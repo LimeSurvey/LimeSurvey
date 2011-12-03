@@ -18,8 +18,20 @@
 // 1=timings only
 // 2=timings + pretty-printed results of validating questions and groups
 // 3=#1 + pretty-printed results of validating questions and groups
-$LEMdebugLevel=0;
-$surveyMode = (($thissurvey['format'] == 'G') ? 'group' : 'question');
+$LEMdebugLevel=3;
+switch ($thissurvey['format'])
+{
+    case "A": //All in one
+        $surveyMode='survey';
+        break;
+    default:
+    case "S": //One at a time
+        $surveyMode='question';
+        break;
+    case "G": //Group at a time
+        $surveyMode='group';
+        break;
+}
 $surveyOptions = array(
     'active'=>($thissurvey['active']=='Y'),
     'allowsave'=>($thissurvey['allowsave']=='Y'),
@@ -39,7 +51,7 @@ $surveyOptions = array(
 
 //Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
 $previewgrp = false;
-if (isset($_REQUEST['action']) && ($_REQUEST['action']=='previewgroup') && $thissurvey['format'] == 'G'){
+if ( $surveyMode=='group' && isset($_REQUEST['action']) && ($_REQUEST['action']=='previewgroup')){
     $previewgrp = true;
 }
 if (isset($_REQUEST['newtest']))
@@ -61,7 +73,10 @@ else
         $totalquestions = buildsurveysession();
         LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, true,$LEMdebugLevel);
         $_SESSION['step'] = 0;
-        if(isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N') {
+        if ($surveyMode == 'survey') {
+            $move = "movenext"; // to force a call to NavigateForwards()
+        }
+        else if (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N') {
             //If explicitply set, hide the welcome screen
             $_SESSION['step'] = 1;
         }
@@ -107,7 +122,7 @@ else
     // Previously we used to keep the session and redirect the user to the
     // submit page.
 
-    if ($_SESSION['step'] == 0) {
+    if ($surveyMode != 'survey' && $_SESSION['step'] == 0) {
         display_first_page();
         exit;
     }
@@ -337,6 +352,12 @@ else
 
         echo templatereplace(file_get_contents("$thistpl/completed.pstpl"));
         echo "\n<br />\n";
+        if ($LEMdebugLevel >= 1) {
+            echo LimeExpressionManager::GetDebugTimingMessage();
+        }
+        if ($LEMdebugLevel >= 2) {
+             echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>".$moveResult['message']."</td></tr></table>\n";
+        }
         echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
         doFooter();
         exit;
@@ -359,7 +380,7 @@ if ($surveyexists <1)
 
 //GET GROUP DETAILS
 
-if ($previewgrp)
+if ($surveyMode == 'group' && $previewgrp)
 {
 	setcookie("limesurvey_timers", "0");
 
@@ -400,6 +421,18 @@ if ($_SESSION['step'] > $_SESSION['maxstep'])
     $_SESSION['maxstep'] = $_SESSION['step'];
 }
 
+// If the survey uses answer persistence and a srid is registered in SESSION
+// then loadanswers from this srid
+/* Only survey mode used this - should all?
+if ($thissurvey['tokenanswerspersistence'] == 'Y' &&
+        $thissurvey['anonymized'] == "N" &&
+        isset($_SESSION['srid']) &&
+        $thissurvey['active'] == "Y")
+{
+    loadanswers();
+}
+*/
+
 //******************************************************************************************************
 //PRESENT SURVEY
 //******************************************************************************************************
@@ -412,62 +445,77 @@ require_once("qanda1.php"); //This should be qanda.php when finished
 //Iterate through the questions about to be displayed:
 $inputnames=array();
 
-$qnumber = 0;
-
-foreach ($_SESSION['fieldarray'] as $key=>$ia)
+foreach ($_SESSION['grouplist'] as $gl)
 {
-    ++$qnumber;
-    $ia[9] = $qnumber; // incremental question count;
+    $gid = $gl[0];
+    $qnumber = 0;
 
-    if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid))
+    if ($surveyMode != 'survey')
     {
-        if ($surveyMode == 'question' && $ia[0] != $stepInfo['qid']) {
+        $onlyThisGID = $stepInfo['gid'];
+        if ($onlyThisGID != $gid)
+        {
             continue;
-        }
-        $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
-        if ($ia[4] != '*' && ($qidattributes===false || $qidattributes['hidden']==1)) {
-            continue;
-        }
-
-        //Get the answers/inputnames
-        // TMSW - can content of retrieveAnswers() be provided by LEM?  Review scope of what it provides.
-        // TODO - retrieveAnswers is slow - queries database separately for each question. May be fixed in _CI or _YII ports, so ignore for now
-        list($plus_qanda, $plus_inputnames)=retrieveAnswers($ia);
-        if ($plus_qanda)
-        {
-            $plus_qanda[] = $ia[4];
-            $plus_qanda[] = $ia[6]; // adds madatory identifyer for adding mandatory class to question wrapping div
-            $qanda[]=$plus_qanda;
-        }
-        if ($plus_inputnames)
-        {
-            $inputnames = addtoarray_single($inputnames, $plus_inputnames);
-        }
-
-        //Display the "mandatory" popup if necessary
-        // TMSW - get question-level error messages - don't call **_popup() directly
-        if (!$previewgrp && $stepInfo['mandViolation'] && $_SESSION['prevstep'] == $_SESSION['step'])
-        {
-            list($mandatorypopup, $popup)=mandatory_popup($ia, $notanswered);
-        }
-
-        //Display the "validation" popup if necessary
-        if (!$previewgrp && !$stepInfo['valid'] && $_SESSION['prevstep'] == $_SESSION['step'])
-        {
-            list($validationpopup, $vpopup)=validation_popup($ia, $notvalidated);
-        }
-
-        // Display the "file validation" popup if necessary
-        if (!$previewgrp && isset($filenotvalidated) && $_SESSION['prevstep'] == $_SESSION['step'])
-        {
-            list($filevalidationpopup, $fpopup) = file_validation_popup($ia, $filenotvalidated);
         }
     }
-    if ($ia[4] == "|")
-        $upload_file = TRUE;
-} //end iteration
 
-if (isset($thissurvey['showprogress']) && $thissurvey['showprogress'] == 'Y')
+    foreach ($_SESSION['fieldarray'] as $key => $ia)
+    {
+        ++$qnumber;
+        $ia[9] = $qnumber; // incremental question count;
+
+        if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid))
+        {
+            if ($surveyMode == 'question' && $ia[0] != $stepInfo['qid'])
+            {
+                continue;
+            }
+            $qidattributes = getQuestionAttributes($ia[0], $ia[4]);
+            if ($ia[4] != '*' && ($qidattributes === false || $qidattributes['hidden'] == 1))
+            {
+                continue;
+            }
+
+            //Get the answers/inputnames
+            // TMSW - can content of retrieveAnswers() be provided by LEM?  Review scope of what it provides.
+            // TODO - retrieveAnswers is slow - queries database separately for each question. May be fixed in _CI or _YII ports, so ignore for now
+            list($plus_qanda, $plus_inputnames) = retrieveAnswers($ia);
+            if ($plus_qanda)
+            {
+                $plus_qanda[] = $ia[4];
+                $plus_qanda[] = $ia[6]; // adds madatory identifyer for adding mandatory class to question wrapping div
+                $qanda[] = $plus_qanda;
+            }
+            if ($plus_inputnames)
+            {
+                $inputnames = addtoarray_single($inputnames, $plus_inputnames);
+            }
+
+            //Display the "mandatory" popup if necessary
+            // TMSW - get question-level error messages - don't call **_popup() directly
+            if (!$previewgrp && $stepInfo['mandViolation'] && $_SESSION['prevstep'] == $_SESSION['step'])
+            {
+                list($mandatorypopup, $popup) = mandatory_popup($ia, $notanswered);
+            }
+
+            //Display the "validation" popup if necessary
+            if (!$previewgrp && !$stepInfo['valid'] && $_SESSION['prevstep'] == $_SESSION['step'])
+            {
+                list($validationpopup, $vpopup) = validation_popup($ia, $notvalidated);
+            }
+
+            // Display the "file validation" popup if necessary
+            if (!$previewgrp && isset($filenotvalidated) && $_SESSION['prevstep'] == $_SESSION['step'])
+            {
+                list($filevalidationpopup, $fpopup) = file_validation_popup($ia, $filenotvalidated);
+            }
+        }
+        if ($ia[4] == "|")
+            $upload_file = TRUE;
+    } //end iteration
+}
+
+if ($surveyMode != 'survey' && isset($thissurvey['showprogress']) && $thissurvey['showprogress'] == 'Y')
 {
     if ($show_empty_group)
     {
@@ -491,7 +539,7 @@ if (isset($fpopup)) {echo $fpopup;}
 echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
 //ALTER PAGE CLASS TO PROVIDE WHOLE-PAGE ALTERNATION
-if ($_SESSION['step'] != $_SESSION['prevstep'] ||
+if ($surveyMode != 'survey' && $_SESSION['step'] != $_SESSION['prevstep'] ||
     (isset($_SESSION['stepno']) && $_SESSION['stepno'] % 2))
 {
     if (!isset($_SESSION['stepno'])) $_SESSION['stepno'] = 0;
@@ -518,9 +566,24 @@ echo sDefaultSubmitHandler();
 
 // <-- END FEATURE - SAVE
 
-// <-- START THE SURVEY -->
+if ($surveyMode == 'survey')
+{
+    if(isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N') {
+        //Hide the welcome screen if explicitly set
+    } else {
+        echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"))."\n";
+    }
 
-echo templatereplace(file_get_contents("{$thistpl}/survey.pstpl"));
+    if ($thissurvey['anonymized'] == "Y")
+    {
+        echo templatereplace(file_get_contents("$thistpl/privacy.pstpl"))."\n";
+    }
+}
+
+// <-- START THE SURVEY -->
+if ($surveyMode != 'survey') {
+    echo templatereplace(file_get_contents("{$thistpl}/survey.pstpl"));
+}
 
 // the runonce element has been changed from a hidden to a text/display:none one
 // in order to workaround an not-reproduced issue #4453 (lemeur)
@@ -561,16 +624,6 @@ print <<<END
 </script>
 END;
 
-echo "\n\n<!-- START THE GROUP -->\n";
-echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));
-echo "\n";
-
-if ($groupdescription)
-{
-    echo templatereplace(file_get_contents("$thistpl/groupdescription.pstpl"));
-}
-echo "\n";
-
 //Display the "mandatory" message on page if necessary
 if (isset($showpopups) && $showpopups == 0 && $stepInfo['mandViolation'] && $_SESSION['prevstep'] == $_SESSION['step'])
 {
@@ -589,10 +642,35 @@ if (isset($showpopups) && $showpopups == 0 && isset($filenotvalidated) && $filen
     echo "<p><span class='errormandatory'>" . $clang->gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</span></p>";
 }
 
-echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
+foreach ($_SESSION['grouplist'] as $gl)
 {
+    $gid=$gl[0];
+    $groupname=$gl[1];
+    $groupdescription=$gl[2];
+
+    if ($surveyMode != 'survey' && $gid != $onlyThisGID) {
+        continue;
+    }
+
+    echo "\n\n<!-- START THE GROUP -->\n";
+    echo "\n\n<div id='group-$gid'>\n";
+    echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));
+    echo "\n";
+
+    if ($groupdescription)
+    {
+        echo templatereplace(file_get_contents("$thistpl/groupdescription.pstpl"));
+    }
+    echo "\n";
+
+    echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
+
     foreach ($qanda as $qa) // one entry per QID
     {
+        if ($gid != $qa[6]) {
+            continue;
+        }
+
         $qid = $qa[4];
         $qinfo = LimeExpressionManager::GetQuestionStatus($qid);
 		$lastgrouparray = explode("X",$qa[7]);
@@ -654,13 +732,14 @@ echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
             echo templatereplace($question_template,NULL,false,$qa[4]);
         };
     }
-	echo "<input type='hidden' name='lastgroup' value='$lastgroup' id='lastgroup' />\n"; // for counting the time spent on each group
-
+    if ($surveyMode != 'survey') {
+        echo "<input type='hidden' name='lastgroup' value='$lastgroup' id='lastgroup' />\n"; // for counting the time spent on each group
+    }
+    echo "\n\n<!-- END THE GROUP -->\n";
+    echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"));
+    echo "\n\n</div>\n";
 
 }
-echo "\n\n<!-- END THE GROUP -->\n";
-echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"));
-echo "\n";
 
 LimeExpressionManager::FinishProcessingGroup();
 echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
@@ -679,7 +758,7 @@ if (!$previewgrp){
     }
 
 
-    if($thissurvey['allowjumps']=='Y')
+    if($surveyMode != 'survey' && $thissurvey['allowjumps']=='Y')
     {
         echo "\n\n<!-- PRESENT THE INDEX -->\n";
 

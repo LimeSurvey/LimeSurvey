@@ -1981,42 +1981,7 @@ class LimeExpressionManager {
         switch ($LEM->surveyMode)
         {
             case 'survey':
-                $LEM->StartProcessingPage(true);
-                /* What is right way to check validity after a submit?
-                if ($LEM->currentGroupSeq != -1) {
-                    // then a repeated showing of survey
-                    if (!$force)
-                    {
-                        $result = $LEM->_ValidateSurvey($debug);
-                        if ($result['mandViolation'] || !$result['valid'])
-                        {
-                            // redisplay the current group
-
-                        }
-                    }
-                    // have submitted the survey
-                    return array(
-                        'finished'=>true,
-                        'message'=>$result['message'],
-                    );                    
-                }
-                 */
-
-                $LEM->currentQset = array();    // reset active list of questions
-                $result = $LEM->_ValidateSurvey();
-                if (!$result['relevant'] || $result['hidden'])
-                {
-                    // then there are no relevant, visible questions in the survey
-                }
-                else
-                {
-                    // display the survey
-                    $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                    return array(
-                        'finished'=>true,
-                        'message'=>$result['message'],
-                    );
-                }
+                // should never be called?
                 break;
             case 'group':
                 // First validate the current group
@@ -2142,42 +2107,35 @@ class LimeExpressionManager {
         switch ($LEM->surveyMode)
         {
             case 'survey':
+                $startingGroup = $LEM->currentGroupSeq;
                 $LEM->StartProcessingPage(true);
-                /* What is right way to check validity after a submit?
-                if ($LEM->currentGroupSeq != -1) {
-                    // then a repeated showing of survey
-                    if (!$force)
-                    {
-                        $result = $LEM->_ValidateSurvey($debug);
-                        if ($result['mandViolation'] || !$result['valid'])
-                        {
-                            // redisplay the current group
-
-                        }
-                    }
-                    // have submitted the survey
-                    return array(
-                        'finished'=>true,
-                        'message'=>$result['message'],
-                    );                    
-                }
-                 */
+                $updatedValues=$LEM->ProcessCurrentResponses();
+                $message = '';
 
                 $LEM->currentQset = array();    // reset active list of questions
                 $result = $LEM->_ValidateSurvey();
-                if (!$result['relevant'] || $result['hidden'])
+                $message .= $result['message'];
+                $updatedValues = array_merge($updatedValues,$result['updatedValues']);
+                if (!$force && !is_null($result) && ($result['mandViolation'] || !$result['valid'] || $startingGroup == -1))
                 {
-                    // then there are no relevant, visible questions in the survey
+                    $finished=false;
                 }
                 else
                 {
-                    // display the survey
-                    $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                    return array(
-                        'finished'=>true,
-                        'message'=>$result['message'],
-                    );
+                    $finished = true;
                 }
+                $message .= $LEM->_UpdateValuesInDatabase($updatedValues,$finished);
+                $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+                return array(
+                    'finished'=>$finished,
+                    'message'=>$message,
+                    'gseq'=>1,
+                    'seq'=>1,
+                    'mandViolation'=>$result['mandViolation'],
+                    'valid'=>$result['valid'],
+                    'unansweredSQs'=>$result['unansweredSQs'],
+                    'invalidSQs'=>$result['invalidSQs'],
+                );
                 break;
             case 'group':
                 // First validate the current group
@@ -2645,7 +2603,7 @@ class LimeExpressionManager {
         }
     }
 
-    function _ValidateSurvey()
+    private function _ValidateSurvey()
     {
         $LEM =& $this;
 
@@ -2654,6 +2612,9 @@ class LimeExpressionManager {
         $shidden=true;
         $smandViolation=false;
         $svalid=true;
+        $unansweredSQs = array();
+        $invalidSQs = array();
+        $updatedValues = array();
 
         for ($i=0;$i<$LEM->numGroups;++$i) {
             $LEM->currentGroupSeq=$i;
@@ -2673,7 +2634,15 @@ class LimeExpressionManager {
                 $svalid=false;
             }
 
-            // TODO - Note, this is needed to generate proper JavaScript - will this prevent tailoring of questions and answers since it closes the group?
+            if (strlen($gStatus['unansweredSQs']) > 0) {
+                $unansweredSQs = array_merge($unansweredSQs, explode('|',$gStatus['unansweredSQs']));
+            }
+            if (strlen($gStatus['invalidSQs']) > 0) {
+                $invalidSQs = array_merge($invalidSQs, explode('|',$gStatus['invalidSQs']));
+            }
+            $updatedValues = array_merge($updatedValues, $gStatus['updatedValues']);
+            $LEM->currentQset = array_merge($LEM->currentQset, $gStatus['qset']);
+
             $LEM->FinishProcessingGroup();
         }
         return array(
@@ -2682,6 +2651,10 @@ class LimeExpressionManager {
             'mandViolation' => $smandViolation,
             'valid' => $svalid,
             'message' => $message,
+            'unansweredSQs' => implode('|',$unansweredSQs),
+            'invalidSQs' => implode('|',$invalidSQs),
+            'updatedValues' => $updatedValues,
+            'seq'=>1,
         );
     }
 

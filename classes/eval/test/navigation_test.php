@@ -39,7 +39,7 @@
             {
                 print '<h3>Starting survey ' . $surveyid . "</h3>";
                 $now = microtime(true);
-                LimeExpressionManager::StartSurvey($surveyid, 'group', $surveyOptions, true,$LEMdebugLevel);
+                LimeExpressionManager::StartSurvey($surveyid, 'survey', $surveyOptions, true,$LEMdebugLevel);
                 print '<b>[StartSurvey() took ' . (microtime(true) - $now) . ' seconds]</b><br/>';
 
                 while(true) {

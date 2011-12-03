@@ -1374,7 +1374,7 @@ class ExpressionManager {
                         }
 
                         $stringParts[] = "<span title='"  . implode('; ',$messages) . "' style='color: ". $color . "; font-weight: bold'";
-                        if ($this->hyperlinkSyntaxHighlighting) {
+                        if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid)) {
                             // Modify this link to utilize a different framework
                             $editlink = $this->rooturl . '/admin/admin.php?sid=' . $this->sid . '&gid=' . $gid . '&qid=' . $qid;
                             $stringParts[] = " onclick='window.open(\"" . $editlink . "\");'";
