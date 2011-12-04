@@ -205,9 +205,13 @@ function LEMval(alias)
     var str = new String(alias);
     var varName = alias;
     var suffix = 'code';    // the default
-    if (str.match(/\.(codeValue|code|displayValue|gid|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|shown|type)$/)) {
-        varName = str.replace(/\.(codeValue|code|displayValue|gid|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|shown|type)$/,'')
+    if (str.match(/\.(codeValue|code|displayValue|gid|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|sgqa|shown|type)$/)) {
+        varName = str.replace(/\.(codeValue|code|displayValue|gid|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|sgqa|shown|type)$/,'')
         suffix = str.replace(/^(.+)\./,'');
+    }
+    if (str.match(/^INSERTANS:/)) {
+        suffix = 'shown';
+        varName = varName.substr(10);
     }
 
     jsName = LEMalias2varName[varName];
@@ -224,9 +228,7 @@ function LEMval(alias)
     else {
         whichJsName = attr.jsName;
     }
-    if (str.match(/^INSERTANS:/)) {
-        suffix = 'shown';
-    }
+
     // values should always be stored encoded with htmlspecialchars()
     switch (suffix) {
         case 'displayValue':

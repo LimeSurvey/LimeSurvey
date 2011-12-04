@@ -1418,6 +1418,7 @@ class ExpressionManager {
     {
         $args = explode(".", $name);
         $varName = $args[0];
+        $varName = preg_replace("/^(?:INSERTANS:)?(.*?)$/", "$1", $varName);
         if (!isset($this->amVars[$varName]))
         {
 //            echo 'UNDEFINED VARIABLE: ' . $varName;
@@ -1646,7 +1647,7 @@ class ExpressionManager {
      */
     private function isValidVariable($name)
     {
-        $varName = preg_replace("/^(.*?)(?:\.(?:" . ExpressionManager::$regex_var_attr . "))?$/", "$1", $name);
+        $varName = preg_replace("/^(?:INSERTANS:)?(.*?)(?:\.(?:" . ExpressionManager::$regex_var_attr . "))?$/", "$1", $name);
         return array_key_exists($varName,$this->amVars);
     }
 

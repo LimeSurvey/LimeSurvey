@@ -1031,7 +1031,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
             // now translate any links
             $insertdata['title']=translink('survey', $oldsid, $newsid, $insertdata['title']);
             $insertdata['question']=translink('survey', $oldsid, $newsid, $insertdata['question']);
-            $insertdata['help']=translink('survey', $oldsid, $newsid, $insertdata['help']);
+            $insertdata['help']=(isset($insertdata['help']) ? translink('survey', $oldsid, $newsid, $insertdata['help']) : '');
             if (isset($aQIDReplacements[$oldsqid])){
                $insertdata['qid']=$aQIDReplacements[$oldsqid];
                db_switchIDInsert('questions',true);

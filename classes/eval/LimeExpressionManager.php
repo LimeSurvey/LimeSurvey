@@ -1419,17 +1419,17 @@ class LimeExpressionManager {
                 );
 
             $this->knownVars[$varName] = $varInfo_Code;
-            $this->knownVars['INSERTANS:' . $code] = $varInfo_Code; // $varInfo_DisplayVal;
+  //          $this->knownVars['INSERTANS:' . $code] = $varInfo_Code; // $varInfo_DisplayVal;
             $this->knownVars[$code] = $varInfo_Code;
 
             $this->jsVar2qid[$jsVarName] = $questionNum;
 
             // Create JavaScript arrays
             $this->alias2varName[$varName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $varName . "':'" . $jsVarName . "'");
-            $this->alias2varName[$jsVarName_on] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $jsVarName_on . "':'" . $jsVarName . "'");
-            $this->alias2varName[$jsVarName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $jsVarName . "':'" . $jsVarName . "'");
+//            $this->alias2varName[$jsVarName_on] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $jsVarName_on . "':'" . $jsVarName . "'");
+//            $this->alias2varName[$jsVarName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $jsVarName . "':'" . $jsVarName . "'");
             $this->alias2varName[$code] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $code . "':'" . $jsVarName . "'");
-            $this->alias2varName['INSERTANS:' . $code] = array('jsName'=>$jsVarName, 'jsPart' => "'INSERTANS:" . $code . "':'" . $jsVarName . "'");
+//            $this->alias2varName['INSERTANS:' . $code] = array('jsName'=>$jsVarName, 'jsPart' => "'INSERTANS:" . $code . "':'" . $jsVarName . "'");
 
             $this->varNameAttr[$jsVarName] = "'" . $jsVarName . "':{ "
                 . "'jsName':'" . $jsVarName
@@ -3958,10 +3958,10 @@ class LimeExpressionManager {
                 $relStatus = 1;
             }
             $jsParts[] = "<input type='hidden' id='relevance" . $qid . "' name='relevance" . $qid .  "' value='" . $relStatus . "'/>\n";
-            if (isset($LEM->qid2code[$qid]))
-            {
-                $jsParts[] = "<input type='hidden' id='relevance" . $qid . "codes' name='relevance" . $qid . "codes' value='" . $LEM->qid2code[$qid] . "'/>\n";
-            }
+//            if (isset($LEM->qid2code[$qid]))
+//            {
+//                $jsParts[] = "<input type='hidden' id='relevance" . $qid . "codes' name='relevance" . $qid . "codes' value='" . $LEM->qid2code[$qid] . "'/>\n";
+//            }
         }
         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
