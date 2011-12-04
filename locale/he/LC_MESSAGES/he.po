@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-26 17:14+0100\n"
-"PO-Revision-Date: 2011-11-29 00:38+0100\n"
-"Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
+"POT-Creation-Date: 2011-11-29 23:16+0100\n"
+"PO-Revision-Date: 2011-12-04 20:56+0100\n"
+"Last-Translator: LimeSurvey team <info@limesurvey.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -54,8 +54,8 @@ msgstr "קבצי CSS וג'אווה סקריפט:"
 #: /tmp/translationstatus_v2/application/views/admin/assessments_view.php:50
 #: /tmp/translationstatus_v2/application/views/admin/survey/listSurveys_view.php:41
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:540
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:140
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:475
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:144
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:492
 msgid "Delete"
 msgstr "מחק"
 
@@ -213,7 +213,7 @@ msgid "Logout"
 msgstr "התנתק"
 
 #: /tmp/translationstatus_v2/application/views/admin/user/modifyuser.php:1
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:466
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:475
 msgid "Editing user"
 msgstr "עורך את המשתמש"
 
@@ -222,16 +222,16 @@ msgstr "עורך את המשתמש"
 #: /tmp/translationstatus_v2/application/views/admin/authentication/login.php:4
 #: /tmp/translationstatus_v2/application/views/admin/authentication/forgotpassword.php:5
 #: /tmp/translationstatus_v2/application/views/installer/success_view.php:32
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:77
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:586
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:144
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:167
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:280
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:423
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:438
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:83
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:603
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:155
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:178
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:289
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:432
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:447
 #: /tmp/translationstatus_v2/application/controllers/admin/authentication.php:161
 #: /tmp/translationstatus_v2/application/controllers/admin/authentication.php:177
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:480
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:490
 msgid "Username"
 msgstr "שם משתמש"
 
@@ -242,15 +242,15 @@ msgstr "שם משתמש"
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenform.php:24
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:174
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:473
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:167
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:178
 #: /tmp/translationstatus_v2/application/controllers/admin/authentication.php:177
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:481
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:491
 msgid "Email"
 msgstr "דואר אלקטרוני"
 
 #: /tmp/translationstatus_v2/application/views/admin/user/modifyuser.php:6
 #: /tmp/translationstatus_v2/application/views/admin/user/editusers.php:9
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:79
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:85
 msgid "Full name"
 msgstr "שם"
 
@@ -259,10 +259,10 @@ msgstr "שם"
 #: /tmp/translationstatus_v2/application/views/installer/success_view.php:33
 #: /tmp/translationstatus_v2/application/helpers/replacements_helper.php:484
 #: /tmp/translationstatus_v2/application/helpers/replacements_helper.php:517
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:150
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:154
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:423
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:438
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:161
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:165
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:432
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:447
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:2107
 #: /tmp/translationstatus_v2/application/libraries/Save.php:410
 msgid "Password"
@@ -326,7 +326,7 @@ msgstr "נהל תוויות"
 
 #: /tmp/translationstatus_v2/application/views/admin/user/setuserrights.php:119
 #: /tmp/translationstatus_v2/application/helpers/replacements_helper.php:507
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:513
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:530
 msgid "Save Now"
 msgstr "שמור כעת"
 
@@ -434,8 +434,8 @@ msgstr "בקרת משתמש"
 #: /tmp/translationstatus_v2/application/views/admin/quotas/viewquotas_view.php:13
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/subQuestion_view.php:69
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPanelIntegration_view.php:5
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:76
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:479
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:82
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:489
 msgid "Action"
 msgstr "פעולה"
 
@@ -458,8 +458,8 @@ msgstr "ערוך משתמש"
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseidheader_view.php:11
 #: /tmp/translationstatus_v2/application/views/admin/saved/savedlist_view.php:23
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:222
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:140
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:517
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:144
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:526
 msgid "Are you sure you want to delete this entry?"
 msgstr "האם אתה בטוח כי ברצונך למחוק כניסה זו?"
 
@@ -488,9 +488,9 @@ msgid "Add user:"
 msgstr "הוסף משתמש:"
 
 #: /tmp/translationstatus_v2/application/views/admin/user/editusers.php:130
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:203
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:354
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:541
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:207
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:366
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:550
 msgid "Add User"
 msgstr "הוסף משתמש"
 
@@ -848,31 +848,29 @@ msgstr "כל התשובות במכסה זו כבר נבחרו"
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1296
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1626
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1662
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:293
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:300
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:307
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:383
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:390
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:593
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:710
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:286
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:323
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:457
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:554
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:592
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:602
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:663
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:669
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:122
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:134
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:211
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:222
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:281
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:297
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:304
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:314
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:385
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:392
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:305
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:312
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:319
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:394
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:401
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:610
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:736
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:295
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:332
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:466
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:606
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:692
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:698
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:123
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:135
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:215
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:226
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:285
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:301
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:308
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:318
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:389
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:396
 msgid "Continue"
 msgstr "המשך"
 
@@ -1287,22 +1285,21 @@ msgstr "העתק תנאים"
 #: /tmp/translationstatus_v2/application/controllers/admin/export.php:529
 #: /tmp/translationstatus_v2/application/controllers/admin/export.php:774
 #: /tmp/translationstatus_v2/application/controllers/admin/export.php:992
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:226
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:319
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:406
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:539
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:608
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:719
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:230
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:331
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:417
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:556
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:625
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:745
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:88
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:190
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:328
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:366
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:467
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:509
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:608
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:628
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:680
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:712
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:199
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:337
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:375
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:476
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:518
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:657
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:709
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:741
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:286
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:344
 #: /tmp/translationstatus_v2/application/controllers/admin/globalsettings.php:88
@@ -1338,11 +1335,11 @@ msgstr "העתק תנאים"
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:360
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:518
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:846
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:160
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:235
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:337
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:425
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:565
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:164
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:239
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:341
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:428
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:574
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:216
 #: /tmp/translationstatus_v2/application/controllers/admin/translate.php:252
 #: /tmp/translationstatus_v2/application/controllers/admin/index.php:30
@@ -1937,9 +1934,9 @@ msgstr "אפשרות \"אחר\":"
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1990
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_manager_helper.php:881
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_manager_helper.php:885
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5351
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5836
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5875
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5609
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6094
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6133
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Controller.php:521
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:421
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:441
@@ -2049,9 +2046,9 @@ msgstr "כן"
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1991
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_manager_helper.php:882
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_manager_helper.php:886
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5360
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5838
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5893
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5618
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6096
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6151
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Controller.php:517
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:422
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:443
@@ -2333,7 +2330,7 @@ msgstr "שאלות אחרות בעלות תנאים על שאלה זו:"
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:61
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:96
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:108
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:667
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:696
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:63
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:86
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:100
@@ -2526,9 +2523,8 @@ msgstr "מכסות"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/importSurvey_view.php:51
 #: /tmp/translationstatus_v2/application/views/admin/survey/copySurvey_view.php:47
-#, fuzzy
 msgid "quota members"
-msgstr "קבוצת שם"
+msgstr "חלק מהחברים"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/importSurvey_view.php:51
 #: /tmp/translationstatus_v2/application/views/admin/survey/copySurvey_view.php:47
@@ -2539,9 +2535,8 @@ msgstr "ו"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/importSurvey_view.php:51
 #: /tmp/translationstatus_v2/application/views/admin/survey/copySurvey_view.php:47
-#, fuzzy
 msgid "quota language settings"
-msgstr "בדוק הגדרות"
+msgstr "תוכן שפת ההגדרות"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/importSurvey_view.php:57
 msgid "Response import summary"
@@ -2708,9 +2703,8 @@ msgid "Syntax highlighted"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:14
-#, fuzzy
 msgid "Preview current question group"
-msgstr "מחק קבוצת שאלה נוכחית"
+msgstr "התצוגה הנוכחית של שאלת הקבוצה"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:25
 msgid "Edit current question group"
@@ -2777,9 +2771,8 @@ msgstr "סגור קבוצה זו"
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:159
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/editGroup_view.php:33
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/addGroup_view.php:40
-#, fuzzy
 msgid "Randomization group:"
-msgstr "סגור קבוצה זו"
+msgstr "קבוצה אקרית"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:167
 msgid "Questions with conditions to this group"
@@ -2800,9 +2793,8 @@ msgid "Import question group"
 msgstr "ייבא קבוצת שאלה"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/addGroup_view.php:25
-#, fuzzy
 msgid "Error: You have to enter a group title for each language."
-msgstr "האם ברצונך ליצור טבלת הרשאות לסקר זה?"
+msgstr "שגיע: אתה צריך להכניס את כותרת הקבוצה עבור כל שפה"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/addGroup_view.php:33
 msgid "Title:"
@@ -2899,7 +2891,7 @@ msgid "General settings"
 msgstr "הגדרות כלליות"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:66
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:73
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:79
 msgid "Survey permissions"
 msgstr "הרשאות סקר"
 
@@ -2965,9 +2957,8 @@ msgid "Survey archive (.zip)"
 msgstr "ארכיון הסקר (.zip)"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:134
-#, fuzzy
 msgid "You can only archive active surveys."
-msgstr "אין הרשאה לפרסם את הסקר הנוכחי"
+msgstr "אתה יכול לאחסן בארכיון רק סקרים פעילים"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:140
 #, fuzzy
@@ -2990,15 +2981,13 @@ msgid "Responses & statistics"
 msgstr "תגובות וסטטיסטיקות"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:179
-#, fuzzy
 msgid "This survey is not active - no responses are available."
-msgstr "הסקר פעיל, ותשובות ישמרו"
+msgstr "סקר זה לא פעיל- התגובות לא זמינות"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:186
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:189
-#, fuzzy
 msgid "Data entry screen"
-msgstr "מסך הכנסת מידע לסקר"
+msgstr "מסך הכנסת המידע"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:188
 msgid "This survey is not active, data entry is not allowed"
@@ -3010,9 +2999,8 @@ msgid "Partial (saved) responses"
 msgstr "תגובות שמורות חלקיות"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:197
-#, fuzzy
 msgid "This survey is not active - no responses are available"
-msgstr "הסקר הזה לא הושלם. לא ניתן לשמור את התשובה שלך"
+msgstr "הסקר הזה לא פעיל- התגובות לא זמינות"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:207
 msgid "Question group/question organizer disabled"
@@ -3106,9 +3094,8 @@ msgid "Add or delete questions"
 msgstr "הוסף או מחק שאלות"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/activateSurvey_view.php:41
-#, fuzzy
 msgid "Add or delete subquestions or change their codes"
-msgstr "הוסף שאלה"
+msgstr "הוסף או מחק שאלות מכוונות או שנה את הקוד שלהן"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/activateSurvey_view.php:43
 msgid "The following settings cannot be changed when the survey is active."
@@ -3235,14 +3222,12 @@ msgid "Import Resources ZIP Archive"
 msgstr "ייבא משאבים כארכיון ZIP"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabNotification_view.php:5
-#, fuzzy
 msgid "Send basic admin notification email to:"
-msgstr "התראת אימייל בסיסית"
+msgstr "שלח הודעת מנהל פשוטה בדואר אלקטרוני ל:"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabNotification_view.php:10
-#, fuzzy
 msgid "Send detailed admin notification email to:"
-msgstr "התרעת אימייל עם הודעה מפורטת"
+msgstr "שלח הודעת מנהל מפורטט בדואר אלקטרוני ל:"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabNotification_view.php:17
 msgid "Date Stamp?"
@@ -3371,7 +3356,7 @@ msgid "Tokens"
 msgstr "מחרוזת תוים"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tab_view.php:9
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:476
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:493
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:161
 msgid "Import"
 msgstr "ייבא"
@@ -3381,9 +3366,8 @@ msgid "Copy"
 msgstr "העתק"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tab_view.php:13
-#, fuzzy
 msgid "Panel integration"
-msgstr "שלח הזמנה באימייל"
+msgstr "לוח משוכלל"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:3214
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tab_view.php:14
@@ -3395,9 +3379,8 @@ msgid "Parameter"
 msgstr "פרמטר"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPanelIntegration_view.php:7
-#, fuzzy
 msgid "Target question"
-msgstr "בשאלה"
+msgstr "שאלת היעד"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPanelIntegration_view.php:8
 msgid "URL parameters"
@@ -3408,9 +3391,8 @@ msgid "No parameters defined"
 msgstr "אין פרמטרים מוגדרים"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPanelIntegration_view.php:10
-#, fuzzy
 msgid "Are you sure you want to delete this URL parameter?"
-msgstr "האם אתה בטוח כי ברצונך למחוק כניסה זו?"
+msgstr "האם אתה בטוח שרצונך הוא למחוק את המשתנה URL?"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:1235
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPanelIntegration_view.php:11
@@ -3440,21 +3422,18 @@ msgid "Bounce email:"
 msgstr "דוא\"ל הקפצה:"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:10
-#, fuzzy
 msgid "You can't use Anonymized responses when Token-based answers persistence is enabled."
-msgstr "לא ניתן להשתמש בתשובות אנונימיות כאשר נוכחות תשובות מבוססות סמלים מופעלת"
+msgstr "אתה לא יכול להישתמש בתגובות אנונימיות כאשר "
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:22
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Controller.php:415
-#, fuzzy
 msgid "Responses to this survey are NOT anonymized."
-msgstr "תשובות לסקר זה אנונימיות"
+msgstr "תגובות לסקר זה לא אנונימיות"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:24
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Controller.php:414
-#, fuzzy
 msgid "Responses to this survey are anonymized."
-msgstr "תשובות לסקר זה אנונימיות"
+msgstr "תגובות לסקר זה אנונימיות"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:45
 msgid "Allow editing responses after completion?"
@@ -3578,9 +3557,8 @@ msgstr "לא (נכפה על ידי האדמין)"
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:265
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:271
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:286
-#, fuzzy
 msgid "Show group name and/or group description"
-msgstr "ערוך את שמות הקבוצות או את תיאוריהן"
+msgstr "הצג את שם הקבוצה ו / או תאור הקבוצה"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:254
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:318
@@ -3632,9 +3610,8 @@ msgstr "הסתר את שניהם"
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:312
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:317
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:331
-#, fuzzy
 msgid "Show question number and/or code"
-msgstr "יש לענות על השאלה הזאת נכונה"
+msgstr "הצג את מספר השאלות ו/או הקוד"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:308
 msgid "Show question number only (Forced by the system administrator)"
@@ -3728,7 +3705,7 @@ msgid "Error: You have to enter a title for this survey."
 msgstr "שגיאה: עליך להכניס כותרת לסקר זה."
 
 #: /tmp/translationstatus_v2/application/views/admin/usergroup/addUserGroup_view.php:1
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:210
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:214
 msgid "Add User Group"
 msgstr "הוסף קבוצת משתמש"
 
@@ -3778,7 +3755,7 @@ msgid "Update User Group"
 msgstr "עדכן קבוצת משתמש"
 
 #: /tmp/translationstatus_v2/application/views/admin/usergroup/usergroupbar_view.php:3
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:78
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:84
 msgid "User Group"
 msgstr "קבוצת המשתמש"
 
@@ -4055,20 +4032,17 @@ msgid "Edit this token"
 msgstr "ערוך סמל זה"
 
 #: /tmp/translationstatus_v2/application/views/admin/labels/exportmulti_view.php:3
-#, fuzzy
 msgid "You have to select at least one label set."
-msgstr "בחרת סקר למחיקה"
+msgstr "אתה צריך לבחור לפחות תג מערכתי אחד"
 
 #: /tmp/translationstatus_v2/application/views/admin/labels/exportmulti_view.php:7
 #: /tmp/translationstatus_v2/application/views/admin/labels/labelsetsbar_view.php:14
-#, fuzzy
 msgid "Export multiple label sets"
-msgstr "ייצא את תויות הקבוצה"
+msgstr "יצאו הרבה תווי מארכות"
 
 #: /tmp/translationstatus_v2/application/views/admin/labels/exportmulti_view.php:9
-#, fuzzy
 msgid "Please choose the label sets you want to export:"
-msgstr "בחר את העמודות שברצונך לייצא."
+msgstr "בבבקשה בחר את התג המערכתי שאתה רוצה להוצאי"
 
 #: /tmp/translationstatus_v2/application/views/admin/labels/exportmulti_view.php:9
 msgid "(Select multiple label sets by using the Ctrl key)"
@@ -4089,9 +4063,8 @@ msgid "Edit label set"
 msgstr "ערוך קבוצת תוויות"
 
 #: /tmp/translationstatus_v2/application/views/admin/labels/labelbar_view.php:11
-#, fuzzy
 msgid "Do you really want to delete this label set?"
-msgstr "האם אתה בטוח כי ברצונך למחוק כניסה זו?"
+msgstr "האם אתה בטוח שרצונך הוא למחוק תג מערכתי זה?"
 
 #: /tmp/translationstatus_v2/application/views/admin/labels/labelbar_view.php:12
 msgid "Delete label set"
@@ -4135,9 +4108,8 @@ msgstr "ייבא קבוצת תוויות"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:1235
 #: /tmp/translationstatus_v2/application/views/admin/labels/editlabel_view.php:17
-#, fuzzy
 msgid "Error: You have to enter a name for this label set."
-msgstr "צריך להכניס  שם המשתמש ודוא\"ל."
+msgstr "שגיע: אתה צריך להכניס שם למערכת התוית הזו"
 
 #: /tmp/translationstatus_v2/application/views/admin/labels/editlabel_view.php:20
 msgid "Set name:"
@@ -4152,7 +4124,7 @@ msgid "You cannot remove this item since you need at least one language in a lab
 msgstr "לא ניתן להסיר פריט זה משום שצריך לפחות שפה אחת בסדרת תוויות."
 
 #: /tmp/translationstatus_v2/application/views/admin/labels/editlabel_view.php:51
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:474
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:491
 msgid "Update"
 msgstr "עדכן"
 
@@ -4310,27 +4282,27 @@ msgstr "עזרה לגבי השאלה הזו"
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:2682
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:2826
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:2889
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5371
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5441
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5541
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5605
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5704
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5752
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5841
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5913
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6007
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6086
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6229
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6251
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6324
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6457
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7232
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7233
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7533
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7608
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7713
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7915
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7969
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5629
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5699
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5799
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5863
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5962
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6010
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6099
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6171
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6265
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6344
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6487
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6509
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6582
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6715
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7490
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7491
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7791
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7866
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7971
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:8173
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:8227
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:688
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:819
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:820
@@ -4356,7 +4328,7 @@ msgstr "אין תשובה"
 #: /tmp/translationstatus_v2/application/views/admin/dataentry/content_view.php:450
 #: /tmp/translationstatus_v2/application/views/admin/dataentry/content_view.php:468
 #: /tmp/translationstatus_v2/application/views/admin/dataentry/content_view.php:591
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6437
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6695
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:823
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:856
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:925
@@ -4372,7 +4344,7 @@ msgstr "אנא בחר"
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:1969
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1983
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_manager_helper.php:878
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5409
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5667
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:429
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:728
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:733
@@ -4390,7 +4362,7 @@ msgstr "נקבה"
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:1968
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1984
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_manager_helper.php:877
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5417
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5675
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:428
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:729
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:733
@@ -4423,8 +4395,8 @@ msgstr "תווית %s"
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:8434
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:2163
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:2320
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7895
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7949
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:8153
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:8207
 #: /tmp/translationstatus_v2/application/controllers/admin/translate.php:383
 msgid "Please choose..."
 msgstr "אנא בחר..."
@@ -4459,8 +4431,8 @@ msgstr "אנא בחר..."
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:2189
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:2320
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:2648
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3504
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3851
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3762
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4109
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:491
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:985
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:914
@@ -4475,13 +4447,15 @@ msgid "Comment"
 msgstr "הערה"
 
 #: /tmp/translationstatus_v2/application/views/admin/dataentry/content_view.php:208
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3098
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:2987
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3354
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:1081
 msgid "Your Choices"
 msgstr "בחירותייך"
 
 #: /tmp/translationstatus_v2/application/views/admin/dataentry/content_view.php:213
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3109
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:2988
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3365
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:1086
 msgid "Your Ranking"
 msgstr "הדירוג שלך"
@@ -4492,8 +4466,8 @@ msgstr "הדירוג שלך"
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:1978
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1858
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_manager_helper.php:887
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5837
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5883
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6095
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6141
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:442
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:1188
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:1205
@@ -4511,8 +4485,8 @@ msgstr "לא בטוח"
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:1984
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1876
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_manager_helper.php:890
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6002
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6045
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6260
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6303
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:449
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:1228
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:1244
@@ -4529,8 +4503,8 @@ msgstr "הוסף"
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:1986
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1877
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_manager_helper.php:891
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6003
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6056
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6261
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6314
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:451
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:1229
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:1245
@@ -4547,8 +4521,8 @@ msgstr "אותו דבר"
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:1985
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1878
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_manager_helper.php:892
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6004
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6068
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6262
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6326
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:450
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:1230
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:1246
@@ -4625,9 +4599,8 @@ msgstr "הסקר שבחרת אינו קיים"
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:1783
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:1787
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:2181
-#, fuzzy
 msgid "Data entry"
-msgstr "כניסת מידע"
+msgstr "הכנסת מידע"
 
 #: /tmp/translationstatus_v2/application/views/admin/dataentry/caption_view.php:29
 #: /tmp/translationstatus_v2/application/views/admin/export/exportresults_view.php:126
@@ -4786,9 +4759,8 @@ msgstr "בחר את העמודות שברצונך לייצא."
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenwarning.php:3
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:3
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1623
-#, fuzzy
 msgid "Token control"
-msgstr "בקר מחרוזות"
+msgstr "סמל שליטה"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/exportresults_view.php:118
 msgid "Choose token fields"
@@ -4843,9 +4815,8 @@ msgid "Export group structure"
 msgstr "ייצא מבנה קבוצה"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/spss_view.php:1
-#, fuzzy
 msgid "Export result data to SPSS"
-msgstr "ייצא תוצאות לקובץ פקודות SPSS"
+msgstr "תוצאות הנתונים שייצוא ל- SPSS"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/spss_view.php:4
 #: /tmp/translationstatus_v2/application/views/admin/export/r_view.php:3
@@ -4853,9 +4824,8 @@ msgid "Data selection:"
 msgstr "בחירת נתונים:"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/spss_view.php:10
-#, fuzzy
 msgid "SPSS version:"
-msgstr "שאלה"
+msgstr "גרסת SPSS"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/spss_view.php:12
 msgid "Prior to 16"
@@ -4906,7 +4876,7 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/export/vv_view.php:9
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:72
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:477
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:494
 msgid "Export"
 msgstr "ייצא"
 
@@ -4919,9 +4889,8 @@ msgid "For easy opening in MS Excel, change the extension to 'tab' or 'txt'"
 msgstr "לפתיחה נוחה במיקרוסופט אקסל"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/r_view.php:1
-#, fuzzy
 msgid "Export result data to R"
-msgstr "ייצא תוצאות לקובץ פקודות SPSS"
+msgstr "תוצאות הנתונים שייצוא ל- R"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/r_view.php:11
 #, fuzzy
@@ -4998,9 +4967,8 @@ msgid "Sharing participants..."
 msgstr "חולק משתתפים..."
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:60
-#, fuzzy
 msgid "Share the selected participants"
-msgstr "מחק את כל כניסות ההרשאה"
+msgstr "לחלוק את ההמשתתפים הנבחרים"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:61
 msgid "No other user in the system"
@@ -5133,18 +5101,16 @@ msgid "Select the attribute to be exported"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/participantsPanel_view.php:11
-#, fuzzy
 msgid "Participants panel"
-msgstr "מותר למשתתפים להדפיס תשובות?"
+msgstr "רשימת המשתתפים"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/participantsPanel_view.php:105
 msgid "There are no participants to be exported"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/userControl_view.php:5
-#, fuzzy
 msgid "Global participant settings"
-msgstr "הגדרות כלליות"
+msgstr "הגדרות המשתתף הכלליות"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/userControl_view.php:26
 msgid "User ID editable : "
@@ -5163,9 +5129,8 @@ msgid "Uploaded CSV file successfully"
 msgstr "קובץ CVS הועלה בהצלחה"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/uploadSummary_view.php:18
-#, fuzzy
 msgid "Successfully created CPDB entries"
-msgstr "מחק את כל כניסות ההרשאה"
+msgstr "נוצרו בהצלחה כניסות CPDB"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/uploadSummary_view.php:20
 #, fuzzy
@@ -5223,9 +5188,8 @@ msgid "Choose the file to upload:"
 msgstr "בחר את הקובץ להעלות"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/importCSV_view.php:17
-#, fuzzy
 msgid "Character set of file:"
-msgstr "קידוד של הקובץ:"
+msgstr "כתוב מערכת של תקיות"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/importCSV_view.php:20
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:84
@@ -5446,47 +5410,40 @@ msgid "firstname, lastname, email"
 msgstr "שם פרטי, שם משפחה, אימייל"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/importCSV_view.php:97
-#, fuzzy
 msgid "blacklist,language"
-msgstr "שפת בסיס"
+msgstr "שפה"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/sharePanel_view.php:6
-#, fuzzy
 msgid "Share panel"
-msgstr "שמור שינויים"
+msgstr "להיתחלק בלוח"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/summary_view.php:2
-#, fuzzy
 msgid "Central participants database summary"
-msgstr "אין הרשאה לפרסם את הסקר הנוכחי"
+msgstr "סיכום הנתונים המשתתפים במרכזית"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/summary_view.php:8
-#, fuzzy
 msgid "Total participants in central table"
-msgstr "סך כל הרשומות בטבלת הרשאות זו:"
+msgstr "כל המשתתפים בטבלה המרכזית"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/summary_view.php:16
 msgid "Participants owned by you"
 msgstr "משתתפים שבבעלותך"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/summary_view.php:24
-#, fuzzy
 msgid "Participants shared with you"
-msgstr "מותר למשתתפים להדפיס תשובות?"
+msgstr "המשתתפים שיתפו אותך"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/summary_view.php:32
-#, fuzzy
 msgid "Participants you have shared"
-msgstr "מותר למשתתפים להדפיס תשובות?"
+msgstr "המשתתפים ששיתפתה"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/summary_view.php:40
 msgid "Blacklisted participants"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/summary_view.php:48
-#, fuzzy
 msgid "Total attributes in the central table"
-msgstr "סך כל הרשומות בטבלת הרשאות זו:"
+msgstr "סך כל התכונות בטבלה הראשית"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/viewAttribute_view.php:3
 #: /tmp/translationstatus_v2/application/views/admin/participants/viewAttribute_view.php:60
@@ -5514,18 +5471,16 @@ msgid "Attribute type:"
 msgstr "סוג מאפיין"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/viewAttribute_view.php:90
-#, fuzzy
 msgid "Attribute visible:"
-msgstr "מאפיין 1"
+msgstr "מאפיין הנראה לעין"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/viewAttribute_view.php:109
 msgid "Value name"
 msgstr "שם ערך"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeControl_view.php:5
-#, fuzzy
 msgid "Attribute visiblity changed"
-msgstr "מאפיין אחד"
+msgstr "תכונת הראיה משתנה"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeControl_view.php:10
 msgid "Attribute control"
@@ -5544,9 +5499,8 @@ msgid "Visible in participant panel"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeControl_view.php:41
-#, fuzzy
 msgid "Dropdown"
-msgstr "נפתח כפול"
+msgstr "להפיל"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeControl_view.php:45
 msgid "Date"
@@ -5760,19 +5714,16 @@ msgid "Total with no unique Token"
 msgstr "סך הכל ללא הרשאה ייחודית:"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokensummary.php:24
-#, fuzzy
 msgid "Total invitations sent"
-msgstr "סך כל ההזמנות שנשלחו:"
+msgstr "סך כל ההזמנות שנשלחו"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokensummary.php:32
-#, fuzzy
 msgid "Total opted out"
-msgstr "סך כל הרשומות שיובאו:"
+msgstr "סך כל המובחרים"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokensummary.php:40
-#, fuzzy
 msgid "Total surveys completed"
-msgstr "סך כל הסקרים שמולאו:"
+msgstr "סך כל הסקרים שהושלמו"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:13
 #, fuzzy
@@ -5807,9 +5758,8 @@ msgstr "ייצא הרשאות לקובץ CSV"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:62
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:75
-#, fuzzy
 msgid "Edit email templates"
-msgstr "ייצא תבנית"
+msgstr "הוסף תבנית דואר אלקטרוני"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:66
 msgid "Send email invitation"
@@ -5821,9 +5771,8 @@ msgid "Send email reminder"
 msgstr "שלח אימייל תזכורת"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:75
-#, fuzzy
 msgid "Generate tokens"
-msgstr "הרשאות כלליות"
+msgstr "מחולל אותות"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:83
 msgid "Drop tokens table"
@@ -5833,18 +5782,16 @@ msgstr "בטל טבלת הרשאות"
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:1
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:10
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1516
-#, fuzzy
 msgid "Bounce settings"
-msgstr "שמור הגדרות"
+msgstr "הגדרות לא צפויות"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:104
 msgid "Show help"
 msgstr "הצג עזרה"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:14
-#, fuzzy
 msgid "You have selected not to use any bounce settings"
-msgstr "לא בחרת בשאלה"
+msgstr "אתה בחרתה לא להישתמש בהגדרות הקפצה"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:18
 msgid "Bounce processing"
@@ -5916,14 +5863,12 @@ msgid "Valid until"
 msgstr "תקים עד"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:181
-#, fuzzy
 msgid "Invalid email address:"
-msgstr "כתובת דואל"
+msgstr "כתובת דואר אלקטרוני שגוי"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:187
-#, fuzzy
 msgid "This participant opted out of this survey."
-msgstr "תודה לך על שהשלמת את הסקר."
+msgstr "משתתף זה בחר לסקר הזה"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:210
 msgid "Do survey"
@@ -5936,9 +5881,8 @@ msgid "Edit token entry"
 msgstr "ערוך כניסת הרשאה"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:222
-#, fuzzy
 msgid "Delete token entry"
-msgstr "מחק כנסת הרשאה"
+msgstr "מחק כניסה מסומנת"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:237
 msgid "View/Update last response"
@@ -5957,14 +5901,12 @@ msgid "Delete the selected entries"
 msgstr "מחק רשומות נבחרות"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:265
-#, fuzzy
 msgid "Are you sure you want to delete the selected entries?"
-msgstr "האם אתה בטוח כי ברצונך למחוק כניסה זו?"
+msgstr "האם אתה בטוח שרצונך הוא למחוק את הכניסות הללו"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:265
-#, fuzzy
 msgid "No tokens selected"
-msgstr "לא נבחר"
+msgstr "לא נבחר סימן"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:273
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:274
@@ -5989,9 +5931,8 @@ msgid "Add participant to CPDB"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:344
-#, fuzzy
 msgid "Please select at least one participant to be added"
-msgstr "אנא סמן אחד לפחות"
+msgstr "אנא בחר לפחות משתתף אחד שהיצטרף"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:353
 msgid "Please select the attributes that are to be added to the central database"
@@ -6003,9 +5944,8 @@ msgid "Manage token attribute fields"
 msgstr "מאפיניי מחרוזות שמות:"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/managetokenattributes.php:4
-#, fuzzy
 msgid "Attribute field"
-msgstr "מאפיין אחד"
+msgstr "שדה מאפיינים"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/managetokenattributes.php:4
 msgid "Field description"
@@ -6116,9 +6056,8 @@ msgid "Token status:"
 msgstr "מחרוזת תוים"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/exportdialog.php:4
-#, fuzzy
 msgid "All tokens"
-msgstr "הצג הרשאות"
+msgstr "כל הסימונים"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/exportdialog.php:6
 msgid "Not started"
@@ -6177,9 +6116,8 @@ msgid "Export tokens"
 msgstr "ייצא שאלה"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/emailpost.php:3
-#, fuzzy
 msgid "Sending invitations..."
-msgstr "שולח הזמנות"
+msgstr "שולח הזמנות..."
 
 #: /tmp/translationstatus_v2/application/views/admin/token/emailpost.php:6
 #, fuzzy
@@ -6275,9 +6213,8 @@ msgid "Min days between reminders"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/token/remind.php:92
-#, fuzzy
 msgid "Max reminders"
-msgstr "תזכורת באימייל"
+msgstr "תזכורת מקסימלית"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/remind.php:95
 msgid "Send Reminders"
@@ -6349,14 +6286,12 @@ msgid "Update token entry"
 msgstr "צור כניסת הרשאה חדשה"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:4
-#, fuzzy
 msgid "Survey bounce email:"
-msgstr "שפת ברירת מחדל"
+msgstr "דואר אלקטרוני לא צפוי של סקר"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:6
-#, fuzzy
 msgid "Bounce settings to be used"
-msgstr "כל כניסות ההרשאה נמחקו."
+msgstr "הגדרות הקפיצה שהיו משומשים"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:10
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:37
@@ -6372,9 +6307,8 @@ msgid "None"
 msgstr "ללא"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:13
-#, fuzzy
 msgid "Use settings below"
-msgstr "שמור הגדרות"
+msgstr "השתמש בהגדרות הבאות"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:16
 msgid "Use global settings"
@@ -6397,9 +6331,8 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:27
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:206
-#, fuzzy
 msgid "Server name & port:"
-msgstr "שעון השרת:"
+msgstr "שם והיציא של השרת:"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:28
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:207
@@ -6517,9 +6450,8 @@ msgid "Site name:"
 msgstr "שם האתר"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:68
-#, fuzzy
 msgid "Default template:"
-msgstr "שנה את שם התבנית הזאת"
+msgstr "תבנית בררת המחדל:"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:82
 #, fuzzy
@@ -6611,9 +6543,8 @@ msgid "Sendmail"
 msgstr "שלח"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:152
-#, fuzzy
 msgid "Qmail"
-msgstr "דואר אלקטרוני"
+msgstr "דואר אלקטרוני Q"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:154
 msgid "SMTP host:"
@@ -6624,14 +6555,12 @@ msgid "Enter your hostname and port, e.g.: my.smtp.com:25"
 msgstr "הכנס את שם המארח ואת הפורט, לדוג': my.smtp.com:25"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:156
-#, fuzzy
 msgid "SMTP username:"
-msgstr "שם משתמש"
+msgstr "שם משתמש SMTP:"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:158
-#, fuzzy
 msgid "SMTP password:"
-msgstr "סיסמא:"
+msgstr "סיסמא SMTP:"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:160
 msgid "SMTP SSL/TLS:"
@@ -6705,9 +6634,8 @@ msgstr "קבע תנאים לשאלה זו"
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:321
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:337
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:356
-#, fuzzy
 msgid "Survey admin can choose"
-msgstr "אחראי מחשוב:"
+msgstr "אחראי הסקר יכול לבחור"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:304
 msgid "Repeating headings in array questions every X subquestions:"
@@ -6719,9 +6647,8 @@ msgid "Show question group name and/or description"
 msgstr "ערוך את שמות הקבוצות או את תיאוריהן"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:350
-#, fuzzy
 msgid "Show question number and/or question code"
-msgstr "צריך לבחור תויות קבוצה לשאלה זו"
+msgstr "הצג מספר שאלה ו/או קוד השאלה"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:365
 msgid "Default site language:"
@@ -6744,9 +6671,8 @@ msgid "Start installation"
 msgstr "התחל התקנה"
 
 #: /tmp/translationstatus_v2/application/views/installer/dbsettings_view.php:21
-#, fuzzy
 msgid "LimeSurvey setup"
-msgstr "התקנת תוכנת הסקרים"
+msgstr "הגדרת LimeSurvey"
 
 #: /tmp/translationstatus_v2/application/views/installer/success_view.php:25
 msgid "LimeSurvey tried to delete the following file but couldn't succeed. You will have to remove the file or else you will not be able to log in."
@@ -6757,14 +6683,12 @@ msgid "File path:"
 msgstr "נתיב קובץ:"
 
 #: /tmp/translationstatus_v2/application/views/installer/success_view.php:31
-#, fuzzy
 msgid "Administrator credentials"
-msgstr "אחראי מחשוב:"
+msgstr "מכתב ההמלצה של המנהל"
 
 #: /tmp/translationstatus_v2/application/views/installer/header_view.php:43
-#, fuzzy
 msgid "LimeSurvey installer"
-msgstr "הוראות LimeSurvey"
+msgstr "מכונת התכנה של LimeSurvey"
 
 #: /tmp/translationstatus_v2/application/views/installer/dbconfig_view.php:24
 msgid "Note: All fields marked with (*) are required."
@@ -6777,9 +6701,8 @@ msgstr "שים לב : דרושים כל השדות שמסומנים עם (*) ."
 #: /tmp/translationstatus_v2/application/controllers/installer.php:899
 #: /tmp/translationstatus_v2/application/controllers/installer.php:944
 #: /tmp/translationstatus_v2/application/controllers/installer.php:980
-#, fuzzy
 msgid "Database configuration"
-msgstr "עדכן תנאי"
+msgstr "צורת מאגר המידע"
 
 #: /tmp/translationstatus_v2/application/views/installer/dbconfig_view.php:33
 #: /tmp/translationstatus_v2/application/helpers/update/update_helper.php:63
@@ -6787,9 +6710,8 @@ msgid "Database type"
 msgstr "סוג בסיס הנתונים"
 
 #: /tmp/translationstatus_v2/application/views/installer/dbconfig_view.php:34
-#, fuzzy
 msgid "This is the database type."
-msgstr "זהו טקסט לעזרה."
+msgstr "זה סוג המאגר המידע"
 
 #: /tmp/translationstatus_v2/application/views/installer/dbconfig_view.php:47
 msgid "Database location"
@@ -6822,9 +6744,8 @@ msgid "Database password"
 msgstr "סיסמת בסיס הנתונים"
 
 #: /tmp/translationstatus_v2/application/views/installer/dbconfig_view.php:69
-#, fuzzy
 msgid "Your database server password."
-msgstr "לא סיפקת סיסמא"
+msgstr "סיסמת שרת מאגר המידע שלך"
 
 #: /tmp/translationstatus_v2/application/views/installer/dbconfig_view.php:75
 #, fuzzy
@@ -6873,9 +6794,8 @@ msgid "Current"
 msgstr "נוכחי"
 
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:64
-#, fuzzy
 msgid "PHP version"
-msgstr "שאלה"
+msgstr "גרסת PHP"
 
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:66
 msgid "Outdated"
@@ -6931,9 +6851,8 @@ msgid "Pre-installation check"
 msgstr "בדיקה לפני התקנה"
 
 #: /tmp/translationstatus_v2/application/views/installer/sidebar_view.php:25
-#, fuzzy
 msgid "Configuration"
-msgstr "יוצר"
+msgstr "צורה"
 
 #: /tmp/translationstatus_v2/application/views/installer/sidebar_view.php:28
 #: /tmp/translationstatus_v2/application/controllers/installer.php:497
@@ -6948,18 +6867,16 @@ msgid "You can leave these settings blank and change them later"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:33
-#, fuzzy
 msgid "Admin login name"
-msgstr "אחראי מחשוב:"
+msgstr "שם המשתמש של המנהל"
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:34
 msgid "This will be the userid by which admin of board will login."
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:39
-#, fuzzy
 msgid "Admin login password"
-msgstr "לא סיפקת סיסמא"
+msgstr "סיסמת המנהל"
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:40
 msgid "This will be the password of admin user."
@@ -6970,23 +6887,20 @@ msgid "Confirm password"
 msgstr "אישור סיסמא"
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:46
-#, fuzzy
 msgid "Confirm your admin password."
-msgstr "אישור סיסמא?"
+msgstr "תאשר את סיסמת המנהל שלך."
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:51
-#, fuzzy
 msgid "Administrator name"
-msgstr "אחראי מחשוב:"
+msgstr "שם המנהל"
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:52
 msgid "This is the default name of the site administrator and used for system messages and contact options."
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:57
-#, fuzzy
 msgid "Administrator email"
-msgstr "אחראי מחשוב:"
+msgstr "דואר האלקטרוני של המנהל"
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:58
 msgid "This is the default email address of the site administrator and used for system messages, contact options and default bounce email."
@@ -7158,14 +7072,12 @@ msgid "Macedonian"
 msgstr "מקדונית"
 
 #: /tmp/translationstatus_v2/application/helpers/surveytranslator_helper.php:343
-#, fuzzy
 msgid "Malay"
-msgstr "זכר"
+msgstr "מלאי"
 
 #: /tmp/translationstatus_v2/application/helpers/surveytranslator_helper.php:350
-#, fuzzy
 msgid "Maltese"
-msgstr "זכר"
+msgstr "מלטי"
 
 #: /tmp/translationstatus_v2/application/helpers/surveytranslator_helper.php:357
 msgid "Norwegian (Bokmal)"
@@ -7269,9 +7181,8 @@ msgid "Please contact %s ( %s ) for further assistance."
 msgstr "לעזרה נוספת"
 
 #: /tmp/translationstatus_v2/application/helpers/replacements_helper.php:269
-#, fuzzy
 msgid "There are no questions in this survey"
-msgstr "ישנה שאלה 1 בסקר הזה"
+msgstr "אין שאלות בסקר זה"
 
 #: /tmp/translationstatus_v2/application/helpers/replacements_helper.php:273
 msgid "There is 1 question in this survey"
@@ -7323,7 +7234,7 @@ msgstr "חזור לסקר"
 
 #: /tmp/translationstatus_v2/application/helpers/replacements_helper.php:478
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:378
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:383
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:387
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:2106
 #: /tmp/translationstatus_v2/application/libraries/Save.php:409
 msgid "Name"
@@ -7376,9 +7287,8 @@ msgstr "טען סקר שנשמר"
 
 # D:\xampp\xampp\htdocs\limesurvey/common.php:1638
 #: /tmp/translationstatus_v2/application/helpers/replacements_helper.php:631
-#, fuzzy
 msgid "You can load a survey that you have previously saved from this screen."
-msgstr "ברשותך אפשרות לטעון סקר ששמר בעבר ממסך זה <br /> הקלד את השם שבו שמרת את הסקר ואת הסיסמא  <br />"
+msgstr "אתה יכול לטעון סקר שאתה מקודם שמרתה ממסך זה"
 
 # D:\xampp\xampp\htdocs\limesurvey/common.php:1638
 #: /tmp/translationstatus_v2/application/helpers/replacements_helper.php:631
@@ -7473,28 +7383,24 @@ msgid "Arrays"
 msgstr "מערכים"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:69
-#, fuzzy
 msgid "Mask questions"
-msgstr "בשאלה"
+msgstr "שאלות מסכה"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:70
-#, fuzzy
 msgid "Single choice questions"
-msgstr "לא הועתקו שאלות"
+msgstr "בחירה אחת בשאלות"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:71
-#, fuzzy
 msgid "Multiple choice questions"
-msgstr "בחירה מרובה"
+msgstr "מבחר בחירות לשאלות"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:72
 msgid "Text questions"
 msgstr "שאלות טקסט"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:76
-#, fuzzy
 msgid "Array dual scale"
-msgstr "מערך של תוויות גמישות"
+msgstr "סולם ערכים זוגיים"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:82
 msgid "5 Point Choice"
@@ -7530,9 +7436,8 @@ msgid "Gender"
 msgstr "מין"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:130
-#, fuzzy
 msgid "Array by column"
-msgstr "הצג הרשאות"
+msgstr "ערך לפי עמודה"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:136
 msgid "Language Switch"
@@ -7548,9 +7453,8 @@ msgid "List (Radio)"
 msgstr "כפתורי רדיו"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:154
-#, fuzzy
 msgid "Multiple choice"
-msgstr "מספר טקסטים קצרים"
+msgstr "הרבה בחירות"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:160
 msgid "Numerical Input"
@@ -7586,9 +7490,8 @@ msgid "Huge Free Text"
 msgstr "טקסט חופשי ארוך מאוד"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:208
-#, fuzzy
 msgid "Text display"
-msgstr "רשומות מוצגות"
+msgstr "מציג טקסט"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:214
 msgid "Yes/No"
@@ -7691,9 +7594,8 @@ msgid ""
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:1583
-#, fuzzy
 msgid "Confirmation of your participation in our survey"
-msgstr "הזמנה להשתתף בסקר"
+msgstr "האישור של המשתתף שלך מסקר שלנו"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:1584
 #, fuzzy
@@ -7718,9 +7620,8 @@ msgstr ""
 "{ADMINNAME}"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:1585
-#, fuzzy
 msgid "Invitation to participate in a survey"
-msgstr "הזמנה להשתתף בסקר"
+msgstr "הגמנת הישתתפות לסקר"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:1586
 #, fuzzy
@@ -7980,9 +7881,8 @@ msgid "Use accessible dropdown boxes instead of calendar popup"
 msgstr "השתמש בקופסאות נפתחות כפולות במקום סולם כפול"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3374
-#, fuzzy
 msgid "Display dropdown boxes"
-msgstr "הצג הרשאות"
+msgstr "הצג קופסאות זרוקות"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3381
 msgid "Minimum year value in calendar"
@@ -8088,9 +7988,8 @@ msgid "Location"
 msgstr "מיקום"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3464
-#, fuzzy
 msgid "Store the city?"
-msgstr "אבטחת הסקר"
+msgstr "מחסן העיר"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3465
 msgid "Save city"
@@ -8128,9 +8027,8 @@ msgid "Statistics"
 msgstr "סטטיסטיקות"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3506
-#, fuzzy
 msgid "Show a map in the statistics?"
-msgstr "להציג גרף בנתונים הציבוריים?"
+msgstr "לצג את המפה בסטטיסטיקות?"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3507
 msgid "Display map"
@@ -8146,9 +8044,8 @@ msgid "Display chart"
 msgstr "הראה שורות"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3527
-#, fuzzy
 msgid "Bar chart"
-msgstr "Binary pseudo charset"
+msgstr "תרשים עמודות"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3527
 msgid "Pie chart"
@@ -8159,9 +8056,8 @@ msgid "Select the type of chart to be displayed"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3529
-#, fuzzy
 msgid "Chart type"
-msgstr "שם בסיס הנתונים"
+msgstr "סוג המפה"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3539
 msgid "Google Maps"
@@ -8196,9 +8092,8 @@ msgid "Get the default location using the user's IP address?"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3569
-#, fuzzy
 msgid "IP as default location"
-msgstr "התראת אימייל בסיסית"
+msgstr "IP כמיקום בררת המחדל"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3576
 msgid "Default coordinates of the map when the page first loads. Format: latitude [space] longtitude"
@@ -8380,14 +8275,12 @@ msgid "Integer only"
 msgstr "מספרים מסוג שלם בלבד"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3760
-#, fuzzy
 msgid "Allow only numerical input"
-msgstr "תוכן מספרי"
+msgstr "מאפשר רק קלט מספרי"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3761
-#, fuzzy
 msgid "Numbers only"
-msgstr "מספר קטן מ"
+msgstr "מספרים בלבד"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3771
 msgid "Rows"
@@ -8440,9 +8333,8 @@ msgid "Allow only numerical input for 'Other' text"
 msgstr "תוכן מספרי"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3825
-#, fuzzy
 msgid "Numbers only for 'Other'"
-msgstr "מספר קטן מ"
+msgstr "מספרים רל ל 'אחרים'"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3833
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
@@ -8466,18 +8358,16 @@ msgstr ""
 
 # D:\xampp\xampp\htdocs\limesurvey/common.php:1558
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3854
-#, fuzzy
 msgid "Answer prefix"
-msgstr "הערה לגבי פרטיות"
+msgstr "קידומת לתשובה"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3864
 msgid "Show statistics of this question in the public statistics page"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3865
-#, fuzzy
 msgid "Show in public statistics"
-msgstr "סטטיסטיקות מהירות"
+msgstr "הצג סטטיסטיקות לציבור"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3873
 msgid "Randomize on each page load"
@@ -8496,9 +8386,8 @@ msgid "Random answer order"
 msgstr "סדר תשובות אקראי"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3898
-#, fuzzy
 msgid "Get order from previous question"
-msgstr "ערוך/הוסף תשובות לשאלה זו"
+msgstr "לקבל סדר מהשאלה הקודמת"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3899
 msgid "Enter question ID to get subquestion order from a previous question"
@@ -8580,9 +8469,8 @@ msgid "Add a suffix to the answer field"
 msgstr "הוסף סיומת לשדה התשובה"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3996
-#, fuzzy
 msgid "Answer suffix"
-msgstr "תשובות"
+msgstr "סיומת לתשובה"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4003
 msgid "Width of text input box"
@@ -8605,14 +8493,12 @@ msgid "Nominal"
 msgstr "שמני"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4024
-#, fuzzy
 msgid "Ordinal"
-msgstr "רשות"
+msgstr "מיספרים סידוריים"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4025
-#, fuzzy
 msgid "Scale"
-msgstr "סולם"
+msgstr "סולם מספרים"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4027
 msgid "Set a specific SPSS export scale type for this question"
@@ -8817,19 +8703,16 @@ msgid "Minute step interval"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4200
-#, fuzzy
 msgid "Short names"
-msgstr "קבוצת שם"
+msgstr "קיצורי שמות"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4201
-#, fuzzy
 msgid "Full names"
-msgstr "שם"
+msgstr "שמות מלאים"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4202
-#, fuzzy
 msgid "Numbers"
-msgstr "מספר קטן מ"
+msgstr "מספרים"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4204
 msgid "Change the display style of the month when using select boxes"
@@ -8842,9 +8725,8 @@ msgstr "רשומות מוצגות"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4209
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4220
-#, fuzzy
 msgid "File metadata"
-msgstr "העידכון נכשל!"
+msgstr "תקית מטא הנתונים"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4215
 msgid "Is the participant required to give a title to the uploaded file?"
@@ -8875,18 +8757,16 @@ msgid "Maximum number of files that the participant can upload for this question
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4246
-#, fuzzy
 msgid "Max number of files"
-msgstr "מספר מקרים"
+msgstr "מספר מקסימלי של תקיות"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4254
 msgid "Minimum number of files that the participant must upload for this question"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4255
-#, fuzzy
 msgid "Min number of files"
-msgstr "מספר מקרים"
+msgstr "מספר מינימלי של תקיות"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4263
 msgid "Allowed file types in comma separated format. e.g. pdf,doc,odt"
@@ -8913,9 +8793,8 @@ msgid "SMTP debug output:"
 msgstr "פלט של דיבאג SMTP:"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:5605
-#, fuzzy
 msgid "Token code"
-msgstr "מחרוזת תוים"
+msgstr "קוד הסימן"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:5606
 msgid "Language code"
@@ -8927,37 +8806,33 @@ msgid "Invitation sent date"
 msgstr "הזמנה נשלחה ל:"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:5608
-#, fuzzy
 msgid "Last Reminder sent date"
-msgstr "תזכורת נשלחה ל:"
+msgstr "תאריך אחרון לשליחת מתזכר"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:5609
 msgid "Total numbers of sent reminders"
 msgstr "מספר כולל של תזכורות שנשלחו"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:5634
-#, fuzzy, php-format
+#, php-format
 msgid "Attribute %s"
-msgstr "מאפיין 1"
+msgstr "מאפיין %s"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:7095
 msgid "Access denied!"
 msgstr "הגישה חסומה"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:7100
-#, fuzzy
 msgid "You are not allowed dump the database!"
-msgstr "אין הרשאה לערוך את הסקר"
+msgstr "אתה לא מורשה לנטוש את מאגר המידע"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:7105
-#, fuzzy
 msgid "You are not allowed export a label set!"
-msgstr "אין הרשאה לדפדף בתשובות"
+msgstr "אתה לא מורשה לייבא קבוצת תווים"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:7110
-#, fuzzy
 msgid "You are not allowed to change user data!"
-msgstr "אינך רשאי לשנות את הזכויות שלך!"
+msgstr "אתה לא מורשה לשנות את מידעת המשתמש"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:7115
 msgid "You are not allowed to create new surveys!"
@@ -8976,9 +8851,8 @@ msgid "You are not allowed to activate this survey!"
 msgstr "אין הרשאה לפרסם את הסקר הנוכחי"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:7135
-#, fuzzy
 msgid "You are not allowed to stop this survey!"
-msgstr "אין הרשאה לערוך את הסקר"
+msgstr "אתה לא מורשה לעצור סקר זה!"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:7140
 msgid "You are not allowed to add a group to this survey!"
@@ -8997,9 +8871,8 @@ msgid "You are not allowed to edit groups in this survey!"
 msgstr "אין הרשאה לערוך קבוצות בסקר הזה"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:7162
-#, fuzzy
 msgid "You are not allowed to browse responses!"
-msgstr "אין הרשאה לדפדף בתשובות"
+msgstr "אתה לא מורשה לראות את התגובות"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:7167
 msgid "You are not allowed to set assessment rules!"
@@ -9010,19 +8883,16 @@ msgid "You are not allowed to delete this group!"
 msgstr "אין הרשאה למחיקת קבוצה זו"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:7177
-#, fuzzy
 msgid "You are not allowed to import a survey!"
-msgstr "אין הרשאה לערוך את הסקר"
+msgstr "אתה לא מורשה לייבא סקר!"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:7183
-#, fuzzy
 msgid "You are not allowed to import a group!"
-msgstr "אין הרשאה למחיקת קבוצה זו"
+msgstr "אתה לא מורשה לייבא קבוצה!"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:7188
-#, fuzzy
 msgid "You are not allowed to to import a question!"
-msgstr "אין הרשאה לביצוע פעולה זו"
+msgstr "אתה לא מורשה לייבא שאלה!"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:7197
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:7202
@@ -9219,9 +9089,8 @@ msgid "Survey could not be actived."
 msgstr "לא ניתן לאתחל את הסקר הבא"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/activate_helper.php:447
-#, fuzzy
 msgid "Database error!!"
-msgstr "שם בסיס הנתונים"
+msgstr "שגיע במאגר המידע"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/activate_helper.php:499
 #, fuzzy
@@ -9245,9 +9114,8 @@ msgid "Open-access mode"
 msgstr "מצב גישה פתוחה"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/activate_helper.php:530
-#, fuzzy
 msgid "No invitation code is needed to complete the survey."
-msgstr "עלייך להרשם כדי לסיים את הסקר"
+msgstr "אין צורך להכניס קוד בשביל להשלים סקר"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/activate_helper.php:530
 msgid "You can switch to the closed-access mode by initialising a token table with the button below."
@@ -9258,9 +9126,8 @@ msgid "Switch to closed-access mode"
 msgstr "החלף למצב גישה סגורה"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:470
-#, fuzzy
 msgid "Page"
-msgstr "טען עמוד"
+msgstr "עמוד"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:492
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:173
@@ -9272,23 +9139,20 @@ msgstr "סטטיסטיקות מהירות"
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:802
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:821
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:840
-#, fuzzy
 msgid "Number of records in this query:"
-msgstr "מספר רשומות ברשומה זו"
+msgstr "מספר של שיאים בשאלה זו"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:805
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:822
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:842
-#, fuzzy
 msgid "Total records in survey:"
-msgstr "סה\"כ רשומות בסקר"
+msgstr "סהכ שיאים בסקר:"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:811
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:825
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:849
-#, fuzzy
 msgid "Percentage of total:"
-msgstr "אחוז מהכל"
+msgstr "אחוז מכול ה:"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:829
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:830
@@ -9318,27 +9182,25 @@ msgstr "סייר"
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:2569
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:2574
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:2066
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4045
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4935
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5225
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5307
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4303
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5193
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5483
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5565
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1779
 msgid "Answer"
 msgstr "תשובה"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1139
-#, fuzzy
 msgid "Total number of files"
-msgstr "מספר כולל של תזכורות שנשלחו"
+msgstr "מספר כל התקיות"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1140
 msgid "Average no. of files per respondent"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1164
-#, fuzzy
 msgid "Total size of files"
-msgstr "סך כל הרשומות שיובאו:"
+msgstr "הגודל הכללי של התקיות"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1165
 msgid "Average file size"
@@ -9444,9 +9306,8 @@ msgstr "רביעון שני (חציון)"
 # D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:961
 # D:\xampp\xampp\htdocs\limesurvey/admin/statistics.php:1066
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1564
-#, fuzzy
 msgid "Median value"
-msgstr "מינימום"
+msgstr "ערך עיקרי"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1594
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1604
@@ -9480,15 +9341,13 @@ msgstr ""
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1706
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1714
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1726
-#, fuzzy
 msgid "Not enough values for calculation"
-msgstr "במהלך החישוב המערכת תתעלם מערכי NULL"
+msgstr "לא מספיק ערכים לחישוב"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:2104
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:2320
-#, fuzzy
 msgid "Comments"
-msgstr "הערה"
+msgstr "הערות"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:2338
 #, fuzzy
@@ -9519,9 +9378,8 @@ msgstr "לא הושלם או לא מוצג"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:2683
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:2715
-#, fuzzy
 msgid "Not displayed"
-msgstr "רשומות מוצגות"
+msgstr "לא הוצג"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:3117
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:3125
@@ -9586,9 +9444,8 @@ msgstr ""
 # D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:1047
 # D:\xampp\xampp\htdocs\limesurvey/admin/statistics.php:1446
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:137
-#, fuzzy
 msgid "Cosine"
-msgstr "סגור"
+msgstr "קוסינוס"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:138
 #, fuzzy
@@ -9634,9 +9491,8 @@ msgid "Format a local time/date as integer"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:148
-#, fuzzy
 msgid "Conditional processing"
-msgstr "עורך התנאים"
+msgstr "תהליכים על תנאי"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:149
 msgid "Join array elements with a string"
@@ -9824,9 +9680,8 @@ msgid "Make a string uppercase"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:195
-#, fuzzy
 msgid "Return part of a string"
-msgstr "חזרה למנהל התוויות"
+msgstr "החזר חלק של מחרוזת"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:196
 msgid "Calculate the sum of values in an array"
@@ -9956,9 +9811,8 @@ msgid "Please confirm the token by answering the security question below and cli
 msgstr "אם קיבלת מחרוזת תוים אנא הקלד אותה לתיבה שמתחת והמשך"
 
 #: /tmp/translationstatus_v2/application/helpers/frontend_helper.php:1723
-#, fuzzy
 msgid "Token:"
-msgstr "מחרוזת תוים"
+msgstr "סימון:"
 
 #: /tmp/translationstatus_v2/application/helpers/frontend_helper.php:1842
 msgid "This survey does not yet have any questions and cannot be tested or completed."
@@ -9978,9 +9832,8 @@ msgid "The LimeSurvey database is being upgraded"
 msgstr "מאגר הנתונים LimeSurvey שהוגדר אינו קיים"
 
 #: /tmp/translationstatus_v2/application/helpers/update/upgrade-all_helper.php:27
-#, fuzzy
 msgid "Please be patient..."
-msgstr "אנא בחר"
+msgstr "אנא תהיה סבלני..."
 
 #: /tmp/translationstatus_v2/application/helpers/update/upgrade-all_helper.php:32
 #, php-format
@@ -10011,19 +9864,16 @@ msgstr ""
 
 # D:\xampp\xampp\htdocs\limesurvey/common.php:1558
 #: /tmp/translationstatus_v2/application/helpers/update/update_helper.php:65
-#, fuzzy
 msgid "Table prefix"
-msgstr "הערה לגבי פרטיות"
+msgstr "טבלת קידומיות"
 
 #: /tmp/translationstatus_v2/application/helpers/update/update_helper.php:67
-#, fuzzy
 msgid "Root URL"
-msgstr "טען כתובת אוטומטית"
+msgstr "מקור URL"
 
 #: /tmp/translationstatus_v2/application/helpers/update/update_helper.php:70
-#, fuzzy
 msgid "Click here to continue"
-msgstr "לחץ כאן כדי להתחבר."
+msgstr "לחץ כאו כדי להמשך"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:628
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:629
@@ -10036,16 +9886,16 @@ msgstr "בחר אחד מתוך הבאים"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:654
 #, fuzzy
-msgid "Click on an item in the list on the left, starting with your highest ranking item, moving through to your lowest ranking item."
+msgid "Drag items in the list on the left to the list on the right in the order that you would like to rank them."
 msgstr "האיבר המדורג כגבוה ביותר עד לאיבר המדורג כנמוך ביותר"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:658
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:659
-#, fuzzy, php-format
-msgid "Check at least %d item"
-msgid_plural "Check at least %d items"
-msgstr[0] "אנא סמן אחד לפחות"
-msgstr[1] "אנא סמן אחד לפחות"
+#, php-format
+msgid "Rank at least %d item."
+msgid_plural "Rank at least %d items."
+msgstr[0] "אנא סמן לפחות %d פריטים"
+msgstr[1] "אנא סמן לפחות%dפריט"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:672
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:673
@@ -10074,17 +9924,16 @@ msgstr "בחר לכל היותר %d תשובות"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:690
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:691
-#, fuzzy, php-format
+#, php-format
 msgid "Check at least %d answer"
 msgid_plural "Check at least %d answers"
-msgstr[0] "בחר לפחות %d תשובות"
-msgstr[1] "בחר לפחות %d תשובות"
+msgstr[0] "בדוק לפחות %d תשובות"
+msgstr[1] "בדוק לפחות %d תשובות"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:702
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:703
-#, fuzzy
 msgid "Choose your language"
-msgstr "שפה נוכחית"
+msgstr "בחר את הספה שלך"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:733
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:734
@@ -10118,24 +9967,22 @@ msgid "Please complete all parts"
 msgstr "אנא מלא את כל החלקים"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:933
-#, fuzzy
 msgid "Please check the items"
-msgstr "אנא סמן אחד לפחות"
+msgstr "אנא בדוק את הכלים"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:936
 msgid "Please rank all items"
 msgstr "אנא דרג את הכל"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:940
-#, fuzzy
 msgid "Please check at least one item."
-msgstr "אנא סמן אחד לפחות"
+msgstr "אנא בדוק לפחות כלי אחד"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:953
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:2211
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:2545
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3221
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3727
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3479
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3985
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:959
 msgid "Other:"
 msgstr "שונות:"
@@ -10176,9 +10023,8 @@ msgid "One or more file have either exceeded the filesize/are not in the right f
 msgstr "שאלה אחת או יותר מבין השאלות הבאות עדיין לא מולאה.  לא תוכל להמשיך עד למילוי כל השאלות"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1143
-#, fuzzy
 msgid "Your time to answer this question has expired"
-msgstr "צריך להוסיף תשובות לשאלה זו"
+msgstr "הזמן שלך לענות לשאלה זו הסתיים"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1146
 msgid "Time remaining"
@@ -10346,142 +10192,140 @@ msgstr ""
 msgid "Please enter your comment here"
 msgstr "אנא הכנס הערותיך כאן"
 
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3069
-#: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:1059
-#: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:2871
-msgid "Remove this item"
-msgstr "הסר איבר זה"
-
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3117
-#, fuzzy
-msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
-msgstr "סמן את המספרים שליד כל איבר ברשימה "
-
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3128
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3143
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:2971
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3386
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3401
 #, fuzzy, php-format
 msgid "Please rank at least %d item for question \"%s\""
 msgid_plural "Please rank at least %d items for question \"%s\"."
 msgstr[0] "אנא סמן אחד לפחות"
 msgstr[1] "אנא סמן אחד לפחות"
 
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3575
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3323
+#: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:1059
+#: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:2871
+msgid "Remove this item"
+msgstr "הסר איבר זה"
+
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3373
+#, fuzzy
+msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
+msgstr "סמן את המספרים שליד כל איבר ברשימה "
+
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3833
 #, php-format
 msgid "Please choose at most %d answer(s) for question \"%s\""
 msgstr ""
 
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3596
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3928
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3854
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4186
 #, php-format
 msgid "Please choose at least %d answer(s) for question \"%s\""
 msgstr ""
 
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3631
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3959
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3889
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4217
 #, php-format
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr ""
 
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3834
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3861
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4092
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4119
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:837
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:839
 msgid "Make a comment on your choice here:"
 msgstr "הוסף הערה שתבאר את בחירתך "
 
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3903
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4161
 #, fuzzy, php-format
 msgid "Please choose at most %d answers for question \"%s\""
 msgstr "אנא בחר לכל היותר %s תשובות:"
 
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4076
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4334
 msgid "Upload files"
 msgstr "העלה קבצים"
 
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4080
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4338
 msgid "Upload your files"
 msgstr "העלה את הקבצים שלך"
 
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4081
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4339
 msgid "Return to survey"
 msgstr "חזור לסקר"
 
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4261
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4567
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5848
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7765
-#, fuzzy
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4519
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4825
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6106
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:8023
 msgid "Error: This question has no answers."
-msgstr "חובה לענות על שאלה זו"
+msgstr "שגיע: לשאלה זו אין תשובה"
 
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4710
-#, fuzzy
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4968
 msgid "Only numbers may be entered in these fields"
-msgstr "לשדה זה ניתן להכניס רק מספרים"
+msgstr "רק חברים להיכנס לתקיות אלו"
 
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4714
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4972
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:988
 #, php-format
 msgid "Total of all entries must not exceed %d"
 msgstr "סכום כל הערכים חייב להיות קטן מ-%d"
 
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4718
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4976
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:984
 #, php-format
 msgid "Total of all entries must equal %d"
 msgstr "סכום כל הערכים חייב להיות שווה ל-%d"
 
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4722
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4980
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:992
 #, php-format
 msgid "Total of all entries must be at least %s"
 msgstr "סכום כל הערכים חייב להיות לפחות %s"
 
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4730
-#, fuzzy
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4988
 msgid "Remaining: "
-msgstr "דירוג"
+msgstr "נותר"
 
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4732
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4990
 msgid "Total: "
 msgstr "סה\"כ"
 
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4781
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4787
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4823
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4834
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5039
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5045
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5081
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5092
 msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr ""
 
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4800
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4808
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5058
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5066
 #, php-format
 msgid "Answer is invalid. The total of all entries should add up to at least %s."
 msgstr ""
 
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4939
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5197
 msgid "Only numbers may be entered in this field"
 msgstr "לשדה זה ניתן להכניס רק מספרים"
 
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5120
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5121
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5378
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:5379
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr ""
 
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6481
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6831
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7190
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7350
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7995
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:6739
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7089
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7448
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7608
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:8253
 #, fuzzy
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr "צריך להוסיף תשובות לשאלה זו"
 
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7108
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7366
 msgid "..."
 msgstr "..."
 
-#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7344
+#: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7602
 #, fuzzy
 msgid "Error: There are no answers defined for this question."
 msgstr "צריך להוסיף תשובות לשאלה זו"
@@ -10523,9 +10367,8 @@ msgstr "כתובות IP יתועדו"
 # D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1773
 # D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1995
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Controller.php:426
-#, fuzzy
 msgid "Referrer URL will be saved."
-msgstr "URL-מפנה יישמר"
+msgstr "מקור המפנה של URL ישמר"
 
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Controller.php:427
 msgid "It uses cookies for access control."
@@ -10541,9 +10384,8 @@ msgid "Participants can save partially finished surveys"
 msgstr "משתתפים יכולים לשמור סקרים לא מלאים"
 
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Controller.php:432
-#, fuzzy
 msgid "Basic email notification is sent to:"
-msgstr "התראת אימייל בסיסית"
+msgstr "הודעת דואר אלקטרוני פשוטה נשלחה ל:"
 
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Controller.php:436
 #, fuzzy
@@ -10597,9 +10439,8 @@ msgid "The email you used has already been registered."
 msgstr "הכתובת בא השתמשת כבר קיימת במערכת"
 
 #: /tmp/translationstatus_v2/application/controllers/register.php:251
-#, fuzzy
 msgid "Thank you for registering to participate in this survey."
-msgstr "תודה לך על שהשלמת את הסקר."
+msgstr "תודה לך שנרשמתה למשתתף בסקר זה"
 
 # D:\xampp\xampp\htdocs\limesurvey/register.php:135
 #: /tmp/translationstatus_v2/application/controllers/register.php:251
@@ -10611,14 +10452,12 @@ msgstr ""
 "אחראי הסקר {ADMINNAME} ({ADMINEMAIL})"
 
 #: /tmp/translationstatus_v2/application/controllers/register.php:251
-#, fuzzy
 msgid "Survey Administrator"
-msgstr "אחראי מחשוב:"
+msgstr "סקר המנהל"
 
 #: /tmp/translationstatus_v2/application/controllers/statistics_user.php:396
-#, fuzzy
 msgid "Please wait ..."
-msgstr "אנא בחר"
+msgstr "אנא חכה..."
 
 # D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:320
 #: /tmp/translationstatus_v2/application/controllers/statistics_user.php:398
@@ -10626,9 +10465,8 @@ msgid "Go back"
 msgstr "חזור אחורה"
 
 #: /tmp/translationstatus_v2/application/controllers/statistics_user.php:407
-#, fuzzy
 msgid "Getting questions and answers ..."
-msgstr "חובה לענות על שאלה זו"
+msgstr "מקבלים שאלות ותשובות..."
 
 #: /tmp/translationstatus_v2/application/controllers/statistics_user.php:423
 msgid "Total records in survey"
@@ -10661,9 +10499,8 @@ msgid "Please enter the database settings you want to use for LimeSurvey:"
 msgstr "בחר את העמודות שברצונך לייצא."
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:333
-#, fuzzy
 msgid "Passwords do not match!"
-msgstr "הסיסמאות אינן מתאימות"
+msgstr "הסיסמאות אינן מתאימות!"
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:408
 #: /tmp/translationstatus_v2/application/controllers/installer.php:684
@@ -10684,9 +10521,8 @@ msgid "The database you specified is up to date. You'll be redirected in 5 secs.
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:516
-#, fuzzy
 msgid "Database doesn't exist!"
-msgstr "שם בסיס הנתונים"
+msgstr "מאגר הנתונים לא קיים"
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:517
 #, fuzzy
@@ -10733,18 +10569,17 @@ msgid "Reason"
 msgstr "סיבה"
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:778
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:587
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:281
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:424
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:439
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:204
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:604
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:290
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:433
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:448
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:208
 msgid "Success!"
 msgstr "הצלחה!"
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:779
-#, fuzzy
 msgid "LimeSurvey has been installed successfully."
-msgstr "הסקר אותחל.  טבלת התשובות נוצרה בהצלחה"
+msgstr "LimeSurvey הותקן בהצלחה"
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:793
 msgid "Passwords don't match."
@@ -10755,9 +10590,8 @@ msgid "Database has been created."
 msgstr "מאגר הנתונים נוצר בהצלחה"
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:890
-#, fuzzy
 msgid "Please continue with populating the database."
-msgstr "אנא הקלק למטה כדי לאכלס את מאגר הנתונים"
+msgstr "אנא המשך באיכלוס מאגר המידע"
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:991
 #, php-format
@@ -10802,14 +10636,12 @@ msgstr "ייצא PDF"
 
 #: /tmp/translationstatus_v2/application/controllers/printanswers.php:212
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:930
-#, fuzzy
 msgid "Survey name (ID)"
-msgstr "מזהה סקר:"
+msgstr "שם הסקר (ID)"
 
 #: /tmp/translationstatus_v2/application/controllers/printanswers.php:214
-#, fuzzy
 msgid "Survey name (ID):"
-msgstr "מזהה סקר:"
+msgstr "שם הסקר (ID):"
 
 #: /tmp/translationstatus_v2/application/controllers/printanswers.php:233
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:932
@@ -10829,9 +10661,8 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:170
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:208
-#, fuzzy
 msgid "The file has been successfuly uploaded."
-msgstr "מאגר הנתונים בשם `%s` נוצר בהצלחה"
+msgstr "התיקיה הועלתה בהצלחה"
 
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:186
 #, php-format
@@ -10843,9 +10674,8 @@ msgid "We are sorry but there was a system error and your file was not saved. An
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:221
-#, fuzzy
 msgid "Sorry, there was an error uploading your file"
-msgstr "אין סקר מתאים"
+msgstr "מצטערים, היתה שגיע בהעלת התקיה שלך"
 
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:240
 msgid "Unknown error"
@@ -10856,14 +10686,13 @@ msgid "Sorry, no more files can be uploaded!"
 msgstr "סליחה, אי אפשר להעלות עוד קבצים!"
 
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:273
-#, fuzzy, php-format
+#, php-format
 msgid "Sorry, only %s files can be uploaded for this question!"
-msgstr "צריך לבחור תויות קבוצה לשאלה זו"
+msgstr "מצטערים, רק %s תקיות יכולות להועלות לשאלה זו"
 
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:274
-#, fuzzy
 msgid "Uploading"
-msgstr "העלה"
+msgstr "מעלה"
 
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:275
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:303
@@ -10898,19 +10727,17 @@ msgid "You can upload %s under %s KB each."
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:61
-#, fuzzy
 msgid "Deleting token table:"
-msgstr "מחק את כל כניסות ההרשאה"
+msgstr "מוחק טבלת סימונים"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:70
-#, fuzzy
 msgid "Deleting survey table:"
-msgstr "מחר סקר"
+msgstr "מוחק טבלת הסקר"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:99
-#, fuzzy, php-format
+#, php-format
 msgid "Deleting conditions: %u conditions deleted"
-msgstr "צריך למחוק את התנאים הבאים"
+msgstr "מוחק תנאים: %u תנאים נמחקו"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:107
 #, fuzzy, php-format
@@ -10922,18 +10749,16 @@ msgid "Deleting orphaned default values."
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:121
-#, fuzzy
 msgid "Deleting orphaned quotas."
-msgstr "תנאי סינון"
+msgstr "מוחק מכסות יתומים"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:126
 msgid "Deleting orphaned language settings."
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:135
-#, fuzzy
 msgid "Deleting orphaned quota members."
-msgstr "תנאי סינון"
+msgstr "מוחק יתום ממכסה החברים"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:143
 #, fuzzy, php-format
@@ -10941,14 +10766,14 @@ msgid "Deleting assessments: %u assessment entries deleted"
 msgstr "צריך למחוק את הערכה הבאה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:151
-#, fuzzy, php-format
+#, php-format
 msgid "Deleting answers: %u answers deleted"
-msgstr "צריך למחוק את התשובות הבאות"
+msgstr "מוחק תשובות:%u תשובות נמחקו"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:159
-#, fuzzy, php-format
+#, php-format
 msgid "Deleting surveys: %u surveys deleted"
-msgstr "צריך למחוק את התשובות הבאות"
+msgstr "מוחק סקרים: %u סקרים נמחקו"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:167
 #, fuzzy, php-format
@@ -10956,19 +10781,18 @@ msgid "Deleting survey languagesettings: %u survey languagesettings deleted"
 msgstr "צריך למחוק את התשובות הבאות"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:175
-#, fuzzy, php-format
+#, php-format
 msgid "Deleting questions: %u questions deleted"
-msgstr "צריך למחוק את התשובות הבאות"
+msgstr "מוחק שאלות: %u שאלות נמחקו"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:184
-#, fuzzy, php-format
+#, php-format
 msgid "Deleting groups: %u groups deleted"
-msgstr "צריך למחוק את הקבוצות הבאות"
+msgstr "מוחק קבוצות: %u קבוצות נמחקו"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:192
-#, fuzzy
 msgid "Deleting orphan survey table:"
-msgstr "מחר סקר"
+msgstr "מוחק טבלת סקר יתום:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:201
 #, fuzzy
@@ -10976,14 +10800,12 @@ msgid "Deleting orphan token table:"
 msgstr "מחק את כל כניסות ההרשאה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:321
-#, fuzzy
 msgid "No matching CQID"
-msgstr "סגור קבוצה זו"
+msgstr "אין CQID תואם"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:331
-#, fuzzy
 msgid "No matching CFIELDNAME group!"
-msgstr "סגור קבוצה זו"
+msgstr "קבוצות CFIELDNAME לא מתאימות"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:336
 msgid "No CFIELDNAME field set!"
@@ -11099,16 +10921,14 @@ msgstr "רשימת קבצי שגיאה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:198
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:295
-#, fuzzy
 msgid "Imported Resources for"
-msgstr "ייבא תגובות"
+msgstr "ייבא תגובות ל"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:200
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:220
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:297
-#, fuzzy
 msgid "Resources Import Summary"
-msgstr "סיכום ייבוא סקר"
+msgstr "סיכום מקורות ייבוא"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:201
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:221
@@ -11145,7 +10965,7 @@ msgstr "קרתה תקלה בזמן טעינת הקובץ שלך. ייתכן וה
 
 # D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:320
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:231
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:451
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:460
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:154
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:176
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:201
@@ -11263,9 +11083,8 @@ msgid "Failed to delete answer"
 msgstr "נכשל במחיקת תשובה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/database.php:368
-#, fuzzy
 msgid "Subquestions were successfully saved."
-msgstr "נכנסת בהצלחה."
+msgstr "שאלות השוליים נשמרו בהצלחה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/database.php:389
 msgid "The question could not be added. You must enter at least enter a question code."
@@ -11281,18 +11100,16 @@ msgid "Question could not be created."
 msgstr "לא ניתן ליצור את השאלה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/database.php:536
-#, fuzzy
 msgid "Question was successfully added."
-msgstr "נכנסת בהצלחה."
+msgstr "השאלה נוספה בהצלחה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/database.php:679
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "לא ניתן לעדכן את השאלה.  יש תנאים לשאלות אחרות שמסתמכים על זאלה זו ושינוי סוג השאלה ייצור בעיות.  עלייך למחוק את התנאים הללו לפני שתוכל לשנות את סוג השאלה."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/database.php:795
-#, fuzzy
 msgid "Question was successfully saved."
-msgstr "נכנסת בהצלחה."
+msgstr "השאלה נשמרה בהצלחה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/database.php:807
 msgid "This question relies on other question's answers and can't be moved above groupId:"
@@ -11313,14 +11130,12 @@ msgid "Some questions rely on this question's answers. You can't move this quest
 msgstr "שאלות כלשהן מסתמכות על התשובה לשאלה זו. אינך יכול להזיז שאלה זו מתחת למזהה הקבוצה:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/database.php:920
-#, fuzzy
 msgid "Survey text elements successfully saved."
-msgstr "נכנסת בהצלחה."
+msgstr "חלקי הטקסט של הסקר נשמרו בהצלחה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/database.php:1123
-#, fuzzy
 msgid "Survey settings were successfully saved."
-msgstr "העדפותיך האישיות נשמרו בהצלחה."
+msgstr "הגדרות הסקר נשמרו בהצלחה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/database.php:1128
 msgid "Survey could not be updated"
@@ -11336,7 +11151,7 @@ msgid "Question group import summary"
 msgstr "סיכום ייבוא קבוצת שאלה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/questiongroup.php:117
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:207
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:211
 msgid "Groups"
 msgstr "קבוצות"
 
@@ -11372,9 +11187,8 @@ msgid "New question group was saved."
 msgstr "קבוצת שאלה חדשה נשמרה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/questiongroup.php:341
-#, fuzzy
 msgid "The question group was deleted."
-msgstr "שנה סדר קבוצות שאלות"
+msgstr "שאלת הקבוצה נמחקה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/questiongroup.php:345
 msgid "Group could not be deleted"
@@ -11385,9 +11199,8 @@ msgid "Group could not be updated"
 msgstr "לא ניתן לעדכן את הקבוצה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/questiongroup.php:499
-#, fuzzy
 msgid "Question group successfully saved."
-msgstr "עריכת קבוצת משתמש בוצעה בהצלחה!"
+msgstr "שאלת הקבוצה נשמרה בהצלחה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/questiongroup.php:534
 #, fuzzy
@@ -11488,9 +11301,8 @@ msgid "is greater than"
 msgstr "גדול מ"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:392
-#, fuzzy
 msgid "is matched (regexp)"
-msgstr "התשובה תואמת ל-(regexp)"
+msgstr "בהתאמה (regexp)"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:591
 msgid "RANK"
@@ -11506,9 +11318,8 @@ msgstr "ענה על שאלה זו רק במידה שהתנאים הבאים מת
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:497
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:642
-#, fuzzy
 msgid "ID:"
-msgstr "ID"
+msgstr "ID:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:643
 msgid "Question code:"
@@ -11707,9 +11518,8 @@ msgstr "זמן ראיון ממוצע:"
 # D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:961
 # D:\xampp\xampp\htdocs\limesurvey/admin/statistics.php:1066
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:957
-#, fuzzy
 msgid "Median: "
-msgstr "מינימום"
+msgstr "אמצע:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:964
 msgid "Timings"
@@ -11759,21 +11569,18 @@ msgstr "טען כתובת"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:60
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:78
-#, fuzzy
 msgid "View response URL"
-msgstr "צפה בתגובות"
+msgstr "לראות תגובות URL"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:61
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:79
-#, fuzzy
 msgid "Edit response URL"
-msgstr "ערוך תגובה זו"
+msgstr "הוסף תגובת URL"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:62
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:80
-#, fuzzy
 msgid "Statistics URL"
-msgstr "סטטיסטיקות מהירות"
+msgstr "סטטיסטיקת URL"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:63
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:82
@@ -11784,15 +11591,13 @@ msgstr "קוד סמל למשתתף זה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:64
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:83
-#, fuzzy
 msgid "First name from token"
-msgstr "שם פרטי מהסמל"
+msgstr "שם פרטי לסמל"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:65
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:84
-#, fuzzy
 msgid "Last name from token"
-msgstr "שם משפחה מהסמל"
+msgstr "שם משפחה לסמל"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:66
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:85
@@ -11812,22 +11617,19 @@ msgstr "תיאור הסקר"
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:92
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:113
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:130
-#, fuzzy
 msgid "Name of the survey administrator"
-msgstr "חזרה לממשק הניהול"
+msgstr "שם לסקר המנהלים"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:74
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:93
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:114
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:131
-#, fuzzy
 msgid "Email address of the survey administrator"
-msgstr "כתובת אימייל כבר קיימת."
+msgstr "כתובות הדואר האלקטרוני של מנהל הסקר"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:81
-#, fuzzy
 msgid "Answers from this response"
-msgstr "ערוך/הוסף תשובות לשאלה זו"
+msgstr "תשובות מתגובה זו"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:101
 #, fuzzy
@@ -11845,24 +11647,20 @@ msgid "URL of the survey"
 msgstr "כתובת URL של הסקר"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:156
-#, fuzzy
 msgid "This question's survey ID number"
-msgstr "ישנה שאלה 1 בסקר הזה"
+msgstr "מספר שאלות הסקר הזה הוא ID"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:157
-#, fuzzy
 msgid "This question's group ID number"
-msgstr "שנה סדר קבוצות שאלות"
+msgstr "מספר השאלות הללו הם ID"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:158
-#, fuzzy
 msgid "This question's question ID number"
-msgstr "לשאלה זו לא מוגדר סוג שאלה"
+msgstr "מספר שאלות השאלה הזה הוא ID"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:159
-#, fuzzy
 msgid "This question's SGQA code"
-msgstr "חובה לענות על שאלה זו"
+msgstr "שאלות אלו הן בSGQA קוד"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:170
 msgid "Overall assessment score"
@@ -11885,9 +11683,9 @@ msgid "%s participant(s) are to be copied "
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/participants.php:1582
-#, fuzzy, php-format
+#, php-format
 msgid "%s participants have been shared "
-msgstr "כל כניסות ההרשאה נמחקו."
+msgstr "%s משתתפים השתתפו"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/participants.php:1592
 #: /tmp/translationstatus_v2/application/controllers/admin/participants.php:1603
@@ -11925,9 +11723,8 @@ msgid "The token entry was successfully updated."
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:487
-#, fuzzy
 msgid "Show this token entry"
-msgstr "צור כניסת הרשאה חדשה"
+msgstr "הצג את סימון הכניסה הזה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:523
 #, fuzzy
@@ -12008,9 +11805,8 @@ msgstr "כל האימיילים לא עמדו בדרישות המתאימות ו
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1034
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1335
-#, fuzzy
 msgid "having a valid email address"
-msgstr "כתובת דואל"
+msgstr "כיימת תכובת דואר אלקטורנית חוקית"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1035
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1336
@@ -12018,9 +11814,8 @@ msgid "not having been sent an invitation already"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1036
-#, fuzzy
 msgid "having already completed the survey"
-msgstr "כבר מילאת סקר זה"
+msgstr "קיים כבר סקר שלם"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1037
 msgid "having a token"
@@ -12032,9 +11827,8 @@ msgid "From token ID"
 msgstr "בטל טבלת הרשאות"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1116
-#, fuzzy
 msgid "Sending to token ID"
-msgstr "שולח למספר מזהה הרשאה (TID):"
+msgstr "שולח לסימן ID"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1117
 #, fuzzy
@@ -12046,9 +11840,8 @@ msgid "Reminder sent to:"
 msgstr "תזכורת נשלחה ל:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1337
-#, fuzzy
 msgid "but not having already completed the survey"
-msgstr "כבר מילאת סקר זה"
+msgstr "אבל כבר אין סקר שלם"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1396
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1414
@@ -12092,9 +11885,8 @@ msgid "A backup of this table has been made and can be accessed by your system a
 msgstr "טבלת ההרשאות הוסרה ומעכשיו אין צורך בהרשאות כדי לגשת לסקר.<br />גיבוי של טבלה זו נוצר והוא נגיש למנהל המערכת."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1516
-#, fuzzy
 msgid "Bounce settings have been saved."
-msgstr "כל כניסות ההרשאה נמחקו."
+msgstr "הגדרות לא צפויות כבר נשמרו"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1624
 msgid "A token table has been created for this survey."
@@ -12180,9 +11972,8 @@ msgid "Show graphs"
 msgstr "הצג גרפים"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:369
-#, fuzzy
 msgid "Show text responses inline"
-msgstr "תגובות שהושלמו בלבד"
+msgstr "הצג תגובות בטקסט שורות"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:376
 msgid "Select output format"
@@ -12221,14 +12012,12 @@ msgid "Responses containing"
 msgstr "תגובות המכילות"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:734
-#, fuzzy
 msgid "Number of files greater than"
-msgstr "מספר גדול מ"
+msgstr "מספר התקיות גדול מ"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:740
-#, fuzzy
 msgid "Number of files less than"
-msgstr "מספר קטן מן"
+msgstr "מספר התקיות קטן מ"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:785
 msgid "Date (YYYY-MM-DD) equals"
@@ -12250,249 +12039,240 @@ msgstr "ייצא קובץ VV"
 msgid "This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys."
 msgstr ""
 
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:134
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:138
 msgid "Edit permissions"
 msgstr "ערוך הרשאות"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:200
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:204
 msgid "User"
 msgstr "משתמש"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:203
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:207
 msgid "Please select a user first"
 msgstr "אנא בחר משתמש תחילה"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:210
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:214
 msgid "Please select a user group first"
 msgstr "אנא בחר קבוצת משתמשים תחילה"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:259
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:263
 msgid "Add user group"
 msgstr "הוסף קבוצת משתמש"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2656
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:281
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:293
 msgid "User Group added."
 msgstr "קבוצת משתמש נוספה."
 
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:284
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:296
 msgid "Set Survey Rights"
 msgstr "קבע את זכויות השאלון"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:292
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:299
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:304
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:311
 msgid "Failed to add User Group."
 msgstr "נכשל בהוספת קבוצת משתמש."
 
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:305
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:381
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:388
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:317
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:392
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:399
 msgid "Failed to add user."
 msgstr "נכשל בהוספת המשתמש."
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2574
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2620
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2674
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:306
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:389
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:318
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:400
 msgid "No Username selected."
 msgstr "לא נבחר שם משתמש."
 
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:371
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:382
 msgid "User added."
 msgstr "משתמש הוסף למערכת"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:373
-#, fuzzy
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:384
 msgid "Set survey permissions"
-msgstr "אפשרויות סקר סטנדרטיות"
+msgstr "הגדרת אישורי הסקר"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:382
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:393
 msgid "Username already exists."
 msgstr "שם המשתמש כבר קיים במערכת."
 
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:456
-#, fuzzy, php-format
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:473
+#, php-format
 msgid "Edit survey permissions for user %s"
-msgstr "קבע תנאים לשאלה זו"
+msgstr "הוסף אישורי סקר למשתמש %s"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:464
-#, fuzzy, php-format
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:481
+#, php-format
 msgid "Edit survey permissions for group %s"
-msgstr "ערוך קבוצת שאלה נוכחית"
+msgstr "הוסף אישורי סקר לקבוצה %s"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:470
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:487
 msgid "Permission"
 msgstr "הרשאות"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:472
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:489
 msgid "Create"
 msgstr "ייצר"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:473
-#, fuzzy
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:490
 msgid "View/read"
-msgstr "תצוגה"
+msgstr "תצוגה/ קריאה"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:574
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:591
 msgid "Deleting User"
 msgstr "מוחק משתמש."
 
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:591
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:322
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:608
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:331
 msgid "Could not delete user. User was not supplied."
 msgstr "לא ניתן למחוק משתמש. לא סיפקת שם משתמש."
 
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:641
-#, fuzzy
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:660
 msgid "Edit survey permissions"
-msgstr "ייצא תבנית"
+msgstr "הוסף אישורי הסקר"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:693
-#, fuzzy
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:719
 msgid "Survey permissions for all users in this group were successfully updated."
-msgstr "העדפותיך האישיות נשמרו בהצלחה."
+msgstr "אישורי הסקר של כל הקבוצה הזו עודכנו בהצלחה"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:702
-#, fuzzy
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:728
 msgid "Survey permissions were successfully updated."
-msgstr "עריכת קבוצת משתמש בוצעה בהצלחה!"
+msgstr "אישורי הסקר עודכנו בהצלחה"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2987
-#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:706
-#, fuzzy
+#: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:732
 msgid "Failed to update survey permissions!"
-msgstr "עידכון זכויות הסקר נכשל!"
+msgstr "נכשל בעידכון אישורי הסקר"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:111
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:115
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:187
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:122
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:196
 msgid "Failed to add user"
 msgstr "נכשל בהוספת המשתמש."
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:111
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:115
 msgid "The email address is not valid."
 msgstr "כתובת הדוא\"ל אינה תקינה."
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:115
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:122
 msgid "A username was not supplied or the username is invalid."
 msgstr "שם המשתמש לא סופק או ששם המשתמש אינו חוקי."
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:141
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:147
+msgid "User created successfully! "
+msgstr "יצירת המשתמש הוצלחה"
+
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:147
+msgid "Username: "
+msgstr "שם משתמש:"
+
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:147
+msgid ", Email: "
+msgstr ", דואר אלקטרוני:"
+
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:152
 #, php-format
 msgid "Hello %s,"
 msgstr "שלום %s,"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:142
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:153
 #, php-format
 msgid "this is an automated email to notify that a user has been created for you on the site '%s'."
 msgstr "זוהי הודעה אוטומטית שנוצר בשבילך משתמש באתר \"%s\"."
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:143
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:154
 msgid "You can use now the following credentials to log into the site:"
 msgstr "עכשיו אתה יכול להשתמש בנתונים אלו כדי להתחבר לאתר:"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:154
-#, fuzzy
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:165
 msgid "Please ask your password to your LimeSurvey administrator"
-msgstr "אנא צור קשר עם מנהל המערכת שלך"
+msgstr "אנא שאל את מנהל ה- LimeSurvey מה סיסמתך"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:158
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:169
 msgid "Click here to log in."
 msgstr "לחץ כאן כדי להתחבר."
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:159
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:170
 #, php-format
 msgid "If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!"
 msgstr "אם יש לך שאלות בנוגע להודעה זאת אל תהסס ליצור קשר עם מנהל האתר ב %s . תודה!"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:161
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:172
 #, php-format
 msgid "User registration at '%s'"
 msgstr "רישום משתמש ב\"%s\""
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:168
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:179
 msgid "An email with a generated password was sent to the user."
 msgstr "אימייל עם סיסמה שיצרה המערכת נשלח אל המשתמש."
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:173
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:184
 #: /tmp/translationstatus_v2/application/controllers/admin/authentication.php:185
 msgid "Email to {NAME} ({EMAIL}) failed."
 msgstr "שליחת אימייל ל{NAME} ({EMAIL}) נכשלה."
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:178
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:526
-#, fuzzy
-msgid "Set user permissions"
-msgstr "ייצא תבנית"
-
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:183
-msgid "Add user"
-msgstr "הוסף משתמש"
-
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:187
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:196
 msgid "The user name already exists."
 msgstr "שם המשתמש כבר קיים במערכת."
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:218
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:227
 msgid "Initial Superadmin cannot be deleted!"
 msgstr "לא ניתן למחוק את המנהל!"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:284
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:293
 #, php-format
 msgid "All of the user's surveys were transferred to %s."
 msgstr ""
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:292
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:301
 msgid "Transfer the user's surveys to: "
 msgstr "העבר את סקר המשתמש ל:"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:310
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:319
 msgid "Delete User"
 msgstr "מחק משתמש"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:407
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:444
-#, fuzzy
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:416
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:453
 msgid "Could not modify user data."
-msgstr "לא יכול לשנות מידע משתמש."
+msgstr "לא יכול לזהות את המידע של המשתמש"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:408
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:417
 msgid "Email address is not valid."
 msgstr "כתובת הדוא\"ל אינה חוקית."
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:423
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:432
 msgid "Unchanged"
 msgstr "לא השתנה"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:445
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:454
 msgid "Email address already exists."
 msgstr "כתובת אימייל כבר קיימת."
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:553
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:591
-msgid "User permissions were updated successfully."
-msgstr "הרשאות המשתמש הועלו בהצלחה."
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:535
+msgid "Set user permissions"
+msgstr "קבע אישורים למשתמש"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:601
-#, fuzzy
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:605
 msgid "You are not allowed to change your own permissions!"
-msgstr "אינך רשאי לשנות את הזכויות שלך!"
+msgstr "אתה לא רשאי לשנות את האישורים שלך"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:638
-#, fuzzy
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:667
 msgid "Set template permissions"
-msgstr "ייצא תבנית"
+msgstr "קבע תבנית אישורים"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:662
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:691
 msgid "Template permissions were updated successfully."
 msgstr "הרשאות התבנית עודכנו בהצלחה."
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:668
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:697
 msgid "Error while updating usertemplates."
 msgstr "שגיאה בעדכון תבניות משתמש."
 
-#: /tmp/translationstatus_v2/application/controllers/admin/user.php:702
+#: /tmp/translationstatus_v2/application/controllers/admin/user.php:731
 msgid "Your personal settings were successfully saved."
 msgstr "העדפותיך האישיות נשמרו בהצלחה."
 
@@ -12530,9 +12310,9 @@ msgid "Import template ZIP archive"
 msgstr "ייבא ארכיון ZIP של התבנית"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:406
-#, fuzzy, php-format
+#, php-format
 msgid "Template could not be renamed to `%s`."
-msgstr "לא ניתן ליצור את השאלה"
+msgstr "שם התבנית לא יכול להיות '%s'"
 
 # D:\web\xampp\htdocs\limesurvey/admin/templates.php:604
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:406
@@ -12541,9 +12321,9 @@ msgid "This name is reserved for standard template."
 msgstr "לא ניתן לשמור שינויים לתבנית סטנדרטית."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:410
-#, fuzzy, php-format
+#, php-format
 msgid "Directory could not be renamed to `%s`."
-msgstr "לא ניתן ליצור את השאלה"
+msgstr "שם הספריה לא יכול להיות '%s'"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:410
 msgid "Maybe you don't have permission."
@@ -12662,14 +12442,12 @@ msgid "Your survey responses have been recorded."
 msgstr "התגובות לסקר נרשמו."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:929
-#, fuzzy
 msgid "Assessment heading"
-msgstr "הערכה"
+msgstr "הערכה של הכותרת"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:929
-#, fuzzy
 msgid "Assessment details"
-msgstr "הערכה"
+msgstr "הערכה של פרטים"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:929
 msgid "Note that this assessment section will only show if assessment rules have been set and assessment mode is activated."
@@ -12699,9 +12477,8 @@ msgid "This is the survey end message."
 msgstr "זוהי הודעת סיום הסקר."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/globalsettings.php:169
-#, fuzzy
 msgid "Global settings were saved."
-msgstr "כל כניסות ההרשאה נמחקו."
+msgstr "הגדרות הכלליות נישמרו"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/globalsettings.php:230
 msgid "System overview"
@@ -12712,25 +12489,21 @@ msgid "Users"
 msgstr "משתמשים"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/globalsettings.php:243
-#, fuzzy
 msgid "Active surveys"
-msgstr "סוקרים פעילים"
+msgstr "סקרים פעילים"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/globalsettings.php:246
-#, fuzzy
 msgid "Deactivated result tables"
-msgstr "טבלאות מחרוזות לא פעילות"
+msgstr "טבלאות  התוצאות נוטרלו"
 
 # token
 #: /tmp/translationstatus_v2/application/controllers/admin/globalsettings.php:249
-#, fuzzy
 msgid "Active token tables"
-msgstr "טבלאות מחרוזות פעילות"
+msgstr "טבלאות הסימונים פעיל"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/globalsettings.php:252
-#, fuzzy
 msgid "Deactivated token tables"
-msgstr "טבלאות מחרוזות לא פעילות"
+msgstr "טבלאות הסימונים לא פעיל"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/globalsettings.php:258
 msgid "Used/free space for file uploads"
@@ -12790,9 +12563,8 @@ msgid "Incorrect username and/or password!"
 msgstr "שם משתמש או סיסמא לא נכונה!"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:147
-#, fuzzy
 msgid "Import survey resources"
-msgstr "ייבא סקר"
+msgstr "הבאת משאבים לסקר"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:153
 msgid "Demo Mode Only: Uploading file is disabled in this system."
@@ -12825,14 +12597,13 @@ msgid "No Surveys available - please create one."
 msgstr "אין סקרים זמינים - אנא צור אחד."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:984
-#, fuzzy
 msgid "You did not choose any surveys."
-msgstr "לא בחרת סקר"
+msgstr "אתה לא בחרתה שום סקרים."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:991
-#, fuzzy, php-format
+#, php-format
 msgid "%s survey(s) were successfully deleted."
-msgstr "עריכת קבוצת משתמש בוצעה בהצלחה!"
+msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:995
 #, fuzzy, php-format
@@ -12840,46 +12611,40 @@ msgid "%s survey(s) were successfully expired."
 msgstr "עריכת קבוצת משתמש בוצעה בהצלחה!"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:1077
-#, fuzzy
 msgid "Edit survey text elements"
-msgstr "ערוך את הגדרות הסקר"
+msgstr "הוסף מרכיבים לטקסט של הסקר"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:1175
 msgid "Import survey data"
 msgstr "ייבא סקר"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:1176
-#, fuzzy
 msgid "Survey structure import summary"
-msgstr "סיכום ייבוא סקר"
+msgstr "מבנה יבוא הסיכום לסקר"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:1182
 msgid "Survey copy summary"
 msgstr "סיכום העתקת הסקר"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:1212
-#, fuzzy
 msgid "Import failed. You specified an invalid file type."
-msgstr "הייבוא נכשל. הבאת קובץ לא תקין."
+msgstr "הייבוא כשל. אתה הבאת קובץ לא תקין."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:1241
-#, fuzzy
 msgid "No survey ID has been provided. Cannot copy survey"
-msgstr "לא ניתן שדה מזהה של סקר SID. לא ניתן להיפטר מהסקר"
+msgstr "לא סופק זיהו הסקר. לא ניתן להעתיק את הסקר"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:1625
 msgid "The survey was successfully expired by setting an expiration date in the survey settings."
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:1707
-#, fuzzy
 msgid "Survey could not be created because it did not have a title"
-msgstr "לא ניתן  ליצור את הסקר כיוון שאין לו כותרת קצרה"
+msgstr "לא ניתן ליצור את הסקר מכיוון שאין לו כותרת"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:1859
-#, fuzzy
 msgid "Survey was successfully added."
-msgstr "נכנסת בהצלחה."
+msgstr "סקר הוסף בהצלחה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:66
 msgid "Welcome to the ComfortUpdate"
@@ -12890,9 +12655,8 @@ msgid "The LimeSurvey ComfortUpdate is an easy procedure to quickly update to th
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:68
-#, fuzzy
 msgid "The following steps will be done by this update:"
-msgstr "צריך למחוק את התשובות הבאות"
+msgstr "הצעדים הבאים יעשו ע\"י העידכון הזה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:69
 msgid "Your LimeSurvey installation is checked if the update can be run successfully."
@@ -12965,9 +12729,9 @@ msgstr "המשך לצעד %s"
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:169
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:345
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:465
-#, fuzzy, php-format
+#, php-format
 msgid "ComfortUpdate step %s"
-msgstr "שלב 3 ComfortUpdate"
+msgstr "אידכון נוח שלב %s"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:200
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:208
@@ -13071,18 +12835,17 @@ msgid "File deleted: %s"
 msgstr "נמחק קובץ: %s"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:545
-#, fuzzy
 msgid "New files were successfully installed."
-msgstr "עריכת קבוצת משתמש בוצעה בהצלחה!"
+msgstr "התקיות החשות הותקנו בהצלחה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:551
 msgid "There was a problem downloading the update file. Please try to restart the update process."
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:571
-#, fuzzy, php-format
+#, php-format
 msgid "Buildnumber was successfully updated to %s."
-msgstr "נכנסת בהצלחה."
+msgstr "מבנה המספר עודקן בהצלחה ל%s"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:572
 #, fuzzy
@@ -13140,9 +12903,8 @@ msgid "Default answer for scale %s:"
 msgstr "תשובת ברירת מחדל לציר %s:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:223
-#, fuzzy
 msgid "Default answer value:"
-msgstr "שפת ברירת מחדל"
+msgstr "ערך תשובת בררת המחדל"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:234
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:272
@@ -13170,97 +12932,92 @@ msgid "Question could not be deleted. There are conditions for other questions t
 msgstr "לא ניתן היה למחוק את השאלה.  יש תנאים לשאלות אחרות שמסתמכים על שאלה זו.  לא תוכל למחוק שאלה זו עד להסרת כל התנאים התלויים בה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:911
-#, fuzzy
 msgid "Question was successfully deleted."
-msgstr "התבנית `%s` נמחקה בהצלחה"
+msgstr "השאלה נמחקה בהצלחה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:922
-#, fuzzy
 msgid "You are not authorized to delete questions."
-msgstr "אין הרשאה למחיקת קבוצה זו"
+msgstr "אתה לא מורשה למחות שאלות"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:1089
 msgid "[Dependency on another question (ID $4)]"
 msgstr ""
 
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:120
-#, fuzzy
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:121
 msgid "Message(s) sent successfully!"
-msgstr "קביעת הורים מוצלחת."
+msgstr "הודעות נשלחו בהצלחה"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:1705
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:121
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:122
 msgid "To:"
 msgstr "עבור:"
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:733
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:128
-#, fuzzy, php-format
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:129
+#, php-format
 msgid "Email to %s failed. Error Message:"
-msgstr "שליחת אימייל ל{FIRSTNAME} {LASTNAME} ({EMAIL})  נכשלה"
+msgstr "דואר אלקטרוני ל%s נכשל. שגיעת הודעה"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:185
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:189
 msgid "Deleting User Group"
 msgstr "מחק קבוצת משתמש"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:203
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:289
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:207
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:293
 msgid "Group Name"
 msgstr "שם הקבוצה"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:208
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:212
 msgid "Could not delete user group."
 msgstr "לא ניתן למחוק את קבוצת המשתמש."
 
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:221
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:225
 msgid "Could not delete user group. No group selected."
 msgstr "לא ניתן למחקו את קבוצת המשתמש. לא נבחרה קבוצה."
 
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:263
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:267
 msgid "Adding User Group"
 msgstr "הוסף קבוצת משתמש"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:279
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:302
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:312
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:283
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:306
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:316
 msgid "Failed to add Group!"
 msgstr "הוספת קבוצה נכשלה!"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:280
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:284
 msgid "Group name length more than 20 characters!"
 msgstr "אורך שם הקבוצה ארוך יותר מן 20 תווים!"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:293
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:384
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:469
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:297
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:388
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:477
 msgid "Description: "
 msgstr "תאור:"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:296
-#, fuzzy
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:300
 msgid "User group successfully added!"
-msgstr "עריכת קבוצת משתמש בוצעה בהצלחה!"
+msgstr "משתמש הקבוצה הוסף בהצלחה"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:303
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:307
 msgid "Group already exists!"
 msgstr "קבוצה קיימת כבר"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:313
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:317
 msgid "Group name was not supplied!"
 msgstr "לא נתת שם לקבוצה!"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:382
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:386
 msgid "Edit User Group Successfully!"
 msgstr "עריכת קבוצת משתמש בוצעה בהצלחה!"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:391
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:395
 msgid "Failed to update!"
 msgstr "העידכון נכשל!"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:517
-#, fuzzy
+#: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:526
 msgid "Delete this user from group"
-msgstr "מחק כניסה זו"
+msgstr "מחק משתמש זה מהקבוצה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:73
 msgid "This will replace the existing text. Continue?"
@@ -13279,19 +13036,16 @@ msgid "Confirmation"
 msgstr "אימות"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:107
-#, fuzzy
 msgid "Basic admin notification"
-msgstr "התראת אימייל בסיסית"
+msgstr "הודעה פשותה של המנהל"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:108
-#, fuzzy
 msgid "Detailed admin notification"
-msgstr "ללא התראת אימייל"
+msgstr "הודע מפורטת של המנהל"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:112
-#, fuzzy
 msgid "Admin confirmation email subject:"
-msgstr "נושא דוא\"ל אימות:"
+msgstr "נושא צורת הדואר האלקטרוני של המנהל:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:115
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:121
@@ -13309,14 +13063,12 @@ msgid "Use default"
 msgstr "השתמש בברירת המחדל"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:117
-#, fuzzy
 msgid "Admin confirmation email body:"
-msgstr "דוא\"ל אימות:"
+msgstr "צורת גוף הדואר האלקטרוני של המנהל"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:119
-#, fuzzy
 msgid "Admin notification email:"
-msgstr "הודעת אחראי מחשוב "
+msgstr "הודעת הדואר האלקטרוני של המנהל:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:126
 #, fuzzy
@@ -13369,9 +13121,8 @@ msgid "Public registration email:"
 msgstr "אימייל הרשמה ציבורית"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:265
-#, fuzzy
 msgid "Email templates successfully saved."
-msgstr "נכנסת בהצלחה."
+msgstr "תבניות הדואר האלקטרוני נשמרו בהצלחה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/translate.php:379
 msgid "Translate to"
@@ -13382,9 +13133,8 @@ msgid "Survey title and description"
 msgstr "תיאור וכותרת של סקר"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/translate.php:499
-#, fuzzy
 msgid "Welcome and end text"
-msgstr "עמוד כניסה"
+msgstr "ברוך הבא וסוף הטקסט"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/translate.php:583
 msgid "Group description"
@@ -13452,19 +13202,16 @@ msgid "Less than (Strings)"
 msgstr "פחות מן (מחרוזות)"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:97
-#, fuzzy
 msgid "Less than or equal to (Strings)"
-msgstr "פחות או שווה ל"
+msgstr "פחות או שווה ל (מחרוזת)"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:98
-#, fuzzy
 msgid "Greater than or equal to (Strings)"
-msgstr "מספר גדול מ"
+msgstr "גדול יותר או שווה ל (מחרוזת)"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:99
-#, fuzzy
 msgid "Greater than (Strings)"
-msgstr "מספר גדול מ"
+msgstr "גדול יתר מ (מחרוזת)"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:143
 msgid "You have not selected a survey"
@@ -13543,9 +13290,8 @@ msgid "Update scenario"
 msgstr "עדכן מקרה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1196
-#, fuzzy
 msgid "Are you sure you want to delete all conditions set in this scenario?"
-msgstr "האם אתה בטוח כי ברצונך למחוק כניסה זו?"
+msgstr "האם אתה בטוח שרצונך הוא למחוק את כל מערכת התנאים בתסריט"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1198
 msgid "Delete this scenario"
@@ -13557,9 +13303,8 @@ msgstr "ערוך תרחיש"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1327
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1400
-#, fuzzy
 msgid "From token table"
-msgstr "בטל טבלת הרשאות"
+msgstr "מטבלת הסימונים"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1331
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1404
@@ -13568,9 +13313,8 @@ msgid "Inexistant token table"
 msgstr "בטל טבלת הרשאות"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1446
-#, fuzzy
 msgid "Are you sure you want to delete this condition?"
-msgstr "האם אתה בטוח כי ברצונך למחוק כניסה זו?"
+msgstr "האם אתה בטוח שרצונך הוא למחוק תנאי זה?"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1448
 msgid "Delete this condition"
@@ -13605,9 +13349,8 @@ msgid "Copy the selected conditions to"
 msgstr "העתק את התנאים הנבחרים אל"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1618
-#, fuzzy
 msgid "This survey's questions don't use conditions"
-msgstr "סקר זה אינו פעיל כעת"
+msgstr "שאלות סקר זה אינן משתמשות בתנאים"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1655
 msgid "Edit condition"
@@ -13636,9 +13379,8 @@ msgstr "שאלות קודמות"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1695
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1830
-#, fuzzy
 msgid "Token fields"
-msgstr "בחר את שדות המחרזות."
+msgstr "שדות מסומנות"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1752
 msgid "Comparison operator"
@@ -13657,18 +13399,16 @@ msgid "RegExp"
 msgstr "RegExp"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1838
-#, fuzzy
 msgid "Predefined answer options for this question"
-msgstr "ערוך/הוסף תשובות לשאלה זו"
+msgstr "אפשרויות התשובה הוגדרו מראש לשאלה זו"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1844
 msgid "Constant value"
 msgstr "ערך קבוע"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1862
-#, fuzzy
 msgid "Answers from previous questions"
-msgstr "ערוך/הוסף תשובות לשאלה זו"
+msgstr "תשובות משאלות קודמות"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1874
 msgid "Attributes values from the participant's token"
@@ -13699,9 +13439,8 @@ msgid "When an imported record matches an existing record ID:"
 msgstr "כשרשומה מיובאת מתאימה למזהה רשומה קיימת:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:153
-#, fuzzy
 msgid "Report and skip the new record."
-msgstr "דווח שגיאה (ודלג על הרשומה החדשה)."
+msgstr "דווח ודלג על רשומה חדשה"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:154
 msgid "Renumber the new record."
@@ -13749,9 +13488,8 @@ msgid "Important Note:"
 msgstr "הערה חשובה:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:394
-#, fuzzy
 msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
-msgstr "הערה חשובה<br />אל תטען מחדש את העמוד הזה, כי זה יגרום לטעינת הקובץ מחדש וייצר כפילויות"
+msgstr "לא לרענן דף זה, זה ייבא את הקובץ שוב ויצור תוצר כפול"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:396
 msgid "Total records imported:"
@@ -14000,9 +13738,8 @@ msgid "Your token seems to be valid but can be used only during a certain time p
 msgstr "סמלך נראה תקין אך ניתן לעשות בו שימוש במשך זמן מסויים בלבד."
 
 #: /tmp/translationstatus_v2/application/controllers/survey.php:751
-#, fuzzy
 msgid "Your responses were successfully saved."
-msgstr "נכנסת בהצלחה."
+msgstr "התגובות שלך נשמרו בהצלחה"
 
 #: /tmp/translationstatus_v2/application/controllers/optout.php:78
 #: /tmp/translationstatus_v2/application/controllers/optin.php:78
@@ -14011,25 +13748,21 @@ msgstr "סקר זה אינו קיים"
 
 #: /tmp/translationstatus_v2/application/controllers/optout.php:89
 #: /tmp/translationstatus_v2/application/controllers/optin.php:89
-#, fuzzy
 msgid "You are not a participant in this survey."
-msgstr "אין הרשאה לפרסם את הסקר הנוכחי"
+msgstr "אתה לא משתתף בסקר זה"
 
 #: /tmp/translationstatus_v2/application/controllers/optout.php:95
-#, fuzzy
 msgid "You have been successfully removed from this survey."
-msgstr "טבלת מחרוזות נוצרה עבור סקר זה."
+msgstr "אתה ירדתה בהצלחה מהסקר הזה"
 
 #: /tmp/translationstatus_v2/application/controllers/optout.php:99
 #: /tmp/translationstatus_v2/application/controllers/optin.php:103
-#, fuzzy
 msgid "You have been already removed from this survey."
-msgstr "כבר מילאת סקר זה"
+msgstr "אתה כבר ירדתה מהסקר הזה"
 
 #: /tmp/translationstatus_v2/application/controllers/optin.php:95
-#, fuzzy
 msgid "You have been successfully added back to this survey."
-msgstr "טבלת מחרוזות נוצרה עבור סקר זה."
+msgstr "אתה הוחזרתה בהצלחה לסקר זה"
 
 #: /tmp/translationstatus_v2/application/controllers/optin.php:99
 msgid "You are already a part of this survey."
@@ -14076,9 +13809,8 @@ msgid "Permission to create/view/update/delete/import/export the questions, grou
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:27
-#, fuzzy
 msgid "Survey locale settings"
-msgstr "הגדרות כלליות"
+msgstr "הגדרות איזוריות של הסקר"
 
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:27
 msgid "Permission to view/update the survey locale settings"
@@ -14089,9 +13821,8 @@ msgid "Survey security"
 msgstr "אבטחת הסקר"
 
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:28
-#, fuzzy
 msgid "Permission to modify survey security settings"
-msgstr "הגדרות אבטחה של סקר זה"
+msgstr "אישו לשינוי הגדרות האבטחה של הסקר"
 
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:29
 msgid "Survey settings"
@@ -14167,9 +13898,8 @@ msgstr "הדפס תשובותיך"
 #: /tmp/translationstatus_v2/application/libraries/Group_format.php:300
 #: /tmp/translationstatus_v2/application/libraries/Question_format.php:328
 #: /tmp/translationstatus_v2/application/libraries/Survey_format.php:171
-#, fuzzy
 msgid "View the statistics for this survey."
-msgstr "הסתר פרטים על סקר זה"
+msgstr "הראה סטטיסטיקה לסקר זה"
 
 #: /tmp/translationstatus_v2/application/libraries/Group_format.php:352
 #: /tmp/translationstatus_v2/application/libraries/Question_format.php:93
@@ -14182,35 +13912,36 @@ msgid "Submit your answers"
 msgstr "העלה את תשובותיך"
 
 #: /tmp/translationstatus_v2/application/libraries/Group_format.php:383
-#, fuzzy
 msgid "There are no more questions. Please press the <Submit> button to finish this survey."
-msgstr "ישנה שאלה 1 בסקר הזה"
+msgstr "אין יותר שאלות. לחץ על הכפתור <שלח> בשביל לסים את הסקר"
 
 #: /tmp/translationstatus_v2/application/libraries/Group_format.php:1277
-#, fuzzy
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
-msgstr "שאלה אחת או יותר לא מולאה באופן המתאים.  לא ניתן להמשיך עד למילוי השאלות בצורה המתאימה"
+msgstr "אחד או יותר מהקבצים המועלים לא בפורמת/גודל המתאים. אתה לא יכול להמשיך עד שהקבצים לא מתוקנים"
 
 #: /tmp/translationstatus_v2/application/libraries/Group_format.php:1391
 #: /tmp/translationstatus_v2/application/libraries/Question_format.php:667
-#, fuzzy
 msgid "Question index"
-msgstr "קודים של השאלה"
+msgstr "מפתח השאלה"
 
 #: /tmp/translationstatus_v2/application/libraries/Question_format.php:316
 #: /tmp/translationstatus_v2/application/libraries/Survey_format.php:159
-#, fuzzy
 msgid "Click here to print your answers."
-msgstr "אנא כתוב את תשובות(י)ך כאן:"
+msgstr "לחץ כאן להתפסת התשובות שלך"
 
 #: /tmp/translationstatus_v2/application/libraries/Question_format.php:568
 msgid "One or more uploaded files do not satisfy the criteria"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/libraries/Survey_format.php:975
-#, fuzzy
 msgid "One or more files are either not in the proper format or exceed the maximum file size limitation. You cannot proceed until these answers are valid."
-msgstr "שאלה אחת או יותר לא מולאה באופן המתאים.  לא ניתן להמשיך עד למילוי השאלות בצורה המתאימה"
+msgstr "אחד או יותר מהקבצים או לא בפורמת הנכון או עבר על הגבלת גודל הקובץ. אתה לא יכול להמשיך עד שהתשובות לא מתוקנות"
+
+#~ msgid "Add user"
+#~ msgstr "הוסף משתמש"
+
+#~ msgid "User permissions were updated successfully."
+#~ msgstr "הרשאות המשתמש הועלו בהצלחה."
 
 #, fuzzy
 #~ msgid "Please Wait"
