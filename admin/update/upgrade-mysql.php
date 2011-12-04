@@ -697,6 +697,11 @@ function db_upgrade($oldversion) {
         ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();@ob_flush();
         modify_database("","update `prefix_settings_global` set `stg_value`='153' where stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
     }
+    if ($oldversion < 154)
+    {
+        modify_database("","ALTER TABLE `prefix_groups` ADD `relevance` text;"); echo $modifyoutput; flush();@ob_flush();
+        modify_database("","update `prefix_settings_global` set `stg_value`='154' where stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
+    }
 
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br />';
     return true;

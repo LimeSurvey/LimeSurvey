@@ -96,6 +96,7 @@ CREATE TABLE prefix_groups (
     description text,
     "language" character varying(20) DEFAULT 'en'::character varying NOT NULL,
     randomization_group varying(20) DEFAULT ''::character varying NOT NULL,
+    relevance text,
     CONSTRAINT prefix_groups_pkey PRIMARY KEY (gid, "language")
 );
 
@@ -547,4 +548,4 @@ create index parent_qid_idx on prefix_questions (parent_qid);
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '153');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '154');
