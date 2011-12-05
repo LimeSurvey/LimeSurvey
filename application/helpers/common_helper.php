@@ -6802,8 +6802,8 @@ function checkquestionfordisplay($qid, $gid=null)
 */
 function sStripDBPrefix($sTableName)
 {
-    $CI = &get_instance();
-    $dbprefix = $CI->db->dbprefix;
+    $yii = Yii::app();
+    $dbprefix = $yii->db->tablePrefix;
     return substr($sTableName,strlen($dbprefix));
 }
 

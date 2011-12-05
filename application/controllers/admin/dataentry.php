@@ -56,16 +56,32 @@
   * @version $Id: dataentry.php 11299 2011-10-29 14:57:24Z c_schmitz $
   * @access public
   */
- class dataentry extends Survey_Common_Controller {
-
+ class dataentry extends CAction {
+	private $yii;
+	private $controller;
+	
     /**
      * dataentry::__construct()
      * Constructor
      * @return
      */
-    function __construct()
+    function run()
 	{
-		parent::__construct();
+		$this->yii = Yii::app();
+		$this->controller = $this->getController();
+		
+		if(isset($_GET['view']))
+		{
+			$this->view($_GET['view']);
+		}
+		else if(isset($_GET['insert']))
+		{
+			$this->insert();
+		} 
+		else if(isset($_GET['import'])) 
+		{
+			$this->import($_GET['import']);
+		}
 	}
 
     function vvimport($surveyid)
@@ -418,16 +434,29 @@
     function import($surveyid)
     {
     	$surveyid = sanitize_int($surveyid);
-        self::_getAdminHeader();
+        
+		$subaction = '';
+		
+		$this->yii->loadHelper('admin/html');
+		
+        $this->controller->_getAdminHeader();
+		
         if(bHasSurveyPermission($surveyid,'responses','create'))
         {
             //if (!isset($surveyid)) $surveyid = $this->input->post('sid');
-            if (!isset($oldtable)) $oldtable = $this->input->post('oldtable');
+            if (!isset($oldtable) && isset($_POST['oldtable'])) 
+            {
+            	$oldtable = $_POST['oldtable'];
 
-            $subaction = $this->input->post('subaction');
-            $clang = $this->limesurvey_lang;
-            $dbprefix = $this->db->dbprefix;
-            $this->load->helper('database');
+            	$subaction = $_POST['subaction'];
+			}
+			
+			$connection = $this->yii->db;
+        	$schema = $connection->getSchema();
+			
+            $clang = $this->yii->lang;
+            $dbprefix = $connection->tablePrefix;
+            $this->yii->loadHelper('database');
 
             if (!$subaction == "import")
             {
@@ -435,29 +464,30 @@
 
                 $query = db_select_tables_like("{$dbprefix}old\_survey\_%");
                 $result = db_execute_assoc($query) or show_error("Error:<br />$query<br />");
-                if ($result->num_rows() > 0)
-                $result = array_values($result);
+                if ($result->count() > 0)
+                	$result = $result->readAll();
+				
                 $optionElements = '';
-                $queryCheckColumnsActive = "SELECT * FROM {$dbprefix}survey_{$surveyid} ";
-                $resultActive = db_execute_assoc($queryCheckColumnsActive) or show_error("Error:<br />$query<br />");
-                $countActive = $resultActive->num_fields();
-                if ($resultActive->num_rows() > 0)
-                $resultActive = array_values($resultActive);
-
-                foreach ($result->result_array() as $row)
+                //$queryCheckColumnsActive = $schema->getTable($oldtable)->columnNames;
+				$resultActive = $schema->getTable($dbprefix.'survey_'.$surveyid)->columnNames;
+                //$resultActive = db_execute_assoc($queryCheckColumnsActive) or show_error("Error:<br />$query<br />");
+                $countActive = count($resultActive);
+				
+                foreach ($result as $row)
                 {
-                    $queryCheckColumnsOld = "SELECT * FROM {$row[0]} ";
-
-                    $resultOld = db_execute_assoc($queryCheckColumnsOld) or show_error("Error:<br />$query<br />");
-
-                    if($countActive== $resultOld->num_fields())
+                	$row = each($row);
+					
+                    //$resultOld = db_execute_assoc($queryCheckColumnsOld) or show_error("Error:<br />$query<br />");
+                    $resultOld = $schema->getTable($row[1])->columnNames;
+					
+                    if($countActive == count($resultOld)) //num_fields()
                     {
-                        $optionElements .= "\t\t\t<option value='{$row[0]}'>{$row[0]}</option>\n";
+                        $optionElements .= "\t\t\t<option value='{$row[1]}'>{$row[1]}</option>\n";
                     }
                 }
-                $this->load->helper('admin/html');
+				
                 //Get the menubar
-                browsemenubar($clang->gT("Quick statistics"),$surveyid,TRUE);
+                browsemenubar($clang->gT("Quick statistics"),$surveyid,TRUE, $this->controller);
                 $importoldresponsesoutput = "
             		<div class='header ui-widget-header'>
             			".$clang->gT("Import responses from a deactivated survey table")."
@@ -492,7 +522,7 @@
                     </div>
             		<br />";
                 $data['display'] = $importoldresponsesoutput;
-                $this->load->view('survey_view',$data);
+                $this->controller->render('/survey_view', $data);
             }
             //elseif (isset($surveyid) && $surveyid && isset($oldtable))
             else
@@ -500,7 +530,7 @@
                 /*
                  * TODO:
                  * - mysql fit machen
-                 * -- quotes f�r mysql beachten --> `
+                 * -- quotes for mysql beachten --> `
                  * - warnmeldung mehrsprachig
                  * - testen
                  */
@@ -512,77 +542,79 @@
                 $dontimportfields = array(
             		 //,'otherfield'
                 );
-
-
+				
                 //$aFieldsOldTable=array_values($connect->MetaColumnNames($oldtable, true));
                 //$aFieldsNewTable=array_values($connect->MetaColumnNames($activetable, true));
-
-                $aFieldsOldTable=array_values($this->db->list_fields($oldtable));
-                $aFieldsNewTable=array_values($this->db->list_fields($activetable));
+                
+                $aFieldsOldTable = array_values($schema->getTable($oldtable)->columnNames);
+                $aFieldsNewTable = array_values($schema->getTable($activetable)->columnNames);
 
                 // Only import fields where the fieldnames are matching
-                $aValidFields=array_intersect($aFieldsOldTable,$aFieldsNewTable);
+                $aValidFields = array_intersect($aFieldsOldTable, $aFieldsNewTable);
 
                 // Only import fields not being in the $dontimportfields array
-                $aValidFields=array_diff($aValidFields,$dontimportfields);
+                $aValidFields = array_diff($aValidFields, $dontimportfields);
 
 
-                $queryOldValues = "SELECT ".implode(", ",$aValidFields)." FROM {$oldtable} ";
+                $queryOldValues = "SELECT ".implode(", ",array_map("db_quote_id", $aValidFields))." FROM {$oldtable} ";
                 $resultOldValues = db_execute_assoc($queryOldValues) or show_error("Error:<br />$queryOldValues<br />");
-                $iRecordCount=$resultOldValues->num_rows();
+                $iRecordCount = $resultOldValues->count();
                 $aSRIDConversions=array();
-                foreach ($resultOldValues->result_array() as $row)
+                foreach ($resultOldValues->readAll() as $row)
                 {
                     $iOldID=$row['id'];
                     unset($row['id']);
 
-                    $sInsertSQL=$connect->GetInsertSQL($activetable,$row);
-                    $result = $connect->Execute($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
-                    $aSRIDConversions[$iOldID]=$connect->Insert_ID();
-                    }
+                    //$sInsertSQL=$connect->GetInsertSQL($activetable, $row);
+                    $sInsertSQL="INSERT into {$activetable} (".implode(",", array_map("db_quote_id", array_keys($row))).") VALUES (".implode(",", array_map("db_quoteall",array_values($row))).")";
+                    $result = db_execute_assoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
+                    $aSRIDConversions[$iOldID]=$connection->getLastInsertID();
+                }
 
-                $this->session->set_userdata('flashmessage', sprintf($clang->gT("%s old response(s) were successfully imported."),$iRecordCount));
+                $this->yii->session['flashmessage'] = sprintf($clang->gT("%s old response(s) were successfully imported."), $iRecordCount);
 
                 $sOldTimingsTable=substr($oldtable,0,strrpos($oldtable,'_')).'_timings'.substr($oldtable,strrpos($oldtable,'_'));
                 $sNewTimingsTable=$dbprefix.$surveyid."_timings";
+				
                 if (tableExists(sStripDBPrefix($sOldTimingsTable)) && tableExists(sStripDBPrefix($sNewTimingsTable)) && returnglobal('importtimings')=='Y')
                 {
                    // Import timings
                     //$aFieldsOldTimingTable=array_values($connect->MetaColumnNames($sOldTimingsTable, true));
                     //$aFieldsNewTimingTable=array_values($connect->MetaColumnNames($sNewTimingsTable, true));
 
-                    $aFieldsOldTimingTable=array_values($this->db->list_fields($sOldTimingsTable));
-                    $aFieldsNewTimingTable=array_values($this->db->list_fields($sNewTimingsTable));
+                    $aFieldsOldTimingTable=array_values($schema->getTable($sOldTimingsTable)->columnNames);
+                    $aFieldsNewTimingTable=array_values($schema->getTable($sNewTimingsTable)->columnNames);
 
                     $aValidTimingFields=array_intersect($aFieldsOldTimingTable,$aFieldsNewTimingTable);
 
                     $queryOldValues = "SELECT ".implode(", ",$aValidTimingFields)." FROM {$sOldTimingsTable} ";
-                $resultOldValues = db_execute_assoc($queryOldValues) or show_error("Error:<br />$queryOldValues<br />");
-                    $iRecordCountT=$resultOldValues->num_rows();
+                	$resultOldValues = db_execute_assoc($queryOldValues) or show_error("Error:<br />$queryOldValues<br />");
+                    $iRecordCountT=$resultOldValues->count();
                     $aSRIDConversions=array();
-                foreach ($resultOldValues->result_array() as $row)
-                {
-                        if (isset($aSRIDConversions[$row['id']]))
-                    {
+	                foreach ($resultOldValues->readAll() as $row)
+	                {
+	                    if (isset($aSRIDConversions[$row['id']]))
+	                    {
                             $row['id']=$aSRIDConversions[$row['id']];
                         }
                         else continue;
-                        $sInsertSQL=$connect->GetInsertSQL($sNewTimingsTable,$row);
-                        $result = $connect->Execute($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
+                        //$sInsertSQL=$connect->GetInsertSQL($sNewTimingsTable,$row);
+						$sInsertSQL="INSERT into {$sNewTimingsTable} (".implode(",", array_map("db_quote_id", array_keys($row))).") VALUES (".implode(",", array_map("db_quoteall", array_values($row))).")";
+                        $result = db_execute_assoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
                     }
-                    $this->session->set_userdata('flashmessage', sprintf($clang->gT("%s old response(s) and according timings were successfully imported."),$iRecordCount,$iRecordCountT));
-
+                    $this->yii->session['flashmessage'] = sprintf($clang->gT("%s old response(s) and according timings were successfully imported."),$iRecordCount,$iRecordCountT);
                 }
-                $importoldresponsesoutput = browsemenubar($clang->gT("Quick statistics"),$surveyid,TRUE);
+				//$this->controller->redirect($this->controller->createUrl('/admin/dataentry/import/'.$surveyid));
+                $importoldresponsesoutput = browsemenubar($clang->gT("Quick statistics"),$surveyid,TRUE, $this->controller);
             }
 
 
         }
 
-        self::_loadEndScripts();
+        $this->controller->_loadEndScripts();
 
 
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        $this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->yii->lang->gT("LimeSurvey online manual"));
     }
 
     /**

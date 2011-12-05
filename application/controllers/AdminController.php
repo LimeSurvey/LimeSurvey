@@ -107,6 +107,7 @@ class AdminController extends LSYii_Controller
 	{
 		return array(
 			'authentication' => 'application.controllers.admin.authentication',
+			'browse' => 'application.controllers.admin.browse',
 			'index' => 'application.controllers.admin.index',
 			'globalsettings' => 'application.controllers.admin.globalsettings',
 			'quotas' => 'application.controllers.admin.quotas',
@@ -131,6 +132,7 @@ class AdminController extends LSYii_Controller
 			'user' => 'application.controllers.admin.useraction',
 			'participants' => 'application.controllers.admin.participantsaction',
 			'translate' => 'application.controllers.admin.translate',
+			'dataentry' => 'application.controllers.admin.dataentry',
 			'saved' => 'application.controllers.admin.saved'
 		);
 	}

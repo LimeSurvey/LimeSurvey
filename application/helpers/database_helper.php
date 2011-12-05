@@ -3,7 +3,7 @@
 function &db_execute_assoc($sql,$inputarr=false,$silent=false)
 {
     //$connect->SetFetchMode(ADODB_FETCH_ASSOC);
-	/*try { */
+	/*try {*/
 		if($inputarr)
 		{
 				$dataset=Yii::app()->db->createCommand($sql)->bindValues($inputarr)->query();	//Checked
@@ -149,7 +149,7 @@ function db_quote_id($id)
     //  $quote = $connect->nameQuote;
     //  return $quote.str_replace($quote,$quote.$quote,$id).$quote;
 
-    switch (get_instance()->db->platform())
+    switch (Yii::app()->db->getDriverName())
     {
         case "mysqli" :
         case "mysql" :

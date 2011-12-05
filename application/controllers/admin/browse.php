@@ -22,32 +22,26 @@
  * @package		LimeSurvey
  * @subpackage	Backend
  */
-class browse extends Survey_Common_Controller {
-
-	/**
-	 * Constructor
-	 */
-	function __construct()
+class browse extends Survey_Common_Action {
+	
+	private $yii;
+	private $controller;
+	
+	public function run()
 	{
-		parent::__construct();
-	}
-
-	public function _remap($method, $params = array())
-	{
-		array_unshift($params, $method);
-	    return call_user_func_array(array($this, "action"), $params);
+		$this->yii = Yii::app();
+		$this->controller = $this->getController();
+		$this->action($_GET['action']);
+		/*array_unshift($params, $method);
+	    return call_user_func_array(array($this, "action"), $params);*/
 	}
 
 	function action($surveyid = null, $subaction = null, $var1 = null, $var2 = null, $var3 = null, $var4 = null)
 	{
 		$surveyid = sanitize_int($surveyid);
-		$_POST = $this->input->post();
-		$clang = $this->limesurvey_lang;
-		
-		$this->load->helper("database");
-		$this->load->helper("surveytranslator");			
-		$this->load->model('Surveys_dynamic_model');
-		
+		$clang = $this->yii->lang;
+		$this->yii->loadHelper("database");
+		$this->yii->loadHelper("surveytranslator");
 		$data = array();
 
 		if (!isset($limit)) {$limit=returnglobal('limit');}
@@ -56,13 +50,12 @@ class browse extends Survey_Common_Controller {
 		if (!isset($order)) {$order=returnglobal('order');}
 		if (!isset($browselang)) {$browselang=returnglobal('browselang');}
 
-
 		// Some test in response table
 		if (!isset($surveyid) && !isset($subaction)) //NO SID OR ACTION PROVIDED
 		{
 		    show_error("\t<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>"
 		            . $clang->gT("Browse Responses")."</div><div class='warningheader'>"
-		            .$clang->gT("Error")."\t</div>\n"
+		            . $clang->gT("Error")."\t</div>\n"
 		            . $clang->gT("You have not selected a survey to browse.")."<br />\n"
 		            ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
 		            ."</div>");
@@ -71,27 +64,27 @@ class browse extends Survey_Common_Controller {
 
 		$data['surveyid'] = $surveyid;
 		$data['subaction'] = $subaction;
+		$data['clang'] = $clang;
 
 		//CHECK IF SURVEY IS ACTIVATED AND EXISTS
-		$actquery = "SELECT * FROM ".$this->db->dbprefix('surveys')." as a inner join ".$this->db->dbprefix('surveys_languagesettings')." as b on (b.surveyls_survey_id=a.sid and b.surveyls_language=a.language) WHERE a.sid=".$this->db->escape($surveyid);
+		$actquery = "SELECT * FROM ".$this->yii->db->tablePrefix.'surveys'." as a inner join ".$this->yii->db->tablePrefix.'surveys_languagesettings'." as b on (b.surveyls_survey_id=a.sid and b.surveyls_language=a.language) WHERE a.sid=".addslashes($surveyid);
 
 		$actresult = db_execute_assoc($actquery);
-		$actcount = $actresult->num_rows();
-		
+		$actcount = $actresult->count();
 		if ($actcount > 0)
 		{
-			foreach ($actresult->result_array() as $actrow)
+			foreach ($actresult->readAll() as $actrow)
 		    {
-		        $surveytable = $this->db->dbprefix("survey_".$actrow['sid']);
-		        $surveytimingstable = $this->db->dbprefix("survey_".$actrow['sid']."_timings");
-		        $tokentable = $this->db->dbprefix."tokens_".$actrow['sid'];
+		        $surveytable = $this->yii->db->tablePrefix."survey_".$actrow['sid'];
+		        $surveytimingstable = $this->yii->db->tablePrefix."survey_".$actrow['sid']."_timings";
+		        $tokentable = $this->yii->db->tablePrefix."tokens_".$actrow['sid'];
 		        /*
 		         * DO NEVER EVER PUT VARIABLES AND FUNCTIONS WHICH GIVE BACK DIFFERENT QUOTES
 		         * IN DOUBLE QUOTED(' and " and \" is used) JAVASCRIPT/HTML CODE!!! (except for: you know what you are doing)
 		         *
 		         * Used for deleting a record, fix quote bugs..
 		         */
-		        $surveytableNq = $this->db->dbprefix("survey_".$surveyid);
+		        $surveytableNq = $this->yii->db->tablePrefix."survey_".$surveyid;
 
 		        $surveyname = "{$actrow['surveyls_title']}";
 		        if ($actrow['active'] == "N") //SURVEY IS NOT ACTIVE YET
@@ -143,305 +136,21 @@ class browse extends Survey_Common_Controller {
 		{
 		    $language = GetBaseLanguageFromSurveyID($surveyid);
 		}
-		
-              
-        // Handle jqgrid edit operations
-        if($subaction == "grid") 
-        {
-            if (isset($_POST['oper'])) {
-                switch ($_POST['oper']) {
-                
-                // Delete responses with ids in $_POST['id'] 
-                case 'del':
-                    if (!bHasSurveyPermission($surveyid,'responses','delete'))
-                    {	
-                        echo '{"error": "'.$clang->gT('You don\'t have permissions to delete the survey!').'"}';
-                    }
-                    if (!isset($_POST['id'])) 
-                    {
-                        echo '{"error": "'.$clang->gT('Missing parameter: \'id\'').'"}';
-                    }
-                    
-                    $aIds = explode(',', $_POST['id']);			
-                  	
-                    foreach ($aIds as $responseID) 
-                    {
-                        // Delete all the files associated to the response							
-                        $fieldmap = createFieldMap($surveyid);
-                        $fuqtquestions = array();
 
-                        // find all fuqt questions
-                        foreach ($fieldmap as $field)
-                        {
-                            if ($field['type'] == "|" && strpos($field['fieldname'], "_filecount") == 0)
-                            $fuqtquestions[] = $field['fieldname'];
-                        }
-
-                        if (!empty($fuqtquestions))
-                        {
-                            $responses = $this->Surveys_dynamic_model->getFieldsForID($fuqtquestions, $surveyid, $responseID);
-
-                            foreach ($responses->result_array() as $json)
-                            {
-                                foreach ($fuqtquestions as $fieldname)
-                                {
-                                    $phparray = json_decode($json[$fieldname]);
-                                    if ($phparray) 
-                                    {
-                                        foreach($phparray as $metadata)
-                                        {
-                                            $path = $this->config->item('uploaddir')."/surveys/".$surveyid."/files/";
-                                            unlink($path.$metadata->filename); // delete the file
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        $this->Surveys_dynamic_model->deleteResponse($surveyid, $responseID);
-                    }
-                    
-                    return;
-                    
-                // Dowload a single file
-                case 'downloadfile':
-                    if (!isset($_POST['id']) || !isset($_POST['filename']) || !isset($_POST['fieldname'])) 
-                    {
-                        show_error($clang->gT('Missing parameters'));
-                    }
-                    
-                    $id = (int)$_POST['id'];
-                    $filename = $_POST['filename'];
-                    $fieldname = $_POST['fieldname'];
-
-                    $result = $this->Surveys_dynamic_model->getFieldsForID($fieldname, $surveyid, $id);
-                    $row = $result->row_array();
-                    $phparray = json_decode(reset($row));
-                    for ($i = 0; $i < count($phparray); $i++)
-                    {
-                        if ($phparray[$i]->name == $filename)
-                        {
-                            $file = $this->config->item('uploaddir')."/surveys/" . $surveyid . "/files/" . $phparray[$i]->filename;
-                            if (file_exists($file)) 
-                            { 
-                                header('Content-Description: File Transfer');
-                                header('Content-Type: application/octet-stream');
-                                header('Content-Disposition: attachment; filename="' . rawurldecode($phparray[$i]->name) . '"');
-                                header('Content-Transfer-Encoding: binary');
-                                header('Expires: 0');
-                                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-                                header('Pragma: public');
-                                header('Content-Length: ' . filesize($file));
-                                ob_clean();
-                                flush();
-                                readfile($file);
-                                exit;
-                            } 
-                            else 
-                            {
-                                show_error($clang->gT("Missing file:").$filename);
-                            }
-                            break;
-                        }
-                    }
-                    return;
-
-                // Download a single zip with files
-                case 'downloadarchive':
-                    $zipfilename = "LS_Responses_for_" . $_POST['id'] . ".zip";
-                    $this->zipFiles($surveyid, $_POST['id'], $zipfilename);
-                    return;
-                    
-                // Download all files for a response
-                case 'downloadarchives':
-                    $zipfilename = "Responses_for_survey_" . $surveyid . ".zip";
-                    $this->zipFiles($surveyid, explode(',', $_POST['ids']), $zipfilename);
-                    return;
-                
-                // Edit a response
-                case 'edit':
-                    unset($_POST['oper']);
-                    if (!isset($_POST['id'])) 
-                    {
-                        echo '{"error": "'.$clang->gT('Missing parameter: \'id\'').'"}';
-                    }
-
-                    $id = (int)$_POST['id'];
-                    unset($_POST['id']);
-
-                    $data = $this->Surveys_dynamic_model->getResponse($surveyid, $id)->row_array();
-
-                    // handle the submitdate
-                    if (isset($_POST['submitdate'])) 
-                    {
-                        if ($_POST['submitdate'] == 'Y') 
-                        {
-                            if ($data['submitdate'] == '') 
-                            {
-                                $data['submitdate'] = date('Y-m-d H:m:s');	
-                            }
-                        }
-                        else 
-                        {
-                            $data['submitdate'] = NULL;	
-                        }
-                        unset($_POST['submitdate']);
-                    }
-                    
-                    // Loop through the array of changed values
-                    foreach ($_POST as $field => $value) 
-                    {
-                        $param = explode('_', $field);
-                        if (count($param) == 1) 
-                        {
-                            $data[$param[0]] = $value;	
-                        } 
-                        else 
-                        {
-                            if ($param[1] == 'comment') 
-                            {
-                                $fileID = (int)$param[2];
-                                $jsonData = json_decode($data[$param[0]], true);
-                                if (isset($jsonData[$fileID])) 
-                                {
-                                    $jsonData[$fileID]['comment'] = $value;	
-                                }
-                                $data[$param[0]] = json_encode($jsonData);
-                            } 
-                            else if ($param[1] == 'title') 
-                            {
-                                $fileID = (int)$param[2];
-                                $jsonData = json_decode($data[$param[0]], true);
-                                if (isset($jsonData[$fileID])) 
-                                {
-                                    $jsonData[$fileID]['title'] = $value;	
-                                }
-                                $data[$param[0]] = json_encode($jsonData);
-                            }	
-                        }
-                    }	
-
-                    $data = $this->Surveys_dynamic_model->updateResponse($surveyid, $id, $data); 
-                    return;
-                default:
-                    echo '{"error": "'.$clang->gT('Missing parameter: \'id\'').'"}';
-                    return;
-                }    		 
-            }
-            
-            // No operation on the table - jqgrid is requesting data
-            if (!isset($_POST['page']) || !isset($_POST['rows']) || !isset($_POST['sidx']) || !isset($_POST['sord'])) 
-            {
-                echo '{"error": "'.$clang->gT('Missing parameters').'"}';
-                return;
-            }
-
-            $aDataDisplayed = $_SESSION['browse']['dataDisplayed'];
-		
-            $dquery = $this->Surveys_dynamic_model->getAllRecords($surveyid);
-
-            $response = array();
-            $response["records"] = $this->Surveys_dynamic_model->getResponseCount($surveyid);
-            $response["page"] = $_POST['page'];
-            $response["total"] = ceil($response["records"] / $_POST['rows']);
-
-
-            foreach($dquery->result_array() as $arow) {
-                $aData = array();
-                $actions = "<a href='".site_url()."/admin/browse/$surveyid/id/{$arow['id']}'><img src='".$this->config->item("imageurl")."/token_viewanswer.png' alt='".$clang->gT('View response details')."' /></a>";
-                if (bHasFileUploadQuestion($surveyid))
-                {
-                    $actions .="<a onclick='getArchive({$arow['id']});' ><img src='".$this->config->item("imageurl")."/down.png' alt='".$clang->gT('Download marked files')."' /></a>";
-                }
-                $aData[] = $actions;
-
-                foreach($aDataDisplayed as $col) 
-                {	
-                    switch($col['type']) {
-                    case 'file':
-                        $data = json_decode($arow[$col['field']]);
-                        $inum = 0;
-                        if ($data) 
-                        {
-                            foreach ($data as $file) 
-                            {
-                                if ($col['attr']['title'] == "1") 
-                                {
-                                    $aData[] = $file->title;
-                                } 
-                                else 
-                                {
-                                    $aData[] = ' ';	
-                                }
-
-                                if ($col['attr']['comment'] == "1")
-                                {
-                                    $aData[] = $file->comment;	
-                                }
-                                else 
-                                {
-                                    $aData = ' ';	
-                                }
-
-                                $fileName = "<a onclick=\"getFile({$arow['id']}, '{$col['field']}', '{$file->name}')\">{$file->name}</a>";
-                                array_push($aData, $fileName, floor($file->size));
-                                $inum++;
-                            }
-                        }
-                        for ($i = $inum; $i < $col['attr']['numfiles']; $i++) 
-                        {
-                            array_push($aData, ' ', '', ' ', "0");
-                        }
-                        break;
-                    case 'submitdate':
-                        if ($arow['submitdate'] == '') 
-                        {
-                            $aData[] = 'No';				        			
-                        }
-                        else 
-                        {
-                            $aData[] = 'Yes';
-                        }
-                        break;
-                    default:                        
-                        $aData[] = $arow[$col['field']];
-                        break;	
-                    }
-                }				
-
-                $response['rows'][] = array(
-                    'id' => $arow['id'],
-                    'cell' => $aData
-                );	
-            }
-
-            echo json_encode($response);
-            return;
-        }
-
-        // Load the jqgrid css & js
-        self::_js_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/js/i18n/grid.locale-en.js");
-        self::_js_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/js/jquery.jqGrid.min.js");
-        
-        $css_admin_includes[] = $this->config->item('generalscripts')."jquery/css/jquery.multiselect.css";
-        $css_admin_includes[] = $this->config->item('generalscripts')."jquery/css/jquery.multiselect.filter.css";
-        $css_admin_includes[] = $this->config->item('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css";
-        $css_admin_includes[] = $this->config->item('generalscripts')."jquery/jqGrid/css/jquery.ui.datepicker.css";
-        
-        $this->config->set_item("css_admin_includes", $css_admin_includes);
-
-		self::_getAdminHeader();
-		
-		
-		self::_browsemenubar($surveyid, $clang->gT("Browse Responses"));
-		
+		$this->controller->_getAdminHeader();
 		$surveyoptions = "";
+		self::_browsemenubar($surveyid, $clang->gT("Browse Responses"));
 		$browseoutput = "";
+
+		$this->controller->_js_admin_includes($this->yii->getConfig("adminscripts").'browse.js');
+
+
 
 		$qulanguage = GetBaseLanguageFromSurveyID($surveyid);
 
 
 		// Looking at a SINGLE entry
+
 		if ($subaction == "id")
 		{
 			$id=sanitize_int($var1);
@@ -493,7 +202,7 @@ class browse extends Survey_Common_Controller {
 		            {
 		                $qidattributes=getQuestionAttributeValues($field['qid']);
 
-		                for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
+		                for ($i = 0; $i < $qidattributes['max_files']; $i++)
 		                {
 		                    if ($qidattributes['show_title'] == 1)
 		                        $fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (Title)",     "type"=>"|", "metadata"=>"title",   "index"=>$i);
@@ -530,7 +239,7 @@ class browse extends Survey_Common_Controller {
 		    }
 		    else {$idquery .= "$surveytable.id = $id";}
 		    $idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg());
-		    foreach ($idresult->result_array() as $idrow)
+		    foreach ($idresult->readAll() as $idrow)
 		    {
 		        $id=$idrow['id'];
 		        $rlanguage=$idrow['startlanguage'];
@@ -542,10 +251,11 @@ class browse extends Survey_Common_Controller {
 			if (isset($rlanguage)) {$data['rlanguage'] = $rlanguage;}
 			$data['next'] = $next;
 			$data['last'] = $last;
-			$this->load->view("admin/browse/browseidheader_view", $data);
+			
+			$this->controller->render("/admin/browse/browseidheader_view", $data);
 
 		    $idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />$idquery<br />".$connect->ErrorMsg());
-		    foreach ($idresult->result_array() as $idrow)
+		    foreach ($idresult->readAll() as $idrow)
 		    {
 		        $highlight=false;
 		        for ($i = 0; $i < $nfncount+1; $i++)
@@ -585,13 +295,13 @@ class browse extends Survey_Common_Controller {
 					$data['inserthighlight'] = $inserthighlight;
 					$data['fnames'] = $fnames;
 					$data['i'] = $i;
-					$this->load->view("admin/browse/browseidrow_view", $data);
+					$this->controller->render("/admin/browse/browseidrow_view", $data);
 		            $highlight=!$highlight;
 		        }
 		    }
-			$this->load->view("admin/browse/browseidfooter_view", $data);
+			$this->controller->render("/admin/browse/browseidfooter_view", $data);
 		}
-		
+
 		elseif ($subaction == "all")
 		{
 		    if(isset($var3)) $order = $var3;
@@ -603,10 +313,7 @@ class browse extends Survey_Common_Controller {
 		     */
 
 		    if (!isset($_POST['sql']))
-		    {
-		    		//don't show options when called from another script with a filter on
-		    		$browseoutput .= $surveyoptions;
-		    } 
+		    {$browseoutput .= $surveyoptions;} //don't show options when called from another script with a filter on
 		    else
 		    {
 		        $browseoutput .= "\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Browse Responses").":</strong> $surveyname</td></tr>\n"
@@ -620,235 +327,217 @@ class browse extends Survey_Common_Controller {
 		                ."</table></td></tr>\n";
 
 		    }
-            
-            // $colNames contains the name of colums for jqgrid
-            $colNames = array();
-            
-            // $colModel contains the models for the columns
-            $colModel = array();
-          
-            // $aDataDisplayed will contain the fields which are displayed
-			$aDataDisplayed = array(array('field'=>'submitdate', 'type'=>'submitdate'));
-			 
-	        $colNames[] = $clang->gT("Actions");
-	        $colModel[] = array(
-	            'name' => "actions",
-	            'index' => "actions",
-	            'align' => 'center',
-	            'sortable' => false,
-	            'width' => 50
-	        );     
-	       
-	        //$fnames[] = array("submitdate", $clang->gT("Completed"), $clang->gT("Completed"), "0", 'D');
-	        $colNames[] = $clang->gT("Completed");
-	        $colModel[] = array(
-	            'name' => "submitdate",
-	            'index' => "submitdate",
-	            'align' => 'center',
-	            'sorttype' => 'string',
-	            'width' => 50,
-	            'editable' => true,
-	            'edittype' => 'select',
-	            'editoptions' => array('value' => "Y:Yes;N:No")
-	        );
-		        
+
+		    //Delete Individual answer using inrow delete buttons/links - checked
+		    if (isset($_POST['deleteanswer']) && $_POST['deleteanswer'] != '' && $_POST['deleteanswer'] != 'marked' && bHasSurveyPermission($surveyid,'responses','delete'))
+		    {
+		        $_POST['deleteanswer']=(int) $_POST['deleteanswer']; // sanitize the value
+
+		        // delete the files as well if its a fuqt
+
+		        $fieldmap = createFieldMap($surveyid);
+		        $fuqtquestions = array();
+		        // find all fuqt questions
+		        foreach ($fieldmap as $field)
+		        {
+		            if ($field['type'] == "|" && strpos($field['fieldname'], "_filecount") == 0)
+		                $fuqtquestions[] = $field['fieldname'];
+		        }
+
+		        if (!empty($fuqtquestions))
+		        {
+		            // find all responses (filenames) to the fuqt questions
+		            $query="SELECT " . implode(", ", $fuqtquestions) . " FROM $surveytable where id={$_POST['deleteanswer']}";
+		            $responses = db_execute_assoc($query) or safe_die("Could not fetch responses<br />$query<br />".$connect->ErrorMsg());
+
+		            foreach ($responses->readAll() as $json)
+		            {
+		                foreach ($fuqtquestions as $fieldname)
+		                {
+		                    $phparray = json_decode($json[$fieldname]);
+		                    foreach($phparray as $metadata)
+		                    {
+		                        $path = $this->yii->getConfig('uploaddir')."/surveys/".$surveyid."/files/";
+		                        unlink($path.$metadata->filename); // delete the file
+		                    }
+		                }
+		            }
+		        }
+
+		        // delete the row
+		        $query="delete FROM $surveytable where id=".mysql_real_escape_string($_POST['deleteanswer']);
+		        db_execute_assoc($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg()); // checked
+		    }
+		    // Marked responses -> deal with the whole batch of marked responses
+		    if (isset($_POST['markedresponses']) && count($_POST['markedresponses'])>0 && bHasSurveyPermission($surveyid,'responses','delete'))
+		    {
+		        // Delete the marked responses - checked
+		        if (isset($_POST['deleteanswer']) && $_POST['deleteanswer'] === 'marked')
+		        {
+                    $fieldmap = createFieldMap($surveyid);
+                    $fuqtquestions = array();
+                    // find all fuqt questions
+		            foreach ($fieldmap as $field)
+		            {
+                        if ($field['type'] == "|" && strpos($field['fieldname'], "_filecount") == 0)
+                            $fuqtquestions[] = $field['fieldname'];
+		                }
+
+		            foreach ($_POST['markedresponses'] as $iResponseID)
+		            {
+		                $iResponseID=(int)$iResponseID; // sanitize the value
+
+                        if (!empty($fuqtquestions))
+		                {
+                            // find all responses (filenames) to the fuqt questions
+                            $query="SELECT " . implode(", ", $fuqtquestions) . " FROM $surveytable where id={$iResponseID}";
+                            $responses = db_execute_assoc($query) or safe_die("Could not fetch responses<br />$query<br />".$connect->ErrorMsg());
+
+                            foreach ($responses->readAll() as $json)
+		                    {
+                                foreach ($fuqtquestions as $fieldname)
+		                        {
+                                    $phparray = json_decode($json[$fieldname]);
+                                    foreach($phparray as $metadata)
+                                    {
+                                        $path = $this->controller->getConfig('uploaddir')."/surveys/{$surveyid}/files/";
+                                        unlink($path.$metadata->filename); // delete the file
+		                        }
+		                    }
+		                }
+		            }
+
+		                $query="delete FROM {$surveytable} where id={$iResponseID}";
+		                db_execute_assoc($query) or safe_die("Could not delete response<br />{$dtquery}<br />".$connect->ErrorMsg());  // checked
+		            }
+		            }
+		        // Download all files for all marked responses  - checked
+		        else if (isset($_POST['downloadfile']) && $_POST['downloadfile'] === 'marked')
+		        {
+		            // Now, zip all the files in the filelist
+                    $zipfilename = "Responses_for_survey_" . $surveyid . ".zip";
+                    $this->zipFiles($_POST['markedresponses'], $zipfilename);
+		        }
+		    }
+		    // Download all files for this entry - checked
+		    else if (isset($_POST['downloadfile']) && $_POST['downloadfile'] != '' && $_POST['downloadfile'] !== true)
+		    {
+		        // Now, zip all the files in the filelist
+		        $zipfilename = "LS_Responses_for_" . $_POST['downloadfile'] . ".zip";
+                $this->zipFiles($_POST['downloadfile'], $zipfilename);
+		        }
+		    else if (isset($_POST['downloadindividualfile']) && $_POST['downloadindividualfile'] != '')
+		    {
+		        $id = (int)$_POST['id'];
+		        $downloadindividualfile = $_POST['downloadindividualfile'];
+		        $fieldname = $_POST['fieldname'];
+
+		        $query = "SELECT ".db_quote_id($fieldname)." FROM {$surveytable} WHERE id={$id}";
+		        $result=db_execute_assoc($query);
+		        $row = $result->read();
+		        $phparray = json_decode(reset($row));
+
+		        for ($i = 0; $i < count($phparray); $i++)
+		        {
+		            if ($phparray[$i]->name == $downloadindividualfile)
+		            {
+		                $file = $this->yii->getConfig('uploaddir')."/surveys/" . $surveyid . "/files/" . $phparray[$i]->filename;
+
+		                if (file_exists($file)) {
+		                    header('Content-Description: File Transfer');
+		                    header('Content-Type: application/octet-stream');
+		                    header('Content-Disposition: attachment; filename="' . rawurldecode($phparray[$i]->name) . '"');
+		                    header('Content-Transfer-Encoding: binary');
+		                    header('Expires: 0');
+		                    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		                    header('Pragma: public');
+		                    header('Content-Length: ' . filesize($file));
+		                    ob_clean();
+		                    flush();
+		                    readfile($file);
+		                    exit;
+		                }
+		                break;
+		            }
+		        }
+		    }
+
+
 		    //add token to top of list if survey is not private
 		    if ($surveyinfo['anonymized'] == "N" && db_tables_exist($tokentable)) //add token to top of list if survey is not private
 		    {
-		   	    $aDataDisplayed[] = array(array('field'=>'token', 'type'=>'firstname'));		        
-		        //$fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
-		        $colNames[] = $clang->gT("Token ID");
-		        $colModel[] = array(
-		            'name' => "token",
-		            'index' => "token",
-		            'width' => 100,
-		            'align' => 'center',
-		            'sorttype' => 'int'
-		        );
-		        
-		        
-    	    	$aDataDisplayed[] = array(array('field'=>'firstname', 'type'=>'firstname'));
-		        //$fnames[] = array("firstname", "First name", $clang->gT("First name"), 0);
-		        $colNames[] = $clang->gT("First Name");
-		        $colModel[] = array(
-		            'name' => "firstname",
-		            'index' => "firstname",
-		            'align' => 'center',
-		            'sorttype' => 'string'
-		        );
-		        
-		        
-		    	$aDataDisplayed[] = array(array('field'=>'lastname', 'type'=>'lastname'));
-		        //$fnames[] = array("lastname", "Last name", $clang->gT("Last name"), 0);
-		        $colNames[] = $clang->gT("Last Name");
-		        $colModel[] = array(
-		            'name' => "lastname",
-		            'index' => "lastname",
-		            'align' => 'center',
-		            'sorttype' => 'string'
-		        );
-		        
-		        
-		        $aDataDisplayed[] = array(array('field'=>'email', 'type'=>'email'));
-		        //$fnames[] = array("email", "Email", $clang->gT("Email"), 0);
-		        $colNames[] = $clang->gT("Email");
-		        $colModel[] = array(
-		            'name' => "lastname",
-		            'index' => "lastname",
-		            'align' => 'center',
-		            'sorttype' => 'string'
-		        );
-		        
+		        $fnames[] = array("token", "Token", $clang->gT("Token ID"), 0);
+		        $fnames[] = array("firstname", "First name", $clang->gT("First name"), 0);
+		        $fnames[] = array("lastname", "Last name", $clang->gT("Last name"), 0);
+		        $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
 		    }
-		    
+
+		    $fnames[] = array("submitdate", $clang->gT("Completed"), $clang->gT("Completed"), "0", 'D');
+		    $fields = createFieldMap($surveyid, 'full', false, false, $language);
+
+		    $fnames[] = array("submitdate", "Completed", $clang->gT("Completed"), "0", 'D');
 		    $fields = createFieldMap($surveyid, 'full', false, false, $language);
 
 		    foreach ($fields as $fielddetails)
 		    {
 		        if ($fielddetails['fieldname']=='lastpage' || $fielddetails['fieldname'] == 'submitdate')
 		            continue;
-				
-		        $question = strlen($fielddetails['question']) > 13 ? substr($fielddetails['question'], 0, 10)."..." : $fielddetails['question'];
-                
+
+		        $question=$fielddetails['question'];
 		        if ($fielddetails['type'] != "|")
 		        {
 		            if ($fielddetails['fieldname']=='lastpage' || $fielddetails['fieldname'] == 'submitdate' || $fielddetails['fieldname'] == 'token')
-		            {
 		                continue;
-					}
-						
+
 		            // no headers for time data
-		            if ($fielddetails['type']=='interview_time' || $fielddetails['type']=='page_time' || $fielddetails['type']=='answer_time')
-					{
-						continue; 
-					}
-					   
+		            if ($fielddetails['type']=='interview_time')
+					    continue;
+		            if ($fielddetails['type']=='page_time')
+					    continue;
+				    if ($fielddetails['type']=='answer_time')
+					    continue;
 		            if (isset($fielddetails['subquestion']) && $fielddetails['subquestion']!='')
-		                $question .=' ('.( strlen($fielddetails['subquestion']) > 13 ? substr($fielddetails['subquestion'], 0, 10)."..." : $fielddetails['subquestion']).')';
-		                
+		                $question .=' ('.$fielddetails['subquestion'].')';
 		            if (isset($fielddetails['subquestion1']) && isset($fielddetails['subquestion2']))
-		                $question .=' ('.( strlen($fielddetails['subquestion1']) > 13 ? substr($fielddetails['subquestion1'], 0, 10)."..." : $fielddetails['subquestion1'])
-		                            .':'.( strlen($fielddetails['subquestion2']) > 13 ? substr($fielddetails['subquestion2'], 0, 10)."..." : $fielddetails['subquestion2']).')';
-		                
+		                $question .=' ('.$fielddetails['subquestion1'].':'.$fielddetails['subquestion2'].')';
 		            if (isset($fielddetails['scale_id']))
-		            	 $question .= '['.( strlen($fielddetails['scale']) > 13 ? substr($fielddetails['scale'], 0, 10)."..." : $fielddetails['scale']).']';
-		            
-		           // $fnames[]=array($fielddetails['fieldname'],$question);		            
-	        	   $aDataDisplayed[] = array('field' => $fielddetails['fieldname'], 'type' => 'normal');
-	               $colNames[] = $question;
-	               $colModel[] = array(
-	                   'name' => $fielddetails['fieldname'],
-	                   'index' => $fielddetails['fieldname'],
-	                   'align' => 'center',
-	                   'sorttype' => 'string',
-	                   'editable' => ($fielddetails['fieldname'] == 'id' ? false: true)
-	               );
+		            $question .='['.$fielddetails['scale'].']';
+		            $fnames[]=array($fielddetails['fieldname'],$question);
 		        }
-		        
 		        else
 		        {
 		            if ($fielddetails['aid']!=='filecount')
 		            {
-		                $qidattributes = getQuestionAttributeValues($fielddetails['qid']);
+		                $qidattributes=getQuestionAttributeValues($fielddetails['qid']);
 
-		                for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
+		                for ($i = 0; $i < $qidattributes['max_files']; $i++)
 		                {
 		                    if ($qidattributes['show_title'] == 1)
-		                    {
-		                        //$fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(Title)",     "type"=>"|", "metadata"=>"title",   "index"=>$i);
-		                        $colNames[] ="File ".($i+1)." - ".$fielddetails['question']."(Title)";
-				                $colModel[] = array(
-				                    'name' => $fielddetails['fieldname']."_title_$i",
-				                    'index' => $fielddetails['fieldname']."_title_$i",
-				                    'align' => 'center',
-		            				'sorttype' => 'string',
-		            				'editable' => true
-			                    );
-					        }
-								  
-		                    if ($qidattributes['show_comment'] == 1) 
-		                    {
-		           					//$fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(Comment)",   "type"=>"|", "metadata"=>"comment", "index"=>$i);
-						        $colNames[] = "File ".($i+1)." - ".$fielddetails['question']."(Comment)";
-				                $colModel[] = array(
-	                                'name' => $fielddetails['fieldname']."_comment_$i",
-				                    'index' => $fielddetails['fieldname']."_comment_$i",
-				                    'align' => 'center',
-		            				'sorttype' => 'string',
-		            				'editable' => true
-		                        );
-			                }
+		                        $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(Title)",     "type"=>"|", "metadata"=>"title",   "index"=>$i);
 
-		                    //$fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(File name)", "type"=>"|", "metadata"=>"name",    "index"=>$i);
-		                    $colNames[] = "File ".($i+1)." - ".$fielddetails['question']."(File name)";
-		                    $colModel[] = array(
-			                    'name' => $fielddetails['fieldname']."_name_$i",
-			                    'index' => $fielddetails['fieldname']."_name_$i",
-			                    'align' => 'center',
-		            			'sorttype' => 'string'
-			                );
-		                
-				            //$fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(File size)", "type"=>"|", "metadata"=>"size",    "index"=>$i);
-		                    $colNames[] = "File ".($i+1)." - ".$fielddetails['question']."(File size) (KB)";
-			                $colModel[] = array(
-			                    'name' => $fielddetails['fieldname']."_size_$i",
-			                    'index' => $fielddetails['fieldname']."_size_$i",
-			                    'align' => 'center',
-		            			'sorttype' => 'int'
-			                );
-			                            
-			        	    	   
+		                    if ($qidattributes['show_comment'] == 1)
+		                        $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(Comment)",   "type"=>"|", "metadata"=>"comment", "index"=>$i);
+
+		                    $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(File name)", "type"=>"|", "metadata"=>"name",    "index"=>$i);
+		                    $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(File size)", "type"=>"|", "metadata"=>"size",    "index"=>$i);
 		                    //$fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
-		                } 
-		                
-		                $aDataDisplayed[] = array(
-		                	 'field' => $fielddetails['fieldname'], 
-		                	 'type' => 'file', 
-		                	 'attr' => array(
-		                	    'title' => $qidattributes['show_title'], 
-		                	 	'comment' => $qidattributes['show_comment'],
-		                	 	'numfiles' => $qidattributes['max_num_of_files']
-		                	 )
-		                );
-		                      
 		                }
+		            }
 		            else
-		            {
-		                //$fnames[] = array($fielddetails['fieldname'], "File count");				                            
-			        	$aDataDisplayed[] = array('field' => $fielddetails['fieldname'], 'type' => 'filecount');
-		                $colNames[] = $question;
-		                $colModel[] = array(
-		                    'name' => 'File count',
-		                    'index' => $fielddetails['fieldname'],
-		                    'align' => 'center',
-		                    'sorttype' => 'int'
-		                );
+		                $fnames[] = array($fielddetails['fieldname'], "File count");
 		        }
 		    }
-		    }
 
-            // $fncount = count($fnames);
+		    $fncount = count($fnames);
 
-            $data = array(
-                'surveyID' => $surveyid,
-                'colNames' => $colNames,
-                'colModel' => $colModel
-            );
-
-            $_SESSION['browse'] = array('dataDisplayed' => $aDataDisplayed);
-            
-            $this->load->view('admin/browse/displayResponses_view', $data);
-            self::_js_admin_includes($this->config->item('adminscripts')."browse.js");        
-		    
-		    /*
 		    //NOW LETS CREATE A TABLE WITH THOSE HEADINGS
+
 		    $tableheader = "<!-- DATA TABLE -->";
 		    if ($fncount < 10) {$tableheader .= "<table class='browsetable' width='100%'>\n";}
 		    else {$tableheader .= "<table class='browsetable'>\n";}
 		    $tableheader .= "\t<thead><tr valign='top'>\n"
 		            . "<th><input type='checkbox' id='selectall'></th>\n"
 		            . "<th>".$clang->gT('Actions')."</th>\n";
-		            
 		    foreach ($fnames as $fn)
 		    {
 		        if (!isset($currentgroup))  {$currentgroup = $fn[1]; $gbc = "odd";}
@@ -866,11 +555,11 @@ class browse extends Survey_Common_Controller {
 		    $tableheader .= "\t<tfoot><tr><td colspan=".($fncount+2).">";
 		    if (bHasSurveyPermission($surveyid,'responses','delete'))
 		    {
-		        $tableheader .= "<img id='imgDeleteMarkedResponses' src='".$this->config->item("imageurl")."/token_delete.png' alt='".$clang->gT('Delete marked responses')."' />";
+		        $tableheader .= "<img id='imgDeleteMarkedResponses' src='".$this->yii->getConfig("imageurl")."/token_delete.png' alt='".$clang->gT('Delete marked responses')."' />";
 		    }
 		    if (bHasFileUploadQuestion($surveyid))
 		    {
-		        $tableheader .="<img id='imgDownloadMarkedFiles' src='".$this->config->item("imageurl")."/down_all.png' alt='".$clang->gT('Download marked files')."' />";
+		        $tableheader .="<img id='imgDownloadMarkedFiles' src='".$this->yii->getConfig("imageurl")."/down_all.png' alt='".$clang->gT('Download marked files')."' />";
 		    }
 		    $tableheader .="</td></tr></tfoot>\n\n";
 
@@ -906,11 +595,13 @@ class browse extends Survey_Common_Controller {
 		    if ($sql_where!="")
 		    {
 		        $dtquery .=" WHERE $sql_where";
-		    } 
-		    
-		    $dtresult=db_execute_assoc($dtquery) or safe_die("Couldn't get response data<br />$dtquery<br />".$connect->ErrorMsg());
-		    $dtrow=$dtresult->row_array();
-			$dtcount=reset($dtrow);
+		    }
+
+		    $dtresult = db_execute_assoc($dtquery) or safe_die("Couldn't get response data<br />$dtquery<br />".$connect->ErrorMsg());
+		    $dtrow = $dtresult->read();
+			$dtcount = reset($dtrow);
+
+		    if ($limit > $dtcount) {$limit=$dtcount;}
 
 		    //NOW LETS SHOW THE DATA
 		    if (isset($_POST['sql']))
@@ -985,7 +676,7 @@ class browse extends Survey_Common_Controller {
 		    {
 		        $dtresult = db_execute_assoc($dtquery) or safe_die("Couldn't get surveys<br />$dtquery<br />".$connect->ErrorMsg());
 		    }
-		    $dtcount2 = $dtresult->num_rows();
+		    $dtcount2 = $dtresult->count();
 		    $cells = $fncount+1;
 
 
@@ -1005,9 +696,10 @@ class browse extends Survey_Common_Controller {
 			$data['last'] = $last;
 			$data['next'] = $next;
 			$data['end'] = $end;
-			//$this->load->view("admin/browse/browseallheader_view", $data);
+			
+			$this->controller->render("/admin/browse/browseallheader_view", $data);
 
-		    foreach ($dtresult->result_array() as $dtrow)
+		    foreach ($dtresult->readAll() as $dtrow)
 		    {
 				if (!isset($bgcc)) {$bgcc="even";}
 				else
@@ -1020,9 +712,9 @@ class browse extends Survey_Common_Controller {
 				$data['surveyinfo'] = $surveyinfo;
 				$data['fncount'] = $fncount;
 				$data['fnames'] = $fnames;
-				//$this->load->view("admin/browse/browseallrow_view", $data);
+				$this->controller->render("/admin/browse/browseallrow_view", $data);
 		    }
-		    //$this->load->view("admin/browse/browseallfooter_view", $data);*/
+		    $this->controller->render("/admin/browse/browseallfooter_view", $data);
 		}
 		elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
 			$browseoutput .= $surveyoptions;
@@ -1101,7 +793,7 @@ class browse extends Survey_Common_Controller {
 		    $dtquery = "SELECT count(tid) FROM {$surveytimingstable} INNER JOIN {$surveytable} ON {$surveytimingstable}.id={$surveytable}.id WHERE submitdate IS NOT NULL ";
 
 		    $dtresult=db_execute_assoc($dtquery) or safe_die("Couldn't get response data<br />$dtquery<br />".$connect->ErrorMsg());
-		    $dtrow=$dtresult->row_array();
+		    $dtrow=$dtresult->read();
 			$dtcount=reset($dtrow);
 
 		    if ($limit > $dtcount) {$limit=$dtcount;}
@@ -1120,8 +812,7 @@ class browse extends Survey_Common_Controller {
 		{
 		        $dtresult = db_execute_assoc($dtquery) or safe_die("Couldn't get surveys<br />$dtquery<br />".$connect->ErrorMsg());
 		    }
-	echo "DFSA";
-		    $dtcount2 = $dtresult->num_rows();
+		    $dtcount2 = $dtresult->count();
 		    $cells = $fncount+1;
 
 		    //CONTROL MENUBAR
@@ -1181,7 +872,7 @@ class browse extends Survey_Common_Controller {
 
 		    $browseoutput .= $tableheader;
 
-		    foreach($dtresult->result_array() as $dtrow)
+		    foreach($dtresult->readAll() as $dtrow)
 		    {
 		        if (!isset($bgcc)) {$bgcc="evenrow";}
 		        else
@@ -1231,7 +922,7 @@ class browse extends Survey_Common_Controller {
 			$browseoutput .= '<table class="statisticssummary">';
 			if($result=db_execute_assoc($queryAvg)){
 
-				$row=$result->row_array();
+				$row=$result->read();
 				$min = (int)($row['avg']/60);
 				$sec = $row['avg']%60;
 				$count=$row['count'];
@@ -1243,7 +934,7 @@ class browse extends Survey_Common_Controller {
 				$middleval = floor(($count-1)/2);
 				$i=0;
 				if($count%2){
-					foreach($result->result_array() as $row){
+					foreach($result->readAll() as $row){
 
 						if($i==$middleval){
 							$median=$row['interviewtime'];
@@ -1252,9 +943,9 @@ class browse extends Survey_Common_Controller {
 						$i++;
 					}
 				}else{
-					foreach($result->result_array() as $row){
+					foreach($result->readAll() as $row){
 						if($i==$middleval){
-							$nextrow=$result->row_array();
+							$nextrow=$result->read();
 							$median=($row['interviewtime']+$nextrow['interviewtime'])/2;
 							break;
 						}
@@ -1283,15 +974,16 @@ class browse extends Survey_Common_Controller {
 		    $gnresult = db_execute_assoc($gnquery);
 		    $gnresult2 = db_execute_assoc($gnquery2);
 
-			$gnrow=$gnresult->row_array();
+			$gnrow=$gnresult->read();
 			$data['num_total_answers']=reset($gnrow);
-			$gnrow2=$gnresult2->row_array();
+			$gnrow2=$gnresult2->read();
 			$data['num_completed_answers']=reset($gnrow2);
-			$this->load->view("admin/browse/browseindex_view", $data);
+			$this->controller->render("/admin/browse/browseindex_view", $data);
 		}
 
 		echo $browseoutput;
-		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+		$this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->yii->lang->gT("LimeSurvey online manual"));
+
 	}
 
 
@@ -1302,10 +994,10 @@ class browse extends Survey_Common_Controller {
      * @param array $responseIds
      * @return ZipArchive
      */
-    function zipFiles($surveyid, $responseIds, $zipfilename) {
-        $surveytable = $this->db->dbprefix('survey_'.$surveyid);
+    function zipFiles($responseIds, $zipfilename) {
+        global $surveyid, $surveytable;
 
-        $tmpdir = $this->config->item('uploaddir'). "/surveys/" . $surveyid . "/files/";
+        $tmpdir = $this->yii->getConfig('uploaddir'). "/surveys/" . $surveyid . "/files/";
 
         $filelist = array();
         $fieldmap = createFieldMap($surveyid, 'full');
@@ -1323,11 +1015,12 @@ class browse extends Survey_Common_Controller {
         foreach ((array)$responseIds as $responseId)
         {
             $responseId=(int)$responseId; // sanitize the value
+
             $query = $initquery . " FROM $surveytable WHERE id=$responseId";
             $filearray = db_execute_assoc($query) or safe_die("Could not download response<br />$query<br />".$connect->ErrorMsg());
             $metadata = array();
             $filecount = 0;
-            foreach($filearray->result_array() as $metadata)
+            while ($metadata = $filearray->FetchRow())
             {
                 foreach ($metadata as $data)
                 {
@@ -1352,12 +1045,13 @@ class browse extends Survey_Common_Controller {
         }
 
         if (count($filelist)>0) {
-            $this->load->library("admin/pclzip/pclzip",array('p_zipname' => $tempdir.$zipfilename));
+        	// TODO: to extend the yii app function loadLibrary to meet the app requirements
+            $this->yii->loadLibrary("admin/pclzip/pclzip"/*,array('p_zipname' => $tempdir.$zipfilename)*/);
             $zip = new PclZip($tmpdir . $zipfilename);
             if ($zip->create($filelist)===0) {
                 //Oops something has gone wrong!
             }
-            
+
             if (file_exists($tmpdir."/".$zipfilename)) {
                 header('Content-Description: File Transfer');
                 header('Content-Type: application/octet-stream');
