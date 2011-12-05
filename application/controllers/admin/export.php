@@ -1024,10 +1024,10 @@ class export extends Survey_Common_Action {
         {
             //Export is happening
             $extension=sanitize_paranoid_string(returnglobal('extension'));
-            //header("Content-Disposition: attachment; filename=vvexport_$surveyid.".$extension);
-            //header("Content-type: text/comma-separated-values; charset=UTF-8");
-            //header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-            //header("Pragma: cache");
+            header("Content-Disposition: attachment; filename=vvexport_$surveyid.".$extension);
+            header("Content-type: text/comma-separated-values; charset=UTF-8");
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Pragma: cache");
             $s="\t";
 
             $fieldmap=createFieldMap($surveyid, "full");
