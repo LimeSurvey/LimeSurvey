@@ -104,7 +104,7 @@ class Tokens_dynamic extends CActiveRecord
 
 		return $data;
 	}
-	
+
 	public function totalRecords($iSurveyID)
     {
         $tksq = "SELECT count(tid) FROM {{tokens_{$iSurveyID}}}";
@@ -112,7 +112,7 @@ class Tokens_dynamic extends CActiveRecord
         $tkr = $tksr->read();
         return $tkr["count(tid)"];
 }
-	
+
 	public function ctquery($iSurveyID,$SQLemailstatuscondition,$tokenid=false,$tokenids=false)
     {
         $ctquery = "SELECT * FROM {{tokens_{$iSurveyID}}} WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
@@ -132,10 +132,11 @@ class Tokens_dynamic extends CActiveRecord
         Yii::app()->loadHelper("database");
         return db_select_limit_assoc($emquery,$maxemails);
     }
-	
-	function insertToken($iSurveyID,$data)
+
+    function insertToken($iSurveyID, $data)
     {
-        return Yii::app()->db->createCommand()->insert("{{tokens_".$iSurveyID.'}}', $data)->query();
+		self::sid($iSurveyID);
+		return Yii::app()->db->createCommand()->insert(self::tableName(), $data);
     }
 }
 ?>

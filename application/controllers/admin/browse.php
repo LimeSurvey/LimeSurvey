@@ -23,10 +23,10 @@
  * @subpackage	Backend
  */
 class browse extends Survey_Common_Action {
-	
+
 	private $yii;
 	private $controller;
-	
+
 	public function run()
 	{
 		$this->yii = Yii::app();
@@ -53,11 +53,11 @@ class browse extends Survey_Common_Action {
 		// Some test in response table
 		if (!isset($surveyid) && !isset($subaction)) //NO SID OR ACTION PROVIDED
 		{
-		    show_error("\t<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>"
+		    die("\t<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>"
 		            . $clang->gT("Browse Responses")."</div><div class='warningheader'>"
 		            . $clang->gT("Error")."\t</div>\n"
 		            . $clang->gT("You have not selected a survey to browse.")."<br />\n"
-		            ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
+		            ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('".$this->getController()->createUrl("/admin")."', '_top')\" /><br />\n"
 		            ."</div>");
 		    return;
 		}
@@ -251,7 +251,7 @@ class browse extends Survey_Common_Action {
 			if (isset($rlanguage)) {$data['rlanguage'] = $rlanguage;}
 			$data['next'] = $next;
 			$data['last'] = $last;
-			
+
 			$this->controller->render("/admin/browse/browseidheader_view", $data);
 
 		    $idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />$idquery<br />".$connect->ErrorMsg());
@@ -696,7 +696,7 @@ class browse extends Survey_Common_Action {
 			$data['last'] = $last;
 			$data['next'] = $next;
 			$data['end'] = $end;
-			
+
 			$this->controller->render("/admin/browse/browseallheader_view", $data);
 
 		    foreach ($dtresult->readAll() as $dtrow)

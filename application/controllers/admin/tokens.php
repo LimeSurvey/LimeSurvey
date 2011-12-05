@@ -46,6 +46,8 @@ class tokens extends Survey_Common_Action
 			$this->route('import', array('surveyid'));
 		elseif ($sa == 'importldap')
 			$this->route('importldap', array('surveyid'));
+		elseif ($sa == 'adddummys')
+			$this->route('adddummys', array('surveyid', 'subaction'));
 	}
 
 	/**
@@ -627,34 +629,34 @@ class tokens extends Survey_Common_Action
 	/**
 	 * Add dummy tokens form
 	 */
-	function adddummys($surveyid)
+	function adddummys($surveyid, $subaction = '')
 	{
 		$surveyid = sanitize_int($surveyid);
-		$clang=$this->limesurvey_lang;
+		$clang = $this->getController()->lang;
 		if(!bHasSurveyPermission($surveyid, 'tokens','create'))
 		{
-			show_error("no permissions"); // TODO Replace
+			die("No permissions."); // TODO Replace
 		}
 
-		if ($this->input->post("subaction"))
+		$this->getController()->loadHelper("surveytranslator");
+
+		if (!empty($subaction) && $subaction == 'add')
 		{
-			$this->load->model("tokens_dynamic_model");
-			$_POST=$this->input->post();
+			$this->getController()->loadLibrary('Date_Time_Converter');
+			$dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+
 		    //Fix up dates and match to database format
 		    if (trim($_POST['validfrom'])=='') {
-		        $_POST['validfrom']=null;
-		    }
-
-		    else
-		    {
-		        $datetimeobj = new Date_Time_Converter(trim($_POST['validfrom']), $dateformatdetails['phpdate'].' H:i');
-		        $_POST['validfrom'] =$datetimeobj->convert('Y-m-d H:i:s');
+		        $_POST['validfrom'] = null;
+		    } else {
+				$datetimeobj = new Date_Time_Converter(array(trim($_POST['validfrom']), $dateformatdetails['phpdate'].' H:i'));
+		        $_POST['validfrom'] = $datetimeobj->convert('Y-m-d H:i:s');
 		    }
 		    if (trim($_POST['validuntil'])=='') {$_POST['validuntil']=null;}
 		    else
 		    {
-		        $datetimeobj = new Date_Time_Converter(trim($_POST['validuntil']), $dateformatdetails['phpdate'].' H:i');
-		        $_POST['validuntil'] =$datetimeobj->convert('Y-m-d H:i:s');
+				$datetimeobj = new Date_Time_Converter(array(trim($_POST['validuntil']), $dateformatdetails['phpdate'].' H:i'));
+		        $_POST['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
 		    }
 
 		    $santitizedtoken='';
@@ -668,7 +670,7 @@ class tokens extends Survey_Common_Action
 			'emailstatus' => 'OK',
 			'token' => $santitizedtoken,
 			'language' => sanitize_languagecode($_POST['language']),
-		        'sent' => 'N',
+		    'sent' => 'N',
 			'remindersent' => 'N',
 			'completed' => 'N',
 			'usesleft' => $_POST['usesleft'],
@@ -676,10 +678,10 @@ class tokens extends Survey_Common_Action
 			'validuntil' => $_POST['validuntil']);
 
 		    // add attributes
-		    $attrfieldnames=GetAttributeFieldnames($surveyid);
+		    $attrfieldnames = GetAttributeFieldnames($surveyid);
 		    foreach ($attrfieldnames as $attr_name)
 		    {
-		        $data[$attr_name]=$_POST[$attr_name];
+		        $data[$attr_name] = $_POST[$attr_name];
 		    }
 		    //$tblInsert=db_table_name('tokens_'.$surveyid);
 		    $amount = sanitize_int($_POST['amount']);
@@ -687,9 +689,9 @@ class tokens extends Survey_Common_Action
 
 		    for ($i=0; $i<$amount;$i++){
 		    	$dataToInsert = $data;
-		        $dataToInsert['firstname'] = str_replace('{TOKEN_COUNTER}',"$i",$dataToInsert['firstname']);
-		        $dataToInsert['lastname'] = str_replace('{TOKEN_COUNTER}',"$i",$dataToInsert['lastname']);
-		        $dataToInsert['email'] = str_replace('{TOKEN_COUNTER}',"$i",$dataToInsert['email']);
+		        $dataToInsert['firstname'] = str_replace('{TOKEN_COUNTER}', $i, $dataToInsert['firstname']);
+		        $dataToInsert['lastname'] = str_replace('{TOKEN_COUNTER}', $i, $dataToInsert['lastname']);
+		        $dataToInsert['email'] = str_replace('{TOKEN_COUNTER}', $i, $dataToInsert['email']);
 
 		        $isvalidtoken = false;
 		        while ($isvalidtoken == false)
@@ -700,46 +702,37 @@ class tokens extends Survey_Common_Action
 		                $existingtokens[$newtoken]=null;
 		            }
 		        }
+
 		        $dataToInsert['token'] = $newtoken;
-		        //$tblInsert=db_table_name('tokens_'.$surveyid);
-		        //$inresult = $connect->AutoExecute($tblInsert, $dataToInsert, 'INSERT') or safe_die ("Add new record failed:<br />\n$inquery<br />\n".$connect->ErrorMsg());
-				$inresult = $this->tokens_dynamic_model->insertToken($surveyid,$dataToInsert);
+				Tokens_dynamic::insertToken($surveyid, $dataToInsert);
 		    }
 
-			self::_getAdminHeader();
-			self::_showMessageBox($clang->gT("Success"),
+			$this->getController()->_getAdminHeader();
+			$this->getController()->_showMessageBox($clang->gT("Success"),
 					$clang->gT("New dummy tokens were added.")."<br /><br />\n<input type='button' value='"
-					.$clang->gT("Display tokens")."' onclick=\"window.open('".site_url("admin/tokens/browse/$surveyid")."', '_top')\" />\n");
-			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+					.$clang->gT("Display tokens")."' onclick=\"window.open('".$this->getController()->createUrl("admin/tokens/sa/browse/surveyid/$surveyid")."', '_top')\" />\n");
+			$this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
 
 		} else {
-			$this->load->model("tokens_dynamic_model");
-			$tkcount=$this->tokens_dynamic_model->totalRecords($surveyid);
-			$this->load->helper("surveytranslator");
-		    //get token length from survey settings
-			$this->load->model("surveys_model");
-			$query = $this->surveys_model->getSomeRecords(array("tokenlength"),array("sid"=>$surveyid));
-			$row = $query->row_array();
-			$tokenlength = $row['tokenlength'];
+			$tkcount = Tokens_dynamic::totalRecords($surveyid);
+			$tokenlength = Yii::app()->db->createCommand()->select('tokenlength')->from('{{surveys}}')->where('sid='.$surveyid)->query()->readColumn(0);
 
-		    //if tokenlength is not set or there are other problems use the default value (15)
-		    if(!isset($tokenlength) || $tokenlength == '')
-		    {
+		    if(empty($tokenlength)) {
 		        $tokenlength = 15;
 		    }
 
-			$data['clang']=$clang;
-			$thissurvey=getSurveyInfo($surveyid);
-			$data['thissurvey']=$thissurvey;
-			$data['imageurl'] = $this->config->item('imageurl');
-			$data['surveyid']=$surveyid;
-			$data['tokenlength']=$tokenlength;
-			$data['dateformatdetails']=getDateFormatData($this->session->userdata('dateformat'));
+			$data['clang'] = $clang;
+			$thissurvey = getSurveyInfo($surveyid);
+			$data['thissurvey'] = $thissurvey;
+			$data['imageurl'] = Yii::app()->getConfig('imageurl');
+			$data['surveyid'] = $surveyid;
+			$data['tokenlength'] = $tokenlength;
+			$data['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
 
-			self::_getAdminHeader();
-			$this->load->view("admin/token/tokenbar",$data);
-			$this->load->view("admin/token/dummytokenform",$data);
-			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+			$this->getController()->_getAdminHeader();
+			$this->getController()->render("/admin/token/tokenbar",$data);
+			$this->getController()->render("/admin/token/dummytokenform",$data);
+			$this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
 		}
 	}
 
