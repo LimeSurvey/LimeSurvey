@@ -26,7 +26,7 @@
 	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/blank.gif' alt='' width='11' />
 	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/seperator.gif' alt='' />
 
-	    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/user/sa/editusers");?>', '_top')" title="<?php $clang->eTview("Create/Edit Users");?>" >
+	    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/user/editusers");?>', '_top')" title="<?php $clang->eTview("Create/Edit Users");?>" >
 	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/security.png' name='AdminSecurity' alt='<?php $clang->eT("Create/Edit Users");?>' width='40' height='40'/></a>
 
 	    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/usergroups/view");?>', '_top')" title="<?php $clang->eTview("Create/Edit Groups");?>" >

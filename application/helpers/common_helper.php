@@ -2946,9 +2946,7 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
 */
 function setuserrights($uid, $rights)
 {
-    $CI =& get_instance();
     $uid=sanitize_int($uid);
-    $CI->load->helper("database");
     $updates = "create_survey=".$rights['create_survey']
     . ", create_user=".$rights['create_user']
     . ", participant_panel=".$rights['participant_panel']
@@ -2957,7 +2955,7 @@ function setuserrights($uid, $rights)
     . ", configurator=".$rights['configurator']
     . ", manage_template=".$rights['manage_template']
     . ", manage_label=".$rights['manage_label'];
-    $uquery = "UPDATE ".$CI->db->dbprefix('users')." SET ".$updates." WHERE uid = ".$uid;
+    $uquery = "UPDATE {{users}} SET ".$updates." WHERE uid = ".$uid;
     return db_select_limit_assoc($uquery);     //Checked
 }
 

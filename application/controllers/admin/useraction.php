@@ -147,13 +147,8 @@ class UserAction extends Survey_Common_Action {
 		if($uresult)
 		{
 			// add default template to template rights for user
-		    $newqid = $this->db->insert_id();
-		    $post=new Templates;
-				$post->uid = $newqid;
-				$post->folder = 'default';
-				$post->use = '1';
-				$post->save();
-				//$this->template_model->insert(array('uid' => $newqid, 'folder' => 'default', 'use' => '1'));
+		    $newqid = Yii::app()->db->getLastInsertID();
+			Templates_rights::model()->insertRecords(array('uid' => $newqid, 'folder' => 'default', 'use' => '1'));
 
 		    // add new user to userlist
 				$sresult = User::model()->getAllRecords(array('uid' => $newqid));
@@ -184,7 +179,7 @@ class UserAction extends Survey_Common_Action {
 		        }
 		    }
 
-		    $body .= "<a href='".$this->createUrl("admin/")."'>".$clang->gT("Click here to log in.")."</a><br /><br />\n";
+		    $body .= "<a href='".$this->getController()->createUrl("admin/")."'>".$clang->gT("Click here to log in.")."</a><br /><br />\n";
 		    $body .=  sprintf($clang->gT('If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!'),Yii::app()->getConfig("siteadminemail"))."<br />\n";
 
 		    $subject = sprintf($clang->gT("User registration at '%s'","unescaped"),Yii::app()->getConfig("sitename"));
@@ -203,7 +198,7 @@ class UserAction extends Survey_Common_Action {
 		        $addsummary .= "<br />".str_replace("{EMAIL}", $new_email, $tmp) . "<br />";
 		    }
 
-		    $addsummary .= "<br />\t\t\t<form method='post' action='".$this->createUrl("admin/user/setuserrights")."'>"
+		    $addsummary .= "<br />\t\t\t<form method='post' action='".$this->getController()->createUrl("admin/user/setuserrights")."'>"
 		    ."<input type='submit' value='".$clang->gT("Set user permissions")."'>"
 		    ."<input type='hidden' name='action' value='setuserrights'>"
 		    ."<input type='hidden' name='user' value='{$new_user}'>"
@@ -263,7 +258,7 @@ class UserAction extends Survey_Common_Action {
 		        if(count($result) == 2) {
 
 				$action = "finaldeluser";
-				foreach($result->read() as $rows){
+				foreach($result as $rows){
 				    $intUid = $rows['uid'];
 				    $selected = '';
 				    if ($intUid == $current_user)
@@ -283,19 +278,18 @@ class UserAction extends Survey_Common_Action {
 		        {
 				if (isset($_POST['transfer_surveys_to'])) {$transfer_surveys_to=sanitize_int($_POST['transfer_surveys_to']);}
 				if ($transfer_surveys_to > 0){
-					$model=Survey::model()->updateByPk(array('owner_id'=>$postuserid), array('owner_id'=>$transfer_surveys_to));
-					$result = $model->save();
+					$model=Survey::model()->updateByPk($postuserid, array('owner_id'=>$transfer_surveys_to));
+					$result = $model;
 				}
-				$sresult = User::model()->getSomeRecords(array('parent_id'), array('uid'=>$postuserid));
-				$fields = $sresult->read();
-
-				if (isset($fields[0]))
+				$sresult = User::model()->getSomeRecords('parent_id', array('uid'=>$postuserid));
+				$fields = $sresult;
+				if (isset($fields['parent_id']))
 				{
-							$uresult = User::model()->parent_update(array('parent_id='=>$postuserid), array('parent_id='=>$fields[0]));
+							$uresult = User::model()->updateByPk(array('parent_id='=>$postuserid), array('parent_id='=>$fields['parent_id']));
 				}
 
 				//DELETE USER FROM TABLE
-						$dresult=User::model()->delete(array('uid'=>$postuserid));
+						$dresult=User::model()->delete('uid=' . $postuserid);
 
 				// Delete user rights
 						$dresult=Survey_permissions::model()->deleteSomeRecords(array('uid'=>$postuserid));
@@ -305,10 +299,12 @@ class UserAction extends Survey_Common_Action {
 				$addsummary = "<br />".$clang->gT("Username").": {$postuser}<br /><br />\n";
 				$addsummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
 				if ($transfer_surveys_to>0){
-				    $sTransferred_to = $this->getController()->_getUserNameFromUid($transfer_surveys_to);
+					$user = User::model()->findByPk($transfer_surveys_to);
+					$sTransferred_to = $user->users_name;
+				    //$sTransferred_to = $this->getController()->_getUserNameFromUid($transfer_surveys_to);
 				    $addsummary .= sprintf($clang->gT("All of the user's surveys were transferred to %s."),$sTransferred_to);
 				}
-				$addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->createUrl('admin/user/editusers')."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+				$addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/user/editusers')."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 				$this->getController()->_showMessageBox("",$addsummary);
 		        }
 		        else
@@ -363,7 +359,7 @@ class UserAction extends Survey_Common_Action {
         if (isset($postuserid) && $postuserid)
         {
 			$sresult = User::model()->getSomeRecords(array('uid'),array('uid'=>$postuserid, 'parent_id'=>Yii::app()->session['loginID']));
-		$sresultcount = $sresult->num_rows();
+		$sresultcount = count($sresult);
         }
         else
         {
@@ -377,16 +373,16 @@ class UserAction extends Survey_Common_Action {
         $sresultcount > 0
         ) )
         {
-			$sresult = User::model()->parentAndUser();
+			$sresult = User::model()->parentAndUser($postuserid);
 			$data['mur'] = $sresult;
-			
+			//the two lines below were commented by someone before me :) don't know why they were their :)
            // $muq = "SELECT a.users_name, a.full_name, a.email, a.uid, b.users_name AS parent FROM ".$this->db->dbprefix('users')." AS a LEFT JOIN ".$this->db->dbprefix('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$postuserid}'";	//	added by Dennis
            // $data['mur'] = db_select_limit_assoc($muq, 1);
 
 		$data['clang']=Yii::app()->lang;
 		    $this->getController()->_getAdminHeader();
 		    $this->getController()->_showadminmenu();
-		$this->getController->render("admin/user/modifyuser",$data);
+		$this->getController()->render("/admin/user/modifyuser",$data);
 		$this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
         }
         else
@@ -395,13 +391,69 @@ class UserAction extends Survey_Common_Action {
         }
     }
 
+    	function escape($str)
+	{
+		if (is_string($str))
+		{
+			$str = "'".$this->escape_str($str)."'";
+		}
+		elseif (is_bool($str))
+		{
+			$str = ($str === FALSE) ? 0 : 1;
+		}
+		elseif (is_null($str))
+		{
+			$str = 'NULL';
+		}
+
+		return $str;
+	}
+	function escape_str($str, $like = FALSE)
+	{
+		if (is_array($str))
+		{
+			foreach ($str as $key => $val)
+			{
+				$str[$key] = $this->escape_str($val, $like);
+			}
+
+			return $str;
+		}
+
+		// Escape single quotes
+		$str = str_replace("'", "''", $this->remove_invisible_characters($str));
+
+		return $str;
+	}
+	function remove_invisible_characters($str, $url_encoded = TRUE)
+	{
+		$non_displayables = array();
+
+		// every control character except newline (dec 10)
+		// carriage return (dec 13), and horizontal tab (dec 09)
+
+		if ($url_encoded)
+		{
+			$non_displayables[] = '/%0[0-8bcef]/';	// url encoded 00-08, 11, 12, 14, 15
+			$non_displayables[] = '/%1[0-9a-f]/';	// url encoded 16-31
+		}
+
+		$non_displayables[] = '/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]+/S';	// 00-08, 11, 12, 14-31, 127
+
+		do
+		{
+			$str = preg_replace($non_displayables, '', $str, -1, $count);
+		}
+		while ($count);
+
+		return $str;
+	}
     /**
     * Modify User POST
     */
     function moduser()
     {
         $clang=Yii::app()->lang;
-        $_POST = $this->input->post();
         $postuser = $this->_post("user");
         $postemail = $this->_post("email");
         $postuserid = $this->_post("uid");
@@ -435,9 +487,9 @@ class UserAction extends Survey_Common_Action {
 		    $failed = false;
 		    if(empty($sPassword))
 		    {
-					$uresult = User::model()->update($postuserid, array('email'=>$this->db->escape($email), 'full_name'=>$this->db->escape($full_name)));
+					$uresult = User::model()->updateByPk($postuserid, array('email'=>$this->escape($email), 'full_name'=>$this->escape($full_name)));
 		    } else {
-					$uresult = User::model()->update($postuserid, array('email'=>$this->db->escape($email), 'full_name'=>$this->db->escape($full_name), 'password' => hash('sha256',$sPassword)));
+					$uresult = User::model()->updateByPk($postuserid, array('email'=>$email, 'full_name'=>$full_name, 'password' => hash('sha256',$sPassword)));
 		    }
 
 		    if($uresult && empty($sPassword))
@@ -446,8 +498,8 @@ class UserAction extends Survey_Common_Action {
 		        $addsummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
 		    } elseif($uresult && !empty($sPassword))
 		    {
-		        if ($sPassword != 'password' ) $this->session->set_userdata('pw_notify',false);
-		        if ($sPassword == 'password' ) $this->session->set_userdata('pw_notify',true);
+		        if ($sPassword != 'password' ) Yii::app()->session['pw_notify'] = FALSE;
+		        if ($sPassword == 'password' ) Yii::app()->session['pw_notify'] = TRUE;
 
 		        if ($display_user_password_in_html === true)
 		        {
@@ -469,14 +521,14 @@ class UserAction extends Survey_Common_Action {
 		}
 		if($failed)
 		{
-		    $addsummary .= "<br /><form method='post' action='".$this->createUrl('admin/user/modifyuser')."'>"
+		    $addsummary .= "<br /><form method='post' action='".$this->getController()->createUrl('admin/user/modifyuser')."'>"
 		    ."<input type='submit' value='".$clang->gT("Back")."'>"
 		    ."<input type='hidden' name='uid' value='{$postuserid}'>"
 		    ."</form>";
 		}
 		else
 		{
-		    $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->createUrl('admin/user/editusers')."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+		    $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/user/editusers')."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 		}
         }
         else
@@ -502,8 +554,6 @@ class UserAction extends Survey_Common_Action {
     	}
     function setuserrights()
     {    
-		//print_r(Yii::app()->tablePrefix);
-
         $data['clang'] = Yii::app()->lang;
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl.'scripts/admin/users.js');
         $postuser = $this->_post('user');
@@ -551,7 +601,7 @@ class UserAction extends Survey_Common_Action {
         if($postuserid != Yii::app()->session['loginID'])
         {
 			$sresult = User::model()->getSomeRecords(array('uid'),array('uid'=>$postuserid, 'parent_id'=>Yii::app()->session['loginID']));
-		$sresultcount = $sresult->num_rows();
+		$sresultcount = count($sresult);
 
 		if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1 && $sresultcount > 0)
 		{ // Not Admin, just a user with childs
@@ -581,9 +631,8 @@ class UserAction extends Survey_Common_Action {
 		    {
 		        // Am I original Superadmin ?
 		        // Initial SuperAdmin has parent_id == 0
-					$adminresult = User::model()->getSomeRecords(array('uid'),array('parent_id'=>0));
-		        $row=$adminresult->row();
-
+					$adminresult = User::model()->getuidfromparentid('0');
+		        $row=$adminresult;
 		        if($row['uid'] == Yii::app()->session['loginID'])	// it's the original superadmin !!!
 		        {
 				$rights['superadmin']=1;
@@ -608,7 +657,7 @@ class UserAction extends Survey_Common_Action {
 
 		    setuserrights($postuserid, $rights);
 		    $addsummary .= "<div class=\"successheader\">".$clang->gT("User permissions were updated successfully.")."</div>\n";
-		    $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->createUrl('admin/user/editusers')."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+		    $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/user/editusers')."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 		}
 		else
 		{

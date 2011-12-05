@@ -85,7 +85,17 @@ class User extends CActiveRecord
 
         return $data;
     }
-	
+	function parentAndUser($postuserid)
+	{
+		$user = Yii::app()->db->createCommand()
+    ->select('a.users_name, a.full_name, a.email, a.uid,  b.users_name AS parent')
+    ->limit(1)
+    ->where('a.uid = ' . $postuserid)
+    ->from("{{users}} a")
+    ->leftJoin('{{users}} AS b', 'a.parent_id = b.uid')
+    ->queryRow();
+		return $user;
+	}
 	/**
 	 * Returns users meeting given condition
 	 *
@@ -147,13 +157,16 @@ class User extends CActiveRecord
 	 */
     public function insert($new_user, $new_pass,$new_full_name,$parent_user,$new_email)
     {
-        $this->load->library('admin/sha256','sha256');
-        $data=array($new_user, $this->sha256->hashing($new_pass),$new_full_name,$parent_user,$new_email);
-        $uquery = "INSERT INTO ".$this->db->dbprefix("users")." (users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,superadmin,configurator,manage_template,manage_label)
-        VALUES (?, ?, ?, ?, 'auto', ?,0,0,0,0,0,0,0)";
-        return $this->db->query($uquery,$data);
+    	   	$tablename = $this->tableName();
+    	 $data=array('users_name' => $new_user, 'password' => hash('sha256', $new_pass),'full_name' => $new_full_name,'parent_id' => $parent_user,'lang' => 'auto','email' => $new_email); 	
+		return Yii::app()->db->createCommand()->insert('{{users}}', $data);
     }
-	
+	    function delete($where)
+    {
+     $dd = Yii::app()->db->createCommand()->from('{{users}}')->delete('{{users}}', $where);
+        //$this->db->where($where);
+        return (bool) $dd;//$this->db->delete('users');
+    }
 	/**
 	 * Updates user
 	 *
@@ -204,7 +217,10 @@ class User extends CActiveRecord
     {
         return Yii::app()->db->createCommand()->select('full_name')->from('{{users}}')->where("uid = $userid")->queryAll();
     }
-		
+	 public function getuidfromparentid($parentid)
+    {
+        return Yii::app()->db->createCommand()->select('uid')->from('{{users}}')->where('parent_id=' . $parentid)->queryRow();
+    }	
 	/**
 	 * Returns id of user
 	 *
