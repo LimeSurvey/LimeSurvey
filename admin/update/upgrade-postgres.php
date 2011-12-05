@@ -423,7 +423,7 @@ function db_upgrade($oldversion) {
     }
     if ($oldversion < 154)
     {
-        modify_database("","ALTER TABLE prefix_groups ADD relevance text;"); echo $modifyoutput; flush();@ob_flush();
+        modify_database("","ALTER TABLE prefix_groups ADD grelevance text;"); echo $modifyoutput; flush();@ob_flush();
         modify_database("", "UPDATE prefix_settings_global SET stg_value='154' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
     }
 

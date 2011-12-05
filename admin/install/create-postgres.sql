@@ -96,7 +96,7 @@ CREATE TABLE prefix_groups (
     description text,
     "language" character varying(20) DEFAULT 'en'::character varying NOT NULL,
     randomization_group varying(20) DEFAULT ''::character varying NOT NULL,
-    relevance text,
+    grelevance text,
     CONSTRAINT prefix_groups_pkey PRIMARY KEY (gid, "language")
 );
 

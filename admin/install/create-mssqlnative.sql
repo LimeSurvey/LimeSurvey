@@ -95,7 +95,7 @@ CREATE TABLE [prefix_groups] (
   [description] varchar(max),
   [language] VARCHAR(20) default 'en',
   [randomization_group] VARCHAR(20) NOT NULL default '',
-  [relevance] varchar(max),
+  [grelevance] varchar(max),
   PRIMARY KEY  ([gid],[language])
 )
 ;
