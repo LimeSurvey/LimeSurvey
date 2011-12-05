@@ -4979,7 +4979,6 @@ function createPassword()
 
 function languageDropdown($surveyid,$selected)
 {
-    $CI = &get_instance();
     $homeurl = Yii::app()->getConfig('homeurl');
     $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -4988,7 +4987,7 @@ function languageDropdown($surveyid,$selected)
 
     foreach ($slangs as $lang)
     {
-        $link = site_url("admin/dataentry/view/".$surveyid."/".$lang);
+        $link = $homeurl."/admin/dataentry/view/".$surveyid."/".$lang;
         if ($lang == $selected) $html .= "\t<option value='{$link}' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
         if ($lang != $selected) $html .= "\t<option value='{$link}'>".getLanguageNameFromCode($lang,false)."</option>\n";
     }

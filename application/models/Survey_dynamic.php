@@ -16,7 +16,7 @@
 
 class Survey_dynamic extends CActiveRecord
 {
-	protected $sid = 0;
+	protected static $sid = 0;
 
 	/**
 	 * Returns the static model of Settings table
@@ -32,6 +32,19 @@ class Survey_dynamic extends CActiveRecord
 		$instance->sid = $sid;
 		return $instance;
 	}
+	
+	/**
+	 * Sets the survey ID for the next model
+	 *
+	 * @static
+	 * @access public
+	 * @param int $sid
+	 * @return void
+	 */
+	public static function sid($sid)
+	{
+		self::$sid = (int) $sid;
+	}
 
 	/**
 	 * Returns the setting's table name to be used by the model
@@ -41,7 +54,7 @@ class Survey_dynamic extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{survey_' . $this->sid . '}}';
+		return '{{survey_' . self::$sid . '}}';
 	}
 
 	/**
@@ -53,6 +66,14 @@ class Survey_dynamic extends CActiveRecord
 	public function primaryKey()
 	{
 		return 'sid';
+	}
+	
+	function insertRecords($data)
+    {
+        $record = new self;
+		foreach ($data as $k => $v)
+			$record->$k = $v;
+		return $record->save();
 	}
 }
 ?>

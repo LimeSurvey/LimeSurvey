@@ -132,5 +132,10 @@ class Tokens_dynamic extends CActiveRecord
         Yii::app()->loadHelper("database");
         return db_select_limit_assoc($emquery,$maxemails);
     }
+	
+	function insertToken($iSurveyID,$data)
+    {
+        return Yii::app()->db->createCommand()->insert("{{tokens_".$iSurveyID.'}}', $data)->query();
+    }
 }
 ?>

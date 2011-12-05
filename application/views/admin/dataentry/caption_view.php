@@ -1,6 +1,6 @@
 <div class='header ui-widget-header'><?php echo $clang->gT("Data entry"); ?></div>
     
-            <form action='<?php echo site_url('admin/dataentry/insert'); ?>' enctype='multipart/form-data' name='addsurvey' method='post' id='addsurvey'>
+            <form action='<?php echo $this->createUrl('admin/dataentry/sa/insert'); ?>' enctype='multipart/form-data' name='addsurvey' method='post' id='addsurvey'>
             <table class='data-entry-tbl' cellspacing='0'>
             <tr>
             <td colspan='3' align='center'>
@@ -53,7 +53,7 @@
         
             if ($thissurvey['datestamp'] == "Y") //Give datestampentry field
             { 
-                $localtimedate=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $this->config->item('timeadjust')); ?> 
+                $localtimedate=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')); ?> 
                 <tr>
                 <td valign='top' width='1%'></td>
                 <td valign='top' align='right' width='30%'><strong>

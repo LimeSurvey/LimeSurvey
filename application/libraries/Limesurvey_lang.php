@@ -26,7 +26,6 @@
 
 class Limesurvey_lang {
 
-    var $CI;
     var $gettextclass;
     var $langcode;
 

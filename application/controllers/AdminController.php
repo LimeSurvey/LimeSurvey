@@ -132,8 +132,8 @@ class AdminController extends LSYii_Controller
 			'user' => 'application.controllers.admin.useraction',
 			'participants' => 'application.controllers.admin.participantsaction',
 			'translate' => 'application.controllers.admin.translate',
+			'saved' => 'application.controllers.admin.saved',
 			'dataentry' => 'application.controllers.admin.dataentry',
-			'saved' => 'application.controllers.admin.saved'
 		);
 	}
 

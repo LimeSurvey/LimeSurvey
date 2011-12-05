@@ -3,7 +3,7 @@
 function &db_execute_assoc($sql,$inputarr=false,$silent=false)
 {
     //$connect->SetFetchMode(ADODB_FETCH_ASSOC);
-	/*try {*/
+	try {
 		if($inputarr)
 		{
 				$dataset=Yii::app()->db->createCommand($sql)->bindValues($inputarr)->query();	//Checked
@@ -13,11 +13,11 @@ function &db_execute_assoc($sql,$inputarr=false,$silent=false)
 				$dataset=Yii::app()->db->createCommand($sql)->query();
 	
 		}
-	/*} catch(CDbException $e) {
+	} catch(CDbException $e) {
 		$dataset=false;
-	}*/
+	}
 
-    //if (!$silent && !$dataset)  { safe_die('Error executing query in db_execute_assoc:'.$sql); }
+    if (!$silent && !$dataset)  { safe_die('Error executing query in db_execute_assoc:'.$sql); }
     return $dataset;
 }
 

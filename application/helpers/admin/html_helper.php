@@ -160,14 +160,7 @@ function browsemenubar($title='', $surveyid=null, $load=false, $controller = fal
     {
         
         $data['display'] = $browsemenubar;
-		if (!$controller)
-		{
-			$this->getController()->render('/survey_view',$data);
-		}
-		else
-		{
-			$controller->render('/survey_view', $data);
-		}
+		Yii::app()->getController()->render('/survey_view',$data);
     }
     else
     {

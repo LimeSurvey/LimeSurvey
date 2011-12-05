@@ -1883,8 +1883,8 @@ class LimeExpressionManager {
 //        log_message('debug','**ERRORS**' . print_r($LEM->syntaxErrors,true));
         if (count($LEM->syntaxErrors) > 0)
         {
-            $CI =& get_instance();
-            $CI->db->insert_batch('expression_errors',$LEM->syntaxErrors);
+            foreach ($LEM->syntaxErrors as $errors)
+                Yii::app()->db->createCommand()->insert('{{expression_errors}}',$errors);
         }
         $LEM->initialized=false;    // so detect calls after done
     }
@@ -1928,7 +1928,7 @@ class LimeExpressionManager {
 
         $jsParts=array();
         $allJsVarsUsed=array();
-        $jsParts[] = '<script type="text/javascript" src="' . base_url() . '/scripts/admin/expressions/em_javascript.js"></script>';
+        $jsParts[] = '<script type="text/javascript" src="' . Yii::app()->baseUrl . '/scripts/admin/expressions/em_javascript.js"></script>';
         $jsParts[] = "<script type='text/javascript'>\n<!--\n";
         $jsParts[] = "function ExprMgr_process_relevance_and_tailoring(evt_type){\n";
         $jsParts[] = "if (typeof LEM_initialized == 'undefined') {\nLEM_initialized=true;\nLEMsetTabIndexes();\nreturn;\n}\n";
