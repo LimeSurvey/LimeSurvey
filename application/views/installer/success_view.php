@@ -1,15 +1,8 @@
-<?php
-$clang = &get_instance()->limesurvey_lang;
-$this->load->view("installer/header_view",array('progressValue' => $progressValue));
-?>
+<?php $this->render("/installer/header_view", compact('progressValue', 'clang')); ?>
 
 <div class="container_6">
 
-<?php $this->load->view('installer/sidebar_view', array(
-       'progressValue' => $progressValue,
-       'classesForStep' => $classesForStep
-    ));
-?>
+<?php $this->render('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
 
 <div class="grid_4 table">
 
@@ -20,7 +13,7 @@ $this->load->view("installer/header_view",array('progressValue' => $progressValu
 <p>&nbsp;<?php echo $descp; ?></p>
 <hr />
 
-<?php if (isset($error) && $error) { ?>
+<?php if (!empty($error)) { ?>
 <font color="red">
 <?php echo $clang->gT("LimeSurvey tried to delete the following file but couldn't succeed. You will have to remove the file or else you will not be able to log in."); ?><br />
 </font><br />
@@ -44,7 +37,7 @@ $this->load->view("installer/header_view",array('progressValue' => $progressValu
  <tbody>
   <tr>
    <td align="left" style="width: 227px;"></td>
-   <td align="right" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="submit" value="Administration" onclick="javascript: window.open('<?php echo site_url("admin/"); ?>', '_top')" />
+   <td align="right" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="submit" value="Administration" onclick="javascript: window.open('<?php echo $this->createUrl("/admin"); ?>', '_top')" />
     <div id="next" style="font-size:11px;"></div>
    </td>
   </tr>
@@ -52,4 +45,4 @@ $this->load->view("installer/header_view",array('progressValue' => $progressValu
 </table>
 </div>
 </div>
-<?php $this->load->view("installer/footer_view"); ?>
+<?php $this->render("/installer/footer_view"); ?>

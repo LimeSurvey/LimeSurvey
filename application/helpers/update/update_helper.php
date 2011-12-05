@@ -20,14 +20,13 @@
  */
 function CheckForDBUpgrades($subaction = null)
 {
-    global $connect;
-    $CI =& get_instance();
-	$clang = $CI->limesurvey_lang;
-	$dbversionnumber = $CI->config->item('dbversionnumber');
+    $connect = Yii::app()->db;
+	$clang = Yii::app()->getController()->lang;
+	$dbversionnumber = Yii::app()->getConfig('dbversionnumber');
     $currentDBVersion=GetGlobalSetting('DBVersion');
-	$dbprefix = $CI->db->dbprefix;
-	$usertemplaterootdir = $CI->config->item('usertemplaterootdir');
-	$standardtemplaterootdir = $CI->config->item('standardtemplaterootdir');
+	$dbprefix = Yii::app()->tablePrefix;
+	$usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
+	$standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
     if (intval($dbversionnumber)>intval($currentDBVersion))
     {
         if(isset($subaction) && $subaction=="continue")
@@ -39,7 +38,7 @@ function CheckForDBUpgrades($subaction = null)
             if ($upgradedbtype=='mysqli') $upgradedbtype='mysql';
             $CI->load->helper('update/upgrade-'.$upgradedbtype);
             $CI->load->helper('update/upgrade-all');
-            $tables = $connect->MetaTables();
+            $tables = $connect->getSchema()->getTableNames();
             db_upgrade_all(intval($currentDBVersion));
             db_upgrade(intval($currentDBVersion));
             $CI->db->update('settings_global',array('stg_value' => intval($dbversionnumber)),array('stg_name' => 'DBVersion'));
@@ -56,14 +55,14 @@ function ShowDBUpgradeNotice() {
     $error=false;
 	    $CI =& get_instance();
 	$clang = $CI->limesurvey_lang;
-	$sitename = $CI->config->item('sitename');
+	$sitename = Yii::app()->getConfig('sitename');
 	echo '<div class="messagebox">';
     echo "<div class='header'>".$clang->gT('Database upgrade').'</div><p>';
     echo $clang->gT('Please verify the following information before continuing with the database upgrade:').'<ul>';
     echo "<li><b>" .$clang->gT('Database type') . ":</b> " . $CI->db->dbdriver . "</li>";
     echo "<li><b>" .$clang->gT('Database name') . ":</b> " . $CI->db->database . "</li>";
-    echo "<li><b>" .$clang->gT('Table prefix') . ":</b> " . $CI->db->dbprefix . "</li>";
-    echo "<li><b>" .$clang->gT('Site name') . ":</b> " . $CI->config->item("sitename") . "</li>";
+    echo "<li><b>" .$clang->gT('Table prefix') . ":</b> " . Yii::app()->tablePrefix . "</li>";
+    echo "<li><b>" .$clang->gT('Site name') . ":</b> " . Yii::app()->getConfig("sitename") . "</li>";
     echo "<li><b>" .$clang->gT('Root URL') . ":</b> " . site_url() . "</li>";
     echo '</ul>';
     echo "<br />";

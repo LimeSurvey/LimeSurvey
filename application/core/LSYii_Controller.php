@@ -28,7 +28,14 @@ abstract class LSYii_Controller extends CController
 	{
 		parent::__construct($id, $module);
 		$this->_checkinstallation();
-		require_once(APPPATH . '/libraries/LS/LS' . EXT);
+
+		//require_once(APPPATH . '/libraries/LS/LS' . EXT);
+		$this->loadLibrary('LS.LS');
+		$this->loadHelper('globalsettings');
+		$this->loadHelper('common');
+		$this->loadHelper('expressions.em_manager');
+		$this->loadHelper('replacements');
+
 		$this->_init();
 	}
 
@@ -42,14 +49,37 @@ abstract class LSYii_Controller extends CController
 	 */
 	protected function _checkinstallation()
 	{
-		$file_name = '/tmp/sample_installer_file.txt';
-		$installer_file = ROOT . $file_name;
-		if (is_file($installer_file))
-		{
+		$file_name = Yii::app()->getConfig('rootdir').'/tmp/sample_installer_file.txt';
+		if (file_exists($file_name))
+        {
 			$message = '<p>Use <a href="'.  $this->createUrl('/installer') . '">the LimeSurvey Web Installer</a> to set-up LimeSurvey.<p>'
-			    ."<p>If you are already done with installation, please delete the file lock file (<tt>...{$file_name}</tt>).";
-			throw new CException($message);
-		}
+			    ."<p>If you are already done with installation, please delete the file lock file (<tt>{$file_name}</tt>).";
+			throw new CHttpException($message);
+        }
+	}
+
+	/**
+	 * Loads a helper
+	 *
+	 * @access public
+	 * @param string $helper
+	 * @return void
+	 */
+	public function loadHelper($helper)
+	{
+		Yii::import('application.helpers.' . $helper . '_helper', true);
+	}
+
+	/**
+	 * Loads a library
+	 *
+	 * @access public
+	 * @param string $helper
+	 * @return void
+	 */
+	public function loadLibrary($library)
+	{
+		Yii::import('application.libraries.'.$library.'', true);
 	}
 
 	protected function _init()

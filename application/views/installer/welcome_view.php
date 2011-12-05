@@ -1,17 +1,10 @@
-<?php
-$clang = Yii::app()->lang;
-$this->getController()->render("installer/header_view",array('progressValue' => $progressValue));
-?>
+<?php $this->render("/installer/header_view", compact('progressValue', 'clang')); ?>
 
-<form action="<?php echo $this->createUrl('installer/install/welcome'); ?>" method="post">
+<form action="<?php echo $this->createUrl('installer/welcome'); ?>" method="post">
 
 <div class="container_6">
 
-<?php $this->getController()->render('installer/sidebar_view', array(
-       'progressValue' => $progressValue,
-       'classesForStep' => $classesForStep
-    ));
-?>
+<?php $this->render('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
 
 <div class="grid_4 table">
 
@@ -31,9 +24,13 @@ $this->getController()->render("installer/header_view",array('progressValue' => 
 <div class="description-field">Your preferred language will be used through out the installation process.</div>
 </td>
 <td align="right">
-<select id='installerLang' name='installerLang' style='width:190px;'>
-<?php $this->getController()->render('installer/language_options_view'); ?>
-</select>
+<?php
+foreach(getlanguagedata(true, true) as $langkey => $languagekind)
+{
+	$languages[htmlspecialchars($langkey)] = sprintf('%s - %s', $languagekind['nativedescription'], $languagekind['description']);
+}
+echo CHtml::dropDownList('installerLang', 'en', $languages, array('style' => 'width: 190px', 'id' => 'installerLang', 'encode' => false));
+?>
 </td>
 </tr>
 </table>
@@ -62,4 +59,4 @@ $this->getController()->render("installer/header_view",array('progressValue' => 
 
 
 </form>
-<?php $this->getController()->render("installer/footer_view"); ?>
+<?php $this->render("/installer/footer_view"); ?>

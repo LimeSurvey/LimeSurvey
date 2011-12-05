@@ -40,11 +40,6 @@ class LSYii_Application extends CWebApplication
 		$settings = array_merge($app_config, $ls_config);
 		foreach ($settings as $key => $value)
 			$this->setConfig($key, $value);
-
-		$this->loadHelper('globalsettings');
-		$this->loadHelper('common');
-		$this->loadHelper('expressions.em_manager');
-		$this->loadHelper('replacements');
 	}
 
 	/**

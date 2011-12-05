@@ -1,17 +1,10 @@
-<?php
-$clang = &get_instance()->limesurvey_lang;
-$this->load->view("installer/header_view",array('progressValue' => $progressValue));
-?>
+<?php $this->render("/installer/header_view", compact('progressValue', 'clang')); ?>
 
-<?php echo form_open('installer/install/1'); ?>
+<?php echo CHtml::beginForm($this->createUrl('installer/database')); ?>
 
 <div class="container_6">
 
-<?php $this->load->view('installer/sidebar_view', array(
-       'progressValue' => $progressValue,
-       'classesForStep' => $classesForStep
-    ));
-?>
+<?php $this->render('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
 
 <div class="grid_4 table">
 
@@ -20,7 +13,9 @@ $this->load->view("installer/header_view",array('progressValue' => $progressValu
 <div style="-moz-border-radius:15px; border-radius:15px; " >
 <p><?php echo $descp; ?></p>
 <hr />
-<center style="color: red; font-size:12px;"><?php echo $errorConnection ; ?></center>
+<div style="color:red; font-size:12px;">
+	<?php echo CHtml::errorSummary($model, null, null, array('class' => 'errors')); ?>
+</div>
 <br /><?php echo $clang->gT("Note: All fields marked with (*) are required."); ?>
 <br />
 
@@ -30,52 +25,47 @@ $this->load->view("installer/header_view",array('progressValue' => $progressValu
   <table style="width: 672px; font-size:14px;">
    <tr>
     <td style="width: 428px;">
-     <b><?php echo $clang->gT("Database type"); ?> * </b><br />
+	 <b><?php echo CHtml::activeLabelEx($model, 'dbtype', array('label' => $clang->gT("Database type"))); ?></b><br />
      <div class="description-field"><?php echo $clang->gT("This is the database type."); ?> </div>
     </td>
     <td style="width: 224px;" align="right">
-     <select name="dbtype" style="width: 147px;">
-      <option value="mysqli" <?php echo set_select('dbtype', 'mysqli',TRUE); ?>  >MySQL</option>
-      <option value="mysql" <?php echo set_select('dbtype', 'mysql'); ?> >MySQL (old driver)</option>
-      <option value="mssql" <?php echo set_select('dbtype', 'mssql'); ?>  >Microsoft SQL Server</option>
-      <option value="postgre" <?php echo set_select('dbtype', 'postgres'); ?>  >PostgreSQL</option>
-     </select>
+	 <?php echo CHtml::activeDropDownList($model, 'dbtype', $model->supported_db_types, array('style' => 'width: 147px')); ?>
     </td>
     </tr>
     <tr>
      <td style="width: 428px;">
-      <b><?php echo $clang->gT("Database Location"); ?> *</b> <br />
+	 <b><?php echo CHtml::activeLabelEx($model, 'dblocation', array('label' => $clang->gT("Database location"))); ?></b><br />
       <div class="description-field"><?php echo $clang->gT('Set this to the IP/net location of your database server. In most cases "localhost" will work.'); ?> </div>
      </td>
-     <td style="width: 224px;" align="right"><input name="dblocation" value="<?php echo set_value('dblocation'); ?>" type="text" /><?php echo "<br/>".form_error('dblocation'); ?></td>
+     <td style="width: 224px;" align="right"><?php echo CHtml::activeTextField($model,'dblocation', array('value' => 'localhost')) ?></td>
     </tr>
     <tr>
      <td style="width: 428px;">
-      <b><?php echo $clang->gT("Database Name"); ?> *</b> <br />
+	 <b><?php echo CHtml::activeLabelEx($model, 'dbname', array('label' => $clang->gT("Database name"))); ?></b><br />
       <div class="description-field"><?php echo $clang->gT("If you provide an existing database name make sure the database does not contain old tables of LimeSurvey."); ?></div>
      </td>
-     <td style="width: 224px;" align="right"><input name="dbname" value="<?php echo set_value('dbname'); ?>" type="text" /><?php echo "<br/>".form_error('dbname'); ?></td>
+     <td style="width: 224px;" align="right"><?php echo CHtml::activeTextField($model,'dbname') ?></td>
     </tr>
     <tr>
      <td style="width: 428px;">
-      <b><?php echo $clang->gT("Database User"); ?> *</b> <br />
+	 <b><?php echo CHtml::activeLabelEx($model, 'dbuser', array('label' => $clang->gT("Database user"))); ?></b><br />
       <div class="description-field"><?php echo $clang->gT('Your Database server user name. In most cases "root" will work.'); ?></div>
     </td>
-    <td style="width: 224px;" align="right"><input name="dbuser" value="<?php echo set_value('dbuser'); ?>" type="text" /><?php echo "<br/>".form_error('dbuser'); ?></td>
+    <td style="width: 224px;" align="right"><?php echo CHtml::activeTextField($model,'dbuser') ?></td>
    </tr>
    <tr>
     <td style="width: 428px;">
-     <b><?php echo $clang->gT("Database Password"); ?></b> <br />
+	 <b><?php echo CHtml::activeLabelEx($model, 'dbpwd', array('label' => $clang->gT("Database password"))); ?></b><br />
      <div class="description-field"><?php echo $clang->gT("Your Database server password."); ?></div>
     </td>
-    <td style="width: 224px;" align="right"><input name="dbpwd" value="" type="password" /><?php echo "<br/>".form_error('dbpwd'); ?></td>
+    <td style="width: 224px;" align="right"><?php echo CHtml::activePasswordField($model,'dbpwd') ?></td>
    </tr>
    <tr>
     <td style="width: 428px;">
-     <b><?php echo $clang->gT("Database Prefix"); ?></b> <br />
+	 <b><?php echo CHtml::activeLabelEx($model, 'dbprefix', array('label' => $clang->gT("Database prefix"))); ?></b><br />
      <div class="description-field"><?php echo $clang->gT('If your database is shared, recommended prefix is "lime_" else you can leave this setting blank.'); ?></div>
     </td>
-    <td style="width: 224px;" align="right"><input name="dbprefix" value="<?php echo set_value('dbprefix','lime_'); ?>" type="text" /></td>
+    <td style="width: 224px;" align="right"><?php echo CHtml::activeTextField($model,'dbprefix', array('value' => 'lime_')) ?></td>
    </tr>
    <tr>
     <td>&nbsp;</td>
@@ -95,15 +85,15 @@ $this->load->view("installer/header_view",array('progressValue' => $progressValu
  <table style="width: 694px; background: #ffffff;">
   <tbody>
    <tr>
-    <td align="left" style="width: 33%;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="<?php echo $clang->gT("Previous"); ?>" onclick="javascript: window.open('<?php echo site_url("installer/install/0"); ?>', '_top')" /></td>
+    <td align="left" style="width: 33%;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="<?php echo $clang->gT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" /></td>
     <td align="center" style="width: 34%;"></td>
-    <td align="right" style="width: 33%;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="submit" value="<?php echo $clang->gT("Next"); ?>" /></td>
+    <td align="right" style="width: 33%;"><?php echo CHtml::submitButton($clang->gT("Next"), array('class' => 'ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only')); ?></td>
    </tr>
   </tbody>
  </table>
 </div>
 </div>
 
-</form>
+<?php echo CHtml::endForm(); ?>
 
-<?php $this->load->view("installer/footer_view"); ?>
+<?php $this->render("/installer/footer_view"); ?>

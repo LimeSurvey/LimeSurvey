@@ -6,9 +6,9 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 
--- 
+--
 -- Table structure for table answers
--- 
+--
 CREATE TABLE prefix_answers (
     qid integer DEFAULT 0 NOT NULL,
     code character varying(5) DEFAULT ''::character varying NOT NULL,
@@ -17,13 +17,13 @@ CREATE TABLE prefix_answers (
     assessment_value integer DEFAULT 0 NOT NULL,
     "language" character varying(20) DEFAULT 'en'::character varying NOT NULL,
     scale_id smallint DEFAULT 0 NOT NULL,
-    CONSTRAINT prefix_answers_pkey PRIMARY KEY (qid, code, "language", scale_id)    
+    CONSTRAINT prefix_answers_pkey PRIMARY KEY (qid, code, "language", scale_id)
 );
 
-    
--- 
+
+--
 -- Table structure for table assessments
--- 
+--
 CREATE TABLE prefix_assessments (
     id serial,
     sid integer DEFAULT 0 NOT NULL,
@@ -34,11 +34,11 @@ CREATE TABLE prefix_assessments (
     maximum character varying(50) DEFAULT ''::character varying NOT NULL,
     message text NOT NULL,
     language character varying(20) DEFAULT 'en'::bpchar NOT NULL,
-    CONSTRAINT prefix_assessments_pkey PRIMARY KEY (id,language)    
+    CONSTRAINT prefix_assessments_pkey PRIMARY KEY (id,language)
 );
 
 
--- 
+--
 -- Table structure for table conditions
 --
 CREATE TABLE prefix_conditions (
@@ -49,11 +49,11 @@ CREATE TABLE prefix_conditions (
     cfieldname character varying(50) DEFAULT ''::character varying NOT NULL,
     method character(5) DEFAULT ''::bpchar NOT NULL,
     value character varying(255) DEFAULT ''::character varying NOT NULL,
-    CONSTRAINT prefix_conditions_pkey PRIMARY KEY (cid)    
+    CONSTRAINT prefix_conditions_pkey PRIMARY KEY (cid)
 );
 
 
--- 
+--
 -- Table structure for table defaultvalues
 --
 CREATE TABLE prefix_defaultvalues (
@@ -63,7 +63,7 @@ CREATE TABLE prefix_defaultvalues (
     language character varying(20) NOT NULL,
     specialtype character varying(20) NOT NULL default '',
     defaultvalue text,
-    CONSTRAINT prefix_defaultvalues_pkey PRIMARY KEY (qid , scale_id, language, specialtype, sqid)      
+    CONSTRAINT prefix_defaultvalues_pkey PRIMARY KEY (qid , scale_id, language, specialtype, sqid)
 );
 
 --
@@ -85,7 +85,7 @@ CREATE TABLE prefix_expression_errors (
 );
 
 
--- 
+--
 -- Table structure for table groups
 --
 CREATE TABLE prefix_groups (
@@ -96,11 +96,11 @@ CREATE TABLE prefix_groups (
     description text,
     "language" character varying(20) DEFAULT 'en'::character varying NOT NULL,
     randomization_group varying(20) DEFAULT ''::character varying NOT NULL,
-    CONSTRAINT prefix_groups_pkey PRIMARY KEY (gid, "language")    
+    CONSTRAINT prefix_groups_pkey PRIMARY KEY (gid, "language")
 );
 
 
--- 
+--
 -- Table structure for table labels
 --
 CREATE TABLE prefix_labels (
@@ -110,23 +110,23 @@ CREATE TABLE prefix_labels (
     sortorder integer NOT NULL,
     assessment_value integer DEFAULT 0 NOT NULL,
     "language" character varying(20) DEFAULT 'en'::character varying NOT NULL,
-    CONSTRAINT prefix_labels_pkey PRIMARY KEY (lid, sortorder, "language")    
+    CONSTRAINT prefix_labels_pkey PRIMARY KEY (lid, sortorder, "language")
 );
 CREATE INDEX prefix_labels_ixcode_idx ON prefix_labels USING btree (code);
 
 
--- 
+--
 -- Table structure for table labelsets
 --
 CREATE TABLE prefix_labelsets (
     lid serial NOT NULL,
     label_name character varying(100) DEFAULT ''::character varying NOT NULL,
     languages character varying(200) DEFAULT 'en'::character varying,
-    CONSTRAINT prefix_labelsets_pkey PRIMARY KEY (lid)    
+    CONSTRAINT prefix_labelsets_pkey PRIMARY KEY (lid)
 );
 
 
--- 
+--
 -- Table structure for table question_attributes
 --
 CREATE TABLE prefix_question_attributes (
@@ -135,13 +135,13 @@ CREATE TABLE prefix_question_attributes (
     attribute character varying(50),
     value text NULL,
     "language" character varying(20),
-    CONSTRAINT prefix_question_attributes_pkey PRIMARY KEY (qaid)    
+    CONSTRAINT prefix_question_attributes_pkey PRIMARY KEY (qaid)
 );
 
 
--- 
+--
 -- Table structure for table quota
--- 
+--
 CREATE TABLE prefix_quota (
     id serial NOT NULL,
     sid integer,
@@ -150,13 +150,13 @@ CREATE TABLE prefix_quota (
     "action" integer,
     "active" integer NOT NULL default '1',
     autoload_url integer NOT NULL DEFAULT 0,
-    CONSTRAINT prefix_quota_pkey PRIMARY KEY (id)  
+    CONSTRAINT prefix_quota_pkey PRIMARY KEY (id)
 );
 
-    
--- 
+
+--
 -- Table structure for table quota_languagesettings
--- 
+--
 CREATE TABLE prefix_quota_languagesettings
 (
     quotals_id serial NOT NULL,
@@ -166,27 +166,27 @@ CREATE TABLE prefix_quota_languagesettings
     quotals_message text NOT NULL,
     quotals_url character varying(255),
     quotals_urldescrip character varying(255),
-    CONSTRAINT prefix_quota_languagesettings_pkey PRIMARY KEY (quotals_id)  
+    CONSTRAINT prefix_quota_languagesettings_pkey PRIMARY KEY (quotals_id)
 );
 
-  
--- 
+
+--
 -- Table structure for table quota_members
---   
+--
 CREATE TABLE prefix_quota_members (
     id serial,
     sid integer,
     qid integer,
     quota_id integer,
     code character varying(11),
-    CONSTRAINT prefix_quota_members_pkey PRIMARY KEY (id)  
+    CONSTRAINT prefix_quota_members_pkey PRIMARY KEY (id)
 );
 CREATE INDEX prefix_quota_members_ixcode_idx ON prefix_quota_members USING btree (sid,qid,quota_id,code);
 
 
--- 
+--
 -- Table structure for table questions
---   
+--
 CREATE TABLE prefix_questions (
     qid serial NOT NULL,
     parent_qid integer DEFAULT 0 NOT NULL,
@@ -204,11 +204,11 @@ CREATE TABLE prefix_questions (
     scale_id smallint DEFAULT 0 NOT NULL,
     same_default smallint DEFAULT 0 NOT NULL,
     relevance text,
-    CONSTRAINT prefix_questions_pkey PRIMARY KEY (qid, "language")    
+    CONSTRAINT prefix_questions_pkey PRIMARY KEY (qid, "language")
 );
 
-    
--- 
+
+--
 -- Table structure for table saved_control
 --
 CREATE TABLE prefix_saved_control (
@@ -223,37 +223,32 @@ CREATE TABLE prefix_saved_control (
     status character(1) DEFAULT ''::bpchar NOT NULL,
     saved_date timestamp without time zone NOT NULL,
     refurl text,
-    CONSTRAINT prefix_saved_control_pkey PRIMARY KEY (scid)    
+    CONSTRAINT prefix_saved_control_pkey PRIMARY KEY (scid)
 );
 
 
--- 
+--
 -- Table structure for table sessions
 --
 CREATE TABLE prefix_sessions(
-     sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
-     expiry TIMESTAMP NOT NULL ,
-     expireref VARCHAR( 250 ) DEFAULT '',
-     created TIMESTAMP NOT NULL ,
-     modified TIMESTAMP NOT NULL ,
-     sessdata TEXT DEFAULT '',
-     CONSTRAINT prefix_sessions_pkey PRIMARY KEY ( sesskey )
-     );
-create INDEX sess_expiry on prefix_sessions( expiry );
-create INDEX sess_expireref on prefix_sessions ( expireref );
+      id character(32) NOT NULL,
+      expire integer DEFAULT NULL,
+      data text,
+      CONSTRAINT prefix_sessions_pkey PRIMARY KEY ( id )
+);
 
 
--- 
+--
 -- Table structure for table settings_global
 --
 CREATE TABLE prefix_settings_global (
     stg_name character varying(50) DEFAULT ''::character varying NOT NULL,
     stg_value character varying(255) DEFAULT ''::character varying NOT NULL,
-    CONSTRAINT prefix_settings_global_pkey PRIMARY KEY (stg_name)    
+    CONSTRAINT prefix_settings_global_pkey PRIMARY KEY (stg_name)
 );
 
 
--- 
+--
 -- Table structure for table surveys
 --
 CREATE TABLE prefix_surveys (
@@ -313,11 +308,11 @@ CREATE TABLE prefix_surveys (
     navigationdelay smallint DEFAULT '0',
     nokeyboard character(1) DEFAULT 'N'::bpchar,
     alloweditaftercompletion character(1) DEFAULT 'N'::bpchar,
-    CONSTRAINT prefix_surveys_pkey PRIMARY KEY (sid)    
+    CONSTRAINT prefix_surveys_pkey PRIMARY KEY (sid)
 );
 
 
--- 
+--
 -- Table structure for table surveys_languagesettings
 --
 CREATE TABLE prefix_surveys_languagesettings (
@@ -343,11 +338,11 @@ CREATE TABLE prefix_surveys_languagesettings (
     email_admin_responses_subj character varying(255),
     email_admin_responses text,
     surveyls_numberformat integer NOT NULL DEFAULT 1,
-    CONSTRAINT prefix_surveys_languagesettings_pkey PRIMARY KEY (surveyls_survey_id, surveyls_language)    
+    CONSTRAINT prefix_surveys_languagesettings_pkey PRIMARY KEY (surveyls_survey_id, surveyls_language)
 );
 
 
--- 
+--
 -- Table structure for table survey_permissions
 --
 CREATE TABLE prefix_survey_permissions (
@@ -360,10 +355,10 @@ CREATE TABLE prefix_survey_permissions (
 	delete_p integer DEFAULT 0 NOT NULL,
     import_p integer DEFAULT 0 NOT NULL,
     export_p integer DEFAULT 0 NOT NULL,
-    CONSTRAINT prefix_survey_permissions_pkey PRIMARY KEY (sid,uid,permission)    
+    CONSTRAINT prefix_survey_permissions_pkey PRIMARY KEY (sid,uid,permission)
 );
 
--- 
+--
 -- Table structure for table survey_url_parameters
 --
 CREATE TABLE prefix_survey_url_parameters (
@@ -374,9 +369,9 @@ CREATE TABLE prefix_survey_url_parameters (
 	targetsqid integer NULL
 );
 
--- 
+--
 -- Table structure for table user_groups
---    
+--
 CREATE TABLE prefix_user_groups (
     ugid serial NOT NULL,
     name character varying(20) NOT NULL,
@@ -385,18 +380,18 @@ CREATE TABLE prefix_user_groups (
 );
 
 
--- 
+--
 -- Table structure for table user_in_groups
---                               
+--
 CREATE TABLE prefix_user_in_groups (
     ugid integer NOT NULL,
     uid integer NOT NULL
 );
 
 
--- 
+--
 -- Table structure for table users
---   
+--
 CREATE TABLE prefix_users (
     uid serial PRIMARY KEY NOT NULL,
     users_name character varying(64) DEFAULT ''::character varying UNIQUE NOT NULL,
@@ -421,9 +416,9 @@ CREATE TABLE prefix_users (
 );
 
 
--- 
+--
 -- Table structure for table templates_rights
---   
+--
 CREATE TABLE prefix_templates_rights (
   "uid" integer NOT NULL,
   "folder" character varying(255) NOT NULL,
@@ -432,9 +427,9 @@ CREATE TABLE prefix_templates_rights (
 );
 
 
--- 
+--
 -- Table structure for table participants
---   
+--
 CREATE TABLE prefix_participants (
   "participant_id" character varying( 50 ) PRIMARY KEY NOT NULL,
   "firstname" character varying( 40 ) NOT NULL,
@@ -446,46 +441,46 @@ CREATE TABLE prefix_participants (
 );
 
 
--- 
+--
 -- Table structure for table participant_attribute
---   
+--
 CREATE TABLE prefix_participant_attribute (
   "participant_id" character varying( 50 ) NOT NULL,
   "attribute_id" integer NOT NULL,
   "value" integer NOT NULL,
-  CONSTRAINT prefix_participant_attribut_pkey PRIMARY KEY (participant_id,attribute_id)  
+  CONSTRAINT prefix_participant_attribut_pkey PRIMARY KEY (participant_id,attribute_id)
 );
 
 
--- 
+--
 -- Table structure for table participant_attribute_names
---   
+--
 CREATE TABLE prefix_participant_attribute_names (
   "attribute_id" serial NOT NULL,
   "attribute_type" character varying( 30 ) NOT NULL,
   "visible" character varying( 5 ) NOT NULL,
   CONSTRAINT prefix_participant_attribute_names_pkey PRIMARY KEY (attribute_id, attribute_type)
 );
--- 
+--
 -- Table structure for table participant_attribute_lang
---   
+--
 CREATE TABLE prefix_participant_attribute_names_lang (
   "id" serial PRIMARY KEY NOT NULL,
   "attribute_id" integer NOT NULL,
   "attribute_name" character varying( 30 ) NOT NULL,
   "lang" character varying( 20 ) NOT NULL
 );
--- 
+--
 -- Table structure for table participant_attribute_values
---   
+--
 CREATE TABLE prefix_participant_attribute_values (
   "value_id" serial PRIMARY KEY NOT NULL,
   "attribute_id" integer NOT NULL,
   "value" character varying( 20 ) NOT NULL
 );
--- 
+--
 -- Table structure for table participant_shares
---   
+--
 CREATE TABLE prefix_participant_shares (
   "participant_id" character varying( 50 ) NOT NULL,
   "shared_uid" integer NOT NULL,
@@ -495,9 +490,9 @@ CREATE TABLE prefix_participant_shares (
 );
 
 
--- 
+--
 -- Table structure for table participant_attribute_values
---   
+--
 CREATE TABLE prefix_survey_links (
   "participant_id" character varying ( 50 ) NOT NULL,
   "token_id" integer NOT NULL,
@@ -507,9 +502,9 @@ CREATE TABLE prefix_survey_links (
 );
 
 
--- 
+--
 -- Table structure for table templates
---      
+--
 CREATE TABLE prefix_templates (
   "folder" character varying(255) NOT NULL,
   "creator" integer NOT NULL,
@@ -529,7 +524,7 @@ CREATE TABLE prefix_failed_login_attempts (
 
 
 --
--- Secondary indexes 
+-- Secondary indexes
 --
 create index assessments_idx2 on prefix_assessments (sid);
 create index assessments_idx3 on prefix_assessments (gid);

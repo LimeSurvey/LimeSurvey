@@ -1,10 +1,9 @@
-<?php
-$clang = &get_instance()->limesurvey_lang;
-$this->load->view("installer/header_view",array('progressValue' => $progressValue));
+<?php $this->render("/installer/header_view", compact('progressValue', 'clang')); ?>
 
-function dirReport($dir,$write)
+<?php
+
+function dirReport($dir, $write, $clang)
 {
-    $clang = &get_instance()->limesurvey_lang;
     $error = 0;
 
     if ($dir == "Found")
@@ -39,11 +38,7 @@ function dirReport($dir,$write)
 
 <div class="container_6">
 
-<?php $this->load->view('installer/sidebar_view', array(
-       'progressValue' => $progressValue,
-       'classesForStep' => $classesForStep
-    ));
-?>
+<?php $this->render('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
 
 <div class="grid_4 table">
 
@@ -68,33 +63,28 @@ function dirReport($dir,$write)
 </tr>
 <tr>
        <td style="width: 209px;"><?php echo $clang->gT("PHP5 mbstring library"); ?></td>
-       <td align="center" style="width: 225px;"><img src="<?php echo base_url(); ?>installer/images/tick-right.png" alt="Check" /></td>
-       <td align="center" style="width: 225px;"><?php echo $mbstringPresent ; ?></td>
+       <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Yes" /></td>
+       <td align="center" style="width: 225px;"><?php echo $mbstringPresent; ?></td>
 </tr>
 <tr>
-       <td style="width: 209px;">/application/config/database.php <?php echo $clang->gT("file"); ?></td>
+       <td style="width: 209px;">/application/config/config.php <?php echo $clang->gT("file"); ?></td>
        <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & Writable"); ?></td>
-       <td align="center" style="width: 225px;"><?php  echo dirReport($databasePresent,$databaseWritable); ?></td>
-</tr>
-<tr>
-       <td style="width: 209px;">/application/config/autoload.php <?php echo $clang->gT("file"); ?></td>
-       <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & Writable"); ?></td>
-       <td align="center" style="width: 225px;"><?php  echo dirReport($autoloadPresent,$autoloadWritable); ?></td>
+       <td align="center" style="width: 225px;"><?php  echo dirReport($configPresent,$configWritable,$clang); ?></td>
 </tr>
 <tr>
        <td style="width: 209px;">/tmp <?php echo $clang->gT("directory"); ?></td>
        <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & Writable"); ?></td>
-       <td align="center" style="width: 225px;"><?php  echo dirReport($tmpdirPresent,$tmpdirWritable); ?></td>
+       <td align="center" style="width: 225px;"><?php  echo dirReport($tmpdirPresent,$tmpdirWritable,$clang); ?></td>
 </tr>
 <tr>
        <td style="width: 209px;">/upload <?php echo $clang->gT("directory"); ?></td>
        <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & Writable"); ?></td>
-       <td align="center" style="width: 225px;"><?php  echo dirReport($uploaddirPresent,$uploaddirWritable); ?></td>
+       <td align="center" style="width: 225px;"><?php  echo dirReport($uploaddirPresent,$uploaddirWritable,$clang); ?></td>
 </tr>
 <tr>
        <td style="width: 209px;">/templates <?php echo $clang->gT("directory"); ?></td>
        <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & Writable"); ?></td>
-       <td align="center" style="width: 225px;"><?php  echo dirReport($templatedirPresent,$templatedirWritable); ?></td>
+       <td align="center" style="width: 225px;"><?php  echo dirReport($templatedirPresent,$templatedirWritable,$clang); ?></td>
 </tr>
 
 </table>
@@ -109,22 +99,22 @@ function dirReport($dir,$write)
 </tr>
 <tr>
        <td style="width: 209px;">PHP5 GD library</td>
-       <td align="center" style="width: 225px;"><img src="<?php echo base_url(); ?>installer/images/tick-right.png" alt="Check" /></td>
+       <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
        <td align="center" style="width: 225px;"><?php echo $gdPresent ; ?></td>
 </tr>
 <tr>
        <td style="width: 209px;">PHP5 LDAP library</td>
-       <td align="center" style="width: 225px;"><img src="<?php echo base_url(); ?>installer/images/tick-right.png" alt="Check" /></td>
+       <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
        <td align="center" style="width: 225px;"><?php echo $ldapPresent ; ?></td>
 </tr>
 <tr>
        <td style="width: 209px;">PHP5 zip library</td>
-       <td align="center" style="width: 225px;"><img src="<?php echo base_url(); ?>installer/images/tick-right.png" alt="Check" /></td>
+       <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
        <td align="center" style="width: 225px;"><?php echo $zipPresent ; ?></td>
 </tr>
 <tr>
        <td style="width: 209px;">PHP5 zlib library</td>
-       <td align="center" style="width: 225px;"><img src="<?php echo base_url(); ?>installer/images/tick-right.png" alt="Check" /></td>
+       <td align="center" style="width: 225px;"><img src="<?php echo Yii::app()->baseUrl; ?>/installer/images/tick-right.png" alt="Check" /></td>
        <td align="center" style="width: 225px;"><?php echo $zlibPresent ; ?></td>
 </tr>
 
@@ -141,11 +131,11 @@ function dirReport($dir,$write)
 <table style="font-size:11px; width: 694px;">
 <tbody>
 <tr>
-<td align="left" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="<?php echo $clang->gT('Previous'); ?>" onclick="javascript: window.open('<?php echo site_url("installer/install/license"); ?>', '_top')" /></td>
-<td align="center" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="<?php echo $clang->gT('Check again'); ?>" onclick="javascript: window.open('<?php echo site_url("installer/install/0"); ?>', '_top')" /></td>
+<td align="left" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="<?php echo $clang->gT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/license"); ?>', '_top')" /></td>
+<td align="center" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="<?php echo $clang->gT('Check again'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" /></td>
 <td align="right" style="width: 227px;">
 <?php if (isset($next) && $next== TRUE) { ?>
-<input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="<?php echo $clang->gT('Next'); ?>" onclick="javascript: window.open('<?php echo site_url("installer/install/1"); ?>', '_top')" />
+<input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="<?php echo $clang->gT('Next'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/database"); ?>', '_top')" />
 <?php } ?>
 
 </td>
@@ -154,4 +144,4 @@ function dirReport($dir,$write)
 </table>
 </div>
 </div>
-<?php $this->load->view("installer/footer_view"); ?>
+<?php $this->render("/installer/footer_view"); ?>

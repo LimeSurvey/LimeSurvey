@@ -1,28 +1,23 @@
-<?php
-$clang = &get_instance()->limesurvey_lang;
-$this->load->view("installer/header_view",array('progressValue' => $progressValue));
-?>
+<?php $this->render("/installer/header_view", compact('progressValue', 'clang')); ?>
 
-<form action="<?php echo $this->config->site_url('installer/optional'); ?>" method="post">
+<?php echo CHtml::beginForm($this->createUrl('installer/optional')); ?>
 
 <div class="container_6">
 
-<?php $this->load->view('installer/sidebar_view', array(
-       'progressValue' => $progressValue,
-       'classesForStep' => $classesForStep
-    ));
-?>
+<?php $this->render('/installer/sidebar_view', compact('progressValue', 'classesForStep', 'clang')); ?>
 
 <div class="grid_4 table">
 
 <p class="title"><?php echo $title; ?></p>
 
-
-
 <div style="-moz-border-radius:15px; border-radius:15px;" >
 <p><?php echo $descp; ?></p>
 <hr />
-<?php echo $confirmation; ?><br />
+<?php echo $confirmation; ?>
+<div style="color:red; font-size:12px;">
+	<?php echo CHtml::errorSummary($model, null, null, array('class' => 'errors')); ?>
+</div>
+<br />
 <?php echo $clang->gT("You can leave these settings blank and change them later"); ?>
 <br />
 
@@ -30,50 +25,52 @@ $this->load->view("installer/header_view",array('progressValue' => $progressValu
 <legend class="content-table-heading"><?php echo $clang->gT("Optional settings"); ?></legend>
 <table style="width: 640px; font-size:14px;">
 <tr>
-<td><b><?php echo $clang->gT("Admin Login Name"); ?></b><br />
+<td><b><?php echo CHtml::activeLabelEx($model, 'adminLoginName', array('label' => $clang->gT("Admin Login Name"))); ?></b><br />
 <div class="description-field"><?php echo $clang->gT("This will be the userid by which admin of board will login."); ?></div>
 </td>
-<td align="right"><input type="text" name="adminLoginName"/></td>
+<td align="right"><?php echo CHtml::activeTextField($model, 'adminLoginName'); ?></td>
 </tr>
 <tr>
-<td><b><?php echo $clang->gT("Admin Login Password"); ?></b><br />
+<td><b><?php echo CHtml::activeLabelEx($model, 'adminLoginPwd', array('label' => $clang->gT("Admin Login Password"))); ?></b><br />
 <div class="description-field"><?php echo $clang->gT("This will be the password of admin user."); ?></div>
 </td>
-<td align="right" ><input type="password" name="adminLoginPwd"/></td>
+<td align="right"><?php echo CHtml::activePasswordField($model, 'adminLoginPwd'); ?></td>
 </tr>
 <tr>
-<td><b><?php echo $clang->gT("Confirm Password"); ?></b><br />
-<div class="description-field"><?php echo $clang->gT("Confirm your admin password."); ?></div>
+<td><b><?php echo CHtml::activeLabelEx($model, 'confirmPwd', array('label' => $clang->gT("Confirm your Admin Password"))); ?></b><br />
 </td>
-<td align="right"><input type="password" name="confirmPwd"/></td>
+<td align="right"><?php echo CHtml::activePasswordField($model, 'confirmPwd'); ?></td>
 </tr>
 <tr>
-<td><b><?php echo $clang->gT("Administrator Name"); ?></b><br />
+<td><b><?php echo CHtml::activeLabelEx($model, 'adminName', array('label' => $clang->gT("Administrator Name"))); ?></b><br />
 <div class="description-field"><?php echo $clang->gT("This is the default name of the site administrator and used for system messages and contact options."); ?></div>
 </td>
-<td align="right"><input type="text" name="adminName"/></td>
+<td align="right"><?php echo CHtml::activeTextField($model, 'adminName'); ?></td>
 </tr>
 <tr>
-<td><b><?php echo $clang->gT("Administrator Email"); ?></b><br />
+<td><b><?php echo CHtml::activeLabelEx($model, 'adminEmail', array('label' => $clang->gT("Administrator Email"))); ?></b><br />
 <div class="description-field"><?php echo $clang->gT("This is the default email address of the site administrator and used for system messages, contact options and default bounce email."); ?></div>
 </td>
-<td align="right"><input type="text" name="adminEmail"/></td>
+<td align="right"><?php echo CHtml::activeTextField($model, 'adminEmail'); ?></td>
 </tr>
 <tr>
-<td><b><?php echo $clang->gT("Site Name"); ?></b><br />
+<td><b><?php echo CHtml::activeLabelEx($model, 'siteName', array('label' => $clang->gT("Site Name"))); ?></b><br />
 <div class="description-field"><?php echo $clang->gT("This name will appear in the survey list overview and in the administration header."); ?></div>
 </td>
-<td align="right"><input type="text" name="siteName"/></td>
+<td align="right"><?php echo CHtml::activeTextField($model, 'siteName'); ?></td>
 </tr>
 <tr>
-<td><b><?php echo $clang->gT("Default Language"); ?></b><br />
+<td><b><?php echo CHtml::activeLabelEx($model, 'surveylang', array('label' => $clang->gT("Default Language"))); ?></b><br />
 <div class="description-field"><?php echo $clang->gT("This will be your default language."); ?></div>
 </td>
 <td align="right">
-
-<select id='surveylang' name='surveylang' style='width:156px;'>
-<?php $this->load->view('installer/language_options_view'); ?>
-</select>
+<?php
+foreach(getlanguagedata(true, true) as $langkey => $languagekind)
+{
+	$languages[htmlspecialchars($langkey)] = sprintf('%s - %s', $languagekind['nativedescription'], $languagekind['description']);
+}
+echo CHtml::activeDropDownList($model, 'surveylang', $languages, array('style' => 'width: 156px', 'encode' => false, 'en' => array('selected' => true)));
+?>
 </td>
 </tr>
 <tr>
@@ -94,9 +91,9 @@ $this->load->view("installer/header_view",array('progressValue' => $progressValu
  <table style="font-size:11px; width: 694px; background: #ffffff;">
   <tbody>
    <tr>
-    <td align="left" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="<?php echo $clang->gT("Previous"); ?>" onclick="javascript: window.open('<?php echo site_url("installer/install/1"); ?>', '_top')" /></td>
+    <td align="left" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="<?php echo $clang->gT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/welcome"); ?>', '_top')" /></td>
     <td align="center" style="width: 227px;"></td>
-    <td align="right" style="width: 227px;"><input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type="submit" value="<?php echo $clang->gT("Next"); ?>" /></td>
+    <td align="right" style="width: 227px;"><?php echo CHtml::submitButton($clang->gT("Next"), array('class' => 'ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only')); ?></td>
    </tr>
   </tbody>
  </table>
@@ -104,6 +101,6 @@ $this->load->view("installer/header_view",array('progressValue' => $progressValu
 </div>
 
 
+<?php echo CHtml::endForm(); ?>
 
-</form>
-<?php $this->load->view("installer/footer_view"); ?>
+<?php $this->render("/installer/footer_view"); ?>
