@@ -1189,7 +1189,7 @@ class ExpressionManager {
         $jsParts = array();
         $jsParts[] = "val = " . $expr . ";\n";
         $jsParts[] = "klass = (LEMeq(addslashes(val),'" . addslashes($expected) . "')) ? 'ok' : 'error';\n";
-        $jsParts[] = "document.getElementById('test_" . $num . "').innerHTML=val;\n";
+        $jsParts[] = "document.getElementById('test_" . $num . "').innerHTML=htmlspecialchars(val);\n";
         $jsParts[] = "document.getElementById('test_" . $num . "').className=klass;\n";
         return implode('',$jsParts);
 
@@ -1205,9 +1205,9 @@ class ExpressionManager {
         $jsParts = array();
         $jsParts[] = "\n  // Tailor Question " . $questionNum . " - " . $name . ": { " . $eqn . " }\n";
         $jsParts[] = "  try{\n";
-        $jsParts[] = "  document.getElementById('" . $name . "').innerHTML=\n    ";
+        $jsParts[] = "  document.getElementById('" . $name . "').innerHTML=htmlspecialchars(\n    ";
         $jsParts[] = $this->GetJavaScriptEquivalentOfExpression();
-        $jsParts[] = ";\n";
+        $jsParts[] = ");\n";
         $jsParts[] = "  } catch (e) { }\n";
         return implode('',$jsParts);
     }
