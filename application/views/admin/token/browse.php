@@ -296,7 +296,7 @@ var survey_id = "<?php echo $surveyid; ?>";
 var addtocpdbUrl = "<?php echo $this->createUrl("admin/participants/sa/addToCentral"); ?>";
 var addpartAddBtn = "<?php $clang->eT("Add to CPDB") ?>";
 var addpartTitle = "<?php $clang->eT('Add participant to CPDB'); ?>";
-var attMapUrl = "<?php echo $this->createUrl("admin/participants/sa/attributeMapToken");?>";
+var attMapUrl = "<?php echo $this->createUrl("admin/participants/sa/attributeMapToken/sid/");?>";
 var postUrl = "<?php echo $this->createUrl("admin/participants/sa/setSession"); ?>";
 <!--
 	for(i=0; i<document.forms.length; i++)
@@ -341,7 +341,7 @@ myform.submit();
                 <?php $clang->eT("Please select at least one participant to be added"); ?>
             </p>
         </div>
-<?php $ajaxloader = array('src' => 'images/ajax-loader.gif',
+<?php $ajaxloader = array('src' => Yii::app()->baseUrl.'/images/ajax-loader.gif',
                           'alt' => 'Ajax Loader',
                           'title' => 'Ajax Loader'); ?>
  <div id="processing" title="<?php $clang->eT("Processing .....") ?>" style="display:none">

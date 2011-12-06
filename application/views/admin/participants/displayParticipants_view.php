@@ -233,7 +233,7 @@ if(isset($allattributes) && count($allattributes) > 0) // Add attribute names to
             'style'       => 'margin:10px',
             );
 
-        echo CHtml::checkBox('redirect',TRUE,$data); ?><input type="hidden" name="redirect" id="redirect" value='TRUE'></p>
+        echo CHtml::checkBox('redirect',TRUE,$data); ?></p>
         <center><ol id='selectableadd' class='selectable' >
                 <li class='ui-widget-content' id='all'><?php echo $clang->gT("all participants in current search") ?></li>
                 <li class='ui-widget-content' id='allingrid'><?php echo $clang->gT("all participants") ?></li>

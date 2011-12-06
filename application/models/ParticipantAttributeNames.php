@@ -109,7 +109,12 @@ class ParticipantAttributeNames extends CActiveRecord
 
     function getParticipantVisibleAttribute($participant_id)
     {
-        return Yii::app()->db->createCommand()->select('{{participant_attribute}}.*,{{participant_attribute_names}}.*,{{participant_attribute_names_lang}}.*')->from('{{participant_attribute}}')->order('{{participant_attribute}}.attribute_id','desc')->join('{{participant_attribute_names_lang}}','{{participant_attribute}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')->join('{{participant_attribute_names}}', '{{participant_attribute}}.attribute_id = {{participant_attribute_names}}.attribute_id')->where('{{participant_attribute_names_lang}}.lang = "'.Yii::app()->session['adminlang'].'" AND lang = "'.Yii::app()->session['adminlang'].'" AND participant_id = "'.$participant_id.'"')->queryAll();
+        if($participant_id != ''){
+            return Yii::app()->db->createCommand()->select('{{participant_attribute}}.*,{{participant_attribute_names}}.*,{{participant_attribute_names_lang}}.*')->from('{{participant_attribute}}')->order('{{participant_attribute}}.attribute_id','desc')->join('{{participant_attribute_names_lang}}','{{participant_attribute}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')->join('{{participant_attribute_names}}', '{{participant_attribute}}.attribute_id = {{participant_attribute_names}}.attribute_id')->where('{{participant_attribute_names_lang}}.lang = "'.Yii::app()->session['adminlang'].'" AND lang = "'.Yii::app()->session['adminlang'].'" AND participant_id = "'.$participant_id.'"')->queryAll();
+        }
+        else {
+            return Yii::app()->db->createCommand()->select('{{participant_attribute}}.*,{{participant_attribute_names}}.*,{{participant_attribute_names_lang}}.*')->from('{{participant_attribute}}')->order('{{participant_attribute}}.attribute_id','desc')->join('{{participant_attribute_names_lang}}','{{participant_attribute}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')->join('{{participant_attribute_names}}', '{{participant_attribute}}.attribute_id = {{participant_attribute_names}}.attribute_id')->where('{{participant_attribute_names_lang}}.lang = "'.Yii::app()->session['adminlang'].'" AND lang = "'.Yii::app()->session['adminlang'].'"')->queryAll();
+        }
     }
 
     function getAttributeValue($participantid,$attributeid)
@@ -131,11 +136,7 @@ class ParticipantAttributeNames extends CActiveRecord
     // this is a very specific function used to get the attributes that are not present for the participant
     function getnotaddedAttributes($attributeid)
     {
-    	$attrid = array('not in','{{participant_attribute_names}}.attribute_id');
-    	foreach($attributeid as $row)
-    	{
-    		$attrid[] = $row;
-    	}
+    	$attrid = array('not in','{{participant_attribute_names}}.attribute_id',$attributeid);
         return Yii::app()->db->createCommand()->select('*')->from('{{participant_attribute_names}}')->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')->where($attrid)->queryAll();
     }    
 
@@ -171,6 +172,11 @@ class ParticipantAttributeNames extends CActiveRecord
         Yii::app()->db->createCommand()->delete('{{participant_attribute_names}}', 'attribute_id = '.$attid); 
         Yii::app()->db->createCommand()->delete('{{participant_attribute_values}}', 'attribute_id = '.$attid); 
         Yii::app()->db->createCommand()->delete('{{participant_attribute}}', 'attribute_id = '.$attid); 
+    }
+
+    function delAttributeValues($attid,$valid)
+    {
+        Yii::app()->db->createCommand()->delete('{{participant_attribute_values}}', 'attribute_id = '.$attid.' AND value_id = '.$valid); 
     }
 
     function getAttributeNames($attributeid)

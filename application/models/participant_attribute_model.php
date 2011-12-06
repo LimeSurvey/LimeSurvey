@@ -76,7 +76,8 @@ class participant_attribute_model extends CI_Model
         $this->db->where('participant_attribute_names_lang.lang',$this->session->userdata('adminlang'));
         $this->db->where('lang',$this->session->userdata('adminlang'));
         $query = $this->db->get();
-     	return $query->result_array();
+     	//return $query->result_array();
+        echo $this->db->last_query();
     }
     //give the attribute type corresponding to attribute id
     function getAttributeType($attid)

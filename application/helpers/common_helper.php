@@ -5520,7 +5520,7 @@ function GetAttributeFieldNames($surveyid)
     if (($table = Yii::app()->db->schema->getTable('{{tokens_'.$surveyid . '}}')) === false)
         return Array();
 
-    return array_filter(array_keys($table->columns), 'filterforattributes');
+    return array_filter(array_values($table->columnNames), 'filterforattributes');
 }
 
 /**
@@ -5546,10 +5546,10 @@ function GetTokenConditionsFieldNames($surveyid)
 function GetTokenFieldsAndNames($surveyid, $onlyAttributes=false)
 {
     $clang = Yii::app()->lang;
-    if (!Yii::app()->db->schema->getTable("{{token_$surveyid}}"))
+    /*if (is_null(Yii::app()->db->schema->getTable("{{token_$surveyid}}")))
     {
         return Array();
-    }
+    }*/
     $extra_attrs=GetAttributeFieldNames($surveyid);
     $basic_attrs=Array('firstname','lastname','email','token','language','sent','remindersent','remindercount','usesleft');
     $basic_attrs_names=Array(
@@ -5563,7 +5563,6 @@ function GetTokenFieldsAndNames($surveyid, $onlyAttributes=false)
     $clang->gT('Total numbers of sent reminders'),
     $clang->gT('Uses left')
     );
-
     $thissurvey=getSurveyInfo($surveyid);
     $attdescriptiondata=array();
     if (!empty($thissurvey['attributedescriptions']))

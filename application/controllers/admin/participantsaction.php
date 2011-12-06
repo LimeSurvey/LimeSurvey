@@ -515,36 +515,35 @@ function exporttocsvAll()
  */
 function getaddtosurveymsg()
 {
-    $this->load->model('participants_model');
-    $searchcondition = basename($this->input->post('searchcondition'));
+    $searchcondition = basename(CHttpRequest::getPost('searchcondition'));
     if($searchcondition != 'getParticipants_json') // If there is a search condition in the url of the jqGrid
     {
         $participantid = "";
         $condition = explode("||",$searchcondition);
         if(count($condition)==3) // If there is no and condition , if the count is equal to 3 that means only one condition
         {
-            $query = $this->participants_model->getParticipantsSearch($condition,0,0);
+            $query = Participants::getParticipantsSearch($condition,0,0);
         }
         else  // if there are 'and' and 'or' condition in the condition the count is to be greater than 3
         {
-            $query = $this->participants_model->getParticipantsSearchMultiple($condition,0,0);
+            $query = Participants::getParticipantsSearchMultiple($condition,0,0);
         }
-        $clang = $this->limesurvey_lang;
+        $clang = $this->getController()->lang;
         echo sprintf($clang->gT("%s participant(s) are to be copied "),count($query));
    }
     else // if there is no search condition the participants will be counted on the basis of who is logged in
     {
         $participantid = "";
-        if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
+        if(Yii::app()->session['USER_RIGHT_SUPERADMIN']) //If super admin all the participants will be visible
         {
-            $query = $this->participants_model->getParticipantswithoutlimit();
+            $query = Participants::getParticipantswithoutlimit();
         }
         else
         {
-            $query = $this->participants_model->getParticipantsOwner($this->session->userdata('loginID'));
+            $query = Participants::getParticipantsOwner(Yii::app()->session['loginID']);
         }
-        $clang = $this->limesurvey_lang;
-        echo sprintf($clang->gT("%s participant(s) are to be copied "),count($query->result_array()));
+        $clang = $this->getController()->lang;
+        echo sprintf($clang->gT("%s participant(s) are to be copied "),count($query));
 
     }
 }
@@ -555,8 +554,7 @@ function getaddtosurveymsg()
  */
 function getSearchIDs()
 {
-    $this->load->model('participants_model');
-    $searchcondition = basename($this->input->post('searchcondition')); // get the search condition from the URL
+    $searchcondition = basename(CHttpRequest::getPost('searchcondition')); // get the search condition from the URL
     if($searchcondition != 'getParticipants_json') // if there is a search condition present
     {
         $participantid = "";
@@ -564,11 +562,11 @@ function getSearchIDs()
         // format for the condition is field||condition||value
         if(count($condition)==3) // if count is 3 , then it's a single search
         {
-            $query = $this->participants_model->getParticipantsSearch($condition,0,0);
+            $query = Participants::getParticipantsSearch($condition,0,0);
         }
         else// if count is more than 3 , then it's a multiple search
         {
-            $query = $this->participants_model->getParticipantsSearchMultiple($condition,0,0);
+            $query = Participants::getParticipantsSearchMultiple($condition,0,0);
         }
         foreach($query as $key=>$value)
         {
@@ -580,16 +578,16 @@ function getSearchIDs()
     else// if no search condition
     {
         $participantid = ""; // initiallise the participant id to blank
-        if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
+        if(Yii::app()->session['USER_RIGHT_SUPERADMIN']) //If super admin all the participants will be visible
         {
-            $query = $this->participants_model->getParticipantswithoutlimit(); // get all the participant id if it is a super admin
+            $query = Participants::getParticipantswithoutlimit(); // get all the participant id if it is a super admin
         }
         else // get participants on which the user has right on
         {
-            $query = $this->participants_model->getParticipantsOwner($this->session->userdata('loginID'));
+            $query = Participants::getParticipantsOwner($this->session->userdata('loginID'));
         }
 
-        foreach($query->result_array() as $key=>$value)
+        foreach($query as $key=>$value)
         {
             $participantid  = $participantid.",".$value['participant_id']; // combine the participant id's in an string
         }
@@ -1182,7 +1180,7 @@ function saveAttribute()
         if(isset($_POST['editbox']))
         {
             $editattvalue = array('value_id'=> $_POST['value_id'],
-                                  'attribute_id'=> $this->uri->segment(4),
+                                  'attribute_id'=> CHttpRequest::getQuery('aid'),
                                   'value' => $_POST['editbox']);
             ParticipantAttributeNames::saveAttributeValue($editattvalue);
         }
@@ -1205,7 +1203,7 @@ function delAttributeValues()
     $attribute_id = CHttpRequest::getQuery('aid');
     $value_id = CHttpRequest::getQuery('vid');
     ParticipantAttributeNames::delAttributeValues($attribute_id,$value_id);
-    CController::redirect(Yii::app()->createUrl('/admin/participants/sa/viewAttribute/'.$attribute_id));
+    CController::redirect(Yii::app()->createUrl('/admin/participants/sa/viewAttribute/aid/'.$attribute_id));
 }
 /*
  * This function is responsible for deleting the storing the additional attributes
@@ -1531,8 +1529,8 @@ function summaryview()
  */
 function setSession()
 {
-    $this->session->unset_userdata('participantid');
-    $this->session->set_userdata('participantid', $this->input->post('participantid'));
+    unset(Yii::app()->session['participantid']);
+    Yii::app()->session['participantid'] = CHttpRequest::getPost('participantid');
 }
 /*
  * funcion for generation of unique id
@@ -1575,9 +1573,10 @@ function shareParticipants()
  */
 function addToCentral()
 {
-    $this->load->model('participants_model');
-    $response=$this->participants_model->copyToCentral($this->input->post('surveyid'),$this->input->post('newarr'),$this->input->post('mapped'));
-    $clang = $this->limesurvey_lang;
+    $newarr = CHttpRequest::getPost('newarr');
+    $mapped = CHttpRequest::getPost('mapped');
+    $response=Participants::copyToCentral(CHttpRequest::getPost('surveyid'),$newarr,CHttpRequest::getPost('mapped'));
+    $clang = $this->getController()->lang;
     echo sprintf($clang->gT("%s participants have been copied,%s participants have not been copied because they already exisit "),$response['success'],$response['duplicate']);
 }
 /*
@@ -1585,10 +1584,8 @@ function addToCentral()
  */
 function addToToken()
 {
-
-    $this->load->model('participants_model');
-    $response = $this->participants_model->copytoSurvey($this->input->post('participantid'),$this->input->post('surveyid'),$this->input->post('attributeid'));
-    $clang = $this->limesurvey_lang;
+    $response = Participants::copytoSurvey(CHttpRequest::getPost('participantid'),CHttpRequest::getPost('surveyid'),CHttpRequest::getPost('attributeid'));
+    $clang = $this->getController()->lang;
     echo sprintf($clang->gT("%s participants have been copied,%s participants have not been copied because they already exisit "),$response['success'],$response['duplicate']);
 }
 /*
@@ -1596,13 +1593,16 @@ function addToToken()
  */
 function addToTokenattmap()
 {
-    $participant_id= $this->input->post('participant_id');
-    $surveyid = $this->input->post('surveyid');
-    $mapped = $this->input->post('mapped');
-    $newcreate = $this->input->post('newarr');
-    $this->load->model('participants_model');
-    $clang = $this->limesurvey_lang;
-    $response=$this->participants_model->copytosurveyatt($surveyid,$mapped,$newcreate,$participant_id);
+    $participant_id= CHttpRequest::getPost('participant_id');
+    $surveyid = CHttpRequest::getPost('surveyid');
+    $mapped = CHttpRequest::getPost('mapped');
+    $newcreate = CHttpRequest::getPost('newarr');
+    $clang = $this->getController()->lang;
+    if(empty($newcreate[0]))
+    {
+        $newcreate = array();
+    }
+    $response=Participants::copytosurveyatt($surveyid,$mapped,$newcreate,$participant_id);
     echo sprintf($clang->gT("%s participants have been copied,%s participants have not been copied because they already exisit "),$response['success'],$response['duplicate']);
 
 }
@@ -1611,19 +1611,25 @@ function addToTokenattmap()
  */
 function attributeMap()
 {
-    self::_js_admin_includes($this->config->item('adminscripts')."attributeMap.js");
-    $css_admin_includes[] = $this->config->item('styleurl')."admin/default/attributeMap.css";
-    $this->config->set_item("css_admin_includes", $css_admin_includes);
-    self::_getAdminHeader();
-    $clang = $this->limesurvey_lang;
-    $surveyid = $this->input->post('survey_id');
-    $redirect = $this->input->post('redirect');
-    $count = $this->input->post('count');
-    $participant_id = $this->input->post('participant_id');
-    $this->load->model('participant_attribute_model');
-    $attributes = $this->participant_attribute_model->getAttributes();
-    $tokenfieldnames = array_values($this->db->list_fields("tokens_$surveyid"));
-    $tokenattributefieldnames=array_filter($tokenfieldnames,'filterforattributes');
+    Yii::app()->loadHelper('common');
+    $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts')."attributeMap.js");
+    $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/attributeMap.css";
+    Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+    $this->getController()->_getAdminHeader();
+    $clang = $this->getController()->lang;
+    $surveyid = CHttpRequest::getPost('survey_id');
+    $redirect = CHttpRequest::getPost('redirect');
+    $count = CHttpRequest::getPost('count');
+    $participant_id = CHttpRequest::getPost('participant_id');
+    $attributes = ParticipantAttributeNames::getAttributes();
+    $arr = Yii::app()->db->createCommand()->select('*')->from("{{tokens_$surveyid}}")->queryRow();
+    if(is_array($arr)){
+        $tokenfieldnames = array_keys($arr);
+        $tokenattributefieldnames=array_filter($tokenfieldnames,'filterforattributes');
+    }
+    else {
+        $tokenattributefieldnames = array();
+    }
     $selectedattribute = array();
     $selectedcentralattribute = array();
     $alreadymappedattid = array();
@@ -1661,19 +1667,19 @@ function attributeMap()
                   'redirect' => $redirect,
                   'participant_id'=>$participant_id,
                   'count' => $count);
-    $this->load->view('admin/participants/attributeMap_view',$aData);
-    self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+    $this->getController()->render('/admin/participants/attributeMap_view',$aData);
+    $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 }
 /*
  * This function is responsible for attribute mapping while copying participants from cpdb to token's table
  */
 function attributeMapToken()
 {
-    self::_getAdminHeader();
-    $clang = $this->limesurvey_lang;
-    $surveyid = $this->uri->segment(4);
-    $this->load->model('participant_attribute_model');
-    $attributes = $this->participant_attribute_model->getAttributes();
+    Yii::app()->loadHelper('common');
+    $this->getController()->_getAdminHeader();
+    $clang = $this->getController()->lang;
+    $surveyid = CHttpRequest::getQuery('sid');
+    $attributes = ParticipantAttributeNames::getAttributes();
     $tokenattributefieldnames=GetTokenFieldsAndNames($surveyid,TRUE);
     $selectedattribute = array();
     $selectedcentralattribute = array();
@@ -1682,7 +1688,7 @@ function attributeMapToken()
     $i=0;
     $j=0;
     foreach($tokenattributefieldnames as $key=>$value)
-    {
+    {   
         if(is_numeric($key[10]))
         {
             $selectedattribute[$value] = $key;
@@ -1704,8 +1710,8 @@ function attributeMapToken()
                   'attribute' => $selectedcentralattribute,
                   'tokenattribute'=>$selectedattribute,
                   'alreadymappedattributename' => $alreadymappedattdisplay );
-    $this->load->view('admin/participants/attributeMapToken_view',$aData);
-    self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+    $this->getController()->render('/admin/participants/attributeMapToken_view',$aData);
+    $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 }
 function mapCSVcancelled()
 {
@@ -1762,5 +1768,6 @@ function saveVisible()
 {
     ParticipantAttributeNames::saveAttributeVisible(CHttpRequest::getPost('attid'),CHttpRequest::getPost('visiblevalue'));
 }
+
 }
 ?>

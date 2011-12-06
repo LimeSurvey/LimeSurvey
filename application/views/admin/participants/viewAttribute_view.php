@@ -14,7 +14,7 @@
   $plus = array('src'    => Yii::app()->baseUrl."/images/plus.png",
                 'alt'    => 'Add Language',
                 'title'  => 'Add Language',
-                'id'     => 'add',
+                'id'     => 'addsign',
                 'hspace' => 2,
                 'vspace' => -6);
 ?>
@@ -22,7 +22,7 @@
   <?php echo $clang->gT('Add a Language:')?>
   <?php 
   $options = array();
-  $options[''] = $clang->gT('<---Select One--->');
+  $options[''] = $clang->gT('---Select One---');
   foreach (getLanguageData () as $langkey2 => $langname)
   {
     $options[$langkey2] = $langname['description'];
@@ -120,12 +120,12 @@
       </td>
       <td>
       <?php
-        $del = array( 'src'    => 'images/error_notice.png',
+        $del = array( 'src'    => Yii::app()->baseUrl.'/images/error_notice.png',
                       'alt'    => 'Delete',
                       'width'  => '15',
                       'height' => '15',
                       'title'  => 'Delete Atribute Value' );
-        $edit = array('src' => 'images/token_edit.png',
+        $edit = array('src' => Yii::app()->baseUrl.'/images/token_edit.png',
                       'alt' => 'Edit',
                       'width' => '15',
                       'id' => 'edit',
@@ -133,7 +133,7 @@
                       'height' => '15',
                       'title' => 'Edit Atribute');
         echo CHtml::image($edit['src'],$edit['alt'],array_slice($edit,2));
-        echo CHtml::link(img($del),'admin/participants/sa/delAttributeValues/'.$attributes['attribute_id'].'/'.$value['value_id']);
+        echo CHtml::link(CHtml::image($del['src'],$del['alt'],array_slice($del,2)),Yii::app()->createUrl('admin/participants/sa/delAttributeValues/aid/'.$attributes['attribute_id'].'/vid/'.$value['value_id']));
       ?>
       </td>
     </tr>

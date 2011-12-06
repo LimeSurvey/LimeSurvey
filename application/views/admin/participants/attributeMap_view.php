@@ -1,12 +1,12 @@
 <script type="text/javascript">
-    var redUrl = "<?php echo site_url("admin/participants/displayParticipants");?>";
+    var redUrl = "<?php echo Yii::app()->baseUrl."/index.php/admin/participants/sa/displayParticipants";?>";
     var surveyId = "<?php echo $survey_id ?>";
     var redirect = "<?php echo $redirect ?>";
     if(redirect=='TRUE')
     {
-     redUrl = "<?php echo site_url("admin/tokens/browse").'/'.$survey_id;?>";
+     redUrl = "<?php echo Yii::app()->baseUrl."/index.php/admin/tokens/sa/browse/surveyid".'/'.$survey_id;?>";
     }
-    var copyUrl = "<?php echo site_url("admin/participants/addToTokenattmap");?>";
+    var copyUrl = "<?php echo Yii::app()->baseUrl."/index.php/admin/participants/sa/addToTokenattmap";?>";
     var participant_id = "<?php echo $participant_id; ?>";   
 </script>
 <div class='header ui-widget-header'>
@@ -75,11 +75,11 @@
 
     <p> <input type="button" name="attmap" id="attmap" value="Continue" /></p>
     <?php $ajaxloader = array(
-          'src' => 'images/ajax-loader.gif',
+          'src' => Yii::app()->baseUrl.'/images/ajax-loader.gif',
           'alt' => 'Ajax Loader',
           'title' => 'Ajax Loader'
           );?>
     <div id="processing" title="<?php echo $clang->gT("Processing .....") ?>" style="display:none">
-    <?php echo img($ajaxloader); ?>
+    <?php echo CHtml::image($ajaxloader['src'],$ajaxloader['alt']); ?>
     </div>
  </div>

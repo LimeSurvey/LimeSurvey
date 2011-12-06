@@ -179,6 +179,11 @@ class Participants extends CActiveRecord
 	    return count(Yii::app()->db->createCommand()->select('{{participants}}.*,{{participant_shares}}.can_edit')->from('{{participants}}')->leftJoin('{{participant_shares}}',' {{participants}}.participant_id={{participant_shares}}.participant_id')->where('owner_uid = '.$userid.' OR share_uid = '.$userid)->group('{{participants}}.participant_id')->queryAll());
 	}
 
+	function getParticipantswithoutlimit()
+	{    
+    	return Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->queryAll();
+	}
+
 	/*
 	 * This function combines the shared participant and the central participant
 	 * table and searches for any reference of owner id in the combined record
@@ -1084,5 +1089,255 @@ class Participants extends CActiveRecord
 	function getParticipantSharedAll()
 	{	
 		return Yii::app()->db->createCommand()->select('{{participants}}.*,{{participant_shares}}.*')->from('{{participants}}')->join('{{participant_shares}}','{{participant_shares}}.participant_id = {{participants}}.participant_id')->queryAll();
+	}
+
+	function copytosurveyatt($surveyid,$mapped,$newcreate,$participantid)
+	{
+		Yii::app()->loadHelper('common');
+	    $duplicate=0;
+	    $sucessfull=0;
+	    $participantid = explode(",",$participantid);
+	    if($participantid[0]=="")
+	    {
+	        $participantid = array_slice($participantid,1); 
+	    }
+	    $number2add=sanitize_int(count($newcreate));
+	    $arr = Yii::app()->db->createCommand()->select('*')->from("{{tokens_$surveyid}}")->queryRow();
+	    if(is_array($arr)){
+	        $tokenfieldnames = array_keys($arr);
+	        $tokenattributefieldnames=array_filter($tokenfieldnames,'filterforattributes');
+    	}
+    	else {
+        	$tokenattributefieldnames = array();
+    	}
+	    foreach($tokenattributefieldnames as $key=>$value)
+	    {
+	       if($value[10]=='c')
+	        {
+	           $attid = substr($value,15);
+	           $mapped[$value] = $attid;
+	        }
+	    }  
+	    $attributesadded=array();
+	    $attributeidadded=array();
+	    $fieldcontents="";
+	    if(!empty($newcreate))
+	    {
+	    foreach ($newcreate as $key=>$value)
+	    {
+	        $fields['attribute_cpdb_'.$value]=array('type' => 'VARCHAR','constraint' => '255');
+	        $attname = Yii::app()->db->createCommand()->select('{{participant_attribute_names_lang}}.attribute_name')->from('{{participant_attribute_names}}')->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')->where('{{participant_attribute_names}}.attribute_id = '.$value.' AND lang = "'.Yii::app()->session['adminlang'].'"');	        
+	        $attributename = $attname->queryRow();
+	        $tokenattributefieldnames[]='attribute_cpdb_'.$value;
+	        $fieldcontents.= 'attribute_cpdb_'.$value.'='.$attributename['attribute_name']."\n";
+	        array_push($attributeidadded,'attribute_cpdb_'.$value);
+	        array_push($attributesadded,$value);
+	    }
+	    $previousatt = Yii::app()->db->createCommand()->select('attributedescriptions')->where("sid = ".$surveyid)->from('{{surveys}}');
+	    $previouseattribute = $previousatt->queryRow();
+	    Yii::app()->db->createCommand()->update('{{surveys}}',array("attributedescriptions"=>$previouseattribute['attributedescriptions'].$fieldcontents),'sid = '.$surveyid);// load description in the surveys table    
+	    foreach($fields as $key=>$value){
+	    	Yii::app()->db->createCommand("ALTER TABLE {{tokens_$surveyid}} ADD COLUMN $key ".$value['type'].'('.$value['constraint'].')')->query(); // add columns in token's table
+	    }
+	    }
+	    //Function for pushing associative array
+	    foreach($participantid as $key=>$participant)
+	    {
+	        $writearray = array();
+	        $participantdata = Yii::app()->db->createCommand()->select('firstname,lastname,email,language,blacklisted')->where('participant_id = "'.$participant.'"')->from('{{participants}}');
+	        $tobeinserted = $participantdata->queryRow();
+	        $query = Yii::app()->db->createCommand()->select('*')->from('{{tokens_'.$surveyid.'}}')->where('firstname = "'.$tobeinserted['firstname'].'" AND lastname = "'.$tobeinserted['lastname'].'" AND email = "'.$tobeinserted['email'].'"')->queryAll();
+	        if (count($query) > 0)
+	        {
+	            $duplicate++;
+	        }
+	        else
+	        {
+	            $writearray = array('participant_id'=>$participant,'firstname'=>$tobeinserted['firstname'],'lastname' => $tobeinserted['lastname'],'email' => $tobeinserted['email'],'emailstatus'=>'OK','language' =>$tobeinserted['language']);
+	            Yii::app()->db->createCommand()->insert('{{tokens_'.$surveyid.'}}', $writearray);
+	            $insertedtokenid = Yii::app()->db->getLastInsertID();
+	            $time = time();
+	            $data = array(
+	            'participant_id' => $participant,
+	            'token_id' => $insertedtokenid ,
+	            'survey_id' => $surveyid,
+	            'date_created' =>  date(DATE_W3C,$time));
+	            Yii::app()->db->createCommand()->insert('{{survey_links}}', $data); 
+	            if(!empty($newcreate))
+	            {
+	            $numberofattributes = count($attributesadded);
+	            for($a=0;$a<$numberofattributes;$a++)  
+	            {  
+	            	$val = Yii::app()->db->createCommand()->select('value')->where('participant_id = "'.$participant.'" AND attribute_id = '.$attributesadded[$a])->from('{{participant_attribute}}');
+	                if(count($val->queryAll())>0)
+	                {
+	                    $value=$val->queryRow();
+	                    $data=array($attributeidadded[$a]=>$value['value']);
+	                    if(!empty($value))
+	                    {
+	                       Yii::app()->db->createCommand()->update("{{tokens_$surveyid}}", $data, 'participant_id = "'.$participant.'"');  
+	                    }
+	                }
+	            }
+	            }
+	            if(!empty($mapped))
+	            {
+	                foreach($mapped as $key=>$value)
+	                {
+	                	$val = Yii::app()->db->createCommand()->select('value')->where('participant_id = "'.$participant.'" AND attribute_id = '.$value)->from('{{participant_attribute}}');
+	                    $value=$val->queryRow();
+	                    if(isset($value['value']))
+	                    {
+	                        $data=array($key=>$value['value']);
+	                        Yii::app()->db->createCommand()->update("{{tokens_$surveyid}}", $data,'participant_id = "'.$participant.'"');
+	                    }
+	                    
+	                }
+	            }
+	            $sucessfull++;
+	        }
+	    }
+	    $returndata = array('success'=>$sucessfull,'duplicate'=>$duplicate);
+	    return $returndata;
+	}
+
+	/*
+	* This function is responsible for checking for any exsisting record in the token table and if not copy the participant to it
+	*/
+	function copyToCentral($surveyid,$newarr,$mapped)
+	{
+	    $tokenid = Yii::app()->session['participantid'];
+	    $duplicate=0;
+	    $sucessfull=0;
+	    $writearray = array();
+	    $attid = array();
+	    $pid="";
+	    $arr = Yii::app()->db->createCommand()->select('*')->from("{{tokens_$surveyid}}")->queryRow();
+	    if(is_array($arr)){
+	        $tokenfieldnames = array_keys($arr);
+	        $tokenattributefieldnames=array_filter($tokenfieldnames,'filterforattributes');
+    	}
+    	else {
+        	$tokenattributefieldnames = array();
+    	}
+	    foreach($tokenattributefieldnames as $key=>$value) //mapping the automatically mapped
+	    {
+	       if($value[10]=='c')
+	        {
+	           $attid = substr($value,15);
+	           $mapped[$attid] = $value;
+	        }
+	    }
+	    if(!empty($newarr))
+	    {
+	       foreach ($newarr as $key=>$value) //creating new central attribute
+	            {
+	                $insertnames = array('attribute_type' => 'TB','visible' => 'Y');
+	                Yii::app()->db->createCommand()->insert('{{participant_attribute_names}}',$insertnames);
+	                $attid[$key] = Yii::app()->db->getLastInsertID();
+	                $insertnameslang = array('attribute_id' => Yii::app()->db->getLastInsertID(),
+	                                         'attribute_name'=>urldecode($key),
+	                                         'lang' => Yii::app()->session['adminlang']);
+	                Yii::app()->db->createCommand()->insert('{{participant_attribute_names_lang}}',$insertnameslang);
+	            }       
+	    }
+	    foreach($tokenid as $key=>$tid)
+	    {
+	        if(is_numeric($tid) && $tid!="")
+	        {
+	            $tobeinserted = Yii::app()->db->createCommand()->select('participant_id,firstname,lastname,email,language')->where('tid = '.$tid)->from('{{tokens_'.$surveyid.'}}')->queryRow();
+	            $query = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->where('firstname = "'.$tobeinserted['firstname'].'" AND lastname = "'.$tobeinserted['lastname'].'" AND email = "'.$tobeinserted['email'].'"')->queryAll();
+	            if (count($query) > 0)
+	            {
+	                $duplicate++;
+	            }
+	            else
+	            {
+	                if(empty($tobeinserted['blacklisted']))
+	                {
+	                    $black = 'N';
+	                }
+	                else
+	                {
+	                    $black = $tobeinserted['blacklisted'];
+	                }
+	                if(!empty($tobeinserted['participant_id']))
+	                {
+	                    $writearray = array('participant_id'=>$tobeinserted['participant_id'],'firstname'=>$tobeinserted['firstname'],'lastname' => $tobeinserted['lastname'],'email' => $tobeinserted['email'],'language' =>$tobeinserted['language'],'blacklisted'=>$black,'owner_uid' => Yii::app()->session['loginID']);
+	                }
+	                else
+	                {
+	                    $writearray = array('participant_id'=>$this->gen_uuid(),'firstname'=>$tobeinserted['firstname'],'lastname' => $tobeinserted['lastname'],'email' => $tobeinserted['email'],'language' =>$tobeinserted['language'],'blacklisted'=>$black,'owner_uid' => Yii::app()->session['loginID']);
+	                }
+	                $pid = $writearray['participant_id'];
+	                Yii::app()->db->createCommand()->insert('{{participants}}',$writearray);
+	                if(!empty($newarr))
+	                {
+	                foreach ($newarr as $key=>$value)
+	                    {
+	                        $val = Yii::app()->db->createCommand()->select($value)->where('tid = '.$tid)->from('{{tokens_'.$surveyid.'}}');
+	                        $value2 = $val->queryRow();
+                        	$data = array(  'participant_id' => $pid,
+                            	            'value' => $value2["$value"],
+                                	        'attribute_id' =>  $attid[$key]);
+
+	                        if(!empty($data['value']))
+	                        {
+	                        Yii::app()->db->createCommand()->insert('{{participant_attribute}}', $data); 
+	                        }
+	                    }
+	                }
+	                if(!empty($mapped))
+	                {
+	                foreach($mapped as $cpdbatt => $tatt)  
+	                {  
+	                     $val = Yii::app()->db->createCommand()->select($tatt)->where('tid = '.$tid)->from('{{tokens_'.$surveyid.'}}');
+	                     $value = $val->queryRow();
+	                     $data = array( 'participant_id' => $pid,
+	                                    'value' => $value["$tatt"],
+	                                    'attribute_id' => $cpdbatt );
+	                     if(!empty($data['value']))
+	                     {
+	                        Yii::app()->db->createCommand()->insert('{{participant_attribute}}', $data); 
+	                     }
+	                }
+	                }
+	                $sucessfull++;
+	            }
+	            }
+	        }
+	        if(!empty($newarr))
+	        {
+	            foreach ($newarr as $key=>$value)
+	            {
+	                $newname = 'attribute_cpdb_'.$attid[$key];
+	                $fields = array($value => array('name' => $newname,'type' => 'TEXT'));
+	                Yii::app()->db->createCommand()->renameColumn('{{tokens_'.$surveyid.'}}',$value,$newname);
+	                Yii::app()->db->createCommand()->alterColumn('{{tokens_'.$surveyid.'}}',$newname,'TEXT');
+	                $previousatt = Yii::app()->db->createCommand()->select('attributedescriptions')->where("sid = ".$surveyid)->from('{{surveys}}');
+	                $previouseattribute = $previousatt->queryRow();
+	                $newstring = str_replace($value,$newname,$previouseattribute['attributedescriptions']);
+	                Yii::app()->db->createCommand()->update('{{surveys}}',array("attributedescriptions"=>$newstring),'sid = '.$surveyid); // load description in the surveys table    
+	            }
+	        }
+	        if(!empty($mapped))
+	        {
+	            foreach($mapped as $cpdbatt => $tatt)  
+	            {
+	                if($tatt[10]!='c')
+	                {
+	                    $newname = 'attribute_cpdb_'.$cpdbatt;
+	                    $fields = array($tatt => array('name' => $newname,'type' => 'TEXT'));
+	                	Yii::app()->db->createCommand()->renameColumn('{{tokens_'.$surveyid.'}}',$tatt,$newname);
+	                	Yii::app()->db->createCommand()->alterColumn('{{tokens_'.$surveyid.'}}',$newname,'TEXT');
+	                    $previousatt = Yii::app()->db->createCommand()->select('attributedescriptions')->where("sid = ".$surveyid)->from('{{surveys}}');
+	                    $previouseattribute = $previousatt->queryRow();
+	                    $newstring = str_replace($tatt,$newname,$previouseattribute['attributedescriptions']);
+	                    Yii::app()->db->createCommand()->update('{{surveys}}',array("attributedescriptions"=>$newstring),'sid = '.$surveyid); // load description in the surveys table    
+	                }
+	            }
+	        }
+	        $returndata = array('success'=>$sucessfull,'duplicate'=>$duplicate);
+	        return $returndata;
 	}
 }

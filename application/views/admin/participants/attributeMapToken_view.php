@@ -1,13 +1,13 @@
 
-        <link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('styleurl')."admin/default/attributeMapToken.css" ?>" />
-        <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.js" ?>" type="text/javascript"></script>
-        <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
-        <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.ui.sortable.js" ?>" type="text/javascript"></script>
-        <script src="<?php echo $this->config->item('adminscripts')."attributeMapToken.js" ?>" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('styleurl')."admin/default/attributeMapToken.css" ?>" />
+        <script src="<?php echo Yii::app()->getConfig('generalscripts')."jquery/jquery.js" ?>" type="text/javascript"></script>
+        <script src="<?php echo Yii::app()->getConfig('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
+        <script src="<?php echo Yii::app()->getConfig('generalscripts')."jquery/jquery.ui.sortable.js" ?>" type="text/javascript"></script>
+        <script src="<?php echo Yii::app()->getConfig('adminscripts')."attributeMapToken.js" ?>" type="text/javascript"></script>
         <script type="text/javascript">
-            var redUrl = "<?php echo site_url("admin/participants/displayParticipants");?>";
-            var copyUrl = "<?php echo site_url("admin/participants/addToCentral");?>";
-            var surveyId = "<?php echo $this->uri->segment(4); ?>";
+            var redUrl = "<?php echo Yii::app()->baseUrl."/index.php/admin/participants/sa/displayParticipants";?>";
+            var copyUrl = "<?php echo Yii::app()->baseUrl."/index.php/admin/participants/sa/addToCentral";?>";
+            var surveyId = "<?php echo CHttpRequest::getQuery('sid'); ?>";
         </script>
   </head>
 <body>
@@ -55,12 +55,12 @@
 <?php } ?>    
     <p> <input type="button" name="attmap" id="attmap" value="Continue" /></p>
     <?php $ajaxloader = array(
-          'src' => 'images/ajax-loader.gif',
+          'src' => Yii::app()->baseUrl.'/images/ajax-loader.gif',
           'alt' => 'Ajax Loader',
           'title' => 'Ajax Loader'
           );?>
     <div id="processing" title="<?php echo $clang->gT("Processing .....") ?>" style="display:none">
-    <?php echo img($ajaxloader); ?>
+    <?php echo CHtml::image($ajaxloader['src'],$ajaxloader['alt']); ?>
     </div>
 </body>
 </html>
