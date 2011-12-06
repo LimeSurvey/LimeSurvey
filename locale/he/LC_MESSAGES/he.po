@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-11-29 23:16+0100\n"
-"PO-Revision-Date: 2011-12-04 20:56+0100\n"
+"PO-Revision-Date: 2011-12-06 23:00+0100\n"
 "Last-Translator: LimeSurvey team <info@limesurvey.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1469,7 +1469,7 @@ msgstr "שם פרמטר:"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/editSurvey_view.php:34
 msgid "Target (sub-)question:"
-msgstr ""
+msgstr "תת שאלת יעד"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/editSurvey_view.php:35
 msgid "(No target question)"
@@ -2080,7 +2080,7 @@ msgstr "חובה:"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:170
 msgid "Relevance equation:"
-msgstr ""
+msgstr "משוואה רלונטית:"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:175
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/questionbar_view.php:209
@@ -2615,7 +2615,7 @@ msgstr "לטבלת התשובות שלך ינתן השם החדש:"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/deactivateSurvey_view.php:21
 msgid "All participant information is lost."
-msgstr ""
+msgstr "כלל המידע על המשתתפים נאבד"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/deactivateSurvey_view.php:22
 msgid "A deactivated survey is not accessible to participants (only a message appears that they are not permitted to see this survey)."
@@ -2631,7 +2631,7 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/deactivateSurvey_view.php:30
 msgid "Expire survey"
-msgstr ""
+msgstr "סקר פג תוקף"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/deactivateSurvey_view.php:35
 msgid "Deactivate survey"
@@ -2672,23 +2672,23 @@ msgstr "זמן"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/showSyntaxErrors_view.php:6
 msgid "sid"
-msgstr ""
+msgstr "sid"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/showSyntaxErrors_view.php:7
 msgid "gid"
-msgstr ""
+msgstr "gid"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/showSyntaxErrors_view.php:8
 msgid "qid"
-msgstr ""
+msgstr "qid"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/showSyntaxErrors_view.php:9
 msgid "gseq"
-msgstr ""
+msgstr "gseq"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/showSyntaxErrors_view.php:10
 msgid "qseq"
-msgstr ""
+msgstr "qseq"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/showSyntaxErrors_view.php:11
 msgid "Type"
@@ -2700,7 +2700,7 @@ msgstr "ביטוי מקור"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/showSyntaxErrors_view.php:13
 msgid "Syntax highlighted"
-msgstr ""
+msgstr "תחביר מודגש"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:14
 msgid "Preview current question group"
@@ -2815,9 +2815,8 @@ msgid "Select question group file (*.lsg/*.csv):"
 msgstr "בחר קובץ קבוצת שאלה (*.lsg/*.csv):"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/organizeGroupsAndQuestions_view.php:1
-#, fuzzy
 msgid "Organize question groups/questions"
-msgstr "עמוד שאלות"
+msgstr "ארגן קבוצת שאלות"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/organizeGroupsAndQuestions_view.php:3
 msgid "To reorder questions/questiongroups just drag the question/group with your mouse to the desired position."
@@ -2864,7 +2863,7 @@ msgstr "פורמט תאריך:"
 #: /tmp/translationstatus_v2/application/views/admin/survey/editLocalSettings_view.php:35
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:47
 msgid "Decimal mark:"
-msgstr ""
+msgstr "סימון דצימאלי"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:9
 msgid "This survey is currently not active"
@@ -2973,7 +2972,7 @@ msgstr "גרסת הדפסה של הסקר"
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:161
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:164
 msgid "QueXML export"
-msgstr ""
+msgstr "QueXML יצוא"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:177
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:180
@@ -3007,9 +3006,8 @@ msgid "Question group/question organizer disabled"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:214
-#, fuzzy
 msgid "Reorder question groups / questions"
-msgstr "ערוך תת-שאלות לשאלה זו"
+msgstr "סדר מחדש קבוצות שאלות"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:221
 msgid "Token management"
@@ -3056,7 +3054,7 @@ msgstr "סגור סקר זה"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/resetSyntaxErrorLog_view.php:2
 msgid "Cleared log of syntax errors"
-msgstr ""
+msgstr "לוג ברור של טעויות תחביר"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/activateSurvey_view.php:5
 #: /tmp/translationstatus_v2/application/views/admin/survey/activateSurvey_view.php:35
@@ -3293,9 +3291,8 @@ msgid "Participant may save and resume later?"
 msgstr "מותר למשפתתפים לשמור ולחזור מאוחר יותר?"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabImport_view.php:6
-#, fuzzy
 msgid "Select survey structure file (*.lss, *.csv) or survey archive (*.zip):"
-msgstr "בחר קובץ מבנה סקר (*.lss, *.csv):"
+msgstr " בחר קובץ מבנה סקר (*.lss, *.csv) או ארכיון סקר"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabImport_view.php:9
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabCopy_view.php:10
@@ -3590,7 +3587,7 @@ msgstr "הצג את שניהם"
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:289
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:334
 msgid "Show group name only"
-msgstr ""
+msgstr "הראה שם קבוצה בלבד"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:290
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:335
@@ -3636,7 +3633,6 @@ msgstr "הראה קוד שאלה בלבד"
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:348
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:360
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:367
-#, fuzzy
 msgid "Show \"No answer\""
 msgstr "אין תשובה"
 
@@ -4092,9 +4088,8 @@ msgstr "אנא בחר"
 
 #: /tmp/translationstatus_v2/application/views/admin/labels/labelsetsbar_view.php:37
 #: /tmp/translationstatus_v2/application/views/admin/labels/editlabel_view.php:4
-#, fuzzy
 msgid "Create or import new label set(s)"
-msgstr "צור או ייבא סקר חדש"
+msgstr "צור מחרוזת תווית חדשה"
 
 #: /tmp/translationstatus_v2/application/views/admin/labels/labelsetsbar_view.php:47
 msgid "Show Help"
@@ -4829,7 +4824,7 @@ msgstr "גרסת SPSS"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/spss_view.php:12
 msgid "Prior to 16"
-msgstr ""
+msgstr "קודם ל16"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/spss_view.php:14
 msgid "16 or up"
@@ -4872,7 +4867,7 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/export/spss_view.php:29
 msgid "Your data should be imported now"
-msgstr ""
+msgstr "המידע שלך אמור להיות מיובא"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/vv_view.php:9
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:72
@@ -4893,14 +4888,12 @@ msgid "Export result data to R"
 msgstr "תוצאות הנתונים שייצוא ל- R"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/r_view.php:11
-#, fuzzy
 msgid "Export R syntax file"
-msgstr "ייצא לקובץ סקרים עם סיומת VV"
+msgstr "יצא לתחביר קובץ R"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/r_view.php:12
-#, fuzzy
 msgid "Export .csv data file"
-msgstr "ייצא תוצאות לקובץ פקודות SPSS"
+msgstr "יצא ל .cvs"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/r_view.php:17
 msgid "Download the data and the syntax file."
@@ -5037,7 +5030,7 @@ msgstr "דואר אלקטרוני"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:102
 msgid "Blacklisted"
-msgstr ""
+msgstr "נכנס לרשימה השחורה"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:102
 msgid "Owner name"
@@ -5106,7 +5099,7 @@ msgstr "רשימת המשתתפים"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/participantsPanel_view.php:105
 msgid "There are no participants to be exported"
-msgstr ""
+msgstr "אין משתתפים לייצוא"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/userControl_view.php:5
 msgid "Global participant settings"
@@ -5122,7 +5115,7 @@ msgstr "אין לך מספיק הרשאות"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/uploadSummary_view.php:13
 msgid "CPDB CSV summary"
-msgstr ""
+msgstr "תקציר  CPDB CSV"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/uploadSummary_view.php:16
 msgid "Uploaded CSV file successfully"
@@ -5133,14 +5126,13 @@ msgid "Successfully created CPDB entries"
 msgstr "נוצרו בהצלחה כניסות CPDB"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/uploadSummary_view.php:20
-#, fuzzy
 msgid "Failed to create token entries"
-msgstr "מחק את כל כניסות ההרשאה"
+msgstr "נכשל ביצירת סמל רשומה"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/uploadSummary_view.php:24
-#, fuzzy, php-format
+#, php-format
 msgid "%s records in CSV"
-msgstr "סה\"כ רשומות בסקר"
+msgstr "%s רשומות ב CVS"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/uploadSummary_view.php:28
 #, php-format
@@ -5153,9 +5145,9 @@ msgid "%s records met minumum requirements"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/uploadSummary_view.php:31
-#, fuzzy, php-format
+#, php-format
 msgid "%s records imported"
-msgstr "סך כל הרשומות שיובאו:"
+msgstr "%s רשומות יובאו"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/uploadSummary_view.php:37
 #, php-format
@@ -5378,7 +5370,7 @@ msgstr "UTF-8 Unicode"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/importCSV_view.php:62
 msgid "Seperator used:"
-msgstr ""
+msgstr "מפריד בשימוש"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/importCSV_view.php:65
 msgid "Auto detected"
@@ -5394,11 +5386,11 @@ msgstr "נקודה פסיק"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/importCSV_view.php:74
 msgid "Filter blank email addresses:"
-msgstr ""
+msgstr "נקה אימייל ריק"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/importCSV_view.php:90
 msgid "CSV input format"
-msgstr ""
+msgstr "קלט CVS"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/importCSV_view.php:93
 #, fuzzy
@@ -5439,7 +5431,7 @@ msgstr "המשתתפים ששיתפתה"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/summary_view.php:40
 msgid "Blacklisted participants"
-msgstr ""
+msgstr "משתתפים ברשימה השחורה"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/summary_view.php:48
 msgid "Total attributes in the central table"
@@ -5520,15 +5512,13 @@ msgid "Attributes to be created"
 msgstr "מאפיינים ליצירה"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeMap_view.php:62
-#, fuzzy
 msgid "Token table attribute"
-msgstr "מאפיין סמל: %s"
+msgstr "מאפיים סמל טבלה"
 
 # control
 #: /tmp/translationstatus_v2/application/views/admin/participants/blacklist_view.php:4
-#, fuzzy
 msgid "Blacklist control"
-msgstr "בקרת משתמש"
+msgstr "בקרת רשימה שחורה"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/blacklist_view.php:44
 #, fuzzy
@@ -5594,9 +5584,8 @@ msgid "Select attributes to copy with your %s participant(s)"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeMapCSV_view.php:29
-#, fuzzy
 msgid "CSV headings"
-msgstr "כותרות מלאות"
+msgstr "כותרות CVS"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeMapCSV_view.php:42
 msgid "Central attribute"
@@ -5659,9 +5648,8 @@ msgstr "שחזר"
 #: /tmp/translationstatus_v2/application/views/admin/token/addtokenpost.php:1
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenform.php:9
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenform.php:110
-#, fuzzy
 msgid "Add token entry"
-msgstr "צור כניסת הרשאה חדשה"
+msgstr "הכנס מחרוזת תווים חדשה"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/addtokenpost.php:5
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:378
@@ -5677,9 +5665,8 @@ msgid "Display tokens"
 msgstr "הצג מחרוזות"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/addtokenpost.php:7
-#, fuzzy
 msgid "Add another token entry"
-msgstr "צור כניסת הרשאה חדשה"
+msgstr "הוסף רשומת סמל חדשה"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/addtokenpost.php:9
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:380
@@ -5699,19 +5686,16 @@ msgid "Add new token entry"
 msgstr "צור כניסת הרשאה חדשה"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokensummary.php:2
-#, fuzzy
 msgid "Token summary"
-msgstr "LimeSurvey תקציר המערכת"
+msgstr "תקציר סמל"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokensummary.php:8
-#, fuzzy
 msgid "Total records in this token table"
-msgstr "סך כל הרשומות בטבלת הרשאות זו:"
+msgstr "סך רשומות בטבלת הסמל הזאת"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokensummary.php:16
-#, fuzzy
 msgid "Total with no unique Token"
-msgstr "סך הכל ללא הרשאה ייחודית:"
+msgstr "סך הכל ללא סמל מיוחד:"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokensummary.php:24
 msgid "Total invitations sent"
@@ -5733,18 +5717,16 @@ msgstr "LimeSurvey תקציר המערכת"
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:27
 #: /tmp/translationstatus_v2/application/views/admin/token/dummytokenform.php:50
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:583
-#, fuzzy
 msgid "Add dummy tokens"
-msgstr "הרשאה שהתווספה"
+msgstr "הוסף סמלים סתמיים"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:36
 msgid "Manage additional attribute fields"
 msgstr "נהל שדות מאפיינים נוספים"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:44
-#, fuzzy
 msgid "Import tokens from CSV file"
-msgstr "ייבא הרשאות מקובץ CSV"
+msgstr "יבא סמלים מקובץ CVS"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:48
 #, fuzzy
@@ -5752,9 +5734,8 @@ msgid "Import tokens from LDAP query"
 msgstr "ייבא הרשאות מקובץ CSV"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:55
-#, fuzzy
 msgid "Export tokens to CSV file"
-msgstr "ייצא הרשאות לקובץ CSV"
+msgstr "ייצא סמלים לקובץ CSV"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:62
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:75
@@ -5876,9 +5857,8 @@ msgstr "עשה סקר"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:217
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenform.php:4
-#, fuzzy
 msgid "Edit token entry"
-msgstr "ערוך כניסת הרשאה"
+msgstr "ערוך רשומת סמל"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:222
 msgid "Delete token entry"
@@ -5924,7 +5904,7 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:300
 msgid "Add to CPDB"
-msgstr ""
+msgstr "הוסף לCPDB"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:301
 msgid "Add participant to CPDB"
@@ -5939,9 +5919,8 @@ msgid "Please select the attributes that are to be added to the central database
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/token/managetokenattributes.php:1
-#, fuzzy
 msgid "Manage token attribute fields"
-msgstr "מאפיניי מחרוזות שמות:"
+msgstr "נהל מאפייני סמל שדה"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/managetokenattributes.php:4
 msgid "Attribute field"
@@ -5961,9 +5940,8 @@ msgid "<no data>"
 msgstr "<אין מידע>"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/managetokenattributes.php:33
-#, fuzzy
 msgid "Add token attributes"
-msgstr "מאפיניי מחרוזות שמות:"
+msgstr "הוסף מאפייני סמל"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/managetokenattributes.php:35
 #, php-format
@@ -6046,14 +6024,12 @@ msgid "Delete all token entries"
 msgstr "מחק את כל כניסות ההרשאה"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/exportdialog.php:1
-#, fuzzy
 msgid "Token export options"
-msgstr "בחירה מרובה"
+msgstr "אפשרויות ייצוא סמל"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/exportdialog.php:3
-#, fuzzy
 msgid "Token status:"
-msgstr "מחרוזת תוים"
+msgstr "סטאטוס סמל:"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/exportdialog.php:4
 msgid "All tokens"
@@ -6106,14 +6082,12 @@ msgid "Filter by email address"
 msgstr "סנן לפי כתובת דוא\"ל"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/exportdialog.php:29
-#, fuzzy
 msgid "Delete exported tokens"
-msgstr "ייצא שאלה"
+msgstr "מחק סמלים מיובאים"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/exportdialog.php:31
-#, fuzzy
 msgid "Export tokens"
-msgstr "ייצא שאלה"
+msgstr "יצא סמלים"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/emailpost.php:3
 msgid "Sending invitations..."
@@ -6204,9 +6178,8 @@ msgid "All token entries to whom a reminder email would apply"
 msgstr "כל כניסות ההרשאה נמחקו."
 
 #: /tmp/translationstatus_v2/application/views/admin/token/remind.php:73
-#, fuzzy
 msgid "Start at Token ID:"
-msgstr "התחל ב-TID מספר:"
+msgstr "התחל בסמל ID"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/remind.php:88
 msgid "Min days between reminders"
@@ -6221,9 +6194,8 @@ msgid "Send Reminders"
 msgstr "שלח תזכורת:"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/dummytokenform.php:2
-#, fuzzy
 msgid "Create dummy tokens"
-msgstr "צור הרשאות"
+msgstr "צור סמלים סתמיים"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/dummytokenform.php:7
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenform.php:18
@@ -6231,14 +6203,12 @@ msgid "Auto"
 msgstr "אוטומטית"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/dummytokenform.php:9
-#, fuzzy
 msgid "Number of tokens"
-msgstr "מספר מקרים"
+msgstr "מספר סמלים"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/dummytokenform.php:11
-#, fuzzy
 msgid "Token length"
-msgstr "קבע אורך סמל ל:"
+msgstr "אורך סמל"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/dummytokenform.php:23
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenform.php:70
@@ -6281,9 +6251,8 @@ msgid "Reminder count:"
 msgstr "ספירת תזכורות:"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenform.php:105
-#, fuzzy
 msgid "Update token entry"
-msgstr "צור כניסת הרשאה חדשה"
+msgstr "עדכן רשומת סמל"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:4
 msgid "Survey bounce email:"
@@ -6322,12 +6291,12 @@ msgstr "סוג שרת:"
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:22
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:200
 msgid "IMAP"
-msgstr ""
+msgstr "IMAP"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:25
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:203
 msgid "POP"
-msgstr ""
+msgstr "POP"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:27
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:206
@@ -6524,14 +6493,12 @@ msgid "Administrator name:"
 msgstr "אחראי מחשוב:"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:139
-#, fuzzy
 msgid "Email method:"
-msgstr "אימייל תזכורת:"
+msgstr "צורת אימייל"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:143
-#, fuzzy
 msgid "PHP (default)"
-msgstr "השתמש בברירת המחדל"
+msgstr "PHP (ברירת מחדל("
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:146
 msgid "SMTP"
@@ -6619,7 +6586,7 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:282
 msgid "Force HTTPS:"
-msgstr ""
+msgstr "הכרח שימוש ב HTTPS"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:286
 msgid "Don't force on or off"
@@ -6748,9 +6715,8 @@ msgid "Your database server password."
 msgstr "סיסמת שרת מאגר המידע שלך"
 
 #: /tmp/translationstatus_v2/application/views/installer/dbconfig_view.php:75
-#, fuzzy
 msgid "Database prefix"
-msgstr "שם בסיס הנתונים"
+msgstr "התחלת בסיס נתונים"
 
 #: /tmp/translationstatus_v2/application/views/installer/dbconfig_view.php:76
 msgid "If your database is shared, recommended prefix is \"lime_\" else you can leave this setting blank."
@@ -6803,7 +6769,7 @@ msgstr "פג תוקפו"
 
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:70
 msgid "PHP5 mbstring library"
-msgstr ""
+msgstr "ספריית PHP mbstring"
 
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:75
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:80
@@ -7105,7 +7071,7 @@ msgstr "פורטוגזית (ברזילאית)"
 
 #: /tmp/translationstatus_v2/application/helpers/surveytranslator_helper.php:399
 msgid "Punjabi"
-msgstr ""
+msgstr "Urdu"
 
 #: /tmp/translationstatus_v2/application/helpers/surveytranslator_helper.php:406
 msgid "Russian"
@@ -7153,7 +7119,7 @@ msgstr "תאילנדית"
 
 #: /tmp/translationstatus_v2/application/helpers/surveytranslator_helper.php:484
 msgid "Urdu"
-msgstr ""
+msgstr "Urdu"
 
 #: /tmp/translationstatus_v2/application/helpers/surveytranslator_helper.php:491
 msgid "Vietnamese"
@@ -7423,7 +7389,6 @@ msgid "Date/Time"
 msgstr "תאריך | שעה"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:112
-#, fuzzy
 msgid "Array (Increase/Same/Decrease)"
 msgstr "מערך - להגדיל, אותו דבר, להקטין"
 
@@ -7444,9 +7409,8 @@ msgid "Language Switch"
 msgstr "החלפת שפות"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:142
-#, fuzzy
 msgid "Multiple Numerical Input"
-msgstr "תוכן מספרי"
+msgstr "קלט מספרי רב"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:148
 msgid "List (Radio)"
@@ -7502,12 +7466,10 @@ msgid "List (Dropdown)"
 msgstr "רשימת ערכים"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:226
-#, fuzzy
 msgid "Array (Numbers)"
-msgstr "מערך של תוויות גמישות"
+msgstr "מערך מספרים"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:232
-#, fuzzy
 msgid "Array (Texts)"
 msgstr "מערך של תוויות גמישות"
 
@@ -7705,9 +7667,8 @@ msgid "Response ID"
 msgstr "זיהוי ID של התגובות"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:2338
-#, fuzzy
 msgid "Date submitted"
-msgstr "הסקר נשלח"
+msgstr "תאריך שליחה"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:2346
 msgid "Last page"
@@ -7884,17 +7845,17 @@ msgstr "השתמש בקופסאות נפתחות כפולות במקום סול�
 msgid "Display dropdown boxes"
 msgstr "הצג קופסאות זרוקות"
 
-#: /tmp/translationstatus_v2/application/helpers/common_helper.php:3381
+#: /tmp/translationstatus_v2/application/helpers/common_helper.php:3382
 msgid "Minimum year value in calendar"
-msgstr ""
+msgstr "שנה מינימלית בלוח השנה"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3382
 msgid "Minimum year"
 msgstr "שנה מינימלית"
 
-#: /tmp/translationstatus_v2/application/helpers/common_helper.php:3389
+#: /tmp/translationstatus_v2/application/helpers/common_helper.php:3390
 msgid "Maximum year value for calendar"
-msgstr ""
+msgstr "שנה מקסימלית בלוח השנה"
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/assessments.php:99
 # D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:879
@@ -7954,9 +7915,9 @@ msgstr "קלט"
 msgid "Multiple numeric inputs sum must equal this value"
 msgstr ""
 
-#: /tmp/translationstatus_v2/application/helpers/common_helper.php:3433
+#: /tmp/translationstatus_v2/application/helpers/common_helper.php:3434
 msgid "Equals sum value"
-msgstr ""
+msgstr "שווה לערך הסכום"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3440
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semicolon."
@@ -8003,9 +7964,9 @@ msgstr "שמור את המצב?"
 msgid "Save state"
 msgstr "שמור מצב"
 
-#: /tmp/translationstatus_v2/application/helpers/common_helper.php:3486
+#: /tmp/translationstatus_v2/application/helpers/common_helper.php:3487
 msgid "Store the postal code?"
-msgstr ""
+msgstr "אכסון מיקוד?"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3487
 msgid "Save postal code"
@@ -8034,14 +7995,13 @@ msgstr "לצג את המפה בסטטיסטיקות?"
 msgid "Display map"
 msgstr "הצג מפה"
 
-#: /tmp/translationstatus_v2/application/helpers/common_helper.php:3517
-msgid "Display a chart in the statistics?"
-msgstr ""
-
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3518
-#, fuzzy
+msgid "Display a chart in the statistics?"
+msgstr "הצג בסטטיסטיקות"
+
+#: /tmp/translationstatus_v2/application/helpers/common_helper.php:3519
 msgid "Display chart"
-msgstr "הראה שורות"
+msgstr "הצג גרף"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3527
 msgid "Bar chart"
@@ -8172,13 +8132,13 @@ msgstr ""
 msgid "Max value from SGQA"
 msgstr ""
 
-#: /tmp/translationstatus_v2/application/helpers/common_helper.php:3649
-msgid "Maximum characters allowed"
-msgstr ""
-
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3650
+msgid "Maximum characters allowed"
+msgstr "מספר תווים מקסימלי מורשה"
+
+#: /tmp/translationstatus_v2/application/helpers/common_helper.php:3651
 msgid "Maximum characters"
-msgstr ""
+msgstr "מספר תוים מקסימלי"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3657
 msgid "Ensure a minimum number of possible answers (0=No limit)"
@@ -8306,9 +8266,9 @@ msgstr "הרבה סה\"כ עבור"
 msgid "Show grand total for either columns or rows"
 msgstr ""
 
-#: /tmp/translationstatus_v2/application/helpers/common_helper.php:3791
+#: /tmp/translationstatus_v2/application/helpers/common_helper.php:3792
 msgid "Show grand total"
-msgstr ""
+msgstr "הראה סך הכל"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3802
 msgid "Present as text input boxes instead of dropdown lists"
@@ -8377,9 +8337,9 @@ msgstr ""
 msgid "Randomize once on survey start"
 msgstr ""
 
-#: /tmp/translationstatus_v2/application/helpers/common_helper.php:3877
+#: /tmp/translationstatus_v2/application/helpers/common_helper.php:3878
 msgid "Present answers in random order"
-msgstr ""
+msgstr "הראה תשובות בסדר אקראי"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3878
 msgid "Random answer order"
@@ -8689,10 +8649,9 @@ msgid "Specify a custom date/time format (the <i>d/dd m/mm yy/yyyy H/HH M/MM</i>
 msgstr ""
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/export.php:147
-#: /tmp/translationstatus_v2/application/helpers/common_helper.php:4185
-#, fuzzy
+#: /tmp/translationstatus_v2/application/helpers/common_helper.php:4186
 msgid "Date/Time format"
-msgstr "פורמט תאריך"
+msgstr "פורמט תאריך/שעה"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4192
 msgid "Minute step interval when using select boxes"
@@ -8718,10 +8677,9 @@ msgstr "מספרים"
 msgid "Change the display style of the month when using select boxes"
 msgstr ""
 
-#: /tmp/translationstatus_v2/application/helpers/common_helper.php:4205
-#, fuzzy
+#: /tmp/translationstatus_v2/application/helpers/common_helper.php:4206
 msgid "Month display style"
-msgstr "רשומות מוצגות"
+msgstr "עיצוב הצגת חודש"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4209
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4220
@@ -8800,10 +8758,9 @@ msgstr "קוד הסימן"
 msgid "Language code"
 msgstr "קוד שפה"
 
-#: /tmp/translationstatus_v2/application/helpers/common_helper.php:5607
-#, fuzzy
+#: /tmp/translationstatus_v2/application/helpers/common_helper.php:5608
 msgid "Invitation sent date"
-msgstr "הזמנה נשלחה ל:"
+msgstr "תאריך שלית הזמנה"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:5608
 msgid "Last Reminder sent date"
@@ -8939,9 +8896,8 @@ msgid "Update of Label Set failed"
 msgstr "עדכון קבוצת תוויות נכשל"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/labels_helper.php:253
-#, fuzzy
 msgid "Labels sucessfully updated"
-msgstr "נכנסת בהצלחה."
+msgstr "תווית עודכנה בהצלחה"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/labels_helper.php:258
 msgid "Can't update labels because you are using duplicated codes"
@@ -9219,9 +9175,9 @@ msgstr ""
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:2131
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:2149
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:2165
-#, fuzzy, php-format
+#, php-format
 msgid "Field summary for %s"
-msgstr "סיכום שדה עבור"
+msgstr "סיכום שדה עבור %s"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1200
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1202
@@ -9290,12 +9246,10 @@ msgstr "ספירה"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1522
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1532
-#, fuzzy
 msgid "1st quartile (Q1)"
 msgstr "רביעון ראשון (Q1)"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1553
-#, fuzzy
 msgid "2nd quartile (Median)"
 msgstr "רביעון שני (חציון)"
 
@@ -9311,7 +9265,6 @@ msgstr "ערך עיקרי"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1594
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1604
-#, fuzzy
 msgid "3rd quartile (Q3)"
 msgstr "רביעון שלישי (Q3)"
 
@@ -9328,7 +9281,7 @@ msgstr "במהלך החישוב המערכת תתעלם מערכי NULL"
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1678
 #, php-format
 msgid "Q1 and Q3 calculated using %s"
-msgstr ""
+msgstr "רבעון ראשון ושלישי חושבו באמצעות %s"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1653
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1656
@@ -9350,9 +9303,8 @@ msgid "Comments"
 msgstr "הערות"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:2338
-#, fuzzy
 msgid "'Other' Responses"
-msgstr "נקה תשובות"
+msgstr "תגובות אחרות"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:2360
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:2379
@@ -9423,7 +9375,7 @@ msgstr "אקס טנגנס"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:134
 msgid "Arc tangent of two variables"
-msgstr ""
+msgstr "ארקטנגנס של שני משתנים"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:135
 msgid "Round fractions up"
@@ -9453,9 +9405,8 @@ msgid "Count the number of answered questions in the list"
 msgstr "מגבלת זמן לענות לשאלה (בשניות)"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:139
-#, fuzzy
 msgid "Format a local date/time"
-msgstr "תאריך/שעת התחלה:"
+msgstr "תבנית תאריך/שעה:"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:140
 msgid "Calculates the exponent of e"
@@ -9466,7 +9417,6 @@ msgid "Round fractions down"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:142
-#, fuzzy
 msgid "Format a GMT date/time"
 msgstr "תאריך/שעת התחלה:"
 
@@ -9571,9 +9521,8 @@ msgid "Get value of pi"
 msgstr "קבל ערך של פיי"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:168
-#, fuzzy
 msgid "Exponential expression"
-msgstr "ביטוי רגולרי"
+msgstr "ביטוי אקספוננציאלי"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:169
 msgid "Convert a quoted-printable string to an 8 bit string"
@@ -9609,7 +9558,7 @@ msgstr "סינוס"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:177
 msgid "Return a formatted string"
-msgstr ""
+msgstr "החזר סטרינג ששונה"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:178
 msgid "Square root"
@@ -9653,7 +9602,7 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:188
 msgid "Case-insensitive strstr"
-msgstr ""
+msgstr "מחרוזת לא רגישה לאותיות גדולות או קטנות"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:189
 msgid "Get string length"
@@ -9673,11 +9622,11 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:193
 msgid "Make a string lowercase"
-msgstr ""
+msgstr "החלף מחרוזת לאותיות קטנות"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:194
 msgid "Make a string uppercase"
-msgstr ""
+msgstr "החלף מחרוזת לאותיות גדולות"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:195
 msgid "Return part of a string"
@@ -9854,9 +9803,8 @@ msgid "Database has been successfully upgraded to version %s"
 msgstr "מאגר הנתונים בשם `%s` נוצר בהצלחה"
 
 #: /tmp/translationstatus_v2/application/helpers/update/update_helper.php:61
-#, fuzzy
 msgid "Database upgrade"
-msgstr "שם בסיס הנתונים"
+msgstr "עדכון בסיס נתונים"
 
 #: /tmp/translationstatus_v2/application/helpers/update/update_helper.php:62
 msgid "Please verify the following information before continuing with the database upgrade:"
@@ -10702,7 +10650,7 @@ msgstr "בחר קובץ "
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:276
 #, php-format
 msgid "Please upload %s more file(s)."
-msgstr ""
+msgstr "אנא העלה מספר של קבצים %s"
 
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:277
 #, php-format
@@ -11716,7 +11664,7 @@ msgstr "אנו מצטערים אך אין לך הרשאה לעשות זאת."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:376
 msgid "-------"
-msgstr ""
+msgstr "-------"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:471
 msgid "The token entry was successfully updated."
@@ -11819,7 +11767,7 @@ msgstr "קיים כבר סקר שלם"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1037
 msgid "having a token"
-msgstr ""
+msgstr "יש סמל"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1115
 #, fuzzy
@@ -11893,9 +11841,8 @@ msgid "A token table has been created for this survey."
 msgstr "טבלת מחרוזות נוצרה עבור סקר זה."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1659
-#, fuzzy
 msgid "Import old tokens"
-msgstr "ייבא שאלה"
+msgstr "ייבא סמלים ישנים"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1660
 #, fuzzy
@@ -12683,18 +12630,16 @@ msgid "You need an update key to run the comfort update. During the beta test of
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:76
-#, fuzzy
 msgid "Please enter a valid update-key:"
-msgstr "אנא הכנס תאריך"
+msgstr "הכנס קוד עדכון תקין"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:77
 msgid "Save update key"
 msgstr "שמור מפתח מעודכן"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:81
-#, fuzzy
 msgid "Update key: Valid"
-msgstr "עדכן קבוצת משתמש"
+msgstr "עדכן מפתח : Valid"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:85
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:637
@@ -13308,9 +13253,8 @@ msgstr "מטבלת הסימונים"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1331
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1404
-#, fuzzy
 msgid "Inexistant token table"
-msgstr "בטל טבלת הרשאות"
+msgstr "טבלת סמל לא קיימת"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1446
 msgid "Are you sure you want to delete this condition?"
@@ -13460,7 +13404,6 @@ msgstr "קידוד של הקובץ:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:171
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:183
-#, fuzzy
 msgid "Import a VV response data file"
 msgstr "ייבא קובץ סקרים עם סיומת VV"
 
@@ -13936,6 +13879,26 @@ msgstr ""
 #: /tmp/translationstatus_v2/application/libraries/Survey_format.php:975
 msgid "One or more files are either not in the proper format or exceed the maximum file size limitation. You cannot proceed until these answers are valid."
 msgstr "אחד או יותר מהקבצים או לא בפורמת הנכון או עבר על הגבלת גודל הקובץ. אתה לא יכול להמשיך עד שהתשובות לא מתוקנות"
+
+#: /tmp/translationstatus_v2/application/controllers/admin/browse.php:158
+#, fuzzy
+msgid "You don't have permissions to delete the survey!"
+msgstr "אין לך הרשאות למחוק ערך זה"
+
+#: /tmp/translationstatus_v2/application/controllers/admin/browse.php:162
+#: /tmp/translationstatus_v2/application/controllers/admin/browse.php:266
+#: /tmp/translationstatus_v2/application/controllers/admin/browse.php:327
+msgid "Missing parameter: 'id'"
+msgstr ""
+
+#: /tmp/translationstatus_v2/application/controllers/admin/browse.php:210
+#: /tmp/translationstatus_v2/application/controllers/admin/browse.php:335
+msgid "Missing parameters"
+msgstr "פרמטרים חסרים"
+
+#: /tmp/translationstatus_v2/application/controllers/admin/browse.php:242
+msgid "Missing file:"
+msgstr "קובץ חסר:"
 
 #~ msgid "Add user"
 #~ msgstr "הוסף משתמש"
