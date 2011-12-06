@@ -187,7 +187,6 @@ else
         }
 
         //COMMIT CHANGES TO DATABASE
-        // TMSW LEM::NavigateForwards() must know whether the survey is active?
         if ($thissurvey['active'] != "Y") //If survey is not active, don't really commit
         {
             if ($thissurvey['assessments']== "Y")
@@ -240,7 +239,7 @@ else
 
             //Before doing the "templatereplace()" function, check the $thissurvey['url']
             //field for limereplace stuff, and do transformations!
-            // TMSW - TODO - check that this works as desired
+            // TMSW - TODO - check that this works as desired - may not substitute URL parameters (in which case use templatereplace)
             $thissurvey['surveyls_url']=dTexts__run($thissurvey['surveyls_url']);
             $thissurvey['surveyls_url']=passthruReplace($thissurvey['surveyls_url'], $thissurvey);
 
