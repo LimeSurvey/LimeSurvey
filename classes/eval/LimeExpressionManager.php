@@ -46,7 +46,7 @@ class LimeExpressionManager {
     private $currentGroupSeq;   // current Group sequence (0-based index)
     private $currentQuestionSeq;    // for Question-by-Question mode, the 0-based index
     private $currentQID;        // used in Question-by-Question modecu
-    private $currentQset=NULL;   // set of the current set of questions to be displayed - at least one must be relevant
+    private $currentQset=NULL;   // set of the current set of questions to be displayed, indexed by QID - at least one must be relevant
     private $indexQseq;         // array of information needed to generate navigation index in question-by-question mode
     private $indexGseq;         // array of information needed to generate navigation index in group-by-group mode
     private $gseq2info;         // array of group sequence number to static info
@@ -2709,7 +2709,10 @@ class LimeExpressionManager {
                 $invalidSQs = array_merge($invalidSQs, explode('|',$gStatus['invalidSQs']));
             }
             $updatedValues = array_merge($updatedValues, $gStatus['updatedValues']);
-            $LEM->currentQset = array_merge($LEM->currentQset, $gStatus['qset']);
+            // array_merge destroys the key, so do it manually
+            foreach ($gStatus['qset'] as $key=>$value) {
+                $LEM->currentQset[$key] = $value;
+            }
 
             $LEM->FinishProcessingGroup();
         }
@@ -2774,7 +2777,7 @@ class LimeExpressionManager {
             if ($qStatus['valid']==false) {
                 $gvalid=false;  // at least one question fails validity constraints
             }
-            $currentQset[] = $qStatus;
+            $currentQset[$qStatus['info']['qid']] = $qStatus;
             $messages[] = $qStatus['message'];
             if (strlen($qStatus['unansweredSQs']) > 0) {
                 $unansweredSQs[] = $qStatus['unansweredSQs'];
