@@ -12,15 +12,14 @@
  *
  * $Id: html_functions.php 10193 2011-06-05 12:20:37Z c_schmitz $
  */
-
-function browsemenubar($title='', $surveyid=null, $load=false, $controller = false)
+function browsemenubar($title='',$surveyid=null,$load=false, $controller = false)
 {
     //$surveyid; //$sumrows5, $surrows; //$yii->getConfig('scriptname'), $yii->getConfig('imageurl'), $yii->getConfig('homeurl'),
     $yii = Yii::app();
     $yii->loadHelper('common');
     $lang = array('fr');
-	//$lang = array($this->config->item('defaultlang'));
-	$yii->loadLibrary('Limesurvey_lang',$lang);
+		//$lang = array($this->config->item('defaultlang'));
+		$yii->loadLibrary('Limesurvey_lang',$lang);
     $clang = $yii->lang;
     $thissurvey=getSurveyInfo($surveyid);
     //$thissurvey = array('name'=>'');
@@ -33,7 +32,7 @@ function browsemenubar($title='', $surveyid=null, $load=false, $controller = fal
     . "<div class='menubar-main'>\n"
     . "<div class='menubar-left'>\n"
     //Return to survey administration
-    . "<a href='".$yii->homeUrl.('/admin/survey/view/'.$surveyid)."' title=\"".$clang->gTview("Return to survey administration")."\" >"
+    . "<a href='".$yii->homeUrl.('/admin/survey/sa/view/surveyid/'.$surveyid)."' title=\"".$clang->gTview("Return to survey administration")."\" >"
     . "<img name='Administration' src='".$yii->getConfig('imageurl')."/home.png' title='' alt='".$clang->gT("Return to survey administration")."' /></a>\n"
     . "<img src='".$yii->getConfig('imageurl')."/blank.gif' alt='' width='11' />\n"
     . "<img src='".$yii->getConfig('imageurl')."/seperator.gif' alt='' />\n";
@@ -41,12 +40,12 @@ function browsemenubar($title='', $surveyid=null, $load=false, $controller = fal
     
     if (bHasSurveyPermission($surveyid,'responses','read'))
     {
-        $browsemenubar.= "<a href='".$yii->homeUrl.('/admin/browse/'.$surveyid)."' title=\"".$clang->gTview("Show summary information")."\" >"
+        $browsemenubar.= "<a href='".$yii->homeUrl.('/admin/browse/surveyid/'.$surveyid)."' title=\"".$clang->gTview("Show summary information")."\" >"
         . "<img name='SurveySummary' src='".$yii->getConfig('imageurl')."/summary.png' title='' alt='".$clang->gT("Show summary information")."' /></a>\n";
         //Display responses
         if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
         {
-            $browsemenubar .="<a href='".$yii->homeUrl.('/admin/browse/'.$surveyid.'/all')."' title=\"".$clang->gTview("Display Responses")."\" >" .
+            $browsemenubar .="<a href='".$yii->homeUrl.('/admin/browse/surveyid/'.$surveyid.'/all')."' title=\"".$clang->gTview("Display Responses")."\" >" .
             "<img name='ViewAll' src='".$yii->getConfig('imageurl')."/document.png' title='' alt='".$clang->gT("Display Responses")."' /></a>\n";
         }
         else
@@ -61,16 +60,18 @@ function browsemenubar($title='', $surveyid=null, $load=false, $controller = fal
             rsort($tmp_survlangs);
 
             $browsemenubar .="<div class=\"langpopup\" id=\"browselangpopup\">".$clang->gT("Please select a language:")."<ul>";
-            $yii->loadHelper("surveytranslator");
+			
+			$yii->loadHelper('surveytranslator');
+			
             foreach ($tmp_survlangs as $tmp_lang)
             {
-                $browsemenubar .= "<li><a href=\"".$yii->homeUrl.('/admin/browse/'.$surveyid.'/all/'.$tmp_lang)."\" accesskey='b'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
+                $browsemenubar .= "<li><a href=\"".$yii->homeUrl.('/admin/browse/surveyid/'.$surveyid.'/all/lang/'.$tmp_lang)."\" accesskey='b'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
             }
             $browsemenubar .= "</ul></div>";
         }
 
         // Display last 50 responses
-        $browsemenubar .= "<a href='".$yii->homeUrl.('/admin/browse/'.$surveyid.'/50/desc')."'" .
+        $browsemenubar .= "<a href='".$yii->homeUrl.('/admin/browse/surveyid/'.$surveyid.'/50/desc')."'" .
                         " title=\"".$clang->gTview("Display Last 50 Responses")."\" >" .
                         "<img name='ViewLast' src='".$yii->getConfig('imageurl')."/viewlast.png' alt='".$clang->gT("Display Last 50 Responses")."' /></a>\n";
                     
@@ -79,20 +80,20 @@ function browsemenubar($title='', $surveyid=null, $load=false, $controller = fal
     // Data entry
     if (bHasSurveyPermission($surveyid,'responses','create'))
     {
-        $browsemenubar .= "<a href='".$yii->homeUrl.('/admin/dataentry/view/'.$surveyid)."'".
+        $browsemenubar .= "<a href='".$yii->homeUrl.('/admin/dataentry/sa/view/surveyid/'.$surveyid)."'".
                         " title=\"".$clang->gTview("Dataentry Screen for Survey")."\" >" .
                         "<img name='DataEntry' src='".$yii->getConfig('imageurl')."/dataentry.png' alt='".$clang->gT("Dataentry Screen for Survey")."' /></a>\n";
     }
     // Statistics
     if (bHasSurveyPermission($surveyid,'statistics','read'))
     {
-        $browsemenubar .= "<a href='".$yii->homeUrl.('/admin/statistics/'.$surveyid)."' "
+        $browsemenubar .= "<a href='".$yii->homeUrl.('/admin/statistics/surveyid/'.$surveyid)."' "
         ."title=\"".$clang->gTview("Get statistics from these responses")."\" >"
         ."<img name='Statistics' src='".$yii->getConfig('imageurl')."/statistics.png' alt='".$clang->gT("Get statistics from these responses")."' /></a>\n";
         // Time Statistics
         if (isset($thissurvey['savetimings']) && $thissurvey['savetimings']=="Y")
         {
-            $browsemenubar .= "<a href='".$yii->homeUrl.('/admin/browse/'.$surveyid.'time')."' "
+            $browsemenubar .= "<a href='".$yii->homeUrl.('/admin/browse/surveyid/'.$surveyid.'time')."' "
             ."title=\"".$clang->gTview("Get time statistics from these responses")."\" >"
             ."<img name='timeStatistics' src='".$yii->getConfig('imageurl')."/timeStatistics.png' alt='".$clang->gT("Get time statistics from these responses")."' /></a>\n";
         }    
@@ -119,7 +120,7 @@ function browsemenubar($title='', $surveyid=null, $load=false, $controller = fal
     //Import old response table
     if (bHasSurveyPermission($surveyid,'responses','create'))  
     {
-        $browsemenubar .= "<a href='".$yii->homeUrl.('/admin/dataentry/import/'.$surveyid)."' title=\"".$clang->gTview("Import responses from a deactivated survey table")."\" >"
+        $browsemenubar .= "<a href='".$yii->homeUrl.('/admin/dataentry/sa/import/surveyid/'.$surveyid)."' title=\"".$clang->gTview("Import responses from a deactivated survey table")."\" >"
         . "<img name='ImportOldResponses' src='".$yii->getConfig('imageurl')."/importold.png' alt='".$clang->gT("Import responses from a deactivated survey table")."' /></a>\n";
     }       
 
@@ -128,14 +129,14 @@ function browsemenubar($title='', $surveyid=null, $load=false, $controller = fal
     //browse saved responses
     if (bHasSurveyPermission($surveyid,'responses','read'))  
     {
-        $browsemenubar .= "<a href='".$yii->homeUrl.'/admin/saved/view/'.$surveyid."' title=\"".$clang->gTview("View Saved but not submitted Responses")."\" >"
+        $browsemenubar .= "<a href='".$yii->homeUrl.'/admin/saved/sa/view/surveyid/'.$surveyid."' title=\"".$clang->gTview("View Saved but not submitted Responses")."\" >"
         . "<img src='".$yii->getConfig('imageurl')."/saved.png' title='' alt='".$clang->gT("View Saved but not submitted Responses")."' name='BrowseSaved' /></a>\n";
     }
 
     //Import VV
     if (bHasSurveyPermission($surveyid,'responses','import'))  
     {    
-        $browsemenubar .= "<a href='".$yii->homeUrl.('/admin/dataentry/vvimport/'.$surveyid)."' title=\"".$clang->gTview("Import a VV survey file")."\" >"
+        $browsemenubar .= "<a href='".$yii->homeUrl.('/admin/dataentry/sa/vvimport/surveyid/'.$surveyid)."' title=\"".$clang->gTview("Import a VV survey file")."\" >"
         . "<img src='".$yii->getConfig('imageurl')."/importvv.png' alt='".$clang->gT("Import a VV survey file")."' /></a>\n";
     }
 

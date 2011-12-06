@@ -1,4 +1,6 @@
-<?php if (isset($explanation) && $explanation)
+<?php
+$yii = Yii::app();
+ if (isset($explanation) && $explanation)
 { ?>
     <tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'><?php echo $explanation; ?></td></tr>
 <?php } ?>
@@ -19,7 +21,7 @@
                     
                     <?php if ($deqrow['help'])
                     { ?>
-                        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/help.gif' alt='<?php echo $blang->gT("Help about this question"); ?>' align='right' onclick="javascript:alert('Question <?php echo $deqrow['title']; ?> Help: <?php echo $hh; ?>')" />
+                        <img src='<?php echo $yii->getConfig('imageurl'); ?>/help.gif' alt='<?php echo $blang->gT("Help about this question"); ?>' align='right' onclick="javascript:alert('Question <?php echo $deqrow['title']; ?> Help: <?php echo $hh; ?>')" />
                     <?php }
                     switch($deqrow['type'])
                     {
@@ -58,7 +60,7 @@
                         case "K": ?>
                             
                             <table>
-                            <?php foreach ($dearesult->readAll() as $dearow)
+                            <?php foreach ($dearesult as $dearow)
                             { ?>
                                 <tr><td align='right'>
                                 <?php echo $dearow['question']; ?>
@@ -73,25 +75,25 @@
                            
                             <table><tr><td></td><th><?php echo sprintf($clang->gT('Label %s'),'1').'</th><th>'.sprintf($clang->gT('Label %s'),'2'); ?></th></tr>
     
-                            <?php foreach ($dearesult->readAll() as $dearow)
+                            <?php foreach ($dearesult as $dearow)
                             { 
                                 // first scale
-                                $delquery = "SELECT * FROM {{answers}} WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' and scale_id=0 ORDER BY sortorder, code";
+                                $delquery = "SELECT * FROM ".$yii->db->tablePrefix."answers WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' and scale_id=0 ORDER BY sortorder, code";
                                 $delresult = db_execute_assoc($delquery); ?>
                                 <tr><td><?php echo $dearow['question']; ?></td><td>
                                 <select name='<?php echo $fieldname.$dearow['title']; ?>#0'>
                                 <option selected='selected' value=''><?php echo $clang->gT("Please choose..."); ?></option>
-                                <?php foreach ($delresult->readAll() as $delrow)
+                                <?php foreach ($delresult as $delrow)
                                 { ?>
                                     <option value='<?php echo $delrow['code']; ?>'><?php echo $delrow['answer']; ?></option>
                                 <?php } ?>
                                 </select></td>
-                                <?php $delquery = "SELECT * FROM {{answers}} WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' and scale_id=1 ORDER BY sortorder, code";
+                                <?php $delquery = "SELECT * FROM ".$yii->db->tablePrefix."answers WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' and scale_id=1 ORDER BY sortorder, code";
                                 $delresult = db_execute_assoc($delquery); ?>
                                 <td>
                                 <select name='<?php echo $fieldname.$dearow['title']; ?>#1'>
                                 <option selected='selected' value=''><?php echo $clang->gT("Please choose..."); ?></option>
-                                <?php foreach ($delresult->readAll() as $delrow)
+                                <?php foreach ($delresult as $delrow)
                                 { ?>
                                     <option value='<?php echo $delrow['code']; ?>'><?php echo $delrow['answer']; ?></option>
                                 <?php } ?>
@@ -234,7 +236,7 @@
                                 $divider=" </td> <td valign='top' width='$width%' nowrap='nowrap'>";
                                 $upto=0; ?>
                                 <table class='question'><tr> <td valign='top' width='<?php echo $width; ?>%' nowrap='nowrap'>
-                                <?php foreach ($mearesult->readAll() as $mearow)
+                                <?php foreach ($mearesult as $mearow)
                                 {
                                     if ($upto == $maxrows)
                                     { 
@@ -279,7 +281,7 @@
                         case "P": //Multiple choice with comments checkbox + text ?>
                             <table border='0'>
                            
-                            <?php foreach ($mearesult->readAll() as $mearow)
+                            <?php foreach ($mearesult as $mearow)
                             { ?>
                                 <tr>
                                 <td>
@@ -402,7 +404,7 @@
                         case "A": //ARRAY (5 POINT CHOICE) radio-buttons ?>
                             
                             <table>
-                            <?php foreach ($mearesult->readAll() as $mearow)
+                            <?php foreach ($mearesult as $mearow)
                             { ?>
                                 <tr>
                                 <td align='right'><?php echo $mearow['question']; ?></td>
@@ -421,7 +423,7 @@
                             <?php break; 
                         case "B": //ARRAY (10 POINT CHOICE) radio-buttons ?>
                             <table>
-                            <?php foreach ($mearesult->readAll() as $mearow)
+                            <?php foreach ($mearesult as $mearow)
                             { ?>
                                 <tr>
                                 <td align='right'><?php echo $mearow['question']; ?></td>
@@ -441,7 +443,7 @@
                         case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                             ?>
                             <table>
-                            <?php foreach ($mearesult->readAll() as $mearow)
+                            <?php foreach ($mearesult as $mearow)
                             { ?>
                                 <tr>
                                 <td align='right'><?php echo $mearow['question']; ?></td>
@@ -459,7 +461,7 @@
                             <?php break; 
                         case "E": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                             ?> <table>
-                            <?php foreach ($mearesult->readAll() as $mearow)
+                            <?php foreach ($mearesult as $mearow)
                             { ?>
                                 <tr>
                                 <td align='right'><?php echo $mearow['question']; ?></td>
@@ -480,7 +482,7 @@
                             ?>
                             <table>
                             <tr><td></td>
-                            <?php foreach($lresult->readAll() as $data)
+                            <?php foreach($lresult as $data)
                             { ?>
                                    <th><?php echo $data['question']; ?></th>
                                 <?php $labelcodes[]=$data['title'];
@@ -488,7 +490,7 @@
                              ?>
                               </tr>
                             <?php $i=0;
-                            foreach ($mearesult->readAll() as $mearow)
+                            foreach ($mearesult as $mearow)
                             {
                                 
                                 if (strpos($mearow['question'],'|'))
@@ -530,7 +532,7 @@
                             <table>
                             <tr><td></td>
                             <?php $labelcodes=array();
-                            foreach ($lresult->readAll() as $data)
+                            foreach ($lresult as $data)
                             { ?>
                                 <th><?php echo $data['question']; ?></th>
                                 <?php $labelcodes[]=$data['title'];
@@ -539,7 +541,7 @@
                               </tr>
                              
                             <?php $i=0;
-                            foreach ($mearesult->readAll() as $mearow)
+                            foreach ($mearesult as $mearow)
                             {
                                 if (strpos($mearow['question'],'|'))
                                 {
@@ -569,7 +571,7 @@
                         case "F": //ARRAY (Flexible Labels)
                         case "H": ?>
                             <table>
-                            <?php foreach ( $mearesult->readAll() as $mearow)
+                            <?php  foreach ( $mearesult as $mearow)
                             { 
                                 
                                 if (strpos($mearow['question'],'|'))
@@ -589,7 +591,8 @@
                                 <td>
                                 <select name='<?php echo $fieldname.$mearow['title']; ?>'>
                                 <option value=''><?php echo $blang->gT("Please choose"); ?>..</option>
-                                <?php foreach ($fresult->readAll() as $frow)
+								
+                                <?php foreach ($fresult as $frow)
                                 { ?>
                                     <option value='<?php echo $frow['code']; ?>'><?php echo $frow['answer']; ?></option>
                                 <?php } ?>

@@ -22,7 +22,7 @@
                 <tr class='data-entry-separator'><td colspan='3'></td></tr>
             <?php }
     
-            if (tableExists('tokens_'.$thissurvey['sid'])) //Give entry field for token id
+            if (tableExists('{{tokens_'.$thissurvey['sid'].'}}')) //Give entry field for token id
             { ?>
                 <tr>
                 <td valign='top' width='1%'></td>

@@ -1483,66 +1483,69 @@ class LimeExpressionManager {
         // TODO - refactor this to not call a static function
         $this->gid2relevanceStatus = array();
         $_groupSeq = -1;
-        usort($this->questionSeq2relevance,'self::cmpQuestionSeq');
-        foreach($this->questionSeq2relevance as $rel)
-        {
-            $qid = $rel['qid'];
-            $gid = $rel['gid'];
-            if ($this->allOnOnePage) {
-                ;   // process relevance for all questions
-            }
-            else {
-                $groupSeq = $rel['groupSeq'];
+		
+        if (usort($this->questionSeq2relevance,'self::cmpQuestionSeq'))
+		{
+			foreach($this->questionSeq2relevance as $rel)
+			{
+				$qid = $rel['qid'];
+				$gid = $rel['gid'];
+				if ($this->allOnOnePage) {
+					;   // process relevance for all questions
+				}
+				else {
+					$groupSeq = $rel['groupSeq'];
 
-                if ($groupSeq > $this->maxGroupSeq) {
-                    break;   // break out of loop
-                }
-                if (!$this->navigationIndex) {
-                    if ($groupSeq > $this->currentGroupSeq) {
-                        break;
-                    }
-                    if ($groupSeq < $this->currentGroupSeq) {
-                        continue;
-                    }
-                }
-                else {
-                    if  ($groupSeq != $_groupSeq) {
-                        $_groupSeq = $groupSeq;   // if new group, then reset status flags
-                        $_groupSeqVisibility=false;
-                        $this->gid2relevanceStatus[$gid]=false;    // default until found to be true
-                    }
+					if ($groupSeq > $this->maxGroupSeq) {
+						break;   // break out of loop
+					}
+					if (!$this->navigationIndex) {
+						if ($groupSeq > $this->currentGroupSeq) {
+							break;
+						}
+						if ($groupSeq < $this->currentGroupSeq) {
+							continue;
+						}
+					}
+					else {
+						if  ($groupSeq != $_groupSeq) {
+							$_groupSeq = $groupSeq;   // if new group, then reset status flags
+							$_groupSeqVisibility=false;
+							$this->gid2relevanceStatus[$gid]=false;    // default until found to be true
+						}
 
-                    // TODO - augment this to show color coding for whether there are unanswered questions?
-                    if ($groupSeq < $this->currentGroupSeq || $groupSeq > $this->currentGroupSeq) {
-                        // Must know relevance of all prior questions so know what to display in reports.
-                        // TODO - if sure relevance won't retroactively change, can reduce calls to this (e.g. if can't have equations depend on future variables and can't assign values)
-                        if ($_groupSeqVisibility == true) {
-                            continue;   // if at least one in the group is visible, then skip relevance check
-                        }
-                        else {
-                            $result = $this->_ProcessRelevance(htmlspecialchars_decode($rel['relevance'],ENT_QUOTES), $qid, $gid);
-                            $_SESSION['relevanceStatus'][$qid] = $result;   // is this needed?  YES, if trying to tailor using a question that was irrelevant on prior page
-                            $this->gid2relevanceStatus[$gid]=true;
-                            continue;
-                        }
-                    }
-                    else {
-                        ;   // current group, so process this one
-                    }
-                }
-            }
+						// TODO - augment this to show color coding for whether there are unanswered questions?
+						if ($groupSeq < $this->currentGroupSeq || $groupSeq > $this->currentGroupSeq) {
+							// Must know relevance of all prior questions so know what to display in reports.
+							// TODO - if sure relevance won't retroactively change, can reduce calls to this (e.g. if can't have equations depend on future variables and can't assign values)
+							if ($_groupSeqVisibility == true) {
+								continue;   // if at least one in the group is visible, then skip relevance check
+							}
+							else {
+								$result = $this->_ProcessRelevance(htmlspecialchars_decode($rel['relevance'],ENT_QUOTES), $qid, $gid);
+								$_SESSION['relevanceStatus'][$qid] = $result;   // is this needed?  YES, if trying to tailor using a question that was irrelevant on prior page
+								$this->gid2relevanceStatus[$gid]=true;
+								continue;
+							}
+						}
+						else {
+							;   // current group, so process this one
+						}
+					}
+				}
 
-            $result = $this->_ProcessRelevance(htmlspecialchars_decode($rel['relevance'],ENT_QUOTES),
-                    $qid,
-                    $gid,
-                    $rel['jsResultVar'],
-                    $rel['type'],
-                    $rel['hidden']
-                    );
-            $_SESSION['relevanceStatus'][$qid] = $result;
-        }
-        $this->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-//        log_message('debug',print_r($_SESSION['relevanceStatus'],true));
+				$result = $this->_ProcessRelevance(htmlspecialchars_decode($rel['relevance'],ENT_QUOTES),
+						$qid,
+						$gid,
+						$rel['jsResultVar'],
+						$rel['type'],
+						$rel['hidden']
+						);
+				$_SESSION['relevanceStatus'][$qid] = $result;
+			}
+			$this->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+	//        log_message('debug',print_r($_SESSION['relevanceStatus'],true));
+		}
     }
 
     /**
@@ -1883,8 +1886,8 @@ class LimeExpressionManager {
 //        log_message('debug','**ERRORS**' . print_r($LEM->syntaxErrors,true));
         if (count($LEM->syntaxErrors) > 0)
         {
-            foreach ($LEM->syntaxErrors as $errors)
-                Yii::app()->db->createCommand()->insert('{{expression_errors}}',$errors);
+            $CI =& get_instance();
+            $CI->db->insert_batch('expression_errors',$LEM->syntaxErrors);
         }
         $LEM->initialized=false;    // so detect calls after done
     }
@@ -1921,6 +1924,7 @@ class LimeExpressionManager {
     {
         $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
+		$yii = Yii::app();
 
         $knownVars = $LEM->knownVars;
 
@@ -1928,7 +1932,7 @@ class LimeExpressionManager {
 
         $jsParts=array();
         $allJsVarsUsed=array();
-        $jsParts[] = '<script type="text/javascript" src="' . Yii::app()->baseUrl . '/scripts/admin/expressions/em_javascript.js"></script>';
+        $jsParts[] = '<script type="text/javascript" src="' . $yii->homeUrl . '/scripts/admin/expressions/em_javascript.js"></script>';
         $jsParts[] = "<script type='text/javascript'>\n<!--\n";
         $jsParts[] = "function ExprMgr_process_relevance_and_tailoring(evt_type){\n";
         $jsParts[] = "if (typeof LEM_initialized == 'undefined') {\nLEM_initialized=true;\nLEMsetTabIndexes();\nreturn;\n}\n";

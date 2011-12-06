@@ -2988,9 +2988,10 @@ function GetBaseLanguageFromSurveyID($surveyid)
         $condition = array('sid' => $surveyid);//"sid=$surveyid";
 
         $surveylanguage = Survey::model()->findByPk($surveyid);//("SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";)
-		if (is_null($surveylanguage))
-			die(var_dump(debug_backtrace()));
-        $surveylanguage = $surveylanguage->attributes; //Checked)
+		
+		/*if (is_null($surveylanguage))
+			die(var_dump(debug_backtrace()));*/
+        $surveylanguage = $surveylanguage['attributes']; //Checked)
 
         if (!isset($surveylanguage['language']) || is_null($surveylanguage))
         {
@@ -3014,7 +3015,7 @@ function GetAdditionalLanguagesFromSurveyID($surveyid)
     if (!isset($cache[$surveyid])) {
         $result = Survey::model()->findByAttributes(array('sid' => (int) $surveyid));
 
-    	$additional_languages = $result->attributes;
+    	$additional_languages = $result['attributes'];
         //$query = "SELECT additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
         $additional_languages = $additional_languages['additional_languages'];
         if (trim($additional_languages)=='')
@@ -3129,7 +3130,8 @@ function getQuestionAttributeValues($qid, $type='')
         return $cache[$qid];
     }
     $result = Questions::model()->findByAttributes(array('qid' => $qid));  //Checked
-    $row=$result->attributes;
+
+    $row=$result['attributes'];
 
     if ($row===false) // Question was deleted while running the survey
     {
@@ -4977,6 +4979,7 @@ function createPassword()
 
 function languageDropdown($surveyid,$selected)
 {
+     $yii = Yii::app();
     $homeurl = Yii::app()->getConfig('homeurl');
     $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -4985,7 +4988,7 @@ function languageDropdown($surveyid,$selected)
 
     foreach ($slangs as $lang)
     {
-        $link = $homeurl."/admin/dataentry/view/".$surveyid."/".$lang;
+        $link = $yii->homeUrl.("/admin/dataentry/sa/view/surveyid/".$surveyid."/lang/".$lang);
         if ($lang == $selected) $html .= "\t<option value='{$link}' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
         if ($lang != $selected) $html .= "\t<option value='{$link}'>".getLanguageNameFromCode($lang,false)."</option>\n";
     }

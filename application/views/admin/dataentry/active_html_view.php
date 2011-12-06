@@ -1,4 +1,7 @@
-<?php if ($thissurvey['active'] == "Y")
+<?php 
+$yii = Yii::app();
+
+if ($thissurvey['active'] == "Y")
             { ?>
 
                 <script type='text/javascript'>
@@ -23,7 +26,7 @@
                 <td colspan='3' align='center'>
                 <table><tr><td align='left'>
                 <input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' checked='checked'/><label for='closerecord'><?php echo $clang->gT("Finalize response submission"); ?></label></td></tr>
-                <input type='hidden' name='closedate' value='<?php echo date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust')); ?>' />
+                <input type='hidden' name='closedate' value='<?php echo date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $yii->getConfig('timeadjust')); ?>' />
     
                 <?php if ($thissurvey['allowsave'] == "Y")
                 { ?>
@@ -77,7 +80,7 @@
             elseif ($thissurvey['active'] == "N")
             { ?>
                 <tr>
-                <td colspan='3' align='center'>";
+                <td colspan='3' align='center'>
                 <font color='red'><strong><?php echo $clang->gT("This survey is not yet active. Your response cannot be saved"); ?>
                 </strong></font></td>
                 </tr>
@@ -99,7 +102,7 @@
             <td>
             <input type='hidden' name='subaction' value='insert' />
             <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
-            <input type='hidden' name='lang' value='<?php echo $sDataEntryLanguage; ?>' />
+            <input type='hidden' name='language' value='<?php echo $sDataEntryLanguage; ?>' />
             </td>
             </tr>
             </table>
