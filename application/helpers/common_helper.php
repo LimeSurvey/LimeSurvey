@@ -5521,7 +5521,7 @@ function GetAttributeFieldNames($surveyid)
         return Array();
 
     return array_filter(array_keys($table->columns), 'filterforattributes');
-    }
+}
 
 /**
 * Retrieves the token field names usable for conditions from the related token table

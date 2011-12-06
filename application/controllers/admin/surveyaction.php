@@ -23,10 +23,10 @@
 * @access public
 */
 class SurveyAction extends Survey_Common_Action {
-	
+
 	private $yii;
 	private $controller;
-	
+
     /**
 	* Base function
 	*
@@ -43,7 +43,7 @@ class SurveyAction extends Survey_Common_Action {
         {
             die();
         }
-		
+
 		$this->yii = Yii::app();
 		$this->controller = $this->getController();
 
@@ -503,7 +503,6 @@ class SurveyAction extends Survey_Common_Action {
             self::_questionbar($surveyid,$gid,$qid,"viewquestion");
             $this->controller->_loadEndScripts();
 
-
             $this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->yii->lang->gT("LimeSurvey online manual"));
 
         }
@@ -521,10 +520,9 @@ class SurveyAction extends Survey_Common_Action {
                 self::_surveysummary($surveyid,"viewgroup");
                 self::_questiongroupbar($surveyid,$gid,$qid,"viewgroup");
 
-                self::_loadEndScripts();
+                $this->controller->_loadEndScripts();
 
-
-                self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
+                $this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 
             }
             else

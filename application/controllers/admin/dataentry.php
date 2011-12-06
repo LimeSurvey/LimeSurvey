@@ -59,7 +59,7 @@
  class dataentry extends Survey_Common_Action {
 	private $yii;
 	private $controller;
-	
+
     /**
      * dataentry::__construct()
      * Constructor
@@ -69,8 +69,8 @@
 	{
 		$this->yii = Yii::app();
 		$this->controller = $this->getController();
-		
-		
+
+
 		if ($sa == 'view')
 			$this->route('view', array('surveyid'));
 		elseif ($sa == 'insert')
@@ -157,8 +157,7 @@
 				$vvoutput = "";
                 if (tableExists("{{survey_$surveyid}}"))
                 {
-                    Yii::app()->loadHelper('admin/html');
-                    browsemenubar($clang->gT("Import VV file"),$surveyid,TRUE).
+                    $this->_browsemenubar($surveyid, $clang->gT("Import VV file")).
             		$vvoutput = "<div class='header ui-widget-header'>".$clang->gT("Import a VV survey file")."</div>
             		<form id='vvexport' enctype='multipart/form-data' method='post' action='".$this->getController()->createURL('admin/dataentry/sa/vvimport/surveyid/'.$surveyid)."'>
             		<ul>
@@ -382,7 +381,7 @@
                         $insert .= "(".implode(", ", array_keys($fielddata)).")\n";
                         $insert .= "VALUES\n";
                         $insert .= "(".implode(", ", array_values($fielddata)).")\n";
-                        
+
                         $result = db_execute_assoc($insert, false, true);
 
                         if (isset($fielddata['id']))
@@ -435,26 +434,24 @@
     function import($surveyid)
     {
     	$surveyid = sanitize_int($surveyid);
-        
+
 		$subaction = '';
-		
-		$this->yii->loadHelper('admin/html');
-		
+
         $this->controller->_getAdminHeader();
-		
+
         if(bHasSurveyPermission($surveyid,'responses','create'))
         {
             //if (!isset($surveyid)) $surveyid = $this->input->post('sid');
-            if (!isset($oldtable) && isset($_POST['oldtable'])) 
+            if (!isset($oldtable) && isset($_POST['oldtable']))
             {
             	$oldtable = $_POST['oldtable'];
 
             	$subaction = $_POST['subaction'];
 			}
-			
+
 			$connection = $this->yii->db;
         	$schema = $connection->getSchema();
-			
+
             $clang = $this->yii->lang;
             $dbprefix = $connection->tablePrefix;
             $this->yii->loadHelper('database');
@@ -467,28 +464,28 @@
                 $result = db_execute_assoc($query) or show_error("Error:<br />$query<br />");
                 if ($result->count() > 0)
                 	$result = $result->readAll();
-				
+
                 $optionElements = '';
                 //$queryCheckColumnsActive = $schema->getTable($oldtable)->columnNames;
 				$resultActive = $schema->getTable($dbprefix.'survey_'.$surveyid)->columnNames;
                 //$resultActive = db_execute_assoc($queryCheckColumnsActive) or show_error("Error:<br />$query<br />");
                 $countActive = count($resultActive);
-				
+
                 foreach ($result as $row)
                 {
                 	$row = each($row);
-					
+
                     //$resultOld = db_execute_assoc($queryCheckColumnsOld) or show_error("Error:<br />$query<br />");
                     $resultOld = $schema->getTable($row[1])->columnNames;
-					
+
                     if($countActive == count($resultOld)) //num_fields()
                     {
                         $optionElements .= "\t\t\t<option value='{$row[1]}'>{$row[1]}</option>\n";
                     }
                 }
-				
+
                 //Get the menubar
-                browsemenubar($clang->gT("Quick statistics"),$surveyid,TRUE, $this->controller);
+                $this->_browsemenubar($surveyid, $clang->gT("Quick statistics"));
                 $importoldresponsesoutput = "
             		<div class='header ui-widget-header'>
             			".$clang->gT("Import responses from a deactivated survey table")."
@@ -543,10 +540,10 @@
                 $dontimportfields = array(
             		 //,'otherfield'
                 );
-				
+
                 //$aFieldsOldTable=array_values($connect->MetaColumnNames($oldtable, true));
                 //$aFieldsNewTable=array_values($connect->MetaColumnNames($activetable, true));
-                
+
                 $aFieldsOldTable = array_values($schema->getTable($oldtable)->columnNames);
                 $aFieldsNewTable = array_values($schema->getTable($activetable)->columnNames);
 
@@ -576,7 +573,7 @@
 
                 $sOldTimingsTable=substr($oldtable,0,strrpos($oldtable,'_')).'_timings'.substr($oldtable,strrpos($oldtable,'_'));
                 $sNewTimingsTable=$dbprefix.$surveyid."_timings";
-				
+
                 if (tableExists(sStripDBPrefix($sOldTimingsTable)) && tableExists(sStripDBPrefix($sNewTimingsTable)) && returnglobal('importtimings')=='Y')
                 {
                    // Import timings
@@ -606,7 +603,7 @@
                     $this->yii->session['flashmessage'] = sprintf($clang->gT("%s old response(s) and according timings were successfully imported."),$iRecordCount,$iRecordCountT);
                 }
 				//$this->controller->redirect($this->controller->createUrl('/admin/dataentry/import/'.$surveyid));
-                $importoldresponsesoutput = browsemenubar($clang->gT("Quick statistics"),$surveyid,TRUE, $this->controller);
+                $this->_browsemenubar($surveyid, $clang->gT("Quick statistics"));
             }
 
 
@@ -627,12 +624,12 @@
      * @param mixed $language
      * @return
      */
-    public function editdata($subaction, $id, $surveyid, $lang)
+    public function editdata($subaction,$id,$surveyid,$language='')
     {
-    	  if ($lang == '') {
-				$language = GetBaseLanguageFromSurveyID($surveyid);   	  	
+    	  if ($language == '') {
+				$language = GetBaseLanguageFromSurveyID($surveyid);
 		  }
-		  
+
     	$surveyid = sanitize_int($surveyid);
 		$id = sanitize_int($id);
         if (!isset($sDataEntryLanguage))
@@ -645,9 +642,8 @@
         if (bHasSurveyPermission($surveyid, 'responses','update'))
         {
             $surveytable = "{{survey_".$surveyid.'}}';
-            $clang = $this->yii->lang;
-            $this->yii->loadHelper('admin/html');
-            browsemenubar($clang->gT("Data entry"),$surveyid,TRUE);
+            $clang = $this->limesurvey_lang;
+            $this->_browsemenubar($surveyid, $clang->gT("Data entry"));
             $dataentryoutput = '';
             $this->yii->loadHelper('database');
             //FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
@@ -1680,11 +1676,10 @@
             {
 
                 $baselang = GetBaseLanguageFromSurveyID($surveyid);
-                Yii::app()->loadHelper("admin/html");
                 Yii::app()->loadHelper("database");
                 $clang = $this->getController()->lang;
                 $surveytable = "{{survey_".$surveyid.'}}';
-                browsemenubar($clang->gT("Data entry"),$surveyid,TRUE);
+                $this->_browsemenubar($surveyid, $clang->gT("Data entry"));
 
 
                 $dataentryoutput = "<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n";
@@ -1796,7 +1791,7 @@
 
 
     }
-   
+
 	/**
      * dataentry::insert()
      * insert new dataentry
@@ -1817,9 +1812,9 @@
                 $surveytable = $this->yii->db->tablePrefix."survey_".$surveyid;
                 $thissurvey=getSurveyInfo($surveyid);
                 $errormsg="";
-                $this->yii->loadHelper("admin/html");
+
                 $this->yii->loadHelper("database");
-                browsemenubar($clang->gT("Data entry"),$surveyid,TRUE, $this->controller);
+                $this->_browsemenubar($surveyid, $clang->gT("Data entry"));
 
 
                 $dataentryoutput ='';
@@ -1891,7 +1886,7 @@
                 else
                 {
 					$last_db_id = 0;
-					
+
                     if (isset($_POST['save']) && $_POST['save'] == "on")
                     {
                         $saver['identifier']=$_POST['save_identifier'];
@@ -1928,7 +1923,7 @@
         					   <td><input type='text' name='save_email' value='".$_POST['save_email']."' />
         					  <tr><td align='right'>".$clang->gT("Start Language:")."</td>
         					   <td><input type='text' name='save_language' value='".$_POST['save_language']."' />\n";
-							
+
                             foreach ($_POST as $key=>$val)
                             {
                                 if (substr($key, 0, 4) != "save" && $key != "action" && $key !="sid" && $key != "datestamp" && $key !="ipaddr")
@@ -1957,7 +1952,7 @@
                     $fieldmap= createFieldMap($surveyid);
                     $columns=array();
                     $values=array();
-					
+
                     $_POST['startlanguage']=$baselang;
                     if ($thissurvey['datestamp'] == "Y") {$_POST['startdate']=$_POST['datestamp'];}
                     if (isset($_POST['closerecord']))
@@ -1971,7 +1966,7 @@
                             $_POST['submitdate']=date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
                         }
                     }
-					
+
                     foreach ($fieldmap as $irow)
                     {
                         $fieldname = $irow['fieldname'];
@@ -2041,7 +2036,7 @@
                     }
 
 					$surveytable = $this->yii->db->tablePrefix.'survey_'.$surveyid;
-					
+
                     $SQL = "INSERT INTO $surveytable
 							(".implode(',', $columns).")
 							VALUES
@@ -2049,8 +2044,8 @@
 
                     //$this->load->model('surveys_dynamic_model');
                    // $iinsert = $this->surveys_dynamic_model->insertRecords($surveyid,$values);
-					
-					
+
+
 					$iinsert = db_execute_assoc($SQL);
 					$last_db_id = $connect->getLastInsertID();
                     if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') // submittoken
@@ -2105,24 +2100,24 @@
                          $srid = $connect->getLastInsertID(); //$connect->getLastInsertID();
                         $aUserData=$this->yii->session;
                         //CREATE ENTRY INTO "saved_control"
-						
-							
+
+
 						$saved_control_table = $this->yii->db->tablePrefix.'saved_control';
-						
-						$columns = array("sid", "srid", "identifier", "access_code", "email", "ip", 
+
+						$columns = array("sid", "srid", "identifier", "access_code", "email", "ip",
 										"refurl", 'saved_thisstep', "status", "saved_date");
-						$values = array("'".$surveyid."'", "'".$srid."'", "'".$saver['identifier']."'", "'".$password."'", "'".$saver['email']."'", "'".$aUserData['ip_address']."'", 
+						$values = array("'".$surveyid."'", "'".$srid."'", "'".$saver['identifier']."'", "'".$password."'", "'".$saver['email']."'", "'".$aUserData['ip_address']."'",
 										"'".getenv("HTTP_REFERER")."'", 0, "'"."S"."'", "'".date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", "'".$this->yii->getConfig('timeadjust'))."'");
-										
+
 						$SQL = "INSERT INTO $saved_control_table
 								(".implode(',',$columns).")
 								VALUES
 								(".implode(',',$values).")";
 						//$this->load->model('surveys_dynamic_model');
 					   // $iinsert = $this->surveys_dynamic_model->insertRecords($surveyid,$values);
-						
-						
-						
+
+
+
                         /*$scdata = array("sid"=>$surveyid,
         				"srid"=>$srid,
         				"identifier"=>$saver['identifier'],
@@ -2155,14 +2150,14 @@
                                             "language"=>$saver['language'],
                                             "sent"=>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust),
                                             "completed"=>"N");*/
-								
-								$columns = array("firstname", "lastname", "email", "token", 
+
+								$columns = array("firstname", "lastname", "email", "token",
 												"language", "sent", "completed");
-								$values = array("'".$saver['identifier']."'", "'".$saver['identifier']."'", "'".$saver['email']."'", "'".$password."'", 
+								$values = array("'".$saver['identifier']."'", "'".$saver['identifier']."'", "'".$saver['email']."'", "'".$password."'",
 												"'".sRandomChars(15)."'", "'".$saver['language']."'", "'"."N"."'");
                                 // $this->load->model('tokens_dynamic_model');
 							    $token_table = $this->yii->db->tablePrefix.'tokens_'.$surveyid;
-					
+
 								$SQL = "INSERT INTO $token_table
 									(".implode(',',$columns).")
 									VALUES
@@ -2208,7 +2203,7 @@
                     $thisid=$last_db_id;
                     $dataentryoutput .= "\t".$clang->gT("The entry was assigned the following record id: ")." {$thisid}<br /><br />\n";
                 }
-				
+
                 $dataentryoutput .= $errormsg;
                 $dataentryoutput .= "\t<input type='submit' value='".$clang->gT("Add Another Record")."' onclick=\"window.open('".$this->yii->homeUrl.('/admin/dataentry/sa/view/surveyid/'.$surveyid.'/lang/'.$lang)."', '_top')\" /><br /><br />\n";
                 $dataentryoutput .= "\t<input type='submit' value='".$clang->gT("Return to survey administration")."' onclick=\"window.open('".$this->yii->homeUrl.('/admin/survey/view/'.$surveyid)."', '_top')\" /><br /><br />\n";
@@ -2249,7 +2244,7 @@
 		$lang = isset($_GET['lang']) ? $_GET['lang'] : NULL;
 		if(isset($lang)) $lang=sanitize_languagecode($lang);
         $this->controller->_getAdminHeader();
-        if (bHasSurveyPermission($surveyid, 'responses','read'))
+        if (bHasSurveyPermission($surveyid, 'responses', 'read'))
         {
 			//$this->yii->loadHelper('expressions/em_manager');
             $clang = $this->yii->lang;
@@ -2257,8 +2252,7 @@
             $sDataEntryLanguage = GetBaseLanguageFromSurveyID($surveyid);
             $surveyinfo=getSurveyInfo($surveyid);
 
-            $this->yii->loadHelper("admin/html");
-            browsemenubar($clang->gT("Data entry"),$surveyid,TRUE, $this->controller);
+            $this->_browsemenubar($surveyid, $clang->gT("Data entry"));
 
             $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -2368,13 +2362,12 @@
             $data['surveyid'] = $surveyid;
             $data['blang'] = $blang;
 			$data['site_url'] = $this->yii->homeUrl;
-			
+
 			LimeExpressionManager::StartProcessingPage(false,true,true);  // means that all variables are on the same page
 
             $this->controller->render("/admin/dataentry/caption_view",$data);
 
             $this->yii->loadHelper('database');
-			
 
             // SURVEY NAME AND DESCRIPTION TO GO HERE
             $degquery = "SELECT * FROM ".$this->yii->db->tablePrefix."groups WHERE sid=$surveyid AND language='{$sDataEntryLanguage}' ORDER BY ".$this->yii->db->tablePrefix."groups.group_order";
@@ -2415,7 +2408,7 @@
                     $s=0;
                     $scenarioquery="SELECT DISTINCT scenario FROM ".$this->yii->db->tablePrefix."conditions WHERE ".$this->yii->db->tablePrefix."conditions.qid={$deqrow['qid']} ORDER BY scenario";
                     $scenarioresult=db_execute_assoc($scenarioquery);
-					
+
                     foreach ($scenarioresult->readAll() as $scenariorow)
                     {
                         if ($s == 0 && $scenarioresult->getRowCount() > 1) { $explanation .= " <br />-------- <i>Scenario {$scenariorow['scenario']}</i> --------<br />";}
@@ -2562,7 +2555,7 @@
                         }
                         $s++;
                     }
-					
+
                     if ($explanation)
                     {
                         // TMSW Conditions->Relevance:  show relevance equation here instead
@@ -2748,7 +2741,7 @@
                             {
                                 $defaultopts = array();
                                 $optgroups = array();
-								
+
                                 foreach ($dearesult->readAll() as $dearow)
                                 {
                                     list ($categorytext, $answertext) = explode($optCategorySeparator,$dearow['answer']);
@@ -3525,11 +3518,11 @@
                 }
                 LimeExpressionManager::FinishProcessingGroup();
             }
-				
+
             LimeExpressionManager::FinishProcessingPage();
             $dataentryoutput .= LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
-			
-			
+
+
             $sdata['display'] = $dataentryoutput;
             $this->controller->render("/survey_view",$sdata);
 

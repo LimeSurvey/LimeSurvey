@@ -279,8 +279,8 @@ class AdminController extends LSYii_Controller
 			$data['buildtext']="";
 		}
 
-		$data['imageurl']= Yii::app()->getConfig("imageurl");
-		$data['url']=$url;
+		$data['imageurl'] = Yii::app()->getConfig("imageurl");
+		$data['url'] = $url;
 
 		if (Yii::app()->getConfig("js_admin_includes"))
 		{

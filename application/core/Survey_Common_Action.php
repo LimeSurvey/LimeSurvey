@@ -260,9 +260,8 @@
         $js_admin_includes[]=Yii::app()->getConfig('generalscripts').'jquery/superfish.js';
         $js_admin_includes[]=Yii::app()->getConfig('generalscripts').'jquery/hoverIntent.js';
         $js_admin_includes[]=Yii::app()->getConfig('adminscripts').'surveytoolbar.js';
-        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
+        $this->controller->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
 
-		Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
         Yii::app()->setConfig("js_admin_includes", $js_admin_includes);
 
 		//Parse data to send to view
