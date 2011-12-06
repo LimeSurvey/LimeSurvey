@@ -78,7 +78,7 @@
 		    <?php }
 		    if (bHasSurveyPermission($surveyid, 'surveyactivation','update'))
 		    { ?>
-		        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/kill/$surveyid");?>', '_top')"
+		        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/kill/surveyid/$surveyid");?>', '_top')"
 		        	title='<?php echo $clang->gTview("Drop tokens table");?>' >
 		        	<img name='DeleteParticipantTable' src='<?php echo $imageurl;?>/delete.png' alt='<?php echo $clang->gT("Drop tokens table");?>' />
 		        </a>

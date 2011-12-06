@@ -46,6 +46,8 @@ class tokens extends Survey_Common_Action
 			$this->route('import', array('surveyid'));
 		elseif ($sa == 'importldap')
 			$this->route('importldap', array('surveyid'));
+	        elseif ($sa == 'kill')
+	                $this->route('kill', array('surveyid'));
 		elseif ($sa == 'adddummys')
 			$this->route('adddummys', array('surveyid', 'subaction'));
 	}
@@ -2201,39 +2203,40 @@ class tokens extends Survey_Common_Action
 	function kill($surveyid)
 	{
 		$surveyid = sanitize_int($surveyid);
-		$clang = $this->limesurvey_lang;
-		$data['clang']=$this->limesurvey_lang;
+		$clang = $this->getController()->lang; 
+		$data['clang']=$this->getController()->lang;
 		$data['thissurvey']=getSurveyInfo($surveyid);
-		$data['imageurl'] = $this->config->item('imageurl');
+
+		$data['imageurl'] = Yii::app()->getConfig("imageurl");
 		$data['surveyid']=$surveyid;
 
 		if (bHasSurveyPermission($surveyid, 'surveyactivation', 'update'))
 		{
-			$_POST = $this->input->post();
 		    $date = date('YmdHis');
 		    //$tokenoutput .= "<div class='header ui-widget-header'>".$clang->gT("Delete Tokens Table")."</div>\n"
 		    //."<div class='messagebox ui-corner-all'>\n";
 		    // ToDo: Just delete it if there is no token in the table
 		    if (!isset($_POST['ok']) || !$_POST['ok'])
 		    {
-				self::_getAdminHeader();
-				$this->load->view("admin/token/tokenbar",$data);
-				self::_showMessageBox($clang->gT("Delete Tokens Table"),$clang->gT("If you delete this table tokens will no longer be required to access this survey.")."<br />".$clang->gT("A backup of this table will be made if you proceed. Your system administrator will be able to access this table.")."<br />\n"
+                        $this->getController()->_getAdminHeader();
+			$this->getController()->render("/admin/token/tokenbar",$data);   
+			$this->getController()->_showMessageBox($clang->gT("Delete Tokens Table"),$clang->gT("If you delete this table tokens will no longer be required to access this survey.")."<br />".$clang->gT("A backup of this table will be made if you proceed. Your system administrator will be able to access this table.")."<br />\n"
 		        ."( \"old_tokens_{$surveyid}_$date\" )<br /><br />\n"
 		        ."<input type='submit' value='"
-		        .$clang->gT("Delete Tokens")."' onclick=\"".get2post(site_url("admin/tokens/kill/$surveyid")."?action=tokens&amp;sid=$surveyid&amp;subaction=kill&amp;ok=surething")."\" />\n"
+		        .$clang->gT("Delete Tokens")."' onclick=\"".get2post($this->getController()->createUrl("admin/tokens/sa/kill/surveyid/$surveyid")."?action=tokens&amp;sid=$surveyid&amp;subaction=kill&amp;ok=surething")."\" />\n"
 		        ."<input type='submit' value='"
-		        .$clang->gT("Cancel")."' onclick=\"window.open('".site_url("admin/tokens/index/$surveyid")."', '_top')\" />\n");
-				self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+		        .$clang->gT("Cancel")."' onclick=\"window.open('".$this->getController()->createUrl("admin/tokens/sa/index/surveyid/$surveyid")."', '_top')\" />\n");
+				
+			$this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual")); 
 		    }
 		    elseif (isset($_POST['ok']) && $_POST['ok'] == "surething")
 		    {
+		        $sDBPrefix = Yii::app()->db->tablePrefix;
 		        $oldtable = "tokens_$surveyid";
-		        $newtable = "old_tokens_{$surveyid}_$date";
-		        //$deactivatequery = db_rename_table( db_table_name_nq($oldtable), db_table_name_nq($newtable));
-		        $this->load->dbforge();
-				$this->dbforge->rename_table($this->db->dbprefix($oldtable) , $this->db->dbprefix($newtable));
-
+ 		        $newtable = "old_tokens_{$surveyid}_$date";
+				
+			Yii::app()->db->createCommand()->renameTable($sDBPrefix.$oldtable, $sDBPrefix.$newtable);
+				
 				//CodeIgniter should handle this correctly
 		        /*if ($databasetype=='postgres')
 		        {
@@ -2249,14 +2252,16 @@ class tokens extends Survey_Common_Action
 		            $deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())." - Query: ".htmlspecialchars($deactivatequery)." <br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
 		        }*/
 
-				self::_getAdminHeader();
-				$this->load->view("admin/token/tokenbar",$data);
-				self::_showMessageBox($clang->gT("Delete Tokens Table"),'<br />'.$clang->gT("The tokens table has now been removed and tokens are no longer required to access this survey.")."<br /> ".$clang->gT("A backup of this table has been made and can be accessed by your system administrator.")."<br />\n"
+				$this->getController()->_getAdminHeader();
+		
+				$this->getController()->render("/admin/token/tokenbar",$data);  
+				$this->getController()->_showMessageBox($clang->gT("Delete Tokens Table"),'<br />'.$clang->gT("The tokens table has now been removed and tokens are no longer required to access this survey.")."<br /> ".$clang->gT("A backup of this table has been made and can be accessed by your system administrator.")."<br />\n"
 		        ."(\"old_tokens_{$surveyid}_$date\")"."<br /><br />\n"
 		        ."<input type='submit' value='"
-		        .$clang->gT("Main Admin Screen")."' onclick=\"window.open('".base_url("admin/")."', '_top')\" />");
-				self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-		    }
+		        .$clang->gT("Main Admin Screen")."' onclick=\"window.open('".Yii::app()->createURL("admin/")."', '_top')\" />");
+
+				$this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+		    }  
 		}
 	}
 
