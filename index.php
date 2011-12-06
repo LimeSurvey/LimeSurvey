@@ -1091,6 +1091,8 @@ function makelanguagechanger()
     if (isset($surveyid))
     {
         $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+        $sBaseLanguage = GetBaseLanguageFromSurveyID($surveyid);
+
     }
 
     $token = sanitize_token(returnglobal('token'));
@@ -1122,10 +1124,14 @@ function makelanguagechanger()
             $lang = sanitize_languagecode($_GET['lang']);
         }
         else
-        $lang = GetBaseLanguageFromSurveyID($surveyid);
+        {
+            $lang = $sBaseLanguage;
+        }
+        $slangs[]=$sBaseLanguage;
+        $aAllLanguages=getLanguageData();
+        $slangs=array_keys(array_intersect_key($aAllLanguages,array_flip($slangs))); // Sort languages by their locale name
 
         $htmlcode ="<select name=\"select\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
-        $htmlcode .= "<option value=\"$relativeurl/index.php?sid=". $surveyid ."&amp;lang=". $lang ."$tokenparam\">".getLanguageNameFromCode($lang,false)."</option>\n";
         $sAddToURL = "";
         $sTargetURL = "$relativeurl/index.php";
         if ($previewgrp){
@@ -1134,12 +1140,12 @@ function makelanguagechanger()
         }
         foreach ($slangs as $otherlang)
         {
-            if($otherlang != $lang)
-            $htmlcode .= "\t<option value=\"$sTargetURL?sid=". $surveyid ."&amp;lang=". $otherlang ."$tokenparam$sAddToURL\" >".getLanguageNameFromCode($otherlang,false)."</option>\n";
-        }
-        if($lang != GetBaseLanguageFromSurveyID($surveyid))
+            $htmlcode .= "\t<option value=\"$sTargetURL?sid=". $surveyid ."&amp;lang=". $otherlang ."$tokenparam$sAddToURL\" ";
+            if($otherlang == $lang)
         {
-            $htmlcode .= "<option value=\"$sTargetURL?sid=".$surveyid."&amp;lang=".GetBaseLanguageFromSurveyID($surveyid)."$tokenparam$sAddToURL\">".getLanguageNameFromCode(GetBaseLanguageFromSurveyID($surveyid),false)."</option>\n";
+                $htmlcode .= " selected=\"selected\" ";
+        }
+            $htmlcode .= ">".getLanguageNameFromCode($otherlang,false)."</option>\n";
         }
 
         $htmlcode .= "</select>\n";
@@ -1154,10 +1160,6 @@ function makelanguagechanger()
         foreach(getlanguagedata() as $key=>$val)
         {
             $htmlcode .= "\t<option value=\"$relativeurl/index.php?lang=".$key."$tokenparam\" ";
-            if($key == $baselang)
-            {
-                $htmlcode .= " selected=\"selected\" ";
-            }
             $htmlcode .= ">".getLanguageNameFromCode($key,false)."</option>\n";
         }
         $htmlcode .= "</select>\n";

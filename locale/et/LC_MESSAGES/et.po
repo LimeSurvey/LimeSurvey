@@ -3,16 +3,17 @@ msgstr ""
 "Project-Id-Version: EITSA\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-25 12:00+0200\n"
-"PO-Revision-Date: 2010-10-25 16:21+0300\n"
-"Last-Translator: Rain viigipuu <rain.viigipuu@gmail.com>\n"
+"PO-Revision-Date: 2011-11-17 16:59+0100\n"
+"Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team:  <karin@eitsa.ee>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Estonian\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-KeywordsList: gT\n"
+"X-Poedit-KeywordsList: gT;ngT:1,2\n"
 "X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Poedit-SearchPath-0: D:\\web\\xampp\\htdocs\\limesurvey\n"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/cmd_install.php:115
@@ -11529,240 +11530,340 @@ msgstr "Olete juba vastanud antud ankeedile."
 
 #~ msgid "Show System Summary"
 #~ msgstr "Näita süsteemi kokkuvõtet"
+
 #~ msgid "Edit/Add Label Sets"
 #~ msgstr "Redigeeri/Lisa hinnanguskaala"
+
 #~ msgid "Create or Import New Survey"
 #~ msgstr "Loo või impordi uus ankeet"
+
 #~ msgid "Array (Flexible Labels) by Column"
 #~ msgstr "Rida  (Paindlikud hinnangud) veerus"
+
 #~ msgid "List (Flexible Labels) (Dropdown)"
 #~ msgstr "Nimekiri (paindlikud hinnangud) (rippmenüü)"
+
 #~ msgid "List (Flexible Labels) (Radio)"
 #~ msgstr "Valikunimekiri (paindlikud hinnangud)"
+
 #~ msgid "Array (Multi Flexible) (Text)"
 #~ msgstr "Multi-flex massiiv (tekst)"
+
 #~ msgid "Return to Survey Administration"
 #~ msgstr "Mine tagasi Ankeedi administreerimisse"
+
 #~ msgid "Export result to a SPSS/PASW command file"
 #~ msgstr "Ekspordi tulemus SPSS/PASW käsufaili"
+
 #~ msgid "Preset"
 #~ msgstr "Ettemääratud"
+
 #~ msgid "Filter an array's answers from a Multiple Options Question"
 #~ msgstr "Filtreeri mitmikvaliku küsimuste vastus"
+
 #~ msgid "Number of columns to display"
 #~ msgstr "Kuvatavate veergude arv"
+
 #~ msgid "Minimum dropdown year"
 #~ msgstr "Minimaalne aasta rippmenüüs"
+
 #~ msgid "Maximum dropdown year"
 #~ msgstr "Maksimaalne aasta rippmenüüs"
+
 #~ msgid "Excludes all other options if this is selected"
 #~ msgstr "Antud valik välistab kõik muud suvandid"
+
 #~ msgid "Step value for array (multi-flexible) question type"
 #~ msgstr "Multi-flex massiivi tüüpi küsimuse sammu väärtus"
+
 #~ msgid "Use Checkbox layout for array (multi-flexible) question type"
 #~ msgstr "Kasuta Multi-flex massiivi tüüpi küsimusele Checkbox kujundust"
+
 #~ msgid "\"Other\" caption"
 #~ msgstr "\"Other\" asendus"
+
 #~ msgid "1=nominal 2=ordinal 3=scale."
 #~ msgstr "1=nominal 2=ordinal 3=scale."
+
 #~ msgid "Export scale type 1=nominal 2=ordinal 3=scale."
 #~ msgstr "Eksportskaala tüüp 1=nominal 2=ordinal 3=scale."
+
 #~ msgid "Survey Saved"
 #~ msgstr "Ankeet salvestatud"
+
 #~ msgid "Survey Submitted"
 #~ msgstr "Ankeet esitatud"
+
 #~ msgid "Date Stamp"
 #~ msgstr "Kuupäeva tempel"
+
 #~ msgid "First Scale"
 #~ msgstr "Esimene hinnanguskaala"
+
 #~ msgid "Second Scale"
 #~ msgstr "Teine hinnanguskaala"
+
 #~ msgid "Your Answer"
 #~ msgstr "Teie vastus"
+
 #~ msgid "Other text"
 #~ msgstr "Muu tekst"
+
 #~ msgid "Please choose one of the following"
 #~ msgstr "Palun valige üks järgnevatest"
+
 #~ msgid ""
 #~ "Error: The labelset used for this question is not available in this "
 #~ "language and/or does not exist."
 #~ msgstr ""
 #~ "Viga: Antud küsimuses kasutatud märgend(id) ei ole selles keeles "
 #~ "kättesaadaval ja/või ei eksiteeri."
+
 #~ msgid "Field summary for"
 #~ msgstr "Välja kokkuvõte"
+
 #~ msgid "Non completed"
 #~ msgstr "Ei ole lõpetatud"
+
 #~ msgid ""
 #~ "The labelset used in this question does not exists or is missing a "
 #~ "translation."
 #~ msgstr ""
 #~ "Hinnanguskaala, mida kasutatakse selles küsimuses, pole olemas või puudub "
 #~ "tõlge."
+
 #~ msgid "Edit (change) your group names"
 #~ msgstr "Redigeeri (muuda) rühma nimesid"
+
 #~ msgid ""
 #~ "Add, Remove or Edit pre-defined question answers (except for Multi-answer "
 #~ "questions)"
 #~ msgstr ""
 #~ "Lisa, eemalda või redigeeri eeldefineeritud küsimuse vastuseid (va. "
 #~ "mitmikvalikuga küsimused)"
+
 #~ msgid "1. scale"
 #~ msgstr "1. skaala"
+
 #~ msgid "2. scale"
 #~ msgstr "2. skaala"
+
 #~ msgid "Data View Control"
 #~ msgstr "Andmete vaate kontroll."
+
 #~ msgid "Completed Records Only"
 #~ msgstr "Ainult lõpetatud kirjed"
+
 #~ msgid "All Records"
 #~ msgstr "Kõik kirjed"
+
 #~ msgid "Incomplete Records Only"
 #~ msgstr "Ainult mittetäielkud kirjed"
+
 #~ msgid "%d responses for this survey"
 #~ msgstr "%d vastuset sellele ankeedile"
+
 #~ msgid "%d full responses"
 #~ msgstr "%d täis vastuseid"
+
 #~ msgid "%d responses not completely filled out"
 #~ msgstr "%d vastust pole lõplikult täidetud"
+
 #~ msgid "Condition"
 #~ msgstr "Tingimus"
+
 #~ msgid "Question could not be deleted"
 #~ msgstr "Küsimust ei saa kustutada"
+
 #~ msgid "Add new Answer"
 #~ msgstr "Lisa uus vastus"
+
 #~ msgid ""
 #~ "Error adding answer: You can't use the same answer code more than once."
 #~ msgstr ""
 #~ "Viga vastuse lisamisel: Te ei saa kasutada ühte vastuse koodi rohkem kui "
 #~ "ühel korral"
+
 #~ msgid "Failed to insert answer"
 #~ msgstr "Vastuse lisamine nurjus "
+
 #~ msgid "Invalid or empty answer code supplied"
 #~ msgstr "Vigane või tühi vastuse kood "
+
 #~ msgid "Failed to make answer not default"
 #~ msgstr "Ebaõnnestus vastuse mitte vaikimisi määramine"
+
 #~ msgid "Failed to make answer default"
 #~ msgstr "Ebaõnnestus vastuse vaikimisi määramine"
+
 #~ msgid "No LID has been provided. Cannot dump label set."
 #~ msgstr "LID pole määratud. Ei saa kuvada hinnaguskaalat."
+
 #~ msgid "No QID has been provided. Cannot dump question."
 #~ msgstr "Ühtegi GID (rühma) ei ole pakutud. Ei saa importida  küsimust."
+
 #~ msgid "Export responses"
 #~ msgstr "Ekspordi vastused "
+
 #~ msgid "Columns"
 #~ msgstr "Veerud"
+
 #~ msgid "Include"
 #~ msgstr "Include"
+
 #~ msgid "from"
 #~ msgstr "alates"
+
 #~ msgid "Export SPSS syntax file"
 #~ msgstr "Ekspordi SPSS süntaksifail"
+
 #~ msgid "Export SPSS data file"
 #~ msgstr "Ekspordi SPSS andmefail"
+
 #~ msgid "Import Group"
 #~ msgstr "Impordi rühm"
+
 #~ msgid "Select CSV File:"
 #~ msgstr "Valige CSV fail:"
+
 #~ msgid "Closed-access"
 #~ msgstr "Piiratud juurdepääs"
+
 #~ msgid "Open-access"
 #~ msgstr "Avatud juurdepääs"
+
 #~ msgid "This survey is active but expired"
 #~ msgstr "Ankeet on aktiivne, kuid aegunud"
+
 #~ msgid "LimeSurvey System Summary"
 #~ msgstr "LimeSurvey süsteemi kokkuvõte"
+
 #~ msgid "De-activated Surveys"
 #~ msgstr "De-aktiveertud ankeedid"
+
 #~ msgid "disabled"
 #~ msgstr "Keelatud"
+
 #~ msgid "You need to add groups"
 #~ msgstr "Peate lisama rühmad"
+
 #~ msgid "Edit Current Group"
 #~ msgstr "Muuda antud rühma"
+
 #~ msgid "Delete Current Group"
 #~ msgstr "Kustuta antud rühm"
+
 #~ msgid "Disabled"
 #~ msgstr "Keelatud"
+
 #~ msgid "Export Current Group"
 #~ msgstr "Ekspordi antud rühm"
+
 #~ msgid "Copy question is not possible in an Active survey"
 #~ msgstr "Aktiveeritud ankeeti ei saa küsimusi kopeerida."
+
 #~ msgid "You need to choose a label set for this question!"
 #~ msgstr "Peate valima hinnanguskaala antud küsimusele"
+
 #~ msgid "Second Label Set"
 #~ msgstr "Teine hinnanguskaala"
+
 #~ msgid "You need to choose a second label set for this question!"
 #~ msgstr "Te peate valima teise hinnanguskaala selle küsimuse jaoks!"
+
 #~ msgid "Edit/Add second Label Sets"
 #~ msgstr "Redigeeri/Lisa teine hinnanguskaala"
+
 #~ msgid "Only users with tokens may enter the survey?"
 #~ msgstr "Ainult tunnuskoodidega kasutajad võivad ankeeti siseneda?"
+
 #~ msgid "(This field is mandatory.)"
 #~ msgstr "(See väli on kohustuslik.)"
+
 #~ msgid "Select CSV/SQL File:"
 #~ msgstr "Vali CSV/SQL fail:"
+
 #~ msgid "No SID (Survey) has been provided. Cannot import group."
 #~ msgstr "Ühtegi SID (ankeeti) ei ole pakutud. Ei saa importida  küsimust."
+
 #~ msgid "This file is not a LimeSurvey group file. Import failed."
 #~ msgstr "See ei ole LimeSurvey rühma fail. Importimine ebaõnnestus."
+
 #~ msgid "Import partially successful."
 #~ msgstr "Importimine oli osaliselt edukas!"
+
 #~ msgid ""
 #~ "The following languages in this group were not imported since the survey "
 #~ "does not contain such a language: "
 #~ msgstr ""
 #~ "Järgmisi keeli selles grupis ei imporditud, sest ankeet ei sisaldanud "
 #~ "sellist keelt:"
+
 #~ msgid "Group Import Summary"
 #~ msgstr "Rühma importimise kokkuvõte"
+
 #~ msgid "Groups:"
 #~ msgstr "Rühmad"
+
 #~ msgid "Question Attributes: "
 #~ msgstr "Küsimuse atribuudid:"
+
 #~ msgid "Import of group is completed."
 #~ msgstr "Rühma importimine on lõpetatud."
+
 #~ msgid "Go to group"
 #~ msgstr "Mine grupile"
+
 #~ msgid "Return to Labels Admin"
 #~ msgstr "Tagasi hinnangute administreerimisse"
+
 #~ msgid ""
 #~ "There was a duplicate labelset, so this set was not imported. The "
 #~ "duplicate will be used instead."
 #~ msgstr ""
 #~ "Siin oli dubleeriv hinnanguskaala, seega seda ei imporditud. Selle asemel "
 #~ "kasutatakse olemasolevat."
+
 #~ msgid "Label Sets"
 #~ msgstr "Hinnanguskaala"
+
 #~ msgid ""
 #~ "You can't import a question which doesn't support the current survey's "
 #~ "base language"
 #~ msgstr "Ei saa importida küsimusi, mida ei toeta antud ankeedi baaskeel."
+
 #~ msgid ""
 #~ "Question \"%s - %s\" was NOT imported because the question type is "
 #~ "unknown."
 #~ msgstr ""
 #~ "Küsimust \"%s - %s\"  EI imporditud, kuna küsimuse tüüp on teadmata."
+
 #~ msgid ""
 #~ "Question \"%s - %s\" was imported but the type was set to '%s' because it "
 #~ "is the most similiar one."
 #~ msgstr ""
 #~ "Küsimus \"%s - %s\" imporditi, kuid tüübiks määrati '%s',  kuna see on "
 #~ "enim sarnane."
+
 #~ msgid "Condition for %d skipped (%d does not exist)"
 #~ msgstr "%d tingimus vahele jäetud (%d ei eksisteeri)"
+
 #~ msgid "No matching qid"
 #~ msgstr "Pole vastavad qid"
+
 #~ msgid "The following question attributes should be deleted"
 #~ msgstr "Järgnevad küsimuse atribuudid tuleks kustutada"
+
 #~ msgid "Add new label set"
 #~ msgstr "Lisa uus hinnanguskaala"
+
 #~ msgid ""
 #~ "You cannot change codes, add or delete entries in this label set because "
 #~ "it is being used by an active survey."
 #~ msgstr ""
 #~ "Te ei saa muuta kodeeringut, lisada või kustutada väärtusi selles "
 #~ "hinnanguskaalas, kuna see on kasutusel aktiivses ankeedis."
+
 #~ msgid ""
 #~ "Some surveys currently use this label set. Modifying the codes, adding or "
 #~ "deleting entries to this label set may produce undesired results in other "
@@ -11771,37 +11872,51 @@ msgstr "Olete juba vastanud antud ankeedile."
 #~ "Mõni ankeet kasutab seda hinnanguskaalat. Koodide muutmine, kirjete "
 #~ "lisamine või kustutamine selles hinnanguskaalas võib tekitada soovimatuid "
 #~ "tulemusi teistes ankeetides."
+
 #~ msgid ""
 #~ "Couldn't Delete Label Set - There are questions that rely on this. You "
 #~ "must delete these questions first."
 #~ msgstr ""
 #~ "Ei saa kustutada hinnanguskaalat, kuna osad küsimused on seotud sellega. "
 #~ "Peate esmalt küsimused kustutama."
+
 #~ msgid "Insert of Label Set failed"
 #~ msgstr "Hinnanguskaala lisamine nurjus"
+
 #~ msgid "Passed one time password doesn't match one time password for user %s"
 #~ msgstr ""
 #~ "Edastatud ühekordne parool ei vasta kasutaja %s ühekordsele paroolile"
+
 #~ msgid "answers:"
 #~ msgstr "vastused:"
+
 #~ msgid "Label Set:"
 #~ msgstr "Hinnanguskaala:"
+
 #~ msgid "Second Label Set:"
 #~ msgstr "Teine hinnanguskaala"
+
 #~ msgid "Copy Attributes?"
 #~ msgstr "Kopeeri atribuudid?"
+
 #~ msgid "Select CSV File"
 #~ msgstr "Vali CSV fail"
+
 #~ msgid "Filter settings"
 #~ msgstr "Filtrisätteid"
+
 #~ msgid "OR between"
 #~ msgstr "VÕI vahel"
+
 #~ msgid "All records"
 #~ msgstr "Kõik kirjed"
+
 #~ msgid "Don't consider NON completed responses"
 #~ msgstr "Ära arvesta lõpetamata vastuseid"
+
 #~ msgid "Getting result count ..."
 #~ msgstr "Toon tulemuste arvu..."
+
 #~ msgid ""
 #~ "There were no eligible emails to send. This will be because none "
 #~ "satisfied the criteria of - having an email address, not having been sent "
@@ -11811,138 +11926,193 @@ msgstr "Olete juba vastanud antud ankeedile."
 #~ "Pole sobivaid e-kirjasid saatmiseks. See võib olla seetõttu, et ükski ei "
 #~ "rahulda kriteeriumit - omades e-kirja aadressi, pole saadetud eelnevalt "
 #~ "kutset, on juba täidetud ankeet ja olemas on tunnuskood."
+
 #~ msgid "Email Reminder"
 #~ msgstr "Saada meeldetuletus"
+
 #~ msgid "Stop at Token ID:"
 #~ msgstr "Lõpeta tunnuskoodiga:"
+
 #~ msgid "Add or Edit Token Entry"
 #~ msgstr "Lisa või redigeeri tunnuskoodi sisestus"
+
 #~ msgid "Added New Token"
 #~ msgstr "Lisatud uus tunnuskood"
+
 #~ msgid "Importing CSV File"
 #~ msgstr "Impordin CSV faili"
+
 #~ msgid "Creating Token Entries"
 #~ msgstr "Loon tunnuskoodide kirjeid "
+
 #~ msgid "Your data:"
 #~ msgstr "Teie andmed:"
+
 #~ msgid "Welcome {NAME}"
 #~ msgstr "Tere tulemast, {NAME}"
+
 #~ msgid "Modifying User"
 #~ msgstr "Muuda kasutajat"
+
 #~ msgid "Update user rights successful."
 #~ msgstr "Kasutaja õiguste muutmine oli edukas."
+
 #~ msgid "Save Settings"
 #~ msgstr "Salvesta seaded"
+
 #~ msgid "Export Responses"
 #~ msgstr "Ekspordi vastused"
+
 #~ msgid "Date is not valid!"
 #~ msgstr "Kuupäev ei ole õige."
+
 #~ msgid ""
 #~ "It appears as if some tables or fields are missing from your database."
 #~ msgstr "Paistab et mõned tabelid või väljad on kadunud andmebaasist."
+
 #~ msgid "Check Database Fields"
 #~ msgstr "Kontrolli andmebaasi välju"
+
 #~ msgid "%s %% complete"
 #~ msgstr "%s %% lõpetatud"
+
 #~ msgid "Please complete all parts of the date"
 #~ msgstr "Palun sisestage kuupäeva kõik osad"
+
 #~ msgid "Format: YYYY-MM-DD"
 #~ msgstr "Formaat: AAA-KK-PP"
+
 #~ msgid "(eg: 2003-12-25 for Christmas day)"
 #~ msgstr "(nt: 2005-12-25 Jõulupühad)"
+
 #~ msgid "Click on an item in the list on the left, starting with your"
 #~ msgstr "Klõpsa vasakul paikneva loendi real"
+
 #~ msgid "Add New Label Set"
 #~ msgstr "Lisa uus hinnanguskaala"
+
 #~ msgid "Save All"
 #~ msgstr "Salvesta kõik"
+
 #~ msgid "Fix Order"
 #~ msgstr "Kindlaksmääratud järjekord"
+
 #~ msgid "Fix Sort"
 #~ msgstr "Kindlaksmääratud sorteerimine"
+
 #~ msgid "Ignore the new record."
 #~ msgstr "Ignoreeri uut kirjet."
+
 #~ msgid "Filter incomplete answers:"
 #~ msgstr "Filtreeri lõpetamata vastused:"
 
 #, fuzzy
 #~ msgid "Enabled"
 #~ msgstr "Luba"
+
 #~ msgid ""
 #~ "Don't consider NON completed responses (only works when Filter incomplete "
 #~ "answers is Disable)"
 #~ msgstr ""
 #~ "Ärge arvestage mittetäidetud vastuseid (töötab ainult siis kui Filtreeri "
 #~ "mittetäidetud vastused on Keelatud)"
+
 #~ msgid "Email Invitation"
 #~ msgstr "Saada kutse"
+
 #~ msgid "Update Token"
 #~ msgstr "Uuenda tunnuskood"
+
 #~ msgid "Add Token"
 #~ msgstr "Lisa tunnuskood"
+
 #~ msgid "Updated Token"
 #~ msgstr "Uuendatud tunnuskood"
+
 #~ msgid "Attribute_1 from token"
 #~ msgstr "Tunnuskoodi atribuut 1"
+
 #~ msgid "Attribute_2 from token"
 #~ msgstr "Tunnuskoodi atribuut 2"
+
 #~ msgid "This template can be modified"
 #~ msgstr "Seda malli saab muuta"
+
 #~ msgid "This template cannot be modified"
 #~ msgstr "Seda malli ei saa muuta"
+
 #~ msgid "Make a copy of this template"
 #~ msgstr "Tee koopia sellest mallist"
+
 #~ msgid "File Control:"
 #~ msgstr "Faili kontroll:"
+
 #~ msgid "Now editing:"
 #~ msgstr "Redigeerin:"
+
 #~ msgid ""
 #~ "Import responses from an old (deactivated) survey table into an active "
 #~ "survey"
 #~ msgstr ""
 #~ "Impordi vastused vanast (deaktiveeritud) ankeedi tabelist aktiveeritud "
 #~ "ankeeti."
+
 #~ msgid ""
 #~ "Sorry, importing questions is limited to the same version. Import failed."
 #~ msgstr ""
 #~ "Küsimuste importimine on limiteeritud sama versiooniga. Importimine "
 #~ "nurjus."
+
 #~ msgid "Anonymous"
 #~ msgstr "Anonüümne"
+
 #~ msgid "Not Anonymous"
 #~ msgstr "mitteanonüümne"
+
 #~ msgid "Current Language"
 #~ msgstr "Kasutatav keel"
+
 #~ msgid "Preferred HTML editor mode"
 #~ msgstr "Eelistatud HTML redaktori viis"
+
 #~ msgid "Edit Current Survey"
 #~ msgstr "Redigeeri ankeeti"
 
 #, fuzzy
 #~ msgid "Disabled - Change Group Order"
 #~ msgstr "Muuda rühma järjekorda"
+
 #~ msgid "Activate/Edit Tokens for this Survey"
 #~ msgstr "Aktiveeri/Redigeeri antud ankeedi tunnuskoode"
+
 #~ msgid ""
 #~ "Adding/editing tokens is not possible because this survey is not "
 #~ "activated."
 #~ msgstr ""
 #~ "Tunnuskoodide lisamine/muutmine pole võimalik, sest see ankeet pole "
 #~ "aktiveeritud."
+
 #~ msgid "Expires?"
 #~ msgstr "Aegub?"
+
 #~ msgid "Use Cookies?"
 #~ msgstr "Kasuta küpsiseid?"
+
 #~ msgid "Participiants may print answers?"
 #~ msgstr "Osalejad võivad trükkida vastused?"
+
 #~ msgid "Filter incomplete answers"
 #~ msgstr "Filtreeri lõpetamata vastused"
+
 #~ msgid "Enable"
 #~ msgstr "Luba"
+
 #~ msgid "if you have NOT answered"
 #~ msgstr "kui te POLE vastanud"
+
 #~ msgid "Only answer this question %s"
 #~ msgstr "Vasta ainult sellele küsimusele %s"
+
 #~ msgid ""
 #~ "If you create any assessments in this page, for the currently selected "
 #~ "survey, the assessment will be performed at the end of the survey after "
@@ -11950,116 +12120,166 @@ msgstr "Olete juba vastanud antud ankeedile."
 #~ msgstr ""
 #~ "Kui te loote siin lehel mõne hinnangu hetkel valitud ankeedi jaoks, siis "
 #~ "hinnang teostatakse ankeedi täitmise järel peale selle esitamist"
+
 #~ msgid ""
 #~ "Answer could not be added. You must insert a code in the mandatory field "
 #~ "(%s)"
 #~ msgstr ""
 #~ "Vastust ei saa lisada. Peate sisestama koodi kohustuslikku välja (%s)"
+
 #~ msgid "Group:"
 #~ msgstr "Rühm:"
+
 #~ msgid "Record ID"
 #~ msgstr "Kirje ID"
+
 #~ msgid "You were signed in on the site %s"
 #~ msgstr "Olete sisse loginud lehele %s"
+
 #~ msgid "Login here"
 #~ msgstr "Logi siin"
+
 #~ msgid "Username and/or email address already exists."
 #~ msgstr "Kasutajanimi ja/või e-posti aadress on juba olemas."
+
 #~ msgid "You have not selected a Survey."
 #~ msgstr "Te pole valinud ankeeti."
+
 #~ msgid "You cannot run this script directly."
 #~ msgstr "Te ei saa käivitada antud skripti otse."
+
 #~ msgid "copy to"
 #~ msgstr "kopeeri"
+
 #~ msgid ""
 #~ "NOTE: If you use a pre-defined answer as your condition, only the equals "
 #~ "or not-equal-to conditions apply."
 #~ msgstr ""
 #~ "MÄRKUS: Kui kasutate eeldefineeritud vastust nagu tingimust, sobib ainult "
 #~ "võrdne või mittevõrdne tingimus."
+
 #~ msgid "Constant Value or Regular Expression"
 #~ msgstr "Konstantne väärtus või regulaaravaldis"
+
 #~ msgid "(XML module only in PHP 4 available)"
 #~ msgstr "(XML moodul on ainult PHP 4-s olemas)"
+
 #~ msgid "depends on group"
 #~ msgstr "sõltub rühmast"
+
 #~ msgid "No matching Group"
 #~ msgstr "Pole vastavat rühma"
+
 #~ msgid "No matching Survey!"
 #~ msgstr "Pole vastavat ankeeti!"
+
 #~ msgid "Email address ist not valid."
 #~ msgstr "e-posti aadress ei ole õige."
+
 #~ msgid "answers"
 #~ msgstr "vastused"
+
 #~ msgid "to remove the last entry in your ranked list"
 #~ msgstr "et eemaldada viimane kirje hinnanguloendist"
+
 #~ msgid "Please choose at most"
 #~ msgstr "Palun vali enam"
+
 #~ msgid ""
 #~ "This is a closed-access survey. You need a valid token to participate."
 #~ msgstr ""
 #~ "See on piiratud juurdepääsuga ankeet. Vajate kehtivat tunnuskoodi ankeedi "
 #~ "täitmiseks."
+
 #~ msgid "prev"
 #~ msgstr "eelmine"
+
 #~ msgid "next"
 #~ msgstr "järgmine"
+
 #~ msgid "Are you sure you want to delete this entry."
 #~ msgstr "Kas oled kindel, et soovid kustutada selle kirje"
+
 #~ msgid "The token you have provided is not valid."
 #~ msgstr "Sisestatud tunnuskood pole kehtiv."
+
 #~ msgid "Your survey responses have been saved succesfully"
 #~ msgstr "Teie ankeedi vastused on edukalt salvestatud"
+
 #~ msgid "The file was only partially uploaded"
 #~ msgstr "Fail laeti ainult osaliselt üles"
+
 #~ msgid "Error on file transfer. You must select a CSV file"
 #~ msgstr "Viga faili ülekandmisel. Peate valima CVS faili"
+
 #~ msgid "You need to upload the file"
 #~ msgstr "Peate faili üleslaadima"
+
 #~ msgid "You must upload a CSV file"
 #~ msgstr "Peate CSV faili üleslaadima"
+
 #~ msgid "Upload CSV file"
 #~ msgstr "Lae ülesse CSV fail"
+
 #~ msgid "It is impossible to upload a file other than CSV type"
 #~ msgstr "Pole võimalik üles laadida faili v.a. CSV tüüpi"
+
 #~ msgid "It is impossible to upload an empty file"
 #~ msgstr "Pole võimalik üles laadida tühja faili"
+
 #~ msgid "Uploading CSV file"
 #~ msgstr "Lae üles CVS fail"
+
 #~ msgid "Visualization:"
 #~ msgstr "Visuaal:"
+
 #~ msgid "Failed to copy"
 #~ msgstr "Kopeerimine ebaõnnestus"
+
 #~ msgid "Directory with the name"
 #~ msgstr "Kaust nimega"
+
 #~ msgid "Please contact"
 #~ msgstr "Palun kontakteeruge"
+
 #~ msgid "Export Current Survey"
 #~ msgstr "Ekspordi ankeet"
+
 #~ msgid "type"
 #~ msgstr "tüüp"
+
 #~ msgid "\", because is the closest one"
 #~ msgstr "\", kuna see on lähim"
+
 #~ msgid "title"
 #~ msgstr "pealkiri"
+
 #~ msgid ")"
 #~ msgstr ")"
+
 #~ msgid "Select all"
 #~ msgstr "Vali kõik"
+
 #~ msgid "Proceed"
 #~ msgstr "Jätka"
+
 #~ msgid "Question List"
 #~ msgstr "Küsimuse nimekiri"
+
 #~ msgid "Like"
 #~ msgstr "Nagu"
+
 #~ msgid "Not Equals"
 #~ msgstr "ei võrdu"
+
 #~ msgid "Filter Conditions"
 #~ msgstr "Filtreeri tingimused"
+
 #~ msgid "Huge free text"
 #~ msgstr "Väga pikk vaba tekst"
+
 #~ msgid "Update tokens table with new fields"
 #~ msgstr "Uuenda tunnuskoodide tabelit uute väljadega"
+
 #~ msgid "Save Survey and Return"
 #~ msgstr "Salvestage ankeet ja tulge tagasi."
-

@@ -9,13 +9,15 @@ msgstr ""
 "Project-Id-Version: lv\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-08-31 01:22+0200\n"
-"PO-Revision-Date: 2008-06-09 16:51+0100\n"
-"Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
+"PO-Revision-Date: 2011-11-17 17:06+0100\n"
+"Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: Latvian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Poedit-KeywordsList: gT;ngT:1,2\n"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:34
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:37
@@ -33,9 +35,7 @@ msgstr "Nav atbilstošas aptaujas."
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:612
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:257
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:760
-msgid ""
-"This survey is not currently active. You will not be able to save your "
-"responses."
+msgid "This survey is not currently active. You will not be able to save your responses."
 msgstr "Šis pētījums pašlaik nav aktīvs.  Nebūs iespējams saglabāt atbildes."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:294
@@ -48,10 +48,8 @@ msgstr "Nav saglabāts"
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:295
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:75
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:108
-msgid ""
-"Your survey responses have not been recorded. This survey is not yet active."
-msgstr ""
-"Jūsu atbildes uz pētījumu nav saglabātas.  Šis pētījums vēl nav aktivizēts."
+msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr "Jūsu atbildes uz pētījumu nav saglabātas.  Šis pētījums vēl nav aktivizēts."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:296
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:76
@@ -298,9 +296,7 @@ msgid "Vietnamese"
 msgstr "Vietnamese"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:240
-msgid ""
-"Warning: You are still using the default password ('password'). Please "
-"change your password and re-login again."
+msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:242
@@ -1226,10 +1222,7 @@ msgid "Comment"
 msgstr "Komentārs"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2161
-msgid ""
-"Caution: JavaScript execution is disabled in your browser. You may not be "
-"able to answer all questions in this survey. Please, verify your browser "
-"parameters."
+msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2176
@@ -1262,15 +1255,7 @@ msgid "This survey is anonymous."
 msgstr "Šis pētījums ir anonīms."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2230
-msgid ""
-"The record kept of your survey responses does not contain any identifying "
-"information about you unless a specific question in the survey has asked for "
-"this. If you have responded to a survey that used an identifying token to "
-"allow you to access the survey, you can rest assured that the identifying "
-"token is not kept with your responses. It is managed in a separate database, "
-"and will only be updated to indicate that you have (or haven't) completed "
-"this survey. There is no way of matching identification tokens with survey "
-"responses in this survey."
+msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2240
@@ -1304,10 +1289,7 @@ msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "Nospiediet uz 'Nosūtīt', lai pabeigtu procesu un saglabātu atbildes."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2338
-msgid ""
-"If you want to check any of the answers you have made, and/or change them, "
-"you can do that now by clicking on the [<< prev] button and browsing through "
-"your responses."
+msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2359
@@ -1325,25 +1307,15 @@ msgstr "Saglabāt nepabeigto pētījumu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2376
 msgid "Enter a name and password for this survey and click save below."
-msgstr ""
-"Ievadiet lietotāja vārdu un paroli šim pētījumam un nospiediet saglabāt "
-"zemāk."
+msgstr "Ievadiet lietotāja vārdu un paroli šim pētījumam un nospiediet saglabāt zemāk."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2376
-msgid ""
-"Your survey will be saved using that name and password, and can be completed "
-"later by logging in with the same name and password."
-msgstr ""
-"Pētījums tiks saglabāts ar norādīto vārdu un paroli un Jūs to varēsiet "
-"turpināt vēlāk tos norādot."
+msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
+msgstr "Pētījums tiks saglabāts ar norādīto vārdu un paroli un Jūs to varēsiet turpināt vēlāk tos norādot."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2376
-msgid ""
-"If you give an email address, an email containing the details will be sent "
-"to you."
-msgstr ""
-"Ja Jūs norādīsiet derīgu e-pasta adresi, Jums tiks nosūtīts e-pasts ar "
-"papildus informāciju."
+msgid "If you give an email address, an email containing the details will be sent to you."
+msgstr "Ja Jūs norādīsiet derīgu e-pasta adresi, Jums tiks nosūtīts e-pasts ar papildus informāciju."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2384
 msgid "Return To Survey"
@@ -1419,16 +1391,11 @@ msgstr "Jusm jāreģistrējas, lai pabeigtu šo pētījumu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2434
 msgid "You may register for this survey if you wish to take part."
-msgstr ""
-"Ja Jūs vēlaties piedalīties šajā pētījumā, Jums ir nepieciešams reģistrēties."
+msgstr "Ja Jūs vēlaties piedalīties šajā pētījumā, Jums ir nepieciešams reģistrēties."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2434
-msgid ""
-"Enter your details below, and an email containing the link to participate in "
-"this survey will be sent immediately."
-msgstr ""
-"Ludzu zemāk ievadīt informāciju par sevi un Jums tiks nosūtīts e-pasts, kādā "
-"veidā Jūs varat piedalīties pētījumā."
+msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "Ludzu zemāk ievadīt informāciju par sevi un Jums tiks nosūtīts e-pasts, kādā veidā Jūs varat piedalīties pētījumā."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2441
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:809
@@ -1597,12 +1564,8 @@ msgid "The answer to the security question is incorrect"
 msgstr "Atbilde uz drošības jautājumu nav pareiza"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:248
-msgid ""
-"This name has already been used for this survey. You must use a unique save "
-"name."
-msgstr ""
-"Šis vārds šajā pētījumā jau ir izmantots.  Jums jāizvēlas cits (unikāls) "
-"vārds."
+msgid "This name has already been used for this survey. You must use a unique save name."
+msgstr "Šis vārds šajā pētījumā jau ir izmantots.  Jums jāizvēlas cits (unikāls) vārds."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:304
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:418
@@ -1611,17 +1574,12 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:305
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:419
-msgid ""
-"Thank you for saving your survey in progress.  The following details can be "
-"used to return to this survey and continue where you left off.  Please keep "
-"this e-mail for your reference - we cannot retrieve the password for you."
+msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:309
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:423
-msgid ""
-"Reload your survey by clicking on the following link (or pasting it into "
-"your browser):"
+msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:542
@@ -1629,19 +1587,11 @@ msgid "Cannot submit results - there are none to submit."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:543
-msgid ""
-"This error can occur if you have already submitted your responses and "
-"pressed 'refresh' on your browser. In this case, your responses have already "
-"been saved."
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:543
-msgid ""
-"If you receive this message in the middle of completing a survey, you should "
-"choose '<- BACK' on your browser and then refresh/reload the previous page. "
-"While you will lose answers from the last page all your others will still "
-"exist. This problem can occur if the webserver is suffering from overload or "
-"excessive use. We apologise for this problem."
+msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:174
@@ -1672,9 +1622,7 @@ msgstr "Jūsu sesija ir beigusies."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:204
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:46
-msgid ""
-"Either you have been inactive for too long, you have cookies disabled for "
-"your browser, or there were problems with your connection."
+msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:291
@@ -1709,16 +1657,13 @@ msgstr "Jūs nenorādījāt paroli"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:513
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:107
-msgid ""
-"This is a closed-access survey, so you must supply a valid token.  Please "
-"contact the administrator for assistance."
+msgid "This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:514
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1681
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1717
-msgid ""
-"The token you have provided is either not valid, or has already been used."
+msgid "The token you have provided is either not valid, or has already been used."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:515
@@ -1750,11 +1695,9 @@ msgstr "pabeigts"
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
-"This email is to confirm that you have completed the survey titled "
-"{SURVEYNAME} and your response has been saved. Thank you for participating.\n"
+"This email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n"
 "\n"
-"If you have any further questions about this email, please contact "
-"{ADMINNAME} on {ADMINEMAIL}.\n"
+"If you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n"
 "\n"
 "Sincerely,\n"
 "\n"
@@ -1794,12 +1737,8 @@ msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1514
-msgid ""
-"Your responses have not been lost and have been emailed to the survey "
-"administrator and will be entered into our database at a later point."
-msgstr ""
-"Jūsu atbildes nav pazaudētas un ir nosūtītas pētījuma administratoram, un "
-"tās tiks pievienotas datubāzei vēlāk."
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr "Jūsu atbildes nav pazaudētas un ir nosūtītas pētījuma administratoram, un tās tiks pievienotas datubāzei vēlāk."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1515
 msgid "An error occurred saving a response to survey id"
@@ -1828,9 +1767,7 @@ msgid "Try to submit again"
 msgstr "Mēģiniet nosūtīt vēlreiz"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1587
-msgid ""
-"Please confirm access to survey by answering the security question below and "
-"click continue."
+msgid "Please confirm access to survey by answering the security question below and click continue."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1635
@@ -1841,29 +1778,20 @@ msgid "This is a controlled survey. You need a valid token to participate."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1636
-msgid ""
-"If you have been issued a token, please enter it in the box below and click "
-"continue."
+msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1758
-msgid ""
-"If you have been issued with a token, please enter it in the box below and "
-"click continue."
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1770
-msgid ""
-"Please confirm the token by answering the security question below and click "
-"continue."
+msgid "Please confirm the token by answering the security question below and click continue."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1873
-msgid ""
-"This survey does not yet have any questions and cannot be tested or "
-"completed."
-msgstr ""
-"Šim pētījuma vēl nav jautājumu un to nav iespējams pārbaudīt vai aizpildīt."
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr "Šim pētījuma vēl nav jautājumu un to nav iespējams pārbaudīt vai aizpildīt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:2169
 #, fuzzy
@@ -1896,9 +1824,7 @@ msgid "Thank you for registering to participate in this survey."
 msgstr "Paldies par reģistrēšanos, lai piedalītos šajā aptaujā."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:153
-msgid ""
-"An email has been sent to the address you provided with access details for "
-"this survey. Please follow the link in that email to proceed."
+msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:153
@@ -1965,25 +1891,15 @@ msgstr "Ja Jūs izvēlējāties citu atbildi, lūdzu aprakstiet."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:544
 msgid "You cannot proceed until you enter some text for one or more questions."
-msgstr ""
-"Jūs nevarat turpināt pirms neesat atbildējes uz vienu vai vairākiem "
-"jautājumiem."
+msgstr "Jūs nevarat turpināt pirms neesat atbildējes uz vienu vai vairākiem jautājumiem."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:548
-msgid ""
-"One or more mandatory questions have not been answered. You cannot proceed "
-"until these have been completed"
-msgstr ""
-"Viens vai vairāki obligātie jautājumi nav atbildēti.  Jūs nevarat turpināt "
-"pirms tie nav pabeigti"
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr "Viens vai vairāki obligātie jautājumi nav atbildēti.  Jūs nevarat turpināt pirms tie nav pabeigti"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:571
-msgid ""
-"One or more questions have not been answered in a valid manner. You cannot "
-"proceed until these answers are valid"
-msgstr ""
-"Viens vai vairāki jautājumi nav atbildēti atbilstoši.  Jūs nevarat turpināt "
-"pirms atbildes ir derīgas"
+msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
+msgstr "Viens vai vairāki jautājumi nav atbildēti atbilstoši.  Jūs nevarat turpināt pirms atbildes ir derīgas"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:631
 msgid "Day"
@@ -2086,8 +2002,7 @@ msgstr "Lūdzu izvēlēties"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:930
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1174
-msgid ""
-"Error: The labelset used for this question is not available in this language."
+msgid "Error: The labelset used for this question is not available in this language."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1237
@@ -2128,9 +2043,7 @@ msgstr "Tavs \"tops\""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1551
 #, fuzzy
-msgid ""
-"Click on the scissors next to each item on the right to remove the last "
-"entry in your ranked list"
+msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr "Nospiediet uz šķēru ikonas pa labi no katra punkta"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1745
@@ -2181,8 +2094,7 @@ msgstr "Atlicis:"
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2174
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2204
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2213
-msgid ""
-"Answer is invalid. The total of all entries should not add up to more than "
+msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "Atbilde nav derīga.  Kopējā ierakstu summa nedrīkst būt lielāka par"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2185
@@ -2197,9 +2109,7 @@ msgstr "Šajā laukā drīkst ievadīt tikai ciparus"
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3236
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3356
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3926
-msgid ""
-"Error: The labelset used for this question is not available in this language "
-"and/or does not exist."
+msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3349
@@ -2313,8 +2223,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:32
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:306
-msgid ""
-"If errors are showing up you might have to execute this script repeatedly."
+msgid "If errors are showing up you might have to execute this script repeatedly."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:53
@@ -2560,9 +2469,7 @@ msgid "Remove"
 msgstr "Noņemt"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:166
-msgid ""
-"You cannot remove this item since you need at least one language in a "
-"labelset."
+msgid "You cannot remove this item since you need at least one language in a labelset."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:184
@@ -2734,12 +2641,8 @@ msgid "Inserting New labels must be done on the first language folder."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:429
-msgid ""
-"You cannot change codes, add or delete entries in this label set because it "
-"is being used by an active survey."
-msgstr ""
-"Jūs nevarat izmainīt kodus, pievienot vai izdzēst ierakstus šajā apzīmējumā, "
-"jo tas tiek izmantots aktīvā pētījumā."
+msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
+msgstr "Jūs nevarat izmainīt kodus, pievienot vai izdzēst ierakstus šajā apzīmējumā, jo tas tiek izmantots aktīvā pētījumā."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:449
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:462
@@ -2788,14 +2691,8 @@ msgid "Fix Sort"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:499
-msgid ""
-"Some surveys currently use this label set. Modifying the codes, adding or "
-"deleting entries to this label set may produce undesired results in other "
-"surveys."
-msgstr ""
-"Daži pētījumi izmanto šo apzīmējumu kopu.  Kodu izmaiņa vai ierakstu "
-"pievienošana vai izdzēšana šai apzīmējumu kopai var radīt nevēlamas sekas "
-"citos pētījumos."
+msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
+msgstr "Daži pētījumi izmanto šo apzīmējumu kopu.  Kodu izmaiņa vai ierakstu pievienošana vai izdzēšana šai apzīmējumu kopai var radīt nevēlamas sekas citos pētījumos."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:570
 msgid "Failed to Copy already defined labels to added languages"
@@ -2810,9 +2707,7 @@ msgid "Update of Label Set failed"
 msgstr "Nav izdevies atjaunināt apzīmējumu kopu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:612
-msgid ""
-"Couldn't Delete Label Set - There are questions that rely on this. You must "
-"delete these questions first."
+msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:648
@@ -2832,12 +2727,8 @@ msgid "Failed to insert label"
 msgstr "Nav izdevies pievienot apzīmējumu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:718
-msgid ""
-"This label code is already used in this labelset. Please choose another code "
-"or rename the existing one."
-msgstr ""
-"Šis apzīmējuma kods jau tiek izmantots šajā apzīmējumu kopā.  Lūdzu "
-"izvēlēties citu kodu vai pārdēvējiet esošo."
+msgid "This label code is already used in this labelset. Please choose another code or rename the existing one."
+msgstr "Šis apzīmējuma kods jau tiek izmantots šajā apzīmējumu kopā.  Lūdzu izvēlēties citu kodu vai pārdēvējiet esošo."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:779
 msgid "Failed to update label"
@@ -2866,9 +2757,7 @@ msgstr "Importēt grupu"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/http_importsurvey.php:33
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:31
 #, php-format
-msgid ""
-"An error occurred uploading your file. This may be caused by incorrect "
-"permissions in your %s folder."
+msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:31
@@ -2970,22 +2859,16 @@ msgid "This file is not a LimeSurvey group file. Import failed."
 msgstr "Šis fails nav LimeSurvey grupas fails.  Importēšana nav izdevusies."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:249
-msgid ""
-"You can't import a group which doesn't support the current survey's base "
-"language."
+msgid "You can't import a group which doesn't support the current survey's base language."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:265
-msgid ""
-"You can't import a question which doesn't support the current survey's base "
-"language."
+msgid "You can't import a question which doesn't support the current survey's base language."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:283
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:281
-msgid ""
-"You can't import label sets which don't support the current survey's base "
-"language"
+msgid "You can't import label sets which don't support the current survey's base language"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:641
@@ -2993,9 +2876,7 @@ msgid "Import partially successful."
 msgstr "Importēšana daļēji izdevusies."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:642
-msgid ""
-"The following languages in this group were not imported since the survey "
-"does not contain such a language: "
+msgid "The following languages in this group were not imported since the survey does not contain such a language: "
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:653
@@ -3337,9 +3218,7 @@ msgid "Important Note:"
 msgstr "Svarīgs paziņojums:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:271
-msgid ""
-"Do NOT refresh this page, as this will import the file again and produce "
-"duplicates"
+msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:273
@@ -3457,9 +3336,7 @@ msgid "Disabled"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1272
-msgid ""
-"Don't consider NON completed responses (only works when Filter incomplete "
-"answers is Disable)"
+msgid "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1277
@@ -3711,18 +3588,13 @@ msgid "Tokens have not been initialised for this survey."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:347
-msgid ""
-"If you initialise tokens for this survey, the survey will only be accessible "
-"to users who have been assigned a token."
+msgid "If you initialise tokens for this survey, the survey will only be accessible to users who have been assigned a token."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:354
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2456
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3062
-msgid ""
-"If you turn on the -Anonymous answers- option and create a tokens table, "
-"LimeSurvey will mark your completed tokens only with a 'Y' instead of date/"
-"time to ensure the anonymity of your participants."
+msgid "If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:358
@@ -3938,8 +3810,7 @@ msgid ""
 "\n"
 "Recently we invited you to participate in a survey.\n"
 "\n"
-"We note that you have not yet completed the survey, and wish to remind you "
-"that the survey is still available should you wish to take part.\n"
+"We note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n"
 "\n"
 "The survey is titled:\n"
 "\"{SURVEYNAME}\"\n"
@@ -3960,8 +3831,7 @@ msgstr ""
 "\n"
 "Nesen mēs Jūs aicinājām piedalīties aptaujā.\n"
 "\n"
-"Izskatās, ka Jūs vēl neesat aptauju pabeidzis, tādējādi mēs vēlamies "
-"atgādināt, ka aptauja vēl ir pieejama, ja Jūs vēlaties piedalīties.\n"
+"Izskatās, ka Jūs vēl neesat aptauju pabeidzis, tādējādi mēs vēlamies atgādināt, ka aptauja vēl ir pieejama, ja Jūs vēlaties piedalīties.\n"
 "\n"
 "Aptaujas nosaukums:\n"
 "\"{SURVEYNAME}\"\n"
@@ -4019,16 +3889,13 @@ msgstr ""
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
-"You, or someone using your email address, have registered to participate in "
-"an online survey titled {SURVEYNAME}.\n"
+"You, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n"
 "\n"
 "To complete this survey, click on the following URL:\n"
 "\n"
 "{SURVEYURL}\n"
 "\n"
-"If you have any questions about this survey, or if you did not register to "
-"participate and believe this email is in error, please contact {ADMINNAME} "
-"at {ADMINEMAIL}."
+"If you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:634
@@ -4210,15 +4077,11 @@ msgid "Delete Tokens Table"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:970
-msgid ""
-"If you delete this table tokens will no longer be required to access this "
-"survey."
+msgid "If you delete this table tokens will no longer be required to access this survey."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:970
-msgid ""
-"A backup of this table will be made if you proceed. Your system "
-"administrator will be able to access this table."
+msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:974
@@ -4226,18 +4089,12 @@ msgid "Delete Tokens"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:998
-msgid ""
-"The tokens table has now been removed and tokens are no longer required to "
-"access this survey."
+msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:998
-msgid ""
-"A backup of this table has been made and can be accessed by your system "
-"administrator."
-msgstr ""
-"Šīs tabulas kopija ir izveidota un to var aplūkot Jūsu sistēmas "
-"administrators."
+msgid "A backup of this table has been made and can be accessed by your system administrator."
+msgstr "Šīs tabulas kopija ir izveidota un to var aplūkot Jūsu sistēmas administrators."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1027
 msgid "Email Invitation"
@@ -4286,15 +4143,11 @@ msgstr "Uzaicinājums nosūtīts:"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1209
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1450
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
-msgstr ""
-"E-pasta nosūtīšana {FIRSTNAME} {LASTNAME} ({EMAIL}) nav izdevusies. Kļūdas "
-"paziņojums:"
+msgstr "E-pasta nosūtīšana {FIRSTNAME} {LASTNAME} ({EMAIL}) nav izdevusies. Kļūdas paziņojums:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1224
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1467
-msgid ""
-"There are more emails pending than can be sent in one batch. Continue "
-"sending emails by clicking below."
+msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1225
@@ -4303,10 +4156,7 @@ msgid "There are {EMAILCOUNT} emails still to be sent."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1245
-msgid ""
-"There were no eligible emails to send. This will be because none satisfied "
-"the criteria of - having an email address, not having been sent an "
-"invitation already, having already completed the survey and having a token."
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1261
@@ -4342,10 +4192,7 @@ msgid "Reminder sent to:"
 msgstr "Atgādinājums nosūtīts:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1490
-msgid ""
-"There were no eligible emails to send. This will be because none satisfied "
-"the criteria of - having an email address, having been sent an invitation, "
-"but not having yet completed the survey."
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1506
@@ -4353,9 +4200,7 @@ msgid "Create Tokens"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1510
-msgid ""
-"Clicking yes will generate tokens for all those in this token list that have "
-"not been issued one. Is this OK?"
+msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1537
@@ -4384,9 +4229,7 @@ msgid "Auto"
 msgstr "Auto"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1633
-msgid ""
-"You can leave this blank, and automatically generate tokens using 'Create "
-"Tokens'"
+msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1689
@@ -4410,9 +4253,7 @@ msgstr "Nav izdevies"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1748
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1796
-msgid ""
-"There is already an entry with that exact token in the table. The same token "
-"cannot be used in multiple entries."
+msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1749
@@ -4434,12 +4275,7 @@ msgid "Note:"
 msgstr "Ziņa:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1818
-msgid ""
-"File should be a standard CSV (comma delimited) file with double quotes "
-"around values (default for openoffice and excel). The first line should "
-"contain header information (will be removed). Data should be ordered as "
-"\"firstname, lastname, email, [emailstatus], [token], [language code], "
-"[attribute1], [attribute2]\"."
+msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [emailstatus], [token], [language code], [attribute1], [attribute2]\"."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1833
@@ -4447,14 +4283,11 @@ msgid "Upload LDAP entries"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1840
-msgid ""
-"LDAP queries are defined by the administrator in the config-ldap.php file"
+msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1870
-msgid ""
-"Upload file not found. Check your permissions and path for the upload "
-"directory"
+msgid "Upload file not found. Check your permissions and path for the upload directory"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1875
@@ -4603,10 +4436,7 @@ msgid "Start Language:"
 msgstr "Sākuma valoda:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:395
-msgid ""
-"Your survey responses have been saved successfully.  You will be sent a "
-"confirmation e-mail. Please make sure to save your password, since we will "
-"not be able to retrieve it for you."
+msgid "Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:409
@@ -4991,10 +4821,8 @@ msgid "Preview:"
 msgstr "Priekšskats"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importoldresponses.php:39
-msgid ""
-"Import responses from an old (deactivated) survey table into an active survey"
-msgstr ""
-"Importēt atbildes no veca (deaktivizēta) pētījuma tabulas aktīvā pētījumā"
+msgid "Import responses from an old (deactivated) survey table into an active survey"
+msgstr "Importēt atbildes no veca (deaktivizēta) pētījuma tabulas aktīvā pētījumā"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importoldresponses.php:43
 msgid "Target Survey ID"
@@ -5013,10 +4841,7 @@ msgid "Export database"
 msgstr "Eksportēt datubāzi"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dumpdb.php:56
-msgid ""
-"The database export is only available for MySQL databases. For other "
-"database types please use the according backup mechanism to create a "
-"database dump."
+msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:22
@@ -5035,36 +4860,19 @@ msgid "You are about to delete this survey"
 msgstr "Jūs tūlīt izdzēsīsiet šo pētījumu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:43
-msgid ""
-"This process will delete this survey, and all related groups, questions "
-"answers and conditions."
-msgstr ""
-"Šī darbība izdzēsīs šo pētījumu un ar to saistītās grupas, jautājumus, "
-"atbildes un nosacījumus."
+msgid "This process will delete this survey, and all related groups, questions answers and conditions."
+msgstr "Šī darbība izdzēsīs šo pētījumu un ar to saistītās grupas, jautājumus, atbildes un nosacījumus."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:44
-msgid ""
-"We recommend that before you delete this survey you export the entire survey "
-"from the main administration screen."
-msgstr ""
-"Pirms šī pētījuma izdzēšanas ir ieteicams eksportēt visu pētījumu no galvenā "
-"adminsitrēšanas ekrāna."
+msgid "We recommend that before you delete this survey you export the entire survey from the main administration screen."
+msgstr "Pirms šī pētījuma izdzēšanas ir ieteicams eksportēt visu pētījumu no galvenā adminsitrēšanas ekrāna."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:48
-msgid ""
-"This survey is active and a responses table exists. If you delete this "
-"survey, these responses will be deleted. We recommend that you export the "
-"responses before deleting this survey."
-msgstr ""
-"Šis pētījums ir aktīvs un tam ir piesaistīta atbilžu tabula.  Ja Jūs "
-"izdzēsīsiet šo pētījumu, tiks izdzēstas arī tā atbildes.  Pirms pētījuma "
-"izdzēšanas Ir ieteicams eksportēt atbildes."
+msgid "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."
+msgstr "Šis pētījums ir aktīvs un tam ir piesaistīta atbilžu tabula.  Ja Jūs izdzēsīsiet šo pētījumu, tiks izdzēstas arī tā atbildes.  Pirms pētījuma izdzēšanas Ir ieteicams eksportēt atbildes."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:53
-msgid ""
-"This survey has an associated tokens table. If you delete this survey this "
-"tokens table will be deleted. We recommend that you export or backup these "
-"tokens before deleting this survey."
+msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:122
@@ -5381,14 +5189,11 @@ msgid "This file is not a LimeSurvey question file. Import failed."
 msgstr "Šis fails nav LimeSurvey jautājumu fails.  Importēšana nav izdevusies."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:107
-msgid ""
-"Sorry, importing questions is limited to the same version. Import failed."
+msgid "Sorry, importing questions is limited to the same version. Import failed."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:240
-msgid ""
-"You can't import a question which doesn't support the current survey's base "
-"language"
+msgid "You can't import a question which doesn't support the current survey's base language"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:496
@@ -5467,8 +5272,7 @@ msgstr "Importēto failu saraksts"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:151
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:330
 msgid "This ZIP archive contains no valid Resources files. Import failed."
-msgstr ""
-"Šis ZIP fails nesatur darīgus resursu failus.  Importēšana nav izdevusies."
+msgstr "Šis ZIP fails nesatur darīgus resursu failus.  Importēšana nav izdevusies."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:152
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:331
@@ -5684,12 +5488,8 @@ msgstr "Parādīt PHP informāciju"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:415
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:417
-msgid ""
-"Survey cannot be activated. Either you have no permission or there are no "
-"questions."
-msgstr ""
-"Pētījumu nav iespējams aktivizēt.  Vai nu Jums nav tiesību to darīt, vai arī "
-"nav tam nav pievienoti jautājumi."
+msgid "Survey cannot be activated. Either you have no permission or there are no questions."
+msgstr "Pētījumu nav iespējams aktivizēt.  Vai nu Jums nav tiesību to darīt, vai arī nav tam nav pievienoti jautājumi."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:458
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:460
@@ -5778,8 +5578,7 @@ msgid "Activate/Edit Tokens for this Survey"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:712
-msgid ""
-"Adding/editing tokens is not possible because this survey is not activated."
+msgid "Adding/editing tokens is not possible because this survey is not activated."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:745
@@ -5955,12 +5754,8 @@ msgid "Edit Current Group"
 msgstr "Rediģēt šo grupu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:993
-msgid ""
-"Deleting this group will also delete any questions and answers it contains. "
-"Are you sure you want to continue?"
-msgstr ""
-"Izdzēšot šo grupu tiks izdzēstas arī tās atbildes.  Vai Jūs tiešām vēlaties "
-"tuprināt?"
+msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
+msgstr "Izdzēšot šo grupu tiks izdzēstas arī tās atbildes.  Vai Jūs tiešām vēlaties tuprināt?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:996
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1005
@@ -5968,11 +5763,8 @@ msgid "Delete Current Group"
 msgstr "Izdzēst šo grupu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1002
-msgid ""
-"Impossible to delete this group because there is at least one question "
-"having a condition on its content"
-msgstr ""
-"Nav iespējams izdzēst šo grupu, jo ir vismaz viens saistītais jautājums"
+msgid "Impossible to delete this group because there is at least one question having a condition on its content"
+msgstr "Nav iespējams izdzēst šo grupu, jo ir vismaz viens saistītais jautājums"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1020
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1021
@@ -6009,21 +5801,15 @@ msgid "Edit Current Question"
 msgstr "Rediģēt šo jautājumu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1162
-msgid ""
-"Deleting this question will also delete any answers it includes. Are you "
-"sure you want to continue?"
-msgstr ""
-"Izdzēšot šo jautājumu tiks izdzēstas arī tā atbildes.  Vai Jūs tiešām "
-"vēlaties turpināt?"
+msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
+msgstr "Izdzēšot šo jautājumu tiks izdzēstas arī tā atbildes.  Vai Jūs tiešām vēlaties turpināt?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1164
 msgid "Delete Current Question"
 msgstr "Izdzēst šo jautājumu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1171
-msgid ""
-"Impossible to delete this question because  there is at least one question "
-"having a condition on it"
+msgid "Impossible to delete this question because  there is at least one question having a condition on it"
 msgstr "Nav iespējams izdzēst šo jautājumu, jo ir saistītais(-ie) jautājumi"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1174
@@ -6189,12 +5975,8 @@ msgid "Add new Answer"
 msgstr "Pievienot jaunu atbildi"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1650
-msgid ""
-"You cannot add answers or edit answer codes for this question type because "
-"the survey is active."
-msgstr ""
-"Šim jautājumam nav iespējams pievienot atbildes vai atbilžu kodus, jo "
-"pētījums ir aktivizēts."
+msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
+msgstr "Šim jautājumam nav iespējams pievienot atbildes vai atbilžu kodus, jo pētījums ir aktivizēts."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1687
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1741
@@ -6416,9 +6198,7 @@ msgid "Use HTML format for token emails?"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2415
-msgid ""
-"If you switch email mode, you'll have to review your email templates to fit "
-"the new format"
+msgid "If you switch email mode, you'll have to review your email templates to fit the new format"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2431
@@ -6437,9 +6217,7 @@ msgid "Anonymous answers?"
 msgstr "Anonīmas atbildes?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2451
-msgid ""
-"You can't use Anonymous answers when Token-based answers persistence is "
-"enabled."
+msgid "You can't use Anonymous answers when Token-based answers persistence is enabled."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2466
@@ -6498,11 +6276,8 @@ msgid "This option can't be set if Anonymous answers are used"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2621
-msgid ""
-"All questions, answers, etc for removed languages will be lost. Are you sure?"
-msgstr ""
-"Noņemtajām valodām visi jautājumi, atbildes, u.c. tiks pazaudētas.  Vai Jūs "
-"tiešām esat pārliecināts?"
+msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
+msgstr "Noņemtajām valodām visi jautājumi, atbildes, u.c. tiks pazaudētas.  Vai Jūs tiešām esat pārliecināts?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2621
 msgid "Save and Continue"
@@ -6522,10 +6297,7 @@ msgid "Current survey has questions with conditions outside their own group"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2766
-msgid ""
-"Re-ordering groups is restricted to ensure that questions on which "
-"conditions are based aren't reordered after questions having the conditions "
-"set"
+msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2766
@@ -6613,12 +6385,8 @@ msgid "You are about to delete all conditions on this survey's questions"
 msgstr "Tūlīt Jūs izdzēsīsiet visu šī pētījuma jautājumu nosacījumus"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:43
-msgid ""
-"We recommend that before you proceed, you export the entire survey from the "
-"main administration screen."
-msgstr ""
-"Pirms turpināt, ir ieteicams eksportēt visu pētījumu no galvenā "
-"administrēšanas ekrāna."
+msgid "We recommend that before you proceed, you export the entire survey from the main administration screen."
+msgstr "Pirms turpināt, ir ieteicams eksportēt visu pētījumu no galvenā administrēšanas ekrāna."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:67
 msgid "All conditions in this survey have been deleted."
@@ -6792,10 +6560,7 @@ msgid "Total"
 msgstr "Kopā"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:128
-msgid ""
-"If you create any assessments in this page, for the currently selected "
-"survey, the assessment will be performed at the end of the survey after "
-"submission"
+msgid "If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:129
@@ -6809,12 +6574,8 @@ msgid "The defined LimeSurvey database does not exist"
 msgstr "Izvēlētais pētījums neeksistē"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:70
-msgid ""
-"Either your selected database has not yet been created or there is a problem "
-"accessing it."
-msgstr ""
-"Vai nu izvēlētā datubāze vēl nav izveidota, vai arī ir problēmas ar piekļuvi "
-"tai."
+msgid "Either your selected database has not yet been created or there is a problem accessing it."
+msgstr "Vai nu izvēlētā datubāze vēl nav izveidota, vai arī ir problēmas ar piekļuvi tai."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:82
 msgid "You have not selected a survey to browse."
@@ -6919,23 +6680,15 @@ msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
 msgstr "UZMANĪGI IZLASIET PIRMS TURPINĀT"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:34
-msgid ""
-"In an active survey, a table is created to store all the data-entry records."
+msgid "In an active survey, a table is created to store all the data-entry records."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:35
-msgid ""
-"When you deactivate a survey all the data entered in the original table will "
-"be moved elsewhere, and when you activate the survey again, the table will "
-"be empty. You will not be able to access this data using LimeSurvey any more."
+msgid "When you deactivate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:36
-msgid ""
-"Deactivated survey data can only be accessed by system administrators using "
-"a Database data access tool like phpmyadmin. If your survey uses tokens, "
-"this table will also be renamed and will only be accessible by system "
-"administrators."
+msgid "Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:37
@@ -6959,9 +6712,7 @@ msgid "The responses to this survey are no longer available using LimeSurvey."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:134
-msgid ""
-"You should note the name of this table in case you need to access this "
-"information later."
+msgid "You should note the name of this table in case you need to access this information later."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:137
@@ -6985,19 +6736,12 @@ msgid "This question requires a second Labelset, but none is set."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:128
-msgid ""
-"The labelset used in this question does not exists or is missing a "
-"translation."
-msgstr ""
-"Šajā jautājumā izmantotā apzīmējumu kopa nepastāv vai arī tai trūkst "
-"tulkojuma."
+msgid "The labelset used in this question does not exists or is missing a translation."
+msgstr "Šajā jautājumā izmantotā apzīmējumu kopa nepastāv vai arī tai trūkst tulkojuma."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:184
-msgid ""
-"This question has a condition set, however the condition is based on a "
-"question that appears after it."
-msgstr ""
-"Šim jautājuma ir nosacījums, taču tas ir kādā no nākamajiem jautājumiem."
+msgid "This question has a condition set, however the condition is based on a question that appears after it."
+msgstr "Šim jautājuma ir nosacījums, taču tas ir kādā no nākamajiem jautājumiem."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:219
 msgid "Survey does not pass consistency check"
@@ -7012,12 +6756,8 @@ msgid "The survey cannot be activated until these problems have been resolved."
 msgstr "Pētījumu nav iespējams aktivizēt, kamēr šīs problēmas nav atrisinātas."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:250
-msgid ""
-"You should only activate a survey when you are absolutely certain that your "
-"survey setup is finished and will not need changing."
-msgstr ""
-"Pētījumu vēlams aktivizēt tikai tad, kad Jūs esat pilnīgi drošs, ka visi "
-"sagatavošanas darbi ir pabeigti un nebūs nepieciešams veikt kādas izmaiņas."
+msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
+msgstr "Pētījumu vēlams aktivizēt tikai tad, kad Jūs esat pilnīgi drošs, ka visi sagatavošanas darbi ir pabeigti un nebūs nepieciešams veikt kādas izmaiņas."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:251
 msgid "Once a survey is activated you can no longer:"
@@ -7048,9 +6788,7 @@ msgid "Edit (change) your group names"
 msgstr "Rediģēt (mainīt) grupu nosaukumus"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:252
-msgid ""
-"Add, Remove or Edit pre-defined question answers (except for Multi-answer "
-"questions)"
+msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:252
@@ -7058,10 +6796,7 @@ msgid "Change survey name or description"
 msgstr "Mainīt pētījuma nosaukumu vai aprakstu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:253
-msgid ""
-"Once data has been entered into this survey, if you want to add or remove "
-"groups or questions, you will need to de-activate this survey, which will "
-"move all data that has already been entered into a separate archived table."
+msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:488
@@ -7073,8 +6808,7 @@ msgid "Survey has been activated. Results table has been successfully created."
 msgstr "Pētījums ir aktivizēts.  Rezultātu tabula izveidota veiksmīgi."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:534
-msgid ""
-"This survey allows public registration. A token table must also be created."
+msgid "This survey allows public registration. A token table must also be created."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:540
@@ -7090,9 +6824,7 @@ msgid "No invitation code is needed to complete the survey."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:541
-msgid ""
-"You can switch to the closed-access mode by initialising a token table with "
-"the button below."
+msgid "You can switch to the closed-access mode by initialising a token table with the button below."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:543
@@ -7122,22 +6854,17 @@ msgid "File does not contain LimeSurvey data in the correct format."
 msgstr "Failā nav LimeSurvey dati korektā formātā."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:761
-msgid ""
-"A group in the CSV/SQL file is not part of the same survey. The import of "
-"the survey was stopped."
+msgid "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:826
 #, fuzzy, php-format
-msgid ""
-"Question \"%s - %s\" was NOT imported because the question type is unknown."
+msgid "Question \"%s - %s\" was NOT imported because the question type is unknown."
 msgstr "netika importēts, jo jautājuma tips nav atpazīstams."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:832
 #, php-format
-msgid ""
-"Question \"%s - %s\" was imported but the type was set to '%s' because it is "
-"the most similiar one."
+msgid "Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1220
@@ -7152,12 +6879,8 @@ msgstr "Neimportētās apzīmējumu kopas"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1233
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1260
-msgid ""
-"(Label Sets were not imported since you do not have the permission to create "
-"new label sets.)"
-msgstr ""
-"(Apzīmējumu kopas netika importētas, jo Jums nav tiesību izveidot jaunas "
-"apzīmējumu kopas.)"
+msgid "(Label Sets were not imported since you do not have the permission to create new label sets.)"
+msgstr "(Apzīmējumu kopas netika importētas, jo Jums nav tiesību izveidot jaunas apzīmējumu kopas.)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1235
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1261
@@ -7185,8 +6908,9 @@ msgstr "Brīdinājumi"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:120
 msgid ""
-"Group could not be added.\\n\\nIt is missing the group name for the "
-"following languages"
+"Group could not be added.\\n"
+"\\n"
+"It is missing the group name for the following languages"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:171
@@ -7205,8 +6929,7 @@ msgstr "Grupu nav izdevies izdzēst"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:297
 #, php-format
-msgid ""
-"Answer could not be added. You must insert a code in the mandatory field (%s)"
+msgid "Answer could not be added. You must insert a code in the mandatory field (%s)"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:384
@@ -7216,16 +6939,8 @@ msgid "Question could not be created."
 msgstr "Juatājumu nav izdevies izveidot."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:490
-msgid ""
-"Question could not be updated. There are conditions for other questions that "
-"rely on the answers to this question and changing the type will cause "
-"problems. You must delete these conditions before you can change the type of "
-"this question."
-msgstr ""
-"Grupu nav izdevies atjaunināt.  Citos jautājumos ir nosacījumi, kuri ir "
-"saistīti ar šī jautājuma atbildēm, un izmaiņas jautājuma tipā var radīt "
-"problēmas.  Vispirms Jums jāizdzēs šie nosacījumu un tad iespējams izmainīt "
-"jautājuma tipu."
+msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
+msgstr "Grupu nav izdevies atjaunināt.  Citos jautājumos ir nosacījumi, kuri ir saistīti ar šī jautājuma atbildēm, un izmaiņas jautājuma tipā var radīt problēmas.  Vispirms Jums jāizdzēs šie nosacījumu un tad iespējams izmainīt jautājuma tipu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:587
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:645
@@ -7237,9 +6952,7 @@ msgid "Answers can't be deleted"
 msgstr "Atbidles nav iespējams izdzēst"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:617
-msgid ""
-"This question relies on other question's answers and can't be moved above "
-"groupId:"
+msgid "This question relies on other question's answers and can't be moved above groupId:"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:618
@@ -7254,29 +6967,17 @@ msgid "See conditions:"
 msgstr "Skatīt nosacījumus:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:629
-msgid ""
-"Some questions rely on this question's answers. You can't move this question "
-"below groupId:"
-msgstr ""
-"Daži jautājumi ir pakārtoti šī jautājuma atbildēm.  Nav iespējams pārbīdīt "
-"šo jautājumu zem groupId:"
+msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
+msgstr "Daži jautājumi ir pakārtoti šī jautājuma atbildēm.  Nav iespējams pārbīdīt šo jautājumu zem groupId:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:655
-msgid ""
-"Question could not be added. You must insert a code in the mandatory field"
-msgstr ""
-"Jautājumu nav iespējams pievienot.  Jums jāievada kods obligātajā laukā"
+msgid "Question could not be added. You must insert a code in the mandatory field"
+msgstr "Jautājumu nav iespējams pievienot.  Jums jāievada kods obligātajā laukā"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:813
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:854
-msgid ""
-"Question could not be deleted. There are conditions for other questions that "
-"rely on this question. You cannot delete this question until those "
-"conditions are removed"
-msgstr ""
-"Jautājumu nav iespējams izdzēst.  Citos jautājumos pastāv nosacījumi, kuri "
-"ir pakļauti šim jautājumam.  Jūs nevarat izdzēst šo jautājumu, kamēr nav "
-"noņemti šie nosacījumi"
+msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
+msgstr "Jautājumu nav iespējams izdzēst.  Citos jautājumos pastāv nosacījumi, kuri ir pakļauti šim jautājumam.  Jūs nevarat izdzēst šo jautājumu, kamēr nav noņemti šie nosacījumi"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:838
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:875
@@ -7285,9 +6986,7 @@ msgstr "Jautājumu nav iespējams izdzēst"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:904
 msgid "Error adding answer: You can't use the same answer code more than once."
-msgstr ""
-"Atbildes pievienošanas kļūda:  Nedrīkst izmantot vienu un to pašu atbildes "
-"kodu vairāk kā vienu reizi."
+msgstr "Atbildes pievienošanas kļūda:  Nedrīkst izmantot vienu un to pašu atbildes kodu vairāk kā vienu reizi."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:932
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:954
@@ -7303,11 +7002,8 @@ msgid "Failed to update answers"
 msgstr "Atbldes nav izdevies atjaunināt"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1058
-msgid ""
-"Answers with a code of 0 (zero) or blank code are not allowed, and will not "
-"be saved"
-msgstr ""
-"Atbildes ar kodu 0 (nulle) vai tukšs kods nav atļautas un netiks saglabātas"
+msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
+msgstr "Atbildes ar kodu 0 (nulle) vai tukšs kods nav atļautas un netiks saglabātas"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1059
 msgid "Duplicate codes found, these entries won't be updated"
@@ -7434,10 +7130,7 @@ msgid "Current group is using conditional questions"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:714
-msgid ""
-"Re-ordering questions in this group is restricted to ensure that questions "
-"on which conditions are based aren't reordered after questions having the "
-"conditions set"
+msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:714
@@ -7489,9 +7182,7 @@ msgid "Open the syntax file in SPSS in Unicode mode"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:115
-msgid ""
-"Edit the 4th line and complete the filename with a full path to he "
-"downloaded data file."
+msgid "Edit the 4th line and complete the filename with a full path to he downloaded data file."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:116
@@ -7609,17 +7300,11 @@ msgid "Security Alert"
 msgstr "Drošības paziņojums"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:118
-msgid ""
-"Someone may be trying to use your LimeSurvey session (CSRF attack "
-"suspected). If you just clicked on a malicious link, please report this to "
-"your system administrator."
+msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:123
-msgid ""
-"Someone may be trying to use your LimeSurvey session by using dangerous GET "
-"requests (CSRF attack suspected). If you just clicked on a malicious link, "
-"please report this to your system administrator."
+msgid "Someone may be trying to use your LimeSurvey session by using dangerous GET requests (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:128
@@ -7674,9 +7359,7 @@ msgid "You logged in successfully."
 msgstr "Pieslēgšanās izdevusies."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:172
-msgid ""
-"LimeSurvey is setup to use the webserver authentication, but it seems you "
-"have not already been authenticated"
+msgid "LimeSurvey is setup to use the webserver authentication, but it seems you have not already been authenticated"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:173
@@ -7908,10 +7591,7 @@ msgid "You have not selected a Question."
 msgstr "Jūs neesat izvēlējies jautājumu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:68
-msgid ""
-"Your condition could not be added! It did not include the question and/or "
-"answer upon which the condition was based. Please ensure you have selected a "
-"question and an answer."
+msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:148
@@ -7987,9 +7667,7 @@ msgid "copy to"
 msgstr "copy to"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:932
-msgid ""
-"Are you sure you want to copy these condition(s) to the questions you have "
-"selected?"
+msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:950
@@ -7998,9 +7676,7 @@ msgid "Add Condition"
 msgstr "Pievienot nosacījumu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1000
-msgid ""
-"NOTE: If you use a pre-defined answer as your condition, only the equals or "
-"not-equal-to conditions apply."
+msgid "NOTE: If you use a pre-defined answer as your condition, only the equals or not-equal-to conditions apply."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1010
@@ -8081,14 +7757,8 @@ msgid "Choose Columns"
 msgstr "Izvēlēties kolonnas"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:274
-msgid ""
-"Your survey contains more than 255 columns of responses. Spreadsheet "
-"applications such as Excel are limited to loading no more than 255. Select "
-"the columns you wish to export in the list below."
-msgstr ""
-"Jūsu pētījums satur vairāk kā 255 atbilžu kolonnas.  Tādas programmas kā "
-"Excel nevar ielādēt vairāk par 255.  Šajā sarakstā lūdzu izvēlēties "
-"kolonnas, kuras Jūs vēlaties eksportēt."
+msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
+msgstr "Jūsu pētījums satur vairāk kā 255 atbilžu kolonnas.  Tādas programmas kā Excel nevar ielādēt vairāk par 255.  Šajā sarakstā lūdzu izvēlēties kolonnas, kuras Jūs vēlaties eksportēt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:280
 msgid "Choose the columns you wish to export."
@@ -8099,9 +7769,7 @@ msgid "Choose Token Fields"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:331
-msgid ""
-"Your survey can export associated token data with each response. Select any "
-"additional fields you would like to export."
+msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:401
@@ -8138,8 +7806,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:55
 msgid "This file is not a LimeSurvey label set file. Import failed."
-msgstr ""
-"Šis fails nav LimeSurvey apzīmējumu kopas fails.  Importēšana nav izdevusies."
+msgstr "Šis fails nav LimeSurvey apzīmējumu kopas fails.  Importēšana nav izdevusies."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:56
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:212
@@ -8147,9 +7814,7 @@ msgid "Return to Labels Admin"
 msgstr "Atgriezties pie apzīmējumu administrēšanas"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:193
-msgid ""
-"There was a duplicate labelset, so this set was not imported. The duplicate "
-"will be used instead."
+msgid "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:201
@@ -8203,8 +7868,7 @@ msgid "A database named \"%s\" already exists."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:53
-msgid ""
-"Do you want to populate that database now by creating the necessary tables?"
+msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:85
@@ -8217,9 +7881,7 @@ msgid "Database `%s` has been successfully populated."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/createdb.php:53
-msgid ""
-"Database Information not provided. This script must be run from admin.php "
-"only."
+msgid "Database Information not provided. This script must be run from admin.php only."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/createdb.php:77

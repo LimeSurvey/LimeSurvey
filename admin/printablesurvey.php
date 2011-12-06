@@ -438,11 +438,10 @@ while ($degrow = $degresult->FetchRow())
                 }
 
                 $x=0;
-                $distinctquery="SELECT cqid, method, cfieldname, value
+                $distinctquery="SELECT DISTINCT cqid, method, cfieldname, value
                             FROM ".db_table_name("conditions")."
                             WHERE  ".db_table_name("conditions").".qid={$deqrow['qid']}
                                 AND ".db_table_name("conditions").".scenario={$scenariorow['scenario']}
-                            group by cqid, method
                             ORDER BY cqid";
                 $distinctresult=db_execute_assoc($distinctquery);
                 //Loop through each condition for a particular scenario.
@@ -623,6 +622,9 @@ while ($degrow = $degresult->FetchRow())
                                 {
                                     $conditions[]=$ansrow['answer'];
                                 }
+                            	if($conrow['value'] == "-oth-") {
+                            	    $conditions[]=$clang->gT("Other");
+                            	}
                                 $conditions = array_unique($conditions);
                                 break;
                             case "M":
@@ -917,11 +919,11 @@ while ($degrow = $degresult->FetchRow())
                             {
                                 $dearow['answer'] = $answer.addsgqacode(" (".$dearow['code'].")");
                             }
-                            $question['ANSWER'] .= "\t".$wrapper['item-start']."\t\t".input_type_image('radio' , $dearow['answer'])."\n\t\t\t".$dearow['answer']."\n".$wrapper['item-end'];                     
+                            $question['ANSWER'] .= "\t".$wrapper['item-start']."\t\t".input_type_image('radio' , $dearow['answer'])."\n\t\t\t".$dearow['answer']."\n".$wrapper['item-end'];
                         }
                         else
                         {
-                        	$question['ANSWER'] .= "\t".$wrapper['item-start']."\t\t".input_type_image('radio' , $dearow['answer'])."\n\t\t\t".$dearow['answer'].addsgqacode(" (".$dearow['code'].")")."\n".$wrapper['item-end'];          	
+                        	$question['ANSWER'] .= "\t".$wrapper['item-start']."\t\t".input_type_image('radio' , $dearow['answer'])."\n\t\t\t".$dearow['answer'].addsgqacode(" (".$dearow['code'].")")."\n".$wrapper['item-end'];
                         }
 
                         if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$dearow['answer']);}

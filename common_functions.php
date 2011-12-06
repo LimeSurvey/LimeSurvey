@@ -5608,9 +5608,12 @@ function retrieve_Answer($code, $phpdateformat=null)
         //extracted from a "fieldname" - ie: 1X2X3a
         // also returns question type
 
-        if ($questiondetails['type'] == "M" ||
-        $questiondetails['type'] == "P")
+        if ($questiondetails['type'] == "M" || $questiondetails['type'] == "P")
         {
+            if ((strpos($code,'comment')>0 || strpos($code,'other')>0) && isset($_SESSION[$code]))
+            {
+                return $_SESSION[$code];
+            }
             $query="SELECT * FROM {$dbprefix}questions WHERE parent_qid='".$questiondetails['qid']."' AND language='".$_SESSION['s_lang']."'";
             $result=db_execute_assoc($query) or safe_die("Error getting answer<br />$query<br />".$connect->ErrorMsg());  //Checked
             while($row=$result->FetchRow())
@@ -7042,10 +7045,10 @@ EOS;
 */
 function fixSubquestions()
 {
-    $surveyidresult=db_execute_assoc("select sq.qid, sq.parent_qid, sq.gid as sqgid, q.gid, sq.type as sqtype, q.type
+    $surveyidresult=db_select_limit_assoc("select sq.qid, sq.parent_qid, sq.gid as sqgid, q.gid, sq.type as sqtype, q.type
     from ".db_table_name('questions')." sq JOIN ".db_table_name('questions')." q on sq.parent_qid=q.qid
-    where sq.parent_qid>0 and  (sq.gid!=q.gid or sq.type!=q.type)");
-    foreach($surveyidresult->GetRows() as $sv)
+    where sq.parent_qid>0 and  (sq.gid!=q.gid or sq.type!=q.type)",1000);
+    while ($sv = $surveyidresult->FetchRow())
     {
         db_execute_assoc('update '.db_table_name('questions')." set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}");
     }

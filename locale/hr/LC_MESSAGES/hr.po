@@ -8,17 +8,18 @@ msgstr ""
 "Project-Id-Version: LimeSurvey HR language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-08-30 19:50+0100\n"
-"PO-Revision-Date: 2011-08-30 19:52+0100\n"
-"Last-Translator: Igor Dobraca <idobraca@rovinj.net>\n"
+"PO-Revision-Date: 2011-11-17 16:50+0100\n"
+"Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: Igor Dobrača & Edita Paulišić <idobraca@rovinj.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-KeywordsList: gT\n"
+"X-Poedit-KeywordsList: gT;ngT:1,2\n"
 "X-Poedit-Basepath: D:\\LimeSurvey\n"
 "X-Poedit-Language: Croatian\n"
 "X-Poedit-Country: CROATIA\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Poedit-SearchPath-0: D:\\LimeSurvey\n"
 
 #: D:\LimeSurvey/common.php:278
@@ -11731,115 +11732,163 @@ msgstr "Vijetnamski"
 
 #~ msgid "Edit/Add Label Sets"
 #~ msgstr "Mijenjaj/Dodaj set markera"
+
 #~ msgid "Create or Import New Survey"
 #~ msgstr "Stvori ili uvezi novi upitnik"
+
 #~ msgid "Please Choose..."
 #~ msgstr "Molim izaberite..."
+
 #~ msgid "Array (Flexible Labels) Dual Scale"
 #~ msgstr "Niz (fleksibilni markeri) dvostruka skala"
+
 #~ msgid "Array (Flexible Labels) by Column"
 #~ msgstr "Niz (fleksibilni markeri) po kolonama"
+
 #~ msgid "List (Flexible Labels) (Dropdown)"
 #~ msgstr "Lista (fleksibilni markeri) (padajuća lista)"
+
 #~ msgid "Boilerplate Question"
 #~ msgstr "Boilerplate pitanje"
+
 #~ msgid "List (Flexible Labels) (Radio)"
 #~ msgstr "Lista (fleksibilni markeri) (radio)"
+
 #~ msgid "Array (Multi Flexible) (Text)"
 #~ msgstr "Niz (fleksibilni markeri) (Tekst)"
+
 #~ msgid "Import answers from a deactivated survey table"
 #~ msgstr "Uvezi odgovore iz deaktivirane tabele upitnika"
+
 #~ msgid "Thank You!"
 #~ msgstr "Hvala vam!"
+
 #~ msgid "First Name"
 #~ msgstr "Ime"
+
 #~ msgid "Email Address"
 #~ msgstr "E-mail adresa"
+
 #~ msgid "Display select boxes"
 #~ msgstr "Prikaži odabrana polja"
+
 #~ msgid "Minimum dropdown year"
 #~ msgstr "Minimalna vrijednost godine"
+
 #~ msgid "Maximum dropdown year"
 #~ msgstr "Maksimalna vrijednost godine"
+
 #~ msgid "Prefix|Suffix"
 #~ msgstr "Prefiks|Sufiks"
+
 #~ msgid "Enter a header text for scale B"
 #~ msgstr "Unesi tekst zaglavlja za skalu B"
+
 #~ msgid "Header scale B"
 #~ msgstr "Zaglavlje skale B"
+
 #~ msgid "Dual dropdown"
 #~ msgstr "Dvostruki padajući niz"
+
 #~ msgid "Message to display when time limit has expired"
 #~ msgstr "Prikaz poruke po isteklom vremenu"
+
 #~ msgid "How long to display the time limit expiry message (in seconds)"
 #~ msgstr "Trajanje prikaza poruke o isteklom vremenu (u sekundama)"
+
 #~ msgid ""
 #~ "Time until time limit expiry when time limit warning message is displayed "
 #~ "(in seconds)"
 #~ msgstr "Prikaz poruke upozorenja o isteku vremena (u sekundama)"
+
 #~ msgid "How long the time limit warning message will display (in seconds)"
 #~ msgstr "Prikaz poruke upozorenja o isteku vremena (u sekundama)"
+
 #~ msgid "Message to display warning that time limit is about to expire"
 #~ msgstr "Poruka o obavijesti o skorom isteku vremenskog limita"
+
 #~ msgid "Failed! Reason: "
 #~ msgstr "Neuspješno! Razlog: "
+
 #~ msgid "Hello!"
 #~ msgstr "Pozdrav!"
+
 #~ msgid "A new response was submitted for your survey."
 #~ msgstr "Novi odgovor je unesen u Vaš upitnik."
+
 #~ msgid "Click the following link to reload the survey:"
 #~ msgstr "Izaberite sljedeći link kako bi učitali upitnik:"
+
 #~ msgid "Click the following link to see the individual response:"
 #~ msgstr "Izaberite sljedeći link kako bi vidjeli pojedinačne odgovore:"
+
 #~ msgid "Click the following link to edit the individual response:"
 #~ msgstr "Izaberite sljedeći link kako bi promijenili pojedinačne odgovore:"
+
 #~ msgid "View statistics by clicking here:"
 #~ msgstr "Pogledajte statistiku odabirom sljedećeg linka:"
+
 #~ msgid ""
 #~ "This email contains confirmation of the responses you made to the survey"
 #~ msgstr "Ova poruka sadrži potvrdu o odgovorima poslanim na anketu"
+
 #~ msgid "Survey submission confirmation"
 #~ msgstr "Potvrda o sudjelovanju"
+
 #~ msgid "For further information contact %s"
 #~ msgstr "Za više informacija kontaktirajte %s"
+
 #~ msgid ""
 #~ "If you have been issued with a token, please enter it in the box below "
 #~ "and click continue."
 #~ msgstr ""
 #~ "Ako ste dobili token, molimo unesite ga u polje ispod i izaberite "
 #~ "nastavak."
+
 #~ msgid "Survey Name (ID)"
 #~ msgstr "ID Upitnika:"
+
 #~ msgid "Date Stamp"
 #~ msgstr "Datum poslužitelja"
+
 #~ msgid "First Scale"
 #~ msgstr "Prva skala"
+
 #~ msgid "Second Scale"
 #~ msgstr "Druga skala"
+
 #~ msgid "Your Answer"
 #~ msgstr "Bez odgovora"
+
 #~ msgid "Rank at least %d items"
 #~ msgstr "Rangiraj najmanje %d opcija"
+
 #~ msgid ""
 #~ "One or more questions have not been answered in a valid manner. You "
 #~ "cannot proceed until these answers are valid"
 #~ msgstr ""
 #~ "Na jedno ili više pitanja niste odgovorili na pravi način. Nije moguće "
 #~ "nastaviti dok ne odgovorite na pravi način."
+
 #~ msgid "Other text"
 #~ msgstr "Drugi komentar"
+
 #~ msgid "Please rank at least %d item(s) for question \"%s\"."
 #~ msgstr "Molim rangirajte najmanje %d odgovor(a) za pitanje \"%s\"."
+
 #~ msgid ""
 #~ "Error: The labelset used for this question is not available in this "
 #~ "language and/or does not exist."
 #~ msgstr ""
 #~ "Greška: Set oznaka korišten za ovo pitanje nije dostupan i/ili ne postoji "
 #~ "za ovaj jezik."
+
 #~ msgid "Field summary for"
 #~ msgstr "Sažetak polja za"
+
 #~ msgid "Non completed"
 #~ msgstr "Nije dovršen"
+
 #~ msgid ""
 #~ "Someone may be trying to use your LimeSurvey session by using dangerous "
 #~ "GET requests (CSRF attack suspected). If you just clicked on a malicious "
@@ -11848,264 +11897,375 @@ msgstr "Vijetnamski"
 #~ "Netko pokušava koristiti neželjeni GET zahtjev za određenu LimeSurvey "
 #~ "sesiju (moguć CSRF  napad). Ukoliko si pak kliknuo na sumnjivi link, "
 #~ "molim obavijesti administratora."
+
 #~ msgid ""
 #~ "The labelset used in this question does not exists or is missing a "
 #~ "translation."
 #~ msgstr ""
 #~ "Set oznaka korišten u ovom pitanju ili ne postoji ili nema prijevod."
+
 #~ msgid "Add or remove answers to Multiple Answer questions"
 #~ msgstr "Dodaj ili ukloni odgovore na pitanje sa više odgovora"
+
 #~ msgid "Edit (change) your group names"
 #~ msgstr "Mjenjanje imena grupa"
+
 #~ msgid ""
 #~ "Add, Remove or Edit pre-defined question answers (except for Multi-answer "
 #~ "questions)"
 #~ msgstr ""
 #~ "Dodaj, obriši ili promijeni predefinirane odgovore na pitanja (osim za "
 #~ "pitanja sa više odgovora)"
+
 #~ msgid "Initialise Tokens"
 #~ msgstr "Inicijaliziraj tokene"
+
 #~ msgid "LimeSurvey Online Manual"
 #~ msgstr "LimeSurvey Online upute"
+
 #~ msgid "Base Language"
 #~ msgstr "Osnovni jezik"
+
 #~ msgid ""
 #~ "Either your selected database has not yet been created or there is a "
 #~ "problem accessing it."
 #~ msgstr ""
 #~ "Ili vaša odabrana baza još uvijek nije kreirana ili postoji problem u "
 #~ "pristupu."
+
 #~ msgid "1. scale"
 #~ msgstr "1. skala"
+
 #~ msgid "2. scale"
 #~ msgstr "2. skala"
+
 #~ msgid "Data View Control"
 #~ msgstr "Kontrola prikaza podataka"
+
 #~ msgid "Records Displayed:"
 #~ msgstr "Prikazano zapisa:"
+
 #~ msgid "Starting From:"
 #~ msgstr "Početak od:"
+
 #~ msgid "Completed Records Only"
 #~ msgstr "Samo kompletirani zapisi"
+
 #~ msgid "All Records"
 #~ msgstr "Svi zapisi"
+
 #~ msgid "Incomplete Records Only"
 #~ msgstr "Samo nekompletirane zapise"
+
 #~ msgid "No condition selected to copy from"
 #~ msgstr "Nisu izabrani uvjeti za kopiranje iz"
+
 #~ msgid "No question selected to copy condition to"
 #~ msgstr "Nisu izabrana pitanja za kopiranje u"
+
 #~ msgid "LimeSurvey manual"
 #~ msgstr "LimeSurvey upute"
+
 #~ msgid ""
 #~ "Are you sure you want to copy these condition(s) to the questions you "
 #~ "have selected?"
 #~ msgstr ""
 #~ "Jeste li sigurni da želite kopirati ove uvjete u pitanja koja ste "
 #~ "izabrali?"
+
 #~ msgid "Equals"
 #~ msgstr "je jednako"
+
 #~ msgid "Answers can't be deleted"
 #~ msgstr "Nije moguće obrisati odgovore"
+
 #~ msgid "Question could not be deleted"
 #~ msgstr "Pitanje nije moguće obrisati"
+
 #~ msgid ""
 #~ "Error adding answer: You can't use the same answer code more than once."
 #~ msgstr ""
 #~ "Greška pri dodavanju odgovora: Ne možete koristiti isti kod odgovora više "
 #~ "puta."
+
 #~ msgid "Failed to insert answer"
 #~ msgstr "Greška pri dodavanju odgovora"
+
 #~ msgid "Invalid or empty answer code supplied"
 #~ msgstr "Unijet je neodgovarajući ili prazan kod odgovora"
+
 #~ msgid "Failed to make answer not default"
 #~ msgstr "Neuspješno postavljanje odgovora u ne osnovno stanje"
+
 #~ msgid "Failed to make answer default"
 #~ msgstr "Neuspješno postavljanje odgovora u osnovno stanje"
+
 #~ msgid "Confirmation of completed survey"
 #~ msgstr "Potvrda o ispunjenom upitniku"
+
 #~ msgid "Survey Registration Confirmation"
 #~ msgstr "Potvrda o registraciji za sudjelovanje u upitniku"
+
 #~ msgid "Survey could not be created"
 #~ msgstr "Upitnik nije moguće kreirati"
+
 #~ msgid "Cannot be modified"
 #~ msgstr "Ne može se promijeniti"
+
 #~ msgid "Update Entry"
 #~ msgstr "Izmjeni zapis"
+
 #~ msgid "IP-Address"
 #~ msgstr "IP-adresa"
+
 #~ msgid "Label 1"
 #~ msgstr "Marker 1"
+
 #~ msgid "Label 2"
 #~ msgstr "Marker 2"
+
 #~ msgid "Export database"
 #~ msgstr "Izvoz baze"
+
 #~ msgid "No LID has been provided. Cannot dump label set."
 #~ msgstr "Nikakav LID nije unesen. Nije moguće uklanjanje seta markera."
+
 #~ msgid "No QID has been provided. Cannot dump question."
 #~ msgstr "QID nije unesen. Nije moguće uklanjanje pitanja."
+
 #~ msgid "Export Results"
 #~ msgstr "Izvezi rezultate"
+
 #~ msgid "Token Control"
 #~ msgstr "Kontrola tokena"
+
 #~ msgid "All records"
 #~ msgstr "Svi zapisi"
+
 #~ msgid "Survey expiration date (DD-MM-YYYY)"
 #~ msgstr "Datum isteka upitnika (DD-MM-YYYY)"
+
 #~ msgid "Survey expiration date (MM-DD-YYYY)"
 #~ msgstr "Datum isteka upitnika (MM-DD-YYYY)"
+
 #~ msgid "Miscellaneous"
 #~ msgstr "Razno"
+
 #~ msgid ""
 #~ "Number of answers to show before repeating the headings in array "
 #~ "questions:"
 #~ msgstr ""
 #~ "Broj odgovora za prikaz prije ponavljanja zaglavlja u pitanju tipa niz:"
+
 #~ msgid "Select CSV File:"
 #~ msgstr "Izaberi CSV datoteke:"
+
 #~ msgid "Survey ID"
 #~ msgstr "ID Upitnika"
+
 #~ msgid "Anonymous answers"
 #~ msgstr "Anonimni odgovori"
+
 #~ msgid "Full Responses"
 #~ msgstr "Kompletni odgovori"
+
 #~ msgid "Total Responses"
 #~ msgstr "Ukupno odgovora"
+
 #~ msgid "Closed-access"
 #~ msgstr "Zatvoren pristup"
+
 #~ msgid "Open-access"
 #~ msgstr "Otvoren pristup"
+
 #~ msgid "This survey is not currently active"
 #~ msgstr "Ovaj upitnik nije trenutno aktivan"
+
 #~ msgid "This survey is currently active"
 #~ msgstr "Ovaj upitnik je trenutno aktivan"
+
 #~ msgid "Delete Current Survey"
 #~ msgstr "Obriši trenutni upitnik"
+
 #~ msgid "Set Assessment Rules"
 #~ msgstr "Podesi vrednovanja ankete"
+
 #~ msgid "Set Survey Quotas"
 #~ msgstr "Podesi ograničenja (kvote) upitnika"
+
 #~ msgid "Browse Responses For This Survey"
 #~ msgstr "Prođi kroz odgovore za ovaj upitnik"
+
 #~ msgid "Responses will be date stamped"
 #~ msgstr "Zabilježiti će se datum ispunjavanja upitnika"
+
 #~ msgid "Base Language:"
 #~ msgstr "Osnovni jezik:"
+
 #~ msgid "Exit Link"
 #~ msgstr "Link za izlaz"
+
 #~ msgid "Second Label Set"
 #~ msgstr "Mijenjaj ovaj set markera"
+
 #~ msgid "You need to choose a second label set for this question!"
 #~ msgstr "Morate dodati set markera za trenutno pitanje"
+
 #~ msgid "Edit/Add second Label Sets"
 #~ msgstr "Mijenjaj/Dodaj set markera"
+
 #~ msgid "Move answer option up"
 #~ msgstr "Premijesti opciju odgovora gore"
+
 #~ msgid "Move answer option down"
 #~ msgstr "Premijesti opciju odgovora dolje"
+
 #~ msgid "Failed to add User."
 #~ msgstr "Neuspješno dodavanje korisnika."
+
 #~ msgid "Define Questions"
 #~ msgstr "Definiraj pitanja"
+
 #~ msgid "Delete Survey"
 #~ msgstr "Obriši upitnik"
+
 #~ msgid "Edit Survey Property"
 #~ msgstr "Promena podataka o upitniku"
+
 #~ msgid "Browse Response"
 #~ msgstr "Pregled odgovora"
+
 #~ msgid "Update survey rights successful."
 #~ msgstr "Uspješno dodavanje privilegija upitnika."
+
 #~ msgid "Edit survey settings - Step 1 of 2"
 #~ msgstr "Uređivanje upitnika - Korak 1 od 2"
+
 #~ msgid "Allow Saves?"
 #~ msgstr "Dozvoli snimanje?"
+
 #~ msgid "Email responses to:"
 #~ msgstr "Pošalji odgovore na:"
+
 #~ msgid "Anonymous answers?"
 #~ msgstr "Anonimni odgovori?"
+
 #~ msgid "Save and Continue"
 #~ msgstr "Snimi i nastavi"
+
 #~ msgid "Edit survey settings - Step 2 of 2"
 #~ msgstr "Uređivanje upitnika - Korak 2 od 2"
+
 #~ msgid "Start date:"
 #~ msgstr "Početni datum:"
+
 #~ msgid "Date format: %s"
 #~ msgstr "Format datuma: %s"
+
 #~ msgid "Expiry Date:"
 #~ msgstr "Datum isteka:"
+
 #~ msgid "Select CSV/SQL File:"
 #~ msgstr "Izaberi CSV/SQL tip datoteke:"
+
 #~ msgid "Do you want to save your changes ?"
 #~ msgstr "Želiš li snimiti promjene?"
+
 #~ msgid "No SID (Survey) has been provided. Cannot import group."
 #~ msgstr "SID (upitnika) nije dostavljen. Nije moguć uvoz grupe."
+
 #~ msgid "Reading file..."
 #~ msgstr "Čitanje datoteke..."
+
 #~ msgid "This file is not a LimeSurvey group file. Import failed."
 #~ msgstr "Ova datoteka nije u formatu LimeSurvey grupe. Uvoz nije uspio."
+
 #~ msgid "Import partially successful."
 #~ msgstr "Uvoz je djelomično uspješanj."
+
 #~ msgid ""
 #~ "The following languages in this group were not imported since the survey "
 #~ "does not contain such a language: "
 #~ msgstr ""
 #~ "Ovi jezici u ovoj grupi pitanja nisu uvezeni zato što upitnik nema takav "
 #~ "jezik."
+
 #~ msgid "Group Import Summary"
 #~ msgstr "Sažet prikaz uvoza grupa pitanja."
+
 #~ msgid "Groups:"
 #~ msgstr "Grupe:"
+
 #~ msgid "Question Attributes: "
 #~ msgstr "Atributi pitanja:"
+
 #~ msgid "Import of group is completed."
 #~ msgstr "Uvoz grupa pitanja je završen."
+
 #~ msgid "Go to group"
 #~ msgstr "Idi na grupu"
+
 #~ msgid "Return to Labels Admin"
 #~ msgstr "Povratak u administraciju oznaka"
+
 #~ msgid "Label Sets"
 #~ msgstr "Setovi oznaka"
+
 #~ msgid ""
 #~ "You can't import a question which doesn't support the current survey's "
 #~ "base language"
 #~ msgstr ""
 #~ "Nije moguće uvoziti pitanje koje ne podržava jezik trenutne baze upitnika."
+
 #~ msgid ""
 #~ "Question \"%s - %s\" was NOT imported because the question type is "
 #~ "unknown."
 #~ msgstr "Pitanje \"%s - %s\" NIJE uvezeno jer je tip pitanja nepoznat."
+
 #~ msgid ""
 #~ "Question \"%s - %s\" was imported but the type was set to '%s' because it "
 #~ "is the most similiar one."
 #~ msgstr ""
 #~ "Pitanje \"%s - %s\" je uvezeno, ali tip je postavljen na '%s'  jer je "
 #~ "najsličniji."
+
 #~ msgid "Condition for %d skipped (%d does not exist)"
 #~ msgstr "Uvjet za %d preskočen (%d ne postoji)"
+
 #~ msgid "Remember that we do not support subdirectories in ZIP Archive."
 #~ msgstr "Oprez! Ne podržavamo poddirektorije u ZIP arhivi."
+
 #~ msgid "Import Template"
 #~ msgstr "Uvezi predložak"
+
 #~ msgid "No matching qid"
 #~ msgstr "Nemam odgovarajući qid"
+
 #~ msgid "The following question attributes should be deleted"
 #~ msgstr "Sjledeće atribute pitanja je potrebno obrisati"
+
 #~ msgid "Data redundancy Check"
 #~ msgstr "Provjera redundantnosti podataka"
+
 #~ msgid "Add new label set"
 #~ msgstr "Dodaj novi set markera"
+
 #~ msgid "Edit Label Set"
 #~ msgstr "Mijenjaj ovaj set markera"
+
 #~ msgid "Check for duplicates?"
 #~ msgstr "Provjera duplikata?"
+
 #~ msgid "Close Window"
 #~ msgstr "Zatvori prozor"
+
 #~ msgid ""
 #~ "You cannot change codes, add or delete entries in this label set because "
 #~ "it is being used by an active survey."
 #~ msgstr ""
 #~ "Ne možete mijenjati kodove, dodati ili obrisati unose unutar ovog seta "
 #~ "markera zato što se oni koriste u aktivnom upitniku."
+
 #~ msgid ""
 #~ "Some surveys currently use this label set. Modifying the codes, adding or "
 #~ "deleting entries to this label set may produce undesired results in other "
@@ -12114,58 +12274,82 @@ msgstr "Vijetnamski"
 #~ "Neki upitnici trenutno koriste ovaj set markera. Promjena kodova, "
 #~ "dodavanje ili brisanje unosa u ovom setu markera mogu dovesti do "
 #~ "neželjenih rezultata drugim upitnicima."
+
 #~ msgid ""
 #~ "Couldn't Delete Label Set - There are questions that rely on this. You "
 #~ "must delete these questions first."
 #~ msgstr ""
 #~ "Nije moguće brisanje seta markera - postoje pitanja koja se oslanjaju na "
 #~ "set. Morate prvo obrisati pitanja."
+
 #~ msgid "Insert of Label Set failed"
 #~ msgstr "Umetanje seta markera nije uspio"
+
 #~ msgid "Passed one time password doesn't match one time password for user %s"
 #~ msgstr ""
 #~ "Poslana jednokratna lozinka i jednokratna lozinka za korisnika %s se ne "
 #~ "podudaraju"
+
 #~ msgid "Label set:"
 #~ msgstr "Set markera:"
+
 #~ msgid "Second Label Set:"
 #~ msgstr "Drugi set markera:"
+
 #~ msgid "Copy Answers?"
 #~ msgstr "Kopiraj odgovore?"
+
 #~ msgid "Copy Attributes?"
 #~ msgstr "Kopiraj atribute?"
+
 #~ msgid "Survey is currently active."
 #~ msgstr "Upitnik je trenutno aktivan."
+
 #~ msgid "Update Question"
 #~ msgstr "Promijeni pitanje"
+
 #~ msgid "Modify Quota"
 #~ msgstr "Izmijeni ograničenja"
+
 #~ msgid "Quota Name"
 #~ msgstr "Naziv ograničenja"
+
 #~ msgid "Quota Limit"
 #~ msgstr "Limit ograničenja"
+
 #~ msgid "Quota Action"
 #~ msgstr "Akcija ograničenja"
+
 #~ msgid "Terminate Survey"
 #~ msgstr "Zaključaj upitnik"
+
 #~ msgid "Terminate Survey With Warning"
 #~ msgstr "Zaustavi ankete uz upozorenje"
+
 #~ msgid "Update Quota"
 #~ msgstr "Ispravi ograničenja"
+
 #~ msgid "Modify"
 #~ msgstr "Izmijeni"
+
 #~ msgid "OR between"
 #~ msgstr "ILI između"
+
 #~ msgid "Edit email settings"
 #~ msgstr "Izmijeni e-mail postavke"
+
 #~ msgid "Email reminder subject:"
 #~ msgstr "Naslov e-maila za podsjećanje:"
+
 #~ msgid "Clear token invites"
 #~ msgstr "Obriši pozivnice tokena"
+
 #~ msgid "Invite sent?"
 #~ msgstr "Pozivnica poslana?"
+
 #~ msgid "Invitation Email:"
 #~ msgstr "Pozivni e-mail:"
+
 #~ msgid ""
 #~ "There were no eligible emails to send. This will be because none "
 #~ "satisfied the criteria of - having an email address, not having been sent "
@@ -12175,295 +12359,427 @@ msgstr "Vijetnamski"
 #~ "Ne postoje e-mail-ovi koji zadovoljavaju uvjete slanja. Nisu zadovoljeni "
 #~ "sljedeći kriteriji - postojanje e-mail adrese, još uvijek neposlana "
 #~ "pozivnica,već popunjen upitnik i posjedovanje tokena."
+
 #~ msgid "Stop at Token ID:"
 #~ msgstr "Zaustavi na token ID broju:"
+
 #~ msgid "Delete token"
 #~ msgstr "Obriši token"
+
 #~ msgid "Display Tokens"
 #~ msgstr "Prikaži tokene"
+
 #~ msgid "Added New Token"
 #~ msgstr "Novi token dodan"
+
 #~ msgid ""
 #~ "Upload file not found. Check your permissions and path for the upload "
 #~ "directory"
 #~ msgstr ""
 #~ "Datoteka za uvoz nije nađena. Provjerite privilegije i putanju do "
 #~ "direktorija za uvoz"
+
 #~ msgid "Set Template Rights"
 #~ msgstr "Postavi prava predložaka"
+
 #~ msgid "Save Settings"
 #~ msgstr "Snimi postavke"
+
 #~ msgid "Setting as Administrator Child"
 #~ msgstr "Postavke kao kod administratora"
+
 #~ msgid "Set Parent successful."
 #~ msgstr "Postavljanje više veze uspješno."
+
 #~ msgid "(Sent by email)"
 #~ msgstr "(Poslano e-mailom)"
+
 #~ msgid "ComfortUpdate Step 3"
 #~ msgstr "ComfortUpdate Korak 3"
+
 #~ msgid "ComfortUpdate Step 4"
 #~ msgstr "ComfortUpdate Korak 4"
+
 #~ msgid "Logging in..."
 #~ msgstr "Prijavljivanje..."
+
 #~ msgid "Welcome {NAME}"
 #~ msgstr "Dobrodošli {NAME}"
+
 #~ msgid "Import Group"
 #~ msgstr "Uvoz grupe korisnika"
+
 #~ msgid "You need to add groups"
 #~ msgstr "Morate dodati grupe pitanja"
+
 #~ msgid "(This field is mandatory.)"
 #~ msgstr "(Ovo polje je obavezno)"
+
 #~ msgid "Survey Submitted"
 #~ msgstr "Upitnik je poslan"
+
 #~ msgid "Condition"
 #~ msgstr "Uvjeti"
+
 #~ msgid "New user data"
 #~ msgstr "Novi korisnički podaci"
+
 #~ msgid "Your data:"
 #~ msgstr "Vaši podaci:"
+
 #~ msgid "Survey Saved"
 #~ msgstr "Upitnik je spremljen"
+
 #~ msgid "Don't consider NON completed responses"
 #~ msgstr "NE uzimaj u obzir odgovore koji nisu dovršeni."
+
 #~ msgid "Iterate surevey"
 #~ msgstr "Iteracija upitnika"
+
 #~ msgid "New Answer"
 #~ msgstr "Novi odgovor"
+
 #~ msgid "answers:"
 #~ msgstr "odgovori:"
+
 #~ msgid "Export result to a SPSS/PASW command file"
 #~ msgstr "Izvezi rezultate u SPSS/PASW komandnu datoteku"
+
 #~ msgid "Deactivated surveys"
 #~ msgstr "Deaktivirani upitnici"
+
 #~ msgid "Label Set:"
 #~ msgstr "Set markera:"
+
 #~ msgid "%d full responses"
 #~ msgstr "%d kompletnih odgovora"
+
 #~ msgid "%d responses not completely filled out"
 #~ msgstr "%d nekompletnih odgovora"
+
 #~ msgid "Export SPSS syntax file"
 #~ msgstr "Izvoz SPSS sintaksne datoteke"
+
 #~ msgid "Export SPSS data file"
 #~ msgstr "Izvoz SPSS podatkovne datoteke"
+
 #~ msgid "saved at"
 #~ msgstr "pohranjeno na"
+
 #~ msgid "Only users with tokens may enter the survey?"
 #~ msgstr "Samo korsnici sa tokenima mogu pristupiti upitniku?"
+
 #~ msgid "Set Name"
 #~ msgstr "Unesi naziv"
+
 #~ msgid ""
 #~ "Please check any problems above and then proceed to the next step to "
 #~ "start the update."
 #~ msgstr ""
 #~ "Provjeri navedene probleme i onda nastavi na slijedeći korak nadogradnje."
+
 #~ msgid "Old files were successfuly backed up to "
 #~ msgstr "Stare datoteke su uspješno pohranjene u"
+
 #~ msgid "Database was successfuly backed up to "
 #~ msgstr "Baza podataka je uspješno pohranjena u"
+
 #~ msgid "Filter settings"
 #~ msgstr "Podešavanja filtera"
+
 #~ msgid "You can submit your answers"
 #~ msgstr "Možeš poslati svoje odgovore"
+
 #~ msgid "Number of columns to display"
 #~ msgstr "Broj kolona za prikaz"
+
 #~ msgid "Step value for array (multi-flexible) question type"
 #~ msgstr "Vrijednost koraka za pitanje više-fleksibilni niz"
+
 #~ msgid "Use checkbox layout for array (multi-flexible) question type"
 #~ msgstr "Koristi izgled izbornih kvadratića kod pitanja Više-fleksibilni niz"
+
 #~ msgid "\"Other\" caption"
 #~ msgstr "\"Other\" natpis"
+
 #~ msgid "Importing CSV file: Success"
 #~ msgstr "Uvoz CSV datoteke: Uspješno"
+
 #~ msgid "Creating Token Entries"
 #~ msgstr "Kreiraj token zapise"
+
 #~ msgid "Modifying User"
 #~ msgstr "Mijenjaj korisnika"
+
 #~ msgid "Update user rights successful."
 #~ msgstr "Promena privilegija korisnika uspješna."
+
 #~ msgid "Data Redundancy Check"
 #~ msgstr "Provjera redundantnosti podataka"
+
 #~ msgid "Deleting Old Token Tables"
 #~ msgstr "Obriši staru tablicu tokena"
+
 #~ msgid "Records with invalid email address removed"
 #~ msgstr "Zapisi sa lošim email adresama su obrisani"
+
 #~ msgid "Time limit for question"
 #~ msgstr "Vremenski limit za ovo pitanje"
+
 #~ msgid "Time limit warning to display(in seconds)"
 #~ msgstr "Prikaz poruke upozorenja o isteku vremena(u sekundama)"
+
 #~ msgid "Time limit warning to display for x seconds"
 #~ msgstr "Prikaz poruke upozorenja o isteku vremena u x sekundi"
+
 #~ msgid "Add or Edit Token Entry"
 #~ msgstr "Dodaj ili promijeni zapis tokena"
+
 #~ msgid "Export responses"
 #~ msgstr "Izvezi odgovore"
+
 #~ msgid "Export Responses"
 #~ msgstr "Izvezi odgovore"
+
 #~ msgid "Include"
 #~ msgstr "Dodaj"
+
 #~ msgid "from"
 #~ msgstr "of"
+
 #~ msgid ""
 #~ "There was a duplicate labelset, so this set was not imported. The "
 #~ "duplicate will be used instead."
 #~ msgstr ""
 #~ "Postoji duplikat ovog seta oznaka, tako da ovaj set nije uvezen. Biti će "
 #~ "korišten duplikat. "
+
 #~ msgid "Email Reminder"
 #~ msgstr "Email podsjetnik"
+
 #~ msgid "Show System Summary"
 #~ msgstr "Prikaži podatke o sustavu"
+
 #~ msgid "Return to Survey Administration"
 #~ msgstr "Povratak u Administraciju upitnika"
+
 #~ msgid "Filter an array's answers from a Multiple Options Question"
 #~ msgstr "Filtriraj niz odgovora dobivenih iz pitanja višestrukog odabira"
+
 #~ msgid "1=nominal 2=ordinal 3=scale."
 #~ msgstr "1=nominalna, 2=redna, 4=stupnjevana."
+
 #~ msgid "Export scale type 1=nominal 2=ordinal 3=scale."
 #~ msgstr "Tip skale za izvoz 1=nominalna, 2=redna, 4=stupnjevana"
+
 #~ msgid "This survey is active but expired"
 #~ msgstr "Ovaj upitnik je aktivan ali je istekao"
+
 #~ msgid "LimeSurvey System Summary"
 #~ msgstr "Pregled sistema LimeSurvey"
+
 #~ msgid "disabled"
 #~ msgstr "isključeno"
+
 #~ msgid "Edit Current Group"
 #~ msgstr "Mijenjaj trenutnu grupu pitanja"
+
 #~ msgid "Delete Current Group"
 #~ msgstr "Obriši trenutnu grupu pitanja"
+
 #~ msgid "Export Current Group"
 #~ msgstr "izvezi trenutnu grupu pitanja"
+
 #~ msgid "Copy question is not possible in an Active survey"
 #~ msgstr "Kopiranje pitanja nije moguće u Aktivnom upitniku"
+
 #~ msgid "Getting result count ..."
 #~ msgstr "Preuzimam broj rezultata..."
+
 #~ msgid "Please choose one of the following"
 #~ msgstr "Molim izaberite jednu opciju od ponuđenih"
+
 #~ msgid "This group has no answer."
 #~ msgstr "Ova grupa nema odgovora."
+
 #~ msgid "Token Attribute Names:"
 #~ msgstr "Imena atributa tokena:"
+
 #~ msgid "Attribute 2"
 #~ msgstr "Atribut 2"
+
 #~ msgid "Total score for this assessment rule"
 #~ msgstr "Ukupni zbroj za ove zadatke"
+
 #~ msgid "Always display this condition"
 #~ msgstr "Uvijek prikaži ovaj uvjet"
+
 #~ msgid "Update Token"
 #~ msgstr "Promijeni token"
+
 #~ msgid ""
 #~ "Import responses from an old (deactivated) survey table into an active "
 #~ "survey"
 #~ msgstr "Uvezi odgovore iz starog (deaktiviranog) upitnika u aktivan upitnik"
+
 #~ msgid "Username and/or email address already exists."
 #~ msgstr "Korisničko ime i/ili e-mail adresa već postoje."
+
 #~ msgid "Filter incomplete answers"
 #~ msgstr "Filtriraj ne kompletne odgovore"
+
 #~ msgid "Fix Order"
 #~ msgstr "Fiksni redoslijed"
+
 #~ msgid "Fix Sort"
 #~ msgstr "Sredi sortiranje"
+
 #~ msgid ""
 #~ "We are sorry but your responses have exceeded a quota on this survey."
 #~ msgstr "Žao nam je ali vaši odgovori prelaze ograničenja ovog upitnika."
+
 #~ msgid "Timed start?"
 #~ msgstr "Vremenski definiran početak?"
+
 #~ msgid "Expires?"
 #~ msgstr "Ističe?"
+
 #~ msgid "Date Format"
 #~ msgstr "Format datuma"
+
 #~ msgid "Answer Privacy"
 #~ msgstr "Privatnost odgovora"
+
 #~ msgid "Anonymous"
 #~ msgstr "Anonimno"
+
 #~ msgid "Not Anonymous"
 #~ msgstr "Nije anonimno"
+
 #~ msgid "Preferred HTML editor mode"
 #~ msgstr "Željeni način rada HTML editora"
+
 #~ msgid "Email Invitation"
 #~ msgstr "Slanje pozivnice e-mailom"
+
 #~ msgid "Format: yyyy-mm-dd hh:mm"
 #~ msgstr "Format: yyyy-mm-dd hh:mm"
+
 #~ msgid "Please complete all parts of the date"
 #~ msgstr "Molim da popunite sve dijelove datuma"
+
 #~ msgid "Current Language"
 #~ msgstr "Trenutni jezik"
+
 #~ msgid "Date is not valid!"
 #~ msgstr "Datum nije ispravan."
+
 #~ msgid "Format: YYYY-MM-DD"
 #~ msgstr "Format: GGGG-MM-DD"
+
 #~ msgid "(eg: 2003-12-25 for Christmas day)"
 #~ msgstr "(npr. 2003-01-06 za Božić)"
+
 #~ msgid ""
 #~ "You've checked the \"other\" checkbox for question \"%s\". Please also "
 #~ "fill in the accompanying text field."
 #~ msgstr ""
 #~ "Odabrali ste izborni kvadratić \"ostalo\" za pitanje \"%s\". Molim "
 #~ "ispunite i pripadajuće tekstualno polje."
+
 #~ msgid "Click on an item in the list on the left, starting with your"
 #~ msgstr "Izaberite opciju iz liste sa lijeve strane, počevši sa vašim"
+
 #~ msgid "Save All"
 #~ msgstr "Snimi sve"
+
 #~ msgid "This template can be modified"
 #~ msgstr "Ovaj predložak može se mjenjati"
+
 #~ msgid "This template cannot be modified"
 #~ msgstr "Ovaj predložak ne može mjenjati"
+
 #~ msgid "You can't edit the default template."
 #~ msgstr "Ne možete promijeniti osnovni predložak."
+
 #~ msgid "Make a copy of this template"
 #~ msgstr "Napravi kopiju ovog predloška"
+
 #~ msgid "File Control:"
 #~ msgstr "Kontrola datoteke:"
+
 #~ msgid "Now editing:"
 #~ msgstr "Sada se mijenja:"
+
 #~ msgid "Group:"
 #~ msgstr "Grupa:"
+
 #~ msgid ""
 #~ "It appears as if some tables or fields are missing from your database."
 #~ msgstr "Izgleda da neke tablice ili polja nedostaju u vašoj bazi podataka."
+
 #~ msgid "Check Database Fields"
 #~ msgstr "Provjeri polja baze podataka"
+
 #~ msgid "Ignore the new record."
 #~ msgstr "Zanemari novi zapis."
+
 #~ msgid "Updated Token"
 #~ msgstr "Promijenjen token"
+
 #~ msgid "Attribute_1 from token"
 #~ msgstr "Atribut 1"
+
 #~ msgid "Attribute_2 from token"
 #~ msgstr "Atribut 1"
+
 #~ msgid "%s %% complete"
 #~ msgstr "%s %% dovršeno"
+
 #~ msgid "Activate/Edit Tokens for this Survey"
 #~ msgstr "Aktiviraj/mijenjaj tokene za ovaj upitnik"
+
 #~ msgid ""
 #~ "Adding/editing tokens is not possible because this survey is not "
 #~ "activated."
 #~ msgstr "Dodavanje/izmjena tokena nije dozvoljena jer anketa nije aktivna."
+
 #~ msgid "Use Cookies?"
 #~ msgstr "Koristi kolačiće?"
+
 #~ msgid "URL Description:"
 #~ msgstr "Opis URL-a"
+
 #~ msgid "if you answered"
 #~ msgstr "ako ste odgovorili"
+
 #~ msgid "if you have NOT answered"
 #~ msgstr "ako NISTE odgovorili"
+
 #~ msgid "Only answer this question %s"
 #~ msgstr "Odgovorite samo na ovo pitanje %s"
+
 #~ msgid "Advanced"
 #~ msgstr "Napredno"
+
 #~ msgid ""
 #~ "Sorry, importing questions is limited to the same version. Import failed."
 #~ msgstr ""
 #~ "Žao mi je, importiranje pitanja limitirano je samo na iste verzije. "
 #~ "Import neuspješan."
+
 #~ msgid ""
 #~ "Answer could not be added. You must insert a code in the mandatory field "
 #~ "(%s)"
 #~ msgstr ""
 #~ "Nije moguće dodati odgovor. Morate unijeti kod u obavezno polje (%s)"
+
 #~ msgid "Add New Label Set"
 #~ msgstr "Dodaj novi set markera"
+
 #~ msgid "Filter incomplete answers:"
 #~ msgstr "Filtriraj nekompletne odgovore:"
+
 #~ msgid ""
 #~ "If you create any assessments in this page, for the currently selected "
 #~ "survey, the assessment will be performed at the end of the survey after "
@@ -12471,96 +12787,136 @@ msgstr "Vijetnamski"
 #~ msgstr ""
 #~ "Kreiranjem ankete na ovoj stranici za trenutno odabran upitnik, anketa će "
 #~ "započeti na kraju upitnika nakon slanja podataka."
+
 #~ msgid "Edit Current Survey"
 #~ msgstr "Mijenjaj trenutni upitnik"
+
 #~ msgid "Record ID"
 #~ msgstr "ID zapisa"
+
 #~ msgid "Public statistics:"
 #~ msgstr "Javna statistika:"
+
 #~ msgid ""
 #~ "Failed! Reason:\n"
 #~ " "
 #~ msgstr ""
 #~ "Neuspješno! Razlog:\n"
 #~ " "
+
 #~ msgid "All answers have been set to not completed."
 #~ msgstr "Svi odgovori su postavljeni kao nekompletni."
+
 #~ msgid "Delete all conditions for this scenario"
 #~ msgstr "Izbriši sve uvjete za ovaj scenarij"
+
 #~ msgid "Condition designer"
 #~ msgstr "Dizajner uvjeta"
+
 #~ msgid "You have not selected a survey."
 #~ msgstr "Niste izabrali upitnik."
+
 #~ msgid "You cannot run this script directly."
 #~ msgstr "Ova skripta se ne može pokrenuti direktno."
+
 #~ msgid "copy to"
 #~ msgstr "kopiraj u"
+
 #~ msgid ""
 #~ "NOTE: If you use a pre-defined answer as your condition, only the equals "
 #~ "or not-equal-to conditions apply."
 #~ msgstr ""
 #~ "NAPOMENA: Ukoliko koristiš predefinirani odgovor kao uvjet, tada samo "
 #~ "možeš koristiti uvjet equals ili not-equal-to"
+
 #~ msgid "Constant value or regular expression"
 #~ msgstr "Konstanta ili regularni izraz"
+
 #~ msgid "Close window"
 #~ msgstr "Zatvori prozor"
+
 #~ msgid "Switch to Add Mode"
 #~ msgstr "Prebaci na dodavanje kao način rada"
+
 #~ msgid "Switch to Copy Mode"
 #~ msgstr "Prebaci na kopiranje kao način rada"
+
 #~ msgid "Disabled - Change Group Order"
 #~ msgstr "Isključeno - Promijeni redoslijed grupa pitanja"
+
 #~ msgid "You have not selected a Survey."
 #~ msgstr "Niste izabrali upitnik."
+
 #~ msgid "Split up results"
 #~ msgstr "Razdvoji rezultate"
+
 #~ msgid "Participiants may print answers?"
 #~ msgstr "Sudionici mogu ispisati odgovore?"
+
 #~ msgid "Item"
 #~ msgstr "Opcija"
+
 #~ msgid "Enabled"
 #~ msgstr "Uključeno"
+
 #~ msgid "You were signed in on the site %s"
 #~ msgstr "Prijavili ste se na stranicu %s"
+
 #~ msgid "Login here"
 #~ msgstr "Prijavite se ovdje"
+
 #~ msgid ""
 #~ "Don't consider NON completed responses (only works when Filter incomplete "
 #~ "answers is Disable)"
 #~ msgstr ""
 #~ "Nemoj uzeti u obzir NE kompletirane odgovore (radi samo ako je "
 #~ "Filtriranje nekompletnih odgovora isključeno)"
+
 #~ msgid "Change Group Order - Disabled"
 #~ msgstr "Promijeni redoslijed grupa pitanja - Isključeno"
+
 #~ msgid "(XML module only in PHP 4 available)"
 #~ msgstr "(XML modul dostupan je samo u PHP 4)"
+
 #~ msgid "depends on group"
 #~ msgstr "ovisi o grupi pitanja"
+
 #~ msgid "No matching Group"
 #~ msgstr "Ne postoji odgovorajuća grupa"
+
 #~ msgid "No matching Survey!"
 #~ msgstr "Ne postoji odgovarajući upitnik!"
+
 #~ msgid "Email address ist not valid."
 #~ msgstr "E-mail adresa nije ispravna."
+
 #~ msgid "answers"
 #~ msgstr "odgovora"
+
 #~ msgid "to remove the last entry in your ranked list"
 #~ msgstr "kako bi uklonili zadnji unos u vašoj list"
+
 #~ msgid "Please choose at most"
 #~ msgstr "Molimo izaberite najviše"
+
 #~ msgid "Are you sure you want to delete this entry."
 #~ msgstr "Jeste li ste sigurni da želite obrisati ovaj zapis."
+
 #~ msgid "Failed to copy"
 #~ msgstr "Neuspjelo kopiranje"
+
 #~ msgid "Directory with the name"
 #~ msgstr "Direktorij sa imenom"
+
 #~ msgid "Farsi"
 #~ msgstr "Perzijski"
+
 #~ msgid "The token you have provided is not valid."
 #~ msgstr "Token koji ste unjeli nije ispravan."
+
 #~ msgid "Your survey responses have been saved succesfully"
 #~ msgstr "Vaši odgovori u upitniku su uspješno spremljeni"
+
 #~ msgid ""
 #~ "You, someone using your email address, or the administrator has saved a "
 #~ "survey in progress. The following details can be used to return to this "
@@ -12569,75 +12925,106 @@ msgstr "Vijetnamski"
 #~ "Vi,netko tko koristi vašu e-mail adresu ili administrator je spremio "
 #~ "upitnik tijekom njegova ispunjavanja. Sljedeći detalji se mogu koristiti "
 #~ "kako bi se vratili ovom upitniku i nastavili gdje ste stali."
+
 #~ msgid ""
 #~ "This is a closed-access survey. You need a valid token to participate."
 #~ msgstr ""
 #~ "Ovo je upitnik zatvorenog tipa. Potreban vam je ispravan token za učešće."
+
 #~ msgid "prev"
 #~ msgstr "Prethodna"
+
 #~ msgid "next"
 #~ msgstr "Slijedeća"
+
 #~ msgid "The file was only partially uploaded"
 #~ msgstr "Ova datoteka je parcijalno poslana"
+
 #~ msgid "Error on file transfer. You must select a CSV file"
 #~ msgstr "Greška u slanju podataka. Morate izabrati CSV tip datoteke"
+
 #~ msgid "You need to upload the file"
 #~ msgstr "Morate poslati datoteku"
+
 #~ msgid "You must upload a CSV file"
 #~ msgstr "Morate poslati CSV datoteku"
+
 #~ msgid "Upload CSV file"
 #~ msgstr "Pošaljite CSV datoteku"
+
 #~ msgid "It is impossible to upload a file other than CSV type"
 #~ msgstr "Nije moguće poslati datoteku koja nije u CSV formatu"
+
 #~ msgid "It is impossible to upload an empty file"
 #~ msgstr "Nije moguće poslati praznu datoteku"
+
 #~ msgid "Uploading CSV file"
 #~ msgstr "Slanje CSV datoteke"
+
 #~ msgid "Visualization:"
 #~ msgstr "Vizualizacija:"
+
 #~ msgid "Select the field number you would like to use for your answers:"
 #~ msgstr "Izaberite broj polje koji želite koristiti za vaše odgovore:"
+
 #~ msgid "CSV File (UTF-8 charset - use this for non-latin languages)"
 #~ msgstr "CSV Datoteka (UTF-8 charset - koristite ovoza ne-latin-ske jezike)"
+
 #~ msgid "Export Current Survey"
 #~ msgstr "Izvezi trenutni upitnik"
+
 #~ msgid "Move User"
 #~ msgstr "Premjesti korisnika"
+
 #~ msgid "Setting new Parent"
 #~ msgstr "Postavi novu višu vezu"
+
 #~ msgid "type"
 #~ msgstr "tip"
+
 #~ msgid "\", because is the closest one"
 #~ msgstr "\", jer je najbliži"
+
 #~ msgid ""
 #~ "You can't import label sets which don't support the current survey's base "
 #~ "language."
 #~ msgstr ""
 #~ "Nije moguće uvoziti set oznaka koji ne podržava jezik trenutne baze "
 #~ "upitnika."
+
 #~ msgid "Answer could not be added. There is already an answer with this code"
 #~ msgstr "Odgovor se ne može dodati. Već postoji odgovor sa ovim kodom."
+
 #~ msgid ""
 #~ "Answer could not be updated. There is already an answer with this code"
 #~ msgstr "Odgovor se ne može promijeniti. Već postoji odgovor sa ovim kodom."
+
 #~ msgid "Select all"
 #~ msgstr "Izaberi sve"
+
 #~ msgid "Proceed"
 #~ msgstr "Nastavi"
+
 #~ msgid "Question List"
 #~ msgstr "Lista pitanja"
+
 #~ msgid "Like"
 #~ msgstr "Kao"
+
 #~ msgid "Huge free text"
 #~ msgstr "Veliki slobodan tekst"
+
 #~ msgid "to TokenID No"
 #~ msgstr "za TokenID broj"
+
 #~ msgid "{TOKENCOUNT} Records Created"
 #~ msgstr "{TOKENCOUNT} zapisa kreirano"
+
 #~ msgid "Please contact"
 #~ msgstr "Molimo vas kontaktirajte"
+
 #~ msgid "Check Settings"
 #~ msgstr "Proveri postavke"
+
 #~ msgid "Save Survey and Return"
 #~ msgstr "Snimi upitnik i vrati se"
-

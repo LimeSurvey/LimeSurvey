@@ -115,7 +115,7 @@
     // Show 'SAVE FORM' only when click the 'Save so far' button the first time
     if ($thissurvey['allowsave'] == "Y" && isset($_POST['saveall']) && !isset($_SESSION['scid']))
     {
-        if ($thissurvey['tokenanswerspersistence'] != 'Y')
+        if($thissurvey['tokenanswerspersistence'] != 'Y' || !tableExists('tokens_'.$surveyid))
         {
             showsaveform();
         }

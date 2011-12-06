@@ -1,17 +1,17 @@
 <?php
 /*
- * LimeSurvey
- * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- * $Id$
- */
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+* $Id$
+*/
 
 // Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
 
@@ -19,34 +19,34 @@ if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this scri
 global $thissurvey;
 
 /*
- * Let's explain what this strange $ia var means
- *
- * The $ia string comes from the $_SESSION['insertarray'] variable which is built at the commencement of the survey.
- * See index.php, function "buildsurveysession()"
- * One $ia array exists for every question in the survey. The $_SESSION['insertarray']
- * string is an array of $ia arrays.
- *
- * $ia[0] => question id
- * $ia[1] => fieldname
- * $ia[2] => title
- * $ia[3] => question text
- * $ia[4] => type --  text, radio, select, array, etc
- * $ia[5] => group id
- * $ia[6] => mandatory Y || N
- * $ia[7] => conditions exist for this question
- * $ia[8] => other questions have conditions which rely on this question (including array_filter and array_filter_exclude attributes)
- * $ia[9] => incremental question count (used by {QUESTION_NUMBER})
- *
- * $conditions element structure
- * $condition[n][0] => qid = question id
- * $condition[n][1] => cqid = question id of the target question, or 0 for TokenAttr leftOperand
- * $condition[n][2] => field name of element [1] (Except for type M or P)
- * $condition[n][3] => value to be evaluated on answers labeled.
- * $condition[n][4] => type of question
- * $condition[n][5] => SGQ code of element [1] (sub-part of [2])
- * $condition[n][6] => method used to evaluate
- * $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
- */
+* Let's explain what this strange $ia var means
+*
+* The $ia string comes from the $_SESSION['insertarray'] variable which is built at the commencement of the survey.
+* See index.php, function "buildsurveysession()"
+* One $ia array exists for every question in the survey. The $_SESSION['insertarray']
+* string is an array of $ia arrays.
+*
+* $ia[0] => question id
+* $ia[1] => fieldname
+* $ia[2] => title
+* $ia[3] => question text
+* $ia[4] => type --  text, radio, select, array, etc
+* $ia[5] => group id
+* $ia[6] => mandatory Y || N
+* $ia[7] => conditions exist for this question
+* $ia[8] => other questions have conditions which rely on this question (including array_filter and array_filter_exclude attributes)
+* $ia[9] => incremental question count (used by {QUESTION_NUMBER})
+*
+* $conditions element structure
+* $condition[n][0] => qid = question id
+* $condition[n][1] => cqid = question id of the target question, or 0 for TokenAttr leftOperand
+* $condition[n][2] => field name of element [1] (Except for type M or P)
+* $condition[n][3] => value to be evaluated on answers labeled.
+* $condition[n][4] => type of question
+* $condition[n][5] => SGQ code of element [1] (sub-part of [2])
+* $condition[n][6] => method used to evaluate
+* $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
+*/
 
 if($shownoanswer > 0 && $thissurvey['shownoanswer'] != 'N')
 {
@@ -58,16 +58,16 @@ else
 };
 
 /**
- * This function returns an array containing the "question/answer" html display
- * and a list of the question/answer fieldnames associated. It is called from
- * question.php, group.php or survey.php
- *
- * @param mixed $ia
- * @param mixed $notanswered
- * @param mixed $notvalidated
- * @param mixed $filenotvalidated
- * @return mixed
- */
+* This function returns an array containing the "question/answer" html display
+* and a list of the question/answer fieldnames associated. It is called from
+* question.php, group.php or survey.php
+*
+* @param mixed $ia
+* @param mixed $notanswered
+* @param mixed $notvalidated
+* @param mixed $filenotvalidated
+* @return mixed
+*/
 function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotvalidated=null)
 {
     //globalise required config variables
@@ -870,7 +870,7 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 	$(document).ready(function() {
 		countdown(".$ia[0].", ".$time_limit.", ".$time_limit_action.", ".$time_limit_warning.", ".$time_limit_warning_2.", ".$time_limit_warning_display_time.", ".$time_limit_warning_2_display_time.", '".$disable."');
 	});
-</script>\n\n";
+    </script>\n\n";
     return $output;
 }
 
@@ -955,12 +955,12 @@ function do_5pointchoice($ia)
 
     if ($ia[6] != "Y"  && SHOW_NO_ANSWER == 1) // Add "No Answer" option if question is not mandatory
     {
-        $answer .= "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"$ia[1]NANS\" value=\"\"";
+        $answer .= "\t<li>\n<input class=\"radio noAnswer\" type=\"radio\" name=\"$ia[1]\" id=\"answer".$ia[1]."NANS\" value=\"\"";
         if (!$_SESSION[$ia[1]])
         {
             $answer .= CHECKED;
         }
-        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"$ia[1]NANS\" class=\"answertext\">".$clang->gT('No answer')."</label>\n\t</li>\n";
+        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer".$ia[1]."NANS\" class=\"answertext\">".$clang->gT('No answer')."</label>\n\t</li>\n";
 
     }
     $answer .= "</ul>\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"{$_SESSION[$ia[1]]}\" />\n";
@@ -1032,6 +1032,7 @@ function do_5pointchoice($ia)
     						$('#{$id}img1').show();
     						$('#{$id}img2').hide();
     					});
+        $checkconditionFunction(ui.value,'$ia[1]','radio');
     				}
 				});
 				$('#{$id}slider a').css('background-image', 'url(\'{$imageurl}/slider.png\')');
@@ -1470,7 +1471,7 @@ function do_list_dropdown($ia)
     $sselect = '
 			<p class="question">
 				<select name="'.$ia[1].'" id="answer'.$ia[1].'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide.'">
-';
+    ';
     $answer = $sselect.$answer;
 
     if (isset($other) && $other=='Y')
@@ -1788,7 +1789,7 @@ function do_list_radio($ia)
     }
     //END OF ITEMS
     $answer .= $wrapper['whole-end'].'
-<input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"{$_SESSION[$ia[1]]}\" />\n";
+    <input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"{$_SESSION[$ia[1]]}\" />\n";
 
     $checkotherscript = "";
 
@@ -1891,7 +1892,7 @@ function do_listwithcomment($ia)
 			<input type="radio" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'" value="'.$ansrow['code'].'" class="radio" '.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
 			<label for="answer'.$ia[1].$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
 		</li>
-';
+            ';
         }
 
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
@@ -1908,7 +1909,7 @@ function do_listwithcomment($ia)
 			<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'" value=" " onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)"'.$check_ans.' />
 			<label for="answer'.$ia[1].'" class="answertext">'.$clang->gT('No answer').'</label>
 		</li>
-';
+            ';
         }
 
         $fname2 = $ia[1].'comment';
@@ -1919,9 +1920,9 @@ function do_listwithcomment($ia)
         //                 . "<textarea class='textarea' name='$ia[1]comment' id='answer$ia[1]comment' rows='$tarows' cols='30'>";
         //    --> END ORIGINAL
         $answer .= '	</ul>
-</div>
+        </div>
 
-<p class="comment">
+        <p class="comment">
 	<label for="answer'.$ia[1].'comment">'.$hint_comment.':</label>
 
 	<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'comment" id="answer'.$ia[1].'comment" rows="'.floor($tarows).'" cols="30" >';
@@ -1931,10 +1932,10 @@ function do_listwithcomment($ia)
             $answer .= str_replace("\\", "", $_SESSION[$fname2]);
         }
         $answer .= '</textarea>
-</p>
+        </p>
 
-<input class="radio" type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"{$_SESSION[$ia[1]]}\" />
-";
+        <input class="radio" type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"{$_SESSION[$ia[1]]}\" />
+        ";
         $inputnames[]=$ia[1];
         $inputnames[]=$ia[1].'comment';
     }
@@ -1942,8 +1943,8 @@ function do_listwithcomment($ia)
     {
         // --> START NEW FEATURE - SAVE
         $answer .= '<p class="select">
-	<select class="select" name="'.$ia[1].'" id="answer'.$ia[1].'" onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" >
-';
+        <select class="select" name="'.$ia[1].'" id="answer'.$ia[1].'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" >
+        ';
         // --> END NEW FEATURE - SAVE
         while ($ansrow=$ansresult->FetchRow())
         {
@@ -1972,8 +1973,8 @@ function do_listwithcomment($ia)
             $answer .= '<option value=""'.$check_ans.'>'.$clang->gT('No answer')."</option>\n";
         }
         $answer .= '	</select>
-</p>
-';
+        </p>
+        ';
         $fname2 = $ia[1].'comment';
         if ($anscount > 8) {$tarows = $anscount/1.2;} else {$tarows = 4;}
         if ($tarows > 15) {$tarows=15;}
@@ -2156,7 +2157,8 @@ function do_ranking($ia)
     $maxselectlength=0;
     $choicelist = "<select size=\"$anscount\" name=\"CHOICES_{$ia[0]}\" ";
     if (isset($choicewidth)) {$choicelist.=$choicewidth;}
-    $choicelist .= " id=\"CHOICES_{$ia[0]}\" onclick=\"if (this.options.length>0 && this.selectedIndex<0) { this.options[this.options.length-1].selected=true;}; rankthis_{$ia[0]}(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class=\"select\">\n";
+
+    $choicelist .= " id=\"CHOICES_{$ia[0]}\" onchange=\"if (this.options.length>0 && this.selectedIndex<0) { this.options[this.options.length-1].selected=true;}; rankthis_{$ia[0]}(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class=\"select\">\n";
 
         foreach ($answers as $ans)
         {
@@ -2579,9 +2581,9 @@ function do_multiplechoice($ia)
             }
             return max;
         }
-}
-//-->
-</script>\n";
+        }
+        //-->
+        </script>\n";
         $answer = $maxanswscript . $answer;
     }
 
@@ -3014,7 +3016,7 @@ function do_file_upload($ia)
 
     $basic .= '</tbody></table>';
     $basic .= '<br /><br /><a href="#" onclick="hideBasic()">Hide Simple Uploader</a>';
-*/
+    */
     $currentdir = getcwd();
     $pos = stripos($currentdir, "admin");
 
@@ -4367,11 +4369,11 @@ function do_gender($ia)
 
 // ---------------------------------------------------------------
 /**
- * DONE: well-formed valid HTML is appreciated
- * Enter description here...
- * @param $ia
- * @return unknown_type
- */
+* DONE: well-formed valid HTML is appreciated
+* Enter description here...
+* @param $ia
+* @return unknown_type
+*/
 // TMSW TODO - Can remove DB query by passing in answer list from EM
 function do_array_5point($ia)
 {
@@ -4537,11 +4539,11 @@ function do_array_5point($ia)
 
 // ---------------------------------------------------------------
 /**
- * DONE: well-formed valid HTML is appreciated
- * Enter description here...
- * @param $ia
- * @return unknown_type
- */
+* DONE: well-formed valid HTML is appreciated
+* Enter description here...
+* @param $ia
+* @return unknown_type
+*/
 // TMSW TODO - Can remove DB query by passing in answer list from EM
 function do_array_10point($ia)
 {
@@ -5416,7 +5418,7 @@ function do_array_multitext($ia)
     {
         $q_table_id = 'totals_'.$ia[0];
 	$q_table_id_HTML = ' id="'.$q_table_id.'"';
-//	$numbersonly = 'onkeypress="return goodchars(event,\'-0123456789.\')"';
+        //	$numbersonly = 'onkeypress="return goodchars(event,\'-0123456789.\')"';
         $num_class = ' numbers-only';
 	switch ($qidattributes['show_totals'])
 	{

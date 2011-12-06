@@ -8,16 +8,17 @@ msgstr ""
 "Project-Id-Version: LimeSurvey\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-18 12:00+0100\n"
-"PO-Revision-Date: 2009-12-03 19:33+1000\n"
-"Last-Translator: Kardina Kamaruddin <kk903@uow.edu.au>\n"
+"PO-Revision-Date: 2011-11-17 17:16+0100\n"
+"Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-KeywordsList: gT\n"
+"X-Poedit-KeywordsList: gT;ngT:1,2\n"
 "X-Poedit-Basepath: D:\n"
 "X-Poedit-Language: English\n"
 "X-Poedit-Country: UNITED STATES\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Poedit-SearchPath-0: D:\\web\\xampp\\htdocs\\limesurvey\n"
 
 #: /var/lib/limesurvey-svn/subversion1x/question.php:40
@@ -36,12 +37,8 @@ msgstr "Maaf. Tiada kajian seperti berikut."
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:883
 #: /var/lib/limesurvey-svn/subversion1x/group.php:296
 #: /var/lib/limesurvey-svn/subversion1x/group.php:1077
-msgid ""
-"This survey is not currently active. You will not be able to save your "
-"responses."
-msgstr ""
-"Kajian ini tidak aktif buat masa ini.  Anda tidak dapat menyimpan jawapan "
-"anda."
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr "Kajian ini tidak aktif buat masa ini.  Anda tidak dapat menyimpan jawapan anda."
 
 #: /var/lib/limesurvey-svn/subversion1x/question.php:212
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:85
@@ -53,8 +50,7 @@ msgstr "Did not save"
 #: /var/lib/limesurvey-svn/subversion1x/question.php:213
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:86
 #: /var/lib/limesurvey-svn/subversion1x/group.php:131
-msgid ""
-"Your survey responses have not been recorded. This survey is not yet active."
+msgid "Your survey responses have not been recorded. This survey is not yet active."
 msgstr "Jawapan anda belum direkod.  Kajian ini belum diaktifkan lagi."
 
 #: /var/lib/limesurvey-svn/subversion1x/question.php:219
@@ -100,23 +96,15 @@ msgstr "Lihat statistik kajian ini."
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:780
 #: /var/lib/limesurvey-svn/subversion1x/group.php:1004
 #, fuzzy
-msgid ""
-"One or more mandatory questions have not been answered. You cannot proceed "
-"until these have been completed."
-msgstr ""
-"Satu atau lebih soalan mandotari belum dijawab.  Anda tidak boleh meneruskan "
-"sehingga semuanya lengkap."
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed."
+msgstr "Satu atau lebih soalan mandotari belum dijawab.  Anda tidak boleh meneruskan sehingga semuanya lengkap."
 
 #: /var/lib/limesurvey-svn/subversion1x/question.php:493
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:786
 #: /var/lib/limesurvey-svn/subversion1x/group.php:1010
 #, fuzzy
-msgid ""
-"One or more questions have not been answered in a valid manner. You cannot "
-"proceed until these answers are valid."
-msgstr ""
-"Satu atau lebih soalan mandotari tidak dijawab dengan sah.  Anda tidak boleh "
-"meneruskan sehingga semuanya lengkap."
+msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
+msgstr "Satu atau lebih soalan mandotari tidak dijawab dengan sah.  Anda tidak boleh meneruskan sehingga semuanya lengkap."
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:126
 msgid "Albanian"
@@ -337,12 +325,8 @@ msgid "Back to main menu"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:322
-msgid ""
-"Warning: You are still using the default password ('password'). Please "
-"change your password and re-login again."
-msgstr ""
-"Perhatian:  Anda masih menggunakan kata laluan yang diberikan ('pasword'). "
-"Sila tukar kata laluan anda"
+msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
+msgstr "Perhatian:  Anda masih menggunakan kata laluan yang diberikan ('pasword'). Sila tukar kata laluan anda"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:325
 msgid "Administration"
@@ -1280,14 +1264,8 @@ msgid "Comment"
 msgstr "Komen"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2866
-msgid ""
-"Caution: JavaScript execution is disabled in your browser. You may not be "
-"able to answer all questions in this survey. Please, verify your browser "
-"parameters."
-msgstr ""
-"Perhatian: kegunaan JavaScript telah dinyah-aktifkan di pelayar web anda. "
-"Anda mungkin tidak dapat menjawab semua pertanyaan dalam kajian ini. Sila, "
-"pastikan  parameter pelayar web anda."
+msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
+msgstr "Perhatian: kegunaan JavaScript telah dinyah-aktifkan di pelayar web anda. Anda mungkin tidak dapat menjawab semua pertanyaan dalam kajian ini. Sila, pastikan  parameter pelayar web anda."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2905
 msgid "There are no questions in this survey"
@@ -1318,25 +1296,8 @@ msgid "This survey is anonymous."
 msgstr "Kajian ini adalah tidak bernama."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2962
-msgid ""
-"The record kept of your survey responses does not contain any identifying "
-"information about you unless a specific question in the survey has asked for "
-"this. If you have responded to a survey that used an identifying token to "
-"allow you to access the survey, you can rest assured that the identifying "
-"token is not kept with your responses. It is managed in a separate database, "
-"and will only be updated to indicate that you have (or haven't) completed "
-"this survey. There is no way of matching identification tokens with survey "
-"responses in this survey."
-msgstr ""
-"Rekod kajian adalah sulit dan tidak menjurus terus kepada anda kecuali "
-"maklumat tertentu yang diminta sahaja.  Jika anda telah mengambil bahagian "
-"di dalam kajian yang menggunakan token untuk mengakses sesuatu kajian, "
-"adalah dijamin bahawa token tersebut digunakan tanpa memberi sebarang "
-"rujukan kepada siapa anda dan tidak  akan dilampirkan bersama jawapan anda. "
-"Token tersebut diuruskan di dalam pangkalan data berlainan, dan hanya "
-"digunakan untuk mengemaskini samada kajian telah dijawab atau sebaliknya.  "
-"Tidak ada cara untuk mengenalpasti token yang diberi dengan jawapan anda di "
-"dalam kajian ini."
+msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "Rekod kajian adalah sulit dan tidak menjurus terus kepada anda kecuali maklumat tertentu yang diminta sahaja.  Jika anda telah mengambil bahagian di dalam kajian yang menggunakan token untuk mengakses sesuatu kajian, adalah dijamin bahawa token tersebut digunakan tanpa memberi sebarang rujukan kepada siapa anda dan tidak  akan dilampirkan bersama jawapan anda. Token tersebut diuruskan di dalam pangkalan data berlainan, dan hanya digunakan untuk mengemaskini samada kajian telah dijawab atau sebaliknya.  Tidak ada cara untuk mengenalpasti token yang diberi dengan jawapan anda di dalam kajian ini."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2972
 msgid "Are you sure you want to clear all your responses?"
@@ -1368,17 +1329,11 @@ msgstr "Anda telah menjawab semua soalan dalam soalselidik ini."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3066
 msgid "Click on 'Submit' now to complete the process and save your answers."
-msgstr ""
-"Klik pada butang 'Hantar' untuk proses terakhir dan simpan jawapan anda."
+msgstr "Klik pada butang 'Hantar' untuk proses terakhir dan simpan jawapan anda."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3072
-msgid ""
-"If you want to check any of the answers you have made, and/or change them, "
-"you can do that now by clicking on the [<< prev] button and browsing through "
-"your responses."
-msgstr ""
-"Jika anda ingin  membuat pembetulan, sila klik butang [<< sebelum] dan semak "
-"jawapan anda"
+msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
+msgstr "Jika anda ingin  membuat pembetulan, sila klik butang [<< sebelum] dan semak jawapan anda"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3079
 msgid "Answers Cleared"
@@ -1401,26 +1356,15 @@ msgstr "Simpan Kajian Anda Yang Belum Siap"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3100
 msgid "Enter a name and password for this survey and click save below."
-msgstr ""
-"Sila masukkan nama dan katalaluan untuk soalselidik ini dan tekan butang "
-"simpan di bawah."
+msgstr "Sila masukkan nama dan katalaluan untuk soalselidik ini dan tekan butang simpan di bawah."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3100
-msgid ""
-"Your survey will be saved using that name and password, and can be completed "
-"later by logging in with the same name and password."
-msgstr ""
-"Soalselidik  akan di simpan mengikut nama dan kata laluan yang anda "
-"diberikan, dan akan dilengkapi bila anda kembali dan menggunakan nama dan "
-"kata laluan tersebut."
+msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
+msgstr "Soalselidik  akan di simpan mengikut nama dan kata laluan yang anda diberikan, dan akan dilengkapi bila anda kembali dan menggunakan nama dan kata laluan tersebut."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3100
-msgid ""
-"If you give an email address, an email containing the details will be sent "
-"to you."
-msgstr ""
-"Jika anda memberikan alamat e-mell, satu e-mell yang berisi maklumati akan "
-"dikirimkan kepada anda."
+msgid "If you give an email address, an email containing the details will be sent to you."
+msgstr "Jika anda memberikan alamat e-mell, satu e-mell yang berisi maklumati akan dikirimkan kepada anda."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3108
 msgid "Return To Survey"
@@ -1475,13 +1419,11 @@ msgstr "Muat Turun Kajian Terdahulu"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3136
 msgid "You can load a survey that you have previously saved from this screen."
-msgstr ""
-"Anda dapat memuatkan kajian yang telah disimpan sebelumnya dari skrin ini."
+msgstr "Anda dapat memuatkan kajian yang telah disimpan sebelumnya dari skrin ini."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3136
 msgid "Type in the 'name' you used to save the survey, and the password."
-msgstr ""
-"Taipkan 'nama' yang digunakan untuk menyimpankajian ini, dan kata laluan."
+msgstr "Taipkan 'nama' yang digunakan untuk menyimpankajian ini, dan kata laluan."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3139
 msgid "Saved name"
@@ -1497,16 +1439,11 @@ msgstr "Anda perlu mendaftar untuk menjawab soalselidik ini"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3158
 msgid "You may register for this survey if you wish to take part."
-msgstr ""
-"Anda perlu mendaftar untuk kajiani ini jika anda ingin mengambil bahagian."
+msgstr "Anda perlu mendaftar untuk kajiani ini jika anda ingin mengambil bahagian."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3158
-msgid ""
-"Enter your details below, and an email containing the link to participate in "
-"this survey will be sent immediately."
-msgstr ""
-"Sila masukkan butiran anda dibawah, dan satu e-mel  mengandungi pautan untuk "
-"soalselidik ini akan dihantar."
+msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "Sila masukkan butiran anda dibawah, dan satu e-mel  mengandungi pautan untuk soalselidik ini akan dihantar."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3165
 #: /var/lib/limesurvey-svn/subversion1x/common.php:7077
@@ -1667,9 +1604,7 @@ msgid "Logic"
 msgstr "Login"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3528
-msgid ""
-"Enter the code of a Multiple options question to only show the matching "
-"answer options in this question."
+msgid "Enter the code of a Multiple options question to only show the matching answer options in this question."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3529
@@ -1677,9 +1612,7 @@ msgid "Array filter"
 msgstr "Saring pilihan"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3536
-msgid ""
-"Enter the code of a Multiple options question to exclude the matching answer "
-"options in this question."
+msgid "Enter the code of a Multiple options question to exclude the matching answer options in this question."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3537
@@ -1701,8 +1634,7 @@ msgid "Code filter"
 msgstr "Jaringan kod"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3563
-msgid ""
-"The answer options will be distributed across the number of columns set here"
+msgid "The answer options will be distributed across the number of columns set here"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3564
@@ -1753,8 +1685,7 @@ msgstr "Awalan | Akhiran"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3614
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
-msgstr ""
-"Post-Jawapan-Separator | Inter-Dropdownlist-Separator untuk senarai dropdown"
+msgstr "Post-Jawapan-Separator | Inter-Dropdownlist-Separator untuk senarai dropdown"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3615
 msgid "Dropdown separators"
@@ -1794,9 +1725,7 @@ msgid "Equals sum value"
 msgstr "Sama dengan jumlah nilai"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3646
-msgid ""
-"Excludes all other options if a certain answer is selected - just enter the "
-"answer code(s) seperated with a semikolon."
+msgid "Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3647
@@ -1812,9 +1741,7 @@ msgid "Hide tip"
 msgstr "Sembunyikan tip"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3668
-msgid ""
-"Hide this question at any time. This is useful for including data using "
-"answer prefilling."
+msgid "Hide this question at any time. This is useful for including data using answer prefilling."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3669
@@ -1840,12 +1767,8 @@ msgstr "Jumlah  nilai maksimum"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3692
 #, fuzzy
-msgid ""
-"Enter the SGQA identifier to use the total of a previous question as the "
-"maximum for this question"
-msgstr ""
-"Pengenalan SGQA  menggunakan jumlah soalan sebelumnya sebagai  maksimum "
-"untuk soalan ini"
+msgid "Enter the SGQA identifier to use the total of a previous question as the maximum for this question"
+msgstr "Pengenalan SGQA  menggunakan jumlah soalan sebelumnya sebagai  maksimum untuk soalan ini"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3693
 #, fuzzy
@@ -1879,12 +1802,8 @@ msgstr "Jumlah nilai minimum"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3724
 #, fuzzy
-msgid ""
-"Enter the SGQA identifier to use the total of a previous question as the "
-"minimum for this question"
-msgstr ""
-"Pengenalan SGQA  menggunakan jumlah soalan sebelumnya sebagai minimum untuk "
-"soalan ini"
+msgid "Enter the SGQA identifier to use the total of a previous question as the minimum for this question"
+msgstr "Pengenalan SGQA  menggunakan jumlah soalan sebelumnya sebagai minimum untuk soalan ini"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3725
 #, fuzzy
@@ -1922,11 +1841,8 @@ msgid "Checkbox layout"
 msgstr "Tatacara checkbox"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3767
-msgid ""
-"SGQA identifier to use total of previous question as total for this question"
-msgstr ""
-"Pengenalan SGQA  menggunakan jumlah soalan sebelumnya sebagai jumlah untuk "
-"soalan ini"
+msgid "SGQA identifier to use total of previous question as total for this question"
+msgstr "Pengenalan SGQA  menggunakan jumlah soalan sebelumnya sebagai jumlah untuk soalan ini"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3768
 #, fuzzy
@@ -1942,8 +1858,7 @@ msgid "Numbers only"
 msgstr "Nombor kurang daripada"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3789
-msgid ""
-"Make the 'Other:' comment field mandatory when the 'Other:' option is active"
+msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3790
@@ -1971,9 +1886,7 @@ msgid "Label for 'Other:' option"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3819
-msgid ""
-"Insert a page break before this question in printable view by setting this "
-"to Yes."
+msgid "Insert a page break before this question in printable view by setting this to Yes."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3820
@@ -2042,9 +1955,7 @@ msgid "Slider initial value"
 msgstr "Hasil permulaan slider"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3903
-msgid ""
-"The handle is displayed at the middle of the slider (this will not set the "
-"initial value)"
+msgid "The handle is displayed at the middle of the slider (this will not set the initial value)"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3904
@@ -2209,9 +2120,7 @@ msgid "Time limit timer CSS style"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4032
-msgid ""
-"Time until time limit expiry when time limit warning message is displayed "
-"(in seconds)"
+msgid "Time until time limit expiry when time limit warning message is displayed (in seconds)"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4033
@@ -2443,12 +2352,8 @@ msgid "The answer to the security question is incorrect."
 msgstr "Jawapan kepada soalan keselamatan tidak betul"
 
 #: /var/lib/limesurvey-svn/subversion1x/save.php:292
-msgid ""
-"This name has already been used for this survey. You must use a unique save "
-"name."
-msgstr ""
-"Nama ini telah digunakan untuk kajian ini. Anda perlu gunakan nama simpanan "
-"lain."
+msgid "This name has already been used for this survey. You must use a unique save name."
+msgstr "Nama ini telah digunakan untuk kajian ini. Anda perlu gunakan nama simpanan lain."
 
 #: /var/lib/limesurvey-svn/subversion1x/save.php:348
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:541
@@ -2457,24 +2362,13 @@ msgstr "Simpan butiran kajian"
 
 #: /var/lib/limesurvey-svn/subversion1x/save.php:349
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:542
-msgid ""
-"Thank you for saving your survey in progress.  The following details can be "
-"used to return to this survey and continue where you left off.  Please keep "
-"this e-mail for your reference - we cannot retrieve the password for you."
-msgstr ""
-"Terima kasih kerana menyimpan kajian yang sedang dijalankan.  Butiran "
-"berikutnya boleh digunakan untuk kembali ke kajian  ini dan menyambung "
-"semula kajian anda. Sila simpan e-mel ini sebagai bahan rujukan- kami tidak "
-"boleh mendapatkan balik kata laluan untuk anda."
+msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
+msgstr "Terima kasih kerana menyimpan kajian yang sedang dijalankan.  Butiran berikutnya boleh digunakan untuk kembali ke kajian  ini dan menyambung semula kajian anda. Sila simpan e-mel ini sebagai bahan rujukan- kami tidak boleh mendapatkan balik kata laluan untuk anda."
 
 #: /var/lib/limesurvey-svn/subversion1x/save.php:353
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:546
-msgid ""
-"Reload your survey by clicking on the following link (or pasting it into "
-"your browser):"
-msgstr ""
-"Muat turun kajian dengan meng-klik pautan berikut (atau salin dan tampalkan "
-"pada layar web anda):"
+msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
+msgstr "Muat turun kajian dengan meng-klik pautan berikut (atau salin dan tampalkan pada layar web anda):"
 
 #: /var/lib/limesurvey-svn/subversion1x/save.php:368
 msgid "Your survey was successfully saved."
@@ -2485,29 +2379,12 @@ msgid "Cannot submit results - there are none to submit."
 msgstr "Tidak dapat menyerahkan hasil - tidak ada hasil untuk diserahkan."
 
 #: /var/lib/limesurvey-svn/subversion1x/save.php:619
-msgid ""
-"This error can occur if you have already submitted your responses and "
-"pressed 'refresh' on your browser. In this case, your responses have already "
-"been saved."
-msgstr ""
-"Ralat ini berlaku jika anda telah menghantar jawapan dan menekan butang "
-"'refresh' pada layar web anda.  Jika ini berlaku, jawapan anda telah "
-"disimpan."
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
+msgstr "Ralat ini berlaku jika anda telah menghantar jawapan dan menekan butang 'refresh' pada layar web anda.  Jika ini berlaku, jawapan anda telah disimpan."
 
 #: /var/lib/limesurvey-svn/subversion1x/save.php:619
-msgid ""
-"If you receive this message in the middle of completing a survey, you should "
-"choose '<- BACK' on your browser and then refresh/reload the previous page. "
-"While you will lose answers from the last page all your others will still "
-"exist. This problem can occur if the webserver is suffering from overload or "
-"excessive use. We apologise for this problem."
-msgstr ""
-"Jika anda menerima mesej ini semasa memenuhi kajian, anda perlu memilih '<-"
-"BACK' pada layar web anda dan kemudian ulang semula/muat turun mukasurat "
-"terdahulu. Anda mungkin akan kehilangan jawapan dari mukasurat yang terakhir "
-"itu tetapi yang lainnya masih wujud. Masalah ini  mungkin berlaku jika "
-"pelayan web anda sedang mengalami lebih muatan atau penggunaan berlebihan.  "
-"Kami meminta maaf diatas masalah ini."
+msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Jika anda menerima mesej ini semasa memenuhi kajian, anda perlu memilih '<-BACK' pada layar web anda dan kemudian ulang semula/muat turun mukasurat terdahulu. Anda mungkin akan kehilangan jawapan dari mukasurat yang terakhir itu tetapi yang lainnya masih wujud. Masalah ini  mungkin berlaku jika pelayan web anda sedang mengalami lebih muatan atau penggunaan berlebihan.  Kami meminta maaf diatas masalah ini."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:101
 msgid "Token mismatch"
@@ -2527,13 +2404,8 @@ msgid "Previous session is set to be finished."
 msgstr "Sesi terdahulu telah habis."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:126
-msgid ""
-"Your browser reports that it was used previously to answer this survey. We "
-"are resetting the session so that you can start from the beginning."
-msgstr ""
-"Pelayar web anda memaklumkan bahawa ia telah digunakan untuk menjawab kajian "
-"ini.  Kami akan mengulangi sesi ini supaya anda boleh membuat kajian dari "
-"mula."
+msgid "Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning."
+msgstr "Pelayar web anda memaklumkan bahawa ia telah digunakan untuk menjawab kajian ini.  Kami akan mengulangi sesi ini supaya anda boleh membuat kajian dari mula."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:242
 #: /var/lib/limesurvey-svn/subversion1x/index.php:271
@@ -2564,12 +2436,8 @@ msgstr "Kami mohon maaf tetapi sesi anda telah tamat."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:272
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:81
-msgid ""
-"Either you have been inactive for too long, you have cookies disabled for "
-"your browser, or there were problems with your connection."
-msgstr ""
-"Samada anda tidak aktif terlalu lama, cookies anda telah dinyahaktifkan oleh "
-"pelayar web, atauterdapat masalah dengan sambungan anda."
+msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
+msgstr "Samada anda tidak aktif terlalu lama, cookies anda telah dinyahaktifkan oleh pelayar web, atauterdapat masalah dengan sambungan anda."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:359
 #, fuzzy
@@ -2612,18 +2480,13 @@ msgstr "Anda tidak memberi kata laluan"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:612
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:139
-msgid ""
-"This is a closed-access survey, so you must supply a valid token.  Please "
-"contact the administrator for assistance."
-msgstr ""
-"This is a closed-access survey, thus a valid token is required. Please "
-"contact the administrator for assistance."
+msgid "This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance."
+msgstr "This is a closed-access survey, thus a valid token is required. Please contact the administrator for assistance."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:613
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2011
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2047
-msgid ""
-"The token you have provided is either not valid, or has already been used."
+msgid "The token you have provided is either not valid, or has already been used."
 msgstr "Token yang diber adalah tidak sah, atau telah digunakan"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:614
@@ -2638,9 +2501,7 @@ msgid "We are sorry but you are not allowed to enter this survey."
 msgstr "Anda tidak dibenarkan memadam kajian ini!"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:638
-msgid ""
-"Your token seems to be valid but can be used only during a certain time "
-"period."
+msgid "Your token seems to be valid but can be used only during a certain time period."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:765
@@ -2690,8 +2551,7 @@ msgid "View statistics by clicking here:"
 msgstr "Klik di sini untuk melihat statistik"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1796
-msgid ""
-"This email contains confirmation of the responses you made to the survey"
+msgid "This email contains confirmation of the responses you made to the survey"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1798
@@ -2701,16 +2561,11 @@ msgstr "Pengesahan pendaftaran kajian"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1817
 msgid "An unexpected error has occurred and your responses cannot be saved."
-msgstr ""
-"Kesilapan luar jangkaan telah berlaku dan jawapan anda tidak dapat disimpan."
+msgstr "Kesilapan luar jangkaan telah berlaku dan jawapan anda tidak dapat disimpan."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1820
-msgid ""
-"Your responses have not been lost and have been emailed to the survey "
-"administrator and will be entered into our database at a later point."
-msgstr ""
-"Jawapan anda tidak hilang dan telah die-mel ke pentadbir laman web dan akan "
-"dimasukkan ke dalam pangkalan data kami kemudian."
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr "Jawapan anda tidak hilang dan telah die-mel ke pentadbir laman web dan akan dimasukkan ke dalam pangkalan data kami kemudian."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1821
 msgid "An error occurred saving a response to survey id"
@@ -2737,12 +2592,8 @@ msgid "Try to submit again"
 msgstr "Hantar semula"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1893
-msgid ""
-"Please confirm access to survey by answering the security question below and "
-"click continue."
-msgstr ""
-"Sila sahkan akses untuk kajian dengan menjawab soalan keselamatan dibawah "
-"dan klik sambung."
+msgid "Please confirm access to survey by answering the security question below and click continue."
+msgstr "Sila sahkan akses untuk kajian dengan menjawab soalan keselamatan dibawah dan klik sambung."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1916
 #, fuzzy
@@ -2754,17 +2605,11 @@ msgstr "Soalan Keselamatan"
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2046
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2081
 msgid "This is a controlled survey. You need a valid token to participate."
-msgstr ""
-"Ini adalah kajian yang dikawal. Anda perlukan token yang sah untuk "
-"penyertaan."
+msgstr "Ini adalah kajian yang dikawal. Anda perlukan token yang sah untuk penyertaan."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1951
-msgid ""
-"If you have been issued a token, please enter it in the box below and click "
-"continue."
-msgstr ""
-"Jika anda telah diberi token, sila masukkan dalam kotak dibawah dan tekan "
-"butang sambung."
+msgid "If you have been issued a token, please enter it in the box below and click continue."
+msgstr "Jika anda telah diberi token, sila masukkan dalam kotak dibawah dan tekan butang sambung."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2012
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2048
@@ -2774,20 +2619,12 @@ msgid "For further information contact %s"
 msgstr "Untuk keterangan lanjut sila hubungi %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2086
-msgid ""
-"If you have been issued with a token, please enter it in the box below and "
-"click continue."
-msgstr ""
-"Jika anda telah diberi token, sila masukkan dalam kotak dibawah dan tekan "
-"butang sambung."
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
+msgstr "Jika anda telah diberi token, sila masukkan dalam kotak dibawah dan tekan butang sambung."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2106
-msgid ""
-"Please confirm the token by answering the security question below and click "
-"continue."
-msgstr ""
-"Sila sahkan token dengan menjawab soalan keselamatan dibawah dan tekan "
-"butang sambung."
+msgid "Please confirm the token by answering the security question below and click continue."
+msgstr "Sila sahkan token dengan menjawab soalan keselamatan dibawah dan tekan butang sambung."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2121
 #, fuzzy
@@ -2795,12 +2632,8 @@ msgid "Token:"
 msgstr "Token"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2220
-msgid ""
-"This survey does not yet have any questions and cannot be tested or "
-"completed."
-msgstr ""
-"Kajian ini tidak mempunyai sebarang soalan dan tidak boleh diuji atau "
-"dilengkapi."
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr "Kajian ini tidak mempunyai sebarang soalan dan tidak boleh diuji atau dilengkapi."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2612
 #: /var/lib/limesurvey-svn/subversion1x/index.php:3028
@@ -2830,13 +2663,8 @@ msgid "Thank you for registering to participate in this survey."
 msgstr "Terima kasih kerana mendaftar untuk kajian ini."
 
 #: /var/lib/limesurvey-svn/subversion1x/register.php:167
-msgid ""
-"An email has been sent to the address you provided with access details for "
-"this survey. Please follow the link in that email to proceed."
-msgstr ""
-"Satu e-mel telah dihantar ke alamat yang telah anda berikan dengan butiran "
-"akses untuk kajian ini. Sila klik pautan di dalam e-mel tersebut untuk "
-"meneruskan kajian."
+msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
+msgstr "Satu e-mel telah dihantar ke alamat yang telah anda berikan dengan butiran akses untuk kajian ini. Sila klik pautan di dalam e-mel tersebut untuk meneruskan kajian."
 
 #: /var/lib/limesurvey-svn/subversion1x/register.php:167
 msgid "Survey Administrator"
@@ -2857,9 +2685,7 @@ msgstr "Pilih SATU  dari jawapan yang diberi"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:573
 #, fuzzy
-msgid ""
-"Click on an item in the list on the left, starting with your highest ranking "
-"item, moving through to your lowest ranking item."
+msgid "Click on an item in the list on the left, starting with your highest ranking item, moving through to your lowest ranking item."
 msgstr "peringkat tertinggi item, diikuiti ke peringkat terendah item."
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:577
@@ -2957,25 +2783,15 @@ msgstr "Jikan anda memilih  '%s', sila sertakan penjelasan."
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:903
 msgid "You cannot proceed until you enter some text for one or more questions."
-msgstr ""
-"Anda tidak boleh meneruskan sehinggalah anda memasukkan teks untuk satu atau "
-"lebih soalan."
+msgstr "Anda tidak boleh meneruskan sehinggalah anda memasukkan teks untuk satu atau lebih soalan."
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:910
-msgid ""
-"One or more mandatory questions have not been answered. You cannot proceed "
-"until these have been completed"
-msgstr ""
-"Satu atau lebih soalan mandotari belum dijawab.  Anda tidak boleh meneruskan "
-"sehingga semuanya lengkap."
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr "Satu atau lebih soalan mandotari belum dijawab.  Anda tidak boleh meneruskan sehingga semuanya lengkap."
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:937
-msgid ""
-"One or more questions have not been answered in a valid manner. You cannot "
-"proceed until these answers are valid"
-msgstr ""
-"Satu atau lebih soalan mandotari tidak dijawab dengan sah.  Anda tidak boleh "
-"meneruskan sehingga semuanya lengkap."
+msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
+msgstr "Satu atau lebih soalan mandotari tidak dijawab dengan sah.  Anda tidak boleh meneruskan sehingga semuanya lengkap."
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:981
 #, fuzzy
@@ -2983,9 +2799,7 @@ msgid "Your time to answer this question has expired"
 msgstr "Anda perlu menambah jawapan untuk soalan ini"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:983
-msgid ""
-"Your time to answer this question has nearly expired. You have {TIME} "
-"remaining."
+msgid "Your time to answer this question has nearly expired. You have {TIME} remaining."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1125
@@ -3140,15 +2954,12 @@ msgstr "Nama anda"
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2318
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2546
 #, php-format
-msgid ""
-"You've selected the \"%s\" answer for question \"%s\". Please also fill in "
-"the accompanying \"other comment\" field."
+msgid "You've selected the \"%s\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1996
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2450
-msgid ""
-"Error: The labelset used for this question is not available in this language."
+msgid "Error: The labelset used for this question is not available in this language."
 msgstr "Ralat: Set label yang digunakan tiada dalam bahasa pilihan."
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2000
@@ -3181,12 +2992,8 @@ msgid "Your Ranking"
 msgstr "Your ranking"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2962
-msgid ""
-"Click on the scissors next to each item on the right to remove the last "
-"entry in your ranked list"
-msgstr ""
-"Klik pada ikon gunting di sebelah kanan setiap item untuk mengeluarkan "
-"catatan terakhir dalam daftar peringkat"
+msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
+msgstr "Klik pada ikon gunting di sebelah kanan setiap item untuk mengeluarkan catatan terakhir dalam daftar peringkat"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2972
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2988
@@ -3209,9 +3016,7 @@ msgstr "Sila pilih yang paling kurang %d item untuk soalan  \"%s\"."
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3423
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3722
 #, php-format
-msgid ""
-"You've marked the \"other\" field for question \"%s\". Please also fill in "
-"the accompanying \"other comment\" field."
+msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3595
@@ -3259,15 +3064,13 @@ msgstr "Jumlah:"
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4321
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4357
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4368
-msgid ""
-"Answer is invalid. The total of all entries should not add up to more than "
+msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "Jawapan tidak sah.  Jumlah kemasukan dicampur tidak boleh  lebih dari"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4334
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4342
 #, php-format
-msgid ""
-"Answer is invalid. The total of all entries should add up to at least %s."
+msgid "Answer is invalid. The total of all entries should add up to at least %s."
 msgstr "Jawapan tidak sah.  Jumlah kemasukan dicampurperlu lebih kurang %s."
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4446
@@ -3279,12 +3082,8 @@ msgstr "Hanya nombor boleh dimasukkan dalam lapangan ini."
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:6205
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:6358
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:7008
-msgid ""
-"Error: The labelset used for this question is not available in this language "
-"and/or does not exist."
-msgstr ""
-"Ralat: Set label yang digunakan untuk soalan ini tiada dalam bahasa pilihan/"
-"atau tidak wujud."
+msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
+msgstr "Ralat: Set label yang digunakan untuk soalan ini tiada dalam bahasa pilihan/atau tidak wujud."
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:6352
 msgid "Error: There are no answers defined for this question."
@@ -3348,9 +3147,7 @@ msgstr "Cetak jawapan anda"
 
 #: /var/lib/limesurvey-svn/subversion1x/group.php:314
 #, fuzzy
-msgid ""
-"There are no more questions. Please press the <Submit> button to finish this "
-"survey."
+msgid "There are no more questions. Please press the <Submit> button to finish this survey."
 msgstr "Maaf tiada jenis soalan sokongan dalam kajian ini."
 
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:641
@@ -3637,11 +3434,8 @@ msgstr "Konsistensi Data Disemak"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:29
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:516
-msgid ""
-"If errors are showing up you might have to execute this script repeatedly."
-msgstr ""
-"Jika kesalahan terjadi anda mungkin harus menjalankan skrip ini berulang-"
-"ulang."
+msgid "If errors are showing up you might have to execute this script repeatedly."
+msgstr "Jika kesalahan terjadi anda mungkin harus menjalankan skrip ini berulang-ulang."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:48
 msgid "No matching Cqid"
@@ -3761,9 +3555,7 @@ msgid "Survey ID %d saved at %s containing %d record(s)"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:308
-msgid ""
-"The following old survey tables should be deleted because their parent "
-"survey no longer exists"
+msgid "The following old survey tables should be deleted because their parent survey no longer exists"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:314
@@ -3773,9 +3565,7 @@ msgstr "Semua tatacara kajian memenuhi piawai konsistensi"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:374
 #, fuzzy
-msgid ""
-"The following old token tables should be deleted because their parent survey "
-"no longer exists"
+msgid "The following old token tables should be deleted because their parent survey no longer exists"
 msgstr "Jadual token lama berikut telah dikembalikan:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:380
@@ -3802,21 +3592,16 @@ msgid "Data redundancy check"
 msgstr "Konsistensi Data Disemak"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:457
-msgid ""
-"The redundancy check looks for tables leftover after deactivating a survey. "
-"You can delete these if you no longer require them."
+msgid "The redundancy check looks for tables leftover after deactivating a survey. You can delete these if you no longer require them."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:467
 #, fuzzy
-msgid ""
-"The following old survey tables contain no responses and can be deleted:"
+msgid "The following old survey tables contain no responses and can be deleted:"
 msgstr "Kajian berikut perlu dipadam"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:475
-msgid ""
-"The following old survey response tables exist and may be deleted if no "
-"longer required:"
+msgid "The following old survey response tables exist and may be deleted if no longer required:"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:483
@@ -3826,9 +3611,7 @@ msgstr "Jadual token lama berikut telah dikembalikan:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:491
 #, fuzzy
-msgid ""
-"The following old token list tables exist and may be deleted if no longer "
-"required:"
+msgid "The following old token list tables exist and may be deleted if no longer required:"
 msgstr "Jadual token lama berikut telah dikembalikan:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:499
@@ -3837,8 +3620,7 @@ msgid "Delete checked items!"
 msgstr "Sila pilih item berkenaan"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:500
-msgid ""
-"Note that you cannot undo a delete if you proceed. The data will be gone."
+msgid "Note that you cannot undo a delete if you proceed. The data will be gone."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:533
@@ -3996,12 +3778,8 @@ msgid "Remove"
 msgstr "Alihkan"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:147
-msgid ""
-"You cannot remove this item since you need at least one language in a "
-"labelset."
-msgstr ""
-"Anda tidak boleh memadam item ini kerana anda memerlukan setidaknya satu "
-"Bahasa dalam setlabel."
+msgid "You cannot remove this item since you need at least one language in a labelset."
+msgstr "Anda tidak boleh memadam item ini kerana anda memerlukan setidaknya satu Bahasa dalam setlabel."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:164
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:229
@@ -4180,12 +3958,8 @@ msgid "Warning"
 msgstr "Amaran"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:426
-msgid ""
-"You cannot change codes, add or delete entries in this label set because it "
-"is being used by an active survey."
-msgstr ""
-"Anda tidak boleh menukar kod, menambah atau memadam entri dalam set label "
-"ini kerana label sedang digunakan oleh satu kajian aktif."
+msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
+msgstr "Anda tidak boleh menukar kod, menambah atau memadam entri dalam set label ini kerana label sedang digunakan oleh satu kajian aktif."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:446
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:459
@@ -4231,14 +4005,8 @@ msgid "Import Resources ZIP Archive"
 msgstr "Impot Sumber arkib ZIP"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:485
-msgid ""
-"Some surveys currently use this label set. Modifying the codes, adding or "
-"deleting entries to this label set may produce undesired results in other "
-"surveys."
-msgstr ""
-"Beberapa kajian sedang menggunakan label set ini. Memodifikasi kod, menambah "
-"atau memadam entri untuk set label ini akan menghasilkan keputusan yang "
-"tidak diingini dalam kajian lain."
+msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
+msgstr "Beberapa kajian sedang menggunakan label set ini. Memodifikasi kod, menambah atau memadam entri untuk set label ini akan menghasilkan keputusan yang tidak diingini dalam kajian lain."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:553
 msgid "Failed to Copy already defined labels to added languages"
@@ -4253,12 +4021,8 @@ msgid "Update of Label Set failed"
 msgstr "Kemaskini set label gagal"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:595
-msgid ""
-"Couldn't Delete Label Set - There are questions that rely on this. You must "
-"delete these questions first."
-msgstr ""
-"Tidak dapat memadam set label- Ada soalan yang bergantung pada set "
-"tersebut.  Anda perlu memadam soalan ini dahulu."
+msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
+msgstr "Tidak dapat memadam set label- Ada soalan yang bergantung pada set tersebut.  Anda perlu memadam soalan ini dahulu."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:631
 msgid "Insert of Label Set failed"
@@ -4277,12 +4041,8 @@ msgid "Failed to insert label"
 msgstr "Gagal untuk menambah label"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:699
-msgid ""
-"This label code is already used in this labelset. Please choose another code "
-"or rename the existing one."
-msgstr ""
-"Kod label ini telah digunakan dalam set label. Sila pilih kod lain atau nama "
-"semula kod sudah ada."
+msgid "This label code is already used in this labelset. Please choose another code or rename the existing one."
+msgstr "Kod label ini telah digunakan dalam set label. Sila pilih kod lain atau nama semula kod sudah ada."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:756
 msgid "Failed to update label"
@@ -4312,12 +4072,8 @@ msgstr "Impot soalan"
 #: /var/lib/limesurvey-svn/subversion1x/admin/http_importsurvey.php:29
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:34
 #, php-format
-msgid ""
-"An error occurred uploading your file. This may be caused by incorrect "
-"permissions in your %s folder."
-msgstr ""
-"Terjadi kesilapan ketika memuat turun fail anda. Hal ini mungkin disebabkan "
-"oleh salah kebenaran di folder %s anda."
+msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
+msgstr "Terjadi kesilapan ketika memuat turun fail anda. Hal ini mungkin disebabkan oleh salah kebenaran di folder %s anda."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:29
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:39
@@ -4425,41 +4181,25 @@ msgid "This file is not a LimeSurvey group file. Import failed."
 msgstr "Fail ini tiada dalam kumpulan fail LimeSurvey. Gagal diimpot."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:251
-msgid ""
-"You can't import a group which doesn't support the current survey's base "
-"language."
-msgstr ""
-"Anda tidak boleh mengimport  kumpulan yang tidak menyokong  Bahasa bahasa "
-"asas kajian ini."
+msgid "You can't import a group which doesn't support the current survey's base language."
+msgstr "Anda tidak boleh mengimport  kumpulan yang tidak menyokong  Bahasa bahasa asas kajian ini."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:267
-msgid ""
-"You can't import a question which doesn't support the current survey's base "
-"language."
-msgstr ""
-"Anda tidak boleh mengimport  soalan yang tidak menyokong  Bahasa asas kajian "
-"ini."
+msgid "You can't import a question which doesn't support the current survey's base language."
+msgstr "Anda tidak boleh mengimport  soalan yang tidak menyokong  Bahasa asas kajian ini."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:285
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:270
-msgid ""
-"You can't import label sets which don't support the current survey's base "
-"language"
-msgstr ""
-"Anda tidak boleh mengimport  set label yang tidak menyokong  Bahasa bahasa "
-"asas kajian ini."
+msgid "You can't import label sets which don't support the current survey's base language"
+msgstr "Anda tidak boleh mengimport  set label yang tidak menyokong  Bahasa bahasa asas kajian ini."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:668
 msgid "Import partially successful."
 msgstr "Impot separa berjaya."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:669
-msgid ""
-"The following languages in this group were not imported since the survey "
-"does not contain such a language: "
-msgstr ""
-"Bahasa-Bahasaberikut dalam kumpulan ini tidak diimport kerana kajian tidak "
-"mengandungi Bahasa tersebut:"
+msgid "The following languages in this group were not imported since the survey does not contain such a language: "
+msgstr "Bahasa-Bahasaberikut dalam kumpulan ini tidak diimport kerana kajian tidak mengandungi Bahasa tersebut:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:680
 msgid "Group Import Summary"
@@ -4764,12 +4504,8 @@ msgid "Important Note:"
 msgstr "Nota penting:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:320
-msgid ""
-"Do NOT refresh this page, as this will import the file again and produce "
-"duplicates"
-msgstr ""
-"JANGAN refresh laman ini, kerana ini akan mengimport fail lagi dan "
-"menghasilkan salinan"
+msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
+msgstr "JANGAN refresh laman ini, kerana ini akan mengimport fail lagi dan menghasilkan salinan"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:322
 msgid "Total records imported:"
@@ -4801,12 +4537,8 @@ msgid "General filters"
 msgstr "Penyaring Am"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:234
-msgid ""
-"You do not have the GD Library installed. Showing charts requires the GD "
-"library to function properly."
-msgstr ""
-"Anda tidak memasang Perpustakaan GD. Menampilkan grafik memerlukan "
-"Perpustakaan GD untuk berfungsi dengan betul."
+msgid "You do not have the GD Library installed. Showing charts requires the GD library to function properly."
+msgstr "Anda tidak memasang Perpustakaan GD. Menampilkan grafik memerlukan Perpustakaan GD untuk berfungsi dengan betul."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:235
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:239
@@ -4814,12 +4546,8 @@ msgid "visit http://us2.php.net/manual/en/ref.image.php for more information"
 msgstr "lawat http://us2.php.net/manual/en/ref.image.php untuk maklumat lanjut"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:238
-msgid ""
-"You do not have the Freetype Library installed. Showing charts requires the "
-"Freetype library to function properly."
-msgstr ""
-"Anda tidak memasang Perpustakaan Freetype. Menampilkan grafik memerlukan "
-"Perpustakaan Freetype untuk berfungsi dengan betul."
+msgid "You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly."
+msgstr "Anda tidak memasang Perpustakaan Freetype. Menampilkan grafik memerlukan Perpustakaan Freetype untuk berfungsi dengan betul."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:266
 #, fuzzy
@@ -4855,9 +4583,7 @@ msgid "View summary of all available fields"
 msgstr "Lihat ringkasan untuk semua bidang yang ada"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:283
-msgid ""
-"Count stats for each question based only on the total number of responses "
-"for which the question was displayed"
+msgid "Count stats for each question based only on the total number of responses for which the question was displayed"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:283
@@ -5053,13 +4779,8 @@ msgid "Current survey has questions with conditions outside their own group"
 msgstr "Kajian ini mempunyai soalan berkondisi diluar kumpulan ini"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:252
-msgid ""
-"Re-ordering groups is restricted to ensure that questions on which "
-"conditions are based aren't reordered after questions having the conditions "
-"set"
-msgstr ""
-"Penyusunan semula kumpulan adalah dihalang untuk memastikan soalan "
-"berkondisi tidak diubah kedudukan selepas soalan yang mempunyai set kondisi"
+msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "Penyusunan semula kumpulan adalah dihalang untuk memastikan soalan berkondisi tidak diubah kedudukan selepas soalan yang mempunyai set kondisi"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:252
 msgid "The following groups are concerned"
@@ -5068,8 +4789,7 @@ msgstr "Kupulan berikutnya diber perhatian"
 #: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:257
 #, php-format
 msgid "Group %s depends on group %s, see the marked conditions on:"
-msgstr ""
-"Kumpulan % s bergantung pada kumpulan % s, lihat kondisi bertanda pada:"
+msgstr "Kumpulan % s bergantung pada kumpulan % s, lihat kondisi bertanda pada:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:262
 msgid "QID"
@@ -5135,9 +4855,7 @@ msgstr "Impot soalan"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:368
 #, fuzzy
-msgid ""
-"A token table has been created for this survey and the old tokens were "
-"imported."
+msgid "A token table has been created for this survey and the old tokens were imported."
 msgstr "Jadual token telah dicipta untuk kajian ini."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:388
@@ -5146,23 +4864,13 @@ msgstr "Token belum dimulakan untuk kajian ini."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:393
 #, fuzzy
-msgid ""
-"If you initialise tokens for this survey then this survey will only be "
-"accessible to users who provide a token either manually or by URL."
-msgstr ""
-"Jika anda mengguna token untuk kajian ini, maka kajian ini hanya boleh "
-"diakses oleh pengguna yang diberi token sahaja."
+msgid "If you initialise tokens for this survey then this survey will only be accessible to users who provide a token either manually or by URL."
+msgstr "Jika anda mengguna token untuk kajian ini, maka kajian ini hanya boleh diakses oleh pengguna yang diberi token sahaja."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:400
 #, fuzzy
-msgid ""
-"Note: If you turn on the -Anonymous answers- option for this survey then "
-"LimeSurvey will mark your completed tokens only with a 'Y' instead of date/"
-"time to ensure the anonymity of your participants."
-msgstr ""
-"Jika anda mengaktifkan -jawapan Anonim- pilihan dan membuat jadual token, "
-"LimeSurvey akan menandakan token dilengkapkan dengan 'Y' bukan tarikh / "
-"waktu untuk menjamin kerahsiaan penyertaan anda."
+msgid "Note: If you turn on the -Anonymous answers- option for this survey then LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
+msgstr "Jika anda mengaktifkan -jawapan Anonim- pilihan dan membuat jadual token, LimeSurvey akan menandakan token dilengkapkan dengan 'Y' bukan tarikh / waktu untuk menjamin kerahsiaan penyertaan anda."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:404
 #, fuzzy
@@ -5449,8 +5157,7 @@ msgid ""
 "\n"
 "Recently we invited you to participate in a survey.\n"
 "\n"
-"We note that you have not yet completed the survey, and wish to remind you "
-"that the survey is still available should you wish to take part.\n"
+"We note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n"
 "\n"
 "The survey is titled:\n"
 "\"{SURVEYNAME}\"\n"
@@ -5471,9 +5178,7 @@ msgstr ""
 "\n"
 "Kami telah menjemput anda menyertai kajian ini.\n"
 "\n"
-"Walau bagaimanapun kami dapati anda belum menyempurnakan kajian tersebut, "
-"and kami ingin memberitahu bahawa kajian ini masih berlangsung jikan anda "
-"ingin mengambil bahagian.\n"
+"Walau bagaimanapun kami dapati anda belum menyempurnakan kajian tersebut, and kami ingin memberitahu bahawa kajian ini masih berlangsung jikan anda ingin mengambil bahagian.\n"
 "\n"
 "Kajian ini bertajuk:\n"
 "\"{NAMA KAJIAN}\"\n"
@@ -5514,11 +5219,9 @@ msgstr "E-mel pengesahan"
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
-"This email is to confirm that you have completed the survey titled "
-"{SURVEYNAME} and your response has been saved. Thank you for participating.\n"
+"This email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n"
 "\n"
-"If you have any further questions about this email, please contact "
-"{ADMINNAME} on {ADMINEMAIL}.\n"
+"If you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n"
 "\n"
 "Sincerely,\n"
 "\n"
@@ -5526,12 +5229,9 @@ msgid ""
 msgstr ""
 "Kepada {NAMA PERTAMA},\n"
 "\n"
-"E-mel ini adalah bertujuan untuk mengesahkan bahawa anda telah melengkapkan "
-"kajian berjudul  {NAMA KAJIAN} dan jawapan anda telah disimpan. Terima kasih "
-"kerana telah mengambil bahagian.\n"
+"E-mel ini adalah bertujuan untuk mengesahkan bahawa anda telah melengkapkan kajian berjudul  {NAMA KAJIAN} dan jawapan anda telah disimpan. Terima kasih kerana telah mengambil bahagian.\n"
 "\n"
-"Jika anda mempunyai sebarang pertanyaan mengenai e-mel ini, sila hubungi "
-"{NAMA OENTADBIR} on {E-MEL PENTADBIR}.\n"
+"Jika anda mempunyai sebarang pertanyaan mengenai e-mel ini, sila hubungi {NAMA OENTADBIR} on {E-MEL PENTADBIR}.\n"
 "\n"
 "Yang benar,\n"
 "\n"
@@ -5556,29 +5256,23 @@ msgstr "E-mel pendaftaran awam"
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
-"You, or someone using your email address, have registered to participate in "
-"an online survey titled {SURVEYNAME}.\n"
+"You, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n"
 "\n"
 "To complete this survey, click on the following URL:\n"
 "\n"
 "{SURVEYURL}\n"
 "\n"
-"If you have any questions about this survey, or if you did not register to "
-"participate and believe this email is in error, please contact {ADMINNAME} "
-"at {ADMINEMAIL}."
+"If you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."
 msgstr ""
 "Kepada {NAMAPERTAMA},\n"
 "\n"
-"anda, atau seseorang yang telah menggunakan e-mel anda, telah mendaftar "
-"untuk menyertai kajian atas talian bertajuk {NAMAKAJIAN}.\n"
+"anda, atau seseorang yang telah menggunakan e-mel anda, telah mendaftar untuk menyertai kajian atas talian bertajuk {NAMAKAJIAN}.\n"
 "\n"
 "Untuk menyertaikajian ini, klik pada URL berikut:\n"
 "\n"
 "{URLKAJIAN}\n"
 "\n"
-"Jika anda mempunyai sebarang pertanyaan mengenai kajian ini, atau anda tidak "
-"mendaftar untuk mengambil bahagian dan percaya bahawa e-mel ini adalah "
-"ralat, sila hubungi {NAMAPENTADBIR} di{MELPENTADBIR}."
+"Jika anda mempunyai sebarang pertanyaan mengenai kajian ini, atau anda tidak mendaftar untuk mengambil bahagian dan percaya bahawa e-mel ini adalah ralat, sila hubungi {NAMAPENTADBIR} di{MELPENTADBIR}."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:720
 msgid "Token email settings have been saved."
@@ -5764,40 +5458,24 @@ msgid "Delete Tokens Table"
 msgstr "Padam jadual token"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1033
-msgid ""
-"If you delete this table tokens will no longer be required to access this "
-"survey."
-msgstr ""
-"Jkan anda memadam jadual ini token tidak diperlukan untuk mengakses kajian "
-"ini."
+msgid "If you delete this table tokens will no longer be required to access this survey."
+msgstr "Jkan anda memadam jadual ini token tidak diperlukan untuk mengakses kajian ini."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1033
-msgid ""
-"A backup of this table will be made if you proceed. Your system "
-"administrator will be able to access this table."
-msgstr ""
-"Sesalinan jadual ini akan dibuat jika anda teruskan. Pentadbir sistem anda "
-"boleh mengakses jadual ini."
+msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
+msgstr "Sesalinan jadual ini akan dibuat jika anda teruskan. Pentadbir sistem anda boleh mengakses jadual ini."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1036
 msgid "Delete Tokens"
 msgstr "Padam token"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1059
-msgid ""
-"The tokens table has now been removed and tokens are no longer required to "
-"access this survey."
-msgstr ""
-"Jadual token telah dikeluarkan dan token tidak diperlukan lagi untuk "
-"mengakses kajian ini."
+msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
+msgstr "Jadual token telah dikeluarkan dan token tidak diperlukan lagi untuk mengakses kajian ini."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1059
-msgid ""
-"A backup of this table has been made and can be accessed by your system "
-"administrator."
-msgstr ""
-"Sesalinan jadual  ini telah dibuat dan boleh diakses oleh pentadbir sistem "
-"anda."
+msgid "A backup of this table has been made and can be accessed by your system administrator."
+msgstr "Sesalinan jadual  ini telah dibuat dan boleh diakses oleh pentadbir sistem anda."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1084
 #, fuzzy
@@ -5813,12 +5491,8 @@ msgstr "Amaran"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1090
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1343
 #, fuzzy
-msgid ""
-"This survey is not yet activated and so your participants won't be able to "
-"fill out the survey."
-msgstr ""
-"Kajian ini tidak aktif buat masa ini.  Anda tidak dapat menyimpan jawapan "
-"anda."
+msgid "This survey is not yet activated and so your participants won't be able to fill out the survey."
+msgstr "Kajian ini tidak aktif buat masa ini.  Anda tidak dapat menyimpan jawapan anda."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1136
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1363
@@ -5865,16 +5539,13 @@ msgstr "Menghantar jemputan"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1268
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1568
 #, fuzzy
-msgid ""
-"Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid."
+msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid."
 msgstr "E-mel ke {NAMAPERTAMA} {NAMAAKHIR} ({E-MEL}) gagal. Nota Ralat:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1272
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1572
 #, fuzzy
-msgid ""
-"Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid "
-"anymore."
+msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore."
 msgstr "E-mel ke {NAMAPERTAMA} {NAMAAKHIR} ({E-MEL}) gagal. Nota Ralat:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1282
@@ -5888,12 +5559,8 @@ msgstr "E-mel ke {NAMAPERTAMA} {NAMAAKHIR} ({E-MEL}) gagal. Nota Ralat:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1303
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1606
-msgid ""
-"There are more emails pending than can be sent in one batch. Continue "
-"sending emails by clicking below."
-msgstr ""
-"Terdapat e-mel tertunda yang tidak boleh dihantar sekali dalam satu masa.  "
-"Klik dibawah untuk menyambung penghantaran e-mel."
+msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
+msgstr "Terdapat e-mel tertunda yang tidak boleh dihantar sekali dalam satu masa.  Klik dibawah untuk menyambung penghantaran e-mel."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1304
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1607
@@ -5901,14 +5568,8 @@ msgid "There are {EMAILCOUNT} emails still to be sent."
 msgstr "Terdapat {JUMLAHE-MEL} e-mel perlu dihantar."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1324
-msgid ""
-"There were no eligible emails to send. This will be because none satisfied "
-"the criteria of - having an email address, not having been sent an "
-"invitation already, having already completed the survey and having a token."
-msgstr ""
-"Tiada yang memenuhi syarat untuk dihantar email. Ini  kerana tidak memenuhi "
-"kriteria - mempunyai alamat e-mel,  jemputan sudah dihantar, telah "
-"menyelesaikan kajian dan mempunyai token."
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
+msgstr "Tiada yang memenuhi syarat untuk dihantar email. Ini  kerana tidak memenuhi kriteria - mempunyai alamat e-mel,  jemputan sudah dihantar, telah menyelesaikan kajian dan mempunyai token."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1389
 msgid "Reminder Email:"
@@ -5947,14 +5608,8 @@ msgid "Reminder sent to:"
 msgstr "Peringatan dihantar ke:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1644
-msgid ""
-"There were no eligible emails to send. This will be because none satisfied "
-"the criteria of - having an email address, having been sent an invitation, "
-"but not having yet completed the survey."
-msgstr ""
-"Tiada yang memenuhi syarat untuk dihantar email. Ini  kerana tidak memenuhi "
-"kriteria - mempunyai alamat e-mel,  jemputan sudah dihantar,tetapi belum "
-"menyelesaikan kajian."
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
+msgstr "Tiada yang memenuhi syarat untuk dihantar email. Ini  kerana tidak memenuhi kriteria - mempunyai alamat e-mel,  jemputan sudah dihantar,tetapi belum menyelesaikan kajian."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1659
 #, fuzzy
@@ -5962,12 +5617,8 @@ msgid "Create tokens"
 msgstr "Cipta token"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1663
-msgid ""
-"Clicking yes will generate tokens for all those in this token list that have "
-"not been issued one. Is this OK?"
-msgstr ""
-"Mengklik ya akan menghasilkantoken bagi semua dalam senarai token ini yang "
-"belum diberi. Adakah ini OK?"
+msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
+msgstr "Mengklik ya akan menghasilkantoken bagi semua dalam senarai token ini yang belum diberi. Adakah ini OK?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1712
 msgid "{TOKENCOUNT} tokens have been created"
@@ -6084,12 +5735,8 @@ msgid "Email Status"
 msgstr "Status e-mel"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1916
-msgid ""
-"You can leave this blank, and automatically generate tokens using 'Create "
-"Tokens'"
-msgstr ""
-"Anda boleh meninggalkan ruang ini kosong, dan secara otomatik menghasilkan "
-"token menggunakan 'Cipta token'"
+msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
+msgstr "Anda boleh meninggalkan ruang ini kosong, dan secara otomatik menghasilkan token menggunakan 'Cipta token'"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1938
 #, fuzzy
@@ -6129,12 +5776,8 @@ msgstr "Gagal"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2063
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2129
-msgid ""
-"There is already an entry with that exact token in the table. The same token "
-"cannot be used in multiple entries."
-msgstr ""
-"Sudah ada penyertaan dengan token sama dalam jadual. Token yang sama tidak "
-"boleh diguna dalam penyertaan berulang."
+msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
+msgstr "Sudah ada penyertaan dengan token sama dalam jadual. Token yang sama tidak boleh diguna dalam penyertaan berulang."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2064
 msgid "Show this token entry"
@@ -6154,17 +5797,8 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2147
 #, fuzzy
-msgid ""
-"File should be a standard CSV (comma delimited) file with optional double "
-"quotes around values (default for OpenOffice and Excel). The first line must "
-"contain the field names. The fields can be in any order."
-msgstr ""
-"File should be a standard CSV (comma delimited) file with double quotes "
-"around values (default for openoffice and excel). The first line should "
-"contain header information (will be removed). Data should be ordered as "
-"\"firstname\", \"lastname\", \"email\", \"[emailstatus]\", \"[token]\", "
-"\"[language code]\", \"[attribute1]\", \"[attribute2]\". Values in "
-"parentheses [] are optional."
+msgid "File should be a standard CSV (comma delimited) file with optional double quotes around values (default for OpenOffice and Excel). The first line must contain the field names. The fields can be in any order."
+msgstr "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname\", \"lastname\", \"email\", \"[emailstatus]\", \"[token]\", \"[language code]\", \"[attribute1]\", \"[attribute2]\". Values in parentheses [] are optional."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2147
 #, fuzzy
@@ -6185,8 +5819,7 @@ msgid "Note:"
 msgstr "Nota:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2162
-msgid ""
-"LDAP queries are defined by the administrator in the config-ldap.php file"
+msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
 msgstr "Pertanyaan LDAP ditetapkan oleh pentadbir dalam config-ldap.php file"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2177
@@ -6194,12 +5827,8 @@ msgid "Token file upload"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2191
-msgid ""
-"Upload file not found. Check your permissions and path for the upload "
-"directory"
-msgstr ""
-"Upload file not found. Check your permissions and path for the upload "
-"directory"
+msgid "Upload file not found. Check your permissions and path for the upload directory"
+msgstr "Upload file not found. Check your permissions and path for the upload directory"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2196
 #, fuzzy
@@ -6207,9 +5836,7 @@ msgid "Uploaded CSV file successfully"
 msgstr "Anda berjaya login."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2229
-msgid ""
-"Error: Your uploaded file is missing one or more of the mandatory columns: "
-"'firstname', 'lastname' or 'email'"
+msgid "Error: Your uploaded file is missing one or more of the mandatory columns: 'firstname', 'lastname' or 'email'"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2327
@@ -6363,9 +5990,7 @@ msgstr "Edit penyertaan ini"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:156
 msgid "This surveys uses anonymous answers, so you can't update your response."
-msgstr ""
-"Kajian ini menggunakan jawapan anonim, sehingga anda tidak boleh "
-"mengemaskini jawapan anda."
+msgstr "Kajian ini menggunakan jawapan anonim, sehingga anda tidak boleh mengemaskini jawapan anda."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:183
 msgid "Try again"
@@ -6398,14 +6023,8 @@ msgid "Start Language:"
 msgstr "Mula bahasa:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:518
-msgid ""
-"Your survey responses have been saved successfully.  You will be sent a "
-"confirmation e-mail. Please make sure to save your password, since we will "
-"not be able to retrieve it for you."
-msgstr ""
-"Jawapan kajian anda telah berjaya disimpan. Anda akan dihantar e-mel "
-"pengesahan. Sila pastikan anda menyimpan kata laluan, kerana kami tidak "
-"boleh mendapatkan balik untuk anda."
+msgid "Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."
+msgstr "Jawapan kajian anda telah berjaya disimpan. Anda akan dihantar e-mel pengesahan. Sila pastikan anda menyimpan kata laluan, kerana kami tidak boleh mendapatkan balik untuk anda."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:532
 msgid "A token entry for the saved survey has been created too."
@@ -6699,9 +6318,7 @@ msgstr "Pangakalan data `%s` telah berjaya diisi."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:229
 #, php-format
-msgid ""
-"There was a problem deleting the template '%s'. Please check your directory/"
-"file permissions."
+msgid "There was a problem deleting the template '%s'. Please check your directory/file permissions."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:274
@@ -6788,12 +6405,8 @@ msgid "Assessment details"
 msgstr "Butiran penilaian"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:447
-msgid ""
-"Note that this assessment section will only show if assessment rules have "
-"been set and assessment mode is activated."
-msgstr ""
-"Perhatian bahawa bahagian penilaian ini hanya akan dipaparkan jika peraturan "
-"penilaian telah ditetapkan dan mod penilaian diaktifkan"
+msgid "Note that this assessment section will only show if assessment rules have been set and assessment mode is activated."
+msgstr "Perhatian bahawa bahagian penilaian ini hanya akan dipaparkan jika peraturan penilaian telah ditetapkan dan mod penilaian diaktifkan"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:448
 msgid "Survey name (ID)"
@@ -6844,9 +6457,7 @@ msgstr "Terima kasih kerana mengambil bahagian dalam kajian ini."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:823
 #, php-format
-msgid ""
-"Note: This is a standard template. If you want to edit it %s please copy it "
-"first%s."
+msgid "Note: This is a standard template. If you want to edit it %s please copy it first%s."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:823
@@ -6994,12 +6605,8 @@ msgid "Click on the following button if you want to"
 msgstr "Klik pada butang berikut ini jika anda ingin"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:32
-msgid ""
-"Delete all incomplete answers that correspond to a token for which a "
-"completed answers is already recorded"
-msgstr ""
-"Padam semua jawapan yang tidak lengkap yang bertepatani dengan token dimana "
-"jawapan yang lengkap telah direkod"
+msgid "Delete all incomplete answers that correspond to a token for which a completed answers is already recorded"
+msgstr "Padam semua jawapan yang tidak lengkap yang bertepatani dengan token dimana jawapan yang lengkap telah direkod"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:33
 msgid "Reset the completed answers to the incomplete state"
@@ -7010,12 +6617,8 @@ msgid "Reset all your tokens to the 'not used' state"
 msgstr "Laras semula semua token ke keadaan 'tidak digunakan'"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:36
-msgid ""
-"Are you really sure you want to *delete* some incomplete answers and reset "
-"the completed state of both answers and tokens?"
-msgstr ""
-"Adakah anda benar-benar yakin ingin * memadam * beberapa jawapan yang tidak "
-"lengkap dan melaras semula keadaan kedua  jawapan legkap dan token?"
+msgid "Are you really sure you want to *delete* some incomplete answers and reset the completed state of both answers and tokens?"
+msgstr "Adakah anda benar-benar yakin ingin * memadam * beberapa jawapan yang tidak lengkap dan melaras semula keadaan kedua  jawapan legkap dan token?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:36
 msgid "Reset answers and token completed state"
@@ -7054,28 +6657,16 @@ msgstr "Adakah anda pasti?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importoldresponses.php:69
 #, fuzzy
-msgid ""
-"You can import all old responses with the same amount of columns as in your "
-"active survey. YOU have to make sure, that this responses corresponds to the "
-"questions in your active survey."
-msgstr ""
-"Amaran: Anda boleh mengimport semua jawapan lama dengan jumlah kolum yang "
-"sama seperti dalam kolum kajian aktif anda. ANDA perlu memastikan, bahawa "
-"jawapan ini sesuai dengan soalan-soalan dalam kajian aktif anda."
+msgid "You can import all old responses with the same amount of columns as in your active survey. YOU have to make sure, that this responses corresponds to the questions in your active survey."
+msgstr "Amaran: Anda boleh mengimport semua jawapan lama dengan jumlah kolum yang sama seperti dalam kolum kajian aktif anda. ANDA perlu memastikan, bahawa jawapan ini sesuai dengan soalan-soalan dalam kajian aktif anda."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dumpdb.php:33
 msgid "Export database"
 msgstr "Ekspot pangkalan data"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dumpdb.php:34
-msgid ""
-"The database export is only available for MySQL databases. For other "
-"database types please use the according backup mechanism to create a "
-"database dump."
-msgstr ""
-"Ekspot pangkalan data hanya tersedia untuk pangkalan dataMySQL. Untuk jenis "
-"pangkalan data lain sila gunakant mekanisme simpanan berkenaan untuk membuat "
-"sebuah pangakalan data buangan."
+msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
+msgstr "Ekspot pangkalan data hanya tersedia untuk pangkalan dataMySQL. Untuk jenis pangkalan data lain sila gunakant mekanisme simpanan berkenaan untuk membuat sebuah pangakalan data buangan."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:22
 #: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:52
@@ -7093,40 +6684,20 @@ msgid "You are about to delete this survey"
 msgstr "Anda akan memadam kajian ini"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:38
-msgid ""
-"This process will delete this survey, and all related groups, questions "
-"answers and conditions."
-msgstr ""
-"Proses ini akan menghapuskan kajian ini, dan semua kumpulan berkaitan, "
-"soalan jawapan dan kondisi."
+msgid "This process will delete this survey, and all related groups, questions answers and conditions."
+msgstr "Proses ini akan menghapuskan kajian ini, dan semua kumpulan berkaitan, soalan jawapan dan kondisi."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:39
-msgid ""
-"We recommend that before you delete this survey you export the entire survey "
-"from the main administration screen."
-msgstr ""
-"Kami mengesyorkan bahawa sebelum anda memadam kajian ini anda mengekspot "
-"keseluruhan kajian daripada skrin pentadbiran utama."
+msgid "We recommend that before you delete this survey you export the entire survey from the main administration screen."
+msgstr "Kami mengesyorkan bahawa sebelum anda memadam kajian ini anda mengekspot keseluruhan kajian daripada skrin pentadbiran utama."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:43
-msgid ""
-"This survey is active and a responses table exists. If you delete this "
-"survey, these responses will be deleted. We recommend that you export the "
-"responses before deleting this survey."
-msgstr ""
-"Kajian ini sedang aktif dan wujud satu jaduah jawapan. Jika anda memadam "
-"kajian ini, jawapan ini akan dihapuskan. Kami menyarankan anda mengekspot "
-"jawapan tersebut sebelum memadam kajian ini."
+msgid "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."
+msgstr "Kajian ini sedang aktif dan wujud satu jaduah jawapan. Jika anda memadam kajian ini, jawapan ini akan dihapuskan. Kami menyarankan anda mengekspot jawapan tersebut sebelum memadam kajian ini."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:48
-msgid ""
-"This survey has an associated tokens table. If you delete this survey this "
-"tokens table will be deleted. We recommend that you export or backup these "
-"tokens before deleting this survey."
-msgstr ""
-"Kajian ini mempunyai jadual token berkaitan. Jika anda memadam kajian ini "
-"jadual token ini akan dihapuskan. Kami sarankan anda untuk mengekspot "
-"ataupunmembuat simpanan token ini sebelum memadam kajian."
+msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
+msgstr "Kajian ini mempunyai jadual token berkaitan. Jika anda memadam kajian ini jadual token ini akan dihapuskan. Kami sarankan anda untuk mengekspot ataupunmembuat simpanan token ini sebelum memadam kajian."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:116
 msgid "This survey has been deleted."
@@ -7726,8 +7297,7 @@ msgid "Show 'no answer' option for non-mandatory questions:"
 msgstr "Tunjuk  kondisi untuk soalan ini"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:365
-msgid ""
-"Number of answers to show before repeating the headings in array questions:"
+msgid "Number of answers to show before repeating the headings in array questions:"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:375
@@ -7795,12 +7365,8 @@ msgid "This file is not a LimeSurvey question file. Import failed."
 msgstr "Fail ini bukan Fail soalan LimeSurvey. Impot gagal."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:228
-msgid ""
-"You can't import a question which doesn't support the current survey's base "
-"language"
-msgstr ""
-"Anda tidak boleh mengimport  soalan yang tidak menyokong  Bahasa bahasa asas "
-"kajian ini."
+msgid "You can't import a question which doesn't support the current survey's base language"
+msgstr "Anda tidak boleh mengimport  soalan yang tidak menyokong  Bahasa bahasa asas kajian ini."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:460
 msgid "Faulty line in import - fields and data don't match"
@@ -8059,11 +7625,8 @@ msgstr "Kajian soalselidik ini sedang aktif"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:153
 #, fuzzy
-msgid ""
-"This survey is currently not active - click here to activate this survey."
-msgstr ""
-"Kajian ini tidak aktif buat masa ini.  Anda tidak dapat menyimpan jawapan "
-"anda."
+msgid "This survey is currently not active - click here to activate this survey."
+msgstr "Kajian ini tidak aktif buat masa ini.  Anda tidak dapat menyimpan jawapan anda."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:157
 #, fuzzy
@@ -8112,11 +7675,8 @@ msgid "Activate this Survey"
 msgstr "Aktifkan kajian soalselidik ini"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:315
-msgid ""
-"Survey cannot be activated. Either you have no permission or there are no "
-"questions."
-msgstr ""
-"Kajian tidak boleh diaktifkan. samada anda tiada kebenaran atau tiada soalan."
+msgid "Survey cannot be activated. Either you have no permission or there are no questions."
+msgstr "Kajian tidak boleh diaktifkan. samada anda tiada kebenaran atau tiada soalan."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:328
 msgid "This survey is active but has a start date."
@@ -8379,12 +7939,8 @@ msgid "Edit current question group"
 msgstr "Edit soalan ini"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:846
-msgid ""
-"Deleting this group will also delete any questions and answers it contains. "
-"Are you sure you want to continue?"
-msgstr ""
-"Memadam kumpulan ini juga akan memadam soalan dan jawapan yang dikandungnya. "
-"Adakah anda yakin ingin meneruskan?"
+msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
+msgstr "Memadam kumpulan ini juga akan memadam soalan dan jawapan yang dikandungnya. Adakah anda yakin ingin meneruskan?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:848
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:855
@@ -8393,12 +7949,8 @@ msgid "Delete current question group"
 msgstr "Padam soalan ini"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:853
-msgid ""
-"Impossible to delete this group because there is at least one question "
-"having a condition on its content"
-msgstr ""
-"Tidak boleh memadam kumpulan ini kerana terdapat satu soalan yang memiliki "
-"kondisi pada kandungan soalan"
+msgid "Impossible to delete this group because there is at least one question having a condition on its content"
+msgstr "Tidak boleh memadam kumpulan ini kerana terdapat satu soalan yang memiliki kondisi pada kandungan soalan"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:869
 #, fuzzy
@@ -8435,24 +7987,16 @@ msgid "Edit Current Question"
 msgstr "Edit soalan ini"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1006
-msgid ""
-"Deleting this question will also delete any answers it includes. Are you "
-"sure you want to continue?"
-msgstr ""
-"Memadam soalan ini juga akan memadamkan setiap jawapan itu dirangkumi. "
-"Adakah anda yakin ingin meneruskannya?"
+msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
+msgstr "Memadam soalan ini juga akan memadamkan setiap jawapan itu dirangkumi. Adakah anda yakin ingin meneruskannya?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1007
 msgid "Delete Current Question"
 msgstr "Padam soalan ini"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1013
-msgid ""
-"It's impossible to delete this question because there is at least one "
-"question having a condition on it."
-msgstr ""
-"Tidak boleh memadam soalan ini kera terdapat satu soalan yang memiliki "
-"kondisi di atasnya."
+msgid "It's impossible to delete this question because there is at least one question having a condition on it."
+msgstr "Tidak boleh memadam soalan ini kera terdapat satu soalan yang memiliki kondisi di atasnya."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1015
 msgid "Disabled - Delete Current Question"
@@ -8623,12 +8167,8 @@ msgid "Add new answer option"
 msgstr "Tambah jawapan baru"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1551
-msgid ""
-"You cannot add answers or edit answer codes for this question type because "
-"the survey is active."
-msgstr ""
-"Anda tidak boleh menambah jawapan atau mengedit kod untuk jenis soalan ini "
-"kerana kajian sedang aktif."
+msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
+msgstr "Anda tidak boleh menambah jawapan atau mengedit kod untuk jenis soalan ini kerana kajian sedang aktif."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1590
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1648
@@ -8900,12 +8440,8 @@ msgid "Use HTML format for token emails?"
 msgstr "Guna format HTML untuk e-mel token?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2507
-msgid ""
-"If you switch email mode, you'll have to review your email templates to fit "
-"the new format"
-msgstr ""
-"Jika anda beralih ke mod e-mel, anda harus menyemak templat e-mel anda agar "
-"sesuai dengan format baru"
+msgid "If you switch email mode, you'll have to review your email templates to fit the new format"
+msgstr "Jika anda beralih ke mod e-mel, anda harus menyemak templat e-mel anda agar sesuai dengan format baru"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2521
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3085
@@ -8929,23 +8465,13 @@ msgid "Anonymous answers?"
 msgstr "Cetak mukasurat jawapan"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2545
-msgid ""
-"You can't use Anonymous answers when Token-based answers persistence is "
-"enabled."
-msgstr ""
-"Anda tidak boleh menggunakan  jawapan anonim ketika Token jawapan tetap "
-"dihidupkan."
+msgid "You can't use Anonymous answers when Token-based answers persistence is enabled."
+msgstr "Anda tidak boleh menggunakan  jawapan anonim ketika Token jawapan tetap dihidupkan."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2550
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3107
-msgid ""
-"If you turn on the -Anonymous answers- option and create a tokens table, "
-"LimeSurvey will mark your completed tokens only with a 'Y' instead of date/"
-"time to ensure the anonymity of your participants."
-msgstr ""
-"Jika anda mengaktifkan -jawapan Anonim- pilihan dan membuat jadual token, "
-"LimeSurvey akan menandakan token dilengkapkan dengan 'Y' bukan tarikh / "
-"waktu untuk menjamin kerahsiaan penyertaan anda."
+msgid "If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
+msgstr "Jika anda mengaktifkan -jawapan Anonim- pilihan dan membuat jadual token, LimeSurvey akan menandakan token dilengkapkan dengan 'Y' bukan tarikh / waktu untuk menjamin kerahsiaan penyertaan anda."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2560
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2584
@@ -9009,11 +8535,8 @@ msgid "Enable assessment mode?"
 msgstr "Mengaktifkan modus penilaian?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2726
-msgid ""
-"All questions, answers, etc for removed languages will be lost. Are you sure?"
-msgstr ""
-"Semua soalan, jawapan, dll untuk dimadam Bahasa akan hilang. Adakah anda "
-"pasti?"
+msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
+msgstr "Semua soalan, jawapan, dll untuk dimadam Bahasa akan hilang. Adakah anda pasti?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2726
 msgid "Save and Continue"
@@ -9147,12 +8670,8 @@ msgid "You are about to delete all conditions on this survey's questions"
 msgstr "Anda akan memadam semua kondisi untuk soalan kajian ini"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/resetsurveylogic.php:41
-msgid ""
-"We recommend that before you proceed, you export the entire survey from the "
-"main administration screen."
-msgstr ""
-"Kami mengesyorkan bahawa sebelum anda meneruskan, sila ekspot keseluruhan "
-"kajian dari skrin utama pentadbir.  "
+msgid "We recommend that before you proceed, you export the entire survey from the main administration screen."
+msgstr "Kami mengesyorkan bahawa sebelum anda meneruskan, sila ekspot keseluruhan kajian dari skrin utama pentadbir.  "
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/resetsurveylogic.php:64
 msgid "All conditions in this survey have been deleted."
@@ -9324,13 +8843,8 @@ msgstr "Penilaian"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:123
 #, php-format
-msgid ""
-"Notice: Assessment mode for this survey is not activated. You can activate "
-"it in the %s survey settings %s (tab 'Notification & data management')."
-msgstr ""
-"Perhatian: Mod penialaian untuk kajian ini tidak diaktifkan.  Anda boleh "
-"mengaktifkannya di  %s persekitaran kajian %s (tab 'Pemberitahuan & "
-"pengurusan data')."
+msgid "Notice: Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."
+msgstr "Perhatian: Mod penialaian untuk kajian ini tidak diaktifkan.  Anda boleh mengaktifkannya di  %s persekitaran kajian %s (tab 'Pemberitahuan & pengurusan data')."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:131
 msgid "No SID Provided"
@@ -9377,12 +8891,8 @@ msgid "The defined LimeSurvey database does not exist"
 msgstr "Pangkalan data LimeSurvey dipilih tidak wujud"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:67
-msgid ""
-"Either your selected database has not yet been created or there is a problem "
-"accessing it."
-msgstr ""
-"Samada pangkalan data pilihan tidak wujud atau terdapat masalah mengakses "
-"pangkalan data."
+msgid "Either your selected database has not yet been created or there is a problem accessing it."
+msgstr "Samada pangkalan data pilihan tidak wujud atau terdapat masalah mengakses pangkalan data."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:78
 msgid "You have not selected a survey to browse."
@@ -9506,22 +9016,12 @@ msgstr "Anda belum memilih soalan"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:137
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:199
-msgid ""
-"Your condition could not be added! It did not include the question and/or "
-"answer upon which the condition was based. Please ensure you have selected a "
-"question and an answer."
-msgstr ""
-"Kondisi anda tidak dapat ditambah! Ia tidak termasuk soalan dan/atau jawapan "
-"di mana kondisi tersebut didasarkan. Sila pastikan anda telah memilih soalan "
-"dan jawapan."
+msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
+msgstr "Kondisi anda tidak dapat ditambah! Ia tidak termasuk soalan dan/atau jawapan di mana kondisi tersebut didasarkan. Sila pastikan anda telah memilih soalan dan jawapan."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:360
-msgid ""
-"Conditions successfully copied (some were skipped because they were "
-"duplicates)"
-msgstr ""
-"Kondisi telah berjaya disalin (sesetengah kondisi telah ditinggalkan kerana "
-"terdapat pendua)"
+msgid "Conditions successfully copied (some were skipped because they were duplicates)"
+msgstr "Kondisi telah berjaya disalin (sesetengah kondisi telah ditinggalkan kerana terdapat pendua)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:364
 msgid "Conditions successfully copied"
@@ -9593,24 +9093,16 @@ msgid "Only show question {QID} IF"
 msgstr "Hanya tunjuk soalan {QID} JIKA"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1150
-msgid ""
-"Are you sure you want to delete all conditions set to the questions you have "
-"selected?"
-msgstr ""
-"Adakah anda pasti untuk memadamkan semua kondisi untuk soalan yang telah "
-"dipilih?"
+msgid "Are you sure you want to delete all conditions set to the questions you have selected?"
+msgstr "Adakah anda pasti untuk memadamkan semua kondisi untuk soalan yang telah dipilih?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1152
 msgid "Delete all conditions"
 msgstr "Padam semua kondisi"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1158
-msgid ""
-"Are you sure you want to renumber the scenarios with incremented numbers "
-"beginning from 1?"
-msgstr ""
-"Adakah anda pasti untuk menombor-semula senario dengan nombor turutan menaik "
-"bermula dari 1?"
+msgid "Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?"
+msgstr "Adakah anda pasti untuk menombor-semula senario dengan nombor turutan menaik bermula dari 1?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1160
 msgid "Renumber scenario automatically"
@@ -9626,9 +9118,7 @@ msgstr "Kemaskini senario"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1222
 msgid "Are you sure you want to delete all conditions set in this scenario?"
-msgstr ""
-"Adakah anda pasti ingin memadam semua syarat yang ditetapkan dalam senario "
-"ini?"
+msgstr "Adakah anda pasti ingin memadam semua syarat yang ditetapkan dalam senario ini?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1224
 msgid "Delete this scenario"
@@ -9711,12 +9201,8 @@ msgid "Copy the selected conditions to"
 msgstr "Salin kondisi yang dipilih ke"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1624
-msgid ""
-"Are you sure you want to copy these condition(s) to the questions you have "
-"selected?"
-msgstr ""
-"Adakah anda pasti ingin menyalin kondisi  ini terhadap soalan-soalan yang "
-"telah anda pilih?"
+msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
+msgstr "Adakah anda pasti ingin menyalin kondisi  ini terhadap soalan-soalan yang telah anda pilih?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1648
 msgid "This survey's questions don't use conditions"
@@ -9816,30 +9302,17 @@ msgid "Download the data and the syntax file."
 msgstr "Muat turun data dan fail sintaks."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_r.php:84
-msgid ""
-"Save both of them on the R working directory (use getwd() and setwd() on the "
-"R command window to get and set it)"
-msgstr ""
-"Simpan keduanya di direktori kerja R (gunakan getwd () dan setwd () pada "
-"tetingkap perintah R  untuk mendapatkan dan menetapkannya)"
+msgid "Save both of them on the R working directory (use getwd() and setwd() on the R command window to get and set it)"
+msgstr "Simpan keduanya di direktori kerja R (gunakan getwd () dan setwd () pada tetingkap perintah R  untuk mendapatkan dan menetapkannya)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_r.php:85
-msgid ""
-"digit:       source(\"Surveydata_syntax.R\", encoding = \"UTF-8\")        on "
-"the R command window"
-msgstr ""
-"digit:       sumber(\"Datakajian_syntax.R\", enkoding = \"UTF-8\")        "
-"pada tetingkap perintah R"
+msgid "digit:       source(\"Surveydata_syntax.R\", encoding = \"UTF-8\")        on the R command window"
+msgstr "digit:       sumber(\"Datakajian_syntax.R\", enkoding = \"UTF-8\")        pada tetingkap perintah R"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_r.php:87
 #, fuzzy
-msgid ""
-"Your data should be imported now, the data.frame is named \"data\", the "
-"variable.labels are attributes of data (\"attributes(data)$variable.labels"
-"\"), like for foreign:read.spss."
-msgstr ""
-"Data anda harus diimport sekarang, data.frame bernama  \"data \", para "
-"variable.names adalah atribut data, seperti untuk read.spss {asing}."
+msgid "Your data should be imported now, the data.frame is named \"data\", the variable.labels are attributes of data (\"attributes(data)$variable.labels\"), like for foreign:read.spss."
+msgstr "Data anda harus diimport sekarang, data.frame bernama  \"data \", para variable.names adalah atribut data, seperti untuk read.spss {asing}."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/cmdline_importsurvey.php:58
 msgid "User name invalid!"
@@ -9868,9 +9341,7 @@ msgid "Welcome to the ComfortUpdate"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:32
-msgid ""
-"The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the "
-"latest version of LimeSurvey."
+msgid "The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:33
@@ -9879,9 +9350,7 @@ msgid "The following steps will be done by this update:"
 msgstr "Jawapan berikut perlu dipadam"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:34
-msgid ""
-"Your LimeSurvey installation is checked if the update can be run "
-"successfully."
+msgid "Your LimeSurvey installation is checked if the update can be run successfully."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:35
@@ -9901,9 +9370,7 @@ msgid "Checking basic requirements..."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:40
-msgid ""
-"You need an update key to run the comfort update. During the beta test of "
-"this update feature the key \"LIMESURVEYUPDATE\" can be used."
+msgid "You need an update key to run the comfort update. During the beta test of this update feature the key \"LIMESURVEYUPDATE\" can be used."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:41
@@ -9927,8 +9394,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:54
 #, php-format
-msgid ""
-"Version file is not writable (%s). Please set according file permissions."
+msgid "Version file is not writable (%s). Please set according file permissions."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:57
@@ -9937,9 +9403,7 @@ msgid "Change log"
 msgstr "Batal"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:92
-msgid ""
-"When checking your installation we found one or more problems. Please check "
-"for any error messages above and fix these before you can proceed."
+msgid "When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:94
@@ -9970,9 +9434,7 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:274
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:348
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:356
-msgid ""
-"On requesting the update information from limesurvey.org there has been an "
-"error:"
+msgid "On requesting the update information from limesurvey.org there has been an error:"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:154
@@ -9988,9 +9450,7 @@ msgid "Update server busy"
 msgstr "Mengemaskini Kumpulan Pengguna"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:168
-msgid ""
-"The update server seems to be currently busy . This happens most likely if "
-"the necessary update files for a new version are prepared."
+msgid "The update server seems to be currently busy . This happens most likely if the necessary update files for a new version are prepared."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:169
@@ -10007,40 +9467,28 @@ msgid "Checking existing LimeSurvey files..."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:201
-msgid ""
-"Warning: The following files/directories need to be updated but their "
-"permissions are set to read-only."
+msgid "Warning: The following files/directories need to be updated but their permissions are set to read-only."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:202
-msgid ""
-"You must set according write permissions on these filese before you can "
-"proceed. If you are unsure what to do please contact your system "
-"administrator for advice."
+msgid "You must set according write permissions on these filese before you can proceed. If you are unsure what to do please contact your system administrator for advice."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:214
-msgid ""
-"The following files would be added by the update but already exist. This is "
-"very unusual and may be co-incidental."
+msgid "The following files would be added by the update but already exist. This is very unusual and may be co-incidental."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:215
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:228
-msgid ""
-"We recommend that these files should be replaced by the update procedure."
+msgid "We recommend that these files should be replaced by the update procedure."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:227
-msgid ""
-"The following files will be modified or deleted but were already modified by "
-"someone else."
+msgid "The following files will be modified or deleted but were already modified by someone else."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:240
-msgid ""
-"When checking your file permissions we found one or more problems. Please "
-"check for any error messages above and fix these before you can proceed."
+msgid "When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:246
@@ -10080,9 +9528,7 @@ msgid "No DB backup created:"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:330
-msgid ""
-"Database backup functionality is currently not available for your database "
-"type. Before proceeding please backup your database using a backup tool!"
+msgid "Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:333
@@ -10100,9 +9546,7 @@ msgid "New files were successfully installed."
 msgstr "Kajian anda telah berjaya disimpan."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:436
-msgid ""
-"There was a problem downloading the update file. Please try to restart the "
-"update process."
+msgid "There was a problem downloading the update file. Please try to restart the update process."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:456
@@ -10132,34 +9576,16 @@ msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
 msgstr "Sila baca dengan teliti sebelum bermula"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:29
-msgid ""
-"In an active survey, a table is created to store all the data-entry records."
-msgstr ""
-"Dalam kajian yang aktif, sebuah jadual yang dibuat untuk menyimpan semua "
-"rekood kemasukan-data."
+msgid "In an active survey, a table is created to store all the data-entry records."
+msgstr "Dalam kajian yang aktif, sebuah jadual yang dibuat untuk menyimpan semua rekood kemasukan-data."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:30
-msgid ""
-"When you deactivate a survey all the data entered in the original table will "
-"be moved elsewhere, and when you activate the survey again, the table will "
-"be empty. You will not be able to access this data using LimeSurvey any more."
-msgstr ""
-"Apabila anda mematikan sebuah kajian semua data yang dimasukkan dalam jadual "
-"asal akan dipindahkan kei tempat lain, dan ketika anda mengaktifkan kajian "
-"semula, jadual akan dikosongkan. Anda tidak akan boleh mengakses data "
-"menggunakan LimeSurvey lagi."
+msgid "When you deactivate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
+msgstr "Apabila anda mematikan sebuah kajian semua data yang dimasukkan dalam jadual asal akan dipindahkan kei tempat lain, dan ketika anda mengaktifkan kajian semula, jadual akan dikosongkan. Anda tidak akan boleh mengakses data menggunakan LimeSurvey lagi."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:31
-msgid ""
-"Deactivated survey data can only be accessed by system administrators using "
-"a Database data access tool like phpmyadmin. If your survey uses tokens, "
-"this table will also be renamed and will only be accessible by system "
-"administrators."
-msgstr ""
-"Menyah-aktifkan  data kajian hanya boleh dicapai oleh pentadbir sistem "
-"menggunakan alat data akses  pangkalan data seperti phpmyadmin. Jika kajian "
-"anda menggunakan token, jadual ini juga akan berganti nama dan hanya akan "
-"boleh dicapai oleh pentadbir sistem."
+msgid "Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
+msgstr "Menyah-aktifkan  data kajian hanya boleh dicapai oleh pentadbir sistem menggunakan alat data akses  pangkalan data seperti phpmyadmin. Jika kajian anda menggunakan token, jadual ini juga akan berganti nama dan hanya akan boleh dicapai oleh pentadbir sistem."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:32
 msgid "Your responses table will be renamed to:"
@@ -10182,23 +9608,15 @@ msgid "The responses to this survey are no longer available using LimeSurvey."
 msgstr "Jawapan kajian ini tiada lagi tersedia melalui LimeSurvey."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:117
-msgid ""
-"You should note the name of this table in case you need to access this "
-"information later."
-msgstr ""
-"Anda perlu mencatat nama jadual ini jika anda perlukan untuk mengakses "
-"maklumat ini kemudian."
+msgid "You should note the name of this table in case you need to access this information later."
+msgstr "Anda perlu mencatat nama jadual ini jika anda perlukan untuk mengakses maklumat ini kemudian."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:120
 msgid "The tokens table associated with this survey has been renamed to: "
-msgstr ""
-"Jadual token yang berkaitan dengan kajian ini telah diubah namanya menjadi:"
+msgstr "Jadual token yang berkaitan dengan kajian ini telah diubah namanya menjadi:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:122
-msgid ""
-"Note: If you deactivated this survey in error, it is possible to restore "
-"this data easily if you do not make any changes to the survey structure. See "
-"the LimeSurvey documentation for further details"
+msgid "Note: If you deactivated this survey in error, it is possible to restore this data easily if you do not make any changes to the survey structure. See the LimeSurvey documentation for further details"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:69
@@ -10220,23 +9638,15 @@ msgstr "Pertanyaan ini memerlukan label set, tetapi tidak ada yang ditetapkan."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:125
 msgid "This question requires a second Labelset, but none is set."
-msgstr ""
-"Soalan ini memerlukan label set kedua, tetapi tidak ada yang ditetapkan."
+msgstr "Soalan ini memerlukan label set kedua, tetapi tidak ada yang ditetapkan."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:143
-msgid ""
-"The labelset used in this question does not exists or is missing a "
-"translation."
-msgstr ""
-"Set label yang digunakan untuk soalan ini tidak wujud atau hilang terjemahan."
+msgid "The labelset used in this question does not exists or is missing a translation."
+msgstr "Set label yang digunakan untuk soalan ini tidak wujud atau hilang terjemahan."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:199
-msgid ""
-"This question has a condition set, however the condition is based on a "
-"question that appears after it."
-msgstr ""
-"Soalan ini mempunyai set syarat, walau bagaimanapun syarat adalah tertakluk "
-"pada soalan yang seterusnya."
+msgid "This question has a condition set, however the condition is based on a question that appears after it."
+msgstr "Soalan ini mempunyai set syarat, walau bagaimanapun syarat adalah tertakluk pada soalan yang seterusnya."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:232
 msgid "Survey does not pass consistency check"
@@ -10251,12 +9661,8 @@ msgid "The survey cannot be activated until these problems have been resolved."
 msgstr "Kajian tidak dapat diaktifkan sehingga masalah diselesaikan."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:263
-msgid ""
-"You should only activate a survey when you are absolutely certain that your "
-"survey setup is finished and will not need changing."
-msgstr ""
-"Anda hanya boleh mengaktifkan kajian bila telah pasti tiada perubahan akan "
-"dilakukan."
+msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
+msgstr "Anda hanya boleh mengaktifkan kajian bila telah pasti tiada perubahan akan dilakukan."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:264
 msgid "Once a survey is activated you can no longer:"
@@ -10287,12 +9693,8 @@ msgid "Edit (change) your group names"
 msgstr "Edit (ubah) nama kumpulan anda"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:265
-msgid ""
-"Add, Remove or Edit pre-defined question answers (except for Multi-answer "
-"questions)"
-msgstr ""
-"Menambah, memadam atau mengedit jawapan untuk soalan yang telah di pra-"
-"tetap  (kecuali untuk soalan jawapan pelbagai)"
+msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
+msgstr "Menambah, memadam atau mengedit jawapan untuk soalan yang telah di pra-tetap  (kecuali untuk soalan jawapan pelbagai)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:265
 msgid "Change survey name or description"
@@ -10300,15 +9702,8 @@ msgstr "Menukar nama soalselidik atau penerangan"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:266
 #, fuzzy
-msgid ""
-"Once data has been entered into this survey, if you want to add or remove "
-"groups or questions, you will need to deactivate this survey, which will "
-"move all data that has already been entered into a separate archived table."
-msgstr ""
-"Bila data telah dimasukkan dalam kajian ini, jika anda ingin menambah atau "
-"mengubah kumpulan atau soalan, anda perlu menyah-aktifkan kajian, dimana "
-"semua data yang telah dimasukkan akan dipindahkan ke jadual arkib yang "
-"berasingan."
+msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to deactivate this survey, which will move all data that has already been entered into a separate archived table."
+msgstr "Bila data telah dimasukkan dalam kajian ini, jika anda ingin menambah atau mengubah kumpulan atau soalan, anda perlu menyah-aktifkan kajian, dimana semua data yang telah dimasukkan akan dipindahkan ke jadual arkib yang berasingan."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:526
 msgid "Survey could not be actived."
@@ -10324,10 +9719,8 @@ msgid "Survey has been activated. Results table has been successfully created."
 msgstr "Kajian telah diaktifkan.  Jadual keputusan telah berjaya dicipta."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:571
-msgid ""
-"This survey allows public registration. A token table must also be created."
-msgstr ""
-"Kajian ini membenarkan pendaftaran awam.  Jadual token perlu diwujudkan."
+msgid "This survey allows public registration. A token table must also be created."
+msgstr "Kajian ini membenarkan pendaftaran awam.  Jadual token perlu diwujudkan."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:572
 msgid "Initialise Tokens"
@@ -10346,12 +9739,8 @@ msgid "No invitation code is needed to complete the survey."
 msgstr "Tiada kod jemputan diperlukan untuk melengkapkan kajian."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:577
-msgid ""
-"You can switch to the closed-access mode by initialising a token table with "
-"the button below."
-msgstr ""
-"Anda boleh beralih ke mod akses tertutup dengan meng- inisialisasikan jadual "
-"token menggunakan butang di bawah ini."
+msgid "You can switch to the closed-access mode by initialising a token table with the button below."
+msgstr "Anda boleh beralih ke mod akses tertutup dengan meng- inisialisasikan jadual token menggunakan butang di bawah ini."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:578
 msgid "Switch to closed-access mode"
@@ -10381,27 +9770,18 @@ msgid "Template %s not found, please review when activating."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:797
-msgid ""
-"A group in the CSV/SQL file is not part of the same survey. The import of "
-"the survey was stopped."
-msgstr ""
-"Satu kumpulan dalam fail CSV / SQL  bukan dari bahagian  kajian yang sama. "
-"Import dari kajian itu dihentikan."
+msgid "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
+msgstr "Satu kumpulan dalam fail CSV / SQL  bukan dari bahagian  kajian yang sama. Import dari kajian itu dihentikan."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:862
 #, php-format
-msgid ""
-"Question \"%s - %s\" was NOT imported because the question type is unknown."
+msgid "Question \"%s - %s\" was NOT imported because the question type is unknown."
 msgstr "Soalan \"%s - %s\" TIDAK diimpot kerana jenis soalan tidak diketahui."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:868
 #, php-format
-msgid ""
-"Question \"%s - %s\" was imported but the type was set to '%s' because it is "
-"the most similiar one."
-msgstr ""
-"Soalan \"%s - %s\" telah diimpot tetapi jenis telah ditetapkan pada '%s' "
-"kerana ia paling hampir."
+msgid "Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."
+msgstr "Soalan \"%s - %s\" telah diimpot tetapi jenis telah ditetapkan pada '%s' kerana ia paling hampir."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1282
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:835
@@ -10432,12 +9812,8 @@ msgstr "Set label tidak diimpot"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1401
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1428
-msgid ""
-"(Label Sets were not imported since you do not have the permission to create "
-"new label sets.)"
-msgstr ""
-"(Set Label  tidak diimport kerana anda tidak dibenarkan untuk membuat set "
-"label baru .)"
+msgid "(Label Sets were not imported since you do not have the permission to create new label sets.)"
+msgstr "(Set Label  tidak diimport kerana anda tidak dibenarkan untuk membuat set label baru .)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1403
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1429
@@ -10469,11 +9845,13 @@ msgstr "Pergi ke kajian "
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:86
 msgid ""
-"Group could not be added.\\n\\nIt is missing the group name for the "
-"following languages"
+"Group could not be added.\\n"
+"\\n"
+"It is missing the group name for the following languages"
 msgstr ""
-"Kumpulan tidak boleh di tambah.\\n\\nTelah terdapat kehilangan nama kumpulan "
-"dari bahasa-bahasa berikut"
+"Kumpulan tidak boleh di tambah.\\n"
+"\\n"
+"Telah terdapat kehilangan nama kumpulan dari bahasa-bahasa berikut"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:128
 msgid "Error: The database reported the following error:"
@@ -10490,9 +9868,7 @@ msgid "Group could not be deleted"
 msgstr "Kumpulan tidak boleh dipadam"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:254
-msgid ""
-"The question could not be added. You must enter at least enter a question "
-"code."
+msgid "The question could not be added. You must enter at least enter a question code."
 msgstr "Jawapan tidak boleh ditambah. Sila masukkan kod soalan."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:316
@@ -10507,16 +9883,8 @@ msgid "Question could not be created."
 msgstr "Soalan tidak boleh dicipta."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:474
-msgid ""
-"Question could not be updated. There are conditions for other questions that "
-"rely on the answers to this question and changing the type will cause "
-"problems. You must delete these conditions before you can change the type of "
-"this question."
-msgstr ""
-"Soalan tidak boleh dikemaskini. Ada kondisi untuk soalan lain yang "
-"bergantung pada jawapan atas soalan ini dan menukar jenis akan menimbulkan "
-"masalah. Anda mesti menghapuskan keadaan ini sebelum anda boleh menukar "
-"jenis soalan ini."
+msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
+msgstr "Soalan tidak boleh dikemaskini. Ada kondisi untuk soalan lain yang bergantung pada jawapan atas soalan ini dan menukar jenis akan menimbulkan masalah. Anda mesti menghapuskan keadaan ini sebelum anda boleh menukar jenis soalan ini."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:557
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:615
@@ -10528,12 +9896,8 @@ msgid "Answers can't be deleted"
 msgstr "Jawapan tidak boleh dipadam"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:587
-msgid ""
-"This question relies on other question's answers and can't be moved above "
-"groupId:"
-msgstr ""
-"Soalan ini bergantung pada jawapan soalan lain dan tidak boleh dipindahkan "
-"atas groupId:"
+msgid "This question relies on other question's answers and can't be moved above groupId:"
+msgstr "Soalan ini bergantung pada jawapan soalan lain dan tidak boleh dipindahkan atas groupId:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:588
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:600
@@ -10546,28 +9910,16 @@ msgid "See conditions:"
 msgstr "Lihat kondisi:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:599
-msgid ""
-"Some questions rely on this question's answers. You can't move this question "
-"below groupId:"
-msgstr ""
-"Beberapa soalan bergantung pada jawapan soalan ini. Anda tidak boleh "
-"memindahkan soalan ini di bawah groupId:"
+msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
+msgstr "Beberapa soalan bergantung pada jawapan soalan ini. Anda tidak boleh memindahkan soalan ini di bawah groupId:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:625
-msgid ""
-"Question could not be added. You must insert a code in the mandatory field"
-msgstr ""
-"Soalan tidak boleh ditambah. Anda perlu memasukkan kod di ruang yang wajib "
+msgid "Question could not be added. You must insert a code in the mandatory field"
+msgstr "Soalan tidak boleh ditambah. Anda perlu memasukkan kod di ruang yang wajib "
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:759
-msgid ""
-"Question could not be deleted. There are conditions for other questions that "
-"rely on this question. You cannot delete this question until those "
-"conditions are removed"
-msgstr ""
-"Soalan tidak boleh dipadam. Ada kondisi untuk soalan lain yang bergantung "
-"pada soalan ini. Anda tidak boleh memadam soalan ini sampai kondisi tersebut "
-"dipadam"
+msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
+msgstr "Soalan tidak boleh dipadam. Ada kondisi untuk soalan lain yang bergantung pada soalan ini. Anda tidak boleh memadam soalan ini sampai kondisi tersebut dipadam"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:784
 msgid "Question could not be deleted"
@@ -10575,9 +9927,7 @@ msgstr "Soalan tidak boleh dipadam"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:816
 msgid "Error adding answer: You can't use the same answer code more than once."
-msgstr ""
-"Ralat penambahan jawapan: Anda tidak boleh menggunakan kod jawapan yang sama "
-"lebih daripada sekali."
+msgstr "Ralat penambahan jawapan: Anda tidak boleh menggunakan kod jawapan yang sama lebih daripada sekali."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:843
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:868
@@ -10593,12 +9943,8 @@ msgid "Failed to update answers"
 msgstr "Gagal untuk mengemaskini jawapan"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:969
-msgid ""
-"Answers with a code of 0 (zero) or blank code are not allowed, and will not "
-"be saved"
-msgstr ""
-"Jawapan dengan kod dari 0 (sifar) atau kod kosong tidak dibenarkan, dan "
-"tidak akan disimpan"
+msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
+msgstr "Jawapan dengan kod dari 0 (sifar) atau kod kosong tidak dibenarkan, dan tidak akan disimpan"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:970
 msgid "Duplicate codes found, these entries won't be updated"
@@ -10750,14 +10096,8 @@ msgid "Current group is using conditional questions"
 msgstr "Kumpulan sekarang menggunakan soalan berkondisi"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:585
-msgid ""
-"Re-ordering questions in this group is restricted to ensure that questions "
-"on which conditions are based aren't reordered after questions having the "
-"conditions set"
-msgstr ""
-"Penyusunan semula soalan dalam kumpulan ini adalah dihalang untuk memastikan "
-"soalan berdasarkan kondisi tidak berubah selepas soalan yang mempunyai set "
-"kondisi"
+msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "Penyusunan semula soalan dalam kumpulan ini adalah dihalang untuk memastikan soalan berdasarkan kondisi tidak berubah selepas soalan yang mempunyai set kondisi"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:585
 msgid "See the conditions marked on the following questions"
@@ -10910,31 +10250,17 @@ msgid "Security alert"
 msgstr "Peringatan Keselamatan"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:118
-msgid ""
-"Someone may be trying to use your LimeSurvey session (CSRF attack "
-"suspected). If you just clicked on a malicious link, please report this to "
-"your system administrator."
-msgstr ""
-"Ada cubaan menggunakan sesi LimeSurvey anda (Serangan CSRF  disyaki). Jika "
-"anda baru melawati pautan meragukan, sila buat aduan kepada pentadbir sistem "
-"anda."
+msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
+msgstr "Ada cubaan menggunakan sesi LimeSurvey anda (Serangan CSRF  disyaki). Jika anda baru melawati pautan meragukan, sila buat aduan kepada pentadbir sistem anda."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:118
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:123
-msgid ""
-"Also this problem can occur when you are working/editing in LimeSurvey in "
-"several browser windows/tabs at the same time."
+msgid "Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:123
-msgid ""
-"Someone may be trying to use your LimeSurvey session by using dangerous GET "
-"requests (CSRF attack suspected). If you just clicked on a malicious link, "
-"please report this to your system administrator."
-msgstr ""
-"Ada cubaan menggunakan sesi LimeSurvey anda  menggunakan permintaan GET "
-"merbahaya (Serangan CSRF  disyaki). Jika anda baru melawati pautan "
-"meragukan, sila buat aduan kepada pentadbir sistem anda."
+msgid "Someone may be trying to use your LimeSurvey session by using dangerous GET requests (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
+msgstr "Ada cubaan menggunakan sesi LimeSurvey anda  menggunakan permintaan GET merbahaya (Serangan CSRF  disyaki). Jika anda baru melawati pautan meragukan, sila buat aduan kepada pentadbir sistem anda."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:128
 msgid "You are not allowed to perform this operation!"
@@ -10993,12 +10319,8 @@ msgid "You logged in successfully."
 msgstr "Anda berjaya login."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:173
-msgid ""
-"LimeSurvey is setup to use the webserver authentication, but it seems you "
-"have not already been authenticated"
-msgstr ""
-"LimeSurvey dikonfigurasikan untuk menggunakan pengesahan pelayan web, tetapi "
-"tampaknya anda belum disahkan"
+msgid "LimeSurvey is setup to use the webserver authentication, but it seems you have not already been authenticated"
+msgstr "LimeSurvey dikonfigurasikan untuk menggunakan pengesahan pelayan web, tetapi tampaknya anda belum disahkan"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:174
 msgid "Please contact your system administrator"
@@ -11036,17 +10358,12 @@ msgstr "Selamat Datang %s,"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:361
 #, php-format
-msgid ""
-"this is an automated email to notify that a user has been created for you on "
-"the site '%s'."
-msgstr ""
-"ini adalah sebuah email automatik untuk memberitahu bahawa  pengguna telah "
-"dicipta untuk anda di halaman '% s'."
+msgid "this is an automated email to notify that a user has been created for you on the site '%s'."
+msgstr "ini adalah sebuah email automatik untuk memberitahu bahawa  pengguna telah dicipta untuk anda di halaman '% s'."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:362
 msgid "You can use now the following credentials to log into the site:"
-msgstr ""
-"Sekarang anda boleh menggunakan watikah seterusnya untuk log masuk ke laman:"
+msgstr "Sekarang anda boleh menggunakan watikah seterusnya untuk log masuk ke laman:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:370
 msgid "Click here to log in."
@@ -11054,12 +10371,8 @@ msgstr "Klik sini untuk  login."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:371
 #, php-format
-msgid ""
-"If you have any questions regarding this mail please do not hesitate to "
-"contact the site administrator at %s. Thank you!"
-msgstr ""
-"Jika anda mempunyai soalan mengenai e-mel ini jangan ragu untuk menghubungi "
-"pentadbir halaman di % s. Terima kasih!"
+msgid "If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!"
+msgstr "Jika anda mempunyai soalan mengenai e-mel ini jangan ragu untuk menghubungi pentadbir halaman di % s. Terima kasih!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:373
 #, php-format
@@ -11141,11 +10454,13 @@ msgstr "Adakah anda mahu menyimpan perubahan yang dilakukan?"
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:306
 #, fuzzy
 msgid ""
-"Quota could not be added.\\n\\nIt is missing a quota message for the "
-"following languages"
+"Quota could not be added.\\n"
+"\\n"
+"It is missing a quota message for the following languages"
 msgstr ""
-"Kumpulan tidak boleh di tambah.\\n\\nTelah terdapat kehilangan nama kumpulan "
-"dari bahasa-bahasa berikut"
+"Kumpulan tidak boleh di tambah.\\n"
+"\\n"
+"Telah terdapat kehilangan nama kumpulan dari bahasa-bahasa berikut"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:394
 msgid "Modify Quota"
@@ -11303,15 +10618,8 @@ msgid "Terminate survey with warning"
 msgstr "Padam kajian dengan amaran"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:46
-msgid ""
-"Data for username and one time password was received but the usage of one "
-"time passwords is disabled at your configuration settings. Please add the "
-"following line to config.php to enable one time passwords: "
-msgstr ""
-"Data untuk kata nama dan kata kunci sekali guna diterima tetapi penggunaan "
-"kata kunci sekali guna telah dinyahdayakan pada aturan konfigurasi anda.Sila "
-"tambah baris berikut ke config.php untuk mengaktifkan penggunaan kata kunci "
-"sekali guna:"
+msgid "Data for username and one time password was received but the usage of one time passwords is disabled at your configuration settings. Please add the following line to config.php to enable one time passwords: "
+msgstr "Data untuk kata nama dan kata kunci sekali guna diterima tetapi penggunaan kata kunci sekali guna telah dinyahdayakan pada aturan konfigurasi anda.Sila tambah baris berikut ke config.php untuk mengaktifkan penggunaan kata kunci sekali guna:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:64
 #, fuzzy, php-format
@@ -11321,8 +10629,7 @@ msgstr "Tiada kata kunci sekali guna dijumpai untuk pengguna"
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:77
 #, fuzzy, php-format
 msgid "Passed one time password doesn't match one time password for user %s"
-msgstr ""
-"Kata kunci sekali pakai tidak sepadan dengan kata kunci sekali pakai pengguna"
+msgstr "Kata kunci sekali pakai tidak sepadan dengan kata kunci sekali pakai pengguna"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:144
 msgid "You have to enter user name and email."
@@ -11444,14 +10751,8 @@ msgid "Help"
 msgstr "Bantuan"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:297
-msgid ""
-"Your survey contains more than 255 columns of responses. Spreadsheet "
-"applications such as Excel are limited to loading no more than 255. Select "
-"the columns you wish to export in the list below."
-msgstr ""
-"Kajian anda mengandungi lebih dari 255 kolom jawapan. Aplikasi spreadsheet "
-"seperti Excel dihadkan untuk memuatkan tidak lebih daripada 255. Pilih kolom "
-"yang ingin anda ekspot dari senarai di bawah ini."
+msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
+msgstr "Kajian anda mengandungi lebih dari 255 kolom jawapan. Aplikasi spreadsheet seperti Excel dihadkan untuk memuatkan tidak lebih daripada 255. Pilih kolom yang ingin anda ekspot dari senarai di bawah ini."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:303
 msgid "Choose the columns you wish to export."
@@ -11466,12 +10767,8 @@ msgid "Choose Token Fields"
 msgstr "Pilih bidang token"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:335
-msgid ""
-"Your survey can export associated token data with each response. Select any "
-"additional fields you would like to export."
-msgstr ""
-"Kajian anda boleh mengekspot data yang berkaitan dengan setiap jawapan. "
-"Pilih bidang  tambahan yang ingin anda ekspot."
+msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
+msgstr "Kajian anda boleh mengekspot data yang berkaitan dengan setiap jawapan. Pilih bidang  tambahan yang ingin anda ekspot."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:356
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:134
@@ -11514,8 +10811,7 @@ msgid "Return to Labels Admin"
 msgstr "Kembali ke Pentadbir label"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:201
-msgid ""
-"The label set was not imported because the same labelset already exists."
+msgid "The label set was not imported because the same labelset already exists."
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:209
@@ -11577,11 +10873,8 @@ msgid "A database named \"%s\" already exists."
 msgstr "Pangkalan data bertajuk  \"%s\" telah wujud."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/index.php:55
-msgid ""
-"Do you want to populate that database now by creating the necessary tables?"
-msgstr ""
-"Adakah anda ingin mengisi pangkalan data sekarang dengan mencipta jadual-"
-"jadual yang berkenaan?"
+msgid "Do you want to populate that database now by creating the necessary tables?"
+msgstr "Adakah anda ingin mengisi pangkalan data sekarang dengan mencipta jadual-jadual yang berkenaan?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/createdb.php:43
 #, php-format
@@ -11589,12 +10882,8 @@ msgid "Database `%s` has been successfully populated."
 msgstr "Pangakalan data `%s` telah berjaya diisi."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/createdb.php:58
-msgid ""
-"Database Information not provided. This script must be run from admin.php "
-"only."
-msgstr ""
-"Maklumat pangkalan data tidak diberi.  Skrip ini perlu dijalankan dari admin."
-"php sahaja."
+msgid "Database Information not provided. This script must be run from admin.php only."
+msgstr "Maklumat pangkalan data tidak diberi.  Skrip ini perlu dijalankan dari admin.php sahaja."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/createdb.php:84
 msgid "Database has been created."
@@ -11650,12 +10939,8 @@ msgid "Open the syntax file in SPSS in Unicode mode"
 msgstr "Buka fail sintaks SPSS dalam mod Unicode"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:141
-msgid ""
-"Edit the 4th line and complete the filename with a full path to the "
-"downloaded data file."
-msgstr ""
-"Edit baris ke-4 dan lengkakani nama fail dengan jalur lengkap ke fail data "
-"yang dimuat turun."
+msgid "Edit the 4th line and complete the filename with a full path to the downloaded data file."
+msgstr "Edit baris ke-4 dan lengkakani nama fail dengan jalur lengkap ke fail data yang dimuat turun."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:142
 msgid "Choose 'Run/All' from the menu to run the import."

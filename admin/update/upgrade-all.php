@@ -1,17 +1,17 @@
 <?PHP
 /*
- * LimeSurvey
- * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- * $Id: upgrade-mssql.php 7556 2009-09-01 23:48:37Z c_schmitz $
- */
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+* $Id: upgrade-mssql.php 7556 2009-09-01 23:48:37Z c_schmitz $
+*/
 
 // There will be a file for each database (accordingly named to the dbADO scheme)
 // where based on the current database version the database is upgraded
@@ -118,7 +118,7 @@ function upgrade_survey_table145()
         $oLanguage = new limesurvey_lang($aSurveyRow['surveyls_language']);
         $aDefaultTexts=aTemplateDefaultTexts($oLanguage,'unescaped');
         unset($oLanguage);
-        $aDefaultTexts['admin_detailed_notification_subject']=$aDefaultTexts['admin_detailed_notification'].$aDefaultTexts['admin_detailed_notification_css'];
+        $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification'].$aDefaultTexts['admin_detailed_notification_css'];
         $aDefaultTexts=array_map('db_quoteall',$aDefaultTexts);
         $sSurveyUpdateQuery= "update ".db_table_name('surveys_languagesettings')." set
                               email_admin_responses_subj={$aDefaultTexts['admin_detailed_notification_subject']},

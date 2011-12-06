@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Finnish language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-13 07:00+0100\n"
-"PO-Revision-Date: 2010-03-12 10:59+0200\n"
-"Last-Translator: Tapio Nurminen <tapio.nurminen@tietokannat.fi>\n"
+"PO-Revision-Date: 2011-11-17 17:15+0100\n"
+"Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -13,7 +13,8 @@ msgstr ""
 "X-Poedit-Language: finnish\n"
 "X-Poedit-Country: FINLAND\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-KeywordsList: gT\n"
+"X-Poedit-KeywordsList: gT;ngT:1,2\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Poedit-SearchPath-0: D:\\web\\xampp\\htdocs\\limesurvey\n"
 
 #: /var/lib/limesurvey-svn/subversion1x/question.php:40
@@ -10617,22 +10618,29 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Export result to a SPSS/PASW command file"
 #~ msgstr "Vie tulokset SPSS-komentotiedostomuotoon (syntaksitiedosto)."
+
 #~ msgid "%d responses for this survey"
 #~ msgstr "%d tutkimukseen vastanneet"
+
 #~ msgid "%d full responses"
 #~ msgstr "%d kaikki vastanneet"
+
 #~ msgid "%d responses not completely filled out"
 #~ msgstr "%d vastaajat"
+
 #~ msgid "Export SPSS syntax file"
 #~ msgstr "Tallenna tulokset SPSS-syntax formaatissa"
+
 #~ msgid "Export SPSS data file"
 #~ msgstr "Tallenna tulokset SPSS-formaatissa"
 
 #, fuzzy
 #~ msgid "Deactivated surveys"
 #~ msgstr "Suljetut tutkimukset"
+
 #~ msgid "Set Name"
 #~ msgstr "Aseta nimi"
+
 #~ msgid "answers:"
 #~ msgstr "vastaukset:"
 
@@ -10647,6 +10655,7 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Logged in as"
 #~ msgstr "Kirjautunut sisään tunnuksella"
+
 #~ msgid "Check Settings"
 #~ msgstr "Tarkista Asetukset"
 
@@ -10661,11 +10670,14 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Long free text"
 #~ msgstr "Pitkä vapaa teksti"
+
 #~ msgid ""
 #~ "It appears as if some tables or fields are missing from your database."
 #~ msgstr "Joitain taulukoita tai kenttiä näyttää puuttuvan tietokannastasi."
+
 #~ msgid "Check Database Fields"
 #~ msgstr "Tarkista tietokannan kentät"
+
 #~ msgid "Return to Survey Administration"
 #~ msgstr "Palaa tutkimuksen hallintaan"
 
@@ -10676,6 +10688,7 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "submit"
 #~ msgstr "Lähetä"
+
 #~ msgid "Save Survey and Return"
 #~ msgstr "Tallena Kysely ja Palaa"
 
@@ -10689,6 +10702,7 @@ msgstr "Kyselyn tilastot #%s"
 #~ "your connection."
 #~ msgstr ""
 #~ "Joko olet ollut toimettomana liian kauan tai yhteydessäsi oli ongelmia."
+
 #~ msgid "Please contact"
 #~ msgstr "Yhteyshenkilönä toimiva"
 
@@ -10707,6 +10721,7 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "complete"
 #~ msgstr "Valmis"
+
 #~ msgid "prev"
 #~ msgstr "Edellinen"
 
@@ -10721,18 +10736,23 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Check at most"
 #~ msgstr "Valitse korkeintaan %d vastausta"
+
 #~ msgid "answers"
 #~ msgstr "vastaukset"
 
 #, fuzzy
 #~ msgid "Please check at least one item"
 #~ msgstr "Valitse vähintään yksi"
+
 #~ msgid "Format: YYYY-MM-DD"
 #~ msgstr "Muoto: VVVV-KK-PP"
+
 #~ msgid "(eg: 2003-12-25 for Christmas day)"
 #~ msgstr "(esim: 2003-12-25)"
+
 #~ msgid "Please choose one of the following"
 #~ msgstr "Valitse yksi seuraavista"
+
 #~ msgid "Click on an item in the list on the left, starting with your"
 #~ msgstr ""
 #~ "Klikkaa vasemmalla olevan listan kohtia tärkeysjärjestyksessä, aloittaen"
@@ -10746,8 +10766,10 @@ msgstr "Kyselyn tilastot #%s"
 #~ msgstr ""
 #~ "Klikkaamalla saksi-ikonia vaihtoehdon kohdalla saat vaihtoehdon pois "
 #~ "listalta."
+
 #~ msgid "to remove the last entry in your ranked list"
 #~ msgstr "voit poistaa listan viimeisen kohdan"
+
 #~ msgid "Please choose at most"
 #~ msgstr "Valitse enintään"
 
@@ -10780,6 +10802,7 @@ msgstr "Kyselyn tilastot #%s"
 #~ msgstr ""
 #~ "Tämä kysely sallii julkisen rekisteröitymisen. Tunnistetaulukko täytyy "
 #~ "myös luoda."
+
 #~ msgid ""
 #~ "If you create any assessments in this page, for the currently selected "
 #~ "survey, the assessment will be performed at the end of the survey after "
@@ -10787,16 +10810,20 @@ msgstr "Kyselyn tilastot #%s"
 #~ msgstr ""
 #~ "Jos teet arvioita kyselystä tälle sivulle, ne toteutetaan kyselyn loppuun "
 #~ "esityksen jälkeen"
+
 #~ msgid "Are you sure you want to delete this entry."
 #~ msgstr "Haluatko varmasti poistaa tämän merkinnän."
 
 #, fuzzy
 #~ msgid "The defined surveyor database does not exist"
 #~ msgstr "Määritettyä tarkastustietokantaa ei ole"
+
 #~ msgid "Filter incomplete answers:"
 #~ msgstr "Suodata keskeneräiset vastaukset:"
+
 #~ msgid "Enable"
 #~ msgstr "Salli"
+
 #~ msgid "Disable"
 #~ msgstr "Estä"
 
@@ -10811,8 +10838,10 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Condition Designer"
 #~ msgstr "Ehtojen suunnittelu"
+
 #~ msgid "You have not selected a Survey."
 #~ msgstr "Et ole valinnut kyselyä."
+
 #~ msgid "You cannot run this script directly."
 #~ msgstr "Et voi käynnistää tätä skriptiä suoraan."
 
@@ -10823,6 +10852,7 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Copy Conditions"
 #~ msgstr "Kopioi ehtoja"
+
 #~ msgid "copy to"
 #~ msgstr "kopioi"
 
@@ -10834,6 +10864,7 @@ msgstr "Kyselyn tilastot #%s"
 #~ msgid ""
 #~ "Answer could not be added. You must insert a code in the mandatory field"
 #~ msgstr "Vastausta ei voitu lisätä. Kirjoita koodi pakolliseen kenttään (%s)"
+
 #~ msgid "Save All"
 #~ msgstr "Tallenna Kaikki"
 
@@ -10846,8 +10877,10 @@ msgstr "Kyselyn tilastot #%s"
 #~ "There is already a recorded answer for this token, follow the following "
 #~ "link to update it"
 #~ msgstr "Tälle tunnisteelle on jo tallennettu vastaus"
+
 #~ msgid "Your survey responses have been saved succesfully"
 #~ msgstr "Vastauksesi on tallennettu"
+
 #~ msgid ""
 #~ "You, someone using your email address, or the administrator has saved a "
 #~ "survey in progress. The following details can be used to return to this "
@@ -10860,8 +10893,10 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Editing Response"
 #~ msgstr "Vastausta muokataan"
+
 #~ msgid "Answer could not be added. There is already an answer with this code"
 #~ msgstr "Vastausta ei voitu lisätä. Tällä koodilla on jo vastaus"
+
 #~ msgid ""
 #~ "Answer could not be updated. There is already an answer with this code"
 #~ msgstr "Vastausta ei voitu päivittää. Tällä koodilla on jo vastaus"
@@ -10896,6 +10931,7 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Survey Has Been De-Activated"
 #~ msgstr "Kysely on suljettu"
+
 #~ msgid "Export Responses"
 #~ msgstr "Vie vastaukset"
 
@@ -10906,49 +10942,67 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Single Response"
 #~ msgstr "Yksittäinen vastaus"
+
 #~ msgid "Columns"
 #~ msgstr "Sarakkeet"
 
 #, fuzzy
 #~ msgid "Question Codes"
 #~ msgstr "Kysymyskoodit"
+
 #~ msgid "Filter incomplete answers"
 #~ msgstr "Suodata keskeneräiset vastaukset"
 
 #, fuzzy
 #~ msgid "Microsoft Excel (Latin charset)"
 #~ msgstr "Microsoft Word (Roomalainen merkistö)"
+
 #~ msgid "CSV File (UTF-8 charset - use this for non-latin languages)"
 #~ msgstr ""
 #~ "CSV-tiedosto (UTF-8 merkistö - käytä tätä ei-roomalaisten kielten kanssa)"
+
 #~ msgid "Attribute 2"
 #~ msgstr "määre 2"
+
 #~ msgid "Anonymous"
 #~ msgstr "Anonyymi"
+
 #~ msgid "Not Anonymous"
 #~ msgstr "Ei Anonyymi"
+
 #~ msgid "This survey is active but expired"
 #~ msgstr "Tämä kysely on toiminnassa, mutta erääntynyt"
+
 #~ msgid "LimeSurvey System Summary"
 #~ msgstr "LimeSurvey järjestelmäyhteenveto"
+
 #~ msgid "Database Name"
 #~ msgstr "Tietokannan nimi"
+
 #~ msgid "Default Language"
 #~ msgstr "Oletuskieli"
+
 #~ msgid "Current Language"
 #~ msgstr "Nykyinen kieli"
+
 #~ msgid "Active Surveys"
 #~ msgstr "Aktiiviset tutkimukset"
+
 #~ msgid "De-activated Surveys"
 #~ msgstr "Suljetut tutkimukset"
+
 #~ msgid "Active Token Tables"
 #~ msgstr "Toimivat tunnistetaulukot"
+
 #~ msgid "De-activated Token Tables"
 #~ msgstr "Suljetut tunnistetaulukot"
+
 #~ msgid "Edit Current Survey"
 #~ msgstr "Muokkaa nykyistä kyselyä"
+
 #~ msgid "Export Current Survey"
 #~ msgstr "Vie Nykyinen Kysely"
+
 #~ msgid "Activate/Edit Tokens for this Survey"
 #~ msgstr "Aktivoi/muokkaa kyselyn tunnisteita"
 
@@ -10983,12 +11037,16 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Survey table name is"
 #~ msgstr "Kyselytaulukon nimi"
+
 #~ msgid "Edit Current Group"
 #~ msgstr "Muokkaa ryhmiä"
+
 #~ msgid "Delete Current Group"
 #~ msgstr "Poista valittu ryhmä"
+
 #~ msgid "Disabled"
 #~ msgstr "Estetty"
+
 #~ msgid "Export Current Group"
 #~ msgstr "Vie valittu ryhmä"
 
@@ -11007,6 +11065,7 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Edit Survey - Step 1 of 2"
 #~ msgstr "Muokkaa Kyselyä - Osa 1/2"
+
 #~ msgid "Use Cookies?"
 #~ msgstr "Evästeet?"
 
@@ -11017,6 +11076,7 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Token Attribute Names:"
 #~ msgstr "Tunnisteiden määreiden nimet:"
+
 #~ msgid "Expires?"
 #~ msgstr "Erääntyy?"
 
@@ -11055,38 +11115,49 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "URL Description:"
 #~ msgstr "URL-osoitteen Kuvaus:"
+
 #~ msgid "depends on group"
 #~ msgstr "riippuu ryhmästä"
 
 #, fuzzy
 #~ msgid "see the marked conditions on"
 #~ msgstr "Poistetaan ehdot"
+
 #~ msgid ""
 #~ "The uploaded file is bigger than the upload_max_filesize directive in php."
 #~ "ini"
 #~ msgstr ""
 #~ "Lataamasi tiedosto on suurempi kuin upload_max_filesize arvo php.ini "
 #~ "tiedostossa"
+
 #~ msgid "The file was only partially uploaded"
 #~ msgstr "Tiedosto lähetettiin vain osittain"
+
 #~ msgid "Error on file transfer. You must select a CSV file"
 #~ msgstr "Virhe tiedoston siirrossa. Valitse CSV-tiedosto."
 
 #, fuzzy
 #~ msgid "Date Format"
 #~ msgstr "Päiväyksen muotoilu"
+
 #~ msgid "You need to upload the file"
 #~ msgstr "Tiedosto täytyy lähettää"
+
 #~ msgid "You must upload a CSV file"
 #~ msgstr "Sinun pitää lähetää CSV-tiedosto"
+
 #~ msgid "It is impossible to upload a file other than CSV type"
 #~ msgstr "Muita kuin CSV-tiedostoja ei voi lähettää"
+
 #~ msgid "It is impossible to upload an empty file"
 #~ msgstr "Tyhjää tiedostoa ei voi lähettää"
+
 #~ msgid "Uploading CSV file"
 #~ msgstr "Lähetetään CSV-tiedosto"
+
 #~ msgid "Visualization:"
 #~ msgstr "Havainnollistus:"
+
 #~ msgid "Select the field number you would like to use for your answers:"
 #~ msgstr "Valitse se kenttänumero jota haluat käyttää vastauksissasi:"
 
@@ -11097,17 +11168,20 @@ msgstr "Kyselyn tilastot #%s"
 #~ msgstr ""
 #~ "Tiedoston lähetyksessä tapahtui virhe. Tämä voi johtua vääristä "
 #~ "oikeuksista %s-kansiossa."
+
 #~ msgid ""
 #~ "You can't import label sets which don't support the current survey's base "
 #~ "language."
 #~ msgstr ""
 #~ "Et voi tuoda tunnusryhmiä, jotka eivät ole nykyisen kyselyn kielellä."
+
 #~ msgid ""
 #~ "There was a duplicate labelset, so this set was not imported. The "
 #~ "duplicate will be used instead."
 #~ msgstr ""
 #~ "Tunnusryhmästä on kopio, joten ryhmää ei tuotu. Kopiota käytetään sen "
 #~ "sijaan."
+
 #~ msgid ""
 #~ "Import responses from an old (deactivated) survey table into an active "
 #~ "survey"
@@ -11130,6 +11204,7 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "All assessments meet consistency standards"
 #~ msgstr "Kaikki ryhmien arviot täyttävät yhtenäisyysstandardit"
+
 #~ msgid "Add New Label Set"
 #~ msgstr "Lisää uusi tunnusryhmä"
 
@@ -11145,6 +11220,7 @@ msgstr "Kyselyn tilastot #%s"
 #~ msgid "Inserting New labels must be done on the first language folder."
 #~ msgstr ""
 #~ "Uusien tunnusten lisäys pitää tehdä ensimmäisessä kielihakemistossa."
+
 #~ msgid "Fix Sort"
 #~ msgstr "Korjaa järjestys"
 
@@ -11163,14 +11239,17 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Add Question"
 #~ msgstr "Lisää kysymys"
+
 #~ msgid "Group:"
 #~ msgstr "Ryhmä:"
 
 #, fuzzy
 #~ msgid "Edit Question"
 #~ msgstr "Muokkaa kysymystä"
+
 #~ msgid "Record ID"
 #~ msgstr "Tallenteen tunniste"
+
 #~ msgid "Start Language"
 #~ msgstr "Aloituskieli"
 
@@ -11233,30 +11312,39 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Q1 and Q3 calculated using"
 #~ msgstr "Q1 ja Q3 lasketaan käyttäen %s"
+
 #~ msgid "Select all"
 #~ msgstr "Valitse kaikki"
+
 #~ msgid "Proceed"
 #~ msgstr "Jatka"
+
 #~ msgid "Question List"
 #~ msgstr "Kysymyslista"
+
 #~ msgid "Like"
 #~ msgstr "Kuten"
 
 #, fuzzy
 #~ msgid "Not Equals"
 #~ msgstr "Samanlainen"
+
 #~ msgid "Filter Conditions"
 #~ msgstr "Suodatinehdot"
+
 #~ msgid "Numerical"
 #~ msgstr "Numeerinen"
+
 #~ msgid "Huge free text"
 #~ msgstr "Suuri vapaa teksti"
+
 #~ msgid "Failed to copy"
 #~ msgstr "Kopiointi epäonnistui"
 
 #, fuzzy
 #~ msgid "to new template directory."
 #~ msgstr "Tiedoston %s kopionti uuteen näkymä hakemistoon epäonnistui."
+
 #~ msgid "Directory with the name"
 #~ msgstr "Hakemisto nimellä"
 
@@ -11275,18 +11363,23 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Submit Page"
 #~ msgstr "Lähetä"
+
 #~ msgid "This template can be modified"
 #~ msgstr "Tätä mallia voi muokata"
+
 #~ msgid "This template cannot be modified"
 #~ msgstr "Tätä mallia ei voi muokata"
 
 #, fuzzy
 #~ msgid "You can't edit the default template."
 #~ msgstr "Et voi muokata oletusmallia."
+
 #~ msgid "Make a copy of this template"
 #~ msgstr "Kopioi malli"
+
 #~ msgid "File Control:"
 #~ msgstr "Tiedostonhallinta:"
+
 #~ msgid "Now editing:"
 #~ msgstr "Muokataan:"
 
@@ -11357,6 +11450,7 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Token Database Administration Options"
 #~ msgstr "Valtuustietokannan hallintaominaisuudet"
+
 #~ msgid "Update tokens table with new fields"
 #~ msgstr "Päivitä valtuustaulukko uusilla kentillä"
 
@@ -11371,8 +11465,10 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Update Response"
 #~ msgstr "Päivitä vastaus"
+
 #~ msgid "Email Invitation"
 #~ msgstr "Sähköpostikutsu"
+
 #~ msgid "to TokenID No"
 #~ msgstr "Tunnistenumeroon"
 
@@ -11383,6 +11479,7 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Invitation Sent To:"
 #~ msgstr "Kutsu lähetettiin osoitteeseen:"
+
 #~ msgid "Email Reminder"
 #~ msgstr "Sähköpostimuistutus"
 
@@ -11397,10 +11494,13 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Add or Edit Token"
 #~ msgstr "Lisää tai muokkaa tunnisteita"
+
 #~ msgid "Update Token"
 #~ msgstr "Päivitä Tunniste"
+
 #~ msgid "Add Token"
 #~ msgstr "Lisää Tunniste"
+
 #~ msgid "Updated Token"
 #~ msgstr "Tunniste Päivitetty"
 
@@ -11417,36 +11517,46 @@ msgstr "Kyselyn tilastot #%s"
 #~ "Ensimmäisellä rivillä tulisi olla ylätunnisten tiedot (poistetaan). "
 #~ "Tiedot tulisi järjestää seuraavasti: \"etunimi, sukunimi, sähköposti,"
 #~ "[emailstatus], [tunniste], [kielikoodi],[määre 1], [määre 2]\"."
+
 #~ msgid "Importing CSV File"
 #~ msgstr "Tuodaan CSV-tiedosto"
+
 #~ msgid "Creating Token Entries"
 #~ msgstr "Luodaan tunnistemerkintöjä"
 
 #, fuzzy
 #~ msgid "Records in CSV"
 #~ msgstr "Tallenteet CSV-tiedostona"
+
 #~ msgid "{TOKENCOUNT} Records Created"
 #~ msgstr "{TOKENCOUNT} Tallenteita Luotu"
+
 #~ msgid "Email address ist not valid."
 #~ msgstr "Sähköpostiosoite ei kelpaa."
 
 #, fuzzy
 #~ msgid "You were signed in on the site"
 #~ msgstr "Rekisteröidyit sivulle %s"
+
 #~ msgid "Login here"
 #~ msgstr "Kirjaudu sisään"
+
 #~ msgid "Username and/or email address already exists."
 #~ msgstr "Käyttäjätunnus tai sähköpostiosoite on jo olemassa."
 
 #, fuzzy
 #~ msgid "Admin cannot be deleted!"
 #~ msgstr "Ylläpitäjää ei voi poistaa!"
+
 #~ msgid "Modifying User"
 #~ msgstr "Muokataan Käyttäjää"
+
 #~ msgid "Update user rights successful."
 #~ msgstr "Käyttäjäoikeuksien päivitys onnistui."
+
 #~ msgid "Move User"
 #~ msgstr "Siirrä Käyttäjä"
+
 #~ msgid "Optional"
 #~ msgstr "Valinnainen"
 
@@ -11457,6 +11567,7 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Report an error (and skip the new record)."
 #~ msgstr "Tee virheraportti (ja ohita uusi tallenne)."
+
 #~ msgid "Ignore the new record."
 #~ msgstr "Ohita uusi tallenne."
 
@@ -11496,6 +11607,7 @@ msgstr "Kyselyn tilastot #%s"
 #~ msgstr ""
 #~ "Kysely on kohdennettu tietylle vastaajaryhmälle. Tarvitset tunnisteen "
 #~ "osallistuaksesi."
+
 #~ msgid "The token you have provided is not valid."
 #~ msgstr "Antamasi tunniste ei kelpaa."
 
@@ -11507,6 +11619,7 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Answer Privacy"
 #~ msgstr "Vastausyksityisyys"
+
 #~ msgid "Copy question is not possible in an Active survey"
 #~ msgstr "Kysymyksiä ei voi kopioida aktiivisessa kyselyssä"
 
@@ -11539,6 +11652,7 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Go Back"
 #~ msgstr "Takaisin"
+
 #~ msgid ""
 #~ "Sorry, importing questions is limited to the same version. Import failed."
 #~ msgstr ""
@@ -11552,14 +11666,17 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Please submit by"
 #~ msgstr "Ole hyvä ja lähetä %s"
+
 #~ msgid "Show System Summary"
 #~ msgstr "LimeSurvey järjestelmäyhteenveto"
+
 #~ msgid "Date is not valid!"
 #~ msgstr "Päivämäärä on virheellinen"
 
 #, fuzzy
 #~ msgid "The Following Surveys Are Available"
 #~ msgstr "Seuraavat tutkimukset tulisi poistaa"
+
 #~ msgid "Please complete all parts of the date"
 #~ msgstr "Ole hyvä ja täydennä päivämäärä kohta oikein"
 
@@ -11579,6 +11696,7 @@ msgstr "Kyselyn tilastot #%s"
 #~ msgid ""
 #~ "Answer is invalid. The total of all entries should add up to at least "
 #~ msgstr "Vastaus on virheellinen. Kysymykseen odotetaan vähintään"
+
 #~ msgid "Security Alert"
 #~ msgstr "Turvallisuus huomautus"
 
@@ -11601,12 +11719,14 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Regular Expression"
 #~ msgstr "Säännöllinen lauseke"
+
 #~ msgid ""
 #~ "NOTE: If you use a pre-defined answer as your condition, only the equals "
 #~ "or not-equal-to conditions apply."
 #~ msgstr ""
 #~ "HUOMAUTUS: Jos käytät ennalta määritelty ehtoja, vain yhtä suuri kuin ja "
 #~ "erisuuri kuin ehdot ovat voimassa."
+
 #~ msgid "Constant Value or Regular Expression"
 #~ msgstr "Vakioarvo tai säännöllinen ilmaus"
 
@@ -11614,8 +11734,10 @@ msgstr "Kyselyn tilastot #%s"
 #~ msgid ""
 #~ "Answer could not be added. You must insert a code in the mandatory field ("
 #~ msgstr "Vastausta ei voitu lisätä. Kirjoita koodi pakolliseen kenttään (%s)"
+
 #~ msgid "Attribute_1 from token"
 #~ msgstr "Tunnisteen määre 1"
+
 #~ msgid "Attribute_2 from token"
 #~ msgstr "Tunnisteen määre 2"
 
@@ -11630,10 +11752,13 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Convert Resources links ?"
 #~ msgstr "Muunna linkkejä"
+
 #~ msgid "Preferred HTML editor mode"
 #~ msgstr "Suositeltu HTML-editori"
+
 #~ msgid "This survey's questions don't use conditions"
 #~ msgstr "Tutkimuksen kysymyksissä ei käytetä ehtolauseita"
+
 #~ msgid "Participiants may print answers?"
 #~ msgstr "Osallistujat voivat tulostaa vastaukset?"
 
@@ -11644,18 +11769,23 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Convert Resources links and INSERTANS fields ?"
 #~ msgstr "Muunna linkkejä ja INSERTAND kenttiä?"
+
 #~ msgid "No matching Group"
 #~ msgstr "Ei vastaavaa Ryhmää"
+
 #~ msgid "No matching Survey!"
 #~ msgstr "Ei vastaavaa Kyselyä!"
+
 #~ msgid "Fix Order"
 #~ msgstr "Muuta järjestystä"
+
 #~ msgid "if you have NOT answered"
 #~ msgstr "jos ET OLE vastannut"
 
 #, fuzzy
 #~ msgid "Error: You have to enter a code for this question."
 #~ msgstr "Virhe: anna tunnusryhmälle nimi."
+
 #~ msgid ""
 #~ "Don't consider NON completed responses (only works when Filter incomplete "
 #~ "answers is Disable)"
@@ -11682,6 +11812,7 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Token Email Settings have been saved."
 #~ msgstr "Tunnisteiden sähköpostiasetukset on tallennettu."
+
 #~ msgid "Add or Edit Token Entry"
 #~ msgstr "Lisää tai muokkaa tunnisteita"
 
@@ -11702,6 +11833,7 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "If you choose 'Other:' you must provide a description."
 #~ msgstr "Jos valitsit '%s', tarkenna."
+
 #~ msgid ""
 #~ "Answer could not be added. You must insert a code in the mandatory field "
 #~ "(%s)"
@@ -11710,6 +11842,7 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "General informations in language: "
 #~ msgstr "Yleinen kieliasetus:"
+
 #~ msgid ""
 #~ "Adding/editing tokens is not possible because this survey is not "
 #~ "activated."
@@ -11728,14 +11861,17 @@ msgstr "Kyselyn tilastot #%s"
 #~ msgstr ""
 #~ "Kysymys \"%s - %s\" tuotiin onnistuneesti, mutta kysymyksen tyyppi "
 #~ "muutettiin '%s', mikä vastaa lähinnä kysymystäsi."
+
 #~ msgid "%s %% complete"
 #~ msgstr "% s %% valmis"
 
 #, fuzzy
 #~ msgid "Please choose at most '%d' answer(s) for question \"%s\""
 #~ msgstr "Valitse enitään '%d' vastaus(t)a kysymykseen \"%s\""
+
 #~ msgid "Disabled - Change Group Order"
 #~ msgstr "Estetty - Vaihda ryhmien järjestystä"
+
 #~ msgid "Only answer this question %s"
 #~ msgstr "Vastaa vain tähän %s kysymykseen"
 
@@ -11746,6 +11882,7 @@ msgstr "Kyselyn tilastot #%s"
 #~ msgstr ""
 #~ "Muokkaa riviä 4 ja täydennä tiedoston nimi ja täydellinen osoiterivi "
 #~ "ladatulle tiedostolle."
+
 #~ msgid "Enabled"
 #~ msgstr "Sallittu"
 
@@ -11756,6 +11893,7 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Confirmation Email:"
 #~ msgstr "Vahvistussähköposti:"
+
 #~ msgid "You were signed in on the site %s"
 #~ msgstr "Rekisteröidyit sivulle %s"
 
@@ -11778,12 +11916,14 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "Export responses"
 #~ msgstr "Vie Vastaukset"
+
 #~ msgid "from"
 #~ msgstr "keneltä"
 
 #, fuzzy
 #~ msgid "Total score for this assessment rule"
 #~ msgstr "Et voi asettaa arviontisääntöjä!"
+
 #~ msgid "disabled"
 #~ msgstr "estetty"
 
@@ -11961,6 +12101,7 @@ msgstr "Kyselyn tilastot #%s"
 #~ "Kysymystä ei voitu poistaa. Muilla kysymyksillä on ehtoja, jotka "
 #~ "riippuvat tästä kysymyksesta. Et voi poistaa tätä kysymystä ennen kuin "
 #~ "nämä ehdot on poistettu"
+
 #~ msgid "An error occurred and your survey responses were not saved."
 #~ msgstr ""
 #~ "Pahoittelumme - järjestelmävirheen vuoksi vastauksiasi ei voitu tallentaa."
@@ -12220,12 +12361,15 @@ msgstr "Kyselyn tilastot #%s"
 #, fuzzy
 #~ msgid "All answers have been set to not completed."
 #~ msgstr "Kaikki kutsumerkinnät on asetettu tilaan 'Ei Kutsuttu'."
+
 #~ msgid "Timed start?"
 #~ msgstr "Ajastettu aloitus?"
+
 #~ msgid "type"
 #~ msgstr "tyyppi"
+
 #~ msgid "\", because is the closest one"
 #~ msgstr "\", koska se on lähin"
+
 #~ msgid "Admin"
 #~ msgstr "Ylläpitäjä"
-
