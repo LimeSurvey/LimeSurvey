@@ -14,11 +14,7 @@
  */
 
 // $LEMdebugLevel - customizable debugging for Lime Expression Manager
-// 0=none
-// 1=timings only
-// 2=timings + pretty-printed results of validating questions and groups
-// 3=#1 + pretty-printed results of validating questions and groups
-$LEMdebugLevel=3;
+$LEMdebugLevel=(LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
 switch ($thissurvey['format'])
 {
     case "A": //All in one
@@ -37,7 +33,7 @@ $surveyOptions = array(
     'allowsave'=>($thissurvey['allowsave']=='Y'),
     'anonymized'=>($thissurvey['anonymized']!='N'),
     'datestamp'=>($thissurvey['datestamp']=='Y'),
-    'hyperlinkSyntaxHighlighting'=>($LEMdebugLevel>=2),     // TODO set this to true if in admin mode but not if running a survey
+    'hyperlinkSyntaxHighlighting'=>(($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY),     // TODO set this to true if in admin mode but not if running a survey
     'ipaddr'=>($thissurvey['ipaddr']=='Y'),
     'refurl'=>(($thissurvey['refurl'] == "Y") ? $_SESSION['refurl'] : NULL),
     'rooturl'=>(isset($rooturl) ? $rooturl : ''),
@@ -352,10 +348,10 @@ else
 
         echo templatereplace(file_get_contents("$thistpl/completed.pstpl"));
         echo "\n<br />\n";
-        if ($LEMdebugLevel >= 1) {
+        if ((($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING)) {
             echo LimeExpressionManager::GetDebugTimingMessage();
         }
-        if ($LEMdebugLevel >= 2) {
+        if ((($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY)) {
              echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>".$moveResult['message']."</td></tr></table>\n";
         }
         echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
@@ -816,10 +812,10 @@ if (!$previewgrp){
     }
 }
 
-if ($LEMdebugLevel >= 1) {
+if (($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING) {
     echo LimeExpressionManager::GetDebugTimingMessage();
 }
-if ($LEMdebugLevel >= 2) {
+if (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
      echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>".$moveResult['message']."</td></tr></table>\n";
 }
 echo "</form>\n";

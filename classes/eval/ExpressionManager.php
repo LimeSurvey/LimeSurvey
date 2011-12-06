@@ -1537,14 +1537,19 @@ class ExpressionManager {
                     return $displayValue;
                 }
             case 'relevanceStatus':
+                $gid = (isset($var['gid'])) ? $var['gid'] : -1;
                 $qid = (isset($var['qid'])) ? $var['qid'] : -1;
-                if ($qid == -1) {
+                $sgqa = (isset($var['sgqa'])) ? $var['sgqa'] : -1;
+                if ($qid == -1 || $gid == -1) {
                     return 1;
                 }
                 if (isset($args[1]) && $args[1]=='NAOK') {
                     return 1;
                 }
-                return (isset($_SESSION['relevanceStatus'][$qid]) ? $_SESSION['relevanceStatus'][$qid] : 0); // should defualt be to show?
+                $grel = (isset($_SESSION['relevanceStatus']['G'.$gid]) ? $_SESSION['relevanceStatus']['G'.$gid] : 1);   // true by default
+                $qrel = (isset($_SESSION['relevanceStatus'][$qid]) ? $_SESSION['relevanceStatus'][$qid] : 0);
+                $sqrel = (isset($_SESSION['relevanceStatus'][$sgqa]) ? $_SESSION['relevanceStatus'][$sgqa] : 1);    // true by default - only want false if a subquestion is irrelevant
+                return ($grel && $qrel && $sqrel);
             default:
                 print 'UNDEFINED ATTRIBUTE: ' . $attr . "<br/>\n";
                 return $default;

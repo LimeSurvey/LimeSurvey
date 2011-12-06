@@ -61,6 +61,10 @@ if ($action == "addgroup")
         . "<textarea cols='80' rows='8' id='description_$grouplang' name='description_$grouplang'></textarea>"
         . getEditor("group-desc","description_".$grouplang, "[".$clang->gT("Description:", "js")."](".$grouplang.")",$surveyid,'','',$action)
         . "</li>\n"
+        // Group-Level Relevance
+        . "<li><label for='relevance'>".$clang->gT("Relevance equation:")."</label>"
+        . "<textarea cols='50' rows='1' id='grelevance' name='grelevance'></textarea>"
+        . "</li>"
         . "</ul>"
         . "\t<p><input type='submit' value='".$clang->gT("Save question group")."' />\n"
         . "</div>\n";
@@ -118,7 +122,7 @@ if ($action == "editgroup")
         } else {
             $grplangs[$esrow['language']] = 99;
         }
-        if ($esrow['language'] == $baselang) $basesettings = array('group_name' => $esrow['group_name'],'description' => $esrow['description'],'group_order' => $esrow['group_order']);
+        if ($esrow['language'] == $baselang) $basesettings = array('group_name' => $esrow['group_name'],'description' => $esrow['description'],'group_order' => $esrow['group_order'], 'grelevance' => $esrow['grelevance']);
 
     }
 
@@ -126,7 +130,7 @@ if ($action == "editgroup")
     {
         if ($value != 99)
         {
-            $egquery = "INSERT INTO ".db_table_name('groups')." (gid, sid, group_name, description,group_order,language) VALUES ('{$gid}', '{$surveyid}', '{$basesettings['group_name']}', '{$basesettings['description']}','{$basesettings['group_order']}', '{$key}')";
+            $egquery = "INSERT INTO ".db_table_name('groups')." (gid, sid, group_name, description,group_order, grelevance, language) VALUES ('{$gid}', '{$surveyid}', '{$basesettings['group_name']}', '{$basesettings['description']}','{$basesettings['group_order']}', '{$basesettings['grelevance']}', '{$key}')";
             $egresult = $connect->Execute($egquery);
         }
     }
@@ -143,6 +147,10 @@ if ($action == "editgroup")
         . "<div class='settingrow'><span class='settingcaption'><label for='description_{$esrow['language']}'>".$clang->gT("Description:")."</label>\n"
         . "</span><span class='settingentry'><textarea cols='70' rows='8' id='description_{$esrow['language']}' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
         . getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
+        . "</span></div>"
+        . "<div class='settingrow'><span class='settingcaption'><label for='relevance'>".$clang->gT("Relevance equation:")."</label></span>\n"
+        . "<span class='settingentry'><textarea cols='50' rows='1' id='grelevance' name='grelevance'>".$esrow['grelevance']."</textarea></span>"
+        . "</span></div>"
         . "\t</span></div><div style='clear:both'></div>";
     $egquery = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid AND language!='$baselang'";
     $egresult = db_execute_assoc($egquery);

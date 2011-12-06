@@ -1660,93 +1660,93 @@ function checkmandatorys($move, $backok=null)
 }
 
 // TMSW Mandatory -> EM
-function checkconditionalmandatorys($move, $backok=null)
-{
-    global $thisstep;
-    if ((isset($_POST['conmandatory']) && $_POST['conmandatory']) && (!isset($backok) || $backok != "Y")) //Mandatory conditional questions that should only be checked if the conditions for displaying that question are met
-
-    {
-        $chkcmands=explode("|", $_POST['conmandatory']);
-        $cmfns=explode("|", $_POST['conmandatoryfn']);
-        $mi=0;
-        foreach ($chkcmands as $ccm)
-        {
-            if (!isset($multiname) || $multiname != "MULTI$cmfns[$mi]") //the last multipleanswerchecked is different to this one
-
-            {
-                if (isset($multiname) && $multiname && isset($_POST[$multiname]) && $_POST[$multiname])
-                {
-                    if ($$multiname == $$multiname2) //For this lot all multiple choice options are unanswered
-
-                    {
-                        //The number of questions not answered is equal to the number of questions
-                            $_SESSION['step'] = $thisstep;
-                        $notanswered[]=substr($multiname, 5, strlen($multiname));
-                        $$multiname=0;
-                        $$multiname2=0;
-                    }
-                }
-                $multiname="MULTI$cmfns[$mi]";
-                $multiname2=$multiname."2"; //POSSIBLE CORRUPTION OF PROCESS - CHECK LATER
-                $$multiname=0;
-                $$multiname2=0;
-            }
-            else
-            {
-                $multiname="MULTI$cmfns[$mi]";
-            }
-            $dccm="display$cmfns[$mi]";
-            $dtccm = "tbdisp$ccm";
-            if (isset($_SESSION[$ccm]) && ($_SESSION[$ccm] == "0" || $_SESSION[$ccm]) && isset($_POST[$dccm]) && $_POST[$dccm] == "on") //There is an answer
-
-            {
-                //The question has an answer, and the answer was displaying
-            }
-            elseif ((isset($_POST[$dccm]) && $_POST[$dccm] == "on") && (!isset($_POST[$multiname]) || !$_POST[$multiname]) && (!isset($_POST[$dtccm]) || $_POST[$dtccm] == "on")) // Question and Answers is on, there is no answer, but it's a multiple
-
-            {
-                if (isset($move) && $move == "moveprev")
-                {
-                    $_SESSION['step'] = $thisstep;
-                }
-                if (isset($move) && $move == "movenext")
-                {
-                    $_SESSION['step'] = $thisstep;
-                }
-                $notanswered[]=$cmfns[$mi];
-            }
-            elseif (isset($_POST[$dccm]) && $_POST[$dccm] == "on")
-            {
-                //One of the conditional mandatory questions was on, but hasn't been answered
-                $$multiname++;
-            }
-            $$multiname2++;
-            $mi++;
-        }
-        if (isset($multiname) && $multiname && isset($_POST[$multiname]) && $_POST[$multiname])
-        {
-            if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
-
-            {
-                //The number of questions not answered is equal to the number of questions
-                if (isset($move) && $move == "moveprev")
-                {
-                    $_SESSION['step'] = $thisstep;
-                }
-                if (isset($move) && $move == "movenext")
-                {
-                    $_SESSION['step'] = $thisstep;
-                }
-                $notanswered[]=substr($multiname, 5, strlen($multiname));
-            }
-        }
-    }
-    if (!isset($notanswered))
-    {
-        return false;
-    }//$notanswered=null;}
-    return $notanswered;
-}
+//function checkconditionalmandatorys($move, $backok=null)
+//{
+//    global $thisstep;
+//    if ((isset($_POST['conmandatory']) && $_POST['conmandatory']) && (!isset($backok) || $backok != "Y")) //Mandatory conditional questions that should only be checked if the conditions for displaying that question are met
+//
+//    {
+//        $chkcmands=explode("|", $_POST['conmandatory']);
+//        $cmfns=explode("|", $_POST['conmandatoryfn']);
+//        $mi=0;
+//        foreach ($chkcmands as $ccm)
+//        {
+//            if (!isset($multiname) || $multiname != "MULTI$cmfns[$mi]") //the last multipleanswerchecked is different to this one
+//
+//            {
+//                if (isset($multiname) && $multiname && isset($_POST[$multiname]) && $_POST[$multiname])
+//                {
+//                    if ($$multiname == $$multiname2) //For this lot all multiple choice options are unanswered
+//
+//                    {
+//                        //The number of questions not answered is equal to the number of questions
+//                            $_SESSION['step'] = $thisstep;
+//                        $notanswered[]=substr($multiname, 5, strlen($multiname));
+//                        $$multiname=0;
+//                        $$multiname2=0;
+//                    }
+//                }
+//                $multiname="MULTI$cmfns[$mi]";
+//                $multiname2=$multiname."2"; //POSSIBLE CORRUPTION OF PROCESS - CHECK LATER
+//                $$multiname=0;
+//                $$multiname2=0;
+//            }
+//            else
+//            {
+//                $multiname="MULTI$cmfns[$mi]";
+//            }
+//            $dccm="display$cmfns[$mi]";
+//            $dtccm = "tbdisp$ccm";
+//            if (isset($_SESSION[$ccm]) && ($_SESSION[$ccm] == "0" || $_SESSION[$ccm]) && isset($_POST[$dccm]) && $_POST[$dccm] == "on") //There is an answer
+//
+//            {
+//                //The question has an answer, and the answer was displaying
+//            }
+//            elseif ((isset($_POST[$dccm]) && $_POST[$dccm] == "on") && (!isset($_POST[$multiname]) || !$_POST[$multiname]) && (!isset($_POST[$dtccm]) || $_POST[$dtccm] == "on")) // Question and Answers is on, there is no answer, but it's a multiple
+//
+//            {
+//                if (isset($move) && $move == "moveprev")
+//                {
+//                    $_SESSION['step'] = $thisstep;
+//                }
+//                if (isset($move) && $move == "movenext")
+//                {
+//                    $_SESSION['step'] = $thisstep;
+//                }
+//                $notanswered[]=$cmfns[$mi];
+//            }
+//            elseif (isset($_POST[$dccm]) && $_POST[$dccm] == "on")
+//            {
+//                //One of the conditional mandatory questions was on, but hasn't been answered
+//                $$multiname++;
+//            }
+//            $$multiname2++;
+//            $mi++;
+//        }
+//        if (isset($multiname) && $multiname && isset($_POST[$multiname]) && $_POST[$multiname])
+//        {
+//            if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
+//
+//            {
+//                //The number of questions not answered is equal to the number of questions
+//                if (isset($move) && $move == "moveprev")
+//                {
+//                    $_SESSION['step'] = $thisstep;
+//                }
+//                if (isset($move) && $move == "movenext")
+//                {
+//                    $_SESSION['step'] = $thisstep;
+//                }
+//                $notanswered[]=substr($multiname, 5, strlen($multiname));
+//            }
+//        }
+//    }
+//    if (!isset($notanswered))
+//    {
+//        return false;
+//    }//$notanswered=null;}
+//    return $notanswered;
+//}
 
 function checkUploadedFileValidity($move, $backok=null)
 {
@@ -1827,7 +1827,7 @@ function checkUploadedFileValidity($move, $backok=null)
                     else
                         $filecount = 0;
 
-                    if ($filecount < $validation['min_num_of_files'] && checkquestionfordisplay($fieldmap[$field]['qid']))
+                    if ($filecount < $validation['min_num_of_files'] && LimeExpressionManager::QuestionIsRelevant($fieldmap[$field]['qid']))
                     {
                         $filenotvalidated = array();
                         $filenotvalidated[$field] = $clang->gT("The minimum number of files has not been uploaded.");
@@ -1850,106 +1850,106 @@ function checkUploadedFileValidity($move, $backok=null)
         return $filenotvalidated;
 }
 
-
-function checkpregs($move,$backok=null)
-{
-    global $connect, $thisstep;
-    if (!isset($backok) || $backok != "Y")
-    {
-        global $dbprefix;
-        $fieldmap=createFieldMap(returnglobal('sid'));
-        if (isset($_POST['fieldnames']))
-        {
-            $fields=explode("|", $_POST['fieldnames']);
-            foreach ($fields as $field)
-            {
-                //Get question information
-                if (isset($_POST[$field]) && isset($_SESSION['s_lang']) && ($_POST[$field] == "0" || $_POST[$field])) //Only do this if there is an answer
-
-                {
-                    $fieldinfo=$fieldmap[$field];
-                    $pregquery="SELECT preg\n"
-                    ."FROM ".db_table_name('questions')."\n"
-                    ."WHERE qid=".$fieldinfo['qid']." "
-                    . "AND language='".$_SESSION['s_lang']."'";
-                    $pregresult=db_execute_assoc($pregquery) or safe_die("ERROR: $pregquery<br />".$connect->ErrorMsg());      //Checked
-                    while($pregrow=$pregresult->FetchRow())
-                    {
-                        $preg=trim($pregrow['preg']);
-                    } // while
-                    if (isset($preg) && $preg)
-                    {
-                        if (!@preg_match($preg, $_POST[$field]))
-                        {
-                            $notvalidated[]=$field;
-                            continue;
-                        }
-                    }
-
-                    // check for other question attributes
-                    $qidattributes=getQuestionAttributes($fieldinfo['qid'],$fieldinfo['type']);
-
-                    if ($fieldinfo['type'] == 'N')
-                    {
-                        $neg = true;
-                        if (trim($qidattributes['max_num_value_n'])!='' &&
-                            $qidattributes['max_num_value_n'] >= 0)
-                        {
-                            $neg = false;
-                        }
-
-                        if (trim($qidattributes['num_value_int_only'])==1 &&
-                        !preg_match("/^" . ($neg? "-?": "") . "[0-9]+$/", $_POST[$field]))
-                        {
-                            $notvalidated[]=$field;
-                            continue;
-                        }
-
-                        if (trim($qidattributes['max_num_value_n'])!='' &&
-                            $_POST[$field] > $qidattributes['max_num_value_n'])
-                        {
-                            $notvalidated[]=$field;
-                            continue;
-                        }
-                        if (trim($qidattributes['min_num_value_n'])!='' &&
-                            $_POST[$field] < $qidattributes['min_num_value_n'])
-                        {
-                            $notvalidated[]=$field;
-                            continue;
-                        }
-                    }
-                }
-            }
-        }
-        //The following section checks for question attribute validation, looking for values in a particular field
-        if (isset($_POST['qattribute_answer']))
-        {
-            foreach ($_POST['qattribute_answer'] as $maxvalueanswer)
-            {
-                //$maxvalue_answername="maxvalue_answer".$maxvalueanswer;
-                if (!empty($_POST['qattribute_answer'.$maxvalueanswer]) && $_POST['display'.$maxvalueanswer] == "on")
-                {
-                        $_SESSION['step'] = $thisstep;
-                    $notvalidated[]=$maxvalueanswer;
-                    return $notvalidated;
-                }
-            }
-        }
-
-        if (isset($notvalidated) && is_array($notvalidated))
-        {
-            if (isset($move) && $move == "moveprev")
-            {
-                $_SESSION['step'] = $thisstep;
-            }
-            if (isset($move) && $move == "movenext")
-            {
-                $_SESSION['step'] = $thisstep;
-            }
-            return $notvalidated;
-        }
-    }
-}
+//
+//function checkpregs($move,$backok=null)
+//{
+//    global $connect, $thisstep;
+//    if (!isset($backok) || $backok != "Y")
+//    {
+//        global $dbprefix;
+//        $fieldmap=createFieldMap(returnglobal('sid'));
+//        if (isset($_POST['fieldnames']))
+//        {
+//            $fields=explode("|", $_POST['fieldnames']);
+//            foreach ($fields as $field)
+//            {
+//                //Get question information
+//                if (isset($_POST[$field]) && isset($_SESSION['s_lang']) && ($_POST[$field] == "0" || $_POST[$field])) //Only do this if there is an answer
+//
+//                {
+//                    $fieldinfo=$fieldmap[$field];
+//                    $pregquery="SELECT preg\n"
+//                    ."FROM ".db_table_name('questions')."\n"
+//                    ."WHERE qid=".$fieldinfo['qid']." "
+//                    . "AND language='".$_SESSION['s_lang']."'";
+//                    $pregresult=db_execute_assoc($pregquery) or safe_die("ERROR: $pregquery<br />".$connect->ErrorMsg());      //Checked
+//                    while($pregrow=$pregresult->FetchRow())
+//                    {
+//                        $preg=trim($pregrow['preg']);
+//                    } // while
+//                    if (isset($preg) && $preg)
+//                    {
+//                        if (!@preg_match($preg, $_POST[$field]))
+//                        {
+//                            $notvalidated[]=$field;
+//                            continue;
+//                        }
+//                    }
+//
+//                    // check for other question attributes
+//                    $qidattributes=getQuestionAttributes($fieldinfo['qid'],$fieldinfo['type']);
+//
+//                    if ($fieldinfo['type'] == 'N')
+//                    {
+//                        $neg = true;
+//                        if (trim($qidattributes['max_num_value_n'])!='' &&
+//                            $qidattributes['max_num_value_n'] >= 0)
+//                        {
+//                            $neg = false;
+//                        }
+//
+//                        if (trim($qidattributes['num_value_int_only'])==1 &&
+//                        !preg_match("/^" . ($neg? "-?": "") . "[0-9]+$/", $_POST[$field]))
+//                        {
+//                            $notvalidated[]=$field;
+//                            continue;
+//                        }
+//
+//                        if (trim($qidattributes['max_num_value_n'])!='' &&
+//                            $_POST[$field] > $qidattributes['max_num_value_n'])
+//                        {
+//                            $notvalidated[]=$field;
+//                            continue;
+//                        }
+//                        if (trim($qidattributes['min_num_value_n'])!='' &&
+//                            $_POST[$field] < $qidattributes['min_num_value_n'])
+//                        {
+//                            $notvalidated[]=$field;
+//                            continue;
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        //The following section checks for question attribute validation, looking for values in a particular field
+//        if (isset($_POST['qattribute_answer']))
+//        {
+//            foreach ($_POST['qattribute_answer'] as $maxvalueanswer)
+//            {
+//                //$maxvalue_answername="maxvalue_answer".$maxvalueanswer;
+//                if (!empty($_POST['qattribute_answer'.$maxvalueanswer]) && $_POST['display'.$maxvalueanswer] == "on")
+//                {
+//                        $_SESSION['step'] = $thisstep;
+//                    $notvalidated[]=$maxvalueanswer;
+//                    return $notvalidated;
+//                }
+//            }
+//        }
+//
+//        if (isset($notvalidated) && is_array($notvalidated))
+//        {
+//            if (isset($move) && $move == "moveprev")
+//            {
+//                $_SESSION['step'] = $thisstep;
+//            }
+//            if (isset($move) && $move == "movenext")
+//            {
+//                $_SESSION['step'] = $thisstep;
+//            }
+//            return $notvalidated;
+//        }
+//    }
+//}
 
 function addtoarray_single($array1, $array2)
 {

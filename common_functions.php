@@ -2789,6 +2789,7 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
             }
         }
         $fieldmap[$fieldname]['relevance']=$arow['relevance'];
+        $fieldmap[$fieldname]['grelevance']=$arow['grelevance'];
         $fieldmap[$fieldname]['questionSeq']=$questionSeq;
         $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
         $fieldmap[$fieldname]['preg']=$arow['preg'];
@@ -6722,10 +6723,10 @@ function recursive_stripslashes($array_or_string)
 * @param mixed $qid
 * @param mixed $gid
 */
-function checkquestionfordisplay($qid, $gid=null)
-{
-    // TMSW [DONE] Conditions->Relevance:  not needed (only check relevance)
-    return LimeExpressionManager::QuestionIsRelevant($qid);
+//function checkquestionfordisplay($qid, $gid=null)
+//{
+//    // TMSW [DONE] Conditions->Relevance:  not needed (only check relevance)
+//    return LimeExpressionManager::QuestionIsRelevant($qid);
 //
 //    global $dbprefix, $connect,$surveyid,$thissurvey;
 //
@@ -7070,7 +7071,7 @@ function checkquestionfordisplay($qid, $gid=null)
 //        unset($distinctcqids);
 //    } // end while scenario
 //    return false;
-}
+//}
 
 /**
 * This is a helper function for GetAttributeFieldNames
@@ -7671,7 +7672,7 @@ function aGetFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonor
             if ($oldqid !== $fname['qid'])
             {
                 $oldqid = $fname['qid'];
-                if (($bHonorConditions && checkquestionfordisplay($fname['qid'],null)) || !$bHonorConditions)
+                if (($bHonorConditions && LimeExpressionManager::QuestionIsRelevant($fname['qid'])) || !$bHonorConditions)
                 {
                 if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2']))
                 {
@@ -7747,87 +7748,87 @@ function aArrayInvert($aArr)
     return $aRet;
 }
 
-/**
-* Check if a question was (at least partially) answered in the current session.
-*
-* @param integer $q - Question id
-* @param array $aFieldnamesInfoInv - Inverted fieldnamesInfo
-*/
-function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
-{
-    $qtype = @$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'];
-
-    switch ($qtype) {
-        case 'X':
-        return true;
-        case 'M':
-        case 'P':
-        case 'O':
-        // multiple choice and list with comments question types - just one answer is required and comments are not required
-        foreach($aFieldnamesInfoInv[$q] as $sField)
-            if(!strstr($sField, 'comment') && isset($_SESSION[$sField]) && trim($_SESSION[$sField])!='')
-                    return true;
-                return false;
-        case 'L': // List questions only need one answer (including the 'other' option)
-            foreach($aFieldnamesInfoInv[$q] as $sField)
-            {
-                if(isset($_SESSION[$sField]) && trim($_SESSION[$sField])!='')
-                    return true;
-            }
-            return false;
-
-        case 'F':
-        case ':':
-        case ';':
-        case '1':
-        case 'C':
-        case 'B':
-        case 'A':
-        case 'E':
-            // array question types - if filtered only displayed answer are required
-            $qattr = getQuestionAttributes(@$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['qid'], $qtype);
-
-            $qcodefilter = @$qattr['array_filter'];
-
-            $sgqfilter = '';
-
-            foreach($_SESSION['fieldarray'] as $field)
-                //look for the multiple choice filter
-                if ($field[2] == $qcodefilter && $field[4] == 'M')
-                {
-                    //filter SQG
-                    $sgqfilter = $field[1];
-                break;
-            }
-
-                //if filter not found checkall answers
-                if ($sgqfilter == '')
-            {
-                // all answers required
-                foreach($aFieldnamesInfoInv[$q] as $sField)
-                    if(!isset($_SESSION[$sField]) || trim($_SESSION[$sField])=='')
-                        return false;
-                    return true;
-        }
-
-            foreach($aFieldnamesInfoInv[$q] as $sField)
-            {
-                //keep only first subquestion code for multiple scale answer
-                $aid = explode('_',$_SESSION['fieldmap'][$sField]['aid']);
-                $aid = explode('#',$aid[0]);
-                //if a checked answer in the multiple choice is not present
-                if (isset($_SESSION[$sgqfilter.$aid[0]]) && $_SESSION[$sgqfilter.$aid[0]] == 'Y' && $_SESSION[$sField] == '')
-                    return false;
-    }
-            return true;
-        default:
-        // all answers required for all other question types
-        foreach($aFieldnamesInfoInv[$q] as $sField)
-            if(!isset($_SESSION[$sField]) || trim($_SESSION[$sField])=='')
-                    return false;
-                return true;
-            }
-}
+///**
+//* Check if a question was (at least partially) answered in the current session.
+//*
+//* @param integer $q - Question id
+//* @param array $aFieldnamesInfoInv - Inverted fieldnamesInfo
+//*/
+//function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
+//{
+//    $qtype = @$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'];
+//
+//    switch ($qtype) {
+//        case 'X':
+//        return true;
+//        case 'M':
+//        case 'P':
+//        case 'O':
+//        // multiple choice and list with comments question types - just one answer is required and comments are not required
+//        foreach($aFieldnamesInfoInv[$q] as $sField)
+//            if(!strstr($sField, 'comment') && isset($_SESSION[$sField]) && trim($_SESSION[$sField])!='')
+//                    return true;
+//                return false;
+//        case 'L': // List questions only need one answer (including the 'other' option)
+//            foreach($aFieldnamesInfoInv[$q] as $sField)
+//            {
+//                if(isset($_SESSION[$sField]) && trim($_SESSION[$sField])!='')
+//                    return true;
+//            }
+//            return false;
+//
+//        case 'F':
+//        case ':':
+//        case ';':
+//        case '1':
+//        case 'C':
+//        case 'B':
+//        case 'A':
+//        case 'E':
+//            // array question types - if filtered only displayed answer are required
+//            $qattr = getQuestionAttributes(@$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['qid'], $qtype);
+//
+//            $qcodefilter = @$qattr['array_filter'];
+//
+//            $sgqfilter = '';
+//
+//            foreach($_SESSION['fieldarray'] as $field)
+//                //look for the multiple choice filter
+//                if ($field[2] == $qcodefilter && $field[4] == 'M')
+//                {
+//                    //filter SQG
+//                    $sgqfilter = $field[1];
+//                break;
+//            }
+//
+//                //if filter not found checkall answers
+//                if ($sgqfilter == '')
+//            {
+//                // all answers required
+//                foreach($aFieldnamesInfoInv[$q] as $sField)
+//                    if(!isset($_SESSION[$sField]) || trim($_SESSION[$sField])=='')
+//                        return false;
+//                    return true;
+//        }
+//
+//            foreach($aFieldnamesInfoInv[$q] as $sField)
+//            {
+//                //keep only first subquestion code for multiple scale answer
+//                $aid = explode('_',$_SESSION['fieldmap'][$sField]['aid']);
+//                $aid = explode('#',$aid[0]);
+//                //if a checked answer in the multiple choice is not present
+//                if (isset($_SESSION[$sgqfilter.$aid[0]]) && $_SESSION[$sgqfilter.$aid[0]] == 'Y' && $_SESSION[$sField] == '')
+//                    return false;
+//    }
+//            return true;
+//        default:
+//        // all answers required for all other question types
+//        foreach($aFieldnamesInfoInv[$q] as $sField)
+//            if(!isset($_SESSION[$sField]) || trim($_SESSION[$sField])=='')
+//                    return false;
+//                return true;
+//            }
+//}
 /**
 * Include Keypad headers
 */

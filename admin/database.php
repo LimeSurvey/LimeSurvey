@@ -147,7 +147,7 @@ if(isset($surveyid))
                 // don't use array_map db_quote on POST
                 // since this is iterated for each language
                 //$_POST  = array_map('db_quote', $_POST);
-                $ugquery = "UPDATE ".db_table_name('groups')." SET group_name='".db_quote($_POST['group_name_'.$grplang])."', description='".db_quote($_POST['description_'.$grplang])."' WHERE sid=".db_quote($postsid)." AND gid=".db_quote($postgid)." AND language='{$grplang}'";
+                $ugquery = "UPDATE ".db_table_name('groups')." SET group_name='".db_quote($_POST['group_name_'.$grplang])."', description='".db_quote($_POST['description_'.$grplang])."', grelevance='".db_quote($_POST['grelevance'])."' WHERE sid=".db_quote($postsid)." AND gid=".db_quote($postgid)." AND language='{$grplang}'";
                 $ugresult = $connect->Execute($ugquery);  // Checked
                 if ($ugresult)
                 {

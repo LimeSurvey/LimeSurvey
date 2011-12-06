@@ -205,8 +205,8 @@ function LEMval(alias)
     var str = new String(alias);
     var varName = alias;
     var suffix = 'code';    // the default
-    if (str.match(/\.(codeValue|code|displayValue|gid|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|sgqa|shown|type)$/)) {
-        varName = str.replace(/\.(codeValue|code|displayValue|gid|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|sgqa|shown|type)$/,'')
+    if (str.match(/\.(codeValue|code|displayValue|gid|grelevance|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|sgqa|shown|type)$/)) {
+        varName = str.replace(/\.(codeValue|code|displayValue|gid|grelevance|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|sgqa|shown|type)$/,'')
         suffix = str.replace(/^(.+)\./,'');
     }
     if (str.match(/^INSERTANS:/)) {
@@ -281,6 +281,8 @@ function LEMval(alias)
             return htmlspecialchars_decode(displayValue);
         case 'gid':
             return attr.gid;
+        case 'grelevance':
+            return attr.grelevance;
         case 'mandatory':
             return attr.mandatory;
         case 'qid':
@@ -295,6 +297,8 @@ function LEMval(alias)
             return attr.qid;
         case 'relevanceStatus':
             return document.getElementById('relevance' + attr.qid).value;
+        case 'sgqa':
+            return attr.sgqa;
         case 'type':
             return attr.type;
         case 'code':
