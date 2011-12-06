@@ -4100,19 +4100,19 @@ class LimeExpressionManager {
     static function UnitTestProcessStringContainingExpressions()
     {
         $vars = array(
-'name' => array('codeValue'=>'Peter', 'jsName'=>'java61764X1X1', 'readWrite'=>'N', 'type'=>'X', 'question'=>'What is your first/given name?', 'questionSeq'=>10, 'groupSeq'=>1),
-'surname' => array('codeValue'=>'Smith', 'jsName'=>'java61764X1X1', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'What is your last/surname?', 'questionSeq'=>20, 'groupSeq'=>1),
-'age' => array('codeValue'=>45, 'jsName'=>'java61764X1X2', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'How old are you?', 'questionSeq'=>30, 'groupSeq'=>2),
-'numKids' => array('codeValue'=>2, 'jsName'=>'java61764X1X3', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'How many kids do you have?', 'relevance'=>'1', 'qid'=>'40','questionSeq'=>40, 'groupSeq'=>2),
-'numPets' => array('codeValue'=>1, 'jsName'=>'java61764X1X4', 'readWrite'=>'Y', 'type'=>'X','question'=>'How many pets do you have?', 'questionSeq'=>50, 'groupSeq'=>2),
-'gender' => array('codeValue'=>'M', 'jsName'=>'java61764X1X5', 'readWrite'=>'Y', 'type'=>'X', 'shown'=>'Male','question'=>'What is your gender (male/female)?', 'questionSeq'=>110, 'groupSeq'=>2),
-'notSetYet' => array('codeValue'=>'?', 'jsName'=>'java61764X3X6', 'readWrite'=>'Y', 'type'=>'X', 'shown'=>'Unknown','question'=>'Who will win the next election?', 'questionSeq'=>200, 'groupSeq'=>3),
+'name' => array('sgqa'=>'name', 'codeValue'=>'Peter', 'jsName'=>'java61764X1X1', 'readWrite'=>'N', 'type'=>'X', 'question'=>'What is your first/given name?', 'questionSeq'=>10, 'groupSeq'=>1),
+'surname' => array('sgqa'=>'surname', 'codeValue'=>'Smith', 'jsName'=>'java61764X1X1', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'What is your last/surname?', 'questionSeq'=>20, 'groupSeq'=>1),
+'age' => array('sgqa'=>'age', 'codeValue'=>45, 'jsName'=>'java61764X1X2', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'How old are you?', 'questionSeq'=>30, 'groupSeq'=>2),
+'numKids' => array('sgqa'=>'numKids', 'codeValue'=>2, 'jsName'=>'java61764X1X3', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'How many kids do you have?', 'relevance'=>'1', 'qid'=>'40','questionSeq'=>40, 'groupSeq'=>2),
+'numPets' => array('sgqa'=>'numPets', 'codeValue'=>1, 'jsName'=>'java61764X1X4', 'readWrite'=>'Y', 'type'=>'X','question'=>'How many pets do you have?', 'questionSeq'=>50, 'groupSeq'=>2),
+'gender' => array('sgqa'=>'gender', 'codeValue'=>'M', 'jsName'=>'java61764X1X5', 'readWrite'=>'Y', 'type'=>'X', 'shown'=>'Male','question'=>'What is your gender (male/female)?', 'questionSeq'=>110, 'groupSeq'=>2),
+'notSetYet' => array('sgqa'=>'notSetYet', 'codeValue'=>'?', 'jsName'=>'java61764X3X6', 'readWrite'=>'Y', 'type'=>'X', 'shown'=>'Unknown','question'=>'Who will win the next election?', 'questionSeq'=>200, 'groupSeq'=>3),
 // Constants
-'61764X1X1'   => array('codeValue'=> '<Sergei>', 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'questionSeq'=>70, 'groupSeq'=>2),
-'61764X1X2'   => array('codeValue'=> 45, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'questionSeq'=>80, 'groupSeq'=>2),
-'61764X1X3'   => array('codeValue'=> 2, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'questionSeq'=>15, 'groupSeq'=>1),
-'61764X1X4'   => array('codeValue'=> 1, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'questionSeq'=>100, 'groupSeq'=>2),
-'TOKEN:ATTRIBUTE_1'     => array('codeValue'=> 'worker', 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X'),
+'61764X1X1' => array('sgqa'=>'61764X1X1', 'codeValue'=> '<Sergei>', 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'questionSeq'=>70, 'groupSeq'=>2),
+'61764X1X2' => array('sgqa'=>'61764X1X2', 'codeValue'=> 45, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'questionSeq'=>80, 'groupSeq'=>2),
+'61764X1X3' => array('sgqa'=>'61764X1X3', 'codeValue'=> 2, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'questionSeq'=>15, 'groupSeq'=>1),
+'61764X1X4' => array('sgqa'=>'61764X1X4', 'codeValue'=> 1, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'questionSeq'=>100, 'groupSeq'=>2),
+'TOKEN:ATTRIBUTE_1' => array('codeValue'=> 'worker', 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X'),
         );
 
         $tests = <<<EOD
@@ -4260,7 +4260,7 @@ EOT;
         foreach(explode("\n",$tests) as $test)
         {
             $args = explode("~",$test);
-            $vars[$args[0]] = array('codeValue'=>'', 'jsName'=>'java_' . $args[0], 'readWrite'=>'Y', 'type'=>'X', 'relevanceNum'=>'relevance' . $i, 'relevanceStatus'=>'1','groupSeq'=>1, 'questionSeq'=>$i);
+            $vars[$args[0]] = array('sgqa'=>$args[0], 'codeValue'=>'', 'jsName'=>'java_' . $args[0], 'jsName_on'=>'java_' . $args[0], 'readWrite'=>'Y', 'type'=>'X', 'relevanceNum'=>'relevance' . $i, 'relevanceStatus'=>'1','groupSeq'=>1, 'questionSeq'=>$i);
             $varSeq[] = $args[0];
             $testArgs[] = $args;
             $LEM->questionId2questionSeq[$i] = $i;
@@ -4273,7 +4273,7 @@ EOT;
                 'jsResultVar'=>'java_' . $args[0],
                 'type'=>(($args[1]=='expr') ? '*' : ($args[1]=='message') ? 'X' : 'S'),
                 'hidden'=>0,
-                'gid'=>1,
+                'gid'=>1,   // ($i % 3),
                 );
             ++$i;
         }
@@ -4305,8 +4305,10 @@ EOT;
             $alias2varName[$jsVarName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $jsVarName . "':'" . $jsVarName . "'");
             $varNameAttr[$jsVarName] = "'" . $jsVarName . "':{"
                 . "'jsName':'" . $jsVarName
+                . "','jsName_on':'" . $jsVarName
+                . "','sgqa':'" . $jsVarName
                 . "','qid':" . $i
-                . ",'gid':". ($i % 3)   // so have 3 possible group numbers
+                . ",'gid':". 1  // ($i % 3)   // so have 3 possible group numbers
             . "}";
         }
         $LEM->alias2varName = $alias2varName;
@@ -4326,7 +4328,6 @@ EOT;
             $rel = LimeExpressionManager::QuestionIsRelevant($arg['num']);
             print "<div id='question" . $arg['num'] . (($rel) ? "'" : "' style='display: none'") . ">\n";
             print "<input type='hidden' id='display" . $arg['num'] . "' name='" . $arg['num'] .  "' value='" . (($rel) ? 'on' : '') . "'/>\n";
-            print "<input type='hidden' id='relevance" . $arg['num'] . "' name='" . $arg['num'] . "' value='" . $rel . "'/>\n";
             if ($arg['type'] == 'expr')
             {
                 // Hack for testing purposes - rather than using LimeSurvey internals to store the results of equations, process them via a hidden <div>

@@ -14,7 +14,7 @@
  */
 
 // $LEMdebugLevel - customizable debugging for Lime Expression Manager
-$LEMdebugLevel=(LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
+$LEMdebugLevel=LEM_DEBUG_TIMING;    // (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
 switch ($thissurvey['format'])
 {
     case "A": //All in one

@@ -205,19 +205,19 @@ function LEMval(alias)
     var str = new String(alias);
     var varName = alias;
     var suffix = 'code';    // the default
-    if (str.match(/\.(codeValue|code|displayValue|gid|grelevance|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|sgqa|shown|type)$/)) {
-        varName = str.replace(/\.(codeValue|code|displayValue|gid|grelevance|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|sgqa|shown|type)$/,'')
-        suffix = str.replace(/^(.+)\./,'');
-    }
     if (str.match(/^INSERTANS:/)) {
         suffix = 'shown';
         varName = varName.substr(10);
+    }
+    else if (str.match(/\.(codeValue|code|displayValue|gid|grelevance|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|sgqa|shown|type)$/)) {
+        varName = str.replace(/\.(codeValue|code|displayValue|gid|grelevance|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|sgqa|shown|type)$/,'')
+        suffix = str.replace(/^(.+)\./,'');
     }
 
     jsName = LEMalias2varName[varName];
     attr = LEMvarNameAttr[jsName];
     if ((suffix == 'code' || suffix == 'codeValue' || suffix == 'displayValue' || suffix == 'shown' || suffix == 'NAOK') && attr.qid!='') {
-        if (document.getElementById('relevance' + attr.qid).value!=='1'){
+        if (!LEMval(varName + '.relevanceStatus')) {
             return '';
         }
     }
@@ -231,6 +231,19 @@ function LEMval(alias)
 
     // values should always be stored encoded with htmlspecialchars()
     switch (suffix) {
+        case 'relevanceStatus': {
+            grel = qrel = sgqarel = 1;
+            if (!(typeof attr.gid === 'undefined') && !(document.getElementById('relevanceG' + attr.gid) === null)) {
+                grel = parseInt(document.getElementById('relevanceG' + attr.gid).value);
+            }
+            if (!(typeof attr.qid === 'undefined') && !(document.getElementById('relevance' + attr.qid) === null)) {
+                qrel = parseInt(document.getElementById('relevance' + attr.qid).value);
+            }
+            if (!(typeof attr.sgqa === 'undefined') && !(document.getElementById('relevance' + attr.sgqa) === null)) {
+                sgqarel = parseInt(document.getElementById('relevance' + attr.sgqa).value);
+            }
+            return (grel && qrel && sgqarel);
+        }
         case 'displayValue':
         case 'shown': {
             value = htmlspecialchars_decode(document.getElementById(whichJsName).value);
@@ -295,8 +308,6 @@ function LEMval(alias)
             return htmlspecialchars_decode(attr.relevance);
         case 'relevanceNum':
             return attr.qid;
-        case 'relevanceStatus':
-            return document.getElementById('relevance' + attr.qid).value;
         case 'sgqa':
             return attr.sgqa;
         case 'type':
@@ -401,13 +412,11 @@ function LEManyNA()
         }
         jsName = LEMalias2varName[arg];
         if (typeof LEMvarNameAttr[jsName] === 'undefined') {
-            continue;   // default is OK (e.g. for questions with dot notation suffix
+            continue;   // default is OK (e.g. for questions with dot notation suffix)
         }
         attr = LEMvarNameAttr[jsName];
-        if (attr.qid!='') {
-            if (document.getElementById('relevance' + attr.qid).value!=='1'){
-                return true;    // means that the question is not relevant
-            }
+        if (!LEMval(attr.sgqa + '.relevanceStatus')) {
+            return true;
         }
     }
     return false;
