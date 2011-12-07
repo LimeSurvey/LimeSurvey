@@ -24,8 +24,15 @@
  */
 class tokens extends Survey_Common_Action
 {
+	private $yii;
+	private $controller;
+	
 	public function run($sa)
 	{
+		$this->yii = Yii::app();
+		$this->controller = $this->getController();
+		$sa = (!$sa) ? "" : $sa;
+		
 		if ($sa == 'index')
 			$this->route('index', array('surveyid'));
 		elseif ($sa == 'addnew')
@@ -50,6 +57,12 @@ class tokens extends Survey_Common_Action
 	                $this->route('kill', array('surveyid'));
 		elseif ($sa == 'adddummys')
 			$this->route('adddummys', array('surveyid', 'subaction'));
+		elseif ($sa == 'managetokenattributes')
+			$this->route('managetokenattributes', array('surveyid'));
+		elseif ($sa == 'updatetokenattributes')
+			$this->route('updatetokenattributes', array('surveyid'));
+		elseif ($sa == 'updatetokenattributedescriptions')
+			$this->route('updatetokenattributedescriptions', array('surveyid'));
 	}
 
 	/**
@@ -744,19 +757,20 @@ class tokens extends Survey_Common_Action
 	function managetokenattributes($surveyid)
 	{
 		$surveyid = sanitize_int($surveyid);
-		$clang=$this->limesurvey_lang;
+		$clang=$this->controller->lang;
 		if(!bHasSurveyPermission($surveyid, 'tokens', 'update'))
 		{
-			show_error("no permissions"); // TODO Replace
+			safe_die("no permissions"); // TODO Replace
 		}
 
-		$this->load->model("tokens_dynamic_model");
-		$tkcount=$this->tokens_dynamic_model->totalRecords($surveyid);
-		$this->load->helper("surveytranslator");
+		//$this->load->model("tokens_dynamic_model");
+		Tokens_dynamic::sid($surveyid);
+		$tkcount=Tokens_dynamic::model()->totalRecords($surveyid);
+		$this->yii->loadHelper("surveytranslator");
 
-		$this->load->model("surveys_model");
-		$query = $this->tokens_dynamic_model->getAllRecords($surveyid,FALSE,1);
-		$examplerow = $query->row_array();
+		//$this->load->model("surveys_model");
+		$query = Tokens_dynamic::model()->findAll(array('limit' => 1));
+		$examplerow = $query;
 
 		$tokenfields=GetTokenFieldsAndNames($surveyid,true);
     	$nrofattributes=0;
@@ -764,16 +778,16 @@ class tokens extends Survey_Common_Action
 		$data['clang']=$clang;
 		$thissurvey=getSurveyInfo($surveyid);
 		$data['thissurvey']=$thissurvey;
-		$data['imageurl'] = $this->config->item('imageurl');
+		$data['imageurl'] = $this->yii->getConfig('imageurl');
 		$data['surveyid']=$surveyid;
 		$data['tokenfields']=$tokenfields;
 		$data['nrofattributes']=$nrofattributes;
 		$data['examplerow']=$examplerow;
 
-		self::_getAdminHeader();
-		$this->load->view("admin/token/tokenbar",$data);
-		$this->load->view("admin/token/managetokenattributes",$data);
-		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+		$this->controller->_getAdminHeader();
+		$this->controller->render("/admin/token/tokenbar",$data);
+		$this->controller->render("/admin/token/managetokenattributes",$data);
+		$this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->controller->lang->gT("LimeSurvey online manual"));
 	}
 
 	/**
@@ -784,11 +798,24 @@ class tokens extends Survey_Common_Action
 		$surveyid = sanitize_int($surveyid);
 		if (bHasSurveyPermission($surveyid, 'tokens', 'update'))
 		{
-			$_POST=$this->input->post();
 		    $number2add=sanitize_int($_POST['addnumber'],1,100);
 		    // find out the existing token attribute fieldnames
-
-		    $tokenfieldnames = array_values($this->db->list_fields("tokens_$surveyid"));
+			$this->yii->loadHelper('database');
+			$dbprefix = $this->yii->db->tablePrefix;
+			$SQL = "SELECT TABLE_NAME, COLUMN_NAME
+				FROM information_schema.columns
+				WHERE TABLE_NAME = '{$dbprefix}tokens_$surveyid'";	
+				
+                //$realfieldnames = array_values($connect->MetaColumnNames($surveytable, true));
+                //$realfieldnames = array_values($this->db->list_fields($surveytable));
+			$realfieldnames_query = db_execute_assoc($SQL);
+			$realfieldnames_result = $realfieldnames_query->readAll();
+			
+			$tokenfieldnames = array();
+			foreach ($realfieldnames_result as $tokenfieldname)
+			{
+				$tokenfieldnames[] .= $tokenfieldname['COLUMN_NAME'];
+			}
 		    $tokenattributefieldnames=array_filter($tokenfieldnames,'filterforattributes');
 		    $i=1;
 		    for ($b=0;$b<$number2add;$b++)
@@ -797,24 +824,28 @@ class tokens extends Survey_Common_Action
 		            $i++;
 		        }
 		        $tokenattributefieldnames[]='attribute_'.$i;
+				db_execute_assoc($this->yii->db->getSchema()->addColumn("{$dbprefix}tokens_$surveyid", 'attribute_'.$i, 'VARCHAR(255)'));
 		        $fields['attribute_'.$i]=array('type' => 'VARCHAR','constraint' => '255');
 		    }
 		    //$dict = NewDataDictionary($connect);
 		    //$sqlarray = $dict->ChangeTableSQL("{$dbprefix}tokens_$surveyid", $fields);
 		    //$execresult=$dict->ExecuteSQLArray($sqlarray, false);
-		    $this->load->dbforge();
-			$this->dbforge->add_column("tokens_$surveyid", $fields);
+		    //$this->load->dbforge();
+			//var_dump($tokenattributefieldnames);
+			//var_dump(Yii::app()->db->getSchema()->addColumn("tokens_$surveyid", $tokenattributefieldnames, 'VARCHAR 255'));
+			//return;
+			//$this->dbforge->add_column("tokens_$surveyid", $fields);
 
-			$clang=$this->limesurvey_lang;
-			$data['clang']=$this->limesurvey_lang;
+			$clang=$this->controller->lang;
+			$data['clang']=$this->controller->lang;
 			$data['thissurvey']=getSurveyInfo($surveyid);
-			$data['imageurl'] = $this->config->item('imageurl');
+			$data['imageurl'] = $this->yii->getConfig('imageurl');
 			$data['surveyid']=$surveyid;
-			self::_getAdminHeader();
-			$this->load->view("admin/token/tokenbar",$data);
-			self::_showMessageBox(sprintf($clang->gT("%s field(s) were successfully added."),$number2add),
-			"<br /><input type='button' value='".$clang->gT("Back to attribute field management.")."' onclick=\"window.open('".site_url("admin/tokens/managetokenattributes/$surveyid")."', '_top')\" />");
-			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+			$this->controller->_getAdminHeader();
+			$this->controller->render("/admin/token/tokenbar",$data);
+			$this->controller->_showMessageBox(sprintf($clang->gT("%s field(s) were successfully added."),$number2add),
+			"<br /><input type='button' value='".$clang->gT("Back to attribute field management.")."' onclick=\"window.open('".$this->yii->homeUrl.("/admin/tokens/sa/managetokenattributes/surveyid/$surveyid")."', '_top')\" />");
+			$this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->controller->lang->gT("LimeSurvey online manual"));
 		}
 	}
 
@@ -829,25 +860,25 @@ class tokens extends Survey_Common_Action
 		    // find out the existing token attribute fieldnames
 		    $tokenattributefieldnames=GetAttributeFieldNames($surveyid);
 		    $fieldcontents='';
-			$_POST=$this->input->post();
 		    foreach ($tokenattributefieldnames as $fieldname)
 		    {
 		        $fieldcontents.=$fieldname.'='.strip_tags($_POST['description_'.$fieldname])."\n";
 		    }
 		    //$updatequery = "update ".db_table_name('surveys').' set attributedescriptions='.db_quoteall($fieldcontents,true)." where sid=$surveyid";
 		    //$execresult=db_execute_assoc($updatequery);
-			$this->load->model("surveys_model");
-			$this->surveys_model->updateSurvey(array("attributedescriptions"=>$fieldcontents),array("sid"=>$surveyid));
-			$clang=$this->limesurvey_lang;
-			$data['clang']=$this->limesurvey_lang;
+			//$this->load->model("surveys_model");
+			//$this->surveys_model->updateSurvey(array("attributedescriptions"=>$fieldcontents),array("sid"=>$surveyid));
+			Survey::model()->updateSurvey(array("attributedescriptions"=>$fieldcontents),"sid=$surveyid");
+			$clang=$this->controller->lang;
+			$data['clang']=$this->controller->lang;
 			$data['thissurvey']=getSurveyInfo($surveyid);
-			$data['imageurl'] = $this->config->item('imageurl');
+			$data['imageurl'] = $this->yii->getConfig('imageurl');
 			$data['surveyid']=$surveyid;
-			self::_getAdminHeader();
-			$this->load->view("admin/token/tokenbar",$data);
-			self::_showMessageBox($clang->gT("Token attribute descriptions were successfully updated."),
-					"<br /><input type='button' value='".$clang->gT("Back to attribute field management.")."' onclick=\"window.open('".site_url("admin/tokens/managetokenattributes/$surveyid")."', '_top')\" />");
-			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+			$this->controller->_getAdminHeader();
+			$this->controller->render("/admin/token/tokenbar",$data);
+			$this->controller->_showMessageBox($clang->gT("Token attribute descriptions were successfully updated."),
+					"<br /><input type='button' value='".$clang->gT("Back to attribute field management.")."' onclick=\"window.open('".$this->yii->homeUrl.("/admin/tokens/sa/managetokenattributes/surveyid/$surveyid")."', '_top')\" />");
+			$this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->controller->lang->gT("LimeSurvey online manual"));
 		}
 	}
 

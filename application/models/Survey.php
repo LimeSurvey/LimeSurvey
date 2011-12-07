@@ -100,25 +100,19 @@ class Survey extends CActiveRecord
 
         return $data;
     }
-    	/**
-	 * Returns users meeting given condition
-	 *
-	 * @access public
-	 * @return string
-	 */
+
     public function getSomeRecords($fields,$condition=FALSE)
     {
-		$criteria = new CDbCriteria;
-
-        if ($condition != FALSE)
-        {	
-		    foreach ($condition as $item => $value)
-			{
-				$criteria->addCondition($item.'="'.$value.'"');
-			}
+        foreach ($fields as $field)
+        {
+            $this->db->select($field);
         }
-		
-		$data = $this->findAll($criteria);
+        if ($condition != FALSE)
+        {
+            $this->db->where($condition);
+        }
+
+        $data = $this->db->get('surveys');
 
         return $data;
     }
@@ -173,16 +167,20 @@ class Survey extends CActiveRecord
 		return $data['sid'];
     }
 
-    public function updateSurvey($data,$condition)
+    public function updateSurvey($data,$condition = FALSE)
     {
-        $this->db->where($condition);
-        return $this->db->update('surveys', $data);
+		return Yii::app()->db->createCommand()->update($this->tableName(), $data, $condition);
     }
 
     public function getSurveyNames()
     {
-        return Yii::app()->db->createCommand()->select('surveyls_survey_id,surveyls_title')->from('{{surveys_languagesettings}}')->join('{{surveys}}','{{surveys_languagesettings}}.surveyls_survey_id = {{surveys}}.sid')->where('owner_id ='. Yii::app()->session['loginID'])->queryAll();
+        $this->db->select('surveyls_survey_id,surveyls_title');
+        $this->db->from('surveys_languagesettings');
+        $this->db->join('surveys','surveys_languagesettings.surveyls_survey_id = surveys.sid');
+        $this->db->where('owner_id',$this->session->userdata('loginID'));
         //$this->db->where('usetokens','Y'); // Will be done later
+        $query=$this->db->get();
+        return $query->result_array();
     }
     
 	public function getAllSurveyNames()
