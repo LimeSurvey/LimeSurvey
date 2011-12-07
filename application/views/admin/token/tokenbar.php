@@ -70,7 +70,7 @@
 		        	<img name='RemindButton' src='<?php echo $imageurl;?>/remind.png' alt='<?php echo $clang->gT("Send email reminder");?>' />
 		        </a>
 		        <img src='<?php echo $imageurl;?>/seperator.gif' alt='' />
-		        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/tokenify/$surveyid");?>', '_top')"
+		        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/tokenify/surveyid/$surveyid");?>', '_top')"
 		        	title='<?php echo $clang->gTview("Generate tokens");?>'>
 		        	<img name='TokenifyButton' src='<?php echo $imageurl;?>/tokenify.png' alt='<?php echo $clang->gT("Generate tokens");?>' />
 		        </a>

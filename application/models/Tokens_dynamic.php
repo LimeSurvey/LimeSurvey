@@ -138,5 +138,72 @@ class Tokens_dynamic extends CActiveRecord
 		self::sid($iSurveyID);
 		return Yii::app()->db->createCommand()->insert(self::tableName(), $data);
     }
+function updateToken($tid,$newtoken)
+    {
+        return Yii::app()->db->createCommand('UPDATE ' . $this->tableName() . ' SET token=\'' . $newtoken . '\' WHERE tid=' . $tid)->execute();
+    }
+    function selectEmptyTokens($iSurveyID)
+    {
+        return Yii::app()->db->createCommand("SELECT tid FROM ".$this->tableName()." WHERE token IS NULL OR token=''")->queryAll();
+    }
+    function createTokens($iSurveyID)
+    {
+        //get token length from survey settings
+        $tlresult = Survey::model()->getSomeRecords("tokenlength",array("sid"=>$iSurveyID));
+        $tlrow = $tlresult;
+        // an alternative way to get tokenlength...  told to me by GautamGupta1:  :)
+        //$tokenlength = Yii::app()->db->createCommand()->select('tokenlength')->from('{{surveys}}')->where('sid='.$surveyid)->query()->readColumn(0);
+        $iTokenLength = $tlrow[0]['tokenlength'];
+        
+
+        //if tokenlength is not set or there are other problems use the default value (15)
+        if(!isset($iTokenLength) || $iTokenLength == '')
+        {
+            $iTokenLength = 15;
+        }
+        $tablename = $this->tableName();
+		$ntresult = Yii::app()->db->createCommand()->select('token')->from($tablename)->queryAll();
+        // select all existing tokens
+        //old code that i did with the code above :)
+        //$ntresult = $this->getSomeRecords(array("token"),$iSurveyID,FALSE,"token");
+        foreach ($ntresult as $tkrow)
+        {
+            $existingtokens[$tkrow['token']]=null;
+        }
+        $newtokencount = 0;
+        $tkresult = $this->selectEmptyTokens($iSurveyID);
+        foreach ($tkresult as $tkrow)
+        {
+            $bIsValidToken = false;
+            while ($bIsValidToken == false)
+            {
+                $newtoken = sRandomChars($iTokenLength);
+                if (!isset($existingtokens[$newtoken])) {
+                    $bIsValidToken = true;
+                    $existingtokens[$newtoken]=null;
+                }
+            }
+            $itresult = $this->updateToken($tkrow['tid'],$newtoken);
+            $newtokencount++;
+        }
+        return $newtokencount;
+
+    }
+    public function getSomeRecords($fields,$condition=FALSE)
+    {
+		$criteria = new CDbCriteria;
+
+        if ($condition != FALSE)
+        {	
+		    foreach ($condition as $item => $value)
+			{
+				$criteria->addCondition($item.'="'.$value.'"');
+			}
+        }
+		
+		$data = $this->findAll($criteria);
+
+        return $data;
+    }
 }
 ?>

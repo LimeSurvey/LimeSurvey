@@ -57,6 +57,8 @@ class tokens extends Survey_Common_Action
 	                $this->route('kill', array('surveyid'));
 		elseif ($sa == 'adddummys')
 			$this->route('adddummys', array('surveyid', 'subaction'));
+		elseif ($sa == 'tokenify')
+			$this->route('tokenify', array('surveyid'));
 		elseif ($sa == 'managetokenattributes')
 			$this->route('managetokenattributes', array('surveyid'));
 		elseif ($sa == 'updatetokenattributes')
@@ -2190,40 +2192,47 @@ class tokens extends Survey_Common_Action
 	 */
 	function tokenify($surveyid)
 	{
+		   function _post($d) {
+    		if (isset($_POST[$d])) {
+    			return $_POST[$d];
+    		}else{
+    			return FALSE;
+    		}
+    	}
 		$surveyid = sanitize_int($surveyid);
-		$clang = $this->limesurvey_lang;
-		$data['clang']=$this->limesurvey_lang;
+		$clang = Yii::app()->lang;
+		$data['clang']=Yii::app()->lang;
 		$data['thissurvey']=getSurveyInfo($surveyid);
-		$data['imageurl'] = $this->config->item('imageurl');
+		$data['imageurl'] = Yii::app()->getConfig('imageurl');
 		$data['surveyid']=$surveyid;
+		Tokens_dynamic::sid($surveyid);
 
 		if (bHasSurveyPermission($surveyid, 'tokens', 'update'))
 		{
-		    if (!$this->input->post('ok'))
+		    if (!_post('ok'))
 		    {
 
-				self::_getAdminHeader();
-				$this->load->view("admin/token/tokenbar",$data);
-				self::_showMessageBox($clang->gT("Create tokens"),
+				$this->getController()->_getAdminHeader();
+				$this->getController()->render("/admin/token/tokenbar",$data);
+				$this->getController()->_showMessageBox($clang->gT("Create tokens"),
 						$clang->gT("Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?")."<br /><br />\n"
 		        ."<input type='submit' value='"
-		        .$clang->gT("Yes")."' onclick=\"".get2post(site_url("admin/tokens/tokenify/$surveyid")."?action=tokens&amp;sid=$surveyid&amp;subaction=tokenify&amp;ok=Y")."\" />\n"
+		        .$clang->gT("Yes")."' onclick=\"".get2post($this->getController()->createUrl("admin/tokens/sa/tokenify/surveyid/$surveyid")."?action=tokens&amp;sid=$surveyid&amp;subaction=tokenify&amp;ok=Y")."\" />\n"
 		        ."<input type='submit' value='"
-		        .$clang->gT("No")."' onclick=\"window.open('".site_url("admin/tokens/index/$surveyid")."', '_top')\" />\n"
+		        .$clang->gT("No")."' onclick=\"window.open('".$this->getController()->createUrl("admin/tokens/sa/index/surveyid/$surveyid")."', '_top')\" />\n"
 		        ."<br />\n");
-				self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+				$this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
 
 		    }
 		    else
 		    {
 		        //get token length from survey settings
-				$this->load->model("tokens_dynamic_model");
-                $newtokencount=$his->tokens_dynamic_model->createTokens($surveyid);
+                $newtokencount=Tokens_dynamic::model()->createTokens($surveyid);
 		        $message=str_replace("{TOKENCOUNT}", $newtokencount, $clang->gT("{TOKENCOUNT} tokens have been created"));
-				self::_getAdminHeader();
-				$this->load->view("admin/token/tokenbar",$data);
-				self::_showMessageBox($clang->gT("Create tokens"),$message);
-				self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+				$this->getController()->_getAdminHeader();
+				$this->getController()->render("/admin/token/tokenbar",$data);
+				$this->getController()->_showMessageBox($clang->gT("Create tokens"),$message);
+				$this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
 		    }
 		}
 	}
