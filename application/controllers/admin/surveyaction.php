@@ -73,6 +73,8 @@ class SurveyAction extends Survey_Common_Action {
 			$this->route('deactivate', array('surveyid'));
 		elseif ($sa == 'confirmdelete' || $sa == 'delete')
 			$this->route('delete', array('surveyid', 'sa'));
+		elseif ($sa == 'editlocalsettings' || isset($_GET['editlocalsettings']))
+			$this->route('editlocalsettings', array('surveyid'));
    		return;
 
 		/* @todo Implement this */
@@ -1058,38 +1060,40 @@ class SurveyAction extends Survey_Common_Action {
     {
         $surveyid = sanitize_int($surveyid);
 
-        $clang = $this->getController()->lang;
+        $clang = $this->controller->lang;
 
-        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
-        $this->config->set_item("css_admin_includes", $css_admin_includes);
-        self::_js_admin_includes(base_url().'scripts/admin/surveysettings.js');
-        self::_getAdminHeader();
-        self::_showadminmenu($surveyid);;
+        $css_admin_includes[] = $this->yii->getConfig('styleurl')."/admin/default/superfish.css";
+        $this->yii->setConfig("css_admin_includes", $css_admin_includes);
+        $this->controller->_js_admin_includes($this->controller->createUrl('scripts/admin/surveysettings.js'));
+        $this->controller->_getAdminHeader();
+        $this->controller->_showadminmenu($surveyid);;
         self::_surveybar($surveyid);
+		
         if(bHasSurveyPermission($surveyid,'surveylocale','read'))
         {
-
+        	$editsurvey = '';
             $grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
             array_unshift($grplangs,$baselang);
 
-            $editsurvey = PrepareEditorScript();
+            $this->yii->loadHelper("admin/htmleditor");
 
+			PrepareEditorScript(true, $this->controller);
 
             $editsurvey .="<div class='header ui-widget-header'>".$clang->gT("Edit survey text elements")."</div>\n";
-            $editsurvey .= "<form id='addnewsurvey' class='form30' name='addnewsurvey' action='".$this->getController()->createUrl("admin/database/index/updatesurveylocalesettings")."' method='post'>\n"
+            $editsurvey .= "<form id='addnewsurvey' class='form30' name='addnewsurvey' action='".$this->controller->createUrl("admin/database/index/updatesurveylocalesettings")."' method='post'>\n"
             . '<div id="tabs">';
             $i = 0;
             foreach ($grplangs as $grouplang)
             {
                 // this one is created to get the right default texts fo each language
-                $this->load->library('lang',array($grouplang));
-                Yii::app()->loadHelper('database');
-                Yii::app()->loadHelper('surveytranslator');
-                $bplang = $this->getController()->lang;//new lang($grouplang);
-                $esquery = "SELECT * FROM ".$this->db->dbprefix."surveys_languagesettings WHERE surveyls_survey_id=$surveyid and surveyls_language='$grouplang'";
+                //$this->yii->loadLibrary('lang',array($grouplang));
+                $this->yii->loadHelper('database');
+                $this->yii->loadHelper('surveytranslator');
+                $bplang = $this->controller->lang;//new lang($grouplang);
+                $esquery = "SELECT * FROM ".$this->yii->db->tablePrefix."surveys_languagesettings WHERE surveyls_survey_id=$surveyid and surveyls_language='$grouplang'";
                 $esresult = db_execute_assoc($esquery); //Checked
-                $esrow = $esresult->row_array();
+                $esrow = $esresult->read();
 
                 $tab_title[$i] = getLanguageNameFromCode($esrow['surveyls_language'],false);
 
@@ -1102,7 +1106,7 @@ class SurveyAction extends Survey_Common_Action {
                 $data['surveyid'] = $surveyid;
                 $data['action'] = "editsurveylocalesettings";
 
-                $tab_content[$i] = $this->load->view('admin/survey/editLocalSettings_view',$data,true);
+                $tab_content[$i] = $this->controller->render('/admin/survey/editLocalSettings_view',$data,true);
 
 
                 $i++;
@@ -1117,6 +1121,7 @@ class SurveyAction extends Survey_Common_Action {
                 $editsurvey .= "<div id='edittxtele$i'>$eachcontent</div>";
             }
             $editsurvey .= "</div>";
+			
             if(bHasSurveyPermission($surveyid,'surveylocale','update'))
             {
                 $editsurvey .= "<p><input type='submit' class='standardbtn' value='".$clang->gT("Save")."' />\n"
@@ -1134,7 +1139,7 @@ class SurveyAction extends Survey_Common_Action {
 
             //echo $editsurvey;
             $finaldata['display'] = $editsurvey;
-            $this->load->view('survey_view',$finaldata);
+            $this->controller->render('/survey_view',$finaldata);
             //self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 
         }
@@ -1142,13 +1147,13 @@ class SurveyAction extends Survey_Common_Action {
         {
             //include("access_denied.php");
             $finaldata['display'] = access_denied("editsurvey",$surveyid);
-            $this->load->view('survey_view',$finaldata);
+            $this->controller->render('/survey_view',$finaldata);
 
         }
-        self::_loadEndScripts();
+        $this->controller->_loadEndScripts();
 
 
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
+        $this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 
     }
 
