@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-03 18:09+0100\n"
-"PO-Revision-Date: 2011-12-06 11:48+0100\n"
+"POT-Creation-Date: 2011-12-06 11:50+0100\n"
+"PO-Revision-Date: 2011-12-07 13:29+0100\n"
 "Last-Translator: LimeSurvey team <info@limesurvey.org>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -950,9 +950,9 @@ msgid "All conditions meet consistency standards."
 msgstr "Todas las condiciones cumplen con los estándares de consistencia."
 
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:26
-#, fuzzy, php-format
+#, php-format
 msgid "There are %s orphaned question attributes."
-msgstr "Aún no hay preguntas definidas en este cuestionario"
+msgstr "Hay %s atributos de pregunta huérfanos"
 
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:30
 msgid "All question attributes meet consistency standards."
@@ -1061,14 +1061,12 @@ msgid "All old survey tables meet consistency standards."
 msgstr "Todas las tablas antiguas de encuestas cumplen con los estándares de consistencia."
 
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:192
-#, fuzzy
 msgid "The following old token tables should be deleted because they contain no records or their parent survey no longer exists:"
-msgstr "Las siguientes tablas invocadas deberían ser recuperadas:"
+msgstr "Las siguientes tablas de participantes deberían ser eliminadas porque no contienen ningún registro o la encuesta de la que provenían ya no existe:"
 
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:203
-#, fuzzy
 msgid "All old token tables meet consistency standards."
-msgstr "Todas las condiciones son consistentes"
+msgstr "Todas las tablas viejas de participantes alcanzan los estándares de consistencia."
 
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:208
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:224
@@ -1088,9 +1086,8 @@ msgstr "Si - Eliminarla!"
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/integritycheck.php:52
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/integritycheck.php:326
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:220
-#, fuzzy
 msgid "Data redundancy check"
-msgstr "Verificación de Consistencia de Datos"
+msgstr "Verificación de redundancia de datos"
 
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:221
 msgid "The redundancy check looks for tables leftover after deactivating a survey. You can delete these if you no longer require them."
@@ -1101,9 +1098,8 @@ msgid "The following old survey response tables exist and may be deleted if no l
 msgstr "The following old survey response tables exist and may be deleted if no longer required:"
 
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:246
-#, fuzzy
 msgid "The following old token list tables exist and may be deleted if no longer required:"
-msgstr "Las siguientes tablas invocadas deberían ser recuperadas:"
+msgstr "Las siguientes tablas viejas de listas de participantes existen y podrían ser eliminadas si ya no son requeridas:"
 
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:258
 msgid "Delete checked items!"
@@ -1475,14 +1471,12 @@ msgid "Parameter name:"
 msgstr "Nombre del parámetro:"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/editSurvey_view.php:34
-#, fuzzy
 msgid "Target (sub-)question:"
-msgstr "Editar pregunta"
+msgstr "(sub-)pregunta objetivo:"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/editSurvey_view.php:35
-#, fuzzy
 msgid "(No target question)"
-msgstr "a la pregunta"
+msgstr "(No hay pregunta objetivo)"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/listSurveys_view.php:5
 msgid "Are you sure you want to delete these surveys?"
@@ -1542,9 +1536,8 @@ msgid "Partial"
 msgstr "Parcial"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/listSurveys_view.php:29
-#, fuzzy
 msgid "Tokens available"
-msgstr "Eliminar Tabla de Participantes"
+msgstr "Participantes disponibles"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/listSurveys_view.php:30
 msgid "Response rate"
@@ -1770,9 +1763,9 @@ msgid "Assessment value"
 msgstr "Evaluaciones"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/answerOptions_view.php:46
-#, fuzzy, php-format
+#, php-format
 msgid "Answer scale %s"
-msgstr "La respuesta fue"
+msgstr "Escala %s de respuesta"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/answerOptions_view.php:65
 msgid "Answer option"
@@ -2195,9 +2188,8 @@ msgstr "Seleccione el archivo de pregunta de LimeSurvey (*.lsq/*.csv)"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:242
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/addGroup_view.php:59
-#, fuzzy
 msgid "Convert resource links?"
-msgstr "¿Convertir enlaces de recursos y campos INSERTANS?"
+msgstr "¿Convertir enlaces de recursos?"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:247
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:62
@@ -2666,9 +2658,8 @@ msgid "quota language settings"
 msgstr "Ajustes de lenguaje cuota"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/importSurvey_view.php:57
-#, fuzzy
 msgid "Response import summary"
-msgstr "Resumen de la Importación de la Pregunta"
+msgstr "Respuesta al resumen de la importación"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/importSurvey_view.php:66
 #: /tmp/translationstatus_v2/application/views/admin/survey/copySurvey_view.php:51
@@ -2822,9 +2813,8 @@ msgid "Type"
 msgstr "Tipo"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/showSyntaxErrors_view.php:12
-#, fuzzy
 msgid "Source expression"
-msgstr "Expresión regular"
+msgstr "Expresión de orígen"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/showSyntaxErrors_view.php:13
 msgid "Syntax highlighted"
@@ -2902,9 +2892,8 @@ msgstr "Cerrar este grupo"
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:159
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/editGroup_view.php:33
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/addGroup_view.php:40
-#, fuzzy
 msgid "Randomization group:"
-msgstr "No se encontró ese Grupo"
+msgstr "Grupo de aleatorización:"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:167
 msgid "Questions with conditions to this group"
@@ -3143,7 +3132,7 @@ msgstr "Reordenar grupos de preguntas / preguntas"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:221
 msgid "Token management"
-msgstr "Administrar pases"
+msgstr "Administrar participantes"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:229
 msgid "Question groups:"
@@ -3240,14 +3229,13 @@ msgstr "Por favor revise estas opciones ahora, luego haga click en el botón deb
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/activateSurvey_view.php:48
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:3
-#, fuzzy
 msgid "Anonymized responses?"
-msgstr "Respuestas incompletas:"
+msgstr "¿Respuestas anonimizadas?"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/activateSurvey_view.php:55
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:15
 msgid "If you turn on the -Anonymized responses- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
-msgstr "Si usted activa la opción de encuesta anónima y crea una tabla de encuestados/as, LimeSurvey marcará las respuestas completadas con una 'Y' en vez de con la fecha y hora para asegurar el anonimato de sus participantes."
+msgstr "Si usted activa la opción de \"respuestas anonimizadas\" y crea una tabla de encuestados/as, LimeSurvey marcará las respuestas completadas con una 'Y' en vez de con la fecha y hora para asegurar el anonimato de sus participantes."
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/activateSurvey_view.php:74
 msgid "Date stamp?"
@@ -3266,9 +3254,8 @@ msgstr "¿Guardar la URL de referencia?"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/activateSurvey_view.php:122
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabNotification_view.php:100
-#, fuzzy
 msgid "Save timings?"
-msgstr "Guardar opciones"
+msgstr "¿Guardar tiempos?"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/activateSurvey_view.php:134
 msgid "Please note that once responses have collected with this survey and you want to add or remove groups/questions or change one of the settings above, you will need to deactivate this survey, which will move all data that has already been entered into a separate archived table."
@@ -3407,14 +3394,12 @@ msgid "Responses will have their referring URL logged."
 msgstr "La respuestas registrarán la URL referente."
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabNotification_view.php:103
-#, fuzzy
 msgid "Timings will not be saved."
-msgstr "Las respuestas no tendrán registro de fecha"
+msgstr "Los tiempos no serán guardados."
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabNotification_view.php:104
-#, fuzzy
 msgid "Timings will be saved."
-msgstr "Las respuestas tendrán registro de fecha"
+msgstr "Los tiempos serán guardados."
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabNotification_view.php:123
 msgid "Enable assessment mode?"
@@ -3493,9 +3478,8 @@ msgstr "Notificación y manejo de datos"
 # D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:1070
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tab_view.php:7
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:30
-#, fuzzy
 msgid "Tokens"
-msgstr "Pase"
+msgstr "Participantes"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tab_view.php:9
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:493
@@ -3508,9 +3492,8 @@ msgid "Copy"
 msgstr "Copiar"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tab_view.php:13
-#, fuzzy
 msgid "Panel integration"
-msgstr "Enviar Invitación (por email)"
+msgstr "Integración del panel"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tab_view.php:14
 msgid "Resources"
@@ -3563,7 +3546,7 @@ msgstr "Rebotes de correo:"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:10
 msgid "You can't use Anonymized responses when Token-based answers persistence is enabled."
-msgstr "No se pueden utilizar respuestas anónimas cuando las respuestas basadas en el Token están activadas"
+msgstr "No se pueden utilizar respuestas anónimas cuando las respuestas basadas en los participantes están activadas"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:22
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Controller.php:415
@@ -3584,14 +3567,12 @@ msgid "This option can't be set if Anonymous answers are used"
 msgstr "Esta opcion no se puede colocar si las respuestas anonimas son usadas"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:58
-#, fuzzy
 msgid "Enable token-based response persistence?"
-msgstr "¿Activar la persistencia de respuestas basada en el pase?"
+msgstr "¿Permitir la persistencia de respuestas basadas en participantes?"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:59
-#, fuzzy
 msgid "This option can't be set if the `Anonymized responses` option is active."
-msgstr "Esta opcion no se puede colocar si las respuestas anonimas son usadas"
+msgstr "Esta opcion no se puede colocar si las \"Respuestas anonimizadas\" estan activas."
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:71
 msgid "Allow public registration?"
@@ -3599,7 +3580,7 @@ msgstr "¿Permitir inscripción pública?"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:87
 msgid "Use HTML format for token emails?"
-msgstr "¿Usar formato HTML al enviar pases por correo electrónico?"
+msgstr "¿Usar formato HTML al enviar emails a participantes?"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:88
 msgid "If you switch email mode, you'll have to review your email templates to fit the new format"
@@ -3908,9 +3889,8 @@ msgid "Add New User Group"
 msgstr "Agregar grupo de usuarios"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseindex_view.php:1
-#, fuzzy
 msgid "Response summary"
-msgstr "Respuestas completas"
+msgstr "Resumen de respuestas."
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseindex_view.php:3
 msgid "Total responses:"
@@ -3964,9 +3944,8 @@ msgstr "Exportar los resultados a la aplicación"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browsemenubar_view.php:49
 #: /tmp/translationstatus_v2/application/helpers/admin/html_helper.php:111
-#, fuzzy
 msgid "Export results to a SPSS/PASW command file"
-msgstr "Exportar los resultados a un archivo de comandos SPSS"
+msgstr "Exportar los resultados a un archivo de comandos SPSS/PASW"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browsemenubar_view.php:52
 #: /tmp/translationstatus_v2/application/helpers/admin/html_helper.php:116
@@ -4165,7 +4144,7 @@ msgstr "Eliminar esta entrada"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseallrow_view.php:20
 msgid "Edit this token"
-msgstr "Editar este pase"
+msgstr "Editar este participante"
 
 #: /tmp/translationstatus_v2/application/views/admin/labels/exportmulti_view.php:3
 msgid "You have to select at least one label set."
@@ -4760,7 +4739,7 @@ msgstr "Entrada de Datos"
 #: /tmp/translationstatus_v2/application/helpers/frontend_helper.php:1533
 #: /tmp/translationstatus_v2/application/helpers/frontend_helper.php:1705
 msgid "Token"
-msgstr "Pase"
+msgstr "Participante"
 
 #: /tmp/translationstatus_v2/application/views/admin/dataentry/caption_view.php:60
 msgid "Datestamp"
@@ -4911,12 +4890,11 @@ msgstr "Elija las columnas que desea exportar."
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:3
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1623
 msgid "Token control"
-msgstr "Control de pases"
+msgstr "Control de participantes"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/exportresults_view.php:118
-#, fuzzy
 msgid "Choose token fields"
-msgstr "Elija los campos con claves de acceso"
+msgstr "Elija los campos de participantes"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/exportresults_view.php:120
 msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
@@ -4970,14 +4948,12 @@ msgstr "Exportar los datos resultado a SPSS"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/spss_view.php:4
 #: /tmp/translationstatus_v2/application/views/admin/export/r_view.php:3
-#, fuzzy
 msgid "Data selection:"
-msgstr "a la pregunta"
+msgstr "Selección de datos:"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/spss_view.php:10
-#, fuzzy
 msgid "SPSS version:"
-msgstr "Versión"
+msgstr "Versión de SPSS:"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/spss_view.php:12
 msgid "Prior to 16"
@@ -5133,7 +5109,7 @@ msgstr "Añadir participante a la Encuesta"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:63
 msgid "Either you don't own a survey or it doesn't have token table"
-msgstr "Incluso si no es dueño de una encuesta o no tiene una tabla de muestra"
+msgstr "Incluso si no es dueño de una encuesta o no tiene una tabla de participantes"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:66
 msgid "Add to survey"
@@ -5160,9 +5136,8 @@ msgid "Select one of the three options"
 msgstr "Elija una de las tres opciones"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:75
-#, fuzzy
 msgid "You have no row selected"
-msgstr "No ha seleccionado un cuestionario"
+msgstr "No tienes ninguna fila seleccionada"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:76
 msgid "Delete participant(s) from central participants panel only"
@@ -5170,11 +5145,11 @@ msgstr "Borrar participante(s) del panel de participantes centrales solamente"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:77
 msgid "Delete participant(s) from central panel and tokens tables"
-msgstr "Borrar participante(s) del panel central y de las tablas de muestra"
+msgstr "Borrar participante(s) del panel central y de las tablas de participantes"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:78
 msgid "Delete participant(s) from central panel, tokens tables and all associated responses"
-msgstr "Borrar participante(s) del panel central, tablas de muestra, y todas las respuestas asociadas"
+msgstr "Borrar participante(s) del panel central, tablas de participantes, y todas las respuestas asociadas"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:80
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:40
@@ -5232,7 +5207,7 @@ msgstr "Por favor seleccione la encuesta en la cual los participantes serán añ
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:230
 msgid "Redirect to token table after copy "
-msgstr "Redireccionar a la tabla de muestra después de copiar"
+msgstr "Redireccionar a la tabla de participantes después de copiar"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:241
 msgid "all participants in current search"
@@ -5286,14 +5261,12 @@ msgid "Uploaded CSV file successfully"
 msgstr "Archivo CSV subido con exito"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/uploadSummary_view.php:18
-#, fuzzy
 msgid "Successfully created CPDB entries"
-msgstr "Borrar todos los Participantes"
+msgstr "Entradas CPDB creadas con éxito"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/uploadSummary_view.php:20
-#, fuzzy
 msgid "Failed to create token entries"
-msgstr "Borrar todos los Participantes"
+msgstr "Falló la creación de entradas de participantes"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1380
 #: /tmp/translationstatus_v2/application/views/admin/participants/uploadSummary_view.php:24
@@ -5325,9 +5298,9 @@ msgstr "Se eliminaron %s registros duplicados"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1384
 #: /tmp/translationstatus_v2/application/views/admin/participants/uploadSummary_view.php:47
-#, fuzzy, php-format
+#, php-format
 msgid "%s records with invalid email address removed"
-msgstr "Se eliminaron los registros con direcciones de correo electrónico no válidas"
+msgstr "%s registros con direcciones de email inválidas eliminados"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/uploadSummary_view.php:57
 #, php-format
@@ -5353,9 +5326,8 @@ msgstr "Elija el archivo a subir:"
 
 # C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1549
 #: /tmp/translationstatus_v2/application/views/admin/participants/importCSV_view.php:17
-#, fuzzy
 msgid "Character set of file:"
-msgstr "Juego de caracteres del archivo:"
+msgstr "Archivo de juego de caracteres:"
 
 # C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1499
 #: /tmp/translationstatus_v2/application/views/admin/participants/importCSV_view.php:20
@@ -5612,9 +5584,8 @@ msgid "firstname, lastname, email"
 msgstr "nombre, apellido, e-mail"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/importCSV_view.php:97
-#, fuzzy
 msgid "blacklist,language"
-msgstr "Idioma por omisión"
+msgstr "lista negra,idioma"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/sharePanel_view.php:6
 msgid "Share panel"
@@ -5678,9 +5649,8 @@ msgid "Attribute visible:"
 msgstr "Atributo visible:"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/viewAttribute_view.php:109
-#, fuzzy
 msgid "Value name"
-msgstr "Nombre guardado"
+msgstr "Nombre del valor"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeControl_view.php:5
 msgid "Attribute visiblity changed"
@@ -5724,34 +5694,28 @@ msgid "Attributes to be created"
 msgstr "Atributos a crear"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeMap_view.php:62
-#, fuzzy
 msgid "Token table attribute"
-msgstr "Atributo del participante: %s"
+msgstr "Atributo de la tabla de símbolos"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/blacklist_view.php:4
-#, fuzzy
 msgid "Blacklist control"
-msgstr "Control de Usuarios"
+msgstr "Control de la lista negra"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/blacklist_view.php:44
-#, fuzzy
 msgid "You have successfully blacklisted from any survey on this server"
-msgstr "Ha sido borrado exitosamente de esta encuesta"
+msgstr "Ha sido vetado con éxito de las encuesta en este servidor "
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/blacklist_view.php:48
-#, fuzzy
 msgid "You have successfully un-blacklisted from any survey on this server"
-msgstr "Ha sido borrado exitosamente de esta encuesta"
+msgstr "Ha sido aceptado nuevamente con éxito en las encuestas en este servidor"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/blacklist_view.php:55
-#, fuzzy
 msgid "You have already been blacklisted from any survey on this server"
-msgstr "Ha sido borrado de esta encuesta"
+msgstr "Ya fue vetado de las encuestas en este servidor con anterioridad"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/blacklist_view.php:59
-#, fuzzy
 msgid "You have already been un-blacklisted from any survey on this server"
-msgstr "Ha sido borrado de esta encuesta"
+msgstr "Ya fue aceptado nuevamente en las encuestas en este servidor con anterioridad"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/blacklist_view.php:65
 msgid "Survey is no longer active"
@@ -5764,24 +5728,20 @@ msgstr "La URL que Ud. está intentando usar ya ha sido modificada, o Ud. ha sid
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/blacklist_view.php:79
 #: /tmp/translationstatus_v2/application/views/admin/participants/blacklist_view.php:107
-#, fuzzy
 msgid "You have successfully blacklisted from this survey"
-msgstr "Ha sido borrado exitosamente de esta encuesta"
+msgstr "Ha sido vetado de esta encuesta con éxito"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/blacklist_view.php:83
-#, fuzzy
 msgid "You have successfully un-blacklisted from this survey"
-msgstr "Ha sido borrado exitosamente de esta encuesta"
+msgstr "Ha sido aceptado nuevamente con éxito en esta encuesta"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/blacklist_view.php:90
-#, fuzzy
 msgid "You have already been blacklisted from this survey"
-msgstr "Ya ha completado este cuestionario."
+msgstr "Ya ha sido vetado de esta encuesta."
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/blacklist_view.php:94
-#, fuzzy
 msgid "You have already been un-blacklisted from this survey"
-msgstr "Ha sido borrado de esta encuesta"
+msgstr "Ya ha sido aceptado nuevamente en esta encuesta"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeMapCSV_view.php:19
 msgid "Summary"
@@ -5797,9 +5757,8 @@ msgid "Select attributes to copy with your %s participant(s)"
 msgstr "Seleccione los atributos a copiar con sus %s participant(s)"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeMapCSV_view.php:29
-#, fuzzy
 msgid "CSV headings"
-msgstr "Cabeceras Completas"
+msgstr "Encabezados CSV"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeMapCSV_view.php:42
 msgid "Central attribute"
@@ -5858,9 +5817,8 @@ msgstr "Recuperar"
 #: /tmp/translationstatus_v2/application/views/admin/token/addtokenpost.php:1
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenform.php:9
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenform.php:110
-#, fuzzy
 msgid "Add token entry"
-msgstr "Agregar un/a nuevo/a encuestado/a"
+msgstr "Agregar entrada de símbolo/s"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/addtokenpost.php:5
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:378
@@ -5876,9 +5834,8 @@ msgid "Display tokens"
 msgstr "Mostrar pases"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/addtokenpost.php:7
-#, fuzzy
 msgid "Add another token entry"
-msgstr "Agregar un/a nuevo/a encuestado/a"
+msgstr "Agregar agregar otra entrada de símbolo/s"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/addtokenpost.php:9
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:380
@@ -5898,9 +5855,8 @@ msgid "Add new token entry"
 msgstr "Agregar un/a nuevo/a encuestado/a"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokensummary.php:2
-#, fuzzy
 msgid "Token summary"
-msgstr "Mostrar resumen de pases"
+msgstr "Resúmen de simbolos"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokensummary.php:8
 msgid "Total records in this token table"
@@ -5915,9 +5871,8 @@ msgid "Total invitations sent"
 msgstr "Total de invitaciones enviadas"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokensummary.php:32
-#, fuzzy
 msgid "Total opted out"
-msgstr "Total de archivos importados"
+msgstr "El total optó por"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokensummary.php:40
 msgid "Total surveys completed"
@@ -5930,9 +5885,8 @@ msgstr "Mostrar resumen de pases"
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:27
 #: /tmp/translationstatus_v2/application/views/admin/token/dummytokenform.php:50
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:583
-#, fuzzy
 msgid "Add dummy tokens"
-msgstr "Agregar encuestado/a"
+msgstr "Agregar símbolos falsos"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:36
 msgid "Manage additional attribute fields"
@@ -5976,18 +5930,16 @@ msgstr "Borrar tabla de participantes"
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:1
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:10
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1516
-#, fuzzy
 msgid "Bounce settings"
-msgstr "Guardar opciones"
+msgstr "Opciones de Rebote"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:104
 msgid "Show help"
 msgstr "Mostrar ayuda"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:14
-#, fuzzy
 msgid "You have selected not to use any bounce settings"
-msgstr "No ha seleccionado una pregunta"
+msgstr "Ha seleccionado no usar opciones de rebote"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:18
 msgid "Bounce processing"
@@ -6042,9 +5994,8 @@ msgstr "¿Se ha completado?"
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:116
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:117
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:5611
-#, fuzzy
 msgid "Uses left"
-msgstr "Usar los valores por defecto"
+msgstr "Usos restantes"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:120
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:121
@@ -6202,9 +6153,8 @@ msgstr "Mensaje de correo de invitación:"
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1384
 #: /tmp/translationstatus_v2/application/views/admin/token/email.php:92
 #: /tmp/translationstatus_v2/application/views/admin/token/remind.php:82
-#, fuzzy
 msgid "Bypass token with failing email addresses"
-msgstr "Se eliminaron los registros con direcciones de correo electrónico no válidas"
+msgstr "Derivar simbolos con correos electrónicos incorrectos"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/email.php:96
 msgid "Send Invitations"
@@ -6223,14 +6173,12 @@ msgid "Set all entries to 'No invitation sent'."
 msgstr "Asignar 'Invitación NO enviada' a todos los registros."
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokendatabaseoptions.php:11
-#, fuzzy
 msgid "Are you sure you want to delete all unique token strings?"
-msgstr "¿Está seguro(a) de querer borrar todas las contraseñas únicas?"
+msgstr "¿Está seguro(a) de querer borrar todas las líneas de participantes?"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokendatabaseoptions.php:12
-#, fuzzy
 msgid "Delete all unique token strings"
-msgstr "Borrar todas las contraseñas únicas"
+msgstr "Borrar todas las líneas de participantes"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokendatabaseoptions.php:15
 msgid "Are you really sure you want to delete ALL token entries?"
@@ -6311,14 +6259,12 @@ msgid "Sending invitations..."
 msgstr "Enviando Invitaciones"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/emailpost.php:6
-#, fuzzy
 msgid "Sending to Token ID"
-msgstr "Enviando al TID Nro:"
+msgstr "Enviando al participante con ID:"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/emailpost.php:7
-#, fuzzy
 msgid "Sending to Token IDs"
-msgstr "Enviando al TID Nro:"
+msgstr "Enviando a los participantes con los IDs:"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/remind.php:32
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:1588
@@ -6379,23 +6325,20 @@ msgstr "Correo de notificación:"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/remind.php:65
 #: /tmp/translationstatus_v2/application/views/admin/token/remind.php:78
-#, fuzzy
 msgid "Send reminder to token ID(s):"
-msgstr "Enviando al TID Nro:"
+msgstr "Enviar recordatorio al (los) participante(s) con ID(s):"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/remind.php:69
 msgid "Sending to:"
 msgstr "Enviando a:"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/remind.php:70
-#, fuzzy
 msgid "All token entries to whom a reminder email would apply"
-msgstr "Se han borrado todos los participantes"
+msgstr "Todos las entradas de participantes que aplicarían para un recordatorio por email"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/remind.php:73
-#, fuzzy
 msgid "Start at Token ID:"
-msgstr "Iniciar en el ID de autenticación Nro:"
+msgstr "Iniciar en el participante con ID:"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/remind.php:88
 msgid "Min days between reminders"
@@ -6410,9 +6353,8 @@ msgid "Send Reminders"
 msgstr "Enviar Recordatorios"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/dummytokenform.php:2
-#, fuzzy
 msgid "Create dummy tokens"
-msgstr "Generar pases"
+msgstr "Generar participantes falsos"
 
 # C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1501
 #: /tmp/translationstatus_v2/application/views/admin/token/dummytokenform.php:7
@@ -6425,15 +6367,13 @@ msgid "Number of tokens"
 msgstr "Número de pases"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/dummytokenform.php:11
-#, fuzzy
 msgid "Token length"
-msgstr "Ajustar tamaño de la contraseña a:"
+msgstr "Longitud del participante"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/dummytokenform.php:23
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenform.php:70
-#, fuzzy
 msgid "Uses left:"
-msgstr "Usar los valores por defecto"
+msgstr "Usos restantes"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/dummytokenform.php:30
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenform.php:81
@@ -6461,24 +6401,20 @@ msgid "You can leave this blank, and automatically generate tokens using 'Genera
 msgstr "Usted puede dejar esto en blanco y generar automáticamente pases usando 'Generar Pases'"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenform.php:61
-#, fuzzy
 msgid "Reminder count:"
-msgstr "Número de recordatorios"
+msgstr "Cuenta de recordatorios:"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenform.php:105
-#, fuzzy
 msgid "Update token entry"
-msgstr "Editar pase"
+msgstr "Actualizar entrada de participante"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:4
-#, fuzzy
 msgid "Survey bounce email:"
-msgstr "Escenario por defecto"
+msgstr "Email de rebote de encuestas:"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:6
-#, fuzzy
 msgid "Bounce settings to be used"
-msgstr "Se han guardado las opciones de correo para pases"
+msgstr "Opciones de rebote a usar"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:10
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:37
@@ -6494,9 +6430,8 @@ msgid "None"
 msgstr "Ninguna"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:13
-#, fuzzy
 msgid "Use settings below"
-msgstr "Guardar opciones"
+msgstr "Usar las siguientes opciones"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:16
 msgid "Use global settings"
@@ -6534,9 +6469,8 @@ msgstr "Nombre de usuario:"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:33
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:214
-#, fuzzy
 msgid "Encryption type:"
-msgstr "Tipo de pregunta:"
+msgstr "Tipo de encriptación:"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:40
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:167
@@ -6769,9 +6703,8 @@ msgid "Email batch size:"
 msgstr "Tamaño del lote de correo:"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:191
-#, fuzzy
 msgid "Default site bounce email:"
-msgstr "Escenario por defecto"
+msgstr "Email de rebote del sitio por defecto:"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:230
 msgid "Survey preview only for administration users"
@@ -6810,9 +6743,8 @@ msgid "Don't force on or off"
 msgstr "No forzar encendido o apagado"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:296
-#, fuzzy
 msgid "Show 'no answer' option for non-mandatory questions:"
-msgstr "Mostrar condiciones para esta pregunta"
+msgstr "Mostrar la opción \"NS/NC\" para preguntas no obligatorias:"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:300
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:321
@@ -6855,7 +6787,6 @@ msgid "Start installation"
 msgstr "Comenzar instalación"
 
 #: /tmp/translationstatus_v2/application/views/installer/dbsettings_view.php:21
-#, fuzzy
 msgid "LimeSurvey setup"
 msgstr "Configuración de LimeSurvey"
 
@@ -6864,9 +6795,8 @@ msgid "LimeSurvey tried to delete the following file but couldn't succeed. You w
 msgstr "LimeSurvey intentó eliminar el siguiente archivo pero no lo ha logrado. Usted debe removerlo o no tendrá permiso para ingresar."
 
 #: /tmp/translationstatus_v2/application/views/installer/success_view.php:27
-#, fuzzy
 msgid "File path:"
-msgstr "Archivo:"
+msgstr "Ruta del Archivo:"
 
 #: /tmp/translationstatus_v2/application/views/installer/success_view.php:31
 msgid "Administrator credentials"
@@ -6963,18 +6893,16 @@ msgstr "No se encontró"
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:881
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1041
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:21
-#, fuzzy
 msgid "Writable"
-msgstr "deshabilitado"
+msgstr "Escribible"
 
 # C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/browse.php:573
 # C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/exportresults.php:160
 # C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/statistics.php:655
 # C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/vvexport.php:75
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:25
-#, fuzzy
 msgid "Unwritable"
-msgstr "Habilitar"
+msgstr "No Escribible"
 
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:55
 msgid "Required settings"
@@ -7060,32 +6988,28 @@ msgid "You can leave these settings blank and change them later"
 msgstr "Puede dejar estas opciones vacías y modificarlas luego"
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:33
-#, fuzzy
 msgid "Admin login name"
-msgstr "Administrador:"
+msgstr "Nombre de usuario del Administrador"
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:34
 msgid "This will be the userid by which admin of board will login."
 msgstr "Este será el userid por el cual el administrador se logueará."
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:39
-#, fuzzy
 msgid "Admin login password"
-msgstr "No ingresó la contraseña"
+msgstr "Contraseña del Administrador"
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:40
 msgid "This will be the password of admin user."
 msgstr "Esta será la contraseña del usuario administrador."
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:45
-#, fuzzy
 msgid "Confirm password"
-msgstr "Confirmar Contraseña:"
+msgstr "Confirmar contraseña"
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:46
-#, fuzzy
 msgid "Confirm your admin password."
-msgstr "Confirmar Contraseña:"
+msgstr "Confirmar contraseña de Administrador"
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:51
 msgid "Administrator name"
@@ -7512,7 +7436,6 @@ msgid "Caution: JavaScript execution is disabled in your browser. You may not be
 msgstr "Aviso: La ejecución de JavaScript está deshabilitada en su navegador. Es posible q no pueda responder todas las preguntas del cuestionario. Por favor, verifique los parámetros de su navegador."
 
 #: /tmp/translationstatus_v2/application/helpers/replacements_helper.php:619
-#, fuzzy
 msgid "Close this window"
 msgstr "Cerrar esta ventana"
 
@@ -7611,28 +7534,24 @@ msgid "Arrays"
 msgstr "Arreglos"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:69
-#, fuzzy
 msgid "Mask questions"
-msgstr "a la pregunta"
+msgstr "Preguntas enmascaradas"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:70
-#, fuzzy
 msgid "Single choice questions"
-msgstr "No se copiaron las preguntas"
+msgstr "Preguntas de opción única"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:71
 msgid "Multiple choice questions"
 msgstr "Preguntas de opción múltiple"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:72
-#, fuzzy
 msgid "Text questions"
-msgstr "a la pregunta"
+msgstr "Preguntas de texto"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:76
-#, fuzzy
 msgid "Array dual scale"
-msgstr "Matriz (etiquetas flexibles) escala doble"
+msgstr "Línea de escala dual"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:82
 msgid "5 Point Choice"
@@ -7655,9 +7574,8 @@ msgid "Date/Time"
 msgstr "Fecha/Hora"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:112
-#, fuzzy
 msgid "Array (Increase/Same/Decrease)"
-msgstr "Matriz (aumento, igual, disminución)"
+msgstr "Línea (Aumentar/igual/Disminuir)"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:118
 msgid "Array"
@@ -7684,23 +7602,20 @@ msgid "List (Radio)"
 msgstr "Lista (Radio)"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:154
-#, fuzzy
 msgid "Multiple choice"
-msgstr "Múltiples Textos Cortos"
+msgstr "Multiple opción"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:160
 msgid "Numerical Input"
 msgstr "Entrada Numérica"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:166
-#, fuzzy
 msgid "List with comment"
 msgstr "Lista con comentarios"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:172
-#, fuzzy
 msgid "Multiple choice with comments"
-msgstr "Múltiples Opciones con Comentarios"
+msgstr "Múltiples opciones con comentarios"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:178
 msgid "Multiple Short Text"
@@ -7724,9 +7639,8 @@ msgid "Huge Free Text"
 msgstr "Texto libre enorme"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:208
-#, fuzzy
 msgid "Text display"
-msgstr "No mostrado"
+msgstr "Visualización de texto"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:214
 msgid "Yes/No"
@@ -7737,18 +7651,16 @@ msgid "List (Dropdown)"
 msgstr "Lista (Desplegable)"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:226
-#, fuzzy
 msgid "Array (Numbers)"
-msgstr "Matriz (multi flexible) (números)"
+msgstr "Línea (Números)"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:232
 msgid "Array (Texts)"
 msgstr "Matriz (multi flexible) (Textos)"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:238
-#, fuzzy
 msgid "File upload"
-msgstr "Archvio token cargado"
+msgstr "Carga de archivo"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:244
 msgid "Equation"
@@ -7777,9 +7689,8 @@ msgid "Detailed email notification with result codes"
 msgstr "Notificación detallada por correo con los códigos de resultados"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:1543
-#, fuzzy
 msgid "Response submission for survey {SURVEYNAME} with results"
-msgstr "Enviar su encuesta."
+msgstr "Responder envío de encuesta {SURVEYNAME} con resultados"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:1544
 msgid ""
@@ -7824,9 +7735,8 @@ msgstr ""
 "{ANSWERTABLE}"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:1581
-#, fuzzy
 msgid "Response submission for survey {SURVEYNAME}"
-msgstr "Enviar su encuesta."
+msgstr "Responder envío de encuesta {SURVEYNAME}"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:1582
 msgid ""
@@ -7978,32 +7888,28 @@ msgid "Response ID"
 msgstr "ID de la respuesta"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:2338
-#, fuzzy
 msgid "Date submitted"
-msgstr "Fecha de envío"
+msgstr "Fecha en que se envió"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:2346
 msgid "Last page"
 msgstr "Ultima pagina"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:2354
-#, fuzzy
 msgid "Start language"
-msgstr "Idioma Inicial"
+msgstr "Idioma de Inicio"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:2391
 msgid "Date last action"
 msgstr "Fecha de la ultima accion"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:2403
-#, fuzzy
 msgid "Date started"
-msgstr "Fecha de inicio"
+msgstr "Fecha en que inició"
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1773
 # D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1995
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:2430
-#, fuzzy
 msgid "Referrer URL"
 msgstr "URL de referencia"
 
@@ -8021,7 +7927,6 @@ msgid "Rank %s"
 msgstr "Rango %s"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:2865
-#, fuzzy
 msgid "Other comment"
 msgstr "Otro comentario"
 
@@ -8034,14 +7939,12 @@ msgid "Total time"
 msgstr "Tiempo total"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:2932
-#, fuzzy
 msgid "Group time"
-msgstr "Nombre del grupo"
+msgstr "Tiempo del grupo"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:2939
-#, fuzzy
 msgid "Question time"
-msgstr "Página de preguntas"
+msgstr "tiempo de preguntas"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3287
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3298
@@ -8072,9 +7975,8 @@ msgstr "Página de preguntas"
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4001
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4009
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4198
-#, fuzzy
 msgid "Display"
-msgstr "Visualización:"
+msgstr "Visualización"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3293
 msgid "Sort the answer options alphabetically"
@@ -8160,14 +8062,12 @@ msgid "Display rows"
 msgstr "Filas a mostrar"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3374
-#, fuzzy
 msgid "Use accessible dropdown boxes instead of calendar popup"
-msgstr "Utilizar cajas de selección accesibles en lugar de calendario flotante"
+msgstr "Utilizar cuadros desplegables accesibles en lugar de calendario flotante"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3375
-#, fuzzy
 msgid "Display dropdown boxes"
-msgstr "Filas a mostrar"
+msgstr "Mostrar cuadros despegables"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3382
 msgid "Minimum year value in calendar"
@@ -8198,29 +8098,24 @@ msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr "Publicación-Respuesta-Separador|Inter-Lista desplegable-Separador para listas desplegables"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3408
-#, fuzzy
 msgid "Dropdown separator"
-msgstr "Separador de listas"
+msgstr "Separador desplegable"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3416
-#, fuzzy
 msgid "Enter a header text for the first scale"
-msgstr "Encabezado para la escala A"
+msgstr "Ingresar un texto de encabezado para la primer escala"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3417
-#, fuzzy
 msgid "Header for first scale"
-msgstr "Encabezado escala A"
+msgstr "Encabezado para la primer escala"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3425
-#, fuzzy
 msgid "Enter a header text for the second scale"
-msgstr "Encabezado para la escala A"
+msgstr "Ingresar un texto de encabezado para la segunda escala"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3426
-#, fuzzy
 msgid "Header for second scale"
-msgstr "Encabezado escala A"
+msgstr "Encabezado para la primer escala"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3430
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3623
@@ -8356,9 +8251,8 @@ msgid "Use mapping service"
 msgstr "Usar servicio de mapeo"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3550
-#, fuzzy
 msgid "Width of the map in pixel"
-msgstr "Anchura de la caja de texto"
+msgstr "Ancho del mapa en pixeles"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3551
 msgid "Map width"
@@ -8429,9 +8323,8 @@ msgid "Maximum sum value"
 msgstr "Valor de la suma máximo"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3634
-#, fuzzy
 msgid "Maximum value of the numeric input"
-msgstr "Valor máximo de la suma de la entrada de múltiples números"
+msgstr "Valor máximo de la entrada numérica"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3635
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3691
@@ -8463,18 +8356,16 @@ msgid "Minimum answers"
 msgstr "Número mínimo de preguntas"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3666
-#, fuzzy
 msgid "The sum of the multiple numeric inputs must be greater than this value"
-msgstr "Las entradas de múltiples números debe ser mayor que este valor"
+msgstr "La suma de las múltiples entradas numéricas debe ser mayor que este valor"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3667
 msgid "Minimum sum value"
 msgstr "Valor de la suma mínimo"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3674
-#, fuzzy
 msgid "Minimum value of the numeric input"
-msgstr "Valor máximo de la suma de la entrada de múltiples números"
+msgstr "Valor minimo de la entrada numérica"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3675
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3699
@@ -8486,7 +8377,6 @@ msgid "Enter the SGQA identifier to use the total of a previous question as the 
 msgstr "Ingrese el identificador SQGA para usar el total de una pregunta previa como el mínimo para esta pregunta"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3683
-#, fuzzy
 msgid "Minimum value from SGQA"
 msgstr "Valor minimo de SGQA"
 
@@ -8504,23 +8394,20 @@ msgid "Step value"
 msgstr "Valor de incremento"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3717
-#, fuzzy
 msgid "Use checkbox layout"
-msgstr "Disponer como cajas de texto"
+msgstr "Usar diseño de casilla"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3718
 msgid "Checkbox layout"
 msgstr "Disponer como cajas de texto"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3728
-#, fuzzy
 msgid "Present answer options in reverse order"
-msgstr "Presentar respuestas en orden aleatorio"
+msgstr "Presentar las opciones de respuesta en orden inverso"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3729
-#, fuzzy
 msgid "Reverse answer order"
-msgstr "Orden de respuesta aleatorio"
+msgstr "Invertir orden de respuestas"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3736
 msgid "SGQA identifier to use total of previous question as total for this question"
@@ -8591,9 +8478,8 @@ msgid "'Other:' comment mandatory"
 msgstr "Comentario 'Otro' obligatorio"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3825
-#, fuzzy
 msgid "Allow only numerical input for 'Other' text"
-msgstr "Permitir sólo entrada numérica"
+msgstr "Únicamente permitir entrada numérica para el texto 'Otro'"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3826
 msgid "Numbers only for 'Other'"
@@ -8714,9 +8600,8 @@ msgid "Display min and max value under the slider"
 msgstr "Despliega los valores minimos y maximos de bajo del slider."
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3980
-#, fuzzy
 msgid "Display slider min and max value"
-msgstr "Valor mínimo del deslizador"
+msgstr "Valores mínimo y máximo del deslizador de la pantalla"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3987
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
@@ -8787,9 +8672,8 @@ msgstr "Tipo de escala para la exportacion SPSS"
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4157
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4165
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4174
-#, fuzzy
 msgid "Timer"
-msgstr "Título"
+msgstr "Temporizador"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4037
 msgid "Limit time to answer question (in seconds)"
@@ -8882,9 +8766,8 @@ msgid "Display a 'time limit warning' when there are this many seconds remaining
 msgstr "Mostrar un \"aviso de tiempo límite\" cuando queden pocos segundos en el contador (aviso no será mostrado si se deja vacío)"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4120
-#, fuzzy
 msgid "1st time limit warning message timer"
-msgstr "Mensaje del contador de tiempo"
+msgstr "Temporizador del primer aviso del alcance del tiempo límite"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4127
 msgid "The 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
@@ -8899,27 +8782,24 @@ msgid "The message to display as a 'time limit warning' (a default warning will 
 msgstr "El mensaje a mostrar como \"aviso de tiempo límite\" (un aviso predeterminado será mostrado si se deja vacío)"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4137
-#, fuzzy
 msgid "1st time limit warning message"
-msgstr "Mensaje del tiempo limite alcanzado"
+msgstr "Mensaje del primer aviso del alcance del tiempo límite"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4144
 msgid "CSS style used when the 'time limit warning' message is displayed"
 msgstr "Estilo CSS usado cuando el mensaje de \"aviso de tiempo límite\" se muestre"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4145
-#, fuzzy
 msgid "1st time limit warning CSS style"
-msgstr "temporizador de tiempo límite de estilo CSS"
+msgstr "Estilo CSS del primer aviso del alcance del tiempo límite"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4152
 msgid "Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr "Mostrar el 2do \"aviso de tiempo límite\" cuando resten esta cantidad de segundos en el contador (aviso no será mostrado si lo deja vacío)"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4153
-#, fuzzy
 msgid "2nd time limit warning message timer"
-msgstr "Mensaje del contador de tiempo"
+msgstr "Temporizador del segundo aviso del alcance del tiempo límite"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4160
 msgid "The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
@@ -8934,18 +8814,16 @@ msgid "The 2nd message to display as a 'time limit warning' (a default warning w
 msgstr "El 2do mensaje a mostrar como \"aviso de tiempo límite\" (un aviso predeterminado se mostrará si se deja vacío)"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4170
-#, fuzzy
 msgid "2nd time limit warning message"
-msgstr "Mensaje del tiempo limite alcanzado"
+msgstr "Mensaje del segundo aviso del alcance del tiempo límite"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4177
 msgid "CSS style used when the 2nd 'time limit warning' message is displayed"
 msgstr "Estilo CSS usado cuando el 2do \"aviso de tiempo límite\" es mostrado"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4178
-#, fuzzy
 msgid "2nd time limit warning CSS style"
-msgstr "temporizador de tiempo límite de estilo CSS"
+msgstr "Estilo CSS del segundo aviso del alcance del tiempo límite"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4185
 msgid "Specify a custom date/time format (the <i>d/dd m/mm yy/yyyy H/HH M/MM</i> formats and \"-./: \" characters are allowed for day/month/year/hour/minutes without or with leading zero respectively. Defaults to survey's date format"
@@ -8986,9 +8864,8 @@ msgstr "Estilo de desplegado de meses"
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:695
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4210
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4221
-#, fuzzy
 msgid "File metadata"
-msgstr "¡No se pudo actualizar!"
+msgstr "Metadata del archivo"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4216
 msgid "Is the participant required to give a title to the uploaded file?"
@@ -9171,7 +9048,6 @@ msgstr "¡No esta permitido que importe una pregunta!"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:7198
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:7203
-#, fuzzy
 msgid "Security alert"
 msgstr "Alerta de seguridad"
 
@@ -9219,9 +9095,8 @@ msgstr "No se pudo actualizar el conjunto de etiquetas"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:121
 #: /tmp/translationstatus_v2/application/helpers/admin/labels_helper.php:253
-#, fuzzy
 msgid "Labels sucessfully updated"
-msgstr "Su encuesta fue guardada con éxito."
+msgstr "Etiquetas actualizadas con éxito"
 
 # C:/documentos/www/docs/limesurvey15/admin/labels.php:654
 #: /tmp/translationstatus_v2/application/helpers/admin/labels_helper.php:258
@@ -9240,21 +9115,18 @@ msgid "This file is too old. Only files from LimeSurvey version 1.50 (DBVersion 
 msgstr "Este archivo es muy antiguo. Solo archivos de LimeSurvey 1.50 (DBVersion 112) y mas actuales son soportados. "
 
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:234
-#, fuzzy
 msgid "You can't import a group which doesn't support at least the survey base language."
-msgstr "No puede importar un grupo que no soporta el lenguaje base de la encuesta actual"
+msgstr "No puede importar un grupo que no soporta por lo menos el lenguaje base de la encuesta actual"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:246
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:1325
-#, fuzzy
 msgid "You can't import a question which doesn't support at least the survey base language."
-msgstr "No puede importar una pregunta que no soporta el lenguaje base de la encuesta actual"
+msgstr "No puede importar una pregunta que no soporta por lo menos el lenguaje base de la encuesta actual"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:260
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:1339
-#, fuzzy
 msgid "You can't import answers which doesn't support at least the survey base language."
-msgstr "No puede importar un grupo que no soporta el lenguaje base de la encuesta actual"
+msgstr "No puede importar un grupo que no soporta por lo menos el lenguaje base de la encuesta actual"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:275
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:1354
@@ -9316,33 +9188,28 @@ msgid "A group in the CSV/SQL file is not part of the same survey. The import of
 msgstr "Un grupo en el archivo CSV/SQL no es parte de la misma encuesta. La importación de la encuesta fue detenida."
 
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:3383
-#, fuzzy
 msgid "This is not a valid LimeSurvey survey structure XML file."
-msgstr "El formato del archivo no es de LimeSurvey. La importación falló."
+msgstr "Este no es un archivo LimeSurvey de encuesta con estructura XML válido."
 
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:3972
-#, fuzzy
 msgid "This is not a valid token data XML file."
-msgstr "Este archivo no es un archivo ZIP válido. Falló la importación."
+msgstr "Este no es un archivo XML de datos de participantes válido."
 
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:4056
-#, fuzzy
 msgid "This is not a valid response data XML file."
-msgstr "Este archivo no es un archivo ZIP válido. Falló la importación."
+msgstr "Este no es un archivo XML de datos de respuesta válido."
 
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:4110
-#, fuzzy
 msgid "This is not a valid timings data XML file."
-msgstr "Este archivo no es un archivo ZIP válido. Falló la importación."
+msgstr "Este no es un archivo XML de datos de tiempos válido."
 
 #: /tmp/translationstatus_v2/application/helpers/admin/activate_helper.php:85
 msgid "This group does not contain any question(s)."
 msgstr "Este grupo no contiene pregunta(s)."
 
 #: /tmp/translationstatus_v2/application/helpers/admin/activate_helper.php:131
-#, fuzzy
 msgid "This question is a subquestion type question but has no configured subquestions."
-msgstr "Esta pregunta  es de múltiples respuestas pero aún no tiene respuestas asignadas a ella"
+msgstr "Esta pregunta está preparada para subpreguntas, pero aún no niguna subpregunta configurada."
 
 #: /tmp/translationstatus_v2/application/helpers/admin/activate_helper.php:141
 msgid "This question is a multiple answer type question but has no answers."
@@ -9418,16 +9285,14 @@ msgstr "Estadísticas rápidas"
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:802
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:821
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:840
-#, fuzzy
 msgid "Number of records in this query:"
-msgstr "Número de elementos en esta consulta"
+msgstr "Número de registros en esta consulta:"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:805
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:822
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:842
-#, fuzzy
 msgid "Total records in survey:"
-msgstr "Total de elementos en este cuestionario"
+msgstr "Registros totales en la encuesta:"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:811
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:825
@@ -9714,9 +9579,8 @@ msgid "Count the number of answered questions in the list"
 msgstr "Contar el número de preguntas contestadas en la lista"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:139
-#, fuzzy
 msgid "Format a local date/time"
-msgstr "Fecha inicial:"
+msgstr "Dar formato a una fecha/hora local"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:140
 msgid "Calculates the exponent of e"
@@ -9727,9 +9591,8 @@ msgid "Round fractions down"
 msgstr "Redondeo de fracciones (hacia abajo)"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:142
-#, fuzzy
 msgid "Format a GMT date/time"
-msgstr "Fecha inicial:"
+msgstr "Dar formato a una fecha/hora en GMT"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:143
 msgid "Convert all HTML entities to their applicable characters (always uses ENT_QUOTES and UTF-8)"
@@ -9752,9 +9615,8 @@ msgid "Format a local time/date as integer"
 msgstr "Formatear la fecha/hora local como entero"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:148
-#, fuzzy
 msgid "Conditional processing"
-msgstr "Diseñador de condiciones"
+msgstr "Procesamiento condicional"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:149
 msgid "Join array elements with a string"
@@ -9845,9 +9707,8 @@ msgid "Convert a 8 bit string to a quoted-printable string"
 msgstr "Convertir una cadena de 8 bits en una cadena citada imprimible"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:171
-#, fuzzy
 msgid "Quote meta characters"
-msgstr "Máximo número de caracteres"
+msgstr "Citar meta caracteres"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:172
 msgid "Generate a random integer"
@@ -10139,9 +10000,8 @@ msgid "Table prefix"
 msgstr "Prefijo de la tabla"
 
 #: /tmp/translationstatus_v2/application/helpers/update/update_helper.php:67
-#, fuzzy
 msgid "Root URL"
-msgstr "Cargar URL automaticamente"
+msgstr "URL Raíz"
 
 #: /tmp/translationstatus_v2/application/helpers/update/update_helper.php:70
 msgid "Click here to continue"
@@ -10162,11 +10022,11 @@ msgstr "Arrastre los elementos en la lista de la izquierda hacia la lista en la 
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:658
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:659
-#, fuzzy, php-format
+#, php-format
 msgid "Rank at least %d item."
 msgid_plural "Rank at least %d items."
-msgstr[0] "Al menos asigne un grado a %d elementos"
-msgstr[1] "Al menos asigne un grado a %d elementos"
+msgstr[0] "Calificar al menos %d elemento."
+msgstr[1] "Calificar al menos %d elementos."
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:672
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:673
@@ -10195,11 +10055,11 @@ msgstr "Marque a lo sumo %d respuestas"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:690
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:691
-#, fuzzy, php-format
+#, php-format
 msgid "Check at least %d answer"
 msgid_plural "Check at least %d answers"
-msgstr[0] "Marque por lo menos %d respuestas"
-msgstr[1] "Marque por lo menos %d respuestas"
+msgstr[0] "Marque por lo menos %d respuestas."
+msgstr[1] "Marque por lo menos %d respuestas."
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:702
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:703
@@ -10214,9 +10074,9 @@ msgstr "Marque por lo menos %d respuestas"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:746
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:747
-#, fuzzy, php-format
+#, php-format
 msgid "At least %d files must be uploaded for this question"
-msgstr "Respuestas predefinidas para esta pregunta"
+msgstr "Deben cargarse por lo menos %d archivos para esta pregunta"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/qanda.php:375
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/printablesurvey.php:250
@@ -10521,11 +10381,11 @@ msgstr "Por favor escriba aquí su comentario"
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:2971
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3386
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3401
-#, fuzzy, php-format
+#, php-format
 msgid "Please rank at least %d item for question \"%s\""
 msgid_plural "Please rank at least %d items for question \"%s\"."
-msgstr[0] "Por favor seleccione al menos %d respuestas para la pregunta \"%s\""
-msgstr[1] "Por favor seleccione al menos %d respuestas para la pregunta \"%s\""
+msgstr[0] "Por favor, califique al menos %d elemento para la pregunta \"%s\""
+msgstr[1] "Por favor, califique al menos %d elementos para la pregunta \"%s\"."
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3323
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:1063
@@ -10538,9 +10398,9 @@ msgid "Click on the scissors next to each item on the right to remove the last e
 msgstr "Pulse en las tijeras que hay a la derecha de cada elemento para eliminar la última entrada en la lista"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3833
-#, fuzzy, php-format
+#, php-format
 msgid "Please choose at most %d answer(s) for question \"%s\""
-msgstr "Por favor seleccione cuando mucho %d elemento(s) para la pregunta \"%s\""
+msgstr "Por favor, seleccione cuando mucho %d respuesta/s para la pregunta \"%s\""
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:3854
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4186
@@ -10562,9 +10422,9 @@ msgid "Make a comment on your choice here:"
 msgstr "Comente su opción aquí:"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4161
-#, fuzzy, php-format
+#, php-format
 msgid "Please choose at most %d answers for question \"%s\""
-msgstr "Por favor seleccione cuando mucho %d elemento(s) para la pregunta \"%s\""
+msgstr "Por favor, seleccione cuando mucho %d respuestas para la pregunta \"%s\""
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:4334
 msgid "Upload files"
@@ -10693,9 +10553,8 @@ msgstr "La Dirección IP será guardada en un archivo de registro"
 # D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1773
 # D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1995
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Controller.php:426
-#, fuzzy
 msgid "Referrer URL will be saved."
-msgstr "Se registrará el URL Referente"
+msgstr "Se registrará la URL Referente."
 
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Controller.php:427
 msgid "It uses cookies for access control."
@@ -10718,7 +10577,6 @@ msgid "Detailed email notification with response data is sent to:"
 msgstr "Notificación detallada por correo electrónico con información de respuesta es enviada a:"
 
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Controller.php:441
-#, fuzzy
 msgid "Regenerate question codes:"
 msgstr "Regenerar los códigos de las preguntas:"
 
@@ -10911,23 +10769,21 @@ msgid "Database has been created."
 msgstr "La Base de Datos ha sido creada."
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:890
-#, fuzzy
 msgid "Please continue with populating the database."
-msgstr "Haga clic para rellenar la base de datos"
+msgstr "Por favor, continúe poblando la base de datos."
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:991
-#, fuzzy, php-format
+#, php-format
 msgid "Database %s has been successfully populated."
-msgstr "La Base de Datos `%s` ha sido creada."
+msgstr "La Base de Datos `%s` ha sido poblada con éxito."
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:995
 msgid "Database was populated but there were errors:"
 msgstr "La base de datos fue poblada pero se detectaron errores:"
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:1192
-#, fuzzy
 msgid "Directory is not writable"
-msgstr "La carpeta temporal %s no es escribible"
+msgstr "El directorio no es escribible"
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:1193
 msgid "You will be redirected in about 5 secs. If not, click "
@@ -11055,24 +10911,22 @@ msgid "You can upload %s under %s KB each."
 msgstr "Puede cargar %s, con menos de %s KB cada uno."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:61
-#, fuzzy
 msgid "Deleting token table:"
-msgstr "Borrando tablas de participantes antiguas"
+msgstr "Eliminando tabla de participantes:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:70
-#, fuzzy
 msgid "Deleting survey table:"
-msgstr "Borrando tablas de encuestas antiguas"
+msgstr "Borrando tabla de encuesta:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:99
-#, fuzzy, php-format
+#, php-format
 msgid "Deleting conditions: %u conditions deleted"
-msgstr "Las siguientes condiciones deberían ser borradas"
+msgstr "Borrando condiciones: %u condiciones borradas"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:107
-#, fuzzy, php-format
+#, php-format
 msgid "Deleting question attributes: %u attributes deleted"
-msgstr "Los siguientes atributos de preguntas deberían ser borrados"
+msgstr "Borrando atributos de pregunta: %u atributos borrados"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:114
 msgid "Deleting orphaned default values."
@@ -11087,67 +10941,61 @@ msgid "Deleting orphaned language settings."
 msgstr "Borrando opciones de lenguaje huerfanas."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:135
-#, fuzzy
 msgid "Deleting orphaned quota members."
-msgstr "Borrando cuotas huerfanas"
+msgstr "Borrando cuotas de miembros huerfanos."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:143
-#, fuzzy, php-format
+#, php-format
 msgid "Deleting assessments: %u assessment entries deleted"
-msgstr "Las siguientes evaluaciones deberían ser borradas"
+msgstr "Borrando evaluaciones: %u entradas de evaluación borradas"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:151
-#, fuzzy, php-format
+#, php-format
 msgid "Deleting answers: %u answers deleted"
-msgstr "Las siguientes respuestas deberían ser borradas"
+msgstr "Borrando respuestas: %u respuestas borradas"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:159
-#, fuzzy, php-format
+#, php-format
 msgid "Deleting surveys: %u surveys deleted"
-msgstr "Los siguientes cuestionarios deberían ser eliminados"
+msgstr "Borrando encuestas: %u encuestas borradas"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:167
-#, fuzzy, php-format
+#, php-format
 msgid "Deleting survey languagesettings: %u survey languagesettings deleted"
-msgstr "Los siguientes cuestionarios deberían ser eliminados"
+msgstr "Borrando opciones de lenguaje de la encuesta: %u opciones de lenguaje de la encuesta borradas"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:175
-#, fuzzy, php-format
+#, php-format
 msgid "Deleting questions: %u questions deleted"
-msgstr "Las siguientes preguntas deberían ser borradas"
+msgstr "Borrando preguntas: %u preguntas borradas"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:184
-#, fuzzy, php-format
+#, php-format
 msgid "Deleting groups: %u groups deleted"
-msgstr "Los siguientes grupos deberían ser borrados"
+msgstr "Borrando grupos: %u grupos borrados"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:192
-#, fuzzy
 msgid "Deleting orphan survey table:"
-msgstr "Borrando tablas de encuestas antiguas"
+msgstr "Borrando tablas de encuestas huerfanas:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:201
-#, fuzzy
 msgid "Deleting orphan token table:"
-msgstr "Borrando tablas de participantes antiguas"
+msgstr "Borrando tablas de participantes huerfanas:"
 
 # D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:51
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:321
-#, fuzzy
 msgid "No matching CQID"
-msgstr "No se encontró el Cqid"
+msgstr "No coincide ningún CQID"
 
 # D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:58
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:331
-#, fuzzy
 msgid "No matching CFIELDNAME group!"
-msgstr "No se encontró el grupo CFIELDNAME correspondiente"
+msgstr "¡No coincide ningún grupo CFIELDNAME!"
 
 # D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:62
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:336
-#, fuzzy
 msgid "No CFIELDNAME field set!"
-msgstr "No ha ingresado el \"CFIELDNAME\"!"
+msgstr "¡No se ha establecido el campo CFIELDNAME!"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:396
 msgid "No matching survey"
@@ -11168,9 +11016,8 @@ msgid "Language specific settings missing"
 msgstr "No se encuentran los datos específicos del idioma"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:449
-#, fuzzy
 msgid "The related survey is missing."
-msgstr "Finalizar encuesta con una Advertencia"
+msgstr "La encuesta relacionada no pudo ser encontrada."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:471
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:482
@@ -11179,19 +11026,17 @@ msgid "There is no matching survey."
 msgstr "No se encontró ninguna encuesta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:528
-#, fuzzy
 msgid "responses"
-msgstr "Respuestas"
+msgstr "respuestas"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:535
-#, fuzzy
 msgid "timings"
-msgstr "Temporizado"
+msgstr "tiempos"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:549
-#, fuzzy, php-format
+#, php-format
 msgid "Survey ID %d saved at %s containing %d record(s) (%s)"
-msgstr "Modo de encuesta fijado en %s:"
+msgstr "La encuesta con ID %d fue guardada en %s conteniendo %d registro/s (%s)"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:612
 #, php-format
@@ -11204,9 +11049,8 @@ msgid "Import Label Set"
 msgstr "Importar Conjunto de Etiquetas"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:57
-#, fuzzy
 msgid "Demo mode only: Uploading files is disabled in this system."
-msgstr "Unicamente en el modo Demo: la Carga de archivo está desactivada en este sistema."
+msgstr "Solo en el modo Demo: La carga de archivos está desactivada en este sistema."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:79
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:87
@@ -11318,9 +11162,8 @@ msgstr "Atrás"
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:310
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:330
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:340
-#, fuzzy
 msgid "Label set import summary"
-msgstr "Sumario de la importación del conjunto de etiquetas"
+msgstr "Resumen de la importación de configuración de etiquetas"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:311
 msgid "Uploaded label set file needs to have an .lsl extension."
@@ -11329,9 +11172,8 @@ msgstr "Archivo de conjunto de etiquetas cargado necesita tener una extensión .
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:312
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:334
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:344
-#, fuzzy
 msgid "Return to label set administration"
-msgstr "Regresar al administrador de encuestas"
+msgstr "Regresar al administrador de configuración de etiquetas"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:332
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:342
@@ -11341,9 +11183,8 @@ msgstr "Etiquetas"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:333
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:343
-#, fuzzy
 msgid "Import of label set(s) is completed."
-msgstr "Se completó la importación de las etiquetas."
+msgstr "Se completó la importación de la/s configuracion/es de etiquetas."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:394
 msgid "Create New Label Set"
@@ -11372,14 +11213,12 @@ msgid "zip library not supported by PHP, Import ZIP Disabled"
 msgstr "La libreria ZIP no esta soportada por PHP, Importacion ZIP deshabilitada."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:612
-#, fuzzy
 msgid "Enter your labels:"
-msgstr "Pregunta de seguridad:"
+msgstr "Ingrese sus etiquetas:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:613
-#, fuzzy
 msgid "Enter one label per line. You can provide a code by separating code and label text with a semicolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semicolon or space."
-msgstr "Escriba una respuesta por línea. Puede proporcionar un código mediante la separación de código y texto de respuesta con un semikolon o tab."
+msgstr "Escriba una etiqueta por línea. Puede proporcionar un código separando el código del texto de etiqueta con un semicolon o tab. Para encuestas multilenguajes agregue la/s traduccion/es en la misma línea separada/s con un semicolon o espacio."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/assessments.php:62
 msgid "No SID Provided"
@@ -11503,9 +11342,8 @@ msgid "No SID (Survey) has been provided. Cannot import question."
 msgstr "No se indicó un SID (Encuesta). No se pudo importar la pregunta."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/questiongroup.php:115
-#, fuzzy
 msgid "Question group import summary"
-msgstr "Resumen de la Importación de la Pregunta"
+msgstr "Resumen de la importación del grupo de preguntas"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/questiongroup.php:117
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:211
@@ -11518,9 +11356,8 @@ msgid "Question attributes:"
 msgstr "Atributos de la pregunta:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/questiongroup.php:128
-#, fuzzy
 msgid "Question group import is complete."
-msgstr "Se completó la importación de la pregunta."
+msgstr "Se completó la importación de grupos de preguntas."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/questiongroup.php:129
 msgid "Go to question group"
@@ -11660,9 +11497,8 @@ msgid "is greater than"
 msgstr "es mayor que"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:392
-#, fuzzy
 msgid "is matched (regexp)"
-msgstr "Respuesta coincide (regexp)"
+msgstr "coincide con (regexp)"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:591
 msgid "RANK"
@@ -11793,14 +11629,14 @@ msgid "Please fax your completed survey to: %s"
 msgstr "Por favor, envíe un fax con su cuestionario completado a: %s"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:1969
-#, fuzzy, php-format
+#, php-format
 msgid "Only answer this question for the items you selected in question %d ('%s')"
-msgstr "Contestar a esta pregunta sólo si las siguientes condiciones se cumplen:"
+msgstr "Contestar a esta pregunta únicamente con los elementos que seleccionó en la pregunta %d ('%s')"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:1978
-#, fuzzy, php-format
+#, php-format
 msgid "Only answer this question for the items you did not select in question %d ('%s')"
-msgstr "Contestar a esta pregunta sólo si las siguientes condiciones se cumplen:"
+msgstr "Contestar a esta pregunta únicamente con los elementos que no seleccionó en la pregunta %d ('%s')"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:64
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:100
@@ -11904,9 +11740,8 @@ msgid "Median: "
 msgstr "Mediana:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:1273
-#, fuzzy
 msgid "Timings"
-msgstr "Temporizado"
+msgstr "Tiempos"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:47
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:104
@@ -11934,7 +11769,7 @@ msgstr "Correo electronico desde"
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:111
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:128
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:163
-#, fuzzy, php-format
+#, php-format
 msgid "Token attribute: %s"
 msgstr "Atributo del participante: %s"
 
@@ -11942,33 +11777,28 @@ msgstr "Atributo del participante: %s"
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:116
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:133
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:165
-#, fuzzy
 msgid "Survey expiration date"
-msgstr "Fecha de expiración de la encuesta (AAAA-MM-DD)"
+msgstr "Fecha de expiración de la encuesta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:59
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:77
-#, fuzzy
 msgid "Reload URL"
-msgstr "Cargar URL automaticamente"
+msgstr "Recargar URL"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:60
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:78
-#, fuzzy
 msgid "View response URL"
-msgstr "Ver Respuesta"
+msgstr "Ver URL de respuesta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:61
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:79
-#, fuzzy
 msgid "Edit response URL"
-msgstr "Editar esta Respuesta"
+msgstr "Editar URL de respuesta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:62
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:80
-#, fuzzy
 msgid "Statistics URL"
-msgstr "Estadísticas Rápidas"
+msgstr "URL de estadísticas"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:63
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:82
@@ -11979,15 +11809,13 @@ msgstr "Codigo Token para este participante."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:64
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:83
-#, fuzzy
 msgid "First name from token"
-msgstr "Nombres desde"
+msgstr "Primer Nombre del participante"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:65
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:84
-#, fuzzy
 msgid "Last name from token"
-msgstr "Apellidos desde"
+msgstr "Apellido del participante"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:66
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:85
@@ -12018,19 +11846,16 @@ msgid "Email address of the survey administrator"
 msgstr "Correo electronico del administrador de la encuesta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:81
-#, fuzzy
 msgid "Answers from this response"
-msgstr "Respuestas de pregunta anterior"
+msgstr "Respuestas de esta respuesta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:101
-#, fuzzy
 msgid "URL for a respondent to opt-out this survey"
-msgstr "%d respuestas a este cuestionario"
+msgstr "URL para que un entrevistado pueda optar por no hacer la encuesta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:102
-#, fuzzy
 msgid "URL for a respondent to opt-in this survey"
-msgstr "%d respuestas a este cuestionario"
+msgstr "URL para que un entrevistado pueda optar por hacer la encuesta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:115
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:132
@@ -12038,40 +11863,34 @@ msgid "URL of the survey"
 msgstr "URL de la encuesta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:156
-#, fuzzy
 msgid "This question's survey ID number"
-msgstr "Hay una pregunta en este cuestionario."
+msgstr "ID de la encuesta de esta pregunta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:157
-#, fuzzy
 msgid "This question's group ID number"
-msgstr "Cambiar el orden de los grupos de preguntas"
+msgstr "ID del grupo de esta pregunta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:158
-#, fuzzy
 msgid "This question's question ID number"
-msgstr "Esta pregunta aún no tiene asignado el 'tipo' de pregunta."
+msgstr "ID de la pregunta de esta pregunta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:159
-#, fuzzy
 msgid "This question's SGQA code"
-msgstr "Esta pregunta es de respuesta obligatoria"
+msgstr "Código SGQA de esta pregunta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:170
-#, fuzzy
 msgid "Overall assessment score"
-msgstr "¿Activar modo de evaluación?"
+msgstr "Puntaje de la evaluación en general"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:171
-#, fuzzy
 msgid "Assessment group score"
-msgstr "Reglas de evaluación"
+msgstr "Puntaje de la evaluación grupal"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/participants.php:396
 #: /tmp/translationstatus_v2/application/controllers/admin/participants.php:420
-#, fuzzy, php-format
+#, php-format
 msgid "Export %s participant(s) to CSV  "
-msgstr "Exportar pases a un archivo CSV"
+msgstr "Exportar %s participante/s a un archivo CSV"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/participants.php:527
 #: /tmp/translationstatus_v2/application/controllers/admin/participants.php:541
@@ -12080,9 +11899,9 @@ msgid "%s participant(s) are to be copied "
 msgstr "%s participante(s) serán copiados"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/participants.php:1582
-#, fuzzy, php-format
+#, php-format
 msgid "%s participants have been shared "
-msgstr "Se han guardado las opciones de correo para pases"
+msgstr "%s participantes han sido compartidos"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/participants.php:1592
 #: /tmp/translationstatus_v2/application/controllers/admin/participants.php:1603
@@ -12102,9 +11921,8 @@ msgid "%s messages were scanned, none were marked as bounce by the system."
 msgstr "%s mensajes fueron escaneados, ninguno fue marcado como rebote por el sistema."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:245
-#, fuzzy
 msgid "Please check your settings"
-msgstr "Por favor revise los elementos"
+msgstr "Por favor, revise sus configuraciones"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:103
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:111
@@ -12127,9 +11945,8 @@ msgid "Show this token entry"
 msgstr "Agregar nuevo(a) encuestado(a)"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:523
-#, fuzzy
 msgid "Marked tokens have been deleted."
-msgstr "Se han borrado todos los participantes"
+msgstr "Se han eliminado los participantes seleccionados."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:525
 msgid "No tokens were selected for deletion"
@@ -12144,9 +11961,8 @@ msgid "Reloading Screen. Please wait."
 msgstr "Recargando la pantalla. Por favor espere."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:631
-#, fuzzy
 msgid "New dummy tokens were added."
-msgstr "Un nuevo Token fue agregado."
+msgstr "Se han agregado participantes falsos."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:617
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:740
@@ -12161,23 +11977,20 @@ msgstr "Regresar al administrador de campos de atributos"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:617
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:773
-#, fuzzy
 msgid "Token attribute descriptions were successfully updated."
-msgstr "%s archivo(s) agregado(s) exitosamente."
+msgstr "Las descripciones de atributos de los participantes fueron actualizadas con éxito."
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:733
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:949
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1256
-#, fuzzy
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid."
-msgstr "El envío de correo a {FIRSTNAME} {LASTNAME} ({EMAIL}) falló. Mensaje de error:"
+msgstr "Envío de email a {FIRSTNAME} {LASTNAME} ({EMAIL}) demorado: El participante aún no es válido."
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:733
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:953
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1260
-#, fuzzy
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore."
-msgstr "El envío de correo a {FIRSTNAME} {LASTNAME} ({EMAIL}) falló. Mensaje de error:"
+msgstr "Envío de email a {FIRSTNAME} {LASTNAME} ({EMAIL}) cancelado: El participante ya no es válido."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:963
 msgid "Invitation sent to:"
@@ -12201,15 +12014,13 @@ msgstr "Hay {EMAILCOUNT} correos que no han sido enviados."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1033
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1334
-#, fuzzy
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of:"
-msgstr "No hay direcciones de candidatos elegibles para enviar. Esto fue causado porque los criterios no se satisficieron:  tener una dirección de correo electrónico, haber recibido una invitación y no haber completado el cuestionario aún."
+msgstr "No se encontraron participantes a los que enviar email. Esto se debe a que ninguno satisfació el criterio de:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1034
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1335
-#, fuzzy
 msgid "having a valid email address"
-msgstr "Dirección de correo electrónico no válida:"
+msgstr "teniendo una dirección de email válida"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1035
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1336
@@ -12217,9 +12028,8 @@ msgid "not having been sent an invitation already"
 msgstr "no ha sido enviada una invitación todavía"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1036
-#, fuzzy
 msgid "having already completed the survey"
-msgstr "Ya ha completado este cuestionario."
+msgstr "habiendo ya completado la encuesta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1037
 msgid "having a token"
@@ -12236,34 +12046,29 @@ msgstr "Teniendo token "
 # D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:475
 # D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:1070
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1115
-#, fuzzy
 msgid "From token ID"
-msgstr "ID de Clave de Acceso"
+msgstr "Del participante con ID"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1116
-#, fuzzy
 msgid "Sending to token ID"
-msgstr "Enviando al TID Nro:"
+msgstr "Enviando al Participante con ID"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1117
-#, fuzzy
 msgid "Sending to token IDs"
-msgstr "Enviando al TID Nro:"
+msgstr "Enviando a los participantes con IDs"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1272
 msgid "Reminder sent to:"
 msgstr "Recordatorio enviado a:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1337
-#, fuzzy
 msgid "but not having already completed the survey"
-msgstr "Ya ha completado este cuestionario."
+msgstr "pero no habiendo completado aun la encuesta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1396
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1414
-#, fuzzy
 msgid "Create tokens"
-msgstr "Generar pases"
+msgstr "Crear participantes"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1397
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
@@ -12300,23 +12105,20 @@ msgid "A backup of this table has been made and can be accessed by your system a
 msgstr "Una copia de respaldo de esta tabla ha sido creada y puede ser accedida por el administrador de sistema."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1516
-#, fuzzy
 msgid "Bounce settings have been saved."
-msgstr "Se han guardado las opciones de correo para pases"
+msgstr "Se han guardado las opciones de rebote de mensajes."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1624
 msgid "A token table has been created for this survey."
 msgstr "Se ha creado una Tabla de Participantes para este cuestionario."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1659
-#, fuzzy
 msgid "Import old tokens"
-msgstr "Importar Pregunta"
+msgstr "Importar viejos participantes"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1660
-#, fuzzy
 msgid "A token table has been created for this survey and the old tokens were imported."
-msgstr "Se ha creado una Tabla de Participantes para este cuestionario."
+msgstr "Se ha creado una Tabla de Participantes para esta encuesta y lso viejos participantes han sido importados."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:244
 msgid "General filters"
@@ -12388,9 +12190,8 @@ msgid "Show graphs"
 msgstr "Mostrar gráficas"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:369
-#, fuzzy
 msgid "Show text responses inline"
-msgstr "Solo respuestas completas"
+msgstr "Mostrar en línea las respuestas de texto"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:376
 msgid "Select output format"
@@ -12429,41 +12230,36 @@ msgid "Responses containing"
 msgstr "Respuestas que contienen"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:734
-#, fuzzy
 msgid "Number of files greater than"
-msgstr "Número Mayor Que"
+msgstr "Número de archivos mayor que"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:740
-#, fuzzy
 msgid "Number of files less than"
-msgstr "Número menor que"
+msgstr "Número de archivos menor que"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:785
 msgid "Date (YYYY-MM-DD) equals"
 msgstr "Fecha (AAAA-MM-DD) igual a"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:791
-#, fuzzy
 msgid "Date is"
-msgstr "Fecha"
+msgstr "La fecha es"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:797
 msgid "AND/OR Date is"
 msgstr "Y/O fecha es"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/export.php:985
-#, fuzzy
 msgid "Export VV file"
-msgstr "Exportar a archivo"
+msgstr "Exportar a archivo VV"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/export.php:1135
 msgid "This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys."
 msgstr "Este archivo contiene un PDF en la encuesta, el archivo queXML de la encuesta y un archivo queXF XML que puede ser usado con queXF: http://quexf.sourceforge.net/ para procesamiento de las encuestas escaneadas."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:138
-#, fuzzy
 msgid "Edit permissions"
-msgstr "Editar plantillas de correo electrónico"
+msgstr "Editar permisos"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:204
 msgid "User"
@@ -12478,7 +12274,6 @@ msgid "Please select a user group first"
 msgstr "¡Por favor seleccione un grupo de usuarios primero!"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:263
-#, fuzzy
 msgid "Add user group"
 msgstr "Agregar grupo de usuarios"
 
@@ -12508,9 +12303,8 @@ msgstr "No se pudo agregar el Grupo de Usuarios."
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:317
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:392
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:399
-#, fuzzy
 msgid "Failed to add user."
-msgstr "No se pudo agregar el nombre de usuario."
+msgstr "Falló al agregar usuario."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1446
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1500
@@ -12525,9 +12319,8 @@ msgid "User added."
 msgstr "Usuario agregado."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:384
-#, fuzzy
 msgid "Set survey permissions"
-msgstr "Opciones generales de la encuesta"
+msgstr "Establecer permisos de la encuesta"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1440
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:974
@@ -12536,29 +12329,26 @@ msgid "Username already exists."
 msgstr "El usuario ya existe."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:473
-#, fuzzy, php-format
+#, php-format
 msgid "Edit survey permissions for user %s"
-msgstr "Establecer permisos de plantilla para este usuario"
+msgstr "Editar permisos de la encuesta para el usuario %s"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:481
-#, fuzzy, php-format
+#, php-format
 msgid "Edit survey permissions for group %s"
-msgstr "Editar el grupo de preguntas actual"
+msgstr "Editar permisos de la encuesta para el grupo %s"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:487
-#, fuzzy
 msgid "Permission"
-msgstr "Versión"
+msgstr "Permiso"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:489
-#, fuzzy
 msgid "Create"
-msgstr "Creado por"
+msgstr "Crear"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:490
-#, fuzzy
 msgid "View/read"
-msgstr "Ver"
+msgstr "Ver/leer"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:591
 msgid "Deleting User"
@@ -12570,27 +12360,23 @@ msgid "Could not delete user. User was not supplied."
 msgstr "No se puede borrar el usuario. Indique el nombre del usuario."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:660
-#, fuzzy
 msgid "Edit survey permissions"
-msgstr "Editar plantillas de correo electrónico"
+msgstr "Editar permisos de la encuesta"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:121
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:719
-#, fuzzy
 msgid "Survey permissions for all users in this group were successfully updated."
-msgstr "Sus opciones personales fueron guardada con éxito."
+msgstr "Los permisos de la encuesta para los usuarios de este grupo fueron actualizados con éxito."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:617
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:728
-#, fuzzy
 msgid "Survey permissions were successfully updated."
-msgstr "%s archivo(s) agregado(s) exitosamente."
+msgstr "Los permisos de la encuesta fueron actualizados con éxito."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1816
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:732
-#, fuzzy
 msgid "Failed to update survey permissions!"
-msgstr "No se pudieron actualizar los permisos de la encuesta"
+msgstr "¡Falló al actualizar los permisos de la encuesta!"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1440
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1446
@@ -12603,27 +12389,23 @@ msgstr "No se pudieron actualizar los permisos de la encuesta"
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:115
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:122
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:196
-#, fuzzy
 msgid "Failed to add user"
-msgstr "No se pudo agregar el nombre de usuario."
+msgstr "Falló al agregar usuario"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:164
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:322
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:115
-#, fuzzy
 msgid "The email address is not valid."
-msgstr "La dirección de correo electrónico no es válida"
+msgstr "La dirección de correo electrónico no es válida."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:122
-#, fuzzy
 msgid "A username was not supplied or the username is invalid."
-msgstr "No se proveyó un nombre de usuario."
+msgstr "No se proveyó un nombre de usuario o dicho nombre de usuario no es válido."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:617
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:147
-#, fuzzy
 msgid "User created successfully! "
-msgstr "¡Se agregó el grupo de usuarios con éxito!"
+msgstr "¡Usuario creado con éxito!"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:147
 msgid "Username: "
@@ -12648,9 +12430,8 @@ msgid "You can use now the following credentials to log into the site:"
 msgstr "Usted puede utilizar ahora las siguientes credenciales para iniciar sesión en el sitio:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:165
-#, fuzzy
 msgid "Please ask your password to your LimeSurvey administrator"
-msgstr "Por favor contacte al administrador del sistema"
+msgstr "Por favor, pregunte al administrador de LimeSurvey por su contraseña"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:169
 msgid "Click here to log in."
@@ -12704,9 +12485,8 @@ msgstr "Borrar usuario"
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:346
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:416
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:453
-#, fuzzy
 msgid "Could not modify user data."
-msgstr "No puede modificar los datos del usuario."
+msgstr "No pudo modificar los datos del usuario."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:164
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:322
@@ -12725,26 +12505,22 @@ msgid "Email address already exists."
 msgstr "Ya existe la dirección de correo electrónico."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:535
-#, fuzzy
 msgid "Set user permissions"
-msgstr "Editar plantillas de correo electrónico"
+msgstr "Establecer permisos del usuario"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:407
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:605
-#, fuzzy
 msgid "You are not allowed to change your own permissions!"
-msgstr "¡No puede cambiar sus propios permisos!"
+msgstr "¡No tienes permisos para cambiar tus propios permisos!"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:667
-#, fuzzy
 msgid "Set template permissions"
-msgstr "Editar plantillas de correo electrónico"
+msgstr "Establecer permisos de la plantilla"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:397
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:691
-#, fuzzy
 msgid "Template permissions were updated successfully."
-msgstr "La actualización de los permisos del usuario fue exitosa."
+msgstr "Los permisos de la plantilla fueron actualizados con éxito."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:697
 msgid "Error while updating usertemplates."
@@ -12790,15 +12566,14 @@ msgid "Import template ZIP archive"
 msgstr "Importar plantilla en archivo ZIP"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:406
-#, fuzzy, php-format
+#, php-format
 msgid "Template could not be renamed to `%s`."
-msgstr "No se puede renombrar el directorio a `%s`."
+msgstr "No se puede renombrar a la plantilla `%s`."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:544
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:406
-#, fuzzy
 msgid "This name is reserved for standard template."
-msgstr "No pueden guardarse los cambios en la plantilla predeterminada."
+msgstr "Este nombre está reservado para la plantilla predeterminada."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:410
 #, php-format
@@ -12875,14 +12650,12 @@ msgid "Save Page"
 msgstr "Página de guardar encuesta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:794
-#, fuzzy
 msgid "Print answers page"
-msgstr "Página de impresión de respuestas"
+msgstr "Imprimir página de respuestas"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:795
-#, fuzzy
 msgid "Printable survey page"
-msgstr "Versión Imprimible de la Encuesta"
+msgstr "Página imprimible de la encuesta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:904
 msgid "Template Sample"
@@ -12955,7 +12728,6 @@ msgid "Please explain something in detail:"
 msgstr "Explique algo en detalle:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:1246
-#, fuzzy
 msgid "Submit your survey."
 msgstr "Enviar su encuesta."
 
@@ -12976,24 +12748,20 @@ msgid "Users"
 msgstr "Usuarios"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/globalsettings.php:243
-#, fuzzy
 msgid "Active surveys"
 msgstr "Encuestas Activas"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/globalsettings.php:246
-#, fuzzy
 msgid "Deactivated result tables"
-msgstr "Tablas de Participantes Desactivados"
+msgstr "Tablas de resultados desactivados"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/globalsettings.php:249
-#, fuzzy
 msgid "Active token tables"
-msgstr "Tablas de Participantes Activos"
+msgstr "Tablas de participantes activos"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/globalsettings.php:252
-#, fuzzy
 msgid "Deactivated token tables"
-msgstr "Tablas de Participantes Desactivados"
+msgstr "Tablas de participantes desactivados"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/globalsettings.php:258
 msgid "Used/free space for file uploads"
@@ -13004,14 +12772,13 @@ msgid "Show PHPInfo"
 msgstr "Mostrar PHPInfo"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/authentication.php:72
-#, fuzzy, php-format
+#, php-format
 msgid "Welcome %s!"
-msgstr "Bienvenido a %s:"
+msgstr "¡Bienvenido %s!"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/authentication.php:77
-#, fuzzy
 msgid "Reloading screen. Please wait."
-msgstr "Recargando la pantalla. Por favor espere."
+msgstr "Recargando la pantalla. Por favor, espere."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/authentication.php:96
 #: /tmp/translationstatus_v2/application/controllers/admin/authentication.php:250
@@ -13059,9 +12826,8 @@ msgid "Incorrect username and/or password!"
 msgstr "¡Nombre de usuario y/o contraseña incorrecta!"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:147
-#, fuzzy
 msgid "Import survey resources"
-msgstr "Importar recursos de encuesta"
+msgstr "Importar recursos de la encuesta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:153
 msgid "Demo Mode Only: Uploading file is disabled in this system."
@@ -13085,65 +12851,57 @@ msgid "No Surveys available - please create one."
 msgstr "No existen cuestionarios - Por favor cree uno."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:984
-#, fuzzy
 msgid "You did not choose any surveys."
-msgstr "No ha seleccionado un cuestionario"
+msgstr "No ha seleccionado ninguna encuesta."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:617
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:991
-#, fuzzy, php-format
+#, php-format
 msgid "%s survey(s) were successfully deleted."
-msgstr "%s archivo(s) agregado(s) exitosamente."
+msgstr "%s encuesta(s) fueron borrada(s) con éxito."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:617
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:995
-#, fuzzy, php-format
+#, php-format
 msgid "%s survey(s) were successfully expired."
-msgstr "%s archivo(s) agregado(s) exitosamente."
+msgstr "%s encuesta(s) expiraron con éxito."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:1077
-#, fuzzy
 msgid "Edit survey text elements"
-msgstr "Editar las propiedades de la encuesta"
+msgstr "Editar los elementos del texto de la encuesta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:1175
-#, fuzzy
 msgid "Import survey data"
-msgstr "Importar Encuesta"
+msgstr "Importar datos de la encuesta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:1176
-#, fuzzy
 msgid "Survey structure import summary"
-msgstr "Resumen de la importación del cuestionario "
+msgstr "Resumen de la importación de la estructura de la encuesta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:1182
-#, fuzzy
 msgid "Survey copy summary"
-msgstr "Resumen de la importación del cuestionario "
+msgstr "Resumen de la copia de la encuesta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:1212
 msgid "Import failed. You specified an invalid file type."
 msgstr "Importación falló. Ha especificado un tipo de archivo no válido."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:1241
-#, fuzzy
 msgid "No survey ID has been provided. Cannot copy survey"
-msgstr "No se indicó un SID. No se puede exportar el cuestionario."
+msgstr "No se indicó un ID de encuesta. No se puede copiar la encuesta."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:1625
 msgid "The survey was successfully expired by setting an expiration date in the survey settings."
 msgstr "La encuesta fue expirada con éxito por la configuración de una fecha de expiración en las opciones de la encuesta."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:1707
-#, fuzzy
 msgid "Survey could not be created because it did not have a title"
-msgstr "No se pudo crear el cuestionario porque no tenía título corto."
+msgstr "No se pudo crear la encuesta porque le falta un título."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:121
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:1859
-#, fuzzy
 msgid "Survey was successfully added."
-msgstr "Su encuesta fue guardada con éxito."
+msgstr "La encuesta fue agregada con éxito."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:66
 msgid "Welcome to the ComfortUpdate"
@@ -13154,9 +12912,8 @@ msgid "The LimeSurvey ComfortUpdate is an easy procedure to quickly update to th
 msgstr "La actualización de comfort LimeSurvey es un procedimiento simple para actualizar rápidamente la última versión de LimeSurvey."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:68
-#, fuzzy
 msgid "The following steps will be done by this update:"
-msgstr "Las siguientes respuestas deberían ser borradas"
+msgstr "Deben realizarse los siguientes pasos para la actualización:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:69
 msgid "Your LimeSurvey installation is checked if the update can be run successfully."
@@ -13183,18 +12940,16 @@ msgid "You need an update key to run the comfort update. During the beta test of
 msgstr "Usted necesita una clave de actualización para correr la actualización de comfort. Durante la prueva beta de esta actualización, la clave \"LIMESURVEYUPDATE\" puede ser utilizada."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:76
-#, fuzzy
 msgid "Please enter a valid update-key:"
-msgstr "Por favor, introduzca la fecha:"
+msgstr "Por favor, introduzca una clave de actualización válida:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:77
 msgid "Save update key"
 msgstr "Guardar la calve de actualizacion"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:81
-#, fuzzy
 msgid "Update key: Valid"
-msgstr "Actualizar escenario"
+msgstr "Clave de actualización: Válida"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:85
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:637
@@ -13229,9 +12984,9 @@ msgstr "Ir al paso %s"
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:169
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:345
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:465
-#, fuzzy, php-format
+#, php-format
 msgid "ComfortUpdate step %s"
-msgstr "ConfortUpdate paso 2"
+msgstr "Paso %s de ComfortUpdate"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:200
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:208
@@ -13246,9 +13001,8 @@ msgstr "Buscando la información de actualización desde limesurvey.org ha surgi
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:205
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:354
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:473
-#, fuzzy
 msgid "Your update key is invalid and was removed. "
-msgstr "Se eliminaron los registros con direcciones de correo electrónico no válidas"
+msgstr "Tu clave de actualización no es válida, y ha sido removida."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:218
 msgid "Update server busy"
@@ -13316,9 +13070,8 @@ msgid "Creating database backup... "
 msgstr "crendo copia de seguridad de la base de datos..."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:432
-#, fuzzy
 msgid "DB backup created:"
-msgstr "Hacer copia de seguridad de toda la base de datos"
+msgstr "Backup de la base de datos creado:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:436
 msgid "No DB backup created:"
@@ -13334,15 +13087,14 @@ msgstr "Por favor chequee si existe algún problema arriba y luego proceda al pa
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:692
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:532
-#, fuzzy, php-format
+#, php-format
 msgid "File deleted: %s"
-msgstr "no se pudo eliminar la respuesta"
+msgstr "Archivo borrado: %s"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:617
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:545
-#, fuzzy
 msgid "New files were successfully installed."
-msgstr "%s archivo(s) agregado(s) exitosamente."
+msgstr "Los nuevos archivos fueron instalados con éxito."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:551
 msgid "There was a problem downloading the update file. Please try to restart the update process."
@@ -13350,14 +13102,13 @@ msgstr "Hubo un problema al descargar el archivo de actualización. Por favor, i
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:121
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:571
-#, fuzzy, php-format
+#, php-format
 msgid "Buildnumber was successfully updated to %s."
-msgstr "Su encuesta fue guardada con éxito."
+msgstr "El número de serie fue actualizado con éxito a %s."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:572
-#, fuzzy
 msgid "Please check any problems above - update was done."
-msgstr "Por favor seleccione al menos un elemento"
+msgstr "Por favor, seleccione al menos uno de los problemas arriba - la actualización se realizó."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:642
 #, php-format
@@ -13388,9 +13139,8 @@ msgid "No GID (Group) has been provided. Cannot import question"
 msgstr "No se indicó un GID (Grupo). No se pudo importar la pregunta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:133
-#, fuzzy
 msgid "Question import summary"
-msgstr "Resumen de la Importación de la Pregunta"
+msgstr "Resumen de la importación de preguntas"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:144
 msgid "Question import is complete."
@@ -13406,9 +13156,9 @@ msgstr "Editar valores por defecto para las respuestas"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:219
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:268
-#, fuzzy, php-format
+#, php-format
 msgid "Default answer for scale %s:"
-msgstr "Encabezado para la escala A"
+msgstr "Respuesta por defecto para la escala %s:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:223
 msgid "Default answer value:"
@@ -13549,19 +13299,16 @@ msgid "Confirmation"
 msgstr "Confirmación"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:107
-#, fuzzy
 msgid "Basic admin notification"
-msgstr "Notificación básica por correo"
+msgstr "Notificación básica de administrador"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:108
-#, fuzzy
 msgid "Detailed admin notification"
-msgstr "Ninguna notificación por correo"
+msgstr "Notificación detallada de administrador"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:112
-#, fuzzy
 msgid "Admin confirmation email subject:"
-msgstr "Asunto del mensaje de confirmación:"
+msgstr "Asunto del mensaje de confirmación de administrador:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:115
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:121
@@ -13579,33 +13326,28 @@ msgid "Use default"
 msgstr "Usar los valores por defecto"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:117
-#, fuzzy
 msgid "Admin confirmation email body:"
-msgstr "Mensaje de confirmación"
+msgstr "Cuerpo del mensaje de confirmación de administrador:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:119
-#, fuzzy
 msgid "Admin notification email:"
-msgstr "Notificación del administrador:"
+msgstr "Mail de notificaciones de administrador:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:126
-#, fuzzy
 msgid "Detailed admin notification subject:"
-msgstr "Notificación detallada por correo con los códigos de resultados"
+msgstr "Asunto de notificación detallada de administrador:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:131
-#, fuzzy
 msgid "Detailed admin notification email:"
-msgstr "Notificación detallada por correo con los códigos de resultados"
+msgstr "Email de notificación detallada de administrador:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:140
 msgid "Invitation email subject:"
 msgstr "Asunto del correo de invitación:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:154
-#, fuzzy
 msgid "Reminder email subject:"
-msgstr "Correo de notificación:"
+msgstr "Asunto del correo de recordatorio:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:159
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:161
@@ -13641,53 +13383,45 @@ msgstr "Mensaje de inscripción pública:"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:121
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:265
-#, fuzzy
 msgid "Email templates successfully saved."
-msgstr "Su encuesta fue guardada con éxito."
+msgstr "Plantillas de email guardadas con éxito."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/translate.php:371
 msgid "Translate to"
 msgstr "Traducir a"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/translate.php:441
-#, fuzzy
 msgid "Survey title and description"
-msgstr "Descripción del campo"
+msgstr "Título y descripción de la encuesta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/translate.php:499
-#, fuzzy
 msgid "Welcome and end text"
-msgstr "Página de Bienvenida"
+msgstr "Texto de bienvenida y final"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/translate.php:588
 msgid "Group description"
 msgstr "Descripción del grupo"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/translate.php:732
-#, fuzzy
 msgid "Answer options"
-msgstr "Prefijo de respuesta"
+msgstr "Opciones de respuesta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/translate.php:761
-#, fuzzy
 msgid "Invitation email"
-msgstr "Mensaje de correo de invitación:"
+msgstr "Correo de invitación"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/translate.php:819
-#, fuzzy
 msgid "Reminder email"
-msgstr "Correo de notificación:"
+msgstr "Correo de recordatorio"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/translate.php:935
-#, fuzzy
 msgid "Registration email"
-msgstr "Registro"
+msgstr "Correo de registro"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:189
 #: /tmp/translationstatus_v2/application/controllers/admin/index.php:20
-#, fuzzy
 msgid "Logged in"
-msgstr "Ingresó como"
+msgstr "Inició sesión"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:89
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:105
@@ -13726,24 +13460,20 @@ msgid "Regular expression"
 msgstr "Expresión regular"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:96
-#, fuzzy
 msgid "Less than (Strings)"
-msgstr "Menor que"
+msgstr "Menor que (Strings)"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:97
-#, fuzzy
 msgid "Less than or equal to (Strings)"
-msgstr "Menor o igual que"
+msgstr "Menor o igual que (Strings)"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:98
-#, fuzzy
 msgid "Greater than or equal to (Strings)"
-msgstr "Mayor o igual que"
+msgstr "Mayor o igual que (Strings)"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:99
-#, fuzzy
 msgid "Greater than (Strings)"
-msgstr "Mayor que"
+msgstr "Mayor que (Strings)"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:143
 msgid "You have not selected a survey"
@@ -13785,17 +13515,14 @@ msgid "Single checkbox"
 msgstr "Casilla de verificación única"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:898
-#, fuzzy
 msgid "checked"
-msgstr "Marcado"
+msgstr "marcados/as"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:899
-#, fuzzy
 msgid "not checked"
-msgstr "Marcado"
+msgstr "desmarcados/as"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1002
-#, fuzzy
 msgid "Before"
 msgstr "Antes"
 
@@ -13838,9 +13565,8 @@ msgstr "Editar escenario"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1327
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1400
-#, fuzzy
 msgid "From token table"
-msgstr "Borrar tabla de participantes"
+msgstr "De la tabla de participantes"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1331
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1404
@@ -13860,28 +13586,24 @@ msgid "Edit this condition"
 msgstr "Editar esta condición"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1528
-#, fuzzy
 msgid "This question is always shown."
-msgstr "Esta pregunta es de respuesta obligatoria"
+msgstr "Esta pregunta siempre debe mostrarse."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1566
-#, fuzzy
 msgid "No questions selected"
-msgstr "No seleccionado"
+msgstr "No hay preguntas seleccionadas"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1566
-#, fuzzy
 msgid "Check all"
-msgstr "Verificar Datos"
+msgstr "Marcar todos/as"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1566
 msgid "Uncheck all"
 msgstr "Desseleccionar todo"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1566
-#, fuzzy
 msgid "selected"
-msgstr "Borrar"
+msgstr "seleccionados/as"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1569
 msgid "Copy the selected conditions to"
@@ -13918,9 +13640,8 @@ msgstr "Pregunta anterior"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1695
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1830
-#, fuzzy
 msgid "Token fields"
-msgstr "Elija los campos con claves de acceso"
+msgstr "Campos de participantes"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1752
 msgid "Comparison operator"
@@ -13939,9 +13660,8 @@ msgid "RegExp"
 msgstr "Expresion Regular"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1838
-#, fuzzy
 msgid "Predefined answer options for this question"
-msgstr "Respuestas predefinidas para esta pregunta"
+msgstr "Opciones predefinidas de repuesta para esta pregunta"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1844
 msgid "Constant value"
@@ -13960,9 +13680,8 @@ msgid "Update condition"
 msgstr "Actualizar condición"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:144
-#, fuzzy
 msgid "Import VV file"
-msgstr "Importar un Archivo de encuestas VV"
+msgstr "Importar un archivo VV"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:148
 msgid "File:"
@@ -14003,9 +13722,8 @@ msgstr "Juego de caracteres del archivo:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:171
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:183
-#, fuzzy
 msgid "Import a VV response data file"
-msgstr "Importar un Archivo de encuestas VV"
+msgstr "Importar un archivo de datos de respuestas VV"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/vvimport.php:77
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:172
@@ -14041,14 +13759,12 @@ msgid "Total records imported:"
 msgstr "Total de elementos importados:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:467
-#, fuzzy
 msgid "Target survey ID:"
-msgstr "ID de el cuestionario destino"
+msgstr "ID de la encuesta destino:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:472
-#, fuzzy
 msgid "Source table:"
-msgstr "Tabla origen"
+msgstr "Tabla de origen:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:480
 msgid "Import also timings (if exist):"
@@ -14070,25 +13786,25 @@ msgstr "Puede importar todas las respuestas antiguas con la misma cantidad de co
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:121
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:544
-#, fuzzy, php-format
+#, php-format
 msgid "%s old response(s) were successfully imported."
-msgstr "Su encuesta fue guardada con éxito."
+msgstr "%s vieja/s respuesta/s fueron importada/s con éxito."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:121
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:573
-#, fuzzy, php-format
+#, php-format
 msgid "%s old response(s) and according timings were successfully imported."
-msgstr "Su encuesta fue guardada con éxito."
+msgstr "%s vieja/s respuesta/s con sus respectivos tiempos fueron importada/s con éxito."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:706
-#, fuzzy, php-format
+#, php-format
 msgid "Editing response (ID %s)"
-msgstr "Modificando respuesta (ID %s)"
+msgstr "Editando respuesta (ID %s)"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:710
-#, fuzzy, php-format
+#, php-format
 msgid "Viewing response (ID %s)"
-msgstr "Ver Respuesta"
+msgstr "Viendo respuesta (ID %s)"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:1611
 msgid "Record Deleted"
@@ -14123,9 +13839,8 @@ msgstr "Siga el enlace para actualizar"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/dataentry.php:249
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:1852
-#, fuzzy
 msgid "This surveys uses anonymized responses, so you can't update your response."
-msgstr "Este cuestionario utiliza respuestas anónimas, así que no puede actualizar su respuesta."
+msgstr "Esta encuesta utiliza respuestas anónimas, así que no puedes actualizar tu respuesta."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:1873
 #: /tmp/translationstatus_v2/application/libraries/Save.php:323
@@ -14198,9 +13913,8 @@ msgstr "Y"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:2477
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:2482
-#, fuzzy
 msgid "to question {QUESTION}, answer {ANSWER}"
-msgstr "a la pregunta {QUESTION}, contestó {ANSWER}"
+msgstr "a la pregunta {QUESTION}, responda {ANSWER}"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:2481
 msgid "No Answer"
@@ -14220,12 +13934,11 @@ msgid "Close Editor"
 msgstr "Cerrar editor"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/htmleditor_pop.php:107
-#, fuzzy, php-format
+#, php-format
 msgid "Editing %s"
-msgstr "Editando"
+msgstr "Editando %s"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/htmleditor_pop.php:157
-#, fuzzy
 msgid "Editing"
 msgstr "Editando"
 
@@ -14293,9 +14006,8 @@ msgstr "El pase que proporcionó parece válido, pero puede ser utilizado sólo 
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:121
 #: /tmp/translationstatus_v2/application/controllers/survey.php:751
-#, fuzzy
 msgid "Your responses were successfully saved."
-msgstr "Su encuesta fue guardada con éxito."
+msgstr "Sus respuestas furon guardadas con éxito."
 
 #: /tmp/translationstatus_v2/application/controllers/optout.php:78
 #: /tmp/translationstatus_v2/application/controllers/optin.php:78
@@ -14317,14 +14029,12 @@ msgid "You have been already removed from this survey."
 msgstr "Ha sido borrado de esta encuesta"
 
 #: /tmp/translationstatus_v2/application/controllers/optin.php:95
-#, fuzzy
 msgid "You have been successfully added back to this survey."
-msgstr "Ha sido borrado exitosamente de esta encuesta"
+msgstr "Ha sido reincorporado con éxito a esta encuesta."
 
 #: /tmp/translationstatus_v2/application/controllers/optin.php:99
-#, fuzzy
 msgid "You are already a part of this survey."
-msgstr "Ya ha completado este cuestionario."
+msgstr "Ya eres parte de esta encuesta."
 
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:20
 msgid "Permission to create/view/update/delete assessments rules for a survey"
@@ -14339,62 +14049,52 @@ msgid "Permission to create(data entry)/view/update/delete/import/export respons
 msgstr "Permisos para crear(ingreso de datos)/ver/actualizar/borrar/importar/exportar respuestas"
 
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:23
-#, fuzzy
 msgid "Permission to view statistics"
-msgstr "Ver estadisticas"
+msgstr "Permiso para ver estadisticas"
 
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:24
-#, fuzzy
 msgid "Survey deletion"
-msgstr "Guardar pregunta"
+msgstr "Eliminación de encuesta"
 
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:24
-#, fuzzy
 msgid "Permission to delete a survey"
-msgstr "Descripción de la encuesta"
+msgstr "Permiso para eliminar una encuesta"
 
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:25
-#, fuzzy
 msgid "Survey activation"
-msgstr "El cuestionario ha sido desactivado"
+msgstr "Activación de encuesta"
 
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:25
-#, fuzzy
 msgid "Permission to activate/deactivate a survey"
-msgstr "Recordatorio para participar en el cuestionario "
+msgstr "Permiso para activar/desactivar una encuesta"
 
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:26
-#, fuzzy
 msgid "Survey content"
-msgstr "Cupo de encuesta"
+msgstr "Contenido de la encuesta"
 
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:26
 msgid "Permission to create/view/update/delete/import/export the questions, groups, answers & conditions of a survey"
 msgstr "Permisos para crear/ver/actualizar/borrar/importar/exportar las preguntas, grupos, respuestas y condiciones para una encuesta."
 
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:27
-#, fuzzy
 msgid "Survey locale settings"
-msgstr "Configuracion global"
+msgstr "Configuracion local de la encuesta"
 
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:27
 msgid "Permission to view/update the survey locale settings"
 msgstr "Permisos para ver/actualizar la configuración de la encuesta"
 
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:28
-#, fuzzy
 msgid "Survey security"
-msgstr "Parámetros de seguridad de la encuesta"
+msgstr "Seguridad de la encuesta"
 
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:28
-#, fuzzy
 msgid "Permission to modify survey security settings"
-msgstr "Modificar opciones de seguridad de la encuesta"
+msgstr "Permiso para modificar las opciones de seguridad de la encuesta"
 
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:29
-#, fuzzy
 msgid "Survey settings"
-msgstr "Guardar opciones"
+msgstr "Opciones de la encuesta"
 
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:29
 msgid "Permission to view/update the survey settings including token table creation"
@@ -14405,9 +14105,8 @@ msgid "Permission to create/update/delete/import/export token entries"
 msgstr "Permisos para crear/actualizar/borrar/importar/exportar entradas de prueba"
 
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:31
-#, fuzzy
 msgid "Quick translation"
-msgstr "Estadísticas Rápidas"
+msgstr "Traducción rápida"
 
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:31
 msgid "Permission to view & update the translations using the quick-translation feature"
@@ -14482,20 +14181,17 @@ msgid "Submit your answers"
 msgstr "Enviar sus respuestas."
 
 #: /tmp/translationstatus_v2/application/libraries/Group_format.php:383
-#, fuzzy
 msgid "There are no more questions. Please press the <Submit> button to finish this survey."
-msgstr "Lo sentimos, no hay tipos de pregunta soportados en este cuestionario."
+msgstr "No hay más preguntas. Por favor, presione el botón de <Enviar> para finalizar la encuesta."
 
 #: /tmp/translationstatus_v2/application/libraries/Group_format.php:1277
-#, fuzzy
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
-msgstr "Una o más preguntas no fueron contestadas de forma correcta. Usted no puede proceder hasta que dichas respuestas sean válidas"
+msgstr "Uno o más archivos cargados no poseen un formato/tamaño apropiado. No se puede proceder hasta que dichos archivos sean válidos."
 
 #: /tmp/translationstatus_v2/application/libraries/Group_format.php:1391
 #: /tmp/translationstatus_v2/application/libraries/Question_format.php:667
-#, fuzzy
 msgid "Question index"
-msgstr "Códigos de pregunta"
+msgstr "Índice de preguntas"
 
 #: /tmp/translationstatus_v2/application/libraries/Question_format.php:316
 #: /tmp/translationstatus_v2/application/libraries/Survey_format.php:159
@@ -14507,9 +14203,8 @@ msgid "One or more uploaded files do not satisfy the criteria"
 msgstr "Uno o más archivos cargados no satisfacen los criterios"
 
 #: /tmp/translationstatus_v2/application/libraries/Survey_format.php:975
-#, fuzzy
 msgid "One or more files are either not in the proper format or exceed the maximum file size limitation. You cannot proceed until these answers are valid."
-msgstr "Una o más preguntas no fueron contestadas de forma correcta. Usted no puede proceder hasta que dichas respuestas sean válidas"
+msgstr "Uno o más archivos no poseen un formato apropiado o exceden el límite máximo de tamaño. No se puede proceder hasta que dichos archivos sean válidos."
 
 #~ msgid "Boilerplate Question"
 #~ msgstr "Mensaje o Comentario"
