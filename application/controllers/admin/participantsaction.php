@@ -1018,7 +1018,7 @@ function getParticipants_json()
  */
 function getAttribute_json()
 {
-    $participant_id=CHttpRequest::getQuery('pid');
+    $participant_id=$_GET['pid'];
     $records = ParticipantAttributeNames::getParticipantVisibleAttribute($participant_id);
     $getallattributes = ParticipantAttributeNames::getAttributes();
     $aData->page = 1;
@@ -1146,21 +1146,30 @@ function viewAttribute()
  */
 function saveAttribute()
     {
-        $aData = array('attribute_id'    => CHttpRequest::getQuery('aid'),
+        $aData = array('attribute_id'    => $_GET['aid'],
                       'attribute_type'  => CHttpRequest::getPost('attribute_type'),
                       'visible'  => CHttpRequest::getPost('visible'));
         ParticipantAttributeNames::saveAttribute($aData);
+
         foreach($_POST as $key=>$value)
         {
             if(strlen($key) == 2) // check for language code in the post variables this is a hack as the only way to check for language data
             {
-                $langdata = array( 'attribute_id' => CHttpRequest::getQuery('aid'),
+                $langdata = array( 'attribute_id' => $_GET['aid'],
                                    'attribute_name' => $value,
                                    'lang' => $key     );
 
                 ParticipantAttributeNames::saveAttributeLanguages($langdata);
             }
         }
+        if(CHttpRequest::getPost('langdata'))
+            {
+                $langdata = array( 'attribute_id' => $_GET['aid'],
+                                   'attribute_name' => CHttpRequest::getPost('attname'),
+                                   'lang' => CHttpRequest::getPost('langdata')   );
+
+                ParticipantAttributeNames::saveAttributeLanguages($langdata);
+            }
         if(isset($_POST['attribute_value_name_1']))
         {
             $i=1;
@@ -1176,11 +1185,10 @@ function saveAttribute()
             }while(isset($_POST[$attvaluename]));
             ParticipantAttributeNames::storeAttributeValues($aDatavalues);
         }
-
         if(isset($_POST['editbox']))
         {
             $editattvalue = array('value_id'=> $_POST['value_id'],
-                                  'attribute_id'=> CHttpRequest::getQuery('aid'),
+                                  'attribute_id'=> $_GET['aid'],
                                   'value' => $_POST['editbox']);
             ParticipantAttributeNames::saveAttributeValue($editattvalue);
         }
@@ -1200,8 +1208,8 @@ function delAttribute()
  */
 function delAttributeValues()
 {
-    $attribute_id = CHttpRequest::getQuery('aid');
-    $value_id = CHttpRequest::getQuery('vid');
+    $attribute_id = $_GET['aid'];
+    $value_id = $_GET['vid'];
     ParticipantAttributeNames::delAttributeValues($attribute_id,$value_id);
     CController::redirect(Yii::app()->createUrl('/admin/participants/sa/viewAttribute/aid/'.$attribute_id));
 }
@@ -1233,7 +1241,7 @@ function storeAttributes()
  */
 function editAttributevalue()
 {
-    if(CHttpRequest::getPost('oper')=="edit")
+    if(CHttpRequest::getPost('oper')=="edit" && CHttpRequest::getPost('attvalue'))
     {
             $attributeid = explode("_",CHttpRequest::getPost('id'));
             $aData = array('participant_id' => CHttpRequest::getPost('participant_id'),'attribute_id' => $attributeid[1],'value' => CHttpRequest::getPost('attvalue'));

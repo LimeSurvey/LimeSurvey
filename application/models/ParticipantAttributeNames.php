@@ -136,7 +136,12 @@ class ParticipantAttributeNames extends CActiveRecord
     // this is a very specific function used to get the attributes that are not present for the participant
     function getnotaddedAttributes($attributeid)
     {
-    	$attrid = array('not in','{{participant_attribute_names}}.attribute_id',$attributeid);
+        $notin=array();
+    	foreach($attributeid as $row)
+    	{
+    		$notin[] = $row;
+    	}
+        $attrid = array('not in','{{participant_attribute_names}}.attribute_id', $notin);
         return Yii::app()->db->createCommand()->select('*')->from('{{participant_attribute_names}}')->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')->where($attrid)->queryAll();
     }    
 
@@ -173,7 +178,7 @@ class ParticipantAttributeNames extends CActiveRecord
         Yii::app()->db->createCommand()->delete('{{participant_attribute_values}}', 'attribute_id = '.$attid); 
         Yii::app()->db->createCommand()->delete('{{participant_attribute}}', 'attribute_id = '.$attid); 
     }
-
+	
     function delAttributeValues($attid,$valid)
     {
         Yii::app()->db->createCommand()->delete('{{participant_attribute_values}}', 'attribute_id = '.$attid.' AND value_id = '.$valid); 
@@ -181,7 +186,7 @@ class ParticipantAttributeNames extends CActiveRecord
 
     function getAttributeNames($attributeid)
     {
-        return Yii::app()->db->createCommand()->where('attribute_id = '.$attributeid)->where('lang = "'.Yii::app()->session['adminlang'].'"')->from('{{participant_attribute_names_lang}}')->select('*')->queryAll();
+        return Yii::app()->db->createCommand()->where("attribute_id = {$attributeid}")->from('{{participant_attribute_names_lang}}')->select('*')->queryAll();
     }
     function getAttribute($attribute_id)
     {
@@ -206,7 +211,7 @@ class ParticipantAttributeNames extends CActiveRecord
         else 
         {
              // A record does exist, update it.
-            $query = Yii::app()->db->createCommand()->update('{{participant_attribute_names_lang}}',array('attribute_id'=>$data['attribute_id'],'lang'=>$data['lang']),'attribute_name = "'.$data['attribute_name'].'"');
+            $query = Yii::app()->db->createCommand()->update('{{participant_attribute_names_lang}}',array('attribute_name'=>$data['attribute_name'],),'attribute_id = '.$data['attribute_id'].' AND lang="'.$data['lang'].'"');
         }
     }
 
@@ -220,7 +225,7 @@ class ParticipantAttributeNames extends CActiveRecord
     //updates the attribute values in participant_attribute_values
     function saveAttributeValue($data)
     {
-        Yii::app()->db->createCommand()->update('{{participant_attribute_values}}', array('attribute_id' => $data['attribute_id'],'value_id'=>$data['value_id']));
+        Yii::app()->db->createCommand()->update('{{participant_attribute_values}}', $data, "attribute_id='{$data['attribute_id']}' AND value_id='{$data['value_id']}'");
     }
 
     function saveAttributeVisible($attid,$visiblecondition)

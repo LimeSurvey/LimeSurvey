@@ -13,7 +13,7 @@ $.each(removeitem, function(index, value) {
                
            }
         });
-         $("#addsign").click(function(){
+         $("#add").click(function(){
          var lang = $("#langdata").val();
          if(lang != "")
             {
@@ -60,7 +60,7 @@ $.each(removeitem, function(index, value) {
         var value_id = this.id;
         $(this).replaceWith( "<div><input type='text' size='20' name='editbox' id='editbox' value="+$(this).text()+"><input type='hidden' id='value_id' name='value_id' value='"+value_id+"' /></div>" );
 });
-$('#edit').click(function(){
+$('.edit').click(function(){
        var value_id = this.name;
        $("#"+value_id).replaceWith( "<div><input type='text' size='20' name='editbox' id='editbox' value="+$("#"+value_id).text()+"><input type='hidden' id='value_id' name='value_id' value='"+value_id+"' /></div>" );    
 });

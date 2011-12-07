@@ -9,12 +9,11 @@
 <script src="<?php echo Yii::app()->getConfig('adminscripts')."viewAttribute.js" ?>" type="text/javascript"></script>
 <div class='header ui-widget-header'><strong><?php echo $clang->gT("Attribute Settings"); ?></strong></div><br/>
 <?php
-  $hidden = array();
-  echo CHtml::beginForm(Yii::app()->createUrl('admin/participants/sa/saveAttribute/aid/'.CHttpRequest::getQuery('aid')).'/',"post",$hidden);
+  echo CHtml::beginForm(Yii::app()->createUrl('admin/participants/sa/saveAttribute/aid/'.CHttpRequest::getQuery('aid')).'/',"post");
   $plus = array('src'    => Yii::app()->baseUrl."/images/plus.png",
                 'alt'    => 'Add Language',
                 'title'  => 'Add Language',
-                'id'     => 'addsign',
+                'id'     => 'add',
                 'hspace' => 2,
                 'vspace' => -6);
 ?>
@@ -22,12 +21,12 @@
   <?php echo $clang->gT('Add a Language:')?>
   <?php 
   $options = array();
-  $options[''] = $clang->gT('---Select One---');
+  $options[''] = $clang->gT('Select One');
   foreach (getLanguageData () as $langkey2 => $langname)
   {
     $options[$langkey2] = $langname['description'];
   }
-   echo CHtml::dropDownList('langdata','id="langdata"',$options);
+   echo CHtml::dropDownList('langdata','',$options);
    echo CHtml::image($plus['src'],$plus['alt'],array_slice($plus,2));
   ?>
  </div>
@@ -81,7 +80,7 @@
       $options = array('DD' => 'Drop Down',
                        'DP' => 'Date',
                        'TB' => 'Text Box');
-      echo CHtml::dropDownList('attribute_type','id="attribute_type"',$options);
+      echo CHtml::dropDownList('attribute_type',$attributes['attribute_type'],$options);
     ?>
     <br/><br/>
  </div>
@@ -92,13 +91,12 @@
   <?php
     if($attributes['visible'] =="TRUE")
     {
-      echo CHtml::checkbox('visible',TRUE,array('value'=>TRUE));
+      echo CHtml::checkbox('visible',TRUE, array('value' => 'TRUE', 'uncheckValue' => 'FALSE'));
     }
     else
     {
-      echo CHtml::checkbox('visible',TRUE,array('value'=>FALSE));
+      echo CHtml::checkbox('visible',FALSE, array('value' => 'TRUE', 'uncheckValue' => 'FALSE'));
     }
-    $hidden = array('visible' => 'FALSE');
   ?>
  </div>
  <br/>
@@ -114,26 +112,28 @@
      ?>
     <tr>
       <td>
-        <div class=editable id="<?php echo $value['value_id'];?> ">
-          <?php echo $value['value']; ?>
+        <div class=editable id="<?php echo $value['value_id'];?>">
+            <?php
+                echo $value['value'];
+            ?>
         </div>
       </td>
       <td>
       <?php
-        $del = array( 'src'    => Yii::app()->baseUrl.'/images/error_notice.png',
-                      'alt'    => 'Delete',
-                      'width'  => '15',
-                      'height' => '15',
-                      'title'  => 'Delete Atribute Value' );
-        $edit = array('src' => Yii::app()->baseUrl.'/images/token_edit.png',
+                      $edit = array('src' =>  Yii::app()->getConfig('imageurl').'/token_edit.png',
                       'alt' => 'Edit',
                       'width' => '15',
-                      'id' => 'edit',
+                      'class' => 'edit',
                       'name' => $value['value_id'],
                       'height' => '15',
                       'title' => 'Edit Atribute');
-        echo CHtml::image($edit['src'],$edit['alt'],array_slice($edit,2));
-        echo CHtml::link(CHtml::image($del['src'],$del['alt'],array_slice($del,2)),Yii::app()->createUrl('admin/participants/sa/delAttributeValues/aid/'.$attributes['attribute_id'].'/vid/'.$value['value_id']));
+            echo CHtml::image($edit['src'],$edit['alt'],array_slice($edit,2));
+        $del = array( 'src'    =>  Yii::app()->getConfig('imageurl').'/error_notice.png',
+                      'alt'    => 'Delete',
+                      'width'  => '15',
+                      'height' => '15',
+                      'title'  => 'Delete Atribute Value');
+        echo CHtml::link(CHtml::image($del['src'],$del['alt'],array_slice($del,2)),$this->createURL('admin/participants/sa/delAttributeValues/aid/'.$attributes['attribute_id'].'/vid/'.$value['value_id']));
       ?>
       </td>
     </tr>
@@ -143,7 +143,7 @@
    </table>
    <div id="plus">
    <a href='#' class='add'>
-       <img src = "<?php echo Yii::app()->baseUrl; ?>/images/plus.png" alt='Add Attribute' width='25' height='25' title='Add Attribute' id='addsign' name='addsign'>
+       <img src = "<?php echo Yii::app()->getConfig('imageurl'); ?>/plus.png" alt='Add Attribute' width='25' height='25' title='Add Attribute' id='addsign' name='addsign'>
    </a>
    </div>
    </div>
