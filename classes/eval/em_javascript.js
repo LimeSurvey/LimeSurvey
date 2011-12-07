@@ -209,14 +209,14 @@ function LEMval(alias)
         suffix = 'shown';
         varName = varName.substr(10);
     }
-    else if (str.match(/\.(codeValue|code|displayValue|gid|grelevance|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|sgqa|shown|type)$/)) {
-        varName = str.replace(/\.(codeValue|code|displayValue|gid|grelevance|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|sgqa|shown|type)$/,'')
+    else if (str.match(/\.(codeValue|code|displayValue|gid|grelevance|groupSeq|jsName|mandatory|NAOK|qid|questionSeq|question|readWrite|relevanceNum|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value)$/)) {
+        varName = str.replace(/\.(codeValue|code|displayValue|gid|grelevance|groupSeq|jsName|mandatory|NAOK|qid|questionSeq|question|readWrite|relevanceNum|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value)$/,'')
         suffix = str.replace(/^(.+)\./,'');
     }
 
     jsName = LEMalias2varName[varName];
     attr = LEMvarNameAttr[jsName];
-    if ((suffix == 'code' || suffix == 'codeValue' || suffix == 'displayValue' || suffix == 'shown' || suffix == 'NAOK') && attr.qid!='') {
+    if ((suffix.match(/^codeValue|code|displayValue|NAOK|shown|valueNAOK|value$/)) && attr.qid!='') {
         if (!LEMval(varName + '.relevanceStatus')) {
             return '';
         }
@@ -262,12 +262,28 @@ function LEMval(alias)
                 case 'F': //ARRAY (Flexible) - Row Format
                 case 'R': //RANKING STYLE
                     which_ans = '0~' + value;
-                    displayValue = (typeof attr.answers[which_ans] === 'undefined') ? '' : attr.answers[which_ans];
+                    if (typeof attr.answers[which_ans] === 'undefined') {
+                        answer = '';
+                    }
+                    else {
+                        answerParts = attr.answers[which_ans].split('|');
+                        answerParts.shift();    // remove the first element
+                        answer = answerParts.join('|');
+                    }
+                    displayValue = answer;
                     break;
                 case '1': //Array (Flexible Labels) dual scale  // need scale
                     prefix = (attr.jsName.match(/#1$/)) ? '1' : '0';
                     which_ans = prefix + '~' + value;
-                    displayValue = (typeof attr.answers[which_ans] === 'undefined') ? '' : attr.answers[which_ans];
+                    if (typeof attr.answers[which_ans] === 'undefined') {
+                        answer = '';
+                    }
+                    else {
+                        answerParts = attr.answers[which_ans].split('|');
+                        answerParts.shift();    // remove the first element
+                        answer = answerParts.join('|');
+                    }
+                    displayValue = answer;
                     break;
                 case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
                 case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
@@ -303,7 +319,7 @@ function LEMval(alias)
         case 'question':
             return htmlspecialchars_decode(attr.question);
         case 'readWrite':
-            return attr.readWrite;
+            return 'N';     // nothing is read-Write for now.  // attr.readWrite;
         case 'relevance':
             return htmlspecialchars_decode(attr.relevance);
         case 'relevanceNum':
@@ -312,14 +328,56 @@ function LEMval(alias)
             return attr.sgqa;
         case 'type':
             return attr.type;
+        case 'groupSeq':
+            return attr.gseq;
+        case 'questionSeq':
+            return attr.qseq;
+        case 'jsName':
+            return whichJsName;
         case 'code':
         case 'codeValue':
         case 'NAOK':
+        case 'value':
+        case 'valueNAOK':
         {
             value = htmlspecialchars_decode(document.getElementById(whichJsName).value);
             if (value === '') {
                 return '';
             }
+
+            if (suffix == 'value' || suffix == 'valueNAOK') {
+                // if in assessment mode, this returns the assessment value
+                // in non-assessment mode, this is identical to .code
+                switch (attr.type) {
+                    case '!': //List - dropdown
+                    case 'L': //LIST drop-down/radio-button list
+                    case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                    case 'H': //ARRAY (Flexible) - Column Format
+                    case 'F': //ARRAY (Flexible) - Row Format
+                    case 'R': //RANKING STYLE
+                        which_ans = '0~' + value;
+                        if (typeof attr.answers[which_ans] === 'undefined') {
+                            value = '';
+                        }
+                        else {
+                            answerParts = attr.answers[which_ans].split('|');
+                            value = answerParts[0];
+                        }
+                        break;
+                    case '1': //Array (Flexible Labels) dual scale  // need scale
+                        prefix = (attr.jsName.match(/#1$/)) ? '1' : '0';
+                        which_ans = prefix + '~' + value;
+                        if (typeof attr.answers[which_ans] === 'undefined') {
+                            value = '';
+                        }
+                        else {
+                            answerParts = attr.answers[which_ans].split('|');
+                            value = answerParts[0];
+                        }
+                        break;
+                }
+            }
+
             if (isNaN(value)) {
                 if (value==='false') {
                     return '';  // so Boolean operations will treat it as false. In JavaScript, Boolean("false") is true since "false" is not a zero-length string

@@ -15,7 +15,7 @@
 
 class ExpressionManager {
     // These are the allowable suffixes for variables - each represents an attribute of a variable.
-    private static $regex_var_attr = 'codeValue|code|displayValue|groupSeq|jsName|mandatory|NAOK|qid|questionSeq|question|readWrite|relevanceNum|relevanceStatus|relevance|sgqa|shown|type';
+    private static $regex_var_attr = 'codeValue|code|displayValue|gid|grelevance|groupSeq|jsName|mandatory|NAOK|qid|questionSeq|question|readWrite|relevanceNum|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value';
 
     // These three variables are effectively static once constructed
     private $sExpressionRegex;
@@ -1445,6 +1445,46 @@ class ExpressionManager {
                 else {
                     return (isset($_SESSION[$sgqa])) ? $_SESSION[$sgqa] : $default;
                 }
+            case 'value':
+            case 'valueNAOK':
+            {
+                $type = $var['type'];
+                $codeValue = $this->GetVarAttribute($name,'codeValue',$default);
+                switch($type)
+                {
+                    case '!': //List - dropdown
+                    case 'L': //LIST drop-down/radio-button list
+                    case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                    case '1': //Array (Flexible Labels) dual scale  // need scale
+                    case 'H': //ARRAY (Flexible) - Column Format
+                    case 'F': //ARRAY (Flexible) - Row Format
+                    case 'R': //RANKING STYLE
+                        $scale_id = $this->GetVarAttribute($name,'scale_id','0');
+                        $which_ans = $scale_id . '~' . $codeValue;
+                        $ansArray = $var['ansArray'];
+                        if (is_null($ansArray))
+                        {
+                            $value = $default;
+                        }
+                        else
+                        {
+                            if (isset($ansArray[$which_ans])) {
+                                $answerInfo = explode('|',$ansArray[$which_ans]);
+                                $answer = $answerInfo[0];
+                            }
+                            else {
+                                $answer = $default;
+                            }
+                            $value = $answer;
+                        }
+                        break;
+                    default:
+                        $value = $codeValue;
+                        break;
+                    }
+                    return $value;
+                }
+                break;
             case 'jsName':
                 if ($this->allOnOnePage || ($this->groupSeq != -1 && isset($var['groupSeq']) && $this->groupSeq == $var['groupSeq'])) {
                     // then on the same page, so return the on-page javaScript name if there is one.
@@ -1455,6 +1495,7 @@ class ExpressionManager {
             case 'mandatory':
             case 'qid':
             case 'gid':
+            case 'grelevance':
             case 'question':
             case 'readWrite':
             case 'relevance':
@@ -1475,7 +1516,7 @@ class ExpressionManager {
                 else
                 {
                     $type = $var['type'];
-                    $codeValue = $this->GetVarAttribute($name,'codeValue',$default);    // TODO - is this correct?
+                    $codeValue = $this->GetVarAttribute($name,'codeValue',$default);   
                     switch($type)
                     {
                         case '!': //List - dropdown
@@ -1494,7 +1535,15 @@ class ExpressionManager {
                             }
                             else
                             {
-                                $displayValue = (isset($ansArray[$which_ans])) ? $ansArray[$which_ans] : $default;
+                                if (isset($ansArray[$which_ans])) {
+                                    $answerInfo = explode('|',$ansArray[$which_ans]);
+                                    array_shift($answerInfo);
+                                    $answer = join('|',$answerInfo);
+                                }
+                                else {
+                                    $answer = $default;
+                                }
+                                $displayValue = $answer;
                             }
                             break;
                         case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
@@ -1530,7 +1579,15 @@ class ExpressionManager {
                             }
                             else
                             {
-                                $displayValue = (isset($ansArray[$codeValue])) ? $ansArray[$codeValue] : $default;
+                                if (isset($ansArray[$codeValue])) {
+                                    $answerInfo = explode('|',$ansArray[$codeValue]);
+                                    array_shift($answerInfo);
+                                    $answer = join('|',$answerInfo);
+                                }
+                                else {
+                                    $answer = $default;
+                                }
+                                $displayValue = $answer;
                             }
                             break;
                     }

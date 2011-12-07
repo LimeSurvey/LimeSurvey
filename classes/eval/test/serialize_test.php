@@ -16,6 +16,8 @@
 
             $now = microtime(true);
 
+            $_SESSION['LEMdebugLevel'] = LEM_DEBUG_NOCACHING;
+
             // Test with two real surveys
             // To customize this test, pick two real surveys, and real gid and qid values from those surveys
             // plus test strings that show validity of substitutions from those surveys.

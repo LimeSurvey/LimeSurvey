@@ -1155,7 +1155,7 @@ class LimeExpressionManager {
                         else {
                             $othertext = $this->gT('Other:');
                         }
-                        $ansArray['0~-oth-'] = $othertext;
+                        $ansArray['0~-oth-'] = '0|' . $othertext;
                     }
                     break;
                 case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
@@ -1372,7 +1372,6 @@ class LimeExpressionManager {
                 }
             }
 
-            // TODO - should these arrays only be built for questions that require substitution at run-time?
             $ansList = '';
             if (isset($ansArray) && !is_null($ansArray)) {
                 $answers = array();
@@ -1391,6 +1390,7 @@ class LimeExpressionManager {
                 'question'=>$question,
                 'qid'=>$questionNum,
                 'gid'=>$groupNum,
+                'grelevance'=>$grelevance,
                 'relevance'=>$relevance,
                 'relevanceNum'=>'relevance' . $questionNum,
                 'qcode'=>$varName,
@@ -1447,7 +1447,9 @@ class LimeExpressionManager {
                 . "','type':'" . $type
                 . "','relevance':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES)
                 . "','grelevance':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$grelevance),ENT_QUOTES)
-                . "'".$ansList."}";
+                . "','gseq':" . $groupSeq
+                . ",'qseq':" . $questionSeq
+                .$ansList."}";
 
             if (($this->debugLevel & LEM_DEBUG_TRANSLATION_DETAIL) == LEM_DEBUG_TRANSLATION_DETAIL)
             {
@@ -1995,6 +1997,7 @@ class LimeExpressionManager {
         $LEM->surveyOptions['active'] = (isset($options['active']) ? $options['active'] : false);
         $LEM->surveyOptions['allowsave'] = (isset($options['allowsave']) ? $options['allowsave'] : false);
         $LEM->surveyOptions['anonymized'] = (isset($options['anonymized']) ? $options['anonymized'] : false);
+        $LEM->surveyOptions['assessments'] = (isset($options['assessments']) ? $options['assessments'] : false);
         $LEM->surveyOptions['datestamp'] = (isset($options['datestamp']) ? $options['datestamp'] : false);
         $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] = (isset($options['hyperlinkSyntaxHighlighting']) ? $options['hyperlinkSyntaxHighlighting'] : false);
         $LEM->surveyOptions['ipaddr'] = (isset($options['ipaddr']) ? $options['ipaddr'] : false);
@@ -4508,7 +4511,7 @@ EOT;
             $lang = " and a.language='".$lang."' and q.language='".$lang."'";
         }
 
-        $query = "SELECT a.qid, a.code, a.answer, a.scale_id"
+        $query = "SELECT a.qid, a.code, a.answer, a.scale_id, a.assessment_value"
             ." FROM ".db_table_name('answers')." AS a, ".db_table_name('questions')." as q"
             ." WHERE ".$where
             .$lang
@@ -4518,11 +4521,13 @@ EOT;
 
         $qans = array();
 
+        $useAssessments = ((isset($this->surveyOptions['assessments'])) ? $this->surveyOptions['assessments'] : false);
+
         foreach($data->GetRows() as $row) {
             if (!isset($qans[$row['qid']])) {
                 $qans[$row['qid']] = array();
             }
-            $qans[$row['qid']][$row['scale_id'].'~'.$row['code']] = $row['answer'];
+            $qans[$row['qid']][$row['scale_id'].'~'.$row['code']] = ($useAssessments ? $row['assessment_value'] : $row['code']) . '|' . $row['answer'];
         }
 
         return $qans;

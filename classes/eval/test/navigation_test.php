@@ -15,13 +15,13 @@
             $clang = new limesurvey_lang("en");
 
             if (count($_POST) == 0) {
-                $query = "select a.surveyls_survey_id as sid, a.surveyls_title as title, b.datecreated "
+                $query = "select a.surveyls_survey_id as sid, a.surveyls_title as title, b.datecreated, b.assessments "
                 . "from " . db_table_name('surveys_languagesettings') . " as a join ". db_table_name('surveys') . " as b on a.surveyls_survey_id = b.sid"
                 . " where a.surveyls_language='en' order by a.surveyls_title, b.datecreated";
         		$data = db_execute_assoc($query);
                 $surveyList='';
                 foreach($data->GetRows() as $row) {
-                    $surveyList .= "<option value='" . $row['sid'] . "'>#" . $row['sid'] . " [" . $row['datecreated'] . '] ' . FlattenText($row['title']) . "</option>\n";
+                    $surveyList .= "<option value='" . $row['sid'] .'|' . $row['assessments'] . "'>#" . $row['sid'] . " [" . $row['datecreated'] . '] ' . FlattenText($row['title']) . "</option>\n";
                 }
 
                 $form = <<< EOD
@@ -57,7 +57,9 @@ EOD;
                 echo $form;
             }
             else {
-                $surveyid = $_POST['sid'];
+                $surveyInfo = explode('|',$_POST['sid']);
+                $surveyid = $surveyInfo[0];
+                $assessments = ($surveyInfo[1] == 'Y');
                 $surveyMode = $_POST['surveyMode'];
                 $LEMdebugLevel = (
                         ((isset($_POST['LEM_DEBUG_TIMING']) && $_POST['LEM_DEBUG_TIMING'] == 'Y') ? LEM_DEBUG_TIMING : 0) +
@@ -71,13 +73,14 @@ EOD;
                     'active'=>false,
                     'allowsave'=>true,
                     'anonymized'=>false,
+                    'assessments'=>$assessments,
                     'datestamp'=>true,
                     'hyperlinkSyntaxHighlighting'=>true,
                     'ipaddr'=>true,
                     'rooturl'=>'../../..',
                 );
 
-                print '<h3>Starting survey ' . $surveyid . " using Survey Mode '". $surveyMode . "'</h3>";
+                print '<h3>Starting survey ' . $surveyid . " using Survey Mode '". $surveyMode . (($assessments) ? "' [Uses Assessments]" : "'") . "</h3>";
                 $now = microtime(true);
                 LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, true,$LEMdebugLevel);
                 print '<b>[StartSurvey() took ' . (microtime(true) - $now) . ' seconds]</b><br/>';
