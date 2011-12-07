@@ -15,7 +15,7 @@
 
 class ExpressionManager {
     // These are the allowable suffixes for variables - each represents an attribute of a variable.
-    private static $regex_var_attr = 'codeValue|code|displayValue|gid|grelevance|groupSeq|jsName|mandatory|NAOK|qid|questionSeq|question|readWrite|relevanceNum|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value';
+    private static $regex_var_attr = 'codeValue|code|displayValue|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value';
 
     // These three variables are effectively static once constructed
     private $sExpressionRegex;
@@ -473,7 +473,7 @@ class ExpressionManager {
                         $this->StackPush($result);
 
                         // TODO - currently, will try to process value anyway, but want to show a potential error.  Should it be a definitive error (e.g. prevent this behavior)?
-                        $groupSeq = $this->GetVarAttribute($token[0],'groupSeq',-1);
+                        $groupSeq = $this->GetVarAttribute($token[0],'gseq',-1);
                         if (($groupSeq != -1) && ($groupSeq > $this->groupSeq))
                         {
                             $this->AddError("This variable is not declared until a later page",$token);
@@ -1100,7 +1100,6 @@ class ExpressionManager {
                     elseif ($i+1<$numTokens && $tokens[$i+1][2] == 'ASSIGN')
                     {
                         $jsName = $this->GetVarAttribute($token[0],'jsName','');
-                        $relevanceNum = $this->GetVarAttribute($token[0],'relevanceNum','');
                         $stringParts[] = "document.getElementById('" . $jsName . "').value";
                         if ($tokens[$i+1][0] == '+=')
                         {
@@ -1113,7 +1112,6 @@ class ExpressionManager {
                     else
                     {
                         $jsName = $this->GetVarAttribute($token[0],'jsName','');
-                        $relevanceNum = $this->GetVarAttribute($token[0],'relevanceNum','');
                         $codeValue = $this->GetVarAttribute($token[0],'code','');
                         if ($jsName != '')
                         {
@@ -1316,8 +1314,8 @@ class ExpressionManager {
                             $codeValue = $this->GetVarAttribute($token[0],'codeValue','');
                             $question = $this->GetVarAttribute($token[0], 'question', '');
                             $qcode= $this->GetVarAttribute($token[0],'qcode','');
-                            $questionSeq = $this->GetVarAttribute($token[0],'questionSeq',-1);
-                            $groupSeq = $this->GetVarAttribute($token[0],'groupSeq',-1);
+                            $questionSeq = $this->GetVarAttribute($token[0],'qseq',-1);
+                            $groupSeq = $this->GetVarAttribute($token[0],'gseq',-1);
                             $ansList = $this->GetVarAttribute($token[0],'ansList','');
                             $gid = $this->GetVarAttribute($token[0],'gid',-1);
                             $qid = $this->GetVarAttribute($token[0],'qid',-1);
@@ -1486,7 +1484,7 @@ class ExpressionManager {
                 }
                 break;
             case 'jsName':
-                if ($this->allOnOnePage || ($this->groupSeq != -1 && isset($var['groupSeq']) && $this->groupSeq == $var['groupSeq'])) {
+                if ($this->allOnOnePage || ($this->groupSeq != -1 && isset($var['gseq']) && $this->groupSeq == $var['gseq'])) {
                     // then on the same page, so return the on-page javaScript name if there is one.
                     return (isset($var['jsName_on']) ? $var['jsName_on'] : (isset($var['jsName'])) ? $var['jsName'] : $default);
                 }
@@ -1499,11 +1497,10 @@ class ExpressionManager {
             case 'question':
             case 'readWrite':
             case 'relevance':
-            case 'relevanceNum':
             case 'type':
             case 'qcode':
-            case 'groupSeq':
-            case 'questionSeq':
+            case 'gseq':
+            case 'qseq':
             case 'ansList':
             case 'scale_id':
                 return (isset($var[$attr])) ? $var[$attr] : $default;
@@ -2304,25 +2301,25 @@ EOD;
     {
         // Some test cases for Evaluator
         $vars = array(
-'one' => array('sgqa'=>'one', 'codeValue'=>1, 'jsName'=>'java_one', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>4),
-'two' => array('sgqa'=>'two', 'codeValue'=>2, 'jsName'=>'java_two', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>4),
-'three' => array('sgqa'=>'three', 'codeValue'=>3, 'jsName'=>'java_three', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>4),
-'four' => array('sgqa'=>'four', 'codeValue'=>4, 'jsName'=>'java_four', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>1),
-'five' => array('sgqa'=>'five', 'codeValue'=>5, 'jsName'=>'java_five', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>1),
-'six' => array('sgqa'=>'six', 'codeValue'=>6, 'jsName'=>'java_six', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>1),
-'seven' => array('sgqa'=>'seven', 'codeValue'=>7, 'jsName'=>'java_seven', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>5),
-'eight' => array('sgqa'=>'eight', 'codeValue'=>8, 'jsName'=>'java_eight', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>5),
-'nine' => array('sgqa'=>'nine', 'codeValue'=>9, 'jsName'=>'java_nine', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>5),
-'ten' => array('sgqa'=>'ten', 'codeValue'=>10, 'jsName'=>'java_ten', 'readWrite'=>'Y', 'groupSeq'=>1,'questionSeq'=>1),
-'half' => array('sgqa'=>'half', 'codeValue'=>.5, 'jsName'=>'java_half', 'readWrite'=>'Y', 'groupSeq'=>1,'questionSeq'=>1),
-'hi' => array('sgqa'=>'hi', 'codeValue'=>'there', 'jsName'=>'java_hi', 'readWrite'=>'Y', 'groupSeq'=>1,'questionSeq'=>1),
-'hello' => array('sgqa'=>'hello', 'codeValue'=>"Tom", 'jsName'=>'java_hello', 'readWrite'=>'Y', 'groupSeq'=>1,'questionSeq'=>1),
-'a' => array('sgqa'=>'a', 'codeValue'=>0, 'jsName'=>'java_a', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>2),
-'b' => array('sgqa'=>'b', 'codeValue'=>0, 'jsName'=>'java_b', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>2),
-'c' => array('sgqa'=>'c', 'codeValue'=>0, 'jsName'=>'java_c', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>2),
-'d' => array('sgqa'=>'d', 'codeValue'=>0, 'jsName'=>'java_d', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>2),
-'eleven' => array('sgqa'=>'eleven', 'codeValue'=>11, 'jsName'=>'java_eleven', 'readWrite'=>'Y', 'groupSeq'=>1,'questionSeq'=>1),
-'twelve' => array('sgqa'=>'twelve', 'codeValue'=>12, 'jsName'=>'java_twelve', 'readWrite'=>'Y', 'groupSeq'=>1,'questionSeq'=>1),
+'one' => array('sgqa'=>'one', 'codeValue'=>1, 'jsName'=>'java_one', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>4),
+'two' => array('sgqa'=>'two', 'codeValue'=>2, 'jsName'=>'java_two', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>4),
+'three' => array('sgqa'=>'three', 'codeValue'=>3, 'jsName'=>'java_three', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>4),
+'four' => array('sgqa'=>'four', 'codeValue'=>4, 'jsName'=>'java_four', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>1),
+'five' => array('sgqa'=>'five', 'codeValue'=>5, 'jsName'=>'java_five', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>1),
+'six' => array('sgqa'=>'six', 'codeValue'=>6, 'jsName'=>'java_six', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>1),
+'seven' => array('sgqa'=>'seven', 'codeValue'=>7, 'jsName'=>'java_seven', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>5),
+'eight' => array('sgqa'=>'eight', 'codeValue'=>8, 'jsName'=>'java_eight', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>5),
+'nine' => array('sgqa'=>'nine', 'codeValue'=>9, 'jsName'=>'java_nine', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>5),
+'ten' => array('sgqa'=>'ten', 'codeValue'=>10, 'jsName'=>'java_ten', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
+'half' => array('sgqa'=>'half', 'codeValue'=>.5, 'jsName'=>'java_half', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
+'hi' => array('sgqa'=>'hi', 'codeValue'=>'there', 'jsName'=>'java_hi', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
+'hello' => array('sgqa'=>'hello', 'codeValue'=>"Tom", 'jsName'=>'java_hello', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
+'a' => array('sgqa'=>'a', 'codeValue'=>0, 'jsName'=>'java_a', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
+'b' => array('sgqa'=>'b', 'codeValue'=>0, 'jsName'=>'java_b', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
+'c' => array('sgqa'=>'c', 'codeValue'=>0, 'jsName'=>'java_c', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
+'d' => array('sgqa'=>'d', 'codeValue'=>0, 'jsName'=>'java_d', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
+'eleven' => array('sgqa'=>'eleven', 'codeValue'=>11, 'jsName'=>'java_eleven', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
+'twelve' => array('sgqa'=>'twelve', 'codeValue'=>12, 'jsName'=>'java_twelve', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
 // Constants
 'ASSESSMENT_HEADING' => array('sgqa'=>'ASSESSMENT_HEADING', 'codeValue'=>'"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"', 'jsName'=>'', 'readWrite'=>'N'),
 'QID' => array('sgqa'=>'QID', 'codeValue'=>'value for {QID}', 'jsName'=>'', 'readWrite'=>'N'),
@@ -2333,13 +2330,13 @@ EOD;
 'TOKEN:FIRSTNAME' => array('sgqa'=>'TOKEN:FIRSTNAME', 'codeValue' => 'value for {TOKEN:FIRSTNAME}', 'jsName' => '', 'readWrite' => 'N'),
 'WELCOME' => array('sgqa'=>'WELCOME', 'codeValue'=>'value for {WELCOME}', 'jsName'=>'', 'readWrite'=>'N'),
 // also include SGQA values and read-only variable attributes
-'12X34X56' => array('sgqa'=>'12X34X56', 'codeValue'=>5, 'jsName'=>'', 'readWrite'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
-'12X3X5lab1_ber' => array('sgqa'=>'12X3X5lab1_ber', 'codeValue'=>10, 'jsName'=>'', 'readWrite'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
-'q5pointChoice' => array('sgqa'=>'q5pointChoice', 'codeValue'=>3, 'jsName'=>'java_q5pointChoice', 'readWrite'=>'N','displayValue'=>'Father', 'relevance'=>1, 'type'=>'5', 'question'=>'(question for q5pointChoice)', 'qid'=>13,'groupSeq'=>2,'questionSeq'=>13),
-'qArrayNumbers_ls1_min' => array('sgqa'=>'qArrayNumbers_ls1_min', 'codeValue'=> 7, 'jsName'=>'java_qArrayNumbers_ls1_min', 'readWrite'=>'N','displayValue'=> 'I love LimeSurvey', 'relevance'=>1, 'type'=>'A', 'question'=>'(question for qArrayNumbers)', 'qid'=>6,'groupSeq'=>2,'questionSeq'=>6),
-'12X3X5lab1_ber#1' => array('sgqa'=>'12X3X5lab1_ber#1', 'codeValue'=> 15, 'jsName'=>'', 'readWrite'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
-'zero' => array('sgqa'=>'zero', 'codeValue'=>0, 'jsName'=>'java_zero', 'groupSeq'=>0,'questionSeq'=>0),
-'empty' => array('sgqa'=>'empty', 'codeValue'=>'', 'jsName'=>'java_empty', 'groupSeq'=>0,'questionSeq'=>0),
+'12X34X56' => array('sgqa'=>'12X34X56', 'codeValue'=>5, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
+'12X3X5lab1_ber' => array('sgqa'=>'12X3X5lab1_ber', 'codeValue'=>10, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
+'q5pointChoice' => array('sgqa'=>'q5pointChoice', 'codeValue'=>3, 'jsName'=>'java_q5pointChoice', 'readWrite'=>'N','displayValue'=>'Father', 'relevance'=>1, 'type'=>'5', 'question'=>'(question for q5pointChoice)', 'qid'=>13,'gseq'=>2,'qseq'=>13),
+'qArrayNumbers_ls1_min' => array('sgqa'=>'qArrayNumbers_ls1_min', 'codeValue'=> 7, 'jsName'=>'java_qArrayNumbers_ls1_min', 'readWrite'=>'N','displayValue'=> 'I love LimeSurvey', 'relevance'=>1, 'type'=>'A', 'question'=>'(question for qArrayNumbers)', 'qid'=>6,'gseq'=>2,'qseq'=>6),
+'12X3X5lab1_ber#1' => array('sgqa'=>'12X3X5lab1_ber#1', 'codeValue'=> 15, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
+'zero' => array('sgqa'=>'zero', 'codeValue'=>0, 'jsName'=>'java_zero', 'gseq'=>0,'qseq'=>0),
+'empty' => array('sgqa'=>'empty', 'codeValue'=>'', 'jsName'=>'java_empty', 'gseq'=>0,'qseq'=>0),
         );
 
         // Syntax for $tests is
@@ -2570,8 +2567,8 @@ EOD;
         // manually set relevance status
         $_SESSION['relevanceStatus'] = array();
         foreach ($vars as $var) {
-            if (isset($var['questionSeq'])) {
-                $_SESSION['relevanceStatus'][$var['questionSeq']] = 1;
+            if (isset($var['qseq'])) {
+                $_SESSION['relevanceStatus'][$var['qseq']] = 1;
             }
         }
 

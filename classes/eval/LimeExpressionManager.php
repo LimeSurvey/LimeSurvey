@@ -353,7 +353,7 @@ class LimeExpressionManager {
         // Associate these with $qid so that can be nested under appropriate question-level relevance?
         foreach ($this->q2subqInfo as $qinfo)
         {
-            if (!is_null($onlyThisQseq) && $onlyThisQseq != $qinfo['qSeq']) {
+            if (!is_null($onlyThisQseq) && $onlyThisQseq != $qinfo['qseq']) {
                 continue;
             }
             else if (!$this->allOnOnePage && $this->groupNum != $qinfo['gid']) {
@@ -1325,7 +1325,7 @@ class LimeExpressionManager {
                 if (!isset($q2subqInfo[$questionNum])) {
                     $q2subqInfo[$questionNum] = array(
                         'qid' => $questionNum,
-                        'qSeq' => $questionSeq,
+                        'qseq' => $questionSeq,
                         'gid' => $groupNum,
                         'sgqa' => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
                         'varName' => $varName,
@@ -1392,10 +1392,9 @@ class LimeExpressionManager {
                 'gid'=>$groupNum,
                 'grelevance'=>$grelevance,
                 'relevance'=>$relevance,
-                'relevanceNum'=>'relevance' . $questionNum,
                 'qcode'=>$varName,
-                'questionSeq'=>$questionSeq,
-                'groupSeq'=>$groupSeq,
+                'qseq'=>$questionSeq,
+                'gseq'=>$groupSeq,
                 'type'=>$type,
                 'sgqa'=>$code,
                 'rowdivid'=>$rowdivid,
@@ -1408,8 +1407,8 @@ class LimeExpressionManager {
                 'relevance'=>$relevance,
                 'grelevance'=>$grelevance,
                 'qid'=>$questionNum,
-                'questionSeq'=>$questionSeq,
-                'groupSeq'=>$groupSeq,
+                'qseq'=>$questionSeq,
+                'gseq'=>$groupSeq,
                 'jsResultVar_on'=>$jsVarName_on,
                 'jsResultVar'=>$jsVarName,
                 'type'=>$type,
@@ -1493,7 +1492,6 @@ class LimeExpressionManager {
                     'jsName_on'=>'',
                     'jsName'=>'',
                     'readWrite'=>'N',
-                    'relevanceNum'=>'',
                     );
 
                 if (($this->debugLevel & LEM_DEBUG_TRANSLATION_DETAIL) == LEM_DEBUG_TRANSLATION_DETAIL)
@@ -1520,7 +1518,6 @@ class LimeExpressionManager {
                     'jsName_on'=>'',
                     'jsName'=>'',
                     'readWrite'=>'N',
-                    'relevanceNum'=>'',
                     );
             $this->knownVars['TOKEN:FIRSTNAME'] = $blankVal;
             $this->knownVars['TOKEN:LASTNAME'] = $blankVal;
@@ -1595,19 +1592,19 @@ class LimeExpressionManager {
  */
     function cmpQuestionSeq($a, $b)
     {
-        if (is_null($a['questionSeq'])) {
-            if (is_null($b['questionSeq'])) {
+        if (is_null($a['qseq'])) {
+            if (is_null($b['qseq'])) {
                 return 0;
             }
             return 1;
         }
-        if (is_null($b['questionSeq'])) {
+        if (is_null($b['qseq'])) {
             return -1;
         }
-        if ($a['questionSeq'] == $b['questionSeq']) {
+        if ($a['qseq'] == $b['qseq']) {
             return 0;
         }
-        return ($a['questionSeq'] < $b['questionSeq']) ? -1 : 1;
+        return ($a['qseq'] < $b['qseq']) ? -1 : 1;
     }
 
     /**
@@ -1622,12 +1619,12 @@ class LimeExpressionManager {
         $grelComputed=array();  // so only process it once per group
         foreach($this->questionSeq2relevance as $rel)
         {
-            if (!is_null($onlyThisQseq) && $onlyThisQseq!=$rel['questionSeq']) {
+            if (!is_null($onlyThisQseq) && $onlyThisQseq!=$rel['qseq']) {
                 continue;
             }
             $qid = $rel['qid'];
             $gid = $rel['gid'];
-            $groupSeq = $rel['groupSeq'];
+            $groupSeq = $rel['gseq'];
             if ($this->allOnOnePage) {
                 ;   // process relevance for all questions
             }
@@ -2128,7 +2125,7 @@ class LimeExpressionManager {
                     $LEM->groupRelevanceInfo=array();   // TODO only important thing from StartProcessingGroup?
                     $qInfo = $LEM->questionSeq2relevance[$LEM->currentQuestionSeq];
                     $LEM->currentQID=$qInfo['qid'];
-                    $LEM->currentGroupSeq=$qInfo['groupSeq'];
+                    $LEM->currentGroupSeq=$qInfo['gseq'];
                     $LEM->groupNum=$qInfo['gid'];
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
                         $LEM->maxGroupSeq = $LEM->currentGroupSeq;
@@ -2339,7 +2336,7 @@ class LimeExpressionManager {
                     $LEM->groupRelevanceInfo=array();   // TODO only important thing from StartProcessingGroup?
                     $qInfo = $LEM->questionSeq2relevance[$LEM->currentQuestionSeq];
                     $LEM->currentQID=$qInfo['qid'];
-                    $LEM->currentGroupSeq=$qInfo['groupSeq'];
+                    $LEM->currentGroupSeq=$qInfo['gseq'];
                     $LEM->groupNum=$qInfo['gid'];
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
                         $LEM->maxGroupSeq = $LEM->currentGroupSeq;
@@ -2648,7 +2645,7 @@ class LimeExpressionManager {
                     $LEM->groupRelevanceInfo=array();   // TODO only important thing from StartProcessingGroup?
                     $qInfo = $LEM->questionSeq2relevance[$LEM->currentQuestionSeq];
                     $LEM->currentQID=$qInfo['qid'];
-                    $LEM->currentGroupSeq=$qInfo['groupSeq'];
+                    $LEM->currentGroupSeq=$qInfo['gseq'];
                     $LEM->groupNum=$qInfo['gid'];
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
                         $LEM->maxGroupSeq = $LEM->currentGroupSeq;
@@ -2939,7 +2936,7 @@ class LimeExpressionManager {
         }
         else
         {
-            $qrel = $LEM->em->ProcessBooleanExpression($relevanceEqn,$qInfo['groupSeq'], $qInfo['questionSeq']);    // assumes safer to re-process relevance and not trust POST values
+            $qrel = $LEM->em->ProcessBooleanExpression($relevanceEqn,$qInfo['gseq'], $qInfo['qseq']);    // assumes safer to re-process relevance and not trust POST values
             if ($LEM->em->HasErrors())
             {
                 $qrel=false;  // default to invalid so that can show the error
@@ -3014,7 +3011,7 @@ class LimeExpressionManager {
                                     else
                                     {
                                         $stringToParse = htmlspecialchars_decode($sq['eqn'],ENT_QUOTES);  // TODO is this needed?
-                                        $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['groupSeq'], $qInfo['questionSeq']);
+                                        $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['gseq'], $qInfo['qseq']);
                                         if ($LEM->em->HasErrors())
                                         {
                                             $sqrel=false;  // default to invalid so that can show the error
@@ -3055,7 +3052,7 @@ class LimeExpressionManager {
                                     else
                                     {
                                         $stringToParse = htmlspecialchars_decode($sq['eqn'],ENT_QUOTES);  // TODO is this needed?
-                                        $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['groupSeq'], $qInfo['questionSeq']);
+                                        $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['gseq'], $qInfo['qseq']);
                                         if ($LEM->em->HasErrors())
                                         {
                                             $sqrel=false;  // default to invalid so that can show the error
@@ -3101,7 +3098,7 @@ class LimeExpressionManager {
                                     else
                                     {
                                         $stringToParse = htmlspecialchars_decode($sq['eqn'],ENT_QUOTES);  // TODO is this needed?
-                                        $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['groupSeq'], $qInfo['questionSeq']);
+                                        $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['gseq'], $qInfo['qseq']);
                                         if ($LEM->em->HasErrors())
                                         {
                                             $sqrel=false;  // default to invalid so that can show the error
@@ -3141,7 +3138,7 @@ class LimeExpressionManager {
                                     else
                                     {
                                         $stringToParse = htmlspecialchars_decode($sq['eqn'],ENT_QUOTES);  // TODO is this needed?
-                                        $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['groupSeq'], $qInfo['questionSeq']);
+                                        $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['gseq'], $qInfo['qseq']);
                                         if ($LEM->em->HasErrors())
                                         {
                                             $sqrel=false;  // default to invalid so that can show the error
@@ -3287,7 +3284,7 @@ class LimeExpressionManager {
             if ($qrel && !$qhidden)
             {
                 $stringToParse = $LEM->qid2validationEqn[$qid]['eqn'];
-                $qvalid = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['groupSeq'], $qInfo['questionSeq']);
+                $qvalid = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['gseq'], $qInfo['qseq']);
                 if ($LEM->em->HasErrors())
                 {
                     $qvalid=false;  // default to invalid so that can show the error
@@ -3324,7 +3321,7 @@ class LimeExpressionManager {
 
         if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY)
         {
-            $debug_qmessage .= '--[Q#' . $qInfo['questionSeq'] . ']'
+            $debug_qmessage .= '--[Q#' . $qInfo['qseq'] . ']'
                 . "[<a href='../../../admin/admin.php?sid={$LEM->sid}&gid=$gid&qid=$qid'>"
                 . 'QID:'. $qid . '</a>][' . $qInfo['type'] . ']: '
                 . ($qrel ? 'relevant' : " <span style='color:red'>irrelevant</span> ")
@@ -3461,7 +3458,7 @@ class LimeExpressionManager {
 
         $LEM->currentQset[$qid] = $qStatus;
 
-        $groupSeq = $qInfo['groupSeq'];
+        $groupSeq = $qInfo['gseq'];
         $LEM->indexQseq[$questionSeq] = array(
             'qid' => $qInfo['qid'],
             'qtext' => $qInfo['qtext'],
@@ -4122,18 +4119,18 @@ class LimeExpressionManager {
     static function UnitTestProcessStringContainingExpressions()
     {
         $vars = array(
-'name' => array('sgqa'=>'name', 'codeValue'=>'Peter', 'jsName'=>'java61764X1X1', 'readWrite'=>'N', 'type'=>'X', 'question'=>'What is your first/given name?', 'questionSeq'=>10, 'groupSeq'=>1),
-'surname' => array('sgqa'=>'surname', 'codeValue'=>'Smith', 'jsName'=>'java61764X1X1', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'What is your last/surname?', 'questionSeq'=>20, 'groupSeq'=>1),
-'age' => array('sgqa'=>'age', 'codeValue'=>45, 'jsName'=>'java61764X1X2', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'How old are you?', 'questionSeq'=>30, 'groupSeq'=>2),
-'numKids' => array('sgqa'=>'numKids', 'codeValue'=>2, 'jsName'=>'java61764X1X3', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'How many kids do you have?', 'relevance'=>'1', 'qid'=>'40','questionSeq'=>40, 'groupSeq'=>2),
-'numPets' => array('sgqa'=>'numPets', 'codeValue'=>1, 'jsName'=>'java61764X1X4', 'readWrite'=>'Y', 'type'=>'X','question'=>'How many pets do you have?', 'questionSeq'=>50, 'groupSeq'=>2),
-'gender' => array('sgqa'=>'gender', 'codeValue'=>'M', 'jsName'=>'java61764X1X5', 'readWrite'=>'Y', 'type'=>'X', 'shown'=>'Male','question'=>'What is your gender (male/female)?', 'questionSeq'=>110, 'groupSeq'=>2),
-'notSetYet' => array('sgqa'=>'notSetYet', 'codeValue'=>'?', 'jsName'=>'java61764X3X6', 'readWrite'=>'Y', 'type'=>'X', 'shown'=>'Unknown','question'=>'Who will win the next election?', 'questionSeq'=>200, 'groupSeq'=>3),
+'name' => array('sgqa'=>'name', 'codeValue'=>'Peter', 'jsName'=>'java61764X1X1', 'readWrite'=>'N', 'type'=>'X', 'question'=>'What is your first/given name?', 'qseq'=>10, 'gseq'=>1),
+'surname' => array('sgqa'=>'surname', 'codeValue'=>'Smith', 'jsName'=>'java61764X1X1', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'What is your last/surname?', 'qseq'=>20, 'gseq'=>1),
+'age' => array('sgqa'=>'age', 'codeValue'=>45, 'jsName'=>'java61764X1X2', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'How old are you?', 'qseq'=>30, 'gseq'=>2),
+'numKids' => array('sgqa'=>'numKids', 'codeValue'=>2, 'jsName'=>'java61764X1X3', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'How many kids do you have?', 'relevance'=>'1', 'qid'=>'40','qseq'=>40, 'gseq'=>2),
+'numPets' => array('sgqa'=>'numPets', 'codeValue'=>1, 'jsName'=>'java61764X1X4', 'readWrite'=>'Y', 'type'=>'X','question'=>'How many pets do you have?', 'qseq'=>50, 'gseq'=>2),
+'gender' => array('sgqa'=>'gender', 'codeValue'=>'M', 'jsName'=>'java61764X1X5', 'readWrite'=>'Y', 'type'=>'X', 'shown'=>'Male','question'=>'What is your gender (male/female)?', 'qseq'=>110, 'gseq'=>2),
+'notSetYet' => array('sgqa'=>'notSetYet', 'codeValue'=>'?', 'jsName'=>'java61764X3X6', 'readWrite'=>'Y', 'type'=>'X', 'shown'=>'Unknown','question'=>'Who will win the next election?', 'qseq'=>200, 'gseq'=>3),
 // Constants
-'61764X1X1' => array('sgqa'=>'61764X1X1', 'codeValue'=> '<Sergei>', 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'questionSeq'=>70, 'groupSeq'=>2),
-'61764X1X2' => array('sgqa'=>'61764X1X2', 'codeValue'=> 45, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'questionSeq'=>80, 'groupSeq'=>2),
-'61764X1X3' => array('sgqa'=>'61764X1X3', 'codeValue'=> 2, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'questionSeq'=>15, 'groupSeq'=>1),
-'61764X1X4' => array('sgqa'=>'61764X1X4', 'codeValue'=> 1, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'questionSeq'=>100, 'groupSeq'=>2),
+'61764X1X1' => array('sgqa'=>'61764X1X1', 'codeValue'=> '<Sergei>', 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'qseq'=>70, 'gseq'=>2),
+'61764X1X2' => array('sgqa'=>'61764X1X2', 'codeValue'=> 45, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'qseq'=>80, 'gseq'=>2),
+'61764X1X3' => array('sgqa'=>'61764X1X3', 'codeValue'=> 2, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'qseq'=>15, 'gseq'=>1),
+'61764X1X4' => array('sgqa'=>'61764X1X4', 'codeValue'=> 1, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'qseq'=>100, 'gseq'=>2),
 'TOKEN:ATTRIBUTE_1' => array('codeValue'=> 'worker', 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X'),
         );
 
@@ -4195,10 +4192,10 @@ EOST;
         $LEM->questionId2groupSeq = array();
         $_SESSION['relevanceStatus'] = array();
         foreach ($vars as $var) {
-            if (isset($var['questionSeq'])) {
-                $LEM->questionId2questionSeq[$var['questionSeq']] = $var['questionSeq'];
-                $LEM->questionId2groupSeq[$var['questionSeq']] = $var['groupSeq'];
-                $_SESSION['relevanceStatus'][$var['questionSeq']] = 1;
+            if (isset($var['qseq'])) {
+                $LEM->questionId2questionSeq[$var['qseq']] = $var['qseq'];
+                $LEM->questionId2groupSeq[$var['qseq']] = $var['gseq'];
+                $_SESSION['relevanceStatus'][$var['qseq']] = 1;
             }
         }
 
@@ -4282,7 +4279,7 @@ EOT;
         foreach(explode("\n",$tests) as $test)
         {
             $args = explode("~",$test);
-            $vars[$args[0]] = array('sgqa'=>$args[0], 'codeValue'=>'', 'jsName'=>'java_' . $args[0], 'jsName_on'=>'java_' . $args[0], 'readWrite'=>'Y', 'type'=>'X', 'relevanceNum'=>'relevance' . $i, 'relevanceStatus'=>'1','groupSeq'=>1, 'questionSeq'=>$i);
+            $vars[$args[0]] = array('sgqa'=>$args[0], 'codeValue'=>'', 'jsName'=>'java_' . $args[0], 'jsName_on'=>'java_' . $args[0], 'readWrite'=>'Y', 'type'=>'X', 'relevanceStatus'=>'1','gseq'=>1, 'qseq'=>$i);
             $varSeq[] = $args[0];
             $testArgs[] = $args;
             $LEM->questionId2questionSeq[$i] = $i;
@@ -4290,8 +4287,8 @@ EOT;
             $LEM->questionSeq2relevance[$i] = array(
                 'relevance'=>htmlspecialchars(preg_replace('/[[:space:]]/',' ',$args[1]),ENT_QUOTES),
                 'qid'=>$i,
-                'questionSeq'=>$i,
-                'groupSeq'=>1,
+                'qseq'=>$i,
+                'gseq'=>1,
                 'jsResultVar'=>'java_' . $args[0],
                 'type'=>(($args[1]=='expr') ? '*' : ($args[1]=='message') ? 'X' : 'S'),
                 'hidden'=>0,

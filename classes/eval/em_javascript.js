@@ -209,8 +209,8 @@ function LEMval(alias)
         suffix = 'shown';
         varName = varName.substr(10);
     }
-    else if (str.match(/\.(codeValue|code|displayValue|gid|grelevance|groupSeq|jsName|mandatory|NAOK|qid|questionSeq|question|readWrite|relevanceNum|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value)$/)) {
-        varName = str.replace(/\.(codeValue|code|displayValue|gid|grelevance|groupSeq|jsName|mandatory|NAOK|qid|questionSeq|question|readWrite|relevanceNum|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value)$/,'')
+    else if (str.match(/\.(codeValue|code|displayValue|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value)$/)) {
+        varName = str.replace(/\.(codeValue|code|displayValue|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value)$/,'')
         suffix = str.replace(/^(.+)\./,'');
     }
 
@@ -319,18 +319,16 @@ function LEMval(alias)
         case 'question':
             return htmlspecialchars_decode(attr.question);
         case 'readWrite':
-            return 'N';     // nothing is read-Write for now.  // attr.readWrite;
+            return attr.readWrite;
         case 'relevance':
             return htmlspecialchars_decode(attr.relevance);
-        case 'relevanceNum':
-            return attr.qid;
         case 'sgqa':
             return attr.sgqa;
         case 'type':
             return attr.type;
-        case 'groupSeq':
+        case 'gseq':
             return attr.gseq;
-        case 'questionSeq':
+        case 'qseq':
             return attr.qseq;
         case 'jsName':
             return whichJsName;
