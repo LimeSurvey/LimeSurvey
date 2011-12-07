@@ -1069,14 +1069,14 @@ class LimeExpressionManager {
 
         foreach($fieldmap as $fielddata)
         {
-            $code = $fielddata['fieldname'];
+            $sgqa = $fielddata['fieldname'];
             $type = $fielddata['type'];
-            if (!preg_match('#^\d+X\d+X\d+#',$code))
+            if (!preg_match('#^\d+X\d+X\d+#',$sgqa))
             {
                 continue;   // not an SGQA value
             }
             $mandatory = $fielddata['mandatory'];
-            $fieldNameParts = explode('X',$code);
+            $fieldNameParts = explode('X',$sgqa);
             $groupNum = $fieldNameParts[1];
 
             $questionId = $fieldNameParts[2];
@@ -1126,11 +1126,11 @@ class LimeExpressionManager {
             $codeList = (isset($this->qid2code[$questionNum]) ? $this->qid2code[$questionNum] : '');
             if ($codeList == '')
             {
-                $codeList = $code;
+                $codeList = $sgqa;
             }
             else
             {
-                $codeList .= '|' . $code;
+                $codeList .= '|' . $sgqa;
             }
             $this->qid2code[$questionNum] = $codeList;
 
@@ -1218,7 +1218,7 @@ class LimeExpressionManager {
                     $sqsuffix = '_' . $fielddata['aid'];
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'] . '_' . $fielddata['scale_id'];;
                     $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
-                    $rowdivid = substr($code,0,-2);
+                    $rowdivid = substr($sgqa,0,-2);
                     break;
                 case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
                 case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
@@ -1235,12 +1235,12 @@ class LimeExpressionManager {
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
                     if ($type != 'H' && $type != 'Q' && $type != 'R') {
-                        if ($type == 'P' && preg_match("/comment$/", $code)) {
-//                            $rowdivid = substr($code,0,-7);
+                        if ($type == 'P' && preg_match("/comment$/", $sgqa)) {
+//                            $rowdivid = substr($sgqa,0,-7);
                         }
                         else {
                             $sqsuffix = '_' . $fielddata['aid'];
-                            $rowdivid = $code;
+                            $rowdivid = $sgqa;
                         }
                     }
                     break;
@@ -1250,7 +1250,7 @@ class LimeExpressionManager {
                     $sqsuffix = '_' . substr($fielddata['aid'],0,strpos($fielddata['aid'],'_'));
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
-                    $rowdivid = substr($code,0,strpos($code,'_'));
+                    $rowdivid = substr($sgqa,0,strpos($sgqa,'_'));
                     break;
             }
 
@@ -1259,7 +1259,7 @@ class LimeExpressionManager {
             {
                 case 'R': //RANKING STYLE
                     $jsVarName_on = 'fvalue_' . $fieldNameParts[2];
-                    $jsVarName = 'java' . $code;
+                    $jsVarName = 'java' . $sgqa;
                     break;
                 case 'D': //DATE
                 case 'N': //NUMERICAL QUESTION TYPE
@@ -1269,8 +1269,8 @@ class LimeExpressionManager {
                 case 'Q': //MULTIPLE SHORT TEXT
                 case 'K': //MULTIPLE NUMERICAL QUESTION
                 case 'X': //BOILERPLATE QUESTION
-                    $jsVarName_on = 'answer' . $code;
-                    $jsVarName = 'java' . $code;
+                    $jsVarName_on = 'answer' . $sgqa;
+                    $jsVarName = 'java' . $sgqa;
                     break;
                 case '!': //List - dropdown
                 case '5': //5 POINT CHOICE radio-buttons
@@ -1289,34 +1289,34 @@ class LimeExpressionManager {
                 case 'M': //Multiple choice checkbox
                 case ':': //ARRAY (Multi Flexi) 1 to 10
                 case ';': //ARRAY (Multi Flexi) Text
-                    $jsVarName = 'java' . $code;
+                    $jsVarName = 'java' . $sgqa;
                     $jsVarName_on = $jsVarName;
                     break;
                 case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                    if (preg_match("/comment$/", $code)) {
-                        $jsVarName = 'java' . $code;
+                    if (preg_match("/comment$/", $sgqa)) {
+                        $jsVarName = 'java' . $sgqa;
                         $varName = $varName . "_comment";
                     }
                     else {
-                        $jsVarName = 'java' . $code;
+                        $jsVarName = 'java' . $sgqa;
                     }
                     $jsVarName_on = $jsVarName;
                     break;
                 case '|': //File Upload
                     // Only want the use the one that ends in '_filecount'
-                    $goodcode = preg_replace("/^(.*?)(_filecount)?$/","$1",$code);
+                    $goodcode = preg_replace("/^(.*?)(_filecount)?$/","$1",$sgqa);
                     $jsVarName = $goodcode . '_filecount';
                     $jsVarName_on = $jsVarName;
                     break;
                 case 'P': //Multiple choice with comments checkbox + text
-                    if (preg_match("/comment$/",$code))
+                    if (preg_match("/comment$/",$sgqa))
                     {
-                        $jsVarName_on = 'answer' . $code;  // is this true for survey.php and not for group.php?
-                        $jsVarName = 'java' . $code;
+                        $jsVarName_on = 'answer' . $sgqa;  // is this true for survey.php and not for group.php?
+                        $jsVarName = 'java' . $sgqa;
                     }
                     else
                     {
-                        $jsVarName = 'java' . $code;
+                        $jsVarName = 'java' . $sgqa;
                         $jsVarName_on = $jsVarName;
                     }
                     break;
@@ -1330,7 +1330,7 @@ class LimeExpressionManager {
                         'sgqa' => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
                         'varName' => $varName,
                         'type' => $type,
-                        'fieldname' => $code,
+                        'fieldname' => $sgqa,
                         'preg' => $preg,
                         );
                 }
@@ -1396,7 +1396,7 @@ class LimeExpressionManager {
                 'qseq'=>$questionSeq,
                 'gseq'=>$groupSeq,
                 'type'=>$type,
-                'sgqa'=>$code,
+                'sgqa'=>$sgqa,
                 'rowdivid'=>$rowdivid,
                 'ansList'=>$ansList,
                 'ansArray'=>$ansArray,
@@ -1423,29 +1423,26 @@ class LimeExpressionManager {
                 );
 
             $this->knownVars[$varName] = $varInfo_Code;
-  //          $this->knownVars['INSERTANS:' . $code] = $varInfo_Code; // $varInfo_DisplayVal;
-            $this->knownVars[$code] = $varInfo_Code;
+            $this->knownVars[$sgqa] = $varInfo_Code;
 
             $this->jsVar2qid[$jsVarName] = $questionNum;
 
             // Create JavaScript arrays
             $this->alias2varName[$varName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $varName . "':'" . $jsVarName . "'");
-//            $this->alias2varName[$jsVarName_on] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $jsVarName_on . "':'" . $jsVarName . "'");
-//            $this->alias2varName[$jsVarName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $jsVarName . "':'" . $jsVarName . "'");
-            $this->alias2varName[$code] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $code . "':'" . $jsVarName . "'");
-//            $this->alias2varName['INSERTANS:' . $code] = array('jsName'=>$jsVarName, 'jsPart' => "'INSERTANS:" . $code . "':'" . $jsVarName . "'");
+            $this->alias2varName[$sgqa] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $sgqa . "':'" . $jsVarName . "'");
 
             $this->varNameAttr[$jsVarName] = "'" . $jsVarName . "':{ "
                 . "'jsName':'" . $jsVarName
                 . "','jsName_on':'" . $jsVarName_on
-                . "','sgqa':'" . $code
+                . "','sgqa':'" . $sgqa
                 . "','qid':" . $questionNum
                 . ",'gid':" . $groupNum
                 . ",'mandatory':'" . $mandatory
                 . "','question':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$question),ENT_QUOTES)
                 . "','type':'" . $type
-                . "','relevance':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES)
-                . "','grelevance':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$grelevance),ENT_QUOTES)
+                . "','relevance':'" . (($relevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES) : 1)
+                . "','readWrite':'" . $readWrite
+                . "','grelevance':'" . (($grelevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$grelevance),ENT_QUOTES) : 1)
                 . "','gseq':" . $groupSeq
                 . ",'qseq':" . $questionSeq
                 .$ansList."}";
@@ -1453,7 +1450,7 @@ class LimeExpressionManager {
             if (($this->debugLevel & LEM_DEBUG_TRANSLATION_DETAIL) == LEM_DEBUG_TRANSLATION_DETAIL)
             {
                 $this->debugLog[] = array(
-                    'code' => $code,
+                    'sgqa' => $sgqa,
                     'type' => $type,
                     'varname' => $varName,
                     'jsName_on'=> $jsVarName_on,
@@ -1488,7 +1485,7 @@ class LimeExpressionManager {
                 }
                 $key = "TOKEN:" . strtoupper($tokenkey);
                 $this->knownVars[$key] = array(
-                    'codeValue'=>$val,
+                    'code'=>$val,
                     'jsName_on'=>'',
                     'jsName'=>'',
                     'readWrite'=>'N',
@@ -1497,7 +1494,7 @@ class LimeExpressionManager {
                 if (($this->debugLevel & LEM_DEBUG_TRANSLATION_DETAIL) == LEM_DEBUG_TRANSLATION_DETAIL)
                 {
                     $this->debugLog[] = array(
-                        'code' => $key,
+                        'sgqa' => $key,
                         'type' => '&nbsp;',
                         'varname' => '&nbsp;',
                         'jsName_on' => '&nbsp;',
@@ -1514,7 +1511,7 @@ class LimeExpressionManager {
         {
             // Explicitly set all tokens to blank
             $blankVal = array(
-                    'codeValue'=>'',
+                    'code'=>'',
                     'jsName_on'=>'',
                     'jsName'=>'',
                     'readWrite'=>'N',
@@ -1536,7 +1533,7 @@ class LimeExpressionManager {
             $debugLog_html .= "<tr><th>Code</th><th>Type</th><th>VarName</th><th>CodeVal</th><th>DisplayVal</th><th>JSname</th><th>Writable?</th><th>Set On This Page?</th><th>Relevance</th><th>Hidden</th><th>Question</th></tr>";
             foreach ($this->debugLog as $t)
             {
-                $debugLog_html .= "<tr><td>" . $t['code']
+                $debugLog_html .= "<tr><td>" . $t['sgqa']
                     . "</td><td>" . $t['type']
                     . "</td><td>" . $t['varname']
                     . "</td><td>" . $t['jsName']
@@ -1675,7 +1672,7 @@ class LimeExpressionManager {
             $replaceArray = array();
             foreach ($replacementFields as $key => $value) {
                 $replaceArray[$key] = array(
-                    'codeValue'=>$value,
+                    'code'=>$value,
                     'jsName_on'=>'',
                     'jsName'=>'',
                     'readWrite'=>'N',
@@ -4046,8 +4043,8 @@ class LimeExpressionManager {
                             continue;
                         }
                         $undeclaredJsVars[] = $jsVar;
-                        $code = $knownVar['sgqa'];
-                        $codeValue = (isset($_SESSION[$code])) ? $_SESSION[$code] : '';
+                        $sgqa = $knownVar['sgqa'];
+                        $codeValue = (isset($_SESSION[$sgqa])) ? $_SESSION[$sgqa] : '';
                         $undeclaredVal[$jsVar] = $codeValue;
 
                         if (isset($LEM->jsVar2qid[$jsVar])) {
@@ -4119,19 +4116,19 @@ class LimeExpressionManager {
     static function UnitTestProcessStringContainingExpressions()
     {
         $vars = array(
-'name' => array('sgqa'=>'name', 'codeValue'=>'Peter', 'jsName'=>'java61764X1X1', 'readWrite'=>'N', 'type'=>'X', 'question'=>'What is your first/given name?', 'qseq'=>10, 'gseq'=>1),
-'surname' => array('sgqa'=>'surname', 'codeValue'=>'Smith', 'jsName'=>'java61764X1X1', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'What is your last/surname?', 'qseq'=>20, 'gseq'=>1),
-'age' => array('sgqa'=>'age', 'codeValue'=>45, 'jsName'=>'java61764X1X2', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'How old are you?', 'qseq'=>30, 'gseq'=>2),
-'numKids' => array('sgqa'=>'numKids', 'codeValue'=>2, 'jsName'=>'java61764X1X3', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'How many kids do you have?', 'relevance'=>'1', 'qid'=>'40','qseq'=>40, 'gseq'=>2),
-'numPets' => array('sgqa'=>'numPets', 'codeValue'=>1, 'jsName'=>'java61764X1X4', 'readWrite'=>'Y', 'type'=>'X','question'=>'How many pets do you have?', 'qseq'=>50, 'gseq'=>2),
-'gender' => array('sgqa'=>'gender', 'codeValue'=>'M', 'jsName'=>'java61764X1X5', 'readWrite'=>'Y', 'type'=>'X', 'shown'=>'Male','question'=>'What is your gender (male/female)?', 'qseq'=>110, 'gseq'=>2),
-'notSetYet' => array('sgqa'=>'notSetYet', 'codeValue'=>'?', 'jsName'=>'java61764X3X6', 'readWrite'=>'Y', 'type'=>'X', 'shown'=>'Unknown','question'=>'Who will win the next election?', 'qseq'=>200, 'gseq'=>3),
+'name' => array('sgqa'=>'name', 'code'=>'Peter', 'jsName'=>'java61764X1X1', 'readWrite'=>'N', 'type'=>'X', 'question'=>'What is your first/given name?', 'qseq'=>10, 'gseq'=>1),
+'surname' => array('sgqa'=>'surname', 'code'=>'Smith', 'jsName'=>'java61764X1X1', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'What is your last/surname?', 'qseq'=>20, 'gseq'=>1),
+'age' => array('sgqa'=>'age', 'code'=>45, 'jsName'=>'java61764X1X2', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'How old are you?', 'qseq'=>30, 'gseq'=>2),
+'numKids' => array('sgqa'=>'numKids', 'code'=>2, 'jsName'=>'java61764X1X3', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'How many kids do you have?', 'relevance'=>'1', 'qid'=>'40','qseq'=>40, 'gseq'=>2),
+'numPets' => array('sgqa'=>'numPets', 'code'=>1, 'jsName'=>'java61764X1X4', 'readWrite'=>'Y', 'type'=>'X','question'=>'How many pets do you have?', 'qseq'=>50, 'gseq'=>2),
+'gender' => array('sgqa'=>'gender', 'code'=>'M', 'jsName'=>'java61764X1X5', 'readWrite'=>'Y', 'type'=>'X', 'shown'=>'Male','question'=>'What is your gender (male/female)?', 'qseq'=>110, 'gseq'=>2),
+'notSetYet' => array('sgqa'=>'notSetYet', 'code'=>'?', 'jsName'=>'java61764X3X6', 'readWrite'=>'Y', 'type'=>'X', 'shown'=>'Unknown','question'=>'Who will win the next election?', 'qseq'=>200, 'gseq'=>3),
 // Constants
-'61764X1X1' => array('sgqa'=>'61764X1X1', 'codeValue'=> '<Sergei>', 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'qseq'=>70, 'gseq'=>2),
-'61764X1X2' => array('sgqa'=>'61764X1X2', 'codeValue'=> 45, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'qseq'=>80, 'gseq'=>2),
-'61764X1X3' => array('sgqa'=>'61764X1X3', 'codeValue'=> 2, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'qseq'=>15, 'gseq'=>1),
-'61764X1X4' => array('sgqa'=>'61764X1X4', 'codeValue'=> 1, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'qseq'=>100, 'gseq'=>2),
-'TOKEN:ATTRIBUTE_1' => array('codeValue'=> 'worker', 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X'),
+'61764X1X1' => array('sgqa'=>'61764X1X1', 'code'=> '<Sergei>', 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'qseq'=>70, 'gseq'=>2),
+'61764X1X2' => array('sgqa'=>'61764X1X2', 'code'=> 45, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'qseq'=>80, 'gseq'=>2),
+'61764X1X3' => array('sgqa'=>'61764X1X3', 'code'=> 2, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'qseq'=>15, 'gseq'=>1),
+'61764X1X4' => array('sgqa'=>'61764X1X4', 'code'=> 1, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'qseq'=>100, 'gseq'=>2),
+'TOKEN:ATTRIBUTE_1' => array('code'=> 'worker', 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X'),
         );
 
         $tests = <<<EOD
@@ -4279,7 +4276,7 @@ EOT;
         foreach(explode("\n",$tests) as $test)
         {
             $args = explode("~",$test);
-            $vars[$args[0]] = array('sgqa'=>$args[0], 'codeValue'=>'', 'jsName'=>'java_' . $args[0], 'jsName_on'=>'java_' . $args[0], 'readWrite'=>'Y', 'type'=>'X', 'relevanceStatus'=>'1','gseq'=>1, 'qseq'=>$i);
+            $vars[$args[0]] = array('sgqa'=>$args[0], 'code'=>'', 'jsName'=>'java_' . $args[0], 'jsName_on'=>'java_' . $args[0], 'readWrite'=>'Y', 'type'=>'X', 'relevanceStatus'=>'1','gseq'=>1, 'qseq'=>$i);
             $varSeq[] = $args[0];
             $testArgs[] = $args;
             $LEM->questionId2questionSeq[$i] = $i;

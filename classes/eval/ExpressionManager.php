@@ -15,7 +15,7 @@
 
 class ExpressionManager {
     // These are the allowable suffixes for variables - each represents an attribute of a variable.
-    private static $regex_var_attr = 'codeValue|code|displayValue|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value';
+    private static $regex_var_attr = 'code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value';
 
     // These three variables are effectively static once constructed
     private $sExpressionRegex;
@@ -1112,7 +1112,7 @@ class ExpressionManager {
                     else
                     {
                         $jsName = $this->GetVarAttribute($token[0],'jsName','');
-                        $codeValue = $this->GetVarAttribute($token[0],'code','');
+                        $code = $this->GetVarAttribute($token[0],'code','');
                         if ($jsName != '')
                         {
                             $varName = $this->GetVarAttribute($token[0],'varName',$token[0]);
@@ -1120,7 +1120,7 @@ class ExpressionManager {
                         }
                         else
                         {
-                            $stringParts[] = is_numeric($codeValue) ? $codeValue : ("'" . addcslashes($codeValue,"'") . "'"); // htmlspecialchars($codeValue,ENT_QUOTES,'UTF-8',false) . "'");
+                            $stringParts[] = is_numeric($code) ? $code : ("'" . addcslashes($code,"'") . "'"); // htmlspecialchars($code,ENT_QUOTES,'UTF-8',false) . "'");
                         }
                     }
                     break;
@@ -1311,7 +1311,7 @@ class ExpressionManager {
                         }
                         else {
                             $jsName = $this->GetVarAttribute($token[0],'jsName','');
-                            $codeValue = $this->GetVarAttribute($token[0],'codeValue','');
+                            $code = $this->GetVarAttribute($token[0],'code','');
                             $question = $this->GetVarAttribute($token[0], 'question', '');
                             $qcode= $this->GetVarAttribute($token[0],'qcode','');
                             $questionSeq = $this->GetVarAttribute($token[0],'qseq',-1);
@@ -1344,14 +1344,14 @@ class ExpressionManager {
                             {
                                 $messages[] = htmlspecialchars($ansList,ENT_QUOTES,'UTF-8',false);
                             }
-                            if ($codeValue != '') {
+                            if ($code != '') {
                                 if ($token[2] == 'SGQA' && preg_match('/^INSERTANS:/',$token[0])) {
-                                    $displayValue = $this->GetVarAttribute($token[0], 'displayValue', '');
-                                    $messages[] = 'value=[' . htmlspecialchars($codeValue,ENT_QUOTES,'UTF-8',false) . '] '
-                                            . htmlspecialchars($displayValue,ENT_QUOTES,'UTF-8',false);
+                                    $shown = $this->GetVarAttribute($token[0], 'shown', '');
+                                    $messages[] = 'value=[' . htmlspecialchars($code,ENT_QUOTES,'UTF-8',false) . '] '
+                                            . htmlspecialchars($shown,ENT_QUOTES,'UTF-8',false);
                                 }
                                 else {
-                                    $messages[] = 'value=' . htmlspecialchars($codeValue,ENT_QUOTES,'UTF-8',false);
+                                    $messages[] = 'value=' . htmlspecialchars($code,ENT_QUOTES,'UTF-8',false);
                                 }
                             }
                             if ($this->groupSeq == -1 || $groupSeq == -1 || $questionSeq == -1 || $this->questionSeq == -1) {
@@ -1435,10 +1435,9 @@ class ExpressionManager {
             case 'varName':
                 return $name;
             case 'code':
-            case 'codeValue':
             case 'NAOK':
-                if (isset($var['codeValue'])) {
-                    return $var['codeValue'];
+                if (isset($var['code'])) {
+                    return $var['code'];    // for static values like TOKEN
                 }
                 else {
                     return (isset($_SESSION[$sgqa])) ? $_SESSION[$sgqa] : $default;
@@ -1447,7 +1446,7 @@ class ExpressionManager {
             case 'valueNAOK':
             {
                 $type = $var['type'];
-                $codeValue = $this->GetVarAttribute($name,'codeValue',$default);
+                $code = $this->GetVarAttribute($name,'code',$default);
                 switch($type)
                 {
                     case '!': //List - dropdown
@@ -1458,7 +1457,7 @@ class ExpressionManager {
                     case 'F': //ARRAY (Flexible) - Row Format
                     case 'R': //RANKING STYLE
                         $scale_id = $this->GetVarAttribute($name,'scale_id','0');
-                        $which_ans = $scale_id . '~' . $codeValue;
+                        $which_ans = $scale_id . '~' . $code;
                         $ansArray = $var['ansArray'];
                         if (is_null($ansArray))
                         {
@@ -1477,7 +1476,7 @@ class ExpressionManager {
                         }
                         break;
                     default:
-                        $value = $codeValue;
+                        $value = $code;
                         break;
                     }
                     return $value;
@@ -1504,16 +1503,15 @@ class ExpressionManager {
             case 'ansList':
             case 'scale_id':
                 return (isset($var[$attr])) ? $var[$attr] : $default;
-            case 'displayValue':
             case 'shown':
-                if (isset($var['displayValue']))
+                if (isset($var['shown']))
                 {
-                    return $var['displayValue'];    // for static values like TOKEN
+                    return $var['shown'];    // for static values like TOKEN
                 }
                 else
                 {
                     $type = $var['type'];
-                    $codeValue = $this->GetVarAttribute($name,'codeValue',$default);   
+                    $code = $this->GetVarAttribute($name,'code',$default);
                     switch($type)
                     {
                         case '!': //List - dropdown
@@ -1524,11 +1522,11 @@ class ExpressionManager {
                         case 'F': //ARRAY (Flexible) - Row Format
                         case 'R': //RANKING STYLE
                             $scale_id = $this->GetVarAttribute($name,'scale_id','0');
-                            $which_ans = $scale_id . '~' . $codeValue;
+                            $which_ans = $scale_id . '~' . $code;
                             $ansArray = $var['ansArray'];
                             if (is_null($ansArray))
                             {
-                                $displayValue=$default;
+                                $shown=$default;
                             }
                             else
                             {
@@ -1540,14 +1538,14 @@ class ExpressionManager {
                                 else {
                                     $answer = $default;
                                 }
-                                $displayValue = $answer;
+                                $shown = $answer;
                             }
                             break;
                         case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
                         case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
                         case ':': //ARRAY (Multi Flexi) 1 to 10
                         case '5': //5 POINT CHOICE radio-buttons
-                            $displayValue = $codeValue;
+                            $shown = $code;
                             break;
                         case 'N': //NUMERICAL QUESTION TYPE
                         case 'K': //MULTIPLE NUMERICAL QUESTION
@@ -1563,7 +1561,7 @@ class ExpressionManager {
                         case 'I': //Language Question
                         case '|': //File Upload
                         case 'X': //BOILERPLATE QUESTION
-                            $displayValue = $codeValue;
+                            $shown = $code;
                             break;
                         case 'G': //GENDER drop-down list
                         case 'Y': //YES/NO radio-buttons
@@ -1572,23 +1570,23 @@ class ExpressionManager {
                             $ansArray = $var['ansArray'];
                             if (is_null($ansArray))
                             {
-                                $displayValue=$default;
+                                $shown=$default;
                             }
                             else
                             {
-                                if (isset($ansArray[$codeValue])) {
-                                    $answerInfo = explode('|',$ansArray[$codeValue]);
+                                if (isset($ansArray[$code])) {
+                                    $answerInfo = explode('|',$ansArray[$code]);
                                     array_shift($answerInfo);
                                     $answer = join('|',$answerInfo);
                                 }
                                 else {
                                     $answer = $default;
                                 }
-                                $displayValue = $answer;
+                                $shown = $answer;
                             }
                             break;
                     }
-                    return $displayValue;
+                    return $shown;
                 }
             case 'relevanceStatus':
                 $gid = (isset($var['gid'])) ? $var['gid'] : -1;
@@ -2069,22 +2067,22 @@ class ExpressionManager {
         switch($op)
         {
             case '=':
-                $this->amVars[$name]['codeValue'] = $value;
+                $this->amVars[$name]['code'] = $value;
                 break;
             case '*=':
-                $this->amVars[$name]['codeValue'] *= $value;
+                $this->amVars[$name]['code'] *= $value;
                 break;
             case '/=':
-                $this->amVars[$name]['codeValue'] /= $value;
+                $this->amVars[$name]['code'] /= $value;
                 break;
             case '+=':
-                $this->amVars[$name]['codeValue'] += $value;
+                $this->amVars[$name]['code'] += $value;
                 break;
             case '-=':
-                $this->amVars[$name]['codeValue'] -= $value;
+                $this->amVars[$name]['code'] -= $value;
                 break;
         }
-        return $this->amVars[$name]['codeValue'];
+        return $this->amVars[$name]['code'];
     }
 
     /**
@@ -2301,42 +2299,42 @@ EOD;
     {
         // Some test cases for Evaluator
         $vars = array(
-'one' => array('sgqa'=>'one', 'codeValue'=>1, 'jsName'=>'java_one', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>4),
-'two' => array('sgqa'=>'two', 'codeValue'=>2, 'jsName'=>'java_two', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>4),
-'three' => array('sgqa'=>'three', 'codeValue'=>3, 'jsName'=>'java_three', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>4),
-'four' => array('sgqa'=>'four', 'codeValue'=>4, 'jsName'=>'java_four', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>1),
-'five' => array('sgqa'=>'five', 'codeValue'=>5, 'jsName'=>'java_five', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>1),
-'six' => array('sgqa'=>'six', 'codeValue'=>6, 'jsName'=>'java_six', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>1),
-'seven' => array('sgqa'=>'seven', 'codeValue'=>7, 'jsName'=>'java_seven', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>5),
-'eight' => array('sgqa'=>'eight', 'codeValue'=>8, 'jsName'=>'java_eight', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>5),
-'nine' => array('sgqa'=>'nine', 'codeValue'=>9, 'jsName'=>'java_nine', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>5),
-'ten' => array('sgqa'=>'ten', 'codeValue'=>10, 'jsName'=>'java_ten', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
-'half' => array('sgqa'=>'half', 'codeValue'=>.5, 'jsName'=>'java_half', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
-'hi' => array('sgqa'=>'hi', 'codeValue'=>'there', 'jsName'=>'java_hi', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
-'hello' => array('sgqa'=>'hello', 'codeValue'=>"Tom", 'jsName'=>'java_hello', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
-'a' => array('sgqa'=>'a', 'codeValue'=>0, 'jsName'=>'java_a', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
-'b' => array('sgqa'=>'b', 'codeValue'=>0, 'jsName'=>'java_b', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
-'c' => array('sgqa'=>'c', 'codeValue'=>0, 'jsName'=>'java_c', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
-'d' => array('sgqa'=>'d', 'codeValue'=>0, 'jsName'=>'java_d', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
-'eleven' => array('sgqa'=>'eleven', 'codeValue'=>11, 'jsName'=>'java_eleven', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
-'twelve' => array('sgqa'=>'twelve', 'codeValue'=>12, 'jsName'=>'java_twelve', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
+'one' => array('sgqa'=>'one', 'code'=>1, 'jsName'=>'java_one', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>4),
+'two' => array('sgqa'=>'two', 'code'=>2, 'jsName'=>'java_two', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>4),
+'three' => array('sgqa'=>'three', 'code'=>3, 'jsName'=>'java_three', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>4),
+'four' => array('sgqa'=>'four', 'code'=>4, 'jsName'=>'java_four', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>1),
+'five' => array('sgqa'=>'five', 'code'=>5, 'jsName'=>'java_five', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>1),
+'six' => array('sgqa'=>'six', 'code'=>6, 'jsName'=>'java_six', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>1),
+'seven' => array('sgqa'=>'seven', 'code'=>7, 'jsName'=>'java_seven', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>5),
+'eight' => array('sgqa'=>'eight', 'code'=>8, 'jsName'=>'java_eight', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>5),
+'nine' => array('sgqa'=>'nine', 'code'=>9, 'jsName'=>'java_nine', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>5),
+'ten' => array('sgqa'=>'ten', 'code'=>10, 'jsName'=>'java_ten', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
+'half' => array('sgqa'=>'half', 'code'=>.5, 'jsName'=>'java_half', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
+'hi' => array('sgqa'=>'hi', 'code'=>'there', 'jsName'=>'java_hi', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
+'hello' => array('sgqa'=>'hello', 'code'=>"Tom", 'jsName'=>'java_hello', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
+'a' => array('sgqa'=>'a', 'code'=>0, 'jsName'=>'java_a', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
+'b' => array('sgqa'=>'b', 'code'=>0, 'jsName'=>'java_b', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
+'c' => array('sgqa'=>'c', 'code'=>0, 'jsName'=>'java_c', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
+'d' => array('sgqa'=>'d', 'code'=>0, 'jsName'=>'java_d', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
+'eleven' => array('sgqa'=>'eleven', 'code'=>11, 'jsName'=>'java_eleven', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
+'twelve' => array('sgqa'=>'twelve', 'code'=>12, 'jsName'=>'java_twelve', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
 // Constants
-'ASSESSMENT_HEADING' => array('sgqa'=>'ASSESSMENT_HEADING', 'codeValue'=>'"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"', 'jsName'=>'', 'readWrite'=>'N'),
-'QID' => array('sgqa'=>'QID', 'codeValue'=>'value for {QID}', 'jsName'=>'', 'readWrite'=>'N'),
-'QUESTIONHELP' => array('sgqa'=>'QUESTIONHELP', 'codeValue'=>'"can single quoted strings" . \'contain nested \'quoted sections\'?', 'jsName'=>'', 'readWrite'=>'N'),
-'QUESTION_HELP' => array('sgqa'=>'QUESTION_HELP', 'codeValue'=>'Can strings have embedded <tags> like <html>, or even unbalanced "quotes or entities without terminal semicolons like &amp and  &lt?', 'jsName'=>'', 'readWrite'=>'N'),
-'NUMBEROFQUESTIONS' => array('sgqa'=>'NUMBEROFQUESTIONS', 'codeValue'=>'value for {NUMBEROFQUESTIONS}', 'jsName'=>'', 'readWrite'=>'N'),
-'THEREAREXQUESTIONS' => array('sgqa'=>'THEREAREXQUESTIONS', 'codeValue'=>'value for {THEREAREXQUESTIONS}', 'jsName'=>'', 'readWrite'=>'N'),
-'TOKEN:FIRSTNAME' => array('sgqa'=>'TOKEN:FIRSTNAME', 'codeValue' => 'value for {TOKEN:FIRSTNAME}', 'jsName' => '', 'readWrite' => 'N'),
-'WELCOME' => array('sgqa'=>'WELCOME', 'codeValue'=>'value for {WELCOME}', 'jsName'=>'', 'readWrite'=>'N'),
+'ASSESSMENT_HEADING' => array('sgqa'=>'ASSESSMENT_HEADING', 'code'=>'"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"', 'jsName'=>'', 'readWrite'=>'N'),
+'QID' => array('sgqa'=>'QID', 'code'=>'value for {QID}', 'jsName'=>'', 'readWrite'=>'N'),
+'QUESTIONHELP' => array('sgqa'=>'QUESTIONHELP', 'code'=>'"can single quoted strings" . \'contain nested \'quoted sections\'?', 'jsName'=>'', 'readWrite'=>'N'),
+'QUESTION_HELP' => array('sgqa'=>'QUESTION_HELP', 'code'=>'Can strings have embedded <tags> like <html>, or even unbalanced "quotes or entities without terminal semicolons like &amp and  &lt?', 'jsName'=>'', 'readWrite'=>'N'),
+'NUMBEROFQUESTIONS' => array('sgqa'=>'NUMBEROFQUESTIONS', 'code'=>'value for {NUMBEROFQUESTIONS}', 'jsName'=>'', 'readWrite'=>'N'),
+'THEREAREXQUESTIONS' => array('sgqa'=>'THEREAREXQUESTIONS', 'code'=>'value for {THEREAREXQUESTIONS}', 'jsName'=>'', 'readWrite'=>'N'),
+'TOKEN:FIRSTNAME' => array('sgqa'=>'TOKEN:FIRSTNAME', 'code' => 'value for {TOKEN:FIRSTNAME}', 'jsName' => '', 'readWrite' => 'N'),
+'WELCOME' => array('sgqa'=>'WELCOME', 'code'=>'value for {WELCOME}', 'jsName'=>'', 'readWrite'=>'N'),
 // also include SGQA values and read-only variable attributes
-'12X34X56' => array('sgqa'=>'12X34X56', 'codeValue'=>5, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
-'12X3X5lab1_ber' => array('sgqa'=>'12X3X5lab1_ber', 'codeValue'=>10, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
-'q5pointChoice' => array('sgqa'=>'q5pointChoice', 'codeValue'=>3, 'jsName'=>'java_q5pointChoice', 'readWrite'=>'N','displayValue'=>'Father', 'relevance'=>1, 'type'=>'5', 'question'=>'(question for q5pointChoice)', 'qid'=>13,'gseq'=>2,'qseq'=>13),
-'qArrayNumbers_ls1_min' => array('sgqa'=>'qArrayNumbers_ls1_min', 'codeValue'=> 7, 'jsName'=>'java_qArrayNumbers_ls1_min', 'readWrite'=>'N','displayValue'=> 'I love LimeSurvey', 'relevance'=>1, 'type'=>'A', 'question'=>'(question for qArrayNumbers)', 'qid'=>6,'gseq'=>2,'qseq'=>6),
-'12X3X5lab1_ber#1' => array('sgqa'=>'12X3X5lab1_ber#1', 'codeValue'=> 15, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
-'zero' => array('sgqa'=>'zero', 'codeValue'=>0, 'jsName'=>'java_zero', 'gseq'=>0,'qseq'=>0),
-'empty' => array('sgqa'=>'empty', 'codeValue'=>'', 'jsName'=>'java_empty', 'gseq'=>0,'qseq'=>0),
+'12X34X56' => array('sgqa'=>'12X34X56', 'code'=>5, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
+'12X3X5lab1_ber' => array('sgqa'=>'12X3X5lab1_ber', 'code'=>10, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
+'q5pointChoice' => array('sgqa'=>'q5pointChoice', 'code'=>3, 'jsName'=>'java_q5pointChoice', 'readWrite'=>'N','shown'=>'Father', 'relevance'=>1, 'type'=>'5', 'question'=>'(question for q5pointChoice)', 'qid'=>13,'gseq'=>2,'qseq'=>13),
+'qArrayNumbers_ls1_min' => array('sgqa'=>'qArrayNumbers_ls1_min', 'code'=> 7, 'jsName'=>'java_qArrayNumbers_ls1_min', 'readWrite'=>'N','shown'=> 'I love LimeSurvey', 'relevance'=>1, 'type'=>'A', 'question'=>'(question for qArrayNumbers)', 'qid'=>6,'gseq'=>2,'qseq'=>6),
+'12X3X5lab1_ber#1' => array('sgqa'=>'12X3X5lab1_ber#1', 'code'=> 15, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
+'zero' => array('sgqa'=>'zero', 'code'=>0, 'jsName'=>'java_zero', 'gseq'=>0,'qseq'=>0),
+'empty' => array('sgqa'=>'empty', 'code'=>'', 'jsName'=>'java_empty', 'gseq'=>0,'qseq'=>0),
         );
 
         // Syntax for $tests is
@@ -2653,7 +2651,7 @@ EOD;
             foreach($em->amVars as $k => $v) {
                 if ($v['jsName'] == $jsVarName)
                 {
-                    $value = $v['codeValue'];
+                    $value = $v['code'];
                 }
             }
             $pre .= "</td><td>" . $value . "</td><td><input type='text' id='relevance" . $i . "' value='1' onchange='recompute()'/>\n";
@@ -2666,10 +2664,10 @@ EOD;
             // populate this from $em->amVars - cheat, knowing that the jsVaraName will be java_xxxx
             $varInfo = $em->amVars[substr($jsVarName,5)];
             foreach ($varInfo as $k=>$v) {
-                if ($k == 'codeValue') {
+                if ($k == 'code') {
                     continue;   // will access it from hidden node
                 }
-               if ($k == 'displayValue') {
+               if ($k == 'shown') {
                     $k = 'shown';
                     $v = htmlspecialchars(preg_replace("/[[:space:]]/",' ',$v),ENT_QUOTES);
                 }

@@ -209,14 +209,14 @@ function LEMval(alias)
         suffix = 'shown';
         varName = varName.substr(10);
     }
-    else if (str.match(/\.(codeValue|code|displayValue|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value)$/)) {
-        varName = str.replace(/\.(codeValue|code|displayValue|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value)$/,'')
+    else if (str.match(/\.(code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value)$/)) {
+        varName = str.replace(/\.(code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value)$/,'')
         suffix = str.replace(/^(.+)\./,'');
     }
 
     jsName = LEMalias2varName[varName];
     attr = LEMvarNameAttr[jsName];
-    if ((suffix.match(/^codeValue|code|displayValue|NAOK|shown|valueNAOK|value$/)) && attr.qid!='') {
+    if ((suffix.match(/^code|NAOK|shown|valueNAOK|value$/)) && attr.qid!='') {
         if (!LEMval(varName + '.relevanceStatus')) {
             return '';
         }
@@ -244,7 +244,6 @@ function LEMval(alias)
             }
             return (grel && qrel && sgqarel);
         }
-        case 'displayValue':
         case 'shown': {
             value = htmlspecialchars_decode(document.getElementById(whichJsName).value);
             switch(attr.type)
@@ -253,7 +252,7 @@ function LEMval(alias)
                 case 'Y': //YES/NO radio-buttons
                 case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                 case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                    displayValue = (typeof attr.answers[value] === 'undefined') ? '' : attr.answers[value];
+                    shown = (typeof attr.answers[value] === 'undefined') ? '' : attr.answers[value];
                     break;
                 case '!': //List - dropdown
                 case 'L': //LIST drop-down/radio-button list
@@ -270,7 +269,7 @@ function LEMval(alias)
                         answerParts.shift();    // remove the first element
                         answer = answerParts.join('|');
                     }
-                    displayValue = answer;
+                    shown = answer;
                     break;
                 case '1': //Array (Flexible Labels) dual scale  // need scale
                     prefix = (attr.jsName.match(/#1$/)) ? '1' : '0';
@@ -283,7 +282,7 @@ function LEMval(alias)
                         answerParts.shift();    // remove the first element
                         answer = answerParts.join('|');
                     }
-                    displayValue = answer;
+                    shown = answer;
                     break;
                 case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
                 case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
@@ -303,11 +302,11 @@ function LEMval(alias)
                 case 'I': //Language Question
                 case '|': //File Upload
                 case 'X': //BOILERPLATE QUESTION
-                    displayValue = value; // what about "no answer"?
+                    shown = value; // what about "no answer"?
                     break;
             }
         }
-            return htmlspecialchars_decode(displayValue);
+            return htmlspecialchars_decode(shown);
         case 'gid':
             return attr.gid;
         case 'grelevance':
@@ -333,7 +332,6 @@ function LEMval(alias)
         case 'jsName':
             return whichJsName;
         case 'code':
-        case 'codeValue':
         case 'NAOK':
         case 'value':
         case 'valueNAOK':
