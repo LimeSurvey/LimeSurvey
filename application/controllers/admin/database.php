@@ -372,7 +372,7 @@ class database extends Survey_Common_Action
             }
         }
 
-        if ($action == "insertquestion" && bHasSurveyPermission($surveyid, 'surveycontent','create'))
+        if (in_array($action, array('insertquestion', 'copyquestion')) && bHasSurveyPermission($surveyid, 'surveycontent','create'))
         {
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
             if (strlen($_POST['title']) < 1)
@@ -385,7 +385,7 @@ class database extends Survey_Common_Action
             {
                 if (!isset($_POST['lid']) || $_POST['lid'] == '') {$_POST['lid']="0";}
                 if (!isset($_POST['lid1']) || $_POST['lid1'] == '') {$_POST['lid1']="0";}
-                if(!empty($_POST['questionposition']) || $_POST['questionposition'] == '0')
+                if (!empty($_POST['questionposition']))
                 {
                     //Bug Fix: remove +1 ->  $question_order=(sanitize_int($_POST['questionposition'])+1);
                     $question_order=(sanitize_int($_POST['questionposition']));
@@ -493,37 +493,82 @@ class database extends Survey_Common_Action
                 {
                     $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be created.","js")."\\n\")\n //-->\n</script>\n";
 
-                }
+                } else {
+					if ($action == 'copyquestion') {
+						if (returnglobal('copysubquestions') == "Y")
+						{
+							$aSQIDMappings = array();
+							$r1 = Questions::getSubQuestions(returnglobal('oldqid'));
 
-                $qattributes=questionAttributes();
-                $validAttributes=$qattributes[$_POST['type']];
-                foreach ($validAttributes as $validAttribute)
-                {
-                    if (isset($_POST[$validAttribute['name']]))
-                    {
-                        $data = array();
-                        $data = array(
-	                        'qid' => $qid,
-	                        'value' => $_POST[$validAttribute['name']],
-	                        'attribute' => $validAttribute['name']
-                        );
+							while ($qr1 = $r1->read())
+							{
+								$qr1['parent_qid'] = $qid;
+								if (isset($aSQIDMappings[$qr1['qid']]))
+								{
+									$qr1['qid'] = $aSQIDMappings[$qr1['qid']];
+								} else {
+									$oldqid = $qr1['qid'];
+									unset($qr1['qid']);
+								}
+								$qr1['gid'] = $postgid;
+								$ir1 = Questions::insertRecords($qr1);
+								if (!isset($qr1['qid']))
+								{
+									$aSQIDMappings[$oldqid] = Yii::app()->db->getLastInsertID('qid');
+								}
+							}
+						}
+						if (returnglobal('copyanswers') == "Y")
+						{
+							$r1 = Answers::getAnswers(returnglobal('oldqid'));
+							while ($qr1 = $r1->read())
+							{
+								Answers::insertRecords(array(
+									'qid' => $qid,
+									'code' => $qr1['code'],
+									'answer' => $qr1['answer'],
+									'sortorder' => $qr1['sortorder'],
+									'language' => $qr1['language'],
+									'scale_id' => $qr1['scale_id']
+								));
+							}
+						}
+						if (returnglobal('copyattributes') == "Y")
+						{
+							$r1 = Question_attributes::getQuestionAttributes(returnglobal('oldqid'));
+							while($qr1 = $r1->read())
+							{
+								Question_attributes::insertRecords(array(
+									'qid' => $qid,
+									'attribute' => $qr1['attribute'],
+									'value' => $qr1['value']
+								));
+							}
+						}
+					} else {
+						$qattributes = questionAttributes();
+						$validAttributes = $qattributes[$_POST['type']];
+						foreach ($validAttributes as $validAttribute)
+						{
+							if (isset($_POST[$validAttribute['name']]))
+							{
+								$data = array(
+									'qid' => $qid,
+									'value' => $_POST[$validAttribute['name']],
+									'attribute' => $validAttribute['name']
+								);
 
-						$attr = new Question_attributes;
-                    	foreach ($data as $k => $v)
-                    		$attr->$k = $v;
-                        $result = $attr->save();
-                        /**$query = "INSERT into ".db_table_name('question_attributes')."
-                        (qid, value, attribute) values ($qid,'".db_quote($_POST[$validAttribute['name']])."','{$validAttribute['name']}')";
-                        $result = $connect->Execute($query) or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg()); // Checked */
+								Question_attributes::insertRecords($data);
 
-                    }
-                }
+							}
+						}
+					}
 
-                fixsortorderQuestions($gid, $surveyid);
-                Yii::app()->session['flashmessage'] =  $clang->gT("Question was successfully added.");
+					fixsortorderQuestions($gid, $surveyid);
+					Yii::app()->session['flashmessage'] =  $clang->gT("Question was successfully added.");
 
-                //include("surveytable_functions.php");
-                //surveyFixColumns($surveyid);
+				}
+
             }
 
             if ($databaseoutput != '')

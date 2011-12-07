@@ -49,13 +49,23 @@ class Answers extends CActiveRecord
 	{
 		return array('qid', 'code');
 	}
-	
+
+    function getAnswers($qid)
+    {
+		return Yii::app()->db->createCommand()
+			->select()
+			->from(self::tableName())
+			->where(array('and', 'qid='.$qid))
+			->order('code asc')
+			->query();
+    }
+
 	public function oldNewInsertansTags($newsid,$oldsid)
 	{
 		$sql = "SELECT a.qid, a.language, a.code, a.answer from {{answers}} as a INNER JOIN {{questions}} as b ON a.qid=b.qid WHERE b.sid=".$newsid." AND a.answer LIKE '%{INSERTANS:".$oldsid."X%'";
     	return Yii::app()->db->createCommand($sql)->query();
-}
-	
+	}
+
 	public function update($data, $condition=FALSE)
     {
 
@@ -67,7 +77,7 @@ class Answers extends CActiveRecord
         return $this->db->update('answers', $data);
 
     }
-	
+
 	function insertRecords($data)
     {
         $ans = new self;

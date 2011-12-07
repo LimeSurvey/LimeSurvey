@@ -520,8 +520,8 @@ class questiongroup extends Survey_Common_Action {
                 elseif ($ID[0]=='q')
                 {
                     if (!isset($questionorder[(int)substr($parent,1)])) $questionorder[(int)substr($parent,1)]=0;
-                    Questions::model()->update(array('question_order'=>$questionorder[(int)substr($parent,1)],'gid'=>(int)substr($parent,1)), 'qid='.(int)substr($ID,1));
-                    Questions::model()->update(array('gid'=>(int)substr($parent,1)), 'parent_qid='.(int)substr($ID,1));
+					Questions::model()->updateAll(array('question_order' => $questionorder[(int)substr($parent,1)], 'gid' => (int)substr($parent,1)), 'qid=' . (int) substr($ID, 1));
+					Questions::model()->updateAll(array('gid'=>(int)substr($parent,1)), 'parent_qid=' . (int) substr($ID, 1));
                     $questionorder[(int)substr($parent,1)]++;
                 }
             }

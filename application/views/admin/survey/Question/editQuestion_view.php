@@ -7,17 +7,17 @@
 <script type='text/javascript'><?php echo $qTypeOutput; ?></script>
 
 <div class='header ui-widget-header'>
-    <?php if (!$adding) { ?>
-        <?php $clang->eT("Edit question"); ?>
-        <?php } else { ?>
+    <?php if ($adding) { ?>
         <?php $clang->eT("Add a new question"); ?>
+        <?php } elseif ($copying) { ?>
+        <?php $clang->eT("Copy question"); ?>
+        <?php } else { ?>
+        <?php $clang->eT("Edit question"); ?>
         <?php } ?>
 </div>
 
 <div id='tabs'>
     <ul>
-
-
 
         <li><a href="#<?php echo $eqrow['language']; ?>"><?php echo getLanguageNameFromCode($eqrow['language'],false); ?>
                 (<?php $clang->eT("Base language"); ?>)
@@ -35,7 +35,7 @@
         <div id="<?php echo $eqrow['language']; ?>">
             <?php $eqrow  = array_map('htmlspecialchars', $eqrow); ?>
             <ul><li>
-                    <label for='title'> <?php $clang->eT("Code:"); ?></label><input type='text' size='20' maxlength='20'  id='title' name='title' value="<?php echo $eqrow['title']; ?>" />
+                    <label for='title'> <?php $clang->eT("Code:"); ?></label><input type='text' size='20' maxlength='20' id='title' name='title' value="<?php echo $eqrow['title']; ?>" /> <?php if ($copying) $clang->eT("Note: You MUST enter a new question code!"); ?>
                 </li><li>
                     <label for='question_<?php echo $eqrow['language']; ?>'><?php $clang->eT("Question:"); ?></label>
                     <textarea cols='50' rows='4' id='question_<?php echo $eqrow['language']; ?>' name='question_<?php echo $eqrow['language']; ?>'><?php echo $eqrow['question']; ?></textarea>
@@ -177,11 +177,8 @@
                 </li>
 
 
-                <?php if ($adding)
-                    {
-
-                        if ($oqresult->getRowCount())
-                        { ?>
+                <?php if ($adding) {
+                        if ($oqresult->getRowCount()) { ?>
 
                         <li>
                             <label for='questionposition'><?php $clang->eT("Position:"); ?></label>
@@ -200,25 +197,51 @@
                         { ?>
                         <input type='hidden' name='questionposition' value='' />
                         <?php }
-                } ?>
+                } elseif ($copying) { ?>
+
+					<li>
+						<label for='copysubquestions'><?php $clang->eT("Copy subquestions?"); ?></label>
+						<input type='checkbox' class='checkboxbtn' checked='checked' id='copysubquestions' name='copysubquestions' value='Y' />
+					</li>
+					<li>
+						<label for='copyanswers'><?php $clang->eT("Copy answer options?"); ?></label>
+						<input type='checkbox' class='checkboxbtn' checked='checked' id='copyanswers' name='copyanswers' value='Y' />
+					</li>
+					<li>
+						<label for='copyattributes'><?php $clang->eT("Copy advanced settings?"); ?></label>
+						<input type='checkbox' class='checkboxbtn' checked='checked' id='copyattributes' name='copyattributes' value='Y' />
+					</li>
+
+				<?php } ?>
 
             </ul>
-            <p><a id="showadvancedattributes"><?php $clang->eT("Show advanced settings"); ?></a><a id="hideadvancedattributes" style="display:none;"><?php $clang->eT("Hide advanced settings"); ?></a></p>
-            <div id="advancedquestionsettingswrapper" style="display:none;">
-                <div class="loader"><?php $clang->eT("Loading..."); ?></div>
-                <div id="advancedquestionsettings"></div>
-            </div>
-            <p><input type='submit' value='<?php $clang->eT("Save"); ?>' />
+
+			<?php if (!$copying) { ?>
+				<p><a id="showadvancedattributes"><?php $clang->eT("Show advanced settings"); ?></a><a id="hideadvancedattributes" style="display:none;"><?php $clang->eT("Hide advanced settings"); ?></a></p>
+				<div id="advancedquestionsettingswrapper" style="display:none;">
+					<div class="loader"><?php $clang->eT("Loading..."); ?></div>
+					<div id="advancedquestionsettings"></div>
+				</div>
+			<?php } ?>
 
                 <?php if ($adding)
                     { ?>
                     <input type='hidden' name='action' value='insertquestion' />
                     <input type='hidden' name='gid' value='<?php echo $eqrow['gid']; ?>' />
+					<p><input type='submit' value='<?php $clang->eT("Add question"); ?>' />
+                    <?php }
+                    elseif ($copying)
+                    { ?>
+                    <input type='hidden' name='action' value='copyquestion' />
+                    <input type='hidden' name='gid' value='<?php echo $eqrow['gid']; ?>' />
+                    <input type='hidden' id='oldqid' name='oldqid' value='<?php echo $qid; ?>' />
+					<p><input type='submit' value='<?php $clang->eT("Copy question"); ?>' />
                     <?php }
                     else
                     { ?>
                     <input type='hidden' name='action' value='updatequestion' />
                     <input type='hidden' id='qid' name='qid' value='<?php echo $qid; ?>' />
+					<p><input type='submit' value='<?php $clang->eT("Update question"); ?>' />
                     <?php } ?>
                 <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid; ?>' /></p>
         </div></form></div>

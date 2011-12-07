@@ -33,7 +33,7 @@
      */
  	public function run($sa)
  	{
- 		if ($sa == 'addquestion' || $sa == 'index' || $sa == 'editquestion')
+ 		if ($sa == 'addquestion' || $sa == 'index' || $sa == 'editquestion' || $sa == 'copyquestion')
  			$this->route('index', array('sa', 'surveyid', 'gid', 'qid'));
 		elseif ($sa == 'subquestions')
 			$this->route('subquestions', array('surveyid', 'gid', 'qid'));
@@ -159,7 +159,6 @@
         }
 
         $this->controller->_loadEndScripts();
-
 
         $this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->controller->lang->gT("LimeSurvey online manual"));
 
@@ -665,14 +664,12 @@
 		if(isset($qid)) $qid = sanitize_int($qid);
 		$gid = sanitize_int($gid);
 
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl.'scripts/jquery/jquery.dd.js');
-        $css_admin_includes[] = Yii::app()->baseUrl.'scripts/jquery/dd.css';
-
-        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
-        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+        $this->controller->_js_admin_includes(Yii::app()->baseUrl.'/scripts/jquery/jquery.dd.js');
+        $this->controller->_css_admin_includes(Yii::app()->baseUrl.'/scripts/jquery/dd.css');
+        $this->controller->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
 
         $this->controller->_getAdminHeader();
-        $this->controller->_showadminmenu($surveyid);;
+        $this->controller->_showadminmenu($surveyid);
         $this->_surveybar($surveyid,$gid);
         $this->_surveysummary($surveyid,"viewgroup");
         $this->_questiongroupbar($surveyid,$gid,$qid,"addquestion");
@@ -690,10 +687,10 @@
             Yii::app()->loadHelper('admin/htmleditor');
             Yii::app()->loadHelper('surveytranslator');
 
-
             if (isset($_POST['sortorder'])) {$postsortorder=sanitize_int($_POST['sortorder']);}
 
-            $data['adding'] = $adding = $action == "addquestion";
+            $data['adding'] = $adding = $action == 'addquestion';
+			$data['copying'] = $copying = $action == 'copyquestion';
             $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
             $questlangs[] = $baselang;
@@ -761,6 +758,8 @@
             {
                 $eqrow = $eqresult->read();  // there should be only one datarow, therefore we don't need a 'while' construct here.
                 // Todo: handler in case that record is not found
+				if ($copying)
+					$eqrow['title'] = '';
             }
             else
             {
@@ -825,9 +824,8 @@
 
             $data['qid'] = $qid;
 
-            $this->controller->render("/admin/survey/Question/editQuestion_view",$data);
+            $this->controller->render("/admin/survey/Question/editQuestion_view", $data);
             $this->_questionJavascript($eqrow['type']);
-
 
         }
         else
@@ -836,7 +834,6 @@
         }
 
         $this->controller->_loadEndScripts();
-
 
         $this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->controller->lang->gT("LimeSurvey online manual"));
 

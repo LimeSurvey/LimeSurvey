@@ -50,13 +50,6 @@ class Questions extends CActiveRecord
 		return 'qid';
 	}
 
-	function update($data, $condition=FALSE)
-    {
-
-        return Yii::app()->db->createCommand()->update($this->tableName(), $data, $condition);
-
-    }
-
 	/**
 	 * This function returns an array of the advanced attributes for the particular question including their values set in the database
 	 *
@@ -117,10 +110,20 @@ class Questions extends CActiveRecord
     {
 		return Yii::app()->db->createCommand()
 			->select()
+			->from(self::tableName())
 			->where(array('and', 'sid='.$sid, 'gid='.$gid, 'language=:language', 'parent_qid=0'))
 			->order('question_order asc')
-			->from($this->tableName())
 			->bindParam(":language", $language, PDO::PARAM_STR)
+			->query();
+    }
+
+    function getSubQuestions($parent_qid)
+    {
+		return Yii::app()->db->createCommand()
+			->select()
+			->from(self::tableName())
+			->where(array('and', 'parent_qid='.$parent_qid))
+			->order('question_order asc')
 			->query();
     }
 

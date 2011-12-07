@@ -49,7 +49,17 @@ class Question_attributes extends CActiveRecord
 	{
 		return 'qaid';
 	}
-		
+
+    function getQuestionAttributes($qid)
+    {
+		return Yii::app()->db->createCommand()
+			->select()
+			->from(self::tableName())
+			->where(array('and', 'qid='.$qid))
+			->order('qaid asc')
+			->query();
+    }
+
 	public function insertRecords($data)
     {
         $attrib = new self;
