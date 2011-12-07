@@ -85,7 +85,7 @@ EOD;
                 while(true) {
                     $now = microtime(true);
 //                    LimeExpressionManager::StartProcessingPage();
-                    $result = LimeExpressionManager::NavigateForwards(true,true);
+                    $result = LimeExpressionManager::NavigateForwards(true);
                     print $result['message'] . "<br/>";
 //                    LimeExpressionManager::FinishProcessingGroup(); // move this internally?  This is what is needed to save group data so visible to GetRelevanceAndTailoringJavaScript()
                     LimeExpressionManager::FinishProcessingPage();

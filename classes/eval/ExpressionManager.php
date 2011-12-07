@@ -1189,7 +1189,7 @@ class ExpressionManager {
         $jsParts = array();
         $jsParts[] = "val = " . $expr . ";\n";
         $jsParts[] = "klass = (LEMeq(addslashes(val),'" . addslashes($expected) . "')) ? 'ok' : 'error';\n";
-        $jsParts[] = "document.getElementById('test_" . $num . "').innerHTML=htmlspecialchars(val);\n";
+        $jsParts[] = "document.getElementById('test_" . $num . "').innerHTML=(val);\n";
         $jsParts[] = "document.getElementById('test_" . $num . "').className=klass;\n";
         return implode('',$jsParts);
 

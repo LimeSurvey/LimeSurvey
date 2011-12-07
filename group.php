@@ -93,7 +93,7 @@ else
     }
     if (isset($move) && ($move == "movenext" || $move == "movesubmit"))
     {
-        $moveResult = LimeExpressionManager::NavigateForwards(false);
+        $moveResult = LimeExpressionManager::NavigateForwards();
     }
     if (isset($move) && bIsNumericInt($move) && $thissurvey['allowjumps']=='Y')
     {
@@ -111,6 +111,11 @@ else
         {
             $_SESSION['step']= $moveResult['seq']+1;  // step is index base 1
             $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+        }
+        if ($move == "movesubmit" && $moveResult['finished'] == false) {
+            // then there are errors, so don't finalize the survey
+            $move = "movenext"; // so will re-display the survey
+            $invalidLastPage=true;
         }
     }
 
@@ -175,7 +180,7 @@ else
 		$show_empty_group = true;
 
     //SUBMIT ###############################################################################
-    if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || is_array($notanswered)) && (!isset($notvalidated) || is_array($notvalidated) ) && (!isset($filenotvalidated) || !$filenotvalidated))
+    if ((isset($move) && $move == "movesubmit"))
     {
         setcookie ("limesurvey_timers", "", time() - 3600);// remove the timers cookies
         if ($thissurvey['refurl'] == "Y")
@@ -384,7 +389,7 @@ if ($surveyMode == 'group' && $previewgrp)
     if ($gseq == -1) {
         echo 'Invalid Group' . $_REQUEST['gid'];
     }
-    $moveResult = LimeExpressionManager::JumpTo($gseq+1,false,true);
+    $moveResult = LimeExpressionManager::JumpTo($gseq+1,true);
     if (isset($moveResult)) {
         $_SESSION['step']= $moveResult['seq']+1;  // step is index base 1?
     }
@@ -402,7 +407,7 @@ else
         $groupname=$clang->gT("Submit your answers");
         $groupdescription=$clang->gT("There are no more questions. Please press the <Submit> button to finish this survey.");
     }
-    else
+    else if ($surveyMode != 'survey')
     {
         $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
         $gid = $stepInfo['gid'];
@@ -432,6 +437,7 @@ if ($thissurvey['tokenanswerspersistence'] == 'Y' &&
 //PRESENT SURVEY
 //******************************************************************************************************
 
+$okToShowErrors = (!$previewgrp && (isset($invalidLastPage) ||  $_SESSION['prevstep'] == $_SESSION['step']));
 
 
 
@@ -488,19 +494,19 @@ foreach ($_SESSION['grouplist'] as $gl)
 
             //Display the "mandatory" popup if necessary
             // TMSW - get question-level error messages - don't call **_popup() directly
-            if (!$previewgrp && $stepInfo['mandViolation'] && $_SESSION['prevstep'] == $_SESSION['step'])
+            if ($okToShowErrors && $stepInfo['mandViolation'])
             {
                 list($mandatorypopup, $popup) = mandatory_popup($ia, $notanswered);
             }
 
             //Display the "validation" popup if necessary
-            if (!$previewgrp && !$stepInfo['valid'] && $_SESSION['prevstep'] == $_SESSION['step'])
+            if ($okToShowErrors && !$stepInfo['valid'])
             {
                 list($validationpopup, $vpopup) = validation_popup($ia, $notvalidated);
             }
 
             // Display the "file validation" popup if necessary
-            if (!$previewgrp && isset($filenotvalidated) && $_SESSION['prevstep'] == $_SESSION['step'])
+            if ($okToShowErrors && isset($filenotvalidated))
             {
                 list($filevalidationpopup, $fpopup) = file_validation_popup($ia, $filenotvalidated);
             }
@@ -620,19 +626,19 @@ print <<<END
 END;
 
 //Display the "mandatory" message on page if necessary
-if (isset($showpopups) && $showpopups == 0 && $stepInfo['mandViolation'] && $_SESSION['prevstep'] == $_SESSION['step'])
+if (isset($showpopups) && $showpopups == 0 && $stepInfo['mandViolation'] && $okToShowErrors)
 {
     echo "<p><span class='errormandatory'>" . $clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</span></p>";
 }
 
 //Display the "validation" message on page if necessary
-if (isset($showpopups) && $showpopups == 0 && !$stepInfo['valid'] && $_SESSION['prevstep'] == $_SESSION['step'])
+if (isset($showpopups) && $showpopups == 0 && !$stepInfo['valid'] && $okToShowErrors)
 {
     echo "<p><span class='errormandatory'>" . $clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</span></p>";
 }
 
 //Display the "file validation" message on page if necessary
-if (isset($showpopups) && $showpopups == 0 && isset($filenotvalidated) && $filenotvalidated == true && $_SESSION['prevstep'] == $_SESSION['step'])
+if (isset($showpopups) && $showpopups == 0 && isset($filenotvalidated) && $filenotvalidated == true && $okToShowErrors)
 {
     echo "<p><span class='errormandatory'>" . $clang->gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</span></p>";
 }

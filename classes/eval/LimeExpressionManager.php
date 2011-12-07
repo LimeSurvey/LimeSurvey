@@ -47,6 +47,7 @@ class LimeExpressionManager {
     private $currentQuestionSeq;    // for Question-by-Question mode, the 0-based index
     private $currentQID;        // used in Question-by-Question modecu
     private $currentQset=NULL;   // set of the current set of questions to be displayed, indexed by QID - at least one must be relevant
+    private $lastMoveResult=NULL;   // last result of NavigateForwards, NavigateBackwards, or JumpTo
     private $indexQseq;         // array of information needed to generate navigation index in question-by-question mode
     private $indexGseq;         // array of information needed to generate navigation index in group-by-group mode
     private $gseq2info;         // array of group sequence number to static info
@@ -2195,7 +2196,7 @@ class LimeExpressionManager {
                 }
                 $message .= $LEM->_UpdateValuesInDatabase($updatedValues,$finished);
                 $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                return array(
+                $LEM->lastMoveResult = array(
                     'finished'=>$finished,
                     'message'=>$message,
                     'gseq'=>1,
@@ -2205,6 +2206,7 @@ class LimeExpressionManager {
                     'unansweredSQs'=>$result['unansweredSQs'],
                     'invalidSQs'=>$result['invalidSQs'],
                 );
+                return $LEM->lastMoveResult;
                 break;
             case 'group':
                 // First validate the current group
@@ -2221,7 +2223,7 @@ class LimeExpressionManager {
                         // redisplay the current group
                         $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                        return array(
+                        $LEM->lastMoveResult = array(
                             'finished'=>false,
                             'message'=>$message,
                             'gseq'=>$LEM->currentGroupSeq,
@@ -2231,6 +2233,7 @@ class LimeExpressionManager {
                             'unansweredSQs'=>$result['unansweredSQs'],
                             'invalidSQs'=>$result['invalidSQs'],
                         );
+                        return $LEM->lastMoveResult;
                     }
                 }
                 while (true)
@@ -2240,7 +2243,7 @@ class LimeExpressionManager {
                     {
                         $message .= $LEM->_UpdateValuesInDatabase($updatedValues,true);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                        return array(
+                        $LEM->lastMoveResult = array(
                             'finished'=>true,
                             'message'=>$message,
                             'gseq'=>$LEM->currentGroupSeq,
@@ -2250,6 +2253,7 @@ class LimeExpressionManager {
                             'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                             'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
                         );
+                        return $LEM->lastMoveResult;
                     }
 
                     $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
@@ -2265,7 +2269,7 @@ class LimeExpressionManager {
                         // display new group
                         $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                        return array(
+                        $LEM->lastMoveResult = array(
                             'finished'=>false,
                             'message'=>$message,
                             'gseq'=>$LEM->currentGroupSeq,
@@ -2275,6 +2279,7 @@ class LimeExpressionManager {
                             'unansweredSQs'=>$result['unansweredSQs'],
                             'invalidSQs'=>$result['invalidSQs'],
                         );
+                        return $LEM->lastMoveResult;
                     }
                 }
                 break;
@@ -2292,7 +2297,7 @@ class LimeExpressionManager {
                         // redisplay the current question
                         $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                        return array(
+                        $LEM->lastMoveResult = array(
                             'finished'=>false,
                             'message'=>$message,
                             'qseq'=>$LEM->currentQuestionSeq,
@@ -2303,6 +2308,7 @@ class LimeExpressionManager {
                             'unansweredSQs'=>$result['unansweredSQs'],
                             'invalidSQs'=>$result['invalidSQs'],
                         );
+                        return $LEM->lastMoveResult;
                     }
                 }
                 while (true)
@@ -2312,7 +2318,7 @@ class LimeExpressionManager {
                     {
                         $message .= $LEM->_UpdateValuesInDatabase($updatedValues,true);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                        return array(
+                        $LEM->lastMoveResult = array(
                             'finished'=>true,
                             'message'=>$message,
                             'qseq'=>$LEM->currentQuestionSeq,
@@ -2323,6 +2329,7 @@ class LimeExpressionManager {
                             'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                             'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
                         );
+                        return $LEM->lastMoveResult;
                     }
 
                     // Set certain variables normally set by StartProcessingGroup()
@@ -2351,7 +2358,7 @@ class LimeExpressionManager {
                         // display new question
                         $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                        return array(
+                        $LEM->lastMoveResult = array(
                             'finished'=>false,
                             'message'=>$message,
                             'qseq'=>$LEM->currentQuestionSeq,
@@ -2362,6 +2369,7 @@ class LimeExpressionManager {
                             'unansweredSQs'=>$result['unansweredSQs'],
                             'invalidSQs'=>$result['invalidSQs'],
                         );
+                        return $LEM->lastMoveResult;
                     }
                 }
                 break;
@@ -2496,7 +2504,7 @@ class LimeExpressionManager {
      * @param <type> $preview - if true, then treat this group/question as relevant, even if it is not, so that it can be displayed
      * @return <type>
      */
-    static function JumpTo($seq,$force=false,$preview=false) {
+    static function JumpTo($seq,$preview=false,$force=false) {
         $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
 
@@ -2522,7 +2530,7 @@ class LimeExpressionManager {
                         // redisplay the current group
                         $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                        return array(
+                        $LEM->lastMoveResult = array(
                             'finished'=>false,
                             'message'=>$message,
                             'gseq'=>$LEM->currentGroupSeq,
@@ -2532,6 +2540,7 @@ class LimeExpressionManager {
                             'unansweredSQs'=>$result['unansweredSQs'],
                             'invalidSQs'=>$result['invalidSQs'],
                         );
+                        return $LEM->lastMoveResult;
                     }
                 }
                 $LEM->currentGroupSeq = $seq-1; // Try to jump to the requested group, but navigate to next if needed
@@ -2542,7 +2551,7 @@ class LimeExpressionManager {
                     {
                         $message .= $LEM->_UpdateValuesInDatabase($updatedValues,true);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                        return array(
+                        $LEM->lastMoveResult = array(
                             'finished'=>true,
                             'message'=>$message,
                             'gseq'=>$LEM->currentGroupSeq,
@@ -2552,6 +2561,7 @@ class LimeExpressionManager {
                             'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                             'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
                         );
+                        return $LEM->lastMoveResult;
                     }
 
                     $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
@@ -2567,7 +2577,7 @@ class LimeExpressionManager {
                         // display new group
                         $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                        return array(
+                        $LEM->lastMoveResult = array(
                             'finished'=>false,
                             'message'=>$message,
                             'gseq'=>$LEM->currentGroupSeq,
@@ -2577,6 +2587,7 @@ class LimeExpressionManager {
                             'unansweredSQs'=>$result['unansweredSQs'],
                             'invalidSQs'=>$result['invalidSQs'],
                         );
+                        return $LEM->lastMoveResult;
                     }
                 }
                 break;
@@ -2594,7 +2605,7 @@ class LimeExpressionManager {
                         // redisplay the current question
                         $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                        return array(
+                        $LEM->lastMoveResult = array(
                             'finished'=>false,
                             'message'=>$message,
                             'qseq'=>$LEM->currentQuestionSeq,
@@ -2605,6 +2616,7 @@ class LimeExpressionManager {
                             'unansweredSQs'=>$result['unansweredSQs'],
                             'invalidSQs'=>$result['invalidSQs'],
                         );
+                        return $LEM->lastMoveResult;
                     }
                 }
                 $LEM->currentQuestionSeq=$seq-1;    // try to jump to requeted question, but go on to next if needed
@@ -2615,7 +2627,7 @@ class LimeExpressionManager {
                     {
                         $message .= $LEM->_UpdateValuesInDatabase($updatedValues,true);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                        return array(
+                        $LEM->lastMoveResult = array(
                             'finished'=>true,
                             'message'=>$message,
                             'qseq'=>$LEM->currentQuestionSeq,
@@ -2626,6 +2638,7 @@ class LimeExpressionManager {
                             'unansweredSQs'=>$result['unansweredSQs'],
                             'invalidSQs'=>$result['invalidSQs'],
                         );
+                        return $LEM->lastMoveResult;
                     }
 
                     // Set certain variables normally set by StartProcessingGroup()
@@ -2654,7 +2667,7 @@ class LimeExpressionManager {
                         // display new question
                         $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-                        return array(
+                        $LEM->lastMoveResult = array(
                             'finished'=>false,
                             'message'=>$message,
                             'qseq'=>$LEM->currentQuestionSeq,
@@ -2665,6 +2678,7 @@ class LimeExpressionManager {
                             'unansweredSQs'=>$result['unansweredSQs'],
                             'invalidSQs'=>$result['invalidSQs'],
                         );
+                        return $LEM->lastMoveResult;
                     }
                 }
                 break;
@@ -3533,7 +3547,9 @@ class LimeExpressionManager {
         $LEM =& LimeExpressionManager::singleton();
         switch ($LEM->surveyMode)
         {
-            default:
+            case 'survey':
+                return $LEM->lastMoveResult;
+                break;
             case 'group':
                 if (is_null($step)) {
                     return $LEM->indexGseq;
