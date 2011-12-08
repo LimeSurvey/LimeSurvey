@@ -36,18 +36,6 @@
                 <td>Shows Relevance equations for all conditions in the database, grouped by question id (and not pretty-printed)</td>
             </tr>
             <tr>
-                <td><a href="upgrade_conditions2relevance.php"><span style='background-color: red;'>**</span>Upgrade Conditions to Relevance</a></td>
-                <td><span style='color: red;'>CAUTION: This function changes your database.</span> This upgrades all conditions within your database to Relevance.  Existing conditions are preserved, but any relevance fields in the questions table are overwritten by Conditions if there are any.</td>
-            </tr>
-            <tr>
-                <td><a href="revert_upgrade_conditions2relevance.php"><span style='background-color: red;'>**</span>Revert of Upgrade Conditions to Relevance</a></td>
-                <td><span style='color: red;'>CAUTION: This function changes your database.</span> This deletes the relevance field for all questions that have Conditions (to avoid having run-time clashes between relevance and conditions)  This function will be removed once the back-end conditions processing is removed and testing is complete.</td>
-            </tr>
-            <tr>
-                <td><a href="upgrade_relevance_location.php"><span style='background-color: red;'>**</span>Move Relevance from Attribute to Question</a></td>
-                <td><span style='color: red;'>CAUTION: This function changes your database.</span> This function copies existing relevance from Question Attribute to Question model.  This function will be removed once the back-end conditions processing is removed and testing is complete.</td>
-            </tr>
-            <tr>
                 <td><a href="usage.php">Running Log - Translations on this Page</a></td>
                 <td>For this page group, shows all of the translation requests, the pretty-printed version of the request, and the translated results.  Note this is only visible if $debugLEM==true</td>
             </tr>
@@ -64,11 +52,7 @@
                 <td><span style='color: red;'>CAUTION: This function changes your database.</span> Remove log of syntax errors</td>
             </tr>
             <tr>
-                <td><a href="serialize_test.php">Test LEM serialization</td>
-                <td>Tests whether can, and speed of, serializing and unserializing LimeExpressionManager object</td>
-            </tr>
-            <tr>
-                <td><a href="navigation_test.php">Test Navigation</td>
+                <td><a href="navigation_test.php">Test Navigation</a></td>
                 <td>Tests whether navigation properly handles relevant and irrelevant groups</td>
             </tr>
         </table>

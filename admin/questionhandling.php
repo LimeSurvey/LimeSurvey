@@ -66,6 +66,12 @@ if ($action == "copyquestion")
     . "<input type='text' id='preg' name='preg' size='50' value=\"".$eqrow['preg']."\" />\n"
     . "</li>\n"
 
+    // Relevance
+    ."<li>"
+    . "<label for='relevance'>".$clang->gT("Relevance equation:")."</label>"
+    . "<textarea cols='50' rows='1' id='relevance' name='relevance'>".$eqrow['relevance']."</textarea>"
+    . "</li>\n"
+
     . "<li ><label for='gid'>".$clang->gT("Question group:")."</label>\n"
     . "<select id='gid' name='gid'>\n"
     . getgrouplist3($eqrow['gid'])
@@ -613,6 +619,7 @@ if($action == "orderquestions")
                 $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
                 break;
         }
+        LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
     }
     if ((!empty($_POST['questionmovefrom']) || (isset($_POST['questionmovefrom']) && $_POST['questionmovefrom'] == '0')) && (!empty($_POST['questionmoveto']) || (isset($_POST['questionmoveto']) && $_POST['questionmoveto'] == '0')))
     {
@@ -643,6 +650,7 @@ if($action == "orderquestions")
             $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=".($newpos+1)." WHERE gid=$gid AND question_order=-1";
             $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
         }
+        LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
     }
 
     //Get the questions for this group

@@ -682,6 +682,8 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
         }
 
     }
+    LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
+
     $results['newqid']=$newqid;
     $results['questions']=1;
     $results['newqid']=$newqid;
@@ -891,6 +893,8 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
             $results['defaultvalues']++;
     }
     }
+
+    LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
 
     $results['newqid']=$newqid;
     $results['questions']=1;

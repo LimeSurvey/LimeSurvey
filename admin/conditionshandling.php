@@ -322,7 +322,7 @@ if (isset($p_subaction) && $p_subaction == "deletescenario")
 if (isset($p_subaction) && $p_subaction == "updatescenario" && isset($p_newscenarionum))
 {
     $query = "UPDATE {$dbprefix}conditions SET scenario=$p_newscenarionum WHERE qid={$qid} AND scenario={$p_scenario}";
-    $result = $connect->Execute($query) or safe_die ("Couldn't delete scenario<br />$query<br />".$connect->ErrorMsg());
+    $result = $connect->Execute($query) or safe_die ("Couldn't update scenario<br />$query<br />".$connect->ErrorMsg());
     LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
 }
 

@@ -973,40 +973,43 @@ function XMLImportGroup($sFullFilepath, $newsid)
     // then for subquestions (because we need to determine the new qids for the main questions first)
     $tablename=$dbprefix.'questions';
     $results['questions']=0;
-    foreach ($xml->questions->rows->row as $row)
+    if (isset($xml->questions))
     {
-       $insertdata=array(); 
-        foreach ($row as $key=>$value)
+        foreach ($xml->questions->rows->row as $row)
         {
-            $insertdata[(string)$key]=(string)$value;
-        }
-        $oldsid=$insertdata['sid'];
-        $insertdata['sid']=$newsid;
-        if (!isset($aGIDReplacements[$insertdata['gid']]) || trim($insertdata['title'])=='') continue; // Skip questions with invalid group id
-        $insertdata['gid']=$aGIDReplacements[$insertdata['gid']];
-        $oldqid=$insertdata['qid']; unset($insertdata['qid']); // save the old qid
+           $insertdata=array();
+            foreach ($row as $key=>$value)
+            {
+                $insertdata[(string)$key]=(string)$value;
+            }
+            $oldsid=$insertdata['sid'];
+            $insertdata['sid']=$newsid;
+            if (!isset($aGIDReplacements[$insertdata['gid']]) || trim($insertdata['title'])=='') continue; // Skip questions with invalid group id
+            $insertdata['gid']=$aGIDReplacements[$insertdata['gid']];
+            $oldqid=$insertdata['qid']; unset($insertdata['qid']); // save the old qid
 
-        // now translate any links
-        $insertdata['title']=translink('survey', $oldsid, $newsid, $insertdata['title']);
-        $insertdata['question']=translink('survey', $oldsid, $newsid, $insertdata['question']);
-        $insertdata['help']=translink('survey', $oldsid, $newsid, $insertdata['help']);
-        // Insert the new question    
-        if (isset($aQIDReplacements[$oldqid]))
-        {
-           $insertdata['qid']=$aQIDReplacements[$oldqid];
-           db_switchIDInsert('questions',true);
-        }   
-        $query=$connect->GetInsertSQL($tablename,$insertdata); 
-        $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
-        if (!isset($aQIDReplacements[$oldqid]))
-        {
-            $newqid=$connect->Insert_ID($tablename,"qid"); // save this for later
-            $aQIDReplacements[$oldqid]=$newqid; // add old and new qid to the mapping array
-            $results['questions']++;
-        }
-        else
-        {
-           db_switchIDInsert('questions',false);
+            // now translate any links
+            $insertdata['title']=translink('survey', $oldsid, $newsid, $insertdata['title']);
+            $insertdata['question']=translink('survey', $oldsid, $newsid, $insertdata['question']);
+            $insertdata['help']=translink('survey', $oldsid, $newsid, $insertdata['help']);
+            // Insert the new question
+            if (isset($aQIDReplacements[$oldqid]))
+            {
+               $insertdata['qid']=$aQIDReplacements[$oldqid];
+               db_switchIDInsert('questions',true);
+            }
+            $query=$connect->GetInsertSQL($tablename,$insertdata);
+            $result = $connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
+            if (!isset($aQIDReplacements[$oldqid]))
+            {
+                $newqid=$connect->Insert_ID($tablename,"qid"); // save this for later
+                $aQIDReplacements[$oldqid]=$newqid; // add old and new qid to the mapping array
+                $results['questions']++;
+            }
+            else
+            {
+               db_switchIDInsert('questions',false);
+            }
         }
     }
 

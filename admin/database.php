@@ -87,18 +87,19 @@ if(isset($surveyid))
                 // Fix bug with FCKEditor saving strange BR types
                 $_POST['group_name_'.$grouplang]=fix_FCKeditor_text($_POST['group_name_'.$grouplang]);
                 $_POST['description_'.$grouplang]=fix_FCKeditor_text($_POST['description_'.$grouplang]);
+                $grelevance = (isset($_POST['grelevance']) ? $_POST['grelevance'] : 1);
 
 
                 if ($first)
                 {
-                    $query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description,group_order,language) VALUES ('".db_quote($postsid)."', '".db_quote($_POST['group_name_'.$grouplang])."', '".db_quote($_POST['description_'.$grouplang])."',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
+                    $query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description, grelevance, group_order, language) VALUES ('".db_quote($postsid)."', '".db_quote($_POST['group_name_'.$grouplang])."', '".db_quote($_POST['description_'.$grouplang])."','".db_quote($grelevance)."',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
                     $result = $connect->Execute($query); // Checked
                     $groupid=$connect->Insert_Id(db_table_name_nq('groups'),"gid");
                     $first=false;
                 }
                 else{
                     db_switchIDInsert('groups',true);
-                    $query = "INSERT INTO ".db_table_name('groups')." (gid, sid, group_name, description,group_order,language) VALUES ('{$groupid}','".db_quote($postsid)."', '".db_quote($_POST['group_name_'.$grouplang])."', '".db_quote($_POST['description_'.$grouplang])."',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
+                    $query = "INSERT INTO ".db_table_name('groups')." (gid, sid, group_name, description, grelevance, group_order, language) VALUES ('{$groupid}','".db_quote($postsid)."', '".db_quote($_POST['group_name_'.$grouplang])."', '".db_quote($_POST['description_'.$grouplang])."','".db_quote($grelevance)."',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
                     $result = $connect->Execute($query) or safe_die("Error<br />".$query."<br />".$connect->ErrorMsg());   // Checked
                     db_switchIDInsert('groups',false);
                 }
@@ -307,6 +308,7 @@ if(isset($surveyid))
             //include("surveytable_functions.php");
             //surveyFixColumns($surveyid);
         }
+        LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
     }
     elseif ($action == "renumberquestions" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
     {
@@ -693,8 +695,8 @@ if(isset($surveyid))
             $_POST['question_'.$baselang]=fix_FCKeditor_text($_POST['question_'.$baselang]);
             $_POST['help_'.$baselang]=fix_FCKeditor_text($_POST['help_'.$baselang]);
             $_POST  = array_map('db_quote', $_POST);
-            $query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, preg, help, other, mandatory, question_order, language)
-                      VALUES ({$postsid}, {$postgid}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$baselang]."', '{$_POST['preg']}', '".$_POST['help_'.$baselang]."', '{$_POST['other']}', '{$_POST['mandatory']}', $max,".db_quoteall($baselang).")";
+            $query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, preg, help, other, mandatory, relevance, question_order, language)
+                      VALUES ({$postsid}, {$postgid}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$baselang]."', '{$_POST['preg']}', '".$_POST['help_'.$baselang]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['relevance']}', $max,".db_quoteall($baselang).")";
             $result = $connect->Execute($query) or safe_die($connect->ErrorMsg()); // Checked
             $newqid = $connect->Insert_ID("{$dbprefix}questions","qid");
             if (!$result)
@@ -721,8 +723,8 @@ if(isset($surveyid))
                 $_POST['help_'.$qlanguage]=fix_FCKeditor_text($_POST['help_'.$qlanguage]);
 
                 db_switchIDInsert('questions',true);
-                $query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, question_order, language)
-                      VALUES ($newqid,{$postsid}, {$postgid}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$qlanguage]."', '".$_POST['help_'.$qlanguage]."', '{$_POST['other']}', '{$_POST['mandatory']}', $max,".db_quoteall($qlanguage).")";
+                $query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, relevance, question_order, language)
+                      VALUES ($newqid,{$postsid}, {$postgid}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$qlanguage]."', '".$_POST['help_'.$qlanguage]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['relevance']}', $max,".db_quoteall($qlanguage).")";
                 $result = $connect->Execute($query) or safe_die($connect->ErrorMsg()); // Checked
                 db_switchIDInsert('questions',false);
             }
@@ -776,10 +778,10 @@ if(isset($surveyid))
                 while ($qr1 = $r1->FetchRow())
                 {
                     $qr1 = array_map('db_quote', $qr1);
-                    $i1 = "INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language, scale_id) "
+                    $i1 = "INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language, scale_id, assessment_value) "
                     . "VALUES ('$newqid', '{$qr1['code']}', "
                     . "'{$qr1['answer']}', "
-                    . "'{$qr1['sortorder']}', '{$qr1['language']}', '{$qr1['scale_id']}')";
+                    . "'{$qr1['sortorder']}', '{$qr1['language']}', '{$qr1['scale_id']}', '{$qr1['assessment_value']}')";
                     $ir1 = $connect->Execute($i1);   // Checked
 
                 }
@@ -806,6 +808,7 @@ if(isset($surveyid))
             $qid=$newqid; //Sets the qid so that admin.php displays the newly created question
             $_SESSION['flashmessage'] = $clang->gT("Question was successfully copied.");
 
+            LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
         }
     }
     elseif ($action == "delquestion" && bHasSurveyPermission($surveyid, 'surveycontent','delete'))

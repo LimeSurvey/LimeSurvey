@@ -380,6 +380,9 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
                     $createsurvey .= " C(36)";
                 }
                 break;
+            case '*':   // Equation
+                $createsurvey .= " X";  // could be anything, from numeric to a long message, so default to text
+                break;
             default:
                 $createsurvey .= " C(5)";
         }

@@ -11,7 +11,7 @@ include_once('ExpressionManager.php');
 define('LEM_DEBUG_TIMING',1);
 define('LEM_DEBUG_VALIDATION_SUMMARY',2);   // also includes  SQL error messages
 define('LEM_DEBUG_VALIDATION_DETAIL',4);
-define('LEM_DEBUG_NOCACHING',8);
+define('LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB',8);
 define('LEM_DEBUG_TRANSLATION_DETAIL',16);
 
 class LimeExpressionManager {
@@ -74,29 +74,31 @@ class LimeExpressionManager {
 
     /**
      * Ensures there is only one instances of LEM.  Note, if switch between surveys, have to clear this cache
-     * Should this allow for multiple simultaneous surveys?
-     * @param <type> $ser - a serialized session to restore
      * @return <type>
      */
-    public static function &singleton($ser=NULL)
+    public static function &singleton()
     {
-        if (!is_null($ser))
-        {
-            $now = microtime(true);
-            self::$instance = unserialize($ser);
-            self::$instance->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+        $now = microtime(true);
+        if (isset($_SESSION['LEMdirtyFlag'])) {
+            $c = __CLASS__;
+            self::$instance = new $c;
+            unset($_SESSION['LEMdirtyFlag']);
         }
-        if (!isset(self::$instance)) {
-            $now = microtime(true);
-            if (isset($_SESSION['LEMsingleton']) && isset($_SESSION['LEMdebugLevel']) && !(($_SESSION['LEMdebugLevel'] & LEM_DEBUG_NOCACHING) == LEM_DEBUG_NOCACHING)) {
+        else if (!isset(self::$instance)) {
+            if (isset($_SESSION['LEMsingleton'])) {
                 self::$instance = unserialize($_SESSION['LEMsingleton']);
             }
             else {
                 $c = __CLASS__;
                 self::$instance = new $c;
             }
-            self::$instance->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
         }
+        else {
+            // does exist, and OK to cache
+            return self::$instance;
+        }
+        // only record duration if have to create new (or unserialize) an instance
+        self::$instance->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
         return self::$instance;
     }
 
@@ -107,15 +109,24 @@ class LimeExpressionManager {
     }
 
     /**
+     * Tells Expression Manager that something has changed enough that needs to eliminate caching
+     */
+    public static function SetDirtyFlag()
+    {
+        $_SESSION['LEMdirtyFlag'] = true;
+        $_SESSION['LEMforceRefresh'] = true;
+    }
+
+    /**
      * Set the SurveyId - really checks whether the survey you're about to work with is new, and if so, clears the LEM cache
      * @param <type> $sid
      */
     public static function SetSurveyId($sid=NULL)
     {
         if (!is_null($sid)) {
-            if (isset($_SESSION['LEMsingleton']) && isset($_SESSION['LEMsid']) && $sid != $_SESSION['LEMsid']) {
+            if (isset($_SESSION['LEMsid']) && $sid != $_SESSION['LEMsid']) {
                 // then trying to use a new survey - so clear the LEM cache
-                unset($_SESSION['LEMsingleton']);
+                $_SESSION['LEMdirtyFlag'] = true;
             }
             $_SESSION['LEMsid'] = $sid;
         }
@@ -191,6 +202,7 @@ class LimeExpressionManager {
      */
     public static function ConvertConditionsToRelevance($surveyId=NULL, $qid=NULL)
     {
+        LimeExpressionManager::SetDirtyFlag();
         $query = LimeExpressionManager::getAllRecordsForSurvey($surveyId,$qid);
 
         $_qid = -1;
@@ -998,7 +1010,11 @@ class LimeExpressionManager {
 
     public function setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh=false,$anonymized=false,$allOnOnePage=false)
     {
-        if (!$forceRefresh && isset($this->knownVars) && !(($_SESSION['LEMdebugLevel'] & LEM_DEBUG_NOCACHING) == LEM_DEBUG_NOCACHING)) {
+        if (isset($_SESSION['LEMforceRefresh'])) {
+            unset($_SESSION['LEMforceRefresh']);
+            $forceRefresh=true;
+        }
+        else if (!$forceRefresh && isset($this->knownVars)) {
             return false;   // means that those variables have been cached and no changes needed
         }
         $now = microtime(true);
@@ -1053,6 +1069,11 @@ class LimeExpressionManager {
         );
 
         $this->gseq2info = $this->getGroupInfoForEM($surveyid,$this->slang);
+        for ($i=0;$i<count($this->gseq2info);++$i)
+        {
+            $gseq = $this->gseq2info[$i];
+            $this->groupId2groupSeq[$gseq['gid']] = $i;
+        }
 
         $qattr = $this->getEMRelatedRecordsForSurvey($surveyid);   // what happens if $surveyid is null?
         $this->qattr = $qattr;
@@ -1107,9 +1128,9 @@ class LimeExpressionManager {
                 $questionSeq = (isset($fielddata['questionSeq'])) ? $fielddata['questionSeq'] : -1;
                 $this->questionId2questionSeq[$questionNum] = $questionSeq;
             }
-            if (!isset($this->groupId2groupSeq[$groupNum])) {
-                $this->groupId2groupSeq[$groupNum] = $groupSeq;
-            }
+//            if (!isset($this->groupId2groupSeq[$groupNum])) {
+//                $this->groupId2groupSeq[$groupNum] = $groupSeq;
+//            }
 
             if (!isset($this->groupSeqInfo[$groupSeq])) {
                 $this->groupSeqInfo[$groupSeq] = array(
@@ -1689,7 +1710,7 @@ class LimeExpressionManager {
         $stringToParse = htmlspecialchars_decode($string,ENT_QUOTES);
         $qnum = is_null($questionNum) ? 0 : $questionNum;
         $result = $LEM->em->sProcessStringContainingExpressions($stringToParse,$qnum, $numRecursionLevels, $whichPrettyPrintIteration, $groupSeq, $questionSeq);
-        if ($LEM->em->HasErrors()) {
+        if ($LEM->em->HasErrors() && (($LEM->debugLevel & LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB) == LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB)) {
             $error = array(
                 'errortime' => date('Y-m-d H:i:s'),
                 'sid' => $LEM->sid,
@@ -1774,7 +1795,7 @@ class LimeExpressionManager {
         $stringToParse = htmlspecialchars_decode($eqn,ENT_QUOTES);
         $result = $this->em->ProcessBooleanExpression($stringToParse,$groupSeq, $questionSeq);
 
-        if ($this->em->HasErrors()) {
+        if ($this->em->HasErrors() && (($this->debugLevel & LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB) == LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB)) {
             $prettyPrint = $this->em->GetPrettyPrintString();
             $error = array(
                 'errortime' => date('Y-m-d H:i:s'),
@@ -1835,7 +1856,7 @@ class LimeExpressionManager {
         $stringToParse = htmlspecialchars_decode($eqn,ENT_QUOTES);
         $result = $this->em->ProcessBooleanExpression($stringToParse,$groupSeq, $questionSeq);
 
-        if ($this->em->HasErrors()) {
+        if ($this->em->HasErrors() && (($this->debugLevel & LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB) == LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB)) {
             $prettyPrint = $this->em->GetPrettyPrintString();
             $error = array(
                 'errortime' => date('Y-m-d H:i:s'),
@@ -1897,7 +1918,7 @@ class LimeExpressionManager {
         $stringToParse = htmlspecialchars_decode($eqn,ENT_QUOTES);
         $result = $this->em->ProcessBooleanExpression($stringToParse,$groupSeq);
 
-        if ($this->em->HasErrors()) {
+        if ($this->em->HasErrors() && (($this->debugLevel & LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB) == LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB)) {
             $prettyPrint = $this->em->GetPrettyPrintString();
             $error = array(
                 'errortime' => date('Y-m-d H:i:s'),
@@ -2073,6 +2094,9 @@ class LimeExpressionManager {
                     }
 
                     $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
+                    if (is_null($result)) {
+                        continue;   // this is an invalid group - skip it
+                    }
                     $message .= $result['message'];
                     if (!$result['relevant'] || $result['hidden'])
                     {
@@ -2254,6 +2278,9 @@ class LimeExpressionManager {
                     }
 
                     $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
+                    if (is_null($result)) {
+                        continue;   // this is an invalid group - skip it
+                    }
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
                     if (!$result['relevant'] || $result['hidden'])
@@ -2562,6 +2589,9 @@ class LimeExpressionManager {
                     }
 
                     $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
+                    if (is_null($result)) {
+                        return NULL;    // invalid group - either bad number, or no questions within it
+                    }
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
                     if (!$preview && (!$result['relevant'] || $result['hidden']))
@@ -2698,6 +2728,9 @@ class LimeExpressionManager {
         for ($i=0;$i<$LEM->numGroups;++$i) {
             $LEM->currentGroupSeq=$i;
             $gStatus = $LEM->_ValidateGroup($i);
+            if (is_null($gStatus)) {
+                continue;   // invalid group, so skip it
+            }
             $message .= $gStatus['message'];
 
             if ($gStatus['relevant']) {
@@ -2752,7 +2785,11 @@ class LimeExpressionManager {
         if ($groupSeq < 0 || $groupSeq >= $LEM->numGroups) {
             return NULL;    // TODO - what is desired behavior?
         }
-        $groupSeqInfo = $LEM->groupSeqInfo[$groupSeq];
+        $groupSeqInfo = (isset($LEM->groupSeqInfo[$groupSeq]) ? $LEM->groupSeqInfo[$groupSeq] : NULL);
+        if (is_null($groupSeqInfo)) {
+            // then there are no questions in this group
+            return NULL;
+        }
         $qInfo = $LEM->questionSeq2relevance[$groupSeqInfo['qstart']];
         $gid = $qInfo['gid'];
         $LEM->StartProcessingGroup($gid, $LEM->surveyOptions['anonymized'], $LEM->sid); // analyze the data we have about this group
@@ -3657,7 +3694,7 @@ class LimeExpressionManager {
 
         $LEM->runtimeTimings = array(); // reset them
 
-        if (count($LEM->syntaxErrors) > 0)
+        if (count($LEM->syntaxErrors) > 0 && (($LEM->debugLevel & LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB) == LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB))
         {
             global $connect;
             foreach ($LEM->syntaxErrors as $err)

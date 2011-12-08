@@ -474,7 +474,7 @@ class ExpressionManager {
 
                         // TODO - currently, will try to process value anyway, but want to show a potential error.  Should it be a definitive error (e.g. prevent this behavior)?
                         $groupSeq = $this->GetVarAttribute($token[0],'gseq',-1);
-                        if (($groupSeq != -1) && ($groupSeq > $this->groupSeq))
+                        if (($groupSeq != -1 && $this->groupSeq != -1) && ($groupSeq > $this->groupSeq))
                         {
                             $this->AddError("This variable is not declared until a later page",$token);
                             return false;

@@ -175,8 +175,8 @@ if(isset($_POST['printableexport']))
 $printoutput .= "\t<div class='printouttitle'><strong>".$clang->gT("Survey name (ID):")."</strong> $surveyname ($surveyid)</div><p>&nbsp;\n";
 
 LimeExpressionManager::StartProcessingPage(true);  // means that all variables are on the same page
-// Since all data are loaded, and don't need JavaScript, pretend all from Group 1
-LimeExpressionManager::StartProcessingGroup(1,($thissurvey['anonymized']!="N"),$surveyid);
+// Since all data are loaded, and don't need JavaScript, pretend all from Group -1
+LimeExpressionManager::StartProcessingGroup(-1,($thissurvey['anonymized']!="N"),$surveyid);
 
 $bHonorConditions=($printanswershonorsconditions==1);
 $aFullResponseTable=aGetFullResponseTable($surveyid,$id,$language,$bHonorConditions);

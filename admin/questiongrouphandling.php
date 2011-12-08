@@ -228,6 +228,7 @@ if ($action == "ordergroups")
                     $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());//Checked
                     break;
             }
+            LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
         }
         // Move the question to specific position
         if ((!empty($_POST['groupmovefrom']) || (isset($_POST['groupmovefrom']) && $_POST['groupmovefrom'] == '0')) && (!empty($_POST['groupmoveto']) || (isset($_POST['groupmoveto']) && $_POST['groupmoveto'] == '0')))
@@ -259,6 +260,7 @@ if ($action == "ordergroups")
                 $cdquery = "UPDATE ".db_table_name('groups')." SET group_order=".($newpos+1)." WHERE sid=$surveyid AND group_order=-1";
                 $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
             }
+            LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
         }
 
         $ordergroups = "<div class='header ui-widget-header'>".$clang->gT("Change Group Order")."</div><br />\n";

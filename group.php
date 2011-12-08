@@ -197,10 +197,8 @@ else
         {
             if ($thissurvey['assessments']== "Y")
             {
-                // TMSW - replace this with EM?
                 $assessments = doAssessment($surveyid);
             }
-            $thissurvey['surveyls_url']=dTexts__run($thissurvey['surveyls_url']);
             if($thissurvey['printanswers'] != 'Y')
             {
                 killSession();
@@ -245,8 +243,6 @@ else
 
             //Before doing the "templatereplace()" function, check the $thissurvey['url']
             //field for limereplace stuff, and do transformations!
-            // TMSW - TODO - check that this works as desired - may not substitute URL parameters (in which case use templatereplace)
-            $thissurvey['surveyls_url']=dTexts__run($thissurvey['surveyls_url']);
             $thissurvey['surveyls_url']=passthruReplace($thissurvey['surveyls_url'], $thissurvey);
 
             $content='';
@@ -329,8 +325,7 @@ else
             {
                 //Automatically redirect the page to the "url" setting for the survey
 
-                $url = $thissurvey['surveyls_url'];
-                $url = dTexts__run($thissurvey['surveyls_url']);
+                $url = templatereplace($thissurvey['surveyls_url']);    // TODO - check safety of this - provides access to any replacement value
                 $url = passthruReplace($url, $thissurvey);
                 $url = str_replace("{SAVEDID}",$saved_id, $url);               // to activate the SAVEDID in the END URL
                 $url = str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
@@ -384,13 +379,19 @@ if ($surveyexists <1)
 if ($surveyMode == 'group' && $previewgrp)
 {
 	setcookie("limesurvey_timers", "0");
+    $_gid = sanitize_int($_REQUEST['gid']);
 
     LimeExpressionManager::StartSurvey($thissurvey['sid'], 'group', $surveyOptions, false,$LEMdebugLevel);
-    $gseq = LimeExpressionManager::GetGroupSeq($_REQUEST['gid']);
+    $gseq = LimeExpressionManager::GetGroupSeq($_gid);
     if ($gseq == -1) {
-        echo 'Invalid Group' . $_REQUEST['gid'];
+        echo $clang->gT('Invalid group number for this survey: ') . $_gid;
+        exit;
     }
     $moveResult = LimeExpressionManager::JumpTo($gseq+1,true);
+    if (is_null($moveResult)) {
+        echo $clang->gT('This group contains no questions.  You must add questions to this group before you can preview it');
+        exit;
+    }
     if (isset($moveResult)) {
         $_SESSION['step']= $moveResult['seq']+1;  // step is index base 1?
     }
@@ -770,6 +771,9 @@ if (!$previewgrp){
         $lastGseq=-1;
         for($v = 0, $n = 0; $n != $_SESSION['maxstep']; ++$n)
         {
+            if (!isset($stepIndex[$n])) {
+                continue;   // this is an invalid group - skip it
+            }
             $stepInfo = $stepIndex[$n];
 
             if (!$stepInfo['show'])
