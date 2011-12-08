@@ -136,7 +136,7 @@ if(isset($showsgqacode) && $showsgqacode == true)
 }
 else
 {
-	$surveyname = "";
+	$surveyname = $surveyname;
 }
 
 $survey_output = array(
@@ -447,14 +447,14 @@ while ($degrow = $degresult->FetchRow())
                 //Loop through each condition for a particular scenario.
                 while ($distinctrow=$distinctresult->FetchRow())
                 {
-                    $subquery='select title, question from '.db_table_name("questions")." where qid={$distinctrow['cqid']} AND parent_qid=0 AND language='{$surveyprintlang}'";
+                    $subquery='select title, question, type from '.db_table_name("questions")." where qid={$distinctrow['cqid']} AND parent_qid=0 AND language='{$surveyprintlang}'";
                     $subresult=$connect->GetRow($subquery);
 
                     if($x > 0)
                     {
-                        $explanation .= ' <em>'.$clang->gT('and').'</em> ';
+                        $explanation .= ' <em class=\'scenario-and-seperator\'>'.$clang->gT('and').'</em> ';
                     }
-                    if(trim($distinctrow['method'])=='')
+                    if(trim($distinctrow['method'])=='') //If there is no method, assume "equals"
                     {
                         $distinctrow['method']='==';
                     }
@@ -492,7 +492,13 @@ while ($degrow = $degresult->FetchRow())
                         {
                             $explanation .= $clang->gT("Answer was")." ";
                         }
-                    	$explanation .= " ".$distinctrow['value'];
+                    	if($distinctrow['value'] == '') {
+                    		$explanation .= " ".$clang->gT("not selected")." ";
+                    	}
+                    	//If question type is numerical or multi numerical, show the actual value, otherwise don't
+                    	if($subresult['type'] == "N" || $subresult['type']=="K") {
+                    		$explanation .= " ".$distinctrow['value']. " ";
+                    	}
                     }
                     if(!$distinctrow['cqid']) { // cqid == 0  ==> token attribute match
                         $tokenData = GetTokenFieldsAndNames($surveyid);
@@ -530,7 +536,7 @@ while ($degrow = $degresult->FetchRow())
                         {
                             $explanation .= $clang->gT("is")." ";
                         }
-                        $answer_section = $distinctrow['value'];
+                        $answer_section = " ".$distinctrow['value']." ";
                     }
 
                     $conquery="SELECT cid, cqid, q.title,\n"
@@ -637,7 +643,10 @@ while ($degrow = $degresult->FetchRow())
                                 }
                                 $conditions = array_unique($conditions);
                                 break;
-                            case "F":
+                            case "N":
+                            	$conditions[]=$value;
+                            	break;
+							case "F":
                             case "H":
                             default:
                                 $value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
@@ -732,7 +741,7 @@ while ($degrow = $degresult->FetchRow())
 
                     if (count($conditions) > 1)
                     {
-                        $explanation .=  "'".implode("' ".$clang->gT("or")." '", $conditions)."'";
+                        $explanation .=  "'".implode("' <em class='scenario-or-seperator'>".$clang->gT("or")."</em> '", $conditions)."'";
                     }
                     elseif (count($conditions) == 1)
                     {
@@ -742,7 +751,7 @@ while ($degrow = $degresult->FetchRow())
                     // Following line commented out because answer_section  was lost, but is required for some question types
                     //$explanation .= " ".$clang->gT("to question")." '".$mapquestionsNumbers[$distinctrow['cqid']]."' $answer_section ";
                     if($distinctrow['cqid']){
-                        $explanation .= " ".$clang->gT("at question")." '".$mapquestionsNumbers[$distinctrow['cqid']]." [".$subresult['title']."]' (".strip_tags($subresult['question'])."$answer_section)" ;
+                        $explanation .= " <span class='scenario-at-seperator'>".$clang->gT("at question")."</span> '".$mapquestionsNumbers[$distinctrow['cqid']]." [".$subresult['title']."]' (".strip_tags($subresult['question'])."$answer_section)" ;
                     }
                     else{
                         $explanation .= " ".$distinctrow['value'] ;
@@ -985,6 +994,7 @@ while ($degrow = $degresult->FetchRow())
                     $rearesult = db_execute_assoc($reaquery) or safe_die ("Couldn't get ranked answers<br />".$connect->ErrorMsg());
                     $reacount = $rearesult->RecordCount();
                     $question['QUESTION_TYPE_HELP'] = $clang->gT("Please number each box in order of preference from 1 to")." $reacount";
+                	$question['QUESTION_TYPE_HELP'] .= min_max_answers_help($qidattributes, $surveyprintlang, $surveyid);
                     if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please number each box in order of preference from 1 to ").$reacount,"U");}
                     $question['ANSWER'] = "\n<ul>\n";
                     while ($rearow = $rearesult->FetchRow())
@@ -1186,8 +1196,16 @@ while ($degrow = $degresult->FetchRow())
 
                     // ==================================================================
                 case "N":  //NUMERICAL
-                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please write your answer here:");
-                    $question['ANSWER'] = input_type_image('text',$question['QUESTION_TYPE_HELP'],20);
+                	$prefix="";
+                	$suffix="";
+                	if($qidattributes['prefix'] != "") {
+                		$prefix=$qidattributes['prefix'];
+                	}
+                	if($qidattributes['suffix'] != "") {
+                		$suffix=$qidattributes['suffix'];
+                	}
+                	$question['QUESTION_TYPE_HELP'] = $clang->gT("Please write your answer here:");
+                    $question['ANSWER'] = "<ul>\n\t<li>\n\t\t<span>$prefix</span>\n\t\t".input_type_image('text',$question['QUESTION_TYPE_HELP'],20)."\n\t\t<span>$suffix</span>\n\t\t</li>\n\t</ul>";
 
                     if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please write your answer here:"),"U");}
                     if(isset($_POST['printableexport'])){$pdf->intopdf("____________________");}
@@ -1934,6 +1952,18 @@ if(isset($_POST['printableexport']))
 echo populate_template( 'survey' , $survey_output );
 
 exit;
+
+function min_max_answers_help($qidattributes, $surveyprintlang, $surveyid) {
+	global $clang;
+	$output = "";
+	if(!empty($qidattributes['max_answers'])) {
+		$output .= "\n<p class='extrahelp'>".sprintf($clang->gT("Please choose no more than %d items"),$qidattributes['max_answers'])."</p>\n";
+	}
+	if(!empty($qidattributes['min_answers'])) {
+		$output .= "\n<p class='extrahelp'>".sprintf($clang->gT("Please choose at least %d items"), $qidattributes['min_answers'])."</p>\n";
+	}
+	return $output;
+}
 
 function array_filter_help($qidattributes, $surveyprintlang, $surveyid) {
     global $clang;
