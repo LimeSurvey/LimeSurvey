@@ -138,7 +138,7 @@ class printablesurvey extends CAction
 		}
 		else
 		{
-			$surveyname = "";
+			$surveyname = $surveyname;
 		}
 
 		$survey_output = array(
@@ -305,14 +305,14 @@ class printablesurvey extends CAction
 		                //Loop through each condition for a particular scenario.
 		                foreach ($distinctresult->readAll() as $distinctrow)
 		                {
-		                    $subquery="select title, question from {{questions}} where qid={$distinctrow['cqid']} AND parent_qid=0 AND language='{$surveyprintlang}'";
+		                    $subquery="select title, question, type from {{questions}} where qid={$distinctrow['cqid']} AND parent_qid=0 AND language='{$surveyprintlang}'";
 		                    $subresult=Yii::app()->db->createCommand($subquery)->query()->read();
 
 		                    if($x > 0)
 		                    {
-		                        $explanation .= ' <em>'.$clang->gT('and').'</em> ';
+		                        $explanation .= ' <em class="scenario-and-seperator">'.$clang->gT('and').'</em> ';
 		                    }
-		                    if(trim($distinctrow['method'])=='')
+		                    if(trim($distinctrow['method'])=='') //If there is no method chosen assume "equals"
 		                    {
 		                        $distinctrow['method']='==';
 		                    }
@@ -350,7 +350,13 @@ class printablesurvey extends CAction
 		                        {
 		                            $explanation .= $clang->gT("Answer was")." ";
 		                        }
-		                    	$explanation .= " ".$distinctrow['value'];
+								if($distinctrow['value'] == '') {
+								    $explanation .= ' '.$clang->gT("Not selected").' ';
+								}
+								//If question type is numerical or multi-numerical, show the actual value - otherwise, don't.
+								if($subresult['type'] == 'N' || $subresult['type'] == 'K') {
+		                    	    $explanation .= ' '.$distinctrow['value']. ' ';
+								}
 		                    }
 		                    if(!$distinctrow['cqid']) { // cqid == 0  ==> token attribute match
 		                        $tokenData = GetTokenFieldsAndNames($surveyid);
@@ -388,7 +394,7 @@ class printablesurvey extends CAction
 		                        {
 		                            $explanation .= $clang->gT("is")." ";
 		                        }
-		                        $answer_section = $distinctrow['value'];
+		                        $answer_section = ' '.$distinctrow['value'].' ';
 		                    }
 
 		                    $conquery="SELECT cid, cqid, q.title,\n"
@@ -495,6 +501,9 @@ class printablesurvey extends CAction
 		                                }
 		                                $conditions = array_unique($conditions);
 		                                break;
+									case "N":
+									    $conditions[]=$value;
+										break;
 		                            case "F":
 		                            case "H":
 		                            default:
@@ -590,7 +599,7 @@ class printablesurvey extends CAction
 
 		                    if (count($conditions) > 1)
 		                    {
-		                        $explanation .=  "'".implode("' ".$clang->gT("or")." '", $conditions)."'";
+		                        $explanation .=  "'".implode("' <em class='scenario-or-seperator'>".$clang->gT("or")."</em> '", $conditions)."'";
 		                    }
 		                    elseif (count($conditions) == 1)
 		                    {
@@ -600,7 +609,7 @@ class printablesurvey extends CAction
 		                    // Following line commented out because answer_section  was lost, but is required for some question types
 		                    //$explanation .= " ".$clang->gT("to question")." '".$mapquestionsNumbers[$distinctrow['cqid']]."' $answer_section ";
 		                    if($distinctrow['cqid']){
-		                        $explanation .= " ".$clang->gT("at question")." '".$mapquestionsNumbers[$distinctrow['cqid']]." [".$subresult['title']."]' (".strip_tags($subresult['question'])."$answer_section)" ;
+		                        $explanation .= " <span class='scenario-at-seperator'>".$clang->gT("at question")."</span> '".$mapquestionsNumbers[$distinctrow['cqid']]." [".$subresult['title']."]' (".strip_tags($subresult['question'])."$answer_section)" ;
 		                    }
 		                    else{
 		                        $explanation .= " ".$distinctrow['value'] ;
@@ -843,7 +852,8 @@ class printablesurvey extends CAction
 		                    $rearesult = Yii::app()->db->createCommand($reaquery)->query();
 		                    $reacount = $rearesult->getRowCount();
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please number each box in order of preference from 1 to")." $reacount";
-		                    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please number each box in order of preference from 1 to ").$reacount,"U");}
+		                    $question['QUESTION_TYPE_HELP'] .= self::_min_max_answers_help($qidattributes, $surveyprintlang, $surveyid);
+							if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please number each box in order of preference from 1 to ").$reacount,"U");}
 		                    $question['ANSWER'] = "\n<ul>\n";
 		                    foreach ($rearesult->readAll() as $rearow)
 		                    {
@@ -1045,8 +1055,16 @@ class printablesurvey extends CAction
 
 		                    // ==================================================================
 		                case "N":  //NUMERICAL
-		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please write your answer here:");
-		                    $question['ANSWER'] = self::_input_type_image('text',$question['QUESTION_TYPE_HELP'],20);
+							$prefix="";
+							$suffix="";
+							if($qidattributes['prefix'][$surveyprintlang] != "") {
+								$prefix=$qidattributes['prefix'][$surveyprintlang]; print_r($prefix);
+							}
+							if($qidattributes['suffix'][$surveyprintlang] != "") {
+								$suffix=$qidattributes['suffix'][$surveyprintlang];
+							}
+							$question['QUESTION_TYPE_HELP'] = $clang->gT("Please write your answer here:");
+							$question['ANSWER'] = "<ul>\n\t<li>\n\t\t<span>$prefix</span>\n\t\t".self::_input_type_image('text',$question['QUESTION_TYPE_HELP'],20)."\n\t\t<span>$suffix</span>\n\t\t</li>\n\t</ul>";
 
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please write your answer here:"),"U");}
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf("____________________");}
@@ -1055,7 +1073,7 @@ class printablesurvey extends CAction
 
 		                    // ==================================================================
 		                case "Y":  //YES/NO
-		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose *only one* of the following:");
+  						    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose *only one* of the following:");
 		                    $question['ANSWER'] = "\n<ul>\n\t<li>\n\t\t".self::_input_type_image('radio',$clang->gT('Yes'))."\n\t\t".$clang->gT('Yes').self::_addsgqacode(" (Y)")."\n\t</li>\n";
 		                    $question['ANSWER'] .= "\n\t<li>\n\t\t".self::_input_type_image('radio',$clang->gT('No'))."\n\t\t".$clang->gT('No').self::_addsgqacode(" (N)")."\n\t</li>\n</ul>\n";
 
@@ -1872,6 +1890,18 @@ class printablesurvey extends CAction
 	            return '<!-- '.$line.'There was nothing to put into the template -->'."\n";
 	        }
 	    }
+	}
+
+	function _min_max_answers_help($qidattributes, $surveyprintlang, $surveyid) {
+		$clang = $this->getController()->lang;
+		$output = "";
+		if(!empty($qidattributes['max_answers'])) {
+			$output .= "\n<p class='extrahelp'>".sprintf($clang->gT("Please choose no more than %d items"),$qidattributes['max_answers'])."</p>\n";
+		}
+		if(!empty($qidattributes['min_answers'])) {
+			$output .= "\n<p class='extrahelp'>".sprintf($clang->gT("Please choose at least %d items"), $qidattributes['min_answers'])."</p>\n";
+		}
+		return $output;
 	}
 
 
