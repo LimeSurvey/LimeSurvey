@@ -2526,8 +2526,7 @@ class LimeExpressionManager {
     }
 
     /**
-     * Jump to a specific question or group sequence.
-     * TODO - if jumping forward, should it re-validate everything in between?
+     * Jump to a specific question or group sequence.  If jumping forward, it re-validates everything in between
      * @param <type> $seq
      * @param <type> $force - if true, then skip validation of current group (e.g. will jump even if there are errors)
      * @param <type> $preview - if true, then treat this group/question as relevant, even if it is not, so that it can be displayed
@@ -2572,7 +2571,9 @@ class LimeExpressionManager {
                         return $LEM->lastMoveResult;
                     }
                 }
-                $LEM->currentGroupSeq = $seq-1; // Try to jump to the requested group, but navigate to next if needed
+                if ($seq < $LEM->currentGroupSeq || $preview) {
+                    $LEM->currentGroupSeq = $seq-1; // Try to jump to the requested group, but navigate to next if needed
+                }
                 while (true)
                 {
                     $LEM->currentQset = array();    // reset active list of questions
@@ -2602,6 +2603,11 @@ class LimeExpressionManager {
                     if (!$preview && (!$result['relevant'] || $result['hidden']))
                     {
                         // then skip this group - assume already saved?
+                        continue;
+                    }
+                    else if (!($result['mandViolation'] || !$result['valid']) && $LEM->currentGroupSeq < $seq) {
+                        // if there is a violation while moving forward, need to stop and ask that set of questions
+                        // if there are no violations, can skip this group as long as changed values are saved.
                         continue;
                     }
                     else
@@ -2651,7 +2657,9 @@ class LimeExpressionManager {
                         return $LEM->lastMoveResult;
                     }
                 }
-                $LEM->currentQuestionSeq=$seq-1;    // try to jump to requeted question, but go on to next if needed
+                if ($seq < $LEM->currentQuestionSeq || $preview) {
+                    $LEM->currentQuestionSeq = $seq-1; // Try to jump to the requested group, but navigate to next if needed
+                }
                 while (true)
                 {
                     $LEM->currentQset = array();    // reset active list of questions
@@ -2667,8 +2675,8 @@ class LimeExpressionManager {
                             'seq'=>$LEM->currentQuestionSeq,
                             'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
                             'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
-                            'unansweredSQs'=>$result['unansweredSQs'],
-                            'invalidSQs'=>$result['invalidSQs'],
+                            'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
+                            'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
                         );
                         return $LEM->lastMoveResult;
                     }
@@ -2692,6 +2700,11 @@ class LimeExpressionManager {
                     if (!$preview && (!$result['relevant'] || $result['hidden']))
                     {
                         // then skip this question
+                        continue;
+                    }
+                    else if (!($result['mandViolation'] || !$result['valid']) && $LEM->currentQuestionSeq < $seq) {
+                        // if there is a violation while moving forward, need to stop and ask that set of questions
+                        // if there are no violations, can skip this group as long as changed values are saved.
                         continue;
                     }
                     else

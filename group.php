@@ -92,9 +92,22 @@ else
             unset($moveResult); // so display welcome page again
         }
     }
-    if (isset($move) && ($move == "movenext" || $move == "movesubmit"))
+    if (isset($move) && $move == "movenext")
     {
         $moveResult = LimeExpressionManager::NavigateForwards();
+    }
+    if (isset($move) && ($move == 'movesubmit'))
+    {
+        if ($surveyMode == 'survey')
+        {
+            $moveResult = LimeExpressionManager::NavigateForwards();
+        }
+        else
+        {
+            // may be submitting from the navigation bar, in which case need to process all intervening questions
+            // in order to update equations and ensure there are no intervening relevant mandatory or relevant invalid questions
+            $moveResult = LimeExpressionManager::JumpTo($_SESSION['totalsteps']+1,false);
+        }
     }
     if (isset($move) && bIsNumericInt($move) && $thissurvey['allowjumps']=='Y')
     {
@@ -162,11 +175,17 @@ else
         if (strlen($unansweredSQList) > 0 && $backok != "N") {
             $notanswered = explode('|',$unansweredSQList);
         }
+        else {
+            $notanswered = array();
+        }
 
         //CHECK INPUT
         $invalidSQList = $moveResult['invalidSQs'];
         if (strlen($invalidSQList) > 0 && $backok != "N") {
             $notvalidated = explode('|',$invalidSQList);
+        }
+        else {
+            $notvalidated = array();
         }
     }
 
