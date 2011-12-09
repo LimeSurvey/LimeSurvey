@@ -50,6 +50,16 @@ class Answers extends CActiveRecord
 		return array('qid', 'code');
 	}
 
+	function getSomeRecords($fields,$condition=FALSE,$order=FALSE)
+	{
+		return Yii::app()->db->createCommand()
+			->select($fields)
+			->from(self::tableName())
+			->where($condition)
+			->order($order)
+			->query();
+	}
+
     function getAnswers($qid)
     {
 		return Yii::app()->db->createCommand()
@@ -57,6 +67,15 @@ class Answers extends CActiveRecord
 			->from(self::tableName())
 			->where(array('and', 'qid='.$qid))
 			->order('code asc')
+			->query();
+    }
+
+    function getAnswerCode($qid, $code, $lang)
+    {
+		return Yii::app()->db->createCommand()
+			->select(array('code', 'answer'))
+			->from(self::tableName())
+			->where(array('and', 'qid='.$qid, 'code="'.$code.'"', 'scale_id=0', 'language="'.$lang.'"'))
 			->query();
     }
 

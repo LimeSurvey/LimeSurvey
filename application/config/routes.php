@@ -47,8 +47,6 @@ $route['(:num)'] = "survey/sid/$1";
 //Admin Routes
 $route['admin'] = "admin/index";
 $route['admin/labels/view'] = "admin/labels/view";
-$route['admin/browse/surveyid/<id:\d+>'] = "admin/browse/action/<id>";
-$route['admin/importoldresponses/<id:\d+>'] = "admin/dataentry/import/<id>";
 
 //question
 $route['admin/question/newquestion/(:num)/(:num)'] = "admin/question/index/addquestion/$1/$2";

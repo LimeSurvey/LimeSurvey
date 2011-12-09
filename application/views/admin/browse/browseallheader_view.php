@@ -1,26 +1,26 @@
 <script type='text/javascript'>
-  var strdeleteconfirm='<?php echo $clang->gT('Do you really want to delete this response?','js');?>'; 
-  var strDeleteAllConfirm='<?php echo $clang->gT('Do you really want to delete all marked responses?','js');?>';
-  var noFilesSelectedForDeletion = '<?php echo $clang->gT('Please select at least one file for deletion','js');?>';
-  var noFilesSelectedForDnld = '<?php echo $clang->gT('Please select at least one file for download','js');?>';
+  var strdeleteconfirm='<?php $clang->eT('Do you really want to delete this response?','js');?>';
+  var strDeleteAllConfirm='<?php $clang->eT('Do you really want to delete all marked responses?','js');?>';
+  var noFilesSelectedForDeletion = '<?php $clang->eT('Please select at least one file for deletion','js');?>';
+  var noFilesSelectedForDnld = '<?php $clang->eT('Please select at least one file for download','js');?>';
 </script>
 <div class='menubar'>
 <div class='menubar-title ui-widget-header'>
-<strong><?php echo $clang->gT("Data view control");?></strong></div>
+<strong><?php $clang->eT("Data view control");?></strong></div>
 <div class='menubar-main'>
 <?php if (!isset($_POST['sql'])) { ?>
-    <a href='<?php echo site_url("admin/browse/$surveyid/all/0/$limit");?>' title='<?php echo $clang->gTview("Show start...");?>' >
-    <img name='DataBegin' align='left' src='<?php echo $imageurl;?>/databegin.png' alt='<?php echo $clang->gT("Show start...");?>' /></a>
-    <a href='<?php echo site_url("admin/browse/$surveyid/all/$last/$limit");?>' title='<?php echo $clang->gTview("Show previous..");?>' >
-    <img name='DataBack' align='left'  src='<?php echo $imageurl;?>/databack.png' alt='<?php echo $clang->gT("Show previous..");?>' /></a>
+    <a href='<?php echo $this->createUrl("admin/browse/surveyid/$surveyid/sa/all/start/0/limit/$limit");?>' title='<?php $clang->eTview("Show start...");?>' >
+    <img name='DataBegin' align='left' src='<?php echo $imageurl;?>/databegin.png' alt='<?php $clang->eT("Show start...");?>' /></a>
+    <a href='<?php echo $this->createUrl("admin/browse/surveyid/$surveyid/sa/all/start/$last/limit/$limit");?>' title='<?php $clang->eTview("Show previous..");?>' >
+    <img name='DataBack' align='left'  src='<?php echo $imageurl;?>/databack.png' alt='<?php $clang->eT("Show previous..");?>' /></a>
     <img src='<?php echo $imageurl;?>/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />
 
-    <a href='<?php echo site_url("admin/browse/$surveyid/all/$next/$limit");?>' title='<?php echo $clang->gT("Show next...");?>' >
-    <img name='DataForward' align='left' src='<?php echo $imageurl;?>/dataforward.png' alt='<?php echo $clang->gT("Show next..");?>' /></a>
-    <a href='<?php echo site_url("admin/browse/$surveyid/all/$end/$limit");?>' title='<?php echo $clang->gT("Show last...");?>' >
-    <img name='DataEnd' align='left' src='<?php echo $imageurl;?>/dataend.png' alt='<?php echo $clang->gT("Show last..");?>' /></a>
+    <a href='<?php echo $this->createUrl("admin/browse/surveyid/$surveyid/sa/all/start/$next/limit/$limit");?>' title='<?php $clang->eT("Show next...");?>' >
+    <img name='DataForward' align='left' src='<?php echo $imageurl;?>/dataforward.png' alt='<?php $clang->eT("Show next..");?>' /></a>
+    <a href='<?php echo $this->createUrl("admin/browse/surveyid/$surveyid/sa/all/start/$end/limit/$limit");?>' title='<?php $clang->eT("Show last...");?>' >
+    <img name='DataEnd' align='left' src='<?php echo $imageurl;?>/dataend.png' alt='<?php $clang->eT("Show last..");?>' /></a>
     <img src='<?php echo $imageurl;?>/seperator.gif' border='0' hspace='0' align='left' alt='' />
-<?php } 
+<?php }
 $selectshow='';
 $selectinc='';
 $selecthide='';
@@ -29,16 +29,15 @@ if(incompleteAnsFilterstate() == "inc") { $selectinc="selected='selected'"; }
 elseif (incompleteAnsFilterstate() == "filter") { $selecthide="selected='selected'"; }
 else { $selectshow="selected='selected'"; }
 ?>
-<form action='<?php echo site_url("admin/browse/$surveyid/all/");?>' id='browseresults' method='post'><font size='1' face='verdana'>
+<form action='<?php echo $this->createUrl("admin/browse/surveyid/$surveyid/sa/all/");?>' id='browseresults' method='post'><font size='1' face='verdana'>
 <img src='<?php echo $imageurl;?>/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />
-<?php echo $clang->gT("Records displayed:");?><input type='text' size='4' value='<?php echo $dtcount2;?>' name='limit' id='limit' />
-&nbsp;&nbsp; <?php echo $clang->gT("Starting from:");?><input type='text' size='4' value='<?php echo $start;?>' name='start' id='start' />
-&nbsp;&nbsp; <input type='submit' value='<?php echo $clang->gT("Show");?>' />
-&nbsp;&nbsp; <input type='submit' value='<?php echo $clang->gT("Show");?>' />
-&nbsp;&nbsp; <?php echo $clang->gT("Display:");?><select name='filterinc' onchange='javascript:document.getElementById("limit").value="";submit();'>
-<option value='show' $selectshow><?php echo $clang->gT("All responses");?></option>
-<option value='filter' $selecthide><?php echo $clang->gT("Completed responses only");?></option>
-<option value='incomplete' $selectinc><?php echo $clang->gT("Incomplete responses only");?></option>
+<?php $clang->eT("Records displayed:");?><input type='text' size='4' value='<?php echo $dtcount2;?>' name='limit' id='limit' />
+&nbsp;&nbsp; <?php $clang->eT("Starting from:");?><input type='text' size='4' value='<?php echo $start;?>' name='start' id='start' />
+&nbsp;&nbsp; <input type='submit' value='<?php $clang->eT("Show");?>' />
+&nbsp;&nbsp; <?php $clang->eT("Display:");?> <select name='filterinc' onchange='javascript:document.getElementById("limit").value="";submit();'>
+<option value='show' $selectshow><?php $clang->eT("All responses");?></option>
+<option value='filter' $selecthide><?php $clang->eT("Completed responses only");?></option>
+<option value='incomplete' $selectinc><?php $clang->eT("Incomplete responses only");?></option>
 </select>
 
 </font>
@@ -50,6 +49,6 @@ else { $selectshow="selected='selected'"; }
     <input type='hidden' name='sql' value='<?php echo html_escape($_POST['sql']);?>' />
 <?php } ?>
 </form></div>
-</div><form action='<?php echo site_url("admin/browse/$surveyid/all");?>' id='resulttableform' method='post'>
+</div><form action='<?php echo $this->createUrl("admin/browse/surveyid/$surveyid/sa/all");?>' id='resulttableform' method='post'>
 
 <?php echo $tableheader; ?>

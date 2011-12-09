@@ -1,10 +1,10 @@
 <tr class='<?php echo $bgcc;?>' valign='top'>
 <td align='center'><input type='checkbox' class='cbResponseMarker' value='<?php echo $dtrow['id'];?>' name='markedresponses[]' /></td>
 <td align='center'>
-<a href='<?php echo site_url("admin/browse/$surveyid/id/{$dtrow['id']}/");?>'><img src='<?php echo $imageurl;?>/token_viewanswer.png' alt='<?php echo $clang->gT('View response details');?>'/></a>
+<a href='<?php echo $this->createUrl("admin/browse/surveyid/$surveyid/id/{$dtrow['id']}/");?>'><img src='<?php echo $imageurl;?>/token_viewanswer.png' alt='<?php echo $clang->gT('View response details');?>'/></a>
 <?php if (bHasSurveyPermission($surveyid,'responses','update')) { ?>
-    <a href='{$scriptname}?action=dataentry&amp;sid={$surveyid}&amp;subaction=edit&amp;id={$dtrow['id']}'><img src='<?php echo $imageurl;?>/token_edit.png' alt='<?php echo $clang->gT('Edit this response');?>'/></a>
-<?php } 
+    <a href='<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$dtrow['id']}"); ?>'><img src='<?php echo $imageurl;?>/token_edit.png' alt='<?php echo $clang->gT('Edit this response');?>'/></a>
+<?php }
 if (bHasFileUploadQuestion($surveyid)) { ?>
     <a><img id='downloadfile_<?php echo $dtrow['id'];?>' src='<?php echo $imageurl;?>/down.png' alt='<?php echo $clang->gT('Download all files in this response as a zip file');?>' class='downloadfile'/></a>
 <?php }
@@ -17,11 +17,11 @@ if ($surveyinfo['anonymized'] == "N" && $dtrow['token'] && db_tables_exist($toke
     if (isset($dtrow['tid']) && !empty($dtrow['tid']))
     {
         //If we have a token, create a link to edit it
-        $browsedatafield = "<a href='".site_url("admin/tokens/edit/$surveyid/{$dtrow['tid']}/")."' title='".$clang->gT("Edit this token")."'>";
+        $browsedatafield = "<a href='".$this->createUrl("admin/tokens/edit/surveyid/$surveyid/{$dtrow['tid']}/")."' title='".$clang->gT("Edit this token")."'>";
         $browsedatafield .= "{$dtrow['token']}";
         $browsedatafield .= "</a>";
     } else {
-        //No corresponding token in the token tabel, just display the token
+        //No corresponding token in the token tabel, just didsplay the token
         $browsedatafield .= "{$dtrow['token']}";
     } ?>
     <td align='center'><?php echo $browsedatafield;?></td>

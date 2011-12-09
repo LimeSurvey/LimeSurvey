@@ -24,34 +24,18 @@
  */
 class browse extends Survey_Common_Action {
 
-	private $yii;
-	private $controller;
-
-	public function run()
+	public function run($surveyid)
 	{
-		$this->yii = Yii::app();
-		$this->controller = $this->getController();
-		$this->action($_GET['action']);
-		/*array_unshift($params, $method);
-	    return call_user_func_array(array($this, "action"), $params);*/
+		$this->route('action', array('surveyid'));
 	}
 
-	function action($surveyid = null, $subaction = null, $var1 = null, $var2 = null, $var3 = null, $var4 = null)
+	function action($surveyid = null)
 	{
 		$surveyid = sanitize_int($surveyid);
-		$clang = $this->yii->lang;
-		$this->yii->loadHelper("database");
-		$this->yii->loadHelper("surveytranslator");
-		$data = array();
-
-		if (!isset($limit)) {$limit=returnglobal('limit');}
-		if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
-		if (!isset($id)) {$id=returnglobal('id');}
-		if (!isset($order)) {$order=returnglobal('order');}
-		if (!isset($browselang)) {$browselang=returnglobal('browselang');}
+		$clang = Yii::app()->lang;
 
 		// Some test in response table
-		if (!isset($surveyid) && !isset($subaction)) //NO SID OR ACTION PROVIDED
+		if (empty($surveyid)) //NO SID OR ACTION PROVIDED
 		{
 		    die("\t<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>"
 		            . $clang->gT("Browse Responses")."</div><div class='warningheader'>"
@@ -62,12 +46,24 @@ class browse extends Survey_Common_Action {
 		    return;
 		}
 
+		Yii::app()->loadHelper("database");
+		Yii::app()->loadHelper("surveytranslator");
+		$data = array();
+
+		if (!isset($limit)) {$limit=returnglobal('limit');}
+		if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+		if (!isset($id)) {$id=returnglobal('id');}
+		if (!isset($order)) {$order=returnglobal('order');}
+		if (!isset($browselang)) {$browselang=returnglobal('browselang');}
+		if (!isset($sa)) {$sa=returnglobal('sa');}
+
 		$data['surveyid'] = $surveyid;
-		$data['subaction'] = $subaction;
+		$data['subaction'] = $sa;
 		$data['clang'] = $clang;
+		$data['imageurl'] = $imageurl = Yii::app()->baseUrl . '/images';
 
 		//CHECK IF SURVEY IS ACTIVATED AND EXISTS
-		$actquery = "SELECT * FROM ".$this->yii->db->tablePrefix.'surveys'." as a inner join ".$this->yii->db->tablePrefix.'surveys_languagesettings'." as b on (b.surveyls_survey_id=a.sid and b.surveyls_language=a.language) WHERE a.sid=".addslashes($surveyid);
+		$actquery = "SELECT * FROM ".Yii::app()->db->tablePrefix.'surveys'." as a inner join ".Yii::app()->db->tablePrefix.'surveys_languagesettings'." as b on (b.surveyls_survey_id=a.sid and b.surveyls_language=a.language) WHERE a.sid=".addslashes($surveyid);
 
 		$actresult = db_execute_assoc($actquery);
 		$actcount = $actresult->count();
@@ -75,16 +71,16 @@ class browse extends Survey_Common_Action {
 		{
 			foreach ($actresult->readAll() as $actrow)
 		    {
-		        $surveytable = $this->yii->db->tablePrefix."survey_".$actrow['sid'];
-		        $surveytimingstable = $this->yii->db->tablePrefix."survey_".$actrow['sid']."_timings";
-		        $tokentable = $this->yii->db->tablePrefix."tokens_".$actrow['sid'];
+		        $surveytable = Yii::app()->db->tablePrefix."survey_".$actrow['sid'];
+		        $surveytimingstable = Yii::app()->db->tablePrefix."survey_".$actrow['sid']."_timings";
+		        $tokentable = Yii::app()->db->tablePrefix."tokens_".$actrow['sid'];
 		        /*
 		         * DO NEVER EVER PUT VARIABLES AND FUNCTIONS WHICH GIVE BACK DIFFERENT QUOTES
 		         * IN DOUBLE QUOTED(' and " and \" is used) JAVASCRIPT/HTML CODE!!! (except for: you know what you are doing)
 		         *
 		         * Used for deleting a record, fix quote bugs..
 		         */
-		        $surveytableNq = $this->yii->db->tablePrefix."survey_".$surveyid;
+		        $surveytableNq = Yii::app()->db->tablePrefix."survey_".$surveyid;
 
 		        $surveyname = "{$actrow['surveyls_title']}";
 		        if ($actrow['active'] == "N") //SURVEY IS NOT ACTIVE YET
@@ -137,23 +133,21 @@ class browse extends Survey_Common_Action {
 		    $language = GetBaseLanguageFromSurveyID($surveyid);
 		}
 
-		$this->controller->_getAdminHeader();
+		$this->getController()->_getAdminHeader();
 		$surveyoptions = "";
 		self::_browsemenubar($surveyid, $clang->gT("Browse Responses"));
 		$browseoutput = "";
 
-		$this->controller->_js_admin_includes($this->yii->getConfig("adminscripts").'browse.js');
-
-
+		$this->getController()->_js_admin_includes(Yii::app()->getConfig("adminscripts").'browse.js');
 
 		$qulanguage = GetBaseLanguageFromSurveyID($surveyid);
 
 
 		// Looking at a SINGLE entry
 
-		if ($subaction == "id")
+		if ($sa == "id")
 		{
-			$id=sanitize_int($var1);
+			$id=sanitize_int($id);
 		    //SHOW HEADER
 		    if (!isset($_POST['sql']) || !$_POST['sql']) {$browseoutput .= $surveyoptions;} // Don't show options if coming from tokens script
 		    //FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
@@ -226,9 +220,9 @@ class browse extends Survey_Common_Action {
 		    if ($surveyinfo['anonymized'] == "N" && db_tables_exist($tokentable))
 		        $idquery .= "LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
 		    if (incompleteAnsFilterstate() == "inc")
-		        $idquery .= " WHERE (submitdate = ".$connect->DBDate('1980-01-01'). " OR submitdate IS NULL) AND ";
+		        $idquery .= " WHERE (submitdate = ".mktime(0,0,0,1,1,1980)." OR submitdate IS NULL) AND ";
 		    elseif (incompleteAnsFilterstate() == "filter")
-		        $idquery .= " WHERE submitdate >= ".$connect->DBDate('1980-01-01'). " AND ";
+		        $idquery .= " WHERE submitdate >= ".mktime(0,0,0,1,1,1980). " AND ";
 		    else
 		        $idquery .= " WHERE ";
 		    if ($id < 1) { $id = 1; }
@@ -238,7 +232,7 @@ class browse extends Survey_Common_Action {
 		        else {$idquery .= "{$_POST['sql']}";}
 		    }
 		    else {$idquery .= "$surveytable.id = $id";}
-		    $idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg());
+		    $idresult = db_execute_assoc($idquery) or die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg());
 		    foreach ($idresult->readAll() as $idrow)
 		    {
 		        $id=$idrow['id'];
@@ -252,7 +246,7 @@ class browse extends Survey_Common_Action {
 			$data['next'] = $next;
 			$data['last'] = $last;
 
-			$this->controller->render("/admin/browse/browseidheader_view", $data);
+			$this->getController()->render("/admin/browse/browseidheader_view", $data);
 
 		    $idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />$idquery<br />".$connect->ErrorMsg());
 		    foreach ($idresult->readAll() as $idrow)
@@ -295,14 +289,14 @@ class browse extends Survey_Common_Action {
 					$data['inserthighlight'] = $inserthighlight;
 					$data['fnames'] = $fnames;
 					$data['i'] = $i;
-					$this->controller->render("/admin/browse/browseidrow_view", $data);
+					$this->getController()->render("/admin/browse/browseidrow_view", $data);
 		            $highlight=!$highlight;
 		        }
 		    }
-			$this->controller->render("/admin/browse/browseidfooter_view", $data);
+			$this->getController()->render("/admin/browse/browseidfooter_view", $data);
 		}
 
-		elseif ($subaction == "all")
+		elseif ($sa == "all")
 		{
 		    if(isset($var3)) $order = $var3;
 
@@ -347,17 +341,16 @@ class browse extends Survey_Common_Action {
 		        if (!empty($fuqtquestions))
 		        {
 		            // find all responses (filenames) to the fuqt questions
-		            $query="SELECT " . implode(", ", $fuqtquestions) . " FROM $surveytable where id={$_POST['deleteanswer']}";
-		            $responses = db_execute_assoc($query) or safe_die("Could not fetch responses<br />$query<br />".$connect->ErrorMsg());
+					$responses = Yii::app()->db->createCommand()->select($fuqtquestions)->from($surveytable)->where('id='.$_POST['deleteanswer'])->query()->readAll();
 
-		            foreach ($responses->readAll() as $json)
+		            foreach ($responses as $json)
 		            {
 		                foreach ($fuqtquestions as $fieldname)
 		                {
 		                    $phparray = json_decode($json[$fieldname]);
 		                    foreach($phparray as $metadata)
 		                    {
-		                        $path = $this->yii->getConfig('uploaddir')."/surveys/".$surveyid."/files/";
+		                        $path = Yii::app()->getConfig('uploaddir')."/surveys/".$surveyid."/files/";
 		                        unlink($path.$metadata->filename); // delete the file
 		                    }
 		                }
@@ -365,8 +358,7 @@ class browse extends Survey_Common_Action {
 		        }
 
 		        // delete the row
-		        $query="delete FROM $surveytable where id=".mysql_real_escape_string($_POST['deleteanswer']);
-		        db_execute_assoc($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg()); // checked
+				Yii::app()->db->createCommand()->delete($surveytable, 'id='.mysql_real_escape_string($_POST['deleteanswer']));
 		    }
 		    // Marked responses -> deal with the whole batch of marked responses
 		    if (isset($_POST['markedresponses']) && count($_POST['markedresponses'])>0 && bHasSurveyPermission($surveyid,'responses','delete'))
@@ -390,27 +382,25 @@ class browse extends Survey_Common_Action {
                         if (!empty($fuqtquestions))
 		                {
                             // find all responses (filenames) to the fuqt questions
-                            $query="SELECT " . implode(", ", $fuqtquestions) . " FROM $surveytable where id={$iResponseID}";
-                            $responses = db_execute_assoc($query) or safe_die("Could not fetch responses<br />$query<br />".$connect->ErrorMsg());
+							$responses = Yii::app()->db->createCommand()->select($fuqtquestions)->from($surveytable)->where('id='.$iResponseID)->query()->readAll();
 
-                            foreach ($responses->readAll() as $json)
+                            foreach ($responses as $json)
 		                    {
                                 foreach ($fuqtquestions as $fieldname)
 		                        {
                                     $phparray = json_decode($json[$fieldname]);
                                     foreach($phparray as $metadata)
                                     {
-                                        $path = $this->controller->getConfig('uploaddir')."/surveys/{$surveyid}/files/";
+                                        $path = $this->getController()->getConfig('uploaddir')."/surveys/{$surveyid}/files/";
                                         unlink($path.$metadata->filename); // delete the file
-		                        }
-		                    }
-		                }
-		            }
+									}
+								}
+							}
+						}
 
-		                $query="delete FROM {$surveytable} where id={$iResponseID}";
-		                db_execute_assoc($query) or safe_die("Could not delete response<br />{$dtquery}<br />".$connect->ErrorMsg());  // checked
+						Yii::app()->db->createCommand()->delete($surveytable, 'id='.$iResponseID);
 		            }
-		            }
+		        }
 		        // Download all files for all marked responses  - checked
 		        else if (isset($_POST['downloadfile']) && $_POST['downloadfile'] === 'marked')
 		        {
@@ -432,16 +422,14 @@ class browse extends Survey_Common_Action {
 		        $downloadindividualfile = $_POST['downloadindividualfile'];
 		        $fieldname = $_POST['fieldname'];
 
-		        $query = "SELECT ".db_quote_id($fieldname)." FROM {$surveytable} WHERE id={$id}";
-		        $result=db_execute_assoc($query);
-		        $row = $result->read();
+				$row = Yii::app()->db->createCommand()->select($fieldname)->from($surveytable)->where('id='.$id)->query()->read();
 		        $phparray = json_decode(reset($row));
 
 		        for ($i = 0; $i < count($phparray); $i++)
 		        {
 		            if ($phparray[$i]->name == $downloadindividualfile)
 		            {
-		                $file = $this->yii->getConfig('uploaddir')."/surveys/" . $surveyid . "/files/" . $phparray[$i]->filename;
+		                $file = Yii::app()->getConfig('uploaddir')."/surveys/" . $surveyid . "/files/" . $phparray[$i]->filename;
 
 		                if (file_exists($file)) {
 		                    header('Content-Description: File Transfer');
@@ -473,9 +461,6 @@ class browse extends Survey_Common_Action {
 		    }
 
 		    $fnames[] = array("submitdate", $clang->gT("Completed"), $clang->gT("Completed"), "0", 'D');
-		    $fields = createFieldMap($surveyid, 'full', false, false, $language);
-
-		    $fnames[] = array("submitdate", "Completed", $clang->gT("Completed"), "0", 'D');
 		    $fields = createFieldMap($surveyid, 'full', false, false, $language);
 
 		    foreach ($fields as $fielddetails)
@@ -555,25 +540,25 @@ class browse extends Survey_Common_Action {
 		    $tableheader .= "\t<tfoot><tr><td colspan=".($fncount+2).">";
 		    if (bHasSurveyPermission($surveyid,'responses','delete'))
 		    {
-		        $tableheader .= "<img id='imgDeleteMarkedResponses' src='".$this->yii->getConfig("imageurl")."/token_delete.png' alt='".$clang->gT('Delete marked responses')."' />";
+		        $tableheader .= "<img id='imgDeleteMarkedResponses' src='".Yii::app()->getConfig("imageurl")."/token_delete.png' alt='".$clang->gT('Delete marked responses')."' />";
 		    }
 		    if (bHasFileUploadQuestion($surveyid))
 		    {
-		        $tableheader .="<img id='imgDownloadMarkedFiles' src='".$this->yii->getConfig("imageurl")."/down_all.png' alt='".$clang->gT('Download marked files')."' />";
+		        $tableheader .="<img id='imgDownloadMarkedFiles' src='".Yii::app()->getConfig("imageurl")."/down_all.png' alt='".$clang->gT('Download marked files')."' />";
 		    }
 		    $tableheader .="</td></tr></tfoot>\n\n";
 
 		    if(isset($var1)) $start = (int) $var1; else $start=returnglobal('start');
 		    if(isset($var2)) $limit = (int) $var2; else $limit=returnglobal('limit');
-		    if (!isset($limit) || $limit== '') {$limit = 50;}
+		    if (!isset($limit) || $limit== '') {$limit = 100;}
 		    if (!isset($start) || $start =='') {$start = 0;}
+
+			$dtquery = Yii::app()->db->createCommand()->select('count(*)')->from($surveytable);
 
 		    //Create the query
 		    if ($surveyinfo['anonymized'] == "N" && db_tables_exist($tokentable))
 		    {
-		        $sql_from = "{$surveytable} LEFT JOIN {$tokentable} ON {$surveytable}.token = {$tokentable}.token";
-		    } else {
-		        $sql_from = $surveytable;
+				$dtquery->leftJoin($tokentable, array(), array("$surveytable.token" => "$tokentable.token"));
 		    }
 
 		    $selectedgroup = returnglobal('selectgroup'); // group token id
@@ -581,104 +566,56 @@ class browse extends Survey_Common_Action {
 		    $sql_where = "";
 		    if (incompleteAnsFilterstate() == "inc")
 		    {
-		        $sql_where .= "submitdate IS NULL";
-
+		        //$sql_where .= "submitdate IS NULL";
+				$dtquery->where('submitdate IS NULL');
 		    }
 		    elseif (incompleteAnsFilterstate() == "filter")
 		    {
-		        $sql_where .= "submitdate IS NOT NULL";
-
+		        //$sql_where .= "submitdate IS NOT NULL";
+				$dtquery->where('submitdate IS NOT NULL');
 		    }
 
 		    //LETS COUNT THE DATA
-		    $dtquery = "SELECT count(*) FROM $sql_from";
-		    if ($sql_where!="")
-		    {
-		        $dtquery .=" WHERE $sql_where";
-		    }
+		    //$dtquery = "SELECT count(*) FROM $sql_from";
+		    //if ($sql_where!="")
+		    //{
+		    //    $dtquery .=" WHERE $sql_where";
+		    //}
 
-		    $dtresult = db_execute_assoc($dtquery) or safe_die("Couldn't get response data<br />$dtquery<br />".$connect->ErrorMsg());
-		    $dtrow = $dtresult->read();
-			$dtcount = reset($dtrow);
+			$dtcount = $dtquery->query()->readColumn(0) or die("Couldn't get response data<br />");
 
 		    if ($limit > $dtcount) {$limit=$dtcount;}
 
+			$dtquery = Yii::app()->db->createCommand()->select()->from($surveytable);
+			$dtwhere = array('and');
+		    $selectedgroup = returnglobal('selectgroup');
+
+		    if ($surveytable['anonymized'] == "N" && db_tables_exist($tokentable))
+				$dtquery->leftJoin($tokentable, array(), array("$surveytable.token" => "$tokentable.token"));
+
 		    //NOW LETS SHOW THE DATA
-		    if (isset($_POST['sql']))
-		    {
-		        if ($_POST['sql'] == "NULL" )
-		        {
-		            if ($surveyinfo['anonymized'] == "N" && db_tables_exist($tokentable))
-		                $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
-		            else
-		                $dtquery = "SELECT * FROM $surveytable ";
-		            // group token id
-		            $selectedgroup = returnglobal('selectgroup');
-		            if (incompleteAnsFilterstate() == "inc")
-		            {
-		                $dtquery .= "WHERE submitdate IS NULL ";
-		            }
-		            elseif (incompleteAnsFilterstate() == "filter")
-		            {
-		                $dtquery .= " WHERE submitdate IS NOT NULL ";
-		            }
+		    if (!empty($_POST['sql']) && stripcslashes($_POST['sql']) !== "" && $_POST['sql'] != "NULL")
+				$dtwhere[] = stripcslashes($_POST['sql']);
 
-		            $dtquery .= " ORDER BY {$surveytable}.id";
-		        }
-		        else
-		        {
-		            if ($surveytable['anonymized'] == "N" && db_tables_exist($tokentable))
-		                $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token where 1=1 ";
-		            else
-		                $dtquery = "SELECT * FROM $surveytable where 1=1 ";
-		            $selectedgroup = returnglobal('selectgroup');
-		            if (incompleteAnsFilterstate() == "inc")
-		            {
-		                $dtquery .= " AND submitdate IS NULL ";
-		                }
-		            elseif (incompleteAnsFilterstate() == "filter")
-		            {
-		                $dtquery .= " AND submitdate IS NOT NULL ";
-		                }
-		            if (stripcslashes($_POST['sql']) !== "")
-		            {
-		                $dtquery .=  ' AND '. stripcslashes($_POST['sql'])." ";
-		            }
-		            $dtquery .= " ORDER BY {$surveytable}.id";
-		        }
-		    }
-		    else
-		    {
-		        if ($surveyinfo['anonymized'] == "N" && db_tables_exist($tokentable))
-		            $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
-		        else
-		            $dtquery = "SELECT * FROM $surveytable ";
-		        if (incompleteAnsFilterstate() == "inc")
-		        {
-		            $dtquery .= " WHERE submitdate IS NULL ";
+			if (incompleteAnsFilterstate() == "inc")
+				$dtwhere[] = 'submitdate IS NULL';
+			elseif (incompleteAnsFilterstate() == "filter")
+				$dtwhere[] = 'submitdate IS NOT NULL';
 
-		        }
-		        elseif (incompleteAnsFilterstate() == "filter")
-		        {
-		            $dtquery .= " WHERE submitdate IS NOT NULL ";
-		        }
+			if (is_array($dtwhere) && count($dtwhere)>1)
+				$dtquery->where($dtwhere);
 
-		        $dtquery .= " ORDER BY {$surveytable}.id";
-		    }
-		    if ($order == "desc") {$dtquery .= " DESC";}
+			$dtquery->order('id ' . ($order == 'desc' ? 'desc' : 'asc'));
 
 		    if (isset($limit))
 		    {
 		        if (!isset($start)) {$start = 0;}
-		        $dtresult = db_select_limit_assoc($dtquery, $limit, $start) or safe_die("Couldn't get surveys<br />$dtquery<br />".$connect->ErrorMsg());
+				$dtquery->limit($limit, $start);
 		    }
-		    else
-		    {
-		        $dtresult = db_execute_assoc($dtquery) or safe_die("Couldn't get surveys<br />$dtquery<br />".$connect->ErrorMsg());
-		    }
-		    $dtcount2 = $dtresult->count();
-		    $cells = $fncount+1;
 
+			$dtresult = $dtquery->query();
+		    $dtcount2 = $dtresult->getRowCount();
+		    $cells = $fncount+1;
 
 		    //CONTROL MENUBAR
 		    $last=$start-$limit;
@@ -697,7 +634,7 @@ class browse extends Survey_Common_Action {
 			$data['next'] = $next;
 			$data['end'] = $end;
 
-			$this->controller->render("/admin/browse/browseallheader_view", $data);
+			$this->getController()->render("/admin/browse/browseallheader_view", $data);
 
 		    foreach ($dtresult->readAll() as $dtrow)
 		    {
@@ -712,11 +649,11 @@ class browse extends Survey_Common_Action {
 				$data['surveyinfo'] = $surveyinfo;
 				$data['fncount'] = $fncount;
 				$data['fnames'] = $fnames;
-				$this->controller->render("/admin/browse/browseallrow_view", $data);
+				$this->getController()->render("/admin/browse/browseallrow_view", $data);
 		    }
-		    $this->controller->render("/admin/browse/browseallfooter_view", $data);
+		    $this->getController()->render("/admin/browse/browseallfooter_view", $data);
 		}
-		elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
+		elseif ($surveyinfo['savetimings']=="Y" && $sa == "time"){
 			$browseoutput .= $surveyoptions;
 			$browseoutput .= '<div class="header ui-widget-header">'.$clang->gT('Time statistics').'</div>';
 
@@ -958,7 +895,7 @@ class browse extends Survey_Common_Action {
 			}
 			$browseoutput .= '</table>';
 		}
-		elseif ($subaction=="time")
+		elseif ($sa=="time")
 		{
 		    $browseoutput .= $surveyoptions;
 		    $browseoutput .= "<div class='header ui-widget-header'>".$clang->gT("Timings")."</div>";
@@ -978,11 +915,11 @@ class browse extends Survey_Common_Action {
 			$data['num_total_answers']=reset($gnrow);
 			$gnrow2=$gnresult2->read();
 			$data['num_completed_answers']=reset($gnrow2);
-			$this->controller->render("/admin/browse/browseindex_view", $data);
+			$this->getController()->render("/admin/browse/browseindex_view", $data);
 		}
 
 		echo $browseoutput;
-		$this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->yii->lang->gT("LimeSurvey online manual"));
+		$this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
 
 	}
 
@@ -997,7 +934,7 @@ class browse extends Survey_Common_Action {
     function zipFiles($responseIds, $zipfilename) {
         global $surveyid, $surveytable;
 
-        $tmpdir = $this->yii->getConfig('uploaddir'). "/surveys/" . $surveyid . "/files/";
+        $tmpdir = Yii::app()->getConfig('uploaddir'). "/surveys/" . $surveyid . "/files/";
 
         $filelist = array();
         $fieldmap = createFieldMap($surveyid, 'full');
@@ -1046,7 +983,7 @@ class browse extends Survey_Common_Action {
 
         if (count($filelist)>0) {
         	// TODO: to extend the yii app function loadLibrary to meet the app requirements
-            $this->yii->loadLibrary("admin/pclzip/pclzip"/*,array('p_zipname' => $tempdir.$zipfilename)*/);
+            Yii::app()->loadLibrary("admin/pclzip/pclzip"/*,array('p_zipname' => $tempdir.$zipfilename)*/);
             $zip = new PclZip($tmpdir . $zipfilename);
             if ($zip->create($filelist)===0) {
                 //Oops something has gone wrong!

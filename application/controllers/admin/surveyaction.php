@@ -151,12 +151,12 @@ class SurveyAction extends Survey_Common_Action {
             die();
         }
 
-        self::_js_admin_includes(Yii::app()->getConfig('generalscripts').'admin/surveysettings.js');
-        self::_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jqGrid/js/i18n/grid.locale-en.js');
-        self::_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jqGrid/js/jquery.jqGrid.min.js');
-        self::_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jquery.json.min.js');
-        self::_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
-        self::_css_admin_includes(Yii::app()->getConfig('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css");
+        $this->controller->_js_admin_includes(Yii::app()->getConfig('generalscripts').'admin/surveysettings.js');
+        $this->controller->_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jqGrid/js/i18n/grid.locale-en.js');
+        $this->controller->_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jqGrid/js/jquery.jqGrid.min.js');
+        $this->controller->_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jquery.json.min.js');
+        $this->controller->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
+        $this->controller->_css_admin_includes(Yii::app()->getConfig('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css");
         self::_getAdminHeader();
         self::_showadminmenu($surveyid);;
         self::_surveybar($surveyid);
@@ -459,12 +459,12 @@ class SurveyAction extends Survey_Common_Action {
             die();
         }
 
-        self::_js_admin_includes(Yii::app()->getConfig('generalscripts').'admin/surveysettings.js');
-        self::_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jqGrid/js/i18n/grid.locale-en.js');
-        self::_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jqGrid/js/jquery.jqGrid.min.js');
-        self::_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jquery.json.min.js');
-        self::_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
-        self::_css_admin_includes(Yii::app()->getConfig('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css");
+        $this->controller->_js_admin_includes(Yii::app()->getConfig('generalscripts').'admin/surveysettings.js');
+        $this->controller->_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jqGrid/js/i18n/grid.locale-en.js');
+        $this->controller->_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jqGrid/js/jquery.jqGrid.min.js');
+        $this->controller->_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jquery.json.min.js');
+        $this->controller->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
+        $this->controller->_css_admin_includes(Yii::app()->getConfig('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css");
         self::_getAdminHeader();
         self::_showadminmenu($surveyid);
         self::_surveybar($surveyid);

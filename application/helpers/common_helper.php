@@ -1850,15 +1850,13 @@ function getsidgidqidaidtype($fieldcode)
 */
 function getextendedanswer($surveyid, $action, $fieldcode, $value, $format='')
 {
-
-    $CI = &get_instance();
-    $clang = $CI->limesurvey_lang;
+	$clang = Yii::app()->getController()->lang;
 
     // use Survey base language if s_lang isn't set in _SESSION (when browsing answers)
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     if  (!isset($action) || (isset($action) && $action!='browse') || $action == NULL )
     {
-        if ($CI->session->userdata('s_lang')) $s_lang = $CI->session->userdata('s_lang');  //This one does not work in admin mode when you browse a particular answer
+        if (Yii::app()->session['s_lang']) $s_lang = Yii::app()->session['s_lang'];  //This one does not work in admin mode when you browse a particular answer
     }
 
     //Fieldcode used to determine question, $value used to match against answer code
@@ -1887,12 +1885,9 @@ function getextendedanswer($surveyid, $action, $fieldcode, $value, $format='')
             case "^":
             case "I":
             case "R":
-                $CI->load->model('answers_model');
+                $result = Answers::model()->getAnswerCode($fields['qid'],$value,$s_lang) or die ("Couldn't get answer type L - getextendedanswer() in common_helper.php<br />$query<br />"); //Checked
 
-                //$query = "SELECT code, answer FROM ".db_table_name('answers')." WHERE qid={$fields['qid']} AND code='".$connect->escape($value)."' AND scale_id=0 AND language='".$s_lang."'";
-                $result = $CI->answers_model->getAnswerCode($fields['qid'],$value,$s_lang) or safe_die ("Couldn't get answer type L - getextendedanswer() in common_helper.php<br />$query<br />"); //Checked
-
-                foreach($result->result_array() as $row)
+                foreach($result->readAll() as $row)
                 {
                     $this_answer=$row['answer'];
                 } // while
@@ -1945,11 +1940,10 @@ function getextendedanswer($surveyid, $action, $fieldcode, $value, $format='')
             case "H":
             case "1":
                 $fieldtoselect = array('answer');
-                $condition = "qid = {$fields['qid']} AND code=".$CI->db->escape($value)." AND language='".$s_lang."'";
-                $CI->load->model('answers_model');
+                $condition = "qid = {$fields['qid']} AND code=".$value." AND language='".$s_lang."'";
 
-                $result = $CI->answers_model->getSomeRecords($fieldtoselect,$condition) or safe_die ("Couldn't get answer type F/H - getextendedanswer() in common_helper.php");   //Checked
-                foreach($result->result_array() as $row)
+                $result = Answers::model()->getSomeRecords($fieldtoselect,$condition) or die ("Couldn't get answer type F/H - getextendedanswer() in common_helper.php");   //Checked
+                foreach($result->readAll() as $row)
                 {
                     $this_answer=$row['answer'];
                 } // while
@@ -2988,7 +2982,7 @@ function GetBaseLanguageFromSurveyID($surveyid)
         $condition = array('sid' => $surveyid);//"sid=$surveyid";
 
         $surveylanguage = Survey::model()->findByPk($surveyid);//("SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";)
-		
+
 		/*if (is_null($surveylanguage))
 			die(var_dump(debug_backtrace()));*/
         $surveylanguage = $surveylanguage['attributes']; //Checked)

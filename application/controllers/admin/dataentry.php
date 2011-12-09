@@ -642,7 +642,7 @@
         if (bHasSurveyPermission($surveyid, 'responses','update'))
         {
             $surveytable = "{{survey_".$surveyid.'}}';
-            $clang = $this->limesurvey_lang;
+            $clang = $this->getController()->lang;
             $this->_browsemenubar($surveyid, $clang->gT("Data entry"));
             $dataentryoutput = '';
             $this->yii->loadHelper('database');
