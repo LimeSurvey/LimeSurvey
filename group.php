@@ -68,7 +68,7 @@ else
     if (!isset($_SESSION['step']))  //  || !$_SESSION['step']) - don't do this for step0, else rebuild the session
     {
         $totalquestions = buildsurveysession();
-        LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, true,$LEMdebugLevel);
+        LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);
         $_SESSION['step'] = 0;
         if ($surveyMode == 'survey') {
             $move = "movenext"; // to force a call to NavigateForwards()
@@ -711,7 +711,7 @@ foreach ($_SESSION['grouplist'] as $gl)
         $question['sgq']=$qa[7];
         //===================================================================
         $answer=$qa[1];
-        $help=$qa[2];
+        $help=$qinfo['info']['help'];   // $qa[2];
 
         $question_template = file_get_contents($thistpl.'/question.pstpl');
         if( preg_match( '/\{QUESTION_ESSENTIALS\}/' , $question_template ) === false || preg_match( '/\{QUESTION_CLASS\}/' , $question_template ) === false )

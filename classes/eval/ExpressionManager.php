@@ -1440,7 +1440,13 @@ class ExpressionManager {
                     return $var['code'];    // for static values like TOKEN
                 }
                 else {
-                    return (isset($_SESSION[$sgqa])) ? $_SESSION[$sgqa] : $default;
+                    if (isset($_SESSION[$sgqa])) {
+                        return $_SESSION[$sgqa];
+                    }
+                    if (isset($var['default']) && !is_null($var['default'])) {
+                        return $var['default'];
+                    }
+                    return $default;
                 }
             case 'value':
             case 'valueNAOK':

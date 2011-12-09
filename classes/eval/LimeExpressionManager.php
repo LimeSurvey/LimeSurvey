@@ -1107,6 +1107,7 @@ class LimeExpressionManager {
             $hidden = (isset($qattr[$questionNum]['hidden'])) ? $qattr[$questionNum]['hidden'] : 'N';
             $scale_id = (isset($fielddata['scale_id'])) ? $fielddata['scale_id'] : '0';
             $preg = (isset($fielddata['preg'])) ? $fielddata['preg'] : NULL; // a perl regular exrpession validation function
+            $defaultValue = (isset($fielddata['defaultvalue']) ? $fielddata['defaultvalue'] : NULL);
             if (trim($preg) == '') {
                 $preg = NULL;
             }
@@ -1422,6 +1423,7 @@ class LimeExpressionManager {
                 'ansList'=>$ansList,
                 'ansArray'=>$ansArray,
                 'scale_id'=>$scale_id,
+                'default'=>$defaultValue,
                 );
 
             $this->questionSeq2relevance[$questionSeq] = array(
@@ -1441,6 +1443,7 @@ class LimeExpressionManager {
                 'qtext'=>$question,
                 'code'=>$varName,
                 'other'=>$other,
+                'default'=>$defaultValue,
                 );
 
             $this->knownVars[$varName] = $varInfo_Code;
@@ -1464,6 +1467,7 @@ class LimeExpressionManager {
                 . "','relevance':'" . (($relevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES) : 1)
                 . "','readWrite':'" . $readWrite
                 . "','grelevance':'" . (($grelevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$grelevance),ENT_QUOTES) : 1)
+                . "','default':'" . (is_null($defaultValue) ? '' : $defaultValue)
                 . "','gseq':" . $groupSeq
                 . ",'qseq':" . $questionSeq
                 .$ansList."}";
@@ -2403,6 +2407,7 @@ class LimeExpressionManager {
     /**
      * Write values to database.
      * @param <type> $updatedValues
+     * @param <boolean> $finished - true if the survey needs to be finalized
      */
     private function _UpdateValuesInDatabase($updatedValues, $finished=false)
     {
@@ -3437,6 +3442,7 @@ class LimeExpressionManager {
         $updatedValues=array();
         if (!$qrel)
         {
+            // If not relevant, then always NULL it in the database
             $sgqas = explode('|',$LEM->qid2code[$qid]);
             foreach ($sgqas as $sgqa)
             {
@@ -3466,6 +3472,16 @@ class LimeExpressionManager {
             // process irrelevant subquestions
             $_SESSION[$sq] = NULL;
             $updatedValues[$sq] = NULL;
+        }
+
+        // Regardless of whether relevant or hidden, if there is a default value and $_SESSION[$sgqa] is NULL, then use the default value in $_SESSION, but don't write to database
+        // Also, set this AFTER testing relevance
+        $sgqas = explode('|',$LEM->qid2code[$qid]);
+        foreach ($sgqas as $sgqa)
+        {
+            if (!is_null($LEM->knownVars[$sgqa]['default']) && !isset($_SESSION[$sgqa])) {
+                $_SESSION[$sgqa] = $LEM->knownVars[$sgqa]['default'];
+            }
         }
 
         // Store metadata needed for subsequent processing and display purposes
@@ -4618,9 +4634,9 @@ EOT;
             $_SESSION['relevanceStatus'][$qid] = $relevant;
             foreach (explode('|',$qinfo['sgqa']) as $sq)
             {
-                if ($relevant && isset($_POST[$sq]))
+                if ($relevant)
                 {
-                    $value = $_POST[$sq];
+                    $value = (isset($_POST[$sq]) ? $_POST[$sq] : '');
                     $type = $qinfo['info']['type'];
                     switch($type)
                     {
@@ -4675,8 +4691,9 @@ EOT;
                         'value'=>$value,
                         );
                 }
-                else {
-                    $_SESSION[$sq] = "";
+                else {  // irrelevant, so database will be NULLed separately
+                    // Must unset the value, rather than setting to '', so that EM can re-use the default value as needed.
+                    unset($_SESSION[$sq]);
                 }
             }
         }

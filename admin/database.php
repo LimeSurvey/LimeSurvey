@@ -414,6 +414,7 @@ if(isset($surveyid))
             }
         }
         $_SESSION['flashmessage'] = $clang->gT("Default value settings were successfully saved.");
+        LimeExpressionManager::SetDirtyFlag();
     }
 
 

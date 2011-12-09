@@ -68,7 +68,7 @@ else
 * @param mixed $filenotvalidated
 * @return mixed
 */
-function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotvalidated=null)
+function retrieveAnswers($ia)
 {
     //globalise required config variables
     global $dbprefix, $clang; //These are from the config-defaults.php file
@@ -82,13 +82,6 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
     $name = $ia[0];
 
     $qtitle=$ia[3];
-
-    //GET HELP
-    // TMSW TODO - eliminate this - get from LEM
-    $hquery="SELECT help FROM {$dbprefix}questions WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."'";
-    $hresult=db_execute_num($hquery) or safe_die($connect->ErrorMsg());       //Checked
-    $help="";
-    while ($hrow=$hresult->FetchRow()) {$help=$hrow[0];}
 
     // TMSW - eliminate this - get from LEM
     //A bit of housekeeping to stop PHP Notices
@@ -419,7 +412,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
     $qtitle = $question_text;
     // =====================================================
 
-    $qanda=array($qtitle, $answer, $help, $display, $name, $ia[2], $gl[0], $ia[1] );
+    $qanda=array($qtitle, $answer, 'help', $display, $name, $ia[2], $gl[0], $ia[1] );
     //New Return
     return array($qanda, $inputnames);
 }

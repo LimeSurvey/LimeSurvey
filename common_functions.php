@@ -2241,8 +2241,6 @@ function validate_templatedir($templatename)
 * @return array
 */
 function createFieldMap($surveyid, $style='full', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
-    // TMSW Conditions->Relevance:  Refactor this function so that doesn't query conditions table, and so that only 3 db calls total to build array (questions, answers, attributes)
-    // TMSW Conditions->Relevance:  'hasconditions' and 'usedinconditions' are no longer needed.
 
     global $dbprefix, $connect, $globalfieldmap, $clang, $aDuplicateQIDs;
     $surveyid=sanitize_int($surveyid);
@@ -2367,12 +2365,54 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
     {
         $s_lang = $sQuestionLanguage;
     }
+
+    // Collect all default values once so don't need separate query for each question with defaults
+    // First collect language specific defaults
+    $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
+        . " FROM ".db_table_name('defaultvalues')." as a, ".db_table_name('questions')." as b"
+        . " WHERE a.qid = b.qid"
+        . " AND a.language = b.language"
+        . " AND a.language = '$s_lang'"
+        . " AND b.same_default=0"
+        . " AND b.sid = ".$surveyid;
+    $defaultResults = db_execute_assoc($defaultsQuery) or safe_die ("Couldn't get list of default values in createFieldMap.<br/>$defaultsQuery<br/>".$conect->ErrorMsg());
+
+    $defaultValues = array();   // indexed by question then subquestion
+    foreach($defaultResults as $dv)
+    {
+        if ($dv['specialtype'] != '') {
+            $sq = $dv['specialtype'];
+        }
+        else {
+            $sq = $dv['sqid'];
+        }
+        $defaultValues[$dv['qid'].'~'.$sq] = $dv['defaultvalue'];
+    }
+
+    // Now overwrite language-specific defaults (if any) base language values for each question that uses same_defaults=1
+    $baseLanguage = GetBaseLanguageFromSurveyID($surveyid);
+    $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
+        . " FROM ".db_table_name('defaultvalues')." as a, ".db_table_name('questions')." as b"
+        . " WHERE a.qid = b.qid"
+        . " AND a.language = b.language"
+        . " AND a.language = '$baseLanguage'"
+        . " AND b.same_default=1"
+        . " AND b.sid = ".$surveyid;
+    $defaultResults = db_execute_assoc($defaultsQuery) or safe_die ("Couldn't get list of default values in createFieldMap.<br/>$defaultsQuery<br/>".$conect->ErrorMsg());
+
+    foreach($defaultResults as $dv)
+    {
+        if ($dv['specialtype'] != '') {
+            $sq = $dv['specialtype'];
+        }
+        else {
+            $sq = $dv['sqid'];
+        }
+        $defaultValues[$dv['qid'].'~'.$sq] = $dv['defaultvalue'];
+    }
+
     $qtypes=getqtypelist('','array');
     $aquery = "SELECT * "
-//        ." (SELECT count(1) FROM ".db_table_name('conditions')." c\n"
-//        ." WHERE questions.qid = c.qid) AS hasconditions,\n"
-//        ." (SELECT count(1) FROM ".db_table_name('conditions')." c\n"
-//        ." WHERE questions.qid = c.cqid) AS usedinconditions\n"
         ." FROM ".db_table_name('questions')." as questions, ".db_table_name('groups')." as groups"
         ." WHERE questions.gid=groups.gid AND "
         ." questions.sid=$surveyid AND "
@@ -2392,40 +2432,6 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
     {
         ++$questionSeq;
 
-//        if ($arow['hasconditions']>0)
-//        {
-//            $conditions = "Y";
-//        }
-//        else
-//        {
-//            $conditions = "N";
-//        }
-//        if ($arow['usedinconditions']>0)
-//        {
-//            $usedinconditions = "Y";
-//        }
-//        else
-//        {
-//            // This question is not directly used in a condition, however we should
-//            // check if its SGQA code is not used as a value in another condition
-//            // as a @SGQA@ code
-//            $atsgqaQuery = "SELECT count(1) as sgqausedincondition "
-//            . "FROM ".db_table_name('questions')." as q, "
-//            . db_table_name('conditions')." as c "
-//            . "WHERE c.qid=q.qid AND q.sid=".$arow['sid']." AND "
-//            . "c.value like '@".$arow['sid']."X".$arow['gid']."X".$arow['qid']."%'";
-//            $atsgqaResult = db_execute_assoc($atsgqaQuery) or safe_die ("Couldn't get list @sgqa@ conditions in createFieldMap function.<br />$atsgqaQuery<br />".$connect->ErrorMsg()); //Checked
-//            $atsgqaRow = $atsgqaResult->FetchRow();
-//            if ($atsgqaRow['sgqausedincondition'] == 0 )
-//            {
-//            $usedinconditions = "N";
-//        }
-//            else
-//            {
-//                $usedinconditions = "Y";
-//            }
-//        }
-
         // Conditions indicators are obsolete with EM.  However, they are so tightly coupled into LS code that easider to just set values to 'N' for now and refactor later.
         $conditions = 'N';
         $usedinconditions = 'N';
@@ -2437,10 +2443,10 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
         // Implicit (subqestion intermal to a question type ) or explicit qubquestions/answer count starts at 1
 
         // Types "L", "!" , "O", "D", "G", "N", "X", "Y", "5","S","T","U","*"
+        $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
 
         if ($qtypes[$arow['type']]['subquestions']==0  && $arow['type'] != "R" && $arow['type'] != "|")
         {
-            $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
             if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
             $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"{$arow['type']}", 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"");
             if ($style == "full")
@@ -2453,16 +2459,8 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
                 $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                 $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                 $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
-                if ($qtypes[$arow['type']]['hasdefaultvalues'])
-                {
-                    if ($arow['same_default'])
-                    {
-                        $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
-                    }
-                    else
-                    {
-                        $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
-                    }
+                if (isset($defaultValues[$arow['qid'].'~0'])) {
+                    $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$arow['qid'].'~0'];
                 }
             }
             switch($arow['type'])
@@ -2493,16 +2491,11 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
                             $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                             $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
                             $fieldmap[$fieldname]['other']=$arow['other'];
-                                if ($arow['same_default'])
-                                {
-                                $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."' and specialtype='other'");
-                                }
-                                else
-                                {
-                                $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}' and specialtype='other'");
-                                }
+                            if (isset($defaultValues[$arow['qid'].'~other'])) {
+                                $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$arow['qid'].'~other'];
                             }
                         }
+                    }
                     break;
                 case "O": //DROPDOWN LIST WITH COMMENT
                     $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}comment";
@@ -2720,16 +2713,10 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
                     $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                     $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
                     $fieldmap[$fieldname]['preg']=$arow['preg'];
-
-                        if ($arow['same_default'])
-                        {
-                        $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE sqid={$abrow['qid']} and qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
-                        }
-                        else
-                        {
-                        $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE sqid={$abrow['qid']} and qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
-                        }
+                    if (isset($defaultValues[$arow['qid'].'~'.$abrow['qid']])) {
+                        $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$arow['qid'].'~'.$abrow['qid']];
                     }
+                }
                 if ($arow['type'] == "P")
                 {
                     $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}comment";
@@ -2794,6 +2781,7 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
         $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
         $fieldmap[$fieldname]['preg']=$arow['preg'];
         $fieldmap[$fieldname]['other']=$arow['other'];
+        $fieldmap[$fieldname]['help']=$arow['help'];
     }
     if (isset($fieldmap)) {
         $globalfieldmap[$surveyid][$style][$clang->langcode] = $fieldmap;
