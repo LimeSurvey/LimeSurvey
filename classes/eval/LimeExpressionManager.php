@@ -2022,6 +2022,7 @@ class LimeExpressionManager {
         $LEM->surveyOptions['ipaddr'] = (isset($options['ipaddr']) ? $options['ipaddr'] : false);
         $LEM->surveyOptions['refurl'] = (isset($options['refurl']) ? $options['refurl'] : NULL);
         $LEM->surveyOptions['rooturl'] = (isset($options['rooturl']) ? $options['rooturl'] : '');
+        $LEM->surveyOptions['savetimings'] = (isset($options['savetimings']) ? $options['savetimings'] : '');
         $LEM->surveyOptions['startlanguage'] = (isset($options['startlanguage']) ? $options['startlanguage'] : 'en');
         $LEM->surveyOptions['surveyls_dateformat'] = (isset($options['surveyls_dateformat']) ? $options['surveyls_dateformat'] : 1);
         $LEM->surveyOptions['tablename'] = (isset($options['tablename']) ? $options['tablename'] : db_table_name('survey_' . $LEM->sid));
@@ -2440,22 +2441,24 @@ class LimeExpressionManager {
             }
         }
 
-        if (count($updatedValues) > 0)
+        if (count($updatedValues) > 0 || $finished)
         {
             $query = 'UPDATE '.$this->surveyOptions['tablename'] . " SET ";
             $setter = array();
             switch ($this->surveyMode)
             {
                 case 'question':
-                    $setter[] = db_quote_id('lastpage') . "=" . db_quoteall($this->currentQuestionSeq);
+                    $thisstep = $this->currentQuestionSeq;
                     break;
                 case 'group':
-                    $setter[] = db_quote_id('lastpage') . "=" . db_quoteall($this->currentGroupSeq);
+                    $thisstep = $this->currentGroupSeq;
                     break;
                 case 'survey':
-                    $setter[] = db_quote_id('lastpage') . "=" . db_quoteall(1);
+                    $thisstep = 1;
                     break;
             }
+            $setter[] = db_quote_id('lastpage') . "=" . db_quoteall($thisstep);
+
             if ($this->surveyOptions['datestamp'] && isset($_SESSION['datestamp'])) {
                 $setter[] = db_quote_id('datestamp') . "=" . db_quoteall($_SESSION['datestamp']);
             }
@@ -2506,16 +2509,52 @@ class LimeExpressionManager {
             {
                 $query .= $_SESSION['srid'];
 
-                if (!db_execute_assoc($query) && (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY))
+                if (!db_execute_assoc($query))
                 {
-                    $message .= 'Error in SQL update: '. $connect->ErrorMsg() . '<br/>';
-                    $message .= submitfailed($connect->ErrorMsg()); // originally just echos this
+                    echo submitfailed($connect->ErrorMsg());
 
-                    if ($finished)
-                    {
-                        // Delete the save control record if successfully finalize the submission
-                        $connect->Execute("DELETE FROM ".db_table_name("saved_control")." where srid=".$_SESSION['srid'].' and sid='.$this->sid);   // Checked
+                    if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
+                        $message .= 'Error in SQL update: '. $connect->ErrorMsg() . '<br/>';
                     }
+                }
+                if ($finished)
+                {
+                    // Delete the save control record if successfully finalize the submission
+                    $query = "DELETE FROM ".db_table_name("saved_control")." where srid=".$_SESSION['srid'].' and sid='.$this->sid;
+                    $connect->Execute($query);   // Checked
+
+                    if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
+                        $message .= ';<br/>'.$query;
+                    }
+                    
+                    // Check Quotas
+                    $bQuotaMatched = false;
+                    $aQuotas = check_quota('return', $this->sid);
+                    if ($aQuotas !== false)
+                    {
+                        if ($aQuotas != false)
+                        {
+                            foreach ($aQuotas as $aQuota)
+                            {
+                                if (isset($aQuota['status']) && $aQuota['status'] == 'matched') {
+                                    $bQuotaMatched = true;
+                                }
+                            }
+                        }
+                    }
+                    if ($bQuotaMatched)
+                    {
+                        check_quota('enforce',$this->sid);  // will create a page and quit.
+                    }
+
+                    // Save Timings if needed
+                    if ($this->surveyOptions['savetimings']) {
+                        set_answer_time();
+                    }
+                }
+                else if ($this->surveyOptions['allowsave'] && isset($_SESSION['scid']))
+                {
+                    $connect->Execute("UPDATE " . db_table_name("saved_control") . " SET saved_thisstep=" . db_quoteall($thisstep) . " where scid=" . $_SESSION['scid']);  // Checked
                 }
             }
             if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
@@ -2525,6 +2564,12 @@ class LimeExpressionManager {
         return $message;
     }
 
+    static function GetLastMoveResult()
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        return (isset($LEM->lastMoveResult) ? $LEM->lastMoveResult : NULL);
+    }
+
     /**
      * Jump to a specific question or group sequence.  If jumping forward, it re-validates everything in between
      * @param <type> $seq
@@ -2532,7 +2577,7 @@ class LimeExpressionManager {
      * @param <type> $preview - if true, then treat this group/question as relevant, even if it is not, so that it can be displayed
      * @return <type>
      */
-    static function JumpTo($seq,$preview=false,$force=false) {
+    static function JumpTo($seq,$preview=false,$processPOST=true,$force=false) {
         $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
 
@@ -2542,11 +2587,45 @@ class LimeExpressionManager {
         switch ($LEM->surveyMode)
         {
             case 'survey':
+                // This only happens if saving data so far, so don't want to submit it, just validate and return
+                $startingGroup = $LEM->currentGroupSeq;
+                $LEM->StartProcessingPage(true);
+                if ($processPOST) {
+                    $updatedValues=$LEM->ProcessCurrentResponses();
+                }
+                else  {
+                    $updatedValues = array();
+                }
+                $message = '';
+
+                $LEM->currentQset = array();    // reset active list of questions
+                $result = $LEM->_ValidateSurvey();
+                $message .= $result['message'];
+                $updatedValues = array_merge($updatedValues,$result['updatedValues']);
+                $finished=false;
+                $message .= $LEM->_UpdateValuesInDatabase($updatedValues,$finished);
+                $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+                $LEM->lastMoveResult = array(
+                    'finished'=>$finished,
+                    'message'=>$message,
+                    'gseq'=>1,
+                    'seq'=>1,
+                    'mandViolation'=>$result['mandViolation'],
+                    'valid'=>$result['valid'],
+                    'unansweredSQs'=>$result['unansweredSQs'],
+                    'invalidSQs'=>$result['invalidSQs'],
+                );
+                return $LEM->lastMoveResult;
                 break;
             case 'group':
                 // First validate the current group
                 $LEM->StartProcessingPage();
-                $updatedValues=$LEM->ProcessCurrentResponses();
+                if ($processPOST) {
+                    $updatedValues=$LEM->ProcessCurrentResponses();
+                }
+                else  {
+                    $updatedValues = array();
+                }
                 $message = '';
                 if (!$force && $LEM->currentGroupSeq != -1 && $seq > $LEM->currentGroupSeq) // only re-validate if jumping forward
                 {
@@ -2571,7 +2650,7 @@ class LimeExpressionManager {
                         return $LEM->lastMoveResult;
                     }
                 }
-                if ($seq < $LEM->currentGroupSeq || $preview) {
+                if ($seq <= $LEM->currentGroupSeq || $preview) {
                     $LEM->currentGroupSeq = $seq-1; // Try to jump to the requested group, but navigate to next if needed
                 }
                 while (true)
@@ -2631,7 +2710,12 @@ class LimeExpressionManager {
                 break;
             case 'question':
                 $LEM->StartProcessingPage();
-                $updatedValues=$LEM->ProcessCurrentResponses();
+                if ($processPOST) {
+                    $updatedValues=$LEM->ProcessCurrentResponses();
+                }
+                else  {
+                    $updatedValues = array();
+                }
                 $message = '';
                 if (!$force && $LEM->currentQuestionSeq != -1 && $seq > $LEM->currentQuestionSeq)
                 {
@@ -2657,7 +2741,7 @@ class LimeExpressionManager {
                         return $LEM->lastMoveResult;
                     }
                 }
-                if ($seq < $LEM->currentQuestionSeq || $preview) {
+                if ($seq <= $LEM->currentQuestionSeq || $preview) {
                     $LEM->currentQuestionSeq = $seq-1; // Try to jump to the requested group, but navigate to next if needed
                 }
                 while (true)

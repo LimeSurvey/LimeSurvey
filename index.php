@@ -47,6 +47,8 @@ else
     $surveyid=sanitize_int($surveyid);
 }
 
+//LimeExpressionManager::SetSurveyId($surveyid);  // must be called early - it clears internal cache if a new survey is being used
+
 //DEFAULT SETTINGS FOR TEMPLATES
 if (!$publicdir)
 {
@@ -639,7 +641,7 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
     // Load session before loading the values from the saved data
     if (isset($_GET['loadall']))
     {
-        buildsurveysession();
+        $totalquestions = buildsurveysession();
     }
 
     $_SESSION['holdname']=$loadname; //Session variable used to load answers every page.
@@ -647,6 +649,7 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 
     if ($errormsg == "") loadanswers();
     $move = "movenext";
+    $_SESSION['LEMreload']=true;
 
     if ($errormsg)
     {
@@ -866,24 +869,6 @@ if ($thissurvey['tokenanswerspersistence'] == 'Y' && !isset($_SESSION['srid']) &
     buildsurveysession();
     loadanswers();
 }
-
-//// SAVE POSTED ANSWERS TO DATABASE IF MOVE (NEXT,PREV,LAST, or SUBMIT) or RETURNING FROM SAVE FORM
-//if (isset($move) || isset($_POST['saveprompt']))
-//{
-//    if ($thissurvey['format'] == 'G') {
-//        require_once("save.php");   // save1.php
-//    }
-//    else {
-//        require_once("save.php");
-//    }
-//
-//    // RELOAD THE ANSWERS INCASE SOMEONE ELSE CHANGED THEM
-//    if ($thissurvey['active'] == "Y" &&
-//            ( $thissurvey['allowsave'] == "Y" || $thissurvey['tokenanswerspersistence'] == "Y") )
-//    {
-//        loadanswers();
-//    }
-//}
 
 if (isset($_REQUEST['action']) && ($_REQUEST['action'] == 'previewgroup')){
         $thissurvey['format'] = 'G';

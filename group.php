@@ -38,6 +38,7 @@ $surveyOptions = array(
     'ipaddr'=>($thissurvey['ipaddr']=='Y'),
     'refurl'=>(($thissurvey['refurl'] == "Y") ? $_SESSION['refurl'] : NULL),
     'rooturl'=>(isset($rooturl) ? $rooturl : ''),
+    'savetimings'=>($thissurvey['savetimings'] == "Y"),
     'surveyls_dateformat'=>(isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
     'startlanguage'=>(isset($_SESSION['s_lang']) ? $_SESSION['s_lang'] : 'en'),
     'target'=>(isset($uploaddir) ?  "{$uploaddir}/surveys/{$thissurvey['sid']}/files/" : "/temp/{$thissurvey['sid']}/files"),
@@ -94,7 +95,15 @@ else
     }
     if (isset($move) && $move == "movenext")
     {
-        $moveResult = LimeExpressionManager::NavigateForwards();
+        if (isset($_SESSION['LEMreload']))
+        {
+            LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);
+            $moveResult = LimeExpressionManager::JumpTo($_SESSION['step'],false,false);   // if late in the survey, will re-validate contents, which may be overkill
+            unset($_SESSION['LEMreload']);
+        }
+        else {
+            $moveResult = LimeExpressionManager::NavigateForwards();
+        }
     }
     if (isset($move) && ($move == 'movesubmit'))
     {
@@ -115,6 +124,10 @@ else
         if ($move > 0 && (($move <= $_SESSION['step']) || (isset($_SESSION['maxstep']) && $move <= $_SESSION['maxstep']))) {
             $moveResult = LimeExpressionManager::JumpTo($move,false);
         }
+    }
+    if (!isset($moveResult)) {
+        // Just in case not set via any other means
+        $moveResult = LimeExpressionManager::GetLastMoveResult();
     }
 
     if (isset($moveResult)) {
@@ -162,9 +175,30 @@ else
         $backok="N";    // NA, since not moving backwards
     }
 
-    if (isset($move) || isset($_POST['saveprompt']))
+    if ($thissurvey['active'] == "Y" && isset($_POST['saveall']))
     {
-        require_once("save.php");
+        // must do this here to process the POSTed values
+        $moveResult = LimeExpressionManager::JumpTo($_SESSION['step'],false);   // by jumping to current step, saves data so far
+
+        require_once("save.php");   // for supporting functions only
+        showsaveform(); // generates a form and exits, awaiting input
+    }
+
+    if ($thissurvey['active'] == "Y" && isset($_POST['saveprompt']))
+    {
+        // The response from the save form
+        require_once("save.php");   // for supporting functions only
+        // CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
+        $flashmessage = savedcontrol();
+        
+        if (isset($errormsg) && $errormsg != "")
+        {
+            showsaveform(); // reshow the form if there is an error
+        }
+
+        $moveResult = LimeExpressionManager::GetLastMoveResult();
+
+        // TODO - does this work automatically for token answer persistence? Used to be savedsilent()
     }
 
     //Now, we check mandatory questions if necessary

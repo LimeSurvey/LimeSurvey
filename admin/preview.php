@@ -64,7 +64,7 @@ $ia = array(0 => $qid,
 
 LimeExpressionManager::StartSurvey($thissurvey['sid'], 'question', NULL, false,$LEMdebugLevel);
 $qseq = LimeExpressionManager::GetQuestionSeq($qid);
-$moveResult = LimeExpressionManager::JumpTo($qseq+1,false,true);
+$moveResult = LimeExpressionManager::JumpTo($qseq+1,false,false,true);
 
 $answers = retrieveAnswers($ia);
 

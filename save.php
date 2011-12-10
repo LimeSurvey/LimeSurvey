@@ -14,20 +14,6 @@
 
  //Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
 
- Redesigned 7/25/2006 - swales
-
- 1.  Save Feature (// --> START NEW FEATURE - SAVE)
-
- How it used to work
- -------------------
- 1. The old save method would save answers to the "survey_x" table only when the submit button was clicked.
- 2. If "allow saves" was turned on then answers were temporarily recorded in the "saved" table.
-
- Why change this feature?
- ------------------------
- If a user did not complete a survey, ALL their answers were lost since no submit (database insert) was performed.
-
-
  Save Feature redesign
  ---------------------
  Benefits
@@ -47,89 +33,9 @@
  9. Save So Far now displays on Submit page. This allows the user one last chance to create a saved_control record so they
  can return later.
 
- Notes
- -----
- 1. A new column SRID has been added to saved_control.
- 2. saved table no longer exists.
  */
 
-    if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
-
-
-    global $connect;
-
-    // SAVE if on page with questions or on submit page
-    if ((isset($move) && $move == "movesubmit"))
-    {
-        if ($thissurvey['active'] == "Y")
-        {
-            $bQuotaMatched = false;
-            $aQuotas = check_quota('return', $surveyid);
-            if ($aQuotas !== false)
-            {
-                if ($aQuotas != false)
-                {
-                    foreach ($aQuotas as $aQuota)
-                    {
-                        if (isset($aQuota['status']) && $aQuota['status'] == 'matched')
-                            $bQuotaMatched = true;
-                    }
-                }
-            }
-            if ($bQuotaMatched)
-                $bFinalizeThisAnswer = false;
-        }
-
-        if ($thissurvey['active'] == "Y" && !isset($_SESSION['finished'])) 	// Only save if active and the survey wasn't already submitted
-        {
-            if ($bQuotaMatched)
-            {
-                check_quota('enforce',$surveyid);
-            }
-        }
-        if ($thissurvey['savetimings'] == "Y" && $thissurvey['active'] == "Y")
-        {
-            set_answer_time();
-        }
-    }
-
-        // CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
-    if (isset($_POST['saveprompt']))  //Value submitted when clicking on 'Save Now' button on SAVE FORM
-    {
-        if ($thissurvey['active'] == "Y")  // Only save if active
-        {
-            $flashmessage = savedcontrol();
-            if (isset($errormsg) && $errormsg != "")
-            {
-                showsaveform();
-            }
-        }
-        else
-        {
-            $_SESSION['scid'] = 0;  // If not active set to a dummy value to save form does not continue to show.
-        }
-    }
-
-    // DISPLAY SAVE FORM
-    // Displays even if not active just to show how it would look when active (for testing purposes)
-    // Show 'SAVE FORM' only when click the 'Save so far' button the first time
-    if ($thissurvey['allowsave'] == "Y" && isset($_POST['saveall']) && !isset($_SESSION['scid']))
-    {
-        if($thissurvey['tokenanswerspersistence'] != 'Y' || !tableExists('tokens_'.$surveyid))
-        {
-            showsaveform();
-        }
-        else
-        {
-            $flashmessage = savedsilent();
-        };
-    }
-    elseif ($thissurvey['allowsave'] == "Y" && isset($_POST['saveall']) && isset($_SESSION['scid']))   //update the saved step only
-    {
-        $connect->Execute("update " . db_table_name("saved_control") . " set saved_thisstep=" . db_quoteall($thisstep) . " where scid=" . $_SESSION['scid']);  // Checked
-    }
-
-
+global $errormsg;   // since neeeded by savecontrol()
 
     function showsaveform()
     {
@@ -303,105 +209,7 @@
     }
     }
 
-    /**
- * savesilent() saves survey responses when the "Resume later" button
- * is press but has no interaction. i.e. it does not ask for email,
- * username or password or capture.
- *
- * @return string confirming successful save.
- */
-    function savedsilent()
-    {
-    global $connect, $surveyid, $dbprefix, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust, $clang, $clienttoken, $thisstep, $modrewrite;
-    submitanswer();
-    // Prepare email
-    $tokenentryquery = 'SELECT * from '.$dbprefix.'tokens_'.$surveyid.' WHERE token=\''.sanitize_paranoid_string($clienttoken).'\';';
-    $tokenentryresult = db_execute_assoc($tokenentryquery);
-    $tokenentryarray = $tokenentryresult->FetchRow();
-
-    $from = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
-    $to = $tokenentryarray['firstname'].' '.$tokenentryarray['lastname'].' <'.$tokenentryarray['email'].'>';
-    $subject = $clang->gT("Saved Survey Details") . " - " . $thissurvey['name'];
-    $message = $clang->gT("Thank you for saving your survey in progress. You can return to the survey at the same point you saved it at any time using the link from this or any previous email sent to regarding this survey.","unescaped")."\n\n";
-    $message .= $clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):","unescaped")."\n";
-    $language = $tokenentryarray['language'];
-
-    if($modrewrite)
-    {
-        $message .= "\n\n$publicurl/$surveyid/lang-$language/tk-$clienttoken";
-    }
-    else
-    {
-        $message .= "\n\n$publicurl/index.php?lang=$language&sid=$surveyid&token=$clienttoken";
-    };
-    if (SendEmailMessage(null, $message, $subject, $to, $from, $sitename, false, getBounceEmail($surveyid)))
-    {
-        $emailsent="Y";
-    }
-    else
-    {
-        echo "Error: Email failed, this may indicate a PHP Mail Setup problem on your server. Your survey details have still been saved, however you will not get an email with the details. You should note the \"name\" and \"password\" you just used for future reference.";
-    };
-    return  $clang->gT('Your survey was successfully saved.');
-    };
-
-    // submitanswer sets the submitdate
-    // Only used by question.php and group.php if next pages
-    // should not display due to conditions and generally used by survey.php
-    // In this case all answers have already been updated by save.php
-    // but movesubmit status was only set after calling save.php
-    // ==> thus we need to update submitdate here.
-    function submitanswer()
-    {
-    global $thissurvey,$timeadjust;
-    global $surveyid, $connect, $clang, $move;
-
-    if ($thissurvey['anonymized'] =="Y" && $thissurvey['datestamp'] =="N")
-    {
-        // In case of anonymized responses survey with no datestamp
-        // then the the answer submitdate gets a conventional timestamp
-        // 1st Jan 1980
-        $mysubmitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
-    }
-    else
-    {
-        $mysubmitdate = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
-    }
-
-    $query = "";
-    if (isset($move) && ($move == "movesubmit") && ($thissurvey['active'] == "Y"))
-    {
-        if (!isset($_SESSION['srid']))
-        { //due to conditions no answer was displayed and yet we must submit
-            $query=createinsertquery();
-            if ($result=$connect->Execute($query))
-            {
-                $tempID=$connect->Insert_ID($thissurvey['tablename'],"id");
-                $_SESSION['srid'] = $tempID;
-            }
-        }
-        $query = "UPDATE {$thissurvey['tablename']} SET ";
-        $query .= " submitdate = ".$connect->DBDate($mysubmitdate);
-        $query .= " WHERE id=" . $_SESSION['srid'];
-    }
-
-    $result=$connect->Execute($query);    // Checked
-    return $result;
-    }
-
-    function array_remval($val, &$arr)
-    {
-    $array_remval = $arr;
-    for($x=0;$x<count($array_remval)-1;$x++)
-    {
-        $i=array_search($val,$array_remval);
-        if($i===false)return false;
-        $array_remval=array_merge(array_slice($array_remval, 0,$i), array_slice($array_remval, $i+1));
-    }
-    return $array_remval;
-    }
-
-    /**
+ /**
  * This functions saves the answer time for question/group and whole survey.
  * [ It compares current time with the time in $_POST['start_time'] ]
  * The times are saved in table: {prefix}{surveytable}_timings
