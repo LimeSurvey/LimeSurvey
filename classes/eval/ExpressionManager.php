@@ -1388,9 +1388,11 @@ class ExpressionManager {
                     $stringParts[] = $token[0];
                     $stringParts[] =  "</span>";
                     break;
+                case 'COMMA':
+                    $stringParts[] = $token[0] . ' ';
+                    break;
                 case 'LP':
                 case 'RP':
-                case 'COMMA':
                 case 'NUMBER':
                     $stringParts[] = $token[0];
                     break;

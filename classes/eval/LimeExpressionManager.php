@@ -13,6 +13,7 @@ define('LEM_DEBUG_VALIDATION_SUMMARY',2);   // also includes  SQL error messages
 define('LEM_DEBUG_VALIDATION_DETAIL',4);
 define('LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB',8);
 define('LEM_DEBUG_TRANSLATION_DETAIL',16);
+define('LEM_PRETTY_PRINT_ALL_SYNTAX',32);
 
 class LimeExpressionManager {
     private static $instance;
@@ -1879,10 +1880,15 @@ class LimeExpressionManager {
             $jsVars = $this->em->GetJSVarsUsed();
             $relevanceVars = implode('|',$this->em->GetJSVarsUsed());
             $relevanceJS = $this->em->GetJavaScriptEquivalentOfExpression();
+            $prettyPrintSQEqn='';
+            if (($this->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX) {
+                $prettyPrintSQEqn = $this->em->GetPrettyPrintString();
+            }
 //            $hasErrors = $this->em->HasErrors();
             $this->subQrelInfo[] = array(
                 'qid' => $questionNum,
                 'eqn' => $eqn,
+                'prettyPrintEqn' => $prettyPrintSQEqn,
                 'result' => $result,
                 'numJsVars' => count($jsVars),
                 'relevancejs' => $relevanceJS,
@@ -3429,7 +3435,7 @@ class LimeExpressionManager {
                 {
                     $validationJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
                 }
-                if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_DETAIL) == LEM_DEBUG_VALIDATION_DETAIL)
+                if (($LEM->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX)
                 {
                     $prettyPrintValidEqn = $LEM->em->GetPrettyPrintString();
                 }
@@ -3437,7 +3443,7 @@ class LimeExpressionManager {
                 $stringToParse = implode('<br/>',$LEM->qid2validationEqn[$qid]['tips']);
                 // pretty-print them
                 $validTip = $LEM->ProcessString($stringToParse, $qid,NULL,false,1,1,false,false);
-                if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_DETAIL) == LEM_DEBUG_VALIDATION_DETAIL) {
+                if (($LEM->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX) {
                     $prettyPrintValidTip = $LEM->GetLastPrettyPrintExpression();
                 }
             }
@@ -3591,7 +3597,9 @@ class LimeExpressionManager {
             'unansweredSQs' => implode('|',$unansweredSQs),
             'valid' => $qvalid,
             'validEqn' => $prettyPrintValidEqn,
+            'prettyValidEqn' => $prettyPrintValidEqn,
             'validTip' => $validTip,
+            'prettyValidTip' => $prettyPrintValidTip,
             'validJS' => $validationJS,
             'invalidSQs' => (isset($invalidSQs) ? $invalidSQs : ''),
             'relevantSQs' => implode('|',$relevantSQs),
@@ -4818,6 +4826,8 @@ EOT;
         // A1, code, assessment_value, text
         // End Message
         global $rooturl;
+
+        $LEMdebugLevel |= LEM_PRETTY_PRINT_ALL_SYNTAX;
         
         $LEM =& LimeExpressionManager::singleton();
 
@@ -4892,28 +4902,24 @@ EOT;
             $help = '';
             if ($q['info']['help'] != '') {
                 $LEM->ProcessString($q['info']['help'], $qid,NULL,false,1,1,false,false);
-                $help = '<br/>[HELP: ' . $LEM->GetLastPrettyPrintExpression() . ']';
+                $help = '<p>[HELP: ' . $LEM->GetLastPrettyPrintExpression() . ']</p>';
             }
 
-            $default = (is_null($q['info']['default']) ? '' : '<p>(' . $q['info']['default'] . ')</p>');
+            $default = (is_null($q['info']['default']) ? '' : '<p>(DEFAULT: ' . $q['info']['default'] . ')</p>');
 
             $relevance = (($q['info']['relevance'] == '') ? 1 : $q['info']['relevance']);
             $LEM->ProcessString('{'. $relevance . '}', $qid,NULL,false,1,1,false,false);
             $relevance = $LEM->GetLastPrettyPrintExpression();
 
-            $validEqn = '';
-            if ($q['validEqn'] != '') {
-                $LEM->ProcessString('{' . $q['validEqn'] .'}', $qid,NULL,false,1,1,false,false);
-                $validEqn = '<br/>[' . $LEM->GetLastPrettyPrintExpression() .']';
-            }
+            $prettyValidEqn = (($q['prettyValidEqn'] == '') ? '' : '<p>(VALIDATION: ' . $q['prettyValidEqn'] . ')</p>');
 
-            $validTip = (($q['validTip'] == '') ? '' : '<p>(TIP: ' . $q['validTip'] . '</p>)');
+            $prettyValidTip = (($q['prettyValidTip'] == '') ? '' : '<p>(TIP: ' . $q['prettyValidTip'] . ')</p>');
 
             $out .= "<tr>"
             . "<td>Q-" . $q['info']['qseq'] . "</td>"
             . "<td>" . $mandatory . "<b>" . $q['info']['code'] . "</b><br/>[<a target='_blank' href='$rooturl/admin/admin.php?sid=$sid&gid=$gid&qid=$qid'>$qid</a>]<br/>$typedesc [$type]</td>"
-            . "<td>" . $relevance . $validEqn . $default . "</td>"
-            . "<td>" . $qtext . $help . $validTip . "</td>"
+            . "<td>" . $relevance . $prettyValidEqn . $default . "</td>"
+            . "<td>" . $qtext . $help . $prettyValidTip . "</td>"
             . "</tr>";
         }
         $out .= "</table>";
