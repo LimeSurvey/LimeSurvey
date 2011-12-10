@@ -3,13 +3,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Survey Logic File</title>
-<style type="text/css">
-tr.group td
-{
-color:#000000;
-background-color:#EAF2D3;
-}
-</style>
     </head>
     <body>
         <?php
@@ -50,7 +43,7 @@ $surveyList
 <td>
 Specify which debugging features to use
 <ul>
-<li><input type='checkbox' name='LEM_DEBUG_TIMING' id='LEM_DEBUG_TIMING' value='Y' checked/>Detailed Timing</li>
+<li><input type='checkbox' name='LEM_DEBUG_TIMING' id='LEM_DEBUG_TIMING' value='Y'/>Detailed Timing</li>
 <li><input type='checkbox' name='LEM_DEBUG_VALIDATION_SUMMARY' id='LEM_DEBUG_VALIDATION_SUMMARY' value='Y'/>Validation Summary</li>
 <li><input type='checkbox' name='LEM_DEBUG_VALIDATION_DETAIL' id='LEM_DEBUG_VALIDATION_DETAIL' value='Y'/>Validation Detail (Validation Summary must also be checked to see detail)</li>
 <li><input type='checkbox' name='LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB' id='LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB' value='Y'/>Log Syntax Errors to Database</li>
@@ -86,10 +79,20 @@ EOD;
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Logic File - Survey #$surveyid</title>
 <style type="text/css">
-tr.group td
+tr.LEMgroup td
 {
-color:#000000;
 background-color:#EAF2D3;
+}
+
+tr.LEManswer td
+{
+background-color:lightgrey;
+}
+
+.LEMerror
+{
+color:red;
+font-weight:bold;
 }
 </style>
     </head>

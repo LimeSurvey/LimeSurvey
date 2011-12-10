@@ -35,6 +35,7 @@ class LimeExpressionManager {
     private $pageTailoringLog;  // Debug log of tailorings done on this page
     private $surveyLogicFile;   // Shows current configuration and data from most recent $fieldmap
 
+    private $qans;  // array of answer lists indexed by qid
     private $groupId2groupSeq;  // map of gid to 0-based sequence number of groups
     private $questionId2questionSeq;    // map question # to an incremental count of question order across the whole survey
     private $questionId2groupSeq;   // map question  # to the group it is within, using an incremental count of group order
@@ -1082,7 +1083,7 @@ class LimeExpressionManager {
         $this->runtimeTimings[] = array(__METHOD__ . ' - question_attributes_model->getEMRelatedRecordsForSurvey',(microtime(true) - $now));
         $now = microtime(true);
 
-        $qans = $this->getAllAnswersForEM($surveyid,NULL);  // ,$this->slang);  // TODO - will this work for multi-lingual?
+        $this->qans = $this->getAllAnswersForEM($surveyid,NULL);  // ,$this->slang);  // TODO - will this work for multi-lingual?
 
         $this->runtimeTimings[] = array(__METHOD__ . ' - answers_model->getAllAnswersForEM',(microtime(true) - $now));
         $now = microtime(true);
@@ -1169,7 +1170,7 @@ class LimeExpressionManager {
                 case 'H': //ARRAY (Flexible) - Column Format
                 case 'F': //ARRAY (Flexible) - Row Format
                 case 'R': //RANKING STYLE
-                    $ansArray = $qans[$questionNum];
+                    $ansArray = $this->qans[$questionNum];
                     if ($other == 'Y' && ($type == 'L' || $type == '!')) {
                         $_qattr = isset($qattr[$questionNum]) ? $qattr[$questionNum] : array();
                         if (isset($_qattr['other_replace_text']) && trim($_qattr['other_replace_text']) != '') {
@@ -3435,6 +3436,7 @@ class LimeExpressionManager {
                 {
                     $validationJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
                 }
+                $prettyPrintValidEqn = $stringToParse;
                 if (($LEM->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX)
                 {
                     $prettyPrintValidEqn = $LEM->em->GetPrettyPrintString();
@@ -3442,6 +3444,7 @@ class LimeExpressionManager {
 
                 $stringToParse = implode('<br/>',$LEM->qid2validationEqn[$qid]['tips']);
                 // pretty-print them
+                $prettyPrintValidTip = $stringToParse;
                 $validTip = $LEM->ProcessString($stringToParse, $qid,NULL,false,1,1,false,false);
                 if (($LEM->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX) {
                     $prettyPrintValidTip = $LEM->GetLastPrettyPrintExpression();
@@ -4827,9 +4830,9 @@ EOT;
         // End Message
         global $rooturl;
 
-        $LEMdebugLevel |= LEM_PRETTY_PRINT_ALL_SYNTAX;
-        
         $LEM =& LimeExpressionManager::singleton();
+
+        $allErrors = array();
 
         $surveyOptions = array(
             'hyperlinkSyntaxHighlighting'=>true,
@@ -4855,78 +4858,133 @@ EOT;
         }
 
         $qtypes=getqtypelist('','array');
+
+        templatereplace('{SITENAME}');  // to ensure that lime replacement fields loaded
         
         $out = "<table border='1'>"
-        . "<tr><th>#</th><th>Name [QID]</th><th>Relevance [Validation] (Default)</th><th>Text [Help] (Tip)</th></tr>";
+        . "<tr><th>#</th><th>Name [ID]</th><th>Relevance [Validation] (Default)</th><th>Text [Help] (Tip)</th></tr>\n";
 
         $_gseq=-1;
         foreach ($LEM->currentQset as $q) {
             $gseq = $q['info']['gseq'];
             $gid = $q['info']['gid'];
             $qid = $q['info']['qid'];
+            $qseq = $q['info']['qseq'];
+
+            $errorCount=0;
 
             // Show Group-Level Info
             if ($gseq != $_gseq) {
                 $_gseq = $gseq;
                 $ginfo = $LEM->gseq2info[$gseq];
 
-                $grelevance = ($ginfo['grelevance']=='') ? 1 : $ginfo['grelevance'];
-                $LEM->ProcessString('{' . $grelevance .'}', $qid,NULL,false,1,1,false,false);
-                $grelevance = $LEM->GetLastPrettyPrintExpression();
+                $grelevance = '{' . (($ginfo['grelevance']=='') ? 1 : $ginfo['grelevance']) . '}';
+                $gtext = ((trim($ginfo['description']) != '') ? '&nbsp;' : $ginfo['description']);
 
-                $gtext = '&nbsp;';
-                if (trim($ginfo['description']) != '') {
-                    $LEM->ProcessString($ginfo['description'], $qid,NULL,false,1,1,false,false);
-                    $gtext= $LEM->GetLastPrettyPrintExpression();
-                }
-
-                $out .= "<tr class='group'>"
+                $groupRow = "<tr class='LEMgroup'>"
                 . "<td>G-$gseq</td>"
-                . "<td><b>".$ginfo['group_name']."</b><br/>[<a target='_blank' href='$rooturl/admin/admin.php?action=orderquestions&sid=$sid&gid=$gid'>".$gid."</a>]</td>"
+                . "<td><b>".$ginfo['group_name']."</b><br/>[<a target='_blank' href='$rooturl/admin/admin.php?action=orderquestions&sid=$sid&gid=$gid'>GID ".$gid."</a>]</td>"
                 . "<td>".$grelevance."</td>"
                 . "<td>".$gtext."</td>"
-                . "</tr>";
+                . "</tr>\n";
+
+                $LEM->ProcessString($groupRow, $qid,NULL,false,1,1,false,false);
+                $out .= $LEM->GetLastPrettyPrintExpression();
+                if ($LEM->em->HasErrors()) {
+                    ++$errorCount;
+                }
             }
 
             // Show Question-Level Info
             $mandatory = (($q['info']['mandatory']=='Y') ? "<span style='color:red'>*</span>" : '');
             $type = $q['info']['type'];
             $typedesc = $qtypes[$type]['description'];
-            
-            $qtext = '&nbsp';
-            if ($q['info']['qtext'] != '') {
-                $LEM->ProcessString($q['info']['qtext'], $qid,NULL,false,1,1,false,false);
-                $qtext = $LEM->GetLastPrettyPrintExpression();                
-            }
-
-            $help = '';
-            if ($q['info']['help'] != '') {
-                $LEM->ProcessString($q['info']['help'], $qid,NULL,false,1,1,false,false);
-                $help = '<p>[HELP: ' . $LEM->GetLastPrettyPrintExpression() . ']</p>';
-            }
 
             $default = (is_null($q['info']['default']) ? '' : '<p>(DEFAULT: ' . $q['info']['default'] . ')</p>');
 
-            $relevance = (($q['info']['relevance'] == '') ? 1 : $q['info']['relevance']);
-            $LEM->ProcessString('{'. $relevance . '}', $qid,NULL,false,1,1,false,false);
-            $relevance = $LEM->GetLastPrettyPrintExpression();
-
-            $prettyValidEqn = (($q['prettyValidEqn'] == '') ? '' : '<p>(VALIDATION: ' . $q['prettyValidEqn'] . ')</p>');
-
+            $qtext = (($q['info']['qtext'] != '') ? $q['info']['qtext'] : '&nbsp');
+            $help = (($q['info']['help'] != '') ? '<p>[HELP: ' . $q['info']['help'] . ']</p>': '');
             $prettyValidTip = (($q['prettyValidTip'] == '') ? '' : '<p>(TIP: ' . $q['prettyValidTip'] . ')</p>');
 
-            $out .= "<tr>"
-            . "<td>Q-" . $q['info']['qseq'] . "</td>"
-            . "<td>" . $mandatory . "<b>" . $q['info']['code'] . "</b><br/>[<a target='_blank' href='$rooturl/admin/admin.php?sid=$sid&gid=$gid&qid=$qid'>$qid</a>]<br/>$typedesc [$type]</td>"
+            $LEM->ProcessString($qtext . $help . $prettyValidTip, $qid,NULL,false,1,1,false,false);
+            $qdetails = $LEM->GetLastPrettyPrintExpression();
+            if ($LEM->em->HasErrors()) {
+                ++$errorCount;
+            }
+
+            // Must parse Relevance this way, otherwise if try to first split expressions, regex equations won't work
+            $relevance = (($q['info']['relevance'] == '') ? 1 : $q['info']['relevance']);
+            $LEM->em->ProcessBooleanExpression($relevance, $gseq, $qseq);
+            $relevance = $LEM->em->GetPrettyPrintString();
+            if ($LEM->em->HasErrors()) {
+                ++$errorCount;
+            }
+
+            // Must parse Validation this way so that regex  (preg) works
+            $prettyValidEqn = '';
+            if ($q['prettyValidEqn'] != '') {
+                $LEM->em->ProcessBooleanExpression($q['prettyValidEqn'], $gseq, $qseq);
+                $prettyValidEqn = '<p>(VALIDATION: ' . $LEM->em->GetPrettyPrintString() . ')</p>';
+                if ($LEM->em->HasErrors()) {
+                    ++$errorCount;
+                }
+            }
+
+            // Show answer options for enumerated lists
+            if (isset($LEM->qans[$qid]))
+            {
+                $_scale=-1;
+                $answerRows = '';
+                foreach ($LEM->qans[$qid] as $ans=>$value)
+                {
+                    $ansInfo = explode('~',$ans);
+                    $valParts = explode('|',$value);
+                    $valInfo[0] = array_shift($valParts);
+                    $valInfo[1] = implode('|',$valParts);
+                    if ($_scale != $ansInfo[0]) {
+                        $i=1;
+                        $_scale = $ansInfo[0];
+                    }
+                    $answerRows .= "<tr class='LEManswer'>"
+                    . "<td>A[" . $ansInfo[0] . "]-" . $i++ . "</td>"
+                    . "<td>" . $ansInfo[1]. "</td>"
+                    . "<td>[VALUE: " . $valInfo[0] . "]</td>"
+                    . "<td>" . $valInfo[1] . "</td>"
+                    . "</tr>\n";
+                }
+                $LEM->ProcessString($answerRows, $qid,NULL,false,1,1,false,false);
+                $out .= $LEM->GetLastPrettyPrintExpression();
+                if ($LEM->em->HasErrors()) {
+                    ++$errorCount;
+                }
+            }
+            $errclass = ($errorCount > 0) ? "class='LEMerror' title='This question has at least $errorCount error(s)'" : '';
+
+            $questionRow = "<tr>"
+            . "<td $errclass>Q-" . $q['info']['qseq'] . "</td>"
+            . "<td><b>" . $mandatory . $q['info']['code'] . "</b><br/>[<a target='_blank' href='$rooturl/admin/admin.php?sid=$sid&gid=$gid&qid=$qid'>QID $qid</a>]<br/>$typedesc [$type]</td>"
             . "<td>" . $relevance . $prettyValidEqn . $default . "</td>"
-            . "<td>" . $qtext . $help . $prettyValidTip . "</td>"
-            . "</tr>";
+            . "<td>" . $qdetails . "</td>"
+            . "</tr>\n";
+
+            $out .= $questionRow;
+
+            if ($errorCount > 0) {
+                $allErrors[$gid . '~' . $qid] = $errorCount;
+            }
         }
         $out .= "</table>";
 
         LimeExpressionManager::FinishProcessingPage();
         if (($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING) {
             $out .= LimeExpressionManager::GetDebugTimingMessage();
+        }
+
+        if (count($allErrors) > 0) {
+            $out = "<p class='LEMerror'>". count($allErrors) . " Question(s) contain errors that need to be corrected</p>\n" . $out;
+        }
+        else {
+            $out = "<p class='LEMerror'>Congratulations, this survey has no syntax errors</p>\n" . $out;
         }
 
         return $out;
