@@ -55,6 +55,10 @@
                 <td><a href="navigation_test.php">Test Navigation</a></td>
                 <td>Tests whether navigation properly handles relevant and irrelevant groups</td>
             </tr>
+            <tr>
+                <td><a href="survey_logic_file.php">Show Survey Logic File</a></td>
+                <td>Shows the logic for the survey (e.g. relevance, validation), and all tailoring</td>
+            </tr>
         </table>
     </body>
 </html>

@@ -4800,5 +4800,130 @@ EOT;
         }
         return $updatedValues;
     }
+    
+    /**
+     * Create HTML view of the survey, showing everything that uses EM
+     * @param <type> $sid
+     * @param <type> $language
+     * @param <type> $gid
+     * @param <type> $qid 
+     */
+    static public function ShowSurveyLogicFile($sid, $language=NULL, $gid=NULL, $qid=NULL,$LEMdebugLevel=0)
+    {
+        // Title
+        // Welcome
+        // G1, name, relevance, text
+        // *Q1, name [type], relevance [validation], text, help, default, help_msg
+        // SQ1, name [scale], relevance [validation], text
+        // A1, code, assessment_value, text
+        // End Message
+        global $rooturl;
+        
+        $LEM =& LimeExpressionManager::singleton();
+
+        $surveyOptions = array(
+            'hyperlinkSyntaxHighlighting'=>true,
+            'rooturl'=>$rooturl,
+        );
+        
+        if (!is_null($qid))
+        {
+            LimeExpressionManager::StartSurvey($sid, 'question', $surveyOptions, false,$LEMdebugLevel);
+            $qseq = LimeExpressionManager::GetQuestionSeq($qid);
+            $moveResult = LimeExpressionManager::JumpTo($qseq+1,false,false,true);
+        }
+        else if (!is_null($gid)) 
+        {
+            LimeExpressionManager::StartSurvey($sid, 'group', $surveyOptions, false,$LEMdebugLevel);
+            $gseq = LimeExpressionManager::GetGroupSeq($gid);
+            $moveResult = LimeExpressionManager::JumpTo($gseq+1,false,false,true);
+        }
+        else
+        {
+            LimeExpressionManager::StartSurvey($sid, 'survey', $surveyOptions, false,$LEMdebugLevel);
+            $moveResult = LimeExpressionManager::NavigateForwards();
+        }
+
+        $qtypes=getqtypelist('','array');
+        
+        $out = "<table border='1'>"
+        . "<tr><th>#</th><th>Name [QID]</th><th>Relevance [Validation] (Default)</th><th>Text [Help] (Tip)</th></tr>";
+
+        $_gseq=-1;
+        foreach ($LEM->currentQset as $q) {
+            $gseq = $q['info']['gseq'];
+            $gid = $q['info']['gid'];
+            $qid = $q['info']['qid'];
+
+            // Show Group-Level Info
+            if ($gseq != $_gseq) {
+                $_gseq = $gseq;
+                $ginfo = $LEM->gseq2info[$gseq];
+
+                $grelevance = ($ginfo['grelevance']=='') ? 1 : $ginfo['grelevance'];
+                $LEM->ProcessString('{' . $grelevance .'}', $qid,NULL,false,1,1,false,false);
+                $grelevance = $LEM->GetLastPrettyPrintExpression();
+
+                $gtext = '&nbsp;';
+                if (trim($ginfo['description']) != '') {
+                    $LEM->ProcessString($ginfo['description'], $qid,NULL,false,1,1,false,false);
+                    $gtext= $LEM->GetLastPrettyPrintExpression();
+                }
+
+                $out .= "<tr class='group'>"
+                . "<td>G-$gseq</td>"
+                . "<td><b>".$ginfo['group_name']."</b><br/>[<a target='_blank' href='$rooturl/admin/admin.php?action=orderquestions&sid=$sid&gid=$gid'>".$gid."</a>]</td>"
+                . "<td>".$grelevance."</td>"
+                . "<td>".$gtext."</td>"
+                . "</tr>";
+            }
+
+            // Show Question-Level Info
+            $mandatory = (($q['info']['mandatory']=='Y') ? "<span style='color:red'>*</span>" : '');
+            $type = $q['info']['type'];
+            $typedesc = $qtypes[$type]['description'];
+            
+            $qtext = '&nbsp';
+            if ($q['info']['qtext'] != '') {
+                $LEM->ProcessString($q['info']['qtext'], $qid,NULL,false,1,1,false,false);
+                $qtext = $LEM->GetLastPrettyPrintExpression();                
+            }
+
+            $help = '';
+            if ($q['info']['help'] != '') {
+                $LEM->ProcessString($q['info']['help'], $qid,NULL,false,1,1,false,false);
+                $help = '<br/>[HELP: ' . $LEM->GetLastPrettyPrintExpression() . ']';
+            }
+
+            $default = (is_null($q['info']['default']) ? '' : '<p>(' . $q['info']['default'] . ')</p>');
+
+            $relevance = (($q['info']['relevance'] == '') ? 1 : $q['info']['relevance']);
+            $LEM->ProcessString('{'. $relevance . '}', $qid,NULL,false,1,1,false,false);
+            $relevance = $LEM->GetLastPrettyPrintExpression();
+
+            $validEqn = '';
+            if ($q['validEqn'] != '') {
+                $LEM->ProcessString('{' . $q['validEqn'] .'}', $qid,NULL,false,1,1,false,false);
+                $validEqn = '<br/>[' . $LEM->GetLastPrettyPrintExpression() .']';
+            }
+
+            $validTip = (($q['validTip'] == '') ? '' : '<p>(TIP: ' . $q['validTip'] . '</p>)');
+
+            $out .= "<tr>"
+            . "<td>Q-" . $q['info']['qseq'] . "</td>"
+            . "<td>" . $mandatory . "<b>" . $q['info']['code'] . "</b><br/>[<a target='_blank' href='$rooturl/admin/admin.php?sid=$sid&gid=$gid&qid=$qid'>$qid</a>]<br/>$typedesc [$type]</td>"
+            . "<td>" . $relevance . $validEqn . $default . "</td>"
+            . "<td>" . $qtext . $help . $validTip . "</td>"
+            . "</tr>";
+        }
+        $out .= "</table>";
+
+        LimeExpressionManager::FinishProcessingPage();
+        if (($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING) {
+            $out .= LimeExpressionManager::GetDebugTimingMessage();
+        }
+
+        return $out;
+    }
 }
 ?>
