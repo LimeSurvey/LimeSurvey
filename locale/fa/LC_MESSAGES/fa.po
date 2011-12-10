@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-Language: Persian\n"
 "X-Poedit-Country: IRAN, ISLAMIC REPUBLIC OF\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Poedit-KeywordsList: gT;ngT:1,2\n"
+"X-Poedit-KeywordsList: gT;ngT:1,2;eT;neT:1,2\n"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:34
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:37
