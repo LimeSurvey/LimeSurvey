@@ -38,7 +38,7 @@ class browse extends Survey_Common_Action {
 		if (empty($surveyid)) //NO SID OR ACTION PROVIDED
 		{
 		    die("\t<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>"
-		            . $clang->gT("Browse Responses")."</div><div class='warningheader'>"
+		            . $clang->gT("Browse responses")."</div><div class='warningheader'>"
 		            . $clang->gT("Error")."\t</div>\n"
 		            . $clang->gT("You have not selected a survey to browse.")."<br />\n"
 		            ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('".$this->getController()->createUrl("/admin")."', '_top')\" /><br />\n"
@@ -86,7 +86,7 @@ class browse extends Survey_Common_Action {
 		        if ($actrow['active'] == "N") //SURVEY IS NOT ACTIVE YET
 		        {
 		            show_error("\t<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>"
-		                . $clang->gT("Browse Responses")."</div><div class='warningheader'>"
+		                . $clang->gT("Browse responses")."</div><div class='warningheader'>"
 		                .$clang->gT("Error")."\t</div>\n"
 		                . $clang->gT("This survey has not been activated. There are no results to browse.")."<br />\n"
 		                ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" /><br />\n"
@@ -98,7 +98,7 @@ class browse extends Survey_Common_Action {
 		else //SURVEY MATCHING $surveyid DOESN'T EXIST
 		{
 		    show_error("\t<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>"
-		        . $clang->gT("Browse Responses")."</div><div class='warningheader'>"
+		        . $clang->gT("Browse responses")."</div><div class='warningheader'>"
 		        .$clang->gT("Error")."\t</div>\n"
 		        . $clang->gT("There is no matching survey.")."<br />\n"
 		        ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
@@ -135,7 +135,7 @@ class browse extends Survey_Common_Action {
 
 		$this->getController()->_getAdminHeader();
 		$surveyoptions = "";
-		self::_browsemenubar($surveyid, $clang->gT("Browse Responses"));
+		self::_browsemenubar($surveyid, $clang->gT("Browse responses"));
 		$browseoutput = "";
 
 		$this->getController()->_js_admin_includes(Yii::app()->getConfig("adminscripts").'browse.js');
@@ -310,7 +310,7 @@ class browse extends Survey_Common_Action {
 		    {$browseoutput .= $surveyoptions;} //don't show options when called from another script with a filter on
 		    else
 		    {
-		        $browseoutput .= "\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Browse Responses").":</strong> $surveyname</td></tr>\n"
+		        $browseoutput .= "\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Browse responses").":</strong> $surveyname</td></tr>\n"
 		                ."\n<tr><td><table width='100%' align='center' border='0' bgcolor='#EFEFEF'>\n"
 		                ."\t<tr>\n"
 		                ."<td align='center'>\n"

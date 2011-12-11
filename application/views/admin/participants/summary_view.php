@@ -1,11 +1,11 @@
 <div class='header ui-widget-header'>
-  <?php echo $clang->gT("Central Participants Database Summary");?>
+  <?php echo $clang->gT("Central participants database summary");?>
 </div>
 <br />
 <table align='center' class='statisticssummary'>
  <tr>
   <th>
-    <?php echo $clang->gT("Total Participants in central table  ");?>
+    <?php echo $clang->gT("Total participants in central table");?>
   </th>
   <td>
     <?php echo $totalrecords; ?>
@@ -13,7 +13,7 @@
  </tr>
  <tr>
   <th>
-    <?php echo $clang->gT("Participants Owned by you  "); ?>
+    <?php echo $clang->gT("Participants owned by you"); ?>
   </th>
   <td>
     <?php echo $owned.' / '.$totalrecords; ?>
@@ -21,7 +21,7 @@
  </tr>
  <tr>
   <th>
-    <?php echo $clang->gT("Participants Shared with you  ");?>
+    <?php echo $clang->gT("Participants shared with you");?>
   </th>
   <td>
     <?php echo $totalrecords-$owned.' / '.$totalrecords; ?>
@@ -29,7 +29,7 @@
  </tr>
  <tr>
   <th>
-    <?php echo $clang->gT("Participants you have shared  ");?>
+    <?php echo $clang->gT("Participants you have shared");?>
   </th>
   <td>
     <?php echo $shared.' / '.$totalrecords; ?>
@@ -37,7 +37,7 @@
  </tr>
  <tr>
   <th>
-    <?php echo $clang->gT("Blacklisted Participants  ");?>
+    <?php echo $clang->gT("Blacklisted participants");?>
   </th>
   <td>
     <?php echo $blacklisted; ?>
@@ -45,7 +45,7 @@
  </tr>
  <tr>
   <th>
-    <?php echo $clang->gT("Total attributes in the central table  ");?>
+    <?php echo $clang->gT("Total attributes in the central table");?>
   </th>
   <td>
     <?php echo $attributecount; ?>

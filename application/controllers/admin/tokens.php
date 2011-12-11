@@ -2153,7 +2153,7 @@ class tokens extends Survey_Common_Action
 		}
 		$separator = returnglobal('separator');
 		if (empty($separator) || $separator == 'auto') $selected = " selected = 'selected'"; else $selected = '';
-		$separatorout = "<option value='auto'$selected>".$clang->gT("Auto detect")."</option>";
+		$separatorout = "<option value='auto'$selected>".$clang->gT("(Autodetect)")."</option>";
 		if ($separator == 'comma') $selected = " selected = 'selected'"; else $selected = '';
 		$separatorout .= "<option value='comma'$selected>".$clang->gT("Comma")."</option>";
 		if ($separator == 'semicolon') $selected = " selected = 'selected'"; else $selected = '';

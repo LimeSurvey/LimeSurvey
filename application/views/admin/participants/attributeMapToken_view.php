@@ -59,7 +59,7 @@
           'alt' => 'Ajax Loader',
           'title' => 'Ajax Loader'
           );?>
-    <div id="processing" title="<?php echo $clang->gT("Processing .....") ?>" style="display:none">
+    <div id="processing" title="<?php echo $clang->gT("Processing...") ?>" style="display:none">
     <?php echo CHtml::image($ajaxloader['src'],$ajaxloader['alt']); ?>
     </div>
 </body>

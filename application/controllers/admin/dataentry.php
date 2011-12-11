@@ -393,7 +393,7 @@
                         if (!$result)
                         {
                             $vvoutput .= "<div class='warningheader'>\n$insert"
-                            ."<br />".sprintf($clang->gT("Import Failed on Record %d"), $recordcount)
+                            ."<br />".sprintf($clang->gT("Import failed on record %d"), $recordcount)
                             ."</div>\n";
                         }
                         else
@@ -410,7 +410,7 @@
                     $vvoutput .= "<br /><i><strong><font color='red'>".$clang->gT("Important Note:")."<br />".$clang->gT("Do NOT refresh this page, as this will import the file again and produce duplicates")."</font></strong></i><br /><br />";
                 }
                 $vvoutput .= $clang->gT("Total records imported:")." ".$importcount."<br /><br />";
-                $vvoutput .= "[<a href='".$this->getController()->createUrl('/').'/admin/browse/surveyid/'.$surveyid."'>".$clang->gT("Browse Responses")."</a>]";
+                $vvoutput .= "[<a href='".$this->getController()->createUrl('/').'/admin/browse/surveyid/'.$surveyid."'>".$clang->gT("Browse responses")."</a>]";
                 $vvoutput .= "</div><br />&nbsp;";
             }
 
@@ -1640,7 +1640,7 @@
                 $delresult = db_execute_assoc($delquery) or safe_die ("Couldn't delete record $id<br />\n");
 
                 $dataentryoutput .= "<div class='successheader'>".$clang->gT("Record Deleted")." (ID: $id)</div><br /><br />\n"
-                ."<input type='submit' value='".$clang->gT("Browse Responses")."' onclick=\"window.open('".$this->getController()->createUrl('/').'/admin/browse/surveyid/'.$surveyid."/all', '_top')\" /><br /><br />\n"
+                ."<input type='submit' value='".$clang->gT("Browse responses")."' onclick=\"window.open('".$this->getController()->createUrl('/').'/admin/browse/surveyid/'.$surveyid."/all', '_top')\" /><br /><br />\n"
                 ."</div>\n";
 
                 $data['display'] = $dataentryoutput;
@@ -1774,7 +1774,7 @@
                 $dataentryoutput .= "<div class='messagebox ui-corner-all'><div class='successheader'>".$clang->gT("Success")."</div>\n"
                 .$clang->gT("Record has been updated.")."<br /><br />\n"
                 ."<input type='submit' value='".$clang->gT("View This Record")."' onclick=\"window.open('$link1', '_top')\" /><br /><br />\n"
-                ."<input type='submit' value='".$clang->gT("Browse Responses")."' onclick=\"window.open('$link2', '_top')\" />\n"
+                ."<input type='submit' value='".$clang->gT("Browse responses")."' onclick=\"window.open('$link2', '_top')\" />\n"
                 ."</div>\n";
 
                 $data['display'] = $dataentryoutput;

@@ -199,7 +199,7 @@ class printanswers extends LSCI_Controller {
         $printoutput = '';
         if($this->config->item('usepdfexport') == 1)
         {
-            $printoutput .= "<form action='".site_url('printanswers/view/'.$surveyid.'/pdf')."' method='post'>\n<center><input type='submit' value='".$clang->gT("PDF Export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
+            $printoutput .= "<form action='".site_url('printanswers/view/'.$surveyid.'/pdf')."' method='post'>\n<center><input type='submit' value='".$clang->gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
         }
         if($printableexport=='pdf')
         {

@@ -99,7 +99,7 @@ var surveyUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/addToTo
 var postUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/setSession"); ?>";
 var ajaxUrl = "<?php echo Yii::app()->createUrl("images/ajax-loader.gif"); ?>";
 var redUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/displayParticipants");?>";
-var colNames = '["participant_id","can_edit","<?php echo $clang->gT("First Name") ?>","<?php echo $clang->gT("Last Name") ?>","<?php echo $clang->gT("E-Mail") ?>","<?php echo $clang->gT("Blacklisted") ?>","<?php echo $clang->gT("Surveys") ?>","<?php echo $clang->gT("Language") ?>","<?php echo $clang->gT("Owner Name") ?>"<?php echo $columnNames; ?>]';
+var colNames = '["participant_id","can_edit","<?php echo $clang->gT("First name") ?>","<?php echo $clang->gT("Last name") ?>","<?php echo $clang->gT("E-mail") ?>","<?php echo $clang->gT("Blacklisted") ?>","<?php echo $clang->gT("Surveys") ?>","<?php echo $clang->gT("Language") ?>","<?php echo $clang->gT("Owner name") ?>"<?php echo $columnNames; ?>]';
 var colModels = '[{ "name":"participant_id", "index":"participant_id", "width":100, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';
     colModels += '{ "name":"can_edit", "index":"can_edit", "width":10, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';
     colModels += '{ "name":"firstname", "index":"firstname", "sorttype":"string", "sortable": true, "width":120, "align":"center", "editable":true},';
@@ -117,22 +117,22 @@ var colModels = '[{ "name":"participant_id", "index":"participant_id", "width":1
 <script src="<?php echo Yii::app()->getConfig('generalscripts')."admin/displayParticipant.js" ?>" type="text/javascript"></script>
 <div id ="search" style="display:none">
 <?php
-$optionsearch = array( '' => 'Select One',
-                      'firstname' => 'First Name',
-                      'lastname' => 'Last Name',
-                      'email' => 'E-Mail',
+$optionsearch = array( '' => 'Select...',
+                      'firstname' => 'First name',
+                      'lastname' => 'Last name',
+                      'email' => 'E-mail',
                       'blacklisted' => 'Blacklisted',
                       'surveys' => 'Surveys ',
                       'language' => 'Language',
                       'owner_uid' => 'Owner ID',
-                      'owner_name' => 'Owner Name');
-$optioncontition = array( '' => 'Select One',
+                      'owner_name' => 'Owner name');
+$optioncontition = array( '' => 'Select...',
                       'equal' => 'Equals',
                       'contains' => 'Contains',
-                      'notequal' => 'Not Equal',
-                      'notcontains' => 'Not Contains',
-                      'greaterthan' => 'Greater Than',
-                      'lessthan' => 'Less Than');
+                      'notequal' => 'Not equal',
+                      'notcontains' => 'Not contains',
+                      'greaterthan' => 'Greater than',
+                      'lessthan' => 'Less than');
 if(isset($allattributes) && count($allattributes) > 0) // Add attribute names to select box
         {
         echo "<script type='text/javascript'> optionstring = '";
@@ -184,7 +184,7 @@ if(isset($allattributes) && count($allattributes) > 0) // Add attribute names to
 	<?php echo $clang->gT("User with whom the participants are to be shared"); ?></p>
         <p>
               <?php
-              $options[''] = $clang->gT("---Select One---");
+              $options[''] = $clang->gT("Select...");
               foreach($names as $row)
               {
                   if(!(Yii::app()->session['loginID'] == $row['uid']))
@@ -216,7 +216,7 @@ if(isset($allattributes) && count($allattributes) > 0) // Add attribute names to
               <?php
                 if(!empty($surveynames))
                 {
-                       $option[''] = $clang->gT("---Select One---");
+                       $option[''] = $clang->gT("Select...");
                        foreach($surveynames as $row )
                         {
                              $option[$row['surveyls_survey_id']] = $row['surveyls_title'];

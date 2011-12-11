@@ -2,12 +2,12 @@
 <script src="<?php echo Yii::app()->getConfig('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
 <script src="<?php echo Yii::app()->getConfig('adminscripts')."attributeControl.js" ?>" type="text/javascript"></script>
 <script type="text/javascript">
-  var saveVisibleMsg = "<?php echo $clang->gT("Attribute Visiblity Changed") ?>";    
+  var saveVisibleMsg = "<?php echo $clang->gT("Attribute visiblity changed") ?>";    
   var saveVisible = "<?php echo Yii::app()->baseUrl."/index.php/admin/participants/sa/saveVisible";?>";
 </script>
 <div class='header ui-widget-header'>
   <strong>
-    <?php echo $clang->gT("Attribute Control"); ?>
+    <?php echo $clang->gT("Attribute control"); ?>
   </strong>
 </div>
 <?php
@@ -19,8 +19,8 @@
   <li>
     <table id='atttable'class='hovertable'>
     <tr>
-      <th><?php echo $clang->gT("Attribute Name"); ?></th>
-      <th><?php echo $clang->gT("Attribute Type"); ?></th>
+      <th><?php echo $clang->gT("Attribute name"); ?></th>
+      <th><?php echo $clang->gT("Attribute type"); ?></th>
       <th><?php echo $clang->gT("Visible in participant panel"); ?></th>
       <th><?php echo $clang->gT("Actions"); ?></th>
     </tr>
@@ -38,7 +38,7 @@
       <?php
         if($value['attribute_type']=='DD')
         {
-          echo $clang->gT("Drop Down");
+          echo $clang->gT("Drop-down list");
         }
         elseif($value['attribute_type']=='DP')
         {
@@ -46,7 +46,7 @@
         }
         else
         {
-          echo $clang->gT("Text Box");
+          echo $clang->gT("Text box");
         }
       ?>
       </td>
@@ -75,13 +75,13 @@
                       'alt'    => 'Edit',
                       'width'  => '15',
                       'height' => '15',
-                      'title'  => 'Edit Atribute');
+                      'title'  => 'Edit attribute');
         echo CHtml::link(CHtml::image($edit['src'],$edit['alt'],array_slice($edit,2)),'viewAttribute/aid/'.$value['attribute_id']);
         $del = array('src' => Yii::app()->baseUrl.'/images/error_notice.png',
                      'alt' => 'Delete',
                      'width' => '15',
                      'height' => '15',
-                     'title' => 'Delete Atribute');
+                     'title' => 'Delete attribute');
         echo CHtml::link(CHtml::image($del['src'],$del['alt'],array_slice($del,2)),'delAttribute/aid/'.$value['attribute_id']);
       ?>
       </td>
@@ -92,7 +92,7 @@
     </table>
   </li>
   <li>
-    <a href="#" class="add"><img src = "<?php echo Yii::app()->baseUrl.'/images/plus.png' ?>" alt="Add Attribute" width="25" height="25" title="Add Attribute" id="add" name="add" /></a>
+    <a href="#" class="add"><img src = "<?php echo Yii::app()->baseUrl.'/images/plus.png' ?>" alt="Add attribute" width="25" height="25" title="Add attribute" id="add" name="add" /></a>
   </li>
 </ul>
 <br/>

@@ -20,7 +20,7 @@
  { 
  ?>
  <div id="centralattribute">
-   <div class="heading"><?php echo $clang->gT("Already Mapped"); ?></div>
+   <div class="heading"><?php echo $clang->gT("Already mapped"); ?></div>
     <ul id="cpdbatt">
     <?php
      foreach($selectedcentralattribute as $key=>$value)
@@ -59,7 +59,7 @@
   ?>
     <div id="tokenattribute">
         <div class="heading">
-         <?php echo $clang->gT("Token Table Attribute");?>
+         <?php echo $clang->gT("Token table attribute");?>
         </div>
         <ul class="tokenatt">
         <?php
@@ -76,10 +76,10 @@
     <p> <input type="button" name="attmap" id="attmap" value="Continue" /></p>
     <?php $ajaxloader = array(
           'src' => Yii::app()->baseUrl.'/images/ajax-loader.gif',
-          'alt' => 'Ajax Loader',
-          'title' => 'Ajax Loader'
+          'alt' => 'Ajax loader',
+          'title' => 'Ajax loader'
           );?>
-    <div id="processing" title="<?php echo $clang->gT("Processing .....") ?>" style="display:none">
+    <div id="processing" title="<?php echo $clang->gT("Processing...") ?>" style="display:none">
     <?php echo CHtml::image($ajaxloader['src'],$ajaxloader['alt']); ?>
     </div>
  </div>

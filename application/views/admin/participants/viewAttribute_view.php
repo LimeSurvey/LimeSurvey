@@ -1,27 +1,27 @@
 <script type="text/javascript">
   var url = "<?php echo Yii::app()->createUrl("admin/participants/sa/getAttributeBox");?>";
-  var attname = "<?php echo $clang->gT("Attribute Name:"); ?>";
+  var attname = "<?php echo $clang->gT("Attribute name:"); ?>";
   removeitem = new Array(); // Array to hold values that are to be removed from langauges option
 </script>
 <script src="<?php echo Yii::app()->getConfig('adminscripts')."admin_core.js" ?>" type="text/javascript"></script>
 <script src="<?php echo Yii::app()->getConfig('generalscripts')."jquery/jquery.js" ?>" type="text/javascript"></script>
 <script src="<?php echo Yii::app()->getConfig('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
 <script src="<?php echo Yii::app()->getConfig('adminscripts')."viewAttribute.js" ?>" type="text/javascript"></script>
-<div class='header ui-widget-header'><strong><?php echo $clang->gT("Attribute Settings"); ?></strong></div><br/>
+<div class='header ui-widget-header'><strong><?php echo $clang->gT("Attribute settings"); ?></strong></div><br/>
 <?php
   echo CHtml::beginForm(Yii::app()->createUrl('admin/participants/sa/saveAttribute/aid/'.CHttpRequest::getQuery('aid')).'/',"post");
   $plus = array('src'    => Yii::app()->baseUrl."/images/plus.png",
-                'alt'    => 'Add Language',
-                'title'  => 'Add Language',
+                'alt'    => 'Add language',
+                'title'  => 'Add language',
                 'id'     => 'add',
                 'hspace' => 2,
                 'vspace' => -6);
 ?>
 <div id="addlang"> 
-  <?php echo $clang->gT('Add a Language:')?>
+  <?php echo $clang->gT('Add a language:')?>
   <?php 
   $options = array();
-  $options[''] = $clang->gT('Select One');
+  $options[''] = $clang->gT('Select...');
   foreach (getLanguageData () as $langkey2 => $langname)
   {
     $options[$langkey2] = $langname['description'];
@@ -56,7 +56,7 @@
   <div id="<?php echo $value['lang']?>">
    <p>
         <label for='attname' id='attname'>
-            <?php echo $clang->gT('Attribute Name:'); ?>
+            <?php echo $clang->gT('Attribute name:'); ?>
         </label>
         <?php echo CHtml::textField($value['lang'],$value['attribute_name']); ?>
    </p>
@@ -68,25 +68,25 @@
  </div>
  <div class='header ui-widget-header'>
     <strong>
-        <?php echo $clang->gT("Common Settings"); ?>
+        <?php echo $clang->gT("Common settings"); ?>
     </strong>
  </div>
  <br/>
  <div id="comsettingdrop">
     <label for='atttype' id='atttype'>
-      <?php echo $clang->gT('Attribute Type:'); ?>
+      <?php echo $clang->gT('Attribute type:'); ?>
     </label>
     <?php 
-      $options = array('DD' => 'Drop Down',
+      $options = array('DD' => 'Drop-down list',
                        'DP' => 'Date',
-                       'TB' => 'Text Box');
+                       'TB' => 'Text box');
       echo CHtml::dropDownList('attribute_type',$attributes['attribute_type'],$options);
     ?>
     <br/><br/>
  </div>
  <div id="comsettingcheck">
  <label for='attvisible' id='attvisible'>
-  <?php echo $clang->gT('Attribute Visible:') ?>
+  <?php echo $clang->gT('Attribute visible:') ?>
  </label>
   <?php
     if($attributes['visible'] =="TRUE")
@@ -104,7 +104,7 @@
   <div id='dd'>
    <table id='ddtable' class='hovertable'>
      <tr>
-       <th><?php echo $clang->gT('Value Name'); ?></th>
+       <th><?php echo $clang->gT('Value name'); ?></th>
      </tr>
      <?php
      foreach($attributevalues as $row=>$value)
@@ -132,7 +132,7 @@
                       'alt'    => 'Delete',
                       'width'  => '15',
                       'height' => '15',
-                      'title'  => 'Delete Atribute Value');
+                      'title'  => 'Delete atribute nalue');
         echo CHtml::link(CHtml::image($del['src'],$del['alt'],array_slice($del,2)),$this->createURL('admin/participants/sa/delAttributeValues/aid/'.$attributes['attribute_id'].'/vid/'.$value['value_id']));
       ?>
       </td>

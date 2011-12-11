@@ -344,7 +344,7 @@ myform.submit();
 <?php $ajaxloader = array('src' => Yii::app()->baseUrl.'/images/ajax-loader.gif',
                           'alt' => 'Ajax Loader',
                           'title' => 'Ajax Loader'); ?>
- <div id="processing" title="<?php $clang->eT("Processing .....") ?>" style="display:none">
+ <div id="processing" title="<?php $clang->eT("Processing...") ?>" style="display:none">
 <?php echo '<img src="', $ajaxloader['src'], '" alt="', $ajaxloader['alt'], '" title="', $ajaxloader['title'], '" />' ?>
 <div id="addcpdb" title="addsurvey" style="display:none">
   <p><?php $clang->eT("Please select the attributes that are to be added to the central database"); ?></p>

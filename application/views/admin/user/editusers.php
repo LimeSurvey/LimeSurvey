@@ -73,7 +73,7 @@
     if (Yii::app()->session['loginID'] == "1" && $usr['parent_id'] !=1 ) { ?>
 
         <form method='post' action='<?php echo $scriptname;?>'>
-        <input type='submit' value='<?php echo $clang->gT("Take Ownership");?>' />
+        <input type='submit' value='<?php echo $clang->gT("Take ownership");?>' />
         <input type='hidden' name='action' value='setasadminchild' />
         <input type='hidden' name='user' value='<?php echo $usr['user'];?>' />
         <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />

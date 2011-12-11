@@ -1580,7 +1580,7 @@ class PdfWriter extends Writer
         $this->pdf = new PDF($pdforientation,'mm','A4');
         $this->pdf->SetFont($pdfdefaultfont, '', $pdffontsize);
         $this->pdf->AddPage();
-        $this->pdf->intopdf("PDF Export ".date("Y.m.d-H:i", time()));
+        $this->pdf->intopdf("PDF export ".date("Y.m.d-H:i", time()));
 
 
         $this->separator="\t";

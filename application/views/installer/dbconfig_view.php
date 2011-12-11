@@ -49,14 +49,14 @@
     <tr>
      <td style="width: 428px;">
 	 <b><?php echo CHtml::activeLabelEx($model, 'dbuser', array('label' => $clang->gT("Database user"))); ?></b><br />
-      <div class="description-field"><?php echo $clang->gT('Your Database server user name. In most cases "root" will work.'); ?></div>
+      <div class="description-field"><?php echo $clang->gT('Your database server user name. In most cases "root" will work.'); ?></div>
     </td>
     <td style="width: 224px;" align="right"><?php echo CHtml::activeTextField($model,'dbuser') ?></td>
    </tr>
    <tr>
     <td style="width: 428px;">
 	 <b><?php echo CHtml::activeLabelEx($model, 'dbpwd', array('label' => $clang->gT("Database password"))); ?></b><br />
-     <div class="description-field"><?php echo $clang->gT("Your Database server password."); ?></div>
+     <div class="description-field"><?php echo $clang->gT("Your database server password."); ?></div>
     </td>
     <td style="width: 224px;" align="right"><?php echo CHtml::activePasswordField($model,'dbpwd') ?></td>
    </tr>

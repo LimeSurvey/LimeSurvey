@@ -121,7 +121,7 @@ class printablesurvey extends CAction
 		{
 		    $pdf_form = '
 		    <form action="'.$this->getController()->createUrl('admin/printablesurvey/surveyid/'.$surveyid.'/lang/'.$surveyprintlang.'/').'" method="post">
-			    <input type="submit" value="'.$clang->gT('PDF Export').'"/>
+			    <input type="submit" value="'.$clang->gT('PDF export').'"/>
 			    <input type="hidden" name="checksessionbypost" value="'.htmlspecialchars(Yii::app()->session['checksessionpost']).'"/>
 			    <input type="hidden" name="printableexport" value="true"/>
 		    </form>

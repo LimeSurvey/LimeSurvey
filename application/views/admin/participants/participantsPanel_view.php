@@ -8,7 +8,7 @@
 <div class="menubar">
   <div class='header ui-widget-header'>
     <div class="menubar-title-left">
-      <strong><?php echo $clang->gT("Participants Panel"); ?> </strong>
+      <strong><?php echo $clang->gT("Participant panel"); ?> </strong>
     </div>
   </div>
   <?php
@@ -37,33 +37,33 @@
                     'style' => 'margin-right:1px');
     
     $display = array('src' => Yii::app()->getConfig('imageurl').'/document.png',
-                     'alt' => 'Display Participants',
-                     'title' => 'Display Participants',
+                     'alt' => 'Display participants',
+                     'title' => 'Display participants',
                      'style' => 'margin-left:5px');
     
     $blacklist = array('src' => Yii::app()->getConfig('imageurl').'/trafficred.png',
-                       'alt' => 'Blacklist Control',
-                       'title' => 'BlackList Control',
+                       'alt' => 'Blacklist control',
+                       'title' => 'BlackList control',
                        'style' => 'margin-left:1px',
                        'style' => 'margin-right:1px');
     
     $globalsettings = array('src' => Yii::app()->getConfig('imageurl').'/token_manage.png',
-                            'alt' => 'Global Participant Settings',
-                            'title' => 'Global Participant Settings',
+                            'alt' => 'Global participant settings',
+                            'title' => 'Global participant settings',
                             'style' => 'margin-left:5px',
                             'style' => 'margin-right:1px');
     
     $attributecontrol = array('src' => Yii::app()->getConfig('imageurl').'/tag_green.png',
-                              'alt' => 'Attribute Control',
-                              'title' => 'Attribute Control',
+                              'alt' => 'Attribute control',
+                              'title' => 'Attribute control',
                               'width' => 50,
                               'height' => 35,
                               'style' => 'margin-left:0px',
                               'style' => 'margin-right:1px');
     
     $sharepanel = array('src' => Yii::app()->getConfig('imageurl').'/share.png',
-                        'alt' => 'Share Panel',
-                        'title' => 'Share Panel',
+                        'alt' => 'Share panel',
+                        'title' => 'Share panel',
                         'height' => 35,
                         'width'=> 35,
                         'style' => 'margin-left:5px');

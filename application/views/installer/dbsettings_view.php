@@ -12,7 +12,7 @@
             <p>&nbsp;<?php echo $descp; ?></p>
             <hr />
             <br />
-            <div class='messagebox'><div class='header'><?php echo $clang->eT('LimeSurvey Setup'); ?></div>
+            <div class='messagebox'><div class='header'><?php echo $clang->eT('LimeSurvey setup'); ?></div>
                 <?php if (isset($adminoutputText)) echo $adminoutputText; ?>
             </div><br />
         </div>

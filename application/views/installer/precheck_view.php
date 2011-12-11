@@ -12,7 +12,7 @@ function dirReport($dir, $write, $clang)
     } else
     {
        $error = 1;
-       $a = $clang->gT("Not Found");
+       $a = $clang->gT("Not found");
     }
 
     if ($write == "Writable")
@@ -68,22 +68,22 @@ function dirReport($dir, $write, $clang)
 </tr>
 <tr>
        <td style="width: 209px;">/application/config/config.php <?php echo $clang->gT("file"); ?></td>
-       <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & Writable"); ?></td>
+       <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & writable"); ?></td>
        <td align="center" style="width: 225px;"><?php  echo dirReport($configPresent,$configWritable,$clang); ?></td>
 </tr>
 <tr>
        <td style="width: 209px;">/tmp <?php echo $clang->gT("directory"); ?></td>
-       <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & Writable"); ?></td>
+       <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & writable"); ?></td>
        <td align="center" style="width: 225px;"><?php  echo dirReport($tmpdirPresent,$tmpdirWritable,$clang); ?></td>
 </tr>
 <tr>
        <td style="width: 209px;">/upload <?php echo $clang->gT("directory"); ?></td>
-       <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & Writable"); ?></td>
+       <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & writable"); ?></td>
        <td align="center" style="width: 225px;"><?php  echo dirReport($uploaddirPresent,$uploaddirWritable,$clang); ?></td>
 </tr>
 <tr>
        <td style="width: 209px;">/templates <?php echo $clang->gT("directory"); ?></td>
-       <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & Writable"); ?></td>
+       <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & writable"); ?></td>
        <td align="center" style="width: 225px;"><?php  echo dirReport($templatedirPresent,$templatedirWritable,$clang); ?></td>
 </tr>
 

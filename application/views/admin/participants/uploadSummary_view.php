@@ -10,7 +10,7 @@
     </head>
     <body>
         <?php
-            $uploadSummary = "<div class='header ui-widget-header'>".$clang->gT("CPDB CSV Summary")."</div><div class='messagebox ui-corner-all'>";
+            $uploadSummary = "<div class='header ui-widget-header'>".$clang->gT("CPDB CSV summary")."</div><div class='messagebox ui-corner-all'>";
         if(empty($errorinupload)) 
             {
                 $uploadSummary .= "<div class='successheader'>".$clang->gT('Uploaded CSV file successfully')."</div>";

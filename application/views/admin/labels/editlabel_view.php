@@ -2,7 +2,7 @@
         <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/close.gif' align='right'
         onclick="window.open('<?php echo $this->createUrl("admin/labels/sa/view/lid/".$lid); ?>', '_top')" />
         <?php if ($action == "newlabelset") { echo $clang->gT("Create or import new label set(s)");}
-        else {echo $clang->gT("Edit Label Set"); } ?>
+        else {echo $clang->gT("Edit label set"); } ?>
 </div>
 
 <div id='tabs'>

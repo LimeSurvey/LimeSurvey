@@ -248,7 +248,7 @@
             $query = "UPDATE {$dbprefix}tokens_$surveyid\n"
             ."SET sent='$today' WHERE tid=$tid";
             $result=db_execute_assoc($query) or show_error("Unable to execute this query : $query<br />");     //Checked
-            $html="<center>".$clang->gT("Thank you for registering to participate in this survey.")."<br /><br />\n".$clang->gT("An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.")."<br /><br />\n".$clang->gT("Survey Administrator")." {ADMINNAME} ({ADMINEMAIL})";
+            $html="<center>".$clang->gT("Thank you for registering to participate in this survey.")."<br /><br />\n".$clang->gT("An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.")."<br /><br />\n".$clang->gT("Survey administrator")." {ADMINNAME} ({ADMINEMAIL})";
             $html=ReplaceFields($html, $fieldsarray);
             $html .= "<br /><br /></center>\n";
         }

@@ -31,7 +31,7 @@
    <tr>
     <td align="left" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="<?php echo $clang->gT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/install/welcome"); ?>', '_top')" /></td>
     <td align="center" style="width: 227px;"></td>
-    <td align="right" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"  type="submit" value="<?php echo $clang->gT('I Accept'); ?>" /></td>
+    <td align="right" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"  type="submit" value="<?php echo $clang->gT('I accept'); ?>" /></td>
    </tr>
 </tbody>
 </table>

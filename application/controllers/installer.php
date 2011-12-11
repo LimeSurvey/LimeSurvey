@@ -518,11 +518,11 @@ class Installer extends CI_Controller {
                     .$clang->gT("LimeSurvey can attempt to create this database for you.")."<br /><br />\n";
 
                     $values['adminoutputForm']="<form action='".site_url("installer/createdb")."' method='post'><input type='submit' value='"
-                    .$clang->gT("Create Database")."' class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' /></form>";
+                    .$clang->gT("Create database")."' class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' /></form>";
 
 
                 }
-                elseif ($dbexistsbutempty ) //&& !(returnglobal('createdbstep2')==$clang->gT("Populate Database")))
+                elseif ($dbexistsbutempty ) //&& !(returnglobal('createdbstep2')==$clang->gT("Populate database")))
                 {
                     $aStatusdata = array(
                     'populatedatabase'  => 'TRUE'
@@ -535,7 +535,7 @@ class Installer extends CI_Controller {
                     .$clang->gT("Do you want to populate that database now by creating the necessary tables?")."<br /><br />";
 
                     $values['adminoutputForm']= "<form method='post' action='".base_url()."index.php/installer/populatedb/'>"
-                    ."<input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type='submit' name='createdbstep2' value='".$clang->gT("Populate Database")."' />"
+                    ."<input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type='submit' name='createdbstep2' value='".$clang->gT("Populate database")."' />"
                     ."</form>";
                 }
                 elseif (!$dbexistsbutempty)
@@ -544,7 +544,7 @@ class Installer extends CI_Controller {
                     $connect->database = $this->input->post('dbname');
                     $connect->Execute("USE DATABASE `$databasename`");
                     $output=CheckForDBUpgrades();
-                    if ($output== '') {$values['adminoutput'].='<br />'.$clang->gT('LimeSurvey Database is up to date. No action needed');}
+                    if ($output== '') {$values['adminoutput'].='<br />'.$clang->gT('LimeSurvey database is up to date. No action needed');}
                     else {$values['adminoutput'].=$output;}
                     $values['adminoutput'].="<br />Please ".anchor("admin","log in.");
                 }
@@ -889,7 +889,7 @@ class Installer extends CI_Controller {
                 .$clang->gT("Database has been created.")."</font></strong><br /><br />\n"
                 .$clang->gT("Please continue with populating the database.")."<br /><br />\n";
                 $values['adminoutputForm'] = "<form method='post' action='".site_url('installer/populatedb')."'>"
-                ."<input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type='submit' name='createdbstep2' value='".$clang->gT("Populate Database")."' /></form>";
+                ."<input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type='submit' name='createdbstep2' value='".$clang->gT("Populate database")."' /></form>";
 
                 $this->session->unset_userdata('databaseDontExist');
             }

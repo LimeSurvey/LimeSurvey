@@ -105,11 +105,11 @@
                         <?php } ?>
                     <?php if(1) { ?>
                         <li><a href='<?php echo $this->createUrl("admin/survey/sa/showsyntaxerrors/surveyid/$surveyid");?>' >
-                            <?php $clang->eT("Show Log of Syntax Errors");?></a></li>
+                            <?php $clang->eT("Show log of syntax errors");?></a></li>
                         <?php } ?>
                     <?php if(1) { ?>
                         <li><a href='<?php echo $this->createUrl("admin/survey/sa/resetsyntaxerrorlog/surveyid/$surveyid");?>' >
-                            <?php $clang->eT("Delete Log of Syntax Errors");?></a></li>
+                            <?php $clang->eT("Delete log of syntax errors");?></a></li>
                         <?php } ?>
                 </ul></li>
             <li><a href='#'>
