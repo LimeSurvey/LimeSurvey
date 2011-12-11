@@ -81,18 +81,28 @@ EOD;
 <style type="text/css">
 tr.LEMgroup td
 {
+background-color:lightgrey;
+}
+
+tr.LEMquestion
+{
 background-color:#EAF2D3;
 }
 
 tr.LEManswer td
 {
-background-color:lightgrey;
+background-color:white;
 }
 
 .LEMerror
 {
 color:red;
 font-weight:bold;
+}
+
+tr.LEMsubq td
+{
+background-color:lightyellow;
 }
 </style>
     </head>
