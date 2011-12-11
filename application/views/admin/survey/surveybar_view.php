@@ -96,7 +96,7 @@
                         <?php } ?>
                     <?php if ($surveycontent) {
                             if($conditionscount) { ?>
-                            <li><a href="#" onclick="<?php echo $this->createUrl("admin/survey/sa/confirmdelete/surveyid/$surveyid"); ?>">
+                             <li><a href="<?php echo $this->createUrl("admin/conditions/sa/action/subaction/resetsurveylogic/surveyid/$surveyid/gid/1/qid/1"); ?>">
                                 <img src='<?php echo $imageurl;?>/resetsurveylogic_30.png' name='ResetSurveyLogic' alt='' width="30" height="30"/> <?php $clang->eT("Reset conditions");?></a></li>
                             <?php } else { ?>
                             <li><a href="#" onclick="alert('<?php $clang->eT("Currently there are no conditions configured for this survey.", "js");?>');" >

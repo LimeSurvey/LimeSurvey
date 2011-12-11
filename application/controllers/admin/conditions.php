@@ -22,14 +22,17 @@
  * @package		LimeSurvey
  * @subpackage	Backend
  */
-class conditions extends Survey_Common_Controller {
+class conditions extends Survey_Common_Action {
 
-	/**
-	 * Constructor
-	 */
-	function __construct()
-	{
-		parent::__construct();
+    public function run($sa = '', $surveyid = 0)
+   {
+   		if (empty($sa)) $sa = null;
+
+		if ($sa == '_remap')
+			$this->route('_remap', array('method', 'params'));
+		elseif ($sa == 'action')
+			$this->route('action', array('subaction', 'surveyid', 'gid', 'qid'));
+		
 	}
 
 	public function _remap($method, $params = array())
@@ -45,13 +48,12 @@ class conditions extends Survey_Common_Controller {
 		$gid = sanitize_int($gid);
 		$qid = sanitize_int($qid);		
 		//Compatibility variables for CI
-		$_POST = $this->input->post();
-		$clang = $this->limesurvey_lang;
-		$dbprefix = $this->db->dbprefix;
-		$imageurl=$this->config->item("imageurl");
-		$this->load->helper("database");
 
-		if($this->input->post("subaction")) $subaction=$this->input->post("subaction");
+		$clang = $this->getController()->lang;
+		$imageurl=Yii::app()->getConfig("imageurl");
+		Yii::app()->loadHelper("database");
+
+		if(!empty($_POST['subaction'])) $subaction=$_POST['subaction'];
 
 		//BEGIN Sanitizing POSTed data
 		if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
@@ -178,6 +180,36 @@ class conditions extends Survey_Common_Controller {
 
 		//BEGIN PROCESS ACTIONS
 		// ADD NEW ENTRY IF THIS IS AN ADD
+
+		if (isset($p_subaction) && $p_subaction == "resetsurveylogic")
+		{
+		$clang = $this->getController()->lang;
+		$resetsurveylogicoutput = "<br />\n";
+		$resetsurveylogicoutput .= "<table class='alertbox' >\n";
+		$resetsurveylogicoutput .= "\t<tr ><td colspan='2' height='4'><font size='1'><strong>".$clang->gT("Reset Survey Logic")."</strong></font></td></tr>\n"; 
+		 
+		 if (!isset($_GET['ok']))
+		    {
+            $this->getController()->_getAdminHeader();
+			$this->getController()->_showMessageBox($clang->gT("Warning"),$clang->gT("You are about to delete all conditions on this survey's questions")."($surveyid)<br />".$clang->gT("We recommend that before you proceed, you export the entire survey from the main administration screen.")."<br />\n"
+            ."<input type='submit' value='"
+            .$clang->gT("Yes")."' onclick=\"window.open('".$this->getController()->createUrl("admin/survey/sa/resetsurveylogic/surveyid/$surveyid")."?ok=Y"."', '_top')\" />\n"
+            ."<input type='submit' value='"
+            .$clang->gT("Cancel")."' onclick=\"window.open('".$this->getController()->createUrl("admin/survey/sa/view/surveyid/$surveyid")."', '_top')\" />\n"); 
+		    }
+		else
+		    {
+			$resetlogicquery = "DELETE FROM {{conditions}} WHERE qid in (select qid from {{questions}} where sid=$surveyid)";
+			Yii::app()->db->createCommand($resetlogicquery)->query();
+			$resetsurveylogicoutput .= "\t<tr>\n";
+			$resetsurveylogicoutput .= "\t\t<td align='center'><br />\n";
+			$resetsurveylogicoutput .= "\t\t\t<strong>".$clang->gT("All conditions in this survey have been deleted.")."<br /><br />\n";
+			$resetsurveylogicoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Continue")."' onclick=\"window.open('".$this->getController()->createUrl('/admin/survey/sa/view/surveyid/'.$surveyid)."', '_top')\" />\n";
+			$resetsurveylogicoutput .= "\t\t</strong></td>\n";
+			$resetsurveylogicoutput .= "\t</tr>\n"; 
+			$data['conditionsoutput']=$resetsurveylogicoutput;
+			}
+		}
 		if (isset($p_subaction) && $p_subaction == "insertcondition")
 		{
 		    if ((!isset($p_canswers) &&
@@ -454,14 +486,14 @@ class conditions extends Survey_Common_Controller {
 		$thissurvey=getSurveyInfo($surveyid);
 
 		$query = "SELECT * "
-		."FROM {$dbprefix}questions, "
-		."{$dbprefix}groups "
-		."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid "
+		."FROM {{questions}}, "
+		."{{groups}} "
+		."WHERE {{questions}}.gid={{groups}}.gid "
 		."AND qid=$qid "
 		."AND parent_qid=0 "
-		."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
+		."AND {{questions}}.language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
 		$result = db_execute_assoc($query) or safe_die ("Couldn't get information for question $qid<br />$query<br />".$connect->ErrorMsg());
-		foreach ($result->result_array() as $rows)
+		foreach ($result->readAll() as $rows)
 		{
 		    $questiongroupname=$rows['group_name'];
 		    $questiontitle=$rows['title'];
@@ -475,16 +507,16 @@ class conditions extends Survey_Common_Controller {
 		// first get all questions in natural sort order
 		// , and find out which number in that order this question is
 		$qquery = "SELECT * "
-		."FROM {$dbprefix}questions, "
-		."{$dbprefix}groups "
-		."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid "
+		."FROM {{questions}}, "
+		."{{groups}} "
+		."WHERE {{questions}}.gid={{groups}}.gid "
 		."AND parent_qid=0 "
-		."AND {$dbprefix}questions.sid=$surveyid "
-		."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-		."AND {$dbprefix}groups.language='".GetBaseLanguageFromSurveyID($surveyid)."' " ;
+		."AND {{questions}}.sid=$surveyid "
+		."AND {{questions}}.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+		."AND {{groups}}.language='".GetBaseLanguageFromSurveyID($surveyid)."' " ;
 
 		$qresult = db_execute_assoc($qquery) or safe_die ("$qquery<br />".$connect->ErrorMsg());
-		$qrows = $qresult->result_array();
+		$qrows = $qresult->readAll();
 		// Perform a case insensitive natural sort on group name then question title (known as "code" in the form) of a multidimensional array
 		usort($qrows, 'GroupOrderThenQuestionOrder');
 
@@ -1027,7 +1059,7 @@ class conditions extends Survey_Common_Controller {
 		    //$questiontextshort = substr($question, 0, 35)."..";
 		    $questiontextshort = htmlspecialchars(mb_strcut(html_entity_decode($question,ENT_QUOTES,'UTF-8'), 0, 35, 'UTF-8'))."...";
 		}
-		$quesitonNavOptions .= "<option value='".site_url("/admin/conditions/editconditionsform/$surveyid/$gid/$qid")."' selected='selected'>$questiontitle: $questiontextshort</option>";
+		$quesitonNavOptions .= "<option value='".$this->getController()->createUrl("/admin/conditions/editconditionsform/$surveyid/$gid/$qid")."' selected='selected'>$questiontitle: $questiontextshort</option>";
 		$quesitonNavOptions .= "</optgroup>\n";
 		$quesitonNavOptions .= "<optgroup class='activesurveyselect' label='".$clang->gT("After","js")."'>\n";
 		foreach ($postrows as $row)
@@ -1098,9 +1130,9 @@ class conditions extends Survey_Common_Controller {
 		//END: PREPARE JAVASCRIPT TO SHOW MATCHING ANSWERS TO SELECTED QUESTION
 
 
-		$css_admin_includes[] = $this->config->item("generalscripts").'jquery/css/jquery.multiselect.css';
-		$this->config->set_item("css_admin_includes", $css_admin_includes);
-		self::_getAdminHeader();
+		$css_admin_includes[] = Yii::app()->getConfig("generalscripts").'jquery/css/jquery.multiselect.css';
+		Yii::app()->getConfig("css_admin_includes", $css_admin_includes);
+      
 		$data['clang'] = $clang;
 		$data['surveyid'] = $surveyid;
 		$data['qid'] = $qid;
@@ -1110,7 +1142,7 @@ class conditions extends Survey_Common_Controller {
 		$data['quesitonNavOptions'] = $quesitonNavOptions;
 		$data['conditionsoutput_action_error'] = $conditionsoutput_action_error;
 		$data['javascriptpre'] = $javascriptpre;
-		$this->load->view("admin/conditions/conditionshead_view",$data);
+	
 
 
 		//BEGIN DISPLAY CONDITIONS FOR THIS QUESTION
@@ -2037,8 +2069,8 @@ class conditions extends Survey_Common_Controller {
 		$conditionsoutput = $conditionsoutput_main_content;
 
 		$data['conditionsoutput'] = $conditionsoutput;
-		$this->load->view("admin/conditions/conditionsforms_view",$data);
-		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+		$this->getController()->render("/admin/conditions/conditionsforms_view",$data);
+		$this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
 
         // TMSW Conditions->Relevance:  Must call LEM->ConvertConditionsToRelevance() whenever Condition is added or updated - what is best location for that action?
 	}
