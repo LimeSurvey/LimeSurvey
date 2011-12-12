@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-11 13:05+0100\n"
-"PO-Revision-Date: 2011-12-11 13:08+0100\n"
+"POT-Creation-Date: 2011-12-12 12:35+0100\n"
+"PO-Revision-Date: 2011-12-12 12:35+0100\n"
 "Last-Translator: LimeSurvey team <info@limesurvey.org>\n"
 "Language-Team: LimeSurvey Team <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -21,11 +21,11 @@ msgstr ""
 "X-Poedit-Language: Arabic\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: application/controllers/AdminController.php:274
+#: application/controllers/AdminController.php:275
 msgid "Version"
 msgstr "نسخة"
 
-#: application/controllers/AdminController.php:335
+#: application/controllers/AdminController.php:336
 msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
 msgstr "تحذير: ما زلت تستخدم كلمة المرور الافتراضية. من فضلك غيّر كلمة المرور الخاصة بك وأعد تسجيل الدخول."
 
@@ -137,7 +137,8 @@ msgstr "قد يحاول ال LimeSurvey إنشاء قاعدة بيانات لك.
 
 #: application/controllers/installer.php:521
 #: application/controllers/InstallerController.php:349
-msgid "Create Database"
+#, fuzzy
+msgid "Create database"
 msgstr "أنشيء قاعدة بيانات"
 
 #: application/controllers/installer.php:534
@@ -155,13 +156,14 @@ msgstr "هل ترغب في تسكين قاعدة البيانات الآن بإ�
 #: application/controllers/installer.php:892
 #: application/controllers/InstallerController.php:361
 #: application/controllers/InstallerController.php:446
-msgid "Populate Database"
+#, fuzzy
+msgid "Populate database"
 msgstr "سكّن قاعدة البيانات"
 
 #: application/controllers/installer.php:547
 #: application/controllers/InstallerController.php:371
 #, fuzzy
-msgid "LimeSurvey Database is up to date. No action needed"
+msgid "LimeSurvey database is up to date. No action needed"
 msgstr "قاعدة بيانات LimeSurvey محدثة. ليس هناك شئ ضروري"
 
 #: application/controllers/installer.php:569
@@ -300,7 +302,8 @@ msgid "Please contact %s ( %s ) for further assistance."
 msgstr "الرجاء الاتصال بـ %s ( %s ) لمزيد من المساعدة."
 
 #: application/controllers/printanswers.php:202
-msgid "PDF Export"
+#, fuzzy
+msgid "PDF export"
 msgstr "تصدير PDF"
 
 #: application/controllers/printanswers.php:212
@@ -341,7 +344,8 @@ msgid "An email has been sent to the address you provided with access details fo
 msgstr "تم إرسال رسالة بالبريد الإلكتروني إلى العنوان الذي وضعته به جميع تفاصيل الاستبيان. من فضلك اتبع الرابط الموجود بالرسالة للاستمرار."
 
 #: application/controllers/register.php:251
-msgid "Survey Administrator"
+#, fuzzy
+msgid "Survey administrator"
 msgstr "إدارة الاستبيان"
 
 #: application/controllers/statistics_user.php:396
@@ -365,10 +369,9 @@ msgid "Generating summaries ..."
 msgstr "جاري إعداد الملخصات"
 
 #: application/controllers/statistics_user.php:464
-#: application/controllers/admin/browse.php:174
-#: application/controllers/admin/browse.php:175
-#: application/controllers/admin/browse.php:475
-#: application/controllers/admin/browse.php:478
+#: application/controllers/admin/browse.php:168
+#: application/controllers/admin/browse.php:169
+#: application/controllers/admin/browse.php:463
 #: application/controllers/admin/dataentry.php:669
 msgid "Completed"
 msgstr "تام"
@@ -405,9 +408,9 @@ msgstr "إن المتصفح خاصتك يعلن انه قد تم استخدام�
 #: application/controllers/survey.old.php:409
 #: application/controllers/survey.old.php:954
 #: application/controllers/survey.old.php:976
-#: application/controllers/admin/browse.php:58
-#: application/controllers/admin/browse.php:94
-#: application/controllers/admin/browse.php:106
+#: application/controllers/admin/browse.php:42
+#: application/controllers/admin/browse.php:90
+#: application/controllers/admin/browse.php:102
 #: application/controllers/admin/dataentry.php:204
 #: application/controllers/admin/dataentry.php:1865
 #: application/controllers/admin/dataentry.php:1870
@@ -613,11 +616,11 @@ msgstr "حرر"
 #: application/controllers/admin/authentication.php:187
 #: application/controllers/admin/authentication.php:197
 #: application/controllers/admin/authentication.php:223
-#: application/controllers/admin/browse.php:985
+#: application/controllers/admin/browse.php:922
 #: application/controllers/admin/checkintegrity.php:46
 #: application/controllers/admin/checkintegrity.php:81
 #: application/controllers/admin/checkintegrity.php:211
-#: application/controllers/admin/conditions.php:2041
+#: application/controllers/admin/conditions.php:2073
 #: application/controllers/admin/dataentry.php:424
 #: application/controllers/admin/dataentry.php:615
 #: application/controllers/admin/dataentry.php:1608
@@ -671,8 +674,8 @@ msgid "User data"
 msgstr "بيانات المستخدم"
 
 #: application/controllers/admin/authentication.php:183
-#: application/controllers/admin/browse.php:172
-#: application/controllers/admin/browse.php:472
+#: application/controllers/admin/browse.php:166
+#: application/controllers/admin/browse.php:460
 msgid "Email"
 msgstr "البريد الالكتروني"
 
@@ -692,163 +695,164 @@ msgstr "يجب ان تسجل الدخول اولا."
 msgid "Incorrect username and/or password!"
 msgstr "اسم مستخدم أو كلمة المرور خاطئة"
 
-#: application/controllers/admin/browse.php:57
-#: application/controllers/admin/browse.php:93
-#: application/controllers/admin/browse.php:105
-#: application/controllers/admin/browse.php:142
-#: application/controllers/admin/browse.php:319
+#: application/controllers/admin/browse.php:41
+#: application/controllers/admin/browse.php:89
+#: application/controllers/admin/browse.php:101
+#: application/controllers/admin/browse.php:138
+#: application/controllers/admin/browse.php:313
 #: application/controllers/admin/dataentry.php:413
 #: application/controllers/admin/dataentry.php:1643
 #: application/controllers/admin/dataentry.php:1777
-msgid "Browse Responses"
+#, fuzzy
+msgid "Browse responses"
 msgstr "استعرض الردود"
 
-#: application/controllers/admin/browse.php:59
+#: application/controllers/admin/browse.php:43
 msgid "You have not selected a survey to browse."
 msgstr "لم تختر أي استبيان لتتصفحه"
 
-#: application/controllers/admin/browse.php:60
-#: application/controllers/admin/browse.php:96
-#: application/controllers/admin/browse.php:108
+#: application/controllers/admin/browse.php:44
+#: application/controllers/admin/browse.php:92
+#: application/controllers/admin/browse.php:104
 msgid "Main Admin Screen"
 msgstr "لوحة التحكم الرئيسية"
 
-#: application/controllers/admin/browse.php:95
+#: application/controllers/admin/browse.php:91
 msgid "This survey has not been activated. There are no results to browse."
 msgstr "لم يتم تفعيل هذا الاستبيان. لا توجد نتائج لتتصفحها."
 
-#: application/controllers/admin/browse.php:107
+#: application/controllers/admin/browse.php:103
 #: application/controllers/admin/checkintegrity.php:485
 #: application/controllers/admin/checkintegrity.php:496
 msgid "There is no matching survey."
 msgstr "لا يوجد استبيان مطابق."
 
-#: application/controllers/admin/browse.php:169
-#: application/controllers/admin/browse.php:469
+#: application/controllers/admin/browse.php:163
+#: application/controllers/admin/browse.php:457
 msgid "Token ID"
 msgstr "رقم العلامة"
 
-#: application/controllers/admin/browse.php:170
-#: application/controllers/admin/browse.php:470
+#: application/controllers/admin/browse.php:164
+#: application/controllers/admin/browse.php:458
 msgid "First name"
 msgstr "الاسم الاول"
 
-#: application/controllers/admin/browse.php:171
-#: application/controllers/admin/browse.php:471
+#: application/controllers/admin/browse.php:165
+#: application/controllers/admin/browse.php:459
 msgid "Last name"
 msgstr "اسم العائلة"
 
-#: application/controllers/admin/browse.php:174
+#: application/controllers/admin/browse.php:168
 msgid "Submission date"
 msgstr "موعد التسليم"
 
-#: application/controllers/admin/browse.php:323
+#: application/controllers/admin/browse.php:317
 msgid "Showing Filtered Results"
 msgstr "اعرض النتائج المصفاة"
 
-#: application/controllers/admin/browse.php:324
+#: application/controllers/admin/browse.php:318
 msgid "Close"
 msgstr "أغلق"
 
-#: application/controllers/admin/browse.php:540
-#: application/controllers/admin/browse.php:768
+#: application/controllers/admin/browse.php:525
+#: application/controllers/admin/browse.php:705
 msgid "Actions"
 msgstr "أعمال"
 
-#: application/controllers/admin/browse.php:558
-#: application/controllers/admin/browse.php:784
+#: application/controllers/admin/browse.php:543
+#: application/controllers/admin/browse.php:721
 msgid "Delete marked responses"
 msgstr "امسح الردود المعلم عليها"
 
-#: application/controllers/admin/browse.php:562
+#: application/controllers/admin/browse.php:547
 msgid "Download marked files"
 msgstr "حذف الملفات المعلم عليها"
 
-#: application/controllers/admin/browse.php:721
+#: application/controllers/admin/browse.php:658
 msgid "Time statistics"
 msgstr "إحصاءات الوقت"
 
-#: application/controllers/admin/browse.php:725
+#: application/controllers/admin/browse.php:662
 msgid "Do you really want to delete this response?"
 msgstr "أمتأكد أنك تريد مسح هذه البيانات؟"
 
-#: application/controllers/admin/browse.php:726
+#: application/controllers/admin/browse.php:663
 msgid "Do you really want to delete all marked responses?"
 msgstr "هل أنت متأكد من مسح جميع الردود المعلم عليها؟"
 
-#: application/controllers/admin/browse.php:754
+#: application/controllers/admin/browse.php:691
 msgid "Total time"
 msgstr "اجمال الوقت"
 
-#: application/controllers/admin/browse.php:756
+#: application/controllers/admin/browse.php:693
 msgid "Group"
 msgstr "مجموعة"
 
-#: application/controllers/admin/browse.php:829
+#: application/controllers/admin/browse.php:766
 msgid "Data view control"
 msgstr "التحكم بعرض البيانات"
 
-#: application/controllers/admin/browse.php:835
+#: application/controllers/admin/browse.php:772
 msgid "Show start..."
 msgstr "اعرض البداية.."
 
-#: application/controllers/admin/browse.php:838
+#: application/controllers/admin/browse.php:775
 msgid "Show previous.."
 msgstr "اظهر السابق.."
 
-#: application/controllers/admin/browse.php:842
+#: application/controllers/admin/browse.php:779
 msgid "Show next..."
 msgstr "اظهر التالي..."
 
-#: application/controllers/admin/browse.php:843
+#: application/controllers/admin/browse.php:780
 msgid "Show next.."
 msgstr "اظهر التالي.."
 
-#: application/controllers/admin/browse.php:845
+#: application/controllers/admin/browse.php:782
 msgid "Show last..."
 msgstr "اعرض النهاية.."
 
-#: application/controllers/admin/browse.php:846
+#: application/controllers/admin/browse.php:783
 msgid "Show last.."
 msgstr "اعرض الاخير.."
 
-#: application/controllers/admin/browse.php:859
+#: application/controllers/admin/browse.php:796
 msgid "Records displayed:"
 msgstr "السجلات المعروضة:"
 
-#: application/controllers/admin/browse.php:860
+#: application/controllers/admin/browse.php:797
 msgid "Starting from:"
 msgstr "بداية من:"
 
-#: application/controllers/admin/browse.php:861
+#: application/controllers/admin/browse.php:798
 msgid "Show"
 msgstr "أعرض"
 
-#: application/controllers/admin/browse.php:886
+#: application/controllers/admin/browse.php:823
 msgid "View response details"
 msgstr "عرض تفاصيل الرد"
 
-#: application/controllers/admin/browse.php:887
+#: application/controllers/admin/browse.php:824
 msgid "Edit this response"
 msgstr "دل هذا الرد"
 
-#: application/controllers/admin/browse.php:888
+#: application/controllers/admin/browse.php:825
 msgid "Delete this response"
 msgstr "احذف هذا الرد"
 
-#: application/controllers/admin/browse.php:915
+#: application/controllers/admin/browse.php:852
 msgid "Interview time"
 msgstr "وقت المقابلة"
 
-#: application/controllers/admin/browse.php:929
+#: application/controllers/admin/browse.php:866
 msgid "Average interview time: "
 msgstr "معدل وقت المقابلة"
 
-#: application/controllers/admin/browse.php:957
+#: application/controllers/admin/browse.php:894
 msgid "Median: "
 msgstr "متوسط"
 
-#: application/controllers/admin/browse.php:964
+#: application/controllers/admin/browse.php:901
 msgid "Timings"
 msgstr "توقيتات"
 
@@ -978,94 +982,95 @@ msgstr "ضبط نظام الاستبيان على%s:"
 msgid "Survey ID %d saved at %s containing %d record(s)"
 msgstr ""
 
-#: application/controllers/admin/conditions.php:89
-#: application/controllers/admin/conditions.php:105
+#: application/controllers/admin/conditions.php:91
+#: application/controllers/admin/conditions.php:107
 msgid "Less than"
 msgstr "أقل من"
 
-#: application/controllers/admin/conditions.php:90
-#: application/controllers/admin/conditions.php:106
+#: application/controllers/admin/conditions.php:92
+#: application/controllers/admin/conditions.php:108
 msgid "Less than or equal to"
 msgstr "أقل من او يساوي"
 
-#: application/controllers/admin/conditions.php:91
-#: application/controllers/admin/conditions.php:107
+#: application/controllers/admin/conditions.php:93
+#: application/controllers/admin/conditions.php:109
 msgid "equals"
 msgstr "يساوي"
 
-#: application/controllers/admin/conditions.php:92
-#: application/controllers/admin/conditions.php:108
+#: application/controllers/admin/conditions.php:94
+#: application/controllers/admin/conditions.php:110
 msgid "Not equal to"
 msgstr "لا يساوي"
 
-#: application/controllers/admin/conditions.php:93
-#: application/controllers/admin/conditions.php:109
+#: application/controllers/admin/conditions.php:95
+#: application/controllers/admin/conditions.php:111
 msgid "Greater than or equal to"
 msgstr "أكثر من او يساوي"
 
-#: application/controllers/admin/conditions.php:94
-#: application/controllers/admin/conditions.php:110
+#: application/controllers/admin/conditions.php:96
+#: application/controllers/admin/conditions.php:112
 msgid "Greater than"
 msgstr "أكثر من"
 
-#: application/controllers/admin/conditions.php:95
-#: application/controllers/admin/conditions.php:111
-#: application/controllers/admin/conditions.php:1880
+#: application/controllers/admin/conditions.php:97
+#: application/controllers/admin/conditions.php:113
+#: application/controllers/admin/conditions.php:1912
 msgid "Regular expression"
 msgstr "التعبير المنتظم"
 
-#: application/controllers/admin/conditions.php:96
+#: application/controllers/admin/conditions.php:98
 #, fuzzy
 msgid "Less than (Strings)"
 msgstr "أقل من"
 
-#: application/controllers/admin/conditions.php:97
+#: application/controllers/admin/conditions.php:99
 #, fuzzy
 msgid "Less than or equal to (Strings)"
 msgstr "أقل من او يساوي"
 
-#: application/controllers/admin/conditions.php:98
+#: application/controllers/admin/conditions.php:100
 #, fuzzy
 msgid "Greater than or equal to (Strings)"
 msgstr "أكثر من او يساوي"
 
-#: application/controllers/admin/conditions.php:99
+#: application/controllers/admin/conditions.php:101
 #, fuzzy
 msgid "Greater than (Strings)"
 msgstr "أكثر من"
 
-#: application/controllers/admin/conditions.php:143
+#: application/controllers/admin/conditions.php:145
 msgid "You have not selected a survey"
 msgstr "لم تحدد استبيانا"
 
-#: application/controllers/admin/conditions.php:144
-#: application/controllers/admin/conditions.php:153
+#: application/controllers/admin/conditions.php:146
+#: application/controllers/admin/conditions.php:155
 msgid "Main admin screen"
 msgstr "شاشة المدير الرئيسية"
 
-#: application/controllers/admin/conditions.php:152
+#: application/controllers/admin/conditions.php:154
 msgid "You have not selected a question"
 msgstr "لم تختر سؤالا."
 
-#: application/controllers/admin/conditions.php:190
-#: application/controllers/admin/conditions.php:266
-msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
-msgstr "لا يمكن إضافة شرطك! إذ إنه لا يحوي السؤال أ/و الإجابة التي يعتمد عليها الشرط. من فضلك تأكد أنك اخترت سؤالا وإجابة."
+#: application/controllers/admin/conditions.php:189
+msgid "Reset Survey Logic"
+msgstr "أعد تنظيم التسلسل المنطقي للاستبيان"
 
-#: application/controllers/admin/conditions.php:427
-msgid "Conditions successfully copied (some were skipped because they were duplicates)"
-msgstr "الشروط قد ارسلت بنجاح ( البعض قد الغي لانه كان مقرر )"
+#: application/controllers/admin/conditions.php:194
+#: application/controllers/admin/dataentry.php:518
+msgid "Warning"
+msgstr "تحذير"
 
-#: application/controllers/admin/conditions.php:431
-msgid "Conditions successfully copied"
-msgstr "تم نسخ الشروط بنجاح"
+#: application/controllers/admin/conditions.php:194
+msgid "You are about to delete all conditions on this survey's questions"
+msgstr "أنت على وشك أن تحذف جميع الشروط في أسئلة هذا الاستبيان"
 
-#: application/controllers/admin/conditions.php:436
-msgid "No conditions could be copied (due to duplicates)"
-msgstr "لا يوجد شروط يمكن نقلها(بسبب التكرار)"
+#: application/controllers/admin/conditions.php:194
+msgid "We recommend that before you proceed, you export the entire survey from the main administration screen."
+msgstr "نطلب منك قبل التقدم، أن تصدر الاستبيان كاملا من شاشة الإدارة الرئيسية."
 
-#: application/controllers/admin/conditions.php:661
-#: application/controllers/admin/conditions.php:912
+#: application/controllers/admin/conditions.php:196
+#: application/controllers/admin/conditions.php:693
+#: application/controllers/admin/conditions.php:944
 #: application/controllers/admin/dataentry.php:511
 #: application/controllers/admin/dataentry.php:807
 #: application/controllers/admin/dataentry.php:1301
@@ -1075,14 +1080,44 @@ msgstr "لا يوجد شروط يمكن نقلها(بسبب التكرار)"
 msgid "Yes"
 msgstr "نعم"
 
-#: application/controllers/admin/conditions.php:662
+#: application/controllers/admin/conditions.php:198
+#: application/controllers/admin/conditions.php:1218
+msgid "Cancel"
+msgstr "ألغي"
+
+#: application/controllers/admin/conditions.php:206
+msgid "All conditions in this survey have been deleted."
+msgstr "حُذفت جميع الشروط في هذا الاستبيان."
+
+#: application/controllers/admin/conditions.php:207
+msgid "Continue"
+msgstr "استمر"
+
+#: application/controllers/admin/conditions.php:222
+#: application/controllers/admin/conditions.php:298
+msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
+msgstr "لا يمكن إضافة شرطك! إذ إنه لا يحوي السؤال أ/و الإجابة التي يعتمد عليها الشرط. من فضلك تأكد أنك اخترت سؤالا وإجابة."
+
+#: application/controllers/admin/conditions.php:459
+msgid "Conditions successfully copied (some were skipped because they were duplicates)"
+msgstr "الشروط قد ارسلت بنجاح ( البعض قد الغي لانه كان مقرر )"
+
+#: application/controllers/admin/conditions.php:463
+msgid "Conditions successfully copied"
+msgstr "تم نسخ الشروط بنجاح"
+
+#: application/controllers/admin/conditions.php:468
+msgid "No conditions could be copied (due to duplicates)"
+msgstr "لا يوجد شروط يمكن نقلها(بسبب التكرار)"
+
+#: application/controllers/admin/conditions.php:694
 #: application/controllers/admin/dataentry.php:1364
 #: application/controllers/admin/dataentry.php:2453
 msgid "Uncertain"
 msgstr "غير متأكد"
 
-#: application/controllers/admin/conditions.php:663
-#: application/controllers/admin/conditions.php:913
+#: application/controllers/admin/conditions.php:695
+#: application/controllers/admin/conditions.php:945
 #: application/controllers/admin/dataentry.php:512
 #: application/controllers/admin/dataentry.php:804
 #: application/controllers/admin/dataentry.php:1304
@@ -1092,257 +1127,253 @@ msgstr "غير متأكد"
 msgid "No"
 msgstr "لا"
 
-#: application/controllers/admin/conditions.php:666
+#: application/controllers/admin/conditions.php:698
 #: application/controllers/admin/dataentry.php:2473
 msgid "Increase"
 msgstr "زيادة"
 
-#: application/controllers/admin/conditions.php:667
+#: application/controllers/admin/conditions.php:699
 #: application/controllers/admin/dataentry.php:2475
 msgid "Same"
 msgstr "نفسه"
 
-#: application/controllers/admin/conditions.php:668
+#: application/controllers/admin/conditions.php:700
 #: application/controllers/admin/dataentry.php:2474
 msgid "Decrease"
 msgstr "نقصان"
 
-#: application/controllers/admin/conditions.php:688
-#: application/controllers/admin/conditions.php:819
-#: application/controllers/admin/conditions.php:820
-#: application/controllers/admin/conditions.php:842
-#: application/controllers/admin/conditions.php:872
-#: application/controllers/admin/conditions.php:917
-#: application/controllers/admin/conditions.php:926
-#: application/controllers/admin/conditions.php:937
-#: application/controllers/admin/conditions.php:946
-#: application/controllers/admin/conditions.php:971
-#: application/controllers/admin/conditions.php:991
-#: application/controllers/admin/conditions.php:1427
+#: application/controllers/admin/conditions.php:720
+#: application/controllers/admin/conditions.php:851
+#: application/controllers/admin/conditions.php:852
+#: application/controllers/admin/conditions.php:874
+#: application/controllers/admin/conditions.php:904
+#: application/controllers/admin/conditions.php:949
+#: application/controllers/admin/conditions.php:958
+#: application/controllers/admin/conditions.php:969
+#: application/controllers/admin/conditions.php:978
+#: application/controllers/admin/conditions.php:1003
+#: application/controllers/admin/conditions.php:1023
+#: application/controllers/admin/conditions.php:1459
 #: application/controllers/admin/dataentry.php:1429
 msgid "No answer"
 msgstr "بدون إجابة"
 
-#: application/controllers/admin/conditions.php:879
+#: application/controllers/admin/conditions.php:911
 msgid "Group of checkboxes"
 msgstr "مجموعة صناديق اختيار"
 
-#: application/controllers/admin/conditions.php:895
+#: application/controllers/admin/conditions.php:927
 msgid "Single checkbox"
 msgstr "صندوق اختيار فردي"
 
-#: application/controllers/admin/conditions.php:898
+#: application/controllers/admin/conditions.php:930
 msgid "checked"
 msgstr "تم الفحص"
 
-#: application/controllers/admin/conditions.php:899
+#: application/controllers/admin/conditions.php:931
 msgid "not checked"
 msgstr "لم تفحص"
 
-#: application/controllers/admin/conditions.php:921
+#: application/controllers/admin/conditions.php:953
 #: application/controllers/admin/dataentry.php:859
 #: application/controllers/admin/dataentry.php:2442
 msgid "Female"
 msgstr "أنثى"
 
-#: application/controllers/admin/conditions.php:922
+#: application/controllers/admin/conditions.php:954
 #: application/controllers/admin/dataentry.php:862
 #: application/controllers/admin/dataentry.php:2441
 msgid "Male"
 msgstr "ذكر"
 
-#: application/controllers/admin/conditions.php:985
+#: application/controllers/admin/conditions.php:1017
 #: application/controllers/admin/dataentry.php:947
 msgid "Other"
 msgstr "آخر"
 
-#: application/controllers/admin/conditions.php:1002
+#: application/controllers/admin/conditions.php:1034
 msgid "Before"
 msgstr "قبل"
 
-#: application/controllers/admin/conditions.php:1019
+#: application/controllers/admin/conditions.php:1051
 msgid "Current"
 msgstr "الحالي"
 
-#: application/controllers/admin/conditions.php:1032
+#: application/controllers/admin/conditions.php:1064
 msgid "After"
 msgstr "بعد ذلك"
 
-#: application/controllers/admin/conditions.php:1137
+#: application/controllers/admin/conditions.php:1169
 msgid "Only show question {QID} IF"
 msgstr "فقط اظهر {QID} للسؤال إذا"
 
-#: application/controllers/admin/conditions.php:1162
-#: application/controllers/admin/conditions.php:1302
+#: application/controllers/admin/conditions.php:1194
+#: application/controllers/admin/conditions.php:1334
 #: application/controllers/admin/dataentry.php:2415
 #: application/controllers/admin/dataentry.php:2505
 #: application/controllers/admin/dataentry.php:2537
 msgid "OR"
 msgstr "أو"
 
-#: application/controllers/admin/conditions.php:1178
+#: application/controllers/admin/conditions.php:1210
 msgid "New scenario number"
 msgstr "رقم سيناريو جديد"
 
-#: application/controllers/admin/conditions.php:1185
+#: application/controllers/admin/conditions.php:1217
 msgid "Update scenario"
 msgstr "حدث السيناريو"
 
-#: application/controllers/admin/conditions.php:1186
-msgid "Cancel"
-msgstr "ألغي"
-
-#: application/controllers/admin/conditions.php:1196
+#: application/controllers/admin/conditions.php:1228
 msgid "Are you sure you want to delete all conditions set in this scenario?"
 msgstr "أمتأكد أنك تريد مسح كل الشروط في هذا السيناريو؟"
 
-#: application/controllers/admin/conditions.php:1198
+#: application/controllers/admin/conditions.php:1230
 msgid "Delete this scenario"
 msgstr "احذف هذا السيناريو"
 
-#: application/controllers/admin/conditions.php:1204
+#: application/controllers/admin/conditions.php:1236
 msgid "Edit scenario"
 msgstr "حرر السيناريو"
 
-#: application/controllers/admin/conditions.php:1295
+#: application/controllers/admin/conditions.php:1327
 msgid "and"
 msgstr "و"
 
-#: application/controllers/admin/conditions.php:1327
-#: application/controllers/admin/conditions.php:1400
+#: application/controllers/admin/conditions.php:1359
+#: application/controllers/admin/conditions.php:1432
 msgid "From token table"
 msgstr "من الجدول المأخوذ"
 
-#: application/controllers/admin/conditions.php:1331
-#: application/controllers/admin/conditions.php:1404
+#: application/controllers/admin/conditions.php:1363
+#: application/controllers/admin/conditions.php:1436
 #, fuzzy
 msgid "Inexistant token table"
 msgstr "أسقط جدول العلامات"
 
-#: application/controllers/admin/conditions.php:1389
+#: application/controllers/admin/conditions.php:1421
 msgid "Not found"
 msgstr "لم يوجد"
 
-#: application/controllers/admin/conditions.php:1446
+#: application/controllers/admin/conditions.php:1478
 msgid "Are you sure you want to delete this condition?"
 msgstr "أمتأكد أنك تريد مسح هذا الشرط؟"
 
-#: application/controllers/admin/conditions.php:1448
+#: application/controllers/admin/conditions.php:1480
 msgid "Delete this condition"
 msgstr "حذف هذا الشرط"
 
-#: application/controllers/admin/conditions.php:1451
+#: application/controllers/admin/conditions.php:1483
 msgid "Edit this condition"
 msgstr "تعديل هذا الشرط"
 
-#: application/controllers/admin/conditions.php:1528
+#: application/controllers/admin/conditions.php:1560
 msgid "This question is always shown."
 msgstr "هذا السؤال ظاهر دائما"
 
-#: application/controllers/admin/conditions.php:1550
-#: application/controllers/admin/conditions.php:1594
+#: application/controllers/admin/conditions.php:1582
+#: application/controllers/admin/conditions.php:1626
 msgid "Copy conditions"
 msgstr "انسخ الشروط"
 
-#: application/controllers/admin/conditions.php:1566
+#: application/controllers/admin/conditions.php:1598
 msgid "No questions selected"
 msgstr "ليس هناك اسئلة مختارة"
 
-#: application/controllers/admin/conditions.php:1566
+#: application/controllers/admin/conditions.php:1598
 msgid "Check all"
 msgstr "افحص الكل"
 
-#: application/controllers/admin/conditions.php:1566
+#: application/controllers/admin/conditions.php:1598
 msgid "Uncheck all"
 msgstr "عدم تحديد الكل"
 
-#: application/controllers/admin/conditions.php:1566
+#: application/controllers/admin/conditions.php:1598
 msgid "selected"
 msgstr "المختارة"
 
-#: application/controllers/admin/conditions.php:1569
+#: application/controllers/admin/conditions.php:1601
 msgid "Copy the selected conditions to"
 msgstr "نسخ الشروط المختارة إلى"
 
-#: application/controllers/admin/conditions.php:1618
+#: application/controllers/admin/conditions.php:1650
 msgid "This survey's questions don't use conditions"
 msgstr "اسئلة هذا الاستبيان ليس بها شروط"
 
-#: application/controllers/admin/conditions.php:1655
+#: application/controllers/admin/conditions.php:1687
 msgid "Edit condition"
 msgstr "عدل الشرط"
 
-#: application/controllers/admin/conditions.php:1659
-#: application/controllers/admin/conditions.php:1897
+#: application/controllers/admin/conditions.php:1691
+#: application/controllers/admin/conditions.php:1929
 msgid "Add condition"
 msgstr "أضف شرط"
 
-#: application/controllers/admin/conditions.php:1670
+#: application/controllers/admin/conditions.php:1702
 msgid "Add scenario"
 msgstr "أضف سيناريو"
 
-#: application/controllers/admin/conditions.php:1671
+#: application/controllers/admin/conditions.php:1703
 msgid "Default scenario"
 msgstr "السيناريو الافتراضي"
 
-#: application/controllers/admin/conditions.php:1682
+#: application/controllers/admin/conditions.php:1714
 msgid "Scenario"
 msgstr "سيناريو"
 
-#: application/controllers/admin/conditions.php:1694
+#: application/controllers/admin/conditions.php:1726
 msgid "Previous questions"
 msgstr "الاسئلة السابقة"
 
-#: application/controllers/admin/conditions.php:1695
-#: application/controllers/admin/conditions.php:1830
+#: application/controllers/admin/conditions.php:1727
+#: application/controllers/admin/conditions.php:1862
 msgid "Token fields"
 msgstr "الخانات المختارة"
 
-#: application/controllers/admin/conditions.php:1752
+#: application/controllers/admin/conditions.php:1784
 msgid "Comparison operator"
 msgstr "معامل المقارنة"
 
-#: application/controllers/admin/conditions.php:1779
+#: application/controllers/admin/conditions.php:1811
 msgid "Answer"
 msgstr "جواب"
 
-#: application/controllers/admin/conditions.php:1827
+#: application/controllers/admin/conditions.php:1859
 msgid "Predefined"
 msgstr "معرف مسبقاً"
 
-#: application/controllers/admin/conditions.php:1828
+#: application/controllers/admin/conditions.php:1860
 msgid "Constant"
 msgstr "ثابت"
 
-#: application/controllers/admin/conditions.php:1829
+#: application/controllers/admin/conditions.php:1861
 msgid "Questions"
 msgstr "اسئلة"
 
-#: application/controllers/admin/conditions.php:1831
+#: application/controllers/admin/conditions.php:1863
 msgid "RegExp"
 msgstr ""
 
-#: application/controllers/admin/conditions.php:1838
+#: application/controllers/admin/conditions.php:1870
 msgid "Predefined answer options for this question"
 msgstr "الاختيار المحدد مسبقاً لهذا السؤال"
 
-#: application/controllers/admin/conditions.php:1844
+#: application/controllers/admin/conditions.php:1876
 msgid "Constant value"
 msgstr "قيمة الثابت"
 
-#: application/controllers/admin/conditions.php:1862
+#: application/controllers/admin/conditions.php:1894
 msgid "Answers from previous questions"
 msgstr "الاجابات من السؤال السابق"
 
-#: application/controllers/admin/conditions.php:1874
+#: application/controllers/admin/conditions.php:1906
 msgid "Attributes values from the participant's token"
 msgstr ""
 
-#: application/controllers/admin/conditions.php:1891
+#: application/controllers/admin/conditions.php:1923
 msgid "Update condition"
 msgstr "تعديل الشرط"
 
-#: application/controllers/admin/conditions.php:1907
+#: application/controllers/admin/conditions.php:1939
 msgid "Clear"
 msgstr "امسح"
 
@@ -1671,7 +1702,7 @@ msgstr ""
 
 #: application/controllers/admin/dataentry.php:396
 #, fuzzy, php-format
-msgid "Import Failed on Record %d"
+msgid "Import failed on record %d"
 msgstr "فشل استيراد السجل %d بسبب [%s]"
 
 #: application/controllers/admin/dataentry.php:410
@@ -1715,10 +1746,6 @@ msgstr "استورد الردود"
 #: application/controllers/admin/dataentry.php:516
 msgid "Are you sure?"
 msgstr "أمتأكد أنت؟"
-
-#: application/controllers/admin/dataentry.php:518
-msgid "Warning"
-msgstr "تحذير"
 
 #: application/controllers/admin/dataentry.php:518
 msgid "You can import all old responses with the same amount of columns as in your active survey. YOU have to make sure, that this responses corresponds to the questions in your active survey."
@@ -2398,7 +2425,6 @@ msgstr "تحذيرات"
 #: application/controllers/admin/labels.php:348
 #: application/controllers/admin/question.php:146
 #: application/controllers/admin/questiongroup.php:139
-#, fuzzy
 msgid "Label sets"
 msgstr "مجموعات علامات"
 
@@ -2517,12 +2543,12 @@ msgid "table"
 msgstr "جدول"
 
 #: application/controllers/admin/printablesurvey.php:151
-#: application/controllers/admin/printablesurvey.php:1791
+#: application/controllers/admin/printablesurvey.php:1809
 msgid "Submit Your Survey."
 msgstr "قدّم استبيانك."
 
 #: application/controllers/admin/printablesurvey.php:153
-#: application/controllers/admin/printablesurvey.php:1791
+#: application/controllers/admin/printablesurvey.php:1809
 msgid "Thank you for completing this survey."
 msgstr "شكرا لك على إكمال هذا الاستبيان."
 
@@ -2531,13 +2557,13 @@ msgid "Please fax your completed survey to:"
 msgstr "من فضلك أرسل فاكسا باستبيانك المكتمل إلى:"
 
 #: application/controllers/admin/printablesurvey.php:171
-#: application/controllers/admin/printablesurvey.php:1785
+#: application/controllers/admin/printablesurvey.php:1803
 #, php-format
 msgid "Please submit by %s"
 msgstr "من فضلك اعرض عن طريق%s"
 
 #: application/controllers/admin/printablesurvey.php:294
-#: application/controllers/admin/printablesurvey.php:593
+#: application/controllers/admin/printablesurvey.php:602
 msgid "or"
 msgstr "أو"
 
@@ -2570,206 +2596,221 @@ msgstr "الإجابة كانت أكبر من"
 msgid "Answer matched (regexp)"
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:361
-#: application/controllers/admin/printablesurvey.php:389
+#: application/controllers/admin/printablesurvey.php:354
+#, fuzzy
+msgid "Not selected"
+msgstr "لم يتم التحديد"
+
+#: application/controllers/admin/printablesurvey.php:367
+#: application/controllers/admin/printablesurvey.php:395
 msgid "is"
 msgstr "يكون"
 
-#: application/controllers/admin/printablesurvey.php:365
+#: application/controllers/admin/printablesurvey.php:371
 msgid "is NOT"
 msgstr "لا يكون"
 
-#: application/controllers/admin/printablesurvey.php:369
+#: application/controllers/admin/printablesurvey.php:375
 msgid "is less than"
 msgstr "أقل من"
 
-#: application/controllers/admin/printablesurvey.php:373
+#: application/controllers/admin/printablesurvey.php:379
 msgid "is less than or equal to"
 msgstr "أقل من او يساوي"
 
-#: application/controllers/admin/printablesurvey.php:377
+#: application/controllers/admin/printablesurvey.php:383
 msgid "is greater than or equal to"
 msgstr "أكبر من او يساوي"
 
-#: application/controllers/admin/printablesurvey.php:381
+#: application/controllers/admin/printablesurvey.php:387
 msgid "is greater than"
 msgstr "اكبر من"
 
-#: application/controllers/admin/printablesurvey.php:385
+#: application/controllers/admin/printablesurvey.php:391
 msgid "is matched (regexp)"
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:560
-#, fuzzy, php-format
+#: application/controllers/admin/printablesurvey.php:569
+#, php-format
 msgid "Label %s"
-msgstr "علامات"
+msgstr "علامات %s"
 
-#: application/controllers/admin/printablesurvey.php:584
+#: application/controllers/admin/printablesurvey.php:593
 msgid "RANK"
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:603
+#: application/controllers/admin/printablesurvey.php:612
 msgid "at question"
 msgstr "عند سؤال"
 
-#: application/controllers/admin/printablesurvey.php:615
+#: application/controllers/admin/printablesurvey.php:624
 msgid "Only answer this question if the following conditions are met:"
 msgstr "أجب عن هذا فقط إذا تطابقت الشروط التالية:"
 
-#: application/controllers/admin/printablesurvey.php:635
+#: application/controllers/admin/printablesurvey.php:644
 msgid "ID:"
 msgstr "المعرف:"
 
-#: application/controllers/admin/printablesurvey.php:636
+#: application/controllers/admin/printablesurvey.php:645
 msgid "Question code:"
 msgstr "كود السؤال:"
 
-#: application/controllers/admin/printablesurvey.php:658
-#: application/controllers/admin/printablesurvey.php:660
+#: application/controllers/admin/printablesurvey.php:667
+#: application/controllers/admin/printablesurvey.php:669
 msgid "*"
 msgstr "*"
 
-#: application/controllers/admin/printablesurvey.php:693
-#: application/controllers/admin/printablesurvey.php:694
-#: application/controllers/admin/printablesurvey.php:718
-#: application/controllers/admin/printablesurvey.php:725
-#: application/controllers/admin/printablesurvey.php:751
-#: application/controllers/admin/printablesurvey.php:754
-#: application/controllers/admin/printablesurvey.php:818
-#: application/controllers/admin/printablesurvey.php:819
-#: application/controllers/admin/printablesurvey.php:1058
-#: application/controllers/admin/printablesurvey.php:1062
+#: application/controllers/admin/printablesurvey.php:702
+#: application/controllers/admin/printablesurvey.php:703
+#: application/controllers/admin/printablesurvey.php:727
+#: application/controllers/admin/printablesurvey.php:734
+#: application/controllers/admin/printablesurvey.php:760
+#: application/controllers/admin/printablesurvey.php:763
+#: application/controllers/admin/printablesurvey.php:827
+#: application/controllers/admin/printablesurvey.php:828
+#: application/controllers/admin/printablesurvey.php:1076
+#: application/controllers/admin/printablesurvey.php:1080
 msgid "Please choose *only one* of the following:"
 msgstr "من فضلك اختر * واحدا فقط* مما يلي:"
 
-#: application/controllers/admin/printablesurvey.php:710
-#: application/controllers/admin/printablesurvey.php:712
+#: application/controllers/admin/printablesurvey.php:719
+#: application/controllers/admin/printablesurvey.php:721
 msgid "Please enter a date:"
 msgstr "من فضلك ادخل تاريخا:"
 
-#: application/controllers/admin/printablesurvey.php:830
-#: application/controllers/admin/printablesurvey.php:832
+#: application/controllers/admin/printablesurvey.php:839
+#: application/controllers/admin/printablesurvey.php:841
 msgid "Make a comment on your choice here:"
 msgstr "اكتب تعليقا على اختيارك هنا:"
 
-#: application/controllers/admin/printablesurvey.php:845
+#: application/controllers/admin/printablesurvey.php:854
 msgid "Please number each box in order of preference from 1 to"
 msgstr "من فضلك رقّم كل صندوق بالترتيب للمراجعة من 1 إلى"
 
-#: application/controllers/admin/printablesurvey.php:846
+#: application/controllers/admin/printablesurvey.php:856
 msgid "Please number each box in order of preference from 1 to "
 msgstr "من فضلك رقّم كل صندوق بالترتيب للمراجعة من 1 إلى"
 
-#: application/controllers/admin/printablesurvey.php:868
-#: application/controllers/admin/printablesurvey.php:869
+#: application/controllers/admin/printablesurvey.php:878
+#: application/controllers/admin/printablesurvey.php:879
 msgid "Please choose *all* that apply:"
 msgstr "من فضلك اختر * كل* ما يمكن تقديمه:"
 
-#: application/controllers/admin/printablesurvey.php:874
-#: application/controllers/admin/printablesurvey.php:875
+#: application/controllers/admin/printablesurvey.php:884
+#: application/controllers/admin/printablesurvey.php:885
 #, php-format
 msgid "Please choose *at most* %s answers:"
 msgstr "من فضلك اختر *علي الاكثر* %s اجابة:"
 
-#: application/controllers/admin/printablesurvey.php:927
-#: application/controllers/admin/printablesurvey.php:928
+#: application/controllers/admin/printablesurvey.php:937
+#: application/controllers/admin/printablesurvey.php:938
 msgid "Please choose all that apply and provide a comment:"
 msgstr "من فضلك اختر كل ما يمكن تقديمه وضع تعليقا:"
 
-#: application/controllers/admin/printablesurvey.php:933
-#: application/controllers/admin/printablesurvey.php:934
+#: application/controllers/admin/printablesurvey.php:943
+#: application/controllers/admin/printablesurvey.php:944
 msgid "Please choose *at most* "
 msgstr "من فضلك اختر * على الأكثر*"
 
-#: application/controllers/admin/printablesurvey.php:933
-#: application/controllers/admin/printablesurvey.php:934
+#: application/controllers/admin/printablesurvey.php:943
+#: application/controllers/admin/printablesurvey.php:944
 msgid "answers and provide a comment:"
 msgstr "أجب وضع تعليقا:"
 
-#: application/controllers/admin/printablesurvey.php:952
+#: application/controllers/admin/printablesurvey.php:962
 msgid "Other:"
 msgstr "اخرى:"
 
-#: application/controllers/admin/printablesurvey.php:973
-#: application/controllers/admin/printablesurvey.php:991
+#: application/controllers/admin/printablesurvey.php:983
+#: application/controllers/admin/printablesurvey.php:1001
 msgid "Please write your answer(s) here:"
 msgstr "من فضلك اكتب إجاباتك هنا:"
 
-#: application/controllers/admin/printablesurvey.php:977
+#: application/controllers/admin/printablesurvey.php:987
 #, php-format
 msgid "Total of all entries must equal %d"
 msgstr "يجب ان يساوي جمع البنود كلها الرقم %d"
 
-#: application/controllers/admin/printablesurvey.php:981
+#: application/controllers/admin/printablesurvey.php:991
 #, php-format
 msgid "Total of all entries must not exceed %d"
 msgstr "إجمالي البنود يجب أن تزيد عن %d"
 
-#: application/controllers/admin/printablesurvey.php:985
+#: application/controllers/admin/printablesurvey.php:995
 #, php-format
 msgid "Total of all entries must be at least %s"
 msgstr "جميع المدخلات يجب ان تكون %s علي الاقل"
 
-#: application/controllers/admin/printablesurvey.php:1013
-#: application/controllers/admin/printablesurvey.php:1015
-#: application/controllers/admin/printablesurvey.php:1022
+#: application/controllers/admin/printablesurvey.php:1023
 #: application/controllers/admin/printablesurvey.php:1025
+#: application/controllers/admin/printablesurvey.php:1032
 #: application/controllers/admin/printablesurvey.php:1035
-#: application/controllers/admin/printablesurvey.php:1038
+#: application/controllers/admin/printablesurvey.php:1045
 #: application/controllers/admin/printablesurvey.php:1048
-#: application/controllers/admin/printablesurvey.php:1051
+#: application/controllers/admin/printablesurvey.php:1066
+#: application/controllers/admin/printablesurvey.php:1069
 msgid "Please write your answer here:"
 msgstr "من فضلك اكتب إجابتك هنا:"
 
-#: application/controllers/admin/printablesurvey.php:1072
-#: application/controllers/admin/printablesurvey.php:1089
-#: application/controllers/admin/printablesurvey.php:1136
-#: application/controllers/admin/printablesurvey.php:1145
-#: application/controllers/admin/printablesurvey.php:1172
-#: application/controllers/admin/printablesurvey.php:1187
-#: application/controllers/admin/printablesurvey.php:1213
-#: application/controllers/admin/printablesurvey.php:1228
-#: application/controllers/admin/printablesurvey.php:1439
-#: application/controllers/admin/printablesurvey.php:1449
-#: application/controllers/admin/printablesurvey.php:1543
-#: application/controllers/admin/printablesurvey.php:1546
-#: application/controllers/admin/printablesurvey.php:1650
-#: application/controllers/admin/printablesurvey.php:1651
+#: application/controllers/admin/printablesurvey.php:1090
+#: application/controllers/admin/printablesurvey.php:1107
+#: application/controllers/admin/printablesurvey.php:1154
+#: application/controllers/admin/printablesurvey.php:1163
+#: application/controllers/admin/printablesurvey.php:1190
+#: application/controllers/admin/printablesurvey.php:1205
+#: application/controllers/admin/printablesurvey.php:1231
+#: application/controllers/admin/printablesurvey.php:1246
+#: application/controllers/admin/printablesurvey.php:1457
+#: application/controllers/admin/printablesurvey.php:1467
+#: application/controllers/admin/printablesurvey.php:1561
+#: application/controllers/admin/printablesurvey.php:1564
+#: application/controllers/admin/printablesurvey.php:1668
+#: application/controllers/admin/printablesurvey.php:1669
 msgid "Please choose the appropriate response for each item:"
 msgstr "من فضلك اختر الرد المناسب لكل بند:"
 
-#: application/controllers/admin/printablesurvey.php:1290
-#: application/controllers/admin/printablesurvey.php:1291
+#: application/controllers/admin/printablesurvey.php:1308
+#: application/controllers/admin/printablesurvey.php:1309
 #, php-format
 msgid "Please write a multiple of %d between %d and %d for each item:"
 msgstr ""
 
-#: application/controllers/admin/printablesurvey.php:1294
-#: application/controllers/admin/printablesurvey.php:1295
+#: application/controllers/admin/printablesurvey.php:1312
+#: application/controllers/admin/printablesurvey.php:1313
 #, php-format
 msgid "Please enter a number between %d and %d for each item:"
 msgstr "لو سمحت ادخل رقم بين  %d و  %d لكل شئ:"
 
-#: application/controllers/admin/printablesurvey.php:1300
-#: application/controllers/admin/printablesurvey.php:1301
+#: application/controllers/admin/printablesurvey.php:1318
+#: application/controllers/admin/printablesurvey.php:1319
 msgid "Check any that apply"
 msgstr "افحص كل ما يمكن تقديمه"
 
-#: application/controllers/admin/printablesurvey.php:1708
+#: application/controllers/admin/printablesurvey.php:1726
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
 msgstr "يوجد {NUMBEROFQUESTIONS} سؤال في الاستبيان"
 
-#: application/controllers/admin/printablesurvey.php:1789
+#: application/controllers/admin/printablesurvey.php:1807
 #, php-format
 msgid "Please fax your completed survey to: %s"
 msgstr "من فضلك أرسل فاكسا باستبيانك المكتمل إلى:%s"
 
-#: application/controllers/admin/printablesurvey.php:1963
+#: application/controllers/admin/printablesurvey.php:1899
+#, fuzzy, php-format
+msgid "Please choose no more than %d items"
+msgstr "من فضلك افحص البنود"
+
+#: application/controllers/admin/printablesurvey.php:1902
+#, fuzzy, php-format
+msgid "Please choose at least %d items"
+msgstr "من فضلك اختر بندا واحدا على الاقل"
+
+#: application/controllers/admin/printablesurvey.php:1993
 #, php-format
 msgid "Only answer this question for the items you selected in question %d ('%s')"
 msgstr "فقط جاوب هذا السؤال للاشياء التي حددتها السؤال %d ('%s')"
 
-#: application/controllers/admin/printablesurvey.php:1972
+#: application/controllers/admin/printablesurvey.php:2002
 #, php-format
 msgid "Only answer this question for the items you did not select in question %d ('%s')"
 msgstr "فقط جاوب هذا السؤال للاشياء التي لم حددتها السؤال %d ('%s')"
@@ -3257,38 +3298,6 @@ msgstr "حدد صلاحيات الاستبيان"
 #: application/controllers/admin/surveypermission.php:306
 msgid "Failed to add User Group."
 msgstr "فشلت إضافة مجموعة المستخدمين."
-
-#: application/controllers/admin/surveypermission.php:300
-#: application/controllers/admin/surveypermission.php:307
-#: application/controllers/admin/surveypermission.php:314
-#: application/controllers/admin/surveypermission.php:387
-#: application/controllers/admin/surveypermission.php:394
-#: application/controllers/admin/surveypermission.php:592
-#: application/controllers/admin/surveypermission.php:703
-#: application/controllers/admin/tokens.php:1109
-#: application/controllers/admin/tokens.php:1435
-#: application/controllers/admin/tokens.php:2448
-#: application/controllers/admin/tokens.php:2483
-#: application/controllers/admin/useraction.php:307
-#: application/controllers/admin/useraction.php:344
-#: application/controllers/admin/useraction.php:531
-#: application/controllers/admin/useraction.php:623
-#: application/controllers/admin/useraction.php:660
-#: application/controllers/admin/useraction.php:670
-#: application/controllers/admin/useraction.php:732
-#: application/controllers/admin/useraction.php:738
-#: application/controllers/admin/usergroups.php:134
-#: application/controllers/admin/usergroups.php:146
-#: application/controllers/admin/usergroups.php:231
-#: application/controllers/admin/usergroups.php:242
-#: application/controllers/admin/usergroups.php:300
-#: application/controllers/admin/usergroups.php:316
-#: application/controllers/admin/usergroups.php:323
-#: application/controllers/admin/usergroups.php:333
-#: application/controllers/admin/usergroups.php:402
-#: application/controllers/admin/usergroups.php:409
-msgid "Continue"
-msgstr "استمر"
 
 #: application/controllers/admin/surveypermission.php:312
 #: application/controllers/admin/surveypermission.php:385
@@ -3885,9 +3894,8 @@ msgid "Optional fields:"
 msgstr "سؤال اختياري"
 
 #: application/controllers/admin/tokens.php:2156
-#, fuzzy
-msgid "Auto detect"
-msgstr "تم التقاطه تلقائيا"
+msgid "(Autodetect)"
+msgstr "مسح تلقائي"
 
 #: application/controllers/admin/tokens.php:2158
 msgid "Comma"
@@ -4968,1192 +4976,1192 @@ msgstr ""
 "\n"
 "إن كان لديك اي تساؤل حول هذه الإستبانة او لعلك لم تطلب التسجيل، يمكنك الإتصاب ب {ADMINNAME} على هذا العنوان {ADMINEMAIL}."
 
-#: application/helpers/common_helper.php:2291
+#: application/helpers/common_helper.php:2285
 msgid "Date submitted"
 msgstr "سلم بتاريخ"
 
-#: application/helpers/common_helper.php:2299
+#: application/helpers/common_helper.php:2293
 msgid "Last page"
 msgstr "الصفحة الاخيرة"
 
-#: application/helpers/common_helper.php:2307
+#: application/helpers/common_helper.php:2301
 msgid "Start language"
 msgstr "ابدأ اللغة"
 
-#: application/helpers/common_helper.php:2329
+#: application/helpers/common_helper.php:2323
 #: application/helpers/frontend_helper.php:1533
 #: application/helpers/frontend_helper.php:1705
 msgid "Token"
 msgstr "رمز/ علامة"
 
-#: application/helpers/common_helper.php:2344
+#: application/helpers/common_helper.php:2338
 msgid "Date last action"
 msgstr "تاريخ آخر عمل"
 
-#: application/helpers/common_helper.php:2356
+#: application/helpers/common_helper.php:2350
 msgid "Date started"
 msgstr "تاريخ البدء"
 
-#: application/helpers/common_helper.php:2372
+#: application/helpers/common_helper.php:2366
 msgid "IP address"
 msgstr "عنوان بروتوكول الإنترنت"
 
-#: application/helpers/common_helper.php:2383
+#: application/helpers/common_helper.php:2377
 msgid "Referrer URL"
 msgstr "رابط مرجعي"
 
-#: application/helpers/common_helper.php:2642
+#: application/helpers/common_helper.php:2636
 msgid "Scale 1"
 msgstr ""
 
-#: application/helpers/common_helper.php:2659
+#: application/helpers/common_helper.php:2653
 msgid "Scale 2"
 msgstr ""
 
-#: application/helpers/common_helper.php:2684
+#: application/helpers/common_helper.php:2678
 #, php-format
 msgid "Rank %s"
 msgstr ""
 
-#: application/helpers/common_helper.php:2832
+#: application/helpers/common_helper.php:2826
 msgid "Other comment"
 msgstr "تعليق اخر"
 
-#: application/helpers/common_helper.php:2899
+#: application/helpers/common_helper.php:2893
 msgid "Group time"
 msgstr "وقت المجموعة"
 
-#: application/helpers/common_helper.php:2906
+#: application/helpers/common_helper.php:2900
 msgid "Question time"
 msgstr "وقت السؤال"
 
-#: application/helpers/common_helper.php:3239
-#: application/helpers/common_helper.php:3250
-#: application/helpers/common_helper.php:3285
-#: application/helpers/common_helper.php:3301
-#: application/helpers/common_helper.php:3312
-#: application/helpers/common_helper.php:3320
-#: application/helpers/common_helper.php:3331
-#: application/helpers/common_helper.php:3339
-#: application/helpers/common_helper.php:3347
-#: application/helpers/common_helper.php:3356
-#: application/helpers/common_helper.php:3364
-#: application/helpers/common_helper.php:3373
-#: application/helpers/common_helper.php:3545
-#: application/helpers/common_helper.php:3556
-#: application/helpers/common_helper.php:3639
-#: application/helpers/common_helper.php:3647
-#: application/helpers/common_helper.php:3655
-#: application/helpers/common_helper.php:3663
-#: application/helpers/common_helper.php:3674
-#: application/helpers/common_helper.php:3749
-#: application/helpers/common_helper.php:3782
-#: application/helpers/common_helper.php:3802
-#: application/helpers/common_helper.php:3822
-#: application/helpers/common_helper.php:3848
-#: application/helpers/common_helper.php:3910
-#: application/helpers/common_helper.php:3944
-#: application/helpers/common_helper.php:3953
-#: application/helpers/common_helper.php:3961
-#: application/helpers/common_helper.php:4150
+#: application/helpers/common_helper.php:3233
+#: application/helpers/common_helper.php:3244
+#: application/helpers/common_helper.php:3279
+#: application/helpers/common_helper.php:3295
+#: application/helpers/common_helper.php:3306
+#: application/helpers/common_helper.php:3314
+#: application/helpers/common_helper.php:3325
+#: application/helpers/common_helper.php:3333
+#: application/helpers/common_helper.php:3341
+#: application/helpers/common_helper.php:3350
+#: application/helpers/common_helper.php:3358
+#: application/helpers/common_helper.php:3367
+#: application/helpers/common_helper.php:3539
+#: application/helpers/common_helper.php:3550
+#: application/helpers/common_helper.php:3633
+#: application/helpers/common_helper.php:3641
+#: application/helpers/common_helper.php:3649
+#: application/helpers/common_helper.php:3657
+#: application/helpers/common_helper.php:3668
+#: application/helpers/common_helper.php:3743
+#: application/helpers/common_helper.php:3776
+#: application/helpers/common_helper.php:3796
+#: application/helpers/common_helper.php:3816
+#: application/helpers/common_helper.php:3842
+#: application/helpers/common_helper.php:3904
+#: application/helpers/common_helper.php:3938
+#: application/helpers/common_helper.php:3947
+#: application/helpers/common_helper.php:3955
+#: application/helpers/common_helper.php:4144
 msgid "Display"
 msgstr "اعرض"
 
-#: application/helpers/common_helper.php:3245
+#: application/helpers/common_helper.php:3239
 msgid "Sort the answer options alphabetically"
 msgstr "ترتيب الأجوبة المحتملة أبجدياً"
 
-#: application/helpers/common_helper.php:3246
+#: application/helpers/common_helper.php:3240
 msgid "Sort answers alphabetically"
 msgstr "ترتيب الأجوبة أبجدياً"
 
-#: application/helpers/common_helper.php:3255
+#: application/helpers/common_helper.php:3249
 msgid "Set the percentage width of the answer column (1-100)"
 msgstr "ضع النسبة المئوية لعمود الاجابة (1-100)"
 
-#: application/helpers/common_helper.php:3256
+#: application/helpers/common_helper.php:3250
 msgid "Answer width"
 msgstr "نطاق الإجابة"
 
-#: application/helpers/common_helper.php:3260
-#: application/helpers/common_helper.php:3268
-#: application/helpers/common_helper.php:3276
-#: application/helpers/common_helper.php:3293
-#: application/helpers/common_helper.php:3390
-#: application/helpers/common_helper.php:3398
-#: application/helpers/common_helper.php:3567
-#: application/helpers/common_helper.php:3591
-#: application/helpers/common_helper.php:3607
-#: application/helpers/common_helper.php:3631
-#: application/helpers/common_helper.php:3685
-#: application/helpers/common_helper.php:3760
-#: application/helpers/common_helper.php:3771
-#: application/helpers/common_helper.php:4221
+#: application/helpers/common_helper.php:3254
+#: application/helpers/common_helper.php:3262
+#: application/helpers/common_helper.php:3270
+#: application/helpers/common_helper.php:3287
+#: application/helpers/common_helper.php:3384
+#: application/helpers/common_helper.php:3392
+#: application/helpers/common_helper.php:3561
+#: application/helpers/common_helper.php:3585
+#: application/helpers/common_helper.php:3601
+#: application/helpers/common_helper.php:3625
+#: application/helpers/common_helper.php:3679
+#: application/helpers/common_helper.php:3754
+#: application/helpers/common_helper.php:3765
+#: application/helpers/common_helper.php:4215
 msgid "Logic"
 msgstr "منطق"
 
-#: application/helpers/common_helper.php:3263
+#: application/helpers/common_helper.php:3257
 msgid "Enter the code of a Multiple choice question to only show the matching answer options in this question."
 msgstr ""
 
-#: application/helpers/common_helper.php:3264
+#: application/helpers/common_helper.php:3258
 msgid "Array filter"
 msgstr ""
 
-#: application/helpers/common_helper.php:3271
+#: application/helpers/common_helper.php:3265
 msgid "Enter the code of a Multiple choice question to exclude the matching answer options in this question."
 msgstr ""
 
-#: application/helpers/common_helper.php:3272
+#: application/helpers/common_helper.php:3266
 msgid "Array filter exclusion"
 msgstr ""
 
-#: application/helpers/common_helper.php:3280
+#: application/helpers/common_helper.php:3274
 msgid "If one of the subquestions is marked then for each marked subquestion this value is added as assessment."
 msgstr ""
 
-#: application/helpers/common_helper.php:3281
+#: application/helpers/common_helper.php:3275
 msgid "Assessment value"
 msgstr "قيمة التقيم"
 
-#: application/helpers/common_helper.php:3288
-#: application/helpers/common_helper.php:3289
+#: application/helpers/common_helper.php:3282
+#: application/helpers/common_helper.php:3283
 msgid "Category separator"
 msgstr "فاصل التصنيف"
 
-#: application/helpers/common_helper.php:3296
+#: application/helpers/common_helper.php:3290
 msgid "Filter the available answers by this value"
 msgstr "رشح الاجابات المتاحة بهذه القيمة"
 
-#: application/helpers/common_helper.php:3297
+#: application/helpers/common_helper.php:3291
 msgid "Code filter"
 msgstr "فلتر رموز"
 
-#: application/helpers/common_helper.php:3307
+#: application/helpers/common_helper.php:3301
 msgid "The answer options will be distributed across the number of columns set here"
 msgstr "خيارات السؤال سوف توزع علي عدد الاعمدة الموجودة هنا"
 
-#: application/helpers/common_helper.php:3308
+#: application/helpers/common_helper.php:3302
 msgid "Display columns"
 msgstr "أعمدة للعرض"
 
-#: application/helpers/common_helper.php:3315
+#: application/helpers/common_helper.php:3309
 msgid "How many rows to display"
 msgstr "كم عدد الصفوف التي ستعرض"
 
-#: application/helpers/common_helper.php:3316
+#: application/helpers/common_helper.php:3310
 msgid "Display rows"
 msgstr "صفوف للعرض"
 
-#: application/helpers/common_helper.php:3326
+#: application/helpers/common_helper.php:3320
 msgid "Use accessible dropdown boxes instead of calendar popup"
 msgstr ""
 
-#: application/helpers/common_helper.php:3327
+#: application/helpers/common_helper.php:3321
 msgid "Display dropdown boxes"
 msgstr "عرض صناديق القوائم المنسدلة"
 
-#: application/helpers/common_helper.php:3334
+#: application/helpers/common_helper.php:3328
 msgid "Minimum year value in calendar"
 msgstr "اقل قيمة للسنة في النتيجة"
 
-#: application/helpers/common_helper.php:3335
+#: application/helpers/common_helper.php:3329
 msgid "Minimum year"
 msgstr "أدنى سنة"
 
-#: application/helpers/common_helper.php:3342
+#: application/helpers/common_helper.php:3336
 msgid "Maximum year value for calendar"
 msgstr "اكبر قيمة للسنة في النتيجة"
 
-#: application/helpers/common_helper.php:3343
+#: application/helpers/common_helper.php:3337
 msgid "Maximum year"
 msgstr "أقصى سنة"
 
-#: application/helpers/common_helper.php:3351
+#: application/helpers/common_helper.php:3345
 msgid "Prefix|Suffix for dropdown lists"
 msgstr ""
 
-#: application/helpers/common_helper.php:3352
+#: application/helpers/common_helper.php:3346
 msgid "Dropdown prefix/suffix"
 msgstr ""
 
-#: application/helpers/common_helper.php:3359
+#: application/helpers/common_helper.php:3353
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr ""
 
-#: application/helpers/common_helper.php:3360
+#: application/helpers/common_helper.php:3354
 msgid "Dropdown separator"
 msgstr "فاصل القائمة المنسدلة"
 
-#: application/helpers/common_helper.php:3368
+#: application/helpers/common_helper.php:3362
 msgid "Enter a header text for the first scale"
 msgstr ""
 
-#: application/helpers/common_helper.php:3369
+#: application/helpers/common_helper.php:3363
 msgid "Header for first scale"
 msgstr ""
 
-#: application/helpers/common_helper.php:3377
+#: application/helpers/common_helper.php:3371
 msgid "Enter a header text for the second scale"
 msgstr ""
 
-#: application/helpers/common_helper.php:3378
+#: application/helpers/common_helper.php:3372
 msgid "Header for second scale"
 msgstr ""
 
-#: application/helpers/common_helper.php:3382
-#: application/helpers/common_helper.php:3575
-#: application/helpers/common_helper.php:3583
-#: application/helpers/common_helper.php:3599
-#: application/helpers/common_helper.php:3615
-#: application/helpers/common_helper.php:3623
-#: application/helpers/common_helper.php:3693
-#: application/helpers/common_helper.php:4134
-#: application/helpers/common_helper.php:4142
+#: application/helpers/common_helper.php:3376
+#: application/helpers/common_helper.php:3569
+#: application/helpers/common_helper.php:3577
+#: application/helpers/common_helper.php:3593
+#: application/helpers/common_helper.php:3609
+#: application/helpers/common_helper.php:3617
+#: application/helpers/common_helper.php:3687
+#: application/helpers/common_helper.php:4128
+#: application/helpers/common_helper.php:4136
 msgid "Input"
 msgstr "ادخال"
 
-#: application/helpers/common_helper.php:3385
+#: application/helpers/common_helper.php:3379
 msgid "Multiple numeric inputs sum must equal this value"
 msgstr ""
 
-#: application/helpers/common_helper.php:3386
+#: application/helpers/common_helper.php:3380
 msgid "Equals sum value"
 msgstr ""
 
-#: application/helpers/common_helper.php:3393
+#: application/helpers/common_helper.php:3387
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon."
 msgstr ""
 
-#: application/helpers/common_helper.php:3394
+#: application/helpers/common_helper.php:3388
 msgid "Exclusive option"
 msgstr "اختيار حصري"
 
-#: application/helpers/common_helper.php:3404
+#: application/helpers/common_helper.php:3398
 msgid "If the participant marks all options, uncheck all and check the option set in the \"Exclusive option\" setting"
 msgstr ""
 
-#: application/helpers/common_helper.php:3405
+#: application/helpers/common_helper.php:3399
 msgid "Auto-check exclusive option if all others are checked"
 msgstr ""
 
-#: application/helpers/common_helper.php:3412
-#: application/helpers/common_helper.php:3423
-#: application/helpers/common_helper.php:3434
-#: application/helpers/common_helper.php:3445
-#: application/helpers/common_helper.php:3488
-#: application/helpers/common_helper.php:3498
-#: application/helpers/common_helper.php:3507
-#: application/helpers/common_helper.php:3516
-#: application/helpers/common_helper.php:3526
-#: application/helpers/common_helper.php:3534
+#: application/helpers/common_helper.php:3406
+#: application/helpers/common_helper.php:3417
+#: application/helpers/common_helper.php:3428
+#: application/helpers/common_helper.php:3439
+#: application/helpers/common_helper.php:3482
+#: application/helpers/common_helper.php:3492
+#: application/helpers/common_helper.php:3501
+#: application/helpers/common_helper.php:3510
+#: application/helpers/common_helper.php:3520
+#: application/helpers/common_helper.php:3528
 msgid "Location"
 msgstr "مكان"
 
-#: application/helpers/common_helper.php:3417
+#: application/helpers/common_helper.php:3411
 msgid "Store the city?"
 msgstr "احفظ المدينة"
 
-#: application/helpers/common_helper.php:3418
+#: application/helpers/common_helper.php:3412
 msgid "Save city"
 msgstr "حفظ المدينة"
 
-#: application/helpers/common_helper.php:3428
+#: application/helpers/common_helper.php:3422
 msgid "Store the state?"
 msgstr "حفظ الولاية؟"
 
-#: application/helpers/common_helper.php:3429
+#: application/helpers/common_helper.php:3423
 msgid "Save state"
 msgstr "حفظ  الولاية"
 
-#: application/helpers/common_helper.php:3439
+#: application/helpers/common_helper.php:3433
 msgid "Store the postal code?"
 msgstr "حفظ الصندوق البريدي؟"
 
-#: application/helpers/common_helper.php:3440
+#: application/helpers/common_helper.php:3434
 msgid "Save postal code"
 msgstr "حفظ الصندوق البريدي"
 
-#: application/helpers/common_helper.php:3450
+#: application/helpers/common_helper.php:3444
 msgid "Store the country?"
 msgstr "حفظ الدولة؟"
 
-#: application/helpers/common_helper.php:3451
+#: application/helpers/common_helper.php:3445
 msgid "Save country"
 msgstr "حفظ الدولة"
 
-#: application/helpers/common_helper.php:3455
-#: application/helpers/common_helper.php:3466
-#: application/helpers/common_helper.php:3477
+#: application/helpers/common_helper.php:3449
+#: application/helpers/common_helper.php:3460
+#: application/helpers/common_helper.php:3471
 msgid "Statistics"
 msgstr "إحصاءات"
 
-#: application/helpers/common_helper.php:3459
+#: application/helpers/common_helper.php:3453
 msgid "Show a map in the statistics?"
 msgstr "اظهار خريطة في الاحصائيات؟"
 
-#: application/helpers/common_helper.php:3460
+#: application/helpers/common_helper.php:3454
 msgid "Display map"
 msgstr "اظهر الخريطة"
 
-#: application/helpers/common_helper.php:3470
+#: application/helpers/common_helper.php:3464
 msgid "Display a chart in the statistics?"
 msgstr "اظهار رسم بياني في الاحصائيات؟"
 
-#: application/helpers/common_helper.php:3471
+#: application/helpers/common_helper.php:3465
 msgid "Display chart"
 msgstr "اظهر الرسم البياني"
 
-#: application/helpers/common_helper.php:3480
+#: application/helpers/common_helper.php:3474
 msgid "Bar chart"
 msgstr "شريط الرسم البياني"
 
-#: application/helpers/common_helper.php:3480
+#: application/helpers/common_helper.php:3474
 msgid "Pie chart"
 msgstr ""
 
-#: application/helpers/common_helper.php:3481
+#: application/helpers/common_helper.php:3475
 msgid "Select the type of chart to be displayed"
 msgstr "حدد نوع الرسم البياني ليظهر"
 
-#: application/helpers/common_helper.php:3482
+#: application/helpers/common_helper.php:3476
 msgid "Chart type"
 msgstr "نوع الرسم البياني"
 
-#: application/helpers/common_helper.php:3491
-#: application/helpers/common_helper.php:3723
-#: application/helpers/common_helper.php:3825
+#: application/helpers/common_helper.php:3485
+#: application/helpers/common_helper.php:3717
+#: application/helpers/common_helper.php:3819
 msgid "Off"
 msgstr "لا يعمل"
 
-#: application/helpers/common_helper.php:3492
+#: application/helpers/common_helper.php:3486
 msgid "Google Maps"
 msgstr "Google خرائط"
 
-#: application/helpers/common_helper.php:3493
+#: application/helpers/common_helper.php:3487
 msgid "Activate this to show a map above the input field where the user can select a location"
 msgstr ""
 
-#: application/helpers/common_helper.php:3494
+#: application/helpers/common_helper.php:3488
 msgid "Use mapping service"
 msgstr "استخدم خدمة التخطيط"
 
-#: application/helpers/common_helper.php:3502
+#: application/helpers/common_helper.php:3496
 msgid "Width of the map in pixel"
 msgstr ""
 
-#: application/helpers/common_helper.php:3503
+#: application/helpers/common_helper.php:3497
 msgid "Map width"
 msgstr "عرض الخريطة"
 
-#: application/helpers/common_helper.php:3511
+#: application/helpers/common_helper.php:3505
 msgid "Height of the map in pixel"
 msgstr "ارتفاع الخريطة بالبكسل"
 
-#: application/helpers/common_helper.php:3512
+#: application/helpers/common_helper.php:3506
 msgid "Map height"
 msgstr "ارتفاع الخريطة"
 
-#: application/helpers/common_helper.php:3521
+#: application/helpers/common_helper.php:3515
 msgid "Get the default location using the user's IP address?"
 msgstr "الحصول على الموقع الافتراضي بواسطة عنوان الاي بي الخاص بالمستخدم؟"
 
-#: application/helpers/common_helper.php:3522
+#: application/helpers/common_helper.php:3516
 msgid "IP as default location"
 msgstr "عنوان الاي بي كموقع افتراضي"
 
-#: application/helpers/common_helper.php:3529
+#: application/helpers/common_helper.php:3523
 msgid "Default coordinates of the map when the page first loads. Format: latitude [space] longtitude"
 msgstr ""
 
-#: application/helpers/common_helper.php:3530
+#: application/helpers/common_helper.php:3524
 msgid "Default position"
 msgstr "الوضع الافتراضي"
 
-#: application/helpers/common_helper.php:3538
+#: application/helpers/common_helper.php:3532
 msgid "Map zoom level"
 msgstr "مستوى تكبير الخريطة"
 
-#: application/helpers/common_helper.php:3539
+#: application/helpers/common_helper.php:3533
 msgid "Zoom level"
 msgstr "مستوى التكبير"
 
-#: application/helpers/common_helper.php:3551
+#: application/helpers/common_helper.php:3545
 msgid "Hide the tip that is normally shown with a question"
 msgstr ""
 
-#: application/helpers/common_helper.php:3552
+#: application/helpers/common_helper.php:3546
 msgid "Hide tip"
 msgstr "اخف النصيحة"
 
-#: application/helpers/common_helper.php:3562
+#: application/helpers/common_helper.php:3556
 msgid "Hide this question at any time. This is useful for including data using answer prefilling."
 msgstr ""
 
-#: application/helpers/common_helper.php:3563
+#: application/helpers/common_helper.php:3557
 msgid "Always hide this question"
 msgstr "دائما اخف هذا السؤال"
 
-#: application/helpers/common_helper.php:3570
+#: application/helpers/common_helper.php:3564
 msgid "Limit the number of possible answers"
 msgstr "حدد رقم الاجابات الممكنة "
 
-#: application/helpers/common_helper.php:3571
+#: application/helpers/common_helper.php:3565
 msgid "Maximum answers"
 msgstr "الحد الاقصى للاجابات"
 
-#: application/helpers/common_helper.php:3578
+#: application/helpers/common_helper.php:3572
 msgid "Maximum sum value of multiple numeric input"
 msgstr ""
 
-#: application/helpers/common_helper.php:3579
+#: application/helpers/common_helper.php:3573
 msgid "Maximum sum value"
 msgstr ""
 
-#: application/helpers/common_helper.php:3586
+#: application/helpers/common_helper.php:3580
 msgid "Maximum value of the numeric input"
 msgstr ""
 
-#: application/helpers/common_helper.php:3587
-#: application/helpers/common_helper.php:3643
+#: application/helpers/common_helper.php:3581
+#: application/helpers/common_helper.php:3637
 msgid "Maximum value"
 msgstr "الأقصى الحد"
 
-#: application/helpers/common_helper.php:3594
+#: application/helpers/common_helper.php:3588
 msgid "Enter the SGQA identifier to use the total of a previous question as the maximum for this question"
 msgstr ""
 
-#: application/helpers/common_helper.php:3595
+#: application/helpers/common_helper.php:3589
 msgid "Max value from SGQA"
 msgstr ""
 
-#: application/helpers/common_helper.php:3602
+#: application/helpers/common_helper.php:3596
 msgid "Maximum characters allowed"
 msgstr "اكثر حروف مسموحة"
 
-#: application/helpers/common_helper.php:3603
+#: application/helpers/common_helper.php:3597
 msgid "Maximum characters"
 msgstr "أقصى عدد للأحرف"
 
-#: application/helpers/common_helper.php:3610
+#: application/helpers/common_helper.php:3604
 msgid "Ensure a minimum number of possible answers (0=No limit)"
 msgstr ""
 
-#: application/helpers/common_helper.php:3611
+#: application/helpers/common_helper.php:3605
 msgid "Minimum answers"
 msgstr "أقل أجابة"
 
-#: application/helpers/common_helper.php:3618
+#: application/helpers/common_helper.php:3612
 msgid "The sum of the multiple numeric inputs must be greater than this value"
 msgstr ""
 
-#: application/helpers/common_helper.php:3619
+#: application/helpers/common_helper.php:3613
 msgid "Minimum sum value"
 msgstr ""
 
-#: application/helpers/common_helper.php:3626
+#: application/helpers/common_helper.php:3620
 msgid "Minimum value of the numeric input"
 msgstr ""
 
-#: application/helpers/common_helper.php:3627
-#: application/helpers/common_helper.php:3651
+#: application/helpers/common_helper.php:3621
+#: application/helpers/common_helper.php:3645
 msgid "Minimum value"
 msgstr "الأدنى الحد"
 
-#: application/helpers/common_helper.php:3634
+#: application/helpers/common_helper.php:3628
 msgid "Enter the SGQA identifier to use the total of a previous question as the minimum for this question"
 msgstr ""
 
-#: application/helpers/common_helper.php:3635
+#: application/helpers/common_helper.php:3629
 msgid "Minimum value from SGQA"
 msgstr "اقل قيمة من SGQA"
 
-#: application/helpers/common_helper.php:3642
+#: application/helpers/common_helper.php:3636
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr ""
 
-#: application/helpers/common_helper.php:3650
+#: application/helpers/common_helper.php:3644
 msgid "Minimum value for array(multi-flexible) question type"
 msgstr ""
 
-#: application/helpers/common_helper.php:3658
-#: application/helpers/common_helper.php:3659
+#: application/helpers/common_helper.php:3652
+#: application/helpers/common_helper.php:3653
 msgid "Step value"
 msgstr "قيمة الخطوة"
 
-#: application/helpers/common_helper.php:3669
+#: application/helpers/common_helper.php:3663
 msgid "Use checkbox layout"
 msgstr ""
 
-#: application/helpers/common_helper.php:3670
+#: application/helpers/common_helper.php:3664
 msgid "Checkbox layout"
 msgstr "تصميم صندوق الاختيار"
 
-#: application/helpers/common_helper.php:3680
+#: application/helpers/common_helper.php:3674
 msgid "Present answer options in reverse order"
 msgstr ""
 
-#: application/helpers/common_helper.php:3681
+#: application/helpers/common_helper.php:3675
 msgid "Reverse answer order"
 msgstr "اقلب ترتيب الاسئلة"
 
-#: application/helpers/common_helper.php:3688
+#: application/helpers/common_helper.php:3682
 msgid "SGQA identifier to use total of previous question as total for this question"
 msgstr ""
 
-#: application/helpers/common_helper.php:3689
+#: application/helpers/common_helper.php:3683
 msgid "Value equals SGQA"
 msgstr ""
 
-#: application/helpers/common_helper.php:3700
+#: application/helpers/common_helper.php:3694
 msgid "Restrict input to integer values"
 msgstr ""
 
-#: application/helpers/common_helper.php:3701
+#: application/helpers/common_helper.php:3695
 msgid "Integer only"
 msgstr "عدد صحيح فقط"
 
-#: application/helpers/common_helper.php:3713
+#: application/helpers/common_helper.php:3707
 msgid "Allow only numerical input"
 msgstr "اسمح بالمدخل العددي فقط"
 
-#: application/helpers/common_helper.php:3714
+#: application/helpers/common_helper.php:3708
 msgid "Numbers only"
 msgstr "ارقام فقط"
 
-#: application/helpers/common_helper.php:3724
+#: application/helpers/common_helper.php:3718
 msgid "Rows"
 msgstr "صفوف"
 
-#: application/helpers/common_helper.php:3725
+#: application/helpers/common_helper.php:3719
 msgid "Columns"
 msgstr "أعمدة"
 
-#: application/helpers/common_helper.php:3726
+#: application/helpers/common_helper.php:3720
 msgid "Both rows and columns"
 msgstr "عرض الصفوف و الاعمدة"
 
-#: application/helpers/common_helper.php:3729
+#: application/helpers/common_helper.php:3723
 msgid "Show totals for either rows, columns or both rows and columns"
 msgstr ""
 
-#: application/helpers/common_helper.php:3730
+#: application/helpers/common_helper.php:3724
 msgid "Show totals for"
 msgstr "اظهر المجموع ل"
 
-#: application/helpers/common_helper.php:3743
+#: application/helpers/common_helper.php:3737
 msgid "Show grand total for either columns or rows"
 msgstr ""
 
-#: application/helpers/common_helper.php:3744
+#: application/helpers/common_helper.php:3738
 msgid "Show grand total"
 msgstr "اظهر المجموع الكبير"
 
-#: application/helpers/common_helper.php:3755
+#: application/helpers/common_helper.php:3749
 msgid "Present as text input boxes instead of dropdown lists"
 msgstr ""
 
-#: application/helpers/common_helper.php:3756
+#: application/helpers/common_helper.php:3750
 msgid "Text inputs"
 msgstr "مدخلات نصية"
 
-#: application/helpers/common_helper.php:3766
+#: application/helpers/common_helper.php:3760
 msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
 msgstr ""
 
-#: application/helpers/common_helper.php:3767
+#: application/helpers/common_helper.php:3761
 msgid "'Other:' comment mandatory"
 msgstr ""
 
-#: application/helpers/common_helper.php:3777
+#: application/helpers/common_helper.php:3771
 msgid "Allow only numerical input for 'Other' text"
 msgstr ""
 
-#: application/helpers/common_helper.php:3778
+#: application/helpers/common_helper.php:3772
 msgid "Numbers only for 'Other'"
 msgstr "الارقام فقط للاخرون"
 
-#: application/helpers/common_helper.php:3786
+#: application/helpers/common_helper.php:3780
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
 msgstr ""
 
-#: application/helpers/common_helper.php:3787
+#: application/helpers/common_helper.php:3781
 msgid "Label for 'Other:' option"
 msgstr "عنوان الاختيار \"أخر:\""
 
-#: application/helpers/common_helper.php:3797
+#: application/helpers/common_helper.php:3791
 msgid "Insert a page break before this question in printable view by setting this to Yes."
 msgstr ""
 
-#: application/helpers/common_helper.php:3798
+#: application/helpers/common_helper.php:3792
 msgid "Insert page break in printable view"
 msgstr ""
 
-#: application/helpers/common_helper.php:3806
+#: application/helpers/common_helper.php:3800
 msgid "Add a prefix to the answer field"
 msgstr ""
 
-#: application/helpers/common_helper.php:3807
+#: application/helpers/common_helper.php:3801
 msgid "Answer prefix"
 msgstr "بادئة إجابة"
 
-#: application/helpers/common_helper.php:3817
+#: application/helpers/common_helper.php:3811
 msgid "Show statistics of this question in the public statistics page"
 msgstr "اظهر الاحصائيات للسؤال فقط في الصفحة العامة للاحصائيات"
 
-#: application/helpers/common_helper.php:3818
+#: application/helpers/common_helper.php:3812
 msgid "Show in public statistics"
 msgstr "عرض فب أحصاءات عامة"
 
-#: application/helpers/common_helper.php:3826
+#: application/helpers/common_helper.php:3820
 msgid "Randomize on each page load"
 msgstr "بطريقة عشوائية في كل صفحة تحمل"
 
-#: application/helpers/common_helper.php:3827
+#: application/helpers/common_helper.php:3821
 msgid "Randomize once on survey start"
 msgstr "بطريقة عشوائية في بداية الاستبيان"
 
-#: application/helpers/common_helper.php:3830
+#: application/helpers/common_helper.php:3824
 msgid "Present answers in random order"
 msgstr "قدم الاجوبة في ترتيب عشوائي"
 
-#: application/helpers/common_helper.php:3831
+#: application/helpers/common_helper.php:3825
 msgid "Random answer order"
 msgstr "نظام للإجابات عشوائي"
 
-#: application/helpers/common_helper.php:3851
+#: application/helpers/common_helper.php:3845
 msgid "Get order from previous question"
 msgstr "خذ الترتيب من الاسئلة السابقة"
 
-#: application/helpers/common_helper.php:3852
+#: application/helpers/common_helper.php:3846
 msgid "Enter question ID to get subquestion order from a previous question"
 msgstr ""
 
-#: application/helpers/common_helper.php:3856
-#: application/helpers/common_helper.php:3867
-#: application/helpers/common_helper.php:3875
-#: application/helpers/common_helper.php:3883
-#: application/helpers/common_helper.php:3891
-#: application/helpers/common_helper.php:3899
-#: application/helpers/common_helper.php:3925
-#: application/helpers/common_helper.php:3936
+#: application/helpers/common_helper.php:3850
+#: application/helpers/common_helper.php:3861
+#: application/helpers/common_helper.php:3869
+#: application/helpers/common_helper.php:3877
+#: application/helpers/common_helper.php:3885
+#: application/helpers/common_helper.php:3893
+#: application/helpers/common_helper.php:3919
+#: application/helpers/common_helper.php:3930
 msgid "Slider"
 msgstr "الزالق"
 
-#: application/helpers/common_helper.php:3862
-#: application/helpers/common_helper.php:3863
-#: application/helpers/common_helper.php:3919
-#: application/helpers/common_helper.php:3920
+#: application/helpers/common_helper.php:3856
+#: application/helpers/common_helper.php:3857
+#: application/helpers/common_helper.php:3913
+#: application/helpers/common_helper.php:3914
 msgid "Use slider layout"
 msgstr "استخدم التنسيق المنزلق"
 
-#: application/helpers/common_helper.php:3870
-#: application/helpers/common_helper.php:3871
+#: application/helpers/common_helper.php:3864
+#: application/helpers/common_helper.php:3865
 msgid "Slider minimum value"
 msgstr "اقل قيمة للانزلاق"
 
-#: application/helpers/common_helper.php:3878
-#: application/helpers/common_helper.php:3879
+#: application/helpers/common_helper.php:3872
+#: application/helpers/common_helper.php:3873
 msgid "Slider maximum value"
 msgstr "اكبر قيمة للانزلاق"
 
-#: application/helpers/common_helper.php:3886
-#: application/helpers/common_helper.php:3887
+#: application/helpers/common_helper.php:3880
+#: application/helpers/common_helper.php:3881
 msgid "Slider accuracy"
 msgstr "دقة الانزلاق"
 
-#: application/helpers/common_helper.php:3894
-#: application/helpers/common_helper.php:3895
+#: application/helpers/common_helper.php:3888
+#: application/helpers/common_helper.php:3889
 msgid "Slider initial value"
 msgstr "القيمة الابتدائية للانزلاق"
 
-#: application/helpers/common_helper.php:3905
+#: application/helpers/common_helper.php:3899
 msgid "The handle is displayed at the middle of the slider (this will not set the initial value)"
 msgstr ""
 
-#: application/helpers/common_helper.php:3906
+#: application/helpers/common_helper.php:3900
 msgid "Slider starts at the middle position"
 msgstr ""
 
-#: application/helpers/common_helper.php:3915
+#: application/helpers/common_helper.php:3909
 msgid "Yes - stars"
 msgstr ""
 
-#: application/helpers/common_helper.php:3916
+#: application/helpers/common_helper.php:3910
 msgid "Yes - slider with emoticon"
 msgstr ""
 
-#: application/helpers/common_helper.php:3931
+#: application/helpers/common_helper.php:3925
 msgid "Display min and max value under the slider"
 msgstr ""
 
-#: application/helpers/common_helper.php:3932
+#: application/helpers/common_helper.php:3926
 msgid "Display slider min and max value"
 msgstr ""
 
-#: application/helpers/common_helper.php:3939
+#: application/helpers/common_helper.php:3933
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
 msgstr ""
 
-#: application/helpers/common_helper.php:3940
+#: application/helpers/common_helper.php:3934
 msgid "Slider left/right text separator"
 msgstr ""
 
-#: application/helpers/common_helper.php:3948
+#: application/helpers/common_helper.php:3942
 msgid "Add a suffix to the answer field"
 msgstr ""
 
-#: application/helpers/common_helper.php:3949
+#: application/helpers/common_helper.php:3943
 #, fuzzy
 msgid "Answer suffix"
 msgstr "أجوبة"
 
-#: application/helpers/common_helper.php:3956
+#: application/helpers/common_helper.php:3950
 msgid "Width of text input box"
 msgstr "تحديد عرض شاشة طباعة النص"
 
-#: application/helpers/common_helper.php:3957
+#: application/helpers/common_helper.php:3951
 msgid "Input box width"
 msgstr "عرض صندوق الادخال"
 
-#: application/helpers/common_helper.php:3967
+#: application/helpers/common_helper.php:3961
 msgid "Present dropdown control(s) instead of list of radio buttons"
 msgstr ""
 
-#: application/helpers/common_helper.php:3968
+#: application/helpers/common_helper.php:3962
 #, fuzzy
 msgid "Use dropdown presentation"
 msgstr "القائمة المنسدلة"
 
-#: application/helpers/common_helper.php:3975
+#: application/helpers/common_helper.php:3969
 msgid "Default"
 msgstr "افتراضي"
 
-#: application/helpers/common_helper.php:3976
+#: application/helpers/common_helper.php:3970
 msgid "Nominal"
 msgstr ""
 
-#: application/helpers/common_helper.php:3977
+#: application/helpers/common_helper.php:3971
 msgid "Ordinal"
 msgstr "ترتيبي"
 
-#: application/helpers/common_helper.php:3978
+#: application/helpers/common_helper.php:3972
 msgid "Scale"
 msgstr "النطاق"
 
-#: application/helpers/common_helper.php:3980
+#: application/helpers/common_helper.php:3974
 msgid "Set a specific SPSS export scale type for this question"
 msgstr ""
 
-#: application/helpers/common_helper.php:3981
+#: application/helpers/common_helper.php:3975
 msgid "SPSS export scale type"
 msgstr ""
 
-#: application/helpers/common_helper.php:3986
-#: application/helpers/common_helper.php:3994
-#: application/helpers/common_helper.php:4005
-#: application/helpers/common_helper.php:4016
-#: application/helpers/common_helper.php:4026
-#: application/helpers/common_helper.php:4035
-#: application/helpers/common_helper.php:4043
-#: application/helpers/common_helper.php:4051
-#: application/helpers/common_helper.php:4060
-#: application/helpers/common_helper.php:4068
-#: application/helpers/common_helper.php:4076
-#: application/helpers/common_helper.php:4084
-#: application/helpers/common_helper.php:4093
-#: application/helpers/common_helper.php:4101
-#: application/helpers/common_helper.php:4109
-#: application/helpers/common_helper.php:4117
-#: application/helpers/common_helper.php:4126
+#: application/helpers/common_helper.php:3980
+#: application/helpers/common_helper.php:3988
+#: application/helpers/common_helper.php:3999
+#: application/helpers/common_helper.php:4010
+#: application/helpers/common_helper.php:4020
+#: application/helpers/common_helper.php:4029
+#: application/helpers/common_helper.php:4037
+#: application/helpers/common_helper.php:4045
+#: application/helpers/common_helper.php:4054
+#: application/helpers/common_helper.php:4062
+#: application/helpers/common_helper.php:4070
+#: application/helpers/common_helper.php:4078
+#: application/helpers/common_helper.php:4087
+#: application/helpers/common_helper.php:4095
+#: application/helpers/common_helper.php:4103
+#: application/helpers/common_helper.php:4111
+#: application/helpers/common_helper.php:4120
 msgid "Timer"
 msgstr "عداد"
 
-#: application/helpers/common_helper.php:3989
+#: application/helpers/common_helper.php:3983
 msgid "Limit time to answer question (in seconds)"
 msgstr ""
 
-#: application/helpers/common_helper.php:3990
+#: application/helpers/common_helper.php:3984
 msgid "Time limit"
 msgstr "حد الوقت"
 
-#: application/helpers/common_helper.php:3997
+#: application/helpers/common_helper.php:3991
 msgid "Warn and move on"
 msgstr ""
 
-#: application/helpers/common_helper.php:3998
+#: application/helpers/common_helper.php:3992
 msgid "Move on without warning"
 msgstr ""
 
-#: application/helpers/common_helper.php:3999
+#: application/helpers/common_helper.php:3993
 msgid "Disable only"
 msgstr "تعطيل فقط"
 
-#: application/helpers/common_helper.php:4000
+#: application/helpers/common_helper.php:3994
 msgid "Action to perform when time limit is up"
 msgstr ""
 
-#: application/helpers/common_helper.php:4001
+#: application/helpers/common_helper.php:3995
 msgid "Time limit action"
 msgstr ""
 
-#: application/helpers/common_helper.php:4011
+#: application/helpers/common_helper.php:4005
 msgid "Disable the next button until time limit expires"
 msgstr "لا تظهر الزر المقبل قبل ان ينتهي الوقت"
 
-#: application/helpers/common_helper.php:4012
+#: application/helpers/common_helper.php:4006
 msgid "Time limit disable next"
 msgstr ""
 
-#: application/helpers/common_helper.php:4021
+#: application/helpers/common_helper.php:4015
 msgid "Disable the prev button until the time limit expires"
 msgstr ""
 
-#: application/helpers/common_helper.php:4022
+#: application/helpers/common_helper.php:4016
 msgid "Time limit disable prev"
 msgstr ""
 
-#: application/helpers/common_helper.php:4030
+#: application/helpers/common_helper.php:4024
 msgid "The text message that displays in the countdown timer during the countdown"
 msgstr ""
 
-#: application/helpers/common_helper.php:4031
+#: application/helpers/common_helper.php:4025
 msgid "Time limit countdown message"
 msgstr ""
 
-#: application/helpers/common_helper.php:4038
+#: application/helpers/common_helper.php:4032
 msgid "CSS Style for the message that displays in the countdown timer during the countdown"
 msgstr ""
 
-#: application/helpers/common_helper.php:4039
+#: application/helpers/common_helper.php:4033
 msgid "Time limit timer CSS style"
 msgstr ""
 
-#: application/helpers/common_helper.php:4046
+#: application/helpers/common_helper.php:4040
 msgid "Display the 'time limit expiry message' for this many seconds before performing the 'time limit action' (defaults to 1 second if left blank)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4047
+#: application/helpers/common_helper.php:4041
 msgid "Time limit expiry message display time"
 msgstr ""
 
-#: application/helpers/common_helper.php:4055
+#: application/helpers/common_helper.php:4049
 msgid "The message to display when the time limit has expired (a default message will display if this setting is left blank)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4056
+#: application/helpers/common_helper.php:4050
 msgid "Time limit expiry message"
 msgstr ""
 
-#: application/helpers/common_helper.php:4063
+#: application/helpers/common_helper.php:4057
 msgid "CSS style for the 'time limit expiry message'"
 msgstr ""
 
-#: application/helpers/common_helper.php:4064
+#: application/helpers/common_helper.php:4058
 msgid "Time limit message CSS style"
 msgstr ""
 
-#: application/helpers/common_helper.php:4071
+#: application/helpers/common_helper.php:4065
 msgid "Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4072
+#: application/helpers/common_helper.php:4066
 msgid "1st time limit warning message timer"
 msgstr ""
 
-#: application/helpers/common_helper.php:4079
+#: application/helpers/common_helper.php:4073
 msgid "The 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4080
+#: application/helpers/common_helper.php:4074
 msgid "1st time limit warning message display time"
 msgstr ""
 
-#: application/helpers/common_helper.php:4088
+#: application/helpers/common_helper.php:4082
 msgid "The message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4089
+#: application/helpers/common_helper.php:4083
 msgid "1st time limit warning message"
 msgstr ""
 
-#: application/helpers/common_helper.php:4096
+#: application/helpers/common_helper.php:4090
 msgid "CSS style used when the 'time limit warning' message is displayed"
 msgstr ""
 
-#: application/helpers/common_helper.php:4097
+#: application/helpers/common_helper.php:4091
 msgid "1st time limit warning CSS style"
 msgstr "CSS أول إنظار لحد الوقط بصيغة"
 
-#: application/helpers/common_helper.php:4104
+#: application/helpers/common_helper.php:4098
 msgid "Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4105
+#: application/helpers/common_helper.php:4099
 msgid "2nd time limit warning message timer"
 msgstr ""
 
-#: application/helpers/common_helper.php:4112
+#: application/helpers/common_helper.php:4106
 msgid "The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4113
+#: application/helpers/common_helper.php:4107
 #, fuzzy
 msgid "2nd time limit warning message display time"
 msgstr "CSS أول إنظار لحد الوقط بصيغة"
 
-#: application/helpers/common_helper.php:4121
+#: application/helpers/common_helper.php:4115
 msgid "The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr ""
 
-#: application/helpers/common_helper.php:4122
+#: application/helpers/common_helper.php:4116
 msgid "2nd time limit warning message"
 msgstr ""
 
-#: application/helpers/common_helper.php:4129
+#: application/helpers/common_helper.php:4123
 msgid "CSS style used when the 2nd 'time limit warning' message is displayed"
 msgstr ""
 
-#: application/helpers/common_helper.php:4130
+#: application/helpers/common_helper.php:4124
 msgid "2nd time limit warning CSS style"
 msgstr ""
 
-#: application/helpers/common_helper.php:4137
+#: application/helpers/common_helper.php:4131
 msgid "Specify a custom date/time format (the <i>d/dd m/mm yy/yyyy H/HH M/MM</i> formats and \"-./: \" characters are allowed for day/month/year/hour/minutes without or with leading zero respectively. Defaults to survey's date format"
 msgstr ""
 
-#: application/helpers/common_helper.php:4138
+#: application/helpers/common_helper.php:4132
 msgid "Date/Time format"
 msgstr "تنسيق الوقت/التاريخ"
 
-#: application/helpers/common_helper.php:4145
+#: application/helpers/common_helper.php:4139
 msgid "Minute step interval when using select boxes"
 msgstr ""
 
-#: application/helpers/common_helper.php:4146
+#: application/helpers/common_helper.php:4140
 msgid "Minute step interval"
 msgstr ""
 
-#: application/helpers/common_helper.php:4153
+#: application/helpers/common_helper.php:4147
 msgid "Short names"
 msgstr "اسماء قصيرة"
 
-#: application/helpers/common_helper.php:4154
+#: application/helpers/common_helper.php:4148
 msgid "Full names"
 msgstr "الاسماء كاملة"
 
-#: application/helpers/common_helper.php:4155
+#: application/helpers/common_helper.php:4149
 msgid "Numbers"
 msgstr "الارقام"
 
-#: application/helpers/common_helper.php:4157
+#: application/helpers/common_helper.php:4151
 msgid "Change the display style of the month when using select boxes"
 msgstr ""
 
-#: application/helpers/common_helper.php:4158
+#: application/helpers/common_helper.php:4152
 msgid "Month display style"
 msgstr "طريقة عرض الشهر"
 
-#: application/helpers/common_helper.php:4162
-#: application/helpers/common_helper.php:4173
+#: application/helpers/common_helper.php:4156
+#: application/helpers/common_helper.php:4167
 #, fuzzy
 msgid "File metadata"
 msgstr "فشل التحديث!"
 
-#: application/helpers/common_helper.php:4168
+#: application/helpers/common_helper.php:4162
 msgid "Is the participant required to give a title to the uploaded file?"
 msgstr ""
 
-#: application/helpers/common_helper.php:4169
+#: application/helpers/common_helper.php:4163
 msgid "Show title"
 msgstr "إظهار العنوان"
 
-#: application/helpers/common_helper.php:4179
+#: application/helpers/common_helper.php:4173
 msgid "Is the participant required to give a comment to the uploaded file?"
 msgstr ""
 
-#: application/helpers/common_helper.php:4180
+#: application/helpers/common_helper.php:4174
 msgid "Show comment"
 msgstr "التعليق إظهار"
 
-#: application/helpers/common_helper.php:4189
+#: application/helpers/common_helper.php:4183
 msgid "The participant cannot upload a single file larger than this size"
 msgstr ""
 
-#: application/helpers/common_helper.php:4190
+#: application/helpers/common_helper.php:4184
 msgid "Maximum file size allowed (in KB)"
 msgstr "اكبر مساحة لملف مسموح بها (بالكليوبايت)"
 
-#: application/helpers/common_helper.php:4198
+#: application/helpers/common_helper.php:4192
 msgid "Maximum number of files that the participant can upload for this question"
 msgstr ""
 
-#: application/helpers/common_helper.php:4199
+#: application/helpers/common_helper.php:4193
 msgid "Max number of files"
 msgstr "الحد الأقصى لعدد الملفات"
 
-#: application/helpers/common_helper.php:4207
+#: application/helpers/common_helper.php:4201
 msgid "Minimum number of files that the participant must upload for this question"
 msgstr ""
 
-#: application/helpers/common_helper.php:4208
+#: application/helpers/common_helper.php:4202
 msgid "Min number of files"
 msgstr "الحد الأدنى لعدد الملفات"
 
-#: application/helpers/common_helper.php:4216
+#: application/helpers/common_helper.php:4210
 msgid "Allowed file types in comma separated format. e.g. pdf,doc,odt"
 msgstr ""
 
-#: application/helpers/common_helper.php:4217
+#: application/helpers/common_helper.php:4211
 msgid "Allowed file types"
 msgstr "انواع الملفات المسموحة"
 
-#: application/helpers/common_helper.php:4224
+#: application/helpers/common_helper.php:4218
 msgid "Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"
 msgstr ""
 
-#: application/helpers/common_helper.php:4225
+#: application/helpers/common_helper.php:4219
 msgid "Randomization group name"
 msgstr "اختر اسم عشوائي للمجموعة"
 
-#: application/helpers/common_helper.php:4361
+#: application/helpers/common_helper.php:4355
 msgid "Email was not sent because demo-mode is activated."
 msgstr "لم ترسل الرسالة الإلكترونية بعد لأن النمط الحالي تجريبي فقط."
 
-#: application/helpers/common_helper.php:4482
+#: application/helpers/common_helper.php:4476
 msgid "SMTP debug output:"
 msgstr ""
 
-#: application/helpers/common_helper.php:5558
+#: application/helpers/common_helper.php:5552
 #: application/helpers/replacements_helper.php:565
 msgid "Email address"
 msgstr "البريد الالكتروني"
 
-#: application/helpers/common_helper.php:5559
+#: application/helpers/common_helper.php:5553
 msgid "Token code"
 msgstr "كود الرمز"
 
-#: application/helpers/common_helper.php:5560
+#: application/helpers/common_helper.php:5554
 msgid "Language code"
 msgstr "لغة الكود"
 
-#: application/helpers/common_helper.php:5561
+#: application/helpers/common_helper.php:5555
 msgid "Invitation sent date"
 msgstr "تريخ إرسال الدعوة"
 
-#: application/helpers/common_helper.php:5562
+#: application/helpers/common_helper.php:5556
 msgid "Last Reminder sent date"
 msgstr "آخر موعد إرسال مذكرة"
 
-#: application/helpers/common_helper.php:5563
+#: application/helpers/common_helper.php:5557
 msgid "Total numbers of sent reminders"
 msgstr "مجموع ارقام التنبيهات المرسلة "
 
-#: application/helpers/common_helper.php:5564
+#: application/helpers/common_helper.php:5558
 msgid "Uses left"
 msgstr "المستخدمين المتبقيين"
 
-#: application/helpers/common_helper.php:5587
+#: application/helpers/common_helper.php:5581
 #, php-format
 msgid "Attribute %s"
 msgstr "السمة %s"
 
-#: application/helpers/common_helper.php:7031
+#: application/helpers/common_helper.php:7025
 msgid "Access denied!"
 msgstr "ممنوع الدخول !"
 
-#: application/helpers/common_helper.php:7036
+#: application/helpers/common_helper.php:7030
 msgid "You are not allowed dump the database!"
 msgstr "غير مسموح لك بتفريغ قاعدة البيانات!"
 
-#: application/helpers/common_helper.php:7041
+#: application/helpers/common_helper.php:7035
 msgid "You are not allowed export a label set!"
 msgstr "غير مسموح لك بتصدير مجموعة الخيارات !"
 
-#: application/helpers/common_helper.php:7046
+#: application/helpers/common_helper.php:7040
 msgid "You are not allowed to change user data!"
 msgstr "غير مسموح لك بتغيير بيانات المستخدم!"
 
-#: application/helpers/common_helper.php:7051
+#: application/helpers/common_helper.php:7045
 msgid "You are not allowed to create new surveys!"
 msgstr "غير مسموح لك بإنشاء استبيانات جديدة!"
 
-#: application/helpers/common_helper.php:7056
+#: application/helpers/common_helper.php:7050
 msgid "You are not allowed to delete this survey!"
 msgstr "غير مسموح لك بحذف هذا الاستبيان!"
 
-#: application/helpers/common_helper.php:7061
+#: application/helpers/common_helper.php:7055
 msgid "You are not allowed to add new questions for this survey!"
 msgstr "غير مسموح لك أضافة أسئلة جديدة لهذا الاستبيان!"
 
-#: application/helpers/common_helper.php:7066
+#: application/helpers/common_helper.php:7060
 msgid "You are not allowed to activate this survey!"
 msgstr "غير مسموح لك بتفعيل هذا الاستبيان!"
 
-#: application/helpers/common_helper.php:7071
+#: application/helpers/common_helper.php:7065
 msgid "You are not allowed to stop this survey!"
 msgstr "غير مسموح لك بايقاف هذا الاستبيان!"
 
-#: application/helpers/common_helper.php:7076
+#: application/helpers/common_helper.php:7070
 msgid "You are not allowed to add a group to this survey!"
 msgstr "غير مسموح لك بإضافة مجموعة لهذا الاستبيان!"
 
-#: application/helpers/common_helper.php:7082
+#: application/helpers/common_helper.php:7076
 msgid "You are not allowed to order groups in this survey!"
 msgstr "غير مسموح لك بطلب مجموعة في هذا الاستبيان!"
 
-#: application/helpers/common_helper.php:7088
+#: application/helpers/common_helper.php:7082
 msgid "You are not allowed to edit this survey!"
 msgstr "غير مسموح لك بتحرير هذا الاستبيان!"
 
-#: application/helpers/common_helper.php:7093
+#: application/helpers/common_helper.php:7087
 msgid "You are not allowed to edit groups in this survey!"
 msgstr "غير مسموح لك بتحرير مجموعات في هذا الاستبيان"
 
-#: application/helpers/common_helper.php:7098
+#: application/helpers/common_helper.php:7092
 msgid "You are not allowed to browse responses!"
 msgstr "غير مسموح لك باستعراض الردود!"
 
-#: application/helpers/common_helper.php:7103
+#: application/helpers/common_helper.php:7097
 msgid "You are not allowed to set assessment rules!"
 msgstr "غير مسموح لك بوضع قواعد تقييم!"
 
-#: application/helpers/common_helper.php:7108
+#: application/helpers/common_helper.php:7102
 msgid "You are not allowed to delete this group!"
 msgstr "غير مسموح لك بحذف هذه المجموعة!"
 
-#: application/helpers/common_helper.php:7113
+#: application/helpers/common_helper.php:7107
 msgid "You are not allowed to import a survey!"
 msgstr "غير مسموح لك باستيراد استبيان!"
 
-#: application/helpers/common_helper.php:7119
+#: application/helpers/common_helper.php:7113
 msgid "You are not allowed to import a group!"
 msgstr "غير مسموح لك باستيراد مجموعة!"
 
-#: application/helpers/common_helper.php:7124
+#: application/helpers/common_helper.php:7118
 msgid "You are not allowed to to import a question!"
 msgstr "غير مسموح لك باستيراد سؤال!"
 
-#: application/helpers/common_helper.php:7133
-#: application/helpers/common_helper.php:7138
+#: application/helpers/common_helper.php:7127
+#: application/helpers/common_helper.php:7132
 msgid "Security alert"
 msgstr "تنبيه الأمان"
 
-#: application/helpers/common_helper.php:7133
-#: application/helpers/common_helper.php:7138
+#: application/helpers/common_helper.php:7127
+#: application/helpers/common_helper.php:7132
 msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
 msgstr "قد يكون هناك شخص ما يحاول استخدام جلسة اللايم سيرفي الخاصة بك باستخدام طلبات حصو خطيرة( قد يكون هجوما CSRF). إذا ضغطت على رابط ال.....، من فضلك أخبر مدير نظامك بهذا."
 
-#: application/helpers/common_helper.php:7133
-#: application/helpers/common_helper.php:7138
+#: application/helpers/common_helper.php:7127
+#: application/helpers/common_helper.php:7132
 msgid "Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time."
 msgstr ""
 
-#: application/helpers/common_helper.php:7143
+#: application/helpers/common_helper.php:7137
 msgid "You are not allowed to perform this operation!"
 msgstr "غير مسموح لك بإجراء هذه العملية!"
 
-#: application/helpers/common_helper.php:7868
+#: application/helpers/common_helper.php:7862
 #, php-format
 msgid "SQL command failed: %s"
 msgstr ""
@@ -8536,7 +8544,7 @@ msgstr "من فضلك افحص بندا واحدا على الاقل للحذف"
 msgid "Please select at least one file for download"
 msgstr "من فضلك اختار بندا واحدا على الاقل للتحميل"
 
-#: application/views/admin/browse/browseallheader_view.php:38
+#: application/views/admin/browse/browseallheader_view.php:37
 msgid "Display:"
 msgstr "اعرض:"
 
@@ -9103,20 +9111,14 @@ msgid "For easy opening in MS Excel, change the extension to 'tab' or 'txt'"
 msgstr "للسهولة في فتح  MS Excelغير الامتداد الي \"tab\" او \"txt\""
 
 #: application/views/admin/labels/editlabel_view.php:4
-#, fuzzy
 msgid "Create or import new label set(s)"
-msgstr "انشيء أو استورد مجموعة علامات جديدة"
-
-#: application/views/admin/labels/editlabel_view.php:5
-msgid "Edit Label Set"
-msgstr "حرر مجموعة علامات "
+msgstr "انشيء أو استورد مجموعة(ات) علامات جديدة"
 
 #: application/views/admin/labels/editlabel_view.php:13
 #: application/views/admin/labels/editlabel_view.php:65
 #: application/views/admin/labels/editlabel_view.php:79
-#, fuzzy
 msgid "Import label set(s)"
-msgstr "نقل مجموعة الخيارات"
+msgstr "استورد  مجموعة علامات"
 
 #: application/views/admin/labels/editlabel_view.php:17
 msgid "Error: You have to enter a name for this label set."
@@ -9139,9 +9141,8 @@ msgid "Select label set file (*.lsl,*.csv):"
 msgstr ""
 
 #: application/views/admin/labels/editlabel_view.php:72
-#, fuzzy
 msgid "Don't import if label set already exists:"
-msgstr "عنوان البريد الإلكتروني موجود بالفعل."
+msgstr "لا تستورد لو مجموعة العلامة موجودة بالفعل:"
 
 #: application/views/admin/labels/editlabel_view.php:76
 msgid "Convert resources links?"
@@ -9152,23 +9153,20 @@ msgid "You have to select at least one label set."
 msgstr "يجب ان تختار علي الأقل سؤال"
 
 #: application/views/admin/labels/exportmulti_view.php:7
-#, fuzzy
 msgid "Export multiple label sets"
-msgstr "انقل مجموعة علامات للخارج"
+msgstr "صدَر مجموعات العلامة ثنائيا"
 
 #: application/views/admin/labels/exportmulti_view.php:9
-#, fuzzy
 msgid "Please choose the label sets you want to export:"
-msgstr "أختر الاعمدة التي ترغب في تصديرها."
+msgstr "أختر مجموعات العلامة التي ترغب في تصديرها:"
 
 #: application/views/admin/labels/exportmulti_view.php:9
 msgid "(Select multiple label sets by using the Ctrl key)"
 msgstr ""
 
 #: application/views/admin/labels/exportmulti_view.php:20
-#, fuzzy
 msgid "Export selected label sets"
-msgstr "احذف مجموعة علامات"
+msgstr "صدَر مجموعات العلامة المحددة"
 
 #: application/views/admin/labels/labelbar_view.php:3
 msgid "Label Set"
@@ -9183,9 +9181,8 @@ msgid "Delete label set"
 msgstr "احذف مجموعة علامات"
 
 #: application/views/admin/labels/labelbar_view.php:15
-#, fuzzy
 msgid "Export this label set"
-msgstr "انقل مجموعة علامات للخارج"
+msgstr "صدَر  مجموعة العلامات هذه"
 
 #: application/views/admin/labels/labelbar_view.php:18
 msgid "Close Window"
@@ -9196,9 +9193,8 @@ msgid "Label Sets Administration"
 msgstr "إدارة مجموعات العلامات"
 
 #: application/views/admin/labels/labelsetsbar_view.php:18
-#, fuzzy
 msgid "Label sets:"
-msgstr "مجموعات علامات"
+msgstr ":مجموعات العلامات"
 
 #: application/views/admin/labels/labelsetsbar_view.php:22
 msgid "Please Choose..."
@@ -9214,22 +9210,22 @@ msgstr "أظهر مساعدة"
 
 #: application/views/admin/participants/attributeControl_view.php:5
 #, fuzzy
-msgid "Attribute Visiblity Changed"
+msgid "Attribute visiblity changed"
 msgstr "سمة التغير الظاهر"
 
 #: application/views/admin/participants/attributeControl_view.php:10
 #, fuzzy
-msgid "Attribute Control"
+msgid "Attribute control"
 msgstr "سمة التحكم "
 
 #: application/views/admin/participants/attributeControl_view.php:22
 #, fuzzy
-msgid "Attribute Name"
+msgid "Attribute name"
 msgstr "سمة الاسم"
 
 #: application/views/admin/participants/attributeControl_view.php:23
 #, fuzzy
-msgid "Attribute Type"
+msgid "Attribute type"
 msgstr "سمة النوع"
 
 #: application/views/admin/participants/attributeControl_view.php:24
@@ -9238,8 +9234,8 @@ msgstr "مرئ في لوحة تحكم المشاركات"
 
 #: application/views/admin/participants/attributeControl_view.php:41
 #, fuzzy
-msgid "Drop Down"
-msgstr "القائمة المنسدلة"
+msgid "Drop-down list"
+msgstr "فاصل القائمة المنسدلة"
 
 #: application/views/admin/participants/attributeControl_view.php:45
 msgid "Date"
@@ -9247,7 +9243,7 @@ msgstr "تاريخ"
 
 #: application/views/admin/participants/attributeControl_view.php:49
 #, fuzzy
-msgid "Text Box"
+msgid "Text box"
 msgstr "صندوق نص"
 
 #: application/views/admin/participants/attributeMapCSV_view.php:19
@@ -9256,7 +9252,7 @@ msgstr "ملخص"
 
 #: application/views/admin/participants/attributeMapCSV_view.php:20
 #, fuzzy
-msgid "Upload Summary"
+msgid "Upload summary"
 msgstr "رفع الملخص"
 
 #: application/views/admin/participants/attributeMapCSV_view.php:26
@@ -9266,43 +9262,38 @@ msgstr "حدد الخصائص التي تريد نسخها مع  %sالمشار�
 
 #: application/views/admin/participants/attributeMapCSV_view.php:29
 #, fuzzy
-msgid "CSV Headings "
+msgid "CSV headings "
 msgstr "عناوين CSV"
 
 #: application/views/admin/participants/attributeMapCSV_view.php:38
-#, fuzzy
-msgid "Attribute's to be created"
+#: application/views/admin/participants/attributeMap_view.php:50
+msgid "Attributes to be created"
 msgstr "سمات لتضاف"
 
 #: application/views/admin/participants/attributeMapCSV_view.php:42
 #, fuzzy
-msgid "Central Attribute"
+msgid "Central attribute"
 msgstr "خصائص مركزي"
 
 #: application/views/admin/participants/attributeMapCSV_view.php:62
 #: application/views/admin/participants/attributeMapToken_view.php:62
 #: application/views/admin/participants/attributeMap_view.php:82
-#, fuzzy
-msgid "Processing ....."
+msgid "Processing..."
 msgstr "جاري المعالجة..."
 
 #: application/views/admin/participants/attributeMap_view.php:23
 #, fuzzy
-msgid "Already Mapped"
+msgid "Already mapped"
 msgstr "مخططة بالفعل"
-
-#: application/views/admin/participants/attributeMap_view.php:50
-msgid "Attributes to be created"
-msgstr "سمات لتضاف"
 
 #: application/views/admin/participants/attributeMap_view.php:62
 #, fuzzy
-msgid "Token Table Attribute"
+msgid "Token table attribute"
 msgstr "سمة جدول الرمز"
 
 #: application/views/admin/participants/blacklist_view.php:4
 #, fuzzy
-msgid "Blacklist Control"
+msgid "Blacklist control"
 msgstr "التحكم في الاسماء المحظورة"
 
 #: application/views/admin/participants/blacklist_view.php:44
@@ -9416,16 +9407,7 @@ msgid "You can see and edit settings for shared participant in share panel."
 msgstr "انت تسطتيع ان تري وتعدل الاعدادات للمشاركات المشتركة في لوحة المشاركة."
 
 #: application/views/admin/participants/displayParticipants_view.php:102
-msgid "First Name"
-msgstr "الاسم الاول"
-
-#: application/views/admin/participants/displayParticipants_view.php:102
-msgid "Last Name"
-msgstr "اسم العائلة"
-
-#: application/views/admin/participants/displayParticipants_view.php:102
-#, fuzzy
-msgid "E-Mail"
+msgid "E-mail"
 msgstr "البريد الالكتروني"
 
 #: application/views/admin/participants/displayParticipants_view.php:102
@@ -9433,8 +9415,7 @@ msgid "Blacklisted"
 msgstr "القائمة المحظورة "
 
 #: application/views/admin/participants/displayParticipants_view.php:102
-#, fuzzy
-msgid "Owner Name"
+msgid "Owner name"
 msgstr "اسم المالك"
 
 #: application/views/admin/participants/displayParticipants_view.php:169
@@ -9459,8 +9440,9 @@ msgstr "المستخدم و المشاركات سوف يشترك"
 
 #: application/views/admin/participants/displayParticipants_view.php:187
 #: application/views/admin/participants/displayParticipants_view.php:219
-msgid "---Select One---"
-msgstr "---اختار واحد(ة)---"
+#: application/views/admin/participants/viewAttribute_view.php:24
+msgid "Select..."
+msgstr "اختر واحد(ة) ..."
 
 #: application/views/admin/participants/displayParticipants_view.php:199
 msgid "Allow this user to edit these participants"
@@ -9499,24 +9481,17 @@ msgid "Import CSV"
 msgstr "استيراد CSV"
 
 #: application/views/admin/participants/importCSV_view.php:11
-#, fuzzy
-msgid "Choose the file to Upload:"
+msgid "Choose the file to upload:"
 msgstr "اختر الملف للرفع:"
 
 #: application/views/admin/participants/importCSV_view.php:17
 #, fuzzy
-msgid "Characterset of File:"
+msgid "Character set of file:"
 msgstr "نوع أحرف الملف:"
 
 #: application/views/admin/participants/importCSV_view.php:62
-#, fuzzy
-msgid "Seperator Used:"
-msgstr "المفرق استخدم:"
-
-#: application/views/admin/participants/importCSV_view.php:65
-#, fuzzy
-msgid "Auto Detected"
-msgstr "تم التقاطه تلقائيا"
+msgid "Seperator used:"
+msgstr "المفرق استخدام:"
 
 #: application/views/admin/participants/importCSV_view.php:95
 msgid "firstname, lastname, email"
@@ -9527,57 +9502,53 @@ msgid "blacklist,language"
 msgstr "اللغة,المحظورة"
 
 #: application/views/admin/participants/participantsPanel_view.php:11
-#, fuzzy
-msgid "Participants Panel"
-msgstr "لوحة تحكم المشاركين"
+msgid "Participant panel"
+msgstr "لوحة تحكم المشارك"
 
 #: application/views/admin/participants/participantsPanel_view.php:105
 msgid "There are no participants to be exported"
 msgstr "لا يوجد مشاركون للتصدير"
 
 #: application/views/admin/participants/sharePanel_view.php:6
-#, fuzzy
-msgid "Share Panel"
-msgstr "مشاركة اللوحة"
+msgid "Share panel"
+msgstr "شارك اللوحة"
 
 #: application/views/admin/participants/summary_view.php:2
 #, fuzzy
-msgid "Central Participants Database Summary"
+msgid "Central participants database summary"
 msgstr "ملخص قاعدة بيانات المشاركات المركزية"
 
 #: application/views/admin/participants/summary_view.php:8
 #, fuzzy
-msgid "Total Participants in central table  "
+msgid "Total participants in central table"
 msgstr "إجمالي المشاركات في الجدول المركزي"
 
 #: application/views/admin/participants/summary_view.php:16
-#, fuzzy
-msgid "Participants Owned by you  "
+msgid "Participants owned by you"
 msgstr "هذه المشاركات امتلكت بواسطتك"
 
 #: application/views/admin/participants/summary_view.php:24
 #, fuzzy
-msgid "Participants Shared with you  "
+msgid "Participants shared with you"
 msgstr "المشاركين المشاركين معاك."
 
 #: application/views/admin/participants/summary_view.php:32
 #, fuzzy
-msgid "Participants you have shared  "
+msgid "Participants you have shared"
 msgstr "المشاركين الذين شاركتهم"
 
 #: application/views/admin/participants/summary_view.php:40
-#, fuzzy
-msgid "Blacklisted Participants  "
-msgstr "قائمة محظورات المشاركات"
+msgid "Blacklisted participants"
+msgstr "قائمة المشاركات المحظورة"
 
 #: application/views/admin/participants/summary_view.php:48
 #, fuzzy
-msgid "Total attributes in the central table  "
+msgid "Total attributes in the central table"
 msgstr "إجمالي الخصائص في الجدول المركزي"
 
 #: application/views/admin/participants/uploadSummary_view.php:13
 #, fuzzy
-msgid "CPDB CSV Summary"
+msgid "CPDB CSV summary"
 msgstr "ملخص"
 
 #: application/views/admin/participants/uploadSummary_view.php:18
@@ -9595,57 +9566,49 @@ msgid "%s records have incomplete or wrong attribute values"
 msgstr "%s المسجلة لم تكتمل بعد او قيمة الخصائص خطا"
 
 #: application/views/admin/participants/userControl_view.php:5
-#, fuzzy
-msgid "Global Participant Settings"
-msgstr "إعدادات الترشيح العامة"
+msgid "Global participant settings"
+msgstr "إعدادات المشاركة العامة"
 
 #: application/views/admin/participants/userControl_view.php:26
 msgid "User ID editable : "
 msgstr "رقم المستخدم قابل للتعديل:"
 
 #: application/views/admin/participants/userControl_view.php:41
-msgid "You don't have sufficient permissions"
+msgid "You don't have sufficient permissions."
 msgstr "ليس لدبك صلاحيات كافية ."
 
 #: application/views/admin/participants/viewAttribute_view.php:3
 #: application/views/admin/participants/viewAttribute_view.php:59
 #, fuzzy
-msgid "Attribute Name:"
-msgstr "سمة الاسم:"
+msgid "Attribute name:"
+msgstr "اسم الصفة:"
 
 #: application/views/admin/participants/viewAttribute_view.php:10
 #, fuzzy
-msgid "Attribute Settings"
+msgid "Attribute settings"
 msgstr "سمة الخصائص"
 
 #: application/views/admin/participants/viewAttribute_view.php:21
-#, fuzzy
-msgid "Add a Language:"
+msgid "Add a language:"
 msgstr "اضف لغة:"
 
-#: application/views/admin/participants/viewAttribute_view.php:24
-#, fuzzy
-msgid "Select One"
-msgstr "اختر جوابا"
-
 #: application/views/admin/participants/viewAttribute_view.php:71
-#, fuzzy
-msgid "Common Settings"
+msgid "Common settings"
 msgstr "إعدادات شائعة"
 
 #: application/views/admin/participants/viewAttribute_view.php:77
 #, fuzzy
-msgid "Attribute Type:"
-msgstr "سمة النوع:"
+msgid "Attribute type:"
+msgstr "نوع الصفة:"
 
 #: application/views/admin/participants/viewAttribute_view.php:89
 #, fuzzy
-msgid "Attribute Visible:"
+msgid "Attribute visible:"
 msgstr "سمة الظهور:"
 
 #: application/views/admin/participants/viewAttribute_view.php:107
 #, fuzzy
-msgid "Value Name"
+msgid "Value name"
 msgstr "اسم القيمة"
 
 #: application/views/admin/quotas/editquotafooter_view.php:1
@@ -9824,13 +9787,8 @@ msgid "The database export is only available for MySQL databases. For other data
 msgstr "نقل قاعدة البيانات متاح فقط لقاعدة بياناتي من نوع SQL. لقواعد البيانات الأخرى من فضلك استخدم آلية النسخة الاحتياطية لكي تنشيء نسخة من قاعدة البيانات."
 
 #: application/views/admin/super/adminmenu.php:73
-#, fuzzy
 msgid "Edit label sets"
-msgstr "حرر مجموعة علامات"
-
-#: application/views/admin/super/adminmenu.php:86
-msgid "Participant panel"
-msgstr "لوحة تحكم المشارك"
+msgstr "حرر مجموعة العلامات"
 
 #: application/views/admin/super/adminmenu.php:90
 msgid "Surveys:"
@@ -9986,15 +9944,13 @@ msgstr "الاجوبة الرئيسية"
 
 #: application/views/admin/survey/copySurvey_view.php:43
 #: application/views/admin/survey/importSurvey_view.php:48
-#, fuzzy
 msgid "Not imported label sets"
-msgstr "مجموعات خيارات غير مستوردة"
+msgstr "مجموعات علامات  غير مستوردة"
 
 #: application/views/admin/survey/copySurvey_view.php:43
 #: application/views/admin/survey/importSurvey_view.php:48
-#, fuzzy
 msgid "(Label sets were not imported since you do not have the permission to create new label sets.)"
-msgstr "( لم تستورد مجموعات خيارات إذ لا تملك تصريحا لانشاء مجموعات خيارات.)"
+msgstr "( لم تستورد مجموعات العلامات إذ لا تملك تصريحا لانشاء مجموعات العلامات.)"
 
 #: application/views/admin/survey/copySurvey_view.php:45
 #: application/views/admin/survey/importSurvey_view.php:28
@@ -10046,9 +10002,8 @@ msgid "No participant information lost."
 msgstr "لم تفقد معلومات مشارك."
 
 #: application/views/admin/survey/deactivateSurvey_view.php:13
-#, fuzzy
 msgid "Ability to change of questions, groups and parameters is still limited."
-msgstr "القدرة علي تغير الاسئلة و المجموعات و parameters لا تزال محدودة."
+msgstr "القدرة علي تغير الاسئلة و المجموعات و العدادات لا تزال محدودة."
 
 #: application/views/admin/survey/deactivateSurvey_view.php:14
 msgid "An expired survey is not accessible to participants (they only see a message that the survey has expired)."
@@ -10342,11 +10297,11 @@ msgstr "نوع "
 
 #: application/views/admin/survey/showSyntaxErrors_view.php:12
 #, fuzzy
-msgid "Source Expression"
+msgid "Source expression"
 msgstr "التعبير المنتظم"
 
 #: application/views/admin/survey/showSyntaxErrors_view.php:13
-msgid "Syntax Highlighted"
+msgid "Syntax highlighted"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_view.php:9
@@ -10398,19 +10353,13 @@ msgstr "اعد الشروط"
 msgid "Currently there are no conditions configured for this survey."
 msgstr "حاليات لا يوجد اي شروط مكونة لهذا الاستبيان."
 
-#: application/views/admin/survey/surveybar_view.php:103
-msgid "Reset Survey Logic"
-msgstr "أعد تنظيم التسلسل المنطقي للاستبيان"
-
 #: application/views/admin/survey/surveybar_view.php:108
-#, fuzzy
-msgid "Show Log of Syntax Errors"
-msgstr "اظهر سجل اخطاء تركيب الجملة."
+msgid "Show log of syntax errors"
+msgstr "اظهر سجل الاخطاء اللغوية ."
 
 #: application/views/admin/survey/surveybar_view.php:112
-#, fuzzy
-msgid "Delete Log of Syntax Errors"
-msgstr "احذف سجل اخطاء تركيب الجملة."
+msgid "Delete log of syntax errors"
+msgstr "احذف سجل الاخطاء اللغوية."
 
 #: application/views/admin/survey/surveybar_view.php:116
 msgid "Display / Export"
@@ -10602,12 +10551,12 @@ msgstr "تلميحات"
 #: application/views/admin/survey/surveySummary_view.php:149
 #: application/views/admin/survey/surveySummary_view.php:154
 #, fuzzy
-msgid "Table Column Usage"
+msgid "Table column usage"
 msgstr "استخدام اعمدة الجدول"
 
 #: application/views/admin/survey/surveySummary_view.php:150
 #, fuzzy
-msgid "Table Size Usage"
+msgid "Table size usage"
 msgstr "استخدام حجم الجدول"
 
 #: application/views/admin/survey/Question/answerOptions_view.php:3
@@ -10632,9 +10581,8 @@ msgstr "انت لا تستطيع ان تمسح اخر اجابة اختياري�
 
 #: application/views/admin/survey/Question/answerOptions_view.php:20
 #: application/views/admin/survey/Question/subQuestion_view.php:7
-#, fuzzy
 msgid "Label set browser"
-msgstr "مجموعات علامات"
+msgstr "متصفح مجموعة العلامة"
 
 #: application/views/admin/survey/Question/answerOptions_view.php:21
 msgid "Quick-add answers"
@@ -10666,15 +10614,13 @@ msgstr "احذف مجموعة علامات"
 
 #: application/views/admin/survey/Question/answerOptions_view.php:146
 #: application/views/admin/survey/Question/subQuestion_view.php:137
-#, fuzzy
 msgid "Save as label set"
-msgstr "احذف مجموعة علامات"
+msgstr "احذف كمجموعة علامات"
 
 #: application/views/admin/survey/Question/answerOptions_view.php:157
 #: application/views/admin/survey/Question/subQuestion_view.php:147
-#, fuzzy
 msgid "Available label sets:"
-msgstr "احذف مجموعة علامات"
+msgstr "مجموعات علامات متاحة:"
 
 #: application/views/admin/survey/Question/answerOptions_view.php:165
 msgid "Enter your answers:"
@@ -10777,14 +10723,12 @@ msgid "At beginning"
 msgstr "بداية"
 
 #: application/views/admin/survey/Question/editQuestion_view.php:203
-#, fuzzy
 msgid "Copy subquestions?"
-msgstr "انسخ السؤال"
+msgstr "انسخ السؤال الفرعي"
 
 #: application/views/admin/survey/Question/editQuestion_view.php:207
-#, fuzzy
 msgid "Copy answer options?"
-msgstr "انسخ الأجوبة؟"
+msgstr "نسخ اختيارات الأجوبة؟"
 
 #: application/views/admin/survey/Question/editQuestion_view.php:211
 msgid "Copy advanced settings?"
@@ -10803,12 +10747,10 @@ msgid "Loading..."
 msgstr "تحمبل..."
 
 #: application/views/admin/survey/Question/editQuestion_view.php:231
-#, fuzzy
 msgid "Add question"
-msgstr "تعديل السؤال"
+msgstr "أضف السؤال"
 
 #: application/views/admin/survey/Question/editQuestion_view.php:244
-#, fuzzy
 msgid "Update question"
 msgstr "حدّث سؤالا"
 
@@ -11045,17 +10987,8 @@ msgid "Add New Question to Group"
 msgstr "أضف سؤالا جديدا للمجموعة"
 
 #: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:122
-msgid "Hide Details of this Group"
+msgid "Hide details of this group"
 msgstr "اخف تفاصيل هذه المجموعة"
-
-#: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:122
-#, fuzzy
-msgid "Hide details of thisgroup"
-msgstr "اخف تفاصيل هذه المجموعة"
-
-#: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:123
-msgid "Show Details of this Group"
-msgstr "اعرض تفاصيل هذه المجموعة"
 
 #: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:123
 msgid "Show details of this group"
@@ -12142,9 +12075,8 @@ msgid "Set global permissions for this user"
 msgstr "حدد الصلاحيات العامة لهذا المستخدم"
 
 #: application/views/admin/user/editusers.php:76
-#, fuzzy
-msgid "Take Ownership"
-msgstr "ياخذ اشتراك"
+msgid "Take ownership"
+msgstr "يشترك"
 
 #: application/views/admin/user/editusers.php:84
 msgid "Set template permissions for this user"
@@ -12165,10 +12097,6 @@ msgstr "إعداداتك الخاصة"
 #: application/views/admin/user/personalsettings.php:29
 msgid "Interface language"
 msgstr "للغة الواجهة"
-
-#: application/views/admin/user/personalsettings.php:32
-msgid "(Autodetect)"
-msgstr "مسح تلقائي"
 
 #: application/views/admin/user/personalsettings.php:41
 msgid "HTML editor mode"
@@ -12207,17 +12135,11 @@ msgid "Set User Rights"
 msgstr "ضع صلاحيات المستخدم"
 
 #: application/views/admin/user/setuserrights.php:30
-msgid "SuperAdministrator"
+msgid "Super-Administrator"
 msgstr "المدير العام"
 
-#: application/views/admin/user/setuserrights.php:31
-#, fuzzy
-msgid "Participant Panel"
-msgstr "لوحة تحكم المشارك"
-
 #: application/views/admin/user/setuserrights.php:34
-#, fuzzy
-msgid "Create Survey"
+msgid "Create survey"
 msgstr "أنشيء استبيانا"
 
 #: application/views/admin/user/setuserrights.php:37
@@ -12225,18 +12147,20 @@ msgid "Configurator"
 msgstr "المعدّ/ المشكّل"
 
 #: application/views/admin/user/setuserrights.php:40
-#, fuzzy
-msgid "Create User"
+msgid "Create user"
 msgstr "سجل مستخدم"
+
+#: application/views/admin/user/setuserrights.php:43
+msgid "Delete user"
+msgstr "امسح مستخدم"
 
 #: application/views/admin/user/setuserrights.php:46
 msgid "Use all/manage templates"
 msgstr "استخدم كل/ تحكم بالقوالب"
 
 #: application/views/admin/user/setuserrights.php:49
-#, fuzzy
-msgid "Manage Labels"
-msgstr "تحكم في العناوين"
+msgid "Manage labels"
+msgstr "تحكم في العلامات"
 
 #: application/views/admin/user/setusertemplates.php:2
 msgid "Edit template permissions"
@@ -12333,7 +12257,8 @@ msgid "Database user"
 msgstr "مستخدم قاعدة البيانات"
 
 #: application/views/installer/dbconfig_view.php:52
-msgid "Your Database server user name. In most cases \"root\" will work."
+#, fuzzy
+msgid "Your database server user name. In most cases \"root\" will work."
 msgstr "اسم مستخدم خادم قاعدة البيانات الخاص بك . في اغلب الاحيان \"root\"  سوف يعمل."
 
 #: application/views/installer/dbconfig_view.php:58
@@ -12342,7 +12267,7 @@ msgstr "كلمة سر قاعدة البيانات"
 
 #: application/views/installer/dbconfig_view.php:59
 #, fuzzy
-msgid "Your Database server password."
+msgid "Your database server password."
 msgstr "كلمة مرور خادم قاعدة البيانات"
 
 #: application/views/installer/dbconfig_view.php:65
@@ -12355,16 +12280,17 @@ msgstr ""
 
 #: application/views/installer/dbsettings_view.php:15
 #, fuzzy
-msgid "LimeSurvey Setup"
+msgid "LimeSurvey setup"
 msgstr " مثبت LimeSurvey."
 
+#: application/views/installer/header_view.php:33
 #: application/views/installer/header_view.php:39
 #, fuzzy
-msgid "LimeSurvey Installer"
+msgid "LimeSurvey installer"
 msgstr "مثبتLimeSurvey"
 
 #: application/views/installer/license_view.php:34
-msgid "I Accept"
+msgid "I accept"
 msgstr ""
 
 #: application/views/installer/optconfig_view.php:21
@@ -12373,7 +12299,7 @@ msgstr "انت تستطيع ان تترك هذه الاعدادات فارغة �
 
 #: application/views/installer/optconfig_view.php:28
 #, fuzzy
-msgid "Admin Login Name"
+msgid "Admin login name"
 msgstr "اسم دخول المدير"
 
 #: application/views/installer/optconfig_view.php:29
@@ -12382,7 +12308,7 @@ msgstr ""
 
 #: application/views/installer/optconfig_view.php:34
 #, fuzzy
-msgid "Admin Login Password"
+msgid "Admin login password"
 msgstr "كلمة سر دخول المدير"
 
 #: application/views/installer/optconfig_view.php:35
@@ -12391,12 +12317,12 @@ msgstr "هذا سيكون كلمة السر الخاصة بالمدير."
 
 #: application/views/installer/optconfig_view.php:40
 #, fuzzy
-msgid "Confirm your Admin Password"
+msgid "Confirm your admin password"
 msgstr "تأكيد كلمة المرور المدير."
 
 #: application/views/installer/optconfig_view.php:45
 #, fuzzy
-msgid "Administrator Name"
+msgid "Administrator name"
 msgstr "اسم المدير:"
 
 #: application/views/installer/optconfig_view.php:46
@@ -12405,17 +12331,12 @@ msgstr ""
 
 #: application/views/installer/optconfig_view.php:51
 #, fuzzy
-msgid "Administrator Email"
+msgid "Administrator email"
 msgstr "البريد الالكتروني للمدير:"
 
 #: application/views/installer/optconfig_view.php:52
 msgid "This is the default email address of the site administrator and used for system messages, contact options and default bounce email."
 msgstr ""
-
-#: application/views/installer/optconfig_view.php:57
-#, fuzzy
-msgid "Site Name"
-msgstr "اسم الموقع"
 
 #: application/views/installer/optconfig_view.php:58
 msgid "This name will appear in the survey list overview and in the administration header."
@@ -12423,7 +12344,7 @@ msgstr "الاسم سوف يظهر في قائمة المرجعة و في اعل
 
 #: application/views/installer/optconfig_view.php:63
 #, fuzzy
-msgid "Default Language"
+msgid "Default language"
 msgstr "اللغة الافتراضية"
 
 #: application/views/installer/optconfig_view.php:64
@@ -12433,11 +12354,6 @@ msgstr "هذه سوف تكون لغتك الافتراضية."
 #: application/views/installer/precheck_view.php:11
 msgid "Found"
 msgstr "وجد "
-
-#: application/views/installer/precheck_view.php:15
-#, fuzzy
-msgid "Not Found"
-msgstr "لم يوجد"
 
 #: application/views/installer/precheck_view.php:20
 msgid "Writable"
@@ -12472,7 +12388,7 @@ msgstr "ملف"
 #: application/views/installer/precheck_view.php:81
 #: application/views/installer/precheck_view.php:86
 #, fuzzy
-msgid "Found & Writable"
+msgid "Found & writable"
 msgstr "موجود و قابل للكتابة"
 
 #: application/views/installer/precheck_view.php:75
@@ -12503,17 +12419,77 @@ msgstr "اوراق المدير"
 
 #: application/views/installer/welcome_view.php:52
 #, fuzzy
-msgid "Start Installation"
+msgid "Start installation"
 msgstr "بداية التنصيب"
 
-#~ msgid "Delete user"
-#~ msgstr "امسح مستخدم"
+#, fuzzy
+#~ msgid "Auto detect"
+#~ msgstr "تم التقاطه تلقائيا"
+
+#~ msgid "Edit Label Set"
+#~ msgstr "حرر مجموعة علامات "
+
+#, fuzzy
+#~ msgid "Drop Down"
+#~ msgstr "القائمة المنسدلة"
+
+#, fuzzy
+#~ msgid "Attribute's to be created"
+#~ msgstr "سمات لتضاف"
+
+#~ msgid "First Name"
+#~ msgstr "الاسم الاول"
+
+#~ msgid "Last Name"
+#~ msgstr "اسم العائلة"
+
+#, fuzzy
+#~ msgid "E-Mail"
+#~ msgstr "البريد الالكتروني"
+
+#~ msgid "---Select One---"
+#~ msgstr "---اختار واحد(ة)---"
+
+#, fuzzy
+#~ msgid "Seperator Used:"
+#~ msgstr "المفرق استخدم:"
+
+#, fuzzy
+#~ msgid "Auto Detected"
+#~ msgstr "تم التقاطه تلقائيا"
+
+#, fuzzy
+#~ msgid "Participants Panel"
+#~ msgstr "لوحة تحكم المشاركين"
+
+#, fuzzy
+#~ msgid "Select One"
+#~ msgstr "اختر جوابا"
+
+#~ msgid "Hide Details of this Group"
+#~ msgstr "اخف تفاصيل هذه المجموعة"
+
+#~ msgid "Show Details of this Group"
+#~ msgstr "اعرض تفاصيل هذه المجموعة"
+
+#, fuzzy
+#~ msgid "Participant Panel"
+#~ msgstr "لوحة تحكم المشارك"
+
+#, fuzzy
+#~ msgid "Administrator Name"
+#~ msgstr "اسم المدير:"
+
+#, fuzzy
+#~ msgid "Site Name"
+#~ msgstr "اسم الموقع"
+
+#, fuzzy
+#~ msgid "Not Found"
+#~ msgstr "لم يوجد"
 
 #~ msgid "This survey has been deleted."
 #~ msgstr "تم حذف هذا الاستبيان."
-
-#~ msgid "Select one..."
-#~ msgstr "اختر واحد(ة) ..."
 
 #~ msgid "Confirm password"
 #~ msgstr "تأكيد كلمة المرور"
@@ -12907,9 +12883,6 @@ msgstr "بداية التنصيب"
 #~ msgid "because"
 #~ msgstr "بسبب"
 
-#~ msgid "All conditions in this survey have been deleted."
-#~ msgstr "حُذفت جميع الشروط في هذا الاستبيان."
-
 #~ msgid "All token entries have been deleted."
 #~ msgstr "حذفت جميع مداخل العلامة."
 
@@ -12951,15 +12924,6 @@ msgstr "بداية التنصيب"
 
 #~ msgid "Upload CSV File"
 #~ msgstr "حمّل ملف CVS"
-
-#~ msgid ""
-#~ "We recommend that before you proceed, you export the entire survey from "
-#~ "the main administration screen."
-#~ msgstr ""
-#~ "نطلب منك قبل التقدم، أن تصدر الاستبيان كاملا من شاشة الإدارة الرئيسية."
-
-#~ msgid "You are about to delete all conditions on this survey's questions"
-#~ msgstr "أنت على وشك أن تحذف جميع الشروط في أسئلة هذا الاستبيان"
 
 #, fuzzy
 #~ msgid "You can't delete a standard template."
