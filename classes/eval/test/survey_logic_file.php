@@ -37,7 +37,7 @@ $surveyList
 <td><select name='surveyMode' id='surveyMode'>
     <option value='question'>Question (One-at-a-time)</option>
     <option value='group'>Group (Group-at-a-time)</option>
-    <option value='survey' selected>Survey (All-in-one)</option>
+    <option value='survey' selected='selected'>Survey (All-in-one)</option>
 </select></td></tr>
 <tr><td>Debug Log Level</td>
 <td>
@@ -46,6 +46,7 @@ Specify which debugging features to use
 <li><input type='checkbox' name='LEM_DEBUG_TIMING' id='LEM_DEBUG_TIMING' value='Y'/>Detailed Timing</li>
 <li><input type='checkbox' name='LEM_DEBUG_VALIDATION_SUMMARY' id='LEM_DEBUG_VALIDATION_SUMMARY' value='Y'/>Validation Summary</li>
 <li><input type='checkbox' name='LEM_DEBUG_VALIDATION_DETAIL' id='LEM_DEBUG_VALIDATION_DETAIL' value='Y'/>Validation Detail (Validation Summary must also be checked to see detail)</li>
+<li><input type='checkbox' name='LEM_PRETTY_PRINT_ALL_SYNTAX' id='LEM_PRETTY_PRINT_ALL_SYNTAX' value='Y' checked="checked"/>Pretty Print Syntax</li>
 <li><input type='checkbox' name='LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB' id='LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB' value='Y'/>Log Syntax Errors to Database</li>
 <li><input type='checkbox' name='LEM_DEBUG_TRANSLATION_DETAIL' id='LEM_DEBUG_TRANSLATION_DETAIL' value='Y'/>Translation Detail</li>
 </ul></td>
@@ -66,7 +67,8 @@ EOD;
                         ((isset($_POST['LEM_DEBUG_VALIDATION_SUMMARY']) && $_POST['LEM_DEBUG_VALIDATION_SUMMARY'] == 'Y') ? LEM_DEBUG_VALIDATION_SUMMARY : 0) +
                         ((isset($_POST['LEM_DEBUG_VALIDATION_DETAIL']) && $_POST['LEM_DEBUG_VALIDATION_DETAIL'] == 'Y') ? LEM_DEBUG_VALIDATION_DETAIL : 0) +
                         ((isset($_POST['LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB']) && $_POST['LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB'] == 'Y') ? LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB : 0) +
-                        ((isset($_POST['LEM_DEBUG_TRANSLATION_DETAIL']) && $_POST['LEM_DEBUG_TRANSLATION_DETAIL'] == 'Y') ? LEM_DEBUG_TRANSLATION_DETAIL : 0)
+                        ((isset($_POST['LEM_DEBUG_TRANSLATION_DETAIL']) && $_POST['LEM_DEBUG_TRANSLATION_DETAIL'] == 'Y') ? LEM_DEBUG_TRANSLATION_DETAIL : 0) +
+                        ((isset($_POST['LEM_PRETTY_PRINT_ALL_SYNTAX']) && $_POST['LEM_PRETTY_PRINT_ALL_SYNTAX'] == 'Y') ? LEM_PRETTY_PRINT_ALL_SYNTAX : 0)
                         );
 
                 $language = NULL;
@@ -110,7 +112,8 @@ background-color:lightyellow;
     <H3>Logic File for Survey #$surveyid</H3>
 EOD;
 
-                print LimeExpressionManager::ShowSurveyLogicFile($surveyid, $language, $gid, $qid,$LEMdebugLevel);
+                $result = LimeExpressionManager::ShowSurveyLogicFile($surveyid, $language, $gid, $qid,$LEMdebugLevel,$assessments);
+                print $result['html'];
 
                 print <<< EOD
 </body>

@@ -2530,10 +2530,15 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
             $abrows = getSubQuestions($surveyid,$arow['qid'],$s_lang);
             //Now first process scale=1
             $answerset=array();
+            $answerList = array();
             foreach ($abrows as $key=>$abrow)
             {
                 if($abrow['scale_id']==1) {
                     $answerset[]=$abrow;
+                    $answerList[] = array(
+                        'code'=>$abrow['title'],
+                        'answer'=>$abrow['question'],
+                    );
                     unset($abrows[$key]);
                 }
             }
@@ -2565,6 +2570,7 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
                         $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                         $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
                         $fieldmap[$fieldname]['preg']=$arow['preg'];
+                        $fieldmap[$fieldname]['answerList']=$answerList;
                     }
                 }
             }
