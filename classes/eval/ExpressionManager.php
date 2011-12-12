@@ -3,38 +3,39 @@
  * Description of ExpressionManager
  * (1) Does safe evaluation of PHP expressions.  Only registered Functions, and known Variables are allowed.
  *   (a) Functions include any math, string processing, conditional, formatting, etc. functions
- *   (b) Variables are typically the question name (question.title) - they can be read/write
- * (2) This class can replace LimeSurvey's current process of resolving strings that contain LimeReplacementFields
+ * (2) This class replaces LimeSurvey's <= 1.91+  process of resolving strings that contain LimeReplacementFields
  *   (a) String is split by expressions (by curly braces, but safely supporting strings and escaped curly braces)
  *   (b) Expressions (things surrounded by curly braces) are evaluated - thereby doing LimeReplacementField substitution and/or more complex calculations
  *   (c) Non-expressions are left intact
  *   (d) The array of stringParts are re-joined to create the desired final string.
+ * (3) The core of Expression Manager is a Recursive Descent Parser (RDP), based off of one build via JavaCC by TMSWhite in 1999.
+ *   (a) Functions that start with RDP_ should not be touched unless you really understand compiler design.
  *
  * @author Thomas M. White (TMSWhite)
  */
 
 class ExpressionManager {
     // These are the allowable suffixes for variables - each represents an attribute of a variable.
-    private static $regex_var_attr = 'code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value';
+    private static $RDP_regex_var_attr = 'code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value';
 
     // These three variables are effectively static once constructed
-    private $sExpressionRegex;
-    private $asTokenType;
-    private $sTokenizerRegex;
-    private $asCategorizeTokensRegex;
-    private $amValidFunctions; // names and # params of valid functions
-    private $amVars;    // names and values of valid variables
+    private $RDP_ExpressionRegex;
+    private $RDP_TokenType;
+    private $RDP_TokenizerRegex;
+    private $RDP_CategorizeTokensRegex;
+    private $RDP_ValidFunctions; // names and # params of valid functions
+    private $RDP_Vars;    // names and values of valid variables
 
     // Thes variables are used while  processing the equation
-    private $expr;  // the source expression
-    private $tokens;    // the list of generated tokens
-    private $count; // total number of $tokens
-    private $pos;   // position within the $token array while processing equation
-    private $errs;    // array of syntax errors
-    private $onlyparse;
-    private $stack; // stack of intermediate results
-    private $result;    // final result of evaluating the expression;
-    private $evalStatus;    // true if $result is a valid result, and  there are no serious errors
+    private $RDP_expr;  // the source expression
+    private $RDP_tokens;    // the list of generated tokens
+    private $RDP_count; // total number of $RDP_tokens
+    private $RDP_pos;   // position within the $token array while processing equation
+    private $RDP_errs;    // array of syntax errors
+    private $RDP_onlyparse;
+    private $RDP_stack; // stack of intermediate results
+    private $RDP_result;    // final result of evaluating the expression;
+    private $RDP_evalStatus;    // true if $RDP_result is a valid result, and  there are no serious errors
     private $varsUsed;  // list of variables referenced in the equation
 
     // These  variables are only used by sProcessStringContainingExpressions
@@ -56,48 +57,49 @@ class ExpressionManager {
     function __construct()
     {
         // List of token-matching regular expressions
-        $regex_dq_string = '(?<!\\\\)".*?(?<!\\\\)"';
-        $regex_sq_string = '(?<!\\\\)\'.*?(?<!\\\\)\'';
-        $regex_whitespace = '\s+';
-        $regex_lparen = '\(';
-        $regex_rparen = '\)';
-        $regex_comma = ',';
-        $regex_not = '!';
-        $regex_inc_dec = '\+\+|--';
-        $regex_binary = '[+*/-]';
-        $regex_compare = '<=|<|>=|>|==|!=|\ble\b|\blt\b|\bge\b|\bgt\b|\beq\b|\bne\b';
-        $regex_assign = '=|\+=|-=|\*=|/=';
-        $regex_sgqa = '(?:INSERTANS:)?[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[01]?';
-        $regex_word = '(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:' . ExpressionManager::$regex_var_attr . '))?';
-        $regex_number = '[0-9]+\.?[0-9]*|\.[0-9]+';
-        $regex_andor = '\band\b|\bor\b|&&|\|\|';
+        // Note, this is effectively a Lexer using Regular Expressions.  Don't change this unless you understand compiler design.
+        $RDP_regex_dq_string = '(?<!\\\\)".*?(?<!\\\\)"';
+        $RDP_regex_sq_string = '(?<!\\\\)\'.*?(?<!\\\\)\'';
+        $RDP_regex_whitespace = '\s+';
+        $RDP_regex_lparen = '\(';
+        $RDP_regex_rparen = '\)';
+        $RDP_regex_comma = ',';
+        $RDP_regex_not = '!';
+        $RDP_regex_inc_dec = '\+\+|--';
+        $RDP_regex_binary = '[+*/-]';
+        $RDP_regex_compare = '<=|<|>=|>|==|!=|\ble\b|\blt\b|\bge\b|\bgt\b|\beq\b|\bne\b';
+        $RDP_regex_assign = '=|\+=|-=|\*=|/=';
+        $RDP_regex_sgqa = '(?:INSERTANS:)?[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[01]?';
+        $RDP_regex_word = '(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:' . ExpressionManager::$RDP_regex_var_attr . '))?';
+        $RDP_regex_number = '[0-9]+\.?[0-9]*|\.[0-9]+';
+        $RDP_regex_andor = '\band\b|\bor\b|&&|\|\|';
 
-        $this->sExpressionRegex = '#((?<!\\\\)' . '{' . '(?!\s*\n\|\s*\r\|\s*\r\n|\s+)' .
-//                '(' . $regex_dq_string . '|' . $regex_sq_string . '|.*?)*' .    // This line lets you have braces embedded in strings - like RegExp - but it crashes the compiler when there are many tokens
+        $this->RDP_ExpressionRegex = '#((?<!\\\\)' . '{' . '(?!\s*\n\|\s*\r\|\s*\r\n|\s+)' .
+//                '(' . $RDP_regex_dq_string . '|' . $RDP_regex_sq_string . '|.*?)*' .    // This line lets you have braces embedded in strings - like RegExp - but it crashes the compiler when there are many tokens
                 '.*?' .
                 '(?<!\\\\)(?<!\n|\r|\r\n|\s)' . '}' . ')#';
 
 
-        // asTokenRegex and asTokenType must be kept in sync  (same number and order)
-        $asTokenRegex = array(
-            $regex_dq_string,
-            $regex_sq_string,
-            $regex_whitespace,
-            $regex_lparen,
-            $regex_rparen,
-            $regex_comma,
-            $regex_andor,
-            $regex_compare,
-            $regex_sgqa,
-            $regex_word,
-            $regex_number,
-            $regex_not,
-            $regex_inc_dec,
-            $regex_assign,
-            $regex_binary,
+        // asTokenRegex and RDP_TokenType must be kept in sync  (same number and order)
+    $RDP_TokenRegex = array(
+            $RDP_regex_dq_string,
+            $RDP_regex_sq_string,
+            $RDP_regex_whitespace,
+            $RDP_regex_lparen,
+            $RDP_regex_rparen,
+            $RDP_regex_comma,
+            $RDP_regex_andor,
+            $RDP_regex_compare,
+            $RDP_regex_sgqa,
+            $RDP_regex_word,
+            $RDP_regex_number,
+            $RDP_regex_not,
+            $RDP_regex_inc_dec,
+            $RDP_regex_assign,
+            $RDP_regex_binary,
             );
 
-        $this->asTokenType = array(
+        $this->RDP_TokenType = array(
             'DQ_STRING',
             'SQ_STRING',
             'SPACE',
@@ -115,20 +117,20 @@ class ExpressionManager {
             'BINARYOP',
            );
 
-        // $sTokenizerRegex - a single regex used to split and equation into tokens
-        $this->sTokenizerRegex = '#(' . implode('|',$asTokenRegex) . ')#i';
+        // $RDP_TokenizerRegex - a single regex used to split and equation into tokens
+        $this->RDP_TokenizerRegex = '#(' . implode('|',$RDP_TokenRegex) . ')#i';
 
-        // $asCategorizeTokensRegex - an array of patterns so can categorize the type of token found - would be nice if could get this from preg_split
+        // $RDP_CategorizeTokensRegex - an array of patterns so can categorize the type of token found - would be nice if could get this from preg_split
         // Adding ability to capture 'OTHER' type, which indicates an error - unsupported syntax element
-        $this->asCategorizeTokensRegex = preg_replace("#^(.*)$#","#^$1$#i",$asTokenRegex);
-        $this->asCategorizeTokensRegex[] = '/.+/';
-        $this->asTokenType[] = 'OTHER';
+        $this->RDP_CategorizeTokensRegex = preg_replace("#^(.*)$#","#^$1$#i",$RDP_TokenRegex);
+        $this->RDP_CategorizeTokensRegex[] = '/.+/';
+        $this->RDP_TokenType[] = 'OTHER';
 
         // Each allowed function is a mapping from local name to external name + number of arguments
         // Functions can have a list of serveral allowable #s of arguments.
         // If the value is -1, the function must have a least one argument but can have an unlimited number of them
         // -2 means that at least one argument is required.  -3 means at least two arguments are required, etc.
-        $this->amValidFunctions = array(
+        $this->RDP_ValidFunctions = array(
 'abs' => array('abs', 'Math.abs', $this->gT('Absolute value'), 'number abs(number)', 'http://www.php.net/manual/en/function.checkdate.php', 1),
 'acos' => array('acos', 'Math.acos', $this->gT('Arc cosine'), 'number acos(number)', 'http://www.php.net/manual/en/function.acos.php', 1),
 'addslashes' => array('addslashes', $this->gT('addslashes'), 'Quote string with slashes', 'string addslashes(string)', 'http://www.php.net/manual/en/function.addslashes.php', 1),
@@ -203,7 +205,7 @@ class ExpressionManager {
 'ucwords' => array('ucwords', 'ucwords', $this->gT('Uppercase the first character of each word in a string'), 'string ucwords(string)', 'http://www.php.net/manual/en/function.ucwords.php', 1),
         );
 
-        $this->amVars = array();
+        $this->RDP_Vars = array();
     }
 
     /**
@@ -212,31 +214,31 @@ class ExpressionManager {
      * @param <type> $errMsg
      * @param <type> $token
      */
-    private function AddError($errMsg, $token)
+    private function RDP_AddError($errMsg, $token)
     {
-        $this->errs[] = array($this->gT($errMsg), $token);
+        $this->RDP_errs[] = array($this->gT($errMsg), $token);
     }
 
     /**
-     * EvalBinary() computes binary expressions, such as (a or b), (c * d), popping  the top two entries off the
+     * RDP_EvaluateBinary() computes binary expressions, such as (a or b), (c * d), popping  the top two entries off the
      * stack and pushing the result back onto the stack.
      *
      * @param array $token
      * @return boolean - false if there is any error, else true
      */
 
-    private function EvalBinary(array $token)
+    private function RDP_EvaluateBinary(array $token)
     {
-        if (count($this->stack) < 2)
+        if (count($this->RDP_stack) < 2)
         {
-            $this->AddError("Unable to evaluate binary operator - fewer than 2 entries on stack", $token);
+            $this->RDP_AddError("Unable to evaluate binary operator - fewer than 2 entries on stack", $token);
             return false;
         }
-        $arg2 = $this->StackPop();
-        $arg1 = $this->StackPop();
+        $arg2 = $this->RDP_StackPop();
+        $arg1 = $this->RDP_StackPop();
         if (is_null($arg1) or is_null($arg2))
         {
-            $this->AddError("Invalid value(s) on the stack", $token);
+            $this->RDP_AddError("Invalid value(s) on the stack", $token);
             return false;
         }
         // TODO:  try to determine datatype?
@@ -287,7 +289,7 @@ class ExpressionManager {
                 $result = array(($arg1[0] / $arg2[0]),$token[1],'NUMBER');
                 break;
         }
-        $this->StackPush($result);
+        $this->RDP_StackPush($result);
         return true;
     }
 
@@ -297,17 +299,17 @@ class ExpressionManager {
      * @return boolean - true if success, false if any error occurred
      */
 
-    private function EvalUnary(array $token)
+    private function RDP_EvaluateUnary(array $token)
     {
-        if (count($this->stack) < 1)
+        if (count($this->RDP_stack) < 1)
         {
-            $this->AddError("Unable to evaluate unary operator - no entries on stack", $token);
+            $this->RDP_AddError("Unable to evaluate unary operator - no entries on stack", $token);
             return false;
         }
-        $arg1 = $this->StackPop();
+        $arg1 = $this->RDP_StackPop();
         if (is_null($arg1))
         {
-            $this->AddError("Invalid value(s) on the stack", $token);
+            $this->RDP_AddError("Invalid value(s) on the stack", $token);
             return false;
         }
         // TODO:  try to determine datatype?
@@ -323,7 +325,7 @@ class ExpressionManager {
                 $result = array((!$arg1[0]),$token[1],'NUMBER');
                 break;
         }
-        $this->StackPush($result);
+        $this->RDP_StackPush($result);
         return true;
     }
 
@@ -335,49 +337,49 @@ class ExpressionManager {
      * @return boolean - true if success, false if any error occurred
      */
 
-    public function Evaluate($expr, $onlyparse=false)
+    public function RDP_Evaluate($expr, $onlyparse=false)
     {
-        $this->expr = $expr;
-        $this->tokens = $this->amTokenize($expr);
-        $this->count = count($this->tokens);
-        $this->pos = -1; // starting position within array (first act will be to increment it)
-        $this->errs = array();
-        $this->onlyparse = $onlyparse;
-        $this->stack = array();
-        $this->evalStatus = false;
-        $this->result = NULL;
+        $this->RDP_expr = $expr;
+        $this->RDP_tokens = $this->RDP_Tokenize($expr);
+        $this->RDP_count = count($this->RDP_tokens);
+        $this->RDP_pos = -1; // starting position within array (first act will be to increment it)
+        $this->RDP_errs = array();
+        $this->RDP_onlyparse = $onlyparse;
+        $this->RDP_stack = array();
+        $this->RDP_evalStatus = false;
+        $this->RDP_result = NULL;
         $this->varsUsed = array();
         $this->jsExpression = NULL;
 
         if ($this->HasSyntaxErrors()) {
             return false;
         }
-        elseif ($this->EvaluateExpressions())
+        elseif ($this->RDP_EvaluateExpressions())
         {
-            if ($this->pos < $this->count)
+            if ($this->RDP_pos < $this->RDP_count)
             {
-                $this->AddError("Extra tokens found", $this->tokens[$this->pos]);
+                $this->RDP_AddError("Extra tokens found", $this->RDP_tokens[$this->RDP_pos]);
                 return false;
             }
-            $this->result = $this->StackPop();
-            if (is_null($this->result))
+            $this->RDP_result = $this->RDP_StackPop();
+            if (is_null($this->RDP_result))
             {
                 return false;
             }
-            if (count($this->stack) == 0)
+            if (count($this->RDP_stack) == 0)
             {
-                $this->evalStatus = true;
+                $this->RDP_evalStatus = true;
                 return true;
             }
             else
             {
-                $this-AddError("Unbalanced equation - values left on stack",NULL);
+                $this-RDP_AddError("Unbalanced equation - values left on stack",NULL);
                 return false;
             }
         }
         else
         {
-            $this->AddError("Not a valid expression",NULL);
+            $this->RDP_AddError("Not a valid expression",NULL);
             return false;
         }
     }
@@ -387,24 +389,24 @@ class ExpressionManager {
      * Process "a op b" where op in (+,-,concatenate)
      * @return boolean - true if success, false if any error occurred
      */
-    private function EvaluateAdditiveExpression()
+    private function RDP_EvaluateAdditiveExpression()
     {
-        if (!$this->EvaluateMultiplicativeExpression())
+        if (!$this->RDP_EvaluateMultiplicativeExpression())
         {
             return false;
         }
-        while (($this->pos + 1) < $this->count)
+        while (($this->RDP_pos + 1) < $this->RDP_count)
         {
-            $token = $this->tokens[++$this->pos];
+            $token = $this->RDP_tokens[++$this->RDP_pos];
             if ($token[2] == 'BINARYOP')
             {
                 switch ($token[0])
                 {
                     case '+':
                     case '-';
-                        if ($this->EvaluateMultiplicativeExpression())
+                        if ($this->RDP_EvaluateMultiplicativeExpression())
                         {
-                            if (!$this->EvalBinary($token))
+                            if (!$this->RDP_EvaluateBinary($token))
                             {
                                 return false;
                             }
@@ -416,13 +418,13 @@ class ExpressionManager {
                         }
                         break;
                     default:
-                        --$this->pos;
+                        --$this->RDP_pos;
                         return true;
                 }
             }
             else
             {
-                --$this->pos;
+                --$this->RDP_pos;
                 return true;
             }
         }
@@ -434,31 +436,31 @@ class ExpressionManager {
      * @return boolean - true if success, false if any error occurred
      */
 
-    private function EvaluateConstantVarOrFunction()
+    private function RDP_EvaluateConstantVarOrFunction()
     {
-        if ($this->pos + 1 >= $this->count)
+        if ($this->RDP_pos + 1 >= $this->RDP_count)
         {
-             $this->AddError("Poorly terminated expression - expected a constant or variable", NULL);
+             $this->RDP_AddError("Poorly terminated expression - expected a constant or variable", NULL);
              return false;
         }
-        $token = $this->tokens[++$this->pos];
+        $token = $this->RDP_tokens[++$this->RDP_pos];
         switch ($token[2])
         {
             case 'NUMBER':
             case 'DQ_STRING':
             case 'SQ_STRING':
-                $this->StackPush($token);
+                $this->RDP_StackPush($token);
                 return true;
                 break;
             case 'WORD':
             case 'SGQA':
-                if (($this->pos + 1) < $this->count and $this->tokens[($this->pos + 1)][2] == 'LP')
+                if (($this->RDP_pos + 1) < $this->RDP_count and $this->RDP_tokens[($this->RDP_pos + 1)][2] == 'LP')
                 {
-                    return $this->EvaluateFunction();
+                    return $this->RDP_EvaluateFunction();
                 }
                 else
                 {
-                    if ($this->isValidVariable($token[0]))
+                    if ($this->RDP_isValidVariable($token[0]))
                     {
                         $this->varsUsed[] = $token[0];  // add this variable to list of those used in this equation
                         $relStatus = $this->GetVarAttribute($token[0],'relevanceStatus',1);
@@ -470,27 +472,27 @@ class ExpressionManager {
                         {
                             $result = array(NULL,$token[1],'NUMBER');   // was 0 instead of NULL
                         }
-                        $this->StackPush($result);
+                        $this->RDP_StackPush($result);
 
                         // TODO - currently, will try to process value anyway, but want to show a potential error.  Should it be a definitive error (e.g. prevent this behavior)?
                         $groupSeq = $this->GetVarAttribute($token[0],'gseq',-1);
                         if (($groupSeq != -1 && $this->groupSeq != -1) && ($groupSeq > $this->groupSeq))
                         {
-                            $this->AddError("This variable is not declared until a later page",$token);
+                            $this->RDP_AddError("This variable is not declared until a later page",$token);
                             return false;
                         }
                         return true;
                     }
                     else
                     {
-                        $this->AddError("Undefined variable", $token);
+                        $this->RDP_AddError("Undefined variable", $token);
                         return false;
                     }
                 }
                 break;
             case 'COMMA':
-                --$this->pos;
-                $this->AddError("Should never  get to this line?",$token);
+                --$this->RDP_pos;
+                $this->RDP_AddError("Should never  get to this line?",$token);
                 return false;
             default:
                 return false;
@@ -502,24 +504,24 @@ class ExpressionManager {
      * Process "a == b", "a eq b", "a != b", "a ne b"
      * @return boolean - true if success, false if any error occurred
      */
-    private function EvaluateEqualityExpression()
+    private function RDP_EvaluateEqualityExpression()
     {
-        if (!$this->EvaluateRelationExpression())
+        if (!$this->RDP_EvaluateRelationExpression())
         {
             return false;
         }
-        while (($this->pos + 1) < $this->count)
+        while (($this->RDP_pos + 1) < $this->RDP_count)
         {
-            $token = $this->tokens[++$this->pos];
+            $token = $this->RDP_tokens[++$this->RDP_pos];
             switch (strtolower($token[0]))
             {
                 case '==':
                 case 'eq':
                 case '!=':
                 case 'ne':
-                    if ($this->EvaluateRelationExpression())
+                    if ($this->RDP_EvaluateRelationExpression())
                     {
-                        if (!$this->EvalBinary($token))
+                        if (!$this->RDP_EvaluateBinary($token))
                         {
                             return false;
                         }
@@ -531,7 +533,7 @@ class ExpressionManager {
                     }
                     break;
                 default:
-                    --$this->pos;
+                    --$this->RDP_pos;
                     return true;
             }
         }
@@ -543,29 +545,29 @@ class ExpressionManager {
      * @return boolean - true if success, false if any error occurred
      */
 
-    private function EvaluateExpression()
+    private function RDP_EvaluateExpression()
     {
-        if ($this->pos + 2 < $this->count)
+        if ($this->RDP_pos + 2 < $this->RDP_count)
         {
-            $token1 = $this->tokens[++$this->pos];
-            $token2 = $this->tokens[++$this->pos];
+            $token1 = $this->RDP_tokens[++$this->RDP_pos];
+            $token2 = $this->RDP_tokens[++$this->RDP_pos];
             if ($token2[2] == 'ASSIGN')
             {
-                if ($this->isValidVariable($token1[0]))
+                if ($this->RDP_isValidVariable($token1[0]))
                 {
                     $this->varsUsed[] = $token1[0];  // add this variable to list of those used in this equation
-                    if ($this->isWritableVariable($token1[0]))
+                    if ($this->RDP_isWritableVariable($token1[0]))
                     {
-                        $evalStatus = $this->EvaluateLogicalOrExpression();
+                        $evalStatus = $this->RDP_EvaluateLogicalOrExpression();
                         if ($evalStatus)
                         {
-                            $result = $this->StackPop();
+                            $result = $this->RDP_StackPop();
                             if (!is_null($result))
                             {
                                 $newResult = $token2;
                                 $newResult[2] = 'NUMBER';
-                                $newResult[0] = $this->setVariableValue($token2[0], $token1[0], $result[0]);
-                                $this->StackPush($newResult);
+                                $newResult[0] = $this->RDP_SetVariableValue($token2[0], $token1[0], $result[0]);
+                                $this->RDP_StackPush($newResult);
                             }
                             else
                             {
@@ -576,26 +578,26 @@ class ExpressionManager {
                     }
                     else
                     {
-                        $this->AddError('The value of this variable can not be changed', $token1);
+                        $this->RDP_AddError('The value of this variable can not be changed', $token1);
                         return false;
                     }
                 }
                 else
                 {
-                    $this->AddError('Only variables can be assigned values', $token1);
+                    $this->RDP_AddError('Only variables can be assigned values', $token1);
                     return false;
                 }
             }
             else
             {
                 // not an assignment expression, so try something else
-                $this->pos -= 2;
-                return $this->EvaluateLogicalOrExpression();
+                $this->RDP_pos -= 2;
+                return $this->RDP_EvaluateLogicalOrExpression();
             }
         }
         else
         {
-            return $this->EvaluateLogicalOrExpression();
+            return $this->RDP_EvaluateLogicalOrExpression();
         }
     }
 
@@ -604,31 +606,31 @@ class ExpressionManager {
      * @return boolean - true if success, false if any error occurred
      */
 
-    private function EvaluateExpressions()
+    private function RDP_EvaluateExpressions()
     {
-        $evalStatus = $this->EvaluateExpression();
+        $evalStatus = $this->RDP_EvaluateExpression();
         if (!$evalStatus)
         {
             return false;
         }
 
-        while (++$this->pos < $this->count) {
-            $token = $this->tokens[$this->pos];
+        while (++$this->RDP_pos < $this->RDP_count) {
+            $token = $this->RDP_tokens[$this->RDP_pos];
             if ($token[2] == 'RP')
             {
                 return true;    // presumbably the end of an expression
             }
             elseif ($token[2] == 'COMMA')
             {
-                if ($this->EvaluateExpression())
+                if ($this->RDP_EvaluateExpression())
                 {
-                    $secondResult = $this->StackPop();
-                    $firstResult = $this->StackPop();
+                    $secondResult = $this->RDP_StackPop();
+                    $firstResult = $this->RDP_StackPop();
                     if (is_null($firstResult))
                     {
                         return false;
                     }
-                    $this->StackPush($secondResult);
+                    $this->RDP_StackPush($secondResult);
                     $evalStatus = true;
                 }
                 else
@@ -638,15 +640,15 @@ class ExpressionManager {
             }
             else
             {
-                $this->AddError("Expected expressions separated by commas",$token);
+                $this->RDP_AddError("Expected expressions separated by commas",$token);
                 $evalStatus = false;
                 break;
             }
         }
-        while (++$this->pos < $this->count)
+        while (++$this->RDP_pos < $this->RDP_count)
         {
-            $token = $this->tokens[$this->pos];
-            $this->AddError("Extra token found after Expressions",$token);
+            $token = $this->RDP_tokens[$this->RDP_pos];
+            $this->RDP_AddError("Extra token found after Expressions",$token);
             $evalStatus = false;
         }
         return $evalStatus;
@@ -656,33 +658,33 @@ class ExpressionManager {
      * Process a function call
      * @return boolean - true if success, false if any error occurred
      */
-    private function EvaluateFunction()
+    private function RDP_EvaluateFunction()
     {
-        $funcNameToken = $this->tokens[$this->pos]; // note that don't need to increment position for functions
+        $funcNameToken = $this->RDP_tokens[$this->RDP_pos]; // note that don't need to increment position for functions
         $funcName = $funcNameToken[0];
-        if (!$this->isValidFunction($funcName))
+        if (!$this->RDP_isValidFunction($funcName))
         {
-            $this->AddError("Undefined Function", $funcNameToken);
+            $this->RDP_AddError("Undefined Function", $funcNameToken);
             return false;
         }
-        $token2 = $this->tokens[++$this->pos];
+        $token2 = $this->RDP_tokens[++$this->RDP_pos];
         if ($token2[2] != 'LP')
         {
-            $this->AddError("Expected left parentheses after function name", $token);
+            $this->RDP_AddError("Expected left parentheses after function name", $token);
         }
         $params = array();  // will just store array of values, not tokens
-        while ($this->pos + 1 < $this->count)
+        while ($this->RDP_pos + 1 < $this->RDP_count)
         {
-            $token3 = $this->tokens[$this->pos + 1];
+            $token3 = $this->RDP_tokens[$this->RDP_pos + 1];
             if (count($params) > 0)
             {
                 // should have COMMA or RP
                 if ($token3[2] == 'COMMA')
                 {
-                    ++$this->pos;   // consume the token so can process next clause
-                    if ($this->EvaluateExpression())
+                    ++$this->RDP_pos;   // consume the token so can process next clause
+                    if ($this->RDP_EvaluateExpression())
                     {
-                        $value = $this->StackPop();
+                        $value = $this->RDP_StackPop();
                         if (is_null($value))
                         {
                             return false;
@@ -692,21 +694,21 @@ class ExpressionManager {
                     }
                     else
                     {
-                        $this->AddError("Extra comma found in function", $token3);
+                        $this->RDP_AddError("Extra comma found in function", $token3);
                         return false;
                     }
                 }
             }
             if ($token3[2] == 'RP')
             {
-                ++$this->pos;   // consume the token so can process next clause
-                return $this->RunFunction($funcNameToken,$params);
+                ++$this->RDP_pos;   // consume the token so can process next clause
+                return $this->RDP_RunFunction($funcNameToken,$params);
             }
             else
             {
-                if ($this->EvaluateExpression())
+                if ($this->RDP_EvaluateExpression())
                 {
-                    $value = $this->StackPop();
+                    $value = $this->RDP_StackPop();
                     if (is_null($value))
                     {
                         return false;
@@ -727,22 +729,22 @@ class ExpressionManager {
      * @return boolean - true if success, false if any error occurred
      */
 
-    private function EvaluateLogicalAndExpression()
+    private function RDP_EvaluateLogicalAndExpression()
     {
-        if (!$this->EvaluateEqualityExpression())
+        if (!$this->RDP_EvaluateEqualityExpression())
         {
             return false;
         }
-        while (($this->pos + 1) < $this->count)
+        while (($this->RDP_pos + 1) < $this->RDP_count)
         {
-            $token = $this->tokens[++$this->pos];
+            $token = $this->RDP_tokens[++$this->RDP_pos];
             switch (strtolower($token[0]))
             {
                 case '&&':
                 case 'and':
-                    if ($this->EvaluateEqualityExpression())
+                    if ($this->RDP_EvaluateEqualityExpression())
                     {
-                        if (!$this->EvalBinary($token))
+                        if (!$this->RDP_EvaluateBinary($token))
                         {
                             return false;
                         }
@@ -754,7 +756,7 @@ class ExpressionManager {
                     }
                     break;
                 default:
-                    --$this->pos;
+                    --$this->RDP_pos;
                     return true;
             }
         }
@@ -765,22 +767,22 @@ class ExpressionManager {
      * Process "a || b" or "a or b"
      * @return boolean - true if success, false if any error occurred
      */
-    private function EvaluateLogicalOrExpression()
+    private function RDP_EvaluateLogicalOrExpression()
     {
-        if (!$this->EvaluateLogicalAndExpression())
+        if (!$this->RDP_EvaluateLogicalAndExpression())
         {
             return false;
         }
-        while (($this->pos + 1) < $this->count)
+        while (($this->RDP_pos + 1) < $this->RDP_count)
         {
-            $token = $this->tokens[++$this->pos];
+            $token = $this->RDP_tokens[++$this->RDP_pos];
             switch (strtolower($token[0]))
             {
                 case '||':
                 case 'or':
-                    if ($this->EvaluateLogicalAndExpression())
+                    if ($this->RDP_EvaluateLogicalAndExpression())
                     {
-                        if (!$this->EvalBinary($token))
+                        if (!$this->RDP_EvaluateBinary($token))
                         {
                             return false;
                         }
@@ -794,7 +796,7 @@ class ExpressionManager {
                     break;
                 default:
                     // no more expressions being  ORed together, so continue parsing
-                    --$this->pos;
+                    --$this->RDP_pos;
                     return true;
             }
         }
@@ -807,24 +809,24 @@ class ExpressionManager {
      * @return boolean - true if success, false if any error occurred
      */
 
-    private function EvaluateMultiplicativeExpression()
+    private function RDP_EvaluateMultiplicativeExpression()
     {
-        if (!$this->EvaluateUnaryExpression())
+        if (!$this->RDP_EvaluateUnaryExpression())
         {
             return  false;
         }
-        while (($this->pos + 1) < $this->count)
+        while (($this->RDP_pos + 1) < $this->RDP_count)
         {
-            $token = $this->tokens[++$this->pos];
+            $token = $this->RDP_tokens[++$this->RDP_pos];
             if ($token[2] == 'BINARYOP')
             {
                 switch ($token[0])
                 {
                     case '*':
                     case '/';
-                        if ($this->EvaluateUnaryExpression())
+                        if ($this->RDP_EvaluateUnaryExpression())
                         {
-                            if (!$this->EvalBinary($token))
+                            if (!$this->RDP_EvaluateBinary($token))
                             {
                                 return false;
                             }
@@ -838,13 +840,13 @@ class ExpressionManager {
                         break;
                         break;
                     default:
-                        --$this->pos;
+                        --$this->RDP_pos;
                         return true;
                 }
             }
             else
             {
-                --$this->pos;
+                --$this->RDP_pos;
                 return true;
             }
         }
@@ -856,34 +858,34 @@ class ExpressionManager {
      * @return boolean - true if success, false if any error occurred
      */
 
-    private function EvaluatePrimaryExpression()
+    private function RDP_EvaluatePrimaryExpression()
     {
-        if (($this->pos + 1) >= $this->count) {
-            $this->AddError("Poorly terminated expression - expected a constant or variable", NULL);
+        if (($this->RDP_pos + 1) >= $this->RDP_count) {
+            $this->RDP_AddError("Poorly terminated expression - expected a constant or variable", NULL);
             return false;
         }
-        $token = $this->tokens[++$this->pos];
+        $token = $this->RDP_tokens[++$this->RDP_pos];
         if ($token[2] == 'LP')
         {
-            if (!$this->EvaluateExpressions())
+            if (!$this->RDP_EvaluateExpressions())
             {
                 return false;
             }
-            $token = $this->tokens[$this->pos];
+            $token = $this->RDP_tokens[$this->RDP_pos];
             if ($token[2] == 'RP')
             {
                 return true;
             }
             else
             {
-                $this->AddError("Expected right parentheses", $token);
+                $this->RDP_AddError("Expected right parentheses", $token);
                 return false;
             }
         }
         else
         {
-            --$this->pos;
-            return $this->EvaluateConstantVarOrFunction();
+            --$this->RDP_pos;
+            return $this->RDP_EvaluateConstantVarOrFunction();
         }
     }
 
@@ -891,15 +893,15 @@ class ExpressionManager {
      * Process "a op b" where op in (lt, gt, le, ge, <, >, <=, >=)
      * @return boolean - true if success, false if any error occurred
      */
-    private function EvaluateRelationExpression()
+    private function RDP_EvaluateRelationExpression()
     {
-        if (!$this->EvaluateAdditiveExpression())
+        if (!$this->RDP_EvaluateAdditiveExpression())
         {
             return false;
         }
-        while (($this->pos + 1) < $this->count)
+        while (($this->RDP_pos + 1) < $this->RDP_count)
         {
-            $token = $this->tokens[++$this->pos];
+            $token = $this->RDP_tokens[++$this->RDP_pos];
             switch (strtolower($token[0]))
             {
                 case '<':
@@ -910,9 +912,9 @@ class ExpressionManager {
                 case 'gt':
                 case '>=';
                 case 'ge':
-                    if ($this->EvaluateAdditiveExpression())
+                    if ($this->RDP_EvaluateAdditiveExpression())
                     {
-                        if (!$this->EvalBinary($token))
+                        if (!$this->RDP_EvaluateBinary($token))
                         {
                             return false;
                         }
@@ -925,7 +927,7 @@ class ExpressionManager {
                     }
                     break;
                 default:
-                    --$this->pos;
+                    --$this->RDP_pos;
                     return true;
             }
         }
@@ -937,13 +939,13 @@ class ExpressionManager {
      * @return boolean - true if success, false if any error occurred
      */
 
-    private function EvaluateUnaryExpression()
+    private function RDP_EvaluateUnaryExpression()
     {
-        if (($this->pos + 1) >= $this->count) {
-            $this->AddError("Poorly terminated expression - expected a constant or variable", NULL);
+        if (($this->RDP_pos + 1) >= $this->RDP_count) {
+            $this->RDP_AddError("Poorly terminated expression - expected a constant or variable", NULL);
             return false;
         }
-        $token = $this->tokens[++$this->pos];
+        $token = $this->RDP_tokens[++$this->RDP_pos];
         if ($token[2] == 'NOT' || $token[2] == 'BINARYOP')
         {
             switch ($token[0])
@@ -951,21 +953,21 @@ class ExpressionManager {
                 case '+':
                 case '-':
                 case '!':
-                    if (!$this->EvaluatePrimaryExpression())
+                    if (!$this->RDP_EvaluatePrimaryExpression())
                     {
                         return false;
                     }
-                    return $this->EvalUnary($token);
+                    return $this->RDP_EvaluateUnary($token);
                     break;
                 default:
-                    --$this->pos;
-                    return $this->EvaluatePrimaryExpression();
+                    --$this->RDP_pos;
+                    return $this->RDP_EvaluatePrimaryExpression();
             }
         }
         else
         {
-            --$this->pos;
-            return $this->EvaluatePrimaryExpression();
+            --$this->RDP_pos;
+            return $this->RDP_EvaluatePrimaryExpression();
         }
     }
 
@@ -1042,7 +1044,7 @@ class ExpressionManager {
      */
     public function GetResult()
     {
-        return $this->result[0];
+        return $this->RDP_result[0];
     }
 
     /**
@@ -1051,7 +1053,7 @@ class ExpressionManager {
      */
     public function GetErrors()
     {
-        return $this->errs;
+        return $this->RDP_errs;
     }
 
     /**
@@ -1069,7 +1071,7 @@ class ExpressionManager {
             $this->jsExpression = '';
             return '';
         }
-        $tokens = $this->tokens;
+        $tokens = $this->RDP_tokens;
         $stringParts=array();
         $numTokens = count($tokens);
         for ($i=0;$i<$numTokens;++$i)
@@ -1090,7 +1092,7 @@ class ExpressionManager {
                     if ($i+1<$numTokens && $tokens[$i+1][2] == 'LP')
                     {
                         // then word is a function name
-                        $funcInfo = $this->amValidFunctions[$token[0]];
+                        $funcInfo = $this->RDP_ValidFunctions[$token[0]];
                         if ($funcInfo[1] == 'NA')
                         {
                             return '';  // to indicate that this is trying to use a undefined function.  Need more graceful solution
@@ -1234,13 +1236,13 @@ class ExpressionManager {
     public function GetPrettyPrintString()
     {
         // color code the equation, showing not only errors, but also variable attributes
-        $errs = $this->errs;
-        $tokens = $this->tokens;
+        $errs = $this->RDP_errs;
+        $tokens = $this->RDP_tokens;
         $errCount = count($errs);
         $errIndex = 0;
         if ($errCount > 0)
         {
-            usort($errs,"cmpErrorTokens");
+            usort($errs,"self::cmpErrorTokens");
         }
         $errSpecificStyle= "style='border-style: solid; border-width: 2px; border-color: red;'";
         $stringParts=array();
@@ -1295,8 +1297,8 @@ class ExpressionManager {
                     if ($i+1<$numTokens && $tokens[$i+1][2] == 'LP')
                     {
                         // then word is a function name
-                        if ($this->isValidFunction($token[0])) {
-                            $funcInfo = $this->amValidFunctions[$token[0]];
+                        if ($this->RDP_isValidFunction($token[0])) {
+                            $funcInfo = $this->RDP_ValidFunctions[$token[0]];
                             $messages[] = $funcInfo[2];
                             $messages[] = $funcInfo[3];
                         }
@@ -1306,7 +1308,7 @@ class ExpressionManager {
                     }
                     else
                     {
-                        if (!$this->isValidVariable($token[0])) {
+                        if (!$this->RDP_isValidVariable($token[0])) {
                             $color = 'red';
                         }
                         else {
@@ -1414,18 +1416,18 @@ class ExpressionManager {
      * @param <type> $varname
      * @return <type>
      */
-    public function GetVarAttribute($name,$attr,$default)
+    private function GetVarAttribute($name,$attr,$default)
     {
         $args = explode(".", $name);
         $varName = $args[0];
         $varName = preg_replace("/^(?:INSERTANS:)?(.*?)$/", "$1", $varName);
-        if (!isset($this->amVars[$varName]))
+        if (!isset($this->RDP_Vars[$varName]))
         {
 //            echo 'UNDEFINED VARIABLE: ' . $varName;
 //            return $default;    // and throw error?
             return '{' . $name . '}';
         }
-        $var = $this->amVars[$varName];
+        $var = $this->RDP_Vars[$varName];
         $sgqa = isset($var['sgqa']) ? $var['sgqa'] : NULL;
         if (is_null($attr))
         {
@@ -1632,7 +1634,7 @@ class ExpressionManager {
      */
     public function HasErrors()
     {
-        return (count($this->errs) > 0);
+        return (count($this->RDP_errs) > 0);
     }
 
     /**
@@ -1648,9 +1650,9 @@ class ExpressionManager {
 
         $nesting = 0;
 
-        for ($i=0;$i<$this->count;++$i)
+        for ($i=0;$i<$this->RDP_count;++$i)
         {
-            $token = $this->tokens[$i];
+            $token = $this->RDP_tokens[$i];
             switch ($token[2])
             {
                 case 'LP':
@@ -1660,28 +1662,28 @@ class ExpressionManager {
                     --$nesting;
                     if ($nesting < 0)
                     {
-                        $this->AddError("Extra right parentheses detected", $token);
+                        $this->RDP_AddError("Extra right parentheses detected", $token);
                     }
                     break;
                 case 'WORD':
                 case 'SGQA':
-                    if ($i+1 < $this->count and $this->tokens[$i+1][2] == 'LP')
+                    if ($i+1 < $this->RDP_count and $this->RDP_tokens[$i+1][2] == 'LP')
                     {
-                        if (!$this->isValidFunction($token[0]))
+                        if (!$this->RDP_isValidFunction($token[0]))
                         {
-                            $this->AddError("Undefined function", $token);
+                            $this->RDP_AddError("Undefined function", $token);
                         }
                     }
                     else
                     {
-                        if (!($this->isValidVariable($token[0])))
+                        if (!($this->RDP_isValidVariable($token[0])))
                         {
-                            $this->AddError("Undefined variable", $token);
+                            $this->RDP_AddError("Undefined variable", $token);
                         }
                     }
                     break;
                 case 'OTHER':
-                    $this->AddError("Unsupported syntax", $token);
+                    $this->RDP_AddError("Unsupported syntax", $token);
                     break;
                 default:
                     break;
@@ -1689,9 +1691,9 @@ class ExpressionManager {
         }
         if ($nesting != 0)
         {
-            $this->AddError("Parentheses not balanced",NULL);
+            $this->RDP_AddError("Parentheses not balanced",NULL);
         }
-        return (count($this->errs) > 0);
+        return (count($this->RDP_errs) > 0);
     }
 
     /**
@@ -1700,9 +1702,9 @@ class ExpressionManager {
      * @return boolean
      */
 
-    private function isValidFunction($name)
+    private function RDP_isValidFunction($name)
     {
-        return array_key_exists($name,$this->amValidFunctions);
+        return array_key_exists($name,$this->RDP_ValidFunctions);
     }
 
     /**
@@ -1710,10 +1712,10 @@ class ExpressionManager {
      * @param <type> $name
      * @return boolean
      */
-    private function isValidVariable($name)
+    private function RDP_isValidVariable($name)
     {
-        $varName = preg_replace("/^(?:INSERTANS:)?(.*?)(?:\.(?:" . ExpressionManager::$regex_var_attr . "))?$/", "$1", $name);
-        return array_key_exists($varName,$this->amVars);
+        $varName = preg_replace("/^(?:INSERTANS:)?(.*?)(?:\.(?:" . ExpressionManager::$RDP_regex_var_attr . "))?$/", "$1", $name);
+        return array_key_exists($varName,$this->RDP_Vars);
     }
 
     /**
@@ -1721,7 +1723,7 @@ class ExpressionManager {
      * @param <type> $name
      * @return <type>
      */
-    private function isWritableVariable($name)
+    private function RDP_isWritableVariable($name)
     {
         return ($this->GetVarAttribute($name, 'readWrite', 'N') == 'Y');
     }
@@ -1738,7 +1740,7 @@ class ExpressionManager {
         $this->groupSeq = $groupSeq;
         $this->questionSeq = $questionSeq;
 
-        $status = $this->Evaluate($expr);
+        $status = $this->RDP_Evaluate($expr);
         if (!$status) {
             return false;    // if there are errors in the expression, hide it?
         }
@@ -1820,7 +1822,7 @@ class ExpressionManager {
             }
             else {
                 ++$this->substitutionNum;
-                if ($this->Evaluate(substr($stringPart[0],1,-1)))
+                if ($this->RDP_Evaluate(substr($stringPart[0],1,-1)))
                 {
                     $resolvedPart = $this->GetResult();
                 }
@@ -1858,7 +1860,7 @@ class ExpressionManager {
         }
         $result = implode('',$this->flatten_array($resolvedParts));
         $this->prettyPrintSource = implode('',$this->flatten_array($prettyPrintParts));
-        $this->errs = $allErrors;   // so that has all errors from this string
+        $this->RDP_errs = $allErrors;   // so that has all errors from this string
         return $result;    // recurse in case there are nested ones, avoiding infinite loops?
     }
 
@@ -1892,21 +1894,22 @@ class ExpressionManager {
 
     /**
      * Run a registered function
+     * Some PHP functions require specific data types - those can be cast here.
      * @param <type> $funcNameToken
      * @param <type> $params
      * @return boolean
      */
-    private function RunFunction($funcNameToken,$params)
+    private function RDP_RunFunction($funcNameToken,$params)
     {
         $name = $funcNameToken[0];
-        if (!$this->isValidFunction($name))
+        if (!$this->RDP_isValidFunction($name))
         {
             return false;
         }
-        $func = $this->amValidFunctions[$name];
+        $func = $this->RDP_ValidFunctions[$name];
         $funcName = $func[0];
         $numArgs = count($params);
-        $result=1;  // default value for $this->onlyparse
+        $result=1;  // default value for $this->RDP_onlyparse
 
         if (function_exists($funcName)) {
             $numArgsAllowed = array_slice($func, 5);    // get array of allowable argument counts from end of $func
@@ -1919,10 +1922,10 @@ class ExpressionManager {
                     $minArgs = abs($numArgsAllowed[0] + 1); // so if value is -2, means that requires at least one argument
                     if ($argsPassed < $minArgs)
                     {
-                        $this->AddError("Function must have at least ". $minArgs . " argument(s)", $funcNameToken);
+                        $this->RDP_AddError("Function must have at least ". $minArgs . " argument(s)", $funcNameToken);
                         return false;
                     }
-                    if (!$this->onlyparse) {
+                    if (!$this->RDP_onlyparse) {
                         $result = $funcName($params);
                     }
                 // Call  function with the params passed
@@ -1930,12 +1933,12 @@ class ExpressionManager {
 
                     switch ($argsPassed) {
                     case 0:
-                        if (!$this->onlyparse) {
+                        if (!$this->RDP_onlyparse) {
                             $result = $funcName();
                         }
                         break;
                     case 1:
-                        if (!$this->onlyparse) {
+                        if (!$this->RDP_onlyparse) {
                             switch($funcName) {
                                 case 'acos':
                                 case 'asin':
@@ -1963,7 +1966,7 @@ class ExpressionManager {
                         }
                         break;
                     case 2:
-                        if (!$this->onlyparse) {
+                        if (!$this->RDP_onlyparse) {
                             switch($funcName) {
                                 case 'atan2':
                                     if (is_float($params[0]) && is_float($params[1]))
@@ -1982,43 +1985,43 @@ class ExpressionManager {
                         }
                         break;
                     case 3:
-                        if (!$this->onlyparse) {
+                        if (!$this->RDP_onlyparse) {
                             $result = $funcName($params[0], $params[1], $params[2]);
                         }
                         break;
                     case 4:
-                        if (!$this->onlyparse) {
+                        if (!$this->RDP_onlyparse) {
                             $result = $funcName($params[0], $params[1], $params[2], $params[3]);
                         }
                         break;
                     case 5:
-                        if (!$this->onlyparse) {
+                        if (!$this->RDP_onlyparse) {
                             $result = $funcName($params[0], $params[1], $params[2], $params[3], $params[4]);
                         }
                         break;
                     case 6:
-                        if (!$this->onlyparse) {
+                        if (!$this->RDP_onlyparse) {
                             $result = $funcName($params[0], $params[1], $params[2], $params[3], $params[4], $params[5]);
                         }
                         break;
                     default:
-                        $this->AddError("Unsupported number of arguments: " . $argsPassed, $funcNameToken);
+                        $this->RDP_AddError("Unsupported number of arguments: " . $argsPassed, $funcNameToken);
                         return false;
                     }
 
                 } else {
-                    $this->AddError("Function does not support that number of arguments:  " . $argsPassed .
+                    $this->RDP_AddError("Function does not support that number of arguments:  " . $argsPassed .
                             ".  Function supports this many arguments, where -1=unlimited: " . implode(',', $numArgsAllowed), $funcNameToken);
                     return false;
                 }
             }
             catch (Exception $e)
             {
-                $this->AddError($e->getMessage(),$funcNameToken);
+                $this->RDP_AddError($e->getMessage(),$funcNameToken);
                 return false;
             }
             $token = array($result,$funcNameToken[1],'NUMBER');
-            $this->StackPush($token);
+            $this->RDP_StackPush($token);
             return true;
         }
     }
@@ -2026,29 +2029,26 @@ class ExpressionManager {
     /**
      * Add user functions to array of allowable functions within the equation.
      * $functions is an array of key to value mappings like this:
-     * 'newfunc' => array('my_func_script', 1,3)
-     * where 'newfunc' is the name of an allowable function wihtin the  expression, 'my_func_script' is the registered PHP function name,
-     * and 1,3 are the list of  allowable numbers of paremeters (so my_func() can take 1 or 3 parameters.
-     *
+     * See $this->RDP_ValidFunctions for examples of the syntax
      * @param array $functions
      */
 
     public function RegisterFunctions(array $functions) {
-        $this->amValidFunctions= array_merge($this->amValidFunctions, $functions);
+        $this->RDP_ValidFunctions= array_merge($this->RDP_ValidFunctions, $functions);
     }
 
     /**
      * Add list of allowable variable names within the equation
-     * $varnames is an array of key to value mappings like this:
-     * 'myvar' => value
+     * $varnames is an array of key to value mappings.
      * where value is optional (e.g. can be blank), and can be any scalar type (e.g. string, number, but not array)
      * the system will use the values as  fast lookup when doing calculations, but if it needs to set values, it will call
      * the interface function to set the values by name
+     * See function GetVarAttribute() for list of allowable attributes
      *
      * @param array $varnames
      */
     public function RegisterVarnamesUsingMerge(array $varnames) {
-        $this->amVars = array_merge($this->amVars, $varnames);
+        $this->RDP_Vars = array_merge($this->RDP_Vars, $varnames);
     }
 
     /**
@@ -2056,7 +2056,7 @@ class ExpressionManager {
      * @param array $varnames
      */
     public function RegisterVarnamesUsingReplace(array $varnames) {
-        $this->amVars = array_merge(array(), $varnames);
+        $this->RDP_Vars = array_merge(array(), $varnames);
     }
 
     /**
@@ -2065,32 +2065,32 @@ class ExpressionManager {
      * @param <type> $name
      * @param <type> $value
      */
-    private function setVariableValue($op,$name,$value)
+    private function RDP_SetVariableValue($op,$name,$value)
     {
         // TODO - set this externally
-        if ($this->onlyparse)
+        if ($this->RDP_onlyparse)
         {
             return 1;
         }
         switch($op)
         {
             case '=':
-                $this->amVars[$name]['code'] = $value;
+                $this->RDP_Vars[$name]['code'] = $value;
                 break;
             case '*=':
-                $this->amVars[$name]['code'] *= $value;
+                $this->RDP_Vars[$name]['code'] *= $value;
                 break;
             case '/=':
-                $this->amVars[$name]['code'] /= $value;
+                $this->RDP_Vars[$name]['code'] /= $value;
                 break;
             case '+=':
-                $this->amVars[$name]['code'] += $value;
+                $this->RDP_Vars[$name]['code'] += $value;
                 break;
             case '-=':
-                $this->amVars[$name]['code'] -= $value;
+                $this->RDP_Vars[$name]['code'] -= $value;
                 break;
         }
-        return $this->amVars[$name]['code'];
+        return $this->RDP_Vars[$name]['code'];
     }
 
     /**
@@ -2101,14 +2101,14 @@ class ExpressionManager {
     public function asSplitStringOnExpressions($src)
     {
         // tokenize string by the {} pattern, propertly dealing with strings in quotations, and escaped curly brace values
-        $tokens0 = preg_split($this->sExpressionRegex,$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
+        $tokens0 = preg_split($this->RDP_ExpressionRegex,$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
 
         $tokens = array();
         // Add token_type to $tokens:  For each token, test each categorization in order - first match will be the best.
         for ($j=0;$j<count($tokens0);++$j)
         {
             $token = $tokens0[$j];
-            if (preg_match($this->sExpressionRegex,$token[0]))
+            if (preg_match($this->RDP_ExpressionRegex,$token[0]))
             {
                 $token[2] = 'EXPRESSION';
             }
@@ -2126,15 +2126,15 @@ class ExpressionManager {
      * @return token
      */
 
-    private function StackPop()
+    private function RDP_StackPop()
     {
-        if (count($this->stack) > 0)
+        if (count($this->RDP_stack) > 0)
         {
-            return array_pop($this->stack);
+            return array_pop($this->RDP_stack);
         }
         else
         {
-            $this->AddError("Tried to pop value off of empty stack", NULL);
+            $this->RDP_AddError("Tried to pop value off of empty stack", NULL);
             return NULL;
         }
     }
@@ -2144,26 +2144,26 @@ class ExpressionManager {
      * @param array $token
      */
 
-    private function StackPush(array $token)
+    private function RDP_StackPush(array $token)
     {
-        if ($this->onlyparse)
+        if ($this->RDP_onlyparse)
         {
             // If only parsing, still want to validate syntax, so use "1" for all variables
             switch($token[2])
             {
                 case 'DQ_STRING':
                 case 'SQ_STRING':
-                    $this->stack[] = array(1,$token[1],$token[2]);
+                    $this->RDP_stack[] = array(1,$token[1],$token[2]);
                     break;
                 case 'NUMBER':
                 default:
-                    $this->stack[] = array(1,$token[1],'NUMBER');
+                    $this->RDP_stack[] = array(1,$token[1],'NUMBER');
                     break;
             }
         }
         else
         {
-            $this->stack[] = $token;
+            $this->RDP_stack[] = $token;
         }
     }
 
@@ -2174,24 +2174,24 @@ class ExpressionManager {
      * @return array
      */
 
-    private function amTokenize($src)
+    private function RDP_Tokenize($src)
     {
         // $tokens0 = array of tokens from equation, showing value and offset position.  Will include SPACE, which should be removed
-        $tokens0 = preg_split($this->sTokenizerRegex,$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
+        $tokens0 = preg_split($this->RDP_TokenizerRegex,$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
 
         // $tokens = array of tokens from equation, showing value, offsete position, and type.  Will not contain SPACE, but will contain OTHER
         $tokens = array();
         // Add token_type to $tokens:  For each token, test each categorization in order - first match will be the best.
         for ($j=0;$j<count($tokens0);++$j)
         {
-            for ($i=0;$i<count($this->asCategorizeTokensRegex);++$i)
+            for ($i=0;$i<count($this->RDP_CategorizeTokensRegex);++$i)
             {
                 $token = $tokens0[$j][0];
-                if (preg_match($this->asCategorizeTokensRegex[$i],$token))
+                if (preg_match($this->RDP_CategorizeTokensRegex[$i],$token))
                 {
-                    if ($this->asTokenType[$i] !== 'SPACE') {
-                        $tokens0[$j][2] = $this->asTokenType[$i];
-                        if ($this->asTokenType[$i] == 'DQ_STRING' || $this->asTokenType[$i] == 'SQ_STRING')
+                    if ($this->RDP_TokenType[$i] !== 'SPACE') {
+                        $tokens0[$j][2] = $this->RDP_TokenType[$i];
+                        if ($this->RDP_TokenType[$i] == 'DQ_STRING' || $this->RDP_TokenType[$i] == 'SQ_STRING')
                         {
                             // remove outside quotes
                             $unquotedToken = str_replace(array('\"',"\'","\\\\"),array('"',"'",'\\'),substr($token,1,-1));
@@ -2274,7 +2274,7 @@ EOD;
 
         foreach(explode("\n",$tests) as $test)
         {
-            $tokens = $em->amTokenize($test);
+            $tokens = $em->RDP_Tokenize($test);
             print '<b>' . $test . '</b><hr/>';
             print '<code>';
             print implode("<br/>\n",explode("\n",print_r($tokens,TRUE)));
@@ -2292,7 +2292,7 @@ EOD;
         $em = new ExpressionManager();
         $output = "<h3>Functions Available within Expression Manager</h3>\n";
         $output .= "<table border='1'><tr><th>Function</th><th>Meaning</th><th>Syntax</th><th>Reference</th></tr>\n";
-        foreach ($em->amValidFunctions as $name => $func) {
+        foreach ($em->RDP_ValidFunctions as $name => $func) {
             $output .= "<tr><td>" . $name . "</td><td>" . $func[2] . "</td><td>" . $func[3] . "</td><td><a href='" . $func[4] . "'>" . $func[4] . "</a>&nbsp;</td></tr>\n";
         }
         $output .= "</table>\n";
@@ -2592,7 +2592,7 @@ EOD;
             $resultStatus = 'ok';
             $em->groupSeq=2;
             $em->questionSeq=3;
-            $status = $em->Evaluate($expr);
+            $status = $em->RDP_Evaluate($expr);
             if ($status)
             {
                 $allJsVarnamesUsed = array_merge($allJsVarnamesUsed,$em->GetJsVarsUsed());
@@ -2656,7 +2656,7 @@ EOD;
         {
             ++$i;
             $pre .= "<tr><td>" .  $i . "</td><td>" . $jsVarName;
-            foreach($em->amVars as $k => $v) {
+            foreach($em->RDP_Vars as $k => $v) {
                 if ($v['jsName'] == $jsVarName)
                 {
                     $value = $v['code'];
@@ -2669,8 +2669,8 @@ EOD;
             $LEMalias2varName[] = "'" . $jsVarName . "':'" . $jsVarName . "'";
             $attrInfo = "'" . $jsVarName .  "': {'jsName':'" . $jsVarName . "'";
 
-            // populate this from $em->amVars - cheat, knowing that the jsVaraName will be java_xxxx
-            $varInfo = $em->amVars[substr($jsVarName,5)];
+            // populate this from $em->RDP_Vars - cheat, knowing that the jsVaraName will be java_xxxx
+            $varInfo = $em->RDP_Vars[substr($jsVarName,5)];
             foreach ($varInfo as $k=>$v) {
                 if ($k == 'code') {
                     continue;   // will access it from hidden node
@@ -2700,34 +2700,45 @@ EOD;
         print $body;
     }
 
+    /**
+     * Stub to access LimeSurvey's functions for internationalizing strings
+     * @param <type> $string
+     * @return <type>
+     */
     function gT($string)
     {
         // ultimately should call i8n functiouns
-        return $string;
+        global $clang;
+        if (isset($clang)) {
+            return $clang->gT($string);
+        }
+        else {
+            return $string;
+        }
     }
-}
 
-/**
- * Used by usort() to order Error tokens by their position within the string
- * @param <type> $a
- * @param <type> $b
- * @return <type>
- */
-function cmpErrorTokens($a, $b)
-{
-    if (is_null($a[1])) {
+    /**
+     * Used by usort() to order Error tokens by their position within the string
+     * @param <type> $a
+     * @param <type> $b
+     * @return <type>
+     */
+    function cmpErrorTokens($a, $b)
+    {
+        if (is_null($a[1])) {
+            if (is_null($b[1])) {
+                return 0;
+            }
+            return 1;
+        }
         if (is_null($b[1])) {
+            return -1;
+        }
+        if ($a[1][1] == $b[1][1]) {
             return 0;
         }
-        return 1;
+        return ($a[1][1] < $b[1][1]) ? -1 : 1;
     }
-    if (is_null($b[1])) {
-        return -1;
-    }
-    if ($a[1][1] == $b[1][1]) {
-        return 0;
-    }
-    return ($a[1][1] < $b[1][1]) ? -1 : 1;
 }
 
 /**
