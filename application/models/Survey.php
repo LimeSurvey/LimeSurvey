@@ -88,6 +88,7 @@ class Survey extends CActiveRecord
 
     public function getAllRecords($condition=FALSE)
     {
+		$criteria = new CDbCriteria;
         if ($condition != FALSE)
         {	
 		    foreach ($condition as $item => $value)

@@ -24,8 +24,14 @@
 */
 class database extends Survey_Common_Action
 {
+	private $yii;
+	private $controller;
+	
 	public function run($sa = null)
 	{
+		$this->yii = Yii::app();
+		$this->controller = $this->getController();
+		
 		$this->route('index', array('sa'));
 	}
 
@@ -964,35 +970,35 @@ class database extends Survey_Common_Action
 
         if (($action == "updatesurveysettingsandeditlocalesettings" || $action == "updatesurveysettings") && bHasSurveyPermission($surveyid,'surveysettings','update'))
         {
-            $this->load->helper('surveytranslator');
-            $this->load->helper('database');
-            $formatdata=getDateFormatData($this->session->userdata('dateformat'));
+            $this->yii->loadHelper('surveytranslator');
+            $this->yii->loadHelper('database');
+            $formatdata=getDateFormatData($this->yii->session['dateformat']);
 
-            $expires = $this->input->post('expires');
+            $expires = $_POST['expires'];
             if (trim($expires)=="")
             {
                 $expires=null;
             }
             else
             {
-                $this->load->library('Date_Time_Converter',array($expires, $formatdata['phpdate'].' H:i'));
-                $datetimeobj = $this->date_time_converter; //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
+                $this->yii->loadLibrary('Date_Time_Converter');
+                $datetimeobj = new date_time_converter(array($expires, $formatdata['phpdate'].' H:i')); //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
                 $expires=$datetimeobj->convert("Y-m-d H:i:s");
             }
-            $startdate = $this->input->post('startdate');
+            $startdate = $_POST['startdate'];
             if (trim($startdate)=="")
             {
                 $startdate=null;
             }
             else
             {
-                $this->load->library('Date_Time_Converter',array($startdate,$formatdata['phpdate'].' H:i'));
-                $datetimeobj = $this->date_time_converter; //new Date_Time_Converter($startdate,$formatdata['phpdate'].' H:i');
+                $this->yii->loadLibrary('Date_Time_Converter');
+                $datetimeobj = new date_time_converter(array($startdate,$formatdata['phpdate'].' H:i')); //new Date_Time_Converter($startdate,$formatdata['phpdate'].' H:i');
                 $startdate=$datetimeobj->convert("Y-m-d H:i:s");
             }
 
             //make sure only numbers are passed within the $_POST variable
-            $tokenlength = (int) $this->input->post('tokenlength');
+            $tokenlength = (int) $_POST['tokenlength'];
             //$_POST['tokenlength'] = (int) $_POST['tokenlength'];
 
             //token length has to be at least 5, otherwise set it to default (15)
@@ -1002,19 +1008,19 @@ class database extends Survey_Common_Action
             }
 
 
-            CleanLanguagesFromSurvey($surveyid,$this->input->post('languageids'));
+            CleanLanguagesFromSurvey($surveyid,$_POST['languageids']);
 
-            FixLanguageConsistency($surveyid,$this->input->post('languageids'));
-            $template = $this->input->post('template');
+            FixLanguageConsistency($surveyid,$_POST['languageids']);
+            $template = $_POST['template'];
 
-            if($this->session->userdata('USER_RIGHT_SUPERADMIN') != 1 && $this->session->userdata('USER_RIGHT_MANAGE_TEMPLATE') != 1 && !hasTemplateManageRights($this->session->userdata('loginID'), $template)) $template = "default";
+            if($this->yii->session['USER_RIGHT_SUPERADMIN'] != 1 && $this->yii->session['USER_RIGHT_MANAGE_TEMPLATE'] != 1 && !hasTemplateManageRights($this->yii->session['loginID'], $template)) $template = "default";
 
             //$sql = "SELECT * FROM ".$this->db->dbprefix."surveys WHERE sid={$postsid}";  // We are using $dbrepfix here instead of db_table_name on purpose because GetUpdateSQL doesn't work correclty on Postfres with a quoted table name
             //$rs = db_execute_assoc($sql); // Checked
 
-            $aURLParams=json_decode($this->input->post('allurlparams'),true);
-            $this->load->model('survey_url_parameters_model');
-            $this->survey_url_parameters_model->deleteRecords(array('sid'=>$surveyid));
+            $aURLParams=json_decode($_POST['allurlparams'],true);
+			db_execute_assoc("DELETE FROM `{{survey_url_parameters}}` WHERE `sid` = '$surveyid'");
+
             foreach($aURLParams as $aURLParam)
             {
                 $aURLParam['parameter']=trim($aURLParam['parameter']);
@@ -1025,52 +1031,54 @@ class database extends Survey_Common_Action
                 unset($aURLParam['act']);
                 unset($aURLParam['title']);
                 unset($aURLParam['id']);
-                if ($aURLParam['targetqid']=='') $aURLParam['targetqid']=null;
-                if ($aURLParam['targetsqid']=='') $aURLParam['targetsqid']=null;
+                if ($aURLParam['targetqid']=='') $aURLParam['targetqid']='NULL';
+                if ($aURLParam['targetsqid']=='') $aURLParam['targetsqid']='NULL';
                 $aURLParam['sid']=$surveyid;
-                $this->survey_url_parameters_model->insertRecord($aURLParam);
+				
+				//db_execute_assoc("INSERT INTO `{{survey_url_parameters}}` (`sid`, `parameter`, `targetqid`, `targetsqid`) VALUES ('$aURLParam[sid]', '$aURLParam[parameter]', $aURLParam[targetqid], $aURLParam[targetsqid])");
+				Yii::app()->db->createCommand()->insert('{{survey_url_parameters}}', $aURLParam);
             }
-            $updatearray= array('admin'=> $this->input->post('admin'),
+            $updatearray= array('admin'=> $_POST['admin'],
             'expires'=>$expires,
-            'adminemail'=> $this->input->post('adminemail'),
+            'adminemail'=> $_POST['adminemail'],
             'startdate'=>$startdate,
-            'bounce_email'=> $this->input->post('bounce_email'),
-            'anonymized'=> $this->input->post('anonymized'),
-            'faxto'=> $this->input->post('faxto'),
-            'format'=> $this->input->post('format'),
-            'savetimings'=> $this->input->post('savetimings'),
+            'bounce_email'=> $_POST['bounce_email'],
+            'anonymized'=> $_POST['anonymized'],
+            'faxto'=> $_POST['faxto'],
+            'format'=> $_POST['format'],
+            'savetimings'=> $_POST['savetimings'],
             'template'=>$template,
-            'assessments'=> $this->input->post('assessments'),
-            'language'=> $this->input->post('language'),
-            'additional_languages'=> $this->input->post('languageids'),
-            'datestamp'=> $this->input->post('datestamp'),
-            'ipaddr'=> $this->input->post('ipaddr'),
-            'refurl'=> $this->input->post('refurl'),
-            'publicgraphs'=> $this->input->post('publicgraphs'),
-            'usecookie'=> $this->input->post('usecookie'),
-            'allowregister'=> $this->input->post('allowregister'),
-            'allowsave'=> $this->input->post('allowsave'),
-            'navigationdelay'=> $this->input->post('navigationdelay'),
-            'printanswers'=> $this->input->post('printanswers'),
-            'publicstatistics'=> $this->input->post('publicstatistics'),
-            'autoredirect'=> $this->input->post('autoredirect'),
-            'showXquestions'=> $this->input->post('showXquestions'),
-            'showgroupinfo'=> $this->input->post('showgroupinfo'),
-            'showqnumcode'=> $this->input->post('showqnumcode'),
-            'shownoanswer'=> $this->input->post('shownoanswer'),
-            'showwelcome'=> $this->input->post('showwelcome'),
-            'allowprev'=> $this->input->post('allowprev'),
-            'allowjumps'=> $this->input->post('allowjumps'),
-            'nokeyboard'=> $this->input->post('nokeyboard'),
-            'showprogress'=> $this->input->post('showprogress'),
-            'listpublic'=> $this->input->post('public'),
-            'htmlemail'=> $this->input->post('htmlemail'),
+            'assessments'=> $_POST['assessments'],
+            'language'=> $_POST['language'],
+            'additional_languages'=> $_POST['languageids'],
+            'datestamp'=> $_POST['datestamp'],
+            'ipaddr'=> $_POST['ipaddr'],
+            'refurl'=> $_POST['refurl'],
+            'publicgraphs'=> $_POST['publicgraphs'],
+            'usecookie'=> $_POST['usecookie'],
+            'allowregister'=> $_POST['allowregister'],
+            'allowsave'=> $_POST['allowsave'],
+            'navigationdelay'=> $_POST['navigationdelay'],
+            'printanswers'=> $_POST['printanswers'],
+            'publicstatistics'=> $_POST['publicstatistics'],
+            'autoredirect'=> $_POST['autoredirect'],
+            'showXquestions'=> $_POST['showXquestions'],
+            'showgroupinfo'=> $_POST['showgroupinfo'],
+            'showqnumcode'=> $_POST['showqnumcode'],
+            'shownoanswer'=> $_POST['shownoanswer'],
+            'showwelcome'=> $_POST['showwelcome'],
+            'allowprev'=> $_POST['allowprev'],
+            'allowjumps'=> $_POST['allowjumps'],
+            'nokeyboard'=> $_POST['nokeyboard'],
+            'showprogress'=> $_POST['showprogress'],
+            'listpublic'=> $_POST['public'],
+            'htmlemail'=> $_POST['htmlemail'],
             'sendconfirmation'=> 'N',
-            'tokenanswerspersistence'=> $this->input->post('tokenanswerspersistence'),
-            'alloweditaftercompletion'=> $this->input->post('alloweditaftercompletion'),
-            'usecaptcha'=> $this->input->post('usecaptcha'),
-            'emailresponseto'=>trim($this->input->post('emailresponseto')),
-            'emailnotificationto'=>trim($this->input->post('emailnotificationto')),
+            'tokenanswerspersistence'=> $_POST['tokenanswerspersistence'],
+            'alloweditaftercompletion'=> $_POST['alloweditaftercompletion'],
+            'usecaptcha'=> $_POST['usecaptcha'],
+            'emailresponseto'=>trim($_POST['emailresponseto']),
+            'emailnotificationto'=>trim($_POST['emailnotificationto']),
             'tokenlength'=>$tokenlength
             );
 
@@ -1080,9 +1088,8 @@ class database extends Survey_Common_Action
             $usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br /><strong>".$connect->ErrorMsg());  // Checked
             }
             */
-            $condition = array('sid' =>  $surveyid);
-            $this->load->model('surveys_model');
-            $this->surveys_model->updateSurvey($updatearray,$condition);
+            $condition = 'sid = \''.$surveyid.'\'';
+            Survey::model()->updateSurvey($updatearray,$condition);
             $sqlstring ='';
 
             foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
@@ -1095,8 +1102,8 @@ class database extends Survey_Common_Action
 
             // Add base language too
             $sqlstring .= "AND surveyls_language <> '".GetBaseLanguageFromSurveyID($surveyid)."' ";
-
-            $usquery = "DELETE FROM ".$this->db->dbprefix."surveys_languagesettings WHERE surveyls_survey_id={$surveyid} ".$sqlstring;
+			$dbprefix = $this->yii->db->tablePrefix;
+            $usquery = "DELETE FROM ".$dbprefix."surveys_languagesettings WHERE surveyls_survey_id={$surveyid} ".$sqlstring;
 
             $usresult = db_execute_assoc($usquery) or safe_die("Error deleting obsolete surveysettings<br />".$usquery."<br /><br /><strong>"); // Checked
 
@@ -1104,12 +1111,11 @@ class database extends Survey_Common_Action
             {
                 if ($langname)
                 {
-                    $usquery = "select * from ".$this->db->dbprefix."surveys_languagesettings where surveyls_survey_id={$surveyid} and surveyls_language='".$langname."'";
+                    $usquery = "select * from ".$dbprefix."surveys_languagesettings where surveyls_survey_id={$surveyid} and surveyls_language='".$langname."'";
                     $usresult = db_execute_assoc($usquery) or safe_die("Error deleting obsolete surveysettings<br />".$usquery."<br /><br /><strong>"); // Checked
-                    if ($usresult->num_rows()==0)
+                    if ($usresult->getRowCount()==0)
                     {
-                        $this->load->library('Limesurvey_lang',array($langname));
-                        $bplang = $this->limesurvey_lang;
+                        $bplang = $this->controller->lang;
                         $aDefaultTexts=aTemplateDefaultTexts($bplang,'unescaped');
                         if (getEmailFormat($surveyid) == "html")
                         {
@@ -1140,11 +1146,8 @@ class database extends Survey_Common_Action
                         'email_admin_responses' => $aDefaultTexts['admin_detailed_notification'],
                         'surveyls_dateformat' => $languagedetails['dateformat']
                         );
-
-                        $this->load->model('surveys_languagesettings_model');
-
-                        $usresult = $this->surveys_languagesettings_model->insertNewSurvey($insertdata);
-                        unset($bplang);
+						Yii::app()->db->createCommand()->insert('{{surveys_languagesettings}}', $insertdata);
+						unset($bplang);
                     }
                 }
             }
@@ -1154,7 +1157,7 @@ class database extends Survey_Common_Action
             if ($usresult)
             {
                 $surveyselect = getsurveylist();
-                $this->session->set_userdata('flashmessage', $clang->gT("Survey settings were successfully saved."));
+                $this->yii->session['flashmessage'] = $clang->gT("Survey settings were successfully saved.");
 
             }
             else
@@ -1170,13 +1173,13 @@ class database extends Survey_Common_Action
             {
                 //redirect(site_url('admin/survey/view/'.$surveyid));
 
-                if ($this->input->post('action') == "updatesurveysettingsandeditlocalesettings")
+                if ($_POST['action'] == "updatesurveysettingsandeditlocalesettings")
                 {
-                    redirect(site_url('admin/survey/editlocalsettings/'.$surveyid));
+                    $this->controller->redirect($this->yii->homeUrl.('/admin/survey/sa/editlocalsettings/surveyid/'.$surveyid));
                 }
                 else
                 {
-                    redirect(site_url('admin/survey/view/'.$surveyid));
+                    $this->controller->redirect($this->yii->homeUrl.('/admin/survey/sa/view/surveyid/'.$surveyid));
                 }
 
             }
@@ -1184,7 +1187,7 @@ class database extends Survey_Common_Action
 
         if (!$action)
         {
-            redirect("/admin","refresh");
+			$this->controller->redirect("/admin","refresh");
         }
 
 

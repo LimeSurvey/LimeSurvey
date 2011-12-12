@@ -75,6 +75,10 @@ class SurveyAction extends Survey_Common_Action {
 			$this->route('delete', array('surveyid', 'sa'));
 		elseif ($sa == 'editlocalsettings' || isset($_GET['editlocalsettings']))
 			$this->route('editlocalsettings', array('surveyid'));
+		elseif ($sa == 'editsurveysettings')
+			$this->route('editsurveysettings', array('surveyid'));
+		elseif ($sa == 'getUrlParamsJSON')
+			$this->route('getUrlParamsJSON', array('surveyid'));
    		return;
 
 		/* @todo Implement this */
@@ -137,7 +141,6 @@ class SurveyAction extends Survey_Common_Action {
     * This function prepares the view for editing a survey
     *
     */
-
     function editsurveysettings($surveyid)
     {
         $surveyid=(int)$surveyid;
@@ -151,44 +154,48 @@ class SurveyAction extends Survey_Common_Action {
             die();
         }
 
+		$dbprefix = Yii::app()->db->tablePrefix;
+		
         $this->controller->_js_admin_includes(Yii::app()->getConfig('generalscripts').'admin/surveysettings.js');
         $this->controller->_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jqGrid/js/i18n/grid.locale-en.js');
         $this->controller->_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jqGrid/js/jquery.jqGrid.min.js');
         $this->controller->_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jquery.json.min.js');
         $this->controller->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
         $this->controller->_css_admin_includes(Yii::app()->getConfig('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css");
-        self::_getAdminHeader();
-        self::_showadminmenu($surveyid);;
+        $this->controller->_getAdminHeader();
+        $this->controller->_showadminmenu($surveyid);;
         self::_surveybar($surveyid);
 
-        Yii::app()->loadHelper('text');
+        //Yii::app()->loadHelper('text');
         Yii::app()->loadHelper('surveytranslator');
         $clang = $this->getController()->lang;
 
         $esrow = array();
         $editsurvey = '';
         $esrow = self::_fetchSurveyInfo('editsurvey',$surveyid);
+		//$esrow = $esrow[0]->tableSchema->columns;
         $data['esrow']=$esrow;
-
-        $data = self::_generalTabEditSurvey($surveyid,$esrow);
-        $data = array_merge($data,self::_tabPresentationNavigation($esrow));
-        $data = array_merge($data,self::_tabPublicationAccess($esrow));
-        $data = array_merge($data,self::_tabNotificationDataManagement($esrow));
-        $data = array_merge($data,self::_tabTokens($esrow));
-        $data = array_merge($data,self::_tabPanelIntegration($esrow));
-        $data = array_merge($data,self::_tabResourceManagement($surveyid));
+		
+        $data = array_merge($data,$this->_generalTabEditSurvey($surveyid,$esrow));
+        $data = array_merge($data,$this->_tabPresentationNavigation($esrow));
+        $data = array_merge($data,$this->_tabPublicationAccess($esrow));
+        $data = array_merge($data,$this->_tabNotificationDataManagement($esrow));
+        $data = array_merge($data,$this->_tabTokens($esrow));
+        $data = array_merge($data,$this->_tabPanelIntegration($esrow));
+        $data = array_merge($data,$this->_tabResourceManagement($surveyid));
 
         //echo $editsurvey;
-        $this->load->model('questions_model');
-        $oResult=$this->questions_model->getQuestionsWithSubQuestions($surveyid,$esrow['language'],"({$this->db->dbprefix}questions.type = 'T'  OR  {$this->db->dbprefix}questions.type = 'Q'  OR  {$this->db->dbprefix}questions.type = 'T' OR {$this->db->dbprefix}questions.type = 'S')");
-        $data['questions']=$oResult->result_array();
-        //        var_dump($data['questions']);
+        //$this->load->model('questions_model');
+        $oResult=Questions::model()->getQuestionsWithSubQuestions($surveyid,$esrow['language'],"({$dbprefix}questions.type = 'T'  OR  {$dbprefix}questions.type = 'Q'  OR  {$dbprefix}questions.type = 'T' OR {$dbprefix}questions.type = 'S')");
+        $data['questions']=$oResult;
         $data['display'] = $editsurvey;
         $data['action'] = "editsurveysettings";
-        $this->load->view('admin/survey/editSurvey_view',$data);
-        self::_loadEndScripts();
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
+		$data['data'] = $data;
+        $this->controller->render('/admin/survey/editSurvey_view',$data);
+        $this->controller->_loadEndScripts();
+        $this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
     }
+
 
     /**
     * survey::importsurveyresources()
@@ -202,8 +209,8 @@ class SurveyAction extends Survey_Common_Action {
         $surveyid = $_POST['sid'];
         $this->getController()->_getAdminHeader();
         $this->getController()->_showadminmenu($surveyid);
-        $this->getController()->_surveybar($surveyid,NULL);
-        $this->getController()->_surveysummary($surveyid,$action);
+        self::_surveybar($surveyid,NULL);
+        self::_surveysummary($surveyid,$action);
 
         if ($action == "importsurveyresources" && $surveyid)
         {
@@ -216,19 +223,19 @@ class SurveyAction extends Survey_Common_Action {
                 $importsurveyresourcesoutput .= $clang->gT("Demo Mode Only: Uploading file is disabled in this system.")."<br /><br />\n";
                 $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".$this->getController()->createUrl('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
                 $importsurveyresourcesoutput .= "</div>\n";
-                show_error($importsurveyresourcesoutput);
+                echo($importsurveyresourcesoutput);
                 return;
             }
 
             //require("classes/phpzip/phpzip.inc.php");
-            $this->load->library('admin/Phpzip');
+            $this->yii->loadLibrary('admin/Phpzip');
             $zipfile=$_FILES['the_file']['tmp_name'];
-            $z = $this->phpzip; //new PHPZip();
+            $z = new PHPZip();
 
             // Create temporary directory
             // If dangerous content is unzipped
             // then no one will know the path
-            $extractdir=$this->getController()->_tempdir(Yii::app()->getConfig('tempdir'));
+            $extractdir=self::_tempdir(Yii::app()->getConfig('tempdir'));
             $basedestdir = Yii::app()->getConfig('publicdir')."/upload/surveys";
             $destdir=$basedestdir."/$surveyid/";
 
@@ -238,7 +245,7 @@ class SurveyAction extends Survey_Common_Action {
                 $importsurveyresourcesoutput .= sprintf ($clang->gT("Incorrect permissions in your %s folder."),$basedestdir)."<br /><br />\n";
                 $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".$this->getController()->createUrl('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
                 $importsurveyresourcesoutput .= "</div>\n";
-                show_error($importsurveyresourcesoutput);
+                echo($importsurveyresourcesoutput);
                 return;
             }
 
@@ -249,7 +256,6 @@ class SurveyAction extends Survey_Common_Action {
 
             $aImportedFilesInfo=null;
             $aErrorFilesInfo=null;
-
 
             if (is_file($zipfile))
             {
@@ -263,7 +269,7 @@ class SurveyAction extends Survey_Common_Action {
                     $importsurveyresourcesoutput .= $clang->gT("This file is not a valid ZIP file $CI. Import failed.")."<br /><br />\n";
                     $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".$this->getController()->createUrl('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
                     $importsurveyresourcesoutput .= "</div>\n";
-                    show_error($importsurveyresourcesoutput);
+                    echo($importsurveyresourcesoutput);
                     return;
                 }
 
@@ -334,7 +340,7 @@ class SurveyAction extends Survey_Common_Action {
                     $importsurveyresourcesoutput .= $clang->gT("Remember that we do not support subdirectories in ZIP $CIs.")."<br /><br />\n";
                     $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".$this->getController()->createUrl('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
                     $importsurveyresourcesoutput .= "</div>\n";
-                    show_error($importsurveyresourcesoutput);
+                    echo($importsurveyresourcesoutput);
                     return;
 
                 }
@@ -388,11 +394,11 @@ class SurveyAction extends Survey_Common_Action {
                 show_error($importsurveyresourcesoutput);
                 return;
             }
-            $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".$this->getController()->createUrl('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
+            $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".$this->getController()->createUrl('admin/survey/sa/editsurveysettings/surveyid/'.$surveyid)."', '_top')\" />\n";
             $importsurveyresourcesoutput .= "</div>\n";
 
             $data['display'] = $importlabeloutput;
-            $this->getController()->render('survey_view',$data);
+            $this->getController()->render('/survey_view',$data);
         }
 
         $this->getController()->_loadEndScripts();
@@ -406,7 +412,7 @@ class SurveyAction extends Survey_Common_Action {
     // Comes from http://fr2.php.net/tempnam
     function _tempdir($dir, $prefix='', $mode=0700)
     {
-        if (substr($dir, -1) != '/') $dir .= '/';
+        if (substr($dir, -1) != PATH_SEPARATOR) $dir .= PATH_SEPARATOR;
 
         do
         {
@@ -1406,11 +1412,13 @@ class SurveyAction extends Survey_Common_Action {
             $esrow['navigationdelay']          = 0;
         } elseif ($action == 'editsurvey') {
             $condition = array('sid' => $surveyid);
-            $this->load->model('surveys_model');
-            //$esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
-            $esresult = Survey::model()->getAllRecords($condition); //($esquery); //Checked)
+            //$this->load->model('surveys_model');
+			$dbprefix = $this->yii->db->tablePrefix;
+			$this->yii->loadHelper('database');
+            $esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
+            $esresult = db_execute_assoc($esquery)->read();//Survey::model()->getAllRecords($condition); //($esquery); //Checked)
             if ($esresult) {
-                $esrow = array_map('htmlspecialchars', $esresult);
+                $esrow = $esresult;
             }
 
         }
@@ -1505,18 +1513,19 @@ class SurveyAction extends Survey_Common_Action {
         $clang = $this->getController()->lang;
         $dateformatdetails=getDateFormatData(Yii::app()->session['dateformat']);
         $startdate='';
-        if (trim($esrow['startdate']) != '') {
-            $items = array($esrow['startdate'] , "Y-m-d H:i:s");
-            $this->load->library('Date_Time_Converter',$items);
-            $datetimeobj = $this->date_time_converter; //new Date_Time_Converter($esrow['startdate'] , "Y-m-d H:i:s");
+        if ($esrow['startdate']) {
+            $items = array($esrow["startdate"] ,$dateformatdetails['phpdate']);
+            $this->yii->loadLibrary('Date_Time_Converter');
+            $datetimeobj = new date_time_converter($items) ; //new Date_Time_Converter($esrow['startdate'] , "Y-m-d H:i:s");
             $startdate=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
         }
 
         $expires='';
-        if (trim($esrow['expires']) != '') {
-            $items = array($esrow['expires'] , "Y-m-d H:i:s");
-            $this->load->library('Date_Time_Converter',$items);
-            $datetimeobj = $this->date_time_converter; //new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
+        if ($esrow['expires']) {
+            $items = array($esrow['expires'] ,$dateformatdetails['phpdate']);
+			
+            $this->yii->loadLibrary('Date_Time_Converter');
+            $datetimeobj = new date_time_converter($items) ; //new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
             $expires=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
         }
         $data['clang'] = $clang;
@@ -1657,17 +1666,21 @@ class SurveyAction extends Survey_Common_Action {
     function getUrlParamsJSON($iSurveyID)
     {
         $iSurveyID = (int)$iSurveyID;
-        $this->load->model('survey_url_parameters_model');
-        Yii::app()->loadHelper('text');
-        $oResult=$this->survey_url_parameters_model->getParametersForSurvey($iSurveyID);
+		$this->yii->loadHelper('database');
+		$oResult = db_execute_assoc("select '' as act, up.*,q.title, sq.title as sqtitle, q.question, sq.question as sqquestion from {$this->yii->db->tablePrefix}survey_url_parameters up
+                            left join {$this->yii->db->tablePrefix}questions q on q.qid=up.targetqid
+                            left join {$this->yii->db->tablePrefix}questions sq on q.qid=up.targetqid
+                            where up.sid={$iSurveyID}");
         $i=0;
-        foreach ($oResult->result_array() as $oRow)
+		
+        foreach ($oResult->readAll() as $oRow)
         {
             $data->rows[$i]['id']=$oRow['id'];
             $oRow['title']= $oRow['title'].': '.ellipsize(FlattenText($oRow['question'],false,true),43,.70);
+			
             if ($oRow['sqquestion']!='')
             {
-                echo ' - '.ellipsize(FlattenText($oRow['sqquestion'],false,true),30,.75);
+                echo (' - '.ellipsize(FlattenText($oRow['sqquestion'],false,true),30,.75));
             }
             unset($oRow['sqquestion']);
             unset($oRow['sqtitle']);
@@ -1678,7 +1691,7 @@ class SurveyAction extends Survey_Common_Action {
         }
 
         $data->page = 1;
-        $data->records = $oResult->num_rows();
+        $data->records = $oResult->getRowCount();
         $data->total = 1;
 
         echo ls_json_encode($data);

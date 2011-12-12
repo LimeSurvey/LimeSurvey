@@ -2,13 +2,15 @@
 <?php
     $data['clang'] = $clang;
     $data['action'] = $action;
-    $this->load->view('admin/survey/subview/tab_view',$data);
-    $this->load->view('admin/survey/subview/tabGeneralEditSurvey_view',$data);
-    $this->load->view('admin/survey/subview/tabPresentation_view',$data);
-    $this->load->view('admin/survey/subview/tabPublication_view',$data);
-    $this->load->view('admin/survey/subview/tabNotification_view',$data);
-    $this->load->view('admin/survey/subview/tabTokens_view',$data);
-    $this->load->view('admin/survey/subview/tabPanelIntegration_view',$data);
+	$yii = Yii::app();
+	$controller = $yii->getController();
+    $controller->render('/admin/survey/subview/tab_view',$data);
+    $controller->render('/admin/survey/subview/tabGeneralEditSurvey_view',$data);
+    $controller->render('/admin/survey/subview/tabPresentation_view',$data);
+    $controller->render('/admin/survey/subview/tabPublication_view',$data);
+    $controller->render('/admin/survey/subview/tabNotification_view',$data);
+    $controller->render('/admin/survey/subview/tabTokens_view',$data);
+    $controller->render('/admin/survey/subview/tabPanelIntegration_view',$data);
 ?>
 <input type='hidden' id='surveysettingsaction' name='action' value='updatesurveysettings' />
 <input type='hidden' id='sid' name='sid' value="<?php echo $esrow['sid'];?>" />
@@ -16,7 +18,7 @@
 <input type='hidden' name='language' value="<?php echo $esrow['language'];?>" />
 </form>
 <?php
-    $this->load->view('admin/survey/subview/tabResourceManagement_view',$data);
+    $controller->render('/admin/survey/subview/tabResourceManagement_view',$data);
 ?>
 </div>
 
@@ -24,7 +26,7 @@
     if (bHasSurveyPermission($surveyid,'surveysettings','update'))
     {?>
     <p><button onclick="if (UpdateLanguageIDs(mylangs,'<?php $clang->eT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js");?>')) {$('#addnewsurvey').submit();}" class='standardbtn' ><?php $clang->eT("Save"); ?></button></p>
-    <p><button onclick="if (UpdateLanguageIDs(mylangs,'<?php $clang->eT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js");?>')) { document.getElementById('surveysettingsaction').value = 'updatesurveysettingsandeditlocalesettings'; $('addnewsurvey').submit();}" class='standardbtn' ><?php $clang->eT("Save & edit survey text elements");?> >></button></p><?php
+    <p><button onclick="if (UpdateLanguageIDs(mylangs,'<?php $clang->eT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js");?>')) { document.getElementById('surveysettingsaction').value = 'updatesurveysettingsandeditlocalesettings'; $('#addnewsurvey').submit();}" class='standardbtn' ><?php $clang->eT("Save & edit survey text elements");?> >></button></p><?php
 }?>
 <div id='dlgEditParameter'>
     <div id='dlgForm' class='form30'>

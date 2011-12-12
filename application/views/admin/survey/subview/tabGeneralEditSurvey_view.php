@@ -1,3 +1,7 @@
+<?php
+	$yii = Yii::app();
+	$controller = $yii->getController();
+?>
 <div id='general'>
 <ul>
     <li>
@@ -9,8 +13,8 @@
             <?php $jsX=0;
             $jsRemLang ="<script type=\"text/javascript\">
                         var mylangs = new Array();
-                        standardtemplaterooturl='".$this->config->item('standardtemplaterooturl')."';
-                        templaterooturl='".$this->config->item('usertemplaterooturl')."';\n";
+                        standardtemplaterooturl='".$yii->getConfig('standardtemplaterooturl')."';
+                        templaterooturl='".$yii->getConfig('usertemplaterooturl')."';\n";
 
             foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname) {
                 if ($langname && $langname != $esrow['language']) {

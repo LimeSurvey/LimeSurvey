@@ -7161,8 +7161,8 @@ function access_denied($action,$sid='')
 */
 function CleanLanguagesFromSurvey($sid, $availlangs)
 {
-    $CI =& get_instance();
-    $CI->load->helper('database');
+    $yii = Yii::app();
+    $yii->loadHelper('database');
     //$clang = $CI->limesurvey_lang;
     $sid=sanitize_int($sid);
     $baselang = GetBaseLanguageFromSurveyID($sid);
@@ -7185,25 +7185,25 @@ function CleanLanguagesFromSurvey($sid, $availlangs)
     }
 
     // Remove From Answers Table
-    $query = "SELECT qid FROM ".$CI->db->dbprefix."questions WHERE sid='{$sid}' AND $sqllang";
+    $query = "SELECT qid FROM ".$yii->db->tablePrefix."questions WHERE sid='{$sid}' AND $sqllang";
 
     $qidresult = db_execute_assoc($query);    //Checked
 
-    foreach ($qidresult->result_array() as $qrow)
+    foreach ($qidresult->readAll() as $qrow)
     {
 
         $myqid = $qrow['qid'];
-        $query = "DELETE FROM ".$CI->db->dbprefix."answers WHERE qid='$myqid' AND $sqllang";
+        $query = "DELETE FROM ".$yii->db->tablePrefix."answers WHERE qid='$myqid' AND $sqllang";
         db_execute_assoc($query) ; //$connect->Execute($query) or safe_die($connect->ErrorMsg());    //Checked
     }
 
     // Remove From Questions Table
-    $query = "DELETE FROM ".$CI->db->dbprefix."questions WHERE sid='{$sid}' AND $sqllang";
+    $query = "DELETE FROM ".$yii->db->tablePrefix."questions WHERE sid='{$sid}' AND $sqllang";
     db_execute_assoc($query) ;
     //$connect->Execute($query) or safe_die($connect->ErrorMsg());   //Checked
 
     // Remove From Groups Table
-    $query = "DELETE FROM ".$CI->db->dbprefix."groups WHERE sid='{$sid}' AND $sqllang";
+    $query = "DELETE FROM ".$yii->db->tablePrefix."groups WHERE sid='{$sid}' AND $sqllang";
     //$connect->Execute($query) or safe_die($connect->ErrorMsg());   //Checked
     db_execute_assoc($query) ;
 
@@ -8495,4 +8495,41 @@ function checkgroupfordisplay($gid,$anonymized,$surveyid)
     }
 }
 
+/**
+ * Ellipsize String
+ *
+ * This public static function will strip tags from a string, split it at its max_length and ellipsize
+ *
+ * @param	string		string to ellipsize
+ * @param	integer		max length of string
+ * @param	mixed		int (1|0) or float, .5, .2, etc for position to split
+ * @param	string		ellipsis ; Default '...'
+ * @return	string		ellipsized string
+ */
+function ellipsize($str, $max_length, $position = 1, $ellipsis = '&hellip;')
+{
+	// Strip tags
+	$str = trim(strip_tags($str));
+
+	// Is the string long enough to ellipsize?
+	if (strlen($str) <= $max_length)
+	{
+		return $str;
+	}
+
+	$beg = substr($str, 0, floor($max_length * $position));
+
+	$position = ($position > 1) ? 1 : $position;
+
+	if ($position === 1)
+	{
+		$end = substr($str, 0, -($max_length - strlen($beg)));
+	}
+	else
+	{
+		$end = substr($str, -($max_length - strlen($beg)));
+	}
+
+	return $beg.$ellipsis.$end;
+}
 // Closing PHP tag intentionally omitted - yes, it is okay

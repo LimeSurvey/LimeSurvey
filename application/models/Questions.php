@@ -126,7 +126,26 @@ class Questions extends CActiveRecord
 			->order('question_order asc')
 			->query();
     }
+	
+	
+    function getQuestionsWithSubQuestions($iSurveyID, $sLanguage, $sCondition=FALSE)
+    {
+		$dbprefix = Yii::app()->db->tablePrefix;
+		$command = Yii::app()->db->createCommand()
+			->select($dbprefix.'questions.*, q.qid as sqid, q.title as sqtitle,  q.question as sqquestion, '.$dbprefix.'groups.*')
+			->from($this->tableName())
+			->leftJoin($dbprefix.'questions q', "q.parent_qid = {$dbprefix}questions.qid AND q.language = {$dbprefix}questions.language")
+			->join($dbprefix.'groups', "{$dbprefix}groups.gid = {$dbprefix}questions.gid  AND {$dbprefix}questions.language = {$dbprefix}groups.language");
+		$command->where("({$dbprefix}questions.sid = '$iSurveyID' AND {$dbprefix}questions.language = '$sLanguage' AND {$dbprefix}questions.parent_qid = 0)");
+        if ($sCondition != FALSE)
+        {
+			$command->where("({$dbprefix}questions.sid = '$iSurveyID' AND {$dbprefix}questions.language = '$sLanguage' AND {$dbprefix}questions.parent_qid = 0) AND " . $sCondition);
+        }
+		$command->order("{$dbprefix}groups.group_order asc, {$dbprefix}questions.question_order asc");
 
+        return $command->query()->readAll();
+    }
+	
 	function insertRecords($data)
     {
         $questions = new self;
