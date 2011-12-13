@@ -1229,10 +1229,13 @@ class LimeExpressionManager {
                 case ';': //ARRAY (Multi Flexi) Text
                     $subqtext = (isset($fielddata['subquestion1']) ? $fielddata['subquestion1'] : '');
                     $ansList = array();
-                    foreach ($fielddata['answerList'] as $ans) {
-                        $ansList['1~' . $ans['code']] = $ans['code'] . '|' . $ans['answer'];
+                    if (isset($fielddata['answerList']))
+                    {
+                        foreach ($fielddata['answerList'] as $ans) {
+                            $ansList['1~' . $ans['code']] = $ans['code'] . '|' . $ans['answer'];
+                        }
+                        $this->multiflexiAnswers[$questionNum] = $ansList;
                     }
-                    $this->multiflexiAnswers[$questionNum] = $ansList;
                     break;
             }
 
@@ -4896,21 +4899,26 @@ EOT;
             'hyperlinkSyntaxHighlighting'=>true,
             'rooturl'=>$rooturl,
         );
+
+        $varNamesUsed = array(); // keeps track of whether variables have been declared
         
         if (!is_null($qid))
         {
+            $surveyMode='question';
             LimeExpressionManager::StartSurvey($sid, 'question', $surveyOptions, false,$LEMdebugLevel);
             $qseq = LimeExpressionManager::GetQuestionSeq($qid);
-            $moveResult = LimeExpressionManager::JumpTo($qseq+1,false,false,true);
+            $moveResult = LimeExpressionManager::JumpTo($qseq+1,true,false,true);
         }
         else if (!is_null($gid)) 
         {
+            $surveyMode='group';
             LimeExpressionManager::StartSurvey($sid, 'group', $surveyOptions, false,$LEMdebugLevel);
             $gseq = LimeExpressionManager::GetGroupSeq($gid);
-            $moveResult = LimeExpressionManager::JumpTo($gseq+1,false,false,true);
+            $moveResult = LimeExpressionManager::JumpTo($gseq+1,true,false,true);
         }
         else
         {
+            $surveyMode='survey';
             LimeExpressionManager::StartSurvey($sid, 'survey', $surveyOptions, false,$LEMdebugLevel);
             $moveResult = LimeExpressionManager::NavigateForwards();
         }
@@ -5078,7 +5086,37 @@ EOT;
                 }
             }
 
+            //////
+            // TEST VALIDITY OF ROOT VARIABLE NAME AND WHETHER HAS BEEN USED
+            //////
             $rootVarName = $q['info']['rootVarName'];
+            $varNameErrorMsg = '';
+            $varNameError = NULL;
+            if (isset($varNamesUsed[$rootVarName]))
+            {
+                $varNameErrorMsg .= $LEM->gT('This variable name has already been used.');
+            }
+            else
+            {
+                $varNamesUsed[$rootVarName] = array(
+                    'gid'=>$gid,
+                    'qid'=>$qid
+                    );
+            }
+
+            if (!preg_match('/^[_a-zA-Z][_0-9a-zA-Z]*$/', $rootVarName))
+            {
+                $varNameErrorMsg .= $LEM->gT('This variable name contains invalid characters.');
+            }
+            if ($varNameErrorMsg != '')
+            {
+                $varNameError = array (
+                    'message' => $varNameErrorMsg,
+                    'gid' => $varNamesUsed[$rootVarName]['gid'],
+                    'qid' => $varNamesUsed[$rootVarName]['qid']
+                    );
+                ++$errorCount;
+            }
 
             //////
             // SHOW ALL SUB-QUESTIONS
@@ -5200,7 +5238,21 @@ EOT;
 
             $questionRow = "<tr class='LEMquestion'>"
             . "<td $errclass>Q-" . $q['info']['qseq'] . "</td>"
-            . "<td><b>" . $mandatory . $rootVarName . "</b><br/>[<a target='_blank' href='$rooturl/admin/admin.php?sid=$sid&gid=$gid&qid=$qid'>QID $qid</a>]<br/>$typedesc [$type]</td>"
+            . "<td><b>" . $mandatory;
+
+            if ($varNameErrorMsg == '')
+            {
+                $questionRow .= $rootVarName;
+            }
+            else
+            {
+                $editlink = $LEM->surveyOptions['rooturl'] . '/admin/admin.php?sid=' . $LEM->sid . '&gid=' . $varNameError['gid'] . '&qid=' . $varNameError['qid'];
+                $questionRow .= "<span style='border-style: solid; border-width: 2px; border-color: red;' title='" . $varNameError['message'] . "' "
+                    . "onclick='window.open(\"$editlink\",\"_blank\")'>"
+                    . $rootVarName . "</span>";
+            }
+            
+            $questionRow .= "</b><br/>[<a target='_blank' href='$rooturl/admin/admin.php?sid=$sid&gid=$gid&qid=$qid'>QID $qid</a>]<br/>$typedesc [$type]</td>"
             . "<td>" . $relevance . $prettyValidEqn . $default . "</td>"
             . "<td>" . $qdetails . "</td>"
             . "</tr>\n";
@@ -5221,10 +5273,22 @@ EOT;
         }
 
         if (count($allErrors) > 0) {
-            $out = "<p class='LEMerror'>". count($allErrors) . " Question(s) contain errors that need to be corrected</p>\n" . $out;
+            $out = "<p class='LEMerror'>". count($allErrors) . $LEM->gT(" Question(s) contain errors that need to be corrected") . "</p>\n" . $out;
         }
         else {
-            $out = "<p class='LEMerror'>Congratulations, this survey has no syntax errors</p>\n" . $out;
+            switch ($surveyMode)
+            {
+                case 'survey':
+                    $message = $LEM->gT('No syntax errors detected in this survey');
+                    break;
+                case 'group':
+                    $message = $LEM->gT('This group, by itself, does not contain any syntax errors');
+                    break;
+                case 'question':
+                    $message = $LEM->gT('This question, by itself, does not contain any syntax errors');
+                    break;
+            }
+            $out = "<p class='LEMerror'>$message</p>\n" . $out;
         }
 
         return array(

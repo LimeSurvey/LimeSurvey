@@ -309,12 +309,19 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             . "<img src='{$imageurl}/emailtemplates_30.png' name='EditEmailTemplates' /> ".$clang->gT("Email templates")."</a></li>\n";
         }
 
+        // QUALITY ASSURANCE BUTTON - SHOW LOGIC FILE
+        if(bHasSurveyPermission($surveyid,'surveyactivation','read'))
+        {
+            $surveysummary .= "<li><a target='_blank' href='{$scriptname}?action=showlogicfile&amp;sid={$surveyid}' >"
+            . "<img src='{$imageurl}/quality_assurance.png' name='ShowLogicFile' /> ".$clang->gT("Survey Logic File")."</a></li>\n";
+        }
+
         $surveysummary .='</ul></li>'; // End if survey properties
 
 
         // Tools menu item
         $surveysummary .= "<li><a href=\"#\">"
-        . "<img src='{$imageurl}/tools.png' name='SorveyTools' alt='".$clang->gT("Tools")."' /></a><ul>\n";
+        . "<img src='{$imageurl}/tools.png' name='SurveyTools' alt='".$clang->gT("Tools")."' /></a><ul>\n";
 
 
         // Delete survey item
@@ -873,6 +880,14 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
             . "<img src='$imageurl/edit.png' alt='".$clang->gT("Edit current question group")."' name='EditGroup' /></a>\n" ;
         }
 
+        // QUALITY ASSURANCE BUTTON - SHOW LOGIC FILE FOR THIS QUESTION GROUP
+        if(bHasSurveyPermission($surveyid,'surveyactivation','read'))
+        {
+            $groupsummary .= "<img src='$imageurl/seperator.gif' alt=''  />\n"
+            . "<a href=\"#\" onclick=\"window.open('$scriptname?action=showlogicfile&amp;sid=$surveyid&amp;gid=$gid','_blank')\""
+            . " title=\"".$clang->gTview("Survey Logic File for current question group")."\">"
+            . "<img src='$imageurl/quality_assurance.png' alt='".$clang->gT("Survey Logic File for current question group")."' name='ShowGroupLogicFile' /></a>\n" ;
+        }
 
         // DELETE CURRENT QUESTION GROUP BUTTON
 
@@ -1140,6 +1155,15 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
             . " title=\"".$clang->gTview("Edit current question")."\">"
             . "<img src='$imageurl/edit.png' alt='".$clang->gT("Edit Current Question")."' name='EditQuestion' /></a>\n" ;
         }
+
+        // QUALITY ASSURANCE BUTTON - SHOW LOGIC FILE FOR THIS QUESTION GROUP
+        if(bHasSurveyPermission($surveyid,'surveyactivation','read'))
+        {
+            $questionsummary .= "<img src='$imageurl/seperator.gif' alt=''  />\n"
+            . "<a href=\"#\" onclick=\"window.open('$scriptname?action=showlogicfile&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid','_blank')\""
+            . " title=\"".$clang->gTview("Survey Logic File for current question")."\">"
+            . "<img src='$imageurl/quality_assurance.png' alt='".$clang->gT("Survey Logic File for current question")."' name='ShowQuestionLogicFile' /></a>\n" ;
+        }        
 
 
         // DELETE CURRENT QUESTION BUTTON

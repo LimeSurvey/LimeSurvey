@@ -256,6 +256,21 @@ if(isset($_SESSION['loginID']))
         exit;
 
     }
+    elseif ($action == 'showlogicfile')
+    {
+        if(bHasSurveyPermission($surveyid,'surveyactivation','read'))
+        {
+            $_POST['sid'] = sanitize_int($surveyid) . '|N';
+            $_POST['LEM_PRETTY_PRINT_ALL_SYNTAX'] = 'Y';
+            $_POST['surveyMode'] = 'survey';
+            $_POST['LEMcalledFromAdmin'] = 'Y';
+            if (isset($_GET['gid'])) { $_POST['gid'] = $_GET['gid']; }
+            if (isset($_GET['qid'])) { $_POST['qid'] = $_GET['qid']; }
+            include($rootdir . '/classes/eval/test/survey_logic_file.php');
+            exit;
+        }
+        else { include('access_denied.php');}
+    }
     elseif ($action=='addgroup' || $action=='editgroup' || $action=='ordergroups')
     {
         if(bHasSurveyPermission($surveyid,'surveycontent','read'))    {$_SESSION['FileManagerContext']="edit:group:$surveyid"; include('questiongrouphandling.php');}

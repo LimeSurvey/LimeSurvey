@@ -6,11 +6,17 @@
     </head>
     <body>
         <?php
-            include_once('../LimeExpressionManager.php');
-            require_once('../../../classes/core/startup.php');
-            require_once('../../../config-defaults.php');
-            require_once('../../../common.php');
-            require_once('../../../classes/core/language.php');
+            if ($_POST['LEMcalledFromAdmin']=='Y') {
+                $rootpath = $rootdir;
+            }
+            else {
+                $rootpath = '../../..';
+            }
+            include_once($rootpath . '/classes/eval/LimeExpressionManager.php');
+            require_once($rootpath . '/classes/core/startup.php');
+            require_once($rootpath . '/config-defaults.php');
+            require_once($rootpath . '/common.php');
+            require_once($rootpath . '/classes/core/language.php');
 
             $clang = new limesurvey_lang("en");
 
@@ -71,9 +77,9 @@ EOD;
                         ((isset($_POST['LEM_PRETTY_PRINT_ALL_SYNTAX']) && $_POST['LEM_PRETTY_PRINT_ALL_SYNTAX'] == 'Y') ? LEM_PRETTY_PRINT_ALL_SYNTAX : 0)
                         );
 
-                $language = NULL;
-                $gid = NULL;
-                $qid = NULL;
+                $language = (isset($_POST['language']) ? sanitize_languagecode($_POST['language']) : NULL);
+                $gid = (isset($_POST['gid']) ? sanitize_int($_POST['gid']) : NULL);
+                $qid = (isset($_POST['qid']) ? sanitize_int($_POST['qid']) : NULL);
 
                 print <<< EOD
 <html>
