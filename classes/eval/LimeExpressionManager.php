@@ -1744,7 +1744,7 @@ class LimeExpressionManager {
             $questionSeq = isset($LEM->questionId2questionSeq[$questionNum]) ? $LEM->questionId2questionSeq[$questionNum] : -1;
             $groupSeq = isset($LEM->questionId2groupSeq[$questionNum]) ? $LEM->questionId2groupSeq[$questionNum] : -1;
         }
-        $stringToParse = htmlspecialchars_decode($string,ENT_QUOTES);
+        $stringToParse = $string;   // decode called later htmlspecialchars_decode($string,ENT_QUOTES);
         $qnum = is_null($questionNum) ? 0 : $questionNum;
         $result = $LEM->em->sProcessStringContainingExpressions($stringToParse,$qnum, $numRecursionLevels, $whichPrettyPrintIteration, $groupSeq, $questionSeq);
         $hasErrors = $LEM->em->HasErrors();

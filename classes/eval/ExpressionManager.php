@@ -1338,7 +1338,13 @@ class ExpressionManager {
                                     $descriptor = '[' . $token[0] . ']';
                                 }
                                 else {
-                                    $displayName = $qcode;
+                                    $args = explode('.',$token[0]);
+                                    if (count($args) == 2) {
+                                        $displayName = $qcode . '.' . $args[1];
+                                    }
+                                    else {
+                                        $displayName = $qcode;
+                                    }
                                 }
                             }
                             else {
@@ -1458,6 +1464,9 @@ class ExpressionManager {
                 }
                 else {
                     if (isset($_SESSION[$sgqa])) {
+//                        if ($_SESSION[$sgqa] == 'false') {
+//                            return $default;  // TODO - is is safe to assume that a value of 'false' means boolean false and should be blanked?
+//                        }
                         return $_SESSION[$sgqa];
                     }
                     if (isset($var['default']) && !is_null($var['default'])) {
@@ -1761,6 +1770,10 @@ class ExpressionManager {
         if (is_null($result)) {
             return false;    // if there are errors in the expression, hide it?
         }
+//        if ($result == 'false') {
+//            return false;    // since the string 'false' is not considered boolean false, but an expression in JavaScript can return 'false'
+//        }
+//        return !empty($result);
         return (boolean) $result;
     }
 
@@ -2362,6 +2375,9 @@ EOD;
         // expectedResult~expression
         // if the expected result is an error, use NULL for the expected result
         $tests  = <<<EOD
+0~('NA' > 0 and 4 > 0) or ('' == 'Y')
+0~('NA'> 0)
+0~(-1 > 0)
 0~zero
 ~empty
 1~is_empty(empty)
