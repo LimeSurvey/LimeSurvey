@@ -522,10 +522,10 @@ if(isset($surveyid))
             if (isset($postgid) && $postgid != "")
             {
 
-                $array_result=checkMovequestionConstraintsForConditions(sanitize_int($postsid),sanitize_int($postqid), sanitize_int($postgid));
+//                $array_result=checkMovequestionConstraintsForConditions(sanitize_int($postsid),sanitize_int($postqid), sanitize_int($postgid));
                 // If there is no blocking conditions that could prevent this move
-                if (is_null($array_result['notAbove']) && is_null($array_result['notBelow']))
-                {
+//                if (is_null($array_result['notAbove']) && is_null($array_result['notBelow']))
+//                {
 
                     $questlangs = GetAdditionalLanguagesFromSurveyID($postsid);
                     $baselang = GetBaseLanguageFromSurveyID($postsid);
@@ -618,38 +618,38 @@ if(isset($surveyid))
                     $_SESSION['flashmessage'] = $clang->gT("Question was successfully saved.");
 
 
-                }
-                else
-                {
-                    // There are conditions constraints: alert the user
-                    $errormsg="";
-                    if (!is_null($array_result['notAbove']))
-                    {
-                        $errormsg.=$clang->gT("This question relies on other question's answers and can't be moved above groupId:","js")
-                        . " " . $array_result['notAbove'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notAbove'][0][1]."\\n"
-                        . $clang->gT("See conditions:")."\\n";
-
-                        foreach ($array_result['notAbove'] as $notAboveCond)
-                        {
-                            $errormsg.="- cid:". $notAboveCond[3]."\\n";
-                        }
-
-                    }
-                    if (!is_null($array_result['notBelow']))
-                    {
-                        $errormsg.=$clang->gT("Some questions rely on this question's answers. You can't move this question below groupId:","js")
-                        . " " . $array_result['notBelow'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notBelow'][0][1]."\\n"
-                        . $clang->gT("See conditions:")."\\n";
-
-                        foreach ($array_result['notBelow'] as $notBelowCond)
-                        {
-                            $errormsg.="- cid:". $notBelowCond[3]."\\n";
-                        }
-                    }
-
-                    $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
-                    $gid= $oldgid; // group move impossible ==> keep display on oldgid
-                }
+//                }
+//                else
+//                {
+//                    // There are conditions constraints: alert the user
+//                    $errormsg="";
+//                    if (!is_null($array_result['notAbove']))
+//                    {
+//                        $errormsg.=$clang->gT("This question relies on other question's answers and can't be moved above groupId:","js")
+//                        . " " . $array_result['notAbove'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notAbove'][0][1]."\\n"
+//                        . $clang->gT("See conditions:")."\\n";
+//
+//                        foreach ($array_result['notAbove'] as $notAboveCond)
+//                        {
+//                            $errormsg.="- cid:". $notAboveCond[3]."\\n";
+//                        }
+//
+//                    }
+//                    if (!is_null($array_result['notBelow']))
+//                    {
+//                        $errormsg.=$clang->gT("Some questions rely on this question's answers. You can't move this question below groupId:","js")
+//                        . " " . $array_result['notBelow'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notBelow'][0][1]."\\n"
+//                        . $clang->gT("See conditions:")."\\n";
+//
+//                        foreach ($array_result['notBelow'] as $notBelowCond)
+//                        {
+//                            $errormsg.="- cid:". $notBelowCond[3]."\\n";
+//                        }
+//                    }
+//
+//                    $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
+//                    $gid= $oldgid; // group move impossible ==> keep display on oldgid
+//                }
             }
             else
             {

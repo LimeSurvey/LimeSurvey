@@ -5080,333 +5080,333 @@ function FixLanguageConsistency($sid, $availlangs='')
     return true;
 }
 
-/**
-* GetGroupDepsForConditions() get Dependencies between groups caused by conditions
-* @param string $sid - the currently selected survey
-* @param string $depgid - (optionnal) get only the dependencies applying to the group with gid depgid
-* @param string $targgid - (optionnal) get only the dependencies for groups dependents on group targgid
-* @param string $index-by - (optionnal) "by-depgid" for result indexed with $res[$depgid][$targgid]
-*                   "by-targgid" for result indexed with $res[$targgid][$depgid]
-* @return array - returns an array describing the conditions or NULL if no dependecy is found
-*
-* Example outupt assumin $index-by="by-depgid":
-*Array
-*(
-*    [125] => Array             // Group Id 125 is dependent on
-*        (
-*            [123] => Array         // Group Id 123
-*                (
-*                    [depgpname] => G3      // GID-125 has name G3
-*                    [targetgpname] => G1   // GID-123 has name G1
-*                    [conditions] => Array
-*                        (
-*                            [189] => Array // Because Question Id 189
-*                                (
-*                                    [0] => 9   // Have condition 9 set
-*                                    [1] => 10  // and condition 10 set
-*                                    [2] => 14  // and condition 14 set
-*                                )
-*
-*                        )
-*
-*                )
-*
-*            [124] => Array         // GID 125 is also dependent on GID 124
-*                (
-*                    [depgpname] => G3
-*                    [targetgpname] => G2
-*                    [conditions] => Array
-*                        (
-*                            [189] => Array // Because Question Id 189 have conditions set
-*                                (
-*                                    [0] => 11
-*                                )
-*
-*                            [215] => Array // And because Question Id 215 have conditions set
-*                                (
-*                                    [0] => 12
-*                                )
-*
-*                        )
-*
-*                )
-*
-*        )
-*
-*)
-*
-* Usage example:
-*   * Get all group dependencies for SID $sid indexed by depgid:
-*       $result=GetGroupDepsForConditions($sid);
-*   * Get all group dependencies for GID $gid in survey $sid indexed by depgid:
-*       $result=GetGroupDepsForConditions($sid,$gid);
-*   * Get all group dependents on group $gid in survey $sid indexed by targgid:
-*       $result=GetGroupDepsForConditions($sid,"all",$gid,"by-targgid");
-*/
-function GetGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="by-depgid")
-{
-    global $connect, $clang;
-    $sid=sanitize_int($sid);
-    $condarray = Array();
+///**
+//* GetGroupDepsForConditions() get Dependencies between groups caused by conditions
+//* @param string $sid - the currently selected survey
+//* @param string $depgid - (optionnal) get only the dependencies applying to the group with gid depgid
+//* @param string $targgid - (optionnal) get only the dependencies for groups dependents on group targgid
+//* @param string $index-by - (optionnal) "by-depgid" for result indexed with $res[$depgid][$targgid]
+//*                   "by-targgid" for result indexed with $res[$targgid][$depgid]
+//* @return array - returns an array describing the conditions or NULL if no dependecy is found
+//*
+//* Example outupt assumin $index-by="by-depgid":
+//*Array
+//*(
+//*    [125] => Array             // Group Id 125 is dependent on
+//*        (
+//*            [123] => Array         // Group Id 123
+//*                (
+//*                    [depgpname] => G3      // GID-125 has name G3
+//*                    [targetgpname] => G1   // GID-123 has name G1
+//*                    [conditions] => Array
+//*                        (
+//*                            [189] => Array // Because Question Id 189
+//*                                (
+//*                                    [0] => 9   // Have condition 9 set
+//*                                    [1] => 10  // and condition 10 set
+//*                                    [2] => 14  // and condition 14 set
+//*                                )
+//*
+//*                        )
+//*
+//*                )
+//*
+//*            [124] => Array         // GID 125 is also dependent on GID 124
+//*                (
+//*                    [depgpname] => G3
+//*                    [targetgpname] => G2
+//*                    [conditions] => Array
+//*                        (
+//*                            [189] => Array // Because Question Id 189 have conditions set
+//*                                (
+//*                                    [0] => 11
+//*                                )
+//*
+//*                            [215] => Array // And because Question Id 215 have conditions set
+//*                                (
+//*                                    [0] => 12
+//*                                )
+//*
+//*                        )
+//*
+//*                )
+//*
+//*        )
+//*
+//*)
+//*
+//* Usage example:
+//*   * Get all group dependencies for SID $sid indexed by depgid:
+//*       $result=GetGroupDepsForConditions($sid);
+//*   * Get all group dependencies for GID $gid in survey $sid indexed by depgid:
+//*       $result=GetGroupDepsForConditions($sid,$gid);
+//*   * Get all group dependents on group $gid in survey $sid indexed by targgid:
+//*       $result=GetGroupDepsForConditions($sid,"all",$gid,"by-targgid");
+//*/
+//function GetGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="by-depgid")
+//{
+//    global $connect, $clang;
+//    $sid=sanitize_int($sid);
+//    $condarray = Array();
+//
+//    $sqldepgid="";
+//    $sqltarggid="";
+//    if ($depgid != "all") { $depgid = sanitize_int($depgid); $sqldepgid="AND tq.gid=$depgid";}
+//    if ($targgid != "all") {$targgid = sanitize_int($targgid); $sqltarggid="AND tq2.gid=$targgid";}
+//
+//    $baselang = GetBaseLanguageFromSurveyID($sid);
+//    $condquery = "SELECT tg.gid as depgid, tg.group_name as depgpname, "
+//    . "tg2.gid as targgid, tg2.group_name as targgpname, tq.qid as depqid, tc.cid FROM "
+//    . db_table_name('conditions')." AS tc, "
+//    . db_table_name('questions')." AS tq, "
+//    . db_table_name('questions')." AS tq2, "
+//    . db_table_name('groups')." AS tg ,"
+//    . db_table_name('groups')." AS tg2 "
+//    . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tg.language='{$baselang}' AND tg2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
+//    . "AND tq.gid = tg.gid AND tg2.gid = tq2.gid "
+//    . "AND tq2.qid=tc.cqid AND tq.gid != tg2.gid $sqldepgid $sqltarggid";
+//    $condresult=db_execute_assoc($condquery) or safe_die($connect->ErrorMsg());   //Checked
+//
+//    if ($condresult->RecordCount() > 0) {
+//        while ($condrow = $condresult->FetchRow())
+//        {
+//
+//            switch ($indexby)
+//            {
+//                case "by-depgid":
+//                    $depgid=$condrow['depgid'];
+//                    $targetgid=$condrow['targgid'];
+//                    $depqid=$condrow['depqid'];
+//                    $cid=$condrow['cid'];
+//                    $condarray[$depgid][$targetgid]['depgpname'] = $condrow['depgpname'];
+//                    $condarray[$depgid][$targetgid]['targetgpname'] = $condrow['targgpname'];
+//                    $condarray[$depgid][$targetgid]['conditions'][$depqid][]=$cid;
+//                    break;
+//
+//                case "by-targgid":
+//                    $depgid=$condrow['depgid'];
+//                    $targetgid=$condrow['targgid'];
+//                    $depqid=$condrow['depqid'];
+//                    $cid=$condrow['cid'];
+//                    $condarray[$targetgid][$depgid]['depgpname'] = $condrow['depgpname'];
+//                    $condarray[$targetgid][$depgid]['targetgpname'] = $condrow['targgpname'];
+//                    $condarray[$targetgid][$depgid]['conditions'][$depqid][] = $cid;
+//                    break;
+//            }
+//        }
+//        return $condarray;
+//    }
+//    return null;
+//}
 
-    $sqldepgid="";
-    $sqltarggid="";
-    if ($depgid != "all") { $depgid = sanitize_int($depgid); $sqldepgid="AND tq.gid=$depgid";}
-    if ($targgid != "all") {$targgid = sanitize_int($targgid); $sqltarggid="AND tq2.gid=$targgid";}
-
-    $baselang = GetBaseLanguageFromSurveyID($sid);
-    $condquery = "SELECT tg.gid as depgid, tg.group_name as depgpname, "
-    . "tg2.gid as targgid, tg2.group_name as targgpname, tq.qid as depqid, tc.cid FROM "
-    . db_table_name('conditions')." AS tc, "
-    . db_table_name('questions')." AS tq, "
-    . db_table_name('questions')." AS tq2, "
-    . db_table_name('groups')." AS tg ,"
-    . db_table_name('groups')." AS tg2 "
-    . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tg.language='{$baselang}' AND tg2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
-    . "AND tq.gid = tg.gid AND tg2.gid = tq2.gid "
-    . "AND tq2.qid=tc.cqid AND tq.gid != tg2.gid $sqldepgid $sqltarggid";
-    $condresult=db_execute_assoc($condquery) or safe_die($connect->ErrorMsg());   //Checked
-
-    if ($condresult->RecordCount() > 0) {
-        while ($condrow = $condresult->FetchRow())
-        {
-
-            switch ($indexby)
-            {
-                case "by-depgid":
-                    $depgid=$condrow['depgid'];
-                    $targetgid=$condrow['targgid'];
-                    $depqid=$condrow['depqid'];
-                    $cid=$condrow['cid'];
-                    $condarray[$depgid][$targetgid]['depgpname'] = $condrow['depgpname'];
-                    $condarray[$depgid][$targetgid]['targetgpname'] = $condrow['targgpname'];
-                    $condarray[$depgid][$targetgid]['conditions'][$depqid][]=$cid;
-                    break;
-
-                case "by-targgid":
-                    $depgid=$condrow['depgid'];
-                    $targetgid=$condrow['targgid'];
-                    $depqid=$condrow['depqid'];
-                    $cid=$condrow['cid'];
-                    $condarray[$targetgid][$depgid]['depgpname'] = $condrow['depgpname'];
-                    $condarray[$targetgid][$depgid]['targetgpname'] = $condrow['targgpname'];
-                    $condarray[$targetgid][$depgid]['conditions'][$depqid][] = $cid;
-                    break;
-            }
-        }
-        return $condarray;
-    }
-    return null;
-}
-
-/**
-* GetQuestDepsForConditions() get Dependencies between groups caused by conditions
-* @param string $sid - the currently selected survey
-* @param string $gid - (optionnal) only search dependecies inside the Group Id $gid
-* @param string $depqid - (optionnal) get only the dependencies applying to the question with qid depqid
-* @param string $targqid - (optionnal) get only the dependencies for questions dependents on question Id targqid
-* @param string $index-by - (optionnal) "by-depqid" for result indexed with $res[$depqid][$targqid]
-*                   "by-targqid" for result indexed with $res[$targqid][$depqid]
-* @return array - returns an array describing the conditions or NULL if no dependecy is found
-*
-* Example outupt assumin $index-by="by-depqid":
-*Array
-*(
-*    [184] => Array     // Question Id 184
-*        (
-*            [183] => Array // Depends on Question Id 183
-*                (
-*                    [0] => 5   // Because of condition Id 5
-*                )
-*
-*        )
-*
-*)
-*
-* Usage example:
-*   * Get all questions dependencies for Survey $sid and group $gid indexed by depqid:
-*       $result=GetQuestDepsForConditions($sid,$gid);
-*   * Get all questions dependencies for question $qid in survey/group $sid/$gid indexed by depqid:
-*       $result=GetGroupDepsForConditions($sid,$gid,$qid);
-*   * Get all questions dependents on question $qid in survey/group $sid/$gid indexed by targqid:
-*       $result=GetGroupDepsForConditions($sid,$gid,"all",$qid,"by-targgid");
-*/
-function GetQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",$indexby="by-depqid", $searchscope="samegroup")
-{
-    global $connect, $clang;
-    $condarray = Array();
-
-    $baselang = GetBaseLanguageFromSurveyID($sid);
-    $sqlgid="";
-    $sqldepqid="";
-    $sqltargqid="";
-    $sqlsearchscope="";
-    if ($gid != "all") {$gid = sanitize_int($gid); $sqlgid="AND tq.gid=$gid";}
-    if ($depqid != "all") {$depqid = sanitize_int($depqid); $sqldepqid="AND tq.qid=$depqid";}
-    if ($targqid != "all") {$targqid = sanitize_int($targqid); $sqltargqid="AND tq2.qid=$targqid";}
-    if ($searchscope == "samegroup") {$sqlsearchscope="AND tq2.gid=tq.gid";}
-
-    $condquery = "SELECT tq.qid as depqid, tq2.qid as targqid, tc.cid FROM "
-    . db_table_name('conditions')." AS tc, "
-    . db_table_name('questions')." AS tq, "
-    . db_table_name('questions')." AS tq2 "
-    . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
-    . "AND  tq2.qid=tc.cqid $sqlsearchscope $sqlgid $sqldepqid $sqltargqid";
-
-    $condresult=db_execute_assoc($condquery) or safe_die($connect->ErrorMsg());    //Checked
-
-    if ($condresult->RecordCount() > 0) {
-        while ($condrow = $condresult->FetchRow())
-        {
-            $depqid=$condrow['depqid'];
-            $targetqid=$condrow['targqid'];
-            $condid=$condrow['cid'];
-            switch ($indexby)
-            {
-                case "by-depqid":
-                    $condarray[$depqid][$targetqid][] = $condid;
-                    break;
-
-                case "by-targqid":
-                    $condarray[$targetqid][$depqid][] = $condid;
-                    break;
-            }
-        }
-        return $condarray;
-    }
-    return null;
-}
+///**
+//* GetQuestDepsForConditions() get Dependencies between groups caused by conditions
+//* @param string $sid - the currently selected survey
+//* @param string $gid - (optionnal) only search dependecies inside the Group Id $gid
+//* @param string $depqid - (optionnal) get only the dependencies applying to the question with qid depqid
+//* @param string $targqid - (optionnal) get only the dependencies for questions dependents on question Id targqid
+//* @param string $index-by - (optionnal) "by-depqid" for result indexed with $res[$depqid][$targqid]
+//*                   "by-targqid" for result indexed with $res[$targqid][$depqid]
+//* @return array - returns an array describing the conditions or NULL if no dependecy is found
+//*
+//* Example outupt assumin $index-by="by-depqid":
+//*Array
+//*(
+//*    [184] => Array     // Question Id 184
+//*        (
+//*            [183] => Array // Depends on Question Id 183
+//*                (
+//*                    [0] => 5   // Because of condition Id 5
+//*                )
+//*
+//*        )
+//*
+//*)
+//*
+//* Usage example:
+//*   * Get all questions dependencies for Survey $sid and group $gid indexed by depqid:
+//*       $result=GetQuestDepsForConditions($sid,$gid);
+//*   * Get all questions dependencies for question $qid in survey/group $sid/$gid indexed by depqid:
+//*       $result=GetGroupDepsForConditions($sid,$gid,$qid);
+//*   * Get all questions dependents on question $qid in survey/group $sid/$gid indexed by targqid:
+//*       $result=GetGroupDepsForConditions($sid,$gid,"all",$qid,"by-targgid");
+//*/
+//function GetQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",$indexby="by-depqid", $searchscope="samegroup")
+//{
+//    global $connect, $clang;
+//    $condarray = Array();
+//
+//    $baselang = GetBaseLanguageFromSurveyID($sid);
+//    $sqlgid="";
+//    $sqldepqid="";
+//    $sqltargqid="";
+//    $sqlsearchscope="";
+//    if ($gid != "all") {$gid = sanitize_int($gid); $sqlgid="AND tq.gid=$gid";}
+//    if ($depqid != "all") {$depqid = sanitize_int($depqid); $sqldepqid="AND tq.qid=$depqid";}
+//    if ($targqid != "all") {$targqid = sanitize_int($targqid); $sqltargqid="AND tq2.qid=$targqid";}
+//    if ($searchscope == "samegroup") {$sqlsearchscope="AND tq2.gid=tq.gid";}
+//
+//    $condquery = "SELECT tq.qid as depqid, tq2.qid as targqid, tc.cid FROM "
+//    . db_table_name('conditions')." AS tc, "
+//    . db_table_name('questions')." AS tq, "
+//    . db_table_name('questions')." AS tq2 "
+//    . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
+//    . "AND  tq2.qid=tc.cqid $sqlsearchscope $sqlgid $sqldepqid $sqltargqid";
+//
+//    $condresult=db_execute_assoc($condquery) or safe_die($connect->ErrorMsg());    //Checked
+//
+//    if ($condresult->RecordCount() > 0) {
+//        while ($condrow = $condresult->FetchRow())
+//        {
+//            $depqid=$condrow['depqid'];
+//            $targetqid=$condrow['targqid'];
+//            $condid=$condrow['cid'];
+//            switch ($indexby)
+//            {
+//                case "by-depqid":
+//                    $condarray[$depqid][$targetqid][] = $condid;
+//                    break;
+//
+//                case "by-targqid":
+//                    $condarray[$targetqid][$depqid][] = $condid;
+//                    break;
+//            }
+//        }
+//        return $condarray;
+//    }
+//    return null;
+//}
 
 
-/**
-* checkMovequestionConstraintsForConditions()
-* @param string $sid - the currently selected survey
-* @param string $qid - qid of the question you want to check possible moves
-* @param string $newgid - (optionnal) get only constraints when trying to move to this particular GroupId
-*                                     otherwise, get all moves constraints for this question
-*
-* @return array - returns an array describing the conditions
-*                 Array
-*                 (
-*                   ['notAbove'] = null | Array
-*                       (
-*                         Array ( gid1, group_order1, qid1, cid1 )
-*                       )
-*                   ['notBelow'] = null | Array
-*                       (
-*                         Array ( gid2, group_order2, qid2, cid2 )
-*                       )
-*                 )
-*
-* This should be read as:
-*    - this question can't be move above group gid1 in position group_order1 because of the condition cid1 on question qid1
-*    - this question can't be move below group gid2 in position group_order2 because of the condition cid2 on question qid2
-*
-*/
-function checkMovequestionConstraintsForConditions($sid,$qid,$newgid="all")
-{
-    global $connect;
-    $resarray=Array();
-    $resarray['notAbove']=null; // defaults to no constraint
-    $resarray['notBelow']=null; // defaults to no constraint
-    $sid=sanitize_int($sid);
-    $qid=sanitize_int($qid);
-
-    if ($newgid != "all")
-    {
-        $newgid=sanitize_int($newgid);
-        $newgorder=getGroupOrder($sid,$newgid);
-    }
-    else
-    {
-        $neworder=""; // Not used in this case
-    }
-
-    $baselang = GetBaseLanguageFromSurveyID($sid);
-
-    // First look for 'my dependencies': questions on which I have set conditions
-    $condquery = "SELECT tq.qid as depqid, tq.gid as depgid, tg.group_order as depgorder, "
-    . "tq2.qid as targqid, tq2.gid as targgid, tg2.group_order as targgorder, "
-    . "tc.cid FROM "
-    . db_table_name('conditions')." AS tc, "
-    . db_table_name('questions')." AS tq, "
-    . db_table_name('questions')." AS tq2, "
-    . db_table_name('groups')." AS tg, "
-    . db_table_name('groups')." AS tg2 "
-    . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
-    . "AND  tq2.qid=tc.cqid AND tg.gid=tq.gid AND tg2.gid=tq2.gid AND tq.qid=$qid ORDER BY tg2.group_order DESC";
-
-    $condresult=db_execute_assoc($condquery) or safe_die($connect->ErrorMsg());    //Checked
-
-    if ($condresult->RecordCount() > 0) {
-
-        while ($condrow = $condresult->FetchRow() )
-        {
-            // This Question can go up to the minimum GID on the 1st row
-            $depqid=$condrow['depqid'];
-            $depgid=$condrow['depgid'];
-            $depgorder=$condrow['depgorder'];
-            $targetqid=$condrow['targqid'];
-            $targetgid=$condrow['targgid'];
-            $targetgorder=$condrow['targgorder'];
-            $condid=$condrow['cid'];
-            //echo "This question can't go above to GID=$targetgid/order=$targetgorder because of CID=$condid";
-            if ($newgid != "all")
-            { // Get only constraints when trying to move to this group
-                if ($newgorder < $targetgorder)
-                {
-                    $resarray['notAbove'][]=Array($targetgid,$targetgorder,$depqid,$condid);
-                }
-            }
-            else
-            { // get all moves constraints
-                $resarray['notAbove'][]=Array($targetgid,$targetgorder,$depqid,$condid);
-            }
-        }
-    }
-
-    // Secondly look for 'questions dependent on me': questions that have conditions on my answers
-    $condquery = "SELECT tq.qid as depqid, tq.gid as depgid, tg.group_order as depgorder, "
-    . "tq2.qid as targqid, tq2.gid as targgid, tg2.group_order as targgorder, "
-    . "tc.cid FROM "
-    . db_table_name('conditions')." AS tc, "
-    . db_table_name('questions')." AS tq, "
-    . db_table_name('questions')." AS tq2, "
-    . db_table_name('groups')." AS tg, "
-    . db_table_name('groups')." AS tg2 "
-    . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
-    . "AND  tq2.qid=tc.cqid AND tg.gid=tq.gid AND tg2.gid=tq2.gid AND tq2.qid=$qid ORDER BY tg.group_order";
-
-    $condresult=db_execute_assoc($condquery) or safe_die($connect->ErrorMsg());        //Checked
-
-    if ($condresult->RecordCount() > 0) {
-
-        while ($condrow = $condresult->FetchRow())
-        {
-            // This Question can go down to the maximum GID on the 1st row
-            $depqid=$condrow['depqid'];
-            $depgid=$condrow['depgid'];
-            $depgorder=$condrow['depgorder'];
-            $targetqid=$condrow['targqid'];
-            $targetgid=$condrow['targgid'];
-            $targetgorder=$condrow['targgorder'];
-            $condid=$condrow['cid'];
-            //echo "This question can't go below to GID=$depgid/order=$depgorder because of CID=$condid";
-            if ($newgid != "all")
-            { // Get only constraints when trying to move to this group
-                if ($newgorder > $depgorder)
-                {
-                    $resarray['notBelow'][]=Array($depgid,$depgorder,$depqid,$condid);
-                }
-            }
-            else
-            { // get all moves constraints
-                $resarray['notBelow'][]=Array($depgid,$depgorder,$depqid,$condid);
-            }
-        }
-    }
-    return $resarray;
-}
+///**
+//* checkMovequestionConstraintsForConditions()
+//* @param string $sid - the currently selected survey
+//* @param string $qid - qid of the question you want to check possible moves
+//* @param string $newgid - (optionnal) get only constraints when trying to move to this particular GroupId
+//*                                     otherwise, get all moves constraints for this question
+//*
+//* @return array - returns an array describing the conditions
+//*                 Array
+//*                 (
+//*                   ['notAbove'] = null | Array
+//*                       (
+//*                         Array ( gid1, group_order1, qid1, cid1 )
+//*                       )
+//*                   ['notBelow'] = null | Array
+//*                       (
+//*                         Array ( gid2, group_order2, qid2, cid2 )
+//*                       )
+//*                 )
+//*
+//* This should be read as:
+//*    - this question can't be move above group gid1 in position group_order1 because of the condition cid1 on question qid1
+//*    - this question can't be move below group gid2 in position group_order2 because of the condition cid2 on question qid2
+//*
+//*/
+//function checkMovequestionConstraintsForConditions($sid,$qid,$newgid="all")
+//{
+//    global $connect;
+//    $resarray=Array();
+//    $resarray['notAbove']=null; // defaults to no constraint
+//    $resarray['notBelow']=null; // defaults to no constraint
+//    $sid=sanitize_int($sid);
+//    $qid=sanitize_int($qid);
+//
+//    if ($newgid != "all")
+//    {
+//        $newgid=sanitize_int($newgid);
+//        $newgorder=getGroupOrder($sid,$newgid);
+//    }
+//    else
+//    {
+//        $neworder=""; // Not used in this case
+//    }
+//
+//    $baselang = GetBaseLanguageFromSurveyID($sid);
+//
+//    // First look for 'my dependencies': questions on which I have set conditions
+//    $condquery = "SELECT tq.qid as depqid, tq.gid as depgid, tg.group_order as depgorder, "
+//    . "tq2.qid as targqid, tq2.gid as targgid, tg2.group_order as targgorder, "
+//    . "tc.cid FROM "
+//    . db_table_name('conditions')." AS tc, "
+//    . db_table_name('questions')." AS tq, "
+//    . db_table_name('questions')." AS tq2, "
+//    . db_table_name('groups')." AS tg, "
+//    . db_table_name('groups')." AS tg2 "
+//    . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
+//    . "AND  tq2.qid=tc.cqid AND tg.gid=tq.gid AND tg2.gid=tq2.gid AND tq.qid=$qid ORDER BY tg2.group_order DESC";
+//
+//    $condresult=db_execute_assoc($condquery) or safe_die($connect->ErrorMsg());    //Checked
+//
+//    if ($condresult->RecordCount() > 0) {
+//
+//        while ($condrow = $condresult->FetchRow() )
+//        {
+//            // This Question can go up to the minimum GID on the 1st row
+//            $depqid=$condrow['depqid'];
+//            $depgid=$condrow['depgid'];
+//            $depgorder=$condrow['depgorder'];
+//            $targetqid=$condrow['targqid'];
+//            $targetgid=$condrow['targgid'];
+//            $targetgorder=$condrow['targgorder'];
+//            $condid=$condrow['cid'];
+//            //echo "This question can't go above to GID=$targetgid/order=$targetgorder because of CID=$condid";
+//            if ($newgid != "all")
+//            { // Get only constraints when trying to move to this group
+//                if ($newgorder < $targetgorder)
+//                {
+//                    $resarray['notAbove'][]=Array($targetgid,$targetgorder,$depqid,$condid);
+//                }
+//            }
+//            else
+//            { // get all moves constraints
+//                $resarray['notAbove'][]=Array($targetgid,$targetgorder,$depqid,$condid);
+//            }
+//        }
+//    }
+//
+//    // Secondly look for 'questions dependent on me': questions that have conditions on my answers
+//    $condquery = "SELECT tq.qid as depqid, tq.gid as depgid, tg.group_order as depgorder, "
+//    . "tq2.qid as targqid, tq2.gid as targgid, tg2.group_order as targgorder, "
+//    . "tc.cid FROM "
+//    . db_table_name('conditions')." AS tc, "
+//    . db_table_name('questions')." AS tq, "
+//    . db_table_name('questions')." AS tq2, "
+//    . db_table_name('groups')." AS tg, "
+//    . db_table_name('groups')." AS tg2 "
+//    . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
+//    . "AND  tq2.qid=tc.cqid AND tg.gid=tq.gid AND tg2.gid=tq2.gid AND tq2.qid=$qid ORDER BY tg.group_order";
+//
+//    $condresult=db_execute_assoc($condquery) or safe_die($connect->ErrorMsg());        //Checked
+//
+//    if ($condresult->RecordCount() > 0) {
+//
+//        while ($condrow = $condresult->FetchRow())
+//        {
+//            // This Question can go down to the maximum GID on the 1st row
+//            $depqid=$condrow['depqid'];
+//            $depgid=$condrow['depgid'];
+//            $depgorder=$condrow['depgorder'];
+//            $targetqid=$condrow['targqid'];
+//            $targetgid=$condrow['targgid'];
+//            $targetgorder=$condrow['targgorder'];
+//            $condid=$condrow['cid'];
+//            //echo "This question can't go below to GID=$depgid/order=$depgorder because of CID=$condid";
+//            if ($newgid != "all")
+//            { // Get only constraints when trying to move to this group
+//                if ($newgorder > $depgorder)
+//                {
+//                    $resarray['notBelow'][]=Array($depgid,$depgorder,$depqid,$condid);
+//                }
+//            }
+//            else
+//            { // get all moves constraints
+//                $resarray['notBelow'][]=Array($depgid,$depgorder,$depqid,$condid);
+//            }
+//        }
+//    }
+//    return $resarray;
+//}
 
 function incompleteAnsFilterstate()
 {
