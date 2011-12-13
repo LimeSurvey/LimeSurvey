@@ -1549,7 +1549,7 @@ class ExpressionManager {
                             $ansArray = $var['ansArray'];
                             if (is_null($ansArray))
                             {
-                                $shown=$default;
+                                $shown=$code;
                             }
                             else
                             {
@@ -1559,7 +1559,7 @@ class ExpressionManager {
                                     $answer = join('|',$answerInfo);
                                 }
                                 else {
-                                    $answer = $default;
+                                    $answer = $code;
                                 }
                                 $shown = $answer;
                             }

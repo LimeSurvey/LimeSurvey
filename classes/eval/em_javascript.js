@@ -262,7 +262,7 @@ function LEMval(alias)
                 case 'R': //RANKING STYLE
                     which_ans = '0~' + value;
                     if (typeof attr.answers[which_ans] === 'undefined') {
-                        answer = '';
+                        answer = value;
                     }
                     else {
                         answerParts = attr.answers[which_ans].split('|');

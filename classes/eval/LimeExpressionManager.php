@@ -4948,7 +4948,7 @@ EOT;
                 $ginfo = $LEM->gseq2info[$gseq];
 
                 $grelevance = '{' . (($ginfo['grelevance']=='') ? 1 : $ginfo['grelevance']) . '}';
-                $gtext = ((trim($ginfo['description']) != '') ? '&nbsp;' : $ginfo['description']);
+                $gtext = ((trim($ginfo['description']) == '') ? '&nbsp;' : $ginfo['description']);
 
                 $groupRow = "<tr class='LEMgroup'>"
                 . "<td>G-$gseq</td>"
