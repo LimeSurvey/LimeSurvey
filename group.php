@@ -12,6 +12,7 @@
  *
  * $Id$
  */
+if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 
 // $LEMdebugLevel - customizable debugging for Lime Expression Manager
 $LEMdebugLevel=0;   // LEM_DEBUG_TIMING;    // (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
@@ -56,7 +57,6 @@ if (isset($_REQUEST['newtest']))
 	if ($_REQUEST['newtest']=="Y")
 		setcookie("limesurvey_timers", "0");
 $show_empty_group = false;
-if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 
 if ($previewgrp)
 {
@@ -84,50 +84,66 @@ else
     if (!isset($_SESSION['maxstep'])) {$_SESSION['maxstep']=0;}
     $_SESSION['prevstep']=$_SESSION['step'];
 
-    //Move current step ###########################################################################
-    if (isset($move) && $move == 'moveprev' && ($thissurvey['allowprev']=='Y' || $thissurvey['allowjumps']=='Y'))
+    if (isset($_SESSION['LEMpostKey']) && (!isset($_POST['LEMpostKey']) || ($_POST['LEMpostKey'] != $_SESSION['LEMpostKey'])))
     {
-        $moveResult = LimeExpressionManager::NavigateBackwards();
-        if ($moveResult['at_start']) {
-            $_SESSION['step']=0;
-            unset($moveResult); // so display welcome page again
-        }
-    }
-    if (isset($move) && $move == "movenext")
-    {
-        if (isset($_SESSION['LEMreload']))
-        {
-            LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);
-            $moveResult = LimeExpressionManager::JumpTo($_SESSION['step'],false,false);   // if late in the survey, will re-validate contents, which may be overkill
-            unset($_SESSION['LEMreload']);
-        }
-        else {
-            $moveResult = LimeExpressionManager::NavigateForwards();
-        }
-    }
-    if (isset($move) && ($move == 'movesubmit'))
-    {
-        if ($surveyMode == 'survey')
-        {
-            $moveResult = LimeExpressionManager::NavigateForwards();
-        }
-        else
-        {
-            // may be submitting from the navigation bar, in which case need to process all intervening questions
-            // in order to update equations and ensure there are no intervening relevant mandatory or relevant invalid questions
-            $moveResult = LimeExpressionManager::JumpTo($_SESSION['totalsteps']+1,false);
-        }
-    }
-    if (isset($move) && bIsNumericInt($move) && $thissurvey['allowjumps']=='Y')
-    {
-        $move = (int)$move;
-        if ($move > 0 && (($move <= $_SESSION['step']) || (isset($_SESSION['maxstep']) && $move <= $_SESSION['maxstep']))) {
-            $moveResult = LimeExpressionManager::JumpTo($move,false);
-        }
-    }
-    if (!isset($moveResult)) {
-        // Just in case not set via any other means
+        // then trying to resubmit (e.g. Next, Previous, Submit) from a cached copy of the page
+        // Simply re-display the current page without re-processing POST or re-validating input.  Means user will lose whatever data entry the just tried
+        // Also flash a message
         $moveResult = LimeExpressionManager::GetLastMoveResult();
+        $move = "movenext"; // so will re-display the survey
+        $invalidLastPage=true;
+        $vpopup="<script type=\"text/javascript\">\n
+        <!--\n $(document).ready(function(){
+            alert(\"".$clang->gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.", "js")."\");});\n //-->\n
+        </script>\n";
+    }
+    else
+    {
+        //Move current step ###########################################################################
+        if (isset($move) && $move == 'moveprev' && ($thissurvey['allowprev']=='Y' || $thissurvey['allowjumps']=='Y'))
+        {
+            $moveResult = LimeExpressionManager::NavigateBackwards();
+            if ($moveResult['at_start']) {
+                $_SESSION['step']=0;
+                unset($moveResult); // so display welcome page again
+            }
+        }
+        if (isset($move) && $move == "movenext")
+        {
+            if (isset($_SESSION['LEMreload']))
+            {
+                LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);
+                $moveResult = LimeExpressionManager::JumpTo($_SESSION['step'],false,false);   // if late in the survey, will re-validate contents, which may be overkill
+                unset($_SESSION['LEMreload']);
+            }
+            else {
+                $moveResult = LimeExpressionManager::NavigateForwards();
+            }
+        }
+        if (isset($move) && ($move == 'movesubmit'))
+        {
+            if ($surveyMode == 'survey')
+            {
+                $moveResult = LimeExpressionManager::NavigateForwards();
+            }
+            else
+            {
+                // may be submitting from the navigation bar, in which case need to process all intervening questions
+                // in order to update equations and ensure there are no intervening relevant mandatory or relevant invalid questions
+                $moveResult = LimeExpressionManager::JumpTo($_SESSION['totalsteps']+1,false);
+            }
+        }
+        if (isset($move) && bIsNumericInt($move) && $thissurvey['allowjumps']=='Y')
+        {
+            $move = (int)$move;
+            if ($move > 0 && (($move <= $_SESSION['step']) || (isset($_SESSION['maxstep']) && $move <= $_SESSION['maxstep']))) {
+                $moveResult = LimeExpressionManager::JumpTo($move,false);
+            }
+        }
+        if (!isset($moveResult)) {
+            // Just in case not set via any other means
+            $moveResult = LimeExpressionManager::GetLastMoveResult();
+        }
     }
 
     if (isset($moveResult)) {
@@ -870,6 +886,9 @@ if (!$previewgrp){
     echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep' />\n";
     echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
     echo "<input type='hidden' name='start_time' value='".time()."' id='start_time' />\n";
+    $_SESSION['LEMpostKey'] = mt_rand();
+    echo "<input type='hidden' name='LEMpostKey' value='{$_SESSION['LEMpostKey']}' id='LEMpostKey' />\n";
+
     if (isset($token) && !empty($token)) {
         echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
     }
