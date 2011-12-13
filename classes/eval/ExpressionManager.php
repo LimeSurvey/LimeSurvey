@@ -1308,10 +1308,13 @@ class ExpressionManager {
                     }
                     else
                     {
-                        if (!$this->RDP_isValidVariable($token[0])) {
+                        if (!$this->RDP_isValidVariable($token[0]))
+                        {
                             $color = 'red';
+                            $displayName = $token[0];
                         }
-                        else {
+                        else
+                        {
                             $jsName = $this->GetVarAttribute($token[0],'jsName','');
                             $code = $this->GetVarAttribute($token[0],'code','');
                             $question = $this->GetVarAttribute($token[0], 'question', '');
@@ -1322,14 +1325,24 @@ class ExpressionManager {
                             $gid = $this->GetVarAttribute($token[0],'gid',-1);
                             $qid = $this->GetVarAttribute($token[0],'qid',-1);
 
-                            if ($token[2] == 'SGQA' && $qcode != '') {
-                                $descriptor = '[' . $qcode . ']';
-                            }
-                            else if ($jsName != '') {
+                            if ($jsName != '') {
                                 $descriptor = '[' . $jsName . ']';
                             }
                             else {
                                 $descriptor = '';
+                            }
+                            // Show variable name instead of SGQA code, if available
+                            if ($qcode != '') {
+                                if (preg_match('/^INSERTANS:/',$token[0])) {
+                                    $displayName = $qcode . '.shown';
+                                    $descriptor = '[' . $token[0] . ']';
+                                }
+                                else {
+                                    $displayName = $qcode;
+                                }
+                            }
+                            else {
+                                $displayName = $token[0];
                             }
                             if ($questionSeq != -1) {
                                 $descriptor .= '[G:' . $groupSeq . ']';
@@ -1380,7 +1393,7 @@ class ExpressionManager {
                             $stringParts[] = " onclick='window.open(\"" . $editlink . "\");'";
                         }
                         $stringParts[] = ">";
-                        $stringParts[] = $token[0];
+                        $stringParts[] = $displayName;
                         $stringParts[] = "</span>";
                     }
                     break;
