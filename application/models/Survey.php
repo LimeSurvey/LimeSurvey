@@ -102,18 +102,19 @@ class Survey extends CActiveRecord
         return $data;
     }
 
-    public function getSomeRecords($fields,$condition=FALSE)
+  public function getSomeRecords($fields,$condition=FALSE)
     {
-        foreach ($fields as $field)
-        {
-            $this->db->select($field);
-        }
-        if ($condition != FALSE)
-        {
-            $this->db->where($condition);
-        }
+		$criteria = new CDbCriteria;
 
-        $data = $this->db->get('surveys');
+        if ($condition != FALSE)
+        {	
+		    foreach ($condition as $item => $value)
+			{
+				$criteria->addCondition($item.'="'.$value.'"');
+			}
+        }
+		
+		$data = $this->findAll($criteria);
 
         return $data;
     }
