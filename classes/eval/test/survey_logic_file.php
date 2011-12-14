@@ -6,6 +6,14 @@
     </head>
     <body>
         <?php
+            if (count($_GET) > 0) {
+                foreach ($_GET as $key=>$val) {
+                    if ($key == 'sid') {
+                        $val = $val . '|N'; // hack to pretend this is not an assessment
+                    }
+                    $_POST[$key] = $val;
+                }
+            }
             if ($_POST['LEMcalledFromAdmin']=='Y') {
                 $rootpath = $rootdir;
             }
@@ -77,7 +85,7 @@ EOD;
                         ((isset($_POST['LEM_PRETTY_PRINT_ALL_SYNTAX']) && $_POST['LEM_PRETTY_PRINT_ALL_SYNTAX'] == 'Y') ? LEM_PRETTY_PRINT_ALL_SYNTAX : 0)
                         );
 
-                $language = (isset($_POST['language']) ? sanitize_languagecode($_POST['language']) : NULL);
+                $language = (isset($_POST['lang']) ? sanitize_languagecode($_POST['lang']) : NULL);
                 $gid = (isset($_POST['gid']) ? sanitize_int($_POST['gid']) : NULL);
                 $qid = (isset($_POST['qid']) ? sanitize_int($_POST['qid']) : NULL);
 
@@ -115,8 +123,12 @@ background-color:lightyellow;
 </style>
     </head>
     <body>
-    <H3>Logic File for Survey #$surveyid</H3>
 EOD;
+
+
+                LimeExpressionManager::SetSurveyLanguage($language);
+
+                echo '<H3>' . $clang->gT('Logic File for Survey # ') . $surveyid . "</H3>\n";
 
                 $result = LimeExpressionManager::ShowSurveyLogicFile($surveyid, $language, $gid, $qid,$LEMdebugLevel,$assessments);
                 print $result['html'];

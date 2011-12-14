@@ -2244,12 +2244,24 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
 
     global $dbprefix, $connect, $globalfieldmap, $clang, $aDuplicateQIDs;
     $surveyid=sanitize_int($surveyid);
-    //checks to see if fieldmap has already been built for this page.
-    if (isset($globalfieldmap[$surveyid][$style][$clang->langcode]) && $force_refresh==false) {
-        return $globalfieldmap[$surveyid][$style][$clang->langcode];
+
+        //Get list of questions
+    if (is_null($sQuestionLanguage))
+    {
+        $sQuestionLanguage = GetBaseLanguageFromSurveyID($surveyid);
     }
-    if (isset($_SESSION['fieldmap-' . $surveyid . $clang->langcode]) && !$force_refresh) {
-        return $_SESSION['fieldmap-' . $surveyid . $clang->langcode];
+    $sQuestionLanguage = sanitize_languagecode($sQuestionLanguage);
+    if ($clang->langcode != $sQuestionLanguage) {
+        SetSurveyLanguage($surveyid, $sQuestionLanguage);
+    }
+    $s_lang = $clang->langcode;
+
+    //checks to see if fieldmap has already been built for this page.
+    if (isset($globalfieldmap[$surveyid][$style][$s_lang]) && $force_refresh==false) {
+        return $globalfieldmap[$surveyid][$style][$s_lang];
+    }
+    if (isset($_SESSION['fieldmap-' . $surveyid . $s_lang]) && !$force_refresh) {
+        return $_SESSION['fieldmap-' . $surveyid . $s_lang];
     }
 
     $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
@@ -2354,16 +2366,6 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
             $fieldmap["refurl"]['group_name']="";
         }
     }
-    }
-
-    //Get list of questions
-    if (is_null($sQuestionLanguage))
-    {
-    $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-    }
-    else
-    {
-        $s_lang = $sQuestionLanguage;
     }
 
     // Collect all default values once so don't need separate query for each question with defaults

@@ -213,7 +213,10 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             $icontext2=$clang->gTview("Execute This Survey");
         }
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
-        if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
+        $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+        $tmp_survlangs[] = $baselang;
+        rsort($tmp_survlangs);
+        if (count($tmp_survlangs) == 1)
         {
             $surveysummary .= "<li><a href='#' accesskey='d' onclick=\"window.open('"
             . $publicurl."/index.php?sid={$surveyid}&amp;newtest=Y&amp;lang={$baselang}', '_blank')\" title=\"{$icontext2}\" >"
@@ -227,9 +230,6 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             . "</a><ul>\n";
             $surveysummary .= "<li><a accesskey='d' target='_blank' href='{$publicurl}/index.php?sid=$surveyid&amp;newtest=Y'>"
               . "<img src='{$imageurl}/do_30.png' /> $icontext </a><ul>";
-            $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-            $tmp_survlangs[] = $baselang;
-            rsort($tmp_survlangs);
             // Test Survey Language Selection Popup
             foreach ($tmp_survlangs as $tmp_lang)
             {
@@ -312,8 +312,27 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         // QUALITY ASSURANCE BUTTON - SHOW LOGIC FILE
         if(bHasSurveyPermission($surveyid,'surveyactivation','read'))
         {
-            $surveysummary .= "<li><a target='_blank' href='{$scriptname}?action=showlogicfile&amp;sid={$surveyid}' >"
-            . "<img src='{$imageurl}/quality_assurance.png' name='ShowLogicFile' /> ".$clang->gT("Survey Logic File")."</a></li>\n";
+            $icontext = $clang->gT("Survey  Logic File");
+        }
+
+        if (count($tmp_survlangs) == 1)
+        {
+            $surveysummary .= "<li><a href='#' onclick=\"window.open('{$scriptname}?action=showlogicfile&amp;sid={$surveyid}', '_blank')\" title=\"{$icontext}\" >"
+            . "<img src='{$imageurl}/quality_assurance.png' alt='$icontext' />$icontext"
+            . "</a></li>\n";
+
+        } else {
+            $surveysummary .= "<li><a href='#' "
+            . "title='{$icontext}'>"
+            . "<img src='{$imageurl}/quality_assurance.png' alt='{$icontext}' />$icontext"
+            . "</a><ul>\n";
+            // Test Survey Language Selection Popup
+            foreach ($tmp_survlangs as $tmp_lang)
+            {
+                $surveysummary .= "<li><a target='_blank' href='{$scriptname}?action=showlogicfile&amp;sid={$surveyid}&amp;lang={$tmp_lang}'>"
+                . "<img src='{$imageurl}/quality_assurance.png' /> ".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
+            }
+            $surveysummary .= "</ul></li>";
         }
 
         $surveysummary .='</ul></li>'; // End if survey properties

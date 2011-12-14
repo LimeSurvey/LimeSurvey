@@ -58,6 +58,10 @@ if (isset($_REQUEST['newtest']))
 		setcookie("limesurvey_timers", "0");
 $show_empty_group = false;
 
+if (isset($_REQUEST['lang']))  {
+    LimeExpressionManager::SetSurveyLanguage($_REQUEST['lang']);
+}
+
 if ($previewgrp)
 {
 	$_SESSION['prevstep'] = 1;

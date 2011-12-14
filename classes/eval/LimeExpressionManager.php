@@ -55,7 +55,6 @@ class LimeExpressionManager {
     private $gseq2info;         // array of group sequence number to static info
 
     private $maxGroupSeq;  // the maximum groupSeq reached -  this is needed for Index
-    private $slang='en';
     private $q2subqInfo;    // mapping of questions to information about their subquestions.
     private $qattr; // array of attributes for each question
     private $syntaxErrors=array();
@@ -137,21 +136,30 @@ class LimeExpressionManager {
     }
 
     /**
-     * A legacy upgrader.  Relevance was initially a Question Attribute during development.  However, as of 2.0 alpha, it was already in the questions table.
-     * @return <type>
+     * Sets the survey language.  If the language has changed, then EM cache must be invalidated and refreshed
+     * @param string $lang
      */
-    public static function UpgradeRelevanceAttributeToQuestion()
+    public static function SetSurveyLanguage($lang=NULL)
     {
-        $query = "SELECT qid, value from ".db_table_name('question_attributes')." where attribute='relevance'";
-        $qresult = db_execute_assoc($query);
-        $queries = array();
-        foreach ($qresult->GetRows() as $row)
-        {
-            $query = "UPDATE ".db_table_name('questions')." SET relevance='".$row['value']."' WHERE qid=".$row['qid'];
-            db_execute_assoc($query);
-            $queries[] = $query;
+        if (is_null($lang)) {
+            $lang = 'en';   // should really be the survey base language
         }
-        return $queries;
+        $lang = sanitize_languagecode($lang);
+        if (!isset($_SESSION['LEMlang'])) {
+            $_SESSION['LEMlang'] = $lang;
+        }
+        if ($_SESSION['LEMlang'] != $lang) {
+            // then changing languages, so clear cache
+            $_SESSION['LEMdirtyFlag'] = true;
+            $_SESSION['LEMforceRefresh'] = true;
+
+            if (isset($_SESSION['LEMsid'])) {
+                SetSurveyLanguage($_SESSION['LEMsid'], $lang);
+                $lang = $_SESSION['s_lang'];
+            }
+        }
+
+        $_SESSION['LEMlang'] = $lang;
     }
 
     /**
@@ -1042,10 +1050,8 @@ class LimeExpressionManager {
             return false;   // means that those variables have been cached and no changes needed
         }
         $now = microtime(true);
-//        $LEM->slang = (isset($_SESSION['s_lang']) ? $_SESSION['s_lang'] : 'en');
-//        log_message('debug','**Language=' . $LEM->slang);
 
-        $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh);
+        $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh,false,$_SESSION['LEMlang']);
         $this->sid= $surveyid;
 
         $this->runtimeTimings[] = array(__METHOD__ . '.createFieldMap',(microtime(true) - $now));
@@ -1092,20 +1098,21 @@ class LimeExpressionManager {
             'D' => $this->gT("Decrease"),
         );
 
-        $this->gseq2info = $this->getGroupInfoForEM($surveyid,$this->slang);
+        $this->gseq2info = $this->getGroupInfoForEM($surveyid,$_SESSION['LEMlang']);
         for ($i=0;$i<count($this->gseq2info);++$i)
         {
             $gseq = $this->gseq2info[$i];
             $this->groupId2groupSeq[$gseq['gid']] = $i;
         }
 
-        $qattr = $this->getQuestionAttributesForEM($surveyid);   // what happens if $surveyid is null?
+        $qattr = $this->getQuestionAttributesForEM($surveyid,NULL,$_SESSION['LEMlang']);
+
         $this->qattr = $qattr;
 
         $this->runtimeTimings[] = array(__METHOD__ . ' - question_attributes_model->getQuestionAttributesForEM',(microtime(true) - $now));
         $now = microtime(true);
 
-        $this->qans = $this->getAnswerSetsForEM($surveyid,NULL);  // ,$this->slang);  // TODO - will this work for multi-lingual?
+        $this->qans = $this->getAnswerSetsForEM($surveyid,NULL,$_SESSION['LEMlang']);
 
         $this->runtimeTimings[] = array(__METHOD__ . ' - answers_model->getAnswerSetsForEM',(microtime(true) - $now));
         $now = microtime(true);
@@ -2045,7 +2052,6 @@ class LimeExpressionManager {
         $LEM->allOnOnePage=$allOnOnePage;
         $LEM->pageTailoringLog='';
         $LEM->surveyLogicFile='';
-        $LEM->slang = (isset($_SESSION['s_lang']) ? $_SESSION['s_lang'] : 'en');
         $LEM->processedRelevance=false;
         if (!is_null($rooturl)) {
             $LEM->surveyOptions['rooturl'] = $rooturl;
@@ -4727,23 +4733,26 @@ EOT;
 		return $data;
     }
 
-    private function getQuestionAttributesForEM($surveyid=NULL,$qid=NULL)
+    private function getQuestionAttributesForEM($surveyid=NULL,$qid=NULL, $lang=NULL)
     {
         if (!is_null($qid)) {
-            $where = " a.qid = ".$qid." and ";
+            $where = " a.qid = ".$qid;
         }
         else if (!is_null($surveyid)) {
-            $where = " a.qid=b.qid and b.sid=".$surveyid." and ";
+            $where = " a.qid=b.qid and b.sid=".$surveyid;
         }
         else {
-            $where = " and ";
+            $where = " 1";
+        }
+        if (!is_null($lang)) {
+            $lang = " and a.language='".$lang."' and b.language='".$lang."'";
         }
 
         // TODO - does this need to be filtered by language?
         $query = "select distinct a.qid, a.attribute, a.value"
                 ." from ".db_table_name('question_attributes')." as a, ".db_table_name('questions')." as b"
-                ." where " . $where . '1'
-//                ." a.attribute in ('hidden', 'array_filter', 'array_filter_exclude', 'code_filter', 'equals_num_value', 'exclude_all_others', 'exclude_all_others_auto', 'max_answers', 'max_num_value', 'max_num_value_n', 'max_num_value_sgqa', 'min_answers', 'min_num_value', 'min_num_value_n', 'min_num_value_sgqa', 'multiflexible_max', 'multiflexible_min', 'num_value_equals_sgqa', 'other_replace_text', 'show_totals')"
+                ." where " . $where
+                .$lang
                 ." order by a.qid, a.attribute";
 
         $data = db_execute_assoc($query);
@@ -4751,6 +4760,20 @@ EOT;
 
         foreach($data->GetRows() as $row) {
             $qattr[$row['qid']][$row['attribute']] = $row['value'];
+        }
+
+        if (!is_null($lang))
+        {
+            // Then get non-language specific first, and overwrite with language-specific
+            $qattr2 = $qattr;
+            $qattr = $this->getQuestionAttributesForEM($surveyid,$qid);
+            foreach ($qattr2 as $q => $qatrs) {
+                if (is_array($qattrs)) {
+                    foreach ($qattrs as $attr=>$value) {
+                        $qattr[$q][$attr] = $value;
+                    }
+                }
+            }            
         }
 
 		return $qattr;
@@ -4942,6 +4965,11 @@ EOT;
         // End Message
         global $rooturl;
 
+        if (!is_null($language)) {
+            // must be called before getting LEM singleton
+            self::SetSurveyLanguage($language);
+        }
+
         $LEM =& LimeExpressionManager::singleton();
 
         $allErrors = array();
@@ -4978,9 +5006,16 @@ EOT;
         $qtypes=getqtypelist('','array');
 
         templatereplace('{SITENAME}');  // to ensure that lime replacement fields loaded
+
+        if (is_null($LEM->currentQset) || count($LEM->currentQset) == 0) {
+            return array(
+                'errors'=>1,
+                'html'=>$LEM->gT('No groups or questions found for language ') . $_SESSION['LEMlang'],
+                );
+        }
         
         $out = "<table border='1'>"
-        . "<tr><th>#</th><th>Name [ID]</th><th>Relevance [Validation] (Default)</th><th>Text [Help] (Tip)</th></tr>\n";
+        . "<tr><th>#</th><th>".$LEM->gT('Name [ID]')."</th><th>".$LEM->gT('Relevance [Validation] (Default)')."</th><th>".$LEM->gT('Text [Help] (Tip)')."</th></tr>\n";
 
         $_gseq=-1;
         foreach ($LEM->currentQset as $q) {
