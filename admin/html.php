@@ -652,10 +652,10 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         {
             $surveysummary2 .= $clang->gT("Regenerate question codes:")
             . " [<a href='#' "
-            . "onclick=\"if (confirm('".$clang->gT("Are you sure you want regenerate the question codes?","js")."')) {".get2post("$scriptname?action=renumberquestions&amp;sid=$surveyid&amp;style=straight")."}\" "
+            . "onclick=\"if (confirm('".$clang->gT("Are you sure you want to regenerate the question codes?\n\nWARNING:\nThis is safe if you only use the Conditions editor.\n\nHOWEVER, if you manually specified any relevance equations, regenerating the question codes will break all of that survey logic.","js")."')) {".get2post("$scriptname?action=renumberquestions&amp;sid=$surveyid&amp;style=straight")."}\" "
             . ">".$clang->gT("Straight")."</a>] "
             . " [<a href='#' "
-            . "onclick=\"if (confirm('".$clang->gT("Are you sure you want regenerate the question codes?","js")."')) {".get2post("$scriptname?action=renumberquestions&amp;sid=$surveyid&amp;style=bygroup")."}\" "
+            . "onclick=\"if (confirm('".$clang->gT("Are you sure you want to regenerate the question codes?\n\nWARNING:\nThis is safe if you only use the Conditions editor.\n\nHOWEVER, if you manually specified any relevance equations, regenerating the question codes will break all of that survey logic.","js")."')) {".get2post("$scriptname?action=renumberquestions&amp;sid=$surveyid&amp;style=bygroup")."}\" "
             . ">".$clang->gT("By Group")."</a>]";
             $surveysummary2 .= "</td></tr>\n";
         }

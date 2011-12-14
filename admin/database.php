@@ -314,8 +314,10 @@ if(isset($surveyid))
     {
         //Automatically renumbers the "question codes" so that they follow
         //a methodical numbering method
+        $style = ((isset($_POST['style']) && $_POST['style']=="bygroup") ? 'bygroup' : 'straight');
         $question_number=1;
         $group_number=0;
+        $gseq=0;
         $gselect="SELECT a.qid, a.gid\n"
         ."FROM ".db_table_name('questions')." as a, ".db_table_name('groups')."\n"
         ."WHERE a.gid=".db_table_name('groups').".gid AND a.sid=$surveyid AND a.parent_qid=0 "
@@ -327,13 +329,16 @@ if(isset($surveyid))
         foreach($grows as $grow)
         {
             //Go through all the questions
-            if ((isset($_POST['style']) && $_POST['style']=="bygroup") && (!isset($group_number) || $group_number != $grow['gid']))
+            if ($style == 'bygroup' && (!isset($group_number) || $group_number != $grow['gid']))
             { //If we're doing this by group, restart the numbering when the group number changes
                 $question_number=1;
-                $group_number++;
+                $group_number = $grow['gid'];
+                $gseq++;
             }
             $usql="UPDATE ".db_table_name('questions')."\n"
-            ."SET title='".str_pad($question_number, 4, "0", STR_PAD_LEFT)."'\n"
+            ."SET title='"
+            .(($style == 'bygroup') ? ('G' . $gseq . '_') : '')
+            ."Q".str_pad($question_number, 4, "0", STR_PAD_LEFT)."'\n"
             ."WHERE qid=".$grow['qid'];
             //$databaseoutput .= "[$sql]";
             $uresult=$connect->Execute($usql) or safe_die("Error: ".$connect->ErrorMsg());  // Checked
@@ -341,7 +346,8 @@ if(isset($surveyid))
             $group_number=$grow['gid'];
         }
         $_SESSION['flashmessage'] = $clang->gT("Question codes were successfully regenerated.");
-    }
+        LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
+        }
 
 
     elseif ($action == "updatedefaultvalues" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
