@@ -37,12 +37,20 @@ class tokens extends Survey_Common_Action
 			$this->route('index', array('surveyid'));
 		elseif ($sa == 'addnew')
 			$this->route('addnew', array('surveyid'));
+        elseif ($sa == 'delete')
+			$this->route('delete', array('surveyid'));
 		elseif ($sa == 'browse')
 			$this->route('browse', array('surveyid', 'limit', 'start', 'order', 'searchstring'));
+        elseif ($sa == 'getTokens_json')
+			$this->route('getTokens_json', array('surveyid'));
+        elseif ($sa == 'getSearch_json')
+			$this->route('getSearch_json', array('surveyid'));
+        elseif ($sa == 'editToken')
+			$this->route('editToken', array('surveyid'));
 		elseif ($sa == 'remind')
-			$this->route('remind', array('surveyid'));
+			$this->route('remind', array('surveyid', 'tids'));
 		elseif ($sa == 'email')
-			$this->route('email', array('surveyid'));
+			$this->route('email', array('surveyid','tids'));
 		elseif ($sa == 'bounceprocessing')
 			$this->route('bounceprocessing', array('surveyid'));
 		elseif ($sa == 'bouncesettings')
@@ -53,8 +61,8 @@ class tokens extends Survey_Common_Action
 			$this->route('import', array('surveyid'));
 		elseif ($sa == 'importldap')
 			$this->route('importldap', array('surveyid'));
-	        elseif ($sa == 'kill')
-	                $this->route('kill', array('surveyid'));
+	    elseif ($sa == 'kill')
+	        $this->route('kill', array('surveyid'));
 		elseif ($sa == 'adddummys')
 			$this->route('adddummys', array('surveyid', 'subaction'));
 		elseif ($sa == 'tokenify')
@@ -290,6 +298,14 @@ class tokens extends Survey_Common_Action
 	 */
 	function browse($surveyid, $limit=50, $start=0, $order=false, $searchstring=false)
 	{
+        $this->getController()->_js_admin_includes( Yii::app()->getConfig('generalscripts')."jquery/jqGrid/js/i18n/grid.locale-en.js");
+        $this->getController()->_js_admin_includes( Yii::app()->getConfig('generalscripts')."jquery/jqGrid/js/jquery.jqGrid.min.js");
+        $css_admin_includes[] = Yii::app()->getConfig('generalscripts')."jquery/css/jquery.multiselect.css";
+        $css_admin_includes[] = Yii::app()->getConfig('generalscripts')."jquery/css/jquery.multiselect.filter.css";
+        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/displayParticipants.css";
+        $css_admin_includes[] = Yii::app()->getConfig('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css";
+        $css_admin_includes[] = Yii::app()->getConfig('generalscripts')."jquery/jqGrid/css/jquery.ui.datepicker.css";
+        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
 		Yii::app()->loadHelper('surveytranslator');
 		Yii::import('application.libraries.Date_Time_Converter', true);
 		$dateformatdetails=getDateFormatData(Yii::app()->session['dateformat']);
@@ -380,6 +396,8 @@ class tokens extends Survey_Common_Action
 		$data['order']=$order;
 		$data['surveyprivate'] = $data['thissurvey']['anonymized'];
 		$data['dateformatdetails'] = $dateformatdetails;
+        //$attr=GetTokenFieldsAndNames($surveyid,true);
+        //var_dump($data);die();
 
 		$this->getController()->_getAdminHeader();
 		$this->getController()->render("/admin/token/tokenbar",$data);
@@ -387,7 +405,145 @@ class tokens extends Survey_Common_Action
 		$this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
 
 	}
+    
+    /**
+     * This function sends the shared participant info to the share panel using JSON encoding
+     * This function is called after the share panel grid is loaded
+     * This function returns the json depending on the user logged in by checking it from the session
+     * @param it takes the session user data loginID
+     * @return JSON encoded string containg sharing information
+     */
+    function getTokens_json($surveyid)
+    {
+        $clang = $this->getController()->lang;
+        $page = CHttpRequest::getPost('page');
+        $limit = CHttpRequest::getPost('rows');
+        
+        Tokens_dynamic::sid($surveyid);
+        $tokens = Tokens_dynamic::model()->findAll();
+        $aData->page = $page;
+        $aData->records =count($tokens);
+        $aData->total =ceil($aData->records / $limit );
+        for($i=0,$j=($page-1)*$limit; $i<$limit && $j<$aData->records ; $i++, $j++)
+        {
+            //var_dump($token['tid']);die();
+            $token=$tokens[$j];
+            if ((int)$token['validfrom']) $token['validfrom']=date('m/d/Y',strtotime(trim($token['validfrom'])));
+            else $token['validfrom']='';
+            if ((int)$token['validuntil']) $token['validuntil']=date('m/d/Y',strtotime(trim($token['validuntil'])));
+            else $token['validuntil']='';
+            
+            $aData->rows[$i]['id']=$token['tid'];
+            $action = '<input type="image" src="'.Yii::app()->getRequest()->getBaseUrl().'/images/do_16.png" title="'.$clang->gT("Do survey").'" alt="'.$clang->gT("Do survey").'" onclick=\'window.open("'.Yii::app()->getRequest()->getBaseUrl()."?sid={$surveyid}&token={$token['tid']}".'", "_blank")\'>';
+            $action .= '<input type="image" src="'.Yii::app()->getRequest()->getBaseUrl().'/images/token_delete.png" title="'.$clang->gT("Delete token entry").'" alt="'.$clang->gT("Delete token entry").'" onclick=\'if (confirm("'.$clang->gT("Are you sure you want to delete this entry?").' ('.$token['tid'].')")) {$("#displaytokens").delRowData('.$token['tid'].');$.post(delUrl,{tid:'.$token['tid'].'});}\'>';
 
+            if (strtolower($token['emailstatus'])=='ok')
+            {
+                if ($token['sent']=='N') $action .= '<input type="image" src="'.Yii::app()->getRequest()->getBaseUrl().'/images/token_invite.png" name="sendinvitations" id="sendinvitations" title="'.$clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)").'" onclick=\'window.open("'.Yii::app()->createUrl("admin/tokens/sa/email/surveyid/{$surveyid}/tids/|".$token['tid']).'", "_blank")\' />';
+                else $action .= '<input type="image" src="'.Yii::app()->getRequest()->getBaseUrl().'/images/token_remind.png" name="sendreminders" id="sendreminders" title="'.$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)").'" onclick=\'window.open("'.Yii::app()->createUrl("admin/tokens/sa/remind/surveyid/{$surveyid}/tids/|".$token['tid']).'", "_blank")\' />';
+			}
+            $action .= '<input style="height: 16; width: 16px; font-size: 8; font-family: verdana" type="image" src="'.Yii::app()->getRequest()->getBaseUrl().'/images/token_edit.png" title="'.$clang->gT("Edit token entry").'" alt="'.$clang->gT("Edit token entry").'" onclick=\'window.open("'.Yii::app()->createUrl("/admin/tokens/sa/edit/surveyid/{$surveyid}/tokenid/{$j}").'", "_top")\'>';
+			
+            $aData->rows[$i]['cell']=array($token['tid'], $action, $token['firstname'],$token['lastname'],$token['email'],$token['emailstatus'],$token['token'],$token['language'],$token['sent'],$token['remindersent'],$token['remindercount'],$token['completed'],$token['usesleft'],$token['validfrom'],$token['validuntil']);
+            $attributes=GetAttributeFieldNames($surveyid);
+            foreach($attributes as $attribute)
+            {
+                $aData->rows[$i]['cell'][]=$token[$attribute];
+            }
+        }
+        echo ls_json_encode($aData);
+    }
+
+    function editToken($surveyid)
+    {
+        $operation = CHttpRequest::getPost('oper');
+
+        // if edit it will update the row
+        if($operation == 'edit')
+        {
+            if(CHttpRequest::getPost('language')=='')
+            {
+                $lang=Yii::app()->session['adminlang'];
+            }
+            else
+            {
+                $lang = CHttpRequest::getPost('language');
+            }
+            Tokens_dynamic::sid($surveyid);
+            
+            if (trim($_POST['validfrom'])=='') {
+                $from=null;
+            }
+            else
+            {
+                $from = date('Y-m-d H:i:s',strtotime(trim($_POST['validfrom'])));
+            }
+            if (trim($_POST['validuntil'])=='') {$until=null;}
+            else
+            {
+                $until = date('Y-m-d H:i:s',strtotime(trim($_POST['validuntil'])));
+            }
+            echo $from.','.$until;
+            $aData = array(
+            'firstname' => CHttpRequest::getPost('firstname'),
+            'lastname' => CHttpRequest::getPost('lastname'),
+            'email' => CHttpRequest::getPost('email'),
+            'emailstatus' => CHttpRequest::getPost('emailstatus'),
+            'token' => CHttpRequest::getPost('token'),
+            'language' => CHttpRequest::getPost('language'),
+            'sent' => CHttpRequest::getPost('sent'),
+            'remindersent' => CHttpRequest::getPost('remindersent'),
+            'remindercount' => CHttpRequest::getPost('remindercount'),
+            'completed' => CHttpRequest::getPost('completed'),
+            'usesleft' => CHttpRequest::getPost('usesleft'),
+            'validfrom' => $from,
+            'validuntil' => $until);
+            $attributes=GetAttributeFieldNames($surveyid);
+            foreach($attributes as $attribute)
+            {
+                $aData[$attribute]=CHttpRequest::getPost($attribute);
+            }
+            $token = Tokens_dynamic::model()->find('tid='.CHttpRequest::getPost('id'));
+            foreach ($aData as $k => $v)
+                $token->$k = $v;
+            echo $token->update();
+        }
+        // if add it will insert a new row
+        elseif($operation == 'add')
+        {
+            if(CHttpRequest::getPost('language')=='')
+
+            $aData = array('firstname' => CHttpRequest::getPost('firstname'),
+                'lastname' => CHttpRequest::getPost('lastname'),
+                'email' => CHttpRequest::getPost('email'),
+                'emailstatus' => CHttpRequest::getPost('emailstatus'),
+                'token' => CHttpRequest::getPost('token'),
+                'language' => CHttpRequest::getPost('language'),
+                'sent' => CHttpRequest::getPost('sent'),
+                'remindersent' => CHttpRequest::getPost('remindersent'),
+                'remindercount' => CHttpRequest::getPost('remindercount'),
+                'completed' => CHttpRequest::getPost('completed'),
+                'usesleft' => CHttpRequest::getPost('usesleft'),
+                'validfrom' => $from,
+                'validuntil' => $until);
+                $attributes=GetAttributeFieldNames($surveyid);
+                foreach($attributes as $attribute)
+                {
+                    $aData[$attribute]=CHttpRequest::getPost($attribute);
+                }
+               echo ls_json_encode(var_export($aData));
+            $token = new Tokens_dynamic;
+            foreach ($aData as $k => $v)
+                $token->$k = $v;
+            echo $token->save();
+        }
+        elseif($operation == 'del')
+        {
+            $_POST['tid'] = $_POST['id'];
+            $this->delete($surveyid);
+        }
+    }
+    
 	/**
 	 * Add new token form
 	 */
@@ -597,49 +753,15 @@ class tokens extends Survey_Common_Action
 	/**
 	 * Delete tokens
 	 */
-	function delete($surveyid, $tokenid=null,$limit=50,$start=0,$order=false,$searchstring=false)
+	function delete($surveyid)
 	{
 		$surveyid = sanitize_int($surveyid);
-		$tokenid = (int) $tokenid;
-		$limit = (int) $limit;
-		$start = (int) $start;
+		@$tokenid = $_POST['tid'];
+        Tokens_dynamic::sid($surveyid);
 
         if(bHasSurveyPermission($surveyid, 'tokens','delete')) {
-			$clang=$this->limesurvey_lang;
-			$this->load->model("tokens_dynamic_model");
-			$this->session->set_userdata('metaHeader', "<meta http-equiv=\"refresh\" content=\"1;URL=".site_url("/admin/tokens/browse/$surveyid")."\" />");
-
-			if($this->input->post("tokenids")) {
-			    $tokenidsarray=explode("|", substr($this->input->post("tokenids"), 1)); //Make the tokenids string into an array, and exclude the first character
-                                    $data = array('token_id' => $tokenidsarray);
-				    foreach($tokenidsarray as $tokenitem) {
-				        if($tokenitem != "") $tokenids[]=sanitize_int($tokenitem);
-				    }
-                            }
-                    if(isset($tokenids) && count($tokenids)>0) {
-		        if(implode(", ", $tokenids) != "") {
-                		$this->tokens_dynamic_model->deleteRecords($surveyid,$tokenids);
-		            $tokenoutput = $clang->gT("Marked tokens have been deleted.");
-		        } else {
-		            $tokenoutput = $clang->gT("No tokens were selected for deletion");
-		        }
-		    } elseif (isset($tokenid)) {
-                        $data = array('token_id' => $tokenid);
-                        $this->tokens_dynamic_model->deleteToken($surveyid,$tokenid);
-                        $tokenoutput = $clang->gT("Token has been deleted.");
-		    }
-                        $data['survey_id']=$surveyid; // This is for lime_survey_links delete
-                        $this->tokens_dynamic_model->deleteParticipantLinks($data); // This is for lime_survey_links delete
-			$data['clang']=$this->limesurvey_lang;
-			$data['thissurvey']=getSurveyInfo($surveyid);
-			$data['imageurl'] = $this->config->item('imageurl');
-			$data['surveyid']=$surveyid;
-			self::_getAdminHeader($this->session->userdata('metaHeader'));
-			$this->load->view("admin/token/tokenbar",$data);
-			self::_showMessageBox($clang->gT("Delete"),
-					$tokenoutput . "</strong><font size='1'><i>".$clang->gT("Reloading Screen. Please wait.")."</i></font></p>");
-			self::_loadEndScripts();
-			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+            $tokenidsarray=explode(",", $tokenid); //Make the tokenids string into an array
+            Tokens_dynamic::model()->deleteRecords($tokenidsarray);
 		}
 	}
 
@@ -902,14 +1024,16 @@ class tokens extends Survey_Common_Action
 			safe_die("no permissions"); // TODO Replace
 		}
 
-		if(isset($tokenids) && $tokenids=="tids") {
-			$_POST("tokenids");
+		if (isset($_POST['tids'])) $tokenids=$_POST['tids'];
+		if(isset($tokenids)) {
 		    $tokenidsarray=explode("|", substr($tokenids, 1)); //Make the tokenids string into an array, and exclude the first character
 		    unset($tokenids);
 		    foreach($tokenidsarray as $tokenitem) {
 		        if($tokenitem != "") $tokenids[]=sanitize_int($tokenitem);
 		    }
 		}
+        else $tokenids=false;
+
 		Tokens_dynamic::sid($surveyid);
 		$tkcount=Tokens_dynamic::model()->totalRecords($surveyid);
 		Yii::app()->loadHelper('surveytranslator');
@@ -930,12 +1054,13 @@ class tokens extends Survey_Common_Action
 		$data['tokenfields']=$tokenfields;
 		$data['nrofattributes']=$nrofattributes;
 		$data['examplerow']=$examplerow;
+		$data['tokenids']=$tokenids;
 		$publicurl = Yii::app()->baseUrl;
 		$modrewrite = Yii::app()->getConfig("modrewrite");
 		$timeadjust = Yii::app()->getConfig("timeadjust");
 
 		Yii::app()->loadHelper('/admin/htmleditor');
-		Yii::app()->loadHelper('/replacements');
+		Yii::app()->loadHelper('replacements');
 
 		if (getEmailFormat($surveyid) == 'html')
 	    {
@@ -956,12 +1081,9 @@ class tokens extends Survey_Common_Action
 	    }
     	else
     	{
-			@$tokenid=$_POST["tokenid"];
-			@$tokenids=$_POST["tokenids"];
 			@$maxemails=$_POST["maxemails"];
 
-			$data['tokenid']=$tokenid;
-			$data['tokenids']=$tokenids;
+			$data['tokenid']=false;
 
 	        if (isset($_POST['bypassbademails']) && $_POST['bypassbademails'] == 'Y')
 	        {
@@ -973,10 +1095,10 @@ class tokens extends Survey_Common_Action
 	        }
 
 	        //$ctfieldcount = $ctresult->FieldCount();
-			$ctresult=Tokens_dynamic::model()->ctquery($surveyid,$SQLemailstatuscondition,$tokenid,$tokenids);
+			$ctresult=Tokens_dynamic::model()->ctquery($surveyid,$SQLemailstatuscondition,false,$tokenids);
 			$ctcount = $ctresult->count();
 
-	        $emresult = Tokens_dynamic::model()->emquery($surveyid,$SQLemailstatuscondition,$maxemails,$tokenid,$tokenids);
+	        $emresult = Tokens_dynamic::model()->emquery($surveyid,$SQLemailstatuscondition,$maxemails,false,$tokenids);
 	        $emcount = $emresult->count();
 
 	        $surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -1158,15 +1280,15 @@ class tokens extends Survey_Common_Action
 	/**
 	 * Remind Action
 	 */
-	function remind($surveyid)
+	function remind($surveyid,$tokenids=null)
 	{
 		if (!empty($_POST['sid']))
         {
             $surveyid = (int)$_POST['sid'];
         }
 
-		if(isset($tokenids) && $tokenids=="tids") {
-			$_POST("tokenids");
+		if (isset($_POST['tids'])) $tokenids=$_POST['tids'];
+		if(isset($tokenids)) {
 		    $tokenidsarray=explode("|", substr($tokenids, 1)); //Make the tokenids string into an array, and exclude the first character
 		    unset($tokenids);
 		    foreach($tokenidsarray as $tokenitem) {
@@ -1176,8 +1298,7 @@ class tokens extends Survey_Common_Action
 
 		$surveyid = sanitize_int($surveyid);
 
-		@$tokenid=$_POST["tid"];
-		@$tokenids=$_POST["tokenids"];
+		$tokenid=false;
 		@$maxemails=$_POST["maxemails"];
 
 		$clang = $this->getController()->lang;
@@ -1208,6 +1329,7 @@ class tokens extends Survey_Common_Action
 		$data['nrofattributes']=$nrofattributes;
 		$data['examplerow']=$examplerow;
 		$data['surveyid'] = $surveyid;
+        $data['tokenids'] = @$tokenids;
 		Yii::app()->loadHelper("admin/htmleditor");
 		Yii::app()->loadHelper('replacements');
 
@@ -1216,7 +1338,7 @@ class tokens extends Survey_Common_Action
 		$timeadjust = Yii::app()->getConfig("timeadjust");
 		$emailcharset = Yii::app()->getConfig("emailcharset");
 
-
+		global $maildebug, $debug;
 		if (getEmailFormat($surveyid) == 'html')
 	    {
 	        $ishtml=true;
@@ -2520,4 +2642,74 @@ class tokens extends Survey_Common_Action
 	        return;
 	    }
 	}
+    function getSearch_json($surveyid)
+    {
+        Tokens_dynamic::sid($surveyid);
+        $page = CHttpRequest::getPost('page');
+        $limit = CHttpRequest::getPost('rows');    
+        $fields = array('tid','firstname','lastname','email','emailstatus','token','language','sent','sentreminder','remindercount','completed','usesleft','validfrom','validuntil');
+        $searchcondition = CHttpRequest::getQuery('search');
+        $searchcondition = urldecode($searchcondition);
+        $finalcondition = array();
+        $condition = explode("||",$searchcondition);
+        if(count($condition)==3)
+        {
+
+            $records = Tokens_dynamic::getSearch($condition,$page,$limit);
+            $aData->page = $page;
+            $aData->records = count (Tokens_dynamic::getSearch($condition,0,0));
+            $aData->total = ceil ($aData->records /$limit );
+        }
+        else
+        {
+            $records = Tokens_dynamic::getSearchMultiple($condition,$page,$limit);
+            $aData->page = $page;
+            $aData->records = count (Tokens_dynamic::getSearchMultiple($condition,0,0));
+            $aData->total = ceil ($aData->records /$limit );
+        }
+        $i=0; 
+        foreach($records as $row=>$value)
+        {
+            $sortablearray[$i]=array($value['tid'],$value['firstname'],$value['lastname'],$value['email'],$value['emailstatus'],$value['token'],$value['language'],$value['sent'],$value['remindersent'],$value['remindercount'],$value['completed'],$value['usesleft'],$value['validfrom'],$value['validuntil']);
+            $i++;
+        }
+        function subval_sort($a,$subkey,$order)
+        {
+            foreach($a as $k=>$v)
+            {
+                $b[$k] = strtolower($v[$subkey]);
+            }
+            if($order == "asc")
+            {
+                asort($b,SORT_REGULAR);
+            }
+            else
+            {
+                arsort($b,SORT_REGULAR);
+            }
+            foreach($b as $key=>$val)
+            {
+                $c[] = $a[$key];
+            }
+            return $c;
+        }
+        if(!empty($sortablearray))
+        {
+            $indexsort = array_search(CHttpRequest::getPost('sidx'), $fields);
+            $sortedarray = subval_sort($sortablearray,$indexsort,CHttpRequest::getPost('sord'));
+            $i=0;
+            $count = count($sortedarray[0]);
+            foreach($sortedarray as $key=>$value)
+            {
+                $aData->rows[$i]['id']=$value[0];   
+                $aData->rows[$i]['cell'] = array();
+                for($j=0 ; $j < $count ; $j++)
+                {
+                    array_push($aData->rows[$i]['cell'],$value[$j]);
+                }
+                $i++;
+            }
+        }
+        echo ls_json_encode($aData);
+    }
 }

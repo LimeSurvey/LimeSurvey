@@ -98,6 +98,6 @@
              <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
              <input type='hidden' name='subaction' value='email' />
       <?php  if (isset($tokenid)) { ?> <input type='hidden' name='tid' value='$tokenid' /> <?php }
-        if (isset($tokenids)) { ?> <input type='hidden' name='tids' value='|".implode("|", $tokenids);?>' /><?php } ?>
+        if (isset($tokenids)) { ?> <input type='hidden' name='tids' value='|<?php echo implode("|", $tokenids);?>' /><?php } ?>
         </form></div>
 </div>

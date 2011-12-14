@@ -1,303 +1,85 @@
-	<script language='javascript' type='text/javascript'> surveyid = '<?php echo $surveyid; ?>'; </script>
-    <script language='javascript' type='text/javascript'> var imgurl = '<?php echo Yii::app()->getConfig('imageurl'); ?>';
-    var controllerurl = '<?php echo $this->createUrl("admin/tokens/sa/bounceprocessing/surveyid/$surveyid"); ?>'; </script>
-
-    <div class='menubar'><div class='menubar-title ui-widget-header'><span style='font-weight:bold;'>
-    <?php $clang->eT("Data view control");?></span></div>
-	<div class='menubar-main'>
-    <div class='menubar-left'>
-    <?php if (bHasSurveyPermission($surveyid,'tokens','update'))
-    {
-        if($thissurvey['bounceprocessing']=='N')
-        { ?>
-            <img src='<?php echo $imageurl;?>/bounce_disabled.png' alt='<?php $clang->eT("You have selected not to use any bounce settings");?>' align='left' />
-       <?php }
-        else
-        { ?>
-            <img src='<?php echo $imageurl;?>/bounce.png' id='bounceprocessing' alt='<?php $clang->eT("Bounce processing");?>' align='left' />
-      <?php  } ?>
-        <img src='<?php echo $imageurl;?>/seperator.gif' alt='' border='0' hspace='0' align='left' />
-   <?php  } ?>
-    <a href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid/limit/$limit/start/0/order/$order/searchstring/".urlencode($searchstring));?>'
-    title='<?php $clang->eTview("Show start...");?>'>
-    <img name='DBeginButton' align='left' src='<?php echo $imageurl;?>/databegin.png' alt='<?php $clang->eT("Show start...");?>' /></a>
-    <a href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid/limit/$limit/start/$last/order/$order/searchstring/".urlencode($searchstring));?>'
-	title='<?php $clang->eTview("Show previous...");?>'>
-	<img name='DBackButton' align='left' src='<?php echo $imageurl;?>/databack.png' alt='<?php $clang->eT("Show previous...");?>' /></a>
-	<img src='<?php echo $imageurl;?>/blank.gif' alt='' width='13' height='20' border='0' hspace='0' align='left' />
-	<a href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid/limit/$limit/start/$next/order/$order/searchstring/".urlencode($searchstring));?>'
-	title='<?php $clang->eTview("Show next...");?>'>
-	<img name='DForwardButton' align='left' src='<?php echo $imageurl;?>/dataforward.png' alt='<?php $clang->eT("Show next...");?>' /></a>
-	<a href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid/limit/$limit/start/$end/order/$order/searchstring/".urlencode($searchstring));?>'
-	title='<?php $clang->eTview("Show last...");?>'>
-	<img name='DEndButton' align='left'  src='<?php echo $imageurl;?>/dataend.png' alt='<?php $clang->eT("Show last...");?>' /></a>
-	<img src='<?php echo $imageurl;?>/seperator.gif' alt='' border='0' hspace='0' align='left' />
-    <form id='tokensearch' method='post' action='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid");?>'>
-	<input type='text' name='searchstring' value='<?php echo htmlspecialchars($searchstring,ENT_QUOTES,'utf-8');?>' />
-	<input type='submit' value='<?php $clang->eT("Search");?>' />
-	<input type='hidden' name='order' value='<?php echo $order;?>' />
-	<input type='hidden' name='subaction' value='search' />
-	<input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
-	</form>
-	<form id='tokenrange' method='post' action='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid");?>'>
-	<img src='<?php echo $imageurl;?>/seperator.gif' alt='' border='0' />
-	<font size='1' face='verdana'>
-	&nbsp;<label for='limit'><?php $clang->eT("Records displayed:");?></label> <input type='text' size='4' value='<?php echo $limit;?>' id='limit' name='limit' />
-	&nbsp;&nbsp;<label for='start'><?php $clang->eT("Starting from:");?></label> <input type='text' size='4' value='<?php echo $start;?>'  id='start' name='start' />
-	&nbsp;<input type='submit' value='<?php $clang->eT("Show");?>' />
-	</font>
-	<input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
-	<input type='hidden' name='action' value='tokens' />
-	<input type='hidden' name='subaction' value='browse' />
-	<input type='hidden' name='order' value='<?php echo $order;?>' />
-	<input type='hidden' name='searchstring' value='<?php echo htmlspecialchars($searchstring,ENT_QUOTES,'utf-8');?>' />
-	</form>
-	</div></div></div>
-
-	<table class='browsetokens' id='browsetokens' cellpadding='1' cellspacing='1'>
-	<tr>
-	<th><input type='checkbox' id='tokencheckboxtoggle' /></th>
-	<th align='left' >
-	<a href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid/limit/$limit/start/$start/order/tid/searchstring/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ");?>ID' alt='<?php $clang->eT("Sort by: ");?>ID' border='0' align='left' hspace='0' /></a>ID</th>
-
-	<th align='left'  ><?php $clang->eT("Actions");?></th>
-	<th align='left'  >
-	<a href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid/limit/$limit/start/$start/order/firstname/searchstring/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("First name");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("First name");?>' border='0' align='left' /></a>
-	<?php $clang->eT("First name");?></th>
-
-	<th align='left'><a href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid/limit/$limit/start/$start/order/lastname/searchstring/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Last name");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Last name");?>' border='0' align='left' /></a>
-	<?php $clang->eT("Last name");?></th>
-
-	<th align='left'  ><a href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid/limit/$limit/start/$start/order/email/searchstring/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Email address");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Email address");?>' border='0' align='left' /></a>
-	<?php $clang->eT("Email address");?></th>
-
-	<th align='left'  >
-	<a href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid/limit/$limit/start/$start/order/emailstatus/searchstring/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Email status");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Email status");?>' border='0' align='left' /></a>
-	<?php $clang->eT("Email status");?></th>
-
-	<th align='left'  ><a href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid/limit/$limit/start/$start/order/token/searchstring/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Token");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Token");?>' border='0' align='left' /></a>
-	<?php $clang->eT("Token");?></th>
-
-	<th align='left'  >
-	<a href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid/limit/$limit/start/$start/order/language/searchstring/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Language");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Language");?>' border='0' align='left' /></a>
-	<?php $clang->eT("Language");?></th>
-
-	<th align='left'  ><a href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid/limit/$limit/start/$start/order/sent%20desc/searchstring/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Invitation sent?");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Invitation sent?");?>' border='0' align='left' /></a>
-	<?php $clang->eT("Invitation sent?");?></th>
-
-
-	<th align='left'  >
-	<a href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid/limit/$limit/start/$start/remindersent%20desc/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Reminder sent?");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Reminder sent?");?>' border='0' align='left' /></a>
-	<span><?php $clang->eT("Reminder sent?");?></span></th>
-
-	<th align='left'>
-	<a href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid/limit/$limit/start/$start/remindercount%20desc/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Reminder count");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Reminder count");?>' border='0' align='left' /></a>
-	<span><?php $clang->eT("Reminder count");?></span></th>
-
-	<th align='left'  ><a href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid/limit/$limit/start/$start/completed%20desc/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Completed?");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Completed?");?>' border='0' align='left' /></a>
-	<?php $clang->eT("Completed?");?></th>
-
-	<th align='left'  >
-	<a href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid/limit/$limit/start/$start/usesleft%20desc/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Uses left");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Uses left");?>' border='0' align='left' /></a>
-	<span><?php $clang->eT("Uses left");?></span></th>
-
-	<th align='left'  ><a href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid/limit/$limit/start/$start/validfrom%20desc/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Valid from");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Valid from");?>' border='0' align='left' /></a>
-	<?php $clang->eT("Valid from");?></th>
-
-	<th align='left'  ><a href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid/limit/$limit/start/$start/validuntil%20desc/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Valid until");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Valid until");?>' border='0' align='left' /></a>
-	<?php $clang->eT("Valid until");?></th>
-
-	<?php $attrfieldnames=GetTokenFieldsAndNames($surveyid,true);
-	foreach ($attrfieldnames as $attr_name=>$attr_translation)
-	{
-	    echo "<th align='left' >"
-	    ."<a href='".$this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid/limit/$limit/start/$start/".$attr_name."/".urlencode($searchstring))."'>"
-	    ."<img src='$imageurl/downarrow.png' alt='' title='"
-	    .$clang->gT("Sort by: ").htmlspecialchars($attr_translation,ENT_QUOTES,'utf-8')."' border='0' align='left' /></a>".htmlspecialchars($attr_translation,ENT_QUOTES,'utf-8')."</th>\n";
-	} ?>
-	</tr>
-
-	<?php $tokenfieldorder=array('tid',
-                           'firstname',
-                           'lastname',
-                           'email',
-                           'emailstatus',
-                           'token',
-                           'language',
-                           'sent',
-                           'remindersent',
-                           'remindercount',
-                           'completed',
-                           'usesleft',
-                           'validfrom',
-                           'validuntil');
-	foreach ($attrfieldnames as $attr_name=>$attr_translation)
-	{
-	    $tokenfieldorder[]=$attr_name;
+<?php
+$uidNames =array();
+/* Build the options for additional languages */
+$j=1;
+$getlangvalues = getLanguageData();
+if(Yii::app()->session['adminlang']!='auto')
+{
+$lname[0]=Yii::app()->session['adminlang'].":".$getlangvalues[Yii::app()->session['adminlang']]['description'];
+}
+foreach ($getlangvalues as $keycode => $keydesc) {
+                if(Yii::app()->session['adminlang']!=$keycode)
+                {
+                        $cleanlangdesc = str_replace (";"," -",$keydesc['description']);
+                        $lname[$j]=$keycode.":".$cleanlangdesc;
+                        $j++;
+                }
 	}
-
-	foreach ($bresult as $brow)
-	{
-	    $brow['token'] = trim($brow['token']);
-	    if (trim($brow['validfrom'])!=''){
-	        $datetimeobj = new Date_Time_Converter(array($brow['validfrom'] , "Y-m-d H:i:s"));
-	        $brow['validfrom']=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
-	    };
-	    if (trim($brow['validuntil'])!=''){
-	        $datetimeobj = new Date_Time_Converter(array($brow['validuntil'] , "Y-m-d H:i:s"));
-	        $brow['validuntil']=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
-	    };
-
-	    if ($bgc == "evenrow") {$bgc = "oddrow";} else {$bgc = "evenrow";}
-		?>
-	    <tr class='<?php echo $bgc;?>'>
-		<td><input type='checkbox' name='<?php echo $brow['tid'];?>' /></td>
-
-	    <?php foreach ($tokenfieldorder as $tokenfieldname)
-	    {
-
-	        if ($tokenfieldname =='email' && $brow['emailstatus'] != 'OK')
-	        {
-	            if ($brow['emailstatus']!='OptOut')
-	            { ?>
-	                <td>
-	                <a href="#" class='invalidemail' title='<?php $clang->eT('Invalid email address:').htmlspecialchars($brow['emailstatus']);?>' >
-	                <?php echo $brow[$tokenfieldname]?></a></td>
-	            <?php }
-	            else
-	            { ?>
-	                <td>
-	                <a href="#" class='optoutemail' title='<?php $clang->eT('This participant opted out of this survey.');?>' >
-	                <?php echo $brow[$tokenfieldname];?></a></td>
-	            <?php }
-	        }
-          else
-	        {
-	            if  ($tokenfieldname=='tid')
-	            { ?>
-	                <td><span style='font-weight:bold'><?php echo $brow[$tokenfieldname];?></span></td>
-	            <?php }
-	            else
-	            { ?>
-	                <td><?php echo htmlspecialchars($brow[$tokenfieldname]);?></td>
-	            <?php }
-	        }
-	        if ($tokenfieldname=='tid')
-	        { ?>
-	            <td align='left' style='white-space:nowrap;'>
-	            <?php if (bHasSurveyPermission($surveyid, 'tokens','update'))
-	            {
-	                if (($brow['completed'] == "N" || $brow['completed'] == "") &&$brow['token'])
-	                {
-	                    $toklang = ($brow['language'] == '') ? $baselanguage : $brow['language']; ?>
-	                    <input style='height: 16px; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/do_16.png'  title='<?php $clang->eT("Do survey");?>'  alt= '<?php $clang->eT("Do survey"); ?>' onclick="window.open('<?php echo $this->createUrl("survey/sid/{$surveyid}/lang/{$toklang}/token/{$brow['token']}");?>', '_blank')" />
-	                <?php }
-	                else
-	                { ?>
-	                    <img src='<?php echo $imageurl;?>/blank.gif' height='16' alt='' width='16'/>
-	                <?php }
-	                ?><input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_edit.png'
-                       title='<?php $clang->eT("Edit token entry");?>' alt='<?php $clang->eT("Edit token entry");?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/edit/$surveyid/".$brow['tid']);?>', '_top')" />
-	            <?php }
-                if (bHasSurveyPermission($surveyid, 'tokens','delete'))
-                { ?>
-                    <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_delete.png'
-                    title='<?php $clang->eT("Delete token entry");?>' alt='<?php $clang->eT("Delete token entry");?>' onclick="if (confirm('<?php $clang->eT("Are you sure you want to delete this entry?","js");?> (<?php echo $brow['tid'];?>)')) { <?php echo get2post($this->createUrl("admin/tokens/delete/$surveyid/".$brow['tid']."?order=1"));?>}"  />
-                <?php }
-
-	            if ($brow['completed'] != "N" && $brow['completed']!="" && $surveyprivate == "N"  && $thissurvey['active']=='Y')
-	            {
-	                // Get response Id
-	                $this->load->helper("database");
-	                $query=db_execute_assoc("SELECT id FROM ".$this->db->dbprefix('survey_'.$surveyid)." WHERE token='{$brow['token']}' ORDER BY id desc");
-	                //$result=db_execute_num($query) or safe_die ("<br />Could not find token!<br />\n" .$connect->ErrorMsg());
-					//Not working: $query = $this->Surveys_dynamic_model->getSomeRecords(array("id"),$surveyid,array("token"=>$brow['token']),"id desc");
-	                $id = reset($query->row_array());
-	                // UPDATE button to the tokens display in the MPID Actions column
-	                if  ($id)
-	                { ?>
-	                    <input type='image' src='<?php echo $imageurl;?>/token_viewanswer.png' style='height: 16; width: 16px;' onclick="window.open('<?php echo $this->createUrl("admin/browse/$surveyid/id/".$id);?>', '_top')"
-                        title='<?php $clang->eT("View/Update last response");?>' alt='<?php $clang->eT("View/Update last response");?>' />
-	                <?php }
-	            }
-	            elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] == "N" && trim($brow['email'])!='' && bHasSurveyPermission($surveyid, 'tokens','update'))
-	            { ?>
-	                <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_invite.png'
-                    title='<?php $clang->eT("Send invitation email to this entry");?>' alt='<?php $clang->eT("Send invitation email to this entry");?>' onclick="<?php echo get2post($this->createUrl("admin/tokens/email/$surveyid/")."?tid=".$brow['tid']);?>" />
-	            <?php }
-	            elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] != "N" && trim($brow['email'])!='')  // reminder button
-	            { ?>
-	                <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_remind.png'
-                    title='<?php $clang->eT("Send reminder email to this entry");?>' alt='<?php $clang->eT("Send reminder email to this entry");?>' onclick="<?php echo get2post($this->createUrl("admin/tokens/remind/$surveyid/")."?tid=".$brow['tid']);?>" />
-	           <?php } ?>
-  	            </td>
-	       <?php }
-	    } ?>
-	    </tr>
-	<?php }
-	// Multiple item actions
-	if (count($bresult) > 0) { ?>
-	    <tr class='<?php echo $bgc;?>'>
-		<td align='left' style='text-align: left' colspan='<?php echo (count($tokenfieldorder)+1);?>'>
-        <?php
-        if (bHasSurveyPermission($surveyid, 'tokens','delete'))
-        { ?>
-            <img src='<?php echo $imageurl;?>/blank.gif' height='16' width='16' alt='' />
-            <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_delete.png'
-            title='<?php $clang->eT("Delete the selected entries");?>' alt='<?php $clang->eT("Delete the selected entries");?>'
-            onclick="if($('#tokenboxeschecked').val()){ if (confirm('<?php $clang->eT("Are you sure you want to delete the selected entries?","js");?>')) { <?php echo get2post($this->createUrl("admin/tokens/delete/$surveyid/")."?action=tokens&amp;sid={$surveyid}&amp;subaction=delete&amp;tokenids=document.getElementById('tokenboxeschecked').value&amp;limit={$limit}&amp;start={$start}&amp;order={$order}");?>}}else{ alert('<?php $clang->eT("No tokens selected",'js');?>');}"  />
-
-        <?php }
-
-        if (bHasSurveyPermission($surveyid, 'tokens','update'))
-        { ?>
-            &nbsp;
-            <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_invite.png'
-            title='<?php $clang->eT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)");?>'
-            alt='<?php $clang->eT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)");?>'
-            onclick="<?php echo get2post($this->createUrl("admin/tokens/sa/email/surveyid/$surveyid/tids")."?tokenids=document.getElementById('tokenboxeschecked').value");?>" />
-            &nbsp;
-            <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_remind.png'
-            title='<?php $clang->eT("Send reminder email to the selected entries (if they have already received the invitation email)");?>'
-            alt='<?php $clang->eT("Send reminder email to the selected entries (if they have already received the invitation email)");?>'
-            onclick="<?php echo get2post($this->createUrl("admin/tokens/sa/remind/surveyid/$surveyid/tids")."?tokenids=document.getElementById('tokenboxeschecked').value");?>" />
-        <?php } ?>
-        <input type='hidden' id='tokenboxeschecked' value='' onchange='alert(this.value)' />
-	    </td>
-	    </tr>
-	<?php }
-	//End multiple item actions
+	$langnames = implode(";",$lname);
+/* Build the columnNames for the extra attributes */
+/* and, build the columnModel */
+$names=GetTokenFieldsAndNames($surveyid,true);
+$attributes=GetAttributeFieldNames($surveyid);
+    if(count($attributes) > 0)
+        {
+        foreach($names as $name)
+            {
+                $attnames[]='"'.$name.'"';
+            }
+        foreach($attributes as $row)
+            {
+                $uidNames[]='{ "name":"'.$row.'", "index":"'.$row.'", "sorttype":"string", "sortable": true, "align":"center", "editable":true, "width":75}';
+            }
+        $columnNames = implode(',',$attnames); //Add to the end of the standard list of columnNames
+    }
+else
+    {
+      $columnNames = "";
+    }
+/* Build the javasript variables to pass to the jqGrid */
 ?>
-	</table>
-
-    <div id='dialog-modal'></div>
-
-<!-- Code for central Participants database -->
-    <p><input type='button' name='addtocpdb' id='addtocpdb' value='<?php $clang->eT("Add participants to central database");?>'/><br />
-<!-- End of Code for central Participants database -->
 <script type="text/javascript">
+var mapButton = "<?php echo $clang->gT("Next") ?>";
+var error = "<?php echo $clang->gT("Error") ?>";
+var removecondition = "<?php echo $clang->gT("Remove condition") ?>";
+var cancelBtn = "<?php echo $clang->gT("Cancel") ?>";
+var exportBtn = "<?php echo $clang->gT("Export") ?>";
+var okBtn = "<?php echo $clang->gT("OK") ?>";
+var noRowSelected = "<?php echo $clang->gT("You have no row selected") ?>";
+var searchBtn = "<?php echo $clang->gT("Search") ?>";
+var shareMsg = "<?php echo $clang->gT("You can see and edit settings for shared participant in share panel.") ?>"; //PLEASE REVIEW
+var jsonSearchUrl = "<?php echo Yii::app()->createUrl("admin/tokens/sa/getSearch_json/surveyid/$surveyid/search");?>";
+var getSearchIDs = "<?php echo Yii::app()->createUrl("admin/participants/sa/getSearchIDs"); ?>";
+var addbutton = "<?php echo Yii::app()->getRequest()->getBaseUrl()."/images/plus.png" ?>";
+var minusbutton = "<?php echo Yii::app()->getRequest()->getBaseUrl()."/images/deleteanswer.png" ?>";
+var delUrl = "<?php echo Yii::app()->createUrl("admin/tokens/sa/delete/surveyid/".$surveyid);?>";
 var cancelBtn = "<?php $clang->eT("Cancel") ?>";
-var okBtn = "<?php $clang->eT("OK") ?>";
-var survey_id = "<?php echo $surveyid; ?>";
-var addtocpdbUrl = "<?php echo $this->createUrl("admin/participants/sa/addToCentral"); ?>";
-var addpartAddBtn = "<?php $clang->eT("Add to CPDB") ?>";
-var addpartTitle = "<?php $clang->eT('Add participant to CPDB'); ?>";
-var attMapUrl = "<?php echo $this->createUrl("admin/participants/sa/attributeMapToken/sid/");?>";
-var postUrl = "<?php echo $this->createUrl("admin/participants/sa/setSession"); ?>";
+var okBtn = "<?php echo $clang->eT("OK") ?>";
+var delmsg = "<?php echo $clang->gT("Are you sure you want to delete this entry?") ?>";
+var surveyID = "<?php echo $surveyid; ?>";
+var jsonUrl = "<?php echo Yii::app()->createUrl('admin/tokens/sa/getTokens_json/surveyid/'.$surveyid); ?>";
+var editUrl = "<?php echo Yii::app()->createUrl('admin/tokens/sa/editToken/surveyid/'.$surveyid); ?>";
+var remindurl = "<?php echo Yii::app()->createUrl("admin/tokens/sa/remind/surveyid/{$surveyid}/tids/|");?>";
+var invitemsg = "<?php echo $clang->eT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)"); ?>"
+var remindmsg = "<?php echo $clang->eT("Send reminder email to the selected entries (if they have already received the invitation email)"); ?>"
+var inviteurl = "<?php echo Yii::app()->createUrl("admin/tokens/sa/email/surveyid/{$surveyid}/tids/|");?>";
+var searchtypes = ["<?php echo $clang->gT("Equals") ?>","<?php echo $clang->gT("Contains") ?>","<?php echo $clang->gT("Not equal") ?>","<?php echo $clang->gT("Not contains") ?>","<?php echo $clang->gT("Greater than") ?>","<?php echo $clang->gT("Less than") ?>"]
+var colNames = ["ID","<?php echo $clang->gT("Action") ?>","<?php echo $clang->gT("First name") ?>","<?php echo $clang->gT("Last name") ?>","<?php echo $clang->gT("Email address") ?>","<?php echo $clang->gT("Email status") ?>","<?php echo $clang->gT("Token") ?>","<?php echo $clang->gT("Language") ?>","<?php echo $clang->gT("Invitation sent?") ?>","<?php echo $clang->gT("Reminder sent?") ?>","<?php echo $clang->gT("Reminder count") ?>","<?php echo $clang->gT("Completed?") ?>","<?php echo $clang->gT("Uses left") ?>","<?php echo $clang->gT("Valid from") ?>","<?php echo $clang->gT("Valid until") ?>",<?php echo $columnNames; ?>];
+var colModels = [{ "name":"tid", "index":"tid", "width":20, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":false},
+    { "name":"action", "index":"action", "sorttype":"string", "sortable": false, "width":70, "align":"center", "editable":false},
+    { "name":"firstname", "index":"firstname", "sorttype":"string", "sortable": true, "width":100, "align":"center", "editable":true},
+    { "name":"lastname", "index":"lastname", "sorttype":"string", "sortable": true,"width":100, "align":"center", "editable":true},
+    { "name":"email", "index":"email","align":"center","width":100, "sorttype":"string", "sortable": true, "editable":true},
+    { "name":"emailstatus", "index":"emailstatus","align":"center","width":80,"sorttype":"string", "sortable": true, "editable":true, "edittype":"checkbox", "editoptions":{ "value":"OK:N"}},
+    { "name":"token", "index":"token","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true},
+    { "name":"language", "index":"language","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true, "edittype":"select", "editoptions":{"value":"<?php echo $langnames; ?>"}},
+    { "name":"sent", "index":"sent","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true, "edittype":"checkbox", "editoptions":{ "value":"Y:N"}},
+    { "name":"remindersent", "index":"remindersent","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true, "edittype":"checkbox", "editoptions":{ "value":"Y:N"}},
+    { "name":"remindercount", "index":"remindercount","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true},
+    { "name":"completed", "index":"completed","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true, "edittype":"checkbox", "editoptions":{ "value":"Y:N"}},
+    { "name":"usesleft", "index":"usesleft","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true},
+    { "name":"validfrom", "index":"validfrom","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true, "editoptions":{ dataInit:function (elem) {$(elem).datepicker();}}},
+    { "name":"validuntil", "index":"validuntil","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true, "editoptions":{ dataInit:function (elem) {$(elem).datepicker();}}},<?php echo implode(",\n",$uidNames);?>];
 <!--
 	for(i=0; i<document.forms.length; i++)
 	{
@@ -333,35 +115,61 @@ myform.submit();
 
 //-->
 </script>
-<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('generalscripts')."jquery/css/jquery.multiselect.css" ?>" />
-<script src="<?php echo Yii::app()->getConfig('adminscripts')."tokentocpdb.js" ?>" type="text/javascript"></script>
-<script src="<?php echo Yii::app()->getConfig('generalscripts')."jquery/jquery.multiselect.min.js" ?>" type="text/javascript"></script>
-<div id="norowselected" title="<?php $clang->eT("Error") ?>" style="display:none">
-            <p>
-                <?php $clang->eT("Please select at least one participant to be added"); ?>
-            </p>
-        </div>
-<?php $ajaxloader = array('src' => Yii::app()->baseUrl.'/images/ajax-loader.gif',
-                          'alt' => 'Ajax Loader',
-                          'title' => 'Ajax Loader'); ?>
- <div id="processing" title="<?php $clang->eT("Processing...") ?>" style="display:none">
-<?php echo '<img src="', $ajaxloader['src'], '" alt="', $ajaxloader['alt'], '" title="', $ajaxloader['title'], '" />' ?>
-<div id="addcpdb" title="addsurvey" style="display:none">
-  <p><?php $clang->eT("Please select the attributes that are to be added to the central database"); ?></p>
-        <p>
-           <select id="attributeid" name="attributeid" multiple="multiple">
-            <?php
-               if(!empty($attrfieldnames))
-                {
-                       foreach($attrfieldnames as $key=>$value)
-                        {
-                           echo "<option value='".$key."'>".$value."</option>";
-                        }
-               }
+<div id ="search" style="display:none">
+<?php
+$optionsearch = array( '' => 'Select One',
+                      'firstname' => $clang->gT("First name"),
+                      'lastname' => $clang->gT("Last name"),
+                      'email' => $clang->gT("Email address"),
+                      'emailstatus' => $clang->gT("Email status"),
+                      'token' => $clang->gT("Token"),
+                      'language' => $clang->gT("Language"),
+                      'sent' => $clang->gT("Invitation sent?"),
+                      'sentreminder' => $clang->gT("Reminder sent?"),
+                      'remindercount' => $clang->gT("Reminder count"),
+                      'completed' => $clang->gT("Completed?"),
+                      'usesleft' => $clang->gT("Uses left"),
+                      'validfrom' => $clang->gT("Valid from"),
+                      'validuntil' => $clang->gT("Valid until"));
+$optioncontition = array( '' => 'Select One',
+                      'equal' => $clang->gT("Equals"),
+                      'contains' => $clang->gT("Contains"),
+                      'notequal' => $clang->gT("Not equal"),
+                      'notcontains' => $clang->gT("Not contains"),
+                      'greaterthan' => $clang->gT("Greater than"),
+                      'lessthan' => $clang->gT("Less than"));
+?>
+<table id='searchtable'>
+<tr>
+<td><?php echo CHtml::dropDownList('field_1','id="field_1"',$optionsearch); ?></td>
+<td><?php echo CHtml::dropDownList('condition_1','id="condition_1"',$optioncontition); ?></td>
+<td><input type="text" id="conditiontext_1" style="margin-left:10px;" /></td>
+<td><img src=<?php echo Yii::app()->getRequest()->getBaseUrl()."/images/plus.png" ?>  id="addbutton" style="margin-bottom:4px"></td>
+</tr>
+</table>
+<br/>
 
-             ?>
-         </select>
-        </p>
 
 </div>
+<br/>
+<table id="displaytokens"></table> <div id="pager"></div>
+<!--p><input type="button" name="sendinvitations" id="sendinvitations" value="Send Invitations" onclick='window.open("<?php echo Yii::app()->createUrl("admin/tokens/sa/email/surveyid/{$surveyid}/tids/|");?>"+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")' /><input type="button" name="sendreminders" id="sendreminders" value="Send Reminders" onclick='window.open("<?php echo Yii::app()->createUrl("admin/tokens/sa/remind/surveyid/{$surveyid}/tids/|");?>"+$("#displaytokens").getGridParam("selarrrow").join("|"), "_blank")' />
+</p-->
+</table>
+
+<div id="fieldnotselected" title="<?php echo $clang->gT("Error") ?>" style="display:none">
+	<p>
+		<?php echo $clang->gT("Please select a field"); ?>
+	</p>
 </div>
+<div id="conditionnotselected" title="<?php echo $clang->gT("Error") ?>" style="display:none">
+	<p>
+		<?php echo $clang->gT("Please select a condition"); ?>
+	</p>
+</div>
+<div id="norowselected" title="<?php echo $clang->gT("Error") ?>" style="display:none">
+	<p>
+		<?php echo $clang->gT("Please select at least one token"); ?>
+	</p>
+</div>
+<div class="ui-widget ui-helper-hidden" id="client-script-return-msg" style="display:none"></div>

@@ -138,7 +138,7 @@ class Tokens_dynamic extends CActiveRecord
 		self::sid($iSurveyID);
 		return Yii::app()->db->createCommand()->insert(self::tableName(), $data);
     }
-function updateToken($tid,$newtoken)
+    function updateToken($tid,$newtoken)
     {
         return Yii::app()->db->createCommand('UPDATE ' . $this->tableName() . ' SET token=\'' . $newtoken . '\' WHERE tid=' . $tid)->execute();
     }
@@ -204,6 +204,264 @@ function updateToken($tid,$newtoken)
 		$data = $this->findAll($criteria);
 
         return $data;
+    }
+    
+    public function search()
+	{
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;
+
+		$criteria->compare('tid',$this->tid,true);
+		$criteria->compare('firstname',$this->firstname,true);
+		$criteria->compare('lastname',$this->lastname,true);
+		$criteria->compare('email',$this->email,true);
+        $criteria->compare('emailstatus',$this->emailstatus,true);
+        $criteria->compare('token',$this->token,true);
+		$criteria->compare('language',$this->language,true);
+        $criteria->compare('sent',$this->sent,true);
+        $criteria->compare('sentreminder',$this->sentreminder,true);
+        $criteria->compare('remindercount',$this->remindercount,true);
+        $criteria->compare('completed',$this->completed,true);
+        $criteria->compare('usesleft',$this->usesleft,true);
+        $criteria->compare('validfrom',$this->validfrom,true);
+        $criteria->compare('validuntil',$this->validuntil,true);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+    
+    function getSearch($condition,$page,$limit)
+	{  
+	    $start = $limit*$page - $limit;
+	    if($condition[1]=='equal')
+        {
+            $command = Yii::app()->db->createCommand()->where($condition[0].' = "'.$condition[2].'"');
+            if($page == 0 && $limit == 0)
+              {
+            $data=$command->select('*')->from(Tokens_dynamic::tableName())->queryAll();
+              }
+              else
+              {
+                  $data = $command->select('*')->from(Tokens_dynamic::tableName())->limit($limit,$start)->queryAll();
+              }   
+            return $data;
+        }
+        else if($condition[1]=='contains')
+        {
+            $condition[2] = '%'.$condition[2].'%';
+            $command = Yii::app()->db->createCommand()->where(array('like',$condition[0],$condition[2]))->select('*')->from(Tokens_dynamic::tableName());
+            if($page == 0 && $limit == 0)
+              {
+            $data=$command->queryAll();
+              }
+              else
+              {
+                $data = $command->limit($limit,$start)->queryAll();
+              }   
+            return $data;
+        }
+        else if($condition[1]=='notequal')
+        {
+            $command = Yii::app()->db->createCommand()->where(array('not in',$condition[0],$condition[2]))->from(Tokens_dynamic::tableName())->select('*');
+            if($page == 0 && $limit == 0)
+                  {
+            $data=$command->queryAll();
+                  }
+                  else
+                  {
+                  $data = $command->limit($limit,$start)->queryAll();
+                    }   
+            return $data;
+        }
+        else if($condition[1]=='notcontains')
+        {
+            $condition[2] = '%'.$condition[2].'%';
+            $command = Yii::app()->db->createCommand()->where(array('not like',$condition[0],$condition[2]))->from(Tokens_dynamic::tableName())->select('*');
+            if($page == 0 && $limit == 0)
+                  {
+            $data=$command->queryAll();
+                  }
+                  else
+                  {
+                  $data = $command->limit($limit,$start)->queryAll();
+                    }   
+            return $data;
+        }
+        else if($condition[1]=='greaterthan')
+        {
+            $command = Yii::app()->db->createCommand()->where($condition[0].' > "'.$condition[2].'"')->order("lastname", "asc")->select('*')->from(Tokens_dynamic::tableName());
+            if($page == 0 && $limit == 0)
+                  {
+            $data=$command->queryAll();
+                  }
+                  else
+                  {
+                  $data = $command->limit($limit,$start)->queryAll();
+                    }   
+            return $data;
+        }
+        else if($condition[1]=='lessthan')
+        {
+            $command = Yii::app()->db->createCommand()->select('*')->from(Tokens_dynamic::tableName())->where($condition[0].' < "'.$condition[2].'"'); 
+            if($page == 0 && $limit == 0)
+            {
+            $data= $command->queryAll();
+            }
+            else
+            {
+                $data = $command->limit($limit,$start)->queryAll();
+            }   
+            return $data;
+        }
+	}
+    
+	function getSearchMultiple($condition,$page,$limit)
+	{
+	   $i=0;
+	   $j=1;
+	   $tobedonelater =array();
+	   $start = $limit*$page - $limit;	   
+	   $command = new CDbCriteria;
+	   $command->condition = '';
+	   $con= count($condition);
+	   while($i < $con){      
+           if($i<3){
+                $i+=3;
+                if($condition[1]=='equal')
+                {
+                    $command->addCondition($condition[0].' = "'.$condition[2].'"');
+                }
+                else if($condition[1]=='contains')
+                {
+                    $command->addCondition($condition[0].' LIKE "%'.$condition[2].'%"');
+                }
+                else if($condition[1]=='notequal')
+                {
+                    $command->addCondition($condition[0].' NOT IN ("'.$condition[2].'")');
+                }
+                else if($condition[1]=='notcontains')
+                {
+                    $command->addCondition($condition[0].' NOT LIKE "%'.$condition[2].'%"');
+                }
+                else if($condition[1]=='greaterthan')
+                {
+                    $command->addCondition($condition[0].' > "'.$condition[2].'"');
+                }
+                else if($condition[1]=='lessthan')
+                {
+                    $command->addCondition($condition[0].' < "'.$condition[2].'"');
+                }
+            }
+	        else if($condition[$i]!='')
+	        {
+	           if($condition[$i+2]=='equal')
+	           {
+                    if($condition[$i]=='and')
+                    {
+                        $command->addCondition($condition[$i+1].' = "'.$condition[$i+3].'"');
+                    }
+                    else
+                    {
+                        $command->addCondition($condition[$i+1].' = "'.$condition[$i+3].'"','OR');
+                    }
+	            }
+	            else if($condition[$i+2]=='contains')
+	            {
+                    if($condition[$i]=='and')
+                    {
+                        
+                        $command->addCondition($condition[$i+1].' LIKE "%'.$condition[$i+3].'%"');
+                    }
+                    else
+                    {
+                        $command->addCondition($condition[$i+1].' LIKE "%'.$condition[$i+3].'%"','OR');
+                    }
+	            }
+	            else if($condition[$i+2]=='notequal')
+	            {
+                    if($condition[$i]=='and')
+                    {
+                        $command->addCondition($condition[$i+1].' NOT IN ("'.$condition[$i+3].'")');
+                    }
+                    else
+                    {
+                        $command->addCondition($condition[$i+1].' NOT IN ("'.$condition[$i+3].'")','OR');
+                    }
+	            }
+	           else if($condition[$i+2]=='notcontains')
+	            {
+                    if($condition[$i]=='and')
+                    {
+                        $command->addCondition($condition[$i+1].' NOT LIKE "%'.$condition[$i+3].'%"');
+                    }
+                    else
+                    {
+                        $command->addCondition($condition[$i+1].' NOT LIKE "%'.$condition[$i+3].'%"','OR');
+                    }
+	            }
+	            else if($condition[$i+2]=='greaterthan')
+	            {
+                    if($condition[$i]=='and')
+                    {
+                        $command->addCondition($condition[$i+1].' > "'.$condition[$i+3].'"');
+                    }
+                    else
+                    {
+                        $command->addCondition($condition[$i+1].' > "'.$condition[$i+3].'"','OR');
+                    }
+	            }
+	            else if($condition[$i+2]=='lessthan')
+	            {
+                    if($condition[$i]=='and')
+                    {
+                        $command->addCondition($condition[$i+1].' < "'.$condition[$i+3].'"');
+                    }
+                    else
+                    {
+                        $command->addCondition($condition[$i+1].' < "'.$condition[$i+3].'"','OR');
+                    }
+	            }
+	            $i=$i+4;
+	        }
+	        else{$i=$i+4;}
+	    }
+	    
+        if($page == 0 && $limit == 0)
+	    {
+	    	$arr = Tokens_dynamic::model()->findAll($command);
+	        $data = array();
+			foreach($arr as $t)
+			{
+    			$data[$t->tid] = $t->attributes;
+			}
+	    }
+	    else
+	    {
+	        $command->limit = $limit;
+	        $command->offset = $start;
+	        $arr = Tokens_dynamic::model()->findAll($command);
+	        $data = array();
+			foreach($arr as $t)
+			{
+    			$data[$t->tid] = $t->attributes;
+			}
+	    }   
+        
+	    return $data;
+	}
+    function deleteToken($tokenid)
+    {
+        $dlquery = "DELETE FROM ".Tokens_dynamic::tableName()." WHERE tid={$tokenid}";
+        return Yii::app()->db->createCommand($dlquery)->query();
+    }
+
+    function deleteRecords($tokenids)
+    {
+        $dlquery = "DELETE FROM ".Tokens_dynamic::tableName()." WHERE tid IN (".implode(", ", $tokenids).")";
+        return Yii::app()->db->createCommand($dlquery)->query();
     }
 }
 ?>
