@@ -70,6 +70,9 @@ function LEMis_int(a)
 
 function LEMis_numeric(a)
 {
+    if (a === '') {
+        return false;   // to make consistent with PHP
+    }
     return !(isNaN(a));
 }
 
@@ -81,6 +84,7 @@ function LEMis_string(a)
 function LEMif(a,b,c)
 {
     // implements conditional logic.  Note double negation of a to ensure it is cast to Boolean
+    if (a === '0') { return c; }    // so consistent with PHP
     return (!!a) ? b : c;
 }
 
@@ -166,7 +170,7 @@ function LEMstrpos(haystack,needle)
 
 function LEMempty(v)
 {
-    if (v == "" || v == 0 || v == "0" || v == "false" || v == "NULL" || v == false) {
+    if (v === "" || v === false) {
         return true;
     }
     return false;

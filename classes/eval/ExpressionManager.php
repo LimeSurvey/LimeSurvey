@@ -153,7 +153,6 @@ class ExpressionManager {
 'if' => array('exprmgr_if', 'LEMif', $this->gT('Conditional processing'), 'if(test,result_if_true,result_if_false)', '', 3),
 'implode' => array('exprmgr_implode', 'LEMimplode', $this->gT('Join array elements with a string'), 'string implode(glue,arg1,arg2,...,argN)', 'http://www.php.net/manual/en/function.implode.php', -2),
 'intval' => array('intval', 'LEMintval', $this->gT('Get the integer value of a variable'), 'int intval(number [, base=10])', 'http://www.php.net/manual/en/function.intval.php', 1,2),
-'is_bool' => array('is_bool', 'is_bool', $this->gT('Finds out whether a variable is a boolean'), 'bool is_bool(var)', 'http://www.php.net/manual/en/function.is-bool.php', 1),
 'is_empty' => array('exprmgr_empty', 'LEMempty', $this->gT('Determine whether a variable is considered to be empty'), 'bool is_empty(var)', 'http://www.php.net/manual/en/function.empty.php', 1),
 'is_float' => array('is_float', 'LEMis_float', $this->gT('Finds whether the type of a variable is float'), 'bool is_float(var)', 'http://www.php.net/manual/en/function.is-float.php', 1),
 'is_int' => array('is_int', 'LEMis_int', $this->gT('Find whether the type of a variable is integer'), 'bool is_int(var)', 'http://www.php.net/manual/en/function.is-int.php', 1),
@@ -227,7 +226,7 @@ class ExpressionManager {
      * @return boolean - false if there is any error, else true
      */
 
-    private function RDP_EvaluateBinary(array $token)
+       private function RDP_EvaluateBinary(array $token)
     {
         if (count($this->RDP_stack) < 2)
         {
@@ -242,6 +241,13 @@ class ExpressionManager {
             return false;
         }
         // TODO:  try to determine datatype?
+        $bNumericArg1 = is_numeric($arg1[0]) || $arg1[0] == '';
+        $bNumericArg2 = is_numeric($arg2[0]) || $arg2[0] == '';
+        $bStringArg1 = !$bNumericArg1 || $arg1[0] == '';
+        $bStringArg2 = !$bNumericArg2 || $arg2[0] == '';
+        $bBothNumeric = ($bNumericArg1 && $bNumericArg2);
+        $bBothString = ($bStringArg1 && $bStringArg2);
+        $bMismatchType = (!$bBothNumeric && !$bBothString);
         switch(strtolower($token[0]))
         {
             case 'or':
@@ -262,31 +268,92 @@ class ExpressionManager {
                 break;
             case '<':
             case 'lt':
-                $result = array(($arg1[0] < $arg2[0]),$token[1],'NUMBER');
+                if ($bMismatchType) {
+                    $result = array(false,$token[1],'NUMBER');
+                }
+                else {
+                    $result = array(($arg1[0] < $arg2[0]),$token[1],'NUMBER');
+                }
                 break;
             case '<=';
             case 'le':
-                $result = array(($arg1[0] <= $arg2[0]),$token[1],'NUMBER');
+                if ($bMismatchType) {
+                    $result = array(false,$token[1],'NUMBER');
+                }
+                else {
+                    // Need this explicit comparison in order to be in agreement with JavaScript
+                    if (($arg1[0] == '0' && $arg2[0] == '') || ($arg1[0] == '' && $arg2[0] == '0')) {
+                        $result = array(true,$token[1],'NUMBER');
+                    }
+                    else {
+                        $result = array(($arg1[0] <= $arg2[0]),$token[1],'NUMBER');
+                    }
+                }
                 break;
             case '>':
             case 'gt':
-                $result = array(($arg1[0] > $arg2[0]),$token[1],'NUMBER');
+                if ($bMismatchType) {
+                    $result = array(false,$token[1],'NUMBER');
+                }
+                else {
+                    // Need this explicit comparison in order to be in agreement with JavaScript
+                    if (($arg1[0] == '0' && $arg2[0] == '') || ($arg1[0] == '' && $arg2[0] == '0')) {
+                        $result = array(false,$token[1],'NUMBER');
+                    }
+                    else {
+                        $result = array(($arg1[0] > $arg2[0]),$token[1],'NUMBER');
+                    }
+                }
                 break;
             case '>=';
             case 'ge':
-                $result = array(($arg1[0] >= $arg2[0]),$token[1],'NUMBER');
+                if ($bMismatchType) {
+                    $result = array(false,$token[1],'NUMBER');
+                }
+                else {
+                    $result = array(($arg1[0] >= $arg2[0]),$token[1],'NUMBER');
+
+                }
                 break;
             case '+':
-                $result = array(($arg1[0] + $arg2[0]),$token[1],'NUMBER');
+                if ($bBothNumeric) {
+                    $result = array(($arg1[0] + $arg2[0]),$token[1],'NUMBER');
+                }
+                else if ($bBothString) {
+                    $result = array($arg1[0] . $arg2[0],$token[1],'STRING');
+                }
+                else {
+                    $result = array(NAN,$token[1],'NUMBER');
+                }
                 break;
             case '-':
-                $result = array(($arg1[0] - $arg2[0]),$token[1],'NUMBER');
+                if ($bBothNumeric) {
+                    $result = array(($arg1[0] - $arg2[0]),$token[1],'NUMBER');
+                }
+                else {
+                    $result = array(NAN,$token[1],'NUMBER');
+                }
                 break;
             case '*':
-                $result = array(($arg1[0] * $arg2[0]),$token[1],'NUMBER');
+                if ($bBothNumeric) {
+                    $result = array(($arg1[0] * $arg2[0]),$token[1],'NUMBER');
+                }
+                else {
+                    $result = array(NAN,$token[1],'NUMBER');
+                }
                 break;
             case '/';
-                $result = array(($arg1[0] / $arg2[0]),$token[1],'NUMBER');
+                if ($bBothNumeric) {
+                    if ($arg2[0] == 0) {
+                        $result = array(NAN,$token[1],'NUMBER');
+                    }
+                    else {
+                        $result = array(($arg1[0] / $arg2[0]),$token[1],'NUMBER');
+                    }
+                }
+                else {
+                    $result = array(NAN,$token[1],'NUMBER');
+                }
                 break;
         }
         $this->RDP_StackPush($result);
@@ -2375,12 +2442,99 @@ EOD;
         // expectedResult~expression
         // if the expected result is an error, use NULL for the expected result
         $tests  = <<<EOD
-0~('NA' > 0 and 4 > 0) or ('' == 'Y')
-0~('NA'> 0)
+1~!'0'
+1~0 eq '0'
+0~0 ne '0'
+0~0 eq empty
+1~0 ne empty
+0~0 eq ''
+1~0 ne ''
+1~is_empty(empty)
+1~is_empty('')
+0~is_empty(0)
+0~is_empty('0')
+0~is_empty('false')
+0~is_empty('NULL')
+0~'' < 10
+0~0 < empty
+1~0 <= empty
+0~0 > empty
+1~0 >= empty
+0~'0' eq empty
+1~'0' ne empty
+0~'0' < empty
+1~'0' <= empty
+0~'0' > empty
+1~'0' >= empty
+1~empty eq empty
+0~empty ne empty
+0~if('0',1,0)
+0~if(0,1,0)
+1~if(!0,1,0)
+0~if(!(!0),1,0)
+1~if('true',1,0)
+1~if('false',1,0)
+1~if('00',1,0)
+0~if('',1,0)
+0~'' > 0
+0~' ' > 0
+1~!0
+0~!' '
+0~!'A'
+0~!1
+0~!'1'
+1~!''
+1~!empty
+1~'0'==0
+0~'A'>0
+0~'A'<0
+0~'A'==0
+0~'A'>=0
+0~'A'<=0
+0~0>'A'
+0~0>='B'
+0~0=='C'
+0~0<'D'
+0~0<='E'
+1~0!='F'
+1~'A' or 'B'
+1~'A' and 'B'
+0~'A' eq 'B'
+1~'A' ne 'B'
+1~'A' < 'B'
+1~'A' <= 'B'
+0~'A' > 'B'
+0~'A' >= 'B'
+AB~'A' + 'B'
+NAN~'A' - 'B'
+NAN~'A' * 'B'
+NAN~'A' / 'B'
+1~'A' or empty
+0~'A' and empty
+0~'A' eq empty
+1~'A' ne empty
+0~'A' < empty
+0~'A' <= empty
+1~'A' > empty
+1~'A' >= empty
+A~'A' + empty
+NAN~'A' - empty
+NAN~'A' * empty
+NAN~'A' / empty
+0~0 or empty
+0~0 and empty
+0~0 + empty
+0~0 - empty
+0~0 * empty
+NAN~0 / empty
+0~is_numeric(empty)
+1~if('A',1,0)
+0~if(empty,1,0)
+0~if(0,1,0)
+1~if('false',1,0)
 0~(-1 > 0)
 0~zero
 ~empty
-1~is_empty(empty)
 1~five > zero
 1~five > empty
 1~empty < 16
@@ -2444,7 +2598,7 @@ there~hi
 0~four eq three
 1~four != three
 0~four ne four
-0~one * hi
+NAN~one * hi
 5~abs(-five)
 0~acos(cos(pi()))-pi()
 0~floor(asin(sin(pi())))
@@ -2560,8 +2714,6 @@ there~if((one > two),'hi','there')
 1~if(' ',1,0)
 0~!is_empty(one==two)
 1~!is_empty(1)
-1~is_bool(0)
-0~is_bool(1)
 &quot;Can strings contain embedded \&quot;quoted passages\&quot; (and parentheses + other characters?)?&quot;~a=htmlspecialchars(ASSESSMENT_HEADING)
 &quot;can single quoted strings&quot; . &#039;contain nested &#039;quoted sections&#039;?~b=htmlspecialchars(QUESTIONHELP)
 Can strings have embedded &lt;tags&gt; like &lt;html&gt;, or even unbalanced &quot;quotes or entities without terminal semicolons like &amp;amp and  &amp;lt?~c=htmlspecialchars(QUESTION_HELP)
@@ -2852,7 +3004,10 @@ function exprmgr_implode($args)
  */
 function exprmgr_empty($arg)
 {
-    return empty($arg);
+    if ($arg === NULL || $arg === "" || $arg === false) {
+        return true;
+    }
+    return false;
 }
 
 /**

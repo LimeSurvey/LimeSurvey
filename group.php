@@ -755,7 +755,7 @@ foreach ($_SESSION['grouplist'] as $gl)
             $man_class .= ' mandatory';
         }
 
-        if (strlen($qinfo['unansweredSQs']) > 0  && $_SESSION['maxstep'] != $_SESSION['step']) {
+        if ($qinfo['anyUnanswered'] && $_SESSION['maxstep'] != $_SESSION['step']) {
             $man_class .= ' missing';
         }
 

@@ -174,6 +174,7 @@ class LimeExpressionManager {
             db_execute_assoc($query);
             $queries[] = $query;
         }
+        LimeExpressionManager::SetDirtyFlag();
         return $queries;
     }
 
@@ -194,6 +195,7 @@ class LimeExpressionManager {
             $query = "UPDATE ".db_table_name('questions')." SET relevance=1 WHERE qid=".$key;
             db_execute_assoc($query);
         }
+        LimeExpressionManager::SetDirtyFlag();
         return count($releqns);
     }
 
@@ -206,8 +208,7 @@ class LimeExpressionManager {
      */
     public static function ConvertConditionsToRelevance($surveyId=NULL, $qid=NULL)
     {
-        LimeExpressionManager::SetDirtyFlag();
-        $query = LimeExpressionManager::getAllRecordsForSurvey($surveyId,$qid);
+        $query = LimeExpressionManager::getConditionsForEM($surveyId,$qid);
 
         $_qid = -1;
         $relevanceEqns = array();
@@ -229,7 +230,7 @@ class LimeExpressionManager {
                     {
                         $scenarios[] = '(' . implode(' and ', $relAndList) . ')';
                     }
-                    $relevanceEqn = implode(' and ', $scenarios);
+                    $relevanceEqn = implode(' or ', $scenarios);
                     $relevanceEqns[$_qid] = $relevanceEqn;
                 }
 
@@ -301,7 +302,21 @@ class LimeExpressionManager {
             }
             else
             {
-                $relOrList[] = $fieldname . " " . $row['method'] . " " . $value;
+                // Conditions uses ' ' to mean not answered, but internally it is really stored as ''.  Fix this
+                if ($value === '" "') {
+                    if ($row['method'] == '==') {
+                        $relOrList[] = "is_empty(" . $fieldname . ")";
+                    }
+                    else if ($row['method'] == '!=') {
+                        $relOrList[] = "!is_empty(" . $fieldname . ")";
+                    }
+                    else {
+                        $relOrList[] = $fieldname . " " . $row['method'] . " " . $value;
+                    }
+                }
+                else {
+                    $relOrList[] = $fieldname . " " . $row['method'] . " " . $value;
+                }
             }
 
             if ($row['cqid'] == 0 || substr($row['cfieldname'],0,1) == '+') {
@@ -319,7 +334,7 @@ class LimeExpressionManager {
             {
                 $scenarios[] = '(' . implode(' and ', $relAndList) . ')';
             }
-            $relevanceEqn = implode(' and ', $scenarios);
+            $relevanceEqn = implode(' or ', $scenarios);
             $relevanceEqns[$_qid] = $relevanceEqn;
         }
         if (is_null($qid)) {
@@ -1084,15 +1099,15 @@ class LimeExpressionManager {
             $this->groupId2groupSeq[$gseq['gid']] = $i;
         }
 
-        $qattr = $this->getEMRelatedRecordsForSurvey($surveyid);   // what happens if $surveyid is null?
+        $qattr = $this->getQuestionAttributesForEM($surveyid);   // what happens if $surveyid is null?
         $this->qattr = $qattr;
 
-        $this->runtimeTimings[] = array(__METHOD__ . ' - question_attributes_model->getEMRelatedRecordsForSurvey',(microtime(true) - $now));
+        $this->runtimeTimings[] = array(__METHOD__ . ' - question_attributes_model->getQuestionAttributesForEM',(microtime(true) - $now));
         $now = microtime(true);
 
-        $this->qans = $this->getAllAnswersForEM($surveyid,NULL);  // ,$this->slang);  // TODO - will this work for multi-lingual?
+        $this->qans = $this->getAnswerSetsForEM($surveyid,NULL);  // ,$this->slang);  // TODO - will this work for multi-lingual?
 
-        $this->runtimeTimings[] = array(__METHOD__ . ' - answers_model->getAllAnswersForEM',(microtime(true) - $now));
+        $this->runtimeTimings[] = array(__METHOD__ . ' - answers_model->getAnswerSetsForEM',(microtime(true) - $now));
         $now = microtime(true);
 
         $q2subqInfo = array();
@@ -1115,7 +1130,7 @@ class LimeExpressionManager {
             $questionNum = $fielddata['qid'];
             $relevance = (isset($fielddata['relevance'])) ? $fielddata['relevance'] : 1;
             $grelevance = (isset($fielddata['grelevance'])) ? $fielddata['grelevance'] : 1;
-            $hidden = (isset($qattr[$questionNum]['hidden'])) ? $qattr[$questionNum]['hidden'] : 'N';
+            $hidden = (isset($qattr[$questionNum]['hidden'])) ? ($qattr[$questionNum]['hidden'] == '1') : false;
             $scale_id = (isset($fielddata['scale_id'])) ? $fielddata['scale_id'] : '0';
             $preg = (isset($fielddata['preg'])) ? $fielddata['preg'] : NULL; // a perl regular exrpession validation function
             $defaultValue = (isset($fielddata['defaultvalue']) ? $fielddata['defaultvalue'] : NULL);
@@ -2879,6 +2894,7 @@ class LimeExpressionManager {
         $unansweredSQs = array();
         $invalidSQs = array();
         $updatedValues = array();
+        $sanyUnanswered = false;
 
         ///////////////////////////////////////////////////////
         // CHECK EACH GROUP, AND SET SURVEY-LEVEL PROPERTIES //
@@ -2903,6 +2919,9 @@ class LimeExpressionManager {
             if (!$gStatus['valid']) {
                 $svalid=false;
             }
+            if ($gStatus['anyUnanswered']) {
+                $sanyUnanswered = true;
+            }
 
             if (strlen($gStatus['unansweredSQs']) > 0) {
                 $unansweredSQs = array_merge($unansweredSQs, explode('|',$gStatus['unansweredSQs']));
@@ -2923,6 +2942,7 @@ class LimeExpressionManager {
             'hidden' => $shidden,
             'mandViolation' => $smandViolation,
             'valid' => $svalid,
+            'anyUnanswered' => $sanyUnanswered,
             'message' => $message,
             'unansweredSQs' => implode('|',$unansweredSQs),
             'invalidSQs' => implode('|',$invalidSQs),
@@ -2962,6 +2982,7 @@ class LimeExpressionManager {
         $unansweredSQs = array();
         $invalidSQs = array();
         $updatedValues = array();
+        $ganyUnanswered = false;
 
         $gRelInfo = $LEM->gRelInfo[$groupSeq];
 
@@ -2982,6 +3003,9 @@ class LimeExpressionManager {
             }
             if ($qStatus['mandViolation']==true) {
                 $gmandViolation=true;   // at least one relevant question fails mandatory test
+            }
+            if ($qStatus['anyUnanswered']==true) {
+                $ganyUnanswered=true;
             }
             if ($qStatus['valid']==false) {
                 $gvalid=false;  // at least one question fails validity constraints
@@ -3064,6 +3088,7 @@ class LimeExpressionManager {
             'valid' => $gvalid,
             'qset' => $currentQset,
             'unansweredSQs' => $unansweredSQList,
+            'anyUnanswered' => $ganyUnanswered,
             'invalidSQs' => $invalidSQList,
             'updatedValues' => $updatedValues,
         );
@@ -3075,7 +3100,7 @@ class LimeExpressionManager {
             'gtext' => $LEM->gseq2info[$groupSeq]['description'],
             'gname' => $LEM->gseq2info[$groupSeq]['group_name'],
             'gid' => $LEM->gseq2info[$groupSeq]['gid'],
-            'anyUnanswered' => ((strlen($unansweredSQList) > 0) ? true : false),
+            'anyUnanswered' => $ganyUnanswered,
             'anyErrors' => (($gmandViolation || !$gvalid) ? true : false),
             'valid' => $gvalid,
             'mandViolation' => $gmandViolation,
@@ -3157,6 +3182,7 @@ class LimeExpressionManager {
         $prettyPrintSQRelEqns=array();
         $prettyPrintSQRelEqn='';
         $prettyPrintValidTip='';
+        $anyUnanswered = false;
         if (!$qrel)
         {
             // All sub-questions are irrelevant
@@ -3370,7 +3396,7 @@ class LimeExpressionManager {
         $unansweredSQs = array();   // list of sub-questions that weren't answered
         foreach ($relevantSQs as $sgqa)
         {
-            if (($qInfo['type'] != '*') && (!isset($_SESSION[$sgqa]) || ($_SESSION[$sgqa] == '' || is_null($_SESSION[$sgqa]))))
+            if (($qInfo['type'] != '*') && (!isset($_SESSION[$sgqa]) || ($_SESSION[$sgqa] === '' || is_null($_SESSION[$sgqa]))))
             {
                 // then a relevant, visible, mandatory question hasn't been answered
                 // Equations are ignored, since set automatically
@@ -3454,6 +3480,31 @@ class LimeExpressionManager {
                     break;
             }
             $mandatoryTip .= "</span></strong>\n";
+        }
+
+        /////////////////////////////////////////////////////////////
+        // DETECT WHETHER QUESTION SHOULD BE FLAGGED AS UNANSWERED //
+        /////////////////////////////////////////////////////////////
+
+        if ($qrel && !$qhidden)
+        {
+            switch ($qInfo['type'])
+            {
+                case 'M':
+                case 'P':
+                case '!': //List - dropdown
+                case 'L': //LIST drop-down/radio-button list
+                    // If at least one checkbox is checked, we're OK
+                    if (count($relevantSQs) > 0 && (count($relevantSQs) == count($unansweredSQs)))
+                    {
+                        $anyUnanswered = true;
+                    }
+                    // what about optional vs. mandatory comment and 'other' fields?
+                    break;
+                default:
+                    $anyUnanswered = (count($unansweredSQs) > 0);
+                    break;
+            }
         }
 
         ///////////////////////////////////////////////
@@ -3664,6 +3715,7 @@ class LimeExpressionManager {
             'irrelevantSQs' => implode('|',$irrelevantSQs),
             'subQrelEqn' => implode('<br/>',$prettyPrintSQRelEqns),
             'mandViolation' => $qmandViolation,
+            'anyUnanswered' => $anyUnanswered,
             'mandTip' => $mandatoryTip,
             'message' => $debug_qmessage,
             'updatedValues' => $updatedValues,
@@ -3681,7 +3733,7 @@ class LimeExpressionManager {
             'qtext' => $qInfo['qtext'],
             'qcode' => $qInfo['code'],
             'qhelp' => $qInfo['help'],
-            'anyUnanswered' => ((count($unansweredSQs) > 0) ? true : false),
+            'anyUnanswered' => $anyUnanswered,
             'anyErrors' => (($qmandViolation || !$qvalid) ? true : false),
             'show' => (($qrel && !$qInfo['hidden']) ? true : false),
             'gseq' => $groupSeq,
@@ -4129,7 +4181,7 @@ class LimeExpressionManager {
                     }
                 }
 
-                if ($arg['hidden'] == 1) {
+                if ($arg['hidden']) {
                     $jsParts[] = "  // This question should always be hidden\n";
                     $jsParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
 //                    $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='';\n";
@@ -4509,7 +4561,7 @@ EOT;
                 'gseq'=>1,
                 'jsResultVar'=>'java_' . $args[0],
                 'type'=>(($args[1]=='expr') ? '*' : ($args[1]=='message') ? 'X' : 'S'),
-                'hidden'=>0,
+                'hidden'=>false,
                 'gid'=>1,   // ($i % 3),
                 );
             ++$i;
@@ -4644,7 +4696,7 @@ EOT;
         }
     }
 
-    private static function getAllRecordsForSurvey($surveyid=NULL, $qid=NULL)
+    private static function getConditionsForEM($surveyid=NULL, $qid=NULL)
     {
         if (!is_null($qid)) {
             $where = " c.qid = ".$qid." and ";
@@ -4675,7 +4727,7 @@ EOT;
 		return $data;
     }
 
-    private function getEMRelatedRecordsForSurvey($surveyid=NULL,$qid=NULL)
+    private function getQuestionAttributesForEM($surveyid=NULL,$qid=NULL)
     {
         if (!is_null($qid)) {
             $where = " a.qid = ".$qid." and ";
@@ -4711,7 +4763,7 @@ EOT;
      * @return <type>
      */
 
-    function getAllAnswersForEM($surveyid=NULL,$qid=NULL,$lang=NULL)
+    function getAnswerSetsForEM($surveyid=NULL,$qid=NULL,$lang=NULL)
     {
         if (!is_null($qid)) {
             $where = "a.qid = ".$qid;
@@ -4994,7 +5046,7 @@ EOT;
                         case 'exclude_all_others':
                         case 'exclude_all_others_auto':
                         case 'hidden':
-                            if ($value == '0') {
+                            if ($value == false || $value == '0') {
                                 $value = NULL; // so can skip this one - just using continue here doesn't work.
                             }
                             break;
