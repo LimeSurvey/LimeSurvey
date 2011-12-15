@@ -410,7 +410,8 @@ CREATE TABLE `prefix_users` (
   `templateeditormode` varchar(7) default 'default',
   `questionselectormode` varchar(7) default 'default',
   `one_time_pw` BLOB,
-  `dateformat` INT UNSIGNED NOT NULL DEFAULT 1
+  `dateformat` INT UNSIGNED NOT NULL DEFAULT 1,
+  `participant_panel` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
@@ -430,14 +431,14 @@ CREATE TABLE `prefix_templates_rights` (
 --
 CREATE TABLE `prefix_participants` (
   `participant_id` varchar(50) NOT NULL,
-  `firstname` varchar(40) NOT NULL,
-  `lastname` varchar(40) NOT NULL,
-  `email` varchar(80) NOT NULL,
-  `language` varchar(20) NOT NULL,
-  `blacklisted` char(1) NOT NULL,
+  `firstname` varchar(40) DEFAULT NULL,
+  `lastname` varchar(40) DEFAULT NULL,
+  `email` varchar(80) DEFAULT NULL,
+  `language` varchar(40) DEFAULT NULL,
+  `blacklisted` varchar(1) NOT NULL,
   `owner_uid` int(20) NOT NULL,
   PRIMARY KEY  (`participant_id`)
-) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 --
 -- Table structure for table participant_attribute
 --
@@ -446,7 +447,7 @@ CREATE TABLE `prefix_participant_attribute` (
   `attribute_id` int(11) NOT NULL,
   `value` varchar(50) NOT NULL,
   PRIMARY KEY  (`participant_id`,`attribute_id`)
-) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 --
 -- Table structure for table participant_attribute_names_lang
 --
@@ -455,7 +456,7 @@ CREATE TABLE `prefix_participant_attribute_names_lang` (
   `attribute_name` varchar(30) NOT NULL,
   `lang` varchar(20) NOT NULL,
    PRIMARY KEY  (`attribute_id`,`lang`)
- ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ ) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 --
 -- Table structure for table participant_attribute_names
 --
@@ -464,7 +465,7 @@ CREATE TABLE `prefix_participant_attribute_names` (
   `attribute_type` varchar(4) NOT NULL,
   `visible` char(5) NOT NULL,
   PRIMARY KEY  (`attribute_id`,`attribute_type`)
-) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 --
 -- Table structure for table participant_attribute_names_values
 --
@@ -473,7 +474,7 @@ CREATE TABLE `prefix_participant_attribute_values` (
   `attribute_id` int(11) NOT NULL,
   `value` varchar(20) NOT NULL,
   PRIMARY KEY  ( `value_id`)
-) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 --
 -- Table structure for table participant_shares
 --
@@ -483,7 +484,7 @@ CREATE TABLE `prefix_participant_shares` (
   `date_added` datetime NOT NULL,
   `can_edit` varchar(5) NOT NULL,
   PRIMARY KEY  (`participant_id`,`share_uid`)
- ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ ) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 --
 -- Table structure for table survey_links
 --
@@ -493,7 +494,7 @@ CREATE TABLE `prefix_survey_links` (
   `survey_id` int(11) NOT NULL,
   `date_created` datetime NOT NULL,
    PRIMARY KEY  (`participant_id`,`token_id`,`survey_id`)
- ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ ) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 --
 -- Table structure for table templates
 --

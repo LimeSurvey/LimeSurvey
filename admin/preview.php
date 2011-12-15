@@ -26,6 +26,9 @@ if (!isset($qid)) {$qid=returnglobal('qid');}
 if (empty($surveyid)) {die("No SID provided.");}
 if (empty($qid)) {die("No QID provided.");}
 
+if (!isset($_SESSION['step'])) { $_SESSION['step'] = 0; }
+if (!isset($_SESSION['prevstep'])) { $_SESSION['prevstep'] = 0; }
+if (!isset($_SESSION['maxstep'])) { $_SESSION['maxstep'] = 0; }
 if (!isset($_GET['lang']) || $_GET['lang'] == "")
 {
     $language = GetBaseLanguageFromSurveyID($surveyid);

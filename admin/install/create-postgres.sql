@@ -417,7 +417,8 @@ CREATE TABLE prefix_users (
     templateeditormode character(7) DEFAULT 'default'::bpchar,
     questionselectormode character(7) DEFAULT 'default'::bpchar,
 	one_time_pw bytea,
-    "dateformat" integer DEFAULT 1 NOT NULL
+    "dateformat" integer DEFAULT 1 NOT NULL,
+    participant_panel integer NOT NULL DEFAULT '0'
 );
 
 
@@ -437,11 +438,11 @@ CREATE TABLE prefix_templates_rights (
 --
 CREATE TABLE prefix_participants (
   "participant_id" character varying( 50 ) PRIMARY KEY NOT NULL,
-  "firstname" character varying( 40 ) NOT NULL,
-  "lastname" character varying( 40 ) NOT NULL,
-  "email" character varying( 80 ) NOT NULL,
-  "language" character varying( 2 ) NOT NULL,
-  "blacklisted" character( 1 ) NOT NULL,
+  "firstname" character varying( 40 ) DEFAULT NULL,
+  "lastname" character varying( 40 ) DEFAULT NULL,
+  "email" character varying( 80 ) DEFAULT NULL,
+  "language" character varying( 2 ) DEFAULT NULL,
+  "blacklisted" character( 1 ) DEFAULT NULL,
   "owner_uid" integer NOT NULL
 );
 

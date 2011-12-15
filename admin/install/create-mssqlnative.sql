@@ -436,7 +436,8 @@ CREATE TABLE [prefix_users] (
   [templateeditormode] char(7) default 'default',
   [questionselectormode] char(7) default 'default',
   [one_time_pw] varchar(max),
-  [dateformat] INT NOT NULL DEFAULT 1
+  [dateformat] INT NOT NULL DEFAULT 1,
+  [participant_panel] TINYINT NOT NULL DEFAULT '0'
 );
 
 
@@ -454,15 +455,15 @@ CREATE TABLE [prefix_templates_rights] (
 -- Table structure for table participants
 --
 CREATE TABLE [prefix_participants] (
-						  [participant_id] varchar(50) NOT NULL,
-                                                  [firstname] varchar(40) NOT NULL,
-						  [lastname] varchar(40) NOT NULL,
-                                                  [email] varchar(80) NOT NULL,
-                                                  [language] varchar(2) NOT NULL,
-						  [blacklisted] varchar(80) NOT NULL,
-                                                  [owner_uid] int(20) NOT NULL,
-                                                   PRIMARY KEY  ([participant_id])
-						  );
+    [participant_id] varchar(50) NOT NULL,
+    [firstname] varchar(40) DEFAULT NULL,
+    [lastname] varchar(40) DEFAULT NULL,
+    [email] varchar(80) DEFAULT NULL,
+    [language] varchar(40) DEFAULT NULL,
+    [blacklisted] varchar(1) DEFAULT NULL,
+    [owner_uid] int(20) NOT NULL,
+    PRIMARY KEY  ([participant_id])
+);
 --
 -- Table structure for table participant attribute
 --
