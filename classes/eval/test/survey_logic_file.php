@@ -126,11 +126,11 @@ background-color:lightyellow;
 EOD;
 
 
-                LimeExpressionManager::SetSurveyLanguage($language);
+                SetSurveyLanguage($surveyid, $language);
 
                 echo '<H3>' . $clang->gT('Logic File for Survey # ') . $surveyid . "</H3>\n";
 
-                $result = LimeExpressionManager::ShowSurveyLogicFile($surveyid, $language, $gid, $qid,$LEMdebugLevel,$assessments);
+                $result = LimeExpressionManager::ShowSurveyLogicFile($surveyid, $gid, $qid,$LEMdebugLevel,$assessments);
                 print $result['html'];
 
                 print <<< EOD

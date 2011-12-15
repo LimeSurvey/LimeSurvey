@@ -73,6 +73,9 @@ class LimeExpressionManager {
     {
         self::$instance =& $this;
         $this->em = new ExpressionManager();
+        if (!isset($_SESSION['LEMlang'])) {
+            $_SESSION['LEMlang'] = 'en';    // so that there is a default
+        }
     }
 
     /**
@@ -136,29 +139,22 @@ class LimeExpressionManager {
     }
 
     /**
-     * Sets the survey language.  If the language has changed, then EM cache must be invalidated and refreshed
+     * Sets the language for Expression Manager.  If the language has changed, then EM cache must be invalidated and refreshed
      * @param string $lang
      */
-    public static function SetSurveyLanguage($lang=NULL)
+    public static function SetEMLanguage($lang=NULL)
     {
         if (is_null($lang)) {
-            $lang = 'en';   // should really be the survey base language
+            return; // should never happen
         }
-        $lang = sanitize_languagecode($lang);
         if (!isset($_SESSION['LEMlang'])) {
             $_SESSION['LEMlang'] = $lang;
         }
         if ($_SESSION['LEMlang'] != $lang) {
             // then changing languages, so clear cache
-            $_SESSION['LEMdirtyFlag'] = true;
+//            $_SESSION['LEMdirtyFlag'] = true;
             $_SESSION['LEMforceRefresh'] = true;
-
-            if (isset($_SESSION['LEMsid'])) {
-                SetSurveyLanguage($_SESSION['LEMsid'], $lang);
-                $lang = $_SESSION['s_lang'];
-            }
         }
-
         $_SESSION['LEMlang'] = $lang;
     }
 
@@ -1040,7 +1036,7 @@ class LimeExpressionManager {
      * @return boolean - true if $fieldmap had been re-created, so ExpressionManager variables need to be re-set
      */
 
-    public function setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh=false,$anonymized=false,$allOnOnePage=false)
+    private function setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh=false,$anonymized=false,$allOnOnePage=false)
     {
         if (isset($_SESSION['LEMforceRefresh'])) {
             unset($_SESSION['LEMforceRefresh']);
@@ -1051,6 +1047,7 @@ class LimeExpressionManager {
         }
         $now = microtime(true);
 
+        // TODO - do I need to force refresh, or trust that createFieldMap will cache langauges properly?
         $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh,false,$_SESSION['LEMlang']);
         $this->sid= $surveyid;
 
@@ -1629,6 +1626,9 @@ class LimeExpressionManager {
         usort($this->questionSeq2relevance,'self::cmpQuestionSeq');
         $this->numQuestions = count($this->questionSeq2relevance);
         $this->numGroups = count($this->groupId2groupSeq);
+
+        // Some values changed, so need to update what was registered to ExpressionManager
+        $this->em->RegisterVarnamesUsingMerge($this->knownVars);
         
         return true;
     }
@@ -2119,11 +2119,7 @@ class LimeExpressionManager {
                 break;
         }
         
-        if ($LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$LEM->surveyOptions['anonymized'],$LEM->allOnOnePage))
-        {
-            // means that some values changed, so need to update what was registered to ExpressionManager
-            $LEM->em->RegisterVarnamesUsingMerge($LEM->knownVars);
-        }
+        $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$LEM->surveyOptions['anonymized'],$LEM->allOnOnePage);
         $LEM->currentGroupSeq=-1;
         $LEM->currentQuestionSeq=-1;    // for question-by-question mode
         $LEM->indexGseq=array();
@@ -2647,9 +2643,14 @@ class LimeExpressionManager {
      * @param <type> $preview - if true, then treat this group/question as relevant, even if it is not, so that it can be displayed
      * @return <type>
      */
-    static function JumpTo($seq,$preview=false,$processPOST=true,$force=false) {
+    static function JumpTo($seq,$preview=false,$processPOST=true,$force=false,$changeLang=false) {
         $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
+
+        if ($changeLang)
+        {
+            $LEM->setVariableAndTokenMappingsForExpressionManager($LEM->sid,true,$LEM->surveyOptions['anonymized'],$LEM->allOnOnePage);
+        }
 
         $LEM->ParseResultCache=array();    // to avoid running same test more than once for a given group
         --$seq; // convert to 0-based numbering
@@ -3862,11 +3863,7 @@ class LimeExpressionManager {
 
             if (!is_null($surveyid))
             {
-                if ($LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$anonymized,$LEM->allOnOnePage))
-                {
-                    // means that some values changed, so need to update what was registered to ExpressionManager
-                    $LEM->em->RegisterVarnamesUsingMerge($LEM->knownVars);
-                }
+                $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$anonymized,$LEM->allOnOnePage);
                 if (isset ($LEM->groupId2groupSeq[$groupNum]))
                 {
                     $groupSeq = $LEM->groupId2groupSeq[$groupNum];
@@ -4950,11 +4947,10 @@ EOT;
     /**
      * Create HTML view of the survey, showing everything that uses EM
      * @param <type> $sid
-     * @param <type> $language
      * @param <type> $gid
      * @param <type> $qid 
      */
-    static public function ShowSurveyLogicFile($sid, $language=NULL, $gid=NULL, $qid=NULL,$LEMdebugLevel=0,$assessments=false)
+    static public function ShowSurveyLogicFile($sid, $gid=NULL, $qid=NULL,$LEMdebugLevel=0,$assessments=false)
     {
         // Title
         // Welcome
@@ -4964,11 +4960,6 @@ EOT;
         // A1, code, assessment_value, text
         // End Message
         global $rooturl;
-
-        if (!is_null($language)) {
-            // must be called before getting LEM singleton
-            self::SetSurveyLanguage($language);
-        }
 
         $LEM =& LimeExpressionManager::singleton();
 

@@ -58,10 +58,6 @@ if (isset($_REQUEST['newtest']))
 		setcookie("limesurvey_timers", "0");
 $show_empty_group = false;
 
-if (isset($_REQUEST['lang']))  {
-    LimeExpressionManager::SetSurveyLanguage($_REQUEST['lang']);
-}
-
 if ($previewgrp)
 {
 	$_SESSION['prevstep'] = 1;
@@ -136,6 +132,10 @@ else
                 // in order to update equations and ensure there are no intervening relevant mandatory or relevant invalid questions
                 $moveResult = LimeExpressionManager::JumpTo($_SESSION['totalsteps']+1,false);
             }
+        }
+        if (isset($move) && (preg_match('/^changelang_/',$move))) {
+            // jump to current step using new language, processing POST values
+            $moveResult = LimeExpressionManager::JumpTo($_SESSION['step'],false,true,false,true);  // do process the POST data
         }
         if (isset($move) && bIsNumericInt($move) && $thissurvey['allowjumps']=='Y')
         {
@@ -535,6 +535,7 @@ foreach ($_SESSION['grouplist'] as $gl)
         }
     }
 
+    // TMSW - could iterate through LEM::currentQset instead
     foreach ($_SESSION['fieldarray'] as $key => $ia)
     {
         ++$qnumber;
@@ -602,7 +603,9 @@ if ($surveyMode != 'survey' && isset($thissurvey['showprogress']) && $thissurvey
         $percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
     }
 }
-$languagechanger = makelanguagechanger();
+if (!(isset($languagechanger) && strlen($languagechanger) > 0) && function_exists('makelanguagechanger')) {
+    $languagechanger = makelanguagechanger();
+}
 
 //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
 sendcacheheaders();

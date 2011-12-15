@@ -114,12 +114,17 @@ if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die("browse - Cannot run 
 
 // Set the language for dispay
 require_once($rootdir.'/classes/core/language.php');  // has been secured
-if (isset($_SESSION['s_lang']))
+if (isset($_REQUEST['lang'])) {
+    $lang = sanitize_languagecode($_REQUEST['lang']);
+    $clang = SetSurveyLanguage( $surveyid, $lang);
+    $language = $_SESSION['s_lang'];
+}
+else if (isset($_SESSION['s_lang']))
 {
     $clang = SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
     $language = $_SESSION['s_lang'];
 } else {
-$language = GetBaseLanguageFromSurveyID($surveyid);
+    $language = GetBaseLanguageFromSurveyID($surveyid);
     $clang = SetSurveyLanguage( $surveyid, $language);
 }
 

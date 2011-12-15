@@ -339,6 +339,12 @@ if (!isset($_SESSION['s_lang'])  && (isset($move)) )
     exit;
 };
 
+if (isset($move) && (preg_match('/^changelang_/',$move)))
+{
+    // Then changing language from the language changer
+    $_POST['lang'] = substr($move,11);
+}
+
 // Set the language of the survey, either from POST, GET parameter of session var
 if (isset($_POST['lang']) && $_POST['lang']!='')  // this one comes from the language question
 {
@@ -356,7 +362,7 @@ if (isset($_GET['lang']) && $surveyid)
     UpdateSessionGroupList($templang);  // to refresh the language strings in the group list session variable
     UpdateFieldArray();        // to refresh question titles and question text
 }
-
+else
 if (isset($_SESSION['s_lang']))
 {
     $clang = SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
@@ -365,10 +371,6 @@ elseif (isset($surveyid) && $surveyid)
 {
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
     $clang = SetSurveyLanguage( $surveyid, $baselang);
-}
-else
-{
-    $baselang=$defaultlang;
 }
 
 if (isset($_REQUEST['embedded_inc']))
@@ -1080,6 +1082,7 @@ function makelanguagechanger()
 
     }
 
+    // TODO - When is this needed?
     $token = sanitize_token(returnglobal('token'));
     if ($token != '')
     {
@@ -1116,7 +1119,11 @@ function makelanguagechanger()
         $aAllLanguages=getLanguageData();
         $slangs=array_keys(array_intersect_key($aAllLanguages,array_flip($slangs))); // Sort languages by their locale name
 
-        $htmlcode ="<select name=\"select\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
+        // Changed how language changer works so that posts any currently set values.  This also ensures that token (and other) parmeters are also posted.
+//        $htmlcode ="<select name=\"select\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
+        $htmlcode ="<select name=\"select\" class='languagechanger'"
+        . "onchange=\"javascript:$('[name=move]').val('changelang_'+ this.value);$('#limesurvey').submit();\">\n";
+
         $sAddToURL = "";
         $sTargetURL = "$relativeurl/index.php";
         if ($previewgrp){
@@ -1125,7 +1132,9 @@ function makelanguagechanger()
         }
         foreach ($slangs as $otherlang)
         {
-            $htmlcode .= "\t<option value=\"$sTargetURL?sid=". $surveyid ."&amp;lang=". $otherlang ."$tokenparam$sAddToURL\" ";
+//            $htmlcode .= "\t<option value=\"$sTargetURL?sid=". $surveyid ."&amp;lang=". $otherlang ."$tokenparam$sAddToURL\" ";
+            $htmlcode .= "\t<option value=\"". $otherlang ."\" ";
+
             if($otherlang == $lang)
         {
                 $htmlcode .= " selected=\"selected\" ";
