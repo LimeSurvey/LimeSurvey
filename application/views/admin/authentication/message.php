@@ -1,2 +1,2 @@
 <?php echo $message; ?>
-<br /><a href='<?php echo current_url();?>'><?php echo $clang->gT("Continue");?></a><br />
+<br /><a href='<?php echo Yii::app()->request->requestUri;?>'><?php echo $clang->gT("Continue");?></a><br />

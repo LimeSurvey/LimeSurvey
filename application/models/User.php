@@ -77,7 +77,7 @@ class User extends CActiveRecord
         {	
 		    foreach ($condition as $item => $value)
 			{
-				$criteria->addCondition($item.'="'.$value.'"');
+				$criteria->addCondition($item.'='.Yii::app()->db->quoteValue($value));
 			}
         }
 		
@@ -104,13 +104,14 @@ class User extends CActiveRecord
 	 */
     public function getSomeRecords($fields,$condition=FALSE)
     {
+    	
 		$criteria = new CDbCriteria;
 
         if ($condition != FALSE)
         {	
 		    foreach ($condition as $item => $value)
 			{
-				$criteria->addCondition($item.'="'.$value.'"');
+				$criteria->addCondition($item.'='.Yii::app()->db->quoteValue($value));
 			}
         }
 		
@@ -245,8 +246,10 @@ class User extends CActiveRecord
     public function updatePassword($uid,$password)
     {
         $data = array('password' => $password);
-        $this->db->where(array("uid"=>$uid));
-        $this->db->update('users',$data);
+        //$this->db->where(array("uid"=>$uid));
+        //$this->db->update('users',$data);
+         $this->updateByPk($uid, $data);
+
     }
 		
 	/**

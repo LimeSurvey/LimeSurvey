@@ -22,6 +22,7 @@
 * @package		LimeSurvey
 * @subpackage	Backend
 */
+
 class Authentication extends CAction
 {
 	/**
@@ -36,6 +37,8 @@ class Authentication extends CAction
 			$this->login();
 		elseif (isset($_GET['logout']))
 			$this->logout();
+		elseif (isset($_GET['forgotpassword']))
+			$this->forgotpassword();
 		else
 			$this->index();
 	}
@@ -127,74 +130,74 @@ class Authentication extends CAction
     */
     public function forgotpassword()
     {
-        $clang = $this->getController()->lang;
-        if(!$this->input->post("action"))
+    
+        $clang = Yii::app()->lang;
+        if(!(isset($_POST["action"])))
         {
-            $data['clang'] = $this->limesurvey_lang;
-            parent::_getAdminHeader();
-            $this->load->view('admin/authentication/forgotpassword', $data);
-            parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+            $data['clang'] = Yii::app()->lang;
+            $this->getController()->_getAdminHeader();
+            $this->getController()->render("/admin/authentication/forgotpassword", $data);
+            $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
         }
         else
         {
-            $postuser = $this->input->post("user");
-            $emailaddr = $this->input->post("email");
+        	
+            $postuser = $_POST["user"];
+            $emailaddr = $_POST["email"];
+            
             //$query = "SELECT users_name, password, uid FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser)." AND email=".$connect->qstr($emailaddr);
             //$result = db_select_limit_assoc($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());  // Checked
-            $this->load->model("Users_model");
-            $query = $this->Users_model->getSomeRecords(array("users_name, password, uid"),array("users_name"=>$postuser,"email"=>$emailaddr));
+            $query = User::model()->getSomeRecords(array("users_name, password, uid"),array("users_name"=>$postuser,"email"=>$emailaddr));
 
-            if ($query->num_rows()  < 1)
+            if (count($query)  < 1)
             {
                 // wrong or unknown username and/or email
-                $data['errormsg']=$this->limesurvey_lang->gT("User name and/or email not found!");
+                $data['errormsg']=Yii::app()->lang->gT("User name and/or email not found!");
                 $data['maxattempts']="";
-                $data['clang']=$this->limesurvey_lang;
+                $data['clang']=Yii::app()->lang;
 
-                parent::_getAdminHeader();
-                $this->load->view('admin/authentication/error', $data);
-                parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+                $this->getController()->_getAdminHeader();
+                $this->getController()->render("/admin/authentication/error", $data);
+               $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
 
             }
             else
             {
                 //$fields = $result->FetchRow();
-                $fields = $query->row_array();
+                $fields = $query;
 
                 // send Mail
                 $new_pass = createPassword();
-                $body = sprintf($clang->gT("Your user data for accessing %s"),$this->config->item("sitename")). "<br />\n";;
-                $body .= $clang->gT("Username") . ": " . $fields['users_name'] . "<br />\n";
+                $body = sprintf($clang->gT("Your user data for accessing %s"),Yii::app()->getConfig("sitename")). "<br />\n";;
+                $body .= $clang->gT("Username") . ": " . $fields[0]['users_name'] . "<br />\n";
                 $body .= $clang->gT("New password") . ": " . $new_pass . "<br />\n";
 
-                $this->load->config("email");
+               // $this->load->config("email");
                 $subject = $clang->gT("User data","unescaped");
                 $to = $emailaddr;
-                $from = $this->config->item("siteadminemail");
-                $sitename = $this->config->item("siteadminname");
-
-                if(SendEmailMessage($body, $subject, $to, $from, $this->config->item("sitename"), false,$this->config->item("siteadminbounce")))
+                $from = Yii::app()->getConfig("siteadminemail");
+                $sitename = Yii::app()->getConfig("siteadminname");
+                if(SendEmailMessage($body, $subject, $to, $from, Yii::app()->getConfig("sitename"), false,Yii::app()->getConfig("siteadminbounce")))
                 {
                     //$query = "UPDATE ".db_table_name('users')." SET password='".SHA256::hashing($new_pass)."' WHERE uid={$fields['uid']}";
                     //$connect->Execute($query); //Checked
-                    $this->Users_model->updatePassword($fields['uid'], $this->sha256->hashing($new_pass));
-
+                    User::model()->updatePassword($fields[0]['uid'], hash('sha256', $new_pass));
                     $data['clang'] = $clang;
-                    $data['message'] = "<br />".$clang->gT("Username").": {$fields['users_name']}<br />".$clang->gT("Email").": {$emailaddr}<br />
+                    $data['message'] = "<br />".$clang->gT("Username").": {$fields[0]['users_name']}<br />".$clang->gT("Email").": {$emailaddr}<br />
                     <br />".$clang->gT("An email with your login data was sent to you.");
-                    parent::_getAdminHeader();
-                    $this->load->view('admin/authentication/message', $data);
-                    parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+                    $this->getController()->_getAdminHeader();
+                    $this->getController()->render('/admin/authentication/message', $data);
+                    $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
                 }
                 else
                 {
-                    $tmp = str_replace("{NAME}", "<strong>".$fields['users_name']."</strong>", $clang->gT("Email to {NAME} ({EMAIL}) failed."));
+                    $tmp = str_replace("{NAME}", "<strong>".$fields[0]['users_name']."</strong>", $clang->gT("Email to {NAME} ({EMAIL}) failed."));
                     $data['clang'] = $clang;
                     $data['message'] = "<br />".str_replace("{EMAIL}", $emailaddr, $tmp) . "<br />";
 
                     $this->getController()->_getAdminHeader();
-                    $this->load->view('admin/authentication/message', $data);
-                    parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+                    $this->getController()->render('/admin/authentication/message', $data);
+                    $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
                 }
             }
         }
