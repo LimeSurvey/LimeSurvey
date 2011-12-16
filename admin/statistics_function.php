@@ -63,7 +63,7 @@ if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 
 /**
 * Generates statistics
-* 
+*
 * @param int $surveyid The survey id
 * @param mixed $allfields
 * @param mixed $q2show
@@ -79,7 +79,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     //$allfields ="";
     global $connect, $dbprefix, $clang,
     $rooturl, $rootdir, $homedir, $homeurl, $tempdir, $tempurl, $scriptname, $imagedir,
-    $chartfontfile, $chartfontsize, $admintheme, $pdfdefaultfont, $pdffontsize;
+    $chartfontfile, $chartfontsize, $admintheme, $pdfdefaultfont, $pdffontsize, $showaggregateddata;
 
     $fieldmap=createFieldMap($surveyid, "full");
 
@@ -157,7 +157,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             if ($field['type'] == "P") {$myField = "P$myField";}
             //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
             if ($field['type'] == "N") {$myField = "N$myField";}
-            
+
             if ($field['type'] == "|") {$myField = "|$myField";}
 
             if ($field['type'] == "Q") {$myField = "Q$myField";}
@@ -178,8 +178,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     $myField = "$myField{$row[0]}";
                 }
                 //$myField = "{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]";
-                 
-                 
+
+
             }
             if($q2show=='all')
             $summary[]=$myField;
@@ -190,11 +190,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     else
     {
         // This gets all the 'to be shown questions' from the POST and puts these into an array
-        if (!is_array($q2show)) 
+        if (!is_array($q2show))
         $summary=returnglobal('summary');
         else
-            $summary = $q2show;           
-        
+            $summary = $q2show;
+
         //print_r($_POST);
         //if $summary isn't an array we create one
         if (isset($summary) && !is_array($summary))
@@ -203,7 +203,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         }
     }
 
-    /* Some variable depend on output type, actually : only line feed */
+	/* Some variable depend on output type, actually : only line feed */
     switch($outputType)
         {
             case 'xls':
@@ -233,7 +233,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         // create new PDF document
         $pdf = new MyPDF();
         $pdf->SetFont($pdfdefaultfont,'',$pdffontsize);
-        
+
         $surveyInfo = getSurveyInfo($surveyid,$language);
 
         // set document information
@@ -243,18 +243,16 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         $pdf->SetSubject($surveyInfo['surveyls_title']);
         $pdf->SetKeywords('LimeSurvey, Statistics, Survey '.$surveyid.'');
         $pdf->SetDisplayMode('fullpage', 'two');
-        // set default header data
-        // the path looks awkward - did not find a better solution to set the image path?
-        $pdf->SetHeaderData('../../../../images/statistics.png', 10, $statlang->gT("Quick statistics") , $statlang->gT("Survey")." ".$surveyid." '".$surveyInfo['surveyls_title']."'");
 
         // set header and footer fonts
         $pdf->setHeaderFont(Array($pdfdefaultfont, '', PDF_FONT_SIZE_MAIN));
         $pdf->setFooterFont(Array($pdfdefaultfont, '', PDF_FONT_SIZE_DATA));
 
         // set default header data
-        $pdf->SetHeaderData("../../../../images/statistics.png", 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".html_entity_decode($surveyInfo['surveyls_title'],ENT_QUOTES,'UTF-8')."'");
-        
-        
+        // the path looks awkward - did not find a better solution to set the image path?
+        $pdf->SetHeaderData("statistics.png", 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".FlattenText($surveyInfo['surveyls_title'],true,'UTF-8')."'");
+
+
         // set default monospaced font
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
@@ -277,19 +275,26 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         /**
          * Initiate the Spreadsheet_Excel_Writer
          */
-        include_once(dirname(__FILE__)."/classes/phpexcel/PHPExcel.php");                
-        if ($pdfOutput!='F')
-        {
-            header("Content-Disposition: attachment; filename=results-survey".$surveyid.".xls");
-            header("Content-type: application/vnd.ms-excel");
+        include_once(dirname(__FILE__)."/classes/pear/Spreadsheet/Excel/Writer.php");
+        if($pdfOutput=='F')
+        $workbook = new Spreadsheet_Excel_Writer($tempdir.'/statistic-survey'.$surveyid.'.xls');
+        else
+        $workbook = new Spreadsheet_Excel_Writer();
+
+        $workbook->setVersion(8);
+        // Inform the module that our data will arrive as UTF-8.
+        // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
+        if (!empty($tempdir)) {
+            $workbook->setTempDir($tempdir);
         }
-        $workbook = new PHPExcel();   
+        if ($pdfOutput!='F')
+        $workbook->send('statistic-survey'.$surveyid.'.xls');
 
         // Creating the first worksheet
-        $sheet = $workbook->getActiveSheet(); 
-        $sheet->setTitle(substr('results-survey'.$surveyid,0,31));             
+        $sheet =& $workbook->addWorksheet(utf8_decode('results-survey'.$surveyid));
+        $sheet->setInputEncoding('utf-8');
+        $sheet->setColumn(0,20,20);
         $separator="~|";
-        /**XXX*/
     }
     /**
      * Start generating
@@ -311,11 +316,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
      * Remember there might be some filters applied which have to be put into an SQL statement
      */
     if(isset($postvars))
-    
+
     foreach ($postvars as $pv)
     {
         //Only do this if there is actually a value for the $pv
-        if (in_array($pv, $allfields) || in_array(substr($pv,1),$aQuestionMap) || in_array($pv,$aQuestionMap) || (substr($pv,0,1)=='D' && in_array(substr($pv,1,strlen($pv)-2),$aQuestionMap)))
+        if (in_array($pv, $allfields) || in_array(substr($pv,1),$aQuestionMap) || in_array($pv,$aQuestionMap) || (($pv[0]=='D' || $pv[0]=='N' || $pv[0]=='K') && in_array(substr($pv,1,strlen($pv)-2),$aQuestionMap)))
         {
             $firstletter=substr($pv,0,1);
             /*
@@ -375,7 +380,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 }
             }
 
-            
+
             //N - Numerical Input
             //K - Multiple Numerical Input
             elseif ($firstletter == "N" || $firstletter == "K")
@@ -524,9 +529,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     //$_POST['sql'] is a post field that is sent from the statistics script to the export script in order
     // to export just those results filtered by this statistics script. It can also be passed to the statistics
     // script to filter from external scripts.
-    elseif (!empty($_POST['sql']) && !isset($_POST['id=']))
+    elseif (isset($_SESSION['sql']) && $_SESSION['sql']!='NULL' && !isset($_POST['id=']))
     {
-        $newsql=substr($_POST['sql'], strpos($_POST['sql'], "WHERE")+5, strlen($_POST['sql']));
+        $newsql=substr($_SESSION['sql'], strpos($_SESSION['sql'], "WHERE")+5, strlen($_SESSION['sql']));
 
         //for debugging only
         //$query = $_POST['sql'];
@@ -552,18 +557,18 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     switch($outputType)
     {
         case "xls":
-            $xlsRow = 1;
-            $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Number of records in this query:"));
-            $sheet->setCellValueByColumnAndRow(1,$xlsRow,$results);
+            $xlsRow = 0;
+            $sheet->write($xlsRow,0,$statlang->gT("Number of records in this query:"));
+            $sheet->write($xlsRow,1,$results);
             ++$xlsRow;
-            $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Total records in survey:"));
-            $sheet->setCellValueByColumnAndRow(1,$xlsRow,$total);
+            $sheet->write($xlsRow,0,$statlang->gT("Total records in survey:"));
+            $sheet->write($xlsRow,1,$total);
 
             if($total)
             {
                 ++$xlsRow;
-                $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Percentage of total:"));
-                $sheet->setCellValueByColumnAndRow(1,$xlsRow,$percent."%");
+                $sheet->write($xlsRow,0,$statlang->gT("Percentage of total:"));
+                $sheet->write($xlsRow,1,$percent."%");
             }
 
             break;
@@ -624,12 +629,12 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     {
         if($outputType=='html' && $browse === true)
         {
+            $_SESSION['sql']=$sql;
             //add a buttons to browse results
             $statisticsoutput .= "<form action='$scriptname?action=browse' method='post' target='_blank'>\n"
             ."\t\t<p>"
             ."\t\t\t<input type='submit' value='".$statlang->gT("Browse")."'  />\n"
             ."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
-            ."\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n"
             ."\t\t\t<input type='hidden' name='subaction' value='all' />\n"
             ."\t\t</p>"
             ."\t\t</form>\n";
@@ -667,11 +672,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             {
                 //get SGQ data
                 list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
-                 
+
                 //select details for this question
                 $nquery = "SELECT title, type, question, parent_qid, other FROM ".db_table_name("questions")." WHERE language='{$language}' AND parent_qid=0 AND qid='$qqid'";
                 $nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
-                 
+
                 //loop through question data
                 while ($nrow=$nresult->FetchRow())
                 {
@@ -685,7 +690,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 //1. Get list of answers
                 $query="SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qqid' AND language='{$language}' and scale_id=0 ORDER BY question_order";
                 $result=db_execute_num($query) or safe_die("Couldn't get list of subquestions for multitype<br />$query<br />".$connect->ErrorMsg());
-                 
+
                 //loop through multiple answers
                 while ($row=$result->FetchRow())
                 {
@@ -694,7 +699,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     //create an array containing answer code, answer and fieldname(??)
                     $alist[]=array("$row[0]", FlattenText($row[1]), $mfield);
                 }
-                 
+
                 //check "other" field. is it set?
                 if ($qother == "Y")
                 {
@@ -710,26 +715,26 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             //T - Long Free Text
             elseif ($firstletter == "T" || $firstletter == "S") //Short and long text
             {
-                 
+
                 //search for key
                 $fld = substr($rt, 1, strlen($rt));
                 $fielddata=$fieldmap[$fld];
-                 
+
                 //get SGQA IDs
                 $qsid=$fielddata['sid'];
                 $qgid=$fielddata['gid'];
                 $qqid=$fielddata['qid'];
-                 
+
 
                 list($qanswer, $qlid)=!empty($fielddata['aid']) ? explode("_", $fielddata['aid']) : array("", "");
                 //get SGQ data
                 //list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
-                 
-                 
+
+
                 //get question data
                 $nquery = "SELECT title, type, question, other, parent_qid FROM ".db_table_name("questions")." WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
                 $nresult = db_execute_num($nquery) or safe_die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
-                 
+
                 //loop through question data
                 while ($nrow=$nresult->FetchRow())
                 {
@@ -738,9 +743,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     $qquestion=FlattenText($nrow[2]);
                     $nlid=$nrow[4];
                 }
-                 
+
                 $mfield=substr($rt, 1, strlen($rt));
-                 
+
                 //Text questions either have an answer, or they don't. There's no other way of quantising the results.
                 // So, instead of building an array of predefined answers like we do with lists & other types,
                 // we instead create two "types" of possible answer - either there is a response.. or there isn't.
@@ -764,17 +769,17 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                 //length of QID
                 $qidlength=strlen($tmpqid);
-                 
+
                 //we somehow get the answer code (see SQL later) from the $qqid
                 $qaid=substr($qqid, $qidlength, strlen($qqid)-$qidlength);
-                 
+
                 //get some question data
                 $nquery = "SELECT title, type, question, other FROM ".db_table_name("questions")." WHERE qid='".substr($qqid, 0, $qidlength)."' AND parent_qid=0 AND language='{$language}'";
                 $nresult = db_execute_num($nquery) or safe_die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
-                 
+
                 //more substrings
                 $count = substr($qqid, strlen($qqid)-1);
-                 
+
                 //loop through question data
                 while ($nrow=$nresult->FetchRow())
                 {
@@ -782,7 +787,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     $qtype=$nrow[1];
                     $qquestion=FlattenText($nrow[2]);
                 }
-                 
+
                 //get answers
                 $qquery = "SELECT title as code, question as answer FROM ".db_table_name("questions")." WHERE parent_qid='".substr($qqid, 0, $qidlength)."' AND title='$qaid' AND language='{$language}' ORDER BY question_order";
                 $qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
@@ -799,7 +804,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                 //even more substrings...
                 $mfield=substr($rt, 1, strlen($rt));
-                 
+
                 //Text questions either have an answer, or they don't. There's no other way of quantising the results.
                 // So, instead of building an array of predefined answers like we do with lists & other types,
                 // we instead create two "types" of possible answer - either there is a response.. or there isn't.
@@ -815,11 +820,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 //getting the needed IDs somehow
                 $lengthofnumeral=substr($rt, strpos($rt, "-")+1, 1);
                 list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strpos($rt, "-")-($lengthofnumeral+1)), 3);
-                 
+
                 //get question data
                 $nquery = "SELECT title, type, question FROM ".db_table_name("questions")." WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
                 $nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
-                 
+
                 //loop through question data
                 while ($nrow=$nresult->FetchRow())
                 {
@@ -827,11 +832,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     $qtype=$nrow[1];
                     $qquestion=FlattenText($nrow[2]). "[".$statlang->gT("Ranking")." ".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
                 }
-                 
+
                 //get answers
                 $query="SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
                 $result=db_execute_num($query) or safe_die("Couldn't get list of answers for multitype<br />$query<br />".$connect->ErrorMsg());
-                 
+
                 //loop through answers
                 while ($row=$result->FetchRow())
                 {
@@ -843,7 +848,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
             else if ($firstletter == "|") // File UPload
             {
-                
+
                 //get SGQ data
                 list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 
@@ -865,15 +870,15 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     4)      Average size of file per respondent
                     5)      Average no. of files
                     5)      Summary/count of file types (ie: 37 jpg, 65 gif, 12 png)
-                    6)      Total size of all files (useful if you re about to download them all)
-                    7)      You could also add things like  smallest file size, largest file size, median file size
+                    6)      Total size of all files (useful if you're about to download them all)
+                    7)      You could also add things like smallest file size, largest file size, median file size
                     8)      no. of files corresponding to each extension
                     9)      max file size
                     10)     min file size
                  */
 
                 // 1) Total number of files uploaded
-                // 2)      Number of respondents who uploaded at least one file (with the inverse being the number of respondents who didn t upload any)
+                // 2)      Number of respondents who uploaded at least one file (with the inverse being the number of respondents who didn’t upload any)
                 $fieldname=substr($rt, 1, strlen($rt));
                 $query = "SELECT SUM(".db_quote_id($fieldname.'_filecount').") as sum, AVG(".db_quote_id($fieldname.'_filecount').") as avg FROM ".db_table_name("survey_$surveyid");
                 $result=db_execute_assoc($query) or safe_die("Couldn't fetch the records<br />$query<br />".$connect->ErrorMsg());
@@ -886,17 +891,17 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     $showem[]=array($statlang->gT("Average no. of files per respondent"), $row['avg']);
                 }
 
-                
+
                 $query = "SELECT ". $fieldname ." as json FROM ".db_table_name("survey_$surveyid");
                 $result=db_execute_assoc($query) or safe_die("Couldn't fetch the records<br />$query<br />".$connect->ErrorMsg());
 
                 $responsecount = 0;
                 $filecount = 0;
                 $size = 0;
-                    
+
                 while ($row = $result->FetchRow())
                 {
-                    
+
                     $json = $row['json'];
                     $phparray = json_decode($json);
 
@@ -910,7 +915,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 $showem[] = array($statlang->gT("Total size of files"), $size." KB");
                 $showem[] = array($statlang->gT("Average file size"), $size/$filecount . " KB");
                 $showem[] = array($statlang->gT("Average size per respondent"), $size/$responsecount . " KB");
-                
+
 /*              $query="SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qqid' AND language='{$language}' ORDER BY question_order";
                 $result=db_execute_num($query) or safe_die("Couldn't get list of subquestions for multitype<br />$query<br />".$connect->ErrorMsg());
 
@@ -1020,8 +1025,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                         //get question details from DB
                         $nquery = "SELECT title, type, question, qid, parent_qid
-								   FROM ".db_table_name("questions")." 
-								   WHERE parent_qid=0 AND qid='".substr($qqid, 0, $qidlength)."' 
+								   FROM ".db_table_name("questions")."
+								   WHERE parent_qid=0 AND qid='".substr($qqid, 0, $qidlength)."'
 								   AND language='{$language}'";
                         $nresult = db_execute_num($nquery) or safe_die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
                     }
@@ -1068,14 +1073,14 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             ++$xlsRow;
 
                             ++$xlsRow;
-                            $sheet->setCellValueByColumnAndRow(0,$xlsRow,$xlsTitle);
+                            $sheet->write($xlsRow, 0,$xlsTitle);
                             ++$xlsRow;
-                            $sheet->setCellValueByColumnAndRow(0,$xlsRow,$xlsDesc);
+                            $sheet->write($xlsRow, 0,$xlsDesc);
 
                             $headXLS[] = array($statlang->gT("Calculation"),$statlang->gT("Result"));
                             ++$xlsRow;
-                            $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Calculation"));
-                            $sheet->setCellValueByColumnAndRow(1,$xlsRow,$statlang->gT("Result"));
+                            $sheet->write($xlsRow, 0,$statlang->gT("Calculation"));
+                            $sheet->write($xlsRow, 1,$statlang->gT("Result"));
 
                             break;
                         case 'pdf':
@@ -1181,7 +1186,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         $showem[]=array($statlang->gT("Standard deviation"), round($row['stdev'],2));
                         $showem[]=array($statlang->gT("Average"), round($row['average'],2));
                         $showem[]=array($statlang->gT("Minimum"), $row['minimum']);
-                         
+
                         //Display the maximum and minimum figures after the quartiles for neatness
                         $maximum=$row['maximum'];
                         $minimum=$row['minimum'];
@@ -1240,10 +1245,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         $q1c=$q1b-1;
                         $q1diff=$q1-$q1b;
                         $total=0;
-                         
+
                         // fix if there are too few values to evaluate.
                         if ($q1c<0) {$q1c=0;}
-                         
+
                         if ($q1 != $q1b)
                         {
                             //ODD NUMBER
@@ -1253,9 +1258,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             while ($row=$result->FetchRow())
                             {
                                 if ($total == 0)    {$total=$total-$row[$fieldname];}
-                                 
+
                                 else                {$total=$total+$row[$fieldname];}
-                                 
+
                                 $lastnumber=$row[$fieldname];
                             }
 
@@ -1276,16 +1281,16 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 $showem[]=array($statlang->gT("1st quartile (Q1)"), $row[$fieldname]);
                             }
                         }
-                         
+
                         $total=0;
-                         
-                         
+
+
                         //MEDIAN (Q2)
                         $median=(1/2)*($medcount+1);
                         $medianb=(int)((1/2)*($medcount+1));
                         $medianc=$medianb-1;
                         $mediandiff=$median-$medianb;
-                         
+
                         if ($median != $medianb)
                         {
                             //remainder
@@ -1299,7 +1304,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                             $showem[]=array($statlang->gT("2nd quartile (Median)"), $total/2);
                         }
-                         
+
                         else
                         {
                             //EVEN NUMBER
@@ -1311,16 +1316,16 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 $showem[]=array($statlang->gT("Median value"), $row[$fieldname]);
                             }
                         }
-                         
+
                         $total=0;
-                         
-                         
+
+
                         //3RD QUARTILE (Q3)
                         $q3=(3/4)*($medcount+1);
                         $q3b=(int)((3/4)*($medcount+1));
                         $q3c=$q3b-1;
                         $q3diff=$q3-$q3b;
-                         
+
                         if ($q3 != $q3b)
                         {
                             $query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
@@ -1329,9 +1334,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             while ($row=$result->FetchRow())
                             {
                                 if ($total == 0)    {$total=$total-$row[$fieldname];}
-                                 
+
                                 else                {$total=$total+$row[$fieldname];}
-                                 
+
                                 $lastnumber=$row[$fieldname];
                             }
                             $q3total=$lastnumber-((1-$q3diff)*$total);
@@ -1340,7 +1345,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                             $showem[]=array($statlang->gT("3rd quartile (Q3)"), $q3total);
                         }
-                         
+
                         else
                         {
                             $query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1";
@@ -1351,11 +1356,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 $showem[]=array($statlang->gT("3rd quartile (Q3)"), $row[$fieldname]);
                             }
                         }
-                         
+
                         $total=0;
-                         
+
                         $showem[]=array($statlang->gT("Maximum"), $maximum);
-                         
+
                         //output results
                         foreach ($showem as $shw)
                         {
@@ -1364,8 +1369,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 case 'xls':
 
                                     ++$xlsRow;
-                                    $sheet->setCellValueByColumnAndRow(0, $xlsRow, html_entity_decode($shw[0],ENT_QUOTES,'UTF-8'));
-                                    $sheet->setCellValueByColumnAndRow(1, $xlsRow, html_entity_decode($shw[1],ENT_QUOTES,'UTF-8'));
+                                    $sheet->write($xlsRow, 0,html_entity_decode($shw[0],ENT_QUOTES,'UTF-8'));
+                                    $sheet->write($xlsRow, 1,html_entity_decode($shw[1],ENT_QUOTES,'UTF-8'));
 
 
                                     $tableXLS[] = array($shw[0],$shw[1]);
@@ -1395,9 +1400,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             case 'xls':
 
                                 ++$xlsRow;
-                                $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Null values are ignored in calculations"));
+                                $sheet->write($xlsRow, 0,$statlang->gT("Null values are ignored in calculations"));
                                 ++$xlsRow;
-                                $sheet->setCellValueByColumnAndRow(0,$xlsRow,sprintf($statlang->gT("Q1 and Q3 calculated using %s"), $statlang->gT("minitab method")));
+                                $sheet->write($xlsRow, 0,sprintf($statlang->gT("Q1 and Q3 calculated using %s"), $statlang->gT("minitab method")));
 
                                 $footXLS[] = array($statlang->gT("Null values are ignored in calculations"));
                                 $footXLS[] = array(sprintf($statlang->gT("Q1 and Q3 calculated using %s"), $statlang->gT("minitab method")));
@@ -1436,7 +1441,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                         //clean up
                         unset($showem);
-                         
+
                     }	//end if (enough results?)
 
                     //not enough (<1) results for calculation
@@ -1450,7 +1455,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 $tableXLS[] = array($statlang->gT("Not enough values for calculation"));
 
                                 ++$xlsRow;
-                                $sheet->setCellValueByColumnAndRow(0,$xlsRow, $statlang->gT("Not enough values for calculation"));
+                                $sheet->write($xlsRow, 0, $statlang->gT("Not enough values for calculation"));
 
 
 
@@ -1485,7 +1490,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     }
 
                 }	//end else -> check last character, greater/less/equals don't need special treatment
-                 
+
             }	//end else-if -> multiple numerical types
 
             //is there some "id", "datestamp" or "D" within the type?
@@ -1512,7 +1517,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 $qgid=$fielddata['gid'];
                 $qqid=$fielddata['qid'];
                 $qanswer=$fielddata['aid'];
-                 
+
                 //question type
                 $qtype=$fielddata['type'];
 
@@ -1521,11 +1526,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                 //question ID
                 $rqid=$qqid;
-                 
+
                 //get question data
                 $nquery = "SELECT title, type, question, qid, parent_qid, other FROM ".db_table_name("questions")." WHERE qid='{$rqid}' AND parent_qid=0 and language='{$language}'";
                 $nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
-                 
+
                 //loop though question data
                 while ($nrow=$nresult->FetchRow())
                 {
@@ -1536,7 +1541,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     $qparentqid=$nrow[4];
                     $qother=$nrow[5];
                 }
-                 
+
                 //check question types
                 switch($qtype)
                 {
@@ -1561,7 +1566,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         }
 
                         //list IDs and answer codes in brackets
-                        $qquestion .=  $linefeed."[".$atext."]";
+                        $qquestion .= $linefeed."[".$atext."]";
                         $qtitle .= "($qanswer)";
                         break;
 
@@ -1581,7 +1586,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             $atext=FlattenText($qrow[1]);
                         }
 
-                        $qquestion .=  $linefeed."[".$atext."]";
+                        $qquestion .= $linefeed."[".$atext."]";
                         $qtitle .= "($qanswer)";
                         break;
 
@@ -1602,7 +1607,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             $atext=FlattenText($qrow[1]);
                         }
                         //output
-                        $qquestion .=  $linefeed."[".$atext."]";
+                        $qquestion .= $linefeed."[".$atext."]";
                         $qtitle .= "($qanswer)";
                         break;
 
@@ -1643,7 +1648,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             $atext=FlattenText($qrow[1]);
                         }
 
-                        $qquestion .=  $linefeed."[".$atext."] [".$ltext."]";
+                        $qquestion .= $linefeed."[".$atext."] [".$ltext."]";
                         $qtitle .= "($qanswer)";
                         break;
 
@@ -1664,7 +1669,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         else {
                             $minvalue=1;
                         }
-                         
+
                         if (trim($qidattributes['multiflexible_step'])!='')
                         {
                             $stepvalue=$qidattributes['multiflexible_step'];
@@ -1672,7 +1677,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         else {
                             $stepvalue=1;
                         }
-                         
+
                         if ($qidattributes['multiflexible_checkbox']!=0) {
                             $minvalue=0;
                             $maxvalue=1;
@@ -1748,12 +1753,12 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         }
                         break;
 
-                         
+
                     case "1":	//array (dual scale)
-                         
+
                         $sSubquestionQuery = "SELECT  question FROM ".db_table_name("questions")." WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
                         $sSubquestion=FlattenText($connect->GetOne($sSubquestionQuery));
-                         
+
                         //get question attributes
                         $qidattributes=getQuestionAttributes($qqid);
 
@@ -1843,11 +1848,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     	}
 
                 }	//end switch question type
-                 
+
                 //moved because it's better to have "no answer" at the end of the list instead of the beginning
                 //put data into array
                 $alist[]=array("", $statlang->gT("No answer"));
-                 
+
             }	//end else -> single option answers
 
             //foreach ($alist as $al) {$statisticsoutput .= "$al[0] - $al[1]<br />";} //debugging line
@@ -1861,13 +1866,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             if (isset($alist) && $alist) //Make sure there really is an answerlist, and if so:
             {
 
-                 
+
                 // this will count the answers considered completed
                 $TotalCompleted = 0;
                 switch($outputType)
                 {
                     case 'xls':
-                         
+
                         $xlsTitle = sprintf($statlang->gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
                         $xlsDesc = html_entity_decode($qquestion,ENT_QUOTES,'UTF-8');
 
@@ -1875,9 +1880,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         ++$xlsRow;
 
                         ++$xlsRow;
-                        $sheet->setCellValueByColumnAndRow(0,$xlsRow,$xlsTitle);
+                        $sheet->write($xlsRow, 0,$xlsTitle);
                         ++$xlsRow;
-                        $sheet->setCellValueByColumnAndRow(0,$xlsRow,$xlsDesc);
+                        $sheet->write($xlsRow, 0,$xlsDesc);
 
                         $tableXLS = array();
                         $footXLS = array();
@@ -1900,12 +1905,12 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         //output
                         $statisticsoutput .= "<table class='statisticstable'>\n"
                         ."\t<thead><tr><th colspan='4' align='center'><strong>"
-						
+
                         //headline
                         .sprintf($statlang->gT("Field summary for %s"),$qtitle)."</strong>"
                         ."</th></tr>\n"
                         ."\t<tr><th colspan='4' align='center'><strong>"
-						
+
                         //question title
                         .$qquestion."</strong></th></tr>\n"
                         ."\t<tr>\n\t\t<th width='50%' align='center' >";
@@ -1923,23 +1928,23 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     if (isset($al[2]) && $al[2])
                     {
                         //handling for "other" option
-                        
+
                         if ($al[0] == $statlang->gT("Other"))
                         {
                             if($qtype=='!' || $qtype=='L')
                             {
-                                // It is better for single choice question types to filter on the number of '-oth-' entries, than to 
+                                // It is better for single choice question types to filter on the number of '-oth-' entries, than to
                                 // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
                                 $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id(substr($al[2],0,strlen($al[2])-5))."='-oth-'";
                             }
                             else
                             {
-                            //get data
-                            $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ";
-                            $query .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
+	                            //get data
+	                            $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ";
+	                            $query .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
+                        	}
                         }
-                        }
-                         
+
                         /*
                          * text questions:
                          *
@@ -1968,7 +1973,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         {
                             $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ( ";
                             $query .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." <> '')" : " (".db_quote_id($al[2])." NOT LIKE ''))";
-                        // all other question types
+                            // all other question types
                         }
                         else
                         {
@@ -1984,7 +1989,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 $query .= " 'Y'";
                             }
                         }
-                         
+
                     }	//end if -> alist set
 
                     else
@@ -2050,20 +2055,38 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         //"no answer" handling
                         if ($al[0] === "")
                         {$fname=$statlang->gT("No answer");}
-                         
+
                         //"other" handling
                         //"Answers" means that we show an option to list answer to "other" text field
                         elseif ($al[0] === $statlang->gT("Other") || $al[0] === "Answers" || ($qtype === "O" && $al[0] === $statlang->gT("Comments")) || $qtype === "P")
                         {
-                            if ($qtype == "P") $ColumnName_RM = $al[2]."comment";
+                            if ($qtype == "P" ) $ColumnName_RM = $al[2]."comment";
                             else  $ColumnName_RM = $al[2];
                             if ($qtype=='O') {
                                 $TotalCompleted -=$row[0];
                             }
                             $fname="$al[1]";
-                            if ($browse===true) $fname .= " <input type='button' value='".$statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&amp;sid=$surveyid&amp;column=$ColumnName_RM&amp;sql=".urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
-                        }
-                         
+                            if (!isset($_POST['showtextinline']) && $browse===true) $fname .= " <input type='button' value='".$statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&amp;sid={$surveyid}&amp;column={$ColumnName_RM}', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
+                        	if(isset($_POST['showtextinline']) && ($qtype != "S" && $qtype != "U" && $qtype != "T" && $qtype != "Q")) {
+                        		//Generate list of 'other' text entries for display
+                        		$headPDF2=array();
+                        		$headPDF2[]=array($statlang->gt("'Other' Responses"));
+                        		$tablePDF2=array();
+                        		$query2 = "SELECT ".db_quote_id($al[2])." FROM ".db_table_name("survey_$surveyid")." WHERE ";
+                        		$query2 .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
+                        		$result2=db_execute_num($query2) or safe_die ("Couldn't do count of values<br />$query<br />".$connect->ErrorMsg());
+                        		$fnamelast = "<div id='textresponses_$fname' class='textresponses' style='text-align: center;'>\n";
+                        		$fnamelast .= "<b>".$clang->gT("'Other' Responses")."</b><br />\n";
+                        		//$fname .= $query2;
+                        		while ($row2=$result2->FetchRow())
+                        		{
+                        			$fnamelast .= $row2[0]."<br />\n";
+                        			$tablePDF2[]=array($row2[0]);
+                        		}
+                        		$fnamelast .= "</div>\n";
+                        	}
+						}
+
                         /*
                          * text questions:
                          *
@@ -2081,24 +2104,42 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             if ($al[0] == "Answers")
                             {
                                 $fname= "$al[1]";
-                                if ($browse===true) $fname .= " <input type='submit' value='"
-                                . $statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]&amp;sql="
-                                . urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
+                                if (!isset($_POST['showtextinline']) && $browse===true) $fname .= " <input type='submit' value='"
+                                . $statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
                             }
                             elseif ($al[0] == "NoAnswer")
                             {
                                 $fname= "$al[1]";
                             }
-							
+
 							$statisticsoutput .= "</th>\n"
 							."\t\t<th width='25%' align='center' >"
 							."<strong>".$statlang->gT("Count")."</strong></th>\n"
 							."\t\t<th width='25%' align='center' >"
 							."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
 							."\t</tr></thead>\n";
+
+                        	if (isset($_POST['showtextinline'])) {
+                        		$headPDF2=array();
+                        		$headPDF2[]=array($statlang->gt("Responses"));
+                        		$tablePDF2=array();
+                        		$query2 = "SELECT ".db_quote_id($al[2])." FROM ".db_table_name("survey_$surveyid")." WHERE ";
+                        		$query2 .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
+                        		$result2=db_execute_num($query2) or safe_die ("Couldn't do count of values<br />$query<br />".$connect->ErrorMsg());
+                        		$fnamelast = "<div id='textresponses_$fname' class='textresponses' style='text-align: center;'>\n";
+								$fnamelast .= "<b>".$clang->gT("Responses")."</b><br />\n";
+                        		//$fname .= $query2;
+                        		while ($row2=$result2->FetchRow())
+                        		{
+                        			$fnamelast .= $row2[0]."<br />\n";
+                        			$tablePDF2[]=array($row2[0]);
+                        		}
+                        		$fnamelast .= "</div>\n";
+
+                        	}
                         }
-                         
-                         
+
+
                         //check if aggregated results should be shown
                         elseif (isset($showaggregateddata) && $showaggregateddata == 1)
                         {
@@ -2114,10 +2155,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                             $headXLS[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"),$statlang->gT("Sum"));
 
                                             ++$xlsRow;
-                                            $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Answer"));
-                                            $sheet->setCellValueByColumnAndRow(1,$xlsRow,$statlang->gT("Count"));
-                                            $sheet->setCellValueByColumnAndRow(2,$xlsRow,$statlang->gT("Percentage"));
-                                            $sheet->setCellValueByColumnAndRow(3,$xlsRow,$statlang->gT("Sum"));
+                                            $sheet->write($xlsRow,0,$statlang->gT("Answer"));
+                                            $sheet->write($xlsRow,1,$statlang->gT("Count"));
+                                            $sheet->write($xlsRow,2,$statlang->gT("Percentage"));
+                                            $sheet->write($xlsRow,3,$statlang->gT("Sum"));
 
                                             break;
                                         case 'pdf':
@@ -2156,9 +2197,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                             $headXLS[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
 
                                             ++$xlsRow;
-                                            $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Answer"));
-                                            $sheet->setCellValueByColumnAndRow(1,$xlsRow,$statlang->gT("Count"));
-                                            $sheet->setCellValueByColumnAndRow(2,$xlsRow,$statlang->gT("Percentage"));
+                                            $sheet->write($xlsRow,0,$statlang->gT("Answer"));
+                                            $sheet->write($xlsRow,1,$statlang->gT("Count"));
+                                            $sheet->write($xlsRow,2,$statlang->gT("Percentage"));
 
                                             break;
 
@@ -2185,7 +2226,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                                     $showheadline = false;
                                 }
-                                 
+
                             }
 
                             //text for answer column is always needed
@@ -2199,10 +2240,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 $showaggregated_indice=count($grawdata) - 1;
                                 $showaggregated_indice_table[$showaggregated_indice]="aggregated";
                                 $showaggregated_indice=-1;
-                                 
+
                                 //keep in mind that we already added data (will be checked later)
                                 $justadded = true;
-                                 
+
                                 //we need a counter because we want to sum up certain values
                                 //reset counter if 5 items have passed
                                 if(!isset($testcounter) || $testcounter >= 4)
@@ -2213,17 +2254,17 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 {
                                     $testcounter++;
                                 }
-                                 
+
                                 //beside the known percentage value a new aggregated value should be shown
                                 //therefore this item is marked in a certain way
-                                 
+
                                 if($testcounter == 0 )	//add 300 to original value
                                 {
                                     //HACK: add three times the total number of results to the value
                                     //This way we get a 300 + X percentage which can be checked later
                                     $row[0] += (3*$results);
                                 }
-                                 
+
                                 //the third value should be shown twice later -> mark it
                                 if($testcounter == 2)	//add 400 to original value
                                 {
@@ -2231,7 +2272,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                     //This way there should be a 400 + X percentage which can be checked later
                                     $row[0] += (4*$results);
                                 }
-                                 
+
                                 //the last value aggregates the data of item 4 + item 5 later
                                 if($testcounter == 4 )	//add 200 to original value
                                 {
@@ -2239,11 +2280,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                     //This way there should be a 200 + X percentage which can be checked later
                                     $row[0] += (2*$results);
                                 }
-                                 
+
                             }	//end if -> question type = "5"/"A"
 
                         }	//end if -> show aggregated data
-                         
+
                         //handling what's left
                         else
                         {
@@ -2252,21 +2293,21 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 switch($outputType)
                                 {
                                     case 'xls':
-                                         
+
                                         $headXLS = array();
                                         $headXLS[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
-                                         
+
                                         ++$xlsRow;
-                                        $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Answer"));
-                                        $sheet->setCellValueByColumnAndRow(1,$xlsRow,$statlang->gT("Count"));
-                                        $sheet->setCellValueByColumnAndRow(2,$xlsRow,$statlang->gT("Percentage"));
+                                        $sheet->write($xlsRow,0,$statlang->gT("Answer"));
+                                        $sheet->write($xlsRow,1,$statlang->gT("Count"));
+                                        $sheet->write($xlsRow,2,$statlang->gT("Percentage"));
 
                                         break;
                                     case 'pdf':
 
                                         $headPDF = array();
                                         $headPDF[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
-                                         
+
                                         break;
                                     case 'html':
                                         //three columns
@@ -2289,7 +2330,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             //answer text
                             $fname="$al[1] ($al[0])";
                         }
-                         
+
                         //are there some results to play with?
                         if ($results > 0)
                         {
@@ -2302,7 +2343,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             //no data!
                             $gdata[] = "N/A";
                         }
-                         
+
                         //only add this if we don't handle question type "5"/"A"
                         if(!isset($justadded))
                         {
@@ -2314,13 +2355,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             //unset to handle "no answer" data correctly
                             unset($justadded);
                         }
-                         
+
                         //put question title and code into array
                         $label[]=$fname;
 
                         //put only the code into the array
                         $justcode[]=$al[0];
-                         
+
                         //edit labels and put them into antoher array
                         $lbl[] = wordwrap(FlattenText("$al[1] ($row[0])"), 25, "\n"); // NMO 2009-03-24
                         $lblrtl[] = utf8_strrev(wordwrap(FlattenText("$al[1] )$row[0]("), 25, "\n")); // NMO 2009-03-24
@@ -2363,7 +2404,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             $i++;
 
                         }	//end while (data available)
-                         
+
                     }	//end if -> noncompleted checked
 
                     //noncompleted is NOT checked
@@ -2371,7 +2412,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     {
                         //calculate total number of incompleted records
                         $TotalIncomplete = $results - $TotalCompleted;
-                         
+
                         //output
                         if ((incompleteAnsFilterstate() != "filter"))
                         {
@@ -2381,29 +2422,29 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         {
                             $fname=$statlang->gT("Not displayed");
                         }
-                         
+
                         //we need some data
                         if ($results > 0)
                         {
                             //calculate percentage
                             $gdata[] = ($TotalIncomplete/$results)*100;
                         }
-                         
+
                         //no data :(
                         else
                         {
                             $gdata[] = "N/A";
                         }
-                         
+
                         //put data of incompleted records into array
                         $grawdata[]=$TotalIncomplete;
-                         
+
                         //put question title ("Not completed") into array
                         $label[]= $fname;
-                         
+
                         //put the code ("Not completed") into the array
                         $justcode[]=$fname;
-                         
+
                         //edit labels and put them into antoher array
                         if ((incompleteAnsFilterstate() != "filter"))
                         {
@@ -2423,10 +2464,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                 //we need to know which item we are editing
                 $itemcounter = 1;
-                 
+
                 //array to store items 1 - 5 of question types "5" and "A"
                 $stddevarray = array();
-                 
+
                 //loop through all available answers
                 while (isset($gdata[$i]))
                 {
@@ -2443,7 +2484,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                      */
                     $statisticsoutput .= "\t<tr>\n\t\t<td align='center' >" . $label[$i] ."\n"
                     ."\t\t</td>\n"
-	                
+
                     //output absolute number of records
                     ."\t\t<td align='center' >" . $grawdata[$i] . "\n</td>";
 
@@ -2454,29 +2495,29 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         switch($outputType)
                         {
                             case 'xls':
-                                 
+
                                 $label[$i]=FlattenText($label[$i]);
                                 $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i]). "%");
 
                                 ++$xlsRow;
-                                $sheet->setCellValueByColumnAndRow(0,$xlsRow,$label[$i]);
-                                $sheet->setCellValueByColumnAndRow(1,$xlsRow,$grawdata[$i]);
-                                $sheet->setCellValueByColumnAndRow(2,$xlsRow,sprintf("%01.2f", $gdata[$i]). "%");
+                                $sheet->write($xlsRow,0,$label[$i]);
+                                $sheet->write($xlsRow,1,$grawdata[$i]);
+                                $sheet->write($xlsRow,2,sprintf("%01.2f", $gdata[$i]). "%");
 
                                 break;
                             case 'pdf':
 
                                 $tablePDF[] = array(FlattenText($label[$i]),$grawdata[$i],sprintf("%01.2f", $gdata[$i]). "%", "");
-                                 
+
                                 break;
                             case 'html':
                                 //output when having no data
                                 $statisticsoutput .= "\t\t<td  align='center' >";
-                                 
+
                                 //percentage = 0
                                 $statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
                                 $gdata[$i] = 0;
-                                 
+
                                 //check if we have to adjust ouput due to $showaggregateddata setting
                                 if(isset($showaggregateddata) && $showaggregateddata == 1 && ($qtype == "5" || $qtype == "A"))
                                 {
@@ -2552,28 +2593,28 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 switch($outputType)
                                 {
                                     case 'xls':
-                                         
+
                                         $label[$i]=FlattenText($label[$i]);
                                         $tableXLS[]= array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%");
 
                                         ++$xlsRow;
-                                        $sheet->setCellValueByColumnAndRow(0,$xlsRow,$label[$i]);
-                                        $sheet->setCellValueByColumnAndRow(1,$xlsRow,$grawdata[$i]);
-                                        $sheet->setCellValueByColumnAndRow(2,$xlsRow,sprintf("%01.2f", $percentage)."%");
+                                        $sheet->write($xlsRow,0,$label[$i]);
+                                        $sheet->write($xlsRow,1,$grawdata[$i]);
+                                        $sheet->write($xlsRow,2,sprintf("%01.2f", $percentage)."%");
 
                                         break;
                                     case 'pdf':
                                         $label[$i]=FlattenText($label[$i]);
                                         $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%", "");
-                                         
+
                                         break;
                                     case 'html':
                                         //output
                                         $statisticsoutput .= "\t\t<td align='center'>";
-                                         
+
                                         //output percentage
                                         $statisticsoutput .= sprintf("%01.2f", $percentage) . "%";
-                                         
+
                                         //adjust output
                                         $statisticsoutput .= "\t\t</td>";
                                         break;
@@ -2592,7 +2633,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             {
                                 //remove "400" which was added before
                                 $gdata[$i] -= 400;
-                                 
+
                                 if($itemcounter == 3 && $label[$i+3] == $statlang->gT("No answer"))
                                 {
                                     //prevent division by zero
@@ -2614,27 +2655,27 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 switch($outputType)
                                 {
                                     case 'xls':
-                                         
+
                                         $label[$i]=FlattenText($label[$i]);
                                         $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $percentage)."%");
 
                                         ++$xlsRow;
-                                        $sheet->setCellValueByColumnAndRow(0,$xlsRow,$label[$i]);
-                                        $sheet->setCellValueByColumnAndRow(1,$xlsRow,$grawdata[$i]);
-                                        $sheet->setCellValueByColumnAndRow(2,$xlsRow,sprintf("%01.2f", $percentage)."%");
-                                        $sheet->setCellValueByColumnAndRow(3,$xlsRow,sprintf("%01.2f", $percentage)."%");
+                                        $sheet->write($xlsRow,0,$label[$i]);
+                                        $sheet->write($xlsRow,1,$grawdata[$i]);
+                                        $sheet->write($xlsRow,2,sprintf("%01.2f", $percentage)."%");
+                                        $sheet->write($xlsRow,3,sprintf("%01.2f", $percentage)."%");
 
                                         break;
                                     case 'pdf':
                                         $label[$i]=FlattenText($label[$i]);
                                         $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $percentage)."%");
-                                         
+
                                         break;
                                     case 'html':
                                         //output percentage
                                         $statisticsoutput .= "\t\t<td align='center' >";
                                         $statisticsoutput .= sprintf("%01.2f", $percentage) . "%</td>";
-                                         
+
                                         //output again (no real aggregation here)
                                         $statisticsoutput .= "\t\t<td align='center' >";
                                         $statisticsoutput .= sprintf("%01.2f", $percentage)."%";
@@ -2655,7 +2696,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             {
                                 //remove "300" which was added before
                                 $gdata[$i] -= 300;
-                                 
+
                                 if($itemcounter == 1 && $label[$i+5] == $statlang->gT("No answer"))
                                 {
                                     //prevent division by zero
@@ -2669,7 +2710,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                     {
                                         $percentage = 0;
                                         $percentage2 = 0;
-                                         
+
                                     }
                                 }
                                 else
@@ -2679,20 +2720,20 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 }
                                 //percentage of item 1 + item 2
                                 $aggregatedgdata = $percentage + $percentage2;
-                                 
+
 
                                 switch($outputType)
                                 {
                                     case 'xls':
-                                         
+
                                         $label[$i]=FlattenText($label[$i]);
                                         $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
 
                                         ++$xlsRow;
-                                        $sheet->setCellValueByColumnAndRow(0,$xlsRow,$label[$i]);
-                                        $sheet->setCellValueByColumnAndRow(1,$xlsRow,$grawdata[$i]);
-                                        $sheet->setCellValueByColumnAndRow(2,$xlsRow,sprintf("%01.2f", $percentage)."%");
-                                        $sheet->setCellValueByColumnAndRow(3,$xlsRow,sprintf("%01.2f", $aggregatedgdata)."%");
+                                        $sheet->write($xlsRow,0,$label[$i]);
+                                        $sheet->write($xlsRow,1,$grawdata[$i]);
+                                        $sheet->write($xlsRow,2,sprintf("%01.2f", $percentage)."%");
+                                        $sheet->write($xlsRow,3,sprintf("%01.2f", $aggregatedgdata)."%");
 
                                         break;
                                     case 'pdf':
@@ -2704,7 +2745,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                         //output percentage
                                         $statisticsoutput .= "\t\t<td align='center' >";
                                         $statisticsoutput .= sprintf("%01.2f", $percentage) . "%</td>";
-                                         
+
                                         //output aggregated data
                                         $statisticsoutput .= "\t\t<td align='center' >";
                                         $statisticsoutput .= sprintf("%01.2f", $aggregatedgdata)."%";
@@ -2722,7 +2763,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             {
                                 //remove "200" which was added before
                                 $gdata[$i] -= 200;
-                                 
+
                                 if($itemcounter == 5 && $label[$i+1] == $statlang->gT("No answer"))
                                 {
                                     //prevent division by zero
@@ -2743,21 +2784,21 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                     $percentage = $gdata[$i];
                                     $percentage2 = $gdata[$i-1];
                                 }
-                                 
+
                                 //item 4 + item 5
                                 $aggregatedgdata = $percentage + $percentage2;
                                 switch($outputType)
                                 {
                                     case 'xls':
-                                         
+
                                         $label[$i]=FlattenText($label[$i]);
                                         $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
 
                                         ++$xlsRow;
-                                        $sheet->setCellValueByColumnAndRow(0,$xlsRow,$label[$i]);
-                                        $sheet->setCellValueByColumnAndRow(1,$xlsRow,$grawdata[$i]);
-                                        $sheet->setCellValueByColumnAndRow(2,$xlsRow,sprintf("%01.2f", $percentage)."%");
-                                        $sheet->setCellValueByColumnAndRow(3,$xlsRow,sprintf("%01.2f", $aggregatedgdata)."%");
+                                        $sheet->write($xlsRow,0,$label[$i]);
+                                        $sheet->write($xlsRow,1,$grawdata[$i]);
+                                        $sheet->write($xlsRow,2,sprintf("%01.2f", $percentage)."%");
+                                        $sheet->write($xlsRow,3,sprintf("%01.2f", $aggregatedgdata)."%");
 
                                         break;
                                     case 'pdf':
@@ -2769,7 +2810,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                         //output percentage
                                         $statisticsoutput .= "\t\t<td align='center' >";
                                         $statisticsoutput .= sprintf("%01.2f", $percentage) . "%</td>";
-                                         
+
                                         //output aggregated data
                                         $statisticsoutput .= "\t\t<td align='center' >";
                                         $statisticsoutput .= sprintf("%01.2f", $aggregatedgdata)."%";
@@ -2788,7 +2829,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 + $grawdata[$i-2]
                                 + $grawdata[$i-3]
                                 + $grawdata[$i-4];
-                                 
+
                                 //special treatment for zero values
                                 if($sumitems > 0)
                                 {
@@ -2810,21 +2851,20 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 switch($outputType)
                                 {
                                     case 'xls':
-                                         
+
 
                                         $footXLS[] = array($statlang->gT("Sum")." (".$statlang->gT("Answers").")",$sumitems,$sumpercentage."%",$sumpercentage."%");
                                         $footXLS[] = array($statlang->gT("Number of cases"),$TotalCompleted,$casepercentage."%","");
 
                                         ++$xlsRow;
-                                        $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Sum")." (".$statlang->gT("Answers").")");
-                                        $sheet->setCellValueByColumnAndRow(1,$xlsRow,$sumitems);
-                                        $sheet->setCellValueByColumnAndRow(2,$xlsRow,$sumpercentage."%");
-                                        $sheet->setCellValueByColumnAndRow(3,$xlsRow,$sumpercentage."%");
+                                        $sheet->write($xlsRow,0,$statlang->gT("Sum")." (".$statlang->gT("Answers").")");
+                                        $sheet->write($xlsRow,1,$sumitems);
+                                        $sheet->write($xlsRow,2,$sumpercentage."%");
+                                        $sheet->write($xlsRow,3,$sumpercentage."%");
                                         ++$xlsRow;
-                                        $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Number of cases"));
-                                        $sheet->setCellValueByColumnAndRow(1,$xlsRow,$TotalCompleted);
-                                        $sheet->setCellValueByColumnAndRow(2,$xlsRow,$casepercentage."%");
-                                        //$sheet->setCellValueByColumnAndRow($xlsRow,3,$sumpercentage."%");
+                                        $sheet->write($xlsRow,0,$statlang->gT("Number of cases"));
+                                        $sheet->write($xlsRow,1,$TotalCompleted);
+                                        $sheet->write($xlsRow,2,$casepercentage."%");
 
                                         break;
                                     case 'pdf':
@@ -2856,7 +2896,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             }
 
                         }	//end if -> show aggregated data
-                         
+
                         //don't show aggregated data
                         else
                         {
@@ -2867,10 +2907,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                     $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i])."%", "");
 
                                     ++$xlsRow;
-                                    $sheet->setCellValueByColumnAndRow(0,$xlsRow,$label[$i]);
-                                    $sheet->setCellValueByColumnAndRow(1,$xlsRow,$grawdata[$i]);
-                                    $sheet->setCellValueByColumnAndRow(2,$xlsRow,sprintf("%01.2f", $gdata[$i])."%");
-                                    //$sheet->setCellValueByColumnAndRow($xlsRow,3,$sumpercentage."%");
+                                    $sheet->write($xlsRow,0,$label[$i]);
+                                    $sheet->write($xlsRow,1,$grawdata[$i]);
+                                    $sheet->write($xlsRow,2,sprintf("%01.2f", $gdata[$i])."%");
+                                    //$sheet->write($xlsRow,3,$sumpercentage."%");
 
                                     break;
                                 case 'pdf':
@@ -2893,7 +2933,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             }
 
                         }
-                         
+
                     }	//end else -> $gdata[$i] != "N/A"
 
 
@@ -2904,7 +2944,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     $itemcounter++;
 
                 }	//end while
-
+            	if(isset($fnamelast)) {
+            		$statisticsoutput.= "<tr><td colspan='3'>".$fnamelast."</td></tr>\n";
+            		unset($fnamelast);
+            	}
                 //only show additional values when this setting is enabled
                 if(isset($showaggregateddata) && $showaggregateddata == 1 )
                 {
@@ -2915,7 +2958,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     {
                         $stddev = 0;
                         $am = 0;
-                         
+
                         //calculate arithmetic mean
                         if(isset($sumitems) && $sumitems > 0)
                         {
@@ -2965,7 +3008,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 {
                                     $stddev += $squarevalue * $stddevarray[$j];
                                 }
-                                 
+
                             }
 
                             //4 = multiply result with 1 / (number of items (=5))
@@ -2989,17 +3032,17 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         switch($outputType)
                         {
                             case 'xls':
-                                 
+
                                 $tableXLS[] = array($statlang->gT("Arithmetic mean"),$am,'','');
                                 $tableXLS[] = array($statlang->gT("Standard deviation"),$stddev,'','');
 
                                 ++$xlsRow;
-                                $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Arithmetic mean"));
-                                $sheet->setCellValueByColumnAndRow(1,$xlsRow,$am);
+                                $sheet->write($xlsRow,0,$statlang->gT("Arithmetic mean"));
+                                $sheet->write($xlsRow,1,$am);
 
                                 ++$xlsRow;
-                                $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Standard deviation"));
-                                $sheet->setCellValueByColumnAndRow(1,$xlsRow,$stddev);
+                                $sheet->write($xlsRow,0,$statlang->gT("Standard deviation"));
+                                $sheet->write($xlsRow,1,$stddev);
 
                                 break;
                             case 'pdf':
@@ -3029,6 +3072,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     //$tablePDF = array();
                     $tablePDF = array_merge_recursive($tablePDF, $footPDF);
                     $pdf->headTable($headPDF,$tablePDF);
+                	if(isset($headPDF2)) {
+                		$tablePDF = array_merge_recursive($headPDF2, $tablePDF2);
+                		$pdf->headTable($headPDF2, $tablePDF2);
+                		unset($headPDF2, $tablePDF2);
+                	}
                     //$pdf->tableintopdf($tablePDF);
 
                     //				if(isset($footPDF))
@@ -3192,7 +3240,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             $lblout=$lbl;
                         }
 
-                         
+
                         //create new 3D pie chart
                         if ($usegraph==1)
                         {
@@ -3214,7 +3262,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 $graph->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
                                 $graph->drawFilledRoundedRectangle(7,7,687,$gheight-3,5,254,255,254);
                                 $graph->drawRoundedRectangle(5,5,689,$gheight-1,5,230,230,230);
-                                 
+
                                 // Draw the pie chart
                                 $graph->setFontProperties($rootdir."/fonts/".$chartfontfile, $chartfontsize);
                                 $graph->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),225,round($gheight/2),170,PIE_PERCENTAGE,TRUE,50,20,5);
@@ -3226,7 +3274,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             }
                             //print_r($DataSet->GetData()); echo "<br/><br/>";
                         }
-                         
+
                     }	//end else -> pie charts
 
                     //introduce new counter
@@ -3262,11 +3310,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     }
 
                 }
-                 
+
                 //close table/output
                 if($outputType=='html')
                 $statisticsoutput .= "</table><br /> \n";
-                 
+
             }	//end if -> collect and display results
 
             //delete data
@@ -3290,21 +3338,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     switch($outputType)
     {
         case 'xls':
-            $objWriter = new PHPExcel_Writer_Excel5($workbook);
-            if($pdfOutput=='F')
-            {
-                $sFileName=$tempdir.DIRECTORY_SEPARATOR.'statistic-survey'.$surveyid.'.xls';
-            }
-            else
-            {
-                $sFileName=$tempdir.DIRECTORY_SEPARATOR.'xls_'.sRandomChars(40);
-            }    
-            $objWriter->save($sFileName); 
-            if($pdfOutput!='F')
-            {
-                readfile($sFileName);
-                unlink($sFileName);        
-            }    
+
+            //$workbook->
+            $workbook->close();
             if($pdfOutput=='F')
             {
                 return $sFileName;

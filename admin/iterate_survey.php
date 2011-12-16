@@ -54,7 +54,7 @@ if  ($subaction=='unfinalizeanswers')
     $updateqr = "UPDATE $surveytable SET submitdate=NULL, lastpage=NULL;\n";
     $updateres = $connect->Execute($updateqr) or safe_die("UnFinilize answers failed:<br />\n" . $connect->ErrorMsg() . "<br />$updateqr");
     // Finally, reset the token completed and sent status
-    $updateqr="UPDATE ".db_table_name("tokens_$surveyid")." SET sent='N', remindersent='N', remindercount=0, completed='N'";
+    $updateqr="UPDATE ".db_table_name("tokens_$surveyid")." SET sent='N', remindersent='N', remindercount=0, completed='N', usesleft=1";
     $updateres=$connect->Execute($updateqr) or safe_die ("Couldn't reset token completed state<br />$updateqr<br />".$connect->ErrorMsg());
     $iteratesurveyoutput .= "<br />\n";
     $iteratesurveyoutput .= "<div class='header ui-widget-header'>".$clang->gT("Iterate survey")."</div>\n";

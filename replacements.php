@@ -1,4 +1,6 @@
 <?php
+global $rootdir;
+include_once($rootdir.'/classes/eval/LimeExpressionManager.php');
 
 /**
  * This function replaces keywords in a text and is mainly intended for templates
@@ -7,11 +9,12 @@
  * NOTE - Don't do any embedded replacements in this function.  Create the array of replacement values and
  * they will be done in batch at the end
  *
- * @param mixed $line Text to search in
- * @param mixed $replacements Array of replacements:  Array( <stringtosearch>=><stringtoreplacewith>
+ * @param string $line Text to search in
+ * @param array $replacements Array of replacements:  Array( <stringtosearch>=><stringtoreplacewith>, where <stringtosearch> is NOT surrounded with curly braces
+ * @param boolean $anonymized Determines if token data is being used or just replaced with blanks
  * @return string  Text with replaced strings
  */
-function templatereplace($line, $replacements=array())
+function templatereplace($line, $replacements=array(), $anonymized=false, $questionNum=NULL)
 {
     global $surveylist, $sitename, $clienttoken, $rooturl;
     global $thissurvey, $imageurl, $defaulttemplate;
@@ -20,7 +23,7 @@ function templatereplace($line, $replacements=array())
     global $question;
     global $showXquestions, $showgroupinfo, $showqnumcode;
     global $answer, $navigator;
-    global $help, $totalquestions, $surveyformat;
+    global $help, $surveyformat;
     global $completed, $register_errormsg;
     global $privacy, $surveyid;
     global $publicurl, $templatedir, $token;
@@ -63,6 +66,15 @@ function templatereplace($line, $replacements=array())
     {
         $surveyformat = "";
     }
+    /*if (isset($thissurvey['allowjumps']) && $thissurvey['allowjumps']=="Y" && $surveyformat!="allinone" && (isset($_SESSION['step']) && $_SESSION['step']>0)){
+        $surveyformat .= " withindex";
+    }*/
+    if (isset($thissurvey['showprogress']) && $thissurvey['showprogress']=="Y"){
+        $surveyformat .= " showprogress";
+    }
+    if (isset($thissurvey['showqnumcode'])){
+        $surveyformat .= " showqnumcode-".$thissurvey['showqnumcode'];
+    }
     // real survey contact
     if (isset($surveylist['contact']))
     {
@@ -81,7 +93,7 @@ function templatereplace($line, $replacements=array())
     // Only continue in this routine if there are bracketed items to replace {}
     if (strpos($line, "{") === false)
     {
-        return $line;
+        return LimeExpressionManager::ProcessString($line, $questionNum, NULL, false, 1, 1, true);
     }
 
     if (
@@ -122,23 +134,14 @@ function templatereplace($line, $replacements=array())
         $_question_man_message = $question['man_message'];
         $_question_valid_message = $question['valid_message'];
         $_question_file_valid_message = $question['file_valid_message'];
-        if (isset($question['sgq']))
-        {
-            $_question_sgq = $question['sgq'];
-            $questiondetails=getsidgidqidaidtype($question['sgq']); //Gets an array containing SID, GID, QID, AID and Question Type
-            $_sid = $questiondetails['sid'];    // is this ever different from $surveyid? If so, when should this be used instead of $surveyid?
-            $_gid = $questiondetails['gid'];
-            $_qid = $questiondetails['qid'];
-            $_aid = (isset($questiondetails['aid']) ? $questiondetails['aid'] : '');
-
-        }
+        $_question_sgq = (isset($question['sgq']) ? $question['sgq'] : '');
         $_question_essentials = $question['essentials'];
         $_question_class = $question['class'];
         $_question_man_class = $question['man_class'];
         $_question_input_error_class = $question['input_error_class'];
-    }
-    else
-    {
+        }
+        else
+        {
         $_question = $question;
         $_question_text = '';
         $_question_help = '';
@@ -147,15 +150,11 @@ function templatereplace($line, $replacements=array())
         $_question_valid_message = '';
         $_question_file_valid_message = '';
         $_question_sgq = '';
-        $_sid = '';
-        $_gid = '';
-        $_qid = '';
-        $_aid = '';
         $_question_essentials = '';
         $_question_class = '';
         $_question_man_class = '';
         $_question_input_error_class = '';
-    }
+    };
 
     if (
         $showqnumcode == 'both' ||
@@ -186,7 +185,13 @@ function templatereplace($line, $replacements=array())
         $_question_code = '';
     }
 
-    $_totalquestionsAsked = $totalquestions - $totalBoilerplatequestions;
+    if (isset($_SESSION['therearexquestions']))
+    {
+        $_totalquestionsAsked = $_SESSION['therearexquestions'] - $totalBoilerplatequestions;
+    }
+    else {
+        $_totalquestionsAsked = 0;
+    }
     if (
       $showXquestions == 'show' ||
       ($showXquestions == 'choose' && !isset($thissurvey['showXquestions'])) ||
@@ -210,11 +215,6 @@ function templatereplace($line, $replacements=array())
     {
         $_therearexquestions = '';
     };
-
-    // Hack - just replace {THEREAREXQUESTIONS}.  ExpressionManager replaces too much otherwise; but sure can specify which subsets to replace if several passes needed
-    if (strpos($line,'{THEREAREXQUESTIONS}')) {
-        $line = str_replace('{THEREAREXQUESTIONS}', $_therearexquestions, $line);
-        }
 
     if (isset($token))
     {
@@ -281,7 +281,7 @@ function templatereplace($line, $replacements=array())
     }
 
     $_clearall = "<input type='button' name='clearallbtn' value='" . $clang->gT("Exit and Clear Survey") . "' class='clearall' "
-            . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {window.open('{$publicurl}/index.php?sid=$surveyid&amp;move=clearall&amp;lang=" . $_s_lang;
+            . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {\nwindow.open('{$publicurl}/index.php?sid=$surveyid&amp;move=clearall&amp;lang=" . $_s_lang;
         if (returnglobal('token'))
         {
         $_clearall .= "&amp;token=" . urlencode(trim(sanitize_token(strip_tags(returnglobal('token')))));
@@ -363,7 +363,7 @@ function templatereplace($line, $replacements=array())
                 $helpicon = $imageurl . "/help.gif";
                 }
             }
-        $_questionhelp = '';
+            $_questionhelp =  "<img src='{$helpicon}' alt='Help' align='left' />".$help;
         }
     else
     {
@@ -546,7 +546,6 @@ function templatereplace($line, $replacements=array())
 
     // Set the array of replacement variables here - don't include curly braces
 	$corecoreReplacements = array();
-	$coreReplacements['AID'] = $_aid;
 	$coreReplacements['ANSWER'] = $answer;  // global
 	$coreReplacements['ANSWERSCLEARED'] = $clang->gT("Answers Cleared");
 	$coreReplacements['ASSESSMENTS'] = $assessments;    // global
@@ -558,7 +557,6 @@ function templatereplace($line, $replacements=array())
 	$coreReplacements['COMPLETED'] = $completed;    // global
 	$coreReplacements['DATESTAMP'] = $_datestamp;
 	$coreReplacements['EXPIRY'] = $_dateoutput;
-	$coreReplacements['GID'] = $_gid;
 	$coreReplacements['GROUPDESCRIPTION'] = $_groupdescription;
 	$coreReplacements['GROUPNAME'] = $_groupname;
 	$coreReplacements['LANG'] = $clang->getlangcode();
@@ -573,7 +571,6 @@ function templatereplace($line, $replacements=array())
 	$coreReplacements['PERCENTCOMPLETE'] = $percentcomplete;    // global
 	$coreReplacements['PRIVACY'] = $privacy;    // global
 	$coreReplacements['PRIVACYMESSAGE'] = "<span style='font-weight:bold; font-style: italic;'>".$clang->gT("A Note On Privacy")."</span><br />".$clang->gT("This survey is anonymous.")."<br />".$clang->gT("The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey.");
-	$coreReplacements['QID'] = $_qid;
 	$coreReplacements['QUESTION'] = $_question;
 	$coreReplacements['QUESTIONHELP'] = $_questionhelp;
 	$coreReplacements['QUESTIONHELPPLAINTEXT'] = strip_tags(addslashes($help)); // global
@@ -618,20 +615,21 @@ function templatereplace($line, $replacements=array())
 	$coreReplacements['TEMPLATECSS'] = $_templatecss;
 	$coreReplacements['TEMPLATEURL'] = $_templateurl;
 	$coreReplacements['THEREAREXQUESTIONS'] = $_therearexquestions;
-	$coreReplacements['TOKEN'] = $_token;
+	if (!$anonymized) $coreReplacements['TOKEN'] = $_token;
 	$coreReplacements['URL'] = $_linkreplace;
 	$coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
 
-    $doTheseReplacements = array_merge($coreReplacements, $replacements);   // so $replacements overrides core values
-
-    // Now do all of the replacements
-    $line = insertansReplace($line);
-    $line = tokenReplace($line);
-    foreach ($doTheseReplacements as $key => $value )
+    if (!is_null($replacements) && is_array($replacements))
     {
-        $line=str_replace('{' . $key . '}', $value, $line);
+        $doTheseReplacements = array_merge($coreReplacements, $replacements);   // so $replacements overrides core values
+    }
+    else
+    {
+        $doTheseReplacements = $coreReplacements;
     }
 
+    // Now do all of the replacements - either call it twice or do recursion within LimeExpressionManager
+    $line = LimeExpressionManager::ProcessString($line, $questionNum, $doTheseReplacements, false, 2, 1);
     return $line;
 }
 
@@ -651,14 +649,6 @@ function templatereplace($line, $replacements=array())
  */
 function insertansReplace($line)
 {
-    if (!isset($_SESSION['dateformats']['phpdate'])) $_SESSION['dateformats']['phpdate']='';
-    while (strpos($line, "{INSERTANS:") !== false)
-    {
-        $answreplace=substr($line, strpos($line, "{INSERTANS:"), strpos($line, "}", strpos($line, "{INSERTANS:"))-strpos($line, "{INSERTANS:")+1);
-        $answreplace2=substr($answreplace, 11, strpos($answreplace, "}", strpos($answreplace, "{INSERTANS:"))-11);
-        $answreplace3=strip_tags(retrieve_Answer($answreplace2, $_SESSION['dateformats']['phpdate']));
-        $line=str_replace($answreplace, $answreplace3, $line);
-    }
     return $line;
 }
 
@@ -671,43 +661,14 @@ function insertansReplace($line)
  *  but have been moved to a function of their own to make it available
  *  to other areas of the script.
  *
- * @param mixed $line   string - the string to iterate, and then return
+ * @param string $line  the string to iterate, and then return
+ * @param boolean $anynomized  Sets if the underlying token data should be not used
  *
  * @return string This string is returned containing the substituted responses
  *
  */
-function tokenReplace($line)
+function tokenReplace($line, $anonymized=false)
 {
-    global $surveyid;
-
-    if (isset($_SESSION['token']) && $_SESSION['token'] != '')
-    {
-        //Gather survey data for tokenised surveys, for use in presenting questions
-        $_SESSION['thistoken']=getTokenData($surveyid, $_SESSION['token']);
-    }
-
-    if (isset($_SESSION['thistoken']))
-    {
-        if (strpos($line, "{TOKEN:FIRSTNAME}") !== false) $line=str_replace("{TOKEN:FIRSTNAME}", $_SESSION['thistoken']['firstname'], $line);
-        if (strpos($line, "{TOKEN:LASTNAME}") !== false) $line=str_replace("{TOKEN:LASTNAME}", $_SESSION['thistoken']['lastname'], $line);
-        if (strpos($line, "{TOKEN:EMAIL}") !== false) $line=str_replace("{TOKEN:EMAIL}", $_SESSION['thistoken']['email'], $line);
-    }
-    else
-    {
-        if (strpos($line, "{TOKEN:FIRSTNAME}") !== false) $line=str_replace("{TOKEN:FIRSTNAME}", "", $line);
-        if (strpos($line, "{TOKEN:LASTNAME}") !== false) $line=str_replace("{TOKEN:LASTNAME}", "", $line);
-        if (strpos($line, "{TOKEN:EMAIL}") !== false) $line=str_replace("{TOKEN:EMAIL}", "", $line);
-    }
-
-    while (strpos($line, "{TOKEN:ATTRIBUTE_")!== false)
-    {
-        $templine=substr($line,strpos($line, "{TOKEN:ATTRIBUTE_"));
-        $templine=substr($templine,0,strpos($templine, "}")+1);
-        $attr_no=(int)substr($templine,17,strpos($templine, "}")-17);
-        $replacestr='';
-        if (isset($_SESSION['thistoken']['attribute_'.$attr_no])) $replacestr=$_SESSION['thistoken']['attribute_'.$attr_no];
-        $line=str_replace($templine, $replacestr, $line);
-    }
     return $line;
 }
 
@@ -726,6 +687,7 @@ function PassthruReplace($line, $thissurvey)
     $line=str_replace("{PASSTHRULABEL}", $thissurvey['passthrulabel'], $line);
     $line=str_replace("{PASSTHRUVALUE}", $thissurvey['passthruvalue'], $line);
 
+    if (!isset($_SESSION['ls_initialquerystr'])) return $line;
     //  Replacement for variable passthru argument like {PASSTHRU:myarg}
     while (strpos($line,"{PASSTHRU:") !== false)
     {
@@ -761,4 +723,8 @@ function PassthruReplace($line, $thissurvey)
     return $line;
 }
 
-?>
+function dTexts__run($text,$questionNum=NULL)
+{
+//    return LimeExpressionManager::ProcessString($text,$questionNum,NULL,true);
+    return $text;
+}

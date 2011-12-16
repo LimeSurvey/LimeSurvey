@@ -223,9 +223,9 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
   if(!isset($_POST['quota_limit']) || $_POST['quota_limit'] < 0 || empty($_POST['quota_limit']) || !is_numeric($_POST['quota_limit']))
         {
             $_POST['quota_limit'] = 0;
-          
+
         }
-            
+
         array_walk( $_POST, 'db_quote', true);
 
         $query = "INSERT INTO ".db_table_name('quota')." (sid,name,qlimit,action,autoload_url)
@@ -386,53 +386,30 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
         $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
         $quotainfo = $result->FetchRow();
 
-        $quotasoutput .='<form action="'.$scriptname.'" method="post">
-					<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
-  						<tr>
-    						<td valign="top">
-								<table width="100%" border="0">
-        							<tbody>
-          								<tr>
-            								<td colspan="2" class="header ui-widget-header">'.$clang->gT("Edit quota").'</td>
-          								</tr>
-          								<tr class="evenrow">
-            								<td align="right"><blockquote>
-                								<p><strong>'.$clang->gT("Quota name").':</strong></p>
-              									</blockquote></td>
-            								<td align="left"> <input name="quota_name" type="text" size="30" maxlength="255" value="'.$quotainfo['name'].'" /></td>
-          								</tr>
-          								<tr class="evenrow">
-            								<td align="right"><blockquote>
-                								<p><strong>'.$clang->gT("Quota limit").':</strong></p>
-              									</blockquote></td>
-            								<td align="left"><input name="quota_limit" type="text" size="12" maxlength="8" value="'.$quotainfo['qlimit'].'" /></td>
-          								</tr>
-          								<tr class="evenrow">
-            								<td align="right"><blockquote>
-                								<p><strong>'.$clang->gT("Quota action").':</strong></p>
-              									</blockquote></td>
-            								<td align="left"> <select name="quota_action">
-            									<option value ="1" ';
-        if($quotainfo['action'] == 1) $quotasoutput .= "selected";
-        $quotasoutput .='>'.$clang->gT("Terminate survey") .'</option>
-            									<option value ="2" ';
-        if($quotainfo['action'] == 2) $quotasoutput .= "selected";
-        $quotasoutput .= '>'.$clang->gT("Terminate survey with warning") .'</option>
-            									</select></td>
-          								</tr>
-          								<tr class="evenrow">
-          								    <td align="right"><blockquote>
-          								        <p><strong>'.$clang->gT("Autoload URL").':</strong></p>
-          								        </blockquote></td>
-          								    <td align="left"><input name="autoload_url" type="checkbox" value="1"';
-        if($quotainfo['autoload_url'] == "1") {$quotasoutput .= " checked";}
-        $quotasoutput .= ' /></td>
-          								</tr>
-          							</tbody>
-          						</table>
-          					</td>
-          				</tr>
-          			</table>';
+        $quotasoutput .="<form action='{$scriptname}' method='post' class='form30'>
+							<div class='header ui-widget-header'>".$clang->gT("Edit quota")."</div>
+                            <ul>
+                            <li>
+                			    <label for ='quota_name'>".$clang->gT("Quota name").":</label> <input name='quota_name' id='quota_name' type='text' size='60' maxlength='255' value='{$quotainfo['name']}' />
+                            </li>
+                            <li>
+                                <label for ='quota_limit'>".$clang->gT("Quota limit").":</label> <input name='quota_limit' id='quota_limit' type='text' size='12' maxlength='9' value='{$quotainfo['qlimit']}' />
+                            </li>
+                            <li>
+                                <label for ='quota_action'>".$clang->gT("Quota action").":</label> <select name='quota_action' id='quota_action'>
+                                    <option value ='1' ";
+                                    if($quotainfo['action'] == 1) $quotasoutput .= 'selected';
+                                    $quotasoutput .='>'.$clang->gT('Terminate survey') .'</option>
+                                                                            <option value ="2" ';
+                                    if($quotainfo['action'] == 2) $quotasoutput .= 'selected';
+                                    $quotasoutput .= '>'.$clang->gT('Terminate survey with warning') ."</option>
+                                </select>
+                            </li>
+          					<li>
+                                <label for ='autoload_url'>	".$clang->gT("Autoload URL").":</label><input name='autoload_url'  id='autoload_url' type='checkbox' value='1'";
+                                if($quotainfo['autoload_url'] == "1") {$quotasoutput .= " checked";}
+        $quotasoutput .= ' /></li>
+          			</ul>';
         $langs = GetAdditionalLanguagesFromSurveyID($surveyid);
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
         array_push($langs,$baselang);
@@ -455,35 +432,21 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
             $quotasoutput .= "</h2>";
 
             $quotasoutput.='
-					<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
-  						<tr>
-    						<td valign="top">
-								<table width="100%" border="0">
-        							<tbody>
-          								<tr class="evenrow">
-          								    <td align="right" valign="top"><blockquote>
-          								        <p><strong>'.$clang->gT("Quota message").':</strong></p>
-          								        </blockquote></td>
-          								    <td align="left"> <textarea name="quotals_message_'.$lang.'" cols="60" rows="6">'.$langquotainfo['quotals_message'].'</textarea></td>
-										</tr>
-          								<tr class="evenrow">
-            								<td align="right"><blockquote>
-                								<p><strong>'.$clang->gT("URL").':</strong></p>
-              									</blockquote></td>
-            								<td align="left"> <input name="quotals_url_'.$lang.'" type="text" size="30" maxlength="255" value="'.$langquotainfo['quotals_url'].'" /></td>
-          								</tr>
-          								<tr class="evenrow">
-            								<td align="right"><blockquote>
-                								<p><strong>'.$clang->gT("URL description").':</strong></p>
-              									</blockquote></td>
-            								<td align="left"> <input name="quotals_urldescrip_'.$lang.'" type="text" size="30" maxlength="255" value="'.$langquotainfo['quotals_urldescrip'].'" /></td>
-          								</tr>
-       								</tbody>
-      							</table>
-    						</td>
-  						</tr>
-					</table>
-				</div>';
+                    <ul>
+                          <li>
+                              <label for="quotals_message_'.$lang.'">'.$clang->gT("Quota message").':</label>
+                              <textarea id="quotals_message_'.$lang.'" name="quotals_message_'.$lang.'" cols="60" rows="6">'.$langquotainfo['quotals_message'].'</textarea>
+                          </li>
+                          <li>
+                            <label for="quotals_url_'.$lang.'">'.$clang->gT("URL").':</label>
+                            <input id="quotals_url_'.$lang.'" name="quotals_url_'.$lang.'" type="text" size="50" maxlength="255" value="'.$langquotainfo['quotals_url'].'" />
+                          </li>
+                        <li>
+                            <label for="quotals_urldescrip_'.$lang.'">'.$clang->gT("URL description").':</label>
+                            <input id="quotals_urldescrip_'.$lang.'" name="quotals_urldescrip_'.$lang.'" type="text" size="50" maxlength="255" value="'.$langquotainfo['quotals_urldescrip'].'" />
+                        </li>
+                    </ul>
+                </div>';
         };
         $quotasoutput .= '
 					<p><input name="submit" type="submit" value="'.$clang->gT("Save quota").'" />
@@ -681,7 +644,7 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
                             <input type="hidden" name="action" value="quotas" />
                             <input type="hidden" name="subaction" value="new_quota" />
                         </form>';
-            
+
         }
         $quotasoutput .='</td>
             	</tr>
@@ -709,12 +672,12 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
 
         $query = "SELECT name FROM ".db_table_name('quota')." WHERE id='".$_POST['quota_id']."'";
         $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-        while ($quotadetails = $result->FetchRow()) 
+        while ($quotadetails = $result->FetchRow())
         {
             $quota_name=$quotadetails['name'];
         }
-        
-        $query = "SELECT qid, title, question FROM ".db_table_name('questions')." WHERE $allowed_types AND sid='$surveyid' AND language='{$baselang}'";
+
+        $query = "SELECT qid, title, question FROM ".db_table_name('questions')." WHERE $allowed_types AND sid='$surveyid' AND language='{$baselang}' order by question_order";
         $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
         if ($result->RecordCount() == 0)
         {
@@ -727,22 +690,12 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
         {
             $quotasoutput .='<div class="header ui-widget-header">'.$clang->gT("Survey Quota").': '.$clang->gT("Add Answer").'</div><br />
 			<div class="messagebox ui-corner-all" style="width: 600px">
-				<form action="'.$scriptname.'" method="post">
-					<table class="addquotaanswer" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
-						<thead>
-						<tr>
-						  <th class="header ui-widget-header"  colspan="2">'.sprintf($clang->gt("New Answer for Quota '%s'"), $quota_name).'</th>
-						</tr>
-						</thead>
-						<tbody>
-						<tr class="evenrow">
-							<td align="center">&nbsp;</td>
-							<td align="center">&nbsp;</td>
-						</tr>
-						<tr class="evenrow">
-							<td width="30%" align="center" valign="top"><strong>'.$clang->gT("Select Question").':</strong></td>
-							<td align="left">
-								<select name="quota_qid" size="15">';
+				<form action="'.$scriptname.'" class="form30" method="post">
+						  <div class="header ui-widget-header" >'.sprintf($clang->gt("New Answer for Quota '%s'"), $quota_name).'</div>
+                          <ul>
+                          <li>
+							<label for="quota_qid">'.$clang->gT("Select Question").':</label>
+								<select id="quota_qid" name="quota_qid" size="15">';
 
             while ($questionlisting = $result->FetchRow())
             {
@@ -751,23 +704,15 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
 
             $quotasoutput .='
 								</select>
-							</td>
-						</tr>
-						<tr align="left" class="evenrow">
-							<td colspan="2">&nbsp;</td>
-						</tr>
-						<tr align="left" class="evenrow">
-							<td>&nbsp;</td>
-							<td>
+						</li>
+                        </ul>
+						<p>
 								<input name="submit" type="submit" class="submit" value="'.$clang->gT("Next").'" />
 								<input type="hidden" name="sid" value="'.$surveyid.'" />
 								<input type="hidden" name="action" value="quotas" />
 								<input type="hidden" name="subaction" value="new_answer_two" />
 								<input type="hidden" name="quota_id" value="'.$_POST['quota_id'].'" />
-							</td>
-						</tr>
-						</tbody>
-					</table><br />
+
 				</form>
 			</div>';
         }
@@ -779,7 +724,7 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
 
         $query = "SELECT name FROM ".db_table_name('quota')." WHERE id='".$_POST['quota_id']."'";
         $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-        while ($quotadetails = $result->FetchRow()) 
+        while ($quotadetails = $result->FetchRow())
         {
             $quota_name=$quotadetails['name'];
         }
@@ -804,54 +749,33 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
         } else
         {
             $quotasoutput .='<div class="header ui-widget-header">'.$clang->gT("Survey Quota").': '.$clang->gT("Add Answer").'</div><br />
-			<div class="messagebox ui-corner-all" style="width: 600px">
-				<form action="'.$scriptname.'#quota_'.$_POST['quota_id'].'" method="post">
-					<table class="addquotaanswer" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
-						<tbody>
-							<thead>
-							<tr>
-							  <th class="header ui-widget-header" colspan="2">'.sprintf($clang->gt("New Answer for Quota '%s'"), $quota_name).'</th>
-							</tr>
-							</thead>
-							<tr class="evenrow">
-								<td align="center">&nbsp;</td>
-								<td align="center">&nbsp;</td>
-							</tr>
-							<tr class="evenrow">
-								<td width="35%" align="center" valign="top"><strong>'.$clang->gT("Select Answer").':</strong></td>
-								<td align="left">
-									<select name="quota_anscode" size="15">';
+			<div class="messagebox ui-corner-all">
+				<form action="'.$scriptname.'#quota_'.$_POST['quota_id'].'" class="form30" method="post">
+                <div class="header">'.sprintf($clang->gt("New Answer for Quota '%s'"), $quota_name).'</div>
+                <ul>
+				<li><label for="quota_anscode">'.$clang->gT("Select Answer").':</label>
+									<select id="quota_anscode" name="quota_anscode" size="15">';
 
             while (list($key,$value) = each($question_answers))
             {
-                if (!isset($value['rowexists'])) $quotasoutput .='<option value="'.$key.'">'.strip_tags(substr($value['Display'],0,40)).'</option>';
+                if (!isset($value['rowexists'])) $quotasoutput .='<option value="'.$key.'">'.$key.':'.FlattenText(substr($value['Display'],0,40)).'</option>';
             }
 
 
             $quotasoutput .='
 									</select>
-								</td>
-							</tr>
-							<tr align="left" class="evenrow">
-								<td width="35%" align="center" valign="top"><strong>'.$clang->gT("Save this, then create another:").'</strong></td>
-								<td><input type="checkbox" name="createanother"></td>
-							</tr>
-							<tr align="left" class="evenrow">
-								<td colspan="2">&nbsp;</td>
-							</tr>
-							<tr align="left" class="evenrow">
-								<td>&nbsp;</td>
-								<td>
+								</li>
+                                <li>
+								<label for="createanother">'.$clang->gT("Save this, then create another:").'</label>
+								<input type="checkbox" id="createanother" name="createanother">
+							</li>
+                            </ul><p>
 									<input name="submit" type="submit" class="submit" value="'.$clang->gT("Next").'" />
 									<input type="hidden" name="sid" value="'.$surveyid.'" />
 									<input type="hidden" name="action" value="quotas" />
 									<input type="hidden" name="subaction" value="insertquotaanswer" />
 									<input type="hidden" name="quota_qid" value="'.$_POST['quota_qid'].'" />
 									<input type="hidden" name="quota_id" value="'.$_POST['quota_id'].'" />
-								</td>
-							</tr>
-						</tbody>
-					</table><br />
 				</form>
 			</div>';
         }

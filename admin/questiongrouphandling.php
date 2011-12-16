@@ -61,6 +61,10 @@ if ($action == "addgroup")
         . "<textarea cols='80' rows='8' id='description_$grouplang' name='description_$grouplang'></textarea>"
         . getEditor("group-desc","description_".$grouplang, "[".$clang->gT("Description:", "js")."](".$grouplang.")",$surveyid,'','',$action)
         . "</li>\n"
+        // Group-Level Relevance
+        . "<li><label for='relevance'>".$clang->gT("Relevance equation:")."</label>"
+        . "<textarea cols='50' rows='1' id='grelevance' name='grelevance'></textarea>"
+        . "</li>"
         . "</ul>"
         . "\t<p><input type='submit' value='".$clang->gT("Save question group")."' />\n"
         . "</div>\n";
@@ -118,7 +122,7 @@ if ($action == "editgroup")
         } else {
             $grplangs[$esrow['language']] = 99;
         }
-        if ($esrow['language'] == $baselang) $basesettings = array('group_name' => $esrow['group_name'],'description' => $esrow['description'],'group_order' => $esrow['group_order']);
+        if ($esrow['language'] == $baselang) $basesettings = array('group_name' => $esrow['group_name'],'description' => $esrow['description'],'group_order' => $esrow['group_order'], 'grelevance' => $esrow['grelevance']);
 
     }
 
@@ -126,7 +130,7 @@ if ($action == "editgroup")
     {
         if ($value != 99)
         {
-            $egquery = "INSERT INTO ".db_table_name('groups')." (gid, sid, group_name, description,group_order,language) VALUES ('{$gid}', '{$surveyid}', '{$basesettings['group_name']}', '{$basesettings['description']}','{$basesettings['group_order']}', '{$key}')";
+            $egquery = "INSERT INTO ".db_table_name('groups')." (gid, sid, group_name, description,group_order, grelevance, language) VALUES ('{$gid}', '{$surveyid}', '{$basesettings['group_name']}', '{$basesettings['description']}','{$basesettings['group_order']}', '{$basesettings['grelevance']}', '{$key}')";
             $egresult = $connect->Execute($egquery);
         }
     }
@@ -143,6 +147,10 @@ if ($action == "editgroup")
         . "<div class='settingrow'><span class='settingcaption'><label for='description_{$esrow['language']}'>".$clang->gT("Description:")."</label>\n"
         . "</span><span class='settingentry'><textarea cols='70' rows='8' id='description_{$esrow['language']}' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
         . getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
+        . "</span></div>"
+        . "<div class='settingrow'><span class='settingcaption'><label for='relevance'>".$clang->gT("Relevance equation:")."</label></span>\n"
+        . "<span class='settingentry'><textarea cols='50' rows='1' id='grelevance' name='grelevance'>".$esrow['grelevance']."</textarea></span>"
+        . "</span></div>"
         . "\t</span></div><div style='clear:both'></div>";
     $egquery = "SELECT * FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid AND language!='$baselang'";
     $egresult = db_execute_assoc($egquery);
@@ -220,6 +228,7 @@ if ($action == "ordergroups")
                     $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());//Checked
                     break;
             }
+            LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
         }
         // Move the question to specific position
         if ((!empty($_POST['groupmovefrom']) || (isset($_POST['groupmovefrom']) && $_POST['groupmovefrom'] == '0')) && (!empty($_POST['groupmoveto']) || (isset($_POST['groupmoveto']) && $_POST['groupmoveto'] == '0')))
@@ -251,6 +260,7 @@ if ($action == "ordergroups")
                 $cdquery = "UPDATE ".db_table_name('groups')." SET group_order=".($newpos+1)." WHERE sid=$surveyid AND group_order=-1";
                 $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
             }
+            LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
         }
 
         $ordergroups = "<div class='header ui-widget-header'>".$clang->gT("Change Group Order")."</div><br />\n";
@@ -258,27 +268,27 @@ if ($action == "ordergroups")
         // Get groups dependencies regarding conditions
         // => Get an array of groups containing questions with conditions outside the group
         // $groupdepsarray[dependent-gid][target-gid]['conditions'][qid-having-conditions]=Array(cids...)
-        $groupdepsarray = GetGroupDepsForConditions($surveyid);
-        $nicegroupdeps=array();
-        if (!is_null($groupdepsarray))
-        {
-            $ordergroups .= "<ul class='movableList'><li class='movableNode'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current survey has questions with conditions outside their own group")."</strong><br /><br /><i>".$clang->gT("Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set")."</i></strong><br /><br/>".$clang->gT("The following groups are concerned").":<ul>\n";
-            foreach ($groupdepsarray as $depgid => $depgrouprow)
-            {
-                foreach($depgrouprow as $targgid => $targrow)
-                {
-                    $ordergroups .= "<li>".sprintf($clang->gT("Group %s depends on group %s, see the marked conditions on:"), "<a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."')\">".$targrow['depgpname']."</a>", "<a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$targgid."')\">".$targrow['targetgpname']."</a> ");
-                    $nicegroupdeps[$depgid]=$targgid;
-                    foreach($targrow['conditions'] as $depqid => $depqrow)
-                    {
-                        $listcid=implode("-",$depqrow);
-                        $ordergroups .= " <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."','_top')\"> [".$clang->gT("QID").": ".$depqid."]</a>";
-                    }
-                    $ordergroups .= "</li>\n";
-                }
-            }
-            $ordergroups .= "</ul></li></ul>";
-        }
+//        $groupdepsarray = GetGroupDepsForConditions($surveyid);
+//        $nicegroupdeps=array();
+//        if (!is_null($groupdepsarray))
+//        {
+//            $ordergroups .= "<ul class='movableList'><li class='movableNode'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current survey has questions with conditions outside their own group")."</strong><br /><br /><i>".$clang->gT("Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set")."</i></strong><br /><br/>".$clang->gT("The following groups are concerned").":<ul>\n";
+//            foreach ($groupdepsarray as $depgid => $depgrouprow)
+//            {
+//                foreach($depgrouprow as $targgid => $targrow)
+//                {
+//                    $ordergroups .= "<li>".sprintf($clang->gT("Group %s depends on group %s, see the marked conditions on:"), "<a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."')\">".$targrow['depgpname']."</a>", "<a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$targgid."')\">".$targrow['targetgpname']."</a> ");
+//                    $nicegroupdeps[$depgid]=$targgid;
+//                    foreach($targrow['conditions'] as $depqid => $depqrow)
+//                    {
+//                        $listcid=implode("-",$depqrow);
+//                        $ordergroups .= " <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."','_top')\"> [".$clang->gT("QID").": ".$depqid."]</a>";
+//                    }
+//                    $ordergroups .= "</li>\n";
+//                }
+//            }
+//            $ordergroups .= "</ul></li></ul>";
+//        }
 
         $ordergroups .= "<form method='post' action=''><ul class='movableList'>";
         //Get the groups from this survey
@@ -318,18 +328,18 @@ if ($action == "ordergroups")
         {
             $downdisabled = "";
             $updisabled = "";
-            if ( !is_null($groupdepsarray) && $i < $groupcount-1 &&
-            array_key_exists($ogarray[$i+1]['gid'],$groupdepsarray) &&
-            array_key_exists($ogarray[$i]['gid'],$groupdepsarray[$ogarray[$i+1]['gid']]) )
-            {
-                $downdisabled = "disabled=\"true\" class=\"disabledUpDnBtn\"";
-            }
-            if ( !is_null($groupdepsarray) && $i !=0  &&
-            array_key_exists($ogarray[$i]['gid'],$groupdepsarray) &&
-            array_key_exists($ogarray[$i-1]['gid'],$groupdepsarray[$ogarray[$i]['gid']]) )
-            {
-                $updisabled = "disabled=\"true\" class=\"disabledUpDnBtn\"";
-            }
+//            if ( !is_null($groupdepsarray) && $i < $groupcount-1 &&
+//            array_key_exists($ogarray[$i+1]['gid'],$groupdepsarray) &&
+//            array_key_exists($ogarray[$i]['gid'],$groupdepsarray[$ogarray[$i+1]['gid']]) )
+//            {
+//                $downdisabled = "disabled=\"true\" class=\"disabledUpDnBtn\"";
+//            }
+//            if ( !is_null($groupdepsarray) && $i !=0  &&
+//            array_key_exists($ogarray[$i]['gid'],$groupdepsarray) &&
+//            array_key_exists($ogarray[$i-1]['gid'],$groupdepsarray[$ogarray[$i]['gid']]) )
+//            {
+//                $updisabled = "disabled=\"true\" class=\"disabledUpDnBtn\"";
+//            }
 
             $ordergroups.="<li class='movableNode' id='gid".$ogarray[$i]['gid']."'>\n" ;
 
@@ -347,41 +357,41 @@ if ($action == "ordergroups")
             }
             //Find out if there are any dependencies
             $max_start_order=0;
-            if ( !is_null($groupdepsarray) && $i!=0 &&
-            array_key_exists($ogarray[$i]['gid'], $groupdepsarray)) //This should find out if there are any dependencies
-            {
-                foreach($groupdepsarray[$ogarray[$i]['gid']] as $key=>$val)
-                {
-                    //qet the question_order value for each of the dependencies
-                    foreach($miniogarray as $mo)
-                    {
-                        if($mo['gid'] == $key && $mo['group_order'] > $max_start_order) //If there is a matching condition, and the question order for that condition is higher than the one already set:
-                        {
-                            $max_start_order = $mo['group_order']; //Set the maximum question condition to this
-                        }
-                    }
-                }
-            }
+//            if ( !is_null($groupdepsarray) && $i!=0 &&
+//            array_key_exists($ogarray[$i]['gid'], $groupdepsarray)) //This should find out if there are any dependencies
+//            {
+//                foreach($groupdepsarray[$ogarray[$i]['gid']] as $key=>$val)
+//                {
+//                    //qet the question_order value for each of the dependencies
+//                    foreach($miniogarray as $mo)
+//                    {
+//                        if($mo['gid'] == $key && $mo['group_order'] > $max_start_order) //If there is a matching condition, and the question order for that condition is higher than the one already set:
+//                        {
+//                            $max_start_order = $mo['group_order']; //Set the maximum question condition to this
+//                        }
+//                    }
+//                }
+//            }
             //Find out if any groups use this as a dependency
             $max_end_order=$groupcount+1; //By default, stop the list at the last group
 
-            if ( !is_null($nicegroupdeps))
-            {
-                //to find which question has a dependence on this one
-                //then stop the list, so you can't move this group past the dependent one
-                foreach($nicegroupdeps as $gdarray)
-                {
-                    if ($ogarray[$i]['gid'] == $gdarray)
-                    {
-                        //This group should never get higher than here ($gdarray)!
-                        //Get the group_order for $gdarray;
-                        $goquery="SELECT group_order FROM ".db_table_name('groups')." WHERE gid = $gdarray";
-                        $goresult=db_execute_assoc($goquery) or safe_die($connect->ErrorMsg());
-                        $gorow = $goresult->FetchRow();
-                        $max_end_order=$gorow['group_order'];
-                    }
-                }
-            }
+//            if ( !is_null($nicegroupdeps))
+//            {
+//                //to find which question has a dependence on this one
+//                //then stop the list, so you can't move this group past the dependent one
+//                foreach($nicegroupdeps as $gdarray)
+//                {
+//                    if ($ogarray[$i]['gid'] == $gdarray)
+//                    {
+//                        //This group should never get higher than here ($gdarray)!
+//                        //Get the group_order for $gdarray;
+//                        $goquery="SELECT group_order FROM ".db_table_name('groups')." WHERE gid = $gdarray";
+//                        $goresult=db_execute_assoc($goquery) or safe_die($connect->ErrorMsg());
+//                        $gorow = $goresult->FetchRow();
+//                        $max_end_order=$gorow['group_order'];
+//                    }
+//                }
+//            }
             $minipos=$miniogarray[0]['group_order']; //Start at the very first group_order
             foreach($miniogarray as $mo)
             {

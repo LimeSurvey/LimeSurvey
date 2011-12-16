@@ -61,8 +61,7 @@ $maxchars = 50;
 
 
 
-//don't call this script directly!
-if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
+include_once("login_check.php");
 
 //some includes, the progressbar is used to show a progressbar while generating the graphs
 //include_once("login_check.php");
@@ -341,6 +340,12 @@ if ($grapherror!='')
 }
 $statisticsoutput.="</li>\n";
 
+//Show text responses inline
+$statisticsoutput .= "<li>
+    <label>".$clang->gT("Show text responses inline").":</label>
+    <input type='checkbox' id='showtextinline' name='showtextinline' ";
+if(isset($_POST['showtextinline'])) { $statisticsoutput .= "checked='checked'"; }
+$statisticsoutput .= "/><br /></li>\n";
 //Output selector
 $statisticsoutput .= "<li>"
 ."<label>"
@@ -400,7 +405,7 @@ foreach ($filters as $flt)
         }
 
         $statisticsoutput .= "\t\t<tr><td><div class='header ui-widget-header'>\n"
-		
+
         ."<input type=\"checkbox\" id='btn_$flt[1]' onclick=\"selectCheckboxes('grp_$flt[1]', 'summary[]', 'btn_$flt[1]');\" />"
 
         //use current groupname and groupid as heading
@@ -475,7 +480,7 @@ foreach ($filters as $flt)
 
         // File Upload will need special filters in future, hence the special treatment
         if ($flt[2] == "|") {$myfield = "|$myfield";}
-        
+
         //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
         if ($flt[2] == "N") {$myfield = "N$myfield";}
         $statisticsoutput .= "<input type='checkbox'  id='filter$myfield' name='summary[]' value='$myfield'";
@@ -491,9 +496,9 @@ foreach ($filters as $flt)
          *
          * Auto-check the question types mentioned above
          */
-        if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE  
-            || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE 
-            || array_search("P{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE 
+        if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
+            || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
+            || array_search("P{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
             || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
         {$statisticsoutput .= " checked='checked'";}
 
@@ -545,18 +550,18 @@ foreach ($filters as $flt)
                 $myfield2="K{$myfield}".$row[0]."G";
                 $myfield3="K{$myfield}".$row[0]."L";
                 if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
-                 
+
                 //start new TD
                 $statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>";
-                 
+
                 //checkbox
                 $statisticsoutput .= "<input type='checkbox'  name='summary[]' value='$myfield1'";
-                 
+
                 //check SGQA -> do we want to pre-check the checkbox?
                 if (isset($summary) && (array_search("K{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $summary) !== FALSE))
                 {$statisticsoutput .= " checked='checked'";}
                 $statisticsoutput .= " />&nbsp;";
-                 
+
                 //show speaker
                 $statisticsoutput .= showSpeaker($flt[3]." - ".FlattenText($row[1]))."<br />\n";
 
@@ -571,10 +576,10 @@ foreach ($filters as $flt)
                 ."\t\t\t\t\t<input type='text' name='$myfield3' value='";
                 if (isset($_POST[$myfield3])) {$statisticsoutput .= $_POST[$myfield3];}
                 $statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n";
-                 
+
                 //we added 1 form -> increase counter
                 $counter2++;
-                 
+
             }
             break;
 
@@ -594,16 +599,16 @@ foreach ($filters as $flt)
             while ($row = $result->FetchRow())
             {
                 //collecting data for output, for details see above (question type "N")
-                 
+
                 //we have one input field for each answer
                 $myfield2 = "Q".$myfield."$row[0]";
                 if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
-                 
+
                 $statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>";
                 $statisticsoutput .= "<input type='checkbox'  name='summary[]' value='$myfield2'";
                 if (isset($summary) && (array_search("Q{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $summary) !== FALSE))
                 {$statisticsoutput .= " checked='checked'";}
-                 
+
                 $statisticsoutput .= " />&nbsp;";
                 $statisticsoutput .= showSpeaker($flt[3]." - ".FlattenText($row[1]))
                 ."<br />\n"
@@ -611,7 +616,7 @@ foreach ($filters as $flt)
                 ."\t\t\t\t\t<input type='text' name='$myfield2' value='";
                 if (isset($_POST[$myfield2]))
                 {$statisticsoutput .= $_POST[$myfield2];}
-                 
+
                 $statisticsoutput .= "' />"
                 ."\t\t\t\t</td>\n";
                 $counter2++;
@@ -750,7 +755,7 @@ foreach ($filters as $flt)
             $statisticsoutput .= " /><strong>";
             $statisticsoutput .= showSpeaker($niceqtext)
             ."<br />\n"
-		
+
             ."\t\t\t\t\t<font size='1'>".$clang->gT("Date (YYYY-MM-DD) equals").":<br />\n"
             ."\t\t\t\t\t<input name='$myfield3' type='text' value='";
 
@@ -778,11 +783,11 @@ foreach ($filters as $flt)
             for ($i=1; $i<=5; $i++)
             {
                 $statisticsoutput .= "\t\t\t\t\t<option value='$i'";
-                 
+
                 //pre-select values which were marked before
                 if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($i, $_POST[$myfield]))
                 {$statisticsoutput .= " selected";}
-                 
+
                 $statisticsoutput .= ">$i</option>\n";
             }
 
@@ -833,7 +838,7 @@ foreach ($filters as $flt)
             foreach ($survlangs  as $availlang)
             {
                 $statisticsoutput .= "\t\t\t\t\t<option value='".$availlang."'";
-                 
+
                 //pre-select values which were marked before
                 if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($availlang, $_POST[$myfield]))
                 {$statisticsoutput .= " selected";}
@@ -860,24 +865,24 @@ foreach ($filters as $flt)
             {
                 $myfield2 = $myfield.$row[0];
                 $statisticsoutput .= "<!-- $myfield2 - ";
-                 
+
                 if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
-                 
+
                 $statisticsoutput .= " -->\n";
-                 
+
                 if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 
                 $statisticsoutput .= "\t\t\t\t<td align='center'>"
                 ."<input type='checkbox'  name='summary[]' value='$myfield2'";
-                 
+
                 //pre-check
                 if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
-                 
+
                 $statisticsoutput .= " />&nbsp;"
                 .showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
                 ."<br />\n"
                 ."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n";
-                 
+
                 //there are always exactly 5 values which have to be listed
                 for ($i=1; $i<=5; $i++)
                 {
@@ -889,10 +894,10 @@ foreach ($filters as $flt)
 
                     $statisticsoutput .= ">$i</option>\n";
                 }
-                 
+
                 $statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
                 $counter2++;
-                 
+
                 //add this to all the other fields
             }
 
@@ -912,23 +917,23 @@ foreach ($filters as $flt)
             {
                 $myfield2 = $myfield . "$row[0]";
                 $statisticsoutput .= "<!-- $myfield2 - ";
-                 
+
                 if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
-                 
+
                 $statisticsoutput .= " -->\n";
-                 
+
                 if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 
                 $statisticsoutput .= "\t\t\t\t<td align='center'>"; //heading
                 $statisticsoutput .= "<input type='checkbox'  name='summary[]' value='$myfield2'";
-                 
+
                 if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
-                 
+
                 $statisticsoutput .= " />&nbsp;"
                 .showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
                 ."<br />\n"
                 ."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n";
-                 
+
                 //here wo loop through 10 entries to create a larger output form
                 for ($i=1; $i<=10; $i++)
                 {
@@ -937,7 +942,7 @@ foreach ($filters as $flt)
                     if (isset($_POST[$myfield2]) && $_POST[$myfield2] == $i) {$statisticsoutput .= " selected";}
                     $statisticsoutput .= ">$i</option>\n";
                 }
-                 
+
                 $statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
                 $counter2++;
             }
@@ -961,44 +966,44 @@ foreach ($filters as $flt)
             {
                 $myfield2 = $myfield . "$row[0]";
                 $statisticsoutput .= "<!-- $myfield2 - ";
-                 
+
                 if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
-                 
+
                 $statisticsoutput .= " -->\n";
-                 
+
                 if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
-                 
+
                 $statisticsoutput .= "\t\t\t\t<td align='center'>"
                 ."<input type='checkbox'  name='summary[]' value='$myfield2'";
-                 
+
                 if (isset($summary) && array_search($myfield2, $summary)!== FALSE)
                 {$statisticsoutput .= " checked='checked'";}
-                 
+
                 $statisticsoutput .= " />&nbsp;<strong>"
                 .showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
                 ."</strong><br />\n"
                 ."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n"
                 ."\t\t\t\t\t<option value='Y'";
-                 
+
                 //pre-select "yes"
                 if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("Y", $_POST[$myfield2])) {$statisticsoutput .= " selected";}
-                 
+
                 $statisticsoutput .= ">".$clang->gT("Yes")."</option>\n"
                 ."\t\t\t\t\t<option value='U'";
-                 
+
                 //pre-select "uncertain"
                 if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("U", $_POST[$myfield2])) {$statisticsoutput .= " selected";}
-                 
+
                 $statisticsoutput .= ">".$clang->gT("Uncertain")."</option>\n"
                 ."\t\t\t\t\t<option value='N'";
-                 
+
                 //pre-select "no"
                 if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("N", $_POST[$myfield2])) {$statisticsoutput .= " selected";}
-                 
+
                 $statisticsoutput .= ">".$clang->gT("No")."</option>\n"
                 ."\t\t\t\t</select>\n\t\t\t\t</td>\n";
                 $counter2++;
-                 
+
                 //add to array
             }
 
@@ -1019,36 +1024,36 @@ foreach ($filters as $flt)
             {
                 $myfield2 = $myfield . "$row[0]";
                 $statisticsoutput .= "<!-- $myfield2 - ";
-                 
+
                 if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
-                 
+
                 $statisticsoutput .= " -->\n";
-                 
+
                 if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
-                 
+
                 $statisticsoutput .= "\t\t\t\t<td align='center'>"
                 ."<input type='checkbox'  name='summary[]' value='$myfield2'";
-                 
+
                 if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
-                 
+
                 $statisticsoutput .= " />&nbsp;<strong>"
                 .showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
                 ."</strong><br />\n"
                 ."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n"
                 ."\t\t\t\t\t<option value='I'";
-                 
+
                 if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array("I", $_POST[$myfield2])) {$statisticsoutput .= " selected";}
-                 
+
                 $statisticsoutput .= ">".$clang->gT("Increase")."</option>\n"
                 ."\t\t\t\t\t<option value='S'";
-                 
+
                 if (isset($_POST[$myfield]) && is_array($_POST[$myfield2]) && in_array("S", $_POST[$myfield2])) {$statisticsoutput .= " selected";}
-                 
+
                 $statisticsoutput .= ">".$clang->gT("Same")."</option>\n"
                 ."\t\t\t\t\t<option value='D'";
-                 
+
                 if (isset($_POST[$myfield]) && is_array($_POST[$myfield2]) && in_array("D", $_POST[$myfield2])) {$statisticsoutput .= " selected";}
-                 
+
                 $statisticsoutput .= ">".$clang->gT("Decrease")."</option>\n"
                 ."\t\t\t\t</select>\n\t\t\t\t</td>\n";
                 $counter2++;
@@ -1180,26 +1185,26 @@ foreach ($filters as $flt)
             {
                 $myfield2 = $myfield . "$row[0]";
                 $statisticsoutput .= "<!-- $myfield2 - ";
-                 
+
                 if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
-                 
+
                 $statisticsoutput .= " -->\n";
-                 
+
                 if ($counter2 == 4)
                 {
                     $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
                     $counter2=0;
                 }
-                 
+
                 $statisticsoutput .= "\t\t\t\t<td align='center'>"
                 ."<input type='checkbox'  name='summary[]' value='$myfield2'";
-                 
+
                 if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
-                 
+
                 $statisticsoutput .= " />&nbsp;<strong>"
                 .showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
                 ."</strong><br />\n";
-                 
+
                 /*
                  * when hoovering the speaker symbol we show the whole question
                  *
@@ -1214,13 +1219,13 @@ foreach ($filters as $flt)
                  */
                 $fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$flt[0]} AND language='{$language}' ORDER BY sortorder, code";
                 $fresult = db_execute_assoc($fquery);
-                 
+
                 //for debugging only:
                 //$statisticsoutput .= $fquery;
-                 
+
                 //creating form
                 $statisticsoutput .= "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n";
-                 
+
                 //loop through all possible answers
                 while ($frow = $fresult->FetchRow())
                 {
@@ -1231,10 +1236,10 @@ foreach ($filters as $flt)
 
                     $statisticsoutput .= ">({$frow['code']}) ".FlattenText($frow['answer'])."</option>\n";
                 }
-                 
+
                 $statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
                 $counter2++;
-                 
+
                 //add fields to main array
             }
 
@@ -1268,7 +1273,7 @@ foreach ($filters as $flt)
             {
                 //adjust layout depending on counter
                 if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter=0;}
-                 
+
                 //myfield is the SGQ identifier
                 //myfield2 is just used as comment in HTML like "R40X34X1721-1"
                 $myfield2 = "R" . $myfield . $i . "-" . strlen($i);
@@ -1276,19 +1281,19 @@ foreach ($filters as $flt)
                 $statisticsoutput .= "<!-- $myfield2 - ";
 
                 if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
-                 
+
                 $statisticsoutput .= " -->\n"
                 ."\t\t\t\t<td align='center'>"
                 ."<input type='checkbox'  name='summary[]' value='$myfield2'";
-                 
+
                 //pre-check
                 if (isset($summary) && array_search($myfield2, $summary) !== FALSE) {$statisticsoutput .= " checked='checked'";}
-                 
+
                 $statisticsoutput .= " />&nbsp;<strong>"
                 .showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
                 ."</strong><br />\n"
                 ."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$i}[]' multiple='multiple'>\n";
-                 
+
                 //output lists of ranking items
                 foreach ($answers as $ans)
                 {
@@ -1299,10 +1304,10 @@ foreach ($filters as $flt)
 
                     $statisticsoutput .= ">$ans[1]</option>\n";
                 }
-                 
+
                 $statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
                 $counter2++;
-                 
+
                 //add averything to main array
             }
 
@@ -1365,7 +1370,7 @@ foreach ($filters as $flt)
                 //check if there is a dualscale_headerA/B
                 $dshquery = "SELECT value FROM ".db_table_name("question_attributes")." WHERE qid={$flt[0]} AND attribute='dualscale_headerA'";
                 $dshresult = db_execute_num($dshquery) or safe_die ("Couldn't get dualscale header!<br />$dshquery<br />".$connect->ErrorMsg());
-                 
+
                 //get header
                 while($dshrow=$dshresult->FetchRow())
                 {
@@ -1384,7 +1389,7 @@ foreach ($filters as $flt)
                 $statisticsoutput .= " />&nbsp;<strong>"
                 .showSpeaker($niceqtext." [".str_replace("'", "`", $row[1])."] - ".$clang->gT("Label").": ".$labeltitle)
                 ."</strong><br />\n";
-                 
+
                 /* get labels
                  * table "labels" contains
                  * - lid
@@ -1393,7 +1398,7 @@ foreach ($filters as $flt)
                  * - sortorder
                  * - language
                  */
-                 
+
                 $fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$flt[0]} AND language='{$language}' and scale_id=0 ORDER BY sortorder, code";
                 $fresult = db_execute_assoc($fquery);
 
@@ -1421,7 +1426,7 @@ foreach ($filters as $flt)
 
 
                 //----------------- LABEL 2 ---------------------
-                 
+
                 //myfield2 = answer code
                 $myfield2 = $myfield . "$row[0]#1";
 
@@ -1451,7 +1456,7 @@ foreach ($filters as $flt)
                 //check if there is a dualsclae_headerA/B
                 $dshquery2 = "SELECT value FROM ".db_table_name("question_attributes")." WHERE qid={$flt[0]} AND attribute='dualscale_headerB'";
                 $dshresult2 = db_execute_num($dshquery2) or safe_die ("Couldn't get dualscale header!<br />$dshquery2<br />".$connect->ErrorMsg());
-                 
+
                 //get header
                 while($dshrow2=$dshresult2->FetchRow())
                 {
@@ -1472,7 +1477,7 @@ foreach ($filters as $flt)
                 $statisticsoutput .= " />&nbsp;<strong>"
                 .showSpeaker($niceqtext." [".str_replace("'", "`", $row[1])."] - ".$clang->gT("Label").": ".$labeltitle2)
                 ."</strong><br />\n";
-                 
+
                 $fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$flt[0]} AND language='{$language}' and scale_id=1 ORDER BY sortorder, code";
                 $fresult = db_execute_assoc($fquery);
 
@@ -1543,10 +1548,10 @@ foreach ($filters as $flt)
             while ($row=$result->FetchRow())
             {
                 $statisticsoutput .= "\t\t\t\t\t\t<option value='{$row[0]}'";
-                 
+
                 //pre-check
                 if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {$statisticsoutput .= " selected";}
-                 
+
                 $statisticsoutput .= '>'.FlattenText($row[1])."</option>\n";
             }
 

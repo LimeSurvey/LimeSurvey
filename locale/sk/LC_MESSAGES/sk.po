@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Slovak Translation v0.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-07 07:00+0200\n"
-"PO-Revision-Date: 2011-11-17 17:00+0100\n"
+"PO-Revision-Date: 2011-11-28 18:29+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1836,7 +1836,7 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:661
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:662
 msgid "Check any that apply"
-msgstr "Môžete vybrať viacero možností. Vyberte všetky, ktoré odpovedajú skutočnosti."
+msgstr "Môžete vybrať viacero možností. Vyberte všetky, ktoré zodpovedajú skutočnosti."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1697
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
@@ -10504,7 +10504,7 @@ msgstr "Tento dotazník je anonymný."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2867
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
-msgstr "Záznam Vašich odpovedí v dotazníku neobsahuje žiadne identifikačné údaje o Vás, pokiaľ sa na ne nedotazovali konkrétne otázky v dotazníku. Pokiaľ ste odpovedal(a) na dotazník, ktorý používa identifikátor k povoleniu prístupu k dotazníku, uisťujeme Vás, že tento identifikátor nie je previazaný s odpoveďami v tomto dotazníku. V oddelenej databázi identifikátorov sa zobrazí iba to, či ste buď vyplnil(a), alebo nevyplnil(a) tento dotazník. Neexistuje spôsob, ako zpárovať identifikátor s odpoveďami v tomto dotazníku. "
+msgstr "Záznam Vašich odpovedí v dotazníku neobsahuje žiadne identifikačné údaje o Vás, pokiaľ sa na ne nedotazovali konkrétne otázky v dotazníku. Pokiaľ ste odpovedal(a) na dotazník, ktorý používa identifikátor k povoleniu prístupu k dotazníku, uisťujeme Vás, že tento identifikátor nie je previazaný s odpoveďami v tomto dotazníku. V oddelenej databáze identifikátorov sa zobrazí iba to, či ste buď vyplnil(a), alebo nevyplnil(a) tento dotazník. Neexistuje spôsob, ako spárovať identifikátor s odpoveďami v tomto dotazníku. "
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2871
 msgid "Exit and Clear Survey"

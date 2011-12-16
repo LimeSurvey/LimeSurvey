@@ -22,7 +22,6 @@ $surveyinfo=getSurveyInfo($surveyid);
 
 $js_admin_includes[]= $homeurl.'/scripts/assessments.js';
 $js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
-$js_admin_includes[]= $rooturl.'/scripts/jquery/jquery-ui.js';
 //                          . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/default/jquery-ui.css\" />\n";
 
 $assessmentlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -103,10 +102,10 @@ if ($action == "assessmentadd" && bHasSurveyPermission($surveyid, 'assessments',
 
 if (bHasSurveyPermission($surveyid, 'assessments','read'))
 {
-        
+
     $assessmentsoutput=PrepareEditorScript();
     $assessmentsoutput.="<script type=\"text/javascript\">
-                        <!-- 
+                        <!--
                             var strnogroup='".$clang->gT("There are no groups available.", "js")."';
                         --></script>\n";
     $assessmentsoutput.="<div class='menubar'>\n"
@@ -116,7 +115,7 @@ if (bHasSurveyPermission($surveyid, 'assessments','read'))
     $assessmentsoutput.= "\t</div>\n"
     . "\t<div class='menubar-main'>\n"
     . "<div class='menubar-left'>\n"
-    . "\t<a href=\"#\" onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" title='".$clang->gTview("Return to survey administration")."'>" 
+    . "\t<a href=\"#\" onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" title='".$clang->gTview("Return to survey administration")."'>"
     . "<img name='Administration' src='$imageurl/home.png' alt='".$clang->gT("Return to survey administration")."' /></a>\n"
 	. "\t<img src='$imageurl/blank.gif' alt='' width='11'  />\n"
 	. "\t<img src='$imageurl/seperator.gif' alt='' />\n";
@@ -186,9 +185,9 @@ if (bHasSurveyPermission($surveyid, 'assessments','read'))
                 <input type='image' src='$imageurl/token_edit.png' alt='".$clang->gT("Edit")."' />
                 <input type='hidden' name='action' value='assessmentedit' />
                 <input type='hidden' name='id' value='".$assess['id']."' />
-                </form>";            
+                </form>";
         }
-        
+
         if (bHasSurveyPermission($surveyid, 'assessments','delete'))
         {
             $assessmentsoutput.="<form method='post' action='$scriptname?sid=$surveyid'>
@@ -222,7 +221,7 @@ if (bHasSurveyPermission($surveyid, 'assessments','read'))
 
     if ((bHasSurveyPermission($surveyid, 'assessments','update') && $actionvalue=="assessmentupdate") || (bHasSurveyPermission($surveyid, 'assessments','create')&& $actionvalue=="assessmentadd"))
     {
-        
+
 	    //now present edit/insert form
 	    $assessmentsoutput.= "<br /><form method='post' class='form30' id='assessmentsform' name='assessmentsform' action='$scriptname?sid=$surveyid'><div class='header ui-widget-header'>\n";
 	    $assessmentsoutput.= "$actiontitle</div>\n";

@@ -32,7 +32,7 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($qid)) {$qid=returnglobal('qid');}
 if (!isset($gid)) {$gid=returnglobal('gid');}
 if (!isset($p_scenario)) {$p_scenario=returnglobal('scenario');}
-if (!isset($p_cqid)) 
+if (!isset($p_cqid))
 {
     $p_cqid=returnglobal('cqid');
     if ($p_cqid == '') $p_cqid=0; // we are not using another question as source of condition
@@ -59,7 +59,7 @@ if (!isset($p_canswers))
 // to explain wich conditions is used to evaluate the question
 if (isset($stringcomparizonoperators) && $stringcomparizonoperators == 1)
 {
-    $method = array(            
+    $method = array(
             "<"  => $clang->gT("Less than"),
             "<=" => $clang->gT("Less than or equal to"),
             "==" => $clang->gT("equals"),
@@ -75,7 +75,7 @@ if (isset($stringcomparizonoperators) && $stringcomparizonoperators == 1)
 }
 else
 {
-    $method = array(            
+    $method = array(
             "<"  => $clang->gT("Less than"),
             "<=" => $clang->gT("Less than or equal to"),
             "==" => $clang->gT("equals"),
@@ -234,6 +234,7 @@ if (isset($p_subaction) && $p_subaction == "insertcondition")
             $result = $connect->Execute($query) or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
         }
     }
+    LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
 }
 
 // UPDATE ENTRY IF THIS IS AN EDIT
@@ -296,32 +297,39 @@ if (isset($p_subaction) && $p_subaction == "updatecondition")
             $result = $connect->Execute($query) or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
         }
     }
+    LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
 }
 
 // DELETE ENTRY IF THIS IS DELETE
 if (isset($p_subaction) && $p_subaction == "delete")
 {
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
     $query = "DELETE FROM {$dbprefix}conditions WHERE cid={$p_cid}";
     $result = $connect->Execute($query) or safe_die ("Couldn't delete condition<br />$query<br />".$connect->ErrorMsg());
+    LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
 }
 
 // DELETE ALL CONDITIONS IN THIS SCENARIO
 if (isset($p_subaction) && $p_subaction == "deletescenario")
 {
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
     $query = "DELETE FROM {$dbprefix}conditions WHERE qid={$qid} AND scenario={$p_scenario}";
     $result = $connect->Execute($query) or safe_die ("Couldn't delete scenario<br />$query<br />".$connect->ErrorMsg());
+    LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
 }
 
 // UPDATE SCENARIO
 if (isset($p_subaction) && $p_subaction == "updatescenario" && isset($p_newscenarionum))
 {
     $query = "UPDATE {$dbprefix}conditions SET scenario=$p_newscenarionum WHERE qid={$qid} AND scenario={$p_scenario}";
-    $result = $connect->Execute($query) or safe_die ("Couldn't delete scenario<br />$query<br />".$connect->ErrorMsg());
+    $result = $connect->Execute($query) or safe_die ("Couldn't update scenario<br />$query<br />".$connect->ErrorMsg());
+    LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
 }
 
 // DELETE ALL CONDITIONS FOR THIS QUESTION
 if (isset($p_subaction) && $p_subaction == "deleteallconditions")
 {
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);
     $query = "DELETE FROM {$dbprefix}conditions WHERE qid={$qid}";
     $result = $connect->Execute($query) or safe_die ("Couldn't delete scenario<br />$query<br />".$connect->ErrorMsg());
 }
@@ -338,7 +346,7 @@ if (isset($p_subaction) && $p_subaction == "renumberscenarios")
         $result2 = $connect->Execute($query2) or safe_die ("Couldn't renumber scenario<br />$query<br />".$connect->ErrorMsg());
         $newindex++;
     }
-
+    LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
 }
 
 // COPY CONDITIONS IF THIS IS COPY
@@ -419,8 +427,8 @@ if (isset($p_subaction) && $p_subaction == "copyconditions")
             $CopyConditionsMessage = "<div class='warningheader'>(".$clang->gT("No conditions could be copied (due to duplicates)").")</div>";
         }
     }
-    
-        }
+    LimeExpressionManager::UpgradeConditionsToRelevance($surveyid); // do for whole survey, since don't know which questions affected.
+}
 //END PROCESS ACTIONS
 
 
@@ -709,27 +717,27 @@ if ($questionscount > 0)
             ." AND q.qid={$rows['qid']}
                AND sq.scale_id=0
                ORDER BY sq.question_order";
-            
+
             $y_axis_db = db_execute_assoc($fquery);
-            
-             // Get the X-Axis   
+
+             // Get the X-Axis
              $aquery = "SELECT sq.*
-                         FROM ".db_table_name('questions')." q, ".db_table_name('questions')." sq 
-                         WHERE q.sid=$surveyid 
+                         FROM ".db_table_name('questions')." q, ".db_table_name('questions')." sq
+                         WHERE q.sid=$surveyid
                          AND sq.parent_qid=q.qid
                          AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'
                          AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'
                          AND q.qid=".$rows['qid']."
                          AND sq.scale_id=1
                          ORDER BY sq.question_order";
-              
+
             $x_axis_db=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
 
             while ($frow=$x_axis_db->FetchRow())
             {
                 $x_axis[$frow['title']]=$frow['question'];
             }
-            
+
             while ($arows = $y_axis_db->FetchRow())
             {
                 foreach($x_axis as $key=>$val)
@@ -878,8 +886,8 @@ if ($questionscount > 0)
                 $shortanswer .= "[".$clang->gT("Single checkbox")."]";
                 $shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
                 $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], "+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']);
-                $canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], 'Y', 'checked');
-                $canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], '', 'not checked');
+                $canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], 'Y', $clang->gT("checked"));
+                $canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], '', $clang->gT("not checked"));
             }
         }
         elseif($rows['type'] == "X") //Boilerplate question
@@ -1082,13 +1090,10 @@ if (isset($canswers))
 {
     foreach($canswers as $can)
     {
-        $an=str_replace("'", "`", $can[2]);
-        $an=str_replace("\r", " ", $an);
-        $an=str_replace("\n", " ", $an);
-        $an=strip_tags($an);
+        $an=json_encode(FlattenText($can[2]));
         $conditionsoutput_main_content .= "Fieldnames[$jn]='$can[0]';\n"
         ."Codes[$jn]='$can[1]';\n"
-        ."Answers[$jn]='$an';\n";
+        ."Answers[$jn]={$an};\n";
         $jn++;
     }
 }
@@ -1931,7 +1936,6 @@ $subaction == "editthiscondition" || $subaction == "delete")
 
     $js_admin_includes[]= $homeurl.'/scripts/conditions.js';
     $js_admin_includes[]= $rooturl.'/scripts/jquery/lime-conditions-tabs.js';
-    $js_admin_includes[]= $rooturl.'/scripts/jquery/jquery-ui.js';
 
     if ($subaction == "editthiscondition" && isset($p_cid))
     {

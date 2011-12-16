@@ -21,7 +21,7 @@ sendcacheheaders();
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($column)) {$column=returnglobal('column');}
 if (!isset($order)) {$order=returnglobal('order');}
-if (!isset($sql)) {$sql=returnglobal('sql');}
+if (!isset($sql)) {$sql=$_SESSION['sql'];}
 
 if (!$surveyid)
 {
@@ -33,6 +33,8 @@ if (!$column)
     //NOCOLUMN
     exit;
 }
+$aColumnNames=$connect->MetaColumnNames("{$dbprefix}survey_{$surveyid}");
+if (!isset($aColumnNames[strtoupper($column)])) safe_die('Invalid column name');
 
 if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n' || $connect->databaseType == 'mssqlnative')
 { $query = "SELECT id, ".db_quote_id($column)." FROM {$dbprefix}survey_$surveyid WHERE (".db_quote_id($column)." NOT LIKE '')"; }
@@ -58,6 +60,10 @@ switch (incompleteAnsFilterstate()) {
 if ($order == "alpha")
 {
     $query .= " ORDER BY ".db_quote_id($column);
+}
+else
+{
+    $query .= " ORDER BY id";
 }
 
 $result=db_execute_assoc($query) or safe_die("Error with query: ".$query."<br />".$connect->ErrorMsg());

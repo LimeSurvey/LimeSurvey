@@ -4,16 +4,12 @@ $(document).ready(function(){
     setupAllTabs();
     if(typeof(userdateformat) !== 'undefined') 
     {
-        $(".popupdate").each(function(i,e) { 
-            format=$('#dateformat'+e.name).val();
-            if(!format) format = userdateformat;
-            $(e).datepicker({ dateFormat: format,  
+        $(".popupdate").datepicker({ dateFormat: userdateformat,  
                               showOn: 'button',
                               changeYear: true, 
                               changeMonth: true, 
                               duration: 'fast'
                             }, $.datepicker.regional[userlanguage]);
-        });
         $(".popupdatetime").datepicker({ dateFormat: userdateformat+' 00:00',  
                               showOn: 'button',
                               changeYear: true, 
@@ -38,7 +34,7 @@ $(document).ready(function(){
         if($(this).attr('alt') != '')
         {
              $(this).qtip({
-               style: {name: 'cream',
+               style: { name: 'cream',
                         tip:true, 
                         color:'#1D2D45', 
                         border: {
@@ -46,40 +42,23 @@ $(document).ready(function(){
                              radius: 5,
                              color: '#EADF95'}
                        },  
-               position: {adjust: { 
-                        screen: true, scroll:true},
+               position: { adjust: { 
+                        screen: true, scroll:true },
                         corner: {
                                 target: 'bottomRight'}
                         },
-               show: {effect: {length:50}},
- 			   hide: {when: 'mouseout'},
- 			   api: {onRender: function() {$(this.options.hide.when.target).bind('click', this.hide);}}
-
+               show: {effect: { length:50}},
+ 			   hide: { when: 'mouseout' }
                });
         }
     });    
 
-    $(".progressbar").each(function(){
-        var pValue = parseInt($(this).attr('name'));
-    
-        $(this).progressbar({
-                            value: pValue
-        });
-
-        if (pValue > 85){
-            $("div",$(this)).css({ 'background': 'Red' });
-        }
-	
-	$("div",this).html(pValue + "%");
-    });
-    
-    
     
     $('label[title]').each(function() {
         if($(this).attr('title') != '')
         {
              $(this).qtip({
-               style: {name: 'cream',
+               style: { name: 'cream',
                         tip:true, 
                         color:'#1D2D45', 
                         border: {
@@ -87,12 +66,12 @@ $(document).ready(function(){
                              radius: 5,
                              color: '#EADF95'}
                        },  
-               position: {adjust: { 
-                        screen: true, scroll:true},
+               position: { adjust: { 
+                        screen: true, scroll:true },
                         corner: {
                                 target: 'bottomRight'}
                         },
-               show: {effect: {length:50}}
+               show: {effect: { length:50}}
                });
         }
     });    
@@ -101,7 +80,7 @@ $(document).ready(function(){
         content:{
                 text:$('#dosurveylangpopup')
         },
-        style: {name: 'cream',
+        style: { name: 'cream',
                         tip:true, 
                 color:'#1D2D45', 
                 border: {
@@ -109,13 +88,13 @@ $(document).ready(function(){
                      radius: 5,
                      color: '#EADF95'}
                },  
-        position: {adjust: { 
-                screen: true, scroll:true},
+        position: { adjust: { 
+                screen: true, scroll:true },
                 corner: {
                         target: 'bottomMiddle',
                         tooltip: 'topMiddle'}
                 },
-        show: {effect: {length:50},
+        show: {effect: { length:50},
                when: {
                    event:'click'
                }},
@@ -129,7 +108,7 @@ $(document).ready(function(){
         content:{
                 text:$('#previewquestionpopup')
         },
-        style: {name: 'cream',
+        style: { name: 'cream',
                         tip:true, 
                 color:'#111111', 
                 border: {
@@ -137,13 +116,13 @@ $(document).ready(function(){
                      radius: 5,
                      color: '#EADF95'}
                },  
-        position: {adjust: { 
-                screen: true, scroll:true},
+        position: { adjust: { 
+                screen: true, scroll:true },
                 corner: {
                         target: 'bottomMiddle',
                         tooltip: 'topMiddle'}
                 },
-        show: {effect: {length:50},
+        show: {effect: { length:50},
                when: {
                    event:'click'
                }},
@@ -157,7 +136,7 @@ $(document).ready(function(){
         if($(this).attr('alt') != '')
         {
              $(this).qtip({
-               style: {name: 'cream',
+               style: { name: 'cream',
                         tip:true, 
                         color:'#111111', 
                         border: {
@@ -165,14 +144,14 @@ $(document).ready(function(){
                              radius: 5,
                              color: '#EADF95'}
                        },  
-               position: {adjust: { 
-                        screen: true, scroll:true},
+               position: { adjust: { 
+                        screen: true, scroll:true },
                         corner: {
                                 target: 'topRight',
                                 tooltip: 'bottomLeft'
                         }
                         },
-               show: {effect: {length:100}}
+               show: {effect: { length:100}}
 
                });
         }
@@ -252,13 +231,13 @@ $(document).ready(function(){
             survey_id : survey_id
        }, function (data){
 	
-           var objToUpdate = $($(oldThis).parent());
+	    var objToUpdate = $($(oldThis).parent());
 	    
-           if (data.record_count>0)
+	    if (data.record_count>0)
                $(objToUpdate).html(data.newowner);
-           else
+	    else
                $(objToUpdate).html(old_owner);
-
+	       
 	    $(objToUpdate).html($(objToUpdate).html() + '(<a id="ownername_edit_69173" translate_to='+translate_to+' class="ownername_edit" href="#">'+initial_text+'</a>)' );
        });
     });
@@ -269,7 +248,7 @@ $(document).ready(function(){
         $("#question_type").change(function(event){
            var selected_value = qDescToCode[''+$("#question_type_child .selected").text()];
            OtherSelection(selected_value);
-	});
+	    });
     }
     
     
@@ -278,34 +257,34 @@ $(document).ready(function(){
 
 function qTypeDropdownInit()
 {
-            $("#question_type_child a").each(function(index,element){
+    $("#question_type_child a").each(function(index,element){
 
-                $(element).qtip({
-                       style: {
-                                    'margin' : '15px',
-                                    'width': '450px',
-                                    'height':'auto',
-                                    'border':{
-                                            width: 4,
-                                            radius: 2
-                                    }
-                            },
-                       content: getToolTip($(element).text()),
-                       position: {
-                                    corner:{
-                                            target: 'leftMiddle',
-                                            tooltip:'rightMiddle'
-                                    }
-                            },
-                       show: 'mouseover',
-                       hide: 'mouseout'
-                });
+        $(element).qtip({
+               style: {
+                            'margin' : '15px',
+                            'width': '450px',
+                            'height':'auto',
+                            'border':{
+                                    width: 4,
+                                    radius: 2
+                            }
+                    },
+               content: getToolTip($(element).text()),
+               position: {
+                            corner:{
+                                    target: 'leftMiddle',
+                                    tooltip:'rightMiddle'
+                            }
+                    },
+               show: 'mouseover',
+               hide: 'mouseout'
+        });
 
-            });
-    }
-    
-    
-    
+    });       
+}
+
+
+
 
 var aToolTipData = {
 
@@ -349,7 +328,7 @@ function updatequestionattributes()
             // Loads the tooltips for the toolbars
            $('.loader').hide();
             $('label[title]').qtip({
-               style: {name: 'cream', 
+               style: { name: 'cream', 
                          tip: true, 
                        color:'#111111', 
                       border: {
@@ -357,12 +336,12 @@ function updatequestionattributes()
                              radius: 5,
                              color: '#EADF95'}
                        },  
-               position: {adjust: { 
-                        screen: true, scroll:true},
+               position: { adjust: { 
+                        screen: true, scroll:true },
                         corner: {
                                 target: 'bottomRight'}
                         },
-               show: {effect: {length:50}}
+               show: {effect: { length:50}}
             });}                                                                                        
     );  
 }
@@ -423,7 +402,7 @@ function arrHasDupes( A ) {                          // finds any duplicate arra
 	for (i=0; i<n; i++) {                        // outer loop uses each item i at 0 through n
 		for (j=i+1; j<n; j++) {              // inner loop only compares items j at i+1 to n
 			if (A[i]==A[j]) return true;
-	}}
+	}	}
 	return false;
 }
 
@@ -621,7 +600,7 @@ function checklangs(mylangs)
 				break;
 			}
 		}
-		if (found == 0) {return false;}
+		if (found == 0) { return false; }
 	}
 	return true;
 }
@@ -640,7 +619,7 @@ String.prototype.splitCSV = function(sep) {
         foo.splice(x - 1, 2, [foo[x - 1], foo[x]].join(sep));
       } else foo = foo.shift().split(sep).concat(foo);
     } else foo[x].replace(/""/g, '"');
-  }return foo;
+  } return foo;
 };
 
 // This is a helper function to extract the question ID from a DOM ID element 
@@ -661,75 +640,5 @@ function htmlspecialchars(str) {
 }
 
 
-function saveaslabelset()
-{
-    var lang = langs.split(";");
-    
 
-    dataToSend = {};
-    dataToSend['langs'] = lang;
-    dataToSend['codelist'] = [];
-    $(".answertable:first tbody tr").each(function(i,e){
-        code = $(".code",e).attr('id');
-        code = code.split("_");
-        code = code[1];
-
-        dataToSend['codelist'].push(code);
-        var assessment_val = '0';
-        if ($("#assessment_"+code+"_0").length != 0 ){
-            assessment_val = $("#assessment_"+code+"_0").val();
-        }
-        dataToSend[code] =  {
-            code: $("#code_"+code+"_0").val(),
-            assessmentvalue: assessment_val
-        };
-        $(lang).each(function(index,element){
-            dataToSend[code]['text_'+element] = $("#answer_"+element+"_"+code+"_0").val();
-            
-        });
-    });
-
-    var label_name = prompt("Enter new label name", "");
-    
-    var data = {
-        action: 'ajaxmodlabelsetanswers',
-        lid:'1',
-        dataToSend:js2php(dataToSend),
-        ajax:'1',
-        label_name:label_name,
-        languageids: dataToSend['langs'].join(" "),
-        checksessionbypost: $("[name=checksessionbypost]").val()
-    }
-
-    $.ajax({
-      type: 'POST',
-      url: 'admin.php',
-      data: data,
-      success: function(){
-          alert("Label successfully created");
-      }
-    });
-}
-
-
-function js2php(object){
-    var json = "{";
-    for (property in object){
-        var value = object[property];
-        if (typeof(value)=="string"){
-            json += '"'+property+'":"'+value+'",'
-        }
-        else{
-            if (!value[0]){
-                json += '"'+property + '":'+js2php(value)+',';
-            }
-            else{
-                json += '"' + property + '":[';
-                for (prop in value) json += '"'+value[prop]+'",';
-                json = json.substr(0,json.length-1)+"],";
-            }
-        }
-    }
-    return json.substr(0,json.length-1)+ "}";
-}
 

@@ -44,16 +44,19 @@ $databasepersistent =   false;	       // If you want to enable persistent databa
 
 // FILE LOCATIONS
 
-$rooturl            =   "http://{$_SERVER['HTTP_HOST']}/limesurvey"; //The root web url for your limesurvey installation.
+// File Locations
+if (isset($cmd_install) && $cmd_install) {
+    $rooturl            =   "http://localhost/limesurvey"; // A safe Root URL if we're doing a cmd_install
+} else {
+    $rooturl            =   "http://{$_SERVER['HTTP_HOST']}/limesurvey"; // The root web url for your limesurvey installation (without a trailing slash).
+    // The double quotes (") are important.
+    $cmd_install = false;
+}
 
 $rootdir            =   dirname(__FILE__); // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this setting.
 // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir="C:\Inetpub\wwwroot\limesurvey"!
 // Some IIS installations also require to use forward slashes instead of backslashes, e.g.  $rootDir="C:/Inetpub/wwwroot/limesurvey"!
 // If you use OS/2 this must be the complete rootdir with FORWARD slashes e.g.: $rootDir="c:/limesurvey";!
-
-$rootsymlinked      =   0;  // if your root document dir is symlinked LimeSurvey might have problems to find out the dir
-// If you notice that labels are not being translated like "_ADMINISTRATION_" instead of "Administration"
-// then try setting this to 1 .
 
 // Site Info
 $sitename           =   'LimeSurvey';     // The official name of the site (appears in the Window title)
@@ -64,7 +67,7 @@ $defaultpass        =   'password';       // This is the default password for th
 
 // If the user enters password incorrectly
 $maxLoginAttempt    =   3;                // Lock them out after 3 attempts
-$timeOutTime        =   60 * 30;          // Lock them out for 30 minutes.
+$timeOutTime        =   60 * 10;          // Lock them out for 10 minutes.
 
 // Site Settings
 $lwcdropdowns       =   'R';              // SHOW LISTS WITH COMMENT in Public Survey as Radio Buttons (R) or Dropdown List (L)
@@ -100,9 +103,9 @@ $showpopups         =   1;                // Show popup messages if mandatory or
 
 // $sessionlifetime sets how long until a survey session expires in seconds
 $sessionlifetime    =  3600;
-// $sessionhandler can be either 'file' or 'db'. (default: 'file'). 
-// Generally you don't want to change that unless you are using LimeSurvey on load-balanced servers   
-$sessionhandler     =  'file';   
+// $sessionhandler can be either 'file' or 'db'. (default: 'file').
+// Generally you don't want to change that unless you are using LimeSurvey on load-balanced servers
+$sessionhandler     =  'file';
 
 
 
@@ -126,7 +129,7 @@ $emailsmtpuser      = '';               // SMTP authorisation username - only se
 $emailsmtppassword  = '';               // SMTP authorisation password - empty password is not allowed
 $emailsmtpssl       = '';               // Set this to 'ssl' or 'tls' to use SSL/TLS for SMTP connection
 
-$emailsmtpdebug     = 0;                // Settings this to 1 activates SMTP debug mode
+$emailsmtpdebug     = 0;                // Settings this to 1 activates SMTP debug mode on errors, set to 2 to always show SMTP debug information
 
 $maxemails          = 50;               // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 
@@ -366,13 +369,13 @@ $standard_templates_readonly =  true;
 
 /**
  * When this settings is true/1 (default = false/0) then the printable survey option will show a reference
- * to the "lime_survey_12345" table which stores the survey answers. 
+ * to the "lime_survey_12345" table which stores the survey answers.
  * It will show a code like "12345X22X333name":
  * 12345 = surveyID
  * 22 = groupID
  * 333 = questionID
  * name = answer code (only shown for certain question types
- * 
+ *
  * This code will be shown in front of each question and in front of each answer option at the printable survey.
  * It can be used as a data analysis code book for querying data from the main response table.
  */
@@ -497,7 +500,7 @@ $showqnumcode = 'choose';
  * to the http part of your normal LimeSurvey URL.
  *	e.g. https://your.domain.org/limesurvey/admin/admin.php
  * If LimeSurvey comes up as normal, then everything is fine. If you
- * get a page not found error or permission denied error then 
+ * get a page not found error or permission denied error then
  */
 $force_ssl = ''; // DO not turn on unless you are sure your server supports SSL/HTTPS
 
@@ -508,7 +511,7 @@ $force_ssl = ''; // DO not turn on unless you are sure your server supports SSL/
  * server doesn't have HTTPS enabled, the only way to turn it off is
  * by changing a value in the database directly. This allows you to
  * force HTTPS off while you change the global settings for Force Secure.
- * 
+ *
  *     false = do nothing;
  *     true = override $force_ssl=on;
  *
@@ -518,9 +521,10 @@ $force_ssl = ''; // DO not turn on unless you are sure your server supports SSL/
 $ssl_emergency_override = false;
 
 
-// Get your IP Info DB key from http://ipinfodb.com/
-// If you have the API key, you can use it to get the approximate location of the user initially.
-
+/**
+*  @var $ipInfoDbAPIKey Get your IP Info DB key from http://ipinfodb.com/
+*  If you have the API key, you can use it to get the initial approximate location of the participant.
+*/
 $ipInfoDbAPIKey = '';
 
 // Google Maps API key. http://code.google.com/apis/maps/signup.html
@@ -528,12 +532,20 @@ $ipInfoDbAPIKey = '';
 
 $googleMapsAPIKey = '';
 
+/**
+* This variable defines the total space available to the file upload question across all surveys. If set to 0 then no limit applies.
+*
+* @var $iFileUploadTotalSpaceMB  Integer number to determine the available space in MB - Default: 0
+*
+*/
+$iFileUploadTotalSpaceMB=0;
+
 //DO NOT EVER CHANGE THE FOLLOWING 5 LINES ---------------
 require_once(dirname(__FILE__).'/config.php');
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']!='' && $_SERVER['HTTPS']!='off')
 {
        $rooturl=str_replace('http://', 'https://', $rooturl);
-}  
+}
 //-----------------------------------------------------
 
 // === Advanced Setup
@@ -563,7 +575,7 @@ $tempdir                 = "$rootdir".DIRECTORY_SEPARATOR."tmp";         // The 
 $imagedir                = "$rootdir".DIRECTORY_SEPARATOR."images";      // The directory path of the image directory
 $uploaddir               = "$rootdir".DIRECTORY_SEPARATOR."upload";
 $standardtemplaterootdir = "$rootdir".DIRECTORY_SEPARATOR."templates";   // The directory path of the standard templates
-$usertemplaterootdir     = "$uploaddir".DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates           
+$usertemplaterootdir     = "$uploaddir".DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates
 
 $sCKEditorURL   =   "$homeurl/scripts/ckeditor.36";
 $ckeditexpandtoolbar   =   true; // defines if the CKeditor toolbar should be opened by default

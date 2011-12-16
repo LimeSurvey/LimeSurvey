@@ -1,9 +1,9 @@
 <?php
 
-require_once('tcpdf.php');
+    require_once('tcpdf.php');
 
-class MyPDF extends TCPDF
-{
+    class MyPDF extends TCPDF
+    {
     function MyPDF($orientation='P', $unit='mm', $format='A4')
     {
         parent::__construct($orientation,$unit,$format);
@@ -119,7 +119,7 @@ class MyPDF extends TCPDF
             else{$fill=0;}
             for($b=0;$b<sizeof($array[$a]);$b++)
             {
-                 
+
                 $this->Cell($maxwidth,4,$this->delete_html($array[$a][$b]),0,0,'L',$fill);
 
             }
@@ -183,15 +183,21 @@ class MyPDF extends TCPDF
             else{$fill=0;}
             for($b=0;$b<sizeof($array[$a]);$b++)
             {
+                    $bEndOfCell=0;
+                    if ($b==sizeof($array[$a])-1)
+                    {
+                        $bEndOfCell=1;
+                    }
+
                 if($a==0)
                 {
                     $oldStyle = $this->FontStyle;
                     $this->SetFont($this->FontFamily, 'B', $this->FontSizePt);
-                    
+
                     if ($maxwidth[$b] > 140) $maxwidth[$b]=130;
                     if ($maxwidth[$b] < 20) $maxwidth[$b]=20;
-                    $this->MultiCell($maxwidth[$b],6,$this->delete_html($array[$a][$b]),0,'L',1,0);
-                    
+                        $this->MultiCell($maxwidth[$b],6,$this->delete_html($array[$a][$b]),0,'L',1,$bEndOfCell);
+
                     $this->SetFont($this->FontFamily, $oldStyle, $this->FontSizePt);
                 }
                 else
@@ -205,16 +211,15 @@ class MyPDF extends TCPDF
                     if ($maxwidth[$b] > 140) $maxwidth[$b]=130;
                     if ($b==0)
                     {
-                        $iLines=$this->MultiCell($maxwidth[$b],6,$this->delete_html($array[$a][$b]),0,'L',$fill,0); 
+                            $iLines=$this->MultiCell($maxwidth[$b],6,$this->delete_html($array[$a][$b]),0,'L',$fill,$bEndOfCell);
                 }
                     else
                     {
-                       $this->MultiCell($maxwidth[$b],$iLines,$this->delete_html($array[$a][$b]),0,'L',$fill,0);   
+                            $this->MultiCell($maxwidth[$b],$iLines,$this->delete_html($array[$a][$b]),0,'L',$fill,$bEndOfCell);
             }
 
                 }
             }
-            $this->ln();
         }
         $this->ln(5);
     }
@@ -275,7 +280,7 @@ class MyPDF extends TCPDF
         $maxlength = array();
         $width = array();
         $width = $this->getminwidth($array);
-         
+
         $margins = $this->getMargins();
         $deadSpace = $margins['left']+$margins['right'];
         $fullWidth = ($this->GetLineWidth()*1000)-$deadSpace;
@@ -327,6 +332,6 @@ class MyPDF extends TCPDF
         $text = html_entity_decode($text);
         return strip_tags($text);
     }
-    
-}
+
+    }
 ?>

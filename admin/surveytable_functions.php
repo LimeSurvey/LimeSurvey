@@ -102,6 +102,8 @@ function surveyFixQuestionNumbering($qid)
 {
     global $dbprefix, $connect;
     //Fix a question id - requires renumbering a question
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);
+
     $oldqid = $_GET['fixnumbering'];
     $query = "SELECT qid FROM {$dbprefix}questions ORDER BY qid DESC";
     $result = db_select_limit_assoc($query, 1) or safe_die($query."<br />".$connect->ErrorMsg());
@@ -142,6 +144,8 @@ function surveyFixQuestionNumbering($qid)
     //Now answers
     $query = "UPDATE {$dbprefix}answers SET qid=$newqid WHERE qid=$oldqid";
     $result = $connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());
+    
+    LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
 }
 
 /**

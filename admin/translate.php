@@ -25,7 +25,6 @@
 
 
 //  $js_admin_includes[]= $homeurl.'/scripts/translation.js';
-//  $js_admin_includes[]= $rooturl.'/scripts/jquery/jquery-ui.js';
 
   // TODO need to do some validation here on surveyid
 
@@ -58,7 +57,7 @@
 
   $baselangdesc = $supportedLanguages[$baselang]['description'];
   if($tolang != "")
-  {  
+  {
     $tolangdesc = $supportedLanguages[$tolang]['description'];
   }
 
@@ -71,7 +70,7 @@
   $translateoutput .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>\n"; //CSS Firefox 2 transition fix
 
   $translateoutput .= "<div class='header ui-widget-header'>".$clang->gT("Translate survey")."</div>\n";
-  
+
 //  $tab_names=array("title", "description", "welcome", "end", "group", "group_desc", "question", "question_help", "answer");
 //  $tab_names=array("title", "description", "invitation", "reminder");
   $tab_names=array("title", "welcome", "group", "question", "subquestion", "answer", "emailinvite", "emailreminder", "emailconfirmation", "emailregistration");
@@ -89,7 +88,7 @@
       if ($type2 != "")
       {
         $tab_names_full[] = $type2;
-      }  
+      }
     }
     foreach($tab_names_full as $type)
     {

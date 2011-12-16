@@ -5,9 +5,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-13 12:00+0200\n"
-"PO-Revision-Date: 2011-10-14 11:56+0100\n"
-"Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
+"POT-Creation-Date: 2011-11-21 12:00+0100\n"
+"PO-Revision-Date: 2011-11-21 16:22+0100\n"
+"Last-Translator: Martin Janeček <ower95@gmail.com>\n"
 "Language-Team: LimeSurvey Team <lukas.slansky@upce.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,8 +23,8 @@ msgstr ""
 #: /tmp/translationstatus/register.php:72
 #: /tmp/translationstatus/save.php:310
 #: /tmp/translationstatus/index.php:635
-#: /tmp/translationstatus/index.php:2332
-#: /tmp/translationstatus/index.php:2554
+#: /tmp/translationstatus/index.php:2276
+#: /tmp/translationstatus/index.php:2498
 msgid "The answer to the security question is incorrect."
 msgstr "Odpověď na bezpečnostní otázku není správná."
 
@@ -49,17 +49,16 @@ msgid "Survey Administrator"
 msgstr "Administrátor průzkumu"
 
 #: /tmp/translationstatus/delete.php:86
-#, fuzzy, php-format
+#, php-format
 msgid "File %s deleted"
-msgstr "Smazán soubor: %s"
+msgstr "Soubor %s smazán."
 
 #: /tmp/translationstatus/delete.php:89
-#, fuzzy
 msgid "Oops, There was an error deleting the file"
-msgstr "Při načtení souboru se vyskytla chyba."
+msgstr "Hups, Při mazání souboru se vyskytla chyba"
 
 #: /tmp/translationstatus/common.php:278
-#: /tmp/translationstatus/admin/tokens.php:544
+#: /tmp/translationstatus/admin/tokens.php:553
 #: /tmp/translationstatus/admin/update/updater.php:612
 msgid "Back to main menu"
 msgstr "Zpět ke globálnímu nastavení"
@@ -100,7 +99,7 @@ msgstr "Generuji souhrny..."
 #: /tmp/translationstatus/admin/browse.php:140
 #: /tmp/translationstatus/admin/browse.php:141
 #: /tmp/translationstatus/admin/browse.php:479
-#: /tmp/translationstatus/admin/tokens.php:733
+#: /tmp/translationstatus/admin/tokens.php:742
 #: /tmp/translationstatus/admin/dataentry.php:456
 #: /tmp/translationstatus/admin/quota.php:484
 #: /tmp/translationstatus/admin/quota.php:660
@@ -124,8 +123,8 @@ msgstr "V seznamu vlevo klikněte na položku, kterou dáváte na první místo 
 #: /tmp/translationstatus/qanda.php:640
 #: /tmp/translationstatus/qanda.php:682
 #: /tmp/translationstatus/qanda.php:683
-#: /tmp/translationstatus/admin/printablesurvey.php:1439
-#: /tmp/translationstatus/admin/printablesurvey.php:1440
+#: /tmp/translationstatus/admin/printablesurvey.php:1441
+#: /tmp/translationstatus/admin/printablesurvey.php:1442
 msgid "Check any that apply"
 msgstr "Můžete vybrat více možností. Vyberte všechny, které odpovídají skutečnosti."
 
@@ -164,8 +163,8 @@ msgstr "V této otázce musí být načteno nejméně %d souborů ."
 
 #: /tmp/translationstatus/qanda.php:784
 #: /tmp/translationstatus/qanda.php:785
-#: /tmp/translationstatus/admin/printablesurvey.php:798
 #: /tmp/translationstatus/admin/printablesurvey.php:800
+#: /tmp/translationstatus/admin/printablesurvey.php:802
 #: /tmp/translationstatus/admin/templates.php:531
 #: /tmp/translationstatus/admin/templates.php:664
 msgid "*"
@@ -192,11 +191,11 @@ msgid "Please check at least one item."
 msgstr "Prosím zaškrtněte alespoň jednu položku."
 
 #: /tmp/translationstatus/qanda.php:912
-#: /tmp/translationstatus/qanda.php:2026
-#: /tmp/translationstatus/qanda.php:2326
-#: /tmp/translationstatus/qanda.php:2985
-#: /tmp/translationstatus/qanda.php:3471
-#: /tmp/translationstatus/admin/printablesurvey.php:1091
+#: /tmp/translationstatus/qanda.php:2029
+#: /tmp/translationstatus/qanda.php:2329
+#: /tmp/translationstatus/qanda.php:2988
+#: /tmp/translationstatus/qanda.php:3474
+#: /tmp/translationstatus/admin/printablesurvey.php:1093
 msgid "Other:"
 msgstr "Jiné:"
 
@@ -264,44 +263,44 @@ msgid "seconds"
 msgstr "vteřin"
 
 #: /tmp/translationstatus/qanda.php:1660
-#: /tmp/translationstatus/qanda.php:2153
-#: /tmp/translationstatus/qanda.php:2463
-#: /tmp/translationstatus/qanda.php:2603
-#: /tmp/translationstatus/qanda.php:2666
-#: /tmp/translationstatus/qanda.php:5076
-#: /tmp/translationstatus/qanda.php:5144
-#: /tmp/translationstatus/qanda.php:5241
-#: /tmp/translationstatus/qanda.php:5305
-#: /tmp/translationstatus/qanda.php:5400
-#: /tmp/translationstatus/qanda.php:5448
-#: /tmp/translationstatus/qanda.php:5532
-#: /tmp/translationstatus/qanda.php:5604
-#: /tmp/translationstatus/qanda.php:5694
-#: /tmp/translationstatus/qanda.php:5773
-#: /tmp/translationstatus/qanda.php:5880
-#: /tmp/translationstatus/qanda.php:5902
-#: /tmp/translationstatus/qanda.php:5975
-#: /tmp/translationstatus/qanda.php:6108
-#: /tmp/translationstatus/qanda.php:6854
-#: /tmp/translationstatus/qanda.php:6855
-#: /tmp/translationstatus/qanda.php:7146
-#: /tmp/translationstatus/qanda.php:7221
-#: /tmp/translationstatus/qanda.php:7326
-#: /tmp/translationstatus/qanda.php:7528
-#: /tmp/translationstatus/qanda.php:7582
+#: /tmp/translationstatus/qanda.php:2156
+#: /tmp/translationstatus/qanda.php:2466
+#: /tmp/translationstatus/qanda.php:2606
+#: /tmp/translationstatus/qanda.php:2669
+#: /tmp/translationstatus/qanda.php:5079
+#: /tmp/translationstatus/qanda.php:5147
+#: /tmp/translationstatus/qanda.php:5244
+#: /tmp/translationstatus/qanda.php:5308
+#: /tmp/translationstatus/qanda.php:5403
+#: /tmp/translationstatus/qanda.php:5451
+#: /tmp/translationstatus/qanda.php:5535
+#: /tmp/translationstatus/qanda.php:5607
+#: /tmp/translationstatus/qanda.php:5697
+#: /tmp/translationstatus/qanda.php:5776
+#: /tmp/translationstatus/qanda.php:5883
+#: /tmp/translationstatus/qanda.php:5905
+#: /tmp/translationstatus/qanda.php:5978
+#: /tmp/translationstatus/qanda.php:6111
+#: /tmp/translationstatus/qanda.php:6857
+#: /tmp/translationstatus/qanda.php:6858
+#: /tmp/translationstatus/qanda.php:7149
+#: /tmp/translationstatus/qanda.php:7224
+#: /tmp/translationstatus/qanda.php:7329
+#: /tmp/translationstatus/qanda.php:7531
+#: /tmp/translationstatus/qanda.php:7585
 #: /tmp/translationstatus/common_functions.php:1892
 #: /tmp/translationstatus/common_functions.php:1900
-#: /tmp/translationstatus/common_functions.php:5963
-#: /tmp/translationstatus/common_functions.php:5968
+#: /tmp/translationstatus/common_functions.php:5962
+#: /tmp/translationstatus/common_functions.php:5967
 #: /tmp/translationstatus/admin/statistics_function.php:754
 #: /tmp/translationstatus/admin/statistics_function.php:813
 #: /tmp/translationstatus/admin/statistics_function.php:1854
 #: /tmp/translationstatus/admin/statistics_function.php:2057
-#: /tmp/translationstatus/admin/statistics_function.php:2526
-#: /tmp/translationstatus/admin/statistics_function.php:2540
-#: /tmp/translationstatus/admin/statistics_function.php:2601
-#: /tmp/translationstatus/admin/statistics_function.php:2664
-#: /tmp/translationstatus/admin/statistics_function.php:2731
+#: /tmp/translationstatus/admin/statistics_function.php:2525
+#: /tmp/translationstatus/admin/statistics_function.php:2539
+#: /tmp/translationstatus/admin/statistics_function.php:2600
+#: /tmp/translationstatus/admin/statistics_function.php:2663
+#: /tmp/translationstatus/admin/statistics_function.php:2730
 #: /tmp/translationstatus/admin/results.php:224
 #: /tmp/translationstatus/admin/results.php:228
 #: /tmp/translationstatus/admin/results.php:239
@@ -328,113 +327,113 @@ msgstr "vteřin"
 msgid "No answer"
 msgstr "Bez odpovědi"
 
-#: /tmp/translationstatus/qanda.php:1790
+#: /tmp/translationstatus/qanda.php:1793
 msgid "Day"
 msgstr "Den"
 
-#: /tmp/translationstatus/qanda.php:1807
+#: /tmp/translationstatus/qanda.php:1810
 msgid "Month"
 msgstr "Měsíc"
 
-#: /tmp/translationstatus/qanda.php:1809
+#: /tmp/translationstatus/qanda.php:1812
 msgid "Jan"
 msgstr "Led"
 
-#: /tmp/translationstatus/qanda.php:1810
+#: /tmp/translationstatus/qanda.php:1813
 msgid "Feb"
 msgstr "Úno"
 
-#: /tmp/translationstatus/qanda.php:1811
+#: /tmp/translationstatus/qanda.php:1814
 msgid "Mar"
 msgstr "Bře"
 
-#: /tmp/translationstatus/qanda.php:1812
+#: /tmp/translationstatus/qanda.php:1815
 msgid "Apr"
 msgstr "Dub"
 
-#: /tmp/translationstatus/qanda.php:1813
+#: /tmp/translationstatus/qanda.php:1816
 msgid "May"
 msgstr "Kvě"
 
-#: /tmp/translationstatus/qanda.php:1814
+#: /tmp/translationstatus/qanda.php:1817
 msgid "Jun"
 msgstr "Čer"
 
-#: /tmp/translationstatus/qanda.php:1815
+#: /tmp/translationstatus/qanda.php:1818
 msgid "Jul"
 msgstr "Čec"
 
-#: /tmp/translationstatus/qanda.php:1816
+#: /tmp/translationstatus/qanda.php:1819
 msgid "Aug"
 msgstr "Srp"
 
-#: /tmp/translationstatus/qanda.php:1817
+#: /tmp/translationstatus/qanda.php:1820
 msgid "Sep"
 msgstr "Zář"
 
-#: /tmp/translationstatus/qanda.php:1818
+#: /tmp/translationstatus/qanda.php:1821
 msgid "Oct"
 msgstr "Říj"
 
-#: /tmp/translationstatus/qanda.php:1819
+#: /tmp/translationstatus/qanda.php:1822
 msgid "Nov"
 msgstr "Lis"
 
-#: /tmp/translationstatus/qanda.php:1820
+#: /tmp/translationstatus/qanda.php:1823
 msgid "Dec"
 msgstr "Pro"
 
-#: /tmp/translationstatus/qanda.php:1837
+#: /tmp/translationstatus/qanda.php:1840
 msgid "Year"
 msgstr "Rok"
 
-#: /tmp/translationstatus/qanda.php:1901
-#: /tmp/translationstatus/qanda.php:4654
-#: /tmp/translationstatus/qanda.php:4934
-#: /tmp/translationstatus/qanda.php:5013
+#: /tmp/translationstatus/qanda.php:1904
+#: /tmp/translationstatus/qanda.php:4657
+#: /tmp/translationstatus/qanda.php:4937
+#: /tmp/translationstatus/qanda.php:5016
 #: /tmp/translationstatus/admin/statistics_function.php:753
 #: /tmp/translationstatus/admin/statistics_function.php:812
 #: /tmp/translationstatus/admin/statistics_function.php:2083
-#: /tmp/translationstatus/admin/statistics_function.php:2119
-#: /tmp/translationstatus/admin/statistics_function.php:2122
-#: /tmp/translationstatus/admin/statistics_function.php:2131
-#: /tmp/translationstatus/admin/statistics_function.php:2136
-#: /tmp/translationstatus/admin/statistics_function.php:2161
-#: /tmp/translationstatus/admin/statistics_function.php:2164
-#: /tmp/translationstatus/admin/statistics_function.php:2173
-#: /tmp/translationstatus/admin/statistics_function.php:2178
-#: /tmp/translationstatus/admin/statistics_function.php:2262
-#: /tmp/translationstatus/admin/statistics_function.php:2265
-#: /tmp/translationstatus/admin/statistics_function.php:2273
-#: /tmp/translationstatus/admin/statistics_function.php:2278
+#: /tmp/translationstatus/admin/statistics_function.php:2118
+#: /tmp/translationstatus/admin/statistics_function.php:2121
+#: /tmp/translationstatus/admin/statistics_function.php:2130
+#: /tmp/translationstatus/admin/statistics_function.php:2135
+#: /tmp/translationstatus/admin/statistics_function.php:2160
+#: /tmp/translationstatus/admin/statistics_function.php:2163
+#: /tmp/translationstatus/admin/statistics_function.php:2172
+#: /tmp/translationstatus/admin/statistics_function.php:2177
+#: /tmp/translationstatus/admin/statistics_function.php:2261
+#: /tmp/translationstatus/admin/statistics_function.php:2264
+#: /tmp/translationstatus/admin/statistics_function.php:2272
+#: /tmp/translationstatus/admin/statistics_function.php:2277
 #: /tmp/translationstatus/admin/conditionshandling.php:1822
 msgid "Answer"
 msgstr "Odpověď"
 
-#: /tmp/translationstatus/qanda.php:1948
+#: /tmp/translationstatus/qanda.php:1951
 msgid "Date picker"
 msgstr "Výběr datumu"
 
-#: /tmp/translationstatus/qanda.php:1955
-#: /tmp/translationstatus/admin/tokens.php:2355
-#: /tmp/translationstatus/admin/tokens.php:2438
+#: /tmp/translationstatus/qanda.php:1958
+#: /tmp/translationstatus/admin/tokens.php:2373
+#: /tmp/translationstatus/admin/tokens.php:2456
 #, php-format
 msgid "Format: %s"
 msgstr "Formát: %s"
 
-#: /tmp/translationstatus/qanda.php:1983
-#: /tmp/translationstatus/qanda.php:2135
-#: /tmp/translationstatus/qanda.php:7508
-#: /tmp/translationstatus/qanda.php:7562
+#: /tmp/translationstatus/qanda.php:1986
+#: /tmp/translationstatus/qanda.php:2138
+#: /tmp/translationstatus/qanda.php:7511
+#: /tmp/translationstatus/qanda.php:7565
 #: /tmp/translationstatus/common_functions.php:637
 #: /tmp/translationstatus/common_functions.php:691
 #: /tmp/translationstatus/common_functions.php:1301
 #: /tmp/translationstatus/common_functions.php:1326
 #: /tmp/translationstatus/common_functions.php:1401
-#: /tmp/translationstatus/common_functions.php:5003
-#: /tmp/translationstatus/common_functions.php:5052
-#: /tmp/translationstatus/common_functions.php:5088
-#: /tmp/translationstatus/common_functions.php:5124
+#: /tmp/translationstatus/common_functions.php:4999
+#: /tmp/translationstatus/common_functions.php:5048
+#: /tmp/translationstatus/common_functions.php:5084
+#: /tmp/translationstatus/common_functions.php:5120
 #: /tmp/translationstatus/admin/labels.php:78
 #: /tmp/translationstatus/admin/dataentry.php:1839
 #: /tmp/translationstatus/admin/dataentry.php:1851
@@ -442,19 +441,19 @@ msgstr "Formát: %s"
 msgid "Please choose..."
 msgstr "Vyberte prosím..."
 
-#: /tmp/translationstatus/qanda.php:2207
+#: /tmp/translationstatus/qanda.php:2210
 msgid "Other answer"
 msgstr "Jiná odpověď"
 
-#: /tmp/translationstatus/qanda.php:2231
-#: /tmp/translationstatus/qanda.php:2500
+#: /tmp/translationstatus/qanda.php:2234
+#: /tmp/translationstatus/qanda.php:2503
 #, php-format
 msgid "You've selected the \"%s\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "Vybrali jste odpověď \"%s\" na otázku \"%s\". Vyplňte prosím i příslušný komentář."
 
-#: /tmp/translationstatus/qanda.php:2429
-#: /tmp/translationstatus/qanda.php:3257
-#: /tmp/translationstatus/qanda.php:3601
+#: /tmp/translationstatus/qanda.php:2432
+#: /tmp/translationstatus/qanda.php:3260
+#: /tmp/translationstatus/qanda.php:3604
 #: /tmp/translationstatus/common_functions.php:1876
 #: /tmp/translationstatus/common_functions.php:1930
 #: /tmp/translationstatus/common_functions.php:2466
@@ -476,6 +475,7 @@ msgstr "Vybrali jste odpověď \"%s\" na otázku \"%s\". Vyplňte prosím i př�
 #: /tmp/translationstatus/admin/exportresults.php:848
 #: /tmp/translationstatus/admin/exportresults.php:849
 #: /tmp/translationstatus/admin/results.php:339
+#: /tmp/translationstatus/admin/printablesurvey.php:626
 #: /tmp/translationstatus/admin/conditionshandling.php:968
 #: /tmp/translationstatus/admin/dataentry.php:716
 #: /tmp/translationstatus/admin/dataentry.php:1867
@@ -485,137 +485,138 @@ msgstr "Vybrali jste odpověď \"%s\" na otázku \"%s\". Vyplňte prosím i př�
 #: /tmp/translationstatus/admin/dataentry.php:2182
 #: /tmp/translationstatus/admin/dataentry.php:2198
 #: /tmp/translationstatus/admin/dataentry.php:2242
+#: /tmp/translationstatus/admin/export_structure_quexml.php:234
+#: /tmp/translationstatus/admin/export_structure_quexml.php:247
+#: /tmp/translationstatus/admin/export_structure_quexml.php:349
+#: /tmp/translationstatus/admin/export_structure_quexml.php:368
 msgid "Other"
 msgstr "Jiné"
 
-#: /tmp/translationstatus/qanda.php:2569
+#: /tmp/translationstatus/qanda.php:2572
 msgid "Please enter your comment here"
 msgstr "Zde prosím vložte Váš komentář"
 
-#: /tmp/translationstatus/qanda.php:2839
+#: /tmp/translationstatus/qanda.php:2842
 #: /tmp/translationstatus/admin/dataentry.php:861
 #: /tmp/translationstatus/admin/dataentry.php:2096
 msgid "Remove this item"
 msgstr "Odstranit tuto položku"
 
-#: /tmp/translationstatus/qanda.php:2867
+#: /tmp/translationstatus/qanda.php:2870
 #: /tmp/translationstatus/admin/dataentry.php:883
 #: /tmp/translationstatus/admin/dataentry.php:2129
 msgid "Your Choices"
 msgstr "Vaše možnosti"
 
-#: /tmp/translationstatus/qanda.php:2878
+#: /tmp/translationstatus/qanda.php:2881
 #: /tmp/translationstatus/admin/dataentry.php:888
 #: /tmp/translationstatus/admin/dataentry.php:2134
 msgid "Your Ranking"
 msgstr "Vaše pořadí"
 
-#: /tmp/translationstatus/qanda.php:2886
+#: /tmp/translationstatus/qanda.php:2889
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr "Pro odstranění poslední položky v seznamu klikněte na nůžky vpravo vedle položky"
 
-#: /tmp/translationstatus/qanda.php:3324
-#: /tmp/translationstatus/qanda.php:3655
-#, fuzzy, php-format
+#: /tmp/translationstatus/qanda.php:3327
+#: /tmp/translationstatus/qanda.php:3658
+#, php-format
 msgid "Please choose at most %d answers for question \"%s\""
-msgstr "Vyberte prosím maximálně %d odpovědí k otázce \"%s\""
+msgstr "Prosím vyberte nanejvýš %d odpovědí pro otázku \"%s\""
 
-#: /tmp/translationstatus/qanda.php:3345
-#: /tmp/translationstatus/qanda.php:3680
+#: /tmp/translationstatus/qanda.php:3348
+#: /tmp/translationstatus/qanda.php:3683
 #, php-format
 msgid "Please choose at least %d answer(s) for question \"%s\""
 msgstr "Vyberte prosím minimálně %d odpovědí k otázce \"%s\""
 
-#: /tmp/translationstatus/qanda.php:3380
-#: /tmp/translationstatus/qanda.php:3711
+#: /tmp/translationstatus/qanda.php:3383
+#: /tmp/translationstatus/qanda.php:3714
 #, php-format
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "Označili jste pole \"other\" pro otázku \"%s\". Vyplňte prosím také příslušné pole \"other comment\"."
 
-#: /tmp/translationstatus/qanda.php:3583
-#: /tmp/translationstatus/qanda.php:3611
-#: /tmp/translationstatus/admin/printablesurvey.php:970
+#: /tmp/translationstatus/qanda.php:3586
+#: /tmp/translationstatus/qanda.php:3614
 #: /tmp/translationstatus/admin/printablesurvey.php:972
+#: /tmp/translationstatus/admin/printablesurvey.php:974
 msgid "Make a comment on your choice here:"
 msgstr "Zde uveďte komentář k Vaší volbě:"
 
-#: /tmp/translationstatus/qanda.php:3808
-#, fuzzy
+#: /tmp/translationstatus/qanda.php:3811
 msgid "Upload files"
-msgstr "Načíst soubor:"
+msgstr "Nahrát souboy"
 
-#: /tmp/translationstatus/qanda.php:3812
-#, fuzzy
+#: /tmp/translationstatus/qanda.php:3815
 msgid "Upload your files"
-msgstr "Načíst soubor:"
+msgstr "Nahrát Vaše soubory"
 
-#: /tmp/translationstatus/qanda.php:3813
-#, fuzzy
+#: /tmp/translationstatus/qanda.php:3816
 msgid "Return to survey"
-msgstr "Vrátit se k průzkumu"
+msgstr "Zpět na průzkum"
 
-#: /tmp/translationstatus/qanda.php:3991
-#: /tmp/translationstatus/qanda.php:4293
-#: /tmp/translationstatus/qanda.php:5539
-#: /tmp/translationstatus/qanda.php:7378
+#: /tmp/translationstatus/qanda.php:3994
+#: /tmp/translationstatus/qanda.php:4296
+#: /tmp/translationstatus/qanda.php:5542
+#: /tmp/translationstatus/qanda.php:7381
 msgid "Error: This question has no answers."
 msgstr "Chyba: otázka nemá odpovědi."
 
-#: /tmp/translationstatus/qanda.php:4435
+#: /tmp/translationstatus/qanda.php:4438
 msgid "Only numbers may be entered in these fields"
 msgstr "Do těchto polí může být zapsán pouze číselný údaj"
 
-#: /tmp/translationstatus/qanda.php:4439
-#: /tmp/translationstatus/admin/printablesurvey.php:1120
+#: /tmp/translationstatus/qanda.php:4442
+#: /tmp/translationstatus/admin/printablesurvey.php:1122
 #, php-format
 msgid "Total of all entries must not exceed %d"
 msgstr "Součet položek nesmí přesáhnout %d"
 
-#: /tmp/translationstatus/qanda.php:4443
-#: /tmp/translationstatus/admin/printablesurvey.php:1116
+#: /tmp/translationstatus/qanda.php:4446
+#: /tmp/translationstatus/admin/printablesurvey.php:1118
 #, php-format
 msgid "Total of all entries must equal %d"
 msgstr "Součet položek musí být %d"
 
-#: /tmp/translationstatus/qanda.php:4447
-#: /tmp/translationstatus/admin/printablesurvey.php:1124
+#: /tmp/translationstatus/qanda.php:4450
+#: /tmp/translationstatus/admin/printablesurvey.php:1126
 #, php-format
 msgid "Total of all entries must be at least %s"
 msgstr "Součet položek musí být nejméně %s"
 
-#: /tmp/translationstatus/qanda.php:4455
+#: /tmp/translationstatus/qanda.php:4458
 msgid "Remaining: "
 msgstr "Zbývá:"
 
-#: /tmp/translationstatus/qanda.php:4457
+#: /tmp/translationstatus/qanda.php:4460
 msgid "Total: "
 msgstr "Celkem:"
 
-#: /tmp/translationstatus/qanda.php:4503
-#: /tmp/translationstatus/qanda.php:4509
-#: /tmp/translationstatus/qanda.php:4545
-#: /tmp/translationstatus/qanda.php:4556
+#: /tmp/translationstatus/qanda.php:4506
+#: /tmp/translationstatus/qanda.php:4512
+#: /tmp/translationstatus/qanda.php:4548
+#: /tmp/translationstatus/qanda.php:4559
 msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "Odpověď není platná. Součet položek nesmí být více než"
 
-#: /tmp/translationstatus/qanda.php:4522
-#: /tmp/translationstatus/qanda.php:4530
+#: /tmp/translationstatus/qanda.php:4525
+#: /tmp/translationstatus/qanda.php:4533
 #, php-format
 msgid "Answer is invalid. The total of all entries should add up to at least %s."
 msgstr "Odpověď není platná. Součet zadaných položek musí být nejméně %s."
 
-#: /tmp/translationstatus/qanda.php:4658
+#: /tmp/translationstatus/qanda.php:4661
 msgid "Only numbers may be entered in this field"
 msgstr "Do tohoto pole může být zapsán pouze číselný údaj"
 
-#: /tmp/translationstatus/qanda.php:4835
-#: /tmp/translationstatus/qanda.php:4836
+#: /tmp/translationstatus/qanda.php:4838
+#: /tmp/translationstatus/qanda.php:4839
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr "Chytněte a přesuňte špendlík do požadovaného místa. Pro přesun špendlíku také můžete na mapu kliknout pravým tlačítkem."
 
-#: /tmp/translationstatus/qanda.php:5056
-#: /tmp/translationstatus/qanda.php:5527
-#: /tmp/translationstatus/qanda.php:5566
+#: /tmp/translationstatus/qanda.php:5059
+#: /tmp/translationstatus/qanda.php:5530
+#: /tmp/translationstatus/qanda.php:5569
 #: /tmp/translationstatus/common_functions.php:1884
 #: /tmp/translationstatus/common_functions.php:1890
 #: /tmp/translationstatus/common_functions.php:1906
@@ -687,20 +688,20 @@ msgstr "Chytněte a přesuňte špendlík do požadovaného místa. Pro přesun 
 #: /tmp/translationstatus/admin/editsurveysettings.php:924
 #: /tmp/translationstatus/admin/editsurveysettings.php:940
 #: /tmp/translationstatus/admin/importoldresponses.php:71
-#: /tmp/translationstatus/admin/printablesurvey.php:557
-#: /tmp/translationstatus/admin/printablesurvey.php:577
-#: /tmp/translationstatus/admin/printablesurvey.php:1198
-#: /tmp/translationstatus/admin/printablesurvey.php:1202
-#: /tmp/translationstatus/admin/printablesurvey.php:1319
-#: /tmp/translationstatus/admin/printablesurvey.php:1336
-#: /tmp/translationstatus/admin/printablesurvey.php:1341
+#: /tmp/translationstatus/admin/printablesurvey.php:556
+#: /tmp/translationstatus/admin/printablesurvey.php:576
+#: /tmp/translationstatus/admin/printablesurvey.php:1200
+#: /tmp/translationstatus/admin/printablesurvey.php:1204
+#: /tmp/translationstatus/admin/printablesurvey.php:1321
+#: /tmp/translationstatus/admin/printablesurvey.php:1338
+#: /tmp/translationstatus/admin/printablesurvey.php:1343
 #: /tmp/translationstatus/admin/questionhandling.php:78
 #: /tmp/translationstatus/admin/questionhandling.php:88
 #: /tmp/translationstatus/admin/questionhandling.php:452
 #: /tmp/translationstatus/admin/questionhandling.php:468
-#: /tmp/translationstatus/admin/tokens.php:1492
-#: /tmp/translationstatus/admin/tokens.php:1778
-#: /tmp/translationstatus/admin/tokens.php:2050
+#: /tmp/translationstatus/admin/tokens.php:1501
+#: /tmp/translationstatus/admin/tokens.php:1791
+#: /tmp/translationstatus/admin/tokens.php:2068
 #: /tmp/translationstatus/admin/statistics.php:818
 #: /tmp/translationstatus/admin/statistics.php:985
 #: /tmp/translationstatus/admin/conditionshandling.php:644
@@ -722,16 +723,18 @@ msgstr "Chytněte a přesuňte špendlík do požadovaného místa. Pro přesun 
 #: /tmp/translationstatus/admin/html.php:1309
 #: /tmp/translationstatus/admin/html.php:1318
 #: /tmp/translationstatus/admin/quota.php:163
-#: /tmp/translationstatus/admin/export_data_functions.php:260
-#: /tmp/translationstatus/admin/export_data_functions.php:264
-#: /tmp/translationstatus/admin/export_data_functions.php:272
-#: /tmp/translationstatus/admin/export_data_functions.php:276
+#: /tmp/translationstatus/admin/export_structure_quexml.php:648
+#: /tmp/translationstatus/admin/export_structure_quexml.php:667
+#: /tmp/translationstatus/admin/export_data_functions.php:232
+#: /tmp/translationstatus/admin/export_data_functions.php:236
+#: /tmp/translationstatus/admin/export_data_functions.php:244
+#: /tmp/translationstatus/admin/export_data_functions.php:248
 msgid "Yes"
 msgstr "Ano"
 
-#: /tmp/translationstatus/qanda.php:5065
-#: /tmp/translationstatus/qanda.php:5529
-#: /tmp/translationstatus/qanda.php:5584
+#: /tmp/translationstatus/qanda.php:5068
+#: /tmp/translationstatus/qanda.php:5532
+#: /tmp/translationstatus/qanda.php:5587
 #: /tmp/translationstatus/common_functions.php:1891
 #: /tmp/translationstatus/common_functions.php:1907
 #: /tmp/translationstatus/common_functions.php:3037
@@ -803,20 +806,20 @@ msgstr "Ano"
 #: /tmp/translationstatus/admin/editsurveysettings.php:929
 #: /tmp/translationstatus/admin/editsurveysettings.php:946
 #: /tmp/translationstatus/admin/importoldresponses.php:72
-#: /tmp/translationstatus/admin/printablesurvey.php:558
-#: /tmp/translationstatus/admin/printablesurvey.php:579
-#: /tmp/translationstatus/admin/printablesurvey.php:1199
-#: /tmp/translationstatus/admin/printablesurvey.php:1203
-#: /tmp/translationstatus/admin/printablesurvey.php:1321
-#: /tmp/translationstatus/admin/printablesurvey.php:1338
-#: /tmp/translationstatus/admin/printablesurvey.php:1341
+#: /tmp/translationstatus/admin/printablesurvey.php:557
+#: /tmp/translationstatus/admin/printablesurvey.php:578
+#: /tmp/translationstatus/admin/printablesurvey.php:1201
+#: /tmp/translationstatus/admin/printablesurvey.php:1205
+#: /tmp/translationstatus/admin/printablesurvey.php:1323
+#: /tmp/translationstatus/admin/printablesurvey.php:1340
+#: /tmp/translationstatus/admin/printablesurvey.php:1343
 #: /tmp/translationstatus/admin/questionhandling.php:81
 #: /tmp/translationstatus/admin/questionhandling.php:91
 #: /tmp/translationstatus/admin/questionhandling.php:455
 #: /tmp/translationstatus/admin/questionhandling.php:471
-#: /tmp/translationstatus/admin/tokens.php:1493
-#: /tmp/translationstatus/admin/tokens.php:1779
-#: /tmp/translationstatus/admin/tokens.php:2052
+#: /tmp/translationstatus/admin/tokens.php:1502
+#: /tmp/translationstatus/admin/tokens.php:1792
+#: /tmp/translationstatus/admin/tokens.php:2070
 #: /tmp/translationstatus/admin/statistics.php:824
 #: /tmp/translationstatus/admin/statistics.php:997
 #: /tmp/translationstatus/admin/conditionshandling.php:646
@@ -838,133 +841,141 @@ msgstr "Ano"
 #: /tmp/translationstatus/admin/html.php:1309
 #: /tmp/translationstatus/admin/html.php:1318
 #: /tmp/translationstatus/admin/quota.php:164
-#: /tmp/translationstatus/admin/export_data_functions.php:273
-#: /tmp/translationstatus/admin/export_data_functions.php:277
+#: /tmp/translationstatus/admin/export_structure_quexml.php:648
+#: /tmp/translationstatus/admin/export_structure_quexml.php:667
+#: /tmp/translationstatus/admin/export_data_functions.php:245
+#: /tmp/translationstatus/admin/export_data_functions.php:249
 msgid "No"
 msgstr "Ne"
 
-#: /tmp/translationstatus/qanda.php:5112
+#: /tmp/translationstatus/qanda.php:5115
 #: /tmp/translationstatus/common_functions.php:1899
 #: /tmp/translationstatus/admin/statistics_function.php:1727
 #: /tmp/translationstatus/admin/exportresults.php:922
 #: /tmp/translationstatus/admin/exportresults.php:923
 #: /tmp/translationstatus/admin/results.php:253
 #: /tmp/translationstatus/admin/results.php:335
-#: /tmp/translationstatus/admin/printablesurvey.php:565
-#: /tmp/translationstatus/admin/printablesurvey.php:861
-#: /tmp/translationstatus/admin/printablesurvey.php:866
+#: /tmp/translationstatus/admin/printablesurvey.php:564
+#: /tmp/translationstatus/admin/printablesurvey.php:863
+#: /tmp/translationstatus/admin/printablesurvey.php:868
 #: /tmp/translationstatus/admin/statistics.php:800
 #: /tmp/translationstatus/admin/conditionshandling.php:904
 #: /tmp/translationstatus/admin/dataentry.php:628
 #: /tmp/translationstatus/admin/dataentry.php:1639
 #: /tmp/translationstatus/admin/dataentry.php:1807
 #: /tmp/translationstatus/admin/quota.php:33
-#: /tmp/translationstatus/admin/export_data_functions.php:268
+#: /tmp/translationstatus/admin/export_structure_quexml.php:652
+#: /tmp/translationstatus/admin/export_data_functions.php:240
 msgid "Female"
 msgstr "Žena"
 
-#: /tmp/translationstatus/qanda.php:5120
+#: /tmp/translationstatus/qanda.php:5123
 #: /tmp/translationstatus/common_functions.php:1898
 #: /tmp/translationstatus/admin/statistics_function.php:1728
 #: /tmp/translationstatus/admin/exportresults.php:918
 #: /tmp/translationstatus/admin/exportresults.php:919
 #: /tmp/translationstatus/admin/results.php:252
 #: /tmp/translationstatus/admin/results.php:334
-#: /tmp/translationstatus/admin/printablesurvey.php:564
-#: /tmp/translationstatus/admin/printablesurvey.php:862
-#: /tmp/translationstatus/admin/printablesurvey.php:866
+#: /tmp/translationstatus/admin/printablesurvey.php:563
+#: /tmp/translationstatus/admin/printablesurvey.php:864
+#: /tmp/translationstatus/admin/printablesurvey.php:868
 #: /tmp/translationstatus/admin/statistics.php:806
 #: /tmp/translationstatus/admin/conditionshandling.php:905
 #: /tmp/translationstatus/admin/dataentry.php:631
 #: /tmp/translationstatus/admin/dataentry.php:1638
 #: /tmp/translationstatus/admin/dataentry.php:1808
 #: /tmp/translationstatus/admin/quota.php:32
-#: /tmp/translationstatus/admin/export_data_functions.php:269
+#: /tmp/translationstatus/admin/export_structure_quexml.php:652
+#: /tmp/translationstatus/admin/export_data_functions.php:241
 msgid "Male"
 msgstr "Muž"
 
-#: /tmp/translationstatus/qanda.php:5528
-#: /tmp/translationstatus/qanda.php:5574
+#: /tmp/translationstatus/qanda.php:5531
+#: /tmp/translationstatus/qanda.php:5577
 #: /tmp/translationstatus/common_functions.php:1908
 #: /tmp/translationstatus/admin/statistics_function.php:1606
 #: /tmp/translationstatus/admin/exportresults.php:978
 #: /tmp/translationstatus/admin/exportresults.php:979
 #: /tmp/translationstatus/admin/results.php:232
 #: /tmp/translationstatus/admin/results.php:361
-#: /tmp/translationstatus/admin/printablesurvey.php:578
-#: /tmp/translationstatus/admin/printablesurvey.php:1320
-#: /tmp/translationstatus/admin/printablesurvey.php:1337
-#: /tmp/translationstatus/admin/printablesurvey.php:1341
+#: /tmp/translationstatus/admin/printablesurvey.php:577
+#: /tmp/translationstatus/admin/printablesurvey.php:1322
+#: /tmp/translationstatus/admin/printablesurvey.php:1339
+#: /tmp/translationstatus/admin/printablesurvey.php:1343
 #: /tmp/translationstatus/admin/statistics.php:991
 #: /tmp/translationstatus/admin/conditionshandling.php:645
 #: /tmp/translationstatus/admin/dataentry.php:1134
 #: /tmp/translationstatus/admin/dataentry.php:1650
 #: /tmp/translationstatus/admin/dataentry.php:2397
-#: /tmp/translationstatus/admin/export_data_functions.php:278
+#: /tmp/translationstatus/admin/export_structure_quexml.php:667
+#: /tmp/translationstatus/admin/export_data_functions.php:250
 msgid "Uncertain"
 msgstr "Nevím"
 
-#: /tmp/translationstatus/qanda.php:5689
-#: /tmp/translationstatus/qanda.php:5732
+#: /tmp/translationstatus/qanda.php:5692
+#: /tmp/translationstatus/qanda.php:5735
 #: /tmp/translationstatus/common_functions.php:1914
 #: /tmp/translationstatus/admin/statistics_function.php:1623
 #: /tmp/translationstatus/admin/exportresults.php:986
 #: /tmp/translationstatus/admin/exportresults.php:987
 #: /tmp/translationstatus/admin/results.php:236
 #: /tmp/translationstatus/admin/results.php:353
-#: /tmp/translationstatus/admin/printablesurvey.php:585
-#: /tmp/translationstatus/admin/printablesurvey.php:1360
-#: /tmp/translationstatus/admin/printablesurvey.php:1376
-#: /tmp/translationstatus/admin/printablesurvey.php:1380
+#: /tmp/translationstatus/admin/printablesurvey.php:584
+#: /tmp/translationstatus/admin/printablesurvey.php:1362
+#: /tmp/translationstatus/admin/printablesurvey.php:1378
+#: /tmp/translationstatus/admin/printablesurvey.php:1382
 #: /tmp/translationstatus/admin/statistics.php:1041
 #: /tmp/translationstatus/admin/conditionshandling.php:649
 #: /tmp/translationstatus/admin/dataentry.php:1670
 #: /tmp/translationstatus/admin/dataentry.php:2416
-#: /tmp/translationstatus/admin/export_data_functions.php:281
+#: /tmp/translationstatus/admin/export_structure_quexml.php:672
+#: /tmp/translationstatus/admin/export_data_functions.php:253
 msgid "Increase"
 msgstr "Zvýšení"
 
-#: /tmp/translationstatus/qanda.php:5690
-#: /tmp/translationstatus/qanda.php:5743
+#: /tmp/translationstatus/qanda.php:5693
+#: /tmp/translationstatus/qanda.php:5746
 #: /tmp/translationstatus/common_functions.php:1916
 #: /tmp/translationstatus/admin/statistics_function.php:1624
 #: /tmp/translationstatus/admin/exportresults.php:990
 #: /tmp/translationstatus/admin/exportresults.php:991
 #: /tmp/translationstatus/admin/results.php:237
 #: /tmp/translationstatus/admin/results.php:354
-#: /tmp/translationstatus/admin/printablesurvey.php:587
-#: /tmp/translationstatus/admin/printablesurvey.php:1361
-#: /tmp/translationstatus/admin/printablesurvey.php:1377
-#: /tmp/translationstatus/admin/printablesurvey.php:1380
+#: /tmp/translationstatus/admin/printablesurvey.php:586
+#: /tmp/translationstatus/admin/printablesurvey.php:1363
+#: /tmp/translationstatus/admin/printablesurvey.php:1379
+#: /tmp/translationstatus/admin/printablesurvey.php:1382
 #: /tmp/translationstatus/admin/statistics.php:1046
 #: /tmp/translationstatus/admin/conditionshandling.php:650
 #: /tmp/translationstatus/admin/dataentry.php:1672
 #: /tmp/translationstatus/admin/dataentry.php:2417
-#: /tmp/translationstatus/admin/export_data_functions.php:282
+#: /tmp/translationstatus/admin/export_structure_quexml.php:672
+#: /tmp/translationstatus/admin/export_data_functions.php:254
 msgid "Same"
 msgstr "Stejný"
 
-#: /tmp/translationstatus/qanda.php:5691
-#: /tmp/translationstatus/qanda.php:5755
+#: /tmp/translationstatus/qanda.php:5694
+#: /tmp/translationstatus/qanda.php:5758
 #: /tmp/translationstatus/common_functions.php:1915
 #: /tmp/translationstatus/admin/statistics_function.php:1625
 #: /tmp/translationstatus/admin/exportresults.php:994
 #: /tmp/translationstatus/admin/exportresults.php:995
 #: /tmp/translationstatus/admin/results.php:238
 #: /tmp/translationstatus/admin/results.php:355
-#: /tmp/translationstatus/admin/printablesurvey.php:586
-#: /tmp/translationstatus/admin/printablesurvey.php:1362
-#: /tmp/translationstatus/admin/printablesurvey.php:1378
+#: /tmp/translationstatus/admin/printablesurvey.php:585
+#: /tmp/translationstatus/admin/printablesurvey.php:1364
 #: /tmp/translationstatus/admin/printablesurvey.php:1380
+#: /tmp/translationstatus/admin/printablesurvey.php:1382
 #: /tmp/translationstatus/admin/statistics.php:1051
 #: /tmp/translationstatus/admin/conditionshandling.php:651
 #: /tmp/translationstatus/admin/dataentry.php:1671
 #: /tmp/translationstatus/admin/dataentry.php:2418
-#: /tmp/translationstatus/admin/export_data_functions.php:283
+#: /tmp/translationstatus/admin/export_structure_quexml.php:672
+#: /tmp/translationstatus/admin/export_data_functions.php:255
 msgid "Decrease"
 msgstr "Pokles"
 
-#: /tmp/translationstatus/qanda.php:6088
+#: /tmp/translationstatus/qanda.php:6091
 #: /tmp/translationstatus/admin/dataentry.php:625
 #: /tmp/translationstatus/admin/dataentry.php:658
 #: /tmp/translationstatus/admin/dataentry.php:727
@@ -983,19 +994,19 @@ msgstr "Pokles"
 msgid "Please choose"
 msgstr "Prosím zvolte"
 
-#: /tmp/translationstatus/qanda.php:6132
-#: /tmp/translationstatus/qanda.php:6478
-#: /tmp/translationstatus/qanda.php:6815
-#: /tmp/translationstatus/qanda.php:6967
-#: /tmp/translationstatus/qanda.php:7608
+#: /tmp/translationstatus/qanda.php:6135
+#: /tmp/translationstatus/qanda.php:6481
+#: /tmp/translationstatus/qanda.php:6818
+#: /tmp/translationstatus/qanda.php:6970
+#: /tmp/translationstatus/qanda.php:7611
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr "Chyba: Sada odpovědí (popisků) pro tuto otázku neexistuje nebo není dostupná v tomto jazyce."
 
-#: /tmp/translationstatus/qanda.php:6733
+#: /tmp/translationstatus/qanda.php:6736
 msgid "..."
 msgstr "..."
 
-#: /tmp/translationstatus/qanda.php:6961
+#: /tmp/translationstatus/qanda.php:6964
 msgid "Error: There are no answers defined for this question."
 msgstr "Chyba: Pro tuto otázku nejsou definovány žádné odpovědi."
 
@@ -1044,7 +1055,7 @@ msgid "Survey name (ID):"
 msgstr "Jméno průzkumu (ID):"
 
 #: /tmp/translationstatus/printanswers.php:191
-#: /tmp/translationstatus/admin/browse.php:872
+#: /tmp/translationstatus/admin/browse.php:873
 #: /tmp/translationstatus/admin/statistics.php:1658
 #: /tmp/translationstatus/admin/statistics.php:1661
 #: /tmp/translationstatus/admin/conditionshandling.php:1733
@@ -1174,9 +1185,8 @@ msgid "Arrays"
 msgstr "Pole"
 
 #: /tmp/translationstatus/common_functions.php:94
-#, fuzzy
 msgid "Mask questions"
-msgstr "u otázky"
+msgstr "Skrýt otázky"
 
 # should not it be "Do not copy..." ?
 #: /tmp/translationstatus/common_functions.php:95
@@ -1325,10 +1335,10 @@ msgstr "Neaktivní"
 #: /tmp/translationstatus/common_functions.php:1302
 #: /tmp/translationstatus/common_functions.php:1327
 #: /tmp/translationstatus/common_functions.php:1402
-#: /tmp/translationstatus/common_functions.php:5053
-#: /tmp/translationstatus/common_functions.php:5089
-#: /tmp/translationstatus/admin/tokens.php:809
-#: /tmp/translationstatus/admin/tokens.php:843
+#: /tmp/translationstatus/common_functions.php:5049
+#: /tmp/translationstatus/common_functions.php:5085
+#: /tmp/translationstatus/admin/tokens.php:818
+#: /tmp/translationstatus/admin/tokens.php:852
 #: /tmp/translationstatus/admin/html.php:515
 msgid "None"
 msgstr "Žádné"
@@ -1369,13 +1379,13 @@ msgstr "Počáteční jazyk:"
 #: /tmp/translationstatus/admin/exportresults.php:442
 #: /tmp/translationstatus/admin/exportresults.php:443
 #: /tmp/translationstatus/admin/exportresults.php:776
-#: /tmp/translationstatus/admin/tokens.php:1051
-#: /tmp/translationstatus/admin/tokens.php:1054
-#: /tmp/translationstatus/admin/tokens.php:1055
-#: /tmp/translationstatus/admin/tokens.php:2299
+#: /tmp/translationstatus/admin/tokens.php:1060
+#: /tmp/translationstatus/admin/tokens.php:1063
+#: /tmp/translationstatus/admin/tokens.php:1064
+#: /tmp/translationstatus/admin/tokens.php:2317
 #: /tmp/translationstatus/admin/dataentry.php:1527
-#: /tmp/translationstatus/index.php:2410
-#: /tmp/translationstatus/index.php:2577
+#: /tmp/translationstatus/index.php:2354
+#: /tmp/translationstatus/index.php:2521
 msgid "Token"
 msgstr "Přístupový kód"
 
@@ -1428,7 +1438,7 @@ msgid "Other comment"
 msgstr "Komentář Jiné"
 
 #: /tmp/translationstatus/common_functions.php:2763
-#: /tmp/translationstatus/admin/browse.php:868
+#: /tmp/translationstatus/admin/browse.php:869
 msgid "Total time"
 msgstr "Celkový čas"
 
@@ -1515,11 +1525,10 @@ msgstr "Filtr pole"
 msgid "Enter the code of a Multiple choice question to exclude the matching answer options in this question."
 msgstr "Vložte kód otázky Vícenásobné možnosti a odpovídající vybrané odpovědi (popisky) se v této otázce nezobrazí."
 
-# clarity
+# Recheck please
 #: /tmp/translationstatus/common_functions.php:3067
-#, fuzzy
 msgid "Array filter exclusion"
-msgstr "Filtrovat podle jazyka"
+msgstr "Pole vylučovacích filtrů"
 
 #: /tmp/translationstatus/common_functions.php:3075
 msgid "If one of the subquestions is marked then for each marked subquestion this value is added as assessment."
@@ -1699,7 +1708,7 @@ msgstr "Uloží zemi"
 
 #: /tmp/translationstatus/common_functions.php:3250
 #: /tmp/translationstatus/common_functions.php:3482
-#: /tmp/translationstatus/admin/tokens.php:824
+#: /tmp/translationstatus/admin/tokens.php:833
 #: /tmp/translationstatus/admin/globalsettings.php:245
 #: /tmp/translationstatus/admin/globalsettings.php:256
 #: /tmp/translationstatus/admin/globalsettings.php:305
@@ -1804,9 +1813,8 @@ msgid "Maximum value"
 msgstr "Maximální hodnota"
 
 #: /tmp/translationstatus/common_functions.php:3353
-#, fuzzy
 msgid "Enter the SGQA identifier to use the total of a previous question as the maximum for this question"
-msgstr "SGQA identifikátor k použití součtu z předchozí otázky jako maximum pro tuto otázku"
+msgstr "Vložte SGQA indentifikátor pro použití součtu předchozí otázky jako maxima pro tuto otázku"
 
 #: /tmp/translationstatus/common_functions.php:3354
 msgid "Max value from SGQA"
@@ -1846,9 +1854,8 @@ msgid "Minimum value"
 msgstr "Minimální hodnota"
 
 #: /tmp/translationstatus/common_functions.php:3393
-#, fuzzy
 msgid "Enter the SGQA identifier to use the total of a previous question as the minimum for this question"
-msgstr "SGQA identifikátor k použití součtu z předchozí otázky jako minimum pro tuto otázku"
+msgstr "Vložte SGQA indentifikátor pro použití součtu předchozí otázky jako minima pro tuto otázku"
 
 #: /tmp/translationstatus/common_functions.php:3394
 msgid "Minimum value from SGQA"
@@ -2100,14 +2107,12 @@ msgid "Default"
 msgstr "Přednastavené"
 
 #: /tmp/translationstatus/common_functions.php:3709
-#, fuzzy
 msgid "Nominal"
-msgstr "Číselný"
+msgstr "Jmenovitý"
 
 #: /tmp/translationstatus/common_functions.php:3710
-#, fuzzy
 msgid "Ordinal"
-msgstr "Volitelné"
+msgstr "Pořadový"
 
 #: /tmp/translationstatus/common_functions.php:3711
 msgid "Scale"
@@ -2366,29 +2371,29 @@ msgstr "Podpořte tento projekt - darujte"
 msgid "Visit our website!"
 msgstr "Navštivte naše webové stránky!"
 
-#: /tmp/translationstatus/common_functions.php:4239
+#: /tmp/translationstatus/common_functions.php:4241
 msgid "Email was not sent because demo-mode is activated."
 msgstr "Email nebyl odeslán, protože je aktivován demonstrační režim."
 
-#: /tmp/translationstatus/common_functions.php:4368
+#: /tmp/translationstatus/common_functions.php:4369
 msgid "SMTP debug output:"
 msgstr "Výstup SMTP debug:"
 
-#: /tmp/translationstatus/common_functions.php:4903
+#: /tmp/translationstatus/common_functions.php:4899
 #, php-format
 msgid "SQL command failed: %s Reason: %s"
 msgstr "SQL příkaz se nezdařil: %s  Z důvodu: %s"
 
-#: /tmp/translationstatus/common_functions.php:5977
+#: /tmp/translationstatus/common_functions.php:5976
 #: /tmp/translationstatus/admin/resetsurveylogic.php:27
 #: /tmp/translationstatus/admin/importquestion.php:53
 #: /tmp/translationstatus/admin/importquestion.php:78
 #: /tmp/translationstatus/admin/importquestion.php:565
-#: /tmp/translationstatus/admin/importquestion.php:775
-#: /tmp/translationstatus/admin/importquestion.php:813
-#: /tmp/translationstatus/admin/importquestion.php:842
-#: /tmp/translationstatus/admin/importquestion.php:865
-#: /tmp/translationstatus/admin/importquestion.php:889
+#: /tmp/translationstatus/admin/importquestion.php:776
+#: /tmp/translationstatus/admin/importquestion.php:814
+#: /tmp/translationstatus/admin/importquestion.php:843
+#: /tmp/translationstatus/admin/importquestion.php:866
+#: /tmp/translationstatus/admin/importquestion.php:890
 #: /tmp/translationstatus/admin/exportresults.php:415
 #: /tmp/translationstatus/admin/http_importsurvey.php:46
 #: /tmp/translationstatus/admin/http_importsurvey.php:70
@@ -2435,13 +2440,13 @@ msgstr "SQL příkaz se nezdařil: %s  Z důvodu: %s"
 #: /tmp/translationstatus/admin/importgroup.php:1094
 #: /tmp/translationstatus/admin/importgroup.php:1118
 #: /tmp/translationstatus/admin/importgroup.php:1172
-#: /tmp/translationstatus/admin/tokens.php:387
-#: /tmp/translationstatus/admin/tokens.php:401
-#: /tmp/translationstatus/admin/tokens.php:467
-#: /tmp/translationstatus/admin/tokens.php:988
-#: /tmp/translationstatus/admin/tokens.php:2702
-#: /tmp/translationstatus/admin/tokens.php:3139
-#: /tmp/translationstatus/admin/tokens.php:3145
+#: /tmp/translationstatus/admin/tokens.php:396
+#: /tmp/translationstatus/admin/tokens.php:410
+#: /tmp/translationstatus/admin/tokens.php:476
+#: /tmp/translationstatus/admin/tokens.php:997
+#: /tmp/translationstatus/admin/tokens.php:2720
+#: /tmp/translationstatus/admin/tokens.php:3157
+#: /tmp/translationstatus/admin/tokens.php:3163
 #: /tmp/translationstatus/admin/conditionshandling.php:119
 #: /tmp/translationstatus/admin/conditionshandling.php:131
 #: /tmp/translationstatus/admin/export_structure_xml.php:50
@@ -2486,88 +2491,88 @@ msgstr "SQL příkaz se nezdařil: %s  Z důvodu: %s"
 #: /tmp/translationstatus/admin/dumpgroup.php:39
 #: /tmp/translationstatus/admin/install/createdb.php:64
 #: /tmp/translationstatus/admin/install/createdb.php:99
-#: /tmp/translationstatus/save.php:735
+#: /tmp/translationstatus/save.php:738
 #: /tmp/translationstatus/index.php:559
 msgid "Error"
 msgstr "Chyba"
 
-#: /tmp/translationstatus/common_functions.php:7056
+#: /tmp/translationstatus/common_functions.php:7055
 #: /tmp/translationstatus/admin/exportresults.php:232
 #: /tmp/translationstatus/admin/exportresults.php:432
 #: /tmp/translationstatus/admin/exportresults.php:433
 #: /tmp/translationstatus/admin/exportresults.php:764
 #: /tmp/translationstatus/admin/browse.php:136
 #: /tmp/translationstatus/admin/browse.php:474
-#: /tmp/translationstatus/admin/tokens.php:1011
-#: /tmp/translationstatus/admin/tokens.php:1014
-#: /tmp/translationstatus/admin/tokens.php:1015
-#: /tmp/translationstatus/admin/tokens.php:2278
-#: /tmp/translationstatus/admin/tokens.php:2414
+#: /tmp/translationstatus/admin/tokens.php:1020
+#: /tmp/translationstatus/admin/tokens.php:1023
+#: /tmp/translationstatus/admin/tokens.php:1024
+#: /tmp/translationstatus/admin/tokens.php:2296
+#: /tmp/translationstatus/admin/tokens.php:2432
 #: /tmp/translationstatus/replacements.php:481
 msgid "First name"
 msgstr "Jméno"
 
-#: /tmp/translationstatus/common_functions.php:7057
+#: /tmp/translationstatus/common_functions.php:7056
 #: /tmp/translationstatus/admin/exportresults.php:233
 #: /tmp/translationstatus/admin/exportresults.php:427
 #: /tmp/translationstatus/admin/exportresults.php:428
 #: /tmp/translationstatus/admin/exportresults.php:767
 #: /tmp/translationstatus/admin/browse.php:137
 #: /tmp/translationstatus/admin/browse.php:475
-#: /tmp/translationstatus/admin/tokens.php:1021
-#: /tmp/translationstatus/admin/tokens.php:1024
-#: /tmp/translationstatus/admin/tokens.php:1025
-#: /tmp/translationstatus/admin/tokens.php:2282
-#: /tmp/translationstatus/admin/tokens.php:2416
+#: /tmp/translationstatus/admin/tokens.php:1030
+#: /tmp/translationstatus/admin/tokens.php:1033
+#: /tmp/translationstatus/admin/tokens.php:1034
+#: /tmp/translationstatus/admin/tokens.php:2300
+#: /tmp/translationstatus/admin/tokens.php:2434
 #: /tmp/translationstatus/replacements.php:488
 msgid "Last name"
 msgstr "Příjmení"
 
-#: /tmp/translationstatus/common_functions.php:7058
+#: /tmp/translationstatus/common_functions.php:7057
 #: /tmp/translationstatus/admin/saved.php:81
 #: /tmp/translationstatus/admin/exportresults.php:234
 #: /tmp/translationstatus/admin/exportresults.php:437
 #: /tmp/translationstatus/admin/exportresults.php:438
-#: /tmp/translationstatus/admin/tokens.php:1031
-#: /tmp/translationstatus/admin/tokens.php:1034
-#: /tmp/translationstatus/admin/tokens.php:1035
+#: /tmp/translationstatus/admin/tokens.php:1040
+#: /tmp/translationstatus/admin/tokens.php:1043
+#: /tmp/translationstatus/admin/tokens.php:1044
 #: /tmp/translationstatus/replacements.php:495
 msgid "Email address"
 msgstr "Emailová adresa"
 
-#: /tmp/translationstatus/common_functions.php:7059
+#: /tmp/translationstatus/common_functions.php:7058
 msgid "Token code"
 msgstr "Přístupový kód účastníka"
 
-#: /tmp/translationstatus/common_functions.php:7060
+#: /tmp/translationstatus/common_functions.php:7059
 msgid "Language code"
 msgstr "Kód jazyka"
 
-#: /tmp/translationstatus/common_functions.php:7061
+#: /tmp/translationstatus/common_functions.php:7060
 msgid "Invitation sent date"
 msgstr "Datum zaslání pozvánky"
 
-#: /tmp/translationstatus/common_functions.php:7062
+#: /tmp/translationstatus/common_functions.php:7061
 msgid "Last Reminder sent date"
 msgstr "Datum zaslání poslední připomínky"
 
-#: /tmp/translationstatus/common_functions.php:7063
+#: /tmp/translationstatus/common_functions.php:7062
 msgid "Total numbers of sent reminders"
 msgstr "Celkový počet zaslaných připomínek"
 
-#: /tmp/translationstatus/common_functions.php:7064
+#: /tmp/translationstatus/common_functions.php:7063
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:112
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:129
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:149
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:165
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:222
-#: /tmp/translationstatus/admin/tokens.php:1111
-#: /tmp/translationstatus/admin/tokens.php:1114
-#: /tmp/translationstatus/admin/tokens.php:1115
+#: /tmp/translationstatus/admin/tokens.php:1120
+#: /tmp/translationstatus/admin/tokens.php:1123
+#: /tmp/translationstatus/admin/tokens.php:1124
 msgid "Uses left"
 msgstr "Zbývající počet použití"
 
-#: /tmp/translationstatus/common_functions.php:7085
+#: /tmp/translationstatus/common_functions.php:7084
 #, php-format
 msgid "Attribute %s"
 msgstr "Atribut %s"
@@ -2586,17 +2591,16 @@ msgstr "Název"
 
 #: /tmp/translationstatus/uploader.php:93
 msgid "Sorry, no more files can be uploaded!"
-msgstr ""
+msgstr "Omlouváme se, nelze nahrát další soubory!"
 
 #: /tmp/translationstatus/uploader.php:94
-#, fuzzy, php-format
+#, php-format
 msgid "Sorry, only %s files can be uploaded for this question!"
-msgstr "V této otázce musí být načteno nejméně %d souborů ."
+msgstr "Omlouváme se, pouze %s souborů může být nahráno k této otázce!"
 
 #: /tmp/translationstatus/uploader.php:95
-#, fuzzy
 msgid "Uploading"
-msgstr "Načíst"
+msgstr "Nahrávání"
 
 #: /tmp/translationstatus/uploader.php:96
 #: /tmp/translationstatus/uploader.php:124
@@ -2606,17 +2610,17 @@ msgstr "Vyberte soubor"
 #: /tmp/translationstatus/uploader.php:97
 #, php-format
 msgid "Please upload %s more file(s)."
-msgstr ""
+msgstr "Prosím, nahrajte %s další(ch) soubor(ú)."
 
 #: /tmp/translationstatus/uploader.php:98
 #, php-format
 msgid "If you wish, you may upload %s more file(s); else you may return back to survey."
-msgstr ""
+msgstr "Pokud si přejete, můžete nahrát další(ch) %s soubor(ů); jinak se můžete vrátit zpět na průzkum."
 
 #: /tmp/translationstatus/uploader.php:99
 #: /tmp/translationstatus/uploader.php:100
 msgid "The maximum number of files has been uploaded. You may return back to survey."
-msgstr ""
+msgstr "Byl nahrán maximální počet souborů, můžete se vrátit zpět na průzkum."
 
 #: /tmp/translationstatus/uploader.php:101
 #, php-format
@@ -2624,6 +2628,8 @@ msgid ""
 "You need to upload %s more files for this question.\n"
 "Are you sure you want to exit?"
 msgstr ""
+"Potřebujete nahrát ještě %s soubor(ů) pro tento dotaz. \n"
+"Opravdu si přejete skončit?"
 
 #: /tmp/translationstatus/uploader.php:127
 #, php-format
@@ -2821,7 +2827,7 @@ msgstr "Portugalština (brazilská)"
 
 #: /tmp/translationstatus/classes/core/surveytranslator.php:471
 msgid "Punjabi"
-msgstr ""
+msgstr "Punjabi"
 
 #: /tmp/translationstatus/classes/core/surveytranslator.php:478
 msgid "Russian"
@@ -2882,7 +2888,7 @@ msgstr "Správa sad popisků"
 #: /tmp/translationstatus/admin/labels.php:64
 #: /tmp/translationstatus/admin/assessments.php:119
 #: /tmp/translationstatus/admin/saved.php:126
-#: /tmp/translationstatus/admin/tokens.php:585
+#: /tmp/translationstatus/admin/tokens.php:594
 #: /tmp/translationstatus/admin/conditionshandling.php:995
 #: /tmp/translationstatus/admin/html_functions.php:29
 #: /tmp/translationstatus/admin/templates.php:810
@@ -2990,7 +2996,7 @@ msgstr "Tuto položku nemůžete vymazat, potřebujete minimálně jeden jazyk v
 #: /tmp/translationstatus/admin/editemailtemplates.php:160
 #: /tmp/translationstatus/admin/questionhandling.php:227
 #: /tmp/translationstatus/admin/questionhandling.php:518
-#: /tmp/translationstatus/admin/tokens.php:2154
+#: /tmp/translationstatus/admin/tokens.php:2172
 #: /tmp/translationstatus/admin/userrighthandling.php:249
 #: /tmp/translationstatus/admin/translate.php:270
 #: /tmp/translationstatus/admin/editsurveytextelements.php:104
@@ -3222,10 +3228,10 @@ msgstr "Nevybral(a) jste průzkum ke smazání"
 #: /tmp/translationstatus/admin/import_resources_zip.php:385
 #: /tmp/translationstatus/admin/importgroup.php:45
 #: /tmp/translationstatus/admin/importgroup.php:70
-#: /tmp/translationstatus/admin/tokens.php:1355
-#: /tmp/translationstatus/admin/tokens.php:1357
-#: /tmp/translationstatus/admin/tokens.php:1359
-#: /tmp/translationstatus/admin/tokens.php:1367
+#: /tmp/translationstatus/admin/tokens.php:1364
+#: /tmp/translationstatus/admin/tokens.php:1366
+#: /tmp/translationstatus/admin/tokens.php:1368
+#: /tmp/translationstatus/admin/tokens.php:1376
 #: /tmp/translationstatus/admin/deactivate.php:46
 #: /tmp/translationstatus/admin/deactivate.php:52
 #: /tmp/translationstatus/admin/deactivate.php:54
@@ -3262,12 +3268,12 @@ msgstr "Hlavní stránka administrátora"
 #: /tmp/translationstatus/admin/importoldresponses.php:78
 #: /tmp/translationstatus/admin/activate.php:69
 #: /tmp/translationstatus/admin/questionhandling.php:650
-#: /tmp/translationstatus/admin/tokens.php:518
-#: /tmp/translationstatus/admin/tokens.php:1336
-#: /tmp/translationstatus/admin/tokens.php:1657
-#: /tmp/translationstatus/admin/tokens.php:1686
-#: /tmp/translationstatus/admin/tokens.php:1990
-#: /tmp/translationstatus/admin/tokens.php:2030
+#: /tmp/translationstatus/admin/tokens.php:527
+#: /tmp/translationstatus/admin/tokens.php:1345
+#: /tmp/translationstatus/admin/tokens.php:1670
+#: /tmp/translationstatus/admin/tokens.php:1699
+#: /tmp/translationstatus/admin/tokens.php:2008
+#: /tmp/translationstatus/admin/tokens.php:2048
 #: /tmp/translationstatus/admin/deactivate.php:27
 #: /tmp/translationstatus/admin/questiongrouphandling.php:265
 #: /tmp/translationstatus/admin/editsubquestions.php:263
@@ -3287,7 +3293,7 @@ msgstr "Před pokračováním doporučujeme exportovat celý průzkum z hlavní 
 
 #: /tmp/translationstatus/admin/resetsurveylogic.php:47
 #: /tmp/translationstatus/admin/assessments.php:280
-#: /tmp/translationstatus/admin/tokens.php:1342
+#: /tmp/translationstatus/admin/tokens.php:1351
 #: /tmp/translationstatus/admin/conditionshandling.php:1229
 #: /tmp/translationstatus/admin/editsubquestions.php:247
 #: /tmp/translationstatus/admin/editsubquestions.php:254
@@ -3300,7 +3306,7 @@ msgstr "Storno"
 
 #: /tmp/translationstatus/admin/resetsurveylogic.php:49
 #: /tmp/translationstatus/admin/assessments.php:194
-#: /tmp/translationstatus/admin/tokens.php:2106
+#: /tmp/translationstatus/admin/tokens.php:2124
 #: /tmp/translationstatus/admin/userrighthandling.php:468
 #: /tmp/translationstatus/admin/templates.php:994
 #: /tmp/translationstatus/admin/html.php:1529
@@ -3315,10 +3321,10 @@ msgstr "Byly smazány všechny podmínky v tomto průzkumu."
 #: /tmp/translationstatus/admin/resetsurveylogic.php:65
 #: /tmp/translationstatus/admin/login_check.php:48
 #: /tmp/translationstatus/admin/login_check.php:85
-#: /tmp/translationstatus/admin/tokens.php:488
-#: /tmp/translationstatus/admin/tokens.php:501
-#: /tmp/translationstatus/admin/tokens.php:1662
-#: /tmp/translationstatus/admin/tokens.php:1994
+#: /tmp/translationstatus/admin/tokens.php:497
+#: /tmp/translationstatus/admin/tokens.php:510
+#: /tmp/translationstatus/admin/tokens.php:1675
+#: /tmp/translationstatus/admin/tokens.php:2012
 #: /tmp/translationstatus/admin/access_denied.php:28
 #: /tmp/translationstatus/admin/access_denied.php:33
 #: /tmp/translationstatus/admin/access_denied.php:38
@@ -3380,9 +3386,9 @@ msgstr "Byly smazány všechny podmínky v tomto průzkumu."
 #: /tmp/translationstatus/admin/usercontrol.php:839
 #: /tmp/translationstatus/admin/quota.php:687
 #: /tmp/translationstatus/admin/quota.php:747
-#: /tmp/translationstatus/index.php:2364
-#: /tmp/translationstatus/index.php:2439
-#: /tmp/translationstatus/index.php:2606
+#: /tmp/translationstatus/index.php:2308
+#: /tmp/translationstatus/index.php:2383
+#: /tmp/translationstatus/index.php:2550
 #: /tmp/translationstatus/replacements.php:530
 msgid "Continue"
 msgstr "Pokračovat"
@@ -3448,8 +3454,8 @@ msgstr "ID"
 #: /tmp/translationstatus/admin/assessments.php:169
 #: /tmp/translationstatus/admin/saved.php:77
 #: /tmp/translationstatus/admin/browse.php:541
-#: /tmp/translationstatus/admin/browse.php:882
-#: /tmp/translationstatus/admin/tokens.php:1006
+#: /tmp/translationstatus/admin/browse.php:883
+#: /tmp/translationstatus/admin/tokens.php:1015
 #: /tmp/translationstatus/admin/editansweroptions.php:156
 msgid "Actions"
 msgstr "Akce"
@@ -3461,15 +3467,15 @@ msgstr "SID"
 
 #: /tmp/translationstatus/admin/assessments.php:173
 #: /tmp/translationstatus/admin/assessments.php:271
-#: /tmp/translationstatus/admin/tokens.php:1461
-#: /tmp/translationstatus/admin/tokens.php:1744
+#: /tmp/translationstatus/admin/tokens.php:1470
+#: /tmp/translationstatus/admin/tokens.php:1757
 msgid "Message"
 msgstr "Zpráva"
 
 #: /tmp/translationstatus/admin/assessments.php:194
 #: /tmp/translationstatus/admin/saved.php:97
 #: /tmp/translationstatus/admin/browse.php:229
-#: /tmp/translationstatus/admin/tokens.php:1244
+#: /tmp/translationstatus/admin/tokens.php:1253
 #: /tmp/translationstatus/admin/userrighthandling.php:85
 #: /tmp/translationstatus/admin/userrighthandling.php:468
 #: /tmp/translationstatus/admin/userrighthandling.php:562
@@ -3485,7 +3491,7 @@ msgid "Total"
 msgstr "Celkem"
 
 #: /tmp/translationstatus/admin/assessments.php:234
-#: /tmp/translationstatus/admin/browse.php:870
+#: /tmp/translationstatus/admin/browse.php:871
 msgid "Group"
 msgstr "Skupina"
 
@@ -3493,8 +3499,8 @@ msgstr "Skupina"
 #: /tmp/translationstatus/admin/editemailtemplates.php:45
 #: /tmp/translationstatus/admin/questionhandling.php:40
 #: /tmp/translationstatus/admin/questionhandling.php:330
-#: /tmp/translationstatus/admin/tokens.php:1404
-#: /tmp/translationstatus/admin/tokens.php:1723
+#: /tmp/translationstatus/admin/tokens.php:1413
+#: /tmp/translationstatus/admin/tokens.php:1736
 #: /tmp/translationstatus/admin/questiongrouphandling.php:33
 #: /tmp/translationstatus/admin/questiongrouphandling.php:138
 #: /tmp/translationstatus/admin/editsubquestions.php:139
@@ -3551,9 +3557,9 @@ msgstr "Rychlé statistiky"
 
 #: /tmp/translationstatus/admin/statistics_function.php:253
 #: /tmp/translationstatus/admin/statistics_function.php:589
+#: /tmp/translationstatus/admin/statistics_function.php:3313
 #: /tmp/translationstatus/admin/statistics_function.php:3314
-#: /tmp/translationstatus/admin/statistics_function.php:3315
-#: /tmp/translationstatus/admin/statistics_function.php:3318
+#: /tmp/translationstatus/admin/statistics_function.php:3317
 #: /tmp/translationstatus/admin/surveylist.php:32
 #: /tmp/translationstatus/admin/html.php:146
 msgid "Survey"
@@ -3583,7 +3589,7 @@ msgstr "Procent z celku:"
 msgid "Results"
 msgstr "Výsledky"
 
-#: /tmp/translationstatus/admin/statistics_function.php:635
+#: /tmp/translationstatus/admin/statistics_function.php:636
 #: /tmp/translationstatus/admin/statistics_function.php:2069
 #: /tmp/translationstatus/admin/statistics_function.php:2090
 msgid "Browse"
@@ -3645,22 +3651,22 @@ msgid "Result"
 msgstr "Výsledek"
 
 #: /tmp/translationstatus/admin/statistics_function.php:1185
-#: /tmp/translationstatus/admin/statistics_function.php:2119
-#: /tmp/translationstatus/admin/statistics_function.php:2125
-#: /tmp/translationstatus/admin/statistics_function.php:2131
-#: /tmp/translationstatus/admin/statistics_function.php:2142
-#: /tmp/translationstatus/admin/statistics_function.php:2820
-#: /tmp/translationstatus/admin/statistics_function.php:2824
-#: /tmp/translationstatus/admin/statistics_function.php:2836
-#: /tmp/translationstatus/admin/statistics_function.php:2842
+#: /tmp/translationstatus/admin/statistics_function.php:2118
+#: /tmp/translationstatus/admin/statistics_function.php:2124
+#: /tmp/translationstatus/admin/statistics_function.php:2130
+#: /tmp/translationstatus/admin/statistics_function.php:2141
+#: /tmp/translationstatus/admin/statistics_function.php:2819
+#: /tmp/translationstatus/admin/statistics_function.php:2823
+#: /tmp/translationstatus/admin/statistics_function.php:2835
+#: /tmp/translationstatus/admin/statistics_function.php:2841
 msgid "Sum"
 msgstr "Suma"
 
 #: /tmp/translationstatus/admin/statistics_function.php:1186
-#: /tmp/translationstatus/admin/statistics_function.php:2998
-#: /tmp/translationstatus/admin/statistics_function.php:3005
-#: /tmp/translationstatus/admin/statistics_function.php:3012
-#: /tmp/translationstatus/admin/statistics_function.php:3019
+#: /tmp/translationstatus/admin/statistics_function.php:2997
+#: /tmp/translationstatus/admin/statistics_function.php:3004
+#: /tmp/translationstatus/admin/statistics_function.php:3011
+#: /tmp/translationstatus/admin/statistics_function.php:3018
 msgid "Standard deviation"
 msgstr "Směrodatná odchylka"
 
@@ -3670,19 +3676,19 @@ msgstr "Průměr"
 
 #: /tmp/translationstatus/admin/statistics_function.php:1234
 #: /tmp/translationstatus/admin/statistics_function.php:2083
-#: /tmp/translationstatus/admin/statistics_function.php:2100
-#: /tmp/translationstatus/admin/statistics_function.php:2119
-#: /tmp/translationstatus/admin/statistics_function.php:2123
-#: /tmp/translationstatus/admin/statistics_function.php:2131
-#: /tmp/translationstatus/admin/statistics_function.php:2138
-#: /tmp/translationstatus/admin/statistics_function.php:2161
-#: /tmp/translationstatus/admin/statistics_function.php:2165
-#: /tmp/translationstatus/admin/statistics_function.php:2173
-#: /tmp/translationstatus/admin/statistics_function.php:2180
-#: /tmp/translationstatus/admin/statistics_function.php:2262
-#: /tmp/translationstatus/admin/statistics_function.php:2266
-#: /tmp/translationstatus/admin/statistics_function.php:2273
-#: /tmp/translationstatus/admin/statistics_function.php:2280
+#: /tmp/translationstatus/admin/statistics_function.php:2099
+#: /tmp/translationstatus/admin/statistics_function.php:2118
+#: /tmp/translationstatus/admin/statistics_function.php:2122
+#: /tmp/translationstatus/admin/statistics_function.php:2130
+#: /tmp/translationstatus/admin/statistics_function.php:2137
+#: /tmp/translationstatus/admin/statistics_function.php:2160
+#: /tmp/translationstatus/admin/statistics_function.php:2164
+#: /tmp/translationstatus/admin/statistics_function.php:2172
+#: /tmp/translationstatus/admin/statistics_function.php:2179
+#: /tmp/translationstatus/admin/statistics_function.php:2261
+#: /tmp/translationstatus/admin/statistics_function.php:2265
+#: /tmp/translationstatus/admin/statistics_function.php:2272
+#: /tmp/translationstatus/admin/statistics_function.php:2279
 msgid "Count"
 msgstr "Počet"
 
@@ -3735,7 +3741,7 @@ msgstr "Není dostatek hodnot pro výpočet"
 
 #: /tmp/translationstatus/admin/statistics_function.php:1784
 #: /tmp/translationstatus/admin/statistics_function.php:1806
-#: /tmp/translationstatus/admin/printablesurvey.php:700
+#: /tmp/translationstatus/admin/printablesurvey.php:702
 #: /tmp/translationstatus/admin/dataentry.php:1830
 #, php-format
 msgid "Label %s"
@@ -3747,36 +3753,36 @@ msgid "Comments"
 msgstr "Komentář"
 
 #: /tmp/translationstatus/admin/statistics_function.php:2083
-#: /tmp/translationstatus/admin/statistics_function.php:2102
-#: /tmp/translationstatus/admin/statistics_function.php:2119
-#: /tmp/translationstatus/admin/statistics_function.php:2124
-#: /tmp/translationstatus/admin/statistics_function.php:2131
-#: /tmp/translationstatus/admin/statistics_function.php:2140
-#: /tmp/translationstatus/admin/statistics_function.php:2161
-#: /tmp/translationstatus/admin/statistics_function.php:2166
-#: /tmp/translationstatus/admin/statistics_function.php:2173
-#: /tmp/translationstatus/admin/statistics_function.php:2182
-#: /tmp/translationstatus/admin/statistics_function.php:2262
-#: /tmp/translationstatus/admin/statistics_function.php:2267
-#: /tmp/translationstatus/admin/statistics_function.php:2273
-#: /tmp/translationstatus/admin/statistics_function.php:2282
+#: /tmp/translationstatus/admin/statistics_function.php:2101
+#: /tmp/translationstatus/admin/statistics_function.php:2118
+#: /tmp/translationstatus/admin/statistics_function.php:2123
+#: /tmp/translationstatus/admin/statistics_function.php:2130
+#: /tmp/translationstatus/admin/statistics_function.php:2139
+#: /tmp/translationstatus/admin/statistics_function.php:2160
+#: /tmp/translationstatus/admin/statistics_function.php:2165
+#: /tmp/translationstatus/admin/statistics_function.php:2172
+#: /tmp/translationstatus/admin/statistics_function.php:2181
+#: /tmp/translationstatus/admin/statistics_function.php:2261
+#: /tmp/translationstatus/admin/statistics_function.php:2266
+#: /tmp/translationstatus/admin/statistics_function.php:2272
+#: /tmp/translationstatus/admin/statistics_function.php:2281
 msgid "Percentage"
 msgstr "Procenta"
 
-#: /tmp/translationstatus/admin/statistics_function.php:2383
-#: /tmp/translationstatus/admin/statistics_function.php:2415
+#: /tmp/translationstatus/admin/statistics_function.php:2382
+#: /tmp/translationstatus/admin/statistics_function.php:2414
 msgid "Not completed or Not displayed"
 msgstr "Nedokončeno nebo Nezobrazeno"
 
-#: /tmp/translationstatus/admin/statistics_function.php:2387
-#: /tmp/translationstatus/admin/statistics_function.php:2419
+#: /tmp/translationstatus/admin/statistics_function.php:2386
+#: /tmp/translationstatus/admin/statistics_function.php:2418
 msgid "Not displayed"
 msgstr "Nezobrazeno"
 
-#: /tmp/translationstatus/admin/statistics_function.php:2820
-#: /tmp/translationstatus/admin/statistics_function.php:2824
-#: /tmp/translationstatus/admin/statistics_function.php:2836
-#: /tmp/translationstatus/admin/statistics_function.php:2842
+#: /tmp/translationstatus/admin/statistics_function.php:2819
+#: /tmp/translationstatus/admin/statistics_function.php:2823
+#: /tmp/translationstatus/admin/statistics_function.php:2835
+#: /tmp/translationstatus/admin/statistics_function.php:2841
 #: /tmp/translationstatus/admin/importquestion.php:91
 #: /tmp/translationstatus/admin/exportresults.php:118
 #: /tmp/translationstatus/admin/http_importsurvey.php:159
@@ -3787,17 +3793,17 @@ msgstr "Nezobrazeno"
 msgid "Answers"
 msgstr "Odpovědi"
 
-#: /tmp/translationstatus/admin/statistics_function.php:2821
-#: /tmp/translationstatus/admin/statistics_function.php:2829
-#: /tmp/translationstatus/admin/statistics_function.php:2837
-#: /tmp/translationstatus/admin/statistics_function.php:2848
+#: /tmp/translationstatus/admin/statistics_function.php:2820
+#: /tmp/translationstatus/admin/statistics_function.php:2828
+#: /tmp/translationstatus/admin/statistics_function.php:2836
+#: /tmp/translationstatus/admin/statistics_function.php:2847
 msgid "Number of cases"
 msgstr "Počet případů"
 
-#: /tmp/translationstatus/admin/statistics_function.php:2997
-#: /tmp/translationstatus/admin/statistics_function.php:3001
-#: /tmp/translationstatus/admin/statistics_function.php:3011
-#: /tmp/translationstatus/admin/statistics_function.php:3017
+#: /tmp/translationstatus/admin/statistics_function.php:2996
+#: /tmp/translationstatus/admin/statistics_function.php:3000
+#: /tmp/translationstatus/admin/statistics_function.php:3010
+#: /tmp/translationstatus/admin/statistics_function.php:3016
 msgid "Arithmetic mean"
 msgstr "Aritmetický průměr"
 
@@ -4010,10 +4016,10 @@ msgstr "Nebylo zadané GID (skupina). Nelze importovat otázku"
 #: /tmp/translationstatus/admin/import_resources_zip.php:519
 #: /tmp/translationstatus/admin/importgroup.php:52
 #: /tmp/translationstatus/admin/importgroup.php:76
-#: /tmp/translationstatus/admin/tokens.php:2513
-#: /tmp/translationstatus/admin/tokens.php:2572
-#: /tmp/translationstatus/admin/tokens.php:2654
-#: /tmp/translationstatus/admin/tokens.php:3111
+#: /tmp/translationstatus/admin/tokens.php:2531
+#: /tmp/translationstatus/admin/tokens.php:2590
+#: /tmp/translationstatus/admin/tokens.php:2672
+#: /tmp/translationstatus/admin/tokens.php:3129
 #: /tmp/translationstatus/admin/importsurvey.php:53
 #: /tmp/translationstatus/admin/importsurvey.php:121
 #: /tmp/translationstatus/admin/importlabel.php:35
@@ -4061,7 +4067,7 @@ msgstr "Přehled importu otázky"
 #: /tmp/translationstatus/admin/importsurvey.php:64
 #: /tmp/translationstatus/admin/importsurvey.php:129
 #: /tmp/translationstatus/admin/html.php:922
-#: /tmp/translationstatus/admin/translate_functions.php:402
+#: /tmp/translationstatus/admin/translate_functions.php:380
 #: /tmp/translationstatus/admin/quota.php:570
 msgid "Questions"
 msgstr "Otázky"
@@ -4071,7 +4077,7 @@ msgstr "Otázky"
 #: /tmp/translationstatus/admin/importgroup.php:81
 #: /tmp/translationstatus/admin/importsurvey.php:68
 #: /tmp/translationstatus/admin/importsurvey.php:133
-#: /tmp/translationstatus/admin/translate_functions.php:463
+#: /tmp/translationstatus/admin/translate_functions.php:441
 msgid "Subquestions"
 msgstr "Dílčí otázky (popisky)"
 
@@ -4121,7 +4127,7 @@ msgstr "Nelze importovat sady popisků, které nepodporují primární jazyk pr�
 msgid "Faulty line in import - fields and data don't match"
 msgstr "Chybný řádek v importu - pole a data si neodpovídají"
 
-#: /tmp/translationstatus/admin/importquestion.php:726
+#: /tmp/translationstatus/admin/importquestion.php:727
 msgid "The languages of the imported question file must at least include the base language of this survey."
 msgstr "Jazyky importované otázky musí obsahovat alespoň primární jazyk tohoto průzkumu."
 
@@ -4158,8 +4164,8 @@ msgid "Range:"
 msgstr "Rozsah:"
 
 #: /tmp/translationstatus/admin/exportresults.php:92
-#: /tmp/translationstatus/admin/tokens.php:1455
-#: /tmp/translationstatus/admin/tokens.php:1726
+#: /tmp/translationstatus/admin/tokens.php:1464
+#: /tmp/translationstatus/admin/tokens.php:1739
 msgid "From"
 msgstr "Od"
 
@@ -4173,7 +4179,7 @@ msgstr "Stav "
 
 #: /tmp/translationstatus/admin/exportresults.php:96
 #: /tmp/translationstatus/admin/export_data_r.php:104
-#: /tmp/translationstatus/admin/browse.php:729
+#: /tmp/translationstatus/admin/browse.php:730
 #: /tmp/translationstatus/admin/statistics.php:260
 #: /tmp/translationstatus/admin/vvexport.php:59
 #: /tmp/translationstatus/admin/export_data_spss.php:121
@@ -4182,7 +4188,7 @@ msgstr "Pouze dokončené odpovědi"
 
 #: /tmp/translationstatus/admin/exportresults.php:97
 #: /tmp/translationstatus/admin/export_data_r.php:105
-#: /tmp/translationstatus/admin/browse.php:728
+#: /tmp/translationstatus/admin/browse.php:729
 #: /tmp/translationstatus/admin/statistics.php:259
 #: /tmp/translationstatus/admin/vvexport.php:60
 #: /tmp/translationstatus/admin/export_data_spss.php:122
@@ -4191,7 +4197,7 @@ msgstr "Všechny odpovědi"
 
 #: /tmp/translationstatus/admin/exportresults.php:98
 #: /tmp/translationstatus/admin/export_data_r.php:106
-#: /tmp/translationstatus/admin/browse.php:730
+#: /tmp/translationstatus/admin/browse.php:731
 #: /tmp/translationstatus/admin/statistics.php:261
 #: /tmp/translationstatus/admin/vvexport.php:61
 #: /tmp/translationstatus/admin/export_data_spss.php:123
@@ -4278,9 +4284,9 @@ msgstr "Vyberte sloupce, které si přejete exportovat."
 
 # consistency
 #: /tmp/translationstatus/admin/exportresults.php:226
-#: /tmp/translationstatus/admin/tokens.php:386
-#: /tmp/translationstatus/admin/tokens.php:400
-#: /tmp/translationstatus/admin/tokens.php:415
+#: /tmp/translationstatus/admin/tokens.php:395
+#: /tmp/translationstatus/admin/tokens.php:409
+#: /tmp/translationstatus/admin/tokens.php:424
 msgid "Token control"
 msgstr "Správa účastníků"
 
@@ -4331,8 +4337,8 @@ msgstr "NOVÝ ZÁZNAM"
 #: /tmp/translationstatus/admin/browse.php:138
 #: /tmp/translationstatus/admin/browse.php:476
 #: /tmp/translationstatus/admin/login_check.php:160
-#: /tmp/translationstatus/admin/tokens.php:2286
-#: /tmp/translationstatus/admin/tokens.php:2418
+#: /tmp/translationstatus/admin/tokens.php:2304
+#: /tmp/translationstatus/admin/tokens.php:2436
 #: /tmp/translationstatus/admin/userrighthandling.php:226
 #: /tmp/translationstatus/admin/userrighthandling.php:438
 #: /tmp/translationstatus/admin/userrighthandling.php:914
@@ -4350,11 +4356,11 @@ msgstr "ID záznamu účastníka"
 
 #: /tmp/translationstatus/admin/exportresults.php:782
 #: /tmp/translationstatus/admin/login_check.php:225
-#: /tmp/translationstatus/admin/tokens.php:1061
-#: /tmp/translationstatus/admin/tokens.php:1064
-#: /tmp/translationstatus/admin/tokens.php:1065
-#: /tmp/translationstatus/admin/tokens.php:2308
-#: /tmp/translationstatus/admin/tokens.php:2421
+#: /tmp/translationstatus/admin/tokens.php:1070
+#: /tmp/translationstatus/admin/tokens.php:1073
+#: /tmp/translationstatus/admin/tokens.php:1074
+#: /tmp/translationstatus/admin/tokens.php:2326
+#: /tmp/translationstatus/admin/tokens.php:2439
 msgid "Language"
 msgstr "Jazyk"
 
@@ -4412,9 +4418,9 @@ msgid "Save both of them on the R working directory (use getwd() and setwd() on 
 msgstr "Uložit obojí do pracovního adresáře R (použijte getwd() a setwd() v příkazovém okně R pro získání a nastavení)"
 
 #: /tmp/translationstatus/admin/export_data_r.php:121
-#, fuzzy, php-format
+#, php-format
 msgid "digit:       source(\"%s\", encoding = \"UTF-8\")        on the R command window"
-msgstr "digit:       source(\"Surveydata_syntax.R\")        v příkazovém okně R"
+msgstr "digit:       source(\"%s\", encoding = \"UTF-8\")       v příkazovém okně R"
 
 #: /tmp/translationstatus/admin/export_data_r.php:123
 msgid "Your data should be imported now, the data.frame is named \"data\", the variable.labels are attributes of data (\"attributes(data)$variable.labels\"), like for foreign:read.spss."
@@ -4914,14 +4920,12 @@ msgid "Import survey"
 msgstr "Importovat průzkum"
 
 #: /tmp/translationstatus/admin/editsurveysettings.php:990
-#, fuzzy
 msgid "Error: You have to select an existing survey."
-msgstr "Chyba: Musíte zadat název pro tento průzkum."
+msgstr "Chyba: Musíte vybrat existující průzkum."
 
 #: /tmp/translationstatus/admin/editsurveysettings.php:990
-#, fuzzy
 msgid "Error: You enter a name for the survey copy."
-msgstr "Chyba: Musíte zadat název pro tento průzkum."
+msgstr "Chyba: Zadal(a) jste duplicitní jméno průzkumu."
 
 #: /tmp/translationstatus/admin/editsurveysettings.php:992
 msgid "Select survey to copy:"
@@ -4966,7 +4970,7 @@ msgstr "Toto přepíše existující text. Pokračovat?"
 
 # plural
 #: /tmp/translationstatus/admin/editemailtemplates.php:37
-#: /tmp/translationstatus/admin/tokens.php:632
+#: /tmp/translationstatus/admin/tokens.php:641
 msgid "Edit email templates"
 msgstr "Editovat šablony emailů"
 
@@ -5014,9 +5018,8 @@ msgid "Admin confirmation email body:"
 msgstr "Tělo potvrzovacího emailu:"
 
 #: /tmp/translationstatus/admin/editemailtemplates.php:80
-#, fuzzy
 msgid "Admin notification email:"
-msgstr "Oznámení administrátorovi:"
+msgstr "Oznamovací email administrátorovi:"
 
 #: /tmp/translationstatus/admin/editemailtemplates.php:87
 msgid "Detailed admin notification subject:"
@@ -5029,7 +5032,7 @@ msgstr "Email s detailním upozorněním:"
 #: /tmp/translationstatus/admin/editemailtemplates.php:94
 #: /tmp/translationstatus/admin/editemailtemplates.php:106
 #: /tmp/translationstatus/admin/editemailtemplates.php:108
-#: /tmp/translationstatus/admin/tokens.php:1465
+#: /tmp/translationstatus/admin/tokens.php:1474
 msgid "Invitation email:"
 msgstr "Email pozvánky:"
 
@@ -5055,8 +5058,8 @@ msgid "Confirmation email:"
 msgstr "Potvrzovací email:"
 
 #: /tmp/translationstatus/admin/editemailtemplates.php:136
-#: /tmp/translationstatus/admin/translate_functions.php:606
-#: /tmp/translationstatus/admin/translate_functions.php:694
+#: /tmp/translationstatus/admin/translate_functions.php:584
+#: /tmp/translationstatus/admin/translate_functions.php:672
 msgid "Confirmation email"
 msgstr "Potvrzovací email"
 
@@ -5175,14 +5178,14 @@ msgstr "(Sady popisků nebyly importovány, protože nemáte oprávnění vytvá
 msgid "Question attributes"
 msgstr "Atributy otázky"
 
+# Recheck please
 #: /tmp/translationstatus/admin/http_importsurvey.php:182
 #: /tmp/translationstatus/admin/importsurvey.php:88
-#, fuzzy
 msgid "quota members"
-msgstr "Změnit kvótu"
+msgstr "kvóta úživatelů"
 
 #: /tmp/translationstatus/admin/http_importsurvey.php:182
-#: /tmp/translationstatus/admin/printablesurvey.php:456
+#: /tmp/translationstatus/admin/printablesurvey.php:455
 #: /tmp/translationstatus/admin/conditionshandling.php:1338
 #: /tmp/translationstatus/admin/importsurvey.php:88
 msgid "and"
@@ -5195,7 +5198,7 @@ msgid "quota language settings"
 msgstr "Nastavení kvóty pro jazyk"
 
 #: /tmp/translationstatus/admin/http_importsurvey.php:186
-#: /tmp/translationstatus/admin/tokens.php:2876
+#: /tmp/translationstatus/admin/tokens.php:2894
 #: /tmp/translationstatus/admin/importsurvey.php:91
 #: /tmp/translationstatus/admin/importsurvey.php:152
 #: /tmp/translationstatus/admin/importlabel.php:66
@@ -5229,12 +5232,12 @@ msgid "table"
 msgstr "tabulka"
 
 #: /tmp/translationstatus/admin/printablesurvey.php:149
-#: /tmp/translationstatus/admin/printablesurvey.php:1928
+#: /tmp/translationstatus/admin/printablesurvey.php:1930
 msgid "Submit Your Survey."
 msgstr "Odeslat Váš průzkum."
 
 #: /tmp/translationstatus/admin/printablesurvey.php:151
-#: /tmp/translationstatus/admin/printablesurvey.php:1928
+#: /tmp/translationstatus/admin/printablesurvey.php:1930
 #: /tmp/translationstatus/admin/templates.php:698
 msgid "Thank you for completing this survey."
 msgstr "Děkujeme Vám za vyplnění tohoto průzkumu."
@@ -5246,220 +5249,216 @@ msgstr "Prosím odfaxujte vyplněný průzkum na:"
 
 # clarity
 #: /tmp/translationstatus/admin/printablesurvey.php:171
-#: /tmp/translationstatus/admin/printablesurvey.php:1922
+#: /tmp/translationstatus/admin/printablesurvey.php:1924
 #: /tmp/translationstatus/admin/templates.php:697
 #, php-format
 msgid "Please submit by %s"
 msgstr "Odpovězte prosím do %s"
 
 #: /tmp/translationstatus/admin/printablesurvey.php:437
-#: /tmp/translationstatus/admin/printablesurvey.php:733
+#: /tmp/translationstatus/admin/printablesurvey.php:735
 #: /tmp/translationstatus/survey.php:147
 #: /tmp/translationstatus/question.php:288
 #: /tmp/translationstatus/group.php:266
 msgid "or"
 msgstr "nebo"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:466
-#: /tmp/translationstatus/admin/printablesurvey.php:494
+#: /tmp/translationstatus/admin/printablesurvey.php:465
+#: /tmp/translationstatus/admin/printablesurvey.php:493
 msgid "Answer was"
 msgstr "Odpověď byla"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:470
+#: /tmp/translationstatus/admin/printablesurvey.php:469
 msgid "Answer was NOT"
 msgstr "Odpověď byla NE"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:474
+#: /tmp/translationstatus/admin/printablesurvey.php:473
 msgid "Answer was less than"
 msgstr "Odpověď byla menší než"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:478
+#: /tmp/translationstatus/admin/printablesurvey.php:477
 msgid "Answer was less than or equal to"
 msgstr "Odpověď byla menší nebo rovna než"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:482
+#: /tmp/translationstatus/admin/printablesurvey.php:481
 msgid "Answer was greater than or equal to"
 msgstr "Odpověď byla větší nebo rovna než"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:486
+#: /tmp/translationstatus/admin/printablesurvey.php:485
 msgid "Answer was greater than"
 msgstr "Odpověď byla větší než"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:490
-#, fuzzy
+#: /tmp/translationstatus/admin/printablesurvey.php:489
 msgid "Answer matched (regexp)"
-msgstr "Přidat novou odpověď"
+msgstr "Odpověď vyhovuje (regulerní výraz)"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:504
-#: /tmp/translationstatus/admin/printablesurvey.php:532
+#: /tmp/translationstatus/admin/printablesurvey.php:503
+#: /tmp/translationstatus/admin/printablesurvey.php:531
 msgid "is"
 msgstr "je"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:508
+#: /tmp/translationstatus/admin/printablesurvey.php:507
 msgid "is NOT"
-msgstr ""
+msgstr "NENÍ"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:512
+#: /tmp/translationstatus/admin/printablesurvey.php:511
 msgid "is less than"
 msgstr "je menší, než"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:516
+#: /tmp/translationstatus/admin/printablesurvey.php:515
 msgid "is less than or equal to"
 msgstr "je menší nebo rovno, než"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:520
+#: /tmp/translationstatus/admin/printablesurvey.php:519
 msgid "is greater than or equal to"
 msgstr "je větší nebo rovno, než"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:524
+#: /tmp/translationstatus/admin/printablesurvey.php:523
 msgid "is greater than"
 msgstr "je větší, než"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:528
-#, fuzzy
+#: /tmp/translationstatus/admin/printablesurvey.php:527
 msgid "is matched (regexp)"
-msgstr "Přidat novou odpověď"
+msgstr "je vyhovující (regulerní výraz)"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:724
+#: /tmp/translationstatus/admin/printablesurvey.php:726
 msgid "RANK"
-msgstr ""
+msgstr "ÚROVĚŇ"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:743
+#: /tmp/translationstatus/admin/printablesurvey.php:745
 msgid "at question"
 msgstr "u otázky"
 
 # if it means "show this question if the following conditions are met"
-#: /tmp/translationstatus/admin/printablesurvey.php:755
+#: /tmp/translationstatus/admin/printablesurvey.php:757
 msgid "Only answer this question if the following conditions are met:"
 msgstr "Zobrazit tuto otázku pouze tehdy, jsou-li splněny následující podmínky:"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:775
+#: /tmp/translationstatus/admin/printablesurvey.php:777
 msgid "ID:"
 msgstr "Číslo:"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:776
+#: /tmp/translationstatus/admin/printablesurvey.php:778
 msgid "Question code:"
 msgstr "Kódy otázek:"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:833
-#: /tmp/translationstatus/admin/printablesurvey.php:834
-#: /tmp/translationstatus/admin/printablesurvey.php:858
-#: /tmp/translationstatus/admin/printablesurvey.php:865
-#: /tmp/translationstatus/admin/printablesurvey.php:891
-#: /tmp/translationstatus/admin/printablesurvey.php:894
-#: /tmp/translationstatus/admin/printablesurvey.php:958
-#: /tmp/translationstatus/admin/printablesurvey.php:959
-#: /tmp/translationstatus/admin/printablesurvey.php:1197
-#: /tmp/translationstatus/admin/printablesurvey.php:1201
+#: /tmp/translationstatus/admin/printablesurvey.php:835
+#: /tmp/translationstatus/admin/printablesurvey.php:836
+#: /tmp/translationstatus/admin/printablesurvey.php:860
+#: /tmp/translationstatus/admin/printablesurvey.php:867
+#: /tmp/translationstatus/admin/printablesurvey.php:893
+#: /tmp/translationstatus/admin/printablesurvey.php:896
+#: /tmp/translationstatus/admin/printablesurvey.php:960
+#: /tmp/translationstatus/admin/printablesurvey.php:961
+#: /tmp/translationstatus/admin/printablesurvey.php:1199
+#: /tmp/translationstatus/admin/printablesurvey.php:1203
 #: /tmp/translationstatus/admin/templates.php:667
 msgid "Please choose *only one* of the following:"
 msgstr "Prosím zvolte *pouze jednu* z následujících možností:"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:850
 #: /tmp/translationstatus/admin/printablesurvey.php:852
+#: /tmp/translationstatus/admin/printablesurvey.php:854
 msgid "Please enter a date:"
 msgstr "Prosím napište datum:"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:985
+#: /tmp/translationstatus/admin/printablesurvey.php:987
 msgid "Please number each box in order of preference from 1 to"
 msgstr "Prosím očíslujte každé okénko podle preferencí od 1 do"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:986
+#: /tmp/translationstatus/admin/printablesurvey.php:988
 msgid "Please number each box in order of preference from 1 to "
 msgstr "Prosím očíslujte každé okénko podle preferencí od 1 do"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:1008
-#: /tmp/translationstatus/admin/printablesurvey.php:1009
+#: /tmp/translationstatus/admin/printablesurvey.php:1010
+#: /tmp/translationstatus/admin/printablesurvey.php:1011
 msgid "Please choose *all* that apply:"
 msgstr "Prosím zvolte *vše*, co je relevantní:"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:1014
-#: /tmp/translationstatus/admin/printablesurvey.php:1015
+#: /tmp/translationstatus/admin/printablesurvey.php:1016
+#: /tmp/translationstatus/admin/printablesurvey.php:1017
 #, php-format
 msgid "Please choose *at most* %s answers:"
 msgstr "Prosím zvolte *nanejvýš* %s  odpovědi:"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:1066
-#: /tmp/translationstatus/admin/printablesurvey.php:1067
+#: /tmp/translationstatus/admin/printablesurvey.php:1068
+#: /tmp/translationstatus/admin/printablesurvey.php:1069
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Prosím zvolte vše, co je relevantní, a doplňte komentář:"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:1072
-#: /tmp/translationstatus/admin/printablesurvey.php:1073
+#: /tmp/translationstatus/admin/printablesurvey.php:1074
+#: /tmp/translationstatus/admin/printablesurvey.php:1075
 msgid "Please choose *at most* "
 msgstr "Prosím zvolte *nanejvýš*"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:1072
-#: /tmp/translationstatus/admin/printablesurvey.php:1073
+#: /tmp/translationstatus/admin/printablesurvey.php:1074
+#: /tmp/translationstatus/admin/printablesurvey.php:1075
 msgid "answers and provide a comment:"
 msgstr "odpovědi a doplňte komentář:"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:1112
-#: /tmp/translationstatus/admin/printablesurvey.php:1130
+#: /tmp/translationstatus/admin/printablesurvey.php:1114
+#: /tmp/translationstatus/admin/printablesurvey.php:1132
 msgid "Please write your answer(s) here:"
 msgstr "Prosím napište své odpovědi zde:"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:1152
 #: /tmp/translationstatus/admin/printablesurvey.php:1154
-#: /tmp/translationstatus/admin/printablesurvey.php:1161
-#: /tmp/translationstatus/admin/printablesurvey.php:1164
-#: /tmp/translationstatus/admin/printablesurvey.php:1174
-#: /tmp/translationstatus/admin/printablesurvey.php:1177
-#: /tmp/translationstatus/admin/printablesurvey.php:1187
-#: /tmp/translationstatus/admin/printablesurvey.php:1190
+#: /tmp/translationstatus/admin/printablesurvey.php:1156
+#: /tmp/translationstatus/admin/printablesurvey.php:1163
+#: /tmp/translationstatus/admin/printablesurvey.php:1166
+#: /tmp/translationstatus/admin/printablesurvey.php:1176
+#: /tmp/translationstatus/admin/printablesurvey.php:1179
+#: /tmp/translationstatus/admin/printablesurvey.php:1189
+#: /tmp/translationstatus/admin/printablesurvey.php:1192
 msgid "Please write your answer here:"
 msgstr "Prosím napište svou odpověď zde:"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:1211
-#: /tmp/translationstatus/admin/printablesurvey.php:1228
-#: /tmp/translationstatus/admin/printablesurvey.php:1275
-#: /tmp/translationstatus/admin/printablesurvey.php:1284
-#: /tmp/translationstatus/admin/printablesurvey.php:1311
-#: /tmp/translationstatus/admin/printablesurvey.php:1326
-#: /tmp/translationstatus/admin/printablesurvey.php:1352
-#: /tmp/translationstatus/admin/printablesurvey.php:1367
-#: /tmp/translationstatus/admin/printablesurvey.php:1576
-#: /tmp/translationstatus/admin/printablesurvey.php:1586
-#: /tmp/translationstatus/admin/printablesurvey.php:1680
-#: /tmp/translationstatus/admin/printablesurvey.php:1683
-#: /tmp/translationstatus/admin/printablesurvey.php:1787
-#: /tmp/translationstatus/admin/printablesurvey.php:1788
+#: /tmp/translationstatus/admin/printablesurvey.php:1213
+#: /tmp/translationstatus/admin/printablesurvey.php:1230
+#: /tmp/translationstatus/admin/printablesurvey.php:1277
+#: /tmp/translationstatus/admin/printablesurvey.php:1286
+#: /tmp/translationstatus/admin/printablesurvey.php:1313
+#: /tmp/translationstatus/admin/printablesurvey.php:1328
+#: /tmp/translationstatus/admin/printablesurvey.php:1354
+#: /tmp/translationstatus/admin/printablesurvey.php:1369
+#: /tmp/translationstatus/admin/printablesurvey.php:1578
+#: /tmp/translationstatus/admin/printablesurvey.php:1588
+#: /tmp/translationstatus/admin/printablesurvey.php:1682
+#: /tmp/translationstatus/admin/printablesurvey.php:1685
+#: /tmp/translationstatus/admin/printablesurvey.php:1789
+#: /tmp/translationstatus/admin/printablesurvey.php:1790
 msgid "Please choose the appropriate response for each item:"
 msgstr "Prosím zvolte vhodnou odpověď pro každou z položek:"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:1429
-#: /tmp/translationstatus/admin/printablesurvey.php:1430
+#: /tmp/translationstatus/admin/printablesurvey.php:1431
+#: /tmp/translationstatus/admin/printablesurvey.php:1432
 #, php-format
 msgid "Please write a multiple of %d between %d and %d for each item:"
 msgstr "Prosím vložte násobek %d od %d do %d pro každou položku:"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:1433
-#: /tmp/translationstatus/admin/printablesurvey.php:1434
+#: /tmp/translationstatus/admin/printablesurvey.php:1435
+#: /tmp/translationstatus/admin/printablesurvey.php:1436
 #, php-format
 msgid "Please enter a number between %d and %d for each item:"
 msgstr "Prosím vložte číslo od %d do %d pro každou položku:"
 
-#: /tmp/translationstatus/admin/printablesurvey.php:1845
+#: /tmp/translationstatus/admin/printablesurvey.php:1847
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
 msgstr "Průzkum obsahuje {NUMBEROFQUESTIONS} otázek."
 
 # correct
-#: /tmp/translationstatus/admin/printablesurvey.php:1926
+#: /tmp/translationstatus/admin/printablesurvey.php:1928
 #, php-format
 msgid "Please fax your completed survey to: %s"
 msgstr "Prosím odfaxujte vyplněný průzkum na: %s"
 
-# if it means "show this question if the following conditions are met"
-#: /tmp/translationstatus/admin/printablesurvey.php:1945
-#, fuzzy, php-format
+#: /tmp/translationstatus/admin/printablesurvey.php:1947
+#, php-format
 msgid "Only answer this question for the items you selected in question %d ('%s')"
-msgstr "Zobrazit tuto otázku pouze tehdy, jsou-li splněny následující podmínky:"
+msgstr "Odpovídejte na tuto otázku pouze pro položky, které jste vybral(a) v otázce %d ('%s')"
 
-# if it means "show this question if the following conditions are met"
-#: /tmp/translationstatus/admin/printablesurvey.php:1954
-#, fuzzy, php-format
+#: /tmp/translationstatus/admin/printablesurvey.php:1956
+#, php-format
 msgid "Only answer this question for the items you did not select in question %d ('%s')"
-msgstr "Zobrazit tuto otázku pouze tehdy, jsou-li splněny následující podmínky:"
+msgstr "Odpovídejte na tuto otázku pouze pro položky, které jste nevybral(a) v otázce %d ('%s')"
 
 #: /tmp/translationstatus/admin/htmleditor-popup.php:37
 #: /tmp/translationstatus/admin/htmleditor-popup.php:45
@@ -5471,9 +5470,9 @@ msgid "Close Editor"
 msgstr "Ukončit editor"
 
 #: /tmp/translationstatus/admin/htmleditor-popup.php:87
-#, fuzzy, php-format
+#, php-format
 msgid "Editing %s"
-msgstr "Editování"
+msgstr "Úprava %s"
 
 #: /tmp/translationstatus/admin/htmleditor-popup.php:137
 msgid "Editing"
@@ -5542,24 +5541,24 @@ msgid "Export this Response"
 msgstr "Exportovat tuto odpověď"
 
 #: /tmp/translationstatus/admin/browse.php:251
-#: /tmp/translationstatus/admin/tokens.php:945
+#: /tmp/translationstatus/admin/tokens.php:954
 msgid "Show previous..."
 msgstr "Zobrazit předchozí..."
 
 #: /tmp/translationstatus/admin/browse.php:254
-#: /tmp/translationstatus/admin/browse.php:707
-#: /tmp/translationstatus/admin/browse.php:955
-#: /tmp/translationstatus/admin/tokens.php:949
+#: /tmp/translationstatus/admin/browse.php:708
+#: /tmp/translationstatus/admin/browse.php:956
+#: /tmp/translationstatus/admin/tokens.php:958
 msgid "Show next..."
 msgstr "Zobrazit následující..."
 
 #: /tmp/translationstatus/admin/browse.php:316
-#: /tmp/translationstatus/admin/browse.php:839
+#: /tmp/translationstatus/admin/browse.php:840
 msgid "Do you really want to delete this response?"
 msgstr "Opravdu chcete smazat tuto odpověď?"
 
 #: /tmp/translationstatus/admin/browse.php:317
-#: /tmp/translationstatus/admin/browse.php:840
+#: /tmp/translationstatus/admin/browse.php:841
 msgid "Do you really want to delete all marked responses?"
 msgstr "Jste si jistý(á), že chcete vymazat všechny označené odpovědi?"
 
@@ -5576,7 +5575,7 @@ msgid "Showing Filtered Results"
 msgstr "Zobrazení filtrovaných výsledků"
 
 #: /tmp/translationstatus/admin/browse.php:559
-#: /tmp/translationstatus/admin/browse.php:898
+#: /tmp/translationstatus/admin/browse.php:899
 msgid "Delete marked responses"
 msgstr "Vymazat označené odpovědi"
 
@@ -5584,117 +5583,117 @@ msgstr "Vymazat označené odpovědi"
 msgid "Download marked files"
 msgstr "Stáhnout označené soubory"
 
-#: /tmp/translationstatus/admin/browse.php:694
-#: /tmp/translationstatus/admin/browse.php:942
-#: /tmp/translationstatus/admin/tokens.php:924
+#: /tmp/translationstatus/admin/browse.php:695
+#: /tmp/translationstatus/admin/browse.php:943
+#: /tmp/translationstatus/admin/tokens.php:933
 msgid "Data view control"
 msgstr "Ovládání zobrazení dat"
 
-#: /tmp/translationstatus/admin/browse.php:700
-#: /tmp/translationstatus/admin/browse.php:948
-#: /tmp/translationstatus/admin/tokens.php:942
+#: /tmp/translationstatus/admin/browse.php:701
+#: /tmp/translationstatus/admin/browse.php:949
+#: /tmp/translationstatus/admin/tokens.php:951
 msgid "Show start..."
 msgstr "Zobrazit počáteční..."
 
-#: /tmp/translationstatus/admin/browse.php:703
-#: /tmp/translationstatus/admin/browse.php:951
+#: /tmp/translationstatus/admin/browse.php:704
+#: /tmp/translationstatus/admin/browse.php:952
 msgid "Show previous.."
 msgstr "Zobrazit předchozí..."
 
-#: /tmp/translationstatus/admin/browse.php:708
-#: /tmp/translationstatus/admin/browse.php:956
+#: /tmp/translationstatus/admin/browse.php:709
+#: /tmp/translationstatus/admin/browse.php:957
 msgid "Show next.."
 msgstr "Zobrazit následující..."
 
-#: /tmp/translationstatus/admin/browse.php:710
-#: /tmp/translationstatus/admin/browse.php:958
-#: /tmp/translationstatus/admin/tokens.php:952
+#: /tmp/translationstatus/admin/browse.php:711
+#: /tmp/translationstatus/admin/browse.php:959
+#: /tmp/translationstatus/admin/tokens.php:961
 msgid "Show last..."
 msgstr "Zobrazit poslední..."
 
-#: /tmp/translationstatus/admin/browse.php:711
-#: /tmp/translationstatus/admin/browse.php:959
+#: /tmp/translationstatus/admin/browse.php:712
+#: /tmp/translationstatus/admin/browse.php:960
 msgid "Show last.."
 msgstr "Zobrazit poslední..."
 
-#: /tmp/translationstatus/admin/browse.php:724
-#: /tmp/translationstatus/admin/browse.php:972
-#: /tmp/translationstatus/admin/tokens.php:965
+#: /tmp/translationstatus/admin/browse.php:725
+#: /tmp/translationstatus/admin/browse.php:973
+#: /tmp/translationstatus/admin/tokens.php:974
 msgid "Records displayed:"
 msgstr "Zobrazených záznamů:"
 
-#: /tmp/translationstatus/admin/browse.php:725
-#: /tmp/translationstatus/admin/browse.php:973
-#: /tmp/translationstatus/admin/tokens.php:966
+#: /tmp/translationstatus/admin/browse.php:726
+#: /tmp/translationstatus/admin/browse.php:974
+#: /tmp/translationstatus/admin/tokens.php:975
 msgid "Starting from:"
 msgstr "Začátek od:"
 
-#: /tmp/translationstatus/admin/browse.php:726
-#: /tmp/translationstatus/admin/browse.php:974
-#: /tmp/translationstatus/admin/tokens.php:967
+#: /tmp/translationstatus/admin/browse.php:727
+#: /tmp/translationstatus/admin/browse.php:975
+#: /tmp/translationstatus/admin/tokens.php:976
 msgid "Show"
 msgstr "Ukázat"
 
-#: /tmp/translationstatus/admin/browse.php:727
+#: /tmp/translationstatus/admin/browse.php:728
 msgid "Display:"
 msgstr "Zobrazit řádky"
 
-#: /tmp/translationstatus/admin/browse.php:759
-#: /tmp/translationstatus/admin/browse.php:1000
+#: /tmp/translationstatus/admin/browse.php:760
+#: /tmp/translationstatus/admin/browse.php:1001
 msgid "View response details"
 msgstr "Zobrazit detaily odpovědi"
 
-#: /tmp/translationstatus/admin/browse.php:763
-#: /tmp/translationstatus/admin/browse.php:1001
+#: /tmp/translationstatus/admin/browse.php:764
+#: /tmp/translationstatus/admin/browse.php:1002
 msgid "Edit this response"
 msgstr "Editovat tuto odpověď"
 
-#: /tmp/translationstatus/admin/browse.php:768
+#: /tmp/translationstatus/admin/browse.php:769
 msgid "Download all files in this response as a zip file"
 msgstr "Stáhnout všechny soubory této odpovědi jako zip soubor."
 
-#: /tmp/translationstatus/admin/browse.php:772
-#: /tmp/translationstatus/admin/browse.php:1002
+#: /tmp/translationstatus/admin/browse.php:773
+#: /tmp/translationstatus/admin/browse.php:1003
 msgid "Delete this response"
 msgstr "Smazat tuto odpověď"
 
-#: /tmp/translationstatus/admin/browse.php:782
+#: /tmp/translationstatus/admin/browse.php:783
 msgid "Edit this token"
 msgstr "Editovat záznam účastníka"
 
-#: /tmp/translationstatus/admin/browse.php:835
+#: /tmp/translationstatus/admin/browse.php:836
 msgid "Time statistics"
 msgstr "Přehled časů potřebných k vyplnění"
 
-#: /tmp/translationstatus/admin/browse.php:1029
+#: /tmp/translationstatus/admin/browse.php:1030
 msgid "Interview time"
 msgstr "Čas vyplnění"
 
-#: /tmp/translationstatus/admin/browse.php:1043
+#: /tmp/translationstatus/admin/browse.php:1044
 msgid "Average interview time: "
 msgstr "Průměrný čas vyplnění:"
 
-#: /tmp/translationstatus/admin/browse.php:1071
+#: /tmp/translationstatus/admin/browse.php:1072
 msgid "Median: "
 msgstr "Medián:"
 
-#: /tmp/translationstatus/admin/browse.php:1078
+#: /tmp/translationstatus/admin/browse.php:1079
 msgid "Timings"
 msgstr "Časy vyplnění"
 
-#: /tmp/translationstatus/admin/browse.php:1093
+#: /tmp/translationstatus/admin/browse.php:1094
 msgid "Response summary"
 msgstr "Přehled odpovědí"
 
-#: /tmp/translationstatus/admin/browse.php:1095
+#: /tmp/translationstatus/admin/browse.php:1096
 msgid "Total responses:"
 msgstr "Celkem odpovědí:"
 
-#: /tmp/translationstatus/admin/browse.php:1097
+#: /tmp/translationstatus/admin/browse.php:1098
 msgid "Full responses:"
 msgstr "Dokončené odpovědi:"
 
-#: /tmp/translationstatus/admin/browse.php:1098
+#: /tmp/translationstatus/admin/browse.php:1099
 msgid "Incomplete responses:"
 msgstr "Nedokončené odpovědi:"
 
@@ -5854,7 +5853,7 @@ msgstr ""
 
 #: /tmp/translationstatus/admin/admin_functions.php:306
 #: /tmp/translationstatus/admin/admin_functions.php:308
-#: /tmp/translationstatus/admin/tokens.php:1719
+#: /tmp/translationstatus/admin/tokens.php:1732
 msgid ""
 "If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n"
 "{OPTOUTURL}"
@@ -5867,7 +5866,7 @@ msgid "Reminder to participate in a survey"
 msgstr "Připomenutí účasti na průzkumu"
 
 #: /tmp/translationstatus/admin/admin_functions.php:308
-#: /tmp/translationstatus/admin/tokens.php:1719
+#: /tmp/translationstatus/admin/tokens.php:1732
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -6105,15 +6104,15 @@ msgstr "SID nebyl zadán. Nemohu vypsat (exportovat) průzkum."
 msgid "First name from token"
 msgstr "Křestní jméno ze záznamu účastníka"
 
+# define token
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:110
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:128
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:148
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:169
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:188
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:220
-#, fuzzy
 msgid "Last name from token"
-msgstr "Příjmení ze záznamu účastníka"
+msgstr "Příjmení z tokenu"
 
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:111
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:164
@@ -6140,27 +6139,23 @@ msgstr "Datum expirace průzkumu"
 
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:122
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:141
-#, fuzzy
 msgid "Reload URL"
-msgstr "Koncová URL:"
+msgstr "Obnovit URL"
 
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:123
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:142
-#, fuzzy
 msgid "View response URL"
-msgstr "Zobrazit odpověď"
+msgstr "Zobrazit URL odpovědi"
 
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:124
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:143
-#, fuzzy
 msgid "Edit response URL"
-msgstr "Editovat tuto odpověď"
+msgstr "Upravit URL odpovědi"
 
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:125
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:144
-#, fuzzy
 msgid "Statistics URL"
-msgstr "Rychlé statistiky"
+msgstr "URL statistik"
 
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:126
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:146
@@ -6202,14 +6197,12 @@ msgid "Answers from this response"
 msgstr "Jednotlivé odpovědi z tohoto vyplněného dotazníku"
 
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:166
-#, fuzzy
 msgid "URL for a respondent to opt-out this survey"
-msgstr "%d odpovědí v průzkumu"
+msgstr "URL pro respondenta pro odhlášení z tohoto průzkumu"
 
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:173
-#, fuzzy
 msgid "ID of the survey"
-msgstr "URL průzkumu"
+msgstr "ID průzkumu"
 
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:181
 #: /tmp/translationstatus/admin/fck_LimeReplacementFields.php:198
@@ -6900,348 +6893,348 @@ msgstr "EUC-JP japonština"
 msgid "UTF-8 Unicode"
 msgstr "UTF-8 Unicode"
 
-#: /tmp/translationstatus/admin/tokens.php:344
+#: /tmp/translationstatus/admin/tokens.php:353
 #, php-format
 msgid "%s messages were scanned out of which %s were marked as bounce by the system."
 msgstr "%s zpráv bylo zkontrolováno a %s z nich bylo označeno jako vrácených systémem."
 
-#: /tmp/translationstatus/admin/tokens.php:348
+#: /tmp/translationstatus/admin/tokens.php:357
 #, php-format
 msgid "%s messages were scanned, none were marked as bounce by the system."
 msgstr "%s zpráv bylo zkontrolováno, žádná nebyla označena jako vrácená systémem"
 
-#: /tmp/translationstatus/admin/tokens.php:353
+#: /tmp/translationstatus/admin/tokens.php:362
 msgid "Your inbox is empty."
 msgstr "Váš inbox je prázdný."
 
-#: /tmp/translationstatus/admin/tokens.php:362
+#: /tmp/translationstatus/admin/tokens.php:371
 msgid "Please check your settings"
 msgstr "Prosím zkontrolujte svá nastavení"
 
-#: /tmp/translationstatus/admin/tokens.php:367
+#: /tmp/translationstatus/admin/tokens.php:376
 #: /tmp/translationstatus/index.php:296
 msgid "We are sorry but you don't have permissions to do this."
 msgstr "Litujeme, ale pro toto nemáte oprávnění."
 
-#: /tmp/translationstatus/admin/tokens.php:388
+#: /tmp/translationstatus/admin/tokens.php:397
 #: /tmp/translationstatus/admin/conditionshandling.php:120
 msgid "You have not selected a survey"
 msgstr "Nevybral(a) jste žádný průzkum"
 
-#: /tmp/translationstatus/admin/tokens.php:390
-#: /tmp/translationstatus/admin/tokens.php:404
-#: /tmp/translationstatus/admin/tokens.php:471
+#: /tmp/translationstatus/admin/tokens.php:399
+#: /tmp/translationstatus/admin/tokens.php:413
+#: /tmp/translationstatus/admin/tokens.php:480
 #: /tmp/translationstatus/admin/conditionshandling.php:121
 #: /tmp/translationstatus/admin/conditionshandling.php:133
 msgid "Main admin screen"
 msgstr "Hlavní stránka administrátora"
 
-#: /tmp/translationstatus/admin/tokens.php:402
+#: /tmp/translationstatus/admin/tokens.php:411
 #: /tmp/translationstatus/admin/dataentry.php:2685
 msgid "The survey you selected does not exist"
 msgstr "Vybraný průzkum neexistuje"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:466
+#: /tmp/translationstatus/admin/tokens.php:475
 msgid "Token table could not be created."
 msgstr "Tabulka účastníků nemohla být vytvořena."
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:486
+#: /tmp/translationstatus/admin/tokens.php:495
 msgid "A token table has been created for this survey."
 msgstr "Tabulka účastníků pro tento průzkum byla vytvořena."
 
-#: /tmp/translationstatus/admin/tokens.php:498
+#: /tmp/translationstatus/admin/tokens.php:507
 msgid "Import old tokens"
 msgstr "Import starých záznamů účastníků"
 
-#: /tmp/translationstatus/admin/tokens.php:499
+#: /tmp/translationstatus/admin/tokens.php:508
 msgid "A token table has been created for this survey and the old tokens were imported."
 msgstr "Tabulka účastníků pro tento průzkum byla vytvořena a staré záznamy byly importovány."
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:519
+#: /tmp/translationstatus/admin/tokens.php:528
 msgid "Tokens have not been initialised for this survey."
 msgstr "Pro tento průzkum zatím nebyla inicializována tabulka účastníků."
 
-#: /tmp/translationstatus/admin/tokens.php:522
+#: /tmp/translationstatus/admin/tokens.php:531
 msgid "If you initialise tokens for this survey then this survey will only be accessible to users who provide a token either manually or by URL."
 msgstr "Pokud inicializujete tabulku účastníků pro tento průzkum, bude průzkum přístupný pouze účastníkům, kterým byl přidělen přístupový kód."
 
-#: /tmp/translationstatus/admin/tokens.php:529
+#: /tmp/translationstatus/admin/tokens.php:538
 msgid "Note: If you turn on the -Anonymized responses- option for this survey then LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
 msgstr "Zapnete-li pro tento průzkum volbu -Anonymní odpovědi-  označí LimeSurvey účastníka, který odpověděl, pouze pomocí  'Y' místo data/času pro zajištění anonymity účastníků."
 
-#: /tmp/translationstatus/admin/tokens.php:533
+#: /tmp/translationstatus/admin/tokens.php:542
 msgid "Do you want to create a token table for this survey?"
 msgstr "Chcete vytvořit tabulku účastníků pro tento průzkum?"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:536
+#: /tmp/translationstatus/admin/tokens.php:545
 #: /tmp/translationstatus/admin/activate_functions.php:471
 msgid "Initialise tokens"
 msgstr "Inicializovat tabulku účastníků"
 
-#: /tmp/translationstatus/admin/tokens.php:538
+#: /tmp/translationstatus/admin/tokens.php:547
 #: /tmp/translationstatus/admin/activate_functions.php:478
 msgid "No, thanks."
 msgstr "Děkuji, ne."
 
-#: /tmp/translationstatus/admin/tokens.php:542
+#: /tmp/translationstatus/admin/tokens.php:551
 msgid "You don't have the permission to activate tokens."
 msgstr "Nemáte oprávnění aktivovat tabulku účastníků."
 
-#: /tmp/translationstatus/admin/tokens.php:550
+#: /tmp/translationstatus/admin/tokens.php:559
 msgid "Restore options"
 msgstr "Obnovit nastavení"
 
 # clarity
-#: /tmp/translationstatus/admin/tokens.php:553
+#: /tmp/translationstatus/admin/tokens.php:562
 msgid "The following old token tables could be restored:"
 msgstr "Následující staré tabulky účastníků mohou být obnoveny:"
 
-#: /tmp/translationstatus/admin/tokens.php:560
+#: /tmp/translationstatus/admin/tokens.php:569
 msgid "Restore"
 msgstr "Obnovit"
 
-#: /tmp/translationstatus/admin/tokens.php:589
+#: /tmp/translationstatus/admin/tokens.php:598
 msgid "Show token summary"
 msgstr "Zobrazit přehled tabulky účastníků"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:593
-#: /tmp/translationstatus/admin/tokens.php:2515
-#: /tmp/translationstatus/admin/tokens.php:2574
-#: /tmp/translationstatus/admin/tokens.php:2581
-#: /tmp/translationstatus/admin/tokens.php:2656
+#: /tmp/translationstatus/admin/tokens.php:602
+#: /tmp/translationstatus/admin/tokens.php:2533
+#: /tmp/translationstatus/admin/tokens.php:2592
+#: /tmp/translationstatus/admin/tokens.php:2599
+#: /tmp/translationstatus/admin/tokens.php:2674
 msgid "Display tokens"
 msgstr "Zobrazit záznamy účastníků"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:598
-#: /tmp/translationstatus/admin/tokens.php:2582
+#: /tmp/translationstatus/admin/tokens.php:607
+#: /tmp/translationstatus/admin/tokens.php:2600
 msgid "Add new token entry"
 msgstr "Přidat nového účastníka"
 
-#: /tmp/translationstatus/admin/tokens.php:602
-#: /tmp/translationstatus/admin/tokens.php:2453
-#: /tmp/translationstatus/admin/tokens.php:2608
+#: /tmp/translationstatus/admin/tokens.php:611
+#: /tmp/translationstatus/admin/tokens.php:2471
+#: /tmp/translationstatus/admin/tokens.php:2626
 msgid "Add dummy tokens"
 msgstr "Přidat fiktivní záznamy účastníků"
 
-#: /tmp/translationstatus/admin/tokens.php:610
+#: /tmp/translationstatus/admin/tokens.php:619
 msgid "Manage additional attribute fields"
 msgstr "Správa dalších atributů účastníků"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:617
+#: /tmp/translationstatus/admin/tokens.php:626
 msgid "Import tokens from CSV file"
 msgstr "Importovat seznam účastníků z CSV souboru"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:619
+#: /tmp/translationstatus/admin/tokens.php:628
 msgid "Import tokens from LDAP query"
 msgstr "Importovat seznam účastníků z LDAP dotazu"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:626
+#: /tmp/translationstatus/admin/tokens.php:635
 msgid "Export tokens to CSV file"
 msgstr "Exportovat seznam účastníků do CSV souboru"
 
-#: /tmp/translationstatus/admin/tokens.php:635
+#: /tmp/translationstatus/admin/tokens.php:644
 msgid "Send email invitation"
 msgstr "Poslat emailové pozvánky"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:638
-#: /tmp/translationstatus/admin/tokens.php:1701
+#: /tmp/translationstatus/admin/tokens.php:647
+#: /tmp/translationstatus/admin/tokens.php:1714
 msgid "Send email reminder"
 msgstr "Poslat email s  připomenutím"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:643
+#: /tmp/translationstatus/admin/tokens.php:652
 msgid "Generate tokens"
 msgstr "Generovat přístupové kódy účastníků"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:650
+#: /tmp/translationstatus/admin/tokens.php:659
 msgid "Drop tokens table"
 msgstr "Odstranit tabulku účastníků"
 
-#: /tmp/translationstatus/admin/tokens.php:657
-#: /tmp/translationstatus/admin/tokens.php:791
-#: /tmp/translationstatus/admin/tokens.php:801
+#: /tmp/translationstatus/admin/tokens.php:666
+#: /tmp/translationstatus/admin/tokens.php:800
+#: /tmp/translationstatus/admin/tokens.php:810
 #: /tmp/translationstatus/admin/globalsettings.php:134
 msgid "Bounce settings"
 msgstr "Zpracování vrácených emailů - nastavení"
 
-#: /tmp/translationstatus/admin/tokens.php:664
+#: /tmp/translationstatus/admin/tokens.php:673
 msgid "Show help"
 msgstr "Zobrazit nápovědu"
 
-#: /tmp/translationstatus/admin/tokens.php:678
+#: /tmp/translationstatus/admin/tokens.php:687
 msgid "Token summary"
 msgstr "Přehled tabulky účastníků"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:682
+#: /tmp/translationstatus/admin/tokens.php:691
 msgid "Total records in this token table"
 msgstr "Celkový počet záznamů v této tabulce účastníků"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:689
+#: /tmp/translationstatus/admin/tokens.php:698
 msgid "Total with no unique Token"
 msgstr "Celkem bez přístupového kódu účastníka"
 
-#: /tmp/translationstatus/admin/tokens.php:694
+#: /tmp/translationstatus/admin/tokens.php:703
 msgid "Total invitations sent"
 msgstr "Celkem posláno pozvánek"
 
-#: /tmp/translationstatus/admin/tokens.php:699
+#: /tmp/translationstatus/admin/tokens.php:708
 msgid "Total opted out"
 msgstr "Celkem se zprůzkumu odhlásilo účastníků"
 
-#: /tmp/translationstatus/admin/tokens.php:704
+#: /tmp/translationstatus/admin/tokens.php:713
 msgid "Total surveys completed"
 msgstr "Celkem ukončených průzkumů"
 
-#: /tmp/translationstatus/admin/tokens.php:729
+#: /tmp/translationstatus/admin/tokens.php:738
 msgid "Token export options"
 msgstr "Možnosti exportu záznamu účastníků"
 
-#: /tmp/translationstatus/admin/tokens.php:731
+#: /tmp/translationstatus/admin/tokens.php:740
 msgid "Token status:"
 msgstr "Stav záznamu:"
 
-#: /tmp/translationstatus/admin/tokens.php:732
+#: /tmp/translationstatus/admin/tokens.php:741
 msgid "All tokens"
 msgstr "Všechny záznamy účastníků"
 
-#: /tmp/translationstatus/admin/tokens.php:734
+#: /tmp/translationstatus/admin/tokens.php:743
 msgid "Not started"
 msgstr "Nezapočato"
 
-#: /tmp/translationstatus/admin/tokens.php:737
+#: /tmp/translationstatus/admin/tokens.php:746
 msgid "Started but not yet completed"
 msgstr "Započato ale dosud nedokončeno"
 
-#: /tmp/translationstatus/admin/tokens.php:740
+#: /tmp/translationstatus/admin/tokens.php:749
 msgid "Invitation status:"
 msgstr "Stav pozvánek:"
 
-#: /tmp/translationstatus/admin/tokens.php:741
-#: /tmp/translationstatus/admin/tokens.php:746
-#: /tmp/translationstatus/admin/tokens.php:751
+#: /tmp/translationstatus/admin/tokens.php:750
+#: /tmp/translationstatus/admin/tokens.php:755
+#: /tmp/translationstatus/admin/tokens.php:760
 msgid "All"
 msgstr "Všichni"
 
-#: /tmp/translationstatus/admin/tokens.php:742
+#: /tmp/translationstatus/admin/tokens.php:751
 msgid "Invited"
 msgstr "Pozván"
 
-#: /tmp/translationstatus/admin/tokens.php:743
+#: /tmp/translationstatus/admin/tokens.php:752
 msgid "Not invited"
 msgstr "Nepozván"
 
-#: /tmp/translationstatus/admin/tokens.php:745
+#: /tmp/translationstatus/admin/tokens.php:754
 msgid "Reminder status:"
 msgstr "Stav připomínek:"
 
-#: /tmp/translationstatus/admin/tokens.php:747
+#: /tmp/translationstatus/admin/tokens.php:756
 msgid "Reminder(s) sent"
 msgstr "Připomínka (ky) odeslány"
 
-#: /tmp/translationstatus/admin/tokens.php:748
+#: /tmp/translationstatus/admin/tokens.php:757
 msgid "No reminder(s) sent"
 msgstr "Neodeslány žádné připomínky"
 
-#: /tmp/translationstatus/admin/tokens.php:750
+#: /tmp/translationstatus/admin/tokens.php:759
 msgid "Filter by language"
 msgstr "Filtrovat podle jazyka"
 
-#: /tmp/translationstatus/admin/tokens.php:758
+#: /tmp/translationstatus/admin/tokens.php:767
 msgid "Filter by email address"
 msgstr "Filtrovat podle emailové adresy"
 
-#: /tmp/translationstatus/admin/tokens.php:762
+#: /tmp/translationstatus/admin/tokens.php:771
 msgid "Export tokens"
 msgstr "Exportovat záznamy účastníků"
 
-#: /tmp/translationstatus/admin/tokens.php:793
+#: /tmp/translationstatus/admin/tokens.php:802
 msgid "Bounce settings have been saved."
 msgstr "Nastavení pro zpracování vrácených emailů bylo uloženo."
 
-#: /tmp/translationstatus/admin/tokens.php:805
+#: /tmp/translationstatus/admin/tokens.php:814
 msgid "Bounce settings to be used"
 msgstr "Nastavení pro vrácené emaily"
 
-#: /tmp/translationstatus/admin/tokens.php:812
+#: /tmp/translationstatus/admin/tokens.php:821
 msgid "Use settings below"
 msgstr "Použít nastavení dole"
 
-#: /tmp/translationstatus/admin/tokens.php:815
+#: /tmp/translationstatus/admin/tokens.php:824
 msgid "Use global settings"
 msgstr "Použít globální nastavení"
 
-#: /tmp/translationstatus/admin/tokens.php:818
+#: /tmp/translationstatus/admin/tokens.php:827
 msgid "Survey bounce email:"
 msgstr "Emailová adresa pro vrácené emaily:"
 
-#: /tmp/translationstatus/admin/tokens.php:820
+#: /tmp/translationstatus/admin/tokens.php:829
 #: /tmp/translationstatus/admin/globalsettings.php:334
 msgid "Server type:"
 msgstr "Typ serveru:"
 
-#: /tmp/translationstatus/admin/tokens.php:827
+#: /tmp/translationstatus/admin/tokens.php:836
 #: /tmp/translationstatus/admin/globalsettings.php:341
 msgid "IMAP"
 msgstr "IMAP"
 
-#: /tmp/translationstatus/admin/tokens.php:830
+#: /tmp/translationstatus/admin/tokens.php:839
 #: /tmp/translationstatus/admin/globalsettings.php:344
 msgid "POP"
 msgstr "POP"
 
-#: /tmp/translationstatus/admin/tokens.php:833
+#: /tmp/translationstatus/admin/tokens.php:842
 #: /tmp/translationstatus/admin/globalsettings.php:347
 msgid "Server name & port:"
 msgstr "Jméno a port serveru:"
 
-#: /tmp/translationstatus/admin/tokens.php:834
+#: /tmp/translationstatus/admin/tokens.php:843
 #: /tmp/translationstatus/admin/globalsettings.php:348
 msgid "Enter your hostname and port, e.g.: imap.gmail.com:995"
 msgstr "Zadejte jméno poskytovatele a port, například: imap.gmail.com:995"
 
-#: /tmp/translationstatus/admin/tokens.php:835
+#: /tmp/translationstatus/admin/tokens.php:844
 #: /tmp/translationstatus/admin/globalsettings.php:350
 msgid "User name:"
 msgstr "Uživatelské jméno"
 
-#: /tmp/translationstatus/admin/tokens.php:837
+#: /tmp/translationstatus/admin/tokens.php:846
 #: /tmp/translationstatus/admin/globalsettings.php:352
 #: /tmp/translationstatus/admin/dataentry.php:183
 #: /tmp/translationstatus/admin/dataentry.php:2632
 msgid "Password:"
 msgstr "Heslo:"
 
-#: /tmp/translationstatus/admin/tokens.php:839
+#: /tmp/translationstatus/admin/tokens.php:848
 #: /tmp/translationstatus/admin/globalsettings.php:354
 msgid "Encryption type:"
 msgstr "Typ šifrování:"
 
-#: /tmp/translationstatus/admin/tokens.php:846
+#: /tmp/translationstatus/admin/tokens.php:855
 #: /tmp/translationstatus/admin/globalsettings.php:308
 #: /tmp/translationstatus/admin/globalsettings.php:361
 msgid "SSL"
 msgstr "SSL"
 
-#: /tmp/translationstatus/admin/tokens.php:849
+#: /tmp/translationstatus/admin/tokens.php:858
 #: /tmp/translationstatus/admin/globalsettings.php:311
 #: /tmp/translationstatus/admin/globalsettings.php:364
 msgid "TLS"
 msgstr "TSL"
 
-#: /tmp/translationstatus/admin/tokens.php:851
+#: /tmp/translationstatus/admin/tokens.php:860
 #: /tmp/translationstatus/admin/userrighthandling.php:159
 #: /tmp/translationstatus/admin/globalsettings.php:523
 #: /tmp/translationstatus/admin/html.php:100
@@ -7249,766 +7242,765 @@ msgid "Save settings"
 msgstr "Uložit nastavení"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:859
-#: /tmp/translationstatus/admin/tokens.php:899
+#: /tmp/translationstatus/admin/tokens.php:868
+#: /tmp/translationstatus/admin/tokens.php:908
 msgid "Delete all token entries"
 msgstr "Smazat všechny záznamy z tabulky"
 
-#: /tmp/translationstatus/admin/tokens.php:860
+#: /tmp/translationstatus/admin/tokens.php:869
 msgid "All token entries have been deleted."
 msgstr "Byly smazány všechny záznamy účastníků."
 
-#: /tmp/translationstatus/admin/tokens.php:868
+#: /tmp/translationstatus/admin/tokens.php:877
 msgid "Reset token invitation status"
 msgstr "Resetovat stav pozvánek"
 
-#: /tmp/translationstatus/admin/tokens.php:869
+#: /tmp/translationstatus/admin/tokens.php:878
 msgid "All token entries have been set to 'Not invited'."
 msgstr "Všechny záznamy byly nastaveny na  'Nepozván'."
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:877
+#: /tmp/translationstatus/admin/tokens.php:886
 msgid "Remove unique token numbers"
 msgstr "Smazat všechny přístupové kódy účastníků"
 
-#: /tmp/translationstatus/admin/tokens.php:878
+#: /tmp/translationstatus/admin/tokens.php:887
 msgid "All unique token numbers have been removed."
 msgstr "Všechny přístupové kódy účastníků byly smazány."
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:885
+#: /tmp/translationstatus/admin/tokens.php:894
 msgid "Token database administration options"
 msgstr "Možnosti správy databáze účastníků"
 
-#: /tmp/translationstatus/admin/tokens.php:891
+#: /tmp/translationstatus/admin/tokens.php:900
 msgid "Are you really sure you want to reset all invitation records to NO?"
 msgstr "Opravdu chcete nastavit všechny záznamy pozvánek na NE?"
 
-#: /tmp/translationstatus/admin/tokens.php:891
+#: /tmp/translationstatus/admin/tokens.php:900
 msgid "Set all entries to 'No invitation sent'."
 msgstr "Nastavit všechny položky na \"Pozvánky neodeslány\"."
 
-#: /tmp/translationstatus/admin/tokens.php:893
+#: /tmp/translationstatus/admin/tokens.php:902
 msgid "Are you sure you want to delete all unique token strings?"
 msgstr "Opravdu chcete smazat všechny přístupové kódy účastníků?"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:893
+#: /tmp/translationstatus/admin/tokens.php:902
 msgid "Delete all unique token strings"
 msgstr "Smazat všechny přístupové kódy účastníků"
 
-#: /tmp/translationstatus/admin/tokens.php:899
+#: /tmp/translationstatus/admin/tokens.php:908
 msgid "Are you really sure you want to delete ALL token entries?"
 msgstr "Opravdu chcete smazat VŠECHNY záznamy účastníků?"
 
-#: /tmp/translationstatus/admin/tokens.php:931
+#: /tmp/translationstatus/admin/tokens.php:940
 msgid "You have selected not to use any bounce settings"
 msgstr "Nepoužíváte žádné nastavení pro zpracování vrácených emailů"
 
-#: /tmp/translationstatus/admin/tokens.php:935
+#: /tmp/translationstatus/admin/tokens.php:944
 msgid "Bounce processing"
 msgstr "Zpracování vrácených zpráv"
 
-#: /tmp/translationstatus/admin/tokens.php:957
+#: /tmp/translationstatus/admin/tokens.php:966
 msgid "Search"
 msgstr "Vyhledat"
 
-#: /tmp/translationstatus/admin/tokens.php:1001
-#: /tmp/translationstatus/admin/tokens.php:1003
 #: /tmp/translationstatus/admin/tokens.php:1010
-#: /tmp/translationstatus/admin/tokens.php:1013
-#: /tmp/translationstatus/admin/tokens.php:1020
-#: /tmp/translationstatus/admin/tokens.php:1023
-#: /tmp/translationstatus/admin/tokens.php:1030
-#: /tmp/translationstatus/admin/tokens.php:1033
-#: /tmp/translationstatus/admin/tokens.php:1040
-#: /tmp/translationstatus/admin/tokens.php:1043
-#: /tmp/translationstatus/admin/tokens.php:1050
-#: /tmp/translationstatus/admin/tokens.php:1053
-#: /tmp/translationstatus/admin/tokens.php:1060
-#: /tmp/translationstatus/admin/tokens.php:1063
-#: /tmp/translationstatus/admin/tokens.php:1070
-#: /tmp/translationstatus/admin/tokens.php:1073
-#: /tmp/translationstatus/admin/tokens.php:1080
-#: /tmp/translationstatus/admin/tokens.php:1083
-#: /tmp/translationstatus/admin/tokens.php:1090
-#: /tmp/translationstatus/admin/tokens.php:1093
-#: /tmp/translationstatus/admin/tokens.php:1100
-#: /tmp/translationstatus/admin/tokens.php:1103
-#: /tmp/translationstatus/admin/tokens.php:1110
-#: /tmp/translationstatus/admin/tokens.php:1113
-#: /tmp/translationstatus/admin/tokens.php:1120
-#: /tmp/translationstatus/admin/tokens.php:1123
-#: /tmp/translationstatus/admin/tokens.php:1130
-#: /tmp/translationstatus/admin/tokens.php:1133
-#: /tmp/translationstatus/admin/tokens.php:1143
+#: /tmp/translationstatus/admin/tokens.php:1012
+#: /tmp/translationstatus/admin/tokens.php:1019
+#: /tmp/translationstatus/admin/tokens.php:1022
+#: /tmp/translationstatus/admin/tokens.php:1029
+#: /tmp/translationstatus/admin/tokens.php:1032
+#: /tmp/translationstatus/admin/tokens.php:1039
+#: /tmp/translationstatus/admin/tokens.php:1042
+#: /tmp/translationstatus/admin/tokens.php:1049
+#: /tmp/translationstatus/admin/tokens.php:1052
+#: /tmp/translationstatus/admin/tokens.php:1059
+#: /tmp/translationstatus/admin/tokens.php:1062
+#: /tmp/translationstatus/admin/tokens.php:1069
+#: /tmp/translationstatus/admin/tokens.php:1072
+#: /tmp/translationstatus/admin/tokens.php:1079
+#: /tmp/translationstatus/admin/tokens.php:1082
+#: /tmp/translationstatus/admin/tokens.php:1089
+#: /tmp/translationstatus/admin/tokens.php:1092
+#: /tmp/translationstatus/admin/tokens.php:1099
+#: /tmp/translationstatus/admin/tokens.php:1102
+#: /tmp/translationstatus/admin/tokens.php:1109
+#: /tmp/translationstatus/admin/tokens.php:1112
+#: /tmp/translationstatus/admin/tokens.php:1119
+#: /tmp/translationstatus/admin/tokens.php:1122
+#: /tmp/translationstatus/admin/tokens.php:1129
+#: /tmp/translationstatus/admin/tokens.php:1132
+#: /tmp/translationstatus/admin/tokens.php:1139
+#: /tmp/translationstatus/admin/tokens.php:1142
+#: /tmp/translationstatus/admin/tokens.php:1152
 msgid "Sort by: "
 msgstr "Seřadit podle:"
 
-#: /tmp/translationstatus/admin/tokens.php:1041
-#: /tmp/translationstatus/admin/tokens.php:1044
-#: /tmp/translationstatus/admin/tokens.php:1045
+#: /tmp/translationstatus/admin/tokens.php:1050
+#: /tmp/translationstatus/admin/tokens.php:1053
+#: /tmp/translationstatus/admin/tokens.php:1054
 msgid "Email status"
 msgstr "Stav emailu"
 
-#: /tmp/translationstatus/admin/tokens.php:1071
-#: /tmp/translationstatus/admin/tokens.php:1074
-#: /tmp/translationstatus/admin/tokens.php:1075
-#: /tmp/translationstatus/admin/tokens.php:2315
+#: /tmp/translationstatus/admin/tokens.php:1080
+#: /tmp/translationstatus/admin/tokens.php:1083
+#: /tmp/translationstatus/admin/tokens.php:1084
+#: /tmp/translationstatus/admin/tokens.php:2333
 msgid "Invitation sent?"
 msgstr "Pozvánka odeslána?"
 
-#: /tmp/translationstatus/admin/tokens.php:1081
-#: /tmp/translationstatus/admin/tokens.php:1084
-#: /tmp/translationstatus/admin/tokens.php:1085
-#: /tmp/translationstatus/admin/tokens.php:2320
+#: /tmp/translationstatus/admin/tokens.php:1090
+#: /tmp/translationstatus/admin/tokens.php:1093
+#: /tmp/translationstatus/admin/tokens.php:1094
+#: /tmp/translationstatus/admin/tokens.php:2338
 msgid "Reminder sent?"
 msgstr "Připomínka odeslána?"
 
-#: /tmp/translationstatus/admin/tokens.php:1091
-#: /tmp/translationstatus/admin/tokens.php:1094
-#: /tmp/translationstatus/admin/tokens.php:1095
+#: /tmp/translationstatus/admin/tokens.php:1100
+#: /tmp/translationstatus/admin/tokens.php:1103
+#: /tmp/translationstatus/admin/tokens.php:1104
 msgid "Reminder count"
 msgstr "Počet připomínek"
 
-#: /tmp/translationstatus/admin/tokens.php:1101
-#: /tmp/translationstatus/admin/tokens.php:1104
-#: /tmp/translationstatus/admin/tokens.php:1105
-#: /tmp/translationstatus/admin/tokens.php:2333
+#: /tmp/translationstatus/admin/tokens.php:1110
+#: /tmp/translationstatus/admin/tokens.php:1113
+#: /tmp/translationstatus/admin/tokens.php:1114
+#: /tmp/translationstatus/admin/tokens.php:2351
 msgid "Completed?"
 msgstr "Dokončeno?"
 
-#: /tmp/translationstatus/admin/tokens.php:1121
-#: /tmp/translationstatus/admin/tokens.php:1124
-#: /tmp/translationstatus/admin/tokens.php:1125
-#: /tmp/translationstatus/admin/tokens.php:2343
-#: /tmp/translationstatus/admin/tokens.php:2426
+#: /tmp/translationstatus/admin/tokens.php:1130
+#: /tmp/translationstatus/admin/tokens.php:1133
+#: /tmp/translationstatus/admin/tokens.php:1134
+#: /tmp/translationstatus/admin/tokens.php:2361
+#: /tmp/translationstatus/admin/tokens.php:2444
 msgid "Valid from"
 msgstr "Platné od"
 
-#: /tmp/translationstatus/admin/tokens.php:1131
-#: /tmp/translationstatus/admin/tokens.php:1134
-#: /tmp/translationstatus/admin/tokens.php:1135
+#: /tmp/translationstatus/admin/tokens.php:1140
+#: /tmp/translationstatus/admin/tokens.php:1143
+#: /tmp/translationstatus/admin/tokens.php:1144
 msgid "Valid until"
 msgstr "Platné do"
 
 # singular
-#: /tmp/translationstatus/admin/tokens.php:1191
+#: /tmp/translationstatus/admin/tokens.php:1200
 msgid "Invalid email address:"
 msgstr "Neplatná emailová adresa:"
 
-#: /tmp/translationstatus/admin/tokens.php:1197
+#: /tmp/translationstatus/admin/tokens.php:1206
 msgid "This participant opted out of this survey."
 msgstr "Tento účastník se průzkumu nechce účastnit."
 
-#: /tmp/translationstatus/admin/tokens.php:1223
-#: /tmp/translationstatus/admin/tokens.php:1225
+#: /tmp/translationstatus/admin/tokens.php:1232
+#: /tmp/translationstatus/admin/tokens.php:1234
 msgid "Do Survey"
 msgstr "Vyplnit průzkum"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:1233
-#: /tmp/translationstatus/admin/tokens.php:1235
-#: /tmp/translationstatus/admin/tokens.php:2264
-#: /tmp/translationstatus/admin/tokens.php:2461
+#: /tmp/translationstatus/admin/tokens.php:1242
+#: /tmp/translationstatus/admin/tokens.php:1244
+#: /tmp/translationstatus/admin/tokens.php:2282
+#: /tmp/translationstatus/admin/tokens.php:2479
 msgid "Edit token entry"
 msgstr "Editovat záznam účastníka"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:1241
-#: /tmp/translationstatus/admin/tokens.php:1243
+#: /tmp/translationstatus/admin/tokens.php:1250
+#: /tmp/translationstatus/admin/tokens.php:1252
 msgid "Delete token entry"
 msgstr "Smazat záznam účastníka"
 
-#: /tmp/translationstatus/admin/tokens.php:1258
-#: /tmp/translationstatus/admin/tokens.php:1260
+#: /tmp/translationstatus/admin/tokens.php:1267
+#: /tmp/translationstatus/admin/tokens.php:1269
 msgid "View/Update last response"
 msgstr "Prohlédnout/Aktualizovat poslední odpověd"
 
-#: /tmp/translationstatus/admin/tokens.php:1267
-#: /tmp/translationstatus/admin/tokens.php:1269
+#: /tmp/translationstatus/admin/tokens.php:1276
+#: /tmp/translationstatus/admin/tokens.php:1278
 msgid "Send invitation email to this entry"
 msgstr "Odeslat email s pozvánkou tomuto účastníkovi"
 
-#: /tmp/translationstatus/admin/tokens.php:1275
-#: /tmp/translationstatus/admin/tokens.php:1277
+#: /tmp/translationstatus/admin/tokens.php:1284
+#: /tmp/translationstatus/admin/tokens.php:1286
 msgid "Send reminder email to this entry"
 msgstr "Odeslat email s připomínkou tomuto účastníkovi"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:1295
-#: /tmp/translationstatus/admin/tokens.php:1297
+#: /tmp/translationstatus/admin/tokens.php:1304
+#: /tmp/translationstatus/admin/tokens.php:1306
 msgid "Delete the selected entries"
 msgstr "Smazat vybrané záznamy"
 
-#: /tmp/translationstatus/admin/tokens.php:1299
+#: /tmp/translationstatus/admin/tokens.php:1308
 msgid "Are you sure you want to delete the selected entries?"
 msgstr "Opravdu chcete vybrané záznamy odstranit?"
 
-#: /tmp/translationstatus/admin/tokens.php:1300
-#, fuzzy
+# define token
+#: /tmp/translationstatus/admin/tokens.php:1309
 msgid "No tokens selected"
-msgstr "Není vybrána žádná otázka"
+msgstr "Nebyl vybrán žádný token"
 
-#: /tmp/translationstatus/admin/tokens.php:1308
-#: /tmp/translationstatus/admin/tokens.php:1310
+#: /tmp/translationstatus/admin/tokens.php:1317
+#: /tmp/translationstatus/admin/tokens.php:1319
 msgid "Send invitation emails to the selected entries (if they have not yet been sent an invitation email)"
 msgstr "Odeslat email s pozvánkou vybraným účastníkům (pokud jim ještě nebyla pozvánka zaslána)"
 
-#: /tmp/translationstatus/admin/tokens.php:1314
-#: /tmp/translationstatus/admin/tokens.php:1316
+#: /tmp/translationstatus/admin/tokens.php:1323
+#: /tmp/translationstatus/admin/tokens.php:1325
 msgid "Send reminder email to the selected entries (if they have already received the invitation email)"
 msgstr "Odeslat email s připomínkou vybraným účastníkům (pokud jim již byl odeslán email s pozvánkou)"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:1331
+#: /tmp/translationstatus/admin/tokens.php:1340
 msgid "Delete Tokens Table"
 msgstr "Smazat tabulku účastníků"
 
 # clarity and consistency
-#: /tmp/translationstatus/admin/tokens.php:1337
+#: /tmp/translationstatus/admin/tokens.php:1346
 msgid "If you delete this table tokens will no longer be required to access this survey."
 msgstr "Pokud smažete tuto tabulku, pro přístup k průzkumu nebudou již vyžadovány přístupové kódy."
 
-#: /tmp/translationstatus/admin/tokens.php:1337
+#: /tmp/translationstatus/admin/tokens.php:1346
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
 msgstr "Budete-li pokračovat, bude tato tabulka zálohována. Váš administrátor bude mít možnost přístupu k této tabulce."
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:1340
+#: /tmp/translationstatus/admin/tokens.php:1349
 msgid "Delete Tokens"
 msgstr "Odstranit tabulku účastníků"
 
 # clarity
-#: /tmp/translationstatus/admin/tokens.php:1364
+#: /tmp/translationstatus/admin/tokens.php:1373
 msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
 msgstr "Tabulka účastníků byla smazána a přístupové kódy již nejsou pro přístup k průzkumu vyžadovány."
 
-#: /tmp/translationstatus/admin/tokens.php:1364
+#: /tmp/translationstatus/admin/tokens.php:1373
 msgid "A backup of this table has been made and can be accessed by your system administrator."
 msgstr "Záloha této tabulky byla vytvořena a bude přístupná administrátorovi."
 
-#: /tmp/translationstatus/admin/tokens.php:1386
+#: /tmp/translationstatus/admin/tokens.php:1395
 msgid "Send email invitations"
 msgstr "Poslat emailové pozvánky"
 
-#: /tmp/translationstatus/admin/tokens.php:1392
-#: /tmp/translationstatus/admin/tokens.php:1706
+#: /tmp/translationstatus/admin/tokens.php:1401
+#: /tmp/translationstatus/admin/tokens.php:1719
 msgid "Warning!"
 msgstr "Varování!"
 
-#: /tmp/translationstatus/admin/tokens.php:1392
-#: /tmp/translationstatus/admin/tokens.php:1706
+#: /tmp/translationstatus/admin/tokens.php:1401
+#: /tmp/translationstatus/admin/tokens.php:1719
 msgid "This survey is not yet activated and so your participants won't be able to fill out the survey."
 msgstr "Průzkum není aktivován. Účastníci průzkumu nebudou moci vyplnit průzkum."
 
-#: /tmp/translationstatus/admin/tokens.php:1458
-#: /tmp/translationstatus/admin/tokens.php:1729
+#: /tmp/translationstatus/admin/tokens.php:1467
+#: /tmp/translationstatus/admin/tokens.php:1742
 msgid "Subject"
 msgstr "Předmět"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:1491
-#: /tmp/translationstatus/admin/tokens.php:1776
+#: /tmp/translationstatus/admin/tokens.php:1500
+#: /tmp/translationstatus/admin/tokens.php:1789
 msgid "Bypass token with failing email addresses"
 msgstr "Přeskočit účastníky s neplatnými emailovými adresami"
 
-#: /tmp/translationstatus/admin/tokens.php:1495
+#: /tmp/translationstatus/admin/tokens.php:1504
 msgid "Send Invitations"
 msgstr "Zaslat pozvání"
 
-#: /tmp/translationstatus/admin/tokens.php:1508
+#: /tmp/translationstatus/admin/tokens.php:1517
 msgid "Sending invitations..."
 msgstr "Odesílám pozvání ..."
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:1510
-#: /tmp/translationstatus/admin/tokens.php:1817
+#: /tmp/translationstatus/admin/tokens.php:1519
+#: /tmp/translationstatus/admin/tokens.php:1830
 msgid "Sending to Token ID"
 msgstr "Odesílá se na ID účastníka"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:1511
-#: /tmp/translationstatus/admin/tokens.php:1818
+#: /tmp/translationstatus/admin/tokens.php:1520
+#: /tmp/translationstatus/admin/tokens.php:1831
 msgid "Sending to Token IDs"
 msgstr "Odesílá se na ID účastníků"
 
-#: /tmp/translationstatus/admin/tokens.php:1617
-#: /tmp/translationstatus/admin/tokens.php:1953
+#: /tmp/translationstatus/admin/tokens.php:1630
+#: /tmp/translationstatus/admin/tokens.php:1971
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid."
 msgstr "Email pro {FIRSTNAME} {LASTNAME} ({EMAIL}) odložen. Záznam účastníka ještě není platný."
 
-#: /tmp/translationstatus/admin/tokens.php:1621
-#: /tmp/translationstatus/admin/tokens.php:1957
+#: /tmp/translationstatus/admin/tokens.php:1634
+#: /tmp/translationstatus/admin/tokens.php:1975
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore."
 msgstr "Email pro {FIRSTNAME} {LASTNAME} ({EMAIL}) byl přeskočen. Záznam účastníka již není platný."
 
-#: /tmp/translationstatus/admin/tokens.php:1631
+#: /tmp/translationstatus/admin/tokens.php:1644
 msgid "Invitation sent to:"
 msgstr "Pozvánka zaslána adresátovi:"
 
-#: /tmp/translationstatus/admin/tokens.php:1639
-#: /tmp/translationstatus/admin/tokens.php:1973
+#: /tmp/translationstatus/admin/tokens.php:1652
+#: /tmp/translationstatus/admin/tokens.php:1991
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
 msgstr "Email pro {FIRSTNAME} {LASTNAME} ({EMAIL}) chyboval. Chybová zpráva:"
 
 # clarity
-#: /tmp/translationstatus/admin/tokens.php:1659
-#: /tmp/translationstatus/admin/tokens.php:1991
+#: /tmp/translationstatus/admin/tokens.php:1672
+#: /tmp/translationstatus/admin/tokens.php:2009
 msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
 msgstr "Ve frontě čeká více emailů než může být odesláno v jedné dávce. Pokračujte v odesílání emailů kliknutím níže."
 
-#: /tmp/translationstatus/admin/tokens.php:1660
-#: /tmp/translationstatus/admin/tokens.php:1992
+#: /tmp/translationstatus/admin/tokens.php:1673
+#: /tmp/translationstatus/admin/tokens.php:2010
 msgid "There are {EMAILCOUNT} emails still to be sent."
 msgstr "Stále ještě čeká {EMAILCOUNT} emailů k odeslání."
 
-#: /tmp/translationstatus/admin/tokens.php:1686
-#: /tmp/translationstatus/admin/tokens.php:2031
+#: /tmp/translationstatus/admin/tokens.php:1699
+#: /tmp/translationstatus/admin/tokens.php:2049
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of:"
 msgstr "Nejsou žádné emaily k odeslání. Tato situace nastala, protože záznamy účastníků nebo účastníci:"
 
 # singular
-#: /tmp/translationstatus/admin/tokens.php:1687
-#: /tmp/translationstatus/admin/tokens.php:2032
+#: /tmp/translationstatus/admin/tokens.php:1700
+#: /tmp/translationstatus/admin/tokens.php:2050
 msgid "having a valid email address"
 msgstr "nemají platnou emailovou adresu"
 
-#: /tmp/translationstatus/admin/tokens.php:1688
-#: /tmp/translationstatus/admin/tokens.php:2033
+#: /tmp/translationstatus/admin/tokens.php:1701
+#: /tmp/translationstatus/admin/tokens.php:2051
 msgid "not having been sent an invitation already"
 msgstr "již jim bylo pozvání zasláno"
 
-#: /tmp/translationstatus/admin/tokens.php:1689
+#: /tmp/translationstatus/admin/tokens.php:1702
 msgid "having already completed the survey"
 msgstr "již průzkum vyplnili"
 
-#: /tmp/translationstatus/admin/tokens.php:1690
+#: /tmp/translationstatus/admin/tokens.php:1703
 msgid "having a token"
 msgstr "s přístupovým kódem "
 
-#: /tmp/translationstatus/admin/tokens.php:1750
+#: /tmp/translationstatus/admin/tokens.php:1763
 msgid "Reminder Email:"
 msgstr "Email s připomínkou:"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:1759
 #: /tmp/translationstatus/admin/tokens.php:1772
+#: /tmp/translationstatus/admin/tokens.php:1785
 msgid "Send reminder to token ID(s):"
 msgstr "Odeslat připomínku účastníkům s ID:"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:1763
+#: /tmp/translationstatus/admin/tokens.php:1776
 msgid "Sending to:"
 msgstr "Odesílá se na:"
 
-#: /tmp/translationstatus/admin/tokens.php:1764
+#: /tmp/translationstatus/admin/tokens.php:1777
 msgid "All token entries to whom a reminder email would apply"
 msgstr "Všechny účastníky, pro které jsou splněny podmínky pro zaslání připomínky"
 
-#: /tmp/translationstatus/admin/tokens.php:1767
+#: /tmp/translationstatus/admin/tokens.php:1780
 msgid "Start at Token ID:"
 msgstr "Začít na ID:"
 
-#: /tmp/translationstatus/admin/tokens.php:1782
+#: /tmp/translationstatus/admin/tokens.php:1795
 msgid "Min days between reminders"
 msgstr "Minimálně dní mezi připomínkami"
 
-#: /tmp/translationstatus/admin/tokens.php:1786
+#: /tmp/translationstatus/admin/tokens.php:1799
 msgid "Max reminders"
 msgstr "Max připomínek"
 
-#: /tmp/translationstatus/admin/tokens.php:1789
+#: /tmp/translationstatus/admin/tokens.php:1802
 msgid "Send Reminders"
 msgstr "Odeslat připomínky"
 
-#: /tmp/translationstatus/admin/tokens.php:1802
+#: /tmp/translationstatus/admin/tokens.php:1815
 msgid "Sending Reminders"
 msgstr "Odesílám připomínky"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:1816
+#: /tmp/translationstatus/admin/tokens.php:1829
 msgid "From Token ID"
 msgstr "Od ID"
 
-#: /tmp/translationstatus/admin/tokens.php:1969
+#: /tmp/translationstatus/admin/tokens.php:1987
 msgid "Reminder sent to:"
 msgstr "Připomínka odeslána na:"
 
-#: /tmp/translationstatus/admin/tokens.php:2034
-#, fuzzy
+#: /tmp/translationstatus/admin/tokens.php:2052
 msgid "but not having already completed the survey"
-msgstr "již průzkum vyplnili"
+msgstr "ale ještě nedokončil(i) průzkum"
 
-#: /tmp/translationstatus/admin/tokens.php:2043
+#: /tmp/translationstatus/admin/tokens.php:2061
 msgid "Create tokens"
 msgstr "Vytvořit přístupové kódy účastníků"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:2047
+#: /tmp/translationstatus/admin/tokens.php:2065
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
 msgstr "Kliknutím na ano se vytvoří přístupové kódy účastníků pro všechny na seznamu, kteří jej ještě nemají vytvořený. Je to OK?"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:2096
+#: /tmp/translationstatus/admin/tokens.php:2114
 msgid "{TOKENCOUNT} tokens have been created"
 msgstr "{TOKENCOUNT} přístupových kódů bylo vytvořeno"
 
-#: /tmp/translationstatus/admin/tokens.php:2113
+#: /tmp/translationstatus/admin/tokens.php:2131
 msgid "Marked tokens have been deleted."
 msgstr "Označené záznamy byly odstraněny."
 
-#: /tmp/translationstatus/admin/tokens.php:2115
+#: /tmp/translationstatus/admin/tokens.php:2133
 msgid "No tokens were selected for deletion"
 msgstr "Nebyly vybrány žádné záznamy účastníků ke smazání"
 
 # clarity and consistency
-#: /tmp/translationstatus/admin/tokens.php:2120
+#: /tmp/translationstatus/admin/tokens.php:2138
 msgid "Token has been deleted."
 msgstr "Záznam účastníka byl smazán."
 
-#: /tmp/translationstatus/admin/tokens.php:2122
+#: /tmp/translationstatus/admin/tokens.php:2140
 msgid "Reloading Screen. Please wait."
 msgstr "Znovunačítám obrazovku. Počkejte prosím."
 
-#: /tmp/translationstatus/admin/tokens.php:2128
+#: /tmp/translationstatus/admin/tokens.php:2146
 msgid "Manage token attribute fields"
 msgstr "Správa atributů účastníků"
 
-#: /tmp/translationstatus/admin/tokens.php:2132
+#: /tmp/translationstatus/admin/tokens.php:2150
 msgid "Attribute field"
 msgstr "Pole atributu"
 
 # correct
-#: /tmp/translationstatus/admin/tokens.php:2132
+#: /tmp/translationstatus/admin/tokens.php:2150
 msgid "Field description"
 msgstr "Popis pole"
 
-#: /tmp/translationstatus/admin/tokens.php:2132
+#: /tmp/translationstatus/admin/tokens.php:2150
 msgid "Example data"
 msgstr "Příklad dat"
 
-#: /tmp/translationstatus/admin/tokens.php:2149
+#: /tmp/translationstatus/admin/tokens.php:2167
 msgid "<no data>"
 msgstr "<žádná data>"
 
-#: /tmp/translationstatus/admin/tokens.php:2160
+#: /tmp/translationstatus/admin/tokens.php:2178
 msgid "Add token attributes"
 msgstr "Přidat atributy účastníků"
 
-#: /tmp/translationstatus/admin/tokens.php:2162
+#: /tmp/translationstatus/admin/tokens.php:2180
 #, php-format
 msgid "There are %s user attribute fields in this token table"
 msgstr "V této tabulce je %s atributů účastníků"
 
-#: /tmp/translationstatus/admin/tokens.php:2165
+#: /tmp/translationstatus/admin/tokens.php:2183
 msgid "Number of attribute fields to add:"
 msgstr "Zadejte počet polí atributů uživatelů, které si přejete přidat:"
 
-#: /tmp/translationstatus/admin/tokens.php:2169
+#: /tmp/translationstatus/admin/tokens.php:2187
 msgid "Add fields"
 msgstr "Přidat pole"
 
-#: /tmp/translationstatus/admin/tokens.php:2190
+#: /tmp/translationstatus/admin/tokens.php:2208
 msgid "Update token attribute descriptions"
 msgstr "Aktualizovat popis atributů účastníků"
 
-#: /tmp/translationstatus/admin/tokens.php:2194
+#: /tmp/translationstatus/admin/tokens.php:2212
 msgid "Updating token attribute descriptions failed:"
 msgstr "Aktualizace popisu atributů účastníků se nezdařila:"
 
-#: /tmp/translationstatus/admin/tokens.php:2195
-#: /tmp/translationstatus/admin/tokens.php:2200
-#: /tmp/translationstatus/admin/tokens.php:2229
-#: /tmp/translationstatus/admin/tokens.php:2234
+#: /tmp/translationstatus/admin/tokens.php:2213
+#: /tmp/translationstatus/admin/tokens.php:2218
+#: /tmp/translationstatus/admin/tokens.php:2247
+#: /tmp/translationstatus/admin/tokens.php:2252
 msgid "Back to attribute field management."
 msgstr "Zpět na správu polí atributů."
 
-#: /tmp/translationstatus/admin/tokens.php:2199
+#: /tmp/translationstatus/admin/tokens.php:2217
 msgid "Token attribute descriptions were successfully updated."
 msgstr "Popis atributů účastníků byl úspěšně aktualizován."
 
-#: /tmp/translationstatus/admin/tokens.php:2224
+#: /tmp/translationstatus/admin/tokens.php:2242
 msgid "Update token attributes"
 msgstr "Aktualizovat atributy účastníků"
 
-#: /tmp/translationstatus/admin/tokens.php:2228
+#: /tmp/translationstatus/admin/tokens.php:2246
 msgid "Adding attribute fields failed:"
 msgstr "Přidání polí atributů účastníků se nezdařilo:"
 
-#: /tmp/translationstatus/admin/tokens.php:2233
+#: /tmp/translationstatus/admin/tokens.php:2251
 #, php-format
 msgid "%s field(s) were successfully added."
 msgstr "%s polí bylo úspěšně přidáno."
 
-#: /tmp/translationstatus/admin/tokens.php:2268
-#: /tmp/translationstatus/admin/tokens.php:2378
-#: /tmp/translationstatus/admin/tokens.php:2546
+#: /tmp/translationstatus/admin/tokens.php:2286
+#: /tmp/translationstatus/admin/tokens.php:2396
+#: /tmp/translationstatus/admin/tokens.php:2564
 msgid "Add token entry"
 msgstr "Přidat záznam účastníka"
 
-#: /tmp/translationstatus/admin/tokens.php:2276
-#: /tmp/translationstatus/admin/tokens.php:2408
+#: /tmp/translationstatus/admin/tokens.php:2294
+#: /tmp/translationstatus/admin/tokens.php:2426
 msgid "Auto"
 msgstr "Auto"
 
-#: /tmp/translationstatus/admin/tokens.php:2290
+#: /tmp/translationstatus/admin/tokens.php:2308
 msgid "Email Status"
 msgstr "Stav emailu"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:2305
+#: /tmp/translationstatus/admin/tokens.php:2323
 msgid "You can leave this blank, and automatically generate tokens using 'Generate Tokens'"
 msgstr "Toto můžete nechat prázdné a automaticky vygenerovat přístupové kódy pomocí  'Vytvořit přístupové kódy účastníků '"
 
-#: /tmp/translationstatus/admin/tokens.php:2327
+#: /tmp/translationstatus/admin/tokens.php:2345
 msgid "Reminder count:"
 msgstr "Počet připomínek"
 
-#: /tmp/translationstatus/admin/tokens.php:2338
-#: /tmp/translationstatus/admin/tokens.php:2424
+#: /tmp/translationstatus/admin/tokens.php:2356
+#: /tmp/translationstatus/admin/tokens.php:2442
 msgid "Uses left:"
 msgstr "Počet použití"
 
-#: /tmp/translationstatus/admin/tokens.php:2349
-#: /tmp/translationstatus/admin/tokens.php:2432
+#: /tmp/translationstatus/admin/tokens.php:2367
+#: /tmp/translationstatus/admin/tokens.php:2450
 msgid "until"
 msgstr "do"
 
-#: /tmp/translationstatus/admin/tokens.php:2355
-#: /tmp/translationstatus/admin/tokens.php:2438
+#: /tmp/translationstatus/admin/tokens.php:2373
+#: /tmp/translationstatus/admin/tokens.php:2456
 msgid "hh:mm"
 msgstr "hh:mm"
 
-#: /tmp/translationstatus/admin/tokens.php:2373
+#: /tmp/translationstatus/admin/tokens.php:2391
 msgid "Update token entry"
 msgstr "Aktualizovat záznam účastníka"
 
-#: /tmp/translationstatus/admin/tokens.php:2403
+#: /tmp/translationstatus/admin/tokens.php:2421
 msgid "Create dummy tokens"
 msgstr "Vytvořit fiktivní záznamy účastníků"
 
-#: /tmp/translationstatus/admin/tokens.php:2410
+#: /tmp/translationstatus/admin/tokens.php:2428
 msgid "Number of tokens"
 msgstr "Počet záznamů účastníků"
 
-#: /tmp/translationstatus/admin/tokens.php:2412
+#: /tmp/translationstatus/admin/tokens.php:2430
 msgid "Token length"
 msgstr "Délka přístupového kódu"
 
-#: /tmp/translationstatus/admin/tokens.php:2514
+#: /tmp/translationstatus/admin/tokens.php:2532
 msgid "The token entry was successfully updated."
 msgstr "Záznam účastníka byl úspěšně aktualizován"
 
-#: /tmp/translationstatus/admin/tokens.php:2519
-#: /tmp/translationstatus/admin/tokens.php:2579
-#: /tmp/translationstatus/admin/tokens.php:3115
+#: /tmp/translationstatus/admin/tokens.php:2537
+#: /tmp/translationstatus/admin/tokens.php:2597
+#: /tmp/translationstatus/admin/tokens.php:3133
 msgid "Failed"
 msgstr "Chyba"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:2520
-#: /tmp/translationstatus/admin/tokens.php:2580
+#: /tmp/translationstatus/admin/tokens.php:2538
+#: /tmp/translationstatus/admin/tokens.php:2598
 msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
 msgstr "V tabulce je již přítomen přístupový kód účastníka s touto hodnotou. Stejný kód nemůže být použit vícekrát."
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:2521
+#: /tmp/translationstatus/admin/tokens.php:2539
 msgid "Show this token entry"
 msgstr "Zobrazit tento záznam účastníka"
 
-#: /tmp/translationstatus/admin/tokens.php:2573
+#: /tmp/translationstatus/admin/tokens.php:2591
 msgid "New token was added."
 msgstr "Byl přidán nový účastník."
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:2575
+#: /tmp/translationstatus/admin/tokens.php:2593
 msgid "Add another token entry"
 msgstr "Přidat dalšího účastníka"
 
-#: /tmp/translationstatus/admin/tokens.php:2655
+#: /tmp/translationstatus/admin/tokens.php:2673
 msgid "New dummy tokens were added."
 msgstr "Nové fiktivní záznamy účastníků byly přidány."
 
-#: /tmp/translationstatus/admin/tokens.php:2662
+#: /tmp/translationstatus/admin/tokens.php:2680
 msgid "Upload CSV File"
 msgstr "Nahrát CSV soubor"
 
-#: /tmp/translationstatus/admin/tokens.php:2665
+#: /tmp/translationstatus/admin/tokens.php:2683
 msgid "CSV input format"
 msgstr "Vstupní formát CSV"
 
-#: /tmp/translationstatus/admin/tokens.php:2666
+#: /tmp/translationstatus/admin/tokens.php:2684
 msgid "File should be a standard CSV (comma delimited) file with optional double quotes around values (default for OpenOffice and Excel). The first line must contain the field names. The fields can be in any order."
 msgstr "Soubor by měl být standardní CSV (čárkou oddělený) s uvozovkami kolem hodnot (výchozí pro OpenOffice). První řádek musí obsahovat hlavičku (jména polí). Pole mohou být v libovolném pořadí."
 
-#: /tmp/translationstatus/admin/tokens.php:2666
+#: /tmp/translationstatus/admin/tokens.php:2684
 msgid "Mandatory fields:"
 msgstr "Povinná pole:"
 
-#: /tmp/translationstatus/admin/tokens.php:2667
+#: /tmp/translationstatus/admin/tokens.php:2685
 msgid "Optional fields:"
 msgstr "Volitelná pole:"
 
-#: /tmp/translationstatus/admin/tokens.php:2673
+#: /tmp/translationstatus/admin/tokens.php:2691
 msgid "Upload LDAP entries"
 msgstr "Nahrát LDAP položky"
 
-#: /tmp/translationstatus/admin/tokens.php:2676
+#: /tmp/translationstatus/admin/tokens.php:2694
 msgid "Note:"
 msgstr "Pozn.:"
 
-#: /tmp/translationstatus/admin/tokens.php:2677
+#: /tmp/translationstatus/admin/tokens.php:2695
 msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
 msgstr "LDAP dotazy jsou definované administrátorem v souboru config-ldap.php"
 
-#: /tmp/translationstatus/admin/tokens.php:2687
+#: /tmp/translationstatus/admin/tokens.php:2705
 msgid "Token file upload"
 msgstr "Upload souboru Účastníků"
 
-#: /tmp/translationstatus/admin/tokens.php:2707
+#: /tmp/translationstatus/admin/tokens.php:2725
 msgid "Uploaded CSV file successfully"
 msgstr "Načtení souboru CSV bylo úspěšné."
 
-#: /tmp/translationstatus/admin/tokens.php:2716
+#: /tmp/translationstatus/admin/tokens.php:2734
 msgid "Failed to open the uploaded file!"
 msgstr "Otevření načteného souboru se nezdařilo!"
 
-#: /tmp/translationstatus/admin/tokens.php:2763
+#: /tmp/translationstatus/admin/tokens.php:2781
 msgid "Error: Your uploaded file is missing one or more of the mandatory columns: 'firstname', 'lastname' or 'email'"
 msgstr "Chyba: V načteném souboru chybí jeden nebo více povinných sloupců:  'jméno', 'příjmení' nebo 'email'"
 
-#: /tmp/translationstatus/admin/tokens.php:2864
+#: /tmp/translationstatus/admin/tokens.php:2882
 msgid "Successfully created token entries"
 msgstr "Úspěšně vytvořené záznamy účastníků"
 
 # consistency
-#: /tmp/translationstatus/admin/tokens.php:2866
+#: /tmp/translationstatus/admin/tokens.php:2884
 msgid "Failed to create token entries"
 msgstr "Vytvořit záznamy účastníků se nezdařilo"
 
-#: /tmp/translationstatus/admin/tokens.php:2868
+#: /tmp/translationstatus/admin/tokens.php:2886
 #, php-format
 msgid "%s records in CSV"
 msgstr "%s záznamů v CSV"
 
-#: /tmp/translationstatus/admin/tokens.php:2869
+#: /tmp/translationstatus/admin/tokens.php:2887
 #, php-format
 msgid "%s records met minumum requirements"
 msgstr "%s záznamů splnilo minimální požadavky"
 
-#: /tmp/translationstatus/admin/tokens.php:2870
+#: /tmp/translationstatus/admin/tokens.php:2888
 #, php-format
 msgid "%s records imported"
 msgstr "%s záznamů importováno"
 
-#: /tmp/translationstatus/admin/tokens.php:2879
+#: /tmp/translationstatus/admin/tokens.php:2897
 #, php-format
 msgid "%s duplicate records removed"
 msgstr "%s duplicitních záznamů odstraněno"
 
-#: /tmp/translationstatus/admin/tokens.php:2880
-#: /tmp/translationstatus/admin/tokens.php:2892
-#: /tmp/translationstatus/admin/tokens.php:2902
-#: /tmp/translationstatus/admin/tokens.php:3121
-#: /tmp/translationstatus/admin/tokens.php:3129
+#: /tmp/translationstatus/admin/tokens.php:2898
+#: /tmp/translationstatus/admin/tokens.php:2910
+#: /tmp/translationstatus/admin/tokens.php:2920
+#: /tmp/translationstatus/admin/tokens.php:3139
+#: /tmp/translationstatus/admin/tokens.php:3147
 msgid "List"
 msgstr "Seznam"
 
-#: /tmp/translationstatus/admin/tokens.php:2891
+#: /tmp/translationstatus/admin/tokens.php:2909
 #, php-format
 msgid "%s lines had a mismatching number of fields."
 msgstr "%s řádků mělo nesouhlasící počet polí."
 
-#: /tmp/translationstatus/admin/tokens.php:2901
-#: /tmp/translationstatus/admin/tokens.php:3128
+#: /tmp/translationstatus/admin/tokens.php:2919
+#: /tmp/translationstatus/admin/tokens.php:3146
 #, php-format
 msgid "%s records with invalid email address removed"
 msgstr "%s  záznamů s neplatnou emailovou adresou bylo odstraněno"
 
-#: /tmp/translationstatus/admin/tokens.php:2923
+#: /tmp/translationstatus/admin/tokens.php:2941
 msgid "Uploading LDAP Query"
 msgstr "Nahrávám LDAP dotaz"
 
-#: /tmp/translationstatus/admin/tokens.php:3117
+#: /tmp/translationstatus/admin/tokens.php:3135
 msgid "Results from LDAP Query"
 msgstr "Výsledky z LDAP dotazu"
 
-#: /tmp/translationstatus/admin/tokens.php:3118
+#: /tmp/translationstatus/admin/tokens.php:3136
 msgid "Records met minumum requirements"
 msgstr "Záznamy splňující minimální požadavky"
 
-#: /tmp/translationstatus/admin/tokens.php:3119
+#: /tmp/translationstatus/admin/tokens.php:3137
 msgid "Records imported"
 msgstr "Importované záznamy"
 
 # clarity
-#: /tmp/translationstatus/admin/tokens.php:3120
+#: /tmp/translationstatus/admin/tokens.php:3138
 msgid "Duplicate records removed"
 msgstr "Duplicitní záznamy odstraněny"
 
-#: /tmp/translationstatus/admin/tokens.php:3139
+#: /tmp/translationstatus/admin/tokens.php:3157
 msgid "Can't bind to the LDAP directory"
 msgstr "Nelze se připojit k LDAP adresáři"
 
-#: /tmp/translationstatus/admin/tokens.php:3145
+#: /tmp/translationstatus/admin/tokens.php:3163
 msgid "Can't connect to the LDAP directory"
 msgstr "Nelze se spojit s LDAP adresářem"
 
-#: /tmp/translationstatus/admin/tokens.php:3166
+#: /tmp/translationstatus/admin/tokens.php:3184
 msgid "Auto detect"
 msgstr "Automaticky detekovat"
 
-#: /tmp/translationstatus/admin/tokens.php:3168
+#: /tmp/translationstatus/admin/tokens.php:3186
 msgid "Comma"
 msgstr "Čárka"
 
-#: /tmp/translationstatus/admin/tokens.php:3170
+#: /tmp/translationstatus/admin/tokens.php:3188
 msgid "Semicolon"
 msgstr "Středník"
 
-#: /tmp/translationstatus/admin/tokens.php:3172
+#: /tmp/translationstatus/admin/tokens.php:3190
 msgid "Choose the CSV file to upload:"
 msgstr "Vyberte CSV soubor pro nahrání:"
 
-#: /tmp/translationstatus/admin/tokens.php:3173
+#: /tmp/translationstatus/admin/tokens.php:3191
 #: /tmp/translationstatus/admin/vvimport.php:93
 msgid "Character set of the file:"
 msgstr "Znaková sada souboru:"
 
-#: /tmp/translationstatus/admin/tokens.php:3174
+#: /tmp/translationstatus/admin/tokens.php:3192
 msgid "Separator used:"
 msgstr "Použitý oddělovač:"
 
-#: /tmp/translationstatus/admin/tokens.php:3177
-#: /tmp/translationstatus/admin/tokens.php:3228
+#: /tmp/translationstatus/admin/tokens.php:3195
+#: /tmp/translationstatus/admin/tokens.php:3246
 msgid "Filter blank email addresses:"
 msgstr "Filtrovat prázdné emailové adresy:"
 
-#: /tmp/translationstatus/admin/tokens.php:3178
-#: /tmp/translationstatus/admin/tokens.php:3229
+#: /tmp/translationstatus/admin/tokens.php:3196
+#: /tmp/translationstatus/admin/tokens.php:3247
 msgid "Filter duplicate records:"
 msgstr "Filtrovat duplicitní záznamy:"
 
 # clarity
-#: /tmp/translationstatus/admin/tokens.php:3179
+#: /tmp/translationstatus/admin/tokens.php:3197
 msgid "Duplicates are determined by:"
 msgstr "Duplicitní záznamy jsou kontrolovány podle:"
 
-#: /tmp/translationstatus/admin/tokens.php:3194
+#: /tmp/translationstatus/admin/tokens.php:3212
 #: /tmp/translationstatus/admin/templates.php:1009
 msgid "Upload"
 msgstr "Načíst"
 
-#: /tmp/translationstatus/admin/tokens.php:3209
+#: /tmp/translationstatus/admin/tokens.php:3227
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
 msgstr "Omlouváme se, ale LDAP modul ve Vaší konfiguraci PHP chybí."
 
-#: /tmp/translationstatus/admin/tokens.php:3215
+#: /tmp/translationstatus/admin/tokens.php:3233
 msgid "LDAP is disabled or no LDAP query defined."
 msgstr "LDAP je zakázáno nebo není definován LDAP dotaz."
 
-#: /tmp/translationstatus/admin/tokens.php:3221
+#: /tmp/translationstatus/admin/tokens.php:3239
 msgid "Select the LDAP query you want to run:"
 msgstr "Vyberte LDAP dotaz, který chcete spustit:"
 
@@ -8278,19 +8270,16 @@ msgid "Group of checkboxes"
 msgstr "Skupina zatrhávacích polí"
 
 #: /tmp/translationstatus/admin/conditionshandling.php:878
-#, fuzzy
 msgid "Single checkbox"
-msgstr "Rozvržení checkboxu"
+msgstr "Samotné zaškrtávací pole"
 
 #: /tmp/translationstatus/admin/conditionshandling.php:881
-#, fuzzy
 msgid "checked"
-msgstr "Zkontrolováno"
+msgstr "zaškrtnuto"
 
 #: /tmp/translationstatus/admin/conditionshandling.php:882
-#, fuzzy
 msgid "not checked"
-msgstr "Zkontrolováno"
+msgstr "nezašktrnuto"
 
 #: /tmp/translationstatus/admin/conditionshandling.php:990
 msgid "Conditions designer"
@@ -8464,7 +8453,7 @@ msgstr "Konstanta"
 
 #: /tmp/translationstatus/admin/conditionshandling.php:1874
 msgid "RegExp"
-msgstr ""
+msgstr "Regulerní Výraz"
 
 #: /tmp/translationstatus/admin/conditionshandling.php:1881
 msgid "Predefined answer options for this question"
@@ -8620,9 +8609,9 @@ msgstr "Tato sada popisků nebyla importována protože stejná sad již existuj
 
 #: /tmp/translationstatus/admin/importlabel.php:253
 #: /tmp/translationstatus/admin/importlabel.php:358
-#, fuzzy, php-format
+#, php-format
 msgid "Existing LID: %s"
-msgstr "Editování odpovědi (ID %s)"
+msgstr "Existující LID: %s"
 
 #: /tmp/translationstatus/admin/html_functions.php:36
 msgid "Show summary information"
@@ -8776,9 +8765,8 @@ msgid "Delete User"
 msgstr "Smazat uživatele"
 
 #: /tmp/translationstatus/admin/userrighthandling.php:327
-#, fuzzy
 msgid "Use all/manage templates"
-msgstr "Správa šablon"
+msgstr "Použít vše/upravit šablony"
 
 #: /tmp/translationstatus/admin/userrighthandling.php:330
 msgid "Manage Labels"
@@ -8791,9 +8779,8 @@ msgid "Save Now"
 msgstr "Nyní uložit"
 
 #: /tmp/translationstatus/admin/userrighthandling.php:420
-#, fuzzy
 msgid "Ownership was successfully changed."
-msgstr "Otázka byla úspěšně přidána."
+msgstr "Vlastnictví bylo úspěšně změněno."
 
 #: /tmp/translationstatus/admin/userrighthandling.php:430
 msgid "User control"
@@ -8820,9 +8807,8 @@ msgid "Set global permissions for this user"
 msgstr "Nastavit globální oprávnění pro tohoto uživatele"
 
 #: /tmp/translationstatus/admin/userrighthandling.php:541
-#, fuzzy
 msgid "Take ownership"
-msgstr "Přebrat vlastnictví"
+msgstr "Vzít vlastnictví"
 
 #: /tmp/translationstatus/admin/userrighthandling.php:551
 msgid "Set template permissions for this user"
@@ -9141,15 +9127,15 @@ msgstr "Tento popis skupiny je docela neurčitý, ale důležitý."
 #: /tmp/translationstatus/admin/templates.php:429
 #: /tmp/translationstatus/admin/quota.php:710
 #: /tmp/translationstatus/admin/quota.php:773
-#: /tmp/translationstatus/index.php:2968
-#: /tmp/translationstatus/index.php:2974
-#: /tmp/translationstatus/index.php:2979
+#: /tmp/translationstatus/index.php:2912
+#: /tmp/translationstatus/index.php:2918
+#: /tmp/translationstatus/index.php:2923
 msgid "Next"
 msgstr "Další"
 
 #: /tmp/translationstatus/admin/templates.php:430
-#: /tmp/translationstatus/index.php:2962
-#: /tmp/translationstatus/index.php:3383
+#: /tmp/translationstatus/index.php:2906
+#: /tmp/translationstatus/index.php:3327
 msgid "Previous"
 msgstr "Předcházející"
 
@@ -9446,9 +9432,8 @@ msgid "There is currently no newer LimeSurvey version available."
 msgstr "V současné době není k dispozici žádná novější verze LimeSurvey."
 
 #: /tmp/translationstatus/admin/globalsettings.php:185
-#, fuzzy
 msgid "Site name:"
-msgstr "Jméno Administrátora:"
+msgstr "Název stránky:"
 
 #: /tmp/translationstatus/admin/globalsettings.php:187
 msgid "Default site language:"
@@ -9509,15 +9494,15 @@ msgstr "Kompatibility mód pro čtečku obrazovky:"
 
 #: /tmp/translationstatus/admin/globalsettings.php:258
 msgid "Session lifetime (seconds):"
-msgstr ""
+msgstr "Životnost sezení (sekundy):"
 
 #: /tmp/translationstatus/admin/globalsettings.php:260
 msgid "IP Info DB API Key:"
-msgstr ""
+msgstr "IP Info DB API Klíč:"
 
 #: /tmp/translationstatus/admin/globalsettings.php:262
 msgid "Google Maps API key:"
-msgstr ""
+msgstr "Google Mapy API klíč:"
 
 #: /tmp/translationstatus/admin/globalsettings.php:275
 msgid "Default site admin email:"
@@ -9539,10 +9524,10 @@ msgstr "PHP (výchozí)"
 msgid "SMTP"
 msgstr "SMTP"
 
+# describe Sendmail please (php function?)
 #: /tmp/translationstatus/admin/globalsettings.php:290
-#, fuzzy
 msgid "Sendmail"
-msgstr "Odeslat"
+msgstr "Sendmail"
 
 #: /tmp/translationstatus/admin/globalsettings.php:293
 msgid "Qmail"
@@ -9569,14 +9554,12 @@ msgid "SMTP SSL/TLS:"
 msgstr "SMTP SSL/TLS:"
 
 #: /tmp/translationstatus/admin/globalsettings.php:313
-#, fuzzy
 msgid "SMTP debug mode:"
-msgstr "Výstup SMTP debug:"
+msgstr "Režim SMTP ladění:"
 
 #: /tmp/translationstatus/admin/globalsettings.php:320
-#, fuzzy
 msgid "On errors"
-msgstr "Celkem chyb"
+msgstr "Na chyby"
 
 #: /tmp/translationstatus/admin/globalsettings.php:323
 msgid "Always"
@@ -9684,7 +9667,7 @@ msgstr "Deaktivované tabulky účastníků"
 
 #: /tmp/translationstatus/admin/globalsettings.php:648
 msgid "Used/free space for file uploads"
-msgstr ""
+msgstr "Využité/volné místo pro nahrané soubory."
 
 #: /tmp/translationstatus/admin/globalsettings.php:655
 msgid "Show PHPInfo"
@@ -9973,33 +9956,31 @@ msgid "The following groups should be deleted"
 msgstr "Následující skupiny musí být smazány"
 
 #: /tmp/translationstatus/admin/integritycheck.php:407
-#, fuzzy, php-format
+#, php-format
 msgid "GID `%s` because there is no matching survey."
-msgstr "Není žádný odpovídající průzkum."
+msgstr "GID `%s` protože není vyhovující průzkum."
 
 #: /tmp/translationstatus/admin/integritycheck.php:412
 msgid "All groups meet consistency standards"
 msgstr "Všechny skupiny splňují standardy konzistence"
 
 #: /tmp/translationstatus/admin/integritycheck.php:453
-#, fuzzy
 msgid "responses"
-msgstr "Odpovědi"
+msgstr "odezvy"
 
 #: /tmp/translationstatus/admin/integritycheck.php:460
-#, fuzzy
 msgid "timings"
-msgstr "Časy vyplnění"
+msgstr "časování"
 
 #: /tmp/translationstatus/admin/integritycheck.php:472
-#, fuzzy, php-format
+#, php-format
 msgid "Survey ID %d saved at %s (%s)"
-msgstr "Průzkum %d uložen v %s"
+msgstr "Průzkum ID %d uložen v %s (%s)"
 
 #: /tmp/translationstatus/admin/integritycheck.php:475
-#, fuzzy, php-format
+#, php-format
 msgid "Survey ID %d saved at %s containing %d record(s) (%s)"
-msgstr "Průzkum  %d uložen v %s obsahuje %d záznam(ů)"
+msgstr "Průzkum ID %d uložený v %s obsahuje %d záznam(ů) (%s)"
 
 #: /tmp/translationstatus/admin/integritycheck.php:483
 msgid "The following old survey tables should be deleted because their parent survey no longer exists"
@@ -10282,21 +10263,20 @@ msgstr "Nemůžete přidávat nebo upravovat dílčí otázky nebo jejich kódy 
 #: /tmp/translationstatus/admin/update/upgrade-postgres.php:309
 #, php-format
 msgid "Database update finished (%s)"
-msgstr ""
+msgstr "Aktualizace databáze dokončena (%s)"
 
 #: /tmp/translationstatus/admin/update/upgrade-all.php:24
 msgid "The LimeSurvey database is being upgraded"
 msgstr "LimeSurvey databáze se aktualizuje"
 
 #: /tmp/translationstatus/admin/update/upgrade-all.php:24
-#, fuzzy
 msgid "Please be patient..."
-msgstr "Prosím počkejte..."
+msgstr "Prosím, buďte trpěliví..."
 
 #: /tmp/translationstatus/admin/update/upgrade-all.php:29
 #, php-format
 msgid "Moving user templates to new location at %s..."
-msgstr ""
+msgstr "Přesun uživatelských šablon na nové umístění %s..."
 
 #: /tmp/translationstatus/admin/update/updater.php:88
 #: /tmp/translationstatus/admin/update/updater.php:188
@@ -10537,14 +10517,13 @@ msgid "Table prefix"
 msgstr "Prefix tabulky"
 
 #: /tmp/translationstatus/admin/update/updater.php:656
-#, fuzzy
 msgid "Site name"
-msgstr "Jméno Administrátora:"
+msgstr "Název stránky"
 
+# "Root URL" is best translation
 #: /tmp/translationstatus/admin/update/updater.php:657
-#, fuzzy
 msgid "Root URL"
-msgstr "Koncová URL:"
+msgstr "Kořenová URL"
 
 #: /tmp/translationstatus/admin/update/updater.php:660
 msgid "Click here to continue"
@@ -10589,9 +10568,8 @@ msgstr "Importovat jako nekompletní odpovědi?"
 
 #: /tmp/translationstatus/admin/vvimport.php:104
 #: /tmp/translationstatus/admin/vvimport.php:116
-#, fuzzy
 msgid "Import a VV response data file"
-msgstr "Importovat soubor průzkumu VV"
+msgstr "Importovat datový soubor reakcí VV"
 
 #: /tmp/translationstatus/admin/vvimport.php:105
 msgid "Cannot import the VVExport file."
@@ -10794,16 +10772,15 @@ msgstr "Tento proces smaže tento průzkum, všechny jeho skupiny, otázky, odpo
 
 #: /tmp/translationstatus/admin/deletesurvey.php:40
 msgid "It will also delete any resources/files that have been uploaded for this survey."
-msgstr ""
+msgstr "Tímto vymažete také prostředky/soubory které byly pro tento průzkum nahrány."
 
 #: /tmp/translationstatus/admin/deletesurvey.php:41
 msgid "We recommend that before you delete this survey you export the entire survey from the main administration screen."
 msgstr "Před smazáním průzkumu doporučujeme exportovat celý průzkum z administrátorské obrazovky."
 
 #: /tmp/translationstatus/admin/deletesurvey.php:45
-#, fuzzy
 msgid "This survey is active and a responses table exists. If you delete this survey, these responses (including any uploaded files) will be deleted. We recommend that you export the responses (and files) before deleting this survey."
-msgstr "Tento průzkum je aktivní a existuje tabulka odpovědí. Smažete-li tento průzkum, budou tyto odpovědi smazány. Doporučujeme exportovat odpovědi před smazáním průzkumu."
+msgstr "Tento průzkum je aktivní a tabulka reakcí existuje. Smažete-li tento průzkum, budou tyto reakce (všetně všech nahraných souborů) smazány. Doporučujeme exportovat reakce (a soubory) před smazáním tohoto průzkumu."
 
 #: /tmp/translationstatus/admin/deletesurvey.php:50
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
@@ -10823,9 +10800,8 @@ msgid "There was an error using the Google API."
 msgstr "Při použití Google API se objevila chyba."
 
 #: /tmp/translationstatus/admin/translate.php:132
-#, fuzzy
 msgid "Detailed Error"
-msgstr "Celkem chyb"
+msgstr "Podrobná chyba"
 
 #: /tmp/translationstatus/admin/translate.php:134
 msgid "Loading translations"
@@ -10935,7 +10911,7 @@ msgstr "Počáteční jazyk:"
 #: /tmp/translationstatus/admin/dataentry.php:1360
 #: /tmp/translationstatus/admin/dataentry.php:2658
 #: /tmp/translationstatus/question.php:666
-#: /tmp/translationstatus/index.php:2984
+#: /tmp/translationstatus/index.php:2928
 #: /tmp/translationstatus/group.php:1351
 #: /tmp/translationstatus/replacements.php:246
 msgid "Submit"
@@ -11071,9 +11047,8 @@ msgid "Interface language"
 msgstr "Jazyk rozhraní (interface)"
 
 #: /tmp/translationstatus/admin/html.php:62
-#, fuzzy
 msgid "(Autodetect)"
-msgstr "Automaticky detekovat"
+msgstr "(Autodetekce)"
 
 #: /tmp/translationstatus/admin/html.php:74
 msgid "HTML editor mode"
@@ -11942,19 +11917,19 @@ msgstr "Uvítací a závěrečný text"
 msgid "Group description"
 msgstr "Popis skupiny"
 
-#: /tmp/translationstatus/admin/translate_functions.php:496
+#: /tmp/translationstatus/admin/translate_functions.php:474
 msgid "Answer options"
 msgstr "Odpovědi (popisky)"
 
-#: /tmp/translationstatus/admin/translate_functions.php:518
+#: /tmp/translationstatus/admin/translate_functions.php:496
 msgid "Invitation email"
 msgstr "Email pozvánky"
 
-#: /tmp/translationstatus/admin/translate_functions.php:562
+#: /tmp/translationstatus/admin/translate_functions.php:540
 msgid "Reminder email"
 msgstr "Email upomínky"
 
-#: /tmp/translationstatus/admin/translate_functions.php:650
+#: /tmp/translationstatus/admin/translate_functions.php:628
 msgid "Registration email"
 msgstr "Registrační email"
 
@@ -12218,17 +12193,12 @@ msgstr "Databáze jménem \"%s\" již existuje."
 msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr "Chcete nyní naplnit databázi vytvořením příslušných tabulek?"
 
-#: /tmp/translationstatus/admin/export_structure_quexml.php:175
+#: /tmp/translationstatus/admin/export_structure_quexml.php:176
 msgid "End"
 msgstr "Konec"
 
-#: /tmp/translationstatus/admin/export_structure_quexml.php:252
-#: /tmp/translationstatus/admin/export_structure_quexml.php:372
-msgid "Please specify"
-msgstr "Prosím upřesněte"
-
-#: /tmp/translationstatus/admin/export_data_functions.php:261
-#: /tmp/translationstatus/admin/export_data_functions.php:265
+#: /tmp/translationstatus/admin/export_data_functions.php:233
+#: /tmp/translationstatus/admin/export_data_functions.php:237
 msgid "Not Selected"
 msgstr "Nevybráno"
 
@@ -12249,21 +12219,21 @@ msgstr "Váš průzkum byl úspěšně uložen."
 msgid "Thank you for saving your survey in progress. You can return to the survey at the same point you saved it at any time using the link from this or any previous email sent to regarding this survey."
 msgstr "Děkujeme za uložení vašeho rozpracovaného průzkumu. Můžete se kdykoli vrátit do stejného bodu průzkumu kliknutím na link v tomto, nebo kterémkoli předešlém emailu vztahujícímu se k tomuto průzkumu. "
 
-#: /tmp/translationstatus/save.php:736
+#: /tmp/translationstatus/save.php:739
 msgid "Cannot submit results - there are none to submit."
 msgstr "Nelze odeslat výsledky - není co odeslat."
 
-#: /tmp/translationstatus/save.php:737
+#: /tmp/translationstatus/save.php:740
 msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
 msgstr "Tato chyba může nastat, pokud jste již průzkum odeslal(a) a stiskl(a) \"obnovit\" ve svém prohlížeči. V tomto případě jsou Vaše odpovědi již uloženy."
 
-#: /tmp/translationstatus/save.php:737
+#: /tmp/translationstatus/save.php:740
 msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
 msgstr "Obdržel(a)-li jste tuto zprávu v průběhu vyplňování průzkumu, doporučujeme stisknout \"<- Zpět\" ve Vašem prohlížeči a následně \"obnovit\" předchozí stránku. Ačkoli jsou všechny odpovědi z poslední stránky ztraceny, ostatní jsou stále dostupné. Tento problém může nastat, je-li server přetížen. Omlouváme se za způsobené problémy."
 
 #: /tmp/translationstatus/survey.php:82
 #: /tmp/translationstatus/question.php:230
-#: /tmp/translationstatus/index.php:2254
+#: /tmp/translationstatus/index.php:2198
 #: /tmp/translationstatus/group.php:184
 msgid "Did Not Save"
 msgstr "Neuloženo"
@@ -12303,7 +12273,7 @@ msgstr "Jednen nebo více souborů není v předepsaném formátu nebo jsou vět
 
 #: /tmp/translationstatus/survey.php:1017
 #: /tmp/translationstatus/question.php:619
-#: /tmp/translationstatus/index.php:3500
+#: /tmp/translationstatus/index.php:3444
 #: /tmp/translationstatus/group.php:1305
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr "Průzkum není nyní aktivní. Nebudete moci uložit Vaše odpovědi."
@@ -12397,24 +12367,24 @@ msgstr "Načíst nedokončený průzkum"
 
 # consistency
 #: /tmp/translationstatus/index.php:693
-#: /tmp/translationstatus/index.php:2404
-#: /tmp/translationstatus/index.php:2476
-#: /tmp/translationstatus/index.php:2520
-#: /tmp/translationstatus/index.php:2557
+#: /tmp/translationstatus/index.php:2348
+#: /tmp/translationstatus/index.php:2420
+#: /tmp/translationstatus/index.php:2464
+#: /tmp/translationstatus/index.php:2501
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Toto je řízený průzkum. K účasti potřebujete platný přístupový kód."
 
 #: /tmp/translationstatus/index.php:694
-#: /tmp/translationstatus/index.php:2477
-#: /tmp/translationstatus/index.php:2521
+#: /tmp/translationstatus/index.php:2421
+#: /tmp/translationstatus/index.php:2465
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr "Přístupový kód, který jste uvedl(a), není platný nebo již byl použit."
 
 #: /tmp/translationstatus/index.php:695
 #: /tmp/translationstatus/index.php:731
-#: /tmp/translationstatus/index.php:2478
-#: /tmp/translationstatus/index.php:2522
-#: /tmp/translationstatus/index.php:2713
+#: /tmp/translationstatus/index.php:2422
+#: /tmp/translationstatus/index.php:2466
+#: /tmp/translationstatus/index.php:2657
 #, php-format
 msgid "For further information please contact %s"
 msgstr "Pro bližší informace kontaktujte %s"
@@ -12435,70 +12405,69 @@ msgstr "Vaše odpovědi byly úspěšně uloženy."
 msgid "There is no matching saved survey"
 msgstr "Mezi uloženými průzkumy není žádný odpovídající"
 
-#: /tmp/translationstatus/index.php:1762
+#: /tmp/translationstatus/index.php:1706
 #, php-format
 msgid "Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."
-msgstr ""
+msgstr "Omlouváme se, soubor (%s) který jste nahrál přesahuje povolenou velikost %s KB"
 
-#: /tmp/translationstatus/index.php:1775
-#: /tmp/translationstatus/index.php:1781
-#, fuzzy, php-format
+#: /tmp/translationstatus/index.php:1719
+#: /tmp/translationstatus/index.php:1725
+#, php-format
 msgid "Sorry, only %s extensions are allowed!"
-msgstr "Bohužel tato přípona (%s) souboru není povolena!"
+msgstr "Omlouváme se, pouze koncovky %s jsou povoleny!"
 
-#: /tmp/translationstatus/index.php:1793
-#, fuzzy
+#: /tmp/translationstatus/index.php:1737
 msgid "The minimum number of files has not been uploaded."
-msgstr "Soubor byl úspěšně načten"
+msgstr "Nebylo nahráno minimum souborů."
 
-#: /tmp/translationstatus/index.php:2255
+#: /tmp/translationstatus/index.php:2199
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "Vyskytla se neočekávaná chyba a Vaše odpovědi nemohly být uloženy."
 
-#: /tmp/translationstatus/index.php:2258
+#: /tmp/translationstatus/index.php:2202
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr "Vaše odpovědi nebyly ztraceny a byly emailem odeslány administrátorovi průzkumu. Do databáze budou vloženy později."
 
-#: /tmp/translationstatus/index.php:2263
+#: /tmp/translationstatus/index.php:2207
 msgid "An error occurred saving a response to survey id"
 msgstr "Při ukládání odpovědi k id průzkumu se vyskytla chyba"
 
-#: /tmp/translationstatus/index.php:2264
+#: /tmp/translationstatus/index.php:2208
 msgid "DATA TO BE ENTERED"
 msgstr "DATA, KTERÁ MAJÍ BÝT VLOŽENA"
 
-#: /tmp/translationstatus/index.php:2269
+#: /tmp/translationstatus/index.php:2213
 msgid "SQL CODE THAT FAILED"
 msgstr "SQL KÓD, KTERÝ CHYBOVAL"
 
-#: /tmp/translationstatus/index.php:2271
+#: /tmp/translationstatus/index.php:2215
 msgid "ERROR MESSAGE"
 msgstr "CHYBOVÁ ZPRÁVA"
 
-#: /tmp/translationstatus/index.php:2273
+#: /tmp/translationstatus/index.php:2217
 msgid "Error saving results"
 msgstr "Chyba při ukládání výsledků"
 
-#: /tmp/translationstatus/index.php:2281
+#: /tmp/translationstatus/index.php:2225
 msgid "Try to submit again"
 msgstr "Zkusit odeslat znovu"
 
-#: /tmp/translationstatus/index.php:2335
+#: /tmp/translationstatus/index.php:2279
 msgid "Please confirm access to survey by answering the security question below and click continue."
 msgstr "Potvrďte prosím přístup k průzkumu zodpovězením bezpečnostní otázky níže a kliknutím na pokračovat."
 
-#: /tmp/translationstatus/index.php:2359
+#: /tmp/translationstatus/index.php:2303
 msgid "Security question:"
 msgstr "Bezpečnostní otázka:"
 
 # consistency
-#: /tmp/translationstatus/index.php:2405
-#: /tmp/translationstatus/index.php:2562
+#: /tmp/translationstatus/index.php:2349
+#: /tmp/translationstatus/index.php:2506
 msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr "Pokud vám byl přidělen přístupový kód, prosím zadejte jej do níže uvedeného pole a klikněte na pokračovat."
 
-#: /tmp/translationstatus/index.php:2435
-#: /tmp/translationstatus/index.php:2603
+#: /tmp/translationstatus/index.php:2379
+#: /tmp/translationstatus/index.php:2547
 #: /tmp/translationstatus/replacements.php:441
 #: /tmp/translationstatus/replacements.php:461
 #: /tmp/translationstatus/replacements.php:506
@@ -12506,15 +12475,15 @@ msgid "Security Question"
 msgstr "Bezpečnostní otázka"
 
 # consistency
-#: /tmp/translationstatus/index.php:2581
+#: /tmp/translationstatus/index.php:2525
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr "Prosím potvrďte přístupový kód zodpovězením bezpečnostní otázky a klikněte na pokračovat."
 
-#: /tmp/translationstatus/index.php:2595
+#: /tmp/translationstatus/index.php:2539
 msgid "Token:"
 msgstr "Přístupový kód:"
 
-#: /tmp/translationstatus/index.php:2712
+#: /tmp/translationstatus/index.php:2656
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Tento průzkum dosud neobsahuje žádné otázky a nemůže být testován nebo vyplněn."
 
@@ -12535,13 +12504,13 @@ msgid "The file has been successfuly uploaded."
 msgstr "Soubor byl úspěšně načten"
 
 #: /tmp/translationstatus/upload.php:131
-#, fuzzy, php-format
+#, php-format
 msgid "Sorry, this file is too large. Only files up to %s KB are allowed."
-msgstr "Bohužel soubor je příliš velký. Jsou povoleny pouze soubory do %s KB."
+msgstr "Omlouváme se, tento soubor je příliž velký. Pouze soubory do %s KB jsou dovoleny."
 
 #: /tmp/translationstatus/upload.php:139
 msgid "We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator."
-msgstr ""
+msgstr "Omlouváme se, ale vyskytla se systémová chyba a Váš soubor nebyl uložen. Administrátor průzkumu byl informován emailem."
 
 #: /tmp/translationstatus/upload.php:166
 msgid "Sorry, there was an error uploading your file"
@@ -12705,6 +12674,9 @@ msgstr "Vyplnil(a) jste všechny otázky v tomto průzkumu."
 #: /tmp/translationstatus/replacements.php:604
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "Nyní klikněte na 'Odeslat' k dokončení průzkumu a uložení odpovědí."
+
+#~ msgid "Please specify"
+#~ msgstr "Prosím upřesněte"
 
 #~ msgid "Setting as Administrator Child"
 #~ msgstr "Nastavení jako dcera administrátora"

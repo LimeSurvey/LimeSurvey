@@ -22,7 +22,7 @@ if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run thi
 require($rootdir.'/version.php');
 require($rootdir."/common_functions.php");
 // Include dTexts
-require_once(dirname(__FILE__).'/classes/dTexts/dTexts.php');
+//require_once(dirname(__FILE__).'/classes/dTexts/dTexts.php');
 
 // Check for most necessary requirements
 // Now check for PHP & db version
@@ -232,12 +232,12 @@ if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mss
 
 
 //check if database exist and access is not via install script
-if (!$database_exists && (strcasecmp($slashlesspath,str_replace(array("\\", "/"), "", $homedir."install")) != 0)) {
+if (!$database_exists && !$cmd_install && (strcasecmp($slashlesspath,str_replace(array("\\", "/"), "", $homedir."install")) != 0)) {
     die ("<br/>The LimeSurvey database does not exist. Please run the <a href='$homeurl/install/index.php'>install script</a> to create the necessary database.");
 }
  
-// Check if the DB is up to date
-if ($dbexistsbutempty && (strcasecmp($slashlesspath,str_replace(array("\\", "/"), "", $homedir."install")) != 0)) {
+ // Check if the DB is up to date and access is not via install script
+if ($dbexistsbutempty && !$cmd_install && (strcasecmp($slashlesspath,str_replace(array("\\", "/"), "", $homedir."install")) != 0)) {
     die ("<br />The LimeSurvey database does exist but it seems to be empty. Please run the <a href='$homeurl/install/index.php'>install script</a> to create the necessary tables.");
 }
 
@@ -272,17 +272,19 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
         $clang = new limesurvey_lang($defaultlang);
         include_once($homedir.'/update/updater.php');
         if(isset($_GET['continue']) && $_GET['continue']==1) 
-        {   
-            echo CheckForDBUpgrades();
+        {
+            echo getAdminHeader();
+            CheckForDBUpgrades();
             echo "<br /><a href='$homeurl'>".$clang->gT("Back to main menu")."</a></div>";
-            updatecheck();                     
-        }        
+            updatecheck();
+            echo getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));                         
+        }
         else
         {   
-            $dbupgradeoutput='<div class="messagebox">';
-            $dbupgradeoutput.= CheckForDBUpgrades();                    
-            $dbupgradeoutput.='</div>';
-            echo getAdminHeader() . $dbupgradeoutput . getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));            
+            echo getAdminHeader(),
+                 '<div class="messagebox">',CheckForDBUpgrades(),'</div>', 
+                 getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"))
+                 ;
         }        
         die;
     }

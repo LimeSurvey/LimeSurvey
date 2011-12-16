@@ -272,7 +272,7 @@ if ($action == "templaterename" && isset($newname) && isset($copydir))
     $olddirname=$usertemplaterootdir."/".$copydir;
     if(isStandardTemplate($newname))
     {
-        echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Template could not be renamed to `%s`.","js"), $newname)." ".$clang->gT("This name is reserved for standard template.","js")."\");\n//-->\n</script>";
+        echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Template could not be renamed to `%s`.","js"), $newname)." ".$clang->gT("This name is reserved for a standard template.","js")."\");\n//-->\n</script>";
     }
     elseif (rename($olddirname, $newdirname)==false)
     {
@@ -518,7 +518,7 @@ switch($screenname) {
 		         ,'number' => '1'
 		         );
 
-		$answer="<ul><li><input type='radio' class='radiobtn' name='1' value='1' id='radio1' /><label class='answertext' for='radio1'>One</label></li><li><input type='radio' class='radiobtn' name='1' value='2' id='radio2' /><label class='answertext' for='radio2'>Two</label></li><li><input type='radio' class='radiobtn' name='1' value='3' id='radio3' /><label class='answertext' for='radio3'>Three</label></li></ul>\n";
+		$answer="<ul><li><input type='radio' class='radio' name='1' value='1' id='radio1' /><label class='answertext' for='radio1'>One</label></li><li><input type='radio' class='radio' name='1' value='2' id='radio2' /><label class='answertext' for='radio2'>Two</label></li><li><input type='radio' class='radiobtn' name='1' value='3' id='radio3' /><label class='answertext' for='radio3'>Three</label></li></ul>\n";
         $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/question.pstpl"));
 
 	    //	$question='<span class="asterisk">*</span>'.$clang->gT("Please explain something in detail:");
@@ -534,7 +534,7 @@ switch($screenname) {
 		 ,'file_valid_message' => ''
 		 ,'essentials' => 'id="question2"'
 		 ,'class' => 'text-long'
-		 ,'man_class' => 'mandatory'
+		 ,'man_class' => ' mandatory'
 		 ,'input_error_class' => ''
 		 ,'number' => '2'
 		 );
@@ -941,9 +941,6 @@ else
                                    //FILE CONTROL DETAILS
                                    if (is_template_editable($templatename)==true)
                                    {
-                                   		// prepare textarea class for optional javascript
-										$templateclasseditormode='full'; // default
-										if (isset($_SESSION['templateeditormode']) && ($_SESSION['templateeditormode']=='none')){$templateclasseditormode='none';}
                                        $templatesoutput.= "\t<table class='templatecontrol'>\n"
                                        ."\t<tr>\n"
                                        ."<th colspan='3'>\n"
@@ -958,7 +955,7 @@ else
                                        ."\t<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
                                        ."\t<input type='hidden' name='editfile' value='$editfile' />\n"
                                        ."\t<input type='hidden' name='action' value='templatesavechanges' />\n"
-                                       ."<textarea name='changes' id='changes' rows='15' cols='40' class='codepress html {$templateclasseditormode}'>";
+                                       ."<textarea name='changes' id='changes' rows='15' cols='40' class='codepress html'>";
                                        if ($editfile) {
         $templatesoutput.= textarea_encode(filetext($templatename,$editfile));
                                        }

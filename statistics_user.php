@@ -83,7 +83,7 @@ if ($surveyid)
         {
             safe_die('The public statistics for this survey are deactivated.');
         }
-         
+
         //check if graphs should be shown for this survey
         if ($surveyinfo['publicgraphs']=='Y')
         {
@@ -173,21 +173,22 @@ echo $header;
 /*
  * only show questions where question attribute "public_statistics" is set to "1"
  */
-$query = "SELECT ".db_table_name("questions").".*, group_name, group_order\n"
-."FROM ".db_table_name("questions").", ".db_table_name("groups").", ".db_table_name("question_attributes")."\n"
-."WHERE ".db_table_name("groups").".gid=".db_table_name("questions").".gid\n"
-."AND ".db_table_name("groups").".language='".$language."'\n"
-."AND ".db_table_name("questions").".language='".$language."'\n"
-."AND ".db_table_name("questions").".sid=$surveyid\n"
-."AND ".db_table_name("questions").".qid=".db_table_name("question_attributes").".qid\n"
-."AND ".db_table_name("question_attributes").".attribute='public_statistics'\n";
+$query = "SELECT q.* , group_name, group_order\n"
+."FROM ".db_table_name("questions")." q, ".db_table_name("groups")." g, ".db_table_name("question_attributes")." qa\n"
+."WHERE g.gid=q.gid\n"
+."AND g.language='".$language."'\n"
+."AND q.language='".$language."'\n"
+."AND q.sid={$surveyid}\n"
+."AND q.qid=qa.qid\n"
+."AND q.parent_qid=0\n"
+."AND qa.attribute='public_statistics'\n";
 if ($databasetype=='mssql_n' or $databasetype=='mssql' or $databasetype=='odbc_mssql' or $databasetype=="mssqlnative")
 {
-    $query .="AND CAST(CAST(".db_table_name("question_attributes").".value as varchar) as int)='1'\n";
+    $query .="AND CAST(CAST(qa.value as varchar) as int)='1'\n";
 }
 else
 {
-    $query .="AND ".db_table_name("question_attributes").".value='1'\n";
+    $query .="AND qa.value='1'\n";
 }
 
 
@@ -257,114 +258,114 @@ $allfields = array();
 $currentgroup='';
 // use to check if there are any question with public statistics
 if(isset($filters)){
-foreach ($filters as $flt)
-{
-    //SGQ identifier
-    $myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}";
+	foreach ($filters as $flt)
+	{
+		//SGQ identifier
+		$myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}";
 
-    //let's switch through the question type for each question
-    switch ($flt[2])
-    {
-        case "K": // Multiple Numerical
-        case "Q": // Multiple Short Text
-            //get answers
-            $query = "SELECT title as code, question as answer FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order";
-            $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		//let's switch through the question type for each question
+		switch ($flt[2])
+		{
+			case "K": // Multiple Numerical
+			case "Q": // Multiple Short Text
+				//get answers
+				$query = "SELECT title as code, question as answer FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order";
+				$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 
-            //go through all the (multiple) answers
-            while ($row=$result->FetchRow())
-            {
-                $myfield2=$flt[2].$myfield.$row[0];
-                $allfields[] = $myfield2;
-            }
-            break;
-        case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS
-        case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
-        case "C": // ARRAY OF YES\No\$clang->gT("Uncertain") QUESTIONS
-        case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
-        case "F": // FlEXIBLE ARRAY
-        case "H": // ARRAY (By Column)
-            //get answers
-            $query = "SELECT title as code, question as answer FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order";
-            $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+				//go through all the (multiple) answers
+				while ($row=$result->FetchRow())
+				{
+					$myfield2=$flt[2].$myfield.$row[0];
+					$allfields[] = $myfield2;
+				}
+				break;
+			case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS
+			case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
+			case "C": // ARRAY OF YES\No\$clang->gT("Uncertain") QUESTIONS
+			case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
+			case "F": // FlEXIBLE ARRAY
+			case "H": // ARRAY (By Column)
+				//get answers
+				$query = "SELECT title as code, question as answer FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order";
+				$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 
-            //go through all the (multiple) answers
-            while ($row=$result->FetchRow())
-            {
-                $myfield2 = $myfield.$row[0];
-                $allfields[]=$myfield2;
-            }
-            break;
-        // all "free text" types (T, U, S)  get the same prefix ("T")
-        case "T": // Long free text
-        case "U": // Huge free text
-        case "S": // Short free text
-            $myfield="T$myfield";
-            $allfields[] = $myfield;
-            break;
-        case ";":  //ARRAY (Multi Flex) (Text)
-        case ":":  //ARRAY (Multi Flex) (Numbers)
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
-            $result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
-            while ($row=$result->FetchRow())
-            {
-                $fquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$flt[0]} AND language='{$language}' AND scale_id=1 ORDER BY question_order, title";
-                $fresult = db_execute_assoc($fquery);
-                while ($frow = $fresult->FetchRow())
-                {
-                    $myfield2 = "T".$myfield . $row[0] . "_" . $frow['title'];
-                $allfields[]=$myfield2;
-            }
-            }
-            break;
-        case "R": //RANKING
-            //get some answers
-            $query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
-            $result = db_execute_assoc($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+				//go through all the (multiple) answers
+				while ($row=$result->FetchRow())
+				{
+					$myfield2 = $myfield.$row[0];
+					$allfields[]=$myfield2;
+				}
+				break;
+			// all "free text" types (T, U, S)  get the same prefix ("T")
+			case "T": // Long free text
+			case "U": // Huge free text
+			case "S": // Short free text
+				$myfield="T$myfield";
+				$allfields[] = $myfield;
+				break;
+			case ";":  //ARRAY (Multi Flex) (Text)
+			case ":":  //ARRAY (Multi Flex) (Numbers)
+				$query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' AND scale_id=0 ORDER BY question_order";
+				$result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+				while ($row=$result->FetchRow())
+				{
+					$fquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$flt[0]} AND language='{$language}' AND scale_id=1 ORDER BY question_order, title";
+					$fresult = db_execute_assoc($fquery);
+					while ($frow = $fresult->FetchRow())
+					{
+						$myfield2 = $myfield . $row[0] . "_" . $frow['title'];
+					$allfields[]=$myfield2;
+				}
+				}
+				break;
+			case "R": //RANKING
+				//get some answers
+				$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+				$result = db_execute_assoc($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 
-            //get number of answers
-            $count = $result->RecordCount();
+				//get number of answers
+				$count = $result->RecordCount();
 
-            //loop through all answers. if there are 3 items to rate there will be 3 statistics
-            for ($i=1; $i<=$count; $i++)
-            {
-                $myfield2 = "R" . $myfield . $i . "-" . strlen($i);
-                $allfields[]=$myfield2;
-            }
-            break;
-        //Boilerplate questions are only used to put some text between other questions -> no analysis needed
-        case "X":  //This is a boilerplate question and it has no business in this script
-            break;
-        case "1": // MULTI SCALE
-            //get answers
-            $query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
-            $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+				//loop through all answers. if there are 3 items to rate there will be 3 statistics
+				for ($i=1; $i<=$count; $i++)
+				{
+					$myfield2 = "R" . $myfield . $i . "-" . strlen($i);
+					$allfields[]=$myfield2;
+				}
+				break;
+			//Boilerplate questions are only used to put some text between other questions -> no analysis needed
+			case "X":  //This is a boilerplate question and it has no business in this script
+				break;
+			case "1": // MULTI SCALE
+				//get answers
+				$query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
+				$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 
-            //loop through answers
-            while ($row=$result->FetchRow())
-            {
-                //----------------- LABEL 1 ---------------------
-                $myfield2 = $myfield . "$row[0]#0";
-                $allfields[]=$myfield2;
-                //----------------- LABEL 2 ---------------------
-                $myfield2 = $myfield . "$row[0]#1";
-                $allfields[]=$myfield2;
-            }	//end WHILE -> loop through all answers
-            break;
+				//loop through answers
+				while ($row=$result->FetchRow())
+				{
+					//----------------- LABEL 1 ---------------------
+					$myfield2 = $myfield . "$row[0]#0";
+					$allfields[]=$myfield2;
+					//----------------- LABEL 2 ---------------------
+					$myfield2 = $myfield . "$row[0]#1";
+					$allfields[]=$myfield2;
+				}	//end WHILE -> loop through all answers
+				break;
 
-        case "P":  //P - Multiple choice with comments
-        case "M":  //M - Multiple choice
-        case "N":  //N - Numerical input
-        case "D":  //D - Date
-            $myfield2 = $flt[2].$myfield;
-                    $allfields[]=$myfield2;
-            break;
-        default:   //Default settings    
-            $allfields[] = $myfield;
-            break;
+			case "P":  //P - Multiple choice with comments
+			case "M":  //M - Multiple choice
+			case "N":  //N - Numerical input
+			case "D":  //D - Date
+				$myfield2 = $flt[2].$myfield;
+						$allfields[]=$myfield2;
+				break;
+			default:   //Default settings
+				$allfields[] = $myfield;
+				break;
 
-    }	//end switch -> check question types and create filter forms
-}
+		}	//end switch -> check question types and create filter forms
+	}
 //end foreach -> loop through all questions with "public_statistics" enabled
 }// end if -> for removing the error message in case there are no filters
 $summary = $allfields;

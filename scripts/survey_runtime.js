@@ -1,41 +1,52 @@
 var DOM1;
-
 $(document).ready(function()
 {
 	DOM1 = (typeof document.getElementsByTagName!='undefined');
 	if (typeof checkconditions!='undefined') checkconditions();
 	if (typeof template_onload!='undefined') template_onload();
 	prepareCellAdapters();
-    if (typeof(focus_element) != 'undefined') 
+    if (typeof(focus_element) != 'undefined')
     {
         $(focus_element).focus();
     }
     $(".question").find("select").each(function () {
         hookEvent($(this).attr('id'),'mousewheel',noScroll);
     });
-	
-	// Virtual keypad/keyboard
-	var kp = $("input.num-keypad");
-	if(kp.length) kp.keypad({showAnim: 'fadeIn', keypadOnly: false});
-	kp = $("input.text-keypad");
-	if(kp.length)
-	{
-			var spacer = $.keypad.HALF_SPACE;
-			for(var i = 0; i != 8; ++i) spacer += $.keypad.SPACE;
-	kp.keypad({
-		showAnim: 'fadeIn',
-		keypadOnly: false,
-		layout: [
-							spacer + $.keypad.CLEAR + $.keypad.CLOSE, $.keypad.SPACE,
-				'!@#$%^&*()_=' + $.keypad.HALF_SPACE + $.keypad.BACK,
-				$.keypad.HALF_SPACE + '`~[]{}<>\\|/' + $.keypad.SPACE + $.keypad.SPACE + '789',
-				'qwertyuiop\'"' + $.keypad.HALF_SPACE + $.keypad.SPACE + '456',
-				$.keypad.HALF_SPACE + 'asdfghjkl;:' + $.keypad.SPACE + $.keypad.SPACE + '123',
-				$.keypad.SPACE + 'zxcvbnm,.?' + $.keypad.SPACE + $.keypad.SPACE + $.keypad.HALF_SPACE + '-0+',
-				$.keypad.SHIFT + $.keypad.SPACE_BAR + $.keypad.ENTER]});
+
+    // Keypad functions
+    var kp = $("input.num-keypad");
+    if(kp.length)
+	{ 
+		kp.keypad({
+			showAnim: 'fadeIn', keypadOnly: false,
+			onKeypress: function(key, value, inst) { 
+				$(this).trigger('keyup');
+			}
+		});
 	}
-	
-	// Maps
+    kp = $(".text-keypad");
+    if(kp.length)
+    {
+        var spacer = $.keypad.HALF_SPACE;
+        for(var i = 0; i != 8; ++i) spacer += $.keypad.SPACE;
+	    kp.keypad({
+		    showAnim: 'fadeIn',
+		    keypadOnly: false,
+		    layout: [
+                spacer + $.keypad.CLEAR + $.keypad.CLOSE, $.keypad.SPACE,
+			    '!@#$%^&*()_=' + $.keypad.HALF_SPACE + $.keypad.BACK,
+			    $.keypad.HALF_SPACE + '`~[]{}<>\\|/' + $.keypad.SPACE + $.keypad.SPACE + '789',
+			    'qwertyuiop\'"' + $.keypad.HALF_SPACE + $.keypad.SPACE + '456',
+			    $.keypad.HALF_SPACE + 'asdfghjkl;:' + $.keypad.SPACE + $.keypad.SPACE + '123',
+			    $.keypad.SPACE + 'zxcvbnm,.?' + $.keypad.SPACE + $.keypad.SPACE + $.keypad.HALF_SPACE + '-0+',
+			    $.keypad.SHIFT + $.keypad.SPACE_BAR + $.keypad.ENTER],
+				onKeypress: function(key, value, inst) { 
+					$(this).trigger('keyup');
+				}
+			});
+    }
+
+    // Maps
 	$(".location").each(function(index,element){
 		var question = $(element).attr('name');
 		var coordinates = $(element).val();
@@ -66,53 +77,58 @@ $(document).ready(function()
 		marker.setPosition(markerLatLng);
 		currentMap.panTo(markerLatLng);
 	});
-	
-	if ((typeof(autoArray) != "undefined")){
-		if ((autoArray.list != 'undefined') && (autoArray.list.length > 0)){
-			var aListOfQuestions = autoArray.list;
 
-			$(aListOfQuestions).each(function(index,element){
-
-				var elementInfo = autoArray[element];
-				var strJSelector = "#answer" + (elementInfo.children.join(", #answer"));
-
-				var aJSelectors = strJSelector.split(", ");
-				var strCheckedSelector = (aJSelectors.join(":checked ,"))+":checked";
-
-				$(strJSelector).live('change',function(event){
-
-					if ($(strCheckedSelector).length == $(strJSelector).length){
-
-						$("#answer"+elementInfo.focus).trigger('click');
-
-						eval("excludeAllOthers"+elementInfo.parent + "('answer"+elementInfo.focus + "', 'yes')");
-
-						checkconditions($("#answer"+elementInfo.focus).val(),
-										$("#answer"+elementInfo.focus).attr("name"),
-										$("#answer"+elementInfo.focus).attr('type')
-									);
-
-					}
-				});
-
-			});
-		}
-	}
-	
-	// disable double-posts in all forms
-	$('form').submit(function()
-	{
-		$('input[type=button], input[type=submit]', this).attr('disabled', 'disabled');
-    });
+//    /* TMSW - not needed?
+//    if ((typeof(autoArray) != "undefined")){
+//        if ((autoArray.list != 'undefined') && (autoArray.list.length > 0)){
+//            var aListOfQuestions = autoArray.list;
+//
+//            $(aListOfQuestions).each(function(index,element){
+//
+//                var elementInfo = autoArray[element];
+//                var strJSelector = "#answer" + (elementInfo.children.join(", #answer"));
+//
+//                var aJSelectors = strJSelector.split(", ");
+//                var strCheckedSelector = (aJSelectors.join(":checked ,"))+":checked";
+//
+//                $(strJSelector).live('change',function(event){
+//
+//                    if ($(strCheckedSelector).length == $(strJSelector).length){
+//
+//                        $("#answer"+elementInfo.focus).trigger('click');
+//
+//                        eval("excludeAllOthers"+elementInfo.parent + "('answer"+elementInfo.focus + "', 'yes')");
+//
+//                        checkconditions($("#answer"+elementInfo.focus).val(),
+//                                        $("#answer"+elementInfo.focus).attr("name"),
+//                                        $("#answer"+elementInfo.focus).attr('type')
+//                                    );
+//
+//                    }
+//                });
+//
+//            });
+//        }
+//    }
+//    */
+    /*replacement for inline javascript for #index */
+    /*
+    $("#index").parents(".outerframe").addClass("withindex");
+     if ($("#index").size() && $("#index .row.current").size()){
+         var idx = $("#index");
+         var row = $("#index .row.current");
+         idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);
+    */
+   ExprMgr_process_relevance_and_tailoring();
 });
 
-gmaps = new Object();
-osmaps = new Object();
+gmaps = new Object;
+osmaps = new Object;
 zoom = [];
 
 // OSMap functions
 function OSMapInitialize(question,lat,lng){
-	 
+
     map = new OpenLayers.Map("gmap_canvas_" + question);
     map.addLayer(new OpenLayers.Layer.OSM());
     var lonLat = new OpenLayers.LonLat(lat,lng)
@@ -126,7 +142,7 @@ function OSMapInitialize(question,lat,lng){
     markers.addMarker(new OpenLayers.Marker(lonLat));
     map.setCenter (lonLat, zoom);
     return map;
-    
+
 }
 
 //// Google Maps Functions (for API V3) ////
@@ -236,7 +252,7 @@ function getInfoToStore(name, lat, lng, city, state, country, postal){
 Array.prototype.push = function()
 {
 	var n = this.length >>> 0;
-	for (var i = 0; i < arguments.length; i++) 
+	for (var i = 0; i < arguments.length; i++)
 	{
 		this[n] = arguments[i];
 		n = n + 1 >>> 0;
@@ -261,13 +277,13 @@ function inArray(needle, haystack)
 {
 	for (h in haystack)
 	{
-		if (haystack[h] == needle) 
+		if (haystack[h] == needle)
 		{
 			return true;
 		}
 	}
 	return false;
-} 
+}
 
 //defined in group.php & survey.php, but a static function
 function match_regex(testedstring,str_regexp)
@@ -295,7 +311,7 @@ function cellAdapter(evt,src)
 				//A cell with multiple radio buttons -- unhandled
 				return;
 			}
-            
+
 		}
 	}
 	else eChild = eChildren[0];
@@ -333,14 +349,14 @@ function prepareCellAdapters()
 				if(ptr.nodeName == 'TD')
 		{
 					foundTD = true;
-					ptr.onclick = 
+					ptr.onclick =
 						function(evt){
 							return cellAdapter(evt,this);
 						};
 					continue;
 				}
-				ptr = ptr.parentNode;	
-			}	
+				ptr = ptr.parentNode;
+			}
 		}
 	}
 }
@@ -349,7 +365,7 @@ function addHiddenField(theform,thename,thevalue)
 {
 	var myel = document.createElement('input');
 	myel.type = 'hidden';
-	myel.name = thename;	
+	myel.name = thename;
 	theform.appendChild(myel);
 	myel.value = thevalue;
 }
@@ -385,7 +401,7 @@ function hookEvent(element, eventName, callback)
   if(element.addEventListener)
   {
     if(eventName == 'mousewheel')
-      element.addEventListener('DOMMouseScroll', callback, false); 
+      element.addEventListener('DOMMouseScroll', callback, false);
     element.addEventListener(eventName, callback, false);
   }
   else if(element.attachEvent)
@@ -431,7 +447,7 @@ function goodchars(e, goods)
 function show_hide_group(group_id)
 {
 	var questionCount;
-	
+
 	// First let's show the group description, otherwise, all its childs would have the hidden status
 	$("#group-" + group_id).show();
 	// If all questions in this group are conditionnal
@@ -492,6 +508,13 @@ function navigator_countdown(n)
 	});
 }
 
+function std_onsubmit_handler()
+{
+    // disable double-posts in all forms
+    $('#moveprevbtn, #movenextbtn, #movesubmitbtn').attr('disabled', 'disabled');
+    return true;
+}
+
 // ==========================================================
 // totals
 
@@ -514,7 +537,7 @@ function multi_set(ids)
 		var _grand = 0;
 		//multi array holder
 		var _bits = new Array();
-		
+
 		//var _obj = document.getElementById(id);
 		//grab the tr's
 		var _obj = document.getElementById(id);//.getElementsByTagName('table');
@@ -524,7 +547,7 @@ function multi_set(ids)
 		//counter used in top level of _bits array
 		var _counter = 0;
 		//generic for vars
-		var _i = 0; 
+		var _i = 0;
 		var _l = _tr.length;
 		for(_i=0; _i<_l; _i++)
 		{
@@ -593,7 +616,7 @@ function multi_set(ids)
 										//set up horo
 										horo_set_up(_counter);
 									};
-									
+
 								};
 								if(vert && _grand == 0)
 								{
@@ -601,12 +624,12 @@ function multi_set(ids)
 									_tdin.onkeydown = dummy;
 									_tdin.onkeyup = dummy;
 									vert_set_up(_tcounter);
-								
+
 								};
 								_tcounter++;
 							};
 						};
-						
+
 					};
 					//check we got some thing that time
 					if(_bits[_counter].length == 0)
@@ -623,7 +646,7 @@ function multi_set(ids)
 					//remove blanks
 					_bits.pop();
 				}
-				
+
 			};
 		};
 		//returns the first text input or false
@@ -645,7 +668,7 @@ function multi_set(ids)
 		{
 			//make all in the row update the final
 			//alert('set horo called for row ' + id);
-			
+
 			var i=0;
 			var l=_bits[id].length;
 			var qt=0;
@@ -665,9 +688,9 @@ function multi_set(ids)
 //				else
 //				{
 //					_bits[id][i].value = '0';
-				};	
+				};
 			};
-			
+
 		}
 		//sets up the vertical calc
 		function vert_set_up(id)
@@ -774,14 +797,14 @@ function multi_set(ids)
 					{
 						qt += (_bits[i][vid].value * 1);
 					}
-					
+
 //				}
 //				else
 //				{
 //					_bits[i][vid].value = '0';
 				};
 			};
-			
+
 		};
 		//run horo calc on row[hid]
 		function calc_horo(hid)
@@ -821,7 +844,7 @@ function multi_set(ids)
 //				else
 //				{
 //					_bits[hid][i].value = '0';
-				};	
+				};
 			};
 		};
 		//clear key input
@@ -889,7 +912,7 @@ function multi_set(ids)
 	var ll=ids.length;
 	//object place holder
 	var _collection=new Array();
-	
+
 	for(ii=0; ii<ll; ii++)
 	{
 		//run main function per id
@@ -908,4 +931,11 @@ function array_dual_dd_checkconditions(value, name, type, rank, condfunction)
         condfunction(value, dualname, type);
    }
     condfunction(value, name, type);
+}
+
+// Maxlength for textareas
+function textLimit(field, maxlen) { 
+	if (document.getElementById(field).value.length > maxlen) {
+		document.getElementById(field).value = document.getElementById(field).value.substring(0, maxlen);
+	}
 }

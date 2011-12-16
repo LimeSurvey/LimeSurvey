@@ -5,13 +5,6 @@ require_once(dirname(__FILE__).'/common.php');
 require_once($homedir.'/classes/core/class.progressbar.php');
 require_once(dirname(__FILE__).'/classes/core/language.php');
 
-if (isset($_GET['filegetcontents']))
-{
-    $handle = file_get_contents("tmp/upload/".$_GET['filegetcontents']);
-    echo $handle;
-    exit();
-}
-
 if (!isset($surveyid))
 {
     $surveyid=returnglobal('sid');
@@ -21,6 +14,22 @@ else
     //This next line ensures that the $surveyid value is never anything but a number.
     $surveyid=sanitize_int($surveyid);
 }
+
+if (isset($_GET['filegetcontents']))
+{
+    $sFileName=sanitize_filename($_GET['filegetcontents']);
+    if (substr($sFileName,0,6)=='futmp_')
+    {
+        $sFileDir = $tempdir.'/upload/';
+    }
+    elseif(substr($sFileName,0,3)=='fu_'){
+        $sFileDir = "{$uploaddir}/surveys/{$surveyid}/files/";
+    }
+    readfile($sFileDir.$sFileName);
+    exit();
+}
+
+
 
 // Compute the Session name
 // Session name is based:
@@ -62,6 +71,7 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
 
 $meta = '<script type="text/javascript">
     var surveyid = "'.$surveyid.'";
+    var fieldname = "'.$_GET['fieldname'].'";
     var questgrppreview  = '.$_GET['preview'].';
 </script>';
 
@@ -76,29 +86,49 @@ $header = getHeader($meta);
 
 echo $header;
 
+echo "<script type='text/javascript'>
+        var translt = {
+             titleFld: '" . $clang->gT('Title','js') . "',
+             commentFld: '" . $clang->gT('Comment','js') . "',
+             errorNoMoreFiles: '" . $clang->gT('Sorry, no more files can be uploaded!','js') . "',
+             errorOnlyAllowed: '" . $clang->gT('Sorry, only %s files can be uploaded for this question!','js') . "',
+             uploading: '" . $clang->gT('Uploading','js') . "',
+             selectfile: '" . $clang->gT('Select file','js') . "',
+             errorNeedMore: '" . $clang->gT('Please upload %s more file(s).','js') . "',
+             errorMoreAllowed: '" . $clang->gT('If you wish, you may upload %s more file(s); else you may return back to survey.','js') . "',
+             errorMaxReached: '" . $clang->gT('The maximum number of files has been uploaded. You may return back to survey.','js') . "',
+             errorTooMuch: '" . $clang->gT('The maximum number of files has been uploaded. You may return back to survey.','js') . "',
+             errorNeedMoreConfirm: '" . $clang->gT("You need to upload %s more files for this question.\nAre you sure you want to exit?",'js') . "'
+            };
+    </script>\n";
+
+$fn = $_GET['fieldname'];
+$qid = $_GET['qid'];
+$qidattributes=getQuestionAttributes($qid);
+
 $body = '
         <div id="notice"></div>
-        <input type="hidden" id="ia"                value="'.$_SESSION['fieldname'].'" />
-        <input type="hidden" id="minfiles"          value="'.$_SESSION['minfiles'].'" />
-        <input type="hidden" id="maxfiles"          value="'.$_SESSION['maxfiles'].'" />
-        <input type="hidden" id="maxfilesize"       value="'.$_SESSION['maxfilesize'].'" />
-        <input type="hidden" id="allowed_filetypes" value="'.$_SESSION['allowed_filetypes'].'" />
-        <input type="hidden" id="preview"           value="'.$_SESSION['preview'].'" />
-        <input type="hidden" id="show_comment"      value="'.$_SESSION['show_comment'].'" />
-        <input type="hidden" id="show_title"        value="'.$_SESSION['show_title'].'" />
-        <input type="hidden" id="licount"           value="0" />
-        <input type="hidden" id="filecount"         value="0" />
+        <input type="hidden" id="ia"                value="'.$fn.'" />
+        <input type="hidden" id="'.$fn.'_minfiles"          value="'.$qidattributes['min_num_of_files'].'" />
+        <input type="hidden" id="'.$fn.'_maxfiles"          value="'.$qidattributes['max_num_of_files'].'" />
+        <input type="hidden" id="'.$fn.'_maxfilesize"       value="'.$qidattributes['max_filesize'].'" />
+        <input type="hidden" id="'.$fn.'_allowed_filetypes" value="'.$qidattributes['allowed_filetypes'].'" />
+        <input type="hidden" id="preview"                   value="'.$_SESSION['preview'].'" />
+        <input type="hidden" id="'.$fn.'_show_comment"      value="'.$qidattributes['show_comment'].'" />
+        <input type="hidden" id="'.$fn.'_show_title"        value="'.$qidattributes['show_title'].'" />
+        <input type="hidden" id="'.$fn.'_licount"           value="0" />
+        <input type="hidden" id="'.$fn.'_filecount"         value="0" />
 
         <!-- The upload button -->
         <div align="center" class="upload-div">
             <button id="button1" class="upload-button" type="button" >'.$clang->gT("Select file").'</button>
         </div>
-        
-        <p class="uploadmsg">'.$clang->gT("You can upload ").$qidattributes['allowed_filetypes'].$clang->gT(" under ").$qidattributes['max_filesize'].$clang->gT(" KB each").'</p>
+
+        <p class="uploadmsg">'.sprintf($clang->gT("You can upload %s under %s KB each.",'js'),$qidattributes['allowed_filetypes'],$qidattributes['max_filesize']).'</p>
         <div class="uploadstatus" id="uploadstatus"></div>
 
         <!-- The list of uploaded files -->
-        <ul id="listfiles"></ul>
+        <ul id="'.$fn.'_listfiles"></ul>
 
     </body>
 </html>';

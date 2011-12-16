@@ -11758,7 +11758,7 @@ msgstr "Gallese"
 #~ msgstr ""
 #~ "Nessun messaggio e-mail da inviare. I messaggi non soddisfano i seguenti "
 #~ "criteri - indirizzo e-mail valido, un invito è già stato inviato ma il "
-#~ "questionario non è stato completato."
+#~ "questionario  non è stato completato."
 
 #~ msgid "Display Tokens"
 #~ msgstr "Mostra gli identificativi"

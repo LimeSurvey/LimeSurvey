@@ -12,34 +12,72 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*****
-Default styles for the jQuery UI Buttons (Next, Previous etc)
-*****/
-.nav-button { outline: 0; margin:0 4px 0 0;  background-color:#FEFEFE;   padding: .4em 1em; text-decoration:none !important; cursor:pointer; position: relative; text-align: center; zoom: 1; }
-.nav-button .ui-icon { position: absolute; top: 50%; margin-top: -8px; left: 50%; margin-left: -8px; }
+/* This part don't have to be modified */
+/* Base style only */
+html{font-size:100%}
+body{font-family:Arial, Helvetica, FreeSans, sans-serif;font-size:.85em;line-height:1.4;color:#000;background:#FFF;margin:0;padding:0}
+html,body{height:100%}
+h1,h2,h3,h4,h5,h6{line-height:1.2;font-weight:700;font-style:normal;margin:1em 0 .5em}
+h1{font-size:1.5em}
+h2{font-size:1.3em}
+h3{font-size:1.2em}
+h4{font-size:1.1em}
+ul,ol{margin:.75em 0 .75em 32px;padding:0}
+address{font-style:italic;margin:.75em 0}
+a{text-decoration:underline}
+a:link,a:visited{color:#11C}
+a:visited{color:#339}
+a:hover,a:focus,a:active{color:#00F}
+a:active{outline:none}
+a img{border:none}
+strong{font-weight:700}
+form,fieldset{border:none;margin:0;padding:0}
+input,button,select{vertical-align:middle}
+abbr[title]{border-bottom:1px dotted;cursor:help}
+blockquote{border-left:solid 2px #ddd;margin:.75em 0 .75em 20px;padding:0 0 0 10px}
+q cite,q q{font-style:normal}
+blockquote p,li p{margin:.5em 0}
+dt{font-weight:700;margin:.75em 0 0}
+dd{margin:.25em 0 .25em 32px}
+table{border-collapse:separate;border-spacing:0;border:1px solid gray;margin:0}
+table td,table th{border:1px solid #ccc;vertical-align:top;padding:4px}
+article,aside,dialog,figure,footer,header,hgroup,menu,nav,section{display:block}
+ul#surveylist{list-style:none}
+.hide{position:absolute;top:-9999px;left:-9999px}
+.good{color:#090}
+#progress-wrapper{width:252px;font-size:12px;height:20px;margin:0 auto}
+#progress-wrapper #progress-pre{float:left;width:45px;text-align:right;margin:0 5px 0 0}
+#progress-wrapper .ui-widget-content{float:left;width:150px;height:1em;text-align:left;border-color:#666;border-style:solid;border-width:1px}
+#progress-wrapper .ui-widget-header{background-color:#AAA;background-image:none;border:1px solid #666}
+#progress-wrapper #progress-post{float:left;width:45px;text-align:left;margin:0 0 0 5px}
+.ui-slider{width:15em;display:inline-block;border:1px solid #666;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;margin:.4em 0 .2em}
+.slider_showmin{float:left;width:3em;font-size:.7em;font-weight:400;text-align:left;color:#666;margin:1.4em 0 0}
+.slider_showmax{float:right;width:3em;font-size:.7em;font-weight:400;text-align:right;color:#666;margin:1.4em 0 0}
+.slider_lefttext{display:inline-block;position:relative;top:-.5em;padding-right:1em;text-align:right;font-size:.9em;color:#666}
+.slider_righttext{display:inline-block;position:relative;top:-.5em;padding-left:1em;font-size:.9em;color:#666}
+.slider_callout{overflow:hidden;position:absolute;top:-1.3em;margin-left:.8em;text-align:right;color:#333;font-size:.9em}
+.ie6 .ui-slider,.ie7 .ui-slider{display:block;float:left;}
+.ie6 .slider_lefttext ,.ie7 .slider_lefttext {float: left;margin-top:1em;}
+.ie6 .slider_righttext ,.ie7 .slider_righttext {float: left;margin-top:1em;}
 
-a.nav-button { float:left; }
-
-/* remove extra button width in IE */
-button.nav-button { width:auto; overflow:visible; }
-
-.nav-button-icon-left { padding-left: 2.1em; margin-left: 3em}
-.nav-button-icon-right { padding-right: 2.1em; }
-.nav-button-icon-right .ui-icon { right: auto;left: 0.2em;margin-left: 2.5em; }
-.nav-button-icon-left .ui-icon { left: auto; right: 0.2em; margin-right: 8em; }
-
+#percentcomplete{height:20px;display:block;margin:5px 0}
+h5,h6{font-size:1em}
+p,dl{margin:.75em 0}
+em,q,cite{font-style:italic}
+.error,.problem{color:#f70}
+.ie .ui-slider{display:inline;}
 /* --------------------------------------------- */
 /* Basic adaptation of the template :            */
 /* color and image                               */
 /* --------------------------------------------- */
 
-body {background:#FEFEFE;color:#222;}
+body {background:#FEFEFE;color:#444;}
 a:link {color: #5670A1;} 
 a:visited {color: #5670A1;} 
-a:hover, a:focus, a:active {background-color: #E5F8A8;color: #5670A1;} 
+a:hover, a:focus, a:active {background-color: #E5F8A8;color: #5670A1;text-decoration:none;} 
 /* Global margin and with*/
 /* width of limesurvey contents parts */
-.wrapper,#content{padding:0;margin:0 auto;max-width:1024px;}
+.wrapper,#content{padding:0;margin:0 auto;max-width:1024px;width:auto !important; width:1024px}
 
 /* Head decoration */
 #head{
@@ -75,7 +113,12 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 	input#loadbutton,
 	input#registercontinue,
 	.navigator input
-		{border:1px solid #ABB8D1;background:#FEFEFE;color:#415479;}
+		{border:1px solid #ABB8D1;background:#FEFEFE;color:#415479;
+  -moz-box-shadow: 2px 2px 5px #ccc;
+  -webkit-box-shadow: 2px 2px 5px #ccc;
+  box-shadow: 2px 2px 5px #ccc;
+
+}
 #languagechanger select:hover,
 	.tools input:hover,
 	.tools a:hover,
@@ -92,7 +135,11 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 	input#savebutton:focus,
 	input#loadbutton:focus,
 	input#registercontinue:focus
-		{color:#415479;background:#dcdfe6;border-color:#ABB8D1;}
+		{color:#415479;background:#dcdfe6;border-color:#ABB8D1;
+  -moz-box-shadow: 2px 2px 5px #415479;
+  -webkit-box-shadow: 2px 2px 5px #415479;
+  box-shadow: 2px 2px 5px #415479;
+		}
 #languagechanger select:hover option{background:#FEFEFE;}
 
 /* for disabled tools */
@@ -105,13 +152,20 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 	#languagechanger select[disabled]
 	{border:1px solid #dbdbdb;background:#FEFEFE;color:#dbdbdb;cursor:inherit;}
 
+.ie .tools input,
+	.ie .tools a,
+	.ie .navigator input,
+	.ie input#savebutton,
+	.ie input#loadbutton
+		{height:2em}
+
+/* gloabl information block */
 .note,#tokenmessage{border:#8195BA 1px solid;background:#EEF6FF;}
 
 /* Group decoration */
 .groupdescription{border: 1px solid #5670A1;border-top:0px none #5670A1;background:#EEF6FF;}
 .grouptitle{border: 1px solid #5670A1;border-bottom:0px none #5670A1;background:#5670A1;color:#FEFEFE}
-.groupdescription{border: 1px solid #5670A1;border-top:0px none #5670A1;background:#EEF6FF;}
-.grouptitle{border: 1px solid #5670A1;border-bottom:0px none #5670A1;background:#5670A1;color:#FEFEFE}
+
 
 /* Question bloc decoration */
 .question-wrapper{background-color:#FEFEFE;border:1px solid #5670A1;}
@@ -120,8 +174,11 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 .question-wrapper .question-text a:hover{color:#5670A1}
 .question-wrapper .question-text{font-weight:bold;}
 .question-wrapper .question-text strong,.question-wrapper .question-text b{font-weight:bolder;}/* see for strong and b to add some color */
-.asterisk {color:#FF8900;}
-span.qnumcode {font-style:italic;}
+.asterisk {display:none}
+.mandatory .asterisk {display:inline;}
+.asterisk {color:#FF8900;padding-right:1em;}
+.showqnumcode-X .qnumcode {display:none;}
+.qnumcode {font-style:italic;padding-right:1em;}
 
 /* input decoration */
 #tokenform input[type=text],.form input[type=text],.answers input[type=text],.answers textarea
@@ -147,6 +204,16 @@ span.qnumcode {font-style:italic;}
 .slider_righttext {color:#5670A1;}
 .slider_callout {color: #161c28;}
 
+/* index */
+#index .container{margin-top: 2em;border: 1px solid #5670A1;background:#EEF6FF;}
+#index .container h2{padding:0.2em 1em 0.5em;margin:0 0 0em;font-size:1.1em;}
+#index .container h2{background:#5670A1;color:#FEFEFE;font-size:1.2em}
+#index .hdr{color:#5670A1;padding:0 0.5em;}
+#index .row{padding:0.1em 1em;cursor: pointer;color:#5670A1;text-decoration: underline;}
+#index .current{padding:0.1em 1em;cursor: pointer;color:#5670A1;text-decoration: none;font-weight:bold;}
+#index .missing{/*background: url()*/}
+#index .row:hover, #index .row:focus, #index .row:active {background-color: #E5F8A8;color: #5670A1;text-decoration:none;}
+#index .container .submit{margin:0 auto 0.5em;display:block}
 /* --------------------------------------------- */
 /* More tempate adaptation                       */
 /* --------------------------------------------- */
@@ -163,7 +230,7 @@ span.qnumcode {font-style:italic;}
 #content{padding-bottom:4.8em;}
 #footer {text-align:center;padding:0.8em 0 0.4em;margin:0;font-size:0.8em;font-weight:normal;}
 #footer{border-width:1px 0;}
-#footer{width:100%;position:absolute;bottom:0;}
+#footer{width:100%;position:absolute;bottom:0;left:0;}
 #footer ul#credits{list-style: none outside;margin-top:0;margin-bottom:0;padding:0;text-align:center;overflow:auto;}
 #footer ul#credit a {display: block;}
 #footer ul#credit li a.ui-state-hover {font-weight:normal;}/* to be corrected */
@@ -213,10 +280,10 @@ ul.info a {}
 #progress-wrapper {height: 2em;}
 
 /*surveylist (home page) */
-ul#surveylist{margin: 0.5em auto;padding: 0;text-align: left;overflow:auto;display:inline-block;}
-ul#surveylist li{display:inline;float:left;clear:left;padding:0.5em 10px;}
-ul#surveylist li a.surveytitle{font-weight:bold;font-size:1.2em;padding:3px 10px;text-decoration: none;margin-bottom: 8px;}
-
+#surveylist{margin: 0.5em auto;padding: 0;text-align: left;overflow:auto;display:inline-block;}
+#surveylist li{padding:0.5em 10px;}
+#surveylist li a.surveytitle{display:block;font-weight:bold;font-size:1.2em;padding:3px 10px;margin-bottom: 4px;border-bottom:1px dotted;text-decoration:none;}
+#surveylist li a.surveytitle:hover,#surveylist li a.surveytitle:focus{border-bottom:1px dotted #FFF;}
 /* specific box */
 .note,#tokenmessage{width:80%;margin:0.5em auto;padding:1em;}
 #tokenform ul{list-style: none ;margin: 0.5em auto;padding: 0;text-align: center;}
@@ -234,9 +301,7 @@ div.form table table td{padding:0;}
 .group{margin-bottom: 2em}
 .groupdescription{padding:1em 1.5em 0.5em;margin:0 0 0.5em;}
 .grouptitle{padding:0.2em 1em 0.5em;margin:0 0 0em;font-size:1.1em;}
-.group{margin-bottom: 2em}
-.groupdescription{padding:1em 1.5em 0.5em;margin:0 0 0.5em;}
-.grouptitle{padding:0.2em 1em 0.5em;margin:0 0 0em;font-size:1.1em;}
+
 
 /* Question decoration */
 .question-wrapper{margin:1em 0;}
@@ -252,7 +317,7 @@ div.form table table td{padding:0;}
 /* error bloc */
 .error-wrapper {display:none;}/* don't diplay error-wrapper if all is OK */
 .input-error .error-wrapper {display:block;padding:0 1em;}/*diplay error-wrapper only if there are error */
-.error-wrapper br:first-child{display:inline;}/* don't put linefeed at start of an error box */
+.error-wrapper br:first-child{display:none;}/* don't put linefeed at start of an error box */
 .error-wrapper {margin:0.5em auto;width:96%;}
 .error-wrapper .error,.error-wrapper .errormandatory {padding:0.3em 1em;}
 .error-wrapper {background:transparent url(./exclamation.png) no-repeat center left;padding:4px;padding-left:20px;}
@@ -412,6 +477,12 @@ table.question tbody td.ddarrayseparator{border-top-width: 0px;}
     text-align: left;
     margin: 1em 0;
 }
+.ie .multiple-opt-comments  .answers,
+	.ie .multiple-short-txt  .answers,
+	.ie .numeric-multi  .answers,
+	.ie .multiple-opt .answers 
+	{overflow:hidden;}
+
 /* some inline list */
  .choice-5-pt-radio .answers ul li
 ,.yes-no .answers ul li
@@ -441,7 +512,7 @@ table.question tbody td.ddarrayseparator{border-top-width: 0px;}
 	font-style: italic;
 }
 
-
+table.rank{width:98%;table-layout:fixed;}
 table.rank, table.rank table{border:0px none #FFF;border-collapse:collapse}
 table.rank td{border-width:1px;}
 table.rank table td{border-width:0px;}
@@ -592,7 +663,7 @@ ul.cols-7 li , ul.cols-7-ul , table.cols-7 td { width: 13%; }
 ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 
 
-.list-dropdown-flexible p.question, .list-dropdown p.question
+.list-dropdown-flexible .question, .list-dropdown .question, .language .question
 {
 text-align:center;
 }
@@ -672,6 +743,7 @@ text-align:center;
 ,.multiple-opt-comments ul li span.option
 ,.multiple-short-txt ul li label
 {
+	clear:left;
 	float:left; 
 	width:45%;
 	padding: 0.3em 1em 0% 0%;
@@ -702,9 +774,13 @@ text-align:center;
 , .list-with-comment .answers ul li input.radio 
 , .list-radio-flexible .answers ul li input.radio 
 {
-	margin-left:45%;
+	margin-left:40%;
 }
-
+.ie .multiple-opt .answers ul li input.checkbox,
+	.ie .list-radio .answers ul li input.radio,
+	.ie .list-with-comment .answers ul li input.radio,
+	.ie .list-radio-flexible .answers ul li input.radio 
+	{margin-left:0;}
 
  .text-short input
  ,.text-short textarea

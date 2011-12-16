@@ -83,7 +83,6 @@ if (!$subaction == "import")
 elseif (isset($surveyid) && $surveyid && isset($oldtable))
 {
     $activetable = "{$dbprefix}survey_$surveyid";
-
     //Fields we don't want to import
     $dontimportfields = array(
 		 //,'otherfield'
@@ -92,7 +91,7 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
 
     $aFieldsOldTable=array_values($connect->MetaColumnNames($oldtable, true)); 
     $aFieldsNewTable=array_values($connect->MetaColumnNames($activetable, true)); 
-
+    
     // Only import fields where the fieldnames are matching
     $aValidFields=array_intersect($aFieldsOldTable,$aFieldsNewTable);
 
@@ -100,7 +99,7 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
     $aValidFields=array_diff($aValidFields,$dontimportfields);
 
 
-    $queryOldValues = "SELECT ".implode(", ",$aValidFields)." FROM {$oldtable} ";
+    $queryOldValues = "SELECT ".implode(", ",array_map("db_quote_id",$aValidFields))." FROM {$oldtable} ";
     $resultOldValues = db_execute_assoc($queryOldValues) or safe_die("Error:<br />$queryOldValues<br />".$connect->ErrorMsg());
     $iRecordCount=$resultOldValues->RecordCount();
     $aSRIDConversions=array();
@@ -112,7 +111,7 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
         $sInsertSQL="INSERT into {$activetable} (".implode(",",array_map("db_quote_id",array_keys($row))).") VALUES (".implode(",",array_map("db_quoteall",array_values($row))).")";
         $result = $connect->Execute($sInsertSQL) or safe_die("Error:<br />$sInsertSQL<br />".$connect->ErrorMsg());
         $aSRIDConversions[$iOldID]=$connect->Insert_Id($activetable,"id");
-        }
+    }
 
     $_SESSION['flashmessage'] = sprintf($clang->gT("%s old response(s) were successfully imported."),$iRecordCount);               
 
@@ -124,22 +123,21 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
         $aFieldsOldTimingTable=array_values($connect->MetaColumnNames($sOldTimingsTable, true)); 
         $aFieldsNewTimingTable=array_values($connect->MetaColumnNames($sNewTimingsTable, true)); 
         $aValidTimingFields=array_intersect($aFieldsOldTimingTable,$aFieldsNewTimingTable);
-
+        
         $queryOldValues = "SELECT ".implode(", ",$aValidTimingFields)." FROM {$sOldTimingsTable} ";
-    $resultOldValues = db_execute_assoc($queryOldValues) or safe_die("Error:<br />$queryOldValues<br />".$connect->ErrorMsg());
+        $resultOldValues = db_execute_assoc($queryOldValues) or safe_die("Error:<br />$queryOldValues<br />".$connect->ErrorMsg());
         $iRecordCountT=$resultOldValues->RecordCount();
         $aSRIDConversions=array();
-    while ($row = $resultOldValues->FetchRow())
-    {
-            if (isset($aSRIDConversions[$row['id']]))
+        while ($row = $resultOldValues->FetchRow())
         {
+            if (isset($aSRIDConversions[$row['id']]))
+            {
                 $row['id']=$aSRIDConversions[$row['id']];   
             }
-            $sInsertSQL=$connect->GetInsertSQL($sNewTimingsTable,$row);
+            $sInsertSQL="INSERT into {$sNewTimingsTable} (".implode(",",array_map("db_quote_id",array_keys($row))).") VALUES (".implode(",",array_map("db_quoteall",array_values($row))).")";
             $result = $connect->Execute($sInsertSQL) or safe_die("Error:<br />$sInsertSQL<br />".$connect->ErrorMsg());
         }
         $_SESSION['flashmessage'] = sprintf($clang->gT("%s old response(s) and according timings were successfully imported."),$iRecordCount,$iRecordCountT);               
-
     }
     $importoldresponsesoutput = browsemenubar($clang->gT("Quick statistics"));
 }

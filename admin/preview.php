@@ -15,6 +15,8 @@
 
 
 //Ensure script is not run directly, avoid path disclosure
+$LEMdebugLevel=0;
+
 include_once("login_check.php");
 require_once(dirname(__FILE__).'/sessioncontrol.php');
 require_once(dirname(__FILE__).'/../qanda.php');
@@ -24,6 +26,9 @@ if (!isset($qid)) {$qid=returnglobal('qid');}
 if (empty($surveyid)) {die("No SID provided.");}
 if (empty($qid)) {die("No QID provided.");}
 
+if (!isset($_SESSION['step'])) { $_SESSION['step'] = 0; }
+if (!isset($_SESSION['prevstep'])) { $_SESSION['prevstep'] = 0; }
+if (!isset($_SESSION['maxstep'])) { $_SESSION['maxstep'] = 0; }
 if (!isset($_GET['lang']) || $_GET['lang'] == "")
 {
     $language = GetBaseLanguageFromSurveyID($surveyid);
@@ -32,7 +37,7 @@ if (!isset($_GET['lang']) || $_GET['lang'] == "")
 }
 
 $_SESSION['s_lang'] = $language;
-$_SESSION['fieldmap']=createFieldMap($surveyid,'full',true,$qid);
+$_SESSION['fieldmap']=createFieldMap($surveyid,'full',false,$qid);
 // Prefill question/answer from defaultvalues
 foreach ($_SESSION['fieldmap'] as $field)
 {
@@ -60,6 +65,10 @@ $ia = array(0 => $qid,
 7 => 'N',
 8 => 'N' ); // ia[8] is usedinconditions
 
+LimeExpressionManager::StartSurvey($thissurvey['sid'], 'question', NULL, false,$LEMdebugLevel);
+$qseq = LimeExpressionManager::GetQuestionSeq($qid);
+$moveResult = LimeExpressionManager::JumpTo($qseq+1,false,false,true);
+
 $answers = retrieveAnswers($ia);
 
 if (!$thissurvey['template'])
@@ -76,14 +85,14 @@ $dummy_js = '
 		<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
 		<script type="text/javascript">
         /* <![CDATA[ */
-            function checkconditions(value, name, type)
-            {
-            }
+	function checkconditions(value, name, type)
+	{
+        }
 		function noop_checkconditions(value, name, type)
-		{
-		}
+        {
+            }
         /* ]]> */
-		</script>
+</script>
         ';
 
 
@@ -96,17 +105,6 @@ $question['class'] = question_class($qrows['type']);
 $question['essentials'] = 'id="question'.$qrows['qid'].'"';
 $question['sgq']=$ia[1];
 
-//Temporary fix for error condition arising from linked question via replacement fields
-//@todo: find a consistent way to check and handle this - I guess this is already handled but the wrong values are entered into the DB
-
-$search_for = '{INSERTANS';
-if(strpos($question['text'],$search_for)!==false){
-    $pattern_text = '/{([A-Z])*:([0-9])*X([0-9])*X([0-9])*}/';
-    $replacement_text = $clang->gT('[Dependency on another question (ID $4)]');
-    $text = preg_replace($pattern_text,$replacement_text,$question['text']);    
-    $question['text']=$text;
-}
-
 if ($qrows['mandatory'] == 'Y')
 {
     $question['man_class'] = ' mandatory';
@@ -117,26 +115,37 @@ else
 };
 
 $content = templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-$content .='<form method="post" action="index.php" id="limesurvey" name="limesurvey" autocomplete="off">'; 
+$content .='<form method="post" action="index.php" id="limesurvey" name="limesurvey" autocomplete="off">';
 $content .= templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));
 
 $question_template = file_get_contents("$thistpl/question.pstpl");
 if(substr_count($question_template , '{QUESTION_ESSENTIALS}') > 0 ) // the following has been added for backwards compatiblity.
 {// LS 1.87 and newer templates
-$content .= "\n".templatereplace($question_template)."\n";
+    $content .= "\n".templatereplace($question_template,NULL,false,$qid)."\n";
 }
 else
 {// LS 1.86 and older templates
-$content .= '<div '.$question['essentials'].' class="'.$question['class'].$question['man_class'].'">';
-$content .= "\n".templatereplace($question_template)."\n";
-$content .= "\n\t</div>\n";
+    $content .= '<div '.$question['essentials'].' class="'.$question['class'].$question['man_class'].'">';
+    $content .= "\n".templatereplace($question_template,NULL,false,$qid)."\n";
+    $content .= "\n\t</div>\n";
 };
 
 $content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl")).$dummy_js;
 $content .= '<p>&nbsp;</form>';
-$content .= templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+
+LimeExpressionManager::FinishProcessingPage();
 
 echo $content;
+
+if ($LEMdebugLevel >= 1) {
+    echo LimeExpressionManager::GetDebugTimingMessage();
+}
+if ($LEMdebugLevel >= 2) {
+     echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>".$moveResult['message']."</td></tr></table>\n";
+}
+
+$content .= templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+
 echo "</html>\n";
 
 

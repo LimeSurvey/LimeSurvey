@@ -430,7 +430,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
     if (isset($surveyrowdata['private'])){
         $surveyrowdata['anonymized']=$surveyrowdata['private'];
         unset($surveyrowdata['private']);
-    }                            
+    }
     if (isset($surveyrowdata['startdate'])) {unset($surveyrowdata['startdate']);}
     $surveyrowdata['bounce_email']=$surveyrowdata['adminemail'];
     if (!isset($surveyrowdata['datecreated']) || $surveyrowdata['datecreated']=='' || $surveyrowdata['datecreated']=='null') {$surveyrowdata['datecreated']=$connect->BindTimeStamp(date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust));}
@@ -1061,6 +1061,9 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 
         }
     }
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance($newsid);
+    LimeExpressionManager::UpgradeConditionsToRelevance($newsid);
+
     $importresults['importversion']=$importversion;
     $importresults['newsid']=$newsid;
     $importresults['oldsid']=$oldsid;
@@ -1078,6 +1081,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 {
     global $connect, $dbprefix, $clang, $timeadjust;
 
+    $results['error']=false;
     if ($sXMLdata == NULL)
     {
         $xml = simplexml_load_file($sFullFilepath);
@@ -1090,6 +1094,12 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     {
         $results['error'] = $clang->gT("This is not a valid LimeSurvey survey structure XML file.");
         return $results;
+    }
+    else
+    {
+        //$results['error'] = $clang->gT("This is VALID LimeSurvey survey structure XML file.");
+        //echo $clang->gT("This is VALID LimeSurvey survey structure XML file.");
+        //return $results;
     }
     $dbversion = (int) $xml->DBVersion;
     $aQIDReplacements=array();
@@ -1144,6 +1154,13 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         {
             $newsid=GetNewSurveyID($oldsid);
         }
+        if ($dbversion<=143)
+        {
+            $insertdata['anonymized']=$insertdata['private'];
+            unset($insertdata['private']);
+            unset($insertdata['notification']);
+        }
+        $insertdata['startdate']=NULL;
         //Now insert the new SID and change some values
         $insertdata['sid']=$newsid;
         //Make sure it is not set active
@@ -1312,7 +1329,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             else
             {
                db_switchIDInsert('questions',false);
-            }            
+            }
             $results['subquestions']++;
         }
     }
@@ -1380,11 +1397,12 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
             // now translate any links
             $query=$connect->GetInsertSQL($tablename,$insertdata);
-            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />\$query<br />\n".$connect->ErrorMsg());
+            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
             $results['defaultvalues']++;
         }
     }
 
+    $aOldNewFieldmap=aReverseTranslateFieldnames($oldsid,$newsid,$aGIDReplacements,$aQIDReplacements);
     // Import conditions --------------------------------------------------------------
     if(isset($xml->conditions))
     {
@@ -1408,17 +1426,17 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             {
                 if (isset($aQIDReplacements[$insertdata['cqid']]))
                 {
+                    $oldcqid = $insertdata['cqid']; //Save for cfield transformation
                     $insertdata['cqid']=$aQIDReplacements[$insertdata['cqid']]; // remap the qid
                 }
                 else continue; // a problem with this answer record -> don't consider
 
                 list($oldcsid, $oldcgid, $oldqidanscode) = explode("X",$insertdata["cfieldname"],3);
-
                 // replace the gid for the new one in the cfieldname(if there is no new gid in the $aGIDReplacements array it means that this condition is orphan -> error, skip this record)
                 if (!isset($aGIDReplacements[$oldcgid]))
                     continue;
             }
-            
+
             unset($insertdata["cid"]);
 
             // recreate the cfieldname with the new IDs
@@ -1426,11 +1444,11 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             {
                 if (preg_match("/^\+/",$oldcsid))
                 {
-                    $newcfieldname = '+'.$newsid . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldqid));
+                    $newcfieldname = '+'.$newsid . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldcqid));
                 }
                 else
                 {
-                    $newcfieldname = $newsid . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldqid));
+                    $newcfieldname = $newsid . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldcqid));
                 }
             }
             else
@@ -1443,9 +1461,22 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $insertdata["method"]='==';
             }
 
+            // Now process the value and replace @sgqa@ codes TIBO
+            if (preg_match("/^@(.*)@$/",$insertdata["value"],$cfieldnameInCondValue))
+            {
+                if (isset($aOldNewFieldmap[$cfieldnameInCondValue[1]]))
+                {
+                    $newvalue = '@'.$aOldNewFieldmap[$cfieldnameInCondValue[1]].'@';
+                    $insertdata["value"] = $newvalue;
+                }
+
+            }
+            
+
+
             // now translate any links
             $query=$connect->GetInsertSQL($tablename,$insertdata);
-            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />\$query<br />\n".$connect->ErrorMsg());
+            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
             $results['conditions']++;
         }
     }
@@ -1468,10 +1499,10 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
 
             $insertdata['sid']=$newsid; // remap the survey id
-
+            unset($insertdata['id']);
             // now translate any links
             $query=$connect->GetInsertSQL($tablename,$insertdata);
-            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />\$query<br />\n".$connect->ErrorMsg());
+            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
             $results['assessments']++;
         }
     }
@@ -1493,7 +1524,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             unset($insertdata['id']);
             // now translate any links
             $query=$connect->GetInsertSQL($tablename,$insertdata);
-            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />\$query<br />\n".$connect->ErrorMsg());
+            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
             $aQuotaReplacements[$oldid] = $connect->Insert_ID(db_table_name_nq('quota'),"id");
             $results['quota']++;
         }
@@ -1517,7 +1548,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             unset($insertdata['id']);
             // now translate any links
             $query=$connect->GetInsertSQL($tablename,$insertdata);
-            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />\$query<br />\n".$connect->ErrorMsg());
+            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
             $results['quotamembers']++;
         }
     }
@@ -1538,7 +1569,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             unset($insertdata['quotals_id']);
             // now translate any links
             $query=$connect->GetInsertSQL($tablename,$insertdata);
-            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />\$query<br />\n".$connect->ErrorMsg());
+            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />{$query}<br />\n".$connect->ErrorMsg());
             $results['quotals']++;
         }
     }
@@ -1547,9 +1578,11 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     GiveAllSurveyPermissions($_SESSION['loginID'],$newsid);
     if ($bTranslateInsertansTags)
     {
-        $aOldNewFieldmap=aReverseTranslateFieldnames($oldsid,$newsid,$aGIDReplacements,$aQIDReplacements);
         TranslateInsertansTags($newsid,$oldsid,$aOldNewFieldmap);
     }
+
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance($newsid);
+    LimeExpressionManager::UpgradeConditionsToRelevance($newsid);
 
     return $results;
 }

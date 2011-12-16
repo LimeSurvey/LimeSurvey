@@ -1,4 +1,4 @@
-// $Id: tokens.js 8633 2010-04-25 12:57:33Z c_schmitz 
+// $Id: tokens.js 8633 2010-04-25 12:57:33Z c_schmitz
 $(document).ready(function(){
 
     intThrottlingRate = 550; // 1 request per 550 ms
@@ -37,11 +37,11 @@ $(document).ready(function(){
 
                 if (!sTargetInnerText)
                     sTargetInnerText = ""
-                
+
                 if (sTargetInnerText.length > 0){
                     bIgnore = true;
                 }
-                
+
                 if (sTargetInnerText == strip(sToConvert)){
                     bIgnore = false;
                 }
@@ -49,9 +49,10 @@ $(document).ready(function(){
 
             if (!bIgnore){
                 sToConvert = sToConvert.replace( new RegExp( "\\n", "g" ),'\\n');
+                sToConvert = sToConvert.replace(/"/g,'\\"');
                 setTimeout('fDoTranslateAjax("'+sBaseLang+'","'+sToLang+'","'+sToConvert+'","'+sId+'");',index*intThrottlingRate)
             }
-            
+
         });
 
         setTimeout('fHideAjaxLoader();',($("._from_",$(ui.target).parent()).length)*intThrottlingRate)
@@ -87,7 +88,7 @@ function fDoTranslateAjax(sBaseLang,sToLang,sToConvert,sId)
                     $("[name="+sId+"]").html(aData.converted);
 
                     var oMyEditor = CKEDITOR.instances[sId];
-                    
+
                     if (oMyEditor)
                     {
                         oMyEditor.setData(aData.converted);

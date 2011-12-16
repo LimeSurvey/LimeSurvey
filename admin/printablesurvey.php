@@ -136,7 +136,7 @@ if(isset($showsgqacode) && $showsgqacode == true)
 }
 else
 {
-	$surveyname = "";
+	$surveyname = $surveyname;
 }
 
 $survey_output = array(
@@ -356,6 +356,7 @@ function star_replace($input)
 
 $total_questions = 0;
 $mapquestionsNumbers=Array();
+$answertext = '';   // otherwise can throw an error on line 1617
 
 // =========================================================
 // START doin the business:
@@ -388,6 +389,8 @@ while ($degrow = $degresult->FetchRow())
     ,'QUESTIONS' => '' // templated formatted content if $question is appended to this at the end of processing each question.
     );
 
+    // A group can have only hidden questions. In that case you don't want to see the group's header/description either.
+    $bGroupHasVisibleQuestions = false;
 
     if(isset($_POST['printableexport'])){$pdf->titleintopdf($degrow['group_name'],$degrow['description']);}
 
@@ -412,6 +415,8 @@ while ($degrow = $degresult->FetchRow())
             {
                 continue;
             }
+            $bGroupHasVisibleQuestions = true;
+
             //GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
 
             $printablesurveyoutput = '';
@@ -433,24 +438,23 @@ while ($degrow = $degresult->FetchRow())
                 }
 
                 $x=0;
-                $distinctquery="SELECT cqid, method, cfieldname, value
+                $distinctquery="SELECT DISTINCT cqid, method, cfieldname, value
                             FROM ".db_table_name("conditions")."
-                            WHERE  ".db_table_name("conditions").".qid={$deqrow['qid']} 
-                                AND ".db_table_name("conditions").".scenario={$scenariorow['scenario']} 
-                            group by cqid, method, cfieldname, value
+                            WHERE  ".db_table_name("conditions").".qid={$deqrow['qid']}
+                                AND ".db_table_name("conditions").".scenario={$scenariorow['scenario']}
                             ORDER BY cqid";
                 $distinctresult=db_execute_assoc($distinctquery);
                 //Loop through each condition for a particular scenario.
                 while ($distinctrow=$distinctresult->FetchRow())
                 {
-                    $subquery='select title, question from '.db_table_name("questions")." where qid={$distinctrow['cqid']} AND parent_qid=0 AND language='{$surveyprintlang}'";
+                    $subquery='select title, question, type from '.db_table_name("questions")." where qid={$distinctrow['cqid']} AND parent_qid=0 AND language='{$surveyprintlang}'";
                     $subresult=$connect->GetRow($subquery);
 
                     if($x > 0)
                     {
-                        $explanation .= ' <em>'.$clang->gT('and').'</em> ';
+                        $explanation .= ' <em class=\'scenario-and-seperator\'>'.$clang->gT('and').'</em> ';
                     }
-                    if(trim($distinctrow['method'])=='')
+                    if(trim($distinctrow['method'])=='') //If there is no method, assume "equals"
                     {
                         $distinctrow['method']='==';
                     }
@@ -488,8 +492,15 @@ while ($degrow = $degresult->FetchRow())
                         {
                             $explanation .= $clang->gT("Answer was")." ";
                         }
+                    	if($distinctrow['value'] == '') {
+                    		$explanation .= " ".$clang->gT("not selected")." ";
+                    	}
+                    	//If question type is numerical or multi numerical, show the actual value, otherwise don't
+                    	if($subresult['type'] == "N" || $subresult['type']=="K") {
+                    		$explanation .= " ".$distinctrow['value']. " ";
+                    	}
                     }
-                    if(!$distinctrow['cqid']){ // cqid == 0  ==> token attribute match
+                    if(!$distinctrow['cqid']) { // cqid == 0  ==> token attribute match
                         $tokenData = GetTokenFieldsAndNames($surveyid);
                         preg_match('/^{TOKEN:([^}]*)}$/',$distinctrow['cfieldname'],$extractedTokenAttr);
                         $explanation .= "Your ".$tokenData[strtolower($extractedTokenAttr[1])]." ";
@@ -525,7 +536,7 @@ while ($degrow = $degresult->FetchRow())
                         {
                             $explanation .= $clang->gT("is")." ";
                         }
-                        $answer_section = $distinctrow['value'];
+                        $answer_section = " ".$distinctrow['value']." ";
                     }
 
                     $conquery="SELECT cid, cqid, q.title,\n"
@@ -617,6 +628,9 @@ while ($degrow = $degresult->FetchRow())
                                 {
                                     $conditions[]=$ansrow['answer'];
                                 }
+                            	if($conrow['value'] == "-oth-") {
+                            	    $conditions[]=$clang->gT("Other");
+                            	}
                                 $conditions = array_unique($conditions);
                                 break;
                             case "M":
@@ -629,7 +643,10 @@ while ($degrow = $degresult->FetchRow())
                                 }
                                 $conditions = array_unique($conditions);
                                 break;
-                            case "F":
+                            case "N":
+                            	$conditions[]=$value;
+                            	break;
+							case "F":
                             case "H":
                             default:
                                 $value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
@@ -644,7 +661,7 @@ while ($degrow = $degresult->FetchRow())
                                 } // while
                                 break;
                         } // switch
-                         
+
                         // Now let's complete the answer text with the answer_section
                         $answer_section="";
                         switch($conrow['type'])
@@ -689,10 +706,10 @@ while ($degrow = $degresult->FetchRow())
                                         $header = '2';
                                     }
                                 }
-                                    while ($ansrow=$ansresult->FetchRow())
-                                    {
+                                while ($ansrow=$ansresult->FetchRow())
+                                {
                                     $answer_section=" (".$ansrow['question']." ".sprintf($clang->gT("Label %s"),$header).")";
-                                    }
+                                }
                                 break;
                             case ":":
                             case ";": //multi flexi: ( answer [label] )
@@ -724,7 +741,7 @@ while ($degrow = $degresult->FetchRow())
 
                     if (count($conditions) > 1)
                     {
-                        $explanation .=  "'".implode("' ".$clang->gT("or")." '", $conditions)."'";
+                        $explanation .=  "'".implode("' <em class='scenario-or-seperator'>".$clang->gT("or")."</em> '", $conditions)."'";
                     }
                     elseif (count($conditions) == 1)
                     {
@@ -734,7 +751,7 @@ while ($degrow = $degresult->FetchRow())
                     // Following line commented out because answer_section  was lost, but is required for some question types
                     //$explanation .= " ".$clang->gT("to question")." '".$mapquestionsNumbers[$distinctrow['cqid']]."' $answer_section ";
                     if($distinctrow['cqid']){
-                        $explanation .= " ".$clang->gT("at question")." '".$mapquestionsNumbers[$distinctrow['cqid']]." [".$subresult['title']."]' (".strip_tags($subresult['question'])."$answer_section)" ;
+                        $explanation .= " <span class='scenario-at-seperator'>".$clang->gT("at question")."</span> '".$mapquestionsNumbers[$distinctrow['cqid']]." [".$subresult['title']."]' (".strip_tags($subresult['question'])."$answer_section)" ;
                     }
                     else{
                         $explanation .= " ".$distinctrow['value'] ;
@@ -756,24 +773,24 @@ while ($degrow = $degresult->FetchRow())
 
             ++$total_questions;
 
-            
+
             //TIBO map question qid to their q number
             $mapquestionsNumbers[$deqrow['qid']]=$total_questions;
             //END OF GETTING CONDITIONS
 
             $qid = $deqrow['qid'];
             $fieldname = "$surveyid"."X"."$gid"."X"."$qid";
-            
+
         	if(isset($showsgqacode) && $showsgqacode == true)
 			{
 				$deqrow['question'] = $deqrow['question']."<br />".$clang->gT("ID:")." $fieldname <br />".
 									  $clang->gT("Question code:")." ".$deqrow['title'];
 			}
-	
+
             $question = array(
 					 'QUESTION_NUMBER' => $total_questions	// content of the question code field
             ,'QUESTION_CODE' => $deqrow['title']
-            ,'QUESTION_TEXT' => preg_replace('/(?:<br ?\/?>|<\/(?:p|h[1-6])>)$/is' , '' , $deqrow['question'])	// content of the question field
+            ,'QUESTION_TEXT' => preg_replace('/(?:<br ?\/?>|<\/(?:p|h[1-6])>)$/is' , '' , tokenReplace($deqrow['question']))	// content of the question field
             ,'QUESTION_SCENARIO' => $explanation	// if there are conditions on a question, list the conditions.
             ,'QUESTION_MANDATORY' => ''		// translated 'mandatory' identifier
             ,'QUESTION_ID' => $deqrow['qid']    // id to be added to wrapping question div
@@ -805,7 +822,7 @@ while ($degrow = $degresult->FetchRow())
             {
                 $hh = $deqrow['help'];
                 $question['QUESTIONHELP'] = $hh;
-                 
+
                 if(isset($_POST['printableexport'])){$pdf->helptextintopdf($hh);}
             }
 
@@ -815,7 +832,7 @@ while ($degrow = $degresult->FetchRow())
                 $question['QUESTION_CLASS'] .=' breakbefore ';
             }
 
-            
+
             if (isset($qidattributes['maximum_chars']) && $qidattributes['maximum_chars']!='') {
                 $question['QUESTION_CLASS'] ="max-chars-{$qidattributes['maximum_chars']} ".$question['QUESTION_CLASS'];
             }
@@ -832,7 +849,7 @@ while ($degrow = $degresult->FetchRow())
                     {
                         $pdfoutput .=" o ".$i." ";
                         //						$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='$i' readonly='readonly' />$i \n";
-                        $question['ANSWER'] .="\t\t<li>\n\t\t\t".input_type_image('radio',$i)."\n\t\t\t$i\n\t\t</li>\n";
+                        $question['ANSWER'] .="\t\t<li>\n\t\t\t".input_type_image('radio',$i)."\n\t\t\t$i ".addsgqacode("($i)")."\n\t\t</li>\n";
                     }
                     if(isset($_POST['printableexport'])){$pdf->intopdf($pdfoutput);}
                     $question['ANSWER'] .="\t</ul>\n";
@@ -852,8 +869,8 @@ while ($degrow = $degresult->FetchRow())
                     $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose *only one* of the following:");
 
                     $question['ANSWER'] .= "\n\t<ul>\n";
-                    $question['ANSWER'] .= "\t\t<li>\n\t\t\t".input_type_image('radio',$clang->gT("Female"))."\n\t\t\t".$clang->gT("Female")."\n\t\t</li>\n";
-                    $question['ANSWER'] .= "\t\t<li>\n\t\t\t".input_type_image('radio',$clang->gT("Male"))."\n\t\t\t".$clang->gT("Male")."\n\t\t</li>\n";
+                    $question['ANSWER'] .= "\t\t<li>\n\t\t\t".input_type_image('radio',$clang->gT("Female"))."\n\t\t\t".$clang->gT("Female")." ".addsgqacode("(F)")."\n\t\t</li>\n";
+                    $question['ANSWER'] .= "\t\t<li>\n\t\t\t".input_type_image('radio',$clang->gT("Male"))."\n\t\t\t".$clang->gT("Male")." ".addsgqacode("(M)")."\n\t\t</li>\n";
                     $question['ANSWER'] .= "\t</ul>\n";
 
                     if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *only one* of the following:"));}
@@ -905,15 +922,19 @@ while ($degrow = $degresult->FetchRow())
                             list ($category, $answer) = explode($optCategorySeparator,$dearow['answer']);
                             if ($category != '')
                             {
-                                $dearow['answer'] = "($category) $answer";
+                                $dearow['answer'] = "($category) $answer ".addsgqacode("(".$dearow['code'].")");
                             }
                             else
                             {
-                                $dearow['answer'] = $answer;
+                                $dearow['answer'] = $answer.addsgqacode(" (".$dearow['code'].")");
                             }
+                            $question['ANSWER'] .= "\t".$wrapper['item-start']."\t\t".input_type_image('radio' , $dearow['answer'])."\n\t\t\t".$dearow['answer']."\n".$wrapper['item-end'];
+                        }
+                        else
+                        {
+                        	$question['ANSWER'] .= "\t".$wrapper['item-start']."\t\t".input_type_image('radio' , $dearow['answer'])."\n\t\t\t".$dearow['answer'].addsgqacode(" (".$dearow['code'].")")."\n".$wrapper['item-end'];
                         }
 
-                        $question['ANSWER'] .= "\t".$wrapper['item-start']."\t\t".input_type_image('radio' , $dearow['answer'])."\n\t\t\t".$dearow['answer']."\n".$wrapper['item-end'];
                         if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$dearow['answer']);}
 
                         ++$rowcounter;
@@ -936,7 +957,7 @@ while ($degrow = $degresult->FetchRow())
                         if(trim($qidattributes["other_replace_text"])=='')
                         {$qidattributes["other_replace_text"]="Other";}
                         //					$printablesurveyoutput .="\t".$wrapper['item-start']."\t\t".input_type_image('radio' , $clang->gT("Other"))."\n\t\t\t".$clang->gT("Other")."\n\t\t\t<input type='text' size='30' readonly='readonly' />\n".$wrapper['item-end'];
-                        $question['ANSWER']  .= $wrapper['item-start-other'].input_type_image('radio',$clang->gT($qidattributes["other_replace_text"])).' '.$clang->gT($qidattributes["other_replace_text"])."\n\t\t\t".input_type_image('other')."\n".$wrapper['item-end'];
+                        $question['ANSWER']  .= $wrapper['item-start-other'].input_type_image('radio',$clang->gT($qidattributes["other_replace_text"])).' '.$clang->gT($qidattributes["other_replace_text"]).addsgqacode(" (-oth-)")."\n\t\t\t".input_type_image('other').addsgqacode(" (".$deqrow['sid']."X".$deqrow['gid']."X".$deqrow['qid']."other)")."\n".$wrapper['item-end'];
                         if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT($qidattributes["other_replace_text"]).": ________");}
                     }
                     $question['ANSWER'] .= $wrapper['whole-end'];
@@ -952,14 +973,14 @@ while ($degrow = $degresult->FetchRow())
                     $question['ANSWER'] = "\t<ul>\n";
                     while ($dearow = $dearesult->FetchRow())
                     {
-                        $question['ANSWER'] .= "\t\t<li>\n\t\t\t".input_type_image('radio',$dearow['answer'])."\n\t\t\t".$dearow['answer']."\n\t\t</li>\n";
+                        $question['ANSWER'] .= "\t\t<li>\n\t\t\t".input_type_image('radio',$dearow['answer'])."\n\t\t\t".$dearow['answer'].addsgqacode(" (".$dearow['code'].")")."\n\t\t</li>\n";
                         if(isset($_POST['printableexport'])){$pdf->intopdf($dearow['answer']);}
                     }
                     $question['ANSWER'] .= "\t</ul>\n";
 
                     $question['ANSWER'] .= "\t<p class=\"comment\">\n\t\t".$clang->gT("Make a comment on your choice here:")."\n";
                     if(isset($_POST['printableexport'])){$pdf->intopdf("Make a comment on your choice here:");}
-                    $question['ANSWER'] .= "\t\t".input_type_image('textarea',$clang->gT("Make a comment on your choice here:"),50,8)."\n\t</p>\n";
+                    $question['ANSWER'] .= "\t\t".input_type_image('textarea',$clang->gT("Make a comment on your choice here:"),50,8).addsgqacode(" (".$deqrow['sid']."X".$deqrow['gid']."X".$deqrow['qid']."comment)")."\n\t</p>\n";
 
                     for($i=0;$i<9;$i++)
                     {
@@ -973,6 +994,7 @@ while ($degrow = $degresult->FetchRow())
                     $rearesult = db_execute_assoc($reaquery) or safe_die ("Couldn't get ranked answers<br />".$connect->ErrorMsg());
                     $reacount = $rearesult->RecordCount();
                     $question['QUESTION_TYPE_HELP'] = $clang->gT("Please number each box in order of preference from 1 to")." $reacount";
+                	$question['QUESTION_TYPE_HELP'] .= min_max_answers_help($qidattributes, $surveyprintlang, $surveyid);
                     if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please number each box in order of preference from 1 to ").$reacount,"U");}
                     $question['ANSWER'] = "\n<ul>\n";
                     while ($rearow = $rearesult->FetchRow())
@@ -1021,7 +1043,7 @@ while ($degrow = $degresult->FetchRow())
                         $question['ANSWER'] .= $wrapper['item-start'].input_type_image('checkbox',$mearow['question'])."\n\t\t".$mearow['question'].addsgqacode(" (".$fieldname.$mearow['title'].") ").$wrapper['item-end'];
                         if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$mearow['answer']);}
                         //						$upto++;
-                         
+
                         ++$rowcounter;
                         if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
                         {
@@ -1072,7 +1094,7 @@ while ($degrow = $degresult->FetchRow())
                     while ($mearow = $mearesult->FetchRow())
                     {
                         $longest_string = longest_string($mearow['question'] , $longest_string );
-                        $question['ANSWER'] .= "\t<li><span>\n\t\t".input_type_image('checkbox',$mearow['question']).$mearow['question']."</span>\n\t\t".input_type_image('text','comment box',60).addsgqacode(" (".$fieldname.$mearow['title'].") ")."\n\t</li>\n";
+                        $question['ANSWER'] .= "\t<li><span>\n\t\t".input_type_image('checkbox',$mearow['question']).$mearow['question'].addsgqacode(" (".$fieldname.$mearow['title'].") ")."</span>\n\t\t".input_type_image('text','comment box',60).addsgqacode(" (".$fieldname.$mearow['title']."comment) ")."\n\t</li>\n";
                         $pdfoutput[$j]=array(" o ".$mearow['title']," __________");
                         $j++;
                     }
@@ -1128,7 +1150,7 @@ while ($degrow = $degresult->FetchRow())
                         if (isset($qidattributes['slider_layout']) && $qidattributes['slider_layout']==1)
                         {
                           $mearow['question']=explode(':',$mearow['question']);
-                          $mearow['question']=$mearow['question'][0];  
+                          $mearow['question']=$mearow['question'][0];
                         }
                         $question['ANSWER'] .=  "\t<li>\n\t\t<span>".$mearow['question']."</span>\n\t\t".input_type_image('text',$mearow['question'],$width).addsgqacode(" (".$fieldname.$mearow['title'].") ")."\n\t</li>\n";
                         if(isset($_POST['printableexport'])){$pdf->intopdf($mearow['question'].": ____________________");}
@@ -1174,8 +1196,16 @@ while ($degrow = $degresult->FetchRow())
 
                     // ==================================================================
                 case "N":  //NUMERICAL
-                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please write your answer here:");
-                    $question['ANSWER'] = input_type_image('text',$question['QUESTION_TYPE_HELP'],20);
+                	$prefix="";
+                	$suffix="";
+                	if($qidattributes['prefix'] != "") {
+                		$prefix=$qidattributes['prefix'];
+                	}
+                	if($qidattributes['suffix'] != "") {
+                		$suffix=$qidattributes['suffix'];
+                	}
+                	$question['QUESTION_TYPE_HELP'] = $clang->gT("Please write your answer here:");
+                    $question['ANSWER'] = "<ul>\n\t<li>\n\t\t<span>$prefix</span>\n\t\t".input_type_image('text',$question['QUESTION_TYPE_HELP'],20)."\n\t\t<span>$suffix</span>\n\t\t</li>\n\t</ul>";
 
                     if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please write your answer here:"),"U");}
                     if(isset($_POST['printableexport'])){$pdf->intopdf("____________________");}
@@ -1185,8 +1215,8 @@ while ($degrow = $degresult->FetchRow())
                     // ==================================================================
                 case "Y":  //YES/NO
                     $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose *only one* of the following:");
-                    $question['ANSWER'] = "\n<ul>\n\t<li>\n\t\t".input_type_image('radio',$clang->gT('Yes'))."\n\t\t".$clang->gT('Yes')."\n\t</li>\n";
-                    $question['ANSWER'] .= "\n\t<li>\n\t\t".input_type_image('radio',$clang->gT('No'))."\n\t\t".$clang->gT('No')."\n\t</li>\n</ul>\n";
+                    $question['ANSWER'] = "\n<ul>\n\t<li>\n\t\t".input_type_image('radio',$clang->gT('Yes'))."\n\t\t".$clang->gT('Yes').addsgqacode(" (Y)")."\n\t</li>\n";
+                    $question['ANSWER'] .= "\n\t<li>\n\t\t".input_type_image('radio',$clang->gT('No'))."\n\t\t".$clang->gT('No').addsgqacode(" (N)")."\n\t</li>\n</ul>\n";
 
                     if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *only one* of the following:"),"U");}
                     if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT("Yes"));}
@@ -1201,20 +1231,19 @@ while ($degrow = $degresult->FetchRow())
                     $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
                     $question['QUESTION_TYPE_HELP'] .= array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
-                    $question['ANSWER'] = '
+                    $question['ANSWER'] = "
 <table>
 	<thead>
 		<tr>
 			<td>&nbsp;</td>
-			<th>1</th>
-			<th>2</th>
-			<th>3</th>
-			<th>4</th>
-			<th>5</th>
+			<th>1".addsgqacode(" (1)")."</th>
+			<th>2".addsgqacode(" (2)")."</th>
+			<th>3".addsgqacode(" (3)")."</th>
+			<th>4".addsgqacode(" (4)")."</th>
+			<th>5".addsgqacode(" (5)")."</th>
 		</tr>
 	</thead>
-	<tbody>
-';
+	<tbody>";
 
                     if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}
                     $pdfoutput = array();
@@ -1224,9 +1253,9 @@ while ($degrow = $degresult->FetchRow())
                     {
                         $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
                         $rowclass = alternation($rowclass,'row');
-                                                
+
                         //semantic differential question type?
-                        if (strpos($mearow['question'],'|')) 
+                        if (strpos($mearow['question'],'|'))
                         {
                         	$answertext = substr($mearow['question'],0, strpos($mearow['question'],'|')).addsgqacode(" (".$fieldname.$mearow['title'].")")." ";
                         }
@@ -1244,7 +1273,7 @@ while ($degrow = $degresult->FetchRow())
                         }
 
                         $answertext .= $mearow['question'];
-                        
+
                         //semantic differential question type?
                         if (strpos($mearow['question'],'|'))
                         {
@@ -1269,7 +1298,7 @@ while ($degrow = $degresult->FetchRow())
                     $question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
                     for ($i=1; $i<=10; $i++)
                     {
-                        $question['ANSWER'] .= "\t\t\t<th>$i</th>\n";
+                        $question['ANSWER'] .= "\t\t\t<th>$i".addsgqacode(" ($i)")."</th>\n";
                     }
                     $question['ANSWER'] .= "\t</thead>\n\n\t<tbody>\n";
                     if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}
@@ -1307,9 +1336,9 @@ while ($degrow = $degresult->FetchRow())
 	<thead>
 		<tr>
 			<td>&nbsp;</td>
-			<th>'.$clang->gT("Yes").'</th>
-			<th>'.$clang->gT("Uncertain").'</th>
-			<th>'.$clang->gT("No").'</th>
+			<th>'.$clang->gT("Yes").addsgqacode(" (Y)").'</th>
+			<th>'.$clang->gT("Uncertain").addsgqacode(" (U)").'</th>
+			<th>'.$clang->gT("No").addsgqacode(" (N)").'</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -1328,7 +1357,7 @@ while ($degrow = $degresult->FetchRow())
                         $question['ANSWER'] .= "\t\t\t<td>".input_type_image('radio',$clang->gT("Uncertain"))."</td>\n";
                         $question['ANSWER'] .= "\t\t\t<td>".input_type_image('radio',$clang->gT("No"))."</td>\n";
                         $question['ANSWER'] .= "\t\t</tr>\n";
-                         
+
                         $pdfoutput[$j]=array($mearow['question']," o ".$clang->gT("Yes")," o ".$clang->gT("Uncertain")," o ".$clang->gT("No"));
                         $j++;
                         $rowclass = alternation($rowclass,'row');
@@ -1348,9 +1377,9 @@ while ($degrow = $degresult->FetchRow())
 	<thead>
 		<tr>
 			<td>&nbsp;</td>
-			<th>'.$clang->gT("Increase").'</th>
-			<th>'.$clang->gT("Same").'</th>
-			<th>'.$clang->gT("Decrease").'</th>
+			<th>'.$clang->gT("Increase").addsgqacode(" (I)").'</th>
+			<th>'.$clang->gT("Same").addsgqacode(" (S)").'</th>
+			<th>'.$clang->gT("Decrease").addsgqacode(" (D)").'</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -1412,7 +1441,7 @@ while ($degrow = $degresult->FetchRow())
                     }
                     $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND scale_id=0 AND language='{$surveyprintlang}' ORDER BY question_order";
                     $mearesult = db_execute_assoc($meaquery);
-                    
+
                     if ($checkboxlayout === false)
                     {
                         if ($stepvalue > 1)
@@ -1435,13 +1464,13 @@ while ($degrow = $degresult->FetchRow())
                     $question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
                     $fquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND scale_id=1 AND language='{$surveyprintlang}' ORDER BY question_order";
                     $fresult = db_execute_assoc($fquery);
-                    
+
                     $fcount = $fresult->RecordCount();
                     $fwidth = "120";
                     $i=0;
                     $pdfoutput = array();
                     $pdfoutput[0][0]=' ';
-                    
+
                     //array to temporary store X axis question codes
                     $xaxisarray = array();
                     while ($frow = $fresult->FetchRow())
@@ -1449,9 +1478,9 @@ while ($degrow = $degresult->FetchRow())
                         $question['ANSWER'] .= "\t\t\t<th>{$frow['question']}</th>\n";
                         $i++;
                         $pdfoutput[0][$i]=$frow['question'];
-                        
+
                         //add current question code
-                        $xaxisarray[$i] = $frow['title'];                        
+                        $xaxisarray[$i] = $frow['title'];
                     }
                     $question['ANSWER'] .= "\t\t</tr>\n\t</thead>\n\n\t<tbody>\n";
                     $a=1; //Counter for pdfoutput
@@ -1513,15 +1542,15 @@ while ($degrow = $degresult->FetchRow())
                     $i=0;
                     $pdfoutput=array();
                     $pdfoutput[0][0]='';
-                    
+
                     //array to temporary store X axis question codes
-                    $xaxisarray = array();                    
+                    $xaxisarray = array();
                     while ($frow = $fresult->FetchRow())
                     {
                         $question['ANSWER'] .= "\t\t\t<th>{$frow['question']}</th>\n";
                         $i++;
                         $pdfoutput[0][$i]=$frow['question'];
-                        
+
                         //add current question code
                         $xaxisarray[$i] = $frow['title'];
                     }
@@ -1578,7 +1607,7 @@ while ($degrow = $degresult->FetchRow())
                     $column_headings = array();
                     while ($frow = $fresult->FetchRow())
                     {
-                        $column_headings[] = $frow['answer'];
+                        $column_headings[] = $frow['answer'].addsgqacode(" (".$frow['code'].")");
                     }
                     if (trim($qidattributes['answer_width'])!='')
                     {
@@ -1614,17 +1643,17 @@ while ($degrow = $degresult->FetchRow())
                         $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
                         $rowclass = alternation($rowclass,'row');
                         if (trim($answertext)=='') $answertext='&nbsp;';
-                                    
+
                         //semantic differential question type?
-                        if (strpos($mearow['question'],'|')) 
+                        if (strpos($mearow['question'],'|'))
                         {
                         	$answertext = substr($mearow['question'],0, strpos($mearow['question'],'|')).addsgqacode(" (".$fieldname.$mearow['title'].")")." ";
                         }
                         else
                         {
                         	$answertext=$mearow['question'].addsgqacode(" (".$fieldname.$mearow['title'].")");
-                        }                        
-                        
+                        }
+
                         if (trim($qidattributes['answer_width'])!='')
                         {
                             $sInsertStyle=' style="width:'.$qidattributes['answer_width'].'%" ';
@@ -1634,7 +1663,7 @@ while ($degrow = $degresult->FetchRow())
                             $sInsertStyle='';
                         }
                         $question['ANSWER'] .= "\t\t\t<th $sInsertStyle class=\"answertext\">$answertext</th>\n";
-                        
+
                         $pdfoutput[$counter][0]=$answertext;
                         for ($i=1; $i<=$fcount; $i++)
                         {
@@ -1645,7 +1674,7 @@ while ($degrow = $degresult->FetchRow())
                         $counter++;
 
                         $answertext=$mearow['question'];
-                        
+
                         //semantic differential question type?
                         if (strpos($mearow['question'],'|'))
                         {
@@ -1685,7 +1714,7 @@ while ($degrow = $degresult->FetchRow())
                     $pdfoutput[0][0]='';
                     while ($frow = $fresult->FetchRow())
                     {
-                        $printablesurveyoutput2 .="\t\t\t<th>{$frow['answer']}</th>\n";
+                        $printablesurveyoutput2 .="\t\t\t<th>{$frow['answer']}".addsgqacode(" (".$frow['code'].")")."</th>\n";
                         $myheader2 .= "<td></td>";
                         $pdfoutput[0][$l1+1]=$frow['answer'];
                         $l1++;
@@ -1697,17 +1726,17 @@ while ($degrow = $degresult->FetchRow())
                     $fcount1 = $fresult1->RecordCount();
                     $fwidth = "120";
                     $l2=0;
-                    
+
                     //array to temporary store second scale question codes
-                    $scale2array = array();                                                      
+                    $scale2array = array();
                     while ($frow1 = $fresult1->FetchRow())
                     {
-                        $printablesurveyoutput2 .="\t\t\t<th>{$frow1['answer']}</th>\n";
+                        $printablesurveyoutput2 .="\t\t\t<th>{$frow1['answer']}".addsgqacode(" (".$frow1['code'].")")."</th>\n";
                         $pdfoutput[1][$l2]=$frow['answer'];
-                        
+
                         //add current question code
                         $scale2array[$l2] = $frow1['code'];
-                        
+
                         $l2++;
                     }
                     // build header if needed
@@ -1761,7 +1790,7 @@ while ($degrow = $degresult->FetchRow())
                             $question['ANSWER'] .= "\t\t\t<th class=\"answertextright\">$answertext</th>\n";
                         }
                         $question['ANSWER'] .= "\t\t</tr>\n";
-                        
+
                         //increase subquestion counter
                         $sqcounter++;
                     }
@@ -1800,7 +1829,7 @@ while ($degrow = $degresult->FetchRow())
                     {
                         $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
                         $rowclass = alternation($rowclass,'row');
-                        $question['ANSWER'] .= "\t\t\t<th class=\"answertext\">{$mearow['answer']}</th>\n";
+                        $question['ANSWER'] .= "\t\t\t<th class=\"answertext\">{$mearow['answer']}".addsgqacode(" (".$mearow['code'].")")."</th>\n";
                         //$printablesurveyoutput .="\t\t\t\t\t<td>";
                         $pdfoutput[$a][0]=$mearow['answer'];
                         for ($i=1; $i<=$fcount; $i++)
@@ -1827,7 +1856,10 @@ while ($degrow = $degresult->FetchRow())
             $group['QUESTIONS'] .= populate_template( 'question' , $question);
 
         }
+        if ($bGroupHasVisibleQuestions)
+        {
         $survey_output['GROUPS'] .= populate_template( 'group' , $group );
+        }
 }
 
 $survey_output['THEREAREXQUESTIONS'] =  str_replace( '{NUMBEROFQUESTIONS}' , $total_questions , $clang->gT('There are {NUMBEROFQUESTIONS} questions in this survey'));
@@ -1921,6 +1953,18 @@ echo populate_template( 'survey' , $survey_output );
 
 exit;
 
+function min_max_answers_help($qidattributes, $surveyprintlang, $surveyid) {
+	global $clang;
+	$output = "";
+	if(!empty($qidattributes['max_answers'])) {
+		$output .= "\n<p class='extrahelp'>".sprintf($clang->gT("Please choose no more than %d items"),$qidattributes['max_answers'])."</p>\n";
+	}
+	if(!empty($qidattributes['min_answers'])) {
+		$output .= "\n<p class='extrahelp'>".sprintf($clang->gT("Please choose at least %d items"), $qidattributes['min_answers'])."</p>\n";
+	}
+	return $output;
+}
+
 function array_filter_help($qidattributes, $surveyprintlang, $surveyid) {
     global $clang;
     $output = "";
@@ -1947,10 +1991,10 @@ function array_filter_help($qidattributes, $surveyprintlang, $surveyid) {
 
 /*
  * $code: Text string containing the reference (column heading) for the current (sub-) question
- * 
+ *
  * Checks if the $showsgqacode setting is enabled at config and adds references to the column headings
  * to the output so it can be used as a code book for customized SQL queries when analysing data.
- * 
+ *
  * return: adds the text string to the overview
  */
 function addsgqacode($code)

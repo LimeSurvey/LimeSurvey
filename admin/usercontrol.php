@@ -73,9 +73,9 @@ if (!isset($_SESSION['loginID']))
                 $subject = $clang->gT("User data","unescaped");
                 $to = $emailaddr;
                 $from = $siteadminemail;
-                $sitename = $siteadminname;
 
-                if(SendEmailMessage($body, $subject, $to, $from, $sitename, false,$siteadminbounce))
+
+                if(SendEmailMessage(null, $body, $subject, $to, $from, $sitename, false,$siteadminbounce))
                 {
                     $query = "UPDATE ".db_table_name('users')." SET password='".SHA256::hashing($new_pass)."' WHERE uid={$fields['uid']}";
                     $connect->Execute($query); //Checked
@@ -125,7 +125,7 @@ if (!isset($_SESSION['loginID']))
                     $result = $connect->query($query) or safe_die ($query."<br />".$connect->ErrorMsg());
 
                 }
-                
+
             }
             if(!$bCannotLogin){
                 $query = "SELECT * FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser);
@@ -176,8 +176,6 @@ if (!isset($_SESSION['loginID']))
                         $_SESSION['user'] = $fields['users_name'];
                         $_SESSION['full_name'] = $fields['full_name'];
                         $_SESSION['htmleditormode'] = $fields['htmleditormode'];
-                        $_SESSION['templateeditormode'] = $fields['templateeditormode'];
-                        $_SESSION['questionselectormode'] = $fields['questionselectormode'];
                         $_SESSION['dateformat'] = $fields['dateformat'];
                         // Compute a checksession random number to test POSTs
                         $_SESSION['checksessionpost'] = sRandomChars(10);
@@ -192,7 +190,7 @@ if (!isset($_SESSION['loginID']))
                         }
                         else
                         {
-                            
+
                             if ( $fields['lang']=='auto' && isset( $_SERVER["HTTP_ACCEPT_LANGUAGE"] ) )
                             {
                                 $browlang=strtolower( $_SERVER["HTTP_ACCEPT_LANGUAGE"] );
@@ -213,7 +211,7 @@ if (!isset($_SESSION['loginID']))
                             else
                             {
                                 $_SESSION['adminlang'] = $fields['lang'];
-                            }                            
+                            }
                             $clang = new limesurvey_lang($_SESSION['adminlang']);
                         }
                         $login = true;
@@ -250,7 +248,7 @@ if (!isset($_SESSION['loginID']))
                                 $loginsummary .= sprintf($clang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),($timeOutTime/60))."<br />";
                             $loginsummary .= "<br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
                         }
-                    
+
                     }
                 }
 
@@ -288,7 +286,7 @@ if (!isset($_SESSION['loginID']))
         }
 
         include("database.php");
-        $query = "SELECT uid, users_name, password, parent_id, email, lang, htmleditormode,questionselectormode, templateeditormode,  dateformat FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($mappeduser);
+        $query = "SELECT uid, users_name, password, parent_id, email, lang, htmleditormode, dateformat FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($mappeduser);
         $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC; //Checked
         $result = $connect->SelectLimit($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());
         if ($result->RecordCount() < 1)
@@ -383,8 +381,6 @@ if (!isset($_SESSION['loginID']))
             $_SESSION['user'] = $fields['users_name'];
             $_SESSION['adminlang'] = $fields['lang'];
             $_SESSION['htmleditormode'] = $fields['htmleditormode'];
-            $_SESSION['questionselectormode'] = $fields['questionselectormode'];
-            $_SESSION['templateeditormode'] = $fields['templateeditormode'];
             $_SESSION['dateformat'] = $fields['dateformat'];
             $_SESSION['checksessionpost'] = sRandomChars(10);
             $_SESSION['pw_notify']=false;
@@ -434,7 +430,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
     elseif($valid_email)
     {
         $new_pass = createPassword();
-        $uquery = "INSERT INTO {$dbprefix}users (users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,superadmin,configurator,manage_template,manage_label) 
+        $uquery = "INSERT INTO {$dbprefix}users (users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,superadmin,configurator,manage_template,manage_label)
                    VALUES ('".db_quote($new_user)."', '".SHA256::hashing($new_pass)."', '".db_quote($new_full_name)."', {$_SESSION['loginID']}, 'auto', '".db_quote($new_email)."',0,0,0,0,0,0,0)";
         $uresult = $connect->Execute($uquery); //Checked
 
@@ -458,31 +454,31 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 			"manage_label"=>$srow['manage_label']));
 
             // send Mail
-            $body = sprintf($clang->gT("Hello %s,"), $new_full_name)."<br /><br />\n";
-            $body .= sprintf($clang->gT("this is an automated email to notify that a user has been created for you on the site '%s'."), $sitename)."<br /><br />\n";
-            $body .= $clang->gT("You can use now the following credentials to log into the site:")."<br />\n";
-            $body .= $clang->gT("Username") . ": " . $new_user . "<br />\n";
+            $body = sprintf($clang->gT("Hello %s,",'unescaped'), $new_full_name)."<br /><br />\n";
+            $body .= sprintf($clang->gT("this is an automated email to notify that a user has been created for you on the site '%s'.",'unescaped'), $sitename)."<br /><br />\n";
+            $body .= $clang->gT("You can use now the following credentials to log into the site:",'unescaped')."<br />\n";
+            $body .= $clang->gT("Username",'unescaped') . ": " . $new_user . "<br />\n";
             if ($useWebserverAuth === false)
             { // authent is not delegated to web server
                 // send password (if authorized by config)
                 if ($display_user_password_in_email === true)
                 {
-                    $body .= $clang->gT("Password") . ": " . $new_pass . "<br />\n";
+                    $body .= $clang->gT("Password",'unescaped') . ": " . $new_pass . "<br />\n";
                 }
                 else
                 {
-                    $body .= $clang->gT("Password") . ": " . $clang->gT("Please ask your password to your LimeSurvey administrator") . "<br />\n";
+                    $body .= $clang->gT("Password",'unescaped') . ": " . $clang->gT("Please ask your LimeSurvey administrator for your password.") . "<br />\n";
                 }
             }
 
-            $body .= "<a href='" . $homeurl . "/admin.php'>".$clang->gT("Click here to log in.")."</a><br /><br />\n";
-            $body .=  sprintf($clang->gT('If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!'),$siteadminemail)."<br />\n";
+            $body .= "<a href='" . $homeurl . "/admin.php'>".$clang->gT("Click here to log in.",'unescaped')."</a><br /><br />\n";
+            $body .=  sprintf($clang->gT('If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!','unescaped'),$siteadminemail)."<br />\n";
 
             $subject = sprintf($clang->gT("User registration at '%s'","unescaped"),$sitename);
             $to = $new_user." <$new_email>";
             $from = $siteadminname." <$siteadminemail>";
             $addsummary .="<div class='messagebox ui-corner-all'>";
-            if(SendEmailMessage($body, $subject, $to, $from, $sitename, true, $siteadminbounce))
+            if(SendEmailMessage(null, $body, $subject, $to, $from, $sitename, true, $siteadminbounce))
             {
                 $addsummary .= "<br />".$clang->gT("Username").": $new_user<br />".$clang->gT("Email").": $new_email<br />";
                 $addsummary .= "<br />".$clang->gT("An email with a generated password was sent to the user.");
@@ -543,7 +539,7 @@ elseif (($action == "deluser" || $action == "finaldeluser") && ($_SESSION['USER_
 
                 $current_user = $_SESSION['loginID'];
                 if($result->RecordCount() == 2) {
-                    
+
                     $action = "finaldeluser";
                     while($rows = $result->FetchRow()){
                             $intUid = $rows['uid'];
@@ -556,7 +552,7 @@ elseif (($action == "deluser" || $action == "finaldeluser") && ($_SESSION['USER_
                     }
                 }
 
-                $query = "SELECT sid FROM ".db_table_name('surveys')." WHERE owner_id = $current_user ;";
+                $query = "SELECT sid FROM ".db_table_name('surveys')." WHERE owner_id = $postuserid ;";
                 $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
                 if($result->RecordCount() == 0) {
                     $action = "finaldeluser";
@@ -619,9 +615,9 @@ elseif (($action == "deluser" || $action == "finaldeluser") && ($_SESSION['USER_
                     $addsummary .= "</select><input type='hidden' name='uid' value='$postuserid'>";
                     $addsummary .= "<input type='hidden' name='user' value='$postuser'>";
                     $addsummary .= "<input type='hidden' name='action' value='finaldeluser'><br /><br />";
-                    $addsummary .= "<input type='submit' value='".$clang->gT("Delete User")."'></form>"; 
+                    $addsummary .= "<input type='submit' value='".$clang->gT("Delete User")."'></form>";
                 }
-                
+
             }
             else
             {
@@ -770,7 +766,7 @@ elseif ($action == "userrights")
                 $adminquery = "SELECT uid FROM {$dbprefix}users WHERE parent_id=0";
                 $adminresult = db_select_limit_assoc($adminquery, 1);
                 $row=$adminresult->FetchRow();
-                 
+
                 if($row['uid'] == $_SESSION['loginID'])	// it's the original superadmin !!!
                 {
                     $rights['superadmin']=1;
@@ -863,7 +859,7 @@ function getInitialAdmin_uid()
 
 function fGetLoginAttemptUpdateQry($la,$sIp)
 {
-    $timestamp = date("Y-m-d H:m:s");    
+    $timestamp = date("Y-m-d H:i:s");
     if ($la)
         $query = "UPDATE ".db_table_name('failed_login_attempts')
                  ." SET number_attempts=number_attempts+1, last_attempt = '$timestamp' WHERE ip='$sIp'";
@@ -880,7 +876,7 @@ function getUserNameFromUid($uid){
 
     $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
-    
+
     if($result->RecordCount() > 0) {
         while($rows = $result->FetchRow()){
             return $rows['users_name'];

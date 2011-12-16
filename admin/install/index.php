@@ -60,7 +60,9 @@ else
     //DB EXISTS, CHECK FOR APPROPRIATE UPGRADES
     $connect->database = $databasename;
     $connect->Execute("USE DATABASE `$databasename`");
-    $output=CheckForDBUpgrades();
+    ob_start();
+    CheckForDBUpgrades();
+    $output=ob_get_clean();
     if ($output== '') {$adminoutput.='<br />LimeSurvey Database is up to date. No action needed';}
     else {$adminoutput.=$output;}
     $adminoutput.="<br />Please <a href='$homeurl/$scriptname'>log in.</a>";

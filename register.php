@@ -105,7 +105,7 @@ while ($mayinsert != true)
 	{
 		$tokenlength = $tlrow['tokenlength'];
 	}
-    $newtoken = sRandomChars($tokenlength);
+	$newtoken = sRandomChars($tokenlength);
     $ntquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='$newtoken'";
     $ntresult = $connect->Execute($ntquery); //Checked
     if (!$ntresult->RecordCount()) {$mayinsert = true;}
@@ -123,7 +123,7 @@ $query = "INSERT INTO {$dbprefix}tokens_$surveyid\n"
 $result = $connect->Execute($query, array($postfirstname,
 $postlastname,
 returnglobal('register_email'),
-                                          'OK', 
+                                          'OK',
 $newtoken)
 //                             $postattribute1,   $postattribute2)
 ) or safe_die ($query."<br />".$connect->ErrorMsg());  //Checked - According to adodb docs the bound variables are quoted automatically
@@ -137,6 +137,8 @@ $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
 $fieldsarray["{FIRSTNAME}"]=$postfirstname;
 $fieldsarray["{LASTNAME}"]=$postlastname;
 $fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
+$fieldsarray["{TOKEN}"]=$newtoken;
+$fieldsarray["{SID}"]=$fieldsarray["{SURVEYID}"]=$surveyid;
 
 $message=$thissurvey['email_register'];
 $subject=$thissurvey['email_register_subj'];
@@ -162,7 +164,7 @@ $subject=ReplaceFields($subject, $fieldsarray);
 
 $html=""; //Set variable
 
-if (SendEmailMessage($message, $subject, returnglobal('register_email'), $from, $sitename,$useHtmlEmail,getBounceEmail($surveyid)))
+if (SendEmailMessage(null, $message, $subject, returnglobal('register_email'), $from, $sitename,$useHtmlEmail,getBounceEmail($surveyid)))
 {
     // TLR change to put date into sent
     //	$query = "UPDATE {$dbprefix}tokens_$surveyid\n"
@@ -184,8 +186,8 @@ else
 if (!$thissurvey['template'])
 {
     $thistpl=sGetTemplatePath(validate_templatedir('default'));
-} 
-else 
+}
+else
 {
     $thistpl=sGetTemplatePath(validate_templatedir($thissurvey['template']));
 }

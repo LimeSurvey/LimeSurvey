@@ -152,7 +152,7 @@ if ($action == "listsurveys")
             $listsurveys.="<td align='center'><a href='".$scriptname."?sid=".$rows['sid']."'>{$rows['sid']}</a></td>";
             $listsurveys.="<td align='left'><a href='".$scriptname."?sid=".$rows['sid']."'>{$rows['surveyls_title']}</a></td>".
 					    "<td>".$datecreated."</td>".
-					    "<td>".$ownername." (<a href='#' class='ownername_edit' id='ownername_edit_{$rows['sid']}'>Edit</a>)</td>".
+					    "<td>".$ownername." (<a href='#' class='ownername_edit' translate_to='".$clang->gT("Update")."' id='ownername_edit_{$rows['sid']}'>".$clang->gT("Edit")."</a>)</td>".
 					    "<td>".$visibility."</td>" .
 					    "<td>".$privacy."</td>";
 
@@ -253,14 +253,11 @@ elseif ($action == "ajaxowneredit"){
 elseif ($action == "ajaxgetusers"){
     header('Content-type: application/json');
 
-    $query = "SELECT users_name, uid FROM ".db_table_name('users').";";
-
-    $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+    $aSeenUsers = getuserlist();
 
     $aUsers = array();
-    if($result->RecordCount() > 0) {
-        while($rows = $result->FetchRow())
-                $aUsers[] = array($rows['uid'], $rows['users_name']);
+    foreach ($aSeenUsers as $userline) {
+                $aUsers[] = array($userline['uid'], $userline['user']);
     }
     
     $ajaxoutput = json_encode($aUsers) . "\n";

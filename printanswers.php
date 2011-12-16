@@ -105,7 +105,7 @@ $clang = $_SESSION['s_lang'];
  print " limit ". $limit."<br />"; //afficher les 50 derniéres réponses par ex. (pas nécessaire)
  print " surveyid ".$surveyid."<br />"; //sid
  print " id ".$id."<br />"; //identifiant de la réponses
- print " order ". $order ."<br />"; //ordre de tri (pas nécessaire) 
+ print " order ". $order ."<br />"; //ordre de tri (pas nécessaire)
  print " this survey ". $thissurvey['tablename'];
  };   */
 
@@ -114,12 +114,17 @@ if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die("browse - Cannot run 
 
 // Set the language for dispay
 require_once($rootdir.'/classes/core/language.php');  // has been secured
-if (isset($_SESSION['s_lang']))
+if (isset($_REQUEST['lang'])) {
+    $lang = sanitize_languagecode($_REQUEST['lang']);
+    $clang = SetSurveyLanguage( $surveyid, $lang);
+    $language = $_SESSION['s_lang'];
+}
+else if (isset($_SESSION['s_lang']))
 {
     $clang = SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
     $language = $_SESSION['s_lang'];
 } else {
-$language = GetBaseLanguageFromSurveyID($surveyid);
+    $language = GetBaseLanguageFromSurveyID($surveyid);
     $clang = SetSurveyLanguage( $surveyid, $language);
 }
 
@@ -131,7 +136,7 @@ if (!isset($thissurvey['templatedir']) || !$thissurvey['templatedir'])
 {
     $thistpl=validate_templatedir("default");
 }
-else 
+else
 {
     $thistpl=validate_templatedir($thissurvey['templatedir']);
 }
@@ -174,8 +179,12 @@ if(isset($_POST['printableexport']))
 }
 $printoutput .= "\t<div class='printouttitle'><strong>".$clang->gT("Survey name (ID):")."</strong> $surveyname ($surveyid)</div><p>&nbsp;\n";
 
+LimeExpressionManager::StartProcessingPage(true);  // means that all variables are on the same page
+// Since all data are loaded, and don't need JavaScript, pretend all from Group -1
+LimeExpressionManager::StartProcessingGroup(-1,($thissurvey['anonymized']!="N"),$surveyid);
 
-$aFullResponseTable=aGetFullResponseTable($surveyid,$id,$language);
+$bHonorConditions=($printanswershonorsconditions==1);
+$aFullResponseTable=aGetFullResponseTable($surveyid,$id,$language,$bHonorConditions);
 
 //Get the fieldmap @TODO: do we need to filter out some fields?
 unset ($aFullResponseTable['id']);
@@ -197,7 +206,7 @@ foreach ($aFullResponseTable as $sFieldname=>$fname)
 {
     if (substr($sFieldname,0,4)=='gid_')
     {
-        
+
 	    if(isset($_POST['printableexport']))
 	    {
 		    $pdf->intopdf(FlattenText($fname[0],true));
@@ -227,8 +236,8 @@ foreach ($aFullResponseTable as $sFieldname=>$fname)
             $pdf->intopdf(FlattenText($fname[0].$fname[1],true).": ".$fname[2]);
             $pdf->ln(2);
         }
-            else
-            {
+        else
+        {
             $printoutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
         }
     }
@@ -242,36 +251,11 @@ if(isset($_POST['printableexport']))
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 
     $sExportFileName=sanitize_filename($surveyname);
-    if (preg_match("/MSIE/i", $_SERVER["HTTP_USER_AGENT"]))
-    {
-        /*
-         *  $dateiname = $InternalReferenceNumber.'.pdf';
-         $pdf->Output($dateiname, 'F');
-         header('Content-type: application/pdf');
-         header('Content-Disposition: attachment; filename="'.basename($dateiname).'"');
-         readfile($dateiname);
-         */
-         
-        header("Content-type: application/pdf");
-        header("Content-Transfer-Encoding: binary");
-         
-         
-        header("Content-Disposition: Attachment; filename=\"". $sExportFileName ."-".$surveyid.".pdf\"");
-         
-			$pdf->Output($tempdir.'/'.$clang->gT($surveyname)."-".$surveyid.".pdf", "F");
-		header("Content-Length: ". filesize($tempdir.'/'.$sExportFileName."-".$surveyid.".pdf"));
-		readfile($tempdir.'/'.$sExportFileName."-".$surveyid.".pdf");
-		unlink($tempdir.'/'.$sExportFileName."-".$surveyid.".pdf");
-
-    }
-    else
-    {
 			$pdf->Output($sExportFileName."-".$surveyid.".pdf","D");
-    }
 }
 
 
-//Display the page with user answers 
+//Display the page with user answers
 if(!isset($_POST['printableexport']))
 {
     sendcacheheaders();
@@ -283,5 +267,7 @@ if(!isset($_POST['printableexport']))
     echo "</body></html>";
 }
 
+LimeExpressionManager::FinishProcessingGroup();
+LimeExpressionManager::FinishProcessingPage();
 
 ?>

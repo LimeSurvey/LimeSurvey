@@ -55,6 +55,7 @@ if (!isset($ok) || !$ok)
 else //delete conditions in the survey
 {
     $dict = NewDataDictionary($connect);
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
 
     $resetlogicquery = "DELETE FROM {$dbprefix}conditions WHERE qid in (select qid from {$dbprefix}questions where sid=$surveyid)";
     $resetlogicresult = $connect->Execute($resetlogicquery) or safe_die ("Couldn't delete conditions<br />$resetlogicquery<br />".$connect->ErrorMsg());

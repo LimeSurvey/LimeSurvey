@@ -1,19 +1,4 @@
 /* Start reset CSS */
-/*****
-Default styles for the jQuery UI Buttons (Next, Previous etc)
-*****/
-.nav-button { outline: 0; margin:0 4px 0 0;  background-color: #999;   padding: .4em 1em; text-decoration:none !important; cursor:pointer; position: relative; text-align: center; zoom: 1; }
-.nav-button .ui-icon { position: absolute; top: 50%; margin-top: -8px; left: 50%; margin-left: -8px; }
-
-a.nav-button { float:left; }
-
-/* remove extra button width in IE */
-button.nav-button { width:auto; overflow:visible; }
-
-.nav-button-icon-left { padding-left: 2.1em; margin-left: 3em}
-.nav-button-icon-right { padding-right: 2.1em; }
-.nav-button-icon-right .ui-icon { right: auto;left: 0.2em;margin-left: 2.5em; }
-.nav-button-icon-left .ui-icon { left: auto; right: 0.2em; margin-right: 8em; }
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td
   {
   margin: 0;
@@ -266,12 +251,17 @@ input.saveall,input.clearall {
   font-style: italic;
 }
 
+.asterisk {display:none}
+.mandatory .asterisk {display:inline;}
 .asterisk {
   color: red;
   font-size: 9pt;
   font-family: verdana;
+  padding-right:1em;
 }
-
+.showqnumcode-X .qnumcode {
+	display:none;
+}
 .innergraph img {
   height: 12px;
   vertical-align: top;
@@ -282,7 +272,6 @@ input.saveall,input.clearall {
   border: 1px solid #000;
   table-layout: fixed !important;
 }
-
 
 .innergraph td {
   height: 12px;
@@ -1279,10 +1268,11 @@ table.assessments th{
 }
 
 /* Question Index */
-.outerframe.withindex {
+.outerframe.withindex,.withindex .outerframe{
   margin-left: 1em;
   margin-right: 26em;
 }
+.allinone .withindex{margin:0}
 
 #index {
   position: absolute;

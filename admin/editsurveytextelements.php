@@ -41,7 +41,7 @@
             $tab_title[$i] = getLanguageNameFromCode($esrow['surveyls_language'],false);
 
             if ($esrow['surveyls_language']==GetBaseLanguageFromSurveyID($surveyid))
-                $tab_title[$i]  .= '('.$clang->gT("Base Language").')';
+                $tab_title[$i]  .= '('.$clang->gT("Base language").')';
 
             $esrow = array_map('htmlspecialchars', $esrow);
             $tab_content[$i] = "<ul>\n"
@@ -76,7 +76,7 @@
                 $tab_content[$i].= ">".$dateformatdata['dateformat'].'</option>';
             }
             $tab_content[$i].= "</select></li>"
-            . "<li><label for=''>".$clang->gT("Decimal Point Format:")."</label>\n";
+            . "<li><label for=''>".$clang->gT("Decimal separator:")."</label>\n";
             $tab_content[$i].="<select size='1' name='numberformat_".$esrow['surveyls_language']."'>\n";
             foreach (getRadixPointData() as $index=>$radixptdata)
             {

@@ -3,6 +3,10 @@
   margin-left: 2.5em;
 }
 
+.yes-no ul,.gender ul {
+  margin-left: 1em;
+}
+
 .multiple-short-txt ul.numbers-only li span {
   width: 10em;
 }

@@ -29,7 +29,7 @@ if (!isset($lid))
 if ($action == "exportsurvresources" && $surveyid) {
     require("classes/phpzip/phpzip.inc.php");
     $z = new PHPZip();
-    $resourcesdir="$publicdir/upload/surveys/$surveyid/";
+    $resourcesdir=$uploaddir. "/surveys/$surveyid/";
     $zipfile="$tempdir/resources-survey-$surveyid.zip";
     $z -> Zip($resourcesdir, $zipfile);
     if (is_file($zipfile)) {
@@ -51,7 +51,7 @@ if ($action == "exportsurvresources" && $surveyid) {
 if ($action == "exportlabelresources" && $lid) {
     require("classes/phpzip/phpzip.inc.php");
     $z = new PHPZip();
-    $resourcesdir="$publicdir/upload/labels/$lid/";
+    $resourcesdir=$uploaddir. "/upload/labels/$lid/";
     $zipfile="$tempdir/resources-labelset-$lid.zip";
     $z -> Zip($resourcesdir, $zipfile);
     if (is_file($zipfile)) {
