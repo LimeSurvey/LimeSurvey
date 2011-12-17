@@ -5000,7 +5000,7 @@ function FixLanguageConsistency($sid, $availlangs='')
                 if ($gresult->RecordCount() < 1)
                 {
                     db_switchIDInsert('groups',true);
-                    $query = "INSERT INTO ".db_table_name('groups')." (gid,sid,group_name,group_order,description,grelevance,language) VALUES('{$group['gid']}','{$group['sid']}',".db_quoteall($group['group_name']).",'{$group['group_order']}',".db_quoteall($group['description']).",'".db_quoteall($group['grelevance'])."','{$lang}')";
+                    $query = "INSERT INTO ".db_table_name('groups')." (gid,sid,group_name,group_order,description,grelevance,language) VALUES('{$group['gid']}','{$group['sid']}',".db_quoteall($group['group_name']).",'{$group['group_order']}',".db_quoteall($group['description']).",'".db_quote($group['grelevance'])."','{$lang}')";
                     $connect->Execute($query) or safe_die($connect->ErrorMsg());  //Checked
                     db_switchIDInsert('groups',false);
                 }
