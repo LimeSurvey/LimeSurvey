@@ -166,6 +166,7 @@ class LimeExpressionManager {
      */
     public static function UpgradeConditionsToRelevance($surveyId=NULL, $qid=NULL)
     {
+        LimeExpressionManager::SetDirtyFlag();  // set dirty flag even if not conditions, since must have had a DB change
         $releqns = self::ConvertConditionsToRelevance($surveyId,$qid);
         $num = count($releqns);
         if ($num == 0) {
@@ -189,6 +190,7 @@ class LimeExpressionManager {
      */
     public static function RevertUpgradeConditionsToRelevance($surveyId=NULL, $qid=NULL)
     {
+        LimeExpressionManager::SetDirtyFlag();  // set dirty flag even if not conditions, since must have had a DB change
         $releqns = self::ConvertConditionsToRelevance($surveyId,$qid);
         $num = count($releqns);
         if ($num == 0) {
@@ -199,7 +201,6 @@ class LimeExpressionManager {
             $query = "UPDATE ".db_table_name('questions')." SET relevance=1 WHERE qid=".$key;
             db_execute_assoc($query);
         }
-        LimeExpressionManager::SetDirtyFlag();
         return count($releqns);
     }
 
@@ -1120,12 +1121,12 @@ class LimeExpressionManager {
 
         foreach($fieldmap as $fielddata)
         {
-            $sgqa = $fielddata['fieldname'];
-            $type = $fielddata['type'];
-            if (!preg_match('#^\d+X\d+X\d+#',$sgqa))
+            if (!isset($fielddata['fieldname']) || !preg_match('#^\d+X\d+X\d+#',$fielddata['fieldname']))
             {
                 continue;   // not an SGQA value
             }
+            $sgqa = $fielddata['fieldname'];
+            $type = $fielddata['type'];
             $mandatory = $fielddata['mandatory'];
             $fieldNameParts = explode('X',$sgqa);
             $groupNum = $fieldNameParts[1];
@@ -1288,7 +1289,8 @@ class LimeExpressionManager {
                     $csuffix = $fielddata['aid'] . '#' . $fielddata['scale_id'];
                     $sqsuffix = '_' . $fielddata['aid'];
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'] . '_' . $fielddata['scale_id'];;
-                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
+                    $question = $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
+//                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
                     $rowdivid = substr($sgqa,0,-2);
                     break;
                 case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
@@ -1304,7 +1306,8 @@ class LimeExpressionManager {
                 case 'R': //RANKING STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
                     $csuffix = $fielddata['aid'];
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'];
-                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
+                    $question = $fielddata['subquestion'];
+//                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
                     if ($type != 'H' && $type != 'Q' && $type != 'R') {
                         if ($type == 'P' && preg_match("/comment$/", $sgqa)) {
 //                            $rowdivid = substr($sgqa,0,-7);
@@ -1320,7 +1323,8 @@ class LimeExpressionManager {
                     $csuffix = $fielddata['aid'];
                     $sqsuffix = '_' . substr($fielddata['aid'],0,strpos($fielddata['aid'],'_'));
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'];
-                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
+                    $question = $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
+//                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
                     $rowdivid = substr($sgqa,0,strpos($sgqa,'_'));
                     break;
             }
@@ -2838,6 +2842,9 @@ class LimeExpressionManager {
 
                     // Set certain variables normally set by StartProcessingGroup()
                     $LEM->groupRelevanceInfo=array();   // TODO only important thing from StartProcessingGroup?
+                    if (!isset($LEM->questionSeq2relevance[$LEM->currentQuestionSeq])) {
+                        return NULL;    // means an invalid question - probably no sub-quetions
+                    }
                     $qInfo = $LEM->questionSeq2relevance[$LEM->currentQuestionSeq];
                     $LEM->currentQID=$qInfo['qid'];
                     $LEM->currentGroupSeq=$qInfo['gseq'];
@@ -4998,10 +5005,10 @@ EOT;
 
         templatereplace('{SITENAME}');  // to ensure that lime replacement fields loaded
 
-        if (is_null($LEM->currentQset) || count($LEM->currentQset) == 0) {
+        if (is_null($moveResult) || is_null($LEM->currentQset) || count($LEM->currentQset) == 0) {
             return array(
                 'errors'=>1,
-                'html'=>$LEM->gT('No groups or questions found for language ') . $_SESSION['LEMlang'],
+                'html'=>$LEM->gT('Invalid question - probably missing sub-questions or language-specific settings for language ') . $_SESSION['LEMlang'],
                 );
         }
         
