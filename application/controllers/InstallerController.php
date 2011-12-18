@@ -878,6 +878,16 @@ class InstallerController extends CController {
 			extract(self::_getDatabaseConfig());
 			$sDsn = sprintf(self::_getDsn($sDatabaseType, $sDatabasePort), $sDatabaseLocation, $sDatabaseName, $sDatabasePort);
 
+            // mod_rewrite existence check
+            if ((function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())) || strtolower(getenv('HTTP_MOD_REWRITE')) == 'on')
+            {
+                $showScriptName = "\t\t\t" . "'showScriptName' => false," . "\n";
+            }
+            else
+            {
+                $showScriptName = "\t\t\t" . "'showScriptName' => true," . "\n";
+            }
+
             $dbdata = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');" . "\n"
             ."/*"."\n"
             ."| -------------------------------------------------------------------"."\n"
@@ -943,7 +953,7 @@ class InstallerController extends CController {
 			."\t\t"   . "'urlManager' => array("                    . "\n"
 			."\t\t\t" . "'urlFormat' => 'path',"                    . "\n"
 			."\t\t\t" . "'rules' => require('routes.php'),"         . "\n"
-			."\t\t\t" . "'showScriptName' => false,"                . "\n"
+			.           $showScriptName
 			."\t\t"   . "),"                                        . "\n"
 			."\t"     . ""                                          . "\n"
 
