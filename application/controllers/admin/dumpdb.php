@@ -13,152 +13,186 @@
  * $Id: dumpdb.php 11155 2011-10-13 12:59:49Z c_schmitz $
  */
 /**
- * Dumpdb
+ * Dump Database
  *
  * @package LimeSurvey
- * @author
  * @copyright 2011
  * @version $Id: dumpdb.php 11155 2011-10-13 12:59:49Z c_schmitz $
  * @access public
  */
 class Dumpdb extends AdminController {
 
-	var $iMaxRecords;
+    /**
+     * Base function
+     *
+     * This functions receives the request to generate a dump file for the
+     * database and does so! Only superadmins are allowed to do this!
+     */
+    public function runWithParams()
+    {
+        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
+        {
+            die();
+        }
 
-	/**
-	 * Base function
-	 *
-	 * This functions receives the request to generate a dump file for the
-	 * database and does so! Only LimeSurvey tables are dumped.
-	 * Only superadmins are allowed to do this!
-	 *
-	 * @access public
-	*/
-	public function runWithParams()
-	{
-		if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1) {
-			die();
-		}
+        if (!in_array(Yii::app()->db->getDriverName(), array('mysql', 'mysqli')) || Yii::app()->getConfig('demoMode') == true)
+        {
+            die($this->getController->lang->gT('This feature is only available for MySQL databases.'));
+        }
 
-		$connection = Yii::app()->db;
-		$this->iMaxRecords = Yii::app()->getConfig('maxdumpdbrecords');
+        $sDbName = $this->_getDbName();
+        $this->_outputHeaders($sDbName);
+        $this->_outputDatabase($sDbName);
 
-		if (!in_array($connection->getDriverName(), array('mysql', 'mysqli')) || Yii::app()->getConfig('demoMode') == true) {
-			die("This feature is only available for MySQL databases.");
-		}
+        // needs to be inside the condition so the updater still can include this file
+        exit;
+    }
 
-		// Yii doesn't give us a good way to get the database name
-		$dbname = preg_match("/dbname=([^;]*)/", $connection->getSchema()->getDbConnection()->connectionString, $matches);
-		$dbname = $matches[1];
+    /**
+     * Get the database name
+     */
+    private function _getDbName() {
+        // Yii doesn't give us a good way to get the database name
+        preg_match('/dbname=([^;]*)/', Yii::app()->db->getSchema()->getDbConnection()->connectionString, $aMatches);
+        $sDbName = $aMatches[1];
 
-		$file_name = "LimeSurvey_".$dbname."_dump_".date_shift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')).".sql";
+        return $sDbName;
+    }
 
-		Header("Content-type: application/octet-stream");
-		Header("Content-Disposition: attachment; filename=$file_name");
-		Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    /**
+     * Send the headers so that it is shown as a download
+     * @param string $sDbName Database Name
+     */
+    private function _outputHeaders($sDbName)
+    {
+        $sFileName = 'LimeSurvey_'.$sDbName.'_dump_'.date_shift(date('Y-m-d H:i:s'), 'Y-m-d', Yii::app()->getConfig('timeadjust')).'.sql';
 
-		echo "-- "."\n";
-		echo "-- LimeSurvey Database Dump of `$dbname`"."\n";
-		self::_completedump();
+        header('Content-type: application/octet-stream');
+        header('Content-Disposition: attachment; filename='.$sFileName);
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+    }
 
-		exit; // needs to be inside the condition so the updater still can include this file
-	}
+    /**
+     * Outputs a full dump of the current LimeSurvey database
+     * @param string $sDbName Database Name
+     */
+    private function _outputDatabase($sDbName)
+    {
+        $bAllowExportAllDb = (bool) Yii::app()->getConfig('allowexportalldb');
 
-	/**
-	 * Outputs a full dump of the current LimeSurvey database
-	 */
-	function _completedump()
-	{
-		$allowexportalldb = (bool) Yii::app()->getConfig('allowexportalldb');
+        $this->_outputDBDescription($sDbName, $bAllowExportAllDb);
+        $this->_outputDBData($bAllowExportAllDb);
+    }
 
-		$connection = Yii::app()->db;
-		$tables = $connection->getSchema()->getTables();
-		if ($allowexportalldb==0) {
-			echo "-- Only prefixed tables with: ".$connection->tablePrefix."\n";
-		}
-		echo "-- Date of Dump: ".date_shift(date("d-M-Y"), "d-M-Y", Yii::app()->getConfig('timeadjust'))."\n";
-		echo "-- "."\n";
+    private function _outputDBDescription($sDbName, $bAllowExportAllDb)
+    {
+        echo '--' . "\n";
+        echo '-- LimeSurvey Database Dump of `' . $sDbName . '`' . "\n";
+        if (!$bAllowExportAllDb) {
+            echo '-- Only prefixed tables with: ' . Yii::app()->db->tablePrefix . "\n";
+        }
+        echo '-- Date of Dump: ' . date_shift(date('d-M-Y'), 'd-M-Y', Yii::app()->getConfig('timeadjust')) . "\n";
+        echo '--' . "\n";
+    }
 
-		foreach($tables as $tablename => $tabledata) {
-			if ($allowexportalldb == 0 && $connection->tablePrefix != substr($tablename, 0, strlen($connection->tablePrefix)))
-				continue;
-			self::_defdump($tablename);
-			self::_datadump($tablename, $tabledata);
-		}
-	}
+    private function _outputDBData($bAllowExportAllDb)
+    {
+        $aTables = Yii::app()->db->getSchema()->getTables();
+        foreach ($aTables as $sTableName => $oTableData)
+        {
+            if ($bAllowExportAllDb && Yii::app()->db->tablePrefix == substr($sTableName, 0, strlen(Yii::app()->db->tablePrefix))) {
+                $this->_outputTableDescription($sTableName);
+                $this->_outputTableData($sTableName, $oTableData);
+            }
+        }
+    }
 
-	/**
-	 * Outputs the table structure in sql format
-	 */
-	function _defdump($tablename)
-	{
+    /**
+     * Outputs the table structure in sql format
+     */
+    private function _outputTableDescription($sTableName)
+    {
+        echo "\n".'-- --------------------------------------------------------'."\n\n";
+        echo '--'."\n";
+        echo '-- Table structure for table `'.$sTableName.'`'."\n";
+        echo '--'."\n\n";
+        echo 'DROP TABLE IF EXISTS `'.$sTableName.'`;'."\n";
 
-		$connection  = Yii::app()->db;
+        $aCreateTable = Yii::app()->db->createCommand('SHOW CREATE TABLE `'.$sTableName.'`')->queryRow();
+        echo $aCreateTable['Create Table'].';'."\n\n";
+    }
 
-		$def  ="\n"."-- --------------------------------------------------------"."\n\n";
-		$def .="--\n";
-		$def .="-- Table structure for table `{$tablename}`"."\n";
-		$def .="--\n\n";
-		$def .= "DROP TABLE IF EXISTS `{$tablename}`;"."\n";
+    /**
+     * Outputs the table data in sql format
+     */
+    private function _outputTableData($sTableName, $oTableData)
+    {
+        echo '--'."\n";
+        echo '-- Dumping data for table `'.$sTableName.'`'."\n";
+        echo '--'."\n\n";
 
-		$sSql = "SHOW CREATE TABLE `{$tablename}`";
-		$aCreateTable = $connection->createCommand($sSql)->queryRow();
-		$def .= $aCreateTable['Create Table'].";\n\n";
-		echo $def;
-	}
+        $iNbRecords = $this->_countNumberOfEntries($sTableName);
+        if ($iNbRecords > 0) {
+            $iMaxNbRecords = $this->_getMaxNbRecords();
+            $aFieldNames = array_keys($oTableData->columns);
 
-	/**
-	 * Outputs the table data in sql format
-	 */
-	function _datadump($tablename, $tabledata)
-	{
-		$connection  = Yii::app()->db;
-		$result  = "--\n";
-		$result .="-- Dumping data for table `$tablename`"."\n";
-		$result .="--\n\n";
-		echo $result;
+            for ($i = 0; $i < ceil($iNbRecords / $iMaxNbRecords); $i++)
+            {
+                $aRecords = Yii::app()->db->createCommand()
+                        ->select()
+                        ->from($sTableName)
+                        ->limit($iMaxNbRecords, ($i != 0 ? ($i * $iMaxNbRecords) + 1 : null))
+                        ->query()->readAll();
 
-		$sSql = "SELECT COUNT(*) FROM `$tablename`";
-		$aNumRows = $connection->createCommand($sSql)->queryRow();
-		$iNumRows = $aNumRows['COUNT(*)'];
-		if ($iNumRows < 1)
-			return;
+                foreach ($aRecords as $aRecord)
+                {
+                    $aFieldNames = $this->_outputRecord($sTableName, $aFieldNames, $aRecord);
+                }
 
-		for($i=0; $i < ceil($iNumRows/$this->iMaxRecords); $i++) {
-			$aResults = $connection->createCommand()
-				->select()
-				->from($tablename)
-				->limit($this->iMaxRecords, ($i != 0 ? ($i*$this->iMaxRecords) + 1 : null))
-				->query()->readAll();
+            }
+            echo "\n";
+        }
+    }
 
-			$aFieldNames = array_keys($tabledata->columns);
-			$iNumFields  = count($aFieldNames);
-			$result = "";
+    private function _outputRecord($sTableName, $aFieldNames, $aRecord)
+    {
+        echo 'INSERT INTO `' . $sTableName . '` VALUES(';
 
-			foreach($aResults as $row){
-				$result .= "INSERT INTO `{$tablename}` VALUES(";
+        foreach ($aFieldNames as $sFieldName)
+        {
+            if (isset($aRecord[$sFieldName]) && !is_null($aRecord[$sFieldName])) {
+                $aRecord[$sFieldName] = addslashes($aRecord[$sFieldName]);
+                $aRecord[$sFieldName] = preg_replace("#\n#", "\\n", $aRecord[$sFieldName]);
+                echo '"' . $aRecord[$sFieldName] . '"';
+            }
+            else
+            {
+                echo 'NULL';
+            }
 
-				foreach($aFieldNames as $sFieldName) {
-					if (isset($row[$sFieldName]) && !is_null($row[$sFieldName]))
-					{
-						$row[$sFieldName] = addslashes($row[$sFieldName]);
-						$row[$sFieldName] = preg_replace("#\n#","\\n",$row[$sFieldName]);
-						$result .= "\"{$row[$sFieldName]}\"";
-					}
-					else
-					{
-						$result .= "NULL";
-					}
+            if (end($aFieldNames) != $sFieldName) {
+                echo ', ';
+            }
+        }
 
-					if (end($aFieldNames) != $sFieldName)
-						$result .= ", ";
-				}
+        echo ');' . "\n";
+        return $aFieldNames;
+    }
 
-				$result .= ");\n";
-			}
+    private function _countNumberOfEntries($sTableName)
+    {
+        $aNumRows = Yii::app()->db->createCommand('SELECT COUNT(*) FROM `' . $sTableName . '`')->queryRow();
+        $iNumRows = $aNumRows['COUNT(*)'];
+        return $iNumRows;
+    }
 
-			echo $result . "\n";
-		}
-	}
-
+    private function _getMaxNbRecords()
+    {
+        $iMaxRecords = (int)Yii::app()->getConfig('maxdumpdbrecords');
+        if ($iMaxRecords < 1) {
+            $iMaxRecords = 2500;
+            return $iMaxRecords; // default
+        }
+        return $iMaxRecords;
+    }
 }
