@@ -73,6 +73,8 @@ class tokens extends Survey_Common_Action
 			$this->route('updatetokenattributes', array('surveyid'));
 		elseif ($sa == 'updatetokenattributedescriptions')
 			$this->route('updatetokenattributedescriptions', array('surveyid'));
+		elseif ($sa == 'edit')
+			$this->route('edit', array('surveyid', 'tokenid'));
 	}
 
 	/**
@@ -403,7 +405,6 @@ class tokens extends Survey_Common_Action
 		$this->getController()->render("/admin/token/tokenbar",$data);
 		$this->getController()->render("/admin/token/browse",$data);
 		$this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
-
 	}
     
     /**
@@ -442,7 +443,7 @@ class tokens extends Survey_Common_Action
                 if ($token['sent']=='N') $action .= '<input type="image" src="'.Yii::app()->getRequest()->getBaseUrl().'/images/token_invite.png" name="sendinvitations" id="sendinvitations" title="'.$clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)").'" onclick=\'window.open("'.Yii::app()->createUrl("admin/tokens/sa/email/surveyid/{$surveyid}/tids/|".$token['tid']).'", "_blank")\' />';
                 else $action .= '<input type="image" src="'.Yii::app()->getRequest()->getBaseUrl().'/images/token_remind.png" name="sendreminders" id="sendreminders" title="'.$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)").'" onclick=\'window.open("'.Yii::app()->createUrl("admin/tokens/sa/remind/surveyid/{$surveyid}/tids/|".$token['tid']).'", "_blank")\' />';
 			}
-            $action .= '<input style="height: 16; width: 16px; font-size: 8; font-family: verdana" type="image" src="'.Yii::app()->getRequest()->getBaseUrl().'/images/token_edit.png" title="'.$clang->gT("Edit token entry").'" alt="'.$clang->gT("Edit token entry").'" onclick=\'window.open("'.Yii::app()->createUrl("/admin/tokens/sa/edit/surveyid/{$surveyid}/tokenid/{$j}").'", "_top")\'>';
+            $action .= '<input style="height: 16; width: 16px; font-size: 8; font-family: verdana" type="image" src="'.Yii::app()->getRequest()->getBaseUrl().'/images/token_edit.png" title="'.$clang->gT("Edit token entry").'" alt="'.$clang->gT("Edit token entry").'" onclick=\'window.open("'.Yii::app()->createUrl("/admin/tokens/sa/edit/surveyid/{$surveyid}/tokenid/{$token['tid']}").'", "_top")\'>';
 			
             $aData->rows[$i]['cell']=array($token['tid'], $action, $token['firstname'],$token['lastname'],$token['email'],$token['emailstatus'],$token['token'],$token['language'],$token['sent'],$token['remindersent'],$token['remindercount'],$token['completed'],$token['usesleft'],$token['validfrom'],$token['validuntil']);
             $attributes=GetAttributeFieldNames($surveyid);
@@ -646,109 +647,102 @@ class tokens extends Survey_Common_Action
 	/**
 	 * Edit Tokens
 	 */
-	function edit($surveyid,$tokenid)
-	{
-		$surveyid = sanitize_int($surveyid);
-		$tokenid = (int) $tokenid;
-		if(!bHasSurveyPermission($surveyid, 'tokens','update'))
-		{
-			show_error("no permissions"); // TODO Replace
-		}
+    function edit($surveyid, $tokenid)
+    {
+        $surveyid = sanitize_int($surveyid);
+        $tokenid = sanitize_int($tokenid);
 
-		if ($this->input->post("subaction"))
-		{
-			$clang=$this->limesurvey_lang;
-			$this->load->model("tokens_dynamic_model");
-			$_POST=$this->input->post();
+        if (!bHasSurveyPermission($surveyid, 'tokens', 'update')) {
+            show_error("no permissions"); // TODO Replace
+        }
 
-		    if (trim($_POST['validfrom'])=='') {
-		        $_POST['validfrom']=null;
-		    }
-		    else
-		    {
-		        $datetimeobj = new Date_Time_Converter(trim($_POST['validfrom']), $dateformatdetails['phpdate'].' H:i');
-		        $_POST['validfrom'] =$datetimeobj->convert('Y-m-d H:i:s');
-		    }
-		    if (trim($_POST['validuntil'])=='') {$_POST['validuntil']=null;}
-		    else
-		    {
-		        $datetimeobj = new Date_Time_Converter(trim($_POST['validuntil']), $dateformatdetails['phpdate'].' H:i');
-		        $_POST['validuntil'] =$datetimeobj->convert('Y-m-d H:i:s');
-		    }
-		    $data = array();
-		    $data[] = $_POST['firstname'];
-		    $data[] = $_POST['lastname'];
-		    $data[] = sanitize_email($_POST['email']);
-		    $data[] = $_POST['emailstatus'];
-		    $santitizedtoken=sanitize_token($_POST['token']);
-		    $data[] = $santitizedtoken;
-		    $data[] = sanitize_languagecode($_POST['language']);
-		    $data[] = $_POST['sent'];
-		    $data[] = $_POST['completed'];
-		    $data[] = $_POST['usesleft'];
-		    //    $db->DBTimeStamp("$year-$month-$day $hr:$min:$secs");
-		    $data[] = $_POST['validfrom'];
-		    $data[] = $_POST['validuntil'];
-		    $data[] = $_POST['remindersent'];
-		    $data[] = intval($_POST['remindercount']);
+        Yii::app()->loadHelper("surveytranslator");
+        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
 
-		    //$udresult = $connect->Execute("Select * from ".db_table_name("tokens_$surveyid")." where tid<>{$tokenid} and token<>'' and token='{$santitizedtoken}'") or safe_die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".$connect->ErrorMsg());
-			$udresult = $this->tokens_dynamic_model->getAllRecords($surveyid,array("tid !="=>$tokenid, "token !="=>"", "token"=>$santitizedtoken));
-		    if ($udresult->num_rows()==0)
-		    {
-		        //$udresult = $connect->Execute("Select * from ".db_table_name("tokens_$surveyid")." where tid={$tokenid} and email='".sanitize_email($_POST['email'])."'") or safe_die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".$connect->ErrorMsg());
+        Tokens_dynamic::sid($surveyid);
 
+        if (!empty($_POST['subaction'])) {
+            $clang = $this->getController()->lang;
 
-		        // Using adodb Execute with blinding method so auto-dbquote is done
-		        $udquery = "UPDATE ".$this->db->dbprefix("tokens_$surveyid")." SET firstname=?, "
-		        . "lastname=?, email=?, emailstatus=?, "
-		        . "token=?, language=?, sent=?, completed=?, usesleft=?, validfrom=?, validuntil=?, remindersent=?, remindercount=?";
-		        $attrfieldnames=GetAttributeFieldnames($surveyid);
-		        foreach ($attrfieldnames as $attr_name)
-		        {
-		            $udquery.= ", $attr_name=?";
-		            $data[].=$_POST[$attr_name];
-		        }
+            Yii::import('application.libraries.Date_Time_Converter', true);
+            if (trim($_POST['validfrom']) == '') {
+                $_POST['validfrom'] = null;
+            }
+            else
+            {
+                $datetimeobj = new Date_Time_Converter(array(trim($_POST['validfrom']), $dateformatdetails['phpdate'] . ' H:i'));
+                $_POST['validfrom'] = $datetimeobj->convert('Y-m-d H:i:s');
+            }
+            if (trim($_POST['validuntil']) == '') {
+                $_POST['validuntil'] = null;
+            }
+            else
+            {
+                $datetimeobj = new Date_Time_Converter(array(trim($_POST['validuntil']), $dateformatdetails['phpdate'] . ' H:i'));
+                $_POST['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
+            }
+            $data = array();
+            $data[] = $_POST['firstname'];
+            $data[] = $_POST['lastname'];
+            $data[] = sanitize_email($_POST['email']);
+            $data[] = $_POST['emailstatus'];
+            $santitizedtoken = sanitize_token($_POST['token']);
+            $data[] = $santitizedtoken;
+            $data[] = sanitize_languagecode($_POST['language']);
+            $data[] = $_POST['sent'];
+            $data[] = $_POST['completed'];
+            $data[] = $_POST['usesleft'];
+            $data[] = $_POST['validfrom'];
+            $data[] = $_POST['validuntil'];
+            $data[] = $_POST['remindersent'];
+            $data[] = intval($_POST['remindercount']);
 
-		        $udquery .= " WHERE tid={$tokenid}";
-				//$this->load->helper("database");
-		        //$udresult = db_execute_assoc($udquery);
-				$this->db->query($udquery,$data);
+            $udresult = Tokens_dynamic::model()->findAll("tid <> '$tokenid'    and token <> '' and token = '$santitizedtoken'");
 
-				$clang=$this->limesurvey_lang;
-				$data['clang']=$this->limesurvey_lang;
-				$data['thissurvey']=getSurveyInfo($surveyid);
-				$data['imageurl'] = $this->config->item('imageurl');
-				$data['surveyid']=$surveyid;
-				self::_getAdminHeader();
-				$this->load->view("admin/token/tokenbar",$data);
-				self::_showMessageBox($clang->gT("Success"),
-				$clang->gT("The token entry was successfully updated.")."<br /><br />\n"
-		        ."\t\t<input type='button' value='".$clang->gT("Display tokens")."' onclick=\"window.open('".site_url("admin/tokens/browse/$surveyid/")."', '_top')\" />\n");
-				self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+            if (count($udresult) == 0) {
+                $attrfieldnames = GetAttributeFieldnames($surveyid);
+                foreach ($attrfieldnames as $attr_name)
+                {
+                    $data[] .= $_POST[$attr_name];
+                }
 
-		    }
-		    else
-		    {
-				$clang=$this->limesurvey_lang;
-				$data['clang']=$this->limesurvey_lang;
-				$data['thissurvey']=getSurveyInfo($surveyid);
-				$data['imageurl'] = $this->config->item('imageurl');
-				$data['surveyid']=$surveyid;
-				self::_getAdminHeader();
-				$this->load->view("admin/token/tokenbar",$data);
-				self::_showMessageBox($clang->gT("Failed"),
-						$clang->gT("There is already an entry with that exact token in the table. The same token cannot be used in multiple entries.")."<br /><br />\n"
-		        ."\t\t<input type='button' value='".$clang->gT("Show this token entry")."' onclick=\"window.open('".site_url("admin/tokens/edit/$surveyid/$tokenid")."', '_top')\" />\n");
-				self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-		    }
-		}
-		else
-		{
-			self::_handletokenform($surveyid,"edit",$tokenid);
-		}
+                $query = "UPDATE {{tokens_$surveyid}} SET firstname='{$_POST['firstname']}',"
+                         . "lastname='{$_POST['lastname']}', email='{$_POST['email']}', emailstatus='{$_POST['emailstatus']}', "
+                         . "token='{$_POST['token']}', language='{$_POST['language']}', sent='{$_POST['sent']}', completed='{$_POST['completed']}', usesleft='{$_POST['usesleft']}', validfrom='{$_POST['validfrom']}', validuntil='{$_POST['validuntil']}', remindersent='{$_POST['remindersent']}', remindercount='{$_POST['remindercount']}'"
+                         . " WHERE tid ={$tokenid}";
+                Yii::app()->db->createCommand($query)->execute();
 
-	}
+                $data['clang'] = $this->getController()->lang;
+                $data['thissurvey'] = getSurveyInfo($surveyid);
+                $data['imageurl'] = Yii::app()->getConfig('imageurl');
+                $data['surveyid'] = $surveyid;
+                $this->getController()->_getAdminHeader();
+                $this->getController()->render("/admin/token/tokenbar", $data);
+                $this->getController()->_showMessageBox($clang->gT("Success"),
+                                                        $clang->gT("The token entry was successfully updated.") . "<br /><br />\n"
+                                                        . "\t\t<input type='button' value='" . $clang->gT("Display tokens") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/browse/surveyid/$surveyid/") . "', '_top')\" />\n");
+                $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+
+            }
+            else
+            {
+                $data['clang'] = $this->getController()->lang;
+                $data['thissurvey'] = getSurveyInfo($surveyid);
+                $data['imageurl'] = Yii::app()->getConfig('imageurl');
+                $data['surveyid'] = $surveyid;
+                $this->getController()->_getAdminHeader();
+                $this->controller->render("/admin/token/tokenbar", $data);
+                $this->getController()->_showMessageBox($clang->gT("Failed"),
+                                                        $clang->gT("There is already an entry with that exact token in the table. The same token cannot be used in multiple entries.") . "<br /><br />\n"
+                                                        . "\t\t<input type='button' value='" . $clang->gT("Show this token entry") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/edit/surveyid/$surveyid/tokenid/$tokenid") . "', '_top')\" />\n");
+                $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+            }
+        }
+        else
+        {
+            $this->_handletokenform($surveyid, "edit", $tokenid);
+        }
+    }
 
 	/**
 	 * Delete tokens
@@ -2486,11 +2480,9 @@ class tokens extends Survey_Common_Action
 
 		if ($subaction == "edit")
 	    {
-	        $edquery = "SELECT * FROM ".$this->db->dbprefix("tokens_$surveyid")." WHERE tid={$tokenid}";
-			$this->load->helper("database");
-	        $edresult = db_execute_assoc($edquery);
-	        //$edfieldcount = $edresult->FieldCount();
-	        $edrow=$edresult->row_array();
+	        $edquery = "SELECT * FROM {{tokens_$surveyid}} WHERE tid={$tokenid}";
+		$edresult = Yii::app()->db->createCommand($edquery)->query();
+		   $edrow=$edresult->read();
 	        //Create variables with the same names as the database column names and fill in the value
 	        foreach ($edrow as $Key=>$Value) {$data['tokendata'][$Key] = $Value;}
 			$data['tokenid']=$tokenid;

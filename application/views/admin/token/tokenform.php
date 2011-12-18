@@ -75,6 +75,7 @@
 	    <li><label for='validfrom'><?php echo $clang->gT("Valid from");?>:</label>
 	    <input type='text' class='popupdatetime' size='20' id='validfrom' name='validfrom' value="<?php
 	     if (isset($validfrom)){
+		  Yii::import('application.libraries.Date_Time_Converter', true);
 	        $datetimeobj = new Date_Time_Converter($validfrom , "Y-m-d H:i:s");
 	       echo $datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
 	    }
