@@ -52,6 +52,7 @@ return array(
 		'urlManager' => array(
 			'urlFormat' => 'path',
 			'rules' => require('routes.php'),
+			'showScriptName' => false,
 		),
 
 	),

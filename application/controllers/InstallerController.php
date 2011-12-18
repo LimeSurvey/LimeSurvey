@@ -943,6 +943,7 @@ class InstallerController extends CController {
 			."\t\t"   . "'urlManager' => array("                    . "\n"
 			."\t\t\t" . "'urlFormat' => 'path',"                    . "\n"
 			."\t\t\t" . "'rules' => require('routes.php'),"         . "\n"
+			."\t\t\t" . "'showScriptName' => false,"                . "\n"
 			."\t\t"   . "),"                                        . "\n"
 			."\t"     . ""                                          . "\n"
 

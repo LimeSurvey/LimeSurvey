@@ -45,7 +45,7 @@ $route['(:num)/tk-(:any)'] = "survey/sid/$1/token/$2";
 $route['(:num)'] = "survey/sid/$1";
 
 //Admin Routes
-$route['admin'] = "admin/index";
+$route['admin/index'] = "admin";
 $route['admin/labels/view'] = "admin/labels/view";
 
 //question
