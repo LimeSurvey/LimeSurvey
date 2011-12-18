@@ -21,9 +21,7 @@ function db_upgrade_all($oldversion) {
     /// This function does anything necessary to upgrade
     /// older versions to match current functionality
     global $modifyoutput, $dbprefix, $usertemplaterootdir, $standardtemplaterootdir;
-    $CI =& get_instance();
-    $CI->load->dbforge();
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
     echo str_pad($clang->gT('The LimeSurvey database is being upgraded').' ('.date('Y-m-d H:i:s').')',14096).".<br /><br />". $clang->gT('Please be patient...')."<br /><br />\n";
 
     if ($oldversion < 143)
@@ -57,97 +55,56 @@ function db_upgrade_all($oldversion) {
     }
     if ($oldversion < 149)
     {
-        $CI->dbforge->add_field('id');
         $fields = array(
-            'sid' => array(
-                             'type' => 'INT',
-                          ),
-            'parameter' => array(
-                             'type' => 'VARCHAR',
-                             'constraint' => '50',
-                              ),
-            'targetqid' => array(
-                             'type' => 'INT',
-                             'null' => TRUE,
-                              ),
-            'targetsqid' => array(
-                             'type' => 'INT',
-                             'null' => TRUE,
-                              ),
-        );
-        $CI->dbforge->add_field($fields);
-        $CI->dbforge->create_table('survey_url_parameters',TRUE);
+            'id' => 'INT',
+            'sid' => 'INT',
+            'parameter' => 'VARCHAR(50)',
+            'targetqid' => 'INT NULL',
+            'targetsqid' => 'INT NULL'
+        );        
+        Yii::app()->db->schema->createTable('{{survey_url_parameters}}',$fields);
     }
     if ($oldversion < 150)
     {
         $fields = array(
-            'relevance' => array(
-                'type' => 'TEXT'
-            )
+            'relevance' => 'TEXT'            
         );
-        $CI->dbforge->add_column('questions',$fields);
+        Yii::app()->db->schema->addColumn('{{questions}}',$fields);
     }
     if ($oldversion < 151)
     {
         $fields = array(
-            'randomization_group' => array(
-                             'type' => 'VARCHAR',
-                             'constraint' => '20',
-                             'null' => FALSE,
-                             'default' => ''
-            )
+            'randomization_group' => 'VARCHAR(20) NOT NULL default \'\''
         );
-        $CI->dbforge->add_column('groups',$fields);
+        Yii::app()->db->schema->addColumn('{{groups}}',$fields);
     }
     if ($oldversion < 152)
     {
-        $sql = "CREATE INDEX question_attributes_idx3 ON ".$CI->db->dbprefix('question_attributes')."(attribute)";
-        $CI->db->query($sql);
+        $sql = "CREATE INDEX question_attributes_idx3 ON {{question_attributes}}(attribute)";
+        Yii::app()->db->createCommand($sql)->execute();
     }
     if ($oldversion < 153)
-    {
-        $CI->dbforge->add_field('id');
+    {        
         $fields = array(
-            'errortime' => array(
-                             'type' => 'VARCHAR',
-                             'constraint' => '50',
-                        ),
-            'sid' => array(
-                             'type' => 'INT',
-                          ),
-            'gid' => array(
-                             'type' => 'INT',
-                          ),
-            'qid' => array(
-                             'type' => 'INT',
-                          ),
-            'gseq' => array(
-                             'type' => 'INT',
-                          ),
-            'qseq' => array(
-                             'type' => 'INT',
-                          ),
-            'type' => array(
-                             'type' => 'VARCHAR',
-                             'constraint' => '50',
-                              ),
-            'eqn' => array(
-                            'type' => 'TEXT'
-                              ),
-            'prettyprint' => array(
-                            'type' => 'TEXT'
-                              ),
+            'id' => 'INT',
+            'errortime' => 'VARCHAR(50)',
+            'sid' => 'INT',
+            'gid' => 'INT',
+            'qid' => 'INT',
+            'gseq' => 'INT',
+            'qseq' => 'INT',
+            'type' => 'VARCHAR(50)',
+            'eqn' => 'TEXT',
+            'prettyprint' => 'TEXT'                            
         );
-        $CI->dbforge->add_field($fields);
-        $CI->dbforge->create_table('expression_errors',TRUE);
+        Yii::app()->db->schema->createTable('{{expression_errors}}',$fields);
     }
 }
 
 function upgrade_question_attributes148()
 {
     global $modifyoutput;
-    $CI =& get_instance();
-    $sDBPrefix=$CI->db->dbprefix;
+    $sDBPrefix=Yii::app()->db->tablePrefix;
     $sSurveyQuery = "SELECT sid FROM {$sDBPrefix}surveys";
     $oSurveyResult = db_execute_assoc($sSurveyQuery);
     foreach ( $oSurveyResult->result_array()  as $aSurveyRow)
@@ -162,7 +119,7 @@ function upgrade_question_attributes148()
         {
             if (isset($aAllAttributes[$aAttributeRow['attribute']]['i18n']) && $aAllAttributes[$aAttributeRow['attribute']]['i18n'])
             {
-                $CI->db->query("delete from {$sDBPrefix}question_attributes where qid={$aAttributeRow['qid']} and attribute='{$aAttributeRow['attribute']}'");
+                Yii::app()->db->createCommand("delete from {$sDBPrefix}question_attributes where qid={$aAttributeRow['qid']} and attribute='{$aAttributeRow['attribute']}'")->execute();
                 foreach ($languages as $language)
                 {
                     $sAttributeInsertQuery="insert into {$sDBPrefix}question_attributes (qid,attribute,value,language) VALUES({$aAttributeRow['qid']},'{$aAttributeRow['attribute']}','{$aAttributeRow['value']}','{$language}' )";
@@ -175,9 +132,8 @@ function upgrade_question_attributes148()
 
 function upgrade_survey_table145()
 {
-    $CI =& get_instance();
     global $modifyoutput, $connect;
-    $sSurveyQuery = "SELECT * FROM {$CI->db->dbprefix}surveys where notification<>'0'";
+    $sSurveyQuery = "SELECT * FROM ".db_table_name('surveys')." where notification<>'0'";
     $oSurveyResult = db_execute_assoc($sSurveyQuery);
     foreach ( $oSurveyResult->result_array() as $aSurveyRow )
     {
@@ -198,26 +154,26 @@ function upgrade_survey_table145()
             {
                 $sEmailDetailedNotificationAddresses=$sEmailDetailedNotificationAddresses.';'.trim($aSurveyRow['emailresponseto']);
             }
-            $sSurveyUpdateQuery= "update {$CI->db->dbprefix}surveys set adminemail='{$sAdminEmailAddress}', emailnotificationto='{$sEmailDetailedNotificationAddresses}' where sid=".$aSurveyRow['sid'];
+            $sSurveyUpdateQuery= "update ".db_table_name('surveys')." set adminemail='{$sAdminEmailAddress}', emailnotificationto='{$sEmailDetailedNotificationAddresses}' where sid=".$aSurveyRow['sid'];
             $connect->execute($sSurveyUpdateQuery);
         }
     }
-    $sSurveyQuery = "SELECT * FROM {$CI->db->dbprefix}surveys_languagesettings";
-    $oSurveyResult = db_execute_assoc($sSurveyQuery);
-    foreach ( $oSurveyResult->result_array() as $aSurveyRow )
+    $sSurveyQuery = "SELECT * FROM ".db_table_name('surveys_languagesettings');
+    $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->queryAll();
+    foreach ( $oSurveyResult as $aSurveyRow )
     {
-        $CI->load->library('Limesurvey_lang',array("langcode"=>$aSurveyRow['surveyls_language']));
-        $oLanguage = $CI->limesurvey_lang;
+        Yii::app()->loadLibrary('Limesurvey_lang',array("langcode"=>$aSurveyRow['surveyls_language']));
+        $oLanguage = Yii::app()->lang;
         $aDefaultTexts=aTemplateDefaultTexts($oLanguage,'unescaped');
         unset($oLanguage);
         $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification'].$aDefaultTexts['admin_detailed_notification_css'];
-        $sSurveyUpdateQuery= "update {$CI->db->dbprefix}surveys_languagesettings set
-                              email_admin_responses_subj=".$CI->db->escape($aDefaultTexts['admin_detailed_notification_subject']).",
-                              email_admin_responses=".$CI->db->escape($aDefaultTexts['admin_detailed_notification']).",
-                              email_admin_notification_subj=".$CI->db->escape($aDefaultTexts['admin_notification_subject']).",
-                              email_admin_notification=".$CI->db->escape($aDefaultTexts['admin_notification'])."
+        $sSurveyUpdateQuery= "update ".db_table_name('surveys_languagesettings')." set
+                              email_admin_responses_subj=".$aDefaultTexts['admin_detailed_notification_subject'].",
+                              email_admin_responses=".$aDefaultTexts['admin_detailed_notification'].",
+                              email_admin_notification_subj=".$aDefaultTexts['admin_notification_subject'].",
+                              email_admin_notification=".$aDefaultTexts['admin_notification']."
                               where surveyls_survey_id=".$aSurveyRow['surveyls_survey_id'];
-        $connect->execute($sSurveyUpdateQuery);
+        $connect->createCommand($sSurveyUpdateQuery)->execute();
     }
 
 }
@@ -225,15 +181,14 @@ function upgrade_survey_table145()
 
 function upgrade_surveypermissions_table145()
 {
-    $CI =& get_instance();
     global $modifyoutput, $connect;
-    $sPermissionQuery = "SELECT * FROM {$CI->db->dbprefix}surveys_rights";
-    $oPermissionResult = db_execute_assoc($sPermissionQuery);
-    if (!$oPermissionResult) {return "Database Error";}
+    $sPermissionQuery = "SELECT * FROM {{surveys_rights}}";
+    $oPermissionResult = Yii::app()->db->createCommand($sPermissionQuery)->queryAll();
+    if (empty($oPermissionResult)) {return "Database Error";}
     else
     {
-        $tablename=$CI->db->dbprefix.'survey_permissions';
-        foreach ( $oPermissionResult->result_array() as $aPermissionRow )
+        $tablename=Yii::app()->db->tablePrefix.'survey_permissions';
+        foreach ( $oPermissionResult as $aPermissionRow )
         {
 
             $sPermissionInsertQuery=$connect->GetInsertSQL($tablename,array('permission'=>'assessments',
@@ -326,29 +281,28 @@ function upgrade_surveypermissions_table145()
 
 function upgrade_survey_table152()
 {	
-	$CI =& get_instance();
     global $modifyoutput, $connect;
-    $sSurveyQuery = "SELECT * FROM {$CI->db->dbprefix}surveys_languagesettings";
-    $oSurveyResult = db_execute_assoc($sSurveyQuery);
-    foreach ( $oSurveyResult->result_array() as $aSurveyRow )
+    $sSurveyQuery = "SELECT * FROM {{surveys_languagesettings}}";
+    $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->queryAll();
+    foreach ( $oSurveyResult as $aSurveyRow )
     {
 		
-        $CI->load->library('Limesurvey_lang',array("langcode"=>$aSurveyRow['surveyls_language']));
-        $oLanguage = $CI->limesurvey_lang;
+        Yii::app()->loadLibrary('Limesurvey_lang',array("langcode"=>$aSurveyRow['surveyls_language']));
+        $oLanguage = Yii::app()->lang;
         $aDefaultTexts=aTemplateDefaultTexts($oLanguage,'unescaped');
         unset($oLanguage);
 		
         if (trim(strip_tags($aSurveyRow['surveyls_email_confirm'])) == '')
         {
 			
-			$sSurveyUpdateQuery= "update {$CI->db->dbprefix}surveys set sendconfirmation='N' where sid=".$aSurveyRow['surveyls_survey_id'];
-            $connect->execute($sSurveyUpdateQuery);
+			$sSurveyUpdateQuery= "update {{surveys}} set sendconfirmation='N' where sid=".$aSurveyRow['surveyls_survey_id'];
+            $connect->createCommand($sSurveyUpdateQuery)->execute;
 			
-			$sSurveyUpdateQuery= "update {$CI->db->dbprefix}surveys_languagesettings set
-                                  surveyls_email_confirm_subj=".$CI->db->escape($aDefaultTexts['confirmation_subject']).",
-                                  surveyls_email_confirm=".$CI->db->escape($aDefaultTexts['confirmation'])."
+			$sSurveyUpdateQuery= "update {{surveys_languagesettings}} set
+                                  surveyls_email_confirm_subj=".$aDefaultTexts['confirmation_subject'].",
+                                  surveyls_email_confirm=".$aDefaultTexts['confirmation']."
                                   where surveyls_survey_id=".$aSurveyRow['surveyls_survey_id'];
-            $connect->execute($sSurveyUpdateQuery);
+            $connect->createCommand($sSurveyUpdateQuery)->execute;
         }
     }
 }

@@ -135,6 +135,7 @@ class AdminController extends LSYii_Controller
 			'saved' => 'application.controllers.admin.saved',
 			'dataentry' => 'application.controllers.admin.dataentry',
 			'emailtemplates' => 'application.controllers.admin.emailtemplates',
+			'update' => 'application.controllers.admin.update',
 			'conditions' => 'application.controllers.admin.conditions'
 		);
 	}

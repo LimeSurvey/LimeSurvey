@@ -7808,9 +7808,8 @@ function getgroupuserlist($ugid)
 */
 function modify_database($sqlfile='', $sqlstring='')
 {
-    $CI =& get_instance();
-    $CI->load->helper('database');
-    $clang = $CI->limesurvey_lang;
+    Yii::app()->loadHelper('database');
+    $clang = Yii::app()->lang;
 
     global $siteadminemail;
     global $siteadminname;
@@ -7818,7 +7817,7 @@ function modify_database($sqlfile='', $sqlstring='')
     global $modifyoutput;
 
     //require_once($homedir."/classes/core/sha256.php");
-    $CI->load->library('admin/sha256');
+    Yii::app()->loadLibrary('admin/sha256');
     $success = true;  // Let's be optimistic
     $modifyoutput='';
 
@@ -7848,16 +7847,16 @@ function modify_database($sqlfile='', $sqlstring='')
             if (substr($line, $length-1, 1) == ';') {
                 $line = substr($line, 0, $length-1);   // strip ;
                 $command .= $line;
-                $command = str_replace('prefix_', $CI->db->dbprefix, $command); // Table prefixes
+                $command = str_replace('prefix_', Yii::app()->db->tablePrefix, $command); // Table prefixes
                 $command = str_replace('$defaultuser', Yii::app()->getConfig('defaultuser'), $command);
-                $command = str_replace('$defaultpass', $CI->sha256->hashing(Yii::app()->getConfig('defaultpass')), $command);
+                $command = str_replace('$defaultpass', Yii::app()->sha256->hashing(Yii::app()->getConfig('defaultpass')), $command);
                 $command = str_replace('$siteadminname', $siteadminname, $command);
                 $command = str_replace('$siteadminemail', $siteadminemail, $command);
                 $command = str_replace('$defaultlang', Yii::app()->getConfig('defaultlang'), $command);
                 $command = str_replace('$sessionname', 'ls'.sRandomChars(20,'123456789'), $command);
-                $command = str_replace('$databasetabletype', $CI->db->dbdriver, $command);
+                $command = str_replace('$databasetabletype', Yii::app()->db->getDriverName(), $command);
 
-                if (!$CI->db->query($command)) {  //Checked
+                if (!Yii::app()->db->createCommand($command)->query()) {  //Checked
                     $command=htmlspecialchars($command);
                     $modifyoutput .="<br />".sprintf($clang->gT("SQL command failed: %s"),"<span style='font-size:10px;'>".$command."</span>","<span style='color:#ee0000;font-size:10px;'></span><br/>");
                     $success = false;

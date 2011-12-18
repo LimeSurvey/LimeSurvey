@@ -24,9 +24,9 @@ function CheckForDBUpgrades($subaction = null)
 	$clang = Yii::app()->getController()->lang;
 	$dbversionnumber = Yii::app()->getConfig('dbversionnumber');
     $currentDBVersion=GetGlobalSetting('DBVersion');
-	$dbprefix = Yii::app()->tablePrefix;
-	$usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
-	$standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
+	$dbprefix = Yii::app()->db->tablePrefix;
+	//$usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
+	//$standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
     if (intval($dbversionnumber)>intval($currentDBVersion))
     {
         if(isset($subaction) && $subaction=="continue")
@@ -34,14 +34,14 @@ function CheckForDBUpgrades($subaction = null)
         	require_once(APPPATH.'third_party/adodb/adodb.inc.php');
 			connectadodb();
             echo "<div style='width:90%; padding:1% 10%;background-color:#eee;'>";
-            $upgradedbtype=$CI->db->dbdriver;
+            $upgradedbtype=Yii::app()->db->getDriverName();
             if ($upgradedbtype=='mysqli') $upgradedbtype='mysql';
-            $CI->load->helper('update/upgrade-'.$upgradedbtype);
-            $CI->load->helper('update/upgrade-all');
-            $tables = $connect->getSchema()->getTableNames();
+            Yii::app()->loadHelper('update/upgrade-'.$upgradedbtype);
+            Yii::app()->loadHelper('update/upgrade-all');
+            //$tables = $connect->getSchema()->getTableNames();
             db_upgrade_all(intval($currentDBVersion));
             db_upgrade(intval($currentDBVersion));
-            $CI->db->update('settings_global',array('stg_value' => intval($dbversionnumber)),array('stg_name' => 'DBVersion'));
+            Yii::app()->db->createCommand()->update($dbprefix.'settings_global', array('stg_value' => intval($dbversionnumber)), array('stg_name' => 'DBVersion'));
             echo "<br />".sprintf($clang->gT("Database has been successfully upgraded to version %s"),$dbversionnumber);
 			echo "<br /><a href='".site_url("admin")."'>".$clang->gT("Back to main menu")."</a></div>";
         }
@@ -52,15 +52,14 @@ function CheckForDBUpgrades($subaction = null)
 }
 
 function ShowDBUpgradeNotice() {
-    $error=false;
-	    $CI =& get_instance();
-	$clang = $CI->limesurvey_lang;
-	$sitename = Yii::app()->getConfig('sitename');
+    //$error=false;
+	$clang = Yii::app()->lang;
+	//$sitename = Yii::app()->getConfig('sitename');
 	echo '<div class="messagebox">';
     echo "<div class='header'>".$clang->gT('Database upgrade').'</div><p>';
     echo $clang->gT('Please verify the following information before continuing with the database upgrade:').'<ul>';
-    echo "<li><b>" .$clang->gT('Database type') . ":</b> " . $CI->db->dbdriver . "</li>";
-    echo "<li><b>" .$clang->gT('Database name') . ":</b> " . $CI->db->database . "</li>";
+    echo "<li><b>" .$clang->gT('Database type') . ":</b> " . Yii::app()->db->getDriverName() . "</li>";
+    echo "<li><b>" .$clang->gT('Database name') . ":</b> " . getDBConnectionStringProperty('dbname') . "</li>";
     echo "<li><b>" .$clang->gT('Table prefix') . ":</b> " . Yii::app()->tablePrefix . "</li>";
     echo "<li><b>" .$clang->gT('Site name') . ":</b> " . Yii::app()->getConfig("sitename") . "</li>";
     echo "<li><b>" .$clang->gT('Root URL') . ":</b> " . site_url() . "</li>";
@@ -71,16 +70,27 @@ function ShowDBUpgradeNotice() {
 	echo '</div>';
 }
 
+function getDBConnectionStringProperty($szProperty)
+{
+    // Yii doesn't give us a good way to get the database name
+    preg_match('/'.$szProperty.'=([^;]*)/', Yii::app()->db->getSchema()->getDbConnection()->connectionString, $aMatches);
+    if ( count($aMatches) === 0 ) {
+        return null;
+    }
+    return $aMatches[1];
+}
+
 function connectadodb() {
 	global $connect;
-	$CI =& get_instance();
-	$databasetype = $CI->db->dbdriver;
+	$databasetype = Yii::app()->db->getDriverName();
     if ($databasetype=='postgre') $databasetype='postgres';
-	$databaselocation = (empty ($CI->db->hostname)) ? "localhost" : $CI->db->hostname;
-	$databaseport = (empty ($CI->db->port)) ? "default" : $CI->db->port;
-	$databaseuser = $CI->db->username;
-	$databasepass = $CI->db->password;
-	$databasename = $CI->db->database;
+    $host = getDBConnectionStringProperty('host');
+    $databaselocation = (empty($host)) ? "localhost" : getDBConnectionStringProperty('host');
+    $port = getDBConnectionStringProperty('port');
+    $databaseport = ($port) ? "default" : $port;
+	$databaseuser = Yii::app()->db->username;
+	$databasepass = Yii::app()->db->password;
+	$databasename = getDBConnectionStringProperty('dbname');
 	$connect=ADONewConnection($databasetype);
 	$database_exists = FALSE;
 	switch ($databasetype)

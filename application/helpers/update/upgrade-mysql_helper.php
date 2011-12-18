@@ -21,8 +21,7 @@ function db_upgrade($oldversion) {
     /// This function does anything necessary to upgrade
     /// older versions to match current functionality
     global $modifyoutput, $databasename, $databasetabletype, $connect;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
     if ($oldversion < 111) {
         // Language upgrades from version 110 to 111 since the language names did change
 
@@ -49,8 +48,8 @@ function db_upgrade($oldversion) {
 
 
 
-        $resultdata=db_execute_assoc("select * from ".db_table_name("labelsets"));
-        while ($datarow = $resultdata->FetchRow()){
+        $resultdata=Yii::app()->db->createCommand("select * from {{labelsets}}");
+        foreach ($resultdata->queryAll() as $datarow){
             $toreplace=$datarow['languages'];
             $toreplace=str_replace('german_informal','german-informal',$toreplace);
             $toreplace=str_replace('cns','cn-Hans',$toreplace);
@@ -65,8 +64,8 @@ function db_upgrade($oldversion) {
         }
 
 
-        $resultdata=db_execute_assoc("select * from ".db_table_name("surveys"));
-        while ($datarow = $resultdata->FetchRow()){
+        $resultdata=Yii::app()->db->createCommand("select * from {{surveys}}");
+        foreach ($resultdata->queryAll() as $datarow){
             $toreplace=$datarow['additional_languages'];
             $toreplace=str_replace('german_informal','german-informal',$toreplace);
             $toreplace=str_replace('cns','cn-Hans',$toreplace);
@@ -145,15 +144,15 @@ function db_upgrade($oldversion) {
             modify_database("","update `prefix_users` set `lang`='$newlang' where lang='$oldlang'");echo $modifyoutput;flush();@ob_flush();
         }
 
-        $resultdata=db_execute_assoc("select * from ".db_table_name("labelsets"));
-        while ($datarow = $resultdata->FetchRow()){
+        $resultdata=Yii::app()->db->createCommand("select * from {{labelsets}}");
+        foreach ($resultdata->queryAll() as $datarow){
             $toreplace=$datarow['languages'];
             $toreplace2=str_replace('no','nb',$toreplace);
             if ($toreplace2!=$toreplace) {modify_database("","update  `prefix_labelsets` set `languages`='$toreplace' where lid=".$datarow['lid']);echo $modifyoutput;flush();@ob_flush();}
         }
 
-        $resultdata=db_execute_assoc("select * from ".db_table_name("surveys"));
-        while ($datarow = $resultdata->FetchRow()){
+        $resultdata=Yii::app()->db->createCommand("select * from {{surveys}}");
+        foreach ($resultdata->queryAll() as $datarow){
             $toreplace=$datarow['additional_languages'];
             $toreplace2=str_replace('no','nb',$toreplace);
             if ($toreplace2!=$toreplace) {modify_database("","update `prefix_surveys` set `additional_languages`='$toreplace' where sid=".$datarow['sid']);echo $modifyoutput;flush();@ob_flush();}
@@ -668,11 +667,11 @@ function upgrade_survey_tables117()
 {
     global $modifyoutput;
     $surveyidquery = "SELECT sid FROM ".db_table_name('surveys')." WHERE active='Y' and datestamp='Y'";
-    $surveyidresult = db_execute_num($surveyidquery);
+    $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
     if (!$surveyidresult) {return "Database Error";}
     else
     {
-        while ( $sv = $surveyidresult->FetchRow() )
+        foreach ( $surveyidresult as $sv )
         {
             modify_database("","ALTER TABLE ".db_table_name('survey_'.$sv[0])." ADD `startdate` datetime AFTER `datestamp`"); echo $modifyoutput; flush();@ob_flush();
         }
@@ -683,11 +682,11 @@ function upgrade_survey_tables118()
 {
     global $modifyoutput,$dbprefix;
     $surveyidquery = "SHOW TABLES LIKE '".$dbprefix."tokens%'";
-    $surveyidresult = db_execute_num($surveyidquery);
+    $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
     if (!$surveyidresult) {return "Database Error";}
     else
     {
-        while ( $sv = $surveyidresult->FetchRow() )
+        foreach ( $surveyidresult as $sv )
         {
             modify_database("","ALTER TABLE ".$sv[0]." CHANGE `token` `token` VARCHAR(15)"); echo $modifyoutput; flush();@ob_flush();
         }
@@ -698,11 +697,11 @@ function upgrade_token_tables125()
 {
     global $modifyoutput,$dbprefix;
     $surveyidquery = "SHOW TABLES LIKE '".$dbprefix."tokens%'";
-    $surveyidresult = db_execute_num($surveyidquery);
+    $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
     if (!$surveyidresult) {return "Database Error";}
     else
     {
-        while ( $sv = $surveyidresult->FetchRow() )
+        foreach ( $surveyidresult as $sv )
         {
             modify_database("","ALTER TABLE ".$sv[0]." ADD `emailstatus` varchar(300) NOT NULL DEFAULT 'OK'"); echo $modifyoutput; flush();@ob_flush();
         }
@@ -714,11 +713,11 @@ function upgrade_token_tables128()
 {
     global $modifyoutput,$dbprefix;
     $surveyidquery = "SHOW TABLES LIKE '".$dbprefix."tokens%'";
-    $surveyidresult = db_execute_num($surveyidquery);
+    $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
     if (!$surveyidresult) {return "Database Error";}
     else
     {
-        while ( $sv = $surveyidresult->FetchRow() )
+        foreach ( $surveyidresult as $sv )
         {
             modify_database("","ALTER TABLE ".$sv[0]." ADD `remindersent` VARCHAR(17) DEFAULT 'N'"); echo $modifyoutput; flush();@ob_flush();
             modify_database("","ALTER TABLE ".$sv[0]." ADD `remindercount` INT(11)  DEFAULT 0"); echo $modifyoutput; flush();@ob_flush();
@@ -731,9 +730,10 @@ function upgrade_token_tables128()
 
 function upgrade_survey_tables133()
 {
-    $surveyidquery = "SELECT sid,additional_languages FROM ".db_table_name('surveys');
-    $surveyidresult = db_execute_num($surveyidquery);
-    while ( $sv = $surveyidresult->FetchRow() )
+    global $dbprefix;
+    $surveyidquery = "SELECT sid,additional_languages FROM ".db_quote_id($dbprefix.'surveys');
+    $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
+    foreach ( $surveyidresult as $sv )
     {
         FixLanguageConsistency($sv[0],$sv[1]);
     }
@@ -745,11 +745,11 @@ function upgrade_token_tables134()
 {
     global $modifyoutput,$dbprefix;
     $surveyidquery = "SHOW TABLES LIKE '".$dbprefix."tokens%'";
-    $surveyidresult = db_execute_assoc($surveyidquery);
+    $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
     if (!$surveyidresult) {return "Database Error";}
     else
     {
-        while ( $sv = $surveyidresult->FetchRow() )
+        foreach ( $surveyidresult as $sv )
         {
             modify_database("","ALTER TABLE ".$sv[0]." ADD `validfrom` Datetime"); echo $modifyoutput; flush();@ob_flush();
             modify_database("","ALTER TABLE ".$sv[0]." ADD `validuntil` Datetime"); echo $modifyoutput; flush();@ob_flush();
@@ -762,11 +762,11 @@ function upgrade_token_tables145()
 {
     global $modifyoutput,$dbprefix;
     $surveyidquery = "SHOW TABLES LIKE '".$dbprefix."tokens%'";
-    $surveyidresult = db_execute_assoc($surveyidquery);
+    $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
     if (!$surveyidresult) {return "Database Error";}
     else
     {
-        foreach ( $surveyidresult->result_array() as $sv)
+        foreach ( $surveyidresult as $sv )
         {
             modify_database("","ALTER TABLE ".$sv[0]." ADD `usesleft` int(11) NOT NULL default '1'"); echo $modifyoutput; flush();@ob_flush();
             modify_database("","UPDATE ".$sv[0]." SET `usesleft`='0' WHERE completed<>'N'"); echo $modifyoutput; flush();@ob_flush();
@@ -779,12 +779,12 @@ function fix_mysql_collation()
 {
     global $connect, $modifyoutput, $dbprefix;
     $sql = 'SHOW TABLE STATUS';
-    $result = db_execute_assoc($sql);
-    if (!$result) {
+    $result = Yii::app()->db->createCommand($sql)->queryAll();
+    if (empty($result)) {
         $modifyoutput .= 'SHOW TABLE - SQL Error';
     }
 
-    while ( $tables = $result->FetchRow() ) {
+    foreach ( $result as $tables ) {
         // Loop through all tables in this database
         $table = $tables['Name'];
         $tablecollation=$tables['Collation'];
@@ -797,8 +797,8 @@ function fix_mysql_collation()
             }
 
             # Now loop through all the fields within this table
-            $result2 = db_execute_assoc("SHOW FULL COLUMNS FROM ".$table);
-            while ( $column = $result2->FetchRow())
+            $result2 = Yii::app()->db->createCommand("SHOW FULL COLUMNS FROM ".$table)->queryAll();
+            foreach ( $result2 as $column )
             {
                 if ($column['Collation']!= 'utf8_unicode_ci' )
                 {
@@ -830,11 +830,11 @@ function upgrade_survey_tables139()
 {
     global $modifyoutput,$dbprefix;
     $surveyidquery = db_select_tables_like($dbprefix."survey\_%");
-    $surveyidresult = db_execute_num($surveyidquery);
-    if (!$surveyidresult) {return "Database Error";}
+    $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
+    if (empty($surveyidresult)) {return "Database Error";}
     else
     {
-        while ( $sv = $surveyidresult->FetchRow() )
+        foreach ( $surveyidresult as $sv )
         {
             if (strpos($sv[0],$dbprefix."survey_")!==false)
             {
@@ -848,16 +848,20 @@ function upgrade_question_attributes142()
 {
     global $modifyoutput,$dbprefix, $connect;
     $attributequery="Select qid from {$dbprefix}question_attributes where attribute='exclude_all_other'  group by qid having count(qid)>1 ";
-    $questionids = db_select_column($attributequery);
-    foreach ($questionids as $questionid)
+    $questionids = Yii::app()->db->createCommand($attributequery)->queryRow();
+    if(!is_array($questionids)) { return "Database Error"; }
+    else
     {
-        //Select all affected question attributes
-        $attributevalues=db_select_column("SELECT value from {$dbprefix}question_attributes where attribute='exclude_all_other' and qid=".$questionid);
-        modify_database("","delete from {$dbprefix}question_attributes where attribute='exclude_all_other' and qid=".$questionid); echo $modifyoutput; flush();@ob_flush();
-        $record['value']=implode(';',$attributevalues);
-        $record['attribute']='exclude_all_other';
-        $record['qid']=$questionid;
-        $connect->AutoExecute("{$dbprefix}question_attributes", $record, 'INSERT');
+        foreach ($questionids as $questionid)
+        {
+            //Select all affected question attributes
+            $attributevalues=db_select_column("SELECT value from {$dbprefix}question_attributes where attribute='exclude_all_other' and qid=".$questionid);
+            modify_database("","delete from {$dbprefix}question_attributes where attribute='exclude_all_other' and qid=".$questionid); echo $modifyoutput; flush();@ob_flush();
+            $record['value']=implode(';',$attributevalues);
+            $record['attribute']='exclude_all_other';
+            $record['qid']=$questionid;
+            $connect->AutoExecute("{$dbprefix}question_attributes", $record, 'INSERT');
+        }
     }
 }
 
@@ -868,11 +872,11 @@ function upgrade_tables143()
 
     $aQIDReplacements=array();
     $answerquery = "select a.*, q.sid, q.gid from {$dbprefix}answers a,{$dbprefix}questions q where a.qid=q.qid and q.type in ('L','O','!') and a.default_value='Y'";
-    $answerresult = db_execute_assoc($answerquery);
-    if (!$answerresult) {return "Database Error";}
+    $answerresult = Yii::app()->db->createCommand($answerquery)->queryAll();
+    if (empty($answerresult)) {return "Database Error";}
     else
     {
-        while ( $row = $answerresult->FetchRow() )
+        foreach ( $answerresult as $row )
         {
             modify_database("","INSERT INTO {$dbprefix}defaultvalues (qid, scale_id,language,specialtype,defaultvalue) VALUES ({$row['qid']},0,".db_quoteall($row['language']).",'',".db_quoteall($row['code']).")"); echo $modifyoutput; flush();@ob_flush();
         }
@@ -881,11 +885,11 @@ function upgrade_tables143()
     // Convert answers to subquestions
 
     $answerquery = "select a.*, q.sid, q.gid, q.type from {$dbprefix}answers a,{$dbprefix}questions q where a.qid=q.qid and a.language=q.language and q.type in ('1','A','B','C','E','F','H','K',';',':','M','P','Q')";
-    $answerresult = db_execute_assoc($answerquery);
-    if (!$answerresult) {return "Database Error";}
+    $answerresult = Yii::app()->db->createCommand($answerquery)->queryAll();
+    if (empty($answerresult)) {return "Database Error";}
     else
     {
-        while ( $row = $answerresult->FetchRow() )
+        foreach ( $answerresult as $row )
         {
 
             $insertarray=array();
@@ -924,18 +928,18 @@ function upgrade_tables143()
 
     // Convert labels to answers
     $answerquery = "select qid ,type ,lid ,lid1, language from {$dbprefix}questions where parent_qid=0 and type in ('1','F','H','M','P','W','Z')";
-    $answerresult = db_execute_assoc($answerquery);
-    if (!$answerresult)
+    $answerresult = Yii::app()->db->createCommand($answerquery)->queryAll();
+    if (empty($answerresult))
     {
         return "Database Error";
     }
     else
     {
-        while ( $row = $answerresult->FetchRow() )
+        foreach ( $answerresult as $row )
         {
             $labelquery="Select * from {$dbprefix}labels where lid={$row['lid']} and language=".db_quoteall($row['language']);
-            $labelresult = db_execute_assoc($labelquery);
-            while ( $lrow = $labelresult->FetchRow() )
+            $labelresult = Yii::app()->db->createCommand($labelquery)->queryAll();
+            foreach ( $labelresult as $lrow )
             {
                 modify_database("","INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language, assessment_value) VALUES ({$row['qid']},".db_quoteall($lrow['code']).",".db_quoteall($lrow['title']).",{$lrow['sortorder']},".db_quoteall($lrow['language']).",{$lrow['assessment_value']})"); echo $modifyoutput; flush();@ob_flush();
                 //$labelids[]
@@ -943,8 +947,8 @@ function upgrade_tables143()
             if ($row['type']=='1')
             {
                 $labelquery="Select * from {$dbprefix}labels where lid={$row['lid1']} and language=".db_quoteall($row['language']);
-                $labelresult = db_execute_assoc($labelquery);
-                while ( $lrow = $labelresult->FetchRow() )
+                $labelresult = Yii::app()->db->createCommand($labelquery)->queryAll();
+                foreach ( $labelresult as $lrow )
                 {
                     modify_database("","INSERT INTO {$dbprefix}answers (qid, code, answer, sortorder, language, scale_id, assessment_value) VALUES ({$row['qid']},".db_quoteall($lrow['code']).",".db_quoteall($lrow['title']).",{$lrow['sortorder']},".db_quoteall($lrow['language']).",1,{$lrow['assessment_value']})"); echo $modifyoutput; flush();@ob_flush();
                 }
@@ -954,18 +958,18 @@ function upgrade_tables143()
 
     // Convert labels to subquestions
     $answerquery = "select * from {$dbprefix}questions where parent_qid=0 and type in (';',':')";
-    $answerresult = db_execute_assoc($answerquery);
-    if (!$answerresult)
+    $answerresult = Yii::app()->db->createCommand($answerquery)->queryAll();
+    if (empty($answerresult))
     {
         return "Database Error";
     }
     else
     {
-        while ( $row = $answerresult->FetchRow() )
+        foreach ( $answerresult as $row )
         {
             $labelquery="Select * from {$dbprefix}labels where lid={$row['lid']} and language=".db_quoteall($row['language']);
-            $labelresult = db_execute_assoc($labelquery);
-            while ( $lrow = $labelresult->FetchRow() )
+            $labelresult = Yii::app()->db->createCommand($labelquery)->queryAll();
+            foreach ( $labelresult as $lrow )
             {
                 $insertarray=array();
                 if (isset($aQIDReplacements[$row['qid'].'_'.$lrow['code'].'_1']))
