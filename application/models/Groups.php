@@ -25,8 +25,8 @@ class Groups extends CActiveRecord
 	 */
 	public static function model()
 	{
-		return parent::model(__CLASS__);
-	}
+        return parent::model(__CLASS__);
+    }
 
 	/**
 	 * Returns the setting's table name to be used by the model
@@ -85,6 +85,29 @@ class Groups extends CActiveRecord
 			->order('group_order asc')
 			->bindParam(":language", $language, PDO::PARAM_STR)
 			->query()->readAll();
+    }
+
+    public static function deleteWithDependency($groupId, $surveyId)
+    {
+        $questionIds = Groups::getQuestionIdsInGroup($groupId);
+        Questions::deleteAllById($questionIds);
+        Assessment::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
+        return Groups::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
+    }
+
+    private static function getQuestionIdsInGroup($groupId) {
+        $questions = Yii::app()->db->createCommand()
+                ->select('qid')
+                ->from('{{questions}} q')
+                ->join('{{groups}} g', 'g.gid=q.gid AND g.gid=' . $groupId . ' AND q.parent_qid=0')
+                ->group('qid')->queryAll();
+
+        $questionIds = array();
+        foreach ($questions as $question) {
+            $questionIds[] = $question['qid'];
+        }
+
+        return $questionIds;
     }
 }
 ?>
