@@ -639,6 +639,76 @@ function htmlspecialchars(str) {
  return str;
 }
 
+function saveaslabelset()
+{
+    var lang = langs.split(";");
 
+
+    dataToSend = {};
+    dataToSend['langs'] = lang;
+    dataToSend['codelist'] = [];
+    $(".answertable:first tbody tr").each(function(i,e){
+        code = $(".code",e).attr('id');
+        code = code.split("_");
+        code = code[1];
+
+        dataToSend['codelist'].push(code);
+        var assessment_val = '0';
+        if ($("#assessment_"+code+"_0").length != 0 ){
+            assessment_val = $("#assessment_"+code+"_0").val();
+        }
+        dataToSend[code] =  {
+            code: $("#code_"+code+"_0").val(),
+            assessmentvalue: assessment_val
+        };
+        $(lang).each(function(index,element){
+            dataToSend[code]['text_'+element] = $("#answer_"+element+"_"+code+"_0").val();
+
+        });
+    });
+
+    var label_name = prompt("Enter new label name", "");
+
+    var data = {
+        action: 'ajaxmodlabelsetanswers',
+        lid:'1',
+        dataToSend:js2php(dataToSend),
+        ajax:'1',
+        label_name:label_name,
+        languageids: dataToSend['langs'].join(" "),
+        checksessionbypost: $("[name=checksessionbypost]").val()
+    }
+
+    $.ajax({
+      type: 'POST',
+      url: 'admin.php',
+      data: data,
+      success: function(){
+          alert("Label successfully created");
+      }
+    });
+}
+
+
+function js2php(object){
+    var json = "{";
+    for (property in object){
+        var value = object[property];
+        if (typeof(value)=="string"){
+            json += '"'+property+'":"'+value+'",'
+        }
+        else{
+            if (!value[0]){
+                json += '"'+property + '":'+js2php(value)+',';
+            }
+            else{
+                json += '"' + property + '":[';
+                for (prop in value) json += '"'+value[prop]+'",';
+                json = json.substr(0,json.length-1)+"],";
+            }
+        }
+    }
+    return json.substr(0,json.length-1)+ "}";
+}
 
 
