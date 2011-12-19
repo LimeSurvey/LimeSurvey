@@ -14,7 +14,7 @@
  *
  */
 
-class survey extends LSCI_Controller {
+class surveyaction extends SurveyController {
 
     function __construct()
     {

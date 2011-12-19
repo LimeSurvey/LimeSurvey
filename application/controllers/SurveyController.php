@@ -26,7 +26,7 @@ class SurveyController extends LSYii_Controller
 	{
 		return array(
 			'tcpdf_check' => 'application.controllers.tcpdf_check',
-            'index' => 'application.controllers.survey',
+            'index' => 'application.controllers.surveyaction',
             'optin' => 'application.controllers.optin',
             'optout' => 'application.controllers.optout',
             'printanswers' => 'application.controllers.printanswers',
