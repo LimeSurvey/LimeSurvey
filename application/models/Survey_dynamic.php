@@ -68,12 +68,82 @@ class Survey_dynamic extends CActiveRecord
 		return 'sid';
 	}
 	
-	function insertRecords($data)
+	/**
+	 * Insert records from $data array
+	 * 
+	 * @access public
+	 * @param array $data
+	 * @return boolean
+	 */
+	public function insertRecords($data)
     {
         $record = new self;
 		foreach ($data as $k => $v)
+		{
+			$search = array('`', "'");
+			$k = str_replace($search, '', $k);
+			$v = str_replace($search, '', $v);
 			$record->$k = $v;
+		}
 		return $record->save();
 	}
+	
+	/**
+	 * Queries the database and returns some records or records count
+	 * according to specified conditions
+	 * 
+	 * @static
+	 * @access public
+	 * @param array $condition
+	 * @param mixed $select
+	 * @param boolean $return_count
+	 * @return mixed
+	 */
+	public static function getSomeRecords($condition=FALSE, $select=FALSE, $return_count=FALSE)
+	{
+		$survey = new Survey_dynamic;
+		$criteria = new CDbCriteria;
+		
+		if( $select != FALSE ) $criteria->select = $select;
+		
+		if( $condition != FALSE )
+		{
+			foreach($condition as $column => $value)
+			{
+				$criteria->addCondition($column."=".$value."");
+			}
+		}
+		
+		if( $return_count ) 
+			return $survey->count($criteria);
+		else
+			return $survey->findAll($criteria);
+	}
+	
+	/**
+	 * Deletes some records from survey's table 
+	 * according to specific condition
+	 * 
+	 * @static
+	 * @access public
+	 * @param array $condition
+	 * @return int
+	 */
+	public static function deleteSomeRecords($condition=FALSE)
+	{
+		$survey = new Survey_dynamic;
+		$criteria = new CDbCriteria;
+		
+		if( $condition != FALSE )
+		{
+			foreach ($condition as $column => $value) 
+			{
+				return $criteria->addCondition($column."=`".$value."`");
+			}	
+		}
+		
+		return $survey->deleteAll($criteria);
+	}
+	
 }
 ?>

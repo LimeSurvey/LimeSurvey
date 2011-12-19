@@ -47,20 +47,20 @@ class Saved_control extends CActiveRecord {
 		return $data;
 	}
 
-	function getSomeRecords($fields,$condition=FALSE)
+	public static function getSomeRecords($condition=FALSE)
 	{
-		foreach ($fields as $field)
+		$record = new self;
+		$criteria = new CDbCriteria;
+		
+		if($condition != FALSE)
 		{
-			$this->db->select($field);
-		}
-		if ($condition != FALSE)
-		{
-			$this->db->where($condition);	
+			foreach ($condition as $column=>$value)
+			{
+				$criteria->addCondition("$column='$value'");
+			}
 		}
 		
-		$data = $this->db->get('saved_control');
-		
-		return $data;
+		return $record->findAll($criteria);
 	}
     
     public function getCountOfAll($sid)
