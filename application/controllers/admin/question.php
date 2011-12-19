@@ -39,6 +39,8 @@
 			$this->route('subquestions', array('surveyid', 'gid', 'qid'));
  		elseif ($sa == 'import')
  			$this->route('import', array());
+		elseif ($sa == 'preview')
+ 			$this->route('preview', array('surveyid','qid'));
  	}
 
     /**
@@ -981,11 +983,14 @@
      */
     function preview($surveyid, $qid, $lang = null)
     {
+
     	$surveyid = sanitize_int($surveyid);
 		$qid = sanitize_int($qid);
 
-		$this->load->helper("qanda");
-		$this->load->helper("surveytranslator");
+
+		Yii::app()->loadHelper("qanda");
+
+		Yii::app()->loadHelper("surveytranslator");
 
 		if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 		$surveyid = (int) $surveyid;
@@ -1017,9 +1022,10 @@
 		setNoAnswerMode($thissurvey);
 		$_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
 
-		$qquery = 'SELECT * FROM '.$this->db->dbprefix('questions')." WHERE sid='$surveyid' AND qid='$qid' AND language='".$this->db->escape_str($language)."'";
-		$qresult = db_execute_assoc($qquery);
-		$qrows = $qresult->row_array();
+		$qquery = "SELECT * FROM {{questions}} WHERE sid='$surveyid' AND qid='$qid' AND language='".addslashes($language)."'";
+		$qresult = Yii::app()->db->createCommand($qquery)->query();
+
+		$qrows = $qresult->read();
 		$ia = array(0 => $qid,
 		1 => $surveyid.'X'.$qrows['gid'].'X'.$qid,
 		2 => $qrows['title'],
@@ -1033,7 +1039,7 @@
 
         // This is needed to properly detect and color code EM syntax errors
         LimeExpressionManager::StartProcessingPage();
-        LimeExpressionManager::StartProcessingGroup($qrows['gid'],false,$surveyid,true);  // loads list of replacement values available for this group
+        //LimeExpressionManager::StartProcessingGroup($qrows['gid'],false,$surveyid,true);  // loads list of replacement values available for this group
 
 		$answers = retrieveAnswers($ia);
 
@@ -1115,7 +1121,7 @@
 
         // if want to  include Javascript in question preview, uncomment these.  However, Group level preview is probably adequate
         LimeExpressionManager::FinishProcessingGroup();
-        $content .= LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
+        //$content .= LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
         LimeExpressionManager::FinishProcessingPage();
 
 		echo $content;

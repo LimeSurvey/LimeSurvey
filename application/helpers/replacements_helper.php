@@ -328,8 +328,9 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
 
     if (isset($surveyid)) {
         $_clearall = "<input type='button' name='clearallbtn' value='" . $clang->gT("Exit and Clear Survey") . "' class='clearall' "
-        . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {\nwindow.open('".site_url($surveyid)."?move=clearall&amp;lang=" . $s_lang;
-        if (returnglobal('token'))
+        . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {\nwindow.open('".Yii::app()->createUrl("$surveyid?move=clearall&amp;lang=" . $s_lang);
+
+		if (returnglobal('token'))
         {
             $_clearall .= "&amp;token=" . urlencode(trim(sanitize_token(strip_tags(returnglobal('token')))));
         }
@@ -533,7 +534,8 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
         else
             $tokensid = $registerdata['sid'];
 
-        $_registerform = "<form method='post' action='".site_url('register/index')."'>\n";
+		$_registerform = "<form method='post' action='".Yii::app()->createUrl('register/index')."'>\n";
+
         if (!isset($_REQUEST['lang']))
         {
             $_reglang = GetBaseLanguageFromSurveyID($tokensid);
@@ -572,8 +574,8 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
 
         if ((count($registerdata) > 1 || isset($thissurvey['usecaptcha'])) && function_exists("ImageCreate") && captcha_enabled('registrationscreen', $thissurvey['usecaptcha']))
         {
-            $_registerform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".site_url('/verification/image')."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
-        }
+			$_registerform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->createUrl('/verification/image')."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
+		}
         $_registerform .= "<tr><td></td><td><input id='registercontinue' class='submit' type='submit' value='" . $clang->gT("Continue") . "' />"
         . "</td></tr>\n"
         . "</table>\n";

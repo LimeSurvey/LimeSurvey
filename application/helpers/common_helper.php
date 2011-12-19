@@ -1787,7 +1787,6 @@ function getsidgidqidaidtype($fieldcode)
 {
     // use simple parsing to get {sid}, {gid}
     // and what may be {qid} or {qid}{aid} combination
-    $CI = &get_instance();
     list($fsid, $fgid, $fqid) = explode('X', $fieldcode);
     $fsid=sanitize_int($fsid);
     $fgid=sanitize_int($fgid);
@@ -1818,16 +1817,17 @@ function getsidgidqidaidtype($fieldcode)
         $s_lang = GetBaseLanguageFromSurveyID($fsid);
         $fieldtoselect = array('type');
         $condition = "qid = ".$fqid." AND language='".$s_lang."'";
-        $CI->load->model('questions_model');
-        $result = $CI->questions_model->getSomeRecords($fieldtoselect,$condition);
+
+	    $result = Questions::model()->getSomeRecords($fieldtoselect,$condition);
+       
         //$result = db_execute_assoc($query) or safe_die ("Couldn't get question type - getsidgidqidaidtype() in common.php<br />".$connect->ErrorMsg()); //Checked
-        if ( $result->num_rows() == 0 )
+		if ( count($result) == 0 )
         { // question doesn't exist
             return Array();
         }
         else
         {   // certainly is type M or P
-            foreach ($result->result_array() as $row)
+            foreach ($result->readAll() as $row)
             {
                 $aRef['type']=$row['type'];
             }
@@ -7914,7 +7914,8 @@ function getHeader($meta = false)
 
     $surveyid = Yii::app()->getConfig('sid');
     Yii::app()->loadHelper('surveytranslator');
-    $clang = $CI->limesurvey_lang;
+    //$clang = $CI->limesurvey_lang;
+	$clang=Yii::app()->lang;
 
     if (!empty(Yii::app()->session['s_lang']))
     {

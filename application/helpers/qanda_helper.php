@@ -560,9 +560,10 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
     //globalise required config variables
     global $thissurvey, $gl; //These are set by index.php
 
-    $CI =& get_instance();
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
+//    $CI =& get_instance();
+//    $dbprefix = $CI->db->dbprefix;
+    //$clang = $CI->limesurvey_lang;
+	$clang = Yii::app()->lang;
 
     //DISPLAY
     $display = $ia[7];
@@ -577,10 +578,10 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
 
 
     //GET HELP
-    $hquery="SELECT help FROM {$dbprefix}questions WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."'";
-    $hresult=db_execute_assoc($hquery) or safe_die($connect->ErrorMsg());       //Checked
+	$hquery="SELECT help FROM {{questions}} WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."'";
+	$hresult=Yii::app()->db->createCommand($hquery)->query() or safe_die($connect->ErrorMsg());
     $help="";
-    $hrow=$hresult->row_array(); $help=reset($hrow);
+    $hrow=$hresult->read(); $help=reset($hrow);
 
     //A bit of housekeeping to stop PHP Notices
     $answer = "";
@@ -906,9 +907,7 @@ function mandatory_message($ia)
     //This function checks to see if this question is mandatory and
     //is being re-displayed because it wasn't answered. It returns
     global $notanswered;
-    $CI =& get_instance();
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
+	$clang=Yii::app()->lang;
     $qtitle="";
     if (isset($notanswered) && is_array($notanswered)) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
     {
@@ -968,9 +967,7 @@ function validation_message($ia)
     //This function checks to see if this question requires validation and
     //that validation has not been met.
     global $notvalidated;
-    $CI =& get_instance();
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
+	$clang=Yii::app()->lang;
 
     $qtitle="";
     if (isset($notvalidated) && is_array($notvalidated)) //ADD WARNINGS TO QUESTIONS IF THEY ARE NOT VALID
@@ -998,8 +995,8 @@ function validation_message($ia)
 function file_validation_message($ia)
 {
     global $filenotvalidated;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
+
+    $clang = Yii::app()->lang;
     $qtitle = "";
     if (isset($filenotvalidated) && is_array($filenotvalidated) && $ia[4] == "|")
     {
@@ -1694,10 +1691,9 @@ function do_equation($ia)
 function do_5pointchoice($ia)
 {
     //global $js_header_includes, $css_header_includes;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
-    $imageurl = $CI->config->item("imageurl");
-
+    
+    $clang=Yii::app()->lang;
+    $imageurl = Yii::app()->getConfig("imageurl");
     if ($ia[8] == 'Y')
     {
         $checkconditionFunction = "checkconditions";
@@ -1824,13 +1820,13 @@ function do_5pointchoice($ia)
 function do_date($ia)
 {
     global $thissurvey;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
+
+    $clang=Yii::app()->lang;
 
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
-    $js_admin_includes = $CI->config->item("js_admin_includes");
+    $js_admin_includes = Yii::app()->getConfig("js_admin_includes");
     $js_admin_includes[] = '/scripts/jquery/lime-calendar.js';
-    $CI->config->set_item("js_admin_includes", $js_admin_includes);
+    Yii::app()->setConfig("js_admin_includes", $js_admin_includes);
         
 
 
@@ -2073,13 +2069,13 @@ function do_date($ia)
     {
         if ($clang->langcode !== 'en')
         {
-			$js_admin_includes = $CI->config->item("js_admin_includes");
+			$js_admin_includes = Yii::app()->getConfig("js_admin_includes");
     		$js_admin_includes[] = '/scripts/jquery/locale/jquery.ui.datepicker-'.$clang->langcode.'.js';
-    		$CI->config->set_item("js_admin_includes", $js_admin_includes);
+    		Yii::app()->setConfig("js_admin_includes", $js_admin_includes);
         }
-		$css_admin_includes = $CI->config->item("css_admin_includes");
+		$css_admin_includes = Yii::app()->getConfig("css_admin_includes");
         $css_admin_includes[]= '/scripts/jquery/css/start/jquery-ui.css';
-		$CI->config->set_item("css_admin_includes", $css_admin_includes);
+		Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
 
         // Format the date  for output
         if (trim($_SESSION[$ia[1]])!='')
@@ -2144,9 +2140,8 @@ function do_date($ia)
 function do_language($ia)
 {
     global $surveyid;
-    $CI =& get_instance();
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
+
+    $clang = Yii::app()->lang;
 
     if ($ia[8] == 'Y')
     {
@@ -2188,9 +2183,8 @@ function do_language($ia)
 function do_list_dropdown($ia)
 {
     global $dropdownthreshold;
-    $CI =& get_instance();
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
+
+	$clang=Yii::app()->lang;
 
     if ($ia[8] == 'Y')
     {
@@ -2221,9 +2215,9 @@ function do_list_dropdown($ia)
     $answer='';
 
 
-    $query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
-    $result = db_execute_assoc($query);      //Checked
-    $row = $result->row_array(); $other = $row['other'];
+    $query = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
+    $result = Yii::app()->db->createCommand($query)->query();     //Checked
+    $row = $result->read(); $other = $row['other'];
 
     //question attribute random order set?
     if ($aQuestionAttributes['random_order']==1)
@@ -2238,14 +2232,14 @@ function do_list_dropdown($ia)
     //no question attributes -> order by sortorder
     else
     {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
+        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
     }
 
-    $ansresult = db_execute_assoc($ansquery) or safe_die('Couldn\'t get answers<br />'.$ansquery.'<br />'.$connect->ErrorMsg());    //Checked
+    $ansresult = Yii::app()->db->createCommand($ansquery)->query() or safe_die('Couldn\'t get answers<br />'.$ansquery.'<br />'.$connect->ErrorMsg());    //Checked
 
     if (!isset($optCategorySeparator))
     {
-        foreach ($ansresult->result_array() as $ansrow)
+        foreach ($ansresult->readAll() as $ansrow)
         {
             $opt_select = '';
             if ($_SESSION[$ia[1]] == $ansrow['code'])
@@ -2446,10 +2440,8 @@ function do_list_radio($ia)
 {
     global $dropdownthreshold;
     global $thissurvey;
-    $CI =& get_instance();
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
-
+    $clang=Yii::app()->lang;
+	
     if ($thissurvey['nokeyboard']=='Y')
     {
         vIncludeKeypad();
@@ -2471,9 +2463,9 @@ function do_list_radio($ia)
 
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
 
-    $query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
-    $result = db_execute_assoc($query);  //Checked
-    foreach ($result->result_array() as $row)
+    $query = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
+    $result = Yii::app()->db->createCommand($query)->query();
+    foreach ($result->readAll() as $row)
     {
         $other = $row['other'];
     }
@@ -2742,9 +2734,7 @@ function do_list_radio($ia)
 function do_listwithcomment($ia)
 {
     global $maxoptionsize, $dropdownthreshold, $thissurvey;
-    $CI =& get_instance();
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
+	$clang=Yii::app()->lang;
 
     if ($thissurvey['nokeyboard']=='Y')
     {
@@ -2782,11 +2772,11 @@ function do_listwithcomment($ia)
     //no question attributes -> order by sortorder
     else
     {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
+        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
     }
 
-    $ansresult = db_execute_assoc($ansquery);      //Checked
-    $anscount = $ansresult->num_rows();
+    $ansresult=Yii::app()->db->createCommand($ansquery)->query();
+    $anscount = $ansresult->getRowCount();
 
 
     $hint_comment = $clang->gT('Please enter your comment here');
@@ -2797,7 +2787,7 @@ function do_listwithcomment($ia)
         <ul>
         ';
 
-        foreach ($ansresult->result_array() as $ansrow)
+        foreach ($ansresult->readAll() as $ansrow)
         {
             $check_ans = '';
             if ($_SESSION[$ia[1]] == $ansrow['code'])
@@ -2931,10 +2921,9 @@ function do_ranking($ia)
 	$answer="";
 
 	/* grab our data */
-    $CI =& get_instance();
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
-    $imageurl = $CI->config->item("imageurl");
+
+	$clang=Yii::app()->lang;
+    $imageurl = Yii::app()->getConfig("imageurl");
 
     if ($ia[8] == 'Y')
     {
@@ -2947,12 +2936,12 @@ function do_ranking($ia)
 
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
     if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
     } else {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
+        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
     }
-    $ansresult = db_execute_assoc($ansquery);   //Checked //information about survey
-    $anscount= $ansresult->num_rows(); // number of answer options?
+    $ansresult = Yii::app()->db->createCommand($ansquery)->query();  //Checked //information about survey
+    $anscount= count($ansresult); // number of answer options?
     // determine maximum number of answers to set
     if (trim($aQuestionAttributes["max_answers"])!='') 
     {
@@ -2978,7 +2967,7 @@ function do_ranking($ia)
     $chosen = array();
     
     // create list of answers
-    foreach ($ansresult->result_array() as $ansrow)
+    foreach ($ansresult->readAll() as $ansrow)
     {
         $answers[] = array($ansrow['code'], $ansrow['answer']);
     }
@@ -3171,10 +3160,8 @@ function do_ranking_old($ia)
 {
     global $thissurvey, $showpopups;
 
-    $CI =& get_instance();
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
-    $imageurl = $CI->config->item("imageurl");
+    $clang = Yii::app()->lang;
+    $imageurl = Yii::app()->getConfig("imageurl");
 
     if ($ia[8] == 'Y')
     {
@@ -3427,9 +3414,8 @@ function do_ranking_old($ia)
 function do_multiplechoice($ia)
 {
     global $dbprefix, $thissurvey;
-    $CI =& get_instance();
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
+
+    $clang = Yii::app()->lang;
 
     if ($thissurvey['nokeyboard']=='Y')
     {
@@ -3926,10 +3912,9 @@ function do_multiplechoice($ia)
 function do_multiplechoice_withcomments($ia)
 {
     global $thissurvey;
-    $CI =& get_instance();
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
-
+  
+    $clang = Yii::app()->lang;
+    $inputnames= array();
     if ($thissurvey['nokeyboard']=='Y')
     {
         vIncludeKeypad();
@@ -3941,14 +3926,15 @@ function do_multiplechoice_withcomments($ia)
     }
 
     $attribute_ref=false;
-    $qaquery = "SELECT qid,attribute FROM ".$CI->db->dbprefix('question_attributes')." WHERE value LIKE '".strtolower($ia[2])."'";
-    $qaresult = db_execute_assoc($qaquery);     //Checked
+    $qaquery = "SELECT qid,attribute FROM {{question_attributes}} WHERE value LIKE '".strtolower($ia[2])."'";
+    $qaresult = Yii::app()->db->createCommand($qaquery)->query();     //Checked
+
     $attribute_ref=false;
-    foreach($qaresult->result_array() as $qarow)
+    foreach($qaresult->readAll() as $qarow)
     {
-        $qquery = "SELECT qid FROM ".$CI->db->dbprefix('questions')." WHERE sid=".$thissurvey['sid']." AND qid=".$qarow['qid'];
-        $qresult = db_execute_assoc($qquery);     //Checked
-        if ($qresult->num_rows() > 0)
+        $qquery = "SELECT qid FROM {{questions}} WHERE sid=".$thissurvey['sid']." AND qid=".$qarow['qid'];
+       $qresult = Yii::app()->db->createCommand($qquery)->query(); //Checked
+	   if (count($qresult)> 0)
         {
             $attribute_ref = true;
         }
@@ -4020,16 +4006,16 @@ function do_multiplechoice_withcomments($ia)
         ;
     }
 
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
-    $qresult = db_execute_assoc($qquery);     //Checked
-    $qrow = $qresult->row_array(); $other = $qrow['other'];
+    $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
+    $qresult = Yii::app()->db->createCommand($qquery)->query();     //Checked
+    $qrow = $qresult->read(); $other = $qrow['other'];
     if ($aQuestionAttributes['random_order']==1) {
         $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     } else {
         $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     }
-    $ansresult = db_execute_assoc($ansquery);  //Checked
-    $anscount = $ansresult->num_rows()*2;
+    $ansresult = Yii::app()->db->createCommand($ansquery)->query();  //Checked
+    $anscount = count($ansresult)*2;
 
     $answer = "<input type='hidden' name='MULTI$ia[1]' value='$anscount' />\n";
     $answer_main = '';
@@ -4044,7 +4030,7 @@ function do_multiplechoice_withcomments($ia)
         $label_width = 0;
     }
 
-    foreach ($ansresult->result_array() as $ansrow)
+    foreach ($ansresult->readAll() as $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
         $trbc='';
@@ -4240,8 +4226,8 @@ function do_multiplechoice_withcomments($ia)
 function do_file_upload($ia)
 {
     global $js_header_includes, $thissurvey, $surveyid;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
+   
+    $clang = Yii::app()->lang;
 
     if ($ia[8] == 'Y')
         $checkconditionFunction = "checkconditions";
@@ -4315,19 +4301,19 @@ function do_file_upload($ia)
     {
         $_SESSION['preview'] = 1 ;
         $questgrppreview = 1;   // Preview is launched from Question or group level
-        $scriptloc = site_url('uploader/');
+        $scriptloc = Yii::app()->createUrl('uploader/');
     }
     else if ($thissurvey['active'] != "Y")
         {
             $_SESSION['preview'] = 1;
             $questgrppreview = 0;
-            $scriptloc = site_url('uploader/');
+            $scriptloc = Yii::app()->createUrl('uploader/');
         }
         else
         {
             $_SESSION['preview'] = 0;
             $questgrppreview = 0;
-            $scriptloc = site_url('uploader/');
+            $scriptloc = Yii::app()->createUrl('uploader/');
     }
 
     $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' href='{$scriptloc}/sid/{$surveyid}/fieldname/{$ia[1]}/qid/{$ia[0]}/preview/"
@@ -4339,7 +4325,7 @@ function do_file_upload($ia)
     returnTxt: '" . $clang->gT('Return to survey') . "'
     };
     </script>\n";
-    $answer .= "<script type='text/javascript' src='".base_url()."/scripts/modaldialog.js'></script>";
+    $answer .= "<script type='text/javascript' src='".Yii::app()->baseUrl."/scripts/modaldialog.js'></script>";
 
     // Modal dialog
     $answer .= $uploadbutton;
@@ -4428,9 +4414,8 @@ function do_file_upload($ia)
 function do_multipleshorttext($ia)
 {
     global $thissurvey;
-    $CI =& get_instance();
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
+ 
+    $clang = Yii::app()->lang;
 
     if ($ia[8] == 'Y')
     {
@@ -4607,9 +4592,8 @@ function do_multipleshorttext($ia)
 function do_multiplenumeric($ia)
 {
     global $js_header_includes, $css_header_includes, $thissurvey;
-    $CI =& get_instance();
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
+ 
+    $clang = Yii::app()->lang;
 
     if ($ia[8] == 'Y')
     {
@@ -5118,8 +5102,8 @@ function do_multiplenumeric($ia)
 function do_numerical($ia)
 {
     global $thissurvey;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
+   
+    $clang = Yii::app()->lang;
 
     if ($ia[8] == 'Y')
     {
@@ -5212,9 +5196,9 @@ function do_numerical($ia)
 function do_shortfreetext($ia)
 {
     global $js_header_includes, $thissurvey,$googleMapsAPIKey;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
-    $googleMapsAPIKey = $CI->config->item("googleMapsAPIKey");
+    
+    $clang = Yii::app()->lang;
+    $googleMapsAPIKey = Yii::app()->getConfig("googleMapsAPIKey");
 
     if ($ia[8] == 'Y')
     {
@@ -5402,7 +5386,7 @@ function do_shortfreetext($ia)
 
 function getLatLongFromIp($ip){
     $CI =& get_instance();
-    $ipInfoDbAPIKey = $CI->config->item("ipInfoDbAPIKey");
+    $ipInfoDbAPIKey = Yii::app()->getConfig("ipInfoDbAPIKey");
 
     $xml = simplexml_load_file("http://api.ipinfodb.com/v2/ip_query.php?key=$ipInfoDbAPIKey&ip=$ip&timezone=false");
     if ($xml->{'Status'} == "OK"){
@@ -5422,9 +5406,8 @@ function getLatLongFromIp($ip){
 function do_longfreetext($ia)
 {
     global $js_header_includes, $thissurvey;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
-
+	$clang=Yii::app()->lang;
+	
     if ($thissurvey['nokeyboard']=='Y')
     {
         vIncludeKeypad();
@@ -5505,8 +5488,7 @@ function do_longfreetext($ia)
 function do_hugefreetext($ia)
 {
     global $js_header_includes, $thissurvey;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
+    $clang =Yii::app()->lang;
 
     if ($thissurvey['nokeyboard']=='Y')
     {
@@ -5585,8 +5567,7 @@ function do_hugefreetext($ia)
 // TMSW Conditions->Relevance:  don't need $checkconditionFunction
 function do_yesno($ia)
 {
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
 
     if ($ia[8] == 'Y')
     {
@@ -5641,8 +5622,7 @@ function do_yesno($ia)
 // TMSW Conditions->Relevance:  don't need $checkconditionFunction
 function do_gender($ia)
 {
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
 
     if ($ia[8] == 'Y')
     {
@@ -5719,9 +5699,8 @@ function do_gender($ia)
 function do_array_5point($ia)
 {
     global $notanswered, $thissurvey;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
-    $dbprefix = $CI->db->dbprefix;
+    
+    $clang = Yii::app()->lang;
 
     if ($ia[8] == 'Y')
     {
@@ -5890,9 +5869,9 @@ function do_array_5point($ia)
 function do_array_10point($ia)
 {
     global $notanswered, $thissurvey;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
-    $dbprefix = $CI->db->dbprefix;
+   
+    $clang = Yii::app()->lang;
+
 
     if ($ia[8] == 'Y')
     {
@@ -6030,9 +6009,8 @@ function do_array_10point($ia)
 function do_array_yesnouncertain($ia)
 {
     global $notanswered, $thissurvey;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
-    $dbprefix = $CI->db->dbprefix;
+   
+    $clang = Yii::app()->lang;
 
     if ($ia[8] == 'Y')
     {
@@ -6190,9 +6168,9 @@ function do_array_increasesamedecrease($ia)
 {
     global $thissurvey;
     global $notanswered;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
-    $dbprefix = $CI->db->dbprefix;
+    
+    $clang = Yii::app()->lang;
+ 
 
     if ($ia[8] == 'Y')
     {
@@ -6365,9 +6343,9 @@ function do_array($ia)
     global $repeatheadings;
     global $notanswered;
     global $minrepeatheadings;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
-    $dbprefix = $CI->db->dbprefix;
+    
+    $clang = Yii::app()->lang;
+
 
     if (isset($ia[8]) && $ia[8] == 'Y')
     {
@@ -6752,9 +6730,9 @@ function do_array_multitext($ia)
     global $repeatheadings;
     global $notanswered;
     global $minrepeatheadings;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
-    $dbprefix = $CI->db->dbprefix;
+    
+    $clang = Yii::app()->lang;
+
 
     if ($thissurvey['nokeyboard']=='Y')
     {
@@ -6777,9 +6755,10 @@ function do_array_multitext($ia)
 
     //echo "<pre>"; print_r($_POST); echo "</pre>";
     $defaultvaluescript = "";
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
-    $qresult = db_execute_assoc($qquery);
-    $qrow = $qresult->row_array(); $other = $qrow['other'];
+    $qquery = "SELECT other FROM {{questions}} WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
+
+    $qresult = Yii::app()->db->createCommand($qquery)->query();
+    $qrow = $qresult->read(); $other = $qrow['other'];
 
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
 
@@ -6904,11 +6883,11 @@ function do_array_multitext($ia)
     }
     $columnswidth=100-($answerwidth*2);
 
-    $lquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY question_order";
-    $lresult = db_execute_assoc($lquery);
-    if ($lresult->num_rows() > 0)
+    $lquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY question_order";
+    $lresult = Yii::app()->db->createCommand($lquery)->query();
+    if (count($lresult)> 0)
     {
-        foreach($lresult->result_array() as $lrow)
+        foreach($lresult->readAll() as $lrow)
         {
             $labelans[]=$lrow['question'];
             $labelcode[]=$lrow['title'];
@@ -7100,9 +7079,8 @@ function do_array_multiflexi($ia)
     global $repeatheadings;
     global $notanswered;
     global $minrepeatheadings;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
-    $dbprefix = $CI->db->dbprefix;
+    
+    $clang = Yii::app()->lang;
 
     if ($ia[8] == 'Y')
     {
@@ -7456,9 +7434,7 @@ function do_array_multiflexi($ia)
 function do_arraycolumns($ia)
 {
     global $notanswered;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
-    $dbprefix = $CI->db->dbprefix;
+    $clang = Yii::app()->lang;
 
     if ($ia[8] == 'Y')
     {
@@ -7619,9 +7595,8 @@ function do_array_dual($ia)
     global $repeatheadings;
     global $notanswered;
     global $minrepeatheadings;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
-    $dbprefix = $CI->db->dbprefix;
+
+    $clang = Yii::app()->lang;
 
     if ($ia[8] == 'Y')
     {
