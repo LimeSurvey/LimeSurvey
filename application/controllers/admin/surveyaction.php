@@ -79,6 +79,8 @@ class SurveyAction extends Survey_Common_Action {
 			$this->route('editsurveysettings', array('surveyid'));
 		elseif ($sa == 'getUrlParamsJSON')
 			$this->route('getUrlParamsJSON', array('surveyid'));
+		elseif ($sa == 'expire')
+			$this->route('expire', array('surveyid'));
    		return;
 
 		/* @todo Implement this */
@@ -1514,19 +1516,19 @@ class SurveyAction extends Survey_Common_Action {
         $dateformatdetails=getDateFormatData(Yii::app()->session['dateformat']);
         $startdate='';
         if ($esrow['startdate']) {
-            $items = array($esrow["startdate"] ,$dateformatdetails['phpdate']);
+            $items = array($esrow["startdate"] ,"Y-m-d H:i:s"); // $dateformatdetails['phpdate']
             $this->yii->loadLibrary('Date_Time_Converter');
             $datetimeobj = new date_time_converter($items) ; //new Date_Time_Converter($esrow['startdate'] , "Y-m-d H:i:s");
-            $startdate=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
+            $startdate=$datetimeobj->convert("d.m.Y H:i");//$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
         }
 
         $expires='';
         if ($esrow['expires']) {
-            $items = array($esrow['expires'] ,$dateformatdetails['phpdate']);
+            $items = array($esrow['expires'] ,"Y-m-d H:i:s");
 			
             $this->yii->loadLibrary('Date_Time_Converter');
             $datetimeobj = new date_time_converter($items) ; //new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
-            $expires=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
+            $expires=$datetimeobj->convert("d.m.Y H:i");
         }
         $data['clang'] = $clang;
         $data['esrow'] = $esrow;
@@ -1636,14 +1638,13 @@ class SurveyAction extends Survey_Common_Action {
             die();
         }
         $clang = $this->getController()->lang;
-        $this->session->set_userdata('flashmessage',$clang->gT("The survey was successfully expired by setting an expiration date in the survey settings."));
-        _expireSurvey($iSurveyID);
-        $this->load->model('surveys_model');
+        Yii::app()->session['flashmessage'] = $clang->gT("The survey was successfully expired by setting an expiration date in the survey settings.");
+        $this->_expireSurvey($iSurveyID);
         $dExpirationdate=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
         $dExpirationdate=date_shift($dExpirationdate, "Y-m-d H:i:s", '-1 day');
-        $this->surveys_model->updateSurvey(array('expires'=>$dExpirationdate),
-        array('sid'=>$iSurveyID));
-        redirect('admin/survey/view/'.$iSurveyID);
+        Survey::model()->updateSurvey(array('expires'=>$dExpirationdate),
+        'sid= \''.$iSurveyID.'\'');
+        $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$iSurveyID));
 
     }
 
@@ -1655,10 +1656,9 @@ class SurveyAction extends Survey_Common_Action {
     */
     function _expireSurvey($iSurveyID)
     {
-        $this->load->model('surveys_model');
         $dExpirationdate=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
         $dExpirationdate=date_shift($dExpirationdate, "Y-m-d H:i:s", '-1 day');
-        return $this->surveys_model->updateSurvey(array('expires'=>$dExpirationdate), array('sid'=>$iSurveyID));
+        return Survey::model()->updateSurvey(array('expires'=>$dExpirationdate), 'sid=\''.$iSurveyID.'\'');
     }
 
 
