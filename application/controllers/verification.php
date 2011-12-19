@@ -14,16 +14,23 @@
  *
  */
 
-class verification extends CI_Controller {
-
-    function __construct()
-    {
-        parent::__construct();
+class verification extends CController
+{
+/**
+* the Verification class, this is grouped with
+* other classes in the "limesurvey_yii" package and * is part of "controllers" subpackage
+* @package limesurvey_yii
+* @subpackage controllers
+*/
+	public function run()
+	{
+		Yii::app()->loadHelper('database');
+		if (isset($_GET['image']))
+			$this->image();
     }
-
     function image()
     {
-        $rootdir=$this->config->item('rootdir');
+        $rootdir = Yii::app()->getConfig('rootdir');
 
         // header for png
         Header("Content-Type: image/png");
