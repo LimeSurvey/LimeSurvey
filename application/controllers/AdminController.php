@@ -49,6 +49,29 @@ class AdminController extends LSYii_Controller
 		if (!Yii::app()->getConfig("editedaction")) {Yii::app()->setConfig("editedaction", returnglobal('editedaction'));} // for html editor integration
 	}
 
+    /**
+     * Shows a nice error message to the world
+     *
+     * @access public
+     * @param string $message The error message
+     * @return void
+     */
+    public function error($message)
+    {
+        $clang = $this->lang;
+
+        $this->_getAdminHeader();
+        $output = '<div class="warningheader">'.$clang->gT('Error').'</div><br />'."\n";
+        $output .= $message . '<br /><br />'."\n";
+        $output .= '<input type="submit" value="'.$clang->gT('Main Admin Screen').'" onclick="window.open("'.Yii::app()->baseUrl.'", "_top")" /><br /><br />'."\n";
+        $output .= '</div>'."\n";
+
+        echo $output;
+
+        $this->_getAdminFooter('http://docs.limesurvey.org', $clang->gT('LimeSurvey online manual'));
+
+        die;
+    }
 	/**
 	 * Load and set session vars
 	 *
