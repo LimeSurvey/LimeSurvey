@@ -16,4 +16,24 @@
 
 class SurveyController extends LSYii_Controller
 {
+	/**
+	 * Routes all the actions to their respective places
+	 *
+	 * @access public
+	 * @return array
+	 */
+	public function actions()
+	{
+		return array(
+			'tcpdf_check' => 'application.controllers.tcpdf_check',
+            'index' => 'application.controllers.survey',
+            'optin' => 'application.controllers.optin',
+            'optout' => 'application.controllers.optout',
+            'printanswers' => 'application.controllers.printanswers',
+            'register' => 'application.controllers.register',
+            'statistics_user' => 'application.controllers.statistics_user',
+            'uploader' => 'application.controllers.uploader',
+            'verification' => 'application.controllers.verification',
+		);
+	}
 }
