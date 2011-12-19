@@ -159,7 +159,7 @@
             <ul>
                 <?php
                     foreach ($groups as $group) {?>
-                    <li>QID:<?php echo $group['gid'];?> <?php $clang->eT("Reason:");?> <?php echo $group['reason'];?></li><?php
+                    <li>GID:<?php echo $group['gid'];?> <?php $clang->eT("Reason:");?> <?php echo $group['reason'];?></li><?php
                 }?>
             </ul>
             <?php
@@ -254,7 +254,7 @@
                     <?php
                 } ?>
             </ul><p>
-                <input type='hidden' name='ok' value='R' />
+                <input type='hidden' name='ok' value='Y' />
                 <input type='submit' value='<?php $clang->eT("Delete checked items!"); ?>' /> <br />
                 <span style='color: red; font-size:0.8em;'><?php $clang->eT("Note that you cannot undo a delete if you proceed. The data will be gone."); ?></span></p>
         </form><?php
