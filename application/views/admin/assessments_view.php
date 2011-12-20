@@ -58,7 +58,7 @@ else {echo "<tr class='evenrow'>\n";} ?>
 	<td>-</td>
 <?php } else { ?>
 	<td><?php echo $clang->gT("Question group");?></td>
-	<td><?php echo $groups[$assess['gid']]['group_name']." (".$assess['gid'].")";?></td>
+	<td><?php echo $groups[$assess['gid']]." (".$assess['gid'].")";?></td>
 <?php } ?>
 
 
@@ -82,14 +82,19 @@ else {echo "<tr class='evenrow'>\n";} ?>
     if (isset($editdata) && $editdata['scope'] == "G") {echo " checked='checked' ";} ?>/>
     <label for='radiogroup'><?php echo $clang->gT("Group");?></label></li>
     <li><label for='gid'><?php echo $clang->gT("Question group");?></label>
-    <?php echo $groupselect?></li>
+        <select name='gid' id='gid'>
+            <?php
+            foreach ($groups as $groupId => $groupName) {
+                echo '<option value="' . $groupId . '"'.($editId == $groupId ? ' selected' : '').'>' . $groupName . '</option>';
+            }
+            ?>
+        </select></li>
     <li><label for='minimum'><?php echo $clang->gT("Minimum");?></label><input type='text' id='minimum' name='minimum' class='numbersonly'<?php
     if (isset($editdata)) {echo " value='{$editdata['minimum']}' ";} ?>/></li>
     <li><label for='maximum'><?php echo $clang->gT("Maximum");?></label><input type='text' id='maximum' name='maximum' class='numbersonly'<?php
     if (isset($editdata)) {echo " value='{$editdata['maximum']}' ";} ?>/></li>
 
-    <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-	</table><div id="languagetabs">
+	</ul><div id="languagetabs">
     <ul>
     <?php foreach ($assessmentlangs as $assessmentlang)
     {
@@ -121,11 +126,11 @@ else {echo "<tr class='evenrow'>\n";} ?>
     <?php } ?>
     </div>
 
-    <p><input type='submit' value='<?php echo $clang->gT("Save");?>' />
+    <div><input type='submit' value='<?php echo $clang->gT("Save");?>' />
     <?php if ($action == "assessmentedit") echo "&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' value='".$clang->gT("Cancel")."' onclick=\"document.assessmentsform.action.value='assessments'\" />\n ";?>
     <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
     <input type='hidden' name='action' value='<?php echo $actionvalue;?>' />
-    <input type='hidden' name='id' value='<?php echo $thisid;?>' />
+    <input type='hidden' name='id' value='<?php echo $editId;?>' />
     </div>
     </form>
     <?php foreach ($assessmentlangs as $assessmentlang) {

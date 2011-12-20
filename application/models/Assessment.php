@@ -50,12 +50,25 @@ class Assessment extends CActiveRecord
 		return array('id', 'language');
 	}
 	
-	function insertRecords($data)
+	public static function insertRecords($data)
     {
-        $assessments = new self;
+        $assessment = new self;
+
 		foreach ($data as $k => $v)
-			$assessments->$k = $v;
-		$assessments->save();
-}
+			$assessment->$k = $v;
+		$assessment->save();
+
+        return $assessment;
+    }
+
+    public static function updateAssessment($id, $language, array $data)
+    {
+        $assessment = self::model()->findByAttributes(array('id' => $id, 'language' => $language));
+        if (!is_null($assessment)) {
+            foreach ($data as $k => $v)
+                $assessment->$k = $v;
+            $assessment->save();
+        }
+    }
 }
 ?>
