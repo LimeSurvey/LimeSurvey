@@ -456,6 +456,21 @@ if (!empty($Row['surveyls_welcometext']))
 	$questionnaire->append_child($questionnaireInfo);
 }
 
+if (!empty($Row['surveyls_endtext']))
+{
+	$questionnaireInfo = $dom->create_element("questionnaireInfo");
+	$position = $dom->create_element("position");
+	$text = $dom->create_element("text");
+	$administration = $dom->create_element("administration");
+	$position->set_content("after");
+	$text->set_content(cleanup($Row['surveyls_endtext']));
+	$administration->set_content("self");
+	$questionnaireInfo->append_child($position);
+	$questionnaireInfo->append_child($text);
+	$questionnaireInfo->append_child($administration);
+	$questionnaire->append_child($questionnaireInfo);
+}
+
 //section == group
 
 
@@ -629,19 +644,19 @@ while ($Row = $QueryResult->FetchRow())
 			$question->append_child($response);
 			break;
 			case "N": //NUMERICAL QUESTION TYPE
-				$response->append_child(create_free("integer",get_length($qid,"maximum_chars","10"),""));
+				$response->append_child(create_free("integer",get_length($qid,"maximum_chars","10"),get_length($qid,"prefix","")));
 			$question->append_child($response);
 			break;
 			case "S": //SHORT FREE TEXT
-				$response->append_child(create_free("text",get_length($qid,"maximum_chars","240"),""));
+				$response->append_child(create_free("text",get_length($qid,"maximum_chars","240"),get_length($qid,"prefix","")));
 			$question->append_child($response);
 			break;
 			case "T": //LONG FREE TEXT
-				$response->append_child(create_free("longtext",get_length($qid,"display_rows","40"),""));
+				$response->append_child(create_free("longtext",get_length($qid,"display_rows","40"),get_length($qid,"prefix","")));
 			$question->append_child($response);
 			break;
 			case "U": //HUGE FREE TEXT
-				$response->append_child(create_free("longtext",get_length($qid,"display_rows","80"),""));
+				$response->append_child(create_free("longtext",get_length($qid,"display_rows","80"),get_length($qid,"prefix","")));
 			$question->append_child($response);
 			break;
 			case "Y": //YES/NO radio-buttons
