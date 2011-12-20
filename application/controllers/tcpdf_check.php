@@ -1,38 +1,38 @@
 <?php if ( ! defined('BASEPATH')) die('No direct script access allowed');
 
-class Tcpdf_check extends CI_Controller {
+class Tcpdf_check extends CAction {
 
-    function __construct()
-    {
-        parent::__construct();
+    public function run()
+	{
+        $this->index();
     }
-
+    
     function index()
     {
-        $this->load->library('admin/pdf');
-        require ($this->config->item('homedir').'application/config/tcpdf_config_ci.php');
-        $this->_config = $tcpdf;
-        $this->pdf->SetHeaderData(
-			$this->_config['header_logo'],
-			$this->_config['header_logo_width'],
-			$this->_config['header_title'],
-			$this->_config['header_string']
+        require_once(APPPATH.'/third_party/tcpdf/tcpdf.php');
+        Yii::app()->getConfig("tcpdf");
+        $pdf = new TCPDF();
+        $pdf->SetHeaderData(
+			Yii::app()->getConfig('header_logo'),
+			Yii::app()->getConfig('header_logo_width'),
+			Yii::app()->getConfig('header_title'),
+			Yii::app()->getConfig('header_string')
 		);
 
         // set document information
-        $this->pdf->SetSubject('TCPDF Tutorial');
-        $this->pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+        $pdf->SetSubject('TCPDF Tutorial');
+        $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
         // set font
-        $this->pdf->SetFont('times', 'BI', 16);
+        $pdf->SetFont('times', 'BI', 16);
 
         // add a page
-        $this->pdf->AddPage();
+        $pdf->AddPage();
 
         // print a line using Cell()
-        $this->pdf->Cell(0, 12, 'Example 001 - Watsup dude', 1, 1, 'C');
+        $pdf->Cell(0, 12, 'Example 001 - Watsup dude', 1, 1, 'C');
 
         //Close and output PDF document
-        $this->pdf->Output('example_001.pdf', 'I');
+        $pdf->Output('example_001.pdf', 'I');
     }
 }

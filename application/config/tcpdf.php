@@ -250,5 +250,5 @@
 	$tcpdf['cell_height_ratio'] = 1.25;
 	$tcpdf['cell_padding'] = 0;
 
-
+    return $tcpdf;
 
