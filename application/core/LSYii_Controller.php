@@ -27,7 +27,7 @@ abstract class LSYii_Controller extends CController
 	public function __construct($id, $module = null)
 	{
 		parent::__construct($id, $module);
-		$this->_checkinstallation();
+		$this->_checkInstallation();
 
 		//require_once(APPPATH . '/libraries/LS/LS' . EXT);
 		$this->loadLibrary('LS.LS');
@@ -47,14 +47,12 @@ abstract class LSYii_Controller extends CController
 	 * @access protected
 	 * @return void
 	 */
-	protected function _checkinstallation()
+	protected function _checkInstallation()
 	{
 		$file_name = Yii::app()->getConfig('rootdir').'/tmp/sample_installer_file.txt';
 		if (file_exists($file_name))
         {
-			$message = '<p>Use <a href="'.  $this->createUrl('/installer') . '">the LimeSurvey Web Installer</a> to set-up LimeSurvey.<p>'
-			    ."<p>If you are already done with installation, please delete the file lock file (<tt>{$file_name}</tt>).";
-			throw new CHttpException($message);
+			$this->redirect($this->createUrl('/installer'));
         }
 	}
 
