@@ -15,26 +15,65 @@
     </ul>
     <form class='form30' id='frmglobalsettings' name='frmglobalsettings' action='<?php echo $this->createUrl("admin/globalsettings");?>' method='post'>
         <div id='overview'>
-            <?php echo $checksettings;?>
+                <div class='header ui-widget-header'><?php echo $clang->gT("System overview"); ?></div>
+                <br /><table class='statisticssummary'>
+                <tr>
+                <th align='right'><?php echo $clang->gT("Users"); ?>:</th><td>$usercount</td>
+                </tr>
+                <tr>
+                <th align='right'><?php echo $clang->gT("Surveys"); ?>:</th><td>$surveycount</td>
+                </tr>
+                <tr>
+                <th align='right'><?php echo $clang->gT("Active surveys"); ?>:</th><td>$activesurveycount</td>
+                </tr>
+                <tr>
+                <th align='right'><?php echo $clang->gT("Deactivated result tables"); ?>:</th><td>$deactivatedsurveys</td>
+                </tr>
+                <tr>
+                <th align='right'><?php echo $clang->gT("Active token tables"); ?>:</th><td>$activetokens</td>
+                </tr>
+                <tr>
+                <th align='right'><?php echo $clang->gT("Deactivated token tables"); ?>:</th><td>$deactivatedtokens</td>
+                </tr>
+            <?php
+                if (Yii::app()->getConfig('iFileUploadTotalSpaceMB')>0)
+                {
+                    $fUsed=fCalculateTotalFileUploadUsage();
+            ?>
+                    <tr>
+                    <th align='right'><?php echo $clang->gT("Used/free space for file uploads"); ?>:</th><td><?php echo sprintf('%01.2F',$fUsed); ?> MB / <?php echo sprintf('%01.2F',Yii::app()->getConfig('iFileUploadTotalSpaceMB')-$fUsed); ?> MB</td>
+                    </tr>
+            <?php
+                }
+            ?>
+                </table>
+            <?php
+                if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1)
+                {
+            ?>
+                    <p><input type="button" onclick="window.open('<?php echo $this->getController()->createUrl("admin/globalsettings/showphpinfo"); ?>')" value="<?php echo $clang->gT("Show PHPInfo"); ?>" />;
+            <?php
+                }
+            ?>
 
-            <br /></p><div class='header ui-widget-header'><?php $clang->eT("Updates");?></div><ul>
-                <li><label for='updatecheckperiod'><?php $clang->eT("Check for updates:");?></label>
+            <br /></p><div class='header ui-widget-header'><?php echo $clang->eT("Updates");?></div><ul>
+                <li><label for='updatecheckperiod'><?php echo $clang->eT("Check for updates:");?></label>
                     <select name='updatecheckperiod' id='updatecheckperiod'>
                         <option value='0'
                             <?php if ($thisupdatecheckperiod==0) { echo "selected='selected'";} ?>
-                            ><?php $clang->eT("Never");?></option>
+                            ><?php echo$clang->eT("Never");?></option>
                         <option value='1'
                             <?php if ($thisupdatecheckperiod==1) { echo "selected='selected'";} ?>
-                            ><?php $clang->eT("Every day");?></option>
+                            ><?php echo$clang->eT("Every day");?></option>
                         <option value='7'
                             <?php if ($thisupdatecheckperiod==7) { echo "selected='selected'";} ?>
-                            ><?php $clang->eT("Every week");?></option>
+                            ><?php echo$clang->eT("Every week");?></option>
                         <option value='14'
                             <?php if ($thisupdatecheckperiod==14) { echo "selected='selected'";} ?>
-                            ><?php $clang->eT("Every 2 weeks");?></option>
+                            ><?php echo$clang->eT("Every 2 weeks");?></option>
                         <option value='30'
                             <?php if ($thisupdatecheckperiod==30) { echo "selected='selected'";} ?>
-                            ><?php $clang->eT("Every month");?></option>
+                            ><?php echo$clang->eT("Every month");?></option>
                     </select>&nbsp;<input type='button' onclick="window.open('<?php echo $this->createUrl("admin/globalsettings/updatecheck");?>', '_top')" value='<?php echo $clang->gT("Check now");?>' />&nbsp;<span id='lastupdatecheck'><?php echo sprintf($clang->gT("Last check: %s"),$updatelastcheck);?></span></li></ul><p>
 
                 <?php
