@@ -38,6 +38,18 @@ class User_groups extends CActiveRecord {
 		return 'ugid';
 	}
 	
+	/**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+            'Users' => array(self::HAS_MANY, 'User','uid')
+        );
+    }
+	
 	function getAllRecords($condition=FALSE)
 	{
 		$this->connection = Yii::app()->db;

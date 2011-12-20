@@ -263,4 +263,16 @@ class User extends CActiveRecord
 
         return $this->db->insert('users',$data);
     }
+
+    /**
+    * Returns User ID common in Survey_Permissions and User_in_groups
+    *
+    * @access public
+    * @return CDbDataReader Object
+    */
+    public function getCommonUID()
+    {
+        $query2 = "SELECT b.uid FROM (SELECT uid FROM {{survey_permissions}} WHERE sid = {$surveyid}) AS c RIGHT JOIN {{user_in_groups}} AS b ON b.uid = c.uid WHERE c.uid IS NULL AND b.ugid = {$postusergroupid}";
+        return Yii::app()->db->createCommand($query2)->query(); //Checked
+    }
 }

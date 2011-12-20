@@ -207,6 +207,15 @@ class Survey_permissions extends CActiveRecord
         $permission = new self;
 		foreach ($data as $k => $v)
 			$permission->$k = $v;
-		$permission->save();
+		return $permission->save();
+    }
+
+    function getUserDetails($surveyid)
+    {
+        $query2 = "SELECT p.sid, p.uid, u.users_name, u.full_name FROM {{survey_permissions}} AS p INNER JOIN {{users}}  AS u ON p.uid = u.uid
+            WHERE p.sid = {$surveyid} AND u.uid != ".Yii::app()->session['loginID'] ."
+            GROUP BY p.sid, p.uid, u.users_name, u.full_name
+            ORDER BY u.users_name";
+        return Yii::app()->db->createCommand($query2)->query(); //Checked
     }
 }
