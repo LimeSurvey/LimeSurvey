@@ -4,16 +4,16 @@
     var editorwindowsHash = new Object();
     function find_popup_editor(fieldname)
     {
-    var window = null;
-    for (var key in editorwindowsHash)
-    {
-    if (key==fieldname && !editorwindowsHash[key].closed)
-    {
-    window = editorwindowsHash[key];
-    return window;
-    }
-    }
-    return null;
+        var window = null;
+        for (var key in editorwindowsHash)
+        {
+            if (key==fieldname && !editorwindowsHash[key].closed)
+            {
+                window = editorwindowsHash[key];
+                return window;
+            }
+        }
+        return null;
     }
 
     function start_popup_editor(fieldname, fieldtext, sid, gid, qid, fieldtype, action)
