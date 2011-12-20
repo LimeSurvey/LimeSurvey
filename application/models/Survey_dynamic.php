@@ -26,9 +26,11 @@ class Survey_dynamic extends CActiveRecord
 	 * @param int $surveyid
 	 * @return CActiveRecord
 	 */
-	public static function model($sid)
+	public static function model($sid = null)
 	{
 		$instance = parent::model(__CLASS__);
+        if ( $sid === null )
+            return $instance;
 		$instance->sid = $sid;
 		return $instance;
 	}

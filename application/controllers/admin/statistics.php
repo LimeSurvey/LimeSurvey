@@ -1726,17 +1726,17 @@ class statistics extends Survey_Common_Action {
 
 	function graph()
 	{
-        $this->load->model('Surveys_dynamic_model');
-        $this->load->model('Question_attributes_model');
-        $this->load->helper('admin/statistics_helper');
-		$this->load->helper("surveytranslator");
+        //$this->load->model('Surveys_dynamic_model');
+        //$this->load->model('Question_attributes_model');
+        Yii::app()->loadHelper('admin/statistics_helper');
+		Yii::app()->loadHelper("surveytranslator");
 
         // Initialise PCHART
-        require_once(APPPATH.'/third_party/pchart/pchart/pChart.class');
-        require_once(APPPATH.'/third_party/pchart/pchart/pData.class');
-        require_once(APPPATH.'/third_party/pchart/pchart/pCache.class');
-        $tempdir = $this->config->item("tempdir");
-        $tempurl = $this->config->item("tempurl");
+        require_once(Yii::app()->basePath . '/third_party/pchart/pchart/pChart.class');
+        require_once(Yii::app()->basePath . '/third_party/pchart/pchart/pData.class');
+        require_once(Yii::app()->basePath . '/third_party/pchart/pchart/pCache.class');
+        $tempdir = Yii::app()->getConfig("tempdir");
+        $tempurl = Yii::app()->getConfig("tempurl");
         $MyCache = new pCache($tempdir.'/');
 
 	    $data['success'] = 1;
@@ -1757,7 +1757,7 @@ class statistics extends Survey_Common_Action {
                             "width" => $aattr['location_mapwidth'],
                             "height" => $aattr['location_mapheight']
                         );
-	                    $this->Question_attributes_model->setAttribute($qqid, 'statistics_showmap', 1);
+	                    Question_attributes::model()->setAttribute($qqid, 'statistics_showmap', 1);
                     } else {
 	                    $data['success'] = 0;
                     }
@@ -1765,7 +1765,7 @@ class statistics extends Survey_Common_Action {
 	            case 'hidemap':
 	                if (isset($aattr['location_mapservice'])) {
                         $data['success'] = 1;
-	                    $this->Question_attributes_model->setAttribute($qqid, 'statistics_showmap', 0);
+	                    Question_attributes::model()->setAttribute($qqid, 'statistics_showmap', 0);
                     } else {
 	                    $data['success'] = 0;
                     }
@@ -1786,10 +1786,10 @@ class statistics extends Survey_Common_Action {
 	                $data['chartdata'] = createChart($qqid, $qsid, $bChartType, $adata['lbl'], $adata['gdata'], $adata['grawdata'], $MyCache);
 
 
-                    $this->Question_attributes_model->setAttribute($qqid, 'statistics_showgraph', 1);
+                    Question_attributes::model()->setAttribute($qqid, 'statistics_showgraph', 1);
 	                break;
 	            case 'hidegraph':
-                    $this->Question_attributes_model->setAttribute($qqid, 'statistics_showgraph', 0);
+                    Question_attributes::model()->setAttribute($qqid, 'statistics_showgraph', 0);
 	                break;
 	            case 'showbar':
 	                if ($qtype == "M" || $qtype == "P") {
@@ -1797,7 +1797,7 @@ class statistics extends Survey_Common_Action {
 	                    break;
 	                }
 
-                    $this->Question_attributes_model->setAttribute($qqid, 'statistics_graphtype', 0);
+                    Question_attributes::model()->setAttribute($qqid, 'statistics_graphtype', 0);
 
                     $adata = $_SESSION['stats'][$_POST['id']];
 	                $data['chartdata'] =  createChart($qqid, $qsid, 0, $adata['lbl'], $adata['gdata'], $adata['grawdata'], $MyCache);
@@ -1810,7 +1810,7 @@ class statistics extends Survey_Common_Action {
 	                    break;
 	                }
 
-                    $this->Question_attributes_model->setAttribute($qqid, 'statistics_graphtype', 1);
+                    Question_attributes::model()->setAttribute($qqid, 'statistics_graphtype', 1);
 
                     $adata = $_SESSION['stats'][$_POST['id']];
 	                $data['chartdata'] =  createChart($qqid, $qsid, 1, $adata['lbl'], $adata['gdata'], $adata['grawdata'], $MyCache);
@@ -1824,7 +1824,7 @@ class statistics extends Survey_Common_Action {
 	    } else {
 	        $data['success'] = 0;
 	    }
-	    $this->load->view("admin/export/statistics_graph_view", $data);
+	    $this->getController()->render("admin/export/statistics_graph_view", $data);
 	}
 
 	////simple function to square a value
