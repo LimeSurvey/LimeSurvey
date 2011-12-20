@@ -7878,33 +7878,41 @@ function modify_database($sqlfile='', $sqlstring='')
 
 }
 
-function getlabelsets($languages=null)
-// Returns a list with label sets
-// if the $languages paramter is provided then only labelset containing all of the languages in the paramter are provided
+/**
+ * Returns labelsets for given language(s), or for all if null
+ *
+ * @param string $languages
+ * @return array
+ */
+function getlabelsets($languages = null)
 {
-    $yii =Yii::app();
-    $yii->loadHelper('database');
+    $yii = Yii::app();
     $clang = $yii->lang;
-    if ($languages){
+    $languagesarray = array();
+    if ($languages)
+    {
         $languages=sanitize_languagecodeS($languages);
         $languagesarray=explode(' ',trim($languages));
     }
-    $query = "SELECT ".Labelset::model()->tableName().".lid as lid, label_name FROM ".Labelset::model()->tableName();
-    if ($languages){
-        $query .=" where ";
-        foreach  ($languagesarray as $item)
-        {
-            $query .=" ((languages like '% $item %') or (languages='$item') or (languages like '% $item') or (languages like '$item %')) and ";
-        }
-        $query .=" 1=1 ";
+
+    $criteria = new CDbCriteria;
+    foreach ($languagesarray as $k => $item)
+    {
+        $criteria->params[':lang_like1_' . $k] = "% $item %";
+        $criteria->params[':lang_' . $k] = $item;
+        $criteria->params[':lang_like2_' . $k] = "% $item";
+        $criteria->params[':lang_like3_' . $k] = "$item %";
+        $criteria->addCondition("
+            ((languages like :lang_like1_$k) or
+            (languages = :lang_$k) or
+            (languages like :lang_like2_$k) or
+            (languages like :lang_like3_$k))");
     }
-    $query .=" order by label_name";
-    $result = Yii::app()->db->createCommand($query)->query(); //Checked
+
+    $result = Labelsets::model()->findAll($criteria);
     $labelsets=array();
     foreach ($result as $row)
-    {
-        $labelsets[] = array($row['lid'], $row['label_name']);
-    }
+        $labelsets[] = array($row->lid, $row->label_name);
     return $labelsets;
 }
 
