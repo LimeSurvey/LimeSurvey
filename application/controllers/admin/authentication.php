@@ -65,13 +65,13 @@ class Authentication extends CAction
 
             $failed_login_attempts = Failed_login_attempts::model();
             $failed_login_attempts->cleanOutOldAttempts();
-
+			
             $bCannotLogin = $failed_login_attempts->isLockedOut($sIp);
-
             if (!$bCannotLogin)
             {
                 if (!empty($_POST['action']))
                 {
+                    
                     $clang = $this->getController()->lang;
 
                     $data = $this->_doLogin($_POST['user'], $_POST['password']);
@@ -92,7 +92,7 @@ class Authentication extends CAction
                         $this->getController()->_GetSessionUserRights(Yii::app()->session['loginID']);
                         Yii::app()->session['just_logged_in'] = true;
                         Yii::app()->session['loginsummary'] = $loginsummary;
-                        $this->getController()->redirect($this->getController()->createUrl('/admin'));
+                        $this->_doRedirect();
                     }
                 }
                 else
@@ -111,7 +111,17 @@ class Authentication extends CAction
         }
         else
         {
-            $this->getController()->redirect($this->getController()->createUrl('/admin'));
+        	
+            Yii::app()->request->redirect($this->getController()->createUrl('/admin'));
+        }
+    }
+
+    private function _doRedirect()
+    {
+        if (strlen(Yii::app()->session['redirectopage']) > 1) {
+            Yii::app()->request->redirect(Yii::app()->session['redirectopage']);
+        } else {
+            Yii::app()->request->redirect($this->getController()->createUrl('/admin'));
         }
     }
 
@@ -212,14 +222,11 @@ class Authentication extends CAction
     {
         $identity = new UserIdentity(sanitize_user($sUsername), $sPassword);
 
-        if (!$identity->authenticate())
-        {
+        if (!$identity->authenticate()) {
             return $this->_getAuthenticationFailedErrorMessage();
         }
-        else
-        {
-            return $this->_setLoginSessions($identity);
-        }
+
+        return $this->_setLoginSessions($identity);
     }
 
     private function _setLoginSessions($identity)

@@ -109,13 +109,14 @@ class AdminController extends LSYii_Controller
 		}
 
 		if ($action != "update" && $action != "db")
-			if (empty($this->user_id) && $action != "authentication"  && $action != "remotecontrol")
-			{
-				if (!($action == "index" && $action == "index"))
-					Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
+        if (empty($this->user_id) && $action != "authentication"  && $action != "remotecontrol")
+        {
+            if (!($action == "index" && $action == "index"))
+            Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
+            Yii::app()->session['redirectopage'] = Yii::app()->request->requestUri;
 
-				$this->redirect($this->createUrl('admin/authentication/login'));
-			}
+            $this->redirect($this->createUrl('admin/authentication/login'));
+        }
 
 		return parent::run($action);
 	}
