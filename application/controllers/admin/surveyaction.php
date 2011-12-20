@@ -89,7 +89,7 @@ class SurveyAction extends Survey_Common_Action {
 		$iSurveyId = 0;
 		$message = $clang->gT('You did not choose any surveys.');
 		if (Survey::model()->findByPk($iSurveyID) === null)
-			continue;
+			return;
 		switch ($sa){
 			case 'expire':
 				if ($this->_expireSurvey($iSurveyID)) $actioncount++;;
@@ -157,7 +157,7 @@ class SurveyAction extends Survey_Common_Action {
         }
 
 		$dbprefix = Yii::app()->db->tablePrefix;
-		
+
         $this->controller->_js_admin_includes(Yii::app()->getConfig('generalscripts').'admin/surveysettings.js');
         $this->controller->_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jqGrid/js/i18n/grid.locale-en.js');
         $this->controller->_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jqGrid/js/jquery.jqGrid.min.js');
@@ -177,7 +177,7 @@ class SurveyAction extends Survey_Common_Action {
         $esrow = self::_fetchSurveyInfo('editsurvey',$surveyid);
 		//$esrow = $esrow[0]->tableSchema->columns;
         $data['esrow']=$esrow;
-		
+
         $data = array_merge($data,$this->_generalTabEditSurvey($surveyid,$esrow));
         $data = array_merge($data,$this->_tabPresentationNavigation($esrow));
         $data = array_merge($data,$this->_tabPublicationAccess($esrow));
@@ -268,7 +268,7 @@ class SurveyAction extends Survey_Common_Action {
                 if ($z->extract($extractdir,$zipfile) != 'OK')
                 {
                     $importsurveyresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
-                    $importsurveyresourcesoutput .= $clang->gT("This file is not a valid ZIP file $CI. Import failed.")."<br /><br />\n";
+                    $importsurveyresourcesoutput .= $clang->gT("This file is not a valid ZIP file $zipfile. Import failed.")."<br /><br />\n";
                     $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".$this->getController()->createUrl('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
                     $importsurveyresourcesoutput .= "</div>\n";
                     echo($importsurveyresourcesoutput);
@@ -338,8 +338,8 @@ class SurveyAction extends Survey_Common_Action {
                 elseif (is_null($aErrorFilesInfo) && is_null($aImportedFilesInfo))
                 {
                     $importsurveyresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
-                    $importsurveyresourcesoutput .= $clang->gT("This ZIP $CI contains no valid Resources files. Import failed.")."<br /><br />\n";
-                    $importsurveyresourcesoutput .= $clang->gT("Remember that we do not support subdirectories in ZIP $CIs.")."<br /><br />\n";
+                    $importsurveyresourcesoutput .= $clang->gT("This ZIP $zipfile contains no valid Resources files. Import failed.")."<br /><br />\n";
+                    $importsurveyresourcesoutput .= $clang->gT("Remember that we do not support subdirectories in ZIP $zipfile's.")."<br /><br />\n";
                     $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".$this->getController()->createUrl('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
                     $importsurveyresourcesoutput .= "</div>\n";
                     echo($importsurveyresourcesoutput);
@@ -399,7 +399,7 @@ class SurveyAction extends Survey_Common_Action {
             $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".$this->getController()->createUrl('admin/survey/sa/editsurveysettings/surveyid/'.$surveyid)."', '_top')\" />\n";
             $importsurveyresourcesoutput .= "</div>\n";
 
-            $data['display'] = $importlabeloutput;
+            $data['display'] = $importsurveyresourcesoutput;
             $this->getController()->render('/survey_view',$data);
         }
 
@@ -1076,7 +1076,7 @@ class SurveyAction extends Survey_Common_Action {
         $this->controller->_getAdminHeader();
         $this->controller->_showadminmenu($surveyid);;
         self::_surveybar($surveyid);
-		
+
         if(bHasSurveyPermission($surveyid,'surveylocale','read'))
         {
         	$editsurvey = '';
@@ -1129,7 +1129,7 @@ class SurveyAction extends Survey_Common_Action {
                 $editsurvey .= "<div id='edittxtele$i'>$eachcontent</div>";
             }
             $editsurvey .= "</div>";
-			
+
             if(bHasSurveyPermission($surveyid,'surveylocale','update'))
             {
                 $editsurvey .= "<p><input type='submit' class='standardbtn' value='".$clang->gT("Save")."' />\n"
@@ -1525,7 +1525,7 @@ class SurveyAction extends Survey_Common_Action {
         $expires='';
         if ($esrow['expires']) {
             $items = array($esrow['expires'] ,"Y-m-d H:i:s");
-			
+
             $this->yii->loadLibrary('Date_Time_Converter');
             $datetimeobj = new date_time_converter($items) ; //new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
             $expires=$datetimeobj->convert("d.m.Y H:i");
@@ -1666,18 +1666,19 @@ class SurveyAction extends Survey_Common_Action {
     function getUrlParamsJSON($iSurveyID)
     {
         $iSurveyID = (int)$iSurveyID;
+        $data = new Object();
 		$this->yii->loadHelper('database');
 		$oResult = db_execute_assoc("select '' as act, up.*,q.title, sq.title as sqtitle, q.question, sq.question as sqquestion from {$this->yii->db->tablePrefix}survey_url_parameters up
                             left join {$this->yii->db->tablePrefix}questions q on q.qid=up.targetqid
                             left join {$this->yii->db->tablePrefix}questions sq on q.qid=up.targetqid
                             where up.sid={$iSurveyID}");
         $i=0;
-		
+
         foreach ($oResult->readAll() as $oRow)
         {
             $data->rows[$i]['id']=$oRow['id'];
             $oRow['title']= $oRow['title'].': '.ellipsize(FlattenText($oRow['question'],false,true),43,.70);
-			
+
             if ($oRow['sqquestion']!='')
             {
                 echo (' - '.ellipsize(FlattenText($oRow['sqquestion'],false,true),30,.75));
@@ -1718,6 +1719,7 @@ class SurveyAction extends Survey_Common_Action {
     {
         if (Yii::app()->session['USER_RIGHT_CREATE_SURVEY'])
         {
+            $clang = $this->getController()->lang;
             // Check if survey title was set
             if (!$_POST['surveyls_title'])
             {

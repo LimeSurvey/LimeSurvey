@@ -1,8 +1,8 @@
-<?php echo PrepareEditorScript(); ?>
+<?php echo PrepareEditorScript($this->getController()); ?>
 <div class='header ui-widget-header'>
         <?php echo $clang->gT("Edit answer options"); ?>
 </div>
-<form id='editanswersform' name='editanswersform' method='post' action='<?php echo site_url('admin/database'); ?>'>
+<form id='editanswersform' name='editanswersform' method='post' action='<?php echo $this->createUrl('admin/database'); ?>'>
 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
 <input type='hidden' name='gid' value='<?php echo $gid; ?>' />
 <input type='hidden' name='qid' value='<?php echo $qid; ?>' />
@@ -67,8 +67,6 @@
                 </tr></thead>
                 <tbody align='center'>
                 <?php $alternate=true;
-
-
 
                 $query = "SELECT * FROM ".$this->db->dbprefix."answers WHERE qid='{$qid}' AND language='{$anslang}' and scale_id=$scale_id ORDER BY sortorder, code";
                 $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg()); //Checked

@@ -46,7 +46,8 @@ class Survey extends CActiveRecord
 	{
 		return array(
 			'languagesettings' => array(self::HAS_ONE, 'Surveys_languagesettings', '',
-				'on' => 't.sid = languagesettings.surveyls_survey_id AND t.language = languagesettings.surveyls_language'),
+				'on' => 't.sid = languagesettings.surveyls_survey_id AND t.language = languagesettings.surveyls_language'
+            ),
 			'owner' => array(self::BELONGS_TO, 'User', '', 'on' => 't.owner_id = owner.uid'),
 		);
 	}
@@ -90,13 +91,13 @@ class Survey extends CActiveRecord
     {
 		$criteria = new CDbCriteria;
         if ($condition != FALSE)
-        {	
+        {
 		    foreach ($condition as $item => $value)
 			{
 				$criteria->addCondition($item.'="'.$value.'"');
 			}
         }
-		
+
 		$data = $this->findAll($criteria);
 
         return $data;
@@ -107,13 +108,13 @@ class Survey extends CActiveRecord
 		$criteria = new CDbCriteria;
 
         if ($condition != FALSE)
-        {	
+        {
 		    foreach ($condition as $item => $value)
 			{
 				$criteria->addCondition($item.'="'.$value.'"');
 			}
         }
-		
+
 		$data = $this->findAll($criteria);
 
         return $data;
@@ -184,7 +185,7 @@ class Survey extends CActiveRecord
         $query=$this->db->get();
         return $query->result_array();
     }
-    
+
 	public function getAllSurveyNames()
     {
         return Yii::app()->db->createCommand()->select('surveyls_survey_id,surveyls_title')->from('{{surveys_languagesettings}}')->join('{{surveys}}','{{surveys_languagesettings}}.surveyls_survey_id = {{surveys}}.sid')->queryAll();

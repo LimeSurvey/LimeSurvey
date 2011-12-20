@@ -52,8 +52,10 @@
         <?php if (!$adding)
             {
 
-                foreach ($aqresult->readAll() as $aqrow)
-                { ?>
+                foreach ($aqresult as $aqrow)
+                {
+                    $aqrow = $aqrow->attributes;
+                    ?>
 
                 <div id="<?php echo $aqrow['language']; ?>">
                     <ul>
@@ -178,15 +180,17 @@
 
 
                 <?php if ($adding) {
-                        if ($oqresult->getRowCount()) { ?>
+                        if (count($oqresult)) { ?>
 
                         <li>
                             <label for='questionposition'><?php $clang->eT("Position:"); ?></label>
                             <select name='questionposition' id='questionposition'>
                                 <option value=''><?php $clang->eT("At end"); ?></option>
                                 <option value='0'><?php $clang->eT("At beginning"); ?></option>
-                                <?php foreach ($oqresult->readAll() as $oq)
-                                    { ?>
+                                <?php foreach ($oqresult as $oq)
+                                    {
+                                        $oq = $oq->attributes;
+                                    ?>
                                     <?php $question_order_plus_one = $oq['question_order']+1; ?>
                                     <option value='<?php echo $question_order_plus_one; ?>'><?php $clang->eT("After"); ?>: <?php echo $oq['title']; ?></option>
                                     <?php } ?>

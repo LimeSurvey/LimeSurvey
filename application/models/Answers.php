@@ -87,7 +87,6 @@ class Answers extends CActiveRecord
 
 	public function update($data, $condition=FALSE)
     {
-
         if ($condition != FALSE)
         {
             $this->db->where($condition);
@@ -103,6 +102,28 @@ class Answers extends CActiveRecord
 		foreach ($data as $k => $v)
 			$ans->$k = $v;
 		return $ans->save();
+    }
+
+    /**
+     * Updates sort order of answers inside a question
+     *
+     * @static
+     * @access public
+     * @param int $qid
+     * @param string $lang
+     * @return void
+     */
+    public static function updateSortOrder($qid, $lang)
+    {
+        $data = self::model()->findAllByAttributes(array('qid' => $qid, 'language' => $lang), array('order' => 'sortorder asc'));
+
+		$position = 0;
+
+        foreach ($data as $row)
+        {
+            $row->sortorder = $position++;
+            $row->save();
+        }
     }
 }
 ?>

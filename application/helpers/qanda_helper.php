@@ -1691,7 +1691,7 @@ function do_equation($ia)
 function do_5pointchoice($ia)
 {
     //global $js_header_includes, $css_header_includes;
-    
+
     $clang=Yii::app()->lang;
     $imageurl = Yii::app()->getConfig("imageurl");
     if ($ia[8] == 'Y')
@@ -1827,7 +1827,7 @@ function do_date($ia)
     $js_admin_includes = Yii::app()->getConfig("js_admin_includes");
     $js_admin_includes[] = '/scripts/jquery/lime-calendar.js';
     Yii::app()->setConfig("js_admin_includes", $js_admin_includes);
-        
+
 
 
     if ($ia[8] == 'Y')
@@ -2441,7 +2441,7 @@ function do_list_radio($ia)
     global $dropdownthreshold;
     global $thissurvey;
     $clang=Yii::app()->lang;
-	
+
     if ($thissurvey['nokeyboard']=='Y')
     {
         vIncludeKeypad();
@@ -2913,7 +2913,7 @@ function do_listwithcomment($ia)
 
 function do_ranking($ia)
 {
-	// note to self: this function needs to define: 
+	// note to self: this function needs to define:
 	// inputnames, answer, among others
 	global $thissurvey, $showpopups;
 
@@ -2943,63 +2943,63 @@ function do_ranking($ia)
     $ansresult = Yii::app()->db->createCommand($ansquery)->query();  //Checked //information about survey
     $anscount= count($ansresult); // number of answer options?
     // determine maximum number of answers to set
-    if (trim($aQuestionAttributes["max_answers"])!='') 
+    if (trim($aQuestionAttributes["max_answers"])!='')
     {
         $max_answers=trim($aQuestionAttributes["max_answers"]);
     } else {
         $max_answers=$anscount;
     }
-    
+
     /* now calculate min_answers */
     $min_answers = 0;
     if (trim($aQuestionAttributes["min_answers"])!='') //if there is a min anwer
     {
     	$min_answers = trim($aQuestionAttributes["min_answers"]);
     }
-    $sMinAnswerErrorMessage = 
+    $sMinAnswerErrorMessage =
     	sprintf($clang->ngT("Please rank at least %d item for question \"%s\"","Please rank at least %d items for question \"%s\".",$min_answers),$min_answers, trim(str_replace(array("\n", "\r"), "", $ia[3])));
-    
-    
+
+
     /* now, figure out what answers to display */
     unset($answers); // array of all answers (ans[0]=id, ans[1]=name)
     unset($chosen); // array of chosen answers
     $answers=array();
     $chosen = array();
-    
+
     // create list of answers
     foreach ($ansresult->readAll() as $ansrow)
     {
         $answers[] = array($ansrow['code'], $ansrow['answer']);
     }
-    
+
     /* final variable configuration */
     $sChoicesLabel = $clang->gT("Your Choices"); //TODO: allow custom labels? (like the workaround)
     $sRankingsLabel = $clang->gT("Your Ranking");
     $sQuestionID = $ia[0];
     $sMaxAnswers = $max_answers; // maximum number of answers, or the number of spaces in the rankings column
     $sMinAnswers = $min_answers;
-    
+
     /* NOW, we are finally set to display what we need to display */
     // note, displayed stuff gets added to "$answer"
-    
+
 
     // mandatory universal internal stylesheet (needed in all cases, let's not leave it up to template makers)
 	$sAnswerRankingCSS = <<<N8G
-	
+
 	<style type="text/css">
-	
+
 		.dragDropTable .dragDropRanks {
 			position: relative;
 		}
-		
+
 		.dragDropTable .dragDropRankList {
 			position: relative;
 		}
-		
+
 		.dragDropTable .dragDropRankList.DDRbackground {
 			/* create a background for the ul (establish a size) to better communicate the maximum number of rankings */
 		}
-		
+
 		.dragDropTable .dragDropRankList.DDRforeground {
 			/* let the background and styling show through, no need to style twice */
 			background: none;
@@ -3008,17 +3008,17 @@ function do_ranking($ia)
 			border-color: transparent; /* if there is a border it won't show up, but it will maintain formatting - turns black in IE6 */
 			padding-bottom: 50px; /* this won't show up, but it naturalizes dragging behavior - you'll see */
 		}
-		
+
 		.dragDropTable .dragDropRankList li.ui-sortable-background {
 			border-color: transparent; /* if there is a border it won't show up, but it will maintain formatting - turns black in IE6 */
 		}
-		
+
 	</style>
 N8G;
-	
-    
+
+
     $inputnames = array();
-    
+
     /* html rankings for insertion later on - cycle through what's already set, and create html and the input fields at the same time*/
     /* also create an array $chosen of items that have been "chosen" */
     $sQuestionRankings = "";
@@ -3046,20 +3046,20 @@ N8C;
                 }
             }
         }
-    	
+
     	// build an input field for the ranking spot
         $sDataSubmission .= <<<N8D
-        
+
                             <input type="hidden" name="$myfname" id="fvalue_$sQuestionID$i" value="$myfvalue" />
 N8D;
         // create a placeholder for the background (to give the ul a size) ($i.)
         $sQuestionRankingsPlaceholders .= <<<N8H
-        
-                            <li class="ui-sortable-placeholder ui-sortable-background ui-state-default"></li> 
+
+                            <li class="ui-sortable-placeholder ui-sortable-background ui-state-default"></li>
 N8H;
         $inputnames[]=$myfname;
     }
-    
+
     /* html choices for insertion later on*/
     $sQuestionChoices = "";
     foreach ($answers as $ans)
@@ -3071,53 +3071,53 @@ N8H;
 N8E;
     	}
     }
-    
+
         /* javascript also see scripts/survey_runtime.js*/
     $iNumChosenAnswers = count($chosen);
     $sAnswerRankingJs = <<<N8B
-    
+
     <script type="text/javascript">
-      
-    \$(document).ready(function() { 
+
+    \$(document).ready(function() {
     	readyRankingQuestion($sQuestionID, $max_answers, $checkconditionFunction, true);
 	} );
-	
-	
-	
+
+
+
 	oldonsubmit_$sQuestionID = document.limesurvey.onsubmit; //get any previous error messages since we still want to keep them
-	
+
 	function ensureMinAnsw_$sQuestionID() {  // make sure there's enoguh answers
 		var count = $('#sortable2$sQuestionID li').length;
-		if (count<$sMinAnswers && document.getElementById("display$sQuestionID").value == 'on') { 
+		if (count<$sMinAnswers && document.getElementById("display$sQuestionID").value == 'on') {
 			//show error message
 			document.getElementById("rankingMinAnsWarning$sQuestionID").style.display = '';
 			return false;
-		}  else { 
-			if (oldonsubmit_$sQuestionID) { 
+		}  else {
+			if (oldonsubmit_$sQuestionID) {
 				return oldonsubmit_$sQuestionID();
-			} 
+			}
 			return true;
-		} 
-	} 
-    
+		}
+	}
+
     document.limesurvey.onsubmit = ensureMinAnsw_$sQuestionID; //check errors!
-    
+
     </script>
-    
+
 N8B;
 
-       
+
     /* html structure */
     $sAnswerRankingHtml = <<<N8F
-    <table class="dragDropTable"> 		
-	    <tbody> 			
-		    <tr> 				
+    <table class="dragDropTable">
+	    <tbody>
+		    <tr>
 			    <td>
 				    <span class="dragDropHeader choicesLabel">$sChoicesLabel</span><br/>
-				    <div class="ui-state-highlight dragDropChoices"> 						
+				    <div class="ui-state-highlight dragDropChoices">
 					    <ul id="sortable1$sQuestionID" class="connectedSortable$sQuestionID dragDropChoiceList ui-sortable">
 $sQuestionChoices
-						</ul>					
+						</ul>
 					</div>
 			    </td>
 			    <td>
@@ -3140,14 +3140,14 @@ $sDataSubmission
     <div id="rankingMinAnsWarning$sQuestionID" style="display:none; color: red" class="errormandatory">
 $sMinAnswerErrorMessage
 	</div>
-    
+
 N8F;
-    
+
     /* Styling in CSS:
      see provided templates
-    
+
     */
-    
+
     /* and the result… */
     $answer .= $sAnswerRankingCSS . $sAnswerRankingJs . $sAnswerRankingHtml;
     return array($answer, $inputnames);
@@ -3258,7 +3258,7 @@ function do_ranking_old($ia)
     unset($chosen);
     $ranklist="";
     $chosen = array();
-    
+
     foreach ($ansresult->result_array() as $ansrow)
     {
         $answers[] = array($ansrow['code'], $ansrow['answer']);
@@ -3280,7 +3280,7 @@ function do_ranking_old($ia)
         var_dump($myfname);
         if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
         {
-       
+
             foreach ($answers as $ans)
             {
                 if ($ans[0] == $_SESSION[$myfname])
@@ -3433,13 +3433,13 @@ function do_multiplechoice($ia)
     $attribute_ref=false;
     $inputnames=array();
 
-    $qaquery = "SELECT qid,attribute FROM ".$CI->db->dbprefix('question_attributes')." WHERE value LIKE '".strtolower($ia[2])."' and (attribute='array_filter' or attribute='array_filter_exclude')";
-    $qaresult = db_execute_assoc($qaquery);     //Checked
-    foreach ($qaresult->result_array() as $qarow)
+    $qaquery = "SELECT qid,attribute FROM {{question_attributes}} WHERE value LIKE '".strtolower($ia[2])."' and (attribute='array_filter' or attribute='array_filter_exclude')";
+    $qaresult = Yii::app()->db->createCommand($qaquery)->query();     //Checked
+    foreach ($qaresult->readAll() as $qarow)
     {
-        $qquery = "SELECT qid FROM ".$CI->db->dbprefix('questions')." WHERE sid=".$thissurvey['sid']." AND scale_id=0 AND qid=".$qarow['qid'];
-        $qresult = db_execute_assoc($qquery);     //Checked
-        if ($qresult->num_rows() > 0)
+        $qquery = "SELECT qid FROM {{questions}} WHERE sid=".$thissurvey['sid']." AND scale_id=0 AND qid=".$qarow['qid'];
+        $qresult = Yii::app()->db->createCommand($qquery)->query();     //Checked
+        if ($qresult->getRowCount() > 0)
         {
             $attribute_ref = true;
         }
@@ -3912,7 +3912,7 @@ function do_multiplechoice($ia)
 function do_multiplechoice_withcomments($ia)
 {
     global $thissurvey;
-  
+
     $clang = Yii::app()->lang;
     $inputnames= array();
     if ($thissurvey['nokeyboard']=='Y')
@@ -4226,7 +4226,7 @@ function do_multiplechoice_withcomments($ia)
 function do_file_upload($ia)
 {
     global $js_header_includes, $thissurvey, $surveyid;
-   
+
     $clang = Yii::app()->lang;
 
     if ($ia[8] == 'Y')
@@ -4414,7 +4414,7 @@ function do_file_upload($ia)
 function do_multipleshorttext($ia)
 {
     global $thissurvey;
- 
+
     $clang = Yii::app()->lang;
 
     if ($ia[8] == 'Y')
@@ -4592,7 +4592,7 @@ function do_multipleshorttext($ia)
 function do_multiplenumeric($ia)
 {
     global $js_header_includes, $css_header_includes, $thissurvey;
- 
+
     $clang = Yii::app()->lang;
 
     if ($ia[8] == 'Y')
@@ -5102,7 +5102,7 @@ function do_multiplenumeric($ia)
 function do_numerical($ia)
 {
     global $thissurvey;
-   
+
     $clang = Yii::app()->lang;
 
     if ($ia[8] == 'Y')
@@ -5196,7 +5196,7 @@ function do_numerical($ia)
 function do_shortfreetext($ia)
 {
     global $js_header_includes, $thissurvey,$googleMapsAPIKey;
-    
+
     $clang = Yii::app()->lang;
     $googleMapsAPIKey = Yii::app()->getConfig("googleMapsAPIKey");
 
@@ -5407,7 +5407,7 @@ function do_longfreetext($ia)
 {
     global $js_header_includes, $thissurvey;
 	$clang=Yii::app()->lang;
-	
+
     if ($thissurvey['nokeyboard']=='Y')
     {
         vIncludeKeypad();
@@ -5699,7 +5699,7 @@ function do_gender($ia)
 function do_array_5point($ia)
 {
     global $notanswered, $thissurvey;
-    
+
     $clang = Yii::app()->lang;
 
     if ($ia[8] == 'Y')
@@ -5869,7 +5869,7 @@ function do_array_5point($ia)
 function do_array_10point($ia)
 {
     global $notanswered, $thissurvey;
-   
+
     $clang = Yii::app()->lang;
 
 
@@ -6009,7 +6009,7 @@ function do_array_10point($ia)
 function do_array_yesnouncertain($ia)
 {
     global $notanswered, $thissurvey;
-   
+
     $clang = Yii::app()->lang;
 
     if ($ia[8] == 'Y')
@@ -6168,9 +6168,9 @@ function do_array_increasesamedecrease($ia)
 {
     global $thissurvey;
     global $notanswered;
-    
+
     $clang = Yii::app()->lang;
- 
+
 
     if ($ia[8] == 'Y')
     {
@@ -6343,7 +6343,7 @@ function do_array($ia)
     global $repeatheadings;
     global $notanswered;
     global $minrepeatheadings;
-    
+
     $clang = Yii::app()->lang;
 
 
@@ -6730,7 +6730,7 @@ function do_array_multitext($ia)
     global $repeatheadings;
     global $notanswered;
     global $minrepeatheadings;
-    
+
     $clang = Yii::app()->lang;
 
 
@@ -7079,7 +7079,7 @@ function do_array_multiflexi($ia)
     global $repeatheadings;
     global $notanswered;
     global $minrepeatheadings;
-    
+
     $clang = Yii::app()->lang;
 
     if ($ia[8] == 'Y')

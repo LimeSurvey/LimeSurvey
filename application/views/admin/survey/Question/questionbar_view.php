@@ -137,7 +137,7 @@
 
 
 
-            if(bHasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['answerscales'] >0)
+            if(bHasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['answerscales'] > 0)
             { ?>
                 <a href='<?php echo $this->createUrl('admin/question/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'
                 title="<?php echo $clang->gTview("Edit answer options for this question"); ?>">
