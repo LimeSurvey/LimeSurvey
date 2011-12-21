@@ -2475,6 +2475,7 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
             {
                 case "L":  //RADIO LIST
                 case "!":  //DROPDOWN LIST
+                    $fieldmap[$fieldname]['other']=$arow['other'];  // so that base variable knows whether has other value
                     if ($arow['other'] == "Y")
                     {
                         $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other";

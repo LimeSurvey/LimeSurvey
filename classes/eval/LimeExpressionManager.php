@@ -1197,15 +1197,23 @@ class LimeExpressionManager {
                 case 'F': //ARRAY (Flexible) - Row Format
                 case 'R': //RANKING STYLE
                     $ansArray = $this->qans[$questionNum];
-                    if ($other == 'Y' && ($type == 'L' || $type == '!')) {
-                        $_qattr = isset($qattr[$questionNum]) ? $qattr[$questionNum] : array();
-                        if (isset($_qattr['other_replace_text']) && trim($_qattr['other_replace_text']) != '') {
-                            $othertext = trim($_qattr['other_replace_text']);
+                    if ($other == 'Y' && ($type == 'L' || $type == '!'))
+                    {
+                        if (preg_match('/other$/',$sgqa))
+                        {
+                            $ansArray = NULL;   // since the other variable doesn't need it
                         }
-                        else {
-                            $othertext = $this->gT('Other:');
+                        else
+                        {
+                            $_qattr = isset($qattr[$questionNum]) ? $qattr[$questionNum] : array();
+                            if (isset($_qattr['other_replace_text']) && trim($_qattr['other_replace_text']) != '') {
+                                $othertext = trim($_qattr['other_replace_text']);
+                            }
+                            else {
+                                $othertext = $this->gT('Other:');
+                            }
+                            $ansArray['0~-oth-'] = '0|' . $othertext;
                         }
-                        $ansArray['0~-oth-'] = '0|' . $othertext;
                     }
                     break;
                 case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
@@ -1408,17 +1416,20 @@ class LimeExpressionManager {
                 }
                 if ($type == 'L')
                 {
-                    foreach (array_keys($ansArray) as $key)
+                    if (!is_null($ansArray))
                     {
-                        $parts = explode('~',$key);
-                        if ($parts[1] == '-oth-') {
-                            $parts[1] = 'other';
+                        foreach (array_keys($ansArray) as $key)
+                        {
+                            $parts = explode('~',$key);
+                            if ($parts[1] == '-oth-') {
+                                $parts[1] = 'other';
+                            }
+                            $q2subqInfo[$questionNum]['subqs'][] = array(
+                                'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum . $parts[1],
+                                'varName' => $varName,
+                                'sqsuffix' => '_' . $parts[1],
+                                );
                         }
-                        $q2subqInfo[$questionNum]['subqs'][] = array(
-                            'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
-                            'varName' => $varName,
-                            'sqsuffix' => '_' . $parts[1],
-                            );
                     }
                 }
                 else if ($type == 'N'
@@ -4168,6 +4179,9 @@ class LimeExpressionManager {
 //                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
                             $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
                             $listItem = substr($sq['rowdivid'],strlen($sq['sgqa']));    // gets the part of the rowdiv id past the end of the sgqa code.
+                            if ($listItem == 'other') {
+                                $listItem = '-oth-';
+                            }
                             $jsParts[] = "    if ($('#java" . $sq['sgqa'] ."').val() == '" . $listItem . "'){\n";
                             $jsParts[] = "      $('#java" . $sq['sgqa'] . "').val('');\n";
                             $jsParts[] = "      $('#answer" . $sq['sgqa'] . "NANS').attr('checked',true);\n";
