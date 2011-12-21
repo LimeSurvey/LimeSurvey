@@ -472,7 +472,7 @@ class Tokens_dynamic extends CActiveRecord
 
     function updateEmailStatus($sid,$token,$status)
     {
-        return Yii::app()->db->createCommand()-update('{{tokens_'.$sid'}}',array('emailastatus' => $status),'token = :token',array(':token' => $token ));
+        return Yii::app()->db->createCommand()-update('{{tokens_'.$sid.'}}',array('emailastatus' => $status),'token = :token',array(':token' => $token ));
     }
 }
 ?>
