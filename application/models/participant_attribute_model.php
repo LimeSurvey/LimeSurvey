@@ -1,5 +1,17 @@
 <?php
-
+/*
+ * LimeSurvey
+ * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ *
+ *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
+ */
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -43,7 +55,7 @@ class participant_attribute_model extends CI_Model
     {
 
         $this->db->select('participant_attribute_names.*,participant_attribute_names_lang.*');
-        $this->db->order_by('participant_attribute_names.attribute_id', 'desc'); 
+        $this->db->order_by('participant_attribute_names.attribute_id', 'desc');
         $this->db->where('participant_attribute_names.visible','TRUE');
         $this->db->join('participant_attribute_names_lang', 'participant_attribute_names_lang.attribute_id = participant_attribute_names.attribute_id');
         $this->db->where('participant_attribute_names_lang.lang',$this->session->userdata('adminlang'));
@@ -57,7 +69,7 @@ class participant_attribute_model extends CI_Model
     }
     function getAttributeValue($participantid,$attributeid)
     {
-        $data = $this->db->get_where('participant_attribute', array('participant_id' => $participantid,'attribute_id'=>$attributeid));	
+        $data = $this->db->get_where('participant_attribute', array('participant_id' => $participantid,'attribute_id'=>$attributeid));
         return $data->row();
     }
     function getAllAttributesValues()
@@ -69,8 +81,8 @@ class participant_attribute_model extends CI_Model
     {
         $this->db->select('participant_attribute.*,participant_attribute_names.*,participant_attribute_names_lang.*');
         $this->db->from('participant_attribute');
-        $this->db->order_by('participant_attribute.attribute_id','desc'); 
-        $this->db->where('participant_id',$participant_id); 
+        $this->db->order_by('participant_attribute.attribute_id','desc');
+        $this->db->where('participant_id',$participant_id);
         $this->db->join('participant_attribute_names_lang', 'participant_attribute.attribute_id = participant_attribute_names_lang.attribute_id');
         $this->db->join('participant_attribute_names', 'participant_attribute.attribute_id = participant_attribute_names.attribute_id','inner');
         $this->db->where('participant_attribute_names_lang.lang',$this->session->userdata('adminlang'));
@@ -108,7 +120,7 @@ class participant_attribute_model extends CI_Model
     function getVisibleAttributes()
     {
         $this->db->select('participant_attribute_names.*,participant_attribute_names_lang.*');
-        $this->db->order_by('participant_attribute_names.attribute_id', 'desc'); 
+        $this->db->order_by('participant_attribute_names.attribute_id', 'desc');
         $this->db->join('participant_attribute_names_lang', 'participant_attribute_names_lang.attribute_id = participant_attribute_names.attribute_id');
         $data = $this->db->get_where('participant_attribute_names', array('participant_attribute_names.visible' => "TRUE",'participant_attribute_names_lang.lang'=>$this->session->userdata('adminlang')));
      	return $data->result_array();
@@ -116,14 +128,14 @@ class participant_attribute_model extends CI_Model
     function getAllAttributes()
     {
         $this->db->select('participant_attribute_names.*,participant_attribute_names_lang.*');
-        $this->db->order_by('participant_attribute_names.attribute_id', 'desc'); 
+        $this->db->order_by('participant_attribute_names.attribute_id', 'desc');
         $this->db->join('participant_attribute_names_lang', 'participant_attribute_names_lang.attribute_id = participant_attribute_names.attribute_id');
         $data = $this->db->get_where('participant_attribute_names', array('participant_attribute_names_lang.lang'=>$this->session->userdata('adminlang')));
      	return $data->result_array();
     }
     //give the count visible attributes in participant_attribute_names
     function getVisibleAttributeCount()
-    {   
+    {
         $this->db->where('visible', "TRUE");
         $this->db->from('participant_attribute_names');
         return $this->db->count_all_results();
@@ -139,7 +151,7 @@ class participant_attribute_model extends CI_Model
     }
     function saveAttributeVisible($attid,$visiblecondition)
     {
-    
+
         $attribute_id = explode("_", $attid);
         $data=array('visible'=>$visiblecondition);
         if($visiblecondition == "")
@@ -147,7 +159,7 @@ class participant_attribute_model extends CI_Model
             $data=array('visible'=>'FALSE');
         }
         $this->db->where('attribute_id',$attribute_id[1]);
-        $this->db->update('participant_attribute_names',$data); 
+        $this->db->update('participant_attribute_names',$data);
     }
     function editParticipantAttributeValue($data)
     {
@@ -156,31 +168,31 @@ class participant_attribute_model extends CI_Model
         $query = $this->db->get('participant_attribute');
         if($query->num_rows() == 0)
         {
-            $this->db->insert('participant_attribute',$data); 
+            $this->db->insert('participant_attribute',$data);
         }
         else
         {
             $this->db->where('participant_id', $data['participant_id']);
             $this->db->where('attribute_id', $data['attribute_id']);
-        $this->db->update('participant_attribute',$data); 
+        $this->db->update('participant_attribute',$data);
     }
-   	
+
     }
     function saveAttribute($data)
     {
         $this->db->where('attribute_id',$data['attribute_id']);
-        $this->db->update('participant_attribute_names', $data); 
+        $this->db->update('participant_attribute_names', $data);
     }
     function saveAttributeLanguages($data)
     {
         $query = $this->db->get_where('participant_attribute_names_lang', array('attribute_id'=>$data['attribute_id'],'lang'=>$data['lang']));
-        if ($query->num_rows() == 0) 
+        if ($query->num_rows() == 0)
         {
               // A record does not exist, insert one.
                $record = array('attribute_id'=>$data['attribute_id'],'attribute_name'=>$data['attribute_name'],'lang'=>$data['lang']);
                $query = $this->db->insert('participant_attribute_names_lang', $data);
         }
-        else 
+        else
         {
              // A record does exist, update it.
             $query = $this->db->update('participant_attribute_names_lang',array('attribute_name'=>$data['attribute_name']), array('attribute_id'=>$data['attribute_id'],'lang'=>$data['lang']));
@@ -195,7 +207,7 @@ class participant_attribute_model extends CI_Model
                                  'attribute_name'=>$data['attribute_name'],
                                  'lang' => $this->session->userdata('adminlang'));
         $this->db->insert('participant_attribute_names_lang',$insertnameslang);
-        
+
     }
     //Returns the inserted id as well
     function storeAttributeCSV($data)
@@ -212,14 +224,14 @@ class participant_attribute_model extends CI_Model
     }
     function delAttribute($attid)
     {
-        $this->db->delete('participant_attribute_names_lang', array('attribute_id' => $attid)); 
-        $this->db->delete('participant_attribute_names', array('attribute_id' => $attid)); 
-        $this->db->delete('participant_attribute_values', array('attribute_id' => $attid)); 
-        $this->db->delete('participant_attribute', array('attribute_id' => $attid)); 
+        $this->db->delete('participant_attribute_names_lang', array('attribute_id' => $attid));
+        $this->db->delete('participant_attribute_names', array('attribute_id' => $attid));
+        $this->db->delete('participant_attribute_values', array('attribute_id' => $attid));
+        $this->db->delete('participant_attribute', array('attribute_id' => $attid));
     }
     function delAttributeValues($attid,$valid)
     {
-        $this->db->delete('participant_attribute_values', array('attribute_id' => $attid,'value_id' => $valid)); 
+        $this->db->delete('participant_attribute_values', array('attribute_id' => $attid,'value_id' => $valid));
     }
     function storeAttributeValues($data)
     {

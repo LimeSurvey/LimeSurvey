@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
  * LimeSurvey
- * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -10,10 +10,8 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *
- *
+ *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
  */
-
  /**
   * optout
   *
@@ -42,7 +40,7 @@
          $iSurveyID=$this->uri->segment(4);
          $sToken=$this->uri->segment(5);
          $sToken=sanitize_token($sToken);
-         
+
          if (!$iSurveyID)
          {
             //You must have an SID to use this
@@ -134,5 +132,5 @@
      * @param mixed $sToken
      * @return
      */
-    
+
 }

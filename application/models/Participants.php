@@ -1,5 +1,17 @@
 <?php
-
+/*
+ * LimeSurvey
+ * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ *
+ *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
+ */
 /**
  * This is the model class for table "{{participants}}".
  *
@@ -103,7 +115,7 @@ class Participants extends CActiveRecord
 	}
 
 	/*
-	 * funcion for generation of unique id 
+	 * funcion for generation of unique id
 	 */
 	function gen_uuid()
 	{
@@ -162,7 +174,7 @@ class Participants extends CActiveRecord
                     Yii::app()->db->createCommand()->delete('{{tokens_'.$value['survey_id'].'}}', 'participant_id = "'.$value['participant_id'].'"');// Deletes from token
                }
             }
-	     }	    
+	     }
 	}
 
 	/*
@@ -180,7 +192,7 @@ class Participants extends CActiveRecord
 	}
 
 	function getParticipantswithoutlimit()
-	{    
+	{
     	return Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->queryAll();
 	}
 
@@ -221,7 +233,7 @@ class Participants extends CActiveRecord
 	    	Yii::app()->db->createCommand()->delete('{{participants}}','participant_id = "'.$row.'"');
 	    	Yii::app()->db->createCommand()->delete('{{survey_links}}','participant_id = "'.$row.'"');
 	    	Yii::app()->db->createCommand()->delete('{{participant_attribute}}','participant_id = "'.$row.'"');
-	    }	    
+	    }
 	}
 
 	function deleteParticipantToken($rows)
@@ -240,11 +252,11 @@ class Participants extends CActiveRecord
 	        Yii::app()->db->createCommand()->delete('{{participants}}','participant_id = "'.$row.'"');
 	    	Yii::app()->db->createCommand()->delete('{{survey_links}}','participant_id = "'.$row.'"');
 	    	Yii::app()->db->createCommand()->delete('{{participant_attribute}}','participant_id = "'.$row.'"');
-	    }	    
+	    }
 	}
 
 	function getParticipantsSearch($condition,$page,$limit)
-	{  
+	{
 	    $start = $limit*$page - $limit;
 	    if($condition[1]=='equal')
 	        {
@@ -258,13 +270,13 @@ class Participants extends CActiveRecord
 	                  else
 	              {
 	                  $data = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->limit($limit,$start)->queryAll();
-	              }   
+	              }
 	              foreach($data as $key=>$value)
 	              {
 	                  $count = count(Yii::app()->db->createCommand()->where('participant_id = "'.$value['participant_id'].'"')->from('{{survey_links}}')->select('*')->queryAll());
 	                  if($count == $condition[2])
 	                  {
-	                     array_push($resultarray,$value); 
+	                     array_push($resultarray,$value);
 	                  }
 	              }
 	              return $resultarray;
@@ -283,7 +295,7 @@ class Participants extends CActiveRecord
 	                else
 	                {
 	                	$data = $command->from('{{participants}}')->limit($limit,$start)->queryAll();
-	                }   
+	                }
 	                return $data;
 	          }
 	          else if(is_numeric($condition[0]))
@@ -296,7 +308,7 @@ class Participants extends CActiveRecord
 	                else
 	                {
 	                      $data = $command->limit($limit,$start)->queryAll();
-	                }   
+	                }
 	                return $data;
 	          }
 	          else
@@ -309,7 +321,7 @@ class Participants extends CActiveRecord
 	              else
 	              {
 	                  $data = $command->select('*')->from('{{participants}}')->limit($limit,$start)->queryAll();
-	              }   
+	              }
 	            return $data;
 	          }
 	        }
@@ -326,18 +338,18 @@ class Participants extends CActiveRecord
 	              else
 	              {
 	                  $data = Yii::app()->db->createCommand()->select('*')->limit($limit,$start)->from('{{participants}}')->queryAll();
-	              }   
+	              }
 	              foreach($data as $key=>$value)
 	              {
 	                  $count = count(Yii::app()->db->createCommand()->where('participant_id = "'.$value['participant_id'].'"')->from('{{survey_links}}')->queryAll());
 	                  if($count == $condition[2])
 	                  {
-	                     array_push($resultarray,$value); 
+	                     array_push($resultarray,$value);
 	                  }
 	              }
 	              return $resultarray;
 	          }
-	          
+
 	          else if($condition[0]=='owner_name')
 	          {
 	                $userid = $command = Yii::app()->db->createCommand()->select('uid')->where(array('like','full_name',$condition[2]))->from('{{users}}')->queryAll();
@@ -350,7 +362,7 @@ class Participants extends CActiveRecord
 	                  else
 	                  {
 	                  $data = $command->limit($limit,$start)->queryAll();
-	                    }   
+	                    }
 	                return $data;
 	          }
 	          else if(is_numeric($condition[0]))
@@ -363,7 +375,7 @@ class Participants extends CActiveRecord
 	                else
 	                {
 	                      $data = $command->limit($limit,$start);
-	                }   
+	                }
 	                return $data;
 	          }
 	          else
@@ -376,17 +388,17 @@ class Participants extends CActiveRecord
 	                  else
 	                  {
 	                    $data = $command->limit($limit,$start)->queryAll();
-	                  }   
+	                  }
 	                return $data;
 	          }
-	          
+
 	        }
 	        else if($condition[1]=='notequal')
 	        {
 	            if($condition[0]=='surveys')
 	          {
 	              $resultarray = array();
-	              
+
 	              if($page == 0 && $limit == 0)
 	                  {
 	              $data = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->queryAll();
@@ -394,20 +406,20 @@ class Participants extends CActiveRecord
 	                  else
 	                  {
 	                  $data = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->limit($limit,$start)->queryAll();
-	                    }   
+	                    }
 	              foreach($data as $key=>$value)
 	              {
 	                  $count = count(Yii::app()->db->createCommand()->select('*')->from('{{survey_links}}')->where('participant_id = "'.$value['participant_id'].'"')->queryAll());
 	                  if($count != $condition[2])
 	                  {
-	                     array_push($resultarray,$value); 
+	                     array_push($resultarray,$value);
 	                  }
 	              }
 	              return $resultarray;
 	          }
 	          else if($condition[0]=='owner_name')
 	          {
-	              
+
 	                $userid = Yii::app()->db->createCommand()->select('uid')->where(array('not in','full_name',$condition[2]))->from('{{users}}')->queryAll();
 	                $uid = $userid[0];
 	                $command = Yii::app()->db->createCommand()->where('owner_uid = '.$uid['uid'])->from('{{participants}}')->select('*');
@@ -418,7 +430,7 @@ class Participants extends CActiveRecord
 	                  else
 	                  {
 	                  $data = $command->limit($limit,$start)->queryAll();
-	                    }   
+	                    }
 	                return $data;
 	          }
 	          else if(is_numeric($condition[0]))
@@ -431,7 +443,7 @@ class Participants extends CActiveRecord
 	                  else
 	                  {
 	                    $data = $command->limit($limit,$start)->queryAll();
-	                  }   
+	                  }
 	                return $data;
 	          }
 	          else
@@ -444,7 +456,7 @@ class Participants extends CActiveRecord
 	                  else
 	                  {
 	                  $data = $command->limit($limit,$start)->queryAll();
-	                    }   
+	                    }
 	            return $data;
 	          }
 	        }
@@ -454,7 +466,7 @@ class Participants extends CActiveRecord
 	            if($condition[0]=='surveys')
 	          {
 	              $resultarray = array();
-	              $command = Yii::app()->db->createCommand()->order('lastname','asc')->from('{{participants}}')->select('*');	              
+	              $command = Yii::app()->db->createCommand()->order('lastname','asc')->from('{{participants}}')->select('*');
 	              if($page == 0 && $limit == 0)
 	                  {
 	              $data = $command->queryAll();
@@ -462,13 +474,13 @@ class Participants extends CActiveRecord
 	                  else
 	                  {
 	                  $data = $command->limit($limit,$start);
-	                    }   
+	                    }
 	              foreach($data as $key=>$value)
 	              {
 	                  $count = count(Yii::app()->db->createCommand()->where('participant_id = "',$value['participant_id'].'"')->from('{{survey_links}}')->select('*')->queryAll());
 	                  if($count != $condition[2])
 	                  {
-	                     array_push($resultarray,$value); 
+	                     array_push($resultarray,$value);
 	                  }
 	              }
 	              return $resultarray;
@@ -485,7 +497,7 @@ class Participants extends CActiveRecord
 	                  else
 	                  {
 	                  $data = $command->limit($limit,$start)->queryAll();
-	                    }   
+	                    }
 	                return $data;
 	          }
 	          else if(is_numeric($condition[0]))
@@ -498,7 +510,7 @@ class Participants extends CActiveRecord
 	                  else
 	                  {
 	                  $data = $command->limit($limit,$start)->queryAll();
-	                    }   
+	                    }
 	                return $data;
 	          }
 	          else
@@ -511,7 +523,7 @@ class Participants extends CActiveRecord
 	                  else
 	                  {
 	                  $data = $command->limit($limit,$start)->queryAll();
-	                    }   
+	                    }
 	            return $data;
 	          }
 	        }
@@ -527,7 +539,7 @@ class Participants extends CActiveRecord
 	                  else
 	                  {
 	                  $data = $this->db->get('participants',$limit,$start);
-	                    }   
+	                    }
 	              foreach($data->result_array() as $key=>$value)
 	              {
 	                  $this->db->where('participant_id',$value['participant_id']);
@@ -535,14 +547,14 @@ class Participants extends CActiveRecord
 	                  $count=$this->db->count_all_results();
 	                  if($count > $condition[2])
 	                  {
-	                     array_push($resultarray,$value); 
+	                     array_push($resultarray,$value);
 	                  }
 	              }
 	              return $resultarray;
 	          }
 	          else if($condition[0]=='owner_name')
 	          {
-	                $userid = Yii::app()->db->createCommand()->select('uid')->where('full_name = "'.$condition[2].'"')->from('{{users}}')->queryAll();	                
+	                $userid = Yii::app()->db->createCommand()->select('uid')->where('full_name = "'.$condition[2].'"')->from('{{users}}')->queryAll();
 	                $uid = $userid[0];
 	                $command = Yii::app()->db->createCommand()->where('owner_uid = '.$uid['uid'])->order("lastname", "asc")->select('*') ->from('{{participants}}');
 	                if($page == 0 && $limit == 0)
@@ -552,7 +564,7 @@ class Participants extends CActiveRecord
 	                  else
 	                  {
 	                  $data = $command->limit($limit,$start)->queryAll();
-	                    }   
+	                    }
 	                return $data;
 	          }
 	          else if(is_numeric($condition[0]))
@@ -565,7 +577,7 @@ class Participants extends CActiveRecord
 	                  else
 	                  {
 	                  $data = $command->limit($limit,$start)->queryAll();
-	                    }   
+	                    }
 	                return $data;
 	          }
 	          else
@@ -578,7 +590,7 @@ class Participants extends CActiveRecord
 	                  else
 	                  {
 	                  $data = $command->limit($limit,$start)->queryAll();
-	                    }   
+	                    }
 	            return $data;
 	          }
 	        }
@@ -587,7 +599,7 @@ class Participants extends CActiveRecord
 	          if($condition[0]=='surveys')
 	          {
 	              $resultarray = array();
-	              
+
 	              if($page == 0 && $limit == 0)
 	                  {
 	              $data = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->queryAll();
@@ -595,24 +607,24 @@ class Participants extends CActiveRecord
 	                  else
 	                  {
 	                  $data = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->limit($limit,$start)->queryAll();
-	                    }   
+	                    }
 	              foreach($data as $key=>$value)
 	              {
 	                  $count = count(Yii::app()->db->createCommand()->where('participant_id = "'.$value['participant_id'].'"')->from('{{survey_links}}')->select('*')->queryAll());
 	                  if($count < $condition[2])
 	                  {
-	                     array_push($resultarray,$value); 
+	                     array_push($resultarray,$value);
 	                  }
 	              }
 	              return $resultarray;
 	          }
 	          else if($condition[0]=='owner_name')
 	          {
-	              
+
 	                $userid = Yii::app()->db->createCommand()->select('uid')->where('full_name = "'.$condition[2].'"')->from('{{users}}')->queryAll();
 	                $uid = $userid[0];
 	                $command = Yii::app()->db->createCommand()->where('owner_uid < '.$uid['uid'])->select('*')->from('{{participants}}');
-	                
+
 	                if($page == 0 && $limit == 0)
 	                  {
 	                $data=$command->queryAll();
@@ -620,7 +632,7 @@ class Participants extends CActiveRecord
 	                  else
 	                  {
 	                  $data = $command->limit($limit,$start);
-	                    }   
+	                    }
 	                return $data;
 	          }
 	          else if(is_numeric($condition[0]))
@@ -634,12 +646,12 @@ class Participants extends CActiveRecord
 	              {
 	                $this->db->limit($limit,$start);
 	                $data = $command->limit($limit,$start);
-	              }   
+	              }
 	                return $data;
 	          }
 	          else
 	          {
-	            $command = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->where($condition[0].' < "'.$condition[2].'"'); 
+	            $command = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->where($condition[0].' < "'.$condition[2].'"');
 	            if($page == 0 && $limit == 0)
 	            {
 	            $data= $command->queryAll();
@@ -647,10 +659,10 @@ class Participants extends CActiveRecord
 	            else
 	            {
 	                $data = $command->limit($limit,$start)->queryAll();
-	            }   
+	            }
 	            return $data;
 	          }
-	          
+
 	        }
 	}
 
@@ -659,11 +671,11 @@ class Participants extends CActiveRecord
 	   $i=0;
 	   $j=1;
 	   $tobedonelater =array();
-	   $start = $limit*$page - $limit;	   
+	   $start = $limit*$page - $limit;
 	   $command = new CDbCriteria;
 	   $command->condition = '';
 	   $con= count($condition);
-	   while($i < $con){      
+	   while($i < $con){
 	   if($i<3){
 	        $i+=3;
 	        if($condition[1]=='equal')
@@ -686,9 +698,9 @@ class Participants extends CActiveRecord
 	            {
 	                $newsub = $j;
 	                $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition[0].' AND {{participant_attribute}}.value LIKE "%'.$condition[2].'%"')->queryAll();
-	                
-					
-					
+
+
+
 	                $command->addInCondition('participant_id',$arr);
 	                $j++;
 	            }
@@ -703,15 +715,15 @@ class Participants extends CActiveRecord
 	            {
 	                $newsub = $j;
 	                $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition[0].' AND {{participant_attribute}}.value NOT IN ("'.$condition[2].'")')->queryAll();
-	                
-				    
+
+
 	                $command->addInCondition('participant_id',$arr);
 	                $j++;
 	            }
 	            else
 	            {
 	               $command->addCondition($condition[0].' NOT IN ("'.$condition[2].'")');
-	                
+
 	            }
 	         }
 	         else if($condition[1]=='notcontains')
@@ -720,15 +732,15 @@ class Participants extends CActiveRecord
 	            {
 	                $newsub = $j;
 	                $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition[0].' AND {{participant_attribute}}.value NOT LIKE "%'.$condition[2].'%"')->queryAll();
-	                
-	                
+
+
 	                $command->addInCondition('participant_id',$arr);
 	                $j++;
 	            }
 	            else
 	            {
 	               $command->addCondition($condition[0].' NOT LIKE "%'.$condition[2].'%"');
-	                
+
 	            }
 	         }
 	         else if($condition[1]=='greaterthan')
@@ -737,15 +749,15 @@ class Participants extends CActiveRecord
 	            {
 	                $newsub = $j;
 	                $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition[0].' AND {{participant_attribute}}.value > "'.$condition[2].'"')->queryAll();
-	                
-					
+
+
 	                $command->addInCondition('participant_id',$arr);
 	                $j++;
 	            }
 	            else
 	            {
 	               $command->addCondition($condition[0].' > "'.$condition[2].'"');
-	                
+
 	            }
 	         }
 	         else if($condition[1]=='lessthan')
@@ -754,19 +766,19 @@ class Participants extends CActiveRecord
 	            {
 	                $newsub = $j;
 	                $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition[0].' AND {{participant_attribute}}.value < "'.$condition[2].'"')->queryAll();
-	                
-					
+
+
 	                $command->addInCondition('participant_id',$arr);
 	                $j++;
 	            }
 	            else
 	            {
 	               $command->addCondition($condition[0].' < "'.$condition[2].'"');
-	                
+
 	            }
 	         }
 	        }
-	        
+
 	        else if($condition[$i]!='')
 	        {
 	           if($condition[$i+2]=='equal')
@@ -775,11 +787,11 @@ class Participants extends CActiveRecord
 	                {
 	                    if($condition[$i]=='and')
 	                    {
-	                        
+
 	                        $newsub = $j;
 	                        $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition[$i+1].' AND {{participant_attribute}}.value = "'.$condition[$i+3].'"')->queryAll();
-	                        
-	                        
+
+
 	                        $command->addInCondition('participant_id',$arr);
 	                        $j++;
 	                    }
@@ -809,8 +821,8 @@ class Participants extends CActiveRecord
 	                    {
 	                        $newsub = $j;
 	                        $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition[$i+1].' AND {{participant_attribute}}.value LIKE "%'.$condition[$i+3].'%"')->queryAll();
-	                        
-							
+
+
 	                        $command->addInCondition('participant_id',$arr);
 	                        $j++;
 	                    }
@@ -824,7 +836,7 @@ class Participants extends CActiveRecord
 	                {
 	                    if($condition[$i]=='and')
 	                    {
-	                        
+
 	                        $command->addCondition($condition[$i+1].' LIKE "%'.$condition[$i+3].'%"');
 	                    }
 	                    else
@@ -841,8 +853,8 @@ class Participants extends CActiveRecord
 	                    {
 	                        $newsub = $j;
 	                        $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition[$i+1].' AND {{participant_attribute}}.value NOT IN ("'.$condition[$i+3].'")')->queryAll();
-	                        
-	                        
+
+
 	                        $command->addInCondition('participant_id',$arr);
 	                        $j++;
 	                    }
@@ -872,8 +884,8 @@ class Participants extends CActiveRecord
 	                    {
 	                        $newsub = $j;
 	                        $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition[$i+1].' AND {{participant_attribute}}.value NOT LIKE "%'.$condition[$i+3].'%"')->queryAll();
-	                        
-							
+
+
 	                        $command->addInCondition('participant_id',$arr);
 	                        $j++;
 	                    }
@@ -903,8 +915,8 @@ class Participants extends CActiveRecord
 	                    {
 	                        $newsub = $j;
 	                        $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition[$i+1].' AND {{participant_attribute}}.value > "'.$condition[$i+3].'"')->queryAll();
-	                        
-							
+
+
 	                        $command->addInCondition('participant_id',$arr);
 	                        $j++;
 	                    }
@@ -934,8 +946,8 @@ class Participants extends CActiveRecord
 	                    {
 	                        $newsub = $j;
 	                        $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition[$i+1].' AND {{participant_attribute}}.value < "'.$condition[$i+3].'"')->queryAll();
-	                        
-							
+
+
 	                        $command->addInCondition('participant_id',$arr);
 	                        $j++;
 	                    }
@@ -980,8 +992,8 @@ class Participants extends CActiveRecord
 			{
     			$data[$t->participant_id] = $t->attributes;
 			}
-	    }   
-	    
+	    }
+
 	    $otherdata = $data;
 	    if(!empty($tobedonelater))
 	    {
@@ -1020,7 +1032,7 @@ class Participants extends CActiveRecord
 	    $participant_id = ParticipantAttributeNames::model()->findAll($command);
 	    $command = new CDBCriteria;
 	    $command->select = '*';
-	    $command->condition = '';	    
+	    $command->condition = '';
 	    foreach($participant_id as $key=>$value)
 	    {
 	        $command->addCondition('participant_id = "'.$value->participant_id.'"');
@@ -1044,8 +1056,8 @@ class Participants extends CActiveRecord
 			{
     			$data[$t->participant_id] = $t->attributes;
 			}
-	    }   
-	    
+	    }
+
 
 	    $orddata = $data;
 	    $finalanswer = array_merge($otherdata,$orddata);
@@ -1053,13 +1065,13 @@ class Participants extends CActiveRecord
 	    }
 	    else
 	    {
-	     return $otherdata;   
+	     return $otherdata;
 	    }
-	    
+
 	}
 
 	function is_owner($participant_id)
-	{  
+	{
 	    $userid=Yii::app()->session['loginID'];
 	    $is_owner = Yii::app()->db->createCommand()->select('participant_id')->where('participant_id = "'.$participant_id.'" AND owner_uid = '.$userid)->from('{{participants}}')->queryAll();
 	    //$is_owner->num_rows();
@@ -1072,11 +1084,11 @@ class Participants extends CActiveRecord
 	    {
 	        return false;
 	    }
-	    
+
 	}
 
 	/*
-	 * This funciton is responsible for showing all the participant's shared by a particular user based on the user id 
+	 * This funciton is responsible for showing all the participant's shared by a particular user based on the user id
 	 */
 	function getParticipantShared($userid)
 	{
@@ -1084,10 +1096,10 @@ class Participants extends CActiveRecord
 	}
 
 	/*
-	 * This funciton is responsible for showing all the participant's shared to the superadmin 
+	 * This funciton is responsible for showing all the participant's shared to the superadmin
 	 */
 	function getParticipantSharedAll()
-	{	
+	{
 		return Yii::app()->db->createCommand()->select('{{participants}}.*,{{participant_shares}}.*')->from('{{participants}}')->join('{{participant_shares}}','{{participant_shares}}.participant_id = {{participants}}.participant_id')->queryAll();
 	}
 
@@ -1099,7 +1111,7 @@ class Participants extends CActiveRecord
 	    $participantid = explode(",",$participantid);
 	    if($participantid[0]=="")
 	    {
-	        $participantid = array_slice($participantid,1); 
+	        $participantid = array_slice($participantid,1);
 	    }
 	    $number2add=sanitize_int(count($newcreate));
 	    $arr = Yii::app()->db->createCommand()->select('*')->from("{{tokens_$surveyid}}")->queryRow();
@@ -1117,7 +1129,7 @@ class Participants extends CActiveRecord
 	           $attid = substr($value,15);
 	           $mapped[$value] = $attid;
 	        }
-	    }  
+	    }
 	    $attributesadded=array();
 	    $attributeidadded=array();
 	    $fieldcontents="";
@@ -1126,7 +1138,7 @@ class Participants extends CActiveRecord
 	    foreach ($newcreate as $key=>$value)
 	    {
 	        $fields['attribute_cpdb_'.$value]=array('type' => 'VARCHAR','constraint' => '255');
-	        $attname = Yii::app()->db->createCommand()->select('{{participant_attribute_names_lang}}.attribute_name')->from('{{participant_attribute_names}}')->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')->where('{{participant_attribute_names}}.attribute_id = '.$value.' AND lang = "'.Yii::app()->session['adminlang'].'"');	        
+	        $attname = Yii::app()->db->createCommand()->select('{{participant_attribute_names_lang}}.attribute_name')->from('{{participant_attribute_names}}')->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')->where('{{participant_attribute_names}}.attribute_id = '.$value.' AND lang = "'.Yii::app()->session['adminlang'].'"');
 	        $attributename = $attname->queryRow();
 	        $tokenattributefieldnames[]='attribute_cpdb_'.$value;
 	        $fieldcontents.= 'attribute_cpdb_'.$value.'='.$attributename['attribute_name']."\n";
@@ -1135,7 +1147,7 @@ class Participants extends CActiveRecord
 	    }
 	    $previousatt = Yii::app()->db->createCommand()->select('attributedescriptions')->where("sid = ".$surveyid)->from('{{surveys}}');
 	    $previouseattribute = $previousatt->queryRow();
-	    Yii::app()->db->createCommand()->update('{{surveys}}',array("attributedescriptions"=>$previouseattribute['attributedescriptions'].$fieldcontents),'sid = '.$surveyid);// load description in the surveys table    
+	    Yii::app()->db->createCommand()->update('{{surveys}}',array("attributedescriptions"=>$previouseattribute['attributedescriptions'].$fieldcontents),'sid = '.$surveyid);// load description in the surveys table
 	    foreach($fields as $key=>$value){
 	    	Yii::app()->db->createCommand("ALTER TABLE {{tokens_$surveyid}} ADD COLUMN $key ".$value['type'].'('.$value['constraint'].')')->query(); // add columns in token's table
 	    }
@@ -1162,12 +1174,12 @@ class Participants extends CActiveRecord
 	            'token_id' => $insertedtokenid ,
 	            'survey_id' => $surveyid,
 	            'date_created' =>  date(DATE_W3C,$time));
-	            Yii::app()->db->createCommand()->insert('{{survey_links}}', $data); 
+	            Yii::app()->db->createCommand()->insert('{{survey_links}}', $data);
 	            if(!empty($newcreate))
 	            {
 	            $numberofattributes = count($attributesadded);
-	            for($a=0;$a<$numberofattributes;$a++)  
-	            {  
+	            for($a=0;$a<$numberofattributes;$a++)
+	            {
 	            	$val = Yii::app()->db->createCommand()->select('value')->where('participant_id = "'.$participant.'" AND attribute_id = '.$attributesadded[$a])->from('{{participant_attribute}}');
 	                if(count($val->queryAll())>0)
 	                {
@@ -1175,7 +1187,7 @@ class Participants extends CActiveRecord
 	                    $data=array($attributeidadded[$a]=>$value['value']);
 	                    if(!empty($value))
 	                    {
-	                       Yii::app()->db->createCommand()->update("{{tokens_$surveyid}}", $data, 'participant_id = "'.$participant.'"');  
+	                       Yii::app()->db->createCommand()->update("{{tokens_$surveyid}}", $data, 'participant_id = "'.$participant.'"');
 	                    }
 	                }
 	            }
@@ -1191,7 +1203,7 @@ class Participants extends CActiveRecord
 	                        $data=array($key=>$value['value']);
 	                        Yii::app()->db->createCommand()->update("{{tokens_$surveyid}}", $data,'participant_id = "'.$participant.'"');
 	                    }
-	                    
+
 	                }
 	            }
 	            $sucessfull++;
@@ -1239,7 +1251,7 @@ class Participants extends CActiveRecord
 	                                         'attribute_name'=>urldecode($key),
 	                                         'lang' => Yii::app()->session['adminlang']);
 	                Yii::app()->db->createCommand()->insert('{{participant_attribute_names_lang}}',$insertnameslang);
-	            }       
+	            }
 	    }
 	    foreach($tokenid as $key=>$tid)
 	    {
@@ -1283,14 +1295,14 @@ class Participants extends CActiveRecord
 
 	                        if(!empty($data['value']))
 	                        {
-	                        Yii::app()->db->createCommand()->insert('{{participant_attribute}}', $data); 
+	                        Yii::app()->db->createCommand()->insert('{{participant_attribute}}', $data);
 	                        }
 	                    }
 	                }
 	                if(!empty($mapped))
 	                {
-	                foreach($mapped as $cpdbatt => $tatt)  
-	                {  
+	                foreach($mapped as $cpdbatt => $tatt)
+	                {
 	                     $val = Yii::app()->db->createCommand()->select($tatt)->where('tid = '.$tid)->from('{{tokens_'.$surveyid.'}}');
 	                     $value = $val->queryRow();
 	                     $data = array( 'participant_id' => $pid,
@@ -1298,7 +1310,7 @@ class Participants extends CActiveRecord
 	                                    'attribute_id' => $cpdbatt );
 	                     if(!empty($data['value']))
 	                     {
-	                        Yii::app()->db->createCommand()->insert('{{participant_attribute}}', $data); 
+	                        Yii::app()->db->createCommand()->insert('{{participant_attribute}}', $data);
 	                     }
 	                }
 	                }
@@ -1317,12 +1329,12 @@ class Participants extends CActiveRecord
 	                $previousatt = Yii::app()->db->createCommand()->select('attributedescriptions')->where("sid = ".$surveyid)->from('{{surveys}}');
 	                $previouseattribute = $previousatt->queryRow();
 	                $newstring = str_replace($value,$newname,$previouseattribute['attributedescriptions']);
-	                Yii::app()->db->createCommand()->update('{{surveys}}',array("attributedescriptions"=>$newstring),'sid = '.$surveyid); // load description in the surveys table    
+	                Yii::app()->db->createCommand()->update('{{surveys}}',array("attributedescriptions"=>$newstring),'sid = '.$surveyid); // load description in the surveys table
 	            }
 	        }
 	        if(!empty($mapped))
 	        {
-	            foreach($mapped as $cpdbatt => $tatt)  
+	            foreach($mapped as $cpdbatt => $tatt)
 	            {
 	                if($tatt[10]!='c')
 	                {
@@ -1333,7 +1345,7 @@ class Participants extends CActiveRecord
 	                    $previousatt = Yii::app()->db->createCommand()->select('attributedescriptions')->where("sid = ".$surveyid)->from('{{surveys}}');
 	                    $previouseattribute = $previousatt->queryRow();
 	                    $newstring = str_replace($tatt,$newname,$previouseattribute['attributedescriptions']);
-	                    Yii::app()->db->createCommand()->update('{{surveys}}',array("attributedescriptions"=>$newstring),'sid = '.$surveyid); // load description in the surveys table    
+	                    Yii::app()->db->createCommand()->update('{{surveys}}',array("attributedescriptions"=>$newstring),'sid = '.$surveyid); // load description in the surveys table
 	                }
 	            }
 	        }

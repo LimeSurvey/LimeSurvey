@@ -1,5 +1,18 @@
 <?php
 /*
+ * LimeSurvey
+ * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ *
+ *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
+ */
+/*
  * This is the main controller for Participants Panel
  */
 class participantsaction extends CAction
@@ -40,7 +53,7 @@ function index()
     $this->getController()->_getAdminHeader();
     if(Yii::app()->session['USER_RIGHT_SUPERADMIN']) // if superadmin all the records in the cpdb will be displayed
     {
-        $iTotalRecords = Participants::model()->count();        
+        $iTotalRecords = Participants::model()->count();
     }
     else                                                 // if not only the participants on which he has right on (shared and owned)
     {
@@ -202,7 +215,7 @@ function sharePanel()
 function getShareInfo_json()
 {
     if(Yii::app()->session['USER_RIGHT_SUPERADMIN']) // If super administrator all the share info in the links table will be shown
-    {        
+    {
         $records = Participants::getParticipantSharedAll();
         $aData->page = 1;
         $aData->records =count($records);
@@ -440,7 +453,7 @@ function exporttocsvcountAll()
  */
 function exporttocsvAll()
 {
-    Yii::app()->loadHelper("export");  // loads the export helper    
+    Yii::app()->loadHelper("export");  // loads the export helper
     if(Yii::app()->session['USER_RIGHT_SUPERADMIN']) //If super admin all the participants will be exported
     {
         $query = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->queryAll();
@@ -504,7 +517,7 @@ function exporttocsvAll()
         $i++;
     }
     // Load the helper and pass the array to be written to a CSV file
-    
+
     cpdb_export($outputarray,"central_".time());
 }
 /**
@@ -698,7 +711,7 @@ function exporttocsv()
 function getParticipantsResults_json()
 {
     $page = CHttpRequest::getPost('page');
-    $limit = CHttpRequest::getPost('rows');    
+    $limit = CHttpRequest::getPost('rows');
     $attid = ParticipantAttributeNames::getAttributeVisibleID();
     $participantfields = array('participant_id','can_edit','firstname','lastname','email','blacklisted','surveys','language','owner_uid');
     if(Yii::app()->session['USER_RIGHT_SUPERADMIN']) //If super admin all the participants will be visible
@@ -722,7 +735,7 @@ function getParticipantsResults_json()
             $aData->records = count (Participants::getParticipantsSearchMultiple($condition,0,0));
             $aData->total = ceil ($aData->records /$limit );
         }
-        $i=0; 
+        $i=0;
         foreach($records as $row=>$value)
         {
             $username = User::getName($value['owner_uid']);//for conversion of uid to human readable names
@@ -771,7 +784,7 @@ function getParticipantsResults_json()
             $count = count($sortedarray[0]);
             foreach($sortedarray as $key=>$value)
             {
-                $aData->rows[$i]['id']=$value[0];   
+                $aData->rows[$i]['id']=$value[0];
                 $aData->rows[$i]['cell'] = array();
                 for($j=0 ; $j < $count ; $j++)
                 {
@@ -892,7 +905,7 @@ function getParticipants_json()
         $i=0;
         foreach($records as $key => $row)
         {
-            $username = User::getName($row['owner_uid']);//for conversion of uid to human readable names            
+            $username = User::getName($row['owner_uid']);//for conversion of uid to human readable names
             $surveycount = Participants::getSurveyCount($row['participant_id']);
             $sortablearray[$i]=array($row['participant_id'],"true",$row['firstname'],$row['lastname'],$row['email'],$row['blacklisted'],$surveycount,$row['language'] ,$username[0]['full_name']);// since it's the admin he has access to all editing on the participants inspite of what can_edit option is
             $attributes =  ParticipantAttributeNames::getParticipantVisibleAttribute($row['participant_id']);
@@ -1115,7 +1128,7 @@ function storeParticipants()
     'language' => CHttpRequest::getPost('language'),
     'blacklisted' => CHttpRequest::getPost('blacklisted'),
     'owner_uid' => CHttpRequest::getPost('owner_uid'));
-    
+
     Participants::insertParticipant($aData);
 }
 /*
@@ -1696,7 +1709,7 @@ function attributeMapToken()
     $i=0;
     $j=0;
     foreach($tokenattributefieldnames as $key=>$value)
-    {   
+    {
         if(is_numeric($key[10]))
         {
             $selectedattribute[$value] = $key;

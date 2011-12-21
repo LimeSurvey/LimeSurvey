@@ -1,5 +1,17 @@
 <?php
-
+/*
+ * LimeSurvey
+ * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ *
+ *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
+ */
 /**
  * This is the model class for table "{{{{participant_attribute_names}}}}".
  *
@@ -101,7 +113,7 @@ class ParticipantAttributeNames extends CActiveRecord
     {
         return Yii::app()->db->createCommand()->select('*')->from('{{participant_attribute_values}}')->queryAll();
     }
-    
+
     function getAttributeVisibleID()
     {
         return Yii::app()->db->createCommand()->select('{{participant_attribute_names}}.*,{{participant_attribute_names_lang}}.*')->from('{{participant_attribute_names}}')->order('{{participant_attribute_names}}.attribute_id', 'desc')->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names_lang}}.attribute_id = {{participant_attribute_names}}.attribute_id')->where('{{participant_attribute_names_lang}}.lang = "'.Yii::app()->session['adminlang'].'" AND {{participant_attribute_names}}.visible = "TRUE"')->queryAll();
@@ -143,7 +155,7 @@ class ParticipantAttributeNames extends CActiveRecord
     	}
         $attrid = array('not in','{{participant_attribute_names}}.attribute_id', $notin);
         return Yii::app()->db->createCommand()->select('*')->from('{{participant_attribute_names}}')->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')->where($attrid)->queryAll();
-    }    
+    }
 
     function storeAttribute($data)
     {
@@ -154,7 +166,7 @@ class ParticipantAttributeNames extends CActiveRecord
                                  'attribute_name'=>$data['attribute_name'],
                                  'lang' => Yii::app()->session['adminlang']);
         Yii::app()->db->createCommand()->insert('{{participant_attribute_names_lang}}',$insertnameslang);
-        
+
     }
 
     function editParticipantAttributeValue($data)
@@ -162,26 +174,26 @@ class ParticipantAttributeNames extends CActiveRecord
 	   	$query = Yii::app()->db->createCommand()->where('participant_id = "'.$data['participant_id'].'" AND attribute_id = '. $data['attribute_id'])->from('{{participant_attribute}}')->select('*')->queryAll();
 	        if(count($query) == 0)
 	        {
-	            Yii::app()->db->createCommand()->insert('{{participant_attribute}}',$data); 
+	            Yii::app()->db->createCommand()->insert('{{participant_attribute}}',$data);
 	        }
 	        else
 	        {
-	        Yii::app()->db->createCommand()->update('{{participant_attribute}}',$data,'participant_id = "'.$data['participant_id'].'" AND attribute_id = '.$data['attribute_id']); 
+	        Yii::app()->db->createCommand()->update('{{participant_attribute}}',$data,'participant_id = "'.$data['participant_id'].'" AND attribute_id = '.$data['attribute_id']);
 	    }
-   	
+
     }
 
     function delAttribute($attid)
     {
-        Yii::app()->db->createCommand()->delete('{{participant_attribute_names_lang}}', 'attribute_id = '.$attid); 
-        Yii::app()->db->createCommand()->delete('{{participant_attribute_names}}', 'attribute_id = '.$attid); 
-        Yii::app()->db->createCommand()->delete('{{participant_attribute_values}}', 'attribute_id = '.$attid); 
-        Yii::app()->db->createCommand()->delete('{{participant_attribute}}', 'attribute_id = '.$attid); 
+        Yii::app()->db->createCommand()->delete('{{participant_attribute_names_lang}}', 'attribute_id = '.$attid);
+        Yii::app()->db->createCommand()->delete('{{participant_attribute_names}}', 'attribute_id = '.$attid);
+        Yii::app()->db->createCommand()->delete('{{participant_attribute_values}}', 'attribute_id = '.$attid);
+        Yii::app()->db->createCommand()->delete('{{participant_attribute}}', 'attribute_id = '.$attid);
     }
-	
+
     function delAttributeValues($attid,$valid)
     {
-        Yii::app()->db->createCommand()->delete('{{participant_attribute_values}}', 'attribute_id = '.$attid.' AND value_id = '.$valid); 
+        Yii::app()->db->createCommand()->delete('{{participant_attribute_values}}', 'attribute_id = '.$attid.' AND value_id = '.$valid);
     }
 
     function getAttributeNames($attributeid)
@@ -202,13 +214,13 @@ class ParticipantAttributeNames extends CActiveRecord
     function saveAttributeLanguages($data)
     {
         $query = Yii::app()->db->createCommand()->from('{{participant_attribute_names_lang}}')->where('attribute_id = '.$data['attribute_id'].' AND lang = "'.$data['lang'].'"')->select('*')->queryAll();
-        if (count($query) == 0) 
+        if (count($query) == 0)
         {
               // A record does not exist, insert one.
                $record = array('attribute_id'=>$data['attribute_id'],'attribute_name'=>$data['attribute_name'],'lang'=>$data['lang']);
                $query = Yii::app()->db->createCommand()->insert('{{participant_attribute_names_lang}}', $data);
         }
-        else 
+        else
         {
              // A record does exist, update it.
             $query = Yii::app()->db->createCommand()->update('{{participant_attribute_names_lang}}',array('attribute_name'=>$data['attribute_name'],),'attribute_id = '.$data['attribute_id'].' AND lang="'.$data['lang'].'"');
@@ -230,13 +242,13 @@ class ParticipantAttributeNames extends CActiveRecord
 
     function saveAttributeVisible($attid,$visiblecondition)
     {
-    
+
         $attribute_id = explode("_", $attid);
         $data=array('visible'=>$visiblecondition);
         if($visiblecondition == "")
         {
             $data=array('visible'=>'FALSE');
         }
-        Yii::app()->db->createCommand()->update('{{participant_attribute_names}}',$data,'attribute_id = '.$attribute_id[1]); 
+        Yii::app()->db->createCommand()->update('{{participant_attribute_names}}',$data,'attribute_id = '.$attribute_id[1]);
     }
 }

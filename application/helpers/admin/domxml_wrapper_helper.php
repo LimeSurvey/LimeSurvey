@@ -1,4 +1,5 @@
 <?php
+
 /*
  Requires PHP5, uses built-in DOM extension.
  To be used in PHP4 scripts using DOMXML extension: allows PHP4/DOMXML scripts to run on PHP5/DOM.

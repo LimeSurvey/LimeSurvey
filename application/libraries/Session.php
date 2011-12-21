@@ -1,7 +1,7 @@
 <?php
 /*
  * LimeSurvey
- * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
  */
 
 require_once 'LS/LS.php';
@@ -67,7 +67,7 @@ class LSCI_Session extends LSCI_Session_Debug // LSCI_Session_Base
             $this->start();
         }
     }
-    
+
     /**
      * start session
      */
@@ -124,9 +124,9 @@ class LSCI_Session extends LSCI_Session_Debug // LSCI_Session_Base
         {
             $_SESSION = array(self::KEY_STORE => array()) + $_SESSION;
         }
-        
+
         $store =& $_SESSION[self::KEY_STORE];
-        
+
         if (isset($store['last_activity']) && ($store['last_activity'] + $expire) < $now)
         {
             // Expired - destroy
@@ -167,7 +167,7 @@ class LSCI_Session extends LSCI_Session_Debug // LSCI_Session_Base
             // Store user agent string
             $store['user_agent'] = trim(substr($CI->input->user_agent(), 0, 50));
         }
-        
+
         // Store session name
         $store['name'] = session_name();
     }
@@ -244,7 +244,7 @@ class LSCI_Session extends LSCI_Session_Debug // LSCI_Session_Base
             $_SESSION[$key] = $val;
         }
     }
-    
+
     /**
      * Delete item(s) in session data (CI Interface)
      *

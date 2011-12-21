@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
  * LimeSurvey
- * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -10,9 +10,8 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id: dataentry.php 11299 2011-10-29 14:57:24Z c_schmitz $
+ *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
  */
-
 /*
  * We need this later:
  *  1 - Array (Flexible Labels) Dual Scale

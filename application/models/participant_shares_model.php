@@ -1,5 +1,17 @@
 <?php
-
+/*
+ * LimeSurvey
+ * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ *
+ *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
+ */
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -19,7 +31,7 @@ class participant_shares_model extends CI_Model
     {
        $this->db->where('participant_id', $data['participant_id']);
        $this->db->where('share_uid', $data['share_uid']);
-       $this->db->update('participant_shares', $data); 
+       $this->db->update('participant_shares', $data);
     }
     function deleteRow($rows)
     {
@@ -27,10 +39,10 @@ class participant_shares_model extends CI_Model
 	$rowid=explode(",",$rows['id']);
 	foreach($rowid as $row)
 		{
-		        $this->db->where('participant_id',$row);			
-                        $this->db->delete('participant_shares'); 
+		        $this->db->where('participant_id',$row);
+                        $this->db->delete('participant_shares');
                }
-		
+
 }
 }
 ?>

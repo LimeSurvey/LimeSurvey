@@ -1,4 +1,17 @@
 <?php
+/*
+ * LimeSurvey
+ * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ *
+ *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
+ */
 class remotecontrol extends Survey_Common_Controller {
 
     /**
@@ -130,7 +143,7 @@ class remotecontrol extends Survey_Common_Controller {
     * - Session key (string)
     * - Survey ID (integer)
     * - ResponseData (array)
-    * 
+    *
     */
     function addResponse($request)
     {
@@ -153,7 +166,7 @@ class remotecontrol extends Survey_Common_Controller {
                 {
                     return $this->xmlrpc->send_error_message('12', 'No survey table');
                 }
- 
+
                 //set required values if not set
                 if (!isset($aResponseData['submitdate'])) $aResponseData['submitdate'] = date("Y-m-d H:i:s");
                 if (!isset($aResponseData['datestamp'])) $aResponseData['datestamp'] = date("Y-m-d H:i:s");
@@ -176,7 +189,7 @@ class remotecontrol extends Survey_Common_Controller {
             else
                 return $this->xmlrpc->send_error_message('2', 'No permission');
         }
-    } 
+    }
 
     /**
     * XML-RPC routine to add a participant to a token table
@@ -394,4 +407,3 @@ class remotecontrol extends Survey_Common_Controller {
     }
 
 }
-
