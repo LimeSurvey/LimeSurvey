@@ -83,6 +83,29 @@ class Saved_control extends CActiveRecord {
         return $row['countall'];
     }
     
+    /**
+    * Deletes some records meeting speicifed condition
+    *
+    * @access public
+    * @param array $condition
+    * @return int (rows deleted)
+    */
+    public function deleteSomeRecords($condition)
+    {
+    	$record = new self;
+    	$criteria = new CDbCriteria;
+
+    	if($condition != FALSE)
+    	{
+    		foreach($condition as $column=>$value)
+    		{
+    			$criteria->addCondition("$column='$value'");
+    		}
+    	}
+
+    	return $record->deleteAll($criteria);
+    }
+
     function insertRecords($data)
     {
         return $this->db->insert('saved_control', $data); 

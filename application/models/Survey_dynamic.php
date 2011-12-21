@@ -101,25 +101,37 @@ class Survey_dynamic extends CActiveRecord
 	 * @param boolean $return_count
 	 * @return mixed
 	 */
-	public static function getSomeRecords($condition=FALSE, $select=FALSE, $return_count=FALSE)
+	public function getSomeRecords($condition=FALSE, $select=FALSE, $return_count=FALSE, $oneonly=FALSE)
 	{
-		$survey = new Survey_dynamic;
+		$survey = new self;
 		$criteria = new CDbCriteria;
 		
 		if( $select != FALSE ) $criteria->select = $select;
 		
 		if( $condition != FALSE )
 		{
-			foreach($condition as $column => $value)
+			if( is_array($condition) )
 			{
-				$criteria->addCondition($column."=".$value."");
+				foreach($condition as $column => $value)
+				{
+					$criteria->addCondition($column."=".$value."");
+				}
+			}
+			else
+			{
+				$criteria->condition = $condition;
 			}
 		}
 		
 		if( $return_count ) 
 			return $survey->count($criteria);
-		else
-			return $survey->findAll($criteria);
+		else 
+		{
+			if($oneonly)
+				return $survey->find($criteria);
+			else
+				return $survey->findAll($criteria);
+		}
 	}
 	
 	/**

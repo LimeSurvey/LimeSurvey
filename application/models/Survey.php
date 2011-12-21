@@ -110,14 +110,29 @@ class Survey extends CActiveRecord
 			}
         }
 
-		$data = $this->findAll($criteria);
-
-        return $data;
+		return $this->findAll($criteria);
     }
 
-  public function getSomeRecords($fields,$condition=FALSE)
+    public function getOneRecord($condition=FALSE)
+    {
+        $criteria = new CDbCriteria;
+
+        if ($condition != FALSE)
+        {   
+            foreach ($condition as $item => $value)
+            {
+                $criteria->addCondition($item.'="'.$value.'"');
+            }
+        }
+        
+        return $this->find($criteria);
+    }
+
+    public function getSomeRecords($fields, $condition=FALSE, $oneonly=FALSE)
     {
 		$criteria = new CDbCriteria;
+
+        $criteria->select = $fields;
 
         if ($condition != FALSE)
         {
@@ -127,9 +142,10 @@ class Survey extends CActiveRecord
 			}
         }
 
-		$data = $this->findAll($criteria);
-
-        return $data;
+        if($oneonly)
+            return $this->find($criteria);
+        else
+		  return $this->findAll($criteria);
     }
 
     public function getDataOnSurvey($surveyid)
@@ -182,7 +198,7 @@ class Survey extends CActiveRecord
 		return $data['sid'];
     }
 
-    public function updateSurvey($data,$condition = FALSE)
+    public function updateSurvey($data, $condition = FALSE)
     {
 		return Yii::app()->db->createCommand()->update($this->tableName(), $data, $condition);
     }
@@ -250,5 +266,20 @@ class Survey extends CActiveRecord
             $this->quota_model->deleteQuota(array('sid'=>$iSurveyID));
         }
 
+    }
+
+    public function loadSurveys($is_superadmin)
+    {
+        $query = " SELECT a.*, c.*, u.users_name FROM {{surveys}} as a "
+            ." INNER JOIN {{surveys_languagesettings}} as c ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language ) AND surveyls_survey_id=a.sid AND surveyls_language=a.language "
+            ." INNER JOIN {{users}} as u ON (u.uid=a.owner_id) ";
+        
+        if($is_superadmin != 1)
+        {
+            $query .= "WHERE a.sid in (select sid from {{survey_permissions}} WHERE uid=".$this->yii->session['loginID']." AND permission='survey' AND read_p=1) ";
+        }
+        $query .= " ORDER BY surveyls_title";
+        
+        return Yii::app()->db->createCommand($query)->query();
     }
 }
