@@ -6008,50 +6008,48 @@ function SSL_mode()
 };
 
 /**
-* get_quotaCompletedCount() returns the number of answers matching the quota
-* @param string $surveyid - Survey identification number
-* @param string $quotaid - quota id for which you want to compute the completed field
-* @return string - number of mathing entries in the result DB or 'N/A'
-*/
+ * Returns the number of answers matching the quota
+ *
+ * @param int $surveyid - Survey identification number
+ * @param int $quotaid - quota id for which you want to compute the completed field
+ * @return mixed - Integer of matching entries in the result DB or 'N/A'
+ */
 function get_quotaCompletedCount($surveyid, $quotaid)
 {
-
-    $result ="N/A";
-    $quota_info = getQuotaInformation($surveyid,GetBaseLanguageFromSurveyID($surveyid),$quotaid);
+    $result = "N/A";
+    $quota_info = getQuotaInformation($surveyid, GetBaseLanguageFromSurveyID($surveyid), $quotaid);
     $quota = $quota_info[0];
 
-	if (Yii::app()->db->schema->getTable('{{survey_' . $surveyid . '}}') &&
-    count($quota['members']) > 0)
+    if (Yii::app()->db->schema->getTable('{{survey_' . $surveyid . '}}') &&
+        count($quota['members']) > 0)
     {
-        $fields_list = array(); // Keep a list of fields for easy reference
-        // construct an array of value for each $quota['members']['fieldnames']
-        unset($querycond);
+        // Keep a list of fields for easy reference
+        $fields_list = array();
+
+        // Construct an array of value for each $quota['members']['fieldnames']
         $fields_query = array();
-        foreach($quota['members'] as $member)
+
+        foreach ($quota['members'] as $member)
         {
-            foreach($member['fieldnames'] as $fieldname)
+            $criteria = new CDbCriteria;
+
+            foreach ($member['fieldnames'] as $fieldname)
             {
-                if (!in_array($fieldname,$fields_list)){
+                if (!in_array($fieldname, $fields_list))
                     $fields_list[] = $fieldname;
-                    $fields_query[$fieldname] = array();
-                }
-                $fields_query[$fieldname][]= $fieldname." = '{$member['value']}'";
+
+                $criteria->addColumnCondition(array($fieldname => $member['value']), 'OR');
             }
+
+            $fields_query[$fieldname] = $criteria;
         }
 
-        foreach($fields_list as $fieldname)
-        {
-            $select_query = " ( ".implode(' OR ',$fields_query[$fieldname]).' )';
-            $querycond[] = $select_query;
-        }
+        $criteria = new CDbCriteria;
 
-        //$querysel = "SELECT count(id) as count FROM ".db_table_name('survey_'.$surveyid)." WHERE ".implode(' AND ',$querycond)." "." AND submitdate IS NOT NULL";
-        //$result = db_execute_assoc($querysel) or safe_die($connect->ErrorMsg()); //Checked
-        //$quota_check = $result->FetchRow();
+        foreach ($fields_list as $fieldname)
+            $criteria->mergeWith($fields_query[$fieldname]);
 
-        $query = Survey_dynamic::model($sid)->findAll(implode('', $querycond));
-        $result = count($query);
-        //$result = $quota_check['count'];
+        $result = Survey_dynamic::model($sid)->count($criteria);
     }
 
     return $result;
