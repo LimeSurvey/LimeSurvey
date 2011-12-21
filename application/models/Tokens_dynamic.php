@@ -463,5 +463,16 @@ class Tokens_dynamic extends CActiveRecord
         $dlquery = "DELETE FROM ".Tokens_dynamic::tableName()." WHERE tid IN (".implode(", ", $tokenids).")";
         return Yii::app()->db->createCommand($dlquery)->query();
     }
+
+    function getEmailStatus($sid,$token)
+    {
+        $usquery = 'SELECT emailstatus from {{tokens_'.$sid.'}} where token="'.$token.'"';
+        return Yii::app()->db->createCommand($usquery)->queryRow();
+    }
+
+    function updateEmailStatus($sid,$token,$status)
+    {
+        return Yii::app()->db->createCommand()-update('{{tokens_'.$sid'}}',array('emailastatus' => $status),'token = :token',array(':token' => $token ));
+    }
 }
 ?>
