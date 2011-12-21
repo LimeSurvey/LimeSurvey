@@ -28,13 +28,12 @@ class Survey_dynamic extends CActiveRecord
 	 */
 	public static function model($sid = null)
 	{
-		$instance = parent::model(__CLASS__);
-        if ( $sid === null )
-            return $instance;
-		$instance->sid = $sid;
-		return $instance;
+        if (!is_null($sid))
+            self::sid($sid);
+        
+		return parent::model(__CLASS__);
 	}
-	
+
 	/**
 	 * Sets the survey ID for the next model
 	 *
@@ -69,10 +68,10 @@ class Survey_dynamic extends CActiveRecord
 	{
 		return 'sid';
 	}
-	
+
 	/**
 	 * Insert records from $data array
-	 * 
+	 *
 	 * @access public
 	 * @param array $data
 	 * @return boolean
@@ -89,11 +88,11 @@ class Survey_dynamic extends CActiveRecord
 		}
 		return $record->save();
 	}
-	
+
 	/**
 	 * Queries the database and returns some records or records count
 	 * according to specified conditions
-	 * 
+	 *
 	 * @static
 	 * @access public
 	 * @param array $condition
@@ -105,9 +104,9 @@ class Survey_dynamic extends CActiveRecord
 	{
 		$survey = new self;
 		$criteria = new CDbCriteria;
-		
+
 		if( $select != FALSE ) $criteria->select = $select;
-		
+
 		if( $condition != FALSE )
 		{
 			if( is_array($condition) )
@@ -122,10 +121,10 @@ class Survey_dynamic extends CActiveRecord
 				$criteria->condition = $condition;
 			}
 		}
-		
-		if( $return_count ) 
+
+		if( $return_count )
 			return $survey->count($criteria);
-		else 
+		else
 		{
 			if($oneonly)
 				return $survey->find($criteria);
@@ -133,11 +132,11 @@ class Survey_dynamic extends CActiveRecord
 				return $survey->findAll($criteria);
 		}
 	}
-	
+
 	/**
-	 * Deletes some records from survey's table 
+	 * Deletes some records from survey's table
 	 * according to specific condition
-	 * 
+	 *
 	 * @static
 	 * @access public
 	 * @param array $condition
@@ -147,17 +146,17 @@ class Survey_dynamic extends CActiveRecord
 	{
 		$survey = new Survey_dynamic;
 		$criteria = new CDbCriteria;
-		
+
 		if( $condition != FALSE )
 		{
-			foreach ($condition as $column => $value) 
+			foreach ($condition as $column => $value)
 			{
 				return $criteria->addCondition($column."=`".$value."`");
-			}	
+			}
 		}
-		
+
 		return $survey->deleteAll($criteria);
 	}
-	
+
 }
 ?>
