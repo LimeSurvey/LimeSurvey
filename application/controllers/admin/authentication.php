@@ -50,7 +50,7 @@ class Authentication extends CAction
      */
     public function index()
     {
-        redirect('/admin', 'refresh');
+        $this->_doRedirect();
     }
 
     /**

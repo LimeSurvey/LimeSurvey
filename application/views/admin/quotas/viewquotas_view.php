@@ -1,4 +1,10 @@
-<?php if(isset($showerror)) echo $showerror;?>
+<?php if (isset($sShowError))  {?>
+<script type="text/javascript">
+    <!--
+    alert("<?php $clang->eT("Quota could not be added.", 'js'); ?>\n\n<?php $clang->eT("It is missing a quota message for the following languages:", 'js'); ?>\n<?php echo $sShowError; ?>");
+    //-->
+</script>
+<?php } ?>
 
 <div class="header ui-widget-header"><?php echo $clang->gT("Survey quotas");?></div>
   				<br />

@@ -1,6 +1,6 @@
 <div class="header ui-widget-header"><?php echo $clang->gT("Survey Quota");?>: <?php echo $clang->gT("Add Answer");?></div><br />
 	<div class="messagebox ui-corner-all" style="width: 600px">
-		<form action="<?php echo $this->createUrl("/admin/quotas/surveyid/$surveyid/subaction/new_answer_two");?>" method="post">
+		<form action="<?php echo $this->createUrl("/admin/quotas/surveyid/$iSurveyId/subaction/new_answer_two");?>" method="post">
 			<table class="addquotaanswer" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
 				<thead>
 				<tr>
@@ -30,10 +30,10 @@
 					<td>&nbsp;</td>
 					<td>
 						<input name="submit" type="submit" class="submit" value="<?php echo $clang->gT("Next");?>" />
-						<input type="hidden" name="sid" value="'.$surveyid.'" />
+						<input type="hidden" name="sid" value="'.$iSurveyId.'" />
 						<input type="hidden" name="action" value="quotas" />
 						<input type="hidden" name="subaction" value="new_answer_two" />
-						<input type="hidden" name="quota_id" value="<?php echo $_POST['quota_id'];?>" />
+						<input type="hidden" name="quota_id" value="<?php echo sanitize_int($_POST['quota_id']);?>" />
 					</td>
 				</tr>
 				</tbody>

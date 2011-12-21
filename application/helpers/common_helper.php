@@ -6010,14 +6010,14 @@ function SSL_mode()
 /**
  * Returns the number of answers matching the quota
  *
- * @param int $surveyid - Survey identification number
+ * @param int $iSurveyId - Survey identification number
  * @param int $quotaid - quota id for which you want to compute the completed field
  * @return mixed - Integer of matching entries in the result DB or 'N/A'
  */
-function get_quotaCompletedCount($surveyid, $quotaid)
+function get_quotaCompletedCount($iSurveyId, $quotaid)
 {
     $result = "N/A";
-    $quota_info = getQuotaInformation($surveyid, GetBaseLanguageFromSurveyID($surveyid), $quotaid);
+    $quota_info = getQuotaInformation($iSurveyId, GetBaseLanguageFromSurveyID($iSurveyId), $quotaid);
     $quota = $quota_info[0];
 
     if (Yii::app()->db->schema->getTable('{{survey_' . $surveyid . '}}') &&

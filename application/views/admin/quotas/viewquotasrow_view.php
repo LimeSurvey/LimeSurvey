@@ -23,18 +23,18 @@
 	<td align="center"><?php echo $quotalisting['qlimit'];?></td>
 	<td align="center" <?php echo $highlight;?>><?php echo $completed;?></td>
 	<td align="center" style="padding: 3px;">
-<?php if (bHasSurveyPermission($surveyid, 'quotas','update')) { ?>
-    <form action="<?php echo $this->createUrl("admin/quotas/surveyid/$surveyid/subaction/quota_editquota");?>" method="post">
+<?php if (bHasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
+    <form action="<?php echo $this->createUrl("admin/quotas/surveyid/$iSurveyId/subaction/quota_editquota");?>" method="post">
                         <input name="submit" type="submit" class="submit" value="<?php echo $clang->gT("Edit");?>" />
-                        <input type="hidden" name="sid" value="<?php echo $surveyid;?>" />
+                        <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
                         <input type="hidden" name="action" value="quotas" />
                         <input type="hidden" name="quota_id" value="<?php echo $quotalisting['id'];?>" />
                         <input type="hidden" name="subaction" value="quota_editquota" />
                     </form>
-<?php } if (bHasSurveyPermission($surveyid, 'quotas','delete')) { ?>
-    <form action="<?php echo $this->createUrl("admin/quotas/surveyid/$surveyid/subaction/quota_delquota");?>" method="post">
+<?php } if (bHasSurveyPermission($iSurveyId, 'quotas','delete')) { ?>
+    <form action="<?php echo $this->createUrl("admin/quotas/surveyid/$iSurveyId/subaction/quota_delquota");?>" method="post">
 			            <input name="submit" type="submit" class="submit" value="<?php echo $clang->gT("Remove");?>" />
-			            <input type="hidden" name="sid" value="<?php echo $surveyid;?>" />
+			            <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
 			            <input type="hidden" name="action" value="quotas" />
 			            <input type="hidden" name="quota_id" value="<?php echo $quotalisting['id'];?>" />
 			            <input type="hidden" name="subaction" value="quota_delquota" />
@@ -49,10 +49,10 @@
 	<td align="center">&nbsp;</td>
 	<td align="center">&nbsp;</td>
 	<td style="padding: 3px;" align="center">
-<?php if (bHasSurveyPermission($surveyid, 'quotas','update')) { ?>
-    <form action="<?php echo $this->createUrl("admin/quotas/surveyid/$surveyid/subaction/new_answer");?>" method="post">
+<?php if (bHasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
+    <form action="<?php echo $this->createUrl("admin/quotas/surveyid/$iSurveyId/subaction/new_answer");?>" method="post">
                         <input name="submit" type="submit" class="quota_new" value="<?php echo $clang->gT("Add Answer");?>" />
-                        <input type="hidden" name="sid" value="<?php echo $surveyid;?>" />
+                        <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
                         <input type="hidden" name="action" value="quotas" />
                         <input type="hidden" name="quota_id" value="<?php echo $quotalisting['id'];?>" />
                         <input type="hidden" name="subaction" value="new_answer" />

@@ -5,9 +5,9 @@
 	<td align="center">&nbsp;</td>
 	<td align="center">&nbsp;</td>
 	<td style="padding: 3px;" align="center">
-		<form action="<?php echo $this->createUrl("admin/quotas/surveyid/$surveyid/subaction/quota_delans");?>" method="post">
+		<form action="<?php echo $this->createUrl("admin/quotas/surveyid/$iSurveyId/subaction/quota_delans");?>" method="post">
 			<input name="submit" type="submit" class="submit" value="<?php echo $clang->gT("Remove");?>" />
-			<input type="hidden" name="sid" value="<?php echo $surveyid;?>" />
+			<input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
 			<input type="hidden" name="action" value="quotas" />
 			<input type="hidden" name="quota_member_id" value="<?php echo $quota_questions['id'];?>" />
 			<input type="hidden" name="quota_qid" value="<?php echo $quota_questions['qid'];?>" />
