@@ -1283,6 +1283,9 @@ class LimeExpressionManager {
                     $csuffix = '';
                     $sqsuffix = '';
                     $varName = $fielddata['title'];
+                    if ($fielddata['aid'] != '') {
+                        $varName .= '_' . $fielddata['aid'];
+                    }
                     $question = $fielddata['question'];
                     break;
                 case '1': //Array (Flexible Labels) dual scale
@@ -1362,19 +1365,10 @@ class LimeExpressionManager {
                 case 'F': //ARRAY (Flexible) - Row Format
                 case 'H': //ARRAY (Flexible) - Column Format
                 case 'M': //Multiple choice checkbox
+                case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
                 case ':': //ARRAY (Multi Flexi) 1 to 10
                 case ';': //ARRAY (Multi Flexi) Text
                     $jsVarName = 'java' . $sgqa;
-                    $jsVarName_on = $jsVarName;
-                    break;
-                case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                    if (preg_match("/comment$/", $sgqa)) {
-                        $jsVarName = 'java' . $sgqa;
-                        $varName = $varName . "_comment";
-                    }
-                    else {
-                        $jsVarName = 'java' . $sgqa;
-                    }
                     $jsVarName_on = $jsVarName;
                     break;
                 case '|': //File Upload
@@ -1421,7 +1415,7 @@ class LimeExpressionManager {
                             $parts[1] = 'other';
                         }
                         $q2subqInfo[$questionNum]['subqs'][] = array(
-                            'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum . $parts[1],
+                            'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
                             'varName' => $varName,
                             'sqsuffix' => '_' . $parts[1],
                             );
