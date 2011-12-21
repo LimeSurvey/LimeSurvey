@@ -5,16 +5,16 @@
             </div>
             <div class='menubar-main'>
                 <div class='menubar-left'>
-                    <a href="#" onclick="window.open('<?php echo site_url("/admin/survey/view/$surveyid$extraGetParams");?>', '_top')" title='"<?php echo $clang->gTview("Return to survey administration");?>'>
+                    <a href="#" onclick="window.open('<?php echo $this->createUrl("/admin/survey/view/$surveyid$extraGetParams");?>', '_top')" title='"<?php echo $clang->gTview("Return to survey administration");?>'>
                         <img name='HomeButton' src='<?php echo $imageurl;?>/home.png' alt='<?php echo $clang->gT("Return to survey administration");?>' /></a>
                     <img src='<?php echo $imageurl;?>/blank.gif' alt='' width='11' />
                     <img src='<?php echo $imageurl;?>/seperator.gif' alt='' />
-                    <a href="#" onclick="window.open('<?php echo site_url("/admin/conditions/conditions/$surveyid/$gid/$qid");?>', '_top')" title='<?php echo $clang->gTview("Show conditions for this question");?>' >
+                    <a href="#" onclick="window.open('<?php echo $this->createUrl("/admin/conditions/sa/action/subaction/conditions/surveyid/$surveyid/gid/$gid/qid/$qid");?>', '_top')" title='<?php echo $clang->gTview("Show conditions for this question");?>' >
                         <img name='SummaryButton' src='<?php echo $imageurl;?>/summary.png' alt='<?php echo $clang->gT("Show conditions for this question");?>' /></a>
                     <img src='<?php echo $imageurl;?>/seperator.gif' alt='' />
-                    <a href="#" onclick="window.open('<?php echo site_url("/admin/conditions/editconditionsform/$surveyid/$gid/$qid");?>', '_top')" title='<?php echo $clang->gTview("Add and edit conditions");?>' >
+                    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/conditions/sa/action/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid");?>', '_top')" title='<?php echo $clang->gTview("Add and edit conditions");?>' >
                         <img name='ConditionAddButton' src='<?php echo $imageurl;?>/conditions_add.png' alt='"<?php echo $clang->gT("Add and edit conditions");?>' /></a>
-                    <a href="#" onclick="window.open('<?php echo site_url("/admin/conditions/copyconditionsform/$surveyid/$gid/$qid");?>', '_top')" title='<?php echo $clang->gTview("Copy conditions");?>' >
+                    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/conditions/sa/action/subaction/copyconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid");?>', '_top')" title='<?php echo $clang->gTview("Copy conditions");?>' >
                         <img name='ConditionCopyButton' src='<?php echo $imageurl;?>/conditions_copy.png' alt='<?php echo $clang->gT("Copy conditions");?>' /></a>
 
                 </div><div class='menubar-right'>

@@ -12,7 +12,7 @@ $subaction == "updatescenario" ||
 $subaction == "renumberscenarios")  { ?>
     <td align='center' width='90%'><strong><?php echo $onlyshow;?></strong>
     </td>
-    <td width='10%' align='right' valign='middle'><form id='deleteallconditions' action='<?php echo site_url("/admin/conditions/deleteallconditions/$surveyid/$gid/$qid/");?>' method='post' name='deleteallconditions' style='margin-bottom:0;'>
+    <td width='10%' align='right' valign='middle'><form id='deleteallconditions' action='<?php echo $this->createUrl("/admin/conditions/sa/action/subaction/deleteallconditions/surveyid/$surveyid/gid/$gid/qid/$qid/");?>' method='post' name='deleteallconditions' style='margin-bottom:0;'>
     <input type='hidden' name='qid' value='<?php echo $qid;?>' />
     <input type='hidden' name='gid' value='<?php echo $gid;?>' />
     <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
@@ -31,8 +31,8 @@ $subaction == "renumberscenarios")  { ?>
 }
 else
 { ?>
-    <td align='center'><strong><?php echo $onlyshow;?></strong>
-    <form id='deleteallconditions' action='<?php echo site_url("/admin/conditions/deleteallconditions/$surveyid/$gid/$qid/");?>' method='post' name='deleteallconditions' style='margin-bottom:0;'>
+    <td align='center'><strong><?php echo $onlyshow;?></strong>	
+    <form id='deleteallconditions' action='<?php echo $this->createUrl("/admin/conditions/sa/action/subaction/deleteallconditions/surveyid/$surveyid/gid/$gid/qid/$qid/");?>' method='post' name='deleteallconditions' style='margin-bottom:0;'>
     <input type='hidden' name='qid' value='<?php echo $qid;?>' />
     <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
     <input type='hidden' id='toplevelsubaction' name='subaction' value='deleteallconditions' />

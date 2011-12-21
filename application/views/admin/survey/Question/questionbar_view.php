@@ -106,7 +106,7 @@
 
             if(bHasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
-                <a href='#' onclick="window.open('<?php echo $this->createUrl("admin/conditions/sa/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid");?>', '_top')"
+                <a href='#' onclick="window.open('<?php echo $this->createUrl("admin/conditions/sa/action/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid");?>', '_top')"
                  title="<?php echo $clang->gTview("Set/view conditions for this question"); ?>">
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/conditions.png' alt='<?php echo $clang->gT("Set conditions for this question"); ?>'  name='SetQuestionConditions' /></a>
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt='' />
