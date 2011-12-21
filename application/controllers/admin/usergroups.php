@@ -45,7 +45,13 @@ class Usergroups extends CAction {
     		$this->view();
     	}
     }
-
+    function _post($d) {
+    		if (isset($_POST[$d])) {
+    			return $_POST[$d];
+    		}else{
+    			return FALSE;
+    		}
+    }
     /**
      * Usergroups::mail()
      * Function responsible to send an e-mail to a user group.
@@ -56,57 +62,64 @@ class Usergroups extends CAction {
     {
 
 		$ugid = sanitize_int($ugid);
-        $clang = $this->limesurvey_lang;
+        $clang = Yii::app()->lang;
 
 
-        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-        $this->config->set_item("css_admin_includes", $css_admin_includes);
-    	self::_js_admin_includes(base_url().'scripts/admin/users.js');
-        self::_getAdminHeader();
-        self::_showadminmenu(false);
-        $action = $this->input->post("action");
-
-        self::_usergroupbar($ugid);
+        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
+        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+    	$this->getController()->_js_admin_includes(Yii::app()->baseUrl.'scripts/admin/users.js');
+        $this->getController()->_getAdminHeader();
+        $this->getController()->_showadminmenu(false);
+        $action = CHttpRequest::getPost("action");
+        $this->_usergroupbar($ugid);
+         
 
         if ($action == "mailsendusergroup")
-        {
+        {   
+            
             $usersummary = "<div class=\"header\">".$clang->gT("Mail to all Members")."</div>\n";
             $usersummary .= "<div class=\"messagebox\">\n";
-            $_POST = $this->input->post();
 
             // user must be in user group
             // or superadmin
-			$this->load->model('user_in_groups');
-			$result = $this->user_in_groups_model->getSomeRecords(array('uid'), array('ugid' => $ugid, 'uid' => $this->session->userdata('loginID')));
-
-            if($result->num_rows() > 0 || $this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
+			//$this->load->model('user_in_groups');
+			$result = User_in_groups::model()->getSomeRecords(array('uid'), array('ugid' => $ugid, 'uid' => Yii::app()->session['loginID']));
+    
+            if(count($result) > 0 || Yii::app()->session['loginID'] == 1)
             {
-				$where	= array('ugid' => $ugid, 'b.uid !' => $this->session->userdata('loginID'));
-				$join	= array('where' => 'users', 'type' => 'inner', 'on' => 'a.uid = b.uid');
-				$eguresult = $this->user_in_groups_model->join(array('*'), 'user_in_groups AS a', $where, $join, 'b.users_name');
-
+				$where	= array('and', 'ugid =' . $ugid, 'b.uid !=' . Yii::app()->session['loginID']);
+				$join	= array('where' => "{{users}} b", 'on' => 'a.uid = b.uid');
+				$eguresult = User_in_groups::model()->join(array('*'), "{{user_in_groups}} AS a", $where, $join, 'b.users_name');
+                //die('me');
                 $addressee = '';
                 $to = '';
-                foreach ($eguresult->result_array() as $egurow)
+                if(isset($eguresult[0])) {
+                foreach ($eguresult as $egurow)
                 {
                     $to .= $egurow['users_name']. ' <'.$egurow['email'].'>'. '; ' ;
                     $addressee .= $egurow['users_name'].', ';
                 }
+                }else{
+                   $to .= $eguresult['users_name']. ' <'.$eguresult['email'].'>'. '; ' ;
+                   $addressee .= $eguresult['users_name'].', ';
+                 }
                 $to = substr("$to", 0, -2);
                 $addressee = substr("$addressee", 0, -2);
 
-				$this->load->model('users');
-				$from_user_result = $this->users_model->getSomeRecords(array('email', 'users_name', 'full_name'), array('uid' => $this->session->userdata('loginID')));
-                $from_user_row = $from_user_result->row_array();
-                if ($from_user_row['full_name'])
+				//$this->load->model('users');
+				$from_user_result = User::model()->getSomeRecords(array('email', 'users_name', 'full_name'), array('uid' => Yii::app()->session['loginID']));
+                $from_user_row = $from_user_result;
+        
+                if ($from_user_row[0]->full_name)
                 {
-                    $from = $from_user_row['full_name'].' <'.$from_user_row['email'].'> ';
+                    $from = $from_user_row[0]->full_name;
+                    $from .= ' <';
+                    $from .= $from_user_row[0]->email . '> ';
                 }
                 else
                 {
-                    $from = $from_user_row['users_name'].' <'.$from_user_row['email'].'> ';
+                    $from = $from_user_row[0]->users_name . ' <' . $from_user_row[0]->email . '> ';
                 }
-
 
                 $body = $_POST['body'];
                 $subject = $_POST['subject'];
@@ -118,7 +131,6 @@ class Usergroups extends CAction {
                     else
                     $to .= ", " . $from;
                 }
-
                 $body = str_replace("\n.", "\n..", $body);
                 $body = wordwrap($body, 70);
 
@@ -126,7 +138,7 @@ class Usergroups extends CAction {
                 //echo $body . '-'.$subject .'-'.'<pre>'.htmlspecialchars($to).'</pre>'.'-'.$from;
                 if (SendEmailMessage( $body, $subject, $to, $from,''))
                 {
-                    $link = site_url("admin/usergroups/view/".$ugid);
+                    $link = $this->getController()->createUrl("admin/usergroups/view/".$ugid);
                     $usersummary = "<div class=\"messagebox\">\n";
                     $usersummary .= "<div class=\"successheader\">".$clang->gT("Message(s) sent successfully!")."</div>\n"
                     . "<br />".$clang->gT("To:")."". $addressee."<br />\n"
@@ -134,9 +146,15 @@ class Usergroups extends CAction {
                 }
                 else
                 {
-                    $link = site_url("admin/usergroups/mail/".$ugid);
+                    global $maildebug;
+                    global $debug;
+                    global $maildebugbody;
+                    //$maildebug = (isset($maildebug)) ? $maildebug : "Their was a unknown error in the mailing part :)";
+                    //$debug = (isset($debug)) ? $debug : 9;
+                    //$maildebugbody = (isset($maildebugbody)) ? $maildebugbody : 'an unknown error accourd';
+                    $link = $this->getController()->createUrl("admin/usergroups/mail/".$ugid);
                     $usersummary = "<div class=\"messagebox\">\n";
-                    $usersummary .= "<div class=\"warningheader\">".sprintf($clang->gT("Email to %s failed. Error Message:"),$to)." ".$maildebug."</div>";
+                    $usersummary .= "<div class=\"warningheader\">".sprintf($clang->gT("Email to %s failed. Error Message:"),$to) . " " . $maildebug."</div>";
                     if ($debug>0)
                     {
                         $usersummary .= "<br /><pre>Subject : $subject<br /><br />".htmlspecialchars($maildebugbody)."<br /></pre>";
@@ -153,26 +171,26 @@ class Usergroups extends CAction {
 
             $displaydata['display'] = $usersummary;
             //$data['display'] = $editsurvey;
-            $this->load->view('survey_view',$displaydata);
+            $this->getController()->render('/survey_view',$displaydata);
         }
         else
         {
-			$this->load->model('user_groups');
-			$where	= array('a.ugid' => $ugid, 'uid' => $this->session->userdata('loginID'));
-			$join	= array('where' => 'user_in_groups AS b', 'type' => 'left', 'on' => 'a.ugid = b.ugid');
-			$result = $this->user_groups_model->join(array('a.ugid', 'a.name', 'a.owner_id', 'b.uid'), 'user_groups AS a', $where, $join, 'name');
+			//$this->load->model('user_groups');
+			$where	= array('and', 'a.ugid =' . $ugid, 'uid =' . Yii::app()->session['loginID']);
+			$join	= array('where' => "{{user_in_groups}} AS b", 'on' => 'a.ugid = b.ugid');
+			$result = User_groups::model()->join(array('a.ugid', 'a.name', 'a.owner_id', 'b.uid'), "{{user_groups}} AS a", $where, $join, 'name');
 			
-            $crow = $result->row_array();
-
+            $crow = $result;
+            $data['ugid'] = $ugid;
             $data['clang'] = $clang;
             
-            $this->load->view("admin/usergroup/mailUserGroup_view",$data);
+           $this->getController()->render("/admin/usergroup/mailUserGroup_view",$data);
         }
 
-        self::_loadEndScripts();
+        $this->getController()->_loadEndScripts();
 
 
-	    self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+	    $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
     }
 
     /**
@@ -540,7 +558,7 @@ class Usergroups extends CAction {
                         if($this->yii->session['USER_RIGHT_SUPERADMIN'] == 1)
                         {
                             $usergroupentries .= "<form method='post' action='scriptname?action=deleteuserfromgroup&amp;ugid=$ugid'>"
-                            ." <input type='image' src='".$this->yii->setConfig('imageurl')."/token_delete.png' alt='".$clang->gT("Delete this user from group")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
+                            ." <input type='image' src='".$this->yii->getConfig('imageurl')."/token_delete.png' alt='".$clang->gT("Delete this user from group")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
                             ." <input type='hidden' name='user' value='{$egurow['users_name']}' />"
                             ." <input name='uid' type='hidden' value='{$egurow['uid']}' />"
 

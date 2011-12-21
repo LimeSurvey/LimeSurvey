@@ -60,33 +60,40 @@ class User_in_groups extends CActiveRecord {
         );
     }
 	
-	/*function getAllRecords($condition=FALSE)
-	{
-		if ($condition != FALSE)
-		{
-			$this->db->where($condition);	
-		}
-		
-		$data = $this->db->get('user_in_groups');
-		
-		return $data;
-	}
+	public function getAllRecords($condition=FALSE)
+    {
+		$criteria = new CDbCriteria;
 
-	function getSomeRecords($fields,$condition=FALSE)
-	{
-		foreach ($fields as $field)
-		{
-			$this->db->select($field);
-		}
-		if ($condition != FALSE)
-		{
-			$this->db->where($condition);	
-		}
-		
-		$data = $this->db->get('user_in_groups');
-		
-		return $data;
-	}
+        if ($condition != FALSE)
+        {
+		    foreach ($condition as $item => $value)
+			{
+				$criteria->addCondition($item.'='.Yii::app()->db->quoteValue($value));
+			}
+        }
+
+		$data = $this->findAll($criteria);
+
+        return $data;
+    }
+
+	public function getSomeRecords($fields,$condition=FALSE)
+    {
+
+		$criteria = new CDbCriteria;
+
+        if ($condition != FALSE)
+        {
+		    foreach ($condition as $item => $value)
+			{
+				$criteria->addCondition($item.'='.Yii::app()->db->quoteValue($value));
+			}
+        }
+
+		$data = $this->findAll($criteria);
+
+        return $data;
+    }
 	
 	function insert($data)
 	{
@@ -95,30 +102,36 @@ class User_in_groups extends CActiveRecord {
 	
 	function join($fields, $from, $condition=FALSE, $join=FALSE, $order=FALSE)
 	{
+	    $user = Yii::app()->db->createCommand();
 		foreach ($fields as $field)
 		{
-			$this->db->select($field);
+			$user->select($field);
 		}
 		
-		$this->db->from($from);
+		$user->from($from);
 		
 		if ($condition != FALSE)
 		{
-			$this->db->where($condition);	
+			$user->where($condition);	
 		}
 
 		if ($order != FALSE)
 		{
-			$this->db->order_by($order);	
+			$user->order($order);	
 		}
 		
-		if (isset($join['where'], $join['type'], $join['on']))
+		if (isset($join['where'], $join['on']))
 		{
-			$this->db->join($condition);	
+		    if (isset($join['left'])) {
+			    $user->leftjoin($join['where'], $join['on']);	
+			}else
+			{
+			    $user->join($join['where'], $join['on']);
+			}
 		}
 		
-		$data = $this->db->get();
+		$data = $user->queryRow();
 		return $data;
-	}*/
+	}
 
 }

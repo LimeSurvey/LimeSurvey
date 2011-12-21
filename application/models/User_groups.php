@@ -104,7 +104,7 @@ class User_groups extends CActiveRecord {
 		return $data;
 	}
 
-    /*function insertRecords($data)
+    function insertRecords($data)
     {
         
         return $this->db->insert('user_groups',$data);
@@ -112,32 +112,38 @@ class User_groups extends CActiveRecord {
 	
 	function join($fields, $from, $condition=FALSE, $join=FALSE, $order=FALSE)
 	{
+	    $user = Yii::app()->db->createCommand();
 		foreach ($fields as $field)
 		{
-			$this->db->select($field);
+			$user->select($field);
 		}
 		
-		$this->db->from($from);
+		$user->from($from);
 		
 		if ($condition != FALSE)
 		{
-			$this->db->where($condition);	
+			$user->where($condition);	
 		}
 
 		if ($order != FALSE)
 		{
-			$this->db->order_by($order);	
+			$user->order($order);	
 		}
 		
-		if (isset($join['where'], $join['type'], $join['on']))
+		if (isset($join['where'], $join['on']))
 		{
-			$this->db->join($condition);	
+		    if (isset($join['left'])) {
+			    $user->leftjoin($join['where'], $join['on']);	
+			}else
+			{
+			    $user->join($join['where'], $join['on']);
+			}
 		}
 		
-		$data = $this->db->get();
+		$data = $user->queryRow();
 		return $data;
 	}
-	
+	/*
 	function multi_select($fields, $from, $condition=FALSE)
 	{
 		foreach ($fields as $field)

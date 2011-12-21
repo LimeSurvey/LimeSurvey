@@ -1,5 +1,5 @@
 <div class='header ui-widget-header'><?php echo $clang->gT("Mail to all Members"); ?></div>
-    <form action='<?php echo site_url("admin/usergroups/mail/".$ugid); ?>' class='form30' id='usergroupform' name='usergroupform' method='post'><ul>
+    <form action='<?php echo $this->createUrl("admin/usergroups/mail/".$ugid); ?>' class='form30' id='usergroupform' name='usergroupform' method='post'><ul>
         <li><label for='copymail'><?php echo $clang->gT("Send me a copy:"); ?></label>
         <input id='copymail' name='copymail' type='checkbox' class='checkboxbtn' value='1' /></li>
         <li><label for='subject'><?php echo $clang->gT("Subject:"); ?></label>
