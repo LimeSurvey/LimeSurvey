@@ -85,7 +85,7 @@ class Authentication extends CAction
                         {
                             Yii::app()->session['metaHeader']  = '<meta http-equiv="refresh"'
                             . ' content="1;URL=' . Yii::app()->session['redirect_after_login'].'" />';
-                            $loginsummary = '<p><font size="1"><i>' . $clang->gT('Reloading screen. Please wait.') . '</i></font>\n';
+                            $loginsummary = '<p><font size="1"><i>' . $clang->gT('Reloading screen. Please wait.') . '</i></font>';
                             unset(Yii::app()->session['redirect_after_login']);
                         }
                         $this->getController()->_GetSessionUserRights(Yii::app()->session['loginID']);
