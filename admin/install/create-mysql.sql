@@ -539,3 +539,11 @@ create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
 -- Version Info
 --
 INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '154');
+INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
+
+
+--
+-- Create admin user
+--
+INSERT INTO `prefix_users` (`users_name`, `password`, `full_name`, `parent_id`, `lang` ,`email`, `create_survey`,`create_user` ,`delete_user` ,`superadmin` ,`configurator` ,`manage_template` , `manage_label`) VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);
+
