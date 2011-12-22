@@ -1,17 +1,18 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
- * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
- */
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+* $Id: database.php 11349 2011-11-09 21:49:00Z tpartner $
+*
+*/
 /**
 * Database
 *
@@ -28,6 +29,7 @@ class database extends Survey_Common_Action
 	
 	public function run($sa = null)
 	{
+	
 		$this->yii = Yii::app();
 		$this->controller = $this->getController();
 		
@@ -42,7 +44,9 @@ class database extends Survey_Common_Action
     */
     function index($action=null)
     {
-        $clang = $this->controller->lang;
+
+      	if(!empty($_POST['action'])) $action=$_POST['action'];
+     	$clang = $this->controller->lang;
         $postsid=returnglobal('sid');
         $postgid=returnglobal('gid');
         $postqid=returnglobal('qid');
@@ -52,22 +56,16 @@ class database extends Survey_Common_Action
         $gid = returnglobal('gid');
         $qid = returnglobal('qid');
         // if $action is not passed, check post data.
-        if (!$action)
-        {
-            $action = $_POST['action'];
-        }
 
         if ($action == "updatedefaultvalues" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
         {
 
-            $this->load->helper('database');
-            $_POST = $this->input->post();
             $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
             array_unshift($questlangs,$baselang);
 
             // same_default value on/off for question
-            $uqquery = "UPDATE ".$this->db->dbprefix."questions";
+            $uqquery = "UPDATE {{questions}}";
             if (isset($_POST['samedefault']))
             {
                 $uqquery .= " SET same_default = '1' ";
@@ -77,16 +75,16 @@ class database extends Survey_Common_Action
                 $uqquery .= " SET same_default = '0' ";
             }
             $uqquery .= "WHERE sid='".$surveyid."' AND qid='".$qid."'";
-            $uqresult = db_execute_assoc($uqquery) or show_error("Error Update Question: ".$uqquery."<br />");
+            $uqresult = Yii::app()->db->createCommand($uqquery)->query() or show_error("Error Update Question: ".$uqquery."<br />");
             if (!$uqresult)
             {
                 $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\n\")\n //-->\n</script>\n";
             }
-            $query = "SELECT type FROM ".$this->db->dbprefix."questions WHERE qid=$qid";
-            $res = db_execute_assoc($query);
-            $resrow = $res->row_array();
+            $query = "SELECT type FROM {{questions}} WHERE qid=$qid";
+            $res = Yii::app()->db->createCommand($query)->query;
+            $resrow = $res->read();
             $questiontype = $resrow['type'];
-            //$questiontype=$connect->GetOne("SELECT type FROM ".$this->db->dbprefix."questions WHERE qid=$qid");
+
             $qtproperties=getqtypelist('','array');
             if ($qtproperties[$questiontype]['answerscales']>0 && $qtproperties[$questiontype]['subquestions']==0)
             {
@@ -96,12 +94,12 @@ class database extends Survey_Common_Action
                     {
                         if (isset($_POST['defaultanswerscale_'.$scale_id.'_'.$language]))
                         {
-                            self::_Updatedefaultvalues($qid,0,$scale_id,'',$language,$_POST['defaultanswerscale_'.$scale_id.'_'.$language],true);
-                        }
+                        $this->_Updatedefaultvalues($qid,0,$scale_id,'',$language,$_POST['defaultanswerscale_'.$scale_id.'_'.$language],true);
+						}
                         if (isset($_POST['other_'.$scale_id.'_'.$language]))
-                        {
-                            self::_Updatedefaultvalues($qid,0,$scale_id,'other',$language,$_POST['other_'.$scale_id.'_'.$language],true);
-                        }
+                        {                            
+                        $this->_Updatedefaultvalues($qid,0,$scale_id,'other',$language,$_POST['other_'.$scale_id.'_'.$language],true);
+						}
                     }
                 }
             }
@@ -110,17 +108,17 @@ class database extends Survey_Common_Action
 
                 foreach ($questlangs as $language)
                 {
-                    $sqquery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND parent_qid=$qid and language='".$language."' and scale_id=0 order by question_order";
-                    $sqresult = db_execute_assoc($sqquery);
-                    //$sqrows = $sqresult->GetRows();
+                    $sqquery = "SELECT * FROM {{questions}} WHERE sid=$surveyid AND gid=$gid AND parent_qid=$qid and language='".$language."' and scale_id=0 order by question_order";                
+                    $sqresult = Yii::app()->db->createCommand($sqquery)->query();
 
                     for ($scale_id=0;$scale_id<$qtproperties[$questiontype]['subquestions'];$scale_id++)
                     {
-                        foreach ($sqresult->result_array() as $aSubquestionrow)
+                        
+			foreach ($sqresult->readAll() as $aSubquestionrow)
                         {
                             if (isset($_POST['defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid']]))
                             {
-                                self::_Updatedefaultvalues($qid,$aSubquestionrow['qid'],$scale_id,'',$language,$_POST['defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid']],true);
+                                $this->_Updatedefaultvalues($qid,$aSubquestionrow['qid'],$scale_id,'',$language,$_POST['defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid']],true);
                             }
                             /*                       if (isset($_POST['other_'.$scale_id.'_'.$language]))
                             {
@@ -139,24 +137,24 @@ class database extends Survey_Common_Action
             }
             else
             {
-                redirect(site_url('admin/survey/view/'.$surveyid.'/'.$gid.'/'.$qid));
+                 $this->controller->redirect($this->getController()->createUrl('/admin/survey/view/'.$surveyid.'/'.$gid.'/'.$qid));  
             }
         }
 
 
         if ($action == "updateansweroptions" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
         {
-            $this->load->helper('database');
+           
+	    Yii::app()->loadHelper('database');
             $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
 
             $alllanguages = $anslangs;
             array_unshift($alllanguages,$baselang);
 
-
-            $query = "select type from ".$this->db->dbprefix."questions where qid=$qid";
-            $res= db_execute_assoc($query);
-            $resrow = $res->row_array();
+            $query = "select type from {{questions}} where qid=$qid";
+            $res= Yii::app()->db->createCommand($query)->query();
+            $resrow = $res->read();
             $questiontype = $resrow['type']; //$connect->GetOne($query);    // Checked)
             $qtypes=getqtypelist('','array');
             $scalecount=$qtypes[$questiontype]['answerscales'];
@@ -167,10 +165,10 @@ class database extends Survey_Common_Action
 
             //require_once("../classes/inputfilter/class.inputfilter_clean.php");
             //$myFilter = new InputFilter('','',1,1,1);
-            $_POST = $this->input->post();
+
             //First delete all answers
-            $query = "delete from ".$this->db->dbprefix."answers where qid=".$qid;
-            $result = db_execute_assoc($query); // Checked
+            $query = "delete from {{answers}} where qid=".$qid;
+            $result = Yii::app()->db->createCommand($query)->query(); // Checked
 
             for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
             {
@@ -182,8 +180,8 @@ class database extends Survey_Common_Action
                     if (isset($_POST['oldcode_'.$sortorderid.'_'.$scale_id])) {
                         $oldcode=sanitize_paranoid_string($_POST['oldcode_'.$sortorderid.'_'.$scale_id]);
                         if($code !== $oldcode) {
-                            $query='UPDATE '.$this->db->dbprefix.'conditions SET value='.db_quoteall($code).' WHERE cqid='.$this->db->escape($qid).' AND value='.$this->db->escape_str($oldcode);
-                            db_execute_assoc($query);
+                            $query='UPDATE {{conditions}} SET value='.db_quoteall($code).' WHERE cqid='.db_quoteall($qid).' AND value='.db_quoteall($oldcode);//escape string is correct?
+                            Yii::app()->db->createCommand($query)->query();
                         }
                     }
 
@@ -192,7 +190,7 @@ class database extends Survey_Common_Action
                     {
                         $answer=$_POST['answer_'.$language.'_'.$sortorderid.'_'.$scale_id];
 
-                        if ($this->config->item('filterxsshtml'))
+                        if (Yii::app()->getConfig('filterxsshtml'))
                         {
                             //Sanitize input, strip XSS
                             $answer=$this->security->xss_clean($answer);
@@ -205,7 +203,7 @@ class database extends Survey_Common_Action
                         $answer=fix_FCKeditor_text($answer);
 
                         // Now we insert the answers
-                        $query = "INSERT INTO ".$this->db->dbprefix."answers (code,answer,qid,sortorder,language,assessment_value, scale_id)
+                        $query = "INSERT INTO {{answers}} (code,answer,qid,sortorder,language,assessment_value, scale_id)
                         VALUES ('".$code."', '".
                         $answer."', ".
                         $qid.", ".
@@ -213,15 +211,15 @@ class database extends Survey_Common_Action
                         $language."', ".
                         $assessmentvalue.",
                         $scale_id)";
-                        if (!$result = db_execute_assoc($query)) // Checked
+                        if (!$result = Yii::app()->db->createCommand($query)->query()) // Checked
                         {
                             $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
                         }
                     } // foreach ($alllanguages as $language)
 
                     if($code !== $oldcode) {
-                        $query='UPDATE '.$this->db->dbprefix.'conditions SET value=\''.$code.'\' WHERE cqid='.$qid.' AND value=\''.$oldcode.'\'';
-                        db_execute_assoc($query);
+                        $query='UPDATE {{conditions}} SET value=\''.$code.'\' WHERE cqid='.$qid.' AND value=\''.$oldcode.'\'';
+                        Yii::app()->db->createCommand($query)->query();
                     }
 
                 }  // for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)
@@ -239,7 +237,7 @@ class database extends Survey_Common_Action
             }
             else
             {
-                redirect(site_url('admin/question/answeroptions/'.$surveyid.'/'.$gid.'/'.$qid));
+                 $this->controller->redirect($this->getController()->createUrl('/admin/question/answeroptions/'.$surveyid.'/'.$gid.'/'.$qid));
             }
 
             //$action='editansweroptions';
@@ -249,19 +247,20 @@ class database extends Survey_Common_Action
 
         if ($action == "updatesubquestions" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
         {
-            $this->load->helper('database');
+
+            Yii::app()->loadHelper('database');
             $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
             array_unshift($anslangs,$baselang);
 
-            $query = "select type from ".$this->db->dbprefix."questions where qid=$qid";
-            $res=db_execute_assoc($query);
-            $row = $res->row_array();
+            $query = "select type from {{questions}} where qid=$qid";
+            $res=Yii::app()->db->createCommand($query)->query();
+            $row = $res->read();
             $questiontype = $row['type']; //$connect->GetOne($query);    // Checked
             $qtypes=getqtypelist('','array');
             $scalecount=$qtypes[$questiontype]['subquestions'];
-            $_POST = $this->input->post();
-            $clang = $this->limesurvey_lang;
+
+            $clang = $this->getController()->lang;
             // First delete any deleted ids
             $deletedqids=explode(' ', trim($_POST['deletedqids']));
 
@@ -270,8 +269,8 @@ class database extends Survey_Common_Action
                 $deletedqid=(int)$deletedqid;
                 if ($deletedqid>0)
                 { // don't remove undefined
-                    $query = "DELETE FROM ".$this->db->dbprefix."questions WHERE qid='{$deletedqid}'";  // Checked
-                    if (!$result = db_execute_assoc($query))
+                    $query = "DELETE FROM {{questions}} WHERE qid='{$deletedqid}'";  // Checked
+                    if (!$result = Yii::app()->db->createCommand($query)->query())
                     {
                         $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete answer","js")." - ".$query." \")\n //-->\n</script>\n";
                     }
@@ -329,14 +328,14 @@ class database extends Survey_Common_Action
                     {
                         if (substr($subquestionkey,0,3)!='new')
                         {
-                            $query='Update '.$this->db->dbprefix.'questions set question_order='.($position+1).', title=\''.$codes[$scale_id][$position].'\', question=\''.$subquestionvalue.'\', scale_id='.$scale_id.' where qid=\''.$subquestionkey.'\' AND language=\''.$language.'\'';
-                            db_execute_assoc($query);
+                            $query='Update {{questions}} set question_order='.($position+1).', title=\''.$codes[$scale_id][$position].'\', question=\''.$subquestionvalue.'\', scale_id='.$scale_id.' where qid=\''.$subquestionkey.'\' AND language=\''.$language.'\'';
+                            Yii::app()->db->createCommand($query)->query();
 
                             if(isset($oldcodes[$scale_id][$position]) && $codes[$scale_id][$position] !== $oldcodes[$scale_id][$position]) {
-                                $query='UPDATE '.$this->db->dbprefix.'conditions SET cfieldname="+'.$surveyid.'X'.$gid.'X'.$qid.$codes[$scale_id][$position].'" WHERE cqid='.$qid.' AND cfieldname="+'.$surveyid.'X'.$gid.'X'.$qid.$oldcodes[$scale_id][$position].'"';
-                                db_execute_assoc($query);
-                                $query='UPDATE '.$this->db->dbprefix.'conditions SET value="'.$codes[$scale_id][$position].'" WHERE cqid='.$qid.' AND cfieldname="'.$surveyid.'X'.$gid.'X'.$qid.'" AND value="'.$oldcodes[$scale_id][$position].'"';
-                                db_execute_assoc($query);
+                                $query='UPDATE {{conditions}} SET cfieldname="+'.$surveyid.'X'.$gid.'X'.$qid.$codes[$scale_id][$position].'" WHERE cqid='.$qid.' AND cfieldname="+'.$surveyid.'X'.$gid.'X'.$qid.$oldcodes[$scale_id][$position].'"';
+                                Yii::app()->db->createCommand($query)->query();
+                                $query='UPDATE {{conditions}} SET value="'.$codes[$scale_id][$position].'" WHERE cqid='.$qid.' AND cfieldname="'.$surveyid.'X'.$gid.'X'.$qid.'" AND value="'.$oldcodes[$scale_id][$position].'"';
+                                Yii::app()->db->createCommand($query)->query();
                             }
 
                         }
@@ -344,15 +343,15 @@ class database extends Survey_Common_Action
                         {
                             if (!isset($insertqid[$position]))
                             {
-                                $query='INSERT into '.$this->db->dbprefix.'questions (sid, gid, question_order, title, question, parent_qid, language, scale_id) values ('.$surveyid.','.$gid.','.($position+1).',\''.$codes[$scale_id][$position].'\',\''.$subquestionvalue.'\','.$qid.',\''.($language).'\','.$scale_id.')';
-                                db_execute_assoc($query);
+                                $query='INSERT into {{questions}} (sid, gid, question_order, title, question, parent_qid, language, scale_id) values ('.$surveyid.','.$gid.','.($position+1).',\''.$codes[$scale_id][$position].'\',\''.$subquestionvalue.'\','.$qid.',\''.($language).'\','.$scale_id.')';
+                                Yii::app()->db->createCommand($query)->query();
                                 $insertqid[$position]=$this->db->insert_id(); //$connect->Insert_Id(db_table_name_nq('questions'),"qid");
                             }
                             else
                             {
                                 db_switchIDInsert('questions',true);
-                                $query='INSERT into '.$this->db->dbprefix.'questions (qid, sid, gid, question_order, title, question, parent_qid, language, scale_id) values ('.$insertqid[$position].','.$surveyid.','.$gid.','.($position+1).',\''.$codes[$scale_id][$position].'\',\''.$subquestionvalue.'\','.$qid.',\''.$language.'\','.$scale_id.')';
-                                db_execute_assoc($query);
+                                $query='INSERT into {{questions}} (qid, sid, gid, question_order, title, question, parent_qid, language, scale_id) values ('.$insertqid[$position].','.$surveyid.','.$gid.','.($position+1).',\''.$codes[$scale_id][$position].'\',\''.$subquestionvalue.'\','.$qid.',\''.$language.'\','.$scale_id.')';
+                                Yii::app()->db->createCommand($query)->query();
                                 db_switchIDInsert('questions',true);
                             }
                         }
@@ -373,7 +372,7 @@ class database extends Survey_Common_Action
             }
             else
             {
-                redirect(site_url('admin/question/subquestions/'.$surveyid.'/'.$gid.'/'.$qid));
+                 $this->controller->redirect($this->getController()->createUrl('/admin/question/subquestions/'.$surveyid.'/'.$gid.'/'.$qid));
             }
         }
 
@@ -396,8 +395,9 @@ class database extends Survey_Common_Action
                     $question_order=(sanitize_int($_POST['questionposition']));
                     //Need to renumber all questions on or after this
                     $cdquery = "UPDATE {{questions}} SET question_order=question_order+1 WHERE gid=".$gid." AND question_order >= ".$question_order;
-                    $cdresult=Yii::app()->db->createCommand($cdquery)->execute(); // or safe_die($connect->ErrorMsg());  // Checked)
-                } else {
+                    
+		    $cdresult=Yii::app()->db->createCommand($cdquery)->query();
+		    } else {
                     $question_order=(getMaxquestionorder($gid,$surveyid));
                     $question_order++;
                 }
@@ -588,7 +588,7 @@ class database extends Survey_Common_Action
 
         if ($action == "updatequestion" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
         {
-        	Yii::app()->loadHelper('expressions/em_manager');
+            Yii::app()->loadHelper('expressions/em_manager');
             $cqquery = "SELECT type, gid FROM {{questions}} WHERE qid={$qid}";
             $cqresult=Yii::app()->db->createCommand($cqquery)->query(); // or safe_die ("Couldn't get question type to check for change<br />".$cqquery."<br />".$connect->ErrorMsg()); // Checked
             $cqr=$cqresult->read();
@@ -702,10 +702,10 @@ class database extends Survey_Common_Action
             {
                 // TMSW Conditions->Relevance:  Do similar check via EM, but do allow such a change since will be easier to modify relevance
                 //Make sure there are no conditions based on this question, since we are changing the type
-                $ccquery = "SELECT * FROM ".$this->db->dbprefix."conditions WHERE cqid={$qid}";
-                $ccresult = db_execute_assoc($ccquery); // or safe_die ("Couldn't get list of cqids for this question<br />".$ccquery."<br />".$connect->ErrorMsg()); // Checked
-                $cccount=$ccresult->num_rows();
-                foreach ($ccresult->result_array() as $ccr) {$qidarray[]=$ccr['qid'];}
+                $ccquery = "SELECT * FROM {{conditions}} WHERE cqid={$qid}";
+                $ccresult = Yii::app()->db->createCommand($ccquery)->query(); // or safe_die ("Couldn't get list of cqids for this question<br />".$ccquery."<br />".$connect->ErrorMsg()); // Checked
+                $cccount=count($ccresult);
+                foreach ($ccresult->readAll() as $ccr) {$qidarray[]=$ccr['qid'];}
                 if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
             }
             if (isset($cccount) && $cccount)
@@ -942,7 +942,7 @@ class database extends Survey_Common_Action
                     //In 'surveyls_survey_id' => $surveyid, it was initially $postsid. returnglobal not working properly!
                     $condition = array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $langname);
 
-                    $usquery = "UPDATE ".Yii::app()->db->tablePrefix.'surveys_languagesettings'." \n"
+                    $usquery = "UPDATE {{surveys_languagesettings}} \n"
                     . "SET surveyls_title='".$short_title."', surveyls_description='".$description."',\n"
                     . "surveyls_welcometext='".$welcome."',\n"
                     . "surveyls_endtext='".$endtext."',\n"
@@ -952,7 +952,7 @@ class database extends Survey_Common_Action
                     . "surveyls_numberformat='".CHttpRequest::getPost('numberformat_'.$langname)."'\n"
                     . "WHERE surveyls_survey_id=".$postsid." and surveyls_language='".$langname."'";
                     
-                    $usresult = db_execute_assoc($usquery);// or safe_die("Error updating local settings");   // Checked
+                    $usresult = Yii::app()->db->createCommand($usquery)->query();// or safe_die("Error updating local settings");   // Checked
                 }
             }
            	Yii::app()->session['flashmessage'] = $clang->gT("Survey text elements successfully saved.");
@@ -963,7 +963,7 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/'.$surveyid));
+                $this->controller->redirect($this->getController()->createUrl('admin/survey/view/'.$surveyid));
             }
         }
 
@@ -1014,11 +1014,10 @@ class database extends Survey_Common_Action
 
             if($this->yii->session['USER_RIGHT_SUPERADMIN'] != 1 && $this->yii->session['USER_RIGHT_MANAGE_TEMPLATE'] != 1 && !hasTemplateManageRights($this->yii->session['loginID'], $template)) $template = "default";
 
-            //$sql = "SELECT * FROM ".$this->db->dbprefix."surveys WHERE sid={$postsid}";  // We are using $dbrepfix here instead of db_table_name on purpose because GetUpdateSQL doesn't work correclty on Postfres with a quoted table name
-            //$rs = db_execute_assoc($sql); // Checked
+           
 
             $aURLParams=json_decode($_POST['allurlparams'],true);
-			db_execute_assoc("DELETE FROM `{{survey_url_parameters}}` WHERE `sid` = '$surveyid'");
+	    Yii::app()->db->createCommand("DELETE FROM `{{survey_url_parameters}}` WHERE `sid` = '$surveyid'")->query();
 
             foreach($aURLParams as $aURLParam)
             {
@@ -1101,17 +1100,16 @@ class database extends Survey_Common_Action
 
             // Add base language too
             $sqlstring .= "AND surveyls_language <> '".GetBaseLanguageFromSurveyID($surveyid)."' ";
-			$dbprefix = $this->yii->db->tablePrefix;
-            $usquery = "DELETE FROM ".$dbprefix."surveys_languagesettings WHERE surveyls_survey_id={$surveyid} ".$sqlstring;
+            $usquery = "DELETE FROM {{surveys_languagesettings}} WHERE surveyls_survey_id={$surveyid} ".$sqlstring;
 
-            $usresult = db_execute_assoc($usquery) or safe_die("Error deleting obsolete surveysettings<br />".$usquery."<br /><br /><strong>"); // Checked
+            $usresult = Yii::app()->db->createCommand($usquery)->query() or safe_die("Error deleting obsolete surveysettings<br />".$usquery."<br /><br /><strong>"); // Checked
 
             foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
             {
                 if ($langname)
                 {
-                    $usquery = "select * from ".$dbprefix."surveys_languagesettings where surveyls_survey_id={$surveyid} and surveyls_language='".$langname."'";
-                    $usresult = db_execute_assoc($usquery) or safe_die("Error deleting obsolete surveysettings<br />".$usquery."<br /><br /><strong>"); // Checked
+                    $usquery = "select * from {{surveys_languagesettings}} where surveyls_survey_id={$surveyid} and surveyls_language='".$langname."'";
+                    $usresult = Yii::app()->db->createCommand($usquery)->query() or safe_die("Error deleting obsolete surveysettings<br />".$usquery."<br /><br /><strong>"); // Checked
                     if ($usresult->getRowCount()==0)
                     {
                         $bplang = $this->controller->lang;
@@ -1205,30 +1203,29 @@ class database extends Survey_Common_Action
     */
     function _Updatedefaultvalues($qid,$sqid,$scale_id,$specialtype,$language,$defaultvalue,$ispost)
     {
-        $this->load->helper('database');
+        //$this->load->helper('database');
         if ($defaultvalue=='')  // Remove the default value if it is empty
         {
-            $query = "DELETE FROM ".$this->db->dbprefix."defaultvalues WHERE sqid=$sqid AND qid=$qid AND specialtype='$specialtype' AND scale_id={$scale_id} AND language='{$language}'";
-            db_execute_assoc($query);
-            //$connect->execute("DELETE FROM ".db_table_name('defaultvalues')." WHERE sqid=$sqid AND qid=$qid AND specialtype='$specialtype' AND scale_id={$scale_id} AND language='{$language}'");
+            $query = "DELETE FROM {{defaultvalues}} WHERE sqid=$sqid AND qid=$qid AND specialtype='$specialtype' AND scale_id={$scale_id} AND language='{$language}'";
+            Yii::app()->db->createCommand($query)->query();
+            
         }
         else
         {
-            $query = "SELECT qid FROM ".$this->db->dbprefix."defaultvalues WHERE sqid=$sqid AND qid=$qid AND specialtype=$specialtype'' AND scale_id={$scale_id} AND language='{$language}'";
-            $res = db_execute_assoc($query);
-            $exists=$res->num_rows(); //$connect->GetOne("SELECT qid FROM ".$this->db->dbprefix."defaultvalues WHERE sqid=$sqid AND qid=$qid AND specialtype=$specialtype'' AND scale_id={$scale_id} AND language='{$language}'");)
-            //if ($exists===false || $exists===null)
+            $query = "SELECT qid FROM {{defaultvalues}} WHERE sqid=$sqid AND qid=$qid AND specialtype=$specialtype'' AND scale_id={$scale_id} AND language='{$language}'";
+            $res = Yii::app()->db->createCommand($query)->query();
+            $exists=count($res); 
+          
             if ($exists == 0)
             {
-                $query = 'INSERT INTO '.$this->db->dbprefix."defaultvalues (defaultvalue,qid,scale_id,language,specialtype,sqid) VALUES ('".$defaultvalue."',{$qid},{$scale_id},'{$language}','{$specialtype}',{$sqid})";
-                db_execute_assoc($query);
-                //$connect->execute('INSERT INTO '.$this->db->dbprefix."defaultvalues (defaultvalue,qid,scale_id,language,specialtype,sqid) VALUES (".db_quoteall($defaultvalue,$ispost).",{$qid},{$scale_id},'{$language}','{$specialtype}',{$sqid})");
+                $query = "INSERT INTO {{defaultvalues}} (defaultvalue,qid,scale_id,language,specialtype,sqid) VALUES ('".$defaultvalue."',{$qid},{$scale_id},'{$language}','{$specialtype}',{$sqid})";
+                Yii::app()->db->createCommand($query)->query();
             }
             else
             {
-                $query = 'UPDATE '.$this->db->dbprefix."defaultvalues set defaultvalue='".$defaultvalue."'  WHERE sqid={$sqid} AND qid={$qid} AND specialtype='{$specialtype}' AND scale_id={$scale_id} AND language='{$language}'";
-                db_execute_assoc($query);
-                //$connect->execute('UPDATE '.$this->db->dbprefix."defaultvalues set defaultvalue='".$defaultvalue."'  WHERE sqid={$sqid} AND qid={$qid} AND specialtype='{$specialtype}' AND scale_id={$scale_id} AND language='{$language}'");
+                $query = "UPDATE {{defaultvalues}} set defaultvalue='".$defaultvalue."'  WHERE sqid={$sqid} AND qid={$qid} AND specialtype='{$specialtype}' AND scale_id={$scale_id} AND language='{$language}'";
+                Yii::app()->db->createCommand($query)->query();
+               
             }
         }
     }
