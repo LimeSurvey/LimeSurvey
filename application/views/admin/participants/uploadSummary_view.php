@@ -3,10 +3,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title></title>
-        <link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('styleurl')."admin/default/adminstyle.css" ?>" />
-        <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.js" ?>" type="text/javascript"></script>
-        <script src="<?php echo $this->config->item('adminscripts')."uploadsummary.js" ?>" type="text/javascript"></script>
-        <script type="text/javascript">var redUrl = "<?php echo site_url("admin/participants/displayParticipants");?>";</script>
+        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('styleurl')."/admin/default/adminstyle.css" ?>" />
+        <script src="<?php echo Yii::app()->getConfig('generalscripts')."/jquery/jquery.js" ?>" type="text/javascript"></script>
+        <script src="<?php echo Yii::app()->getConfig('adminscripts')."/uploadsummary.js" ?>" type="text/javascript"></script>
+        <script type="text/javascript">var redUrl = "<?php echo $this->createURL("admin/participants/sa/displayParticipants");?>";</script>
     </head>
     <body>
         <?php

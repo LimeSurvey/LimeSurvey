@@ -234,6 +234,20 @@ class ParticipantAttributeNames extends CActiveRecord
     	}
     }
 
+    function storeAttributeCSV($data)
+    {
+        $insertnames = array('attribute_type' => '\''.$data['attribute_type'],
+                            'visible' => $data['visible']);
+		Yii::app()->db->createCommand()->insert('{{participant_attribute_names}}', $insertnames);
+		
+        $insertid = Yii::app()->db->getLastInsertID();
+        $insertnameslang = array('attribute_id' => $insertid,
+                                 'attribute_name'=>$data['attribute_name'],
+                                 'lang' => Yii::app()->session['adminlang']);
+		Yii::app()->db->createCommand()->insert('{{participant_attribute_names_lang}}', $insertnameslang);
+        return $insertid;
+    }
+	
     //updates the attribute values in participant_attribute_values
     function saveAttributeValue($data)
     {
@@ -249,6 +263,18 @@ class ParticipantAttributeNames extends CActiveRecord
         {
             $data=array('visible'=>'FALSE');
         }
-        Yii::app()->db->createCommand()->update('{{participant_attribute_names}}',$data,'attribute_id = '.$attribute_id[1]);
+        Yii::app()->db->createCommand()->update('{{participant_attribute_names}}',$data,'attribute_id = '.$attribute_id[1]); 
+    }
+	
+    function getAttributeID()
+    {
+		$query = Yii::app()->db->createCommand()->select('attribute_id')->from('{{participant_attribute_names}}')->order('attribute_id','desc')->queryAll();
+        return $query;
+    }
+	
+	
+    function saveParticipantAttributeValue($data)
+    {
+		Yii::app()->db->createCommand()->insert('{{participant_attribute_names}}', $data);
     }
 }

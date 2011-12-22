@@ -1,16 +1,13 @@
 <div class='header ui-widget-header'>
  <strong><?php echo $clang->gT("Import CSV"); ?> </strong>
 </div>
- <?php
-  $attribute = array('class' => 'form44');
-  echo form_open_multipart('/admin/participants/attributeMapCSV',$attribute);
- ?>
+ <form action="<?php echo $this->createURL('admin/participants/sa/attributeMapCSV'); ?>" method="post" accept-charset="utf-8" class="form44" enctype="multipart/form-data">
 <ul>
  <li>
-  <label for="fileupload" id="fileupload">
+  <label for="the_file" id="fileupload">
    <?php echo $clang->gT("Choose the file to upload:");?>
   </label>
-  <input type="file" name="userfile" size="50" />
+  <input type="file" name="the_file" size="50" />
  </li>
  <li>
   <label for="characterset" id="characterset">
@@ -54,19 +51,41 @@
                              ,"ucs2"=>$clang->gT("UCS-2 Unicode")
                              ,"ujis"=>$clang->gT("EUC-JP Japanese")
                              ,"utf8"=>$clang->gT("UTF-8 Unicode"));
-       echo form_dropdown('characterset', $encodingsarray, 'auto');
    ?>
+	<select name="characterset">
+		<option value="auto" selected="selected">Automatic</option>
+		<?php 
+			$encodingsarray_keys = array_keys($encodingsarray);
+			$i = 0;
+			foreach($encodingsarray as $encoding):
+		?>
+		<option value="<?php echo ($encodingsarray_keys[$i++]); ?>"><?php echo $encoding; ?></option>
+		<?php 
+			endforeach;
+		?>
+	</select>
  </li>
  <li>
   <label for="seperatorused" id="seperatorused">
    <?php  echo $clang->gT("Seperator used:");?>
   </label>
    <?php
-     $seperatorused = array( "auto"=>$clang->gT("(Autodetect)")
-                             ,"comma"=>$clang->gT("Comma")
-                             ,"semicolon"=>$clang->gT("Semicolon"));
-     echo form_dropdown('seperatorused', $seperatorused, 'auto');
+     $seperatorused = array("comma"=>$clang->gT("Comma")
+                            ,"semicolon"=>$clang->gT("Semicolon"));
    ?>
+   
+	<select name="seperatorused">
+		<option value="auto" selected="selected"><?php echo $clang->gT("(Autodetect)"); ?></option>
+		<?php 
+			$seperatorused_keys = array_keys($seperatorused);
+			$i = 0;
+			foreach($seperatorused as $seperator):
+		?>
+		<option value="<?php echo ($seperatorused_keys[$i++]); ?>"><?php echo $seperator; ?></option>
+		<?php 
+			endforeach;
+		?>
+	</select>
  </li>
  <li>
   <label for ="filter" id="filter">
@@ -74,17 +93,13 @@
     echo $clang->gT("Filter blank email addresses:");
    ?>
   </label>
-   <?php
-    echo form_checkbox('filterbea','accept', TRUE); 
-   ?>
+  <input type="checkbox" name="filterbea" value="accept" checked="checked"/></li>
  </li>
  <li>
      <p><input type="submit" value="upload" /></p>
  </li>
 </ul>
- <?php 
-  echo form_close();
- ?>
+</form>
 <div class="messagebox ui-corner-all">
  <div class="header ui-widget-header">
   <?php $clang->gT("CSV input format") ?>

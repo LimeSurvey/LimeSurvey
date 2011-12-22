@@ -1352,4 +1352,26 @@ class Participants extends CActiveRecord
 	        $returndata = array('success'=>$sucessfull,'duplicate'=>$duplicate);
 	        return $returndata;
 	}
+	
+	/*
+	 * The purpose of this function is to check for duplicate in participants
+	*/
+	function checkforDuplicate($fields)
+	{
+		$query = Yii::app()->db->createCommand()->select('*')->where($fields)->from('{{participants}}')->queryAll();
+		if (count($query) > 0){return true;}
+		else {return false;}
+	}
+	
+	function insertParticipantCSV($data)
+	{
+		$insertData = array('participant_id' => $data['participant_id'],
+							'firstname' => $data['firstname'],
+							'lastname' => $data['lastname'],
+							'email' => $data['email'],
+							'language' => $data['language'],
+							'blacklisted' => $data['blacklisted'],
+							'owner_uid' => $data['owner_uid'] );
+		Yii::app()->db->createCommand()->insert('{{participants}}', $insertData);
+	}
 }
