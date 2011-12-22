@@ -59,8 +59,8 @@ class UserAction extends Survey_Common_Action {
     */
     function editusers()
     {
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl.'scripts/jquery/jquery.tablesorter.min.js');
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl.'scripts/admin/users.js');
+        $this->getController()->_js_admin_includes(Yii::app()->baseUrl.'/scripts/jquery/jquery.tablesorter.min.js');
+        $this->getController()->_js_admin_includes(Yii::app()->baseUrl.'/scripts/admin/users.js');
 
         $userlist = getuserlist();
         $ui = count($userlist);
