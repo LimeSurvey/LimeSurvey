@@ -4557,6 +4557,7 @@ EOT;
         $testArgs = array();
         $argInfo = array();
 
+        LimeExpressionManager::SetDirtyFlag();
         $LEM =& LimeExpressionManager::singleton();
 
 
@@ -4659,6 +4660,7 @@ EOT;
             print "</div>\n";
         }
         print "</table>";
+        LimeExpressionManager::SetDirtyFlag();  // so subsequent tests don't try to access these variables
     }
 
     public static function ShowStackTrace($msg=NULL,&$args=NULL)

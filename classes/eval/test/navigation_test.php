@@ -1,4 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<?php
+if (count($_POST)==0 && !((isset($subaction) && $subaction == 'navigation_test'))) {die("Cannot run this script directly");}
+?>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -6,15 +9,9 @@
     </head>
     <body>
         <?php
-            include_once('../LimeExpressionManager.php');
-            require_once('../../../classes/core/startup.php');
-            require_once('../../../config-defaults.php');
-            require_once('../../../common.php');
-            require_once('../../../classes/core/language.php');
-
-            $clang = new limesurvey_lang("en");
-
             if (count($_POST) == 0) {
+                $clang = new limesurvey_lang("en");
+
                 $query = "select a.surveyls_survey_id as sid, a.surveyls_title as title, b.datecreated, b.assessments "
                 . "from " . db_table_name('surveys_languagesettings') . " as a join ". db_table_name('surveys') . " as b on a.surveyls_survey_id = b.sid"
                 . " where a.surveyls_language='en' order by a.surveyls_title, b.datecreated";
@@ -25,7 +22,7 @@
                 }
 
                 $form = <<< EOD
-<form method='post' action='navigation_test.php'>
+<form method='post' action='../classes/eval/test/navigation_test.php'>
 <h3>Enter the following variables to test navigation for a survey using different styles</h3>
 <table border='1'>
 <tr><th>Parameter</th><th>Value</th></tr>
@@ -58,6 +55,14 @@ EOD;
                 echo $form;
             }
             else {
+                include_once('../LimeExpressionManager.php');
+                require_once('../../../classes/core/startup.php');
+                require_once('../../../config-defaults.php');
+                require_once('../../../common.php');
+                require_once('../../../classes/core/language.php');
+
+                $clang = new limesurvey_lang("en");
+
                 $surveyInfo = explode('|',$_POST['sid']);
                 $surveyid = $surveyInfo[0];
                 $assessments = ($surveyInfo[1] == 'Y');

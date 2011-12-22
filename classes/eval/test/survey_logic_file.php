@@ -1,4 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<?php
+if (count($_POST) == 0 && !((isset($subaction) && $subaction == 'survey_logic_file'))) {die("Cannot run this script directly");}
+?>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -14,7 +17,7 @@
                     $_POST[$key] = $val;
                 }
             }
-            if ($_POST['LEMcalledFromAdmin']=='Y') {
+            if ((isset($subaction) && $subaction == 'survey_logic_file') || $_POST['LEMcalledFromAdmin']=='Y') {
                 $rootpath = $rootdir;
             }
             else {
@@ -28,7 +31,8 @@
 
             $clang = new limesurvey_lang("en");
 
-            if (count($_POST) == 0) {
+            if ((isset($subaction) && $subaction == 'survey_logic_file'))   //  || count($_POST) == 0) {
+            {
                 $query = "select a.surveyls_survey_id as sid, a.surveyls_title as title, b.datecreated, b.assessments "
                 . "from " . db_table_name('surveys_languagesettings') . " as a join ". db_table_name('surveys') . " as b on a.surveyls_survey_id = b.sid"
                 . " where a.surveyls_language='en' order by a.surveyls_title, b.datecreated";
@@ -39,7 +43,7 @@
                 }
 
                 $form = <<< EOD
-<form method='post' action='survey_logic_file.php'>
+<form method='post' action='../classes/eval/test/survey_logic_file.php'>
 <h3>Generate a logic file for the survey</h3>
 <table border='1'>
 <tr><th>Parameter</th><th>Value</th></tr>
