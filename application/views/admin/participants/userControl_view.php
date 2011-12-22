@@ -2,7 +2,7 @@
  <div class='header ui-widget-header'>
    <strong>
      <?php
-      echo $clang->gT("Global participant settings"); 
+      echo $clang->gT("Global participant settings");
      ?>
    </strong>
  </div>
@@ -17,7 +17,7 @@
     if(Yii::app()->session['USER_RIGHT_SUPERADMIN'])
     {
        $attribute = array('class' => 'form44');
-       echo CHtml::beginForm('admin/participants/storeUserControlValues','post',$attribute);
+       echo CHtml::beginForm($this->createUrl('admin/participants/sa/storeUserControlValues'),'post',$attribute);
        $options = array('Y'=>'Yes','N'=> 'No');
    ?>
   <ul>
@@ -29,15 +29,15 @@
    </li>
   </ul>
   <p>
-     <?php 
-       echo CHtml::submitButton('submit', array('value' => 'Submit')); 
+     <?php
+       echo CHtml::submitButton('submit', array('value' => 'Submit'));
      ?>
   </p>
    <?php
       echo CHtml::endForm();
      }
      else
-     {  
+     {
         echo "<div class='messagebox ui-corner-all'>".$clang->gT("You don't have sufficient permissions.")."</div>";
      }
    ?>
