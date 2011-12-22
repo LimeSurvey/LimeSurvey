@@ -34,7 +34,7 @@ class optin extends LSYii_Controller {
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
         $sLanguageCode = $langcode;
-        $iSurveyID = $urveyid
+        $iSurveyID = $urveyid;
         $sToken = $token;
         $sToken = sanitize_token($sToken);
 
