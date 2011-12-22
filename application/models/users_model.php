@@ -39,9 +39,9 @@ class Users_model extends CI_Model {
 
         $data = $this->db->get('users');
         return $data;
-    }   
+    }
 
-	function parentAndUser()
+	function parentAndUser($postuserid)
 	{
 		$this->db->select('a.users_name, a.full_name, a.email, a.uid, b.users_name AS parent');
 		$this->db->select('users AS a');
@@ -68,7 +68,7 @@ class Users_model extends CI_Model {
         $this->db->where('users_name',$user);
         $this->db->update('users',$data);
     }
-	
+
     function delete($where)
     {
         $this->db->where($where);
@@ -88,8 +88,8 @@ class Users_model extends CI_Model {
     {
         $this->db->where(array("uid"=>$uid));
         return $this->db->update('users',$data);
-    }    
-	
+    }
+
 	function parent_update($where,$data)
     {
         $this->db->where($where);
