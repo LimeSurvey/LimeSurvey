@@ -5901,8 +5901,8 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 
         foreach ($fieldnames as $sOldFieldname=>$sNewFieldname)
         {
-            $pattern = "{INSERTANS:".$sOldFieldname."}";
-            $replacement = "{INSERTANS:".$sNewFieldname."}";
+            $pattern = $sOldFieldname;
+            $replacement = $sNewFieldname;
             $urldescription=preg_replace('/'.$pattern.'/', $replacement, $urldescription);
             $endurl=preg_replace('/'.$pattern.'/', $replacement, $endurl);
         }
@@ -5927,8 +5927,8 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 
         foreach ($fieldnames as $sOldFieldname=>$sNewFieldname)
         {
-            $pattern = "{INSERTANS:".$sOldFieldname."}";
-            $replacement = "{INSERTANS:".$sNewFieldname."}";
+            $pattern = $sOldFieldname;
+            $replacement = $sNewFieldname;
             $urldescription=preg_replace('/'.$pattern.'/', $replacement, $urldescription);
             $endurl=preg_replace('/'.$pattern.'/', $replacement, $endurl);
         }
@@ -5956,8 +5956,8 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 
         foreach ($fieldnames as $sOldFieldname=>$sNewFieldname)
         {
-            $pattern = "{INSERTANS:".$sOldFieldname."}";
-            $replacement = "{INSERTANS:".$sNewFieldname."}";
+            $pattern = $sOldFieldname;
+            $replacement = $sNewFieldname;
             $gpname = preg_replace('/'.$pattern.'/', $replacement, $gpname);
             $description=preg_replace('/'.$pattern.'/', $replacement, $description);
         }
@@ -5984,8 +5984,8 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 
         foreach ($fieldnames as $sOldFieldname=>$sNewFieldname)
         {
-            $pattern = "{INSERTANS:".$sOldFieldname."}";
-            $replacement = "{INSERTANS:".$sNewFieldname."}";
+            $pattern = $sOldFieldname;
+            $replacement = $sNewFieldname;
             $question=preg_replace('/'.$pattern.'/', $replacement, $question);
             $help=preg_replace('/'.$pattern.'/', $replacement, $help);
         }
@@ -6013,8 +6013,8 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 
         foreach ($fieldnames as $sOldFieldname=>$sNewFieldname)
         {
-            $pattern = "{INSERTANS:".$sOldFieldname."}";
-            $replacement = "{INSERTANS:".$sNewFieldname."}";
+            $pattern = $sOldFieldname;
+            $replacement = $sNewFieldname;
             $answer=preg_replace('/'.$pattern.'/', $replacement, $answer);
         }
 
