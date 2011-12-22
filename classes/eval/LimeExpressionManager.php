@@ -1196,7 +1196,7 @@ class LimeExpressionManager {
                 case 'H': //ARRAY (Flexible) - Column Format
                 case 'F': //ARRAY (Flexible) - Row Format
                 case 'R': //RANKING STYLE
-                    $ansArray = $this->qans[$questionNum];
+                    $ansArray = (isset($this->qans[$questionNum]) ? $this->qans[$questionNum] : NULL);
                     if ($other == 'Y' && ($type == 'L' || $type == '!'))
                     {
                         if (preg_match('/other$/',$sgqa))
@@ -4179,10 +4179,11 @@ class LimeExpressionManager {
 //                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
                             $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
                             $listItem = substr($sq['rowdivid'],strlen($sq['sgqa']));    // gets the part of the rowdiv id past the end of the sgqa code.
+                            $jsParts[] = "    if (($('#java" . $sq['sgqa'] ."').val() == '" . $listItem . "')";
                             if ($listItem == 'other') {
-                                $listItem = '-oth-';
-                            }
-                            $jsParts[] = "    if ($('#java" . $sq['sgqa'] ."').val() == '" . $listItem . "'){\n";
+                                $jsParts[] = " || ($('#java" . $sq['sgqa'] ."').val() == '-oth-')";
+                            }                        
+                            $jsParts[] = "){\n";
                             $jsParts[] = "      $('#java" . $sq['sgqa'] . "').val('');\n";
                             $jsParts[] = "      $('#answer" . $sq['sgqa'] . "NANS').attr('checked',true);\n";
                             $jsParts[] = "    }\n";
