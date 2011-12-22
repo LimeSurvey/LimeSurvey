@@ -33,7 +33,7 @@ class optout extends LSYii_Controller {
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
         $sLanguageCode = $langcode;
-        $iSurveyID = $urveyid;
+        $iSurveyID = $surveyid;
         $sToken = $token;
         $sToken = sanitize_token($sToken);
 
@@ -80,7 +80,7 @@ class optout extends LSYii_Controller {
                 }
                 else
                 {
-                    $html = clang->gT('You have been already removed from this survey.');
+                    $html = $clang->gT('You have been already removed from this survey.');
                 }
             }            
         }
