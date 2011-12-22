@@ -3781,6 +3781,27 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Use dropdown boxes instead of list of radio buttons'),
     "caption"=>$clang->gT('Use dropdown boxes'));
 
+    $qattributes["dropdown_size"]=array(
+    "types"=>"!",   // TODO add these later?  "1F",
+    'category'=>$clang->gT('Display'),
+    'sortorder'=>200,
+    'inputtype'=>'text',
+    'default'=>0,
+    "help"=>$clang->gT('For list dropdown boxes, show up to this many rows'),
+    "caption"=>$clang->gT('Height of dropdown'));
+
+    $qattributes["dropdown_prefix"]=array(
+    "types"=>"!",   // TODO add these later?  "1F",
+    'category'=>$clang->gT('Display'),
+    'sortorder'=>201,
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('None'),
+        1=>$clang->gT('Order - like 3)'),
+        ),
+    'default'=>0,
+    "help"=>$clang->gT('Accelerator keys for list items'),
+    "caption"=>$clang->gT('Prefix for list items'));
+
     $qattributes["scale_export"]=array(
     "types"=>"CEFGHLMOPWYZ1!:*",
     'category'=>$clang->gT('Other'),

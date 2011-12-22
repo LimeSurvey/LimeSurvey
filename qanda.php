@@ -1356,6 +1356,35 @@ function do_list_dropdown($ia)
 
     $ansresult = db_execute_assoc($ansquery) or safe_die('Couldn\'t get answers<br />'.$ansquery.'<br />'.$connect->ErrorMsg());    //Checked
 
+    $dropdownSize = '';
+    if (isset($qidattributes['dropdown_size']) && $qidattributes['dropdown_size'] > 0)
+    {
+        $_height = sanitize_int($qidattributes['dropdown_size']) ;
+        $_maxHeight = $ansresult->RowCount();
+        if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != '') && $ia[6] != 'Y' && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+            ++$_maxHeight;  // for No Answer
+        }
+        if (isset($other) && $other=='Y') {
+            ++$_maxHeight;  // for Other
+        }
+        if (!$_SESSION[$ia[1]]) {
+            ++$_maxHeight;  // for 'Please choose:'
+        }
+
+        if ($_height > $_maxHeight) {
+            $_height = $_maxHeight;
+        }
+        $dropdownSize = ' size="'.$_height.'"';
+    }
+
+    $prefixStyle = 0;
+    if (isset($qidattributes['dropdown_prefix']))
+    {
+        $prefixStyle = sanitize_int($qidattributes['dropdown_prefix']) ;
+    }
+    $_rowNum=0;
+    $_prefix='';
+
     if (!isset($optCategorySeparator))
     {
         while ($ansrow = $ansresult->FetchRow())
@@ -1365,7 +1394,10 @@ function do_list_dropdown($ia)
             {
                 $opt_select = SELECTED;
             }
-            $answer .= "<option value='{$ansrow['code']}' {$opt_select}>{$ansrow['answer']}</option>\n";
+            if ($prefixStyle == 1) {
+                $_prefix = ++$_rowNum . ') ';
+            }
+            $answer .= "<option value='{$ansrow['code']}' {$opt_select}>{$_prefix}{$ansrow['answer']}</option>\n";
         }
     }
     else
@@ -1443,12 +1475,18 @@ function do_list_dropdown($ia)
         {
             $opt_select = '';
         }
-        $answer .= '					<option value="-oth-"'.$opt_select.'>'.$othertext."</option>\n";
+        if ($prefixStyle == 1) {
+            $_prefix = ++$_rowNum . ') ';
+        }
+        $answer .= '					<option value="-oth-"'.$opt_select.'>'.$_prefix.$othertext."</option>\n";
     }
 
     if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != '') && $ia[6] != 'Y' && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
-        $answer .= '<option value="">'.$clang->gT('No answer')."</option>\n";
+        if ($prefixStyle == 1) {
+            $_prefix = ++$_rowNum . ') ';
+        }
+        $answer .= '<option value="">'.$_prefix.$clang->gT('No answer')."</option>\n";
     }
     $answer .= '				</select>
 				<input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="'.$_SESSION[$ia[1]].'" />';
@@ -1463,7 +1501,7 @@ function do_list_dropdown($ia)
     }
     $sselect = '
 			<p class="question">
-				<select name="'.$ia[1].'" id="answer'.$ia[1].'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide.'">
+				<select name="'.$ia[1].'" id="answer'.$ia[1].'"'.$dropdownSize.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide.'">
     ';
     $answer = $sselect.$answer;
 
