@@ -171,7 +171,7 @@ class Usergroups extends CAction {
 
             $displaydata['display'] = $usersummary;
             //$data['display'] = $editsurvey;
-            $this->getController()->render('/survey_view',$displaydata);
+            $this->getController()->render('/admin/usergroup/plain',$displaydata);
         }
         else
         {
@@ -263,7 +263,7 @@ class Usergroups extends CAction {
 
             $displaydata['display'] = $usersummary;
             //$data['display'] = $editsurvey;
-            $this->controller->render('/survey_view', $displaydata);
+            $this->controller->render('/admin/usergroup/plain', $displaydata);
         }
 
         $this->controller->_loadEndScripts();
@@ -355,7 +355,7 @@ class Usergroups extends CAction {
                 $usersummary .= "</div>\n";
                 $displaydata['display'] = $usersummary;
                 //$data['display'] = $editsurvey;
-                $this->controller->render('/survey_view', $displaydata);
+                $this->controller->render('/admin/usergroup/plain', $displaydata);
 
             }
             else
@@ -430,7 +430,7 @@ class Usergroups extends CAction {
 
                     $displaydata['display'] = $usersummary;
                     //$data['display'] = $editsurvey;
-                    $this->controller->render('/survey_view', $displaydata);
+                    $this->controller->render('/admin/usergroup/plain', $displaydata);
 
             	}
                 else
@@ -578,7 +578,7 @@ class Usergroups extends CAction {
                     
                     if(isset($row2[0]['ugid']))
                     {
-                        $usergroupsummary .= "<form action='scriptname?ugid={$ugid}' method='post'>\n"
+                        $usergroupsummary .= "<form action='" . $this->getController()->createUrl('admin/usergroups/addusertogroup/' . $ugid) . "' method='post'>\n"
                         . "<table class='users'><tbody><tr><td>&nbsp;</td>\n"
                         . "<td>&nbsp;</td>"
                         . "<td align='center'><select name='uid'>\n"
@@ -592,7 +592,7 @@ class Usergroups extends CAction {
 
                     $displaydata['display'] = $usergroupsummary;
                     //$data['display'] = $editsurvey;
-                    $this->controller->render('/survey_view',$displaydata);
+                    $this->controller->render('/admin/usergroup/plain',$displaydata);
                 }
                 else
                 {
@@ -610,6 +610,65 @@ class Usergroups extends CAction {
 	   $this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->yii->lang->gT("LimeSurvey online manual"));
     }
 
+
+    function addusertogroup ()
+    {
+        $this->controller->_js_admin_includes($this->yii->baseUrl.'scripts/admin/users.js');
+        $this->controller->_getAdminHeader();
+        $this->getController()->_showadminmenu(false);        
+	    Yii::app()->loadHelper('database');
+	    $clang = Yii::app()->lang;
+	    $postuserid = CHttpRequest::getPost('uid');
+	    $ugid = $_GET['addusertogroup'];
+	    $this->_usergroupbar($ugid);
+        $addsummary = "<div class=\"header\">".$clang->gT("Adding User to group")."...</div>\n";
+        $addsummary .= "<div class=\"messagebox\">\n";
+
+        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
+        {
+            $query = "SELECT ugid, owner_id FROM {{user_groups}} WHERE ugid = " . $ugid . " AND owner_id = ".Yii::app()->session['loginID']." AND owner_id != ".$postuserid;
+            $result = db_execute_assoc($query); //Checked
+            if($result->count() > 0)
+            {
+                if($postuserid > 0)
+                {
+                    //$isrquery = "INSERT INTO {{user_in_groups}} VALUES({$ugid},{$postuserid})";
+                    $isrresult = User_in_groups::model()->insert(array('ugid' => $ugid, 'uid' =>$postuserid)); //Checked
+
+                    if($isrresult)
+                    {
+                        $addsummary .= "<div class=\"successheader\">".$clang->gT("User added.")."</div>\n";
+                    }
+                    else  // ToDo: for this to happen the keys on the table must still be set accordingly
+                    {
+                        // Username already exists.
+                        $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add user.")."</div>\n" . "<br />" . $clang->gT("Username already exists.")."<br />\n";
+                    }
+                }
+                else
+                {
+                    $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add user.")."</div>\n" . "<br />" . $clang->gT("No Username selected.")."<br />\n";
+                }
+                $addsummary .= "<br/><input type=\"submit\" onclick=\"window.location='" . $this->getController()->createUrl('admin/usergroups/view') . '/' . $ugid . "'\" value=\"".$clang->gT("Continue")."\"/>\n";
+                
+            }
+            else
+            {
+            	echo 'access denied';
+              //include("access_denied.php");
+            }
+        }
+        else
+        {
+        	echo 'access denied';
+            //include("access_denied.php");
+        }
+        $addsummary .= "</div>\n";
+        $displaydata['display'] = $addsummary;
+        $this->controller->render('/admin/usergroup/plain',$displaydata);
+        $this->controller->_loadEndScripts();
+        $this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->yii->lang->gT("LimeSurvey online manual"));
+    }
 
 
     /**

@@ -97,7 +97,8 @@ class User_in_groups extends CActiveRecord {
 	
 	function insert($data)
 	{
-		return (bool) $this->db->insert('user_in_groups', $data);
+		$user = Yii::app()->db->createCommand()->insert($this->tableName(), $data);
+		return (bool) $user;
 	}
 	
 	function join($fields, $from, $condition=FALSE, $join=FALSE, $order=FALSE)
