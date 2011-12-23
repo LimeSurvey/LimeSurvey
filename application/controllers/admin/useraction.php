@@ -97,7 +97,7 @@ class UserAction extends Survey_Common_Action
         $this->getController()->_getAdminHeader();
         $this->getController()->_showadminmenu();
         $this->getController()->render("/admin/user/editusers", $data);
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang > gT("LimeSurvey online manual"));
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
     }
 
     private function _getSurveyCountForUser(array $user)
