@@ -22,14 +22,9 @@
  * @version $Id$
  * @access public
  */
-class optin extends LSYii_Controller {
+class OptinController extends LSYii_Controller {
 
-    function __construct()
-    {
-        parent::__construct();
-    }
-
-    function local($langcode, $surveyid, $token)
+    function actionLocal($langcode, $surveyid, $token)
     {
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
@@ -60,9 +55,11 @@ class optin extends LSYii_Controller {
             $baselang = $sLanguageCode;
         }
 
-        $thissurvey=getSurveyInfo($iSurveyID,$baselang);
+        Yii::app()->lang = $clang;
 
-        if ($thissurvey == false || Yii::app()->db->schema->getTable("tokens_{$iSurveyID}") == null)
+        $thissurvey=getSurveyInfo($iSurveyID,$baselang);
+        
+        if ($thissurvey == false || Yii::app()->db->schema->getTable("{{tokens_{$iSurveyID}}}") == null)
         {
             $html = $clang->gT('This survey does not seem to exist.');
         }
@@ -102,16 +99,17 @@ class optin extends LSYii_Controller {
         {
             $thistpl=sGetTemplatePath($thissurvey['templatedir']);
         }
-        $this->_renderHtml($html,$thistpl);
+        $this->_renderHtml($html,$thistpl,$clang);
     }
 
-    private function _renderHtml($html,$thistpl)
+    private function _renderHtml($html,$thistpl,$clang)
     {
         sendcacheheaders();
         doHeader();
         $data['html'] = $html;
         $data['thistpl'] = $thistpl;
-        $this->getController()->render('/opt_view',$data);
+        $data['clang'] = $clang;
+        $this->render('/opt_view',$data);
         doFooter();
     }
 }

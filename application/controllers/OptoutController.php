@@ -21,14 +21,9 @@
  * @version $Id$
  * @access public
  */
-class optout extends LSYii_Controller {
+class OptoutController extends LSYii_Controller {
 
-    function __construct()
-    {
-        parent::__construct();
-    }
-
-    function local($langcode, $surveyid, $token)
+    function actionLocal($langcode, $surveyid, $token)
     {
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
@@ -57,9 +52,12 @@ class optout extends LSYii_Controller {
             $clang = new Limesurvey_lang(array('langcode' => $sLanguageCode));
             $baselang = $sLanguageCode;
         }
+
+        Yii::app()->lang = $clang;
+
         $thissurvey=getSurveyInfo($iSurveyID,$baselang);
 
-        if ($thissurvey==false || !tableExists("tokens_{$iSurveyID}")){
+        if ($thissurvey==false || !tableExists("{{tokens_{$iSurveyID}}}")){
             $html = $clang->gT('This survey does not seem to exist.');
         }
         else
@@ -104,7 +102,7 @@ class optout extends LSYii_Controller {
         doHeader();
         $data['html'] = $html;
         $data['thistpl'] = $thistpl;
-        $this->getController()->render('/opt_view',$data);
+        $this->render('/opt_view',$data);
         doFooter();
     }
 
