@@ -136,7 +136,7 @@ class emailtemplates extends Survey_Common_Action {
         $this->_surveysummary($surveyid, "editemailtemplates");
         $this->_js_admin_includes(Yii::app()->baseUrl . '/scripts/admin/emailtemplates.js');
 
-        $this->getController()->render('/survey_view', $data);
+        $this->getController()->render('/admin/emailtemplates/emailtemplates_view', $data);
         $this->getController()->_loadEndScripts();
         $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
     }
