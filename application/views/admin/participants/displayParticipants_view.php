@@ -3,104 +3,104 @@
 
 /* Build a different colModel for the userid column based on whether or not the user is editable */
 /* This can probably be moved into the controller */
-if(Yii::app()->getConfig("userideditable") == 'Y')  //Firstly, if the user has edit rights, make the columns editable
+if (Yii::app()->getConfig("userideditable") == 'Y')  //Firstly, if the user has edit rights, make the columns editable
 {
-	$uid = '{ "name":"owner_uid", "index":"owner_uid", "width":150, "sorttype":"int", "sortable": true, "align":"center", "editable":true, "edittype":"select", "editoptions":{ "value":"';
-	$i=0;
-	foreach($names->result() as $row)
-	{
-                $name[$i]=$row->uid.":".$row->full_name;
-		$i++;
-	}
-	$unames = implode(";",$name).'"}}';
-	$uidNames[] = $uid.$unames;
+    $uid = '{ "name":"owner_uid", "index":"owner_uid", "width":150, "sorttype":"int", "sortable": true, "align":"center", "editable":true, "edittype":"select", "editoptions":{ "value":"';
+    $i = 0;
+    foreach ($names->result() as $row)
+    {
+        $name[$i] = $row->uid . ":" . $row->full_name;
+        $i++;
+    }
+    $unames = implode(";", $name) . '"}}';
+    $uidNames[] = $uid . $unames;
 }
 else
 {
-	$uidNames[] = '{ "name":"owner_uid", "index":"owner_uid", "width":150, "sorttype":"int", "sortable": true, "align":"center", "editable":false}';
+    $uidNames[] = '{ "name":"owner_uid", "index":"owner_uid", "width":150, "sorttype":"int", "sortable": true, "align":"center", "editable":false}';
 }
 /* Build the options for additional languages */
-$j=1;
+$j = 1;
 $lang = '{ "name":"language", "index":"language", "sorttype":"string", "sortable": true, "align":"center", "editable":true, "edittype":"select", "editoptions":{ "value":"';
 $getlangvalues = getLanguageData();
-if(Yii::app()->session['adminlang']!='auto')
+if (Yii::app()->session['adminlang'] != 'auto')
 {
-$lname[0]=Yii::app()->session['adminlang'].":".$getlangvalues[Yii::app()->session['adminlang']]['description'];
+    $lname[0] = Yii::app()->session['adminlang'] . ":" . $getlangvalues[Yii::app()->session['adminlang']]['description'];
 }
-foreach ($getlangvalues as $keycode => $keydesc) {
-                if(Yii::app()->session['adminlang']!=$keycode)
-                {
-                        $cleanlangdesc = str_replace (";"," -",$keydesc['description']);
-                        $lname[$j]=$keycode.":".$cleanlangdesc;
-                        $j++;
-                }
-	}
-	$langnames = implode(";",$lname).'"}}';
-	$langNames[] = $lang.$langnames;
+foreach ($getlangvalues as $keycode => $keydesc)
+{
+    if (Yii::app()->session['adminlang'] != $keycode)
+    {
+        $cleanlangdesc = str_replace(";", " -", $keydesc['description']);
+        $lname[$j] = $keycode . ":" . $cleanlangdesc;
+        $j++;
+    }
+}
+$langnames = implode(";", $lname) . '"}}';
+$langNames[] = $lang . $langnames;
 /* Build the columnNames for the extra attributes */
 /* and, build the columnModel */
-    if(isset($attributes) && count($attributes) > 0)
-        {
-        foreach($attributes as $row)
-            {
-                $attnames[]='"'.$row['attribute_name'].'"';
-                $uidNames[]='{ "name": "'.$row['attribute_name'].'", "index":"'.$row['attribute_name'].'", "sorttype":"string", "sortable": true, "align":"center"}';
-            }
-        $columnNames = ','.implode(",",$attnames).''; //Add to the end of the standard list of columnNames
-
-    }
-else
+if (isset($attributes) && count($attributes) > 0)
+{
+    foreach ($attributes as $row)
     {
-      $columnNames = "";
+        $attnames[] = '"' . $row['attribute_name'] . '"';
+        $uidNames[] = '{ "name": "' . $row['attribute_name'] . '", "index":"' . $row['attribute_name'] . '", "sorttype":"string", "sortable": true, "align":"center"}';
     }
+    $columnNames = ',' . implode(",", $attnames) . ''; //Add to the end of the standard list of columnNames
+}
+else
+{
+    $columnNames = "";
+}
 /* Build the javasript variables to pass to the jqGrid */
 ?>
 <script type="text/javascript">
-var spTitle = "<?php echo $clang->gT("Sharing participants..."); ?>";
-var spAddBtn = "<?php echo $clang->gT("Share the selected participants"); ?>";
-var sfNoUser = "<?php echo $clang->gT("No other user in the system"); ?>";
-var addpartTitle = "<?php echo $clang->gT("Add participant to Survey"); ?>";
-var addpartErrorMsg = "<?php echo $clang->gT("Either you don't own a survey or it doesn't have token table"); ?>";
-var mapButton = "<?php echo $clang->gT("Next") ?>";
-var error = "<?php echo $clang->gT("Error") ?>";
-var addsurvey = "<?php echo $clang->gT("Add to survey") ?>";
-var exportcsv = "<?php echo $clang->gT("Export CSV") ?>";
-var nooptionselected = "<?php echo $clang->gT("Please choose either of the options") ?>";
-var removecondition = "<?php echo $clang->gT("Remove condition") ?>";
-var selectSurvey = "<?php echo $clang->gT("Please select a survey to add participants to"); ?>";
-var cancelBtn = "<?php echo $clang->gT("Cancel") ?>";
-var exportBtn = "<?php echo $clang->gT("Export") ?>";
-var okBtn = "<?php echo $clang->gT("OK") ?>";
-var deletefrompanelmsg = "<?php echo $clang->gT("Select one of the three options") ?>";
-var noRowSelected = "<?php echo $clang->gT("You have no row selected") ?>";
-var deletefrompanel = "<?php echo $clang->gT("Delete participant(s) from central participants panel only") ?>";
-var deletefrompanelandtoken = "<?php echo $clang->gT("Delete participant(s) from central panel and tokens tables") ?>";
-var deletefrompaneltokenandresponse = "<?php echo $clang->gT("Delete participant(s) from central panel, tokens tables and all associated responses") ?>";
-var deleteMsg = "<br/>"+deletefrompanelmsg+"<br/><br/><center><ol id='selectable' class='selectable' ><li class='ui-widget-content' id='po'>"+deletefrompanel+"</li><li class='ui-widget-content' id='ptt'>"+deletefrompanelandtoken+"</li><li class='ui-widget-content' id='ptta'>"+deletefrompaneltokenandresponse+"</li></ol></center>";
-var searchBtn = "<?php echo $clang->gT("Search") ?>";
-var shareMsg = "<?php echo $clang->gT("You can see and edit settings for shared participant in share panel.") ?>"; //PLEASE REVIEW
-var jsonUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/getParticipants_json");?>";
-var jsonSearchUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/getParticipantsResults_json/search/");?>";
-var editUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/editParticipant"); ?>";
-var getSearchIDs = "<?php echo Yii::app()->createUrl("admin/participants/sa/getSearchIDs"); ?>";
-var getaddtosurveymsg = "<?php echo Yii::app()->createUrl("admin/participants/sa/getaddtosurveymsg"); ?>";
-var minusbutton = "<?php echo Yii::app()->getRequest()->getBaseUrl()."/images/deleteanswer.png" ?>";
-var addbutton = "<?php echo Yii::app()->getRequest()->getBaseUrl()."/images/plus.png" ?>";
-var delparticipantUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/delParticipant");?>";
-var surveylinkUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/getSurveyInfo_json/pid/"); ?>";
-var getAttribute_json = "<?php echo Yii::app()->createUrl("admin/participants/sa/getAttribute_json/pid/");?>";
-var exporttocsv = "<?php echo Yii::app()->createUrl("admin/participants/sa/exporttocsv/id");?>";
-var exporttocsvcount = "<?php echo Yii::app()->createUrl("admin/participants/sa/exporttocsvcount");?>";
-var getcpdbAttributes_json = "<?php echo Yii::app()->createUrl("admin/participants/sa/exporttocsvcount");?>";
-var attMapUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/attributeMap");?>";
-var editAttributevalue = "<?php echo Yii::app()->createUrl("admin/participants/sa/editAttributevalue");?>";
-var shareUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/shareParticipants"); ?>";
-var surveyUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/addToToken"); ?>";
-var postUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/setSession"); ?>";
-var ajaxUrl = "<?php echo Yii::app()->createUrl("images/ajax-loader.gif"); ?>";
-var redUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/displayParticipants");?>";
-var colNames = '["participant_id","can_edit","<?php echo $clang->gT("First name") ?>","<?php echo $clang->gT("Last name") ?>","<?php echo $clang->gT("E-mail") ?>","<?php echo $clang->gT("Blacklisted") ?>","<?php echo $clang->gT("Surveys") ?>","<?php echo $clang->gT("Language") ?>","<?php echo $clang->gT("Owner name") ?>"<?php echo $columnNames; ?>]';
-var colModels = '[{ "name":"participant_id", "index":"participant_id", "width":100, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';
+    var spTitle = "<?php echo $clang->gT("Sharing participants..."); ?>";
+    var spAddBtn = "<?php echo $clang->gT("Share the selected participants"); ?>";
+    var sfNoUser = "<?php echo $clang->gT("No other user in the system"); ?>";
+    var addpartTitle = "<?php echo $clang->gT("Add participant to Survey"); ?>";
+    var addpartErrorMsg = "<?php echo $clang->gT("Either you don't own a survey or it doesn't have token table"); ?>";
+    var mapButton = "<?php echo $clang->gT("Next") ?>";
+    var error = "<?php echo $clang->gT("Error") ?>";
+    var addsurvey = "<?php echo $clang->gT("Add to survey") ?>";
+    var exportcsv = "<?php echo $clang->gT("Export CSV") ?>";
+    var nooptionselected = "<?php echo $clang->gT("Please choose either of the options") ?>";
+    var removecondition = "<?php echo $clang->gT("Remove condition") ?>";
+    var selectSurvey = "<?php echo $clang->gT("Please select a survey to add participants to"); ?>";
+    var cancelBtn = "<?php echo $clang->gT("Cancel") ?>";
+    var exportBtn = "<?php echo $clang->gT("Export") ?>";
+    var okBtn = "<?php echo $clang->gT("OK") ?>";
+    var deletefrompanelmsg = "<?php echo $clang->gT("Select one of the three options") ?>";
+    var noRowSelected = "<?php echo $clang->gT("You have no row selected") ?>";
+    var deletefrompanel = "<?php echo $clang->gT("Delete participant(s) from central participants panel only") ?>";
+    var deletefrompanelandtoken = "<?php echo $clang->gT("Delete participant(s) from central panel and tokens tables") ?>";
+    var deletefrompaneltokenandresponse = "<?php echo $clang->gT("Delete participant(s) from central panel, tokens tables and all associated responses") ?>";
+    var deleteMsg = "<br/>"+deletefrompanelmsg+"<br/><br/><center><ol id='selectable' class='selectable' ><li class='ui-widget-content' id='po'>"+deletefrompanel+"</li><li class='ui-widget-content' id='ptt'>"+deletefrompanelandtoken+"</li><li class='ui-widget-content' id='ptta'>"+deletefrompaneltokenandresponse+"</li></ol></center>";
+    var searchBtn = "<?php echo $clang->gT("Search") ?>";
+    var shareMsg = "<?php echo $clang->gT("You can see and edit settings for shared participant in share panel.") ?>"; //PLEASE REVIEW
+    var jsonUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/getParticipants_json"); ?>";
+    var jsonSearchUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/getParticipantsResults_json/search/"); ?>";
+    var editUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/editParticipant"); ?>";
+    var getSearchIDs = "<?php echo Yii::app()->createUrl("admin/participants/sa/getSearchIDs"); ?>";
+    var getaddtosurveymsg = "<?php echo Yii::app()->createUrl("admin/participants/sa/getaddtosurveymsg"); ?>";
+    var minusbutton = "<?php echo Yii::app()->getRequest()->getBaseUrl() . "/images/deleteanswer.png" ?>";
+    var addbutton = "<?php echo Yii::app()->getRequest()->getBaseUrl() . "/images/plus.png" ?>";
+    var delparticipantUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/delParticipant"); ?>";
+    var surveylinkUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/getSurveyInfo_json/pid/"); ?>";
+    var getAttribute_json = "<?php echo Yii::app()->createUrl("admin/participants/sa/getAttribute_json/pid/"); ?>";
+    var exporttocsv = "<?php echo Yii::app()->createUrl("admin/participants/sa/exporttocsv/id"); ?>";
+    var exporttocsvcount = "<?php echo Yii::app()->createUrl("admin/participants/sa/exporttocsvcount"); ?>";
+    var getcpdbAttributes_json = "<?php echo Yii::app()->createUrl("admin/participants/sa/exporttocsvcount"); ?>";
+    var attMapUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/attributeMap"); ?>";
+    var editAttributevalue = "<?php echo Yii::app()->createUrl("admin/participants/sa/editAttributevalue"); ?>";
+    var shareUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/shareParticipants"); ?>";
+    var surveyUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/addToToken"); ?>";
+    var postUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/setSession"); ?>";
+    var ajaxUrl = "<?php echo Yii::app()->createUrl("images/ajax-loader.gif"); ?>";
+    var redUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/displayParticipants"); ?>";
+    var colNames = '["participant_id","can_edit","<?php echo $clang->gT("First name") ?>","<?php echo $clang->gT("Last name") ?>","<?php echo $clang->gT("E-mail") ?>","<?php echo $clang->gT("Blacklisted") ?>","<?php echo $clang->gT("Surveys") ?>","<?php echo $clang->gT("Language") ?>","<?php echo $clang->gT("Owner name") ?>"<?php echo $columnNames; ?>]';
+    var colModels = '[{ "name":"participant_id", "index":"participant_id", "width":100, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';
     colModels += '{ "name":"can_edit", "index":"can_edit", "width":10, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';
     colModels += '{ "name":"firstname", "index":"firstname", "sorttype":"string", "sortable": true, "width":120, "align":"center", "editable":true},';
     colModels += '{ "name":"lastname", "index":"lastname", "sorttype":"string", "sortable": true,"width":120, "align":"center", "editable":true},';
@@ -109,52 +109,50 @@ var colModels = '[{ "name":"participant_id", "index":"participant_id", "width":1
     colModels += '{ "name":"surveys", "index":"surveys","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":false},';
 
 <?php
-    $colModels  ="colModels += '".implode(",';\n colModels += '",$langNames).",";
-    $colModels .= implode(",';\n colModels += '", $uidNames)."]';";
-    echo $colModels;
+$colModels = "colModels += '" . implode(",';\n colModels += '", $langNames) . ",";
+$colModels .= implode(",';\n colModels += '", $uidNames) . "]';";
+echo $colModels;
 ?>
 </script>
-<script src="<?php echo Yii::app()->getConfig('generalscripts')."admin/displayParticipant.js" ?>" type="text/javascript"></script>
+<script src="<?php echo Yii::app()->getConfig('generalscripts') . "admin/displayParticipant.js" ?>" type="text/javascript"></script>
 <div id ="search" style="display:none">
-<?php
-$optionsearch = array( '' => 'Select...',
-                      'firstname' => 'First name',
-                      'lastname' => 'Last name',
-                      'email' => 'E-mail',
-                      'blacklisted' => 'Blacklisted',
-                      'surveys' => 'Surveys ',
-                      'language' => 'Language',
-                      'owner_uid' => 'Owner ID',
-                      'owner_name' => 'Owner name');
-$optioncontition = array( '' => 'Select...',
-                      'equal' => 'Equals',
-                      'contains' => 'Contains',
-                      'notequal' => 'Not equal',
-                      'notcontains' => 'Not contains',
-                      'greaterthan' => 'Greater than',
-                      'lessthan' => 'Less than');
-if(isset($allattributes) && count($allattributes) > 0) // Add attribute names to select box
-        {
+    <?php
+    $optionsearch = array('' => 'Select...',
+        'firstname' => 'First name',
+        'lastname' => 'Last name',
+        'email' => 'E-mail',
+        'blacklisted' => 'Blacklisted',
+        'surveys' => 'Surveys ',
+        'language' => 'Language',
+        'owner_uid' => 'Owner ID',
+        'owner_name' => 'Owner name');
+    $optioncontition = array('' => 'Select...',
+        'equal' => 'Equals',
+        'contains' => 'Contains',
+        'notequal' => 'Not equal',
+        'notcontains' => 'Not contains',
+        'greaterthan' => 'Greater than',
+        'lessthan' => 'Less than');
+    if (isset($allattributes) && count($allattributes) > 0) // Add attribute names to select box
+    {
         echo "<script type='text/javascript'> optionstring = '";
-           foreach($allattributes as $key=>$value)
-            {
-               $optionsearch[$value['attribute_id']] = $value['attribute_name'];
-               echo "<option value=".$value['attribute_id'].">".$value['attribute_name']."</option>";
-            }
-        echo "';</script>";
+        foreach ($allattributes as $key => $value)
+        {
+            $optionsearch[$value['attribute_id']] = $value['attribute_name'];
+            echo "<option value=" . $value['attribute_id'] . ">" . $value['attribute_name'] . "</option>";
         }
-
-
-?>
-<table id='searchtable'>
-<tr>
-<td><?php echo CHtml::dropDownList('field_1','id="field_1"',$optionsearch); ?></td>
-<td><?php echo CHtml::dropDownList('condition_1','id="condition_1"',$optioncontition); ?></td>
-<td><input type="text" id="conditiontext_1" style="margin-left:10px;" /></td>
-<td><img src=<?php echo Yii::app()->getRequest()->getBaseUrl()."/images/plus.png" ?>  id="addbutton" style="margin-bottom:4px"></td>
-</tr>
-</table>
-<br/>
+        echo "';</script>";
+    }
+    ?>
+    <table id='searchtable'>
+        <tr>
+            <td><?php echo CHtml::dropDownList('field_1', 'id="field_1"', $optionsearch); ?></td>
+            <td><?php echo CHtml::dropDownList('condition_1', 'id="condition_1"', $optioncontition); ?></td>
+            <td><input type="text" id="conditiontext_1" style="margin-left:10px;" /></td>
+            <td><img src=<?php echo Yii::app()->getRequest()->getBaseUrl() . "/images/plus.png" ?>  id="addbutton" style="margin-bottom:4px"></td>
+        </tr>
+    </table>
+    <br/>
 
 
 </div>
@@ -165,95 +163,98 @@ if(isset($allattributes) && count($allattributes) > 0) // Add attribute names to
 </table>
 
 <div id="fieldnotselected" title="<?php echo $clang->gT("Error") ?>" style="display:none">
-	<p>
-		<?php echo $clang->gT("Please select a field"); ?>
-	</p>
+    <p>
+<?php echo $clang->gT("Please select a field"); ?>
+    </p>
 </div>
 <div id="conditionnotselected" title="<?php echo $clang->gT("Error") ?>" style="display:none">
-	<p>
-		<?php echo $clang->gT("Please select a condition"); ?>
-	</p>
+    <p>
+<?php echo $clang->gT("Please select a condition"); ?>
+    </p>
 </div>
 <div id="norowselected" title="<?php echo $clang->gT("Error") ?>" style="display:none">
-	<p>
-		<?php echo $clang->gT("Please select at least one participant"); ?>
-	</p>
+    <p>
+<?php echo $clang->gT("Please select at least one participant"); ?>
+    </p>
 </div>
 <div id="shareform" title="<?php echo $clang->gT("Share") ?>" style="display:none">
-	<p>
-	<?php echo $clang->gT("User with whom the participants are to be shared"); ?></p>
+    <p>
+<?php echo $clang->gT("User with whom the participants are to be shared"); ?></p>
+    <p>
+        <?php
+        $options[''] = $clang->gT("Select...");
+        foreach ($names as $row)
+        {
+            if (!(Yii::app()->session['loginID'] == $row['uid']))
+            {
+                $options[$row['uid']] = $row['full_name'];
+            }
+        }
+        echo CHtml::dropDownList('shareuser', 'id="shareuser"', $options);
+        ?>
+    </p>
+    <p>
+<?php echo $clang->gT("Allow this user to edit these participants"); ?>
+    </p>
+    <p><?php
+$data = array(
+    'id' => 'can_edit',
+    'value' => 'TRUE',
+    'style' => 'margin:10px',
+);
+echo CHtml::checkBox('can_edit', TRUE, $data);
+?><input type="hidden" name="can_edit" id="can_edit" value='TRUE'></p>
+</div>
+<!--<div id="addsurvey" title="addsurvey" style="display:none">-->
+<div class="ui-widget ui-helper-hidden" id="client-script-return-msg" style="display:none">
+    <form action="<?php echo Yii::app()->createUrl("admin/participants/sa/attributeMap"); ?>" name="addsurvey" id="addsurvey" method="POST">
+        <input type="hidden" name="participant_id" id="participant_id" value=""></input>
+        <input type="hidden" name="count" id="count" value=""></input>
         <p>
-              <?php
-              $options[''] = $clang->gT("Select...");
-              foreach($names as $row)
-              {
-                  if(!(Yii::app()->session['loginID'] == $row['uid']))
-                  {
-                       $options[$row['uid']] = $row['full_name'];
-                  }
-              }
-              echo CHtml::dropDownList('shareuser', 'id="shareuser"', $options);
-              ?>
-        </p>
+            <?php echo $clang->gT("Please select the survey to which participants are to be added"); ?></p>
         <p>
-        <?php echo $clang->gT("Allow this user to edit these participants"); ?>
-        </p>
-        <p><?php $data = array(            
-            'id'          => 'can_edit',
-            'value'       => 'TRUE',            
-            'style'       => 'margin:10px',
-            );
-        echo CHtml::checkBox('can_edit',TRUE,$data); ?><input type="hidden" name="can_edit" id="can_edit" value='TRUE'></p>
-    </div>
-        <!--<div id="addsurvey" title="addsurvey" style="display:none">-->
-        <div class="ui-widget ui-helper-hidden" id="client-script-return-msg" style="display:none">
-        <form action="<?php echo Yii::app()->createUrl("admin/participants/sa/attributeMap");?>" name="addsurvey" id="addsurvey" method="POST">
-            <input type="hidden" name="participant_id" id="participant_id" value=""></input>
-            <input type="hidden" name="count" id="count" value=""></input>
-	<p>
-	<?php echo $clang->gT("Please select the survey to which participants are to be added"); ?></p>
-        <p>
-              <?php
-                if(!empty($surveynames))
+            <?php
+            if (!empty($surveynames))
+            {
+                $option[''] = $clang->gT("Select...");
+                foreach ($surveynames as $row)
                 {
-                       $option[''] = $clang->gT("Select...");
-                       foreach($surveynames as $row )
-                        {
-                             $option[$row['surveyls_survey_id']] = $row['surveyls_title'];
-                        }
-                        echo CHtml::dropDownList('survey_id','id="survey_id"',$option);
+                    $option[$row['surveyls_survey_id']] = $row['surveyls_title'];
                 }
-
-             ?>
+                echo CHtml::dropDownList('survey_id', 'id="survey_id"', $option);
+            }
+            ?>
         </p>
         <p><?php echo $clang->gT("Redirect to token table after copy "); ?>
-        <?php $data = array(            
-            'id'          => 'redirect',
-            'value'       => 'TRUE',            
-            'style'       => 'margin:10px',
+            <?php
+            $data = array(
+                'id' => 'redirect',
+                'value' => 'TRUE',
+                'style' => 'margin:10px',
             );
 
-        echo CHtml::checkBox('redirect',TRUE,$data); ?></p>
+            echo CHtml::checkBox('redirect', TRUE, $data);
+            ?></p>
         <center><ol id='selectableadd' class='selectable' >
                 <li class='ui-widget-content' id='all'><?php echo $clang->gT("all participants in current search") ?></li>
                 <li class='ui-widget-content' id='allingrid'><?php echo $clang->gT("all participants") ?></li>
                 <li class='ui-widget-content' id='selected'><?php echo $clang->gT("only the participants I have selected") ?></li>
-        </ol></center>
-            </form>
+            </ol></center>
+    </form>
 </div>
 <div id="notauthorised" title="notauthorised" style="display:none">
-	<p>
-	<?php echo $clang->gT("This is shared participant and you are not authorised to edit it"); ?></p>
-    
+    <p>
+<?php echo $clang->gT("This is shared participant and you are not authorised to edit it"); ?></p>
+
 </div>
 <div id="exportcsv" title="exportcsv" style="display:none">
-    <?php echo $clang->gT("Select the attribute to be exported"); ?><br/><br/>   
-     <select id="attributes" name="attributes" multiple="multiple">
+        <?php echo $clang->gT("Select the attribute to be exported"); ?><br/><br/>
+    <select id="attributes" name="attributes" multiple="multiple">
         <?php
-            foreach($allattributes as $key=>$value)
-            {
-                echo "<option value=".$value['attribute_id'].">".$value['attribute_name']."</option>";
-            }
+        foreach ($allattributes as $key => $value)
+        {
+            echo "<option value=" . $value['attribute_id'] . ">" . $value['attribute_name'] . "</option>";
+        }
         ?>
     </select>
 </div>

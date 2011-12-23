@@ -1,7 +1,7 @@
 <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.js"?>" type="text/javascript"></script>
 <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('generalscripts')."jquery/css/start/jquery-ui.css" ?>" />
-<title><?PHP echo $clang->gT("Blacklist control") ?></title>
+<title><?PHP echo $clang->gT("Blacklist Control") ?></title>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url()."templates/default/template.css" ?>" />
 <style type="text/css" media="aural tty">
     progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }

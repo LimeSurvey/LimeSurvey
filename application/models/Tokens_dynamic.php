@@ -10,7 +10,7 @@
    * other free or open source software licenses.
    * See COPYRIGHT.php for copyright notices and details.
    *
-   *	$Id: common_helper.php 11335 2011-11-08 12:06:48Z c_schmitz $
+   *	$Id$
    *	Files Purpose: lots of common functions
 */
 
@@ -39,8 +39,11 @@ class Tokens_dynamic extends CActiveRecord
 	 * @param int $surveyid
 	 * @return CActiveRecord
 	 */
-	public static function model()
+	public static function model($sid)
 	{
+        if (!is_null($sid))
+            self::sid($sid);
+
 		return parent::model(__CLASS__);
 	}
 
@@ -154,7 +157,7 @@ class Tokens_dynamic extends CActiveRecord
         // an alternative way to get tokenlength...  told to me by GautamGupta1:  :)
         //$tokenlength = Yii::app()->db->createCommand()->select('tokenlength')->from('{{surveys}}')->where('sid='.$surveyid)->query()->readColumn(0);
         $iTokenLength = $tlrow[0]['tokenlength'];
-        
+
 
         //if tokenlength is not set or there are other problems use the default value (15)
         if(!isset($iTokenLength) || $iTokenLength == '')
@@ -194,18 +197,18 @@ class Tokens_dynamic extends CActiveRecord
 		$criteria = new CDbCriteria;
 
         if ($condition != FALSE)
-        {	
+        {
 		    foreach ($condition as $item => $value)
 			{
 				$criteria->addCondition($item.'="'.$value.'"');
 			}
         }
-		
+
 		$data = $this->findAll($criteria);
 
         return $data;
     }
-    
+
     public function search()
 	{
 		// Warning: Please modify the following code to remove attributes that
@@ -232,9 +235,9 @@ class Tokens_dynamic extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-    
+
     function getSearch($condition,$page,$limit)
-	{  
+	{
 	    $start = $limit*$page - $limit;
 	    if($condition[1]=='equal')
         {
@@ -246,7 +249,7 @@ class Tokens_dynamic extends CActiveRecord
               else
               {
                   $data = $command->select('*')->from(Tokens_dynamic::tableName())->limit($limit,$start)->queryAll();
-              }   
+              }
             return $data;
         }
         else if($condition[1]=='contains')
@@ -260,7 +263,7 @@ class Tokens_dynamic extends CActiveRecord
               else
               {
                 $data = $command->limit($limit,$start)->queryAll();
-              }   
+              }
             return $data;
         }
         else if($condition[1]=='notequal')
@@ -273,7 +276,7 @@ class Tokens_dynamic extends CActiveRecord
                   else
                   {
                   $data = $command->limit($limit,$start)->queryAll();
-                    }   
+                    }
             return $data;
         }
         else if($condition[1]=='notcontains')
@@ -287,7 +290,7 @@ class Tokens_dynamic extends CActiveRecord
                   else
                   {
                   $data = $command->limit($limit,$start)->queryAll();
-                    }   
+                    }
             return $data;
         }
         else if($condition[1]=='greaterthan')
@@ -300,12 +303,12 @@ class Tokens_dynamic extends CActiveRecord
                   else
                   {
                   $data = $command->limit($limit,$start)->queryAll();
-                    }   
+                    }
             return $data;
         }
         else if($condition[1]=='lessthan')
         {
-            $command = Yii::app()->db->createCommand()->select('*')->from(Tokens_dynamic::tableName())->where($condition[0].' < "'.$condition[2].'"'); 
+            $command = Yii::app()->db->createCommand()->select('*')->from(Tokens_dynamic::tableName())->where($condition[0].' < "'.$condition[2].'"');
             if($page == 0 && $limit == 0)
             {
             $data= $command->queryAll();
@@ -313,21 +316,21 @@ class Tokens_dynamic extends CActiveRecord
             else
             {
                 $data = $command->limit($limit,$start)->queryAll();
-            }   
+            }
             return $data;
         }
 	}
-    
+
 	function getSearchMultiple($condition,$page,$limit)
 	{
 	   $i=0;
 	   $j=1;
 	   $tobedonelater =array();
-	   $start = $limit*$page - $limit;	   
+	   $start = $limit*$page - $limit;
 	   $command = new CDbCriteria;
 	   $command->condition = '';
 	   $con= count($condition);
-	   while($i < $con){      
+	   while($i < $con){
            if($i<3){
                 $i+=3;
                 if($condition[1]=='equal')
@@ -372,7 +375,7 @@ class Tokens_dynamic extends CActiveRecord
 	            {
                     if($condition[$i]=='and')
                     {
-                        
+
                         $command->addCondition($condition[$i+1].' LIKE "%'.$condition[$i+3].'%"');
                     }
                     else
@@ -428,7 +431,7 @@ class Tokens_dynamic extends CActiveRecord
 	        }
 	        else{$i=$i+4;}
 	    }
-	    
+
         if($page == 0 && $limit == 0)
 	    {
 	    	$arr = Tokens_dynamic::model()->findAll($command);
@@ -448,8 +451,8 @@ class Tokens_dynamic extends CActiveRecord
 			{
     			$data[$t->tid] = $t->attributes;
 			}
-	    }   
-        
+	    }
+
 	    return $data;
 	}
     function deleteToken($tokenid)
