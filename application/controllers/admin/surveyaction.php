@@ -1831,8 +1831,6 @@ class SurveyAction extends Survey_Common_Action {
                 $sExpiryDate=$this->date_time_converter->convert("Y-m-d H:i:s");
             }
 
-            $_POST = CHttpRequest::getPost();
-
             // Insert base settings into surveys table
             $aInsertData=array(
                 'expires'                   =>  $sExpiryDate,
