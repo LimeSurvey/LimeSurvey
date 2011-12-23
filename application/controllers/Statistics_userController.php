@@ -26,12 +26,8 @@
  * See http://docs.limesurvey.org/tiki-index.php?page=Question+attributes#public_statistics
  */
 
-class statistics_user extends LSCI_Controller {
+class Statistics_userController extends LSYii_Controller {
 
-	function __construct()
-	{
-		parent::__construct();
-	}
 
 	public function _remap($method, $params = array())
 	{
@@ -39,13 +35,15 @@ class statistics_user extends LSCI_Controller {
 	    return call_user_func_array(array($this, "action"), $params);
 	}
 
-	function action($surveyid)
+	function actionAction($surveyid)
 	{
 		$surveyid=(int)$surveyid;
-		$this->load->library('admin/progressbar','progressbar');
-		$this->load->helper("admin/statistics");
-		$this->load->helper('database');
-		$this->load->helper('surveytranslator');
+		Yii::import('application.libraries.admin.progressbar',true);
+		Yii::app()->loadHelper("admin/statistics");
+		Yii::app()->loadHelper('database');
+		Yii::app()->loadHelper('surveytranslator');
+
+		$data = array();
 
 		//XXX enable/disable this for testing
 		//$publicgraphs = 1;
@@ -67,10 +65,15 @@ class statistics_user extends LSCI_Controller {
 		 */
 
 		if(!isset($surveyid))
+		{
 			$surveyid=returnglobal('sid');
+		}
 		else
+		{
 			$surveyid = (int) $surveyid;
-		if (!$surveyid){
+		}
+		if (!$surveyid)
+		{
 		    //This next line ensures that the $surveyid value is never anything but a number.
 		    safe_die('You have to provide a valid survey ID.');
 		}
@@ -78,12 +81,14 @@ class statistics_user extends LSCI_Controller {
 
 		if ($surveyid)
 		{
-		    $actquery="SELECT * FROM ".$this->db->dbprefix('surveys')." WHERE sid=$surveyid and active='Y'";
-		    $actresult=db_execute_assoc($actquery) or safe_die ("Couldn't access survey settings<br />$query<br />".$connect->ErrorMsg());      //Checked
-		    if ($actresult->num_rows() == 0) { safe_die('You have to provide a valid survey ID.'); }
+		    $actresult = Survey::model()->findAll('sid = :sid AND active = :active', array(':sid' => $surveyid, ':active' => 'Y'));      //Checked
+		    if (count($actresult) == 0)
+		    {
+			    safe_die('You have to provide a valid survey ID.');
+			}
 		    else
 		    {
-		        $surveyinfo=getSurveyInfo($surveyid);
+		        $surveyinfo = getSurveyInfo($surveyid);
 		        // CHANGE JSW_NZ - let's get the survey title for display
 		        $thisSurveyTitle = $surveyinfo["name"];
 		        // CHANGE JSW_NZ - let's get css from individual template.css - so define path
@@ -97,7 +102,9 @@ class statistics_user extends LSCI_Controller {
 		        if ($surveyinfo['publicgraphs']=='Y')
 		        {
 		            $publicgraphs = 1;
-		        } else {
+		        }
+		        else
+		        {
 		            $publicgraphs = 0;
 		        }
 		    }
@@ -116,13 +123,13 @@ class statistics_user extends LSCI_Controller {
 		    require_once(APPPATH.'third_party/pchart/pchart/pData.class');
 		    require_once(APPPATH.'third_party/pchart/pchart/pCache.class');
 
-		    $MyCache = new pCache($this->config->item("tempdir").'/');
+		    $MyCache = new pCache(Yii::app()->getConfig("tempdir").'/');
 		    //$currentuser is created as prefix for pchart files
 		    if (isset($_SERVER['REDIRECT_REMOTE_USER']))
 		    {
 		        $currentuser=$_SERVER['REDIRECT_REMOTE_USER'];
 		    }
-		    elseif (session_id())
+		    else if (session_id())
 		    {
 		        $currentuser=substr(session_id(), 0, 15);
 		    }
@@ -137,7 +144,7 @@ class statistics_user extends LSCI_Controller {
 		$language = GetBaseLanguageFromSurveyID($surveyid);
 
 
-		$chartfontfile = $this->config->item("chartfontfile");
+		$chartfontfile = Yii::app()->getConfig("chartfontfile");
 		//pick the best font file if font setting is 'auto'
 		if ($chartfontfile=='auto')
 		{
@@ -150,10 +157,7 @@ class statistics_user extends LSCI_Controller {
 		    {
 		        $chartfontfile='KacstFarsi.ttf';
 		    }
-
 		}
-
-
 
 		//set survey language for translations
 		$clang = SetSurveyLanguage($surveyid, $language);
@@ -162,38 +166,27 @@ class statistics_user extends LSCI_Controller {
 		//Create header (fixes bug #3097)
 		$surveylanguage= $language;
 		sendcacheheaders();
-
+		$condition = false;
 		$header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
 		. "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"".$surveylanguage."\" lang=\"".$surveylanguage."\"";
 		if (getLanguageRTL($surveylanguage))
 		{
+			$condition = true;
 		    $header.=" dir=\"rtl\" ";
 		}
-		$sitename = $this->config->item("sitename");
-		$header.= ">\n\t<head>\n"
-		. "<title>$sitename</title>\n"
-		. "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n"
-		    . "<link href=\"".$thisSurveyCssPath."/template.css\" rel=\"stylesheet\" type=\"text/css\" />\n"
-		. "</head>\n<body>\n";
+		$sitename = Yii::app()->getConfig("sitename");
 
-		echo $header;
-
-
+		$data['surveylanguage'] = $surveylanguage;
+		$data['sitename'] = $sitename;
+		$data['condition'] = $condition;
+		$data['thisSurveyCssPath'] = $thisSurveyCssPath;
 
 		/*
 		 * only show questions where question attribute "public_statistics" is set to "1"
 		 */
 
-        $query = "SELECT q.* , group_name, group_order\n"
-        ."FROM ".$this->db->dbprefix("questions")." q, ".$this->db->dbprefix("groups")." g, ".$this->db->dbprefix("question_attributes")." qa\n"
-        ."WHERE g.gid=q.gid\n"
-        ."AND g.language='".$language."'\n"
-        ."AND q.language='".$language."'\n"
-        ."AND q.sid={$surveyid}\n"
-        ."AND q.qid=qa.qid\n"
-        ."AND q.parent_qid=0\n"
-        ."AND qa.attribute='public_statistics'\n";
-        $databasetype = $this->db->platform();
+        $query = "SELECT q.* , group_name, group_order FROM {{questions}} q, {{groups}} g, {{question_attributes}} qa WHERE 'g.gid' = 'q.gid' AND 'g.language' = '".$language."' AND 'q.language' = '".$language."' AND 'q.sid' = {$surveyid} AND 'q.qid' = 'qa.qid' AND 'q.parent_qid' = 0 AND 'qa.attribute' = 'public_statistics'";
+        $databasetype = Yii::app()->db->getDriverName();
         if ($databasetype=='mssql_n' or $databasetype=='mssql' or $databasetype=='odbc_mssql' or $databasetype=="mssqlnative")
         {
             $query .="AND CAST(CAST(qa.value as varchar) as int)='1'\n";
@@ -204,10 +197,10 @@ class statistics_user extends LSCI_Controller {
         }
 
 		//execute query
-		$result = db_execute_assoc($query) or safe_die("Couldn't do it!<br />$query<br />".$connect->ErrorMsg());
+		$result = Yii::app()->db->createCommand($query)->queryAll();
 
 		//store all the data in $rows
-		$rows = $result->result_array();
+		$rows = $result;
 
 
 		//SORT IN NATURAL ORDER!
@@ -229,20 +222,20 @@ class statistics_user extends LSCI_Controller {
 		$totalrecords = 0;
 
 		//count number of answers
-		$query = "SELECT count(*) FROM ".$this->db->dbprefix("survey_$surveyid");
+		$query = "SELECT count(*) FROM {{survey_$surveyid}}";
 
 		//if incompleted answers should be filtert submitdate has to be not null
 		//this setting is taken from config-defaults.php
-		if ($this->config->item("filterout_incomplete_answers") == true)
+		if (Yii::app()->getConfig("filterout_incomplete_answers") == true)
 		{
-		    $query .= " WHERE ".$this->db->dbprefix("survey_$surveyid").".submitdate is not null";
+		    $query .= " WHERE {{survey_$surveyid}}.submitdate is not null";
 		}
-		$result = db_execute_assoc($query) or safe_die ("Couldn't get total<br />$query<br />".$connect->ErrorMsg());
+		$result = Yii::app()->db->createCommand($query)->queryAll();
 
 		//$totalrecords = total number of answers
-		foreach($result->result_array() as $row)
+		foreach($result as $row)
 		{
-		    $totalrecords=reset($row);
+		    $totalrecords = reset($row);
 		}
 
 
@@ -278,11 +271,11 @@ class statistics_user extends LSCI_Controller {
 		        case "K": // Multiple Numerical
 		        case "Q": // Multiple Short Text
 		            //get answers
-		            $query = "SELECT title as code, question as answer FROM ".$this->db->dbprefix("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order";
-		            $result = db_execute_assoc($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		            $query = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order";
+		            $result =  Yii::app()->db->createCommand($query)->queryAll();
 
 		            //go through all the (multiple) answers
-		            foreach($result->result_array() as $row)
+		            foreach($result as $row)
 		            {
 		                $myfield2=$flt[2].$myfield.reset($row);
 		                $allfields[] = $myfield2;
@@ -295,11 +288,11 @@ class statistics_user extends LSCI_Controller {
 		        case "F": // FlEXIBLE ARRAY
 		        case "H": // ARRAY (By Column)
 		            //get answers
-		            $query = "SELECT title as code, question as answer FROM ".$this->db->dbprefix("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order";
-		            $result = db_execute_assoc($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		            $query = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order";
+		            $result = Yii::app()->db->createCommand($query)->queryAll();
 
 		            //go through all the (multiple) answers
-		            foreach($result->result_array() as $row)
+		            foreach($result as $row)
 		            {
 		                $myfield2 = $myfield.reset($row);
 		                $allfields[]=$myfield2;
@@ -314,13 +307,13 @@ class statistics_user extends LSCI_Controller {
 		            break;
 		        case ";":  //ARRAY (Multi Flex) (Text)
 		        case ":":  //ARRAY (Multi Flex) (Numbers)
-                    $query = "SELECT title, question FROM ".$this->db->dbprefix("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' AND scale_id=0 ORDER BY question_order";
-		            $result = db_execute_assoc($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
-		            foreach($result->result_array() as $row)
+                    $query = "SELECT title, question FROM {{questions}} WHERE parent_qid='$flt[0]' AND language='{$language}' AND scale_id = 0 ORDER BY question_order";
+		            $result = Yii::app()->db->createCommand($query)->queryAll();
+		            foreach($result as $row)
 		            {
-		                $fquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$flt[0]} AND language='{$language}' AND scale_id=1 ORDER BY question_order, title";
-		                $fresult = db_execute_assoc($fquery);
-		                foreach($fresult->result_array() as $frow)
+		                $fquery = "SELECT * FROM {{questions}} WHERE parent_qid = {$flt[0]} AND language = '{$language}' AND scale_id = 1 ORDER BY question_order, title";
+		                $fresult = Yii::app()->db->createCommand($query)->queryAll();
+		                foreach($fresult as $frow)
 		                {
 		                    $myfield2 = $myfield . reset($row) . "_" . $frow['title'];
 		                $allfields[]=$myfield2;
@@ -329,8 +322,8 @@ class statistics_user extends LSCI_Controller {
 		            break;
 		        case "R": //RANKING
 		            //get some answers
-		            $query = "SELECT code, answer FROM ".$this->db->dbprefix("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
-		            $result = db_execute_assoc($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		            $query = "SELECT code, answer FROM {{answers}} WHERE qid = '$flt[0]' AND language = '{$language}' ORDER BY sortorder, answer";
+		            $result = Yii::app()->db->createCommand($query)->queryAll();
 
 		            //get number of answers
 		            $count = $result->num_rows();
@@ -347,11 +340,11 @@ class statistics_user extends LSCI_Controller {
 		            break;
 		        case "1": // MULTI SCALE
 		            //get answers
-		            $query = "SELECT title, question FROM ".$this->db->dbprefix("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
-		            $result = db_execute_assoc($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		            $query = "SELECT title, question FROM {{questions}} WHERE parent_qid = '$flt[0]' AND language = '{$language}' ORDER BY question_order";
+		            $result = Yii::app()->db->createCommand($query)->queryAll();
 
 		            //loop through answers
-		            foreach($result->result_array() as $row)
+		            foreach($result as $row)
 		            {
 		                //----------------- LABEL 1 ---------------------
 		                $myfield2 = $myfield . reset($row[0])."#0";
@@ -411,18 +404,12 @@ class statistics_user extends LSCI_Controller {
 		{
 		    $postvars[]=$key;
 		}
-
+		$data['thisSurveyTitle'] = $thisSurveyTitle;
+		$data['totalrecords'] = $totalrecords;
+		$data['clang'] = $clang;
+		$data['summary'] = $summary;
 		//show some main data at the beginnung
-		// CHANGE JSW_NZ - let's allow html formatted questions to show
-		$statisticsoutput .= "\n<div id='statsContainer'>\n"
-		."\t<div id='statsHeader'> \n"
-		."\t\t<div class='statsSurveyTitle'>"
-		."$thisSurveyTitle</div>\n"
-		."\t\t<div class='statsNumRecords'>"
-		.$clang->gT("Total records in survey")." : $totalrecords</div>\n";
-
-		//close statsHeader
-		$statisticsoutput .= "\t</div>\n";
+		// CHANGE JSW_NZ - let's allow html formatted questions to show		
 
 
 		//push progress bar from 35 to 40
@@ -450,10 +437,6 @@ class statistics_user extends LSCI_Controller {
 
 		    $statisticsoutput .= generate_statistics($surveyid, $summary, $summary, $publicgraphs, 'html',null,$language,false);
 
-		                //output
-		    $statisticsoutput .= "<br />\n"
-		    . "</div>\n";
-
 		}	//end if -> show summary results
 
 
@@ -465,18 +448,13 @@ class statistics_user extends LSCI_Controller {
 		    $prb->hide();
 		}
 
-
-		//output everything:
-		echo $statisticsoutput;
-
+		$this->render('/statistics_user_view',$data);
 
 		//output footer
 		echo getFooter();
 
-
 		//Delete all Session Data
-		$_SESSION['finished'] = true;
-
+		Yii::app()->session['finished'] = true;
 	}
 
 }

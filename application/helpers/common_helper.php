@@ -3031,21 +3031,17 @@ function GetAdditionalLanguagesFromSurveyID($surveyid)
 // If null or 0 is given for $surveyid then the default language from config-defaults.php is returned
 function SetSurveyLanguage($surveyid, $language)
 {
-    $CI = &get_instance();
     $surveyid=sanitize_int($surveyid);
     $defaultlang = Yii::app()->getConfig('defaultlang');
 
     if (isset($surveyid) && $surveyid>0)
     {
         // see if language actually is present in survey
-        $fields = array('language', 'additional_languages');
-        $condition = array('sid' => $surveyid); //"sid = $surveyid";
-        $CI->load->model('surveys_model');
+        $result = Survey::model()->findAll('sid = :sid', array(':sid' => $surveyid));
 
-        $result = $CI->surveys_model->getSomeRecords($fields,$condition); //Checked
-        foreach ($result->result_array() as $row) {//while ($result && ($row=$result->FetchRow())) {)
-            $additional_languages = $row['additional_languages'];
-            $default_language = $row['language'];
+        foreach ($result as $row) {//while ($result && ($row=$result->FetchRow())) {)
+            $additional_languages = $row->additional_languages;
+            $default_language = $row->language;
         }
 
         if (!isset($language) || ($language=='') || (isset($additional_languages) && strpos($additional_languages, $language) === false)
@@ -3058,20 +3054,16 @@ function SetSurveyLanguage($surveyid, $language)
             $_SESSION['s_lang'] =  $language;
             //echo "Language will be set to ".$_SESSION['s_lang']."<br />";
         }
-        $lang = array($_SESSION['s_lang']);
-        $CI->load->library('Limesurvey_lang',$lang);
-        $clang = $CI->limesurvey_lang;
-        //$clang = new limesurvey_lang($_SESSION['s_lang']);
+        Yii::import('application.libraries.Limesurvey_lang', true);
+        $clang = new limesurvey_lang(array('langcode' => $_SESSION['s_lang']));
     }
     else {
-        $lang = array($defaultlang);
-        $CI->load->library('Limesurvey_lang',$lang);
-        $clang = $CI->limesurvey_lang;
-        //$clang = new limesurvey_lang($defaultlang);
+        Yii::import('application.libraries.Limesurvey_lang', true);
+        $clang = new Limesurvey_lang(array('langcode' => $defaultlang));
     }
 
     $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
-    $CI->load->helper('surveytranslator');
+    Yii::app()->loadHelper('surveytranslator');
     $_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
     return $clang;
 }
