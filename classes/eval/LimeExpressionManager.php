@@ -3017,7 +3017,7 @@ class LimeExpressionManager {
             if ($qStatus['relevant']==true) {
                 $grel = $gRelInfo['result'];    // true;   // at least one question relevant
             }
-            if ($qStatus['hidden']==false) {
+            if ($qStatus['hidden']==false && $qStatus['relevant'] == true) {
                 $ghidden=false; // at least one question is visible
             }
             if ($qStatus['mandViolation']==true) {
