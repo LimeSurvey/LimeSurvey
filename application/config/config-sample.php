@@ -33,7 +33,7 @@ return array(
 	),
 
 	'components' => array(
-		/*
+        /*
 		'db' => array(
 			'connectionString' => 'mysql:host=localhost;port=3306;dbname=limesurvey',
 			'emulatePrepare' => true,
@@ -48,7 +48,7 @@ return array(
 			'connectionID' => 'db',
 			'sessionTableName' => '{{sessions}}',
 		),
-		*/
+        */
 		'urlManager' => array(
 			'urlFormat' => 'path',
 			'rules' => require('routes.php'),

@@ -31,6 +31,10 @@ class LSYii_Application extends CWebApplication
 	 */
 	public function __construct($config = null)
 	{
+        if (!file_exists($config))
+        {
+            $config = APPPATH . 'config/config-sample' . EXT;
+        }
 		parent::__construct($config);
 		// Load the default and environmental settings from different files into self.
 		$app_config = require(APPPATH . '/config/application.php');

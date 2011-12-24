@@ -108,9 +108,9 @@ class InstallerController extends CController {
     */
     function _checkInstallation()
     {
-        if (!file_exists(Yii::app()->getConfig('rootdir').'/tmp/sample_installer_file.txt'))
+        if (file_exists(Yii::app()->getConfig('rootdir').'/config/config.php'))
         {
-			throw new CHttpException(500, 'Installation has been done already. Installer disabled. Please delete the file ' . Yii::app()->getConfig('rootdir').'/tmp/sample_installer_file.txt');
+			throw new CHttpException(500, 'Installation has been done already. Installer disabled.');
             exit();
         }
     }
