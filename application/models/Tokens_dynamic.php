@@ -39,7 +39,7 @@ class Tokens_dynamic extends CActiveRecord
 	 * @param int $surveyid
 	 * @return CActiveRecord
 	 */
-	public static function model($sid)
+	public static function model($sid = null)
 	{
         if (!is_null($sid))
             self::sid($sid);
