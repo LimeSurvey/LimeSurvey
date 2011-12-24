@@ -53,13 +53,78 @@ class Conditions extends CActiveRecord
         return 'cid';
     }
 
-    function insertRecords($data)
+    public function getSomeRecords($fields=FALSE, $conditions=FALSE)
     {
-        $conditions = new self;
-        foreach ($data as $k => $v)
-            $conditions->$k = $v;
-        return $conditions->save();
+        $criteria = new CDbCriteria;
+
+        if( $fields != FALSE )
+        {
+            $criteria->select = $fields;
+        }
+
+        if( $conditions != FALSE )
+        {
+            foreach($conditions as $column=>$value)
+            {
+                $criteria->addCondition("$column='$value'");
+            }
+        }
+
+        return $this->findAll($criteria);
     }
+
+    public function deleteRecords($condition=FALSE)
+    {
+        $criteria = new CDbCriteria;
+
+        if( $condition != FALSE )
+        {
+            if( is_array($condition) )
+            {
+                foreach($condition as $column=>$value)
+                {
+                    $criteria->addCondition("$column='$value'");
+                }
+            }
+            else
+            {
+                $criteria->where = $condition;
+            }
+        }
+
+        return $this->deleteAll($criteria);
+    }
+
+    public function insertRecords($data, $update=FALSE, $condition=FALSE)
+    {
+        $record = new self;
+        foreach ($data as $k => $v)
+        {
+            $v = str_replace(array("'", '"'), '', $v);
+            $record->$k = $v;
+        }
+
+        if( $update )
+        {
+            $criteria = new CdbCriteria;
+            if( is_array($condition) )
+            {
+                foreach($condition as $column=>$value)
+                {
+                    $criteria->addCondition("$column='$value'");
+                }
+            }
+            else
+            {
+                $criteria->where = $condition;
+            }
+
+            return $record->updateAll($criteria);
+        }
+        else
+            return $record->save();
+    }
+
 }
 
 ?>

@@ -152,12 +152,12 @@ class Questions extends CActiveRecord
     function getQuestions($sid, $gid, $language)
     {
         return Yii::app()->db->createCommand()
-        ->select()
-        ->from(self::tableName())
-        ->where(array('and', 'sid=' . $sid, 'gid=' . $gid, 'language=:language', 'parent_qid=0'))
-        ->order('question_order asc')
-        ->bindParam(":language", $language, PDO::PARAM_STR)
-        ->query();
+            ->select()
+            ->from(self::tableName())
+            ->where(array('and', 'sid=' . $sid, 'gid=' . $gid, 'language=:language', 'parent_qid=0'))
+            ->order('question_order asc')
+            ->bindParam(":language", $language, PDO::PARAM_STR)
+            ->query();
     }
 
     function getSubQuestions($parent_qid)
@@ -196,18 +196,24 @@ class Questions extends CActiveRecord
         return $questions->save();
     }
 
-    function getSomeRecords($fields, $condition)
+    function getSomeRecords($fields, $condition, $order=NULL)
     {
-        return Yii::app()->db->createCommand()
-        ->select($fields)
-        ->from(self::tableName())
-        ->where($condition)
-        ->query();
+        $record = Yii::app()->db->createCommand()
+            ->select($fields)
+            ->from(self::tableName())
+            ->where($condition);
+
+        if( $order != NULL )
+        {
+            $record->order($order);
+        }
+
+        return $record->query();
     }
 
     public static function deleteAllById($questionsIds)
     {
-        if (!is_array($questionsIds))
+        if ( !is_array($questionsIds) )
         {
             $questionsIds = array($questionsIds);
         }

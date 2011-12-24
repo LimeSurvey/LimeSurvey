@@ -49,14 +49,14 @@ class Answers extends CActiveRecord
 		return array('qid', 'code');
 	}
 
-	function getSomeRecords($fields,$condition=FALSE,$order=FALSE)
+	function getSomeRecords($fields, $condition=FALSE, $order='')
 	{
 		return Yii::app()->db->createCommand()
 			->select($fields)
 			->from(self::tableName())
 			->where($condition)
 			->order($order)
-			->query();
+			->queryAll();
 	}
 
     function getAnswers($qid)

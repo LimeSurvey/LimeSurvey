@@ -22,56 +22,61 @@
  */
 class conditions extends Survey_Common_Action {
 
+	private $yii;
+	private $controller;
+	private $template_data;
+
     public function run($sa = '', $surveyid = 0)
-   {
+   	{
+   		$this->yii = Yii::app();
+   		$this->controller = $this->getController();
+   		$this->template_data = array();
+
    		if (empty($sa)) $sa = null;
 
 		if ($sa == '_remap')
 			$this->route('_remap', array('method', 'params'));
-		elseif ($sa == 'action')
+		elseif ($sa == 'action' || $sa == 'editconditionsform')
 			$this->route('action', array('subaction', 'surveyid', 'gid', 'qid'));
-		
 	}
 
-	public function _remap($method, $params = array())
+	/*public function _remap($method, $params = array())
 	{
 		array_unshift($params, $method);
 	    return call_user_func_array(array($this, "action"), $params);
-	}
+	}*/
 
 	function action($subaction, $surveyid=null, $gid=null, $qid=null)
 	{
-
 		$surveyid = sanitize_int($surveyid);
 		$gid = sanitize_int($gid);
-		$qid = sanitize_int($qid);		
-		//Compatibility variables for CI
+		$qid = sanitize_int($qid);
 
 		$clang = $this->getController()->lang;
-		$imageurl=Yii::app()->getConfig("imageurl");
+		$imageurl = Yii::app()->getConfig("imageurl");
 		Yii::app()->loadHelper("database");
 
-		if(!empty($_POST['subaction'])) $subaction=$_POST['subaction'];
+		if( !empty($_POST['subaction']) ) $subaction=CHttpRequest::getPost('subaction');
 
 		//BEGIN Sanitizing POSTed data
-		if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
-		if (!isset($qid)) {$qid=returnglobal('qid');}
-		if (!isset($gid)) {$gid=returnglobal('gid');}
-		if (!isset($p_scenario)) {$p_scenario=returnglobal('scenario');}
-		if (!isset($p_cqid))
+		if ( !isset($surveyid) ) { $surveyid = returnglobal('sid'); }
+		if ( !isset($qid) ) { $qid = returnglobal('qid'); }
+		if ( !isset($gid) ) { $gid = returnglobal('gid'); }
+		if ( !isset($p_scenario)) {$p_scenario=returnglobal('scenario');}
+		if ( !isset($p_cqid))
 		{
-		    $p_cqid=returnglobal('cqid');
+		    $p_cqid = returnglobal('cqid');
 		    if ($p_cqid == '') $p_cqid=0; // we are not using another question as source of condition
 		}
-		if (!isset($p_cid)) {$p_cid=returnglobal('cid');}
-		if (!isset($p_subaction)) {$p_subaction=returnglobal('subaction');}
+
+		if (!isset($p_cid)) { $p_cid=returnglobal('cid'); }
+		if (!isset($p_subaction)) { $p_subaction=returnglobal('subaction');}
 		if (!isset($p_cquestions)) {$p_cquestions=returnglobal('cquestions');}
 		if (!isset($p_csrctoken)) {$p_csrctoken=returnglobal('csrctoken');}
 		if (!isset($p_prevquestionsgqa)) {$p_prevquestionsgqa=returnglobal('prevQuestionSGQA');}
 
 		if (!isset($p_canswers))
 		{
-
 		    if (isset($_POST['canswers']) && is_array($_POST['canswers']))
 		    {
 		        foreach ($_POST['canswers'] as $key => $val)
@@ -86,18 +91,18 @@ class conditions extends Survey_Common_Action {
 		if (isset($stringcomparizonoperators) && $stringcomparizonoperators == 1)
 		{
 		    $method = array(
-		            "<"  => $clang->gT("Less than"),
-		            "<=" => $clang->gT("Less than or equal to"),
-		            "==" => $clang->gT("equals"),
-		            "!=" => $clang->gT("Not equal to"),
-		            ">=" => $clang->gT("Greater than or equal to"),
-		            ">"  => $clang->gT("Greater than"),
-		            "RX" => $clang->gT("Regular expression"),
-		            "a<b"  => $clang->gT("Less than (Strings)"),
-		            "a<=b" => $clang->gT("Less than or equal to (Strings)"),
-		            "a>=b" => $clang->gT("Greater than or equal to (Strings)"),
-		            "a>b"  => $clang->gT("Greater than (Strings)")
-		            );
+		            "<"  	=> $clang->gT("Less than"),
+		            "<=" 	=> $clang->gT("Less than or equal to"),
+		            "==" 	=> $clang->gT("equals"),
+		            "!=" 	=> $clang->gT("Not equal to"),
+		            ">=" 	=> $clang->gT("Greater than or equal to"),
+		            ">"  	=> $clang->gT("Greater than"),
+		            "RX" 	=> $clang->gT("Regular expression"),
+		            "a<b"  	=> $clang->gT("Less than (Strings)"),
+		            "a<=b" 	=> $clang->gT("Less than or equal to (Strings)"),
+		            "a>=b" 	=> $clang->gT("Greater than or equal to (Strings)"),
+		            "a>b"  	=> $clang->gT("Greater than (Strings)")
+		    );
 		}
 		else
 		{
@@ -109,12 +114,12 @@ class conditions extends Survey_Common_Action {
 		            ">=" => $clang->gT("Greater than or equal to"),
 		            ">"  => $clang->gT("Greater than"),
 		            "RX" => $clang->gT("Regular expression")
-		            );
+		    );
 		}
 
 		if (isset($_POST['method']))
 		{
-		    if (!in_array($_POST['method'], array_keys($method)))
+		    if ( !in_array($_POST['method'], array_keys($method)))
 		    {
 		        $p_method = "==";
 		    }
@@ -136,22 +141,27 @@ class conditions extends Survey_Common_Action {
 		// Caution (lemeur): database.php uses auto_unescape on all entries in $_POST
 		// Take care to not use auto_unescape on $_POST variables after this
 
+		$br = CHtml::openTag('br \\');
 
 		//MAKE SURE THAT THERE IS A SID
 		if (!isset($surveyid) || !$surveyid)
 		{
-		    $conditionsoutput = $clang->gT("You have not selected a survey")."<br /><br />"
-		    ."<input type='submit' value='".$clang->gT("Main admin screen")."' onclick=\"window.open('".$this->getController()->createUrl("admin/")."', '_top')\" /><br />\n";
+		    $conditionsoutput = $clang->gT("You have not selected a survey").str_repeat($br, 2);
+		    $conditionsouput .= CHtml::submitButton($clang->gT("Main admin screen"), array(
+			    'onclick' => "window.open('".$this->getController()->createUrl("admin/")."', '_top')"
+			)).$br;
 			safe_die($conditionsoutput);
 		    return;
 		}
 
-		//MAKE SURE THAT THERE IS A QID
-		if (!isset($qid) || !$qid)
+		// MAKE SURE THAT THERE IS A QID
+		if ( !isset($qid) || !$qid )
 		{
-		    $conditionsoutput = $clang->gT("You have not selected a question")."<br /><br />"
-		    ."<input type='submit' value='".$clang->gT("Main admin screen")."' onclick=\"window.open('".$this->getController()->createUrl("admin/")."', '_top')\" /><br />\n";
-			safe_die($conditionsoutput);  
+		    $conditionsoutput = $clang->gT("You have not selected a question").str_repeat($br, 2);
+		    $conditionsoutput .= CHtml::submitButton($clang->gT("Main admin screen"), array(
+			    'onclick' => "window.open('".$this->controller->createUrl("admin/")."', '_top')"
+			)).$br;
+			safe_die($conditionsoutput);
 		    return;
 		}
 
@@ -159,100 +169,114 @@ class conditions extends Survey_Common_Action {
 		// If we made it this far, then lets develop the menu items
 		// add the conditions container table
 
-		$extraGetParams ="";
+		$extraGetParams = "";
 		if (isset($qid) && isset($gid))
 		{
-		    $extraGetParams="/$gid/$qid/";
+		    $extraGetParams = "/$gid/$qid/";
 		}
-
 
 		$conditionsoutput_action_error = ""; // defined during the actions
 		$conditionsoutput_main_content = ""; // everything after the menubar
 
-		$markcidarray=Array();
-		if (isset($_GET['markcid']))
+		$markcidarray = Array();
+		if ( isset($_GET['markcid']) )
 		{
-		    $markcidarray=explode("-",$_GET['markcid']);
+		    $markcidarray = explode("-", $_GET['markcid']);
 		}
-
 
 		//BEGIN PROCESS ACTIONS
 		// ADD NEW ENTRY IF THIS IS AN ADD
 
 		if (isset($p_subaction) && $p_subaction == "resetsurveylogic")
 		{
-	
-		$clang = $this->getController()->lang;
-		$resetsurveylogicoutput = "<br />\n";
-		$resetsurveylogicoutput .= "<table class='alertbox' >\n";
-		$resetsurveylogicoutput .= "\t<tr ><td colspan='2' height='4'><font size='1'><strong>".$clang->gT("Reset Survey Logic")."</strong></font></td></tr>\n"; 
-		 
-		 if (!isset($_GET['ok']))
+
+			$clang = $this->getController()->lang;
+			$resetsurveylogicoutput = $br;
+			$resetsurveylogicoutput .= CHtml::openTag('table', array('class'=>'alertbox'));
+			$resetsurveylogicoutput .= CHtml::openTag('tr').CHtml::openTag('td', array('colspan'=>'2', 'height'=>'4'));
+			$resetsurveylogicoutput .= CHtml::tag('font', array('size'=>'1'), CHtml::tag('strong', array(), $clang->gT("Reset Survey Logic")));
+			$resetsurveylogicoutput .= CHtml::closeTag('td').CHtml::closeTag('tr');
+
+			if (!isset($_GET['ok']))
 		    {
-            $this->getController()->_getAdminHeader();
-			$this->getController()->_showMessageBox($clang->gT("Warning"),$clang->gT("You are about to delete all conditions on this survey's questions")."($surveyid)<br />".$clang->gT("We recommend that before you proceed, you export the entire survey from the main administration screen.")."<br />\n"
-            ."<input type='submit' value='"
-            .$clang->gT("Yes")."' onclick=\"window.open('".$this->getController()->createUrl("admin/survey/sa/resetsurveylogic/surveyid/$surveyid")."?ok=Y"."', '_top')\" />\n"
-            ."<input type='submit' value='"
-            .$clang->gT("Cancel")."' onclick=\"window.open('".$this->getController()->createUrl("admin/survey/sa/view/surveyid/$surveyid")."', '_top')\" />\n"); 
+		        $this->getController()->_getAdminHeader();
+		        $button_yes = CHtml::submitButton($clang->gT("Yes"), array(
+			    	'onclick' => "window.open('".$this->getController()->createUrl("admin/survey/sa/resetsurveylogic/surveyid/$surveyid")."?ok=Y"."', '_top')"
+			    ));
+			    $button_cancel = CHtml::submitButton($clang->gT("Cancel"), array(
+					'onclick' => "window.open('".$this->getController()->createUrl("admin/survey/sa/view/surveyid/$surveyid")."', '_top')"
+				));
+
+		        $messagebox_content = $clang->gT("You are about to delete all conditions on this survey's questions")."($surveyid)"
+			        . $br . $clang->gT("We recommend that before you proceed, you export the entire survey from the main administration screen.")
+			        . $br . $button_yes . $button_cancel;
+
+				$this->getController()->_showMessageBox($clang->gT("Warning"), $messagebox_content);
 		    }
-		else
+			else
 		    {
-			$resetlogicquery = "DELETE FROM {{conditions}} WHERE qid in (select qid from {{questions}} where sid=$surveyid)";
-			Yii::app()->db->createCommand($resetlogicquery)->query();
-			$resetsurveylogicoutput .= "\t<tr>\n";
-			$resetsurveylogicoutput .= "\t\t<td align='center'><br />\n";
-			$resetsurveylogicoutput .= "\t\t\t<strong>".$clang->gT("All conditions in this survey have been deleted.")."<br /><br />\n";
-			$resetsurveylogicoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Continue")."' onclick=\"window.open('".$this->getController()->createUrl('/admin/survey/sa/view/surveyid/'.$surveyid)."', '_top')\" />\n";
-			$resetsurveylogicoutput .= "\t\t</strong></td>\n";
-			$resetsurveylogicoutput .= "\t</tr>\n"; 
-			$data['conditionsoutput']=$resetsurveylogicoutput;
+		    	Conditions::model()->deleteRecords('qid in (select qid from {{questions}} where sid=$surveyid)');
+
+				$resetsurveylogicoutput .= CHtml::openTag('tr');
+				$resetsurveylogicoutput .= CHtml::openTag('tr', array('align'=>'center')).$br;
+				$resetsurveylogicoutput .= CHtml::openTag('strong');
+				$resetsurveylogicoutput .= $clang->gT("All conditions in this survey have been deleted.").str_repeat($br, 2);
+				$resetsurveylogicoutput .= submitButton($clang->gT("Continue"), array(
+					'onclick' => "window.open('".$this->controller->createUrl('/admin/survey/sa/view/surveyid/'.$surveyid)."', '_top')"
+				));
+				$resetsurveylogicoutput .= CHtml::closeTag('strong').CHtml::closeTag('td');
+				$resetsurveylogicoutput .= CHtml::closeTag('tr');
+				$data['conditionsoutput'] = $resetsurveylogicoutput;
 			}
 		}
+
 		if (isset($p_subaction) && $p_subaction == "insertcondition")
 		{
-		    if ((!isset($p_canswers) &&
-		    !isset($_POST['ConditionConst']) &&
-		    !isset($_POST['prevQuestionSGQA']) &&
-		    !isset($_POST['tokenAttr']) &&
-		    !isset($_POST['ConditionRegexp'])) ||
-		    (!isset($p_cquestions) && !isset($p_csrctoken)))
+		    if ((	!isset($p_canswers) &&
+				    !isset($_POST['ConditionConst']) &&
+				    !isset($_POST['prevQuestionSGQA']) &&
+				    !isset($_POST['tokenAttr']) &&
+				    !isset($_POST['ConditionRegexp'])) ||
+				    (!isset($p_cquestions) && !isset($p_csrctoken))
+				)
 		    {
-		        $conditionsoutput_action_error .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.","js")."\")\n //-->\n</script>\n";
+		    	$conditionsoutput_action_error .= CHtml::script("\n<!--\n alert(\"".$clang->gT("Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.","js")."\")\n //-->\n");
 		    }
 		    else
 		    {
 		        if (isset($p_cquestions) && $p_cquestions != '')
 		        {
-		            $conditionCfieldname=$p_cquestions;
+		            $conditionCfieldname = $p_cquestions;
 		        }
 		        elseif(isset($p_csrctoken) && $p_csrctoken != '')
 		        {
-		            $conditionCfieldname=$p_csrctoken;
+		            $conditionCfieldname = $p_csrctoken;
 		        }
+
+		        $condition_data = array(
+			            	'qid' 			=> $qid,
+			            	'scenario' 		=> $p_scenario,
+			            	'cqid' 			=> $p_cqid,
+			            	'cfieldname' 	=> $conditionCfieldname,
+			            	'method'		=> $p_method
+			    );
 
 		        if (isset($p_canswers))
 		        {
 		            foreach ($p_canswers as $ca)
 		            {
-		                //First lets make sure there isn't already an exact replica of this condition
-		                $query = "SELECT * FROM {{conditions}}\n"
-		                ."WHERE qid='$qid'\n"
-		                ."AND scenario='".$p_scenario."'\n"
-		                ."AND cqid='".$p_cqid."'\n"
-		                ."AND cfieldname='".$conditionCfieldname."'\n"
-		                ."AND method='".$p_method."'\n"
-		                ."AND value='".$ca."'";
-		                $result = Yii::app()->db->createCommand($query)->query() or safe_die("Couldn't check for existing condition<br />$query<br />".$connect->ErrorMsg());
+		            	//First lets make sure there isn't already an exact replica of this condition
+		            	$condition_data['value'] = $ca;
+
+		            	$result = Conditions::model()->getSomeRecords('*', $condition_data);
+
 		                $count_caseinsensitivedupes = count($result);
 
 		                if ($count_caseinsensitivedupes == 0)
 		                {
-		                $query = "INSERT INTO {{conditions}} (qid, scenario, cqid, cfieldname, method, value) VALUES "
-		                . "('{$qid}', '{$p_scenario}', '{$p_cqid}', '{$conditionCfieldname}', '{$p_method}', '$ca')";
-		                $result = Yii::app()->db->createCommand($query)->query() or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
-		            }
-		        }
+		                	$result = Conditions::model()->insertRecords($condition_data);;
+		            	}
+		        	}
 		        }
 
 		        unset($posted_condition_value);
@@ -260,26 +284,25 @@ class conditions extends Survey_Common_Action {
 		        // so we only need to db_quote _POST variables
 		        if (isset($_POST['ConditionConst']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#CONST")
 		        {
-		            $posted_condition_value = db_quoteall($_POST['ConditionConst']);
+		            $posted_condition_value = db_quoteall(CHttpRequest::getPost('ConditionConst'));
 		        }
 		        elseif (isset($_POST['prevQuestionSGQA']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#PREVQUESTIONS")
 		        {
-		            $posted_condition_value = db_quoteall($_POST['prevQuestionSGQA']);
+		            $posted_condition_value = db_quoteall(CHttpRequest::getPost('prevQuestionSGQA'));
 		        }
 		        elseif (isset($_POST['tokenAttr']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#TOKENATTRS")
 		        {
-		            $posted_condition_value = db_quoteall($_POST['tokenAttr']);
+		            $posted_condition_value = db_quoteall(CHttpRequest::getPost('tokenAttr'));
 		        }
 		        elseif (isset($_POST['ConditionRegexp']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#REGEXP")
 		        {
-		            $posted_condition_value = db_quoteall($_POST['ConditionRegexp']);
+		            $posted_condition_value = db_quoteall(CHttpRequest::getPost('ConditionRegexp'));
 		        }
 
 		        if (isset($posted_condition_value))
 		        {
-		            $query = "INSERT INTO {{conditions}} (qid, scenario, cqid, cfieldname, method, value) VALUES "
-		            . "('{$qid}', '{$p_scenario}', '{$p_cqid}', '{$conditionCfieldname}', '{$p_method}', {$posted_condition_value})";
-		            $result = Yii::app()->db->createCommand($query)->query() or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
+		        	$conditions_data['value'] = $posted_condition_value;
+		           	$result = Conditions::model()->insertRecords($condition_data);
 		        }
 		    }
 		}
@@ -287,33 +310,41 @@ class conditions extends Survey_Common_Action {
 		// UPDATE ENTRY IF THIS IS AN EDIT
 		if (isset($p_subaction) && $p_subaction == "updatecondition")
 		{
-		    if ((!isset($p_canswers) &&
-		    !isset($_POST['ConditionConst']) &&
-		    !isset($_POST['prevQuestionSGQA']) &&
-		    !isset($_POST['tokenAttr']) &&
-		    !isset($_POST['ConditionRegexp'])) ||
-		    (!isset($p_cquestions) && !isset($p_csrctoken)))
+		    if ((	!isset($p_canswers) &&
+				    !isset($_POST['ConditionConst']) &&
+				    !isset($_POST['prevQuestionSGQA']) &&
+				    !isset($_POST['tokenAttr']) &&
+				    !isset($_POST['ConditionRegexp'])) ||
+				    (!isset($p_cquestions) && !isset($p_csrctoken))
+				)
 		    {
-		        $conditionsoutput_action_error .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.","js")."\")\n //-->\n</script>\n";
+		    	$conditionsoutput_action_error .= CHtml::script("\n<!--\n alert(\"".$clang->gT("Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.","js")."\")\n //-->\n");
 		    }
 		    else
 		    {
-		        if (isset($p_cquestions) && $p_cquestions != '')
+		        if ( isset($p_cquestions) && $p_cquestions != '' )
 		        {
-		            $conditionCfieldname=$p_cquestions;
+		            $conditionCfieldname = $p_cquestions;
 		        }
 		        elseif(isset($p_csrctoken) && $p_csrctoken != '')
 		        {
-		            $conditionCfieldname=$p_csrctoken;
+		            $conditionCfieldname = $p_csrctoken;
 		        }
 
-		        if (isset($p_canswers))
+		        if ( isset($p_canswers) )
 		        {
 		            foreach ($p_canswers as $ca)
-		            { // This is an Edit, there will only be ONE VALUE
-		                $query = "UPDATE {{conditions}} SET qid='{$qid}', scenario='{$p_scenario}', cqid='{$p_cqid}', cfieldname='{$conditionCfieldname}', method='{$p_method}', value='$ca' "
-		                . " WHERE cid={$p_cid}";
-		                $result = Yii::app()->db->createCommand($query)->query() or safe_die ("Couldn't update condition<br />$query<br />".$connect->ErrorMsg());
+		            {
+			            // This is an Edit, there will only be ONE VALUE
+			            $updated_data = array(
+			            	'qid' => $qid,
+			            	'scenario' => $p_scenario,
+			            	'cqid' => $p_cqid,
+			            	'cfieldname' => $conditionCfieldname,
+			            	'method' => $p_method,
+			            	'value' => $ca
+				        );
+			            $result = Conditions::model()->insertRecords($updated_data, TRUE, array('cid'=>$p_cid));
 		            }
 		        }
 
@@ -322,26 +353,32 @@ class conditions extends Survey_Common_Action {
 		        // so we only need to db_quote _POST variables
 		        if (isset($_POST['ConditionConst']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#CONST")
 		        {
-		            $posted_condition_value = db_quoteall($_POST['ConditionConst']);
+		            $posted_condition_value = db_quoteall(CHttpRequest::getPost('ConditionConst'));
 		        }
 		        elseif (isset($_POST['prevQuestionSGQA']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#PREVQUESTIONS")
 		        {
-		            $posted_condition_value = db_quoteall($_POST['prevQuestionSGQA']);
+		            $posted_condition_value = db_quoteall(CHttpRequest::getPost('prevQuestionSGQA'));
 		        }
 		        elseif (isset($_POST['tokenAttr']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#TOKENATTRS")
 		        {
-		            $posted_condition_value = db_quoteall($_POST['tokenAttr']);
+		            $posted_condition_value = db_quoteall(CHttpRequest::getPost('tokenAttr'));
 		        }
 		        elseif (isset($_POST['ConditionRegexp']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#REGEXP")
 		        {
-		            $posted_condition_value = db_quoteall($_POST['ConditionRegexp']);
+		            $posted_condition_value = db_quoteall(CHttpRequest::getPost('ConditionRegexp'));
 		        }
 
 		        if (isset($posted_condition_value))
 		        {
-		            $query = "UPDATE {{conditions}} SET qid='{$qid}', scenario='{$p_scenario}' , cqid='{$p_cqid}', cfieldname='{$conditionCfieldname}', method='{$p_method}', value={$posted_condition_value} "
-		            . " WHERE cid={$p_cid}";
-		            $result = Yii::app()->db->createCommand($query)->query() or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
+		        	$updated_data = array(
+			            	'qid' => $qid,
+			            	'scenario' => $p_scenario,
+			            	'cqid' => $p_cqid,
+			            	'cfieldname' => $conditionCfieldname,
+			            	'method' => $p_method,
+			            	'value' => $posted_condition_value
+				        );
+				    $result = Conditions::model()->insertRecords($updated_data, TRUE, array('cid'=>$p_cid));
 		        }
 		    }
 		}
@@ -349,29 +386,26 @@ class conditions extends Survey_Common_Action {
 		// DELETE ENTRY IF THIS IS DELETE
 		if (isset($p_subaction) && $p_subaction == "delete")
 		{
-		    $query = "DELETE FROM {{conditions}} WHERE cid={$p_cid}";
-		    $result = Yii::app()->db->createCommand($query)->query() or safe_die ("Couldn't delete condition<br />$query<br />".$connect->ErrorMsg());
+			$result = Conditions::model()->deleteRecords(array('cid'=>$p_cid));
 		}
 
 		// DELETE ALL CONDITIONS IN THIS SCENARIO
 		if (isset($p_subaction) && $p_subaction == "deletescenario")
 		{
-		    $query = "DELETE FROM {{conditions}} WHERE qid={$qid} AND scenario={$p_scenario}";
-		    $result = Yii::app()->db->createCommand($query)->query() or safe_die ("Couldn't delete scenario<br />$query<br />".$connect->ErrorMsg());
+			$result = Conditions::model()->deleteRecords(array('qid'=>$qid, 'scenario'=>$p_scenario));
 		}
 
 		// UPDATE SCENARIO
 		if (isset($p_subaction) && $p_subaction == "updatescenario" && isset($p_newscenarionum))
 		{
-		    $query = "UPDATE {{conditions}} SET scenario=$p_newscenarionum WHERE qid={$qid} AND scenario={$p_scenario}";
-		    $result = Yii::app()->db->createCommand($query)->query() or safe_die ("Couldn't delete scenario<br />$query<br />".$connect->ErrorMsg());
+			$result = Conditions::model()->insertRecords(array('scenario'=>$p_newscenarionum), TRUE, array(
+				'qid'=>$qid, 'scenario'=>$p_scenario));
 		}
 
 		// DELETE ALL CONDITIONS FOR THIS QUESTION
 		if (isset($p_subaction) && $p_subaction == "deleteallconditions")
 		{
-		    $query = "DELETE FROM {{conditions}} WHERE qid={$qid}";
-		    $result = Yii::app()->db->createCommand($query)->query() or safe_die ("Couldn't delete scenario<br />$query<br />".$connect->ErrorMsg());
+			$result = Conditions::model()->deleteRecords(array('qid'=>$qid));
 		}
 
 		// RENUMBER SCENARIOS
@@ -379,23 +413,26 @@ class conditions extends Survey_Common_Action {
 		{
 		    $query = "SELECT DISTINCT scenario FROM {{conditions}} WHERE qid={$qid} ORDER BY scenario";
 		    $result = Yii::app()->db->createCommand($query)->query() or safe_die ("Couldn't select scenario<br />$query<br />".$connect->ErrorMsg());
-		    $newindex=1;
+		    $newindex = 1;
+
 		    foreach ($result->readAll() as $srow)
 		    {
-		        $query2 = "UPDATE {{conditions}} set scenario=$newindex WHERE qid={$qid} AND scenario=".$srow['scenario'].";";
-		        $result2 = Yii::app()->db->createCommand($query2)->query() or safe_die ("Couldn't renumber scenario<br />$query<br />".$connect->ErrorMsg());
+		    	// new var $update_result == old var $result2
+		    	$update_result = Conditions::insertRecords(array('scenario'=>$newindex), TRUE,
+		    		array( 'qid'=>$qid, 'scenario'=>$srow['scenario'] )
+		    	);
 		        $newindex++;
 		    }
 
 		}
 
 		// COPY CONDITIONS IF THIS IS COPY
-		if (isset($p_subaction) && $p_subaction == "copyconditions") 
+		if ( isset($p_subaction) && $p_subaction == "copyconditions" )
 		{
 
-		    $qid=returnglobal('qid');
-		    $copyconditionsfrom=returnglobal('copyconditionsfrom');
-		    $copyconditionsto=returnglobal('copyconditionsto');
+		    $qid = returnglobal('qid');
+		    $copyconditionsfrom = returnglobal('copyconditionsfrom');
+		    $copyconditionsto = returnglobal('copyconditionsto');
 		    if (isset($copyconditionsto) && is_array($copyconditionsto) && isset($copyconditionsfrom) && is_array($copyconditionsfrom))
 		    {
 		        //Get the conditions we are going to copy
@@ -403,29 +440,38 @@ class conditions extends Survey_Common_Action {
 		        ."WHERE cid in ('";
 		        $query .= implode("', '", $copyconditionsfrom);
 		        $query .= "')";
-		        $result = Yii::app()->db->createCommand($query)->query() or safe_die("Couldn't get conditions for copy<br />$query<br />".$connect->ErrorMsg());
+		        $result = Yii::app()->db->createCommand($query)->query() or
+		        	safe_die("Couldn't get conditions for copy<br />$query<br />".$connect->ErrorMsg());
+
 		        foreach ($result->readAll() as $row)
 		        {
-		            $proformaconditions[]=array("scenario"=>$row['scenario'],
-					"cqid"=>$row['cqid'],
-					"cfieldname"=>$row['cfieldname'],
-					"method"=>$row['method'],
-					"value"=>$row['value']);
+		            $proformaconditions[] = array(
+			            "scenario"		=>	$row['scenario'],
+						"cqid"			=>	$row['cqid'],
+						"cfieldname"	=>	$row['cfieldname'],
+						"method"		=>	$row['method'],
+						"value"			=>	$row['value']
+					);
 		        } // while
+
 		        foreach ($copyconditionsto as $copyc)
 		        {
 		            list($newsid, $newgid, $newqid)=explode("X", $copyc);
 		            foreach ($proformaconditions as $pfc)
 		            { //TIBO
+
 		                //First lets make sure there isn't already an exact replica of this condition
-		                $query = "SELECT * FROM {{conditions}}\n"
-		                ."WHERE qid='$newqid'\n"
-		                ."AND scenario='".$pfc['scenario']."'\n"
-		                ."AND cqid='".$pfc['cqid']."'\n"
-		                ."AND cfieldname='".$pfc['cfieldname']."'\n"
-		                ."AND method='".$pfc['method']."'\n"
-		                ."AND value='".$pfc['value']."'";
-		                $result = Yii::app()->db->createCommand($query)->query() or safe_die("Couldn't check for existing condition<br />$query<br />".$connect->ErrorMsg());
+		                $conditions_data = array(
+		                	'qid' 			=> 	$newqid,
+		                	'scenario' 		=> 	$pfc['scenario'],
+		                	'cqid' 			=> 	$pfc['cqid'],
+		                	'cfieldname' 	=> 	$pfc['cfieldname'],
+		                	'method' 		=>	$pfc['method'],
+		                	'value' 		=> 	$pfc['value']
+			            );
+
+			            $result = Conditions::model()->getSomeRecords('*', $conditions_data);
+
 		                $count_caseinsensitivedupes = count($result);
 
 		                $countduplicates = 0;
@@ -439,66 +485,65 @@ class conditions extends Survey_Common_Action {
 
 		                if ($countduplicates == 0) //If there is no match, add the condition.
 		                {
-		                    $query = "INSERT INTO {{conditions}} ( qid,scenario,cqid,cfieldname,method,value) \n"
-		                    ."VALUES ( '$newqid', '".$pfc['scenario']."', '".$pfc['cqid']."',"
-		                    ."'".$pfc['cfieldname']."', '".$pfc['method']."',"
-		                    ."'".$pfc['value']."')";
-		                    $result=Yii::app()->db->createCommand($query)->query() or safe_die ("Couldn't insert query<br />$query<br />".$connect->ErrorMsg());
-		                    $conditionCopied=true;
+		                	$result = Conditions::model()->insertRecords($conditions_data);
+		                    $conditionCopied = true;
 		                }
 		                else
 		                {
-		                    $conditionDuplicated=true;
+		                    $conditionDuplicated = true;
 		                }
 		            }
 		        }
+
 		        if (isset($conditionCopied) && $conditionCopied === true)
 		        {
 		            if (isset($conditionDuplicated) && $conditionDuplicated ==true)
 		            {
-		                $CopyConditionsMessage = "<div class='partialheader'>(".$clang->gT("Conditions successfully copied (some were skipped because they were duplicates)").")</div>";
+		            	$CopyConditionsMessage = CHtml::tag('div', array('class'=>'partialheader'),
+		            		'('.$clang->gT("Conditions successfully copied (some were skipped because they were duplicates)").')'
+		            	);
 		            }
 		            else
 		            {
-		                $CopyConditionsMessage = "<div class='successheader'>(".$clang->gT("Conditions successfully copied").")</div>";
+		            	$CopyConditionsMessage = CHtml::tag('div', array('class'=>'successheader'),
+		            		'('.$clang->gT("Conditions successfully copied").')'
+		            	);
 		            }
 		        }
 		        else
 		        {
-		            $CopyConditionsMessage = "<div class='warningheader'>(".$clang->gT("No conditions could be copied (due to duplicates)").")</div>";
+		        	$CopyConditionsMessage = CHtml::tag('div', array('class'=>'warningheader'),
+		        		'('.$clang->gT("No conditions could be copied (due to duplicates)").')'
+		        	);
 		        }
 		    }
 
 		}
 		//END PROCESS ACTIONS
 
-
-
-		$cquestions=Array();
-		$canswers=Array();
-
-
+		$cquestions = Array();
+		$canswers 	= Array();
 
 		//BEGIN: GATHER INFORMATION
 		// 1: Get information for this question
-		if (!isset($qid)) {$qid=returnglobal('qid');}
-		if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
-		$thissurvey=getSurveyInfo($surveyid);
+		if (!isset($qid)) { $qid = returnglobal('qid'); }
+		if (!isset($surveyid)) { $surveyid = returnglobal('sid'); }
+		$thissurvey = getSurveyInfo($surveyid);
 
 		$query = "SELECT * "
-		."FROM {{questions}}, "
-		."{{groups}} "
-		."WHERE {{questions}}.gid={{groups}}.gid "
-		."AND qid=$qid "
-		."AND parent_qid=0 "
-		."AND {{questions}}.language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
+			."FROM {{questions}}, "
+			."{{groups}} "
+			."WHERE {{questions}}.gid={{groups}}.gid "
+			."AND qid=$qid "
+			."AND parent_qid=0 "
+			."AND {{questions}}.language='".GetBaseLanguageFromSurveyID($surveyid)."'";
 		$result = Yii::app()->db->createCommand($query)->query() or safe_die ("Couldn't get information for question $qid<br />$query<br />".$connect->ErrorMsg());
 		foreach ($result->readAll() as $rows)
 		{
-		    $questiongroupname=$rows['group_name'];
-		    $questiontitle=$rows['title'];
-		    $questiontext=$rows['question'];
-		    $questiontype=$rows['type'];
+		    $questiongroupname = $rows['group_name'];
+		    $questiontitle = $rows['title'];
+		    $questiontext = $rows['question'];
+		    $questiontype = $rows['type'];
 		}
 
 		// 2: Get all other questions that occur before this question that are pre-determined answer types
@@ -507,13 +552,13 @@ class conditions extends Survey_Common_Action {
 		// first get all questions in natural sort order
 		// , and find out which number in that order this question is
 		$qquery = "SELECT * "
-		."FROM {{questions}}, "
-		."{{groups}} "
-		."WHERE {{questions}}.gid={{groups}}.gid "
-		."AND parent_qid=0 "
-		."AND {{questions}}.sid=$surveyid "
-		."AND {{questions}}.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-		."AND {{groups}}.language='".GetBaseLanguageFromSurveyID($surveyid)."' " ;
+			."FROM {{questions}}, "
+			."{{groups}} "
+			."WHERE {{questions}}.gid={{groups}}.gid "
+			."AND parent_qid=0 "
+			."AND {{questions}}.sid=$surveyid "
+			."AND {{questions}}.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+			."AND {{groups}}.language='".GetBaseLanguageFromSurveyID($surveyid)."' " ;
 
 		$qresult = Yii::app()->db->createCommand($qquery)->query() or safe_die ("$qquery<br />".$connect->ErrorMsg());
 		$qrows = $qresult->readAll();
@@ -541,55 +586,57 @@ class conditions extends Survey_Common_Action {
 		$position = "before";
 		foreach ($qrows as $qrow) //Go through each question until we reach the current one
 		{
-		    if ($qrow["qid"] == $qid)
+		    if ( $qrow["qid"] == $qid )
 		    {
-		        $position="after";
+		        $position = "after";
 		        //break;
 		    }
 		    elseif ($qrow["qid"] != $qid && $position=="after")
 		    {
-		        $postquestionlist[]=$qrow['qid'];
+		        $postquestionlist[] = $qrow['qid'];
 		    }
 		}
 
-		$theserows=array();
-		$postrows=array();
+		$theserows = array();
+		$postrows  = array();
 
 		if (isset($questionlist) && is_array($questionlist))
 		{
 		    foreach ($questionlist as $ql)
 		    {
 		        $query = "SELECT {{questions}}.qid, "
-		        ."{{questions}}.sid, "
-		        ."{{questions}}.gid, "
-		        ."{{questions}}.question, "
-		        ."{{questions}}.type, "
-		        ."{{questions}}.title, "
-		        ."{{questions}}.other, "
-		        ."{{questions}}.mandatory "
-		        ."FROM {{questions}}, "
-		        ."{{groups}} "
-		        ."WHERE {{questions}}.gid={{groups}}.gid "
-		        ."AND parent_qid=0 "
-		        ."AND {{questions}}.qid=$ql "
-		        ."AND {{questions}}.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-		        ."AND {{groups}}.language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
+			        ."{{questions}}.sid, "
+			        ."{{questions}}.gid, "
+			        ."{{questions}}.question, "
+			        ."{{questions}}.type, "
+			        ."{{questions}}.title, "
+			        ."{{questions}}.other, "
+			        ."{{questions}}.mandatory "
+			        ."FROM {{questions}}, "
+			        ."{{groups}} "
+			        ."WHERE {{questions}}.gid={{groups}}.gid "
+			        ."AND parent_qid=0 "
+			        ."AND {{questions}}.qid=$ql "
+			        ."AND {{questions}}.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+			        ."AND {{groups}}.language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
 
-		        $result=Yii::app()->db->createCommand($query)->query() or die("Couldn't get question $qid");
+		        $result = Yii::app()->db->createCommand($query)->query() or die("Couldn't get question $qid");
 
-		        $thiscount=count($result);
+		        $thiscount = count($result);
 
 		        // And store again these questions in this array...
 		        foreach ($result->readAll() as $myrows)
 		        {                   //key => value
-		            $theserows[]=array("qid"=>$myrows['qid'],
-							"sid"=>$myrows['sid'],
-							"gid"=>$myrows['gid'],
-							"question"=>$myrows['question'],
-							"type"=>$myrows['type'],
-							"mandatory"=>$myrows['mandatory'],
-							"other"=>$myrows['other'],
-							"title"=>$myrows['title']);
+		            $theserows[] = array(
+			            	"qid"		=>	$myrows['qid'],
+							"sid"		=>	$myrows['sid'],
+							"gid"		=>	$myrows['gid'],
+							"question"	=>	$myrows['question'],
+							"type"		=>	$myrows['type'],
+							"mandatory"	=>	$myrows['mandatory'],
+							"other"		=>	$myrows['other'],
+							"title"		=>	$myrows['title']
+					);
 		        }
 		    }
 		}
@@ -599,36 +646,38 @@ class conditions extends Survey_Common_Action {
 		    foreach ($postquestionlist as $pq)
 		    {
 		        $query = "SELECT q.qid, "
-		        ."q.sid, "
-		        ."q.gid, "
-		        ."q.question, "
-		        ."q.type, "
-		        ."q.title, "
-		        ."q.other, "
-		        ."q.mandatory "
-		        ."FROM {{questions}} q, "
-		        ."{{groups}} g "
-		        ."WHERE q.gid=g.gid AND "
-		        ."q.parent_qid=0 AND "
-		        ."q.qid=$pq AND "
-		        ."q.language='".GetBaseLanguageFromSurveyID($surveyid)."' AND "
-		        ."g.language='".GetBaseLanguageFromSurveyID($surveyid)."'";
+			        ."q.sid, "
+			        ."q.gid, "
+			        ."q.question, "
+			        ."q.type, "
+			        ."q.title, "
+			        ."q.other, "
+			        ."q.mandatory "
+			        ."FROM {{questions}} q, "
+			        ."{{groups}} g "
+			        ."WHERE q.gid=g.gid AND "
+			        ."q.parent_qid=0 AND "
+			        ."q.qid=$pq AND "
+			        ."q.language='".GetBaseLanguageFromSurveyID($surveyid)."' AND "
+			        ."g.language='".GetBaseLanguageFromSurveyID($surveyid)."'";
 
 
 		        $result = Yii::app()->db->createCommand($query)->query() or safe_die("Couldn't get postquestions $qid<br />$query<br />".$connect->ErrorMsg());
 
-		        $postcount=count($result);
+		        $postcount = count($result);
 
 		        foreach ($result->readAll() as $myrows)
 		        {
-		            $postrows[]=array("qid"=>$myrows['qid'],
-		                        "sid"=>$myrows['sid'],
-		                        "gid"=>$myrows['gid'],
-		                        "question"=>$myrows['question'],
-		                        "type"=>$myrows['type'],
-		                        "mandatory"=>$myrows['mandatory'],
-		                        "other"=>$myrows['other'],
-		                        "title"=>$myrows['title']);
+		            $postrows[]=array(
+			            		"qid"		=>	$myrows['qid'],
+		                        "sid"		=>	$myrows['sid'],
+		                        "gid"		=>	$myrows['gid'],
+		                        "question"	=>	$myrows['question'],
+		                        "type"		=>	$myrows['type'],
+		                        "mandatory"	=>	$myrows['mandatory'],
+		                        "other"		=>	$myrows['other'],
+		                        "title"		=>	$myrows['title']
+		            );
 		        } // while
 		    }
 		    $postquestionscount=count($postrows);
@@ -638,42 +687,48 @@ class conditions extends Survey_Common_Action {
 
 		if (isset($postquestionscount) && $postquestionscount > 0)
 		{ //Build the array used for the questionNav and copyTo select boxes
-		foreach ($postrows as $pr)
-		{
-		    $pquestions[]=array("text"=>$pr['title'].": ".substr(strip_tags($pr['question']), 0, 80),
-				"fieldname"=>$pr['sid']."X".$pr['gid']."X".$pr['qid']);
-		}
+			foreach ($postrows as $pr)
+			{
+			    $pquestions[]  =array("text" => $pr['title'].": ".substr(strip_tags($pr['question']), 0, 80),
+					"fieldname" => $pr['sid']."X".$pr['gid']."X".$pr['qid']);
+			}
 		}
 
 		// Previous question parsing ==> building cquestions[] and canswers[]
 		if ($questionscount > 0)
 		{
-		    $X="X";
+		    $X = "X";
 
 		    foreach($theserows as $rows)
 		    {
 		        $shortquestion=$rows['title'].": ".strip_tags($rows['question']);
 
 		        if ($rows['type'] == "A" ||
-		        $rows['type'] == "B" ||
-		        $rows['type'] == "C" ||
-		        $rows['type'] == "E" ||
-		        $rows['type'] == "F" ||
-		        $rows['type'] == "H" )
+			        $rows['type'] == "B" ||
+			        $rows['type'] == "C" ||
+			        $rows['type'] == "E" ||
+			        $rows['type'] == "F" ||
+			        $rows['type'] == "H"
+			    )
 		        {
-		            $aquery="SELECT * "
+		            /*$aquery = "SELECT * "
 		            ."FROM {{questions}} "
 		            ."WHERE parent_qid={$rows['qid']} "
 		            ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-		            ."ORDER BY question_order";
+		            ."ORDER BY question_order";*/
 
-		            $aresult=Yii::app()->db->createCommand($aquery)->query() or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
+		            $aresult = Questions::model()->getSomeRecords('*', array( 'and',
+			        	"parent_qid=".$rows['qid']."",
+			        	"laguage='".GetBaseLanguageFromSurveyID($surveyid)."'"
+			        ), 'question_order ASC');
 
 		            foreach ($aresult->readAll() as $arows)
 		            {
 		                $shortanswer = "{$arows['title']}: [" . FlattenText($arows['question']) . "]";
-		                $shortquestion=$rows['title'].":$shortanswer ".FlattenText($rows['question']);
-		                $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']);
+		                $shortquestion = $rows['title'].":$shortanswer ".FlattenText($rows['question']);
+		                $cquestions[] = array( $shortquestion, $rows['qid'], $rows['type'],
+		                	$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']
+		                );
 
 		                switch ($rows['type'])
 		                {
@@ -701,13 +756,12 @@ class conditions extends Survey_Common_Action {
 		                        break;
 		                    case "F": //Array Flexible Row
 		                    case "H": //Array Flexible Column
-		                        $fquery = "SELECT * "
-		                        ."FROM {{answers}} "
-		                        ."WHERE qid={$rows['qid']} "
-		                        ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-		                        ."AND scale_id=0 "
-		                        ."ORDER BY sortorder, code ";
-		                        $fresult = Yii::app()->db->createCommand($fquery)->query();
+
+		                        $fresult = Answers::model()->getSomeRecords('*', array('and',
+		                        	"qid={$rows['qid']}", "language='".GetBaseLanguageFromSurveyID($surveyid)."'", 'scale_id=0'),
+		                        	'sortorder, code'
+		                        );
+
 		                        foreach ($fresult->readAll() as $frow)
 		                        {
 		                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $frow['code'], $frow['answer']);
@@ -751,26 +805,26 @@ class conditions extends Survey_Common_Action {
 		            // Get the Y-Axis
 
 		            $fquery = "SELECT sq.*, q.other"
-		            ." FROM {{questions sq}}, {{questions q}}"
-		            ." WHERE sq.sid=$surveyid AND sq.parent_qid=q.qid "
-		            . "AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
-		            ." AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
-		            ." AND q.qid={$rows['qid']}
-		               AND sq.scale_id=0
-		               ORDER BY sq.question_order";
+			            ." FROM {{questions sq}}, {{questions q}}"
+			            ." WHERE sq.sid=$surveyid AND sq.parent_qid=q.qid "
+			            . "AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
+			            ." AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
+			            ." AND q.qid={$rows['qid']}
+			               AND sq.scale_id=0
+			               ORDER BY sq.question_order";
 
 		            $y_axis_db = Yii::app()->db->createCommand($fquery)->query();
 
-		             // Get the X-Axis
-		             $aquery = "SELECT sq.*
-		                         FROM {{questions q}}, {{questions sq}}
-		                         WHERE q.sid=$surveyid
-		                         AND sq.parent_qid=q.qid
-		                         AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'
-		                         AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'
-		                         AND q.qid=".$rows['qid']."
-		                         AND sq.scale_id=1
-		                         ORDER BY sq.question_order";
+					// Get the X-Axis
+					$aquery = "SELECT sq.*
+						FROM {{questions q}}, {{questions sq}}
+						WHERE q.sid=$surveyid
+						AND sq.parent_qid=q.qid
+						AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'
+						AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'
+						AND q.qid=".$rows['qid']."
+						AND sq.scale_id=1
+						ORDER BY sq.question_order";
 
 		            $x_axis_db=Yii::app()->db->createCommand($aquery)->query() or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
 
@@ -799,12 +853,8 @@ class conditions extends Survey_Common_Action {
 		        } //if A,B,C,E,F,H
 		        elseif ($rows['type'] == "1") //Multi Scale
 		        {
-		            $aquery="SELECT * "
-		            ."FROM {{questions}} "
-		            ."WHERE parent_qid={$rows['qid']} "
-		            ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-		            ."ORDER BY question_order";
-		            $aresult=Yii::app()->db->createCommand($aquery)->query() or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
+		        	$aresult = Questions::model()->getSomeRecords('*', "parent_qid={$rows['qid']}" .
+		            		"AND language='".GetBaseLanguageFromSurveyID($surveyid)."'", 'question_order desc');
 
 		            foreach ($aresult->readAll() as $arows)
 		            {
@@ -812,34 +862,28 @@ class conditions extends Survey_Common_Action {
 		                $label1 = isset($attr['dualscale_headerA']) ? $attr['dualscale_headerA'] : 'Label1';
 		                $label2 = isset($attr['dualscale_headerB']) ? $attr['dualscale_headerB'] : 'Label2';
 		                $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "][$label1]";
-		                $shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
-		                $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0");
+		                $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
+		                $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0");
 
 		                $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "][$label2]";
-		                $shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
-		                $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1");
+		                $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
+		                $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1");
 
 		                // first label
-		                $lquery="SELECT * "
-		                ."FROM {{answers}} "
-		                ."WHERE qid={$rows['qid']} "
-		                ."AND scale_id=0 "
-		                ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-		                ."ORDER BY sortorder, answer";
-		                $lresult=Yii::app()->db->createCommand($lquery)->query() or safe_die ("Couldn't get labels to Array <br />$lquery<br />".$connect->ErrorMsg());
+		                $lresult = Answers::model()->getSomeRecords('*',
+		                	"qid={$rows['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'",
+		                	'sortorder, answer'
+		                );
 		                foreach ($lresult->readAll() as $lrows)
 		                {
 		                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0", "{$lrows['code']}", "{$lrows['code']}");
 		                }
 
 		                // second label
-		                $lquery="SELECT * "
-		                ."FROM {{answers}} "
-		                ."WHERE qid={$rows['qid']} "
-		                ."AND scale_id=1 "
-		                ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-		                ."ORDER BY sortorder, answer";
-		                $lresult=Yii::app()->db->createCommand($lquery)->query() or safe_die ("Couldn't get labels to Array <br />$lquery<br />".$connect->ErrorMsg());
+		               	$lresult = Answers::model()->getSomeRecords('*',
+		                	"qid={$rows['qid']} AND scale_id=1 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'",
+		                	'sortorder, answer'
+		                );
 		                foreach ($lresult->readAll() as $lrows)
 		                {
 		                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1", "{$lrows['code']}", "{$lrows['code']}");
@@ -855,12 +899,8 @@ class conditions extends Survey_Common_Action {
 		        }
 		        elseif ($rows['type'] == "K" ||$rows['type'] == "Q") //Multi shorttext/numerical
 		        {
-		            $aquery="SELECT * "
-		            ."FROM {{questions}} "
-		            ."WHERE parent_qid={$rows['qid']} "
-		            ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-		            ."ORDER BY question_order";
-		            $aresult=Yii::app()->db->createCommand($aquery)->query() or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
+		            $aresult = Questions::model()->getSomeRecords('*', "parent_qid={$rows['qid']}" .
+		            		"AND language='".GetBaseLanguageFromSurveyID($surveyid)."'", 'question_order desc');
 
 		            foreach ($aresult->readAll() as $arows)
 		            {
@@ -878,14 +918,12 @@ class conditions extends Survey_Common_Action {
 		        }
 		        elseif ($rows['type'] == "R") //Answer Ranking
 		        {
-		            $aquery="SELECT * "
-		            ."FROM {{answers}} "
-		            ."WHERE qid={$rows['qid']} "
-					."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' " //??
-		            ."AND scale_id=0 "
-		            ."ORDER BY sortorder, answer";
-		            $aresult=Yii::app()->db->createCommand($aquery)->query() or safe_die ("Couldn't get answers to Ranking question<br />$aquery<br />".$connect->ErrorMsg());
-		            $acount=count($aresult);
+		            $aresult = Answers::model()->getSomeRecords('*',
+		                	"qid={$rows['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'",
+		                	'sortorder, answer'
+	                );
+
+		            $acount = count($aresult);
 		            foreach ($aresult->readAll() as $arow)
 		            {
 		                $theanswer = addcslashes($arow['answer'], "'");
@@ -909,14 +947,11 @@ class conditions extends Survey_Common_Action {
 		        elseif($rows['type'] == "M" || $rows['type'] == "P")
 		        {
 		            $shortanswer = " [".$clang->gT("Group of checkboxes")."]";
-		            $shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
-		            $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
-		            $aquery="SELECT * "
-		            ."FROM {{questions}} "
-		            ."WHERE parent_qid={$rows['qid']} "
-		            ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-		            ."ORDER BY question_order";
-		            $aresult=Yii::app()->db->createCommand($aquery)->query() or safe_die ("Couldn't get answers to this question<br />$aquery<br />".$connect->ErrorMsg());
+		            $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
+		            $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
+
+		            $aresult = Questions::model()->getSomeRecords('*', "parent_qid={$rows['qid']}" .
+		            		"AND language='".GetBaseLanguageFromSurveyID($surveyid)."'", 'question_order desc');
 
 		            foreach ($aresult->readAll() as $arows)
 		            {
@@ -980,15 +1015,11 @@ class conditions extends Survey_Common_Action {
 		                    break;
 
 		                default:
-		                    $aquery="SELECT * "
-		                    ."FROM {{answers}} "
-		                    ."WHERE qid={$rows['qid']} "
-		                    ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-		                    ."AND scale_id=0 "
-		                    ."ORDER BY sortorder, "
-		                    ."answer";
-		                    // Ranking question? Replacing "Ranking" by "this"
-		                    $aresult=Yii::app()->db->createCommand($aquery)->query() or safe_die ("Couldn't get answers to this question<br />$aquery<br />".$connect->ErrorMsg());
+
+		                    $aresult = Answers::model()->getSomeRecords('*',
+				                	"qid={$rows['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'",
+				                	'sortorder, answer'
+			                );
 
 		                    foreach ($aresult->readAll() as $arows)
 		                    {
@@ -1004,15 +1035,15 @@ class conditions extends Survey_Common_Action {
 		                        }
 		                    }
 		                    elseif ($rows['type'] != "M" &&
-		                    $rows['type'] != "P" &&
-		                    $rows['type'] != "J" &&
-		                    $rows['type'] != "I" )
+				                    $rows['type'] != "P" &&
+				                    $rows['type'] != "J" &&
+				                    $rows['type'] != "I" )
 		                    {
 		                        // For dropdown questions
 		                        // optinnaly add the 'Other' answer
-		                        if ( ($rows['type'] == "L" ||
-		                        $rows['type'] == "!") &&
-		                        $rows['other'] == "Y")
+		                        if ( (	$rows['type'] == "L" ||
+				                        $rows['type'] == "!") &&
+				                        $rows['other'] == "Y" )
 		                        {
 		                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "-oth-", $clang->gT("Other"));
 		                        }
@@ -1031,7 +1062,7 @@ class conditions extends Survey_Common_Action {
 		//END Gather Information for this question
 
 
-		$quesitonNavOptions = "<optgroup class='activesurveyselect' label='".$clang->gT("Before","js")."'>";
+		$questionNavOptions = CHtml::openTag('optgroup', array('class'=>'activesurveyselect', 'label'=>$clang->gT("Before","js")));
 		foreach ($theserows as $row)
 		{
 		    $question=$row['question'];
@@ -1045,11 +1076,15 @@ class conditions extends Survey_Common_Action {
 		        //$questionselecter = substr($question, 0, 35)."..";
 		        $questionselecter = htmlspecialchars(mb_strcut(html_entity_decode($question,ENT_QUOTES,'UTF-8'), 0, 35, 'UTF-8'))."...";
 		    }
-		    $quesitonNavOptions .= "<option value='".$this->getController()->createUrl("/admin/conditions/sa/action/subaction/editconditionsform/surveyid/$surveyid/gid/{$row['gid']}/qid/{$row['qid']}")."'>{$row['title']}: ".$questionselecter."</option>";
+
+		    $questionNavOptions .= CHtml::tag('option', array(
+			    'value' => $this->controller->createUrl("/admin/conditions/sa/action/subaction/editconditionsform/surveyid/$surveyid/gid/{$row['gid']}/qid/{$row['qid']}")),
+				$questionselecter
+			);
 		}
-		$quesitonNavOptions .= "</optgroup>\n";
-		$quesitonNavOptions .= "<optgroup class='activesurveyselect' label='".$clang->gT("Current","js")."'>\n";
-		$question=strip_tags($questiontext);
+		$questionNavOptions .= CHtml::closeTag('optgroup');
+		$questionNavOptions .= CHtml::openTag('optgroup', array('class'=>'activesurveyselect', 'label'=>$clang->gT("Current","js")));
+		$question = strip_tags($questiontext);
 		if (strlen($question)<35)
 		{
 		    $questiontextshort = $question;
@@ -1059,10 +1094,14 @@ class conditions extends Survey_Common_Action {
 		    //$questiontextshort = substr($question, 0, 35)."..";
 		    $questiontextshort = htmlspecialchars(mb_strcut(html_entity_decode($question,ENT_QUOTES,'UTF-8'), 0, 35, 'UTF-8'))."...";
 		}
-		
-		$quesitonNavOptions .= "<option value='".$this->getController()->createUrl("/admin/conditions/sa/action/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid")."' selected='selected'>$questiontitle: $questiontextshort</option>";
-		$quesitonNavOptions .= "</optgroup>\n";
-		$quesitonNavOptions .= "<optgroup class='activesurveyselect' label='".$clang->gT("After","js")."'>\n";
+
+		$questionNavOptions .= CHtml::tag('option', array(
+			'value'=>$this->controller->createUrl("/admin/conditions/sa/action/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"),
+			'selected'=>'selected'),
+			$questiontitle .': '. $questiontextshort);
+		$questionNavOptions .= CHtml::closeTag('optgroup');
+		$questionNavOptions .= CHtml::openTag('optgroup', array('class'=> 'activesurveyselect', 'label'=>$clang->gT("After","js")));
+
 		foreach ($postrows as $row)
 		{
 		    $question=$row['question'];
@@ -1076,41 +1115,45 @@ class conditions extends Survey_Common_Action {
 		        //$questionselecter = substr($question, 0, 35)."..";
 		        $questionselecter = htmlspecialchars(mb_strcut(html_entity_decode($question,ENT_QUOTES,'UTF-8'), 0, 35, 'UTF-8'))."...";
 		    }
-		    $quesitonNavOptions .=  "<option value='".$this->getController()->createUrl("/admin/conditions/sa/action/subaction/editconditionsform/surveyid/$surveyid/gid/{$row['gid']}/qid/{$row['qid']}")."'>{$row['title']}: ".$questionselecter."</option>";
+		    $questionNavOptions .=  CHtml::tag('option', array(
+			    'value' => $this->controller->createUrl("/admin/conditions/sa/action/subaction/editconditionsform/surveyid/$surveyid/gid/{$row['gid']}/qid/{$row['qid']}")),
+			    $row['title'].':'.$questionselecter
+			);
 		}
-		$quesitonNavOptions .= "</optgroup>\n";
+		$questionNavOptions .= CHtml::closeTag('optgroup');
 
 		//Now display the information and forms
 		//BEGIN: PREPARE JAVASCRIPT TO SHOW MATCHING ANSWERS TO SELECTED QUESTION
-		$javascriptpre = "<script type='text/javascript'>\n"
-		."<!--\n"
-		."\tvar Fieldnames = new Array();\n"
-		."\tvar Codes = new Array();\n"
-		."\tvar Answers = new Array();\n"
-		."\tvar QFieldnames = new Array();\n"
-		."\tvar Qcqids = new Array();\n"
-		."\tvar Qtypes = new Array();\n";
-		$jn=0;
-		if (isset($canswers))
+		$javascriptpre = CHtml::openTag('script', array('type' => 'text/javascript'))
+			. "<!--\n"
+			. "\tvar Fieldnames = new Array();\n"
+			. "\tvar Codes = new Array();\n"
+			. "\tvar Answers = new Array();\n"
+			. "\tvar QFieldnames = new Array();\n"
+			. "\tvar Qcqids = new Array();\n"
+			. "\tvar Qtypes = new Array();\n";
+
+		$jn = 0;
+		if ( isset($canswers) )
 		{
             foreach($canswers as $can)
             {
-                $an=ls_json_encode(FlattenText($can[2]));
+                $an = ls_json_encode(FlattenText($can[2]));
                 $conditionsoutput_main_content .= "Fieldnames[$jn]='$can[0]';\n"
-                ."Codes[$jn]='$can[1]';\n"
-                ."Answers[$jn]={$an};\n";
+	                . "Codes[$jn]='$can[1]';\n"
+	                . "Answers[$jn]={$an};\n";
                 $jn++;
             }
 		}
-		$jn=0;
 
-		if (isset($cquestions))
+		$jn = 0;
+		if ( isset($cquestions) )
 		{
 		    foreach ($cquestions as $cqn)
 		    {
 		        $javascriptpre .= "QFieldnames[$jn]='$cqn[3]';\n"
-		        ."Qcqids[$jn]='$cqn[1]';\n"
-		        ."Qtypes[$jn]='$cqn[2]';\n";
+			        ."Qcqids[$jn]='$cqn[1]';\n"
+			        ."Qtypes[$jn]='$cqn[2]';\n";
 		        $jn++;
 		    }
 		}
@@ -1126,43 +1169,47 @@ class conditions extends Survey_Common_Action {
 		}
 
 		$javascriptpre .= "//-->\n"
-		."</script>\n";
+		.CHtml::closeTag('script');
 
 		//END: PREPARE JAVASCRIPT TO SHOW MATCHING ANSWERS TO SELECTED QUESTION
 
 
 		$css_admin_includes[] = Yii::app()->getConfig("generalscripts").'jquery/css/jquery.multiselect.css';
+
 		Yii::app()->setConfig("css_admin_includes", $css_admin_includes);//supposed to be setConfig
         $this->getController()->_getAdminHeader();
+
 		$data['clang'] = $clang;
 		$data['surveyid'] = $surveyid;
 		$data['qid'] = $qid;
 		$data['gid'] = $gid;
 		$data['imageurl'] = $imageurl;
 		$data['extraGetParams'] = $extraGetParams;
-		$data['quesitonNavOptions'] = $quesitonNavOptions;
+		$data['quesitonNavOptions'] = $questionNavOptions;
 		$data['conditionsoutput_action_error'] = $conditionsoutput_action_error;
 		$data['javascriptpre'] = $javascriptpre;
-		$this->getController()->render("/admin/conditions/conditionshead_view",$data);  
+
+		$this->getController()->render("/admin/conditions/conditionshead_view", $data);
 
 
 		//BEGIN DISPLAY CONDITIONS FOR THIS QUESTION
-		if ($subaction=='index' ||
-		$subaction=='editconditionsform' || $subaction=='insertcondition' ||
-		$subaction == "editthiscondition" || $subaction == "delete" ||
-		$subaction == "updatecondition" || $subaction == "deletescenario" ||
-		$subaction == "renumberscenarios" || $subaction == "deleteallconditions" ||
-		$subaction == "updatescenario" ||
-		$subaction=='copyconditionsform' || $subaction=='copyconditions' || $subaction=='conditions')  
+		if (	$subaction == 'index' ||
+				$subaction == 'editconditionsform' || $subaction == 'insertcondition' ||
+				$subaction == "editthiscondition" || $subaction == "delete" ||
+				$subaction == "updatecondition" || $subaction == "deletescenario" ||
+				$subaction == "renumberscenarios" || $subaction == "deleteallconditions" ||
+				$subaction == "updatescenario" ||
+				$subaction == 'copyconditionsform' || $subaction == 'copyconditions' || $subaction == 'conditions'
+			)
 		{
 
 		    //3: Get other conditions currently set for this question
-		    $conditionscount=0;
+		    $conditionscount = 0;
 		    $s=0;
 		    $scenarioquery = "SELECT DISTINCT {{conditions}}.scenario "
-		    ."FROM {{conditions}} "
-		    ."WHERE {{conditions}}.qid=$qid\n"
-		    ."ORDER BY {{conditions}}.scenario";
+			    ."FROM {{conditions}} "
+			    ."WHERE {{conditions}}.qid=$qid\n"
+			    ."ORDER BY {{conditions}}.scenario";
 		    $scenarioresult = Yii::app()->db->createCommand($scenarioquery)->query() or safe_die ("Couldn't get other (scenario) conditions for question $qid<br />$query<br />".$connect->Error);
 		    $scenariocount=count($scenarioresult);
 
@@ -1171,13 +1218,14 @@ class conditions extends Survey_Common_Action {
 
 			$data['conditionsoutput'] = $conditionsoutput_main_content;
 			$data['extraGetParams'] = $extraGetParams;
-			$data['quesitonNavOptions'] = $quesitonNavOptions;
+			$data['quesitonNavOptions'] = $questionNavOptions;
 			$data['conditionsoutput_action_error'] = $conditionsoutput_action_error;
 			$data['javascriptpre'] = $javascriptpre;
 			$data['onlyshow'] = $onlyshow;
 			$data['subaction'] = $subaction;
 			$data['scenariocount'] = $scenariocount;
-			$this->getController()->render("/admin/conditions/conditionslist_view",$data);
+
+			$this->getController()->render("/admin/conditions/conditionslist_view", $data);
 
 		    if ($scenariocount > 0)
 		    {
@@ -1206,82 +1254,76 @@ class conditions extends Survey_Common_Action {
 		                $initialCheckbox = "";
 		            }
 
-		            $conditionsoutput_main_content .= "<tr><td>\n"
-		            ."<table width='100%' cellspacing='0'><tr>$initialCheckbox<td width='90%'>$scenariotext&nbsp;\n"
-		            ."<form action='".$this->getController()->createUrl("/admin/conditions/updatescenario/$surveyid/$gid/$qid/")."' method='post' id='editscenario{$scenarionr['scenario']}' style='display: none'>\n"
-		            ."<label>".$clang->gT("New scenario number").":&nbsp;\n"
-		            ."<input type='text' name='newscenarionum' size='3'/></label>\n"
-		            ."<input type='hidden' name='scenario' value='{$scenarionr['scenario']}'/>\n"
-		            ."<input type='hidden' name='sid' value='$surveyid' />\n"
-		            ."<input type='hidden' name='gid' value='$gid' />\n"
-		            ."<input type='hidden' name='qid' value='$qid' />\n"
-		            ."<input type='hidden' name='subaction' value='updatescenario' />&nbsp;&nbsp;\n"
-		            ."<input type='submit' name='scenarioupdated' value='".$clang->gT("Update scenario")."' />\n"
-		            ."<input type='button' name='cancel' value='".$clang->gT("Cancel")."' onclick=\"$('#editscenario{$scenarionr['scenario']}').hide('slow');\"/>\n"
-		            ."</form></td>\n"
-		            . "<td width='10%' valign='middle' align='right'><form id='deletescenario{$scenarionr['scenario']}' action='".$this->getController()->createUrl("/admin/conditions/sa/action/subaction/deletescenario/surveyid/$surveyid/gid/$gid/qid/$qid/")."' method='post' name='deletescenario{$scenarionr['scenario']}' style='margin-bottom:0;'>\n";
-
-		            if ($scenariotext != "" && ($subaction == "editconditionsform" ||$subaction == "insertcondition" ||
-		            $subaction == "updatecondition" || $subaction == "editthiscondition" ||
-		            $subaction == "renumberscenarios" || $subaction == "updatescenario" ||
-		            $subaction == "deletescenario" || $subaction == "delete") )
+		            if (	$scenariotext != "" && ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
+				            $subaction == "updatecondition" || $subaction == "editthiscondition" ||
+				            $subaction == "renumberscenarios" || $subaction == "updatescenario" ||
+				            $subaction == "deletescenario" || $subaction == "delete")
+				       	)
 		            {
-		                $conditionsoutput_main_content .= "\t<a href='#' "
-		                ." onclick=\"if ( confirm('".$clang->gT("Are you sure you want to delete all conditions set in this scenario?","js")."')) { document.getElementById('deletescenario{$scenarionr['scenario']}').submit();}\""
-		                ." title='".$clang->gTview("Delete this scenario")."' >"
-		                ." <img src='$imageurl/scenario_delete.png' ".$clang->gT("Delete this scenario")." name='DeleteWholeGroup' /></a>\n";
+		            	$img_tag = CHtml::image($imageurl.'/scenario_delete.png', $clang->gT("Delete this scenario"), array(
+			            	'name'=>'DeleteWholeGroup'
+			           	));
+		            	$additional_main_content = CHtml::link($img_tag, '#', array(
+			            	'onclick' 	=> 	"if ( confirm('".$clang->gT("Are you sure you want to delete all conditions set in this scenario?", "js")."')) { document.getElementById('deletescenario{$scenarionr['scenario']}').submit();}",
+			            	'title' 	=> 	$clang->gTview("Delete this scenario")
+		            	));
 
-		                $conditionsoutput_main_content .= "\t<a href='#' "
-		                ." id='editscenariobtn{$scenarionr['scenario']}'"
-		                ." onclick=\"$('#editscenario{$scenarionr['scenario']}').toggle('slow');\""
-		                ." title='".$clang->gTview("Edit scenario")."' >"
-		                ." <img src='$imageurl/scenario_edit.png' alt='".$clang->gT("Edit scenario")."' name='DeleteWholeGroup' /></a>\n";
+		            	$img_tag = CHtml::image($imageurl.'/scenario_edit.png', $clang->gT("Edit scenario"), array(
+			            	'name'=>'DeleteWholeGroup'
+			            ));
+			            $additional_main_content = CHtml::link($img_tag, '#', array(
+				        	'id' 		=> 	'editscenariobtn'.$scenarionr['scenario'],
+				        	'onclick' 	=> 	"$('#editscenario{$scenarionr['scenario']}').toggle('slow');",
+				        	'title' 	=> 	$clang->gTview("Edit scenario")
+				        ));
 
+		                $data['additional_content'] = $additional_main_content;
 		            }
 
-		            $conditionsoutput_main_content .= "\t<input type='hidden' name='scenario' value='{$scenarionr['scenario']}' />\n"
-		            ."\t<input type='hidden' name='qid' value='$qid' />\n"
-		            ."\t<input type='hidden' name='sid' value='$surveyid' />\n"
-		            ."\t<input type='hidden' name='subaction' value='deletescenario' />\n"
-		            ."</form></td></tr></table></td></tr>\n";
+		            $data['initialCheckbox'] = $initialCheckbox;
+		            $data['scenariotext'] = $scenariotext;
+		            $data['scenarionr'] = $scenarionr;
+
+		            $conditionsoutput_main_content .= $this->controller->render('/admin/conditions/includes/conditions_scenario',
+		            	$data, TRUE);
 
 		            unset($currentfield);
 
 		            $query = "SELECT {{conditions}}.cid, "
-		            ."{{conditions}}.scenario, "
-		            ."{{conditions}}.cqid, "
-		            ."{{conditions}}.cfieldname, "
-		            ."{{conditions}}.method, "
-		            ."{{conditions}}.value, "
-		            ."{{questions}}.type "
-		            ."FROM {{conditions}}, "
-		            ."{{questions}}, "
-		            ."{{groups}} "
-		            ."WHERE {{conditions}}.cqid={{questions}}.qid "
-		            ."AND {{questions}}.gid={{groups}}.gid "
-		            ."AND {{questions}}.parent_qid=0 "
-		            ."AND {{questions}}.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-		            ."AND {{groups}}.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-		            ."AND {{conditions}}.qid=$qid "
-		            ."AND {{conditions}}.scenario={$scenarionr['scenario']}\n"
-		            ."AND {{conditions}}.cfieldname NOT LIKE '{%' \n" // avoid catching SRCtokenAttr conditions
-		            ."ORDER BY {{groups}}.group_order,{{questions}}.question_order";
+			            ."{{conditions}}.scenario, "
+			            ."{{conditions}}.cqid, "
+			            ."{{conditions}}.cfieldname, "
+			            ."{{conditions}}.method, "
+			            ."{{conditions}}.value, "
+			            ."{{questions}}.type "
+			            ."FROM {{conditions}}, "
+			            ."{{questions}}, "
+			            ."{{groups}} "
+			            ."WHERE {{conditions}}.cqid={{questions}}.qid "
+			            ."AND {{questions}}.gid={{groups}}.gid "
+			            ."AND {{questions}}.parent_qid=0 "
+			            ."AND {{questions}}.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+			            ."AND {{groups}}.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+			            ."AND {{conditions}}.qid=$qid "
+			            ."AND {{conditions}}.scenario={$scenarionr['scenario']}\n"
+			            ."AND {{conditions}}.cfieldname NOT LIKE '{%' \n" // avoid catching SRCtokenAttr conditions
+			            ."ORDER BY {{groups}}.group_order,{{questions}}.question_order";
 		            $result = Yii::app()->db->createCommand($query)->query() or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />".$connect->ErrorMsg());
 		            $conditionscount=count($result);
 
 		            $querytoken = "SELECT {{conditions}}.cid, "
-		            ."{{conditions}}.scenario, "
-		            ."{{conditions}}.cqid, "
-		            ."{{conditions}}.cfieldname, "
-		            ."{{conditions}}.method, "
-		            ."{{conditions}}.value, "
-		            ."'' AS type "
-		            ."FROM {{conditions}} "
-		            ."WHERE "
-		            ." {{conditions}}.qid=$qid "
-		            ."AND {{conditions}}.scenario={$scenarionr['scenario']}\n"
-		            ."AND {{conditions}}.cfieldname LIKE '{%' \n" // only catching SRCtokenAttr conditions
-		            ."ORDER BY {{conditions}}.cfieldname";
+			            ."{{conditions}}.scenario, "
+			            ."{{conditions}}.cqid, "
+			            ."{{conditions}}.cfieldname, "
+			            ."{{conditions}}.method, "
+			            ."{{conditions}}.value, "
+			            ."'' AS type "
+			            ."FROM {{conditions}} "
+			            ."WHERE "
+			            ." {{conditions}}.qid=$qid "
+			            ."AND {{conditions}}.scenario={$scenarionr['scenario']}\n"
+			            ."AND {{conditions}}.cfieldname LIKE '{%' \n" // only catching SRCtokenAttr conditions
+			            ."ORDER BY {{conditions}}.cfieldname";
 		            $resulttoken = Yii::app()->db->createCommand($querytoken)->query() or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />".$connect->ErrorMsg());
 		            $conditionscounttoken=count($resulttoken);
 
@@ -1335,12 +1377,13 @@ class conditions extends Survey_Common_Action {
 		                        ."<font size='1'><strong>"
 		                        .$clang->gT("OR")."</strong></font></td></tr>";
 		                    }
+
 		                    $conditionsoutput_main_content .= "\t<tr class='oddrow' style='$markcidstyle'>\n"
 		                    ."\t<td><form style='margin-bottom:0;' name='conditionaction{$rows['cid']}' id='conditionaction{$rows['cid']}' method='post' action='".$this->getController()->createUrl("/admin/conditions/sa/action/subaction/$subaction/surveyid/$surveyid/gid/$gid/qid/$qid/")."'>\n"
 		                    ."<table width='100%' style='height: 13px;' cellspacing='0' cellpadding='0'>\n"
 		                    ."\t<tr>\n";
 
-		                    if ( $subaction == "copyconditionsform" || $subaction == "copyconditions" ) 
+		                    if ( $subaction == "copyconditionsform" || $subaction == "copyconditions" )
 		                    {
 		                        $conditionsoutput_main_content .= "<td>&nbsp;&nbsp;</td>"
 		                        . "<td valign='middle' align='right'>\n"
@@ -1469,39 +1512,32 @@ class conditions extends Survey_Common_Action {
 		                    $conditionsoutput_main_content .= "\t</font></td>\n"
 		                    ."\t<td align='right' valign='middle' width='10%'>\n";
 
-		                    if ($subaction == "editconditionsform" ||$subaction == "insertcondition" ||
-		                    $subaction == "updatecondition" || $subaction == "editthiscondition" ||
-		                    $subaction == "renumberscenarios" || $subaction == "deleteallconditions" ||
-		                    $subaction == "updatescenario" ||
-		                    $subaction == "deletescenario" || $subaction == "delete")
+		                    if ( $subaction == "editconditionsform" ||$subaction == "insertcondition" ||
+			                    $subaction == "updatecondition" || $subaction == "editthiscondition" ||
+			                    $subaction == "renumberscenarios" || $subaction == "deleteallconditions" ||
+			                    $subaction == "updatescenario" ||
+			                    $subaction == "deletescenario" || $subaction == "delete" )
 		                    { // show single condition action buttons in edit mode
-		                        $conditionsoutput_main_content .= ""
-		                        ."<a href='#' "
-		                        ." onclick=\"if ( confirm('".$clang->gT("Are you sure you want to delete this condition?","js")."')) { \$('#editModeTargetVal{$rows['cid']}').remove();\$('#cquestions{$rows['cid']}').remove();document.getElementById('conditionaction{$rows['cid']}').submit();}\""
-		                        ." title='".$clang->gTview("Delete this condition")."' >"
-		                        ." <img src='$imageurl/conditions_delete_16.png'  alt='".$clang->gT("Delete this condition")."' name='DeleteThisCondition' title='' /></a>\n"
-		                        ."<a href='#' "
-		                        ." onclick='document.getElementById(\"subaction{$rows['cid']}\").value=\"editthiscondition\";document.getElementById(\"conditionaction{$rows['cid']}\").submit();'>"
-		                        ." <img src='$imageurl/conditions_edit_16.png'  alt='".$clang->gT("Edit this condition")."' name='EditThisCondition' /></a>\n"
-		                        ."\t<input type='hidden' name='subaction' id='subaction{$rows['cid']}' value='delete' />\n"
-		                        ."\t<input type='hidden' name='cid' value='{$rows['cid']}' />\n"
-		                        ."\t<input type='hidden' name='scenario' value='{$rows['scenario']}' />\n"
-		                        //							."\t<input type='hidden' id='cquestions{$rows['cid']}'  name='cquestions' value='{$rows['cfieldname']}' />\n"
-		                        ."\t<input type='hidden' name='method' value='{$rows['method']}' />\n"
-		                        ."\t<input type='hidden' name='sid' value='$surveyid' />\n"
-		                        ."\t<input type='hidden' name='gid' value='$gid' />\n"
-		                        ."\t<input type='hidden' name='qid' value='$qid' />\n";
+
+		                    	$data['rows'] = $rows;
+		                        $conditionsoutput_main_content .= $this->controller->render('/admin/conditions/includes/conditions_edit',
+		                        	$data, TRUE);
+
 		                        // now sets e corresponding hidden input field
 		                        // depending on the leftOperandType
 		                        if ($leftOperandType == 'tokenattr')
 		                        {
-		                            $conditionsoutput_main_content .= ""
-		                            ."\t<input type='hidden' id='csrctoken{$rows['cid']}' name='csrctoken' value='".html_escape($rows['cfieldname'])."' />\n";
+		                        	$conditionsoutput_main_content .= CHtml::hiddenField('csrctoken', html_escape($rows['cfieldname']), array(
+			                        	'id' => 'csrctoken'.$rows['cid']
+			                        ));
 		                        }
 		                        else
 		                        {
-		                            $conditionsoutput_main_content .= ""
-		                            ."\t<input type='hidden' id='cquestions{$rows['cid']}' name='cquestions' value='".html_escape($rows['cfieldname'])."' />\n";
+		                        	$conditionsoutput_main_content .= CHtml::hiddenField('cquestions', html_escape($rows['cfieldname']),
+		                        		array(
+			                        		'id' => 'cquestions'.$rows['cid']
+			                        	)
+			                        );
 		                        }
 
 		                        // now set the corresponding hidden input field
@@ -1509,63 +1545,66 @@ class conditions extends Survey_Common_Action {
 		                        // This is used when Editting a condition
 		                        if ($rightOperandType == 'predefinedAnsw')
 		                        {
-		                            $conditionsoutput_main_content .= ""
-		                            ."\t<input type='hidden' name='EDITcanswers[]' id='editModeTargetVal{$rows['cid']}' value='".html_escape($rows['value'])."' />\n";
+		                        	$conditionsoutput_main_content .= CHtml::hiddenField('EDITcanswers[]', html_escape($rows['value']), array(
+			                        	'id' => 'editModeTargetVal'.$rows['cid']
+			                        ));
 		                        }
 		                        elseif ($rightOperandType == 'prevQsgqa')
 		                        {
-		                            $conditionsoutput_main_content .= ""
-		                            ."\t<input type='hidden' id='editModeTargetVal{$rows['cid']}' name='EDITprevQuestionSGQA' value='".html_escape($rows['value'])."' />\n";
+		                        	$conditionsoutput_main_content .= CHtml::hiddenField('EDITprevQuestionSGQA', html_escape($rows['value']),
+		                        		array(
+			                        		'id' => 'editModeTargetVal'.$rows['cid']
+			                        	));
 		                        }
 		                        elseif ($rightOperandType == 'tokenAttr')
 		                        {
-		                            $conditionsoutput_main_content .= ""
-		                            ."\t<input type='hidden' id='editModeTargetVal{$rows['cid']}' name='EDITtokenAttr' value='".html_escape($rows['value'])."' />\n";
+		                        	$conditionsoutput_main_content .= CHtml::hiddenField('EDITtokenAttr', html_escape($rows['value']), array(
+			                        	'id' => 'editModeTargetVal'.$rows['cid']
+			                        ));
 		                        }
 		                        elseif ($rightOperandType == 'regexp')
 		                        {
-		                            $conditionsoutput_main_content .= ""
-		                            ."\t<input type='hidden' id='editModeTargetVal{$rows['cid']}' name='EDITConditionRegexp' value='".html_escape($rows['value'])."' />\n";
+		                        	$conditionsoutput_main_content .= CHtml::hiddenField('EDITConditionRegexp', html_escape($rows['value']),
+		                        		array(
+			                        		'id' => 'editModeTargetVal'.$rows['cid']
+			                        	));
 		                        }
 		                        else
 		                        {
-		                            $conditionsoutput_main_content .= ""
-		                            ."\t<input type='hidden' id='editModeTargetVal{$rows['cid']}' name='EDITConditionConst' value='".html_escape($rows['value'])."' />\n";
+		                        	$conditionsoutput_main_content .= CHtml::hiddenField('EDITConditionConst', html_escape($rows['value']),
+		                        		array(
+			                        		'id' => 'editModeTargetVal'.$rows['cid']
+			                        	));
 		                        }
 		                    }
 
-		                    $conditionsoutput_main_content .= ""
-		                    ."\t</td>\n"
-		                    ."\t</tr>\n"
-		                    ."\t</table></form>\n"
-		                    ."\t</td>\n"
-		                    ."\t</tr>\n";
-		                    $currentfield=$rows['cfieldname'];
+		                    $conditionsoutput_main_content 	.= 	CHtml::closeTag('td') 	. CHtml::closeTag('tr') .
+	                    										CHtml::closeTag('table'). CHtml::closeTag('form') .
+		                    									CHtml::closeTag('td') 	. CHtml::closeTag('tr');
+
+		                    $currentfield = $rows['cfieldname'];
 		                }
-		                $conditionsoutput_main_content .= "\t<tr>\n"
-		                ."<td height='3'>\n"
-		                ."</td>\n"
-		                ."\t</tr>\n";
+
+		                $conditionsoutput_main_content 	.= 	CHtml::openTag('tr') . CHtml::openTag('td', array('height'=>'3')).
+		                									CHtml::closeTag('td') . CHtml::closeTag('tr');
 		            }
 		            else
 		            {
-		                $conditionsoutput_main_content .= "\t<tr>\n"
-		                ."<td colspan='3' height='3'>\n"
-		                ."</td>\n"
-		                ."\t</tr>\n";
+		            	$conditionsoutput_main_content .= CHtml::openTag('tr') . CHtml::openTag('td', array('colspan'=>'3', 'height'=>'3'));
+		            	$conditionsoutput_main_content .= CHtml::closeTag('td') . CHtml::closeTag('tr');
 		            }
+
 		            $s++;
 		        }
 		    }
 		    else
 		    { // no condition ==> disable delete all conditions button, and display a simple comment
-		        $conditionsoutput_main_content .= "<tr><td valign='middle' align='center'>".$clang->gT("This question is always shown.")."\n"
-		        . "</td></tr>\n";
+		    	$conditionsoutput_main_content 	.= 	CHtml::openTag('tr') . CHtml::tag('td', array('valign'=>'middle', 'align'=>'center'),
+		    										$clang->gT("This question is always shown.")).CHtml::closeTag('tr');
 		    }
-		    $conditionsoutput_main_content .= ""
-		    . "</table>\n";
 
-		    $conditionsoutput_main_content .= "</td></tr>\n";
+		    $conditionsoutput_main_content .= CHtml::closeTag('table');
+		    $conditionsoutput_main_content .= CHtml::closeTag('td') . CHtml::closeTag('tr');
 
 		}
 		//END DISPLAY CONDITIONS FOR THIS QUESTION
@@ -1597,6 +1636,7 @@ class conditions extends Survey_Common_Action {
 		        //TIBO
 				$this->_js_admin_includes(Yii::app()->getConfig("generalscripts").'jquery/jquery.multiselect.min.js');
 
+				// TODO
 		        $conditionsoutput_main_content .= "<script type='text/javascript'>$(document).ready(function () { $('#copytomultiselect').multiselect( { autoOpen: true, noneSelectedText: '".$clang->gT("No questions selected")."', checkAllText: '".$clang->gT("Check all")."', uncheckAllText: '".$clang->gT("Uncheck all")."', selectedText: '# ".$clang->gT("selected")."', beforeclose: function(){ return false;},height: 200 } ); });</script>";
 
 		        $conditionsoutput_main_content .= "\t<div class='conditioncopy-tbl-row'>\n"
@@ -1791,19 +1831,7 @@ class conditions extends Survey_Common_Action {
 		    	$selected=$methodCode=="==" ? " selected='selected'" : "";
 		        $conditionsoutput_main_content .= "\t<option value='".$methodCode."'$selected>".$methodTxt."</option>\n";
 		    }
-		/**
-		    ."\t<option value='<'>".$clang->gT("Less than")."</option>\n"
-		    ."\t<option value='<='>".$clang->gT("Less than or equal to")."</option>\n"
-		    ."\t<option selected='selected' value='=='>".$clang->gT("Equals")."</option>\n"
-		    ."\t<option value='!='>".$clang->gT("Not equal to")."</option>\n"
-		    ."\t<option value='>='>".$clang->gT("Greater than or equal to")."</option>\n"
-		    ."\t<option value='>'>".$clang->gT("Greater than")."</option>\n"
-		    ."\t<option value='RX'>".$clang->gT("Regular expression")."</option>\n"
-		    ."\t<option value='a<b'>".$clang->gT("Less than (Strings)")."</option>\n"
-		    ."\t<option value='a<=b'>".$clang->gT("Less than or equal to (Strings)")."</option>\n"
-		    ."\t<option value='a>=b'>".$clang->gT("Greater than or equal to (Strings)")."</option>\n"
-		    ."\t<option value='a>b'>".$clang->gT("Greater than (Strings)")."</option>\n"
-		**/
+
 		    $conditionsoutput_main_content .="</select>\n"
 		    ."</div>\n"
 		    ."</div>\n";
@@ -2071,13 +2099,13 @@ class conditions extends Survey_Common_Action {
 		$conditionsoutput = $conditionsoutput_main_content;
 
 		$data['conditionsoutput'] = $conditionsoutput;
-		$this->getController()->render("/admin/conditions/conditionsforms_view",$data);  
+		$this->getController()->render("/admin/conditions/conditionsforms_view", $data);
 		$this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
 
         // TMSW Conditions->Relevance:  Must call LEM->ConvertConditionsToRelevance() whenever Condition is added or updated - what is best location for that action?
 	}
 
-	function _showSpeaker($hinttext)
+	private function _showSpeaker($hinttext)
 	{
 	    global $max;
 		$clang = Yii::app()->lang;
