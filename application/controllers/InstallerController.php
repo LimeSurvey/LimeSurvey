@@ -107,7 +107,7 @@ class InstallerController extends CController {
     */
     function _checkInstallation()
     {
-        if (file_exists(Yii::app()->getConfig('rootdir').'/config/config.php'))
+        if (file_exists(APPPATH . 'config/config.php'))
         {
 			throw new CHttpException(500, 'Installation has been done already. Installer disabled.');
             exit();
