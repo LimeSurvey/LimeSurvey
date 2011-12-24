@@ -11,17 +11,16 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 * @author Shubham Sachdeva
-* @author Gautam Gupta
 */
 
 /**
 * Installer
 *
-* FIXME output code belongs into view
+* @todo Output code belongs into view
+* @todo Make it write the config.php file
 *
 * @package LimeSurvey
 * @author Shubham Sachdeva
-* @author Gautam Gupta
 * @copyright 2011
 * @version $Id$
 * @access public
@@ -590,15 +589,6 @@ class InstallerController extends CController {
 
 					Yii::app()->session['deletedirectories'] = true;
 
-					//DELETE SAMPLE INSTALLER FILE. If we can't, notify user of the same.
-					$installer_file = Yii::app()->getConfig('rootdir').'/tmp/sample_installer_file.txt';
-					if (is_writable($installer_file))
-					{
-						rename($installer_file, $installer_file.'.removed');
-					} else {
-						$aData['error'] = true;
-					}
-
 					$aData['title'] = $clang->gT("Success!");
 					$aData['descp'] = $clang->gT("LimeSurvey has been installed successfully.");
 					$aData['classesForStep'] = array('off','off','off','off','off','off');
@@ -762,12 +752,8 @@ class InstallerController extends CController {
 
         // ** file and directory permissions checking **
 
-        // config file
-        if (!check_FileWriteable(Yii::app()->getConfig('rootdir').'/application/config/config.php', $data, 'config', 'derror') )
-            $bProceed = false;
-
-        // tmp directory check
-        if (!check_DirectoryWriteable(Yii::app()->getConfig('rootdir').'/tmp/', $data, 'tmpdir', 'terror') )
+        // config directory
+        if (!check_DirectoryWriteable(Yii::app()->getConfig('rootdir').'/application/config', $data, 'config', 'derror') )
             $bProceed = false;
 
         // templates directory check
@@ -962,13 +948,14 @@ class InstallerController extends CController {
                       . "/* End of file config.php */"              . "\n"
                       . "/* Location: ./application/config/config.php */";
 
-            if (is_writable(APPPATH . 'config/config.php')) {
+            if (is_writable(APPPATH . 'config')) {
                 write_file(APPPATH . 'config/config.php', $dbdata);
 				Yii::app()->session['configFileWritten'] = true;
             } else {
                 header('refresh:5;url='.$this->createUrl("installer/welcome"));
-                echo "<b>".$clang->gT("Configuration file directory is not writable")."</b><br/>";
+                echo "<b>".$clang->gT("Configuration directory is not writable")."</b><br/>";
                 printf($clang->gT('You will be redirected in about 5 secs. If not, click <a href="%s">here</a>.' ,'unescaped'), $this->createUrl('installer/welcome'));
+                exit;
             }
         }
     }

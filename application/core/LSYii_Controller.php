@@ -49,7 +49,7 @@ abstract class LSYii_Controller extends CController
 	protected function _checkInstallation()
 	{
 		$file_name = Yii::app()->getConfig('rootdir').'/application/config/config.php';
-		if (!file_exists($file_name))
+		if (!file_exists($file_name) && empty(Yii::app()->session['configFileWritten']))
         {
 			$this->redirect($this->createUrl('/installer'));
         }
