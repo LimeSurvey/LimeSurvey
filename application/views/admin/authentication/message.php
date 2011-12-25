@@ -1,2 +1,4 @@
-<?php echo $message; ?>
-<br /><a href='<?php echo Yii::app()->request->requestUri;?>'><?php echo $clang->gT("Continue");?></a><br />
+<p>
+    <?php echo $message; ?><br />
+    <a href='<?php echo $this->createUrl("/admin/authentication/login"); ?>'><?php $clang->eT('Continue'); ?></a><br />
+</p>

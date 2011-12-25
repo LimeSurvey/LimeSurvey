@@ -1,4 +1,7 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH'))
+    exit('No direct script access allowed');
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -10,18 +13,17 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
+ * 	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
  */
 
 /**
-* Authentication Controller
-*
-* This controller performs authentication
-*
-* @package        LimeSurvey
-* @subpackage    Backend
-*/
-
+ * Authentication Controller
+ *
+ * This controller performs authentication
+ *
+ * @package        LimeSurvey
+ * @subpackage    Backend
+ */
 class Authentication extends CAction
 {
     /**
@@ -37,7 +39,7 @@ class Authentication extends CAction
         elseif (isset($_GET['logout']))
             $this->logout();
         elseif (isset($_GET['forgotpassword']))
-            $this->forgotpassword();
+            $this->forgotPassword();
         else
             $this->index();
     }
@@ -55,159 +57,221 @@ class Authentication extends CAction
 
     /**
      * Show login screen and parse login data
-    */
+     */
     public function login()
     {
-        if (Yii::app()->user->getIsGuest())
+        $this->_redirectIfLoggedIn();
+        $sIp = Yii::app()->request->getUserHostAddress();
+        $canLogin = $this->_userCanLogin($sIp);
+
+        if ($canLogin && !is_array($canLogin))
         {
-            $sIp = Yii::app()->request->getUserHostAddress();
-
-            $failed_login_attempts = Failed_login_attempts::model();
-            $failed_login_attempts->cleanOutOldAttempts();
-			
-            $bCannotLogin = $failed_login_attempts->isLockedOut($sIp);
-            if (!$bCannotLogin)
+            if (CHttpRequest::getPost('action'))
             {
-                if (!empty($_POST['action']))
+                $aData = $this->_doLogin(CHttpRequest::getPost('user'), CHttpRequest::getPost('password'));
+
+                if (!isset($aData['errormsg']))
                 {
-                    
-                    $clang = $this->getController()->lang;
+                    Failed_login_attempts::model()->deleteAttempts($sIp);
 
-                    $data = $this->_doLogin($_POST['user'], $_POST['password']);
-
-                    if (isset($data['errormsg']))
-                        $this->getController()->render('/admin/authentication/error', $data);
-                    else
-                    {
-                        $failed_login_attempts->deleteAttempts($sIp);
-                        $loginsummary = '<br />' . sprintf($clang->gT('Welcome %s!'), Yii::app()->session['full_name']) . '<br />&nbsp;';
-                        if (!empty(Yii::app()->session['redirect_after_login']) && strpos(Yii::app()->session['redirect_after_login'], 'logout') === FALSE)
-                        {
-                            Yii::app()->session['metaHeader']  = '<meta http-equiv="refresh"'
-                            . ' content="1;URL=' . Yii::app()->session['redirect_after_login'].'" />';
-                            $loginsummary = '<p><font size="1"><i>' . $clang->gT('Reloading screen. Please wait.') . '</i></font>';
-                            unset(Yii::app()->session['redirect_after_login']);
-                        }
-                        $this->getController()->_GetSessionUserRights(Yii::app()->session['loginID']);
-                        Yii::app()->session['just_logged_in'] = true;
-                        Yii::app()->session['loginsummary'] = $loginsummary;
-                        $this->_doRedirect();
-                    }
+                    $this->getController()->_GetSessionUserRights(Yii::app()->session['loginID']);
+                    Yii::app()->session['just_logged_in'] = true;
+                    Yii::app()->session['loginsummary'] = $this->_getSummary();
+                    $this->_doRedirect();
+                    die();
                 }
-                else
-                    $this->_showLoginForm();
+                else {
+                    $this->_renderWrappedTemplate('error', $aData);
+                }
             }
             else
             {
-                // wrong or unknown username
-                $data['errormsg']="";
-                $data['maxattempts'] = sprintf(
-                $this->getController()->lang->gT('You have exceeded you maximum login attempts. Please wait %d minutes before trying again'),
-                (Yii::app()->getConfig("timeOutTime")/60)) . '<br />';
-
-                $this->_renderTemplateWrappedInHeaderAndFooter('/admin/authentication/error', $data);
+                $this->_showLoginForm();
             }
         }
         else
         {
-        	
-            Yii::app()->request->redirect($this->getController()->createUrl('/admin'));
-        }
-    }
-
-    private function _doRedirect()
-    {
-        if (strlen(Yii::app()->session['redirectopage']) > 1) {
-            Yii::app()->request->redirect(Yii::app()->session['redirectopage']);
-        } else {
-            Yii::app()->request->redirect($this->getController()->createUrl('/admin'));
+            $this->_renderWrappedTemplate('error', $canLogin);
         }
     }
 
     /**
-    * Logout user
-    */
+     * Logout user
+     */
     public function logout()
     {
         Yii::app()->user->logout();
-        $this->_showLoginForm('<p>'.$this->getController()->lang->gT('Logout successful.'));
+        $this->_showLoginForm($this->getController()->lang->gT('Logout successful.'));
     }
 
     /**
-    * Forgot Password screen
-    */
-    public function forgotpassword()
+     * Forgot Password screen
+     */
+    public function forgotPassword()
     {
-        $clang = $this->getController()->lang;
-        if(!CHttpRequest::getPost('action'))
+        $this->_redirectIfLoggedIn();
+
+        if (!CHttpRequest::getPost('action'))
         {
-            $this->_renderTemplateWrappedInHeaderAndFooter("/admin/authentication/forgotpassword");
+            $this->_renderWrappedTemplate('forgotpassword');
         }
         else
         {
             $postuser = CHttpRequest::getPost('user');
-            $emailaddr = CHttpRequest::getPost('email');
+            $sEmailAddr = CHttpRequest::getPost('email');
 
-            //$query = "SELECT users_name, password, uid FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser)." AND email=".$connect->qstr($emailaddr);
-            //$result = db_select_limit_assoc($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());  // Checked
-            $query = User::model()->getSomeRecords(array("users_name, password, uid"),array("users_name"=>$postuser,"email"=>$emailaddr));
+            $aFields = User::model()->getSomeRecords(array('users_name, password, uid'), array('users_name' => $postuser, 'email' => $sEmailAddr));
 
-            if (count($query)  < 1)
+            if (count($aFields) < 1)
             {
                 // wrong or unknown username and/or email
-                $data['errormsg'] = $this->getController()->lang->gT("User name and/or email not found!");
-                $data['maxattempts']="";
-                $this->_renderTemplateWrappedInHeaderAndFooter("/admin/authentication/error", $data);
-
-            } else {
-                //$fields = $result->FetchRow();
-                $fields = $query;
-
-                // send Mail
-                $new_pass = createPassword();
-                $body = sprintf($clang->gT("Your user data for accessing %s"),Yii::app()->getConfig("sitename")). "<br />\n";;
-                $body .= $clang->gT("Username") . ": " . $fields[0]['users_name'] . "<br />\n";
-                $body .= $clang->gT("New password") . ": " . $new_pass . "<br />\n";
-
-               // $this->load->config("email");
-                $subject = $clang->gT("User data","unescaped");
-                $to = $emailaddr;
-                $from = Yii::app()->getConfig("siteadminemail");
-                $sitename = Yii::app()->getConfig("siteadminname");
-                if(SendEmailMessage($body, $subject, $to, $from, Yii::app()->getConfig("sitename"), false,Yii::app()->getConfig("siteadminbounce")))
-                {
-                    //$query = "UPDATE ".db_table_name('users')." SET password='".SHA256::hashing($new_pass)."' WHERE uid={$fields['uid']}";
-                    //$connect->Execute($query); //Checked
-                    User::model()->updatePassword($fields[0]['uid'], hash('sha256', $new_pass));
-                    $data['message'] = '<br />' . $clang->gT("Username") . ': ' . $fields[0]['users_name'] . '<br />' . $clang->gT("Email") . ': ' . $emailaddr . '<br />
-                    <br />' . $clang->gT('An email with your login data was sent to you.');
-                    $this->_renderTemplateWrappedInHeaderAndFooter('/admin/authentication/message', $data);
-                }
-                else
-                {
-                    $tmp = str_replace("{NAME}", "<strong>" . $fields[0]['users_name'] . "</strong>", $clang->gT("Email to {NAME} ({EMAIL}) failed."));
-                    $data['message'] = '<br />' . str_replace("{EMAIL}", $emailaddr, $tmp) . '<br />';
-                    $this->_renderTemplateWrappedInHeaderAndFooter('/admin/authentication/message', $data);
-                }
+                $aData['errormsg'] = $this->getController()->lang->gT('User name and/or email not found!');
+                $aData['maxattempts'] = '';
+                $this->_renderWrappedTemplate('error', $aData);
+            }
+            else
+            {
+                $aData['message'] = $this->_sendPasswordEmail($sEmailAddr, $aFields);
+                $this->_renderWrappedTemplate('message', $aData);
             }
         }
     }
 
     /**
-    * Show login screen
-    * @param optional message
-    */
-    protected function _showLoginForm( $logoutSummary = '' )
+     * Send the forgot password email
+     *
+     * @param string $sEmailAddr
+     * @param array $aFields
+     */
+    private function _sendPasswordEmail($sEmailAddr, $aFields)
     {
-        if ($logoutSummary === '' )
+        $clang = $this->getController()->lang;
+        $sFrom = Yii::app()->getConfig('siteadminemail');
+        $sTo = $sEmailAddr;
+        $sSubject = $clang->gT('User data');
+        $sNewPass = createPassword();
+        $sSiteName = Yii::app()->getConfig('sitename');
+        $sSiteAdminBounce = Yii::app()->getConfig('siteadminbounce');
+
+        $username = sprintf($clang->gT('Username: %s'), $aFields[0]['users_name']);
+        $email    = sprintf($clang->gT('Email: %s'), $sEmailAddr);
+        $password = sprintf($clang->gT('New password: %s'), $sNewPass);
+
+        $body   = array();
+        $body[] = sprintf($clang->gT('Your user data for accessing %s'), Yii::app()->getConfig('sitename'));
+        $body[] = $username;
+        $body[] = $password;
+        $body   = implode("\n", $body);
+
+        if (SendEmailMessage($body, $sSubject, $sTo, $sFrom, $sSiteName, false, $sSiteAdminBounce))
         {
-            $data['summary'] = $this->getController()->lang->gT('You have to login first.');
+            User::model()->updatePassword($aFields[0]['uid'], hash('sha256', $sNewPass));
+            $sMessage = $username . '<br />' . $email . '<br /><br />' . $clang->gT('An email with your login data was sent to you.');
         }
         else
         {
-            $data['summary'] = $logoutSummary;
+            $tmp = str_replace("{NAME}", '<strong>' . $aFields[0]['users_name'] . '</strong>', $clang->gT("Email to {NAME} ({EMAIL}) failed."));
+            $sMessage = str_replace("{EMAIL}", $sEmailAddr, $tmp) . '<br />';
         }
-        $this->_renderTemplateWrappedInHeaderAndFooter('/admin/authentication/login', $data);
+
+        return $sMessage;
+    }
+
+    /**
+     * Show login screen
+     * @param optional message
+     */
+    protected function _showLoginForm($sLogoutSummary = '')
+    {
+        $aData['summary'] = $this->_getSummary('logout', $sLogoutSummary);
+        $this->_renderWrappedTemplate('login', $aData);
+    }
+
+    /**
+     * Get's the summary
+     * @param string $sMethod login|logout
+     * @param string $sSummary Default summary
+     * @return string Summary
+     */
+    private function _getSummary($sMethod = 'login', $sSummary = '')
+    {
+        if (!empty($sSummary))
+        {
+            return $sSummary;
+        }
+
+        $clang = $this->getController()->lang;
+
+        switch ($sMethod) {
+            case 'logout' :
+                $sSummary = $clang->gT('You have to login first.');
+                break;
+
+            case 'login' :
+            default :
+                $sSummary = '<br />' . sprintf($clang->gT('Welcome %s!'), Yii::app()->session['full_name']) . '<br />&nbsp;';
+                if (!empty(Yii::app()->session['redirect_after_login']) && strpos(Yii::app()->session['redirect_after_login'], 'logout') === FALSE)
+                {
+                    Yii::app()->session['metaHeader'] = '<meta http-equiv="refresh"'
+                            . ' content="1;URL=' . Yii::app()->session['redirect_after_login'] . '" />';
+                    $sSummary = '<p><font size="1"><i>' . $clang->gT('Reloading screen. Please wait.') . '</i></font>';
+                    unset(Yii::app()->session['redirect_after_login']);
+                }
+                break;
+        }
+
+        return $sSummary;
+    }
+
+    /**
+     * Redirects a logged in user to the administration page
+     */
+    private function _redirectIfLoggedIn()
+    {
+        if (!Yii::app()->user->getIsGuest())
+        {
+            Yii::app()->request->redirect($this->getController()->createUrl('/admin'));
+        }
+    }
+
+    /**
+     * Check if a user can log in
+     * @param string $sIp IP Address
+     * @return bool|array
+     */
+    private function _userCanLogin($sIp = '')
+    {
+        if (empty($sIp))
+        {
+            $sIp = Yii::app()->request->getUserHostAddress();
+        }
+
+        $failed_login_attempts = Failed_login_attempts::model();
+        $failed_login_attempts->cleanOutOldAttempts();
+
+        if ($failed_login_attempts->isLockedOut($sIp))
+        {
+            return $this->_getAuthenticationFailedErrorMessage();
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    /**
+     * Redirect after login
+     */
+    private function _doRedirect()
+    {
+        if (strlen(Yii::app()->session['redirectopage']) > 1)
+        {
+            Yii::app()->request->redirect(Yii::app()->session['redirectopage']);
+        }
+        else
+        {
+            Yii::app()->request->redirect($this->getController()->createUrl('/admin'));
+        }
     }
 
     /**
@@ -221,13 +285,19 @@ class Authentication extends CAction
     {
         $identity = new UserIdentity(sanitize_user($sUsername), $sPassword);
 
-        if (!$identity->authenticate()) {
+        if (!$identity->authenticate())
+        {
             return $this->_getAuthenticationFailedErrorMessage();
         }
 
         return $this->_setLoginSessions($identity);
     }
 
+    /**
+     * Sets the login sessions
+     * @param UserIdentity $identity
+     * @return bool True
+     */
     private function _setLoginSessions($identity)
     {
         $user = $identity->getUser();
@@ -240,9 +310,13 @@ class Authentication extends CAction
         return true;
     }
 
+    /**
+     * Sets the session data
+     * @param CActiveRecord $user
+     */
     private function _setSessionData($user)
     {
-        Yii::app()->session['loginID'] = intval($user->uid);
+        Yii::app()->session['loginID'] = (int) $user->uid;
         Yii::app()->session['user'] = $user->users_name;
         Yii::app()->session['full_name'] = $user->full_name;
         Yii::app()->session['htmleditormode'] = $user->htmleditormode;
@@ -252,11 +326,15 @@ class Authentication extends CAction
         Yii::app()->session['checksessionpost'] = sRandomChars(10);
     }
 
+    /**
+     * Sets the language settings for the user
+     * @param CActiveRecord $user
+     */
     private function _setLanguageSettings($user)
     {
-        if (isset($_POST['loginlang']) && $_POST['loginlang'] !== 'default')
+        if (CHttpRequest::getPost('loginlang') !== 'default')
         {
-            $user->lang = sanitize_languagecode($_POST['loginlang']);
+            $user->lang = sanitize_languagecode(CHttpRequest::getPost('loginlang'));
             $user->save();
         }
 
@@ -264,10 +342,14 @@ class Authentication extends CAction
         $this->getController()->lang->limesurvey_lang(array('langcode' => $user->lang));
     }
 
+    /**
+     * Checks if the user is using default password
+     */
     private function _checkForUsageOfDefaultPassword()
     {
         $clang = $this->getController()->lang;
-        if (strtolower($_POST['password']) === 'password') {
+        if (strtolower($_POST['password']) === 'password')
+        {
             Yii::app()->session['pw_notify'] = true;
             Yii::app()->session['flashmessage'] = $clang->gT('Warning: You are still using the default password (\'password\'). Please change your password and re-login again.');
         }
@@ -277,38 +359,49 @@ class Authentication extends CAction
         }
     }
 
+    /**
+     * Get the authentication failed error messages
+     * @return array Data
+     */
     private function _getAuthenticationFailedErrorMessage()
     {
         $clang = $this->getController()->lang;
-        $data = array();
+        $aData = array();
+
         $userHostAddress = Yii::app()->request->getUserHostAddress();
-        $isUserNotFound = Failed_login_attempts::model()->addAttempt($userHostAddress);
+        $bUserNotFound = Failed_login_attempts::model()->addAttempt($userHostAddress);
 
-        if ( $isUserNotFound )
+        if ($bUserNotFound)
         {
-            $data['errormsg'] = $clang->gT('Incorrect username and/or password!');
-            $data['maxattempts'] = '';
-
-            $isLockedOut = Failed_login_attempts::model()->isLockedOut($userHostAddress);
-
-            if ( $isLockedOut )
-            {
-                $data['maxattempts'] = sprintf(
-                    $clang->gT('You have exceeded you maximum login attempts. Please wait %d minutes before trying again'),
-                    Yii::app()->getConfig('timeOutTime') / 60
-                );
-            }
+            $aData['errormsg'] = $clang->gT('Incorrect username and/or password!');
+            $aData['maxattempts'] = '';
         }
 
-        return $data;
+        $bLockedOut = Failed_login_attempts::model()->isLockedOut($userHostAddress);
+
+        if ($bLockedOut)
+        {
+            $aData['maxattempts'] = sprintf(
+                    $clang->gT('You have exceeded you maximum login attempts. Please wait %d minutes before trying again'),
+                    Yii::app()->getConfig('timeOutTime') / 60
+            );
+        }
+
+        return $aData;
     }
 
-    private function _renderTemplateWrappedInHeaderAndFooter($szViewUrl, $data = NULL)
+    /**
+     * Renders a template wrapped in header and footer
+     * @param string $szViewUrl
+     * @param array $aData
+     */
+    private function _renderWrappedTemplate($szViewUrl, $aData = array())
     {
-        $clang = $this->getController()->lang;
-        $data['clang'] = $clang;
+        $aData['clang'] = $clang = $this->getController()->lang;
+
         $this->getController()->_getAdminHeader();
-        $this->getController()->render($szViewUrl, $data);
+        $this->getController()->render('/admin/authentication/' . $szViewUrl, $aData);
         $this->getController()->_getAdminFooter('http://docs.limesurvey.org', $clang->gT('LimeSurvey online manual'));
     }
+
 }

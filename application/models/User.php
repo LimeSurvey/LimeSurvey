@@ -62,7 +62,7 @@ class User extends CActiveRecord
 			array('email', 'email'),
 		);
 	}
-	
+
 	/**
 	 * Returns all users
 	 *
@@ -74,13 +74,13 @@ class User extends CActiveRecord
 		$criteria = new CDbCriteria;
 
         if ($condition != FALSE)
-        {	
+        {
 		    foreach ($condition as $item => $value)
 			{
 				$criteria->addCondition($item.'='.Yii::app()->db->quoteValue($value));
 			}
         }
-		
+
 		$data = $this->findAll($criteria);
 
         return $data;
@@ -88,15 +88,15 @@ class User extends CActiveRecord
 	function parentAndUser($postuserid)
 	{
 		$user = Yii::app()->db->createCommand()
-    ->select('a.users_name, a.full_name, a.email, a.uid,  b.users_name AS parent')
-    ->limit(1)
-    ->where('a.uid = ' . $postuserid)
-    ->from("{{users}} a")
-    ->leftJoin('{{users}} AS b', 'a.parent_id = b.uid')
-    ->queryRow();
+        ->select('a.users_name, a.full_name, a.email, a.uid,  b.users_name AS parent')
+        ->limit(1)
+        ->where('a.uid = ' . $postuserid)
+        ->from("{{users}} a")
+        ->leftJoin('{{users}} AS b', 'a.parent_id = b.uid')
+        ->queryRow();
 		return $user;
 	}
-	
+
 	/**
 	 * Returns users meeting given condition
 	 *
@@ -114,16 +114,16 @@ class User extends CActiveRecord
 		}
 
         if ($condition != FALSE)
-        {	
+        {
 		    foreach ($condition as $item => $value)
 			{
 				$criteria->addCondition($item.'='.Yii::app()->db->quoteValue($value));
 			}
         }
-		
+
 		return $record->findAll($criteria);
     }
-	
+
 	/**
 	 * Returns onetime password
 	 *
@@ -138,7 +138,7 @@ class User extends CActiveRecord
 
         return $data;
     }
-	
+
 	/**
 	 * Deletes onetime password
 	 *
@@ -153,7 +153,7 @@ class User extends CActiveRecord
         $this->db->where('users_name',$user);
         $this->db->update('users',$data);
     }
-	
+
 	/**
 	 * Creates new user
 	 *
@@ -163,7 +163,7 @@ class User extends CActiveRecord
     public function insert($new_user, $new_pass,$new_full_name,$parent_user,$new_email)
     {
     	   	$tablename = $this->tableName();
-    	 $data=array('users_name' => $new_user, 'password' => hash('sha256', $new_pass),'full_name' => $new_full_name,'parent_id' => $parent_user,'lang' => 'auto','email' => $new_email); 	
+    	 $data=array('users_name' => $new_user, 'password' => hash('sha256', $new_pass),'full_name' => $new_full_name,'parent_id' => $parent_user,'lang' => 'auto','email' => $new_email);
 		return Yii::app()->db->createCommand()->insert('{{users}}', $data);
     }
 	    function delete($where)
@@ -172,33 +172,7 @@ class User extends CActiveRecord
         //$this->db->where($where);
         return (bool) $dd;//$this->db->delete('users');
     }
-	/**
-	 * Updates user
-	 *
-	 * @access public
-	 * @return string
-	 */
-    public function update($uid,$data)
-    {
-        $this->db->where(array("uid"=>$uid));
-        return $this->db->update('users',$data);
-    }
-	
-	/**
-	 * Updates user language
-	 *
-	 * @access public
-	 * @return string
-	 */
-    public function updateLang($uid,$postloginlang)
-    {
-        $data = array(
-        'lang' => $postloginlang
-        );
-        $this->db->where(array("uid"=>$uid));
-        $this->db->update('users',$data);
-    }
-		
+
 	/**
 	 * Returns user share settings
 	 *
@@ -211,7 +185,7 @@ class User extends CActiveRecord
         $result= $this->db->get('users');
         return $result->row();
     }
-    	
+
 	/**
 	 * Returns full name of user
 	 *
@@ -225,7 +199,7 @@ class User extends CActiveRecord
 	 public function getuidfromparentid($parentid)
     {
         return Yii::app()->db->createCommand()->select('uid')->from('{{users}}')->where('parent_id=' . $parentid)->queryRow();
-    }	
+    }
 	/**
 	 * Returns id of user
 	 *
@@ -240,7 +214,7 @@ class User extends CActiveRecord
         $result = $this->db->get();
         return $result->row();
     }
-		
+
 	/**
 	 * Updates user password
 	 *
@@ -255,7 +229,7 @@ class User extends CActiveRecord
          $this->updateByPk($uid, $data);
 
     }
-		
+
 	/**
 	 * Adds user record
 	 *
@@ -274,7 +248,7 @@ class User extends CActiveRecord
     * @access public
     * @return CDbDataReader Object
     */
-    public function getCommonUID()
+    public function getCommonUID($surveyid, $postusergroupid)
     {
         $query2 = "SELECT b.uid FROM (SELECT uid FROM {{survey_permissions}} WHERE sid = {$surveyid}) AS c RIGHT JOIN {{user_in_groups}} AS b ON b.uid = c.uid WHERE c.uid IS NULL AND b.ugid = {$postusergroupid}";
         return Yii::app()->db->createCommand($query2)->query(); //Checked
