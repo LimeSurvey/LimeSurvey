@@ -4976,9 +4976,7 @@ function CSVUnquote($field)
 function incompleteAnsFilterstate()
 {
     global $filterout_incomplete_answers;
-    $letsfilter='';
-    $letsfilter = returnglobal('filterinc'); //read get/post filterinc
-
+    $letsfilter = CHttpRequest::getParam('filterinc'); //read get/post filterinc
 
     // first let's initialize the incompleteanswers session variable
     if ($letsfilter != '')
