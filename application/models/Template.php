@@ -16,7 +16,7 @@ if (!defined('BASEPATH'))
  * 	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
  */
 
-class Templates_rights extends CActiveRecord
+class Template extends CActiveRecord
 {
     /**
      * Returns the static object for this model
@@ -37,7 +37,7 @@ class Templates_rights extends CActiveRecord
      */
     public function tableName()
     {
-        return '{{templates_rights}}';
+        return '{{templates}}';
     }
 
     /**
@@ -48,6 +48,6 @@ class Templates_rights extends CActiveRecord
      */
     public function primaryKey()
     {
-        return 'uid';
+        return 'folder';
     }
 }

@@ -279,25 +279,26 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 }
 
 /**
-* isStandardTemplate returns true if a template is a standard template
-* This function does not check if a template actually exists
-*
-* @param mixed $sTemplateName template name to look for
-* @return bool True if standard template, otherwise false
-*/
+ * Returns true if a template is a standard template
+ * This function does not check if a template actually exists
+ *
+ * @param string $sTemplateName template name to look for
+ * @return bool True if standard template, otherwise false
+ */
 function isStandardTemplate($sTemplateName)
 {
-    return in_array($sTemplateName,array('basic',
-    'bluengrey',
-    'business_grey',
-    'citronade',
-    'clear_logo',
-    'default',
-    'eirenicon',
-    'limespired',
-    'mint_idea',
-    'sherpa',
-    'vallendar'));
+    return in_array($sTemplateName, array('basic',
+        'bluengrey',
+        'business_grey',
+        'citronade',
+        'clear_logo',
+        'default',
+        'eirenicon',
+        'limespired',
+        'mint_idea',
+        'sherpa',
+        'vallendar'
+    ));
 }
 
 /**
@@ -1304,7 +1305,7 @@ function getgrouplistlang($gid, $language,$surveyid)
 
     $groupselecter="";
     if (!$surveyid) {$surveyid=returnglobal('sid');}
-    
+
     $gidresult = Groups::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $language));   //Checked)
     foreach ($gidresult as $gv)
     {
