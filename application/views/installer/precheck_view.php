@@ -67,14 +67,9 @@ function dirReport($dir, $write, $clang)
        <td align="center" style="width: 225px;"><?php echo $mbstringPresent; ?></td>
 </tr>
 <tr>
-       <td style="width: 209px;">/application/config/config.php <?php echo $clang->gT("file"); ?></td>
+       <td style="width: 209px;">/application/config <?php echo $clang->gT("directory"); ?></td>
        <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & writable"); ?></td>
        <td align="center" style="width: 225px;"><?php  echo dirReport($configPresent,$configWritable,$clang); ?></td>
-</tr>
-<tr>
-       <td style="width: 209px;">/tmp <?php echo $clang->gT("directory"); ?></td>
-       <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & writable"); ?></td>
-       <td align="center" style="width: 225px;"><?php  echo dirReport($tmpdirPresent,$tmpdirWritable,$clang); ?></td>
 </tr>
 <tr>
        <td style="width: 209px;">/upload <?php echo $clang->gT("directory"); ?></td>
