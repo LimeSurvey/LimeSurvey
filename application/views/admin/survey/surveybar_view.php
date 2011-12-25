@@ -120,13 +120,13 @@
                             <?php } ?>
                         <ul>
                             <?php if($surveyexport) { ?>
-                                <li><a href='<?php echo $this->createUrl("admin/export/sa/exportstructurexml/surveyid/$surveyid");?>' >
+                                <li><a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructurexml/surveyid/$surveyid");?>' >
                                     <img src='<?php echo $imageurl;?>/export_30.png' alt='' width="30" height="30"/> <?php $clang->eT("Survey structure (.lss)");?></a>
                                 </li>
                                 <?php } ?>
                             <?php if($respstatsread && $surveyexport) {
                                     if ($activated){?>
-                                    <li><a href='<?php echo $this->createUrl("admin/export/sa/exportarchive/surveyid/$surveyid");?>' >
+                                    <li><a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportarchive/surveyid/$surveyid");?>' >
                                         <img src='<?php echo $imageurl;?>/export_30.png' alt='' width="30" height="30"/> <?php $clang->eT("Survey archive (.zip)");?></a></li>
                                     <?php }
                                     else
@@ -136,7 +136,7 @@
                                     }
                             }?>
                             <?php if($surveyexport) { ?>
-                                <li><a href='<?php echo $this->createUrl("admin/export/sa/exportstructurequexml/surveyid/$surveyid");?>' >
+                                <li><a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructurequexml/surveyid/$surveyid");?>' >
                                     <img src='<?php echo $imageurl;?>/export_30.png' alt='' width="30" height="30"/> <?php $clang->eT("queXML format (*.xml)");?></a>
                                 </li>
                                 <?php } ?>
