@@ -290,12 +290,12 @@ class question extends Survey_Common_Action
         $surveyid = sanitize_int($surveyid);
         $qid = sanitize_int($qid);
         $gid = sanitize_int($gid);
-        $this->getController()->_js_admin_includes(base_url() . 'scripts/jquery/jquery.dd.js');
-        $this->getController()->_js_admin_includes(base_url() . 'scripts/admin/answers.js');
-        $this->getController()->_js_admin_includes(base_url() . 'scripts/jquery/jquery.blockUI.js');
-        $this->getController()->_js_admin_includes(base_url() . 'scripts/jquery/jquery.selectboxes.min.js');
+        $this->getController()->_js_admin_includes(Yii::app()->baseUrl .'/scripts/jquery/jquery.dd.js');
+        $this->getController()->_js_admin_includes(Yii::app()->baseUrl .'/scripts/admin/answers.js');
+        $this->getController()->_js_admin_includes(Yii::app()->baseUrl .'/scripts/jquery/jquery.blockUI.js');
+        $this->getController()->_js_admin_includes(Yii::app()->baseUrl .'/scripts/jquery/jquery.selectboxes.min.js');
 
-        $css_admin_includes[] = base_url() . 'scripts/jquery/dd.css';
+        $css_admin_includes[] = Yii::app()->baseUrl . 'scripts/jquery/dd.css';
 
         $css_admin_includes[] = Yii::app()->getConfig('styleurl') . "admin/default/superfish.css";
         Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
@@ -327,6 +327,7 @@ class question extends Survey_Common_Action
      */
     public function _editansweroptions($surveyid, $gid, $qid)
     {
+        Yii::app()->loadHelper('database');
         $surveyid = sanitize_int($surveyid);
         $qid = sanitize_int($qid);
         $gid = sanitize_int($gid);
@@ -348,9 +349,11 @@ class question extends Survey_Common_Action
         // Check if there is at least one answer
         for ($i = 0; $i < $scalecount; $i++)
         {
-            $qresult = Answers::model()->count(array('qid' => $qid, 'scale_id' => $i, 'language' => $baselang));
+            $ans = new CDbCriteria;
+            $ans->addCondition("qid=$qid")->addCondition("scale_id=$i")->addCondition("language='$baselang'");
+            $qresult = Answers::model()->count($ans);
 
-            if (empty($qresult))
+            if ((int)$qresult=0)
                 Answers::model()->insert(array(
                     'qid' => $qid,
                     'code' => 'A1',
@@ -367,7 +370,9 @@ class question extends Survey_Common_Action
         {
             foreach ($anslangs as $language)
             {
-                $iAnswerCount = Answers::model()->count(array('qid' => $qid, 'scale_id' => $i, 'language' => $language));
+                $ans = new CDbCriteria;
+                $ans->addCondition("qid=$qid")->addCondition("scale_id=$i")->addCondition("language='$language'");
+                $iAnswerCount = Answers::model()->count($ans);
 
                 // Means that no record for the language exists in the answers table
                 if (empty($iAnswerCount))
@@ -400,7 +405,9 @@ class question extends Survey_Common_Action
         if (!isset($_POST['ansaction']))
         {
             // Check if any nulls exist. If they do, redo the sortorders
-            $cacount = Answers::model()->count(array('qid' => $qid, 'sortorder' => null, 'language' => $baselang));
+            $ans = new CDbCriteria;
+            $ans->addCondition("qid=$qid")->addCondition("scale_id=$i")->addCondition("language='$baselang'");
+            $cacount = Answers::model()->count($ans);
             if (!empty($cacount))
                 Answers::updateSortOrder($qid, GetBaseLanguageFromSurveyID($surveyid));
         }
@@ -417,7 +424,7 @@ class question extends Survey_Common_Action
         else
             $maxsortorder = 1;
 
-        $data['clang'] = $this->limesurvey_lang;
+        $data['clang'] = $this->getController()->lang;
         $data['surveyid'] = $surveyid;
         $data['gid'] = $gid;
         $data['qid'] = $qid;
@@ -425,7 +432,7 @@ class question extends Survey_Common_Action
         $data['scalecount'] = $scalecount;
 
         // The following line decides if the assessment input fields are visible or not
-        $sumresult1 = Survey::model()->with('languagesettings')->together()->findByAttributes(array('t.sid' => $surveyid));
+        $sumresult1 = Survey::model()->with('languagesettings')->together()->findByAttributes(array('sid' => $surveyid));
         if (is_null($sumresult1))
             $this->getController()->error('Invalid survey ID');
 
@@ -434,7 +441,7 @@ class question extends Survey_Common_Action
         $surveyinfo = array_map('FlattenText', $surveyinfo);
         $assessmentvisible = ($surveyinfo['assessments'] == 'Y' && $qtypes[$qtype]['assessable'] == 1);
         $data['assessmentvisible'] = $assessmentvisible;
-        $this->getController()->render('admin/survey/Question/answerOptions_view', $data);
+        $this->getController()->render('/admin/survey/Question/answerOptions_view', $data);
     }
 
     /**

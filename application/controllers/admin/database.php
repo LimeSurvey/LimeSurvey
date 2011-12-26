@@ -83,6 +83,7 @@ class database extends Survey_Common_Action
     function _updateDefaultValuesLanguage($surveyid, $gid, $qid)
     {
         $clang = Yii::app()->lang;
+        $databaseoutput['clang']=$clang;
         $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
         array_unshift($questlangs, $baselang);
@@ -141,7 +142,7 @@ class database extends Survey_Common_Action
         $this->session->set_userdata('flashmessage', $clang->gT("Default value settings were successfully saved."));
 
         if ($databaseoutput != '') {
-            $this->getController()->render('/admin/database_view', $databaseoutput);
+            $this->getController()->render('/admin/database/database_view', $databaseoutput);
         }
         else
         {
@@ -153,14 +154,16 @@ class database extends Survey_Common_Action
     {
         Yii::app()->loadHelper('database');
         $clang = Yii::app()->lang;
-
+        $databaseoutput['clang']=$clang;
+        
         $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
 
         $alllanguages = $anslangs;
         array_unshift($alllanguages, $baselang);
 
-        $resrow = Questions::model()->getSomeRecords(array('type'), array('qid' => $qid));
+        $criteria = new CDbCriteria;
+        $resrow = Questions::model()->getSomeRecords('type', "qid={$qid}")->read();
         $questiontype = $resrow['type']; //$connect->GetOne($query);    // Checked)
         $qtypes = getqtypelist('', 'array');
         $scalecount = $qtypes[$questiontype]['answerscales'];
@@ -172,7 +175,7 @@ class database extends Survey_Common_Action
         //$myFilter = new InputFilter('','',1,1,1);
 
         //First delete all answers
-        Answers::model()->delete(array($qid));
+        Answers::model()->deleteAll("qid={$qid}");
 
         for ($scale_id = 0; $scale_id < $scalecount; $scale_id++)
         {
@@ -192,14 +195,14 @@ class database extends Survey_Common_Action
                 foreach ($alllanguages as $language)
                 {
                     $answer = $_POST['answer_' . $language . '_' . $sortorderid . '_' . $scale_id];
-                    if (Yii::app()->getConfig('filterxsshtml')) {
+                    /*if (Yii::app()->getConfig('filterxsshtml')) {
                         //Sanitize input, strip XSS
                         $answer = $this->security->xss_clean($answer);
                     }
                     else
-                    {
+                    {*/
                         $answer = html_entity_decode($answer, ENT_QUOTES, "UTF-8");
-                    }
+                    //}
                     // Fix bug with FCKEditor saving strange BR types
                     $answer = fix_FCKeditor_text($answer);
 
@@ -210,7 +213,7 @@ class database extends Survey_Common_Action
 
                 } // foreach ($alllanguages as $language)
 
-                if ($code !== $oldcode) {
+                if (isset($oldcode) && $code !== $oldcode) {
                     Conditions::model()->update(array('value' => $code), array('cqid' => $qid, 'value' => $oldcode));
                 }
 
@@ -220,10 +223,10 @@ class database extends Survey_Common_Action
         $databaseoutput['invalidCode'] = $invalidCode;
         $databaseoutput['duplicateCode'] = $duplicateCode;
 
-        $this->session->set_userdata('flashmessage', $clang->gT("Answer options were successfully saved."));
+        $_SESSION['flashmessage'] = $clang->gT("Answer options were successfully saved.");
 
         if ($databaseoutput != '') {
-            $this->getController()->render('/admin/database_view', $databaseoutput);
+            $this->getController()->render('/admin/database/database_view', $databaseoutput);
         }
         else
         {
@@ -343,7 +346,7 @@ class database extends Survey_Common_Action
         //$action='editsubquestions';
 
         if ($databaseoutput != '') {
-            $this->getController()->render('/admin/database_view', $databaseoutput);
+            $this->getController()->render('/admin/database/database_view', $databaseoutput);
         }
         else
         {
@@ -358,7 +361,7 @@ class database extends Survey_Common_Action
         $strlen = $_POST['title'];
         if ($strlen < 1) {
             $databaseoutput ['strlen'] = $strlen;
-            $this->getController()->render('/admin/database_view', $databaseoutput);
+            $this->getController()->render('/admin/database/database_view', $databaseoutput);
         }
         else
         {
@@ -456,7 +459,7 @@ class database extends Survey_Common_Action
                         $result2 = $connect->Execute($query);  // Checked */
                         if (!$result2) {
                             $databaseoutput['result2'] = $result2;
-                            $this->getController()->render('/admin/database_view', $databaseoutput);
+                            $this->getController()->render('/admin/database/database_view', $databaseoutput);
 
                         }
                     }
@@ -464,7 +467,7 @@ class database extends Survey_Common_Action
             }
             if (!$result) {
                 $databaseoutput['result3'] = $result;
-                $this->getController()->render('/admin/database_view', $databaseoutput);
+                $this->getController()->render('/admin/database/database_view', $databaseoutput);
 
             } else {
                 if ($action == 'copyquestion') {
@@ -539,7 +542,7 @@ class database extends Survey_Common_Action
         }
 
         if ($databaseoutput != '') {
-            $this->getController()->render('/admin/database_view', $databaseoutput);
+            $this->getController()->render('/admin/database/database_view', $databaseoutput);
         }
         else
         {
@@ -797,7 +800,7 @@ class database extends Survey_Common_Action
         }
 
         if ($databaseoutput != '') {
-            $this->getController()->render('/admin/database_view', $databaseoutput);
+            $this->getController()->render('/admin/database/database_view', $databaseoutput);
         }
         else
         {
@@ -875,7 +878,7 @@ class database extends Survey_Common_Action
         Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("Survey text elements successfully saved.");
 
         //        if ($databaseoutput != '') {
-        //            $this->getController()->render('/admin/database_view', $databaseoutput);
+        //            $this->getController()->render('/admin/database/database_view', $databaseoutput);
         //        }
         //        else
         //        {
@@ -1057,7 +1060,7 @@ class database extends Survey_Common_Action
             $databaseoutput = $usresult;
         }
         if ($databaseoutput != '') {
-            $this->getController()->render('/admin/database_view', $databaseoutput);
+            $this->getController()->render('/admin/database/database_view', $databaseoutput);
         }
         else
         {

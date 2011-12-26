@@ -1,4 +1,4 @@
-<?php echo PrepareEditorScript($this->getController()); ?>
+<?php echo PrepareEditorScript(true, $this); ?>
 <div class='header ui-widget-header'>
         <?php echo $clang->gT("Edit answer options"); ?>
 </div>
@@ -22,7 +22,7 @@
     var sAssessmentValue='<?php echo $clang->gT('Assessment value','js'); ?>';
     var duplicateanswercode='<?php echo $clang->gT('Error: You are trying to use duplicate answer codes.','js'); ?>';
     var langs='<?php echo implode(';',$anslangs); ?>';
-    var ci_path="<?php echo $this->config->item('imageurl'); ?>";
+    var ci_path="<?php echo Yii::app()->getConfig('imageurl'); ?>";
 </script>
 <div id='tabs'>
 <ul>
@@ -68,11 +68,11 @@
                 <tbody align='center'>
                 <?php $alternate=true;
 
-                $query = "SELECT * FROM ".$this->db->dbprefix."answers WHERE qid='{$qid}' AND language='{$anslang}' and scale_id=$scale_id ORDER BY sortorder, code";
+                $query = "SELECT * FROM {{answers}} WHERE qid='{$qid}' AND language='{$anslang}' and scale_id=$scale_id ORDER BY sortorder, code";
                 $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg()); //Checked
-                $anscount = $result->num_rows();
+                $anscount = $result->count();
 
-                foreach ($result->result_array() as $row)
+                foreach ($result->readAll() as $row)
                 {
                     $row['code'] = htmlspecialchars($row['code']);
                     $row['answer']=htmlspecialchars($row['answer']);
@@ -87,7 +87,7 @@
 
                     <?php if ($first)
                     { ?>
-                        <img class='handle' src='<?php echo $this->config->item('imageurl'); ?>/handle.png' /></td><td><input type='hidden' class='oldcode' id='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>' name='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>' value="<?php echo $row['code']; ?>" /><input type='text' class='code' id='code_<?php echo $position; ?>_<?php echo $scale_id; ?>' name='code_<?php echo $position; ?>_<?php echo $scale_id; ?>' value="<?php echo $row['code']; ?>" maxlength='5' size='5'
+                        <img class='handle' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/handle.png' /></td><td><input type='hidden' class='oldcode' id='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>' name='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>' value="<?php echo $row['code']; ?>" /><input type='text' class='code' id='code_<?php echo $position; ?>_<?php echo $scale_id; ?>' name='code_<?php echo $position; ?>_<?php echo $scale_id; ?>' value="<?php echo $row['code']; ?>" maxlength='5' size='5'
                          onkeypress="return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')"
                          />
                     <?php }
@@ -126,8 +126,8 @@
                     <?php echo  getEditor("editanswer","answer_".$row['language']."_{$row['sortorder']}_{$scale_id}", "[".$clang->gT("Answer:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer'); ?>
 
 
-                    </td><td><img src='<?php echo $this->config->item('imageurl'); ?>/addanswer.png' class='btnaddanswer' />
-                    <img src='<?php echo $this->config->item('imageurl'); ?>/deleteanswer.png' class='btndelanswer' />
+                    </td><td><img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/addanswer.png' class='btnaddanswer' />
+                    <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/deleteanswer.png' class='btndelanswer' />
 
                     </td></tr>
                     <?php $position++;
@@ -140,7 +140,7 @@
                 <button id='btnlsbrowser_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btnlsbrowser' type='button'><?php echo $clang->gT('Predefined label sets...'); ?></button>
                 <button id='btnquickadd_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btnquickadd' type='button'><?php echo $clang->gT('Quick add...'); ?></button>
 
-                <?php if($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1 || $this->session->userdata('USER_RIGHT_MANAGE_LABEL') == 1){ ?>
+                <?php if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1){ ?>
                     <button class='bthsaveaslabel' id='bthsaveaslabel_<?php echo $scale_id; ?>' type='button'><?php echo $clang->gT('Save as label set'); ?></button>
 
                     <?php }
