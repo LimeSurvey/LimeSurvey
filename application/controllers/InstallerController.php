@@ -17,7 +17,6 @@
 * Installer
 *
 * @todo Output code belongs into view
-* @todo Make it write the config.php file
 *
 * @package LimeSurvey
 * @author Shubham Sachdeva
@@ -107,7 +106,7 @@ class InstallerController extends CController {
     */
     function _checkInstallation()
     {
-        if (file_exists(APPPATH . 'config/config.php'))
+        if (file_exists(APPPATH . 'config/config.php') && empty($_POST['InstallerConfigForm']))
         {
 			throw new CHttpException(500, 'Installation has been done already. Installer disabled.');
             exit();
@@ -848,17 +847,14 @@ class InstallerController extends CController {
     }
 
     /**
-    * Installer::_writeConfigFile()
-    * Function to write given database settings in APPPATH.'application/config/config.php'
-    * @return
+    * Function to write given database settings in APPPATH.'config/config.php'
     */
     function _writeConfigFile()
     {
         $aData['clang'] = $clang = $this->lang;
-        //write database.php if database exists and has been populated.
+        //write config.php if database exists and has been populated.
         if (Yii::app()->session['databaseexist'] && Yii::app()->session['tablesexist'])
         {
-            //write variables in database.php
             $this->loadHelper('file');
 
 			extract(self::_getDatabaseConfig());
@@ -867,11 +863,11 @@ class InstallerController extends CController {
             // mod_rewrite existence check
             if ((function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())) || strtolower(getenv('HTTP_MOD_REWRITE')) == 'on')
             {
-                $showScriptName = "\t\t\t" . "'showScriptName' => false," . "\n";
+                $showScriptName = 'false';
             }
             else
             {
-                $showScriptName = "\t\t\t" . "'showScriptName' => true," . "\n";
+                $showScriptName = 'true';
             }
 
             $dbdata = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');" . "\n"
@@ -939,7 +935,7 @@ class InstallerController extends CController {
 			."\t\t"   . "'urlManager' => array("                    . "\n"
 			."\t\t\t" . "'urlFormat' => 'path',"                    . "\n"
 			."\t\t\t" . "'rules' => require('routes.php'),"         . "\n"
-			.           $showScriptName
+            ."\t\t\t" . "'showScriptName' => $showScriptName,"      . "\n"
 			."\t\t"   . "),"                                        . "\n"
 			."\t"     . ""                                          . "\n"
 
