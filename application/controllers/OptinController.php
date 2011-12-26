@@ -24,7 +24,7 @@
  */
 class OptinController extends LSYii_Controller {
 
-    function actionLocal($langcode, $surveyid, $token)
+    function actionLocal($surveyid, $token, $langcode = '')
     {
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
@@ -34,7 +34,7 @@ class OptinController extends LSYii_Controller {
         $sToken = sanitize_token($sToken);
 
         if (!$iSurveyID)
-        {            
+        {
             $this->redirect($this->getController()->createUrl('/'));
         }
         $iSurveyID = (int)$iSurveyID;
@@ -58,7 +58,7 @@ class OptinController extends LSYii_Controller {
         Yii::app()->lang = $clang;
 
         $thissurvey=getSurveyInfo($iSurveyID,$baselang);
-        
+
         if ($thissurvey == false || Yii::app()->db->schema->getTable("{{tokens_{$iSurveyID}}}") == null)
         {
             $html = $clang->gT('This survey does not seem to exist.');

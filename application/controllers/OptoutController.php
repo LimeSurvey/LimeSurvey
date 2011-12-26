@@ -23,7 +23,7 @@
  */
 class OptoutController extends LSYii_Controller {
 
-    function actionLocal($langcode, $surveyid, $token)
+    function actionLocal($surveyid, $token, $langcode = '')
     {
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
@@ -33,7 +33,7 @@ class OptoutController extends LSYii_Controller {
         $sToken = sanitize_token($sToken);
 
         if (!$iSurveyID)
-        {        
+        {
             $this->redirect($this->getController()->createUrl('/'));
         }
         $iSurveyID = (int)$iSurveyID;
@@ -80,7 +80,7 @@ class OptoutController extends LSYii_Controller {
                 {
                     $html = $clang->gT('You have been already removed from this survey.');
                 }
-            }            
+            }
         }
 
         //PRINT COMPLETED PAGE
