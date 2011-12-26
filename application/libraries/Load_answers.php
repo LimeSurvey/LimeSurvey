@@ -16,9 +16,6 @@ class Load_answers {
 	
 	function run($args) {	
 		extract($args);
-		$CI =& get_instance();
-		$_POST = $CI->input->post();
-		
 
 		if (!isset($thistpl)) {die ("Error!");}
 		sendcacheheaders();
@@ -34,7 +31,7 @@ class Load_answers {
 		."\t}\n"
 		."\t</script>\n\n";
 		
-		echo "<form method='post' action='$relativeurl/index.php'>\n";
+		echo "<form method='post' action='".Yii::app()->createUrl("survey")."'>\n";
 		foreach(file("$thistpl/load.pstpl") as $op)
 		{
 		    echo templatereplace($op);

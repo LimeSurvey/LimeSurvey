@@ -35,17 +35,17 @@
         </div>
         <ul class='sf-menu'>
             <?php if($onelanguage) { ?>
-                <li><a href='#' accesskey='d' onclick="window.open('<?php echo $this->createUrl("survey/sa/newtest/surveyid/$surveyid/newtest/Y/lang/$baselang");?>', '_blank')" title="<?php echo $icontext2;?>" >
+                <li><a href='#' accesskey='d' onclick="window.open('<?php echo $this->createUrl("survey/index/surveyid/$surveyid/newtest/Y/lang/$baselang");?>', '_blank')" title="<?php echo $icontext2;?>" >
                         <img src='<?php echo $imageurl;?>/do.png' alt='<?php echo $icontext;?>' />
                     </a></li>
                 <?php } else { ?>
                 <li><a href='#' title='<?php echo $icontext2;?>' accesskey='d'>
                         <img src='<?php echo $imageurl;?>/do.png' alt='<?php echo $icontext;?>' />
                     </a><ul>
-                        <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("survey/sa/newtest/surveyid/$surveyid/newtest/Y"); ?>'>
+                        <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("survey/index/surveyid/$surveyid/newtest/Y"); ?>'>
                             <img src='<?php echo $imageurl;?>/do_30.png' alt=''/> <?php echo $icontext;?> </a><ul>
                                 <?php foreach ($languagelist as $tmp_lang) { ?>
-                                    <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("survey/sa/newtest/surveyid/$surveyid/newtest/Y/lang/$tmp_lang");?>'>
+                                    <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("survey/index/surveyid/$surveyid/newtest/Y/lang/$tmp_lang");?>'>
                                         <img src='<?php echo $imageurl;?>/do_30.png' alt=''/> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
                                     <?php } ?>
                             </ul></li>

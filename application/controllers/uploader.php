@@ -14,35 +14,21 @@
  *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
  */
 
-class uploader extends LSCI_Controller {
-
-	function __construct()
-	{
-		parent::__construct();
-	}
+class Uploader extends CAction {
 	
-	public function _remap($method, $params = array())
+    public function run()
 	{
-		array_unshift($params, $method);
-	    return call_user_func_array(array($this, "action"), $params);
-	}
+        $this->action();
+    }
 
 	function action()
 	{
-		//Replace $param:
-		$arg_list = func_get_args();
-		if($arg_list[0]==__CLASS__) array_shift($arg_list);
-		if(count($arg_list)%2 == 0) {
-		    for ($i = 0; $i < count($arg_list); $i+=2) {
-		        //echo $arg_list[$i]."=" . $arg_list[$i+1] . "<br />\n";
-				$param[$arg_list[$i]] = returnglobal($arg_list[$i], $arg_list[$i+1]);
-		    }
-		}
+
+		$uploaddir = Yii::app()->getConfig("uploaddir");
+		$tempdir = Yii::app()->getConfig("tempdir");
 		
-		$uploaddir = $this->config->item("uploaddir");
-		$tempdir = $this->config->item("tempdir");
-		
-		$this->load->helper("database");
+		Yii::app()->loadHelper("database");
+        $param = $_REQUEST;
 	
 		if (isset($param['filegetcontents']))
 		{
@@ -60,7 +46,7 @@ class uploader extends LSCI_Controller {
 			
 		if (!isset($surveyid))
 		{
-		    $surveyid=sanitize_int($param['sid']);
+		    $surveyid=sanitize_int(@$param['sid']);
 		}
 		else
 		{
@@ -72,11 +58,11 @@ class uploader extends LSCI_Controller {
 		// Session name is based:
 		// * on this specific limesurvey installation (Value SessionName in DB)
 		// * on the surveyid (from Get or Post param). If no surveyid is given we are on the public surveys portal
-		$usquery = "SELECT stg_value FROM ".$this->db->dbprefix("settings_global")." where stg_name='SessionName'";
+		$usquery = "SELECT stg_value FROM {{settings_global}} where stg_name='SessionName'";
 		$usresult = db_execute_assoc($usquery,'',true);          //Checked
 		if ($usresult)
 		{
-		    $usrow = $usresult->row_array();
+		    $usrow = $usresult->read();
 		    $stg_SessionName=$usrow['stg_value'];
 		    if ($surveyid)
 		    {
@@ -101,16 +87,14 @@ class uploader extends LSCI_Controller {
 		//session_set_cookie_params(0,$relativeurl.'/');
 		//@session_start();
 		
-		if (!$this->session->userdata('fieldname'))
+		if (!@Yii::app()->session['fieldname'])
 		{
 		    die("You don't have a valid session !");
 		}
 		
 		if(isset($param['mode']) && $param['mode'] == "upload")
 		{
-		    $baselang = GetBaseLanguageFromSurveyID($surveyid);
-		    $this->load->library('Limesurvey_lang',array("langcode"=>$baselang));
-			$clang = $this->limesurvey_lang;
+			$clang = Yii::app()->lang;
 		
 		    $randfilename = 'futmp_'.sRandomChars(15);
 		    $sTempUploadDir = $tempdir.'/uploads/';
@@ -177,7 +161,7 @@ class uploader extends LSCI_Controller {
 		    else
 		    {    // if everything went fine and the file was uploaded successfuly,
 		         // send the file related info back to the client
-		         $iFileUploadTotalSpaceMB = $this->config->item("iFileUploadTotalSpaceMB");
+		         $iFileUploadTotalSpaceMB = Yii::app()->getConfig("iFileUploadTotalSpaceMB");
 		        if ($size > $maxfilesize)
 		        {
 		            $return = array(
@@ -246,19 +230,17 @@ class uploader extends LSCI_Controller {
 		}
 		
 		$meta = '<script type="text/javascript">
-		    var uploadurl = "'.site_url('uploader/mode/upload/').'";
+		    var uploadurl = "'.$this->getController()->createUrl('uploader/mode/upload/').'";
 		    var surveyid = "'.$surveyid.'";
 		    var fieldname = "'.$param['fieldname'].'";
 		    var questgrppreview  = '.$param['preview'].';
 		</script>';
 		
-		$meta .='<script type="text/javascript" src="'.$this->config->item("generalscripts").'/ajaxupload.js"></script>
-		<script type="text/javascript" src="'.$this->config->item("generalscripts").'/uploader.js"></script>
-		<link type="text/css" href="'.$this->config->item("generalscripts").'/uploader.css" rel="stylesheet" />';
+		$meta .='<script type="text/javascript" src="'.Yii::app()->getConfig("generalscripts").'/ajaxupload.js"></script>
+		<script type="text/javascript" src="'.Yii::app()->getConfig("generalscripts").'/uploader.js"></script>
+		<link type="text/css" href="'.Yii::app()->getConfig("generalscripts").'/uploader.css" rel="stylesheet" />';
 		
-		$baselang = GetBaseLanguageFromSurveyID($surveyid);
-	    $this->load->library('Limesurvey_lang',array("langcode"=>$baselang));
-		$clang = $this->limesurvey_lang;
+		$clang = Yii::app()->lang;
 					
 		$header = getHeader($meta);
 		
@@ -291,7 +273,7 @@ class uploader extends LSCI_Controller {
 		        <input type="hidden" id="'.$fn.'_maxfiles"          value="'.$qidattributes['max_num_of_files'].'" />
 		        <input type="hidden" id="'.$fn.'_maxfilesize"       value="'.$qidattributes['max_filesize'].'" />
 		        <input type="hidden" id="'.$fn.'_allowed_filetypes" value="'.$qidattributes['allowed_filetypes'].'" />
-		        <input type="hidden" id="preview"                   value="'.$this->session->userdata('preview').'" />
+		        <input type="hidden" id="preview"                   value="'.Yii::app()->session['preview'].'" />
 		        <input type="hidden" id="'.$fn.'_show_comment"      value="'.$qidattributes['show_comment'].'" />
 		        <input type="hidden" id="'.$fn.'_show_title"        value="'.$qidattributes['show_title'].'" />
 		        <input type="hidden" id="'.$fn.'_licount"           value="0" />

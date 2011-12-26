@@ -20,12 +20,8 @@ class Question_format {
 		global $surveyid, $thissurvey, $totalquestions, $token;
 
 		extract($args);
-		$CI =& get_instance();
-		//$_SESSION = $CI->session->userdata;
-		$dbprefix = $CI->db->dbprefix;
-		$publicurl = base_url();
-		$_POST = $CI->input->post();
-		$allowmandbackwards = $CI->config->item("allowmandbackwards");
+		
+		$allowmandbackwards = Yii::app()->getConfig("allowmandbackwards");
 
 
 		//Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
@@ -265,7 +261,7 @@ class Question_format {
 		        {
 		            // ClearAll link is only relevant for survey with printanswers enabled
 		            // in other cases the session is cleared at submit time
-		            $completed .= "<a href='{$publicurl}/index.php?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
+		            $completed .= "<a href='".Yii::app()->createUrl("survey/sid/{$surveyid}/move/clearall")."'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
 		        }
 
 		    }
@@ -312,7 +308,7 @@ class Question_format {
 		        if ($thissurvey['printanswers']=='Y')
 		        {
 		            $completed .= "<br /><br />"
-		            ."<a class='printlink' href='".site_url('printanswers/view/'.$surveyid)."' target='_blank'>"
+		            ."<a class='printlink' href='".Yii::app()->createUrl('printanswers/view/'.$surveyid)."' target='_blank'>"
 		            .$clang->gT("Click here to print your answers.")
 		            ."</a><br />\n";
 		        }
@@ -402,7 +398,7 @@ class Question_format {
 
 
 		//require_once("qanda.php");
-		$CI->load->helper("qanda");
+		Yii::app()->loadHelper("qanda");
 		setNoAnswerMode($thissurvey);
         // TMSW Conditions->Relevance:  EM will handle mandatories, so these arrays not needed
 		$mandatorys=array();
@@ -485,7 +481,7 @@ class Question_format {
 		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'Question_format[477]');
 
 
-		echo "\n<form method='post' action='".site_url("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
+		echo "\n<form method='post' action='".Yii::app()->createUrl("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
         echo sDefaultSubmitHandler();
 
         $redata = compact(array_keys(get_defined_vars()));

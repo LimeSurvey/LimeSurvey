@@ -19,16 +19,11 @@ class Group_format {
 
 		global $surveyid, $thissurvey, $totalquestions, $token;
 
-
-
 		extract($args);
-		$CI =& get_instance();
-        $CI->load->helper('frontend');
-		$dbprefix = $CI->db->dbprefix;
-        $publicurl = $CI->config->item('publicurl');
+        Yii::app()->loadHelper('frontend');
+        $publicurl = Yii::app()->getConfig('publicurl');
 
-		$_POST = $CI->input->post();
-		$allowmandbackwards = $CI->config->item("allowmandbackwards");
+		$allowmandbackwards = Yii::app()->getConfig("allowmandbackwards");
 
 
 		//Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
@@ -211,7 +206,7 @@ class Group_format {
 		            {
 		                // ClearAll link is only relevant for survey with printanswers enabled
 		                // in other cases the session is cleared at submit time
-		                $completed .= "<a href='{$publicurl}/index.php?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
+		                $completed .= "<a href='".Yii::app()->createUrl("survey/sid/{$surveyid}/move/clearall")."'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
 		            }
 		        }
 		        else //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
@@ -284,7 +279,7 @@ class Group_format {
 		            if ($thissurvey['printanswers']=='Y')
 		            {
 		                $completed .= "<br /><br />"
-		                ."<a class='printlink' href='".site_url('printanswers/view/'.$surveyid)."'  target='_blank'>"
+		                ."<a class='printlink' href='".Yii::app()->createUrl('printanswers/view/'.$surveyid)."'  target='_blank'>"
 		                .$clang->gT("Print your answers.")
 		                ."</a><br />\n";
 		            }
@@ -407,7 +402,7 @@ class Group_format {
 
 
 		//require_once("qanda.php"); //This should be qanda.php when finished
-		$CI->load->helper("qanda");
+		Yii::app()->loadHelper("qanda");
 		setNoAnswerMode($thissurvey);
 		//Iterate through the questions about to be displayed:
         //
@@ -520,7 +515,7 @@ class Group_format {
 		        $percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
 		    }
 		}
-		$languagechanger = makelanguagechanger();
+		$languagechanger = makelanguagechanger($baselang);
 
 		//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
 		sendcacheheaders();
@@ -541,11 +536,11 @@ class Group_format {
 		$hiddenfieldnames=implode("|", $inputnames);
 
 		if (isset($upload_file) && $upload_file)
-		    echo "<form enctype=\"multipart/form-data\" method='post' action='".site_url("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>
+		    echo "<form enctype=\"multipart/form-data\" method='post' action='".Yii::app()->createUrl("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>
 		      <!-- INPUT NAMES -->
 		      <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
 		else
-		    echo "<form method='post' action='".site_url("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>
+		    echo "<form method='post' action='".Yii::app()->createUrl("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>
 		      <!-- INPUT NAMES -->
 		      <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
         echo sDefaultSubmitHandler();
@@ -1067,19 +1062,19 @@ END;
 		        $qfbase = $surveyid."X".$gid."X".$attralist['fid'];
 		        if ($attralist['type'] == "M" || $attralist['type'] == "P")
 		        {
-		            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';";
+		            $tqquery = "SELECT type FROM {{questions}} WHERE qid='".$attralist['qid']."';";
 		            $tqresult = db_execute_assoc($tqquery); //Checked
-		            $OrigQuestion = $tqresult->row_array();
+		            $OrigQuestion = $tqresult->read();
 
 		            if($OrigQuestion['type'] == "L" || $OrigQuestion['type'] == "O")
 		            {
-		                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
+		                $qquery = "SELECT {{answers}}.code as title, {{questions}}.type, {{questions}}.other FROM {{answers}}, {{questions}} WHERE {{answers}}.qid={{questions}}.qid AND {{answers}}.qid='".$attralist['qid']."' AND {{answers}}.language='".$_SESSION['s_lang']."' order by code;";
 		            } else {
-		                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND parent_qid!=0 AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
+		                $qquery = "SELECT title, type, other FROM {{questions}} WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND parent_qid!=0 AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
 		            }
 		            $qresult = db_execute_assoc($qquery); //Checked
 		            $other=null;
-		            foreach($qresult->result_array() as $fansrows)
+		            foreach($qresult->readAll() as $fansrows)
 		            {
 		                if($fansrows['other']== "Y") $other="Y";
 		                if(strpos($array_filter_types, $fansrows['type']) === false) {} else
@@ -1150,19 +1145,19 @@ END;
 		        $qfbase = $surveyid."X".$gid."X".$attralist['fid'];
 		        if ($attralist['type'] == "M" || $attralist['type'] == "P")
 		        {
-		            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';";
+		            $tqquery = "SELECT type FROM {{questions}} WHERE qid='".$attralist['qid']."';";
 		            $tqresult = db_execute_assoc($tqquery); //Checked
-		            $OrigQuestion = $tqresult->row_array();
+		            $OrigQuestion = $tqresult->read();
 
 		            if($OrigQuestion['type'] == "L" || $OrigQuestion['type'] == "O")
 		            {
-		                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
+		                $qquery = "SELECT {{answers}}.code as title, {{questions}}.type, {{questions}}.other FROM {{answers}}, {{questions}} WHERE {{answers}}.qid={{questions}}.qid AND {{answers}}.qid='".$attralist['qid']."' AND {{answers.language}}='".$_SESSION['s_lang']."' order by code;";
 		            } else {
-		                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND parent_qid!=0 AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
+		                $qquery = "SELECT title, type, other FROM {{questions}} WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND parent_qid!=0 AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
 		            }
 		            $qresult = db_execute_assoc($qquery); //Checked
 		            $other=null;
-		            foreach($qresult->result_array() as $fansrows)
+		            foreach($qresult->readAll() as $fansrows)
 		            {
 		                if($fansrows['other']== "Y") $other="Y";
 		                if(strpos($array_filter_exclude_types, $fansrows['type']) === false) {} else

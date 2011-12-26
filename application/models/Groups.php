@@ -109,5 +109,14 @@ class Groups extends CActiveRecord
 
         return $questionIds;
     }
+    
+    function getSomeRecords($fields, $condition=null)
+    {
+        return Yii::app()->db->createCommand()
+        ->select($fields)
+        ->from(self::tableName())
+        ->where($condition)
+        ->query();
+    }
 }
 ?>

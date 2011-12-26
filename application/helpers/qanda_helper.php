@@ -66,59 +66,59 @@ function retrieveConditionInfo($ia)
 {
     //This function returns an array containing all related conditions
     //for a question - the array contains the fields from the conditions table
-    $CI =& get_instance();
-    $dbprefix = $CI->db->dbprefix;
+    
+    
 
     if ($ia[7] == "Y")
     {	//DEVELOP CONDITIONS ARRAY FOR THIS QUESTION
-        $cquery =	"SELECT {$dbprefix}conditions.qid, "
-        ."{$dbprefix}conditions.scenario, "
-        ."{$dbprefix}conditions.cqid, "
-        ."{$dbprefix}conditions.cfieldname, "
-        ."{$dbprefix}conditions.value, "
-        ."{$dbprefix}questions.type, "
-        ."{$dbprefix}questions.sid, "
-        ."{$dbprefix}questions.gid, "
-        ."{$dbprefix}conditions.method, "
+        $cquery =	"SELECT {{conditions}}.qid, "
+        ."{{conditions}}.scenario, "
+        ."{{conditions}}.cqid, "
+        ."{{conditions}}.cfieldname, "
+        ."{{conditions}}.value, "
+        ."{{questions}}.type, "
+        ."{{questions}}.sid, "
+        ."{{questions}}.gid, "
+        ."{{conditions}}.method, "
         ."questionssrc.gid as srcgid "
-        ."FROM {$dbprefix}conditions, "
-        ."{$dbprefix}questions ,"
-        ."{$dbprefix}questions as questionssrc "
-        ."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid "
-        ."AND {$dbprefix}conditions.qid=questionssrc.qid "
-        ."AND {$dbprefix}conditions.qid=$ia[0] "
-        ."AND {$dbprefix}questions.language='".$_SESSION['s_lang']."' "
-        ."AND {$dbprefix}conditions.cfieldname NOT LIKE '{%' "
-        ."ORDER BY {$dbprefix}conditions.scenario, "
-        ."{$dbprefix}conditions.cqid, "
-        ."{$dbprefix}conditions.cfieldname";
+        ."FROM {{conditions}}, "
+        ."{{questions}} ,"
+        ."{{questions}} as questionssrc "
+        ."WHERE {{conditions}}.cqid={{questions}}.qid "
+        ."AND {{conditions}}.qid=questionssrc.qid "
+        ."AND {{conditions}}.qid=$ia[0] "
+        ."AND {{questions}}.language='".$_SESSION['s_lang']."' "
+        ."AND {{conditions}}.cfieldname NOT LIKE '{%' "
+        ."ORDER BY {{conditions}}.scenario, "
+        ."{{conditions}}.cqid, "
+        ."{{conditions}}.cfieldname";
         $cresult = db_execute_assoc($cquery) or safe_die ("OOPS<br />$cquery<br />".$connect->ErrorMsg());     //Checked
 
-        $cquerytoken =	"SELECT {$dbprefix}conditions.qid, "
-        ."{$dbprefix}conditions.scenario, "
-        ."{$dbprefix}conditions.cqid, "
-        ."{$dbprefix}conditions.cfieldname, "
-        ."{$dbprefix}conditions.value, "
+        $cquerytoken =	"SELECT {{conditions}}.qid, "
+        ."{{conditions}}.scenario, "
+        ."{{conditions}}.cqid, "
+        ."{{conditions}}.cfieldname, "
+        ."{{conditions}}.value, "
         ."'' as type, "
         ."0 as sid, "
         ."0 as gid, "
-        ."{$dbprefix}conditions.method,"
+        ."{{conditions}}.method,"
         ."questionssrc.gid as srcgid "
-        ."FROM {$dbprefix}conditions, {$dbprefix}questions as questionssrc "
-        ."WHERE {$dbprefix}conditions.qid=questionssrc.qid "
-        ."AND {$dbprefix}conditions.qid=$ia[0] "
-        ."AND {$dbprefix}conditions.cfieldname LIKE '{%' "
-        ."ORDER BY {$dbprefix}conditions.scenario, "
-        ."{$dbprefix}conditions.cqid, "
-        ."{$dbprefix}conditions.cfieldname";
+        ."FROM {{conditions}}, {{questions}} as questionssrc "
+        ."WHERE {{conditions}}.qid=questionssrc.qid "
+        ."AND {{conditions}}.qid=$ia[0] "
+        ."AND {{conditions}}.cfieldname LIKE '{%' "
+        ."ORDER BY {{conditions}}.scenario, "
+        ."{{conditions}}.cqid, "
+        ."{{conditions}}.cfieldname";
 
         $cresulttoken = db_execute_assoc($cquerytoken) or safe_die ("OOPS<br />$cquerytoken<br />".$connect->ErrorMsg());     //Checked
 
-        foreach ($cresulttoken->result_array() as $tempcrow)
+        foreach ($cresulttoken->readAll() as $tempcrow)
         {
             $aAllConditions[] = $tempcrow;
         }
-        foreach($cresult->result_array() as $tempcrow)
+        foreach($cresult->readAll() as $tempcrow)
         {
             $aAllConditions[] = $tempcrow;
         }
@@ -174,8 +174,8 @@ function retrieveConditionInfo($ia)
 function retrieveJSidname($cd,$currentgid=null)
 {
     global $dropdownthreshold;
-    $CI =& get_instance();
-    $dbprefix = $CI->db->dbprefix;
+    
+    
 
     if (preg_match("/^\+{0,1}[0-9]+X([0-9]+)X(.*)$/",$cd[2]) == 0)
     { // This is not a true fieldname (for instance a {TOKEN:ATTR..}
@@ -191,9 +191,9 @@ function retrieveJSidname($cd,$currentgid=null)
 
     if ($cd[4] == "L")
     {
-        $cccquery="SELECT code FROM {$dbprefix}answers WHERE qid={$cd[1]} AND language='".$_SESSION['s_lang']."'";
+        $cccquery="SELECT code FROM {{answers}} WHERE qid={$cd[1]} AND language='".$_SESSION['s_lang']."'";
         $cccresult=db_execute_assoc($cccquery); // Checked
-        $cccount=$cccresult->num_rows();
+        $cccount=$cccresult->count();
     }
     if ($cd[4] == "R")
     {
@@ -331,11 +331,11 @@ function setman_normal($ia)
 // TMSW Conditions->Relevance:  EM will manage mandatories - but must check all question specific issues (like ranking)
 function setman_ranking($ia)
 {
-    $CI =& get_instance();
-    $dbprefix = $CI->db->dbprefix;
-    $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+    
+    
+    $ansquery = "SELECT * FROM {{answers}} WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
     $ansresult = db_execute_assoc($ansquery);  //Checked
-    $anscount = $ansresult->num_rows();
+    $anscount = $ansresult->count();
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
 
     if (trim($aQuestionAttributes['max_answers'])!='') {
@@ -358,13 +358,13 @@ function setman_ranking($ia)
 // TMSW Conditions->Relevance:  EM will manage mandatories - but must check all question specific issues (like ranking)
 function setman_questionandcode($ia)
 {
-    $CI =& get_instance();
-    $dbprefix = $CI->db->dbprefix;
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
+    
+    
+    $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
     $qresult = db_execute_assoc($qquery);     //Checked
     $qrow = $qresult->row_array();
     $other = $qrow['other'];
-    $subquestionquery = "SELECT title FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+    $subquestionquery = "SELECT title FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     $sqresult = db_execute_assoc($subquestionquery); //Checked
 
     foreach ($sqresult->row_array() as $subquestionrow)
@@ -401,23 +401,23 @@ function setman_questionandcode($ia)
 */
 function setman_multiflex($ia)
 {
-    $CI =& get_instance();
-    $dbprefix = $CI->db->dbprefix;
+    
+    
 
     $mandatorys=array();
     $mandatoryfns=array();
-    $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY question_order, title";
+    $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY question_order, title";
     $ansresult = db_execute_assoc($ansquery);
-    $ans2query = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY question_order, title";
+    $ans2query = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY question_order, title";
     $ans2result = db_execute_assoc($ans2query);
 
-    foreach ($ans2result->result_array()as $ans2row)
+    foreach ($ans2result->readAll()as $ans2row)
     {
         $lset[]=$ans2row;
     }
 
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
-    foreach ($ansresult->result_array() as $ansrow)
+    foreach ($ansresult->readAll() as $ansrow)
     {
         //Don't add to mandatory list if the row is filtered out with the array_filter option
         if (trim($aQuestionAttributes['array_filter'])!='')
@@ -470,18 +470,18 @@ function setman_multiflex($ia)
 // TMSW Conditions->Relevance:  EM will manage mandatories - but must check all question specific issues (like ranking)
 function setman_questionandcode_multiscale($ia)
 {
-    $CI =& get_instance();
-    $dbprefix = $CI->db->dbprefix;
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
+    
+    
+    $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);   //Checked
-    foreach ($qresult->result_array() as $qrow)
+    foreach ($qresult->readAll() as $qrow)
     {
         $other = $qrow['other'];
     }
 
     // Get Subquestions
     $subquery="SELECT * "
-    ."FROM {$dbprefix}questions "
+    ."FROM {{questions}} "
     ."WHERE parent_qid={$ia[0]} "
     ."AND language='".$_SESSION['s_lang']."' "
     ."ORDER BY question_order";
@@ -489,25 +489,25 @@ function setman_questionandcode_multiscale($ia)
 
     // Get Answer Scale 1
     $ans1query="SELECT qid "
-    ."FROM {$dbprefix}answers "
+    ."FROM {{answers}} "
     ."WHERE qid={$ia[0]} "
     ."AND scale_id=0 "
     ."AND language='".$_SESSION['s_lang']."' "
     ."ORDER BY sortorder";
     $ans1result = db_execute_assoc($ans1query);   //Checked
-    $ans1count = $ans1result->num_rows();
+    $ans1count = $ans1result->count();
 
     // Get Answer Scale 2
     $ans2query="SELECT qid "
-    ."FROM {$dbprefix}answers "
+    ."FROM {{answers}} "
     ."WHERE qid={$ia[0]} "
     ."AND scale_id=1 "
     ."AND language='".$_SESSION['s_lang']."' "
     ."ORDER BY sortorder";
     $ans2result = db_execute_assoc($ans2query);   //Checked
-    $ans2count = $ans2result->num_rows();
+    $ans2count = $ans2result->count();
 
-    foreach ($subresult->result_array() as $subrow)
+    foreach ($subresult->readAll() as $subrow)
     {
         // first answer set
         if ($ans1count > 0)
@@ -559,9 +559,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
     //globalise required config variables
     global $thissurvey, $gl; //These are set by index.php
 
-//    $CI =& get_instance();
-//    $dbprefix = $CI->db->dbprefix;
-    //$clang = $CI->limesurvey_lang;
+    //$clang = Yii::app()->lang;
 	$clang = Yii::app()->lang;
 
     //DISPLAY
@@ -936,7 +934,7 @@ function mandatory_message($ia)
                 case 'M':
                 case 'P':
                     $qtitle .= ' '.$clang->gT('Please check at least one item.').'.';
-                    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
+                    $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0];
                     $qresult = db_execute_assoc($qquery);    //Checked
                     $qrow = $qresult->row_array();
                     if ($qrow['other']=='Y')
@@ -976,10 +974,10 @@ function validation_message($ia)
         {
             $help='';
             $helpselect="SELECT help\n"
-            ."FROM {$dbprefix}questions\n"
+            ."FROM {{questions}}\n"
             ."WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
             $helpresult=db_execute_assoc($helpselect) or safe_die($helpselect.'<br />'.$connect->ErrorMsg());     //Checked
-            foreach ($helpresult->result_array() as $helprow)
+            foreach ($helpresult->readAll() as $helprow)
             {
                 $help=' <span class="questionhelp">'.$helprow['help'].'</span>';
             }
@@ -1013,8 +1011,8 @@ function file_validation_message($ia)
 function mandatory_popup($ia, $notanswered=null)
 {
     global $showpopups;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
+    
+    $clang = Yii::app()->lang;
     //This sets the mandatory popup message to show if required
     //Called from question.php, group.php or survey.php
     if ($notanswered === null) {unset($notanswered);}
@@ -1048,8 +1046,8 @@ function mandatory_popup($ia, $notanswered=null)
 function validation_popup($ia, $notvalidated=null)
 {
     global $showpopups;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
+    
+    $clang = Yii::app()->lang;
     //This sets the validation popup message to show if required
     //Called from question.php, group.php or survey.php
     if ($notvalidated === null) {unset($notvalidated);}
@@ -1077,8 +1075,8 @@ function validation_popup($ia, $notvalidated=null)
 function file_validation_popup($ia, $filenotvalidated = null)
 {
     global $showpopups;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
+    
+    $clang = Yii::app()->lang;
     if ($filenotvalidated === null) { unset($filenotvalidated); }
     if (isset($filenotvalidated) && is_array($filenotvalidated) && isset($showpopups) && $showpopups == 1)
     {
@@ -1100,8 +1098,8 @@ function file_validation_popup($ia, $filenotvalidated = null)
 
 function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
     global $thissurvey;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
+    
+    $clang = Yii::app()->lang;
 
     /* The following lines cover for previewing questions, because no $_SESSION['fieldarray'] exists.
     This just stops error messages occuring */
@@ -2221,12 +2219,12 @@ function do_list_dropdown($ia)
     //question attribute random order set?
     if ($aQuestionAttributes['random_order']==1)
     {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
     }
     //question attribute alphasort set?
     elseif ($aQuestionAttributes['alphasort']==1)
     {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY answer";
+        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY answer";
     }
     //no question attributes -> order by sortorder
     else
@@ -2252,7 +2250,7 @@ function do_list_dropdown($ia)
     {
         $defaultopts = Array();
         $optgroups = Array();
-        foreach ($ansresult->result_array() as $ansrow)
+        foreach ($ansresult->readAll() as $ansrow)
         {
             // Let's sort answers in an array indexed by subcategories
             @list ($categorytext, $answertext) = explode($optCategorySeparator,$ansrow['answer']);
@@ -2471,12 +2469,12 @@ function do_list_radio($ia)
 
     //question attribute random order set?
     if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
-        $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
+        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
+        $ansresult = db_execute_assoc($ansquery)->readAll();  //Checked
     }
     elseif ($aQuestionAttributes['random_order']==2 && !isset($_SESSION['answer_order'][$ia[0]])) {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
-        $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
+        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
+        $ansresult = db_execute_assoc($ansquery)->readAll();  //Checked
         $_SESSION['answer_order'][$ia[0]]=$ansresult;
     }
     elseif (isset($_SESSION['answer_order'][$ia[0]]))
@@ -2487,15 +2485,15 @@ function do_list_radio($ia)
     //question attribute alphasort set?
     elseif ($aQuestionAttributes['alphasort']==1)
     {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY answer";
-        $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
+        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY answer";
+        $ansresult = db_execute_assoc($ansquery)->readAll();  //Checked
     }
 
     //no question attributes -> order by sortorder
     else
     {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
-        $ansresult = db_execute_assoc($ansquery)->result_array();;  //Checked
+        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
+        $ansresult = db_execute_assoc($ansquery)->readAll();;  //Checked
     }
 
     $anscount = count($ansresult);
@@ -2761,12 +2759,12 @@ function do_listwithcomment($ia)
 
     //question attribute random order set?
     if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
     }
     //question attribute alphasort set?
     elseif ($aQuestionAttributes['alphasort']==1)
     {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY answer";
+        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY answer";
     }
     //no question attributes -> order by sortorder
     else
@@ -2851,7 +2849,7 @@ function do_listwithcomment($ia)
         <select class="select" name="'.$ia[1].'" id="answer'.$ia[1].'" onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" >
         ';
 
-        foreach ($ansresult->result_array() as $ansrow)
+        foreach ($ansresult->readAll() as $ansrow)
         {
             $check_ans = '';
             if ($_SESSION[$ia[1]] == $ansrow['code'])
@@ -3174,12 +3172,12 @@ function do_ranking_old($ia)
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
     $answer="";
     if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
     } else {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
+        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
     }
     $ansresult = db_execute_assoc($ansquery);   //Checked
-    $anscount= $ansresult->num_rows();
+    $anscount= $ansresult->count();
     if (trim($aQuestionAttributes["max_answers"])!='')
     {
         $max_answers=trim($aQuestionAttributes["max_answers"]);
@@ -3258,7 +3256,7 @@ function do_ranking_old($ia)
     $ranklist="";
     $chosen = array();
 
-    foreach ($ansresult->result_array() as $ansrow)
+    foreach ($ansresult->readAll() as $ansrow)
     {
         $answers[] = array($ansrow['code'], $ansrow['answer']);
     }
@@ -3412,7 +3410,7 @@ function do_ranking_old($ia)
 
 function do_multiplechoice($ia)
 {
-    global $dbprefix, $thissurvey;
+    global $thissurvey;
 
     $clang = Yii::app()->lang;
 
@@ -3545,17 +3543,17 @@ function do_multiplechoice($ia)
         ;
     }
 
-    $qquery = "SELECT other FROM ".$CI->db->dbprefix('questions')." WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
+    $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
     $qresult = db_execute_assoc($qquery);     //Checked
     $qrow = $qresult->row_array(); $other = $qrow['other'];
 
     if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM ".$CI->db->dbprefix('questions')." WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
-        $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+        $ansresult = db_execute_assoc($ansquery)->readAll();  //Checked
     }
     elseif ($aQuestionAttributes['random_order']==2 && !isset($_SESSION["answer_order"][$ia[0]])) {
-        $ansquery = "SELECT * FROM ".$CI->db->dbprefix('questions')." WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
-        $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+        $ansresult = db_execute_assoc($ansquery)->readAll();  //Checked
         $_SESSION["answer_order"]=$ansresult;
     }
     elseif (isset($_SESSION["answer_order"][$ia[0]]))
@@ -3564,8 +3562,8 @@ function do_multiplechoice($ia)
     }
     else
     {
-        $ansquery = "SELECT * FROM ".$CI->db->dbprefix('questions')." WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
-        $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+        $ansresult = db_execute_assoc($ansquery)->readAll();  //Checked
     }
 
     $anscount = count($ansresult);
@@ -4009,9 +4007,9 @@ function do_multiplechoice_withcomments($ia)
     $qresult = Yii::app()->db->createCommand($qquery)->query();     //Checked
     $qrow = $qresult->read(); $other = $qrow['other'];
     if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     } else {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     }
     $ansresult = Yii::app()->db->createCommand($ansquery)->query();  //Checked
     $anscount = count($ansresult)*2;
@@ -4481,15 +4479,15 @@ function do_multipleshorttext($ia)
     }
 
     if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     }
     else
     {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     }
 
     $ansresult = db_execute_assoc($ansquery);    //Checked
-    $anscount = $ansresult->num_rows()*2;
+    $anscount = $ansresult->count()*2;
     //$answer .= "\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
     $fn = 1;
 
@@ -4515,7 +4513,7 @@ function do_multipleshorttext($ia)
                 $maxsize=65525;
             }
 
-            foreach ($ansresult->result_array() as $ansrow)
+            foreach ($ansresult->readAll() as $ansrow)
             {
                 $myfname = $ia[1].$ansrow['title'];
                 if ($ansrow['question'] == "")
@@ -4550,7 +4548,7 @@ function do_multipleshorttext($ia)
         }
         else
         {
-            foreach ($ansresult->result_array() as $ansrow)
+            foreach ($ansresult->readAll() as $ansrow)
             {
                 $myfname = $ia[1].$ansrow['title'];
                 if ($ansrow['question'] == "") {$ansrow['question'] = "&nbsp;";}
@@ -4788,15 +4786,15 @@ function do_multiplenumeric($ia)
 
     if ($aQuestionAttributes['random_order']==1)
     {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     }
     else
     {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     }
 
     $ansresult = db_execute_assoc($ansquery);	//Checked
-    $anscount = $ansresult->num_rows()*2;
+    $anscount = $ansresult->count()*2;
     //$answer .= "\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
     $fn = 1;
 
@@ -4810,7 +4808,7 @@ function do_multiplenumeric($ia)
     else
     {
         $label_width = 0;
-        foreach($ansresult->result_array() as $ansrow)
+        foreach($ansresult->readAll() as $ansrow)
         {
             $myfname = $ia[1].$ansrow['title'];
             if ($ansrow['question'] == "") {$ansrow['question'] = "&nbsp;";}
@@ -5384,7 +5382,7 @@ function do_shortfreetext($ia)
 }
 
 function getLatLongFromIp($ip){
-    $CI =& get_instance();
+    
     $ipInfoDbAPIKey = Yii::app()->getConfig("ipInfoDbAPIKey");
 
     $xml = simplexml_load_file("http://api.ipinfodb.com/v2/ip_query.php?key=$ipInfoDbAPIKey&ip=$ip&timezone=false");
@@ -5729,23 +5727,23 @@ function do_array_5point($ia)
     }
     $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
-    $ansquery = "SELECT question FROM {$dbprefix}questions WHERE parent_qid=".$ia[0]." AND question like '%|%'";
+    $ansquery = "SELECT question FROM {{questions}} WHERE parent_qid=".$ia[0]." AND question like '%|%'";
     $ansresult = db_execute_assoc($ansquery);   //Checked
 
-    if ($ansresult->num_rows()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
+    if ($ansresult->count()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
     // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
 
 
     if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     }
     else
     {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     }
 
     $ansresult = db_execute_assoc($ansquery);     //Checked
-    $anscount = $ansresult->num_rows();
+    $anscount = $ansresult->count();
 
     $fn = 1;
     $answer = "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - a five point Likert scale array\">\n\n"
@@ -5781,7 +5779,7 @@ function do_array_5point($ia)
     $trbc = '';
     $n=0;
     //return array($answer, $inputnames);
-    foreach ($ansresult->result_array() as $ansrow)
+    foreach ($ansresult->readAll() as $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
 
@@ -5881,7 +5879,7 @@ function do_array_10point($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]."  AND language='".$_SESSION['s_lang']."'";
+    $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]."  AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);      //Checked
     $qrow = $qresult->row_array(); $other = $qrow['other'];
 
@@ -5902,14 +5900,14 @@ function do_array_10point($ia)
     $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
     if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     }
     else
     {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     }
     $ansresult = db_execute_assoc($ansquery);   //Checked
-    $anscount = $ansresult->num_rows();
+    $anscount = $ansresult->count();
 
     $fn = 1;
     $answer = "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - a ten point Likert scale array\" >\n\n"
@@ -5941,7 +5939,7 @@ function do_array_10point($ia)
     $answer .= "</tr>\n</thead>";
     $answer_t_content = '';
     $trbc = '';
-    foreach ($ansresult->result_array() as $ansrow)
+    foreach ($ansresult->readAll() as $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
         $answertext=dTexts__run($ansrow['question'],$ansrow['qid']);
@@ -6020,9 +6018,9 @@ function do_array_yesnouncertain($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
+    $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);	//Checked
-    $qrow = $qresult->result_array();
+    $qrow = $qresult->readAll();
     $other = isset($qrow['other']) ? $qrow['other'] : '';
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
     if (trim($aQuestionAttributes['answer_width'])!='')
@@ -6041,14 +6039,14 @@ function do_array_yesnouncertain($ia)
     $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
     if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     }
     else
     {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     }
     $ansresult = db_execute_assoc($ansquery);	//Checked
-    $anscount = $ansresult->num_rows();
+    $anscount = $ansresult->count();
     $fn = 1;
     $answer = "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - a Yes/No/uncertain Likert scale array\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
@@ -6084,7 +6082,7 @@ function do_array_yesnouncertain($ia)
     else
     {
         $trbc = '';
-        foreach($ansresult->result_array() as $ansrow)
+        foreach($ansresult->readAll() as $ansrow)
         {
             $myfname = $ia[1].$ansrow['title'];
             $answertext=dTexts__run($ansrow['question'],$ansrow['qid']);
@@ -6180,7 +6178,7 @@ function do_array_increasesamedecrease($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
+    $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);   //Checked
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
     if (trim($aQuestionAttributes['answer_width'])!='')
@@ -6198,19 +6196,19 @@ function do_array_increasesamedecrease($ia)
     }
     $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
-    foreach($qresult->result_array() as $qrow)
+    foreach($qresult->readAll() as $qrow)
     {
         $other = $qrow['other'];
     }
     if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     }
     else
     {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     }
     $ansresult = db_execute_assoc($ansquery);  //Checked
-    $anscount = $ansresult->num_rows();
+    $anscount = $ansresult->count();
 
     $fn = 1;
 
@@ -6244,7 +6242,7 @@ function do_array_increasesamedecrease($ia)
     ."\t</thead>\n";
     $answer_body = '';
     $trbc = '';
-    foreach($ansresult->result_array() as $ansrow)
+    foreach($ansresult->readAll() as $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
         $answertext=dTexts__run($ansrow['question'],$ansrow['qid']);
@@ -6355,10 +6353,10 @@ function do_array($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
+    $qquery = "SELECT other FROM {{questions}} WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);     //Checked
     $qrow = $qresult->row_array(); $other = $qrow['other'];
-    $lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
+    $lquery = "SELECT * FROM {{answers}} WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
 
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
     if (trim($aQuestionAttributes['answer_width'])!='')
@@ -6381,9 +6379,9 @@ function do_array($ia)
     }
 
     $lresult = db_execute_assoc($lquery);   //Checked
-    if ($useDropdownLayout === false && $lresult->num_rows() > 0)
+    if ($useDropdownLayout === false && $lresult->count() > 0)
     {
-        foreach ($lresult->result_array() as $lrow)
+        foreach ($lresult->readAll() as $lrow)
         {
             $labelans[]=$lrow['answer'];
             $labelcode[]=$lrow['code'];
@@ -6391,18 +6389,18 @@ function do_array($ia)
 
         //		$cellwidth=sprintf('%02d', $cellwidth);
 
-        $ansquery = "SELECT question FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND question like '%|%' ";
+        $ansquery = "SELECT question FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
         $ansresult = db_execute_assoc($ansquery);  //Checked
-        if ($ansresult->num_rows()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
+        if ($ansresult->count()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
 
         if ($aQuestionAttributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
-            $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+            $ansresult = db_execute_assoc($ansquery)->readAll();  //Checked
         }
         elseif ($aQuestionAttributes['random_order']==2 && !isset($_SESSION['answer_order'][$ia[0]])) {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
-            $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+            $ansresult = db_execute_assoc($ansquery)->readAll();  //Checked
             $sessionao[$ia[0]]=$ansresult;
             $_SESSION['answer_order'][$ia[0]]=$ansresult;
         }
@@ -6412,8 +6410,8 @@ function do_array($ia)
         }
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
-            $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+            $ansresult = db_execute_assoc($ansquery)->readAll();  //Checked
         }
 
         if (trim($aQuestionAttributes['parent_order']!=''))
@@ -6593,24 +6591,24 @@ function do_array($ia)
 
         $answer = $answer_start . $answer_cols . $answer_head .$answer . "\t</tbody>\n</table>\n";
     }
-    elseif ($useDropdownLayout === true && $lresult->num_rows() > 0)
+    elseif ($useDropdownLayout === true && $lresult->count() > 0)
     {
-        foreach($lresult->result_array() as $lrow)
+        foreach($lresult->readAll() as $lrow)
             $labels[]=Array('code' => $lrow['code'],
             'answer' => $lrow['answer']);
-        $ansquery = "SELECT question FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND question like '%|%' ";
+        $ansquery = "SELECT question FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
         $ansresult = db_execute_assoc($ansquery);  //Checked
-        if ($ansresult->num_rows()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
+        if ($ansresult->count()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($aQuestionAttributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
         }
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
         }
         $ansresult = db_execute_assoc($ansquery); //Checked
-        $anscount = $ansresult->num_rows();
+        $anscount = $ansresult->count();
         $fn=1;
 
         $numrows = count($labels);
@@ -6630,7 +6628,7 @@ function do_array($ia)
         $trbc = '';
         $inputnames=array();
 
-        foreach ($ansresult->result_array() as $ansrow)
+        foreach ($ansresult->readAll() as $ansrow)
         {
             $myfname = $ia[1].$ansrow['title'];
             $trbc = alternation($trbc , 'row');
@@ -6901,7 +6899,7 @@ function do_array_multitext($ia)
 
         $cellwidth=sprintf('%02d', $cellwidth);
 
-        $ansquery = "SELECT count(question) FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} and scale_id=0 AND question like '%|%'";
+        $ansquery = "SELECT count(question) FROM {{questions}} WHERE parent_qid={$ia[0]} and scale_id=0 AND question like '%|%'";
         $ansresult = reset(db_execute_assoc($ansquery)->row_array());
         if ($ansresult>0)
         {
@@ -6914,14 +6912,14 @@ function do_array_multitext($ia)
         }
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($aQuestionAttributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
         }
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
         }
         $ansresult = db_execute_assoc($ansquery);
-        $anscount = $ansresult->num_rows();
+        $anscount = $ansresult->count();
         $fn=1;
 
         $answer_cols = "\t<colgroup class=\"col-responses\">\n"
@@ -6959,7 +6957,7 @@ function do_array_multitext($ia)
         $answer = "\n<table$q_table_id_HTML class=\"question$num_class"."$totals_class\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array of text responses\">\n" . $answer_cols . $answer_head;
 
         $trbc = '';
-        foreach ($ansresult->result_array() as $ansrow)
+        foreach ($ansresult->readAll() as $ansrow)
         {
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
             {
@@ -7092,7 +7090,7 @@ function do_array_multiflexi($ia)
 
     //echo '<pre>'; print_r($_POST); echo '</pre>';
     $defaultvaluescript = '';
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
+    $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
     $qresult = db_execute_assoc($qquery);
     $qrow = $qresult->row_array(); $other = $qrow['other'];
 
@@ -7181,11 +7179,11 @@ function do_array_multiflexi($ia)
     }
     $columnswidth=100-($answerwidth*2);
 
-    $lquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY question_order";
+    $lquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY question_order";
     $lresult = db_execute_assoc($lquery);
-    if ($lresult->num_rows() > 0)
+    if ($lresult->count() > 0)
     {
-        foreach ($lresult->result_array() as $lrow)
+        foreach ($lresult->readAll() as $lrow)
         {
             $labelans[]=$lrow['question'];
             $labelcode[]=$lrow['title'];
@@ -7196,18 +7194,18 @@ function do_array_multiflexi($ia)
 
         $cellwidth=sprintf('%02d', $cellwidth);
 
-        $ansquery = "SELECT question FROM {$dbprefix}questions WHERE parent_qid=".$ia[0]." AND scale_id=0 AND question like '%|%'";
+        $ansquery = "SELECT question FROM {{questions}} WHERE parent_qid=".$ia[0]." AND scale_id=0 AND question like '%|%'";
         $ansresult = db_execute_assoc($ansquery);
-        if ($ansresult->num_rows()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
+        if ($ansresult->count()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($aQuestionAttributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
         }
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
         }
-        $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
+        $ansresult = db_execute_assoc($ansquery)->readAll();  //Checked
         if (trim($aQuestionAttributes['parent_order']!=''))
         {
             $iParentQID=(int) $aQuestionAttributes['parent_order'];
@@ -7445,14 +7443,14 @@ function do_arraycolumns($ia)
     }
 
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
+    $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);    //Checked
     $qrow = $qresult->row_array(); $other = $qrow['other'];
-    $lquery = "SELECT * FROM {$dbprefix}answers WHERE qid=".$ia[0]."  AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
+    $lquery = "SELECT * FROM {{answers}} WHERE qid=".$ia[0]."  AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
     $lresult = db_execute_assoc($lquery);   //Checked
-    if ($lresult->num_rows() > 0)
+    if ($lresult->count() > 0)
     {
-        foreach ($lresult->result_array() as $lrow)
+        foreach ($lresult->readAll() as $lrow)
         {
             $labelans[]=$lrow['answer'];
             $labelcode[]=$lrow['code'];
@@ -7465,14 +7463,14 @@ function do_arraycolumns($ia)
             $labels[]=array('answer'=>$clang->gT('No answer'), 'code'=>'');
         }
         if ($aQuestionAttributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
         }
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
         }
         $ansresult = db_execute_assoc($ansquery);  //Checked
-        $anscount = $ansresult->num_rows();
+        $anscount = $ansresult->count();
         if ($anscount>0)
         {
             $fn=1;
@@ -7491,7 +7489,7 @@ function do_arraycolumns($ia)
             . "\t<thead>\n"
             . "<tr>\n"
             . "\t<td>&nbsp;</td>\n";
-            foreach($ansresult->result_array() as $ansrow)
+            foreach($ansresult->readAll() as $ansrow)
             {
                 $anscode[]=$ansrow['title'];
                 $answers[]=dTexts__run($ansrow['question'],$ansrow['qid']);
@@ -7521,7 +7519,7 @@ function do_arraycolumns($ia)
             $answer .= "</tr>\n\t</thead>\n\n\t<tbody>\n";
             $ansrowcount=0;
             $ansrowtotallength=0;
-            foreach($ansresult->result_array() as $ansrow)
+            foreach($ansresult->readAll() as $ansrow)
             {
                 $ansrowcount++;
                 $ansrowtotallength=$ansrowtotallength+strlen($ansrow['question']);
@@ -7609,10 +7607,10 @@ function do_array_dual($ia)
     $inputnames=array();
     $labelans1=array();
     $labelans=array();
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
+    $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $other = reset(db_execute_assoc($qquery)->row_array());    //Checked
-    $lquery =  "SELECT * FROM {$dbprefix}answers WHERE scale_id=0 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
-    $lquery1 = "SELECT * FROM {$dbprefix}answers WHERE scale_id=1 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
+    $lquery =  "SELECT * FROM {{answers}} WHERE scale_id=0 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
+    $lquery1 = "SELECT * FROM {{answers}} WHERE scale_id=1 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
 
     if ($aQuestionAttributes['use_dropdown']==1)
@@ -7641,7 +7639,7 @@ function do_array_dual($ia)
     }
 
     $lresult = db_execute_assoc($lquery); //Checked
-    if ($useDropdownLayout === false && $lresult->num_rows() > 0)
+    if ($useDropdownLayout === false && $lresult->count() > 0)
     {
 
         if (trim($aQuestionAttributes['answer_width'])!='')
@@ -7655,15 +7653,15 @@ function do_array_dual($ia)
         $columnswidth = 100 - $answerwidth;
 
 
-        foreach ($lresult->result_array() as $lrow)
+        foreach ($lresult->readAll() as $lrow)
         {
             $labelans[]=$lrow['answer'];
             $labelcode[]=$lrow['code'];
         }
         $lresult1 = db_execute_assoc($lquery1); //Checked
-        if ($lresult1->num_rows() > 0)
+        if ($lresult1->count() > 0)
         {
-            foreach ($lresult1->result_array() as $lrow1)
+            foreach ($lresult1->readAll() as $lrow1)
             {
                 $labelans1[]=$lrow1['answer'];
                 $labelcode1[]=$lrow1['code'];
@@ -7675,9 +7673,9 @@ function do_array_dual($ia)
 
         $cellwidth=sprintf("%02d", $cellwidth);
 
-        $ansquery = "SELECT question FROM {$dbprefix}questions WHERE parent_qid=".$ia[0]." and scale_id=0 AND question like '%|%'";
+        $ansquery = "SELECT question FROM {{questions}} WHERE parent_qid=".$ia[0]." and scale_id=0 AND question like '%|%'";
         $ansresult = db_execute_assoc($ansquery);   //Checked
-        if ($ansresult->num_rows()>0)
+        if ($ansresult->count()>0)
         {
             $right_exists=true;
         }
@@ -7687,14 +7685,14 @@ function do_array_dual($ia)
         }
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($aQuestionAttributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
         }
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY question_order";
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY question_order";
         }
         $ansresult = db_execute_assoc($ansquery);   //Checked
-        $anscount = $ansresult->num_rows();
+        $anscount = $ansresult->count();
         $fn=1;
         // unselect second scale when using "no answer"
         $answer = "<script type='text/javascript'>\n"
@@ -7808,7 +7806,7 @@ function do_array_dual($ia)
         . "\n\t</thead>\n";
 
         $trbc = '';
-        foreach ($ansresult->result_array() as $ansrow)
+        foreach ($ansresult->readAll() as $ansrow)
         {
             // Build repeat headings if needed
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
@@ -7961,7 +7959,7 @@ function do_array_dual($ia)
         }
         $answer .= "</table>\n";
     }
-    elseif ($useDropdownLayout === true && $lresult->num_rows() > 0)
+    elseif ($useDropdownLayout === true && $lresult->count() > 0)
     {
 
         if (trim($aQuestionAttributes['answer_width'])!='')
@@ -7979,16 +7977,16 @@ function do_array_dual($ia)
 
         //question atribute random_order set?
         if ($aQuestionAttributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
         }
 
         //no question attributes -> order by sortorder
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
         }
         $ansresult = db_execute_assoc($ansquery);    //Checked
-        $anscount = $ansresult->num_rows();
+        $anscount = $ansresult->count();
 
         if ($anscount==0)
         {
@@ -7999,13 +7997,13 @@ function do_array_dual($ia)
         {
 
             //already done $lresult = db_execute_assoc($lquery);
-            foreach ($lresult->result_array() as $lrow)
+            foreach ($lresult->readAll() as $lrow)
             {
                 $labels0[]=Array('code' => $lrow['code'],
                 'title' => $lrow['answer']);
             }
             $lresult1 = db_execute_assoc($lquery1);   //Checked
-            foreach ($lresult1->result_array() as $lrow1)
+            foreach ($lresult1->readAll() as $lrow1)
             {
                 $labels1[]=Array('code' => $lrow1['code'],
                 'title' => $lrow1['answer']);
@@ -8079,7 +8077,7 @@ function do_array_dual($ia)
             . "\t</thead>\n\n";
 
             $trbc = '';
-            foreach ($ansresult->result_array() as $ansrow)
+            foreach ($ansresult->readAll() as $ansrow)
             {
                 $rowname = $ia[1].$ansrow['title'];
                 $dualgroup=0;

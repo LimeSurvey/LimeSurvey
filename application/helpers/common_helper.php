@@ -1467,7 +1467,7 @@ function getSurveyInfo($surveyid, $languagecode='')
     }
 
     //not sure this should be here... ToDo: Find a better place
-    if (function_exists('makelanguagechanger')) $languagechanger = makelanguagechanger();
+    if (function_exists('makelanguagechanger')) $languagechanger = makelanguagechanger($languagecode);
     return $thissurvey;
 }
 

@@ -17,33 +17,30 @@ function loadanswers()
     global $surveyid;
     global $thissurvey, $thisstep;
     global $clienttoken;
-    $CI =& get_instance();
-    $_POST = $CI->input->post();
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
     //$_SESSION = $CI->session->userdata;
 
     $scid=returnglobal('scid');
     if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
     {
-        $query = "SELECT * FROM ".$CI->db->dbprefix('saved_control')." INNER JOIN {$thissurvey['tablename']}
-        ON ".$CI->db->dbprefix('saved_control').".srid = {$thissurvey['tablename']}.id
-        WHERE ".$CI->db->dbprefix('saved_control').".sid=$surveyid\n";
+        $query = "SELECT * FROM {{saved_control}} INNER JOIN {$thissurvey['tablename']}
+        ON {{saved_control}}.srid = {$thissurvey['tablename']}.id
+        WHERE {{saved_control}}.sid=$surveyid\n";
         if (isset($scid)) //Would only come from email
 
         {
-            $query .= "AND ".$CI->db->dbprefix('saved_control').".scid={$scid}\n";
+            $query .= "AND {{saved_control}}.scid={$scid}\n";
         }
-        $query .="AND ".$CI->db->dbprefix('saved_control').".identifier = '".auto_escape($_SESSION['holdname'])."' ";
+        $query .="AND {{saved_control}}.identifier = '".auto_escape($_SESSION['holdname'])."' ";
 
         $databasetype = $CI->db->platform();
         if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n' || $databasetype=='mssqlnative')
         {
-            $query .="AND CAST(".$CI->db->dbprefix('saved_control').".access_code as varchar(32))= '".md5(auto_unescape($_SESSION['holdpass']))."'\n";
+            $query .="AND CAST({{saved_control}}.access_code as varchar(32))= '".md5(auto_unescape($_SESSION['holdpass']))."'\n";
         }
         else
         {
-            $query .="AND ".$CI->db->dbprefix('saved_control').".access_code = '".md5(auto_unescape($_SESSION['holdpass']))."'\n";
+            $query .="AND {{saved_control}}.access_code = '".md5(auto_unescape($_SESSION['holdpass']))."'\n";
         }
     }
     elseif (isset($_SESSION['srid']))
@@ -56,15 +53,15 @@ function loadanswers()
         return;
     }
     $result = db_execute_assoc($query) or safe_die ("Error loading results<br />$query<br />");   //Checked
-    if ($result->num_rows() < 1)
+    if ($result->count() < 1)
     {
-        show_error($clang->gT("There is no matching saved survey")."<br />\n");
+        safe_die($clang->gT("There is no matching saved survey")."<br />\n");
     }
     else
     {
         //A match has been found. Let's load the values!
         //If this is from an email, build surveysession first
-        $row=$result->row_array();
+        $row=$result->read();
         foreach ($row as $column => $value)
         {
             if ($column == "token")
@@ -138,19 +135,19 @@ function loadanswers()
 function makegraph($currentstep, $total)
 {
     global $thissurvey;
-    global $publicurl, $js_header_includes, $css_header_includes;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
+    global $js_header_includes, $css_header_includes;
+    
+    $clang = Yii::app()->lang;
     //$_SESSION = $CI->session->userdata;
 
-    $js_admin_includes = $CI->config->item("js_admin_includes");
+    $js_admin_includes = Yii::app()->getConfig("js_admin_includes");
     $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
-    $CI->config->set_item("js_admin_includes", $js_admin_includes);
+    Yii::app()->setConfig("js_admin_includes", $js_admin_includes);
 
-    $css_admin_includes = $CI->config->item("js_admin_includes");
+    $css_admin_includes = Yii::app()->getConfig("js_admin_includes");
     $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css';
     $css_header_includes[]= '/scripts/jquery/css/start/lime-progress.css';
-    $CI->config->set_item("css_admin_includes", $css_admin_includes);
+    Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
 
     $size = intval(($currentstep-1)/$total*100);
 
@@ -211,13 +208,8 @@ function makegraph($currentstep, $total)
     return $graph;
 }
 
-function makelanguagechanger()
+function makelanguagechanger($baselang)
 {
-    global $relativeurl;
-    $CI =& get_instance();
-    $_POST = $CI->input->post();
-    $_REQUEST = $CI->input->get_post();
-
     if (!isset($surveyid))
     {
         $surveyid=returnglobal('sid');
@@ -241,7 +233,7 @@ function makelanguagechanger()
         if ($_REQUEST['action']=='previewgroup')
             $previewgrp = true;
 
-        if (!empty($slangs))
+    if (!empty($slangs))
     {
         if (isset($_SESSION['s_lang']) && $_SESSION['s_lang'] != '')
         {
@@ -260,10 +252,9 @@ function makelanguagechanger()
 
         $htmlcode ="<select name=\"select\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
         $sAddToURL = "";
-        $sTargetURL = "$relativeurl/index.php";
+        $sTargetURL = Yii::app()->getController()->createUrl("survey");
         if ($previewgrp){
             $sAddToURL = "&amp;action=previewgroup&amp;gid={$_REQUEST['gid']}";
-            $sTargetURL = "";
         }
         foreach ($slangs as $otherlang)
         {
@@ -281,13 +272,12 @@ function makelanguagechanger()
         return $htmlcode;
     } elseif (!isset($surveyid))
     {
-        $defaultlang = $CI->config->item("defaultlang");
-        global $baselang;
+        $defaultlang = Yii::app()->getConfig("defaultlang");
         $htmlcode = "<select name=\"select\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
-        $htmlcode .= "<option value=\"$relativeurl/index.php?lang=". $defaultlang ."$tokenparam\">".getLanguageNameFromCode($defaultlang,false)."</option>\n";
+        $htmlcode .= "<option value=\"".Yii::app()->getController()->createUrl("/survey")."?lang=". $defaultlang ."$tokenparam\">".getLanguageNameFromCode($defaultlang,false)."</option>\n";
         foreach(getlanguagedataRestricted() as $key=>$val)
         {
-            $htmlcode .= "\t<option value=\"$relativeurl/index.php?lang=".$key."$tokenparam\" ";
+            $htmlcode .= "\t<option value=\"".Yii::app()->getController()->createUrl("/survey")."?lang=".$key."$tokenparam\" ";
             if($key == $baselang)
             {
                 $htmlcode .= " selected=\"selected\" ";
@@ -304,8 +294,7 @@ function makelanguagechanger()
 function checkconfield($value)
 {
     global $surveyid,$thissurvey,$qattributes;
-    $CI =& get_instance();
-    $dbprefix = $CI->db->dbprefix;
+    
     //$_SESSION = $CI->session->userdata;
 
     $fieldisdisplayed=true;
@@ -351,14 +340,14 @@ function checkconfield($value)
     if ($value_isconditionnal  == "Y" && isset($_SESSION[$value]) ) //Do this if there is a condition based on this answer
     {
 
-        $scenarioquery = "SELECT DISTINCT scenario FROM ".$CI->db->dbprefix("conditions")
-        ." WHERE ".$CI->db->dbprefix("conditions").".qid=$sfa[0] ORDER BY scenario";
+        $scenarioquery = "SELECT DISTINCT scenario FROM {{conditions}}"
+        ." WHERE {{conditions}}.qid=$sfa[0] ORDER BY scenario";
         $scenarioresult=db_execute_assoc($scenarioquery);
         $matchfound=0;
         //$scenario=1;
         //while ($scenario > 0)
         $evalNextScenario = true;
-        foreach($scenarioresult->result_array() as $scenariorow)
+        foreach($scenarioresult->readAll() as $scenariorow)
         {
             if($evalNextScenario !== true)
                 break;
@@ -368,32 +357,32 @@ function checkconfield($value)
 
             $scenario = $scenariorow['scenario'];
             $currentcfield="";
-            $query = "SELECT ".$CI->db->dbprefix('conditions').".*, ".$CI->db->dbprefix('questions').".type "
-            . "FROM ".$CI->db->dbprefix('conditions').", ".$CI->db->dbprefix('questions')." "
-            . "WHERE ".$CI->db->dbprefix('conditions').".cqid=".$CI->db->dbprefix('questions').".qid "
-            . "AND ".$CI->db->dbprefix('conditions').".qid=$value_qid "
-            . "AND ".$CI->db->dbprefix('conditions').".scenario=$scenario "
-            . "AND ".$CI->db->dbprefix('conditions').".cfieldname NOT LIKE '{%' "
-            . "ORDER BY ".$CI->db->dbprefix('conditions').".qid,".$CI->db->dbprefix('conditions').".cfieldname";
+            $query = "SELECT {{conditions}}.*, {{questions}}.type "
+            . "FROM {{conditions}}, {{questions}} "
+            . "WHERE {{conditions}}.cqid={{questions}}.qid "
+            . "AND {{conditions}}.qid=$value_qid "
+            . "AND {{conditions}}.scenario=$scenario "
+            . "AND {{conditions}}.cfieldname NOT LIKE '{%' "
+            . "ORDER BY {{conditions}}.qid,{{conditions}}.cfieldname";
             $result=db_execute_assoc($query) or safe_die($query."<br />".$connect->ErrorMsg());         //Checked
-            $conditionsfound = $result->num_rows();
+            $conditionsfound = $result->count();
 
-            $querytoken = "SELECT ".$CI->db->dbprefix('conditions').".*, '' as type "
-            . "FROM ".$CI->db->dbprefix('conditions')." "
+            $querytoken = "SELECT {{conditions}}.*, '' as type "
+            . "FROM {{conditions}} "
             . "WHERE "
-            . " ".$CI->db->dbprefix('conditions').".qid=$value_qid "
-            . "AND ".$CI->db->dbprefix('conditions').".scenario=$scenario "
-            . "AND ".$CI->db->dbprefix('conditions').".cfieldname LIKE '{%' "
-            . "ORDER BY ".$CI->db->dbprefix('conditions').".qid,".$CI->db->dbprefix('conditions').".cfieldname";
+            . " {{conditions}}.qid=$value_qid "
+            . "AND {{conditions}}.scenario=$scenario "
+            . "AND {{conditions}}.cfieldname LIKE '{%' "
+            . "ORDER BY {{conditions}}.qid,{{conditions}}.cfieldname";
             $resulttoken=db_execute_assoc($querytoken) or safe_die($querytoken."<br />".$connect->ErrorMsg());         //Checked
-            $conditionsfoundtoken = $resulttoken->num_rows();
+            $conditionsfoundtoken = $resulttoken->count();
             $conditionsfound = $conditionsfound + $conditionsfoundtoken;
 
-            foreach($resulttoken->result_array() as $Condrow)
+            foreach($resulttoken->readAll() as $Condrow)
             {
                 $aAllCondrows[] = $Condrow;
             }
-            foreach($result->result_array() as $Condrow)
+            foreach($result->readAll() as $Condrow)
             {
                 $aAllCondrows[] = $Condrow;
             }
@@ -604,8 +593,8 @@ function checkconfield($value)
 function checkmandatorys($move, $backok=null)
 {
     global $thisstep;
-    $CI =& get_instance();
-    $_POST = $CI->input->post();
+    
+    
     //$_SESSION = $CI->session->userdata;
 
     if ((isset($_POST['mandatory']) && $_POST['mandatory']) && (!isset($backok) || $backok != "Y"))
@@ -704,8 +693,8 @@ function checkmandatorys($move, $backok=null)
 function checkconditionalmandatorys($move, $backok=null)
 {
     global $thisstep;
-    $CI =& get_instance();
-    $_POST = $CI->input->post();
+    
+    
     //$_SESSION = $CI->session->userdata;
 
     // TODO - also check whether relevance set?
@@ -798,14 +787,13 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
 {
     global $thisstep;
 
-    $CI =& get_instance();
-    $_POST = $CI->input->post();
-    $clang = $CI->limesurvey_lang;
+    
+    
+    $clang = Yii::app()->lang;
     //$_SESSION = $CI->session->userdata;
 
     if (!isset($backok) || $backok != "Y")
     {
-        global $dbprefix;
         $fieldmap = createFieldMap($surveyid,'full');
 
         if (isset($_POST['fieldnames']) && $_POST['fieldnames']!="")
@@ -818,9 +806,9 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
                 {
                     $validation = array();
 
-                    $query = "SELECT * FROM ".$CI->db->dbprefix('question_attributes')." WHERE qid = ".$fieldmap[$field]['qid'];
+                    $query = "SELECT * FROM {{question_attributes}} WHERE qid = ".$fieldmap[$field]['qid'];
                     $result = db_execute_assoc($query);
-                    foreach($result->row_array() as $row)
+                    foreach($result->readAll() as $row)
                         $validation[$row['attribute']] = $row['value'];
 
                     $filecount = 0;
@@ -906,14 +894,9 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
 function aCheckInput($surveyid, $move,$backok=null)
 {
     global $connect, $thisstep, $thissurvey;
-    $CI =& get_instance();
-    $_POST = $CI->input->post();
-    //$_SESSION = $CI->session->userdata;
-    $dbprefix = $CI->db->dbprefix;
 
     if (!isset($backok) || $backok != "Y")
     {
-        global $dbprefix;
         $fieldmap=createFieldMap($surveyid, 'full');
         if (isset($_POST['fieldnames']))
         {
@@ -926,11 +909,11 @@ function aCheckInput($surveyid, $move,$backok=null)
                 {
                     $fieldinfo=$fieldmap[$field];
                     $pregquery="SELECT preg\n"
-                    ."FROM ".$CI->db->dbprefix('questions')."\n"
+                    ."FROM {{questions}}\n"
                     ."WHERE qid=".$fieldinfo['qid']." "
                     . "AND language='".$_SESSION['s_lang']."'";
                     $pregresult=db_execute_assoc($pregquery) or safe_die("ERROR: $pregquery<br />".$connect->ErrorMsg());      //Checked
-                    foreach($pregresult->result_array() as $pregrow)
+                    foreach($pregresult->readAll() as $pregrow)
                     {
                         $preg=trim($pregrow['preg']);
                     } // while
@@ -1068,23 +1051,22 @@ function submittokens($quotaexit=false)
     global $surveyid;
     global $thistpl, $clienttoken;
 
-    $CI =& get_instance();
-    $_POST = $CI->input->post();
+    
+    
     //$_SESSION = $CI->session->userdata;
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
-    $sitename = $CI->config->item("sitename");
+    $clang = Yii::app()->lang;
+    $sitename = Yii::app()->getConfig("sitename");
 
     // Shift the date due to global timeadjust setting
     $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
 
     // check how many uses the token has left
-    $usesquery = "SELECT usesleft FROM {$dbprefix}tokens_$surveyid WHERE token=".$CI->db->escape($clienttoken);
+    $usesquery = "SELECT usesleft FROM {{tokens_$surveyid}} WHERE token=".$clienttoken;
     $usesresult = db_execute_assoc($usesquery);
-    $usesrow = $usesresult->row_array();
+    $usesrow = $usesresult->read();
     if (isset($usesrow)) { $usesleft = $usesrow['usesleft']; }
 
-    $utquery = "UPDATE {$dbprefix}tokens_$surveyid\n";
+    $utquery = "UPDATE {{tokens_$surveyid}}\n";
     if ($quotaexit==true)
     {
         $utquery .= "SET completed='Q', usesleft=usesleft-1\n";
@@ -1111,17 +1093,17 @@ function submittokens($quotaexit=false)
             $utquery .= "SET usesleft=usesleft-1\n";
         }
     }
-    $utquery .= "WHERE token=".$CI->db->escape($clienttoken)."";
+    $utquery .= "WHERE token=".$clienttoken."";
 
     $utresult = db_execute_assoc($utquery) or safe_die ("Couldn't update tokens table!<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked
 
     if ($quotaexit==false)
     {
         // TLR change to put date into sent and completed
-        $cnfquery = "SELECT * FROM ".$CI->db->dbprefix("tokens_$surveyid")." WHERE token=".$CI->db->escape($clienttoken)." AND completed!='N' AND completed!=''";
+        $cnfquery = "SELECT * FROM {{tokens_$surveyid}} WHERE token=".$clienttoken." AND completed!='N' AND completed!=''";
 
         $cnfresult = db_execute_assoc($cnfquery);       //Checked
-        $cnfrow = $cnfresult->row_array();
+        $cnfrow = $cnfresult->read();
         if (isset($cnfrow))
         {
             $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
@@ -1206,14 +1188,13 @@ function SendSubmitNotifications()
 {
     global $thissurvey, $debug;
     global $emailcharset;
-    global $homeurl, $surveyid, $publicurl, $maildebug, $tokensexist;
+    global $homeurl, $surveyid, $maildebug, $tokensexist;
 
-    $CI =& get_instance();
-    $_POST = $CI->input->post();
+    
+    
     //$_SESSION = $CI->session->userdata;
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
-    $sitename = $CI->config->item("sitename");
+    $clang = Yii::app()->lang;
+    $sitename = Yii::app()->getConfig("sitename");
 
     $bIsHTML = ($thissurvey['htmlemail'] == 'Y');
 
@@ -1221,7 +1202,7 @@ function SendSubmitNotifications()
 
     if ($thissurvey['allowsave'] == "Y" && isset($_SESSION['scid']))
     {
-        $aReplacementVars['RELOADURL']="{$publicurl}/index.php?sid={$surveyid}&loadall=reload&scid=".$_SESSION['scid']."&loadname=".urlencode($_SESSION['holdname'])."&loadpass=".urlencode($_SESSION['holdpass']);
+        $aReplacementVars['RELOADURL']="".Yii::app()->createUrl("survey/sid/{$surveyid}/loadall/reload/scid/".$_SESSION['scid']."/loadname/".urlencode($_SESSION['holdname'])."/loadpass/".urlencode($_SESSION['holdpass']));
         if ($bIsHTML)
         {
             $aReplacementVars['RELOADURL']="<a href='{$aReplacementVars['RELOADURL']}'>{$aReplacementVars['RELOADURL']}</a>";
@@ -1265,7 +1246,7 @@ function SendSubmitNotifications()
 
     if (!empty($thissurvey['emailresponseto']))
     {
-        if (isset($_SESSION['token']) && $_SESSION['token'] != '' && db_tables_exist($dbprefix.'tokens_'.$surveyid))
+        if (isset($_SESSION['token']) && $_SESSION['token'] != '' && db_tables_exist('{{tokens_'.$surveyid.'}}'))
         {
             //Gather token data for tokenised surveys
             $_SESSION['thistoken']=getTokenData($surveyid, $_SESSION['token']);
@@ -1369,11 +1350,10 @@ function submitfailed($errormsg='')
     global $thissurvey;
     global $thistpl, $subquery, $surveyid;
 
-    $CI =& get_instance();
-    $_POST = $CI->input->post();
+    
+    
     //$_SESSION = $CI->session->userdata;
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
 
     $completed = "<br /><strong><font size='2' color='red'>"
     . $clang->gT("Did Not Save")."</strong></font><br /><br />\n\n"
@@ -1425,14 +1405,13 @@ function buildsurveysession($surveyid)
     //global $surveyid;
     global $register_errormsg;
     global $totalBoilerplatequestions, $totalquestions;
-    global $templang, $move, $rooturl, $publicurl;
+    global $templang, $move, $rooturl;
 
 
-    $CI =& get_instance();
-    $_POST = $CI->input->post();
+    
+    
     //$_SESSION = $CI->session->userdata;
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
 
     if (!isset($templang) || $templang=='')
     {
@@ -1467,7 +1446,7 @@ function buildsurveysession($surveyid)
             }
 
             echo "<p class='captcha'>".$clang->gT("Please confirm access to survey by answering the security question below and click continue.")."</p>
-            <form class='captcha' method='post' action='".site_url("$surveyid")."'>
+            <form class='captcha' method='post' action='".Yii::app()->createUrl("$surveyid")."'>
             <table align='center'>
             <tr>
             <td align='right' valign='middle'>
@@ -1490,7 +1469,7 @@ function buildsurveysession($surveyid)
             if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
             {
                 echo "<tr>
-                <td align='center' valign='middle'><label for='captcha'>".$clang->gT("Security question:")."</label></td><td align='left' valign='middle'><table><tr><td valign='middle'><img src='".site_url('/verification/image')."' alt='captcha' /></td>
+                <td align='center' valign='middle'><label for='captcha'>".$clang->gT("Security question:")."</label></td><td align='left' valign='middle'><table><tr><td valign='middle'><img src='".Yii::app()->createUrl('/verification/image')."' alt='captcha' /></td>
                 <td valign='middle'><input id='captcha' type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table>
                 </td>
                 </tr>";
@@ -1539,7 +1518,7 @@ function buildsurveysession($surveyid)
             echo '<div id="wrapper"><p id="tokenmessage">'.$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br />";
             echo $clang->gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
             <script type='text/javascript'>var focus_element='#token';</script>
-            <form id='tokenform' method='post' action='".site_url("$surveyid")."'>
+            <form id='tokenform' method='post' action='".Yii::app()->createUrl("$surveyid")."'>
             <ul>
             <li>
             <label for='token'>".$clang->gT("Token")."</label><input class='text $kpclass' id='token' type='text' name='token' />";
@@ -1567,7 +1546,7 @@ function buildsurveysession($surveyid)
             if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
             {
                 echo "<li>
-                <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='".site_url('/verification/image')."' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
+                <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='".Yii::app()->createUrl('/verification/image')."' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
                 </li>";
             }
             echo "<li>
@@ -1592,13 +1571,13 @@ function buildsurveysession($surveyid)
         //check if token actually does exist
         // check also if it is allowed to change survey after completion
         if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-            $tkquery = "SELECT COUNT(*) FROM ".$CI->db->dbprefix('tokens_'.$surveyid)." WHERE token=".$CI->db->escape(trim(strip_tags($clienttoken)))." ";
+            $tkquery = "SELECT COUNT(*) FROM {{tokens_".$surveyid."}} WHERE token=".trim(strip_tags($clienttoken))." ";
         } else {
-            $tkquery = "SELECT COUNT(*) FROM ".$CI->db->dbprefix('tokens_'.$surveyid)." WHERE token=".$CI->db->escape(trim(strip_tags($clienttoken)))." AND (completed = 'N' or completed='')";
+            $tkquery = "SELECT COUNT(*) FROM {{tokens_".$surveyid."}} WHERE token=".trim(strip_tags($clienttoken))." AND (completed = 'N' or completed='')";
         }
 
         $tkresult = db_execute_assoc($tkquery);    //Checked
-        $tkexist = reset($tkresult->row_array());
+        $tkexist = reset($tkresult->read());
         if (!$tkexist || $areTokensUsed)
         {
             //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
@@ -1636,14 +1615,14 @@ function buildsurveysession($surveyid)
             //check if token actually does exist
             if ($thissurvey['alloweditaftercompletion'] == 'Y' )
             {
-                $tkquery = "SELECT COUNT(*) FROM ".$CI->db->dbprefix('tokens_'.$surveyid)." WHERE token='".$this->db->escape(trim(sanitize_xss_string(strip_tags($clienttoken))))."'";
+                $tkquery = "SELECT COUNT(*) FROM {{tokens_".$surveyid."}} WHERE token='".trim(sanitize_xss_string(strip_tags($clienttoken)))."'";
             }
             else
             {
-                $tkquery = "SELECT COUNT(*) FROM ".$CI->db->dbprefix('tokens_'.$surveyid)." WHERE token='".$this->db->escape(trim(sanitize_xss_string(strip_tags($clienttoken))))."' AND (completed = 'N' or completed='')";
+                $tkquery = "SELECT COUNT(*) FROM {{tokens_".$surveyid."}} WHERE token='".trim(sanitize_xss_string(strip_tags($clienttoken)))."' AND (completed = 'N' or completed='')";
             }
             $tkresult = db_execute_assoc($tkquery);     //Checked
-            list($tkexist) = $tkresult->row_array();
+            list($tkexist) = $tkresult->read();
             if (!$tkexist || ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y') )
             {
                 sendcacheheaders();
@@ -1700,7 +1679,7 @@ function buildsurveysession($surveyid)
                     if (!isset($gettoken))
                     {
                         echo $clang->gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
-                        <form id='tokenform' method='get' action='{$publicurl}/index.php'>
+                        <form id='tokenform' method='get' action='".Yii::app()->createUrl("survey")."/index.php'>
                         <ul>
                         <li>
                         <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
@@ -1719,7 +1698,7 @@ function buildsurveysession($surveyid)
                 else
                 {
                     echo $clang->gT("Please confirm the token by answering the security question below and click continue.")."</p>
-                    <form id='tokenform' method='get' action='{$publicurl}/index.php'>
+                    <form id='tokenform' method='get' action='".Yii::app()->createUrl("survey")."'>
                     <ul>
                     <li>
                     <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
@@ -1740,7 +1719,7 @@ function buildsurveysession($surveyid)
                 if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
                 {
                     echo "<li>
-                    <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='".site_url('/verification/image')."' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
+                    <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='".Yii::app()->createUrl('/verification/image')."' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
                     </li>";
                 }
                 echo "<li><input class='submit' type='submit' value='".$clang->gT("Continue")."' /></li>
@@ -1766,14 +1745,14 @@ function buildsurveysession($surveyid)
 
     //RL: multilingual support
 
-    if (isset($_GET['token']) && db_tables_exist($dbprefix.'tokens_'.$surveyid))
+    if (isset($_GET['token']) && db_tables_exist('{{tokens_'.$surveyid.'}}'))
     {
 
         //get language from token (if one exists)
-        $tkquery2 = "SELECT * FROM ".$CI->db->dbprefix('tokens_'.$surveyid)." WHERE token='".db_quote($clienttoken)."' AND (completed = 'N' or completed='')";
+        $tkquery2 = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".db_quote($clienttoken)."' AND (completed = 'N' or completed='')";
         //echo $tkquery2;
         $result = db_execute_assoc($tkquery2) or safe_die ("Couldn't get tokens<br />$tkquery<br />".$connect->ErrorMsg());    //Checked
-        foreach ($result->result_array() as $rw)
+        foreach ($result->readAll() as $rw)
         {
             $tklanguage=$rw['language'];
         }
@@ -1803,24 +1782,22 @@ function buildsurveysession($surveyid)
 
     // Optimized Query
     // Change query to use sub-select to see if conditions exist.
-    $query = "SELECT ".$CI->db->dbprefix('questions').".*, ".$CI->db->dbprefix('groups').".*,\n"
-    ." (SELECT count(1) FROM ".$CI->db->dbprefix('conditions')."\n"
-    ." WHERE ".$CI->db->dbprefix('questions').".qid = ".$CI->db->dbprefix('conditions').".qid) AS hasconditions,\n"
-    ." (SELECT count(1) FROM ".$CI->db->dbprefix('conditions')."\n"
-    ." WHERE ".$CI->db->dbprefix('questions').".qid = ".$CI->db->dbprefix('conditions').".cqid) AS usedinconditions\n"
-    ." FROM ".$CI->db->dbprefix('groups')." INNER JOIN ".$CI->db->dbprefix('questions')." ON ".$CI->db->dbprefix('groups').".gid = ".$CI->db->dbprefix('questions').".gid\n"
-    ." WHERE ".$CI->db->dbprefix('questions').".sid=".$surveyid."\n"
-    ." AND ".$CI->db->dbprefix('groups').".language='".$_SESSION['s_lang']."'\n"
-    ." AND ".$CI->db->dbprefix('questions').".language='".$_SESSION['s_lang']."'\n"
-    ." AND ".$CI->db->dbprefix('questions').".parent_qid=0\n"
-    ." ORDER BY ".$CI->db->dbprefix('groups').".group_order,".$CI->db->dbprefix('questions').".question_order";
+    $query = "SELECT {{questions}}.*, {{groups}}.*,\n"
+    ." (SELECT count(1) FROM {{conditions}}\n"
+    ." WHERE {{questions}}.qid = {{conditions}}.qid) AS hasconditions,\n"
+    ." (SELECT count(1) FROM {{conditions}}\n"
+    ." WHERE {{questions}}.qid = {{conditions}}.cqid) AS usedinconditions\n"
+    ." FROM {{groups}} INNER JOIN {{questions}} ON {{groups}}.gid = {{questions}}.gid\n"
+    ." WHERE {{questions}}.sid=".$surveyid."\n"
+    ." AND {{groups}}.language='".$_SESSION['s_lang']."'\n"
+    ." AND {{questions}}.language='".$_SESSION['s_lang']."'\n"
+    ." AND {{questions}}.parent_qid=0\n"
+    ." ORDER BY {{groups}}.group_order,{{questions}}.question_order";
 
     //var_dump($_SESSION);
     $result = db_execute_assoc($query);    //Checked
 
-    $arows = $result->result_array();
-
-    $totalquestions = $result->num_rows();
+    $totalquestions = $result->count();
 
     //2. SESSION VARIABLE: totalsteps
     //The number of "pages" that will be presented in this survey
@@ -1877,7 +1854,7 @@ function buildsurveysession($surveyid)
         $_SESSION['insertarray'][]= "token";
     }
 
-    if ($tokensexist == 1 && $thissurvey['anonymized'] == "N"  && db_tables_exist($dbprefix.'tokens_'.$surveyid))
+    if ($tokensexist == 1 && $thissurvey['anonymized'] == "N"  && db_tables_exist('{{tokens_'.$surveyid.'}}'))
     {
         //Gather survey data for "non anonymous" surveys, for use in presenting questions
         $_SESSION['thistoken']=getTokenData($surveyid, $clienttoken);
@@ -1887,13 +1864,12 @@ function buildsurveysession($surveyid)
 
 
     // Randomization groups for groups
-    $CI->load->model('groups_model');
     $aRandomGroups=array();
     $aGIDCompleteMap=array();
     // first find all groups and their groups IDS
-    $oData=$CI->groups_model->getSomeRecords(array('gid','randomization_group'),
-    array('sid'=>$surveyid,'randomization_group <>'=>'','language'=>$_SESSION['s_lang']));
-    foreach($oData->result_array() as $aGroup)
+    $oData=Groups::model()->getSomeRecords(array('gid','randomization_group'),
+    "sid={$surveyid} and language='{$_SESSION['s_lang']}' and randomization_group !=''");
+    foreach($oData->readAll() as $aGroup)
     {
         $aRandomGroups[$aGroup['randomization_group']][] = $aGroup['gid'];
     }
@@ -1958,14 +1934,14 @@ function buildsurveysession($surveyid)
     $randomGroups=array();
     if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n' || $databasetype=='mssqlnative')
     {
-        $rgquery = "SELECT attr.qid, CAST(value as varchar(255)) FROM ".$CI->db->dbprefix('question_attributes')." as attr right join ".$CI->db->dbprefix('questions')." as quests on attr.qid=quests.qid WHERE attribute='random_group' and CAST(value as varchar(255)) <> '' and sid=$surveyid GROUP BY attr.qid, CAST(value as varchar(255))";
+        $rgquery = "SELECT attr.qid, CAST(value as varchar(255)) FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and CAST(value as varchar(255)) <> '' and sid=$surveyid GROUP BY attr.qid, CAST(value as varchar(255))";
     }
     else
     {
-        $rgquery = "SELECT attr.qid, value FROM ".$CI->db->dbprefix('question_attributes')." as attr right join ".$CI->db->dbprefix('questions')." as quests on attr.qid=quests.qid WHERE attribute='random_group' and value <> '' and sid=$surveyid GROUP BY attr.qid, value";
+        $rgquery = "SELECT attr.qid, value FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and value <> '' and sid=$surveyid GROUP BY attr.qid, value";
     }
     $rgresult = db_execute_assoc($rgquery);
-    foreach($rgresult->result_array() as $rgrow)
+    foreach($rgresult->readAll() as $rgrow)
     {
         // Get the question IDs for each randomization group
         $randomGroups[$rgrow['value']][] = $rgrow['qid'];
@@ -2094,9 +2070,8 @@ function buildsurveysession($surveyid)
     $_SESSION['fieldarray']=array_values($_SESSION['fieldarray']);
 
     //Check if a passthru label and value have been included in the query url
-    $CI->load->model('survey_url_parameters_model');
-    $oResult=$CI->survey_url_parameters_model->getParametersForSurvey($surveyid);
-    foreach($oResult->result_array() as $aRow)
+    $oResult=Survey_url_parameters::model()->getParametersForSurvey($surveyid);
+    foreach($oResult->readAll() as $aRow)
     {
         if(isset($_GET[$aRow['parameter']]))
         {
@@ -2127,11 +2102,11 @@ function buildsurveysession($surveyid)
 
     // Fix totalquestions by substracting Test Display questions
     $sNoOfTextDisplayQuestions=(int) reset(db_execute_assoc("SELECT count(*)\n"
-    ." FROM ".$CI->db->dbprefix('questions')
+    ." FROM {{questions}}"
     ." WHERE type in ('X','*')\n"
     ." AND sid={$surveyid}"
     ." AND language='".$_SESSION['s_lang']."'"
-    ." AND parent_qid=0")->row_array());
+    ." AND parent_qid=0")->read());
 
     $_SESSION['therearexquestions'] = $totalquestions - $sNoOfTextDisplayQuestions; // must be global for THEREAREXQUESTIONS replacement field to work
 
@@ -2151,11 +2126,10 @@ function surveymover()
     global $thissurvey, $clang;
     global $surveyid, $presentinggroupdescription;
 
-    $CI =& get_instance();
-    $_POST = $CI->input->post();
+    
+    
     //$_SESSION = $CI->session->userdata;
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
 
     $surveymover = "";
 
@@ -2230,11 +2204,10 @@ function doAssessment($surveyid, $returndataonly=false)
 {
     global $thistpl;
 
-    $CI =& get_instance();
-    $_POST = $CI->input->post();
+    
+    
     //$_SESSION = $CI->session->userdata;
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
 
     $baselang=GetBaseLanguageFromSurveyID($surveyid);
     $total=0;
@@ -2242,15 +2215,15 @@ function doAssessment($surveyid, $returndataonly=false)
     {
         $_SESSION['s_lang']=$baselang;
     }
-    $query = "SELECT * FROM ".$CI->db->dbprefix('assessments')."
+    $query = "SELECT * FROM {{assessments}} 
     WHERE sid=$surveyid and language='{$_SESSION['s_lang']}'
     ORDER BY scope, id";
     if ($result = db_execute_assoc($query))   //Checked
 
     {
-        if ($result->num_rows() > 0)
+        if ($result->count() > 0)
         {
-            foreach($result->result_array() as $row)
+            foreach($result->readAll() as $row)
             {
                 if ($row['scope'] == "G")
                 {
@@ -2287,11 +2260,11 @@ function doAssessment($surveyid, $returndataonly=false)
                         else
                         {
 
-                            $usquery = "SELECT assessment_value FROM ".$CI->db->dbprefix("answers")." where qid=".$field['qid']." and language='$baselang' and code=".db_quoteall($_SESSION[$field['fieldname']]);
+                            $usquery = "SELECT assessment_value FROM {{answers}} where qid=".$field['qid']." and language='$baselang' and code=".db_quoteall($_SESSION[$field['fieldname']]);
                             $usresult = db_execute_assoc($usquery);          //Checked
                             if ($usresult)
                             {
-                                $usrow = $usresult->row_array();
+                                $usrow = $usresult->read();
 
                                 if (($field['type'] == "M") || ($field['type'] == "P"))
                                 {
@@ -2399,15 +2372,14 @@ function UpdateSessionGroupList($surveyid, $language)
 //A list of groups in this survey, ordered by group name.
 
 {
-    $CI =& get_instance();
-    $_POST = $CI->input->post();
+    
+    
     //$_SESSION = $CI->session->userdata;
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
     unset ($_SESSION['grouplist']);
-    $query = "SELECT * FROM ".$CI->db->dbprefix('groups')." WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
-    $result = db_execute_assoc($query) or safe_die ("Couldn't get group list<br />$query<br />".$connect->ErrorMsg());  //Checked
-    foreach ($result->result_array() as $row)
+    $query = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
+    $result = db_execute_assoc($query) or safe_die ("Couldn't get group list<br />$query<br />");  //Checked
+    foreach ($result->readAll() as $row)
     {
         $_SESSION['grouplist'][$row['gid']]=array($row['gid'], $row['group_name'], $row['description']);
     }
@@ -2432,11 +2404,10 @@ function UpdateFieldArray()
 {
     global $surveyid;
 
-    $CI =& get_instance();
-    $_POST = $CI->input->post();
+    
+    
     //$_SESSION = $CI->session->userdata;
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
 
     if (isset($_SESSION['fieldarray']))
     {
@@ -2445,9 +2416,9 @@ function UpdateFieldArray()
         {
             $questionarray =& $_SESSION['fieldarray'][$key];
 
-            $query = "SELECT * FROM ".$CI->db->dbprefix('questions')." WHERE qid=".$questionarray[0]." AND language='".$_SESSION['s_lang']."'";
+            $query = "SELECT * FROM {{questions}} WHERE qid=".$questionarray[0]." AND language='".$_SESSION['s_lang']."'";
             $result = db_execute_assoc($query) or safe_die ("Couldn't get question <br />$query<br />".$connect->ErrorMsg());      //Checked
-            $row = $result->row_array();
+            $row = $result->read();
             $questionarray[2]=$row['title'];
             $questionarray[3]=$row['question'];
             unset($questionarray);
@@ -2469,16 +2440,15 @@ function check_quota($checkaction,$surveyid)
     if (!isset($_SESSION['s_lang'])){
         return;
     }
-    global $thistpl, $clang, $clienttoken, $publicurl;
+    global $thistpl, $clang, $clienttoken;
     $global_matched = false;
     $quota_info = getQuotaInformation($surveyid, $_SESSION['s_lang']);
     $x=0;
 
-    $CI =& get_instance();
-    $_POST = $CI->input->post();
+    
+    
     //$_SESSION = $CI->session->userdata;
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
 
     if(count($quota_info) > 0) // Quota's have to exist
     {
@@ -2554,14 +2524,14 @@ function check_quota($checkaction,$surveyid)
                 {
 
                     // Check the status of the quota, is it full or not
-                    $querysel = "SELECT id FROM ".$CI->db->dbprefix('survey_'.$surveyid)."
+                    $querysel = "SELECT id FROM {{survey_".$surveyid."}}
                     WHERE ".implode(' AND ',$querycond)." "."
                     AND submitdate IS NOT NULL";
 
                     $result = db_execute_assoc($querysel) or safe_die($connect->ErrorMsg());    //Checked
-                    $quota_check = $result->row_array();
+                    $quota_check = $result->readAll();
 
-                    if ($result->num_rows() >= $quota['Limit']) // Quota is full!!
+                    if ($result->count() >= $quota['Limit']) // Quota is full!!
 
                     {
                         // Now we have to check if the quota matches in the current session
@@ -2649,7 +2619,7 @@ function check_quota($checkaction,$surveyid)
                 echo "\t<div class='quotamessage'>\n";
                 echo "\t".$quota['Message']."<br /><br />\n";
                 echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
-                echo "<form method='post' action='{$publicurl}/index.php' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><button class='nav-button nav-button-icon-left ui-corner-all' class='submit' accesskey='p' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" name='move2'><span class='ui-icon ui-icon-seek-prev'></span>".$clang->gT("Previous")."</button>
+                echo "<form method='post' action='".Yii::app()->createUrl("survey")."' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><button class='nav-button nav-button-icon-left ui-corner-all' class='submit' accesskey='p' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" name='move2'><span class='ui-icon ui-icon-seek-prev'></span>".$clang->gT("Previous")."</button>
                 <input type='hidden' name='thisstep' value='".($_SESSION['step'])."' id='thisstep' />
                 <input type='hidden' name='sid' value='".returnglobal('sid')."' id='sid' />
                 <input type='hidden' name='token' value='".$clienttoken."' id='token' />
@@ -2712,11 +2682,10 @@ function GetReferringUrl()
 {
     global $clang,$stripQueryFromRefurl;
 
-    $CI =& get_instance();
-    $_POST = $CI->input->post();
+    
+    
     //$_SESSION = $CI->session->userdata;
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
 
     if (isset($_SESSION['refurl']))
     {
@@ -2754,13 +2723,12 @@ function GetReferringUrl()
 * Shows the welcome page, used in group by group and question by question mode
 */
 function display_first_page() {
-    global $thistpl, $token, $surveyid, $thissurvey, $navigator,$publicurl, $totalquestions;
+    global $thistpl, $token, $surveyid, $thissurvey, $navigator, $totalquestions;
 
-    $CI =& get_instance();
-    $_POST = $CI->input->post();
+    
+    
     //$_SESSION = $CI->session->userdata;
-    $dbprefix = $CI->db->dbprefix;
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
 
     $navigator = surveymover();
 
@@ -2769,7 +2737,7 @@ function display_first_page() {
 
     $redata = compact(array_keys(get_defined_vars()));
     echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'frontend_helper[2757]');
-    echo "\n<form method='post' action='".site_url("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
+    echo "\n<form method='post' action='".Yii::app()->createUrl("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
 
     echo "\n\n<!-- START THE SURVEY -->\n";
 

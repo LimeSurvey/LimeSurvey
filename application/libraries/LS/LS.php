@@ -22,7 +22,7 @@
  *
  * @param string $class
  */
-function LS_autoload($class)
+function LS($class)
 {
     $namespace = 'LS';
     $separator = '_';
@@ -39,4 +39,4 @@ function LS_autoload($class)
     require $file; # provoke fatal error if file does not exists.
 }
  
-spl_autoload_register('LS_autoload');
+spl_autoload_register('LS');

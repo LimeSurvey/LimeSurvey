@@ -13,17 +13,16 @@
  *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
  */
 
-class surveyaction extends SurveyController {
+class SurveyAction extends CAction {
 
-    function __construct()
-    {
-        parent::__construct();
+    public function run()
+	{
+        $this->action();
     }
-
-    public function _remap($method, $params = array())
-    {
-        array_unshift($params, $method);
-        return call_user_func_array(array($this, 'action'), $params);
+    
+    public function newtest()
+	{
+        $this->action();
     }
 
     function action()
@@ -31,25 +30,24 @@ class surveyaction extends SurveyController {
         global $surveyid, $thistpl, $totalquestions;
         global $thissurvey, $thisstep;
         global $clienttoken, $tokensexist, $token;
+        $clang = Yii::app()->lang;
 
-        @ini_set('session.gc_maxlifetime', $this->config->item('sess_expiration'));
+        @ini_set('session.gc_maxlifetime', Yii::app()->getConfig('sess_expiration'));
 
         $this->_loadRequiredHelpersAndLibraries();
 
-        $_POST = $this->input->post();
         $param = $this->_getParameters(func_get_args(), $_POST);
 
-        $surveyid = $param['sid'];
-        $thisstep = $param['thisstep'];
-        $move = $param['move'];
-        $clienttoken = $param['token'];
-        $standardtemplaterootdir = $this->config->item('standardtemplaterootdir');
+        @$surveyid = $param['sid'];
+        @$thisstep = $param['thisstep'];
+        @$move = $param['move'];
+        @$clienttoken = $param['token'];
+        $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
 
         // unused vars in this method (used in methods using compacted method vars)
-        $loadname = $param['loadname'];
-        $loadpass = $param['loadpass'];
-        $sitename = $this->config->item('sitename');
-        $relativeurl = $this->config->item('relativeurl');
+        @$loadname = $param['loadname'];
+        @$loadpass = $param['loadpass'];
+        $sitename = Yii::app()->getConfig('sitename');
 
         $this->_setSessionToSurvey($surveyid);
 
@@ -129,7 +127,7 @@ class surveyaction extends SurveyController {
         $redata = compact(array_keys(get_defined_vars()));
 
 
-        if ( $this->_didSessionTimeOut() )
+        /*if ( $this->_didSessionTimeOut() )
         {
             // TODO is this still required (we have the basepath check at the top)
             if (isset($param['rootdir']))
@@ -148,13 +146,13 @@ class surveyaction extends SurveyController {
                     sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
                 );
             $this->_niceExit($redata, __LINE__, null, $asMessage);
-        };
+        };*/
 
         // Set the language of the survey, either from POST, GET parameter of session var
         $sTempLanguage = null;
-        if ( !empty($_POST['lang']) )
+        if ( !empty($_REQUEST['lang']) )
         {
-            $sTempLanguage = $_POST['lang'];
+            $sTempLanguage = $_REQUEST['lang'];
         }
         else if ( isset($param['lang']) && !empty($surveyid) )
         {
@@ -165,12 +163,13 @@ class surveyaction extends SurveyController {
         {
             $sTempLanguage = sanitize_languagecode($sTempLanguage);
             $clang = SetSurveyLanguage( $surveyid, $sTempLanguage);
-            UpdateSessionGroupList($surveyid, $sTempLanguage);         // to refresh the language strings in the group list session variable
+            if ($surveyid) UpdateSessionGroupList($surveyid, $sTempLanguage);         // to refresh the language strings in the group list session variable
             UpdateFieldArray();                                        // to refresh question titles and question text
         }
 
         if (isset($_SESSION['s_lang']))
         {
+            $baselang = sanitize_languagecode($_SESSION['s_lang']);
             $clang = SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
         }
         elseif (!empty($surveyid))
@@ -180,7 +179,16 @@ class surveyaction extends SurveyController {
         }
         else
         {
-            $baselang = $this->config->item("defaultlang");
+            if(isset($_POST['lang']) && $_POST['lang']!='')
+            {
+                $baselang = sanitize_languagecode($_POST['lang']);
+            }
+            else if (isset($_GET['lang']) && $_GET['lang'] != '')
+            {
+                $baselang = sanitize_languagecode($_GET['lang']);
+            }
+            else
+                $baselang = Yii::app()->getConfig("defaultlang");
         }
 
         if (isset($param['embedded_inc']))
@@ -196,24 +204,16 @@ class surveyaction extends SurveyController {
         //CHECK FOR REQUIRED INFORMATION (sid)
         if (!$surveyid)
         {
-            if(isset($param['lang']))
-            {
-                $baselang = sanitize_languagecode($param['lang']);
-            }
-            elseif (!isset($baselang))
-            {
-                $baselang = $this->config->item("defaultlang");
-            }
             $clang = $this->_loadLimesurveyLang($baselang);
             if(!isset($defaulttemplate))
             {
-                $defaulttemplate=$this->config->item("defaulttemplate");
+                $defaulttemplate=Yii::app()->getConfig("defaulttemplate");
             }
-            $languagechanger = makelanguagechanger();
+            $languagechanger = makelanguagechanger($baselang);
             //Find out if there are any publicly available surveys
             $query = "SELECT a.sid, b.surveyls_title, a.publicstatistics
-                      FROM ".$this->db->dbprefix('surveys')." AS a
-                      INNER JOIN ".$this->db->dbprefix('surveys_languagesettings')." AS b
+                      FROM {{surveys}} AS a
+                      INNER JOIN {{surveys_languagesettings}} AS b
                       ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language )
                       WHERE surveyls_survey_id=a.sid
                       AND surveyls_language=a.language
@@ -223,28 +223,28 @@ class surveyaction extends SurveyController {
                       AND ((a.expires >= '".date("Y-m-d H:i")."') OR (a.expires is null))
                       AND ((a.startdate <= '".date("Y-m-d H:i")."') OR (a.startdate is null))
                       ORDER BY surveyls_title";
-            $result = db_execute_assoc($query,false,true) or show_error("Could not connect to database. If you try to install LimeSurvey please refer to the <a href='http://docs.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage."); //Checked
+            $result = db_execute_assoc($query,false,true) or safe_die("Could not connect to database. If you try to install LimeSurvey please refer to the <a href='http://docs.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage."); //Checked
             $list=array();
 
-            if($result->num_rows() > 0)
+            if($result->count() > 0)
             {
-                foreach($result->result_array() as $rows)
+                foreach($result->readAll() as $rows)
                 {
-                    $link = "<li><a href='".site_url($rows['sid']);
+                    $link = "<li><a href='".$this->getController()->createUrl('/survey/index/sid/'.$rows['sid']);
                     if (isset($param['lang']))
                     {
                         $link .= "/lang-".sanitize_languagecode($param['lang']);
                     }
                     $link .= "'  class='surveytitle'>".$rows['surveyls_title']."</a>\n";
-                    if ($rows['publicstatistics'] == 'Y') $link .= "<a href='".site_url("statistics_user/".$rows['sid'])."'>(".$clang->gT('View statistics').")</a>";
+                    if ($rows['publicstatistics'] == 'Y') $link .= "<a href='".$this->getController()->createUrl("statistics_user/".$rows['sid'])."'>(".$clang->gT('View statistics').")</a>";
                     $link .= "</li>\n";
                     $list[]=$link;
                 }
             }
             //Check for inactive surveys which allow public registration.
             $squery = "SELECT a.sid, b.surveyls_title, a.publicstatistics
-                      FROM ".$this->db->dbprefix('surveys')." AS a
-                      INNER JOIN ".$this->db->dbprefix('surveys_languagesettings')." AS b
+                      FROM {{surveys}} AS a
+                      INNER JOIN {{surveys_languagesettings}} AS b
                       ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language )
                       WHERE surveyls_survey_id=a.sid
                       AND surveyls_language=a.language
@@ -256,18 +256,18 @@ class surveyaction extends SurveyController {
                       AND a.startdate is not null
                       ORDER BY surveyls_title";
 
-            $sresult = db_execute_assoc($squery) or show_error("Couldn't execute $squery");
+            $sresult = db_execute_assoc($squery) or safe_die("Couldn't execute $squery");
 
 
-            if($sresult->num_rows() > 0)
+            if($sresult->count() > 0)
             {
                 $list[] = "<br/>".$clang->gT("Following survey(s) are not yet active but you can register for them.");
-                foreach($sresult->result_array() as $rows)
+                foreach($sresult->readAll() as $rows)
                 {
                     $link = "<li><a href=\"#\" id='inactivesurvey' onclick = 'sendreq(".$rows['sid'].");' ";
-                    //$link = "<li><a href=\"#\" id='inactivesurvey' onclick = 'get2post(".site_url('survey/send/')."?sid={$rows['sid']}&amp;)sendreq(".$rows['sid'].",".$rows['startdate'].",".$rows['expires'].");' ";
+                    //$link = "<li><a href=\"#\" id='inactivesurvey' onclick = 'get2post(".$this->getController()->createUrl('survey/send/')."?sid={$rows['sid']}&amp;)sendreq(".$rows['sid'].",".$rows['startdate'].",".$rows['expires'].");' ";
                     $link .= "  class='surveytitle'>".$rows['surveyls_title']."</a>\n";
-                    if ($rows['publicstatistics'] == 'Y') $link .= "<a href='".site_url("statistics_user/".$rows['sid'])."'>(".$clang->gT('View statistics').")</a>";
+                    if ($rows['publicstatistics'] == 'Y') $link .= "<a href='".$this->getController()->createUrl("statistics_user/".$rows['sid'])."'>(".$clang->gT('View statistics').")</a>";
                     $link .= "</li><div id='regform'></div>\n";
                     $list[]=$link;
                 }
@@ -279,12 +279,12 @@ class surveyaction extends SurveyController {
             }
             $surveylist=array(
                     "nosid"=>$clang->gT("You have not provided a survey identification number"),
-                    "contact"=>sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$this->config->item("siteadminname"),encodeEmail($this->config->item("siteadminemail"))),
+                    "contact"=>sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),Yii::app()->getConfig("siteadminname"),encodeEmail(Yii::app()->getConfig("siteadminemail"))),
                     "listheading"=>$clang->gT("The following surveys are available:"),
                     "list"=>implode("\n",$list),
             );
 
-            $thissurvey['name'] = $this->config->item("sitename");
+            $thissurvey['name'] = Yii::app()->getConfig("sitename");
             $thissurvey['templatedir'] = $defaulttemplate;
 
             $data['thissurvey'] = $thissurvey;
@@ -294,7 +294,7 @@ class surveyaction extends SurveyController {
             $data['templatedir'] = sGetTemplatePath($defaulttemplate);
             $data['templateurl'] = sGetTemplateURL($defaulttemplate)."/";
             $data['templatename'] = $defaulttemplate;
-            $data['sitename'] = $this->config->item("sitename");
+            $data['sitename'] = Yii::app()->getConfig("sitename");
             $data['languagechanger'] = $languagechanger;
 
             //A nice exit
@@ -310,17 +310,16 @@ class surveyaction extends SurveyController {
 
                 $.ajax({
                   type: "GET",
-                  url: "'.site_url("register/ajaxregisterform").'/" + surveyid,
+                  url: "'.$this->getController()->createUrl("register/ajaxregisterform").'/" + surveyid,
                 }).done(function(msg) {
                   document.getElementById("regform").innerHTML = msg;
                 });
             }
             </script>';
 
-
-
-
-            $this->_niceExit($redata, __LINE__);
+            $this->_printTemplateContent(Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.'endpage.pstpl', $redata, __LINE__);
+            doFooter();
+            exit;
         }
 
         // Get token
@@ -371,7 +370,7 @@ class surveyaction extends SurveyController {
         }
 
 
-        $timeadjust = $this->config->item("timeadjust");
+        $timeadjust = Yii::app()->getConfig("timeadjust");
         //MAKE SURE SURVEY HASN'T EXPIRED
         if ($thissurvey['expiry']!='' and date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)>$thissurvey['expiry'] && $thissurvey['active']!='N')
         {
@@ -499,8 +498,9 @@ class surveyaction extends SurveyController {
         if (isset($_POST['loadall']) && $_POST['loadall'] == $clang->gT("Load Unfinished Survey"))
         {
             $redata = compact(array_keys(get_defined_vars()));
-            $this->load->library("load_answers");
-            $this->load_answers->run($redata);
+            Yii::import("application.libraries.Load_answers");
+            $tmp = new Load_answers();
+            $tmp->run($redata);
         }
 
 
@@ -511,20 +511,20 @@ class surveyaction extends SurveyController {
         // this check is done in buildsurveysession and error message
         // could be more interresting there (takes into accound captcha if used)
         if ($tokensexist == 1 && isset($token) && $token &&
-            isset($_SESSION['step']) && $_SESSION['step']>0 && db_tables_exist($this->db->dbprefix('tokens_'.$surveyid)))
+            isset($_SESSION['step']) && $_SESSION['step']>0 && db_tables_exist(Yii::app()->db->tablePrefix.'_tokens_'.$surveyid))
         {
             //check if tokens actually haven't been already used
             $areTokensUsed = usedTokens(trim(strip_tags(returnglobal('token'))),$surveyid);
             // check if token actually does exist
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-                $tkquery = "SELECT * FROM ".$this->db->dbprefix('tokens_'.$surveyid)." WHERE token=".$this->db->escape($token)." ";
+                $tkquery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token=".$token." ";
             } else {
-                $tkquery = "SELECT * FROM ".$this->db->dbprefix('tokens_'.$surveyid)." WHERE token=".$this->db->escape($token)." AND (completed = 'N' or completed='')";
+                $tkquery = "SELECT * FROM {{'tokens_'".$surveyid."}} WHERE token=".$token." AND (completed = 'N' or completed='')";
             }
             $tkresult = db_execute_assoc($tkquery); //Checked
-            $tokendata = $tkresult->row_array();
-            if ($tkresult->num_rows()==0 || $areTokensUsed)
+            $tokendata = $tkresult->read();
+            if ($tkresult->count()==0 || $areTokensUsed)
             {
                 sendcacheheaders();
                 doHeader();
@@ -542,16 +542,16 @@ class surveyaction extends SurveyController {
                 $this->_niceExit($redata, __LINE__, $thistpl, $asMessage, true);
             }
         }
-        if ($tokensexist == 1 && isset($token) && $token && db_tables_exist($this->db->dbprefix('tokens_'.$surveyid))) //check if token is in a valid time frame
+        if ($tokensexist == 1 && isset($token) && $token && db_tables_exist("{{tokens_".$surveyid."}}")) //check if token is in a valid time frame
         {
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-                $tkquery = "SELECT * FROM ".$this->db->dbprefix('tokens_'.$surveyid)." WHERE token=".$this->db->escape($token)." ";
+                $tkquery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token=".$token." ";
             } else {
-                $tkquery = "SELECT * FROM ".$this->db->dbprefix('tokens_'.$surveyid)." WHERE token=".$this->db->escape($token)." AND (completed = 'N' or completed='')";
+                $tkquery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token=".$token." AND (completed = 'N' or completed='')";
             }
             $tkresult = db_execute_assoc($tkquery); //Checked
-            $tokendata = $tkresult->row_array();
+            $tokendata = $tkresult->read();
             if (isset($tokendata['validfrom']) && (trim($tokendata['validfrom'])!='' && $tokendata['validfrom']>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) ||
             isset($tokendata['validuntil']) && (trim($tokendata['validuntil'])!='' && $tokendata['validuntil']<date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)))
             {
@@ -596,9 +596,9 @@ class surveyaction extends SurveyController {
                 // if yes, extract the response json to those questions
                 if (isset($qid))
                 {
-                    $query = "SELECT * FROM ".$this->db->dbprefix("survey_".$surveyid)." WHERE id=".$_SESSION['srid'];
+                    $query = "SELECT * FROM {{survey_".$surveyid."}} WHERE id=".$_SESSION['srid'];
                     $result = db_execute_assoc($query);
-                    foreach($result->result_array() as $row)
+                    foreach($result->readAll() as $row)
                     {
                         foreach ($qid as $question)
                         {
@@ -611,7 +611,7 @@ class surveyaction extends SurveyController {
 
                             foreach ($phparray as $metadata)
                             {
-                                $target = $this->config->item("uploaddir")."/surveys/".$surveyid."/files/";
+                                $target = Yii::app()->getConfig("uploaddir")."/surveys/".$surveyid."/files/";
                                 // delete those files
                                 unlink($target.$metadata->filename);
                             }
@@ -622,10 +622,10 @@ class surveyaction extends SurveyController {
 
 
                 // delete the response but only if not already completed
-                db_execute_assoc('DELETE FROM '.$this->db->dbprefix('survey_'.$surveyid).' WHERE id='.$_SESSION['srid']." AND submitdate IS NULL");
+                db_execute_assoc('DELETE FROM {{survey_".$surveyid)."}} WHERE id='.$_SESSION['srid']." AND submitdate IS NULL");
 
                 // also delete a record from saved_control when there is one
-                db_execute_assoc('DELETE FROM '.$this->db->dbprefix('saved_control'). ' WHERE srid='.$_SESSION['srid'].' AND sid='.$surveyid);
+                db_execute_assoc('DELETE FROM {{saved_control}} WHERE srid='.$_SESSION['srid'].' AND sid='.$surveyid);
             }
             session_unset();
             session_destroy();
@@ -689,12 +689,12 @@ class surveyaction extends SurveyController {
 
             // load previous answers if any (dataentry with nosubmit)
             $srquery="SELECT id FROM {$thissurvey['tablename']}"
-            . " WHERE {$thissurvey['tablename']}.token='".$this->db->escape($token)."' order by id desc";
+            . " WHERE {$thissurvey['tablename']}.token='".$token."' order by id desc";
 
             $result = db_select_limit_assoc($srquery,1);
-            if ($result->num_rows()>0)
+            if ($result->count()>0)
             {
-                $row=reset($result->result_array());
+                $row=reset($result->read());
                 if($row['submitdate']=='' || ($row['submitdate']!='' && $thissurvey['alloweditaftercompletion'] == 'Y'))
                     $_SESSION['srid'] = $row['id'];
             }
@@ -707,8 +707,9 @@ class surveyaction extends SurveyController {
         {
             $redata = compact(array_keys(get_defined_vars()));
             //save.php
-            $this->load->library("Save");
-            $this->save->run($redata);
+            Yii::import("application.libraries.Save");
+            $tmp = new Save();
+            $tmp->run($redata);
 
             // RELOAD THE ANSWERS INCASE SOMEONE ELSE CHANGED THEM
             if ($thissurvey['active'] == "Y" &&
@@ -732,17 +733,20 @@ class surveyaction extends SurveyController {
         switch ($thissurvey['format'])
         {
             case "A": //All in one
-                $this->load->library("Survey_format");
-                $this->survey_format->run($redata);
+                Yii::import("application.libraries.survey_format");
+                $tmp = new survey_format();
+                $tmp->run($redata);
                 break;
             case "G": //Group at a time
-                $this->load->library("Group_format");
-                $this->group_format->run($redata);
+                Yii::import("application.libraries.group_format");
+                $tmp = new group_format();
+                $tmp->run($redata);
                 break;
             case "S": //One at a time
              default:
-                $this->load->library("Question_format");
-                $this->question_format->run($redata);
+                Yii::import("application.libraries.question_format");
+                $tmp = new question_format();
+                $tmp->run($redata);
         }
 
 		if (isset($_POST['saveall']) || isset($flashmessage))
@@ -754,7 +758,7 @@ class surveyaction extends SurveyController {
     function _getParameters($args = array(), $post = array())
     {
         $param = array();
-        if($args[0]==__CLASS__) array_shift($args);
+        if(@$args[0]==__CLASS__) array_shift($args);
         if(count($args)%2 == 0) {
             for ($i = 0; $i < count($args); $i+=2) {
                 //Sanitize input from URL with returnglobal
@@ -805,7 +809,11 @@ class surveyaction extends SurveyController {
             }
             return $sSessionname.'-runtime-publicportal';
         }
-        return 'LimeSurveyRuntime-'.$surveyId;
+        if ($surveyId)
+        {
+            return $sSessionname.'LimeSurveyRuntime-'.$surveyId;
+        }
+        return 'LimeSurveyRuntime-runtime-publicportal';
     }
 
     /**
@@ -816,12 +824,10 @@ class surveyaction extends SurveyController {
     function _setSessionToSurvey($surveyId)
     {
         $sSessionname = $this->_getSessionName($surveyId);
-        if (LS_PHP_Session::isActive())
-        {
-            throw new BadMethodCallException('Session already started.');
-        }
+        Yii::import("application.libraries.LS.LS");
+        LS('LS_PHP_Session');
         session_name($sSessionname);
-        $sCurrentname = $this->session->getActiveName();
+        $sCurrentname = session_name();
         if ($sCurrentname !== $sSessionname)
         {
             throw new RuntimeException(sprintf('Session name mismatch, must be %s, is %s.', $sSessionname, $sCurrentname));
@@ -830,9 +836,9 @@ class surveyaction extends SurveyController {
         // and get back on survey session name.
         $aMergevars = array('loginID', 'USER_RIGHT_SUPERADMIN');
         $aMerge = array();
-        if (!$this->session->all_userdata())
+        if (!$_SESSION)
         {
-            $this->session->sess_destroy();
+            session_destroy();
             $sAdminName = 'PHPSESSID';
             session_name($sAdminName);
             $sCurrentname = $this->session->getActiveName();
@@ -840,7 +846,7 @@ class surveyaction extends SurveyController {
             {
                 throw new RuntimeException(sprintf('Session name mismatch, must be %s, is %s.', $sAdminName, $sCurrentname));
             }
-            if ($aData = $this->session->all_userdata())
+            if ($aData = $_SESSION)
             {
                 foreach ($aMergevars as $sVar)
                 {
@@ -851,23 +857,23 @@ class surveyaction extends SurveyController {
                 }
                 // switch session from admin to survey
                 LS_PHP_Session::changeTo($sSessionname);
-                $this->session->close();
+                session_write_close();
             }
             else
             {
                 // there is no admin session (data), destroy it
                 // and change the session name
-                $this->session->sess_destroy();
+                session_destroy();
                 session_name($sSessionname);
             }
         }
 
         // @todo check if $this->session handles PHP configuration
         //       -> on start(). check what is required. -> give a setCookieParams() to private config
-        session_set_cookie_params(0, $this->config->item("relativeurl"));
+        session_set_cookie_params(0, Yii::app()->getConfig("relativeurl"));
         // @todo move that up and/or where it belongs to, session might need to be restarted if necessary to set
         //       for survey session
-        $sCurrentname = $this->session->getActiveName();
+        $sCurrentname = session_name();
         if ($sCurrentname !== $sSessionname)
         {
             throw new RuntimeException(sprintf('Session name mismatch, must be %s, is %s.', $sSessionname, $sCurrentname));
@@ -990,9 +996,9 @@ class surveyaction extends SurveyController {
     function _loadRequiredHelpersAndLibraries()
     {
         //Load helpers, libraries and config vars
-        $this->load->helper("database");
-        $this->load->helper("frontend");
-        $this->load->helper("surveytranslator");
+        Yii::app()->loadHelper("database");
+        Yii::app()->loadHelper("frontend");
+        Yii::app()->loadHelper("surveytranslator");
 //        $this->load->library("Dtexts");
     }
 
@@ -1007,9 +1013,9 @@ class surveyaction extends SurveyController {
             $baselang = $mvSurveyIdOrBaseLang;
         }
 
-        $this->load->library('Limesurvey_lang',array("langcode"=>$baselang));
+        Yii::import("application.libraries.Limesurvey_lang");
 
-        return $this->limesurvey_lang;
+        return new Limesurvey_lang(array("langcode"=>$baselang));
     }
 
     function _surveyExistsAndIsActive($surveyId)
@@ -1019,7 +1025,7 @@ class surveyaction extends SurveyController {
 
         if ($surveyId)
         {
-            $aRow = db_execute_assoc("SELECT active FROM ".$this->db->dbprefix('surveys')." WHERE sid='".$surveyId."'")->row_array();
+            $aRow = db_execute_assoc("SELECT active FROM {{surveys}} WHERE sid='".$surveyId."'")->read();
             if (isset($aRow['active']))
             {
                 $surveyExists = true;
@@ -1051,7 +1057,7 @@ class surveyaction extends SurveyController {
 
     function _surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $bIsSurveyActive, $bSurveyExists)
     {
-        $bSurveyPreviewRequireAuth = $this->config->item('surveyPreview_require_Auth');
+        $bSurveyPreviewRequireAuth = Yii::app()->getConfig('surveyPreview_require_Auth');
         return $surveyid && $bIsSurveyActive === false && $bSurveyExists && isset($bSurveyPreviewRequireAuth) && $bSurveyPreviewRequireAuth == true &&  !$this->_canUserPreviewSurvey($surveyid);
     }
 
@@ -1070,11 +1076,11 @@ class surveyaction extends SurveyController {
 
         $rightresult = db_execute_assoc(
         	"SELECT uid
-        	FROM ".$this->db->dbprefix('survey_permissions')."
-        	WHERE sid = ".$this->db->escape($surveyId)."
-        	AND uid = '".$this->db->escape($_SESSION['loginID'])."'
+        	FROM {{survey_permissions}}
+        	WHERE sid = ".$surveyId."
+        	AND uid = '".$_SESSION['loginID']."'
         	GROUP BY uid");
-        if ( $rightresult->num_rows() > 0 )
+        if ( $rightresult->count() > 0 )
             return true;
         return false;
     }
@@ -1086,7 +1092,7 @@ class surveyaction extends SurveyController {
     function _niceExit(&$redata, $iDebugLine, $sTemplateDir = null, $asMessage = array(), $bKillSession = false)
     {
         if ( $sTemplateDir === null )
-            $sTemplateDir = $this->config->item("standardtemplaterootdir").DIRECTORY_SEPARATOR.'default';
+            $sTemplateDir = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'default';
 
         sendcacheheaders();
 
@@ -1107,8 +1113,7 @@ class surveyaction extends SurveyController {
     function _createNewUserSessionAndRedirect($surveyId, &$redata, $iDebugLine, $asMessage = array())
     {
         $baselang = GetBaseLanguageFromSurveyID($surveyId);
-        $this->load->library('Limesurvey_lang',array("langcode"=>$baselang));
-        $clang = $this->limesurvey_lang;
+        $clang = Yii::app()->lang;
         // Let's first regenerate a session id
         killSession();
         // Let's redirect the client to the same URL after having reseted the session

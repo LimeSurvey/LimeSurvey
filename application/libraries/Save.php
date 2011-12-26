@@ -57,8 +57,6 @@ class Save {
 
     function run($args) {
         extract($args);
-        $CI =& get_instance();
-        $_POST = $CI->input->post();
 
         //First, save the posted data to session
         //Doing this ensures that answers on the current page are saved as well.
@@ -72,7 +70,7 @@ class Save {
             {
                 if (!isset($_SESSION['fieldmap'][$postedfieldnames[$x]]))
                 {
-                    array_remval($postedfieldnames[$x],$postedfieldnames);
+                    $this->array_remval($postedfieldnames[$x],$postedfieldnames);
                 }
 
             }
@@ -167,13 +165,13 @@ class Save {
                     {
                         if (substr($subquery,0,6)=='INSERT')
                         {
-                            $tempID=$CI->db->insert_id(); // Find out id immediately if inserted
+                            $tempID=Yii::app()->db->getLastInsertID(); // Find out id immediately if inserted
                             $_SESSION['srid'] = $tempID;
                             $saved_id = $tempID;
                         }
                         if ($bFinalizeThisAnswer === true)
                         {
-                            db_execute_assoc("DELETE FROM ".$CI->db->dbprefix("saved_control")." where srid=".$_SESSION['srid'].' and sid='.$surveyid);   // Checked
+                            db_execute_assoc("DELETE FROM {{saved_control}} where srid=".$_SESSION['srid'].' and sid='.$surveyid);   // Checked
                         }
                     }
                     else
@@ -204,7 +202,7 @@ class Save {
                             $qidattributes = getQuestionAttributeValues($fieldexists['qid']);
                             $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
                             //		                    $datetimeobj = new Date_Time_Converter($_SESSION[$value], $dateformatdetails['phpdate']);
-                            $_SESSION[$value] = $CI->db->escape(date("Y-m-d H:i:s", strtotime($_SESSION[$value])));
+                            $_SESSION[$value] = date("Y-m-d H:i:s", strtotime($_SESSION[$value]));
                         }
                     }
                 }
@@ -250,7 +248,7 @@ class Save {
         }
         elseif ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && isset($_SESSION['scid']) )   //update the saved step only
         {
-            db_execute_assoc("update ".$CI->db->dbprefix("saved_control")." set saved_thisstep=".$CI->db->escape($thisstep)." where scid=".$_SESSION['scid']);  // Checked
+            db_execute_assoc("update {{saved_control}} set saved_thisstep=".$thisstep." where scid=".$_SESSION['scid']);  // Checked
         }
 
     }
@@ -258,7 +256,7 @@ class Save {
     function showsaveform()
     {
         //Show 'SAVE FORM' only when click the 'Save so far' button the first time, or when duplicate is found on SAVE FORM.
-        global $thistpl, $errormsg, $thissurvey, $surveyid, $clang, $clienttoken, $relativeurl, $thisstep;
+        global $thistpl, $errormsg, $thissurvey, $surveyid, $clang, $clienttoken, $thisstep;
         sendcacheheaders();
         doHeader();
         foreach(file("$thistpl/startpage.pstpl") as $op)
@@ -274,7 +272,7 @@ class Save {
         ."\t//-->\n"
         ."\t</script>\n\n";
 
-        echo "<form method='post' action='$relativeurl/index.php'>\n";
+        echo "<form method='post' action='".Yii::app()->createUrl("survey")."'>\n";
         //PRESENT OPTIONS SCREEN
         if (isset($errormsg) && $errormsg != "")
         {
@@ -316,7 +314,7 @@ class Save {
         // - "value" which is the value of the response
         //We start by generating the first 5 values which are consistent for all rows.
 
-        global $surveyid, $dbprefix, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust, $clang, $clienttoken, $thisstep;
+        global $surveyid, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust, $clang, $clienttoken, $thisstep;
 
         //Check that the required fields have been completed.
         $errormsg="";
@@ -340,11 +338,11 @@ class Save {
             return;
         }
         //All the fields are correct. Now make sure there's not already a matching saved item
-        $query = "SELECT COUNT(*) FROM {$dbprefix}saved_control\n"
+        $query = "SELECT COUNT(*) FROM {{saved_control}}\n"
         ."WHERE sid=$surveyid\n"
-        ."AND identifier=".$CI->db->escape($_POST['savename'],true);
+        ."AND identifier=".$_POST['savename'];
         $result = db_execute_num($query) or safe_die("Error checking for duplicates!<br />$query<br />");   // Checked
-        list($count) = $result->row_array();
+        list($count) = $result->read();
         if ($count > 0)
         {
             $errormsg.=$clang->gT("This name has already been used for this survey. You must use a unique save name.")."<br />\n";
@@ -363,7 +361,7 @@ class Save {
                 //One of the strengths of ADOdb's AutoExecute() is that only valid field names for $table are updated
                 if (db_execute_assoc($CI->db->insert_string($thissurvey['tablename'], $sdata)))    // Checked
                 {
-                    $srid = $CI->db->insert_id();
+                    $srid = Yii::app()->db->getLastInsertID();
                     $_SESSION['srid'] = $srid;
                 }
                 else
@@ -385,9 +383,9 @@ class Save {
             "saved_date"=>$today);
 
 
-            if (db_execute_assoc($CI->db->insert_string("{$dbprefix}saved_control", $scdata)))   // Checked
+            if (db_execute_assoc($CI->db->insert_string("{{saved_control}}", $scdata)))   // Checked
             {
-                $scid = $CI->db->insert_id();
+                $scid = Yii::app()->db->getLastInsertID();
                 $_SESSION['scid'] = $scid;
             }
             else
@@ -436,12 +434,12 @@ class Save {
     */
     function savedsilent()
     {
-        global $surveyid, $dbprefix, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust, $clang, $clienttoken, $thisstep, $modrewrite;
+        global $surveyid, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust, $clang, $clienttoken, $thisstep, $modrewrite;
         submitanswer();
         // Prepare email
-        $tokenentryquery = 'SELECT * from '.$dbprefix.'tokens_'.$surveyid.' WHERE token=\''.sanitize_paranoid_string($clienttoken).'\';';
+        $tokenentryquery = 'SELECT * from {{tokens_'.$surveyid.'}} WHERE token=\''.sanitize_paranoid_string($clienttoken).'\';';
         $tokenentryresult = db_execute_assoc($tokenentryquery);
-        $tokenentryarray = $tokenentryresult->row_array();
+        $tokenentryarray = $tokenentryresult->read();
 
         $from = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
         $to = $tokenentryarray['firstname'].' '.$tokenentryarray['lastname'].' <'.$tokenentryarray['email'].'>';
@@ -474,13 +472,13 @@ class Save {
     function createinsertquery($surveyid, $move, $thissurvey, $thisstep, $postedfieldnames, $bFinalizeThisAnswer)
     {
 
-        $CI =& get_instance();
-        $_POST = $CI->input->post();
+        
+        
         global $thistpl;
 
-        $clang = $CI->limesurvey_lang;
-        $timeadjust = $CI->config->item("timeadjust");
-        $deletenonvalues = $CI->config->item("deletenonvalues");
+        $clang = Yii::app()->lang;
+        $timeadjust = Yii::app()->getConfig("timeadjust");
+        $deletenonvalues = Yii::app()->getConfig("deletenonvalues");
 
         $fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
 
@@ -523,7 +521,7 @@ class Save {
                     else if ($fieldexists['type']=='|' && strpos($fieldexists['fieldname'], "_filecount") === false)
                         {
                             $fieldname = $fieldexists['fieldname'];
-                            $target = $CI->config->item("uploaddir")."/surveys/". $thissurvey['sid'] ."/files/";
+                            $target = Yii::app()->getConfig("uploaddir")."/surveys/". $thissurvey['sid'] ."/files/";
 
                             $json = $_SESSION[$value];
                             $phparray = json_decode(stripslashes($json));
@@ -531,7 +529,7 @@ class Save {
                             // if the files have not been saved already,
                             // move the files from tmp to the files folder
 
-                            $tmp = $CI->config->item('tempdir').'/upload/';
+                            $tmp = Yii::app()->getConfig('tempdir').'/upload/';
                             if (!is_null($phparray) && count($phparray) > 0)
                             {
                                 // Move the (unmoved, temp) files from temp to files directory.
@@ -548,7 +546,7 @@ class Save {
                             }
                             $_SESSION[$value] = json_encode($phparray);
                         }
-                        $values[] = $CI->db->escape($_SESSION[$value]);
+                        $values[] = $_SESSION[$value];
                         // filename is changed from undefined to a random value
                         // update uses $_POST for saving responses
                         $_POST[$value] = $_SESSION[$value];
@@ -573,9 +571,9 @@ class Save {
                             $qidattributes = getQuestionAttributeValues($fieldexists['qid']);
                             $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
                             $datetimeobj = new Date_Time_Converter($_SESSION[$value], $dateformatdetails['phpdate']);
-                            $_SESSION[$value] = $CI->db->escape(date("Y-m-d H:i:s", strtotime($_SESSION[$value])));
+                            $_SESSION[$value] = date("Y-m-d H:i:s", strtotime($_SESSION[$value]));
                         }
-                        $values[]=$CI->db->escape($_SESSION[$value],get_magic_quotes_gpc());
+                        $values[]=date("Y-m-d H:i:s", strtotime($_SESSION[$value]));
                     }
                 }
             }
@@ -614,30 +612,30 @@ class Save {
                 }
 
                 // INSERT NEW ROW
-                $query = "INSERT INTO ".$CI->db->_escape_identifiers($thissurvey['tablename'])."\n"
+                $query = "INSERT INTO ".$thissurvey['tablename']."\n"
                 ."(".implode(', ', array_map('db_quote_id',$colnames));
-                $query .= ",".$CI->db->_escape_identifiers('lastpage');
+                $query .= ",lastpage";
                 if ($thissurvey['datestamp'] == "Y")
                 {
-                    $query .= ",".$CI->db->_escape_identifiers('datestamp');
-                    $query .= ",".$CI->db->_escape_identifiers('startdate');
+                    $query .= ",datestamp";
+                    $query .= ",startdate";
                 }
                 if ($thissurvey['ipaddr'] == "Y")
                 {
-                    $query .= ",".$CI->db->_escape_identifiers('ipaddr');
+                    $query .= ",ipaddr";
                 }
-                $query .= ",".$CI->db->_escape_identifiers('startlanguage');
+                $query .= ",startlanguage";
                 if ($thissurvey['refurl'] == "Y")
                 {
-                    $query .= ",".$CI->db->_escape_identifiers('refurl');
+                    $query .= ",refurl";
                 }
                 if ($bFinalizeThisAnswer === true && ($thissurvey['format'] != "A"))
                 {
-                    $query .= ",".$CI->db->_escape_identifiers('submitdate');
+                    $query .= ",submitdate";
                 }
                 $query .=") ";
-                $query .="VALUES (".implode(", ", $values);
-                $query .= ",".($thisstep+1);
+                $query .="VALUES ('".implode("', '", $values);
+                $query .= "',".($thisstep+1);
                 if ($thissurvey['datestamp'] == "Y")
                 {
                     $query .= ", '".$_SESSION['datestamp']."'";
@@ -650,12 +648,12 @@ class Save {
                 $query .= ", '".$_SESSION['s_lang']."'";
                 if ($thissurvey['refurl'] == "Y")
                 {
-                    $query .= ", '".$CI->db->escape($_SESSION['refurl'])."'";
+                    $query .= ", '".$_SESSION['refurl']."'";
                 }
                 if ($bFinalizeThisAnswer === true && ($thissurvey['format'] != "A"))
                 {
                     // is if a ALL-IN-ONE survey, we don't set the submit date before the data is validated
-                    $query .= ", ".$CI->db->escape($mysubmitdate);
+                    $query .= ", '".$mysubmitdate."'";
                 }
                 $query .=")";
             }
@@ -677,7 +675,7 @@ class Save {
                     // is if a ALL-IN-ONE survey, we don't set the submit date before the data is validated
                     if ($bFinalizeThisAnswer === true && ($thissurvey['format'] != "A"))
                     {
-                        $query .= " submitdate = ".$CI->db->escape($mysubmitdate).", ";
+                        $query .= " submitdate = '".$mysubmitdate."', ";
                     }
                     // Resets fields hidden due to conditions
                     // TMSW Conditions->Relevance:  EM will deal with NULLing irrelevant fields (as opposed to hidden ones)
@@ -693,7 +691,7 @@ class Save {
                             //}
                             //else
                             //{
-                            //	$query .= $CI->db->escape($hiddenfield)." = '',";
+                            //	$query .= $hiddenfield." = '',";
                             //}
                         }
                     }
@@ -725,18 +723,18 @@ class Save {
                                 }
                                 elseif ($fieldinfo['type']=='N' || $fieldinfo['type']=='K') //sanitize numerical fields
                                 {
-                                    $qfield=$CI->db->escape(sanitize_float($_POST[$field]));
+                                    $qfield=sanitize_float($_POST[$field]);
                                 }
                                 elseif ($fieldinfo['type']=='D')  // convert the date to the right DB Format
                                 {
                                     $qidattributes = getQuestionAttributeValues($fieldinfo['qid']);
                                     $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
                                     // $datetimeobj = new Date_Time_Converter($_POST[$field], $dateformatdetails['phpdate']);
-                                    $qfield = $CI->db->escape(date("Y-m-d H:i:s", strtotime($_POST[$field])));
+                                    $qfield = date("Y-m-d H:i:s", strtotime($_POST[$field]));
                                 }
                                 else
                                 {
-                                    $qfield = $CI->db->escape($_POST[$field],true);
+                                    $qfield = $_POST[$field];
                                 }
                                 $query .= db_quote_id($field)." = ".$qfield.",";
                             }
@@ -753,7 +751,7 @@ class Save {
                     if ($bFinalizeThisAnswer === true)
                     {
                         $query = "UPDATE {$thissurvey['tablename']} SET ";
-                        $query .= " submitdate = ".$CI->db->escape($mysubmitdate);
+                        $query .= " submitdate = '".$mysubmitdate ."'";
                         $query .= " WHERE id=" . $_SESSION['srid'];
                     }
                 }
@@ -788,8 +786,8 @@ class Save {
         global $thissurvey;
         global $surveyid, $move;
         $CI = &get_instance();
-        $clang = $CI->limesurvey_lang;
-        $timeadjust = $CI->config->item('timeadjust');
+        $clang = Yii::app()->lang;
+        $timeadjust = Yii::app()->getConfig('timeadjust');
 
         if ($thissurvey['anonymized'] =="Y" && $thissurvey['datestamp'] =="N")
         {
@@ -816,7 +814,7 @@ class Save {
                 }
             }
             $query = "UPDATE {$thissurvey['tablename']} SET ";
-            $query .= " submitdate = ". $CI->db->escape(date("Y-m-d H:i:s", strtotime($mysubmitdate)));
+            $query .= " submitdate = '".date("Y-m-d H:i:s", strtotime($mysubmitdate)."'");
             $query .= " WHERE id=" . $_SESSION['srid'];
         }
 
@@ -855,8 +853,8 @@ class Save {
         if(!isset($setField))
             $setField = $_POST['lastgroup'];
         if(!isset($setField)){ //we show the whole survey on one page - we don't have to save time for group/question
-            if($CI->db->insert_id() > 0){	// means that the last operation was INSERT
-                $query = "INSERT INTO ".$CI->db->protect_identifiers($thissurvey['tablename']."_timings") ." ("
+            if(Yii::app()->db->getLastInsertID() > 0){	// means that the last operation was INSERT
+                $query = "INSERT INTO ".$thissurvey['tablename']."_timings" ." ("
                 ."id, interviewtime)"
                 ." VALUES (" .$_SESSION['srid'] ."," .$passedTime .")";
             }else{	// UPDATE
@@ -870,14 +868,14 @@ class Save {
 
         $setField .= "time";
         //saving the times
-        if($CI->db->insert_id() > 0){	// means that the last operation was INSERT
-            $query = "INSERT INTO ".$CI->db->protect_identifiers($thissurvey['tablename']."_timings") ." ("
-            ."id, interviewtime, " .$CI->db->protect_identifiers($setField) .")"
+        if(Yii::app()->db->getLastInsertID() > 0){	// means that the last operation was INSERT
+            $query = "INSERT INTO ".$thissurvey['tablename']."_timings" ." ("
+            ."id, interviewtime, " .$setField .")"
             ." VALUES (" .$_SESSION['srid'] ."," .$passedTime ."," .$passedTime.")";
         }else{	// UPDATE
             $query = "UPDATE {$thissurvey['tablename']}_timings SET "
             ."interviewtime = interviewtime" ." + " .$passedTime .","
-            .$CI->db->protect_identifiers($setField) ." = " .$CI->db->protect_identifiers($setField) ." + " .$passedTime
+            .$setField." = ".$setField." + ".$passedTime
             ." WHERE id = " .$_SESSION['srid'];
         }
         db_execute_assoc($query);
