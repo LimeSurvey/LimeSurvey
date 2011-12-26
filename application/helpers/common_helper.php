@@ -279,26 +279,25 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 }
 
 /**
- * Returns true if a template is a standard template
- * This function does not check if a template actually exists
- *
- * @param string $sTemplateName template name to look for
- * @return bool True if standard template, otherwise false
- */
+* isStandardTemplate returns true if a template is a standard template
+* This function does not check if a template actually exists
+*
+* @param mixed $sTemplateName template name to look for
+* @return bool True if standard template, otherwise false
+*/
 function isStandardTemplate($sTemplateName)
 {
-    return in_array($sTemplateName, array('basic',
-        'bluengrey',
-        'business_grey',
-        'citronade',
-        'clear_logo',
-        'default',
-        'eirenicon',
-        'limespired',
-        'mint_idea',
-        'sherpa',
-        'vallendar'
-    ));
+    return in_array($sTemplateName,array('basic',
+    'bluengrey',
+    'business_grey',
+    'citronade',
+    'clear_logo',
+    'default',
+    'eirenicon',
+    'limespired',
+    'mint_idea',
+    'sherpa',
+    'vallendar'));
 }
 
 /**
@@ -1305,7 +1304,7 @@ function getgrouplistlang($gid, $language,$surveyid)
 
     $groupselecter="";
     if (!$surveyid) {$surveyid=returnglobal('sid');}
-
+    
     $gidresult = Groups::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $language));   //Checked)
     foreach ($gidresult as $gv)
     {
@@ -3004,7 +3003,7 @@ function SetSurveyLanguage($surveyid, $language)
         $clang = new Limesurvey_lang(array('langcode' => $defaultlang));
     }
 
-    $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
+    $thissurvey=getSurveyInfo($surveyid, @$_SESSION['s_lang']);
     Yii::app()->loadHelper('surveytranslator');
     $_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
     return $clang;
@@ -4976,7 +4975,9 @@ function CSVUnquote($field)
 function incompleteAnsFilterstate()
 {
     global $filterout_incomplete_answers;
-    $letsfilter = CHttpRequest::getParam('filterinc'); //read get/post filterinc
+    $letsfilter='';
+    $letsfilter = returnglobal('filterinc'); //read get/post filterinc
+
 
     // first let's initialize the incompleteanswers session variable
     if ($letsfilter != '')
@@ -5421,9 +5422,8 @@ function filterforattributes ($fieldname)
 */
 function GetAttributeFieldNames($surveyid)
 {
-    if (($table = Yii::app()->db->schema->getTable('{{tokens_'.$surveyid . '}}')) === false)
+    if (!$table = Yii::app()->db->schema->getTable('{{tokens_'.$surveyid . '}}'))
         return Array();
-
     return array_filter(array_values($table->columnNames), 'filterforattributes');
 }
 
