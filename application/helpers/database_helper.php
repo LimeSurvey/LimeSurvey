@@ -127,15 +127,14 @@ function &db_select_limit_assoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieon
  */
 function &db_select_column($sql)
 {
-	$CI = &get_instance();
     //$connect->SetFetchMode(ADODB_FETCH_NUM);
-    $dataset=$CI->db->query($sql);
-    $fields = $dataset->list_fields();
-    $firstfield = $fields[0];
-    $resultarray=array();
-    if ($dataset->num_rows() > 0)
+    $dataset=Yii::app()->db->createCommand($sql)->query();
+    if ($dataset->count() > 0)
     {
-        foreach ($dataset->result_array() as $row)
+            $fields = array_keys($dataset[0]);
+        $firstfield = $fields[0];
+        $resultarray=array();
+        foreach ($dataset->readAll() as $row)
         {
             $resultarray[] = $row[$firstfield];
         }
@@ -183,8 +182,7 @@ function db_quote_id($id)
 
 function db_random()
 {
-	$CI = &get_instance();
-    if ($CI->db->dbdriver == 'odbc_mssql' || $CI->db->dbdriver == 'mssql_n' || $CI->db->dbdriver == 'odbtp')  {$srandom='NEWID()';}
+    if (Yii::app()->db->getDriverName() == 'odbc_mssql' || Yii::app()->db->getDriverName() == 'mssql_n' || Yii::app()->db->getDriverName() == 'odbtp')  {$srandom='NEWID()';}
     else {$srandom= 0 + lcg_value()*(abs(1));}
     return $srandom;
 
@@ -258,19 +256,5 @@ function db_select_tables_like($table)
  */
 function db_tables_exist($table)
 {
-	$CI = &get_instance();
-    return $CI->db->table_exists($table);
-    /**global $connect;
-
-    $surveyHasTokensTblQ = db_select_tables_like("$table");
-    $surveyHasTokensTblResult = db_execute_num($surveyHasTokensTblQ); //Checked
-
-    if ($surveyHasTokensTblResult->RecordCount() >= 1)
-    {
-        return TRUE;
-    }
-    else
-    {
-        return FALSE;
-    }*/
+    return !!Yii::app()->db->schema->getTable($table);
 }
