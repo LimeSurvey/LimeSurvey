@@ -66,6 +66,21 @@ class Question_attributes extends CActiveRecord
 		foreach ($data as $k => $v)
 			$attrib->$k = $v;
 		return $attrib->save();
-}
+    }
+
+    function getSomeRecords($fields, $condition, $order=NULL)
+    {
+        $record = Yii::app()->db->createCommand()
+            ->select($fields)
+            ->from(self::tableName())
+            ->where($condition);
+
+        if( $order != NULL )
+        {
+            $record->order($order);
+        }
+
+        return $record->query();
+    }
 }
 ?>

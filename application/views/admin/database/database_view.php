@@ -10,13 +10,13 @@ if (isset($result)) // Checked
 <script type="text/javascript"><br /><br /> alert("<?php $clang->gT("Failed to update answers","js"); ?>" - ".$query." - ".$connect->ErrorMsg() ?>")<br /><br /></script><br />
 <?php
 }
-if ($invalidCode == 1)
+if (isset($invalidCode) && $invalidCode == 1)
 {
 ?>
 <script type="text/javascript"><br /><br /> alert("<?php $clang->gT("Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved","js"); ?>")<br /><br /></script><br />
 <?php
 }
-if ($duplicateCode == 1)
+if (isset($duplicateCode) && $duplicateCode == 1)
 {
 ?>
 <script type="text/javascript"><br /><br /> alert("<?php $clang->gT("Duplicate codes found, these entries won't be updated","js"); ?>")<br /><br /></script><br />

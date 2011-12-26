@@ -240,6 +240,7 @@ class database extends Survey_Common_Action
     function _updateSubQuestions($surveyid, $gid, $qid)
     {
         $clang = $this->getController()->lang;
+        $databaseoutput['clang']=$clang;
         Yii::app()->loadHelper('database');
         $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -553,8 +554,9 @@ class database extends Survey_Common_Action
 
     function _updateQuestion($surveyid, $gid, $qid)
     {
-        Yii::app()->loadHelper('expressions/em_manager');
-        $cqresult = Questions::model()->getSomeRecords(array('type', 'gid'), array('qid' => $qid));
+        $clang = $this->getController()->lang;
+        $databaseoutput['clang']=$clang;
+        $cqresult = Questions::model()->getSomeRecords(array('type', 'gid'), "qid=$qid");
         $cqr = $cqresult->read();
         $oldtype = $cqr['type'];
         $oldgid = $cqr['gid'];
@@ -588,11 +590,18 @@ class database extends Survey_Common_Action
                 foreach ($aLanguages as $sLanguage)
                 {
                     if (isset($_POST[$validAttribute['name'] . '_' . $sLanguage])) {
-                        $value = sanatize_paranoid_string($_POST[$validAttribute['name'] . '_' . $sLanguage]); //sanitize is SPELLED WRONG
+                        $value = $_POST[$validAttribute['name'] . '_' . $sLanguage];
 
-                        $result = Question_attributes::model()->getSomeRecords(array('qaid'), array('qid' => $qid, 'attribute' => $validAttribute['name'], 'language' => $sLanguage));
+                        $result = Question_attributes::model()->getSomeRecords(array('qaid'), "qid={$qid} AND attribute='{$validAttribute['name']}' AND language='{$sLanguage}'");
                         if ($result->getRowCount() > 0) {
-                            Question_attributes::model()->update(array('value' => $value), array('attribute' => $validAttribute['name'], 'qid' => $qid, 'language' => $sLanguage));
+                            try
+                            {
+                                Question_attributes::model()->update(array('value' => $value), array('attribute' => $validAttribute['name'], 'qid' => $qid, 'language' => $sLanguage));
+                            }
+                            catch (Exception $e)
+                            {
+                                1;
+                            }
                         }
                         else
                         {
@@ -605,10 +614,17 @@ class database extends Survey_Common_Action
             {
                 if (isset($_POST[$validAttribute['name']])) {
 
-                    $result = Question_attributes::model()->getSomeRecords(array('qaid'), array('attribute' => $validAttribute['name'], 'qid' => $qid));
-                    $value = sanitize_string_paranoid($_POST[$validAttribute['name']]);
-                    if ($result->getRowCount() > 0) {
-                        Question_attributes::model()->update(array('value' => $value, 'language' => NULL), array('attribute' => $validAttribute['name'], 'qid' => $qid));
+                    $result = Question_attributes::model()->getSomeRecords(array('qaid'), "attribute='{$validAttribute['name']}' AND qid=$qid");
+                    $value = $_POST[$validAttribute['name']];
+                    if ($result->count() > 0) {
+                        try
+                        {
+                            Question_attributes::model()->update(array('value' => $value, 'language' => NULL), array('attribute' => $validAttribute['name'], 'qid' => $qid));
+                        }
+                        catch (Exception $e)
+                        {
+                            1;
+                        }
                     }
                     else
                     {
@@ -730,7 +746,7 @@ class database extends Survey_Common_Action
                                     $udata = array_merge($udata, array('question_order' => 0));
                                 }
                             }
-                            $uqresult = Questions::model()->update(array('sid' => $surveyid, 'qid' => $qid, 'language' => $qlang), $udata);
+                            $uqresult = Questions::model()->updateAll($udata,"sid=$surveyid AND qid=$qid AND language='$qlang'");
                             $databaseoutput['uqresult'] = $uqresult;
                         }
                     }
@@ -752,10 +768,7 @@ class database extends Survey_Common_Action
                         Questions::model()->update(array('type' => sanitize_paranoid_string($_POST['type'])), array('parent_qid' => $qid));
                     }
 
-                    Answers::model()->delete(array('qid' => $qid, 'scale_id >=' => $iAnswerScales));
-
-                    // Remove old subquestion scales
-                    Answers::model()->delete(array('parent_qid' => $qid, 'scale_id' >= $iSubquestionScales));
+                    Answers::model()->deleteAll("qid=$qid AND scale_id >=$iAnswerScales");
                 }
                 else
                 {
@@ -1055,11 +1068,7 @@ class database extends Survey_Common_Action
             //$surveyselect = getsurveylist();
             $this->yii->session['flashmessage'] = Yii::app()->lang->gT("Survey settings were successfully saved.");
         }
-        else
-        {
-            $databaseoutput = $usresult;
-        }
-        if ($databaseoutput != '') {
+        if ($databaseoutput) {
             $this->getController()->render('/admin/database/database_view', $databaseoutput);
         }
         else
