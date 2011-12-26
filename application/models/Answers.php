@@ -10,81 +10,81 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
+ *    $Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
  */
 
 class Answers extends CActiveRecord
 {
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-	 * @return CActiveRecord
-	 */
-	public static function model()
-	{
-		return parent::model(__CLASS__);
-	}
+    /**
+     * Returns the static model of Settings table
+     *
+     * @static
+     * @access public
+     * @return CActiveRecord
+     */
+    public static function model()
+    {
+        return parent::model(__CLASS__);
+    }
 
-	/**
-	 * Returns the setting's table name to be used by the model
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function tableName()
-	{
-		return '{{answers}}';
-	}
+    /**
+     * Returns the setting's table name to be used by the model
+     *
+     * @access public
+     * @return string
+     */
+    public function tableName()
+    {
+        return '{{answers}}';
+    }
 
-	/**
-	 * Returns the primary key of this table
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function primaryKey()
-	{
-		return array('qid', 'code');
-	}
+    /**
+     * Returns the primary key of this table
+     *
+     * @access public
+     * @return array
+     */
+    public function primaryKey()
+    {
+        return array('qid', 'code');
+    }
 
-	function getSomeRecords($fields, $condition=FALSE, $order='')
-	{
-		return Yii::app()->db->createCommand()
-			->select($fields)
-			->from(self::tableName())
-			->where($condition)
-			->order($order)
-			->queryAll();
-	}
+    function getSomeRecords($fields, $condition=FALSE, $order='')
+    {
+        return Yii::app()->db->createCommand()
+            ->select($fields)
+            ->from(self::tableName())
+            ->where($condition)
+            ->order($order)
+            ->queryAll();
+    }
 
     function getAnswers($qid)
     {
-		return Yii::app()->db->createCommand()
-			->select()
-			->from(self::tableName())
-			->where(array('and', 'qid='.$qid))
-			->order('code asc')
-			->query();
+        return Yii::app()->db->createCommand()
+            ->select()
+            ->from(self::tableName())
+            ->where(array('and', 'qid='.$qid))
+            ->order('code asc')
+            ->query();
     }
 
     function getAnswerCode($qid, $code, $lang)
     {
-		return Yii::app()->db->createCommand()
-			->select(array('code', 'answer'))
-			->from(self::tableName())
-			->where(array('and', 'qid='.$qid, 'code="'.$code.'"', 'scale_id=0', 'language="'.$lang.'"'))
-			->query();
+        return Yii::app()->db->createCommand()
+            ->select(array('code', 'answer'))
+            ->from(self::tableName())
+            ->where(array('and', 'qid='.$qid, 'code="'.$code.'"', 'scale_id=0', 'language="'.$lang.'"'))
+            ->query();
     }
 
-	public function oldNewInsertansTags($newsid,$oldsid)
-	{
-		$sql = "SELECT a.qid, a.language, a.code, a.answer from {{answers}} as a INNER JOIN {{questions}} as b ON a.qid=b.qid WHERE b.sid=".$newsid." AND a.answer LIKE '%{INSERTANS:".$oldsid."X%'";
-    	return Yii::app()->db->createCommand($sql)->query();
-	}
+    public function oldNewInsertansTags($newsid,$oldsid)
+    {
+        $sql = "SELECT a.qid, a.language, a.code, a.answer from {{answers}} as a INNER JOIN {{questions}} as b ON a.qid=b.qid WHERE b.sid=".$newsid." AND a.answer LIKE '%{INSERTANS:".$oldsid."X%'";
+        return Yii::app()->db->createCommand($sql)->query();
+    }
 
-	public function update($data, $condition=FALSE)
+    public function update($data, $condition=FALSE)
     {
         if ($condition != FALSE)
         {
@@ -95,12 +95,12 @@ class Answers extends CActiveRecord
 
     }
 
-	function insertRecords($data)
+    function insertRecords($data)
     {
         $ans = new self;
-		foreach ($data as $k => $v)
-			$ans->$k = $v;
-		return $ans->save();
+        foreach ($data as $k => $v)
+            $ans->$k = $v;
+        return $ans->save();
     }
 
     /**
@@ -115,14 +115,23 @@ class Answers extends CActiveRecord
     public static function updateSortOrder($qid, $lang)
     {
         $data = self::model()->findAllByAttributes(array('qid' => $qid, 'language' => $lang), array('order' => 'sortorder asc'));
-
-		$position = 0;
+        $position = 0;
 
         foreach ($data as $row)
         {
             $row->sortorder = $position++;
             $row->save();
         }
+    }
+    
+    function getAllRecords($condition, $order=FALSE)
+    {
+        $command=Yii::app()->db->createCommand()->select('*')->from($this->tableName())->where($condition);
+        if ($order != FALSE)
+        {
+            $command->order($order);
+        }
+        return $command->query();
     }
 }
 ?>

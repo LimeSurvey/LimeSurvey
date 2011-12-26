@@ -13,8 +13,8 @@ if (!defined('BASEPATH'))
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * 	$Id: common_helper.php 11335 2011-11-08 12:06:48Z c_schmitz $
- * 	Files Purpose: lots of common functions
+ *     $Id: common_helper.php 11335 2011-11-08 12:06:48Z c_schmitz $
+ *     Files Purpose: lots of common functions
  */
 
 class Conditions extends CActiveRecord
@@ -124,7 +124,42 @@ class Conditions extends CActiveRecord
         else
             return $record->save();
     }
+    function getScenarios($qid)
+    {
 
+        $scenarioquery = "SELECT DISTINCT scenario FROM ".$this->tableName()." WHERE qid=".$qid." ORDER BY scenario";
+
+        return Yii::app()->db->createCommand($scenarioquery)->query();
+    }
+    function getSomeConditions($fields, $condition, $order, $group){
+    $record = Yii::app()->db->createCommand()
+            ->select($fields)
+            ->from($this->tableName())
+            ->where($condition);
+
+        if( $order != NULL )
+        {
+            $record->order($order);
+        }
+        if( $group != NULL )
+        {
+            $record->group($group);
+        }
+
+        return $record->query();
+    }
+    function getConditionsQuestions($distinctrow,$deqrow,$scenariorow,$surveyprintlang)
+    {
+    $conquery="SELECT cid, cqid, q.title,\n"
+        ."q.question, value, q.type, cfieldname\n"
+        ."FROM {{conditions}} c, {{questions}} q\n"
+        ."WHERE c.cqid=q.qid\n"
+        ."AND c.cqid={$distinctrow}\n"
+        ."AND c.qid={$deqrow} \n"
+        ."AND c.scenario={$scenariorow} \n"
+        ."AND language='{$surveyprintlang}'";
+    return Yii::app()->db->createCommand($conquery)->query();
+    }
 }
 
 ?>

@@ -109,6 +109,17 @@ class Groups extends CActiveRecord
 
         return $questionIds;
     }
+	function getAllGroups($condition, $order=false)
+    {
+        
+
+        $command = Yii::app()->db->createCommand()->where($condition)->select('*')->from($this->tableName());
+	    if ($order != FALSE)
+        {
+            $command->order($order);
+        }
+		return $command->query();
+    }
     
     function getSomeRecords($fields, $condition=null)
     {

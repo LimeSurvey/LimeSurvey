@@ -148,12 +148,10 @@ class Survey extends CActiveRecord
 		  return $this->findAll($criteria);
     }
 
-    public function getDataOnSurvey($surveyid)
+    public function getDataOnSurvey($surveyid, $lang)
     {
-        $sql = "SELECT * FROM ".$this->db->dbprefix('surveys')." inner join ".$this->db->dbprefix('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=".$surveyid;
-        $this->load->helper('database');
-        return db_select_limit_assoc($sql, 1);
-
+        $query = "SELECT * FROM  {{surveys}} inner join {{surveys_languagesettings}} on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=".$surveyid;
+	    return Yii::app()->db->createCommand($query)->query();
     }
 
     /**
