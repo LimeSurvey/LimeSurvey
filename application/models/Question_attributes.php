@@ -68,19 +68,14 @@ class Question_attributes extends CActiveRecord
 		return $attrib->save();
     }
 
-    function getSomeRecords($fields, $condition, $order=NULL)
+    public function getQuestionsForStatistics($fields, $condition, $orderby)
     {
-        $record = Yii::app()->db->createCommand()
-            ->select($fields)
-            ->from(self::tableName())
-            ->where($condition);
-
-        if( $order != NULL )
-        {
-            $record->order($order);
-        }
-
-        return $record->query();
+        return Yii::app()->db->createCommand()
+        ->select($fields)
+        ->from(self::tableName())
+        ->where($condition)
+        ->order($orderby)
+        ->queryAll();
     }
 }
 ?>

@@ -13,8 +13,8 @@ if (!defined('BASEPATH'))
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *     $Id: common_helper.php 11335 2011-11-08 12:06:48Z c_schmitz $
- *     Files Purpose: lots of common functions
+ * 	$Id: common_helper.php 11335 2011-11-08 12:06:48Z c_schmitz $
+ * 	Files Purpose: lots of common functions
  */
 
 class Questions extends CActiveRecord
@@ -149,12 +149,12 @@ class Questions extends CActiveRecord
         return $aAttributeNames;
     }
 
-    function getQuestions($sid, $gid, $language, $parent_id=FALSE, $type=FALSE)
+    function getQuestions($sid, $gid, $language)
     {
         return Yii::app()->db->createCommand()
             ->select()
             ->from(self::tableName())
-            ->where(array('and', 'sid=' . $sid, 'gid=' . $gid, 'language=:language', 'parent_qid='.$parent_id, 'TYPE <> '.$type))
+            ->where(array('and', 'sid=' . $sid, 'gid=' . $gid, 'language=:language', 'parent_qid=0'))
             ->order('question_order asc')
             ->bindParam(":language", $language, PDO::PARAM_STR)
             ->query();
@@ -226,7 +226,7 @@ class Questions extends CActiveRecord
         Yii::app()->db->createCommand()->delete(Defaultvalues::model()->tableName(), array('in', 'qid', $questionsIds));
         Yii::app()->db->createCommand()->delete(Quota_members::model()->tableName(), array('in', 'qid', $questionsIds));
     }
-    
+
     function getAllRecords($condition, $order=FALSE)
     {
         $command=Yii::app()->db->createCommand()->select('*')->from($this->tableName())->where($condition);
@@ -235,6 +235,28 @@ class Questions extends CActiveRecord
             $command->order($order);
         }
         return $command->query();
+    }
+
+    public function getQuestionsForStatistics($fields, $condition, $orderby)
+    {
+        return Yii::app()->db->createCommand()
+        ->select($fields)
+        ->from(self::tableName())
+        ->where($condition)
+        ->order($orderby)
+        ->queryAll();
+    }
+
+    public function getQuestionList($surveyid, $language)
+    {
+        $query = "SELECT questions.*, groups.group_name, groups.group_order\n"
+        ." FROM {{questions}} as questions, {{groups}} as groups\n"
+        ." WHERE groups.gid=questions.gid\n"
+        ." AND groups.language='".$language."'\n"
+        ." AND questions.language='".$language."'\n"
+        ." AND questions.parent_qid=0\n"
+        ." AND questions.sid=$surveyid";
+        return Yii::app()->db->createCommand($query)->queryAll();
     }
 
 }

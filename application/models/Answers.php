@@ -123,7 +123,7 @@ class Answers extends CActiveRecord
             $row->save();
         }
     }
-    
+
     function getAllRecords($condition, $order=FALSE)
     {
         $command=Yii::app()->db->createCommand()->select('*')->from($this->tableName())->where($condition);
@@ -132,6 +132,16 @@ class Answers extends CActiveRecord
             $command->order($order);
         }
         return $command->query();
+    }
+
+    public function getQuestionsForStatistics($fields, $condition, $orderby)
+    {
+        return Yii::app()->db->createCommand()
+        ->select($fields)
+        ->from(self::tableName())
+        ->where($condition)
+        ->order($orderby)
+        ->queryAll();
     }
 }
 ?>
