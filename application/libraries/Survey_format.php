@@ -130,7 +130,6 @@ class Survey_format {
                 if (!isset($_SESSION['finished']))
                 {
                     //            $subquery = createinsertquery();
-                    //            $connect->Execute($subquery);   // Checked
                     $CI->save->submitanswer($surveyid, $thissurvey, $move);
                 }
 
@@ -937,7 +936,6 @@ END;
             }
             $java .= $appendj;
         }
- */
 
         if (isset($java)) {echo $java;}
         foreach ($groupUnconditionnalQuestionsCount as $thegid => $thecount)
