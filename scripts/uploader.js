@@ -24,7 +24,7 @@ $(document).ready(function(){
             if (isValueInArray(image_extensions, json[i-1].ext))
                 previewblock += "<img src='uploader.php?filegetcontents="+json[i-1].filename+"' height='60px' />"+decodeURIComponent(json[i-1].name);
             else
-                previewblock += "<img src='images/placeholder.png' height='60px' /><br />"+decodeURIComponent(json[i-1].name);
+                previewblock += "<img src='"+imageurl+"placeholder.png' height='60px' /><br />"+decodeURIComponent(json[i-1].name);
 
             previewblock += "</td>";
             if ($('#'+fieldname+'_show_title').val() == 1 && $('#'+fieldname+'_show_comment').val() == 1)
@@ -34,7 +34,7 @@ $(document).ready(function(){
             else if ($('#'+fieldname+'_show_comment').val() == 1)
                 previewblock += "<td align='center'><label>"+translt.commentFld+"</label></td><td align='center'><input type='text' value='"+json[i-1].comment+"' id='"+fieldname+"_comment_"+i+"' /></td>";
 
-            previewblock += "<td align='center' width='20%' ><img style='cursor:pointer' src='images/delete.png' onclick='deletefile(\""+fieldname+"\", "+i+")' /></td></tr></table>"+
+            previewblock += "<td align='center' width='20%' ><img style='cursor:pointer' src='"+imageurl+"delete.png' onclick='deletefile(\""+fieldname+"\", "+i+")' /></td></tr></table>"+
                     "<input type='hidden' id='"+fieldname+"_size_"    +i+"' value="+json[i-1].size+" />"+
                     "<input type='hidden' id='"+fieldname+"_name_"    +i+"' value="+json[i-1].name+" />"+
                     "<input type='hidden' id='"+fieldname+"_file_index_"+i+"' value="+i+" />"+
@@ -137,7 +137,7 @@ $(document).ready(function(){
                 if (isValueInArray(image_extensions, metadata.ext))
                     previewblock += "<img src='"+uploadurl+"/filegetcontents/"+decodeURIComponent(metadata.filename)+"' height='60px' />";
                 else
-                    previewblock += "<img src='images/placeholder.png' height='60px' />";
+                    previewblock += "<img src='"+imageurl+"placeholder.png' height='60px' />";
 
                 previewblock += "<br />"+decodeURIComponent(metadata.name)+"</td>";
                 if ($("#"+fieldname+"_show_title").val() == 1 && $("#"+fieldname+"_show_comment").val() == 1)
@@ -147,7 +147,7 @@ $(document).ready(function(){
                 else if ($("#"+fieldname+"_show_comment").val() == 1)
                     previewblock += "<td align='center'><label>"+translt.commentFld+"</label></td><td align='center'><input type='text' value='' id='"+fieldname+"_comment_"+count+"' /></td>";
 
-                previewblock += "<td  align='center' width='20%'><img style='cursor:pointer' src='images/delete.png' onclick='deletefile(\""+fieldname+"\", "+count+")'/></td>"+
+                previewblock += "<td  align='center' width='20%'><img style='cursor:pointer' src='"+imageurl+"delete.png' onclick='deletefile(\""+fieldname+"\", "+count+")'/></td>"+
                                         "</tr></table>"+
                                         "<input type='hidden' id='"+fieldname+"_size_"+count+"' value="+metadata.size+" />"+
                                         "<input type='hidden' id='"+fieldname+"_file_index_"+count+"' value="+metadata.file_index+" />"+
@@ -300,6 +300,7 @@ function deletefile(fieldname, count) {
     }
     filename=$("#"+fieldname+"_filename_"+count).val();
     name=$("#"+fieldname+"_name_"+count).val();
-    xmlhttp.open('GET','delete.php?sid='+surveyid+'&fieldname='+fieldname+'&filename='+filename+'&name='+encodeURI(name), true);
+    //xmlhttp.open('GET','delete.php?sid='+surveyid+'&fieldname='+fieldname+'&filename='+filename+'&name='+encodeURI(name), true);
+    alert('Not yet implemented!');
     xmlhttp.send();
 }

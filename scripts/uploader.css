@@ -55,11 +55,11 @@ img {
 .success {
     color: #4F8A10;
     background-color: #DFF2BF;
-    background-image:url('../images/success_notice.png');
+    background-image:url('../../images/success_notice.png');
 }
 
 .error {
     color: #D8000C;
     background-color: #FFBABA;
-    background-image: url('../images/error_notice.png');
+    background-image: url('../../images/error_notice.png');
 }

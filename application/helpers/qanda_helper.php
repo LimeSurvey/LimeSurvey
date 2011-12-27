@@ -4298,19 +4298,19 @@ function do_file_upload($ia)
     {
         $_SESSION['preview'] = 1 ;
         $questgrppreview = 1;   // Preview is launched from Question or group level
-        $scriptloc = Yii::app()->createUrl('uploader/');
+        $scriptloc = Yii::app()->createUrl('uploader/index');
     }
     else if ($thissurvey['active'] != "Y")
         {
             $_SESSION['preview'] = 1;
             $questgrppreview = 0;
-            $scriptloc = Yii::app()->createUrl('uploader/');
+            $scriptloc = Yii::app()->createUrl('uploader/index');
         }
         else
         {
             $_SESSION['preview'] = 0;
             $questgrppreview = 0;
-            $scriptloc = Yii::app()->createUrl('uploader/');
+            $scriptloc = Yii::app()->createUrl('uploader/index');
     }
 
     $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' href='{$scriptloc}/sid/{$surveyid}/fieldname/{$ia[1]}/qid/{$ia[0]}/preview/"
