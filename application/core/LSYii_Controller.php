@@ -28,7 +28,6 @@ abstract class LSYii_Controller extends CController
 		parent::__construct($id, $module);
 		$this->_checkInstallation();
 
-		//require_once(APPPATH . '/libraries/LS/LS' . EXT);
 		$this->loadLibrary('LS.LS');
 		$this->loadHelper('globalsettings');
 		$this->loadHelper('common');

@@ -66,7 +66,7 @@ class Tokens_dynamic extends CActiveRecord
 	 */
 	public function primaryKey()
 	{
-		return 'id';
+		return 'tid';
 	}
 
 	/**
@@ -108,32 +108,19 @@ class Tokens_dynamic extends CActiveRecord
 		return $data;
 	}
 
-	public function totalRecords($iSurveyID)
+    public function findUninvited($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
     {
-        $tksq = "SELECT count(tid) FROM {{tokens_{$iSurveyID}}}";
-        $tksr = Yii::app()->db->createCommand($tksq)->query();
-        $tkr = $tksr->read();
-        return $tkr["count(tid)"];
-}
+        $emquery = "SELECT * FROM {{tokens_" . self::$sid . "}} WHERE ((completed ='N') or (completed='')) AND token <> '' AND email <> ''";
 
-	public function ctquery($iSurveyID,$SQLemailstatuscondition,$tokenid=false,$tokenids=false)
-    {
-        $ctquery = "SELECT * FROM {{tokens_{$iSurveyID}}} WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
+        if ($bEmail) { $emquery .= " AND ((sent = 'N') or (sent = ''))"; } else { $emquery .= " AND sent <> 'N' AND sent <> ''"; }
+        if ($SQLemailstatuscondition) {$emquery .= " $SQLemailstatuscondition";}
+        if ($SQLremindercountcondition) {$emquery .= " $SQLremindercountcondition";}
+        if ($SQLreminderdelaycondition) {$emquery .= " $SQLreminderdelaycondition";}
+        if ($aTokenIds) {$emquery .= " AND tid IN ('".implode("', '", $aTokenIds)."')";}
+        if ($iMaxEmails) {$emquery .= " LIMIT $iMaxEmails"; }
+        $emquery .= " ORDER BY tid";
 
-        if ($tokenid) {$ctquery .= " AND tid='{$tokenid}'";}
-        if ($tokenids) {$ctquery .= " AND tid IN ('".implode("', '", $tokenids)."')";}
-
-        return Yii::app()->db->createCommand($ctquery)->query();
-    }
-
-    public function emquery($iSurveyID,$SQLemailstatuscondition,$maxemails,$tokenid=false,$tokenids=false)
-    {
-        $emquery = "SELECT * FROM {{tokens_{$iSurveyID}}} WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
-
-        if ($tokenid) {$emquery .= " and tid='{$tokenid}'";}
-        if ($tokenids) {$emquery .= " AND tid IN ('".implode("', '", $tokenids)."')";}
-        Yii::app()->loadHelper("database");
-        return db_select_limit_assoc($emquery,$maxemails);
+        return Yii::app()->db->createCommand($emquery)->queryAll();
     }
 
     function insertToken($iSurveyID, $data)
@@ -152,27 +139,23 @@ class Tokens_dynamic extends CActiveRecord
     function createTokens($iSurveyID)
     {
         //get token length from survey settings
-        $tlresult = Survey::model()->getSomeRecords("tokenlength",array("sid"=>$iSurveyID));
-        $tlrow = $tlresult;
-        // an alternative way to get tokenlength...  told to me by GautamGupta1:  :)
-        //$tokenlength = Yii::app()->db->createCommand()->select('tokenlength')->from('{{surveys}}')->where('sid='.$surveyid)->query()->readColumn(0);
+        $tlrow = Survey::model()->getSomeRecords("tokenlength",array("sid"=>$iSurveyID));
         $iTokenLength = $tlrow[0]['tokenlength'];
 
-
         //if tokenlength is not set or there are other problems use the default value (15)
-        if(!isset($iTokenLength) || $iTokenLength == '')
+        if(empty($iTokenLength))
         {
             $iTokenLength = 15;
         }
-        $tablename = $this->tableName();
-		$ntresult = Yii::app()->db->createCommand()->select('token')->from($tablename)->queryAll();
+
+		$ntresult = $this->findAll();
+
         // select all existing tokens
-        //old code that i did with the code above :)
-        //$ntresult = $this->getSomeRecords(array("token"),$iSurveyID,FALSE,"token");
         foreach ($ntresult as $tkrow)
         {
-            $existingtokens[$tkrow['token']]=null;
+            $existingtokens[] = $tkrow['token'];
         }
+
         $newtokencount = 0;
         $tkresult = $this->selectEmptyTokens($iSurveyID);
         foreach ($tkresult as $tkrow)
@@ -181,12 +164,12 @@ class Tokens_dynamic extends CActiveRecord
             while ($bIsValidToken == false)
             {
                 $newtoken = sRandomChars($iTokenLength);
-                if (!isset($existingtokens[$newtoken])) {
+                if (!in_array($newtoken, $existingtokens)) {
+                    $existingtokens[] = $newtoken;
                     $bIsValidToken = true;
-                    $existingtokens[$newtoken]=null;
                 }
             }
-            $itresult = $this->updateToken($tkrow['tid'],$newtoken);
+            $itresult = $this->updateToken($tkrow['tid'], $newtoken);
             $newtokencount++;
         }
         return $newtokencount;
@@ -461,9 +444,9 @@ class Tokens_dynamic extends CActiveRecord
         return Yii::app()->db->createCommand($dlquery)->query();
     }
 
-    function deleteRecords($tokenids)
+    function deleteRecords($iTokenIds)
     {
-        $dlquery = "DELETE FROM ".Tokens_dynamic::tableName()." WHERE tid IN (".implode(", ", $tokenids).")";
+        $dlquery = "DELETE FROM ".Tokens_dynamic::tableName()." WHERE tid IN (".implode(", ", $iTokenIds).")";
         return Yii::app()->db->createCommand($dlquery)->query();
     }
 

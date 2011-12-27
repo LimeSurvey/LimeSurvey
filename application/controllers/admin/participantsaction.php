@@ -35,7 +35,7 @@ class participantsaction extends CAction
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    private function _renderTemplateWrappedInHeaderAndFooter($aViewUrls = array(), $aData = array())
+    private function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
     {
         $aViewUrls = (array) $aViewUrls;
         if (empty($aViewUrls))
@@ -79,7 +79,7 @@ class participantsaction extends CAction
         );
 
         // loads the participant panel and summary view
-        $this->_renderTemplateWrappedInHeaderAndFooter(array('participantsPanel', 'summary'), $aData);
+        $this->_renderWrappedTemplate(array('participantsPanel', 'summary'), $aData);
     }
 
     /**
@@ -87,7 +87,7 @@ class participantsaction extends CAction
      */
     function importCSV()
     {
-        $this->_renderTemplateWrappedInHeaderAndFooter(array('participantsPanel', 'importCSV'));
+        $this->_renderWrappedTemplate(array('participantsPanel', 'importCSV'));
     }
 
     /**
@@ -124,7 +124,7 @@ class participantsaction extends CAction
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jqGrid/css/jquery.ui.datepicker.css');
 
         // loads the participant panel view and display participant view
-        $this->_renderTemplateWrappedInHeaderAndFooter(array('participantsPanel', 'displayParticipants'), $aData);
+        $this->_renderWrappedTemplate(array('participantsPanel', 'displayParticipants'), $aData);
     }
 
     /**
@@ -132,7 +132,7 @@ class participantsaction extends CAction
      */
     function blacklistControl()
     {
-        $this->_renderTemplateWrappedInHeaderAndFooter('participantsPanel');
+        $this->_renderWrappedTemplate('participantsPanel');
     }
 
     /**
@@ -146,7 +146,7 @@ class participantsaction extends CAction
 
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . 'admin/default/participants.css');
 
-        $this->_renderTemplateWrappedInHeaderAndFooter(array('participantsPanel', 'attributeControl'), $aData);
+        $this->_renderWrappedTemplate(array('participantsPanel', 'attributeControl'), $aData);
     }
 
     /**
@@ -158,7 +158,7 @@ class participantsaction extends CAction
             'userideditable' => Yii::app()->getConfig('userideditable')
         );
 
-        $this->_renderTemplateWrappedInHeaderAndFooter(array('participantsPanel', 'userControl'), $aData);
+        $this->_renderWrappedTemplate(array('participantsPanel', 'userControl'), $aData);
     }
 
     /**
@@ -175,7 +175,7 @@ class participantsaction extends CAction
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jqGrid/css/ui.jqgrid.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jqGrid/css/jquery.ui.datepicker.css');
 
-        $this->_renderTemplateWrappedInHeaderAndFooter(array('participantsPanel', 'sharePanel'));
+        $this->_renderWrappedTemplate(array('participantsPanel', 'sharePanel'));
     }
 
     /**
@@ -891,6 +891,7 @@ class participantsaction extends CAction
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
         {
             $records = Participants::getParticipants($page, $limit);
+            $aData = new Object();
             $aData->page = $page;
             $aData->records = Participants::model()->count();
             $aData->total = ceil($aData->records / $limit);
@@ -958,6 +959,7 @@ class participantsaction extends CAction
         {
             $iUserID = Yii::app()->session['loginID'];
             $records = Participants::getParticipantsOwner($iUserID);
+            $aData = new Object();
             $aData->page = $page;
             $aData->records = count($records);
             $aData->total = ceil($aData->records / $limit);
@@ -1031,6 +1033,7 @@ class participantsaction extends CAction
         $iParticipantId = CHttpRequest::getQuery('pid');
         $records = ParticipantAttributeNames::getParticipantVisibleAttribute($iParticipantId);
         $getallattributes = ParticipantAttributeNames::getAttributes();
+        $aData = new Object();
         $aData->page = 1;
         $aData->records = count($records);
         $aData->total = ceil($aData->records / 10);
@@ -1144,7 +1147,7 @@ class participantsaction extends CAction
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . 'admin/default/participants.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . 'admin/default/viewAttribute.css');
 
-        $this->_renderTemplateWrappedInHeaderAndFooter(array('participantsPanel', 'viewAttribute'), $aData);
+        $this->_renderWrappedTemplate(array('participantsPanel', 'viewAttribute'), $aData);
     }
 
     /*
@@ -1288,7 +1291,7 @@ class participantsaction extends CAction
             $templateData['error_msg'] = sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir'));
             $errorinupload = array('error' => $this->upload->display_errors());
             Yii::app()->session['summary'] = array('errorinupload' => $errorinupload);
-            $this->_renderTemplateWrappedInHeaderAndFooter(array('participantsPanel', 'uploadSummary'));
+            $this->_renderWrappedTemplate(array('participantsPanel', 'uploadSummary'));
         }
         else
         {
@@ -1318,7 +1321,7 @@ class participantsaction extends CAction
                 'fullfilepath' => $sFilePath,
                 'linecount' => $linecount - 1
             );
-            $this->_renderTemplateWrappedInHeaderAndFooter('attributeMapCSV', $aData);
+            $this->_renderWrappedTemplate('attributeMapCSV', $aData);
         }
     }
 
@@ -1558,7 +1561,7 @@ class participantsaction extends CAction
 
     function summaryview()
     {
-        $this->_renderTemplateWrappedInHeaderAndFooter(array('participantsPanel', 'uploadSummary'));
+        $this->_renderWrappedTemplate(array('participantsPanel', 'uploadSummary'));
     }
 
     /*
@@ -1722,7 +1725,7 @@ class participantsaction extends CAction
             'count' => $count
         );
 
-        $this->_renderTemplateWrappedInHeaderAndFooter('attributeMap', $aData);
+        $this->_renderWrappedTemplate('attributeMap', $aData);
     }
 
     /*
@@ -1770,7 +1773,7 @@ class participantsaction extends CAction
             'alreadymappedattributename' => $alreadymappedattdisplay
         );
 
-        $this->_renderTemplateWrappedInHeaderAndFooter('attributeMapToken', $aData);
+        $this->_renderWrappedTemplate('attributeMapToken', $aData);
     }
 
     function mapCSVcancelled()

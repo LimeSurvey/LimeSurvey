@@ -1304,7 +1304,7 @@ function getgrouplistlang($gid, $language,$surveyid)
 
     $groupselecter="";
     if (!$surveyid) {$surveyid=returnglobal('sid');}
-    
+
     $gidresult = Groups::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $language));   //Checked)
     foreach ($gidresult as $gv)
     {
@@ -5424,7 +5424,7 @@ function GetAttributeFieldNames($surveyid)
 {
     if (!$table = Yii::app()->db->schema->getTable('{{tokens_'.$surveyid . '}}'))
         return Array();
-    return array_filter(array_values($table->columnNames), 'filterforattributes');
+    return array_filter(array_keys($table->columns), 'filterforattributes');
 }
 
 /**
