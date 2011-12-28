@@ -141,8 +141,7 @@ class database extends Survey_Common_Action
             }
         }
 
-        $databaseoutput['clang']=$clang;
-        
+
         if ($action == "updateansweroptions" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
         {
            
@@ -188,7 +187,7 @@ class database extends Survey_Common_Action
 
                     $assessmentvalue=(int) $_POST['assessment_'.$sortorderid.'_'.$scale_id];
                     foreach ($alllanguages as $language)
-                    {*/
+                    {
                         $answer=$_POST['answer_'.$language.'_'.$sortorderid.'_'.$scale_id];
 
                         if (Yii::app()->getConfig('filterxsshtml'))
