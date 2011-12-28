@@ -53,9 +53,14 @@ class Survey_Common_Action extends CAction
      */
     function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
     {
-        $aViewUrls = (array) $aViewUrls;
-
         $aData['clang'] = $clang = $this->getController()->lang;
+        $aViewUrls = (array) $aViewUrls;
+        $sViewPath = '/admin/';
+
+        if (!empty($sAction))
+        {
+            $sViewPath .= $sAction . '/';
+        }
 
         $this->getController()->_getAdminHeader();
 
@@ -63,7 +68,7 @@ class Survey_Common_Action extends CAction
         {
             if (empty($sViewKey) || is_numeric($sViewKey))
             {
-                $this->getController()->render("/admin/{$sAction}/{$viewUrl}", $aData);
+                $this->getController()->render($sViewPath . $viewUrl, $aData);
             }
             else
             {

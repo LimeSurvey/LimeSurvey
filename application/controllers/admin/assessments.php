@@ -90,7 +90,7 @@ class Assessments extends Survey_Common_Action
         $data['gid'] = empty($_POST['gid']) ? '' : sanitize_int($_POST['gid']);
 
         Yii::app()->loadHelper('admin/htmleditor');
-        $this->_renderHeaderAndFooter("/admin/assessments_view", $data);
+        $this->_renderWrappedTemplate("assessments_view", $data);
     }
 
     private function _collectGroupData($surveyId)
@@ -171,16 +171,17 @@ class Assessments extends Survey_Common_Action
     }
 
     /**
-     * Renders the views for the index
-     * @return void
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
      */
-    private function _renderHeaderAndFooter($path, array $data)
+    function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
     {
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig("adminscripts") . 'assessments.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig("generalscripts") . 'jquery/jquery.tablesorter.min.js');
-        $this->getController()->_getAdminHeader();
-        $this->getController()->render($path, $data);
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'assessments.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.tablesorter.min.js');
+
+        parent::_renderWrappedTemplate('', $aViewUrls, $aData);
     }
 
     private function _getAssessmentPostData($surveyid, $language)
