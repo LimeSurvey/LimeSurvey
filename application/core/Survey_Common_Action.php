@@ -45,6 +45,51 @@ class Survey_Common_Action extends CAction
     }
 
     /**
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string $sAction Current action, the folder to fetch views from
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
+    {
+        $aViewUrls = (array) $aViewUrls;
+
+        $aData['clang'] = $clang = $this->getController()->lang;
+
+        $this->getController()->_getAdminHeader();
+
+        foreach ($aViewUrls as $sViewKey => $viewUrl)
+        {
+            if (empty($sViewKey) || is_numeric($sViewKey))
+            {
+                $this->getController()->render("/admin/{$sAction}/{$viewUrl}", $aData);
+            }
+            else
+            {
+                switch ($sViewKey)
+                {
+                    case 'message' :
+                        if (empty($viewUrl['class']))
+                        {
+                            $this->getController()->_showMessageBox($viewUrl['title'], $viewUrl['message']);
+                        }
+                        else
+                        {
+                            $this->getController()->_showMessageBox($viewUrl['title'], $viewUrl['message'], $viewUrl['class']);
+                        }
+                        break;
+                    case 'output' :
+                        echo $viewUrl;
+                        break;
+                }
+            }
+        }
+
+        $this->getController()->_getAdminFooter('http://docs.limesurvey.org', $clang->gT('LimeSurvey online manual'));
+    }
+
+    /**
      * Shows admin menu for question
      * @param int Survey id
      * @param int Group id
@@ -276,7 +321,7 @@ class Survey_Common_Action extends CAction
         $condition = array('sid' => $surveyid, 'parent_qid' => 0, 'language' => $baselang);
 
         //$sumquery3 =  "SELECT * FROM ".db_table_name('questions')." WHERE sid={$surveyid} AND parent_qid=0 AND language='".$baselang."'"; //Getting a count of questions for this survey
-        $sumresult3 = Questions::model()->findAllByAttributes($condition); //$connect->Execute($sumquery3); //Checked
+        $sumresult3 = Questions::model()->findAllByAttributes($condition); //Checked
         $sumcount3 = count($sumresult3);
 
         $data['canactivate'] = $sumcount3 > 0 && bHasSurveyPermission($surveyid, 'surveyactivation', 'update');
@@ -333,7 +378,7 @@ class Survey_Common_Action extends CAction
         // TMSW Conditions->Relevance:  How is conditionscount used?  Should Relevance do the same?
 
         $query = count(Conditions::model()->findAllByAttributes(array('qid' => $surveyid)));
-        $sumcount6 = $query; //$connect->GetOne($sumquery6); //Checked
+        $sumcount6 = $query; //Checked
         $data['surveycontent'] = bHasSurveyPermission($surveyid, 'surveycontent', 'update');
         $data['conditionscount'] = ($sumcount6 > 0);
         // Eport menu item
@@ -402,13 +447,13 @@ class Survey_Common_Action extends CAction
 
         $condition = array('sid' => $surveyid, 'parent_qid' => 0, 'language' => $baselang);
 
-        $sumresult3 = Questions::model()->findAllByAttributes($condition); //$connect->Execute($sumquery3); //Checked
+        $sumresult3 = Questions::model()->findAllByAttributes($condition); //Checked
         $sumcount3 = count($sumresult3);
 
         $condition = array('sid' => $surveyid, 'language' => $baselang);
 
         //$sumquery2 = "SELECT * FROM ".db_table_name('groups')." WHERE sid={$surveyid} AND language='".$baselang."'"; //Getting a count of groups for this survey
-        $sumresult2 = Groups::model()->findAllByAttributes($condition); //$connect->Execute($sumquery2); //Checked
+        $sumresult2 = Groups::model()->findAllByAttributes($condition); //Checked
         $sumcount2 = count($sumresult2);
 
         //SURVEY SUMMARY

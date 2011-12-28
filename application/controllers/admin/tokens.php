@@ -70,41 +70,10 @@ class tokens extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    private function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
     {
-        $aViewUrls = (array) $aViewUrls;
-
-        $aData['clang'] = $clang = $this->getController()->lang;
         $aData['imageurl'] = Yii::app()->getConfig('imageurl');
-
-        $this->getController()->_getAdminHeader();
-        foreach ($aViewUrls as $sViewKey => $viewUrl)
-        {
-            if (empty($sViewKey) || is_numeric($sViewKey))
-            {
-                $this->getController()->render('/admin/token/'.$viewUrl, $aData);
-            }
-            else
-            {
-                switch ($sViewKey)
-                {
-                    case 'message' :
-                        if (empty($viewUrl['class']))
-                        {
-                            $this->getController()->_showMessageBox($viewUrl['title'], $viewUrl['message']);
-                        }
-                        else
-                        {
-                            $this->getController()->_showMessageBox($viewUrl['title'], $viewUrl['message'], $viewUrl['class']);
-                        }
-                        break;
-                    case 'output' :
-                        echo $viewUrl;
-                        break;
-                }
-            }
-        }
-        $this->getController()->_getAdminFooter('http://docs.limesurvey.org', $clang->gT('LimeSurvey online manual'));
+        parent::_renderWrappedTemplate('token', $aViewUrls, $aData);
     }
 
 	/**

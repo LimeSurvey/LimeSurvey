@@ -24,7 +24,7 @@ if (!defined('BASEPATH'))
  * @package        LimeSurvey
  * @subpackage    Backend
  */
-class Authentication extends CAction
+class Authentication extends Survey_Common_Action
 {
     /**
      * Executes the action based on given input
@@ -391,17 +391,14 @@ class Authentication extends CAction
     }
 
     /**
-     * Renders a template wrapped in header and footer
-     * @param string $szViewUrl
-     * @param array $aData
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
      */
-    private function _renderWrappedTemplate($szViewUrl, $aData = array())
+    function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
     {
-        $aData['clang'] = $clang = $this->getController()->lang;
-
-        $this->getController()->_getAdminHeader();
-        $this->getController()->render('/admin/authentication/' . $szViewUrl, $aData);
-        $this->getController()->_getAdminFooter('http://docs.limesurvey.org', $clang->gT('LimeSurvey online manual'));
+        parent::_renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
 
 }
