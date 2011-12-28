@@ -58,16 +58,16 @@ class labels extends Survey_Common_Action
      */
     public function importlabelresources()
     {
-        $clang = $this->controller->lang;
+        $clang = $this->getController()->lang;
         $action = returnglobal('action');
         $lid = returnglobal('lid');
-        $this->controller->_getAdminHeader();
+        $this->getController()->_getAdminHeader();
         $this->_labelsetbar();
 
         if ($action == "importlabelresources" && $lid)
         {
             if (Yii::app()->getConfig('demoMode'))
-                $this->controller->error($clang->gT("Demo mode only: Uploading files is disabled in this system."));
+                $this->getController()->error($clang->gT("Demo mode only: Uploading files is disabled in this system."));
 
             Yii::import('application.libraries.admin.Phpzip');
 
@@ -82,7 +82,7 @@ class labels extends Survey_Common_Action
             $destdir = $basedestdir . "/$lid/";
 
             if (!is_writeable($basedestdir))
-                $this->controller->error(sprintf($clang->gT("Incorrect permissions in your %s folder."), $basedestdir));
+                $this->getController()->error(sprintf($clang->gT("Incorrect permissions in your %s folder."), $basedestdir));
 
             if (!is_dir($destdir))
                 mkdir($destdir);
@@ -95,7 +95,7 @@ class labels extends Survey_Common_Action
                 $importlabelresourcesoutput .= $clang->gT("Reading file..") . "<br /><br />\n";
 
                 if ($z->extract($extractdir, $zipfile) != 'OK')
-                    $this->controller->error($clang->gT("This file is not a valid ZIP file archive. Import failed."));
+                    $this->getController()->error($clang->gT("This file is not a valid ZIP file archive. Import failed."));
 
                 // now read tempdir and copy authorized files only
                 $dh = opendir($extractdir);
@@ -149,21 +149,21 @@ class labels extends Survey_Common_Action
                 rmdir($extractdir);
 
                 if (is_null($aErrorFilesInfo) && is_null($aImportedFilesInfo))
-                    $this->controller->error($clang->gT("This ZIP archive contains no valid Resources files. Import failed.") . '<br /><br />' . $clang->gT("Remember that we do not support subdirectories in ZIP archives."));
+                    $this->getController()->error($clang->gT("This ZIP archive contains no valid Resources files. Import failed.") . '<br /><br />' . $clang->gT("Remember that we do not support subdirectories in ZIP archives."));
             }
             else
-                $this->controller->error(sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir));
+                $this->getController()->error(sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir));
 
-            $this->controller->render('/admin/labels/importlabelresources_view', array(
+            $this->getController()->render('/admin/labels/importlabelresources_view', array(
                 'clang' => $clang,
                 'aErrorFilesInfo' => $aErrorFilesInfo,
                 'aImportedFilesInfo' => $aImportedFilesInfo,
             ));
         }
 
-        $this->controller->_loadEndScripts();
+        $this->getController()->_loadEndScripts();
 
-        $this->controller->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
     }
 
     /**
@@ -197,9 +197,9 @@ class labels extends Survey_Common_Action
      */
     public function import()
     {
-        $clang = $this->controller->lang;
+        $clang = $this->getController()->lang;
         $action = returnglobal('action');
-        $this->controller->_getAdminHeader();
+        $this->getController()->_getAdminHeader();
         $this->_labelsetbar();
 
         if ($action == 'importlabels')
@@ -211,7 +211,7 @@ class labels extends Survey_Common_Action
             $sExtension = !empty($aPathInfo['extension']) ? $aPathInfo['extension'] : '';
 
             if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
-                $this->controller->error(sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir')));
+                $this->getController()->error(sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir')));
 
             $options['checkforduplicates'] = 'off';
             if (isset($_POST['checkforduplicates']))
@@ -222,18 +222,18 @@ class labels extends Survey_Common_Action
             elseif (strtolower($sExtension) == 'lsl')
                 $aImportResults = XMLImportLabelsets($sFullFilepath, $options);
             else
-                $this->controller->error($clang->gT("Uploaded label set file needs to have an .lsl extension."));
+                $this->getController()->error($clang->gT("Uploaded label set file needs to have an .lsl extension."));
 
             unlink($sFullFilepath);
 
-            $this->controller->render('/admin/labels/import_view', array(
+            $this->getController()->render('/admin/labels/import_view', array(
                 'aImportResults' => $aImportResults,
                 'clang' => $clang,
             ));
         }
-        $this->controller->_loadEndScripts();
+        $this->getController()->_loadEndScripts();
 
-        $this->controller->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
     }
 
     /**
@@ -249,9 +249,9 @@ class labels extends Survey_Common_Action
         $lid = sanitize_int($lid);
 
         Yii::app()->loadHelper('surveytranslator');
-        $clang = $this->controller->lang;
+        $clang = $this->getController()->lang;
 
-        $this->controller->_getAdminHeader();
+        $this->getController()->_getAdminHeader();
         $this->_labelsetbar($lid);
 
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1)
@@ -294,12 +294,12 @@ class labels extends Survey_Common_Action
             $data['panecookie'] = $panecookie;
             $data['tabitem'] = $tabitem;
 
-            $this->controller->render('/admin/labels/editlabel_view', $data);
+            $this->getController()->render('/admin/labels/editlabel_view', $data);
         }
 
-        $this->controller->_loadEndScripts();
+        $this->getController()->_loadEndScripts();
 
-        $this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->controller->lang->gT("LimeSurvey online manual"));
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
     }
 
     /**
@@ -316,15 +316,15 @@ class labels extends Survey_Common_Action
             $lid = sanitize_int($lid);
 
         // Gets the current language
-        $clang = $this->controller->lang;
+        $clang = $this->getController()->lang;
         $action = 'labels';
 
         // Loads admin header
-        $this->controller->_getAdminHeader();
+        $this->getController()->_getAdminHeader();
 
         // Includes some javascript files
-        $this->controller->_js_admin_includes(Yii::app()->baseUrl . '/scripts/admin/labels.js');
-        $this->controller->_js_admin_includes(Yii::app()->baseUrl . '/scripts/admin/updateset.js');
+        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/admin/labels.js');
+        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/admin/updateset.js');
 
         // Checks if user have the sufficient rights to manage the labels
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1)
@@ -346,7 +346,7 @@ class labels extends Survey_Common_Action
                 $data['row'] = $result->attributes;
 
                 // Display a specific labelbar menu
-                $this->controller->render("/admin/labels/labelbar_view", $data);
+                $this->getController()->render("/admin/labels/labelbar_view", $data);
 
                 $rwlabelset = $result;
 
@@ -387,7 +387,7 @@ class labels extends Survey_Common_Action
                     $i++;
                 }
 
-                $this->controller->render('/admin/labels/labelview_view', array(
+                $this->getController()->render('/admin/labels/labelview_view', array(
                     'results' => $results,
                     'lslanguages' => $lslanguages,
                     'clang' => $clang,
@@ -399,9 +399,9 @@ class labels extends Survey_Common_Action
             }
         }
 
-        $this->controller->_loadEndScripts();
+        $this->getController()->_loadEndScripts();
 
-        $this->controller->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
     }
 
     /**
@@ -436,9 +436,9 @@ class labels extends Survey_Common_Action
                     $lid = 0;
 
             if ($lid)
-                $this->controller->redirect($this->controller->createUrl("admin/labels/sa/view/lid/" . $lid));
+                $this->getController()->redirect($this->getController()->createUrl("admin/labels/sa/view/lid/" . $lid));
             else
-                $this->controller->redirect($this->controller->createUrl("admin/labels/sa/view"));
+                $this->getController()->redirect($this->getController()->createUrl("admin/labels/sa/view"));
         }
     }
 
@@ -450,13 +450,13 @@ class labels extends Survey_Common_Action
      */
     public function exportmulti()
     {
-        $this->controller->_getAdminHeader();
+        $this->getController()->_getAdminHeader();
         $this->_labelsetbar(0);
-        $this->controller->_js_admin_includes(Yii::app()->baseUrl . 'scripts/admin/labels.js');
-        $data['clang'] = $this->controller->lang;
+        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . 'scripts/admin/labels.js');
+        $data['clang'] = $this->getController()->lang;
         $data['labelsets'] = getlabelsets();
-        $this->controller->render('/admin/labels/exportmulti_view', $data);
-        $this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->controller->lang->gT("LimeSurvey online manual"));
+        $this->getController()->render('/admin/labels/exportmulti_view', $data);
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
     }
 
     /**
@@ -469,9 +469,9 @@ class labels extends Survey_Common_Action
     protected function _labelsetbar($lid = 0)
     {
         $lid = (int) $lid;
-        $data['clang'] = $this->controller->lang;
+        $data['clang'] = $this->getController()->lang;
         $data['lid'] = $lid;
         $data['labelsets'] = getlabelsets();
-        $this->controller->render("/admin/labels/labelsetsbar_view",$data);
+        $this->getController()->render("/admin/labels/labelsetsbar_view",$data);
     }
  }
