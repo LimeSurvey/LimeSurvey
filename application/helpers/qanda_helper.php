@@ -362,12 +362,12 @@ function setman_questionandcode($ia)
     
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
     $qresult = db_execute_assoc($qquery);     //Checked
-    $qrow = $qresult->row_array();
+    $qrow = $qresult->read();
     $other = $qrow['other'];
     $subquestionquery = "SELECT title FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     $sqresult = db_execute_assoc($subquestionquery); //Checked
 
-    foreach ($sqresult->row_array() as $subquestionrow)
+    foreach ($sqresult->read() as $subquestionrow)
     {
         $mandatorys[]=$ia[1].$subquestionrow['title'];
         $mandatoryfns[]=$ia[1];
@@ -936,7 +936,7 @@ function mandatory_message($ia)
                     $qtitle .= ' '.$clang->gT('Please check at least one item.').'.';
                     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0];
                     $qresult = db_execute_assoc($qquery);    //Checked
-                    $qrow = $qresult->row_array();
+                    $qrow = $qresult->read();
                     if ($qrow['other']=='Y')
                     {
                         $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
@@ -3545,7 +3545,7 @@ function do_multiplechoice($ia)
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
     $qresult = db_execute_assoc($qquery);     //Checked
-    $qrow = $qresult->row_array(); $other = $qrow['other'];
+    $qrow = $qresult->read(); $other = $qrow['other'];
 
     if ($aQuestionAttributes['random_order']==1) {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
@@ -5881,7 +5881,7 @@ function do_array_10point($ia)
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]."  AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);      //Checked
-    $qrow = $qresult->row_array(); $other = $qrow['other'];
+    $qrow = $qresult->read(); $other = $qrow['other'];
 
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
     if (trim($aQuestionAttributes['answer_width'])!='')
@@ -6355,7 +6355,7 @@ function do_array($ia)
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);     //Checked
-    $qrow = $qresult->row_array(); $other = $qrow['other'];
+    $qrow = $qresult->read(); $other = $qrow['other'];
     $lquery = "SELECT * FROM {{answers}} WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
 
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
@@ -6900,7 +6900,7 @@ function do_array_multitext($ia)
         $cellwidth=sprintf('%02d', $cellwidth);
 
         $ansquery = "SELECT count(question) FROM {{questions}} WHERE parent_qid={$ia[0]} and scale_id=0 AND question like '%|%'";
-        $ansresult = reset(db_execute_assoc($ansquery)->row_array());
+        $ansresult = reset(db_execute_assoc($ansquery)->read());
         if ($ansresult>0)
         {
             $right_exists=true;
@@ -7092,7 +7092,7 @@ function do_array_multiflexi($ia)
     $defaultvaluescript = '';
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
     $qresult = db_execute_assoc($qquery);
-    $qrow = $qresult->row_array(); $other = $qrow['other'];
+    $qrow = $qresult->read(); $other = $qrow['other'];
 
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
     if (trim($aQuestionAttributes['multiflexible_max'])!='' && trim($aQuestionAttributes['multiflexible_min']) ==''){
@@ -7445,7 +7445,7 @@ function do_arraycolumns($ia)
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);    //Checked
-    $qrow = $qresult->row_array(); $other = $qrow['other'];
+    $qrow = $qresult->read(); $other = $qrow['other'];
     $lquery = "SELECT * FROM {{answers}} WHERE qid=".$ia[0]."  AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
     $lresult = db_execute_assoc($lquery);   //Checked
     if ($lresult->count() > 0)
@@ -7608,7 +7608,7 @@ function do_array_dual($ia)
     $labelans1=array();
     $labelans=array();
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
-    $other = reset(db_execute_assoc($qquery)->row_array());    //Checked
+    $other = reset(db_execute_assoc($qquery)->read());    //Checked
     $lquery =  "SELECT * FROM {{answers}} WHERE scale_id=0 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
     $lquery1 = "SELECT * FROM {{answers}} WHERE scale_id=1 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
