@@ -398,6 +398,7 @@ class Authentication extends Survey_Common_Action
      */
     function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
     {
+        $aData['display']['menu_bars'] = false;
         parent::_renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
 

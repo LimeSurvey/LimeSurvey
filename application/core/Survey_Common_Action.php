@@ -53,6 +53,7 @@ class Survey_Common_Action extends CAction
      */
     function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
     {
+        // Gather the data
         $aData['clang'] = $clang = $this->getController()->lang;
         $aViewUrls = (array) $aViewUrls;
         $sViewPath = '/admin/';
@@ -62,8 +63,33 @@ class Survey_Common_Action extends CAction
             $sViewPath .= $sAction . '/';
         }
 
+        // Header
         $this->getController()->_getAdminHeader();
 
+        // Menu bars
+        if (!isset($aData['display']['menu_bars']) || $aData['display']['menu_bars'] !== false)
+        {
+            $this->getController()->_showadminmenu(!empty($aData['surveyid']) ? $aData['surveyid'] : null);
+
+            if (!empty($aData['surveyid']))
+            {
+                $this->_surveybar($aData['surveyid'], !empty($aData['gid']) ? $aData['gid'] : null);
+
+                if (!empty($aData['display']['menu_bars']['surveysummary']))
+                {
+                    $this->_surveysummary($aData['surveyid'], $aData['display']['menu_bars']['surveysummary']);
+                }
+
+                if (!empty($aData['gid']))
+                {
+                    $this->_questiongroupbar($aData['surveyid'], $aData['gid'], !empty($aData['qid']) ? $aData['qid'] : null, $aData['display']['menu_bars']['gid_action']);
+                }
+            }
+        }
+
+        unset($aData['display']);
+
+        // Load views
         foreach ($aViewUrls as $sViewKey => $viewUrl)
         {
             if (empty($sViewKey) || is_numeric($sViewKey))
@@ -74,6 +100,7 @@ class Survey_Common_Action extends CAction
             {
                 switch ($sViewKey)
                 {
+                    // Message
                     case 'message' :
                         if (empty($viewUrl['class']))
                         {
@@ -84,6 +111,8 @@ class Survey_Common_Action extends CAction
                             $this->getController()->_showMessageBox($viewUrl['title'], $viewUrl['message'], $viewUrl['class']);
                         }
                         break;
+
+                     // Output
                     case 'output' :
                         echo $viewUrl;
                         break;
@@ -91,6 +120,7 @@ class Survey_Common_Action extends CAction
             }
         }
 
+        // Footer
         $this->getController()->_getAdminFooter('http://docs.limesurvey.org', $clang->gT('LimeSurvey online manual'));
     }
 

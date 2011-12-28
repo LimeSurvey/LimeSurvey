@@ -52,7 +52,7 @@ class emailtemplates extends Survey_Common_Action {
         $clang = $this->getController()->lang;
         $surveyid = sanitize_int($surveyid);
         $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
-        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);       
+        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
 
         Yii::app()->loadHelper('admin.htmleditor');
         Yii::app()->loadHelper('surveytranslator');
@@ -75,7 +75,7 @@ class emailtemplates extends Survey_Common_Action {
         $data['bplangs'] = array();
         $data['defaulttexts'] = array();
         foreach ($grplangs as $key => $grouplang)
-        {            
+        {
             $data['bplangs'][$key] = new limesurvey_lang(array($grouplang));
             $data['attrib'][$key] = Surveys_languagesettings::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :ls', array(':ssid' => $surveyid, ':ls' => $grouplang));
             $data['defaulttexts'][$key] = aTemplateDefaultTexts($data['bplangs'][$key]);
@@ -83,8 +83,8 @@ class emailtemplates extends Survey_Common_Action {
         $data['clang'] = $clang;
         $data['surveyid'] = $surveyid;
         $data['ishtml'] = $ishtml;
-        $data['grplangs'] = $grplangs;  
-        $this->_renderHtml($data,$surveyid);
+        $data['grplangs'] = $grplangs;
+        $this->_renderWrappedTemplate('emailtemplates_view', $data);
     }
 
     /**
@@ -115,7 +115,7 @@ class emailtemplates extends Survey_Common_Action {
                         'email_admin_notification' => $_POST['email_admin_notification_'.$langname],
                         'email_admin_responses_subj' => $_POST['email_admin_responses_subj_'.$langname],
                         'email_admin_responses' => $_POST['email_admin_responses_'.$langname]
-                        );                
+                        );
                 $usquery = Surveys_languagesettings::model()->updateAll($attributes,'surveyls_survey_id = :ssid AND surveyls_language = :sl', array(':ssid' => $surveyid, ':sl' => $langname));
                 if ($usquery <= 0)
                     die("Error updating<br />".$usquery."<br /><br />");
@@ -126,19 +126,19 @@ class emailtemplates extends Survey_Common_Action {
     }
 
 
-    private function _renderHtml($data,$surveyid)
-    {
-        $clang = $this->getController()->lang;
+    /**
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+	{
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'emailtemplates.js');
 
-        $this->controller->_getAdminHeader();
-        $this->controller->_showadminmenu($surveyid);
-        $this->_surveybar($surveyid);
-        $this->_surveysummary($surveyid, "editemailtemplates");
-        $this->_js_admin_includes(Yii::app()->baseUrl . '/scripts/admin/emailtemplates.js');
+        $aData['display']['menu_bars']['surveysummary'] = 'editemailtemplates';
 
-        $this->getController()->render('/admin/emailtemplates/emailtemplates_view', $data);
-        $this->getController()->_loadEndScripts();
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+        parent::_renderWrappedTemplate('emailtemplates', $aViewUrls, $aData);
     }
 
 }

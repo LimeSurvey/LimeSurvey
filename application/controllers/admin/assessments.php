@@ -181,6 +181,8 @@ class Assessments extends Survey_Common_Action
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'assessments.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.tablesorter.min.js');
 
+        $aData['display']['menu_bars'] = false;
+
         parent::_renderWrappedTemplate('', $aViewUrls, $aData);
     }
 

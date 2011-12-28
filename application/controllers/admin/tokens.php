@@ -73,6 +73,7 @@ class tokens extends Survey_Common_Action
     function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
     {
         $aData['imageurl'] = Yii::app()->getConfig('imageurl');
+        $aData['display']['menu_bars'] = false;
         parent::_renderWrappedTemplate('token', $aViewUrls, $aData);
     }
 
