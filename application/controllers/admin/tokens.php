@@ -385,7 +385,6 @@ class tokens extends Survey_Common_Action
 
         $tokens = Tokens_dynamic::model($iSurveyId)->findAll();
 
-        $aData = new Object();
         $aData->page = $page;
         $aData->records = count($tokens);
         $aData->total = ceil($aData->records / $limit);
