@@ -35,16 +35,13 @@ class update extends CAction
         $actions = array_keys($_GET);
         $_GET['method'] = $action = (!empty($actions[0])) ? $actions[0] : '';
 
-        echo $this->getController()->_getAdminHeader(false, true);
-
         if (!empty($action)) {
             $this->$action($_GET[$action]);
         }
         else
         {
             $this->index();
-        }
-        echo $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"), true);
+        }        
     }
 
     /**
@@ -80,7 +77,7 @@ class update extends CAction
         $data['changelog'] = isset($changelog) ? $changelog : '';
         $data['httperror'] = isset($httperror) ? $httperror : '';
 
-        $this->getController()->render('/admin/update/update', $data);
+        $this->_renderHtml('/admin/update/update', $data);
     }
 
     private function _getChangelog($buildnumber, $updaterversion, $updatekey)
@@ -153,7 +150,7 @@ class update extends CAction
         $data['error'] = $error;
         $data['updateinfo'] = $updateinfo;
         $data['readonlyfiles'] = $readonlyfiles;
-        $this->getController()->render('/admin/update/step2', $data);
+        $this->_renderHtml('/admin/update/step2', $data);
     }
 
     private function _getReadOnlyFiles($updateinfo)
@@ -303,7 +300,7 @@ class update extends CAction
                 write_file($tempdir.'/'.$sfilename.".gz", $backup);
             }
         }
-        $this->getController()->render('/admin/update/step3', $data);
+        $this->_renderHtml('/admin/update/step3', $data);
     }
 
 
@@ -432,7 +429,7 @@ class update extends CAction
         setGlobalSetting('updateavailable','0');
         setGlobalSetting('updatebuild','');
         setGlobalSetting('updateversion','');
-        $this->getController()->render('/admin/update/step4', $data);
+        $this->_renderHtml('/admin/update/step4', $data);
     }
 
     private function _RunUpdaterUpdate()
@@ -565,7 +562,15 @@ class update extends CAction
         {
             echo  CheckForDBUpgrades();
         }
-        echo self::_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"), true);
+        echo $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"), true);
+    }
+
+    private function _renderHtml($path, $data)
+    {
+        echo $this->getController()->_getAdminHeader(false, true);
+        $this->getController()->render($path, $data);
+        echo $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"), true);
+
     }
 
 }

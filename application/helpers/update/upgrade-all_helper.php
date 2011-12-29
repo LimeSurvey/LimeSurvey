@@ -21,6 +21,8 @@ function db_upgrade_all($oldversion) {
     /// This function does anything necessary to upgrade
     /// older versions to match current functionality
     global $modifyoutput, $dbprefix, $usertemplaterootdir, $standardtemplaterootdir;
+    $usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
+    $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
     $clang = Yii::app()->lang;
     echo str_pad($clang->gT('The LimeSurvey database is being upgraded').' ('.date('Y-m-d H:i:s').')',14096).".<br /><br />". $clang->gT('Please be patient...')."<br /><br />\n";
 
@@ -69,14 +71,14 @@ function db_upgrade_all($oldversion) {
         $fields = array(
             'relevance' => 'TEXT'            
         );
-        Yii::app()->db->schema->addColumn('{{questions}}',$fields);
+        Yii::app()->db->schema->addColumn('{{questions}}','relevance','TEXT');
     }
     if ($oldversion < 151)
     {
         $fields = array(
             'randomization_group' => 'VARCHAR(20) NOT NULL default \'\''
         );
-        Yii::app()->db->schema->addColumn('{{groups}}',$fields);
+        Yii::app()->db->schema->addColumn('{{groups}}','randomization_group','VARCHAR(20) NOT NULL default \'\'');
     }
     if ($oldversion < 152)
     {
@@ -107,7 +109,7 @@ function upgrade_question_attributes148()
     $sDBPrefix=Yii::app()->db->tablePrefix;
     $sSurveyQuery = "SELECT sid FROM {$sDBPrefix}surveys";
     $oSurveyResult = db_execute_assoc($sSurveyQuery);
-    foreach ( $oSurveyResult->result_array()  as $aSurveyRow)
+    foreach ( $oSurveyResult->readAll()  as $aSurveyRow)
     {
         $surveyid=$aSurveyRow['sid'];
         $languages=array_merge(array(GetBaseLanguageFromSurveyID($surveyid)), GetAdditionalLanguagesFromSurveyID($surveyid));
@@ -115,7 +117,7 @@ function upgrade_question_attributes148()
         $sAttributeQuery = "select q.qid,attribute,value from {$sDBPrefix}question_attributes qa , {$sDBPrefix}questions q where q.qid=qa.qid and sid={$surveyid}";
         $oAttributeResult = db_execute_assoc($sAttributeQuery);
         $aAllAttributes=questionAttributes(true);
-        foreach ( $oAttributeResult->result_array() as $aAttributeRow)
+        foreach ( $oAttributeResult->readAll() as $aAttributeRow)
         {
             if (isset($aAllAttributes[$aAttributeRow['attribute']]['i18n']) && $aAllAttributes[$aAttributeRow['attribute']]['i18n'])
             {
@@ -133,16 +135,17 @@ function upgrade_question_attributes148()
 function upgrade_survey_table145()
 {
     global $modifyoutput, $connect;
-    $sSurveyQuery = "SELECT * FROM ".db_table_name('surveys')." where notification<>'0'";
+    $sDBPrefix = Yii::app()->db->tablePrefix;
+    $sSurveyQuery = "SELECT * FROM ".$sDBPrefix.'surveys'." where notification<>'0'";
     $oSurveyResult = db_execute_assoc($sSurveyQuery);
-    foreach ( $oSurveyResult->result_array() as $aSurveyRow )
+    foreach ( $oSurveyResult->readAll() as $aSurveyRow )
     {
         if ($aSurveyRow['notification']=='1' && trim($aSurveyRow['adminemail'])!='')
         {
             $aEmailAddresses=explode(';',$aSurveyRow['adminemail']);
             $sAdminEmailAddress=$aEmailAddresses[0];
             $sEmailnNotificationAddresses=implode(';',$aEmailAddresses);
-            $sSurveyUpdateQuery= "update ".db_table_name('surveys')." set adminemail='{$sAdminEmailAddress}', emailnotificationto='{$sEmailnNotificationAddresses}' where sid=".$aSurveyRow['sid'];
+            $sSurveyUpdateQuery= "update ".$sDBPrefix.'surveys'." set adminemail='{$sAdminEmailAddress}', emailnotificationto='{$sEmailnNotificationAddresses}' where sid=".$aSurveyRow['sid'];
             $connect->execute($sSurveyUpdateQuery);
         }
         else
@@ -158,7 +161,7 @@ function upgrade_survey_table145()
             $connect->execute($sSurveyUpdateQuery);
         }
     }
-    $sSurveyQuery = "SELECT * FROM ".db_table_name('surveys_languagesettings');
+    $sSurveyQuery = "SELECT * FROM ".$sDBPrefix.'surveys_languagesettings';
     $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->queryAll();
     foreach ( $oSurveyResult as $aSurveyRow )
     {

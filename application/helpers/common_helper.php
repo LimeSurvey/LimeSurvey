@@ -5623,32 +5623,32 @@ function removeBOM($str=""){
 function GetUpdateInfo()
 {
     //require_once($homedir."/classes/http/http.php");
-    $CI =& get_instance();
-    $CI->load->library('admin/http/http','http');
+    Yii::import('application.libraries.admin.http.http');
+    $http = new http;
 
-    $CI->http->timeout=0;
-    $CI->http->data_timeout=0;
-    $CI->http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-    $CI->http->GetRequestArguments("http://update.limesurvey.org?build=".Yii::app()->getConfig("buildnumber"),$arguments);
+    $http->timeout=0;
+    $http->data_timeout=0;
+    $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
+    $http->GetRequestArguments("http://update.limesurvey.org?build=".Yii::app()->getConfig("buildnumber"),$arguments);
 
     $updateinfo=false;
-    $error=$CI->http->Open($arguments);
-    $error=$CI->http->SendRequest($arguments);
+    $error=$http->Open($arguments);
+    $error=$http->SendRequest($arguments);
 
-    $CI->http->ReadReplyHeaders($headers);
+    $http->ReadReplyHeaders($headers);
 
 
     if($error=="") {
         $body=''; $full_body='';
         for(;;){
-            $error = $CI->http->ReadReplyBody($body,10000);
+            $error = $http->ReadReplyBody($body,10000);
             if($error != "" || strlen($body)==0) break;
             $full_body .= $body;
         }
         $updateinfo=json_decode($full_body,true);
-        if ($CI->http->response_status!='200')
+        if ($http->response_status!='200')
         {
-            $updateinfo['errorcode']=$CI->http->response_status;
+            $updateinfo['errorcode']=$http->response_status;
             $updateinfo['errorhtml']=$full_body;
         }
     }
@@ -5657,7 +5657,7 @@ function GetUpdateInfo()
         $updateinfo['errorcode']=$error;
         $updateinfo['errorhtml']=$error;
     }
-    unset( $CI->http );
+    unset( $http );
     return $updateinfo;
 }
 
@@ -7691,7 +7691,8 @@ function modify_database($sqlfile='', $sqlstring='')
     global $modifyoutput;
 
     //require_once($homedir."/classes/core/sha256.php");
-    Yii::app()->loadLibrary('admin/sha256');
+    Yii::app()->loadLibrary('admin/sha256','sha256');
+    $sha256 = new sha256;
     $success = true;  // Let's be optimistic
     $modifyoutput='';
 
@@ -7723,22 +7724,23 @@ function modify_database($sqlfile='', $sqlstring='')
                 $command .= $line;
                 $command = str_replace('prefix_', Yii::app()->db->tablePrefix, $command); // Table prefixes
                 $command = str_replace('$defaultuser', Yii::app()->getConfig('defaultuser'), $command);
-                $command = str_replace('$defaultpass', Yii::app()->sha256->hashing(Yii::app()->getConfig('defaultpass')), $command);
+                $command = str_replace('$defaultpass', $sha256->hashing(Yii::app()->getConfig('defaultpass')), $command);
                 $command = str_replace('$siteadminname', $siteadminname, $command);
                 $command = str_replace('$siteadminemail', $siteadminemail, $command);
                 $command = str_replace('$defaultlang', Yii::app()->getConfig('defaultlang'), $command);
                 $command = str_replace('$sessionname', 'ls'.sRandomChars(20,'123456789'), $command);
                 $command = str_replace('$databasetabletype', Yii::app()->db->getDriverName(), $command);
 
-                if (!Yii::app()->db->createCommand($command)->query()) {  //Checked
+                try
+                {   Yii::app()->db->createCommand($command)->query(); //Checked
+                    $command=htmlspecialchars($command);
+                    $modifyoutput .=". ";
+                }
+                catch(CDbException $e)
+                {                    
                     $command=htmlspecialchars($command);
                     $modifyoutput .="<br />".sprintf($clang->gT("SQL command failed: %s"),"<span style='font-size:10px;'>".$command."</span>","<span style='color:#ee0000;font-size:10px;'></span><br/>");
                     $success = false;
-                }
-                else
-                {
-                    $command=htmlspecialchars($command);
-                    $modifyoutput .=". ";
                 }
 
                 $command = '';

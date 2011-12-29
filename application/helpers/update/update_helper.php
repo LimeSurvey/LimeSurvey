@@ -24,8 +24,8 @@ function CheckForDBUpgrades($subaction = null)
 	$dbversionnumber = Yii::app()->getConfig('dbversionnumber');
     $currentDBVersion=GetGlobalSetting('DBVersion');
 	$dbprefix = Yii::app()->db->tablePrefix;
-	//$usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
-	//$standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
+	$usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
+	$standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
     if (intval($dbversionnumber)>intval($currentDBVersion))
     {
         if(isset($subaction) && $subaction=="continue")
@@ -40,9 +40,9 @@ function CheckForDBUpgrades($subaction = null)
             //$tables = $connect->getSchema()->getTableNames();
             db_upgrade_all(intval($currentDBVersion));
             db_upgrade(intval($currentDBVersion));
-            Yii::app()->db->createCommand()->update($dbprefix.'settings_global', array('stg_value' => intval($dbversionnumber)), array('stg_name' => 'DBVersion'));
+            Yii::app()->db->createCommand()->update($dbprefix.'settings_global', array('stg_value' => intval($dbversionnumber)), 'stg_name = \'DBVersion\'');
             echo "<br />".sprintf($clang->gT("Database has been successfully upgraded to version %s"),$dbversionnumber);
-			echo "<br /><a href='".site_url("admin")."'>".$clang->gT("Back to main menu")."</a></div>";
+			echo "<br /><a href='".Yii::app()->createUrl("admin")."'>".$clang->gT("Back to main menu")."</a></div>";
         }
         else {
             ShowDBUpgradeNotice();
@@ -59,12 +59,12 @@ function ShowDBUpgradeNotice() {
     echo $clang->gT('Please verify the following information before continuing with the database upgrade:').'<ul>';
     echo "<li><b>" .$clang->gT('Database type') . ":</b> " . Yii::app()->db->getDriverName() . "</li>";
     echo "<li><b>" .$clang->gT('Database name') . ":</b> " . getDBConnectionStringProperty('dbname') . "</li>";
-    echo "<li><b>" .$clang->gT('Table prefix') . ":</b> " . Yii::app()->tablePrefix . "</li>";
+    echo "<li><b>" .$clang->gT('Table prefix') . ":</b> " . Yii::app()->db->tablePrefix . "</li>";
     echo "<li><b>" .$clang->gT('Site name') . ":</b> " . Yii::app()->getConfig("sitename") . "</li>";
-    echo "<li><b>" .$clang->gT('Root URL') . ":</b> " . site_url() . "</li>";
+    echo "<li><b>" .$clang->gT('Root URL') . ":</b> " . Yii::app()->createUrl('') . "</li>";
     echo '</ul>';
     echo "<br />";
-    echo "<a href='".site_url("admin/update/db/continue")."'>" . $clang->gT('Click here to continue') . "</a>";
+    echo "<a href='".Yii::app()->createUrl("admin/update/db/continue")."'>" . $clang->gT('Click here to continue') . "</a>";
     echo "<br />";
 	echo '</div>';
 }
