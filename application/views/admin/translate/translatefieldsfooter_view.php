@@ -1,4 +1,4 @@
-<?php echo translate::displayTranslateFieldsFooter(); ?>
+<?php echo $translateFieldsFooter; ?>
 </div>
 <?php if ($all_fields_empty) { ?>
 	<p><?php echo $clang->gT("Nothing to translate on this page");?></p><br />

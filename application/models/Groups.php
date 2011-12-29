@@ -50,6 +50,23 @@ class Groups extends CActiveRecord
 		return 'gid';
 	}
 
+	function getAllRecords($condition=FALSE, $order=FALSE, $return_query = TRUE)
+	{
+		$query = Yii::app()->db->createCommand()->select('*')->from('{{groups}}');
+
+		if ($condition != FALSE)
+		{
+			$query->where($condition);
+		}
+
+		if($order != FALSE)
+		{
+			$query->order($order);
+		}
+
+        return ( $return_query ) ? $query->queryAll() : $query;
+	}
+
 	function updateGroupOrder($sid,$lang,$position=0)
     {
 		$data=Yii::app()->db->createCommand()->select('gid')->where(array('and','sid='.$sid,'language="'.$lang.'"'))->order('group_order, group_name ASC')->from('{{groups}}')->query();
@@ -111,7 +128,7 @@ class Groups extends CActiveRecord
     }
 	function getAllGroups($condition, $order=false)
     {
-        
+
 
         $command = Yii::app()->db->createCommand()->where($condition)->select('*')->from($this->tableName());
 	    if ($order != FALSE)
@@ -120,7 +137,7 @@ class Groups extends CActiveRecord
         }
 		return $command->query();
     }
-    
+
     function getSomeRecords($fields, $condition=null)
     {
         return Yii::app()->db->createCommand()

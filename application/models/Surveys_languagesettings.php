@@ -63,18 +63,16 @@ class Surveys_languagesettings extends CActiveRecord
 		);
 	}
 
-	function getAllRecords($condition=FALSE)
+	function getAllRecords($condition=FALSE, $return_query = TRUE)
 	{
+		$query = Yii::app()->db->createCommand()->select('*')->from('{{surveys_languagesettings}}');
 		if ($condition != FALSE)
 		{
-			$this->db->where($condition);
+			$query->where($condition);
 		}
-		
-		$data = $this->db->get('surveys_languagesettings');
-
-        return $data;
+        return ( $return_query ) ? $query->queryAll() : $query;
 	}
-	
+
     function getDateFormat($surveyid,$languagecode)
     {
 		$query=Yii::app()->db->createCommand();
@@ -104,13 +102,13 @@ class Surveys_languagesettings extends CActiveRecord
 		$criteria = new CDbCriteria;
 
         if ($condition != FALSE)
-        {	
+        {
 		    foreach ($condition as $item => $value)
 			{
 				$criteria->addCondition($item.'="'.$value.'"');
 			}
         }
-		
+
 		$data = $this->updateAll($data, $criteria);
 	}
 
@@ -143,7 +141,7 @@ class Surveys_languagesettings extends CActiveRecord
         {
             return false;
         }
-        
+
         return true;
     }
 
