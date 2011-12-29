@@ -20,7 +20,7 @@
  * @package       LimeSurvey
  * @subpackage    Backend
  */
-class CheckIntegrity extends CAction
+class CheckIntegrity extends Survey_Common_Action
 {
 
     public function run()
@@ -34,15 +34,22 @@ class CheckIntegrity extends CAction
             $this->index();
     }
 
+    /**
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    {
+        parent::_renderWrappedTemplate('checkintegrity', $aViewUrls, $aData);
+    }
+
     public function index()
     {
         if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1) {
             $aData = $this->_checkintegrity();
-            $this->getController()->_getAdminHeader();
-            $this->getController()->_showadminmenu();
-            $aData['clang'] = Yii::app()->lang;
-            $this->getController()->render('/admin/checkintegrity/check_view', $aData);
-            $this->getController()->_getAdminFooter('http://docs.limesurvey.org', $this->getController()->lang->gT('LimeSurvey online manual'));
+            $this->_renderWrappedTemplate('check_view', $aData);
         }
     }
 
@@ -69,11 +76,7 @@ class CheckIntegrity extends CAction
                 }
             }
 
-            $this->getController()->_getAdminHeader();
-            $this->getController()->_showadminmenu();
-            $aData['clang'] = $clang;
-            $this->getController()->render('/admin/checkintegrity/fix_view', $aData);
-            $this->getController()->_getAdminFooter('http://docs.limesurvey.org', Yii::app()->lang->gT('LimeSurvey online manual'));
+            $this->_renderWrappedTemplate('fix_view', $aData);
         }
     }
 
@@ -142,11 +145,7 @@ class CheckIntegrity extends CAction
                 $aData = $this->_deleteOrphanTokenTables($aDelete['orphantokentables'], $aData, $clang);
             }
 
-            $this->getController()->_getAdminHeader();
-            $this->getController()->_showadminmenu();
-            $aData['clang'] = $clang;
-            $this->getController()->render('/admin/checkintegrity/fix_view', $aData);
-            $this->getController()->_getAdminFooter('http://docs.limesurvey.org', Yii::app()->lang->gT('LimeSurvey online manual'));
+            $this->_renderWrappedTemplate('fix_view', $aData);
         }
     }
 
@@ -411,7 +410,7 @@ class CheckIntegrity extends CAction
             }
 
             if ($condition['cqid'] != 0) { // skip case with cqid=0 for codnitions on {TOKEN:EMAIL} for instance
-                $iRowCount = count(Questions::model()->findAllByPk($condition['cqid']));
+                $iRowCount = Questions::model()->countByAttributes(array('qid' => $condition['cqid']));
                 if (Questions::model()->hasErrors()) safe_die(Questions::model()->getError());
                 if (!$iRowCount) {
                     $aDelete['conditions'][] = array('cid' => $condition['cid'], 'reason' => $clang->gT('No matching CQID'));
@@ -439,7 +438,7 @@ class CheckIntegrity extends CAction
         if (Question_attributes::model()->hasErrors()) safe_die(Question_attributes::model()->getError());
         foreach ($question_attributes as $question_attribute)
         {
-            $iRowCount = count(Questions::model()->findAllByPk($question_attribute['qid']));
+            $iRowCount = Questions::model()->countByAttributes(array('qid' => $question_attribute['qid']));
             if (Questions::model()->hasErrors()) safe_die(Questions::model()->getError());
             if (!$iRowCount < 1) {
                 $aDelete['questionattributes'][] = array('qid' => $question_attribute['qid']);
@@ -479,7 +478,7 @@ class CheckIntegrity extends CAction
         $quotas = Quota::model()->findAll();
         if (Quota::model()->hasErrors()) safe_die(Quota::model()->getError());
         $ids = array();
-        foreach ($quotas as $quota) $ids[] = $survey['id'];
+        foreach ($quotas as $quota) $ids[] = $quota['id'];
         $criteria = new CDbCriteria;
         $criteria->addNotInCondition('quotals_quota_id', $ids);
 
@@ -543,7 +542,7 @@ class CheckIntegrity extends CAction
         if (Answers::model()->hasErrors()) safe_die(Answers::model()->getError());
         foreach ($answers as $answer)
         {
-            $iAnswerCount = count(Questions::model()->findAllByPk($answer['qid']));
+            $iAnswerCount = Questions::model()->countByAttributes(array('qid' => $answer['qid']));
             if (Questions::model()->hasErrors()) safe_die(Questions::model()->getError());
             if (!$iAnswerCount) {
                 $aDelete['answers'][] = array('qid' => $answer['qid'], 'code' => $answer['code'], 'reason' => $clang->gT('No matching question'));
