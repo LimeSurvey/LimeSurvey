@@ -135,9 +135,17 @@ class ParticipantAttributeNames extends CActiveRecord
         return $data;
     }
 
-    function getAttributes()
+    function getAttributes($count = false, $limit = -1, $offset = -1)
     {
-        return Yii::app()->db->createCommand()->select('{{participant_attribute_names}}.*,{{participant_attribute_names_lang}}.*')->from('{{participant_attribute_names}}')->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')->where('lang = "'.Yii::app()->session['adminlang'].'"')->queryAll();
+        $command = Yii::app()->db->createCommand()->from('{{participant_attribute_names}}')->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')->where('lang = "'.Yii::app()->session['adminlang'].'"')->limit($limit, $offset);
+        if (empty($count))
+        {
+            return $command->select('{{participant_attribute_names}}.*,{{participant_attribute_names_lang}}.*')->queryAll();
+        }
+        else
+        {
+            return array_shift($command->select('count(*)')->queryColumn());
+        }
     }
 
     function getAttributesValues($attribute_id)
@@ -162,10 +170,13 @@ class ParticipantAttributeNames extends CActiveRecord
         $insertnames = array('attribute_type' => $data['attribute_type'],
                             'visible' => $data['visible']);
         Yii::app()->db->createCommand()->insert('{{participant_attribute_names}}',$insertnames);
-        $insertnameslang = array('attribute_id' => Yii::app()->db->getLastInsertID(),
+        $attribute_id = Yii::app()->db->getLastInsertID();
+        $insertnameslang = array('attribute_id' => $attribute_id,
                                  'attribute_name'=>$data['attribute_name'],
                                  'lang' => Yii::app()->session['adminlang']);
         Yii::app()->db->createCommand()->insert('{{participant_attribute_names_lang}}',$insertnameslang);
+
+        return $attribute_id;
 
     }
 
@@ -208,7 +219,29 @@ class ParticipantAttributeNames extends CActiveRecord
 
     function saveAttribute($data)
     {
-        Yii::app()->db->createCommand()->update('{{participant_attribute_names}}',$data,'attribute_id = '.$data['attribute_id']);
+        if (empty($data['attribute_id']))
+        {
+            return;
+        }
+
+        $insertnames = array();
+        if (!empty($data['attribute_type']))
+        {
+            $insertnames['attribute_type'] = $data['attribute_type'];
+        }
+        if (!empty($data['visible']))
+        {
+            $insertnames['visible'] = $data['visible'];
+        }
+        if (!empty($insertnames))
+        {
+            Yii::app()->db->createCommand()->update('{{participant_attribute_names}}', $insertnames, 'attribute_id = '.$data['attribute_id']);
+        }
+
+        if (!empty($data['attribute_name']))
+        {
+            Yii::app()->db->createCommand()->update('{{participant_attribute_names_lang}}', array('attribute_name' => $data['attribute_name']), 'attribute_id = '.$data['attribute_id'].' AND lang="'.Yii::app()->session['adminlang'].'"');
+        }
     }
 
     function saveAttributeLanguages($data)
@@ -239,7 +272,7 @@ class ParticipantAttributeNames extends CActiveRecord
         $insertnames = array('attribute_type' => '\''.$data['attribute_type'],
                             'visible' => $data['visible']);
 		Yii::app()->db->createCommand()->insert('{{participant_attribute_names}}', $insertnames);
-		
+
         $insertid = Yii::app()->db->getLastInsertID();
         $insertnameslang = array('attribute_id' => $insertid,
                                  'attribute_name'=>$data['attribute_name'],
@@ -247,7 +280,7 @@ class ParticipantAttributeNames extends CActiveRecord
 		Yii::app()->db->createCommand()->insert('{{participant_attribute_names_lang}}', $insertnameslang);
         return $insertid;
     }
-	
+
     //updates the attribute values in participant_attribute_values
     function saveAttributeValue($data)
     {
@@ -263,16 +296,16 @@ class ParticipantAttributeNames extends CActiveRecord
         {
             $data=array('visible'=>'FALSE');
         }
-        Yii::app()->db->createCommand()->update('{{participant_attribute_names}}',$data,'attribute_id = '.$attribute_id[1]); 
+        Yii::app()->db->createCommand()->update('{{participant_attribute_names}}',$data,'attribute_id = '.$attribute_id[1]);
     }
-	
+
     function getAttributeID()
     {
 		$query = Yii::app()->db->createCommand()->select('attribute_id')->from('{{participant_attribute_names}}')->order('attribute_id','desc')->queryAll();
         return $query;
     }
-	
-	
+
+
     function saveParticipantAttributeValue($data)
     {
 		Yii::app()->db->createCommand()->insert('{{participant_attribute_names}}', $data);

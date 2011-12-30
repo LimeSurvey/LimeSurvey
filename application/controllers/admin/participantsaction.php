@@ -30,6 +30,29 @@ class participantsaction extends CAction
     }
 
     /**
+     * Loads jqGrid for the view
+     * @param string $sScript Subaction
+     */
+    private function _loadjqGrid($sScript = '', $aData = array())
+    {
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jqGrid/css/ui.jqgrid.css');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jqGrid/css/jquery.ui.datepicker.css');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jquery.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jquery-ui.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/js/i18n/grid.locale-en.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/js/jquery.jqGrid.min.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/plugins/jquery.searchFilter.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/src/grid.celledit.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/js/i18n/grid.locale-en.js');
+
+        if (!empty($sScript))
+        {
+            $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . $sScript . '.js');
+            $this->_renderWrappedTemplate(array('participantsPanel', $sScript), $aData);
+        }
+    }
+
+    /**
      * Renders template(s) wrapped in header and footer
      *
      * @param string|array $aViewUrls View url(s)
@@ -136,20 +159,6 @@ class participantsaction extends CAction
     }
 
     /**
-     * Loads the view 'attributeControl'
-     */
-    function attributeControl()
-    {
-        $aData = array(
-            'result' => ParticipantAttributeNames::getAttributes()
-        );
-
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . 'admin/default/participants.css');
-
-        $this->_renderWrappedTemplate(array('participantsPanel', 'attributeControl'), $aData);
-    }
-
-    /**
      * Loads the view 'userControl'
      */
     function userControl()
@@ -166,16 +175,7 @@ class participantsaction extends CAction
      */
     function sharePanel()
     {
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/js/i18n/grid.locale-en.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/js/jquery.jqGrid.min.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/plugins/jquery.searchFilter.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/src/grid.celledit.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts')    . 'sharePanel.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')  . 'jquery/jqGrid/js/i18n/grid.locale-en.js');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jqGrid/css/ui.jqgrid.css');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jqGrid/css/jquery.ui.datepicker.css');
-
-        $this->_renderWrappedTemplate(array('participantsPanel', 'sharePanel'));
+        $this->_loadjqGrid('sharePanel');
     }
 
     /**
@@ -247,6 +247,86 @@ class participantsaction extends CAction
                 'share_uid' => CHttpRequest::getPost('shared_uid')
             );
             ParticipantShares::updateShare($aData);
+        }
+    }
+
+    /**
+     * Loads the view 'attributeControl'
+     */
+    function attributeControl()
+    {
+        $this->_loadjqGrid('attributeControl');
+    }
+
+    /**
+     * Sends the attributes info using JSON encoding
+     * Called after the attribute control grid is loaded
+     * @return JSON encoded string containg sharing information
+     */
+    function getAttributeInfo_json()
+    {
+        $clang = Yii::app()->lang;
+        $page = CHttpRequest::getPost('page');
+        $limit = CHttpRequest::getPost('rows');
+        $records = ParticipantAttributeNames::getAttributes();
+
+        $attribute_types = array(
+            'DD' => $clang->gT("Drop-down list"),
+            'DP' => $clang->gT("Date"),
+            'TB' => $clang->gT("Text Box")
+        );
+
+        $aData->page = $page;
+        $aData->records = count($records);
+        $aData->total = ceil(ParticipantAttributeNames::getAttributes(true) / $limit);
+
+        $i = 0;
+        foreach ($records as $row)
+        {
+            $aData->rows[$i]['id'] = $row['attribute_id'];
+            $aData->rows[$i]['cell'] = array('', $row['attribute_name'], $attribute_types[$row['attribute_type']], $row['visible']);
+            $i++;
+        }
+
+        echo ls_json_encode($aData);
+    }
+
+    /**
+     * Takes the edit call from the share panel, which either edits or deletes the share information
+     * Basically takes the call on can_edit
+     */
+    function editAttributeInfo()
+    {
+        $operation = CHttpRequest::getPost('oper');
+        if ($operation == 'del' && CHttpRequest::getPost('id'))
+        {
+            $aAttributeIds = (array) explode(',', CHttpRequest::getPost('id'));
+            $aAttributeIds = array_map('trim', $aAttributeIds);
+            $aAttributeIds = array_map('intval', $aAttributeIds);
+
+            foreach ($aAttributeIds as $iAttributeId)
+            {
+                ParticipantAttributeNames::delAttribute($iAttributeId);
+            }
+        }
+        elseif ($operation == 'add' && CHttpRequest::getPost('attribute_name'))
+        {
+            $aData = array(
+                'attribute_name' => CHttpRequest::getPost('attribute_name'),
+                'attribute_type' => CHttpRequest::getPost('attribute_type'),
+                'visible' => CHttpRequest::getPost('visible') == 'TRUE' ? 'TRUE' : 'FALSE'
+            );
+            echo ParticipantAttributeNames::storeAttribute($aData);
+        }
+        elseif ($operation == 'edit' && CHttpRequest::getPost('id'))
+        {
+            $aData = array(
+                'attribute_id' => CHttpRequest::getPost('id'),
+                'attribute_name' => CHttpRequest::getPost('attribute_name'),
+                'attribute_type' => CHttpRequest::getPost('attribute_type'),
+                'visible' => CHttpRequest::getPost('visible') == 'TRUE' ? 'TRUE' : 'FALSE'
+            );
+            ParticipantAttributeNames::saveAttribute($aData);
         }
     }
 
@@ -891,7 +971,6 @@ class participantsaction extends CAction
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
         {
             $records = Participants::getParticipants($page, $limit);
-            $aData = new Object();
             $aData->page = $page;
             $aData->records = Participants::model()->count();
             $aData->total = ceil($aData->records / $limit);
@@ -959,7 +1038,6 @@ class participantsaction extends CAction
         {
             $iUserID = Yii::app()->session['loginID'];
             $records = Participants::getParticipantsOwner($iUserID);
-            $aData = new Object();
             $aData->page = $page;
             $aData->records = count($records);
             $aData->total = ceil($aData->records / $limit);
@@ -1218,16 +1296,6 @@ class participantsaction extends CAction
     }
 
     /*
-     * Responsible for deleting the additional attribute.
-     */
-    function delAttribute()
-    {
-        $iAttributeId = CHttpRequest::getQuery('aid');
-        ParticipantAttributeNames::delAttribute($iAttributeId);
-        CController::redirect(Yii::app()->createUrl('/admin/participants/sa/attributeControl'));
-    }
-
-    /*
      * Responsible for deleting the additional attribute values in case of drop down.
      */
     function delAttributeValues()
@@ -1236,30 +1304,6 @@ class participantsaction extends CAction
         $iValueId = CHttpRequest::getQuery('vid');
         ParticipantAttributeNames::delAttributeValues($iAttributeId, $iValueId);
         CController::redirect(Yii::app()->createUrl('/admin/participants/sa/viewAttribute/aid/' . $iAttributeId));
-    }
-
-    /*
-     * Responsible for deleting the storing the additional attributes
-     */
-    function storeAttributes()
-    {
-        $i = 1;
-        do
-        {
-            $attname = 'attribute_name_' . $i;
-            $atttype = 'attribute_type_' . $i;
-            $visible = 'visible_' . $i;
-            if (!empty($_POST[$attname]))
-            {
-                $aData = array('attribute_name' => CHttpRequest::getPost($attname),
-                    'attribute_type' => CHttpRequest::getPost($atttype),
-                    'visible' => CHttpRequest::getPost($visible));
-                ParticipantAttributeNames::storeAttribute($aData);
-            }
-            $i++;
-        } while (isset($_POST[$attname]));
-
-        CController::redirect('attributeControl');
     }
 
     /*
@@ -1828,11 +1872,6 @@ class participantsaction extends CAction
                 $this->load->view('admin/participants/blacklist_view', $aData);
             }
         }
-    }
-
-    function saveVisible()
-    {
-        ParticipantAttributeNames::saveAttributeVisible(CHttpRequest::getPost('attid'), CHttpRequest::getPost('visiblevalue'));
     }
 
 }
