@@ -77,6 +77,22 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
 
+
+Changes from 1.91+ (build 11379) to 1.91+ (build 11804) Dec 30, 2011
+#Updated translation: Hungarian by GCI participant Andor Uhlár (c_schmitz)
+#Updated translation: French (b00z00)
+#Updated translation: Czech by GCI participant Martin Janeček (c_schmitz)
+#Updated translation: Indonesian 100% by Ivan Lanin (c_schmitz)
+#Updated translation: Indonesian by Jeremy Malcolm (c_schmitz)
+#Updated translation: Lithuanian by Roland As (c_schmitz)
+#Updated translation: Portuguese by João Santa Comba (c_schmitz)
+#Updated translation: Slovak (c_schmitz)
+#Updated translation: Spanish (es) (kadejo)
+#Updated translation: Turkish by GCI participant Mtmecax (c_schmitz)
+#Updated translations: Backported relevant translations from the Yii version (c_schmitz)
+-Fixed issue #5587: Unable to take ranking questions on Android phone browsers (tpartner)
+-Fixed issue: If SMTP sending fails due to invalid domain all following invitations in the same batch fail too if using SMTP (c_schmitz)
+
 Changes from 1.91+ (build 11343) to 1.91+ (build 11379) Nov 16, 2011
 -Fixed issue #5580: conditions don't work when using slider with emoticons and evaluation is done on the same page (lemeur)
 -Fixed issue #5570: INSERTANS does not return other comment in multiple questions with Other activated (c_schmitz)
