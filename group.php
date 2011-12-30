@@ -861,7 +861,7 @@ if (!$previewgrp){
                 $lastGseq = $stepInfo['gseq'];
             }
 
-            $sText = (($surveyMode == 'group') ? FlattenText($stepInfo['gname']) : FlattenText($stepInfo['qtext']));
+            $sText = (($surveyMode == 'group') ? FlattenText($stepInfo['gname'] . ': ' . $stepInfo['gtext']) : FlattenText($stepInfo['qtext']));
             $bGAnsw = !$stepInfo['anyUnanswered'];
 
             ++$v;
