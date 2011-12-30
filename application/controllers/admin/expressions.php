@@ -12,7 +12,7 @@
  *
  *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
  */
-class Expressions extends Admin_Controller {
+class Expressions extends Survey_Common_Action {
 	function __construct()
 	{
 		parent::__construct();

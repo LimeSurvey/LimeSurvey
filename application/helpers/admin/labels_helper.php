@@ -171,7 +171,6 @@ function modlabelsetanswers($lid)
 
     //global  $labelsoutput;
 
-    Yii::app() = Yii::app();
     Yii::app()->loadHelper('database');
     $clang = Yii::app()-> lang;
 
