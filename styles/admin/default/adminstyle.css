@@ -1,3 +1,11 @@
+* {
+    margin: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
 body {
     font-family: verdana, arial, sans-serif;
     text-align: left;
@@ -23,6 +31,16 @@ p {
     text-align:center;
 }
 
+/* Wrapper */
+.wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -40px;
+    background-color:#f8f8ff;
+    width:100%;
+}
+
 /* Administration footer box */
 .footer {
     text-align: center;
@@ -31,8 +49,12 @@ p {
     background: #121a28;
     margin: 0;
     padding: 5px;
-    margin-bottom:400px;
     clear:left;
+}
+
+.footer, .push {
+    height: 30px;
+    clear: both;
 }
 
 img {
@@ -1110,7 +1132,7 @@ textarea.updater-changelog {
 }
 
 .form30 ul.editor-parent {
-	min-width:1000px; 
+	min-width:1000px;
 }
 
 #frmeditquestion li,
@@ -1132,12 +1154,6 @@ div.loader {
     width:80px;
     margin:0 auto;
     padding-top:75px;
-}
-
-#wrapper {
-    background-color:#f8f8ff;
-    width:100%;
-    padding:1px 0px;
 }
 
 .background {
