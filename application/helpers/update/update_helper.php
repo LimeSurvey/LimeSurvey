@@ -19,7 +19,6 @@
  */
 function CheckForDBUpgrades($subaction = null)
 {
-    $connect = Yii::app()->db;
 	$clang = Yii::app()->getController()->lang;
 	$dbversionnumber = Yii::app()->getConfig('dbversionnumber');
     $currentDBVersion=GetGlobalSetting('DBVersion');
@@ -30,14 +29,11 @@ function CheckForDBUpgrades($subaction = null)
     {
         if(isset($subaction) && $subaction=="continue")
         {
-        	require_once(APPPATH.'third_party/adodb/adodb.inc.php');
-			connectadodb();
-            echo "<div style='width:90%; padding:1% 10%;background-color:#eee;'>";
+        	echo "<div style='width:90%; padding:1% 10%;background-color:#eee;'>";
             $upgradedbtype=Yii::app()->db->getDriverName();
             if ($upgradedbtype=='mysqli') $upgradedbtype='mysql';
             Yii::app()->loadHelper('update/upgrade-'.$upgradedbtype);
             Yii::app()->loadHelper('update/upgrade-all');
-            //$tables = $connect->getSchema()->getTableNames();
             db_upgrade_all(intval($currentDBVersion));
             db_upgrade(intval($currentDBVersion));
             Yii::app()->db->createCommand()->update($dbprefix.'settings_global', array('stg_value' => intval($dbversionnumber)), 'stg_name = \'DBVersion\'');
@@ -77,49 +73,4 @@ function getDBConnectionStringProperty($szProperty)
         return null;
     }
     return $aMatches[1];
-}
-
-function connectadodb() {
-	global $connect;
-	$databasetype = Yii::app()->db->getDriverName();
-    if ($databasetype=='postgre') $databasetype='postgres';
-    $host = getDBConnectionStringProperty('host');
-    $databaselocation = (empty($host)) ? "localhost" : getDBConnectionStringProperty('host');
-    $port = getDBConnectionStringProperty('port');
-    $databaseport = ($port) ? "default" : $port;
-	$databaseuser = Yii::app()->db->username;
-	$databasepass = Yii::app()->db->password;
-	$databasename = getDBConnectionStringProperty('dbname');
-	$connect=ADONewConnection($databasetype);
-	$database_exists = FALSE;
-	switch ($databasetype)
-	{
-	    case "postgres":
-	    case "mysqli":
-	    case "mysql": if ($databaseport!="default") {$dbhost="$databaselocation:$databaseport";}
-	    else {$dbhost=$databaselocation;}
-	    break;
-	    case "mssql_n":
-		case "mssqlnative":
-	    case "mssql": if ($databaseport!="default") {$dbhost="$databaselocation,$databaseport";}
-	    else {$dbhost=$databaselocation;}
-	    break;
-	    case "odbc_mssql": $dbhost="Driver={SQL Server};Server=$databaselocation;Database=".$databasename;
-	    break;
-
-	    default: safe_die("Unknown database type");
-	}
-	// Now try connecting to the database
-    if (@$connect->Connect($dbhost, $databaseuser, $databasepass, $databasename))
-    {
-        $database_exists = TRUE;
-    }
-    else {
-        // If that doesnt work try connection without database-name
-        $connect->database = '';
-        if (!@$connect->Connect($dbhost, $databaseuser, $databasepass))
-        {
-            safe_die("Can't connect to LimeSurvey database. Reason: ".$connect->ErrorMsg());
-        }
-    }
 }

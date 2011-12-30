@@ -22,7 +22,7 @@ list(,$updaterversion)=explode(' ','$Rev: 11155 $');  // this is updated by subv
  * @package		LimeSurvey
  * @subpackage	Backend
  */
-class update extends CAction
+class update extends Survey_Common_Action
 {
     /**
      * Executes the action based on given input

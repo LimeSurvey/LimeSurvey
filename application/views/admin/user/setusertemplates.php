@@ -13,7 +13,7 @@
         {
             $templaterights = array();
             $squery = 'SELECT '.$this->db->escape('folder').','.$this->db->escape('use')." FROM ".$this->db->dbprefix("templates_rights")." WHERE uid={$usr['uid']}";
-            $sresult = db_execute_assoc($squery) or safe_die($connect->ErrorMsg());//Checked
+            $sresult = db_execute_assoc($squery) or safe_die();//Checked
             foreach ($sresult->row_array() as $srow)
             {
                 $templaterights[$srow["folder"]] = array("use"=>$srow["use"]);
@@ -26,7 +26,7 @@
             <br /><input type='checkbox' alt='<?php echo $clang->gT("Check or uncheck all items");?>' class='tipme' id='checkall' />
             </th></tr>
             </thead>
-			
+
             <tfoot>
             <tr>
             <td colspan="3">
@@ -36,11 +36,11 @@
             </td>
             </tr>
             </tfoot>
-			
+
 			<tbody>
 
             <?php $tquery = "SELECT * FROM ".$this->db->dbprefix("templates");
-            $tresult = db_execute_assoc($tquery) or safe_die($connect->ErrorMsg()); //Checked
+            $tresult = db_execute_assoc($tquery) or safe_die(); //Checked
 
             $table_row_odd_even = 'odd';
             foreach ($tresult->result_array() as $trow)

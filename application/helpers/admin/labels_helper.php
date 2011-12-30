@@ -20,9 +20,8 @@ function updateset($lid)
 {
     //global $labelsoutput;
 
-    $yii = Yii::app();
-    $yii->loadHelper('database');
-    $clang = $yii->lang;
+    Yii::app()->loadHelper('database');
+    $clang = Yii::app()->lang;
 
     // Get added and deleted languagesid arrays
 
@@ -42,10 +41,8 @@ function updateset($lid)
     //$postlabel_name = db_quoteall($postlabel_name,true);
     $oldlangidsarray=array();
     $query = "SELECT languages FROM ".Labelset::model()->tableName()." WHERE lid=".$lid;
-	$connection = $yii->db;
-	$command = $connection->createCommand($query);
-    $result = $command->queryAll();
-    if ($command)
+	$result = Yii::app()->db->createCommand($query)->queryAll();
+    if ($result)
     {
         foreach ($result as $row) { $oldlangids=$row['languages']; }
         $oldlangidsarray=explode(" ",trim($oldlangids));
@@ -55,9 +52,8 @@ function updateset($lid)
 
     // If new languages are added, create labels' codes and sortorder for the new languages
     $query = "SELECT code,sortorder,assessment_value FROM ".Label::model()->tableName()." WHERE lid=".$lid." GROUP BY code,sortorder,assessment_value";
-    $command = $connection->createCommand($query);
-    $result=$command->queryAll();
-    if ($command) { foreach ($result as $row) {$oldcodesarray[$row['code']]=array('sortorder'=>$row['sortorder'],'assessment_value'=>$row['assessment_value']);} }
+    $result = Yii::app()->db->createCommand($query)->queryAll();
+    if ($result) { foreach ($result as $row) {$oldcodesarray[$row['code']]=array('sortorder'=>$row['sortorder'],'assessment_value'=>$row['assessment_value']);} }
     if (isset($oldcodesarray) && count($oldcodesarray) > 0 )
     {
         foreach ($addlangidsarray as $addedlangid)
@@ -74,13 +70,11 @@ function updateset($lid)
         db_switchIDInsert('labels',true);
         $label = new Label;
         $query = 'INSERT INTO '.$label->tableName().' (lid,code,sortorder,language,assessment_value) VALUES ('.$sqlvalues_string.')';
-		$command = $connection->createCommand($query);
-		$result = $command->query();
-        //$result=$label->model()->insertRecords($sqlline); //($query);)
-            if (!$result)
-            {
-                $labelsoutput= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to Copy already defined labels to added languages","js")." - ".$query."\")\n //-->\n</script>\n";
-            }
+		$result = Yii::app()->db->createCommand($query)->query();
+        if (!$result)
+        {
+            $labelsoutput= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to Copy already defined labels to added languages","js")." - ".$query."\")\n //-->\n</script>\n";
+        }
         db_switchIDInsert('labels',false);
     }
 
@@ -93,8 +87,7 @@ function updateset($lid)
     if ($sqlwherelang)
     {
         $query = "DELETE FROM ".Label::model()->tableName()." WHERE lid=$lid AND (".trim($sqlwherelang, ' OR').")";
-        $command=$connection->createCommand($query);
-		$result = $command->query();
+        $result = Yii::app()->db->createCommand($query)->query();
         if (!$result)
         {
             $labelsoutput= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete labels for removed languages","js")." - ".$query."\")\n //-->\n</script>\n";
@@ -103,8 +96,7 @@ function updateset($lid)
 
     // Update the label set itself
     $query = "UPDATE ".Labelset::model()->tableName()." SET label_name='{$postlabel_name}', languages='{$postlanguageids}' WHERE lid='$lid'";
-    $command = $connection->createCommand($query);
-	$result = $command->query();
+    $result = Yii::app()->db->createCommand($query)->query();
     if (!$result)
     {
         $labelsoutput= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Update of Label Set failed","js")." - ".$query."\")\n //-->\n</script>\n";
@@ -125,10 +117,7 @@ function updateset($lid)
 */
 function deletelabelset($lid)
 {
-    //global $connect;
-
-    $yii = Yii::app();
-    $yii->loadHelper('database');
+    Yii::app()->loadHelper('database');
 
     $query = "DELETE FROM ".Label::model()->tableName()." WHERE lid=$lid";
     $result = db_execute_assoc($query);
@@ -172,7 +161,7 @@ function insertlabelset()
     }
     else
     {
-        return $CI->db->insert_id(); //$connect->Insert_ID(db_table_name_nq('labelsets'),"lid");
+        return $CI->db->insert_id();
     }
 
 }
@@ -182,9 +171,9 @@ function modlabelsetanswers($lid)
 
     //global  $labelsoutput;
 
-    $yii = Yii::app();
-    $yii->loadHelper('database');
-    $clang = $yii-> lang;
+    Yii::app() = Yii::app();
+    Yii::app()->loadHelper('database');
+    $clang = Yii::app()-> lang;
 
     $ajax = false;
     if (isset($_POST['ajax']) && $_POST['ajax'] == "1"){
@@ -205,7 +194,7 @@ function modlabelsetanswers($lid)
 
         $query = "DELETE FROM ".Label::model()->tableName()." WHERE `lid` = '$lid'";
 
-        $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg());
+        $result = db_execute_assoc($query);
 
         foreach($data->{'codelist'} as $index=>$codeid){
 
@@ -216,7 +205,7 @@ function modlabelsetanswers($lid)
             //$codeid = db_quoteall($codeid,true);
 
             $assessmentvalue = (int)($codeObj->{'assessmentvalue'});
-			
+
             foreach($data->{'langs'} as $lang){
 
                 $strTemp = 'text_'.$lang;
@@ -240,9 +229,7 @@ function modlabelsetanswers($lid)
 
                 $query = "INSERT INTO ".Label::model()->tableName()." (`lid`,`code`,`title`,`sortorder`, `assessment_value`, `language`)
                     VALUES('$lid','$actualcode','$title','$sort_order','$assessmentvalue','$lang')";
-				$connection = $yii->db;
-				$command = $connection->createCommand($query);
-                $result = $command->query(); //($query) or safe_die($connect->ErrorMsg());)
+				$result = Yii::app()->db->createCommand($query)->query();
             }
 
 
@@ -251,7 +238,7 @@ function modlabelsetanswers($lid)
         }
 
 
-        $yii->session['flashmessage'] = $clang->gT("Labels sucessfully updated");
+        Yii::app()->session['flashmessage'] = $clang->gT("Labels sucessfully updated");
 
     }
     else
@@ -280,13 +267,13 @@ function fixorder($lid) {
     $clang = $CI->limesurvey_lang;
 
     $qulabelset = "SELECT * FROM ".$CI->db->dbprefix."labelsets WHERE lid=$lid";
-    $rslabelset = db_execute_assoc($qulabelset);  //or safe_die($connect->ErrorMsg());
+    $rslabelset = db_execute_assoc($qulabelset);
     $rwlabelset=$rslabelset->row_array();
     $lslanguages=explode(" ", trim($rwlabelset['languages']));
     foreach ($lslanguages as $lslanguage)
     {
         $query = "SELECT lid, code, title, sortorder FROM ".$CI->db->dbprefix."labels WHERE lid=? and language=? ORDER BY sortorder, code";
-        $result = db_execute_assosc($query, array($lid,$lslanguage)); // or safe_die("Can't read labels table: $query // (lid=$lid, language=$lslanguage) ".$connect->ErrorMsg());
+        $result = db_execute_assosc($query, array($lid,$lslanguage));
         $position=0;
         foreach ($result->result_array() as $row)
         {

@@ -14,8 +14,6 @@
  */
 class User_groups extends CActiveRecord {
 
-	protected $connection;
-
 	/**
 	 * Returns the static model of Settings table
 	 *
@@ -141,14 +139,13 @@ class User_groups extends CActiveRecord {
 	}
 
  	function addGroup($group_name, $group_description) {
-	    $connect= Yii::app()->db;
-	    $iquery = "INSERT INTO ".Yii::app()->db->tablePrefix."user_groups (`name`, `description`, `owner_id`) VALUES('{$group_name}', '{$group_description}', '{$_SESSION['loginID']}')";
-	    $command = $connect->createCommand($iquery);
+	    $iquery = "INSERT INTO {{user_groups}} (`name`, `description`, `owner_id`) VALUES('{$group_name}', '{$group_description}', '{$_SESSION['loginID']}')";
+	    $command = Yii::app()->db->createCommand($iquery);
 	    $result = $command->query();
 	    if($result) { //Checked
-	    	$id = $connect->getLastInsertID(); //$connect->Insert_Id(db_table_name_nq('user_groups'),'ugid');
+	    	$id = Yii::app()->db->getLastInsertID(); //Yii::app()->db->Insert_Id(db_table_name_nq('user_groups'),'ugid');
 	        if($id > 0) {
-	           	$user_in_groups_query = 'INSERT INTO '.Yii::app()->db->tablePrefix.'user_in_groups (ugid, uid) VALUES ('.$id.','.Yii::app()->session['loginID'].')';
+	           	$user_in_groups_query = 'INSERT INTO {{user_in_groups}} (ugid, uid) VALUES ('.$id.','.Yii::app()->session['loginID'].')';
 	           	db_execute_assoc($user_in_groups_query);
 	        }
 	        return $id;
@@ -160,21 +157,21 @@ class User_groups extends CActiveRecord {
 
 	function updateGroup($name, $description, $ugid)
     {
-    	$query = 'UPDATE '.Yii::app()->db->tablePrefix.'user_groups SET name=\''.$name.'\', description=\''.$description.'\' WHERE ugid=\''.$ugid.'\'';
+    	$query = 'UPDATE {{user_groups}} SET name=\''.$name.'\', description=\''.$description.'\' WHERE ugid=\''.$ugid.'\'';
        	$uquery = db_execute_assoc($query);
         return $uquery;
     }
 
 	function requestEditGroup($ugid, $ownerid)
 	{
-		$query = 'SELECT * FROM '.Yii::app()->db->tablePrefix.'user_groups WHERE ugid='.$ugid.' AND owner_id='.$ownerid;
+		$query = 'SELECT * FROM {{user_groups}} WHERE ugid='.$ugid.' AND owner_id='.$ownerid;
         $result = db_execute_assoc($query);
 		return $result;
 	}
 
 	function requestViewGroup($ugid, $userid)
 	{
-		$query = "SELECT a.ugid, a.name, a.owner_id, a.description, b.uid FROM ".Yii::app()->db->tablePrefix."user_groups AS a LEFT JOIN ".Yii::app()->db->tablePrefix."user_in_groups AS b ON a.ugid = b.ugid WHERE a.ugid = {$ugid} AND uid = ".$userid." ORDER BY name";
+		$query = "SELECT a.ugid, a.name, a.owner_id, a.description, b.uid FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE a.ugid = {$ugid} AND uid = ".$userid." ORDER BY name";
 		//$select	= array('a.ugid', 'a.name', 'a.owner_id', 'a.description', 'b.uid');
 		//$join	= array('where' => 'user_in_groups AS b', 'type' => 'left', 'on' => 'a.ugid = b.ugid');
 		//$where	= array('uid' => $this->session->userdata('loginID'), 'a.ugid' => $ugid);
@@ -183,7 +180,7 @@ class User_groups extends CActiveRecord {
 
 	function deleteGroup($ugid, $ownerid)
 	{
-		$del_query = 'DELETE FROM '.Yii::app()->db->tablePrefix.'user_groups WHERE owner_id=\''.$ownerid.'\' AND ugid='.$ugid;
+		$del_query = 'DELETE FROM {{user_groups}} WHERE owner_id=\''.$ownerid.'\' AND ugid='.$ugid;
         //$remquery = $this->user_groups_model->delete(array('owner_id' => $this->session->userdata('loginID'), 'ugid' => $ugid));
         return db_execute_assoc($del_query);
 	}

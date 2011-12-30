@@ -44,7 +44,7 @@ class SurveyController extends LSYii_Controller
 		if (!Yii::app()->getConfig("subaction")) {Yii::app()->setConfig("subaction", returnglobal('subaction'));} //Desired subaction
 		if (!Yii::app()->getConfig("editedaction")) {Yii::app()->setConfig("editedaction", returnglobal('editedaction'));} // for html editor integration
 	}
-    
+
     /**
 	 * Load and set session vars
 	 *
@@ -81,7 +81,7 @@ class SurveyController extends LSYii_Controller
             'verification' => 'application.controllers.verification',
 		);
 	}
-    
+
         /**
 	 * Shows admin menu for question
 	 * @param int Survey id
@@ -109,7 +109,7 @@ class SurveyController extends LSYii_Controller
     	$data['sqct'] = $sqct = $sqrr->count();
 
         $qrquery = "SELECT * FROM {{questions}} WHERE gid=$gid AND sid=$surveyid AND qid=$qid AND language='".$baselang."'";
-        $qrresult = db_execute_assoc($qrquery); // or safe_die($qrquery."<br />".$connect->ErrorMsg()); //Checked
+        $qrresult = db_execute_assoc($qrquery);  //Checked
         $questionsummary = "<div class='menubar'>\n";
 
         // Check if other questions in the Survey are dependent upon this question
@@ -315,7 +315,7 @@ class SurveyController extends LSYii_Controller
 
         $condition = array('sid' => $surveyid, 'parent_qid' => 0, 'language' => $baselang);
         //$sumquery3 =  "SELECT * FROM ".db_table_name('questions')." WHERE sid={$surveyid} AND parent_qid=0 AND language='".$baselang."'"; //Getting a count of questions for this survey
-        $sumresult3 = Questions::model()->getAllRecords($condition); //$connect->Execute($sumquery3); //Checked
+        $sumresult3 = Questions::model()->getAllRecords($condition);  //Checked
         $sumcount3 = $sumresult3->count();
 
 		$data['canactivate'] = $sumcount3 > 0 && bHasSurveyPermission($surveyid,'surveyactivation','update');
@@ -371,7 +371,7 @@ class SurveyController extends LSYii_Controller
         //$sumquery6 = "SELECT count(*) FROM ".db_table_name('conditions')." as c, ".db_table_name('questions')." as q WHERE c.qid = q.qid AND q.sid=$surveyid"; //Getting a count of conditions for this survey
         // TMSW Conditions->Relevance:  How is conditionscount used?  Should Relevance do the same?
         $query = Conditions::model()->getCountOfConditions($surveyid);
-        $sumcount6 = $query->read(); //$connect->GetOne($sumquery6); //Checked
+        $sumcount6 = $query->read();  //Checked
         $data['surveycontent'] = bHasSurveyPermission($surveyid,'surveycontent','update');
 		$data['conditionscount'] = ($sumcount6 > 0);
         // Eport menu item
@@ -439,12 +439,12 @@ class SurveyController extends LSYii_Controller
 
 		$condition = array('sid' => $surveyid, 'parent_qid' => 0, 'language' => $baselang);
         //$sumquery3 =  "SELECT * FROM ".db_table_name('questions')." WHERE sid={$surveyid} AND parent_qid=0 AND language='".$baselang."'"; //Getting a count of questions for this survey
-        $sumresult3 = Questions_model::model()->getAllRecords($condition); //$connect->Execute($sumquery3); //Checked
+        $sumresult3 = Questions_model::model()->getAllRecords($condition);  //Checked
         $sumcount3 = $sumresult3->count();
 
 		$condition = array('sid' => $surveyid, 'language' => $baselang);
 		//$sumquery2 = "SELECT * FROM ".db_table_name('groups')." WHERE sid={$surveyid} AND language='".$baselang."'"; //Getting a count of groups for this survey
-		$sumresult2 = Groups::model()->getAllRecords($condition); //$connect->Execute($sumquery2); //Checked
+		$sumresult2 = Groups::model()->getAllRecords($condition); //Checked
 		$sumcount2 = $sumresult2->count();
 
         //SURVEY SUMMARY

@@ -116,7 +116,7 @@ class surveypermission extends Survey_Common_Action {
                         $group_ids_query = implode(" OR ugid=", $group_ids);
                         unset($group_ids);
 
-                        $result4 = User_groups::model()->findAll('ugid = :ugid',array(':ugid' => $group_ids_query));                      
+                        $result4 = User_groups::model()->findAll('ugid = :ugid',array(':ugid' => $group_ids_query));
 
                         foreach ($result4 as $resul4row)
                         {
@@ -410,13 +410,13 @@ class surveypermission extends Survey_Common_Action {
                     $query = "select users_name from {{users}} where uid={$postuserid}";
                     $res = Yii::app()->db->createCommand($query)->query();
                     $resrow = $res->read();
-                    $sUsername=$resrow['users_name']; //$connect->GetOne("select users_name from {{users}} where uid={$postuserid}");
+                    $sUsername=$resrow['users_name'];
                     $usersummary = "<div class='header ui-widget-header'>".sprintf($clang->gT("Edit survey permissions for user %s"),"<span style='font-style:italic'>".$sUsername."</span>")."</div>";
                 }
                 else
                 {
                     $resrow = User_groups::model()->find('ugid = :ugid',array(':ugid' => $postusergroupid));
-                    $sUsergroupName=$resrow->name; //$connect->GetOne("select name from {{user_groups}} where ugid={$postusergroupid}");
+                    $sUsergroupName=$resrow->name;
                     $usersummary = "<div class='header ui-widget-header'>".sprintf($clang->gT("Edit survey permissions for group %s"),"<span style='font-style:italic'>".$sUsergroupName."</span>")."</div>";
                 }
                 $usersummary .= "<br /><form action='".$this->getController()->createUrl('admin/surveypermission/sa/surveyright/surveyid/'.$surveyid)."' method='post'>\n"
@@ -567,7 +567,7 @@ class surveypermission extends Survey_Common_Action {
             $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Edit survey permissions")."</div>\n";
             $addsummary .= "<div class='messagebox ui-corner-all'>\n";
             $where = ' ';
-            if(isset($postuserid)){                
+            if(isset($postuserid)){
                 if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
                 {
                     $where .= "sid = :surveyid AND owner_id != :postuserid AND owner_id = :owner_id";
@@ -580,7 +580,7 @@ class surveypermission extends Survey_Common_Action {
                     $where .= "sid = :surveyid AND owner_id = :owner_id";
                     $resrow = Survey::model()->find($where,array(':sid' => $surveyid, ':owner_id' => Yii::app()->session['loginID']));
                 }
-                $iOwnerID=$resrow->owner_id; //$connect->GetOne($sQuery);
+                $iOwnerID=$resrow->owner_id;
             }
 
             $aBaseSurveyPermissions = Survey_permissions::getBasePermissions();

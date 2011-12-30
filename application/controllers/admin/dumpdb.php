@@ -20,7 +20,7 @@
  * @version $Id: dumpdb.php 11155 2011-10-13 12:59:49Z c_schmitz $
  * @access public
  */
-class Dumpdb extends AdminController {
+class Dumpdb extends Survey_Common_Action {
 
     /**
      * Base function
@@ -28,7 +28,7 @@ class Dumpdb extends AdminController {
      * This functions receives the request to generate a dump file for the
      * database and does so! Only superadmins are allowed to do this!
      */
-    public function runWithParams()
+    public function run()
     {
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
         {
@@ -44,7 +44,6 @@ class Dumpdb extends AdminController {
         $this->_outputHeaders($sDbName);
         $this->_outputDatabase($sDbName);
 
-        // needs to be inside the condition so the updater still can include this file
         exit;
     }
 

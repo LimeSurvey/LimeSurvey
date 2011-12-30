@@ -136,7 +136,7 @@ function makegraph($currentstep, $total)
 {
     global $thissurvey;
     global $js_header_includes, $css_header_includes;
-    
+
     $clang = Yii::app()->lang;
     //$_SESSION = $CI->session->userdata;
 
@@ -294,7 +294,7 @@ function makelanguagechanger($baselang)
 function checkconfield($value)
 {
     global $surveyid,$thissurvey,$qattributes;
-    
+
     //$_SESSION = $CI->session->userdata;
 
     $fieldisdisplayed=true;
@@ -364,7 +364,7 @@ function checkconfield($value)
             . "AND {{conditions}}.scenario=$scenario "
             . "AND {{conditions}}.cfieldname NOT LIKE '{%' "
             . "ORDER BY {{conditions}}.qid,{{conditions}}.cfieldname";
-            $result=db_execute_assoc($query) or safe_die($query."<br />".$connect->ErrorMsg());         //Checked
+            $result=db_execute_assoc($query) or safe_die($query."<br />");         //Checked
             $conditionsfound = $result->count();
 
             $querytoken = "SELECT {{conditions}}.*, '' as type "
@@ -374,7 +374,7 @@ function checkconfield($value)
             . "AND {{conditions}}.scenario=$scenario "
             . "AND {{conditions}}.cfieldname LIKE '{%' "
             . "ORDER BY {{conditions}}.qid,{{conditions}}.cfieldname";
-            $resulttoken=db_execute_assoc($querytoken) or safe_die($querytoken."<br />".$connect->ErrorMsg());         //Checked
+            $resulttoken=db_execute_assoc($querytoken) or safe_die($querytoken."<br />");         //Checked
             $conditionsfoundtoken = $resulttoken->count();
             $conditionsfound = $conditionsfound + $conditionsfoundtoken;
 
@@ -593,8 +593,8 @@ function checkconfield($value)
 function checkmandatorys($move, $backok=null)
 {
     global $thisstep;
-    
-    
+
+
     //$_SESSION = $CI->session->userdata;
 
     if ((isset($_POST['mandatory']) && $_POST['mandatory']) && (!isset($backok) || $backok != "Y"))
@@ -693,8 +693,8 @@ function checkmandatorys($move, $backok=null)
 function checkconditionalmandatorys($move, $backok=null)
 {
     global $thisstep;
-    
-    
+
+
     //$_SESSION = $CI->session->userdata;
 
     // TODO - also check whether relevance set?
@@ -787,8 +787,8 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
 {
     global $thisstep;
 
-    
-    
+
+
     $clang = Yii::app()->lang;
     //$_SESSION = $CI->session->userdata;
 
@@ -893,7 +893,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
 // TMSW Conditions->Relevance:  Consolidate checking most/all validation criteria within EM
 function aCheckInput($surveyid, $move,$backok=null)
 {
-    global $connect, $thisstep, $thissurvey;
+    global $thisstep, $thissurvey;
 
     if (!isset($backok) || $backok != "Y")
     {
@@ -912,7 +912,7 @@ function aCheckInput($surveyid, $move,$backok=null)
                     ."FROM {{questions}}\n"
                     ."WHERE qid=".$fieldinfo['qid']." "
                     . "AND language='".$_SESSION['s_lang']."'";
-                    $pregresult=db_execute_assoc($pregquery) or safe_die("ERROR: $pregquery<br />".$connect->ErrorMsg());      //Checked
+                    $pregresult=db_execute_assoc($pregquery) or safe_die("ERROR: $pregquery<br />");      //Checked
                     foreach($pregresult->readAll() as $pregrow)
                     {
                         $preg=trim($pregrow['preg']);
@@ -1051,8 +1051,8 @@ function submittokens($quotaexit=false)
     global $surveyid;
     global $thistpl, $clienttoken;
 
-    
-    
+
+
     //$_SESSION = $CI->session->userdata;
     $clang = Yii::app()->lang;
     $sitename = Yii::app()->getConfig("sitename");
@@ -1095,7 +1095,7 @@ function submittokens($quotaexit=false)
     }
     $utquery .= "WHERE token=".$clienttoken."";
 
-    $utresult = db_execute_assoc($utquery) or safe_die ("Couldn't update tokens table!<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked
+    $utresult = db_execute_assoc($utquery) or safe_die ("Couldn't update tokens table!<br />\n$utquery<br />\n");     //Checked
 
     if ($quotaexit==false)
     {
@@ -1190,8 +1190,8 @@ function SendSubmitNotifications()
     global $emailcharset;
     global $homeurl, $surveyid, $maildebug, $tokensexist;
 
-    
-    
+
+
     //$_SESSION = $CI->session->userdata;
     $clang = Yii::app()->lang;
     $sitename = Yii::app()->getConfig("sitename");
@@ -1350,8 +1350,8 @@ function submitfailed($errormsg='')
     global $thissurvey;
     global $thistpl, $subquery, $surveyid;
 
-    
-    
+
+
     //$_SESSION = $CI->session->userdata;
     $clang = Yii::app()->lang;
 
@@ -1408,8 +1408,8 @@ function buildsurveysession($surveyid)
     global $templang, $move, $rooturl;
 
 
-    
-    
+
+
     //$_SESSION = $CI->session->userdata;
     $clang = Yii::app()->lang;
 
@@ -1751,7 +1751,7 @@ function buildsurveysession($surveyid)
         //get language from token (if one exists)
         $tkquery2 = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".db_quote($clienttoken)."' AND (completed = 'N' or completed='')";
         //echo $tkquery2;
-        $result = db_execute_assoc($tkquery2) or safe_die ("Couldn't get tokens<br />$tkquery<br />".$connect->ErrorMsg());    //Checked
+        $result = db_execute_assoc($tkquery2) or safe_die ("Couldn't get tokens<br />$tkquery<br />");    //Checked
         foreach ($result->readAll() as $rw)
         {
             $tklanguage=$rw['language'];
@@ -2126,8 +2126,8 @@ function surveymover()
     global $thissurvey, $clang;
     global $surveyid, $presentinggroupdescription;
 
-    
-    
+
+
     //$_SESSION = $CI->session->userdata;
     $clang = Yii::app()->lang;
 
@@ -2204,8 +2204,8 @@ function doAssessment($surveyid, $returndataonly=false)
 {
     global $thistpl;
 
-    
-    
+
+
     //$_SESSION = $CI->session->userdata;
     $clang = Yii::app()->lang;
 
@@ -2215,7 +2215,7 @@ function doAssessment($surveyid, $returndataonly=false)
     {
         $_SESSION['s_lang']=$baselang;
     }
-    $query = "SELECT * FROM {{assessments}} 
+    $query = "SELECT * FROM {{assessments}}
     WHERE sid=$surveyid and language='{$_SESSION['s_lang']}'
     ORDER BY scope, id";
     if ($result = db_execute_assoc($query))   //Checked
@@ -2372,8 +2372,8 @@ function UpdateSessionGroupList($surveyid, $language)
 //A list of groups in this survey, ordered by group name.
 
 {
-    
-    
+
+
     //$_SESSION = $CI->session->userdata;
     $clang = Yii::app()->lang;
     unset ($_SESSION['grouplist']);
@@ -2404,8 +2404,8 @@ function UpdateFieldArray()
 {
     global $surveyid;
 
-    
-    
+
+
     //$_SESSION = $CI->session->userdata;
     $clang = Yii::app()->lang;
 
@@ -2417,7 +2417,7 @@ function UpdateFieldArray()
             $questionarray =& $_SESSION['fieldarray'][$key];
 
             $query = "SELECT * FROM {{questions}} WHERE qid=".$questionarray[0]." AND language='".$_SESSION['s_lang']."'";
-            $result = db_execute_assoc($query) or safe_die ("Couldn't get question <br />$query<br />".$connect->ErrorMsg());      //Checked
+            $result = db_execute_assoc($query) or safe_die ("Couldn't get question <br />$query<br />");      //Checked
             $row = $result->read();
             $questionarray[2]=$row['title'];
             $questionarray[3]=$row['question'];
@@ -2445,8 +2445,8 @@ function check_quota($checkaction,$surveyid)
     $quota_info = getQuotaInformation($surveyid, $_SESSION['s_lang']);
     $x=0;
 
-    
-    
+
+
     //$_SESSION = $CI->session->userdata;
     $clang = Yii::app()->lang;
 
@@ -2528,7 +2528,7 @@ function check_quota($checkaction,$surveyid)
                     WHERE ".implode(' AND ',$querycond)." "."
                     AND submitdate IS NOT NULL";
 
-                    $result = db_execute_assoc($querysel) or safe_die($connect->ErrorMsg());    //Checked
+                    $result = db_execute_assoc($querysel) or safe_die();    //Checked
                     $quota_check = $result->readAll();
 
                     if ($result->count() >= $quota['Limit']) // Quota is full!!
@@ -2682,8 +2682,8 @@ function GetReferringUrl()
 {
     global $clang,$stripQueryFromRefurl;
 
-    
-    
+
+
     //$_SESSION = $CI->session->userdata;
     $clang = Yii::app()->lang;
 
@@ -2725,8 +2725,8 @@ function GetReferringUrl()
 function display_first_page() {
     global $thistpl, $token, $surveyid, $thissurvey, $navigator, $totalquestions;
 
-    
-    
+
+
     //$_SESSION = $CI->session->userdata;
     $clang = Yii::app()->lang;
 

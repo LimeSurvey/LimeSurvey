@@ -169,7 +169,7 @@ function spss_export_data ($na = null) {
  * @return array or false
  */
 function spss_getvalues ($field = array(), $qidattributes = null ) {
-    global $surveyid, $dbprefix, $connect, $language, $length_vallabel;
+    global $surveyid, $language, $length_vallabel;
 	$clang = Yii::app()->lang;
 
     if (!isset($field['LStype']) || empty($field['LStype'])) return false;
@@ -279,8 +279,7 @@ function spss_getvalues ($field = array(), $qidattributes = null ) {
  * @return array
  */
 function spss_fieldmap($prefix = 'V') {
-    global $surveyid, $dbprefix, $typeMap, $connect, $clang;
-    global $surveyprivate, $tokensexist, $language;
+    global $surveyid, $typeMap, $clang, $surveyprivate, $tokensexist, $language;
 
     $fieldmap = createFieldMap($surveyid, 'full');		//Create a FULL fieldmap
 
@@ -811,10 +810,7 @@ function quexml_fixed_array($array)
  */
 function quexml_skipto($qid,$value,$cfieldname = "")
 {
-	global $connect ;
-
-	global $surveyid ;
-        global $quexmllang;
+	global $surveyid, $quexmllang;
 	$qlang = new limesurvey_lang(array($quexmllang));
 
 	$zeros = "0000000000";
@@ -1834,7 +1830,7 @@ function tokens_export($surveyid)
     $databasetype = Yii::app()->db->getDriverName();
     if (trim($_POST['filteremail'])!='')
     {
-        if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n' || $connect->databaseType == 'mssqlnative')
+        if (in_array($databasetype, array('odbc_mssql', 'odbtp', 'mssql_n', 'mssqlnative')))
         {
             $bquery .= ' and CAST(email as varchar) like '.db_quoteall('%'.$_POST['filteremail'].'%', true);
         }

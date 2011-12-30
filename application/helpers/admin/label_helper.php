@@ -107,8 +107,6 @@ function updateset($lid)
 */
 function deletelabelset($lid)
 {
-    //global $connect;
-
     $query = "DELETE FROM {{labels}} WHERE lid=$lid";
     $result = Yii::app()->db->createCommand($query)->execute();
     $query = "DELETE FROM {{labelsets}} WHERE lid=$lid";
@@ -149,7 +147,7 @@ function insertlabelset()
     }
     else
     {
-        return Yii::app()->db->getLastInsertID(); //$connect->Insert_ID(db_table_name_nq('labelsets'),"lid");
+        return Yii::app()->db->getLastInsertID();
     }
 
 }
@@ -181,7 +179,7 @@ function modlabelsetanswers($lid)
 
         $query = "DELETE FROM {{labels}}  WHERE `lid` = '$lid'";
 
-        $result = Yii::app()->db->createCommand($query)->execute(); // or safe_die($connect->ErrorMsg());
+        $result = Yii::app()->db->createCommand($query)->execute();
 
         foreach($data->{'codelist'} as $index=>$codeid){
 
@@ -254,13 +252,13 @@ function fixorder($lid) {
     $clang = Yii::app()->lang;
 
     $qulabelset = "SELECT * FROM {{labelsets}} WHERE lid=$lid";
-    $rslabelset = Yii::app()->db->createCommand($qulabelset)->query();  //or safe_die($connect->ErrorMsg());
+    $rslabelset = Yii::app()->db->createCommand($qulabelset)->query();
     $rwlabelset=$rslabelset->read();
     $lslanguages=explode(" ", trim($rwlabelset['languages']));
     foreach ($lslanguages as $lslanguage)
     {
         $query = "SELECT lid, code, title, sortorder FROM {{labels}} WHERE lid=:lid and language=:lang ORDER BY sortorder, code";
-        $result = Yii::app()->createCommand($query)->query(array(':lid' => $lid, ':lang' => $lslanguage)); // or safe_die("Can't read labels table: $query // (lid=$lid, language=$lslanguage) ".$connect->ErrorMsg());
+        $result = Yii::app()->createCommand($query)->query(array(':lid' => $lid, ':lang' => $lslanguage)); // or safe_die("Can't read labels table: $query // (lid=$lid, language=$lslanguage) "
         $position=0;
         foreach ($result->readAll() as $row)
         {

@@ -63,13 +63,13 @@ function db_upgrade_all($oldversion) {
             'parameter' => 'VARCHAR(50)',
             'targetqid' => 'INT NULL',
             'targetsqid' => 'INT NULL'
-        );        
+        );
         Yii::app()->db->schema->createTable('{{survey_url_parameters}}',$fields);
     }
     if ($oldversion < 150)
     {
         $fields = array(
-            'relevance' => 'TEXT'            
+            'relevance' => 'TEXT'
         );
         Yii::app()->db->schema->addColumn('{{questions}}','relevance','TEXT');
     }
@@ -86,7 +86,7 @@ function db_upgrade_all($oldversion) {
         Yii::app()->db->createCommand($sql)->execute();
     }
     if ($oldversion < 153)
-    {        
+    {
         $fields = array(
             'id' => 'INT',
             'errortime' => 'VARCHAR(50)',
@@ -97,7 +97,7 @@ function db_upgrade_all($oldversion) {
             'qseq' => 'INT',
             'type' => 'VARCHAR(50)',
             'eqn' => 'TEXT',
-            'prettyprint' => 'TEXT'                            
+            'prettyprint' => 'TEXT'
         );
         Yii::app()->db->schema->createTable('{{expression_errors}}',$fields);
     }
@@ -134,7 +134,7 @@ function upgrade_question_attributes148()
 
 function upgrade_survey_table145()
 {
-    global $modifyoutput, $connect;
+    global $modifyoutputt;
     $sDBPrefix = Yii::app()->db->tablePrefix;
     $sSurveyQuery = "SELECT * FROM ".$sDBPrefix.'surveys'." where notification<>'0'";
     $oSurveyResult = db_execute_assoc($sSurveyQuery);
@@ -146,7 +146,7 @@ function upgrade_survey_table145()
             $sAdminEmailAddress=$aEmailAddresses[0];
             $sEmailnNotificationAddresses=implode(';',$aEmailAddresses);
             $sSurveyUpdateQuery= "update ".$sDBPrefix.'surveys'." set adminemail='{$sAdminEmailAddress}', emailnotificationto='{$sEmailnNotificationAddresses}' where sid=".$aSurveyRow['sid'];
-            $connect->execute($sSurveyUpdateQuery);
+            Yii::app()->db->createCommand($sSurveyUpdateQuery)->execute();
         }
         else
         {
@@ -157,8 +157,8 @@ function upgrade_survey_table145()
             {
                 $sEmailDetailedNotificationAddresses=$sEmailDetailedNotificationAddresses.';'.trim($aSurveyRow['emailresponseto']);
             }
-            $sSurveyUpdateQuery= "update ".db_table_name('surveys')." set adminemail='{$sAdminEmailAddress}', emailnotificationto='{$sEmailDetailedNotificationAddresses}' where sid=".$aSurveyRow['sid'];
-            $connect->execute($sSurveyUpdateQuery);
+            $sSurveyUpdateQuery= "update {{surveys}} set adminemail='{$sAdminEmailAddress}', emailnotificationto='{$sEmailDetailedNotificationAddresses}' where sid=".$aSurveyRow['sid'];
+            Yii::app()->db->createCommand($sSurveyUpdateQuery)->execute();
         }
     }
     $sSurveyQuery = "SELECT * FROM ".$sDBPrefix.'surveys_languagesettings';
@@ -170,13 +170,13 @@ function upgrade_survey_table145()
         $aDefaultTexts=aTemplateDefaultTexts($oLanguage,'unescaped');
         unset($oLanguage);
         $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification'].$aDefaultTexts['admin_detailed_notification_css'];
-        $sSurveyUpdateQuery= "update ".db_table_name('surveys_languagesettings')." set
+        $sSurveyUpdateQuery = "update {{surveys_languagesettings}} set
                               email_admin_responses_subj=".$aDefaultTexts['admin_detailed_notification_subject'].",
                               email_admin_responses=".$aDefaultTexts['admin_detailed_notification'].",
                               email_admin_notification_subj=".$aDefaultTexts['admin_notification_subject'].",
                               email_admin_notification=".$aDefaultTexts['admin_notification']."
                               where surveyls_survey_id=".$aSurveyRow['surveyls_survey_id'];
-        $connect->createCommand($sSurveyUpdateQuery)->execute();
+        Yii::app()->db->createCommand($sSurveyUpdateQuery)->execute();
     }
 
 }
@@ -184,7 +184,7 @@ function upgrade_survey_table145()
 
 function upgrade_surveypermissions_table145()
 {
-    global $modifyoutput, $connect;
+    global $modifyoutput;
     $sPermissionQuery = "SELECT * FROM {{surveys_rights}}";
     $oPermissionResult = Yii::app()->db->createCommand($sPermissionQuery)->queryAll();
     if (empty($oPermissionResult)) {return "Database Error";}
@@ -194,25 +194,25 @@ function upgrade_surveypermissions_table145()
         foreach ( $oPermissionResult as $aPermissionRow )
         {
 
-            $sPermissionInsertQuery=$connect->GetInsertSQL($tablename,array('permission'=>'assessments',
+            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename, array('permission'=>'assessments',
                                                                             'create_p'=>$aPermissionRow['define_questions'],
                                                                             'read_p'=>$aPermissionRow['define_questions'],
                                                                             'update_p'=>$aPermissionRow['define_questions'],
                                                                             'delete_p'=>$aPermissionRow['define_questions'],
                                                                             'sid'=>$aPermissionRow['sid'],
-                                                                            'uid'=>$aPermissionRow['uid']));
+                                                                            'uid'=>$aPermissionRow['uid']))->getText();
             modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
 
-            $sPermissionInsertQuery=$connect->GetInsertSQL($tablename,array('permission'=>'quotas',
+            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'quotas',
                                                                             'create_p'=>$aPermissionRow['define_questions'],
                                                                             'read_p'=>$aPermissionRow['define_questions'],
                                                                             'update_p'=>$aPermissionRow['define_questions'],
                                                                             'delete_p'=>$aPermissionRow['define_questions'],
                                                                             'sid'=>$aPermissionRow['sid'],
-                                                                            'uid'=>$aPermissionRow['uid']));
+                                                                            'uid'=>$aPermissionRow['uid']))->getText();
             modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
 
-            $sPermissionInsertQuery=$connect->GetInsertSQL($tablename,array('permission'=>'responses',
+            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'responses',
                                                                             'create_p'=>$aPermissionRow['browse_response'],
                                                                             'read_p'=>$aPermissionRow['browse_response'],
                                                                             'update_p'=>$aPermissionRow['browse_response'],
@@ -220,29 +220,29 @@ function upgrade_surveypermissions_table145()
                                                                             'export_p'=>$aPermissionRow['export'],
                                                                             'import_p'=>$aPermissionRow['browse_response'],
                                                                             'sid'=>$aPermissionRow['sid'],
-                                                                            'uid'=>$aPermissionRow['uid']));
+                                                                            'uid'=>$aPermissionRow['uid']))->getText();
             modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
 
-            $sPermissionInsertQuery=$connect->GetInsertSQL($tablename,array('permission'=>'statistics',
+            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'statistics',
                                                                             'read_p'=>$aPermissionRow['browse_response'],
                                                                             'sid'=>$aPermissionRow['sid'],
-                                                                            'uid'=>$aPermissionRow['uid']));
+                                                                            'uid'=>$aPermissionRow['uid']))->getText();
             modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
 
-            $sPermissionInsertQuery=$connect->GetInsertSQL($tablename,array('permission'=>'survey',
+            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'survey',
                                                                             'read_p'=>1,
                                                                             'delete_p'=>$aPermissionRow['delete_survey'],
                                                                             'sid'=>$aPermissionRow['sid'],
-                                                                            'uid'=>$aPermissionRow['uid']));
+                                                                            'uid'=>$aPermissionRow['uid']))->getText();
             modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
 
-            $sPermissionInsertQuery=$connect->GetInsertSQL($tablename,array('permission'=>'surveyactivation',
+            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'surveyactivation',
                                                                             'update_p'=>$aPermissionRow['activate_survey'],
                                                                             'sid'=>$aPermissionRow['sid'],
-                                                                            'uid'=>$aPermissionRow['uid']));
+                                                                            'uid'=>$aPermissionRow['uid']))->getText();
             modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
 
-            $sPermissionInsertQuery=$connect->GetInsertSQL($tablename,array('permission'=>'surveycontent',
+            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'surveycontent',
                                                                             'create_p'=>$aPermissionRow['define_questions'],
                                                                             'read_p'=>$aPermissionRow['define_questions'],
                                                                             'update_p'=>$aPermissionRow['define_questions'],
@@ -250,24 +250,24 @@ function upgrade_surveypermissions_table145()
                                                                             'export_p'=>$aPermissionRow['export'],
                                                                             'import_p'=>$aPermissionRow['define_questions'],
                                                                             'sid'=>$aPermissionRow['sid'],
-                                                                            'uid'=>$aPermissionRow['uid']));
+                                                                            'uid'=>$aPermissionRow['uid']))->getText();
             modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
 
-            $sPermissionInsertQuery=$connect->GetInsertSQL($tablename,array('permission'=>'surveylocale',
+            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'surveylocale',
                                                                             'read_p'=>$aPermissionRow['edit_survey_property'],
                                                                             'update_p'=>$aPermissionRow['edit_survey_property'],
                                                                             'sid'=>$aPermissionRow['sid'],
-                                                                            'uid'=>$aPermissionRow['uid']));
+                                                                            'uid'=>$aPermissionRow['uid']))->getText();
             modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
 
-            $sPermissionInsertQuery=$connect->GetInsertSQL($tablename,array('permission'=>'surveysettings',
+            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'surveysettings',
                                                                             'read_p'=>$aPermissionRow['edit_survey_property'],
                                                                             'update_p'=>$aPermissionRow['edit_survey_property'],
                                                                             'sid'=>$aPermissionRow['sid'],
-                                                                            'uid'=>$aPermissionRow['uid']));
+                                                                            'uid'=>$aPermissionRow['uid']))->getText();
             modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
 
-            $sPermissionInsertQuery=$connect->GetInsertSQL($tablename,array('permission'=>'tokens',
+            $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'tokens',
                                                                             'create_p'=>$aPermissionRow['activate_survey'],
                                                                             'read_p'=>$aPermissionRow['activate_survey'],
                                                                             'update_p'=>$aPermissionRow['activate_survey'],
@@ -275,37 +275,36 @@ function upgrade_surveypermissions_table145()
                                                                             'export_p'=>$aPermissionRow['export'],
                                                                             'import_p'=>$aPermissionRow['activate_survey'],
                                                                             'sid'=>$aPermissionRow['sid'],
-                                                                            'uid'=>$aPermissionRow['uid'])
-                                                          );
+                                                                            'uid'=>$aPermissionRow['uid']))->getText();
             modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
         }
     }
 }
 
 function upgrade_survey_table152()
-{	
-    global $modifyoutput, $connect;
+{
+    global $modifyoutput;
     $sSurveyQuery = "SELECT * FROM {{surveys_languagesettings}}";
     $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->queryAll();
     foreach ( $oSurveyResult as $aSurveyRow )
     {
-		
+
         Yii::app()->loadLibrary('Limesurvey_lang',array("langcode"=>$aSurveyRow['surveyls_language']));
         $oLanguage = Yii::app()->lang;
         $aDefaultTexts=aTemplateDefaultTexts($oLanguage,'unescaped');
         unset($oLanguage);
-		
+
         if (trim(strip_tags($aSurveyRow['surveyls_email_confirm'])) == '')
         {
-			
+
 			$sSurveyUpdateQuery= "update {{surveys}} set sendconfirmation='N' where sid=".$aSurveyRow['surveyls_survey_id'];
-            $connect->createCommand($sSurveyUpdateQuery)->execute;
-			
+            Yii::app()->db->createCommand($sSurveyUpdateQuery)->execute();
+
 			$sSurveyUpdateQuery= "update {{surveys_languagesettings}} set
                                   surveyls_email_confirm_subj=".$aDefaultTexts['confirmation_subject'].",
                                   surveyls_email_confirm=".$aDefaultTexts['confirmation']."
                                   where surveyls_survey_id=".$aSurveyRow['surveyls_survey_id'];
-            $connect->createCommand($sSurveyUpdateQuery)->execute;
+            Yii::app()->db->createCommand($sSurveyUpdateQuery)->execute();
         }
     }
 }

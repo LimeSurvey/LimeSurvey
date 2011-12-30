@@ -466,7 +466,7 @@ function bHasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
         //$sSQL = "SELECT {$sCRUD} FROM " . db_table_name('survey_permissions') . "
         //        WHERE sid={$iSID} AND uid = {$iUID}
         //        and permission=".db_quoteall($sPermission); //Getting rights for this survey
-        $bPermission = is_null($query) ? array() : $query->attributes; //$connect->GetOne($sSQL);
+        $bPermission = is_null($query) ? array() : $query->attributes;
         if (!isset($bPermission[$sCRUD]) || $bPermission[$sCRUD]==0)
         {
             $bPermission=false;
@@ -1571,14 +1571,6 @@ function fixsortorderAnswers($qid,$surveyid=null) //Function rewrites the sortor
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
 
     Answers::model()->updateSortOrder($qid,$baselang);
-    //$cdresult = db_execute_num("SELECT qid, code, sortorder FROM ".db_table_name('answers')." WHERE qid={$qid} and language='{$baselang}' ORDER BY sortorder"); //Checked
-    //$position=0;
-    //while ($cdrow=$cdresult->FetchRow())
-    //{
-    //$cd2query="UPDATE ".db_table_name('answers')." SET sortorder={$position} WHERE qid={$cdrow[0]} AND code='{$cdrow[1]}' AND sortorder={$cdrow[2]} ";
-    //$cd2result=$connect->Execute($cd2query) or safe_die ("Couldn't update sortorder<br />$cd2query<br />".$connect->ErrorMsg()); //Checked
-    //$position++;
-    //}
 }
 
 /**
@@ -1613,29 +1605,12 @@ function shiftorderQuestions($sid,$gid,$shiftvalue) //Function shifts the sortor
     $baselang = GetBaseLanguageFromSurveyID($sid);
 
     Questions::model()->updateQuestionOrder($gid,$baselang,$shiftvalue);
-
-    //$cdresult = db_execute_assoc("SELECT qid FROM ".db_table_name('questions')." WHERE gid='{$gid}' and language='{$baselang}' ORDER BY question_order, title ASC"); //Checked
-    //$position=$shiftvalue;
-    //while ($cdrow=$cdresult->FetchRow())
-    //{
-    //$cd2query="UPDATE ".db_table_name('questions')." SET question_order='{$position}' WHERE qid='{$cdrow['qid']}' ";
-    //$cd2result = $connect->Execute($cd2query) or safe_die ("Couldn't update question_order<br />$cd2query<br />".$connect->ErrorMsg()); //Checked
-    //$position++;
-    //}
 }
 
 function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for groups
 {
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
     Groups::model()->updateGroupOrder($surveyid,$baselang);
-    //$cdresult = db_execute_assoc("SELECT gid FROM ".db_table_name('groups')." WHERE sid='{$surveyid}' AND language='{$baselang}' ORDER BY group_order, group_name");
-    //$position=0;
-    //while ($cdrow=$cdresult->FetchRow())
-    //{
-    //$cd2query="UPDATE ".db_table_name('groups')." SET group_order='{$position}' WHERE gid='{$cdrow['gid']}' ";
-    //$cd2result = $connect->Execute($cd2query) or safe_die ("Couldn't update group_order<br />$cd2query<br />".$connect->ErrorMsg());  //Checked
-    //$position++;
-    //}
 }
 
 function fixmovedquestionConditions($qid,$oldgid,$newgid) //Function rewrites the cfieldname for a question after group change
@@ -1759,7 +1734,6 @@ function getsidgidqidaidtype($fieldcode)
 
 	    $result = Questions::model()->getSomeRecords($fieldtoselect,$condition);
 
-        //$result = db_execute_assoc($query) or safe_die ("Couldn't get question type - getsidgidqidaidtype() in common.php<br />".$connect->ErrorMsg()); //Checked
 		if ( count($result) == 0 )
         { // question doesn't exist
             return Array();
@@ -2405,7 +2379,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         ); //"WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'";
                         $data = Defaultvalues::model()->findByAttributes($conditiontoselect);
                         $data  = $data->attributes;
-                        $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];//$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
+                        $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];
                     }
                     else
                     {
@@ -2419,7 +2393,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
                         $row  = $data[0]->attributes;
                         if (count($data) >0)
-                            $fieldmap[$fieldname]['defaultvalue']=$row['defaultvalue'];//$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
+                            $fieldmap[$fieldname]['defaultvalue']=$row['defaultvalue'];
                         else
                             $fieldmap[$fieldname]['defaultvalue']='';
 
@@ -2466,7 +2440,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                                     $data = Defaultvalues::model()->findByAttributes($conditiontoselect);
                                     $data  = $data->attributes;
                                     if (!isset($data['defaultvalue'])) $data['defaultvalue']=null;
-                                    $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];//$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
+                                    $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];
                                 }
                                 else
                                 {
@@ -2479,7 +2453,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                                     $data = Defaultvalues::model()->findByAttributes($conditiontoselect);
                                     $data  = $data->attributes;
                                     if (!isset($data['defaultvalue'])) $data['defaultvalue']=null;
-                                    $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];//$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
+                                    $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];
                                 }
 
                             }
@@ -2604,7 +2578,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             //MULTI ENTRY
             $data = Answers::model()->findAllByAttributes(array('qid' => $arow['qid'], 'language' => $s_lang));
             $data = count($data);
-            $slots=$data;//$connect->GetOne("select count(code) from ".db_table_name('answers')." where qid={$arow['qid']} and language='{$s_lang}'");
+            $slots=$data;
             for ($i=1; $i<=$slots; $i++)
             {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i";
@@ -2702,7 +2676,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                             $data  = $data->attributes;
                             if(isset($data['defaultvalue']))
                                 $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];
-                            //$fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE sqid={$abrow['qid']} and qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
                         }
                         else
                         {
@@ -2713,7 +2686,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                             if(isset($data['defaultvalue']))
                                 $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];
 
-                            //$fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE sqid={$abrow['qid']} and qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
                         }
                     }
                 }
@@ -4889,7 +4861,7 @@ function createPassword()
 
 function languageDropdown($surveyid,$selected)
 {
-     $yii = Yii::app();
+
     $homeurl = Yii::app()->getConfig('homeurl');
     $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -4898,7 +4870,7 @@ function languageDropdown($surveyid,$selected)
 
     foreach ($slangs as $lang)
     {
-        $link = $yii->homeUrl.("/admin/dataentry/sa/view/surveyid/".$surveyid."/lang/".$lang);
+        $link = Yii::app()->homeUrl.("/admin/dataentry/sa/view/surveyid/".$surveyid."/lang/".$lang);
         if ($lang == $selected) $html .= "\t<option value='{$link}' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
         if ($lang != $selected) $html .= "\t<option value='{$link}'>".getLanguageNameFromCode($lang,false)."</option>\n";
     }
@@ -5517,7 +5489,6 @@ function GetAttributeValue($surveyid,$attrName,$token)
     {
         return null;
     }
-    //$sanitized_token=$connect->qstr($token,get_magic_quotes_gpc());
     $surveyid=sanitize_int($surveyid);
 
     Tokens_dynamic::sid($surveyid);
@@ -5698,8 +5669,6 @@ function getNumericalFormat($lang = 'en', $integer = false, $negative = true) {
 
 function getTokenData($surveyid, $token)
 {
-    //$query = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."'";
-    //$result = db_execute_assoc($query) or safe_die("Couldn't get token info in getTokenData()<br />".$query."<br />".$connect->ErrorMsg());    //Checked
     Tokens_dynamic::sid($surveyid);
     $query=$Tokens_dynamic::model()->getAllRecords(array("token"=>$token));
 
@@ -5836,9 +5805,6 @@ function getXMLWriter() {
 */
 function db_rename_table($oldtable, $newtable)
 {
-    //$dict = NewDataDictionary($connect);
-    //$result=$dict->RenameTableSQL($oldtable, $newtable);
-    //return $result[0];
     Yii::app()->db->createCommand()->renameTable($oldtable, $newtable);
 }
 
@@ -5970,8 +5936,6 @@ function aGetFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonor
     Surveys_dynamic::sid($iSurveyID);
     $idquery = Surveys_dynamic::model()->getAllRecords(array('id'=>$iResponseID));
     $idrow = $idquery->readAll();
-    //$idquery = "SELECT * FROM ".db_table_name('survey_'.$iSurveyID)." WHERE id=".$iResponseID;
-    //$idrow=$connect->GetRow($idquery) or safe_die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg()); //Checked
 
     $aResultTable=array();
 
@@ -6205,18 +6169,6 @@ function getQuotaInformation($surveyid,$language,$quotaid='all')
     global $clienttoken;
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
 
-    /*$query = "SELECT * FROM ".db_table_name('quota').", ".db_table_name('quota_languagesettings')."
-    WHERE ".db_table_name('quota').".id = ".db_table_name('quota_languagesettings').".quotals_quota_id
-    AND sid='{$surveyid}'
-    AND quotals_language='".$language."'";
-    if ($quotaid != 'all')
-    {
-    $query .= " AND id=$quotaid";
-    }
-
-    $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());    //Checked
-    */
-
     $result = Quota::model()->with(array('languagesettings' => array('condition' => "quotals_language='$language'")))->findAllByAttributes(array('sid' => $surveyid, 'id' =>$quotaid));
     $quota_info = array();
     $x=0;
@@ -6248,20 +6200,14 @@ function getQuotaInformation($surveyid,$language,$quotaid='all')
             'Url' => $survey_quotas['quotals_url'],
             'UrlDescrip' => $survey_quotas['quotals_urldescrip'],
             'AutoloadUrl' => $survey_quotas['autoload_url']));
-            //$query = "SELECT * FROM ".db_table_name('quota_members')." WHERE quota_id='{$survey_quotas['id']}'";
-            //$result_qe = db_execute_assoc($query) or safe_die($connect->ErrorMsg());      //Checked
+
             $result_qe = Quota_members::model()->findAllByAttributes(array('quota_id'=>$survey_quotas['id']));
             $quota_info[$x]['members'] = array();
             if (count($result_qe) > 0)
-            //if ($result_qe->RecordCount() > 0)
             {
-                //while ($quota_entry = $result_qe->FetchRow())
                 foreach ($result_qe as $quota_entry)
                 {
                 	$quota_entry = $quota_entry->attributes;
-                    //$query = "SELECT type, title,gid FROM ".db_table_name('questions')." WHERE qid='{$quota_entry['qid']}' AND language='{$baselang}'";
-                    //$result_quest = db_execute_assoc($query) or safe_die($connect->ErrorMsg());     //Checked
-                    //$qtype = $result_quest->FetchRow();
                     $result_quest=Questions::model()->findByAttributes(array('qid'=>$quota_entry['qid'], 'language'=>$baselang));
                     $qtype=$result_quest->attributes;
 
@@ -6347,10 +6293,6 @@ function checkquestionfordisplay($qid, $gid=null)
     {
         $scenario = $scenariorow['scenario'];
         $totalands=0;
-        /*$query = "SELECT * FROM ".db_table_name('conditions')."\n"
-        ."WHERE qid=$qid AND scenario=$scenario ORDER BY cqid,cfieldname";
-        $result = db_execute_assoc($query) or safe_die("Couldn't check conditions<br />$query<br />".$connect->ErrorMsg());   //Checked
-        */
         $subquery = Conditions::model()->getAllRecords(array('qid'=>$qid,'scenario'=>$scenario),"cqid,cfieldname");
 
         $conditionsfoundforthisscenario=0;
@@ -6390,10 +6332,6 @@ function checkquestionfordisplay($qid, $gid=null)
             if (preg_match("/^\+(.*)$/",$row['cfieldname'],$cfieldnamematch))
             { // this condition uses a single checkbox as source
                 $conditionSourceType='question';
-                /*$query2= "SELECT type, gid FROM ".db_table_name('questions')."\n"
-                ." WHERE qid={$row['cqid']} AND language='".$_SESSION['s_lang']."'";
-                $result2=db_execute_assoc($query2) or safe_die ("Coudn't get type from questions<br />$ccquery<br />".$connect->ErrorMsg());   //Checked
-                */
                 $query2=Questions::model()->getSomeRecords(array("type, gid"),array('qid'=>$row['cqid'],'language'=>Yii::app()->session['s_lang']));
                 //while($row2=$result2->FetchRow())
                 foreach ($query2->readAll() as $row2)
@@ -6414,10 +6352,6 @@ function checkquestionfordisplay($qid, $gid=null)
             else
             { // this is a simple condition using a question as source
                 $conditionSourceType='question';
-                /*$query2= "SELECT type, gid FROM ".db_table_name('questions')."\n"
-                ." WHERE qid={$row['cqid']} AND language='".$_SESSION['s_lang']."'";
-                $result2=db_execute_assoc($query2) or safe_die ("Coudn't get type from questions<br />$ccquery<br />".$connect->ErrorMsg());   //Checked
-                */
                 $query2=Questions::model()->getSomeRecords(array("type, gid"),array('qid'=>$row['cqid'],'language'=>Yii::app()->session['s_lang']));
                 foreach ($query2->readAll() as $row2)
                 //while($row2=$result2->FetchRow())
@@ -6685,8 +6619,8 @@ function checkquestionfordisplay($qid, $gid=null)
 */
 function sStripDBPrefix($sTableName)
 {
-    $yii = Yii::app();
-    $dbprefix = $yii->db->tablePrefix;
+
+    $dbprefix = Yii::app()->db->tablePrefix;
     return substr($sTableName,strlen($dbprefix));
 }
 
@@ -7038,8 +6972,8 @@ function access_denied($action,$sid='')
 */
 function CleanLanguagesFromSurvey($sid, $availlangs)
 {
-    $yii = Yii::app();
-    $yii->loadHelper('database');
+
+    Yii::app()->loadHelper('database');
     //$clang = Yii::app()->lang;
     $sid=sanitize_int($sid);
     $baselang = GetBaseLanguageFromSurveyID($sid);
@@ -7062,27 +6996,24 @@ function CleanLanguagesFromSurvey($sid, $availlangs)
     }
 
     // Remove From Answers Table
-    $query = "SELECT qid FROM ".$yii->db->tablePrefix."questions WHERE sid='{$sid}' AND $sqllang";
-
-    $qidresult = db_execute_assoc($query);    //Checked
+    $query = "SELECT qid FROM {{questions}} WHERE sid='{$sid}' AND $sqllang";
+    $qidresult = db_execute_assoc($query);
 
     foreach ($qidresult->readAll() as $qrow)
     {
 
         $myqid = $qrow['qid'];
-        $query = "DELETE FROM ".$yii->db->tablePrefix."answers WHERE qid='$myqid' AND $sqllang";
-        db_execute_assoc($query) ; //$connect->Execute($query) or safe_die($connect->ErrorMsg());    //Checked
+        $query = "DELETE FROM {{answers}} WHERE qid='$myqid' AND $sqllang";
+        db_execute_assoc($query);
     }
 
     // Remove From Questions Table
-    $query = "DELETE FROM ".$yii->db->tablePrefix."questions WHERE sid='{$sid}' AND $sqllang";
-    db_execute_assoc($query) ;
-    //$connect->Execute($query) or safe_die($connect->ErrorMsg());   //Checked
+    $query = "DELETE FROM {{questions}} WHERE sid='{$sid}' AND $sqllang";
+    db_execute_assoc($query);
 
     // Remove From Groups Table
-    $query = "DELETE FROM ".$yii->db->tablePrefix."groups WHERE sid='{$sid}' AND $sqllang";
-    //$connect->Execute($query) or safe_die($connect->ErrorMsg());   //Checked
-    db_execute_assoc($query) ;
+    $query = "DELETE FROM {{groups}} WHERE sid='{$sid}' AND $sqllang";
+    db_execute_assoc($query);
 
     return true;
 }
@@ -7108,7 +7039,7 @@ function FixLanguageConsistency($sid, $availlangs='')
     $baselang = GetBaseLanguageFromSurveyID($sid);
     $sid=sanitize_int($sid);
     $query = "SELECT * FROM {{groups}} WHERE sid='{$sid}' AND language='{$baselang}'  ORDER BY group_order";
-    $result = Yii::app()->db->createCommand($query)->query(); //or safe_die($connect->ErrorMsg());  //Checked
+    $result = Yii::app()->db->createCommand($query)->query();
     if ($result->getRowCount() > 0)
     {
         foreach($result->readAll() as $group)
@@ -7117,7 +7048,7 @@ function FixLanguageConsistency($sid, $availlangs='')
             {
 
                 $query = "SELECT gid FROM {{groups}} WHERE sid='{$sid}' AND gid='{$group['gid']}' AND language='{$lang}'";
-                $gresult = Yii::app()->db->createCommand($query)->query(); // or safe_die($connect->ErrorMsg()); //Checked
+                $gresult = Yii::app()->db->createCommand($query)->query();
                 if ($gresult->getRowCount() < 1)
                 {
                     $data = array(
@@ -7138,7 +7069,7 @@ function FixLanguageConsistency($sid, $availlangs='')
 
     $quests = array();
     $query = "SELECT * FROM {{questions}} WHERE sid='{$sid}' AND language='{$baselang}' ORDER BY question_order";
-    $result = Yii::app()->db->createCommand($query)->query(); // or safe_die($connect->ErrorMsg());  //Checked
+    $result = Yii::app()->db->createCommand($query)->query();
     if ($result->getRowCount() > 0)
     {
         foreach($result->readAll() as $question)
@@ -7147,7 +7078,7 @@ function FixLanguageConsistency($sid, $availlangs='')
             foreach ($langs as $lang)
             {
                 $query = "SELECT qid FROM {{questions}} WHERE sid='{$sid}' AND qid='{$question['qid']}' AND language='{$lang}'";
-                $gresult = Yii::app()->db->createCommand($query)->query(); // or safe_die($connect->ErrorMsg());   //Checked
+                $gresult = Yii::app()->db->createCommand($query)->query();
                 if ($gresult->getRowCount() < 1)
                 {
                     db_switchIDInsert('questions',true);
@@ -7180,7 +7111,7 @@ function FixLanguageConsistency($sid, $availlangs='')
         }
 
         $query = "SELECT * FROM {{answers}} WHERE language='{$baselang}' and (".trim($sqlans,' OR').") ORDER BY qid, code";
-        $result = Yii::app()->db->createCommand($query)->query() ;//or safe_die($connect->ErrorMsg()); //Checked
+        $result = Yii::app()->db->createCommand($query)->query();
         if ($result->getRowCount() > 0)
         {
             foreach($result->readAll() as $answer)
@@ -7188,7 +7119,7 @@ function FixLanguageConsistency($sid, $availlangs='')
                 foreach ($langs as $lang)
                 {
                     $query = "SELECT qid FROM {{answers}} WHERE code='{$answer['code']}' AND qid='{$answer['qid']}' AND language='{$lang}'";
-                    $gresult = Yii::app()->db->createCommand($query)->query(); // or safe_die($connect->ErrorMsg());  //Checked
+                    $gresult = Yii::app()->db->createCommand($query)->query();
                     if ($gresult->getRowCount() < 1)
                     {
                         $data = array(
@@ -7210,7 +7141,7 @@ function FixLanguageConsistency($sid, $availlangs='')
 
 
     $query = "SELECT * FROM {{assessments}} WHERE sid='{$sid}' AND language='{$baselang}'";
-    $result = Yii::app()->db->createCommand($query)->query(); // or safe_die($connect->ErrorMsg());  //Checked
+    $result = Yii::app()->db->createCommand($query)->query();
     if ($result->getRowCount() > 0)
     {
         foreach($result->readAll() as $assessment)
@@ -7218,7 +7149,7 @@ function FixLanguageConsistency($sid, $availlangs='')
             foreach ($langs as $lang)
             {
                 $query = "SELECT id FROM {{assessments}} WHERE sid='{$sid}' AND id='{$assessment['id']}' AND language='{$lang}'";
-                $gresult = Yii::app()->db->createCommand($query)->query(); // or safe_die($connect->ErrorMsg()); //Checked
+                $gresult = Yii::app()->db->createCommand($query)->query();
                 if ($gresult->getRowCount() < 1)
                 {
                     $data = array(
@@ -7252,18 +7183,15 @@ function FixLanguageConsistency($sid, $availlangs='')
 */
 function db_switchIDInsert($table,$state)
 {
-    Yii::app()->loadHelper('database');
-    if (Yii::app()->db->getDriverName() =='odbc_mssql' || Yii::app()->db->getDriverName() =='odbtp' || Yii::app()->db->getDriverName() =='mssql_n' || Yii::app()->db->getDriverName() =='mssqlnative')
+    if (in_array(Yii::app()->db->getDriverName(), array('odbc_mssql', 'odbtp', 'mssql_n', 'mssqlnative')))
     {
-        if ($state==true)
+        if ($state == true)
         {
-            //$connect->Execute('SET IDENTITY_INSERT '.db_table_name($table).' ON');
-            db_execute_assoc('SET IDENTITY_INSERT {{'.$table.'}} ON');
+            Yii::app()->db->createCommand('SET IDENTITY_INSERT {{'.$table.'}} ON')->execute();
         }
         else
         {
-            //$connect->Execute('SET IDENTITY_INSERT '.db_table_name($table).' OFF');
-            db_execute_assoc('SET IDENTITY_INSERT {{'.$table.'}} OFF');
+            Yii::app()->db->createCommand('SET IDENTITY_INSERT {{'.$table.'}} OFF')->execute();
         }
     }
 }
@@ -7520,7 +7448,7 @@ function checkMovequestionConstraintsForConditions($sid,$qid,$newgid="all")
     . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
     . "AND  tq2.qid=tc.cqid AND tg.gid=tq.gid AND tg2.gid=tq2.gid AND tq.qid=$qid ORDER BY tg2.group_order DESC";
 
-    $condresult=Yii::app()->db->createCommand($condquery)->query(); // or safe_die($connect->ErrorMsg());    //Checked
+    $condresult=Yii::app()->db->createCommand($condquery)->query();
 
     if ($condresult->getRowCount() > 0) {
 
@@ -7560,7 +7488,7 @@ function checkMovequestionConstraintsForConditions($sid,$qid,$newgid="all")
     . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
     . "AND  tq2.qid=tc.cqid AND tg.gid=tq.gid AND tg2.gid=tq2.gid AND tq2.qid=$qid ORDER BY tg.group_order";
 
-    $condresult=Yii::app()->db->createCommand($condquery)->query(); // or safe_die($connect->ErrorMsg());        //Checked
+    $condresult=Yii::app()->db->createCommand($condquery)->query();
 
     if ($condresult->getRowCount() > 0) {
 
@@ -7638,13 +7566,11 @@ function getusergrouplist($ugid=NULL,$outputformat='optionlist')
 
 function getgroupuserlist($ugid)
 {
-    $yii = Yii::app();
-
-    $yii->loadHelper('database');
-    $clang = $yii->lang;
+    Yii::app()->loadHelper('database');
+    $clang = Yii::app()->lang;
 
     $ugid=sanitize_int($ugid);
-    $surveyidquery = "SELECT a.uid, a.users_name FROM ".$yii->db->tablePrefix."users AS a LEFT JOIN (SELECT uid AS id FROM ".$yii->db->tablePrefix."user_in_groups WHERE ugid = {$ugid}) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name";
+    $surveyidquery = "SELECT a.uid, a.users_name FROM ".Yii::app()->db->tablePrefix."users AS a LEFT JOIN (SELECT uid AS id FROM ".Yii::app()->db->tablePrefix."user_in_groups WHERE ugid = {$ugid}) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name";
 
     $surveyidresult = db_execute_assoc($surveyidquery);  //Checked
     if (!$surveyidresult) {return "Database Error";}
@@ -7690,7 +7616,6 @@ function modify_database($sqlfile='', $sqlstring='')
     global $codeString;
     global $modifyoutput;
 
-    //require_once($homedir."/classes/core/sha256.php");
     Yii::app()->loadLibrary('admin/sha256','sha256');
     $sha256 = new sha256;
     $success = true;  // Let's be optimistic
@@ -7762,8 +7687,8 @@ function modify_database($sqlfile='', $sqlstring='')
  */
 function getlabelsets($languages = null)
 {
-    $yii = Yii::app();
-    $clang = $yii->lang;
+
+    $clang = Yii::app()->lang;
     $languagesarray = array();
     if ($languages)
     {

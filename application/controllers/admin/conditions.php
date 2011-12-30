@@ -412,7 +412,7 @@ class conditions extends Survey_Common_Action {
 		if (isset($p_subaction) && $p_subaction == "renumberscenarios")
 		{
 		    $query = "SELECT DISTINCT scenario FROM {{conditions}} WHERE qid={$qid} ORDER BY scenario";
-		    $result = Yii::app()->db->createCommand($query)->query() or safe_die ("Couldn't select scenario<br />$query<br />".$connect->ErrorMsg());
+		    $result = Yii::app()->db->createCommand($query)->query() or safe_die ("Couldn't select scenario<br />$query<br />");
 		    $newindex = 1;
 
 		    foreach ($result->readAll() as $srow)
@@ -441,7 +441,7 @@ class conditions extends Survey_Common_Action {
 		        $query .= implode("', '", $copyconditionsfrom);
 		        $query .= "')";
 		        $result = Yii::app()->db->createCommand($query)->query() or
-		        	safe_die("Couldn't get conditions for copy<br />$query<br />".$connect->ErrorMsg());
+		        	safe_die("Couldn't get conditions for copy<br />$query<br />");
 
 		        foreach ($result->readAll() as $row)
 		        {
@@ -537,7 +537,7 @@ class conditions extends Survey_Common_Action {
 			."AND qid=$qid "
 			."AND parent_qid=0 "
 			."AND {{questions}}.language='".GetBaseLanguageFromSurveyID($surveyid)."'";
-		$result = Yii::app()->db->createCommand($query)->query() or safe_die ("Couldn't get information for question $qid<br />$query<br />".$connect->ErrorMsg());
+		$result = Yii::app()->db->createCommand($query)->query() or safe_die ("Couldn't get information for question $qid<br />$query<br />");
 		foreach ($result->readAll() as $rows)
 		{
 		    $questiongroupname = $rows['group_name'];
@@ -560,7 +560,7 @@ class conditions extends Survey_Common_Action {
 			."AND {{questions}}.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 			."AND {{groups}}.language='".GetBaseLanguageFromSurveyID($surveyid)."' " ;
 
-		$qresult = Yii::app()->db->createCommand($qquery)->query() or safe_die ("$qquery<br />".$connect->ErrorMsg());
+		$qresult = Yii::app()->db->createCommand($qquery)->query() or safe_die ("$qquery<br />");
 		$qrows = $qresult->readAll();
 		// Perform a case insensitive natural sort on group name then question title (known as "code" in the form) of a multidimensional array
 		usort($qrows, 'GroupOrderThenQuestionOrder');
@@ -662,7 +662,7 @@ class conditions extends Survey_Common_Action {
 			        ."g.language='".GetBaseLanguageFromSurveyID($surveyid)."'";
 
 
-		        $result = Yii::app()->db->createCommand($query)->query() or safe_die("Couldn't get postquestions $qid<br />$query<br />".$connect->ErrorMsg());
+		        $result = Yii::app()->db->createCommand($query)->query() or safe_die("Couldn't get postquestions $qid<br />$query<br />");
 
 		        $postcount = count($result);
 
@@ -826,7 +826,7 @@ class conditions extends Survey_Common_Action {
 						AND sq.scale_id=1
 						ORDER BY sq.question_order";
 
-		            $x_axis_db=Yii::app()->db->createCommand($aquery)->query() or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
+		            $x_axis_db=Yii::app()->db->createCommand($aquery)->query() or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />");
 
 		            foreach ($x_axis_db->readAll() as $frow)
 		            {
@@ -1210,7 +1210,7 @@ class conditions extends Survey_Common_Action {
 			    ."FROM {{conditions}} "
 			    ."WHERE {{conditions}}.qid=$qid\n"
 			    ."ORDER BY {{conditions}}.scenario";
-		    $scenarioresult = Yii::app()->db->createCommand($scenarioquery)->query() or safe_die ("Couldn't get other (scenario) conditions for question $qid<br />$query<br />".$connect->Error);
+		    $scenarioresult = Yii::app()->db->createCommand($scenarioquery)->query() or safe_die ("Couldn't get other (scenario) conditions for question $qid<br />$query<br />");
 		    $scenariocount=count($scenarioresult);
 
 		    $showreplace="$questiontitle". $this->_showSpeaker($questiontext);
@@ -1308,7 +1308,7 @@ class conditions extends Survey_Common_Action {
 			            ."AND {{conditions}}.scenario={$scenarionr['scenario']}\n"
 			            ."AND {{conditions}}.cfieldname NOT LIKE '{%' \n" // avoid catching SRCtokenAttr conditions
 			            ."ORDER BY {{groups}}.group_order,{{questions}}.question_order";
-		            $result = Yii::app()->db->createCommand($query)->query() or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />".$connect->ErrorMsg());
+		            $result = Yii::app()->db->createCommand($query)->query() or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />");
 		            $conditionscount=count($result);
 
 		            $querytoken = "SELECT {{conditions}}.cid, "
@@ -1324,7 +1324,7 @@ class conditions extends Survey_Common_Action {
 			            ."AND {{conditions}}.scenario={$scenarionr['scenario']}\n"
 			            ."AND {{conditions}}.cfieldname LIKE '{%' \n" // only catching SRCtokenAttr conditions
 			            ."ORDER BY {{conditions}}.cfieldname";
-		            $resulttoken = Yii::app()->db->createCommand($querytoken)->query() or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />".$connect->ErrorMsg());
+		            $resulttoken = Yii::app()->db->createCommand($querytoken)->query() or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />");
 		            $conditionscounttoken=count($resulttoken);
 
 		            $conditionscount=$conditionscount+$conditionscounttoken;

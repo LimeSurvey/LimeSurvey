@@ -655,7 +655,6 @@
         $data = Survey_languagesettings::model()->getDateFormat($surveyid,$languagecode);
         //$query = "SELECT surveyls_dateformat FROM ".db_table_name('surveys').",".db_table_name('surveys_languagesettings')." WHERE sid=$surveyid and surveyls_survey_id=$surveyid and surveyls_language='$languagecode'";
         $dateformat = $data->readAll();
-        //$dateformat = $connect->GetOne($query);
         if(is_null($dateformat))
         {
             $dateformat = 0;

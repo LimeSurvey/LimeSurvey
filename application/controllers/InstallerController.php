@@ -32,12 +32,6 @@ class InstallerController extends CController {
 	public $lang = null;
 
     /**
-    * Database connection
-    * @var CDbConnection
-    */
-    private $connection;
-
-    /**
     * Sha256
     * @var Sha256
     */
@@ -806,7 +800,7 @@ class InstallerController extends CController {
     }
 
     /**
-    * Executes an SQL file using ADODB
+    * Executes an SQL file
     *
 	* @param string $sFileName
     * @param string $sDatabasePrefix

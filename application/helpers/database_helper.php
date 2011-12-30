@@ -14,7 +14,6 @@
  */
 function &db_execute_assoc($sql,$inputarr=false,$silent=false)
 {
-    //$connect->SetFetchMode(ADODB_FETCH_ASSOC);
 	try {
 		if($inputarr)
 		{
@@ -23,7 +22,7 @@ function &db_execute_assoc($sql,$inputarr=false,$silent=false)
 		else
 		{
 				$dataset=Yii::app()->db->createCommand($sql)->query();
-	
+
 		}
 	} catch(CDbException $e) {
 		$dataset=false;
@@ -35,7 +34,6 @@ function &db_execute_assoc($sql,$inputarr=false,$silent=false)
 
 function &db_execute($sql,$inputarr=false,$silent=false)
 {
-    //$connect->SetFetchMode(ADODB_FETCH_ASSOC);
 	try {
 		if($inputarr)
 		{
@@ -78,18 +76,17 @@ function &db_records_count($sql)
 	{
 		$result = $yii->db->createCommand($sql)->query();
 		$count = $result->count();
-	} 
-	catch(CDbException $e) 
+	}
+	catch(CDbException $e)
 	{
 		$count = FALSE;
 	}
-	
+
 	return $count;
 }
 
 function &db_select_limit_assoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieonerror=true)
 {
-    //$connect->SetFetchMode(ADODB_FETCH_ASSOC);
 	$query = Yii::app()->db->createCommand($sql.= " ");
     if ($numrows)
     {
@@ -127,7 +124,6 @@ function &db_select_limit_assoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieon
  */
 function &db_select_column($sql)
 {
-    //$connect->SetFetchMode(ADODB_FETCH_NUM);
     $dataset=Yii::app()->db->createCommand($sql)->query();
     if ($dataset->count() > 0)
     {
@@ -156,10 +152,6 @@ function &db_select_column($sql)
 
 function db_quote_id($id)
 {
-    // WE DONT HAVE nor USE other thing that alfanumeric characters in the field names
-    //  $quote = $connect->nameQuote;
-    //  return $quote.str_replace($quote,$quote.$quote,$id).$quote;
-
     switch (Yii::app()->db->getDriverName())
     {
         case "mysqli" :
@@ -187,43 +179,7 @@ function db_random()
     return $srandom;
 
 }
-/**
-function db_quote($str,$ispostvar=false)
-// This functions escapes the string only inside
-{
-    global $connect;
-    if ($ispostvar) { return $connect->escape($str, get_magic_quotes_gpc());}
-    else {return $connect->escape($str);}
-}
 
-function db_quoteall($str,$ispostvar=false)
-// This functions escapes the string inside and puts quotes around the string according to the used db type
-// IF you are quoting a variable from a POST/GET then set $ispostvar to true so it doesnt get quoted twice.
-{
-    global $connect;
-    if ($ispostvar) { return $connect->qstr($str, get_magic_quotes_gpc());}
-    else {return $connect->qstr($str);}
-
-}
-
-function db_table_name($name)
-{
-    global $dbprefix;
-    return db_quote_id($dbprefix.$name);
-}
-*/
-/**
- * returns the table name without quotes
- *
- * @param mixed $name
- */
- /**
-function db_table_name_nq($name)
-{
-    global $dbprefix;
-    return $dbprefix.$name;
-}
-*/
 /**
  *  Return a sql statement for finding LIKE named tables
  *  Be aware that you have to escape underscor chars by using a backslash
@@ -247,6 +203,16 @@ function db_select_tables_like($table)
     }
 }
 
+/**
+ * Gets the table names. Do not prefix.
+ * @param string $table String to match
+ * @uses db_select_tables_like() To get the tables like sql query
+ * @return array Array of matched table names
+ */
+function db_get_tables_like($table)
+{
+    return (array) Yii::app()->db->createCommand(db_select_tables_like("{{{$table}}}"))->queryAll();
+}
 
 /**
  *  Return a boolean stating if the table(s) exist(s)

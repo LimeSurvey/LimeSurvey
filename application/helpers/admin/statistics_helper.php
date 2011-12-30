@@ -1163,7 +1163,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 $showem[] = array($statlang->gT("Average size per respondent"), $size/$responsecount . " KB");
 
 /*              $query="SELECT title, question FROM {{questions}} WHERE parent_qid='$qqid' AND language='{$language}' ORDER BY question_order";
-                $result=db_execute_num($query) or safe_die("Couldn't get list of subquestions for multitype<br />$query<br />".$connect->ErrorMsg());
+                $result=db_execute_num($query) or safe_die("Couldn't get list of subquestions for multitype<br />$query<br />");
 
                 //loop through multiple answers
                 while ($row=$result->FetchRow())
@@ -2009,7 +2009,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     case "1":	//array (dual scale)
 
                         $sSubquestionQuery = "SELECT  question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
-                        $sSubquestion=FlattenText($connect->GetOne($sSubquestionQuery));
+                        $sSubquestion = FlattenText(Yii::app()->db->createCommand($sSubquestionQuery)->query());
 
                         //get question attributes
                         $qidattributes=getQuestionAttributeValues($qqid);

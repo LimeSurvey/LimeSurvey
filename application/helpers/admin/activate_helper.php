@@ -25,20 +25,20 @@ function fixNumbering($fixnumbering)
      //Fix a question id - requires renumbering a question
     $oldqid = $fixnumbering;
     $query = "SELECT qid FROM {{questions}} ORDER BY qid DESC";
-    $result = db_select_limit_assoc($query, 1); // or safe_die($query."<br />".$connect->ErrorMsg());
+    $result = db_select_limit_assoc($query, 1);
     foreach ($result->readAll() as $row) {$lastqid=$row['qid'];}
     $newqid=$lastqid+1;
     $query = "UPDATE {{questions}} SET qid=$newqid WHERE qid=$oldqid";
-    $result = db_execute_assosc($query); // or safe_die($query."<br />".$connect->ErrorMsg());
+    $result = db_execute_assosc($query);
     // Update subquestions
     $query = "UPDATE {{questions}} SET parent_qid=$newqid WHERE parent_qid=$oldqid";
-    $result = db_execute_assosc($query); // or safe_die($query."<br />".$connect->ErrorMsg());
+    $result = db_execute_assosc($query);
     //Update conditions.. firstly conditions FOR this question
     $query = "UPDATE {{conditions}} SET qid=$newqid WHERE qid=$oldqid";
-    $result = db_execute_assosc($query); // or safe_die($query."<br />".$connect->ErrorMsg());
+    $result = db_execute_assosc($query);
     //Now conditions based upon this question
     $query = "SELECT cqid, cfieldname FROM {{conditions}} WHERE cqid=$oldqid";
-    $result = db_execute_assoc($query); // or safe_die($query."<br />".$connect->ErrorMsg());
+    $result = db_execute_assoc($query);
     foreach ($result->readAll() as $row)
     {
         $switcher[]=array("cqid"=>$row['cqid'], "cfieldname"=>$row['cfieldname']);
@@ -51,16 +51,16 @@ function fixNumbering($fixnumbering)
                                               SET cqid=$newqid,
                                               cfieldname='".str_replace("X".$oldqid, "X".$newqid, $switch['cfieldname'])."'
                                               WHERE cqid=$oldqid";
-            $result = db_execute_assosc($query); // or safe_die($query."<br />".$connect->ErrorMsg());
+            $result = db_execute_assosc($query);
         }
     }
     // TMSW Conditions->Relevance:  (1) Call LEM->ConvertConditionsToRelevance()when done. (2) Should relevance for old conditions be removed first?
     //Now question_attributes
     $query = "UPDATE {{question_attributes}} SET qid=$newqid WHERE qid=$oldqid";
-    $result = db_execute_assosc($query); // or safe_die($query."<br />".$connect->ErrorMsg());
+    $result = db_execute_assosc($query);
     //Now answers
     $query = "UPDATE {{answers}} SET qid=$newqid WHERE qid=$oldqid";
-    $result = db_execute_assosc($query); // or safe_die($query."<br />".$connect->ErrorMsg());
+    $result = db_execute_assosc($query);
 }
 /**
  * checks consistency of groups
@@ -72,7 +72,7 @@ function checkGroup($postsid)
 
     $baselang = GetBaseLanguageFromSurveyID($postsid);
     $groupquery = "SELECT g.gid,g.group_name,count(q.qid) as count from {{questions}} as q RIGHT JOIN {{groups}} as g ON q.gid=g.gid AND g.language=q.language WHERE g.sid=$postsid AND g.language='$baselang' group by g.gid,g.group_name;";
-    $groupresult=Yii::app()->db->createCommand($groupquery)->query()->readAll(); // or safe_die($groupquery."<br />".$connect->ErrorMsg());
+    $groupresult=Yii::app()->db->createCommand($groupquery)->query()->readAll();
     foreach ($groupresult as $row)
     { //TIBO
         if ($row['count'] == 0)
@@ -170,7 +170,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
     //CHECK THAT ALL CONDITIONS SET ARE FOR QUESTIONS THAT PRECEED THE QUESTION CONDITION
     //A: Make an array of all the qids in order of appearance
     //	$qorderquery="SELECT * FROM ".Yii::app()->db->tablePrefix."questions, ".Yii::app()->db->tablePrefix."groups WHERE ".Yii::app()->db->tablePrefix."questions.gid=".Yii::app()->db->tablePrefix."groups.gid AND ".Yii::app()->db->tablePrefix."questions.sid={$_GET['sid']} ORDER BY ".Yii::app()->db->tablePrefix."groups.sortorder, ".Yii::app()->db->tablePrefix."questions.title";
-    //	$qorderresult=db_execute_assosc($qorderquery) or safe_die("Couldn't generate a list of questions in order<br />$qorderquery<br />".$connect->ErrorMsg());
+    //	$qorderresult=db_execute_assosc($qorderquery) or safe_die("Couldn't generate a list of questions in order<br />$qorderquery<br />");
     //	$qordercount=$qorderresult->RecordCount();
     //	$c=0;
     //	while ($qorderrow=$qorderresult->FetchRow())
@@ -262,7 +262,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
 
 function activateSurvey($surveyid, $simulate = false)
 {
-    
+
     $clang = Yii::app()->lang;
 
      $createsurvey='';
@@ -285,10 +285,10 @@ function activateSurvey($surveyid, $simulate = false)
 
     //Get list of questions for the base language
     $fieldmap=createFieldMap($surveyid);
-    
+
     $createsurvey = array();
     foreach ($fieldmap as $j=>$arow) //With each question, create the appropriate field(s)
-    {        
+    {
         switch($arow['type'])
         {
             case 'startlanguage':
@@ -453,28 +453,28 @@ function activateSurvey($surveyid, $simulate = false)
                     }
                     else
                     {
-                        $autonumberquery = "ALTER TABLE {{survey_{$surveyid}}} AUTO_INCREMENT = ".$row['autonumber_start'];                        
+                        $autonumberquery = "ALTER TABLE {{survey_{$surveyid}}} AUTO_INCREMENT = ".$row['autonumber_start'];
                         $result = @Yii::app()->db->createCommand($autonumberquery)->execute();
                     }
                 }
             }
 
             if (isset($savetimings) && $savetimings=="TRUE")
-            {                
+            {
                 $timingsfieldmap = createTimingsFieldMap($surveyid);
                 $createsurveytimings .= '`'.implode("` F DEFAULT '0',\n`",array_keys($timingsfieldmap)) . "` F DEFAULT '0'";
 
-                
+
 
                 foreach ($timingsfieldmap as $field=>$fielddata)
                 {
-                    $column[$field] = 'FLOAT';                    
+                    $column[$field] = 'FLOAT';
                 }
                 $command = new CDbCommand(Yii::app()->db);
                 foreach($column as $name => $type)
                 {
                     $command->addColumn($tabname,$name,$type);
-                }                
+                }
             }
         }
 
@@ -548,7 +548,7 @@ function mssql_drop_constraint($fieldname, $tablename)
 
 function mssql_drop_primary_index($tablename)
 {
-    global $dbprefix, $connect, $modifyoutput;
+    global $modifyoutput;
     Yii::app()->loadHelper("database");
 
     // find out the constraint name of the old primary key

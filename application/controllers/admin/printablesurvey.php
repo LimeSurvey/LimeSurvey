@@ -21,7 +21,7 @@
  * @package        LimeSurvey
  * @subpackage    Backend
  */
-class printablesurvey extends CAction
+class printablesurvey extends Survey_Common_Action
 {
 
     /**
@@ -30,7 +30,7 @@ class printablesurvey extends CAction
     function run($surveyid, $lang = null)
     {
         $surveyid = sanitize_int($surveyid);
-        
+
         //echo '<pre>'.print_r($_SESSION,true).'</pre>';
         // PRESENT SURVEY DATAENTRY SCREEN
         if(isset($_POST['printableexport']))
@@ -54,7 +54,7 @@ class printablesurvey extends CAction
         // Setting the selected language for printout
         $clang = new limesurvey_lang(array('lang' => $surveyprintlang));
 
-     
+
     $desrow = Survey::model()->getDataOnSurvey($surveyid,  $surveyprintlang)->read();
 
         if ($desrow==false || count($desrow)==0)
@@ -77,7 +77,7 @@ class printablesurvey extends CAction
 
         $_POST['welcome']=$welcome;
         $_POST['surveydesc']=$surveydesc;
-        
+
         if(isset($_POST['printableexport'])){$pdf->titleintopdf($surveyname,$surveydesc);}
 
 
@@ -298,16 +298,16 @@ class printablesurvey extends CAction
                         }
 
                         $x=0;
-                      
+
                         $conditions1="qid={$deqrow['qid']} AND scenario={$scenariorow['scenario']}";
                         $distinctresult=Conditions::model()->getSomeConditions(array('cqid','method', 'cfieldname', 'value'), $conditions1, array('cqid'),array('cqid', 'method'));
-                    
+
                         //Loop through each condition for a particular scenario.
                         foreach ($distinctresult->readAll() as $distinctrow)
                         {
-                              $condition = "qid = '{$distinctrow['cqid']}' AND parent_qid = 0 AND language = '{$surveyprintlang}'"; 
+                              $condition = "qid = '{$distinctrow['cqid']}' AND parent_qid = 0 AND language = '{$surveyprintlang}'";
                               $subresult=Questions::model()->getSomeRecords(array('title','question','type'), $condition)->read();
-                            
+
                             if($x > 0)
                             {
                                 $explanation .= ' <em class="scenario-and-seperator">'.$clang->gT('and').'</em> ';
@@ -398,7 +398,7 @@ class printablesurvey extends CAction
                             }
 
                             $conresult=Conditions::model()->getConditionsQuestions($distinctrow['cqid'],$deqrow['qid'],$scenariorow['scenario'],$surveyprintlang);
-                            
+
                             $conditions=array();
                             foreach ($conresult->readAll() as $conrow)
                             {
@@ -446,10 +446,10 @@ class printablesurvey extends CAction
                                         $labelIndex=preg_match("/^[^#]+#([01]{1})$/",$conrow['cfieldname']);
                                         if ($labelIndex == 0)
                                         { // TIBO
-                             
+
                                         $condition="qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND scale_id=0 AND language='{$surveyprintlang}'";
                                         $fresult=Answers::model()->getAllRecords($condition);
-                                            
+
                                             foreach($fresult->readAll() as $frow)
                                             {
                                                 $postans=$frow['answer'];
@@ -458,7 +458,7 @@ class printablesurvey extends CAction
                                         }
                                         elseif ($labelIndex == 1)
                                         {
-                                        
+
                                         $condition="qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND scale_id=1 AND language='{$surveyprintlang}'";
                                         $fresult=Answers::model()->getAllRecords($condition);
                                             foreach($fresult->readAll() as $frow)
@@ -474,7 +474,7 @@ class printablesurvey extends CAction
                                     case "R":
                                         $condition="qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
                                         $ansresult=Answers::model()->getSomeRecords(array('answer'), $condition);
-                                        
+
                                         foreach ($ansresult->readAll() as $ansrow)
                                         {
                                             $conditions[]=$ansrow['answer'];
@@ -501,9 +501,9 @@ class printablesurvey extends CAction
                                     case "H":
                                     default:
                                         $value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
-                                        
+
                                         $condition=" qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
-                                            
+
                                         $fresult=Answers::model()->getAllRecords($condition);
                                         foreach ($fresult->readAll() as $frow)
                                         {
@@ -527,7 +527,7 @@ class printablesurvey extends CAction
                                         $thiscquestion=$fieldmap[$conrow['cfieldname']];
                                         $condition="parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
                                           $ansresult= Questions::model()->getSomeRecords(array('question'), $condition);
-                                          
+
                                         foreach ($ansresult->readAll() as $ansrow)
                                         {
                                             $answer_section=" (".$ansrow['question'].")";
@@ -568,8 +568,8 @@ class printablesurvey extends CAction
                                          $ansresult= Questions::model()->getSomeRecords(array('question'), $condition);
                                         foreach ($ansresult->readAll() as $ansrow)
                                         {
-                                        
-                                        $condition = "qid = '{$conrow['cqid']}' AND code = '{$conrow['value']}' AND language= '{$surveyprintlang}'";  
+
+                                        $condition = "qid = '{$conrow['cqid']}' AND code = '{$conrow['value']}' AND language= '{$surveyprintlang}'";
                                         $fresult= Answers::model()->getAllRecords( $condition);
                                             foreach ($fresult->readAll() as $frow)
                                             {
@@ -753,7 +753,7 @@ class printablesurvey extends CAction
 
                             if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *only one* of the following:"));}
                             $dearesult=Answers::model()->getAllRecords(" qid='{$deqrow['qid']}' AND language='{$surveyprintlang}' ", array('sortorder','answer'));
-                           
+
                             $deacount=$dearesult->getRowCount();
                             if ($deqrow['other'] == "Y") {$deacount++;}
 
@@ -818,7 +818,7 @@ class printablesurvey extends CAction
                             $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose *only one* of the following:");
                             if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *only one* of the following:"),"U");}
                                    $dearesult=Answers::model()->getAllRecords(" qid='{$deqrow['qid']}' AND language='{$surveyprintlang}'", array('sortorder', 'answer') );
-                  
+
                             $question['ANSWER'] = "\t<ul>\n";
                             foreach ($dearesult->readAll() as $dearow)
                             {
@@ -874,9 +874,9 @@ class printablesurvey extends CAction
                                 $question['QUESTION_TYPE_HELP'] = sprintf($clang->gT('Please choose *at most* %s answers:' ),'<span class="num">'.$maxansw.'</span>');
                                 if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT('Please choose *at most* %s answers:' ),$maxansw),"U");}
                             }
-                          
+
                             $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
-                           
+
                             $mearesult=Questions::model()->getAllRecords(" parent_qid='{$deqrow['qid']}' AND language='{$surveyprintlang}' ", array('question_order'));
                             $meacount = $mearesult->getRowCount();
                             if ($deqrow['other'] == 'Y') {$meacount++;}
@@ -934,9 +934,9 @@ class printablesurvey extends CAction
                                 $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose *at most* ").'<span class="num">'.$maxansw.'</span> '.$clang->gT("answers and provide a comment:");
                                 if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *at most* ").$maxansw.$clang->gT("answers and provide a comment:"),"U");}
                             }
-                          
+
                             $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
-                 
+
                             $mearesult=Questions::model()->getAllRecords("parent_qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}'", array('question_order'));
                             //                $printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose all that apply and provide a comment:")."</u><br />\n";
                             $pdfoutput=array();
@@ -993,7 +993,7 @@ class printablesurvey extends CAction
                             $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please write your answer(s) here:");
 
                             $mearesult=Questions::model()->getAllRecords("parent_qid='{$deqrow['qid']}' AND language='{$surveyprintlang}'", array('question_order'));
-                     
+
                             $longest_string = 0;
                             foreach ($mearesult->readAll() as $mearow)
                             {
@@ -1077,7 +1077,7 @@ class printablesurvey extends CAction
 
                             // ==================================================================
                         case "A":  //ARRAY (5 POINT CHOICE)
-                            $condition = "parent_qid = '{$deqrow['qid']}'  AND language= '{$surveyprintlang}'";     
+                            $condition = "parent_qid = '{$deqrow['qid']}'  AND language= '{$surveyprintlang}'";
                             $mearesult= Questions::model()->getAllRecords( $condition, array('question_order'));
                             $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
                             $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
@@ -1141,7 +1141,7 @@ class printablesurvey extends CAction
                             // ==================================================================
                         case "B":  //ARRAY (10 POINT CHOICE)
                             $mearesult=Questions::model()->getAllRecords(" parent_qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}' ", array(' question_order'));
-                      
+
                             $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
                             $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
@@ -1177,7 +1177,7 @@ class printablesurvey extends CAction
                             // ==================================================================
                         case "C":  //ARRAY (YES/UNCERTAIN/NO)
                             $mearesult=Questions::model()->getAllRecords(" parent_qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}' ", array('question_order'));
-                           
+
                             $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
                             $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
@@ -1546,15 +1546,15 @@ class printablesurvey extends CAction
                             //$meaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
                             //$mearesult = Yii::app()->db->createCommand($meaquery)->query();
                             $mearesult=Questions::model()->getAllRecords(" parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ", array('question_order'));
-                            
+
                             $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
                             $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
                             if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}
                             $question['ANSWER'] .= "\n<table>\n\t<thead>\n";
 
-                          
-                             $condition = "qid= '{$deqrow['qid']}'  AND language= '{$surveyprintlang}' AND scale_id=0";         
+
+                             $condition = "qid= '{$deqrow['qid']}'  AND language= '{$surveyprintlang}' AND scale_id=0";
                              $fresult= Answers::model()->getAllRecords( $condition, array('sortorder', 'code'));
 
                             $fcount = $fresult->getRowCount();
@@ -1656,7 +1656,7 @@ class printablesurvey extends CAction
                             //$headstyle="style='border-left-style: solid; border-left-width: 1px; border-left-color: #AAAAAA'";
                             $headstyle="style='padding-left: 20px; padding-right: 7px'";
 
-                            $condition = "parent_qid= '{$deqrow['qid']}'  AND language= '{$surveyprintlang}'";         
+                            $condition = "parent_qid= '{$deqrow['qid']}'  AND language= '{$surveyprintlang}'";
                             $fresult= Questions::model()->getAllRecords( $condition, array('question_order', 'title'));
                             $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
                             if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}

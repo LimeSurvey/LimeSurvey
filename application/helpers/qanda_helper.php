@@ -66,8 +66,8 @@ function retrieveConditionInfo($ia)
 {
     //This function returns an array containing all related conditions
     //for a question - the array contains the fields from the conditions table
-    
-    
+
+
 
     if ($ia[7] == "Y")
     {	//DEVELOP CONDITIONS ARRAY FOR THIS QUESTION
@@ -92,7 +92,7 @@ function retrieveConditionInfo($ia)
         ."ORDER BY {{conditions}}.scenario, "
         ."{{conditions}}.cqid, "
         ."{{conditions}}.cfieldname";
-        $cresult = db_execute_assoc($cquery) or safe_die ("OOPS<br />$cquery<br />".$connect->ErrorMsg());     //Checked
+        $cresult = db_execute_assoc($cquery) or safe_die ("OOPS<br />$cquery<br />");     //Checked
 
         $cquerytoken =	"SELECT {{conditions}}.qid, "
         ."{{conditions}}.scenario, "
@@ -112,7 +112,7 @@ function retrieveConditionInfo($ia)
         ."{{conditions}}.cqid, "
         ."{{conditions}}.cfieldname";
 
-        $cresulttoken = db_execute_assoc($cquerytoken) or safe_die ("OOPS<br />$cquerytoken<br />".$connect->ErrorMsg());     //Checked
+        $cresulttoken = db_execute_assoc($cquerytoken) or safe_die ("OOPS<br />$cquerytoken<br />");     //Checked
 
         foreach ($cresulttoken->readAll() as $tempcrow)
         {
@@ -174,8 +174,8 @@ function retrieveConditionInfo($ia)
 function retrieveJSidname($cd,$currentgid=null)
 {
     global $dropdownthreshold;
-    
-    
+
+
 
     if (preg_match("/^\+{0,1}[0-9]+X([0-9]+)X(.*)$/",$cd[2]) == 0)
     { // This is not a true fieldname (for instance a {TOKEN:ATTR..}
@@ -331,8 +331,7 @@ function setman_normal($ia)
 // TMSW Conditions->Relevance:  EM will manage mandatories - but must check all question specific issues (like ranking)
 function setman_ranking($ia)
 {
-    
-    
+
     $ansquery = "SELECT * FROM {{answers}} WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
     $ansresult = db_execute_assoc($ansquery);  //Checked
     $anscount = $ansresult->count();
@@ -358,8 +357,7 @@ function setman_ranking($ia)
 // TMSW Conditions->Relevance:  EM will manage mandatories - but must check all question specific issues (like ranking)
 function setman_questionandcode($ia)
 {
-    
-    
+
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
     $qresult = db_execute_assoc($qquery);     //Checked
     $qrow = $qresult->read();
@@ -401,8 +399,6 @@ function setman_questionandcode($ia)
 */
 function setman_multiflex($ia)
 {
-    
-    
 
     $mandatorys=array();
     $mandatoryfns=array();
@@ -470,8 +466,7 @@ function setman_multiflex($ia)
 // TMSW Conditions->Relevance:  EM will manage mandatories - but must check all question specific issues (like ranking)
 function setman_questionandcode_multiscale($ia)
 {
-    
-    
+
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);   //Checked
     foreach ($qresult->readAll() as $qrow)
@@ -576,7 +571,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
 
     //GET HELP
 	$hquery="SELECT help FROM {{questions}} WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."'";
-	$hresult=Yii::app()->db->createCommand($hquery)->query() or safe_die($connect->ErrorMsg());
+	$hresult=Yii::app()->db->createCommand($hquery)->query() or safe_die();
     $help="";
     $hrow=$hresult->read(); $help=reset($hrow);
 
@@ -976,7 +971,7 @@ function validation_message($ia)
             $helpselect="SELECT help\n"
             ."FROM {{questions}}\n"
             ."WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
-            $helpresult=db_execute_assoc($helpselect) or safe_die($helpselect.'<br />'.$connect->ErrorMsg());     //Checked
+            $helpresult=db_execute_assoc($helpselect) or safe_die($helpselect.'<br />');     //Checked
             foreach ($helpresult->readAll() as $helprow)
             {
                 $help=' <span class="questionhelp">'.$helprow['help'].'</span>';
@@ -1011,7 +1006,7 @@ function file_validation_message($ia)
 function mandatory_popup($ia, $notanswered=null)
 {
     global $showpopups;
-    
+
     $clang = Yii::app()->lang;
     //This sets the mandatory popup message to show if required
     //Called from question.php, group.php or survey.php
@@ -1046,7 +1041,7 @@ function mandatory_popup($ia, $notanswered=null)
 function validation_popup($ia, $notvalidated=null)
 {
     global $showpopups;
-    
+
     $clang = Yii::app()->lang;
     //This sets the validation popup message to show if required
     //Called from question.php, group.php or survey.php
@@ -1075,7 +1070,7 @@ function validation_popup($ia, $notvalidated=null)
 function file_validation_popup($ia, $filenotvalidated = null)
 {
     global $showpopups;
-    
+
     $clang = Yii::app()->lang;
     if ($filenotvalidated === null) { unset($filenotvalidated); }
     if (isset($filenotvalidated) && is_array($filenotvalidated) && isset($showpopups) && $showpopups == 1)
@@ -1098,7 +1093,7 @@ function file_validation_popup($ia, $filenotvalidated = null)
 
 function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
     global $thissurvey;
-    
+
     $clang = Yii::app()->lang;
 
     /* The following lines cover for previewing questions, because no $_SESSION['fieldarray'] exists.
@@ -2232,7 +2227,7 @@ function do_list_dropdown($ia)
         $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
     }
 
-    $ansresult = Yii::app()->db->createCommand($ansquery)->query() or safe_die('Couldn\'t get answers<br />'.$ansquery.'<br />'.$connect->ErrorMsg());    //Checked
+    $ansresult = Yii::app()->db->createCommand($ansquery)->query() or safe_die('Couldn\'t get answers<br />'.$ansquery.'<br />');    //Checked
 
     if (!isset($optCategorySeparator))
     {
@@ -5382,7 +5377,7 @@ function do_shortfreetext($ia)
 }
 
 function getLatLongFromIp($ip){
-    
+
     $ipInfoDbAPIKey = Yii::app()->getConfig("ipInfoDbAPIKey");
 
     $xml = simplexml_load_file("http://api.ipinfodb.com/v2/ip_query.php?key=$ipInfoDbAPIKey&ip=$ip&timezone=false");

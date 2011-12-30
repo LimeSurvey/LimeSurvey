@@ -20,7 +20,7 @@
  * @package        LimeSurvey
  * @subpackage    Backend
  */
-class GlobalSettings extends CAction
+class GlobalSettings extends Survey_Common_Action
 {
     /**
      * Routes to the correct sub-page

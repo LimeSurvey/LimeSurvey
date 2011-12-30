@@ -80,21 +80,6 @@ class SurveyAction extends Survey_Common_Action {
 		elseif ($sa == 'expire')
 			$this->route('expire', array('surveyid'));
    		return;
-
-		/* @todo Implement this */
-		$clang = $this->getController()->lang;
-		$actioncount = 0;
-		$iSurveyId = 0;
-		$message = $clang->gT('You did not choose any surveys.');
-		if (Survey::model()->findByPk($iSurveyID) === null)
-			continue;
-		switch ($sa){
-			case 'archive':
-				Yii::app()->session['surveyid'] = $iSurveyID;
-				redirect('admin/export/sa/surveyarchives/surveyid/'.$iSurveyId);
-				break;
-		}
-        $this->getController()->render('/admin/survey/listSurveys_view', array('clang' => $clang));
     }
 
     /**

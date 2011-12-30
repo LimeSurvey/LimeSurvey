@@ -19,9 +19,6 @@ injectglobalsettings();
 
 function injectglobalsettings()
 {
-    //$usquery = "SELECT * FROM ".db_table_name("settings_global");
-    //$dbvaluearray=$connect->GetAll($usquery);
-
 	$settings = Settings_global::model()->findAll();
 
     //if ($dbvaluearray!==false)

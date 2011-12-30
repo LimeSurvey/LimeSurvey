@@ -358,7 +358,6 @@ class Save {
                 "ipaddr"=>get_current_ip_address(),
                 "startlanguage"=>$_SESSION['s_lang'],
                 "refurl"=>getenv("HTTP_REFERER"));
-                //One of the strengths of ADOdb's AutoExecute() is that only valid field names for $table are updated
                 if (db_execute_assoc($CI->db->insert_string($thissurvey['tablename'], $sdata)))    // Checked
                 {
                     $srid = Yii::app()->db->getLastInsertID();
@@ -472,8 +471,8 @@ class Save {
     function createinsertquery($surveyid, $move, $thissurvey, $thisstep, $postedfieldnames, $bFinalizeThisAnswer)
     {
 
-        
-        
+
+
         global $thistpl;
 
         $clang = Yii::app()->lang;
@@ -809,7 +808,7 @@ class Save {
                 $query=createinsertquery();
                 if ($result=db_execute_assoc($query))
                 {
-                    $tempID=$connect->Insert_ID($thissurvey['tablename'],"id");
+                    $tempID = Yii::app()->db->getLastInsertID(); //Insert_ID($thissurvey['tablename'],"id");
                     $_SESSION['srid'] = $tempID;
                 }
             }

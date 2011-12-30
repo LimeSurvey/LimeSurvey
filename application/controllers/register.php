@@ -36,7 +36,7 @@
     	Yii::app()->loadHelper('replacements');
     	//Yii::app();
     	//$this->getController();
-    	
+
     	if(!empty($action))
     	{
     		$this->$action($_GET[$action]);
@@ -53,23 +53,23 @@
         $surveyid = sanitize_int($surveyid);
         $squery = "SELECT a.expires, a.startdate
                       FROM {{surveys}} AS a
-                      WHERE a.sid = $surveyid "; 
-                     
-                                            
+                      WHERE a.sid = $surveyid ";
+
+
         $sresult = db_execute_assoc($squery) or show_error("Couldn't execute $squery");
-        
-            
+
+
         $row = $sresult->read();
-        
+
         $data['sid'] = $surveyid;
         $data['startdate'] = $row['startdate'];
         $data['enddate'] = $row['expires'];
-        
+
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
         Yii::import('application.libraries.Limesurvey_lang');
 			$clang = new Limesurvey_lang(array('langcode' => $baselang));
         echo templatereplace(file_get_contents("$thistpl/register.pstpl"),array(),$redata,'register.php',false,NULL,$data);
-        
+
     }
 
     /**
@@ -79,7 +79,7 @@
      */
     function index()
     {
-    	
+
         $surveyid = CHttpRequest::getPost('sid');
         $postlang = CHttpRequest::getPost('lang');
         if (!$surveyid)
@@ -101,7 +101,7 @@
         }
 
 		CHttpSession::setCookieParams(array(0, Yii::app()->getConfig('relativeurl').'/'));
-       
+
         // Get passed language from form, so that we dont loose this!
         if (!isset($postlang) || $postlang == "" || !$postlang )
         {
@@ -141,7 +141,7 @@
         {
             Yii::app()->request->redirect($surveyid);
         }
-        
+
         //$dbprefix = $this->db->dbprefix;
         //Check if this email already exists in token database
         $query = "SELECT email FROM {{tokens_$surveyid}}\n"
@@ -185,36 +185,26 @@
         $postfirstname=sanitize_xss_string(strip_tags(CHttpRequest::getPost('register_firstname')));
         $postlastname=sanitize_xss_string(strip_tags(CHttpRequest::getPost('register_lastname')));
         $starttime = sanitize_xss_string(CHttpRequest::getPost('startdate'));
-        $endtime = sanitize_xss_string(CHttpRequest::getPost('enddate'));        
+        $endtime = sanitize_xss_string(CHttpRequest::getPost('enddate'));
         /*$postattribute1=sanitize_xss_string(strip_tags(returnglobal('register_attribute1')));
          $postattribute2=sanitize_xss_string(strip_tags(returnglobal('register_attribute2')));   */
 
         //Insert new entry into tokens db
         $query = "INSERT INTO {{tokens_$surveyid}}\n"
-        . "(firstname, lastname, email, emailstatus, token"; 
-        
+        . "(firstname, lastname, email, emailstatus, token";
+
         if ($starttime && $endtime)
-        $query .= ", validfrom, validuntil"; 
-        
-        $query .=")\n"      
+        $query .= ", validfrom, validuntil";
+
+        $query .=")\n"
         . "VALUES ('$postfirstname', '$postlastname', '".CHttpRequest::getPost('register_email')."', 'OK', '$newtoken'";
-        
+
         if ($starttime && $endtime)
         $query .= ",$starttime,$endtime";
-        
+
         $query .=")";
         $result = db_execute_assoc($query);
-        /**
-        $result = $connect->Execute($query, array($postfirstname,
-        $postlastname,
-        returnglobal('register_email'),
-                                                  'OK',
-        $newtoken)
-
-        //                             $postattribute1,   $postattribute2)
-        ) or safe_die ($query."<br />".$connect->ErrorMsg());  //Checked - According to adodb docs the bound variables are quoted automatically
-        */
-        $tid = Yii::app()->db->getLastInsertID();; //$connect->Insert_ID("{$dbprefix}tokens_$surveyid","tid");
+        $tid = Yii::app()->db->getLastInsertID();
 
 
         $fieldsarray["{ADMINNAME}"]=$thissurvey['adminname'];
