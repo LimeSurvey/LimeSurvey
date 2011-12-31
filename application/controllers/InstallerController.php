@@ -26,6 +26,12 @@
 */
 class InstallerController extends CController {
 
+    /**
+     *
+     * @var type
+     */
+    public $connection;
+
 	/**
 	 * clang
 	 */
@@ -271,7 +277,7 @@ class InstallerController extends CController {
 					// Check if the surveys table exists or not
 					if ($bDBExists == true) {
 						try {
-							Yii::app()->db->createCommand()->select()->from('{{surveys}}')->queryAll();
+							$this->connection->createCommand()->select()->from('{{surveys}}')->queryAll();
 							$bTablesDoNotExist = false;
 						} catch(Exception $e) {
 							$bTablesDoNotExist = true;
@@ -299,21 +305,21 @@ class InstallerController extends CController {
 					if (in_array($model->dbtype, array('mysql', 'mysqli'))) {
 						//for development - use mysql in the strictest mode  //Checked)
 						if (Yii::app()->getConfig('debug')>1) {
-							Yii::app()->db->createCommand("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI'")->execute();
+							$this->connection->createCommand("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI'")->execute();
 						}
-						$versioninfo = Yii::app()->db->getServerVersion();
+						$versioninfo = $this->connection->getServerVersion();
 						if (version_compare($versioninfo,'4.1','<'))
 						{
 							die("<br />Error: You need at least MySQL version 4.1 to run LimeSurvey. Your version:".$versioninfo);
 						}
-						@Yii::app()->db->createCommand("SET CHARACTER SET 'utf8'")->execute();  //Checked
-						@Yii::app()->db->createCommand("SET NAMES 'utf8'")->execute();  //Checked
+						@$this->connection->createCommand("SET CHARACTER SET 'utf8'")->execute();  //Checked
+						@$this->connection->createCommand("SET NAMES 'utf8'")->execute();  //Checked
 					}
 
 					// Setting dateformat for mssql driver. It seems if you don't do that the in- and output format could be different
 					if (in_array($model->dbtype, array('odbc_mssql', 'odbtp', 'mssql_n', 'mssqlnative'))) {
-						@Yii::app()->db->createCommand('SET DATEFORMAT ymd;')->execute();     //Checked
-						@Yii::app()->db->createCommand('SET QUOTED_IDENTIFIER ON;')->execute();     //Checked
+						@$this->connection->createCommand('SET DATEFORMAT ymd;')->execute();     //Checked
+						@$this->connection->createCommand('SET QUOTED_IDENTIFIER ON;')->execute();     //Checked
 					}
 
 					//$aData array won't work here. changing the name
@@ -344,8 +350,8 @@ class InstallerController extends CController {
 					{
 						Yii::app()->session['populatedatabase'] = true;
 
-						//Yii::app()->db->database = $model->dbname;
-//						//Yii::app()->db->createCommand("USE DATABASE `".$model->dbname."`")->execute();
+						//$this->connection->database = $model->dbname;
+//						//$this->connection->createCommand("USE DATABASE `".$model->dbname."`")->execute();
 						$values['adminoutputText'].= sprintf($clang->gT('A database named "%s" already exists.'),$model->dbname)."<br /><br />\n"
 						.$clang->gT("Do you want to populate that database now by creating the necessary tables?")."<br /><br />";
 
@@ -356,8 +362,8 @@ class InstallerController extends CController {
 					elseif (!$dbexistsbutempty)
 					{
 						//DB EXISTS, CHECK FOR APPROPRIATE UPGRADES
-						//Yii::app()->db->database = $model->dbname;
-						//Yii::app()->db->createCommand("USE DATABASE `$databasename`")->execute();
+						//$this->connection->database = $model->dbname;
+						//$this->connection->createCommand("USE DATABASE `$databasename`")->execute();
 						/* @todo Implement Upgrade */
 						//$output=CheckForDBUpgrades();
 						if ($output== '') {$values['adminoutput'].='<br />'.$clang->gT('LimeSurvey database is up to date. No action needed');}
@@ -408,14 +414,14 @@ class InstallerController extends CController {
 		{
 			case 'mysqli':
 			case 'mysql':
-				$createDb = Yii::app()->db->createCommand("CREATE DATABASE `$sDatabaseName` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci")->execute();
+				$createDb = $this->connection->createCommand("CREATE DATABASE `$sDatabaseName` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci")->execute();
 				break;
 			case 'mssql':
 			case 'odbc':
-				$createDb = Yii::app()->db->createCommand("CREATE DATABASE [$sDatabaseName];")->execute();
+				$createDb = $this->connection->createCommand("CREATE DATABASE [$sDatabaseName];")->execute();
 				break;
 			default:
-				$createDb = Yii::app()->db->createCommand("CREATE DATABASE $sDatabaseName")->execute();
+				$createDb = $this->connection->createCommand("CREATE DATABASE $sDatabaseName")->execute();
 				break;
 		}
 
@@ -424,7 +430,7 @@ class InstallerController extends CController {
 		{
 			$dsn = self::_getDsn($sDatabaseType, $sDatabasePort);
 			$sDsn = sprintf($dsn, $sDatabaseLocation, $sDatabaseName, $sDatabasePort);
-			Yii::app()->db = new CDbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
+			$this->connection = new CDbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
 
 			Yii::app()->session['populatedatabase'] = true;
 			Yii::app()->session['databaseexist'] = true;
@@ -560,20 +566,20 @@ class InstallerController extends CController {
 				$aData['progressValue'] = 40;
 
 				//config file is written, and we've a db in place
-				Yii::app()->db = Yii::app()->db;
+				$this->connection = Yii::app()->db;
 
 				//checking DB Connection
-				if (Yii::app()->db->getActive() == true) {
+				if ($this->connection->getActive() == true) {
 					$this->loadLibrary('admin/sha256','sha256');
 					$this->sha256 = new SHA256;
 					$password_hash = $this->sha256->hashing($defaultpass);
 
 					try {
-						Yii::app()->db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => 'ls'.self::_getRandomID().self::_getRandomID().self::_getRandomID()));
+						$this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => 'ls'.self::_getRandomID().self::_getRandomID().self::_getRandomID()));
 
-						Yii::app()->db->createCommand()->insert('{{users}}', array('users_name' => $defaultuser, 'password' => $password_hash, 'full_name' => $siteadminname, 'parent_id' => 0, 'lang' => $defaultlang, 'email' => $siteadminemail, 'create_survey' => 1, 'create_user' => 1, 'participant_panel' => 1, 'delete_user' => 1, 'superadmin' => 1, 'configurator' => 1, 'manage_template' => 1, 'manage_label' => 1));
+						$this->connection->createCommand()->insert('{{users}}', array('users_name' => $defaultuser, 'password' => $password_hash, 'full_name' => $siteadminname, 'parent_id' => 0, 'lang' => $defaultlang, 'email' => $siteadminemail, 'create_survey' => 1, 'create_user' => 1, 'participant_panel' => 1, 'delete_user' => 1, 'superadmin' => 1, 'configurator' => 1, 'manage_template' => 1, 'manage_label' => 1));
 						foreach(array('sitename', 'siteadminname', 'siteadminemail', 'siteadminbounce', 'defaultlang') as $insert) {
-							Yii::app()->db->createCommand()->insert("{{settings_global}}", array('stg_name' => $insert, 'stg_value' => $$insert));
+							$this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => $insert, 'stg_value' => $$insert));
 						}
 					// only continue if we're error free otherwise setup is broken.
 					} catch (Exception $e) {
@@ -787,11 +793,11 @@ class InstallerController extends CController {
         switch ($sDatabaseType) {
             case 'mysql':
             case 'mysqli':
-                Yii::app()->db->createCommand("ALTER DATABASE `{$sDatabaseName}` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;")->execute();
+                $this->connection->createCommand("ALTER DATABASE `{$sDatabaseName}` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;")->execute();
                 break;
             case 'pgsql':
-                if (Yii::app()->db->getClientVersion() == '9') {
-                    Yii::app()->db->createCommand("ALTER DATABASE {$sDatabaseName} SET bytea_output='escape';")->execute();
+                if ($this->connection->getClientVersion() == '9') {
+                    $this->connection->createCommand("ALTER DATABASE {$sDatabaseName} SET bytea_output='escape';")->execute();
                 }
                 break;
         }
@@ -826,7 +832,7 @@ class InstallerController extends CController {
                     $sCommand = str_replace('prefix_', $sDatabasePrefix, $sCommand); // Table prefixes
 
                     try {
-						Yii::app()->db->createCommand($sCommand)->execute();
+						$this->connection->createCommand($sCommand)->execute();
 					} catch(Exception $e) {
 						$aMessages[] = "Executing: ".$sCommand." failed! Reason: ".$e;
 					}
@@ -1075,10 +1081,10 @@ class InstallerController extends CController {
 
 		try {
 			$sDsn = sprintf($dsn, $sDatabaseLocation, $sDatabaseName, $sDatabasePort);
-			Yii::app()->db = new CDbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
-			Yii::app()->db->emulatePrepare = true;
-			Yii::app()->db->active = true;
-			Yii::app()->db->tablePrefix = $sDatabasePrefix;
+			$this->connection = new CDbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
+			$this->connection->emulatePrepare = true;
+			$this->connection->active = true;
+			$this->connection->tablePrefix = $sDatabasePrefix;
 			return true;
 		} catch(Exception $e) {
 			if (!empty($aData['model']) && !empty($aData['clang'])) {
@@ -1134,8 +1140,8 @@ class InstallerController extends CController {
         $sPasswordHash = $this->sha256->hashing(Yii::app()->getConfig('defaultpass'));
 
 		try {
-			Yii::app()->db->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => 'ls'.self::_getRandomID().self::_getRandomID().self::_getRandomID()));
-			Yii::app()->db->createCommand()->insert('{{users}}', array(
+			$this->connection->createCommand()->insert("{{settings_global}}", array('stg_name' => 'SessionName', 'stg_value' => 'ls'.self::_getRandomID().self::_getRandomID().self::_getRandomID()));
+			$this->connection->createCommand()->insert('{{users}}', array(
 				'users_name'=>Yii::app()->getConfig('defaultuser'),
 				'password'=>$sPasswordHash,
 				'full_name'=>Yii::app()->getConfig('siteadminname'),
