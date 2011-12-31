@@ -70,6 +70,9 @@ function LEMis_int(a)
 
 function LEMis_numeric(a)
 {
+    if (a === '') {
+        return false;   // to make consistent with PHP
+    }
     return !(isNaN(a));
 }
 
@@ -81,6 +84,7 @@ function LEMis_string(a)
 function LEMif(a,b,c)
 {
     // implements conditional logic.  Note double negation of a to ensure it is cast to Boolean
+    if (a === '0') { return c; }    // so consistent with PHP
     return (!!a) ? b : c;
 }
 
@@ -133,12 +137,17 @@ function LEMimplode()
 }
 
 /*
- * Returns true if within matches the pattern
+ * Returns true if within matches the pattern.  Pattern must start and end with the '/' character
  */
 function LEMregexMatch(pattern,within)
 {
-    var str = new String(within);
-    return (str.match(pattern) !== null);
+    try {
+        var reg = new RegExp(pattern.substr(1,pattern.length-2));
+        return reg.test(within);
+    }
+    catch (err) {
+        return false;
+    }
 }
 
 function LEMstrlen(a)
@@ -161,7 +170,7 @@ function LEMstrpos(haystack,needle)
 
 function LEMempty(v)
 {
-    if (v == "" || v == 0 || v == "0" || v == "false" || v == "NULL" || v == false) {
+    if (v === "" || v === false) {
         return true;
     }
     return false;
@@ -200,33 +209,54 @@ function LEMval(alias)
     var str = new String(alias);
     var varName = alias;
     var suffix = 'code';    // the default
-    if (str.match(/\.(codeValue|code|displayValue|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|shown|type)$/)) {
-        varName = str.replace(/\.(codeValue|code|displayValue|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|shown|type)$/,'')
+    if (str.match(/^INSERTANS:/)) {
+        suffix = 'shown';
+        varName = varName.substr(10);
+    }
+    else if (str.match(/\.(code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value)$/)) {
+        varName = str.replace(/\.(code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value)$/,'')
         suffix = str.replace(/^(.+)\./,'');
     }
 
     jsName = LEMalias2varName[varName];
     attr = LEMvarNameAttr[jsName];
-    if ((suffix == 'code' || suffix == 'codeValue' || suffix == 'displayValue' || suffix == 'shown' || suffix == 'NAOK') && attr.qid!='') {
-        if (document.getElementById('relevance' + attr.qid).value!=='1'){
+    if ((suffix.match(/^code|NAOK|shown|valueNAOK|value$/)) && attr.qid!='') {
+        if (!LEMval(varName + '.relevanceStatus')) {
             return '';
         }
     }
-    if (str.match(/^INSERTANS:/)) {
-        suffix = 'shown';
+    var whichJsName;    // correct name whether on- or off-page
+    if (LEMallOnOnePage==true || attr.gid == LEMgid) {
+        whichJsName = (typeof attr.jsName_on === 'undefined') ? attr.jsName : attr.jsName_on;
     }
+    else {
+        whichJsName = attr.jsName;
+    }
+
     // values should always be stored encoded with htmlspecialchars()
     switch (suffix) {
-        case 'displayValue':
+        case 'relevanceStatus': {
+            grel = qrel = sgqarel = 1;
+            if (!(typeof attr.gid === 'undefined') && !(document.getElementById('relevanceG' + attr.gid) === null)) {
+                grel = parseInt(document.getElementById('relevanceG' + attr.gid).value);
+            }
+            if (!(typeof attr.qid === 'undefined') && !(document.getElementById('relevance' + attr.qid) === null)) {
+                qrel = parseInt(document.getElementById('relevance' + attr.qid).value);
+            }
+            if (!(typeof attr.sgqa === 'undefined') && !(document.getElementById('relevance' + attr.sgqa) === null)) {
+                sgqarel = parseInt(document.getElementById('relevance' + attr.sgqa).value);
+            }
+            return (grel && qrel && sgqarel);
+        }
         case 'shown': {
-            value = htmlspecialchars_decode(document.getElementById(attr.jsName).value);
+            value = htmlspecialchars_decode(document.getElementById(whichJsName).value);
             switch(attr.type)
             {
                 case 'G': //GENDER drop-down list
                 case 'Y': //YES/NO radio-buttons
                 case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                 case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                    displayValue = (typeof attr.answers[value] === 'undefined') ? '' : attr.answers[value];
+                    shown = (typeof attr.answers[value] === 'undefined') ? '' : attr.answers[value];
                     break;
                 case '!': //List - dropdown
                 case 'L': //LIST drop-down/radio-button list
@@ -235,12 +265,28 @@ function LEMval(alias)
                 case 'F': //ARRAY (Flexible) - Row Format
                 case 'R': //RANKING STYLE
                     which_ans = '0~' + value;
-                    displayValue = (typeof attr.answers[which_ans] === 'undefined') ? '' : attr.answers[which_ans];
+                    if (typeof attr.answers[which_ans] === 'undefined') {
+                        answer = value;
+                    }
+                    else {
+                        answerParts = attr.answers[which_ans].split('|');
+                        answerParts.shift();    // remove the first element
+                        answer = answerParts.join('|');
+                    }
+                    shown = answer;
                     break;
                 case '1': //Array (Flexible Labels) dual scale  // need scale
                     prefix = (attr.jsName.match(/#1$/)) ? '1' : '0';
                     which_ans = prefix + '~' + value;
-                    displayValue = (typeof attr.answers[which_ans] === 'undefined') ? '' : attr.answers[which_ans];
+                    if (typeof attr.answers[which_ans] === 'undefined') {
+                        answer = '';
+                    }
+                    else {
+                        answerParts = attr.answers[which_ans].split('|');
+                        answerParts.shift();    // remove the first element
+                        answer = answerParts.join('|');
+                    }
+                    shown = answer;
                     break;
                 case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
                 case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
@@ -260,13 +306,15 @@ function LEMval(alias)
                 case 'I': //Language Question
                 case '|': //File Upload
                 case 'X': //BOILERPLATE QUESTION
-                    displayValue = value; // what about "no answer"?
+                    shown = value; // what about "no answer"?
                     break;
             }
         }
-            return htmlspecialchars_decode(displayValue);
-        case 'qid':
-            return attr.qid;
+            return htmlspecialchars_decode(shown);
+        case 'gid':
+            return attr.gid;
+        case 'grelevance':
+            return attr.grelevance;
         case 'mandatory':
             return attr.mandatory;
         case 'qid':
@@ -277,20 +325,59 @@ function LEMval(alias)
             return attr.readWrite;
         case 'relevance':
             return htmlspecialchars_decode(attr.relevance);
-        case 'relevanceNum':
-            return attr.qid;
-        case 'relevanceStatus':
-            return document.getElementById('relevance' + attr.qid).value;
+        case 'sgqa':
+            return attr.sgqa;
         case 'type':
             return attr.type;
+        case 'gseq':
+            return attr.gseq;
+        case 'qseq':
+            return attr.qseq;
+        case 'jsName':
+            return whichJsName;
         case 'code':
-        case 'codeValue':
         case 'NAOK':
+        case 'value':
+        case 'valueNAOK':
         {
-            value = htmlspecialchars_decode(document.getElementById(attr.jsName).value);
+            value = htmlspecialchars_decode(document.getElementById(whichJsName).value);
             if (value === '') {
                 return '';
             }
+
+            if (suffix == 'value' || suffix == 'valueNAOK') {
+                // if in assessment mode, this returns the assessment value
+                // in non-assessment mode, this is identical to .code
+                switch (attr.type) {
+                    case '!': //List - dropdown
+                    case 'L': //LIST drop-down/radio-button list
+                    case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                    case 'H': //ARRAY (Flexible) - Column Format
+                    case 'F': //ARRAY (Flexible) - Row Format
+                    case 'R': //RANKING STYLE
+                        which_ans = '0~' + value;
+                        if (typeof attr.answers[which_ans] === 'undefined') {
+                            value = '';
+                        }
+                        else {
+                            answerParts = attr.answers[which_ans].split('|');
+                            value = answerParts[0];
+                        }
+                        break;
+                    case '1': //Array (Flexible Labels) dual scale  // need scale
+                        prefix = (attr.jsName.match(/#1$/)) ? '1' : '0';
+                        which_ans = prefix + '~' + value;
+                        if (typeof attr.answers[which_ans] === 'undefined') {
+                            value = '';
+                        }
+                        else {
+                            answerParts = attr.answers[which_ans].split('|');
+                            value = answerParts[0];
+                        }
+                        break;
+                }
+            }
+
             if (isNaN(value)) {
                 if (value==='false') {
                     return '';  // so Boolean operations will treat it as false. In JavaScript, Boolean("false") is true since "false" is not a zero-length string
@@ -306,7 +393,7 @@ function LEMval(alias)
     }
 }
 
-/* 
+/*
  * Remove HTML and PHP tags from string
  */
 function LEMstrip_tags(htmlString)
@@ -383,13 +470,11 @@ function LEManyNA()
         }
         jsName = LEMalias2varName[arg];
         if (typeof LEMvarNameAttr[jsName] === 'undefined') {
-            continue;   // default is OK (e.g. for questions with dot notation suffix
+            continue;   // default is OK (e.g. for questions with dot notation suffix)
         }
         attr = LEMvarNameAttr[jsName];
-        if (attr.qid!='') {
-            if (document.getElementById('relevance' + attr.qid).value!=='1'){
-                return true;    // means that the question is not relevant
-            }
+        if (!LEMval(attr.sgqa + '.relevanceStatus')) {
+            return true;
         }
     }
     return false;
@@ -402,59 +487,18 @@ function  LEMsetTabIndexes()
 {
     if (typeof tabIndexesSet == 'undefined') {
         $(':input[type!=hidden][id!=runonce]').each(function(index){
-            $(this).attr('tabindex',index);
+            if (index==0) {
+                $(this).focus();    // focus on first active element on page
+            }
             $(this).bind('keydown',function(e) {
                 if (e.keyCode == 9) {
                     ExprMgr_process_relevance_and_tailoring(e.type);
-                    LEMmoveNextTabIndex(e.shiftKey);
-                    e.preventDefault();
-                    return false;
+                    return true;
                 }
+                return true;
             })
         })	// MUST DO THIS FIRST
         tabIndexesSet = true;
-        $('[tabindex=0]').focus();
-    }
-}
-
-/**
- * TAB or SHIFT-TAB to the next (prev) relevant form element.
- */
-function LEMmoveNextTabIndex(prev)
-{
-	var currentIndex = document.activeElement.tabIndex;
-    var els, el;
-    try {
-        if (prev) {
-            els= $('div[id^=question]').has('[tabindex]:lt(' + document.activeElement.tabIndex + ')').has('input[id^=display][value=on]').find('[tabindex]').add('input[type=button]:enabled,input[type=submit]:enabled').add('button[type=button]:enabled,button[type=submit]:enabled').toArray();
-            for (i=els.length-1;i>=0;--i) {
-                el = els[i];
-                if (el.tabIndex < currentIndex) {
-                    $(el).focus();
-                    target_tabIndex =  el.tabIndex;
-                    return;
-                }
-            }
-            $('[tabindex=' + els[els.length-1].tabIndex + ']').focus();
-            return;
-        }
-        else {
-            els= $('div[id^=question]').has('[tabindex]:gt(' + document.activeElement.tabIndex + ')').has('input[id^=display][value=on]').find('[tabindex]').add('input[type=button]:enabled,input[type=submit]:enabled').add('button[type=button]:enabled,button[type=submit]:enabled').toArray();
-            for (i=0;i<els.length;++i) {
-                el = els[i];
-                if (el.tabIndex > currentIndex) {
-                    $(el).focus();
-                    target_tabIndex =  el.tabIndex;
-                    return;
-                }
-            }
-            // if no match, wrap around to beginnning
-            $('[tabindex=0]').focus();
-            target_tabIndex =  0;
-            return;
-        }
-    } catch (e)  {
-        return;
     }
 }
 
