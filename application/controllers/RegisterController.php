@@ -21,55 +21,34 @@
   * @version $Id$
   * @access public
   */
- class register extends CAction {
+ class RegisterController extends LSYii_Controller {
 
-	/**
-	 * register::__construct()
-	 * Constructor
-	 * @return
-	 */
-	 public function run()
+    function actionAjaxregisterform($surveyid)
     {
-    	$actions = array_keys($_GET);
-    	$_GET['method'] = $action = (!empty($actions[0])) ? $actions[0] : '';
-    	Yii::app()->loadHelper('database');
-    	Yii::app()->loadHelper('replacements');
-    	//Yii::app();
-    	//$this->getController();
-
-    	if(!empty($action))
-    	{
-    		$this->$action($_GET[$action]);
-    	}
-    	else
-    	{
-    		$this->index();
-    	}
-    }
-    function ajaxregisterform($surveyid)
-    {
+        Yii::app()->loadHelper('database');
+        Yii::app()->loadHelper('replacements');
         $redata = compact(array_keys(get_defined_vars()));
         $thistpl = Yii::app()->getConfig("standardtemplaterootdir").'/default';
         $surveyid = sanitize_int($surveyid);
         $squery = "SELECT a.expires, a.startdate
                       FROM {{surveys}} AS a
-                      WHERE a.sid = $surveyid ";
-
-
+                      WHERE a.sid = $surveyid "; 
+                     
+                                            
         $sresult = db_execute_assoc($squery) or show_error("Couldn't execute $squery");
-
-
+        
+            
         $row = $sresult->read();
-
+        
         $data['sid'] = $surveyid;
         $data['startdate'] = $row['startdate'];
         $data['enddate'] = $row['expires'];
-
+        
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
         Yii::import('application.libraries.Limesurvey_lang');
-			$clang = new Limesurvey_lang(array('langcode' => $baselang));
+		Yii::app()->lang = new Limesurvey_lang(array('langcode' => $baselang));
         echo templatereplace(file_get_contents("$thistpl/register.pstpl"),array(),$redata,'register.php',false,NULL,$data);
-
+        
     }
 
     /**
@@ -77,11 +56,15 @@
      * Process register form data and take appropriate action
      * @return
      */
-    function index()
+    function actionIndex($surveyid = null)
     {
-
-        $surveyid = CHttpRequest::getPost('sid');
+        Yii::app()->loadHelper('database');
+        Yii::app()->loadHelper('replacements');
         $postlang = CHttpRequest::getPost('lang');
+        if($surveyid == null)
+        {
+            $surveyid = CHttpRequest::getPost('sid');
+        }
         if (!$surveyid)
         {
             Yii::app()->request->redirect(Yii::app()->baseUrl);
@@ -93,28 +76,26 @@
         {
             $usrow = $usresult->read();
             $stg_SessionName=$usrow['stg_value'];
-            CHttpSession::setSessionName("$stg_SessionName-runtime-$surveyid");
+            Yii::app()->session->setSessionName("$stg_SessionName-runtime-$surveyid");
         }
         else
         {
-            CHttpSession::setSessionName("LimeSurveyRuntime-$surveyid");
+            Yii::app()->setSessionName("LimeSurveyRuntime-$surveyid");
         }
 
-		CHttpSession::setCookieParams(array(0, Yii::app()->getConfig('relativeurl').'/'));
+		Yii::app()->session->setCookieParams(array(0, Yii::app()->getConfig('relativeurl').'/'));
 
         // Get passed language from form, so that we dont loose this!
         if (!isset($postlang) || $postlang == "" || !$postlang )
         {
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
-            //$this->load->library('Limesurvey_lang',array($baselang));
             Yii::import('application.libraries.Limesurvey_lang');
-			$clang = new Limesurvey_lang(array('langcode' => $baselang));
-            //$clang = $this->limesurvey_lang;
+			Yii::app()->lang = new Limesurvey_lang(array('langcode' => $baselang));
+            $clang = Yii::app()->lang;
         } else {
-            //$this->load->library('Limesurvey_lang',array($postlang));
-            //$clang = $this->limesurvey_lang;
             Yii::import('application.libraries.Limesurvey_lang');
-			$clang = new Limesurvey_lang(array('langcode' => $postlang));
+			Yii::app()->lang = new Limesurvey_lang(array('langcode' => $postlang));
+            $clang = Yii::app()->lang;
             $baselang = $postlang;
         }
 
@@ -122,7 +103,7 @@
 
         $register_errormsg = "";
         // Check the security question's answer
-    if (function_exists("ImageCreate") && captcha_enabled('registrationscreen',$thissurvey['usecaptcha']) )
+        if (function_exists("ImageCreate") && captcha_enabled('registrationscreen',$thissurvey['usecaptcha']) )
         {
             if (!isset($_POST['loadsecurity']) ||
             !isset(Yii::app()->session['secanswer']) ||
@@ -139,9 +120,9 @@
         }
         if ($register_errormsg != "")
         {
-            Yii::app()->request->redirect($surveyid);
+            Yii::app()->request->redirect(Yii::app()->createUrl('survey/index/sid/'.$surveyid));
         }
-
+        
         //$dbprefix = $this->db->dbprefix;
         //Check if this email already exists in token database
         $query = "SELECT email FROM {{tokens_$surveyid}}\n"
@@ -150,7 +131,7 @@
         if (($result->count()) > 0)
         {
             $register_errormsg=$clang->gT("The email you used has already been registered.");
-            Yii::app()->request->redirect($surveyid);
+            Yii::app()->request->redirect(Yii::app()->createUrl('survey/index/sid/'.$surveyid));
             //include "index.php";
             //exit;
         }
@@ -185,26 +166,36 @@
         $postfirstname=sanitize_xss_string(strip_tags(CHttpRequest::getPost('register_firstname')));
         $postlastname=sanitize_xss_string(strip_tags(CHttpRequest::getPost('register_lastname')));
         $starttime = sanitize_xss_string(CHttpRequest::getPost('startdate'));
-        $endtime = sanitize_xss_string(CHttpRequest::getPost('enddate'));
+        $endtime = sanitize_xss_string(CHttpRequest::getPost('enddate'));        
         /*$postattribute1=sanitize_xss_string(strip_tags(returnglobal('register_attribute1')));
          $postattribute2=sanitize_xss_string(strip_tags(returnglobal('register_attribute2')));   */
 
         //Insert new entry into tokens db
         $query = "INSERT INTO {{tokens_$surveyid}}\n"
-        . "(firstname, lastname, email, emailstatus, token";
-
+        . "(firstname, lastname, email, emailstatus, token"; 
+        
         if ($starttime && $endtime)
-        $query .= ", validfrom, validuntil";
-
-        $query .=")\n"
+        $query .= ", validfrom, validuntil"; 
+        
+        $query .=")\n"      
         . "VALUES ('$postfirstname', '$postlastname', '".CHttpRequest::getPost('register_email')."', 'OK', '$newtoken'";
-
+        
         if ($starttime && $endtime)
         $query .= ",$starttime,$endtime";
-
+        
         $query .=")";
         $result = db_execute_assoc($query);
-        $tid = Yii::app()->db->getLastInsertID();
+        /**
+        $result = $connect->Execute($query, array($postfirstname,
+        $postlastname,
+        returnglobal('register_email'),
+                                                  'OK',
+        $newtoken)
+
+        //                             $postattribute1,   $postattribute2)
+        ) or safe_die ($query."<br />".$connect->ErrorMsg());  //Checked - According to adodb docs the bound variables are quoted automatically
+        */
+        $tid = Yii::app()->db->getLastInsertID();; //$connect->Insert_ID("{$dbprefix}tokens_$surveyid","tid");
 
 
         $fieldsarray["{ADMINNAME}"]=$thissurvey['adminname'];
@@ -224,9 +215,9 @@
         if (getEmailFormat($surveyid) == 'html')
         {
             $useHtmlEmail = true;
-            $surveylink = $this->getController()->createUrl(''.$surveyid.'/lang-'.$baselang.'/tk-'.$newtoken);
-            $optoutlink = $this->getController()->createUrl('optout/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
-            $optinlink = $this->getController()->createUrl('optin/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
+            $surveylink = $this->createUrl(''.$surveyid.'/lang-'.$baselang.'/tk-'.$newtoken);
+            $optoutlink = $this->createUrl('optout/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
+            $optinlink = $this->createUrl('optin/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
             $fieldsarray["{SURVEYURL}"]="<a href='$surveylink'>".$surveylink."</a>";
             $fieldsarray["{OPTOUTURL}"]="<a href='$optoutlink'>".$optoutlink."</a>";
             $fieldsarray["{OPTINURL}"]="<a href='$optinlink'>".$optinlink."</a>";
@@ -234,16 +225,16 @@
         else
         {
             $useHtmlEmail = false;
-            $fieldsarray["{SURVEYURL}"]= $this->getController()->createUrl(''.$surveyid.'/lang-'.$baselang.'/tk-'.$newtoken);
-            $fieldsarray["{OPTOUTURL}"]= $this->getController()->createUrl('optout/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
-            $fieldsarray["{OPTINURL}"]= $this->getController()->createUrl('optin/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
+            $fieldsarray["{SURVEYURL}"]= $this->createUrl(''.$surveyid.'/lang-'.$baselang.'/tk-'.$newtoken);
+            $fieldsarray["{OPTOUTURL}"]= $this->createUrl('optout/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
+            $fieldsarray["{OPTINURL}"]= $this->createUrl('optin/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
         }
 
         $message=ReplaceFields($message, $fieldsarray);
         $subject=ReplaceFields($subject, $fieldsarray);
 
-        $html=""; //Set variable
-					$sitename =  Yii::app()->getConfig('sitename');
+        $html = ""; //Set variable
+		$sitename =  Yii::app()->getConfig('sitename');
 
         if (SendEmailMessage($message, $subject, CHttpRequest::getPost('register_email'), $from, $sitename,$useHtmlEmail,getBounceEmail($surveyid)))
         {

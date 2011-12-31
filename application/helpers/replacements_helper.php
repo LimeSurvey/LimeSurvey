@@ -26,7 +26,7 @@
 * @return string  Text with replaced strings
 */
 function templatereplace($line, $replacements=array(),&$redata=array(), $debugSrc='Unspecified', $anonymized=false, $questionNum=NULL, $registerdata=array())
-{
+{   
     /*
     global $clienttoken,$token,$sitename,$move,$showXquestions,$showqnumcode,$questioncode,$register_errormsg;
     global $s_lang,$errormsg,$saved_id, $totalBoilerplatequestions, $relativeurl, $languagechanger,$captchapath,$loadname;
@@ -103,7 +103,6 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
     {
         $line = file_get_contents($line);
     }
-
 
     $clang = Yii::app()->lang;
 
@@ -545,7 +544,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
         else
             $tokensid = $registerdata['sid'];
 
-		$_registerform = "<form method='post' action='".Yii::app()->createUrl('/register/index')."'>\n";
+		$_registerform = "<form method='post' action='".Yii::app()->createUrl('/register/index/surveyid/'.$tokensid)."'>\n";
 
         if (!isset($_REQUEST['lang']))
         {

@@ -202,6 +202,7 @@ class SurveyAction extends CAction {
 
 
         //CHECK FOR REQUIRED INFORMATION (sid)
+
         if (!$surveyid)
         {
             $clang = $this->_loadLimesurveyLang($baselang);
@@ -310,7 +311,7 @@ class SurveyAction extends CAction {
 
                 $.ajax({
                   type: "GET",
-                  url: "'.$this->getController()->createUrl("register/ajaxregisterform").'/" + surveyid,
+                  url: "'.$this->getController()->createUrl("register/ajaxregisterform/surveyid").'/" + surveyid,
                 }).done(function(msg) {
                   document.getElementById("regform").innerHTML = msg;
                 });
@@ -342,7 +343,7 @@ class SurveyAction extends CAction {
 
         //SEE IF SURVEY USES TOKENS AND GROUP TOKENS
         $i = 0; //$tokensexist = 0;
-        if ($surveyExists == 1 && tableExists('tokens_'.$thissurvey['sid']))
+        if ($surveyExists == 1 && Yii::app()->db->schema->getTable('{{tokens_'.$thissurvey['sid'].'}}') != null)
         {
             $tokensexist = 1;
 

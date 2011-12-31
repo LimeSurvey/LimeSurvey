@@ -12,7 +12,7 @@
 			<strong><?php echo $clang->gT("Survey URL") ." (".getLanguageNameFromCode($surveyinfo['language'],false)."):";?></strong>
 		</td>
 		<td align='left'>
-		<?php $tmp_url = $this->createAbsoluteUrl("/admin/survey/sa/view/surveyid/{$surveyinfo['sid']}");
+		<?php $tmp_url = $this->createAbsoluteUrl("/survey/index/sid/{$surveyinfo['sid']}");
         echo "<a href='{$tmp_url}/lang/{$surveyinfo['language']}' target='_blank'>{$tmp_url}/lang/{$surveyinfo['language']}</a>";
         foreach ($aAdditionalLanguages as $langname)
         {

@@ -13,7 +13,7 @@
  *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
  */
 
-class verification extends CController
+class VerificationController extends LSYii_Controller
 {
 /**
 * the Verification class, this is grouped with
@@ -106,7 +106,7 @@ class verification extends CController
         ImageDestroy($im);
 
         // Add the answer to the session
-        $_SESSION['secanswer'] = $num1+$num2;
+        Yii::app()->session['secanswer'] = $num1+$num2;
     }
 }
 
