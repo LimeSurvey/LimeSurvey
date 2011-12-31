@@ -554,7 +554,7 @@ function gettemplatelist()
 function getQuestions($surveyid,$gid,$selectedqid)
 {
 	$clang = Yii::app()->lang;
-    $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+    $s_lang = Survey::model()->findByPk($surveyid)->language;
 	$qrows = Questions::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang, 'parent_qid' => 0));
 
     if (!isset($questionselecter)) {$questionselecter="";}
@@ -599,7 +599,7 @@ function getGidPrevious($surveyid, $gid)
     $clang = Yii::app()->lang;
 
     if (!$surveyid) {$surveyid=returnglobal('sid');}
-    $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+    $s_lang = Survey::model()->findByPk($surveyid)->language;
     $qresult = Groups::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang)); //checked
 
     $i = 0;
@@ -628,7 +628,7 @@ function getGidPrevious($surveyid, $gid)
 function getQidPrevious($surveyid, $gid, $qid)
 {
     $clang = Yii::app()->lang;
-    $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+    $s_lang = Survey::model()->findByPk($surveyid)->language;
 	$qrows = Questions::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $s_lang));
 
     $i = 0;
@@ -662,7 +662,7 @@ function getGidNext($surveyid, $gid)
 {
     $clang = Yii::app()->lang;
     if (!$surveyid) {$surveyid=returnglobal('sid');}
-    $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+    $s_lang = Survey::model()->findByPk($surveyid)->language;
 
     //$gquery = "SELECT gid FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
 
@@ -697,7 +697,7 @@ function getGidNext($surveyid, $gid)
 function getQidNext($surveyid, $gid, $qid)
 {
     $clang = Yii::app()->lang;
-    $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+    $s_lang = Survey::model()->findByPk($surveyid)->language;
 	$qrows = Questions::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $s_lang, 'parent_qid' => 0));
 
 
@@ -799,7 +799,7 @@ function getGroupSum($surveyid, $lang)
 */
 function getQuestionSum($surveyid, $groupid)
 {
-    $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+    $s_lang = Survey::model()->findByPk($surveyid)->language;
     //$condn = "WHERE gid=$groupid and sid=$surveyid AND language='{$s_lang}'"; //Getting a count of questions for this survey
     $condn = array(
     'gid' => $groupid,
@@ -820,7 +820,7 @@ function getQuestionSum($surveyid, $groupid)
 */
 function getMaxgrouporder($surveyid)
 {
-    $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+    $s_lang = Survey::model()->findByPk($surveyid)->language;
 
     //$max_sql = "SELECT max( group_order ) AS max FROM ".db_table_name('groups')." WHERE sid =$surveyid AND language='{$s_lang}'" ;
     $query = Groups::model()->find(array('order' => 'group_order desc'));
@@ -844,7 +844,7 @@ function getMaxgrouporder($surveyid)
 function getGroupOrder($surveyid,$gid)
 {
 
-    $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+    $s_lang = Survey::model()->findByPk($surveyid)->language;
 
     //$grporder_sql = "SELECT group_order FROM ".db_table_name('groups')." WHERE sid =$surveyid AND language='{$s_lang}' AND gid=$gid" ;
     $grporder_result = Groups::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang)); //Checked
@@ -864,7 +864,7 @@ function getGroupOrder($surveyid,$gid)
 function getMaxquestionorder($gid,$surveyid)
 {
     $gid=sanitize_int($gid);
-    $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+    $s_lang = Survey::model()->findByPk($surveyid)->language;
     $max_sql = "SELECT max( question_order ) AS max FROM {{questions}} WHERE gid='$gid' AND language='$s_lang'";
 
     $max_result = Yii::app()->db->createCommand($max_sql)->query(); //Checked
@@ -1221,7 +1221,7 @@ function getgrouplist($gid,$surveyid)
     $gid=sanitize_int($gid);
     $surveyid=sanitize_int($surveyid);
     if (!$surveyid) {$surveyid=returnglobal('sid');}
-    $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+    $s_lang = Survey::model()->findByPk($surveyid)->language;
 
     $gidquery = "SELECT gid, group_name FROM {{groups}} WHERE sid='{$surveyid}' AND  language='{$s_lang}' ORDER BY group_order";
     $gidresult = Yii::app()->db->createCommand($gidquery)->query(); //Checked
@@ -1245,7 +1245,7 @@ function getgrouplist2($gid,$surveyid)
     //$clang = Yii::app()->lang;
     $groupselecter = "";
     if (!$surveyid) {$surveyid=returnglobal('sid');}
-    $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+    $s_lang = Survey::model()->findByPk($surveyid)->language;
     //$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
     $gidresult = Groups::model()->getGroupAndID($surveyid,$s_lang) or safe_die("Plain old did not work!");   //Checked
 
@@ -1272,7 +1272,7 @@ function getgrouplist3($gid,$surveyid)
 
     if (!$surveyid) {$surveyid=returnglobal('sid');}
     $groupselecter = "";
-    $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+    $s_lang = Survey::model()->findByPk($surveyid)->language;
 
 
     //$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
@@ -1426,7 +1426,7 @@ function getSurveyInfo($surveyid, $languagecode='')
     // if no language code is set then get the base language one
     if (!isset($languagecode) || $languagecode=='')
     {
-        $languagecode=GetBaseLanguageFromSurveyID($surveyid);;
+        $languagecode=Survey::model()->findByPk($surveyid)->language;;
     }
 
     //$query="SELECT * FROM ".db_table_name('surveys').",".db_table_name('surveys_languagesettings')." WHERE sid=$surveyid and surveyls_survey_id=$surveyid and surveyls_language='$languagecode'";
@@ -1568,7 +1568,7 @@ function StandardSort($a, $b)
 function fixsortorderAnswers($qid,$surveyid=null) //Function rewrites the sortorder for a group of answers
 {
     $qid=sanitize_int($qid);
-    $baselang = GetBaseLanguageFromSurveyID($surveyid);
+    $baselang = Survey::model()->findByPk($surveyid)->language;
 
     Answers::model()->updateSortOrder($qid,$baselang);
 }
@@ -1583,7 +1583,7 @@ function fixsortorderQuestions($groupid, $surveyid) //Function rewrites the sort
 {
     $gid = sanitize_int($groupid);
     $surveyid = sanitize_int($surveyid);
-    $baselang = GetBaseLanguageFromSurveyID($surveyid);
+    $baselang = Survey::model()->findByPk($surveyid)->language;
 
     $questions = Questions::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $baselang));
 	$p = 0;
@@ -1602,14 +1602,14 @@ function shiftorderQuestions($sid,$gid,$shiftvalue) //Function shifts the sortor
     $gid=sanitize_int($gid);
     $shiftvalue=sanitize_int($shiftvalue);
 
-    $baselang = GetBaseLanguageFromSurveyID($sid);
+    $baselang = Survey::model()->findByPk($sid)->language;
 
     Questions::model()->updateQuestionOrder($gid,$baselang,$shiftvalue);
 }
 
 function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for groups
 {
-    $baselang = GetBaseLanguageFromSurveyID($surveyid);
+    $baselang = Survey::model()->findByPk($surveyid)->language;
     Groups::model()->updateGroupOrder($surveyid,$baselang);
 }
 
@@ -1728,7 +1728,7 @@ function getsidgidqidaidtype($fieldcode)
         $aRef['gid']=$fgid;
         $aRef['qid']=sanitize_int($fqid);
 
-        $s_lang = GetBaseLanguageFromSurveyID($fsid);
+        $s_lang = Survey::model()->findByPk($fsid)->language;
         $fieldtoselect = array('type');
         $condition = "qid = ".$fqid." AND language='".$s_lang."'";
 
@@ -1766,7 +1766,7 @@ function getextendedanswer($surveyid, $action, $fieldcode, $value, $format='')
 	$clang = Yii::app()->getController()->lang;
 
     // use Survey base language if s_lang isn't set in _SESSION (when browsing answers)
-    $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+    $s_lang = Survey::model()->findByPk($surveyid)->language;
     if  (!isset($action) || (isset($action) && $action!='browse') || $action == NULL )
     {
         if (Yii::app()->session['s_lang']) $s_lang = Yii::app()->session['s_lang'];  //This one does not work in admin mode when you browse a particular answer
@@ -2375,8 +2375,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         $conditiontoselect = array(
                         'qid' => $arow['qid'],
                         'scale_id' => 0,
-                        'language' => GetBaseLanguageFromSurveyID($surveyid)
-                        ); //"WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'";
+                        'language' => Survey::model()->findByPk($surveyid)->language
+                        ); //"WHERE qid={$arow['qid']} AND scale_id=0 AND language='".Survey::model()->findByPk($surveyid)->language."'";
                         $data = Defaultvalues::model()->findByAttributes($conditiontoselect);
                         $data  = $data->attributes;
                         $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];
@@ -2431,11 +2431,11 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                             {
                                 if ($arow['same_default'])
                                 {
-                                    //$conditiontoselect = "WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'";
+                                    //$conditiontoselect = "WHERE qid={$arow['qid']} AND scale_id=0 AND language='".Survey::model()->findByPk($surveyid)->language."'";
                                     $conditiontoselect = array(
                                     'qid' => $arow['qid'],
                                     'scale_id' => 0,
-                                    'language' => GetBaseLanguageFromSurveyID($surveyid)
+                                    'language' => Survey::model()->findByPk($surveyid)->language
                                     );
                                     $data = Defaultvalues::model()->findByAttributes($conditiontoselect);
                                     $data  = $data->attributes;
@@ -2670,7 +2670,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
                         if ($arow['same_default'])
                         {
-                            $conditiontoselect = "sqid = '{$abrow['qid']}' AND qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'";
+                            $conditiontoselect = "sqid = '{$abrow['qid']}' AND qid={$arow['qid']} AND scale_id=0 AND language='".Survey::model()->findByPk($surveyid)->language."'";
 
                             $data = Defaultvalues::model()->find($conditiontoselect);
                             $data  = $data->attributes;
@@ -2879,63 +2879,27 @@ function getSavedCount($surveyid)
 }
 
 /**
-* Returns the base language from a survey id
-*
-* @param int survey id
-*/
+ * Returns the base language from a survey id
+ *
+ * @deprecated Use Survey::model()->findByPk($surveyid)->language
+ * @param int $surveyid
+ * @return string
+ */
 function GetBaseLanguageFromSurveyID($surveyid)
 {
-    //if(empty($surveyid)) var_dump(debug_backtrace());
-    static $cache = array();
-    $surveyid=(int)($surveyid);
-    if (!isset($cache[$surveyid])) {
-
-        $condition = array('sid' => $surveyid);//"sid=$surveyid";
-
-        $surveylanguage = Survey::model()->findByPk($surveyid);//("SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";)
-
-		/*if (is_null($surveylanguage))
-			die(var_dump(debug_backtrace()));*/
-        $surveylanguage = $surveylanguage['attributes']; //Checked)
-
-        if (!isset($surveylanguage['language']) || is_null($surveylanguage))
-        {
-            $surveylanguage='en';
-        }
-        else
-        {
-            $surveylanguage = $surveylanguage['language'];
-        }
-        $cache[$surveyid] = $surveylanguage;
-    } else {
-        $surveylanguage = $cache[$surveyid];
-    }
-    return $surveylanguage;
+    return Survey::model()->findByPk($surveyid)->language;
 }
 
-
+/**
+ * Returns the additional languages from a survey id
+ *
+ * @deprecated Use Survey::model()->findByPk($surveyid)->additionalLanguages
+ * @param int $surveyid
+ * @return array
+ */
 function GetAdditionalLanguagesFromSurveyID($surveyid)
 {
-    static $cache = array();
-    if (!isset($cache[$surveyid])) {
-        $result = Survey::model()->findByAttributes(array('sid' => (int) $surveyid));
-
-    	$additional_languages = $result['attributes'];
-        //$query = "SELECT additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
-        $additional_languages = $additional_languages['additional_languages'];
-        if (trim($additional_languages)=='')
-        {
-            $additional_languages = array();
-        }
-        else
-        {
-            $additional_languages = explode(" ", trim($additional_languages));
-        }
-        $cache[$surveyid] = $additional_languages;
-    } else {
-        $additional_languages = $cache[$surveyid];
-    }
-    return $additional_languages;
+    return Survey::model()->findByPk($surveyid)->additionalLanguages;
 }
 
 
@@ -3038,7 +3002,7 @@ function getQuestionAttributeValues($qid, $type='')
     $type=$row['type'];
     $surveyid=$row['sid'];
 
-    $aLanguages=array_merge(array(GetBaseLanguageFromSurveyID($surveyid)),GetAdditionalLanguagesFromSurveyID($surveyid));
+    $aLanguages=array_merge(array(Survey::model()->findByPk($surveyid)->language),Survey::model()->findByPk($surveyid)->additionalLanguages);
 
 
     //Now read available attributes, make sure we do this only once per request to save
@@ -4863,8 +4827,8 @@ function languageDropdown($surveyid,$selected)
 {
 
     $homeurl = Yii::app()->getConfig('homeurl');
-    $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-    $baselang = GetBaseLanguageFromSurveyID($surveyid);
+    $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+    $baselang = Survey::model()->findByPk($surveyid)->language;
     array_unshift($slangs,$baselang);
     $html = "<select class='listboxquestions' name='langselect' onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n";
 
@@ -4880,8 +4844,8 @@ function languageDropdown($surveyid,$selected)
 
 function languageDropdownClean($surveyid,$selected)
 {
-    $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-    $baselang = GetBaseLanguageFromSurveyID($surveyid);
+    $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+    $baselang = Survey::model()->findByPk($surveyid)->language;
     array_unshift($slangs,$baselang);
     $html = "<select class='listboxquestions' id='language' name='language'>\n";
     foreach ($slangs as $lang)
@@ -5882,7 +5846,7 @@ function SSL_mode()
 function get_quotaCompletedCount($iSurveyId, $quotaid)
 {
     $result = "N/A";
-    $quota_info = getQuotaInformation($iSurveyId, GetBaseLanguageFromSurveyID($iSurveyId), $quotaid);
+    $quota_info = getQuotaInformation($iSurveyId, Survey::model()->findByPk($iSurveyId)->language, $quotaid);
     $quota = $quota_info[0];
 
     if (Yii::app()->db->schema->getTable('{{survey_' . $surveyid . '}}') &&
@@ -6167,7 +6131,7 @@ function vIncludeKeypad()
 function getQuotaInformation($surveyid,$language,$quotaid='all')
 {
     global $clienttoken;
-    $baselang = GetBaseLanguageFromSurveyID($surveyid);
+    $baselang = Survey::model()->findByPk($surveyid)->language;
 
     $result = Quota::model()->with(array('languagesettings' => array('condition' => "quotals_language='$language'")))->findAllByAttributes(array('sid' => $surveyid, 'id' =>$quotaid));
     $quota_info = array();
@@ -6976,7 +6940,7 @@ function CleanLanguagesFromSurvey($sid, $availlangs)
     Yii::app()->loadHelper('database');
     //$clang = Yii::app()->lang;
     $sid=sanitize_int($sid);
-    $baselang = GetBaseLanguageFromSurveyID($sid);
+    $baselang = Survey::model()->findByPk($sid)->language;
 
     if (!empty($availlangs) && $availlangs != " ")
     {
@@ -7033,10 +6997,10 @@ function FixLanguageConsistency($sid, $availlangs='')
         $langs = explode(" ",$availlangs);
         if($langs[count($langs)-1] == "") array_pop($langs);
     } else {
-        $langs=GetAdditionalLanguagesFromSurveyID($sid);
+        $langs=Survey::model()->findByPk($sid)->additionalLanguages;
     }
 
-    $baselang = GetBaseLanguageFromSurveyID($sid);
+    $baselang = Survey::model()->findByPk($sid)->language;
     $sid=sanitize_int($sid);
     $query = "SELECT * FROM {{groups}} WHERE sid='{$sid}' AND language='{$baselang}'  ORDER BY group_order";
     $result = Yii::app()->db->createCommand($query)->query();
@@ -7269,7 +7233,7 @@ function GetGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="b
     if ($depgid != "all") { $depgid = sanitize_int($depgid); $sqldepgid="AND tq.gid=$depgid";}
     if ($targgid != "all") {$targgid = sanitize_int($targgid); $sqltarggid="AND tq2.gid=$targgid";}
 
-    $baselang = GetBaseLanguageFromSurveyID($sid);
+    $baselang = Survey::model()->findByPk($sid)->language;
     $condquery = "SELECT tg.gid as depgid, tg.group_name as depgpname, "
     . "tg2.gid as targgid, tg2.group_name as targgpname, tq.qid as depqid, tc.cid FROM "
     . "{{conditions}} AS tc, "
@@ -7352,7 +7316,7 @@ function GetQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",
     $clang = Yii::app()->lang;
     $condarray = Array();
 
-    $baselang = GetBaseLanguageFromSurveyID($sid);
+    $baselang = Survey::model()->findByPk($sid)->language;
     $sqlgid="";
     $sqldepqid="";
     $sqltargqid="";
@@ -7434,7 +7398,7 @@ function checkMovequestionConstraintsForConditions($sid,$qid,$newgid="all")
         $neworder=""; // Not used in this case
     }
 
-    $baselang = GetBaseLanguageFromSurveyID($sid);
+    $baselang = Survey::model()->findByPk($sid)->language;
 
     // First look for 'my dependencies': questions on which I have set conditions
     $condquery = "SELECT tq.qid as depqid, tq.gid as depgid, tg.group_order as depgorder, "
@@ -7662,7 +7626,7 @@ function modify_database($sqlfile='', $sqlstring='')
                     $modifyoutput .=". ";
                 }
                 catch(CDbException $e)
-                {                    
+                {
                     $command=htmlspecialchars($command);
                     $modifyoutput .="<br />".sprintf($clang->gT("SQL command failed: %s"),"<span style='font-size:10px;'>".$command."</span>","<span style='color:#ee0000;font-size:10px;'></span><br/>");
                     $success = false;
@@ -7732,7 +7696,7 @@ function getHeader($meta = false)
     }
     elseif (isset($surveyid) && $surveyid)
     {
-        $surveylanguage=GetBaseLanguageFromSurveyID($surveyid);
+        $surveylanguage=Survey::model()->findByPk($surveyid)->language;
     }
     else
     {

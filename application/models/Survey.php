@@ -1,4 +1,7 @@
-<?php if ( ! defined('BASEPATH')) die('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH'))
+    die('No direct script access allowed');
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -10,213 +13,156 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
+ * 	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
  */
+
 class Survey extends CActiveRecord
 {
-	/**
-	 * Returns the table's name
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function tableName()
-	{
-		return '{{surveys}}';
-	}
-
-	/**
-	 * Returns the table's primary key
-	 *
-	 * @access public
-	 * @return string
-	 */
-	public function primaryKey()
-	{
-		return 'sid';
-	}
-
-	/**
-	 * Return the static model for this table
-	 *
-	 * @static
-	 * @access public
-	 * @return CActiveRecord
-	 */
-	public static function model()
-	{
-		return parent::model(__CLASS__);
-	}
-
-	/**
-	 * Returns this model's relations
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function relations()
-	{
-		return array(
-			'languagesettings' => array(self::HAS_ONE, 'Surveys_languagesettings', '',
-				'on' => 't.sid = languagesettings.surveyls_survey_id AND t.language = languagesettings.surveyls_language'
-            ),
-			'owner' => array(self::BELONGS_TO, 'User', '', 'on' => 't.owner_id = owner.uid'),
-		);
-	}
-
-	/**
-	 * Returns this model's scopes
-	 *
-	 * @access public
-	 * @return array
-	 */
-	public function scopes()
-	{
-		return array(
-			'active' => array(
-				'condition' => 'active = "Y"',
-			),
-		);
-	}
-
-	/**
-	 * permission scope for this model
-	 *
-	 * @access public
-	 * @param int $loginID
-	 * @return CActiveRecord
-	 */
-	public function permission($loginID)
-	{
-		$loginID = (int) $loginID;
-		$criteria = $this->getDBCriteria();
-		$criteria->mergeWith(array(
-			'condition' => 'sid IN (SELECT sid FROM {{survey_permissions}} WHERE uid = :uid AND permission = :permission AND read_p = 1)',
-		));
-		$criteria->params[':uid'] = $loginID;
-		$criteria->params[':permission'] = 'survey';
-
-		return $this;
-	}
-
-    public function getAllRecords($condition=FALSE)
+    /**
+     * Returns the table's name
+     *
+     * @access public
+     * @return string
+     */
+    public function tableName()
     {
-		$criteria = new CDbCriteria;
-        if ($condition != FALSE)
-        {
-		    foreach ($condition as $item => $value)
-			{
-				$criteria->addCondition($item.'="'.$value.'"');
-			}
-        }
-
-		return $this->findAll($criteria);
-    }
-
-    public function getOneRecord($condition=FALSE)
-    {
-        $criteria = new CDbCriteria;
-
-        if ($condition != FALSE)
-        {
-            foreach ($condition as $item => $value)
-            {
-                $criteria->addCondition($item.'="'.$value.'"');
-            }
-        }
-
-        return $this->find($criteria);
-    }
-
-    public function getSomeRecords($fields, $condition=FALSE, $oneonly=FALSE)
-    {
-		$criteria = new CDbCriteria;
-
-        $criteria->select = $fields;
-
-        if ($condition != FALSE)
-        {
-		    foreach ($condition as $item => $value)
-			{
-				$criteria->addCondition($item.'="'.$value.'"');
-			}
-        }
-
-        if($oneonly)
-            return $this->find($criteria);
-        else
-		  return $this->findAll($criteria);
-    }
-
-    public function getDataOnSurvey($surveyid, $lang)
-    {
-        $query = "SELECT * FROM  {{surveys}} inner join {{surveys_languagesettings}} on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=".$surveyid;
-	    return Yii::app()->db->createCommand($query)->query();
+        return '{{surveys}}';
     }
 
     /**
-    * Creates a new survey - does some basic checks of the suppplied data
-    *
-    * @param string $data
-    * @return mixed
-    */
+     * Returns the table's primary key
+     *
+     * @access public
+     * @return string
+     */
+    public function primaryKey()
+    {
+        return 'sid';
+    }
+
+    /**
+     * Return the static model for this table
+     *
+     * @static
+     * @access public
+     * @return CActiveRecord
+     */
+    public static function model()
+    {
+        return parent::model(__CLASS__);
+    }
+
+    /**
+     * Returns this model's relations
+     *
+     * @access public
+     * @return array
+     */
+    public function relations()
+    {
+        return array(
+            'languagesettings' => array(self::HAS_ONE, 'Surveys_languagesettings', '',
+                'on' => 't.sid = languagesettings.surveyls_survey_id AND t.language = languagesettings.surveyls_language'
+            ),
+            'owner' => array(self::BELONGS_TO, 'User', '', 'on' => 't.owner_id = owner.uid'),
+        );
+    }
+
+    /**
+     * Returns this model's scopes
+     *
+     * @access public
+     * @return array
+     */
+    public function scopes()
+    {
+        return array(
+            'active' => array(
+                'condition' => 'active = "Y"',
+            ),
+        );
+    }
+
+    /**
+     * permission scope for this model
+     *
+     * @access public
+     * @param int $loginID
+     * @return CActiveRecord
+     */
+    public function permission($loginID)
+    {
+        $loginID = (int) $loginID;
+        $criteria = $this->getDBCriteria();
+        $criteria->mergeWith(array(
+            'condition' => 'sid IN (SELECT sid FROM {{survey_permissions}} WHERE uid = :uid AND permission = :permission AND read_p = 1)',
+        ));
+        $criteria->params[':uid'] = $loginID;
+        $criteria->params[':permission'] = 'survey';
+
+        return $this;
+    }
+
+    /**
+     * Returns additional languages formatted into a string
+     *
+     * @access public
+     * @return array
+     */
+    public function getAdditionalLanguages()
+    {
+        return explode(' ', trim($this->additional_languages));
+    }
+
+    /**
+     * !!! Shouldn't this be moved to beforeSave?
+     * Creates a new survey - does some basic checks of the suppplied data
+     *
+     * @param string $data
+     * @return mixed
+     */
     public function insertNewSurvey($data)
     {
         do
         {
-            if(isset($data['wishSID'])) // if wishSID is set check if it is not taken already
+            if (isset($data['wishSID'])) // if wishSID is set check if it is not taken already
             {
-                $data['sid']=$data['wishSID'];
+                $data['sid'] = $data['wishSID'];
                 unset($data['wishSID']);
             }
             else
-            {
-                $data['sid'] = sRandomChars(6,'123456789');
-            }
-            $isquery = 'SELECT sid FROM {{surveys}} WHERE sid='.$data['sid'];
-            $isresult = Yii::app()->db->createCommand($isquery)->query(); // Checked
-        }
-        while ($isresult->count()>0);
+                $data['sid'] = sRandomChars(6, '123456789');
 
-        $data['datecreated']=date("Y-m-d");
-        if (isset($data['startdate']) && trim($data['startdate'])=='')
+            $isresult = self::model()->findByPk($data['sid']);
+        }
+        while (!is_null($isresult));
+
+        $data['datecreated'] = date("Y-m-d");
+        if (isset($data['startdate']) && trim($data['startdate']) == '')
+            $data['startdate'] = null;
+
+        if (isset($data['expires']) && trim($data['expires']) == '')
+            $data['expires'] = null;
+
+
+        try
         {
-            $data['startdate']=null;
-        }
-        if (isset($data['expires']) && trim($data['expires'])=='')
+            self::model()->insert($data);
+        } catch (CDbException $e)
         {
-            $data['expires']=null;
+            return false;
         }
-
-        try {
-			Yii::app()->db->createCommand()->insert('{{surveys}}', $data);
-        } catch(CDbException $e) {
-			return false;
-        }
-		return $data['sid'];
+        return $data['sid'];
     }
 
-    public function updateSurvey($data, $condition = FALSE)
-    {
-		return Yii::app()->db->createCommand()->update($this->tableName(), $data, $condition);
-    }
-
-    public function getSurveyNames()
-    {
-        $this->db->select('surveyls_survey_id,surveyls_title');
-        $this->db->from('surveys_languagesettings');
-        $this->db->join('surveys','surveys_languagesettings.surveyls_survey_id = surveys.sid');
-        $this->db->where('owner_id',$this->session->userdata('loginID'));
-        //$this->db->where('usetokens','Y'); // Will be done later
-        $query=$this->db->get();
-        return $query->result_array();
-    }
-
-	public function getAllSurveyNames()
-    {
-        return Yii::app()->db->createCommand()->select('surveyls_survey_id,surveyls_title')->from('{{surveys_languagesettings}}')->join('{{surveys}}','{{surveys_languagesettings}}.surveyls_survey_id = {{surveys}}.sid')->queryAll();
-    }
-
+    /**
+     * !!! DOESN'T WORK !!!
+     *
+     * @access public
+     * @param int $iSurveyID
+     * @param bool @recursive
+     * @return void
+     */
     public function deleteSurvey($iSurveyID, $recursive=true)
     {
         $this->db->delete('surveys', array('sid' => $iSurveyID));
@@ -229,26 +175,25 @@ class Survey extends CActiveRecord
             $this->load->model('questions_model');
             if (tableExists("survey_{$iSurveyID}"))  //delete the survey_$iSurveyID table
             {
-                $dsresult = $this->dbforge->drop_table('survey_'.$iSurveyID) or safe_die ("Couldn't drop table survey_".$iSurveyID);
+                $dsresult = $this->dbforge->drop_table('survey_' . $iSurveyID) or safe_die("Couldn't drop table survey_" . $iSurveyID);
             }
 
             if (tableExists("survey_{$iSurveyID}_timings"))  //delete the survey_$iSurveyID_timings table
             {
-                $dsresult = $this->dbforge->drop_table('survey_'.$iSurveyID.'_timings') or safe_die ("Couldn't drop table survey_".$iSurveyID."_timings");
+                $dsresult = $this->dbforge->drop_table('survey_' . $iSurveyID . '_timings') or safe_die("Couldn't drop table survey_" . $iSurveyID . "_timings");
             }
 
             if (tableExists("tokens_$iSurveyID")) //delete the tokens_$iSurveyID table
             {
-                $dsresult = $this->dbforge->drop_table('tokens_'.$iSurveyID) or safe_die ("Couldn't drop table token_".$iSurveyID);
+                $dsresult = $this->dbforge->drop_table('tokens_' . $iSurveyID) or safe_die("Couldn't drop table token_" . $iSurveyID);
             }
 
-            $oResult=$this->questions_model->getSomeRecords(array('qid'),array('sid'=>$iSurveyID));
+            $oResult = $this->questions_model->getSomeRecords(array('qid'), array('sid' => $iSurveyID));
             foreach ($oResult->result_array() as $aRow)
             {
                 $this->db->delete('answers', array('qid' => $aRow['qid']));
                 $this->db->delete('conditions', array('qid' => $aRow['qid']));
                 $this->db->delete('question_attributes', array('qid' => $aRow['qid']));
-
             }
 
             $this->db->delete('questions', array('sid' => $iSurveyID));
@@ -258,36 +203,10 @@ class Survey extends CActiveRecord
             $this->db->delete('survey_permissions', array('sid' => $iSurveyID));
             $this->db->delete('saved_control', array('sid' => $iSurveyID));
             $this->load->model('survey_url_parameters_model');
-            $this->survey_url_parameters_model->deleteRecords(array('sid'=>$iSurveyID));
+            $this->survey_url_parameters_model->deleteRecords(array('sid' => $iSurveyID));
 
             $this->load->model('quota_model');
-            $this->quota_model->deleteQuota(array('sid'=>$iSurveyID));
+            $this->quota_model->deleteQuota(array('sid' => $iSurveyID));
         }
-
-    }
-
-    public function loadSurveys($is_superadmin)
-    {
-        $query = " SELECT a.*, c.*, u.users_name FROM {{surveys}} as a "
-            ." INNER JOIN {{surveys_languagesettings}} as c ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language ) AND surveyls_survey_id=a.sid AND surveyls_language=a.language "
-            ." INNER JOIN {{users}} as u ON (u.uid=a.owner_id) ";
-
-        if($is_superadmin != 1)
-        {
-            $query .= "WHERE a.sid in (select sid from {{survey_permissions}} WHERE uid=".$this->yii->session['loginID']." AND permission='survey' AND read_p=1) ";
-        }
-        $query .= " ORDER BY surveyls_title";
-
-        return Yii::app()->db->createCommand($query)->query();
-    }
-
-    public function getDataJoinLanguageSettings($surveyid)
-    {
-		$query = Yii::app()->db->createCommand();
-        $query->select('*');
-        $query->from('{{surveys}}');
-		$query->join('{{surveys_languagesettings}}','{{surveys_languagesettings}}.surveyls_survey_id={{surveys}}.sid and {{surveys_languagesettings}}.surveyls_language={{surveys}}.language');
-        $query->where('{{surveys}}.sid = \''.$surveyid.'\'');
-        return $query->queryRow();
     }
 }

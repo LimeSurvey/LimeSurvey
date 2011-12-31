@@ -2144,8 +2144,8 @@ function do_language($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $answerlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-    $answerlangs [] = GetBaseLanguageFromSurveyID($surveyid);
+    $answerlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+    $answerlangs [] = Survey::model()->findByPk($surveyid)->language;
     $answer = "\n\t<p class=\"question\">\n<select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"document.getElementById('lang').value=this.value; $checkconditionFunction(this.value, this.name, this.type);\">\n";
     if (!$_SESSION[$ia[1]]) {$answer .= "\t<option value=\"\" selected=\"selected\">".$clang->gT('Please choose...')."</option>\n";}
     foreach ($answerlangs as $ansrow)

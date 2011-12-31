@@ -224,7 +224,7 @@ class SurveyDao
         $intId = sanitize_int($id);
         $survey->id = $intId;
         //$clang must be set up prior to calling the createFieldMap function.
-        $lang = GetBaseLanguageFromSurveyID($intId);
+        $lang = Survey::model()->findByPk($intId)->language;
         $clang = new limesurvey_lang(array($lang));
         $survey->fieldMap = createFieldMap($id, 'full');
 

@@ -76,8 +76,8 @@ class quotas extends Survey_Common_Action
         // Set the variables in an array
         $aData['iSurveyId'] = $iSurveyId;
         $aData['clang'] = $this->getController()->lang;
-        $aData['aLangs'] = GetAdditionalLanguagesFromSurveyID($iSurveyId);
-        $aData['sBaseLang'] = GetBaseLanguageFromSurveyID($iSurveyId);
+        $aData['aLangs'] = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
+        $aData['sBaseLang'] = Survey::model()->findByPk($iSurveyId)->language;
         array_push($aData['aLangs'], $aData['sBaseLang']);
 
         $aData['action'] = $action = CHttpRequest::getParam('action');
@@ -568,7 +568,7 @@ class quotas extends Survey_Common_Action
 
         if ($aQuestionType == 'I')
         {
-            $slangs = GetAdditionalLanguagesFromSurveyID($iSurveyId);
+            $slangs = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
             array_unshift($slangs, $sBaseLang);
 
             while (list($key, $value) = each($slangs))

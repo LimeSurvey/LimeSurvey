@@ -155,8 +155,8 @@ class questiongroup extends Survey_Common_Action
             {
                 Yii::app()->loadHelper('admin/htmleditor');
                 Yii::app()->loadHelper('surveytranslator');
-                $grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-                $baselang = GetBaseLanguageFromSurveyID($surveyid);
+                $grplangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+                $baselang = Survey::model()->findByPk($surveyid)->language;
                 $grplangs[] = $baselang;
                 $grplangs = array_reverse($grplangs);
 
@@ -187,8 +187,8 @@ class questiongroup extends Survey_Common_Action
         {
             Yii::app()->loadHelper('surveytranslator');
 
-            $grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+            $grplangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+            $baselang = Survey::model()->findByPk($surveyid)->language;
 
             $grplangs[] = $baselang;
             $errorstring = '';
@@ -323,8 +323,8 @@ class questiongroup extends Survey_Common_Action
                 Yii::app()->loadHelper('admin/htmleditor');
                 Yii::app()->loadHelper('surveytranslator');
 
-                $aAdditionalLanguages = GetAdditionalLanguagesFromSurveyID($surveyid);
-                $aBaseLanguage = GetBaseLanguageFromSurveyID($surveyid);
+                $aAdditionalLanguages = Survey::model()->findByPk($surveyid)->additionalLanguages;
+                $aBaseLanguage = Survey::model()->findByPk($surveyid)->language;
 
                 $aLanguages = array_merge(array($aBaseLanguage), $aAdditionalLanguages);
 
@@ -408,8 +408,8 @@ class questiongroup extends Survey_Common_Action
         {
             Yii::app()->loadHelper('surveytranslator');
 
-            $grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+            $grplangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+            $baselang = Survey::model()->findByPk($surveyid)->language;
 
             array_push($grplangs, $baselang);
 
@@ -475,7 +475,7 @@ class questiongroup extends Survey_Common_Action
     private function _showReorderForm($iSurveyID)
     {
         // Prepare data for the view
-        $sBaseLanguage = GetBaseLanguageFromSurveyID($iSurveyID);
+        $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
 
         LimeExpressionManager::StartProcessingPage(false, true, false);
 

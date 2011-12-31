@@ -80,7 +80,7 @@ class Questions extends CActiveRecord
      */
     public static function updateSortOrder($gid, $surveyid)
     {
-        $questions = self::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => GetBaseLanguageFromSurveyID($surveyid)));
+        $questions = self::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => Survey::model()->findByPk($surveyid)->language));
         $p = 0;
         foreach ($questions as $question)
         {
@@ -105,7 +105,7 @@ class Questions extends CActiveRecord
     {
         if (is_null($sLanguage))
         {
-            $aLanguages = array_merge(array(GetBaseLanguageFromSurveyID($iSurveyID)), GetAdditionalLanguagesFromSurveyID($iSurveyID));
+            $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
         }
         else
         {

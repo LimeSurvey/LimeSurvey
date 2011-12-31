@@ -11,7 +11,7 @@
 
         <?php foreach ($grplangs as $grouplang): ?>
             <li><a href='#tab-<?php echo $grouplang; ?>'><?php echo getLanguageNameFromCode($grouplang,false); ?>
-            <?php if ($grouplang == GetBaseLanguageFromSurveyID($surveyid)): ?>
+            <?php if ($grouplang == Survey::model()->findByPk($surveyid)->language): ?>
                 <?php echo ' ('.$clang->gT("Base language").')'; ?>
             <?php endif; ?>
             </a></li>

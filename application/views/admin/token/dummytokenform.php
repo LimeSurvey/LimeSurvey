@@ -18,7 +18,7 @@
             <input type='text' maxlength='320' size='50' id='email' name='email' value="" /></li>
         </li>
         <li><label for='language'><?php $clang->eT("Language"); ?>:</label>
-            <?php echo languageDropdownClean($surveyid, GetBaseLanguageFromSurveyID($surveyid)); ?>
+            <?php echo languageDropdownClean($surveyid, Survey::model()->findByPk($surveyid)->language); ?>
         </li>
         <li><label for='usesleft'><?php $clang->eT("Uses left:"); ?></label>
             <input type='text' size='20' id='usesleft' name='usesleft' value="1" /></li>

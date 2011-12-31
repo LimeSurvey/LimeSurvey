@@ -536,7 +536,7 @@ class conditions extends Survey_Common_Action {
 			."WHERE {{questions}}.gid={{groups}}.gid "
 			."AND qid=$qid "
 			."AND parent_qid=0 "
-			."AND {{questions}}.language='".GetBaseLanguageFromSurveyID($surveyid)."'";
+			."AND {{questions}}.language='".Survey::model()->findByPk($surveyid)->language."'";
 		$result = Yii::app()->db->createCommand($query)->query() or safe_die ("Couldn't get information for question $qid<br />$query<br />");
 		foreach ($result->readAll() as $rows)
 		{
@@ -557,8 +557,8 @@ class conditions extends Survey_Common_Action {
 			."WHERE {{questions}}.gid={{groups}}.gid "
 			."AND parent_qid=0 "
 			."AND {{questions}}.sid=$surveyid "
-			."AND {{questions}}.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-			."AND {{groups}}.language='".GetBaseLanguageFromSurveyID($surveyid)."' " ;
+			."AND {{questions}}.language='".Survey::model()->findByPk($surveyid)->language."' "
+			."AND {{groups}}.language='".Survey::model()->findByPk($surveyid)->language."' " ;
 
 		$qresult = Yii::app()->db->createCommand($qquery)->query() or safe_die ("$qquery<br />");
 		$qrows = $qresult->readAll();
@@ -617,8 +617,8 @@ class conditions extends Survey_Common_Action {
 			        ."WHERE {{questions}}.gid={{groups}}.gid "
 			        ."AND parent_qid=0 "
 			        ."AND {{questions}}.qid=$ql "
-			        ."AND {{questions}}.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-			        ."AND {{groups}}.language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
+			        ."AND {{questions}}.language='".Survey::model()->findByPk($surveyid)->language."' "
+			        ."AND {{groups}}.language='".Survey::model()->findByPk($surveyid)->language."'" ;
 
 		        $result = Yii::app()->db->createCommand($query)->query() or die("Couldn't get question $qid");
 
@@ -658,8 +658,8 @@ class conditions extends Survey_Common_Action {
 			        ."WHERE q.gid=g.gid AND "
 			        ."q.parent_qid=0 AND "
 			        ."q.qid=$pq AND "
-			        ."q.language='".GetBaseLanguageFromSurveyID($surveyid)."' AND "
-			        ."g.language='".GetBaseLanguageFromSurveyID($surveyid)."'";
+			        ."q.language='".Survey::model()->findByPk($surveyid)->language."' AND "
+			        ."g.language='".Survey::model()->findByPk($surveyid)->language."'";
 
 
 		        $result = Yii::app()->db->createCommand($query)->query() or safe_die("Couldn't get postquestions $qid<br />$query<br />");
@@ -714,12 +714,12 @@ class conditions extends Survey_Common_Action {
 		            /*$aquery = "SELECT * "
 		            ."FROM {{questions}} "
 		            ."WHERE parent_qid={$rows['qid']} "
-		            ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+		            ."AND language='".Survey::model()->findByPk($surveyid)->language."' "
 		            ."ORDER BY question_order";*/
 
 		            $aresult = Questions::model()->getSomeRecords('*', array( 'and',
 			        	"parent_qid=".$rows['qid']."",
-			        	"laguage='".GetBaseLanguageFromSurveyID($surveyid)."'"
+			        	"laguage='".Survey::model()->findByPk($surveyid)->language."'"
 			        ), 'question_order ASC');
 
 		            foreach ($aresult->readAll() as $arows)
@@ -758,7 +758,7 @@ class conditions extends Survey_Common_Action {
 		                    case "H": //Array Flexible Column
 
 		                        $fresult = Answers::model()->getSomeRecords('*', array('and',
-		                        	"qid={$rows['qid']}", "language='".GetBaseLanguageFromSurveyID($surveyid)."'", 'scale_id=0'),
+		                        	"qid={$rows['qid']}", "language='".Survey::model()->findByPk($surveyid)->language."'", 'scale_id=0'),
 		                        	'sortorder, code'
 		                        );
 
@@ -807,8 +807,8 @@ class conditions extends Survey_Common_Action {
 		            $fquery = "SELECT sq.*, q.other"
 			            ." FROM {{questions sq}}, {{questions q}}"
 			            ." WHERE sq.sid=$surveyid AND sq.parent_qid=q.qid "
-			            . "AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
-			            ." AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'"
+			            . "AND q.language='".Survey::model()->findByPk($surveyid)->language."'"
+			            ." AND sq.language='".Survey::model()->findByPk($surveyid)->language."'"
 			            ." AND q.qid={$rows['qid']}
 			               AND sq.scale_id=0
 			               ORDER BY sq.question_order";
@@ -820,8 +820,8 @@ class conditions extends Survey_Common_Action {
 						FROM {{questions q}}, {{questions sq}}
 						WHERE q.sid=$surveyid
 						AND sq.parent_qid=q.qid
-						AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'
-						AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'
+						AND q.language='".Survey::model()->findByPk($surveyid)->language."'
+						AND sq.language='".Survey::model()->findByPk($surveyid)->language."'
 						AND q.qid=".$rows['qid']."
 						AND sq.scale_id=1
 						ORDER BY sq.question_order";
@@ -854,7 +854,7 @@ class conditions extends Survey_Common_Action {
 		        elseif ($rows['type'] == "1") //Multi Scale
 		        {
 		        	$aresult = Questions::model()->getSomeRecords('*', "parent_qid={$rows['qid']}" .
-		            		"AND language='".GetBaseLanguageFromSurveyID($surveyid)."'", 'question_order desc');
+		            		"AND language='".Survey::model()->findByPk($surveyid)->language."'", 'question_order desc');
 
 		            foreach ($aresult->readAll() as $arows)
 		            {
@@ -871,7 +871,7 @@ class conditions extends Survey_Common_Action {
 
 		                // first label
 		                $lresult = Answers::model()->getSomeRecords('*',
-		                	"qid={$rows['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'",
+		                	"qid={$rows['qid']} AND scale_id=0 AND language='".Survey::model()->findByPk($surveyid)->language."'",
 		                	'sortorder, answer'
 		                );
 		                foreach ($lresult->readAll() as $lrows)
@@ -881,7 +881,7 @@ class conditions extends Survey_Common_Action {
 
 		                // second label
 		               	$lresult = Answers::model()->getSomeRecords('*',
-		                	"qid={$rows['qid']} AND scale_id=1 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'",
+		                	"qid={$rows['qid']} AND scale_id=1 AND language='".Survey::model()->findByPk($surveyid)->language."'",
 		                	'sortorder, answer'
 		                );
 		                foreach ($lresult->readAll() as $lrows)
@@ -900,7 +900,7 @@ class conditions extends Survey_Common_Action {
 		        elseif ($rows['type'] == "K" ||$rows['type'] == "Q") //Multi shorttext/numerical
 		        {
 		            $aresult = Questions::model()->getSomeRecords('*', "parent_qid={$rows['qid']}" .
-		            		"AND language='".GetBaseLanguageFromSurveyID($surveyid)."'", 'question_order desc');
+		            		"AND language='".Survey::model()->findByPk($surveyid)->language."'", 'question_order desc');
 
 		            foreach ($aresult->readAll() as $arows)
 		            {
@@ -919,7 +919,7 @@ class conditions extends Survey_Common_Action {
 		        elseif ($rows['type'] == "R") //Answer Ranking
 		        {
 		            $aresult = Answers::model()->getSomeRecords('*',
-		                	"qid={$rows['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'",
+		                	"qid={$rows['qid']} AND scale_id=0 AND language='".Survey::model()->findByPk($surveyid)->language."'",
 		                	'sortorder, answer'
 	                );
 
@@ -951,7 +951,7 @@ class conditions extends Survey_Common_Action {
 		            $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
 
 		            $aresult = Questions::model()->getSomeRecords('*', "parent_qid={$rows['qid']}" .
-		            		"AND language='".GetBaseLanguageFromSurveyID($surveyid)."'", 'question_order desc');
+		            		"AND language='".Survey::model()->findByPk($surveyid)->language."'", 'question_order desc');
 
 		            foreach ($aresult->readAll() as $arows)
 		            {
@@ -1017,7 +1017,7 @@ class conditions extends Survey_Common_Action {
 		                default:
 
 		                    $aresult = Answers::model()->getSomeRecords('*',
-				                	"qid={$rows['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'",
+				                	"qid={$rows['qid']} AND scale_id=0 AND language='".Survey::model()->findByPk($surveyid)->language."'",
 				                	'sortorder, answer'
 			                );
 
@@ -1302,8 +1302,8 @@ class conditions extends Survey_Common_Action {
 			            ."WHERE {{conditions}}.cqid={{questions}}.qid "
 			            ."AND {{questions}}.gid={{groups}}.gid "
 			            ."AND {{questions}}.parent_qid=0 "
-			            ."AND {{questions}}.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-			            ."AND {{groups}}.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+			            ."AND {{questions}}.language='".Survey::model()->findByPk($surveyid)->language."' "
+			            ."AND {{groups}}.language='".Survey::model()->findByPk($surveyid)->language."' "
 			            ."AND {{conditions}}.qid=$qid "
 			            ."AND {{conditions}}.scenario={$scenarionr['scenario']}\n"
 			            ."AND {{conditions}}.cfieldname NOT LIKE '{%' \n" // avoid catching SRCtokenAttr conditions

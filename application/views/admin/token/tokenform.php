@@ -71,7 +71,7 @@ else
             }
             else
             {
-                echo languageDropdownClean($surveyid, GetBaseLanguageFromSurveyID($surveyid));
+                echo languageDropdownClean($surveyid, Survey::model()->findByPk($surveyid)->language);
             }
             ?>
         </li>

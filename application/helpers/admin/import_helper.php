@@ -211,15 +211,15 @@ function CSVImportGroup($sFullFilepath, $newsid)
 
     $aLanguagesSupported = array();  // this array will keep all the languages supported for the survey
 
-    $sBaseLanguage = GetBaseLanguageFromSurveyID($newsid);
+    $sBaseLanguage = Survey::model()->findByPk($newsid)->language;
     $aLanguagesSupported[]=$sBaseLanguage;     // adds the base language to the list of supported languages
-    $aLanguagesSupported=array_merge($aLanguagesSupported,GetAdditionalLanguagesFromSurveyID($newsid));
+    $aLanguagesSupported=array_merge($aLanguagesSupported,Survey::model()->findByPk($newsid)->additionalLanguages);
 
 
 
 
     // Let's check that imported objects support at least the survey's baselang
-    $langcode = GetBaseLanguageFromSurveyID($newsid);
+    $langcode = Survey::model()->findByPk($newsid)->language;
     if (isset($grouparray))
     {
         $groupfieldnames = convertCSVRowToArray($grouparray[0],',','"');
@@ -782,9 +782,9 @@ function XMLImportGroup($sFullFilepath, $newsid)
 
     $aLanguagesSupported = array();  // this array will keep all the languages supported for the survey
 
-    $sBaseLanguage = GetBaseLanguageFromSurveyID($newsid);
+    $sBaseLanguage = Survey::model()->findByPk($newsid)->language;
     $aLanguagesSupported[]=$sBaseLanguage;     // adds the base language to the list of supported languages
-    $aLanguagesSupported=array_merge($aLanguagesSupported,GetAdditionalLanguagesFromSurveyID($newsid));
+    $aLanguagesSupported=array_merge($aLanguagesSupported,Survey::model()->findByPk($newsid)->additionalLanguages);
 
     $xml = @simplexml_load_file($sFullFilepath);
     if ($xml==false || $xml->LimeSurveyDocType!='Group') safe_die('This is not a valid LimeSurvey group structure XML file.');
@@ -1244,9 +1244,9 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
 
     $aLanguagesSupported = array();  // this array will keep all the languages supported for the survey
 
-    $sBaseLanguage = GetBaseLanguageFromSurveyID($newsid);
+    $sBaseLanguage = Survey::model()->findByPk($newsid)->language;
     $aLanguagesSupported[]=$sBaseLanguage;     // adds the base language to the list of supported languages
-    $aLanguagesSupported=array_merge($aLanguagesSupported,GetAdditionalLanguagesFromSurveyID($newsid));
+    $aLanguagesSupported=array_merge($aLanguagesSupported,Survey::model()->findByPk($newsid)->additionalLanguages);
 
 
     // Let's check that imported objects support at least the survey's baselang
@@ -1675,9 +1675,9 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
     $clang = Yii::app()->lang;
     $aLanguagesSupported = array();  // this array will keep all the languages supported for the survey
 
-    $sBaseLanguage = GetBaseLanguageFromSurveyID($newsid);
+    $sBaseLanguage = Survey::model()->findByPk($newsid)->language;
     $aLanguagesSupported[]=$sBaseLanguage;     // adds the base language to the list of supported languages
-    $aLanguagesSupported=array_merge($aLanguagesSupported,GetAdditionalLanguagesFromSurveyID($newsid));
+    $aLanguagesSupported=array_merge($aLanguagesSupported,Survey::model()->findByPk($newsid)->additionalLanguages);
 
     $xml = simplexml_load_file($sFullFilepath);
     if ($xml->LimeSurveyDocType!='Question') safe_die('This is not a valid LimeSurvey question structure XML file.');
@@ -2649,9 +2649,9 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     // The survey languagesettings are imported now
     $aLanguagesSupported = array();  // this array will keep all the languages supported for the survey
 
-    $sBaseLanguage = GetBaseLanguageFromSurveyID($newsid);
+    $sBaseLanguage = Survey::model()->findByPk($newsid)->language;
     $aLanguagesSupported[]=$sBaseLanguage;     // adds the base language to the list of supported languages
-    $aLanguagesSupported=array_merge($aLanguagesSupported,GetAdditionalLanguagesFromSurveyID($newsid));
+    $aLanguagesSupported=array_merge($aLanguagesSupported,Survey::model()->findByPk($newsid)->additionalLanguages);
 
 
     // DO SURVEY_RIGHTS

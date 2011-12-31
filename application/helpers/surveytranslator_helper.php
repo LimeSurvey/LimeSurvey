@@ -650,7 +650,7 @@
     {
         if (!isset($languagecode) || $languagecode=='')
         {
-            $languagecode=GetBaseLanguageFromSurveyID($surveyid);;
+            $languagecode=Survey::model()->findByPk($surveyid)->language;;
         }
         $data = Survey_languagesettings::model()->getDateFormat($surveyid,$languagecode);
         //$query = "SELECT surveyls_dateformat FROM ".db_table_name('surveys').",".db_table_name('surveys_languagesettings')." WHERE sid=$surveyid and surveyls_survey_id=$surveyid and surveyls_language='$languagecode'";

@@ -36,8 +36,8 @@ class Assessments extends Survey_Common_Action
         $surveyId = sanitize_int($surveyId);
         $action = !empty($_POST['action']) ? $_POST['action'] : '';
 
-        $languages = GetAdditionalLanguagesFromSurveyID($surveyId);
-        $surveyLanguage = GetBaseLanguageFromSurveyID($surveyId);
+        $languages = Survey::model()->findByPk($surveyId)->additionalLanguages;
+        $surveyLanguage = Survey::model()->findByPk($surveyId)->language;
 
         array_unshift($languages, $surveyLanguage); // makes an array with ALL the languages supported by the survey -> $assessmentlangs
 

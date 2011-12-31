@@ -216,7 +216,7 @@ function makelanguagechanger($baselang)
     }
     if (isset($surveyid))
     {
-        $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+        $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
     }
 
     $token = sanitize_token(returnglobal('token'));
@@ -248,7 +248,7 @@ function makelanguagechanger($baselang)
                     $lang = sanitize_languagecode($_GET['lang']);
                 }
                 else
-                    $lang = GetBaseLanguageFromSurveyID($surveyid);
+                    $lang = Survey::model()->findByPk($surveyid)->language;
 
         $htmlcode ="<select name=\"select\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
         $sAddToURL = "";
@@ -261,9 +261,9 @@ function makelanguagechanger($baselang)
             if($otherlang != $lang)
                 $htmlcode .= "\t<option value=\"$sTargetURL?sid=". $surveyid ."&amp;lang=". $otherlang ."$tokenparam$sAddToURL\" >".getLanguageNameFromCode($otherlang,false)."</option>\n";
         }
-        if($lang != GetBaseLanguageFromSurveyID($surveyid))
+        if($lang != Survey::model()->findByPk($surveyid)->language)
         {
-            $htmlcode .= "<option value=\"$sTargetURL?sid=".$surveyid."&amp;lang=".GetBaseLanguageFromSurveyID($surveyid)."$tokenparam$sAddToURL\">".getLanguageNameFromCode(GetBaseLanguageFromSurveyID($surveyid),false)."</option>\n";
+            $htmlcode .= "<option value=\"$sTargetURL?sid=".$surveyid."&amp;lang=".Survey::model()->findByPk($surveyid)->language."$tokenparam$sAddToURL\">".getLanguageNameFromCode(Survey::model()->findByPk($surveyid)->language,false)."</option>\n";
         }
 
         $htmlcode .= "</select>\n";
@@ -2209,7 +2209,7 @@ function doAssessment($surveyid, $returndataonly=false)
     //$_SESSION = $CI->session->userdata;
     $clang = Yii::app()->lang;
 
-    $baselang=GetBaseLanguageFromSurveyID($surveyid);
+    $baselang=Survey::model()->findByPk($surveyid)->language;
     $total=0;
     if (!isset($_SESSION['s_lang']))
     {

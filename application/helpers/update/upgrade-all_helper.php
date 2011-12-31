@@ -112,7 +112,7 @@ function upgrade_question_attributes148()
     foreach ( $oSurveyResult->readAll()  as $aSurveyRow)
     {
         $surveyid=$aSurveyRow['sid'];
-        $languages=array_merge(array(GetBaseLanguageFromSurveyID($surveyid)), GetAdditionalLanguagesFromSurveyID($surveyid));
+        $languages=array_merge(array(Survey::model()->findByPk($surveyid)->language), Survey::model()->findByPk($surveyid)->additionalLanguages);
 
         $sAttributeQuery = "select q.qid,attribute,value from {$sDBPrefix}question_attributes qa , {$sDBPrefix}questions q where q.qid=qa.qid and sid={$surveyid}";
         $oAttributeResult = db_execute_assoc($sAttributeQuery);

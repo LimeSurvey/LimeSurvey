@@ -15,7 +15,7 @@
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt='' />
             <?php if(bHasSurveyPermission($surveyid,'surveycontent','read'))
             {
-                if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
+                if (count(Survey::model()->findByPk($surveyid)->additionalLanguages) == 0)
                 { ?>
                     <a href="#" accesskey='q' onclick="window.open('<?php echo $this->createUrl("admin/question/sa/preview/surveyid/$surveyid/qid/$qid/");?>', '_blank')"
                     title="<?php echo $clang->gTview("Preview This Question"); ?>">

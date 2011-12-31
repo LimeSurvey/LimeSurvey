@@ -141,7 +141,7 @@ class Statistics_userController extends LSYii_Controller {
 
 
 		// Set language for questions and labels to base language of this survey
-		$language = GetBaseLanguageFromSurveyID($surveyid);
+		$language = Survey::model()->findByPk($surveyid)->language;
 
 
 		$chartfontfile = Yii::app()->getConfig("chartfontfile");

@@ -82,7 +82,7 @@ function createChart($qid, $sid, $type, $lbl, $gdata, $grawdata, $cache)
     $scriptname = Yii::app()->getConfig("scriptname");
     $chartfontfile = Yii::app()->getConfig("chartfontfile");
     $chartfontsize = Yii::app()->getConfig("chartfontsize");
-    $language = GetBaseLanguageFromSurveyID($sid);
+    $language = Survey::model()->findByPk($sid)->language;
 
     if ($chartfontfile=='auto')
     {
@@ -361,8 +361,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
     //Get an array of codes of all available languages in this survey
-    $surveylanguagecodes = GetAdditionalLanguagesFromSurveyID($surveyid);
-    $surveylanguagecodes[] = GetBaseLanguageFromSurveyID($surveyid);
+    $surveylanguagecodes = Survey::model()->findByPk($surveyid)->additionalLanguages;
+    $surveylanguagecodes[] = Survey::model()->findByPk($surveyid)->language;
 
     // Set language for questions and answers to base language of this survey
     $language=$statlangcode;

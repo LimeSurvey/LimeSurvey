@@ -104,19 +104,19 @@ class browse extends Survey_Common_Action
         elseif (isset($_SESSION['browselang']))
         {
             $aData['language'] = $_SESSION['browselang'];
-            $aData['languagelist'] = $languagelist = GetAdditionalLanguagesFromSurveyID($iSurveyId);
-            $aData['languagelist'][] = GetBaseLanguageFromSurveyID($iSurveyId);
+            $aData['languagelist'] = $languagelist = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
+            $aData['languagelist'][] = Survey::model()->findByPk($iSurveyId)->language;
             if (!in_array($aData['language'], $languagelist))
             {
-                $aData['language'] = GetBaseLanguageFromSurveyID($iSurveyId);
+                $aData['language'] = Survey::model()->findByPk($iSurveyId)->language;
             }
         }
         else
         {
-            $aData['language'] = GetBaseLanguageFromSurveyID($iSurveyId);
+            $aData['language'] = Survey::model()->findByPk($iSurveyId)->language;
         }
 
-        $aData['qulanguage'] = GetBaseLanguageFromSurveyID($iSurveyId);
+        $aData['qulanguage'] = Survey::model()->findByPk($iSurveyId)->language;
 
         $aData['surveyoptions'] = '';
         $aData['browseoutput']  = '';

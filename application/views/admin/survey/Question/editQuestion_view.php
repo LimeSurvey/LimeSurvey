@@ -23,7 +23,7 @@
                 (<?php $clang->eT("Base language"); ?>)
             </a></li>
         <?php
-            $addlanguages=GetAdditionalLanguagesFromSurveyID($surveyid);
+            $addlanguages=Survey::model()->findByPk($surveyid)->additionalLanguages;
             foreach  ($addlanguages as $addlanguage)
             { ?>
             <li><a href="#<?php echo $addlanguage; ?>"><?php echo getLanguageNameFromCode($addlanguage,false); ?>
@@ -75,7 +75,7 @@
             }
             else
             {
-                $addlanguages=GetAdditionalLanguagesFromSurveyID($surveyid);
+                $addlanguages=Survey::model()->findByPk($surveyid)->additionalLanguages;
                 foreach  ($addlanguages as $addlanguage)
                 { ?>
                 <div id="<?php echo $addlanguage; ?>">

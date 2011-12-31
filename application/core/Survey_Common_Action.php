@@ -136,7 +136,7 @@ class Survey_Common_Action extends CAction
         $clang = $this->getController()->lang;
 
 
-        $baselang = GetBaseLanguageFromSurveyID($surveyid);
+        $baselang = Survey::model()->findByPk($surveyid)->language;
 
         //Show Question Details
         //Count answer-options for this question
@@ -171,15 +171,15 @@ class Survey_Common_Action extends CAction
             $qrrow = array_map('FlattenText', $qrrow);
             if (bHasSurveyPermission($surveyid, 'surveycontent', 'read'))
             {
-                if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
+                if (count(Survey::model()->findByPk($surveyid)->additionalLanguages) == 0)
                 {
 
                 }
                 else
                 {
                     Yii::app()->loadHelper('surveytranslator');
-                    $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-                    $baselang = GetBaseLanguageFromSurveyID($surveyid);
+                    $tmp_survlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+                    $baselang = Survey::model()->findByPk($surveyid)->language;
                     $tmp_survlangs[] = $baselang;
                     rsort($tmp_survlangs);
                     $data['tmp_survlangs'] = $tmp_survlangs;
@@ -252,7 +252,7 @@ class Survey_Common_Action extends CAction
     function _questiongroupbar($surveyid, $gid, $qid=null, $action)
     {
         $clang = $this->getController()->lang;
-        $baselang = GetBaseLanguageFromSurveyID($surveyid);
+        $baselang = Survey::model()->findByPk($surveyid)->language;
 
         Yii::app()->loadHelper('replacements');
         // TODO: check that surveyid and thus baselang are always set here
@@ -320,7 +320,7 @@ class Survey_Common_Action extends CAction
         //$this->load->helper('surveytranslator');
         $clang = $this->getController()->lang;
         //echo Yii::app()->getConfig('gid');
-        $baselang = GetBaseLanguageFromSurveyID($surveyid);
+        $baselang = Survey::model()->findByPk($surveyid)->language;
         $condition = array('sid' => $surveyid, 'language' => $baselang);
 
         //$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid"; //Getting data for this survey
@@ -377,10 +377,10 @@ class Survey_Common_Action extends CAction
             $data['icontext2'] = $clang->gTview("Execute This Survey");
         }
 
-        $data['baselang'] = GetBaseLanguageFromSurveyID($surveyid);
-        $data['onelanguage'] = (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0);
+        $data['baselang'] = Survey::model()->findByPk($surveyid)->language;
+        $data['onelanguage'] = (count(Survey::model()->findByPk($surveyid)->additionalLanguages) == 0);
 
-        $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+        $tmp_survlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
         $data['additionallanguages'] = $tmp_survlangs;
         $tmp_survlangs[] = $data['baselang'];
         rsort($tmp_survlangs);
@@ -466,7 +466,7 @@ class Survey_Common_Action extends CAction
     {
         $clang = $this->getController()->lang;
 
-        $baselang = GetBaseLanguageFromSurveyID($surveyid);
+        $baselang = Survey::model()->findByPk($surveyid)->language;
         $condition = array('sid' => $surveyid, 'language' => $baselang);
 
         $sumresult1 = Survey::model()->with('languagesettings')->findByPk($surveyid); //$sumquery1, 1) ; //Checked
@@ -493,7 +493,7 @@ class Survey_Common_Action extends CAction
 
         //SURVEY SUMMARY
 
-        $aAdditionalLanguages = GetAdditionalLanguagesFromSurveyID($surveyid);
+        $aAdditionalLanguages = Survey::model()->findByPk($surveyid)->additionalLanguages;
         $surveysummary2 = "";
         if ($surveyinfo['anonymized'] != "N")
         {
@@ -722,8 +722,8 @@ class Survey_Common_Action extends CAction
         $data['clang'] = Yii::app()->lang;
         $data['surveyid'] = $surveyid;
 
-        $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-        $baselang = GetBaseLanguageFromSurveyID($surveyid);
+        $tmp_survlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+        $baselang = Survey::model()->findByPk($surveyid)->language;
         $tmp_survlangs[] = $baselang;
         rsort($tmp_survlangs);
         $data['tmp_survlangs'] = $tmp_survlangs;

@@ -495,7 +495,7 @@
     public function editdata($subaction, $id, $surveyid, $language='')
     {
     	if ($language == '') {
-			$language = GetBaseLanguageFromSurveyID($surveyid);
+			$language = Survey::model()->findByPk($surveyid)->language;
 		}
 
     	$surveyid = sanitize_int($surveyid);
@@ -503,7 +503,7 @@
 
         if (!isset($sDataEntryLanguage))
         {
-            $sDataEntryLanguage = GetBaseLanguageFromSurveyID($surveyid);
+            $sDataEntryLanguage = Survey::model()->findByPk($surveyid)->language;
         }
 
         $surveyinfo = getSurveyInfo($surveyid);
@@ -1056,8 +1056,8 @@
                             $lresult = db_execute_assoc($lquery);
 
 
-                            $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-                            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+                            $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+                            $baselang = Survey::model()->findByPk($surveyid)->language;
                             array_unshift($slangs,$baselang);
 
                             $dataentryoutput.= "<select name='{$fname['fieldname']}'>\n";
@@ -1504,7 +1504,7 @@
             if ($subaction == "update"  && bHasSurveyPermission($surveyid, 'responses', 'update'))
             {
 
-                $baselang = GetBaseLanguageFromSurveyID($surveyid);
+                $baselang = Survey::model()->findByPk($surveyid)->language;
                 Yii::app()->loadHelper("database");
                 $clang = $this->getController()->lang;
                 $surveytable = "{{survey_".$surveyid.'}}';
@@ -1758,7 +1758,7 @@
                     }
 
                     //BUILD THE SQL TO INSERT RESPONSES
-                    $baselang = GetBaseLanguageFromSurveyID($surveyid);
+                    $baselang = Survey::model()->findByPk($surveyid)->language;
                     $fieldmap = createFieldMap($surveyid);
                     $columns = array();
                     $values = array();
@@ -2038,13 +2038,13 @@
 			//Yii::app()->loadHelper('expressions/em_manager');
             $clang = Yii::app()->lang;
 
-            $sDataEntryLanguage = GetBaseLanguageFromSurveyID($surveyid);
+            $sDataEntryLanguage = Survey::model()->findByPk($surveyid)->language;
             $surveyinfo=getSurveyInfo($surveyid);
 
             $this->_browsemenubar($surveyid, $clang->gT("Data entry"));
 
-            $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+            $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+            $baselang = Survey::model()->findByPk($surveyid)->language;
             array_unshift($slangs,$baselang);
 
             if(is_null($lang) || !in_array($lang,$slangs))
@@ -2531,8 +2531,8 @@
 
                             break;
                         case "I": //Language Switch
-                            $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-                            $sbaselang = GetBaseLanguageFromSurveyID($surveyid);
+                            $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+                            $sbaselang = Survey::model()->findByPk($surveyid)->language;
                             array_unshift($slangs,$sbaselang);
                             $cdata['slangs'] = $slangs;
 
@@ -2671,8 +2671,8 @@
             {
                 if ($thissurvey['allowsave'] == "Y")
                 {
-                    $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-                    $sbaselang = GetBaseLanguageFromSurveyID($surveyid);
+                    $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+                    $sbaselang = Survey::model()->findByPk($surveyid)->language;
                     array_unshift($slangs,$sbaselang);
                     $adata['slangs'] = $slangs;
                     $adata['baselang'] = $baselang;

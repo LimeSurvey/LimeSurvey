@@ -46,8 +46,8 @@ class translate extends Survey_Common_Action {
         $this->getController()->_js_admin_includes(Yii::app()->getConfig("adminscripts") . 'translation.js');
 
         $clang = Yii::app()->lang;
-        $baselang = GetBaseLanguageFromSurveyID($surveyid);
-        $langs = GetAdditionalLanguagesFromSurveyID($surveyid);
+        $baselang = Survey::model()->findByPk($surveyid)->language;
+        $langs = Survey::model()->findByPk($surveyid)->additionalLanguages;
 
         Yii::app()->loadHelper("database");
 		Yii::app()->loadHelper("admin/htmleditor");
@@ -311,8 +311,8 @@ class translate extends Survey_Common_Action {
         $imageurl = Yii::app()->getConfig("imageurl");
         $clang = Yii::app()->lang;
 
-        $baselang = GetBaseLanguageFromSurveyID($surveyid);
-        $langs = GetAdditionalLanguagesFromSurveyID($surveyid);
+        $baselang = Survey::model()->findByPk($surveyid)->language;
+        $langs = Survey::model()->findByPk($surveyid)->additionalLanguages;
 
 		$surveyinfo = Survey::model()->getDataJoinLanguageSettings($surveyid);
 
@@ -387,7 +387,7 @@ class translate extends Survey_Common_Action {
 
         $clang = Yii::app()->lang;
 
-        $langs = GetAdditionalLanguagesFromSurveyID($surveyid);
+        $langs = Survey::model()->findByPk($surveyid)->additionalLanguages;
         $supportedLanguages = getLanguageData(FALSE);
 
 		$language_list .= CHtml::openTag('div', array('class'=>'menubar-right')); // Opens .menubar-right div
@@ -401,7 +401,7 @@ class translate extends Survey_Common_Action {
 							)
 						);
 
-        if ( count(GetAdditionalLanguagesFromSurveyID($surveyid)) > 1 )
+        if ( count(Survey::model()->findByPk($surveyid)->additionalLanguages) > 1 )
         {
 			$selected = ( ! isset($tolang) ) ? "selected" : "";
 

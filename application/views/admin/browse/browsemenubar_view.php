@@ -13,7 +13,7 @@
             { ?>
                 <a href='<?php echo $this->createUrl("admin/browse/surveyid/$surveyid"); ?>' title="<?php $clang->eTview("Show summary information"); ?>">
                     <img name='SurveySummary' src='<?php echo $imageurl; ?>/summary.png' title='' alt='<?php $clang->eT("Show summary information"); ?>' /></a>
-    <?php if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
+    <?php if (count(Survey::model()->findByPk($surveyid)->additionalLanguages) == 0)
     { ?>
                     <a href='<?php echo $this->createUrl("admin/browse/surveyid/$surveyid/sa/all"); ?>' title="<?php $clang->eTview("Display Responses"); ?>">
                         <img name='ViewAll' src='<?php echo $imageurl; ?>/document.png' title='' alt='<?php $clang->eT("Display Responses"); ?>' /></a>

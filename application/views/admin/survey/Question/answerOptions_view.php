@@ -29,7 +29,7 @@
     <?php foreach ($anslangs as $anslang)
     { ?>
         <li><a href='#tabpage_<?php echo $anslang; ?>'><?php echo getLanguageNameFromCode($anslang, false); ?>
-        <?php if ($anslang==GetBaseLanguageFromSurveyID($surveyid)) { ?> (<?php echo $clang->gT("Base Language"); ?>) <?php } ?></a>
+        <?php if ($anslang==Survey::model()->findByPk($surveyid)->language) { ?> (<?php echo $clang->gT("Base Language"); ?>) <?php } ?></a>
         </li>
     <?php } ?>
 </ul>

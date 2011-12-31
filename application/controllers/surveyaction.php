@@ -174,7 +174,7 @@ class SurveyAction extends CAction {
         }
         elseif (!empty($surveyid))
         {
-            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+            $baselang = Survey::model()->findByPk($surveyid)->language;
             $clang = SetSurveyLanguage( $surveyid, $baselang);
         }
         else
@@ -1007,7 +1007,7 @@ class SurveyAction extends CAction {
     {
         if ( is_int($mvSurveyIdOrBaseLang) )
         {
-            $baselang = GetBaseLanguageFromSurveyID($surveyId);
+            $baselang = Survey::model()->findByPk($surveyId)->language;
         }
         else
         {
@@ -1113,7 +1113,7 @@ class SurveyAction extends CAction {
 
     function _createNewUserSessionAndRedirect($surveyId, &$redata, $iDebugLine, $asMessage = array())
     {
-        $baselang = GetBaseLanguageFromSurveyID($surveyId);
+        $baselang = Survey::model()->findByPk($surveyId)->language;
         $clang = Yii::app()->lang;
         // Let's first regenerate a session id
         killSession();

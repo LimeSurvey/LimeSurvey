@@ -44,7 +44,7 @@
         $data['startdate'] = $row['startdate'];
         $data['enddate'] = $row['expires'];
         
-        $baselang = GetBaseLanguageFromSurveyID($surveyid);
+        $baselang = Survey::model()->findByPk($surveyid)->language;
         Yii::import('application.libraries.Limesurvey_lang');
 		Yii::app()->lang = new Limesurvey_lang(array('langcode' => $baselang));
         echo templatereplace(file_get_contents("$thistpl/register.pstpl"),array(),$redata,'register.php',false,NULL,$data);
@@ -88,7 +88,7 @@
         // Get passed language from form, so that we dont loose this!
         if (!isset($postlang) || $postlang == "" || !$postlang )
         {
-            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+            $baselang = Survey::model()->findByPk($surveyid)->language;
             Yii::import('application.libraries.Limesurvey_lang');
 			Yii::app()->lang = new Limesurvey_lang(array('langcode' => $baselang));
             $clang = Yii::app()->lang;

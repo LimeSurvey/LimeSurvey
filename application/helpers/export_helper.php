@@ -601,7 +601,7 @@ function survey_getXMLStructure($surveyid, $xmlwriter, $exclude=array())
     BuildXMLFromQuery($xmlwriter,$qquery,'subquestions');
 
     //Question attributes
-    $sBaseLanguage=GetBaseLanguageFromSurveyID($surveyid);
+    $sBaseLanguage=Survey::model()->findByPk($surveyid)->language;
 	$platform = Yii::app()->db->getDriverName();
     if ($platform == 'odbc_mssql' || $platform == 'odbtp' || $platform == 'mssql_n' || $platform =='mssqlnative')
     {
@@ -673,8 +673,8 @@ function survey_getXMLData($surveyid, $exclude = array())
     $xml->writeElement('LimeSurveyDocType','Survey');
     $xml->writeElement('DBVersion',getGlobalSetting("DBVersion"));
     $xml->startElement('languages');
-    $surveylanguages=GetAdditionalLanguagesFromSurveyID($surveyid);
-    $surveylanguages[]=GetBaseLanguageFromSurveyID($surveyid);
+    $surveylanguages=Survey::model()->findByPk($surveyid)->additionalLanguages;
+    $surveylanguages[]=Survey::model()->findByPk($surveyid)->language;
     foreach ($surveylanguages as $surveylanguage)
     {
         $xml->writeElement('language',$surveylanguage);
@@ -712,8 +712,8 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
     $xml->writeElement('LimeSurveyDocType',$sDocType);
     $xml->writeElement('DBVersion',getGlobalSetting("DBVersion"));
     $xml->startElement('languages');
-    $aSurveyLanguages=GetAdditionalLanguagesFromSurveyID($iSurveyID);
-    $aSurveyLanguages[]=GetBaseLanguageFromSurveyID($iSurveyID);
+    $aSurveyLanguages=Survey::model()->findByPk($iSurveyID)->additionalLanguages;
+    $aSurveyLanguages[]=Survey::model()->findByPk($iSurveyID)->language;
     foreach ($aSurveyLanguages as $sSurveyLanguage)
     {
         $xml->writeElement('language',$sSurveyLanguage);
@@ -1693,7 +1693,7 @@ function group_getXMLStructure($xml,$gid)
     //Question attributes
     $surveyid=Yii::app()->db->createCommand("select sid from {{groups}} where gid={$gid}")->query()->read();
     $surveyid=$surveyid['sid'];
-    $sBaseLanguage=GetBaseLanguageFromSurveyID($surveyid);
+    $sBaseLanguage=Survey::model()->findByPk($surveyid)->language;
 	$platform = Yii::app()->db->getDriverName();
     if ($platform == 'odbc_mssql' || $platform == 'odbtp' || $platform == 'mssql_n' || $platform =='mssqlnative')
     {
@@ -1795,7 +1795,7 @@ function question_getXMLStructure($xml,$gid,$qid)
     $surveyid=Yii::app()->db->createCommand("select sid from {{groups}} where gid={$gid}")->query();
     $surveyid=$surveyid->read();
 	$surveyid=$surveyid['sid'];
-    $sBaseLanguage=GetBaseLanguageFromSurveyID($surveyid);
+    $sBaseLanguage=Survey::model()->findByPk($surveyid)->language;
 	$platform = Yii::app()->db->getDriverName();
     if ($platform == 'odbc_mssql' || $platform == 'odbtp' || $platform == 'mssql_n' || $platform =='mssqlnative')
     {

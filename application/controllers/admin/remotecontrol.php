@@ -171,7 +171,7 @@ class remotecontrol extends Survey_Common_Action {
                 if (!isset($aResponseData['submitdate'])) $aResponseData['submitdate'] = date("Y-m-d H:i:s");
                 if (!isset($aResponseData['datestamp'])) $aResponseData['datestamp'] = date("Y-m-d H:i:s");
                 if (!isset($aResponseData['startdate'])) $aResponseData['startdate'] = date("Y-m-d H:i:s");
-                if (!isset($aResponseData['startlanguage'])) $aResponseData['startlanguage'] = GetBaseLanguageFromSurveyID($iSurveyID);
+                if (!isset($aResponseData['startlanguage'])) $aResponseData['startlanguage'] = Survey::model()->findByPk($iSurveyID)->language;
 
                 $this->load->model('surveys_dynamic_model');
                 $iinsert = $this->surveys_dynamic_model->insertRecords($iSurveyID,$aResponseData);

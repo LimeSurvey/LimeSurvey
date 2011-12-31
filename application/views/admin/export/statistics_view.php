@@ -507,8 +507,8 @@
 
 
                                 case "I": // Language
-                                    $survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-                                    $survlangs[] = GetBaseLanguageFromSurveyID($surveyid);
+                                    $survlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+                                    $survlangs[] = Survey::model()->findByPk($surveyid)->language;
                                     foreach ($survlangs  as $availlang)
                                     {
                                         echo "\t\t\t\t\t<option value='".$availlang."'";

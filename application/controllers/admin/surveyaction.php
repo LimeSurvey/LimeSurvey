@@ -1034,8 +1034,8 @@ class SurveyAction extends Survey_Common_Action {
         if(bHasSurveyPermission($surveyid,'surveylocale','read'))
         {
         	$editsurvey = '';
-            $grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+            $grplangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+            $baselang = Survey::model()->findByPk($surveyid)->language;
             array_unshift($grplangs,$baselang);
 
             Yii::app()->loadHelper("admin/htmleditor");
@@ -1056,7 +1056,7 @@ class SurveyAction extends Survey_Common_Action {
 
                 $tab_title[$i] = getLanguageNameFromCode($esrow['surveyls_language'],false);
 
-                if ($esrow['surveyls_language'] == GetBaseLanguageFromSurveyID($surveyid))
+                if ($esrow['surveyls_language'] == Survey::model()->findByPk($surveyid)->language)
                     $tab_title[$i]  .= '('.$clang->gT("Base Language").')';
 
                 $esrow = array_map('htmlspecialchars', $esrow);

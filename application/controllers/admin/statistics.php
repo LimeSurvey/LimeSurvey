@@ -116,7 +116,7 @@ class statistics extends Survey_Common_Action {
 
 
 		// Set language for questions and answers to base language of this survey
-		$language = GetBaseLanguageFromSurveyID($surveyid);
+		$language = Survey::model()->findByPk($surveyid)->language;
 		$data['language'] = $language;
 
 //		$chartfontfile = Yii::app()->getConfig("chartfontfile");
@@ -277,8 +277,8 @@ class statistics extends Survey_Common_Action {
 		//    $statisticsoutput .= " style='display:none' ";
 		//}
 
-		$survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-		$survlangs [] = GetBaseLanguageFromSurveyID($surveyid);
+		$survlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+		$survlangs [] = Survey::model()->findByPk($surveyid)->language;
 		$data['survlangs'] = $survlangs;
 		$data['datestamp'] = $datestamp;
 

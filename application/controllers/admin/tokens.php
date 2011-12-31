@@ -326,7 +326,7 @@ class tokens extends Survey_Common_Action
             $end = 0;
         }
 
-        $sBaseLanguage = GetBaseLanguageFromSurveyID($iSurveyId);
+        $sBaseLanguage = Survey::model()->findByPk($iSurveyId)->language;
         $aData['next'] = $next;
         $aData['last'] = $last;
         $aData['end'] = $end;
@@ -958,8 +958,8 @@ function editToken($iSurveyId)
 
         $query = Tokens_dynamic::model($iSurveyId)->find();
         $aExampleRow = empty($query) ? array() : $query->attributes;
-        $aSurveyLangs = GetAdditionalLanguagesFromSurveyID($iSurveyId);
-        $sBaseLanguage = GetBaseLanguageFromSurveyID($iSurveyId);
+        $aSurveyLangs = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
+        $sBaseLanguage = Survey::model()->findByPk($iSurveyId)->language;
         array_unshift($aSurveyLangs, $sBaseLanguage);
         $aTokenIds = $this->_getTokenIds($aTokenIds);
         $aTokenFields = GetTokenFieldsAndNames($iSurveyId, true);
@@ -1559,7 +1559,7 @@ function editToken($iSurveyId)
                 @ini_set('auto_detect_line_endings', true);
                 // open it and trim the ednings
                 $tokenlistarray = file($sFilePath);
-                $sBaseLanguage = GetBaseLanguageFromSurveyID($iSurveyId);
+                $sBaseLanguage = Survey::model()->findByPk($iSurveyId)->language;
                 if (!CHttpRequest::getPost('filterduplicatefields') || (CHttpRequest::getPost('filterduplicatefields') && count(CHttpRequest::getPost('filterduplicatefields')) == 0))
                 {
                     $filterduplicatefields = array('firstname', 'lastname', 'email');

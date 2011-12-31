@@ -193,7 +193,7 @@ class export extends Survey_Common_Action {
 
         Yii::app()->loadHelper("admin/exportresults");
 
-        $surveybaselang = GetBaseLanguageFromSurveyID($surveyid);
+        $surveybaselang = Survey::model()->findByPk($surveyid)->language;
         $exportoutput = "";
 
         // Get info about the survey
@@ -432,7 +432,7 @@ class export extends Survey_Common_Action {
 		{
             // Get Base language:
 
-            $language = GetBaseLanguageFromSurveyID($surveyid);
+            $language = Survey::model()->findByPk($surveyid)->language;
             $clang = new limesurvey_lang(array($language));
             Yii::app()->loadHelper("admin/exportresults");
         }
@@ -703,7 +703,7 @@ class export extends Survey_Common_Action {
         else
         {
             // Get Base language:
-            //$language = GetBaseLanguageFromSurveyID($surveyid);
+            //$language = Survey::model()->findByPk($surveyid)->language;
             //$clang = new limesurvey_lang(array($language));
             Yii::app()->loadHelper("admin/exportresults");
         }
@@ -962,7 +962,7 @@ class export extends Survey_Common_Action {
             $fieldmap=createFieldMap($surveyid, "full");
             $surveytable = "{{survey_$surveyid}}";
 
-            GetBaseLanguageFromSurveyID($surveyid);
+            Survey::model()->findByPk($surveyid)->language;
 
             $fieldnames = Yii::app()->db->schema->getTable($surveytable)->getColumnNames();
 
@@ -1070,7 +1070,7 @@ class export extends Survey_Common_Action {
         }
 		else
         {
-            $surveyprintlang=GetbaseLanguageFromSurveyid($surveyid);
+            $surveyprintlang=Survey::model()->findByPk($surveyid)->language;
         }
 
         // Setting the selected language for printout
@@ -1329,7 +1329,7 @@ class export extends Survey_Common_Action {
 			}
             else
 			{
-                $quexmllang=GetBaseLanguageFromSurveyID($surveyid);
+                $quexmllang=Survey::model()->findByPk($surveyid)->language;
 			}
 
             if ( ! (isset($noheader) && $noheader == TRUE) )

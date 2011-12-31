@@ -70,7 +70,7 @@ function checkGroup($postsid)
 {
     $clang = Yii::app()->lang;
 
-    $baselang = GetBaseLanguageFromSurveyID($postsid);
+    $baselang = Survey::model()->findByPk($postsid)->language;
     $groupquery = "SELECT g.gid,g.group_name,count(q.qid) as count from {{questions}} as q RIGHT JOIN {{groups}} as g ON q.gid=g.gid AND g.language=q.language WHERE g.sid=$postsid AND g.language='$baselang' group by g.gid,g.group_name;";
     $groupresult=Yii::app()->db->createCommand($groupquery)->query()->readAll();
     foreach ($groupresult as $row)

@@ -53,8 +53,8 @@ class database extends Survey_Common_Action
         if ($action == "updatedefaultvalues" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
         {
 
-            $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+            $questlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+            $baselang = Survey::model()->findByPk($surveyid)->language;
             array_unshift($questlangs,$baselang);
 
             // same_default value on/off for question
@@ -139,8 +139,8 @@ class database extends Survey_Common_Action
         {
 
 	    Yii::app()->loadHelper('database');
-            $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+            $anslangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+            $baselang = Survey::model()->findByPk($surveyid)->language;
 
             $alllanguages = $anslangs;
             array_unshift($alllanguages,$baselang);
@@ -242,8 +242,8 @@ class database extends Survey_Common_Action
         {
 
             Yii::app()->loadHelper('database');
-            $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+            $anslangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+            $baselang = Survey::model()->findByPk($surveyid)->language;
             array_unshift($anslangs,$baselang);
 
             $query = "select type from {{questions}} where qid=$qid";
@@ -371,7 +371,7 @@ class database extends Survey_Common_Action
 
         if (in_array($action, array('insertquestion', 'copyquestion')) && bHasSurveyPermission($surveyid, 'surveycontent','create'))
         {
-            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+            $baselang = Survey::model()->findByPk($surveyid)->language;
             if (strlen($_POST['title']) < 1)
             {
                 $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n "
@@ -448,7 +448,7 @@ class database extends Survey_Common_Action
                 // Add other languages
                 if ($result)
                 {
-                    $addlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+                    $addlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
                     foreach ($addlangs as $alang)
                     {
                         if ($alang != "")
@@ -600,7 +600,7 @@ class database extends Survey_Common_Action
             }
             $attsql.='1=1';
             Yii::app()->db->createCommand($attsql)->execute(); // or safe_die ("Couldn't delete obsolete question attributes<br />".$attsql."<br />"); // Checked
-            $aLanguages=array_merge(array(GetBaseLanguageFromSurveyID($surveyid)),GetAdditionalLanguagesFromSurveyID($surveyid));
+            $aLanguages=array_merge(array(Survey::model()->findByPk($surveyid)->language),Survey::model()->findByPk($surveyid)->additionalLanguages);
 
 
             //now save all valid attributes
@@ -717,8 +717,8 @@ class database extends Survey_Common_Action
                     if (is_null($array_result['notAbove']) && is_null($array_result['notBelow']))
                     {
 
-                        $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-                        $baselang = GetBaseLanguageFromSurveyID($surveyid);
+                        $questlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+                        $baselang = Survey::model()->findByPk($surveyid)->language;
                         array_push($questlangs,$baselang);
                     	$p = new CHtmlPurifier();
                     	if (Yii::app()->getConfig('filterxsshtml'))
@@ -874,8 +874,8 @@ class database extends Survey_Common_Action
 
         if (($action == "updatesurveylocalesettings") && bHasSurveyPermission($surveyid,'surveylocale','update'))
         {
-            $languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
-            $languagelist[]=GetBaseLanguageFromSurveyID($surveyid);
+            $languagelist = Survey::model()->findByPk($surveyid)->additionalLanguages;
+            $languagelist[]=Survey::model()->findByPk($surveyid)->language;
 
 			Yii::app()->loadHelper('database');
 
@@ -1074,7 +1074,7 @@ class database extends Survey_Common_Action
             Survey::model()->updateSurvey($updatearray,$condition);
             $sqlstring ='';
 
-            foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
+            foreach (Survey::model()->findByPk($surveyid)->additionalLanguages as $langname)
             {
                 if ($langname)
                 {
@@ -1083,12 +1083,12 @@ class database extends Survey_Common_Action
             }
 
             // Add base language too
-            $sqlstring .= "AND surveyls_language <> '".GetBaseLanguageFromSurveyID($surveyid)."' ";
+            $sqlstring .= "AND surveyls_language <> '".Survey::model()->findByPk($surveyid)->language."' ";
             $usquery = "DELETE FROM {{surveys_languagesettings}} WHERE surveyls_survey_id={$surveyid} ".$sqlstring;
 
             $usresult = Yii::app()->db->createCommand($usquery)->query() or safe_die("Error deleting obsolete surveysettings<br />".$usquery."<br /><br /><strong>"); // Checked
 
-            foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
+            foreach (Survey::model()->findByPk($surveyid)->additionalLanguages as $langname)
             {
                 if ($langname)
                 {

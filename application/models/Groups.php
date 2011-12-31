@@ -94,7 +94,7 @@ class Groups extends CActiveRecord
     }
 
     function getGroups($surveyid) {
-        $language = GetBaseLanguageFromSurveyID($surveyid);
+        $language = Survey::model()->findByPk($surveyid)->language;
 		return Yii::app()->db->createCommand()
 			->select(array('gid', 'group_name'))
 			->from($this->tableName())

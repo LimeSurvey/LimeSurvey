@@ -43,7 +43,7 @@ class OptinController extends LSYii_Controller {
         // Get passed language from form, so that we dont loose this!
         if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode)
         {
-            $baselang = GetBaseLanguageFromSurveyID($iSurveyID);
+            $baselang = Survey::model()->findByPk($iSurveyID)->language;
             Yii::import('application.libraries.Limesurvey_lang', true);
             $clang = new Limesurvey_lang(array('langcode' => $baselang));
         }

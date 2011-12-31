@@ -548,7 +548,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
 
         if (!isset($_REQUEST['lang']))
         {
-            $_reglang = GetBaseLanguageFromSurveyID($tokensid);
+            $_reglang = Survey::model()->findByPk($tokensid)->language;
         }
         else
         {

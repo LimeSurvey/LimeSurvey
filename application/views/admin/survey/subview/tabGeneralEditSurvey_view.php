@@ -16,7 +16,7 @@
                         standardtemplaterooturl='".$yii->getConfig('standardtemplaterooturl')."';
                         templaterooturl='".$yii->getConfig('usertemplaterooturl')."';\n";
 
-            foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname) {
+            foreach (Survey::model()->findByPk($surveyid)->additionalLanguages as $langname) {
                 if ($langname && $langname != $esrow['language']) {
                 $jsRemLang .=" mylangs[$jsX] = \"$langname\"\n"; ?>
                 <option id='<?php echo $langname; ?>' value='<?php echo $langname; ?>'><?php echo getLanguageNameFromCode($langname,false); ?>
@@ -34,7 +34,7 @@
 
 
             <td align='left'><select size='5' style='min-width:220px;' id='available_languages' name='available_languages'>
-            <?php $tempLang=GetAdditionalLanguagesFromSurveyID($surveyid);
+            <?php $tempLang=Survey::model()->findByPk($surveyid)->additionalLanguages;
             foreach (getLanguageDataRestricted () as $langkey2 => $langname) {
                 if ($langkey2 != $esrow['language'] && in_array($langkey2, $tempLang) == false) {  // base languag must not be shown here ?>
                     <option id='<?php echo $langkey2 ; ?>' value='<?php echo $langkey2; ?>'>

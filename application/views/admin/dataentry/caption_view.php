@@ -11,7 +11,7 @@
     
             <tr class='data-entry-separator'><td colspan='3'></td></tr>
     
-            <?php if (count(GetAdditionalLanguagesFromSurveyID($surveyid))>0)
+            <?php if (count(Survey::model()->findByPk($surveyid)->additionalLanguages)>0)
             { ?>
                 <tr>
                 <td colspan='3' align='center'>

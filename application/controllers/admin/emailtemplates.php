@@ -66,8 +66,8 @@ class emailtemplates extends Survey_Common_Action {
             $ishtml = false;
         }
 
-        $grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-        $baselang = GetBaseLanguageFromSurveyID($surveyid);
+        $grplangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+        $baselang = Survey::model()->findByPk($surveyid)->language;
         array_unshift($grplangs,$baselang);
 
         PrepareEditorScript(true, $this->getController());
@@ -97,8 +97,8 @@ class emailtemplates extends Survey_Common_Action {
         $clang = $this->getController()->lang;
         if ($action == "updateemailtemplates" && bHasSurveyPermission($surveyid, 'surveylocale','update'))
         {
-            $languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
-            $languagelist[] = GetBaseLanguageFromSurveyID($surveyid);
+            $languagelist = Survey::model()->findByPk($surveyid)->additionalLanguages;
+            $languagelist[] = Survey::model()->findByPk($surveyid)->language;
             array_filter($languagelist);
             foreach ($languagelist as $langname)
             {

@@ -96,7 +96,7 @@ class SurveyController extends LSYii_Controller
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('text');
 
-        $baselang = GetBaseLanguageFromSurveyID($surveyid);
+        $baselang = Survey::model()->findByPk($surveyid)->language;
 
         //Show Question Details
     	//Count answer-options for this question
@@ -129,12 +129,12 @@ class SurveyController extends LSYii_Controller
             $qrrow = array_map('FlattenText', $qrrow);
             if(bHasSurveyPermission($surveyid,'surveycontent','read'))
             {
-                if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
+                if (count(Survey::model()->findByPk($surveyid)->additionalLanguages) == 0)
                 {
                 } else {
                     Yii::app()->loadHelper('surveytranslator');
-                    $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-                    $baselang = GetBaseLanguageFromSurveyID($surveyid);
+                    $tmp_survlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+                    $baselang = Survey::model()->findByPk($surveyid)->language;
                     $tmp_survlangs[] = $baselang;
                     rsort($tmp_survlangs);
                     $data['tmp_survlangs'] = $tmp_survlangs;
@@ -210,7 +210,7 @@ class SurveyController extends LSYii_Controller
 
         $clang = Yii::app()->lang;
         Yii::app()->loadHelper('database');
-        $baselang = GetBaseLanguageFromSurveyID($surveyid);
+        $baselang = Survey::model()->findByPk($surveyid)->language;
 
         // TODO: check that surveyid and thus baselang are always set here
         $sumquery4 = "SELECT * FROM {{questions}} WHERE sid=$surveyid AND
@@ -284,7 +284,7 @@ class SurveyController extends LSYii_Controller
     	//Yii::app()->loadHelper('surveytranslator');
     	$clang = Yii::app()->lang;
 		//echo $this->config->item('gid');
-        $baselang = GetBaseLanguageFromSurveyID($surveyid);
+        $baselang = Survey::model()->findByPk($surveyid)->language;
         $condition = array('sid' => $surveyid, 'language' => $baselang);
         //$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid"; //Getting data for this survey
         $sumresult1 = Surveys::model()->getDataOnSurvey($surveyid); //$sumquery1, 1) ; //Checked
@@ -335,10 +335,10 @@ class SurveyController extends LSYii_Controller
             $data['icontext2']=$clang->gTview("Execute This Survey");
         }
 
-        $data['baselang'] = GetBaseLanguageFromSurveyID($surveyid);
- 		$data['onelanguage'] = (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0);
+        $data['baselang'] = Survey::model()->findByPk($surveyid)->language;
+ 		$data['onelanguage'] = (count(Survey::model()->findByPk($surveyid)->additionalLanguages) == 0);
 
-		$tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+		$tmp_survlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
 		$data['additionallanguages'] = $tmp_survlangs;
         $tmp_survlangs[] = $data['baselang'];
 		rsort($tmp_survlangs);
@@ -427,7 +427,7 @@ class SurveyController extends LSYii_Controller
     {
         $clang = Yii::app()->lang;
 
-		$baselang = GetBaseLanguageFromSurveyID($surveyid);
+		$baselang = Survey::model()->findByPk($surveyid)->language;
         $condition = array('sid' => $surveyid, 'language' => $baselang);
         //$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid"; //Getting data for this survey
         $sumresult1 = Surveys::model()->getDataOnSurvey($surveyid); //$sumquery1, 1) ; //Checked
@@ -449,7 +449,7 @@ class SurveyController extends LSYii_Controller
 
         //SURVEY SUMMARY
 
-        $aAdditionalLanguages = GetAdditionalLanguagesFromSurveyID($surveyid);
+        $aAdditionalLanguages = Survey::model()->findByPk($surveyid)->additionalLanguages;
         $surveysummary2 = "";
         if ($surveyinfo['anonymized'] != "N") {$surveysummary2 .= $clang->gT("Responses to this survey are anonymized.")."<br />";}
         else {$surveysummary2 .= $clang->gT("Responses to this survey are NOT anonymized.")."<br />";}
@@ -620,8 +620,8 @@ class SurveyController extends LSYii_Controller
 		$data['clang'] = Yii::app()->lang;
 		$data['surveyid'] = $surveyid;
 
-		$tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-        $baselang = GetBaseLanguageFromSurveyID($surveyid);
+		$tmp_survlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+        $baselang = Survey::model()->findByPk($surveyid)->language;
         $tmp_survlangs[] = $baselang;
         rsort($tmp_survlangs);
 		$data['tmp_survlangs'] = $tmp_survlangs;
