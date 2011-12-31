@@ -13,21 +13,122 @@
  *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
  */
 class Expressions extends Survey_Common_Action {
-	function __construct()
+	function run()
 	{
-		parent::__construct();
+    ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>ExpressionManager:  <?php $this->_printTitle(isset($_GET['sa'])?$_GET['sa']:'index')?></title>
+        <script src="<?php echo Yii::app()->getConfig('generalscripts')  . 'jquery/jquery.js'; ?>"></script>
+        <script src="<?php echo Yii::app()->getConfig('generalscripts')  . 'admin/expressions/em_javascript.js'; ?>" /></script>
+        <style type="text/css">
+            <!--
+                .error {
+                    background-color: #ff0000;
+                }
+                .ok {
+                    background-color: #00ff00
+                }
+            -->
+        </style>
+    </head>
+    <body <?php $this->_printOnLoad(isset($_GET['sa'])?$_GET['sa']:'index')?>>
+    <?php
+		if(isset($_GET['sa']))
+			$this->test($_GET['sa']);
+		else $this->index();
+    ?>
+    </body>
+</html>
+    <?php
+    }
+    public function index()
+	{
+		$this->getController()->render('/admin/expressions/test_view');
 	}
 
-    function index()
-	{
-		$this->load->view('admin/expressions/test');
-	}
-
-    function test($which)
+    public function test($which)
     {
-        $this->load->view('admin/expressions/test/'.$which);
+        $this->getController()->render('/admin/expressions/test/'.$which);
+    }
+    
+    private function _printOnLoad($which)
+    {
+        switch ($which)
+        {
+            case 'relevance':
+                echo ' onload="ExprMgr_process_relevance_and_tailoring(\'\');"';
+                break;
+            case 'unit':
+                echo ' onload="recompute()"';
+                break;
+        }
+    }
+    
+    private function _printTitle($which)
+    {
+        switch ($which)
+        {
+            case 'index':
+                echo 'Test Suite';
+                break;
+            case 'relevance':
+                echo 'Unit Test Relevance';
+                break;
+            case 'stringspilt':
+                echo 'Unit Test String Splitter';
+                break;
+            case 'functions':
+                echo 'Available Functions';
+                break;
+            case 'data':
+                echo 'Current Data';
+                break;
+            case 'reset_syntax_error_log':
+                echo 'Reset Log of Syntax Errors';
+                break;
+            case 'tokenizer':
+                echo 'Unit Test Tokenizer';
+                break;
+            case 'unit':
+                echo 'Unit Test Core Evaluator';
+                break;
+            case 'conditions2relevance':
+                echo 'Preview Conditions to Relevance';
+                break;
+            case 'navigation_test':
+                echo 'Navigation Test';
+                break;
+            case 'reset_syntax_error_log.php':
+                break;
+                echo 'Reset Log of Syntax Errors';
+                break;
+            case 'revert_upgrade_conditions2relevance':
+                break;
+                echo 'Revert Upgrade Conditions to Relevance';
+                break;
+            case 'strings_with_expressions':
+                echo 'Test Evaluation of Strings Containing Expressions';
+                break;
+            case 'survey_logic_file':
+                echo 'Survey Logic File';
+                break;
+            case 'syntax_errors':
+                echo 'Show Log of Syntax Errors';
+                break;
+            case 'upgrade_conditions2relevance':
+                echo 'Upgrade Conditions to Relevance';
+                break;
+            case 'upgrade_relevance_location':
+                echo 'Upgrade Relevance Location';
+                break;
+            case 'usage':
+                echo 'Running Translation Log';
+                break;
+        }
     }
 }
-
 /* End of file expressions.php */
 /* Location: ./application/controllers/admin/expressions.php */

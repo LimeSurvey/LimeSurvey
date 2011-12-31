@@ -160,7 +160,8 @@ class AdminController extends LSYii_Controller
 			'dataentry' => 'application.controllers.admin.dataentry',
 			'emailtemplates' => 'application.controllers.admin.emailtemplates',
 			'update' => 'application.controllers.admin.update',
-			'conditions' => 'application.controllers.admin.conditions'
+			'conditions' => 'application.controllers.admin.conditions',
+			'expressions' => 'application.controllers.admin.expressions'
 		);
 	}
 
