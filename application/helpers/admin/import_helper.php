@@ -2572,7 +2572,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
         }
         else
         {
-            echo $clang->gT("Import of this survey file failed")."\n".$clang->gT("File does not contain LimeSurvey data in the correct format.")."\n";
+            $clang->eT("Import of this survey file failed")."\n".$clang->gT("File does not contain LimeSurvey data in the correct format.")."\n";
             return;
         }
     }
@@ -3903,9 +3903,6 @@ function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeField
         }
     }
 
-
-
-
     db_switchIDInsert('tokens_'.$iSurveyID,true);
     foreach ($xml->tokens->rows->row as $row)
     {
@@ -3916,7 +3913,7 @@ function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeField
             $insertdata[(string)$key]=(string)$value;
         }
 
-        $result = Tokens_dynamic->model($iSurveyID)->insertToken($insertdata) or safe_die($clang->gT("Error").": Failed to insert data<br />");
+        $result = Tokens_dynamic::model($iSurveyID)->insertToken($insertdata) or safe_die($clang->gT("Error").": Failed to insert data<br />");
 
         $results['tokens']++;
     }
