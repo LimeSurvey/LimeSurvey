@@ -2994,7 +2994,7 @@ function getQuestionAttributeValues($qid, $type='')
 
     $row=$result['attributes'];
 
-    if ($row===false) // Question was deleted while running the survey
+    if (empty($row)) // Question was deleted while running the survey
     {
         $cache[$qid]=false;
         return false;
