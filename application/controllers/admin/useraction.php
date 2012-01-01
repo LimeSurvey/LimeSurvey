@@ -47,7 +47,7 @@ class UserAction extends Survey_Common_Action
         unset($userlist[0]);
 
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) {
-            $noofsurveys = Survey::model()->count(array("owner_id" => $usrhimself['uid']));
+            $noofsurveys = Survey::model()->countByAttributes(array("owner_id" => $usrhimself['uid']));
             $data['noofsurveys'] = $noofsurveys;
         }
 
@@ -78,7 +78,7 @@ class UserAction extends Survey_Common_Action
 
     private function _getSurveyCountForUser(array $user)
     {
-        return Survey::model()->count(array('owner_id' => $user['uid']));
+        return Survey::model()->countByAttributes(array('owner_id' => $user['uid']));
     }
 
     function adduser()
