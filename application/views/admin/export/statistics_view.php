@@ -7,8 +7,8 @@
         }
 ?>
 
-<form method='post' name='formbuilder' action='<?php echo Yii::app()->createUrl("admin/statistics/surveyid/$surveyid"); ?>#start'>
-<div class='header ui-widget-header'><?php echo $clang->gT("General filters"); ?></div>
+<form method='post' name='formbuilder' action='<?php echo Yii::app()->getController()->createUrl("admin/statistics/surveyid/$surveyid"); ?>#start'>
+<div class='header ui-widget-header'><?php $clang->eT("General filters"); ?></div>
     <div id='statistics_general_filter'>
     <?php
     $error = '';
@@ -22,22 +22,22 @@
     }
     ?>
     <fieldset style='clear:both;'>
-        <legend><?php echo $clang->gT("Data selection"); ?></legend>
+        <legend><?php $clang->eT("Data selection"); ?></legend>
         <ul>
             <li>
-                <label for='filterinc'><?php echo $clang->gT("Include:"); ?> </label>
+                <label for='filterinc'><?php $clang->eT("Include:"); ?> </label>
                 <select name='filterinc' id='filterinc'>
-                    <option value='show' <?php echo $selectshow; ?>><?php echo $clang->gT("All responses"); ?></option>
-                    <option value='filter' <?php echo $selecthide; ?> > <?php echo $clang->gT("Completed responses only"); ?></option>
-                    <option value='incomplete' <?php echo $selectinc; ?> > <?php echo $clang->gT("Incomplete responses only"); ?></option>
+                    <option value='show' <?php echo $selectshow; ?>><?php $clang->eT("All responses"); ?></option>
+                    <option value='filter' <?php echo $selecthide; ?> > <?php $clang->eT("Completed responses only"); ?></option>
+                    <option value='incomplete' <?php echo $selectinc; ?> > <?php $clang->eT("Incomplete responses only"); ?></option>
                 </select>
             </li>
             <li>
-                <label for='viewsummaryall'><?php echo $clang->gT("View summary of all available fields"); ?></label>
+                <label for='viewsummaryall'><?php $clang->eT("View summary of all available fields"); ?></label>
                 <input type='checkbox' id='viewsummaryall' name='viewsummaryall' <?php if (isset($_POST['viewsummaryall'])) { echo "checked='checked'";} ?> />
             </li>
             <li id='vertical_slide'>
-                <label id='noncompletedlbl' for='noncompleted' title='<?php echo $clang->gT("Count stats for each question based only on the total number of responses for which the question was displayed"); ?>'><?php echo $clang->gT("Subtotals based on displayed questions"); ?></label>
+                <label id='noncompletedlbl' for='noncompleted' title='<?php $clang->eT("Count stats for each question based only on the total number of responses for which the question was displayed"); ?>'><?php $clang->eT("Subtotals based on displayed questions"); ?></label>
                 <input type='checkbox' id='noncompleted' name='noncompleted' <?php if (isset($_POST['noncompleted'])) {echo "checked='checked'"; } ?> />
             </li>
             <?php
@@ -55,21 +55,21 @@
 
             ?>
             <li>
-                <label for='statlang'><?php echo $clang->gT("Statistics report language"); ?></label>
+                <label for='statlang'><?php $clang->eT("Statistics report language"); ?></label>
                 <select name="statlang" id="statlang"><?php echo $language_options; ?></select>
             </li>
         </ul>
     </fieldset>
 
     <fieldset id='left'>
-        <legend><?php echo $clang->gT("Response ID"); ?></legend>
+        <legend><?php $clang->eT("Response ID"); ?></legend>
         <ul>
             <li>
-                <label for='idG'><?php echo $clang->gT("Greater than:"); ?></label>
+                <label for='idG'><?php $clang->eT("Greater than:"); ?></label>
                 <input type='text' id='idG' name='idG' size='10' value='<?php if (isset($_POST['idG'])){ echo  sanitize_int($_POST['idG']);} ?>' onkeypress="return goodchars(event,'0123456789')" />
             </li>
             <li>
-                <label for='idL'><?php echo $clang->gT("Less than:"); ?></label>
+                <label for='idL'><?php $clang->eT("Less than:"); ?></label>
                 <input type='text' id='idL' name='idL' size='10' value='<?php if (isset($_POST['idL'])) { echo sanitize_int($_POST['idL']);} ?>' onkeypress="return goodchars(event,'0123456789')" />
             </li>
         </ul>
@@ -100,16 +100,16 @@
     ?>
 
     <fieldset>
-        <legend><?php echo $clang->gT("Output options"); ?></legend>
+        <legend><?php $clang->eT("Output options"); ?></legend>
         <ul>
             <li>
-                <label for='usegraph'><?php echo $clang->gT("Show graphs"); ?></label>
+                <label for='usegraph'><?php $clang->eT("Show graphs"); ?></label>
                 <input type='checkbox' id='usegraph' name='usegraph' <?php if (isset($_POST['usegraph'])) { echo "checked='checked'"; } ?> /><br />
                 <?php if($error != '') { echo "<span id='grapherror' style='display:none'>$error<hr /></span>"; } ?>
             </li>
 
             <li>
-                <label><?php echo $clang->gT("Select output format"); ?>:</label>
+                <label><?php $clang->eT("Select output format"); ?>:</label>
                 <input type='radio' id="outputtypehtml" name='outputtype' value='html' checked='checked' />
                 <label for='outputtypehtml'>HTML</label>
                 <input type='radio' id="outputtypepdf" name='outputtype' value='pdf' />
@@ -122,13 +122,13 @@
     </div>
 
     <p>
-        <input type='submit' value='<?php echo $clang->gT("View stats"); ?>' />
-        <input type='button' value='<?php echo $clang->gT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->createUrl("admin/statistics/surveyid/$surveyid"); ?>', '_top')" />
+        <input type='submit' value='<?php $clang->eT("View stats"); ?>' />
+        <input type='button' value='<?php $clang->eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/surveyid/$surveyid"); ?>', '_top')" />
     </p>
 
     <div class='header header_statistics'>
         <img src='<?php echo $imageurl; ?>/plus.gif' align='right' id='showfilter' /><img src='<?php echo $imageurl; ?>/minus.gif' align='right' id='hidefilter' />
-        <?php echo $clang->gT("Response filters"); ?>
+        <?php $clang->eT("Response filters"); ?>
     </div>
 
     <input type='hidden' id='filterchoice_state' name='filterchoice_state' value='<?php echo $filterchoice_state; ?>' />
@@ -1234,8 +1234,8 @@
         </table>
 
         <p id='vertical_slide2'>
-            <input type='submit' value='<?php echo $clang->gT("View stats"); ?>' />
-            <input type='button' value='<?php echo $clang->gT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->createUrl("admin/statistics/surveyid/$surveyid"); ?>', '_top')" />
+            <input type='submit' value='<?php $clang->eT("View stats"); ?>' />
+            <input type='button' value='<?php $clang->eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/surveyid/$surveyid"); ?>', '_top')" />
             <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
             <input type='hidden' name='display' value='stats' />
         </p>

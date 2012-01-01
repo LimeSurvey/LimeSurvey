@@ -2,7 +2,7 @@
     <?php
     if ($subaction == "edit")
     {
-        echo $clang->gT("Edit token entry");
+        $clang->eT("Edit token entry");
         foreach ($tokendata as $Key => $Value)
         {
             $$Key = $Value;
@@ -10,7 +10,7 @@
     }
     else
     {
-        echo $clang->gT("Add token entry");
+        $clang->eT("Add token entry");
         $tokenid = "";
     }
     ?>
@@ -24,25 +24,25 @@
 }
 else
 {
-    echo $clang->gT("Auto");
+    $clang->eT("Auto");
 } ?>
         </li>
-        <li><label for='firstname'><?php echo $clang->gT("First name"); ?>:</label>
+        <li><label for='firstname'><?php $clang->eT("First name"); ?>:</label>
             <input type='text' size='30' id='firstname' name='firstname' value="<?php if (isset($firstname))
             {
                 echo $firstname;
             } ?>" /></li>
-        <li><label for='lastname'><?php echo $clang->gT("Last name"); ?>:</label>
+        <li><label for='lastname'><?php $clang->eT("Last name"); ?>:</label>
             <input type='text' size='30'  id='lastname' name='lastname' value="<?php if (isset($lastname))
                    {
                        echo $lastname;
                    } ?>" /></li>
-        <li><label for='email'><?php echo $clang->gT("Email"); ?>:</label>
+        <li><label for='email'><?php $clang->eT("Email"); ?>:</label>
             <input type='text' maxlength='320' size='50' id='email' name='email' value="<?php if (isset($email))
             {
                 echo $email;
             } ?>" /></li>
-        <li><label for='emailstatus'><?php echo $clang->gT("Email Status"); ?>:</label>
+        <li><label for='emailstatus'><?php $clang->eT("Email Status"); ?>:</label>
             <input type='text' maxlength='320' size='50' id='emailstatus' name='emailstatus' value="<?php
             if (isset($emailstatus))
             {
@@ -53,17 +53,17 @@ else
                 echo "OK";
             }
 ?>" /></li>
-        <li><label for='token'><?php echo $clang->gT("Token"); ?>:</label>
+        <li><label for='token'><?php $clang->eT("Token"); ?>:</label>
             <input type='text' size='20' name='token' id='token' value="<?php if (isset($token))
             {
                 echo $token;
             } ?>" />
 <?php if ($subaction == "addnew")
 { ?>
-                <font size='1' color='red'><?php echo $clang->gT("You can leave this blank, and automatically generate tokens using 'Generate Tokens'"); ?></font>
+                <font size='1' color='red'><?php $clang->eT("You can leave this blank, and automatically generate tokens using 'Generate Tokens'"); ?></font>
 <?php } ?>
         </li>
-        <li><label for='language'><?php echo $clang->gT("Language"); ?>:</label>
+        <li><label for='language'><?php $clang->eT("Language"); ?>:</label>
             <?php
             if (isset($language))
             {
@@ -76,7 +76,7 @@ else
             ?>
         </li>
 
-        <li><label for='sent'><?php echo $clang->gT("Invitation sent?"); ?></label>
+        <li><label for='sent'><?php $clang->eT("Invitation sent?"); ?></label>
             <input type='text' size='20' id='sent' name='sent' value="<?php
             if (isset($sent))
             {
@@ -88,7 +88,7 @@ else
             }
             ?>" /></li>
 
-        <li><label for='remindersent'><?php echo $clang->gT("Reminder sent?"); ?></label>
+        <li><label for='remindersent'><?php $clang->eT("Reminder sent?"); ?></label>
             <input type='text' size='20' id='remindersent' name='remindersent' value="<?php
         if (isset($remindersent))
         {
@@ -102,11 +102,11 @@ else
 
         <?php if ($subaction == "edit")
         { ?>
-            <li><label for='remindercount'><?php echo $clang->gT("Reminder count:"); ?></label>
+            <li><label for='remindercount'><?php $clang->eT("Reminder count:"); ?></label>
                 <input type='text' size='6' id='remindercount' name='remindercount' value="<?php echo $remindercount; ?>" /></li>
 <?php } ?>
 
-        <li><label for='completed'><?php echo $clang->gT("Completed?"); ?></label>
+        <li><label for='completed'><?php $clang->eT("Completed?"); ?></label>
             <input type='text' size='20' id='completed' name='completed' value="<?php
         if (isset($completed))
         {
@@ -118,7 +118,7 @@ else
         }
 ?>" /></li>
 
-        <li><label for='usesleft'><?php echo $clang->gT("Uses left:"); ?></label>
+        <li><label for='usesleft'><?php $clang->eT("Uses left:"); ?></label>
             <input type='text' size='20' id='usesleft' name='usesleft' value="<?php
         if (isset($usesleft))
         {
@@ -130,7 +130,7 @@ else
         }
 ?>" /></li>
 
-        <li><label for='validfrom'><?php echo $clang->gT("Valid from"); ?>:</label>
+        <li><label for='validfrom'><?php $clang->eT("Valid from"); ?>:</label>
             <input type='text' class='popupdatetime' size='20' id='validfrom' name='validfrom' value="<?php
         if (isset($validfrom))
         {
@@ -138,7 +138,7 @@ else
             $datetimeobj = new Date_Time_Converter($validfrom, "Y-m-d H:i:s");
             echo $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
         }
-?>" /> <label for='validuntil'><?php echo $clang->gT('until'); ?>
+?>" /> <label for='validuntil'><?php $clang->eT('until'); ?>
             </label><input type='text' size='20' id='validuntil' name='validuntil' class='popupdatetime' value="<?php
         if (isset($validuntil))
         {
@@ -170,12 +170,12 @@ switch ($subaction)
 {
     case "edit":
         ?>
-                <input type='submit' value='<?php echo $clang->gT("Update token entry"); ?>' />
+                <input type='submit' value='<?php $clang->eT("Update token entry"); ?>' />
                 <input type='hidden' name='subaction' value='updatetoken' />
                 <input type='hidden' name='tid' value='<?php echo $tokenid; ?>' />
         <?php break;
     case "addnew": ?>
-                <input type='submit' value='<?php echo $clang->gT("Add token entry"); ?>' />
+                <input type='submit' value='<?php $clang->eT("Add token entry"); ?>' />
                 <input type='hidden' name='subaction' value='inserttoken' />
         <?php break;
 } ?>

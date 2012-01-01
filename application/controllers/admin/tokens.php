@@ -402,17 +402,17 @@ class tokens extends Survey_Common_Action
                 $token['validuntil'] = '';
 
             $aData->rows[$i]['id'] = $token['tid'];
-            $action = '<input type="image" src="' . Yii::app()->getConfig('imageurl') . '/do_16.png" title="' . $clang->gT("Do survey") . '" alt="' . $clang->gT("Do survey") . '" onclick=\'window.open("' . Yii::app()->createUrl("optin/local/surveyid/{$iSurveyId}/token/{$token['token']}") . '", "_blank")\'>';
+            $action = '<input type="image" src="' . Yii::app()->getConfig('imageurl') . '/do_16.png" title="' . $clang->gT("Do survey") . '" alt="' . $clang->gT("Do survey") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("optin/local/surveyid/{$iSurveyId}/token/{$token['token']}") . '", "_blank")\'>';
             $action .= '<input type="image" src="' . Yii::app()->getConfig('imageurl') . '/token_delete.png" title="' . $clang->gT("Delete token entry") . '" alt="' . $clang->gT("Delete token entry") . '" onclick=\'if (confirm("' . $clang->gT("Are you sure you want to delete this entry?") . ' (' . $token['tid'] . ')")) {$("#displaytokens").delRowData(' . $token['tid'] . ');$.post(delUrl,{tid:' . $token['tid'] . '});}\'>';
 
             if (strtolower($token['emailstatus']) == 'ok')
             {
                 if ($token['sent'] == 'N')
-                    $action .= '<input type="image" src="' . Yii::app()->getConfig('imageurl') . '/token_invite.png" name="sendinvitations" id="sendinvitations" title="' . $clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)") . '" onclick=\'window.open("' . Yii::app()->createUrl("admin/tokens/sa/email/surveyid/{$iSurveyId}/tokenids/" . $token['tid']) . '", "_blank")\' />';
+                    $action .= '<input type="image" src="' . Yii::app()->getConfig('imageurl') . '/token_invite.png" name="sendinvitations" id="sendinvitations" title="' . $clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("admin/tokens/sa/email/surveyid/{$iSurveyId}/tokenids/" . $token['tid']) . '", "_blank")\' />';
                 else
-                    $action .= '<input type="image" src="' . Yii::app()->getConfig('imageurl') . '/token_remind.png" name="sendreminders" id="sendreminders" title="' . $clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)") . '" onclick=\'window.open("' . Yii::app()->createUrl("admin/tokens/sa/email/action/remind/surveyid/{$iSurveyId}/tokenids/" . $token['tid']) . '", "_blank")\' />';
+                    $action .= '<input type="image" src="' . Yii::app()->getConfig('imageurl') . '/token_remind.png" name="sendreminders" id="sendreminders" title="' . $clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("admin/tokens/sa/email/action/remind/surveyid/{$iSurveyId}/tokenids/" . $token['tid']) . '", "_blank")\' />';
             }
-            $action .= '<input style="height: 16; width: 16px; font-size: 8; font-family: verdana" type="image" src="' . Yii::app()->getConfig('imageurl') . '/token_edit.png" title="' . $clang->gT("Edit token entry") . '" alt="' . $clang->gT("Edit token entry") . '" onclick=\'window.open("' . Yii::app()->createUrl("/admin/tokens/sa/edit/surveyid/{$iSurveyId}/tokenid/{$token['tid']}") . '", "_top")\'>';
+            $action .= '<input style="height: 16; width: 16px; font-size: 8; font-family: verdana" type="image" src="' . Yii::app()->getConfig('imageurl') . '/token_edit.png" title="' . $clang->gT("Edit token entry") . '" alt="' . $clang->gT("Edit token entry") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("/admin/tokens/sa/edit/surveyid/{$iSurveyId}/tokenid/{$token['tid']}") . '", "_top")\'>';
 
             $aData->rows[$i]['cell'] = array($token['tid'], $action, $token['firstname'], $token['lastname'], $token['email'], $token['emailstatus'], $token['token'], $token['language'], $token['sent'], $token['remindersent'], $token['remindercount'], $token['completed'], $token['usesleft'], $token['validfrom'], $token['validuntil']);
             $attributes = GetAttributeFieldNames($iSurveyId);
@@ -1834,7 +1834,7 @@ function editToken($iSurveyId)
                 'message' => '<br />' . $clang->gT("The tokens table has now been removed and tokens are no longer required to access this survey.") . "<br /> " . $clang->gT("A backup of this table has been made and can be accessed by your system administrator.") . "<br />\n"
                     . "(\"old_tokens_{$iSurveyId}_$date\")" . "<br /><br />\n"
                     . "<input type='submit' value='"
-                    . $clang->gT("Main Admin Screen") . "' onclick=\"window.open('" . Yii::app()->createURL("admin/") . "', '_top')\" />"
+                    . $clang->gT("Main Admin Screen") . "' onclick=\"window.open('" . Yii::app()->getController()->createUrl("admin/") . "', '_top')\" />"
             )), $aData);
         }
     }
@@ -1949,7 +1949,7 @@ function editToken($iSurveyId)
             $comm = Yii::app()->db->createCommand();
             $comm->createTable('{{tokens_' . $iSurveyId . '}}', $fields);
 
-            //$tabname = "{$dbprefix}tokens_{$iSurveyId}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
+            //$tabname = "{{tokens_{$iSurveyId}}}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
             /* $taboptarray = array('mysql' => 'ENGINE='.$aDatabasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci',
               'mysqli' => 'ENGINE='.$aDatabasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
               $dict = NewDataDictionary($connect);

@@ -1,7 +1,7 @@
 <script src="<?php echo Yii::app()->getConfig('adminscripts') . "participantPanel.js" ?>" type="text/javascript"></script>
 <script type="text/javascript">
-    var exporttocsvcountall = "<?php echo Yii::app()->createUrl("exporttocsvcountAll"); ?>";
-    var exporttocsvall = "<?php echo Yii::app()->createUrl("exporttocsvAll"); ?>";
+    var exporttocsvcountall = "<?php echo Yii::app()->getController()->createUrl("exporttocsvcountAll"); ?>";
+    var exporttocsvall = "<?php echo Yii::app()->getController()->createUrl("exporttocsvAll"); ?>";
     var okBtn = "<?php $clang->eT("OK") ?>";
     var error = "<?php $clang->eT("Error") ?>";
 </script>
@@ -79,7 +79,7 @@
     <div class='menubar-main'>
         <div class='menubar-left'>
             <?php
-            echo CHtml::link(CHtml::image($home['src'], $home['alt']), Yii::app()->createUrl("admin"));
+            echo CHtml::link(CHtml::image($home['src'], $home['alt']), Yii::app()->getController()->createUrl("/admin"));
             echo CHtml::link(CHtml::image($information['src'], $information['alt']), $this->createURL('admin/participants/sa/index'));
             echo CHtml::link(CHtml::image($display['src'], $display['alt']), $this->createURL('admin/participants/sa/displayParticipants'));
             echo CHtml::image($seperator['src'], $seperator['alt']);

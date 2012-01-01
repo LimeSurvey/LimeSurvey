@@ -1,4 +1,4 @@
-<?php echo $clang->gT("Transfer the user's surveys to: "); ?>
+<?php $clang->eT("Transfer the user's surveys to: "); ?>
 
 <form method="post" name="deluserform" action="<?php echo $this->createUrl("admin/user/deluser"); ?>">
     <select name='transfer_surveys_to'>
@@ -27,5 +27,5 @@
     <input type="hidden" name="uid" value="<?php echo $postuserid; ?>" />
     <input type="hidden" name="user" value="<?php echo $postuser; ?>" />
     <input type="hidden" name="action" value="finaldeluser" /><br /> <br />
-    <input type="submit" value="<?php echo $clang->gT("Delete User"); ?>" />
+    <input type="submit" value="<?php $clang->eT("Delete User"); ?>" />
 </form>

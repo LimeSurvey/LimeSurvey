@@ -1,9 +1,9 @@
     <div class="push"></div>
 </div>
 <div class='footer'>
-    <div style='float:left;width:110px;text-align:left;'><a href='http://docs.limesurvey.org'><img alt='LimeSurvey - <?php echo $clang->gT("Online Manual");?>' title='LimeSurvey - <?php echo $clang->gT("Online Manual");?>' src='<?php echo $imageurl;?>/docs.png' width="25" height="25"/></a></div>
-    <div style='float:right;'><a href='http://donate.limesurvey.org'><img alt='<?php echo $clang->gT("Support this project - Donate to "); ?>LimeSurvey' title='<?php echo $clang->gT("Support this project - Donate to "); ?>LimeSurvey!' src='<?php echo $imageurl;?>/donate.png' width="107" height="25"/></a></div>
-    <div class='subtitle'><a class='subtitle' title='<?php echo $clang->gT("Visit our website!"); ?>' href='http://www.limesurvey.org' target='_blank'>LimeSurvey</a><br /><?php echo $versiontitle." ".$versionnumber." ".$buildtext;?></div>
+    <div style='float:left;width:110px;text-align:left;'><a href='http://docs.limesurvey.org'><img alt='LimeSurvey - <?php $clang->eT("Online Manual");?>' title='LimeSurvey - <?php $clang->eT("Online Manual");?>' src='<?php echo $imageurl;?>/docs.png' width="25" height="25"/></a></div>
+    <div style='float:right;'><a href='http://donate.limesurvey.org'><img alt='<?php $clang->eT("Support this project - Donate to "); ?>LimeSurvey' title='<?php $clang->eT("Support this project - Donate to "); ?>LimeSurvey!' src='<?php echo $imageurl;?>/donate.png' width="107" height="25"/></a></div>
+    <div class='subtitle'><a class='subtitle' title='<?php $clang->eT("Visit our website!"); ?>' href='http://www.limesurvey.org' target='_blank'>LimeSurvey</a><br /><?php echo $versiontitle." ".$versionnumber." ".$buildtext;?></div>
 </div>
 <?php
     if(!empty($js_admin_includes))

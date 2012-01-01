@@ -7,7 +7,7 @@ if (isset($uqresult))
 if (isset($result)) // Checked
 {
 ?>
-<script type="text/javascript">alert("<?php echo $clang->gT("Failed to update answers", 'js') . " - " . $query; ?>")</script><br />
+<script type="text/javascript">alert("<?php $clang->eT("Failed to update answers", 'js') . " - " . $query; ?>")</script><br />
 <?php
 }
 if (isset($invalidCode) && $invalidCode == 1)
@@ -25,7 +25,7 @@ if (isset($duplicateCode) && $duplicateCode == 1)
 if (isset($aresult))
 {
 ?>
-<script type="text/javascript">alert("<?php echo $clang->gT("Failed to delete answer", 'js') . " - ".$query; ?>")</script><br />
+<script type="text/javascript">alert("<?php $clang->eT("Failed to delete answer", 'js') . " - ".$query; ?>")</script><br />
 <?php
 }
 if (isset($strlen) && $strlen < 1)

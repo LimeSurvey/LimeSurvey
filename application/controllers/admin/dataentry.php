@@ -358,21 +358,17 @@
         	$schema = Yii::app()->db->getSchema();
 
             $clang = Yii::app()->lang;
-            $dbprefix = Yii::app()->db->tablePrefix;
             Yii::app()->loadHelper('database');
 
             if (!$subaction == "import")
             {
                 // show UI for choosing old table
 
-                $query = db_select_tables_like("{$dbprefix}old\_survey\_%");
-                $result = db_execute_assoc($query) or show_error("Error:<br />$query<br />");
-                if ($result->count() > 0)
-                	$result = $result->readAll();
+                $result = db_get_tables_like("old\_survey\_%");
 
                 $optionElements_array = '';
                 //$queryCheckColumnsActive = $schema->getTable($oldtable)->columnNames;
-				$resultActive = $schema->getTable($dbprefix.'survey_'.$surveyid)->columnNames;
+				$resultActive = $schema->getTable("{{survey_{$surveyid}}}")->columnNames;
                 //$resultActive = db_execute_assoc($queryCheckColumnsActive) or show_error("Error:<br />$query<br />");
                 $countActive = count($resultActive);
 
@@ -407,7 +403,7 @@
                  */
                 //	if($databasetype=="postgres")
                 //	{
-                $activetable = "{$dbprefix}survey_$surveyid";
+                $activetable = "{{survey_$surveyid}}";
 
                 //Fields we don't want to import
                 $dontimportfields = array(
@@ -445,14 +441,11 @@
                 Yii::app()->session['flashmessage'] = sprintf($clang->gT("%s old response(s) were successfully imported."), $iRecordCount);
 
                 $sOldTimingsTable=substr($oldtable,0,strrpos($oldtable,'_')).'_timings'.substr($oldtable,strrpos($oldtable,'_'));
-                $sNewTimingsTable=$dbprefix.$surveyid."_timings";
+                $sNewTimingsTable = "{{{$surveyid}_timings}}";
 
-                if (tableExists(sStripDBPrefix($sOldTimingsTable)) && tableExists(sStripDBPrefix($sNewTimingsTable)) && returnglobal('importtimings')=='Y')
+                if (returnglobal('importtimings')=='Y' && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable))
                 {
-                   // Import timings
-                    //$aFieldsOldTimingTable=array_values(Yii::app()->db->MetaColumnNames($sOldTimingsTable, true));
-                    //$aFieldsNewTimingTable=array_values(Yii::app()->db->MetaColumnNames($sNewTimingsTable, true));
-
+                    // Import timings
                     $aFieldsOldTimingTable=array_values($schema->getTable($sOldTimingsTable)->columnNames);
                     $aFieldsNewTimingTable=array_values($schema->getTable($sNewTimingsTable)->columnNames);
 
@@ -1937,7 +1930,7 @@
                         $this->load->model('saved_control_model');*/
                         if (db_execute_assoc($SQL))
                         {
-                            $scid =  Yii::app()->db->getLastInsertID(); // Yii::app()->db->getLastInsertID("{$dbprefix}saved_control","scid");
+                            $scid =  Yii::app()->db->getLastInsertID(); // Yii::app()->db->getLastInsertID("{{saved_control}}","scid");
 
 							$dataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), $clang->gT("Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."));
                             //$dataentryoutput .= "<font class='successtitle'></font><br />\n";

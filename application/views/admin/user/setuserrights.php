@@ -3,7 +3,7 @@
 <table width='100%' border='0'>
 <tr>
 <td colspan='8' class='header ui-widget-header' align='center'>
-<?php echo $clang->gT("Set User Rights");?>:<?php echo htmlspecialchars(sanitize_user($_POST['user']));?>
+<?php $clang->eT("Set User Rights");?>:<?php echo htmlspecialchars(sanitize_user($_POST['user']));?>
 </td>
 </tr>
 
@@ -116,7 +116,7 @@ foreach ($userlist as $usr) {
 
         <tr>
         <td colspan='7' align='center'>
-        <input type='submit' value='<?php echo $clang->gT("Save Now");?>' />
+        <input type='submit' value='<?php $clang->eT("Save Now");?>' />
         <input type='hidden' name='action' value='userrights' />
         <input type='hidden' name='uid' value='<?php echo $postuserid;?>' />
         </td>

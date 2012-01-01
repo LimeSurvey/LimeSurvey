@@ -11,22 +11,22 @@
 <div id="steps">
 <table class="grid_2" >
 <tr class="<?php echo $classesForStep[0]; ?>">
-<td>1: <?php echo $clang->gT("Welcome"); ?></td>
+<td>1: <?php $clang->eT("Welcome"); ?></td>
 </tr>
 <tr class="<?php echo $classesForStep[1]; ?>">
-<td>2: <?php echo $clang->gT("License"); ?></td>
+<td>2: <?php $clang->eT("License"); ?></td>
 </tr>
 <tr class="<?php echo $classesForStep[2]; ?>">
-<td>3: <?php echo $clang->gT("Pre-installation check"); ?></td>
+<td>3: <?php $clang->eT("Pre-installation check"); ?></td>
 </tr>
 <tr class="<?php echo $classesForStep[3]; ?>">
-<td>4: <?php echo $clang->gT("Configuration"); ?></td>
+<td>4: <?php $clang->eT("Configuration"); ?></td>
 </tr>
 <tr class="<?php echo $classesForStep[4]; ?>">
-<td>5: <?php echo $clang->gT("Database settings"); ?></td>
+<td>5: <?php $clang->eT("Database settings"); ?></td>
 </tr>
 <tr class="<?php echo $classesForStep[5]; ?>">
-<td>6: <?php echo $clang->gT("Optional settings"); ?></td>
+<td>6: <?php $clang->eT("Optional settings"); ?></td>
 </tr>
 </table>
 </div>

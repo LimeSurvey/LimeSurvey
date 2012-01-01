@@ -1,7 +1,7 @@
 <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.js"?>" type="text/javascript"></script>
 <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('generalscripts')."jquery/css/start/jquery-ui.css" ?>" />
-<title><?PHP echo $clang->gT("Blacklist Control") ?></title>
+<title><?PHP $clang->eT("Blacklist Control") ?></title>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url()."templates/default/template.css" ?>" />
 <style type="text/css" media="aural tty">
     progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
@@ -41,32 +41,32 @@
                 {
                     if($blacklist == 'Y')
                     {
-                        echo $clang->gT("You have successfully blacklisted from any survey on this server");
+                        $clang->eT("You have successfully blacklisted from any survey on this server");
                     }
                     else if($blacklist == 'N')
                         {
-                            echo $clang->gT("You have successfully un-blacklisted from any survey on this server");
+                            $clang->eT("You have successfully un-blacklisted from any survey on this server");
                         }
                 }
                 else if($is_participant)
                     {
                         if($blacklist == 'Y')
                         {
-                            echo $clang->gT("You have already been blacklisted from any survey on this server");
+                            $clang->eT("You have already been blacklisted from any survey on this server");
                         }
                         else if($blacklist == 'N')
                             {
-                                echo $clang->gT("You have already been un-blacklisted from any survey on this server");
+                                $clang->eT("You have already been un-blacklisted from any survey on this server");
                             }
 
                 }
                 else if(!$is_survey)
                     {
-                        echo $clang->gT("Survey is no longer active");
+                        $clang->eT("Survey is no longer active");
                     }
                     else
                     {
-                        echo $clang->gT("The URL you are trying to use is either modified, or you have been removed from this server");
+                        $clang->eT("The URL you are trying to use is either modified, or you have been removed from this server");
                 }
 
             }
@@ -76,35 +76,35 @@
                     {
                         if($blacklist == 'Y')
                         {
-                            echo $clang->gT("You have successfully blacklisted from this survey");
+                            $clang->eT("You have successfully blacklisted from this survey");
                         }
                         else if($blacklist == 'N')
                             {
-                                echo $clang->gT("You have successfully un-blacklisted from this survey");
+                                $clang->eT("You have successfully un-blacklisted from this survey");
                             }
                 }
                 else if($is_participant)
                     {
                         if($blacklist == 'Y')
                         {
-                            echo $clang->gT("You have already been blacklisted from this survey");
+                            $clang->eT("You have already been blacklisted from this survey");
                         }
                         else if($blacklist == 'N')
                             {
-                                echo $clang->gT("You have already been un-blacklisted from this survey");
+                                $clang->eT("You have already been un-blacklisted from this survey");
                             }
 
                 }
                 else
                 {
-                    echo $clang->gT("The URL you are trying to use is either modified, or you have been removed from this server");
+                    $clang->eT("The URL you are trying to use is either modified, or you have been removed from this server");
 
                 }
 
             }
             else
             {
-                echo $clang->gT("You have successfully blacklisted from this survey");
+                $clang->eT("You have successfully blacklisted from this survey");
             }
         ?>
     </p>

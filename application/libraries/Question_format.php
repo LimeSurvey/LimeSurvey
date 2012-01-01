@@ -261,7 +261,7 @@ class Question_format {
 		        {
 		            // ClearAll link is only relevant for survey with printanswers enabled
 		            // in other cases the session is cleared at submit time
-		            $completed .= "<a href='".Yii::app()->createUrl("survey/sid/{$surveyid}/move/clearall")."'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
+		            $completed .= "<a href='".Yii::app()->getController()->createUrl("survey/sid/{$surveyid}/move/clearall")."'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
 		        }
 
 		    }
@@ -308,7 +308,7 @@ class Question_format {
 		        if ($thissurvey['printanswers']=='Y')
 		        {
 		            $completed .= "<br /><br />"
-		            ."<a class='printlink' href='".Yii::app()->createUrl('printanswers/view/'.$surveyid)."' target='_blank'>"
+		            ."<a class='printlink' href='".Yii::app()->getController()->createUrl('printanswers/view/'.$surveyid)."' target='_blank'>"
 		            .$clang->gT("Click here to print your answers.")
 		            ."</a><br />\n";
 		        }
@@ -481,7 +481,7 @@ class Question_format {
 		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'Question_format[477]');
 
 
-		echo "\n<form method='post' action='".Yii::app()->createUrl("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
+		echo "\n<form method='post' action='".Yii::app()->getController()->createUrl("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
         echo sDefaultSubmitHandler();
 
         $redata = compact(array_keys(get_defined_vars()));

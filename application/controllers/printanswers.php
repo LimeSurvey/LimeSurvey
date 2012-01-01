@@ -179,7 +179,7 @@ class printanswers extends LSYii_Controller {
         $printoutput = '';
         if(Yii::app()->getConfig('usepdfexport') == 1)
         {
-            $printoutput .= "<form action='".Yii::app()->createUrl('printanswers/view/'.$surveyid.'/pdf')."' method='post'>\n<center><input type='submit' value='".$clang->gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
+            $printoutput .= "<form action='".Yii::app()->getController()->createUrl('printanswers/view/'.$surveyid.'/pdf')."' method='post'>\n<center><input type='submit' value='".$clang->gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
         }
         if($printableexport == 'pdf')
         {

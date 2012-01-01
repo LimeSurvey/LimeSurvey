@@ -1,6 +1,6 @@
-<span class='printouttitle'><strong><?php echo $clang->gT("Survey name (ID)") ?></strong> Test survey (46962)</span><br />
+<span class='printouttitle'><strong><?php $clang->eT("Survey name (ID)") ?></strong> Test survey (46962)</span><br />
 <table class='printouttable' >
-    <tr><th><?php echo $clang->gT("Question") ?></th><th><?php echo $clang->gT("Your answer") ?></th></tr>
+    <tr><th><?php $clang->eT("Question") ?></th><th><?php $clang->eT("Your answer") ?></th></tr>
     <tr>
         <td>id</td>
         <td>12</td>

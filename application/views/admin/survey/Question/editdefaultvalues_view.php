@@ -1,4 +1,4 @@
-    <div class='header ui-widget-header'><?php echo $clang->gT('Edit default answer values') ?></div>
+    <div class='header ui-widget-header'><?php $clang->eT('Edit default answer values') ?></div>
     <form class='form30' id='frmdefaultvalues' name='frmdefaultvalues'
             action='<?php echo $this->createUrl('admin/database/index') ?>' method='post'>
         <div id="tabs">
@@ -33,7 +33,7 @@
                         <select name='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>' id='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'>
 
                             <option value=''<?php is_null($opts['defaultvalue']) ? ' selected="selected"' : '' ?>>
-                                <?php echo $clang->gT('<No default value>') ?>
+                                <?php $clang->eT('<No default value>') ?>
                             </option>
 <?php
                 foreach ($opts['answers'] as $answer)
@@ -51,7 +51,7 @@
 ?>
                     <li>
                         <label for='other_<?php echo "{$scale_id}_{$language}" ?>'>
-                            <?php echo $clang->gT("Default value for option 'Other':")?>
+                            <?php $clang->eT("Default value for option 'Other':")?>
                         </label>
                         <input type='text' name='other_<?php echo "{$scale_id}_{$language}" ?>' value='<?php echo $opts['Ydefaultvalue'] ?>' id='other_<?php echo "{$scale_id}_{$language}" ?>'>
                     </li>
@@ -110,7 +110,7 @@
 ?>
                     <li>
                         <label for='samedefault'>
-                            <?php echo $clang->gT('Use same default value across languages:') ?>
+                            <?php $clang->eT('Use same default value across languages:') ?>
                         </label>
                         <input type='checkbox' name='samedefault' id='samedefault'<?php $questionrow['same_default'] ? ' checked="checked"' : '' ?> />
                     </li>
@@ -127,5 +127,5 @@
         <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid ?>' />
         <input type='hidden' id='gid' name='gid' value='<?php echo $gid ?>' />
         <input type='hidden' id='qid' name='qid' value='<?php echo $qid ?>' />
-        <input type='submit' value='<?php echo $clang->gT('Save') ?>'/>
+        <input type='submit' value='<?php $clang->eT('Save') ?>'/>
     </form>

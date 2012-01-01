@@ -272,7 +272,7 @@ class Save {
         ."\t//-->\n"
         ."\t</script>\n\n";
 
-        echo "<form method='post' action='".Yii::app()->createUrl("survey")."'>\n";
+        echo "<form method='post' action='".Yii::app()->getController()->createUrl("survey")."'>\n";
         //PRESENT OPTIONS SCREEN
         if (isset($errormsg) && $errormsg != "")
         {

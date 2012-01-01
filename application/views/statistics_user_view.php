@@ -13,4 +13,4 @@
             </div>
             <?php if (isset($summary) && $summary) { echo $statisticsoutput; } ?><br />
         </div>
-                
+

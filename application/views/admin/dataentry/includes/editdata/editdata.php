@@ -28,14 +28,14 @@
     <tr>
     	<td align='left'>
     		<input type='checkbox' class='checkboxbtn' name='save' id='save' onclick='saveshow(this.id)' />
-    		<label for='save'><?php echo $clang->gT("Save for further completion by survey user"); ?></label>
+    		<label for='save'><?php $clang->eT("Save for further completion by survey user"); ?></label>
         </td>
    	</tr>
 </table>
 
 <div name='saveoptions' id='saveoptions' style='display: none'>
 	<table align='center' class='outlinetable' cellspacing='0'>
-    	<tr><td align='right'><?php echo $clang->gT("Identifier:"); ?></td>
+    	<tr><td align='right'><?php $clang->eT("Identifier:"); ?></td>
     		<td>
     			<input type='text' name='save_identifier'" 
 	    			<?php if (returnglobal('identifier')) { ?> 
@@ -54,7 +54,7 @@
 </div>
 <tr>
 	<td align='center'>
-		<input type='submit' value='<?php echo $clang->gT("Submit"); ?>' />
+		<input type='submit' value='<?php $clang->eT("Submit"); ?>' />
 		<input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
 		<input type='hidden' name='subaction' value='insert' />
 		<input type='hidden' name='language' value='<?php echo $sDataEntryLanguage; ?>' />

@@ -1,10 +1,10 @@
-<div class='header ui-widget-header'><?php echo $clang->gT("Editing user");?></div><br />
+<div class='header ui-widget-header'><?php $clang->eT("Editing user");?></div><br />
 <form action='<?php echo $this->createUrl("admin/user/moduser");?>' method='post'>
 <table class='edituser'><thead><tr>
-<th><?php echo $clang->gT("Username");?></th>
-<th><?php echo $clang->gT("Email");?></th>
-<th><?php echo $clang->gT("Full name");?></th>
-<th><?php echo $clang->gT("Password");?></th>
+<th><?php $clang->eT("Username");?></th>
+<th><?php $clang->eT("Email");?></th>
+<th><?php $clang->eT("Full name");?></th>
+<th><?php $clang->eT("Password");?></th>
 </tr></thead>
 <tbody><tr>
 <?php 
@@ -38,7 +38,7 @@ foreach ($mur as $mrw) { ?>
 </tbody>
 </table>
 <p>
-<input type='submit' value='<?php echo $clang->gT("Save");?>' />
+<input type='submit' value='<?php $clang->eT("Save");?>' />
 <input type='hidden' name='action' value='moduser' />
 </p>
 </form>

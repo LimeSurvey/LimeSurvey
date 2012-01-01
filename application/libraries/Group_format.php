@@ -206,7 +206,7 @@ class Group_format {
 		            {
 		                // ClearAll link is only relevant for survey with printanswers enabled
 		                // in other cases the session is cleared at submit time
-		                $completed .= "<a href='".Yii::app()->createUrl("survey/sid/{$surveyid}/move/clearall")."'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
+		                $completed .= "<a href='".Yii::app()->getController()->createUrl("survey/sid/{$surveyid}/move/clearall")."'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
 		            }
 		        }
 		        else //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
@@ -279,7 +279,7 @@ class Group_format {
 		            if ($thissurvey['printanswers']=='Y')
 		            {
 		                $completed .= "<br /><br />"
-		                ."<a class='printlink' href='".Yii::app()->createUrl('printanswers/view/'.$surveyid)."'  target='_blank'>"
+		                ."<a class='printlink' href='".Yii::app()->getController()->createUrl('printanswers/view/'.$surveyid)."'  target='_blank'>"
 		                .$clang->gT("Print your answers.")
 		                ."</a><br />\n";
 		            }
@@ -536,11 +536,11 @@ class Group_format {
 		$hiddenfieldnames=implode("|", $inputnames);
 
 		if (isset($upload_file) && $upload_file)
-		    echo "<form enctype=\"multipart/form-data\" method='post' action='".Yii::app()->createUrl("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>
+		    echo "<form enctype=\"multipart/form-data\" method='post' action='".Yii::app()->getController()->createUrl("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>
 		      <!-- INPUT NAMES -->
 		      <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
 		else
-		    echo "<form method='post' action='".Yii::app()->createUrl("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>
+		    echo "<form method='post' action='".Yii::app()->getController()->createUrl("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>
 		      <!-- INPUT NAMES -->
 		      <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
         echo sDefaultSubmitHandler();

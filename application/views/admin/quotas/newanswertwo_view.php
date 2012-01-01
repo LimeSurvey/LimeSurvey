@@ -1,11 +1,11 @@
 <?php if (count($question_answers) == $x) { ?>
-<div class="header"><?php echo $clang->gT("Add Answer");?>: <?php echo $clang->gT("Question Selection");?></div><br />
+<div class="header"><?php $clang->eT("Add Answer");?>: <?php $clang->eT("Question Selection");?></div><br />
 	<div class="messagebox">
-		<?php echo $clang->gT("All answers are already selected in this quota.");?>
-		<br/><br/><input type="submit" onclick="window.open('<?php echo $this->createUrl("admin/quotas/surveyid/$iSurveyId");?>', '_top')" value="<?php echo $clang->gT("Continue");?>"/>
+		<?php $clang->eT("All answers are already selected in this quota.");?>
+		<br/><br/><input type="submit" onclick="window.open('<?php echo $this->createUrl("admin/quotas/surveyid/$iSurveyId");?>', '_top')" value="<?php $clang->eT("Continue");?>"/>
 	</div>
 <?php } else { ?>
-<div class="header ui-widget-header"><?php echo $clang->gT("Survey Quota");?>: <?php echo $clang->gT("Add Answer");?></div><br />
+<div class="header ui-widget-header"><?php $clang->eT("Survey Quota");?>: <?php $clang->eT("Add Answer");?></div><br />
 	<div class="messagebox ui-corner-all" style="width: 600px">
 		<form action="<?php echo $this->createUrl("admin/quotas/surveyid/$iSurveyId/subaction/insertquotaanswer");?>#quota_<?php echo sanitize_int($_POST['quota_id']);?>" method="post">
 			<table class="addquotaanswer" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
@@ -20,7 +20,7 @@
 						<td align="center">&nbsp;</td>
 					</tr>
 					<tr class="evenrow">
-						<td width="35%" align="center" valign="top"><strong><?php echo $clang->gT("Select Answer");?>:</strong></td>
+						<td width="35%" align="center" valign="top"><strong><?php $clang->eT("Select Answer");?>:</strong></td>
 						<td align="left">
 							<select name="quota_anscode" size="15">
 <?php
@@ -33,7 +33,7 @@
 						</td>
 					</tr>
 					<tr align="left" class="evenrow">
-						<td width="35%" align="center" valign="top"><strong><?php echo $clang->gT("Save this, then create another:");?></strong></td>
+						<td width="35%" align="center" valign="top"><strong><?php $clang->eT("Save this, then create another:");?></strong></td>
 						<td><input type="checkbox" name="createanother"></td>
 					</tr>
 					<tr align="left" class="evenrow">
@@ -42,7 +42,7 @@
 					<tr align="left" class="evenrow">
 						<td>&nbsp;</td>
 						<td>
-							<input name="submit" type="submit" class="submit" value="<?php echo $clang->gT("Next");?>" />
+							<input name="submit" type="submit" class="submit" value="<?php $clang->eT("Next");?>" />
 							<input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
 							<input type="hidden" name="action" value="quotas" />
 							<input type="hidden" name="subaction" value="insertquotaanswer" />

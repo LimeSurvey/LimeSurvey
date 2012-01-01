@@ -12,14 +12,14 @@
                 {
                     foreach ($failedcheck as $fc)
                     { ?>
-                    <li> Question qid-<?php echo $fc[0]; ?> ("<a href='<?php echo Yii::app()->createUrl('admin/survey/view/'.$surveyid.'/'.$fc[3].'/'.$fc[0]); ?>'><?php echo $fc[1]; ?></a>")<?php echo $fc[2]; ?></li>
+                    <li> Question qid-<?php echo $fc[0]; ?> ("<a href='<?php echo Yii::app()->getController()->createUrl('admin/survey/view/'.$surveyid.'/'.$fc[3].'/'.$fc[0]); ?>'><?php echo $fc[1]; ?></a>")<?php echo $fc[2]; ?></li>
                     <?php }
                 }
                 if (isset($failedgroupcheck) && $failedgroupcheck)
                 {
                     foreach ($failedgroupcheck as $fg)
                     { ?>
-                    <li> Group gid-<?php echo $fg[0]; ?> ("<a href='<?php echo Yii::app()->createUrl('admin/survey/view/'.$surveyid.'/'.$fg[0]); ?>'><?php echo $fg[1]; ?></a>")<?php echo $fg[2]; ?></li>
+                    <li> Group gid-<?php echo $fg[0]; ?> ("<a href='<?php echo Yii::app()->getController()->createUrl('admin/survey/view/'.$surveyid.'/'.$fg[0]); ?>'><?php echo $fg[1]; ?></a>")<?php echo $fg[2]; ?></li>
                     <?php }
             } ?>
         </ul>
@@ -43,16 +43,16 @@
             <?php $clang->eT("The following settings cannot be changed when the survey is active.");?>
         </div>
         <?php $clang->eT("Please check these settings now, then click the button below.");?>
-        <form class='form44' action='<?php echo Yii::app()->createUrl("admin/survey/sa/activate/surveyid/".$surveyid); ?>' method='post'>
+        <form class='form44' action='<?php echo Yii::app()->getController()->createUrl("admin/survey/sa/activate/surveyid/".$surveyid); ?>' method='post'>
             <ul>
-                <li><label for='anonymized'><?php echo $clang->gT("Anonymized responses?"); ?>
+                <li><label for='anonymized'><?php $clang->eT("Anonymized responses?"); ?>
 
                         <script type="text/javascript"><!--
                             function alertPrivacy()
                             {
                                 if (document.getElementById('anonymized').value == 'Y')
                                 {
-                                    alert('<?php echo $clang->gT("Warning"); ?>: <?php echo $clang->gT("If you turn on the -Anonymized responses- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.","js"); ?>');
+                                    alert('<?php $clang->eT("Warning"); ?>: <?php $clang->eT("If you turn on the -Anonymized responses- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.","js"); ?>');
                                 }
                             }
                             //--></script></label>
@@ -62,12 +62,12 @@
                             <?php if ($aSurveysettings['anonymized'] == "Y") { ?>
                                 selected='selected'
                                 <?php } ?>
-                            ><?php echo $clang->gT("Yes"); ?></option>
+                            ><?php $clang->eT("Yes"); ?></option>
                         <option value='N'
                             <?php if ($aSurveysettings['anonymized'] != "Y") { ?>
                                 selected='selected'
                                 <?php } ?>
-                            ><?php echo $clang->gT("No"); ?></option>
+                            ><?php $clang->eT("No"); ?></option>
                     </select>
                 </li>
 

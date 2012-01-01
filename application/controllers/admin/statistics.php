@@ -31,7 +31,7 @@ class statistics extends Survey_Common_Action {
 		$surveyid = sanitize_int($surveyid);
 		//TODO: Convert question types to views
 
-		$clang = $this->controller->lang;
+		$clang = $this->getController()->lang;
 
 		Yii::app()->loadHelper("surveytranslator");
 
@@ -167,11 +167,11 @@ class statistics extends Survey_Common_Action {
 		//hide/show the filter
 		//filtersettings by default aren't shown when showing the results
 		//$statisticsoutput .= '<script type="text/javascript" src="scripts/statistics.js"></script>';
-		$this->controller->_js_admin_includes(Yii::app()->baseUrl."/scripts/admin/statistics.js");
+		$this->getController()->_js_admin_includes(Yii::app()->baseUrl."/scripts/admin/statistics.js");
 
 		if (empty($_POST['outputtype']) || $_POST['outputtype'] == 'html')
 		{
-			$this->controller->_getAdminHeader();
+			$this->getController()->_getAdminHeader();
 
 			//headline with all icons for available statistic options
 			//Get the menubar
@@ -551,8 +551,8 @@ class statistics extends Survey_Common_Action {
 		}	//end if -> show summary results
 
 		$data['output'] = $statisticsoutput;
-		$this->controller->render("/admin/export/statistics_view",$data);
-		$this->controller->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+		$this->getController()->render("/admin/export/statistics_view",$data);
+		$this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
 
 	}
 

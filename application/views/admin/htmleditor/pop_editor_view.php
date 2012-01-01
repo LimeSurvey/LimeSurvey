@@ -49,7 +49,7 @@
                     var editor = evt.editor;
                     editor.setData(window.opener.document.getElementsByName("<?php echo $sFieldName; ?>")[0].value);
                     editor.execCommand('maximize');
-                    window.status='LimeSurvey <?php echo $clang->gT('Editing', 'js') . ' ' . 'javascript_escape(' . $sFieldText . ', true)'; ?>';
+                    window.status='LimeSurvey <?php $clang->eT('Editing', 'js') . ' ' . 'javascript_escape(' . $sFieldText . ', true)'; ?>';
                 }
 
                 function html_transfert()

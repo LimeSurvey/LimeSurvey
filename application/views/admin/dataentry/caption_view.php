@@ -1,4 +1,4 @@
-<div class='header ui-widget-header'><?php echo $clang->gT("Data entry"); ?></div>
+<div class='header ui-widget-header'><?php $clang->eT("Data entry"); ?></div>
     
             <form action='<?php echo $this->createUrl('admin/dataentry/sa/insert'); ?>' enctype='multipart/form-data' name='addsurvey' method='post' id='addsurvey'>
             <table class='data-entry-tbl' cellspacing='0'>

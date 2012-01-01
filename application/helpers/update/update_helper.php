@@ -38,7 +38,7 @@ function CheckForDBUpgrades($subaction = null)
             db_upgrade(intval($currentDBVersion));
             Yii::app()->db->createCommand()->update($dbprefix.'settings_global', array('stg_value' => intval($dbversionnumber)), 'stg_name = \'DBVersion\'');
             echo "<br />".sprintf($clang->gT("Database has been successfully upgraded to version %s"),$dbversionnumber);
-			echo "<br /><a href='".Yii::app()->createUrl("admin")."'>".$clang->gT("Back to main menu")."</a></div>";
+			echo "<br /><a href='".Yii::app()->getController()->createUrl("admin")."'>".$clang->gT("Back to main menu")."</a></div>";
         }
         else {
             ShowDBUpgradeNotice();
@@ -52,15 +52,15 @@ function ShowDBUpgradeNotice() {
 	//$sitename = Yii::app()->getConfig('sitename');
 	echo '<div class="messagebox">';
     echo "<div class='header'>".$clang->gT('Database upgrade').'</div><p>';
-    echo $clang->gT('Please verify the following information before continuing with the database upgrade:').'<ul>';
+    $clang->eT('Please verify the following information before continuing with the database upgrade:').'<ul>';
     echo "<li><b>" .$clang->gT('Database type') . ":</b> " . Yii::app()->db->getDriverName() . "</li>";
     echo "<li><b>" .$clang->gT('Database name') . ":</b> " . getDBConnectionStringProperty('dbname') . "</li>";
     echo "<li><b>" .$clang->gT('Table prefix') . ":</b> " . Yii::app()->db->tablePrefix . "</li>";
     echo "<li><b>" .$clang->gT('Site name') . ":</b> " . Yii::app()->getConfig("sitename") . "</li>";
-    echo "<li><b>" .$clang->gT('Root URL') . ":</b> " . Yii::app()->createUrl('') . "</li>";
+    echo "<li><b>" .$clang->gT('Root URL') . ":</b> " . Yii::app()->getController()->createUrl('') . "</li>";
     echo '</ul>';
     echo "<br />";
-    echo "<a href='".Yii::app()->createUrl("admin/update/db/continue")."'>" . $clang->gT('Click here to continue') . "</a>";
+    echo "<a href='".Yii::app()->getController()->createUrl("admin/update/db/continue")."'>" . $clang->gT('Click here to continue') . "</a>";
     echo "<br />";
 	echo '</div>';
 }

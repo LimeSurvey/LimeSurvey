@@ -41,14 +41,14 @@
                 }
                 else
                 {
-                    echo $clang->gT("No replacement variable available for this field");
+                    $clang->eT("No replacement variable available for this field");
                     $noselection = true;
                 }
 
                 if (count($replFields) > 0)
                 {
                 ?>
-                <optgroup label='<?php echo $clang->gT("Standard Fields");?>'>
+                <optgroup label='<?php $clang->eT("Standard Fields");?>'>
                     <?php
 
                         foreach ($replFields as $stdfield)
@@ -65,7 +65,7 @@
                 if (isset($cquestions))
                 {
                 ?>
-                <optgroup label='<?php echo $clang->gT("Previous Answers Fields");?>'>
+                <optgroup label='<?php $clang->eT("Previous Answers Fields");?>'>
                     <?php
                         foreach ($cquestions as $cqn)
                         {
@@ -106,11 +106,11 @@
                 <tr>
                     <td>
                         <br />
-                        <font color='orange'><?php echo $clang->gT("Some Question have been disabled");?></font>
+                        <font color='orange'><?php $clang->eT("Some Question have been disabled");?></font>
                         <br />
                         <?php echo sprintf($clang->gT("Survey Format is %s:"), $clang->gT("All in one"));?>
                         <br />
-                        <i><?php echo $clang->gT("Only Previous pages answers are available");?></i>
+                        <i><?php $clang->eT("Only Previous pages answers are available");?></i>
                         <br />
                     </td>
                 </tr>
@@ -121,9 +121,9 @@
                 <tr>
                     <td>
                         <br />
-                        <font color='orange'><?php echo $clang->gT("Some Question have been disabled");?></font>
+                        <font color='orange'><?php $clang->eT("Some Question have been disabled");?></font>
                         <br /><?php echo sprintf($clang->gT("Survey mode is set to %s:"), $clang->gT("Group by Group"));?>
-                        <br/><i><?php echo $clang->gT("Only Previous pages answers are available");?>
+                        <br/><i><?php $clang->eT("Only Previous pages answers are available");?>
                         </i><br />
                     </td></tr>
                 <?php

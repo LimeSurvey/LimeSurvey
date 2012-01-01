@@ -26,7 +26,7 @@
 * @return string  Text with replaced strings
 */
 function templatereplace($line, $replacements=array(),&$redata=array(), $debugSrc='Unspecified', $anonymized=false, $questionNum=NULL, $registerdata=array())
-{   
+{
     /*
     global $clienttoken,$token,$sitename,$move,$showXquestions,$showqnumcode,$questioncode,$register_errormsg;
     global $s_lang,$errormsg,$saved_id, $totalBoilerplatequestions, $relativeurl, $languagechanger,$captchapath,$loadname;
@@ -338,7 +338,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
 
     if (isset($surveyid)) {
         $_clearall = "<input type='button' name='clearallbtn' value='" . $clang->gT("Exit and Clear Survey") . "' class='clearall' "
-        . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {\nwindow.open('".Yii::app()->createUrl("survey/index/sid/$surveyid?move=clearall&amp;lang=" . $s_lang);
+        . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {\nwindow.open('".Yii::app()->getController()->createUrl("survey/index/sid/$surveyid?move=clearall&amp;lang=" . $s_lang);
 
 		if (returnglobal('token'))
         {
@@ -442,7 +442,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
 
     if (isset($thissurvey['active']) and $thissurvey['active'] == "N")
     {
-        $_restart= "<a href='" . Yii::app()->createUrl("survey/index/sid/$surveyid/newtest/Y");
+        $_restart= "<a href='" . Yii::app()->getController()->createUrl("survey/index/sid/$surveyid/newtest/Y");
         if (isset($s_lang) && $s_lang!='') $_restart.="/lang/".$s_lang;
         $_restart.="'>".$clang->gT("Restart this Survey")."</a>";
     }
@@ -453,7 +453,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
             if (!empty($restart_token)) $restart_extra .= "/token/".urlencode($restart_token);
             else $restart_extra = "/newtest/Y";
             if (!empty($_GET['lang'])) $restart_extra .= "/lang/".returnglobal('lang');
-            $_restart = "<a href='".Yii::app()->createUrl("survey/index/sid/$surveyid$restart_extra")."'>".$clang->gT("Restart this Survey")."</a>";
+            $_restart = "<a href='".Yii::app()->getController()->createUrl("survey/index/sid/$surveyid$restart_extra")."'>".$clang->gT("Restart this Survey")."</a>";
     }
     else
     {
@@ -471,7 +471,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
 
     if (isset($surveyid))
     {
-        $_return_to_survey = "<a href=".Yii::app()->createUrl("survey/index/sid/{$surveyid}");
+        $_return_to_survey = "<a href=".Yii::app()->getController()->createUrl("survey/index/sid/{$surveyid}");
         if (returnglobal('token'))
         {
             $_return_to_survey.= "?amp;token=" . urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
@@ -510,7 +510,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
     $_saveform .= "' /></td></tr>\n";
     if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && captcha_enabled('saveandloadscreen', $thissurvey['usecaptcha']))
     {
-        $_saveform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->createUrl('/verification/sa/image')."' alt='' /></td><td valign='middle' style='text-align:left'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
+        $_saveform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/sa/image')."' alt='' /></td><td valign='middle' style='text-align:left'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
     }
     $_saveform .= "<tr><td align='right'></td><td></td></tr>\n"
     . "<tr><td></td><td><input type='submit'  id='savebutton' name='savesubmit' value='" . $clang->gT("Save Now") . "' /></td></tr>\n"
@@ -531,7 +531,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
     $_loadform .= "' /></td></tr>\n";
     if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && captcha_enabled('saveandloadscreen', $thissurvey['usecaptcha']))
     {
-        $_loadform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->createUrl('/verification/sa/image')."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' alt=''/></td></tr></table></td></tr>\n";
+        $_loadform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/sa/image')."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' alt=''/></td></tr></table></td></tr>\n";
     }
     $_loadform .="<tr><td align='right'></td><td></td></tr>\n"
     . "<tr><td></td><td><input type='submit' id='loadbutton' value='" . $clang->gT("Load Now") . "' /></td></tr></table>\n";
@@ -544,7 +544,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
         else
             $tokensid = $registerdata['sid'];
 
-		$_registerform = "<form method='post' action='".Yii::app()->createUrl('/register/index/surveyid/'.$tokensid)."'>\n";
+		$_registerform = "<form method='post' action='".Yii::app()->getController()->createUrl('/register/index/surveyid/'.$tokensid)."'>\n";
 
         if (!isset($_REQUEST['lang']))
         {
@@ -584,7 +584,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
 
         if ((count($registerdata) > 1 || isset($thissurvey['usecaptcha'])) && function_exists("ImageCreate") && captcha_enabled('registrationscreen', $thissurvey['usecaptcha']))
         {
-			$_registerform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->createUrl('/verification/sa/image')."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
+			$_registerform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/sa/image')."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
 		}
         $_registerform .= "<tr><td></td><td><input id='registercontinue' class='submit' type='submit' value='" . $clang->gT("Continue") . "' />"
         . "</td></tr>\n"

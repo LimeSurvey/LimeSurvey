@@ -36,7 +36,7 @@
 	</tr>
 	<tr>
 		<td align='right' valign='top'>
-			<strong><?php echo $clang->gT("Welcome:");?></strong>
+			<strong><?php $clang->eT("Welcome:");?></strong>
 		</td>
         <td align='left'>
         	<?php
@@ -47,7 +47,7 @@
 	</tr>
     <tr>
     	<td align='right' valign='top'>
-    		<strong><?php echo $clang->gT("Administrator:");?></strong>
+    		<strong><?php $clang->eT("Administrator:");?></strong>
     	</td>
         <td align='left'>
         	<?php echo "{$surveyinfo['admin']} ({$surveyinfo['adminemail']})";?>
@@ -56,7 +56,7 @@
 	<?php if (trim($surveyinfo['faxto'])!='') { ?>
 	    <tr>
 	    	<td align='right' valign='top'>
-	    		<strong><?php echo $clang->gT("Fax to:");?></strong>
+	    		<strong><?php $clang->eT("Fax to:");?></strong>
 	    	</td>
 	    	<td align='left'>
 	    		<?php echo$surveyinfo['faxto'];?>
@@ -65,7 +65,7 @@
     <?php } ?>
     <tr>
     	<td align='right' valign='top'>
-    		<strong><?php echo $clang->gT("Start date/time:");?></strong>
+    		<strong><?php $clang->eT("Start date/time:");?></strong>
     	</td>
         <td align='left'>
         	<?php echo $startdate;?>
@@ -73,7 +73,7 @@
     </tr>
     <tr>
     	<td align='right' valign='top'>
-    		<strong><?php echo $clang->gT("Expiry date/time:");?></strong>
+    		<strong><?php $clang->eT("Expiry date/time:");?></strong>
     	</td>
     	<td align='left'>
     		<?php echo $expdate;?>
@@ -81,7 +81,7 @@
     </tr>
     <tr>
     	<td align='right' valign='top'>
-    		<strong><?php echo $clang->gT("Template:");?></strong>
+    		<strong><?php $clang->eT("Template:");?></strong>
     	</td>
     	<td align='left'>
     		<?php echo $surveyinfo['template'];?>
@@ -89,7 +89,7 @@
     </tr>
     <tr>
     	<td align='right' valign='top'>
-    		<strong><?php echo $clang->gT("Base language:");?></strong>
+    		<strong><?php $clang->eT("Base language:");?></strong>
     	</td>
     	<td align='left'>
     		<?php echo $language;?>
@@ -102,7 +102,7 @@
     		<?php echo $additionnalLanguages;?>
     <tr>
     	<td align='right' valign='top'>
-    		<strong><?php echo $clang->gT("End URL");?>:</strong>
+    		<strong><?php $clang->eT("End URL");?>:</strong>
     	</td>
     	<td align='left'>
     		<?php echo $endurl;?>
@@ -110,7 +110,7 @@
     </tr>
     <tr>
     	<td align='right' valign='top'>
-    		<strong><?php echo $clang->gT("Number of questions/groups");?>:</strong>
+    		<strong><?php $clang->eT("Number of questions/groups");?>:</strong>
     	</td>
     	<td align='left'>
     		<?php echo $sumcount3."/".$sumcount2;?>
@@ -118,7 +118,7 @@
     </tr>
     <tr>
     	<td align='right' valign='top'>
-    		<strong><?php echo $clang->gT("Survey currently active");?>:</strong>
+    		<strong><?php $clang->eT("Survey currently active");?>:</strong>
     	</td>
     	<td align='left'>
     		<?php echo $activatedlang;?>
@@ -127,7 +127,7 @@
     <?php if($activated=="Y") { ?>
     <tr>
     	<td align='right' valign='top'>
-    		<strong><?php echo $clang->gT("Survey table name");?>:</strong>
+    		<strong><?php $clang->eT("Survey table name");?>:</strong>
     	</td>
     	<td align='left'>
     		<?php echo $surveydb;?>
@@ -136,7 +136,7 @@
     <?php } ?>
     <tr>
     	<td align='right' valign='top'>
-    		<strong><?php echo $clang->gT("Hints");?>:</strong>
+    		<strong><?php $clang->eT("Hints");?>:</strong>
     	</td>
     	<td align='left'>
     		<?php echo $warnings.$hints;?>
@@ -146,12 +146,12 @@
             if ($tableusage['dbtype']=='mysql' || $tableusage['dbtype']=='mysqli'){
                 $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2);
                 $size_usage =  round($tableusage['size'][0]/$tableusage['size'][1] * 100,2); ?>
-                <tr><td align='right' valign='top'><strong><?php echo $clang->gT("Table column usage");?>: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> </td></tr>
-                <tr><td align='right' valign='top'><strong><?php echo $clang->gT("Table size usage");?>: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $size_usage;?>'></div></td></tr>
+                <tr><td align='right' valign='top'><strong><?php $clang->eT("Table column usage");?>: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> </td></tr>
+                <tr><td align='right' valign='top'><strong><?php $clang->eT("Table size usage");?>: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $size_usage;?>'></div></td></tr>
             <?php }
             elseif (($arrCols['dbtype'] == 'mssql')||($arrCols['dbtype'] == 'postgre')){
                 $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2); ?>
-                <tr><td align='right' valign='top'><strong><?php echo $clang->gT("Table column usage");?>: </strong></td><td><strong><?php echo $column_usage;?>%</strong><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> </td></tr>
+                <tr><td align='right' valign='top'><strong><?php $clang->eT("Table column usage");?>: </strong></td><td><strong><?php echo $column_usage;?>%</strong><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> </td></tr>
             <?php }
         } ?>
 </table>

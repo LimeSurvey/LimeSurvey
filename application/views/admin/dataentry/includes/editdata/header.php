@@ -1,4 +1,4 @@
-<div class='header ui-widget-header'><?php echo $clang->gT("Data entry"); ?></div>
+<div class='header ui-widget-header'><?php $clang->eT("Data entry"); ?></div>
 <div class='header ui-widget-header'>
 	<?php 
 		if ($subaction == "edit") {

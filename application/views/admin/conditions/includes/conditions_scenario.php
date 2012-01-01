@@ -6,15 +6,15 @@
 				<td width='90%'><?php echo $scenariotext; ?>&nbsp;
 					<form action='<?php echo $this->createUrl("/admin/conditions/updatescenario/$surveyid/$gid/$qid/"); ?>' method='post' id='editscenario
 						<?php echo $scenarionr['scenario']; ?>' style='display: none'>
-					    <label><?php echo $clang->gT("New scenario number"); ?>":&nbsp;
+					    <label><?php $clang->eT("New scenario number"); ?>":&nbsp;
 					    <input type='text' name='newscenarionum' size='3'/></label>
 					    <input type='hidden' name='scenario' value='<?php echo $scenarionr['scenario']; ?>'/>
 					    <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
 					    <input type='hidden' name='gid' value='<?php echo $gid; ?>' />
 					    <input type='hidden' name='qid' value='<?php echo $qid; ?>' />
 					    <input type='hidden' name='subaction' value='updatescenario' />&nbsp;&nbsp;
-					    <input type='submit' name='scenarioupdated' value='<?php echo $clang->gT("Update scenario"); ?>' />
-					    <input type='button' name='cancel' value='<?php echo $clang->gT("Cancel"); ?>' onclick="$('#editscenario<?php echo $scenarionr['scenario']; ?>').hide('slow');" />
+					    <input type='submit' name='scenarioupdated' value='<?php $clang->eT("Update scenario"); ?>' />
+					    <input type='button' name='cancel' value='<?php $clang->eT("Cancel"); ?>' onclick="$('#editscenario<?php echo $scenarionr['scenario']; ?>').hide('slow');" />
 					</form>
 				</td>
 				<td width='10%' valign='middle' align='right'>

@@ -40,7 +40,7 @@ class export extends Survey_Common_Action {
         }
         else
 		{
-            CController::redirect(Yii::app()->createUrl('admin/participants/sa/index'));
+            CController::redirect(Yii::app()->getController()->createUrl('admin/participants/sa/index'));
         }
 	}
 
@@ -135,7 +135,7 @@ class export extends Survey_Common_Action {
 
 			$data = array("surveyid" => $surveyid, "gid" => $gid);
 
-			$this->_renderView("/admin/export/group_view", $surveyid, $gid, NULL, $data);
+			$this->_renderWrappedTemplate("group_view", $data);
         }
         else
         {
@@ -161,7 +161,7 @@ class export extends Survey_Common_Action {
 
 			$data = array("surveyid" => $surveyid, "gid" => $gid, "qid" =>$qid);
 
-			$this->_renderView("/admin/export/question_view", $surveyid, $gid, $qid, $data);
+			$this->_renderWrappedTemplate("question_view", $data);
         }
         else
         {
@@ -671,7 +671,7 @@ class export extends Survey_Common_Action {
 
         if  ( ! isset($subaction) )
         {
-            $this->controller->_getAdminHeader();
+            $this->getController()->_getAdminHeader();
             $this->_browsemenubar($surveyid, $clang->gT('Export results'));
 
             $selecthide = "";
@@ -697,8 +697,8 @@ class export extends Survey_Common_Action {
             $data['filename'] = "survey_" . $surveyid . "_R_syntax_file.R";
         	$data['surveyid'] = $surveyid;
 
-            $this->controller->render("/admin/export/r_view", $data);
-            $this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->controller->lang->gT("LimeSurvey online manual"));
+            $this->getController()->render("/admin/export/r_view", $data);
+            $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
         }
         else
         {
@@ -1362,17 +1362,19 @@ class export extends Survey_Common_Action {
 		header("Pragma: {$pragma}");                          // HTTP/1.0
 	}
 
-	private function _renderView($view, $surveyid, $gid, $qid, $data)
+    /**
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
 	{
-		$css_admin_includes[] = Yii::app()->getConfig('styleurl') . "admin/default/superfish.css";
-		Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
-		$this->getController()->_getAdminHeader();
-		$this->getController()->_showadminmenu($surveyid);
-		$this->_surveybar($surveyid, $gid);
-		$this->_questiongroupbar($surveyid, $gid, $qid, "exportstructureGroup");
-		$this->getController()->render($view, $data);
-		$this->getController()->_loadEndScripts();
-		$this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
+		$this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . 'admin/default/superfish.css');
+
+        $aData['display']['menu_bars']['gid_action'] = 'exportstructureGroup';
+
+        parent::_renderWrappedTemplate('export', $aViewUrls, $aData);
 	}
 
     /**

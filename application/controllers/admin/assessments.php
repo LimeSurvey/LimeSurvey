@@ -28,16 +28,16 @@ class Assessments extends Survey_Common_Action
      * Routes to the correct sub-action
      *
      * @access public
-     * @param int $surveyId
+     * @param int $iSurveyId
      * @return void
      */
-    public function run($surveyId)
+    public function index($iSurveyId)
     {
-        $surveyId = sanitize_int($surveyId);
-        $action = !empty($_POST['action']) ? $_POST['action'] : '';
+        $iSurveyId = sanitize_int($iSurveyId);
+        $action = CHttpRequest::getPost('action');
 
-        $languages = Survey::model()->findByPk($surveyId)->additionalLanguages;
-        $surveyLanguage = Survey::model()->findByPk($surveyId)->language;
+        $languages = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
+        $surveyLanguage = Survey::model()->findByPk($iSurveyId)->language;
 
         array_unshift($languages, $surveyLanguage); // makes an array with ALL the languages supported by the survey -> $assessmentlangs
 
@@ -45,96 +45,112 @@ class Assessments extends Survey_Common_Action
         Yii::app()->setConfig("assessmentlangs", $languages);
 
         if ($action == "assessmentadd")
-            $this->_add($surveyId);
+            $this->_add($iSurveyId);
         if ($action == "assessmentupdate")
-            $this->_update($surveyId);
+            $this->_update($iSurveyId);
         if ($action == "assessmentdelete")
-             $this->_delete($surveyId, $_POST['id']);
+             $this->_delete($iSurveyId, $_POST['id']);
 
-        if (bHasSurveyPermission($surveyId, 'assessments', 'read')) {
+        if (bHasSurveyPermission($iSurveyId, 'assessments', 'read')) {
             $clang = $this->getController()->lang;
 
-            if ($surveyId == '') {
+            if ($iSurveyId == '') {
                 show_error($clang->gT("No SID Provided"));
                 die();
             }
 
-            $this->_showAssessments($surveyId, $action, $surveyLanguage, $clang);
+            $this->_showAssessments($iSurveyId, $action, $surveyLanguage, $clang);
         }
 
     }
 
-    private function _showAssessments($surveyId, $action, $surveyLanguage, Limesurvey_lang $clang)
+    /**
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
     {
-        $assessments = Assessment::model()->findAllByAttributes(array('sid' => $surveyId));
-        $data = $this->_collectGroupData($surveyId);
-        $headings = array($clang->gT("Scope"), $clang->gT("Question group"), $clang->gT("Minimum"), $clang->gT("Maximum"));
-        $data['actiontitle'] = $clang->gT("Add");
-        $data['actionvalue'] = "assessmentadd";
-        $data['editId'] = '';
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'assessments.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.tablesorter.min.js');
 
-        if ($action == "assessmentedit" && bHasSurveyPermission($surveyId, 'assessments', 'update')) {
-            $data = $this->_collectEditData($surveyLanguage, $data, $clang);
+        $aData['display']['menu_bars'] = false;
+
+        parent::_renderWrappedTemplate('', $aViewUrls, $aData);
+    }
+
+    private function _showAssessments($iSurveyId, $action, $surveyLanguage, Limesurvey_lang $clang)
+    {
+        $assessments = Assessment::model()->findAllByAttributes(array('sid' => $iSurveyId));
+        $aData = $this->_collectGroupData($iSurveyId);
+        $headings = array($clang->gT("Scope"), $clang->gT("Question group"), $clang->gT("Minimum"), $clang->gT("Maximum"));
+        $aData['actiontitle'] = $clang->gT("Add");
+        $aData['actionvalue'] = "assessmentadd";
+        $aData['editId'] = '';
+
+        if ($action == "assessmentedit" && bHasSurveyPermission($iSurveyId, 'assessments', 'update')) {
+            $aData = $this->_collectEditData($surveyLanguage, $aData, $clang);
         }
 
-        $surveyinfo = getSurveyInfo($surveyId);
-        $data['clang'] = $clang;
-        $data['surveyinfo'] = $surveyinfo;
-        $data['imageurl'] = Yii::app()->getConfig('imageurl');
-        $data['surveyid'] = $surveyId;
-        $data['headings'] = $headings;
-        $data['assessments'] = $assessments;
-        $data['assessmentlangs'] = Yii::app()->getConfig("assessmentlangs");
-        $data['baselang'] = $surveyLanguage;
-        $data['action'] = $action;
-        $data['gid'] = empty($_POST['gid']) ? '' : sanitize_int($_POST['gid']);
+        $surveyinfo = getSurveyInfo($iSurveyId);
+        $aData['clang'] = $clang;
+        $aData['surveyinfo'] = $surveyinfo;
+        $aData['imageurl'] = Yii::app()->getConfig('imageurl');
+        $aData['surveyid'] = $iSurveyId;
+        $aData['headings'] = $headings;
+        $aData['assessments'] = $assessments;
+        $aData['assessmentlangs'] = Yii::app()->getConfig("assessmentlangs");
+        $aData['baselang'] = $surveyLanguage;
+        $aData['action'] = $action;
+        $aData['gid'] = empty($_POST['gid']) ? '' : sanitize_int($_POST['gid']);
 
         Yii::app()->loadHelper('admin/htmleditor');
-        $this->_renderWrappedTemplate("assessments_view", $data);
+        $this->_renderWrappedTemplate("assessments_view", $aData);
     }
 
-    private function _collectGroupData($surveyId)
+    private function _collectGroupData($iSurveyId)
     {
-        $groups = Groups::model()->findAllByAttributes(array('sid' => $surveyId));
+        $groups = Groups::model()->findAllByAttributes(array('sid' => $iSurveyId));
         foreach ($groups as $group) {
             $groupId = $group->attributes['gid'];
             $groupName = $group->attributes['group_name'];
-            $data['groups'][$groupId] = $groupName;
+            $aData['groups'][$groupId] = $groupName;
         }
-        return $data;
+        return $aData;
     }
 
-    private function _collectEditData($surveyLanguage, array $data, Limesurvey_lang $clang)
+    private function _collectEditData($surveyLanguage, array $aData, Limesurvey_lang $clang)
     {
         $assessments = Assessment::model()->findAllByAttributes(array('id' => sanitize_int($_POST['id']), 'language' => $surveyLanguage));
 
         foreach ($assessments as $assessment) {
             $editData = $assessment->attributes;
         }
-        $data['actiontitle'] = $clang->gT("Edit");
-        $data['actionvalue'] = "assessmentupdate";
-        $data['editId'] = $editData['id'];
-        $data['editdata'] = $editData;
-        return $data;
+        $aData['actiontitle'] = $clang->gT("Edit");
+        $aData['actionvalue'] = "assessmentupdate";
+        $aData['editId'] = $editData['id'];
+        $aData['editdata'] = $editData;
+        return $aData;
     }
 
     /**
      * Inserts an assessment to the database. Receives input from POST
      */
-    private function _add($surveyId)
+    private function _add($iSurveyId)
     {
-        if (bHasSurveyPermission($surveyId, 'assessments', 'create')) {
+        if (bHasSurveyPermission($iSurveyId, 'assessments', 'create')) {
             $first = true;
             $assessmentId = -1;
             $languages = Yii::app()->getConfig("assessmentlangs");
             foreach ($languages as $language)
             {
-                $data = $this->_getAssessmentPostData($surveyId, $language);
+                $aData = $this->_getAssessmentPostData($iSurveyId, $language);
 
                 if ($first == false) {
-                    $data['id'] = $assessmentId;
+                    $aData['id'] = $assessmentId;
                 }
-                $assessment = Assessment::insertRecords($data);
+                $assessment = Assessment::insertRecords($aData);
                 if ($first == true) {
                     $first = false;
                     $assessmentId = $assessment->id;
@@ -146,16 +162,16 @@ class Assessments extends Survey_Common_Action
     /**
      * Updates an assessment. Receives input from POST
      */
-    private function _update($surveyid)
+    private function _update($iSurveyId)
     {
-        if (bHasSurveyPermission($surveyid, 'assessments', 'update') && isset($_POST['id'])) {
+        if (bHasSurveyPermission($iSurveyId, 'assessments', 'update') && isset($_POST['id'])) {
 
             $aid = sanitize_int($_POST['id']);
             $languages = Yii::app()->getConfig("assessmentlangs");
             foreach ($languages as $language)
             {
-                $data = $this->_getAssessmentPostData($surveyid, $language);
-                Assessment::updateAssessment($aid, $language, $data);
+                $aData = $this->_getAssessmentPostData($iSurveyId, $language);
+                Assessment::updateAssessment($aid, $language, $aData);
             }
         }
     }
@@ -163,30 +179,14 @@ class Assessments extends Survey_Common_Action
     /**
      * Deletes an assessment.
      */
-    private function _delete($surveyid, $assessmentId)
+    private function _delete($iSurveyId, $assessmentId)
     {
-        if (bHasSurveyPermission($surveyid, 'assessments', 'delete')) {
+        if (bHasSurveyPermission($iSurveyId, 'assessments', 'delete')) {
             Assessment::model()->deleteAllByAttributes(array('id' => $assessmentId));
         }
     }
 
-    /**
-     * Renders template(s) wrapped in header and footer
-     *
-     * @param string|array $aViewUrls View url(s)
-     * @param array $aData Data to be passed on. Optional.
-     */
-    function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
-    {
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'assessments.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.tablesorter.min.js');
-
-        $aData['display']['menu_bars'] = false;
-
-        parent::_renderWrappedTemplate('', $aViewUrls, $aData);
-    }
-
-    private function _getAssessmentPostData($surveyid, $language)
+    private function _getAssessmentPostData($iSurveyId, $language)
     {
         if (!isset($_POST['gid']))
             $_POST['gid'] = 0;
@@ -197,7 +197,7 @@ class Assessments extends Survey_Common_Action
         }
 
         return array(
-            'sid' => $surveyid,
+            'sid' => $iSurveyId,
             'scope' => sanitize_paranoid_string($_POST['scope']),
             'gid' => sanitize_int($_POST['gid']),
             'minimum' => sanitize_paranoid_string($_POST['minimum']),

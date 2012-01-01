@@ -21,40 +21,16 @@
 * @access public
 */
 class surveypermission extends Survey_Common_Action {
-	/**
-	 * Routes to current subview
-	 *
-	 * @access public
-	 * @param string $sa
-	 * @return void
-	 */
-	public function run($sa)
-	{
-		if ($sa == 'view')
-			$this->route('view', array('surveyid'));
-		elseif ($sa == 'addusergroup')
-			$this->route('addusergroup', array('surveyid'));
-		elseif ($sa == 'adduser')
-			$this->route('adduser', array('surveyid'));
-		elseif ($sa == 'set')
-			$this->route('set', array('surveyid'));
-		elseif ($sa == 'delete')
-			$this->route('delete', array('surveyid'));
-		elseif ($sa == 'surveyright')
-			$this->route('surveyright', array('surveyid'));
-	}
 
     /**
-    * surveypermission::view()
     * Load survey security screen.
     * @param mixed $surveyid
     * @return void
     */
-    function view($surveyid)
+    function index($surveyid)
     {
         $surveyid = sanitize_int($surveyid);
-        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
-        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
         $this->_renderHeaderAndMenu($surveyid);
         $clang = Yii::app()->lang;
         $imageurl = Yii::app()->getConfig('imageurl');
@@ -232,8 +208,7 @@ class surveypermission extends Survey_Common_Action {
         $surveyid = sanitize_int($surveyid);
 
         $action = $_POST['action'];
-        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."/admin/default/superfish.css";
-        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
         $this->_renderHeaderAndMenu($surveyid);
         $clang = Yii::app()->lang;
 
@@ -313,8 +288,7 @@ class surveypermission extends Survey_Common_Action {
         $surveyid = sanitize_int($surveyid);
 
         $action = $_POST['action'];
-        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
-        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
         $this->_renderHeaderAndMenu($surveyid);
         $clang = Yii::app()->lang;
         $imageurl = Yii::app()->getConfig('imageurl');
@@ -383,8 +357,7 @@ class surveypermission extends Survey_Common_Action {
         $surveyid = sanitize_int($surveyid);
 
         $action = $_POST['action'];
-        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
-        Yii::app()->getConfig("css_admin_includes", $css_admin_includes);
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
         $this->_renderHeaderAndMenu($surveyid);
         $clang = Yii::app()->lang;
         $imageurl = Yii::app()->getConfig('imageurl');
@@ -502,8 +475,7 @@ class surveypermission extends Survey_Common_Action {
         $surveyid = sanitize_int($surveyid);
 
         $action = $_POST['action'];
-        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
-        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
         $this->_renderHeaderAndMenu($surveyid);
         $clang = Yii::app()->lang;
         $imageurl = Yii::app()->getConfig('imageurl');
@@ -554,8 +526,7 @@ class surveypermission extends Survey_Common_Action {
         $surveyid = sanitize_int($surveyid);
 
         $action = $_POST['action'];
-        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."/admin/default/superfish.css";
-        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
         $this->_renderHeaderAndMenu($surveyid);
         $clang = Yii::app()->lang;
         $imageurl = Yii::app()->getConfig('imageurl');

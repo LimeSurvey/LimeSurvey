@@ -1,8 +1,8 @@
 <div class='header header_statistics'>
         <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/close.gif' align='right'
         onclick="window.open('<?php echo $this->createUrl("admin/labels/sa/view/lid/".$lid); ?>', '_top')" />
-        <?php if ($action == "newlabelset") { echo $clang->gT("Create or import new label set(s)");}
-        else {echo $clang->gT("Edit label set"); } ?>
+        <?php if ($action == "newlabelset") { $clang->eT("Create or import new label set(s)");}
+        else {$clang->eT("Edit label set"); } ?>
 </div>
 
 <div id='tabs'>
@@ -10,19 +10,19 @@
         <li><a href='#neweditlblset0'><?php echo $tabitem; ?>
         </a></li>
         <?php if ($action == "newlabelset"){ ?>
-            <li><a href='#neweditlblset1'><?php echo $clang->gT("Import label set(s)"); ?></a></li>
+            <li><a href='#neweditlblset1'><?php $clang->eT("Import label set(s)"); ?></a></li>
         <?php } ?>
         </ul>
         <div id='neweditlblset0'>
-            <form method='post' class='form30' id='labelsetform' action='<?php echo $this->createUrl("admin/labels/sa/process"); ?>' onsubmit="return isEmpty(document.getElementById('label_name'), '<?php echo $clang->gT("Error: You have to enter a name for this label set.","js"); ?>')">
+            <form method='post' class='form30' id='labelsetform' action='<?php echo $this->createUrl("admin/labels/sa/process"); ?>' onsubmit="return isEmpty(document.getElementById('label_name'), '<?php $clang->eT("Error: You have to enter a name for this label set.","js"); ?>')">
 
         <ul>
-        <li><label for='languageids'><?php echo $clang->gT("Set name:"); ?></label>
+        <li><label for='languageids'><?php $clang->eT("Set name:"); ?></label>
         <input type='hidden' name='languageids' id='languageids' value='<?php echo $langids; ?>' />
         <input type='text' id='label_name' name='label_name' maxlength='100' size='50' value='<?php if (isset($lbname)) { echo $lbname;} ?>' />
         </li>
 
-        <li><label><?php echo $clang->gT("Languages:"); ?></label>
+        <li><label><?php $clang->eT("Languages:"); ?></label>
         <table><tr><td align='left'><select multiple='multiple' style='min-width:220px;' size='5' id='additional_languages' name='additional_languages'>
         <?php foreach ($langidsarray as $langid)
         { ?>
@@ -32,7 +32,7 @@
 
 
         </select></td>
-        <td align='left'><input type="button" value="<< <?php echo $clang->gT("Add"); ?>" onclick="DoAdd()" id="AddBtn" /><br /> <input type="button" value="<?php echo $clang->gT("Remove"); ?> >>" onclick="DoRemove(1,'<?php echo $clang->gT("You cannot remove this item since you need at least one language in a labelset.", "js"); ?>')" id="RemoveBtn"  /></td>
+        <td align='left'><input type="button" value="<< <?php $clang->eT("Add"); ?>" onclick="DoAdd()" id="AddBtn" /><br /> <input type="button" value="<?php $clang->eT("Remove"); ?> >>" onclick="DoRemove(1,'<?php $clang->eT("You cannot remove this item since you need at least one language in a labelset.", "js"); ?>')" id="RemoveBtn"  /></td>
 
 
         <td align='left'><select size='5' style='min-width:220px;' id='available_languages' name='available_languages'>
@@ -47,8 +47,8 @@
 
         </select></td>
         </tr></table></li></ul>
-        <p><input type='submit' value='<?php if ($action == "newlabelset") {echo $clang->gT("Save");}
-        else {echo $clang->gT("Update");} ?>' />
+        <p><input type='submit' value='<?php if ($action == "newlabelset") {$clang->eT("Save");}
+        else {$clang->eT("Update");} ?>' />
         <input type='hidden' name='action' value='<?php if ($action == "newlabelset") {echo "insertlabelset";} else {echo "updateset";} ?>' />
 
         <?php if ($action == "editlabelset") { ?>
@@ -62,21 +62,21 @@
             <div id='neweditlblset1'>
                 <form enctype='multipart/form-data' id='importlabels' name='importlabels' action='<?php echo $this->createUrl('admin/labels/sa/import'); ?>' method='post'>
                 <div class='header ui-widget-header'>
-                <?php echo $clang->gT("Import label set(s)"); ?>
+                <?php $clang->eT("Import label set(s)"); ?>
                 </div><ul>
                 <li><label for='the_file'>
-                <?php echo $clang->gT("Select label set file (*.lsl,*.csv):"); ?></label>
+                <?php $clang->eT("Select label set file (*.lsl,*.csv):"); ?></label>
                 <input id='the_file' name='the_file' type='file' size='35' />
                 </li>
                 <li><label for='checkforduplicates'>
-                <?php echo $clang->gT("Don't import if label set already exists:"); ?></label>
+                <?php $clang->eT("Don't import if label set already exists:"); ?></label>
                 <input name='checkforduplicates' id='checkforduplicates' type='checkbox' checked='checked' />
                 </li>
                 <li><label for='translinksfields'>
-                <?php echo $clang->gT("Convert resources links?"); ?></label>
+                <?php $clang->eT("Convert resources links?"); ?></label>
                 <input name='translinksfields' id='translinksfields' type='checkbox' checked='checked' />
                 </li></ul>
-                <p><input type='submit' value='<?php echo $clang->gT("Import label set(s)"); ?>' />
+                <p><input type='submit' value='<?php $clang->eT("Import label set(s)"); ?>' />
                 <input type='hidden' name='action' value='importlabels' />
                 </form></div>
 

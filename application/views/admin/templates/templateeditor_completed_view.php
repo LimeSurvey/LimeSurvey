@@ -1,5 +1,5 @@
 <br />
-<span class='success'><?php echo $clang->gT("Thank you!") ?></span>
+<span class='success'><?php $clang->eT("Thank you!") ?></span>
 <br /><br />
-<?php echo $clang->gT("Your survey responses have been recorded.") ?>
+<?php $clang->eT("Your survey responses have been recorded.") ?>
 <br /><br />

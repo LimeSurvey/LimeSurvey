@@ -82,7 +82,7 @@ $yii = Yii::app();
                                 $delresult = db_execute_assoc($delquery); ?>
                                 <tr><td><?php echo $dearow['question']; ?></td><td>
                                 <select name='<?php echo $fieldname.$dearow['title']; ?>#0'>
-                                <option selected='selected' value=''><?php echo $clang->gT("Please choose..."); ?></option>
+                                <option selected='selected' value=''><?php $clang->eT("Please choose..."); ?></option>
                                 <?php foreach ($delresult as $delrow)
                                 { ?>
                                     <option value='<?php echo $delrow['code']; ?>'><?php echo $delrow['answer']; ?></option>
@@ -92,7 +92,7 @@ $yii = Yii::app();
                                 $delresult = db_execute_assoc($delquery); ?>
                                 <td>
                                 <select name='<?php echo $fieldname.$dearow['title']; ?>#1'>
-                                <option selected='selected' value=''><?php echo $clang->gT("Please choose..."); ?></option>
+                                <option selected='selected' value=''><?php $clang->eT("Please choose..."); ?></option>
                                 <?php foreach ($delresult as $delrow)
                                 { ?>
                                     <option value='<?php echo $delrow['code']; ?>'><?php echo $delrow['answer']; ?></option>
@@ -101,12 +101,12 @@ $yii = Yii::app();
                             <?php }
                             if ($fother == "Y")
                             { ?>
-                                <option value='-oth-'><?php echo $clang->gT("Other"); ?></option>
+                                <option value='-oth-'><?php $clang->eT("Other"); ?></option>
                             <?php }
                             
                             if ($fother == "Y")
                             { 
-                                echo $clang->gT("Other"); ?>:
+                                $clang->eT("Other"); ?>:
                                 <input type='text' name='<?php echo $fieldname; ?>other' value='' />
                             <?php } ?>
                             </tr></table>

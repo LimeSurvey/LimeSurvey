@@ -1,4 +1,4 @@
-<div class='header ui-widget-header'><?php echo $clang->gT("Group members"); ?></div>
+<div class='header ui-widget-header'><?php $clang->eT("Group members"); ?></div>
 <?php
 if(isset($headercfg))
 {
@@ -21,7 +21,7 @@ if(isset($groupfound))
 { ?>
 <table width='100%' border='0'>
 	<tr><td align='justify' colspan='2' height='4'>
- 	<font size='2' ><strong><?php echo $clang->gT("Description: ");?></strong>
+ 	<font size='2' ><strong><?php $clang->eT("Description: ");?></strong>
     <?php echo $usergroupdescription;?></font></td></tr>
 </table>
 <?php
@@ -30,9 +30,9 @@ if(isset($groupfound))
 
 <table class='users'>
 	<thead><tr>
-    	<th><?php echo $clang->gT("Action");?></th>
-        <th><?php echo $clang->gT("Username");?></th>
-        <th><?php echo $clang->gT("Email");?></th>
+    	<th><?php $clang->eT("Action");?></th>
+        <th><?php $clang->eT("Username");?></th>
+        <th><?php $clang->eT("Email");?></th>
         </tr></thead>
 	<tbody>
 	<?php
@@ -45,7 +45,7 @@ if(isset($groupfound))
 			if($currentuser["displayactions"])
             { ?>
 				<form method='post' action='scriptname?action=deleteuserfromgroup&amp;ugid=$ugid'>
-				<input type='image' src='<?php echo $this->yii->getConfig('imageurl')?>/token_delete.png' alt='"<?php echo $clang->gT("Delete this user from group");?>' onclick='return confirm("<?php echo $clang->gT("Are you sure you want to delete this entry?","js");?>")' />
+				<input type='image' src='<?php echo Yii::app()->getConfig('imageurl')?>/token_delete.png' alt='"<?php $clang->eT("Delete this user from group");?>' onclick='return confirm("<?php $clang->eT("Are you sure you want to delete this entry?","js");?>")' />
 				<input type='hidden' name='user' value='<?php echo $currentuser["username"];?>' />"
 				<input name='uid' type='hidden' value='<?php echo $currentuser["userid"];?>' />"
 				<input name='ugid' type='hidden' value='<?php echo $usergroupid;?>' />";
@@ -79,7 +79,7 @@ if	($useradddialog)
 		<select name='uid'>
 			<?php echo $useraddusers;?>
 		</select>
-		<input type='submit' value='<?php echo $clang->gT("Add User");?>' />
+		<input type='submit' value='<?php $clang->eT("Add User");?>' />
 		<input type='hidden' name='action' value='addusertogroup' /></td>
 		</tr></tbody></table>
 	</form>

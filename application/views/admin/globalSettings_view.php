@@ -51,7 +51,7 @@
                 if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1)
                 {
             ?>
-                    <p><input type="button" onclick="window.open('<?php echo Yii::app()->createUrl("admin/globalsettings/showphpinfo"); ?>')" value="<?php $clang->eT("Show PHPInfo"); ?>" />
+                    <p><input type="button" onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/globalsettings/showphpinfo"); ?>')" value="<?php $clang->eT("Show PHPInfo"); ?>" />
             <?php
                 }
             ?>

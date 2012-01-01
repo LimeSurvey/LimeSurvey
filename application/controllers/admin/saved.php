@@ -45,8 +45,8 @@ class saved extends Survey_Common_Action
         $iSurveyId = sanitize_int($iSurveyId);
         $clang = $this->getController()->lang;
 
-        $this->_js_admin_includes(Yii::app()->baseUrl . 'scripts/jquery/jquery.tablesorter.min.js');
-        $this->_js_admin_includes(Yii::app()->baseUrl . 'scripts/admin/saved.js');
+        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . 'scripts/jquery/jquery.tablesorter.min.js');
+        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . 'scripts/admin/saved.js');
         $this->getController()->_getAdminHeader();
 
         if (bHasSurveyPermission($iSurveyId, 'responses', 'read'))

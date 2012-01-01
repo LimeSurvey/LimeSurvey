@@ -15,15 +15,15 @@
 
 <?php if (!empty($error)) { ?>
 <font color="red">
-<?php echo $clang->gT("LimeSurvey tried to delete the following file but couldn't succeed. You will have to remove the file or else you will not be able to log in."); ?><br />
+<?php $clang->eT("LimeSurvey tried to delete the following file but couldn't succeed. You will have to remove the file or else you will not be able to log in."); ?><br />
 </font><br />
-<?php echo $clang->gT("File path:");?> "<?php echo $this->config->item('rootdir').'/tmp/sample_installer_file.txt'; ?>".
+<?php $clang->eT("File path:");?> "<?php echo $this->config->item('rootdir').'/tmp/sample_installer_file.txt'; ?>".
 <br /><br />
 <?php } ?>
 
-<b> <?php echo $clang->gT("Administrator credentials"); ?>:</b><br /><br />
-<?php echo $clang->gT("Username"); ?>: <?php echo $user; ?> <br />
-<?php echo $clang->gT("Password"); ?>: <?php echo $pwd; ?>
+<b> <?php $clang->eT("Administrator credentials"); ?>:</b><br /><br />
+<?php $clang->eT("Username"); ?>: <?php echo $user; ?> <br />
+<?php $clang->eT("Password"); ?>: <?php echo $pwd; ?>
 <br /><br />
 </div>
 </div>

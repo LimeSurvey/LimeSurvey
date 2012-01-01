@@ -20,16 +20,16 @@ switch ($this->session->userdata('htmleditormode'))
 } ?>
 
 <div class='formheader'>
-<strong><?php echo $clang->gT("Your personal settings");?></strong>
+<strong><?php $clang->eT("Your personal settings");?></strong>
 </div>
 <div>
 <form action='<?php echo site_url("admin/user/personalsettings/");?>' id='personalsettings' class='form44' method='post'>
 <ul>
 
-<li><label for='lang'><?php echo $clang->gT("Interface language");?>:</label>
+<li><label for='lang'><?php $clang->eT("Interface language");?>:</label>
 <select id='lang' name='lang'>
 <option value='auto'<?php if ($sSavedLanguage == 'auto') {echo " selected='selected'";} ?>>
-	<?php echo $clang->gT("(Autodetect)");?></option>
+	<?php $clang->eT("(Autodetect)");?></option>
 <?php foreach (getlanguagedata(true) as $langkey=>$languagekind) { ?>
     <option value='<?php echo $langkey;?>'<?php if ($langkey == $sSavedLanguage) {echo " selected='selected'";}?>>
     	<?php echo $languagekind['nativedescription'];?> - <?php echo $languagekind['description'];?></option>
@@ -38,39 +38,39 @@ switch ($this->session->userdata('htmleditormode'))
 </li>
 
 <li>
-<label for='htmleditormode'><?php echo $clang->gT("HTML editor mode");?>:</label>
+<label for='htmleditormode'><?php $clang->eT("HTML editor mode");?>:</label>
 <select id='htmleditormode' name='htmleditormode'>
-<option value='default' <?php echo $edmod1;?>><?php echo $clang->gT("Default");?></option>
-<option value='inline' <?php echo $edmod3;?>><?php echo $clang->gT("Inline HTML editor");?></option>
-<option value='popup' <?php echo $edmod4;?>><?php echo $clang->gT("Popup HTML editor");?></option>
-<option value='none' <?php echo $edmod2;?>><?php echo $clang->gT("No HTML editor");?></option>
+<option value='default' <?php echo $edmod1;?>><?php $clang->eT("Default");?></option>
+<option value='inline' <?php echo $edmod3;?>><?php $clang->eT("Inline HTML editor");?></option>
+<option value='popup' <?php echo $edmod4;?>><?php $clang->eT("Popup HTML editor");?></option>
+<option value='none' <?php echo $edmod2;?>><?php $clang->eT("No HTML editor");?></option>
 </select>
 </li>
 
 <li>
-<label for='questionselectormode'><?php echo $clang->gT("Question selector mode");?>:</label>
+<label for='questionselectormode'><?php $clang->eT("Question selector mode");?>:</label>
 <select id='questionselectormode' name='questionselectormode'>
-<option value='default'><?php echo $clang->gT("Default");?></option>
+<option value='default'><?php $clang->eT("Default");?></option>
 <option value='full'<?php if ($this->session->userdata('questionselectormode')=="full"){
-	echo "selected='selected'";}?>><?php echo $clang->gT("Full question selector");?></option>
+	echo "selected='selected'";}?>><?php $clang->eT("Full question selector");?></option>
 <option value='none'<?php if ($this->session->userdata('questionselectormode')=="none"){
-	echo "selected='selected'";}?>><?php echo $clang->gT("Simple question selector");?></option>
+	echo "selected='selected'";}?>><?php $clang->eT("Simple question selector");?></option>
 </select>
   </li>
 
 <li>
-<label for='templateeditormode'><?php echo $clang->gT("Template editor mode");?>:</label>
+<label for='templateeditormode'><?php $clang->eT("Template editor mode");?>:</label>
 <select id='templateeditormode' name='templateeditormode'>
-	<option value='default'><?php echo $clang->gT("Default");?></option>
+	<option value='default'><?php $clang->eT("Default");?></option>
 <option value='full'<?php if ($this->session->userdata('templateeditormode')=="full"){
-	echo "selected='selected'";};?>><?php echo $clang->gT("Full template editor");?></option>
+	echo "selected='selected'";};?>><?php $clang->eT("Full template editor");?></option>
 <option value='none'<?php if ($this->session->userdata('templateeditormode')=="none"){
-	echo "selected='selected'";}?>><?php echo $clang->gT("Simple template editor");?></option>
+	echo "selected='selected'";}?>><?php $clang->eT("Simple template editor");?></option>
 </select>
 </li>
 
 <li>
-<label for='dateformat'><?php echo $clang->gT("Date format");?>:</label>
+<label for='dateformat'><?php $clang->eT("Date format");?>:</label>
 <select name='dateformat' id='dateformat'>
 <?php foreach (getDateFormatData() as $index=>$dateformatdata)
 {
@@ -85,5 +85,5 @@ switch ($this->session->userdata('htmleditormode'))
 </select>
 </li>
 </ul>
-<p><input type='hidden' name='action' value='savepersonalsettings' /><input class='submit' type='submit' value='<?php echo $clang->gT("Save settings");
+<p><input type='hidden' name='action' value='savepersonalsettings' /><input class='submit' type='submit' value='<?php $clang->eT("Save settings");
 ?>' /></p></form></div>

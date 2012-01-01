@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    var url = "<?php echo Yii::app()->createUrl("admin/participants/sa/getAttributeBox"); ?>";
+    var url = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getAttributeBox"); ?>";
     var attname = "<?php $clang->eT("Attribute name:"); ?>";
     removeitem = new Array(); // Array to hold values that are to be removed from langauges option
 </script>
@@ -9,7 +9,7 @@
 <script src="<?php echo Yii::app()->getConfig('adminscripts') . "viewAttribute.js" ?>" type="text/javascript"></script>
 <div class='header ui-widget-header'><strong><?php $clang->eT("Attribute settings"); ?></strong></div><br/>
 <?php
-echo CHtml::beginForm(Yii::app()->createUrl('admin/participants/sa/saveAttribute/aid/' . CHttpRequest::getQuery('aid')) . '/', "post");
+echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/participants/sa/saveAttribute/aid/' . CHttpRequest::getQuery('aid')) . '/', "post");
 $plus = array('src' => Yii::app()->baseUrl . "/images/plus.png",
     'alt' => 'Add language',
     'title' => 'Add language',

@@ -22,14 +22,10 @@
  */
 class conditions extends Survey_Common_Action {
 
-	private $yii;
-	private $controller;
 	private $template_data;
 
     public function run($sa = '', $surveyid = 0)
    	{
-   		$this->yii = Yii::app();
-   		$this->controller = $this->getController();
    		$this->template_data = array();
 
    		if (empty($sa)) $sa = null;
@@ -159,7 +155,7 @@ class conditions extends Survey_Common_Action {
 		{
 		    $conditionsoutput = $clang->gT("You have not selected a question").str_repeat($br, 2);
 		    $conditionsoutput .= CHtml::submitButton($clang->gT("Main admin screen"), array(
-			    'onclick' => "window.open('".$this->controller->createUrl("admin/")."', '_top')"
+			    'onclick' => "window.open('".$this->getController()->createUrl("admin/")."', '_top')"
 			)).$br;
 			safe_die($conditionsoutput);
 		    return;
@@ -222,7 +218,7 @@ class conditions extends Survey_Common_Action {
 				$resetsurveylogicoutput .= CHtml::openTag('strong');
 				$resetsurveylogicoutput .= $clang->gT("All conditions in this survey have been deleted.").str_repeat($br, 2);
 				$resetsurveylogicoutput .= submitButton($clang->gT("Continue"), array(
-					'onclick' => "window.open('".$this->controller->createUrl('/admin/survey/sa/view/surveyid/'.$surveyid)."', '_top')"
+					'onclick' => "window.open('".$this->getController()->createUrl('/admin/survey/sa/view/surveyid/'.$surveyid)."', '_top')"
 				));
 				$resetsurveylogicoutput .= CHtml::closeTag('strong').CHtml::closeTag('td');
 				$resetsurveylogicoutput .= CHtml::closeTag('tr');
@@ -1078,7 +1074,7 @@ class conditions extends Survey_Common_Action {
 		    }
 
 		    $questionNavOptions .= CHtml::tag('option', array(
-			    'value' => $this->controller->createUrl("/admin/conditions/sa/action/subaction/editconditionsform/surveyid/$surveyid/gid/{$row['gid']}/qid/{$row['qid']}")),
+			    'value' => $this->getController()->createUrl("/admin/conditions/sa/action/subaction/editconditionsform/surveyid/$surveyid/gid/{$row['gid']}/qid/{$row['qid']}")),
 				$questionselecter
 			);
 		}
@@ -1096,7 +1092,7 @@ class conditions extends Survey_Common_Action {
 		}
 
 		$questionNavOptions .= CHtml::tag('option', array(
-			'value'=>$this->controller->createUrl("/admin/conditions/sa/action/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"),
+			'value'=>$this->getController()->createUrl("/admin/conditions/sa/action/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"),
 			'selected'=>'selected'),
 			$questiontitle .': '. $questiontextshort);
 		$questionNavOptions .= CHtml::closeTag('optgroup');
@@ -1116,7 +1112,7 @@ class conditions extends Survey_Common_Action {
 		        $questionselecter = htmlspecialchars(mb_strcut(html_entity_decode($question,ENT_QUOTES,'UTF-8'), 0, 35, 'UTF-8'))."...";
 		    }
 		    $questionNavOptions .=  CHtml::tag('option', array(
-			    'value' => $this->controller->createUrl("/admin/conditions/sa/action/subaction/editconditionsform/surveyid/$surveyid/gid/{$row['gid']}/qid/{$row['qid']}")),
+			    'value' => $this->getController()->createUrl("/admin/conditions/sa/action/subaction/editconditionsform/surveyid/$surveyid/gid/{$row['gid']}/qid/{$row['qid']}")),
 			    $row['title'].':'.$questionselecter
 			);
 		}
@@ -1173,10 +1169,8 @@ class conditions extends Survey_Common_Action {
 
 		//END: PREPARE JAVASCRIPT TO SHOW MATCHING ANSWERS TO SELECTED QUESTION
 
+		$this->getController()->_css_admin_include(Yii::app()->getConfig("generalscripts").'jquery/css/jquery.multiselect.css');
 
-		$css_admin_includes[] = Yii::app()->getConfig("generalscripts").'jquery/css/jquery.multiselect.css';
-
-		Yii::app()->setConfig("css_admin_includes", $css_admin_includes);//supposed to be setConfig
         $this->getController()->_getAdminHeader();
 
 		$data['clang'] = $clang;
@@ -1284,7 +1278,7 @@ class conditions extends Survey_Common_Action {
 		            $data['scenariotext'] = $scenariotext;
 		            $data['scenarionr'] = $scenarionr;
 
-		            $conditionsoutput_main_content .= $this->controller->render('/admin/conditions/includes/conditions_scenario',
+		            $conditionsoutput_main_content .= $this->getController()->render('/admin/conditions/includes/conditions_scenario',
 		            	$data, TRUE);
 
 		            unset($currentfield);
@@ -1520,7 +1514,7 @@ class conditions extends Survey_Common_Action {
 		                    { // show single condition action buttons in edit mode
 
 		                    	$data['rows'] = $rows;
-		                        $conditionsoutput_main_content .= $this->controller->render('/admin/conditions/includes/conditions_edit',
+		                        $conditionsoutput_main_content .= $this->getController()->render('/admin/conditions/includes/conditions_edit',
 		                        	$data, TRUE);
 
 		                        // now sets e corresponding hidden input field
@@ -1634,7 +1628,7 @@ class conditions extends Survey_Common_Action {
 		    if (isset($conditionsList) && is_array($conditionsList))
 		    {
 		        //TIBO
-				$this->_js_admin_includes(Yii::app()->getConfig("generalscripts").'jquery/jquery.multiselect.min.js');
+				$this->getController()->_js_admin_includes(Yii::app()->getConfig("generalscripts").'jquery/jquery.multiselect.min.js');
 
 				// TODO
 		        $conditionsoutput_main_content .= "<script type='text/javascript'>$(document).ready(function () { $('#copytomultiselect').multiselect( { autoOpen: true, noneSelectedText: '".$clang->gT("No questions selected")."', checkAllText: '".$clang->gT("Check all")."', uncheckAllText: '".$clang->gT("Uncheck all")."', selectedText: '# ".$clang->gT("selected")."', beforeclose: function(){ return false;},height: 200 } ); });</script>";
@@ -1945,8 +1939,8 @@ class conditions extends Survey_Common_Action {
 		    $conditionsoutput_main_content .= "</div>\n"; // end conditiontarget div
 
 
-		    $this->_js_admin_includes(Yii::app()->getConfig("adminscripts").'conditions.js');
-		    $this->_js_admin_includes(Yii::app()->getConfig("generalscripts").'jquery/lime-conditions-tabs.js');
+		    $this->getController()->_js_admin_includes(Yii::app()->getConfig("adminscripts").'conditions.js');
+		    $this->getController()->_js_admin_includes(Yii::app()->getConfig("generalscripts").'jquery/lime-conditions-tabs.js');
 
 		    if ($subaction == "editthiscondition" && isset($p_cid))
 		    {

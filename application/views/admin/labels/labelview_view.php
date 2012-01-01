@@ -1,7 +1,7 @@
 <script type="text/javascript"><!--
    var ci_path = '<?php echo Yii::app()->getConfig('imageurl') ?>'; //-->
 </script>
-<div class='header ui-widget-header'><?php echo $clang->gT("Labels") ?></div>
+<div class='header ui-widget-header'><?php $clang->eT("Labels") ?></div>
 <div id='tabs'>
     <ul>
 <?php
@@ -12,7 +12,7 @@
         <li><a href='#up_resmgmt'>" . $clang->gT("Uploaded Resources Management") . "</a></li>";
 ?>
     </ul>
-    <form method='post' id='mainform' action='<?php echo $this->createUrl('admin/labels/sa/process') ?>' onsubmit="return codeCheck('code_', <?php echo $maxsortorder ?>, '<?php echo $clang->gT("Error: You are trying to use duplicate label codes.", 'js') ?>', '<?php echo $clang->gT("Error: 'other' is a reserved keyword.", 'js') ?>');">
+    <form method='post' id='mainform' action='<?php echo $this->createUrl('admin/labels/sa/process') ?>' onsubmit="return codeCheck('code_', <?php echo $maxsortorder ?>, '<?php $clang->eT("Error: You are trying to use duplicate label codes.", 'js') ?>', '<?php $clang->eT("Error: 'other' is a reserved keyword.", 'js') ?>');">
         <input type='hidden' name='sortorder' value='<?php echo $msorow['sortorder'] ?>' />
         <input type='hidden' name='lid' value='<?php echo $lid ?>' />
         <input type='hidden' name= 'action' value='modlabelsetanswers' />
@@ -35,10 +35,10 @@
         echo '
                         <th>&nbsp;</th>';
 ?>
-                        <th><?php echo $clang->gT("Code") ?></th>
-                        <th><?php echo $clang->gT("Assessment value") ?></th>
-                        <th><?php echo $clang->gT("Title") ?></th>
-                        <th><?php echo $clang->gT("Action") ?></th>
+                        <th><?php $clang->eT("Code") ?></th>
+                        <th><?php $clang->eT("Assessment value") ?></th>
+                        <th><?php $clang->eT("Title") ?></th>
+                        <th><?php $clang->eT("Action") ?></th>
                     </tr>
                 </thead>
                 <tbody align='center'>
@@ -107,8 +107,8 @@
  ?>
                 </tbody>
             </table>
-            <button class='btnquickadd' id='btnquickadd' type='button'><?php echo $clang->gT('Quick add...') ?></button>
-            <p><input type='submit' name='method' value='<?php echo $clang->gT("Save Changes") ?>'  id='saveallbtn_<?php echo $lslanguage ?>' /></p>
+            <button class='btnquickadd' id='btnquickadd' type='button'><?php $clang->eT('Quick add...') ?></button>
+            <p><input type='submit' name='method' value='<?php $clang->eT("Save Changes") ?>'  id='saveallbtn_<?php echo $lslanguage ?>' /></p>
         </div>
 <?php
 }
@@ -118,7 +118,7 @@
         <div>
             <form class='form30' enctype='multipart/form-data' id='importlabelresources' name='importlabelresources'
                   action='<?php echo $this->createUrl('admin/labels/sa/importlabelresources') ?>' method='post'
-                  onsubmit='return validatefilename(this, "<?php echo $clang->gT('Please select a file to import!', 'js') ?>");'>
+                  onsubmit='return validatefilename(this, "<?php $clang->eT('Please select a file to import!', 'js') ?>");'>
 
                 <input type='hidden' name='lid' value='$lid' />
                 <input type='hidden' name='action' value='importlabelresources' />
@@ -127,35 +127,35 @@
                         <label>&nbsp;</label>
                         <input type='button'<?php hasResources($lid, 'label') === false ? ' disabled="disabled"' : '' ?>
                                onclick='window.open("<?php echo Yii::app()->getConfig('sCKEditorURL') ?>/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php?", "_blank")'
-                               value="<?php echo $clang->gT("Browse Uploaded Resources") ?>" />
+                               value="<?php $clang->eT("Browse Uploaded Resources") ?>" />
                     </li>
                     <li>
                         <label>&nbsp;</label>
                         <input type='button'<?php hasResources($lid, 'label') === false ? ' disabled="disabled"' : '' ?>
                                onclick='window.open("scriptname?action=exportlabelresources&amp;lid=<?php echo $lid ?>", "_blank")'
-                               value="<?php echo $clang->gT("Export Resources As ZIP Archive") ?>"  />
+                               value="<?php $clang->eT("Export Resources As ZIP Archive") ?>"  />
                     </li>
                     <li>
-                        <label for='the_file'><?php echo $clang->gT("Select ZIP File:") ?></label>
+                        <label for='the_file'><?php $clang->eT("Select ZIP File:") ?></label>
                         <input id='the_file' name="the_file" type="file" size="50" />
                     </li>
                     <li>
                         <label>&nbsp;</label>
-                        <input type='button' value='<?php echo $clang->gT("Import Resources ZIP Archive") ?>'
+                        <input type='button' value='<?php $clang->eT("Import Resources ZIP Archive") ?>'
                                <?php echo !function_exists("zip_open") ? "onclick='alert(\"" . $clang->gT("zip library not supported by PHP, Import ZIP Disabled", "js") . "\");'" : "onclick='if (validatefilename(this.form,\"" . $clang->gT('Please select a file to import!', 'js') . "\")) { this.form.submit();}'" ?>/>
                     </li>
                 </ul>
             </form>
         </div>
     </div>
-    <div id='quickadd' name='<?php echo $clang->gT('Quick add') ?>' style='display:none;'>
+    <div id='quickadd' name='<?php $clang->eT('Quick add') ?>' style='display:none;'>
         <div style='float:left;'>
-            <label for='quickadd'><?php echo $clang->gT('Enter your labels:') ?></label>
+            <label for='quickadd'><?php $clang->eT('Enter your labels:') ?></label>
             <br />
-            <textarea id='quickaddarea' class='tipme' title='<?php echo $clang->gT('Enter one label per line. You can provide a code by separating code and label text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or space.') ?>' rows='30' cols='100' style='width:570px;'></textarea>
-            <br /><button id='btnqareplace' type='button'><?php echo $clang->gT('Replace') ?></button>
-            <button id='btnqainsert' type='button'><?php echo $clang->gT('Add') ?></button>
-            <button id='btnqacancel' type='button'><?php echo $clang->gT('Cancel') ?></button>
+            <textarea id='quickaddarea' class='tipme' title='<?php $clang->eT('Enter one label per line. You can provide a code by separating code and label text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or space.') ?>' rows='30' cols='100' style='width:570px;'></textarea>
+            <br /><button id='btnqareplace' type='button'><?php $clang->eT('Replace') ?></button>
+            <button id='btnqainsert' type='button'><?php $clang->eT('Add') ?></button>
+            <button id='btnqacancel' type='button'><?php $clang->eT('Cancel') ?></button>
         </div>
     </div>
 </div>

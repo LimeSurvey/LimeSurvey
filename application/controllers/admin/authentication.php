@@ -26,39 +26,11 @@ if (!defined('BASEPATH'))
  */
 class Authentication extends Survey_Common_Action
 {
-    /**
-     * Executes the action based on given input
-     *
-     * @access public
-     * @return void
-     */
-    public function run()
-    {
-        if (isset($_GET['login']))
-            $this->login();
-        elseif (isset($_GET['logout']))
-            $this->logout();
-        elseif (isset($_GET['forgotpassword']))
-            $this->forgotPassword();
-        else
-            $this->index();
-    }
-
-    /**
-     * Default Controller Action
-     *
-     * @access public
-     * @return void
-     */
-    public function index()
-    {
-        $this->_doRedirect();
-    }
 
     /**
      * Show login screen and parse login data
      */
-    public function login()
+    public function index()
     {
         $this->_redirectIfLoggedIn();
         $sIp = Yii::app()->request->getUserHostAddress();
@@ -107,7 +79,7 @@ class Authentication extends Survey_Common_Action
     /**
      * Forgot Password screen
      */
-    public function forgotPassword()
+    public function forgotpassword()
     {
         $this->_redirectIfLoggedIn();
 
@@ -396,7 +368,7 @@ class Authentication extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
     {
         $aData['display']['menu_bars'] = false;
         parent::_renderWrappedTemplate('authentication', $aViewUrls, $aData);

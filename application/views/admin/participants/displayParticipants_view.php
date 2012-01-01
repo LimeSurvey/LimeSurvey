@@ -56,50 +56,50 @@ else
 /* Build the javasript variables to pass to the jqGrid */
 ?>
 <script type="text/javascript">
-    var spTitle = "<?php echo $clang->gT("Sharing participants..."); ?>";
-    var spAddBtn = "<?php echo $clang->gT("Share the selected participants"); ?>";
-    var sfNoUser = "<?php echo $clang->gT("No other user in the system"); ?>";
-    var addpartTitle = "<?php echo $clang->gT("Add participant to Survey"); ?>";
-    var addpartErrorMsg = "<?php echo $clang->gT("Either you don't own a survey or it doesn't have token table"); ?>";
-    var mapButton = "<?php echo $clang->gT("Next") ?>";
-    var error = "<?php echo $clang->gT("Error") ?>";
-    var addsurvey = "<?php echo $clang->gT("Add to survey") ?>";
-    var exportcsv = "<?php echo $clang->gT("Export CSV") ?>";
-    var nooptionselected = "<?php echo $clang->gT("Please choose either of the options") ?>";
-    var removecondition = "<?php echo $clang->gT("Remove condition") ?>";
-    var selectSurvey = "<?php echo $clang->gT("Please select a survey to add participants to"); ?>";
-    var cancelBtn = "<?php echo $clang->gT("Cancel") ?>";
-    var exportBtn = "<?php echo $clang->gT("Export") ?>";
-    var okBtn = "<?php echo $clang->gT("OK") ?>";
-    var deletefrompanelmsg = "<?php echo $clang->gT("Select one of the three options") ?>";
-    var noRowSelected = "<?php echo $clang->gT("You have no row selected") ?>";
-    var deletefrompanel = "<?php echo $clang->gT("Delete participant(s) from central participants panel only") ?>";
-    var deletefrompanelandtoken = "<?php echo $clang->gT("Delete participant(s) from central panel and tokens tables") ?>";
-    var deletefrompaneltokenandresponse = "<?php echo $clang->gT("Delete participant(s) from central panel, tokens tables and all associated responses") ?>";
+    var spTitle = "<?php $clang->eT("Sharing participants..."); ?>";
+    var spAddBtn = "<?php $clang->eT("Share the selected participants"); ?>";
+    var sfNoUser = "<?php $clang->eT("No other user in the system"); ?>";
+    var addpartTitle = "<?php $clang->eT("Add participant to Survey"); ?>";
+    var addpartErrorMsg = "<?php $clang->eT("Either you don't own a survey or it doesn't have token table"); ?>";
+    var mapButton = "<?php $clang->eT("Next") ?>";
+    var error = "<?php $clang->eT("Error") ?>";
+    var addsurvey = "<?php $clang->eT("Add to survey") ?>";
+    var exportcsv = "<?php $clang->eT("Export CSV") ?>";
+    var nooptionselected = "<?php $clang->eT("Please choose either of the options") ?>";
+    var removecondition = "<?php $clang->eT("Remove condition") ?>";
+    var selectSurvey = "<?php $clang->eT("Please select a survey to add participants to"); ?>";
+    var cancelBtn = "<?php $clang->eT("Cancel") ?>";
+    var exportBtn = "<?php $clang->eT("Export") ?>";
+    var okBtn = "<?php $clang->eT("OK") ?>";
+    var deletefrompanelmsg = "<?php $clang->eT("Select one of the three options") ?>";
+    var noRowSelected = "<?php $clang->eT("You have no row selected") ?>";
+    var deletefrompanel = "<?php $clang->eT("Delete participant(s) from central participants panel only") ?>";
+    var deletefrompanelandtoken = "<?php $clang->eT("Delete participant(s) from central panel and tokens tables") ?>";
+    var deletefrompaneltokenandresponse = "<?php $clang->eT("Delete participant(s) from central panel, tokens tables and all associated responses") ?>";
     var deleteMsg = "<br/>"+deletefrompanelmsg+"<br/><br/><center><ol id='selectable' class='selectable' ><li class='ui-widget-content' id='po'>"+deletefrompanel+"</li><li class='ui-widget-content' id='ptt'>"+deletefrompanelandtoken+"</li><li class='ui-widget-content' id='ptta'>"+deletefrompaneltokenandresponse+"</li></ol></center>";
-    var searchBtn = "<?php echo $clang->gT("Search") ?>";
-    var shareMsg = "<?php echo $clang->gT("You can see and edit settings for shared participant in share panel.") ?>"; //PLEASE REVIEW
-    var jsonUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/getParticipants_json"); ?>";
-    var jsonSearchUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/getParticipantsResults_json/search/"); ?>";
-    var editUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/editParticipant"); ?>";
-    var getSearchIDs = "<?php echo Yii::app()->createUrl("admin/participants/sa/getSearchIDs"); ?>";
-    var getaddtosurveymsg = "<?php echo Yii::app()->createUrl("admin/participants/sa/getaddtosurveymsg"); ?>";
+    var searchBtn = "<?php $clang->eT("Search") ?>";
+    var shareMsg = "<?php $clang->eT("You can see and edit settings for shared participant in share panel.") ?>"; //PLEASE REVIEW
+    var jsonUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getParticipants_json"); ?>";
+    var jsonSearchUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getParticipantsResults_json/search/"); ?>";
+    var editUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/editParticipant"); ?>";
+    var getSearchIDs = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getSearchIDs"); ?>";
+    var getaddtosurveymsg = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getaddtosurveymsg"); ?>";
     var minusbutton = "<?php echo Yii::app()->getRequest()->getBaseUrl() . "/images/deleteanswer.png" ?>";
     var addbutton = "<?php echo Yii::app()->getRequest()->getBaseUrl() . "/images/plus.png" ?>";
-    var delparticipantUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/delParticipant"); ?>";
-    var surveylinkUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/getSurveyInfo_json/pid/"); ?>";
-    var getAttribute_json = "<?php echo Yii::app()->createUrl("admin/participants/sa/getAttribute_json/pid/"); ?>";
-    var exporttocsv = "<?php echo Yii::app()->createUrl("admin/participants/sa/exporttocsv/id"); ?>";
-    var exporttocsvcount = "<?php echo Yii::app()->createUrl("admin/participants/sa/exporttocsvcount"); ?>";
-    var getcpdbAttributes_json = "<?php echo Yii::app()->createUrl("admin/participants/sa/exporttocsvcount"); ?>";
-    var attMapUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/attributeMap"); ?>";
-    var editAttributevalue = "<?php echo Yii::app()->createUrl("admin/participants/sa/editAttributevalue"); ?>";
-    var shareUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/shareParticipants"); ?>";
-    var surveyUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/addToToken"); ?>";
-    var postUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/setSession"); ?>";
-    var ajaxUrl = "<?php echo Yii::app()->createUrl("images/ajax-loader.gif"); ?>";
-    var redUrl = "<?php echo Yii::app()->createUrl("admin/participants/sa/displayParticipants"); ?>";
-    var colNames = '["participant_id","can_edit","<?php echo $clang->gT("First name") ?>","<?php echo $clang->gT("Last name") ?>","<?php echo $clang->gT("E-mail") ?>","<?php echo $clang->gT("Blacklisted") ?>","<?php echo $clang->gT("Surveys") ?>","<?php echo $clang->gT("Language") ?>","<?php echo $clang->gT("Owner name") ?>"<?php echo $columnNames; ?>]';
+    var delparticipantUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/delParticipant"); ?>";
+    var surveylinkUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getSurveyInfo_json/pid/"); ?>";
+    var getAttribute_json = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getAttribute_json/pid/"); ?>";
+    var exporttocsv = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/exporttocsv/id"); ?>";
+    var exporttocsvcount = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/exporttocsvcount"); ?>";
+    var getcpdbAttributes_json = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/exporttocsvcount"); ?>";
+    var attMapUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/attributeMap"); ?>";
+    var editAttributevalue = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/editAttributevalue"); ?>";
+    var shareUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/shareParticipants"); ?>";
+    var surveyUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/addToToken"); ?>";
+    var postUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/setSession"); ?>";
+    var ajaxUrl = "<?php echo Yii::app()->getController()->createUrl("images/ajax-loader.gif"); ?>";
+    var redUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/displayParticipants"); ?>";
+    var colNames = '["participant_id","can_edit","<?php $clang->eT("First name") ?>","<?php $clang->eT("Last name") ?>","<?php $clang->eT("E-mail") ?>","<?php $clang->eT("Blacklisted") ?>","<?php $clang->eT("Surveys") ?>","<?php $clang->eT("Language") ?>","<?php $clang->eT("Owner name") ?>"<?php echo $columnNames; ?>]';
     var colModels = '[{ "name":"participant_id", "index":"participant_id", "width":100, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';
     colModels += '{ "name":"can_edit", "index":"can_edit", "width":10, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';
     colModels += '{ "name":"firstname", "index":"firstname", "sorttype":"string", "sortable": true, "width":120, "align":"center", "editable":true},';
@@ -162,24 +162,24 @@ echo $colModels;
 </p>
 </table>
 
-<div id="fieldnotselected" title="<?php echo $clang->gT("Error") ?>" style="display:none">
+<div id="fieldnotselected" title="<?php $clang->eT("Error") ?>" style="display:none">
     <p>
-<?php echo $clang->gT("Please select a field"); ?>
+<?php $clang->eT("Please select a field"); ?>
     </p>
 </div>
-<div id="conditionnotselected" title="<?php echo $clang->gT("Error") ?>" style="display:none">
+<div id="conditionnotselected" title="<?php $clang->eT("Error") ?>" style="display:none">
     <p>
-<?php echo $clang->gT("Please select a condition"); ?>
+<?php $clang->eT("Please select a condition"); ?>
     </p>
 </div>
-<div id="norowselected" title="<?php echo $clang->gT("Error") ?>" style="display:none">
+<div id="norowselected" title="<?php $clang->eT("Error") ?>" style="display:none">
     <p>
-<?php echo $clang->gT("Please select at least one participant"); ?>
+<?php $clang->eT("Please select at least one participant"); ?>
     </p>
 </div>
-<div id="shareform" title="<?php echo $clang->gT("Share") ?>" style="display:none">
+<div id="shareform" title="<?php $clang->eT("Share") ?>" style="display:none">
     <p>
-<?php echo $clang->gT("User with whom the participants are to be shared"); ?></p>
+<?php $clang->eT("User with whom the participants are to be shared"); ?></p>
     <p>
         <?php
         $options[''] = $clang->gT("Select...");
@@ -194,7 +194,7 @@ echo $colModels;
         ?>
     </p>
     <p>
-<?php echo $clang->gT("Allow this user to edit these participants"); ?>
+<?php $clang->eT("Allow this user to edit these participants"); ?>
     </p>
     <p><?php
 $data = array(
@@ -207,11 +207,11 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
 </div>
 <!--<div id="addsurvey" title="addsurvey" style="display:none">-->
 <div class="ui-widget ui-helper-hidden" id="client-script-return-msg" style="display:none">
-    <form action="<?php echo Yii::app()->createUrl("admin/participants/sa/attributeMap"); ?>" name="addsurvey" id="addsurvey" method="POST">
+    <form action="<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/attributeMap"); ?>" name="addsurvey" id="addsurvey" method="POST">
         <input type="hidden" name="participant_id" id="participant_id" value=""></input>
         <input type="hidden" name="count" id="count" value=""></input>
         <p>
-            <?php echo $clang->gT("Please select the survey to which participants are to be added"); ?></p>
+            <?php $clang->eT("Please select the survey to which participants are to be added"); ?></p>
         <p>
             <?php
             if (!empty($surveynames))
@@ -225,7 +225,7 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
             }
             ?>
         </p>
-        <p><?php echo $clang->gT("Redirect to token table after copy "); ?>
+        <p><?php $clang->eT("Redirect to token table after copy "); ?>
             <?php
             $data = array(
                 'id' => 'redirect',
@@ -236,19 +236,19 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
             echo CHtml::checkBox('redirect', TRUE, $data);
             ?></p>
         <center><ol id='selectableadd' class='selectable' >
-                <li class='ui-widget-content' id='all'><?php echo $clang->gT("all participants in current search") ?></li>
-                <li class='ui-widget-content' id='allingrid'><?php echo $clang->gT("all participants") ?></li>
-                <li class='ui-widget-content' id='selected'><?php echo $clang->gT("only the participants I have selected") ?></li>
+                <li class='ui-widget-content' id='all'><?php $clang->eT("all participants in current search") ?></li>
+                <li class='ui-widget-content' id='allingrid'><?php $clang->eT("all participants") ?></li>
+                <li class='ui-widget-content' id='selected'><?php $clang->eT("only the participants I have selected") ?></li>
             </ol></center>
     </form>
 </div>
 <div id="notauthorised" title="notauthorised" style="display:none">
     <p>
-<?php echo $clang->gT("This is shared participant and you are not authorised to edit it"); ?></p>
+<?php $clang->eT("This is shared participant and you are not authorised to edit it"); ?></p>
 
 </div>
 <div id="exportcsv" title="exportcsv" style="display:none">
-        <?php echo $clang->gT("Select the attribute to be exported"); ?><br/><br/>
+        <?php $clang->eT("Select the attribute to be exported"); ?><br/><br/>
     <select id="attributes" name="attributes" multiple="multiple">
         <?php
         foreach ($allattributes as $key => $value)

@@ -1,4 +1,4 @@
-<input type='submit' value='<?php echo $clang->gT("Save"); ?>' />
+<input type='submit' value='<?php $clang->eT("Save"); ?>' />
  <input type='hidden' name='id' value='<?php echo $id; ?>' />
  <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
  <input type='hidden' name='subaction' value='update' />

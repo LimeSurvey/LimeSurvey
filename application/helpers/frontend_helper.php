@@ -1202,7 +1202,7 @@ function SendSubmitNotifications()
 
     if ($thissurvey['allowsave'] == "Y" && isset($_SESSION['scid']))
     {
-        $aReplacementVars['RELOADURL']="".Yii::app()->createUrl("survey/sid/{$surveyid}/loadall/reload/scid/".$_SESSION['scid']."/loadname/".urlencode($_SESSION['holdname'])."/loadpass/".urlencode($_SESSION['holdpass']));
+        $aReplacementVars['RELOADURL']="".Yii::app()->getController()->createUrl("survey/sid/{$surveyid}/loadall/reload/scid/".$_SESSION['scid']."/loadname/".urlencode($_SESSION['holdname'])."/loadpass/".urlencode($_SESSION['holdpass']));
         if ($bIsHTML)
         {
             $aReplacementVars['RELOADURL']="<a href='{$aReplacementVars['RELOADURL']}'>{$aReplacementVars['RELOADURL']}</a>";
@@ -1446,7 +1446,7 @@ function buildsurveysession($surveyid)
             }
 
             echo "<p class='captcha'>".$clang->gT("Please confirm access to survey by answering the security question below and click continue.")."</p>
-            <form class='captcha' method='post' action='".Yii::app()->createUrl("$surveyid")."'>
+            <form class='captcha' method='post' action='".Yii::app()->getController()->createUrl("$surveyid")."'>
             <table align='center'>
             <tr>
             <td align='right' valign='middle'>
@@ -1469,7 +1469,7 @@ function buildsurveysession($surveyid)
             if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
             {
                 echo "<tr>
-                <td align='center' valign='middle'><label for='captcha'>".$clang->gT("Security question:")."</label></td><td align='left' valign='middle'><table><tr><td valign='middle'><img src='".Yii::app()->createUrl('/verification/image')."' alt='captcha' /></td>
+                <td align='center' valign='middle'><label for='captcha'>".$clang->gT("Security question:")."</label></td><td align='left' valign='middle'><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image')."' alt='captcha' /></td>
                 <td valign='middle'><input id='captcha' type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table>
                 </td>
                 </tr>";
@@ -1545,7 +1545,7 @@ function buildsurveysession($surveyid)
             if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
             {
                 echo "<li>
-                <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='".Yii::app()->createUrl('/verification/image')."' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
+                <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='".Yii::app()->getController()->createUrl('/verification/image')."' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
                 </li>";
             }
             echo "<li>
@@ -1678,7 +1678,7 @@ function buildsurveysession($surveyid)
                     if (!isset($gettoken))
                     {
                         echo $clang->gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
-                        <form id='tokenform' method='get' action='".Yii::app()->createUrl("survey")."/index.php'>
+                        <form id='tokenform' method='get' action='".Yii::app()->getController()->createUrl("survey")."/index.php'>
                         <ul>
                         <li>
                         <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
@@ -1697,7 +1697,7 @@ function buildsurveysession($surveyid)
                 else
                 {
                     echo $clang->gT("Please confirm the token by answering the security question below and click continue.")."</p>
-                    <form id='tokenform' method='get' action='".Yii::app()->createUrl("survey")."'>
+                    <form id='tokenform' method='get' action='".Yii::app()->getController()->createUrl("survey")."'>
                     <ul>
                     <li>
                     <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
@@ -1718,7 +1718,7 @@ function buildsurveysession($surveyid)
                 if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
                 {
                     echo "<li>
-                    <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='".Yii::app()->createUrl('/verification/image')."' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
+                    <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='".Yii::app()->getController()->createUrl('/verification/image')."' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
                     </li>";
                 }
                 echo "<li><input class='submit' type='submit' value='".$clang->gT("Continue")."' /></li>
@@ -2618,7 +2618,7 @@ function check_quota($checkaction,$surveyid)
                 echo "\t<div class='quotamessage'>\n";
                 echo "\t".$quota['Message']."<br /><br />\n";
                 echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
-                echo "<form method='post' action='".Yii::app()->createUrl("survey")."' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><button class='nav-button nav-button-icon-left ui-corner-all' class='submit' accesskey='p' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" name='move2'><span class='ui-icon ui-icon-seek-prev'></span>".$clang->gT("Previous")."</button>
+                echo "<form method='post' action='".Yii::app()->getController()->createUrl("survey")."' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><button class='nav-button nav-button-icon-left ui-corner-all' class='submit' accesskey='p' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" name='move2'><span class='ui-icon ui-icon-seek-prev'></span>".$clang->gT("Previous")."</button>
                 <input type='hidden' name='thisstep' value='".($_SESSION['step'])."' id='thisstep' />
                 <input type='hidden' name='sid' value='".returnglobal('sid')."' id='sid' />
                 <input type='hidden' name='token' value='".$clienttoken."' id='token' />
@@ -2736,7 +2736,7 @@ function display_first_page() {
 
     $redata = compact(array_keys(get_defined_vars()));
     echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'frontend_helper[2757]');
-    echo "\n<form method='post' action='".Yii::app()->createUrl("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
+    echo "\n<form method='post' action='".Yii::app()->getController()->createUrl("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
 
     echo "\n\n<!-- START THE SURVEY -->\n";
 

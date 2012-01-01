@@ -18,21 +18,21 @@
 	<?php echo CHtml::errorSummary($model, null, null, array('class' => 'errors')); ?>
 </div>
 <br />
-<?php echo $clang->gT("You can leave these settings blank and change them later"); ?>
+<?php $clang->eT("You can leave these settings blank and change them later"); ?>
 <br />
 
 <fieldset class="content-table">
-<legend class="content-table-heading"><?php echo $clang->gT("Optional settings"); ?></legend>
+<legend class="content-table-heading"><?php $clang->eT("Optional settings"); ?></legend>
 <table style="width: 640px; font-size:14px;">
 <tr>
 <td><b><?php echo CHtml::activeLabelEx($model, 'adminLoginName', array('label' => $clang->gT("Admin login name"))); ?></b><br />
-<div class="description-field"><?php echo $clang->gT("This will be the userid by which admin of board will login."); ?></div>
+<div class="description-field"><?php $clang->eT("This will be the userid by which admin of board will login."); ?></div>
 </td>
 <td align="right"><?php echo CHtml::activeTextField($model, 'adminLoginName'); ?></td>
 </tr>
 <tr>
 <td><b><?php echo CHtml::activeLabelEx($model, 'adminLoginPwd', array('label' => $clang->gT("Admin login password"))); ?></b><br />
-<div class="description-field"><?php echo $clang->gT("This will be the password of admin user."); ?></div>
+<div class="description-field"><?php $clang->eT("This will be the password of admin user."); ?></div>
 </td>
 <td align="right"><?php echo CHtml::activePasswordField($model, 'adminLoginPwd'); ?></td>
 </tr>
@@ -43,25 +43,25 @@
 </tr>
 <tr>
 <td><b><?php echo CHtml::activeLabelEx($model, 'adminName', array('label' => $clang->gT("Administrator name"))); ?></b><br />
-<div class="description-field"><?php echo $clang->gT("This is the default name of the site administrator and used for system messages and contact options."); ?></div>
+<div class="description-field"><?php $clang->eT("This is the default name of the site administrator and used for system messages and contact options."); ?></div>
 </td>
 <td align="right"><?php echo CHtml::activeTextField($model, 'adminName'); ?></td>
 </tr>
 <tr>
 <td><b><?php echo CHtml::activeLabelEx($model, 'adminEmail', array('label' => $clang->gT("Administrator email"))); ?></b><br />
-<div class="description-field"><?php echo $clang->gT("This is the default email address of the site administrator and used for system messages, contact options and default bounce email."); ?></div>
+<div class="description-field"><?php $clang->eT("This is the default email address of the site administrator and used for system messages, contact options and default bounce email."); ?></div>
 </td>
 <td align="right"><?php echo CHtml::activeTextField($model, 'adminEmail'); ?></td>
 </tr>
 <tr>
 <td><b><?php echo CHtml::activeLabelEx($model, 'siteName', array('label' => $clang->gT("Site name"))); ?></b><br />
-<div class="description-field"><?php echo $clang->gT("This name will appear in the survey list overview and in the administration header."); ?></div>
+<div class="description-field"><?php $clang->eT("This name will appear in the survey list overview and in the administration header."); ?></div>
 </td>
 <td align="right"><?php echo CHtml::activeTextField($model, 'siteName'); ?></td>
 </tr>
 <tr>
 <td><b><?php echo CHtml::activeLabelEx($model, 'surveylang', array('label' => $clang->gT("Default language"))); ?></b><br />
-<div class="description-field"><?php echo $clang->gT("This will be your default language."); ?></div>
+<div class="description-field"><?php $clang->eT("This will be your default language."); ?></div>
 </td>
 <td align="right">
 <?php
@@ -91,7 +91,7 @@ echo CHtml::activeDropDownList($model, 'surveylang', $languages, array('style' =
  <table style="font-size:11px; width: 694px; background: #ffffff;">
   <tbody>
    <tr>
-    <td align="left" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="<?php echo $clang->gT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/welcome"); ?>', '_top')" /></td>
+    <td align="left" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="<?php $clang->eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/welcome"); ?>', '_top')" /></td>
     <td align="center" style="width: 227px;"></td>
     <td align="right" style="width: 227px;"><?php echo CHtml::submitButton($clang->gT("Next"), array('class' => 'ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only')); ?></td>
    </tr>

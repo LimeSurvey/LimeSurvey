@@ -173,7 +173,7 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
                                                                 ,LimeReplacementFieldsQID : \"".$qID."\"
                                                                 ,LimeReplacementFieldsType : \"".$fieldtype."\"
                                                                 ,LimeReplacementFieldsAction : \"".$action."\"
-                                                                ,LimeReplacementFieldsPath : \"".Yii::app()->createUrl("admin/fck_LimeReplacementFields/index/")."\"
+                                                                ,LimeReplacementFieldsPath : \"".Yii::app()->getController()->createUrl("admin/fck_LimeReplacementFields/index/")."\"
                                                                 ,width:'660'
                                                                 ,language:'".sTranslateLangCode2CK(Yii::app()->getConfig('adminlang'))."'
                                                                 ,smiley_path : \"".Yii::app()->getConfig('uploadurl')."/images/smiley/msn/\"\n"

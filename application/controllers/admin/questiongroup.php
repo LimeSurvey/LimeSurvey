@@ -64,10 +64,9 @@ class questiongroup extends Survey_Common_Action
     {
         $action = $_POST['action'];
         $surveyid = $_POST['sid'];
-        $clang = $this->controller->lang;
+        $clang = $this->getController()->lang;
 
-        $css_admin_includes[] = Yii::app()->getConfig('styleurl') . "admin/default/superfish.css";
-        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+        $this->getController()->_css_admin_include(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
 
         if ($action == 'importgroup')
         {
@@ -90,7 +89,7 @@ class questiongroup extends Survey_Common_Action
             if (isset($fatalerror))
             {
                 @unlink($sFullFilepath);
-                $this->controller->error($fatalerror);
+                $this->getController()->error($fatalerror);
             }
 
             Yii::app()->loadHelper('admin/import');
@@ -101,13 +100,13 @@ class questiongroup extends Survey_Common_Action
             elseif (strtolower($sExtension) == 'lsg')
                 $aImportResults = XMLImportGroup($sFullFilepath, $surveyid);
             else
-                $this->controller->error('Unknown file extension');
+                $this->getController()->error('Unknown file extension');
             FixLanguageConsistency($surveyid);
 
             if (isset($aImportResults['fatalerror']))
             {
                 unlink($sFullFilepath);
-                $this->controller->error($aImportResults['fatalerror']);
+                $this->getController()->error($aImportResults['fatalerror']);
             }
 
             unlink($sFullFilepath);
@@ -118,8 +117,8 @@ class questiongroup extends Survey_Common_Action
             $data['aImportResults'] = $aImportResults;
             $data['sExtension'] = $sExtension;
 
-            $this->controller->_getAdminHeader();
-            $this->controller->_showadminmenu($surveyid);
+            $this->getController()->_getAdminHeader();
+            $this->getController()->_showadminmenu($surveyid);
             $this->_surveybar($surveyid, NULL);
             $this->_surveysummary($surveyid, "importgroup");
             $this->getController()->render('/admin/survey/QuestionGroups/import_view', $data);
@@ -143,10 +142,10 @@ class questiongroup extends Survey_Common_Action
         if (bHasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
             $action = "addgroup";
-            $clang = $this->controller->lang;
+            $clang = $this->getController()->lang;
 
-            $css_admin_includes[] = Yii::app()->getConfig('styleurl') . "admin/default/superfish.css";
-            Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+            $this->getController()->_css_admin_include(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
+
             $this->getController()->_getAdminHeader();
             $this->getController()->_showadminmenu($surveyid);
             $this->_surveybar($surveyid);
@@ -310,12 +309,12 @@ class questiongroup extends Survey_Common_Action
         if (bHasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
             $action = "editgroup"; //$this->input->post('action');
-            $clang = $this->controller->lang;
+            $clang = $this->getController()->lang;
 
-            $css_admin_includes[] = Yii::app()->getConfig('styleurl') . "admin/default/superfish.css";
-            Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
-            $this->controller->_getAdminHeader($surveyid);
-            $this->controller->_showadminmenu($surveyid, $gid);
+            $this->getController()->_css_admin_include(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
+
+            $this->getController()->_getAdminHeader($surveyid);
+            $this->getController()->_showadminmenu($surveyid, $gid);
             $this->_surveybar($surveyid, $gid);
 
             if ($action == "editgroup")
@@ -385,9 +384,9 @@ class questiongroup extends Survey_Common_Action
                 $this->getController()->render('/admin/survey/QuestionGroups/editGroup_view', $data);
             }
         }
-        $this->controller->_loadEndScripts();
+        $this->getController()->_loadEndScripts();
 
-        $this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->controller->lang->gT("LimeSurvey online manual"));
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
     }
 
     /**
@@ -517,18 +516,16 @@ class questiongroup extends Survey_Common_Action
         $js_admin_includes[] = Yii::app()->getConfig('generalscripts') . 'admin/organize.js';
         Yii::app()->setConfig("js_admin_includes", $js_admin_includes);
 
-        $css_admin_includes = Yii::app()->getConfig("css_admin_includes");
-        $css_admin_includes[] = Yii::app()->getConfig('styleurl') . "admin/default/superfish.css";
-        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+        $this->getController()->_css_admin_include(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
 
-        $this->controller->_getAdminHeader();
-        $this->controller->_showadminmenu($iSurveyID);
+        $this->getController()->_getAdminHeader();
+        $this->getController()->_showadminmenu($iSurveyID);
         $this->_surveybar($iSurveyID);
 
         $this->getController()->render('/admin/survey/organizeGroupsAndQuestions_view', $aViewData);
 
-        $this->controller->_loadEndScripts();
-        $this->controller->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
+        $this->getController()->_loadEndScripts();
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
     }
 
     private function _reorderGroup($iSurveyID)

@@ -1,11 +1,11 @@
 <div class='header ui-widget-header'>
-    <?php echo $clang->gT("Token summary"); ?>
+    <?php $clang->eT("Token summary"); ?>
 </div>
 <br />
 <table align='center' class='statisticssummary'>
     <tr>
         <th>
-            <?php echo $clang->gT("Total records in this token table"); ?>
+            <?php $clang->eT("Total records in this token table"); ?>
         </th>
         <td>
             <?php echo $queries['tkcount']; ?>
@@ -13,7 +13,7 @@
     </tr>
     <tr>
         <th>
-            <?php echo $clang->gT("Total with no unique Token"); ?>
+            <?php $clang->eT("Total with no unique Token"); ?>
         </th>
         <td>
             <?php echo $queries['query1']; ?>
@@ -21,7 +21,7 @@
     </tr>
     <tr>
         <th>
-            <?php echo $clang->gT("Total invitations sent"); ?>
+            <?php $clang->eT("Total invitations sent"); ?>
         </th>
         <td>
             <?php echo $queries['query2']; ?>
@@ -29,7 +29,7 @@
     </tr>
     <tr>
         <th>
-            <?php echo $clang->gT("Total opted out"); ?>
+            <?php $clang->eT("Total opted out"); ?>
         </th>
         <td>
             <?php echo $queries['query3']; ?>
@@ -37,7 +37,7 @@
     </tr>
     <tr>
         <th>
-            <?php echo $clang->gT("Total surveys completed"); ?>
+            <?php $clang->eT("Total surveys completed"); ?>
         </th>
         <td>
             <?php echo $queries['query4']; ?>
@@ -50,20 +50,20 @@
 </script>
 <?php /* if (bHasSurveyPermission($surveyid, 'tokens', 'update') || bHasSurveyPermission($surveyid, 'tokens', 'delete'))
 { ?>
-    <div class='header ui-widget-header'><?php echo $clang->gT("Token database administration options"); ?></div>
+    <div class='header ui-widget-header'><?php $clang->eT("Token database administration options"); ?></div>
     <div style='width:30%; margin:0 auto;'>
         <ul>
                     <?php if (bHasSurveyPermission($surveyid, 'tokens', 'update'))
                     { ?>
-                <li><a href='#' onclick="if( confirm('<?php echo $clang->gT("Are you really sure you want to reset all invitation records to NO?", "js"); ?>')) { <?php echo get2post(Yii::app()->baseUrl . "?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites"); ?>}">
-                        <?php echo $clang->gT("Set all entries to 'No invitation sent'."); ?></a></li>
-                <li><a href='#' onclick="if ( confirm('<?php echo $clang->gT("Are you sure you want to delete all unique token strings?", "js"); ?>')) { <?php echo get2post(Yii::app()->baseUrl . "?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens"); ?>}">
-                <?php echo $clang->gT("Delete all unique token strings"); ?></a></li>
+                <li><a href='#' onclick="if( confirm('<?php $clang->eT("Are you really sure you want to reset all invitation records to NO?", "js"); ?>')) { <?php echo get2post(Yii::app()->baseUrl . "?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites"); ?>}">
+                        <?php $clang->eT("Set all entries to 'No invitation sent'."); ?></a></li>
+                <li><a href='#' onclick="if ( confirm('<?php $clang->eT("Are you sure you want to delete all unique token strings?", "js"); ?>')) { <?php echo get2post(Yii::app()->baseUrl . "?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens"); ?>}">
+                <?php $clang->eT("Delete all unique token strings"); ?></a></li>
                     <?php }
                     if (bHasSurveyPermission($surveyid, 'tokens', 'delete'))
                     { ?>
-                <li><a href='#' onclick=" if (confirm('<?php echo $clang->gT("Are you really sure you want to delete ALL token entries?", "js"); ?>')) { <?php echo get2post(Yii::app()->baseUrl . "?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall"); ?>}">
-        <?php echo $clang->gT("Delete all token entries"); ?></a></li>
+                <li><a href='#' onclick=" if (confirm('<?php $clang->eT("Are you really sure you want to delete ALL token entries?", "js"); ?>')) { <?php echo get2post(Yii::app()->baseUrl . "?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall"); ?>}">
+        <?php $clang->eT("Delete all token entries"); ?></a></li>
     <?php } ?>
         </ul>
     </div>

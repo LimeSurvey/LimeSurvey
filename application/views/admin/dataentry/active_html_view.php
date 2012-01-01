@@ -25,25 +25,25 @@ if ($thissurvey['active'] == "Y")
                 <tr>
                 <td colspan='3' align='center'>
                 <table><tr><td align='left'>
-                <input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' checked='checked'/><label for='closerecord'><?php echo $clang->gT("Finalize response submission"); ?></label></td></tr>
+                <input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' checked='checked'/><label for='closerecord'><?php $clang->eT("Finalize response submission"); ?></label></td></tr>
                 <input type='hidden' name='closedate' value='<?php echo date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $yii->getConfig('timeadjust')); ?>' />
     
                 <?php if ($thissurvey['allowsave'] == "Y")
                 { ?>
 
-                    <tr><td align='left'><input type='checkbox' class='checkboxbtn' name='save' id='save' onclick='saveshow(this.id)' /><label for='save'><?php echo $clang->gT("Save for further completion by survey user"); ?></label>
+                    <tr><td align='left'><input type='checkbox' class='checkboxbtn' name='save' id='save' onclick='saveshow(this.id)' /><label for='save'><?php $clang->eT("Save for further completion by survey user"); ?></label>
                     </td></tr></table>
                     <div name='saveoptions' id='saveoptions' style='display: none'>
                     <table align='center' class='outlinetable' cellspacing='0'>
-    					  <tr><td align='right'><?php echo $clang->gT("Identifier:"); ?></td>
+    					  <tr><td align='right'><?php $clang->eT("Identifier:"); ?></td>
     					  <td><input type='text' name='save_identifier' /></td></tr>
-    					  <tr><td align='right'><?php echo $clang->gT("Password:"); ?></td>
+    					  <tr><td align='right'><?php $clang->eT("Password:"); ?></td>
     					  <td><input type='password' name='save_password' /></td></tr>
-    					  <tr><td align='right'><?php echo $clang->gT("Confirm Password:"); ?></td>
+    					  <tr><td align='right'><?php $clang->eT("Confirm Password:"); ?></td>
     					  <td><input type='password' name='save_confirmpassword' /></td></tr>
-    					  <tr><td align='right'><?php echo $clang->gT("Email:"); ?></td>
+    					  <tr><td align='right'><?php $clang->eT("Email:"); ?></td>
     					  <td><input type='text' name='save_email' /></td></tr>
-    					  <tr><td align='right'><?php echo $clang->gT("Start Language:"); ?></td>
+    					  <tr><td align='right'><?php $clang->eT("Start Language:"); ?></td>
     					  <td>
                     <select name='save_language'>
                     <?php foreach ($slangs as $lang)
@@ -64,7 +64,7 @@ if ($thissurvey['active'] == "Y")
                 <?php } ?>
                 <tr>
                 <td colspan='3' align='center'>
-                <input type='submit' id='submitdata' value='<?php echo $clang->gT("Submit"); ?>'
+                <input type='submit' id='submitdata' value='<?php $clang->eT("Submit"); ?>'
     
                 <?php if (tableExists('tokens_'.$thissurvey['sid']))
                 { ?>
@@ -81,7 +81,7 @@ if ($thissurvey['active'] == "Y")
             { ?>
                 <tr>
                 <td colspan='3' align='center'>
-                <font color='red'><strong><?php echo $clang->gT("This survey is not yet active. Your response cannot be saved"); ?>
+                <font color='red'><strong><?php $clang->eT("This survey is not yet active. Your response cannot be saved"); ?>
                 </strong></font></td>
                 </tr>
             <?php }
@@ -90,9 +90,9 @@ if ($thissurvey['active'] == "Y")
                 </form>
                 <tr>
                 <td colspan='3' align='center'>";
-                <font color='red'><strong><?php echo $clang->gT("Error"); ?></strong></font><br />
-                <?php echo $clang->gT("The survey you selected does not exist"); ?><br /><br />
-                <input type='submit' value='<?php echo $clang->gT("Main Admin Screen"); ?>' onclick="window.open('<?php echo $scriptname; ?>', '_top')" />
+                <font color='red'><strong><?php $clang->eT("Error"); ?></strong></font><br />
+                <?php $clang->eT("The survey you selected does not exist"); ?><br /><br />
+                <input type='submit' value='<?php $clang->eT("Main Admin Screen"); ?>' onclick="window.open('<?php echo $scriptname; ?>', '_top')" />
                 </td>
                 </tr>
                 </table>

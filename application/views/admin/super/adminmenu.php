@@ -26,10 +26,10 @@
 	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/blank.gif' alt='' width='11' />
 	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/seperator.gif' alt='' />
 
-	    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/user/editusers");?>', '_top')" title="<?php $clang->eTview("Create/Edit Users");?>" >
+	    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/user/index");?>', '_top')" title="<?php $clang->eTview("Create/Edit Users");?>" >
 	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/security.png' name='AdminSecurity' alt='<?php $clang->eT("Create/Edit Users");?>' width='40' height='40'/></a>
 
-	    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/usergroups/view");?>', '_top')" title="<?php $clang->eTview("Create/Edit Groups");?>" >
+	    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/usergroups/index");?>', '_top')" title="<?php $clang->eTview("Create/Edit Groups");?>" >
 	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/usergroup.png' alt='<?php $clang->eT("Create/Edit Groups");?>' width='40' height='40'/></a>
 
 		<?php
@@ -91,7 +91,7 @@
 	    <select id='surveylist' name='surveylist' onchange="window.open(this.options[this.selectedIndex].value,'_top')">
 	    <?php echo getsurveylist(false, false, $surveyid); ?>
 	    </select>
-        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/listsurveys");?>', '_top')" title="<?php $clang->eTview("Detailed list of surveys");?>" >
+        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/index");?>', '_top')" title="<?php $clang->eTview("Detailed list of surveys");?>" >
         <img src='<?php echo Yii::app()->getConfig('imageurl');?>/surveylist.png' name='ListSurveys' alt='<?php $clang->eT("Detailed list of surveys");?>' />
         </a>
 
@@ -105,7 +105,7 @@
 
 
 	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/seperator.gif' alt='' border='0' hspace='0' />
-	    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/authentication/logout");?>', '_top')" title="<?php $clang->eTview("Logout");?>" >
+	    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/authentication/sa/logout");?>', '_top')" title="<?php $clang->eTview("Logout");?>" >
 	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/logout.png' name='Logout' alt='<?php $clang->eT("Logout");?>' /></a>
 
 	    <a href="http://docs.limesurvey.org" title="<?php $clang->eTview("LimeSurvey online manual");?>" >

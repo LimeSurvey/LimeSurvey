@@ -1,7 +1,7 @@
-<div class='header ui-widget-header'><?php echo $clang->gT("Import Label Set") ?></div>
+<div class='header ui-widget-header'><?php $clang->eT("Import Label Set") ?></div>
 <div class='messagebox ui-corner-all'>
-    <div class="successheader"><?php echo $clang->gT("Success") ?></div><br />
-    <?php echo $clang->gT("File upload succeeded.") ?><br /><br />
+    <div class="successheader"><?php $clang->eT("Success") ?></div><br />
+    <?php $clang->eT("File upload succeeded.") ?><br /><br />
 
 <?php
     $ImportListHeader = '';
@@ -30,9 +30,9 @@
     }
 ?>
 
-    <strong><?php echo $clang->gT("Imported Resources for") ?> LID:</strong><?php echo $lid ?><br /><br />
+    <strong><?php $clang->eT("Imported Resources for") ?> LID:</strong><?php echo $lid ?><br /><br />
     <div class="<?php echo $statusClass ?>"><?php echo $status ?></div><br />
-    <strong><u><?php echo $clang->gT("Resources Import Summary") ?></u></strong><br />
+    <strong><u><?php $clang->eT("Resources Import Summary") ?></u></strong><br />
     <?php echo $clang->gT("Total Imported files") . ": $okfiles" ?><br />
     <?php echo $clang->gT("Total Errors") . ": $errfiles" ?><br />
     <?php echo $ImportListHeader; ?>
@@ -64,5 +64,5 @@
 <?php
     }
 ?>
-    <input type='submit' value='<?php echo $clang->gT("Back") ?>' onclick="window.open('<?php echo $this->createUrl('admin/labels/sa/view/lid/' . $lid) ?>', '_top')" />
+    <input type='submit' value='<?php $clang->eT("Back") ?>' onclick="window.open('<?php echo $this->createUrl('admin/labels/sa/view/lid/' . $lid) ?>', '_top')" />
 </div>

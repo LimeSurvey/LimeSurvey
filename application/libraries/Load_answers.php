@@ -31,7 +31,7 @@ class Load_answers {
 		."\t}\n"
 		."\t</script>\n\n";
 		
-		echo "<form method='post' action='".Yii::app()->createUrl("survey")."'>\n";
+		echo "<form method='post' action='".Yii::app()->getController()->createUrl("survey")."'>\n";
 		foreach(file("$thistpl/load.pstpl") as $op)
 		{
 		    echo templatereplace($op);

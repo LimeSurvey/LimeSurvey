@@ -1,6 +1,6 @@
 <div class='messagebox ui-corner-all'>
     <div class='header ui-widget-header'>
-        <?php echo $clang->gT("Sending invitations..."); ?>
+        <?php $clang->eT("Sending invitations..."); ?>
     </div>
     <?php
     if ($tokenids)

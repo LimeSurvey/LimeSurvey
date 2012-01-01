@@ -67,8 +67,7 @@ class question extends Survey_Common_Action
         $gid = returnglobal('gid');
         $clang = $this->getController()->lang;
 
-        $css_admin_includes[] = Yii::app()->getConfig('styleurl') . "/admin/default/superfish.css";
-        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+        $this->getController()->_css_admin_include(Yii::app()->getConfig('styleurl') . "/admin/default/superfish.css");
 
         $this->getController()->_getAdminHeader();
         $this->getController()->_showadminmenu($surveyid);
@@ -296,9 +295,8 @@ class question extends Survey_Common_Action
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl .'/scripts/jquery/jquery.selectboxes.min.js');
 
         $css_admin_includes[] = Yii::app()->baseUrl . 'scripts/jquery/dd.css';
-
         $css_admin_includes[] = Yii::app()->getConfig('styleurl') . "admin/default/superfish.css";
-        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+        $this->getController()->_css_admin_include($css_admin_includes);
 
         $this->getController()->_getAdminHeader();
         $this->getController()->_showadminmenu($surveyid);
@@ -466,7 +464,7 @@ class question extends Survey_Common_Action
 
         $css_admin_includes[] = Yii::app()->getConfig('generalscripts') . 'jquery/dd.css';
         $css_admin_includes[] = Yii::app()->getConfig('styleurl') . "admin/default/superfish.css";
-        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+        $this->getController()->_css_admin_include($css_admin_includes);
 
         $this->getController()->_getAdminHeader();
         $this->getController()->_showadminmenu($surveyid);
@@ -698,7 +696,7 @@ class question extends Survey_Common_Action
                         $esrow->delete();
                     else
                         $questlangs[$esrow->language] = 99;
-                    
+
                     if ($esrow->language == $baselang)
                     {
                         $esrow = $esrow->attributes;

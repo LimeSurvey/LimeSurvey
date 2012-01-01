@@ -23,34 +23,11 @@
  * @access public
  */
 
-class Usergroups extends CAction
+class Usergroups extends Survey_Common_Action
 {
 
     private $headersent;
     private $footersent;
-
-    public function run()
-    {
-        $actions = array_keys($_GET);
-        $_GET['method'] = $action = (!empty($actions[0])) ? $actions[0] : '';
-
-        if (!empty($action)) {
-            $this->$action($_GET[$action]);
-        }
-        else
-        {
-            $this->view();
-        }
-    }
-
-    private function _post($d)
-    {
-        if (isset($_POST[$d])) {
-            return $_POST[$d];
-        } else {
-            return FALSE;
-        }
-    }
 
     /**
      * Usergroups::mail()
@@ -125,7 +102,7 @@ class Usergroups extends CAction
 
                 //echo $body . '-'.$subject .'-'.'<pre>'.htmlspecialchars($to).'</pre>'.'-'.$from;
                 if (SendEmailMessage($body, $subject, $to, $from, '')) {
-                    $this->view($ugid, array("type" => "success", "message" => "Message(s) sent successfully!"));
+                    $this->index($ugid, array("type" => "success", "message" => "Message(s) sent successfully!"));
                 }
                 else
                 {
@@ -137,7 +114,7 @@ class Usergroups extends CAction
                     //$maildebugbody = (isset($maildebugbody)) ? $maildebugbody : 'an unknown error accourd';
                     $headercfg["type"] = "warning";
                     $headercfg["message"] = sprintf($clang->gT("Email to %s failed. Error Message:"), $to) . " " . $maildebug;
-                    $this->view($ugid, $headercfg);
+                    $this->index($ugid, $headercfg);
                 }
             }
             else
@@ -188,17 +165,17 @@ class Usergroups extends CAction
 
                         if ($delquery_result) //Checked)
                         {
-                            $this->view(false, array("type" => "success", "message" => $clang->gT("Success!")));
+                            $this->index(false, array("type" => "success", "message" => $clang->gT("Success!")));
                         }
                         else
                         {
-                            $this->view(false, array("type" => "warning", "message" => $clang->gT("Could not delete user group.")));
+                            $this->index(false, array("type" => "warning", "message" => $clang->gT("Could not delete user group.")));
                         }
                     }
                 }
                 else
                 {
-                    $this->view($ugid, array("type" => "warning", "message" => $clang->gT("Could not delete user group. No group selected.")));
+                    $this->index($ugid, array("type" => "warning", "message" => $clang->gT("Could not delete user group. No group selected.")));
                 }
             }
 
@@ -228,7 +205,7 @@ class Usergroups extends CAction
 
                     if (isset($db_group_name) && strlen($db_group_name) > 0) {
                         if (strlen($db_group_name) > 21) {
-                            $this->view(false, array("type" => "warning", "message" => $clang->gT("Failed to add Group! Group name length more than 20 characters.")));
+                            $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add Group! Group name length more than 20 characters.")));
 
                         }
                         else
@@ -237,18 +214,18 @@ class Usergroups extends CAction
                             $ugid = User_groups::model()->addGroup($db_group_name, $db_group_description);
 
                             if ($ugid > 0) {
-                                $this->view($ugid, array("type" => "success", "message" => $clang->gT("User Group successfully added!")));
+                                $this->index($ugid, array("type" => "success", "message" => $clang->gT("User Group successfully added!")));
                             }
                             else
                             {
-                                $this->view(false, array("type" => "warning", "message" => $clang->gT("Failed to add Group! Group already exists.")));
+                                $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add Group! Group already exists.")));
                             }
                         }
 
                     }
                     else
                     {
-                        $this->view(false, array("type" => "warning", "message" => $clang->gT("Failed to add Group! Group Name was not supplied.")));
+                        $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add Group! Group Name was not supplied.")));
                     }
                 }
             }
@@ -291,7 +268,7 @@ class Usergroups extends CAction
                         $headercfg["message"] = $clang->gT("Failed to edit User Group!");
                         $headercfg["type"] = "warning";
                     }
-                    $this->view($ugid, $headercfg);
+                    $this->index($ugid, $headercfg);
 
                 }
             }
@@ -309,13 +286,13 @@ class Usergroups extends CAction
 
 
     /**
-     * Usergroups::view()
+     * Usergroups::index()
      * Load viewing of a user group screen.
      * @param bool $ugid
      * @param array|bool $header (type=success, warning)(message=localized message)
      * @return void
      */
-    public function view($ugid = false, $header = false)
+    public function index($ugid = false, $header = false)
     {
         if ($ugid != false)
             $ugid = (int)$ugid;
@@ -398,8 +375,7 @@ class Usergroups extends CAction
                 $ugid = sanitize_int($ugid);
             else
                 $ugid = false;
-            $css_admin_includes[] = Yii::app()->getConfig('styleurl') . "admin/default/superfish.css";
-            Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+            $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
             $this->getController()->_js_admin_includes(Yii::app()->baseUrl . 'scripts/admin/users.js');
             $this->getController()->_getAdminHeader();
             $this->getController()->_showadminmenu(false);
@@ -465,7 +441,7 @@ class Usergroups extends CAction
         //$this->load->model('user_groups');
         //$uquery = $this->user_groups_model->update(array('name' => $name, 'description' => $description), array('ugid' => $ugid));
         $uquery = db_execute_assoc($query);
-        return $uquery; //or safe_die($connect->ErrorMsg()) ; //Checked)
+        return $uquery;  //Checked)
     }
 
     /**
@@ -495,51 +471,9 @@ class Usergroups extends CAction
                 $this->load->model('templates_model');
                 $this->templates_model->insertRecords($data);
 
-                //db_execute_assoc($query2); // or safe_die($connect->ErrorMsg()); //Checked
+                //db_execute_assoc($query2); //Checked
             }
         }
         return true;
-    }
-
-    // adds Usergroups in Database by Moses
-    /**
-     * Usergroups::_addUserGroupInDB()
-     * Function that add a user group in database.
-     * @param mixed $group_name
-     * @param mixed $group_description
-     * @return
-     */
-    private function _addUserGroupInDB($group_name, $group_description)
-    {
-        $connect = Yii::app()->db;
-        $iquery = "INSERT INTO " . Yii::app()->db->tablePrefix . "user_groups (`name`, `description`, `owner_id`) VALUES('{$group_name}', '{$group_description}', '{$_SESSION['loginID']}')";
-        $command = $connect->createCommand($iquery);
-        $result = $command->query();
-        /*$data = array(
-                'name' => $group_name,
-                'description' => $group_description,
-                'owner_id' => $this->session->userdata('loginID')
-
-        );
-        $this->load->model('user_groups_model');
-        $this->load->model('user_in_groups_model');*/
-
-        if ($result) { //Checked
-            $id = $connect->getLastInsertID(); //$connect->Insert_Id(db_table_name_nq('user_groups'),'ugid');
-
-            if ($id > 0) {
-                $user_in_groups_query = 'INSERT INTO ' . Yii::app()->db->tablePrefix . 'user_in_groups (ugid, uid) VALUES (' . $id . ',' . Yii::app()->session['loginID'] . ')';
-                db_execute_assoc($user_in_groups_query);
-                /*$this->user_in_groups_model = new User_in_groups;
-                    $this->user_in_groups_model->ugid = $id;
-                    $this->user_in_groups_model->uid = Yii::app()->session['loginID'];
-                    $this->user_in_groups_model->save();*/
-                //$this->user_in_groups_model->insert(array('ugid' => $id, 'uid' => $this->session->userdata('loginID')));
-            }
-            return $id;
-        }
-        else
-            return -1;
-
     }
 }

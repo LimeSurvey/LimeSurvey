@@ -1,34 +1,34 @@
 <div class='menubar'>
     <div class='menubar-title ui-widget-header'>
-        <strong><?php echo $clang->gT("Token control"); ?> </strong> <?php echo htmlspecialchars($thissurvey['surveyls_title']); ?>
+        <strong><?php $clang->eT("Token control"); ?> </strong> <?php echo htmlspecialchars($thissurvey['surveyls_title']); ?>
     </div></div><div class='messagebox ui-corner-all'>
-    <div class='warningheader'><?php echo $clang->gT("Warning"); ?></div>
-    <br /><strong><?php echo $clang->gT("Tokens have not been initialised for this survey."); ?></strong><br /><br />
+    <div class='warningheader'><?php $clang->eT("Warning"); ?></div>
+    <br /><strong><?php $clang->eT("Tokens have not been initialised for this survey."); ?></strong><br /><br />
     <?php
     if (bHasSurveyPermission($surveyid, 'surveyactivation', 'update'))
     {
-        echo $clang->gT("If you initialise tokens for this survey then this survey will only be accessible to users who provide a token either manually or by URL.");
+        $clang->eT("If you initialise tokens for this survey then this survey will only be accessible to users who provide a token either manually or by URL.");
         ?><br /><br />
 
         <?php
         if ($thissurvey['anonymized'] == 'Y')
         {
-            echo $clang->gT("Note: If you turn on the -Anonymized responses- option for this survey then LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.");
+            $clang->eT("Note: If you turn on the -Anonymized responses- option for this survey then LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.");
             ?><br /><br />
         <?php
         }
-        echo $clang->gT("Do you want to create a token table for this survey?");
+        $clang->eT("Do you want to create a token table for this survey?");
         ?>
         <br /><br />
-        <input type='submit' value='<?php echo $clang->gT("Initialise tokens"); ?>' onclick="<?php echo get2post($this->createUrl("admin/tokens/sa/index/surveyid/$surveyid") . "?action=tokens&amp;sid=$surveyid&amp;createtable=Y"); ?>" />
-        <input type='submit' value='<?php echo $clang->gT("No, thanks."); ?>' onclick="window.open('<?php echo$this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>', '_top')" /></div>
+        <input type='submit' value='<?php $clang->eT("Initialise tokens"); ?>' onclick="<?php echo get2post($this->createUrl("admin/tokens/sa/index/surveyid/$surveyid") . "?action=tokens&amp;sid=$surveyid&amp;createtable=Y"); ?>" />
+        <input type='submit' value='<?php $clang->eT("No, thanks."); ?>' onclick="window.open('<?php echo$this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>', '_top')" /></div>
 <?php
 }
 else
 {
-    echo $clang->gT("You don't have the permission to activate tokens.");
+    $clang->eT("You don't have the permission to activate tokens.");
     ?>
-    <input type='submit' value='<?php echo $clang->gT("Back to main menu"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/survey/view/surveyid/$surveyid"); ?>', '_top')" /></div>
+    <input type='submit' value='<?php $clang->eT("Back to main menu"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/survey/view/surveyid/$surveyid"); ?>', '_top')" /></div>
 
 <?php
 }
@@ -37,10 +37,10 @@ else
 if ($tcount > 0 && $databasetype != 'postgre' && bHasSurveyPermission($surveyid, 'surveyactivation', 'update'))
 {
     ?>
-    <br /><div class='header ui-widget-header'><?php echo $clang->gT("Restore options"); ?></div>
+    <br /><div class='header ui-widget-header'><?php $clang->eT("Restore options"); ?></div>
     <div class='messagebox ui-corner-all'>
         <form method='post' action='<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid"); ?>'>
-    <?php echo $clang->gT("The following old token tables could be restored:"); ?><br /><br />
+    <?php $clang->eT("The following old token tables could be restored:"); ?><br /><br />
             <select size='4' name='oldtable' style='width:250px;'>
     <?php
     foreach ($oldlist as $ol)
@@ -49,7 +49,7 @@ if ($tcount > 0 && $databasetype != 'postgre' && bHasSurveyPermission($surveyid,
     }
     ?>
             </select><br /><br />
-            <input type='submit' value='<?php echo $clang->gT("Restore"); ?>' />
+            <input type='submit' value='<?php $clang->eT("Restore"); ?>' />
             <input type='hidden' name='restoretable' value='Y' />
             <input type='hidden' name='sid' value='$surveyid' />
         </form></div>

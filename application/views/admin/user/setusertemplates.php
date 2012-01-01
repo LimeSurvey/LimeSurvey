@@ -1,10 +1,10 @@
 <form action='<?php echo site_url("admin/user/usertemplates");?>' method='post'>
-	<div class='header ui-widget-header'><?php echo $clang->gT('Edit template permissions');?></div>
+	<div class='header ui-widget-header'><?php $clang->eT('Edit template permissions');?></div>
     <table id="user-template-rights" width='50%' border='0' cellpadding='3' style='margin:5px auto 0 auto;'>
 	<thead>
 	<tr>
 	<th colspan="2" style="background-color:#000; color:#fff;">
-    <?php echo $clang->gT('Set templates that this user may access');?>: <?php echo $_POST['user'];?></th>
+    <?php $clang->eT('Set templates that this user may access');?>: <?php echo $_POST['user'];?></th>
 	</tr>
 	<?php
     foreach ($userlist as $usr)
@@ -20,17 +20,17 @@
             }
 			?>
             <tr><th>
-            <?php echo $clang->gT('Template name');?>
+            <?php $clang->eT('Template name');?>
             <br />&nbsp;</th><th>
-            <?php echo $clang->gT('Allowed');?>
-            <br /><input type='checkbox' alt='<?php echo $clang->gT("Check or uncheck all items");?>' class='tipme' id='checkall' />
+            <?php $clang->eT('Allowed');?>
+            <br /><input type='checkbox' alt='<?php $clang->eT("Check or uncheck all items");?>' class='tipme' id='checkall' />
             </th></tr>
             </thead>
 
             <tfoot>
             <tr>
             <td colspan="3">
-            <input type="submit" value="<?php echo $clang->gT('Save settings');?>" />
+            <input type="submit" value="<?php $clang->eT('Save settings');?>" />
             <input type="hidden" name="action" value="usertemplates" />
             <input type="hidden" name="uid" value="<?php echo $postuserid;?>" />
             </td>

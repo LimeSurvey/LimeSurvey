@@ -51,8 +51,7 @@ class emailtemplates extends Survey_Common_Action {
     {
         $clang = $this->getController()->lang;
         $surveyid = sanitize_int($surveyid);
-        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
-        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+        $this->getController()->_css_admin_include(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
 
         Yii::app()->loadHelper('admin.htmleditor');
         Yii::app()->loadHelper('surveytranslator');

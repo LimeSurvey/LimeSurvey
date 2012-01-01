@@ -422,7 +422,7 @@ function activateSurvey($surveyid, $simulate = false)
 
     if (!$execresult)
     {
-        $link = Yii::app()->createUrl("admin/survey/view/".$surveyid);
+        $link = Yii::app()->getController()->createUrl("admin/survey/view/".$surveyid);
         $activateoutput .= "<br />\n<div class='messagebox ui-corner-all'>\n" .
         "<div class='header ui-widget-header'>".$clang->gT("Activate Survey")." ($surveyid)</div>\n" .
         "<div class='warningheader'>".$clang->gT("Survey could not be actived.")."</div>\n" .
@@ -504,15 +504,15 @@ function activateSurvey($surveyid, $simulate = false)
         if (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
         {
             $activateoutput .= $clang->gT("This survey allows public registration. A token table must also be created.")."<br /><br />\n";
-            $activateoutput .= "<input type='submit' value='".$clang->gT("Initialise tokens")."' onclick=\"".get2post(Yii::app()->createUrl("admin/tokens/surveyid/".$surveyid))."\" />\n";
+            $activateoutput .= "<input type='submit' value='".$clang->gT("Initialise tokens")."' onclick=\"".get2post(Yii::app()->getController()->createUrl("admin/tokens/surveyid/".$surveyid))."\" />\n";
         }
         else
         {
-            $link = Yii::app()->createUrl("admin/survey/view/".$surveyid);
+            $link = Yii::app()->getController()->createUrl("admin/survey/view/".$surveyid);
 
             $activateoutput .= $clang->gT("This survey is now active, and responses can be recorded.")."<br /><br />\n";
             $activateoutput .= "<strong>".$clang->gT("Open-access mode").":</strong> ".$clang->gT("No invitation code is needed to complete the survey.")."<br />".$clang->gT("You can switch to the closed-access mode by initialising a token table with the button below.")."<br /><br />\n";
-            $activateoutput .= "<input type='submit' value='".$clang->gT("Switch to closed-access mode")."' onclick=\"".get2post(Yii::app()->createUrl("admin/tokens/surveyid/".$surveyid))."\" />\n";
+            $activateoutput .= "<input type='submit' value='".$clang->gT("Switch to closed-access mode")."' onclick=\"".get2post(Yii::app()->getController()->createUrl("admin/tokens/surveyid/".$surveyid))."\" />\n";
             $activateoutput .= "<input type='submit' value='".$clang->gT("No, thanks.")."' onclick=\"".get2post("$link")."\" />\n";
         }
         $activateoutput .= "</div><br />&nbsp;\n";

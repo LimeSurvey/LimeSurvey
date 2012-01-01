@@ -1,9 +1,9 @@
-<div class='header ui-widget-header'><?php echo $clang->gT("Import template") ?></div>
+<div class='header ui-widget-header'><?php $clang->eT("Import template") ?></div>
 <div class='messagebox ui-corner-all'>
-    <div class='successheader'><?php echo $clang->gT("Success") ?></div><br />
-    <?php echo $clang->gT("File upload succeeded.") ?><br /><br />
-    <?php echo $clang->gT("Reading file..") ?><br /><br />
-    <strong><?php echo $clang->gT("Imported template files for") ?></strong> <?php echo $lid ?><br /><br />
+    <div class='successheader'><?php $clang->eT("Success") ?></div><br />
+    <?php $clang->eT("File upload succeeded.") ?><br /><br />
+    <?php $clang->eT("Reading file..") ?><br /><br />
+    <strong><?php $clang->eT("Imported template files for") ?></strong> <?php echo $lid ?><br /><br />
 <?php
 $okfiles = 0;
 $errfiles = 0;
@@ -28,14 +28,14 @@ else
 }
 ?>
     <div class="<?php echo $statusClass ?>"><?php echo $status ?></div><br />
-    <strong><u><?php echo $clang->gT("Resources Import Summary") ?></u></strong><br />
+    <strong><u><?php $clang->eT("Resources Import Summary") ?></u></strong><br />
     <?php echo $clang->gT("Total Imported files") . ": $okfiles" ?><br />
     <?php echo $clang->gT("Total Errors") . ": $errfiles" ?><br />
 <?php
 if (count($aImportedFilesInfo) > 0)
 {
 ?>
-    <br /><strong><u><?php echo $clang->gT("Imported Files List") ?>:</u></strong><br />
+    <br /><strong><u><?php $clang->eT("Imported Files List") ?>:</u></strong><br />
     <ul>
 <?php
     foreach ($aImportedFilesInfo as $entry)
@@ -49,7 +49,7 @@ if (count($aErrorFilesInfo) > 0)
 {
 ?>
     </ul>
-    <br /><strong><u><?php echo $clang->gT("Error Files List") ?>:</u></strong><br />
+    <br /><strong><u><?php $clang->eT("Error Files List") ?>:</u></strong><br />
     <ul>
 <?php
     foreach ($aErrorFilesInfo as $entry)
@@ -61,5 +61,5 @@ if (count($aErrorFilesInfo) > 0)
 }
 ?>
     </ul>
-    <input type='submit' value='<?php echo $clang->gT("Open imported template") ?>' onclick="window.open('<?php echo $this->createUrl('admin/templates/sa/view/editfile/startpage.pstpl/screenname/welcome/templatename/' . $newdir) ?>', '_top')" />
+    <input type='submit' value='<?php $clang->eT("Open imported template") ?>' onclick="window.open('<?php echo $this->createUrl('admin/templates/sa/view/editfile/startpage.pstpl/screenname/welcome/templatename/' . $newdir) ?>', '_top')" />
 </div>

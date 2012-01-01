@@ -101,7 +101,7 @@ class AdminController extends LSYii_Controller
 	public function run($action)
 	{
 		// Check if the DB is up to date
-		if (!Yii::app()->db->schema->getTable('{{survey}}'))
+		if (!Yii::app()->db->schema->getTable('{{surveys}}'))
 		{
 			$usrow = getGlobalSetting('DBVersion');
 			if ((int) $usrow < Yii::app()->getConfig('dbversionnumber') && $action != 'update' && $action != 'authentication')
@@ -115,7 +115,7 @@ class AdminController extends LSYii_Controller
             Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
             Yii::app()->session['redirectopage'] = Yii::app()->request->requestUri;
 
-            $this->redirect($this->createUrl('admin/authentication/login'));
+            $this->redirect($this->createUrl('/admin/authentication/sa/login'));
         }
 
 		return parent::run($action);
@@ -129,41 +129,51 @@ class AdminController extends LSYii_Controller
 	 */
 	public function actions()
 	{
-		return array(
-			'authentication' => 'application.controllers.admin.authentication',
-			'browse' => 'application.controllers.admin.browse',
-			'index' => 'application.controllers.admin.index',
-			'globalsettings' => 'application.controllers.admin.globalsettings',
-			'quotas' => 'application.controllers.admin.quotas',
-			'usergroups' => 'application.controllers.admin.usergroups',
-			'export' => 'application.controllers.admin.export',
-			'assessments' =>'application.controllers.admin.assessments',
-			'checkintegrity' => 'application.controllers.admin.checkintegrity',
-			'labels' => 'application.controllers.admin.labels',
-			'htmleditor_pop' => 'application.controllers.admin.htmleditor_pop',
-			'survey' => 'application.controllers.admin.surveyaction',
-			'printablesurvey' => 'application.controllers.admin.printablesurvey',
-			'tokens' => 'application.controllers.admin.tokens',
-			'surveypermission' => 'application.controllers.admin.surveypermission',
-			'questiongroup' => 'application.controllers.admin.questiongroup',
-			'dumpdb' => 'application.controllers.admin.dumpdb',
-			'question' => 'application.controllers.admin.question',
-			'database' => 'application.controllers.admin.database',
-			'statistics' => 'application.controllers.admin.statistics',
-			'translate' => 'application.controllers.admin.translate',
-			'labels' => 'application.controllers.admin.labels',
-			'templates' => 'application.controllers.admin.templates',
-			'user' => 'application.controllers.admin.useraction',
-			'participants' => 'application.controllers.admin.participantsaction',
-			'translate' => 'application.controllers.admin.translate',
-			'saved' => 'application.controllers.admin.saved',
-			'dataentry' => 'application.controllers.admin.dataentry',
-			'emailtemplates' => 'application.controllers.admin.emailtemplates',
-			'update' => 'application.controllers.admin.update',
-			'conditions' => 'application.controllers.admin.conditions',
-			'expressions' => 'application.controllers.admin.expressions'
-		);
+        $actions = $this->getActionClasses();
+
+        foreach ($actions as $action => $class)
+        {
+            $actions[$action] = "application.controllers.admin.{$class}";
+        }
+
+        return $actions;
 	}
+
+    public function getActionClasses()
+    {
+        return array(
+			'assessments'      => 'assessments',
+			'authentication'   => 'authentication',
+			'browse'           => 'browse',
+			'checkintegrity'   => 'checkintegrity',
+			'conditions'       => 'conditions',
+			'database'         => 'database',
+			'dataentry'        => 'dataentry',
+			'dumpdb'           => 'dumpdb',
+			'emailtemplates'   => 'emailtemplates',
+			'export'           => 'export',
+			'expressions'      => 'expressions',
+			'globalsettings'   => 'globalsettings',
+			'htmleditor_pop'   => 'htmleditor_pop',
+			'index'            => 'index',
+			'labels'           => 'labels',
+			'participants'     => 'participantsaction',
+			'printablesurvey'  => 'printablesurvey',
+			'question'         => 'question',
+			'questiongroup'    => 'questiongroup',
+			'quotas'           => 'quotas',
+			'saved'            => 'saved',
+			'statistics'       => 'statistics',
+			'survey'           => 'surveyaction',
+			'surveypermission' => 'surveypermission',
+			'user'             => 'useraction',
+			'usergroups'       => 'usergroups',
+			'templates'        => 'templates',
+			'tokens'           => 'tokens',
+			'translate'        => 'translate',
+			'update'           => 'update',
+        );
+    }
 
 	/**
 	 * Set Session User Rights
@@ -177,14 +187,14 @@ class AdminController extends LSYii_Controller
 
 		if (!empty($user))
 		{
-			Yii::app()->session['USER_RIGHT_SUPERADMIN'] = $user->superadmin;
-			Yii::app()->session['USER_RIGHT_CREATE_SURVEY'] = ($user->create_survey || $user->superadmin);
+			Yii::app()->session['USER_RIGHT_SUPERADMIN']        = $user->superadmin;
+			Yii::app()->session['USER_RIGHT_CREATE_SURVEY']     = ($user->create_survey || $user->superadmin);
 			Yii::app()->session['USER_RIGHT_PARTICIPANT_PANEL'] = ($user->participant_panel || $user->superadmin);
-			Yii::app()->session['USER_RIGHT_CONFIGURATOR'] = ($user->configurator || $user->superadmin);
-			Yii::app()->session['USER_RIGHT_CREATE_USER'] = ($user->create_user || $user->superadmin);
-			Yii::app()->session['USER_RIGHT_DELETE_USER'] = ($user->delete_user || $user->superadmin);
-			Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'] = ($user->manage_template || $user->superadmin);
-			Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] = ($user->manage_label || $user->superadmin);
+			Yii::app()->session['USER_RIGHT_CONFIGURATOR']      = ($user->configurator || $user->superadmin);
+			Yii::app()->session['USER_RIGHT_CREATE_USER']       = ($user->create_user || $user->superadmin);
+			Yii::app()->session['USER_RIGHT_DELETE_USER']       = ($user->delete_user || $user->superadmin);
+			Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE']   = ($user->manage_template || $user->superadmin);
+			Yii::app()->session['USER_RIGHT_MANAGE_LABEL']      = ($user->manage_label || $user->superadmin);
 		}
 
 		// SuperAdmins
@@ -209,6 +219,15 @@ class AdminController extends LSYii_Controller
 		else
 			Yii::app()->session['USER_RIGHT_INITIALSUPERADMIN'] = 0;
 	}
+
+    function createUrl($route, $params = array(), $ampersand = '&')
+    {
+        $url = parent::createUrl($route, $params, $ampersand);
+
+        $url = str_replace('/sa', '', $url);
+
+        return $url;
+    }
 
 	/**
 	 * Prints Admin Header
@@ -256,10 +275,6 @@ class AdminController extends LSYii_Controller
 
 		$data['sitename'] = Yii::app()->getConfig("sitename");
 		$data['admintheme'] = Yii::app()->getConfig("admintheme");
-
-		if (Yii::app()->getConfig("css_admin_includes"))
-			$data['css_admin_includes'] = array_unique(Yii::app()->getConfig("css_admin_includes"));
-
 		$data['firebug'] = use_firebug();
 
 		if (!empty(Yii::app()->session['dateformat']))
@@ -268,7 +283,6 @@ class AdminController extends LSYii_Controller
 		// Prepare flashmessage
 		if (!empty(Yii::app()->session['flashmessage']) && Yii::app()->session['flashmessage'] != '')
 		{
-			//unset($_SESSION['flashmessage']);
 			$data['flashmessage'] = Yii::app()->session['flashmessage'];
 			unset(Yii::app()->session['flashmessage']);
 		}
@@ -292,36 +306,35 @@ class AdminController extends LSYii_Controller
 
 		$data['versionnumber'] = Yii::app()->getConfig("versionnumber");
 
-		$data['buildtext']="";
+		$data['buildtext'] = "";
 		if(Yii::app()->getConfig("buildnumber")!="") {
 			$data['buildtext']= "Build ".Yii::app()->getConfig("buildnumber");
 		}
 
 		//If user is not logged in, don't print the version number information in the footer.
-		$data['versiontitle'] = $clang->gT('Version');
 		if (empty(Yii::app()->session['loginID']))
 		{
 			$data['versionnumber']="";
 			$data['versiontitle']="";
 			$data['buildtext']="";
 		}
+        else
+        {
+            $data['versiontitle'] = $clang->gT('Version');
+        }
 
 		$data['imageurl'] = Yii::app()->getConfig("imageurl");
 		$data['url'] = $url;
 
-		if (Yii::app()->getConfig("js_admin_includes"))
-		{
-			$data['js_admin_includes'] = array_unique(Yii::app()->getConfig("js_admin_includes"));
-		}
-		if (Yii::app()->getConfig("css_admin_includes"))
-			$data['css_admin_includes'] = array_unique(Yii::app()->getConfig("css_admin_includes"));
+		$data['js_admin_includes']  = $this->_js_admin_includes(array(), true);
+		$data['css_admin_includes'] = $this->_css_admin_includes(array(), true);
 
 		return $this->render("/admin/super/footer", $data, $return);
 
 	}
 
 	/**
-	 * Shows a message...box
+	 * Shows a message box
 	 *
 	 * @access public
 	 * @param string $title
@@ -371,20 +384,6 @@ class AdminController extends LSYii_Controller
 
 	}
 
-	public function _css_admin_includes($include)
-	{
-		$css_admin_includes = Yii::app()->getConfig("css_admin_includes");
-		$css_admin_includes[] = $include;
-		Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
-	}
-
-	public function _js_admin_includes($include)
-	{
-		$js_admin_includes = Yii::app()->getConfig("js_admin_includes");
-		$js_admin_includes[] = $include;
-		Yii::app()->setConfig("js_admin_includes", $js_admin_includes);
-	}
-
 	public function _loadEndScripts()
 	{
 		static $out = false;
@@ -403,4 +402,34 @@ class AdminController extends LSYii_Controller
 
 		return $this->render('/admin/endScripts_view', $data);
 	}
+
+	public function _css_admin_includes($includes = array(), $reset = false)
+	{
+        return $this->_admin_includes('css', $includes, $reset);
+	}
+
+	public function _js_admin_includes($includes = array(), $reset = false)
+	{
+        return $this->_admin_includes('js', $includes, $reset);
+	}
+
+    private function _admin_includes($method, $includes = array(), $reset = false)
+    {
+        $method = in_array($method, array('js', 'css')) ? $method : 'js';
+        $includes = (array) $includes;
+        $admin_includes = (array) Yii::app()->getConfig("{$method}_admin_includes");
+        $admin_includes = array_merge($admin_includes, $includes);
+        $admin_includes = array_filter($admin_includes);
+        $admin_includes = array_unique($admin_includes);
+        if ($reset == true)
+        {
+            Yii::app()->setConfig("{$method}_admin_includes", array());
+        }
+        else
+        {
+            Yii::app()->setConfig("{$method}_admin_includes", $admin_includes);
+        }
+
+        return $admin_includes;
+    }
 }

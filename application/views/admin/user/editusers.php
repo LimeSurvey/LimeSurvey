@@ -1,28 +1,28 @@
-<div class='header ui-widget-header'><?php echo $clang->gT("User control");?></div><br />
+<div class='header ui-widget-header'><?php $clang->eT("User control");?></div><br />
 <table id='users' class='users' width='100%' border='0'>
 <thead>
 <tr>
-<th><?php echo $clang->gT("Action");?></th>
+<th><?php $clang->eT("Action");?></th>
 	    
-<th width='20%'><?php echo $clang->gT("Username");?></th>
-<th width='20%'><?php echo $clang->gT("Email");?></th>
-<th width='20%'><?php echo $clang->gT("Full name");?></th>
+<th width='20%'><?php $clang->eT("Username");?></th>
+<th width='20%'><?php $clang->eT("Email");?></th>
+<th width='20%'><?php $clang->eT("Full name");?></th>
 <?php if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) { ?>
-    <th width='5%'><?php echo $clang->gT("No of surveys");?></th>
+    <th width='5%'><?php $clang->eT("No of surveys");?></th>
 <?php } ?>
-<th width='15%'><?php echo $clang->gT("Created by");?></th>
+<th width='15%'><?php $clang->eT("Created by");?></th>
 </tr></thead><tbody>
 <tr >
 <td align='center' style='padding:3px;'>
 <form method='post' action='<?php echo $this->createUrl("admin/user/modifyuser");?>'>
-<input type='image' src='<?php echo $imageurl;?>/token_edit.png' value='<?php echo $clang->gT("Edit user");?>' />
+<input type='image' src='<?php echo $imageurl;?>/token_edit.png' value='<?php $clang->eT("Edit user");?>' />
 <input type='hidden' name='action' value='modifyuser' />
 <input type='hidden' name='uid' value='<?php echo $usrhimself['uid'];?>' />
 </form>
 
 <?php if ($usrhimself['parent_id'] != 0 && Yii::app()->session['USER_RIGHT_DELETE_USER'] == 1 ) { ?>
     <form method='post' action='$scriptname?action=deluser'>
-    <input type='submit' value='<?php echo $clang->gT("Delete");?>' onclick='return confirm("<?php echo $clang->gT("Are you sure you want to delete this entry?","js");?>")' />
+    <input type='submit' value='<?php $clang->eT("Delete");?>' onclick='return confirm("<?php $clang->eT("Are you sure you want to delete this entry?","js");?>")' />
     <input type='hidden' name='action' value='deluser' />
     <input type='hidden' name='user' value='<?php echo $usrhimself['user'];?>' />
     <input type='hidden' name='uid' value='<?php echo $usrhimself['uid'];?>' />
@@ -53,7 +53,7 @@
     <td align='center' style='padding:3px;'>
     <?php if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || $usr['uid'] == $_SESSION['loginID'] || (Yii::app()->session['USER_RIGHT_CREATE_USER'] == 1 && $usr['parent_id'] == Yii::app()->session['loginID'])) { ?>
         <form method='post' action='<?php echo $this->createUrl("admin/user/modifyuser");?>'>
-        <input type='image' src='<?php echo $imageurl;?>/token_edit.png' alt='<?php echo $clang->gT("Edit this user");?>' />
+        <input type='image' src='<?php echo $imageurl;?>/token_edit.png' alt='<?php $clang->eT("Edit this user");?>' />
         <input type='hidden' name='action' value='modifyuser' />
         <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
         </form>
@@ -64,7 +64,7 @@
     (Yii::app()->session['USER_RIGHT_CREATE_USER'] == 1 &&
     $usr['parent_id'] == Yii::app()->session['loginID'])) && $usr['uid']!=1) { ?>
         <form method='post' action='<?php echo $this->createUrl("admin/user/setuserrights/");?>'>
-        <input type='image' src='<?php echo $imageurl;?>/security_16.png' alt='<?php echo $clang->gT("Set global permissions for this user");?>' />
+        <input type='image' src='<?php echo $imageurl;?>/security_16.png' alt='<?php $clang->eT("Set global permissions for this user");?>' />
         <input type='hidden' name='action' value='setuserrights' />
         <input type='hidden' name='user' value='<?php echo $usr['user'];?>' />
         <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
@@ -73,7 +73,7 @@
     if (Yii::app()->session['loginID'] == "1" && $usr['parent_id'] !=1 ) { ?>
 
         <form method='post' action='<?php echo $scriptname;?>'>
-        <input type='submit' value='<?php echo $clang->gT("Take ownership");?>' />
+        <input type='submit' value='<?php $clang->eT("Take ownership");?>' />
         <input type='hidden' name='action' value='setasadminchild' />
         <input type='hidden' name='user' value='<?php echo $usr['user'];?>' />
         <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
@@ -81,7 +81,7 @@
     <?php }
     if ((Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'] == 1)  && $usr['uid']!=1) { ?>
         <form method='post' action='<?php echo $this->createUrl("admin/user/setusertemplates/");?>'>
-        <input type='image' src='<?php echo $imageurl;?>/templatepermissions_small.png' alt='<?php echo $clang->gT("Set template permissions for this user");?>' />
+        <input type='image' src='<?php echo $imageurl;?>/templatepermissions_small.png' alt='<?php $clang->eT("Set template permissions for this user");?>' />
         <input type='hidden' name='action' value='setusertemplates' />
         <input type='hidden' name='user' value='<?php echo $usr['user'];?>' />
         <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
@@ -89,7 +89,7 @@
     <?php }
     if ((Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || (Yii::app()->session['USER_RIGHT_DELETE_USER'] == 1  && $usr['parent_id'] == Yii::app()->session['loginID']))&& $usr['uid']!=1) { ?>
         <form method='post' action='<?php echo $this->createUrl("admin/user/deluser");?>'>
-        <input type='image' src='<?php echo $imageurl;?>/token_delete.png' alt='<?php echo $clang->gT("Delete this user");?>' onclick='return confirm("<?php echo $clang->gT("Are you sure you want to delete this entry?","js");?>")' />
+        <input type='image' src='<?php echo $imageurl;?>/token_delete.png' alt='<?php $clang->eT("Delete this user");?>' onclick='return confirm("<?php $clang->eT("Are you sure you want to delete this entry?","js");?>")' />
         <input type='hidden' name='action' value='deluser' />
         <input type='hidden' name='user' value='<?php echo $usr['user'];?>' />
         <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
@@ -123,11 +123,11 @@
 <?php if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_CREATE_USER']) { ?>
     <form action='<?php echo $this->createUrl("admin/user/adduser");?>' method='post'>
     <table class='users'><tr class='oddrow'>
-    <th><?php echo $clang->gT("Add user:");?></th>
+    <th><?php $clang->eT("Add user:");?></th>
     <td align='center' width='20%'><input type='text' name='new_user' /></td>
     <td align='center' width='20%'><input type='text' name='new_email' /></td>
     <td align='center' width='20%' ><input type='text' name='new_full_name' /></td><td width='8%'>&nbsp;</td>
-    <td align='center' width='15%'><input type='submit' value='<?php echo $clang->gT("Add User");?>' />
+    <td align='center' width='15%'><input type='submit' value='<?php $clang->eT("Add User");?>' />
     <input type='hidden' name='action' value='adduser' /></td>
     </tr></table></form><br />
 <?php } ?>

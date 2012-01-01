@@ -1,6 +1,6 @@
 <div class='menubar'>
     <div class='menubar-title ui-widget-header'>
-    <strong><?php echo $clang->gT("User Group"); ?></strong>
+    <strong><?php $clang->eT("User Group"); ?></strong>
     <?php if($ugid && $grpresultcount > 0)
     {
         echo "{$grow['name']}";
@@ -16,8 +16,8 @@
     <?php if($ugid && $grpresultcount > 0)
     { ?>
         <a href="#" onclick="window.location='<?php echo $this->createUrl("admin/usergroups/mail/".$ugid); ?>'"
-         title='<?php echo $clang->gTview("Mail to all Members"); ?>'>
-        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/invite.png' alt='<?php echo $clang->gT("Mail to all Members"); ?>' name='MailUserGroup' /></a>
+         title='<?php $clang->eTview("Mail to all Members"); ?>'>
+        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/invite.png' alt='<?php $clang->eT("Mail to all Members"); ?>' name='MailUserGroup' /></a>
     <?php }
     else
     { ?>
@@ -30,8 +30,8 @@
     Yii::app()->session['loginID'] == $grow['owner_id'])
     { ?>
         <a href="#" onclick="window.location='<?php echo $this->createUrl("admin/usergroups/edit/".$ugid); ?>'"
-         title='<?php echo $clang->gTview("Edit Current User Group"); ?>'>
-        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/edit.png' alt='<?php echo $clang->gT("Edit Current User Group"); ?>' name='EditUserGroup' /></a>
+         title='<?php $clang->eTview("Edit Current User Group"); ?>'>
+        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/edit.png' alt='<?php $clang->eT("Edit Current User Group"); ?>' name='EditUserGroup' /></a>
     <?php }
     else
     { ?>
@@ -42,9 +42,9 @@
     Yii::app()->session['loginID'] == $grow['owner_id'])
     { ?>
 
-        <a href='#' onclick="if (confirm('<?php echo $clang->gT("Are you sure you want to delete this entry?","js"); ?>')) { <?php echo get2post($this->createUrl('admin/usergroups/delete')."?action=delusergroup&amp;ugid=$ugid"); ?>}"
-         title='<?php echo $clang->gTview("Delete Current User Group"); ?>'>
-        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/delete.png' alt='<?php echo $clang->gT("Delete Current User Group"); ?>' name='DeleteUserGroup'  /></a>
+        <a href='#' onclick="if (confirm('<?php $clang->eT("Are you sure you want to delete this entry?","js"); ?>')) { <?php echo get2post($this->createUrl('admin/usergroups/delete')."?action=delusergroup&amp;ugid=$ugid"); ?>}"
+         title='<?php $clang->eTview("Delete Current User Group"); ?>'>
+        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/delete.png' alt='<?php $clang->eT("Delete Current User Group"); ?>' name='DeleteUserGroup'  /></a>
     <?php }
     else
     { ?>
@@ -54,14 +54,14 @@
     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt='' />
     </div>
     <div class='menubar-right'>
-    <label for="ugid"><?php echo $clang->gT("User groups"); ?>:</label>  <select name='ugid' id='ugid' onchange="window.location=this.options[this.selectedIndex].value">
+    <label for="ugid"><?php $clang->eT("User groups"); ?>:</label>  <select name='ugid' id='ugid' onchange="window.location=this.options[this.selectedIndex].value">
     <?php echo getusergrouplist($ugid,'optionlist'); ?>
     </select>
     <?php if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
     { ?>
         <a href='<?php echo $this->createUrl("admin/usergroups/add"); ?>'
-         title='<?php echo $clang->gTview("Add New User Group"); ?>'>
-        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/add.png' alt='<?php echo $clang->gT("Add New User Group"); ?>'
+         title='<?php $clang->eTview("Add New User Group"); ?>'>
+        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/add.png' alt='<?php $clang->eT("Add New User Group"); ?>'
         name='AddNewUserGroup' onclick="window.location=''" /></a>
     <?php } ?>
     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt='' />

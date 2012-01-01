@@ -25,7 +25,7 @@ class participantsaction extends CAction
         }
         else
         {
-            CController::redirect(Yii::app()->createUrl('admin/participants/sa/index'));
+            CController::redirect(Yii::app()->getController()->createUrl('admin/participants/sa/index'));
         }
     }
 
@@ -418,7 +418,7 @@ class participantsaction extends CAction
     function storeUserControlValues()
     {
         Settings_global::model()->update(array('userideditable', CHttpRequest::getPost('userideditable')));
-        CController::redirect(Yii::app()->createUrl('admin/participants/sa/userControl'));
+        CController::redirect(Yii::app()->getController()->createUrl('admin/participants/sa/userControl'));
     }
 
     /**
@@ -437,7 +437,7 @@ class participantsaction extends CAction
         foreach ($records as $row)
         {
             $surveyname = Surveys_languagesettings::getSurveyNames($row['survey_id']);
-            $aData->rows[$i]['cell'] = array($surveyname[0]['surveyls_title'], '<a href=' . Yii::app()->createUrl("/admin/tokens/browse/{$row['survey_id']}") . '>' . $row['survey_id'], $row['token_id'], $row['date_created']);
+            $aData->rows[$i]['cell'] = array($surveyname[0]['surveyls_title'], '<a href=' . Yii::app()->getController()->createUrl("/admin/tokens/browse/{$row['survey_id']}") . '>' . $row['survey_id'], $row['token_id'], $row['date_created']);
             $i++;
         }
 
@@ -1292,7 +1292,7 @@ class participantsaction extends CAction
             );
             ParticipantAttributeNames::saveAttributeValue($editattvalue);
         }
-        CController::redirect(Yii::app()->createUrl('admin/participants/sa/attributeControl'));
+        CController::redirect(Yii::app()->getController()->createUrl('admin/participants/sa/attributeControl'));
     }
 
     /*
@@ -1303,7 +1303,7 @@ class participantsaction extends CAction
         $iAttributeId = CHttpRequest::getQuery('aid');
         $iValueId = CHttpRequest::getQuery('vid');
         ParticipantAttributeNames::delAttributeValues($iAttributeId, $iValueId);
-        CController::redirect(Yii::app()->createUrl('/admin/participants/sa/viewAttribute/aid/' . $iAttributeId));
+        CController::redirect(Yii::app()->getController()->createUrl('/admin/participants/sa/viewAttribute/aid/' . $iAttributeId));
     }
 
     /*

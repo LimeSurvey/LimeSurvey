@@ -16,7 +16,7 @@ if ($httperror != '')
 
 if (!$updater_exists)
 {
-	echo $clang->gT('There was a problem downloading the updater file. Please try to restart the update process.').'<br />';
+	$clang->eT('There was a problem downloading the updater file. Please try to restart the update process.').'<br />';
 }
 
 ?>

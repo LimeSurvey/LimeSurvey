@@ -32,10 +32,10 @@ class translate extends Survey_Common_Action {
 
     public function action()
     {
-        $surveyid = ( isset($_GET['surveyid']) ) ? sanitize_int(CHttpRequest::getParam('surveyid')) : NULL;
-        $tolang = ( isset($_GET['lang']) ) ? CHttpRequest::getParam('lang') : "";
-
-        $action = returnglobal('action');
+        $surveyid = sanitize_int(CHttpRequest::getParam('surveyid'));
+        $tolang = CHttpRequest::getParam('lang');
+        $action = CHttpRequest::getParam('action');
+		$actionvalue = CHttpRequest::getPost('actionvalue');
 
         if ( $action == "ajaxtranslategoogleapi" )
         {
@@ -51,9 +51,6 @@ class translate extends Survey_Common_Action {
 
         Yii::app()->loadHelper("database");
 		Yii::app()->loadHelper("admin/htmleditor");
-
-		$tolang = ( isset($_POST['lang']) ) ? CHttpRequest::getPost('lang') : $tolang;
-		$actionvalue  = ( isset($_POST['actionvalue']) ) ? CHttpRequest::getPost('actionvalue') : "";
 
         if ( empty($tolang) && count($langs) == 1 )
         {
@@ -113,7 +110,7 @@ class translate extends Survey_Common_Action {
 
 		foreach( $tab_names_full as $type )
 		{
-			$size = ( isset($_POST["{$type}_size"]) ) ? CHttpRequest::getPost("{$type}_size") : 0;
+			$size = (int) CHttpRequest::getPost("{$type}_size");
 
 			// start a loop in order to update each record
 			$i = 0;
