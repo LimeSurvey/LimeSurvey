@@ -1518,10 +1518,9 @@ function buildsurveysession($surveyid)
             echo '<div id="wrapper"><p id="tokenmessage">'.$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br />";
             echo $clang->gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
             <script type='text/javascript'>var focus_element='#token';</script>
-            <form id='tokenform' method='post' action='".Yii::app()->createUrl("$surveyid")."'>
+            <form id='tokenform' method='post' action='".Yii::app()->createUrl("/survey/index/sid/$surveyid")."'>
             <ul>
             <li>
-            <label for='token'>".$clang->gT("Token")."</label><input class='text $kpclass' id='token' type='text' name='token' />";
 
             echo "<input type='hidden' name='sid' value='".$surveyid."' id='sid' />
             <input type='hidden' name='lang' value='".$templang."' id='lang' />";

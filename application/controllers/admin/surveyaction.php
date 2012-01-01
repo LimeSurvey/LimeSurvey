@@ -1212,11 +1212,12 @@ class SurveyAction extends Survey_Common_Action {
                 }
                 elseif (isset($sExtension) && strtolower($sExtension) == 'zip')  // Import a survey archive
                 {
-                    $this->load->library("admin/pclzip/pclzip", array('p_zipname' => $sFullFilepath));
-                    $aFiles = $this->pclzip->listContent();
+                    Yii::import("application.libraries.admin.pclzip.pclzip", true);
+                    $pclzip = new PclZip(array('p_zipname' => $sFullFilepath));
+                    $aFiles = $pclzip->listContent();
 
-                    if ($this->pclzip->extract(PCLZIP_OPT_PATH, Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR, PCLZIP_OPT_BY_EREG, '/(lss|lsr|lsi|lst)$/')== 0) {
-                        unset($this->pclzip);
+                    if ($pclzip->extract(PCLZIP_OPT_PATH, Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR, PCLZIP_OPT_BY_EREG, '/(lss|lsr|lsi|lst)$/')== 0) {
+                        unset($pclzip);
                     }
                     // Step 1 - import the LSS file and activate the survey
                     foreach ($aFiles as $aFile)
@@ -1275,7 +1276,7 @@ class SurveyAction extends Survey_Common_Action {
                     $importerror = true;
                 }
             }
-            elseif ($action == 'copysurvey' && empty($importerror) || !$importerror)
+            elseif ($action == 'copysurvey' && (empty($importerror) || !$importerror))
             {
                 $aImportResults=XMLImportSurvey('',$copysurveydata,$sNewSurveyName);
             }

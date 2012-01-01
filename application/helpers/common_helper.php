@@ -1736,11 +1736,11 @@ function getsidgidqidaidtype($fieldcode)
 
 		if ( count($result) == 0 )
         { // question doesn't exist
-            return Array();
+            return array();
         }
         else
         {   // certainly is type M or P
-            foreach ($result->readAll() as $row)
+            foreach ($result as $row)
             {
                 $aRef['type']=$row['type'];
             }
@@ -5634,15 +5634,15 @@ function getNumericalFormat($lang = 'en', $integer = false, $negative = true) {
 function getTokenData($surveyid, $token)
 {
     Tokens_dynamic::sid($surveyid);
-    $query=$Tokens_dynamic::model()->getAllRecords(array("token"=>$token));
+    $query = Tokens_dynamic::model()->findAll('token = :token',array(':token' => $token));
 
     // while($row=$result->FetchRow())
-    foreach ($query->readAll() as $row)
+    foreach ($query as $row)
     {
-        $thistoken=array("firstname"=>$row['firstname'],
-        "lastname"=>$row['lastname'],
-        "email"=>$row['email'],
-        "language" =>$row['language']);
+        $thistoken=array("firstname"=>$row->firstname,
+        "lastname"=>$row->lastname,
+        "email"=>$row->email,
+        "language" =>$row->language);
         $attrfieldnames=GetAttributeFieldnames($surveyid);
         foreach ($attrfieldnames as $attr_name)
         {
@@ -5783,9 +5783,9 @@ function usedTokens($token, $surveyid)
     Tokens_dynamic::sid($surveyid);
     $query=Tokens_dynamic::model()->getSomeRecords(array("tid, usesleft"), array("token"=>$token));
 
-    if ($query->count() > 0) {
-        $row = $query->readAll();
-        if ($row['usesleft']>0) $utresult = false;
+    if (count($query) > 0) {
+        $row = $query[0];
+        if ($row->usesleft > 0) $utresult = false;
     }
     return $utresult;
 }

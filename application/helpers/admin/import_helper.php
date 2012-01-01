@@ -3859,10 +3859,8 @@ function GetNewSurveyID($oldsid)
 
 function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeFields=true)
 {
-    $CI =& get_instance();
-
-    $CI->load->helper('database');
-    $clang = $CI->limesurvey_lang;
+    $this->getController()->loadhelper('database');
+    $clang = Yii::app()->lang;
     $xml = simplexml_load_file($sFullFilepath);
 
     if ($xml->LimeSurveyDocType!='Tokens')
@@ -3883,7 +3881,6 @@ function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeField
 
     if ($sCreateMissingAttributeFields)
     {
-        $CI->load->dbforge();
         // Get a list with all fieldnames in the XML
         $aXLMFieldNames=array();
         foreach ($xml->tokens->fields->fieldname as $sFieldName )
@@ -3919,7 +3916,8 @@ function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeField
             $insertdata[(string)$key]=(string)$value;
         }
 
-        $result = $CI->tokens_dynamic_model->insertToken($iSurveyID,$insertdata) or safe_die($clang->gT("Error").": Failed to insert data<br />");
+        Tokens_dynamic->sid($iSurveyID);
+        $result = Tokens_dynamic->model()->insertToken($insertdata) or safe_die($clang->gT("Error").": Failed to insert data<br />");
 
         $results['tokens']++;
     }
