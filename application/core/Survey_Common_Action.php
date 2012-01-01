@@ -465,12 +465,12 @@ class Survey_Common_Action extends CAction
             $aData['icontext2'] = $clang->gTview("Execute This Survey");
         }
 
-        $data['baselang'] = Survey::model()->findByPk($iSurveyId)->language;
-        $data['onelanguage'] = (count(Survey::model()->findByPk($iSurveyId)->additionalLanguages) == 0);
+        $aData['baselang'] = Survey::model()->findByPk($iSurveyId)->language;
+        $aData['onelanguage'] = (count(Survey::model()->findByPk($iSurveyId)->additionalLanguages) == 0);
 
         $tmp_survlangs = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
-        $data['additionallanguages'] = $tmp_survlangs;
-        $tmp_survlangs[] = $data['baselang'];
+        $aData['additionallanguages'] = $tmp_survlangs;
+        $tmp_survlangs[] = $aData['baselang'];
         rsort($tmp_survlangs);
         $aData['languagelist'] = $tmp_survlangs;
 
