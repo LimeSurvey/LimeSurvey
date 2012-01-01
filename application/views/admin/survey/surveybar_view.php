@@ -75,7 +75,7 @@
                             <img src='<?php echo $imageurl;?>/assessments_30.png' alt=''/> <?php $clang->eT("Assessments");?></a></li>
                         <?php } ?>
                     <?php if($surveylocale) { ?>
-                        <li><a href='<?php echo $this->createUrl("admin/emailtemplates/sa/edit/surveyid/$surveyid");?>' >
+                        <li><a href='<?php echo $this->createUrl("admin/emailtemplates/sa/index/surveyid/$surveyid");?>' >
                             <img src='<?php echo $imageurl;?>/emailtemplates_30.png' name='EditEmailTemplates' alt=''/> <?php $clang->eT("Email templates");?></a></li>
                         <?php } ?>
                 </ul></li>
@@ -96,7 +96,7 @@
                         <?php } ?>
                     <?php if ($surveycontent) {
                             if($conditionscount) { ?>
-                             <li><a href="<?php echo $this->createUrl("admin/conditions/sa/action/subaction/resetsurveylogic/surveyid/$surveyid/gid/1/qid/1"); ?>">
+                             <li><a href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/resetsurveylogic/surveyid/$surveyid/gid/1/qid/1"); ?>">
                                 <img src='<?php echo $imageurl;?>/resetsurveylogic_30.png' name='ResetSurveyLogic' alt='' width="30" height="30"/> <?php $clang->eT("Reset conditions");?></a></li>
                             <?php } else { ?>
                             <li><a href="#" onclick="alert('<?php $clang->eT("Currently there are no conditions configured for this survey.", "js");?>');" >
@@ -173,7 +173,7 @@
             <li><a href='#'><img src='<?php echo $imageurl;?>/responses.png' name='Responses' alt='<?php $clang->eT("Responses");?>' width="40" height="40"/></a><ul>
                     <?php if($respstatsread) {
                             if($activated) { ?>
-                            <li><a href='<?php echo $this->createUrl("admin/browse/surveyid/$surveyid/");?>' >
+                            <li><a href='<?php echo $this->createUrl("admin/browse/sa/index/surveyid/$surveyid/");?>' >
                                 <img src='<?php echo $imageurl;?>/browse_30.png' name='BrowseSurveyResults' alt='' width="30" height="30"/> <?php $clang->eT("Responses & statistics");?></a></li>
                             <?php } else { ?>
                             <li><a href="#" onclick="alert('<?php $clang->eT("This survey is not active - no responses are available.","js");?>');" >

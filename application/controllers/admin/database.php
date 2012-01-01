@@ -24,18 +24,13 @@
 */
 class database extends Survey_Common_Action
 {
-	public function run($sa = null)
-	{
-		$this->route('index', array('sa'));
-	}
-
-    /**
+	/**
     * Database::index()
     *
     * @param mixed $action
     * @return
     */
-    function index($action=null)
+    function index($sa = null)
     {
 
       	if(!empty($_POST['action'])) $action=$_POST['action'];
@@ -87,11 +82,11 @@ class database extends Survey_Common_Action
                     {
                         if (isset($_POST['defaultanswerscale_'.$scale_id.'_'.$language]))
                         {
-                        $this->_Updatedefaultvalues($qid,0,$scale_id,'',$language,$_POST['defaultanswerscale_'.$scale_id.'_'.$language],true);
+                        $this->_updateDefaultValues($qid,0,$scale_id,'',$language,$_POST['defaultanswerscale_'.$scale_id.'_'.$language],true);
 						}
                         if (isset($_POST['other_'.$scale_id.'_'.$language]))
                         {
-                        $this->_Updatedefaultvalues($qid,0,$scale_id,'other',$language,$_POST['other_'.$scale_id.'_'.$language],true);
+                        $this->_updateDefaultValues($qid,0,$scale_id,'other',$language,$_POST['other_'.$scale_id.'_'.$language],true);
 						}
                     }
                 }
@@ -111,7 +106,7 @@ class database extends Survey_Common_Action
                         {
                             if (isset($_POST['defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid']]))
                             {
-                                $this->_Updatedefaultvalues($qid,$aSubquestionrow['qid'],$scale_id,'',$language,$_POST['defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid']],true);
+                                $this->_updateDefaultValues($qid,$aSubquestionrow['qid'],$scale_id,'',$language,$_POST['defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid']],true);
                             }
                             /*                       if (isset($_POST['other_'.$scale_id.'_'.$language]))
                             {
@@ -1185,7 +1180,7 @@ class database extends Survey_Common_Action
     * @param mixed $defaultvalue    The default value itself
     * @param boolean $ispost   If defaultvalue is from a $_POST set this to true to properly quote things
     */
-    function _Updatedefaultvalues($qid,$sqid,$scale_id,$specialtype,$language,$defaultvalue,$ispost)
+    function _updateDefaultValues($qid,$sqid,$scale_id,$specialtype,$language,$defaultvalue,$ispost)
     {
         //$this->load->helper('database');
         if ($defaultvalue=='')  // Remove the default value if it is empty
@@ -1196,7 +1191,7 @@ class database extends Survey_Common_Action
         }
         else
         {
-            $query = "SELECT qid FROM {{defaultvalues}} WHERE sqid=$sqid AND qid=$qid AND specialtype=$specialtype'' AND scale_id={$scale_id} AND language='{$language}'";
+            $query = "SELECT qid FROM {{defaultvalues}} WHERE sqid=$sqid AND qid=$qid AND specialtype='$specialtype' AND scale_id={$scale_id} AND language='{$language}'";
             $res = Yii::app()->db->createCommand($query)->query();
             $exists=count($res);
 

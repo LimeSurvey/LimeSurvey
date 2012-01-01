@@ -1,14 +1,14 @@
-<script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.js"?>" type="text/javascript"></script>
-<script src="<?php echo $this->config->item('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
-<link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('generalscripts')."jquery/css/start/jquery-ui.css" ?>" />
+<script src="<?php echo Yii::app()->getConfig('generalscripts')."jquery/jquery.js"?>" type="text/javascript"></script>
+<script src="<?php echo Yii::app()->getConfig('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('generalscripts')."jquery/css/start/jquery-ui.css" ?>" />
 <title><?PHP $clang->eT("Blacklist Control") ?></title>
-<link rel="stylesheet" type="text/css" href="<?php echo base_url()."templates/default/template.css" ?>" />
+<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl."templates/default/template.css" ?>" />
 <style type="text/css" media="aural tty">
     progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
 </style>
 <script src="<?php echo base_url()."templates/default/template.js"?>" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url()."templates/default/favicon.ico" ?>" />
-<script src="<?php echo $this->config->item('generalscripts')."scripts/survey_runtime.js" ?>" type="text/javascript"></script>
+<script src="<?php echo Yii::app()->getConfig('generalscripts')."scripts/survey_runtime.js" ?>" type="text/javascript"></script>
 
 <body class="default lang-en groupbygroup">
 <div class="outerframe">
@@ -19,7 +19,7 @@
     <tr>
         <td class="survey-description">
             <br />
-            <h2>Blacklist Control</h2>
+            <h2><?php $clang->eT('Blacklist Control'); ?></h2>
             <p></p>
         </td>
     </tr>

@@ -6,7 +6,7 @@
     <div class='header ui-widget-header'>
         <?php $clang->eT("Edit email templates"); ?>
     </div>
-    <form class='form30newtabs' id='emailtemplates' action='<?php echo Yii::app()->getController()->createUrl('admin/emailtemplates/sa/update/action/updateemailtemplates/surveyid/'.$surveyid); ?>' method='post'>
+    <form class='form30newtabs' id='emailtemplates' action='<?php echo Yii::app()->getController()->createUrl('admin/emailtemplates/sa/update/surveyid/'.$surveyid); ?>' method='post'>
         <div id='tabs'><ul>
 
         <?php foreach ($grplangs as $grouplang): ?>

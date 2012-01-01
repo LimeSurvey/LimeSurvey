@@ -18,7 +18,7 @@
 					</form>
 				</td>
 				<td width='10%' valign='middle' align='right'>
-					<form id='deletescenario<?php echo $scenarionr['scenario']; ?>' action='<?php echo $this->createUrl("/admin/conditions/sa/action/subaction/deletescenario/surveyid/$surveyid/gid/$gid/qid/$qid/"); ?>' method='post' name='deletescenario<?php echo $scenarionr['scenario']; ?>' style='margin-bottom:0;'>
+					<form id='deletescenario<?php echo $scenarionr['scenario']; ?>' action='<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/deletescenario/surveyid/$surveyid/gid/$gid/qid/$qid/"); ?>' method='post' name='deletescenario<?php echo $scenarionr['scenario']; ?>' style='margin-bottom:0;'>
 						<?php if(isset($additional_conetent)) echo $additional_content; ?>
 						<input type='hidden' name='scenario' value='{$scenarionr['scenario']}' />
 					    <input type='hidden' name='qid' value='$qid' />

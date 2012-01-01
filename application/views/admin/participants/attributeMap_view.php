@@ -4,7 +4,7 @@
     var redirect = "<?php echo $redirect ?>";
     if(redirect=='TRUE')
     {
-        redUrl = "<?php echo Yii::app()->baseUrl . "/index.php/admin/tokens/sa/browse/surveyid" . '/' . $survey_id; ?>";
+        redUrl = "<?php echo Yii::app()->baseUrl . "/index.php/admin/tokens/sa/browse/sa/index/surveyid" . '/' . $survey_id; ?>";
     }
     var copyUrl = "<?php echo Yii::app()->baseUrl . "/index.php/admin/participants/sa/addToTokenattmap"; ?>";
     var participant_id = "<?php echo $participant_id; ?>";

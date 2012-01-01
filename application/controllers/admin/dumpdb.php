@@ -22,14 +22,10 @@
  */
 class Dumpdb extends Survey_Common_Action {
 
-    /**
-     * Base function
-     *
-     * This functions receives the request to generate a dump file for the
-     * database and does so! Only superadmins are allowed to do this!
-     */
-    public function run()
+    function __construct($controller, $id)
     {
+        parent::__construct($controller, $id);
+
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
         {
             die();
@@ -39,7 +35,16 @@ class Dumpdb extends Survey_Common_Action {
         {
             die($this->getController()->lang->gT('This feature is only available for MySQL databases.'));
         }
+    }
 
+    /**
+     * Base function
+     *
+     * This functions receives the request to generate a dump file for the
+     * database and does so! Only superadmins are allowed to do this!
+     */
+    public function index()
+    {
         $sDbName = $this->_getDbName();
         $this->_outputHeaders($sDbName);
         $this->_outputDatabase($sDbName);

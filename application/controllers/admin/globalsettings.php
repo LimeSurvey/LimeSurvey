@@ -22,18 +22,13 @@
  */
 class GlobalSettings extends Survey_Common_Action
 {
-    /**
-     * Routes to the correct sub-page
-     *
-     * @access public
-     * @return void
-     */
-    public function run()
+
+    function __construct($controller, $id)
     {
-        if (isset($_GET['showphpinfo'])) {
-            $this->showphpinfo();
-        } else {
-            $this->index();
+        parent::__construct($controller, $id);
+
+        if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] != 1) {
+            die();
         }
     }
 
@@ -45,17 +40,15 @@ class GlobalSettings extends Survey_Common_Action
      */
     public function index()
     {
-        if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1) {
-            if (!empty($_POST['action'])) {
-                $this->_saveSettings();
-            }
-            $this->_displaySettings();
+        if (!empty($_POST['action'])) {
+            $this->_saveSettings();
         }
+        $this->_displaySettings();
     }
 
     public function showphpinfo()
     {
-        if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1 && !Yii::app()->getConfig('demoMode')) {
+        if (!Yii::app()->getConfig('demoMode')) {
             phpinfo();
         }
     }
@@ -85,7 +78,8 @@ class GlobalSettings extends Survey_Common_Action
             $data['restrictToLanguages'] = explode(' ', trim(Yii::app()->getConfig('restrictToLanguages')));
             $data['excludedLanguages'] = array_diff(array_keys($data['allLanguages']), $data['restrictToLanguages']);
         }
-        $this->_renderAdmin($data);
+
+        $this->_renderWrappedTemplate('globalSettings_view', $data);
     }
 
     private function _saveSettings()
@@ -223,13 +217,17 @@ class GlobalSettings extends Survey_Common_Action
         );
     }
 
-    private function _renderAdmin($data)
+    /**
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
     {
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . "scripts/jquery/jquery.selectboxes.min.js");
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . "scripts/admin/globalsettings.js");
-        $this->getController()->_getAdminHeader();
-        $this->getController()->_showadminmenu();
-        $this->getController()->render('/admin/globalSettings_view', $data);
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
+
+        parent::_renderWrappedTemplate('', $aViewUrls, $aData);
     }
 }

@@ -37,6 +37,8 @@ class Survey_Common_Action extends CAction
         {
             $sSubAction = 'index'; // default
         }
+
+        // sa made it somehow into the url, try to fix it
         elseif ($params['sa'] == 'sa')
         {
             $sSubAction = array_shift(array_keys($params));
@@ -51,6 +53,8 @@ class Survey_Common_Action extends CAction
             $params = array_filter($_params);
             $params['sa'] = $sSubAction;
         }
+
+        // all is good
         else
         {
             $sSubAction = $params['sa'];
@@ -75,17 +79,25 @@ class Survey_Common_Action extends CAction
 
         // We're all good to go, let's execute it
         return parent::runWithParamsInternal($this, $oMethod, $params);
-        //return call_user_func_array(array($this, $sSubAction), $params);
 	}
 
     private function _addPseudoParams($params)
     {
         $pseudos = array(
-            'surveyid' => 'iSurveyId',
-            'qid' => 'iQuestionId',
+            'id' => 'iId',
             'gid' => 'iGroupId',
+            'qid' => 'iQuestionId',
+            'sid' => 'iSurveyId',
+            'surveyid' => 'iSurveyId',
+            'srid' => 'iSurveyResponseId',
+            'scid' => 'iSavedControlId',
             'uid' => 'iUserId',
-            'ugid' => 'iUserGroupId'
+            'ugid' => 'iUserGroupId',
+            'fieldname' => 'sFieldName',
+            'fieldtext' => 'sFieldText',
+            'action' => 'sAction',
+            'lang' => 'sLanguage',
+            'browselang' => 'sBrowseLang',
         );
 
         foreach ($pseudos as $key => $pseudo)
@@ -96,7 +108,10 @@ class Survey_Common_Action extends CAction
 
                 foreach ($pseudo as $pseud)
                 {
-                    $params[$pseud] = $params[$key];
+                    if (empty($params[$pseud]))
+                    {
+                        $params[$pseud] = $params[$key];
+                    }
                 }
             }
         }
@@ -143,6 +158,7 @@ class Survey_Common_Action extends CAction
     {
         // Gather the data
         $aData['clang'] = $clang = $this->getController()->lang;
+        $aData = $this->_addPseudoParams($aData);
         $aViewUrls = (array) $aViewUrls;
         $sViewPath = '/admin/';
 
@@ -155,7 +171,7 @@ class Survey_Common_Action extends CAction
         $this->getController()->_getAdminHeader();
 
         // Menu bars
-        if (!isset($aData['display']['menu_bars']) || $aData['display']['menu_bars'] !== false)
+        if (!isset($aData['display']['menu_bars']) || ($aData['display']['menu_bars'] !== false && (!is_array($aData['display']['menu_bars']) || !in_array('browse', array_keys($aData['display']['menu_bars'])))))
         {
             $this->getController()->_showadminmenu(!empty($aData['surveyid']) ? $aData['surveyid'] : null);
 
@@ -175,14 +191,35 @@ class Survey_Common_Action extends CAction
             }
         }
 
+        if (!empty($aData['display']['menu_bars']['browse']) && !empty($aData['surveyid']))
+        {
+            $this->_browsemenubar($aData['surveyid'], $aData['display']['menu_bars']['browse']);
+        }
+
+        if (!empty($aData['display']['menu_bars']['user_group']))
+        {
+            $this->_userGroupBar(!empty($aData['ugid']) ? $aData['ugid'] : 0);
+        }
+
         unset($aData['display']);
 
         // Load views
         foreach ($aViewUrls as $sViewKey => $viewUrl)
         {
-            if (empty($sViewKey) || is_numeric($sViewKey))
+            if (empty($sViewKey) || !in_array($sViewKey, array('message', 'output')))
             {
-                $this->getController()->render($sViewPath . $viewUrl, $aData);
+                if (is_numeric($sViewKey))
+                {
+                    $this->getController()->render($sViewPath . $viewUrl, $aData);
+                }
+                elseif (is_array($viewUrl))
+                {
+                    foreach ($viewUrl as $aSubData)
+                    {
+                        $aSubData = array_merge($aData, $aSubData);
+                        $this->getController()->render($sViewPath . $sViewKey, $aSubData);
+                    }
+                }
             }
             else
             {
@@ -817,6 +854,38 @@ class Survey_Common_Action extends CAction
         $aData['tmp_survlangs'] = $tmp_survlangs;
 
         $this->getController()->render("/admin/browse/browsemenubar_view", $aData);
+    }
+    /**
+     * Load menu bar of user group controller.
+     * @param int $ugid
+     * @return void
+     */
+    function _userGroupBar($ugid = 0)
+    {
+        $data['clang'] = Yii::app()->lang;
+        Yii::app()->loadHelper('database');
+
+        if (!empty($ugid)) {
+            $grpquery = "SELECT gp.* FROM {{user_groups}} AS gp, {{user_in_groups}} AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = $ugid AND gu.uid=" . Yii::app()->session['loginID'];
+            $grpresult = db_execute_assoc($grpquery);
+            $grpresultcount = db_records_count($grpquery);
+
+            if ($grpresultcount > 0) {
+                $grow = array_map('htmlspecialchars', $grpresult->read());
+            }
+            else
+            {
+                $grow = false;
+            }
+
+            $data['grow'] = $grow;
+            $data['grpresultcount'] = $grpresultcount;
+
+        }
+
+        $data['ugid'] = $ugid;
+
+        $this->getController()->render('/admin/usergroup/usergroupbar_view', $data);
     }
 
 }

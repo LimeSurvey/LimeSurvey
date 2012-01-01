@@ -23,26 +23,12 @@
 */
 class export extends Survey_Common_Action {
 
-    /**
-     * Run, routes it down to valid sub-action
-	 *
-     * @access public
-     * @return void
-     */
+    function __construct($controller, $id)
+    {
+        parent::__construct($controller, $id);
 
-	public function run($sa)
-	{
 		Yii::app()->loadHelper('export');
-
-		if ( ! empty($sa) )
-		{
-            $this->route($sa, array());
-        }
-        else
-		{
-            CController::redirect(Yii::app()->getController()->createUrl('admin/participants/sa/index'));
-        }
-	}
+    }
 
     public function survey()
     {
@@ -208,7 +194,6 @@ class export extends Survey_Common_Action {
             $afieldcount = count($excesscols);
 
             $this->getController()->_getAdminHeader();
-            $this->_browsemenubar($surveyid, $clang->gT("Export results"));
 
 			$selecthide = "'";
 			$selectshow = "";
@@ -236,14 +221,13 @@ class export extends Survey_Common_Action {
             $max_datasets_query = Yii::app()->db->createCommand("SELECT COUNT(id) AS count FROM {{survey_$surveyid}}")->query()->read();
             $max_datasets = $max_datasets_query['count'];
 
-            $data['clang'] = $clang;
             $data['max_datasets'] = $max_datasets;
         	$data['surveyid'] = $surveyid;
         	$data['imageurl'] = Yii::app()->getConfig('imageurl');
         	$data['thissurvey'] = $thissurvey;
+            $data['display']['menu_bars']['browse'] = $clang->gT("Export results");
 
-            $this->getController()->render("/admin/export/exportresults_view", $data);
-            $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+            $this->_renderWrappedTemplate('exportresults_view', $data);
 
             return;
         }
@@ -398,9 +382,6 @@ class export extends Survey_Common_Action {
 
         if  ( ! isset($subaction) )
         {
-            $this->getController()->_getAdminHeader();
-            $this->_browsemenubar($surveyid, $clang->gT('Export results'));
-
             $selecthide = "";
             $selectshow = "";
             $selectinc = "";
@@ -417,16 +398,14 @@ class export extends Survey_Common_Action {
                     $selectshow="selected='selected'";
             }
 
-            $data['clang'] = $clang;
             $data['selectinc'] = $selectinc;
             $data['selecthide'] = $selecthide;
             $data['selectshow'] = $selectshow;
             $data['spssver'] = $spssver;
         	$data['surveyid'] = $surveyid;
+            $data['display']['menu_bars']['browse'] = $clang->gT('Export results');
 
-            $this->getController()->render("/admin/export/spss_view", $data);
-            $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
-
+            $this->_renderWrappedTemplate('spss_view', $data);
         }
 		else
 		{
@@ -671,9 +650,6 @@ class export extends Survey_Common_Action {
 
         if  ( ! isset($subaction) )
         {
-            $this->getController()->_getAdminHeader();
-            $this->_browsemenubar($surveyid, $clang->gT('Export results'));
-
             $selecthide = "";
             $selectshow = "";
             $selectinc = "";
@@ -690,15 +666,14 @@ class export extends Survey_Common_Action {
                     $selectshow = "selected='selected'";
             }
 
-            $data['clang'] = $clang;
             $data['selectinc'] = $selectinc;
             $data['selecthide'] = $selecthide;
             $data['selectshow'] = $selectshow;
             $data['filename'] = "survey_" . $surveyid . "_R_syntax_file.R";
         	$data['surveyid'] = $surveyid;
+            $data['display']['menu_bars']['browse'] = $clang->gT("Export results");
 
-            $this->getController()->render("/admin/export/r_view", $data);
-            $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
+            $this->_renderWrappedTemplate('r_view', $data);
         }
         else
         {
@@ -937,17 +912,13 @@ class export extends Survey_Common_Action {
                 $selectshow = "selected='selected'";
             }
 
-            $this->getController()->_getAdminHeader();
-			$this->_browsemenubar($surveyid, $clang->gT("Export VV file"));
-
-            $data["clang"] = $clang;
             $data['selectinc'] = $selectinc;
             $data['selecthide'] = $selecthide;
             $data['selectshow'] = $selectshow;
         	$data['surveyid'] = $surveyid;
+            $data['display']['menu_bars']['browse'] = $clang->gT("Export VV file");
 
-			$this->getController()->render("/admin/export/vv_view", $data);
-            $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+            $this->_renderWrappedTemplate('vv_view', $data);
         }
         elseif ( isset($surveyid) && $surveyid )
         {
@@ -1368,7 +1339,7 @@ class export extends Survey_Common_Action {
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
 	{
 		$this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . 'admin/default/superfish.css');
 

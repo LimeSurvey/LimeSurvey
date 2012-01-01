@@ -27,8 +27,7 @@
 class InstallerController extends CController {
 
     /**
-     *
-     * @var type
+     * @var CDbConnection
      */
     public $connection;
 

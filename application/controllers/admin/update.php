@@ -24,25 +24,6 @@ list(,$updaterversion)=explode(' ','$Rev: 11155 $');  // this is updated by subv
  */
 class update extends Survey_Common_Action
 {
-    /**
-     * Executes the action based on given input
-     *
-     * @access public
-     * @return void
-     */
-    public function run()
-    {
-        $actions = array_keys($_GET);
-        $_GET['method'] = $action = (!empty($actions[0])) ? $actions[0] : '';
-
-        if (!empty($action)) {
-            $this->$action($_GET[$action]);
-        }
-        else
-        {
-            $this->index();
-        }        
-    }
 
     /**
      * Default Controller Action
@@ -69,15 +50,13 @@ class update extends Survey_Common_Action
             list($httperror, $changelog, $cookies) = $this->_getChangelog($buildnumber, $updaterversion, $updatekey);
         }
 
-        $data = array();
-        $data['clang'] = $clang;
-        $data['error'] = $error;
-        $data['tempdir'] = $tempdir;
-        $data['updatekey'] = $updatekey;
-        $data['changelog'] = isset($changelog) ? $changelog : '';
-        $data['httperror'] = isset($httperror) ? $httperror : '';
+        $aData['error'] = $error;
+        $aData['tempdir'] = $tempdir;
+        $aData['updatekey'] = $updatekey;
+        $aData['changelog'] = isset($changelog) ? $changelog : '';
+        $aData['httperror'] = isset($httperror) ? $httperror : '';
 
-        $this->_renderHtml('/admin/update/update', $data);
+        $this->_renderWrappedTemplate('update', $aData);
     }
 
     private function _getChangelog($buildnumber, $updaterversion, $updatekey)
@@ -145,12 +124,10 @@ class update extends Survey_Common_Action
         $_SESSION['updateinfo'] = $updateinfo;
         $_SESSION['updatesession'] = $cookies;
 
-        $data = array();
-        $data['clang'] = $clang;
-        $data['error'] = $error;
-        $data['updateinfo'] = $updateinfo;
-        $data['readonlyfiles'] = $readonlyfiles;
-        $this->_renderHtml('/admin/update/step2', $data);
+        $aData['error'] = $error;
+        $aData['updateinfo'] = $updateinfo;
+        $aData['readonlyfiles'] = $readonlyfiles;
+        $this->_renderWrappedTemplate('step2', $aData);
     }
 
     private function _getReadOnlyFiles($updateinfo)
@@ -225,8 +202,8 @@ class update extends Survey_Common_Action
         $rootdir = Yii::app()->getConfig("rootdir");
         $publicdir = Yii::app()->getConfig("publicdir");
         $tempdir = Yii::app()->getConfig("tempdir");
-        $databasetype = Yii::app()->db->getDriverName();
-        $data = array('clang' => $clang);
+        $aDatabasetype = Yii::app()->db->getDriverName();
+        $aData = array('clang' => $clang);
         // Request the list with changed files from the server
         $updatekey=getGlobalSetting('updatekey');
 
@@ -242,7 +219,7 @@ class update extends Survey_Common_Action
             $updateinfo=$_SESSION['updateinfo'];
         }
 
-        $data['updateinfo'] = $updateinfo;
+        $aData['updateinfo'] = $updateinfo;
 
         // okay, updateinfo now contains all necessary updateinformation
         // Create DB and file backups now
@@ -267,14 +244,14 @@ class update extends Survey_Common_Action
             die("Error : ".$archive->errorInfo(true));
         }
 
-        $data['databasetype'] = $databasetype;
+        $aData['databasetype'] = $aDatabasetype;
 
         //TODO: Yii provides no function to backup the database. To be done after dumpdb is ported
-        if (in_array($databasetype, array('mysql', 'mysqli')))
+        if (in_array($aDatabasetype, array('mysql', 'mysqli')))
         {
             $this->load->dbutil();
             $this->load->helper("string");
-            if ((in_array($databasetype, array('mysql', 'mysqli'))) && Yii::app()->getConfig('demoMode') != true) {
+            if ((in_array($aDatabasetype, array('mysql', 'mysqli'))) && Yii::app()->getConfig('demoMode') != true) {
                 $tables = $this->db->list_tables();
                 foreach ($tables as $table)
                 {
@@ -300,7 +277,8 @@ class update extends Survey_Common_Action
                 write_file($tempdir.'/'.$sfilename.".gz", $backup);
             }
         }
-        $this->_renderHtml('/admin/update/step3', $data);
+
+        $this->_renderWrappedTemplate('step3', $aData);
     }
 
 
@@ -315,10 +293,10 @@ class update extends Survey_Common_Action
         $rootdir = Yii::app()->getConfig("rootdir");
         $publicdir = Yii::app()->getConfig("publicdir");
         $tempdir = Yii::app()->getConfig("tempdir");
-        $databasetype = Yii::app()->db->getDriverName();
+        $aDatabasetype = Yii::app()->db->getDriverName();
         // Request the list with changed files from the server
         $updatekey=getGlobalSetting('updatekey');
-        $data = array('clang' => $clang);
+        $aData = array('clang' => $clang);
 
         if (!isset( $_SESSION['updateinfo']))
         {
@@ -404,8 +382,8 @@ class update extends Survey_Common_Action
             $downloaderror=true;
         }
 
-        $data['new_files'] = $new_files;
-        $data['downloaderror'] = $downloaderror;
+        $aData['new_files'] = $new_files;
+        $aData['downloaderror'] = $downloaderror;
 
         //  PclTraceDisplay();
 
@@ -429,7 +407,8 @@ class update extends Survey_Common_Action
         setGlobalSetting('updateavailable','0');
         setGlobalSetting('updatebuild','');
         setGlobalSetting('updateversion','');
-        $this->_renderHtml('/admin/update/step4', $data);
+
+        $this->_renderWrappedTemplate('step4', $aData);
     }
 
     private function _RunUpdaterUpdate()
@@ -522,7 +501,7 @@ class update extends Survey_Common_Action
             }
             file_put_contents($tempdir.'/updater.zip',$full_body);
         }
-        $data['httperror'] = $httperror;
+        $aData['httperror'] = $httperror;
 
         //Now unzip the new updater over the existing ones.
         if (file_exists($tempdir.'/updater.zip')){
@@ -542,7 +521,7 @@ class update extends Survey_Common_Action
             $updater_exists = false;
             $error=true;
         }
-        $data['updater_exists'] = $updater_exists;
+        $aData['updater_exists'] = $updater_exists;
     }
 
     /**
@@ -552,25 +531,30 @@ class update extends Survey_Common_Action
     {
         $clang = $this->getController()->lang;
         Yii::app()->loadHelper("update/update");
-        echo $this->getController()->_getAdminHeader(false, true);
+
         if(isset($subaction) && $subaction=="continue")
         {
-            echo CheckForDBUpgrades($subaction);
+            $aViewUrls['output'] = CheckForDBUpgrades($subaction);
             updatecheck();
         }
         else
         {
-            echo  CheckForDBUpgrades();
+            $aViewUrls['output'] = CheckForDBUpgrades();
         }
-        echo $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"), true);
+
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
-    private function _renderHtml($path, $data)
+    /**
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
     {
-        echo $this->getController()->_getAdminHeader(false, true);
-        $this->getController()->render($path, $data);
-        echo $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"), true);
-
+        $aData['display']['menu_bars'] = false;
+        parent::_renderWrappedTemplate('update', $aViewUrls, $aData);
     }
 
 }

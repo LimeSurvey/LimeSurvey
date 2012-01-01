@@ -20,7 +20,7 @@ class Expressions extends Survey_Common_Action {
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>ExpressionManager:  <?php $this->_printTitle(isset($_GET['sa'])?$_GET['sa']:'index')?></title>
+        <title>ExpressionManager:  <?php $this->_printTitle(CHttpRequest::getQuery('sa', 'index')); ?></title>
         <script src="<?php echo Yii::app()->getConfig('generalscripts')  . 'jquery/jquery.js'; ?>"></script>
         <script src="<?php echo Yii::app()->getConfig('generalscripts')  . 'admin/expressions/em_javascript.js'; ?>" /></script>
         <style type="text/css">
@@ -34,7 +34,7 @@ class Expressions extends Survey_Common_Action {
             -->
         </style>
     </head>
-    <body <?php $this->_printOnLoad(isset($_GET['sa'])?$_GET['sa']:'index')?>>
+    <body <?php $this->_printOnLoad(CHttpRequest::getQuery('sa', 'index'))?>>
     <?php
 		if(isset($_GET['sa']))
 			$this->test($_GET['sa']);
@@ -44,16 +44,17 @@ class Expressions extends Survey_Common_Action {
 </html>
     <?php
     }
-    public function index()
+
+    protected function index()
 	{
 		$this->getController()->render('/admin/expressions/test_view');
 	}
 
-    public function test($which)
+    protected function test($which)
     {
         $this->getController()->render('/admin/expressions/test/'.$which);
     }
-    
+
     private function _printOnLoad($which)
     {
         switch ($which)
@@ -66,7 +67,7 @@ class Expressions extends Survey_Common_Action {
                 break;
         }
     }
-    
+
     private function _printTitle($which)
     {
         switch ($which)

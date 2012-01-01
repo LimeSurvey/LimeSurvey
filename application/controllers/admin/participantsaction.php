@@ -15,20 +15,8 @@
 /*
  * This is the main controller for Participants Panel
  */
-class participantsaction extends CAction
+class participantsaction extends Survey_Common_Action
 {
-    function run($sa = '')
-    {
-        if (!empty($sa) && method_exists($this, $sa))
-        {
-            call_user_func_array(array($this, $sa), array());
-        }
-        else
-        {
-            CController::redirect(Yii::app()->getController()->createUrl('admin/participants/sa/index'));
-        }
-    }
-
     /**
      * Loads jqGrid for the view
      * @param string $sScript Subaction
@@ -58,21 +46,16 @@ class participantsaction extends CAction
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    private function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
     {
-        $aViewUrls = (array) $aViewUrls;
-        if (empty($aViewUrls))
-        {
-            return;
-        }
-        $clang = $aData['clang'] = $this->getController()->lang;
+        $aData['display']['menu_bars'] = false;
 
-        $this->getController()->_getAdminHeader();
-        foreach ($aViewUrls as $sViewUrl)
+        foreach((array) $aViewUrls as $sViewUrl)
         {
-            $this->getController()->render('/admin/participants/'.$sViewUrl.'_view', $aData);
+            $a_ViewUrls[] = $sViewUrl . '_view';
         }
-        $this->getController()->_getAdminFooter('http://docs.limesurvey.org', $clang->gT('LimeSurvey online manual'));
+
+        parent::_renderWrappedTemplate('participants', $a_ViewUrls, $aData);
     }
 
     /**
@@ -155,7 +138,7 @@ class participantsaction extends CAction
      */
     function blacklistControl()
     {
-        $this->_renderWrappedTemplate('participantsPanel');
+        $this->_renderWrappedTemplate(array('participantsPanel', 'blacklist'));
     }
 
     /**

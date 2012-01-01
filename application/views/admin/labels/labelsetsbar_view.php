@@ -15,7 +15,7 @@
         </div>
         <div class='menubar-right'>
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/blank.gif' width='5' height='20' alt='' />
-            <label for='labelsetchanger'><?php $clang->eT("Label sets:");?>: </label>
+            <label for='labelsetchanger'><?php $clang->eT("Label sets:");?> </label>
             <select id='labelsetchanger' onchange="window.open(this.options[this.selectedIndex].value,'_top')">
                 <option value=''
                     <?php if (!isset($lid) || $lid<1) { ?> selected='selected' <?php } ?>

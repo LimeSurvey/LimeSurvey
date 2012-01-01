@@ -224,7 +224,7 @@ class AdminController extends LSYii_Controller
     {
         $url = parent::createUrl($route, $params, $ampersand);
 
-        $url = str_replace('/sa', '', $url);
+        $url = str_replace('/sa/', '/', $url);
 
         return $url;
     }

@@ -700,7 +700,7 @@ function editToken($iSurveyId)
                 $this->_renderWrappedTemplate(array('tokenbar', 'message' => array(
                     'title' => $clang->gT("Success"),
                     'message' => $clang->gT("The token entry was successfully updated.") . "<br /><br />\n"
-                        . "\t\t<input type='button' value='" . $clang->gT("Display tokens") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/browse/surveyid/$iSurveyId/") . "', '_top')\" />\n"
+                        . "\t\t<input type='button' value='" . $clang->gT("Display tokens") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/browse/sa/index/surveyid/$iSurveyId/") . "', '_top')\" />\n"
                 )), $aData);
             }
             else

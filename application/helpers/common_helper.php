@@ -7509,7 +7509,7 @@ function getusergrouplist($ugid=NULL,$outputformat='optionlist')
             //if (isset($_GET['ugid']) && $gn['ugid'] == $_GET['ugid']) {$selecter .= " selected='selected'"; $svexist = 1;}
 
             if ($gn['ugid'] == $ugid) {$selecter .= " selected='selected'"; $svexist = 1;}
-            $link = Yii::app()->getController()->createUrl("admin/usergroups/view/".$gn['ugid']);
+            $link = Yii::app()->getController()->createUrl("admin/usergroups/sa/view/ugid/".$gn['ugid']);
             $selecter .=" value='{$link}'>{$gn['name']}</option>\n";
             $simplegidarray[] = $gn['ugid'];
         }
@@ -7534,7 +7534,7 @@ function getgroupuserlist($ugid)
     $clang = Yii::app()->lang;
 
     $ugid=sanitize_int($ugid);
-    $surveyidquery = "SELECT a.uid, a.users_name FROM ".Yii::app()->db->tablePrefix."users AS a LEFT JOIN (SELECT uid AS id FROM ".Yii::app()->db->tablePrefix."user_in_groups WHERE ugid = {$ugid}) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name";
+    $surveyidquery = "SELECT a.uid, a.users_name FROM {{users}} AS a LEFT JOIN (SELECT uid AS id FROM {{user_in_groups}} WHERE ugid = {$ugid}) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name";
 
     $surveyidresult = db_execute_assoc($surveyidquery);  //Checked
     if (!$surveyidresult) {return "Database Error";}

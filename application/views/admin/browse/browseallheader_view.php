@@ -10,15 +10,15 @@
     <div class='menubar-main'>
         <?php if (!isset($_POST['sql']))
         { ?>
-            <a href='<?php echo $this->createUrl("admin/browse/surveyid/$surveyid/sa/all/start/0/limit/$limit"); ?>' title='<?php $clang->eTview("Show start..."); ?>' >
+            <a href='<?php echo $this->createUrl("admin/browse/sa/index/surveyid/$surveyid/sa/all/start/0/limit/$limit"); ?>' title='<?php $clang->eTview("Show start..."); ?>' >
                 <img name='DataBegin' align='left' src='<?php echo $imageurl; ?>/databegin.png' alt='<?php $clang->eT("Show start..."); ?>' /></a>
-            <a href='<?php echo $this->createUrl("admin/browse/surveyid/$surveyid/sa/all/start/$last/limit/$limit"); ?>' title='<?php $clang->eTview("Show previous.."); ?>' >
+            <a href='<?php echo $this->createUrl("admin/browse/sa/index/surveyid/$surveyid/sa/all/start/$last/limit/$limit"); ?>' title='<?php $clang->eTview("Show previous.."); ?>' >
                 <img name='DataBack' align='left'  src='<?php echo $imageurl; ?>/databack.png' alt='<?php $clang->eT("Show previous.."); ?>' /></a>
             <img src='<?php echo $imageurl; ?>/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />
 
-            <a href='<?php echo $this->createUrl("admin/browse/surveyid/$surveyid/sa/all/start/$next/limit/$limit"); ?>' title='<?php $clang->eT("Show next..."); ?>' >
+            <a href='<?php echo $this->createUrl("admin/browse/sa/index/surveyid/$surveyid/sa/all/start/$next/limit/$limit"); ?>' title='<?php $clang->eT("Show next..."); ?>' >
                 <img name='DataForward' align='left' src='<?php echo $imageurl; ?>/dataforward.png' alt='<?php $clang->eT("Show next.."); ?>' /></a>
-            <a href='<?php echo $this->createUrl("admin/browse/surveyid/$surveyid/sa/all/start/$end/limit/$limit"); ?>' title='<?php $clang->eT("Show last..."); ?>' >
+            <a href='<?php echo $this->createUrl("admin/browse/sa/index/surveyid/$surveyid/sa/all/start/$end/limit/$limit"); ?>' title='<?php $clang->eT("Show last..."); ?>' >
                 <img name='DataEnd' align='left' src='<?php echo $imageurl; ?>/dataend.png' alt='<?php $clang->eT("Show last.."); ?>' /></a>
             <img src='<?php echo $imageurl; ?>/seperator.gif' border='0' hspace='0' align='left' alt='' />
         <?php
@@ -40,7 +40,7 @@
             $selectshow = "selected='selected'";
         }
         ?>
-        <form action='<?php echo $this->createUrl("admin/browse/surveyid/$surveyid/sa/all/"); ?>' id='browseresults' method='post'><font size='1' face='verdana'>
+        <form action='<?php echo $this->createUrl("admin/browse/sa/index/surveyid/$surveyid/sa/all/"); ?>' id='browseresults' method='post'><font size='1' face='verdana'>
             <img src='<?php echo $imageurl; ?>/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />
             <?php $clang->eT("Records displayed:"); ?><input type='text' size='4' value='<?php echo $dtcount2; ?>' name='limit' id='limit' />
             &nbsp;&nbsp; <?php $clang->eT("Starting from:"); ?><input type='text' size='4' value='<?php echo $start; ?>' name='start' id='start' />
@@ -63,7 +63,7 @@
         </form></div>
 </div>
 
-<form action='<?php echo $this->createUrl("admin/browse/surveyid/$surveyid/sa/all"); ?>' id='resulttableform' method='post'>
+<form action='<?php echo $this->createUrl("admin/browse/sa/index/surveyid/$surveyid/sa/all"); ?>' id='resulttableform' method='post'>
 
     <!-- DATA TABLE -->
         <?php if ($fncount < 10) { ?>

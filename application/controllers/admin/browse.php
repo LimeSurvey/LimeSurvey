@@ -24,23 +24,11 @@
 class browse extends Survey_Common_Action
 {
 
-    public function run($sa = 'all')
+    function __construct($controller, $id)
     {
-        // Load helpers
-        Yii::app()->loadHelper('surveytranslator');
+        parent::__construct($controller, $id);
 
-        // Route
-        switch ($sa)
-        {
-            case 'view' :
-            case 'time' :
-                $this->route($sa, array('surveyid', 'id', 'browselang'));
-                break;
-            case 'all' :
-            default :
-                $this->route('all', array('surveyid'));
-                break;
-        }
+        Yii::app()->loadHelper('surveytranslator');
     }
 
     private function _getData($params)
@@ -57,9 +45,9 @@ class browse extends Survey_Common_Action
 
         // Set the variables in an array
         $aData['surveyid'] = $aData['iSurveyId'] = (int) $iSurveyId;
-        if (!empty($iSurveyId))
+        if (!empty($iId))
         {
-            $aData['iId'] = (int) $iSurveyId;
+            $aData['iId'] = (int) $iId;
         }
         $aData['clang'] = $clang = $this->getController()->lang;
         $aData['imageurl'] = Yii::app()->getConfig('imageurl');
@@ -124,29 +112,12 @@ class browse extends Survey_Common_Action
         return $aData;
     }
 
-    /**
-     * Pre Quota
-     *
-     * @access publlic
-     * @param int $iSurveyId
-     * @return void
-     */
-    private function _displayHeader($iSurveyId)
-    {
-        $clang = $this->getController()->lang;
-
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'browse.js');
-
-        $this->getController()->_getAdminHeader();
-        self::_browsemenubar($iSurveyId, $clang->gT('Browse responses'));
-    }
-
     public function view($iSurveyId, $iId, $sBrowseLang = '')
     {
         $aData = $this->_getData(array('iId' => $iId, 'iSurveyId' => $iSurveyId, 'browselang' => $sBrowseLang));
         extract($aData);
-        $this->_displayHeader($iSurveyId);
         $clang = Yii::app()->lang;
+        $aViewUrls = array();
 
         $fncount = 0;
         $fieldmap = createFieldMap($iSurveyId, 'full', false, false, $aData['language']);
@@ -211,8 +182,8 @@ class browse extends Survey_Common_Action
         $nfncount = count($fnames) - 1;
         //SHOW INDIVIDUAL RECORD
         $oCriteria = new CDbCriteria();
-        if ($aData['surveyinfo']['anonymized'] == 'N' && tableExists('tokens_' . $iSurveyId))
-            $oCriteria->join = "LEFT JOIN 'tokens_{$iSurveyId}' ON surveys_{$iSurveyId}.token = tokens_{$iSurveyId}.token";
+        if ($aData['surveyinfo']['anonymized'] == 'N' && tableExists("{{tokens_$iSurveyId}}}"))
+            $oCriteria->join = "LEFT JOIN '{{tokens_{$iSurveyId}}}' ON {{surveys_{$iSurveyId}}}.token = {{tokens_{$iSurveyId}}}.token";
         if (incompleteAnsFilterstate() == 'inc')
             $oCriteria->addCondition('submitdate = ' . mktime(0, 0, 0, 1, 1, 1980) . ' OR submitdate IS NULL');
         elseif (incompleteAnsFilterstate() == 'filter')
@@ -253,7 +224,7 @@ class browse extends Survey_Common_Action
         $aData['next'] = $next;
         $aData['last'] = $last;
 
-        $this->getController()->render('/admin/browse/browseidheader_view', $aData);
+        $aViewUrls[] = 'browseidheader_view';
 
         foreach ($iIdresult as $iIdrow)
         {
@@ -287,7 +258,7 @@ class browse extends Survey_Common_Action
                             if ($metadata === "size")
                                 $answervalue = rawurldecode(((int) ($phparray[$index][$metadata])) . " KB");
                             else if ($metadata === "name")
-                                $answervalue = CHtml::link(rawurldecode($phparray[$index][$metadata]), $this->createUrl("/admin/browse/sa/all/downloadindividualfile/{$phparray[$index][$metadata]}/fieldname/{$fnames[$i][0]}/id/{$iId}/surveyid/{$iSurveyId}"));
+                                $answervalue = CHtml::link(rawurldecode($phparray[$index][$metadata]), $this->createUrl("/admin/browse/sa/index/downloadindividualfile/{$phparray[$index][$metadata]}/fieldname/{$fnames[$i][0]}/id/{$iId}/surveyid/{$iSurveyId}"));
                             else
                                 $answervalue = rawurldecode($phparray[$index][$metadata]);
                         }
@@ -303,19 +274,20 @@ class browse extends Survey_Common_Action
                 $aData['inserthighlight'] = $inserthighlight;
                 $aData['fnames'] = $fnames;
                 $aData['i'] = $i;
-                $this->getController()->render('/admin/browse/browseidrow_view', $aData);
+                $aViewUrls['browseidrow_view'][] = $aData;
             }
         }
 
-        $this->getController()->render('/admin/browse/browseidfooter_view', $aData);
-		$this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+        $aViewUrls[] = 'browseidfooter_view';
+
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
-    public function all($iSurveyId)
+    public function index($iSurveyId)
     {
         $aData = $this->_getData($iSurveyId);
         extract($aData);
-        $this->_displayHeader($iSurveyId);
+        $aViewUrls = array();
 
         /**
          * fnames is used as informational array
@@ -324,7 +296,7 @@ class browse extends Survey_Common_Action
          */
         if (CHttpRequest::getPost('sql'))
         {
-            $this->getController()->render("/admin/browse/browseallfiltered_view");
+            $aViewUrls[] = 'browseallfiltered_view';
         }
 
         //Delete Individual answer using inrow delete buttons/links - checked
@@ -588,7 +560,7 @@ class browse extends Survey_Common_Action
         $aData['fncount'] = $fncount;
         $aData['fnames'] = $fnames;
 
-        $this->getController()->render("/admin/browse/browseallheader_view", $aData);
+        $aViewUrls[] = 'browseallheader_view';
 
         $bgcc = 'odd';
         foreach ($dtresult as $dtrow)
@@ -603,18 +575,18 @@ class browse extends Survey_Common_Action
                 }
             $aData['dtrow'] = $dtrow;
             $aData['bgcc'] = $bgcc;
-            $this->getController()->render("/admin/browse/browseallrow_view", $aData);
+            $aViewUrls['browseallrow_view'][] = $aData;
         }
 
-        $this->getController()->render("/admin/browse/browseallfooter_view", $aData);
-		$this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+        $aViewUrls[] = 'browseallfooter_view';
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     public function time($iSurveyId)
     {
         $aData = $this->_getData(array('iSurveyId' => $iSurveyId));
         extract($aData);
-        $this->_displayHeader($iSurveyId);
+        $aViewUrls = array();
 
         if ($aData['surveyinfo']['savetimings'] != "Y")
             die();
@@ -740,7 +712,7 @@ class browse extends Survey_Common_Action
             $selectshow = " selected='selected'";
         }
 
-        $this->getController()->render("/admin/browse/browsetimeheader_view", $aData);
+        $aViewUrls[] = 'browsetimeheader_view';
 
         $bgcc = 'oddrow';
         foreach ($dtresult as $dtrow)
@@ -773,7 +745,7 @@ class browse extends Survey_Common_Action
             $aData['browsedatafield'] = $browsedatafield;
             $aData['bgcc'] = $bgcc;
             $aData['dtrow'] = $dtrow;
-            $this->getController()->render("/admin/browse/browsetimerow_view", $aData);
+            $aViewUrls['browsetimerow_view'][] = $aData;
         }
 
         //interview Time statistics
@@ -830,10 +802,14 @@ class browse extends Survey_Common_Action
             $aData['allsec'] = $median % 60;
         }
 
-        $this->getController()->render('/admin/browse/browsetimefooter_view', $aData);
+        $aViewUrls[] = 'browsetimefooter_view';
+
         $aData['num_total_answers'] = Survey_dynamic::model($iSurveyId)->count();
         $aData['num_completed_answers'] = Survey_dynamic::model($iSurveyId)->count('submitdate IS NOT NULL');
-        $this->getController()->render('/admin/browse/browseindex_view', $aData);
+
+        $aViewUrls[] = 'browseindex_view';
+
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     /**
@@ -920,6 +896,22 @@ class browse extends Survey_Common_Action
                 exit;
             }
         }
+    }
+
+    /**
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    {
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'browse.js');
+
+        $aData['display']['menu_bars'] = false;
+        $aData['display']['menu_bars']['browse'] = Yii::app()->lang->gT('Browse responses'); // browse is independent of the above
+
+        parent::_renderWrappedTemplate('browse', $aViewUrls, $aData);
     }
 
 }

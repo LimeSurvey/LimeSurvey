@@ -24,43 +24,27 @@
 class saved extends Survey_Common_Action
 {
 
-    /**
-     * Load viewing of unsaved responses screen.
-     * @param mixed $sa Sub Action
-     */
-    public function run($sa)
-    {
-        if ($sa == 'view')
-        {
-            $this->route('view', array('surveyid'));
-        }
-        elseif ($sa == 'delete')
-        {
-            $this->route('delete', array('surveyid', 'srid', 'scid'));
-        }
-    }
-
     public function view($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $clang = $this->getController()->lang;
+        $aViewUrls = array();
+
+        if (!bHasSurveyPermission($iSurveyId, 'responses', 'read'))
+        {
+            die();
+        }
 
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . 'scripts/jquery/jquery.tablesorter.min.js');
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . 'scripts/admin/saved.js');
-        $this->getController()->_getAdminHeader();
 
-        if (bHasSurveyPermission($iSurveyId, 'responses', 'read'))
-        {
-            $aThisSurvey = getSurveyInfo($iSurveyId);
-            $aData['sSurveyName'] = $aThisSurvey['name'];
-            $aData['iSurveyId'] = $iSurveyId;
-            $aData['clang'] = $clang;
-            $this->getController()->render('/admin/saved/savedbar_view', $aData);
-            $this->_showSavedList($iSurveyId);
-        }
+        $aThisSurvey = getSurveyInfo($iSurveyId);
+        $aData['sSurveyName'] = $aThisSurvey['name'];
+        $aData['iSurveyId'] = $iSurveyId;
+        $aViewUrls[] = 'savedbar_view';
+        $aViewUrls['savedlist_view'][] = $this->_showSavedList($iSurveyId);
 
-        $this->getController()->_loadEndScripts();
-        $this->getController()->_getAdminFooter('http://docs.limesurvey.org', $clang->gT('LimeSurvey online manual'));
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     /**
@@ -74,6 +58,18 @@ class saved extends Survey_Common_Action
         Yii::app()->db->createCommand()->delete("{{survey_{$iSurveyId}}}", 'id=:id', array('id' => $iSurveyResponseId)) or die($clang->gT("Couldn't delete"));
 
         $this->getController()->redirect($this->getController()->createUrl("admin/saved/sa/view/surveyid/{$iSurveyId}"));
+    }
+
+    /**
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    {
+        $aData['display']['menu_bars'] = false;
+        parent::_renderWrappedTemplate('saved', $aViewUrls, $aData);
     }
 
     /**
@@ -92,11 +88,7 @@ class saved extends Survey_Common_Action
 
         if (!empty($aResults))
         {
-            $aData['clang'] = $clang;
-            $aData['aResults'] = $aResults;
-            $aData['iSurveyId'] = $iSurveyId;
-
-            $this->getController()->render('/admin/saved/savedlist_view', $aData);
+            return compact('aResults');
         }
     }
 

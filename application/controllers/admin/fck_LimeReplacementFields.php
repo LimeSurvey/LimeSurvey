@@ -15,18 +15,6 @@
 class fck_LimeReplacementFields extends Survey_Common_Action
 {
 
-    /**
-     * routes to the correct subdir
-     *
-     * @access public
-     * @param string $sa
-     * @return void
-     */
-    public function run($sa)
-    {
-        $this->route($sa, array('fieldtype', 'action', 'surveyid', 'gid', 'qid'));
-    }
-
     public function index($fieldtype, $action, $surveyid = false, $gid = false, $qid = false)
     {
         if ($surveyid != false) {
@@ -77,7 +65,7 @@ class fck_LimeReplacementFields extends Survey_Common_Action
         $this->getController()->render('/admin/limeReplacementFields_view', $data);
     }
 
-    public function _getQuestionList($action, $gid, $qid, array $fieldmap, $questionType, $surveyformat)
+    private function _getQuestionList($action, $gid, $qid, array $fieldmap, $questionType, $surveyformat)
     {
         $previousQuestion = null;
         $isPreviousPageQuestion = true;

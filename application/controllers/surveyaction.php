@@ -19,7 +19,7 @@ class SurveyAction extends CAction {
 	{
         $this->action();
     }
-    
+
     public function newtest()
 	{
         $this->action();
@@ -512,7 +512,7 @@ class SurveyAction extends CAction {
         // this check is done in buildsurveysession and error message
         // could be more interresting there (takes into accound captcha if used)
         if ($tokensexist == 1 && isset($token) && $token &&
-            isset($_SESSION['step']) && $_SESSION['step']>0 && db_tables_exist(Yii::app()->db->tablePrefix.'_tokens_'.$surveyid))
+            isset($_SESSION['step']) && $_SESSION['step']>0 && tableExists("tokens_{$surveyid}}}"))
         {
             //check if tokens actually haven't been already used
             $areTokensUsed = usedTokens(trim(strip_tags(returnglobal('token'))),$surveyid);

@@ -4,33 +4,33 @@
     </div>
     <div class='menubar-main'>
         <div class='menubar-left'>
-            <a href='<?php echo $this->createUrl("admin/survey/view/$surveyid"); ?>' title="<?php $clang->eTview("Return to survey administration"); ?>">
+            <a href='<?php echo $this->createUrl("admin/survey/view/surveyid/$surveyid"); ?>' title="<?php $clang->eTview("Return to survey administration"); ?>">
                 <img name='Administration' src='<?php echo $imageurl; ?>/home.png' title='' alt='<?php $clang->eT("Return to survey administration"); ?>' /></a>
             <img src='<?php echo $imageurl; ?>/blank.gif' alt='' width='11' />
             <img src='<?php echo $imageurl; ?>/seperator.gif' alt='' />
 
             <?php if (bHasSurveyPermission($surveyid, 'responses', 'read'))
             { ?>
-                <a href='<?php echo $this->createUrl("admin/browse/surveyid/$surveyid"); ?>' title="<?php $clang->eTview("Show summary information"); ?>">
+                <a href='<?php echo $this->createUrl("admin/browse/sa/index/surveyid/$surveyid"); ?>' title="<?php $clang->eTview("Show summary information"); ?>">
                     <img name='SurveySummary' src='<?php echo $imageurl; ?>/summary.png' title='' alt='<?php $clang->eT("Show summary information"); ?>' /></a>
     <?php if (count(Survey::model()->findByPk($surveyid)->additionalLanguages) == 0)
     { ?>
-                    <a href='<?php echo $this->createUrl("admin/browse/surveyid/$surveyid/sa/all"); ?>' title="<?php $clang->eTview("Display Responses"); ?>">
+                    <a href='<?php echo $this->createUrl("admin/browse/sa/index/surveyid/$surveyid/sa/all"); ?>' title="<?php $clang->eTview("Display Responses"); ?>">
                         <img name='ViewAll' src='<?php echo $imageurl; ?>/document.png' title='' alt='<?php $clang->eT("Display Responses"); ?>' /></a>
     <?php }
     else
     { ?>
-                    <a href="<?php echo $this->createUrl("admin/browse/surveyid/$surveyid/sa/all"); ?>" accesskey='b' id='browseresponses' title="<?php $clang->eTview("Display Responses"); ?>" >
+                    <a href="<?php echo $this->createUrl("admin/browse/sa/index/surveyid/$surveyid/sa/all"); ?>" accesskey='b' id='browseresponses' title="<?php $clang->eTview("Display Responses"); ?>" >
                         <img src='<?php echo $imageurl; ?>/document.png' alt='<?php $clang->eT("Display Responses"); ?>' name='ViewAll' /></a>
 
                     <div class="langpopup" id="browselangpopup"><?php $clang->eT("Please select a language:"); ?><ul>
                     <?php foreach ($tmp_survlangs as $tmp_lang)
                     { ?>
-                                <li><a href="<?php echo $this->createUrl("admin/browse/surveyid/$surveyid/sa/all/start/0/limit/50/order/asc/browselang/$tmp_lang"); ?>" accesskey='b'><?php echo getLanguageNameFromCode($tmp_lang, false); ?></a></li>
+                                <li><a href="<?php echo $this->createUrl("admin/browse/sa/index/surveyid/$surveyid/sa/all/start/0/limit/50/order/asc/browselang/$tmp_lang"); ?>" accesskey='b'><?php echo getLanguageNameFromCode($tmp_lang, false); ?></a></li>
                     <?php } ?>
                         </ul></div>
     <?php } ?>
-                <a href='<?php echo $this->createUrl("admin/browse/surveyid/$surveyid/sa/all/start/0/limit/50/order/desc"); ?>' title="<?php $clang->eTview("Display Last 50 Responses"); ?>" >
+                <a href='<?php echo $this->createUrl("admin/browse/sa/index/surveyid/$surveyid/sa/all/start/0/limit/50/order/desc"); ?>' title="<?php $clang->eTview("Display Last 50 Responses"); ?>" >
                     <img name='ViewLast' src='<?php echo $imageurl; ?>/viewlast.png' alt='<?php $clang->eT("Display Last 50 Responses"); ?>' /></a>
             <?php }
             if (bHasSurveyPermission($surveyid, 'responses', 'create'))
@@ -40,11 +40,11 @@
             <?php }
             if (bHasSurveyPermission($surveyid, 'statistics', 'read'))
             { ?>
-                <a href='<?php echo $this->createUrl("admin/statistics/surveyid/$surveyid"); ?>' title="<?php $clang->eTview("Get statistics from these responses"); ?>">
+                <a href='<?php echo $this->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>' title="<?php $clang->eTview("Get statistics from these responses"); ?>">
                     <img name='Statistics' src='<?php echo $imageurl; ?>/statistics.png' alt='<?php $clang->eT("Get statistics from these responses"); ?>' /></a>
     <?php if ($thissurvey['savetimings'] == "Y")
     { ?>
-                    <a href='<?php echo $this->createUrl("admin/browse/surveyid/$surveyid/subaction/time"); ?>' title="<?php $clang->eTview("Get time statistics from these responses"); ?>" >
+                    <a href='<?php echo $this->createUrl("admin/browse/sa/index/surveyid/$surveyid/subaction/time"); ?>' title="<?php $clang->eTview("Get time statistics from these responses"); ?>" >
                         <img name='timeStatistics' src='<?php echo $imageurl; ?>/timeStatistics.png' alt='<?php $clang->eT("Get time statistics from these responses"); ?>' /></a>
     <?php }
 } ?>

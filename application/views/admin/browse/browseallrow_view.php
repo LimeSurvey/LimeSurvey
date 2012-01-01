@@ -1,7 +1,7 @@
 <tr class='<?php echo $bgcc; ?>' valign='top'>
     <td align='center'><input type='checkbox' class='cbResponseMarker' value='<?php echo $dtrow['id']; ?>' name='markedresponses[]' /></td>
     <td align='center'>
-        <a href='<?php echo $this->createUrl("admin/browse/surveyid/$surveyid/sa/view/id/{$dtrow['id']}/"); ?>'><img src='<?php echo $imageurl; ?>/token_viewanswer.png' alt='<?php $clang->eT('View response details'); ?>'/></a>
+        <a href='<?php echo $this->createUrl("admin/browse/sa/view/surveyid/$surveyid/id/{$dtrow['id']}"); ?>'><img src='<?php echo $imageurl; ?>/token_viewanswer.png' alt='<?php $clang->eT('View response details'); ?>'/></a>
         <?php if (bHasSurveyPermission($surveyid, 'responses', 'update'))
         { ?>
             <a href='<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$dtrow['id']}"); ?>'><img src='<?php echo $imageurl; ?>/token_edit.png' alt='<?php $clang->eT('Edit this response'); ?>'/></a>

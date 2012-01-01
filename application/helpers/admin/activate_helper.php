@@ -137,7 +137,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
     }
 
     //NOW CHECK THAT ALL QUESTIONS HAVE A 'QUESTION TYPE' FIELD SET
-    //$chkquery = "SELECT qid, question, gid FROM ".Yii::app()->db->tablePrefix."questions WHERE sid={$_GET['sid']} AND type = ''";
+    //$chkquery = "SELECT qid, question, gid FROM {{questions}} WHERE sid={$_GET['sid']} AND type = ''";
     $chkquery = "SELECT qid, question, gid FROM {{questions}} WHERE sid={$surveyid} AND type = ''";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow)
@@ -149,7 +149,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
 
 
     //ChECK THAT certain array question types have answers set
-    //$chkquery = "SELECT q.qid, question, gid FROM ".Yii::app()->db->tablePrefix."questions as q WHERE (select count(*) from ".Yii::app()->db->tablePrefix."answers as a where a.qid=q.qid and scale_id=0)=0 and sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z', '1') and q.parent_qid=0";
+    //$chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0 and sid={$_GET['sid']} AND type IN ('F', 'H', 'W', 'Z', '1') and q.parent_qid=0";
     $chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=0)=0 and sid={$surveyid} AND type IN ('F', 'H', 'W', 'Z', '1') and q.parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach($chkresult as $chkrow){
@@ -157,7 +157,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
     } // while
 
     //CHECK THAT DUAL Array has answers set
-    //$chkquery = "SELECT q.qid, question, gid FROM ".Yii::app()->db->tablePrefix."questions as q WHERE (select count(*) from ".Yii::app()->db->tablePrefix."answers as a where a.qid=q.qid and scale_id=1)=0 and sid={$_GET['sid']} AND type='1' and q.parent_qid=0";
+    //$chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=1)=0 and sid={$_GET['sid']} AND type='1' and q.parent_qid=0";
     $chkquery = "SELECT q.qid, question, gid FROM {{questions}} as q WHERE (select count(*) from {{answers}} as a where a.qid=q.qid and scale_id=1)=0 and sid={$surveyid} AND type='1' and q.parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow){
@@ -169,7 +169,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
     //
     //CHECK THAT ALL CONDITIONS SET ARE FOR QUESTIONS THAT PRECEED THE QUESTION CONDITION
     //A: Make an array of all the qids in order of appearance
-    //	$qorderquery="SELECT * FROM ".Yii::app()->db->tablePrefix."questions, ".Yii::app()->db->tablePrefix."groups WHERE ".Yii::app()->db->tablePrefix."questions.gid=".Yii::app()->db->tablePrefix."groups.gid AND ".Yii::app()->db->tablePrefix."questions.sid={$_GET['sid']} ORDER BY ".Yii::app()->db->tablePrefix."groups.sortorder, ".Yii::app()->db->tablePrefix."questions.title";
+    //	$qorderquery="SELECT * FROM {{questions}}, {{groups}} WHERE {{questions}}.gid={{groups}}.gid AND {{questions}}.sid={$_GET['sid']} ORDER BY {{groups}}.sortorder, {{questions}}.title";
     //	$qorderresult=db_execute_assosc($qorderquery) or safe_die("Couldn't generate a list of questions in order<br />$qorderquery<br />");
     //	$qordercount=$qorderresult->RecordCount();
     //	$c=0;
@@ -194,10 +194,10 @@ function checkQuestions($postsid, $surveyid, $qtypes)
     $qordercount="";
     //1: Get each condition's question id
     $conquery= "SELECT {{conditions}}.qid, cqid, {{questions}}.question, "
-    . "".Yii::app()->db->tablePrefix."questions.gid "
-    . "FROM ".Yii::app()->db->tablePrefix."conditions, ".Yii::app()->db->tablePrefix."questions, ".Yii::app()->db->tablePrefix."groups "
-    . "WHERE ".Yii::app()->db->tablePrefix."conditions.qid=".Yii::app()->db->tablePrefix."questions.qid "
-    . "AND ".Yii::app()->db->tablePrefix."questions.gid=".Yii::app()->db->tablePrefix."groups.gid ORDER BY ".Yii::app()->db->tablePrefix."conditions.qid";
+    . "{{questions}}.gid "
+    . "FROM {{conditions}}, {{questions}}, {{groups}} "
+    . "WHERE {{conditions}}.qid={{questions}}.qid "
+    . "AND {{questions}}.gid={{groups}}.gid ORDER BY {{conditions}}.qid";
     $conresult=Yii::app()->db->createCommand($conquery)->query()->readAll();
     //2: Check each conditions cqid that it occurs later than the cqid
     foreach ($conresult as $conrow)
@@ -271,7 +271,7 @@ function activateSurvey($surveyid, $simulate = false)
      $fieldstiming = array();
      $createsurveydirectory=false;
     //Check for any additional fields for this survey and create necessary fields (token and datestamp)
-    $pquery = "SELECT anonymized, allowregister, datestamp, ipaddr, refurl, savetimings FROM ".Yii::app()->db->tablePrefix."surveys WHERE sid={$surveyid}";
+    $pquery = "SELECT anonymized, allowregister, datestamp, ipaddr, refurl, savetimings FROM {{surveys}} WHERE sid={$surveyid}";
     $presult=Yii::app()->db->createCommand($pquery)->query()->readAll();
     $prow=$presult[0];
     if ($prow['allowregister'] == "Y")

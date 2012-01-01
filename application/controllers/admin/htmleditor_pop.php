@@ -17,12 +17,6 @@
 class htmleditor_pop extends Survey_Common_Action
 {
 
-    function run($sa = 'index')
-    {
-        if ($sa == 'index')
-			$this->route('index', array('fieldname', 'fieldtext', 'fieldtype', 'action', 'surveyid', 'gid', 'qid', 'lang'));
-    }
-
     function index($sFieldName = 0, $sFieldText = 0, $sFieldType = 0, $sAction = 0, $iSurveyId = 0, $iGroupId = 0, $iQuestionId = 0, $sLanguage = 0)
     {
         $aData['clang'] = $this->getController()->lang;

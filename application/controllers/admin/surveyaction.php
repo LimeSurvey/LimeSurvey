@@ -1480,9 +1480,9 @@ class SurveyAction extends Survey_Common_Action
     {
         $iSurveyId = (int) $iSurveyId;
         Yii::app()->loadHelper('database');
-        $oResult = db_execute_assoc("select '' as act, up.*,q.title, sq.title as sqtitle, q.question, sq.question as sqquestion from {Yii::app()->db->tablePrefix}survey_url_parameters up
-                            left join {Yii::app()->db->tablePrefix}questions q on q.qid=up.targetqid
-                            left join {Yii::app()->db->tablePrefix}questions sq on q.qid=up.targetqid
+        $oResult = db_execute_assoc("select '' as act, up.*,q.title, sq.title as sqtitle, q.question, sq.question as sqquestion from {{survey_url_parameters}} up
+                            left join {{questions}} q on q.qid=up.targetqid
+                            left join {{questions}} sq on q.qid=up.targetqid
                             where up.sid={$iSurveyId}");
         $i = 0;
 

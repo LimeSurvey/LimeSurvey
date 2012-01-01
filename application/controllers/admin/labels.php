@@ -36,18 +36,8 @@ class labels extends Survey_Common_Action
      */
     public function run($sa)
     {
-        if ($sa == 'newlabelset' || $sa == 'editlabelset' || $sa == 'index')
+        if ($sa == 'newlabelset' || $sa == 'editlabelset')
             $this->route('index', array('sa', 'lid'));
-        elseif ($sa == 'import')
-            $this->route('import', array());
-        elseif ($sa == 'importlabelresources')
-            $this->route('importlabelresources', array());
-        elseif ($sa == 'exportmulti')
-            $this->route('exportmulti', array());
-        elseif ($sa == 'process')
-            $this->route('process', array());
-        elseif ($sa == 'view')
-            $this->route('view', array('lid'));
     }
 
     /**
@@ -61,8 +51,6 @@ class labels extends Survey_Common_Action
         $clang = $this->getController()->lang;
         $action = returnglobal('action');
         $lid = returnglobal('lid');
-        $this->getController()->_getAdminHeader();
-        $this->_labelsetbar();
 
         if ($action == "importlabelresources" && $lid)
         {
@@ -154,16 +142,13 @@ class labels extends Survey_Common_Action
             else
                 $this->getController()->error(sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir));
 
-            $this->getController()->render('/admin/labels/importlabelresources_view', array(
-                'clang' => $clang,
+            $aData = array(
                 'aErrorFilesInfo' => $aErrorFilesInfo,
                 'aImportedFilesInfo' => $aImportedFilesInfo,
-            ));
+            );
+
+            $this->_renderWrappedTemplate('importlabelresources_view', $aData);
         }
-
-        $this->getController()->_loadEndScripts();
-
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
     }
 
     /**
@@ -199,8 +184,7 @@ class labels extends Survey_Common_Action
     {
         $clang = $this->getController()->lang;
         $action = returnglobal('action');
-        $this->getController()->_getAdminHeader();
-        $this->_labelsetbar();
+        $aViewUrls = array();
 
         if ($action == 'importlabels')
         {
@@ -226,14 +210,10 @@ class labels extends Survey_Common_Action
 
             unlink($sFullFilepath);
 
-            $this->getController()->render('/admin/labels/import_view', array(
-                'aImportResults' => $aImportResults,
-                'clang' => $clang,
-            ));
+            $aViewUrls['import_view'][] = array('aImportResults' => $aImportResults);
         }
-        $this->getController()->_loadEndScripts();
 
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     /**
@@ -244,19 +224,17 @@ class labels extends Survey_Common_Action
      * @param integer $lid
      * @return
      */
-    public function index($action, $lid=0)
+    public function index($sa, $lid=0)
     {
-        $lid = sanitize_int($lid);
-
         Yii::app()->loadHelper('surveytranslator');
-        $clang = $this->getController()->lang;
 
-        $this->getController()->_getAdminHeader();
-        $this->_labelsetbar($lid);
+        $clang = $this->getController()->lang;
+        $lid = sanitize_int($lid);
+        $aViewUrls = array();
 
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1)
         {
-            if ($action == "editlabelset")
+            if ($sa == "editlabelset")
             {
                 $result = Labelsets::model()->findAllByAttributes(array('lid' => $lid));
                 foreach ($result as $row)
@@ -266,15 +244,14 @@ class labels extends Survey_Common_Action
                     $lblid = $row['lid'];
                     $langids = $row['languages'];
                 }
-                $data['lbname'] = $lbname;
-                $data['lblid'] = $lblid;
+                $aData['lbname'] = $lbname;
+                $aData['lblid'] = $lblid;
             }
 
-            $data['clang'] = $clang;
-            $data['action'] = $action;
-            $data['lid'] = $lid;
+            $aData['action'] = $sa;
+            $aData['lid'] = $lid;
 
-            if ($action == "newlabelset")
+            if ($sa == "newlabelset")
             {
                 $langids = Yii::app()->session['adminlang'];
                 $tabitem = $clang->gT("Create New Label Set");
@@ -289,17 +266,16 @@ class labels extends Survey_Common_Action
             else
                 $panecookie = 'new';
 
-            $data['langids'] = $langids;
-            $data['langidsarray'] = $langidsarray;
-            $data['panecookie'] = $panecookie;
-            $data['tabitem'] = $tabitem;
+            $aData['langids'] = $langids;
+            $aData['langidsarray'] = $langidsarray;
+            $aData['panecookie'] = $panecookie;
+            $aData['tabitem'] = $tabitem;
 
-            $this->getController()->render('/admin/labels/editlabel_view', $data);
+            $aViewUrls['editlabel_view'][] = $aData;
         }
 
-        $this->getController()->_loadEndScripts();
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
 
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
     }
 
     /**
@@ -318,9 +294,8 @@ class labels extends Survey_Common_Action
         // Gets the current language
         $clang = $this->getController()->lang;
         $action = 'labels';
-
-        // Loads admin header
-        $this->getController()->_getAdminHeader();
+        $aViewUrls = array();
+        $aData = array();
 
         // Includes some javascript files
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/admin/labels.js');
@@ -329,9 +304,6 @@ class labels extends Survey_Common_Action
         // Checks if user have the sufficient rights to manage the labels
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1)
         {
-            // Sets the menubar
-            $this->_labelsetbar($lid);
-
             // Get a result containing labelset with the specified id
             $result = Labelsets::model()->findByAttributes(array('lid' => $lid));
 
@@ -341,12 +313,12 @@ class labels extends Survey_Common_Action
             if ($lid && $labelset_exists)
             {
                 // Now recieve all labelset information and display it
-                $data['lid'] = $lid;
-                $data['clang'] = $clang;
-                $data['row'] = $result->attributes;
+                $aData['lid'] = $lid;
+                $aData['clang'] = $clang;
+                $aData['row'] = $result->attributes;
 
                 // Display a specific labelbar menu
-                $this->getController()->render("/admin/labels/labelbar_view", $data);
+                $aViewUrls['labelbar_view'][] = $aData;
 
                 $rwlabelset = $result;
 
@@ -387,7 +359,7 @@ class labels extends Survey_Common_Action
                     $i++;
                 }
 
-                $this->getController()->render('/admin/labels/labelview_view', array(
+                $aViewUrls['labelview_view'][] = array(
                     'results' => $results,
                     'lslanguages' => $lslanguages,
                     'clang' => $clang,
@@ -395,13 +367,11 @@ class labels extends Survey_Common_Action
                     'maxsortorder' => $maxsortorder,
                     'msorow' => $maxresult->attributes,
                     'action' => $action,
-                ));
+                );
             }
         }
 
-        $this->getController()->_loadEndScripts();
-
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     /**
@@ -450,28 +420,37 @@ class labels extends Survey_Common_Action
      */
     public function exportmulti()
     {
-        $this->getController()->_getAdminHeader();
-        $this->_labelsetbar(0);
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . 'scripts/admin/labels.js');
-        $data['clang'] = $this->getController()->lang;
-        $data['labelsets'] = getlabelsets();
-        $this->getController()->render('/admin/labels/exportmulti_view', $data);
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
+        $this->_renderWrappedTemplate('exportmulti_view', $aData);
     }
 
     /**
-     * Common labelset menu
+     * Renders template(s) wrapped in header and footer
      *
-     * @access protected
-     * @param int $lid
-     * @return void
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
      */
-    protected function _labelsetbar($lid = 0)
+    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
     {
-        $lid = (int) $lid;
-        $data['clang'] = $this->getController()->lang;
-        $data['lid'] = $lid;
-        $data['labelsets'] = getlabelsets();
-        $this->getController()->render("/admin/labels/labelsetsbar_view",$data);
+        if (!isset($aData['display']['menu_bars']['labels']) || $aData['display']['menu_bars']['labels'] != false)
+        {
+            if (empty($aData['labelsets']))
+            {
+                $aData['labelsets'] = getlabelsets();
+            }
+
+            if (empty($aData['lid']))
+            {
+                $aData['lid'] = 0;
+            }
+
+            $aViewUrls = (array) $aViewUrls;
+
+            array_unshift($aViewUrls, 'labelsetsbar_view');
+        }
+
+        $aData['display']['menu_bars'] = false;
+
+        parent::_renderWrappedTemplate('labels', $aViewUrls, $aData);
     }
  }

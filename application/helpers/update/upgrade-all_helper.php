@@ -188,7 +188,7 @@ function upgrade_surveypermissions_table145()
     if (empty($oPermissionResult)) {return "Database Error";}
     else
     {
-        $tablename=Yii::app()->db->tablePrefix.'survey_permissions';
+        $tablename = '{{survey_permissions}}';
         foreach ( $oPermissionResult as $aPermissionRow )
         {
 

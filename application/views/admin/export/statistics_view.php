@@ -7,7 +7,7 @@
         }
 ?>
 
-<form method='post' name='formbuilder' action='<?php echo Yii::app()->getController()->createUrl("admin/statistics/surveyid/$surveyid"); ?>#start'>
+<form method='post' name='formbuilder' action='<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>#start'>
 <div class='header ui-widget-header'><?php $clang->eT("General filters"); ?></div>
     <div id='statistics_general_filter'>
     <?php
@@ -1235,7 +1235,7 @@
 
         <p id='vertical_slide2'>
             <input type='submit' value='<?php $clang->eT("View stats"); ?>' />
-            <input type='button' value='<?php $clang->eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/surveyid/$surveyid"); ?>', '_top')" />
+            <input type='button' value='<?php $clang->eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
             <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
             <input type='hidden' name='display' value='stats' />
         </p>

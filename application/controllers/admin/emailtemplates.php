@@ -24,39 +24,20 @@
 class emailtemplates extends Survey_Common_Action {
 
     /**
-     * Routes to the correct sub-action
-     *
-     * @access public
-     * @return void
-     */
-    public function run($sa)
-    {
-        if ($sa == 'edit')
-        {
-            $this->route('edit', array('surveyid'));
-        }
-        else if ($sa == 'update')
-        {
-            $this->route('update', array('surveyid', 'action'));
-        }
-    }
-
-    /**
-     * emailtemplates::edit()
      * Load edit email template screen.
-     * @param mixed $surveyid
+     * @param mixed $iSurveyId
      * @return
      */
-    function edit($surveyid)
+    function index($iSurveyId)
     {
         $clang = $this->getController()->lang;
-        $surveyid = sanitize_int($surveyid);
-        $this->getController()->_css_admin_include(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
+        $iSurveyId = sanitize_int($iSurveyId);
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
 
         Yii::app()->loadHelper('admin.htmleditor');
         Yii::app()->loadHelper('surveytranslator');
 
-        if(isset($surveyid) && getEmailFormat($surveyid) == 'html')
+        if(isset($iSurveyId) && getEmailFormat($iSurveyId) == 'html')
         {
             $ishtml = true;
         }
@@ -65,39 +46,38 @@ class emailtemplates extends Survey_Common_Action {
             $ishtml = false;
         }
 
-        $grplangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-        $baselang = Survey::model()->findByPk($surveyid)->language;
+        $grplangs = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
+        $baselang = Survey::model()->findByPk($iSurveyId)->language;
         array_unshift($grplangs,$baselang);
 
         PrepareEditorScript(true, $this->getController());
-        $data['attrib'] = array();
-        $data['bplangs'] = array();
-        $data['defaulttexts'] = array();
+        $aData['attrib'] = array();
+        $aData['bplangs'] = array();
+        $aData['defaulttexts'] = array();
         foreach ($grplangs as $key => $grouplang)
         {
-            $data['bplangs'][$key] = new limesurvey_lang(array($grouplang));
-            $data['attrib'][$key] = Surveys_languagesettings::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :ls', array(':ssid' => $surveyid, ':ls' => $grouplang));
-            $data['defaulttexts'][$key] = aTemplateDefaultTexts($data['bplangs'][$key]);
+            $aData['bplangs'][$key] = new limesurvey_lang(array($grouplang));
+            $aData['attrib'][$key] = Surveys_languagesettings::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :ls', array(':ssid' => $iSurveyId, ':ls' => $grouplang));
+            $aData['defaulttexts'][$key] = aTemplateDefaultTexts($aData['bplangs'][$key]);
         }
-        $data['clang'] = $clang;
-        $data['surveyid'] = $surveyid;
-        $data['ishtml'] = $ishtml;
-        $data['grplangs'] = $grplangs;
-        $this->_renderWrappedTemplate('emailtemplates_view', $data);
+
+        $aData['surveyid'] = $iSurveyId;
+        $aData['ishtml'] = $ishtml;
+        $aData['grplangs'] = $grplangs;
+        $this->_renderWrappedTemplate('emailtemplates_view', $aData);
     }
 
     /**
-     * emailtemplates::update()
      * Function responsible to process any change in email template.
      * @return
      */
-    function update($surveyid, $action)
+    function update($iSurveyId)
     {
         $clang = $this->getController()->lang;
-        if ($action == "updateemailtemplates" && bHasSurveyPermission($surveyid, 'surveylocale','update'))
+        if (bHasSurveyPermission($iSurveyId, 'surveylocale','update'))
         {
-            $languagelist = Survey::model()->findByPk($surveyid)->additionalLanguages;
-            $languagelist[] = Survey::model()->findByPk($surveyid)->language;
+            $languagelist = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
+            $languagelist[] = Survey::model()->findByPk($iSurveyId)->language;
             array_filter($languagelist);
             foreach ($languagelist as $langname)
             {
@@ -115,13 +95,13 @@ class emailtemplates extends Survey_Common_Action {
                         'email_admin_responses_subj' => $_POST['email_admin_responses_subj_'.$langname],
                         'email_admin_responses' => $_POST['email_admin_responses_'.$langname]
                         );
-                $usquery = Surveys_languagesettings::model()->updateAll($attributes,'surveyls_survey_id = :ssid AND surveyls_language = :sl', array(':ssid' => $surveyid, ':sl' => $langname));
+                $usquery = Surveys_languagesettings::model()->updateAll($attributes,'surveyls_survey_id = :ssid AND surveyls_language = :sl', array(':ssid' => $iSurveyId, ':sl' => $langname));
                 if ($usquery <= 0)
                     die("Error updating<br />".$usquery."<br /><br />");
             }
             Yii::app()->session['flashmessage'] = $clang->gT("Email templates successfully saved.");
         }
-        $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$surveyid));
+        $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$iSurveyId));
     }
 
 

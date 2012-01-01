@@ -23,34 +23,21 @@
 class CheckIntegrity extends Survey_Common_Action
 {
 
-    public function run()
+    public function __construct($controller, $id)
     {
-        Yii::app()->loadHelper('database');
-        if (isset($_GET['fixredundancy']))
-            $this->fixredundancy();
-        elseif (isset($_GET['fixintegrity']))
-            $this->fixintegrity();
-        else
-            $this->index();
-    }
+        parent::__construct($controller, $id);
 
-    /**
-     * Renders template(s) wrapped in header and footer
-     *
-     * @param string|array $aViewUrls View url(s)
-     * @param array $aData Data to be passed on. Optional.
-     */
-    function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
-    {
-        parent::_renderWrappedTemplate('checkintegrity', $aViewUrls, $aData);
+        if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] != 1) {
+            die();
+        }
+
+        Yii::app()->loadHelper('database');
     }
 
     public function index()
     {
-        if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1) {
-            $aData = $this->_checkintegrity();
-            $this->_renderWrappedTemplate('check_view', $aData);
-        }
+        $aData = $this->_checkintegrity();
+        $this->_renderWrappedTemplate('check_view', $aData);
     }
 
     public function fixredundancy()
@@ -780,5 +767,16 @@ class CheckIntegrity extends Survey_Common_Action
             }
         }
         return $aDelete;
+    }
+
+    /**
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    {
+        parent::_renderWrappedTemplate('checkintegrity', $aViewUrls, $aData);
     }
 }

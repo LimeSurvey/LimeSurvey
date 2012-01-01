@@ -13,7 +13,7 @@
                 <img name='SummaryButton' src='<?php echo $imageurl; ?>/summary.png' alt='<?php $clang->eT("Show token summary"); ?>' />
             </a>
             <img src='<?php echo $imageurl; ?>/seperator.gif' alt='' />
-            <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>', '_top')"
+            <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/browse/sa/index/surveyid/$surveyid"); ?>', '_top')"
                title='<?php $clang->eTview("Display tokens"); ?>' >
                 <img name='ViewAllButton' src='<?php echo $imageurl; ?>/document.png' alt='<?php $clang->eT("Display tokens"); ?>' />
             </a>
@@ -67,7 +67,7 @@ if (bHasSurveyPermission($surveyid, 'tokens', 'update'))
 {
     ?>
                 <img src='<?php echo $imageurl; ?>/seperator.gif' alt='' />
-                <a href='<?php echo $this->createUrl("admin/emailtemplates/sa/edit/surveyid/$surveyid"); ?>' title='<?php $clang->eTview("Edit email templates"); ?>'>
+                <a href='<?php echo $this->createUrl("admin/emailtemplates/sa/index/surveyid/$surveyid"); ?>' title='<?php $clang->eTview("Edit email templates"); ?>'>
                     <img name='EmailTemplatesButton' src='<?php echo $imageurl; ?>/emailtemplates.png' alt='<?php $clang->eT("Edit email templates"); ?>' />
                 </a>
                 <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/email/surveyid/$surveyid"); ?>', '_top')"

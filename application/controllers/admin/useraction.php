@@ -48,32 +48,26 @@ class UserAction extends Survey_Common_Action
 
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) {
             $noofsurveys = Survey::model()->countByAttributes(array("owner_id" => $usrhimself['uid']));
-            $data['noofsurveys'] = $noofsurveys;
+            $aData['noofsurveys'] = $noofsurveys;
         }
 
         if (isset($usrhimself['parent_id']) && $usrhimself['parent_id'] != 0)
-            $data['row'] = User::model()->findByAttributes(array('uid' => $usrhimself['parent_id']))->users_name;
+            $aData['row'] = User::model()->findByAttributes(array('uid' => $usrhimself['parent_id']))->users_name;
 
-        $data['usrhimself'] = $usrhimself;
+        $aData['usrhimself'] = $usrhimself;
         // other users
-        $data['row'] = 0;
-        $data['usr_arr'] = $userlist;
+        $aData['row'] = 0;
+        $aData['usr_arr'] = $userlist;
         $noofsurveyslist = array();
 
         //This loops through for each user and checks the amount of surveys against them.
         for ($i = 1; $i <= count($userlist); $i++)
             $noofsurveyslist[$i] = $this->_getSurveyCountForUser($userlist[$i]);
 
+        $aData['imageurl'] = Yii::app()->getConfig("imageurl");
+        $aData['noofsurveyslist'] = $noofsurveyslist;
 
-        $clang = Yii::app()->lang;
-        $data['clang'] = $clang;
-        $data['imageurl'] = Yii::app()->getConfig("imageurl");
-        $data['noofsurveyslist'] = $noofsurveyslist;
-
-        $this->getController()->_getAdminHeader();
-        $this->getController()->_showadminmenu();
-        $this->getController()->render("/admin/user/editusers", $data);
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+        $this->_renderWrappedTemplate('editusers', $aData);
     }
 
     private function _getSurveyCountForUser(array $user)
@@ -91,16 +85,15 @@ class UserAction extends Survey_Common_Action
         $new_user = FlattenText(CHttpRequest::getPost('new_user'), false, true);
         $new_email = FlattenText(CHttpRequest::getPost('new_email'), false, true);
         $new_full_name = FlattenText(CHttpRequest::getPost('new_full_name'), false, true);
+        $aViewUrls = array();
 
-        $this->getController()->_getAdminHeader();
-        $this->getController()->_showadminmenu();
         $valid_email = true;
         if (!validate_email($new_email)) {
             $valid_email = false;
-            $this->getController()->_showMessageBox($clang->gT("Failed to add user"), $clang->gT("The email address is not valid."), 'warningheader');
+            $aViewUrls['message'] = array('title' => $clang->gT("Failed to add user"), 'message' => $clang->gT("The email address is not valid."), 'class'=> 'warningheader');
         }
         if (empty($new_user)) {
-            $this->getController()->_showMessageBox($clang->gT("Failed to add user"), $clang->gT("A username was not supplied or the username is invalid."), 'warningheader');
+            $aViewUrls['message'] = array('title' => $clang->gT("Failed to add user"), 'message' => $clang->gT("A username was not supplied or the username is invalid."), 'class'=> 'warningheader');
         }
         elseif ($valid_email)
         {
@@ -139,7 +132,7 @@ class UserAction extends Survey_Common_Action
                     }
                 }
 
-                $body .= "<a href='" . $this->getController()->createUrl("admin/") . "'>" . $clang->gT("Click here to log in.") . "</a><br /><br />\n";
+                $body .= "<a href='" . $this->getController()->createUrl("/admin") . "'>" . $clang->gT("Click here to log in.") . "</a><br /><br />\n";
                 $body .= sprintf($clang->gT('If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!'), Yii::app()->getConfig("siteadminemail")) . "<br />\n";
 
                 $subject = sprintf($clang->gT("User registration at '%s'", "unescaped"), Yii::app()->getConfig("sitename"));
@@ -160,16 +153,17 @@ class UserAction extends Survey_Common_Action
                     $classMsg = 'warningheader';
                 }
 
-                $this->showMessageBoxWithRedirect($clang->gT("Add user"), "", $classMsg, $extra,
+                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Add user"), "", $classMsg, $extra,
                                                   $this->getController()->createUrl("admin/user/setuserrights"), $clang->gT("Set user permissions"),
                                                   array('action' => 'setuserrights', 'user' => $new_user, 'uid' => $newqid));
             }
             else
             {
-                $this->showMessageBoxWithRedirect($clang->gT("Failed to add user"), $clang->gT("The user name already exists."), 'warningheader');
+                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Failed to add user"), $clang->gT("The user name already exists."), 'warningheader');
             }
         }
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
+
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     /**
@@ -181,9 +175,9 @@ class UserAction extends Survey_Common_Action
             die(access_denied('deluser'));
         }
         $clang = Yii::app()->lang;
-        $this->getController()->_getAdminHeader();
-        $this->getController()->_showadminmenu();
         $action = CHttpRequest::getPost("action");
+        $aViewUrls = array();
+
         // CAN'T DELETE ORIGINAL SUPERADMIN
         // Initial SuperAdmin has parent_id == 0
         $row = User::model()->findByAttributes(array('parent_id' => 0));
@@ -192,7 +186,7 @@ class UserAction extends Survey_Common_Action
         $postuser = CHttpRequest::getPost("user");
         if ($row['uid'] == $postuserid) // it's the original superadmin !!!
         {
-            $this->getController()->_showMessageBox($clang->gT("Initial Superadmin cannot be deleted!"), "", "warningheader");
+            $aViewUrls['message'] = array('title' => $clang->gT('Initial Superadmin cannot be deleted!'), 'class' => 'warningheader');
         }
         else
         {
@@ -206,7 +200,7 @@ class UserAction extends Survey_Common_Action
                 if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || $sresultcount > 0 || $postuserid == Yii::app()->session['loginID']) {
                     $transfer_surveys_to = 0;
                     $ownerUser = User::model()->findAll();
-                    $data['users'] = $ownerUser;
+                    $aData['users'] = $ownerUser;
 
                     $current_user = Yii::app()->session['loginID'];
                     if (count($ownerUser) == 2) {
@@ -234,11 +228,11 @@ class UserAction extends Survey_Common_Action
                     }
                     else
                     {
-                        $data['postuserid'] = $postuserid;
-                        $data['postuser'] = $postuser;
-                        $data['current_user'] = $current_user;
-                        $data['clang'] = $clang;
-                        $this->getController()->render('/admin/user/deluser', $data);
+                        $aData['postuserid'] = $postuserid;
+                        $aData['postuser'] = $postuser;
+                        $aData['current_user'] = $current_user;
+
+                        $aViewUrls[] = 'deluser';
                     }
                 }
                 else
@@ -249,10 +243,11 @@ class UserAction extends Survey_Common_Action
             }
             else
             {
-                $this->showMessageBoxWithRedirect("", $clang->gT("Could not delete user. User was not supplied."), "warningheader");
+                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect("", $clang->gT("Could not delete user. User was not supplied."), "warningheader");
             }
         }
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
+
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     function deleteFinalUser($result, $transfer_surveys_to)
@@ -292,7 +287,8 @@ class UserAction extends Survey_Common_Action
             $extra = sprintf($clang->gT("All of the user's surveys were transferred to %s."), $sTransferred_to);
         }
 
-        $this->showMessageBoxWithRedirect("", $clang->gT("Success!"), "successheader", $extra);
+        $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect("", $clang->gT("Success!"), "successheader", $extra);
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     /**
@@ -306,15 +302,12 @@ class UserAction extends Survey_Common_Action
             $sresultcount = count($sresult);
 
             if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['loginID'] == $postuserid ||
-                (Yii::app()->session['USER_RIGHT_CREATE_USER'] && $sresultcount > 0)
-            ) {
+                (Yii::app()->session['USER_RIGHT_CREATE_USER'] && $sresultcount > 0) )
+            {
                 $sresult = User::model()->parentAndUser($postuserid);
-                $data['mur'] = $sresult;
-                $data['clang'] = Yii::app()->lang;
-                $this->getController()->_getAdminHeader();
-                $this->getController()->_showadminmenu();
-                $this->getController()->render("/admin/user/modifyuser", $data);
-                $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
+                $aData['mur'] = $sresult;
+
+                $this->_renderWrappedTemplate('modifyuser', $aData);
             }
             return;
         }
@@ -334,9 +327,7 @@ class UserAction extends Survey_Common_Action
         $postfull_name = CHttpRequest::getPost("full_name");
         $display_user_password_in_html = Yii::app()->getConfig("display_user_password_in_html");
         $addsummary = '';
-
-        $this->getController()->_getAdminHeader();
-        $this->getController()->_showadminmenu();
+        $aViewUrls = array();
 
         $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
         $sresultcount = count($sresult);
@@ -352,7 +343,7 @@ class UserAction extends Survey_Common_Action
             $full_name = html_entity_decode($postfull_name, ENT_QUOTES, 'UTF-8');
 
             if (!validate_email($email)) {
-                $this->showMessageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Could not modify user data."), "warningheader", $clang->gT("Email address is not valid."),
+                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Could not modify user data."), "warningheader", $clang->gT("Email address is not valid."),
                                                   $this->getController()->createUrl('admin/user/modifyuser'), $clang->gT("Back"), array('uid' => $postuserid));
             }
             else
@@ -367,7 +358,7 @@ class UserAction extends Survey_Common_Action
 
                 if ($uresult && empty($sPassword)) {
                     $extra = $clang->gT("Username") . ": $users_name<br />" . $clang->gT("Password") . ": (" . $clang->gT("Unchanged") . ")<br />\n";
-                    $this->showMessageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Success!"), "successheader", $extra);
+                    $aViewUrls['mboxwithredirect'] = $this->_messageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Success!"), "successheader", $extra);
                 }
                 elseif ($uresult && !empty($sPassword))
                 {
@@ -385,21 +376,21 @@ class UserAction extends Survey_Common_Action
                     }
 
                     $extra = $clang->gT("Username") . ": {$users_name}<br />" . $clang->gT("Password") . ": {$displayedPwd}<br />\n";
-                    $this->showMessageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Success!"), "successheader", $extra);
+                    $aViewUrls['mboxwithredirect'] = $this->_messageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Success!"), "successheader", $extra);
                 }
                 else
                 {
                     // Username and/or email adress already exists.
-                    $this->showMessageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Could not modify user data. Email address already exists."), 'warningheader');
+                    $aViewUrls['mboxwithredirect'] = $this->_messageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Could not modify user data. Email address already exists."), 'warningheader');
                 }
             }
         }
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
+
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     function setuserrights()
     {
-        $data['clang'] = Yii::app()->lang;
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . 'scripts/admin/users.js');
         $postuser = CHttpRequest::getPost('user');
         $postemail = CHttpRequest::getPost('email');
@@ -418,11 +409,8 @@ class UserAction extends Survey_Common_Action
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || (Yii::app()->session['USER_RIGHT_CREATE_USER'] && $sresultcount > 0 && Yii::app()->session['loginID'] != $postuserid)
         ) //	if($_SESSION['loginID'] != $postuserid)
         {
-            $this->getController()->_getAdminHeader();
-            $this->getController()->_showadminmenu();
-            $data['postuserid'] = $postuserid;
-            $this->getController()->render("/admin/user/setuserrights", $data);
-            $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
+            $aData['postuserid'] = $postuserid;
+            $this->_renderWrappedTemplate('setuserrights', $aData);
         } // if
         else
         {
@@ -438,9 +426,8 @@ class UserAction extends Survey_Common_Action
     {
         $clang = Yii::app()->lang;
         $postuserid = CHttpRequest::getPost("uid");
+        $aViewUrls = array();
 
-        $this->getController()->_getAdminHeader();
-        $this->getController()->_showadminmenu();
         // A user can't modify his own rights ;-)
         if ($postuserid != Yii::app()->session['loginID']) {
             $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
@@ -508,30 +495,28 @@ class UserAction extends Survey_Common_Action
                 echo access_denied('userrights');
                 die();
             }
-            $this->showMessageBoxWithRedirect($clang->gT("Set user permissions"), $clang->gT("User permissions were updated successfully."), 'successheader');
+            $aViewUrls['mboxwithredirect'] = $this->_messageBoxWithRedirect($clang->gT("Set user permissions"), $clang->gT("User permissions were updated successfully."), 'successheader');
         }
         else
         {
-            $this->showMessageBoxWithRedirect($clang->gT("Set user permissions"), $clang->gT("You are not allowed to change your own permissions!"), 'warningheader');
+            $aViewUrls['mboxwithredirect'] = $this->_messageBoxWithRedirect($clang->gT("Set user permissions"), $clang->gT("You are not allowed to change your own permissions!"), 'warningheader');
         }
 
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     function setusertemplates()
     {
-        $data['clang'] = Yii::app()->lang;
+        $aData['clang'] = Yii::app()->lang;
         $postuser = CHttpRequest::getPost("user");
         $postemail = CHttpRequest::getPost("email");
         $postuserid = $_POST["uid"];
         $postfull_name = CHttpRequest::getPost("full_name");
         $this->_refreshtemplates();
-        $data['userlist'] = getuserlist();
-        $this->getController()->_getAdminHeader();
-        $this->getController()->_showadminmenu();
-        $data['postuserid'] = $postuserid;
-        $this->load->view("admin/user/setusertemplates", $data);
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
+        $aData['userlist'] = getuserlist();
+        $aData['postuserid'] = $postuserid;
+
+        $this->_renderWrappedTemplate('setusertemplates', $aData);
     }
 
     function usertemplates()
@@ -539,8 +524,6 @@ class UserAction extends Survey_Common_Action
         $clang = Yii::app()->lang;
         $postuserid = CHttpRequest::getPost("uid");
 
-        $this->getController()->_getAdminHeader();
-        $this->getController()->_showadminmenu();
         // SUPERADMINS AND MANAGE_TEMPLATE USERS CAN SET THESE RIGHTS
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'] == 1) {
             $templaterights = array();
@@ -565,11 +548,11 @@ class UserAction extends Survey_Common_Action
                 }
             }
             if ($uresult) {
-                $this->showMessageBoxWithRedirect($clang->gT("Set template permissions"), $clang->gT("Template permissions were updated successfully."), "successheader");
+                $aViewUrls['mboxwithredirect'] = $this->_messageBoxWithRedirect($clang->gT("Set template permissions"), $clang->gT("Template permissions were updated successfully."), "successheader");
             }
             else
             {
-                $this->showMessageBoxWithRedirect($clang->gT("Set template permissions"), $clang->gT("Error while updating usertemplates."), "warningheader");
+                $aViewUrls['mboxwithredirect'] = $this->_messageBoxWithRedirect($clang->gT("Set template permissions"), $clang->gT("Error while updating usertemplates."), "warningheader");
             }
         }
         else
@@ -577,7 +560,8 @@ class UserAction extends Survey_Common_Action
             echo access_denied('usertemplates');
             die();
         }
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
+
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     /**
@@ -587,9 +571,9 @@ class UserAction extends Survey_Common_Action
     {
         $clang = Yii::app()->lang;
         if (CHttpRequest::getPost("action")) {
-            $data = array('lang' => CHttpRequest::getPost('lang'), 'dateformat' => CHttpRequest::getPost('dateformat'), 'htmleditormode' => CHttpRequest::getPost('htmleditormode'),
+            $aData = array('lang' => CHttpRequest::getPost('lang'), 'dateformat' => CHttpRequest::getPost('dateformat'), 'htmleditormode' => CHttpRequest::getPost('htmleditormode'),
                           'questionselectormode' => CHttpRequest::getPost('questionselectormode'), 'templateeditormode' => CHttpRequest::getPost('templateeditormode'));
-            $uresult = User::model()->update(Yii::app()->session['loginID'], $data);
+            $uresult = User::model()->update(Yii::app()->session['loginID'], $aData);
             Yii::app()->session['adminlang'] = CHttpRequest::getPost('lang');
             Yii::app()->session['htmleditormode'] = CHttpRequest::getPost('htmleditormode');
             Yii::app()->session['questionselectormode'] = CHttpRequest::getPost('questionselectormode');
@@ -598,17 +582,12 @@ class UserAction extends Survey_Common_Action
             Yii::app()->session['flashmessage'] = $clang->gT("Your personal settings were successfully saved.");
         }
         $query = User::model()->getSomeRecords(array("lang"), array("uid" => $this->session->userdata("loginID")));
-        $data['sSavedLanguage'] = reset($query->read());
+        $aData['sSavedLanguage'] = reset($query->read());
 
-        $data['clang'] = $clang;
-
-        $this->getController()->_getAdminHeader();
-        $this->getController()->_showadminmenu();
-        $this->load->view("admin/user/personalsettings", $data);
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
+        $this->_renderWrappedTemplate('personalsettings', $aData);
     }
 
-    function _getUserNameFromUid($uid)
+    private function _getUserNameFromUid($uid)
     {
         $uid = sanitize_int($uid);
         $result = User::model()->findAllByAttributes(array('uid' => $uid));
@@ -621,7 +600,7 @@ class UserAction extends Survey_Common_Action
         }
     }
 
-    function _refreshtemplates()
+    private function _refreshtemplates()
     {
         $template_a = gettemplatelist();
         foreach ($template_a as $tp => $fullpath)
@@ -640,7 +619,7 @@ class UserAction extends Survey_Common_Action
         return true;
     }
 
-    function escape($str)
+    private function escape($str)
     {
         if (is_string($str)) {
             $str = $this->escape_str($str);
@@ -657,7 +636,7 @@ class UserAction extends Survey_Common_Action
         return $str;
     }
 
-    function escape_str($str, $like = FALSE)
+    private function escape_str($str, $like = FALSE)
     {
         if (is_array($str)) {
             foreach ($str as $key => $val)
@@ -674,7 +653,7 @@ class UserAction extends Survey_Common_Action
         return $str;
     }
 
-    function remove_invisible_characters($str, $url_encoded = TRUE)
+    private function remove_invisible_characters($str, $url_encoded = TRUE)
     {
         $non_displayables = array();
 
@@ -696,23 +675,33 @@ class UserAction extends Survey_Common_Action
         return $str;
     }
 
-    function showMessageBoxWithRedirect($title, $message, $classMsg, $extra = "", $url = "", $urlText = "", $hiddenVars = array(), $classMbTitle = "header ui-widget-header")
+    private function _messageBoxWithRedirect($title, $message, $classMsg, $extra = "", $url = "", $urlText = "", $hiddenVars = array(), $classMbTitle = "header ui-widget-header")
     {
         $clang = Yii::app()->lang;
-        $url = (!empty($url)) ? $url : $this->getController()->createUrl('admin/user/editusers');
+        $url = (!empty($url)) ? $url : $this->getController()->createUrl('admin/user/sa/index');
         $urlText = (!empty($urlText)) ? $urlText : $clang->gT("Continue");
 
-        $data['title'] = $title;
-        $data['message'] = $message;
-        $data['url'] = $url;
-        $data['urlText'] = $urlText;
-        $data['classMsg'] = $classMsg;
-        $data['classMbTitle'] = $classMbTitle;
-        $data['extra'] = $extra;
-        $data['hiddenVars'] = $hiddenVars;
-        $data['clang'] = $clang;
+        $aData['title'] = $title;
+        $aData['message'] = $message;
+        $aData['url'] = $url;
+        $aData['urlText'] = $urlText;
+        $aData['classMsg'] = $classMsg;
+        $aData['classMbTitle'] = $classMbTitle;
+        $aData['extra'] = $extra;
+        $aData['hiddenVars'] = $hiddenVars;
 
-        $this->getController()->render('/admin/user/mboxwithredirect', $data);
+        return $aData;
+    }
+
+    /**
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    {
+        parent::_renderWrappedTemplate('user', $aViewUrls, $aData);
     }
 
 }

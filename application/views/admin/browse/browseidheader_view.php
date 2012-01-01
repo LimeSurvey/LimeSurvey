@@ -27,10 +27,10 @@
             <img name='ExportAnswer' src='<?php echo $imageurl; ?>/export.png' alt='<?php $clang->eT("Export this Response"); ?>' align='left' /></a>
         <img src='<?php echo $imageurl; ?>/seperator.gif' border='0' hspace='0' align='left' alt='' />
         <img src='<?php echo $imageurl; ?>/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt='' />
-        <a href='<?php echo $this->createUrl("admin/browse/surveyid/$surveyid/sa/view/id/$last"); ?>' title='<?php $clang->eT("Show previous..."); ?>' >
+        <a href='<?php echo $this->createUrl("admin/browse/sa/view/surveyid/$surveyid/id/$last"); ?>' title='<?php $clang->eT("Show previous..."); ?>' >
             <img name='DataBack' align='left' src='<?php echo $imageurl; ?>/databack.png' alt='<?php $clang->eT("Show previous..."); ?>' /></a>
         <img src='<?php echo $imageurl; ?>/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />
-        <a href='<?php echo $this->createUrl("admin/browse/surveyid/$surveyid/sa/view/id/$next"); ?>' title='<?php $clang->eT("Show next..."); ?>'>
+        <a href='<?php echo $this->createUrl("admin/browse/sa/view/surveyid/$surveyid/id/$next"); ?>' title='<?php $clang->eT("Show next..."); ?>'>
             <img name='DataForward' align='left' src='<?php echo $imageurl; ?>/dataforward.png' alt='<?php $clang->eT("Show next..."); ?>' /></a>
     </div>
 </div>

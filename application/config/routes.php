@@ -64,12 +64,11 @@ $route['admin/<action:\w+>/<sa:\w+>/*'] = 'admin/<action>/sa/<sa>';
 //question
 $route['admin/question/newquestion/(:num)/(:num)'] = "admin/question/index/addquestion/$1/$2";
 $route['admin/question/editquestion/(:num)/(:num)/(:num)'] = "admin/question/index/editquestion/$1/$2/$3";
-$route['admin/question/deletequestion/(:num)/(:num)/(:num)'] = "admin/question/delete/delquestion/$1/$2/$3";
 
 $route['admin/labels/<action:\w+>'] = "admin/labels/index/<action>";
 $route['admin/labels/<action:\w+>/<lid:\d+>'] = "admin/labels/index/<action>/<id>";
 
-$route['<controller:\w+>/<action:\w+>'] = '<controller>/<action>';
+$route['<controller:\w+>/<action:\w+>/index'] = '<controller>/<action>';
 
 //Expression Manager tests
 $route['admin/expressions'] = "admin/expressions/index";
