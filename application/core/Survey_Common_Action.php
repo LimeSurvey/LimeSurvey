@@ -58,9 +58,9 @@ class Survey_Common_Action extends CAction
 
         // Check if the class has the method
 		$oClass = new ReflectionClass($this);
-        if ($oClass->hasMethod($sSubAction) == false)
+        if (!$oClass->hasMethod($sSubAction))
         {
-            parent::runWithParams($params);
+            return parent::runWithParams($params);
         }
 
         // Check if the method is public and of the action class, not its parents
@@ -68,7 +68,7 @@ class Survey_Common_Action extends CAction
         $aActions = $this->getController()->getActionClasses();
         if(strtolower($oMethod->getDeclaringClass()->name) != $aActions[$this->getId()] || !$oMethod->isPublic())
         {
-            parent::runWithParams($params);
+            return parent::runWithParams($params);
         }
 
         $params = $this->_addPseudoParams($params);

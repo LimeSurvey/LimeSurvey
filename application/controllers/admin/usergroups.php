@@ -460,12 +460,9 @@ class Usergroups extends Survey_Common_Action
             $result = $this->templates_model->getAllRecords_like(array('folder' => $tp));
 
             if ($result->num_rows() == 0) {
-                //$query2 = "INSERT INTO ".$this->db->dbprefix."templates (".db_quote_id('folder').",".db_quote_id('creator').") VALUES ('".$tp."', ".$_SESSION['loginID'].')' ;
                 $data = array(
                     'folder' => $tp,
                     'creator' => $this->session->userdata('loginID')
-
-
                 );
 
                 $this->load->model('templates_model');

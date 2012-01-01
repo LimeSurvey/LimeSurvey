@@ -432,10 +432,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
             $grouprowdata['group_name']=translink('survey', $oldsid, $newsid, $grouprowdata['group_name']);
             $grouprowdata['description']=translink('survey', $oldsid, $newsid, $grouprowdata['description']);
 
-            //$tablename=$dbprefix.'groups';
-
             $gres = Yii::app()->db->createCommand()->insert('{{groups}}', $grouprowdata);
-
 
             //GET NEW GID  .... if is not done before and we count a group if a new gid is required
             if ($newgid == 0)
@@ -819,7 +816,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
 
     // Import group table ===================================================================================
 
-    //$tablename=$dbprefix.'groups';
+
     $query = "SELECT MAX(group_order) AS maxqo FROM {{groups}} WHERE sid=$newsid";
     $res = Yii::app()->db->createCommand($query)->query();
     $resrow = $res->read();
@@ -868,7 +865,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
 
     // We have to run the question table data two times - first to find all main questions
     // then for subquestions (because we need to determine the new qids for the main questions first)
-    //$tablename=$dbprefix.'questions';
+
 
     $results['questions']=0;
     foreach ($xml->questions->rows->row as $row)
@@ -942,7 +939,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
     // Import answers --------------------------------------------------------------
     if(isset($xml->answers))
     {
-        //$tablename=$dbprefix.'answers';
+
 
         foreach ($xml->answers->rows->row as $row)
         {
@@ -964,7 +961,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
     // Import questionattributes --------------------------------------------------------------
     if(isset($xml->question_attributes))
     {
-        //$tablename=$dbprefix.'question_attributes';
+
 
         $aAllAttributes=questionAttributes(true);
 
@@ -1000,7 +997,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
     // Import defaultvalues --------------------------------------------------------------
     if(isset($xml->defaultvalues))
     {
-        //$tablename=$dbprefix.'defaultvalues';
+
 
         $results['defaultvalues']=0;
         foreach ($xml->defaultvalues->rows->row as $row)
@@ -1022,7 +1019,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
     // Import conditions --------------------------------------------------------------
     if(isset($xml->conditions))
     {
-        //$tablename=$dbprefix.'conditions';
+
 
         foreach ($xml->conditions->rows->row as $row)
         {
@@ -1714,7 +1711,7 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
 
     // We have to run the question table data two times - first to find all main questions
     // then for subquestions (because we need to determine the new qids for the main questions first)
-    //$tablename=$dbprefix.'questions';
+
 
     $query = "SELECT MAX(question_order) AS maxqo FROM {{questions}} WHERE sid=$newsid AND gid=$newgid";
     $res = Yii::app()->db->createCommand($query)->query();
@@ -1804,7 +1801,7 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
     // Import answers --------------------------------------------------------------
     if(isset($xml->answers))
     {
-        //$tablename=$dbprefix.'answers';
+
 
         foreach ($xml->answers->rows->row as $row)
         {
@@ -1827,7 +1824,7 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
     // Import questionattributes --------------------------------------------------------------
     if(isset($xml->question_attributes))
     {
-        //$tablename=$dbprefix.'question_attributes';
+
 
         $aAllAttributes=questionAttributes(true);
         foreach ($xml->question_attributes->rows->row as $row)
@@ -1867,7 +1864,7 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
     // Import defaultvalues --------------------------------------------------------------
     if(isset($xml->defaultvalues))
     {
-        //$tablename=$dbprefix.'defaultvalues';
+
 
         $results['defaultvalues']=0;
         foreach ($xml->defaultvalues->rows->row as $row)
@@ -2100,7 +2097,7 @@ function XMLImportLabelsets($sFullFilepath, $options)
 
     // Import labels table ===================================================================================
 
-    //$tablename=$dbprefix.'labelsets';
+
     foreach ($xml->labelsets->rows->row as $row)
     {
         $insertdata=array();
@@ -2122,7 +2119,7 @@ function XMLImportLabelsets($sFullFilepath, $options)
 
     // Import labels table ===================================================================================
 
-    //$tablename=$dbprefix.'labels';
+
     foreach ($xml->labels->rows->row as $row)
     {
         $insertdata=array();
@@ -3376,7 +3373,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
     // Import survey languagesettings table ===================================================================================
 
-    //$tablename=$dbprefix.'surveys_languagesettings';
+
 
     foreach ($xml->surveys_languagesettings->rows->row as $row)
     {
@@ -3411,7 +3408,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
     // Import groups table ===================================================================================
 
-    //$tablename=$dbprefix.'groups';
+
 	if (isset($xml->groups->rows->row))
 	{
     foreach ($xml->groups->rows->row as $row)
@@ -3569,7 +3566,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     // Import questionattributes -------------------------------------------------
     if(isset($xml->question_attributes))
     {
-        //$tablename=$dbprefix.'question_attributes';
+
 
         $aAllAttributes=questionAttributes(true);
         foreach ($xml->question_attributes->rows->row as $row)
@@ -3600,7 +3597,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     // Import defaultvalues ------------------------------------------------------
     if(isset($xml->defaultvalues))
     {
-        //$tablename=$dbprefix.'defaultvalues';
+
 
         $results['defaultvalues']=0;
         foreach ($xml->defaultvalues->rows->row as $row)
@@ -3623,7 +3620,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     // Import conditions ---------------------------------------------------------
     if(isset($xml->conditions))
     {
-        //$tablename=$dbprefix.'conditions';
+
 
         $results['conditions']=0;
         foreach ($xml->conditions->rows->row as $row)
@@ -3700,7 +3697,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     // Import assessments --------------------------------------------------------
     if(isset($xml->assessments))
     {
-        //$tablename=$dbprefix.'assessments';
+
 
         foreach ($xml->assessments->rows->row as $row)
         {
@@ -3725,7 +3722,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     // Import quota --------------------------------------------------------------
     if(isset($xml->quota))
     {
-        //$tablename=$dbprefix.'quota';
+
 
         foreach ($xml->quota->rows->row as $row)
         {
@@ -3786,7 +3783,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     // Import survey_url_parameters ----------------------------------------------
     if(isset($xml->survey_url_parameters))
     {
-        //$tablename=$dbprefix.'quota_languagesettings';
+
         foreach ($xml->survey_url_parameters->rows->row as $row)
         {
             $insertdata=array();

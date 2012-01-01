@@ -158,7 +158,7 @@ class LimeExpressionManager {
     		$where = " c.qid = ".$qid." and ";
     	}
     	else if (!is_null($surveyid)) {
-    		$where = " c.qid in (select qid from ".$this->db->dbprefix('questions')." where sid = ".$surveyid.") and ";
+    		$where = " c.qid in (select qid from {{questions}} where sid = ".$surveyid.") and ";
     	}
     	else {
     		$where = "";
@@ -1496,7 +1496,7 @@ class LimeExpressionManager {
         // TODO - refactor this to not call a static function
         $this->gid2relevanceStatus = array();
         $_groupSeq = -1;
-		
+
         if (usort($this->questionSeq2relevance,'self::cmpQuestionSeq'))
 		{
 			foreach($this->questionSeq2relevance as $rel)

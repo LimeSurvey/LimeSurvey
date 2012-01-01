@@ -172,12 +172,11 @@ class Questions extends CActiveRecord
 
     function getQuestionsWithSubQuestions($iSurveyID, $sLanguage, $sCondition = FALSE)
     {
-        $dbprefix = Yii::app()->db->tablePrefix;
         $command = Yii::app()->db->createCommand()
-        ->select($dbprefix . 'questions.*, q.qid as sqid, q.title as sqtitle,  q.question as sqquestion, ' . $dbprefix . 'groups.*')
+        ->select('{{questions}}.*, q.qid as sqid, q.title as sqtitle,  q.question as sqquestion, ' . '{{groups}}.*')
         ->from($this->tableName())
-        ->leftJoin($dbprefix . 'questions q', "q.parent_qid = {{questions}}.qid AND q.language = {{questions}}.language")
-        ->join($dbprefix . 'groups', "{{groups}}.gid = {{questions}}.gid  AND {{questions}}.language = {{groups}}.language");
+        ->leftJoin('{{questions}} q', "q.parent_qid = {{questions}}.qid AND q.language = {{questions}}.language")
+        ->join('{{groups}}', "{{groups}}.gid = {{questions}}.gid  AND {{questions}}.language = {{groups}}.language");
         $command->where("({{questions}}.sid = '$iSurveyID' AND {{questions}}.language = '$sLanguage' AND {{questions}}.parent_qid = 0)");
         if ($sCondition != FALSE)
         {

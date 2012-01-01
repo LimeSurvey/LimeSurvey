@@ -22,7 +22,6 @@ function CheckForDBUpgrades($subaction = null)
 	$clang = Yii::app()->getController()->lang;
 	$dbversionnumber = Yii::app()->getConfig('dbversionnumber');
     $currentDBVersion=GetGlobalSetting('DBVersion');
-	$dbprefix = Yii::app()->db->tablePrefix;
 	$usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
 	$standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
     if (intval($dbversionnumber)>intval($currentDBVersion))
@@ -36,7 +35,7 @@ function CheckForDBUpgrades($subaction = null)
             Yii::app()->loadHelper('update/upgrade-all');
             db_upgrade_all(intval($currentDBVersion));
             db_upgrade(intval($currentDBVersion));
-            Yii::app()->db->createCommand()->update($dbprefix.'settings_global', array('stg_value' => intval($dbversionnumber)), 'stg_name = \'DBVersion\'');
+            Yii::app()->db->createCommand()->update('{{settings_global}}', array('stg_value' => intval($dbversionnumber)), 'stg_name = \'DBVersion\'');
             echo "<br />".sprintf($clang->gT("Database has been successfully upgraded to version %s"),$dbversionnumber);
 			echo "<br /><a href='".Yii::app()->getController()->createUrl("admin")."'>".$clang->gT("Back to main menu")."</a></div>";
         }

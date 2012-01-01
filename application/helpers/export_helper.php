@@ -436,7 +436,7 @@ function spss_fieldmap($prefix = 'V') {
  * @return string
  */
 function spss_getquery() {
-    global $surveyprivate, $dbprefix, $surveyid, $tokensexist;
+    global $surveyprivate, $surveyid, $tokensexist;
 
     #See if tokens are being used
     if (isset($tokensexist) && $tokensexist == true && $surveyprivate == 'N') {

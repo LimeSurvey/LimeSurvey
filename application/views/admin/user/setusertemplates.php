@@ -12,7 +12,7 @@
         if ($usr['uid'] == $postuserid)
         {
             $templaterights = array();
-            $squery = 'SELECT '.$this->db->escape('folder').','.$this->db->escape('use')." FROM ".$this->db->dbprefix("templates_rights")." WHERE uid={$usr['uid']}";
+            $squery = 'SELECT '.$this->db->escape('folder').','.$this->db->escape('use')." FROM {{templates_rights}} WHERE uid={$usr['uid']}";
             $sresult = db_execute_assoc($squery) or safe_die();//Checked
             foreach ($sresult->row_array() as $srow)
             {
@@ -39,7 +39,7 @@
 
 			<tbody>
 
-            <?php $tquery = "SELECT * FROM ".$this->db->dbprefix("templates");
+            <?php $tquery = "SELECT * FROM {{templates}}";
             $tresult = db_execute_assoc($tquery) or safe_die(); //Checked
 
             $table_row_odd_even = 'odd';

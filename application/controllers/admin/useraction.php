@@ -310,10 +310,6 @@ class UserAction extends Survey_Common_Action
             ) {
                 $sresult = User::model()->parentAndUser($postuserid);
                 $data['mur'] = $sresult;
-                //the two lines below were commented by someone before me :) don't know why they were their :)
-                // $muq = "SELECT a.users_name, a.full_name, a.email, a.uid, b.users_name AS parent FROM ".$this->db->dbprefix('users')." AS a LEFT JOIN ".$this->db->dbprefix('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$postuserid}'";	//	added by Dennis
-                // $data['mur'] = db_select_limit_assoc($muq, 1);
-
                 $data['clang'] = Yii::app()->lang;
                 $this->getController()->_getAdminHeader();
                 $this->getController()->_showadminmenu();

@@ -20,7 +20,7 @@
 function db_upgrade_all($oldversion) {
     /// This function does anything necessary to upgrade
     /// older versions to match current functionality
-    global $modifyoutput, $dbprefix, $usertemplaterootdir, $standardtemplaterootdir;
+    global $modifyoutput, $usertemplaterootdir, $standardtemplaterootdir;
     $usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
     $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
     $clang = Yii::app()->lang;
@@ -106,25 +106,24 @@ function db_upgrade_all($oldversion) {
 function upgrade_question_attributes148()
 {
     global $modifyoutput;
-    $sDBPrefix=Yii::app()->db->tablePrefix;
-    $sSurveyQuery = "SELECT sid FROM {$sDBPrefix}surveys";
+    $sSurveyQuery = "SELECT sid FROM {{surveys}}";
     $oSurveyResult = db_execute_assoc($sSurveyQuery);
     foreach ( $oSurveyResult->readAll()  as $aSurveyRow)
     {
         $surveyid=$aSurveyRow['sid'];
         $languages=array_merge(array(Survey::model()->findByPk($surveyid)->language), Survey::model()->findByPk($surveyid)->additionalLanguages);
 
-        $sAttributeQuery = "select q.qid,attribute,value from {$sDBPrefix}question_attributes qa , {$sDBPrefix}questions q where q.qid=qa.qid and sid={$surveyid}";
+        $sAttributeQuery = "select q.qid,attribute,value from {{question_attributes}} qa , {{questions}} q where q.qid=qa.qid and sid={$surveyid}";
         $oAttributeResult = db_execute_assoc($sAttributeQuery);
         $aAllAttributes=questionAttributes(true);
         foreach ( $oAttributeResult->readAll() as $aAttributeRow)
         {
             if (isset($aAllAttributes[$aAttributeRow['attribute']]['i18n']) && $aAllAttributes[$aAttributeRow['attribute']]['i18n'])
             {
-                Yii::app()->db->createCommand("delete from {$sDBPrefix}question_attributes where qid={$aAttributeRow['qid']} and attribute='{$aAttributeRow['attribute']}'")->execute();
+                Yii::app()->db->createCommand("delete from {{question_attributes}} where qid={$aAttributeRow['qid']} and attribute='{$aAttributeRow['attribute']}'")->execute();
                 foreach ($languages as $language)
                 {
-                    $sAttributeInsertQuery="insert into {$sDBPrefix}question_attributes (qid,attribute,value,language) VALUES({$aAttributeRow['qid']},'{$aAttributeRow['attribute']}','{$aAttributeRow['value']}','{$language}' )";
+                    $sAttributeInsertQuery="insert into {{question_attributes}} (qid,attribute,value,language) VALUES({$aAttributeRow['qid']},'{$aAttributeRow['attribute']}','{$aAttributeRow['value']}','{$language}' )";
                     modify_database("",$sAttributeInsertQuery); echo $modifyoutput; flush();@ob_flush();
                 }
             }
@@ -135,8 +134,7 @@ function upgrade_question_attributes148()
 function upgrade_survey_table145()
 {
     global $modifyoutputt;
-    $sDBPrefix = Yii::app()->db->tablePrefix;
-    $sSurveyQuery = "SELECT * FROM ".$sDBPrefix.'surveys'." where notification<>'0'";
+    $sSurveyQuery = "SELECT * FROM {{surveys}} where notification<>'0'";
     $oSurveyResult = db_execute_assoc($sSurveyQuery);
     foreach ( $oSurveyResult->readAll() as $aSurveyRow )
     {
@@ -145,7 +143,7 @@ function upgrade_survey_table145()
             $aEmailAddresses=explode(';',$aSurveyRow['adminemail']);
             $sAdminEmailAddress=$aEmailAddresses[0];
             $sEmailnNotificationAddresses=implode(';',$aEmailAddresses);
-            $sSurveyUpdateQuery= "update ".$sDBPrefix.'surveys'." set adminemail='{$sAdminEmailAddress}', emailnotificationto='{$sEmailnNotificationAddresses}' where sid=".$aSurveyRow['sid'];
+            $sSurveyUpdateQuery= "update {{surveys}} set adminemail='{$sAdminEmailAddress}', emailnotificationto='{$sEmailnNotificationAddresses}' where sid=".$aSurveyRow['sid'];
             Yii::app()->db->createCommand($sSurveyUpdateQuery)->execute();
         }
         else
@@ -161,7 +159,7 @@ function upgrade_survey_table145()
             Yii::app()->db->createCommand($sSurveyUpdateQuery)->execute();
         }
     }
-    $sSurveyQuery = "SELECT * FROM ".$sDBPrefix.'surveys_languagesettings';
+    $sSurveyQuery = "SELECT * FROM {{surveys_languagesettings}}";
     $oSurveyResult = Yii::app()->db->createCommand($sSurveyQuery)->queryAll();
     foreach ( $oSurveyResult as $aSurveyRow )
     {

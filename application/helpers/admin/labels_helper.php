@@ -265,19 +265,19 @@ function fixorder($lid) {
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
 
-    $qulabelset = "SELECT * FROM ".$CI->db->dbprefix."labelsets WHERE lid=$lid";
+    $qulabelset = "SELECT * FROM {{labelsets}} WHERE lid=$lid";
     $rslabelset = db_execute_assoc($qulabelset);
     $rwlabelset=$rslabelset->row_array();
     $lslanguages=explode(" ", trim($rwlabelset['languages']));
     foreach ($lslanguages as $lslanguage)
     {
-        $query = "SELECT lid, code, title, sortorder FROM ".$CI->db->dbprefix."labels WHERE lid=? and language=? ORDER BY sortorder, code";
+        $query = "SELECT lid, code, title, sortorder FROM {{labels}} WHERE lid=? and language=? ORDER BY sortorder, code";
         $result = db_execute_assosc($query, array($lid,$lslanguage));
         $position=0;
         foreach ($result->result_array() as $row)
         {
             $position=sprintf("%05d", $position);
-            $query2="UPDATE ".$CI->db->dbprefix."labels SET sortorder='$position' WHERE lid=".$row['lid']." AND code=".$row['code']." AND title=".$row['title']." AND language='$lslanguage' ";
+            $query2="UPDATE {{labels}} SET sortorder='$position' WHERE lid=".$row['lid']." AND code=".$row['code']." AND title=".$row['title']." AND language='$lslanguage' ";
             $result2=db_execute_assosc($query2);
             $position++;
         }

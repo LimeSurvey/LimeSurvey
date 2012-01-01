@@ -168,7 +168,7 @@ class printanswers extends LSYii_Controller {
         {
             foreach ($actresult as $actrow)
             {
-                $surveytable = $this->db->dbprefix."survey_".$actrow->sid;
+                $surveytable = "{{survey_{$actrow->sid}}}";
                 $surveyname = "{$actrow->surveyls_title}";
             }
         }

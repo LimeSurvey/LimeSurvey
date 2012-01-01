@@ -91,7 +91,7 @@ class Surveys_languagesettings extends CActiveRecord
 
         if ($hasPermission)
         {
-            $this->db->where('a.sid IN (SELECT sid FROM '.$this->db->dbprefix("survey_permissions").' WHERE uid='.$this->session->userdata("loginID").' AND permission=\'survey\' and read_p=1) ');
+            $this->db->where('a.sid IN (SELECT sid FROM {{survey_permissions}} WHERE uid='.$this->session->userdata("loginID").' AND permission=\'survey\' and read_p=1) ');
         }
         $this->db->order_by('active DESC, surveyls_title');
         return $this->db->get();
@@ -114,7 +114,7 @@ class Surveys_languagesettings extends CActiveRecord
 
     function getAllData($sid,$lcode)
     {
-    	$query = 'SELECT * FROM '. $this->db->dbprefix('surveys') .', '. $this->db->dbprefix('surveys_languagesettings') .' WHERE sid=? AND surveyls_survey_id=? AND surveyls_language=?';
+    	$query = 'SELECT * FROM {{surveys}}, {{surveys_languagesettings}} WHERE sid=? AND surveyls_survey_id=? AND surveyls_language=?';
         return $this->db->query($query, array($sid, $sid, $lcode));
     }
 

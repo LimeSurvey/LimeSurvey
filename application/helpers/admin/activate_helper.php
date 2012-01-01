@@ -401,12 +401,7 @@ function activateSurvey($surveyid, $simulate = false)
     // If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
     //$createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a comma
 
-    $tabname = Yii::app()->db->tablePrefix."survey_{$surveyid}"; // dbprefix is added automatically
-
-    if (isset($savetimings) && $savetimings=="TRUE")
-    {
-        $tabnametimings = $tabname .'_timings';
-    }
+    $tabname = "{{survey_{$surveyid}}}";
 
     $command = new CDbCommand(Yii::app()->db);
     try
