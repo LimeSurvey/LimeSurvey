@@ -3916,8 +3916,7 @@ function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeField
             $insertdata[(string)$key]=(string)$value;
         }
 
-        Tokens_dynamic->sid($iSurveyID);
-        $result = Tokens_dynamic->model()->insertToken($insertdata) or safe_die($clang->gT("Error").": Failed to insert data<br />");
+        $result = Tokens_dynamic->model($iSurveyID)->insertToken($insertdata) or safe_die($clang->gT("Error").": Failed to insert data<br />");
 
         $results['tokens']++;
     }
