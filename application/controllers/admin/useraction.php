@@ -47,16 +47,12 @@ class UserAction extends Survey_Common_Action
         unset($userlist[0]);
 
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) {
-            $query = Survey::model()->getSomeRecords(array("count(*)"), array("owner_id" => $usrhimself['uid']));
-            $noofsurveys = count($query);
-            $noofsurveys = $noofsurveys["count(*)"];
+            $noofsurveys = Survey::model()->count(array("owner_id" => $usrhimself['uid']));
             $data['noofsurveys'] = $noofsurveys;
         }
 
-        if (isset($usrhimself['parent_id']) && $usrhimself['parent_id'] != 0) {
-            $uresult = User::model()->getSomeRecords(array("users_name"), array("uid" => $usrhimself['parent_id']));
-            $data['row'] = $uresult->row_array();
-        }
+        if (isset($usrhimself['parent_id']) && $usrhimself['parent_id'] != 0)
+            $data['row'] = User::model()->findByAttributes(array('uid' => $usrhimself['parent_id']))->users_name;
 
         $data['usrhimself'] = $usrhimself;
         // other users
@@ -66,9 +62,7 @@ class UserAction extends Survey_Common_Action
 
         //This loops through for each user and checks the amount of surveys against them.
         for ($i = 1; $i <= count($userlist); $i++)
-        {
             $noofsurveyslist[$i] = $this->_getSurveyCountForUser($userlist[$i]);
-        }
 
 
         $clang = Yii::app()->lang;
@@ -84,8 +78,7 @@ class UserAction extends Survey_Common_Action
 
     private function _getSurveyCountForUser(array $user)
     {
-        $query = Survey::model()->getSomeRecords(array("count(*)"), array("owner_id" => $user['uid']));
-        return isset($query["count(*)"]) ? $query["count(*)"] : false;
+        return Survey::model()->count(array('owner_id' => $user['uid']));
     }
 
     function adduser()
@@ -193,8 +186,7 @@ class UserAction extends Survey_Common_Action
         $action = CHttpRequest::getPost("action");
         // CAN'T DELETE ORIGINAL SUPERADMIN
         // Initial SuperAdmin has parent_id == 0
-        $adminresult = User::model()->getSomeRecords(array('uid'), array('parent_id' => 0));
-        $row = count($adminresult);
+        $row = User::model()->findByAttributes(array('parent_id' => 0));
 
         $postuserid = CHttpRequest::getPost("uid");
         $postuser = CHttpRequest::getPost("user");
@@ -213,7 +205,7 @@ class UserAction extends Survey_Common_Action
 
                 if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || $sresultcount > 0 || $postuserid == Yii::app()->session['loginID']) {
                     $transfer_surveys_to = 0;
-                    $ownerUser = User::model()->getSomeRecords(array('users_name', 'uid'));
+                    $ownerUser = User::model()->findAll();
                     $data['users'] = $ownerUser;
 
                     $current_user = Yii::app()->session['loginID'];
@@ -232,7 +224,7 @@ class UserAction extends Survey_Common_Action
                         }
                     }
 
-                    $ownerUser = Survey::model()->getSomeRecords(array('sid'), array('owner_id' => $current_user));
+                    $ownerUser = Survey::model()->findAllByAttributes(array('owner_id' => $current_user));
                     if (count($ownerUser) == 0) {
                         $action = "finaldeluser";
                     }
@@ -276,7 +268,7 @@ class UserAction extends Survey_Common_Action
             $model = Survey::model()->updateByPk($postuserid, array('owner_id' => $transfer_surveys_to));
             $result = $model;
         }
-        $sresult = User::model()->getSomeRecords('parent_id', array('uid' => $postuserid));
+        $sresult = User::model()->findByAttributes(array('uid' => $postuserid));
         $fields = $sresult;
         if (isset($fields['parent_id'])) {
             $uresult = User::model()->updateByPk(array('parent_id=' => $postuserid), array('parent_id=' => $fields['parent_id']));
@@ -286,7 +278,7 @@ class UserAction extends Survey_Common_Action
         $dresult = User::model()->delete('uid=' . $postuserid);
 
         // Delete user rights
-        $dresult = Survey_permissions::model()->deleteSomeRecords(array('uid' => $postuserid));
+        $dresult = Survey_permissions::model()->deleteAllByAttributes(array('uid' => $postuserid));
 
         if ($postuserid == Yii::app()->session['loginID'])
             killSession(); // user deleted himself
@@ -310,7 +302,7 @@ class UserAction extends Survey_Common_Action
     {
         if (isset($_POST['uid'])) {
             $postuserid = sanitize_int($_POST['uid']);
-            $sresult = User::model()->getSomeRecords(array('uid'), array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
+            $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
             $sresultcount = count($sresult);
 
             if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['loginID'] == $postuserid ||
@@ -350,7 +342,7 @@ class UserAction extends Survey_Common_Action
         $this->getController()->_getAdminHeader();
         $this->getController()->_showadminmenu();
 
-        $sresult = User::model()->getSomeRecords(array('uid'), array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
+        $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
         $sresultcount = count($sresult);
 
         if ((Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || $postuserid == Yii::app()->session['loginID'] ||
@@ -418,7 +410,7 @@ class UserAction extends Survey_Common_Action
         $postuserid = CHttpRequest::getPost('uid');
         $postfull_name = CHttpRequest::getPost('full_name');
         if (isset($_POST['uid'])) {
-            $sresult = User::model()->getSomeRecords(array('uid'), array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
+            $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
             $sresultcount = count($sresult);
         }
         else
@@ -455,7 +447,7 @@ class UserAction extends Survey_Common_Action
         $this->getController()->_showadminmenu();
         // A user can't modify his own rights ;-)
         if ($postuserid != Yii::app()->session['loginID']) {
-            $sresult = User::model()->getSomeRecords(array('uid'), array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
+            $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
             $sresultcount = count($sresult);
 
             if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1 && $sresultcount > 0) { // Not Admin, just a user with childs
@@ -556,8 +548,8 @@ class UserAction extends Survey_Common_Action
         // SUPERADMINS AND MANAGE_TEMPLATE USERS CAN SET THESE RIGHTS
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'] == 1) {
             $templaterights = array();
-            $tresult = Templates::model()->getAllRecords();
-            foreach ($tresult->read() as $trow)
+            $tresult = Templates::model()->findAll();
+            foreach ($tresult as $trow)
             {
                 if (isset($_POST[$trow["folder"] . "_use"]))
                     $templaterights[$trow["folder"]] = 1;
@@ -566,7 +558,7 @@ class UserAction extends Survey_Common_Action
             }
             foreach ($templaterights as $key => $value)
             {
-                $post = new Templates_rights();
+                $post = new Templates_rights;
                 $post->uid = $postuserid;
                 $post->folder = $key;
                 $post->use = $value;
@@ -623,7 +615,7 @@ class UserAction extends Survey_Common_Action
     function _getUserNameFromUid($uid)
     {
         $uid = sanitize_int($uid);
-        $result = User::model()->getSomeRecords(array('users_name', 'uid'), array('uid' => $uid));
+        $result = User::model()->findAllByAttributes(array('uid' => $uid));
 
         if (count($result) > 0) {
             foreach ($result->read() as $rows)
