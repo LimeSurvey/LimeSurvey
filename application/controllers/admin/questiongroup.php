@@ -466,8 +466,8 @@ class questiongroup extends Survey_Common_Action
         $aData['aGroupsAndQuestions'] = $aGrouplist;
         $aData['surveyid'] = $iSurveyId;
 
-        $this->getController()->_js_admin_include(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.ui.nestedSortable.js');
-        $this->getController()->_js_admin_include(Yii::app()->getConfig('generalscripts') . 'admin/organize.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.ui.nestedSortable.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'admin/organize.js');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
 
         $this->_renderWrappedTemplate('organizeGroupsAndQuestions_view', $aData);
