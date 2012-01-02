@@ -27,32 +27,6 @@ if (!defined('BASEPATH'))
  */
 class question extends Survey_Common_Action
 {
-    /**
-     * Routes to the correct sub-action
-     *
-     * @access public
-     * @param string $sa
-     * @return void
-     */
-    public function run($sa)
-    {
-        if ($sa == 'addquestion' || $sa == 'index' || $sa == 'editquestion' || $sa == 'copyquestion')
-            $this->route('index', array('sa', 'surveyid', 'gid', 'qid'));
-        elseif ($sa == 'subquestions')
-            $this->route('subquestions', array('surveyid', 'gid', 'qid'));
-        elseif ($sa == 'import')
-            $this->route('import', array());
-        elseif ($sa == 'preview')
-            $this->route('preview', array('surveyid', 'qid', 'lang'));
-        elseif ($sa == 'ajaxquestionattributes')
-            $this->route('ajaxquestionattributes', array());
-        elseif ($sa == 'answeroptions')
-            $this->route('answeroptions', array('surveyid', 'gid', 'qid'));
-        elseif ($sa == 'editdefaultvalues')
-            $this->route('editdefaultvalues', array('surveyid', 'gid', 'qid'));
-        elseif ($sa == 'deletequestion')
-            $this->route('delete', array('sa', 'surveyid', 'gid', 'qid'));
-    }
 
     /**
      * Function responsible to import a question.
@@ -66,14 +40,12 @@ class question extends Survey_Common_Action
         $surveyid = returnglobal('sid');
         $gid = returnglobal('gid');
         $clang = $this->getController()->lang;
+        $aViewUrls = array();
 
-        $this->getController()->_css_admin_include(Yii::app()->getConfig('styleurl') . "/admin/default/superfish.css");
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "/admin/default/superfish.css");
 
-        $this->getController()->_getAdminHeader();
-        $this->getController()->_showadminmenu($surveyid);
-        $this->_surveybar($surveyid, $gid);
-        $this->_surveysummary($surveyid, "viewquestion");
-        $this->_questiongroupbar($surveyid, $gid, NULL, "viewgroup");
+        $aData['display']['menu_bars']['surveysummary'] = 'viewquestion';
+        $aData['display']['menu_bars']['gid_action'] = 'viewgroup';
 
         if ($action == 'importquestion')
         {
@@ -117,18 +89,14 @@ class question extends Survey_Common_Action
 
             unlink($sFullFilepath);
 
-            $this->getController()->render('/admin/survey/Question/import_view', array(
-                'clang' => $clang,
-                'aImportResults' => $aImportResults,
-                'surveyid' => $surveyid,
-                'gid' => $gid,
-                'sExtension' => $sExtension,
-            ));
+            $aData['aImportResults'] = $aImportResults;
+            $aData['surveyid'] = $surveyid;
+            $aData['gid'] = $gid;
+            $aData['sExtension'] = $sExtension;
+            $aViewUrls[] = 'import_view';
         }
 
-        $this->getController()->_loadEndScripts();
-
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     /**
@@ -147,13 +115,10 @@ class question extends Survey_Common_Action
         $qid = sanitize_int($qid);
 
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
-        $this->getController()->_getAdminHeader();
-        $this->getController()->_showadminmenu($surveyid);
 
-        $this->_surveybar($surveyid, $gid);
-        $this->_surveysummary($surveyid, "editdefaultvalues");
-        $this->_questiongroupbar($surveyid, $gid, $qid, "editdefaultvalues");
-        $this->_questionbar($surveyid, $gid, $qid, "editdefaultvalues");
+        $aData['display']['menu_bars']['surveysummary'] = 'editdefaultvalues';
+        $aData['display']['menu_bars']['gid_action'] = 'editdefaultvalues';
+        $aData['display']['menu_bars']['qid_action'] = 'editdefaultvalues';
 
         $clang = $this->getController()->lang;
 
@@ -258,7 +223,7 @@ class question extends Survey_Common_Action
             }
         }
 
-        $this->getController()->render('/admin/survey/Question/editdefaultvalues_view', array(
+        $aData = array(
             'qid' => $qid,
             'surveyid' => $surveyid,
             'langopts' => $langopts,
@@ -267,12 +232,9 @@ class question extends Survey_Common_Action
             'gid' => $gid,
             'qtproperties' => $qtproperties,
             'baselang' => $baselang,
-            'clang' => $clang,
-        ));
+        );
 
-        $this->getController()->_loadEndScripts();
-
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+        $this->_renderWrappedTemplate('editdefaultvalues_view', $aData);
     }
 
     /**
@@ -296,22 +258,17 @@ class question extends Survey_Common_Action
 
         $css_admin_includes[] = Yii::app()->baseUrl . 'scripts/jquery/dd.css';
         $css_admin_includes[] = Yii::app()->getConfig('styleurl') . "admin/default/superfish.css";
-        $this->getController()->_css_admin_include($css_admin_includes);
+        $this->getController()->_css_admin_includes($css_admin_includes);
 
-        $this->getController()->_getAdminHeader();
-        $this->getController()->_showadminmenu($surveyid);
-
-        $this->_surveybar($surveyid, $gid);
-        $this->_surveysummary($surveyid, "viewgroup");
-        $this->_questiongroupbar($surveyid, $gid, $qid, "addquestion");
-        $this->_questionbar($surveyid, $gid, $qid, "editansweroptions");
+        $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
+        $aData['display']['menu_bars']['gid_action'] = 'addquestion';
+        $aData['display']['menu_bars']['qid_action'] = 'editansweroptions';
 
         Yii::app()->session['FileManagerContext'] = "edit:answer:{$surveyid}";
 
-        $this->_editansweroptions($surveyid, $gid, $qid);
-        $this->getController()->_loadEndScripts();
+        $aViewUrls = $this->_editansweroptions($surveyid, $gid, $qid);
 
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     /**
@@ -422,12 +379,11 @@ class question extends Survey_Common_Action
         else
             $maxsortorder = 1;
 
-        $data['clang'] = $this->getController()->lang;
-        $data['surveyid'] = $surveyid;
-        $data['gid'] = $gid;
-        $data['qid'] = $qid;
-        $data['anslangs'] = $anslangs;
-        $data['scalecount'] = $scalecount;
+        $aData['surveyid'] = $surveyid;
+        $aData['gid'] = $gid;
+        $aData['qid'] = $qid;
+        $aData['anslangs'] = $anslangs;
+        $aData['scalecount'] = $scalecount;
 
         // The following line decides if the assessment input fields are visible or not
         $sumresult1 = Survey::model()->with('languagesettings')->together()->findByAttributes(array('sid' => $surveyid));
@@ -438,8 +394,11 @@ class question extends Survey_Common_Action
         $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings->attributes);
         $surveyinfo = array_map('FlattenText', $surveyinfo);
         $assessmentvisible = ($surveyinfo['assessments'] == 'Y' && $qtypes[$qtype]['assessable'] == 1);
-        $data['assessmentvisible'] = $assessmentvisible;
-        $this->getController()->render('/admin/survey/Question/answerOptions_view', $data);
+        $aData['assessmentvisible'] = $assessmentvisible;
+
+        $aViewUrls['answerOptions_view'][] = $aData;
+
+        return $aViewUrls;
     }
 
     /**
@@ -453,31 +412,24 @@ class question extends Survey_Common_Action
      */
     public function subquestions($surveyid, $gid, $qid)
     {
-        $surveyid = sanitize_int($surveyid);
-        $qid = sanitize_int($qid);
-        $gid = sanitize_int($gid);
+        $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
+        $aData['gid'] = $gid = sanitize_int($gid);
+        $aData['qid'] = $qid = sanitize_int($qid);
 
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.dd.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'admin/subquestions.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.blockUI.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery.selectboxes.min.js');
-
-        $css_admin_includes[] = Yii::app()->getConfig('generalscripts') . 'jquery/dd.css';
-        $css_admin_includes[] = Yii::app()->getConfig('styleurl') . "admin/default/superfish.css";
-        $this->getController()->_css_admin_include($css_admin_includes);
-
-        $this->getController()->_getAdminHeader();
-        $this->getController()->_showadminmenu($surveyid);
-        $this->_surveybar($surveyid, $gid);
-        $this->_surveysummary($surveyid, "viewgroup");
-        $this->_questiongroupbar($surveyid, $gid, $qid, "addquestion");
-        $this->_questionbar($surveyid, $gid, $qid, "editsubquestions");
-        $this->getController()->_loadEndScripts();
-
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/dd.css');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
         Yii::app()->session['FileManagerContext'] = "edit:answer:{$surveyid}";
 
-        /* @todo Make this work */
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
+        $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
+        $aData['display']['menu_bars']['gid_action'] = 'addquestion';
+        $aData['display']['menu_bars']['qid_action'] = 'editsubquestions';
+        $aViewUrls = $this->_editsubquestion($surveyid, $gid, $qid);
+
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     /**
@@ -604,9 +556,9 @@ class question extends Survey_Common_Action
             'language' => Survey::model()->findByPk($surveyid)->language
         ), array('order' => 'question_order desc'));
 
-        $data['anscount'] = $anscount = count($result);
+        $aData['anscount'] = $anscount = count($result);
         $row = $result[0]->attributes;
-        $data['row'] = $row;
+        $aData['row'] = $row;
         $maxsortorder = $row['question_order'] + 1;
 
         /**
@@ -616,7 +568,7 @@ class question extends Survey_Common_Action
         $qtypes = getqtypelist('', 'array');
         Yii::app()->loadHelper('surveytranslator');
 
-        $data['scalecount'] = $scalecount = $qtypes[$qtype]['subquestions'];
+        $aData['scalecount'] = $scalecount = $qtypes[$qtype]['subquestions'];
 
         $sumresult1 = Survey::model()->with('languagesettings')->together()->findByAttributes(array('t.sid' => $surveyid));
         if ($sumresult1->num_rows() == 0)
@@ -626,15 +578,16 @@ class question extends Survey_Common_Action
         $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings->attributes);
         $surveyinfo = array_map('FlattenText', $surveyinfo);
 
-        $data['activated'] = $activated = $surveyinfo['active'];
-        $data['clang'] = $clang;
-        $data['surveyid'] = $surveyid;
-        $data['gid'] = $gid;
-        $data['qid'] = $qid;
-        $data['anslangs'] = $anslangs;
-        $data['maxsortorder'] = $maxsortorder;
+        $aData['activated'] = $activated = $surveyinfo['active'];
+        $aData['surveyid'] = $surveyid;
+        $aData['gid'] = $gid;
+        $aData['qid'] = $qid;
+        $aData['anslangs'] = $anslangs;
+        $aData['maxsortorder'] = $maxsortorder;
 
-        $this->getController()->render('admin/survey/Question/subQuestion_view', $data);
+        $aViewUrls['subQuestion_view'][] = $aData;
+
+        return $aViewUrls;
     }
 
     /**
@@ -647,25 +600,23 @@ class question extends Survey_Common_Action
      * @param int $qid
      * @return void
      */
-    public function index($action, $surveyid, $gid, $qid=null)
+    public function index($sa, $surveyid, $gid, $qid=null)
     {
+        $action = $sa;
         $surveyid = sanitize_int($surveyid);
+        $gid = sanitize_int($gid);
         if (isset($qid))
             $qid = sanitize_int($qid);
-        $gid = sanitize_int($gid);
 
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/jquery.dd.js');
-        $this->getController()->_css_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/dd.css');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
-
-        $this->getController()->_getAdminHeader();
-        $this->getController()->_showadminmenu($surveyid);
-        $this->_surveybar($surveyid, $gid);
-        $this->_surveysummary($surveyid, "viewgroup");
-        $this->_questiongroupbar($surveyid, $gid, $qid, "addquestion");
+        $aViewUrls = array();
+        $aData['surveyid'] = $surveyid;
+        $aData['gid'] = $gid;
+        $aData['qid'] = $qid;
+        $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
+        $aData['display']['menu_bars']['gid_action'] = 'addquestion';
 
         if ($action != "addquestion")
-            $this->_questionbar($surveyid, $gid, $qid, "editquestion");
+            $aData['display']['menu_bars']['qid_action'] = 'editquestion';
 
         if (bHasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
@@ -678,8 +629,8 @@ class question extends Survey_Common_Action
             if (isset($_POST['sortorder']))
                 $postsortorder = sanitize_int($_POST['sortorder']);
 
-            $data['adding'] = $adding = $action == 'addquestion';
-            $data['copying'] = $copying = $action == 'copyquestion';
+            $aData['adding'] = $adding = $action == 'addquestion';
+            $aData['copying'] = $copying = $action == 'copyquestion';
             $questlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
             $baselang = Survey::model()->findByPk($surveyid)->language;
             $questlangs[] = $baselang;
@@ -724,7 +675,7 @@ class question extends Survey_Common_Action
                             'qid' => $qid,
                             'sid' => $surveyid,
                             'gid' => $gid,
-                            'type' => $basesettings['tyoe'],
+                            'type' => $basesettings['type'],
                             'title' => $basesettings['title'],
                             'question' => $basesettings['question'],
                             'preg' => $basesettings['preg'],
@@ -753,7 +704,7 @@ class question extends Survey_Common_Action
                 $qDescToCode .= " '{$qdesc['description']}' : '{$qtype}', \n";
                 $qCodeToInfo .= " '{$qtype}' : '" . ls_json_encode($qdesc) . "', \n";
             }
-            $data['qTypeOutput'] = "$qDescToCode 'null':'null' }; \n $qCodeToInfo 'null':'null' };";
+            $aData['qTypeOutput'] = "$qDescToCode 'null':'null' }; \n $qCodeToInfo 'null':'null' };";
 
             if (!$adding)
             {
@@ -780,9 +731,9 @@ class question extends Survey_Common_Action
                 $eqrow['group_name'] = '';
             }
 
-            $data['eqrow'] = $eqrow;
-            $data['surveyid'] = $surveyid;
-            $data['gid'] = $gid;
+            $aData['eqrow'] = $eqrow;
+            $aData['surveyid'] = $surveyid;
+            $aData['gid'] = $gid;
 
             if (!$adding)
             {
@@ -791,11 +742,11 @@ class question extends Survey_Common_Action
                 $criteria->params[':lang'] = $baselang;
                 $criteria->addCondition('language != :lang');
                 $aqresult = Questions::model()->findAll($criteria);
-                $data['aqresult'] = $aqresult;
+                $aData['aqresult'] = $aqresult;
             }
 
-            $data['clang'] = $clang;
-            $data['action'] = $action;
+            $aData['clang'] = $clang;
+            $aData['action'] = $action;
 
             $sumresult1 = Survey::model()->findByPk($surveyid);
             if (is_null($sumresult1))
@@ -803,7 +754,7 @@ class question extends Survey_Common_Action
 
             $surveyinfo = $sumresult1->attributes;
             $surveyinfo = array_map('FlattenText', $surveyinfo);
-            $data['activated'] = $activated = $surveyinfo['active'];
+            $aData['activated'] = $activated = $surveyinfo['active'];
 
             if ($activated != "Y")
             {
@@ -812,7 +763,7 @@ class question extends Survey_Common_Action
                 if (Yii::app()->session['questionselectormode'] == 'none')
                     $selectormodeclass = 'none';
 
-                $data['selectormodeclass'] = $selectormodeclass;
+                $aData['selectormodeclass'] = $selectormodeclass;
             }
 
             if (!$adding)
@@ -825,32 +776,16 @@ class question extends Survey_Common_Action
                 // Get the questions for this group
                 $baselang = Survey::model()->findByPk($surveyid)->language;
                 $oqresult = Questions::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $baselang), array('order' => 'question_order'));
-                $data['oqresult'] = $oqresult;
+                $aData['oqresult'] = $oqresult;
             }
 
-            $data['qid'] = $qid;
-
-            $this->getController()->render("/admin/survey/Question/editQuestion_view", $data);
-            $this->_questionJavascript($eqrow['type']);
+            $aViewUrls['editQuestion_view'][] = $aData;
+            $aViewUrls['questionJavascript_view'][] = array('type' => $eqrow['type']);
         }
         else
             include('access_denied.php');
 
-        $this->getController()->_loadEndScripts();
-
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
-    }
-
-    /**
-     * Load javascript functions required in question screen.
-     *
-     * @access public
-     * @param string $type
-     * @return void
-     */
-    public function _questionjavascript($type)
-    {
-        $this->getController()->render('/admin/survey/Question/questionJavascript_view', array('type' => $type));
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     /**
@@ -863,14 +798,14 @@ class question extends Survey_Common_Action
      * @param int $qid
      * @return void
      */
-    public function delete($action, $surveyid, $gid, $qid)
+    public function delete($surveyid, $gid, $qid)
     {
         $clang = $this->getController()->lang;
         $surveyid = sanitize_int($surveyid);
         $gid = sanitize_int($gid);
         $qid = sanitize_int($qid);
 
-        if ($action == "deletequestion" && bHasSurveyPermission($surveyid, 'surveycontent', 'delete'))
+        if (bHasSurveyPermission($surveyid, 'surveycontent', 'delete'))
         {
             if (!isset($qid))
                 $qid = returnglobal('qid');
@@ -1126,5 +1061,20 @@ class question extends Survey_Common_Action
         echo "</html>\n";
 
         exit;
+    }
+
+    /**
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    {
+        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/jquery.dd.js');
+        $this->getController()->_css_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/dd.css');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
+
+        parent::_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
 }

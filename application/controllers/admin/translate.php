@@ -22,15 +22,7 @@
 */
 class translate extends Survey_Common_Action {
 
-    /**
-    * Constructor
-    */
-	public function run()
-	{
-		$this->route("action", array());
-	}
-
-    public function action()
+    public function index()
     {
         $surveyid = sanitize_int(CHttpRequest::getParam('surveyid'));
         $tolang = CHttpRequest::getParam('lang');
@@ -311,7 +303,8 @@ class translate extends Survey_Common_Action {
         $baselang = Survey::model()->findByPk($surveyid)->language;
         $langs = Survey::model()->findByPk($surveyid)->additionalLanguages;
 
-		$surveyinfo = Survey::model()->getDataJoinLanguageSettings($surveyid);
+        $surveyinfo = Survey::model()->with('languagesettings')->findByPk($surveyid);
+        $surveyinfo = array_merge($surveyinfo->attributes, $surveyinfo->languagesettings->attributes);
 
 		$surveyinfo = array_map('FlattenText', $surveyinfo);
 		$menutext = ( $surveyinfo['active'] == "N" ) ? $clang->gT("Test This Survey") : $clang->gT("Execute This Survey");
@@ -406,7 +399,7 @@ class translate extends Survey_Common_Action {
 								'option',
 								array(
 									'selected' => $selected,
-									'value' => $this->getController()->createUrl("admin/translate/surveyid/{$surveyid}/")
+									'value' => $this->getController()->createUrl("admin/translate/sa/index/surveyid/{$surveyid}/")
 								),
 								$clang->gT("Please choose...")
 							);
@@ -421,7 +414,7 @@ class translate extends Survey_Common_Action {
 								'option',
 								array(
 									'selected' => $selected,
-									'value' => $this->getController()->createUrl("admin/translate/surveyid/{$surveyid}/lang/{$lang}")
+									'value' => $this->getController()->createUrl("admin/translate/sa/index/surveyid/{$surveyid}/lang/{$lang}")
 								),
 								$tolangtext
 							);

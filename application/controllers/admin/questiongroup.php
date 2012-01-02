@@ -29,31 +29,6 @@ class questiongroup extends Survey_Common_Action
 {
 
     /**
-     * Eoutes to the current sub-question
-     *
-     * @access public
-     * @param string $sa
-     * @return void
-     */
-    public function run($sa)
-    {
-        if ($sa == 'add')
-            $this->route('add', array('surveyid'));
-        elseif ($sa == 'insert')
-            $this->route('insert', array('surveyid'));
-        elseif ($sa == 'edit')
-            $this->route('edit', array('surveyid', 'gid'));
-        elseif ($sa == 'update')
-            $this->route('update', array('gid'));
-        elseif ($sa == 'import')
-            $this->route('import', array());
-        elseif ($sa == 'organize')
-            $this->route('organize', array('surveyid'));
-        elseif ($sa == 'delete')
-            $this->route('delete', array());
-    }
-
-    /**
      * questiongroup::import()
      * Function responsible to import a question group.
      *
@@ -66,7 +41,7 @@ class questiongroup extends Survey_Common_Action
         $surveyid = $_POST['sid'];
         $clang = $this->getController()->lang;
 
-        $this->getController()->_css_admin_include(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
 
         if ($action == 'importgroup')
         {
@@ -111,45 +86,34 @@ class questiongroup extends Survey_Common_Action
 
             unlink($sFullFilepath);
 
-            $data['display'] = $importgroup;
-            $data['clang'] = $clang;
-            $data['surveyid'] = $surveyid;
-            $data['aImportResults'] = $aImportResults;
-            $data['sExtension'] = $sExtension;
+            $aData['display'] = $importgroup;
+            $aData['surveyid'] = $surveyid;
+            $aData['aImportResults'] = $aImportResults;
+            $aData['sExtension'] = $sExtension;
+            $aData['display']['menu_bars']['surveysummary'] = 'importgroup';
 
-            $this->getController()->_getAdminHeader();
-            $this->getController()->_showadminmenu($surveyid);
-            $this->_surveybar($surveyid, NULL);
-            $this->_surveysummary($surveyid, "importgroup");
-            $this->getController()->render('/admin/survey/QuestionGroups/import_view', $data);
+            $this->_renderWrappedTemplate('QuestionGroups/import_view', $aData);
             // TMSW Conditions->Relevance:  call LEM->ConvertConditionsToRelevance() after import
         }
-
-        $this->getController()->_loadEndScripts();
-
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
     }
 
     /**
      * questiongroup::add()
-     * Load add new question grup screen.
+     * Load add new question group screen.
      * @return
      */
     function add($surveyid)
     {
         $surveyid = sanitize_int($surveyid);
+        $aViewUrls = $aData = array();
 
         if (bHasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
             $action = "addgroup";
             $clang = $this->getController()->lang;
 
-            $this->getController()->_css_admin_include(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
+            $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
 
-            $this->getController()->_getAdminHeader();
-            $this->getController()->_showadminmenu($surveyid);
-            $this->_surveybar($surveyid);
-            $this->_surveysummary($surveyid, "addgroup");
             if ($action == "addgroup")
             {
                 Yii::app()->loadHelper('admin/htmleditor');
@@ -159,17 +123,15 @@ class questiongroup extends Survey_Common_Action
                 $grplangs[] = $baselang;
                 $grplangs = array_reverse($grplangs);
 
-                $data['clang'] = $clang;
-                $data['surveyid'] = $surveyid;
-                $data['action'] = $action;
-                $data['grplangs'] = $grplangs;
-                $data['baselang'] = $baselang;
-                $this->getController()->render('/admin/survey/QuestionGroups/addGroup_view', $data);
+                $aData['display']['menu_bars']['surveysummary'] = 'addgroup';
+                $aData['surveyid'] = $surveyid;
+                $aData['action'] = $action;
+                $aData['grplangs'] = $grplangs;
+                $aData['baselang'] = $baselang;
+                $aViewUrls = 'QuestionGroups/addGroup_view';
             }
 
-            $this->getController()->_loadEndScripts();
-
-            $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
+            $this->_renderWrappedTemplate($aViewUrls, $aData);
         }
     }
 
@@ -217,7 +179,7 @@ class questiongroup extends Survey_Common_Action
 
                     if ($first)
                     {
-                        $data = array(
+                        $aData = array(
                             'sid' => $surveyid,
                             'group_name' => $group_name,
                             'description' => $group_description,
@@ -227,7 +189,7 @@ class questiongroup extends Survey_Common_Action
                         );
 
                         $group = new Groups;
-                        foreach ($data as $k => $v)
+                        foreach ($aData as $k => $v)
                             $group->$k = $v;
                         $group->save();
                         $groupid = Yii::app()->db->getLastInsertID();
@@ -236,7 +198,7 @@ class questiongroup extends Survey_Common_Action
                     else
                     {
                         //db_switchIDInsert('groups',true);
-                        $data = array(
+                        $aData = array(
                             'gid' => $groupid,
                             'sid' => $surveyid,
                             'group_name' => $group_name,
@@ -247,7 +209,7 @@ class questiongroup extends Survey_Common_Action
                         );
 
                         $group = new Groups;
-                        foreach ($data as $k => $v)
+                        foreach ($aData as $k => $v)
                             $group->$k = $v;
                         $group->save();
                     }
@@ -305,17 +267,14 @@ class questiongroup extends Survey_Common_Action
     {
         $surveyid = sanitize_int($surveyid);
         $gid = sanitize_int($gid);
+        $aViewUrls = $aData = array();
 
         if (bHasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
             $action = "editgroup"; //$this->input->post('action');
             $clang = $this->getController()->lang;
 
-            $this->getController()->_css_admin_include(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
-
-            $this->getController()->_getAdminHeader($surveyid);
-            $this->getController()->_showadminmenu($surveyid, $gid);
-            $this->_surveybar($surveyid, $gid);
+            $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
 
             if ($action == "editgroup")
             {
@@ -365,7 +324,7 @@ class questiongroup extends Survey_Common_Action
                 foreach ($aLanguages as $sLanguage)
                 {
                     $oResult = Groups::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $sLanguage));
-                    $data['aGroupData'][$sLanguage] = $oResult->attributes;
+                    $aData['aGroupData'][$sLanguage] = $oResult->attributes;
                     $aTabTitles[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
                     if ($first)
                     {
@@ -373,20 +332,19 @@ class questiongroup extends Survey_Common_Action
                         $first = false;
                     }
                 }
-                $data['action'] = "editgroup";
-                $data['clang'] = $clang;
-                $data['surveyid'] = $surveyid;
-                $data['gid'] = $gid;
-                $data['tabtitles'] = $aTabTitles;
-                $data['aBaseLanguage'] = $aBaseLanguage;
 
+                $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'editgroup';
+                $aData['surveyid'] = $surveyid;
+                $aData['gid'] = $gid;
+                $aData['tabtitles'] = $aTabTitles;
+                $aData['aBaseLanguage'] = $aBaseLanguage;
 
-                $this->getController()->render('/admin/survey/QuestionGroups/editGroup_view', $data);
+                $aViewUrls = 'QuestionGroups/editGroup_view';
             }
-        }
-        $this->getController()->_loadEndScripts();
 
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
+            $this->_renderWrappedTemplate($aViewUrls, $aData);
+        }
+
     }
 
     /**
@@ -426,7 +384,7 @@ class questiongroup extends Survey_Common_Action
                     $group_name = fix_FCKeditor_text($group_name);
                     $group_description = fix_FCKeditor_text($group_description);
 
-                    $data = array(
+                    $aData = array(
                         'group_name' => $group_name,
                         'description' => $group_description,
                         'randomization_group' => $_POST['randomization_group'],
@@ -437,7 +395,7 @@ class questiongroup extends Survey_Common_Action
                         'language' => $grplang
                     );
                     $group = Groups::model()->findByAttributes($condition);
-                    foreach ($data as $k => $v)
+                    foreach ($aData as $k => $v)
                         $group->$k = $v;
                     $ugresult = $group->save();
                     if ($ugresult)
@@ -457,39 +415,37 @@ class questiongroup extends Survey_Common_Action
      * Load ordering of question group screen.
      * @return
      */
-    public function organize($iSurveyID)
+    public function organize($iSurveyId)
     {
-        $iSurveyID = (int)$iSurveyID;
+        $iSurveyId = (int)$iSurveyId;
 
-        if (!empty($_POST['orgdata']) && bHasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
-            $this->_reorderGroup($iSurveyID);
+        if (!empty($_POST['orgdata']) && bHasSurveyPermission($iSurveyId, 'surveycontent', 'update')) {
+            $this->_reorderGroup($iSurveyId);
         }
         else {
-            $this->_showReorderForm($iSurveyID);
-
-
+            $this->_showReorderForm($iSurveyId);
         }
     }
 
-    private function _showReorderForm($iSurveyID)
+    private function _showReorderForm($iSurveyId)
     {
         // Prepare data for the view
-        $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
+        $sBaseLanguage = Survey::model()->findByPk($iSurveyId)->language;
 
         LimeExpressionManager::StartProcessingPage(true, $this->getController()->createUrl('/'));
 
-        $aGrouplist = Groups::model()->getGroups($iSurveyID);
+        $aGrouplist = Groups::model()->getGroups($iSurveyId);
         $initializedReplacementFields = false;
 
         foreach ($aGrouplist as $iGID => $aGroup)
         {
-            LimeExpressionManager::StartProcessingGroup($aGroup['gid'], false, $iSurveyID);
+            LimeExpressionManager::StartProcessingGroup($aGroup['gid'], false, $iSurveyId);
             if (!$initializedReplacementFields) {
                 templatereplace("{SITENAME}"); // Hack to ensure the EM sets values of LimeReplacementFields
                 $initializedReplacementFields = true;
             }
 
-            $oQuestionData = Questions::model()->getQuestions($iSurveyID, $aGroup['gid'], $sBaseLanguage);
+            $oQuestionData = Questions::model()->getQuestions($iSurveyId, $aGroup['gid'], $sBaseLanguage);
 
             $qs = array();
             $junk = array();
@@ -507,28 +463,17 @@ class questiongroup extends Survey_Common_Action
         }
         LimeExpressionManager::FinishProcessingPage();
 
-        $aViewData['aGroupsAndQuestions'] = $aGrouplist;
-        $aViewData['clang'] = Yii::app()->lang;
-        $aViewData['surveyid'] = $iSurveyID;
+        $aData['aGroupsAndQuestions'] = $aGrouplist;
+        $aData['surveyid'] = $iSurveyId;
 
-        $js_admin_includes = Yii::app()->getConfig("js_admin_includes");
-        $js_admin_includes[] = Yii::app()->getConfig('generalscripts') . 'jquery/jquery.ui.nestedSortable.js';
-        $js_admin_includes[] = Yii::app()->getConfig('generalscripts') . 'admin/organize.js';
-        Yii::app()->setConfig("js_admin_includes", $js_admin_includes);
+        $this->getController()->_js_admin_include(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.ui.nestedSortable.js');
+        $this->getController()->_js_admin_include(Yii::app()->getConfig('generalscripts') . 'admin/organize.js');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
 
-        $this->getController()->_css_admin_include(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
-
-        $this->getController()->_getAdminHeader();
-        $this->getController()->_showadminmenu($iSurveyID);
-        $this->_surveybar($iSurveyID);
-
-        $this->getController()->render('/admin/survey/organizeGroupsAndQuestions_view', $aViewData);
-
-        $this->getController()->_loadEndScripts();
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
+        $this->_renderWrappedTemplate('organizeGroupsAndQuestions_view', $aData);
     }
 
-    private function _reorderGroup($iSurveyID)
+    private function _reorderGroup($iSurveyId)
     {
         $AOrgData = array();
         parse_str($_POST['orgdata'], $AOrgData);
@@ -552,6 +497,17 @@ class questiongroup extends Survey_Common_Action
             }
         }
         Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("The new question group/question order was successfully saved.");
-        $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $iSurveyID));
+        $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $iSurveyId));
+    }
+
+    /**
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    {
+        parent::_renderWrappedTemplate('survey', $aViewUrls, $aData);
     }
 }

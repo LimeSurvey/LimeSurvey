@@ -29,9 +29,8 @@ class surveypermission extends Survey_Common_Action {
     */
     function index($surveyid)
     {
-        $surveyid = sanitize_int($surveyid);
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
-        $this->_renderHeaderAndMenu($surveyid);
+        $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
+        $aViewUrls = array();
         $clang = Yii::app()->lang;
         $imageurl = Yii::app()->getConfig('imageurl');
 
@@ -186,15 +185,15 @@ class surveypermission extends Survey_Common_Action {
             . "<input type='hidden' name='action' value='addusergroupsurveysecurity' />\n"
             . "</li></ul></form>";
 
-            $data['display'] = $surveysecurity;
-            $this->getController()->render('/survey_view',$data);
+            $aViewUrls['output'] = $surveysecurity;
         }
         else
         {
             access_denied();
 
         }
-        $this->_renderEndScriptsAndFooter();
+
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     /**
@@ -205,10 +204,11 @@ class surveypermission extends Survey_Common_Action {
     */
     function addusergroup($surveyid)
     {
-        $surveyid = sanitize_int($surveyid);
+        $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
+        $aViewUrls = array();
 
         $action = $_POST['action'];
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
+
         $this->_renderHeaderAndMenu($surveyid);
         $clang = Yii::app()->lang;
 
@@ -272,8 +272,11 @@ class surveypermission extends Survey_Common_Action {
                 access_denied();
             }
             $addsummary .= "</div>\n";
+
+            $aViewUrls['output'] = $addsummary;
         }
-        $this->_renderEndScriptsAndFooter();
+
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
 
@@ -285,11 +288,11 @@ class surveypermission extends Survey_Common_Action {
     */
     function adduser($surveyid)
     {
-        $surveyid = sanitize_int($surveyid);
+        $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
+        $aViewUrls = array();
 
         $action = $_POST['action'];
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
-        $this->_renderHeaderAndMenu($surveyid);
+
         $clang = Yii::app()->lang;
         $imageurl = Yii::app()->getConfig('imageurl');
         $postuserid = $_POST['uid'];
@@ -340,10 +343,10 @@ class surveypermission extends Survey_Common_Action {
 
             $addsummary .= "</div>\n";
 
-            $data['display'] = $addsummary;
-            $this->getController()->render('/survey_view',$data);
+            $aViewUrls['output'] = $addsummary;
         }
-        $this->_renderEndScriptsAndFooter();
+
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     /**
@@ -354,10 +357,11 @@ class surveypermission extends Survey_Common_Action {
     */
     function set($surveyid)
     {
-        $surveyid = sanitize_int($surveyid);
+        $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
+        $aViewUrls = array();
 
         $action = $_POST['action'];
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
+
         $this->_renderHeaderAndMenu($surveyid);
         $clang = Yii::app()->lang;
         $imageurl = Yii::app()->getConfig('imageurl');
@@ -452,15 +456,15 @@ class surveypermission extends Survey_Common_Action {
                 }
                 $usersummary .= "</form>\n";
 
-                $data['display'] = $usersummary;
-                $this->getController()->render('/survey_view',$data);
+                $aViewUrls['output'] = $usersummary;
             }
             else
             {
                 include("access_denied.php");
             }
         }
-        $this->_renderEndScriptsAndFooter();
+
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     /**
@@ -472,11 +476,11 @@ class surveypermission extends Survey_Common_Action {
     function delete($surveyid)
     {
 
-        $surveyid = sanitize_int($surveyid);
+        $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
+        $aViewUrls = array();
 
         $action = $_POST['action'];
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
-        $this->_renderHeaderAndMenu($surveyid);
+
         $clang = Yii::app()->lang;
         $imageurl = Yii::app()->getConfig('imageurl');
         $postuserid = !empty($_POST['uid']) ? $_POST['uid'] : false;
@@ -509,10 +513,10 @@ class surveypermission extends Survey_Common_Action {
             }
             $addsummary .= "</div>\n";
 
-            $data['display'] = $addsummary;
-            $this->getController()->render('/survey_view',$data);
+            $aViewUrls['output'] = $addsummary;
         }
-        $this->_renderEndScriptsAndFooter();
+
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     /**
@@ -523,11 +527,10 @@ class surveypermission extends Survey_Common_Action {
     */
     function surveyright($surveyid)
     {
-        $surveyid = sanitize_int($surveyid);
+        $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
+        $aViewUrls = array();
 
         $action = $_POST['action'];
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
-        $this->_renderHeaderAndMenu($surveyid);
         $clang = Yii::app()->lang;
         $imageurl = Yii::app()->getConfig('imageurl');
         $postuserid = !empty($_POST['uid']) ? $_POST['uid'] : false;
@@ -600,33 +603,23 @@ class surveypermission extends Survey_Common_Action {
             }
             $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
             $addsummary .= "</div>\n";
-            $data['display'] = $addsummary;
-            $this->getController()->render('/survey_view',$data);
+            $aViewUrls['output'] = $addsummary;
         }
-        $this->_renderEndScriptsAndFooter();
+
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     /**
-    * Function renders the Header and the Menu.
-    * @param mixed $surveyid
-    * @return void
-    */
-    private function _renderHeaderAndMenu($surveyid)
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
     {
-        $this->getController()->_getAdminHeader();
-        $this->getController()->_showadminmenu($surveyid);
-        $this->_surveybar($surveyid,NULL);
-        $this->_surveysummary($surveyid,'addsurveysecurity');
-    }
-
-    /**
-    * Function renders the End Scripts and Footer.
-    * @return void
-    */
-    private function _renderEndScriptsAndFooter()
-    {
-        $this->getController()->_loadEndScripts();
-        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
+        $aData['display']['menu_bars']['surveysummary'] = 'addsurveysecurity';
+        parent::_renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
 
 }

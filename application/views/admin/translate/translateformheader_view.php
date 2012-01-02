@@ -1,6 +1,6 @@
 <div id="translationloading" style="width: 100%; font-weight: bold; color: #000; text-align: center;"><br /><?php $clang->eT("Loading translations");?><br /><br /></div>
 
-<form name='translateform' method='post' action='<?php echo $this->createUrl("admin/translate/surveyid/{$surveyid}/lang/{$tolang}");?>' id='translateform' >
+<form name='translateform' method='post' action='<?php echo $this->createUrl("admin/translate/sa/index/surveyid/{$surveyid}/lang/{$tolang}");?>' id='translateform' >
 	<input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
 	<input type='hidden' name='action' value='translate' />
 	<input type='hidden' name='actionvalue' value='translateSave' />

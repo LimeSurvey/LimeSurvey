@@ -24,59 +24,6 @@
 class tokens extends Survey_Common_Action
 {
 
-    public function run($sa = '')
-    {
-        switch ($sa)
-        {
-            case 'addnew' :
-            case 'bounceprocessing' :
-            case 'bouncesettings' :
-            case 'delete' :
-            case 'exportdialog' :
-            case 'getSearch_json' :
-            case 'getTokens_json' :
-            case 'editToken' :
-            case 'import' :
-            case 'importldap' :
-            case 'kill' :
-            case 'managetokenattributes' :
-            case 'tokenify' :
-            case 'updatetokenattributes' :
-            case 'updatetokenattributedescriptions' :
-                $this->route($sa, array('surveyid'));
-                break;
-            case 'email' :
-                $this->route('email', array('surveyid', 'tokenids'));
-                break;
-            case 'adddummies' :
-                $this->route('addDummies', array('surveyid', 'subaction'));
-                break;
-            case 'browse' :
-                $this->route('browse', array('surveyid', 'limit', 'start', 'order', 'searchstring'));
-                break;
-            case 'edit' :
-                $this->route('edit', array('surveyid', 'tokenid'));
-                break;
-            case 'index' :
-            default :
-                $this->route('index', array('surveyid'));
-                break;
-        }
-	}
-
-    /**
-     * Renders template(s) wrapped in header and footer
-     *
-     * @param string|array $aViewUrls View url(s)
-     * @param array $aData Data to be passed on. Optional.
-     */
-    function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
-    {
-        $aData['imageurl'] = Yii::app()->getConfig('imageurl');
-        $aData['display']['menu_bars'] = false;
-        parent::_renderWrappedTemplate('token', $aViewUrls, $aData);
-    }
-
 	/**
 	 * Show token index page, handle token database
 	 */
@@ -2075,6 +2022,19 @@ function editToken($iSurveyId)
             }
         }
         echo ls_json_encode($aData);
+    }
+
+    /**
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    {
+        $aData['imageurl'] = Yii::app()->getConfig('imageurl');
+        $aData['display']['menu_bars'] = false;
+        parent::_renderWrappedTemplate('token', $aViewUrls, $aData);
     }
 
 }

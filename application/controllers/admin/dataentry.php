@@ -55,35 +55,17 @@
   * @version $Id: dataentry.php 11299 2011-10-29 14:57:24Z c_schmitz $
   * @access public
   */
- class dataentry extends Survey_Common_Action {
+ class dataentry extends Survey_Common_Action
+{
 
-    /**
-     * dataentry::__construct()
-     * Constructor
-     * @return
-     */
-     public function run($sa)
+     function __construct($controller, $id)
      {
-         echo $this->getController()->_getAdminHeader();
+         parent::__construct($controller, $id);
 
-         if ($sa == 'view')
-             $this->route('view', array('surveyid'));
-         elseif ($sa == 'insert')
-             $this->route('insert', array('surveyid'));
-         elseif ($sa == 'import')
-             $this->route('import', array('surveyid'));
-         elseif ($sa == 'vvimport')
-             $this->route('vvimport', array());
-         elseif ($sa == 'editdata')
-             $this->route('editdata', array('subaction', 'id', 'surveyid', 'lang'));
-
-
-         echo $this->getController()->_loadEndScripts();
-         echo $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
-	}
+         Yii::app()->loadHelper('surveytranslator');
+     }
 
 	/**
-     * dataentry::vvimport()
      * Function responsible for importing responses from file (.cvs)
 	 *
      * @param mixed $surveyid
@@ -91,14 +73,14 @@
      */
     function vvimport()
     {
-        $templateData = array();
+        $aData = array();
 
     	$surveyid = sanitize_int(CHttpRequest::getParam('surveyid'));
 		if (!empty($_REQUEST['sid'])) {
             $surveyid = sanitize_int($_REQUEST['sid']);
         }
-        $templateData['surveyid'] = $surveyid;
-        $templateData['clang'] = $this->getController()->lang;
+        $aData['surveyid'] = $surveyid;
+        $aData['clang'] = $this->getController()->lang;
 
         if( bHasSurveyPermission($surveyid,'responses','create') )
         {
@@ -108,21 +90,21 @@
             $subAction = CHttpRequest::getPost('subaction');
             if ($subAction != "upload")
             {
-                $this->_showUploadForm($this->_getEncodingsArray(), $surveyid, $templateData);
+                $this->_showUploadForm($this->_getEncodingsArray(), $surveyid, $aData);
             }
             else
             {
-                $this->_handleFileUpload($surveyid, $templateData);
+                $this->_handleFileUpload($surveyid, $aData);
             }
         }
     }
 
-     private function _handleFileUpload($surveyid, $templateData)
+     private function _handleFileUpload($surveyid, $aData)
      {
          $vvoutput = '';
          $donotimport = array();
          $clang = $this->getController()->lang;
-         $filePath = $this->_moveUploadedFile($templateData);
+         $filePath = $this->_moveUploadedFile($aData);
          $aFileContents = $this->_readFile($filePath);
          unlink($filePath); //delete the uploaded file
          unset($aFileContents[0]); //delete the first line
@@ -213,7 +195,7 @@
                      // Check if record with same id exists
                      if ($recordexists) {
                          if (CHttpRequest::getPost('insert') == "ignore") {
-                             $templateData['msgs'][] .= sprintf($clang->gT("Record ID %s was skipped because of duplicate ID."), $fielddata['`id`']);
+                             $aData['msgs'][] .= sprintf($clang->gT("Record ID %s was skipped because of duplicate ID."), $fielddata['`id`']);
                              continue;
                          }
                          if (CHttpRequest::getPost('insert') == "replace") {
@@ -238,22 +220,23 @@
                  }
 
                  if (!$result) {
-                     $templateData['error_msg'] = sprintf($clang->gT("Import failed on record %d"), $recordcount);
-                     $vvoutput .= $this->getController()->render('/admin/dataentry/warning_header', $templateData, TRUE);
+                     $aData['error_msg'] = sprintf($clang->gT("Import failed on record %d"), $recordcount);
+                     $this->_renderWrappedTemplate('warning_header', $aData);
+                     die();
                  }
                  else
                  {
                      $importcount++;
                  }
 
-                 $templateData['importcount'] = $importcount;
+                 $aData['importcount'] = $importcount;
              }
          }
 
-         $templateData['noid'] = CHttpRequest::getPost('noid');
-         $templateData['insertstyle'] = CHttpRequest::getPost('insertstyle');
+         $aData['noid'] = CHttpRequest::getPost('noid');
+         $aData['insertstyle'] = CHttpRequest::getPost('insertstyle');
 
-         $this->getController()->render('/admin/dataentry/vvimport_upload', $templateData);
+         $this->_renderWrappedTemplate('vvimport_upload', $aData);
      }
 
      private function _getFieldInfo($aFileContents)
@@ -283,7 +266,7 @@
          return $bigarray;
      }
 
-     private function _moveUploadedFile($templateData)
+     private function _moveUploadedFile($aData)
      {
          $clang = $this->getController()->lang;
          $the_full_file_path = Yii::app()->getConfig('tempdir') . "/" . $_FILES['the_file']['name'];
@@ -291,30 +274,28 @@
          $move_uploaded_file_result = @move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path);
 
          if (!$move_uploaded_file_result) {
-             $templateData['error_msg'] = sprintf(
+             $aData['error_msg'] = sprintf(
                  $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),
                  Yii::app()->getConfig('tempdir')
              );
-             safe_die($this->getController()->render('/admin/dataentry/warning_header', $templateData, TRUE));
+             $this->_renderWrappedTemplate('warning_header', $aData);
+             die();
          }
          return $the_full_file_path;
      }
 
-     private function _showUploadForm($aEncodings, $surveyid, $templateData)
+     private function _showUploadForm($aEncodings, $surveyid, $aData)
      {
          asort($aEncodings);
 
          // Create encodings list using the Yii's CHtml helper
          $charsetsout = CHtml::listOptions('utf8', $aEncodings, $aEncodings);
 
-         $templateData['tableExists'] = tableExists("{{survey_$surveyid}}");
-         $templateData['charsetsout'] = $charsetsout;
+         $aData['tableExists'] = tableExists("{{survey_$surveyid}}");
+         $aData['charsetsout'] = $charsetsout;
+         $aData['display']['menu_bars']['browse'] = $this->getController()->lang->gT("Import VV file");
 
-         if ($templateData['tableExists']) {
-             $this->_browsemenubar($surveyid, Yii::app()->lang->gT("Import VV file"));
-         }
-
-         $this->getController()->render('/admin/dataentry/vvimport', $templateData);
+         $this->_renderWrappedTemplate('vvimport', $aData);
      }
 
      private function _getUploadCharset($encodingsarray)
@@ -340,7 +321,7 @@
 
 		$subaction = '';
 
-		$data = array(
+		$aData = array(
 			'clang' => Yii::app()->lang,
 			'surveyid' => $surveyid
 		);
@@ -384,12 +365,12 @@
                     	$optionElements_array[$row[1]] = $row[1];
                     }
                 }
-				$data['optionElements'] = CHtml::listOptions('', $optionElements_array, $optionElements_array);
+				$aData['optionElements'] = CHtml::listOptions('', $optionElements_array, $optionElements_array);
 
                 //Get the menubar
-                $this->_browsemenubar($surveyid, $clang->gT("Quick statistics"));
+                $aData['display']['menu_bars']['browse'] = $clang->gT("Quick statistics");
 
-				$this->getController()->render('/admin/dataentry/import', $data);
+                $this->_renderWrappedTemplate('import', $aData);
             }
             //elseif (isset($surveyid) && $surveyid && isset($oldtable))
             else
@@ -401,7 +382,7 @@
                  * - warnmeldung mehrsprachig
                  * - testen
                  */
-                //	if($databasetype=="postgres")
+                //	if($aDatabasetype=="postgres")
                 //	{
                 $activetable = "{{survey_$surveyid}}";
 
@@ -468,10 +449,11 @@
                     }
                     Yii::app()->session['flashmessage'] = sprintf($clang->gT("%s old response(s) and according timings were successfully imported."),$iRecordCount,$iRecordCountT);
                 }
-				//$this->getController()->redirect($this->getController()->createUrl('/admin/dataentry/import/'.$surveyid));
-                $this->_browsemenubar($surveyid, $clang->gT("Quick statistics"));
-            }
 
+                 $aData['display']['menu_bars']['browse'] = $clang->gT("Quick statistics");
+
+                 $this->_renderWrappedTemplate('', $aData);
+            }
 
         }
     }
@@ -493,6 +475,7 @@
 
     	$surveyid = sanitize_int($surveyid);
 		$id = sanitize_int($id);
+        $aViewUrls = array();
 
         if (!isset($sDataEntryLanguage))
         {
@@ -503,17 +486,16 @@
         if (bHasSurveyPermission($surveyid, 'responses','update'))
         {
             $surveytable = "{{survey_".$surveyid.'}}';
-            $clang = $this->getController()->lang;
-            $this->_browsemenubar($surveyid, $clang->gT("Data entry"));
+            $aData['clang'] = $clang = $this->getController()->lang;
+            $aData['display']['menu_bars']['browse'] = $clang->gT("Data entry");
 
-            $dataentryoutput = '';
             Yii::app()->loadHelper('database');
 
             //FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-            $fnquery = "SELECT * FROM ".Yii::app()->db->tablePrefix."questions, ".Yii::app()->db->tablePrefix."groups g, ".Yii::app()->db->tablePrefix."surveys WHERE
-    		".Yii::app()->db->tablePrefix."questions.gid=g.gid AND
-    		".Yii::app()->db->tablePrefix."questions.language = '{$sDataEntryLanguage}' AND g.language = '{$sDataEntryLanguage}' AND
-    		".Yii::app()->db->tablePrefix."questions.sid=".Yii::app()->db->tablePrefix."surveys.sid AND ".Yii::app()->db->tablePrefix."questions.sid='$surveyid'
+            $fnquery = "SELECT * FROM {{questions}}, {{groups}} g, {{surveys}} WHERE
+    		{{questions}}.gid=g.gid AND
+    		{{questions}}.language = '{$sDataEntryLanguage}' AND g.language = '{$sDataEntryLanguage}' AND
+    		{{questions}}.sid={{surveys}}.sid AND {{questions}}.sid='$surveyid'
             order by group_order, question_order";
             $fnresult = db_execute_assoc($fnquery);
 
@@ -597,17 +579,16 @@
                 $results1['ipaddr'] = $saver['ip'];
                 $results[] = $results1;
             }
-            //	$dataentryoutput .= "<pre>";print_r($results);$dataentryoutput .= "</pre>";
 
-			$data = array(
-				'clang' => Yii::app()->lang,
+			$aData = array(
 				'id' => $id,
 				'surveyid' => $surveyid,
 				'subaction' => $subaction,
-				'part' => 'header'
+				'part' => 'header',
+                'clang' => $clang,
 			);
 
-			$dataentryoutput .= $this->getController()->render('/admin/dataentry/edit', $data, TRUE);
+			$aViewUrls[] = 'edit';
 
             $highlight = FALSE;
             unset($fnames['lastpage']);
@@ -622,6 +603,7 @@
                 }
             }
 
+            $aDataentryoutput = '';
             foreach ($results as $idrow)
             {
                 $fname = reset($fnames);
@@ -633,18 +615,18 @@
 						$answer = $idrow[ $fname['fieldname'] ];
 					}
                     $question = $fname['question'];
-                    $dataentryoutput .= "\t<tr";
-                    if ($highlight) $dataentryoutput .=" class='odd'";
-                       else $dataentryoutput .=" class='even'";
+                    $aDataentryoutput .= "\t<tr";
+                    if ($highlight) $aDataentryoutput .=" class='odd'";
+                       else $aDataentryoutput .=" class='even'";
 
                     $highlight=!$highlight;
-                    $dataentryoutput .=">\n"
+                    $aDataentryoutput .=">\n"
                     ."<td valign='top' align='right' width='25%'>"
                     ."\n";
-                    $dataentryoutput .= "\t<strong>".strip_javascript($question)."</strong>\n";
-                    $dataentryoutput .= "</td>\n"
+                    $aDataentryoutput .= "\t<strong>".strip_javascript($question)."</strong>\n";
+                    $aDataentryoutput .= "</td>\n"
                     ."<td valign='top' align='left'>\n";
-                    //$dataentryoutput .= "\t-={$fname[3]}=-"; //Debugging info
+                    //$aDataentryoutput .= "\t-={$fname[3]}=-"; //Debugging info
                     if(isset($fname['qid']) && isset($fname['type']))
                     {
                         $qidattributes = getQuestionAttributeValues($fname['qid'], $fname['type']);
@@ -674,27 +656,27 @@
 										$completedate => $clang->gT('Yes')
 							);
 
-							$dataentryoutput .= CHtml::dropDownList('completed', $selected, $select_options);
+							$aDataentryoutput .= CHtml::dropDownList('completed', $selected, $select_options);
 
                             break;
                         case "X": //Boilerplate question
-                            $dataentryoutput .= "";
+                            $aDataentryoutput .= "";
                             break;
                         case "Q":
                         case "K":
-							$dataentryoutput .= $fname['subquestion'].'&nbsp;';
-							$dataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
+							$aDataentryoutput .= $fname['subquestion'].'&nbsp;';
+							$aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
                             break;
                         case "id":
-                        	$dataentryoutput .= CHtml::tag('span', array('style' => 'font-weight: bold;'), '&nbsp;'.$idrow[$fname['fieldname']]);
+                        	$aDataentryoutput .= CHtml::tag('span', array('style' => 'font-weight: bold;'), '&nbsp;'.$idrow[$fname['fieldname']]);
                             break;
                         case "5": //5 POINT CHOICE radio-buttons
                             for ($i=1; $i<=5; $i++)
                             {
                             	$checked = FALSE;
                             	if ($idrow[$fname['fieldname']] == $i) { $checked = TRUE; }
-                            	$dataentryoutput .= CHtml::radioButton($fname['fieldname'], $checked, array('class'=>'radiobtn', 'value'=>$i));
-								$dataentryoutput .= $i;
+                            	$aDataentryoutput .= CHtml::radioButton($fname['fieldname'], $checked, array('class'=>'radiobtn', 'value'=>$i));
+								$aDataentryoutput .= $i;
                             }
                             break;
                         case "D": //DATE
@@ -714,22 +696,22 @@
                             {
                                 $goodchars = str_replace( array("m","d","y", "H", "M"), "", $dateformatdetails['dateformat']);
                                 $goodchars = "0123456789".$goodchars[0];
-								$dataentryoutput .= CHtml::textField($fname['fieldname'], $thisdate,
+								$aDataentryoutput .= CHtml::textField($fname['fieldname'], $thisdate,
 									array(
 										'class' => 'popupdate',
 										'size' => '12',
 										'onkeypress' => 'return goodchars(event,\''.$goodchars.'\')'
 									)
 								);
-								$dataentryoutput .= CHtml::hiddenField('dateformat'.$fname['fieldname'], $dateformatdetails['lsdate'],
+								$aDataentryoutput .= CHtml::hiddenField('dateformat'.$fname['fieldname'], $dateformatdetails['lsdate'],
 									array( 'id' => "dateformat{$fname['fieldname']}" )
 								);
-                               // $dataentryoutput .= "\t<input type='text' class='popupdate' size='12' name='{$fname['fieldname']}' value='{$thisdate}' onkeypress=\"return goodchars(event,'".$goodchars."')\"/>\n";
-                               // $dataentryoutput .= "\t<input type='hidden' name='dateformat{$fname['fieldname']}' id='dateformat{$fname['fieldname']}' value='{$dateformatdetails['jsdate']}'  />\n";
+                               // $aDataentryoutput .= "\t<input type='text' class='popupdate' size='12' name='{$fname['fieldname']}' value='{$thisdate}' onkeypress=\"return goodchars(event,'".$goodchars."')\"/>\n";
+                               // $aDataentryoutput .= "\t<input type='hidden' name='dateformat{$fname['fieldname']}' id='dateformat{$fname['fieldname']}' value='{$dateformatdetails['jsdate']}'  />\n";
                             }
                             else
                             {
-                            	$dataentryoutput .= CHtml::textField($fname['fieldname'], $thisdate);
+                            	$aDataentryoutput .= CHtml::textField($fname['fieldname'], $thisdate);
                             }
                             break;
                         case "G": //GENDER drop-down list
@@ -738,7 +720,7 @@
 								'F' => $clang->gT("Female"),
 								'G' => $clang->gT("Male")
 							);
-							$dataentryoutput .= CHtml::listBox($fname['fieldname'], $idrow[$fname['fieldname']], $select_options);
+							$aDataentryoutput .= CHtml::listBox($fname['fieldname'], $idrow[$fname['fieldname']], $select_options);
                             break;
                         case "L": //LIST drop-down
                         case "!": //List (Radio)
@@ -754,25 +736,25 @@
 
                             if (substr($fname['fieldname'], -5) == "other")
                             {
-                                $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
+                                $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
                                 .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
                             }
                             else
                             {
                                 $lquery = "SELECT * FROM {{answers}} WHERE qid={$fname['qid']} AND language = '{$sDataEntryLanguage}' ORDER BY sortorder, answer";
                                 $lresult = db_execute_assoc($lquery);
-                                $dataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n"
+                                $aDataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n"
                                 ."<option value=''";
-                                if ($idrow[$fname['fieldname']] == "") {$dataentryoutput .= " selected='selected'";}
-                                $dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
+                                if ($idrow[$fname['fieldname']] == "") {$aDataentryoutput .= " selected='selected'";}
+                                $aDataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
 
                                 if (!isset($optCategorySeparator))
                                 {
                                     foreach ($lresult->readAll() as $llrow)
                                     {
-                                        $dataentryoutput .= "<option value='{$llrow['code']}'";
-                                        if ($idrow[$fname['fieldname']] == $llrow['code']) {$dataentryoutput .= " selected='selected'";}
-                                        $dataentryoutput .= ">{$llrow['answer']}</option>\n";
+                                        $aDataentryoutput .= "<option value='{$llrow['code']}'";
+                                        if ($idrow[$fname['fieldname']] == $llrow['code']) {$aDataentryoutput .= " selected='selected'";}
+                                        $aDataentryoutput .= ">{$llrow['answer']}</option>\n";
                                     }
                                 }
                                 else
@@ -794,20 +776,20 @@
 
                                     foreach ($optgroups as $categoryname => $optionlistarray)
                                     {
-                                        $dataentryoutput .= "<optgroup class=\"dropdowncategory\" label=\"".$categoryname."\">\n";
+                                        $aDataentryoutput .= "<optgroup class=\"dropdowncategory\" label=\"".$categoryname."\">\n";
                                         foreach ($optionlistarray as $optionarray)
                                         {
-                                            $dataentryoutput .= "\t<option value='{$optionarray['code']}'";
-                                            if ($idrow[$fname['fieldname']] == $optionarray['code']) {$dataentryoutput .= " selected='selected'";}
-                                            $dataentryoutput .= ">{$optionarray['answer']}</option>\n";
+                                            $aDataentryoutput .= "\t<option value='{$optionarray['code']}'";
+                                            if ($idrow[$fname['fieldname']] == $optionarray['code']) {$aDataentryoutput .= " selected='selected'";}
+                                            $aDataentryoutput .= ">{$optionarray['answer']}</option>\n";
                                         }
-                                        $dataentryoutput .= "</optgroup>\n";
+                                        $aDataentryoutput .= "</optgroup>\n";
                                     }
                                     foreach ($defaultopts as $optionarray)
                                     {
-                                        $dataentryoutput .= "<option value='{$optionarray['code']}'";
-                                        if ($idrow[$fname['fieldname']] == $optionarray['code']) {$dataentryoutput .= " selected='selected'";}
-                                        $dataentryoutput .= ">{$optionarray['answer']}</option>\n";
+                                        $aDataentryoutput .= "<option value='{$optionarray['code']}'";
+                                        if ($idrow[$fname['fieldname']] == $optionarray['code']) {$aDataentryoutput .= " selected='selected'";}
+                                        $aDataentryoutput .= ">{$optionarray['answer']}</option>\n";
                                     }
 
                                 }
@@ -820,29 +802,29 @@
                                 }
                                 if ($fother =="Y")
                                 {
-                                    $dataentryoutput .= "<option value='-oth-'";
-                                    if ($idrow[$fname['fieldname']] == "-oth-"){$dataentryoutput .= " selected='selected'";}
-                                    $dataentryoutput .= ">".$clang->gT("Other")."</option>\n";
+                                    $aDataentryoutput .= "<option value='-oth-'";
+                                    if ($idrow[$fname['fieldname']] == "-oth-"){$aDataentryoutput .= " selected='selected'";}
+                                    $aDataentryoutput .= ">".$clang->gT("Other")."</option>\n";
                                 }
-                                $dataentryoutput .= "\t</select>\n";
+                                $aDataentryoutput .= "\t</select>\n";
                             }
                             break;
                         case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
                             $lquery = "SELECT * FROM {{answers}} WHERE qid={$fname['qid']} AND language = '{$sDataEntryLanguage}' ORDER BY sortorder, answer";
                             $lresult = db_execute_assoc($lquery);
-                            $dataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n"
+                            $aDataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n"
                             ."<option value=''";
-                            if ($idrow[$fname['fieldname']] == "") {$dataentryoutput .= " selected='selected'";}
-                            $dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
+                            if ($idrow[$fname['fieldname']] == "") {$aDataentryoutput .= " selected='selected'";}
+                            $aDataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
 
                             foreach ($lresult->readAll() as $llrow)
                             {
-                                $dataentryoutput .= "<option value='{$llrow['code']}'";
-                                if ($idrow[$fname['fieldname']] == $llrow['code']) {$dataentryoutput .= " selected='selected'";}
-                                $dataentryoutput .= ">{$llrow['answer']}</option>\n";
+                                $aDataentryoutput .= "<option value='{$llrow['code']}'";
+                                if ($idrow[$fname['fieldname']] == $llrow['code']) {$aDataentryoutput .= " selected='selected'";}
+                                $aDataentryoutput .= ">{$llrow['answer']}</option>\n";
                             }
                             $fname=next($fnames);
-                            $dataentryoutput .= "\t</select>\n"
+                            $aDataentryoutput .= "\t</select>\n"
                             ."\t<br />\n"
                             ."\t<textarea cols='45' rows='5' name='{$fname['fieldname']}'>"
                             .htmlspecialchars($idrow[$fname['fieldname']]) . "</textarea>\n";
@@ -863,7 +845,7 @@
                             $ansquery = "SELECT * FROM {{answers}} WHERE language = '{$sDataEntryLanguage}' AND qid=$thisqid ORDER BY sortorder, answer";
                             $ansresult = db_execute_assoc($ansquery);
                             $anscount = $ansresult->count();
-                            $dataentryoutput .= "\t<script type='text/javascript'>\n"
+                            $aDataentryoutput .= "\t<script type='text/javascript'>\n"
                             ."\t<!--\n"
                             ."function rankthis_$thisqid(\$code, \$value)\n"
                             ."\t{\n"
@@ -985,7 +967,7 @@
                                 }
                             }
                             $choicelist .= "</select>\n";
-                            $dataentryoutput .= "\t<table align='left' border='0' cellspacing='5'>\n"
+                            $aDataentryoutput .= "\t<table align='left' border='0' cellspacing='5'>\n"
                             ."<tr>\n"
                             ."\t<td align='left' valign='top' width='200'>\n"
                             ."<strong>"
@@ -1001,8 +983,8 @@
                             ."\t</table>\n"
                             ."\t<input type='hidden' name='multi' value='$anscount' />\n"
                             ."\t<input type='hidden' name='lastfield' value='";
-                            if (isset($multifields)) {$dataentryoutput .= $multifields;}
-                            $dataentryoutput .= "' />\n";
+                            if (isset($multifields)) {$aDataentryoutput .= $multifields;}
+                            $aDataentryoutput .= "' />\n";
                             $choicelist="";
                             $ranklist="";
                             unset($answers);
@@ -1025,17 +1007,17 @@
                             while ($fname['qid'] == $thisqid)
                             {
                                 $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
-                                //$dataentryoutput .= substr($fname['fieldname'], strlen($fname['fieldname'])-5, 5)."<br />\n";
+                                //$aDataentryoutput .= substr($fname['fieldname'], strlen($fname['fieldname'])-5, 5)."<br />\n";
                                 if (substr($fname['fieldname'], -5) == "other")
                                 {
-                                    $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
+                                    $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
                                     .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
                                 }
                                 else
                                 {
-                                    $dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='{$fname['fieldname']}' value='Y'";
-                                    if ($idrow[$fname['fieldname']] == "Y") {$dataentryoutput .= " checked";}
-                                    $dataentryoutput .= " />{$fname['subquestion']}<br />\n";
+                                    $aDataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='{$fname['fieldname']}' value='Y'";
+                                    if ($idrow[$fname['fieldname']] == "Y") {$aDataentryoutput .= " checked";}
+                                    $aDataentryoutput .= " />{$fname['subquestion']}<br />\n";
                                 }
 
                                 $fname=next($fnames);
@@ -1053,59 +1035,59 @@
                             $baselang = Survey::model()->findByPk($surveyid)->language;
                             array_unshift($slangs,$baselang);
 
-                            $dataentryoutput.= "<select name='{$fname['fieldname']}'>\n";
-                            $dataentryoutput .= "<option value=''";
-                            if ($idrow[$fname['fieldname']] == "") {$dataentryoutput .= " selected='selected'";}
-                            $dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
+                            $aDataentryoutput.= "<select name='{$fname['fieldname']}'>\n";
+                            $aDataentryoutput .= "<option value=''";
+                            if ($idrow[$fname['fieldname']] == "") {$aDataentryoutput .= " selected='selected'";}
+                            $aDataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
 
                             foreach ($slangs as $lang)
                             {
-                                $dataentryoutput.="<option value='{$lang}'";
-                                if ($lang == $idrow[$fname['fieldname']]) {$dataentryoutput .= " selected='selected'";}
-                                $dataentryoutput.=">".getLanguageNameFromCode($lang,false)."</option>\n";
+                                $aDataentryoutput.="<option value='{$lang}'";
+                                if ($lang == $idrow[$fname['fieldname']]) {$aDataentryoutput .= " selected='selected'";}
+                                $aDataentryoutput.=">".getLanguageNameFromCode($lang,false)."</option>\n";
                             }
-                            $dataentryoutput .= "</select>";
+                            $aDataentryoutput .= "</select>";
                             break;
 
                         case "P": //Multiple choice with comments checkbox + text
-                            $dataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table>\n";
                             while (isset($fname) && $fname['type'] == "P")
                             {
                                 $thefieldname=$fname['fieldname'];
                                 if (substr($thefieldname, -7) == "comment")
                                 {
-                                    $dataentryoutput .= "<td><input type='text' name='{$fname['fieldname']}' size='50' value='"
+                                    $aDataentryoutput .= "<td><input type='text' name='{$fname['fieldname']}' size='50' value='"
                                     .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' /></td>\n"
                                     ."\t</tr>\n";
                                 }
                                 elseif (substr($fname['fieldname'], -5) == "other")
                                 {
-                                    $dataentryoutput .= "\t<tr>\n"
+                                    $aDataentryoutput .= "\t<tr>\n"
                                     ."<td>\n"
                                     ."\t<input type='text' name='{$fname['fieldname']}' size='30' value='"
                                     .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n"
                                     ."</td>\n"
                                     ."<td>\n";
                                     $fname=next($fnames);
-                                    $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' size='50' value='"
+                                    $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' size='50' value='"
                                     .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n"
                                     ."</td>\n"
                                     ."\t</tr>\n";
                                 }
                                 else
                                 {
-                                    $dataentryoutput .= "\t<tr>\n"
+                                    $aDataentryoutput .= "\t<tr>\n"
                                     ."<td><input type='checkbox' class='checkboxbtn' name=\"{$fname['fieldname']}\" value='Y'";
-                                    if ($idrow[$fname['fieldname']] == "Y") {$dataentryoutput .= " checked";}
-                                    $dataentryoutput .= " />{$fname['subquestion']}</td>\n";
+                                    if ($idrow[$fname['fieldname']] == "Y") {$aDataentryoutput .= " checked";}
+                                    $aDataentryoutput .= " />{$fname['subquestion']}</td>\n";
                                 }
                                 $fname=next($fnames);
                             }
-                            $dataentryoutput .= "</table>\n";
+                            $aDataentryoutput .= "</table>\n";
                             $fname=prev($fnames);
                             break;
                         case "|": //FILE UPLOAD
-                            $dataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table>\n";
                             if ($fname['aid']!=='filecount' && isset($idrow[$fname['fieldname'] . '_filecount']) && ($idrow[$fname['fieldname'] . '_filecount'] > 0))
                             {//file metadata
                                 $metadata = json_decode($idrow[$fname['fieldname']], true);
@@ -1113,18 +1095,18 @@
                                 for ($i = 0; $i < $qAttributes['max_num_of_files'], isset($metadata[$i]); $i++)
                                 {
                                     if ($qAttributes['show_title'])
-                                        $dataentryoutput .= '<tr><td width="25%">Title    </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_title_'.$i   .'" name="title"    size=50 value="'.htmlspecialchars($metadata[$i]["title"])   .'" /></td></tr>';
+                                        $aDataentryoutput .= '<tr><td width="25%">Title    </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_title_'.$i   .'" name="title"    size=50 value="'.htmlspecialchars($metadata[$i]["title"])   .'" /></td></tr>';
                                     if ($qAttributes['show_comment'])
-                                        $dataentryoutput .= '<tr><td width="25%">Comment  </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_comment_'.$i .'" name="comment"  size=50 value="'.htmlspecialchars($metadata[$i]["comment"]) .'" /></td></tr>';
+                                        $aDataentryoutput .= '<tr><td width="25%">Comment  </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_comment_'.$i .'" name="comment"  size=50 value="'.htmlspecialchars($metadata[$i]["comment"]) .'" /></td></tr>';
 
-                                    $dataentryoutput .= '<tr><td>        File name</td><td><input   class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_name_'.$i    .'" name="name" size=50 value="'.htmlspecialchars(rawurldecode($metadata[$i]["name"]))    .'" /></td></tr>'
+                                    $aDataentryoutput .= '<tr><td>        File name</td><td><input   class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_name_'.$i    .'" name="name" size=50 value="'.htmlspecialchars(rawurldecode($metadata[$i]["name"]))    .'" /></td></tr>'
                                                        .'<tr><td></td><td><input type="hidden" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_size_'.$i    .'" name="size"     size=50 value="'.htmlspecialchars($metadata[$i]["size"])    .'" /></td></tr>'
                                                        .'<tr><td></td><td><input type="hidden" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_ext_'.$i     .'" name="ext"      size=50 value="'.htmlspecialchars($metadata[$i]["ext"])     .'" /></td></tr>'
                                                        .'<tr><td></td><td><input type="hidden"  class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_filename_'.$i    .'" name="filename" size=50 value="'.htmlspecialchars(rawurldecode($metadata[$i]["filename"]))    .'" /></td></tr>';
                                 }
-                                $dataentryoutput .= '<tr><td></td><td><input type="hidden" id="'.$fname['fieldname'].'" name="'.$fname['fieldname'].'" size=50 value="'.htmlspecialchars($idrow[$fname['fieldname']]).'" /></td></tr>';
-                                $dataentryoutput .= '</table>';
-                                $dataentryoutput .= '<script type="text/javascript">
+                                $aDataentryoutput .= '<tr><td></td><td><input type="hidden" id="'.$fname['fieldname'].'" name="'.$fname['fieldname'].'" size=50 value="'.htmlspecialchars($idrow[$fname['fieldname']]).'" /></td></tr>';
+                                $aDataentryoutput .= '</table>';
+                                $aDataentryoutput .= '<script type="text/javascript">
                                                          $(function() {
                                                             $(".'.$fname['fieldname'].'").keyup(function() {
                                                                 var filecount = $("#'.$fname['fieldname'].'_filecount").val();
@@ -1150,168 +1132,168 @@
                             }
                             else
                             {//file count
-                                $dataentryoutput .= '<input readonly id="'.$fname['fieldname'].'" name="'.$fname['fieldname'].'" value ="'.htmlspecialchars($idrow[$fname['fieldname']]).'" /></td></table>';
+                                $aDataentryoutput .= '<input readonly id="'.$fname['fieldname'].'" name="'.$fname['fieldname'].'" value ="'.htmlspecialchars($idrow[$fname['fieldname']]).'" /></td></table>';
                             }
                             break;
                         case "N": //NUMERICAL TEXT
-                            $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='{$idrow[$fname['fieldname']]}' "
+                            $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='{$idrow[$fname['fieldname']]}' "
                             ."onkeypress=\"return goodchars(event,'0123456789.,')\" />\n";
                             break;
                         case "S": //SHORT FREE TEXT
-                            $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
+                            $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
                             .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "' />\n";
                             break;
                         case "T": //LONG FREE TEXT
-                            $dataentryoutput .= "\t<textarea rows='5' cols='45' name='{$fname['fieldname']}'>"
+                            $aDataentryoutput .= "\t<textarea rows='5' cols='45' name='{$fname['fieldname']}'>"
                             .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "</textarea>\n";
                             break;
                         case "U": //HUGE FREE TEXT
-                            $dataentryoutput .= "\t<textarea rows='50' cols='70' name='{$fname['fieldname']}'>"
+                            $aDataentryoutput .= "\t<textarea rows='50' cols='70' name='{$fname['fieldname']}'>"
                             .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES) . "</textarea>\n";
                             break;
                         case "Y": //YES/NO radio-buttons
-                            $dataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n"
+                            $aDataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n"
                             ."<option value=''";
-                            if ($idrow[$fname['fieldname']] == "") {$dataentryoutput .= " selected='selected'";}
-                            $dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n"
+                            if ($idrow[$fname['fieldname']] == "") {$aDataentryoutput .= " selected='selected'";}
+                            $aDataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n"
                             ."<option value='Y'";
-                            if ($idrow[$fname['fieldname']] == "Y") {$dataentryoutput .= " selected='selected'";}
-                            $dataentryoutput .= ">".$clang->gT("Yes")."</option>\n"
+                            if ($idrow[$fname['fieldname']] == "Y") {$aDataentryoutput .= " selected='selected'";}
+                            $aDataentryoutput .= ">".$clang->gT("Yes")."</option>\n"
                             ."<option value='N'";
-                            if ($idrow[$fname['fieldname']] == "N") {$dataentryoutput .= " selected='selected'";}
-                            $dataentryoutput .= ">".$clang->gT("No")."</option>\n"
+                            if ($idrow[$fname['fieldname']] == "N") {$aDataentryoutput .= " selected='selected'";}
+                            $aDataentryoutput .= ">".$clang->gT("No")."</option>\n"
                             ."\t</select>\n";
                             break;
                         case "A": //ARRAY (5 POINT CHOICE) radio-buttons
-                            $dataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table>\n";
                             $thisqid=$fname['qid'];
                             while ($fname['qid'] == $thisqid)
                             {
-                                $dataentryoutput .= "\t<tr>\n"
+                                $aDataentryoutput .= "\t<tr>\n"
                                 ."<td align='right'>{$fname['subquestion']}</td>\n"
                                 ."<td>\n";
                                 for ($j=1; $j<=5; $j++)
                                 {
-                                    $dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='$j'";
-                                    if ($idrow[$fname['fieldname']] == $j) {$dataentryoutput .= " checked";}
-                                    $dataentryoutput .= " />$j&nbsp;\n";
+                                    $aDataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='$j'";
+                                    if ($idrow[$fname['fieldname']] == $j) {$aDataentryoutput .= " checked";}
+                                    $aDataentryoutput .= " />$j&nbsp;\n";
                                 }
-                                $dataentryoutput .= "</td>\n"
+                                $aDataentryoutput .= "</td>\n"
                                 ."\t</tr>\n";
                                 $fname=next($fnames);
                             }
-                            $dataentryoutput .= "</table>\n";
+                            $aDataentryoutput .= "</table>\n";
                             $fname=prev($fnames);
                             break;
                         case "B": //ARRAY (10 POINT CHOICE) radio-buttons
-                            $dataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table>\n";
                             $thisqid=$fname['qid'];
                             while ($fname['qid'] == $thisqid)
                             {
                                 $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
-                                $dataentryoutput .= "\t<tr>\n"
+                                $aDataentryoutput .= "\t<tr>\n"
                                 ."<td align='right'>{$fname['subquestion']}</td>\n"
                                 ."<td>\n";
                                 for ($j=1; $j<=10; $j++)
                                 {
-                                    $dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='$j'";
-                                    if ($idrow[$fname['fieldname']] == $j) {$dataentryoutput .= " checked";}
-                                    $dataentryoutput .= " />$j&nbsp;\n";
+                                    $aDataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='$j'";
+                                    if ($idrow[$fname['fieldname']] == $j) {$aDataentryoutput .= " checked";}
+                                    $aDataentryoutput .= " />$j&nbsp;\n";
                                 }
-                                $dataentryoutput .= "</td>\n"
+                                $aDataentryoutput .= "</td>\n"
                                 ."\t</tr>\n";
                                 $fname=next($fnames);
                             }
                             $fname=prev($fnames);
-                            $dataentryoutput .= "</table>\n";
+                            $aDataentryoutput .= "</table>\n";
                             break;
                         case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                            $dataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table>\n";
                             $thisqid=$fname['qid'];
                             while ($fname['qid'] == $thisqid)
                             {
                                 $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
-                                $dataentryoutput .= "\t<tr>\n"
+                                $aDataentryoutput .= "\t<tr>\n"
                                 ."<td align='right'>{$fname['subquestion']}</td>\n"
                                 ."<td>\n"
                                 ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='Y'";
-                                if ($idrow[$fname['fieldname']] == "Y") {$dataentryoutput .= " checked";}
-                                $dataentryoutput .= " />".$clang->gT("Yes")."&nbsp;\n"
+                                if ($idrow[$fname['fieldname']] == "Y") {$aDataentryoutput .= " checked";}
+                                $aDataentryoutput .= " />".$clang->gT("Yes")."&nbsp;\n"
                                 ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='U'";
-                                if ($idrow[$fname['fieldname']] == "U") {$dataentryoutput .= " checked";}
-                                $dataentryoutput .= " />".$clang->gT("Uncertain")."&nbsp;\n"
+                                if ($idrow[$fname['fieldname']] == "U") {$aDataentryoutput .= " checked";}
+                                $aDataentryoutput .= " />".$clang->gT("Uncertain")."&nbsp;\n"
                                 ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='N'";
-                                if ($idrow[$fname['fieldname']] == "N") {$dataentryoutput .= " checked";}
-                                $dataentryoutput .= " />".$clang->gT("No")."&nbsp;\n"
+                                if ($idrow[$fname['fieldname']] == "N") {$aDataentryoutput .= " checked";}
+                                $aDataentryoutput .= " />".$clang->gT("No")."&nbsp;\n"
                                 ."</td>\n"
                                 ."\t</tr>\n";
                                 $fname=next($fnames);
                             }
                             $fname=prev($fnames);
-                            $dataentryoutput .= "</table>\n";
+                            $aDataentryoutput .= "</table>\n";
                             break;
                         case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
-                            $dataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table>\n";
                             $thisqid=$fname['qid'];
                             while ($fname['qid'] == $thisqid)
                             {
                                 $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
-                                $dataentryoutput .= "\t<tr>\n"
+                                $aDataentryoutput .= "\t<tr>\n"
                                 ."<td align='right'>{$fname['subquestion']}</td>\n"
                                 ."<td>\n"
                                 ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='I'";
-                                if ($idrow[$fname['fieldname']] == "I") {$dataentryoutput .= " checked";}
-                                $dataentryoutput .= " />Increase&nbsp;\n"
+                                if ($idrow[$fname['fieldname']] == "I") {$aDataentryoutput .= " checked";}
+                                $aDataentryoutput .= " />Increase&nbsp;\n"
                                 ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='S'";
-                                if ($idrow[$fname['fieldname']] == "I") {$dataentryoutput .= " checked";}
-                                $dataentryoutput .= " />Same&nbsp;\n"
+                                if ($idrow[$fname['fieldname']] == "I") {$aDataentryoutput .= " checked";}
+                                $aDataentryoutput .= " />Same&nbsp;\n"
                                 ."\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='D'";
-                                if ($idrow[$fname['fieldname']] == "D") {$dataentryoutput .= " checked";}
-                                $dataentryoutput .= " />Decrease&nbsp;\n"
+                                if ($idrow[$fname['fieldname']] == "D") {$aDataentryoutput .= " checked";}
+                                $aDataentryoutput .= " />Decrease&nbsp;\n"
                                 ."</td>\n"
                                 ."\t</tr>\n";
                                 $fname=next($fnames);
                             }
                             $fname=prev($fnames);
-                            $dataentryoutput .= "</table>\n";
+                            $aDataentryoutput .= "</table>\n";
                             break;
                         case "F": //ARRAY (Flexible Labels)
                         case "H":
                         case "1":
-                            $dataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table>\n";
                             $thisqid=$fname['qid'];
                             while (isset($fname['qid']) && $fname['qid'] == $thisqid)
                             {
                                 $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
-                                $dataentryoutput .= "\t<tr>\n"
+                                $aDataentryoutput .= "\t<tr>\n"
                                 ."<td align='right' valign='top'>{$fname['subquestion']}";
                                 if (isset($fname['scale']))
                                 {
-                                    $dataentryoutput .= " (".$fname['scale'].')';
+                                    $aDataentryoutput .= " (".$fname['scale'].')';
                                 }
-                                $dataentryoutput .="</td>\n";
+                                $aDataentryoutput .="</td>\n";
                                 $scale_id=0;
                                 if (isset($fname['scale_id'])) $scale_id=$fname['scale_id'];
                                 $fquery = "SELECT * FROM {{answers}} WHERE qid='{$fname['qid']}' and scale_id={$scale_id} and language='$sDataEntryLanguage' order by sortorder, answer";
                                 $fresult = db_execute_assoc($fquery);
-                                $dataentryoutput .= "<td>\n";
+                                $aDataentryoutput .= "<td>\n";
                                 foreach ($fresult->readAll() as $frow)
                                 {
-                                    $dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='{$frow['code']}'";
-                                    if ($idrow[$fname['fieldname']] == $frow['code']) {$dataentryoutput .= " checked";}
-                                    $dataentryoutput .= " />".$frow['answer']."&nbsp;\n";
+                                    $aDataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value='{$frow['code']}'";
+                                    if ($idrow[$fname['fieldname']] == $frow['code']) {$aDataentryoutput .= " checked";}
+                                    $aDataentryoutput .= " />".$frow['answer']."&nbsp;\n";
                                 }
                                 //Add 'No Answer'
-                                $dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value=''";
-                                if ($idrow[$fname['fieldname']] == '') {$dataentryoutput .= " checked";}
-                                $dataentryoutput .= " />".$clang->gT("No answer")."&nbsp;\n";
+                                $aDataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value=''";
+                                if ($idrow[$fname['fieldname']] == '') {$aDataentryoutput .= " checked";}
+                                $aDataentryoutput .= " />".$clang->gT("No answer")."&nbsp;\n";
 
-                                $dataentryoutput .= "</td>\n"
+                                $aDataentryoutput .= "</td>\n"
                                 ."\t</tr>\n";
                                 $fname=next($fnames);
                             }
                             $fname=prev($fnames);
-                            $dataentryoutput .= "</table>\n";
+                            $aDataentryoutput .= "</table>\n";
                             break;
                         case ":": //ARRAY (Multi Flexi) (Numbers)
                             $qidattributes=getQuestionAttributeValues($fname['qid']);
@@ -1345,89 +1327,88 @@
                                 $maxvalue=1;
                                 $stepvalue=1;
                             }
-                            $dataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table>\n";
                             $thisqid=$fname['qid'];
                             while (isset($fname['qid']) && $fname['qid'] == $thisqid)
                             {
                                 $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
-                                $dataentryoutput .= "\t<tr>\n"
+                                $aDataentryoutput .= "\t<tr>\n"
                                 . "<td align='right' valign='top'>{$fname['subquestion1']}:{$fname['subquestion2']}</td>\n";
-                                $dataentryoutput .= "<td>\n";
+                                $aDataentryoutput .= "<td>\n";
                                 if ($qidattributes['input_boxes']!=0) {
-                                    $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='";
-                                    if (!empty($idrow[$fname['fieldname']])) {$dataentryoutput .= $idrow[$fname['fieldname']];}
-                                    $dataentryoutput .= "' size=4 />";
+                                    $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='";
+                                    if (!empty($idrow[$fname['fieldname']])) {$aDataentryoutput .= $idrow[$fname['fieldname']];}
+                                    $aDataentryoutput .= "' size=4 />";
                                 } else {
-                                    $dataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n";
-                                    $dataentryoutput .= "<option value=''>...</option>\n";
+                                    $aDataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n";
+                                    $aDataentryoutput .= "<option value=''>...</option>\n";
                                     for($ii=$minvalue;$ii<=$maxvalue;$ii+=$stepvalue)
                                     {
-                                        $dataentryoutput .= "<option value='$ii'";
-                                        if($idrow[$fname['fieldname']] == $ii) {$dataentryoutput .= " selected";}
-                                        $dataentryoutput .= ">$ii</option>\n";
+                                        $aDataentryoutput .= "<option value='$ii'";
+                                        if($idrow[$fname['fieldname']] == $ii) {$aDataentryoutput .= " selected";}
+                                        $aDataentryoutput .= ">$ii</option>\n";
                                     }
                                 }
 
-                                $dataentryoutput .= "</td>\n"
+                                $aDataentryoutput .= "</td>\n"
                                 ."\t</tr>\n";
                                 $fname=next($fnames);
                             }
                             $fname=prev($fnames);
-                            $dataentryoutput .= "</table>\n";
+                            $aDataentryoutput .= "</table>\n";
                             break;
                         case ";": //ARRAY (Multi Flexi)
-                            $dataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table>\n";
                             $thisqid=$fname['qid'];
                             while (isset($fname['qid']) && $fname['qid'] == $thisqid)
                             {
                                 $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
-                                $dataentryoutput .= "\t<tr>\n"
+                                $aDataentryoutput .= "\t<tr>\n"
                                 . "<td align='right' valign='top'>{$fname['subquestion1']}:{$fname['subquestion2']}</td>\n";
-                                $dataentryoutput .= "<td>\n";
-                                $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='";
-                                if(!empty($idrow[$fname['fieldname']])) {$dataentryoutput .= $idrow[$fname['fieldname']];}
-                                $dataentryoutput .= "' /></td>\n"
+                                $aDataentryoutput .= "<td>\n";
+                                $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='";
+                                if(!empty($idrow[$fname['fieldname']])) {$aDataentryoutput .= $idrow[$fname['fieldname']];}
+                                $aDataentryoutput .= "' /></td>\n"
                                 ."\t</tr>\n";
                                 $fname=next($fnames);
                             }
                             $fname=prev($fnames);
-                            $dataentryoutput .= "</table>\n";
+                            $aDataentryoutput .= "</table>\n";
                             break;
                         default: //This really only applies to tokens for non-private surveys
-                            $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
+                            $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
                             .$idrow[$fname['fieldname']] . "' />\n";
                             break;
                     }
 
-                    $dataentryoutput .= "		</td>
+                    $aDataentryoutput .= "		</td>
     							</tr>\n";
                 } while ($fname=next($fnames));
             }
-            $dataentryoutput .= "</table>\n"
+            $aDataentryoutput .= "</table>\n"
             ."<p>\n";
 
-			$data['sDataEntryLanguage'] = $sDataEntryLanguage;
+			$aData['sDataEntryLanguage'] = $sDataEntryLanguage;
 
             if (!bHasSurveyPermission($surveyid, 'responses','update'))
             { // if you are not survey owner or super admin you cannot modify responses
-                $dataentryoutput .= "<input type='button' value='".$clang->gT("Save")."' disabled='disabled'/>\n";
+                $aDataentryoutput .= "<input type='button' value='".$clang->gT("Save")."' disabled='disabled'/>\n";
             }
             elseif ($subaction == "edit" && bHasSurveyPermission($surveyid,'responses','update'))
             {
-            	$data['part'] = 'edit';
-                $dataentryoutput .= $this->getController()->render('/admin/dataentry/edit', $data, TRUE);
+            	$aData['part'] = 'edit';
+                $aDataentryoutput .= $this->getController()->render('/admin/dataentry/edit', $aData, TRUE);
             }
             elseif ($subaction == "editsaved" && bHasSurveyPermission($surveyid,'responses','update'))
             {
-            	$data['part'] = 'editsaved';
-            	$dataentryoutput .= $this->getController()->render('/admin/dataentry/edit', $data, TRUE);
+            	$aData['part'] = 'editsaved';
+            	$aDataentryoutput .= $this->getController()->render('/admin/dataentry/edit', $aData, TRUE);
             }
 
-            $dataentryoutput .= "</form>\n";
+            $aDataentryoutput .= "</form>\n";
 
-            $data['display'] = $dataentryoutput;
-            $this->getController()->render('/survey_view',$data);
-
+            $aViewUrls['output'] = $aDataentryoutput;
+            $this->_renderWrappedTemplate($aViewUrls, $aData);
         }
     }
 
@@ -1445,36 +1426,21 @@
 		$surveyid = sanitize_int($surveyid);
         $id = CHttpRequest::getPost('id');
 
-		$data = array(
-			'clang' => Yii::app()->lang,
+		$aData = array(
 			'surveyid' => $surveyid,
 			'id' => $id
 		);
 
-        if (bHasSurveyPermission($surveyid, 'responses','read'))
+        if (bHasSurveyPermission($surveyid, 'responses','read') && $subaction == "delete"  && bHasSurveyPermission($surveyid, 'responses', 'delete'))
         {
-            if ($subaction == "delete"  && bHasSurveyPermission($surveyid,'responses','delete'))
-            {
-                $clang = $this->getController()->lang;
-                $surveytable = "{{survey_".$surveyid.'}}';
+            $surveytable = "{{survey_".$surveyid.'}}';
+            $aData['thissurvey'] = getSurveyInfo($surveyid);
 
-                /*$dataentryoutput .= "<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n";
-                $dataentryoutput .= "<div class='messagebox ui-corner-all'>\n";*/
+            $delquery = "DELETE FROM $surveytable WHERE id=$id";
+            Yii::app()->loadHelper('database');
+            $delresult = db_execute_assoc($delquery) or safe_die ("Couldn't delete record $id<br />\n");
 
-                $thissurvey = getSurveyInfo($surveyid);
-
-                $delquery = "DELETE FROM $surveytable WHERE id=$id";
-                Yii::app()->loadHelper('database');
-                $delresult = db_execute_assoc($delquery) or safe_die ("Couldn't delete record $id<br />\n");
-
-                /*$dataentryoutput .= "<div class='successheader'>".$clang->gT("Record Deleted")." (ID: $id)</div><br /><br />\n"
-                ."<input type='submit' value='".$clang->gT("Browse responses")."' onclick=\"window.open('".$this->getController()->createUrl('/').'/admin/browse/surveyid/'.$surveyid."/all', '_top')\" /><br /><br />\n"
-                ."</div>\n";*/
-
-                /*$data['display'] = $dataentryoutput;
-                $this->getController()->render('/survey_view',$data);*/
-               $this->getController()->render('/admin/dataentry/delete.php');
-            }
+            $this->_renderWrappedTemplate('delete', $aData);
         }
     }
 
@@ -1492,119 +1458,113 @@
         $id = CHttpRequest::getPost('id');
         $lang = CHttpRequest::getPost('lang');
 
-        //if (bHasSurveyPermission($surveyid, 'responses','update'))
-        //{
-            if ($subaction == "update"  && bHasSurveyPermission($surveyid, 'responses', 'update'))
+        if ($subaction == "update"  && bHasSurveyPermission($surveyid, 'responses', 'update'))
+        {
+
+            $baselang = Survey::model()->findByPk($surveyid)->language;
+            Yii::app()->loadHelper("database");
+            $clang = $this->getController()->lang;
+            $surveytable = "{{survey_".$surveyid.'}}';
+
+            $aDataentryoutput = "<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n";
+
+            $fieldmap= createFieldMap($surveyid);
+
+            // unset timings
+            foreach ($fieldmap as $fname)
             {
-
-                $baselang = Survey::model()->findByPk($surveyid)->language;
-                Yii::app()->loadHelper("database");
-                $clang = $this->getController()->lang;
-                $surveytable = "{{survey_".$surveyid.'}}';
-                $this->_browsemenubar($surveyid, $clang->gT("Data entry"));
-
-
-                $dataentryoutput = "<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n";
-
-                $fieldmap= createFieldMap($surveyid);
-
-                // unset timings
-                foreach ($fieldmap as $fname)
+                if ($fname['type'] == "interview_time" || $fname['type'] == "page_time" || $fname['type'] == "answer_time")
                 {
-                    if ($fname['type'] == "interview_time" || $fname['type'] == "page_time" || $fname['type'] == "answer_time")
-                    {
-                        unset($fieldmap[$fname['fieldname']]);
-                    }
+                    unset($fieldmap[$fname['fieldname']]);
                 }
-
-                $thissurvey = getSurveyInfo($surveyid);
-                $updateqr = "UPDATE $surveytable SET \n";
-
-                foreach ($fieldmap as $irow)
-                {
-                    $fieldname=$irow['fieldname'];
-                    if ($fieldname=='id') continue;
-                    if (isset($_POST[$fieldname]))
-                    {
-                        $thisvalue=$_POST[$fieldname];
-                    }
-                    else
-                    {
-                        $thisvalue="";
-                    }
-                    if ($irow['type'] == 'lastpage')
-                    {
-                        $thisvalue=0;
-                    }
-                    elseif ($irow['type'] == 'D')
-                    {
-                        if ($thisvalue == "")
-                        {
-                            $updateqr .= $fieldname." = NULL, \n"; //db_quote_id($fieldname)." = NULL, \n";
-                        }
-                        else
-                        {
-                            $qidattributes = getQuestionAttributeValues($irow['qid'], $irow['type']);
-                            $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
-
-                            $items = array($thisvalue,$dateformatdetails['phpdate']);
-                            $this->getController()->loadLibrary('Date_Time_Converter');
-                            $datetimeobj = new date_time_converter($items) ;
-                            //need to check if library get initialized with new value of constructor or not.
-
-                            //$datetimeobj = new Date_Time_Converter($thisvalue,$dateformatdetails['phpdate']);
-                            $updateqr .= $fieldname." = '{$datetimeobj->convert("Y-m-d H:i:s")}', \n";// db_quote_id($fieldname)." = '{$datetimeobj->convert("Y-m-d H:i:s")}', \n";
-                        }
-                    }
-                    elseif (($irow['type'] == 'N' || $irow['type'] == 'K') && $thisvalue == "")
-                    {
-                        $updateqr .= $fieldname." = NULL, \n"; //db_quote_id($fieldname)." = NULL, \n";
-                    }
-                    elseif ($irow['type'] == '|' && strpos($irow['fieldname'], '_filecount') && $thisvalue == "")
-                    {
-                        $updateqr .= $fieldname." = NULL, \n"; //db_quote_id($fieldname)." = NULL, \n";
-                    }
-                    elseif ($irow['type'] == 'submitdate')
-                    {
-                        if (isset($_POST['completed']) && ($_POST['completed']== "N"))
-                        {
-                            $updateqr .= $fieldname." = NULL, \n"; //db_quote_id($fieldname)." = NULL, \n";
-                        }
-                        elseif (isset($_POST['completed']) && $thisvalue=="")
-                        {
-                            $updateqr .= $fieldname." = '" . $_POST['completed'] . "', \n";// db_quote_id($fieldname)." = " . db_quoteall($_POST['completed'],true) . ", \n";
-                        }
-                        else
-                        {
-                            $updateqr .= $fieldname." = '" . $thisvalue . "', \n"; //db_quote_id($fieldname)." = " . db_quoteall($thisvalue,true) . ", \n";
-                        }
-                    }
-                    else
-                    {
-                        $updateqr .= $fieldname." = '" . $thisvalue . "', \n"; // db_quote_id($fieldname)." = " . db_quoteall($thisvalue,true) . ", \n";
-                    }
-                }
-                $updateqr = substr($updateqr, 0, -3);
-                $updateqr .= " WHERE id=$id";
-
-                $updateres = db_execute_assoc($updateqr) or safe_die("Update failed:<br />\n<br />$updateqr");
-                while (ob_get_level() > 0) {
-                    ob_end_flush();
-                }
-
-                $onerecord_link = $this->getController()->createUrl('/').'/admin/browse/surveyid/'.$surveyid.'/id/'.$id;
-                $allrecords_link = $this->getController()->createUrl('/').'/admin/browse/surveyid/'.$surveyid.'/all';
-                $dataentryoutput .= "<div class='messagebox ui-corner-all'><div class='successheader'>".$clang->gT("Success")."</div>\n"
-                .$clang->gT("Record has been updated.")."<br /><br />\n"
-                ."<input type='submit' value='".$clang->gT("View This Record")."' onclick=\"window.open('$onerecord_link', '_top')\" /><br /><br />\n"
-                ."<input type='submit' value='".$clang->gT("Browse responses")."' onclick=\"window.open('$allrecords_link', '_top')\" />\n"
-                ."</div>\n";
-
-                $data['display'] = $dataentryoutput;
-                $this->getController()->render('/survey_view',$data);
             }
 
-        //}
+            $thissurvey = getSurveyInfo($surveyid);
+            $updateqr = "UPDATE $surveytable SET \n";
+
+            foreach ($fieldmap as $irow)
+            {
+                $fieldname=$irow['fieldname'];
+                if ($fieldname=='id') continue;
+                if (isset($_POST[$fieldname]))
+                {
+                    $thisvalue=$_POST[$fieldname];
+                }
+                else
+                {
+                    $thisvalue="";
+                }
+                if ($irow['type'] == 'lastpage')
+                {
+                    $thisvalue=0;
+                }
+                elseif ($irow['type'] == 'D')
+                {
+                    if ($thisvalue == "")
+                    {
+                        $updateqr .= $fieldname." = NULL, \n"; //db_quote_id($fieldname)." = NULL, \n";
+                    }
+                    else
+                    {
+                        $qidattributes = getQuestionAttributeValues($irow['qid'], $irow['type']);
+                        $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
+
+                        $items = array($thisvalue,$dateformatdetails['phpdate']);
+                        $this->getController()->loadLibrary('Date_Time_Converter');
+                        $datetimeobj = new date_time_converter($items) ;
+                        //need to check if library get initialized with new value of constructor or not.
+
+                        //$datetimeobj = new Date_Time_Converter($thisvalue,$dateformatdetails['phpdate']);
+                        $updateqr .= $fieldname." = '{$datetimeobj->convert("Y-m-d H:i:s")}', \n";// db_quote_id($fieldname)." = '{$datetimeobj->convert("Y-m-d H:i:s")}', \n";
+                    }
+                }
+                elseif (($irow['type'] == 'N' || $irow['type'] == 'K') && $thisvalue == "")
+                {
+                    $updateqr .= $fieldname." = NULL, \n"; //db_quote_id($fieldname)." = NULL, \n";
+                }
+                elseif ($irow['type'] == '|' && strpos($irow['fieldname'], '_filecount') && $thisvalue == "")
+                {
+                    $updateqr .= $fieldname." = NULL, \n"; //db_quote_id($fieldname)." = NULL, \n";
+                }
+                elseif ($irow['type'] == 'submitdate')
+                {
+                    if (isset($_POST['completed']) && ($_POST['completed']== "N"))
+                    {
+                        $updateqr .= $fieldname." = NULL, \n"; //db_quote_id($fieldname)." = NULL, \n";
+                    }
+                    elseif (isset($_POST['completed']) && $thisvalue=="")
+                    {
+                        $updateqr .= $fieldname." = '" . $_POST['completed'] . "', \n";// db_quote_id($fieldname)." = " . db_quoteall($_POST['completed'],true) . ", \n";
+                    }
+                    else
+                    {
+                        $updateqr .= $fieldname." = '" . $thisvalue . "', \n"; //db_quote_id($fieldname)." = " . db_quoteall($thisvalue,true) . ", \n";
+                    }
+                }
+                else
+                {
+                    $updateqr .= $fieldname." = '" . $thisvalue . "', \n"; // db_quote_id($fieldname)." = " . db_quoteall($thisvalue,true) . ", \n";
+                }
+            }
+            $updateqr = substr($updateqr, 0, -3);
+            $updateqr .= " WHERE id=$id";
+
+            $updateres = db_execute_assoc($updateqr) or safe_die("Update failed:<br />\n<br />$updateqr");
+            while (ob_get_level() > 0) {
+                ob_end_flush();
+            }
+
+            $onerecord_link = $this->getController()->createUrl('/').'/admin/browse/sa/index/surveyid/'.$surveyid.'/id/'.$id;
+            $allrecords_link = $this->getController()->createUrl('/').'/admin/browse/sa/index/surveyid/'.$surveyid.'/all';
+            $aDataentryoutput .= "<div class='messagebox ui-corner-all'><div class='successheader'>".$clang->gT("Success")."</div>\n"
+            .$clang->gT("Record has been updated.")."<br /><br />\n"
+            ."<input type='submit' value='".$clang->gT("View This Record")."' onclick=\"window.open('$onerecord_link', '_top')\" /><br /><br />\n"
+            ."<input type='submit' value='".$clang->gT("Browse responses")."' onclick=\"window.open('$allrecords_link', '_top')\" />\n"
+            ."</div>\n";
+
+            $aViewUrls['output'] = $aDataentryoutput;
+            $this->_renderWrappedTemplate($aViewUrls, $aData);
+        }
     }
 
 	/**
@@ -1618,8 +1578,7 @@
         $surveyid = CHttpRequest::getPost('sid');
 		$lang = isset($_POST['lang']) ? CHttpRequest::getPost('lang') : NULL;
 
-		$data = array(
-			'clang' => Yii::app()->lang,
+		$aData = array(
 			'surveyid' => $surveyid,
 			'lang' => $lang
 		);
@@ -1629,19 +1588,16 @@
             if ($subaction == "insert" && bHasSurveyPermission($surveyid,'responses','create'))
             {
                 $clang = Yii::app()->lang;
-                $surveytable = Yii::app()->db->tablePrefix."survey_".$surveyid;
+                $surveytable = "{{survey_{$surveyid}}}";
                 $thissurvey = getSurveyInfo($surveyid);
                 $errormsg = "";
 
                 Yii::app()->loadHelper("database");
-                $this->_browsemenubar($surveyid, $clang->gT("Data entry"));
+                $aViewUrls['display']['menu_bars']['browse'] = $clang->gT("Data entry");
 
-
-                $dataentryoutput = '';
-				$dataentrymsgs = array();
+                $aDataentryoutput = '';
+				$aDataentrymsgs = array();
                 $hiddenfields = '';
-                /*$dataentryoutput .= "<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n"
-                ."\t<div class='messagebox ui-corner-all'>\n";*/
 
                 $lastanswfortoken = ''; // check if a previous answer has been submitted or saved
                 $rlanguage = '';
@@ -1649,8 +1605,7 @@
                 if (isset($_POST['token']))
                 {
                     $tokencompleted = "";
-                    $tokentable = Yii::app()->db->tablePrefix."tokens_".$surveyid;
-                    $tcquery = "SELECT completed from $tokentable WHERE token='".$_POST['token']."'"; //db_quoteall($_POST['token'],true);
+                    $tcquery = "SELECT completed from {{tokens_{$surveyid}}} WHERE token='{$_POST['token']}'"; //db_quoteall($_POST['token'],true);
                     $tcresult = db_execute_assoc($tcquery);
                     $tccount = $tcresult->getRowCount();
                     foreach ($tcresult->readAll() as $tcrow)
@@ -1715,7 +1670,7 @@
 
                     if (isset($_POST['save']) && $_POST['save'] == "on")
                     {
-                    	$data['save'] = TRUE;
+                    	$aData['save'] = TRUE;
 
                         $saver['identifier']=$_POST['save_identifier'];
                         $saver['language']=$_POST['save_language'];
@@ -1735,7 +1690,7 @@
                         if (!$saver['password']) { $errormsg .= $clang->gT("Error").": ".$clang->gT("You must supply a password for this saved session.");}
                         if ($saver['password'] != $saver['passwordconfirm']) { $errormsg .= $clang->gT("Error").": ".$clang->gT("Your passwords do not match.");}
 
-						$data['errormsg'] = $errormsg;
+						$aData['errormsg'] = $errormsg;
 
                         if ($errormsg)
                         {
@@ -1744,7 +1699,7 @@
                                 if (substr($key, 0, 4) != "save" && $key != "action" && $key !="sid" && $key != "datestamp" && $key !="ipaddr")
                                 {
                                 	$hiddenfields .= CHtml::hiddenField($key, $val);
-                                    //$dataentryoutput .= "<input type='hidden' name='$key' value='$val' />\n";
+                                    //$aDataentryoutput .= "<input type='hidden' name='$key' value='$val' />\n";
                                 }
                             }
                         }
@@ -1838,7 +1793,7 @@
                         }
                     }
 
-					$surveytable = Yii::app()->db->tablePrefix.'survey_'.$surveyid;
+					$surveytable = "{{survey_{$surveyid}}}";
 
                     $SQL = "INSERT INTO $surveytable
 							(".implode(',', $columns).")
@@ -1856,13 +1811,13 @@
                             { $submitdate = date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust); }
 
         				// check how many uses the token has left
-        				$usesquery = "SELECT usesleft FROM ".Yii::app()->db->tablePrefix."tokens_$surveyid WHERE token='".$_POST['token']."'";
+        				$usesquery = "SELECT usesleft FROM {{tokens_}}$surveyid WHERE token='".$_POST['token']."'";
         				$usesresult = db_execute_assoc($usesquery);
         				$usesrow = $usesresult->readAll(); //$usesresult->row_array()
         				if (isset($usesrow)) { $usesleft = $usesrow[0]['usesleft']; }
 
                         // query for updating tokens
-                        $utquery = "UPDATE ".Yii::app()->db->tablePrefix."tokens_$surveyid\n";
+                        $utquery = "UPDATE {{tokens_$surveyid}}\n";
                         if (bIsTokenCompletedDatestamped($thissurvey))
                         {
         					if (isset($usesleft) && $usesleft<=1)
@@ -1890,7 +1845,7 @@
 
                         // save submitdate into survey table
                         $srid = Yii::app()->db->getLastInsertID(); // Yii::app()->db->getLastInsertID();
-                        $sdquery = "UPDATE ".Yii::app()->db->tablePrefix."survey_$surveyid SET submitdate='".$submitdate."' WHERE id={$srid}\n";
+                        $sdquery = "UPDATE {{survey_$surveyid}} SET submitdate='".$submitdate."' WHERE id={$srid}\n";
                         $sdresult = db_execute_assoc($sdquery) or safe_die ("Couldn't set submitdate response in survey table!<br />\n$sdquery<br />\n");
 						$last_db_id = Yii::app()->db->getLastInsertID();
                     }
@@ -1901,7 +1856,7 @@
                         //CREATE ENTRY INTO "saved_control"
 
 
-						$saved_control_table = Yii::app()->db->tablePrefix.'saved_control';
+						$saved_control_table = '{{saved_control}}';
 
 						$columns = array("sid", "srid", "identifier", "access_code", "email", "ip",
 										"refurl", 'saved_thisstep', "status", "saved_date");
@@ -1912,10 +1867,6 @@
 								(".implode(',',$columns).")
 								VALUES
 								(".implode(',',$values).")";
-						//$this->load->model('surveys_dynamic_model');
-					   // $iinsert = $this->surveys_dynamic_model->insertRecords($surveyid,$values);
-
-
 
                         /*$scdata = array("sid"=>$surveyid,
         				"srid"=>$srid,
@@ -1932,14 +1883,14 @@
                         {
                             $scid =  Yii::app()->db->getLastInsertID(); // Yii::app()->db->getLastInsertID("{{saved_control}}","scid");
 
-							$dataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), $clang->gT("Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."));
-                            //$dataentryoutput .= "<font class='successtitle'></font><br />\n";
+							$aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), $clang->gT("Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."));
+                            //$aDataentryoutput .= "<font class='successtitle'></font><br />\n";
 
-							$tokens_table = "tokens_$surveyid";
+							$tokens_table = "{{tokens_$surveyid}}";
 							$last_db_id = Yii::app()->db->getLastInsertID();
-                            if (tableExists('{{'.$tokens_table.'}}')) //If the query fails, assume no tokens table exists
+                            if (tableExists($tokens_table)) //If the query fails, assume no tokens table exists
                             {
-								$tkquery = "SELECT * FROM ".Yii::app()->db->tablePrefix.$tokens_table;
+								$tkquery = "SELECT * FROM {$tokens_table}";
 								$tkresult = db_execute_assoc($tkquery);
                                 /*$tokendata = array (
                                             "firstname"=> $saver['identifier'],
@@ -1954,8 +1905,6 @@
 												"language", "sent", "completed");
 								$values = array("'".$saver['identifier']."'", "'".$saver['identifier']."'", "'".$saver['email']."'", "'".$password."'",
 												"'".sRandomChars(15)."'", "'".$saver['language']."'", "'"."N"."'");
-                                // $this->load->model('tokens_dynamic_model');
-							    $token_table = Yii::app()->db->tablePrefix.'tokens_'.$surveyid;
 
 								$SQL = "INSERT INTO $token_table
 									(".implode(',',$columns).")
@@ -1964,8 +1913,8 @@
                                 //$this->tokens_dynamic_model->insertToken($surveyid,$tokendata);
 								db_execute_assoc($SQL);
                                 //Yii::app()->db->AutoExecute(db_table_name("tokens_".$surveyid), $tokendata,'INSERT');
-                                $dataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), $clang->gT("A token entry for the saved survey has been created too."));
-                                //$dataentryoutput .= "<font class='successtitle'></font><br />\n";
+                                $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), $clang->gT("A token entry for the saved survey has been created too."));
+                                //$aDataentryoutput .= "<font class='successtitle'></font><br />\n";
 								$last_db_id = Yii::app()->db->getLastInsertID();
 
                             }
@@ -1987,7 +1936,7 @@
                                     if (SendEmailMessage($message, $subject, $saver['email'], $from, $sitename, false, getBounceEmail($surveyid)))
                                     {
                                         $emailsent="Y";
-                                        $dataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), $clang->gT("An email has been sent with details about your saved survey"));
+                                        $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), $clang->gT("An email has been sent with details about your saved survey"));
                                     }
                                 }
                             }
@@ -1999,16 +1948,15 @@
                         }
 
                     }
-					$data['thisid'] = $last_db_id;
+					$aData['thisid'] = $last_db_id;
                 }
 
-				$data['errormsg'] = $errormsg;
+				$aData['errormsg'] = $errormsg;
 
-				$data['dataentrymsgs'] = $dataentrymsgs;
+				$aData['dataentrymsgs'] = $aDataentrymsgs;
 
-				$this->getController()->render('/admin/dataentry/insert', $data);
+				$this->getController()->render('/admin/dataentry/insert', $aData);
             }
-
 
         }
     }
@@ -2025,16 +1973,14 @@
     	$surveyid = sanitize_int($surveyid);
 		$lang = isset($_GET['lang']) ? $_GET['lang'] : NULL;
 		if(isset($lang)) $lang=sanitize_languagecode($lang);
+        $aViewUrls = array();
 
         if (bHasSurveyPermission($surveyid, 'responses', 'read'))
         {
-			//Yii::app()->loadHelper('expressions/em_manager');
             $clang = Yii::app()->lang;
 
             $sDataEntryLanguage = Survey::model()->findByPk($surveyid)->language;
             $surveyinfo=getSurveyInfo($surveyid);
-
-            $this->_browsemenubar($surveyid, $clang->gT("Data entry"));
 
             $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
             $baselang = Survey::model()->findByPk($surveyid)->language;
@@ -2055,37 +2001,36 @@
             //This is the default, presenting a blank dataentry form
             $fieldmap=createFieldMap($surveyid);
 
-            $data['clang'] = $clang;
-            $data['thissurvey'] = $thissurvey;
-            $data['langlistbox'] = $langlistbox;
-            $data['surveyid'] = $surveyid;
-            $data['blang'] = $blang;
-			$data['site_url'] = Yii::app()->homeUrl;
+            $aData['thissurvey'] = $thissurvey;
+            $aData['langlistbox'] = $langlistbox;
+            $aData['surveyid'] = $surveyid;
+            $aData['blang'] = $blang;
+			$aData['site_url'] = Yii::app()->homeUrl;
 
 			LimeExpressionManager::StartProcessingPage(true,$this->getController()->createUrl('/'));  // means that all variables are on the same page
 
-            $this->getController()->render("/admin/dataentry/caption_view",$data);
+            $aViewUrls[] = 'caption_view';
 
             Yii::app()->loadHelper('database');
 
             // SURVEY NAME AND DESCRIPTION TO GO HERE
-            $degquery = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='{$sDataEntryLanguage}' ORDER BY {{groups.group_order}}";
+            $degquery = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='{$sDataEntryLanguage}' ORDER BY {{groups}}.group_order";
             $degresult = db_execute_assoc($degquery);
             // GROUP NAME
-            $dataentryoutput = '';
+            $aDataentryoutput = '';
 
             foreach ($degresult->readAll() as $degrow)
             {
                 LimeExpressionManager::StartProcessingGroup($degrow['gid'], ($thissurvey['anonymized']!="N"),$surveyid);
 
-                $deqquery = "SELECT * FROM ".Yii::app()->db->tablePrefix."questions WHERE sid=$surveyid AND parent_qid=0 AND gid={$degrow['gid']} AND language='{$sDataEntryLanguage}'";
+                $deqquery = "SELECT * FROM {{questions}} WHERE sid=$surveyid AND parent_qid=0 AND gid={$degrow['gid']} AND language='{$sDataEntryLanguage}'";
                 $deqresult = db_execute_assoc($deqquery);
-                $dataentryoutput .= "\t<tr>\n"
+                $aDataentryoutput .= "\t<tr>\n"
                 ."<td colspan='3' align='center'><strong>".FlattenText($degrow['group_name'],true)."</strong></td>\n"
                 ."\t</tr>\n";
                 $gid = $degrow['gid'];
 
-                $dataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
+                $aDataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
 
                 $deqrows = array(); //Create an empty array in case FetchRow does not return any rows
                 foreach ($deqresult->readAll() as $deqrow) {$deqrows[] = $deqrow;} //Get table output into array
@@ -2106,7 +2051,7 @@
                     //GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
                     $explanation = ""; //reset conditions explanation
                     $s=0;
-                    $scenarioquery="SELECT DISTINCT scenario FROM ".Yii::app()->db->tablePrefix."conditions WHERE ".Yii::app()->db->tablePrefix."conditions.qid={$deqrow['qid']} ORDER BY scenario";
+                    $scenarioquery="SELECT DISTINCT scenario FROM {{conditions}} WHERE {{conditions}}.qid={$deqrow['qid']} ORDER BY scenario";
                     $scenarioresult=db_execute_assoc($scenarioquery);
 
                     foreach ($scenarioresult->readAll() as $scenariorow)
@@ -2115,13 +2060,13 @@
                         if ($s > 0) { $explanation .= " <br />-------- <i>".$clang->gT("OR")." Scenario {$scenariorow['scenario']}</i> --------<br />";}
 
                         $x=0;
-                        $distinctquery="SELECT DISTINCT cqid, {{questions}}.title FROM {{conditions}}, {{questions}} WHERE {{conditions}}.cqid={{questions}}.qid AND {{conditions.}}qid={$deqrow['qid']} AND {{conditions}}.scenario={$scenariorow['scenario']} ORDER BY cqid";
+                        $distinctquery="SELECT DISTINCT cqid, {{questions}}.title FROM {{conditions}}, {{questions}} WHERE {{conditions}}.cqid={{questions}}.qid AND {{conditions}}.qid={$deqrow['qid']} AND {{conditions}}.scenario={$scenariorow['scenario']} ORDER BY cqid";
                         $distinctresult=db_execute_assoc($distinctquery);
 
                         foreach ($distinctresult->readAll() as $distinctrow)
                         {
                             if ($x > 0) {$explanation .= " <i>".$blang->gT("AND")."</i><br />";}
-                            $conquery="SELECT cid, cqid, cfieldname, {{questions.title, {{questions}}.question, value, {{questions}}.type, method FROM {{conditions}}, {{questions}} WHERE {{conditions}}.cqid={{questions}}.qid AND {{conditions}}.cqid={$distinctrow['cqid']} AND {{conditions}}.qid={$deqrow['qid']} AND {{conditions}}.scenario={$scenariorow['scenario']}";
+                            $conquery="SELECT cid, cqid, cfieldname, {{questions}}.title, {{questions}}.question, value, {{questions}}.type, method FROM {{conditions}}, {{questions}} WHERE {{conditions}}.cqid={{questions}}.qid AND {{conditions}}.cqid={$distinctrow['cqid']} AND {{conditions}}.qid={$deqrow['qid']} AND {{conditions}}.scenario={$scenariorow['scenario']}";
                             $conresult=db_execute_assoc($conquery);
                             foreach ($conresult->readAll() as $conrow)
                             {
@@ -2179,7 +2124,7 @@
                                     case "H":
                                     default:
                                         $value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
-                                        $fquery = "SELECT * FROM ".Yii::app()->db->tablePrefix."questions "
+                                        $fquery = "SELECT * FROM {{questions}} "
                                         . "WHERE qid='{$conrow['cqid']}'\n and language='$sDataEntryLanguage' "
                                         . "AND title='{$conrow['title']}' and scale_id=0";
                                         $fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />Failed to execute this command in Data Entry controller.");
@@ -2196,7 +2141,7 @@
                                 {
 
                                     case "1":
-                                        $ansquery="SELECT answer FROM ".Yii::app()->db->tablePrefix."answers WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$baselang}'";
+                                        $ansquery="SELECT answer FROM {{answers}} WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$baselang}'";
                                         $ansresult=db_execute_assoc($ansquery);
                                         foreach ($ansresult->readAll() as $ansrow)
                                         {
@@ -2215,7 +2160,7 @@
                                     case ":":
                                     case ";":
                                         $thiscquestion=$fieldmap[$conrow['cfieldname']];
-                                        $ansquery="SELECT answer FROM ".Yii::app()->db->tablePrefix."answers WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion['aid']}' AND language='{$sDataEntryLanguage}'";
+                                        $ansquery="SELECT answer FROM {{answers}} WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion['aid']}' AND language='{$sDataEntryLanguage}'";
                                         $ansresult=db_execute_assoc($ansquery);
                                         $i=0;
                                         foreach ($ansresult->readAll() as $ansrow)
@@ -2228,7 +2173,7 @@
                                         $operator=$blang->gT("AND");	// this is a dirty, DIRTY fix but it works since only array questions seem to be ORd
                                         break;
                                     default:
-                                        $ansquery="SELECT answer FROM ".Yii::app()->db->tablePrefix."answers WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$sDataEntryLanguage}'";
+                                        $ansquery="SELECT answer FROM {{answers}} WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$sDataEntryLanguage}'";
                                         $ansresult=db_execute_assoc($ansquery);
                                         foreach ($ansresult->readAll() as $ansrow)
                                         {
@@ -2263,7 +2208,7 @@
                         if ($bgc == "even") {$bgc = "odd";} else {$bgc = "even";} //Do no alternate on explanation row
                         $explanation = "[".$blang->gT("Only answer this if the following conditions are met:")."]<br />$explanation\n";
                         $cdata['explanation'] = $explanation;
-                        //$dataentryoutput .= "<tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'>$explanation</td></tr>\n";
+                        //$aDataentryoutput .= "<tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'>$explanation</td></tr>\n";
                     }
 
                     //END OF GETTING CONDITIONS
@@ -2290,25 +2235,25 @@
                         $hh = addcslashes($deqrow['help'], "\0..\37'\""); //Escape ASCII decimal 0-32 plus single and double quotes to make JavaScript happy.
                         $hh = htmlspecialchars($hh, ENT_QUOTES); //Change & " ' < > to HTML entities to make HTML happy.
                         $cdata['hh'] = $hh;
-                        //$dataentryoutput .= "\t<img src='$imageurl/help.gif' alt='".$blang->gT("Help about this question")."' align='right' onclick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\" />\n";
+                        //$aDataentryoutput .= "\t<img src='$imageurl/help.gif' alt='".$blang->gT("Help about this question")."' align='right' onclick=\"javascript:alert('Question {$deqrow['title']} Help: $hh')\" />\n";
                     }
                     switch($deqrow['type'])
                     {
                         case "Q": //MULTIPLE SHORT TEXT
                         case "K":
-                            $deaquery = "SELECT question,title FROM ".Yii::app()->db->tablePrefix."questions WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
+                            $deaquery = "SELECT question,title FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $dearesult = db_execute_assoc($deaquery);
                             $cdata['dearesult'] = $dearesult->readAll();
 
                             break;
 
                         case "1": // multi scale^
-                            $deaquery = "SELECT * FROM ".Yii::app()->db->tablePrefix."questions WHERE parent_qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY question_order";
+                            $deaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY question_order";
                             $dearesult = db_execute_assoc($deaquery);
 
                             $cdata['dearesult'] = $dearesult->readAll();
 
-                            $oquery="SELECT other FROM ".Yii::app()->db->tablePrefix."questions WHERE qid={$deqrow['qid']} AND language='{$baselang}'";
+                            $oquery="SELECT other FROM {{questions}} WHERE qid={$deqrow['qid']} AND language='{$baselang}'";
                             $oresult=db_execute_assoc($oquery) or safe_die("Couldn't get other for list question<br />".$oquery);
                             foreach($oresult->readAll() as $orow)
                             {
@@ -2329,17 +2274,17 @@
                                 unset($optCategorySeparator);
                             }
                             $defexists="";
-                            $deaquery = "SELECT * FROM ".Yii::app()->db->tablePrefix."answers WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY sortorder, answer";
+                            $deaquery = "SELECT * FROM {{answers}} WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY sortorder, answer";
                             $dearesult = db_execute_assoc($deaquery);
-                            //$dataentryoutput .= "\t<select name='$fieldname'>\n";
-                            $datatemp='';
+                            //$aDataentryoutput .= "\t<select name='$fieldname'>\n";
+                            $aDatatemp='';
                             if (!isset($optCategorySeparator))
                             {
                                 foreach ($dearesult->readAll() as $dearow)
                                 {
-                                    $datatemp .= "<option value='{$dearow['code']}'";
-                                    //if ($dearow['default_value'] == "Y") {$datatemp .= " selected='selected'"; $defexists = "Y";}
-                                    $datatemp .= ">{$dearow['answer']}</option>\n";
+                                    $aDatatemp .= "<option value='{$dearow['code']}'";
+                                    //if ($dearow['default_value'] == "Y") {$aDatatemp .= " selected='selected'"; $defexists = "Y";}
+                                    $aDatatemp .= ">{$dearow['answer']}</option>\n";
                                 }
                             }
                             else
@@ -2361,27 +2306,27 @@
                                 }
                                 foreach ($optgroups as $categoryname => $optionlistarray)
                                 {
-                                    $datatemp .= "<optgroup class=\"dropdowncategory\" label=\"".$categoryname."\">\n";
+                                    $aDatatemp .= "<optgroup class=\"dropdowncategory\" label=\"".$categoryname."\">\n";
                                     foreach ($optionlistarray as $optionarray)
                                     {
-                                        $datatemp .= "\t<option value='{$optionarray['code']}'";
-                                        //if ($optionarray['default_value'] == "Y") {$datatemp .= " selected='selected'"; $defexists = "Y";}
-                                        $datatemp .= ">{$optionarray['answer']}</option>\n";
+                                        $aDatatemp .= "\t<option value='{$optionarray['code']}'";
+                                        //if ($optionarray['default_value'] == "Y") {$aDatatemp .= " selected='selected'"; $defexists = "Y";}
+                                        $aDatatemp .= ">{$optionarray['answer']}</option>\n";
                                     }
-                                    $datatemp .= "</optgroup>\n";
+                                    $aDatatemp .= "</optgroup>\n";
                                 }
                                 foreach ($defaultopts as $optionarray)
                                 {
-                                    $datatemp .= "\t<option value='{$optionarray['code']}'";
-                                    //if ($optionarray['default_value'] == "Y") {$datatemp .= " selected='selected'"; $defexists = "Y";}
-                                    $datatemp .= ">{$optionarray['answer']}</option>\n";
+                                    $aDatatemp .= "\t<option value='{$optionarray['code']}'";
+                                    //if ($optionarray['default_value'] == "Y") {$aDatatemp .= " selected='selected'"; $defexists = "Y";}
+                                    $aDatatemp .= ">{$optionarray['answer']}</option>\n";
                                 }
                             }
 
-                            if ($defexists=="") {$dataentryoutput .= "<option selected='selected' value=''>".$blang->gT("Please choose")."..</option>\n".$datatemp;}
-                            else {$dataentryoutput .=$datatemp;}
+                            if ($defexists=="") {$aDataentryoutput .= "<option selected='selected' value=''>".$blang->gT("Please choose")."..</option>\n".$aDatatemp;}
+                            else {$aDataentryoutput .=$aDatatemp;}
 
-                            $oquery="SELECT other FROM ".Yii::app()->db->tablePrefix."questions WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}'";
+                            $oquery="SELECT other FROM {{questions}} WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}'";
                             $oresult=db_execute_assoc($oquery) or safe_die("Couldn't get other for list question<br />");
                             foreach($oresult->readAll() as $orow)
                             {
@@ -2393,25 +2338,25 @@
                             break;
                         case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
                             $defexists="";
-                            $deaquery = "SELECT * FROM ".Yii::app()->db->tablePrefix."answers WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY sortorder, answer";
+                            $deaquery = "SELECT * FROM {{answers}} WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY sortorder, answer";
                             $dearesult = db_execute_assoc($deaquery);
-                            //$dataentryoutput .= "\t<select name='$fieldname'>\n";
-                            $datatemp='';
+                            //$aDataentryoutput .= "\t<select name='$fieldname'>\n";
+                            $aDatatemp='';
                             foreach ($dearesult->readAll() as $dearow)
 //                            while ($dearow = $dearesult->FetchRow())
                             {
-                                $datatemp .= "<option value='{$dearow['code']}'";
-                                //if ($dearow['default_value'] == "Y") {$datatemp .= " selected='selected'"; $defexists = "Y";}
-                                $datatemp .= ">{$dearow['answer']}</option>\n";
+                                $aDatatemp .= "<option value='{$dearow['code']}'";
+                                //if ($dearow['default_value'] == "Y") {$aDatatemp .= " selected='selected'"; $defexists = "Y";}
+                                $aDatatemp .= ">{$dearow['answer']}</option>\n";
 
                             }
-                            $cdata['datatemp'] = $datatemp;
+                            $cdata['datatemp'] = $aDatatemp;
                             $cdata['defexists'] = $defexists;
 
                             break;
                         case "R": //RANKING TYPE QUESTION
                             $thisqid=$deqrow['qid'];
-                            $ansquery = "SELECT * FROM ".Yii::app()->db->tablePrefix."answers WHERE qid=$thisqid AND language='{$sDataEntryLanguage}' ORDER BY sortorder, answer";
+                            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$thisqid AND language='{$sDataEntryLanguage}' ORDER BY sortorder, answer";
                             $ansresult = db_execute_assoc($ansquery);
                             $anscount = $ansresult->getRowCount();
 
@@ -2514,7 +2459,7 @@
                             {
                                 $dcols=0;
                             }
-                            $meaquery = "SELECT title, question FROM ".Yii::app()->db->tablePrefix."questions WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
+                            $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $mearesult = db_execute_assoc($meaquery);
                             $meacount = $mearesult->getRowCount();
 
@@ -2531,8 +2476,8 @@
 
                             break;
                         case "P": //Multiple choice with comments checkbox + text
-                            //$dataentryoutput .= "<table border='0'>\n";
-                            $meaquery = "SELECT * FROM ".Yii::app()->db->tablePrefix."questions WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order, question";
+                            //$aDataentryoutput .= "<table border='0'>\n";
+                            $meaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order, question";
                             $mearesult = db_execute_assoc($meaquery);
 
                             $cdata['mearesult'] = $mearesult->readAll();
@@ -2547,25 +2492,25 @@
 
                             break;
                         case "A": //ARRAY (5 POINT CHOICE) radio-buttons
-                            $meaquery = "SELECT title, question FROM ".Yii::app()->db->tablePrefix."questions WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
+                            $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $mearesult = db_execute_assoc($meaquery);
 
                             $cdata['mearesult'] = $mearesult->readAll();
 
                             break;
                         case "B": //ARRAY (10 POINT CHOICE) radio-buttons
-                            $meaquery = "SELECT title, question FROM ".Yii::app()->db->tablePrefix."questions WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
+                            $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $mearesult = db_execute_assoc($meaquery);
                             $cdata['mearesult'] = $mearesult->readAll();
 
                         case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                            $meaquery = "SELECT title, question FROM ".Yii::app()->db->tablePrefix."questions WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
+                            $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $mearesult=db_execute_assoc($meaquery);
                             $cdata['mearesult'] = $mearesult->readAll();
 
                             break;
                         case "E": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                            $meaquery = "SELECT title, question FROM ".Yii::app()->db->tablePrefix."questions WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
+                            $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $mearesult=db_execute_assoc($meaquery) or safe_die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />");
                             $cdata['mearesult'] = $mearesult->readAll();
 
@@ -2606,22 +2551,22 @@
                             $cdata['maxvalue'] = $maxvalue;
                             $cdata['stepvalue'] = $stepvalue;
 
-                            $lquery = "SELECT question, title FROM ".Yii::app()->db->tablePrefix."questions WHERE parent_qid={$deqrow['qid']} and scale_id=1 and language='{$sDataEntryLanguage}' ORDER BY question_order";
+                            $lquery = "SELECT question, title FROM {{questions}} WHERE parent_qid={$deqrow['qid']} and scale_id=1 and language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $lresult=db_execute_assoc($lquery) or die ("Couldn't get labels, Type \":\"<br />$lquery<br />");
                             $cdata['lresult'] = $lresult->readAll();
 
-                            $meaquery = "SELECT question, title FROM ".Yii::app()->db->tablePrefix."questions WHERE parent_qid={$deqrow['qid']} and scale_id=0 and language='{$sDataEntryLanguage}' ORDER BY question_order";
+                            $meaquery = "SELECT question, title FROM {{questions}} WHERE parent_qid={$deqrow['qid']} and scale_id=0 and language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \":\"<br />$meaquery<br />");
                             $cdata['mearesult'] = $mearesult->readAll();
 
                             break;
                         case ";": //ARRAY (Multi Flexi)
 
-                            $lquery = "SELECT * FROM ".Yii::app()->db->tablePrefix."questions WHERE scale_id=1 and parent_qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY question_order";
+                            $lquery = "SELECT * FROM {{questions}} WHERE scale_id=1 and parent_qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $lresult=db_execute_assoc($lquery) or die ("Couldn't get labels, Type \":\"<br />$lquery<br />");
                             $cdata['lresult'] = $lresult->readAll();
 
-                            $meaquery = "SELECT * FROM ".Yii::app()->db->tablePrefix."questions WHERE scale_id=0 and parent_qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY question_order";
+                            $meaquery = "SELECT * FROM {{questions}} WHERE scale_id=0 and parent_qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \":\"<br />$meaquery<br />");
 
                             $cdata['mearesult'] = $mearesult->readAll();
@@ -2629,12 +2574,12 @@
                             break;
                         case "F": //ARRAY (Flexible Labels)
                         case "H":
-                            $meaquery = "SELECT * FROM ".Yii::app()->db->tablePrefix."questions WHERE parent_qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY question_order";
+                            $meaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $mearesult=db_execute_assoc($meaquery) or safe_die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />");
 
                             $cdata['mearesult'] = $mearesult->readAll();
 
-                                $fquery = "SELECT * FROM ".Yii::app()->db->tablePrefix."answers WHERE qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY sortorder, code";
+                                $fquery = "SELECT * FROM {{answers}} WHERE qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY sortorder, code";
                                 $fresult = db_execute_assoc($fquery);
                                 $cdata['fresult'] = $fresult->readAll();
                             break;
@@ -2643,22 +2588,20 @@
                     $cdata['sDataEntryLanguage'] = $sDataEntryLanguage;
                     $viewdata = $this->getController()->render("/admin/dataentry/content_view",$cdata,TRUE);
                     $viewdata_em = LimeExpressionManager::ProcessString($viewdata, $deqrow['qid'], NULL, false, 1, 1);
-                    $dataentryoutput .= $viewdata_em;
+                    $aDataentryoutput .= $viewdata_em;
                 }
                 LimeExpressionManager::FinishProcessingGroup();
             }
 
             LimeExpressionManager::FinishProcessingPage();
-            $dataentryoutput .= LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
+            $aDataentryoutput .= LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
 
 
-            $sdata['display'] = $dataentryoutput;
-            $this->getController()->render("/survey_view",$sdata);
+            $aViewUrls['output'] = $aDataentryoutput;
 
-            $adata['clang'] = $clang;
-            $adata['thissurvey'] = $thissurvey;
-            $adata['surveyid'] = $surveyid;
-            $adata['sDataEntryLanguage'] = $sDataEntryLanguage;
+            $aData['thissurvey'] = $thissurvey;
+            $aData['surveyid'] = $surveyid;
+            $aData['sDataEntryLanguage'] = $sDataEntryLanguage;
 
             if ($thissurvey['active'] == "Y")
             {
@@ -2667,13 +2610,15 @@
                     $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
                     $sbaselang = Survey::model()->findByPk($surveyid)->language;
                     array_unshift($slangs,$sbaselang);
-                    $adata['slangs'] = $slangs;
-                    $adata['baselang'] = $baselang;
+                    $aData['slangs'] = $slangs;
+                    $aData['baselang'] = $baselang;
 				}
 
             }
 
-           $this->getController()->render("/admin/dataentry/active_html_view",$adata);
+            $aViewUrls[] = 'active_html_view';
+
+            $this->_renderWrappedTemplate($aViewUrls, $aData);
         }
     }
 
@@ -2762,6 +2707,21 @@
 
 		return $fieldvalues;
 	}
+
+    /**
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    {
+        if (!isset($aData['display']['menu_bars']['browse']))
+        {
+            $aData['display']['menu_bars']['browse'] = $this->getController()->lang->gT("Data entry");
+        }
+        parent::_renderWrappedTemplate('dataentry', $aViewUrls, $aData);
+    }
 
 }
 

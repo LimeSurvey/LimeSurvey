@@ -47,7 +47,7 @@
                 if (is_null($condarray))
                 { ?>
                     <a href='#'
-    				onclick="if (confirm('<?php $clang->eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>')) { <?php echo get2post($this->createUrl("admin/question/sa/deletequestion/surveyid/$surveyid/gid/$gid/qid/$qid")); ?>}">
+    				onclick="if (confirm('<?php $clang->eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>')) { <?php echo get2post($this->createUrl("admin/question/sa/delete/surveyid/$surveyid/gid/$gid/qid/$qid")); ?>}">
     				<img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/delete.png' name='DeleteWholeQuestion' alt='<?php $clang->eT("Delete current question"); ?>'
     				border='0' hspace='0' /></a>
                 <?php }
@@ -106,7 +106,7 @@
 
             if(bHasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
-                <a href='#' onclick="window.open('<?php echo $this->createUrl("admin/conditions/sa/action/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid");?>', '_top')"
+                <a href='#' onclick="window.open('<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid");?>', '_top')"
                  title="<?php $clang->eTview("Set/view conditions for this question"); ?>">
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/conditions.png' alt='<?php $clang->eT("Set conditions for this question"); ?>'  name='SetQuestionConditions' /></a>
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt='' />

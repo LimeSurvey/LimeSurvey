@@ -26,9 +26,6 @@
 class Usergroups extends Survey_Common_Action
 {
 
-    private $headersent;
-    private $footersent;
-
     /**
      * Usergroups::mail()
      * Function responsible to send an e-mail to a user group.
@@ -41,11 +38,7 @@ class Usergroups extends Survey_Common_Action
         $ugid = sanitize_int($ugid);
         $clang = Yii::app()->lang;
 
-
-        $this->_sendHeaders($ugid);
         $action = CHttpRequest::getPost("action");
-        $this->_renderUserGroupBar($ugid);
-
 
         if ($action == "mailsendusergroup") {
 
@@ -57,7 +50,8 @@ class Usergroups extends Survey_Common_Action
             //$this->load->model('user_in_groups');
             $result = User_in_groups::model()->getSomeRecords(array('uid'), array('ugid' => $ugid, 'uid' => Yii::app()->session['loginID']));
 
-            if (count($result) > 0 || Yii::app()->session['loginID'] == 1) {
+            if (count($result) > 0 || Yii::app()->session['loginID'] == 1)
+            {
                 $where = array('and', 'ugid =' . $ugid, 'b.uid !=' . Yii::app()->session['loginID']);
                 $join = array('where' => "{{users}} b", 'on' => 'a.uid = b.uid');
                 $eguresult = User_in_groups::model()->join(array('*'), "{{user_in_groups}} AS a", $where, $join, 'b.users_name');
@@ -102,7 +96,7 @@ class Usergroups extends Survey_Common_Action
 
                 //echo $body . '-'.$subject .'-'.'<pre>'.htmlspecialchars($to).'</pre>'.'-'.$from;
                 if (SendEmailMessage($body, $subject, $to, $from, '')) {
-                    $this->index($ugid, array("type" => "success", "message" => "Message(s) sent successfully!"));
+                    list($aViewUrls, $aData) = $this->index($ugid, array("type" => "success", "message" => "Message(s) sent successfully!"));
                 }
                 else
                 {
@@ -114,30 +108,28 @@ class Usergroups extends Survey_Common_Action
                     //$maildebugbody = (isset($maildebugbody)) ? $maildebugbody : 'an unknown error accourd';
                     $headercfg["type"] = "warning";
                     $headercfg["message"] = sprintf($clang->gT("Email to %s failed. Error Message:"), $to) . " " . $maildebug;
-                    $this->index($ugid, $headercfg);
+                    list($aViewUrls, $aData) = $this->index($ugid, $headercfg);
                 }
             }
             else
             {
-                //include("access_denied.php");
+                die();
             }
 
         }
         else
         {
-            //$this->load->model('user_groups');
             $where = array('and', 'a.ugid =' . $ugid, 'uid =' . Yii::app()->session['loginID']);
             $join = array('where' => "{{user_in_groups}} AS b", 'on' => 'a.ugid = b.ugid');
             $result = User_groups::model()->join(array('a.ugid', 'a.name', 'a.owner_id', 'b.uid'), "{{user_groups}} AS a", $where, $join, 'name');
 
             $crow = $result;
-            $data['ugid'] = $ugid;
-            $data['clang'] = $clang;
+            $aData['ugid'] = $ugid;
 
-            $this->getController()->render("/admin/usergroup/mailUserGroup_view", $data);
+            $aViewUrls = 'mailUserGroup_view';
         }
 
-        $this->_sendFooters();
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     /**
@@ -150,7 +142,8 @@ class Usergroups extends Survey_Common_Action
         $clang = Yii::app()->lang;
         $action = $_POST['action'];
         $ugid = $_POST['ugid'];
-        $this->_sendHeaders($ugid);
+        $aViewUrls = array();
+        $aData = array();
 
         if ($action == "delusergroup") {
 
@@ -161,27 +154,27 @@ class Usergroups extends Survey_Common_Action
                     if ($result->count() > 0) {
                         $delquery_result = User_groups::model()->deleteGroup($ugid, Yii::app()->session["loginID"]);
 
-                        // $del_user_in_groups_query = "DELETE FROM ".Yii::app()->db->tablePrefix."user_in_groups WHERE ugid=$ugid AND uid=".Yii::app()->session['loginID'];
+                        // $del_user_in_groups_query = "DELETE FROM {{user_in_groups}} WHERE ugid=$ugid AND uid=".Yii::app()->session['loginID'];
 
                         if ($delquery_result) //Checked)
                         {
-                            $this->index(false, array("type" => "success", "message" => $clang->gT("Success!")));
+                            list($aViewUrls, $aData) = $this->index(false, array("type" => "success", "message" => $clang->gT("Success!")));
                         }
                         else
                         {
-                            $this->index(false, array("type" => "warning", "message" => $clang->gT("Could not delete user group.")));
+                            list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Could not delete user group.")));
                         }
                     }
                 }
                 else
                 {
-                    $this->index($ugid, array("type" => "warning", "message" => $clang->gT("Could not delete user group. No group selected.")));
+                    list($aViewUrls, $aData) = $this->index($ugid, array("type" => "warning", "message" => $clang->gT("Could not delete user group. No group selected.")));
                 }
             }
 
         }
 
-        $this->_sendFooters();
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
 
@@ -189,13 +182,10 @@ class Usergroups extends Survey_Common_Action
     {
         $clang = Yii::app()->lang;
 
-        $this->_sendHeaders(false);
         $action = (isset($_POST['action'])) ? $_POST['action'] : '';
+        $aData = array();
 
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) {
-
-            $this->_sendHeaders(false);
-            $data['clang'] = $clang;
 
             if ($action == "usergroupindb") {
 
@@ -205,7 +195,7 @@ class Usergroups extends Survey_Common_Action
 
                     if (isset($db_group_name) && strlen($db_group_name) > 0) {
                         if (strlen($db_group_name) > 21) {
-                            $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add Group! Group name length more than 20 characters.")));
+                            list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add Group! Group name length more than 20 characters.")));
 
                         }
                         else
@@ -214,28 +204,28 @@ class Usergroups extends Survey_Common_Action
                             $ugid = User_groups::model()->addGroup($db_group_name, $db_group_description);
 
                             if ($ugid > 0) {
-                                $this->index($ugid, array("type" => "success", "message" => $clang->gT("User Group successfully added!")));
+                                list($aViewUrls, $aData) = $this->index($ugid, array("type" => "success", "message" => $clang->gT("User Group successfully added!")));
                             }
                             else
                             {
-                                $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add Group! Group already exists.")));
+                                list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add Group! Group already exists.")));
                             }
                         }
 
                     }
                     else
                     {
-                        $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add Group! Group Name was not supplied.")));
+                        list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add Group! Group Name was not supplied.")));
                     }
                 }
             }
             else
             {
-                $this->getController()->render('/admin/usergroup/addUserGroup_view', $data);
+                $aViewUrls = 'addUserGroup_view';
             }
         }
 
-        $this->_sendFooters();
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     /**
@@ -251,42 +241,40 @@ class Usergroups extends Survey_Common_Action
         $action = (isset($_POST['action'])) ? $_POST['action'] : '';
         $this->_sendHeaders($ugid);
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) {
-            $data['clang'] = $clang;
             if ($action == "editusergroupindb") {
-                if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) {
-                    $ugid = $_POST['ugid'];
 
-                    $db_name = $_POST['name'];
-                    $db_description = $_POST['description'];
+                $ugid = $_POST['ugid'];
 
-                    if (User_groups::model()->updateGroup($db_name, $db_description, $ugid)) {
-                        $headercfg["message"] = $clang->gT("Edit User Group Successfully!");
-                        $headercfg["type"] = "success";
-                    }
-                    else
-                    {
-                        $headercfg["message"] = $clang->gT("Failed to edit User Group!");
-                        $headercfg["type"] = "warning";
-                    }
-                    $this->index($ugid, $headercfg);
+                $db_name = $_POST['name'];
+                $db_description = $_POST['description'];
 
+                if (User_groups::model()->updateGroup($db_name, $db_description, $ugid)) {
+                    $headercfg["message"] = $clang->gT("Edit User Group Successfully!");
+                    $headercfg["type"] = "success";
                 }
+                else
+                {
+                    $headercfg["message"] = $clang->gT("Failed to edit User Group!");
+                    $headercfg["type"] = "warning";
+                }
+                list($aViewUrls, $aData) = $this->index($ugid, $headercfg);
+
             }
             else
             {
                 $result = User_groups::model()->requestEditGroup($ugid, Yii::app()->session['loginID']);
                 $esrow = $result->readAll();
-                $data['esrow'] = $esrow[0];
-                $data['ugid'] = $ugid;
-                $this->getController()->render("/admin/usergroup/editUserGroup_view", $data);
-                $this->_sendFooters();
+                $aData['esrow'] = $esrow[0];
+                $aData['ugid'] = $ugid;
+                $aViewUrls = 'editUserGroup_view';
             }
         }
+
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
 
     /**
-     * Usergroups::index()
      * Load viewing of a user group screen.
      * @param bool $ugid
      * @param array|bool $header (type=success, warning)(message=localized message)
@@ -296,34 +284,36 @@ class Usergroups extends Survey_Common_Action
     {
         if ($ugid != false)
             $ugid = (int)$ugid;
+
         if ($header)
-            $data["headercfg"] = $header;
+            $aData['headercfg'] = $header;
         else
-            $data = array();
+            $aData = array();
+
+        $aViewUrls = array();
+        $aData['ugid'] = $ugid;
 
         $clang = Yii::app()->lang;
-        $data["clang"] = $clang;
-        $this->_sendHeaders($ugid);
 
         if (Yii::app()->session['loginID']) {
 
             if ($ugid) {
                 $ugid = sanitize_int($ugid);
-                $data["usergroupid"] = $ugid;
+                $aData["usergroupid"] = $ugid;
                 $result = User_groups::model()->requestViewGroup($ugid, Yii::app()->session["loginID"]);
                 $crow = $result[0];
                 if ($result) {
-                    $data["groupfound"] = true;
-                    $data["groupname"] = $crow['name'];
+                    $aData["groupfound"] = true;
+                    $aData["groupname"] = $crow['name'];
                     if (!empty($crow['description']))
-                        $data["usergroupdescription"] = $crow['description'];
+                        $aData["usergroupdescription"] = $crow['description'];
                     else
-                        $data["usergroupdescription"] = "";
+                        $aData["usergroupdescription"] = "";
                 }
                 //$this->user_in_groups_model = new User_in_groups;
-                $eguquery = "SELECT * FROM " . Yii::app()->db->tablePrefix . "user_in_groups AS a INNER JOIN " . Yii::app()->db->tablePrefix . "users AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " ORDER BY b.users_name";
+                $eguquery = "SELECT * FROM {{user_in_groups}} AS a INNER JOIN {{users}} AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " ORDER BY b.users_name";
                 $eguresult = db_execute_assoc($eguquery);
-                $query2 = "SELECT ugid FROM " . Yii::app()->db->tablePrefix . "user_groups WHERE ugid = " . $ugid . " AND owner_id = " . Yii::app()->session['loginID'];
+                $query2 = "SELECT ugid FROM {{user_groups}} WHERE ugid = " . $ugid . " AND owner_id = " . Yii::app()->session['loginID'];
                 $result2 = db_select_limit_assoc($query2, 1);
                 $row2 = $result2->readAll();
                 $row = 1;
@@ -352,83 +342,28 @@ class Usergroups extends Survey_Common_Action
                     $userloop[$row]["email"] = $egurow['email'];
                     $row++;
                 }
-                $data["userloop"] = $userloop;
+                $aData["userloop"] = $userloop;
                 if (isset($row2[0]['ugid'])) {
-                    $data["useradddialog"] = true;
-                    $data["useraddusers"] = getgroupuserlist($ugid, 'optionlist');
-                    $data["useraddurl"] = "";
+                    $aData["useradddialog"] = true;
+                    $aData["useraddusers"] = getgroupuserlist($ugid, 'optionlist');
+                    $aData["useraddurl"] = "";
                 }
 
-                //$data['display'] = $editsurvey;
-                // $this->getController()->render('/survey_view',$displaydata);
-                $this->getController()->render('/admin/usergroup/viewUserGroup_view', $data);
+                $aViewUrls[] = 'viewUserGroup_view';
             }
         }
 
-        $this->_sendFooters();
-    }
-
-    private function _sendHeaders($ugid = false)
-    {
-        if (!$this->headersent) {
-            if ($ugid)
-                $ugid = sanitize_int($ugid);
-            else
-                $ugid = false;
-            $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
-            $this->getController()->_js_admin_includes(Yii::app()->baseUrl . 'scripts/admin/users.js');
-            $this->getController()->_getAdminHeader();
-            $this->getController()->_showadminmenu(false);
-            $this->_renderUserGroupBar($ugid);
-            $this->headersent = true;
+        if (!empty($headers))
+        {
+            return array($aViewUrls, $aData);
         }
-    }
-
-    private function _sendFooters()
-    {
-        if (!$this->footersent) {
-            $this->getController()->_loadEndScripts();
-            $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
-            $this->footersent = true;
+        else
+        {
+            $this->_renderWrappedTemplate($aViewUrls, $aData);
         }
     }
 
     /**
-     * Usergroups::_usergroupbar()
-     * Load menu bar of user group controller.
-     * @param bool $ugid
-     * @return void
-     */
-    private function _renderUserGroupBar($ugid = false)
-    {
-        $data['clang'] = Yii::app()->lang;
-        Yii::app()->loadHelper('database');
-        if ($ugid) {
-            $grpquery = "SELECT gp.* FROM " . Yii::app()->db->tablePrefix . "user_groups AS gp, " . Yii::app()->db->tablePrefix . "user_in_groups AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = $ugid AND gu.uid=" . Yii::app()->session['loginID'];
-            $grpresult = db_execute_assoc($grpquery);
-            $grpresultcount = db_records_count($grpquery);
-
-            if ($grpresultcount > 0) {
-                $grow = array_map('htmlspecialchars', $grpresult->read());
-            }
-            else
-            {
-                $grow = false;
-            }
-
-            $data['grow'] = $grow;
-            $data['grpresultcount'] = $grpresultcount;
-
-        }
-
-        $data['ugid'] = $ugid;
-
-
-        $this->getController()->render('/admin/usergroup/usergroupbar_view', $data);
-    }
-
-    /**
-     * Usergroups::_updateusergroup()
      * Function responsible to update a user group.
      * @param mixed $name
      * @param mixed $description
@@ -437,7 +372,7 @@ class Usergroups extends Survey_Common_Action
      */
     private function _updateUserGroup($name, $description, $ugid)
     {
-        $query = 'UPDATE ' . Yii::app()->db->tablePrefix . 'user_groups SET name=\'' . $name . '\', description=\'' . $description . '\' WHERE ugid=\'' . $ugid . '\'';
+        $query = 'UPDATE {{user_groups}} SET name=\'' . $name . '\', description=\'' . $description . '\' WHERE ugid=\'' . $ugid . '\'';
         //$this->load->model('user_groups');
         //$uquery = $this->user_groups_model->update(array('name' => $name, 'description' => $description), array('ugid' => $ugid));
         $uquery = db_execute_assoc($query);
@@ -445,7 +380,6 @@ class Usergroups extends Survey_Common_Action
     }
 
     /**
-     * Usergroups::_refreshtemplates()
      * Function to refresh templates.
      * @return
      */
@@ -460,17 +394,33 @@ class Usergroups extends Survey_Common_Action
             $result = $this->templates_model->getAllRecords_like(array('folder' => $tp));
 
             if ($result->num_rows() == 0) {
-                $data = array(
+                $aData = array(
                     'folder' => $tp,
                     'creator' => $this->session->userdata('loginID')
                 );
 
                 $this->load->model('templates_model');
-                $this->templates_model->insertRecords($data);
+                $this->templates_model->insertRecords($aData);
 
                 //db_execute_assoc($query2); //Checked
             }
         }
         return true;
+    }
+
+    /**
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    {
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
+        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . 'scripts/admin/users.js');
+
+        $aData['display']['menu_bars']['user_group'] = true;
+
+        parent::_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
     }
 }

@@ -32,10 +32,12 @@ class Survey_Common_Action extends CAction
      */
 	public function runWithParams($params)
 	{
+        $sDefault = 'index';
+
         // Check for a subaction
         if (empty($params['sa']))
         {
-            $sSubAction = 'index'; // default
+            $sSubAction = $sDefault; // default
         }
 
         // sa made it somehow into the url, try to fix it
@@ -64,18 +66,18 @@ class Survey_Common_Action extends CAction
 		$oClass = new ReflectionClass($this);
         if (!$oClass->hasMethod($sSubAction))
         {
-            return parent::runWithParams($params);
+            $sSubAction = 'run';
         }
+
+        $params = $this->_addPseudoParams($params);
 
         // Check if the method is public and of the action class, not its parents
         $oMethod  = new ReflectionMethod($this, $sSubAction);
         $aActions = Yii::app()->getController()->getActionClasses();
         if(empty($aActions[$this->getId()]) || strtolower($oMethod->getDeclaringClass()->name) != $aActions[$this->getId()] || !$oMethod->isPublic())
         {
-            return parent::runWithParams($params);
+            $oMethod = new ReflectionMethod($this, $sDefault);
         }
-
-        $params = $this->_addPseudoParams($params);
 
         // We're all good to go, let's execute it
         return parent::runWithParamsInternal($this, $oMethod, $params);
@@ -98,6 +100,8 @@ class Survey_Common_Action extends CAction
             'action' => 'sAction',
             'lang' => 'sLanguage',
             'browselang' => 'sBrowseLang',
+            'tokenids' => 'aTokenIds',
+            'tokenid' => 'iTokenId'
         );
 
         foreach ($pseudos as $key => $pseudo)
@@ -182,7 +186,7 @@ class Survey_Common_Action extends CAction
                 if (isset($aData['display']['menu_bars']['surveysummary']))
                 {
 
-                    if (empty($aData['display']['menu_bars']['surveysummary']) && !empty($aData['gid']))
+                    if ((empty($aData['display']['menu_bars']['surveysummary']) || !is_string($aData['display']['menu_bars']['surveysummary'])) && !empty($aData['gid']))
                     {
                         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
                     }
@@ -825,7 +829,7 @@ class Survey_Common_Action extends CAction
 //
         $aData['tableusage'] = false;
 
-        if ($action !== true && in_array($action, array('deactivate', 'activate', 'surveysecurity', 'editdefaultvalues', 'editemailtemplates',
+        if (in_array($action, array('deactivate', 'activate', 'surveysecurity', 'editdefaultvalues', 'editemailtemplates',
          'surveyrights', 'addsurveysecurity', 'addusergroupsurveysecurity',
          'setsurveysecurity', 'setusergroupsurveysecurity', 'delsurveysecurity',
          'editsurveysettings', 'editsurveylocalesettings', 'updatesurveysettingsandeditlocalesettings', 'addgroup', 'importgroup',
