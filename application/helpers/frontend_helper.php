@@ -233,7 +233,7 @@ function makelanguagechanger($baselang)
         if ($_REQUEST['action']=='previewgroup')
             $previewgrp = true;
 
-    if (!empty($slangs))
+    if (!empty($slangs) && $slangs[0]!='')
     {
         if (isset($_SESSION['s_lang']) && $_SESSION['s_lang'] != '')
         {

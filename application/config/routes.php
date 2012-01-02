@@ -68,7 +68,7 @@ $route['admin/question/editquestion/(:num)/(:num)/(:num)'] = "admin/question/ind
 $route['admin/labels/<action:\w+>'] = "admin/labels/index/<action>";
 $route['admin/labels/<action:\w+>/<lid:\d+>'] = "admin/labels/index/<action>/<id>";
 
-$route['<controller:\w+>/<action:\w+>/index'] = '<controller>/<action>';
+$route['<controller:\w+>/<action:\w+>'] = '<controller>/<action>';
 
 //Expression Manager tests
 $route['admin/expressions'] = "admin/expressions/index";
