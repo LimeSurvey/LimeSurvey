@@ -715,7 +715,7 @@ class SurveyAction extends Survey_Common_Action
         //!!! Is this even possible to execute?
         if (empty(Yii::app()->session['USER_RIGHT_SUPERADMIN']))
             $surveys->permission(Yii::app()->user->getId());
-        $surveys = $surveys->findAll();
+        $surveys = $surveys->with('languagesettings', 'owner')->findAll();
 
         $aSurveyEntries->page = $page;
         $aSurveyEntries->records = count($surveys);
@@ -724,6 +724,8 @@ class SurveyAction extends Survey_Common_Action
         {
             $aSurveyEntry = array();
             $rows = $surveys[$j];
+            $rows = array_merge($rows->attributes, $rows->languagesettings->attributes, $rows->owner->attributes);
+
             // Set status
             if ($rows['active'] == "Y" && $rows['expires'] != '' && $rows['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')))
             {
@@ -797,8 +799,8 @@ class SurveyAction extends Survey_Common_Action
             //Set Responses
             if ($rows['active'] == "Y")
             {
-                $partial = Survey_dynamics::model($rows['sid'])->countByAttributes(array('submitdate' => null));
-                $all = Survey_dynamics::model($rows['sid'])->count();
+                $partial = Survey_dynamic::model($rows['sid'])->countByAttributes(array('submitdate' => null));
+                $all = Survey_dynamic::model($rows['sid'])->count();
 
                 $aSurveyEntry[] = $all - $partial;
                 $aSurveyEntry[] = $partial;
