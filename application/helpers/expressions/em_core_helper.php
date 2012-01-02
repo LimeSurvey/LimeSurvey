@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -10,44 +10,45 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
+ *	$Id: ExpressionManager.php 11256 2011-10-25 13:52:18Z c_schmitz $
  */
 /**
  * Description of ExpressionManager
  * (1) Does safe evaluation of PHP expressions.  Only registered Functions, and known Variables are allowed.
  *   (a) Functions include any math, string processing, conditional, formatting, etc. functions
- *   (b) Variables are typically the question name (question.title) - they can be read/write
- * (2) This class can replace LimeSurvey's current process of resolving strings that contain LimeReplacementFields
+ * (2) This class replaces LimeSurvey's <= 1.91+  process of resolving strings that contain LimeReplacementFields
  *   (a) String is split by expressions (by curly braces, but safely supporting strings and escaped curly braces)
  *   (b) Expressions (things surrounded by curly braces) are evaluated - thereby doing LimeReplacementField substitution and/or more complex calculations
  *   (c) Non-expressions are left intact
  *   (d) The array of stringParts are re-joined to create the desired final string.
+ * (3) The core of Expression Manager is a Recursive Descent Parser (RDP), based off of one build via JavaCC by TMSWhite in 1999.
+ *   (a) Functions that start with RDP_ should not be touched unless you really understand compiler design.
  *
  * @author Thomas M. White (TMSWhite)
  */
 
 class ExpressionManager {
     // These are the allowable suffixes for variables - each represents an attribute of a variable.
-    private static $regex_var_attr = 'codeValue|code|displayValue|groupSeq|jsName|mandatory|NAOK|qid|questionSeq|question|readWrite|relevanceNum|relevanceStatus|relevance|sgqa|shown|type';
+    private static $RDP_regex_var_attr = 'code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value';
 
     // These three variables are effectively static once constructed
-    private $sExpressionRegex;
-    private $asTokenType;
-    private $sTokenizerRegex;
-    private $asCategorizeTokensRegex;
-    private $amValidFunctions; // names and # params of valid functions
-    private $amVars;    // names and values of valid variables
+    private $RDP_ExpressionRegex;
+    private $RDP_TokenType;
+    private $RDP_TokenizerRegex;
+    private $RDP_CategorizeTokensRegex;
+    private $RDP_ValidFunctions; // names and # params of valid functions
+    private $RDP_Vars;    // names and values of valid variables
 
     // Thes variables are used while  processing the equation
-    private $expr;  // the source expression
-    private $tokens;    // the list of generated tokens
-    private $count; // total number of $tokens
-    private $pos;   // position within the $token array while processing equation
-    private $errs;    // array of syntax errors
-    private $onlyparse;
-    private $stack; // stack of intermediate results
-    private $result;    // final result of evaluating the expression;
-    private $evalStatus;    // true if $result is a valid result, and  there are no serious errors
+    private $RDP_expr;  // the source expression
+    private $RDP_tokens;    // the list of generated tokens
+    private $RDP_count; // total number of $RDP_tokens
+    private $RDP_pos;   // position within the $token array while processing equation
+    private $RDP_errs;    // array of syntax errors
+    private $RDP_onlyparse;
+    private $RDP_stack; // stack of intermediate results
+    private $RDP_result;    // final result of evaluating the expression;
+    private $RDP_evalStatus;    // true if $RDP_result is a valid result, and  there are no serious errors
     private $varsUsed;  // list of variables referenced in the equation
 
     // These  variables are only used by sProcessStringContainingExpressions
@@ -59,52 +60,59 @@ class ExpressionManager {
 
     private $questionSeq;   // sequence order of question - so can detect if try to use variable before it is set
     private $groupSeq;  // sequence order of groups - so can detect if try to use variable before it is set
+    private $allOnOnePage=false;
+    
+    // The following are only needed to enable click on variable names within pretty print and open new window to edit them
+    private $sid=NULL; // the survey ID
+    private $rooturl='';    // the root URL for LimeSurvey
+    private $hyperlinkSyntaxHighlighting=false;
 
     function __construct()
     {
         // List of token-matching regular expressions
-        $regex_dq_string = '(?<!\\\\)".*?(?<!\\\\)"';
-        $regex_sq_string = '(?<!\\\\)\'.*?(?<!\\\\)\'';
-        $regex_whitespace = '\s+';
-        $regex_lparen = '\(';
-        $regex_rparen = '\)';
-        $regex_comma = ',';
-        $regex_not = '!';
-        $regex_inc_dec = '\+\+|--';
-        $regex_binary = '[+*/-]';
-        $regex_compare = '<=|<|>=|>|==|!=|\ble\b|\blt\b|\bge\b|\bgt\b|\beq\b|\bne\b';
-        $regex_assign = '=|\+=|-=|\*=|/=';
-        $regex_sgqa = '(?:INSERTANS:)?[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[01]?';
-        $regex_word = '(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:' . ExpressionManager::$regex_var_attr . '))?';
-        $regex_number = '[0-9]+\.?[0-9]*|\.[0-9]+';
-        $regex_andor = '\band\b|\bor\b|&&|\|\|';
+        // Note, this is effectively a Lexer using Regular Expressions.  Don't change this unless you understand compiler design.
+        $RDP_regex_dq_string = '(?<!\\\\)".*?(?<!\\\\)"';
+        $RDP_regex_sq_string = '(?<!\\\\)\'.*?(?<!\\\\)\'';
+        $RDP_regex_whitespace = '\s+';
+        $RDP_regex_lparen = '\(';
+        $RDP_regex_rparen = '\)';
+        $RDP_regex_comma = ',';
+        $RDP_regex_not = '!';
+        $RDP_regex_inc_dec = '\+\+|--';
+        $RDP_regex_binary = '[+*/-]';
+        $RDP_regex_compare = '<=|<|>=|>|==|!=|\ble\b|\blt\b|\bge\b|\bgt\b|\beq\b|\bne\b';
+        $RDP_regex_assign = '=|\+=|-=|\*=|/=';
+        $RDP_regex_sgqa = '(?:INSERTANS:)?[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[01]?';
+        $RDP_regex_word = '(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:' . ExpressionManager::$RDP_regex_var_attr . '))?';
+        $RDP_regex_number = '[0-9]+\.?[0-9]*|\.[0-9]+';
+        $RDP_regex_andor = '\band\b|\bor\b|&&|\|\|';
 
-        $this->sExpressionRegex = '#((?<!\\\\)' . '{' . '(?!\s*\n\|\s*\r\|\s*\r\n|\s+)' .
+        $this->RDP_ExpressionRegex = '#((?<!\\\\)' . '{' . '(?!\s*\n\|\s*\r\|\s*\r\n|\s+)' .
+//                '(' . $RDP_regex_dq_string . '|' . $RDP_regex_sq_string . '|.*?)*' .    // This line lets you have braces embedded in strings - like RegExp - but it crashes the compiler when there are many tokens
                 '.*?' .
-//                '(' . $regex_dq_string . '|' . $regex_sq_string . '|.*?)*' .  // this led to parsing failures when there were more than about 10 SGQA + strings in an expression
                 '(?<!\\\\)(?<!\n|\r|\r\n|\s)' . '}' . ')#';
 
 
-        // asTokenRegex and asTokenType must be kept in sync  (same number and order)
-        $asTokenRegex = array(
-            $regex_dq_string,
-            $regex_sq_string,
-            $regex_whitespace,
-            $regex_lparen,
-            $regex_rparen,
-            $regex_comma,
-            $regex_andor,
-            $regex_compare,
-            $regex_sgqa,
-            $regex_word,
-            $regex_number,
-            $regex_not,
-            $regex_inc_dec,
-            $regex_assign,
-            $regex_binary,
+        // asTokenRegex and RDP_TokenType must be kept in sync  (same number and order)
+    $RDP_TokenRegex = array(
+            $RDP_regex_dq_string,
+            $RDP_regex_sq_string,
+            $RDP_regex_whitespace,
+            $RDP_regex_lparen,
+            $RDP_regex_rparen,
+            $RDP_regex_comma,
+            $RDP_regex_andor,
+            $RDP_regex_compare,
+            $RDP_regex_sgqa,
+            $RDP_regex_word,
+            $RDP_regex_number,
+            $RDP_regex_not,
+            $RDP_regex_inc_dec,
+            $RDP_regex_assign,
+            $RDP_regex_binary,
             );
 
-        $this->asTokenType = array(
+        $this->RDP_TokenType = array(
             'DQ_STRING',
             'SQ_STRING',
             'SPACE',
@@ -122,97 +130,94 @@ class ExpressionManager {
             'BINARYOP',
            );
 
-        // $sTokenizerRegex - a single regex used to split and equation into tokens
-        $this->sTokenizerRegex = '#(' . implode('|',$asTokenRegex) . ')#i';
+        // $RDP_TokenizerRegex - a single regex used to split and equation into tokens
+        $this->RDP_TokenizerRegex = '#(' . implode('|',$RDP_TokenRegex) . ')#i';
 
-        // $asCategorizeTokensRegex - an array of patterns so can categorize the type of token found - would be nice if could get this from preg_split
+        // $RDP_CategorizeTokensRegex - an array of patterns so can categorize the type of token found - would be nice if could get this from preg_split
         // Adding ability to capture 'OTHER' type, which indicates an error - unsupported syntax element
-        $this->asCategorizeTokensRegex = preg_replace("#^(.*)$#","#^$1$#i",$asTokenRegex);
-        $this->asCategorizeTokensRegex[] = '/.+/';
-        $this->asTokenType[] = 'OTHER';
-
-        $clang = Yii::app()->lang;
+        $this->RDP_CategorizeTokensRegex = preg_replace("#^(.*)$#","#^$1$#i",$RDP_TokenRegex);
+        $this->RDP_CategorizeTokensRegex[] = '/.+/';
+        $this->RDP_TokenType[] = 'OTHER';
 
         // Each allowed function is a mapping from local name to external name + number of arguments
         // Functions can have a list of serveral allowable #s of arguments.
         // If the value is -1, the function must have a least one argument but can have an unlimited number of them
         // -2 means that at least one argument is required.  -3 means at least two arguments are required, etc.
-        $this->amValidFunctions = array(
-'abs' => array('abs', 'Math.abs', $clang->gT('Absolute value'), 'number abs(number)', 'http://www.php.net/manual/en/function.checkdate.php', 1),
-'acos' => array('acos', 'Math.acos', $clang->gT('Arc cosine'), 'number acos(number)', 'http://www.php.net/manual/en/function.acos.php', 1),
-'addslashes' => array('addslashes', $clang->gT('addslashes'), 'Quote string with slashes', 'string addslashes(string)', 'http://www.php.net/manual/en/function.addslashes.php', 1),
-'asin' => array('asin', 'Math.asin', $clang->gT('Arc sine'), 'number asin(number)', 'http://www.php.net/manual/en/function.asin.php', 1),
-'atan' => array('atan', 'Math.atan', $clang->gT('Arc tangent'), 'number atan(number)', 'http://www.php.net/manual/en/function.atan.php', 1),
-'atan2' => array('atan2', 'Math.atan2', $clang->gT('Arc tangent of two variables'), 'number atan2(number, number)', 'http://www.php.net/manual/en/function.atan2.php', 2),
-'ceil' => array('ceil', 'Math.ceil', $clang->gT('Round fractions up'), 'number ceil(number)', 'http://www.php.net/manual/en/function.ceil.php', 1),
-'checkdate' => array('checkdate', 'checkdate', $clang->gT('Returns true(1) if it is a valid date in gregorian calendar'), 'bool checkdate(month,day,year)', 'http://www.php.net/manual/en/function.checkdate.php', 3),
-'cos' => array('cos', 'Math.cos', $clang->gT('Cosine'), 'number cos(number)', 'http://www.php.net/manual/en/function.cos.php', 1),
-'count' => array('exprmgr_count', 'LEMcount', $clang->gT('Count the number of answered questions in the list'), 'number count(arg1, arg2, ... argN)', '', -1),
-'date' => array('date', 'date', $clang->gT('Format a local date/time'), 'string date(format [, timestamp=time()])', 'http://www.php.net/manual/en/function.date.php', 1,2),
-'exp' => array('exp', 'Math.exp', $clang->gT('Calculates the exponent of e'), 'number exp(number)', 'http://www.php.net/manual/en/function.exp.php', 1),
-'floor' => array('floor', 'Math.floor', $clang->gT('Round fractions down'), 'number floor(number)', 'http://www.php.net/manual/en/function.floor.php', 1),
-'gmdate' => array('gmdate', 'gmdate', $clang->gT('Format a GMT date/time'), 'string gmdate(format [, timestamp=time()])', 'http://www.php.net/manual/en/function.gmdate.php', 1,2),
-'html_entity_decode' => array('html_entity_decode', 'html_entity_decode', $clang->gT('Convert all HTML entities to their applicable characters (always uses ENT_QUOTES and UTF-8)'), 'string html_entity_decode(string)', 'http://www.php.net/manual/en/function.html-entity-decode.php', 1),
-'htmlentities' => array('htmlentities', 'htmlentities', $clang->gT('Convert all applicable characters to HTML entities (always uses ENT_QUOTES and UTF-8)'), 'string htmlentities(string)', 'http://www.php.net/manual/en/function.htmlentities.php', 1),
-'htmlspecialchars' => array('expr_mgr_htmlspecialchars', 'htmlspecialchars', $clang->gT('Convert special characters to HTML entities (always uses ENT_QUOTES and UTF-8)'), 'string htmlspecialchars(string)', 'http://www.php.net/manual/en/function.htmlspecialchars.php', 1),
-'htmlspecialchars_decode' => array('expr_mgr_htmlspecialchars_decode', 'htmlspecialchars_decode', $clang->gT('Convert special HTML entities back to characters (always uses ENT_QUOTES and UTF-8)'), 'string htmlspecialchars_decode(string)', 'http://www.php.net/manual/en/function.htmlspecialchars-decode.php', 1),
-'idate' => array('idate', 'idate', $clang->gT('Format a local time/date as integer'), 'string idate(string [, timestamp=time()])', 'http://www.php.net/manual/en/function.idate.php', 1,2),
-'if' => array('exprmgr_if', 'LEMif', $clang->gT('Conditional processing'), 'if(test,result_if_true,result_if_false)', '', 3),
-'implode' => array('exprmgr_implode', 'LEMimplode', $clang->gT('Join array elements with a string'), 'string implode(glue,arg1,arg2,...,argN)', 'http://www.php.net/manual/en/function.implode.php', -2),
-'intval' => array('intval', 'LEMintval', $clang->gT('Get the integer value of a variable'), 'int intval(number [, base=10])', 'http://www.php.net/manual/en/function.intval.php', 1,2),
-'is_bool' => array('is_bool', 'is_bool', $clang->gT('Finds out whether a variable is a boolean'), 'bool is_bool(var)', 'http://www.php.net/manual/en/function.is-bool.php', 1),
-'is_empty' => array('exprmgr_empty', 'LEMempty', $clang->gT('Determine whether a variable is considered to be empty'), 'bool is_empty(var)', 'http://www.php.net/manual/en/function.empty.php', 1),
-'is_float' => array('is_float', 'LEMis_float', $clang->gT('Finds whether the type of a variable is float'), 'bool is_float(var)', 'http://www.php.net/manual/en/function.is-float.php', 1),
-'is_int' => array('is_int', 'LEMis_int', $clang->gT('Find whether the type of a variable is integer'), 'bool is_int(var)', 'http://www.php.net/manual/en/function.is-int.php', 1),
-'is_nan' => array('is_nan', 'isNaN', $clang->gT('Finds whether a value is not a number'), 'bool is_nan(var)', 'http://www.php.net/manual/en/function.is-nan.php', 1),
-'is_null' => array('is_null', 'LEMis_null', $clang->gT('Finds whether a variable is NULL'), 'bool is_null(var)', 'http://www.php.net/manual/en/function.is-null.php', 1),
-'is_numeric' => array('is_numeric', 'LEMis_numeric', $clang->gT('Finds whether a variable is a number or a numeric string'), 'bool is_numeric(var)', 'http://www.php.net/manual/en/function.is-numeric.php', 1),
-'is_string' => array('is_string', 'LEMis_string', $clang->gT('Find whether the type of a variable is string'), 'bool is_string(var)', 'http://www.php.net/manual/en/function.is-string.php', 1),
-'list' => array('exprmgr_list', 'LEMlist', $clang->gT('Return comma-separated list of values'), 'string list(arg1, arg2, ... argN)', '', -2),
-'log' => array('log', 'Math.log', $clang->gT('Natural logarithm'), 'number log(number)', 'http://www.php.net/manual/en/function.log.php', 1),
-'ltrim' => array('ltrim', 'ltrim', $clang->gT('Strip whitespace (or other characters) from the beginning of a string'), 'string ltrim(string [, charlist])', 'http://www.php.net/manual/en/function.ltrim.php', 1,2),
-'max' => array('max', 'Math.max', $clang->gT('Find highest value'), 'number max(arg1, arg2, ... argN)', 'http://www.php.net/manual/en/function.max.php', -2),
-'min' => array('min', 'Math.min', $clang->gT('Find lowest value'), 'number min(arg1, arg2, ... argN)', 'http://www.php.net/manual/en/function.min.php', -2),
-'mktime' => array('mktime', 'mktime', $clang->gT('Get UNIX timestamp for a date (each of the 6 arguments are optional)'), 'number mktime([hour [, minute [, second [, month [, day [, year ]]]]]])', 'http://www.php.net/manual/en/function.mktime.php', 0,1,2,3,4,5,6),
-'nl2br' => array('nl2br', 'nl2br', $clang->gT('Inserts HTML line breaks before all newlines in a string'), 'string nl2br(string)', 'http://www.php.net/manual/en/function.nl2br.php', 1,1),
-'number_format' => array('number_format', 'number_format', $clang->gT('Format a number with grouped thousands'), 'string number_format(number)', 'http://www.php.net/manual/en/function.number-format.php', 1),
-'pi' => array('pi', 'LEMpi', $clang->gT('Get value of pi'), 'number pi()', '', 0),
-'pow' => array('pow', 'Math.pow', $clang->gT('Exponential expression'), 'number pow(base, exp)', 'http://www.php.net/manual/en/function.pow.php', 2),
-'quoted_printable_decode' => array('quoted_printable_decode', 'quoted_printable_decode', $clang->gT('Convert a quoted-printable string to an 8 bit string'), 'string quoted_printable_decode(string)', 'http://www.php.net/manual/en/function.quoted-printable-decode.php', 1),
-'quoted_printable_encode' => array('quoted_printable_encode', 'quoted_printable_encode', $clang->gT('Convert a 8 bit string to a quoted-printable string'), 'string quoted_printable_encode(string)', 'http://www.php.net/manual/en/function.quoted-printable-encode.php', 1),
-'quotemeta' => array('quotemeta', 'quotemeta', $clang->gT('Quote meta characters'), 'string quotemeta(string)', 'http://www.php.net/manual/en/function.quotemeta.php', 1),
-'rand' => array('rand', 'Math.random', $clang->gT('Generate a random integer'), 'int rand() OR int rand(min, max)', 'http://www.php.net/manual/en/function.rand.php', 0,2),
-'regexMatch' => array('exprmgr_regexMatch', 'LEMregexMatch', $clang->gT('Compare a string to a regular expression pattern'), 'bool regexMatch(pattern,input)', '', 2),
-'round' => array('round', 'LEMround', $clang->gT('Rounds a number to an optional precision'), 'number round(val [, precision])', 'http://www.php.net/manual/en/function.round.php', 1,2),
-'rtrim' => array('rtrim', 'rtrim', $clang->gT('Strip whitespace (or other characters) from the end of a string'), 'string rtrim(string [, charlist])', 'http://www.php.net/manual/en/function.rtrim.php', 1,2),
-'sin' => array('sin', 'Math.sin', $clang->gT('Sine'), 'number sin(arg)', 'http://www.php.net/manual/en/function.sin.php', 1),
-'sprintf' => array('sprintf', 'sprintf', $clang->gT('Return a formatted string'), 'string sprintf(format, arg1, arg2, ... argN)', 'http://www.php.net/manual/en/function.sprintf.php', -2),
-'sqrt' => array('sqrt', 'Math.sqrt', $clang->gT('Square root'), 'number sqrt(arg)', 'http://www.php.net/manual/en/function.sqrt.php', 1),
-'stddev' => array('exprmgr_stddev', 'LEMstddev', $clang->gT('Calculate the Sample Standard Deviation for the list of numbers'), 'number stddev(arg1, arg2, ... argN)', '', -2),
-'str_pad' => array('str_pad', 'str_pad', $clang->gT('Pad a string to a certain length with another string'), 'string str_pad(input, pad_length [, pad_string])', 'http://www.php.net/manual/en/function.str-pad.php', 2,3),
-'str_repeat' => array('str_repeat', 'str_repeat', $clang->gT('Repeat a string'), 'string str_repeat(input, multiplier)', 'http://www.php.net/manual/en/function.str-repeat.php', 2),
-'str_replace' => array('str_replace', 'LEMstr_replace', $clang->gT('Replace all occurrences of the search string with the replacement string'), 'string str_replace(search,  replace, subject)', 'http://www.php.net/manual/en/function.str-replace.php', 3),
-'strcasecmp' => array('strcasecmp', 'strcasecmp', $clang->gT('Binary safe case-insensitive string comparison'), 'int strcasecmp(str1, str2)', 'http://www.php.net/manual/en/function.strcasecmp.php', 2),
-'strcmp' => array('strcmp', 'strcmp', $clang->gT('Binary safe string comparison'), 'int strcmp(str1, str2)', 'http://www.php.net/manual/en/function.strcmp.php', 2),
-'strip_tags' => array('strip_tags', 'strip_tags', $clang->gT('Strip HTML and PHP tags from a string'), 'string strip_tags(str, allowable_tags)', 'http://www.php.net/manual/en/function.strip-tags.php', 1,2),
-'stripos' => array('stripos', 'stripos', $clang->gT('Find position of first occurrence of a case-insensitive string'), 'int stripos(haystack, needle [, offset=0])', 'http://www.php.net/manual/en/function.stripos.php', 2,3),
-'stripslashes' => array('stripslashes', 'stripslashes', $clang->gT('Un-quotes a quoted string'), 'string stripslashes(string)', 'http://www.php.net/manual/en/function.stripslashes.php', 1),
-'stristr' => array('stristr', 'stristr', $clang->gT('Case-insensitive strstr'), 'string stristr(haystack, needle [, before_needle=false])', 'http://www.php.net/manual/en/function.stristr.php', 2,3),
-'strlen' => array('strlen', 'LEMstrlen', $clang->gT('Get string length'), 'int strlen(string)', 'http://www.php.net/manual/en/function.strlen.php', 1),
-'strpos' => array('strpos', 'LEMstrpos', $clang->gT('Find position of first occurrence of a string'), 'int strpos(haystack, needle [ offset=0])', 'http://www.php.net/manual/en/function.strpos.php', 2,3),
-'strrev' => array('strrev', 'strrev', $clang->gT('Reverse a string'), 'string strrev(string)', 'http://www.php.net/manual/en/function.strrev.php', 1),
-'strstr' => array('strstr', 'strstr', $clang->gT('Find first occurrence of a string'), 'string strstr(haystack, needle)', 'http://www.php.net/manual/en/function.strstr.php', 2),
-'strtolower' => array('strtolower', 'LEMstrtolower', $clang->gT('Make a string lowercase'), 'string strtolower(string)', 'http://www.php.net/manual/en/function.strtolower.php', 1),
-'strtoupper' => array('strtoupper', 'LEMstrtoupper', $clang->gT('Make a string uppercase'), 'string strtoupper(string)', 'http://www.php.net/manual/en/function.strtoupper.php', 1),
-'substr' => array('substr', 'substr', $clang->gT('Return part of a string'), 'string substr(string, start [, length])', 'http://www.php.net/manual/en/function.substr.php', 2,3),
-'sum' => array('array_sum', 'LEMsum', $clang->gT('Calculate the sum of values in an array'), 'number sum(arg1, arg2, ... argN)', '', -2),
-'tan' => array('tan', 'Math.tan', $clang->gT('Tangent'), 'number tan(arg)', 'http://www.php.net/manual/en/function.tan.php', 1),
-'time' => array('time', 'time', $clang->gT('Return current UNIX timestamp'), 'number time()', 'http://www.php.net/manual/en/function.time.php', 0),
-'trim' => array('trim', 'trim', $clang->gT('Strip whitespace (or other characters) from the beginning and end of a string'), 'string trim(string [, charlist])', 'http://www.php.net/manual/en/function.trim.php', 1,2),
-'ucwords' => array('ucwords', 'ucwords', $clang->gT('Uppercase the first character of each word in a string'), 'string ucwords(string)', 'http://www.php.net/manual/en/function.ucwords.php', 1),
+        $this->RDP_ValidFunctions = array(
+'abs' => array('abs', 'Math.abs', $this->gT('Absolute value'), 'number abs(number)', 'http://www.php.net/manual/en/function.checkdate.php', 1),
+'acos' => array('acos', 'Math.acos', $this->gT('Arc cosine'), 'number acos(number)', 'http://www.php.net/manual/en/function.acos.php', 1),
+'addslashes' => array('addslashes', $this->gT('addslashes'), 'Quote string with slashes', 'string addslashes(string)', 'http://www.php.net/manual/en/function.addslashes.php', 1),
+'asin' => array('asin', 'Math.asin', $this->gT('Arc sine'), 'number asin(number)', 'http://www.php.net/manual/en/function.asin.php', 1),
+'atan' => array('atan', 'Math.atan', $this->gT('Arc tangent'), 'number atan(number)', 'http://www.php.net/manual/en/function.atan.php', 1),
+'atan2' => array('atan2', 'Math.atan2', $this->gT('Arc tangent of two variables'), 'number atan2(number, number)', 'http://www.php.net/manual/en/function.atan2.php', 2),
+'ceil' => array('ceil', 'Math.ceil', $this->gT('Round fractions up'), 'number ceil(number)', 'http://www.php.net/manual/en/function.ceil.php', 1),
+'checkdate' => array('checkdate', 'checkdate', $this->gT('Returns true(1) if it is a valid date in gregorian calendar'), 'bool checkdate(month,day,year)', 'http://www.php.net/manual/en/function.checkdate.php', 3),
+'cos' => array('cos', 'Math.cos', $this->gT('Cosine'), 'number cos(number)', 'http://www.php.net/manual/en/function.cos.php', 1),
+'count' => array('exprmgr_count', 'LEMcount', $this->gT('Count the number of answered questions in the list'), 'number count(arg1, arg2, ... argN)', '', -1),
+'date' => array('date', 'date', $this->gT('Format a local date/time'), 'string date(format [, timestamp=time()])', 'http://www.php.net/manual/en/function.date.php', 1,2),
+'exp' => array('exp', 'Math.exp', $this->gT('Calculates the exponent of e'), 'number exp(number)', 'http://www.php.net/manual/en/function.exp.php', 1),
+'floor' => array('floor', 'Math.floor', $this->gT('Round fractions down'), 'number floor(number)', 'http://www.php.net/manual/en/function.floor.php', 1),
+'gmdate' => array('gmdate', 'gmdate', $this->gT('Format a GMT date/time'), 'string gmdate(format [, timestamp=time()])', 'http://www.php.net/manual/en/function.gmdate.php', 1,2),
+'html_entity_decode' => array('html_entity_decode', 'html_entity_decode', $this->gT('Convert all HTML entities to their applicable characters (always uses ENT_QUOTES and UTF-8)'), 'string html_entity_decode(string)', 'http://www.php.net/manual/en/function.html-entity-decode.php', 1),
+'htmlentities' => array('htmlentities', 'htmlentities', $this->gT('Convert all applicable characters to HTML entities (always uses ENT_QUOTES and UTF-8)'), 'string htmlentities(string)', 'http://www.php.net/manual/en/function.htmlentities.php', 1),
+'htmlspecialchars' => array('expr_mgr_htmlspecialchars', 'htmlspecialchars', $this->gT('Convert special characters to HTML entities (always uses ENT_QUOTES and UTF-8)'), 'string htmlspecialchars(string)', 'http://www.php.net/manual/en/function.htmlspecialchars.php', 1),
+'htmlspecialchars_decode' => array('expr_mgr_htmlspecialchars_decode', 'htmlspecialchars_decode', $this->gT('Convert special HTML entities back to characters (always uses ENT_QUOTES and UTF-8)'), 'string htmlspecialchars_decode(string)', 'http://www.php.net/manual/en/function.htmlspecialchars-decode.php', 1),
+'idate' => array('idate', 'idate', $this->gT('Format a local time/date as integer'), 'string idate(string [, timestamp=time()])', 'http://www.php.net/manual/en/function.idate.php', 1,2),
+'if' => array('exprmgr_if', 'LEMif', $this->gT('Conditional processing'), 'if(test,result_if_true,result_if_false)', '', 3),
+'implode' => array('exprmgr_implode', 'LEMimplode', $this->gT('Join array elements with a string'), 'string implode(glue,arg1,arg2,...,argN)', 'http://www.php.net/manual/en/function.implode.php', -2),
+'intval' => array('intval', 'LEMintval', $this->gT('Get the integer value of a variable'), 'int intval(number [, base=10])', 'http://www.php.net/manual/en/function.intval.php', 1,2),
+'is_empty' => array('exprmgr_empty', 'LEMempty', $this->gT('Determine whether a variable is considered to be empty'), 'bool is_empty(var)', 'http://www.php.net/manual/en/function.empty.php', 1),
+'is_float' => array('is_float', 'LEMis_float', $this->gT('Finds whether the type of a variable is float'), 'bool is_float(var)', 'http://www.php.net/manual/en/function.is-float.php', 1),
+'is_int' => array('is_int', 'LEMis_int', $this->gT('Find whether the type of a variable is integer'), 'bool is_int(var)', 'http://www.php.net/manual/en/function.is-int.php', 1),
+'is_nan' => array('is_nan', 'isNaN', $this->gT('Finds whether a value is not a number'), 'bool is_nan(var)', 'http://www.php.net/manual/en/function.is-nan.php', 1),
+'is_null' => array('is_null', 'LEMis_null', $this->gT('Finds whether a variable is NULL'), 'bool is_null(var)', 'http://www.php.net/manual/en/function.is-null.php', 1),
+'is_numeric' => array('is_numeric', 'LEMis_numeric', $this->gT('Finds whether a variable is a number or a numeric string'), 'bool is_numeric(var)', 'http://www.php.net/manual/en/function.is-numeric.php', 1),
+'is_string' => array('is_string', 'LEMis_string', $this->gT('Find whether the type of a variable is string'), 'bool is_string(var)', 'http://www.php.net/manual/en/function.is-string.php', 1),
+'list' => array('exprmgr_list', 'LEMlist', $this->gT('Return comma-separated list of values'), 'string list(arg1, arg2, ... argN)', '', -2),
+'log' => array('log', 'Math.log', $this->gT('Natural logarithm'), 'number log(number)', 'http://www.php.net/manual/en/function.log.php', 1),
+'ltrim' => array('ltrim', 'ltrim', $this->gT('Strip whitespace (or other characters) from the beginning of a string'), 'string ltrim(string [, charlist])', 'http://www.php.net/manual/en/function.ltrim.php', 1,2),
+'max' => array('max', 'Math.max', $this->gT('Find highest value'), 'number max(arg1, arg2, ... argN)', 'http://www.php.net/manual/en/function.max.php', -2),
+'min' => array('min', 'Math.min', $this->gT('Find lowest value'), 'number min(arg1, arg2, ... argN)', 'http://www.php.net/manual/en/function.min.php', -2),
+'mktime' => array('mktime', 'mktime', $this->gT('Get UNIX timestamp for a date (each of the 6 arguments are optional)'), 'number mktime([hour [, minute [, second [, month [, day [, year ]]]]]])', 'http://www.php.net/manual/en/function.mktime.php', 0,1,2,3,4,5,6),
+'nl2br' => array('nl2br', 'nl2br', $this->gT('Inserts HTML line breaks before all newlines in a string'), 'string nl2br(string)', 'http://www.php.net/manual/en/function.nl2br.php', 1,1),
+'number_format' => array('number_format', 'number_format', $this->gT('Format a number with grouped thousands'), 'string number_format(number)', 'http://www.php.net/manual/en/function.number-format.php', 1),
+'pi' => array('pi', 'LEMpi', $this->gT('Get value of pi'), 'number pi()', '', 0),
+'pow' => array('pow', 'Math.pow', $this->gT('Exponential expression'), 'number pow(base, exp)', 'http://www.php.net/manual/en/function.pow.php', 2),
+'quoted_printable_decode' => array('quoted_printable_decode', 'quoted_printable_decode', $this->gT('Convert a quoted-printable string to an 8 bit string'), 'string quoted_printable_decode(string)', 'http://www.php.net/manual/en/function.quoted-printable-decode.php', 1),
+'quoted_printable_encode' => array('quoted_printable_encode', 'quoted_printable_encode', $this->gT('Convert a 8 bit string to a quoted-printable string'), 'string quoted_printable_encode(string)', 'http://www.php.net/manual/en/function.quoted-printable-encode.php', 1),
+'quotemeta' => array('quotemeta', 'quotemeta', $this->gT('Quote meta characters'), 'string quotemeta(string)', 'http://www.php.net/manual/en/function.quotemeta.php', 1),
+'rand' => array('rand', 'Math.random', $this->gT('Generate a random integer'), 'int rand() OR int rand(min, max)', 'http://www.php.net/manual/en/function.rand.php', 0,2),
+'regexMatch' => array('exprmgr_regexMatch', 'LEMregexMatch', $this->gT('Compare a string to a regular expression pattern'), 'bool regexMatch(pattern,input)', '', 2),
+'round' => array('round', 'LEMround', $this->gT('Rounds a number to an optional precision'), 'number round(val [, precision])', 'http://www.php.net/manual/en/function.round.php', 1,2),
+'rtrim' => array('rtrim', 'rtrim', $this->gT('Strip whitespace (or other characters) from the end of a string'), 'string rtrim(string [, charlist])', 'http://www.php.net/manual/en/function.rtrim.php', 1,2),
+'sin' => array('sin', 'Math.sin', $this->gT('Sine'), 'number sin(arg)', 'http://www.php.net/manual/en/function.sin.php', 1),
+'sprintf' => array('sprintf', 'sprintf', $this->gT('Return a formatted string'), 'string sprintf(format, arg1, arg2, ... argN)', 'http://www.php.net/manual/en/function.sprintf.php', -2),
+'sqrt' => array('sqrt', 'Math.sqrt', $this->gT('Square root'), 'number sqrt(arg)', 'http://www.php.net/manual/en/function.sqrt.php', 1),
+'stddev' => array('exprmgr_stddev', 'LEMstddev', $this->gT('Calculate the Sample Standard Deviation for the list of numbers'), 'number stddev(arg1, arg2, ... argN)', '', -2),
+'str_pad' => array('str_pad', 'str_pad', $this->gT('Pad a string to a certain length with another string'), 'string str_pad(input, pad_length [, pad_string])', 'http://www.php.net/manual/en/function.str-pad.php', 2,3),
+'str_repeat' => array('str_repeat', 'str_repeat', $this->gT('Repeat a string'), 'string str_repeat(input, multiplier)', 'http://www.php.net/manual/en/function.str-repeat.php', 2),
+'str_replace' => array('str_replace', 'LEMstr_replace', $this->gT('Replace all occurrences of the search string with the replacement string'), 'string str_replace(search,  replace, subject)', 'http://www.php.net/manual/en/function.str-replace.php', 3),
+'strcasecmp' => array('strcasecmp', 'strcasecmp', $this->gT('Binary safe case-insensitive string comparison'), 'int strcasecmp(str1, str2)', 'http://www.php.net/manual/en/function.strcasecmp.php', 2),
+'strcmp' => array('strcmp', 'strcmp', $this->gT('Binary safe string comparison'), 'int strcmp(str1, str2)', 'http://www.php.net/manual/en/function.strcmp.php', 2),
+'strip_tags' => array('strip_tags', 'strip_tags', $this->gT('Strip HTML and PHP tags from a string'), 'string strip_tags(str, allowable_tags)', 'http://www.php.net/manual/en/function.strip-tags.php', 1,2),
+'stripos' => array('stripos', 'stripos', $this->gT('Find position of first occurrence of a case-insensitive string'), 'int stripos(haystack, needle [, offset=0])', 'http://www.php.net/manual/en/function.stripos.php', 2,3),
+'stripslashes' => array('stripslashes', 'stripslashes', $this->gT('Un-quotes a quoted string'), 'string stripslashes(string)', 'http://www.php.net/manual/en/function.stripslashes.php', 1),
+'stristr' => array('stristr', 'stristr', $this->gT('Case-insensitive strstr'), 'string stristr(haystack, needle [, before_needle=false])', 'http://www.php.net/manual/en/function.stristr.php', 2,3),
+'strlen' => array('strlen', 'LEMstrlen', $this->gT('Get string length'), 'int strlen(string)', 'http://www.php.net/manual/en/function.strlen.php', 1),
+'strpos' => array('strpos', 'LEMstrpos', $this->gT('Find position of first occurrence of a string'), 'int strpos(haystack, needle [ offset=0])', 'http://www.php.net/manual/en/function.strpos.php', 2,3),
+'strrev' => array('strrev', 'strrev', $this->gT('Reverse a string'), 'string strrev(string)', 'http://www.php.net/manual/en/function.strrev.php', 1),
+'strstr' => array('strstr', 'strstr', $this->gT('Find first occurrence of a string'), 'string strstr(haystack, needle)', 'http://www.php.net/manual/en/function.strstr.php', 2),
+'strtolower' => array('strtolower', 'LEMstrtolower', $this->gT('Make a string lowercase'), 'string strtolower(string)', 'http://www.php.net/manual/en/function.strtolower.php', 1),
+'strtoupper' => array('strtoupper', 'LEMstrtoupper', $this->gT('Make a string uppercase'), 'string strtoupper(string)', 'http://www.php.net/manual/en/function.strtoupper.php', 1),
+'substr' => array('substr', 'substr', $this->gT('Return part of a string'), 'string substr(string, start [, length])', 'http://www.php.net/manual/en/function.substr.php', 2,3),
+'sum' => array('array_sum', 'LEMsum', $this->gT('Calculate the sum of values in an array'), 'number sum(arg1, arg2, ... argN)', '', -2),
+'tan' => array('tan', 'Math.tan', $this->gT('Tangent'), 'number tan(arg)', 'http://www.php.net/manual/en/function.tan.php', 1),
+'time' => array('time', 'time', $this->gT('Return current UNIX timestamp'), 'number time()', 'http://www.php.net/manual/en/function.time.php', 0),
+'trim' => array('trim', 'trim', $this->gT('Strip whitespace (or other characters) from the beginning and end of a string'), 'string trim(string [, charlist])', 'http://www.php.net/manual/en/function.trim.php', 1,2),
+'ucwords' => array('ucwords', 'ucwords', $this->gT('Uppercase the first character of each word in a string'), 'string ucwords(string)', 'http://www.php.net/manual/en/function.ucwords.php', 1),
         );
 
-        $this->amVars = array();
+        $this->RDP_Vars = array();
     }
 
     /**
@@ -221,35 +226,41 @@ class ExpressionManager {
      * @param <type> $errMsg
      * @param <type> $token
      */
-    private function AddError($errMsg, $token)
+    private function RDP_AddError($errMsg, $token)
     {
-        $clang = Yii::app()->lang;
-        $this->errs[] = array($clang->gT($errMsg), $token);
+        $this->RDP_errs[] = array($this->gT($errMsg), $token);
     }
 
     /**
-     * EvalBinary() computes binary expressions, such as (a or b), (c * d), popping  the top two entries off the
+     * RDP_EvaluateBinary() computes binary expressions, such as (a or b), (c * d), popping  the top two entries off the
      * stack and pushing the result back onto the stack.
      *
      * @param array $token
      * @return boolean - false if there is any error, else true
      */
 
-    private function EvalBinary(array $token)
+       private function RDP_EvaluateBinary(array $token)
     {
-        if (count($this->stack) < 2)
+        if (count($this->RDP_stack) < 2)
         {
-            $this->AddError("Unable to evaluate binary operator - fewer than 2 entries on stack", $token);
+            $this->RDP_AddError("Unable to evaluate binary operator - fewer than 2 entries on stack", $token);
             return false;
         }
-        $arg2 = $this->StackPop();
-        $arg1 = $this->StackPop();
+        $arg2 = $this->RDP_StackPop();
+        $arg1 = $this->RDP_StackPop();
         if (is_null($arg1) or is_null($arg2))
         {
-            $this->AddError("Invalid value(s) on the stack", $token);
+            $this->RDP_AddError("Invalid value(s) on the stack", $token);
             return false;
         }
         // TODO:  try to determine datatype?
+        $bNumericArg1 = is_numeric($arg1[0]) || $arg1[0] == '';
+        $bNumericArg2 = is_numeric($arg2[0]) || $arg2[0] == '';
+        $bStringArg1 = !$bNumericArg1 || $arg1[0] == '';
+        $bStringArg2 = !$bNumericArg2 || $arg2[0] == '';
+        $bBothNumeric = ($bNumericArg1 && $bNumericArg2);
+        $bBothString = ($bStringArg1 && $bStringArg2);
+        $bMismatchType = (!$bBothNumeric && !$bBothString);
         switch(strtolower($token[0]))
         {
             case 'or':
@@ -270,34 +281,95 @@ class ExpressionManager {
                 break;
             case '<':
             case 'lt':
-                $result = array(($arg1[0] < $arg2[0]),$token[1],'NUMBER');
+                if ($bMismatchType) {
+                    $result = array(false,$token[1],'NUMBER');
+                }
+                else {
+                    $result = array(($arg1[0] < $arg2[0]),$token[1],'NUMBER');
+                }
                 break;
             case '<=';
             case 'le':
-                $result = array(($arg1[0] <= $arg2[0]),$token[1],'NUMBER');
+                if ($bMismatchType) {
+                    $result = array(false,$token[1],'NUMBER');
+                }
+                else {
+                    // Need this explicit comparison in order to be in agreement with JavaScript
+                    if (($arg1[0] == '0' && $arg2[0] == '') || ($arg1[0] == '' && $arg2[0] == '0')) {
+                        $result = array(true,$token[1],'NUMBER');
+                    }
+                    else {
+                        $result = array(($arg1[0] <= $arg2[0]),$token[1],'NUMBER');
+                    }
+                }
                 break;
             case '>':
             case 'gt':
-                $result = array(($arg1[0] > $arg2[0]),$token[1],'NUMBER');
+                if ($bMismatchType) {
+                    $result = array(false,$token[1],'NUMBER');
+                }
+                else {
+                    // Need this explicit comparison in order to be in agreement with JavaScript
+                    if (($arg1[0] == '0' && $arg2[0] == '') || ($arg1[0] == '' && $arg2[0] == '0')) {
+                        $result = array(false,$token[1],'NUMBER');
+                    }
+                    else {
+                        $result = array(($arg1[0] > $arg2[0]),$token[1],'NUMBER');
+                    }
+                }
                 break;
             case '>=';
             case 'ge':
-                $result = array(($arg1[0] >= $arg2[0]),$token[1],'NUMBER');
+                if ($bMismatchType) {
+                    $result = array(false,$token[1],'NUMBER');
+                }
+                else {
+                    $result = array(($arg1[0] >= $arg2[0]),$token[1],'NUMBER');
+
+                }
                 break;
             case '+':
-                $result = array(($arg1[0] + $arg2[0]),$token[1],'NUMBER');
+                if ($bBothNumeric) {
+                    $result = array(($arg1[0] + $arg2[0]),$token[1],'NUMBER');
+                }
+                else if ($bBothString) {
+                    $result = array($arg1[0] . $arg2[0],$token[1],'STRING');
+                }
+                else {
+                    $result = array(NAN,$token[1],'NUMBER');
+                }
                 break;
             case '-':
-                $result = array(($arg1[0] - $arg2[0]),$token[1],'NUMBER');
+                if ($bBothNumeric) {
+                    $result = array(($arg1[0] - $arg2[0]),$token[1],'NUMBER');
+                }
+                else {
+                    $result = array(NAN,$token[1],'NUMBER');
+                }
                 break;
             case '*':
-                $result = array(($arg1[0] * $arg2[0]),$token[1],'NUMBER');
+                if ($bBothNumeric) {
+                    $result = array(($arg1[0] * $arg2[0]),$token[1],'NUMBER');
+                }
+                else {
+                    $result = array(NAN,$token[1],'NUMBER');
+                }
                 break;
             case '/';
-                $result = array(($arg1[0] / $arg2[0]),$token[1],'NUMBER');
+                if ($bBothNumeric) {
+                    if ($arg2[0] == 0) {
+                        $result = array(NAN,$token[1],'NUMBER');
+                    }
+                    else {
+                        $result = array(($arg1[0] / $arg2[0]),$token[1],'NUMBER');
+                    }
+                }
+                else {
+                    $result = array(NAN,$token[1],'NUMBER');
+                }
                 break;
         }
-        $this->StackPush($result);
+        $this->RDP_StackPush($result);
         return true;
     }
 
@@ -307,17 +379,17 @@ class ExpressionManager {
      * @return boolean - true if success, false if any error occurred
      */
 
-    private function EvalUnary(array $token)
+    private function RDP_EvaluateUnary(array $token)
     {
-        if (count($this->stack) < 1)
+        if (count($this->RDP_stack) < 1)
         {
-            $this->AddError("Unable to evaluate unary operator - no entries on stack", $token);
+            $this->RDP_AddError("Unable to evaluate unary operator - no entries on stack", $token);
             return false;
         }
-        $arg1 = $this->StackPop();
+        $arg1 = $this->RDP_StackPop();
         if (is_null($arg1))
         {
-            $this->AddError("Invalid value(s) on the stack", $token);
+            $this->RDP_AddError("Invalid value(s) on the stack", $token);
             return false;
         }
         // TODO:  try to determine datatype?
@@ -333,7 +405,7 @@ class ExpressionManager {
                 $result = array((!$arg1[0]),$token[1],'NUMBER');
                 break;
         }
-        $this->StackPush($result);
+        $this->RDP_StackPush($result);
         return true;
     }
 
@@ -345,49 +417,49 @@ class ExpressionManager {
      * @return boolean - true if success, false if any error occurred
      */
 
-    public function Evaluate($expr, $onlyparse=false)
+    public function RDP_Evaluate($expr, $onlyparse=false)
     {
-        $this->expr = $expr;
-        $this->tokens = $this->amTokenize($expr);
-        $this->count = count($this->tokens);
-        $this->pos = -1; // starting position within array (first act will be to increment it)
-        $this->errs = array();
-        $this->onlyparse = $onlyparse;
-        $this->stack = array();
-        $this->evalStatus = false;
-        $this->result = NULL;
+        $this->RDP_expr = $expr;
+        $this->RDP_tokens = $this->RDP_Tokenize($expr);
+        $this->RDP_count = count($this->RDP_tokens);
+        $this->RDP_pos = -1; // starting position within array (first act will be to increment it)
+        $this->RDP_errs = array();
+        $this->RDP_onlyparse = $onlyparse;
+        $this->RDP_stack = array();
+        $this->RDP_evalStatus = false;
+        $this->RDP_result = NULL;
         $this->varsUsed = array();
         $this->jsExpression = NULL;
 
         if ($this->HasSyntaxErrors()) {
             return false;
         }
-        elseif ($this->EvaluateExpressions())
+        elseif ($this->RDP_EvaluateExpressions())
         {
-            if ($this->pos < $this->count)
+            if ($this->RDP_pos < $this->RDP_count)
             {
-                $this->AddError("Extra tokens found", $this->tokens[$this->pos]);
+                $this->RDP_AddError("Extra tokens found", $this->RDP_tokens[$this->RDP_pos]);
                 return false;
             }
-            $this->result = $this->StackPop();
-            if (is_null($this->result))
+            $this->RDP_result = $this->RDP_StackPop();
+            if (is_null($this->RDP_result))
             {
                 return false;
             }
-            if (count($this->stack) == 0)
+            if (count($this->RDP_stack) == 0)
             {
-                $this->evalStatus = true;
+                $this->RDP_evalStatus = true;
                 return true;
             }
             else
             {
-                $this-AddError("Unbalanced equation - values left on stack",NULL);
+                $this-RDP_AddError("Unbalanced equation - values left on stack",NULL);
                 return false;
             }
         }
         else
         {
-            $this->AddError("Not a valid expression",NULL);
+            $this->RDP_AddError("Not a valid expression",NULL);
             return false;
         }
     }
@@ -397,24 +469,24 @@ class ExpressionManager {
      * Process "a op b" where op in (+,-,concatenate)
      * @return boolean - true if success, false if any error occurred
      */
-    private function EvaluateAdditiveExpression()
+    private function RDP_EvaluateAdditiveExpression()
     {
-        if (!$this->EvaluateMultiplicativeExpression())
+        if (!$this->RDP_EvaluateMultiplicativeExpression())
         {
             return false;
         }
-        while (($this->pos + 1) < $this->count)
+        while (($this->RDP_pos + 1) < $this->RDP_count)
         {
-            $token = $this->tokens[++$this->pos];
+            $token = $this->RDP_tokens[++$this->RDP_pos];
             if ($token[2] == 'BINARYOP')
             {
                 switch ($token[0])
                 {
                     case '+':
                     case '-';
-                        if ($this->EvaluateMultiplicativeExpression())
+                        if ($this->RDP_EvaluateMultiplicativeExpression())
                         {
-                            if (!$this->EvalBinary($token))
+                            if (!$this->RDP_EvaluateBinary($token))
                             {
                                 return false;
                             }
@@ -426,13 +498,13 @@ class ExpressionManager {
                         }
                         break;
                     default:
-                        --$this->pos;
+                        --$this->RDP_pos;
                         return true;
                 }
             }
             else
             {
-                --$this->pos;
+                --$this->RDP_pos;
                 return true;
             }
         }
@@ -444,66 +516,63 @@ class ExpressionManager {
      * @return boolean - true if success, false if any error occurred
      */
 
-    private function EvaluateConstantVarOrFunction()
+    private function RDP_EvaluateConstantVarOrFunction()
     {
-        if ($this->pos + 1 >= $this->count)
+        if ($this->RDP_pos + 1 >= $this->RDP_count)
         {
-             $this->AddError("Poorly terminated expression - expected a constant or variable", NULL);
+             $this->RDP_AddError("Poorly terminated expression - expected a constant or variable", NULL);
              return false;
         }
-        $token = $this->tokens[++$this->pos];
+        $token = $this->RDP_tokens[++$this->RDP_pos];
         switch ($token[2])
         {
             case 'NUMBER':
             case 'DQ_STRING':
             case 'SQ_STRING':
-                $this->StackPush($token);
+                $this->RDP_StackPush($token);
                 return true;
                 break;
             case 'WORD':
             case 'SGQA':
-                if (($this->pos + 1) < $this->count and $this->tokens[($this->pos + 1)][2] == 'LP')
+                if (($this->RDP_pos + 1) < $this->RDP_count and $this->RDP_tokens[($this->RDP_pos + 1)][2] == 'LP')
                 {
-                    return $this->EvaluateFunction();
+                    return $this->RDP_EvaluateFunction();
                 }
                 else
                 {
-//                    if ($token[0] == 'QID' || $token[0] == 'SGQA') {
-//                        LimeExpressionManager::ShowStackTrace($token[0]);
-//                    }
-                    if ($this->isValidVariable($token[0]))
+                    if ($this->RDP_isValidVariable($token[0]))
                     {
                         $this->varsUsed[] = $token[0];  // add this variable to list of those used in this equation
                         $relStatus = $this->GetVarAttribute($token[0],'relevanceStatus',1);
                         if ($relStatus==1)
                         {
-                            $result = array($this->GetVarAttribute($token[0],NULL,0),$token[1],'NUMBER');
+                            $result = array($this->GetVarAttribute($token[0],NULL,''),$token[1],'NUMBER');
                         }
                         else
                         {
                             $result = array(NULL,$token[1],'NUMBER');   // was 0 instead of NULL
                         }
-                        $this->StackPush($result);
+                        $this->RDP_StackPush($result);
 
                         // TODO - currently, will try to process value anyway, but want to show a potential error.  Should it be a definitive error (e.g. prevent this behavior)?
-                        $groupSeq = $this->GetVarAttribute($token[0],'groupSeq',-1);
-                        if (($groupSeq != -1) && ($groupSeq > $this->groupSeq))
+                        $groupSeq = $this->GetVarAttribute($token[0],'gseq',-1);
+                        if (($groupSeq != -1 && $this->groupSeq != -1) && ($groupSeq > $this->groupSeq))
                         {
-                            $this->AddError("This variable is not declared until a later page",$token);
+                            $this->RDP_AddError("This variable is not declared until a later page",$token);
                             return false;
                         }
                         return true;
                     }
                     else
                     {
-                        $this->AddError("Undefined variable", $token);
+                        $this->RDP_AddError("Undefined variable", $token);
                         return false;
                     }
                 }
                 break;
             case 'COMMA':
-                --$this->pos;
-                $this->AddError("Should never  get to this line?",$token);
+                --$this->RDP_pos;
+                $this->RDP_AddError("Should never  get to this line?",$token);
                 return false;
             default:
                 return false;
@@ -515,24 +584,24 @@ class ExpressionManager {
      * Process "a == b", "a eq b", "a != b", "a ne b"
      * @return boolean - true if success, false if any error occurred
      */
-    private function EvaluateEqualityExpression()
+    private function RDP_EvaluateEqualityExpression()
     {
-        if (!$this->EvaluateRelationExpression())
+        if (!$this->RDP_EvaluateRelationExpression())
         {
             return false;
         }
-        while (($this->pos + 1) < $this->count)
+        while (($this->RDP_pos + 1) < $this->RDP_count)
         {
-            $token = $this->tokens[++$this->pos];
+            $token = $this->RDP_tokens[++$this->RDP_pos];
             switch (strtolower($token[0]))
             {
                 case '==':
                 case 'eq':
                 case '!=':
                 case 'ne':
-                    if ($this->EvaluateRelationExpression())
+                    if ($this->RDP_EvaluateRelationExpression())
                     {
-                        if (!$this->EvalBinary($token))
+                        if (!$this->RDP_EvaluateBinary($token))
                         {
                             return false;
                         }
@@ -544,7 +613,7 @@ class ExpressionManager {
                     }
                     break;
                 default:
-                    --$this->pos;
+                    --$this->RDP_pos;
                     return true;
             }
         }
@@ -556,29 +625,29 @@ class ExpressionManager {
      * @return boolean - true if success, false if any error occurred
      */
 
-    private function EvaluateExpression()
+    private function RDP_EvaluateExpression()
     {
-        if ($this->pos + 2 < $this->count)
+        if ($this->RDP_pos + 2 < $this->RDP_count)
         {
-            $token1 = $this->tokens[++$this->pos];
-            $token2 = $this->tokens[++$this->pos];
+            $token1 = $this->RDP_tokens[++$this->RDP_pos];
+            $token2 = $this->RDP_tokens[++$this->RDP_pos];
             if ($token2[2] == 'ASSIGN')
             {
-                if ($this->isValidVariable($token1[0]))
+                if ($this->RDP_isValidVariable($token1[0]))
                 {
                     $this->varsUsed[] = $token1[0];  // add this variable to list of those used in this equation
-                    if ($this->isWritableVariable($token1[0]))
+                    if ($this->RDP_isWritableVariable($token1[0]))
                     {
-                        $evalStatus = $this->EvaluateLogicalOrExpression();
+                        $evalStatus = $this->RDP_EvaluateLogicalOrExpression();
                         if ($evalStatus)
                         {
-                            $result = $this->StackPop();
+                            $result = $this->RDP_StackPop();
                             if (!is_null($result))
                             {
                                 $newResult = $token2;
                                 $newResult[2] = 'NUMBER';
-                                $newResult[0] = $this->setVariableValue($token2[0], $token1[0], $result[0]);
-                                $this->StackPush($newResult);
+                                $newResult[0] = $this->RDP_SetVariableValue($token2[0], $token1[0], $result[0]);
+                                $this->RDP_StackPush($newResult);
                             }
                             else
                             {
@@ -589,26 +658,26 @@ class ExpressionManager {
                     }
                     else
                     {
-                        $this->AddError('The value of this variable can not be changed', $token1);
+                        $this->RDP_AddError('The value of this variable can not be changed', $token1);
                         return false;
                     }
                 }
                 else
                 {
-                    $this->AddError('Only variables can be assigned values', $token1);
+                    $this->RDP_AddError('Only variables can be assigned values', $token1);
                     return false;
                 }
             }
             else
             {
                 // not an assignment expression, so try something else
-                $this->pos -= 2;
-                return $this->EvaluateLogicalOrExpression();
+                $this->RDP_pos -= 2;
+                return $this->RDP_EvaluateLogicalOrExpression();
             }
         }
         else
         {
-            return $this->EvaluateLogicalOrExpression();
+            return $this->RDP_EvaluateLogicalOrExpression();
         }
     }
 
@@ -617,31 +686,31 @@ class ExpressionManager {
      * @return boolean - true if success, false if any error occurred
      */
 
-    private function EvaluateExpressions()
+    private function RDP_EvaluateExpressions()
     {
-        $evalStatus = $this->EvaluateExpression();
+        $evalStatus = $this->RDP_EvaluateExpression();
         if (!$evalStatus)
         {
             return false;
         }
 
-        while (++$this->pos < $this->count) {
-            $token = $this->tokens[$this->pos];
+        while (++$this->RDP_pos < $this->RDP_count) {
+            $token = $this->RDP_tokens[$this->RDP_pos];
             if ($token[2] == 'RP')
             {
                 return true;    // presumbably the end of an expression
             }
             elseif ($token[2] == 'COMMA')
             {
-                if ($this->EvaluateExpression())
+                if ($this->RDP_EvaluateExpression())
                 {
-                    $secondResult = $this->StackPop();
-                    $firstResult = $this->StackPop();
+                    $secondResult = $this->RDP_StackPop();
+                    $firstResult = $this->RDP_StackPop();
                     if (is_null($firstResult))
                     {
                         return false;
                     }
-                    $this->StackPush($secondResult);
+                    $this->RDP_StackPush($secondResult);
                     $evalStatus = true;
                 }
                 else
@@ -651,15 +720,15 @@ class ExpressionManager {
             }
             else
             {
-                $this->AddError("Expected expressions separated by commas",$token);
+                $this->RDP_AddError("Expected expressions separated by commas",$token);
                 $evalStatus = false;
                 break;
             }
         }
-        while (++$this->pos < $this->count)
+        while (++$this->RDP_pos < $this->RDP_count)
         {
-            $token = $this->tokens[$this->pos];
-            $this->AddError("Extra token found after Expressions",$token);
+            $token = $this->RDP_tokens[$this->RDP_pos];
+            $this->RDP_AddError("Extra token found after Expressions",$token);
             $evalStatus = false;
         }
         return $evalStatus;
@@ -669,33 +738,33 @@ class ExpressionManager {
      * Process a function call
      * @return boolean - true if success, false if any error occurred
      */
-    private function EvaluateFunction()
+    private function RDP_EvaluateFunction()
     {
-        $funcNameToken = $this->tokens[$this->pos]; // note that don't need to increment position for functions
+        $funcNameToken = $this->RDP_tokens[$this->RDP_pos]; // note that don't need to increment position for functions
         $funcName = $funcNameToken[0];
-        if (!$this->isValidFunction($funcName))
+        if (!$this->RDP_isValidFunction($funcName))
         {
-            $this->AddError("Undefined Function", $funcNameToken);
+            $this->RDP_AddError("Undefined Function", $funcNameToken);
             return false;
         }
-        $token2 = $this->tokens[++$this->pos];
+        $token2 = $this->RDP_tokens[++$this->RDP_pos];
         if ($token2[2] != 'LP')
         {
-            $this->AddError("Expected left parentheses after function name", $token);
+            $this->RDP_AddError("Expected left parentheses after function name", $token);
         }
         $params = array();  // will just store array of values, not tokens
-        while ($this->pos + 1 < $this->count)
+        while ($this->RDP_pos + 1 < $this->RDP_count)
         {
-            $token3 = $this->tokens[$this->pos + 1];
+            $token3 = $this->RDP_tokens[$this->RDP_pos + 1];
             if (count($params) > 0)
             {
                 // should have COMMA or RP
                 if ($token3[2] == 'COMMA')
                 {
-                    ++$this->pos;   // consume the token so can process next clause
-                    if ($this->EvaluateExpression())
+                    ++$this->RDP_pos;   // consume the token so can process next clause
+                    if ($this->RDP_EvaluateExpression())
                     {
-                        $value = $this->StackPop();
+                        $value = $this->RDP_StackPop();
                         if (is_null($value))
                         {
                             return false;
@@ -705,21 +774,21 @@ class ExpressionManager {
                     }
                     else
                     {
-                        $this->AddError("Extra comma found in function", $token3);
+                        $this->RDP_AddError("Extra comma found in function", $token3);
                         return false;
                     }
                 }
             }
             if ($token3[2] == 'RP')
             {
-                ++$this->pos;   // consume the token so can process next clause
-                return $this->RunFunction($funcNameToken,$params);
+                ++$this->RDP_pos;   // consume the token so can process next clause
+                return $this->RDP_RunFunction($funcNameToken,$params);
             }
             else
             {
-                if ($this->EvaluateExpression())
+                if ($this->RDP_EvaluateExpression())
                 {
-                    $value = $this->StackPop();
+                    $value = $this->RDP_StackPop();
                     if (is_null($value))
                     {
                         return false;
@@ -740,22 +809,22 @@ class ExpressionManager {
      * @return boolean - true if success, false if any error occurred
      */
 
-    private function EvaluateLogicalAndExpression()
+    private function RDP_EvaluateLogicalAndExpression()
     {
-        if (!$this->EvaluateEqualityExpression())
+        if (!$this->RDP_EvaluateEqualityExpression())
         {
             return false;
         }
-        while (($this->pos + 1) < $this->count)
+        while (($this->RDP_pos + 1) < $this->RDP_count)
         {
-            $token = $this->tokens[++$this->pos];
+            $token = $this->RDP_tokens[++$this->RDP_pos];
             switch (strtolower($token[0]))
             {
                 case '&&':
                 case 'and':
-                    if ($this->EvaluateEqualityExpression())
+                    if ($this->RDP_EvaluateEqualityExpression())
                     {
-                        if (!$this->EvalBinary($token))
+                        if (!$this->RDP_EvaluateBinary($token))
                         {
                             return false;
                         }
@@ -767,7 +836,7 @@ class ExpressionManager {
                     }
                     break;
                 default:
-                    --$this->pos;
+                    --$this->RDP_pos;
                     return true;
             }
         }
@@ -778,22 +847,22 @@ class ExpressionManager {
      * Process "a || b" or "a or b"
      * @return boolean - true if success, false if any error occurred
      */
-    private function EvaluateLogicalOrExpression()
+    private function RDP_EvaluateLogicalOrExpression()
     {
-        if (!$this->EvaluateLogicalAndExpression())
+        if (!$this->RDP_EvaluateLogicalAndExpression())
         {
             return false;
         }
-        while (($this->pos + 1) < $this->count)
+        while (($this->RDP_pos + 1) < $this->RDP_count)
         {
-            $token = $this->tokens[++$this->pos];
+            $token = $this->RDP_tokens[++$this->RDP_pos];
             switch (strtolower($token[0]))
             {
                 case '||':
                 case 'or':
-                    if ($this->EvaluateLogicalAndExpression())
+                    if ($this->RDP_EvaluateLogicalAndExpression())
                     {
-                        if (!$this->EvalBinary($token))
+                        if (!$this->RDP_EvaluateBinary($token))
                         {
                             return false;
                         }
@@ -807,7 +876,7 @@ class ExpressionManager {
                     break;
                 default:
                     // no more expressions being  ORed together, so continue parsing
-                    --$this->pos;
+                    --$this->RDP_pos;
                     return true;
             }
         }
@@ -820,24 +889,24 @@ class ExpressionManager {
      * @return boolean - true if success, false if any error occurred
      */
 
-    private function EvaluateMultiplicativeExpression()
+    private function RDP_EvaluateMultiplicativeExpression()
     {
-        if (!$this->EvaluateUnaryExpression())
+        if (!$this->RDP_EvaluateUnaryExpression())
         {
             return  false;
         }
-        while (($this->pos + 1) < $this->count)
+        while (($this->RDP_pos + 1) < $this->RDP_count)
         {
-            $token = $this->tokens[++$this->pos];
+            $token = $this->RDP_tokens[++$this->RDP_pos];
             if ($token[2] == 'BINARYOP')
             {
                 switch ($token[0])
                 {
                     case '*':
                     case '/';
-                        if ($this->EvaluateUnaryExpression())
+                        if ($this->RDP_EvaluateUnaryExpression())
                         {
-                            if (!$this->EvalBinary($token))
+                            if (!$this->RDP_EvaluateBinary($token))
                             {
                                 return false;
                             }
@@ -851,13 +920,13 @@ class ExpressionManager {
                         break;
                         break;
                     default:
-                        --$this->pos;
+                        --$this->RDP_pos;
                         return true;
                 }
             }
             else
             {
-                --$this->pos;
+                --$this->RDP_pos;
                 return true;
             }
         }
@@ -869,34 +938,34 @@ class ExpressionManager {
      * @return boolean - true if success, false if any error occurred
      */
 
-    private function EvaluatePrimaryExpression()
+    private function RDP_EvaluatePrimaryExpression()
     {
-        if (($this->pos + 1) >= $this->count) {
-            $this->AddError("Poorly terminated expression - expected a constant or variable", NULL);
+        if (($this->RDP_pos + 1) >= $this->RDP_count) {
+            $this->RDP_AddError("Poorly terminated expression - expected a constant or variable", NULL);
             return false;
         }
-        $token = $this->tokens[++$this->pos];
+        $token = $this->RDP_tokens[++$this->RDP_pos];
         if ($token[2] == 'LP')
         {
-            if (!$this->EvaluateExpressions())
+            if (!$this->RDP_EvaluateExpressions())
             {
                 return false;
             }
-            $token = $this->tokens[$this->pos];
+            $token = $this->RDP_tokens[$this->RDP_pos];
             if ($token[2] == 'RP')
             {
                 return true;
             }
             else
             {
-                $this->AddError("Expected right parentheses", $token);
+                $this->RDP_AddError("Expected right parentheses", $token);
                 return false;
             }
         }
         else
         {
-            --$this->pos;
-            return $this->EvaluateConstantVarOrFunction();
+            --$this->RDP_pos;
+            return $this->RDP_EvaluateConstantVarOrFunction();
         }
     }
 
@@ -904,15 +973,15 @@ class ExpressionManager {
      * Process "a op b" where op in (lt, gt, le, ge, <, >, <=, >=)
      * @return boolean - true if success, false if any error occurred
      */
-    private function EvaluateRelationExpression()
+    private function RDP_EvaluateRelationExpression()
     {
-        if (!$this->EvaluateAdditiveExpression())
+        if (!$this->RDP_EvaluateAdditiveExpression())
         {
             return false;
         }
-        while (($this->pos + 1) < $this->count)
+        while (($this->RDP_pos + 1) < $this->RDP_count)
         {
-            $token = $this->tokens[++$this->pos];
+            $token = $this->RDP_tokens[++$this->RDP_pos];
             switch (strtolower($token[0]))
             {
                 case '<':
@@ -923,9 +992,9 @@ class ExpressionManager {
                 case 'gt':
                 case '>=';
                 case 'ge':
-                    if ($this->EvaluateAdditiveExpression())
+                    if ($this->RDP_EvaluateAdditiveExpression())
                     {
-                        if (!$this->EvalBinary($token))
+                        if (!$this->RDP_EvaluateBinary($token))
                         {
                             return false;
                         }
@@ -938,7 +1007,7 @@ class ExpressionManager {
                     }
                     break;
                 default:
-                    --$this->pos;
+                    --$this->RDP_pos;
                     return true;
             }
         }
@@ -950,13 +1019,13 @@ class ExpressionManager {
      * @return boolean - true if success, false if any error occurred
      */
 
-    private function EvaluateUnaryExpression()
+    private function RDP_EvaluateUnaryExpression()
     {
-        if (($this->pos + 1) >= $this->count) {
-            $this->AddError("Poorly terminated expression - expected a constant or variable", NULL);
+        if (($this->RDP_pos + 1) >= $this->RDP_count) {
+            $this->RDP_AddError("Poorly terminated expression - expected a constant or variable", NULL);
             return false;
         }
-        $token = $this->tokens[++$this->pos];
+        $token = $this->RDP_tokens[++$this->RDP_pos];
         if ($token[2] == 'NOT' || $token[2] == 'BINARYOP')
         {
             switch ($token[0])
@@ -964,21 +1033,21 @@ class ExpressionManager {
                 case '+':
                 case '-':
                 case '!':
-                    if (!$this->EvaluatePrimaryExpression())
+                    if (!$this->RDP_EvaluatePrimaryExpression())
                     {
                         return false;
                     }
-                    return $this->EvalUnary($token);
+                    return $this->RDP_EvaluateUnary($token);
                     break;
                 default:
-                    --$this->pos;
-                    return $this->EvaluatePrimaryExpression();
+                    --$this->RDP_pos;
+                    return $this->RDP_EvaluatePrimaryExpression();
             }
         }
         else
         {
-            --$this->pos;
-            return $this->EvaluatePrimaryExpression();
+            --$this->RDP_pos;
+            return $this->RDP_EvaluatePrimaryExpression();
         }
     }
 
@@ -1055,7 +1124,7 @@ class ExpressionManager {
      */
     public function GetResult()
     {
-        return $this->result[0];
+        return $this->RDP_result[0];
     }
 
     /**
@@ -1064,7 +1133,7 @@ class ExpressionManager {
      */
     public function GetErrors()
     {
-        return $this->errs;
+        return $this->RDP_errs;
     }
 
     /**
@@ -1082,7 +1151,7 @@ class ExpressionManager {
             $this->jsExpression = '';
             return '';
         }
-        $tokens = $this->tokens;
+        $tokens = $this->RDP_tokens;
         $stringParts=array();
         $numTokens = count($tokens);
         for ($i=0;$i<$numTokens;++$i)
@@ -1093,17 +1162,17 @@ class ExpressionManager {
             switch ($token[2])
             {
                 case 'DQ_STRING':
-                    $stringParts[] = '"' . addcslashes($token[0],'"') . '"'; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false) . "'";
+                    $stringParts[] = '"' . addcslashes($token[0],'\"') . '"'; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false) . "'";
                     break;
                 case 'SQ_STRING':
-                    $stringParts[] = "'" . addcslashes($token[0],"'") . "'"; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false) . "'";
+                    $stringParts[] = "'" . addcslashes($token[0],"\'") . "'"; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false) . "'";
                     break;
                 case 'SGQA':
                 case 'WORD':
                     if ($i+1<$numTokens && $tokens[$i+1][2] == 'LP')
                     {
                         // then word is a function name
-                        $funcInfo = $this->amValidFunctions[$token[0]];
+                        $funcInfo = $this->RDP_ValidFunctions[$token[0]];
                         if ($funcInfo[1] == 'NA')
                         {
                             return '';  // to indicate that this is trying to use a undefined function.  Need more graceful solution
@@ -1113,7 +1182,6 @@ class ExpressionManager {
                     elseif ($i+1<$numTokens && $tokens[$i+1][2] == 'ASSIGN')
                     {
                         $jsName = $this->GetVarAttribute($token[0],'jsName','');
-                        $relevanceNum = $this->GetVarAttribute($token[0],'relevanceNum','');
                         $stringParts[] = "document.getElementById('" . $jsName . "').value";
                         if ($tokens[$i+1][0] == '+=')
                         {
@@ -1126,8 +1194,7 @@ class ExpressionManager {
                     else
                     {
                         $jsName = $this->GetVarAttribute($token[0],'jsName','');
-                        $relevanceNum = $this->GetVarAttribute($token[0],'relevanceNum','');
-                        $codeValue = $this->GetVarAttribute($token[0],'code','');
+                        $code = $this->GetVarAttribute($token[0],'code','');
                         if ($jsName != '')
                         {
                             $varName = $this->GetVarAttribute($token[0],'varName',$token[0]);
@@ -1135,7 +1202,7 @@ class ExpressionManager {
                         }
                         else
                         {
-                            $stringParts[] = is_numeric($codeValue) ? $codeValue : ("'" . addcslashes($codeValue,"'") . "'"); // htmlspecialchars($codeValue,ENT_QUOTES,'UTF-8',false) . "'");
+                            $stringParts[] = is_numeric($code) ? $code : ("'" . addcslashes($code,"'") . "'"); // htmlspecialchars($code,ENT_QUOTES,'UTF-8',false) . "'");
                         }
                     }
                     break;
@@ -1179,7 +1246,7 @@ class ExpressionManager {
         $varsUsed = implode("', '", $nonNAvarsUsed);
         if ($varsUsed != '')
         {
-            $this->jsExpression = "LEMif(LEManyNA('" . $varsUsed . "'),''," . $mainClause . ")";
+            $this->jsExpression = "LEMif(LEManyNA('" . $varsUsed . "'),'',(" . $mainClause . "))";
         }
         else
         {
@@ -1202,7 +1269,7 @@ class ExpressionManager {
         $jsParts = array();
         $jsParts[] = "val = " . $expr . ";\n";
         $jsParts[] = "klass = (LEMeq(addslashes(val),'" . addslashes($expected) . "')) ? 'ok' : 'error';\n";
-        $jsParts[] = "document.getElementById('test_" . $num . "').innerHTML=val;\n";
+        $jsParts[] = "document.getElementById('test_" . $num . "').innerHTML=(val);\n";
         $jsParts[] = "document.getElementById('test_" . $num . "').className=klass;\n";
         return implode('',$jsParts);
 
@@ -1216,12 +1283,12 @@ class ExpressionManager {
     public function GetJavaScriptFunctionForReplacement($questionNum, $name,$eqn)
     {
         $jsParts = array();
-        $jsParts[] = "\n// Tailor Question " . $questionNum . " - " . $name . ": { " . $eqn . " }\n";
-        $jsParts[] = "try{\n";
-        $jsParts[] = "document.getElementById('" . $name . "').innerHTML=\n";
+        $jsParts[] = "\n  // Tailor Question " . $questionNum . " - " . $name . ": { " . $eqn . " }\n";
+        $jsParts[] = "  try{\n";
+        $jsParts[] = "  document.getElementById('" . $name . "').innerHTML=htmlspecialchars(\n    ";
         $jsParts[] = $this->GetJavaScriptEquivalentOfExpression();
-        $jsParts[] = ";\n";
-        $jsParts[] = "} catch (e) { }\n";
+        $jsParts[] = ");\n";
+        $jsParts[] = "  } catch (e) { }\n";
         return implode('',$jsParts);
     }
 
@@ -1249,13 +1316,13 @@ class ExpressionManager {
     public function GetPrettyPrintString()
     {
         // color code the equation, showing not only errors, but also variable attributes
-        $errs = $this->errs;
-        $tokens = $this->tokens;
+        $errs = $this->RDP_errs;
+        $tokens = $this->RDP_tokens;
         $errCount = count($errs);
         $errIndex = 0;
         if ($errCount > 0)
         {
-            usort($errs,"cmpErrorTokens");
+            usort($errs,"self::cmpErrorTokens");
         }
         $errSpecificStyle= "style='border-style: solid; border-width: 2px; border-color: red;'";
         $stringParts=array();
@@ -1310,8 +1377,8 @@ class ExpressionManager {
                     if ($i+1<$numTokens && $tokens[$i+1][2] == 'LP')
                     {
                         // then word is a function name
-                        if ($this->isValidFunction($token[0])) {
-                            $funcInfo = $this->amValidFunctions[$token[0]];
+                        if ($this->RDP_isValidFunction($token[0])) {
+                            $funcInfo = $this->RDP_ValidFunctions[$token[0]];
                             $messages[] = $funcInfo[2];
                             $messages[] = $funcInfo[3];
                         }
@@ -1321,26 +1388,47 @@ class ExpressionManager {
                     }
                     else
                     {
-                        if (!$this->isValidVariable($token[0])) {
+                        if (!$this->RDP_isValidVariable($token[0]))
+                        {
                             $color = 'red';
+                            $displayName = $token[0];
                         }
-                        else {
-                            $isOnCurrentPage = $this->GetVarAttribute($token[0],'isOnCurrentPage','N');
+                        else
+                        {
                             $jsName = $this->GetVarAttribute($token[0],'jsName','');
-                            $codeValue = $this->GetVarAttribute($token[0],'codeValue','');
+                            $code = $this->GetVarAttribute($token[0],'code','');
                             $question = $this->GetVarAttribute($token[0], 'question', '');
                             $qcode= $this->GetVarAttribute($token[0],'qcode','');
-                            $questionSeq = $this->GetVarAttribute($token[0],'questionSeq',-1);
-                            $groupSeq = $this->GetVarAttribute($token[0],'groupSeq',-1);
+                            $questionSeq = $this->GetVarAttribute($token[0],'qseq',-1);
+                            $groupSeq = $this->GetVarAttribute($token[0],'gseq',-1);
                             $ansList = $this->GetVarAttribute($token[0],'ansList','');
-                            if ($token[2] == 'SGQA' && $qcode != '') {
-                                $descriptor = '[' . $qcode . ']';
-                            }
-                            else if ($jsName != '') {
+                            $gid = $this->GetVarAttribute($token[0],'gid',-1);
+                            $qid = $this->GetVarAttribute($token[0],'qid',-1);
+
+                            if ($jsName != '') {
                                 $descriptor = '[' . $jsName . ']';
                             }
                             else {
                                 $descriptor = '';
+                            }
+                            // Show variable name instead of SGQA code, if available
+                            if ($qcode != '') {
+                                if (preg_match('/^INSERTANS:/',$token[0])) {
+                                    $displayName = $qcode . '.shown';
+                                    $descriptor = '[' . $token[0] . ']';
+                                }
+                                else {
+                                    $args = explode('.',$token[0]);
+                                    if (count($args) == 2) {
+                                        $displayName = $qcode . '.' . $args[1];
+                                    }
+                                    else {
+                                        $displayName = $qcode;
+                                    }
+                                }
+                            }
+                            else {
+                                $displayName = $token[0];
                             }
                             if ($questionSeq != -1) {
                                 $descriptor .= '[G:' . $groupSeq . ']';
@@ -1357,52 +1445,42 @@ class ExpressionManager {
                             {
                                 $messages[] = htmlspecialchars($ansList,ENT_QUOTES,'UTF-8',false);
                             }
-                            if ($codeValue != '') {
+                            if ($code != '') {
                                 if ($token[2] == 'SGQA' && preg_match('/^INSERTANS:/',$token[0])) {
-                                    $displayValue = $this->GetVarAttribute($token[0], 'displayValue', '');
-                                    $messages[] = 'value=[' . htmlspecialchars($codeValue,ENT_QUOTES,'UTF-8',false) . '] '
-                                            . htmlspecialchars($displayValue,ENT_QUOTES,'UTF-8',false);
+                                    $shown = $this->GetVarAttribute($token[0], 'shown', '');
+                                    $messages[] = 'value=[' . htmlspecialchars($code,ENT_QUOTES,'UTF-8',false) . '] '
+                                            . htmlspecialchars($shown,ENT_QUOTES,'UTF-8',false);
                                 }
                                 else {
-                                    $messages[] = 'value=' . htmlspecialchars($codeValue,ENT_QUOTES,'UTF-8',false);
+                                    $messages[] = 'value=' . htmlspecialchars($code,ENT_QUOTES,'UTF-8',false);
                                 }
                             }
-                            // TODO - isOnCurrentPage may now be surpufluous, EXCEPT for fact that LS has different data storage names for on vs. off page.
-                            if ($isOnCurrentPage=='Y')
-                            {
-                                if ($questionSeq == -1 || $this->questionSeq == -1) {
-//                                    log_message('debug','{' . $this->groupSeq . "," . $this->questionSeq . "} " . $token[0] . ": " . $descriptor);
-                                    $color = '#996600'; // tan
-                                }
-                                else if ($questionSeq > $this->questionSeq) {
-                                    if ($groupSeq > $this->groupSeq) {
-                                        $color = '#FF00FF ';     // pink a likely error
-                                    }
-                                    else {
-                                        $color = 'maroon';  // #228b22 - warning
-                                    }
-                                }
-                                else {
-                                    $color = '#4C88BE';    // cyan that goes well with the background color
-                                }
+                            if ($this->groupSeq == -1 || $groupSeq == -1 || $questionSeq == -1 || $this->questionSeq == -1) {
+                                $color = '#996600'; // tan
                             }
-                            else
-                            {
-                                if ($this->groupSeq == -1 || $groupSeq == -1) {
-//                                    log_message('debug','{' . $this->groupSeq . "," . $this->questionSeq . "} " . $token[0] . ": " . $descriptor);
-                                    $color = '#996600'; // tan
-                                }
-                                else if ($groupSeq > $this->groupSeq) {
-                                    $color = '#FF00FF ';     // pink a likely error
-                                }
-                                else {
-                                    $color = 'green';
-                                }
+                            else if ($groupSeq > $this->groupSeq) {
+                                $color = '#FF00FF ';     // pink a likely error
+                            }
+                            else if ($groupSeq < $this->groupSeq) {
+                                $color = 'green';
+                            }
+                            else if ($questionSeq > $this->questionSeq) {
+                                $color = 'maroon';  // #228b22 - warning
+                            }
+                            else {
+                                $color = '#4C88BE';    // cyan that goes well with the background color
                             }
                         }
 
-                        $stringParts[] = "<span title='"  . implode('; ',$messages) . "' style='color: ". $color . "; font-weight: bold'>";
-                        $stringParts[] = $token[0];
+                        $stringParts[] = "<span title='"  . implode('; ',$messages) . "' style='color: ". $color . "; font-weight: bold'";
+                        if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid)) {
+                            // Modify this link to utilize a different framework
+                            $_editurl = '/admin/survey/view/surveyid/' . $this->sid . '/gid/' . $gid . '/qid/' . $qid;
+                            $editlink = Yii::app()->getController()->createUrl($_editurl);
+                            $stringParts[] = " onclick='window.open(\"" . $editlink . "\");'";
+                        }
+                        $stringParts[] = ">";
+                        $stringParts[] = $displayName;
                         $stringParts[] = "</span>";
                     }
                     break;
@@ -1412,9 +1490,11 @@ class ExpressionManager {
                     $stringParts[] = $token[0];
                     $stringParts[] =  "</span>";
                     break;
+                case 'COMMA':
+                    $stringParts[] = $token[0] . ' ';
+                    break;
                 case 'LP':
                 case 'RP':
-                case 'COMMA':
                 case 'NUMBER':
                     $stringParts[] = $token[0];
                     break;
@@ -1436,16 +1516,18 @@ class ExpressionManager {
      * @param <type> $varname
      * @return <type>
      */
-    public function GetVarAttribute($name,$attr,$default)
+    private function GetVarAttribute($name,$attr,$default)
     {
         $args = explode(".", $name);
         $varName = $args[0];
-        if (!isset($this->amVars[$varName]))
+        $varName = preg_replace("/^(?:INSERTANS:)?(.*?)$/", "$1", $varName);
+        if (!isset($this->RDP_Vars[$varName]))
         {
 //            echo 'UNDEFINED VARIABLE: ' . $varName;
-            return $default;    // and throw error?
+//            return $default;    // and throw error?
+            return '{' . $name . '}';
         }
-        $var = $this->amVars[$varName];
+        $var = $this->RDP_Vars[$varName];
         $sgqa = isset($var['sgqa']) ? $var['sgqa'] : NULL;
         if (is_null($attr))
         {
@@ -1457,38 +1539,184 @@ class ExpressionManager {
             case 'varName':
                 return $name;
             case 'code':
-            case 'codeValue':
             case 'NAOK':
-                return (isset($var['codeValue'])) ? $var['codeValue'] : $default;
-            case 'isOnCurrentPage':
+                if (isset($var['code'])) {
+                    return $var['code'];    // for static values like TOKEN
+                }
+                else {
+                    if (isset($_SESSION[$sgqa])) {
+//                        if ($_SESSION[$sgqa] == 'false') {
+//                            return $default;  // TODO - is is safe to assume that a value of 'false' means boolean false and should be blanked?
+//                        }
+                        return $_SESSION[$sgqa];
+                    }
+                    if (isset($var['default']) && !is_null($var['default'])) {
+                        return $var['default'];
+                    }
+                    return $default;
+                }
+            case 'value':
+            case 'valueNAOK':
+            {
+                $type = $var['type'];
+                $code = $this->GetVarAttribute($name,'code',$default);
+                switch($type)
+                {
+                    case '!': //List - dropdown
+                    case 'L': //LIST drop-down/radio-button list
+                    case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                    case '1': //Array (Flexible Labels) dual scale  // need scale
+                    case 'H': //ARRAY (Flexible) - Column Format
+                    case 'F': //ARRAY (Flexible) - Row Format
+                    case 'R': //RANKING STYLE
+                        $scale_id = $this->GetVarAttribute($name,'scale_id','0');
+                        $which_ans = $scale_id . '~' . $code;
+                        $ansArray = $var['ansArray'];
+                        if (is_null($ansArray))
+                        {
+                            $value = $default;
+                        }
+                        else
+                        {
+                            if (isset($ansArray[$which_ans])) {
+                                $answerInfo = explode('|',$ansArray[$which_ans]);
+                                $answer = $answerInfo[0];
+                            }
+                            else {
+                                $answer = $default;
+                            }
+                            $value = $answer;
+                        }
+                        break;
+                    default:
+                        $value = $code;
+                        break;
+                    }
+                    return $value;
+                }
+                break;
             case 'jsName':
+                if ($this->allOnOnePage || ($this->groupSeq != -1 && isset($var['gseq']) && $this->groupSeq == $var['gseq'])) {
+                    // then on the same page, so return the on-page javaScript name if there is one.
+                    return (isset($var['jsName_on']) ? $var['jsName_on'] : (isset($var['jsName'])) ? $var['jsName'] : $default);
+                }
+                return (isset($var['jsName']) ? $var['jsName'] : $default);
             case 'sgqa':
             case 'mandatory':
             case 'qid':
+            case 'gid':
+            case 'grelevance':
             case 'question':
             case 'readWrite':
             case 'relevance':
-            case 'relevanceNum':
             case 'type':
             case 'qcode':
-            case 'groupSeq':
-            case 'questionSeq':
+            case 'gseq':
+            case 'qseq':
             case 'ansList':
+            case 'scale_id':
                 return (isset($var[$attr])) ? $var[$attr] : $default;
-            case 'displayValue':
             case 'shown':
-                return (isset($var['displayValue'])) ? $var['displayValue'] : $default;
+                if (isset($var['shown']))
+                {
+                    return $var['shown'];    // for static values like TOKEN
+                }
+                else
+                {
+                    $type = $var['type'];
+                    $code = $this->GetVarAttribute($name,'code',$default);
+                    switch($type)
+                    {
+                        case '!': //List - dropdown
+                        case 'L': //LIST drop-down/radio-button list
+                        case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                        case '1': //Array (Flexible Labels) dual scale  // need scale
+                        case 'H': //ARRAY (Flexible) - Column Format
+                        case 'F': //ARRAY (Flexible) - Row Format
+                        case 'R': //RANKING STYLE
+                            $scale_id = $this->GetVarAttribute($name,'scale_id','0');
+                            $which_ans = $scale_id . '~' . $code;
+                            $ansArray = $var['ansArray'];
+                            if (is_null($ansArray))
+                            {
+                                $shown=$code;
+                            }
+                            else
+                            {
+                                if (isset($ansArray[$which_ans])) {
+                                    $answerInfo = explode('|',$ansArray[$which_ans]);
+                                    array_shift($answerInfo);
+                                    $answer = join('|',$answerInfo);
+                                }
+                                else {
+                                    $answer = $code;
+                                }
+                                $shown = $answer;
+                            }
+                            break;
+                        case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                        case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                        case ':': //ARRAY (Multi Flexi) 1 to 10
+                        case '5': //5 POINT CHOICE radio-buttons
+                            $shown = $code;
+                            break;
+                        case 'N': //NUMERICAL QUESTION TYPE
+                        case 'K': //MULTIPLE NUMERICAL QUESTION
+                        case 'Q': //MULTIPLE SHORT TEXT
+                        case ';': //ARRAY (Multi Flexi) Text
+                        case 'S': //SHORT FREE TEXT
+                        case 'T': //LONG FREE TEXT
+                        case 'U': //HUGE FREE TEXT
+                        case 'M': //Multiple choice checkbox
+                        case 'P': //Multiple choice with comments checkbox + text
+                        case 'D': //DATE
+                        case '*': //Equation
+                        case 'I': //Language Question
+                        case '|': //File Upload
+                        case 'X': //BOILERPLATE QUESTION
+                            $shown = $code;
+                            break;
+                        case 'G': //GENDER drop-down list
+                        case 'Y': //YES/NO radio-buttons
+                        case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                        case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                            $ansArray = $var['ansArray'];
+                            if (is_null($ansArray))
+                            {
+                                $shown=$default;
+                            }
+                            else
+                            {
+                                if (isset($ansArray[$code])) {
+                                    $answerInfo = explode('|',$ansArray[$code]);
+                                    array_shift($answerInfo);
+                                    $answer = join('|',$answerInfo);
+                                }
+                                else {
+                                    $answer = $default;
+                                }
+                                $shown = $answer;
+                            }
+                            break;
+                    }
+                    return $shown;
+                }
             case 'relevanceStatus':
+                $gid = (isset($var['gid'])) ? $var['gid'] : -1;
                 $qid = (isset($var['qid'])) ? $var['qid'] : -1;
-                if ($qid == -1) {
+                $sgqa = (isset($var['sgqa'])) ? $var['sgqa'] : -1;
+                if ($qid == -1 || $gid == -1) {
                     return 1;
                 }
                 if (isset($args[1]) && $args[1]=='NAOK') {
                     return 1;
                 }
-                return (isset($_SESSION['relevanceStatus'][$qid]) ? $_SESSION['relevanceStatus'][$qid] : 0); // should defualt be to show?
+                $grel = (isset($_SESSION['relevanceStatus']['G'.$gid]) ? $_SESSION['relevanceStatus']['G'.$gid] : 1);   // true by default
+                $qrel = (isset($_SESSION['relevanceStatus'][$qid]) ? $_SESSION['relevanceStatus'][$qid] : 0);
+                $sqrel = (isset($_SESSION['relevanceStatus'][$sgqa]) ? $_SESSION['relevanceStatus'][$sgqa] : 1);    // true by default - only want false if a subquestion is irrelevant
+                return ($grel && $qrel && $sqrel);
             default:
-                log_message('debug','UNDEFINED ATTRIBUTE: ' . $attr);
+                print 'UNDEFINED ATTRIBUTE: ' . $attr . "<br/>\n";
                 return $default;
         }
         return $default;    // and throw and error?
@@ -1509,7 +1737,7 @@ class ExpressionManager {
      */
     public function HasErrors()
     {
-        return (count($this->errs) > 0);
+        return (count($this->RDP_errs) > 0);
     }
 
     /**
@@ -1525,9 +1753,9 @@ class ExpressionManager {
 
         $nesting = 0;
 
-        for ($i=0;$i<$this->count;++$i)
+        for ($i=0;$i<$this->RDP_count;++$i)
         {
-            $token = $this->tokens[$i];
+            $token = $this->RDP_tokens[$i];
             switch ($token[2])
             {
                 case 'LP':
@@ -1537,28 +1765,28 @@ class ExpressionManager {
                     --$nesting;
                     if ($nesting < 0)
                     {
-                        $this->AddError("Extra right parentheses detected", $token);
+                        $this->RDP_AddError("Extra right parentheses detected", $token);
                     }
                     break;
                 case 'WORD':
                 case 'SGQA':
-                    if ($i+1 < $this->count and $this->tokens[$i+1][2] == 'LP')
+                    if ($i+1 < $this->RDP_count and $this->RDP_tokens[$i+1][2] == 'LP')
                     {
-                        if (!$this->isValidFunction($token[0]))
+                        if (!$this->RDP_isValidFunction($token[0]))
                         {
-                            $this->AddError("Undefined function", $token);
+                            $this->RDP_AddError("Undefined function", $token);
                         }
                     }
                     else
                     {
-                        if (!($this->isValidVariable($token[0])))
+                        if (!($this->RDP_isValidVariable($token[0])))
                         {
-                            $this->AddError("Undefined variable", $token);
+                            $this->RDP_AddError("Undefined variable", $token);
                         }
                     }
                     break;
                 case 'OTHER':
-                    $this->AddError("Unsupported syntax", $token);
+                    $this->RDP_AddError("Unsupported syntax", $token);
                     break;
                 default:
                     break;
@@ -1566,9 +1794,9 @@ class ExpressionManager {
         }
         if ($nesting != 0)
         {
-            $this->AddError("Parentheses not balanced",NULL);
+            $this->RDP_AddError("Parentheses not balanced",NULL);
         }
-        return (count($this->errs) > 0);
+        return (count($this->RDP_errs) > 0);
     }
 
     /**
@@ -1577,9 +1805,9 @@ class ExpressionManager {
      * @return boolean
      */
 
-    private function isValidFunction($name)
+    private function RDP_isValidFunction($name)
     {
-        return array_key_exists($name,$this->amValidFunctions);
+        return array_key_exists($name,$this->RDP_ValidFunctions);
     }
 
     /**
@@ -1587,10 +1815,10 @@ class ExpressionManager {
      * @param <type> $name
      * @return boolean
      */
-    private function isValidVariable($name)
+    private function RDP_isValidVariable($name)
     {
-        $varName = preg_replace("/^(.*?)(?:\.(?:" . ExpressionManager::$regex_var_attr . "))?$/", "$1", $name);
-        return array_key_exists($varName,$this->amVars);
+        $varName = preg_replace("/^(?:INSERTANS:)?(.*?)(?:\.(?:" . ExpressionManager::$RDP_regex_var_attr . "))?$/", "$1", $name);
+        return array_key_exists($varName,$this->RDP_Vars);
     }
 
     /**
@@ -1598,7 +1826,7 @@ class ExpressionManager {
      * @param <type> $name
      * @return <type>
      */
-    private function isWritableVariable($name)
+    private function RDP_isWritableVariable($name)
     {
         return ($this->GetVarAttribute($name, 'readWrite', 'N') == 'Y');
     }
@@ -1615,7 +1843,7 @@ class ExpressionManager {
         $this->groupSeq = $groupSeq;
         $this->questionSeq = $questionSeq;
 
-        $status = $this->Evaluate($expr);
+        $status = $this->RDP_Evaluate($expr);
         if (!$status) {
             return false;    // if there are errors in the expression, hide it?
         }
@@ -1623,6 +1851,10 @@ class ExpressionManager {
         if (is_null($result)) {
             return false;    // if there are errors in the expression, hide it?
         }
+//        if ($result == 'false') {
+//            return false;    // since the string 'false' is not considered boolean false, but an expression in JavaScript can return 'false'
+//        }
+//        return !empty($result);
         return (boolean) $result;
     }
 
@@ -1630,10 +1862,14 @@ class ExpressionManager {
      * Start processing a group of substitions - will be incrementally numbered
      */
 
-    public function StartProcessingGroup()
+    public function StartProcessingGroup($sid=NULL,$rooturl='',$hyperlinkSyntaxHighlighting=false,$allOnOnePage=false)
     {
         $this->substitutionNum=0;
         $this->substitutionInfo=array(); // array of JavaScripts for managing each substitution
+        $this->allOnOnePage=$allOnOnePage;
+        $this->sid=$sid;
+        $this->rooturl=$rooturl;
+        $this->hyperlinkSyntaxHighlighting=$hyperlinkSyntaxHighlighting;
     }
 
     /**
@@ -1693,7 +1929,7 @@ class ExpressionManager {
             }
             else {
                 ++$this->substitutionNum;
-                if ($this->Evaluate(substr($stringPart[0],1,-1)))
+                if ($this->RDP_Evaluate(substr($stringPart[0],1,-1)))
                 {
                     $resolvedPart = $this->GetResult();
                 }
@@ -1731,7 +1967,7 @@ class ExpressionManager {
         }
         $result = implode('',$this->flatten_array($resolvedParts));
         $this->prettyPrintSource = implode('',$this->flatten_array($prettyPrintParts));
-        $this->errs = $allErrors;   // so that has all errors from this string
+        $this->RDP_errs = $allErrors;   // so that has all errors from this string
         return $result;    // recurse in case there are nested ones, avoiding infinite loops?
     }
 
@@ -1765,21 +2001,22 @@ class ExpressionManager {
 
     /**
      * Run a registered function
+     * Some PHP functions require specific data types - those can be cast here.
      * @param <type> $funcNameToken
      * @param <type> $params
      * @return boolean
      */
-    private function RunFunction($funcNameToken,$params)
+    private function RDP_RunFunction($funcNameToken,$params)
     {
         $name = $funcNameToken[0];
-        if (!$this->isValidFunction($name))
+        if (!$this->RDP_isValidFunction($name))
         {
             return false;
         }
-        $func = $this->amValidFunctions[$name];
+        $func = $this->RDP_ValidFunctions[$name];
         $funcName = $func[0];
         $numArgs = count($params);
-        $result=1;  // default value for $this->onlyparse
+        $result=1;  // default value for $this->RDP_onlyparse
 
         if (function_exists($funcName)) {
             $numArgsAllowed = array_slice($func, 5);    // get array of allowable argument counts from end of $func
@@ -1792,10 +2029,10 @@ class ExpressionManager {
                     $minArgs = abs($numArgsAllowed[0] + 1); // so if value is -2, means that requires at least one argument
                     if ($argsPassed < $minArgs)
                     {
-                        $this->AddError("Function must have at least ". $minArgs . " argument(s)", $funcNameToken);
+                        $this->RDP_AddError("Function must have at least ". $minArgs . " argument(s)", $funcNameToken);
                         return false;
                     }
-                    if (!$this->onlyparse) {
+                    if (!$this->RDP_onlyparse) {
                         $result = $funcName($params);
                     }
                 // Call  function with the params passed
@@ -1803,12 +2040,12 @@ class ExpressionManager {
 
                     switch ($argsPassed) {
                     case 0:
-                        if (!$this->onlyparse) {
+                        if (!$this->RDP_onlyparse) {
                             $result = $funcName();
                         }
                         break;
                     case 1:
-                        if (!$this->onlyparse) {
+                        if (!$this->RDP_onlyparse) {
                             switch($funcName) {
                                 case 'acos':
                                 case 'asin':
@@ -1836,7 +2073,7 @@ class ExpressionManager {
                         }
                         break;
                     case 2:
-                        if (!$this->onlyparse) {
+                        if (!$this->RDP_onlyparse) {
                             switch($funcName) {
                                 case 'atan2':
                                     if (is_float($params[0]) && is_float($params[1]))
@@ -1855,43 +2092,43 @@ class ExpressionManager {
                         }
                         break;
                     case 3:
-                        if (!$this->onlyparse) {
+                        if (!$this->RDP_onlyparse) {
                             $result = $funcName($params[0], $params[1], $params[2]);
                         }
                         break;
                     case 4:
-                        if (!$this->onlyparse) {
+                        if (!$this->RDP_onlyparse) {
                             $result = $funcName($params[0], $params[1], $params[2], $params[3]);
                         }
                         break;
                     case 5:
-                        if (!$this->onlyparse) {
+                        if (!$this->RDP_onlyparse) {
                             $result = $funcName($params[0], $params[1], $params[2], $params[3], $params[4]);
                         }
                         break;
                     case 6:
-                        if (!$this->onlyparse) {
+                        if (!$this->RDP_onlyparse) {
                             $result = $funcName($params[0], $params[1], $params[2], $params[3], $params[4], $params[5]);
                         }
                         break;
                     default:
-                        $this->AddError("Unsupported number of arguments: " . $argsPassed, $funcNameToken);
+                        $this->RDP_AddError("Unsupported number of arguments: " . $argsPassed, $funcNameToken);
                         return false;
                     }
 
                 } else {
-                    $this->AddError("Function does not support that number of arguments:  " . $argsPassed .
+                    $this->RDP_AddError("Function does not support that number of arguments:  " . $argsPassed .
                             ".  Function supports this many arguments, where -1=unlimited: " . implode(',', $numArgsAllowed), $funcNameToken);
                     return false;
                 }
             }
             catch (Exception $e)
             {
-                $this->AddError($e->getMessage(),$funcNameToken);
+                $this->RDP_AddError($e->getMessage(),$funcNameToken);
                 return false;
             }
             $token = array($result,$funcNameToken[1],'NUMBER');
-            $this->StackPush($token);
+            $this->RDP_StackPush($token);
             return true;
         }
     }
@@ -1899,29 +2136,26 @@ class ExpressionManager {
     /**
      * Add user functions to array of allowable functions within the equation.
      * $functions is an array of key to value mappings like this:
-     * 'newfunc' => array('my_func_script', 1,3)
-     * where 'newfunc' is the name of an allowable function wihtin the  expression, 'my_func_script' is the registered PHP function name,
-     * and 1,3 are the list of  allowable numbers of paremeters (so my_func() can take 1 or 3 parameters.
-     *
+     * See $this->RDP_ValidFunctions for examples of the syntax
      * @param array $functions
      */
 
     public function RegisterFunctions(array $functions) {
-        $this->amValidFunctions= array_merge($this->amValidFunctions, $functions);
+        $this->RDP_ValidFunctions= array_merge($this->RDP_ValidFunctions, $functions);
     }
 
     /**
      * Add list of allowable variable names within the equation
-     * $varnames is an array of key to value mappings like this:
-     * 'myvar' => value
+     * $varnames is an array of key to value mappings.
      * where value is optional (e.g. can be blank), and can be any scalar type (e.g. string, number, but not array)
      * the system will use the values as  fast lookup when doing calculations, but if it needs to set values, it will call
      * the interface function to set the values by name
+     * See function GetVarAttribute() for list of allowable attributes
      *
      * @param array $varnames
      */
     public function RegisterVarnamesUsingMerge(array $varnames) {
-        $this->amVars = array_merge($this->amVars, $varnames);
+        $this->RDP_Vars = array_merge($this->RDP_Vars, $varnames);
     }
 
     /**
@@ -1929,7 +2163,7 @@ class ExpressionManager {
      * @param array $varnames
      */
     public function RegisterVarnamesUsingReplace(array $varnames) {
-        $this->amVars = array_merge(array(), $varnames);
+        $this->RDP_Vars = array_merge(array(), $varnames);
     }
 
     /**
@@ -1938,32 +2172,32 @@ class ExpressionManager {
      * @param <type> $name
      * @param <type> $value
      */
-    private function setVariableValue($op,$name,$value)
+    private function RDP_SetVariableValue($op,$name,$value)
     {
         // TODO - set this externally
-        if ($this->onlyparse)
+        if ($this->RDP_onlyparse)
         {
             return 1;
         }
         switch($op)
         {
             case '=':
-                $this->amVars[$name]['codeValue'] = $value;
+                $this->RDP_Vars[$name]['code'] = $value;
                 break;
             case '*=':
-                $this->amVars[$name]['codeValue'] *= $value;
+                $this->RDP_Vars[$name]['code'] *= $value;
                 break;
             case '/=':
-                $this->amVars[$name]['codeValue'] /= $value;
+                $this->RDP_Vars[$name]['code'] /= $value;
                 break;
             case '+=':
-                $this->amVars[$name]['codeValue'] += $value;
+                $this->RDP_Vars[$name]['code'] += $value;
                 break;
             case '-=':
-                $this->amVars[$name]['codeValue'] -= $value;
+                $this->RDP_Vars[$name]['code'] -= $value;
                 break;
         }
-        return $this->amVars[$name]['codeValue'];
+        return $this->RDP_Vars[$name]['code'];
     }
 
     /**
@@ -1974,14 +2208,14 @@ class ExpressionManager {
     public function asSplitStringOnExpressions($src)
     {
         // tokenize string by the {} pattern, propertly dealing with strings in quotations, and escaped curly brace values
-        $tokens0 = preg_split($this->sExpressionRegex,$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
+        $tokens0 = preg_split($this->RDP_ExpressionRegex,$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
 
         $tokens = array();
         // Add token_type to $tokens:  For each token, test each categorization in order - first match will be the best.
         for ($j=0;$j<count($tokens0);++$j)
         {
             $token = $tokens0[$j];
-            if (preg_match($this->sExpressionRegex,$token[0]))
+            if (preg_match($this->RDP_ExpressionRegex,$token[0]))
             {
                 $token[2] = 'EXPRESSION';
             }
@@ -1999,15 +2233,15 @@ class ExpressionManager {
      * @return token
      */
 
-    private function StackPop()
+    private function RDP_StackPop()
     {
-        if (count($this->stack) > 0)
+        if (count($this->RDP_stack) > 0)
         {
-            return array_pop($this->stack);
+            return array_pop($this->RDP_stack);
         }
         else
         {
-            $this->AddError("Tried to pop value off of empty stack", NULL);
+            $this->RDP_AddError("Tried to pop value off of empty stack", NULL);
             return NULL;
         }
     }
@@ -2017,26 +2251,26 @@ class ExpressionManager {
      * @param array $token
      */
 
-    private function StackPush(array $token)
+    private function RDP_StackPush(array $token)
     {
-        if ($this->onlyparse)
+        if ($this->RDP_onlyparse)
         {
             // If only parsing, still want to validate syntax, so use "1" for all variables
             switch($token[2])
             {
                 case 'DQ_STRING':
                 case 'SQ_STRING':
-                    $this->stack[] = array(1,$token[1],$token[2]);
+                    $this->RDP_stack[] = array(1,$token[1],$token[2]);
                     break;
                 case 'NUMBER':
                 default:
-                    $this->stack[] = array(1,$token[1],'NUMBER');
+                    $this->RDP_stack[] = array(1,$token[1],'NUMBER');
                     break;
             }
         }
         else
         {
-            $this->stack[] = $token;
+            $this->RDP_stack[] = $token;
         }
     }
 
@@ -2047,24 +2281,24 @@ class ExpressionManager {
      * @return array
      */
 
-    private function amTokenize($src)
+    private function RDP_Tokenize($src)
     {
         // $tokens0 = array of tokens from equation, showing value and offset position.  Will include SPACE, which should be removed
-        $tokens0 = preg_split($this->sTokenizerRegex,$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
+        $tokens0 = preg_split($this->RDP_TokenizerRegex,$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
 
         // $tokens = array of tokens from equation, showing value, offsete position, and type.  Will not contain SPACE, but will contain OTHER
         $tokens = array();
         // Add token_type to $tokens:  For each token, test each categorization in order - first match will be the best.
         for ($j=0;$j<count($tokens0);++$j)
         {
-            for ($i=0;$i<count($this->asCategorizeTokensRegex);++$i)
+            for ($i=0;$i<count($this->RDP_CategorizeTokensRegex);++$i)
             {
                 $token = $tokens0[$j][0];
-                if (preg_match($this->asCategorizeTokensRegex[$i],$token))
+                if (preg_match($this->RDP_CategorizeTokensRegex[$i],$token))
                 {
-                    if ($this->asTokenType[$i] !== 'SPACE') {
-                        $tokens0[$j][2] = $this->asTokenType[$i];
-                        if ($this->asTokenType[$i] == 'DQ_STRING' || $this->asTokenType[$i] == 'SQ_STRING')
+                    if ($this->RDP_TokenType[$i] !== 'SPACE') {
+                        $tokens0[$j][2] = $this->RDP_TokenType[$i];
+                        if ($this->RDP_TokenType[$i] == 'DQ_STRING' || $this->RDP_TokenType[$i] == 'SQ_STRING')
                         {
                             // remove outside quotes
                             $unquotedToken = str_replace(array('\"',"\'","\\\\"),array('"',"'",'\\'),substr($token,1,-1));
@@ -2095,6 +2329,7 @@ What if there is a { space after the opening brace?}
 What about a {space before the closing brace }?
 What about an { expression nested {within a string} that has white space after the opening brace}?
 Can {expressions contain 'single' or "double" quoted strings}?
+Can an expression contain a perl regular expression like this {'/^\d{3}-\d{2}-\d{4}$/'}?
 [img src="images/mine_{Q1}.png"/]
 [img src="images/mine_" + {Q1} + ".png"/]
 [img src={implode('','"images/mine_',Q1,'.png"')}/]
@@ -2104,6 +2339,7 @@ Can {expressions contain 'single' or "double" quoted strings}?
 Since you have more {if((INSERT61764X1X3 > INSERT61764X1X4),'children','pets')} than you do {if((INSERT61764X1X3 > INSERT61764X1X4),'pets','children')}, do you feel that the {if((INSERT61764X1X3 > INSERT61764X1X4),'pets','children')} are at a disadvantage?
 Here is a String that failed to parse prior to fixing the preg_split() command to avoid recursive search of sub-strings: [{((617167X9X3241 == "Y" or 617167X9X3242 == "Y" or 617167X9X3243 == "Y" or 617167X9X3244 == "Y" or 617167X9X3245 == "Y" or 617167X9X3246 == "Y" or 617167X9X3247 == "Y" or 617167X9X3248 == "Y" or 617167X9X3249 == "Y") and (617167X9X3301 == "Y" or 617167X9X3302 == "Y" or 617167X9X3303 == "Y" or 617167X9X3304 == "Y" or 617167X9X3305 == "Y" or 617167X9X3306 == "Y" or 617167X9X3307 == "Y" or 617167X9X3308 == "Y" or 617167X9X3309 == "Y"))}] Here is the question.
 EOD;
+// Here is a String that failed to parse prior to fixing the preg_split() command to avoid recursive search of sub-strings: [{((617167X9X3241 == "Y" or 617167X9X3242 == "Y" or 617167X9X3243 == "Y" or 617167X9X3244 == "Y" or 617167X9X3245 == "Y" or 617167X9X3246 == "Y" or 617167X9X3247 == "Y" or 617167X9X3248 == "Y" or 617167X9X3249 == "Y") and (617167X9X3301 == "Y" or 617167X9X3302 == "Y" or 617167X9X3303 == "Y" or 617167X9X3304 == "Y" or 617167X9X3305 == "Y" or 617167X9X3306 == "Y" or 617167X9X3307 == "Y" or 617167X9X3308 == "Y" or 617167X9X3309 == "Y"))}] Here is the question.
 
         $em = new ExpressionManager();
 
@@ -2145,7 +2381,7 @@ EOD;
 
         foreach(explode("\n",$tests) as $test)
         {
-            $tokens = $em->amTokenize($test);
+            $tokens = $em->RDP_Tokenize($test);
             print '<b>' . $test . '</b><hr/>';
             print '<code>';
             print implode("<br/>\n",explode("\n",print_r($tokens,TRUE)));
@@ -2163,7 +2399,7 @@ EOD;
         $em = new ExpressionManager();
         $output = "<h3>Functions Available within Expression Manager</h3>\n";
         $output .= "<table border='1'><tr><th>Function</th><th>Meaning</th><th>Syntax</th><th>Reference</th></tr>\n";
-        foreach ($em->amValidFunctions as $name => $func) {
+        foreach ($em->RDP_ValidFunctions as $name => $func) {
             $output .= "<tr><td>" . $name . "</td><td>" . $func[2] . "</td><td>" . $func[3] . "</td><td><a href='" . $func[4] . "'>" . $func[4] . "</a>&nbsp;</td></tr>\n";
         }
         $output .= "</table>\n";
@@ -2178,143 +2414,152 @@ EOD;
     {
         // Some test cases for Evaluator
         $vars = array(
-'one' => array('codeValue'=>1, 'jsName'=>'java_one', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>2,'questionSeq'=>4),
-'two' => array('codeValue'=>2, 'jsName'=>'java_two', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>2,'questionSeq'=>4),
-'three' => array('codeValue'=>3, 'jsName'=>'java_three', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>4),
-'four' => array('codeValue'=>4, 'jsName'=>'java_four', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>1),
-'five' => array('codeValue'=>5, 'jsName'=>'java_five', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>1),
-'six' => array('codeValue'=>6, 'jsName'=>'java_six', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>1),
-'seven' => array('codeValue'=>7, 'jsName'=>'java_seven', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>5),
-'eight' => array('codeValue'=>8, 'jsName'=>'java_eight', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>5),
-'nine' => array('codeValue'=>9, 'jsName'=>'java_nine', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>5),
-'ten' => array('codeValue'=>10, 'jsName'=>'java_ten', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
-'half' => array('codeValue'=>.5, 'jsName'=>'java_half', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
-'hi' => array('codeValue'=>'there', 'jsName'=>'java_hi', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
-'hello' => array('codeValue'=>"Tom", 'jsName'=>'java_hello', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
-'a' => array('codeValue'=>0, 'jsName'=>'java_a', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>2),
-'b' => array('codeValue'=>0, 'jsName'=>'java_b', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>2),
-'c' => array('codeValue'=>0, 'jsName'=>'java_c', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>2),
-'d' => array('codeValue'=>0, 'jsName'=>'java_d', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>2),
-'eleven' => array('codeValue'=>11, 'jsName'=>'java_eleven', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
-'twelve' => array('codeValue'=>12, 'jsName'=>'java_twelve', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
+'one' => array('sgqa'=>'one', 'code'=>1, 'jsName'=>'java_one', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>4),
+'two' => array('sgqa'=>'two', 'code'=>2, 'jsName'=>'java_two', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>4),
+'three' => array('sgqa'=>'three', 'code'=>3, 'jsName'=>'java_three', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>4),
+'four' => array('sgqa'=>'four', 'code'=>4, 'jsName'=>'java_four', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>1),
+'five' => array('sgqa'=>'five', 'code'=>5, 'jsName'=>'java_five', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>1),
+'six' => array('sgqa'=>'six', 'code'=>6, 'jsName'=>'java_six', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>1),
+'seven' => array('sgqa'=>'seven', 'code'=>7, 'jsName'=>'java_seven', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>5),
+'eight' => array('sgqa'=>'eight', 'code'=>8, 'jsName'=>'java_eight', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>5),
+'nine' => array('sgqa'=>'nine', 'code'=>9, 'jsName'=>'java_nine', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>5),
+'ten' => array('sgqa'=>'ten', 'code'=>10, 'jsName'=>'java_ten', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
+'half' => array('sgqa'=>'half', 'code'=>.5, 'jsName'=>'java_half', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
+'hi' => array('sgqa'=>'hi', 'code'=>'there', 'jsName'=>'java_hi', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
+'hello' => array('sgqa'=>'hello', 'code'=>"Tom", 'jsName'=>'java_hello', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
+'a' => array('sgqa'=>'a', 'code'=>0, 'jsName'=>'java_a', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
+'b' => array('sgqa'=>'b', 'code'=>0, 'jsName'=>'java_b', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
+'c' => array('sgqa'=>'c', 'code'=>0, 'jsName'=>'java_c', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
+'d' => array('sgqa'=>'d', 'code'=>0, 'jsName'=>'java_d', 'readWrite'=>'Y', 'gseq'=>2,'qseq'=>2),
+'eleven' => array('sgqa'=>'eleven', 'code'=>11, 'jsName'=>'java_eleven', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
+'twelve' => array('sgqa'=>'twelve', 'code'=>12, 'jsName'=>'java_twelve', 'readWrite'=>'Y', 'gseq'=>1,'qseq'=>1),
 // Constants
-'ADMINEMAIL' => array('codeValue'=>'value for {ADMINEMAIL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'ADMINNAME' => array('codeValue'=>'value for {ADMINNAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'AID' => array('codeValue'=>'value for {AID}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'ANSWERSCLEARED' => array('codeValue'=>'value for {ANSWERSCLEARED}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'ANSWER' => array('codeValue'=>'value for {ANSWER}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'ASSESSMENTS' => array('codeValue'=>'value for {ASSESSMENTS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'ASSESSMENT_CURRENT_TOTAL' => array('codeValue'=>'value for {ASSESSMENT_CURRENT_TOTAL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'ASSESSMENT_HEADING' => array('codeValue'=>'"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'CHECKJAVASCRIPT' => array('codeValue'=>'value for {CHECKJAVASCRIPT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'CLEARALL' => array('codeValue'=>'value for {CLEARALL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'CLOSEWINDOW' => array('codeValue'=>'value for {CLOSEWINDOW}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'COMPLETED' => array('codeValue'=>'value for {COMPLETED}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'DATESTAMP' => array('codeValue'=>'value for {DATESTAMP}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'EMAILCOUNT' => array('codeValue'=>'value for {EMAILCOUNT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'EMAIL' => array('codeValue'=>'value for {EMAIL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'EXPIRY' => array('codeValue'=>'value for {EXPIRY}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'FIRSTNAME' => array('codeValue'=>'value for {FIRSTNAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'GID' => array('codeValue'=>'value for {GID}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'GROUPDESCRIPTION' => array('codeValue'=>'value for {GROUPDESCRIPTION}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'GROUPNAME' => array('codeValue'=>'value for {GROUPNAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'INSERTANS:123X45X67' => array('displayValue'=>'value for {INSERTANS:123X45X67}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'INSERTANS:123X45X67ber' => array('displayValue'=>'value for {INSERTANS:123X45X67ber}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'INSERTANS:123X45X67ber_01a' => array('displayValue'=>'value for {INSERTANS:123X45X67ber_01a}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'LANGUAGECHANGER' => array('codeValue'=>'value for {LANGUAGECHANGER}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'LANGUAGE' => array('codeValue'=>'value for {LANGUAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'LANG' => array('codeValue'=>'value for {LANG}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'LASTNAME' => array('codeValue'=>'value for {LASTNAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'LOADERROR' => array('codeValue'=>'value for {LOADERROR}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'LOADFORM' => array('codeValue'=>'value for {LOADFORM}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'LOADHEADING' => array('codeValue'=>'value for {LOADHEADING}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'LOADMESSAGE' => array('codeValue'=>'value for {LOADMESSAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'NAME' => array('codeValue'=>'value for {NAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'NAVIGATOR' => array('codeValue'=>'value for {NAVIGATOR}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'NOSURVEYID' => array('codeValue'=>'value for {NOSURVEYID}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'NOTEMPTY' => array('codeValue'=>'value for {NOTEMPTY}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'NULL' => array('codeValue'=>'value for {NULL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'NUMBEROFQUESTIONS' => array('codeValue'=>'value for {NUMBEROFQUESTIONS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'OPTOUTURL' => array('codeValue'=>'value for {OPTOUTURL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'PERCENTCOMPLETE' => array('codeValue'=>'value for {PERCENTCOMPLETE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'PERC' => array('codeValue'=>'value for {PERC}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'PRIVACYMESSAGE' => array('codeValue'=>'value for {PRIVACYMESSAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'PRIVACY' => array('codeValue'=>'value for {PRIVACY}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QID' => array('codeValue'=>'value for {QID}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTIONHELPPLAINTEXT' => array('codeValue'=>'value for {QUESTIONHELPPLAINTEXT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTIONHELP' => array('codeValue'=>'"can single quoted strings" . \'contain nested \'quoted sections\'?', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_CLASS' => array('codeValue'=>'value for {QUESTION_CLASS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_CODE' => array('codeValue'=>'value for {QUESTION_CODE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_ESSENTIALS' => array('codeValue'=>'value for {QUESTION_ESSENTIALS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_FILE_VALID_MESSAGE' => array('codeValue'=>'value for {QUESTION_FILE_VALID_MESSAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_HELP' => array('codeValue'=>'Can strings have embedded <tags> like <html>, or even unbalanced "quotes or entities without terminal semicolons like &amp and  &lt?', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_INPUT_ERROR_CLASS' => array('codeValue'=>'value for {QUESTION_INPUT_ERROR_CLASS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_MANDATORY' => array('codeValue'=>'value for {QUESTION_MANDATORY}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_MAN_CLASS' => array('codeValue'=>'value for {QUESTION_MAN_CLASS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_MAN_MESSAGE' => array('codeValue'=>'value for {QUESTION_MAN_MESSAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_NUMBER' => array('codeValue'=>'value for {QUESTION_NUMBER}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_TEXT' => array('codeValue'=>'value for {QUESTION_TEXT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_VALID_MESSAGE' => array('codeValue'=>'value for {QUESTION_VALID_MESSAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION' => array('codeValue'=>'value for {QUESTION}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'REGISTERERROR' => array('codeValue'=>'value for {REGISTERERROR}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'REGISTERFORM' => array('codeValue'=>'value for {REGISTERFORM}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'REGISTERMESSAGE1' => array('codeValue'=>'value for {REGISTERMESSAGE1}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'REGISTERMESSAGE2' => array('codeValue'=>'value for {REGISTERMESSAGE2}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'RESTART' => array('codeValue'=>'value for {RESTART}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'RETURNTOSURVEY' => array('codeValue'=>'value for {RETURNTOSURVEY}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SAVEALERT' => array('codeValue'=>'value for {SAVEALERT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SAVEDID' => array('codeValue'=>'value for {SAVEDID}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SAVEERROR' => array('codeValue'=>'value for {SAVEERROR}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SAVEFORM' => array('codeValue'=>'value for {SAVEFORM}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SAVEHEADING' => array('codeValue'=>'value for {SAVEHEADING}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SAVEMESSAGE' => array('codeValue'=>'value for {SAVEMESSAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SAVE' => array('codeValue'=>'value for {SAVE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SGQ' => array('codeValue'=>'value for {SGQ}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SID' => array('codeValue'=>'value for {SID}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SITENAME' => array('codeValue'=>'value for {SITENAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SUBMITBUTTON' => array('codeValue'=>'value for {SUBMITBUTTON}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SUBMITCOMPLETE' => array('codeValue'=>'value for {SUBMITCOMPLETE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SUBMITREVIEW' => array('codeValue'=>'value for {SUBMITREVIEW}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SURVEYCONTACT' => array('codeValue'=>'value for {SURVEYCONTACT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SURVEYDESCRIPTION' => array('codeValue'=>'value for {SURVEYDESCRIPTION}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SURVEYFORMAT' => array('codeValue'=>'value for {SURVEYFORMAT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SURVEYLANGAGE' => array('codeValue'=>'value for {SURVEYLANGAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SURVEYLISTHEADING' => array('codeValue'=>'value for {SURVEYLISTHEADING}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SURVEYLIST' => array('codeValue'=>'value for {SURVEYLIST}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SURVEYNAME' => array('codeValue'=>'value for {SURVEYNAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SURVEYURL' => array('codeValue'=>'value for {SURVEYURL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'TEMPLATECSS' => array('codeValue'=>'value for {TEMPLATECSS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'TEMPLATEURL' => array('codeValue'=>'value for {TEMPLATEURL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'TEXT' => array('codeValue'=>'value for {TEXT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'THEREAREXQUESTIONS' => array('codeValue'=>'value for {THEREAREXQUESTIONS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'TIME' => array('codeValue'=>'value for {TIME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'TOKEN:EMAIL' => array('codeValue'=>'value for {TOKEN:EMAIL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'TOKEN:FIRSTNAME' => array('codeValue'=>'value for {TOKEN:FIRSTNAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'TOKEN:LASTNAME' => array('codeValue'=>'value for {TOKEN:LASTNAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'TOKENCOUNT' => array('codeValue'=>'value for {TOKENCOUNT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'TOKEN_COUNTER' => array('codeValue'=>'value for {TOKEN_COUNTER}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'TOKEN' => array('codeValue'=>'value for {TOKEN}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'URL' => array('codeValue'=>'value for {URL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'WELCOME' => array('codeValue'=>'value for {WELCOME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'ASSESSMENT_HEADING' => array('sgqa'=>'ASSESSMENT_HEADING', 'code'=>'"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"', 'jsName'=>'', 'readWrite'=>'N'),
+'QID' => array('sgqa'=>'QID', 'code'=>'value for {QID}', 'jsName'=>'', 'readWrite'=>'N'),
+'QUESTIONHELP' => array('sgqa'=>'QUESTIONHELP', 'code'=>'"can single quoted strings" . \'contain nested \'quoted sections\'?', 'jsName'=>'', 'readWrite'=>'N'),
+'QUESTION_HELP' => array('sgqa'=>'QUESTION_HELP', 'code'=>'Can strings have embedded <tags> like <html>, or even unbalanced "quotes or entities without terminal semicolons like &amp and  &lt?', 'jsName'=>'', 'readWrite'=>'N'),
+'NUMBEROFQUESTIONS' => array('sgqa'=>'NUMBEROFQUESTIONS', 'code'=>'value for {NUMBEROFQUESTIONS}', 'jsName'=>'', 'readWrite'=>'N'),
+'THEREAREXQUESTIONS' => array('sgqa'=>'THEREAREXQUESTIONS', 'code'=>'value for {THEREAREXQUESTIONS}', 'jsName'=>'', 'readWrite'=>'N'),
+'TOKEN:FIRSTNAME' => array('sgqa'=>'TOKEN:FIRSTNAME', 'code' => 'value for {TOKEN:FIRSTNAME}', 'jsName' => '', 'readWrite' => 'N'),
+'WELCOME' => array('sgqa'=>'WELCOME', 'code'=>'value for {WELCOME}', 'jsName'=>'', 'readWrite'=>'N'),
 // also include SGQA values and read-only variable attributes
-'12X34X56'  => array('codeValue'=>5, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
-'12X3X5lab1_ber'    => array('codeValue'=>10, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
-'q5pointChoice'    => array('codeValue'=>3, 'jsName'=>'java_q5pointChoice', 'readWrite'=>'N','displayValue'=>'Father', 'relevance'=>1, 'type'=>'5', 'question'=>'(question for q5pointChoice)', 'qid'=>12,'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>12),
-'qArrayNumbers_ls1_min'    => array('codeValue'=> 7, 'jsName'=>'java_qArrayNumbers_ls1_min', 'readWrite'=>'N','displayValue'=> 'I love LimeSurvey', 'relevance'=>1, 'type'=>'A', 'question'=>'(question for qArrayNumbers)', 'qid'=>6,'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>6),
-'12X3X5lab1_ber#1'  => array('codeValue'=> 15, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
+'12X34X56' => array('sgqa'=>'12X34X56', 'code'=>5, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
+'12X3X5lab1_ber' => array('sgqa'=>'12X3X5lab1_ber', 'code'=>10, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
+'q5pointChoice' => array('sgqa'=>'q5pointChoice', 'code'=>3, 'jsName'=>'java_q5pointChoice', 'readWrite'=>'N','shown'=>'Father', 'relevance'=>1, 'type'=>'5', 'question'=>'(question for q5pointChoice)', 'qid'=>13,'gseq'=>2,'qseq'=>13),
+'qArrayNumbers_ls1_min' => array('sgqa'=>'qArrayNumbers_ls1_min', 'code'=> 7, 'jsName'=>'java_qArrayNumbers_ls1_min', 'readWrite'=>'N','shown'=> 'I love LimeSurvey', 'relevance'=>1, 'type'=>'A', 'question'=>'(question for qArrayNumbers)', 'qid'=>6,'gseq'=>2,'qseq'=>6),
+'12X3X5lab1_ber#1' => array('sgqa'=>'12X3X5lab1_ber#1', 'code'=> 15, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
+'zero' => array('sgqa'=>'zero', 'code'=>0, 'jsName'=>'java_zero', 'gseq'=>0,'qseq'=>0),
+'empty' => array('sgqa'=>'empty', 'code'=>'', 'jsName'=>'java_empty', 'gseq'=>0,'qseq'=>0),
         );
 
         // Syntax for $tests is
         // expectedResult~expression
         // if the expected result is an error, use NULL for the expected result
         $tests  = <<<EOD
+1~!'0'
+1~0 eq '0'
+0~0 ne '0'
+0~0 eq empty
+1~0 ne empty
+0~0 eq ''
+1~0 ne ''
+1~is_empty(empty)
+1~is_empty('')
+0~is_empty(0)
+0~is_empty('0')
+0~is_empty('false')
+0~is_empty('NULL')
+0~'' < 10
+0~0 < empty
+1~0 <= empty
+0~0 > empty
+1~0 >= empty
+0~'0' eq empty
+1~'0' ne empty
+0~'0' < empty
+1~'0' <= empty
+0~'0' > empty
+1~'0' >= empty
+1~empty eq empty
+0~empty ne empty
+0~if('0',1,0)
+0~if(0,1,0)
+1~if(!0,1,0)
+0~if(!(!0),1,0)
+1~if('true',1,0)
+1~if('false',1,0)
+1~if('00',1,0)
+0~if('',1,0)
+0~'' > 0
+0~' ' > 0
+1~!0
+0~!' '
+0~!'A'
+0~!1
+0~!'1'
+1~!''
+1~!empty
+1~'0'==0
+0~'A'>0
+0~'A'<0
+0~'A'==0
+0~'A'>=0
+0~'A'<=0
+0~0>'A'
+0~0>='B'
+0~0=='C'
+0~0<'D'
+0~0<='E'
+1~0!='F'
+1~'A' or 'B'
+1~'A' and 'B'
+0~'A' eq 'B'
+1~'A' ne 'B'
+1~'A' < 'B'
+1~'A' <= 'B'
+0~'A' > 'B'
+0~'A' >= 'B'
+AB~'A' + 'B'
+NAN~'A' - 'B'
+NAN~'A' * 'B'
+NAN~'A' / 'B'
+1~'A' or empty
+0~'A' and empty
+0~'A' eq empty
+1~'A' ne empty
+0~'A' < empty
+0~'A' <= empty
+1~'A' > empty
+1~'A' >= empty
+A~'A' + empty
+NAN~'A' - empty
+NAN~'A' * empty
+NAN~'A' / empty
+0~0 or empty
+0~0 and empty
+0~0 + empty
+0~0 - empty
+0~0 * empty
+NAN~0 / empty
+0~is_numeric(empty)
+1~if('A',1,0)
+0~if(empty,1,0)
+0~if(0,1,0)
+1~if('false',1,0)
+0~(-1 > 0)
+0~zero
+~empty
+1~five > zero
+1~five > empty
+1~empty < 16
+1~zero == empty
 3~q5pointChoice.code
 5~q5pointChoice.type
 (question for q5pointChoice)~q5pointChoice.question
 1~q5pointChoice.relevance
 4~q5pointChoice.NAOK + 1
 NULL~q5pointChoice.bogus
-12~q5pointChoice.qid
+13~q5pointChoice.qid
 7~qArrayNumbers_ls1_min.code
 6~max(five,(one + (two * four)- three))
 6~max((one + (two * four)- three))
@@ -2367,7 +2612,7 @@ there~hi
 0~four eq three
 1~four != three
 0~four ne four
-0~one * hi
+NAN~one * hi
 5~abs(-five)
 0~acos(cos(pi()))-pi()
 0~floor(asin(sin(pi())))
@@ -2375,8 +2620,10 @@ there~hi
 9~floor(9.9)
 15~sum(one,two,three,four,five)
 5~count(one,two,three,four,five)
-0~a='',b='',c=0
-1~count(a,b,c)
+0~a='hello',b='',c=0
+hello~a
+0~c
+2~count(a,b,c)
 5~intval(5.7)
 1~is_float(pi())
 0~is_float(5)
@@ -2395,7 +2642,6 @@ NULL~(one * two + (three - four)
 NULL~(one * two + (three - four)))
 NULL~++a
 NULL~--b
-value for {INSERTANS:123X45X67}~INSERTANS:123X45X67
 value for {QID}~QID
 "Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"~ASSESSMENT_HEADING
 "can single quoted strings" . 'contain nested 'quoted sections'?~QUESTIONHELP
@@ -2459,14 +2705,14 @@ hi there!~strtolower(c)
 1~c == 'Hi there!'
 1~c == "Hi there!"
 1~strpos(c,'there')>1
-1~regexMatch('there',c)
-1~regexMatch('^.*there.*$',c)
-0~regexMatch('joe',c)
-1~regexMatch('(?:dog|cat)food','catfood stinks')
-1~regexMatch('(?:dog|cat)food','catfood stinks')
-1~regexMatch('[0-9]{3}-[0-9]{2}-[0-9]{4}','123-45-6789')
-1~regexMatch('\d{3}-\d{2}-\d{4}','123-45-6789')
-1~regexMatch('(?:\(\d{3}\))\s*\d{3}-\d{4}','(212) 555-1212')
+1~regexMatch('/there/',c)
+1~regexMatch('/^.*there.*$/',c)
+0~regexMatch('/joe/',c)
+1~regexMatch('/(?:dog|cat)food/','catfood stinks')
+1~regexMatch('/(?:dog|cat)food/','catfood stinks')
+1~regexMatch('/[0-9]{3}-[0-9]{2}-[0-9]{4}/','123-45-6789')
+1~regexMatch('/\d{3}-\d{2}-\d{4}/','123-45-6789')
+1~regexMatch('/(?:\(\d{3}\))\s*\d{3}-\d{4}/','(212) 555-1212')
 11~eleven
 144~twelve * twelve
 4~if(5 > 7,2,4)
@@ -2482,8 +2728,6 @@ there~if((one > two),'hi','there')
 1~if(' ',1,0)
 0~!is_empty(one==two)
 1~!is_empty(1)
-1~is_bool(0)
-0~is_bool(1)
 &quot;Can strings contain embedded \&quot;quoted passages\&quot; (and parentheses + other characters?)?&quot;~a=htmlspecialchars(ASSESSMENT_HEADING)
 &quot;can single quoted strings&quot; . &#039;contain nested &#039;quoted sections&#039;?~b=htmlspecialchars(QUESTIONHELP)
 Can strings have embedded &lt;tags&gt; like &lt;html&gt;, or even unbalanced &quot;quotes or entities without terminal semicolons like &amp;amp and  &amp;lt?~c=htmlspecialchars(QUESTION_HELP)
@@ -2524,8 +2768,8 @@ EOD;
         // manually set relevance status
         $_SESSION['relevanceStatus'] = array();
         foreach ($vars as $var) {
-            if (isset($var['questionSeq'])) {
-                $_SESSION['relevanceStatus'][$var['questionSeq']] = 1;
+            if (isset($var['qseq'])) {
+                $_SESSION['relevanceStatus'][$var['qseq']] = 1;
             }
         }
 
@@ -2543,7 +2787,7 @@ EOD;
             $resultStatus = 'ok';
             $em->groupSeq=2;
             $em->questionSeq=3;
-            $status = $em->Evaluate($expr);
+            $status = $em->RDP_Evaluate($expr);
             if ($status)
             {
                 $allJsVarnamesUsed = array_merge($allJsVarnamesUsed,$em->GetJsVarsUsed());
@@ -2589,6 +2833,8 @@ EOD;
         $body .= '</table>';
         $body .= "<script type='text/javascript'>\n";
         $body .= "<!--\n";
+        $body .= "var LEMgid=2;\n";
+        $body .= "var LEMallOnOnePage=false;\n";
         $body .= "function recompute() {\n";
         $body .= implode("\n",$javaScript);
         $body .= "}\n//-->\n</script>\n";
@@ -2605,10 +2851,10 @@ EOD;
         {
             ++$i;
             $pre .= "<tr><td>" .  $i . "</td><td>" . $jsVarName;
-            foreach($em->amVars as $k => $v) {
+            foreach($em->RDP_Vars as $k => $v) {
                 if ($v['jsName'] == $jsVarName)
                 {
-                    $value = $v['codeValue'];
+                    $value = $v['code'];
                 }
             }
             $pre .= "</td><td>" . $value . "</td><td><input type='text' id='relevance" . $i . "' value='1' onchange='recompute()'/>\n";
@@ -2618,15 +2864,13 @@ EOD;
             $LEMalias2varName[] = "'" . $jsVarName . "':'" . $jsVarName . "'";
             $attrInfo = "'" . $jsVarName .  "': {'jsName':'" . $jsVarName . "'";
 
-            // populate this from $em->amVars - cheat, knowing that the jsVaraName will be java_xxxx
-            $varInfo = $em->amVars[substr($jsVarName,5)];
+            // populate this from $em->RDP_Vars - cheat, knowing that the jsVaraName will be java_xxxx
+            $varInfo = $em->RDP_Vars[substr($jsVarName,5)];
             foreach ($varInfo as $k=>$v) {
-                if ($k == 'codeValue') {
+                if ($k == 'code') {
                     continue;   // will access it from hidden node
-//                    $k = 'code';
-//                    $v = htmlspecialchars(preg_replace("/[[:space:]]/",' ',$v),ENT_QUOTES);
                 }
-               if ($k == 'displayValue') {
+               if ($k == 'shown') {
                     $k = 'shown';
                     $v = htmlspecialchars(preg_replace("/[[:space:]]/",' ',$v),ENT_QUOTES);
                 }
@@ -2650,29 +2894,46 @@ EOD;
         print $pre;
         print $body;
     }
-}
 
-/**
- * Used by usort() to order Error tokens by their position within the string
- * @param <type> $a
- * @param <type> $b
- * @return <type>
- */
-function cmpErrorTokens($a, $b)
-{
-    if (is_null($a[1])) {
+    /**
+     * Stub to access LimeSurvey's functions for internationalizing strings
+     * @param <type> $string
+     * @return <type>
+     */
+    function gT($string)
+    {
+        // ultimately should call i8n functiouns
+        global $clang;
+        if (isset($clang)) {
+            return $clang->gT($string);
+        }
+        else {
+            return $string;
+        }
+    }
+
+    /**
+     * Used by usort() to order Error tokens by their position within the string
+     * @param <type> $a
+     * @param <type> $b
+     * @return <type>
+     */
+    function cmpErrorTokens($a, $b)
+    {
+        if (is_null($a[1])) {
+            if (is_null($b[1])) {
+                return 0;
+            }
+            return 1;
+        }
         if (is_null($b[1])) {
+            return -1;
+        }
+        if ($a[1][1] == $b[1][1]) {
             return 0;
         }
-        return 1;
+        return ($a[1][1] < $b[1][1]) ? -1 : 1;
     }
-    if (is_null($b[1])) {
-        return -1;
-    }
-    if ($a[1][1] == $b[1][1]) {
-        return 0;
-    }
-    return ($a[1][1] < $b[1][1]) ? -1 : 1;
 }
 
 /**
@@ -2757,7 +3018,10 @@ function exprmgr_implode($args)
  */
 function exprmgr_empty($arg)
 {
-    return empty($arg);
+    if ($arg === NULL || $arg === "" || $arg === false) {
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -2821,7 +3085,14 @@ function expr_mgr_htmlspecialchars_decode($string)
  */
 function exprmgr_regexMatch($pattern, $input)
 {
-    return preg_match("/" . $pattern . "/", $input);
+    try {
+        $result = preg_match($pattern, $input);
+    } catch (Exception $e) {
+        $result = false;
+        // How should errors be logged?
+        print 'Invalid PERL Regular Expression: ' . htmlspecialchars($pattern);
+    }
+    return $result;
 }
 
 ?>
