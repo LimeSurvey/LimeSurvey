@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: LimeSurvey 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-13 13:52+0100\n"
-"PO-Revision-Date: 2011-12-14 20:27+0100\n"
-"Last-Translator: LimeSurvey team <info@limesurvey.org>\n"
+"PO-Revision-Date: 2012-01-02 13:18+0100\n"
+"Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -94,8 +94,9 @@ msgid "This file type is not allowed to be uploaded."
 msgstr "اس فائل کی قسم کی اجازت دی اپ لوڈ ہی نہیں ہے"
 
 #: /tmp/translationstatus_v2/application/views/admin/templates/templateeditorbar_view.php:43
+#, fuzzy
 msgid "Template editor"
-msgstr "سانچہ ایڈیٹر"
+msgstr "سانچہ مدی"
 
 #: /tmp/translationstatus_v2/application/views/admin/templates/templateeditorbar_view.php:43
 #: /tmp/translationstatus_v2/application/views/admin/templates/templateeditorbar_view.php:110
@@ -118,8 +119,9 @@ msgid "Return to survey administration"
 msgstr "سروے انتظامیہ پر واپس جائیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/templates/templateeditorbar_view.php:55
+#, fuzzy
 msgid "Note: This is a standard template."
-msgstr "نوٹ : یہ ایک معیاری سانچے ہے."
+msgstr "آپ کو ایک معیاری سانچے کا نام تبدیل نہیں کر سکتی"
 
 #: /tmp/translationstatus_v2/application/views/admin/templates/templateeditorbar_view.php:56
 #, fuzzy, php-format
@@ -148,8 +150,9 @@ msgstr "copy_of_"
 #: /tmp/translationstatus_v2/application/views/admin/templates/templateeditorbar_view.php:77
 #: /tmp/translationstatus_v2/application/views/admin/templates/templateeditorbar_view.php:98
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:104
+#, fuzzy
 msgid "Import template"
-msgstr "درآمد کے سانچے"
+msgstr "برآمد سانچ"
 
 #: /tmp/translationstatus_v2/application/views/admin/templates/templateeditorbar_view.php:67
 msgid "Export Template"
@@ -183,8 +186,9 @@ msgid "Are you sure you want to delete this template?"
 msgstr "کیا آپ واقعی اس سانچے کو ختم کرنا چاہتے ہیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/templates/templateeditorbar_view.php:90
+#, fuzzy
 msgid "Delete this template"
-msgstr "اس سانچے کو خارج کر دیں"
+msgstr "حذف صار"
 
 #: /tmp/translationstatus_v2/application/views/admin/templates/templateeditorbar_view.php:97
 #: /tmp/translationstatus_v2/application/views/admin/templates/templateeditorbar_view.php:98
@@ -294,8 +298,9 @@ msgid "Set User Rights"
 msgstr "سیٹ صارف کے حقو"
 
 #: /tmp/translationstatus_v2/application/views/admin/user/setuserrights.php:30
+#, fuzzy
 msgid "Super-Administrator"
-msgstr "منتظم اعلی"
+msgstr "سروے ایڈمنسٹریٹ"
 
 #: /tmp/translationstatus_v2/application/views/admin/user/setuserrights.php:31
 #: /tmp/translationstatus_v2/application/views/admin/super/adminmenu.php:86
@@ -304,24 +309,28 @@ msgid "Participant panel"
 msgstr "شرکا پینل"
 
 #: /tmp/translationstatus_v2/application/views/admin/user/setuserrights.php:34
+#, fuzzy
 msgid "Create survey"
-msgstr "سروے بنائیں"
+msgstr "سروے بنائی"
 
 #: /tmp/translationstatus_v2/application/views/admin/user/setuserrights.php:37
 msgid "Configurator"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/user/setuserrights.php:40
+#, fuzzy
 msgid "Create user"
-msgstr "صارف تشکیل دیں"
+msgstr "صارف تشکیل دی"
 
 #: /tmp/translationstatus_v2/application/views/admin/user/setuserrights.php:43
+#, fuzzy
 msgid "Delete user"
-msgstr "صارف کو حذف کریں"
+msgstr "حذف صار"
 
 #: /tmp/translationstatus_v2/application/views/admin/user/setuserrights.php:46
+#, fuzzy
 msgid "Use all/manage templates"
-msgstr "تمام استعمال کریں / سانچوں کے انتظام"
+msgstr "سانچے کا انتظا"
 
 #: /tmp/translationstatus_v2/application/views/admin/user/setuserrights.php:49
 msgid "Manage labels"
@@ -480,11 +489,11 @@ msgstr "ملکیت حاصل کریں"
 
 #: /tmp/translationstatus_v2/application/views/admin/user/editusers.php:84
 msgid "Set template permissions for this user"
-msgstr "اس صارف کے لیے سانچے کی اجازت مقرر کریں"
+msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/user/editusers.php:92
 msgid "Delete this user"
-msgstr "اس رکن کی ویب سائٹ دیکھیں اس رکن کو خارج کریں"
+msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/user/editusers.php:126
 msgid "Add user:"
@@ -663,7 +672,7 @@ msgstr "کوٹہ کارروائی"
 #: /tmp/translationstatus_v2/application/views/admin/quotas/viewquotasrow_view.php:18
 #: /tmp/translationstatus_v2/application/views/admin/quotas/editquota_view.php:27
 msgid "Terminate survey"
-msgstr "Terminate survey"
+msgstr "سروے کے ختم"
 
 #: /tmp/translationstatus_v2/application/views/admin/quotas/newquota_view.php:16
 #: /tmp/translationstatus_v2/application/views/admin/quotas/viewquotasrow_view.php:20
@@ -679,7 +688,7 @@ msgstr "Autoload یو آر ای"
 #: /tmp/translationstatus_v2/application/views/admin/quotas/newquota_view.php:36
 #: /tmp/translationstatus_v2/application/views/admin/quotas/editquotalang_view.php:9
 msgid "Quota message"
-msgstr "TeQuota پیغام"
+msgstr "کوٹہ پیغام"
 
 #: /tmp/translationstatus_v2/application/views/admin/quotas/newquota_view.php:37
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:3280
@@ -902,8 +911,9 @@ msgstr "معاف کیجئے گا کوئی اس سروے میں سوال اقسا
 
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:2
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/fix_view.php:2
+#, fuzzy
 msgid "Data consistency check"
-msgstr "ڈیٹا مستقل مزاجی چیک"
+msgstr "ڈیٹا کی مستقل مزاجی کی جان"
 
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:3
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/fix_view.php:3
@@ -911,8 +921,9 @@ msgid "If errors are showing up you might have to execute this script repeatedly
 msgstr "اگر غلطیاں کر رہے ہیں آپ اس سکرپٹ کو بار بار کے قتل کے لئے ہو سکتا ہے"
 
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:11
+#, fuzzy
 msgid "The following conditions should be deleted:"
-msgstr "مندرجہ ذیل شرائط کو خارج کر دیا ہونا چاہیے :"
+msgstr "مندرجہ ذیل شرائط کو خارج کر دیا جانا چاہئ"
 
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:14
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:76
@@ -925,8 +936,9 @@ msgid "Reason:"
 msgstr "وجہ :"
 
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:21
+#, fuzzy
 msgid "All conditions meet consistency standards."
-msgstr "تمام حالات میں مستقل مزاجی کے معیار پر پورا اترتے."
+msgstr "سب حالات مستقل مزاجی معیار پر پورا اترت"
 
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:26
 #, php-format
@@ -971,11 +983,12 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:66
 msgid "All quota quota members meet consistency standards."
-msgstr "تمام کوٹہ کوٹہ کے ارکان میں مستقل مزاجی کے معیار پر پورا اترتے ہیں."
+msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:72
+#, fuzzy
 msgid "The following assessments should be deleted:"
-msgstr "مندرجہ ذیل جائزوں کو خارج کر دیا ہونا چاہیے :"
+msgstr "مندرجہ ذیل جائزوں کو خارج کر دیا جانا چاہئ"
 
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:76
 msgid "Assessment:"
@@ -1044,13 +1057,15 @@ msgid "The following old token tables should be deleted because they contain no 
 msgstr "کیونکہ وہ کوئی ریکارڈ یا اب موجود نہیں ہے ان کے والدین کے سروے پر مشتمل مندرجہ ذیل پرانے ٹوکن کی ٹیبل سے خارج کر دیا جانا چاہئے :"
 
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:203
+#, fuzzy
 msgid "All old token tables meet consistency standards."
-msgstr "تمام پرانے ٹوکن ٹیبل میں مستقل مزاجی کے معیار پر پورا اترتے ہیں."
+msgstr "تمام گروپ کے تعین مستقل مزاجی معیار پر پورا اترت"
 
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:208
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:224
+#, fuzzy
 msgid "No database action required!"
-msgstr "کوئی ڈیٹا بیس کی کارروائی کی ضرورت!"
+msgstr "کوئی ڈیٹا بیس کارروائی کی ضرور"
 
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:211
 msgid "Should we proceed with the delete?"
@@ -1061,8 +1076,9 @@ msgid "Yes - Delete Them!"
 msgstr "جی ہاں ، ان کو ختم"
 
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:220
+#, fuzzy
 msgid "Data redundancy check"
-msgstr "آنکڑا فالتوپن چیک"
+msgstr "ڈیٹا کی مستقل مزاجی کی جان"
 
 #: /tmp/translationstatus_v2/application/views/admin/checkintegrity/check_view.php:221
 msgid "The redundancy check looks for tables leftover after deactivating a survey. You can delete these if you no longer require them."
@@ -1110,20 +1126,23 @@ msgstr "لوڈنگ.."
 
 #: /tmp/translationstatus_v2/application/views/admin/translate/translateheader_view.php:7
 #: /tmp/translationstatus_v2/application/controllers/admin/translate.php:297
+#, fuzzy
 msgid "Translate survey"
-msgstr "سروے کا ترجمہ"
+msgstr "ختم سرو"
 
 #: /tmp/translationstatus_v2/application/views/admin/translate/translateformheader_view.php:1
 msgid "Loading translations"
 msgstr "لوڈ کر رہا ہے ترجمہ"
 
 #: /tmp/translationstatus_v2/application/views/admin/translate/translateformheader_view.php:12
+#, fuzzy
 msgid "There was an error using the Google API."
-msgstr "گوگل API کا استعمال کرتے ہوئے میں ایک خرابی تھی."
+msgstr "اس تازہ کاری کی جانچ (%s) پر ایک غلطی تھ"
 
 #: /tmp/translationstatus_v2/application/views/admin/translate/translateformheader_view.php:13
+#, fuzzy
 msgid "Detailed Error"
-msgstr "تفصیلی خرابی"
+msgstr "کل غلطیا"
 
 #: /tmp/translationstatus_v2/application/views/admin/limeReplacementFields_view.php:44
 msgid "No replacement variable available for this field"
@@ -1172,8 +1191,9 @@ msgid "Are you sure you want to delete all conditions set to the questions you h
 msgstr "کیا آپ واقعی تمام سوالات آپ کے منتخب کردہ قائم کرنے کی شرائط کو ختم کرنا چاہتے ہیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/conditions/conditionslist_view.php:24
+#, fuzzy
 msgid "Delete all conditions"
-msgstr "تمام حالات کو خارج کر دیں"
+msgstr "حالات کو خار"
 
 #: /tmp/translationstatus_v2/application/views/admin/conditions/conditionslist_view.php:28
 msgid "Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?"
@@ -1188,18 +1208,21 @@ msgid "Conditions designer"
 msgstr "ضوابط ڈیزائنر"
 
 #: /tmp/translationstatus_v2/application/views/admin/conditions/conditionshead_view.php:13
+#, fuzzy
 msgid "Show conditions for this question"
-msgstr "اس سوال کے لئے حالات کو دکھائیں"
+msgstr "اس سوال کے لئے مقرر کی شرائ"
 
 #: /tmp/translationstatus_v2/application/views/admin/conditions/conditionshead_view.php:16
+#, fuzzy
 msgid "Add and edit conditions"
-msgstr "حالات کو شامل کریں اور ترمیم"
+msgstr "شرط کا اضافہ کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/conditions/conditionshead_view.php:18
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1582
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1626
+#, fuzzy
 msgid "Copy conditions"
-msgstr "کاپی کریں حالات"
+msgstr "نقل شرائ"
 
 #: /tmp/translationstatus_v2/application/views/admin/conditions/conditionshead_view.php:26
 #: /tmp/translationstatus_v2/application/views/admin/super/adminmenu.php:112
@@ -1334,16 +1357,19 @@ msgstr "کاپی کریں حالات"
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:1790
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:2231
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:3658
+#, fuzzy
 msgid "LimeSurvey online manual"
-msgstr "LimeSurvey آن لائن دستی"
+msgstr "LimeSurvey آن لائن دست"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveySummary_view.php:12
+#, fuzzy
 msgid "Survey URL"
-msgstr "سروے URL"
+msgstr "سروے بچا لی"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveySummary_view.php:19
+#, fuzzy
 msgid "Survey URL for language:"
-msgstr "زبان کے لئے سروے کا URL :"
+msgstr "زبان کے لئے سروے کا یو آر ایل "
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveySummary_view.php:20
 msgid "Flag"
@@ -1384,13 +1410,15 @@ msgstr "فیکس :"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveySummary_view.php:68
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPublication_view.php:18
+#, fuzzy
 msgid "Start date/time:"
-msgstr "متعلقہ تاریخ / وقت شروع کریں :"
+msgstr "شروع زبان "
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveySummary_view.php:76
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPublication_view.php:29
+#, fuzzy
 msgid "Expiry date/time:"
-msgstr "ختم ہونے کی تاریخ / وقت :"
+msgstr "ختم ہونے کی تاریخ "
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveySummary_view.php:92
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:4
@@ -1411,8 +1439,9 @@ msgid "Number of questions/groups"
 msgstr "سوال / گروپوں کی تعدا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveySummary_view.php:121
+#, fuzzy
 msgid "Survey currently active"
-msgstr "سروے فی الحال فعال"
+msgstr "سروے چالو نہیں کیا جا سکا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveySummary_view.php:130
 msgid "Survey table name"
@@ -1432,8 +1461,9 @@ msgid "Table size usage"
 msgstr "میز کا سائز استعمال"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/editSurvey_view.php:1
+#, fuzzy
 msgid "Edit survey settings"
-msgstr "سروے کی ترتیبات میں ترمیم کریں"
+msgstr "ای میل تراتیب میں ترمیم کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/editSurvey_view.php:28
 #: /tmp/translationstatus_v2/application/views/admin/survey/editSurvey_view.php:29
@@ -1441,28 +1471,33 @@ msgid "All questions, answers, etc for removed languages will be lost. Are you s
 msgstr "سب سوال ، جواب ، ہٹا زبانوں کے لئے وغیرہ ختم ہو جائے گا. کیا تمہیں یقین ہے"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/editSurvey_view.php:29
+#, fuzzy
 msgid "Save & edit survey text elements"
-msgstr "سروے کے متن کے عناصر کو محفوظ کریں اور ترمیم"
+msgstr "محفوظ سروے رپور"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/editSurvey_view.php:34
 msgid "Parameter name:"
 msgstr "پیرامیٹر کا ​​نام :"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/editSurvey_view.php:36
+#, fuzzy
 msgid "Target (sub-)question:"
-msgstr "ھدف (ذیلی) سوال :"
+msgstr "سوال میں ترمیم کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/editSurvey_view.php:37
+#, fuzzy
 msgid "(No target question)"
-msgstr "(کوئی ہدف سوال نہیں)"
+msgstr "سوال میں ترمیم کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/listSurveys_view.php:5
+#, fuzzy
 msgid "Are you sure you want to delete these surveys?"
-msgstr "کیا آپ اس بات کا یقین ہے کہ تم ان کے سروے کے کو خارج کرنا چاہتے ہیں؟"
+msgstr "کیا آپ واقعی یہ انٹری حذف کرنا چاہتے ہیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/listSurveys_view.php:6
+#, fuzzy
 msgid "Are you sure you want to expire these surveys?"
-msgstr "کیا آپ اس بات کا یقین ہے کہ آپ ان سروے کی میعاد ختم ہونے کے لئے چاہتے ہیں؟"
+msgstr "کیا آپ واقعی یہ انٹری حذف کرنا چاہتے ہیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/listSurveys_view.php:7
 msgid "This function creates a ZIP archive of several survey archives and can take some time - please be patient! Do you want to contine?"
@@ -1487,8 +1522,9 @@ msgid "Survey"
 msgstr "سروے"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/listSurveys_view.php:22
+#, fuzzy
 msgid "Date created"
-msgstr "تاریخ بنائی"
+msgstr "تاریخ کو پید"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/listSurveys_view.php:23
 msgid "Owner"
@@ -1499,8 +1535,9 @@ msgid "Access"
 msgstr "رسائی"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/listSurveys_view.php:25
+#, fuzzy
 msgid "Anonymized responses"
-msgstr "Anonymized کے جوابات"
+msgstr "درآمد کے جوابا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/listSurveys_view.php:26
 msgid "Full"
@@ -1522,8 +1559,9 @@ msgid "Response rate"
 msgstr "رسپانس کی شرح"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/listSurveys_view.php:38
+#, fuzzy
 msgid "Selected survey(s):"
-msgstr "منتخب شدہ سروے (ے) :"
+msgstr "حذف سرو"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/listSurveys_view.php:40
 msgid "Expire"
@@ -1546,38 +1584,44 @@ msgstr "ٹھیک ہ"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/listSurveys_view.php:65
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:20
+#, fuzzy
 msgid "This survey is active but expired."
-msgstr "یہ سروے فعال لیکن میعاد ختم ہو چکی ہے."
+msgstr "سروے چالو نہیں کیا جا سکا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/listSurveys_view.php:69
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:22
+#, fuzzy
 msgid "This survey is active but has a start date."
-msgstr "اس سروے چالو حالت میں ہے لیکن شروع کرنے کی تاریخ ہے."
+msgstr "سروے چالو نہیں کیا جا سکا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/listSurveys_view.php:76
+#, fuzzy
 msgid "This survey is active - click here to stop this survey."
-msgstr "اس سروے چالو حالت میں ہے -- اس سروے کو روکنے کے لئے کے لئے یہاں کلک کریں."
+msgstr "سروے چالو نہیں کیا جا سکا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/listSurveys_view.php:80
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:108
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:24
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:207
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:271
+#, fuzzy
 msgid "This survey is currently active."
-msgstr "یہ سروے اس وقت فعال ہے."
+msgstr "سروے چالو نہیں کیا جا سکا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/listSurveys_view.php:89
 msgid "This survey is currently not active - click here to activate this survey."
 msgstr "یہ سروے اس وقت نہیں ہے چالو -- یہاں کلک کریں اس سروے کو چالو کرنے کے"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/listSurveys_view.php:93
+#, fuzzy
 msgid "This survey is currently not active."
-msgstr "اس سروے فی الحال فعال نہیں ہے."
+msgstr "سروے چالو نہیں کیا جا سکا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/subQuestion_view.php:3
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/answerOptions_view.php:16
+#, fuzzy
 msgid "New answer option"
-msgstr "نیا جواب آپشن"
+msgstr "نئی جوا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/subQuestion_view.php:4
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/subQuestion_view.php:64
@@ -1594,25 +1638,29 @@ msgid "Label"
 msgstr "لیبل"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/subQuestion_view.php:6
+#, fuzzy
 msgid "You cannot delete the last subquestion."
-msgstr "آپ کی آخری subquestion کو ختم نہیں کر سکتے."
+msgstr "آپ نے ایک سوال کے منتخب کردہ نہیں ہیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/subQuestion_view.php:7
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/answerOptions_view.php:20
+#, fuzzy
 msgid "Label set browser"
-msgstr "لیبل سیٹ براؤزر"
+msgstr "لیبل سی"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/subQuestion_view.php:8
+#, fuzzy
 msgid "Quick-add subquestions"
-msgstr "subquestions فوری شامل کریں"
+msgstr "سوال کا اضافہ کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/subQuestion_view.php:9
 msgid "Error: You are trying to use duplicate subquestion codes."
 msgstr "غلطی : آپ ڈوپلیکیٹ subquestion کوڈ کو استعمال کرنے کی کوشش کر رہے ہیں."
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/subQuestion_view.php:15
+#, fuzzy
 msgid "Edit subquestions"
-msgstr "subquestions میں ترمیم کریں"
+msgstr "سوال میں ترمیم کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/subQuestion_view.php:17
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/answerOptions_view.php:23
@@ -1662,8 +1710,9 @@ msgstr "فوری اضافہ.."
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/subQuestion_view.php:137
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/answerOptions_view.php:146
+#, fuzzy
 msgid "Save as label set"
-msgstr "لیبل سیٹ کے طور پر محفوظ کریں"
+msgstr "حذف سیٹ لیب"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/subQuestion_view.php:147
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/answerOptions_view.php:157
@@ -1722,16 +1771,19 @@ msgid "You cannot add/remove subquestions or edit their codes because the survey
 msgstr "تم شامل / نہیں subquestions دور یا کر سکتے ہیں ان کے کوڈ کی وجہ سے سروے چالو حالت میں ہے میں ترمیم کریں"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/answerOptions_view.php:3
+#, fuzzy
 msgid "Edit answer options"
-msgstr "جواب اختیارات میں ترمیم کریں"
+msgstr "جواب میں ترمیم کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/answerOptions_view.php:19
+#, fuzzy
 msgid "You cannot delete the last answer option."
-msgstr "آپ کی آخری جواب کے آپشن کو ختم نہیں کر سکتے."
+msgstr "صارف کی معلومات میں ترمیم نہیں کر سکا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/answerOptions_view.php:21
+#, fuzzy
 msgid "Quick-add answers"
-msgstr "جواب فوری شامل کریں"
+msgstr "سوال کا اضافہ کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/answerOptions_view.php:22
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/answerOptions_view.php:57
@@ -1753,8 +1805,9 @@ msgid "Answer:"
 msgstr "جواب :"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/answerOptions_view.php:165
+#, fuzzy
 msgid "Enter your answers:"
-msgstr "آپ جوابات درج کریں :"
+msgstr "پرنٹ صفحہ جوابا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/answerOptions_view.php:166
 #, fuzzy
@@ -1762,21 +1815,25 @@ msgid "Enter one answer per line. You can provide a code by separating code and 
 msgstr "ہر سطر میں ایک جواب میں داخل ہو جاؤ. تم ایک semikolon یا ٹیب کے ساتھ کوڈ اور جواب متن الگ سے ایک کوڈ فراہم کر سکتا ہے"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:11
+#, fuzzy
 msgid "Add a new question"
-msgstr "ایک نیا سوال شامل کریں"
+msgstr "سوال کا اضافہ کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:13
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:238
+#, fuzzy
 msgid "Copy question"
-msgstr "Copy question"
+msgstr "نقل سوا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:15
+#, fuzzy
 msgid "Edit question"
-msgstr "سوال میں ترمیم کریں"
+msgstr "سوال میں ترمیم کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:34
+#, fuzzy
 msgid "Error: You have to enter a question code."
-msgstr "غلطی : آپ نے ایک سوال کے کوڈ داخل کرنے کے لئے ہے."
+msgstr "اس سروے کی تفصیل چھپائی"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:38
 msgid "Note: You MUST enter a new question code!"
@@ -1809,8 +1866,9 @@ msgstr "سوال کی قسم "
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:108
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:129
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:151
+#, fuzzy
 msgid "Cannot be changed (survey is active)"
-msgstr "(سروے فعال ہے) نہیں بدلا جا سکتا"
+msgstr "(سروے فعال ہے) نہیں ہو سکتا گئ"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:119
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:128
@@ -2088,20 +2146,24 @@ msgid "Copy subquestions?"
 msgstr "نقل سوا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:207
+#, fuzzy
 msgid "Copy answer options?"
-msgstr "جواب اختیارات کو کاپی کریں؟"
+msgstr "کاپی کا جواب"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:211
+#, fuzzy
 msgid "Copy advanced settings?"
-msgstr "اعلی درجے کی ترتیبات کو کاپی کریں؟"
+msgstr "محفوظ ترتیبا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:220
+#, fuzzy
 msgid "Show advanced settings"
-msgstr "اعلی درجے کی ترتیبات دکھائیں"
+msgstr "محفوظ ترتیبا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:220
+#, fuzzy
 msgid "Hide advanced settings"
-msgstr "اعلی درجے کی ترتیبات چھپائیں"
+msgstr "محفوظ ترتیبا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:231
 msgid "Add question"
@@ -2112,8 +2174,9 @@ msgid "Update question"
 msgstr "سوال کو اپ ڈیٹ کریں"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:257
+#, fuzzy
 msgid "...or import a question"
-msgstr "... یا ایک سوال درآمد"
+msgstr "درآمد سوا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:258
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/addGroup_view.php:54
@@ -2134,8 +2197,9 @@ msgstr "LimeSurvey سروے فائل (*. وی"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:265
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/addGroup_view.php:59
+#, fuzzy
 msgid "Convert resource links?"
-msgstr "وسائل کی لنکس کو تبدیل؟"
+msgstr "بدلیں وسائل لنکس"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/editQuestion_view.php:270
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:69
@@ -2174,20 +2238,23 @@ msgid "Deleting this question will also delete any answer options and subquestio
 msgstr "اس سوال کو خارج کرنے کا کوئی جواب کے اختیارات اور subquestions یہ بھی شامل ہے کو بھی حذف کر دے گا. کیا آپ واقعی جاری رکھنا چاہتے ہیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/questionbar_view.php:51
+#, fuzzy
 msgid "Delete current question"
-msgstr "موجودہ سوال کو حذف کریں"
+msgstr "حذف موجودہ سوا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/questionbar_view.php:59
 msgid "It's impossible to delete this question because there is at least one question having a condition on it."
 msgstr "یہ ناممکن ہے اس سوال کو ختم کرنے کی وجہ سے وہاں کم از کم ایک اس پر ایک شرط رکھنے کا سوال ہے"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/questionbar_view.php:61
+#, fuzzy
 msgid "Disabled - Delete current question"
-msgstr "غیر فعال کر دیا -- موجودہ سوال کو حذف کریں"
+msgstr "غیر فعال -- موجودہ سوال خار"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/questionbar_view.php:77
+#, fuzzy
 msgid "Export this question"
-msgstr "اس سوال برآمد"
+msgstr "برآمد یہ سوا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/questionbar_view.php:91
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/questionbar_view.php:98
@@ -2199,22 +2266,26 @@ msgid "You can't copy a question if the survey is active."
 msgstr "آپ نے ایک سوال کی کاپی نہیں اگر اس سروے فعال کر سکتے ہیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/questionbar_view.php:111
+#, fuzzy
 msgid "Set conditions for this question"
-msgstr "اس سوال کے لئے ضوابط کو مرتب کریں"
+msgstr "اس سوال کے لئے مقرر کی شرائ"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/questionbar_view.php:129
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/questionbar_view.php:232
+#, fuzzy
 msgid "Edit subquestions for this question"
-msgstr "اس سوال کے لئے subquestions میں ترمیم کریں کو کلک کریں"
+msgstr "اس سوال کے لئے مقرر کی شرائ"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/questionbar_view.php:144
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/questionbar_view.php:222
+#, fuzzy
 msgid "Edit answer options for this question"
-msgstr "اس سوال کا جواب اختیارات میں ترمیم کریں"
+msgstr "/ اس سوال کے جواب میں شامل کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/questionbar_view.php:158
+#, fuzzy
 msgid "Edit default answers for this question"
-msgstr "اس سوال کے لئے پہلے سے طے شدہ جواب میں ترمیم کریں"
+msgstr "/ اس سوال کے جواب میں شامل کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/questionbar_view.php:163
 msgid "Hide Details of this Question"
@@ -2241,16 +2312,19 @@ msgid "Type:"
 msgstr "قسم "
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/questionbar_view.php:220
+#, fuzzy
 msgid "You need to add answer options to this question"
-msgstr "آپ اس سوال کا جواب اختیارات میں شامل کرنے کی ضرورت ہے"
+msgstr "/ اس سوال کے جواب میں شامل کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/questionbar_view.php:230
+#, fuzzy
 msgid "You need to add subquestions to this question"
-msgstr "آپ کو اس سوال کا subquestions میں شامل کرنے کی ضرورت ہے"
+msgstr "/ اس سوال کے جواب میں شامل کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/questionbar_view.php:275
+#, fuzzy
 msgid "Other questions having conditions on this question:"
-msgstr "Other questions having conditions on this question:"
+msgstr "اس سوال کے لئے مقرر کی شرائ"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/importSurvey_view.php:5
 #: /tmp/translationstatus_v2/application/views/admin/survey/importSurvey_view.php:14
@@ -2479,8 +2553,9 @@ msgstr "لیبل سیٹ"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/importSurvey_view.php:48
 #: /tmp/translationstatus_v2/application/views/admin/survey/copySurvey_view.php:43
+#, fuzzy
 msgid "Not imported label sets"
-msgstr "نہیں درآمد لیبل سیٹ"
+msgstr "درآمد نہیں لیبل سی"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/importSurvey_view.php:48
 #: /tmp/translationstatus_v2/application/views/admin/survey/copySurvey_view.php:43
@@ -2510,12 +2585,14 @@ msgstr "او"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/importSurvey_view.php:51
 #: /tmp/translationstatus_v2/application/views/admin/survey/copySurvey_view.php:47
+#, fuzzy
 msgid "quota language settings"
-msgstr ""
+msgstr "ای میل تراتیب میں ترمیم کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/importSurvey_view.php:57
+#, fuzzy
 msgid "Response import summary"
-msgstr "رسپانس درآمد کے خلاصے"
+msgstr "سوال درآمد کا خلاص"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/importSurvey_view.php:66
 #: /tmp/translationstatus_v2/application/views/admin/survey/copySurvey_view.php:51
@@ -2526,13 +2603,15 @@ msgid "Warnings"
 msgstr "انتباہا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/importSurvey_view.php:78
+#, fuzzy
 msgid "Import of survey is completed."
-msgstr ""
+msgstr "سروے کی درآمد مکمل ہو گیا ہے"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/importSurvey_view.php:82
 #: /tmp/translationstatus_v2/application/views/admin/survey/copySurvey_view.php:60
+#, fuzzy
 msgid "Copy of survey is completed."
-msgstr "سروے کی کاپی مکمل ہو گیا ہے."
+msgstr "سروے کی درآمد مکمل ہو گیا ہے"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/importSurvey_view.php:84
 #: /tmp/translationstatus_v2/application/views/admin/survey/copySurvey_view.php:62
@@ -2541,8 +2620,9 @@ msgstr "سروے جا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/deactivateSurvey_view.php:4
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:29
+#, fuzzy
 msgid "Stop this survey"
-msgstr "اس سروے کو بند کرو"
+msgstr "اس گروپ کو بند کر دی"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/deactivateSurvey_view.php:6
 #: /tmp/translationstatus_v2/application/views/admin/survey/activateSurvey_view.php:38
@@ -2563,8 +2643,9 @@ msgid "Deactivation"
 msgstr "وضاحت "
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/deactivateSurvey_view.php:11
+#, fuzzy
 msgid "No responses are lost."
-msgstr "کوئی ردعمل نہیں کھو جاتے ہیں."
+msgstr "دیکھیے جوا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/deactivateSurvey_view.php:12
 msgid "No participant information lost."
@@ -2587,8 +2668,9 @@ msgid "All responses are not accessible anymore with LimeSurvey)."
 msgstr "تمام ردعمل قابل رسائی نہیں ہیں LimeSurvey کے ساتھ)."
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/deactivateSurvey_view.php:20
+#, fuzzy
 msgid "Your response table will be renamed to:"
-msgstr "Your response table will be renamed to:"
+msgstr "آپ جوابات ٹیبل نام بدلنے کے لئے کرے گا "
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/deactivateSurvey_view.php:21
 msgid "All participant information is lost."
@@ -2608,11 +2690,11 @@ msgstr "اس کے علاوہ آپ deactivating سے پہلے آپ کے جواب�
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/deactivateSurvey_view.php:30
 msgid "Expire survey"
-msgstr ""
+msgstr "سروے میعاد ختم ہونے"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/deactivateSurvey_view.php:35
 msgid "Deactivate survey"
-msgstr "Deactivate survey"
+msgstr "سروے بے عمل کریں"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/deactivateSurvey_view.php:46
 msgid "Deactivate Survey"
@@ -2668,7 +2750,7 @@ msgstr "qseq"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/showSyntaxErrors_view.php:11
 msgid "Type"
-msgstr ""
+msgstr "قسم"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/showSyntaxErrors_view.php:12
 msgid "Source expression"
@@ -2679,12 +2761,14 @@ msgid "Syntax highlighted"
 msgstr "نحو پر روشنی ڈالی"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:14
+#, fuzzy
 msgid "Preview current question group"
-msgstr "پیش نظارہ موجودہ سوال گروپ"
+msgstr "حذف موجودہ سوا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:25
+#, fuzzy
 msgid "Edit current question group"
-msgstr "موجودہ سوال گروپ میں ترمیم کریں"
+msgstr "موجودہ سوال ترمی"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:37
 msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
@@ -2692,8 +2776,9 @@ msgstr "اس گروپ کو خارج کرنے کا کوئی سوال بھی او�
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:39
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:48
+#, fuzzy
 msgid "Delete current question group"
-msgstr "موجودہ سوال گروپ کو خارج کر دیں"
+msgstr "حذف موجودہ سوا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:46
 msgid "Impossible to delete this group because there is at least one question having a condition on its content"
@@ -2705,23 +2790,20 @@ msgid "Export this question group"
 msgstr "برآمد یہ سوا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:64
-#, fuzzy
 msgid "Questions:"
-msgstr "سوالا"
+msgstr "سوال :"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:78
-#, fuzzy
 msgid "Previous question"
-msgstr "مشاہدہ یہ سوا"
+msgstr "پچھلا سوال"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:84
 msgid "No previous question"
 msgstr "کوئی گزشتہ سوال"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:94
-#, fuzzy
 msgid "Next question"
-msgstr "سوال میں ترمیم کری"
+msgstr "اگلا سوال"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:100
 msgid "No next question"
@@ -2730,19 +2812,21 @@ msgstr "اگلا کوئی سوال"
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:108
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:271
 msgid "Disabled"
-msgstr "معذور"
+msgstr "غیر فعال کر دیا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:115
 msgid "Add New Question to Group"
 msgstr "گروپ میں نئے سوال کا اضافہ کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:122
+#, fuzzy
 msgid "Hide details of this group"
-msgstr "اس گروپ کی تفصیلات چھپائیں"
+msgstr "اس گروپ کی تفصیل چھپائی"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:123
+#, fuzzy
 msgid "Show details of this group"
-msgstr "اس گروپ کی تفصیل دکھائیں"
+msgstr "اس گروپ کی نمائش کی تفصیلا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:126
 msgid "Close this Group"
@@ -2751,30 +2835,35 @@ msgstr "اس گروپ کو بند کر دی"
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:159
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/editGroup_view.php:33
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/addGroup_view.php:40
+#, fuzzy
 msgid "Randomization group:"
-msgstr "Randomization گروپ :"
+msgstr "کوئی بھی ملتے جلتے گرو"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:167
+#, fuzzy
 msgid "Questions with conditions to this group"
-msgstr "شرائط کے ساتھ اس گروپ کو سوالات"
+msgstr "اس سوال کے لئے مقرر کی شرائ"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/editGroup_view.php:3
 msgid "Edit Group"
 msgstr "گروپ میں ترمیم کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/addGroup_view.php:2
+#, fuzzy
 msgid "Add question group"
-msgstr "سوال گروپ میں شامل کریں"
+msgstr "سوال کا اضافہ کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/addGroup_view.php:12
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/addGroup_view.php:61
 #: /tmp/translationstatus_v2/application/controllers/admin/questiongroup.php:69
+#, fuzzy
 msgid "Import question group"
-msgstr "درآمد سوال گروپ"
+msgstr "درآمد سوا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/addGroup_view.php:25
+#, fuzzy
 msgid "Error: You have to enter a group title for each language."
-msgstr "غلطی : آپ میں سے ہر ایک کی زبان گروپ کے لئے ایک عنوان 'میں داخل ہونے دیا ہے."
+msgstr "اس سروے کی تفصیل چھپائی"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/addGroup_view.php:33
 msgid "Title:"
@@ -2787,16 +2876,18 @@ msgid "Required"
 msgstr "ضرور"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/addGroup_view.php:43
+#, fuzzy
 msgid "Save question group"
-msgstr "سوال گروپ محفوظ کریں"
+msgstr "گروپ میں نئے سوال کا اضافہ کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/QuestionGroups/addGroup_view.php:57
 msgid "Select question group file (*.lsg/*.csv):"
 msgstr "منتخب سوال گروپ فائل (*. lsg وی / *.) "
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/organizeGroupsAndQuestions_view.php:1
+#, fuzzy
 msgid "Organize question groups/questions"
-msgstr "گروہوں کے سوال / سوالات کو منظم کریں"
+msgstr "گروپ میں نئے سوال کا اضافہ کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/organizeGroupsAndQuestions_view.php:3
 msgid "To reorder questions/questiongroups just drag the question/group with your mouse to the desired position."
@@ -2814,7 +2905,7 @@ msgstr "سروے کا عنوان"
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:25
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:27
 msgid "Welcome message:"
-msgstr "پیغام کا استقبال :"
+msgstr "پیغام میں خوش آمدید :"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/editLocalSettings_view.php:13
 #: /tmp/translationstatus_v2/application/views/admin/survey/editLocalSettings_view.php:15
@@ -2831,8 +2922,9 @@ msgstr "آخر یو آر ایل "
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/editLocalSettings_view.php:20
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:36
+#, fuzzy
 msgid "URL description:"
-msgstr "URL تفصیل :"
+msgstr "یو آر ایل کی وضاحت "
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/editLocalSettings_view.php:23
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:38
@@ -2845,12 +2937,14 @@ msgid "Decimal mark:"
 msgstr "اعشاری مارک :"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:9
+#, fuzzy
 msgid "This survey is currently not active"
-msgstr "یہ سروے اس وقت نہیں ہے سرگرم"
+msgstr "سروے چالو نہیں کیا جا سکا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:13
+#, fuzzy
 msgid "Activate this Survey"
-msgstr "اس سروے کو چالو کریں"
+msgstr "اس سروے بے عمل کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:16
 msgid "Survey cannot be activated. Either you have no permission or there are no questions."
@@ -2861,12 +2955,13 @@ msgid "Survey properties"
 msgstr "سروے کی خصوصیات"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:58
+#, fuzzy
 msgid "Edit text elements"
-msgstr "متن عناصر میں ترمیم کریں"
+msgstr "ٹوکن لاگ ان کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:62
 msgid "General settings"
-msgstr "جنرل کی تراتیب"
+msgstr "جنرل کی ترتیبات"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:66
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:82
@@ -2875,7 +2970,7 @@ msgstr "سروے کی اجازت"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:79
 msgid "Email templates"
-msgstr "ای میل ٹیمپلیٹس"
+msgstr "ای میل کے سانچوں"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:83
 msgid "Tools"
@@ -2885,20 +2980,21 @@ msgstr "فورم کے اوزار"
 #: /tmp/translationstatus_v2/application/views/admin/survey/deleteSurvey_view.php:3
 #: /tmp/translationstatus_v2/application/views/admin/survey/deleteSurvey_view.php:35
 msgid "Delete survey"
-msgstr "سروے حذف کریں"
+msgstr "سروے کو حذف کریں"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:91
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:94
 msgid "Quick-translation"
-msgstr "فوری ترجمہ -"
+msgstr "فوری ترجمہ"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:93
+#, fuzzy
 msgid "Currently there are no additional languages configured for this survey."
-msgstr "فی الحال کوئی یہ اضافی سروے کے لئے تشکیل زبانیں ہیں."
+msgstr "فی الحال کوئی اس سروے کے لیے مرتب کیا حالات ہیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:100
 msgid "Reset conditions"
-msgstr "ضوابط کو بحال کریں"
+msgstr "حالات دوبارہ مرتب کریں"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:102
 msgid "Currently there are no conditions configured for this survey."
@@ -2914,8 +3010,9 @@ msgid "Show log of syntax errors"
 msgstr "نحو کی غلطیاں کی لاگ ان دکھائیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:112
+#, fuzzy
 msgid "Delete log of syntax errors"
-msgstr "نحو کی غلطیاں کی لاگ ان کریں حذف کریں"
+msgstr "نحو کے نقائص کے لاگ ان کو خارج کر دیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:116
 #, fuzzy
@@ -2928,16 +3025,18 @@ msgstr "... برآمد"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:124
 msgid "Survey structure (.lss)"
-msgstr "سروے کے ڈھانچے (آئایسایس.)"
+msgstr "سروے کی ساخت "
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:130
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:135
+#, fuzzy
 msgid "Survey archive (.zip)"
-msgstr "سروے محفوظ شدہ دستاويزات (زپ.)"
+msgstr "سروے (آئی ڈی) کے نا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:134
+#, fuzzy
 msgid "You can only archive active surveys."
-msgstr "آپ صرف چالو محفوظ شدہ دستاويزات سروے کر سکتے ہیں."
+msgstr "آپ کو اجازت نہیں اس سروے کو چالو کرنے کے لئے کر رہے ہیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:140
 #, fuzzy
@@ -2967,20 +3066,23 @@ msgstr "یہ سروے اب چالو حالت میں ہے ، اور جوابات 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:186
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:189
 msgid "Data entry screen"
-msgstr "ڈیٹا انٹری کی سکرین"
+msgstr "ڈیٹا لاگ ان سکرین"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:188
+#, fuzzy
 msgid "This survey is not active, data entry is not allowed"
-msgstr "یہ سروے فعال نہیں ہے، ڈیٹا انٹری کی اجازت نہیں ہے"
+msgstr "سروے چالو نہیں کیا جا سکا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:195
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:198
+#, fuzzy
 msgid "Partial (saved) responses"
-msgstr "جزوی ردعمل (بچا لیا)"
+msgstr "محفوظ جوابات "
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:197
+#, fuzzy
 msgid "This survey is not active - no responses are available"
-msgstr "یہ سروے فعال نہیں ہے -- کوئی ردعمل دستیاب ہیں"
+msgstr "یہ سروے ابھی تک نہیں ہے چالو. آپ کے جواب کو محفوظ نہیں کیا جا سکتا ہ"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:207
 msgid "Question group/question organizer disabled"
@@ -3000,24 +3102,29 @@ msgid "Question groups:"
 msgstr "سوال گروپوں :"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:239
+#, fuzzy
 msgid "Previous question group"
-msgstr "پچھلا سوال گروپ"
+msgstr "مشاہدہ یہ سوا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:243
+#, fuzzy
 msgid "No previous question group"
-msgstr "کوئی گزشتہ گروپ سوال"
+msgstr "درآمد سوا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:252
+#, fuzzy
 msgid "Next question group"
-msgstr "اگلا ، دوسرا سوال گروپ"
+msgstr "گروپ میں نئے سوال کا اضافہ کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:258
+#, fuzzy
 msgid "No next question group"
-msgstr "کوئی گروپ اگلے سوال"
+msgstr "درآمد سوا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:279
+#, fuzzy
 msgid "Add new group to survey"
-msgstr "نئے گروپ کے سروے میں شامل کریں"
+msgstr "نئے گروپ کے سروے میں شامل کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:284
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:285
@@ -3026,13 +3133,15 @@ msgstr "اس سروے کی تفصیل چھپائی"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:288
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:289
+#, fuzzy
 msgid "Show details of this survey"
-msgstr "este سروے ڈی دکھائیں تفصیلات"
+msgstr "اس سروے کی تفصیل چھپائی"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:295
 #: /tmp/translationstatus_v2/application/views/admin/survey/surveybar_view.php:296
+#, fuzzy
 msgid "Close this survey"
-msgstr "اس سروے کو بند کر دیں"
+msgstr "اس گروپ کو بند کر دی"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/resetSyntaxErrorLog_view.php:2
 msgid "Cleared log of syntax errors"
@@ -3078,8 +3187,9 @@ msgid "Add or delete subquestions or change their codes"
 msgstr "یا subquestions کو ختم کریں یا ان کے کوڈ میں تبدیل"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/activateSurvey_view.php:43
+#, fuzzy
 msgid "The following settings cannot be changed when the survey is active."
-msgstr "مندرجہ ذیل ترتیبات جب سروے فعال ہے بدلا نہیں جا سکتا."
+msgstr "* اس ترتیب کو بعد میں تبدیل نہیں کیا جاسکتا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/activateSurvey_view.php:45
 msgid "Please check these settings now, then click the button below."
@@ -3087,8 +3197,9 @@ msgstr "براہ کرم ان کی ترتیبات کو اب چیک کریں، پ�
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/activateSurvey_view.php:48
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:3
+#, fuzzy
 msgid "Anonymized responses?"
-msgstr ""
+msgstr "درآمد کے جوابا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/activateSurvey_view.php:55
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:15
@@ -3097,12 +3208,14 @@ msgid "If you turn on the -Anonymized responses- option and create a tokens tabl
 msgstr "اگر آپ کو گمنام - جواب آپشن پر پھیر لیتے ہیں اور ایک ٹوکن ٹیبل تشکیل ، LimeSurvey صرف ایک کی بجائے تاریخ کے 'وائی' / آپ کے شرکاء کے نام ظاہر نہ کرنے کو یقینی بنانے کے وقت کے ساتھ ساتھ اپنے مکمل ٹوکن کو نشان زد کر جائے گا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/activateSurvey_view.php:74
+#, fuzzy
 msgid "Date stamp?"
-msgstr "تاریخ سٹیمپ؟"
+msgstr "تاریخ ٹکٹ"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/activateSurvey_view.php:90
+#, fuzzy
 msgid "Save IP address?"
-msgstr "IP ایڈریس محفوظ کریں؟"
+msgstr "محفوظ آئی پی ایڈریس"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/activateSurvey_view.php:107
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabNotification_view.php:73
@@ -3112,8 +3225,9 @@ msgstr "یو آر ایل کا حوالہ محفوظ"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/activateSurvey_view.php:122
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabNotification_view.php:100
+#, fuzzy
 msgid "Save timings?"
-msgstr "وقت کو محفوظ کریں؟"
+msgstr "محفوظ ترتیبا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/activateSurvey_view.php:134
 #, fuzzy
@@ -3148,8 +3262,9 @@ msgid "Bounce Email:"
 msgstr "فونز ، ای میل "
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPublication_view.php:4
+#, fuzzy
 msgid "List survey publicly:"
-msgstr "عوامی سطح پر کی فہرست سروے :"
+msgstr "فہرست سرو"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPublication_view.php:33
 msgid "Set cookie to prevent repeated participation?"
@@ -3206,8 +3321,9 @@ msgid "Send basic admin notification email to:"
 msgstr "بنیادی منتظم نوٹیفکیشن ای میل پر بھیجیں :"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabNotification_view.php:10
+#, fuzzy
 msgid "Send detailed admin notification email to:"
-msgstr "ایڈمن تفصیلی اطلاع کا ای میل بھیجیں :"
+msgstr "نتائج کوڈ کے ساتھ تفصیلی ای میل کی اطلا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabNotification_view.php:17
 msgid "Date Stamp?"
@@ -3261,11 +3377,12 @@ msgstr "وقت بچ جائے گا."
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabNotification_view.php:123
 msgid "Enable assessment mode?"
-msgstr "تشخیص موڈ فعال کریں؟"
+msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabNotification_view.php:138
+#, fuzzy
 msgid "Participant may save and resume later?"
-msgstr "شرکا اور اس کے بعد جون کو دوبارہ شروع کرنے کو بچانے؟"
+msgstr "پرنٹ صفحہ جوابا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabImport_view.php:6
 #, fuzzy
@@ -3274,16 +3391,18 @@ msgstr "منتخب سروے ساخت فائل (*. lss ، وی *.) "
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabImport_view.php:9
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabCopy_view.php:10
+#, fuzzy
 msgid "Convert resource links and INSERTANS fields?"
-msgstr "INSERTANS وسائل کے لنکس اور کھیتوں میں کنورٹ کریں؟"
+msgstr "بدلیں وسائل لنکس اور INSERTANS خانوں"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabImport_view.php:11
 msgid "Import survey"
 msgstr "درآمد سروے"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabCopy_view.php:4
+#, fuzzy
 msgid "Select survey to copy:"
-msgstr "کاپی کرنے کے لئے سروے کا انتخاب کریں :"
+msgstr "بحال سروے منط"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabCopy_view.php:7
 msgid "New survey title:"
@@ -3294,24 +3413,27 @@ msgid "Exclude quotas?"
 msgstr "خارج کر دیں کوٹہ"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabCopy_view.php:14
+#, fuzzy
 msgid "Exclude answers?"
-msgstr "جواب باہر نکال دیں؟"
+msgstr "جواب میں ترمیم کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabCopy_view.php:16
+#, fuzzy
 msgid "Reset conditions?"
-msgstr "ضوابط کو بحال کریں؟"
+msgstr "حالات کو خار"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabCopy_view.php:19
 #: /tmp/translationstatus_v2/application/views/admin/survey/copySurvey_view.php:1
 #: /tmp/translationstatus_v2/application/controllers/admin/surveyaction.php:1194
+#, fuzzy
 msgid "Copy survey"
-msgstr "کاپی سروے"
+msgstr "سروے کی"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tab_view.php:3
 #: /tmp/translationstatus_v2/application/views/admin/export/exportresults_view.php:8
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:8
 msgid "General"
-msgstr "جنرل"
+msgstr "General"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tab_view.php:4
 msgid "Presentation & navigation"
@@ -3366,12 +3488,14 @@ msgid "No parameters defined"
 msgstr "پیرامیٹرز کی وضاحت نہیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPanelIntegration_view.php:13
+#, fuzzy
 msgid "Are you sure you want to delete this URL parameter?"
-msgstr "کیا آپ واقعی اس یو آر ایل پیرامیٹر خارج کرنا چاہتے ہیں؟"
+msgstr "کیا آپ واقعی یہ انٹری حذف کرنا چاہتے ہیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPanelIntegration_view.php:14
+#, fuzzy
 msgid "You have to enter a valid parameter name."
-msgstr "آپ کو ایک درست پیرامیٹر کا ​​نام درج کرنا پڑتا ہے."
+msgstr "آپ کا صارف نام اور ای میل میں داخل ہے"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPanelIntegration_view.php:15
 msgid "Add URL parameter"
@@ -3394,20 +3518,23 @@ msgid "Bounce email:"
 msgstr "ای میل اچھال :"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:10
+#, fuzzy
 msgid "You can't use Anonymized responses when Token-based answers persistence is enabled."
-msgstr ""
+msgstr "آپ کو گمنام جواب کا استعمال نہ کریں جب ٹوکن کی بنیاد پر جواب مداومت کے فعال کر سکتے ہیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:22
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Controller.php:415
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Action.php:417
+#, fuzzy
 msgid "Responses to this survey are NOT anonymized."
-msgstr "اس سروے کے جوابات نہیں anonymized ہیں."
+msgstr "اس سروے کے جوابات anonymized ہیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:24
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Controller.php:414
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Action.php:416
+#, fuzzy
 msgid "Responses to this survey are anonymized."
-msgstr "اس سروے کے جوابات anonymized ہیں."
+msgstr "اس سروے کے جوابات anonymized ہیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:45
 msgid "Allow editing responses after completion?"
@@ -3427,8 +3554,9 @@ msgid "This option can't be set if the `Anonymized responses` option is active."
 msgstr "یہ سہولت ان اگر گمنام جواب استعمال کیا جاتا ہے نہیں کی جا سکت"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:71
+#, fuzzy
 msgid "Allow public registration?"
-msgstr "عوامی رجسٹریشن کی اجازت دیں؟"
+msgstr "پبلک رجسٹریشن ای میل "
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:87
 msgid "Use HTML format for token emails?"
@@ -3439,12 +3567,14 @@ msgid "If you switch email mode, you'll have to review your email templates to f
 msgstr "اگر آپ کو ای میل موڈ سوئچ ، آپ اپنا ای میل کا جائزہ لینے کے لئے ہوگا اس نئے فارمیٹ موزوں کرنے کے لیے سانچ"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:104
+#, fuzzy
 msgid "Send confirmation emails?"
-msgstr "توثیقی ای میل بھیجیں؟"
+msgstr "توثیقی ای می"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:120
+#, fuzzy
 msgid "Set token length to:"
-msgstr "ستمبر ٹوکن کی لمبائی :"
+msgstr "حذف ٹوکن لاگ ا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:4
 msgid "Format:"
@@ -3459,8 +3589,9 @@ msgid "Template Preview:"
 msgstr "سانچہ منظر "
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:46
+#, fuzzy
 msgid "Template preview image"
-msgstr "سانچہ پیش نظارہ تصویر"
+msgstr "سانچہ منظر "
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:50
 msgid "Show welcome screen?"
@@ -3487,16 +3618,18 @@ msgid "Show progress bar"
 msgstr "ترقی بار دکھائیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:144
+#, fuzzy
 msgid "Participants may print answers?"
-msgstr "شرکاء نے جواب پرنٹ کر سکتا ہوں؟"
+msgstr "پرنٹ صفحہ جوابا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:162
 msgid "Public statistics?"
-msgstr "پبلک اعداد و شمار برائے؟"
+msgstr "پبلک اعداد و شمار ہے؟"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:180
+#, fuzzy
 msgid "Show graphs in public statistics?"
-msgstr "عوام میں اعداد و شمار برائے گرافس دکھائیں؟"
+msgstr "فوری اعداد و شما"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:197
 msgid "Automatically load URL when survey complete?"
@@ -3512,12 +3645,14 @@ msgid "Show \"There are X questions in this survey\""
 msgstr "اس سروے میں کوئی سوال نہیں ہی"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:220
+#, fuzzy
 msgid "Yes (Forced by the system administrator)"
-msgstr "جی ہاں (سسٹم ایڈمنسٹریٹر کی طرف سے جبری)"
+msgstr "براہ مہربانی اپنے سسٹم انتظامیہ سے رابط"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:225
+#, fuzzy
 msgid "No (Forced by the system administrator)"
-msgstr "نہیں (سسٹم ایڈمنسٹریٹر کی طرف سے جبری)"
+msgstr "سروے کے منتظم کا نا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:249
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:253
@@ -3531,8 +3666,9 @@ msgstr "اپنے گروپ کا نام یا تفصیل میں ترمیم کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:254
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:319
+#, fuzzy
 msgid "Show both (Forced by the system administrator)"
-msgstr "دونوں دکھائیں (سسٹم ایڈمنسٹریٹر کی طرف سے جبری)"
+msgstr "براہ مہربانی اپنے سسٹم انتظامیہ سے رابط"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:260
 msgid "Show group name only (Forced by the system administrator)"
@@ -3544,15 +3680,17 @@ msgstr "گروپ صرف وضاحت (سسٹم ایڈمنسٹریٹر کی طرف 
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:272
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:304
+#, fuzzy
 msgid "Hide both (Forced by the system administrator)"
-msgstr "دونوں (سسٹم ایڈمنسٹریٹر کی طرف سے جبری) چھپائیں"
+msgstr "براہ مہربانی اپنے سسٹم انتظامیہ سے رابط"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:289
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:334
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:333
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:352
+#, fuzzy
 msgid "Show both"
-msgstr "دونوں دکھائیں"
+msgstr "نمائش میں مد"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:290
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:334
@@ -3561,15 +3699,17 @@ msgstr "صرف گروپ کا نام دکھائیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:291
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:335
+#, fuzzy
 msgid "Show group description only"
-msgstr "صرف گروپ کی تفصیلات دکھائیں"
+msgstr "یو آر ایل کی وضاحت "
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:292
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:337
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:336
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:355
+#, fuzzy
 msgid "Hide both"
-msgstr "دونوں چھپائیں"
+msgstr "چھپائیں ٹ"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:299
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:303
@@ -3586,18 +3726,21 @@ msgid "Show question number only (Forced by the system administrator)"
 msgstr "سوال نمبر صرف دکھائیں (نظام کے ایڈمنسٹریٹر کی طرف سے جبری)"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:314
+#, fuzzy
 msgid "Show question code only (Forced by the system administrator)"
-msgstr "صرف کوڈ سوال (سسٹم ایڈمنسٹریٹر کی طرف سے جبری) دکھائیں"
+msgstr "براہ مہربانی اپنے سسٹم انتظامیہ سے رابط"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:335
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:353
+#, fuzzy
 msgid "Show question number only"
-msgstr "صرف سوال نمبر دکھائیں"
+msgstr "دکھانا ٹوکن کے خلاص"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:336
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:354
+#, fuzzy
 msgid "Show question code only"
-msgstr "صرف کوڈ سوال دکھائیں"
+msgstr "سوال کو"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:345
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:349
@@ -3608,12 +3751,14 @@ msgid "Show \"No answer\""
 msgstr "کوئی جوا"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:349
+#, fuzzy
 msgid "Off (Forced by the system administrator)"
-msgstr "آف (سسٹم ایڈمنسٹریٹر کی طرف سے جبری)"
+msgstr "براہ مہربانی اپنے سسٹم انتظامیہ سے رابط"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:369
+#, fuzzy
 msgid "On (Forced by the system administrator)"
-msgstr "پر (سسٹم ایڈمنسٹریٹر کی طرف سے جبری)"
+msgstr "براہ مہربانی اپنے سسٹم انتظامیہ سے رابط"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/deleteSurvey_view.php:9
 msgid "You have not selected a survey to delete"
@@ -3645,8 +3790,9 @@ msgid "This survey has an associated tokens table. If you delete this survey thi
 msgstr "یہ سروے ایک متعلقہ ٹوکن کی میز ہے. اگر آپ اس سروے کو ختم اس کے ٹوکن کی میز کو خارج کر دیا جائے گا. ہم آپ کو وہ برآمد یا بیک اپ اس سروے کے حذف کرنے سے پہلے مشورہ دیتے ہیں ان کے ٹوکن"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/copySurvey_view.php:16
+#, fuzzy
 msgid "Survey import summary"
-msgstr "سروے کے خلاصے کے درآمدی"
+msgstr "سروے درآمد کا خلاص"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/exportSurveyError_view.php:5
 #: /tmp/translationstatus_v2/application/views/admin/export/vv_view.php:5
@@ -3660,12 +3806,14 @@ msgid "No SID has been provided. Cannot dump survey"
 msgstr "نہیں سڈ ہے فراہم کیا گیا ہے. سروے ڈمپ نہیں کر سکت"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/newSurvey_view.php:10
+#, fuzzy
 msgid "Create, import, or copy survey"
-msgstr "، بنائیں درآمد نقل، یا سروے"
+msgstr "یا سروے درآمد بنائی"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/newSurvey_view.php:28
+#, fuzzy
 msgid "Error: You have to enter a title for this survey."
-msgstr "غلطی : آپ نے اس سروے کے لئے ایک عنوان درج کرنے کے لئے ہے."
+msgstr "اس سروے کی تفصیل چھپائی"
 
 #: /tmp/translationstatus_v2/application/views/admin/usergroup/addUserGroup_view.php:1
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:217
@@ -3675,7 +3823,7 @@ msgstr "صارف گروپ میں شام"
 #: /tmp/translationstatus_v2/application/views/admin/usergroup/addUserGroup_view.php:4
 #: /tmp/translationstatus_v2/application/views/admin/usergroup/editUserGroup_view.php:4
 msgid "Name:"
-msgstr "Allow phonetic typing"
+msgstr "نام :"
 
 #: /tmp/translationstatus_v2/application/views/admin/usergroup/addUserGroup_view.php:9
 msgid "Add Group"
@@ -3727,27 +3875,30 @@ msgstr "حذف موجودہ صارف گرو"
 
 #: /tmp/translationstatus_v2/application/views/admin/usergroup/usergroupbar_view.php:57
 msgid "User groups"
-msgstr "یوزر کے گروپس"
+msgstr "صارف گروپوں"
 
 #: /tmp/translationstatus_v2/application/views/admin/usergroup/usergroupbar_view.php:64
 msgid "Add New User Group"
 msgstr "نیا صارف گروپ میں شام"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseindex_view.php:1
+#, fuzzy
 msgid "Response summary"
-msgstr "اس کے جواب کا خلاصہ"
+msgstr "مکمل جوابا"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseindex_view.php:3
+#, fuzzy
 msgid "Total responses:"
-msgstr "کل ردعمل :"
+msgstr "کل کے جوابا"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseindex_view.php:5
 msgid "Full responses:"
-msgstr "مکمل جوابات :"
+msgstr "مکمل ردعمل :"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseindex_view.php:6
+#, fuzzy
 msgid "Incomplete responses:"
-msgstr "نامکمل جوابات :"
+msgstr "درآمد کے جوابا"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browsemenubar_view.php:14
 msgid "Show summary information"
@@ -3771,12 +3922,14 @@ msgid "Get statistics from these responses"
 msgstr "ان کے جوابات سے اعداد و شمار ہو جا"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browsemenubar_view.php:40
+#, fuzzy
 msgid "Get time statistics from these responses"
-msgstr "یہ ردعمل وقت کے اعداد و شمار سے"
+msgstr "ان کے جوابات سے اعداد و شمار ہو جا"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browsemenubar_view.php:46
+#, fuzzy
 msgid "Export results to application"
-msgstr "درخواست کرنے کے لئے نتائج برآمد"
+msgstr "درخواست کی برآمد کے نتائ"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browsemenubar_view.php:49
 #, fuzzy
@@ -3784,13 +3937,15 @@ msgid "Export results to a SPSS/PASW command file"
 msgstr "برآمد ایس وی فائل کے لئے ٹوک"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browsemenubar_view.php:52
+#, fuzzy
 msgid "Export results to a R data file"
-msgstr "ایک R ڈیٹا فائل کو نتائج برآمد"
+msgstr "درخواست کی برآمد کے نتائ"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browsemenubar_view.php:57
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:491
+#, fuzzy
 msgid "Import responses from a deactivated survey table"
-msgstr "ایک سروے کے غیر فعال میز سے درآمد کے جوابات"
+msgstr "ایک طرف سے درآمد کے جوابات سروے ٹیبل غیر فعا"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browsemenubar_view.php:63
 msgid "View Saved but not submitted Responses"
@@ -3807,8 +3962,9 @@ msgid "Export a VV survey file"
 msgstr "درآمد VV سروے فائ"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browsemenubar_view.php:75
+#, fuzzy
 msgid "Iterate survey"
-msgstr "سروے Iterate"
+msgstr "سروے بنائی"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseallheader_view.php:2
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:662
@@ -3821,18 +3977,21 @@ msgid "Do you really want to delete all marked responses?"
 msgstr "کیا آپ واقعی تمام کا نشان لگا کے جوابات کو حذف کرنا چاہتے ہیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseallheader_view.php:4
+#, fuzzy
 msgid "Please select at least one file for deletion"
-msgstr "منسوخی کے لئے کم از کم ایک فائل منتخب کریں"
+msgstr "درآمد کرنے کی ایک فائل منتخب کریں"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseallheader_view.php:5
+#, fuzzy
 msgid "Please select at least one file for download"
-msgstr "ڈاؤن لوڈ کے لئے کم از کم ایک فائل منتخب کریں"
+msgstr "کم سے کم ایک چیز کی جانچ کریں"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseallheader_view.php:9
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:6
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:766
+#, fuzzy
 msgid "Data view control"
-msgstr "اعداد و شمار دیکھیں کنٹرول"
+msgstr "اعداد و شمار دیکھنے کے کنٹرو"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseallheader_view.php:13
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:23
@@ -3854,8 +4013,9 @@ msgstr "دکھائیں... اگل"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseallheader_view.php:19
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:780
+#, fuzzy
 msgid "Show next.."
-msgstr "اگلے دکھائیں.."
+msgstr "نمائش میں مد"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseallheader_view.php:20
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:33
@@ -3865,8 +4025,9 @@ msgstr "دکھائیں... آخر"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseallheader_view.php:21
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:783
+#, fuzzy
 msgid "Show last.."
-msgstr "آخری دکھائیں.."
+msgstr "دکھانا گراف"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseallheader_view.php:34
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:45
@@ -3878,7 +4039,7 @@ msgstr "ریکارڈز ظاہر :"
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:46
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:797
 msgid "Starting from:"
-msgstr "سے شروع ہو رہا ہے :"
+msgstr "سے شروع :"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseallheader_view.php:36
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:47
@@ -3888,7 +4049,7 @@ msgstr "دکھائی"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseallheader_view.php:37
 msgid "Display:"
-msgstr "ظاہر کریں :"
+msgstr "کا مشاھدہ :"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseallheader_view.php:38
 #: /tmp/translationstatus_v2/application/views/admin/export/exportresults_view.php:15
@@ -3905,8 +4066,9 @@ msgstr "سب کے جوابات"
 #: /tmp/translationstatus_v2/application/views/admin/export/vv_view.php:11
 #: /tmp/translationstatus_v2/application/views/admin/export/r_view.php:4
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:293
+#, fuzzy
 msgid "Completed responses only"
-msgstr "مکمل ردعمل صرف"
+msgstr "مکمل صفح"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseallheader_view.php:40
 #: /tmp/translationstatus_v2/application/views/admin/export/exportresults_view.php:16
@@ -3914,8 +4076,9 @@ msgstr "مکمل ردعمل صرف"
 #: /tmp/translationstatus_v2/application/views/admin/export/vv_view.php:13
 #: /tmp/translationstatus_v2/application/views/admin/export/r_view.php:6
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:294
+#, fuzzy
 msgid "Incomplete responses only"
-msgstr "نامکمل ردعمل صرف"
+msgstr "مکمل صفح"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseidheader_view.php:2
 #, fuzzy, php-format
@@ -3936,8 +4099,9 @@ msgid "You don't have permission to delete this entry."
 msgstr "آپ اس اندراج کو ختم کرنے کی اجازت نہیں ہے"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseidheader_view.php:18
+#, fuzzy
 msgid "Download files for this entry"
-msgstr "اس اندراج کے لئے ڈاؤن لوڈ ، اتارنا فائلوں"
+msgstr "حذف اس اندرا"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseidheader_view.php:22
 msgid "Export this Response"
@@ -3950,13 +4114,15 @@ msgstr "دکھائیں... گزشت"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseallrow_view.php:4
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:823
+#, fuzzy
 msgid "View response details"
-msgstr "جواب تفصیلات ملاحظہ کریں"
+msgstr "دیکھیے جوا"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseallrow_view.php:6
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:824
+#, fuzzy
 msgid "Edit this response"
-msgstr "اس جواب کو ترمیم کریں"
+msgstr "برآمد اس جوا"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseallrow_view.php:9
 msgid "Download all files in this response as a zip file"
@@ -3964,21 +4130,24 @@ msgstr "ایک زپ فائل کے طور پر اس کے جواب میں تمام
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseallrow_view.php:12
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:825
+#, fuzzy
 msgid "Delete this response"
-msgstr "اس جواب کو حذف کریں"
+msgstr "برآمد اس جوا"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseallrow_view.php:20
 msgid "Edit this token"
 msgstr "اس ٹوکن ترمی"
 
 #: /tmp/translationstatus_v2/application/views/admin/labels/exportmulti_view.php:3
+#, fuzzy
 msgid "You have to select at least one label set."
-msgstr "آپ کم از کم ایک لیبل مقرر منتخب کرنے کے لئے ہے."
+msgstr "آپ نے ایک سوال کے منتخب کردہ نہیں ہیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/labels/exportmulti_view.php:7
 #: /tmp/translationstatus_v2/application/views/admin/labels/labelsetsbar_view.php:14
+#, fuzzy
 msgid "Export multiple label sets"
-msgstr "ایک سے زیادہ لیبل سیٹ برآمد"
+msgstr "برآمد سیٹ لیب"
 
 #: /tmp/translationstatus_v2/application/views/admin/labels/exportmulti_view.php:9
 msgid "Please choose the label sets you want to export:"
@@ -4012,8 +4181,9 @@ msgid "Delete label set"
 msgstr "حذف سیٹ لیب"
 
 #: /tmp/translationstatus_v2/application/views/admin/labels/labelbar_view.php:15
+#, fuzzy
 msgid "Export this label set"
-msgstr "ستمبر میں اس لیبل کو برآمد"
+msgstr "برآمد سیٹ لیب"
 
 #: /tmp/translationstatus_v2/application/views/admin/labels/labelbar_view.php:18
 msgid "Close Window"
@@ -4025,7 +4195,7 @@ msgstr "لیبل انتظامیہ سی"
 
 #: /tmp/translationstatus_v2/application/views/admin/labels/labelsetsbar_view.php:18
 msgid "Label sets:"
-msgstr "لیبل سیٹ :"
+msgstr "لیبل کا تعین کرتا ہے :"
 
 #: /tmp/translationstatus_v2/application/views/admin/labels/labelsetsbar_view.php:22
 msgid "Please Choose..."
@@ -4033,8 +4203,9 @@ msgstr "براہ مہربانی منتخب کریں.."
 
 #: /tmp/translationstatus_v2/application/views/admin/labels/labelsetsbar_view.php:37
 #: /tmp/translationstatus_v2/application/views/admin/labels/editlabel_view.php:4
+#, fuzzy
 msgid "Create or import new label set(s)"
-msgstr "یا درآمد نئے لیبل (ے) مقرر بنائیں"
+msgstr "یا درآمد نئے سیٹ لیبل تشکیل دی"
 
 #: /tmp/translationstatus_v2/application/views/admin/labels/labelsetsbar_view.php:47
 msgid "Show Help"
@@ -4044,7 +4215,7 @@ msgstr "نمائش میں مد"
 #: /tmp/translationstatus_v2/application/views/admin/labels/editlabel_view.php:65
 #: /tmp/translationstatus_v2/application/views/admin/labels/editlabel_view.php:79
 msgid "Import label set(s)"
-msgstr "درآمد لیبل (ے) قائم"
+msgstr "درآمد لیبل سیٹ (ے)"
 
 #: /tmp/translationstatus_v2/application/views/admin/labels/editlabel_view.php:17
 msgid "Error: You have to enter a name for this label set."
@@ -4076,8 +4247,9 @@ msgid "Don't import if label set already exists:"
 msgstr "کیا اگر لیبل سیٹ پہلے ہی موجود ہے درآمد نہیں "
 
 #: /tmp/translationstatus_v2/application/views/admin/labels/editlabel_view.php:76
+#, fuzzy
 msgid "Convert resources links?"
-msgstr "وسائل لنکس کنورٹ کریں؟"
+msgstr "بدلیں وسائل لنکس"
 
 #: /tmp/translationstatus_v2/application/views/admin/super/footer.php:3
 msgid "Online Manual"
@@ -4158,7 +4330,7 @@ msgstr "/ گروپوں میں ترمیم کری"
 #: /tmp/translationstatus_v2/application/views/admin/super/adminmenu.php:39
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:4
 msgid "Global settings"
-msgstr "گلوبل کی تراتیب"
+msgstr "گلوبل کی ترتیبات"
 
 #: /tmp/translationstatus_v2/application/views/admin/super/adminmenu.php:45
 msgid "Check Data Integrity"
@@ -4173,8 +4345,9 @@ msgid "The database export is only available for MySQL databases. For other data
 msgstr "ڈیٹا بیس کی برآمد ایس کیو ایل ڈیٹا بیس کے لئے دستیاب ہے. کے لئے دوسرے ڈیٹا بیس اقسام کے مطابق بیک اپ نظام ایک ڈیٹا بیس پھینکنے بنانے کے لیے استعمال کریں"
 
 #: /tmp/translationstatus_v2/application/views/admin/super/adminmenu.php:73
+#, fuzzy
 msgid "Edit label sets"
-msgstr "لیبل سیٹ میں ترمیم کریں"
+msgstr "ترمیم قائم لیب"
 
 #: /tmp/translationstatus_v2/application/views/admin/super/adminmenu.php:79
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:111
@@ -4191,12 +4364,14 @@ msgid "Surveys:"
 msgstr "سروے :"
 
 #: /tmp/translationstatus_v2/application/views/admin/super/adminmenu.php:95
+#, fuzzy
 msgid "Detailed list of surveys"
-msgstr "سروے کی تفصیلی فہرست"
+msgstr "حذف سرو"
 
 #: /tmp/translationstatus_v2/application/views/admin/super/adminmenu.php:103
+#, fuzzy
 msgid "Create, import, or copy a survey"
-msgstr "، درآمد بنائیں، یا ایک سروے کی کاپی"
+msgstr "یا سروے درآمد بنائی"
 
 #: /tmp/translationstatus_v2/application/views/admin/dataentry/content_view.php:24
 msgid "Help about this question"
@@ -4539,7 +4714,7 @@ msgstr "اس سروے میں آپ کو پہلے سے موجود نہیں منت�
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:1821
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:2255
 msgid "Data entry"
-msgstr "ڈیٹا انٹری"
+msgstr "ڈیٹا انٹری کی"
 
 #: /tmp/translationstatus_v2/application/views/admin/dataentry/caption_view.php:29
 #: /tmp/translationstatus_v2/application/views/admin/export/exportresults_view.php:126
@@ -4563,8 +4738,9 @@ msgid "IP address"
 msgstr "IP ایڈریس"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/question_view.php:2
+#, fuzzy
 msgid "Export question structure"
-msgstr "ایکسپورٹ کی ساخت کا سوال"
+msgstr "برآمد سروے ڈھانچ"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/question_view.php:7
 #: /tmp/translationstatus_v2/application/views/admin/export/group_view.php:7
@@ -4579,8 +4755,9 @@ msgstr "Lsrc (*. وی) کے لئے محفوظ کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/question_view.php:14
 #: /tmp/translationstatus_v2/application/views/admin/export/group_view.php:14
+#, fuzzy
 msgid "Export to file"
-msgstr "کرنے کے لئے فائل برآمد"
+msgstr "ایکسپورٹ فائ"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/exportresults_view.php:1
 #: /tmp/translationstatus_v2/application/views/admin/export/vv_view.php:21
@@ -4591,8 +4768,9 @@ msgid "Export results"
 msgstr "برآمد کے نتائ"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/exportresults_view.php:5
+#, fuzzy
 msgid "Filtered from statistics script"
-msgstr "فلٹر کے اعداد و شمار سکرپٹ سے"
+msgstr "اعداد و شمار سکرپٹ سے فلٹ"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/exportresults_view.php:6
 msgid "Single response"
@@ -4702,8 +4880,9 @@ msgid "Token control"
 msgstr "ٹوکن کنٹرول"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/exportresults_view.php:118
+#, fuzzy
 msgid "Choose token fields"
-msgstr "کھیتوں ٹوکن انتخاب کریں"
+msgstr "ٹوکن شعبوں کا انتخاب کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/exportresults_view.php:120
 msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
@@ -4750,8 +4929,9 @@ msgid "Export data"
 msgstr "ایکسپورٹ کے اعداد و شمار"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/group_view.php:2
+#, fuzzy
 msgid "Export group structure"
-msgstr "ایکسپورٹ گروپ ڈھانچہ"
+msgstr "برآمد سروے ڈھانچ"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/spss_view.php:1
 msgid "Export result data to SPSS"
@@ -4780,8 +4960,9 @@ msgid "Step 1:"
 msgstr "مرحلہ نمبر 1 "
 
 #: /tmp/translationstatus_v2/application/views/admin/export/spss_view.php:18
+#, fuzzy
 msgid "Export syntax"
-msgstr "ایکسپورٹ نحو"
+msgstr "ایکسپورٹ فائ"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/spss_view.php:19
 #: /tmp/translationstatus_v2/application/views/admin/export/r_view.php:12
@@ -4794,8 +4975,9 @@ msgid "Instructions for the impatient"
 msgstr "ادیر کے لئے ہدایا"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/spss_view.php:24
+#, fuzzy
 msgid "Download the data and the syntax file"
-msgstr "ڈیٹا فائل اور نحو ڈاؤن لوڈ ، اتارنا"
+msgstr "ڈاؤن لوڈ ، اتارنا اعداد و شمار اور نحو فائل"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/spss_view.php:25
 msgid "Open the syntax file in SPSS in Unicode mode"
@@ -4812,8 +4994,9 @@ msgid "Choose 'Run/All' from the menu to run the import"
 msgstr "منتخب 'چلانے / سب' مینو میں سے درآمد کے چلانے کے لئے"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/spss_view.php:29
+#, fuzzy
 msgid "Your data should be imported now"
-msgstr "آپ کا ڈیٹا ابھی ہونا چاہئے برآمد"
+msgstr "آپ اعداد و شمار اب درآمد کرنا چاہئے"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/vv_view.php:9
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:72
@@ -4830,16 +5013,19 @@ msgid "For easy opening in MS Excel, change the extension to 'tab' or 'txt'"
 msgstr "ایم ایس ایکسل میں آسانی سے کھولنے کے لیے 'کے ٹیب پر' یا 'ٹيکسٹ' کے پھیلاؤ میں تبدیل"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/r_view.php:1
+#, fuzzy
 msgid "Export result data to R"
-msgstr "R کرنے کے نتیجے میں ڈیٹا برآمد"
+msgstr "درخواست کی برآمد کے نتائ"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/r_view.php:11
+#, fuzzy
 msgid "Export R syntax file"
-msgstr "ایکسپورٹ R نحو فائل"
+msgstr "ایکسپورٹ فائ"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/r_view.php:12
+#, fuzzy
 msgid "Export .csv data file"
-msgstr ". برآمد CSV ڈیٹا فائل"
+msgstr "برآمد ایس وی فائل کے لئے ٹوک"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/r_view.php:17
 msgid "Download the data and the syntax file."
@@ -4873,8 +5059,9 @@ msgid "Login"
 msgstr "لاگ ا"
 
 #: /tmp/translationstatus_v2/application/views/admin/authentication/login.php:31
+#, fuzzy
 msgid "Forgot your password?"
-msgstr "اپنا پاس ورڈ بھول گئے ہیں؟"
+msgstr "پاس ورڈ بھول گئے"
 
 #: /tmp/translationstatus_v2/application/views/admin/authentication/forgotpassword.php:2
 msgid "You have to enter user name and email."
@@ -4893,60 +5080,69 @@ msgid "Date Saved"
 msgstr "تاریخ بچا لی"
 
 #: /tmp/translationstatus_v2/application/views/admin/saved/savedlist_view.php:18
+#, fuzzy
 msgid "Edit entry"
-msgstr "ترمیم کریں کے اندراج پر"
+msgstr "ٹوکن لاگ ان کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/saved/savedlist_view.php:23
+#, fuzzy
 msgid "Delete entry"
-msgstr "انٹری حذف کریں"
+msgstr "حذف ٹوکن لاگ ا"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:59
 msgid "Sharing participants..."
 msgstr "شیئرنگ کے شرکاء..."
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:60
+#, fuzzy
 msgid "Share the selected participants"
-msgstr "منتخب شرکاء نے حصہ"
+msgstr "حذف صار"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:61
 msgid "No other user in the system"
 msgstr "کوئی بھی نظام میں دوسرے صارف"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:62
+#, fuzzy
 msgid "Add participant to Survey"
-msgstr "شریک کرنے کے لئے سروے کا اضافہ کریں"
+msgstr "نصیحت سروے میں حصہ لینے کے لئ"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:63
 msgid "Either you don't own a survey or it doesn't have token table"
 msgstr "یا تو تم ایک سروے ہی نہیں ہے یا ٹوکن ٹیبل نہیں ہے"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:66
+#, fuzzy
 msgid "Add to survey"
-msgstr "کرنے کے لئے سروے کا اضافہ کریں"
+msgstr "صارف شامل کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:67
+#, fuzzy
 msgid "Export CSV"
-msgstr "CSV برآمد"
+msgstr "برآم"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:68
+#, fuzzy
 msgid "Please choose either of the options"
-msgstr "اختیارات میں سے کسی کا انتخاب براہ مہربانی"
+msgstr "* صرف مندرجہ ذیل میں سے ایک * انتخاب کریں "
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:69
 msgid "Remove condition"
 msgstr "شرط کو ہٹا دیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:70
+#, fuzzy
 msgid "Please select a survey to add participants to"
-msgstr "ایک سروے کے شرکاء میں شامل کرنے کا انتخاب کریں"
+msgstr "درآمد کرنے کی ایک فائل منتخب کریں"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:74
 msgid "Select one of the three options"
 msgstr "تین اختیارات میں سے ایک کو منتخب کریں"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:75
+#, fuzzy
 msgid "You have no row selected"
-msgstr "آپ صف منتخب نہیں کی ہے"
+msgstr "تم نے ایک سروے کے منتخب نہیں کیا ہ"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:76
 msgid "Delete participant(s) from central participants panel only"
@@ -4982,16 +5178,19 @@ msgid "Owner name"
 msgstr "مالک کا نام"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:169
+#, fuzzy
 msgid "Please select a field"
-msgstr "ایک فیلڈ کا انتخاب کریں"
+msgstr "ایک صارف کی پہلی براہ کرم انتخاب کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:174
+#, fuzzy
 msgid "Please select a condition"
-msgstr "ایک حالت کا انتخاب کریں"
+msgstr "درآمد کرنے کی ایک فائل منتخب کریں"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:179
+#, fuzzy
 msgid "Please select at least one participant"
-msgstr "کم از کم ایک شریک کا انتخاب کریں"
+msgstr "کم سے کم ایک چیز کی جانچ کریں"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:182
 msgid "Share"
@@ -5020,8 +5219,9 @@ msgid "Redirect to token table after copy "
 msgstr "نقل کے بعد ٹوکن ٹیبل کے لئے لوٹایا گی"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:238
+#, fuzzy
 msgid "all participants in current search"
-msgstr "تمام موجودہ تلاش میں شرکاء"
+msgstr "پرنٹ صفحہ جوابا"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:239
 msgid "all participants"
@@ -5044,16 +5244,18 @@ msgid "There are no participants to be exported"
 msgstr "کوئی برآمد کیا جائے شرکاء ہیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/userControl_view.php:5
+#, fuzzy
 msgid "Global participant settings"
-msgstr "گلوبل تراتیب میں شریک"
+msgstr "فلٹر سیٹن"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/userControl_view.php:26
 msgid "User ID editable : "
 msgstr "یوزر کے قابل تدوین ID :"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/userControl_view.php:41
+#, fuzzy
 msgid "You don't have sufficient permissions."
-msgstr "آپ کی مہارت کا کافی اجازت نہیں ہے."
+msgstr "شاید آپ کو اجازت نہیں ہے"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/uploadSummary_view.php:13
 msgid "CPDB CSV summary"
@@ -5061,17 +5263,20 @@ msgstr "CPDB CSV کے خلاصے"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/uploadSummary_view.php:16
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1916
+#, fuzzy
 msgid "Uploaded CSV file successfully"
-msgstr "CSV فائل کامیابی سے اپ لوڈ"
+msgstr "اپ لوڈ کریں سی ایس وی فائ"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/uploadSummary_view.php:18
+#, fuzzy
 msgid "Successfully created CPDB entries"
-msgstr "کامیابی سے تشکیل دے اندراجات CPDB"
+msgstr "حذف ٹوکن لاگ ا"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/uploadSummary_view.php:20
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:2075
+#, fuzzy
 msgid "Failed to create token entries"
-msgstr "ٹوکن کے اندراجات بنانے میں ناکام"
+msgstr "حذف ٹوکن لاگ ا"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/uploadSummary_view.php:24
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:2077
@@ -5122,16 +5327,19 @@ msgid "Processing..."
 msgstr "... پروسیسنگ"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/importCSV_view.php:2
+#, fuzzy
 msgid "Import CSV"
-msgstr "CSV درآمد"
+msgstr "درآم"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/importCSV_view.php:11
+#, fuzzy
 msgid "Choose the file to upload:"
-msgstr "اپ لوڈ کرنے کی فائل کا انتخاب کریں :"
+msgstr "سی ایس وی کی فائل کا انتخاب کریں "
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/importCSV_view.php:17
+#, fuzzy
 msgid "Character set of file:"
-msgstr "فائل کا کیریکٹر سیٹ :"
+msgstr "فائل کا کریکٹر سیٹ "
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/importCSV_view.php:20
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1847
@@ -5390,77 +5598,85 @@ msgid "firstname, lastname, email"
 msgstr "firstname، lastname ای میل،"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/importCSV_view.php:97
+#, fuzzy
 msgid "blacklist,language"
-msgstr "ناپسندیدہ افراد کی فہرست، زبان"
+msgstr "بیس زبا"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/sharePanel_view.php:6
 msgid "Share panel"
 msgstr "شیئر پینل"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/summary_view.php:2
+#, fuzzy
 msgid "Central participants database summary"
-msgstr "شرکاء نے مرکزی ڈیٹا بیس کا خلاصہ"
+msgstr "اس سروے کی تفصیل چھپائی"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/summary_view.php:8
+#, fuzzy
 msgid "Total participants in central table"
-msgstr "مرکزی ٹیبل میں کل شرکاء"
+msgstr "اس ٹوکن کے ٹیبل میں کل ریکار"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/summary_view.php:16
 msgid "Participants owned by you"
 msgstr "شرکاء نے آپ کی طرف سے ملکیت"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/summary_view.php:24
+#, fuzzy
 msgid "Participants shared with you"
-msgstr "شرکاء نے آپ کے ساتھ مشترکہ"
+msgstr "پرنٹ صفحہ جوابا"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/summary_view.php:32
+#, fuzzy
 msgid "Participants you have shared"
-msgstr "آپ شرکاء نے مشترکہ ہے"
+msgstr "پرنٹ صفحہ جوابا"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/summary_view.php:40
 msgid "Blacklisted participants"
 msgstr "بلیک لسٹ کے شرکاء"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/summary_view.php:48
+#, fuzzy
 msgid "Total attributes in the central table"
-msgstr "ٹیبل میں کل مرکزی خصوصیات"
+msgstr "اس ٹوکن کے ٹیبل میں کل ریکار"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/viewAttribute_view.php:3
 #: /tmp/translationstatus_v2/application/views/admin/participants/viewAttribute_view.php:59
 msgid "Attribute name:"
-msgstr "وصف کا نام :"
+msgstr "خاصیت کا نام :"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/viewAttribute_view.php:10
 msgid "Attribute settings"
-msgstr "وصف کی تراتیب"
+msgstr "وصف کی ترتیبات"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/viewAttribute_view.php:21
+#, fuzzy
 msgid "Add a language:"
-msgstr "ایک زبان شامل کریں :"
+msgstr "بیس زبا"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/viewAttribute_view.php:71
 msgid "Common settings"
-msgstr "کامن کی تراتیب"
+msgstr "کامن کی ترتیبات"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/viewAttribute_view.php:77
 msgid "Attribute type:"
-msgstr "خاصیت کی قسم :"
+msgstr "وصف کی قسم :"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/viewAttribute_view.php:89
 msgid "Attribute visible:"
-msgstr "نظر آنے والی خاصیت :"
+msgstr "نظر آتا ہے وصف :"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/viewAttribute_view.php:107
 msgid "Value name"
-msgstr "قیمت کا نام"
+msgstr "ویلیو نام"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeControl_view.php:5
+#, fuzzy
 msgid "Attribute visiblity changed"
-msgstr "وصف visiblity تبدیل کر دیا گیا"
+msgstr "خاصیت میدا"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeControl_view.php:10
 msgid "Attribute control"
-msgstr "وصف کنٹرول"
+msgstr "خصوصیات کا کنٹرول"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeControl_view.php:22
 msgid "Attribute name"
@@ -5468,15 +5684,16 @@ msgstr "خاصیت کا نام"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeControl_view.php:23
 msgid "Attribute type"
-msgstr "خاصیت کی قسم"
+msgstr "وصف کی قسم"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeControl_view.php:24
 msgid "Visible in participant panel"
 msgstr "شریک پینل میں نظر آئے"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeControl_view.php:41
+#, fuzzy
 msgid "Drop-down list"
-msgstr "ڈراپ ڈاؤن فہرست"
+msgstr "دوہری لٹکتی"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeControl_view.php:45
 msgid "Date"
@@ -5492,12 +5709,14 @@ msgstr "پہلے ہی مائچترت"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeMap_view.php:50
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeMapCSV_view.php:38
+#, fuzzy
 msgid "Attributes to be created"
-msgstr "پیدا ہونے کی خصوصیات"
+msgstr "خاصیت میدا"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeMap_view.php:62
+#, fuzzy
 msgid "Token table attribute"
-msgstr "ٹوکن وصف کی میز"
+msgstr "ٹوکن وصف کا نام "
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/blacklist_view.php:4
 msgid "Blacklist control"
@@ -5555,14 +5774,12 @@ msgid "You have already been un-blacklisted from this survey"
 msgstr "اس سروے کی تفصیل چھپائیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeMapCSV_view.php:19
-#, fuzzy
 msgid "Summary"
-msgstr "سروے کی"
+msgstr "خلاصہ"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeMapCSV_view.php:20
-#, fuzzy
 msgid "Upload summary"
-msgstr "مکمل جوابا"
+msgstr "کے خلاصے کے اپ لوڈ کریں"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeMapCSV_view.php:26
 #, php-format
@@ -5620,9 +5837,8 @@ msgid "Back to main menu"
 msgstr "مین مینو پر واپس جائی"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenwarning.php:33
-#, fuzzy
 msgid "Restore options"
-msgstr "اختیارات بحا"
+msgstr "اختیارات بحالاختیارات بحال"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenwarning.php:36
 msgid "The following old token tables could be restored:"
@@ -5648,9 +5864,8 @@ msgstr "ٹوکن نئی شامل کر دیا گیا"
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:18
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:571
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:730
-#, fuzzy
 msgid "Display tokens"
-msgstr "ظاہر ٹوک"
+msgstr "ٹوکن کا مشاھدہ"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/addtokenpost.php:7
 #, fuzzy
@@ -5674,9 +5889,8 @@ msgid "Add new token entry"
 msgstr "نیا ٹوکن کے اندراج میں اضافہ کری"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokensummary.php:2
-#, fuzzy
 msgid "Token summary"
-msgstr "دکھانا ٹوکن کے خلاص"
+msgstr "ٹوکن کے خلاصے"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokensummary.php:8
 #, fuzzy
@@ -5780,9 +5994,8 @@ msgid "Send email reminder"
 msgstr "ای میل نصیحت بھیجی"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:75
-#, fuzzy
 msgid "Generate tokens"
-msgstr "پیدا ٹوک"
+msgstr "پیدا ٹوکن"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:83
 msgid "Drop tokens table"
@@ -5792,14 +6005,12 @@ msgstr "چھوڑ دو ٹیبل ٹوک"
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:1
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:10
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:2340
-#, fuzzy
 msgid "Bounce settings"
-msgstr "محفوظ ترتیبا"
+msgstr "اچھال کی ترتیبات"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:104
-#, fuzzy
 msgid "Show help"
-msgstr "نمائش میں مد"
+msgstr "مدد نمائش"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:13
 #, fuzzy
@@ -5830,29 +6041,25 @@ msgstr "حساب سے ترتیب دیں "
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:80
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:81
-#, fuzzy
 msgid "Email status"
-msgstr "حالت برق"
+msgstr "ای میل کی حیثیت"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:93
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:94
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenform.php:49
-#, fuzzy
 msgid "Invitation sent?"
-msgstr "دعوت نامہ بھیج دیا "
+msgstr "دعوت نامہ بھیجا تھا؟"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:99
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:100
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenform.php:54
-#, fuzzy
 msgid "Reminder sent?"
-msgstr "یاددہانی بھیجی"
+msgstr "یاد دہانی بھیجا؟"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:104
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:105
-#, fuzzy
 msgid "Reminder count"
-msgstr "اس نصیحت کو ای میل "
+msgstr "یاد دہانی شمار"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:108
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:109
@@ -5863,9 +6070,8 @@ msgstr "مکمل"
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:113
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:114
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:5558
-#, fuzzy
 msgid "Uses left"
-msgstr "استعمال شد"
+msgstr "استعمال کرتا ہے چھوڑ"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:117
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:118
@@ -5889,9 +6095,8 @@ msgid "This participant opted out of this survey."
 msgstr "یہ حصہ اس سروے سے باہر رکھا گیا"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:207
-#, fuzzy
 msgid "Do survey"
-msgstr "سروے کی"
+msgstr "سروے کیا"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:214
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenform.php:4
@@ -5972,14 +6177,12 @@ msgid "Attribute field"
 msgstr "خاصیت میدا"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/managetokenattributes.php:4
-#, fuzzy
 msgid "Field description"
-msgstr "یو آر ایل کی وضاحت "
+msgstr "فیلڈ کی وضاحت"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/managetokenattributes.php:4
-#, fuzzy
 msgid "Example data"
-msgstr "برآمد کی معلوما"
+msgstr "مثال کے طور پر اعداد و شمار"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/managetokenattributes.php:21
 msgid "<no data>"
@@ -6000,9 +6203,8 @@ msgid "Number of attribute fields to add:"
 msgstr "وصف خانوں کی تعداد میں شامل کرنے کے لئے "
 
 #: /tmp/translationstatus_v2/application/views/admin/token/managetokenattributes.php:42
-#, fuzzy
 msgid "Add fields"
-msgstr "عام موضوعا"
+msgstr "شعبوں کا اضافہ کریں"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/email.php:3
 #, fuzzy
@@ -6028,9 +6230,8 @@ msgstr "موضو"
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:131
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:143
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:145
-#, fuzzy
 msgid "Invitation email:"
-msgstr "دعوت نامہ ای میل "
+msgstr "ای میل :"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/email.php:92
 #: /tmp/translationstatus_v2/application/views/admin/token/remind.php:82
@@ -6052,9 +6253,8 @@ msgid "Token status:"
 msgstr "ٹوکن وصف کا نام "
 
 #: /tmp/translationstatus_v2/application/views/admin/token/exportdialog.php:4
-#, fuzzy
 msgid "All tokens"
-msgstr "ظاہر ٹوک"
+msgstr "تمام ٹوکن"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/exportdialog.php:6
 #, fuzzy
@@ -6073,9 +6273,8 @@ msgstr "دعوت نامہ ای میل "
 #: /tmp/translationstatus_v2/application/views/admin/token/exportdialog.php:12
 #: /tmp/translationstatus_v2/application/views/admin/token/exportdialog.php:17
 #: /tmp/translationstatus_v2/application/views/admin/token/exportdialog.php:22
-#, fuzzy
 msgid "All"
-msgstr "بچاتا کی اجازت دیں"
+msgstr "تمام"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/exportdialog.php:13
 msgid "Invited"
@@ -6117,9 +6316,8 @@ msgid "Delete exported tokens"
 msgstr "برآمد سوا"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/exportdialog.php:31
-#, fuzzy
 msgid "Export tokens"
-msgstr "برآمد سوا"
+msgstr "ٹوکن برآمد"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/emailpost.php:3
 #, fuzzy
@@ -6201,9 +6399,8 @@ msgid "Send reminder to token ID(s):"
 msgstr "ٹوکن کی شناخت کے لئے بھیجا جا رہا ہ"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/remind.php:69
-#, fuzzy
 msgid "Sending to:"
-msgstr "ٹوکن کی شناخت کے لئے بھیجا جا رہا ہ"
+msgstr "کرنے کے لئے بھیجا جا رہا ہے :"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/remind.php:70
 msgid "All token entries to whom a reminder email would apply"
@@ -6218,9 +6415,8 @@ msgid "Min days between reminders"
 msgstr "یاددہانی کے درمیان کم سے کم د"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/remind.php:92
-#, fuzzy
 msgid "Max reminders"
-msgstr "یاد دلانے والی ای می"
+msgstr "زیادہ سے زیادہ یاددہانی"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/remind.php:95
 msgid "Send Reminders"
@@ -6242,15 +6438,13 @@ msgid "Number of tokens"
 msgstr "مقدمات کی تعدا"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/dummytokenform.php:11
-#, fuzzy
 msgid "Token length"
-msgstr "حذف ٹوکن لاگ ا"
+msgstr "ٹوکن کی لمبائی"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/dummytokenform.php:23
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenform.php:70
-#, fuzzy
 msgid "Uses left:"
-msgstr "استعمال شد"
+msgstr "استعمال کرتا ہے چھوڑ دیا :"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/dummytokenform.php:30
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenform.php:81
@@ -6279,9 +6473,8 @@ msgid "You can leave this blank, and automatically generate tokens using 'Genera
 msgstr "آپ اسے خالی چھوڑ دیں ، اور خود کار طریقے سے ٹوکن کا استعمال کرتے ہوئے 'ٹوکن تشکیل دیں' پیدا کر سکتے ہی"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenform.php:61
-#, fuzzy
 msgid "Reminder count:"
-msgstr "اس نصیحت کو ای میل "
+msgstr "یاد دہانی کا شمار :"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenform.php:105
 #, fuzzy
@@ -6324,9 +6517,8 @@ msgstr "فلٹر سیٹن"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:18
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:193
-#, fuzzy
 msgid "Server type:"
-msgstr "سرور کا وقت "
+msgstr "سرور کی قسم :"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:22
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:200
@@ -6352,15 +6544,13 @@ msgstr "my.smtp.com : : 25 آپ کے دہانہ و نام میزبان ، مثا
 
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:29
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:209
-#, fuzzy
 msgid "User name:"
-msgstr "صارف کا نا"
+msgstr "صارف کا نام :"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:33
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:214
-#, fuzzy
 msgid "Encryption type:"
-msgstr "سوال کی قسم "
+msgstr "خفیہ کاری قسم :"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:40
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:167
@@ -6380,34 +6570,28 @@ msgid "You must set at last one available language."
 msgstr "آپ نے ایک سوال کے منتخب کردہ نہیں ہیں"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:7
-#, fuzzy
 msgid "Overview & update"
-msgstr "جائزہ اور اپ ڈی"
+msgstr "کا جائزہ اور اپ ڈیٹ"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:9
-#, fuzzy
 msgid "Email settings"
-msgstr "ای میل تراتیب میں ترمیم کری"
+msgstr "ای میل کی ترتیبات"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:11
-#, fuzzy
 msgid "Security"
-msgstr "سیکیورٹی الر"
+msgstr "سلامتی"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:12
-#, fuzzy
 msgid "Presentation"
-msgstr "اختیارات بحا"
+msgstr "ڈیمو"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:14
-#, fuzzy
 msgid "Interfaces"
-msgstr "بیس زبا"
+msgstr "انٹرفیس"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:20
-#, fuzzy
 msgid "Updates"
-msgstr "تازہ صارف گرو"
+msgstr "تازہ ترین معلومات کے"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:21
 msgid "Check for updates:"
@@ -6434,9 +6618,8 @@ msgid "Every month"
 msgstr "ہر مہین"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:38
-#, fuzzy
 msgid "Check now"
-msgstr "پھر سے چیک کری"
+msgstr "اب چیک کریں"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:38
 #, php-format
@@ -6467,14 +6650,12 @@ msgid "There is currently no newer LimeSurvey version available."
 msgstr "فی الحال کوئی نئے LimeSurvey دستیاب ورژن"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:59
-#, fuzzy
 msgid "Site name:"
-msgstr "پہلا نا"
+msgstr "سائٹ کا نام :"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:68
-#, fuzzy
 msgid "Default template:"
-msgstr "ای میل میں ترمیم کریں سانچ"
+msgstr "طے شدہ سانچہ :"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:82
 #, fuzzy
@@ -6542,14 +6723,12 @@ msgid "Default site admin email:"
 msgstr "طے شدہ زبا"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:137
-#, fuzzy
 msgid "Administrator name:"
-msgstr "سروے ایڈمنسٹریٹ"
+msgstr "منتظم کا نام :"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:139
-#, fuzzy
 msgid "Email method:"
-msgstr "یاد دلانے والی ای میل "
+msgstr "ای میل کا طریقہ :"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:143
 msgid "PHP (default)"
@@ -6602,9 +6781,8 @@ msgid "Always"
 msgstr "ہمیش"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:184
-#, fuzzy
 msgid "Email batch size:"
-msgstr "حالت برق"
+msgstr "ای میل بیچ کا سائز :"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:191
 #, fuzzy
@@ -6675,14 +6853,12 @@ msgid "Show question number and/or question code"
 msgstr "اس سروے کی تفصیل چھپائی"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:365
-#, fuzzy
 msgid "Default site language:"
-msgstr "طے شدہ زبا"
+msgstr "پہلے سے مقرر شدہ سائٹ کی زبان :"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:381
-#, fuzzy
 msgid "Available languages:"
-msgstr "ہلاک لیبل سیٹ "
+msgstr "دستیاب زبانیں :"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:411
 msgid "XML-RPC interface enabled:"
@@ -6707,14 +6883,12 @@ msgid "LimeSurvey tried to delete the following file but couldn't succeed. You w
 msgstr "LimeSurvey مندرجہ ذیل فائل کو حذف کرنے کی کوشش کی لیکن کامیاب نہ ہو سکی. آپ فائل کو دور کرنے کے لئے ہے یا اور آپ کو لاگ ان کرنے کے قابل نہیں ہوں گے"
 
 #: /tmp/translationstatus_v2/application/views/installer/success_view.php:20
-#, fuzzy
 msgid "File path:"
-msgstr "تصویر "
+msgstr "فائل کا پاتھ :"
 
 #: /tmp/translationstatus_v2/application/views/installer/success_view.php:24
-#, fuzzy
 msgid "Administrator credentials"
-msgstr "سروے ایڈمنسٹریٹ"
+msgstr "منتظم اسناد"
 
 #: /tmp/translationstatus_v2/application/views/installer/header_view.php:33
 #: /tmp/translationstatus_v2/application/views/installer/header_view.php:39
@@ -6737,15 +6911,13 @@ msgstr "نوٹ : (*) سے نشان لگا دیا گیا ہے تمام شعبوں
 #: /tmp/translationstatus_v2/application/controllers/InstallerController.php:402
 #: /tmp/translationstatus_v2/application/controllers/InstallerController.php:475
 #: /tmp/translationstatus_v2/application/controllers/InstallerController.php:565
-#, fuzzy
 msgid "Database configuration"
-msgstr "اپ ڈیٹ سوا"
+msgstr "ڈیٹا بیس کی ترتیب"
 
 #: /tmp/translationstatus_v2/application/views/installer/dbconfig_view.php:28
 #: /tmp/translationstatus_v2/application/helpers/update/update_helper.php:62
-#, fuzzy
 msgid "Database type"
-msgstr "ڈیٹا بیس کا نا"
+msgstr "ڈیٹا بیس کی قسم"
 
 #: /tmp/translationstatus_v2/application/views/installer/dbconfig_view.php:29
 #, fuzzy
@@ -6753,28 +6925,25 @@ msgid "This is the database type."
 msgstr "اس میں کچھ مدد متن اس طرح ہے"
 
 #: /tmp/translationstatus_v2/application/views/installer/dbconfig_view.php:37
-#, fuzzy
 msgid "Database location"
-msgstr "تاریخ گزشتہ کارروائ"
+msgstr "ڈیٹا بیس محل وقوع"
 
 #: /tmp/translationstatus_v2/application/views/installer/dbconfig_view.php:38
 msgid "Set this to the IP/net location of your database server. In most cases \"localhost\" will work."
-msgstr "آپ کے ڈیٹا بیس سرور کا IP / نیول مقام پر اس کو مرتب کریں. \"localhost \" زیادہ تر صورتوں میں کام کریں گے."
+msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/installer/dbconfig_view.php:44
 #: /tmp/translationstatus_v2/application/helpers/update/update_helper.php:63
-#, fuzzy
 msgid "Database name"
-msgstr "ڈیٹا بیس کا نا"
+msgstr "ڈیٹا بیس کا نام"
 
 #: /tmp/translationstatus_v2/application/views/installer/dbconfig_view.php:45
 msgid "If you provide an existing database name make sure the database does not contain old tables of LimeSurvey."
 msgstr "اگر آپ کی فراہم کردہ ایک موجودہ ڈیٹا بیس کا نام یقین ہے کہ ڈیٹا بیس میں LimeSurvey کے پرانے ٹیبل شامل نہیں ہے."
 
 #: /tmp/translationstatus_v2/application/views/installer/dbconfig_view.php:51
-#, fuzzy
 msgid "Database user"
-msgstr "ڈیٹا بیس کا نا"
+msgstr "ڈیٹا بیس صارف"
 
 #: /tmp/translationstatus_v2/application/views/installer/dbconfig_view.php:52
 #, fuzzy
@@ -6782,9 +6951,8 @@ msgid "Your database server user name. In most cases \"root\" will work."
 msgstr "آپ پاس ورڈ فراہم نہیں کی"
 
 #: /tmp/translationstatus_v2/application/views/installer/dbconfig_view.php:58
-#, fuzzy
 msgid "Database password"
-msgstr "ڈیٹا بیس کا نا"
+msgstr "ڈیٹا بیس پاس ورڈ"
 
 #: /tmp/translationstatus_v2/application/views/installer/dbconfig_view.php:59
 #, fuzzy
@@ -6792,9 +6960,8 @@ msgid "Your database server password."
 msgstr "آپ پاس ورڈ فراہم نہیں کی"
 
 #: /tmp/translationstatus_v2/application/views/installer/dbconfig_view.php:65
-#, fuzzy
 msgid "Database prefix"
-msgstr "ڈیٹا بیس کا نا"
+msgstr "ڈیٹا بیس اپسرگ"
 
 #: /tmp/translationstatus_v2/application/views/installer/dbconfig_view.php:66
 msgid "If your database is shared, recommended prefix is \"lime_\" else you can leave this setting blank."
@@ -6812,12 +6979,11 @@ msgstr "پچھل"
 
 #: /tmp/translationstatus_v2/application/views/installer/license_view.php:34
 msgid "I accept"
-msgstr "مجھے منظور ہے"
+msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:11
-#, fuzzy
 msgid "Found"
-msgstr "گ"
+msgstr "ملا"
 
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:15
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1421
@@ -6825,9 +6991,8 @@ msgid "Not found"
 msgstr "نہیں مل"
 
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:20
-#, fuzzy
 msgid "Writable"
-msgstr "عنوا"
+msgstr "قابل تحریر"
 
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:24
 msgid "Unwritable"
@@ -6841,9 +7006,8 @@ msgstr "محفوظ ترتیبا"
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:56
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:98
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1051
-#, fuzzy
 msgid "Current"
-msgstr "موجودہ زبا"
+msgstr "موجودہ"
 
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:59
 #, fuzzy
@@ -6859,9 +7023,8 @@ msgid "PHP5 mbstring library"
 msgstr "PHP5 mbstring لائبریری"
 
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:70
-#, fuzzy
 msgid "file"
-msgstr "تصوی"
+msgstr "فائل"
 
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:71
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:76
@@ -6873,18 +7036,16 @@ msgstr "ملا اور تحریر"
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:75
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:80
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:85
-#, fuzzy
 msgid "directory"
-msgstr "ٹوکن لاگ ان کری"
+msgstr "ڈائرکٹری"
 
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:93
 #: /tmp/translationstatus_v2/application/views/installer/sidebar_view.php:29
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:25
 #: /tmp/translationstatus_v2/application/controllers/installer.php:569
 #: /tmp/translationstatus_v2/application/controllers/InstallerController.php:542
-#, fuzzy
 msgid "Optional settings"
-msgstr "اختیاری سوا"
+msgstr "اختیاری کی ترتیبات"
 
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:97
 msgid "Recommended"
@@ -6893,9 +7054,8 @@ msgstr "سفارش کی جاتی ہے"
 #: /tmp/translationstatus_v2/application/views/installer/sidebar_view.php:14
 #: /tmp/translationstatus_v2/application/controllers/installer.php:241
 #: /tmp/translationstatus_v2/application/controllers/InstallerController.php:141
-#, fuzzy
 msgid "Welcome"
-msgstr "صفحہ میں خوش آمدی"
+msgstr "خوش آمدید"
 
 #: /tmp/translationstatus_v2/application/views/installer/sidebar_view.php:17
 #: /tmp/translationstatus_v2/application/controllers/installer.php:264
@@ -6910,9 +7070,8 @@ msgid "Pre-installation check"
 msgstr "چیک پری کی تنصیب"
 
 #: /tmp/translationstatus_v2/application/views/installer/sidebar_view.php:23
-#, fuzzy
 msgid "Configuration"
-msgstr "پاس ورڈ تصدیق کریں "
+msgstr "کی ترتیب"
 
 #: /tmp/translationstatus_v2/application/views/installer/sidebar_view.php:26
 #: /tmp/translationstatus_v2/application/controllers/installer.php:497
@@ -6923,27 +7082,24 @@ msgstr "پاس ورڈ تصدیق کریں "
 #: /tmp/translationstatus_v2/application/controllers/InstallerController.php:329
 #: /tmp/translationstatus_v2/application/controllers/InstallerController.php:454
 #: /tmp/translationstatus_v2/application/controllers/InstallerController.php:455
-#, fuzzy
 msgid "Database settings"
-msgstr "محفوظ ترتیبا"
+msgstr "ڈیٹا بیس کی ترتیبات"
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:21
 msgid "You can leave these settings blank and change them later"
 msgstr "آپ ان کی ترتیبات کو خالی چھوڑ دیں اور ان کو بعد میں تبدیل کر سکتے ہیں"
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:28
-#, fuzzy
 msgid "Admin login name"
-msgstr "سروے ایڈمنسٹریٹ"
+msgstr "ایڈمن لاگ ان نام"
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:29
 msgid "This will be the userid by which admin of board will login."
 msgstr "اس صارف کی شناخت ہے بورڈ کے منتظم ہے جس کے ذریعے لاگ ان کریں گے ہو جائے گا."
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:34
-#, fuzzy
 msgid "Admin login password"
-msgstr "آپ پاس ورڈ فراہم نہیں کی"
+msgstr "ایڈمن لاگ ان پاس ورڈ"
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:35
 msgid "This will be the password of admin user."
@@ -6955,9 +7111,8 @@ msgid "Confirm your admin password"
 msgstr "پاس ورڈ تصدیق کریں "
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:45
-#, fuzzy
 msgid "Administrator name"
-msgstr "سروے ایڈمنسٹریٹ"
+msgstr "منتظم کا نام"
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:46
 msgid "This is the default name of the site administrator and used for system messages and contact options."
@@ -6974,18 +7129,16 @@ msgstr "اس سائٹ ایڈمنسٹریٹر کے پہلے سے طے شدہ ای
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:57
 #: /tmp/translationstatus_v2/application/helpers/update/update_helper.php:65
-#, fuzzy
 msgid "Site name"
-msgstr "پہلا نا"
+msgstr "سائٹ کا نام"
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:58
 msgid "This name will appear in the survey list overview and in the administration header."
 msgstr "سروے کی فہرست کے جائزہ میں یہ نام اور انتظامیہ کے ہیڈر میں دکھایا جائے گا."
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:63
-#, fuzzy
 msgid "Default language"
-msgstr "طے شدہ زبا"
+msgstr "پہلے سے طے شدہ زبان"
 
 #: /tmp/translationstatus_v2/application/views/installer/optconfig_view.php:64
 #, fuzzy
@@ -7005,9 +7158,8 @@ msgid "Basque"
 msgstr "باسک"
 
 #: /tmp/translationstatus_v2/application/helpers/surveytranslator_helper.php:106
-#, fuzzy
 msgid "Belarusian"
-msgstr "بلغاری"
+msgstr "بیلاروسی"
 
 #: /tmp/translationstatus_v2/application/helpers/surveytranslator_helper.php:113
 msgid "Bosnian"
@@ -7118,9 +7270,8 @@ msgid "Italian"
 msgstr "اطالو"
 
 #: /tmp/translationstatus_v2/application/helpers/surveytranslator_helper.php:302
-#, fuzzy
 msgid "Italian (formal)"
-msgstr "اطالوی فارم"
+msgstr "اطالوی (باضابطہ)"
 
 #: /tmp/translationstatus_v2/application/helpers/surveytranslator_helper.php:309
 msgid "Japanese"
@@ -7410,9 +7561,8 @@ msgstr "محفوظ کریں بٹن پر کلک کرنے کے بعد آپ اس ب
 #: /tmp/translationstatus_v2/application/libraries/Group_format.php:275
 #: /tmp/translationstatus_v2/application/libraries/Question_format.php:303
 #: /tmp/translationstatus_v2/application/libraries/Survey_format.php:146
-#, fuzzy
 msgid "Thank you!"
-msgstr "آپ کا شکریہ"
+msgstr "آپ کا شکریہ!"
 
 #: /tmp/translationstatus_v2/application/helpers/replacements_helper.php:669
 msgid "You have completed answering the questions in this survey."
@@ -7428,9 +7578,8 @@ msgid "Not Selected"
 msgstr "نہیں منتخ"
 
 #: /tmp/translationstatus_v2/application/helpers/export_helper.php:871
-#, fuzzy
 msgid "End"
-msgstr "او"
+msgstr "اختتام"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:56
 #, fuzzy
@@ -7438,24 +7587,20 @@ msgid "Arrays"
 msgstr "لڑ"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:57
-#, fuzzy
 msgid "Mask questions"
-msgstr "سوال میں ترمیم کری"
+msgstr "ماسک سوالات"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:58
-#, fuzzy
 msgid "Single choice questions"
-msgstr "کیا سوال نہیں کاپ"
+msgstr "سنگل انتخاب سوالات"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:59
-#, fuzzy
 msgid "Multiple choice questions"
-msgstr "ایک سے زیادہ اختیارا"
+msgstr "ایک سے زیادہ پسند سوالات"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:60
-#, fuzzy
 msgid "Text questions"
-msgstr "سوال میں ترمیم کری"
+msgstr "متن سوالات"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:64
 #, fuzzy
@@ -7513,9 +7658,8 @@ msgid "List (Radio)"
 msgstr "فہرست (ریڈیو"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:142
-#, fuzzy
 msgid "Multiple choice"
-msgstr "ایک سے زیادہ مختصر مت"
+msgstr "ایک سے زیادہ پسند"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:148
 msgid "Numerical Input"
@@ -7553,9 +7697,8 @@ msgid "Huge Free Text"
 msgstr "بھاری مفت مت"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:196
-#, fuzzy
 msgid "Text display"
-msgstr "ریکارڈز ظاہر "
+msgstr "متن ڈسپلے"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:202
 msgid "Yes/No"
@@ -7566,30 +7709,25 @@ msgid "List (Dropdown)"
 msgstr "فہرست (ڈراپ ڈاؤن"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:214
-#, fuzzy
 msgid "Array (Numbers)"
-msgstr "لڑی (لچکدار لیبل"
+msgstr "سرنی (نمبرز)"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:220
-#, fuzzy
 msgid "Array (Texts)"
-msgstr "لڑی (لچکدار لیبل"
+msgstr "سرنی (سرخیوں کی شکل میں)"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:226
-#, fuzzy
 msgid "File upload"
-msgstr "ٹوکن فائل اپ لو"
+msgstr "فائل اپ لوڈ"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:232
-#, fuzzy
 msgid "Equation"
-msgstr "سوال میں ترمیم کری"
+msgstr "مساوات"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:407
 #: /tmp/translationstatus_v2/application/controllers/admin/surveyaction.php:899
-#, fuzzy
 msgid "Expired"
-msgstr "ختم ہونے کی تاریخ "
+msgstr "کی میعاد ختم ہو"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:412
 #: /tmp/translationstatus_v2/application/controllers/admin/surveyaction.php:930
@@ -7782,19 +7920,16 @@ msgid "Response ID"
 msgstr "دیکھیے جوا"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:2285
-#, fuzzy
 msgid "Date submitted"
-msgstr "تاریخ عر"
+msgstr "پیش تاریخ"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:2293
-#, fuzzy
 msgid "Last page"
-msgstr "آخری نا"
+msgstr "آخری صفحہ"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:2301
-#, fuzzy
 msgid "Start language"
-msgstr "شروع زبا"
+msgstr "زبان شروع کریں"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:2338
 #, fuzzy
@@ -7836,9 +7971,8 @@ msgid "Total time"
 msgstr "کل "
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:2893
-#, fuzzy
 msgid "Group time"
-msgstr "گروپ کا نا"
+msgstr "گروپ وقت"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:2900
 #, fuzzy
@@ -7874,9 +8008,8 @@ msgstr "سوال صفح"
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3947
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3955
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4144
-#, fuzzy
 msgid "Display"
-msgstr "ظاہر ٹوک"
+msgstr "دکھائیں"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3239
 #, fuzzy
@@ -7892,9 +8025,8 @@ msgid "Set the percentage width of the answer column (1-100)"
 msgstr "سیٹ کا جواب کالم (1-100) کا فی صد کی چوڑائ"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3250
-#, fuzzy
 msgid "Answer width"
-msgstr "جواب کو"
+msgstr "جواب چوڑائی"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3254
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3262
@@ -7946,9 +8078,8 @@ msgid "Filter the available answers by this value"
 msgstr "فلٹر اس کی قدر کی طرف سے دستیاب جوابا"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3291
-#, fuzzy
 msgid "Code filter"
-msgstr "بند مدی"
+msgstr "کوڈ فلٹر"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3301
 msgid "The answer options will be distributed across the number of columns set here"
@@ -8000,7 +8131,7 @@ msgstr "سابقہ | ڈراپ ڈاؤن فہرست کے لئے لاحق"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3346
 msgid "Dropdown prefix/suffix"
-msgstr "ڈراپڈاؤن اپسرگ / لاحقہ"
+msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3353
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
@@ -8078,9 +8209,8 @@ msgstr "آٹو چیک خصوصی اختیار ہے اگر تمام دوسروں 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3510
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3520
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3528
-#, fuzzy
 msgid "Location"
-msgstr "لڑائ"
+msgstr "مقام"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3411
 #, fuzzy
@@ -8124,9 +8254,8 @@ msgstr "ٹیسٹ اس سرو"
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3471
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:23
 #: /tmp/translationstatus_v2/application/models/Survey_permissions.php:67
-#, fuzzy
 msgid "Statistics"
-msgstr "فوری اعداد و شما"
+msgstr "اعداد و شمار"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3453
 #, fuzzy
@@ -8208,9 +8337,8 @@ msgid "Default coordinates of the map when the page first loads. Format: latitud
 msgstr "پہلے سے طے شدہ نقشہ کے نقاط جب صفحے کی پہلی بوجھ. وضع : طول بلد [خالی جگہ] longtitude"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3524
-#, fuzzy
 msgid "Default position"
-msgstr "طے شدہ زبا"
+msgstr "ڈیفالٹ کی پوزیشن"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3532
 msgid "Map zoom level"
@@ -8334,9 +8462,8 @@ msgid "Use checkbox layout"
 msgstr "چیک اعداد و شمار"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3664
-#, fuzzy
 msgid "Checkbox layout"
-msgstr "چیک اعداد و شمار"
+msgstr "کے چیک باکس کو ترتیب"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3674
 #, fuzzy
@@ -8375,14 +8502,12 @@ msgid "Numbers only"
 msgstr "تعداد سے بھی ک"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3718
-#, fuzzy
 msgid "Rows"
-msgstr "براؤز کری"
+msgstr "صفیں"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3719
-#, fuzzy
 msgid "Columns"
-msgstr "کالم انتخاب کری"
+msgstr "کالم"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3720
 msgid "Both rows and columns"
@@ -8452,9 +8577,8 @@ msgid "Add a prefix to the answer field"
 msgstr "جواب علاقے میں ایک سابقہ شامل کریں"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3801
-#, fuzzy
 msgid "Answer prefix"
-msgstr "جواب پرائیویس"
+msgstr "جواب اپسرگ"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3811
 #, fuzzy
@@ -8566,9 +8690,8 @@ msgid "Add a suffix to the answer field"
 msgstr "جواب علاقے میں ایک لاحقہ اضافہ"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3943
-#, fuzzy
 msgid "Answer suffix"
-msgstr "جواب کو"
+msgstr "جواب لاحقہ"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3950
 msgid "Width of text input box"
@@ -8595,9 +8718,8 @@ msgid "Ordinal"
 msgstr "آرڈینل"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3972
-#, fuzzy
 msgid "Scale"
-msgstr "پہلا نا"
+msgstr "پیمانے"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3974
 msgid "Set a specific SPSS export scale type for this question"
@@ -8624,18 +8746,16 @@ msgstr "SPSS برآمد پیمانے کی قسم"
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4103
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4111
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4120
-#, fuzzy
 msgid "Timer"
-msgstr "عنوا"
+msgstr "ٹائمر"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3983
 msgid "Limit time to answer question (in seconds)"
 msgstr "حد یہ وقت سوال (سیکنڈ میں) کا جواب دینا"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3984
-#, fuzzy
 msgid "Time limit"
-msgstr "وقت پیش"
+msgstr "وقت کی حد"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3991
 msgid "Warn and move on"
@@ -8803,19 +8923,16 @@ msgid "Minute step interval"
 msgstr "منٹ قدم وقفہ"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4147
-#, fuzzy
 msgid "Short names"
-msgstr "سیٹ کا نا"
+msgstr "اصلی نام"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4148
-#, fuzzy
 msgid "Full names"
-msgstr "مکمل جوابا"
+msgstr "مکمل نام"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4149
-#, fuzzy
 msgid "Numbers"
-msgstr "تعداد سے بھی ک"
+msgstr "نمبر"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4151
 msgid "Change the display style of the month when using select boxes"
@@ -8828,9 +8945,8 @@ msgstr "ریکارڈز ظاہر "
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4156
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4167
-#, fuzzy
 msgid "File metadata"
-msgstr "اپ ڈیٹ میں ناکامی"
+msgstr "فائل میٹا ڈیٹا"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4162
 msgid "Is the participant required to give a title to the uploaded file?"
@@ -8902,9 +9018,8 @@ msgid "SMTP debug output:"
 msgstr "SMTP ڈیبگ آؤٹ پٹ :"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:5553
-#, fuzzy
 msgid "Token code"
-msgstr "ٹوکن کنٹرو"
+msgstr "ٹوکن کوڈ"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:5554
 #, fuzzy
@@ -9009,9 +9124,8 @@ msgstr "آپ کی اجازت سے ایک سوال درآمد کرنے کی اج�
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:7127
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:7132
-#, fuzzy
 msgid "Security alert"
-msgstr "سیکیورٹی الر"
+msgstr "حفاظتی انتباہ"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:7127
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:7132
@@ -9240,17 +9354,15 @@ msgid "Switch to closed-access mode"
 msgstr "بند رسائی موڈ میں سوئ"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:468
-#, fuzzy
 msgid "Page"
-msgstr "لوڈ صفح"
+msgstr "صفحہ"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:490
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:181
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:488
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:606
-#, fuzzy
 msgid "Quick statistics"
-msgstr "فوری اعداد و شما"
+msgstr "فوری اعداد و شمار"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:800
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:819
@@ -9459,9 +9571,8 @@ msgstr "حساب کتاب کے لئے کافی نہیں اقدا"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:2101
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:2316
-#, fuzzy
 msgid "Comments"
-msgstr "تبصر"
+msgstr "تبصرہ"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:2338
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:2357
@@ -9512,9 +9623,8 @@ msgid "You have completed %s%% of this survey"
 msgstr "اس سروے کی تفصیل چھپائی"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:128
-#, fuzzy
 msgid "Absolute value"
-msgstr "مرحلہ قیمت"
+msgstr "مطلق قیمت"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:129
 msgid "Arc cosine"
@@ -9545,9 +9655,8 @@ msgid "Returns true(1) if it is a valid date in gregorian calendar"
 msgstr "سچ واپسی (1) اگر یہ جار جیائی کیلنڈر میں ایک درست تاریخ ہے"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:136
-#, fuzzy
 msgid "Cosine"
-msgstr "بند کری"
+msgstr "ہم جیب"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:137
 #, fuzzy
@@ -9709,18 +9818,16 @@ msgid "Strip whitespace (or other characters) from the end of a string"
 msgstr "ایک تار کے ایک سرے سے پٹی سفید فاصلہ (یا دوسرے حروف)"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:175
-#, fuzzy
 msgid "Sine"
-msgstr "سلائیڈر"
+msgstr "جیب"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:176
 msgid "Return a formatted string"
 msgstr "ایک فارمیٹ سٹرنگ واپس"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:177
-#, fuzzy
 msgid "Square root"
-msgstr "سروے کوٹ"
+msgstr "ورگمول"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:178
 msgid "Calculate the Sample Standard Deviation for the list of numbers"
@@ -9798,9 +9905,8 @@ msgid "Calculate the sum of values in an array"
 msgstr "ایک سرنی میں اقدار کی رقم کا حساب لگائیں"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:196
-#, fuzzy
 msgid "Tangent"
-msgstr "حد "
+msgstr "مماس"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:197
 msgid "Return current UNIX timestamp"
@@ -9885,9 +9991,8 @@ msgid "Please confirm access to survey by answering the security question below 
 msgstr "رسائی سلامتی کے ذیل میں سوال کے جواب کی طرف سے سروے کے لئے کلک جاری کی توثیق کریں"
 
 #: /tmp/translationstatus_v2/application/helpers/frontend_helper.php:1481
-#, fuzzy
 msgid "Security question:"
-msgstr "سلامتی کا سوا"
+msgstr "سیکورٹی سوال :"
 
 #: /tmp/translationstatus_v2/application/helpers/frontend_helper.php:1527
 #: /tmp/translationstatus_v2/application/helpers/frontend_helper.php:1601
@@ -9921,9 +10026,8 @@ msgid "Please confirm the token by answering the security question below and cli
 msgstr "براہ مہربانی حفاظت کے ذیل میں سوال کے جواب کی طرف سے نشانی اور تصدیق کریں پر کلک کریں رہیں"
 
 #: /tmp/translationstatus_v2/application/helpers/frontend_helper.php:1723
-#, fuzzy
 msgid "Token:"
-msgstr "اضافہ ٹوک"
+msgstr "ٹوکن :"
 
 #: /tmp/translationstatus_v2/application/helpers/frontend_helper.php:1842
 msgid "This survey does not yet have any questions and cannot be tested or completed."
@@ -9975,9 +10079,8 @@ msgid "Please verify the following information before continuing with the databa
 msgstr "ڈیٹا بیس کی اپ گریڈ کے ساتھ جاری رکھنے سے پہلے براہ مہربانی مندرجہ ذیل معلومات کی تصدیق :"
 
 #: /tmp/translationstatus_v2/application/helpers/update/update_helper.php:64
-#, fuzzy
 msgid "Table prefix"
-msgstr "جواب پرائیویس"
+msgstr "ٹیبل اپسرگ"
 
 #: /tmp/translationstatus_v2/application/helpers/update/update_helper.php:66
 #, fuzzy
@@ -10068,7 +10171,7 @@ msgstr "/ اس سوال کے جواب میں شامل کری"
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:1097
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:1255
 msgid "*"
-msgstr "*"
+msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:918
 msgid "This question is mandatory"
@@ -10174,23 +10277,20 @@ msgid "Month"
 msgstr "مہین"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1907
-#, fuzzy
 msgid "January"
-msgstr "جنور"
+msgstr "جنوری"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1908
 msgid "February"
 msgstr "فروری"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1909
-#, fuzzy
 msgid "March"
-msgstr "مار"
+msgstr "مارچ"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1910
-#, fuzzy
 msgid "April"
-msgstr "اپری"
+msgstr "اپریل"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1911
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1935
@@ -10198,38 +10298,32 @@ msgid "May"
 msgstr "مئ"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1912
-#, fuzzy
 msgid "June"
-msgstr "جو"
+msgstr "جون"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1913
-#, fuzzy
 msgid "July"
-msgstr "جولائ"
+msgstr "جولائی"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1914
-#, fuzzy
 msgid "August"
-msgstr "اگس"
+msgstr "اگست"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1915
 msgid "September"
 msgstr "ستمبر"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1916
-#, fuzzy
 msgid "October"
-msgstr "دیگ"
+msgstr "اکتوبر"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1917
-#, fuzzy
 msgid "November"
-msgstr "کبھی نہی"
+msgstr "نومبر"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1918
-#, fuzzy
 msgid "December"
-msgstr "ک"
+msgstr "دسمبر"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1931
 msgid "Jan"
@@ -10280,14 +10374,12 @@ msgid "Year"
 msgstr "سا"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:2032
-#, fuzzy
 msgid "Hour"
-msgstr "ی"
+msgstr "قیامت"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:2049
-#, fuzzy
 msgid "Minute"
-msgstr "کم از ک"
+msgstr "منٹ"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:2117
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:2126
@@ -10539,9 +10631,8 @@ msgstr "کیا آپ واقعی اس سوال کوڈ پنرجیویت کرنا چ
 
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Controller.php:444
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Action.php:446
-#, fuzzy
 msgid "Straight"
-msgstr "سیٹ صارف کے حقو"
+msgstr "براہ راست"
 
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Controller.php:447
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Action.php:449
@@ -10733,9 +10824,8 @@ msgstr "اختیاری ترتیبات جو آپ نے سر شروع دے"
 #: /tmp/translationstatus_v2/application/controllers/installer.php:856
 #: /tmp/translationstatus_v2/application/controllers/installer.php:943
 #: /tmp/translationstatus_v2/application/controllers/installer.php:979
-#, fuzzy
 msgid "Reason"
-msgstr "مکمل جوابا"
+msgstr "کی وجہ"
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:778
 #: /tmp/translationstatus_v2/application/controllers/admin/useraction.php:300
@@ -10791,9 +10881,8 @@ msgid "You will be redirected in about 5 secs. If not, click "
 msgstr "آپ کے بارے میں 5 سیکنڈ میں دوبارہ ہدایت کی جائے گی. اگر نہیں ، تو کلک کریں"
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:1193
-#, fuzzy
 msgid "here"
-msgstr "دیگ"
+msgstr "یہاں"
 
 #: /tmp/translationstatus_v2/application/controllers/printanswers.php:107
 msgid "ERROR"
@@ -10828,9 +10917,8 @@ msgstr "سروے (آئی ڈی) کے نا"
 
 #: /tmp/translationstatus_v2/application/controllers/printanswers.php:233
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:973
-#, fuzzy
 msgid "Your answer"
-msgstr "آپ کا جوا"
+msgstr "آپ کا جواب"
 
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:141
 #, php-format
@@ -10878,9 +10966,8 @@ msgid "Sorry, only %s files can be uploaded for this question!"
 msgstr "Set conditions for this question"
 
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:274
-#, fuzzy
 msgid "Uploading"
-msgstr "اپ لوڈ کری"
+msgstr "اپ لوڈ ہو"
 
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:275
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:303
@@ -11552,14 +11639,12 @@ msgid "The new question group/question order was successfully saved."
 msgstr "ٹوکن کی انٹری کو کامیابی سے اپ ڈیٹ کیا گیا"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:137
-#, fuzzy
 msgid "Database"
-msgstr "ڈیٹا بیس کا نا"
+msgstr "ڈیٹا بیس"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:137
-#, fuzzy
 msgid "table"
-msgstr "مر"
+msgstr "ٹیبل"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:151
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:1809
@@ -11594,9 +11679,8 @@ msgstr "ی"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:323
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:351
-#, fuzzy
 msgid "Answer was"
-msgstr "جواب کو"
+msgstr "جواب تھا"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:327
 #, fuzzy
@@ -11633,9 +11717,8 @@ msgstr "نہیں منتخ"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:367
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:395
-#, fuzzy
 msgid "is"
-msgstr "فہرس"
+msgstr "ہے"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:371
 msgid "is NOT"
@@ -11685,9 +11768,8 @@ msgid "ID:"
 msgstr "آئی ڈ"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:645
-#, fuzzy
 msgid "Question code:"
-msgstr "سوال کو"
+msgstr "سوال کوڈ :"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:702
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:703
@@ -11824,9 +11906,8 @@ msgstr "صرف سوال میں اشیاء آپ کو نہیں منتخب کیا %
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:413
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:1643
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:1777
-#, fuzzy
 msgid "Browse responses"
-msgstr "براؤز کے جوابا"
+msgstr "ردعمل براؤز کریں"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:43
 msgid "You have not selected a survey to browse."
@@ -11843,9 +11924,8 @@ msgstr "ٹوکن کی شناخ"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:168
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:347
-#, fuzzy
 msgid "Submission date"
-msgstr "مقامی حضور عاجزی و فرمانبردار"
+msgstr "جمع کرانے کی تاریخ"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:317
 msgid "Showing Filtered Results"
@@ -11867,23 +11947,20 @@ msgid "Download marked files"
 msgstr "کل درآمد کی فائلی"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:658
-#, fuzzy
 msgid "Time statistics"
-msgstr "کوائف کے اعدادوشما"
+msgstr "وقت کے اعداد و شمار"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:852
-#, fuzzy
 msgid "Interview time"
-msgstr "سرور کا وقت "
+msgstr "انٹرویو وقت"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:866
 msgid "Average interview time: "
 msgstr "اوسط انٹرویو کا وقت :"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:894
-#, fuzzy
 msgid "Median: "
-msgstr "اوسط قیم"
+msgstr ": میڈین"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:901
 #, fuzzy
@@ -12229,9 +12306,8 @@ msgstr "ڈپلیکیٹ ریکارڈ نکال دی"
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:2089
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:2101
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:2111
-#, fuzzy
 msgid "List"
-msgstr "ح"
+msgstr "فہرست"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1771
 msgid "Can't bind to the LDAP directory"
@@ -12288,9 +12364,8 @@ msgid "Mandatory fields:"
 msgstr "عام موضوعا"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:2132
-#, fuzzy
 msgid "Optional fields:"
-msgstr "اختیاری سوا"
+msgstr "اختیاری خانوں :"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:2162
 #, fuzzy
@@ -12303,9 +12378,8 @@ msgid "Character set of the file:"
 msgstr "فائل کا کریکٹر سیٹ "
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:2164
-#, fuzzy
 msgid "Separator used:"
-msgstr "Seperator کا استعمال کیا ہے :"
+msgstr "جداکار کا استعمال کیا ہے :"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:2169
 msgid "Duplicates are determined by:"
@@ -12369,9 +12443,8 @@ msgid "A token table has been created for this survey and the old tokens were im
 msgstr "ایک ٹوکن کی میز ہے اس سروے کے لئے پیدا کیا گیا ہے اور پرانی ٹوکن برآمد کیا گیا"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:253
-#, fuzzy
 msgid "General filters"
-msgstr "پیدا ٹوک"
+msgstr "جنرل فلٹر"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:258
 msgid "You do not have the GD Library installed. Showing charts requires the GD library to function properly."
@@ -12387,9 +12460,8 @@ msgid "You do not have the Freetype Library installed. Showing charts requires t
 msgstr "آپ کے پاس نہیں Freetype لائبریری نصب کرتے ہیں. چارٹ بھی) کی ضرورت ہوتی ہے Freetype لائبریری مناسب طریقے سے کام کرنے کی"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:290
-#, fuzzy
 msgid "Data selection"
-msgstr "تاریخ گزشتہ کارروائ"
+msgstr "ڈیٹا انتخاب"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:291
 msgid "Include:"
@@ -12522,9 +12594,8 @@ msgid "Edit permissions"
 msgstr "ای میل میں ترمیم کریں سانچ"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:207
-#, fuzzy
 msgid "User"
-msgstr "صارف شامل کری"
+msgstr "یوزر کے"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:210
 msgid "Please select a user first"
@@ -12594,9 +12665,8 @@ msgid "Permission"
 msgstr "فارس"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:474
-#, fuzzy
 msgid "Create"
-msgstr "سروے بنائی"
+msgstr "تخلیق کریں"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:475
 #, fuzzy
@@ -12852,9 +12922,8 @@ msgid "System overview"
 msgstr "نظام جائز"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/globalsettings.php:230
-#, fuzzy
 msgid "Users"
-msgstr "صارف گرو"
+msgstr "صارفین"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/globalsettings.php:236
 #, fuzzy
@@ -12979,9 +13048,8 @@ msgid "Demo Mode Only: Uploading file is disabled in this system."
 msgstr "ڈیمو موڈ صرف : اپ لوڈ فائل اس کے نظام میں غیر فعال کر دیا ہے"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/surveyaction.php:887
-#, fuzzy
 msgid "Closed"
-msgstr "بند مدی"
+msgstr "بند کر دیا گیا"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/surveyaction.php:891
 msgid "Open"
@@ -13433,19 +13501,16 @@ msgid "This will replace the existing text. Continue?"
 msgstr "یہ موجودہ متن کی جگہ لے گا. جاری رکھیں"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:101
-#, fuzzy
 msgid "Invitation"
-msgstr "دعوت نامے ارسال کری"
+msgstr "دعوت نامہ"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:102
-#, fuzzy
 msgid "Reminder"
-msgstr "یاددہانی بھیجی"
+msgstr "یاد دہانی"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:103
-#, fuzzy
 msgid "Confirmation"
-msgstr "توثیقی ای می"
+msgstr "کی توثیق"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:105
 #, fuzzy
@@ -13509,9 +13574,8 @@ msgstr "اس نصیحت کو ای میل "
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:157
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:159
-#, fuzzy
 msgid "Email reminder:"
-msgstr "یاد دلانے والی ای میل "
+msgstr "ای میل یاددہانی :"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:169
 msgid "No confirmation emails will be sent. To send emails see Survey properties."
@@ -13570,14 +13634,12 @@ msgid "Group description"
 msgstr "یو آر ایل کی وضاحت "
 
 #: /tmp/translationstatus_v2/application/controllers/admin/translate.php:733
-#, fuzzy
 msgid "Answer options"
-msgstr "جواب پرائیویس"
+msgstr "جواب اختیارات"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/translate.php:762
-#, fuzzy
 msgid "Invitation email"
-msgstr "دعوت نامہ ای میل "
+msgstr "ای میل"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/translate.php:820
 #, fuzzy
@@ -13703,19 +13765,16 @@ msgid "Group of checkboxes"
 msgstr "چیک باکس کے گرو"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:927
-#, fuzzy
 msgid "Single checkbox"
-msgstr "سنگل کی رائ"
+msgstr "سنگل کے ساتھ دیئے گئے چیک باکس"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:930
-#, fuzzy
 msgid "checked"
-msgstr "چی"
+msgstr "جانچ پڑتال"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:931
-#, fuzzy
 msgid "not checked"
-msgstr "چی"
+msgstr "نہیں کی جانچ پڑتال"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1034
 msgid "Before"
@@ -13791,18 +13850,16 @@ msgid "No questions selected"
 msgstr "سوال انتخا"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1598
-#, fuzzy
 msgid "Check all"
-msgstr "چیک اعداد و شما"
+msgstr "تمام چیک کریں"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1598
 msgid "Uncheck all"
 msgstr "غیر منتخب کریں تمام"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1598
-#, fuzzy
 msgid "selected"
-msgstr "حذ"
+msgstr "منتخب"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1601
 #, fuzzy
@@ -13845,9 +13902,8 @@ msgstr "مشاہدہ یہ سوا"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1727
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1862
-#, fuzzy
 msgid "Token fields"
-msgstr "ٹوکن شعبوں کا انتخاب کری"
+msgstr "ٹوکن شعبوں"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1784
 msgid "Comparison operator"
@@ -13968,9 +14024,8 @@ msgid "Target survey ID:"
 msgstr "ٹارگٹ سروے کی شناخ"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:500
-#, fuzzy
 msgid "Source table:"
-msgstr "سروے کی فہرست کا صفح"
+msgstr "ماخذ ٹیبل :"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:508
 msgid "Import also timings (if exist):"
@@ -14359,7 +14414,7 @@ msgstr "ٹوکن کی میز تخلیق سمیت سروے ترتیبات دیک�
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:30
 #: /tmp/translationstatus_v2/application/models/Survey_permissions.php:74
 msgid "Permission to create/update/delete/import/export token entries"
-msgstr "/ پیدا / اپ ڈیٹ کو حذف / / ٹوکن اندراجات برآمد درآمد کی اجازت"
+msgstr ""
 
 #: /tmp/translationstatus_v2/application/models/survey_permissions_model.php:31
 #: /tmp/translationstatus_v2/application/models/Survey_permissions.php:75
