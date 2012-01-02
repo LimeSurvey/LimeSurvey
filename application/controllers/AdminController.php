@@ -80,6 +80,11 @@ class AdminController extends LSYii_Controller
 	 */
 	protected function _sessioncontrol()
 	{
+        // From personal settings
+        if (CHttpRequest::getPost('action') == 'savepersonalsettings') {
+            Yii::app()->session['adminlang'] = CHttpRequest::getPost('lang');
+        }
+
 		if (!Yii::app()->session["adminlang"] || Yii::app()->session["adminlang"]=='')
 			Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
 
@@ -230,7 +235,7 @@ class AdminController extends LSYii_Controller
 	 */
 	public function _getAdminHeader($meta = false, $return = false)
 	{
-		if (!Yii::app()->session["adminlang"] || Yii::app()->session["adminlang"]=='')
+		if (empty(Yii::app()->session["adminlang"]))
 			Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
 
 		$data = array();

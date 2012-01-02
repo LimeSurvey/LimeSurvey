@@ -570,10 +570,19 @@ class UserAction extends Survey_Common_Action
     function personalsettings()
     {
         $clang = Yii::app()->lang;
+
+        // Save Data
         if (CHttpRequest::getPost("action")) {
-            $aData = array('lang' => CHttpRequest::getPost('lang'), 'dateformat' => CHttpRequest::getPost('dateformat'), 'htmleditormode' => CHttpRequest::getPost('htmleditormode'),
-                          'questionselectormode' => CHttpRequest::getPost('questionselectormode'), 'templateeditormode' => CHttpRequest::getPost('templateeditormode'));
-            $uresult = User::model()->update(Yii::app()->session['loginID'], $aData);
+            $aData = array(
+                'lang' => CHttpRequest::getPost('lang'),
+                'dateformat' => CHttpRequest::getPost('dateformat'),
+                'htmleditormode' => CHttpRequest::getPost('htmleditormode'),
+                'questionselectormode' => CHttpRequest::getPost('questionselectormode'),
+                'templateeditormode' => CHttpRequest::getPost('templateeditormode')
+            );
+
+            $uresult = User::model()->updateByPk(Yii::app()->session['loginID'], $aData);
+
             Yii::app()->session['adminlang'] = CHttpRequest::getPost('lang');
             Yii::app()->session['htmleditormode'] = CHttpRequest::getPost('htmleditormode');
             Yii::app()->session['questionselectormode'] = CHttpRequest::getPost('questionselectormode');
@@ -581,22 +590,26 @@ class UserAction extends Survey_Common_Action
             Yii::app()->session['dateformat'] = CHttpRequest::getPost('dateformat');
             Yii::app()->session['flashmessage'] = $clang->gT("Your personal settings were successfully saved.");
         }
-        $query = User::model()->getSomeRecords(array("lang"), array("uid" => $this->session->userdata("loginID")));
-        $aData['sSavedLanguage'] = reset($query->read());
 
+        // Get user lang
+        $user = User::model()->findByPk(Yii::app()->session['loginID']);
+        $aData['sSavedLanguage'] = $user->lang;
+
+        // Render personal settings view
         $this->_renderWrappedTemplate('personalsettings', $aData);
     }
 
     private function _getUserNameFromUid($uid)
     {
         $uid = sanitize_int($uid);
-        $result = User::model()->findAllByAttributes(array('uid' => $uid));
+        $result = User::model()->findByPk($uid);
 
-        if (count($result) > 0) {
-            foreach ($result->read() as $rows)
-            {
-                return $rows['users_name'];
-            }
+        if (!empty($result)) {
+            return $result->users_name;
+        }
+        else
+        {
+            return false;
         }
     }
 
