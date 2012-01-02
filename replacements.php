@@ -608,7 +608,8 @@ function templatereplace($line, $replacements=array(), $anonymized=false, $quest
 	$coreReplacements['SURVEYCONTACT'] = $_surveycontact;
 	$coreReplacements['SURVEYDESCRIPTION'] = (isset($thissurvey['description']) ? $thissurvey['description'] : '');
 	$coreReplacements['SURVEYFORMAT'] = $surveyformat;  // global
-	$coreReplacements['SURVEYLANGAGE'] = $clang->langcode;
+	$coreReplacements['SURVEYLANGAGE'] = $clang->langcode;  // this misspelling is kept for legacy reasons
+	$coreReplacements['SURVEYLANGUAGE'] = $clang->langcode;
 	$coreReplacements['SURVEYLIST'] = $surveylist['list'];  // global
 	$coreReplacements['SURVEYLISTHEADING'] =  $surveylist['listheading'];   // global
 	$coreReplacements['SURVEYNAME'] = $thissurvey['name'];  // global
