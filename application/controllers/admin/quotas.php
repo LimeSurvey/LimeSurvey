@@ -24,57 +24,30 @@
 class quotas extends Survey_Common_Action
 {
 
-    /**
-     * Base function
-     *
-     * @access public
-     * @return void
-     */
-    public function run($subaction = 'index', $surveyid = 0)
+    function __construct($controller, $id)
     {
-        if (!bHasSurveyPermission($surveyid, 'quotas', 'read'))
-        {
-            die();
-        }
+        parent::__construct($controller, $id);
 
         // Load helpers
         Yii::app()->loadHelper('surveytranslator');
         // Sanitize/get globals/variables
         $_POST['quotamax'] = sanitize_int(CHttpRequest::getPost('quotamax'));
+
         if (empty($_POST['autoload_url']))
         {
             $_POST['autoload_url'] = 0;
         }
+
         if (empty($_POST['quota_limit']) || !is_numeric(CHttpRequest::getPost('quota_limit')) || CHttpRequest::getPost('quota_limit') < 0)
         {
             $_POST['quota_limit'] = 0;
-        }
-
-        switch ($subaction)
-        {
-            case 'index' :
-                $this->route('index', array('surveyid', 'quickreport'));
-                break;
-            case 'insertquota' :
-            case 'modifyquota' :
-            case 'insertquotaanswer' :
-            case 'quota_delans' :
-            case 'quota_delquota' :
-            case 'quota_editquota' :
-            case 'new_quota' :
-                $this->route($subaction, array('surveyid'));
-                break;
-            case 'new_answer' :
-            case 'new_answer_two' :
-                $this->route('new_answer', array('surveyid', 'subaction'));
-                break;
         }
     }
 
     private function _getData($iSurveyId)
     {
         // Set the variables in an array
-        $aData['iSurveyId'] = $iSurveyId;
+        $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
         $aData['clang'] = $this->getController()->lang;
         $aData['aLangs'] = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
         $aData['sBaseLang'] = Survey::model()->findByPk($iSurveyId)->language;
@@ -94,40 +67,20 @@ class quotas extends Survey_Common_Action
         }
     }
 
-    /**
-     * Pre Quota
-     *
-     * @access publlic
-     * @param int $iSurveyId
-     * @return void
-     */
-    public function _displayHeader($iSurveyId)
-    {
-        // Insert scripts and styles
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . '/jquery/jquery.tablesorter.min.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . '/quotas.js');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . 'admin/default/superfish.css');
-
-        // Show the common head of the page
-        $this->getController()->_getAdminHeader();
-        $this->getController()->_showadminmenu();
-        $this->_surveybar($iSurveyId);
-    }
-
     function _redirectToIndex($iSurveyId)
     {
-        $this->getController()->redirect($this->getController()->createUrl("/admin/quotas/surveyid/$iSurveyId"));
+        $this->getController()->redirect($this->getController()->createUrl("/admin/quotas/sa/index/surveyid/$iSurveyId"));
     }
 
-    function index($iSurveyId, $bQuickReport = false)
+    function index($iSurveyId, $quickreport = false)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $aData = $this->_getData($iSurveyId);
+        $aViewUrls = array();
 
-        if ($bQuickReport == false)
+        if ($quickreport == false)
         {
-            $this->_displayHeader($iSurveyId);
-            $this->getController()->render("/admin/quotas/viewquotas_view", $aData);
+            $aViewUrls[] = 'viewquotas_view';
         }
 
         $clang = $aData['clang'];
@@ -146,6 +99,7 @@ class quotas extends Survey_Common_Action
         //if there are quotas let's proceed
         if (count($aResult) > 0)
         {
+            $aViewUrls['output'] = '';
             //loop through all quotas
             foreach ($aResult as $aQuotaListing)
             {
@@ -155,7 +109,7 @@ class quotas extends Survey_Common_Action
                 $totalcompleted = $totalcompleted + $completed;
                 $csvoutput[] = $aQuotaListing['name'] . "," . $aQuotaListing['qlimit'] . "," . $completed . "," . ($aQuotaListing['qlimit'] - $completed) . "\r\n";
 
-                if ($bQuickReport != false)
+                if ($quickreport != false)
                 {
                     continue;
                 }
@@ -165,7 +119,7 @@ class quotas extends Survey_Common_Action
                 $aData['completed'] = $completed;
                 $aData['totalquotas'] = $totalquotas;
                 $aData['totalcompleted'] = $totalcompleted;
-                $this->getController()->render("/admin/quotas/viewquotasrow_view", $aData);
+                $aViewUrls['output'] .= $this->getController()->render("/admin/quotas/viewquotasrow_view", $aData, true);
 
                 //check how many sub-elements exist for a certain quota
                 $aResults2 = Quota_members::model()->findAllByAttributes(array('quota_id' => $aQuotaListing['id']));
@@ -176,23 +130,23 @@ class quotas extends Survey_Common_Action
                     $aQuestionAnswers = self::getQuotaAnswers($aQuotaQuestions['qid'], $iSurveyId, $aQuotaListing['id']);
                     $aData['question_answers'] = $aQuestionAnswers;
                     $aData['quota_questions'] = $aQuotaQuestions;
-                    $this->getController()->render('/admin/quotas/viewquotasrowsub_view', $aData);
+                    $aViewUrls['output'] .= $this->getController()->render('/admin/quotas/viewquotasrowsub_view', $aData, true);
                 }
             }
         }
         else
         {
             // No quotas have been set for this survey
-            $this->getController()->render('/admin/quotas/viewquotasempty_view', $aData);
+            $aViewUrls[] = 'viewquotasempty_view';
         }
 
         $aData['totalquotas'] = $totalquotas;
         $aData['totalcompleted'] = $totalcompleted;
 
-        if ($bQuickReport == false)
+        if ($quickreport == false)
         {
-            $this->getController()->render('/admin/quotas/viewquotasfooter_view', $aData);
-            $this->getController()->_getAdminFooter('http://docs.limesurvey.org', $clang->gT('LimeSurvey online manual'));
+            $aViewUrls[] = 'viewquotasfooter_view';
+            $this->_renderWrappedTemplate($aViewUrls, $aData);
         }
         else
         {
@@ -339,7 +293,7 @@ class quotas extends Survey_Common_Action
         }
     }
 
-    function quota_delans($iSurveyId)
+    function delans($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'delete');
@@ -353,7 +307,7 @@ class quotas extends Survey_Common_Action
         self::_redirectToIndex($iSurveyId);
     }
 
-    function quota_delquota($iSurveyId)
+    function delquota($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'delete');
@@ -365,37 +319,40 @@ class quotas extends Survey_Common_Action
         self::_redirectToIndex($iSurveyId);
     }
 
-    function quota_editquota($iSurveyId)
+    function editquota($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'update');
         $aData = $this->_getData($iSurveyId);
         $aLangs = $aData['aLangs'];
         $clang = $aData['clang'];
+        $aViewUrls = array();
 
         $aQuotaInfo = Quota::model()->findByPk(CHttpRequest::getPost('quota_id'));
         $aData['quotainfo'] = $aQuotaInfo;
 
-        $this->getController()->render('/admin/quotas/editquota_view', $aData);
+        $aViewUrls[] = 'editquota_view';
 
         foreach ($aLangs as $sLang)
         {
             $aData['langquotainfo'] = Quota_languagesettings::model()->findByAttributes(array('quotals_quota_id' => CHttpRequest::getPost('quota_id'), 'quotals_language' => $sLang));
             $aData['lang'] = $sLang;
-            $this->getController()->render('/admin/quotas/editquotalang_view', $aData);
+            $aViewUrls['editquotalang_view'][] = $aData;
         }
 
-        $this->getController()->render('/admin/quotas/editquotafooter_view', $aData);
-        $this->getController()->_getAdminFooter('http://docs.limesurvey.org', $clang->gT('LimeSurvey online manual'));
+        $aViewUrls[] = 'editquotafooter_view';
+
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
-    function new_answer($iSurveyId, $sSubAction)
+    function new_answer($iSurveyId, $sSubAction = 'new_answer')
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'create');
         $aData = $this->_getData($iSurveyId);
         $sBaseLang = $aData['sBaseLang'];
         $clang = $aData['clang'];
+        $aViewUrls = array();
 
         if (($sSubAction == "new_answer" || ($sSubAction == "new_answer_two" && !isset($_POST['quota_qid']))) && bHasSurveyPermission($iSurveyId, 'quotas', 'create'))
         {
@@ -408,13 +365,13 @@ class quotas extends Survey_Common_Action
             $result = Questions::model()->findAllByAttributes(array('type' => array('G', 'M', 'Y', 'A', 'B', 'I', 'L', 'O', '!'), 'sid' => $iSurveyId, 'language' => $sBaseLang));
             if (empty($result))
             {
-                $this->getController()->render("/admin/quotas/newanswererror_view", $aData);
+                $aViewUrls[] = 'newanswererror_view';
             }
             else
             {
                 $aData['newanswer_result'] = $result;
                 $aData['quota_name'] = $quota_name;
-                $this->getController()->render("/admin/quotas/newanswer_view", $aData);
+                $aViewUrls[] = 'newanswer_view';
             }
         }
 
@@ -436,13 +393,13 @@ class quotas extends Survey_Common_Action
             $aData['question_answers'] = $aQuestionAnswers;
             $aData['x'] = $x;
             $aData['quota_name'] = $sQuotaName;
-            $this->getController()->render('/admin/quotas/newanswertwo_view', $aData);
+            $aViewUrls[] = 'newanswertwo_view';
         }
 
-        $this->getController()->_getAdminFooter('http://docs.limesurvey.org', $clang->gT('LimeSurvey online manual'));
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
-    function new_quota($iSurveyId)
+    function newquota($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'create');
@@ -450,10 +407,10 @@ class quotas extends Survey_Common_Action
         $clang = $aData['clang'];
 
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
-        $aData['langs'] = $aData['sLangs'];
+        $aData['langs'] = $aData['aLangs'];
+        $aData['baselang'] = $aData['sBaseLang'];
 
-        $this->getController()->render('/admin/quotas/newquota_view', $aData);
-        $this->getController()->_getAdminFooter('http://docs.limesurvey.org', $clang->gT('LimeSurvey online manual'));
+        $this->_renderWrappedTemplate('newquota_view', $aData);
     }
 
     function getQuotaAnswers($iQuestionId, $iSurveyId, $iQuotaId)
@@ -591,6 +548,21 @@ class quotas extends Survey_Common_Action
         {
             return $aAnswerList;
         }
+    }
+
+    /**
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    {
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . '/jquery/jquery.tablesorter.min.js');
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . '/quotas.js');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . 'admin/default/superfish.css');
+
+        parent::_renderWrappedTemplate('quotas', $aViewUrls, $aData);
     }
 
 }

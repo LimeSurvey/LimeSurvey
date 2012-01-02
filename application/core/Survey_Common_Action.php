@@ -101,7 +101,8 @@ class Survey_Common_Action extends CAction
             'lang' => 'sLanguage',
             'browselang' => 'sBrowseLang',
             'tokenids' => 'aTokenIds',
-            'tokenid' => 'iTokenId'
+            'tokenid' => 'iTokenId',
+            'subaction' => 'sSubAction',
         );
 
         foreach ($pseudos as $key => $pseudo)

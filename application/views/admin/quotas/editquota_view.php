@@ -1,4 +1,4 @@
-<form action="<?php echo $this->createUrl("admin/quotas/surveyid/$iSurveyId/subaction/modifyquota");?>" method="post">
+<form action="<?php echo $this->createUrl("admin/quotas/sa/modifyquota/surveyid/$iSurveyId");?>" method="post">
     <div class="ui-tabs ui-widget ui-widget-content ui-corner-all">
         <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
             <tr>

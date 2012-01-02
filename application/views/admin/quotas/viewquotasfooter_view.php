@@ -6,7 +6,7 @@
     		<td align="center"><?php echo $totalcompleted;?></td>
     		<td align="center" style="padding: 3px;">
 <?php if (bHasSurveyPermission($iSurveyId, 'quotas','create')) { ?>
-    <form action="<?php echo $this->createUrl("admin/quotas/surveyid/$iSurveyId/subaction/new_quota");?>" method="post">
+    <form action="<?php echo $this->createUrl("admin/quotas/sa/newquota/surveyid/$iSurveyId");?>" method="post">
                     <input name="submit" type="submit" class="quota_new" value="<?php $clang->eT("Add New Quota");?>" />
                     <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
                     <input type="hidden" name="action" value="quotas" />

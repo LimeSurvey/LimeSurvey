@@ -1,6 +1,6 @@
 <div class="header ui-widget-header"><?php $clang->eT("Survey Quota");?>: <?php $clang->eT("Add Answer");?></div><br />
 	<div class="messagebox ui-corner-all" style="width: 600px">
-		<form action="<?php echo $this->createUrl("/admin/quotas/surveyid/$iSurveyId/subaction/new_answer_two");?>" method="post">
+		<form action="<?php echo $this->createUrl("/admin/quotas/sa/new_answer/surveyid/$iSurveyId/subaction/new_answer_two");?>" method="post">
 			<table class="addquotaanswer" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
 				<thead>
 				<tr>

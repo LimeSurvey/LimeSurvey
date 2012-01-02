@@ -5849,7 +5849,7 @@ function get_quotaCompletedCount($iSurveyId, $quotaid)
     $quota_info = getQuotaInformation($iSurveyId, Survey::model()->findByPk($iSurveyId)->language, $quotaid);
     $quota = $quota_info[0];
 
-    if (Yii::app()->db->schema->getTable('{{survey_' . $surveyid . '}}') &&
+    if (Yii::app()->db->schema->getTable('{{survey_' . $iSurveyId . '}}') &&
         count($quota['members']) > 0)
     {
         // Keep a list of fields for easy reference
@@ -5878,7 +5878,7 @@ function get_quotaCompletedCount($iSurveyId, $quotaid)
         foreach ($fields_list as $fieldname)
             $criteria->mergeWith($fields_query[$fieldname]);
 
-        $result = Survey_dynamic::model($sid)->count($criteria);
+        $result = Survey_dynamic::model($iSurveyId)->count($criteria);
     }
 
     return $result;

@@ -20,29 +20,9 @@
  * @package		LimeSurvey
  * @subpackage	Backend
  */
-class conditions extends Survey_Common_Action {
+class conditionsaction extends Survey_Common_Action {
 
-	private $template_data;
-
-    public function run($sa = '', $surveyid = 0)
-   	{
-   		$this->template_data = array();
-
-   		if (empty($sa)) $sa = null;
-
-		if ($sa == '_remap')
-			$this->route('_remap', array('method', 'params'));
-		elseif ($sa == 'action' || $sa == 'editconditionsform')
-			$this->route('action', array('subaction', 'surveyid', 'gid', 'qid'));
-	}
-
-	/*public function _remap($method, $params = array())
-	{
-		array_unshift($params, $method);
-	    return call_user_func_array(array($this, "action"), $params);
-	}*/
-
-	function action($subaction, $surveyid=null, $gid=null, $qid=null)
+	function index($subaction, $surveyid=null, $gid=null, $qid=null)
 	{
 		$surveyid = sanitize_int($surveyid);
 		$gid = sanitize_int($gid);
@@ -137,13 +117,13 @@ class conditions extends Survey_Common_Action {
 		// Caution (lemeur): database.php uses auto_unescape on all entries in $_POST
 		// Take care to not use auto_unescape on $_POST variables after this
 
-		$br = CHtml::openTag('br \\');
+		$br = CHtml::openTag('br /');
 
 		//MAKE SURE THAT THERE IS A SID
 		if (!isset($surveyid) || !$surveyid)
 		{
 		    $conditionsoutput = $clang->gT("You have not selected a survey").str_repeat($br, 2);
-		    $conditionsouput .= CHtml::submitButton($clang->gT("Main admin screen"), array(
+		    $conditionsoutput .= CHtml::submitButton($clang->gT("Main admin screen"), array(
 			    'onclick' => "window.open('".$this->getController()->createUrl("admin/")."', '_top')"
 			)).$br;
 			safe_die($conditionsoutput);
@@ -172,7 +152,7 @@ class conditions extends Survey_Common_Action {
 		}
 
 		$conditionsoutput_action_error = ""; // defined during the actions
-		$conditionsoutput_main_content = ""; // everything after the menubar
+		$aViewUrls['output'] = ""; // everything after the menubar
 
 		$markcidarray = Array();
 		if ( isset($_GET['markcid']) )
@@ -207,7 +187,11 @@ class conditions extends Survey_Common_Action {
 			        . $br . $clang->gT("We recommend that before you proceed, you export the entire survey from the main administration screen.")
 			        . $br . $button_yes . $button_cancel;
 
-				$this->getController()->_showMessageBox($clang->gT("Warning"), $messagebox_content);
+                $this->_renderWrappedTemplate(array('message' => array(
+                    'title' => $clang->gT("Warning"),
+                    'message' => $messagebox_content
+                )));
+                exit;
 		    }
 			else
 		    {
@@ -715,10 +699,10 @@ class conditions extends Survey_Common_Action {
 
 		            $aresult = Questions::model()->getSomeRecords('*', array( 'and',
 			        	"parent_qid=".$rows['qid']."",
-			        	"laguage='".Survey::model()->findByPk($surveyid)->language."'"
+			        	"language='".Survey::model()->findByPk($surveyid)->language."'"
 			        ), 'question_order ASC');
 
-		            foreach ($aresult->readAll() as $arows)
+		            foreach ($aresult as $arows)
 		            {
 		                $shortanswer = "{$arows['title']}: [" . FlattenText($arows['question']) . "]";
 		                $shortquestion = $rows['title'].":$shortanswer ".FlattenText($rows['question']);
@@ -896,9 +880,9 @@ class conditions extends Survey_Common_Action {
 		        elseif ($rows['type'] == "K" ||$rows['type'] == "Q") //Multi shorttext/numerical
 		        {
 		            $aresult = Questions::model()->getSomeRecords('*', "parent_qid={$rows['qid']}" .
-		            		"AND language='".Survey::model()->findByPk($surveyid)->language."'", 'question_order desc');
+		            		" AND language='".Survey::model()->findByPk($surveyid)->language."'", 'question_order desc');
 
-		            foreach ($aresult->readAll() as $arows)
+		            foreach ($aresult as $arows)
 		            {
 		                $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "]";
 		                $shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
@@ -920,7 +904,7 @@ class conditions extends Survey_Common_Action {
 	                );
 
 		            $acount = count($aresult);
-		            foreach ($aresult->readAll() as $arow)
+		            foreach ($aresult as $arow)
 		            {
 		                $theanswer = addcslashes($arow['answer'], "'");
 		                $quicky[]=array($arow['code'], $theanswer);
@@ -947,9 +931,9 @@ class conditions extends Survey_Common_Action {
 		            $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
 
 		            $aresult = Questions::model()->getSomeRecords('*', "parent_qid={$rows['qid']}" .
-		            		"AND language='".Survey::model()->findByPk($surveyid)->language."'", 'question_order desc');
+		            		" AND language='".Survey::model()->findByPk($surveyid)->language."'", 'question_order desc');
 
-		            foreach ($aresult->readAll() as $arows)
+		            foreach ($aresult as $arows)
 		            {
 		                $theanswer = addcslashes($arows['question'], "'");
 		                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['title'], $theanswer);
@@ -1017,7 +1001,7 @@ class conditions extends Survey_Common_Action {
 				                	'sortorder, answer'
 			                );
 
-		                    foreach ($aresult->readAll() as $arows)
+		                    foreach ($aresult as $arows)
 		                    {
 		                        $theanswer = addcslashes($arows['answer'], "'");
 		                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
@@ -1074,13 +1058,13 @@ class conditions extends Survey_Common_Action {
 		    }
 
 		    $questionNavOptions .= CHtml::tag('option', array(
-			    'value' => $this->getController()->createUrl("/admin/conditions/sa/action/subaction/editconditionsform/surveyid/$surveyid/gid/{$row['gid']}/qid/{$row['qid']}")),
+			    'value' => $this->getController()->createUrl("/admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/{$row['gid']}/qid/{$row['qid']}")),
 				$questionselecter
 			);
 		}
 		$questionNavOptions .= CHtml::closeTag('optgroup');
 		$questionNavOptions .= CHtml::openTag('optgroup', array('class'=>'activesurveyselect', 'label'=>$clang->gT("Current","js")));
-		$question = strip_tags($questiontext);
+		$question = strip_tags($question);
 		if (strlen($question)<35)
 		{
 		    $questiontextshort = $question;
@@ -1092,7 +1076,7 @@ class conditions extends Survey_Common_Action {
 		}
 
 		$questionNavOptions .= CHtml::tag('option', array(
-			'value'=>$this->getController()->createUrl("/admin/conditions/sa/action/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"),
+			'value'=>$this->getController()->createUrl("/admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"),
 			'selected'=>'selected'),
 			$questiontitle .': '. $questiontextshort);
 		$questionNavOptions .= CHtml::closeTag('optgroup');
@@ -1112,7 +1096,7 @@ class conditions extends Survey_Common_Action {
 		        $questionselecter = htmlspecialchars(mb_strcut(html_entity_decode($question,ENT_QUOTES,'UTF-8'), 0, 35, 'UTF-8'))."...";
 		    }
 		    $questionNavOptions .=  CHtml::tag('option', array(
-			    'value' => $this->getController()->createUrl("/admin/conditions/sa/action/subaction/editconditionsform/surveyid/$surveyid/gid/{$row['gid']}/qid/{$row['qid']}")),
+			    'value' => $this->getController()->createUrl("/admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/{$row['gid']}/qid/{$row['qid']}")),
 			    $row['title'].':'.$questionselecter
 			);
 		}
@@ -1135,7 +1119,7 @@ class conditions extends Survey_Common_Action {
             foreach($canswers as $can)
             {
                 $an = ls_json_encode(FlattenText($can[2]));
-                $conditionsoutput_main_content .= "Fieldnames[$jn]='$can[0]';\n"
+                $aViewUrls['output'] .= "Fieldnames[$jn]='$can[0]';\n"
 	                . "Codes[$jn]='$can[1]';\n"
 	                . "Answers[$jn]={$an};\n";
                 $jn++;
@@ -1169,9 +1153,9 @@ class conditions extends Survey_Common_Action {
 
 		//END: PREPARE JAVASCRIPT TO SHOW MATCHING ANSWERS TO SELECTED QUESTION
 
-		$this->getController()->_css_admin_include(Yii::app()->getConfig("generalscripts").'jquery/css/jquery.multiselect.css');
+		$this->getController()->_css_admin_includes(Yii::app()->getConfig("generalscripts").'jquery/css/jquery.multiselect.css');
 
-        $this->getController()->_getAdminHeader();
+        $aViewUrls = array();
 
 		$data['clang'] = $clang;
 		$data['surveyid'] = $surveyid;
@@ -1183,8 +1167,8 @@ class conditions extends Survey_Common_Action {
 		$data['conditionsoutput_action_error'] = $conditionsoutput_action_error;
 		$data['javascriptpre'] = $javascriptpre;
 
-		$this->getController()->render("/admin/conditions/conditionshead_view", $data);
-
+		$aViewUrls['conditionshead_view'][] = $data;
+        $aViewUrls['output'] = '';
 
 		//BEGIN DISPLAY CONDITIONS FOR THIS QUESTION
 		if (	$subaction == 'index' ||
@@ -1210,7 +1194,7 @@ class conditions extends Survey_Common_Action {
 		    $showreplace="$questiontitle". $this->_showSpeaker($questiontext);
 		    $onlyshow=str_replace("{QID}", $showreplace, $clang->gT("Only show question {QID} IF"));
 
-			$data['conditionsoutput'] = $conditionsoutput_main_content;
+			$data['conditionsoutput'] = $aViewUrls['output'];
 			$data['extraGetParams'] = $extraGetParams;
 			$data['quesitonNavOptions'] = $questionNavOptions;
 			$data['conditionsoutput_action_error'] = $conditionsoutput_action_error;
@@ -1219,7 +1203,7 @@ class conditions extends Survey_Common_Action {
 			$data['subaction'] = $subaction;
 			$data['scenariocount'] = $scenariocount;
 
-			$this->getController()->render("/admin/conditions/conditionslist_view", $data);
+			$aViewUrls['conditionslist_view'][] = $data;
 
 		    if ($scenariocount > 0)
 		    {
@@ -1278,7 +1262,7 @@ class conditions extends Survey_Common_Action {
 		            $data['scenariotext'] = $scenariotext;
 		            $data['scenarionr'] = $scenarionr;
 
-		            $conditionsoutput_main_content .= $this->getController()->render('/admin/conditions/includes/conditions_scenario',
+		            $aViewUrls['output'] .= $this->getController()->render('/admin/conditions/includes/conditions_scenario',
 		            	$data, TRUE);
 
 		            unset($currentfield);
@@ -1359,32 +1343,32 @@ class conditions extends Survey_Common_Action {
 
 		                    if (isset($currentfield) && $currentfield != $rows['cfieldname'])
 		                    {
-		                        $conditionsoutput_main_content .= "<tr class='evenrow'>\n"
+		                        $aViewUrls['output'] .= "<tr class='evenrow'>\n"
 		                        ."\t<td valign='middle' align='center'>\n"
 		                        ."<font size='1'><strong>"
 		                        .$clang->gT("and")."</strong></font></td></tr>";
 		                    }
 		                    elseif (isset($currentfield))
 		                    {
-		                        $conditionsoutput_main_content .= "<tr class='evenrow'>\n"
+		                        $aViewUrls['output'] .= "<tr class='evenrow'>\n"
 		                        ."\t<td valign='top' align='center'>\n"
 		                        ."<font size='1'><strong>"
 		                        .$clang->gT("OR")."</strong></font></td></tr>";
 		                    }
 
-		                    $conditionsoutput_main_content .= "\t<tr class='oddrow' style='$markcidstyle'>\n"
-		                    ."\t<td><form style='margin-bottom:0;' name='conditionaction{$rows['cid']}' id='conditionaction{$rows['cid']}' method='post' action='".$this->getController()->createUrl("/admin/conditions/sa/action/subaction/$subaction/surveyid/$surveyid/gid/$gid/qid/$qid/")."'>\n"
+		                    $aViewUrls['output'] .= "\t<tr class='oddrow' style='$markcidstyle'>\n"
+		                    ."\t<td><form style='margin-bottom:0;' name='conditionaction{$rows['cid']}' id='conditionaction{$rows['cid']}' method='post' action='".$this->getController()->createUrl("/admin/conditions/sa/index/subaction/$subaction/surveyid/$surveyid/gid/$gid/qid/$qid/")."'>\n"
 		                    ."<table width='100%' style='height: 13px;' cellspacing='0' cellpadding='0'>\n"
 		                    ."\t<tr>\n";
 
 		                    if ( $subaction == "copyconditionsform" || $subaction == "copyconditions" )
 		                    {
-		                        $conditionsoutput_main_content .= "<td>&nbsp;&nbsp;</td>"
+		                        $aViewUrls['output'] .= "<td>&nbsp;&nbsp;</td>"
 		                        . "<td valign='middle' align='right'>\n"
 		                        . "\t<input type='checkbox' name='aConditionFromScenario{$scenarionr['scenario']}' id='cbox{$rows['cid']}' value='{$rows['cid']}' checked='checked'/>\n"
 		                        . "</td>\n";
 		                    }
-		                    $conditionsoutput_main_content .= ""
+		                    $aViewUrls['output'] .= ""
 		                    ."<td valign='middle' align='right' width='40%'>\n"
 		                    ."\t<font size='1' face='verdana'>\n";
 
@@ -1401,7 +1385,7 @@ class conditions extends Survey_Common_Action {
 		                        {
 		                            $thisAttrName=html_escape($extractedTokenAttr[1])." [".$clang->gT("Inexistant token table")."]";
 		                        }
-		                        $conditionsoutput_main_content .= "\t$thisAttrName\n";
+		                        $aViewUrls['output'] .= "\t$thisAttrName\n";
 		                        // TIBO not sure this is used anymore !!
 		                        $conditionsList[]=array("cid"=>$rows['cid'],
 										"text"=>$thisAttrName);
@@ -1413,18 +1397,18 @@ class conditions extends Survey_Common_Action {
 		                        {
 		                            if ($cqn[3] == $rows['cfieldname'])
 		                            {
-		                                $conditionsoutput_main_content .= "\t$cqn[0] (qid{$rows['cqid']})\n";
+		                                $aViewUrls['output'] .= "\t$cqn[0] (qid{$rows['cqid']})\n";
 		                                $conditionsList[]=array("cid"=>$rows['cid'],
 											"text"=>$cqn[0]." ({$rows['value']})");
 		                            }
 		                            else
 		                            {
-		                                //$conditionsoutput_main_content .= "\t<font color='red'>ERROR: Delete this condition. It is out of order.</font>\n";
+		                                //$aViewUrls['output'] .= "\t<font color='red'>ERROR: Delete this condition. It is out of order.</font>\n";
 		                            }
 		                        }
 		                    }
 
-		                    $conditionsoutput_main_content .= "\t</font></td>\n"
+		                    $aViewUrls['output'] .= "\t</font></td>\n"
 		                    ."\t<td align='center' valign='middle' width='20%'>\n"
 		                    ."<font size='1'>\n" //    .$clang->gT("Equals")."</font></td>"
 		                    .$method[trim ($rows['method'])]
@@ -1440,7 +1424,7 @@ class conditions extends Survey_Common_Action {
 		                    if ($rows['method'] == 'RX')
 		                    {
 		                        $rightOperandType = 'regexp';
-		                        $conditionsoutput_main_content .= "".html_escape($rows['value'])."\n";
+		                        $aViewUrls['output'] .= "".html_escape($rows['value'])."\n";
 		                    }
 		                    elseif (preg_match('/^@([0-9]+X[0-9]+X[^@]*)@$/',$rows['value'],$matchedSGQA) > 0)
 		                    { // SGQA
@@ -1460,7 +1444,7 @@ class conditions extends Survey_Common_Action {
 		                            $matchedSGQAText=$rows['value'].' ('.$clang->gT("Not found").')';
 		                        }
 
-		                        $conditionsoutput_main_content .= "".html_escape($matchedSGQAText)."\n";
+		                        $aViewUrls['output'] .= "".html_escape($matchedSGQAText)."\n";
 		                    }
 		                    elseif ($thissurvey['anonymized'] != 'Y' && preg_match('/^{TOKEN:([^}]*)}$/',$rows['value'],$extractedTokenAttr) > 0)
 		                    {
@@ -1474,7 +1458,7 @@ class conditions extends Survey_Common_Action {
 		                        {
 		                            $thisAttrName=html_escape($extractedTokenAttr[1])." [".$clang->gT("Inexistant token table")."]";
 		                        }
-		                        $conditionsoutput_main_content .= "\t$thisAttrName\n";
+		                        $aViewUrls['output'] .= "\t$thisAttrName\n";
 		                    }
 		                    elseif (isset($canswers))
 		                    {
@@ -1482,7 +1466,7 @@ class conditions extends Survey_Common_Action {
 		                        {
 		                            if ($can[0] == $rows['cfieldname'] && $can[1] == $rows['value'])
 		                            {
-		                                $conditionsoutput_main_content .= "$can[2] ($can[1])\n";
+		                                $aViewUrls['output'] .= "$can[2] ($can[1])\n";
 		                                $rightOperandType = 'predefinedAnsw';
 
 		                            }
@@ -1495,15 +1479,15 @@ class conditions extends Survey_Common_Action {
 		                        if ($rows['value'] == ' ' ||
 		                        $rows['value'] == '')
 		                        {
-		                            $conditionsoutput_main_content .= "".$clang->gT("No answer")."\n";
+		                            $aViewUrls['output'] .= "".$clang->gT("No answer")."\n";
 		                        }
 		                        else
 		                        {
-		                            $conditionsoutput_main_content .= "".html_escape($rows['value'])."\n";
+		                            $aViewUrls['output'] .= "".html_escape($rows['value'])."\n";
 		                        }
 		                    }
 
-		                    $conditionsoutput_main_content .= "\t</font></td>\n"
+		                    $aViewUrls['output'] .= "\t</font></td>\n"
 		                    ."\t<td align='right' valign='middle' width='10%'>\n";
 
 		                    if ( $subaction == "editconditionsform" ||$subaction == "insertcondition" ||
@@ -1514,20 +1498,20 @@ class conditions extends Survey_Common_Action {
 		                    { // show single condition action buttons in edit mode
 
 		                    	$data['rows'] = $rows;
-		                        $conditionsoutput_main_content .= $this->getController()->render('/admin/conditions/includes/conditions_edit',
+		                        $aViewUrls['output'] .= $this->getController()->render('/admin/conditions/includes/conditions_edit',
 		                        	$data, TRUE);
 
 		                        // now sets e corresponding hidden input field
 		                        // depending on the leftOperandType
 		                        if ($leftOperandType == 'tokenattr')
 		                        {
-		                        	$conditionsoutput_main_content .= CHtml::hiddenField('csrctoken', html_escape($rows['cfieldname']), array(
+		                        	$aViewUrls['output'] .= CHtml::hiddenField('csrctoken', html_escape($rows['cfieldname']), array(
 			                        	'id' => 'csrctoken'.$rows['cid']
 			                        ));
 		                        }
 		                        else
 		                        {
-		                        	$conditionsoutput_main_content .= CHtml::hiddenField('cquestions', html_escape($rows['cfieldname']),
+		                        	$aViewUrls['output'] .= CHtml::hiddenField('cquestions', html_escape($rows['cfieldname']),
 		                        		array(
 			                        		'id' => 'cquestions'.$rows['cid']
 			                        	)
@@ -1539,53 +1523,53 @@ class conditions extends Survey_Common_Action {
 		                        // This is used when Editting a condition
 		                        if ($rightOperandType == 'predefinedAnsw')
 		                        {
-		                        	$conditionsoutput_main_content .= CHtml::hiddenField('EDITcanswers[]', html_escape($rows['value']), array(
+		                        	$aViewUrls['output'] .= CHtml::hiddenField('EDITcanswers[]', html_escape($rows['value']), array(
 			                        	'id' => 'editModeTargetVal'.$rows['cid']
 			                        ));
 		                        }
 		                        elseif ($rightOperandType == 'prevQsgqa')
 		                        {
-		                        	$conditionsoutput_main_content .= CHtml::hiddenField('EDITprevQuestionSGQA', html_escape($rows['value']),
+		                        	$aViewUrls['output'] .= CHtml::hiddenField('EDITprevQuestionSGQA', html_escape($rows['value']),
 		                        		array(
 			                        		'id' => 'editModeTargetVal'.$rows['cid']
 			                        	));
 		                        }
 		                        elseif ($rightOperandType == 'tokenAttr')
 		                        {
-		                        	$conditionsoutput_main_content .= CHtml::hiddenField('EDITtokenAttr', html_escape($rows['value']), array(
+		                        	$aViewUrls['output'] .= CHtml::hiddenField('EDITtokenAttr', html_escape($rows['value']), array(
 			                        	'id' => 'editModeTargetVal'.$rows['cid']
 			                        ));
 		                        }
 		                        elseif ($rightOperandType == 'regexp')
 		                        {
-		                        	$conditionsoutput_main_content .= CHtml::hiddenField('EDITConditionRegexp', html_escape($rows['value']),
+		                        	$aViewUrls['output'] .= CHtml::hiddenField('EDITConditionRegexp', html_escape($rows['value']),
 		                        		array(
 			                        		'id' => 'editModeTargetVal'.$rows['cid']
 			                        	));
 		                        }
 		                        else
 		                        {
-		                        	$conditionsoutput_main_content .= CHtml::hiddenField('EDITConditionConst', html_escape($rows['value']),
+		                        	$aViewUrls['output'] .= CHtml::hiddenField('EDITConditionConst', html_escape($rows['value']),
 		                        		array(
 			                        		'id' => 'editModeTargetVal'.$rows['cid']
 			                        	));
 		                        }
 		                    }
 
-		                    $conditionsoutput_main_content 	.= 	CHtml::closeTag('td') 	. CHtml::closeTag('tr') .
+		                    $aViewUrls['output'] 	.= 	CHtml::closeTag('td') 	. CHtml::closeTag('tr') .
 	                    										CHtml::closeTag('table'). CHtml::closeTag('form') .
 		                    									CHtml::closeTag('td') 	. CHtml::closeTag('tr');
 
 		                    $currentfield = $rows['cfieldname'];
 		                }
 
-		                $conditionsoutput_main_content 	.= 	CHtml::openTag('tr') . CHtml::openTag('td', array('height'=>'3')).
+		                $aViewUrls['output'] 	.= 	CHtml::openTag('tr') . CHtml::openTag('td', array('height'=>'3')).
 		                									CHtml::closeTag('td') . CHtml::closeTag('tr');
 		            }
 		            else
 		            {
-		            	$conditionsoutput_main_content .= CHtml::openTag('tr') . CHtml::openTag('td', array('colspan'=>'3', 'height'=>'3'));
-		            	$conditionsoutput_main_content .= CHtml::closeTag('td') . CHtml::closeTag('tr');
+		            	$aViewUrls['output'] .= CHtml::openTag('tr') . CHtml::openTag('td', array('colspan'=>'3', 'height'=>'3'));
+		            	$aViewUrls['output'] .= CHtml::closeTag('td') . CHtml::closeTag('tr');
 		            }
 
 		            $s++;
@@ -1593,34 +1577,34 @@ class conditions extends Survey_Common_Action {
 		    }
 		    else
 		    { // no condition ==> disable delete all conditions button, and display a simple comment
-		    	$conditionsoutput_main_content 	.= 	CHtml::openTag('tr') . CHtml::tag('td', array('valign'=>'middle', 'align'=>'center'),
+		    	$aViewUrls['output'] 	.= 	CHtml::openTag('tr') . CHtml::tag('td', array('valign'=>'middle', 'align'=>'center'),
 		    										$clang->gT("This question is always shown.")).CHtml::closeTag('tr');
 		    }
 
-		    $conditionsoutput_main_content .= CHtml::closeTag('table');
-		    $conditionsoutput_main_content .= CHtml::closeTag('td') . CHtml::closeTag('tr');
+		    $aViewUrls['output'] .= CHtml::closeTag('table');
+		    $aViewUrls['output'] .= CHtml::closeTag('td') . CHtml::closeTag('tr');
 
 		}
 		//END DISPLAY CONDITIONS FOR THIS QUESTION
 
 
 		// Separator
-		$conditionsoutput_main_content .= "\t<tr bgcolor='#555555'><td colspan='3'></td></tr>\n";
+		$aViewUrls['output'] .= "\t<tr bgcolor='#555555'><td colspan='3'></td></tr>\n";
 
 
 		// BEGIN: DISPLAY THE COPY CONDITIONS FORM
 		if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
 		{
-		    $conditionsoutput_main_content .= "<tr class=''><td colspan='3'>\n"
-		    ."<form action='".$this->getController()->createUrl("admin/conditions/sa/action/subaction/copyconditions/surveyid/$surveyid/gid/$gid/qid/$qid/")."' name='copyconditions' id='copyconditions' method='post'>\n";
+		    $aViewUrls['output'] .= "<tr class=''><td colspan='3'>\n"
+		    ."<form action='".$this->getController()->createUrl("admin/conditions/sa/index/subaction/copyconditions/surveyid/$surveyid/gid/$gid/qid/$qid/")."' name='copyconditions' id='copyconditions' method='post'>\n";
 
-		    $conditionsoutput_main_content .= "<div class='header ui-widget-header'>".$clang->gT("Copy conditions")."</div>\n";
+		    $aViewUrls['output'] .= "<div class='header ui-widget-header'>".$clang->gT("Copy conditions")."</div>\n";
 
 
 		    //CopyConditionsMessage
 		    if (isset ($CopyConditionsMessage))
 		    {
-		        $conditionsoutput_main_content .= "<div class='messagebox ui-corner-all'>\n"
+		        $aViewUrls['output'] .= "<div class='messagebox ui-corner-all'>\n"
 		        ."$CopyConditionsMessage\n"
 		        ."</div>\n";
 		    }
@@ -1631,9 +1615,9 @@ class conditions extends Survey_Common_Action {
 				$this->getController()->_js_admin_includes(Yii::app()->getConfig("generalscripts").'jquery/jquery.multiselect.min.js');
 
 				// TODO
-		        $conditionsoutput_main_content .= "<script type='text/javascript'>$(document).ready(function () { $('#copytomultiselect').multiselect( { autoOpen: true, noneSelectedText: '".$clang->gT("No questions selected")."', checkAllText: '".$clang->gT("Check all")."', uncheckAllText: '".$clang->gT("Uncheck all")."', selectedText: '# ".$clang->gT("selected")."', beforeclose: function(){ return false;},height: 200 } ); });</script>";
+		        $aViewUrls['output'] .= "<script type='text/javascript'>$(document).ready(function () { $('#copytomultiselect').multiselect( { autoOpen: true, noneSelectedText: '".$clang->gT("No questions selected")."', checkAllText: '".$clang->gT("Check all")."', uncheckAllText: '".$clang->gT("Uncheck all")."', selectedText: '# ".$clang->gT("selected")."', beforeclose: function(){ return false;},height: 200 } ); });</script>";
 
-		        $conditionsoutput_main_content .= "\t<div class='conditioncopy-tbl-row'>\n"
+		        $aViewUrls['output'] .= "\t<div class='conditioncopy-tbl-row'>\n"
 		        ."\t<div class='condition-tbl-left'>".$clang->gT("Copy the selected conditions to").":</div>\n"
 		        ."\t<div class='condition-tbl-right'>\n"
 		        ."\t\t<select name='copyconditionsto[]'id='copytomultiselect'  multiple style='font-family:verdana; font-size:10; width:600px' size='10'>\n";
@@ -1641,10 +1625,10 @@ class conditions extends Survey_Common_Action {
 		        {
 		            foreach ($pquestions as $pq)
 		            {
-		                $conditionsoutput_main_content .= "\t\t<option value='{$pq['fieldname']}'>".$pq['text']."</option>\n";
+		                $aViewUrls['output'] .= "\t\t<option value='{$pq['fieldname']}'>".$pq['text']."</option>\n";
 		            }
 		        }
-		        $conditionsoutput_main_content .= "\t\t</select>\n"
+		        $aViewUrls['output'] .= "\t\t</select>\n"
 		        ."\t</div>\n"
 		        ."\t</div>\n";
 
@@ -1657,7 +1641,7 @@ class conditions extends Survey_Common_Action {
 		            $disableCopyCondition=" ";
 		        }
 
-		        $conditionsoutput_main_content .= "\t<div class='condition-tbl-full'>\n"
+		        $aViewUrls['output'] .= "\t<div class='condition-tbl-full'>\n"
 		//        ."\t\t<input type='submit' value='".$clang->gT("Copy conditions")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to copy these condition(s) to the questions you have selected?","js")."')){ prepareCopyconditions(); return true;} else { return false;}\" $disableCopyCondition/>\n"
 		        ."\t\t<input type='submit' value='".$clang->gT("Copy conditions")."' onclick=\"prepareCopyconditions(); return true;\" $disableCopyCondition/>\n"
 		        ."<input type='hidden' name='subaction' value='copyconditions' />\n"
@@ -1666,7 +1650,7 @@ class conditions extends Survey_Common_Action {
 		        ."<input type='hidden' name='qid' value='$qid' />\n"
 		        ."</div>\n";
 
-		        $conditionsoutput_main_content .= "<script type=\"text/javascript\">\n"
+		        $aViewUrls['output'] .= "<script type=\"text/javascript\">\n"
 		        ."function prepareCopyconditions()\n"
 		        ."{\n"
 		        ."\t$(\"input:checked[name^='aConditionFromScenario']\").each(function(i,val)\n"
@@ -1682,12 +1666,12 @@ class conditions extends Survey_Common_Action {
 		    }
 		    else
 		    {
-		        $conditionsoutput_main_content .= "<div class='messagebox ui-corner-all'>\n"
+		        $aViewUrls['output'] .= "<div class='messagebox ui-corner-all'>\n"
 		        ."<div class='partialheader'>".$clang->gT("This survey's questions don't use conditions")."</div><br />\n"
 		        ."</div>\n";
 		    }
 
-		    $conditionsoutput_main_content .= "</form></td></tr>\n";
+		    $aViewUrls['output'] .= "</form></td></tr>\n";
 
 		}
 		// END: DISPLAY THE COPY CONDITIONS FORM
@@ -1716,8 +1700,8 @@ class conditions extends Survey_Common_Action {
 		$subaction == "updatescenario" ||
 		$subaction == "editthiscondition" || $subaction == "delete")
 		{
-		    $conditionsoutput_main_content .= "<tr><td colspan='3'>\n";
-		    $conditionsoutput_main_content .= "<form action='".$this->getController()->createUrl("/admin/conditions/sa/action/subaction/$subaction/surveyid/$surveyid/gid/$gid/qid/$qid/")."' name='editconditions' id='editconditions' method='post'>\n";
+		    $aViewUrls['output'] .= "<tr><td colspan='3'>\n";
+		    $aViewUrls['output'] .= "<form action='".$this->getController()->createUrl("/admin/conditions/sa/index/subaction/$subaction/surveyid/$surveyid/gid/$gid/qid/$qid/")."' name='editconditions' id='editconditions' method='post'>\n";
 		    if ($subaction == "editthiscondition" &&  isset($p_cid))
 		    {
 		        $mytitle = $clang->gT("Edit condition");
@@ -1726,7 +1710,7 @@ class conditions extends Survey_Common_Action {
 		    {
 		        $mytitle = $clang->gT("Add condition");
 		    }
-		    $conditionsoutput_main_content .= "<div class='header ui-widget-header'>".$mytitle."</div>\n";
+		    $aViewUrls['output'] .= "<div class='header ui-widget-header'>".$mytitle."</div>\n";
 
 		    ///////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1746,7 +1730,7 @@ class conditions extends Survey_Common_Action {
 		        $scenarioInputStyle = "style = ''";
 		    }
 
-		    $conditionsoutput_main_content .="<div class='condition-tbl-row'>\n"
+		    $aViewUrls['output'] .="<div class='condition-tbl-row'>\n"
 		    ."<div class='condition-tbl-left'>$scenarioAddBtn&nbsp;".$clang->gT("Scenario")."</div>\n"
 		    ."<div class='condition-tbl-right'><input type='text' name='scenario' id='scenario' value='1' size='2' $scenarioInputStyle/>"
 		    ."$scenarioTxt\n"
@@ -1754,7 +1738,7 @@ class conditions extends Survey_Common_Action {
 		    ."</div>\n";
 
 		    // Begin "Question" row
-		    $conditionsoutput_main_content .="<div class='condition-tbl-row'>\n"
+		    $aViewUrls['output'] .="<div class='condition-tbl-row'>\n"
 		    ."<div class='condition-tbl-left'>".$clang->gT("Question")."</div>\n"
 		    ."<div class='condition-tbl-right'>\n"
 		    ."\t<div id=\"conditionsource\" class=\"tabs-nav\">\n"
@@ -1764,15 +1748,15 @@ class conditions extends Survey_Common_Action {
 		    ."\t</ul>\n";
 
 		    // Previous question tab
-		    $conditionsoutput_main_content .= "<div id='SRCPREVQUEST'><select name='cquestions' id='cquestions' size='".($qcount+1)."' >\n";
+		    $aViewUrls['output'] .= "<div id='SRCPREVQUEST'><select name='cquestions' id='cquestions' size='".($qcount+1)."' >\n";
 		    if (isset($cquestions))
 		    {
 		        $js_getAnswers_onload = "";
 		        foreach ($cquestions as $cqn)
 		        {
-		            $conditionsoutput_main_content .= "<option value='$cqn[3]' title=\"".htmlspecialchars($cqn[0])."\"";
+		            $aViewUrls['output'] .= "<option value='$cqn[3]' title=\"".htmlspecialchars($cqn[0])."\"";
 		            if (isset($p_cquestions) && $cqn[3] == $p_cquestions) {
-		                $conditionsoutput_main_content .= " selected";
+		                $aViewUrls['output'] .= " selected";
 		                if (isset($p_canswers))
 		                {
 		                    $canswersToSelect = "";
@@ -1784,15 +1768,15 @@ class conditions extends Survey_Common_Action {
 		                    $js_getAnswers_onload .= "$('#canswersToSelect').val('$canswersToSelect');\n";
 		                }
 		            }
-		            $conditionsoutput_main_content .= ">$cqn[0]</option>\n";
+		            $aViewUrls['output'] .= ">$cqn[0]</option>\n";
 		        }
 		    }
 
-		    $conditionsoutput_main_content .= "</select>\n"
+		    $aViewUrls['output'] .= "</select>\n"
 		    ."</div>\n";
 
 		    // Source token Tab
-		    $conditionsoutput_main_content .= "<div id='SRCTOKENATTRS'><select name='csrctoken' id='csrctoken' size='".($qcount+1)."' >\n";
+		    $aViewUrls['output'] .= "<div id='SRCTOKENATTRS'><select name='csrctoken' id='csrctoken' size='".($qcount+1)."' >\n";
 		    foreach (GetTokenFieldsAndNames($surveyid) as $tokenattr => $tokenattrName)
 		    {
 		        // Check to select
@@ -1804,34 +1788,34 @@ class conditions extends Survey_Common_Action {
 		        {
 		            $selectThisSrcTokenAttr = "";
 		        }
-		        $conditionsoutput_main_content .= "<option value='{TOKEN:".strtoupper($tokenattr)."}' $selectThisSrcTokenAttr>".html_escape($tokenattrName)."</option>\n";
+		        $aViewUrls['output'] .= "<option value='{TOKEN:".strtoupper($tokenattr)."}' $selectThisSrcTokenAttr>".html_escape($tokenattrName)."</option>\n";
 		    }
 
-		    $conditionsoutput_main_content .= "</select>\n"
+		    $aViewUrls['output'] .= "</select>\n"
 		    ."</div>\n\n";
 
-		    $conditionsoutput_main_content .= "\t</div>\n"; // end conditionsource div
+		    $aViewUrls['output'] .= "\t</div>\n"; // end conditionsource div
 
-		    $conditionsoutput_main_content .= "</div>\n"
+		    $aViewUrls['output'] .= "</div>\n"
 		    ."</div>\n";
 
 		    // Begin "Comparison operator" row
-		    $conditionsoutput_main_content .="<div class='condition-tbl-row'>\n"
+		    $aViewUrls['output'] .="<div class='condition-tbl-row'>\n"
 		    ."<div class='condition-tbl-left'>".$clang->gT("Comparison operator")."</div>\n"
 		    ."<div class='condition-tbl-right'>\n"
 		    ."<select name='method' id='method' style='font-family:verdana; font-size:10' >\n";
 		    foreach ($method as $methodCode => $methodTxt)
 		    {
 		    	$selected=$methodCode=="==" ? " selected='selected'" : "";
-		        $conditionsoutput_main_content .= "\t<option value='".$methodCode."'$selected>".$methodTxt."</option>\n";
+		        $aViewUrls['output'] .= "\t<option value='".$methodCode."'$selected>".$methodTxt."</option>\n";
 		    }
 
-		    $conditionsoutput_main_content .="</select>\n"
+		    $aViewUrls['output'] .="</select>\n"
 		    ."</div>\n"
 		    ."</div>\n";
 
 		    // Begin "Answer" row
-		    $conditionsoutput_main_content .="<div class='condition-tbl-row'>\n"
+		    $aViewUrls['output'] .="<div class='condition-tbl-row'>\n"
 		    ."<div class='condition-tbl-left'>".$clang->gT("Answer")."</div>\n";
 
 		    if ($subaction == "editthiscondition")
@@ -1876,7 +1860,7 @@ class conditions extends Survey_Common_Action {
 		    }
 
 
-		    $conditionsoutput_main_content .= ""
+		    $aViewUrls['output'] .= ""
 		    ."<div class='condition-tbl-right'>\n"
 		    ."<div id=\"conditiontarget\" class=\"tabs-nav\">\n"
 		    ."\t<ul>\n"
@@ -1888,55 +1872,55 @@ class conditions extends Survey_Common_Action {
 		    ."\t</ul>\n";
 
 		    // Predefined answers tab
-		    $conditionsoutput_main_content .= "\t<div id='CANSWERSTAB'>\n"
+		    $aViewUrls['output'] .= "\t<div id='CANSWERSTAB'>\n"
 		    ."\t\t<select  name='canswers[]' $multipletext id='canswers' size='7'>\n"
 		    ."\t\t</select>\n"
 		    ."\t\t<br /><span id='canswersLabel'>".$clang->gT("Predefined answer options for this question")."</span>\n"
 		    ."\t</div>\n";
 
 		    // Constant tab
-		    $conditionsoutput_main_content .= "\t<div id='CONST' style='display:' >\n"
+		    $aViewUrls['output'] .= "\t<div id='CONST' style='display:' >\n"
 		    ."\t\t<textarea name='ConditionConst' id='ConditionConst' rows='5' cols='113'>$EDITConditionConst</textarea>\n"
 		    ."\t\t<br /><div id='ConditionConstLabel'>".$clang->gT("Constant value")."</div>\n"
 		    ."\t</div>\n";
 		    // Previous answers tab @SGQA@ placeholders
-		    $conditionsoutput_main_content .= "\t<div id='PREVQUESTIONS'>\n"
+		    $aViewUrls['output'] .= "\t<div id='PREVQUESTIONS'>\n"
 		    ."\t\t<select name='prevQuestionSGQA' id='prevQuestionSGQA' size='7'>\n";
 		    foreach ($cquestions as $cqn)
 		    { // building the @SGQA@ placeholders options
 		        if ($cqn[2] != 'M' && $cqn[2] != 'P')
 		        { // Type M or P aren't real fieldnames and thus can't be used in @SGQA@ placehodlers
-		            $conditionsoutput_main_content .= "\t\t<option value='@$cqn[3]@' title=\"".htmlspecialchars($cqn[0])."\"";
+		            $aViewUrls['output'] .= "\t\t<option value='@$cqn[3]@' title=\"".htmlspecialchars($cqn[0])."\"";
 		            if (isset($p_prevquestionsgqa) && $p_prevquestionsgqa == "@".$cqn[3]."@")
 		            {
-		                $conditionsoutput_main_content .= " selected='selected'";
+		                $aViewUrls['output'] .= " selected='selected'";
 		            }
-		            $conditionsoutput_main_content .= ">$cqn[0]</option>\n";
+		            $aViewUrls['output'] .= ">$cqn[0]</option>\n";
 		        }
 		    }
-		    $conditionsoutput_main_content .= "\t\t</select>\n"
+		    $aViewUrls['output'] .= "\t\t</select>\n"
 		    ."\t\t<br /><span id='prevQuestionSGQALabel'>".$clang->gT("Answers from previous questions")."</span>\n"
 		    ."\t</div>\n";
 
 		    // Token tab
-		    $conditionsoutput_main_content .= "\t<div id='TOKENATTRS'>\n"
+		    $aViewUrls['output'] .= "\t<div id='TOKENATTRS'>\n"
 		    ."\t\t<select name='tokenAttr' id='tokenAttr' size='7'>\n";
 		    foreach (GetTokenFieldsAndNames($surveyid) as $tokenattr => $tokenattrName)
 		    {
-		        $conditionsoutput_main_content .= "\t\t<option value='{TOKEN:".strtoupper($tokenattr)."}'>".html_escape($tokenattrName)."</option>\n";
+		        $aViewUrls['output'] .= "\t\t<option value='{TOKEN:".strtoupper($tokenattr)."}'>".html_escape($tokenattrName)."</option>\n";
 		    }
 
-		    $conditionsoutput_main_content .= "\t\t</select>\n"
+		    $aViewUrls['output'] .= "\t\t</select>\n"
 		    ."\t\t<br /><span id='tokenAttrLabel'>".$clang->gT("Attributes values from the participant's token")."</span>\n"
 		    ."\t</div>\n";
 
 		    // Regexp Tab
-		    $conditionsoutput_main_content .= "\t<div id='REGEXP' style='display:'>\n"
+		    $aViewUrls['output'] .= "\t<div id='REGEXP' style='display:'>\n"
 		    ."\t\t<textarea name='ConditionRegexp' id='ConditionRegexp' rows='5' cols='113'>$EDITConditionRegexp</textarea>\n"
 		    ."\t\t<br /><div id='ConditionRegexpLabel'><a href=\"http://docs.limesurvey.org/tiki-index.php?page=Using+Regular+Expressions\" target=\"_blank\">".$clang->gT("Regular expression")."</a></div>\n"
 		    ."\t</div>\n";
 
-		    $conditionsoutput_main_content .= "</div>\n"; // end conditiontarget div
+		    $aViewUrls['output'] .= "</div>\n"; // end conditiontarget div
 
 
 		    $this->getController()->_js_admin_includes(Yii::app()->getConfig("adminscripts").'conditions.js');
@@ -1955,11 +1939,11 @@ class conditions extends Survey_Common_Action {
 		        $submitcid = "";
 		    }
 
-		    $conditionsoutput_main_content .= "</div>\n"
+		    $aViewUrls['output'] .= "</div>\n"
 		    ."</div>\n";
 
 		    // Begin buttons row
-		    $conditionsoutput_main_content .= "<div class='condition-tbl-full'>\n"
+		    $aViewUrls['output'] .= "<div class='condition-tbl-full'>\n"
 		    ."\t<input type='reset' id='resetForm' value='".$clang->gT("Clear")."' />\n"
 		    ."\t<input type='submit' value='".$submitLabel."' />\n"
 		    ."<input type='hidden' name='sid' value='$surveyid' />\n"
@@ -1979,12 +1963,12 @@ class conditions extends Survey_Common_Action {
 		        $js_getAnswers_onload = '';
 		    }
 
-		    $conditionsoutput_main_content .= "<script type='text/javascript'>\n"
+		    $aViewUrls['output'] .= "<script type='text/javascript'>\n"
 		    . "<!--\n"
 		    . "\t".$js_getAnswers_onload."\n";
 		    if (isset($p_method))
 		    {
-		        $conditionsoutput_main_content .= "\tdocument.getElementById('method').value='".$p_method."';\n";
+		        $aViewUrls['output'] .= "\tdocument.getElementById('method').value='".$p_method."';\n";
 		    }
 
 		    if ($subaction == "editthiscondition")
@@ -1993,41 +1977,41 @@ class conditions extends Survey_Common_Action {
 		        {
 		            // In order to avoid issues with backslash escaping, I don't use javascript to set the value
 		            // Thus the value is directly set when creating the Textarea element
-		            //$conditionsoutput_main_content .= "\tdocument.getElementById('ConditionConst').value='".html_escape($_POST['EDITConditionConst'])."';\n";
-		            $conditionsoutput_main_content .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
+		            //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionConst').value='".html_escape($_POST['EDITConditionConst'])."';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
 		        }
 		        elseif (isset($_POST['EDITprevQuestionSGQA']) && $_POST['EDITprevQuestionSGQA'] != '')
 		        {
-		            $conditionsoutput_main_content .= "\tdocument.getElementById('prevQuestionSGQA').value='".html_escape($_POST['EDITprevQuestionSGQA'])."';\n";
-		            $conditionsoutput_main_content .= "\tdocument.getElementById('editTargetTab').value='#PREVQUESTIONS';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('prevQuestionSGQA').value='".html_escape($_POST['EDITprevQuestionSGQA'])."';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#PREVQUESTIONS';\n";
 		        }
 		        elseif (isset($_POST['EDITtokenAttr']) && $_POST['EDITtokenAttr'] != '')
 		        {
-		            $conditionsoutput_main_content .= "\tdocument.getElementById('tokenAttr').value='".html_escape($_POST['EDITtokenAttr'])."';\n";
-		            $conditionsoutput_main_content .= "\tdocument.getElementById('editTargetTab').value='#TOKENATTRS';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('tokenAttr').value='".html_escape($_POST['EDITtokenAttr'])."';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#TOKENATTRS';\n";
 		        }
 		        elseif (isset($_POST['EDITConditionRegexp']) && $_POST['EDITConditionRegexp'] != '')
 		        {
 		            // In order to avoid issues with backslash escaping, I don't use javascript to set the value
 		            // Thus the value is directly set when creating the Textarea element
-		            //$conditionsoutput_main_content .= "\tdocument.getElementById('ConditionRegexp').value='".html_escape($_POST['EDITConditionRegexp'])."';\n";
-		            $conditionsoutput_main_content .= "\tdocument.getElementById('editTargetTab').value='#REGEXP';\n";
+		            //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionRegexp').value='".html_escape($_POST['EDITConditionRegexp'])."';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#REGEXP';\n";
 		        }
 		        elseif (isset($_POST['EDITcanswers']) && is_array($_POST['EDITcanswers']))
 		        { // was a predefined answers post
-		            $conditionsoutput_main_content .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
-		            $conditionsoutput_main_content .= "\t$('#canswersToSelect').val('".$_POST['EDITcanswers'][0]."');\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
+		            $aViewUrls['output'] .= "\t$('#canswersToSelect').val('".$_POST['EDITcanswers'][0]."');\n";
 		        }
 
 		        if (isset($_POST['csrctoken']) && $_POST['csrctoken'] != '')
 		        {
-		            $conditionsoutput_main_content .= "\tdocument.getElementById('csrctoken').value='".html_escape($_POST['csrctoken'])."';\n";
-		            $conditionsoutput_main_content .= "\tdocument.getElementById('editSourceTab').value='#SRCTOKENATTRS';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('csrctoken').value='".html_escape($_POST['csrctoken'])."';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('editSourceTab').value='#SRCTOKENATTRS';\n";
 		        }
 		        else if (isset($_POST['cquestions']) && $_POST['cquestions'] != '')
 		        {
-		            $conditionsoutput_main_content .= "\tdocument.getElementById('cquestions').value='".html_escape($_POST['cquestions'])."';\n";
-		            $conditionsoutput_main_content .= "\tdocument.getElementById('editSourceTab').value='#SRCPREVQUEST';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".html_escape($_POST['cquestions'])."';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('editSourceTab').value='#SRCPREVQUEST';\n";
 		        }
 		    }
 		    else
@@ -2036,65 +2020,64 @@ class conditions extends Survey_Common_Action {
 		        {
 		            // In order to avoid issues with backslash escaping, I don't use javascript to set the value
 		            // Thus the value is directly set when creating the Textarea element
-		            //$conditionsoutput_main_content .= "\tdocument.getElementById('ConditionConst').value='".html_escape($_POST['ConditionConst'])."';\n";
-		            $conditionsoutput_main_content .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
+		            //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionConst').value='".html_escape($_POST['ConditionConst'])."';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
 		        }
 		        elseif (isset($_POST['prevQuestionSGQA']) && $_POST['prevQuestionSGQA'] != '')
 		        {
-		            $conditionsoutput_main_content .= "\tdocument.getElementById('prevQuestionSGQA').value='".html_escape($_POST['prevQuestionSGQA'])."';\n";
-		            $conditionsoutput_main_content .= "\tdocument.getElementById('editTargetTab').value='#PREVQUESTIONS';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('prevQuestionSGQA').value='".html_escape($_POST['prevQuestionSGQA'])."';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#PREVQUESTIONS';\n";
 		        }
 		        elseif (isset($_POST['tokenAttr']) && $_POST['tokenAttr'] != '')
 		        {
-		            $conditionsoutput_main_content .= "\tdocument.getElementById('tokenAttr').value='".html_escape($_POST['tokenAttr'])."';\n";
-		            $conditionsoutput_main_content .= "\tdocument.getElementById('editTargetTab').value='#TOKENATTRS';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('tokenAttr').value='".html_escape($_POST['tokenAttr'])."';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#TOKENATTRS';\n";
 		        }
 		        elseif (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp'] != '')
 		        {
 		            // In order to avoid issues with backslash escaping, I don't use javascript to set the value
 		            // Thus the value is directly set when creating the Textarea element
-		            //$conditionsoutput_main_content .= "\tdocument.getElementById('ConditionRegexp').value='".html_escape($_POST['ConditionRegexp'])."';\n";
-		            $conditionsoutput_main_content .= "\tdocument.getElementById('editTargetTab').value='#REGEXP';\n";
+		            //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionRegexp').value='".html_escape($_POST['ConditionRegexp'])."';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#REGEXP';\n";
 		        }
 		        else
 		        { // was a predefined answers post
 		            if (isset($_POST['cquestions']))
 		            {
-		                $conditionsoutput_main_content .= "\tdocument.getElementById('cquestions').value='".html_escape($_POST['cquestions'])."';\n";
+		                $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".html_escape($_POST['cquestions'])."';\n";
 		            }
-		            $conditionsoutput_main_content .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
 		        }
 
 		        if (isset($_POST['csrctoken']) && $_POST['csrctoken'] != '')
 		        {
-		            $conditionsoutput_main_content .= "\tdocument.getElementById('csrctoken').value='".html_escape($_POST['csrctoken'])."';\n";
-		            $conditionsoutput_main_content .= "\tdocument.getElementById('editSourceTab').value='#SRCTOKENATTRS';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('csrctoken').value='".html_escape($_POST['csrctoken'])."';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('editSourceTab').value='#SRCTOKENATTRS';\n";
 		        }
 		        else
 		        {
-		            if (isset($_POST['cquestions'])) $conditionsoutput_main_content .= "\tdocument.getElementById('cquestions').value='".javascript_escape($_POST['cquestions'])."';\n";
-		            $conditionsoutput_main_content .= "\tdocument.getElementById('editSourceTab').value='#SRCPREVQUEST';\n";
+		            if (isset($_POST['cquestions'])) $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".javascript_escape($_POST['cquestions'])."';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('editSourceTab').value='#SRCPREVQUEST';\n";
 		        }
 		    }
 
 		    if (isset($p_scenario))
 		    {
-		        $conditionsoutput_main_content .= "\tdocument.getElementById('scenario').value='".$p_scenario."';\n";
+		        $aViewUrls['output'] .= "\tdocument.getElementById('scenario').value='".$p_scenario."';\n";
 		    }
-		    $conditionsoutput_main_content .= "-->\n"
+		    $aViewUrls['output'] .= "-->\n"
 		    . "</script>\n";
-		    $conditionsoutput_main_content .= "</td></tr>\n";
+		    $aViewUrls['output'] .= "</td></tr>\n";
 		}
 		//END: DISPLAY THE ADD or EDIT CONDITION FORM
 
 
-		$conditionsoutput_main_content .= "</table>\n";
+		$aViewUrls['output'] .= "</table>\n";
 
-		$conditionsoutput = $conditionsoutput_main_content;
+		$conditionsoutput = $aViewUrls['output'];
 
 		$data['conditionsoutput'] = $conditionsoutput;
-		$this->getController()->render("/admin/conditions/conditionsforms_view", $data);
-		$this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+        $this->_renderWrappedTemplate('conditionsforms_view', $data);
 
         // TMSW Conditions->Relevance:  Must call LEM->ConvertConditionsToRelevance() whenever Condition is added or updated - what is best location for that action?
 	}
@@ -2135,5 +2118,17 @@ class conditions extends Survey_Common_Action {
 	    return $reshtml;
 
 	}
+
+    /**
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    {
+        $aData['display']['menu_bars'] = false;
+        parent::_renderWrappedTemplate('conditions', $aViewUrls, $aData);
+    }
 
 }
