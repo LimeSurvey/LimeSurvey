@@ -12,14 +12,14 @@
                 {
                     foreach ($failedcheck as $fc)
                     { ?>
-                    <li> Question qid-<?php echo $fc[0]; ?> ("<a href='<?php echo Yii::app()->getController()->createUrl('admin/survey/view/'.$surveyid.'/'.$fc[3].'/'.$fc[0]); ?>'><?php echo $fc[1]; ?></a>")<?php echo $fc[2]; ?></li>
+                    <li> Question qid-<?php echo $fc[0]; ?> ("<a href='<?php echo Yii::app()->getController()->createUrl('admin/survey/view/surveyid/'.$surveyid.'/'.$fc[3].'/'.$fc[0]); ?>'><?php echo $fc[1]; ?></a>")<?php echo $fc[2]; ?></li>
                     <?php }
                 }
                 if (isset($failedgroupcheck) && $failedgroupcheck)
                 {
                     foreach ($failedgroupcheck as $fg)
                     { ?>
-                    <li> Group gid-<?php echo $fg[0]; ?> ("<a href='<?php echo Yii::app()->getController()->createUrl('admin/survey/view/'.$surveyid.'/'.$fg[0]); ?>'><?php echo $fg[1]; ?></a>")<?php echo $fg[2]; ?></li>
+                    <li> Group gid-<?php echo $fg[0]; ?> ("<a href='<?php echo Yii::app()->getController()->createUrl('admin/survey/view/surveyid/'.$surveyid.'/'.$fg[0]); ?>'><?php echo $fg[1]; ?></a>")<?php echo $fg[2]; ?></li>
                     <?php }
             } ?>
         </ul>

@@ -417,7 +417,7 @@ function activateSurvey($surveyid, $simulate = false)
 
     if (!$execresult)
     {
-        $link = Yii::app()->getController()->createUrl("admin/survey/view/".$surveyid);
+        $link = Yii::app()->getController()->createUrl("admin/survey/view/surveyid/".$surveyid);
         $activateoutput .= "<br />\n<div class='messagebox ui-corner-all'>\n" .
         "<div class='header ui-widget-header'>".$clang->gT("Activate Survey")." ($surveyid)</div>\n" .
         "<div class='warningheader'>".$clang->gT("Survey could not be actived.")."</div>\n" .
@@ -503,7 +503,7 @@ function activateSurvey($surveyid, $simulate = false)
         }
         else
         {
-            $link = Yii::app()->getController()->createUrl("admin/survey/view/".$surveyid);
+            $link = Yii::app()->getController()->createUrl("admin/survey/view/surveyid/".$surveyid);
 
             $activateoutput .= $clang->gT("This survey is now active, and responses can be recorded.")."<br /><br />\n";
             $activateoutput .= "<strong>".$clang->gT("Open-access mode").":</strong> ".$clang->gT("No invitation code is needed to complete the survey.")."<br />".$clang->gT("You can switch to the closed-access mode by initialising a token table with the button below.")."<br /><br />\n";

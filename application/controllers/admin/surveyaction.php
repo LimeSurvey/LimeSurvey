@@ -737,7 +737,7 @@ class SurveyAction extends Survey_Common_Action
             {
                 if (bHasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
                 {
-                    $aSurveyEntry[] = '<!--c--><a href="' . $this->getController()->createUrl('admin/survey/deactivate/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('imageurl') . '/active.png" alt="' . $clang->gT("This survey is active - click here to stop this survey.") . '"/></a>';
+                    $aSurveyEntry[] = '<!--c--><a href="' . $this->getController()->createUrl('admin/survey/deactivate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('imageurl') . '/active.png" alt="' . $clang->gT("This survey is active - click here to stop this survey.") . '"/></a>';
                 }
                 else
                 {
