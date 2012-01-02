@@ -127,7 +127,7 @@ class SurveyAction extends CAction {
         $redata = compact(array_keys(get_defined_vars()));
 
 
-        if ( $this->_didSessionTimeOut() )
+        /*if ( $this->_didSessionTimeOut() )
         {
             // TODO is this still required (we have the basepath check at the top)
             if (isset($param['rootdir']))
@@ -146,7 +146,7 @@ class SurveyAction extends CAction {
                     sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
                 );
             $this->_niceExit($redata, __LINE__, null, $asMessage);
-        };
+        };*/
 
         // Set the language of the survey, either from POST, GET parameter of session var
         $sTempLanguage = null;
