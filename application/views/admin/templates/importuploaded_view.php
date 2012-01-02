@@ -61,5 +61,5 @@ if (count($aErrorFilesInfo) > 0)
 }
 ?>
     </ul>
-    <input type='submit' value='<?php $clang->eT("Open imported template") ?>' onclick="window.open('<?php echo $this->createUrl('admin/templates/sa/view/editfile/startpage.pstpl/screenname/welcome/templatename/' . $newdir) ?>', '_top')" />
+    <input type='submit' value='<?php $clang->eT("Open imported template") ?>' onclick="window.open('<?php echo $this->createUrl('admin/templates/view/editfile/startpage.pstpl/screenname/welcome/templatename/' . $newdir) ?>', '_top')" />
 </div>

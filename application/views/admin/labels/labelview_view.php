@@ -12,7 +12,7 @@
         <li><a href='#up_resmgmt'>" . $clang->gT("Uploaded Resources Management") . "</a></li>";
 ?>
     </ul>
-    <form method='post' id='mainform' action='<?php echo $this->createUrl('admin/labels/sa/process') ?>' onsubmit="return codeCheck('code_', <?php echo $maxsortorder ?>, '<?php $clang->eT("Error: You are trying to use duplicate label codes.", 'js') ?>', '<?php $clang->eT("Error: 'other' is a reserved keyword.", 'js') ?>');">
+    <form method='post' id='mainform' action='<?php echo $this->createUrl('admin/labels/process') ?>' onsubmit="return codeCheck('code_', <?php echo $maxsortorder ?>, '<?php $clang->eT("Error: You are trying to use duplicate label codes.", 'js') ?>', '<?php $clang->eT("Error: 'other' is a reserved keyword.", 'js') ?>');">
         <input type='hidden' name='sortorder' value='<?php echo $msorow['sortorder'] ?>' />
         <input type='hidden' name='lid' value='<?php echo $lid ?>' />
         <input type='hidden' name= 'action' value='modlabelsetanswers' />
@@ -117,7 +117,7 @@
     <div id='up_resmgmt'>
         <div>
             <form class='form30' enctype='multipart/form-data' id='importlabelresources' name='importlabelresources'
-                  action='<?php echo $this->createUrl('admin/labels/sa/importlabelresources') ?>' method='post'
+                  action='<?php echo $this->createUrl('admin/labels/importlabelresources') ?>' method='post'
                   onsubmit='return validatefilename(this, "<?php $clang->eT('Please select a file to import!', 'js') ?>");'>
 
                 <input type='hidden' name='lid' value='$lid' />

@@ -1,4 +1,4 @@
-<form id='exportstructureQuestion' name='exportstructureQuestion' action='<?php echo $this->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid");?>' method='post'>
+<form id='exportstructureQuestion' name='exportstructureQuestion' action='<?php echo $this->createUrl("admin/export/group/surveyid/$surveyid/gid/$gid");?>' method='post'>
 <div class='header ui-widget-header'><?php $clang->eT("Export question structure");?></div>
 <ul>
 <li>

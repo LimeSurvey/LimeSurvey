@@ -177,10 +177,10 @@ class conditionsaction extends Survey_Common_Action {
 		    {
 		        $this->getController()->_getAdminHeader();
 		        $button_yes = CHtml::submitButton($clang->gT("Yes"), array(
-			    	'onclick' => "window.open('".$this->getController()->createUrl("admin/survey/sa/resetsurveylogic/surveyid/$surveyid")."?ok=Y"."', '_top')"
+			    	'onclick' => "window.open('".$this->getController()->createUrl("admin/survey/resetsurveylogic/surveyid/$surveyid")."?ok=Y"."', '_top')"
 			    ));
 			    $button_cancel = CHtml::submitButton($clang->gT("Cancel"), array(
-					'onclick' => "window.open('".$this->getController()->createUrl("admin/survey/sa/view/surveyid/$surveyid")."', '_top')"
+					'onclick' => "window.open('".$this->getController()->createUrl("admin/survey/view/surveyid/$surveyid")."', '_top')"
 				));
 
 		        $messagebox_content = $clang->gT("You are about to delete all conditions on this survey's questions")."($surveyid)"
@@ -202,7 +202,7 @@ class conditionsaction extends Survey_Common_Action {
 				$resetsurveylogicoutput .= CHtml::openTag('strong');
 				$resetsurveylogicoutput .= $clang->gT("All conditions in this survey have been deleted.").str_repeat($br, 2);
 				$resetsurveylogicoutput .= submitButton($clang->gT("Continue"), array(
-					'onclick' => "window.open('".$this->getController()->createUrl('/admin/survey/sa/view/surveyid/'.$surveyid)."', '_top')"
+					'onclick' => "window.open('".$this->getController()->createUrl('/admin/survey/view/surveyid/'.$surveyid)."', '_top')"
 				));
 				$resetsurveylogicoutput .= CHtml::closeTag('strong').CHtml::closeTag('td');
 				$resetsurveylogicoutput .= CHtml::closeTag('tr');
@@ -1058,7 +1058,7 @@ class conditionsaction extends Survey_Common_Action {
 		    }
 
 		    $questionNavOptions .= CHtml::tag('option', array(
-			    'value' => $this->getController()->createUrl("/admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/{$row['gid']}/qid/{$row['qid']}")),
+			    'value' => $this->getController()->createUrl("/admin/conditions/index/subaction/editconditionsform/surveyid/$surveyid/gid/{$row['gid']}/qid/{$row['qid']}")),
 				$questionselecter
 			);
 		}
@@ -1076,7 +1076,7 @@ class conditionsaction extends Survey_Common_Action {
 		}
 
 		$questionNavOptions .= CHtml::tag('option', array(
-			'value'=>$this->getController()->createUrl("/admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"),
+			'value'=>$this->getController()->createUrl("/admin/conditions/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"),
 			'selected'=>'selected'),
 			$questiontitle .': '. $questiontextshort);
 		$questionNavOptions .= CHtml::closeTag('optgroup');
@@ -1096,7 +1096,7 @@ class conditionsaction extends Survey_Common_Action {
 		        $questionselecter = htmlspecialchars(mb_strcut(html_entity_decode($question,ENT_QUOTES,'UTF-8'), 0, 35, 'UTF-8'))."...";
 		    }
 		    $questionNavOptions .=  CHtml::tag('option', array(
-			    'value' => $this->getController()->createUrl("/admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/{$row['gid']}/qid/{$row['qid']}")),
+			    'value' => $this->getController()->createUrl("/admin/conditions/index/subaction/editconditionsform/surveyid/$surveyid/gid/{$row['gid']}/qid/{$row['qid']}")),
 			    $row['title'].':'.$questionselecter
 			);
 		}
@@ -1357,7 +1357,7 @@ class conditionsaction extends Survey_Common_Action {
 		                    }
 
 		                    $aViewUrls['output'] .= "\t<tr class='oddrow' style='$markcidstyle'>\n"
-		                    ."\t<td><form style='margin-bottom:0;' name='conditionaction{$rows['cid']}' id='conditionaction{$rows['cid']}' method='post' action='".$this->getController()->createUrl("/admin/conditions/sa/index/subaction/$subaction/surveyid/$surveyid/gid/$gid/qid/$qid/")."'>\n"
+		                    ."\t<td><form style='margin-bottom:0;' name='conditionaction{$rows['cid']}' id='conditionaction{$rows['cid']}' method='post' action='".$this->getController()->createUrl("/admin/conditions/index/subaction/$subaction/surveyid/$surveyid/gid/$gid/qid/$qid/")."'>\n"
 		                    ."<table width='100%' style='height: 13px;' cellspacing='0' cellpadding='0'>\n"
 		                    ."\t<tr>\n";
 
@@ -1596,7 +1596,7 @@ class conditionsaction extends Survey_Common_Action {
 		if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
 		{
 		    $aViewUrls['output'] .= "<tr class=''><td colspan='3'>\n"
-		    ."<form action='".$this->getController()->createUrl("admin/conditions/sa/index/subaction/copyconditions/surveyid/$surveyid/gid/$gid/qid/$qid/")."' name='copyconditions' id='copyconditions' method='post'>\n";
+		    ."<form action='".$this->getController()->createUrl("admin/conditions/index/subaction/copyconditions/surveyid/$surveyid/gid/$gid/qid/$qid/")."' name='copyconditions' id='copyconditions' method='post'>\n";
 
 		    $aViewUrls['output'] .= "<div class='header ui-widget-header'>".$clang->gT("Copy conditions")."</div>\n";
 
@@ -1701,7 +1701,7 @@ class conditionsaction extends Survey_Common_Action {
 		$subaction == "editthiscondition" || $subaction == "delete")
 		{
 		    $aViewUrls['output'] .= "<tr><td colspan='3'>\n";
-		    $aViewUrls['output'] .= "<form action='".$this->getController()->createUrl("/admin/conditions/sa/index/subaction/$subaction/surveyid/$surveyid/gid/$gid/qid/$qid/")."' name='editconditions' id='editconditions' method='post'>\n";
+		    $aViewUrls['output'] .= "<form action='".$this->getController()->createUrl("/admin/conditions/index/subaction/$subaction/surveyid/$surveyid/gid/$gid/qid/$qid/")."' name='editconditions' id='editconditions' method='post'>\n";
 		    if ($subaction == "editthiscondition" &&  isset($p_cid))
 		    {
 		        $mytitle = $clang->gT("Edit condition");

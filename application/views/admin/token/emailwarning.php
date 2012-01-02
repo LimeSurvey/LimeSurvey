@@ -1,6 +1,6 @@
 <div class='messagebox ui-corner-all'>
     <div class='warningheader'><?php $clang->eT("Warning"); ?></div><br />
-    <form method='post' action='<?php echo $this->createUrl("/admin/tokens/sa/{$sSubAction}/surveyid/{$surveyid}"); ?>'>
+    <form method='post' action='<?php echo $this->createUrl("/admin/tokens/{$sSubAction}/surveyid/{$surveyid}"); ?>'>
         <?php $clang->eT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."); ?><br /><br />
         <?php echo str_replace("{EMAILCOUNT}", "$lefttosend", $clang->gT("There are {EMAILCOUNT} emails still to be sent.")); ?>
         <br /><br />

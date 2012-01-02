@@ -6,7 +6,7 @@
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('styleurl') . "/admin/default/adminstyle.css" ?>" />
         <script src="<?php echo Yii::app()->getConfig('generalscripts') . "/jquery/jquery.js" ?>" type="text/javascript"></script>
         <script src="<?php echo Yii::app()->getConfig('adminscripts') . "/uploadsummary.js" ?>" type="text/javascript"></script>
-        <script type="text/javascript">var redUrl = "<?php echo $this->createURL("admin/participants/sa/displayParticipants"); ?>";</script>
+        <script type="text/javascript">var redUrl = "<?php echo $this->createURL("admin/participants/displayParticipants"); ?>";</script>
     </head>
     <body>
         <?php

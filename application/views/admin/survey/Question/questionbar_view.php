@@ -2,7 +2,7 @@
     <div class="langpopup" id="previewquestionpopup"><?php $clang->eT("Please select a language:"); ?><ul>
     <?php foreach ($tmp_survlangs as $tmp_lang)
     { ?>
-        <li><a target='_blank' onclick="$('#previewquestion').qtip('hide');" href='<?php echo $this->createUrl("admin/question/sa/preview/surveyid/".$surveyid."/qid/".$qid."/lang/".$tmp_lang); ?>' accesskey='d'><?php echo getLanguageNameFromCode($tmp_lang,false); ?></a></li>
+        <li><a target='_blank' onclick="$('#previewquestion').qtip('hide');" href='<?php echo $this->createUrl("admin/question/preview/surveyid/".$surveyid."/qid/".$qid."/lang/".$tmp_lang); ?>' accesskey='d'><?php echo getLanguageNameFromCode($tmp_lang,false); ?></a></li>
     <?php } ?>
     </ul></div>
 <?php } ?>
@@ -17,7 +17,7 @@
             {
                 if (count(Survey::model()->findByPk($surveyid)->additionalLanguages) == 0)
                 { ?>
-                    <a href="#" accesskey='q' onclick="window.open('<?php echo $this->createUrl("admin/question/sa/preview/surveyid/$surveyid/qid/$qid/");?>', '_blank')"
+                    <a href="#" accesskey='q' onclick="window.open('<?php echo $this->createUrl("admin/question/preview/surveyid/$surveyid/qid/$qid/");?>', '_blank')"
                     title="<?php $clang->eTview("Preview This Question"); ?>">
                     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/preview.png' alt='<?php $clang->eT("Preview This Question"); ?>' name='previewquestionimg' /></a>
                     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt='' />
@@ -34,7 +34,7 @@
            <?php  if(bHasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
 
-                <a href='<?php echo $this->createUrl("admin/question/sa/editquestion/surveyid/".$surveyid."/gid/".$gid."/qid/".$qid); ?>'
+                <a href='<?php echo $this->createUrl("admin/question/editquestion/surveyid/".$surveyid."/gid/".$gid."/qid/".$qid); ?>'
                  title="<?php $clang->eTview("Edit current question"); ?>">
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/edit.png' alt='<?php $clang->eT("Edit Current Question"); ?>' name='EditQuestion' /></a>
             <?php } ?>
@@ -47,7 +47,7 @@
                 if (is_null($condarray))
                 { ?>
                     <a href='#'
-    				onclick="if (confirm('<?php $clang->eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>')) { <?php echo get2post($this->createUrl("admin/question/sa/delete/surveyid/$surveyid/gid/$gid/qid/$qid")); ?>}">
+    				onclick="if (confirm('<?php $clang->eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>')) { <?php echo get2post($this->createUrl("admin/question/delete/surveyid/$surveyid/gid/$gid/qid/$qid")); ?>}">
     				<img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/delete.png' name='DeleteWholeQuestion' alt='<?php $clang->eT("Delete current question"); ?>'
     				border='0' hspace='0' /></a>
                 <?php }
@@ -55,7 +55,7 @@
                             // TMSW Conditions->Relevance:  not needed - should be allowed to delete questions even if others depend upon it - use separate view to see exceptions
 
                 { ?>
-                    <a href='<?php echo $this->createUrl('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'
+                    <a href='<?php echo $this->createUrl('admin/survey/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'
     				onclick="alert('<?php $clang->eT("It's impossible to delete this question because there is at least one question having a condition on it.","js"); ?>')"
     				title="<?php $clang->eTview("Disabled - Delete current question"); ?>">
     				<img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/delete_disabled.png' name='DeleteWholeQuestion' alt='<?php $clang->eT("Disabled - Delete current question"); ?>' /></a>
@@ -72,7 +72,7 @@
 
             if(bHasSurveyPermission($surveyid,'surveycontent','export'))
             { ?>
-                <a href='<?php echo $this->createUrl("admin/export/sa/question/surveyid/$surveyid/gid/$gid/qid/$qid");?>'
+                <a href='<?php echo $this->createUrl("admin/export/question/surveyid/$surveyid/gid/$gid/qid/$qid");?>'
                  title="<?php $clang->eTview("Export this question"); ?>" >
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/dumpquestion.png' alt='<?php $clang->eT("Export this question"); ?>' name='ExportQuestion' /></a>
             <?php } ?>
@@ -86,7 +86,7 @@
             {
                 if ($activated != "Y")
                 { ?>
-                    <a href='<?php echo $this->createUrl("admin/question/sa/copyquestion/surveyid/$surveyid/gid/$gid/qid/$qid");?>'
+                    <a href='<?php echo $this->createUrl("admin/question/copyquestion/surveyid/$surveyid/gid/$gid/qid/$qid");?>'
                      title="<?php $clang->eTview("Copy Current Question"); ?>" >
                     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/copy.png'  alt='<?php $clang->eT("Copy Current Question"); ?>' name='CopyQuestion' /></a>
                     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt='' />
@@ -106,7 +106,7 @@
 
             if(bHasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
-                <a href='#' onclick="window.open('<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid");?>', '_top')"
+                <a href='#' onclick="window.open('<?php echo $this->createUrl("admin/conditions/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid");?>', '_top')"
                  title="<?php $clang->eTview("Set/view conditions for this question"); ?>">
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/conditions.png' alt='<?php $clang->eT("Set conditions for this question"); ?>'  name='SetQuestionConditions' /></a>
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt='' />
@@ -124,7 +124,7 @@
             {
                 if ($qtypes[$qrrow['type']]['subquestions'] >0)
                 { ?>
-                    <a href='<?php echo $this->createUrl('admin/question/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'
+                    <a href='<?php echo $this->createUrl('admin/question/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'
                     title='<?php $clang->eTview("Edit subquestions for this question"); ?>'>
                     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/subquestions.png' alt='<?php $clang->eT("Edit subquestions for this question"); ?>' name='EditSubquestions' /></a>
                 <?php }
@@ -139,7 +139,7 @@
 
             if(bHasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['answerscales'] > 0)
             { ?>
-                <a href='<?php echo $this->createUrl('admin/question/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'
+                <a href='<?php echo $this->createUrl('admin/question/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'
                 title="<?php $clang->eTview("Edit answer options for this question"); ?>">
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/answers.png' alt='<?php $clang->eT("Edit answer options for this question"); ?>' name='EditAnswerOptions' /></a>
             <?php }
@@ -153,7 +153,7 @@
 
             if(bHasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0)
             { ?>
-                <a href='<?php echo $this->createUrl('admin/question/sa/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'
+                <a href='<?php echo $this->createUrl('admin/question/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'
                 title="<?php $clang->eTview("Edit default answers for this question"); ?>">
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/defaultanswers.png' alt='<?php $clang->eT("Edit default answers for this question"); ?>' name='EditDefaultAnswerOptions' /></a>
             <?php } ?>
@@ -167,7 +167,7 @@
             onclick='document.getElementById("questiondetails").style.display="";' />
             <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/close.gif' title='
             <?php $clang->eT("Close this Question"); ?>' alt='<?php $clang->eT("Close this Question"); ?>' name='CloseQuestionWindow'
-            onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid/qid/$gid"); ?>', '_top')" />
+            onclick="window.open('<?php echo $this->createUrl("admin/survey/view/surveyid/$surveyid/qid/$gid"); ?>', '_top')" />
             </div>
             </div>
             </div>
@@ -217,7 +217,7 @@
             { ?>
                 <tr ><td></td><td align='left'>
                 <span class='statusentryhighlight'>
-                <?php $clang->eT("Warning"); ?>: <a href='<?php echo $this->createUrl("admin/question/sa/answeroptions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'><?php $clang->eT("You need to add answer options to this question"); ?>
+                <?php $clang->eT("Warning"); ?>: <a href='<?php echo $this->createUrl("admin/question/answeroptions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'><?php $clang->eT("You need to add answer options to this question"); ?>
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/answers_20.png' title='
                 <?php $clang->eT("Edit answer options for this question"); ?>' name='EditThisQuestionAnswers'/></a></span></td></tr>
             <?php }
@@ -227,7 +227,7 @@
             { ?>
                <tr ><td></td><td align='left'>
                 <span class='statusentryhighlight'>
-                <?php $clang->eT("Warning"); ?>: <a href='<?php echo $this->createUrl("admin/question/sa/subquestions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'><?php $clang->eT("You need to add subquestions to this question"); ?>
+                <?php $clang->eT("Warning"); ?>: <a href='<?php echo $this->createUrl("admin/question/subquestions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'><?php $clang->eT("You need to add subquestions to this question"); ?>
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/subquestions_20.png' title='
                 <?php $clang->eT("Edit subquestions for this question"); ?>' name='EditThisQuestionAnswers' /></a></span></td></tr>
             <?php }

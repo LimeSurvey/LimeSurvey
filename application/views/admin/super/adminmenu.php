@@ -7,7 +7,7 @@
 			if(Yii::app()->session['loginID'])
 	    	{ ?>
 	 			 --  <?php $clang->eT("Logged in as:");?><strong>
-		        <a href="#" onclick="window.open('<?php echo $this->createUrl("/admin/user/sa/personalsettings");?>', '_top')" title="<?php $clang->eTview("Edit your personal preferences");?>">
+		        <a href="#" onclick="window.open('<?php echo $this->createUrl("/admin/user/personalsettings");?>', '_top')" title="<?php $clang->eTview("Edit your personal preferences");?>">
 		        <?php echo Yii::app()->session['user'];?> <img src='<?php echo Yii::app()->getConfig('imageurl');?>/profile_edit.png' name='ProfileEdit' alt='<?php $clang->eT("Edit your personal preferences");?>' /></a>
 		        </strong>
 	        <?php } ?>
@@ -69,20 +69,20 @@
 		{
 	    ?>
 
-	    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/labels/sa/view");?>', '_top')" title="<?php $clang->eTview("Edit label sets");?>" >
+	    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/labels/view");?>', '_top')" title="<?php $clang->eTview("Edit label sets");?>" >
 	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/labels.png' name='LabelsEditor' alt='<?php $clang->eT("Edit label sets");?>' width='40' height='40'/></a>
 	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/seperator.gif' alt='' border='0' hspace='0' />
 	    <?php }
 	    if(Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 		{ ?>
-	    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/templates/sa/view");?>', '_top')" title="<?php $clang->eTview("Template Editor");?>" >
+	    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/templates/view");?>', '_top')" title="<?php $clang->eTview("Template Editor");?>" >
 	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/templates.png' name='EditTemplates' alt='<?php $clang->eT("Template Editor");?>' width='40' height='40'/></a>
 	    <?php } ?>
             <img src='<?php echo Yii::app()->getConfig('imageurl');?>/seperator.gif' alt='' border='0' hspace='0' />
         <?php
         if(Yii::app()->session['USER_RIGHT_PARTICIPANT_PANEL'] == 1)
 		{ 	 ?>
-            <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/participants/sa/index");?>', '_top')" title="<?php $clang->eTview("Participant panel");?>" >
+            <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/participants/index");?>', '_top')" title="<?php $clang->eTview("Participant panel");?>" >
 	        <img src='<?php echo Yii::app()->getConfig('imageurl');?>/tokens.png' name='participantpanel' alt='<?php $clang->eT("Participant panel");?>' width='40' height='40'/></a>
         <?php } ?>
 	</div>
@@ -91,7 +91,7 @@
 	    <select id='surveylist' name='surveylist' onchange="window.open(this.options[this.selectedIndex].value,'_top')">
 	    <?php echo getsurveylist(false, false, $surveyid); ?>
 	    </select>
-        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/index");?>', '_top')" title="<?php $clang->eTview("Detailed list of surveys");?>" >
+        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/survey/index");?>', '_top')" title="<?php $clang->eTview("Detailed list of surveys");?>" >
         <img src='<?php echo Yii::app()->getConfig('imageurl');?>/surveylist.png' name='ListSurveys' alt='<?php $clang->eT("Detailed list of surveys");?>' />
         </a>
 
@@ -99,13 +99,13 @@
 	    if(Yii::app()->session['USER_RIGHT_CREATE_SURVEY'] == 1)
 		{ ?>
 
-	    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/newsurvey");?>', '_top')" title="<?php $clang->eTview("Create, import, or copy a survey");?>" >
+	    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/survey/newsurvey");?>', '_top')" title="<?php $clang->eTview("Create, import, or copy a survey");?>" >
 	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/add.png' name='AddSurvey' alt='<?php $clang->eT("Create, import, or copy a survey");?>' /></a>
 	    <?php } ?>
 
 
 	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/seperator.gif' alt='' border='0' hspace='0' />
-	    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/authentication/sa/logout");?>', '_top')" title="<?php $clang->eTview("Logout");?>" >
+	    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/authentication/logout");?>', '_top')" title="<?php $clang->eTview("Logout");?>" >
 	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/logout.png' name='Logout' alt='<?php $clang->eT("Logout");?>' /></a>
 
 	    <a href="http://docs.limesurvey.org" title="<?php $clang->eTview("LimeSurvey online manual");?>" >

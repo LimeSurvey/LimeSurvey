@@ -101,7 +101,7 @@ class emailtemplates extends Survey_Common_Action {
             }
             Yii::app()->session['flashmessage'] = $clang->gT("Email templates successfully saved.");
         }
-        $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$iSurveyId));
+        $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/surveyid/'.$iSurveyId));
     }
 
 

@@ -24,11 +24,11 @@ $errors = LimeExpressionManager::GetSyntaxErrors();
                     <?php echo $error['sid'];?>
                     </a>
                 </td>
-                <td><a href="<?php echo $this->createUrl('/admin/questiongroup/sa/organize/surveyid'.$error['sid'].'/gid/'.$error['gid']);?>">
+                <td><a href="<?php echo $this->createUrl('/admin/questiongroup/organize/surveyid'.$error['sid'].'/gid/'.$error['gid']);?>">
                     <?php echo $error['gid'];?>
                     </a>
                 </td>
-                <td><a href="<?php echo $this->createUrl('/admin/questiongroup/sa/organize/surveyid/'.$error['sid'].'/gid/'.$error['gid'].'/qid/'.$error['qid']);?>">
+                <td><a href="<?php echo $this->createUrl('/admin/questiongroup/organize/surveyid/'.$error['sid'].'/gid/'.$error['gid'].'/qid/'.$error['qid']);?>">
                     <?php echo $error['qid'];?>
                     </a>
                 </td>

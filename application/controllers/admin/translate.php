@@ -264,7 +264,7 @@ class translate extends Survey_Common_Action {
 							$clang->gTview("Return to survey administration"),
 							"Administration",
 							"home.png",
-							$this->getController()->createUrl("admin/survey/sa/view/surveyid/{$surveyid}/")
+							$this->getController()->createUrl("admin/survey/view/surveyid/{$surveyid}/")
 						);
 
         // Separator
@@ -399,7 +399,7 @@ class translate extends Survey_Common_Action {
 								'option',
 								array(
 									'selected' => $selected,
-									'value' => $this->getController()->createUrl("admin/translate/sa/index/surveyid/{$surveyid}/")
+									'value' => $this->getController()->createUrl("admin/translate/index/surveyid/{$surveyid}/")
 								),
 								$clang->gT("Please choose...")
 							);
@@ -414,7 +414,7 @@ class translate extends Survey_Common_Action {
 								'option',
 								array(
 									'selected' => $selected,
-									'value' => $this->getController()->createUrl("admin/translate/sa/index/surveyid/{$surveyid}/lang/{$lang}")
+									'value' => $this->getController()->createUrl("admin/translate/index/surveyid/{$surveyid}/lang/{$lang}")
 								),
 								$tolangtext
 							);

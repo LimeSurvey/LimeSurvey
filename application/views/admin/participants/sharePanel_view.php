@@ -1,6 +1,6 @@
 <script type="text/javascript">
-    var shareinfoUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getShareInfo_json"); ?>";
-    var editurlshare = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/editShareInfo"); ?>";
+    var shareinfoUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getShareInfo_json"); ?>";
+    var editurlshare = "<?php echo Yii::app()->getController()->createUrl("admin/participants/editShareInfo"); ?>";
     var isadmin = "<?php echo (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == '1' ? 1 : 0); ?>"
 </script>
 <div class='header ui-widget-header'><strong><?php $clang->eT("Share panel"); ?> </strong></div>

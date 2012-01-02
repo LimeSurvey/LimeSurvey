@@ -661,7 +661,7 @@ class SurveyAction extends Survey_Common_Action
 
                 if (count($questionsCountResult) && bHasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
                 {
-                    $aSurveyEntry[] = '<!--e--><a href="' . $this->getController()->createUrl('admin/survey/sa/activate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('imageurl') . '/inactive.png" title="" alt="' . $clang->gT("This survey is currently not active - click here to activate this survey.") . '" /></a>';
+                    $aSurveyEntry[] = '<!--e--><a href="' . $this->getController()->createUrl('admin/survey/activate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('imageurl') . '/inactive.png" title="" alt="' . $clang->gT("This survey is currently not active - click here to activate this survey.") . '" /></a>';
                 }
                 else
                 {
@@ -671,10 +671,10 @@ class SurveyAction extends Survey_Common_Action
 
             //Set SID
             $aSurveyEntry[] = $rows['sid'];
-            '<a href="' . $this->getController()->createUrl("/admin/survey/sa/view/surveyid/" . $rows['sid']) . '">' . $rows['sid'] . '</a>';
+            '<a href="' . $this->getController()->createUrl("/admin/survey/view/surveyid/" . $rows['sid']) . '">' . $rows['sid'] . '</a>';
 
             //Set Title
-            $aSurveyEntry[] = '<!--' . $rows['surveyls_title'] . '--><a href="' . $this->getController()->createUrl("/admin/survey/sa/view/surveyid/" . $rows['sid']) . '">' . $rows['surveyls_title'] . '</a>';
+            $aSurveyEntry[] = '<!--' . $rows['surveyls_title'] . '--><a href="' . $this->getController()->createUrl("/admin/survey/view/surveyid/" . $rows['sid']) . '">' . $rows['surveyls_title'] . '</a>';
 
             //Set Date
             Yii::import('application.libraries.Date_Time_Converter', true);
@@ -715,7 +715,7 @@ class SurveyAction extends Survey_Common_Action
                 $aSurveyEntry[] = $all;
 
 
-                $aSurveyEntry['viewurl'] = $this->getController()->createUrl("/admin/survey/sa/view/surveyid/" . $rows['sid']);
+                $aSurveyEntry['viewurl'] = $this->getController()->createUrl("/admin/survey/view/surveyid/" . $rows['sid']);
                 if (Yii::app()->db->schema->getTable("{{tokens_" . $rows['sid'] . "}}"))
                 {
                     $tokens = Tokens_dynamic::model($rows['sid'])->count();
@@ -1347,7 +1347,7 @@ class SurveyAction extends Survey_Common_Action
         $dExpirationdate = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
         $dExpirationdate = date_shift($dExpirationdate, "Y-m-d H:i:s", '-1 day');
         Survey::model()->updateSurvey(array('expires' => $dExpirationdate), 'sid= \'' . $iSurveyId . '\'');
-        $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $iSurveyId));
+        $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/surveyid/' . $iSurveyId));
     }
 
     /**
@@ -1611,7 +1611,7 @@ class SurveyAction extends Survey_Common_Action
             // Update survey permissions
             Survey_permissions::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
 
-            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $iNewSurveyid));
+            $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/surveyid/' . $iNewSurveyid));
         }
     }
 

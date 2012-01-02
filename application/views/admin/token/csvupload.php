@@ -2,7 +2,7 @@
     <?php echo $sError; ?><br /><br />
 <?php } ?>
 
-<form id='tokenimport' enctype='multipart/form-data' action='<?php echo $this->createUrl("admin/tokens/sa/import/surveyid/$iSurveyId"); ?>' method='post'>
+<form id='tokenimport' enctype='multipart/form-data' action='<?php echo $this->createUrl("admin/tokens/import/surveyid/$iSurveyId"); ?>' method='post'>
     <ul>
         <li>
             <label for='the_file'><?php $clang->eT("Choose the CSV file to upload:"); ?></label>

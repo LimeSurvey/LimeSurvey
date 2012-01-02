@@ -115,7 +115,7 @@ class AdminController extends LSYii_Controller
             Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
             Yii::app()->session['redirectopage'] = Yii::app()->request->requestUri;
 
-            $this->redirect($this->createUrl('/admin/authentication/sa/login'));
+            $this->redirect($this->createUrl('/admin/authentication/login'));
         }
 
 		return parent::run($action);
@@ -219,15 +219,6 @@ class AdminController extends LSYii_Controller
 		else
 			Yii::app()->session['USER_RIGHT_INITIALSUPERADMIN'] = 0;
 	}
-
-    function createUrl($route, $params = array(), $ampersand = '&')
-    {
-        $url = parent::createUrl($route, $params, $ampersand);
-
-        $url = str_replace('/sa/', '/', $url);
-
-        return $url;
-    }
 
 	/**
 	 * Prints Admin Header

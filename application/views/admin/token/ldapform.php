@@ -19,7 +19,7 @@ elseif (empty($ldap_queries) || !is_array($ldap_queries) || count($ldap_queries)
 else
 {
 ?>
-<form method='post' action='<?php echo $this->createUrl("admin/tokens/sa/importldap/surveyid/$iSurveyId"); ?>' method='post'>
+<form method='post' action='<?php echo $this->createUrl("admin/tokens/importldap/surveyid/$iSurveyId"); ?>' method='post'>
     <p>
         <?php $clang->eT("Select the LDAP query you want to run:"); ?><br />
         <select name='ldapQueries'>

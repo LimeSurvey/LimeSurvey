@@ -24,7 +24,7 @@
 	<td align="center" <?php echo $highlight;?>><?php echo $completed;?></td>
 	<td align="center" style="padding: 3px;">
 <?php if (bHasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
-    <form action="<?php echo $this->createUrl("admin/quotas/sa/editquota/surveyid/$iSurveyId");?>" method="post">
+    <form action="<?php echo $this->createUrl("admin/quotas/editquota/surveyid/$iSurveyId");?>" method="post">
                         <input name="submit" type="submit" class="submit" value="<?php $clang->eT("Edit");?>" />
                         <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
                         <input type="hidden" name="action" value="quotas" />
@@ -32,7 +32,7 @@
                         <input type="hidden" name="subaction" value="quota_editquota" />
                     </form>
 <?php } if (bHasSurveyPermission($iSurveyId, 'quotas','delete')) { ?>
-    <form action="<?php echo $this->createUrl("admin/quotas/sa/delquota/surveyid/$iSurveyId");?>" method="post">
+    <form action="<?php echo $this->createUrl("admin/quotas/delquota/surveyid/$iSurveyId");?>" method="post">
 			            <input name="submit" type="submit" class="submit" value="<?php $clang->eT("Remove");?>" />
 			            <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
 			            <input type="hidden" name="action" value="quotas" />
@@ -50,7 +50,7 @@
 	<td align="center">&nbsp;</td>
 	<td style="padding: 3px;" align="center">
 <?php if (bHasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
-    <form action="<?php echo $this->createUrl("admin/quotas/sa/new_answer/surveyid/$iSurveyId");?>" method="post">
+    <form action="<?php echo $this->createUrl("admin/quotas/new_answer/surveyid/$iSurveyId");?>" method="post">
                         <input name="submit" type="submit" class="quota_new" value="<?php $clang->eT("Add Answer");?>" />
                         <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
                         <input type="hidden" name="action" value="quotas" />

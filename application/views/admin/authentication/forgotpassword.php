@@ -1,4 +1,4 @@
-<form class="form44" name="forgotpassword" id="forgotpassword" method="post" action="<?php echo $this->createUrl("admin/authentication/sa/forgotpassword"); ?>" >
+<form class="form44" name="forgotpassword" id="forgotpassword" method="post" action="<?php echo $this->createUrl("admin/authentication/forgotpassword"); ?>" >
     <p><strong><?php $clang->eT('You have to enter user name and email.'); ?></strong></p>
 
     <ul>

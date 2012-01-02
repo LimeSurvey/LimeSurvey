@@ -9,5 +9,5 @@
     ?>
 </div>
 
-<form method='post' action='<?php echo $this->createUrl('/admin/dataentry/sa/update'); ?>' name='editresponse' id='editresponse'>
+<form method='post' action='<?php echo $this->createUrl('/admin/dataentry/update'); ?>' name='editresponse' id='editresponse'>
    <table id='responsedetail' width='99%' align='center' cellpadding='0' cellspacing='0'>

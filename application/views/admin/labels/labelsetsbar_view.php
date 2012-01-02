@@ -10,7 +10,7 @@
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' align='left' alt='' />
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/blank.gif' width='76' align='left' height='20' alt='' />
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' border='0' hspace='0' align='left' alt='' />
-            <a href='<?php echo $this->createUrl("admin/labels/sa/exportmulti");?>' title="<?php $clang->eTview("Export label set"); ?>" >
+            <a href='<?php echo $this->createUrl("admin/labels/exportmulti");?>' title="<?php $clang->eTview("Export label set"); ?>" >
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/dumplabelmulti.png' alt='<?php $clang->eT("Export multiple label sets"); ?>' align='left' /></a>
         </div>
         <div class='menubar-right'>
@@ -25,14 +25,14 @@
                     {
                         foreach ($labelsets as $lb)
                         { ?>
-                        <option value='<?php echo $this->createUrl("admin/labels/sa/view/lid/".$lb[0]); ?>'
+                        <option value='<?php echo $this->createUrl("admin/labels/view/lid/".$lb[0]); ?>'
                             <?php if ($lb[0] == $lid) { ?> selected='selected' <?php } ?>
                             ><?php echo $lb[0]; ?>: <?php echo $lb[1]; ?></option>
                         <?php }
                 } ?>
 
             </select>
-            <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/labels/sa/newlabelset") ?>', '_top')"
+            <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/labels/newlabelset") ?>', '_top')"
                 title="<?php $clang->eTview("Create or import new label set(s)"); ?>">
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/add.png' name='AddLabel' alt='<?php $clang->eT("Create or import new label set(s)"); ?>' /></a>
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif'  alt='' />

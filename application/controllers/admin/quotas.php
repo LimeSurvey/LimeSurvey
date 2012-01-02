@@ -69,7 +69,7 @@ class quotas extends Survey_Common_Action
 
     function _redirectToIndex($iSurveyId)
     {
-        $this->getController()->redirect($this->getController()->createUrl("/admin/quotas/sa/index/surveyid/$iSurveyId"));
+        $this->getController()->redirect($this->getController()->createUrl("/admin/quotas/index/surveyid/$iSurveyId"));
     }
 
     function index($iSurveyId, $quickreport = false)

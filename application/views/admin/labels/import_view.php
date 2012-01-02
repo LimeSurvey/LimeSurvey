@@ -30,5 +30,5 @@
         <li><?php echo $clang->gT("Labels") . ": {$aImportResults['labels']}" ?></li>
     </ul>
     <strong><?php $clang->eT("Import of label set(s) is completed.") ?></strong><br /><br />
-    <input type='submit' value='<?php $clang->gT("Return to label set administration") ?>' onclick="window.open('<?php echo $this->createUrl('admin/labels/sa/view') ?>', '_top')" />
+    <input type='submit' value='<?php $clang->gT("Return to label set administration") ?>' onclick="window.open('<?php echo $this->createUrl('admin/labels/view') ?>', '_top')" />
 </div><br />

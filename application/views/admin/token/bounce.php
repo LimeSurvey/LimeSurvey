@@ -1,6 +1,6 @@
 <div class='header ui-widget-header'><?php $clang->eT("Bounce settings"); ?></div>
 <div id='bouncesettingsdiv'>
-    <form id='bouncesettings' name='bouncesettings' action='<?php echo $this->createUrl("admin/tokens/sa/bouncesettings/surveyid/$surveyid"); ?>' method='post'>
+    <form id='bouncesettings' name='bouncesettings' action='<?php echo $this->createUrl("admin/tokens/bouncesettings/surveyid/$surveyid"); ?>' method='post'>
         <br><li><label for='bounce_email'><?php $clang->eT('Survey bounce email:'); ?></label>
             <input type='text' size='50' id='bounce_email' name='bounce_email' value="<?php echo $settings['bounce_email']; ?>" ></li>
         <li><label for='bounceprocessing'><?php $clang->eT("Bounce settings to be used"); ?></label>

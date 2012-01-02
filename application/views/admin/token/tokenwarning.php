@@ -20,8 +20,8 @@
         $clang->eT("Do you want to create a token table for this survey?");
         ?>
         <br /><br />
-        <input type='submit' value='<?php $clang->eT("Initialise tokens"); ?>' onclick="<?php echo get2post($this->createUrl("admin/tokens/sa/index/surveyid/$surveyid") . "?action=tokens&amp;sid=$surveyid&amp;createtable=Y"); ?>" />
-        <input type='submit' value='<?php $clang->eT("No, thanks."); ?>' onclick="window.open('<?php echo$this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>', '_top')" /></div>
+        <input type='submit' value='<?php $clang->eT("Initialise tokens"); ?>' onclick="<?php echo get2post($this->createUrl("admin/tokens/index/surveyid/$surveyid") . "?action=tokens&amp;sid=$surveyid&amp;createtable=Y"); ?>" />
+        <input type='submit' value='<?php $clang->eT("No, thanks."); ?>' onclick="window.open('<?php echo$this->createUrl("admin/survey/view/surveyid/$surveyid"); ?>', '_top')" /></div>
 <?php
 }
 else
@@ -39,7 +39,7 @@ if ($tcount > 0 && $databasetype != 'postgre' && bHasSurveyPermission($surveyid,
     ?>
     <br /><div class='header ui-widget-header'><?php $clang->eT("Restore options"); ?></div>
     <div class='messagebox ui-corner-all'>
-        <form method='post' action='<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid"); ?>'>
+        <form method='post' action='<?php echo $this->createUrl("admin/tokens/index/surveyid/$surveyid"); ?>'>
     <?php $clang->eT("The following old token tables could be restored:"); ?><br /><br />
             <select size='4' name='oldtable' style='width:250px;'>
     <?php

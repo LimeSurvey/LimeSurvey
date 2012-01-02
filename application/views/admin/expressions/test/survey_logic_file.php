@@ -20,7 +20,7 @@ if (empty($_POST['sid']))   //  || count($_POST) == 0) {
     foreach($data->readAll() as $row) {
         $surveyList .= "<option value='" . $row['sid'] .'|' . $row['assessments'] . "'>#" . $row['sid'] . " [" . $row['datecreated'] . '] ' . FlattenText($row['title']) . "</option>\n";
     }
-    $url=$this->createUrl('admin/expressions/sa/survey_logic_file');
+    $url=$this->createUrl('admin/expressions/survey_logic_file');
     $form = <<< EOD
 <form method='post' action='$url'>
 <h3>Generate a logic file for the survey</h3>

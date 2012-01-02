@@ -11,7 +11,7 @@ if (count($_POST) == 0) {
         $surveyList .= "<option value='" . $row['sid'] .'|' . $row['assessments'] . "'>#" . $row['sid'] . " [" . $row['datecreated'] . '] ' . FlattenText($row['title']) . "</option>\n";
     }
 
-    $url=$this->createUrl('admin/expressions/sa/navigation_test');
+    $url=$this->createUrl('admin/expressions/navigation_test');
     $form = <<< EOD
 <form method='post' action='$url'>
 <h3>Enter the following variables to test navigation for a survey using different styles</h3>

@@ -5,7 +5,7 @@
 	<td align="center">&nbsp;</td>
 	<td align="center">&nbsp;</td>
 	<td style="padding: 3px;" align="center">
-		<form action="<?php echo $this->createUrl("admin/quotas/sa/delans/surveyid/$iSurveyId");?>" method="post">
+		<form action="<?php echo $this->createUrl("admin/quotas/delans/surveyid/$iSurveyId");?>" method="post">
 			<input name="submit" type="submit" class="submit" value="<?php $clang->eT("Remove");?>" />
 			<input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
 			<input type="hidden" name="action" value="quotas" />

@@ -80,21 +80,21 @@
         <div class='menubar-left'>
             <?php
             echo CHtml::link(CHtml::image($home['src'], $home['alt']), Yii::app()->getController()->createUrl("/admin"));
-            echo CHtml::link(CHtml::image($information['src'], $information['alt']), $this->createURL('admin/participants/sa/index'));
-            echo CHtml::link(CHtml::image($display['src'], $display['alt']), $this->createURL('admin/participants/sa/displayParticipants'));
+            echo CHtml::link(CHtml::image($information['src'], $information['alt']), $this->createURL('admin/participants/index'));
+            echo CHtml::link(CHtml::image($display['src'], $display['alt']), $this->createURL('admin/participants/displayParticipants'));
             echo CHtml::image($seperator['src'], $seperator['alt']);
-            echo CHtml::link(CHtml::image($import['src'], $import['alt']), $this->createURL('admin/participants/sa/importCSV'));
-            echo CHtml::link(CHtml::image($export['src'], $export['alt']), $this->createURL('admin/participants/sa/exporttocsvAll'));
+            echo CHtml::link(CHtml::image($import['src'], $import['alt']), $this->createURL('admin/participants/importCSV'));
+            echo CHtml::link(CHtml::image($export['src'], $export['alt']), $this->createURL('admin/participants/exporttocsvAll'));
             echo CHtml::image($seperator['src'], $seperator['alt']);
-            echo CHtml::link(CHtml::image($blacklist['src'], $blacklist['alt']), $this->createURL('admin/participants/sa/blacklistControl'));
+            echo CHtml::link(CHtml::image($blacklist['src'], $blacklist['alt']), $this->createURL('admin/participants/blacklistControl'));
             if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
             {
-                echo CHtml::link(CHtml::image($globalsettings['src'], $globalsettings['alt']), $this->createURL('admin/participants/sa/userControl'));
+                echo CHtml::link(CHtml::image($globalsettings['src'], $globalsettings['alt']), $this->createURL('admin/participants/userControl'));
             }
             echo CHtml::image($seperator['src'], $seperator['alt']);
-            echo CHtml::link(CHtml::image($attributecontrol['src'], $attributecontrol['alt']), $this->createURL('admin/participants/sa/attributeControl'));
+            echo CHtml::link(CHtml::image($attributecontrol['src'], $attributecontrol['alt']), $this->createURL('admin/participants/attributeControl'));
             echo CHtml::image($seperator['src'], $seperator['alt']);
-            echo CHtml::link(CHtml::image($sharepanel['src'], $sharepanel['alt']), $this->createURL('admin/participants/sa/sharePanel'));
+            echo CHtml::link(CHtml::image($sharepanel['src'], $sharepanel['alt']), $this->createURL('admin/participants/sharePanel'));
             ?>
         </div>
     </div>

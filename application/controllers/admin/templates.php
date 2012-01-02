@@ -247,7 +247,7 @@ class templates extends Survey_Common_Action
      */
     public function screenredirect($editfile = 'startpage.pstpl', $templatename = 'default', $screenname = 'welcome')
     {
-        $this->getController()->redirect($this->getController()->createUrl("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
+        $this->getController()->redirect($this->getController()->createUrl("admin/templates/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
     }
 
     /**
@@ -261,7 +261,7 @@ class templates extends Survey_Common_Action
      */
     public function fileredirect($templatename = 'default', $screenname = 'welcome', $editfile = 'startpage.pstpl')
     {
-        $this->getController()->redirect($this->getController()->createUrl("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
+        $this->getController()->redirect($this->getController()->createUrl("admin/templates/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
     }
 
     /**
@@ -276,7 +276,7 @@ class templates extends Survey_Common_Action
             // This is where the temp file is
             $the_full_file_path = Yii::app()->getConfig('usertemplaterootdir') . "/" . $_POST['templatename'] . "/" . returnglobal('otherfile');
             unlink($the_full_file_path);
-            $this->getController()->redirect($this->getController()->createUrl("admin/templates/sa/view/editfile/" . returnglobal('editfile') . "/screenname/" . returnglobal('screenname') . "/templatename/" . returnglobal('templatename')));
+            $this->getController()->redirect($this->getController()->createUrl("admin/templates/view/editfile/" . returnglobal('editfile') . "/screenname/" . returnglobal('screenname') . "/templatename/" . returnglobal('templatename')));
         }
     }
 
@@ -374,7 +374,7 @@ class templates extends Survey_Common_Action
         }
 
         // Redirect with default templatename, editfile and screenname
-        $this->getController()->redirect($this->getController()->createUrl("admin/templates/sa/view"));
+        $this->getController()->redirect($this->getController()->createUrl("admin/templates/view"));
     }
 
     /**
@@ -432,7 +432,7 @@ class templates extends Survey_Common_Action
             }
         }
 
-        $this->getController()->redirect($this->getController()->createUrl("admin/templates/sa/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
+        $this->getController()->redirect($this->getController()->createUrl("admin/templates/view/editfile/" . $editfile . "/screenname/" . $screenname . "/templatename/" . $templatename));
     }
 
     /**

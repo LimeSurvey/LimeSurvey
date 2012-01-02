@@ -1554,8 +1554,8 @@
                 ob_end_flush();
             }
 
-            $onerecord_link = $this->getController()->createUrl('/').'/admin/browse/sa/index/surveyid/'.$surveyid.'/id/'.$id;
-            $allrecords_link = $this->getController()->createUrl('/').'/admin/browse/sa/index/surveyid/'.$surveyid.'/all';
+            $onerecord_link = $this->getController()->createUrl('/').'/admin/browse/index/surveyid/'.$surveyid.'/id/'.$id;
+            $allrecords_link = $this->getController()->createUrl('/').'/admin/browse/index/surveyid/'.$surveyid.'/all';
             $aDataentryoutput .= "<div class='messagebox ui-corner-all'><div class='successheader'>".$clang->gT("Success")."</div>\n"
             .$clang->gT("Record has been updated.")."<br /><br />\n"
             ."<input type='submit' value='".$clang->gT("View This Record")."' onclick=\"window.open('$onerecord_link', '_top')\" /><br /><br />\n"
@@ -1656,7 +1656,7 @@
                     {
                         $errormsg .= "<br /><br />".$clang->gT("Follow the following link to update it").":\n";
                         $errormsg .= CHtml::link("[id:$lastanswfortoken]",
-                        	Yii::app()->baseUrl.('/admin/dataentry/sa/editdata/subaction/edit/id/'.$lastanswfortoken.'/surveyid/'.$surveyid.'/lang/'.$rlanguage),
+                        	Yii::app()->baseUrl.('/admin/dataentry/editdata/subaction/edit/id/'.$lastanswfortoken.'/surveyid/'.$surveyid.'/lang/'.$rlanguage),
 							array('title' => $clang->gT("Edit this entry")));
                     }
                     else

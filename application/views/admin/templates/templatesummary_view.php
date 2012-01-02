@@ -12,7 +12,7 @@
         <tr><th class='subheader' width='150'>
             <?php $clang->eT("Standard files:"); ?></th>
             <td align='center' valign='top' rowspan='3'>
-                <form name='editTemplate' method='post' action='<?php echo $this->createUrl("admin/templates/sa/templatesavechanges"); ?>'>
+                <form name='editTemplate' method='post' action='<?php echo $this->createUrl("admin/templates/templatesavechanges"); ?>'>
                     <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
                     <input type='hidden' name='screenname' value='<?php echo html_escape($screenname); ?>' />
                     <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
@@ -41,17 +41,17 @@
                 </form></td>
             <th class='subheader' colspan='2' align='right' width='200'><?php $clang->eT("Other files:"); ?></th></tr>
 
-        <tr><td valign='top' rowspan='2' class='subheader'><select size='6' name='editfile' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
+        <tr><td valign='top' rowspan='2' class='subheader'><select size='6' name='editfile' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
                     <?php echo makeoptions($files, "name", "name", $editfile); ?>
                 </select><br /><br/>
                 <?php $clang->eT("CSS & Javascript files:"); ?>
-                <br/><select size='8' name='cssfiles' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
+                <br/><select size='8' name='cssfiles' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
                     <?php echo makeoptions($cssfiles, "name", "name", $editfile); ?>
                 </select>
 
             </td>
             <td valign='top' align='right' width='20%'>
-                <form action='<?php echo $this->createUrl("admin/templates/sa/templatefiledelete"); ?>' method='post'>
+                <form action='<?php echo $this->createUrl("admin/templates/templatefiledelete"); ?>' method='post'>
                     <table width='90' align='left' border='0' cellpadding='0' cellspacing='0'><tr><td></td></tr>
                         <tr><td><select size='11' style='min-width:130px;' name='otherfile' id='otherfile'>
                                     <?php echo makeoptions($otherfiles, "name", "name", ""); ?>
@@ -72,7 +72,7 @@
         </tr>
         <tr>
             <td valign='top'>
-                <form enctype='multipart/form-data' name='importtemplatefile' action='<?php echo $this->createUrl('admin/templates/sa/upload/') ?>' method='post' onsubmit='return checkuploadfiletype(this.the_file.value);'>
+                <form enctype='multipart/form-data' name='importtemplatefile' action='<?php echo $this->createUrl('admin/templates/upload/') ?>' method='post' onsubmit='return checkuploadfiletype(this.the_file.value);'>
                     <table><tr> <th class='subheader' valign='top' style='border: solid 1 #000080'>
                             <?php $clang->eT("Upload a file:"); ?></th></tr><tr><td><input name="the_file" type="file" size="30" /><br />
                                 <input type='submit' value='<?php $clang->eT("Upload"); ?>'

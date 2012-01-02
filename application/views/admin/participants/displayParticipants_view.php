@@ -79,26 +79,26 @@ else
     var deleteMsg = "<br/>"+deletefrompanelmsg+"<br/><br/><center><ol id='selectable' class='selectable' ><li class='ui-widget-content' id='po'>"+deletefrompanel+"</li><li class='ui-widget-content' id='ptt'>"+deletefrompanelandtoken+"</li><li class='ui-widget-content' id='ptta'>"+deletefrompaneltokenandresponse+"</li></ol></center>";
     var searchBtn = "<?php $clang->eT("Search") ?>";
     var shareMsg = "<?php $clang->eT("You can see and edit settings for shared participant in share panel.") ?>"; //PLEASE REVIEW
-    var jsonUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getParticipants_json"); ?>";
-    var jsonSearchUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getParticipantsResults_json/search/"); ?>";
-    var editUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/editParticipant"); ?>";
-    var getSearchIDs = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getSearchIDs"); ?>";
-    var getaddtosurveymsg = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getaddtosurveymsg"); ?>";
+    var jsonUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getParticipants_json"); ?>";
+    var jsonSearchUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getParticipantsResults_json/search/"); ?>";
+    var editUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/editParticipant"); ?>";
+    var getSearchIDs = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getSearchIDs"); ?>";
+    var getaddtosurveymsg = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getaddtosurveymsg"); ?>";
     var minusbutton = "<?php echo Yii::app()->getRequest()->getBaseUrl() . "/images/deleteanswer.png" ?>";
     var addbutton = "<?php echo Yii::app()->getRequest()->getBaseUrl() . "/images/plus.png" ?>";
-    var delparticipantUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/delParticipant"); ?>";
-    var surveylinkUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getSurveyInfo_json/pid/"); ?>";
-    var getAttribute_json = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getAttribute_json/pid/"); ?>";
-    var exporttocsv = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/exporttocsv/id"); ?>";
-    var exporttocsvcount = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/exporttocsvcount"); ?>";
-    var getcpdbAttributes_json = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/exporttocsvcount"); ?>";
-    var attMapUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/attributeMap"); ?>";
-    var editAttributevalue = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/editAttributevalue"); ?>";
-    var shareUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/shareParticipants"); ?>";
-    var surveyUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/addToToken"); ?>";
-    var postUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/setSession"); ?>";
+    var delparticipantUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/delParticipant"); ?>";
+    var surveylinkUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getSurveyInfo_json/pid/"); ?>";
+    var getAttribute_json = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getAttribute_json/pid/"); ?>";
+    var exporttocsv = "<?php echo Yii::app()->getController()->createUrl("admin/participants/exporttocsv/id"); ?>";
+    var exporttocsvcount = "<?php echo Yii::app()->getController()->createUrl("admin/participants/exporttocsvcount"); ?>";
+    var getcpdbAttributes_json = "<?php echo Yii::app()->getController()->createUrl("admin/participants/exporttocsvcount"); ?>";
+    var attMapUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/attributeMap"); ?>";
+    var editAttributevalue = "<?php echo Yii::app()->getController()->createUrl("admin/participants/editAttributevalue"); ?>";
+    var shareUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/shareParticipants"); ?>";
+    var surveyUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/addToToken"); ?>";
+    var postUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/setSession"); ?>";
     var ajaxUrl = "<?php echo Yii::app()->getController()->createUrl("images/ajax-loader.gif"); ?>";
-    var redUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/displayParticipants"); ?>";
+    var redUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/displayParticipants"); ?>";
     var colNames = '["participant_id","can_edit","<?php $clang->eT("First name") ?>","<?php $clang->eT("Last name") ?>","<?php $clang->eT("E-mail") ?>","<?php $clang->eT("Blacklisted") ?>","<?php $clang->eT("Surveys") ?>","<?php $clang->eT("Language") ?>","<?php $clang->eT("Owner name") ?>"<?php echo $columnNames; ?>]';
     var colModels = '[{ "name":"participant_id", "index":"participant_id", "width":100, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';
     colModels += '{ "name":"can_edit", "index":"can_edit", "width":10, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';
@@ -207,7 +207,7 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
 </div>
 <!--<div id="addsurvey" title="addsurvey" style="display:none">-->
 <div class="ui-widget ui-helper-hidden" id="client-script-return-msg" style="display:none">
-    <form action="<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/attributeMap"); ?>" name="addsurvey" id="addsurvey" method="POST">
+    <form action="<?php echo Yii::app()->getController()->createUrl("admin/participants/attributeMap"); ?>" name="addsurvey" id="addsurvey" method="POST">
         <input type="hidden" name="participant_id" id="participant_id" value=""></input>
         <input type="hidden" name="count" id="count" value=""></input>
         <p>

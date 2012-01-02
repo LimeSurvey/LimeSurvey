@@ -21,7 +21,7 @@
             }
             ?>
         </ul>
-        <form id='sendinvitation' class='form30' method='post' action='<?php echo $this->createUrl("admin/tokens/sa/email/surveyid/$surveyid"); ?>'>
+        <form id='sendinvitation' class='form30' method='post' action='<?php echo $this->createUrl("admin/tokens/email/surveyid/$surveyid"); ?>'>
 
             <?php
             foreach ($surveylangs as $language)

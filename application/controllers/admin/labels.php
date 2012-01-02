@@ -406,9 +406,9 @@ class labels extends Survey_Common_Action
                     $lid = 0;
 
             if ($lid)
-                $this->getController()->redirect($this->getController()->createUrl("admin/labels/sa/view/lid/" . $lid));
+                $this->getController()->redirect($this->getController()->createUrl("admin/labels/view/lid/" . $lid));
             else
-                $this->getController()->redirect($this->getController()->createUrl("admin/labels/sa/view"));
+                $this->getController()->redirect($this->getController()->createUrl("admin/labels/view"));
         }
     }
 

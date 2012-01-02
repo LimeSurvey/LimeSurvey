@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    var url = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/getAttributeBox"); ?>";
+    var url = "<?php echo Yii::app()->getController()->createUrl("admin/participants/getAttributeBox"); ?>";
     var attname = "<?php $clang->eT("Attribute name:"); ?>";
     removeitem = new Array(); // Array to hold values that are to be removed from langauges option
 </script>
@@ -9,7 +9,7 @@
 <script src="<?php echo Yii::app()->getConfig('adminscripts') . "viewAttribute.js" ?>" type="text/javascript"></script>
 <div class='header ui-widget-header'><strong><?php $clang->eT("Attribute settings"); ?></strong></div><br/>
 <?php
-echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/participants/sa/saveAttribute/aid/' . CHttpRequest::getQuery('aid')) . '/', "post");
+echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/participants/saveAttribute/aid/' . CHttpRequest::getQuery('aid')) . '/', "post");
 $plus = array('src' => Yii::app()->baseUrl . "/images/plus.png",
     'alt' => 'Add language',
     'title' => 'Add language',
@@ -134,7 +134,7 @@ $plus = array('src' => Yii::app()->baseUrl . "/images/plus.png",
                         'width' => '15',
                         'height' => '15',
                         'title' => 'Delete atribute nalue');
-                    echo CHtml::link(CHtml::image($del['src'], $del['alt'], array_slice($del, 2)), $this->createURL('admin/participants/sa/delAttributeValues/aid/' . $attributes['attribute_id'] . '/vid/' . $value['value_id']));
+                    echo CHtml::link(CHtml::image($del['src'], $del['alt'], array_slice($del, 2)), $this->createURL('admin/participants/delAttributeValues/aid/' . $attributes['attribute_id'] . '/vid/' . $value['value_id']));
                     ?>
                 </td>
             </tr>

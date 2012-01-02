@@ -26,12 +26,12 @@
                 </td>
             </tr><tr>
                 <td>
-                    <form method="post" action="<?php echo $this->createUrl("admin/survey/sa/expire/surveyid/".$surveyid);?>">
+                    <form method="post" action="<?php echo $this->createUrl("admin/survey/expire/surveyid/".$surveyid);?>">
                         <input type='submit' value='<?php $clang->eT("Expire survey"); ?>'/>
                     </form>
                 </td>
                 <td>
-                    <form method="post" action="<?php echo $this->createUrl("admin/survey/sa/deactivate/surveyid/".$surveyid);?>">
+                    <form method="post" action="<?php echo $this->createUrl("admin/survey/deactivate/surveyid/".$surveyid);?>">
                         <input type='submit' value='<?php $clang->eT("Deactivate survey"); ?>' onclick="<?php echo get2post($this->createUrl("admin/survey/deactivate/".$surveyid)."?action=deactivate&amp;ok=Y&amp;sid=$surveyid"); ?>" />
                         <input type='hidden' value='Y' name='ok' />
                     </form>

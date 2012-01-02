@@ -1,5 +1,5 @@
 <div class='header ui-widget-header'><?php $clang->eT("Uploaded template file") ?></div>
-<form enctype='multipart/form-data' id='importtemplate' name='importtemplate' action='<?php echo $this->createUrl('admin/templates/sa/upload') ?>' method='post' onsubmit='return validatefilename(this, "<?php $clang->eT('Please select a file to import!', 'js') ?>");'>
+<form enctype='multipart/form-data' id='importtemplate' name='importtemplate' action='<?php echo $this->createUrl('admin/templates/upload') ?>' method='post' onsubmit='return validatefilename(this, "<?php $clang->eT('Please select a file to import!', 'js') ?>");'>
     <input type='hidden' name='lid' value='$lid' />
     <input type='hidden' name='action' value='templateupload' />
     <ul>

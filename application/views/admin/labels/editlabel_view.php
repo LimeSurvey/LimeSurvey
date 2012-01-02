@@ -1,6 +1,6 @@
 <div class='header header_statistics'>
         <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/close.gif' align='right'
-        onclick="window.open('<?php echo $this->createUrl("admin/labels/sa/view/lid/".$lid); ?>', '_top')" />
+        onclick="window.open('<?php echo $this->createUrl("admin/labels/view/lid/".$lid); ?>', '_top')" />
         <?php if ($action == "newlabelset") { $clang->eT("Create or import new label set(s)");}
         else {$clang->eT("Edit label set"); } ?>
 </div>
@@ -14,7 +14,7 @@
         <?php } ?>
         </ul>
         <div id='neweditlblset0'>
-            <form method='post' class='form30' id='labelsetform' action='<?php echo $this->createUrl("admin/labels/sa/process"); ?>' onsubmit="return isEmpty(document.getElementById('label_name'), '<?php $clang->eT("Error: You have to enter a name for this label set.","js"); ?>')">
+            <form method='post' class='form30' id='labelsetform' action='<?php echo $this->createUrl("admin/labels/process"); ?>' onsubmit="return isEmpty(document.getElementById('label_name'), '<?php $clang->eT("Error: You have to enter a name for this label set.","js"); ?>')">
 
         <ul>
         <li><label for='languageids'><?php $clang->eT("Set name:"); ?></label>
@@ -60,7 +60,7 @@
         </div>
         <?php if ($action == "newlabelset"){ ?>
             <div id='neweditlblset1'>
-                <form enctype='multipart/form-data' id='importlabels' name='importlabels' action='<?php echo $this->createUrl('admin/labels/sa/import'); ?>' method='post'>
+                <form enctype='multipart/form-data' id='importlabels' name='importlabels' action='<?php echo $this->createUrl('admin/labels/import'); ?>' method='post'>
                 <div class='header ui-widget-header'>
                 <?php $clang->eT("Import label set(s)"); ?>
                 </div><ul>

@@ -17,7 +17,7 @@
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'])
         {
             $attribute = array('class' => 'form44');
-            echo CHtml::beginForm('admin/participants/sa/storeUserControlValues', 'post', $attribute);
+            echo CHtml::beginForm('admin/participants/storeUserControlValues', 'post', $attribute);
             $options = array('Y' => 'Yes', 'N' => 'No');
             ?>
             <ul>

@@ -678,7 +678,7 @@ class UserAction extends Survey_Common_Action
     private function _messageBoxWithRedirect($title, $message, $classMsg, $extra = "", $url = "", $urlText = "", $hiddenVars = array(), $classMbTitle = "header ui-widget-header")
     {
         $clang = Yii::app()->lang;
-        $url = (!empty($url)) ? $url : $this->getController()->createUrl('admin/user/sa/index');
+        $url = (!empty($url)) ? $url : $this->getController()->createUrl('admin/user/index');
         $urlText = (!empty($urlText)) ? $urlText : $clang->gT("Continue");
 
         $aData['title'] = $title;

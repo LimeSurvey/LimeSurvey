@@ -13,7 +13,7 @@
  *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
  */
 class Expressions extends Survey_Common_Action {
-	function run()
+	function index()
 	{
     ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -38,17 +38,12 @@ class Expressions extends Survey_Common_Action {
     <?php
 		if(isset($_GET['sa']))
 			$this->test($_GET['sa']);
-		else $this->index();
+		else $this->getController()->render('/admin/expressions/test_view');
     ?>
     </body>
 </html>
     <?php
     }
-
-    protected function index()
-	{
-		$this->getController()->render('/admin/expressions/test_view');
-	}
 
     protected function test($which)
     {

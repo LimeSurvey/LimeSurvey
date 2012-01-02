@@ -1,12 +1,12 @@
 <script type="text/javascript">
-    var redUrl = "<?php echo Yii::app()->baseUrl . "/index.php/admin/participants/sa/displayParticipants"; ?>";
+    var redUrl = "<?php echo Yii::app()->baseUrl . "/index.php/admin/participants/displayParticipants"; ?>";
     var surveyId = "<?php echo $survey_id ?>";
     var redirect = "<?php echo $redirect ?>";
     if(redirect=='TRUE')
     {
-        redUrl = "<?php echo Yii::app()->baseUrl . "/index.php/admin/tokens/sa/browse/sa/index/surveyid" . '/' . $survey_id; ?>";
+        redUrl = "<?php echo Yii::app()->baseUrl . "/index.php/admin/tokens/browse/index/surveyid" . '/' . $survey_id; ?>";
     }
-    var copyUrl = "<?php echo Yii::app()->baseUrl . "/index.php/admin/participants/sa/addToTokenattmap"; ?>";
+    var copyUrl = "<?php echo Yii::app()->baseUrl . "/index.php/admin/participants/addToTokenattmap"; ?>";
     var participant_id = "<?php echo $participant_id; ?>";
 </script>
 <div class='header ui-widget-header'>

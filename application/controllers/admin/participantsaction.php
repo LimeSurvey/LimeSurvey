@@ -401,7 +401,7 @@ class participantsaction extends Survey_Common_Action
     function storeUserControlValues()
     {
         Settings_global::model()->update(array('userideditable', CHttpRequest::getPost('userideditable')));
-        CController::redirect(Yii::app()->getController()->createUrl('admin/participants/sa/userControl'));
+        CController::redirect(Yii::app()->getController()->createUrl('admin/participants/userControl'));
     }
 
     /**
@@ -1275,7 +1275,7 @@ class participantsaction extends Survey_Common_Action
             );
             ParticipantAttributeNames::saveAttributeValue($editattvalue);
         }
-        CController::redirect(Yii::app()->getController()->createUrl('admin/participants/sa/attributeControl'));
+        CController::redirect(Yii::app()->getController()->createUrl('admin/participants/attributeControl'));
     }
 
     /*
@@ -1286,7 +1286,7 @@ class participantsaction extends Survey_Common_Action
         $iAttributeId = CHttpRequest::getQuery('aid');
         $iValueId = CHttpRequest::getQuery('vid');
         ParticipantAttributeNames::delAttributeValues($iAttributeId, $iValueId);
-        CController::redirect(Yii::app()->getController()->createUrl('/admin/participants/sa/viewAttribute/aid/' . $iAttributeId));
+        CController::redirect(Yii::app()->getController()->createUrl('/admin/participants/viewAttribute/aid/' . $iAttributeId));
     }
 
     /*

@@ -2,7 +2,7 @@
 if ($tableExists) {
 ?>
 		<div class='header ui-widget-header'><?php $clang->eT("Import a VV survey file"); ?></div>
-		<form id='vvexport' enctype='multipart/form-data' method='post' action="<?php echo $this->createURL('admin/dataentry/sa/vvimport/surveyid/'.$surveyid); ?>">
+		<form id='vvexport' enctype='multipart/form-data' method='post' action="<?php echo $this->createURL('admin/dataentry/vvimport/surveyid/'.$surveyid); ?>">
 			<ul>
 				<li>
 					<label for='the_file'><?php $clang->eT("File:"); ?></label>
