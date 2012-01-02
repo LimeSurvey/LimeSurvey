@@ -13,7 +13,7 @@
  *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
  */
 $config['versionnumber'] = "2.0alpha";
-$config['dbversionnumber'] = 153;
+$config['dbversionnumber'] = 154;
 $config['buildnumber'] = '';
 
 return $config;
