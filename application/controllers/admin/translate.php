@@ -58,17 +58,14 @@ class translate extends Survey_Common_Action {
 
         $baselangdesc = $supportedLanguages[$baselang]['description'];
 
-        $this->getController()->_getAdminHeader();
-
-        $data = array
-		(
+        $aData = array(
 			"surveyid" => $surveyid,
 			"survey_title" => $survey_title,
 			"tolang" => $tolang,
 			"clang" => $clang,
 			"adminmenu" => $this->showTranslateAdminmenu($surveyid, $survey_title, $tolang)
 		);
-        $this->getController()->render("/admin/translate/translateheader_view", $data);
+        $aViewUrls['translateheader_view'][] = $aData;
 
         $tab_names = array("title", "welcome", "group", "question", "subquestion", "answer",
 						"emailinvite", "emailreminder", "emailconfirmation", "emailregistration");
@@ -82,10 +79,10 @@ class translate extends Survey_Common_Action {
 
             $tolangdesc = $supportedLanguages[$tolang]['description'];
 			// Display tabs with fields to translate, as well as input fields for translated values
-			$this->_displayUntranslatedFields($surveyid, $tolang, $baselang, $tab_names, $baselangdesc, $tolangdesc);
+			$aViewUrls = array_merge($aViewUrls, $this->_displayUntranslatedFields($surveyid, $tolang, $baselang, $tab_names, $baselangdesc, $tolangdesc));
         } // end if
 
-		$this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
 	private function _translateSave($surveyid, $tolang, $baselang, $tab_names)
@@ -130,18 +127,19 @@ class translate extends Survey_Common_Action {
 
 	private function _displayUntranslatedFields($surveyid, $tolang, $baselang, $tab_names, $baselangdesc, $tolangdesc)
 	{
-		$data['surveyid'] = $surveyid;
-		$data['clang'] = Yii::app()->lang;
-		$data['tab_names'] = $tab_names;
-		$data['tolang'] = $tolang;
-		$data['baselang'] = $baselang;
+		$aData['surveyid'] = $surveyid;
+		$aData['clang'] = Yii::app()->lang;
+		$aData['tab_names'] = $tab_names;
+		$aData['tolang'] = $tolang;
+		$aData['baselang'] = $baselang;
 
 		foreach( $tab_names as $type )
 		{
-			$data['amTypeOptions'][] = $this->setupTranslateFields($surveyid, $type, $tolang, $baselang);
+			$aData['amTypeOptions'][] = $this->setupTranslateFields($surveyid, $type, $tolang, $baselang);
 		}
-		$this->getController()->render("/admin/translate/translateformheader_view", $data);
 
+        $aViewUrls['translateformheader_view'][] = $aData;
+        $aViewUrls['output'] = '';
 		// Define content of each tab
 		foreach( $tab_names as $type )
 		{
@@ -166,11 +164,11 @@ class translate extends Survey_Common_Action {
 			$resultbase = $amTypeOptions["querybase"];
 			$resultto = $amTypeOptions["queryto"];
 
-			$data['baselangdesc'] = $baselangdesc;
-			$data['tolangdesc'] = $tolangdesc;
-			$data['type'] = $type;
-			$data['translateTabs'] = $this->displayTranslateFieldsHeader($baselangdesc, $tolangdesc);
-			$this->getController()->render("/admin/translate/translatetabs_view", $data);
+			$aData['baselangdesc'] = $baselangdesc;
+			$aData['tolangdesc'] = $tolangdesc;
+			$aData['type'] = $type;
+			$aData['translateTabs'] = $this->displayTranslateFieldsHeader($baselangdesc, $tolangdesc);
+			$aViewUrls['output'] .= $this->getController()->render("/admin/translate/translatetabs_view", $aData, true);
 			foreach ( $resultbase->queryAll() as $rowfrom )
 			{
 				$textfrom = htmlspecialchars_decode($rowfrom[$amTypeOptions["dbColumn"]]);
@@ -195,44 +193,46 @@ class translate extends Survey_Common_Action {
 					$evenRow = ! ($evenRow);
 				}
 
-				$data['textfrom'] = $textfrom;
-				$data['textfrom2'] = $textfrom2;
-				$data['textto'] = $textto;
-				$data['textto2'] = $textto2;
-				$data['rowfrom'] = $rowfrom;
-				$data['rowfrom2'] = $rowfrom2;
-				$data['evenRow'] = $evenRow;
-				$data['gid'] = $gid;
-				$data['qid'] = $qid;
-				$data['amTypeOptions'] = $amTypeOptions;
-				$data['amTypeOptions2'] = $amTypeOptions2;
-				$data['i'] = $i;
-				$data['type'] = $type;
-				$data['type2'] = $type2;
-				$data['associated'] = $associated;
+				$aData['textfrom'] = $textfrom;
+				$aData['textfrom2'] = $textfrom2;
+				$aData['textto'] = $textto;
+				$aData['textto2'] = $textto2;
+				$aData['rowfrom'] = $rowfrom;
+				$aData['rowfrom2'] = $rowfrom2;
+				$aData['evenRow'] = $evenRow;
+				$aData['gid'] = $gid;
+				$aData['qid'] = $qid;
+				$aData['amTypeOptions'] = $amTypeOptions;
+				$aData['amTypeOptions2'] = $amTypeOptions2;
+				$aData['i'] = $i;
+				$aData['type'] = $type;
+				$aData['type2'] = $type2;
+				$aData['associated'] = $associated;
 
 				$evenRow = !($evenRow);
-				$data['translateFields'] = $this->displayTranslateFields($surveyid, $gid, $qid, $type,
+				$aData['translateFields'] = $this->displayTranslateFields($surveyid, $gid, $qid, $type,
 											$amTypeOptions, $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $rowfrom, $evenRow);
 				if ($associated && strlen(trim((string)$textfrom2)) > 0)
 				{
 					$evenRow = !($evenRow);
-					$data['translateFields'] .= $this->displayTranslateFields($surveyid, $gid, $qid, $type2,
+					$aData['translateFields'] .= $this->displayTranslateFields($surveyid, $gid, $qid, $type2,
 											$amTypeOptions2, $baselangdesc, $tolangdesc, $textfrom2, $textto2, $i, $rowfrom2, $evenRow);
 				}
 
-				$this->getController()->render("/admin/translate/translatefields_view", $data);
+				$aViewUrls['output'] .= $this->getController()->render("/admin/translate/translatefields_view", $aData, true);
 
 				$i++;
 			} // end while
 
-			$data['all_fields_empty'] = $all_fields_empty;
-			$data['translateFieldsFooter'] = $this->displayTranslateFieldsFooter();
-			$this->getController()->render("/admin/translate/translatefieldsfooter_view", $data);
+			$aData['all_fields_empty'] = $all_fields_empty;
+			$aData['translateFieldsFooter'] = $this->displayTranslateFieldsFooter();
+			$aViewUrls['output'] .= $this->getController()->render("/admin/translate/translatefieldsfooter_view", $aData, true);
 		} // end foreach
 
 		// Submit button
-		$this->getController()->render("/admin/translate/translatefooter_view", $data);
+		$aViewUrls['translatefooter_view'] = $aData;
+
+        return $aViewUrls;
 	}
 
     /**
@@ -442,12 +442,12 @@ class translate extends Survey_Common_Action {
     {
         $clang = Yii::app()->lang;
 
-		$data = array();
+		$aData = array();
 
         switch ( $type )
         {
             case 'title':
-				$data = array(
+				$aData = array(
 					'type' => 1,
 					'dbColumn' => 'surveyls_title',
 					'id1' => '',
@@ -462,7 +462,7 @@ class translate extends Survey_Common_Action {
 			break;
 
             case 'description':
-				$data = array(
+				$aData = array(
 					'type' => 1,
 					'dbColumn' => 'surveyls_description',
 					'id1' => '',
@@ -477,7 +477,7 @@ class translate extends Survey_Common_Action {
 			break;
 
             case 'welcome':
-				$data = array(
+				$aData = array(
 					'type' => 1,
 					'dbColumn' => 'surveyls_welcometext',
 					'id1' => '',
@@ -492,7 +492,7 @@ class translate extends Survey_Common_Action {
 			break;
 
             case 'end':
-				$data = array(
+				$aData = array(
 					'type' => 1,
 					'dbColumn' => 'surveyls_endtext',
 					'id1' => '',
@@ -507,7 +507,7 @@ class translate extends Survey_Common_Action {
 			break;
 
             case 'group':
-				$data = array(
+				$aData = array(
 					'type' => 2,
 					'dbColumn' => 'group_name',
 					'id1' => 'gid',
@@ -522,7 +522,7 @@ class translate extends Survey_Common_Action {
 			break;
 
             case 'group_desc':
-				$data = array(
+				$aData = array(
 					'type' => 2,
 					'dbColumn' => 'description',
 					'id1' => 'gid',
@@ -537,7 +537,7 @@ class translate extends Survey_Common_Action {
 			break;
 
             case 'question':
-				$data = array(
+				$aData = array(
 					'type' => 3,
 					'dbColumn' => 'question',
 					'id1' => 'qid',
@@ -552,7 +552,7 @@ class translate extends Survey_Common_Action {
 			break;
 
             case 'question_help':
-				$data = array(
+				$aData = array(
 					'type' => 3,
 					'dbColumn' => 'help',
 					'id1' => 'qid',
@@ -567,7 +567,7 @@ class translate extends Survey_Common_Action {
 			break;
 
             case 'subquestion':
-				$data = array(
+				$aData = array(
 					'type' => 4,
 					'dbColumn' => 'question',
 					'id1' => 'qid',
@@ -582,7 +582,7 @@ class translate extends Survey_Common_Action {
 			break;
 
             case 'answer': // TODO not touched
-				$data = array(
+				$aData = array(
 					'type' => 5,
 					'dbColumn' => 'answer',
 					'id1' => 'qid',
@@ -597,7 +597,7 @@ class translate extends Survey_Common_Action {
 			break;
 
             case 'emailinvite':
-				$data = array(
+				$aData = array(
 					'type' => 1,
 					'dbColumn' => 'surveyls_email_invite_subj',
 					'id1' => '',
@@ -612,7 +612,7 @@ class translate extends Survey_Common_Action {
 			break;
 
             case 'emailinvitebody':
-				$data = array(
+				$aData = array(
 					'type' => 1,
 					'dbColumn' => 'surveyls_email_invite',
 					'id1' => '',
@@ -627,7 +627,7 @@ class translate extends Survey_Common_Action {
 			break;
 
             case 'emailreminder':
-				$data = array(
+				$aData = array(
 					'type' => 1,
 					'dbColumn' => 'surveyls_email_remind_subj',
 					'id1' => '',
@@ -642,7 +642,7 @@ class translate extends Survey_Common_Action {
 			break;
 
             case 'emailreminderbody':
-				$data = array(
+				$aData = array(
 					'type' => 1,
 					'dbColumn' => 'surveyls_email_remind',
 					'id1' => '',
@@ -657,7 +657,7 @@ class translate extends Survey_Common_Action {
 			break;
 
             case 'emailconfirmation':
-				$data = array(
+				$aData = array(
 					'type' => 1,
 					'dbColumn' => 'surveyls_email_confirm_subj',
 					'id1' => '',
@@ -672,7 +672,7 @@ class translate extends Survey_Common_Action {
 			break;
 
             case 'emailconfirmationbody':
-				$data = array(
+				$aData = array(
 					'type' => 1,
 					'dbColumn' => 'surveyls_email_confirm',
 					'id1' => '',
@@ -687,7 +687,7 @@ class translate extends Survey_Common_Action {
 			break;
 
             case 'emailregistration':
-				$data = array(
+				$aData = array(
 					'type' => 1,
 					'dbColumn' => 'surveyls_email_register_subj',
 					'id1' => '',
@@ -702,7 +702,7 @@ class translate extends Survey_Common_Action {
 			break;
 
             case 'emailregistrationbody':
-				$data = array(
+				$aData = array(
 					'type' => 1,
 					'dbColumn' => 'surveyls_email_register',
 					'id1' => '',
@@ -717,7 +717,7 @@ class translate extends Survey_Common_Action {
 			break;
 
             case 'email_confirm':
-				$data = array(
+				$aData = array(
 					'type' => 1,
 					'dbColumn' => 'surveyls_email_confirm_subj',
 					'id1' => '',
@@ -732,7 +732,7 @@ class translate extends Survey_Common_Action {
 			break;
 
             case 'email_confirmbody':
-				$data = array(
+				$aData = array(
 					'type' => 1,
 					'dbColumn' => 'surveyls_email_confirm',
 					'id1' => '',
@@ -747,16 +747,16 @@ class translate extends Survey_Common_Action {
 			break;
         }
 
-		$amTypeOptions = $this->_amTypeOptions($data, $surveyid, $tolang, $baselang, $id1, $id2, $new);
+		$amTypeOptions = $this->_amTypeOptions($aData, $surveyid, $tolang, $baselang, $id1, $id2, $new);
 
         return $amTypeOptions;
     }
 
-	private function _amTypeOptions($data, $surveyid, $tolang, $baselang, $id1 = "", $id2 = "", $new = "")
+	private function _amTypeOptions($aData, $surveyid, $tolang, $baselang, $id1 = "", $id2 = "", $new = "")
 	{
 		$amTypeOptions = array();
 
-		switch ( $data['type'] )
+		switch ( $aData['type'] )
 		{
 			case 1 :
 				$amTypeOptions = array_merge($amTypeOptions, array(
@@ -768,7 +768,7 @@ class translate extends Survey_Common_Action {
 					),
 					"queryupdate" => Surveys_languagesettings::model()->update(
 						array(
-							$data['dbColumn'] => $new
+							$aData['dbColumn'] => $new
 						),
 						array(
 							'surveyls_survey_id' => $surveyid,
@@ -790,7 +790,7 @@ class translate extends Survey_Common_Action {
 					),
 					"queryupdate" => Groups::model()->update(
 						array(
-							$data['dbColumn'] => $new
+							$aData['dbColumn'] => $new
 						),
 						"gid = '{$id1}' AND sid = '{$surveyid}' AND language = '{$tolang}'"
 					)
@@ -811,7 +811,7 @@ class translate extends Survey_Common_Action {
 					),
 					"queryupdate" => Questions::model()->update(
 						array(
-							$data['dbColumn'] => $new
+							$aData['dbColumn'] => $new
 						),
 						"gid = '{$id1}' AND sid = '{$surveyid}' AND parent_qid = 0 AND language = '{$tolang}'"
 					)
@@ -845,7 +845,7 @@ class translate extends Survey_Common_Action {
 					"queryto" => Answers::model()->getAnswerQuery($surveyid, $tolang, FALSE),
 					"queryupdate" => Answers::model()->update(
 						array(
-							$data['dbColumn'] => $new
+							$aData['dbColumn'] => $new
 						),
 						"qid = '{$id1}' AND code = '{$id2}' AND language = '{$tolang}'"
 					)
@@ -853,7 +853,7 @@ class translate extends Survey_Common_Action {
 			break;
 		}
 
-		$amTypeOptions = array_merge((array)$amTypeOptions, (array)$data);
+		$amTypeOptions = array_merge((array)$amTypeOptions, (array)$aData);
 
 		return $amTypeOptions;
 	}
@@ -944,7 +944,7 @@ class translate extends Survey_Common_Action {
         return $translateoutput;
     }
 
-	private function _loadEditor($htmleditor, $data)
+	private function _loadEditor($htmleditor, $aData)
 	{
 		$editor_function = "";
 
@@ -955,10 +955,10 @@ class translate extends Survey_Common_Action {
 		else if ( $htmleditor["HTMLeditorDisplay"] == "Popup" )
         {
             $editor_function = "getPopupEditor";
-			$data[2] = urlencode($htmleditor['description']);
+			$aData[2] = urlencode($htmleditor['description']);
         }
 
-		return call_user_func_array($editor_function, $data);
+		return call_user_func_array($editor_function, $aData);
 	}
 
     /**
@@ -1082,5 +1082,17 @@ class translate extends Survey_Common_Action {
 		);
 
         return ls_json_encode($aOutput) . "\n";
+    }
+
+    /**
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    {
+        $aData['display']['menu_bars'] = false;
+        parent::_renderWrappedTemplate('translate', $aViewUrls, $aData);
     }
 }
