@@ -609,7 +609,7 @@ class SurveyAction extends Survey_Common_Action
             $template_data['failedgroupcheck'] = $failedgroupcheck;
             $template_data['aSurveysettings'] = getSurveyInfo($iSurveyId);
 
-            $this->getController()->render("/admin/survey/activateSurvey_view", $this->template_data);
+            $this->getController()->render("/admin/survey/activateSurvey_view", $template_data);
             //IF ANY OF THE CHECKS FAILED, PRESENT THIS SCREEN
         }
         else
