@@ -106,7 +106,7 @@ class AdminController extends LSYii_Controller
 	public function run($action)
 	{
 		// Check if the DB is up to date
-		if (!Yii::app()->db->schema->getTable('{{surveys}}'))
+		if (Yii::app()->db->schema->getTable('{{surveys}}'))
 		{
 			$usrow = getGlobalSetting('DBVersion');
 			if ((int) $usrow < Yii::app()->getConfig('dbversionnumber') && $action != 'update' && $action != 'authentication')

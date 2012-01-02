@@ -38,7 +38,7 @@ class LSYii_Application extends CWebApplication
 		parent::__construct($config);
 		// Load the default and environmental settings from different files into self.
 		$app_config = require(APPPATH . '/config/application.php');
-		$ls_config = require(APPPATH . '/config/lsconfig.php');
+		$ls_config = require(APPPATH . '/config/config-defaults.php');
 		$version_config = require(APPPATH . '/config/version.php');
 
 		$settings = array_merge($app_config, $ls_config, $version_config);

@@ -542,7 +542,7 @@ class update extends Survey_Common_Action
             $aViewUrls['output'] = CheckForDBUpgrades();
         }
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate($aViewUrls);
     }
 
     /**
