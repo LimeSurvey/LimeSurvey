@@ -206,7 +206,7 @@ class Group_format {
 		            {
 		                // ClearAll link is only relevant for survey with printanswers enabled
 		                // in other cases the session is cleared at submit time
-		                $completed .= "<a href='".Yii::app()->getController()->createUrl("survey/sid/{$surveyid}/move/clearall")."'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
+		                $completed .= "<a href='".Yii::app()->getController()->createUrl("/survey/index/sid/{$surveyid}/move/clearall")."'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
 		            }
 		        }
 		        else //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
@@ -418,7 +418,7 @@ class Group_format {
 
 		$qnumber = 0;
         //This re-starts the group, after checking relevance, so get consistent and unduplcated set of replacement functions
-        LimeExpressionManager::StartProcessingPage($thissurvey['allowjumps']=='Y');
+        LimeExpressionManager::StartProcessingPage();
         LimeExpressionManager::StartProcessingGroup($gid,($thissurvey['anonymized']!="N"),$thissurvey['sid']);
 
 		foreach ($_SESSION['fieldarray'] as $key=>$ia)
@@ -536,11 +536,11 @@ class Group_format {
 		$hiddenfieldnames=implode("|", $inputnames);
 
 		if (isset($upload_file) && $upload_file)
-		    echo "<form enctype=\"multipart/form-data\" method='post' action='".Yii::app()->getController()->createUrl("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>
+		    echo "<form enctype=\"multipart/form-data\" method='post' action='".Yii::app()->getController()->createUrl("/survey/index")."' id='limesurvey' name='limesurvey' autocomplete='off'>
 		      <!-- INPUT NAMES -->
 		      <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
 		else
-		    echo "<form method='post' action='".Yii::app()->getController()->createUrl("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>
+		    echo "<form method='post' action='".Yii::app()->getController()->createUrl("/survey/index")."' id='limesurvey' name='limesurvey' autocomplete='off'>
 		      <!-- INPUT NAMES -->
 		      <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
         echo sDefaultSubmitHandler();

@@ -2062,14 +2062,14 @@
             $data['blang'] = $blang;
 			$data['site_url'] = Yii::app()->homeUrl;
 
-			LimeExpressionManager::StartProcessingPage(false,true,true);  // means that all variables are on the same page
+			LimeExpressionManager::StartProcessingPage(true,$this->getController()->createUrl('/'));  // means that all variables are on the same page
 
             $this->getController()->render("/admin/dataentry/caption_view",$data);
 
             Yii::app()->loadHelper('database');
 
             // SURVEY NAME AND DESCRIPTION TO GO HERE
-            $degquery = "SELECT * FROM ".Yii::app()->db->tablePrefix."groups WHERE sid=$surveyid AND language='{$sDataEntryLanguage}' ORDER BY ".Yii::app()->db->tablePrefix."groups.group_order";
+            $degquery = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='{$sDataEntryLanguage}' ORDER BY {{groups.group_order}}";
             $degresult = db_execute_assoc($degquery);
             // GROUP NAME
             $dataentryoutput = '';
@@ -2115,13 +2115,13 @@
                         if ($s > 0) { $explanation .= " <br />-------- <i>".$clang->gT("OR")." Scenario {$scenariorow['scenario']}</i> --------<br />";}
 
                         $x=0;
-                        $distinctquery="SELECT DISTINCT cqid, ".Yii::app()->db->tablePrefix."questions.title FROM ".Yii::app()->db->tablePrefix."conditions, ".Yii::app()->db->tablePrefix."questions WHERE ".Yii::app()->db->tablePrefix."conditions.cqid=".Yii::app()->db->tablePrefix."questions.qid AND ".Yii::app()->db->tablePrefix."conditions.qid={$deqrow['qid']} AND ".Yii::app()->db->tablePrefix."conditions.scenario={$scenariorow['scenario']} ORDER BY cqid";
+                        $distinctquery="SELECT DISTINCT cqid, {{questions}}.title FROM {{conditions}}, {{questions}} WHERE {{conditions}}.cqid={{questions}}.qid AND {{conditions.}}qid={$deqrow['qid']} AND {{conditions}}.scenario={$scenariorow['scenario']} ORDER BY cqid";
                         $distinctresult=db_execute_assoc($distinctquery);
 
                         foreach ($distinctresult->readAll() as $distinctrow)
                         {
                             if ($x > 0) {$explanation .= " <i>".$blang->gT("AND")."</i><br />";}
-                            $conquery="SELECT cid, cqid, cfieldname, ".Yii::app()->db->tablePrefix."questions.title, ".Yii::app()->db->tablePrefix."questions.question, value, ".Yii::app()->db->tablePrefix."questions.type, method FROM ".Yii::app()->db->tablePrefix."conditions, ".Yii::app()->db->tablePrefix."questions WHERE ".Yii::app()->db->tablePrefix."conditions.cqid=".Yii::app()->db->tablePrefix."questions.qid AND ".Yii::app()->db->tablePrefix."conditions.cqid={$distinctrow['cqid']} AND ".Yii::app()->db->tablePrefix."conditions.qid={$deqrow['qid']} AND ".Yii::app()->db->tablePrefix."conditions.scenario={$scenariorow['scenario']}";
+                            $conquery="SELECT cid, cqid, cfieldname, {{questions.title, {{questions}}.question, value, {{questions}}.type, method FROM {{conditions}}, {{questions}} WHERE {{conditions}}.cqid={{questions}}.qid AND {{conditions}}.cqid={$distinctrow['cqid']} AND {{conditions}}.qid={$deqrow['qid']} AND {{conditions}}.scenario={$scenariorow['scenario']}";
                             $conresult=db_execute_assoc($conquery);
                             foreach ($conresult->readAll() as $conrow)
                             {
@@ -2156,7 +2156,7 @@
                                         break;
                                     case "1":
                                         $value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
-                                        $fquery = "SELECT * FROM ".Yii::app()->db->tablePrefix."labels"
+                                        $fquery = "SELECT * FROM {{labels}}"
                                         . "WHERE lid='{$conrow['lid']}'\n and language='$sDataEntryLanguage' "
                                         . "AND code='{$conrow['value']}'";
                                         $fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />Failed to execute this command in Data entry controller");

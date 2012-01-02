@@ -476,7 +476,7 @@ class questiongroup extends Survey_Common_Action
         // Prepare data for the view
         $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
 
-        LimeExpressionManager::StartProcessingPage(false, true, false);
+        LimeExpressionManager::StartProcessingPage(true, $this->getController()->createUrl('/'));
 
         $aGrouplist = Groups::model()->getGroups($iSurveyID);
         $initializedReplacementFields = false;

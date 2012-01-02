@@ -95,7 +95,7 @@ class Survey_format {
                 {
                     // ClearAll link is only relevant for survey with printanswers enabled
                     // in other cases the session is cleared at submit time
-                    $completed .= "<a href='".Yii::app()->getController()->createUrl("survey/sid/{$surveyid}/move/clearall")."'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
+                    $completed .= "<a href='".Yii::app()->getController()->createUrl("/survey/index/sid/{$surveyid}/move/clearall")."'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
                 }
             }
             else //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
@@ -149,7 +149,7 @@ class Survey_format {
                 if ($thissurvey['printanswers']=='Y')
                 {
                     $completed .= "<br /><br />"
-                    ."<a class='printlink' href='".Yii::app()->getController()->createUrl('printanswers/view/'.$surveyid)."' target='_blank'>"
+                    ."<a class='printlink' href='".Yii::app()->getController()->createUrl('/printanswers/view/'.$surveyid)."' target='_blank'>"
                     .$clang->gT("Click here to print your answers.")
                     ."</a><br />\n";
                 }
@@ -263,7 +263,7 @@ class Survey_format {
         $inputnames=array();
         $groupUnconditionnalQuestionsCount=array();
 
-        LimeExpressionManager::StartProcessingPage(false,true,true);  // means that all variables are on the same page
+        LimeExpressionManager::StartProcessingPage(true, $this->getController()->createUrl('/'));  // means that all variables are on the same page
 
         global $gl;
 
@@ -357,7 +357,7 @@ class Survey_format {
         if(isset($vpopup)) {echo $vpopup;}
         $redata = compact(array_keys(get_defined_vars()));
         echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'Survey_format[362]');
-        echo "\n<form method='post' action='".Yii::app()->getController()->createUrl("survey/$surveyid")."' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
+        echo "\n<form method='post' action='".Yii::app()->getController()->createUrl("/survey/index/$surveyid")."' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
         //PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
         echo "\n<!-- INPUT NAMES -->\n"
         ."\t<input type='hidden' name='fieldnames' id='fieldnames' value='"

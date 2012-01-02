@@ -252,7 +252,7 @@ function makelanguagechanger($baselang)
 
         $htmlcode ="<select name=\"select\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
         $sAddToURL = "";
-        $sTargetURL = Yii::app()->getController()->createUrl("survey");
+        $sTargetURL = Yii::app()->getController()->createUrl("/survey/index");
         if ($previewgrp){
             $sAddToURL = "&amp;action=previewgroup&amp;gid={$_REQUEST['gid']}";
         }
@@ -274,10 +274,10 @@ function makelanguagechanger($baselang)
     {
         $defaultlang = Yii::app()->getConfig("defaultlang");
         $htmlcode = "<select name=\"select\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
-        $htmlcode .= "<option value=\"".Yii::app()->getController()->createUrl("/survey")."?lang=". $defaultlang ."$tokenparam\">".getLanguageNameFromCode($defaultlang,false)."</option>\n";
+        $htmlcode .= "<option value=\"".Yii::app()->getController()->createUrl("/survey/index")."?lang=". $defaultlang ."$tokenparam\">".getLanguageNameFromCode($defaultlang,false)."</option>\n";
         foreach(getlanguagedataRestricted() as $key=>$val)
         {
-            $htmlcode .= "\t<option value=\"".Yii::app()->getController()->createUrl("/survey")."?lang=".$key."$tokenparam\" ";
+            $htmlcode .= "\t<option value=\"".Yii::app()->getController()->createUrl("/survey/index")."?lang=".$key."$tokenparam\" ";
             if($key == $baselang)
             {
                 $htmlcode .= " selected=\"selected\" ";
@@ -1202,7 +1202,7 @@ function SendSubmitNotifications()
 
     if ($thissurvey['allowsave'] == "Y" && isset($_SESSION['scid']))
     {
-        $aReplacementVars['RELOADURL']="".Yii::app()->getController()->createUrl("survey/sid/{$surveyid}/loadall/reload/scid/".$_SESSION['scid']."/loadname/".urlencode($_SESSION['holdname'])."/loadpass/".urlencode($_SESSION['holdpass']));
+        $aReplacementVars['RELOADURL']="".Yii::app()->getController()->createUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/".$_SESSION['scid']."/loadname/".urlencode($_SESSION['holdname'])."/loadpass/".urlencode($_SESSION['holdpass']));
         if ($bIsHTML)
         {
             $aReplacementVars['RELOADURL']="<a href='{$aReplacementVars['RELOADURL']}'>{$aReplacementVars['RELOADURL']}</a>";
@@ -1446,7 +1446,7 @@ function buildsurveysession($surveyid)
             }
 
             echo "<p class='captcha'>".$clang->gT("Please confirm access to survey by answering the security question below and click continue.")."</p>
-            <form class='captcha' method='post' action='".Yii::app()->getController()->createUrl("$surveyid")."'>
+            <form class='captcha' method='post' action='".Yii::app()->getController()->createUrl("/survey/index/sid/$surveyid")."'>
             <table align='center'>
             <tr>
             <td align='right' valign='middle'>
@@ -1518,7 +1518,7 @@ function buildsurveysession($surveyid)
             echo '<div id="wrapper"><p id="tokenmessage">'.$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br />";
             echo $clang->gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
             <script type='text/javascript'>var focus_element='#token';</script>
-            <form id='tokenform' method='post' action='".$this->getController()->createUrl("/survey/index/sid/$surveyid")."'>
+            <form id='tokenform' method='post' action='".Yii::app()->getController()->createUrl("/survey/index/sid/$surveyid")."'>
             <ul>
             <li>";
 
@@ -1678,7 +1678,7 @@ function buildsurveysession($surveyid)
                     if (!isset($gettoken))
                     {
                         echo $clang->gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
-                        <form id='tokenform' method='get' action='".Yii::app()->getController()->createUrl("survey")."/index.php'>
+                        <form id='tokenform' method='get' action='".Yii::app()->getController()->createUrl("/survey/index")."'>
                         <ul>
                         <li>
                         <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
@@ -1697,7 +1697,7 @@ function buildsurveysession($surveyid)
                 else
                 {
                     echo $clang->gT("Please confirm the token by answering the security question below and click continue.")."</p>
-                    <form id='tokenform' method='get' action='".Yii::app()->getController()->createUrl("survey")."'>
+                    <form id='tokenform' method='get' action='".Yii::app()->getController()->createUrl("/survey/index")."'>
                     <ul>
                     <li>
                     <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
@@ -2618,7 +2618,7 @@ function check_quota($checkaction,$surveyid)
                 echo "\t<div class='quotamessage'>\n";
                 echo "\t".$quota['Message']."<br /><br />\n";
                 echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
-                echo "<form method='post' action='".Yii::app()->getController()->createUrl("survey")."' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><button class='nav-button nav-button-icon-left ui-corner-all' class='submit' accesskey='p' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" name='move2'><span class='ui-icon ui-icon-seek-prev'></span>".$clang->gT("Previous")."</button>
+                echo "<form method='post' action='".Yii::app()->getController()->createUrl("/survey/index")."' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><button class='nav-button nav-button-icon-left ui-corner-all' class='submit' accesskey='p' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" name='move2'><span class='ui-icon ui-icon-seek-prev'></span>".$clang->gT("Previous")."</button>
                 <input type='hidden' name='thisstep' value='".($_SESSION['step'])."' id='thisstep' />
                 <input type='hidden' name='sid' value='".returnglobal('sid')."' id='sid' />
                 <input type='hidden' name='token' value='".$clienttoken."' id='token' />
@@ -2736,7 +2736,7 @@ function display_first_page() {
 
     $redata = compact(array_keys(get_defined_vars()));
     echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'frontend_helper[2757]');
-    echo "\n<form method='post' action='".Yii::app()->getController()->createUrl("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
+    echo "\n<form method='post' action='".Yii::app()->getController()->createUrl("/survey/index")."' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
 
     echo "\n\n<!-- START THE SURVEY -->\n";
 
