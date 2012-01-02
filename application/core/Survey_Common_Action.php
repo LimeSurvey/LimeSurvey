@@ -69,8 +69,8 @@ class Survey_Common_Action extends CAction
 
         // Check if the method is public and of the action class, not its parents
         $oMethod  = new ReflectionMethod($this, $sSubAction);
-        $aActions = $this->getController()->getActionClasses();
-        if(strtolower($oMethod->getDeclaringClass()->name) != $aActions[$this->getId()] || !$oMethod->isPublic())
+        $aActions = Yii::app()->getController()->getActionClasses();
+        if(empty($aActions[$this->getId()]) || strtolower($oMethod->getDeclaringClass()->name) != $aActions[$this->getId()] || !$oMethod->isPublic())
         {
             return parent::runWithParams($params);
         }
@@ -157,7 +157,7 @@ class Survey_Common_Action extends CAction
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
     {
         // Gather the data
-        $aData['clang'] = $clang = $this->getController()->lang;
+        $aData['clang'] = $clang = Yii::app()->lang;
         $aData = $this->_addPseudoParams($aData);
         $aViewUrls = (array) $aViewUrls;
         $sViewPath = '/admin/';
@@ -168,25 +168,41 @@ class Survey_Common_Action extends CAction
         }
 
         // Header
-        $this->getController()->_getAdminHeader();
+        Yii::app()->getController()->_getAdminHeader();
 
         // Menu bars
         if (!isset($aData['display']['menu_bars']) || ($aData['display']['menu_bars'] !== false && (!is_array($aData['display']['menu_bars']) || !in_array('browse', array_keys($aData['display']['menu_bars'])))))
         {
-            $this->getController()->_showadminmenu(!empty($aData['surveyid']) ? $aData['surveyid'] : null);
+            Yii::app()->getController()->_showadminmenu(!empty($aData['surveyid']) ? $aData['surveyid'] : null);
 
             if (!empty($aData['surveyid']))
             {
                 $this->_surveybar($aData['surveyid'], !empty($aData['gid']) ? $aData['gid'] : null);
 
-                if (!empty($aData['display']['menu_bars']['surveysummary']))
+                if (isset($aData['display']['menu_bars']['surveysummary']))
                 {
-                    $this->_surveysummary($aData['surveyid'], $aData['display']['menu_bars']['surveysummary']);
+
+                    if (empty($aData['display']['menu_bars']['surveysummary']) && !empty($aData['gid']))
+                    {
+                        $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
+                    }
+
+                    $this->_surveysummary($aData['surveyid'], !empty($aData['display']['menu_bars']['surveysummary']) ? $aData['display']['menu_bars']['surveysummary'] : null);
                 }
 
                 if (!empty($aData['gid']))
                 {
-                    $this->_questiongroupbar($aData['surveyid'], $aData['gid'], !empty($aData['qid']) ? $aData['qid'] : null, $aData['display']['menu_bars']['gid_action']);
+                    if (empty($aData['display']['menu_bars']['gid_action']) && !empty($aData['qid']))
+                    {
+                        $aData['display']['menu_bars']['gid_action'] = 'viewquestion';
+                    }
+
+                    $this->_questiongroupbar($aData['surveyid'], $aData['gid'], !empty($aData['qid']) ? $aData['qid'] : null, !empty($aData['display']['menu_bars']['gid_action']) ? $aData['display']['menu_bars']['gid_action'] : null);
+
+                    if (!empty($aData['qid']))
+                    {
+                        $this->_questionbar($aData['surveyid'], $aData['gid'], $aData['qid'], !empty($aData['display']['menu_bars']['qid_action']) ? $aData['display']['menu_bars']['qid_action'] : null);
+                    }
                 }
             }
         }
@@ -210,14 +226,14 @@ class Survey_Common_Action extends CAction
             {
                 if (is_numeric($sViewKey))
                 {
-                    $this->getController()->render($sViewPath . $viewUrl, $aData);
+                    Yii::app()->getController()->render($sViewPath . $viewUrl, $aData);
                 }
                 elseif (is_array($viewUrl))
                 {
                     foreach ($viewUrl as $aSubData)
                     {
                         $aSubData = array_merge($aData, $aSubData);
-                        $this->getController()->render($sViewPath . $sViewKey, $aSubData);
+                        Yii::app()->getController()->render($sViewPath . $sViewKey, $aSubData);
                     }
                 }
             }
@@ -229,11 +245,11 @@ class Survey_Common_Action extends CAction
                     case 'message' :
                         if (empty($viewUrl['class']))
                         {
-                            $this->getController()->_showMessageBox($viewUrl['title'], $viewUrl['message']);
+                            Yii::app()->getController()->_showMessageBox($viewUrl['title'], $viewUrl['message']);
                         }
                         else
                         {
-                            $this->getController()->_showMessageBox($viewUrl['title'], $viewUrl['message'], $viewUrl['class']);
+                            Yii::app()->getController()->_showMessageBox($viewUrl['title'], $viewUrl['message'], $viewUrl['class']);
                         }
                         break;
 
@@ -246,7 +262,7 @@ class Survey_Common_Action extends CAction
         }
 
         // Footer
-        $this->getController()->_getAdminFooter('http://docs.limesurvey.org', $clang->gT('LimeSurvey online manual'));
+        Yii::app()->getController()->_getAdminFooter('http://docs.limesurvey.org', $clang->gT('LimeSurvey online manual'));
     }
 
     /**
@@ -256,7 +272,7 @@ class Survey_Common_Action extends CAction
      * @param int Question id
      * @param string action
      */
-    function _questionbar($iSurveyId, $gid, $qid, $action)
+    function _questionbar($iSurveyId, $gid, $qid, $action = null)
     {
         $clang = $this->getController()->lang;
 
@@ -374,7 +390,7 @@ class Survey_Common_Action extends CAction
      * @param int Survey id
      * @param int Group id
      */
-    function _questiongroupbar($iSurveyId, $gid, $qid=null, $action)
+    function _questiongroupbar($iSurveyId, $gid, $qid=null, $action = null)
     {
         $clang = $this->getController()->lang;
         $baselang = Survey::model()->findByPk($iSurveyId)->language;
@@ -809,25 +825,21 @@ class Survey_Common_Action extends CAction
 //
         $aData['tableusage'] = false;
 
-        //$gid || $qid ||
-
-
-        if ($action == "deactivate" || $action == "activate" || $action == "surveysecurity" || $action == "editdefaultvalues" || $action == "editemailtemplates"
-        || $action == "surveyrights" || $action == "addsurveysecurity" || $action == "addusergroupsurveysecurity"
-        || $action == "setsurveysecurity" || $action == "setusergroupsurveysecurity" || $action == "delsurveysecurity"
-        || $action == "editsurveysettings" || $action == "editsurveylocalesettings" || $action == "updatesurveysettingsandeditlocalesettings" || $action == "addgroup" || $action == "importgroup"
-        || $action == "ordergroups" || $action == "deletesurvey" || $action == "resetsurveylogic"
-        || $action == "importsurveyresources" || $action == "translate" || $action == "emailtemplates"
-        || $action == "exportstructure" || $action == "quotas" || $action == "copysurvey" || $action == "viewgroup" || $action == "viewquestion")
+        if ($action !== true && in_array($action, array('deactivate', 'activate', 'surveysecurity', 'editdefaultvalues', 'editemailtemplates',
+         'surveyrights', 'addsurveysecurity', 'addusergroupsurveysecurity',
+         'setsurveysecurity', 'setusergroupsurveysecurity', 'delsurveysecurity',
+         'editsurveysettings', 'editsurveylocalesettings', 'updatesurveysettingsandeditlocalesettings', 'addgroup', 'importgroup',
+         'ordergroups', 'deletesurvey', 'resetsurveylogic',
+         'importsurveyresources', 'translate', 'emailtemplates',
+         'exportstructure', 'quotas', 'copysurvey', 'viewgroup', 'viewquestion')))
         {
             $showstyle = "style='display: none'";
         }
-        if (!isset($showstyle))
+        else
         {
             $showstyle = "";
         }
-        /*         * if ($gid) {$showstyle="style='display: none'";}
-          if (!isset($showstyle)) {$showstyle="";} */
+
         $aData['showstyle'] = $showstyle;
         $aData['aAdditionalLanguages'] = $aAdditionalLanguages;
         $aData['clang'] = $clang;

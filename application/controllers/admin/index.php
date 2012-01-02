@@ -16,24 +16,35 @@ class Index extends Survey_Common_Action
 {
 	public function run()
 	{
-        $clang = $this->getController()->lang;
-
-		$this->getController()->_getAdminHeader();
-		$this->getController()->_showadminmenu();
-
-        if (Yii::app()->session['just_logged_in'])
-        {
-            $this->getController()->_showMessageBox($clang->gT("Logged in"), Yii::app()->session['loginsummary']);
-            unset(Yii::app()->session['just_logged_in'], Yii::app()->session['loginsummary']);
-        }
+        $clang = Yii::app()->lang;
+        $aViewUrls = array();
 
 		if (count(getsurveylist(true)) == 0)
 		{
-			$data['clang']=$this->lang;
-			$this->getController()->render("/admin/super/firststeps", $data);
+            $aViewUrls = 'firststeps';
 		}
+        elseif (Yii::app()->session['just_logged_in'])
+        {
+            $aViewUrls = array('message' => array(
+                'title' => $clang->gT("Logged in"),
+                'message' => Yii::app()->session['loginsummary']
+            ));
+            unset(Yii::app()->session['just_logged_in'], Yii::app()->session['loginsummary']);
+        }
 
-		$this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+        $this->_renderWrappedTemplate($aViewUrls);
+
 	}
+
+    /**
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    {
+        parent::_renderWrappedTemplate('super', $aViewUrls, $aData);
+    }
 
 }

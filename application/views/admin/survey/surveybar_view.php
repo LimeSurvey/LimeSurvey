@@ -67,7 +67,7 @@
                         <?php } ?>
 
                     <?php if($quotas) { ?>
-                        <li><a href='<?php echo $this->createUrl("admin/quotas/surveyid/$surveyid/");?>' >
+                        <li><a href='<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/$surveyid/");?>' >
                             <img src='<?php echo $imageurl;?>/quota_30.png' alt=''/> <?php $clang->eT("Quotas");?></a></li>
                         <?php } ?>
                     <?php if($assessments) { ?>
