@@ -239,7 +239,6 @@ class Usergroups extends Survey_Common_Action
         $ugid = (int)$ugid;
         $clang = Yii::app()->lang;
         $action = (isset($_POST['action'])) ? $_POST['action'] : '';
-        $this->_sendHeaders($ugid);
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) {
             if ($action == "editusergroupindb") {
 
@@ -361,51 +360,6 @@ class Usergroups extends Survey_Common_Action
         {
             $this->_renderWrappedTemplate($aViewUrls, $aData);
         }
-    }
-
-    /**
-     * Function responsible to update a user group.
-     * @param mixed $name
-     * @param mixed $description
-     * @param mixed $ugid
-     * @return
-     */
-    private function _updateUserGroup($name, $description, $ugid)
-    {
-        $query = 'UPDATE {{user_groups}} SET name=\'' . $name . '\', description=\'' . $description . '\' WHERE ugid=\'' . $ugid . '\'';
-        //$this->load->model('user_groups');
-        //$uquery = $this->user_groups_model->update(array('name' => $name, 'description' => $description), array('ugid' => $ugid));
-        $uquery = db_execute_assoc($query);
-        return $uquery;  //Checked)
-    }
-
-    /**
-     * Function to refresh templates.
-     * @return
-     */
-    private function _refreshTemplates()
-    {
-
-        $template_a = gettemplatelist();
-        foreach ($template_a as $tp => $fullpath) {
-            // check for each folder if there is already an entry in the database
-            // if not create it with current user as creator (user with rights "create user" can assign template rights)
-            $this->load->model('templates');
-            $result = $this->templates_model->getAllRecords_like(array('folder' => $tp));
-
-            if ($result->num_rows() == 0) {
-                $aData = array(
-                    'folder' => $tp,
-                    'creator' => $this->session->userdata('loginID')
-                );
-
-                $this->load->model('templates_model');
-                $this->templates_model->insertRecords($aData);
-
-                //db_execute_assoc($query2); //Checked
-            }
-        }
-        return true;
     }
 
     /**
