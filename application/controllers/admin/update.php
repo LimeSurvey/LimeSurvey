@@ -527,22 +527,23 @@ class update extends Survey_Common_Action
     /**
      * Update database
      */
-    function db($subaction = null)
+    function db($continue = null)
     {
         $clang = $this->getController()->lang;
         Yii::app()->loadHelper("update/update");
-
-        if(isset($subaction) && $subaction=="continue")
+        $getHeader = true;
+        if(isset($continue) && $continue=="yes")
         {
-            $aViewUrls['output'] = CheckForDBUpgrades($subaction);
+            $aViewUrls['output'] = CheckForDBUpgrades($continue);
             updatecheck();
+            $getHeader = false;
         }
         else
         {
             $aViewUrls['output'] = CheckForDBUpgrades();
         }
 
-        $this->_renderWrappedTemplate($aViewUrls);
+        $this->_renderWrappedTemplate($aViewUrls,array(),$getHeader);
     }
 
     /**
@@ -551,10 +552,10 @@ class update extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array(), $getHeader)
     {
         $aData['display']['menu_bars'] = false;
-        parent::_renderWrappedTemplate('update', $aViewUrls, $aData);
+        parent::_renderWrappedTemplate('update', $aViewUrls, $aData, $getHeader);
     }
 
 }

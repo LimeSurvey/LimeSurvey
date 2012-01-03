@@ -26,8 +26,9 @@ function CheckForDBUpgrades($subaction = null)
 	$standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
     if (intval($dbversionnumber)>intval($currentDBVersion))
     {
-        if(isset($subaction) && $subaction=="continue")
+        if(isset($subaction) && $subaction=="yes")
         {
+            echo Yii::app()->getController()->_getAdminHeader();
         	echo "<div style='width:90%; padding:1% 10%;background-color:#eee;'>";
             $upgradedbtype=Yii::app()->db->getDriverName();
             if ($upgradedbtype=='mysqli') $upgradedbtype='mysql';
@@ -36,11 +37,12 @@ function CheckForDBUpgrades($subaction = null)
             db_upgrade_all(intval($currentDBVersion));
             db_upgrade(intval($currentDBVersion));
             Yii::app()->db->createCommand()->update('{{settings_global}}', array('stg_value' => intval($dbversionnumber)), 'stg_name = \'DBVersion\'');
-            echo "<br />".sprintf($clang->gT("Database has been successfully upgraded to version %s"),$dbversionnumber);
-			echo "<br /><a href='".Yii::app()->getController()->createUrl("admin")."'>".$clang->gT("Back to main menu")."</a></div>";
+            $data = "<br />".sprintf($clang->gT("Database has been successfully upgraded to version %s"),$dbversionnumber);
+			$data .= "<br /><a href='".Yii::app()->getController()->createUrl("/admin")."'>".$clang->gT("Back to main menu")."</a></div>";
+            return $data;
         }
         else {
-            ShowDBUpgradeNotice();
+            return ShowDBUpgradeNotice();
         }
     }
 }
@@ -49,19 +51,19 @@ function ShowDBUpgradeNotice() {
     //$error=false;
 	$clang = Yii::app()->lang;
 	//$sitename = Yii::app()->getConfig('sitename');
-	echo '<div class="messagebox">';
-    echo "<div class='header'>".$clang->gT('Database upgrade').'</div><p>';
-    $clang->eT('Please verify the following information before continuing with the database upgrade:').'<ul>';
-    echo "<li><b>" .$clang->gT('Database type') . ":</b> " . Yii::app()->db->getDriverName() . "</li>";
-    echo "<li><b>" .$clang->gT('Database name') . ":</b> " . getDBConnectionStringProperty('dbname') . "</li>";
-    echo "<li><b>" .$clang->gT('Table prefix') . ":</b> " . Yii::app()->db->tablePrefix . "</li>";
-    echo "<li><b>" .$clang->gT('Site name') . ":</b> " . Yii::app()->getConfig("sitename") . "</li>";
-    echo "<li><b>" .$clang->gT('Root URL') . ":</b> " . Yii::app()->getController()->createUrl('') . "</li>";
-    echo '</ul>';
-    echo "<br />";
-    echo "<a href='".Yii::app()->getController()->createUrl("admin/update/db/continue")."'>" . $clang->gT('Click here to continue') . "</a>";
-    echo "<br />";
-	echo '</div>';
+	return '<div class="messagebox">'
+    ."<div class='header'>".$clang->gT('Database upgrade').'</div><p>'
+    .$clang->gT('Please verify the following information before continuing with the database upgrade:').'<ul>'
+    ."<li><b>" .$clang->gT('Database type') . ":</b> " . Yii::app()->db->getDriverName() . "</li>"
+    ."<li><b>" .$clang->gT('Database name') . ":</b> " . getDBConnectionStringProperty('dbname') . "</li>"
+    ."<li><b>" .$clang->gT('Table prefix') . ":</b> " . Yii::app()->db->tablePrefix . "</li>"
+    ."<li><b>" .$clang->gT('Site name') . ":</b> " . Yii::app()->getConfig("sitename") . "</li>"
+    ."<li><b>" .$clang->gT('Root URL') . ":</b> " . Yii::app()->getController()->createUrl('') . "</li>"
+    .'</ul>'
+    ."<br />"
+    ."<a href='".Yii::app()->getController()->createUrl("admin/update/db/continue/yes")."'>" . $clang->gT('Click here to continue') . "</a>"
+    ."<br />"
+	.'</div>';
 }
 
 function getDBConnectionStringProperty($szProperty)

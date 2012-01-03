@@ -173,7 +173,7 @@ class Survey_Common_Action extends CAction
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $getHeader = true)
     {
         // Gather the data
         $aData['clang'] = $clang = Yii::app()->lang;
@@ -187,7 +187,8 @@ class Survey_Common_Action extends CAction
         }
 
         // Header
-        Yii::app()->getController()->_getAdminHeader();
+        if($getHeader)
+            Yii::app()->getController()->_getAdminHeader();
 
         // Menu bars
         if (!isset($aData['display']['menu_bars']) || ($aData['display']['menu_bars'] !== false && (!is_array($aData['display']['menu_bars']) || !in_array('browse', array_keys($aData['display']['menu_bars'])))))
