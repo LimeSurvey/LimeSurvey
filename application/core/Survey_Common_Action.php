@@ -27,11 +27,14 @@ class Survey_Common_Action extends CAction
 {
 
     /**
+     * Override runWithParams() implementation in CAction to help us parse
+     * requests with subactions.
      *
-     * @param type $params
+     * @param array $params URL Parameters
      */
 	public function runWithParams($params)
 	{
+        // Default method that would be called if the subaction and run() do not exist
         $sDefault = 'index';
 
         // Check for a subaction
@@ -39,24 +42,6 @@ class Survey_Common_Action extends CAction
         {
             $sSubAction = $sDefault; // default
         }
-
-        // sa made it somehow into the url, try to fix it
-        elseif ($params['sa'] == 'sa')
-        {
-            $sSubAction = array_shift(array_keys($params));
-            $_params = array();
-            $params = $params2 = array_flip($params);
-
-            foreach($params as $param => $key)
-            {
-                $_params[$param] = next($params2);
-            }
-
-            $params = array_filter($_params);
-            $params['sa'] = $sSubAction;
-        }
-
-        // all is good
         else
         {
             $sSubAction = $params['sa'];
@@ -66,25 +51,51 @@ class Survey_Common_Action extends CAction
 		$oClass = new ReflectionClass($this);
         if (!$oClass->hasMethod($sSubAction))
         {
+            // If it doesn't, revert to default Yii method, that is run() which should reroute us somewhere else
             $sSubAction = 'run';
         }
 
+        // Populate the params. eg. surveyid -> iSurveyId
         $params = $this->_addPseudoParams($params);
 
         // Check if the method is public and of the action class, not its parents
+        // ReflectionClass gets us the methods of the class and parent class
+        // If the above method existence check passed, it might not be neceessary that it is of the action class
         $oMethod  = new ReflectionMethod($this, $sSubAction);
+
+        // Get the action classes from the admin controller as the urls necessarily do not equal the class names. Eg. survey -> surveyaction
         $aActions = Yii::app()->getController()->getActionClasses();
         if(empty($aActions[$this->getId()]) || strtolower($oMethod->getDeclaringClass()->name) != $aActions[$this->getId()] || !$oMethod->isPublic())
         {
+            // Either action doesn't exist in our whitelist, or the method class doesn't equal the action class or the method isn't public
+            // So let us get the last possible default method, ie. index
             $oMethod = new ReflectionMethod($this, $sDefault);
         }
 
         // We're all good to go, let's execute it
+        // runWithParamsInternal would automatically get the parameters of the method and populate them as required with the params
         return parent::runWithParamsInternal($this, $oMethod, $params);
 	}
 
+    /**
+     * Some functions have different parameters, which are just an alias of the
+     * usual parameters we're getting in the url. This function just populates
+     * those variables so that we don't end up in an error.
+     *
+     * This is also used while rendering wrapped template
+     * {@link Survey_Common_Action::_renderWrappedTemplate()}
+     *
+     * @param array $params Parameters to parse and populate
+     * @return array Populated parameters
+     */
     private function _addPseudoParams($params)
     {
+        // Return if params isn't an array
+        if (empty($params) || !is_array($params))
+        {
+            return $params;
+        }
+
         $pseudos = array(
             'id' => 'iId',
             'gid' => 'iGroupId',
@@ -105,6 +116,10 @@ class Survey_Common_Action extends CAction
             'subaction' => 'sSubAction',
         );
 
+        // Foreach pseudo, take the key, if it exists,
+        // Populate the values (taken as an array) as keys in params
+        // with that key's value in the params
+        // (only if that place is empty)
         foreach ($pseudos as $key => $pseudo)
         {
             if (!empty($params[$key]))
@@ -121,14 +136,13 @@ class Survey_Common_Action extends CAction
             }
         }
 
+        // Finally return the populated array
         return $params;
     }
 
     /**
-     * Executes the action based on given input
-     *
-     * @access public
-     * @return void
+     * Action classes require them to have a run method. We reroute it to index
+     * if called.
      */
     public function run()
     {
