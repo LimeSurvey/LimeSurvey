@@ -421,7 +421,7 @@ class labels extends Survey_Common_Action
     public function exportmulti()
     {
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . 'scripts/admin/labels.js');
-        $this->_renderWrappedTemplate('exportmulti_view', $aData);
+        $this->_renderWrappedTemplate('exportmulti_view');
     }
 
     /**
