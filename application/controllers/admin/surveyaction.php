@@ -812,17 +812,18 @@ class SurveyAction extends Survey_Common_Action
                 Yii::app()->loadHelper('surveytranslator');
                 $bplang = $this->getController()->lang; //new lang($grouplang);
 
-                $esrow = Surveys_languagesettings::model()->findByPk(array($surveyid, $grouplang));
+                $esrow = Surveys_languagesettings::model()->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $grouplang))->getAttributes();
 
                 $tab_title[$i] = getLanguageNameFromCode($esrow['surveyls_language'], false);
 
                 if ($esrow['surveyls_language'] == Survey::model()->findByPk($surveyid)->language)
                     $tab_title[$i] .= '(' . $clang->gT("Base Language") . ')';
 
-                $esrow = array_map('htmlspecialchars', $esrow);
+                //$esrow = array_map('htmlspecialchars', $esrow);
                 $aData['esrow'] = $esrow;
                 $x->template_data['surveyid'] = $surveyid;
                 $aData['action'] = "editsurveylocalesettings";
+                $aData['clang'] = $clang;
 
                 $tab_content[$i] = $this->getController()->render('/admin/survey/editLocalSettings_view', $aData, true);
 
