@@ -80,7 +80,12 @@ class AdminController extends LSYii_Controller
 	 */
 	protected function _sessioncontrol()
 	{
-		if (!Yii::app()->session["adminlang"] || Yii::app()->session["adminlang"]=='')
+        // From personal settings
+         if (CHttpRequest::getPost('action') == 'savepersonalsettings') {
+             Yii::app()->session['adminlang'] = CHttpRequest::getPost('lang');
+         }
+
+		if (empty(Yii::app()->session['adminlang']))
 			Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
 
 		Yii::import('application.libraries.Limesurvey_lang');
@@ -101,7 +106,7 @@ class AdminController extends LSYii_Controller
 	public function run($action)
 	{
 		// Check if the DB is up to date
-		if (!Yii::app()->db->schema->getTable('{{surveys}}'))
+		if (Yii::app()->db->schema->getTable('{{surveys}}'))
 		{
 			$usrow = getGlobalSetting('DBVersion');
 			if ((int) $usrow < Yii::app()->getConfig('dbversionnumber') && $action != 'update' && $action != 'authentication')
@@ -111,11 +116,12 @@ class AdminController extends LSYii_Controller
 		if ($action != "update" && $action != "db")
             if (empty($this->user_id) && $action != "authentication"  && $action != "remotecontrol")
             {
-                if (!($action == "index" && $action == "index"))
+                if ($action != 'index')
                     Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
+
                 Yii::app()->session['redirectopage'] = Yii::app()->request->requestUri;
 
-                $this->redirect($this->createUrl('admin/authentication/login'));
+                $this->redirect($this->createUrl('/admin/authentication/login'));
             }
 
 		return parent::run($action);
@@ -231,7 +237,7 @@ class AdminController extends LSYii_Controller
 	 */
 	public function _getAdminHeader($meta = false, $return = false)
 	{
-		if (!Yii::app()->session["adminlang"] || Yii::app()->session["adminlang"]=='')
+		if (empty(Yii::app()->session['adminlang']))
 			Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
 
 		$data = array();
