@@ -207,7 +207,7 @@ class Survey_Common_Action extends CAction
                         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
                     }
 
-                    $this->_surveysummary($aData['surveyid'], !empty($aData['display']['menu_bars']['surveysummary']) ? $aData['display']['menu_bars']['surveysummary'] : null);
+                    $this->_surveysummary($aData['surveyid'], !empty($aData['display']['menu_bars']['surveysummary']) ? $aData['display']['menu_bars']['surveysummary'] : null, !empty($aData['gid']) ? $aData['gid'] : null);
                 }
 
                 if (!empty($aData['gid']))
@@ -623,7 +623,7 @@ class Survey_Common_Action extends CAction
      * @param int Survey id
      * @param string Action to be performed
      */
-    function _surveysummary($iSurveyId, $action=null)
+    function _surveysummary($iSurveyId, $action=null, $gid=null)
     {
         $clang = $this->getController()->lang;
 
@@ -845,7 +845,7 @@ class Survey_Common_Action extends CAction
 //
         $aData['tableusage'] = false;
 
-        if (in_array($action, array('deactivate', 'activate', 'surveysecurity', 'editdefaultvalues', 'editemailtemplates',
+        if ($gid || in_array($action, array('deactivate', 'activate', 'surveysecurity', 'editdefaultvalues', 'editemailtemplates',
          'surveyrights', 'addsurveysecurity', 'addusergroupsurveysecurity',
          'setsurveysecurity', 'setusergroupsurveysecurity', 'delsurveysecurity',
          'editsurveysettings', 'editsurveylocalesettings', 'updatesurveysettingsandeditlocalesettings', 'addgroup', 'importgroup',

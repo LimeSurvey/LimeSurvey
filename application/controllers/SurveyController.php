@@ -591,7 +591,7 @@ class SurveyController extends LSYii_Controller
 
         //$gid || $qid ||
 
-
+        debugbreak();
         if ($action=="deactivate"|| $action=="activate" || $action=="surveysecurity" || $action=="editdefaultvalues" || $action == "editemailtemplates"
         || $action=="surveyrights" || $action=="addsurveysecurity" || $action=="addusergroupsurveysecurity"
         || $action=="setsurveysecurity" ||  $action=="setusergroupsurveysecurity" || $action=="delsurveysecurity"
@@ -600,8 +600,7 @@ class SurveyController extends LSYii_Controller
         || $action=="importsurveyresources" || $action=="translate"  || $action=="emailtemplates"
         || $action=="exportstructure" || $action=="quotas" || $action=="copysurvey" || $action=="viewgroup" || $action == "viewquestion") {$showstyle="style='display: none'";}
         if (!isset($showstyle)) {$showstyle="";}
-        /**if ($gid) {$showstyle="style='display: none'";}
-        if (!isset($showstyle)) {$showstyle="";} */
+        if ($gid) {$showstyle="style='display: none'";}
         $data['showstyle'] = $showstyle;
         $data['aAdditionalLanguages'] = $aAdditionalLanguages;
 		$this->getController()->render("admin/survey/surveySummary_view",$data);

@@ -47,11 +47,11 @@ function dirReport($dir, $write, $clang)
 <p>&nbsp;<?php echo $descp; ?></p>
 <hr />
 <fieldset class="content-table">
-<legend class="content-table-heading"><?php $clang->eT("Required settings"); ?></legend>
+<legend class="content-table-heading"><?php $clang->eT("Minimum requirements"); ?></legend>
 
 <table style="width: 671px; margin-top: 0px; border-top-width: 1px; ">
 <tr>
-       <td  style="width: 209px;"><?php //$clang->eT("Required settings"); ?></td>
+       <td>&nbsp;</td>
        <td align="center" style="width: 225px;"><b><?php $clang->eT("Required"); ?></b></td>
        <td align="center" style="width: 225px;"><b><?php $clang->eT("Current"); ?></b></td>
 </tr>
@@ -85,7 +85,7 @@ function dirReport($dir, $write, $clang)
 </table>
 </fieldset>
 <fieldset class="content-table">
-<legend class="content-table-heading"><?php $clang->eT('Optional settings'); ?></legend>
+<legend class="content-table-heading"><?php $clang->eT('Optional modules'); ?></legend>
 <table style="width: 671px; margin-top: 0px; border-top-width: 1px;" >
 <tr>
        <td style="width: 209px;">&nbsp;</td>
