@@ -3,99 +3,99 @@
 if (!defined('BASEPATH'))
     die('No direct script access allowed');
 /*
- * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- * 	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
- */
+* LimeSurvey
+* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+* 	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
+*/
 
 class Survey extends CActiveRecord
 {
     /**
-     * Returns the table's name
-     *
-     * @access public
-     * @return string
-     */
+    * Returns the table's name
+    *
+    * @access public
+    * @return string
+    */
     public function tableName()
     {
         return '{{surveys}}';
     }
 
     /**
-     * Returns the table's primary key
-     *
-     * @access public
-     * @return string
-     */
+    * Returns the table's primary key
+    *
+    * @access public
+    * @return string
+    */
     public function primaryKey()
     {
         return 'sid';
     }
 
     /**
-     * Return the static model for this table
-     *
-     * @static
-     * @access public
-     * @return CActiveRecord
-     */
+    * Return the static model for this table
+    *
+    * @static
+    * @access public
+    * @return CActiveRecord
+    */
     public static function model()
     {
         return parent::model(__CLASS__);
     }
 
     /**
-     * Returns this model's relations
-     *
-     * @access public
-     * @return array
-     */
+    * Returns this model's relations
+    *
+    * @access public
+    * @return array
+    */
     public function relations()
     {
         return array(
-            'languagesettings' => array(self::HAS_ONE, 'Surveys_languagesettings', '',
-                'on' => 't.sid = languagesettings.surveyls_survey_id AND t.language = languagesettings.surveyls_language'
-            ),
-            'owner' => array(self::BELONGS_TO, 'User', '', 'on' => 't.owner_id = owner.uid'),
+        'languagesettings' => array(self::HAS_ONE, 'Surveys_languagesettings', '',
+        'on' => 't.sid = languagesettings.surveyls_survey_id AND t.language = languagesettings.surveyls_language'
+        ),
+        'owner' => array(self::BELONGS_TO, 'User', '', 'on' => 't.owner_id = owner.uid'),
         );
     }
 
     /**
-     * Returns this model's scopes
-     *
-     * @access public
-     * @return array
-     */
+    * Returns this model's scopes
+    *
+    * @access public
+    * @return array
+    */
     public function scopes()
     {
         return array(
-            'active' => array(
-                'condition' => 'active = "Y"',
-            ),
+        'active' => array(
+        'condition' => 'active = "Y"',
+        ),
         );
     }
 
     /**
-     * permission scope for this model
-     *
-     * @access public
-     * @param int $loginID
-     * @return CActiveRecord
-     */
+    * permission scope for this model
+    *
+    * @access public
+    * @param int $loginID
+    * @return CActiveRecord
+    */
     public function permission($loginID)
     {
         $loginID = (int) $loginID;
         $criteria = $this->getDBCriteria();
         $criteria->mergeWith(array(
-            'condition' => 'sid IN (SELECT sid FROM {{survey_permissions}} WHERE uid = :uid AND permission = :permission AND read_p = 1)',
+        'condition' => 'sid IN (SELECT sid FROM {{survey_permissions}} WHERE uid = :uid AND permission = :permission AND read_p = 1)',
         ));
         $criteria->params[':uid'] = $loginID;
         $criteria->params[':permission'] = 'survey';
@@ -104,23 +104,29 @@ class Survey extends CActiveRecord
     }
 
     /**
-     * Returns additional languages formatted into a string
-     *
-     * @access public
-     * @return array
-     */
+    * Returns additional languages formatted into a string
+    *
+    * @access public
+    * @return array
+    */
     public function getAdditionalLanguages()
     {
-        return explode(' ', trim($this->additional_languages));
+        $sLanguages=trim($this->additional_languages);
+        if ($sLanguages!='')
+        {
+            return explode(' ', $sLanguages);
+        }
+        else
+            return array();
     }
 
     /**
-     * !!! Shouldn't this be moved to beforeSave?
-     * Creates a new survey - does some basic checks of the suppplied data
-     *
-     * @param string $data
-     * @return mixed
-     */
+    * !!! Shouldn't this be moved to beforeSave?
+    * Creates a new survey - does some basic checks of the suppplied data
+    *
+    * @param string $data
+    * @return mixed
+    */
     public function insertNewSurvey($data)
     {
         do
@@ -156,13 +162,13 @@ class Survey extends CActiveRecord
     }
 
     /**
-     * !!! DOESN'T WORK !!!
-     *
-     * @access public
-     * @param int $iSurveyID
-     * @param bool @recursive
-     * @return void
-     */
+    * !!! DOESN'T WORK !!!
+    *
+    * @access public
+    * @param int $iSurveyID
+    * @param bool @recursive
+    * @return void
+    */
     public function deleteSurvey($iSurveyID, $recursive=true)
     {
         $this->db->delete('surveys', array('sid' => $iSurveyID));

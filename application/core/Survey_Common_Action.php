@@ -1,39 +1,39 @@
 <?php
 
 /*
- * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
- */
+* LimeSurvey
+* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
+*/
 
 /**
- * Survey Common Action
- *
- * This controller contains common functions for survey related views.
- *
- * @package		LimeSurvey
- * @subpackage	Backend
- * @author		Shitiz Garg
- */
+* Survey Common Action
+*
+* This controller contains common functions for survey related views.
+*
+* @package		LimeSurvey
+* @subpackage	Backend
+* @author		Shitiz Garg
+*/
 class Survey_Common_Action extends CAction
 {
 
     /**
-     * Override runWithParams() implementation in CAction to help us parse
-     * requests with subactions.
-     *
-     * @param array $params URL Parameters
-     */
-	public function runWithParams($params)
-	{
+    * Override runWithParams() implementation in CAction to help us parse
+    * requests with subactions.
+    *
+    * @param array $params URL Parameters
+    */
+    public function runWithParams($params)
+    {
         // Default method that would be called if the subaction and run() do not exist
         $sDefault = 'index';
 
@@ -48,7 +48,7 @@ class Survey_Common_Action extends CAction
         }
 
         // Check if the class has the method
-		$oClass = new ReflectionClass($this);
+        $oClass = new ReflectionClass($this);
         if (!$oClass->hasMethod($sSubAction))
         {
             // If it doesn't, revert to default Yii method, that is run() which should reroute us somewhere else
@@ -75,19 +75,19 @@ class Survey_Common_Action extends CAction
         // We're all good to go, let's execute it
         // runWithParamsInternal would automatically get the parameters of the method and populate them as required with the params
         return parent::runWithParamsInternal($this, $oMethod, $params);
-	}
+    }
 
     /**
-     * Some functions have different parameters, which are just an alias of the
-     * usual parameters we're getting in the url. This function just populates
-     * those variables so that we don't end up in an error.
-     *
-     * This is also used while rendering wrapped template
-     * {@link Survey_Common_Action::_renderWrappedTemplate()}
-     *
-     * @param array $params Parameters to parse and populate
-     * @return array Populated parameters
-     */
+    * Some functions have different parameters, which are just an alias of the
+    * usual parameters we're getting in the url. This function just populates
+    * those variables so that we don't end up in an error.
+    *
+    * This is also used while rendering wrapped template
+    * {@link Survey_Common_Action::_renderWrappedTemplate()}
+    *
+    * @param array $params Parameters to parse and populate
+    * @return array Populated parameters
+    */
     private function _addPseudoParams($params)
     {
         // Return if params isn't an array
@@ -97,23 +97,23 @@ class Survey_Common_Action extends CAction
         }
 
         $pseudos = array(
-            'id' => 'iId',
-            'gid' => 'iGroupId',
-            'qid' => 'iQuestionId',
-            'sid' => 'iSurveyId',
-            'surveyid' => 'iSurveyId',
-            'srid' => 'iSurveyResponseId',
-            'scid' => 'iSavedControlId',
-            'uid' => 'iUserId',
-            'ugid' => 'iUserGroupId',
-            'fieldname' => 'sFieldName',
-            'fieldtext' => 'sFieldText',
-            'action' => 'sAction',
-            'lang' => 'sLanguage',
-            'browselang' => 'sBrowseLang',
-            'tokenids' => 'aTokenIds',
-            'tokenid' => 'iTokenId',
-            'subaction' => 'sSubAction',
+        'id' => 'iId',
+        'gid' => 'iGroupId',
+        'qid' => 'iQuestionId',
+        'sid' => 'iSurveyId',
+        'surveyid' => 'iSurveyId',
+        'srid' => 'iSurveyResponseId',
+        'scid' => 'iSavedControlId',
+        'uid' => 'iUserId',
+        'ugid' => 'iUserGroupId',
+        'fieldname' => 'sFieldName',
+        'fieldtext' => 'sFieldText',
+        'action' => 'sAction',
+        'lang' => 'sLanguage',
+        'browselang' => 'sBrowseLang',
+        'tokenids' => 'aTokenIds',
+        'tokenid' => 'iTokenId',
+        'subaction' => 'sSubAction',
         );
 
         // Foreach pseudo, take the key, if it exists,
@@ -141,22 +141,22 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-     * Action classes require them to have a run method. We reroute it to index
-     * if called.
-     */
+    * Action classes require them to have a run method. We reroute it to index
+    * if called.
+    */
     public function run()
     {
         $this->index();
     }
 
     /**
-     * Routes the action into correct subaction
-     *
-     * @access protected
-     * @param string $sa
-     * @param array $get_vars
-     * @return void
-     */
+    * Routes the action into correct subaction
+    *
+    * @access protected
+    * @param string $sa
+    * @param array $get_vars
+    * @return void
+    */
     protected function route($sa, array $get_vars)
     {
         $func_args = array();
@@ -167,12 +167,12 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-     * Renders template(s) wrapped in header and footer
-     *
-     * @param string $sAction Current action, the folder to fetch views from
-     * @param string|array $aViewUrls View url(s)
-     * @param array $aData Data to be passed on. Optional.
-     */
+    * Renders template(s) wrapped in header and footer
+    *
+    * @param string $sAction Current action, the folder to fetch views from
+    * @param string|array $aViewUrls View url(s)
+    * @param array $aData Data to be passed on. Optional.
+    */
     protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $getHeader = true)
     {
         // Gather the data
@@ -206,8 +206,7 @@ class Survey_Common_Action extends CAction
                     {
                         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
                     }
-
-                    $this->_surveysummary($aData['surveyid'], !empty($aData['display']['menu_bars']['surveysummary']) ? $aData['display']['menu_bars']['surveysummary'] : null, !empty($aData['gid']) ? $aData['gid'] : null);
+                    $this->_surveysummary($aData['surveyid'], $sAction, !empty($aData['gid']) ? $aData['gid'] : null);
                 }
 
                 if (!empty($aData['gid']))
@@ -273,7 +272,7 @@ class Survey_Common_Action extends CAction
                         }
                         break;
 
-                     // Output
+                        // Output
                     case 'output' :
                         echo $viewUrl;
                         break;
@@ -286,12 +285,12 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-     * Shows admin menu for question
-     * @param int Survey id
-     * @param int Group id
-     * @param int Question id
-     * @param string action
-     */
+    * Shows admin menu for question
+    * @param int Survey id
+    * @param int Group id
+    * @param int Question id
+    * @param string action
+    */
     function _questionbar($iSurveyId, $gid, $qid, $action = null)
     {
         $clang = $this->getController()->lang;
@@ -374,16 +373,16 @@ class Survey_Common_Action extends CAction
                         $aAttribute['value'] = $aAttribute['options'][$aAttribute['value']];
                     }
                     /*
-                      if ($aAttribute['name']=='relevance')
-                      {
-                      $sRelevance = $aAttribute['value'];
-                      if ($sRelevance !== '' && $sRelevance !== '1' && $sRelevance !== '0')
-                      {
-                      LimeExpressionManager::ProcessString("{" . $sRelevance . "}");    // tests Relevance equation so can pretty-print it
-                      $aAttribute['value']= LimeExpressionManager::GetLastPrettyPrintExpression();
-                      }
-                      }
-                     */
+                    if ($aAttribute['name']=='relevance')
+                    {
+                    $sRelevance = $aAttribute['value'];
+                    if ($sRelevance !== '' && $sRelevance !== '1' && $sRelevance !== '0')
+                    {
+                    LimeExpressionManager::ProcessString("{" . $sRelevance . "}");    // tests Relevance equation so can pretty-print it
+                    $aAttribute['value']= LimeExpressionManager::GetLastPrettyPrintExpression();
+                    }
+                    }
+                    */
                     $DisplayArray[] = $aAttribute;
                 }
             }
@@ -406,10 +405,10 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-     * Shows admin menu for question groups
-     * @param int Survey id
-     * @param int Group id
-     */
+    * Shows admin menu for question groups
+    * @param int Survey id
+    * @param int Group id
+    */
     function _questiongroupbar($iSurveyId, $gid, $qid=null, $action = null)
     {
         $clang = $this->getController()->lang;
@@ -473,9 +472,9 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-     * Shows admin menu for surveys
-     * @param int Survey id
-     */
+    * Shows admin menu for surveys
+    * @param int Survey id
+    */
     function _surveybar($iSurveyId, $gid=null)
     {
         //$this->load->helper('surveytranslator');
@@ -539,9 +538,9 @@ class Survey_Common_Action extends CAction
         }
 
         $aData['baselang'] = Survey::model()->findByPk($iSurveyId)->language;
-        $aData['onelanguage'] = (count(Survey::model()->findByPk($iSurveyId)->additionalLanguages) == 0);
-
-        $tmp_survlangs = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
+        //        DebugBreak();
+        $tmp_survlangs = Survey::model()->findByPk($iSurveyId)->getAdditionalLanguages();
+        $aData['onelanguage']=(count($tmp_survlangs)==0);
         $aData['additionallanguages'] = $tmp_survlangs;
         $tmp_survlangs[] = $aData['baselang'];
         rsort($tmp_survlangs);
@@ -619,10 +618,10 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-     * Show survey summary
-     * @param int Survey id
-     * @param string Action to be performed
-     */
+    * Show survey summary
+    * @param int Survey id
+    * @param string Action to be performed
+    */
     function _surveysummary($iSurveyId, $action=null, $gid=null)
     {
         $clang = $this->getController()->lang;
@@ -839,19 +838,19 @@ class Survey_Common_Action extends CAction
         $aData['hints'] = $surveysummary2;
 
         //return (array('column'=>array($columns_used,$hard_limit) , 'size' => array($length, $size_limit) ));
-//        $aData['tableusage'] = get_dbtableusage($iSurveyId);
-// ToDo: Table usage is calculated on every menu display which is too slow with bug surveys.
-// Needs to be moved to a database field and only updated if there are question/subquestions added/removed (it's currently also not functional due to the port)
-//
-        $aData['tableusage'] = false;
+        //        $aData['tableusage'] = get_dbtableusage($iSurveyId);
+        // ToDo: Table usage is calculated on every menu display which is too slow with bug surveys.
+        // Needs to be moved to a database field and only updated if there are question/subquestions added/removed (it's currently also not functional due to the port)
+        //
 
+        $aData['tableusage'] = false;
         if ($gid || in_array($action, array('deactivate', 'activate', 'surveysecurity', 'editdefaultvalues', 'editemailtemplates',
-         'surveyrights', 'addsurveysecurity', 'addusergroupsurveysecurity',
-         'setsurveysecurity', 'setusergroupsurveysecurity', 'delsurveysecurity',
-         'editsurveysettings', 'editsurveylocalesettings', 'updatesurveysettingsandeditlocalesettings', 'addgroup', 'importgroup',
-         'ordergroups', 'deletesurvey', 'resetsurveylogic',
-         'importsurveyresources', 'translate', 'emailtemplates',
-         'exportstructure', 'quotas', 'copysurvey', 'viewgroup', 'viewquestion')))
+        'surveyrights', 'addsurveysecurity', 'addusergroupsurveysecurity',
+        'setsurveysecurity', 'setusergroupsurveysecurity', 'delsurveysecurity',
+        'editsurveysettings', 'editsurveylocalesettings', 'updatesurveysettingsandeditlocalesettings', 'addgroup', 'importgroup',
+        'ordergroups', 'deletesurvey', 'resetsurveylogic',
+        'importsurveyresources', 'translate', 'emailtemplates',
+        'exportstructure', 'quotas', 'copysurvey', 'viewgroup', 'viewquestion')))
         {
             $showstyle = "style='display: none'";
         }
@@ -868,8 +867,8 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-     * Browse Menu Bar
-     */
+    * Browse Menu Bar
+    */
     function _browsemenubar($iSurveyId, $title='')
     {
         //BROWSE MENU BAR
@@ -888,10 +887,10 @@ class Survey_Common_Action extends CAction
         $this->getController()->render("/admin/browse/browsemenubar_view", $aData);
     }
     /**
-     * Load menu bar of user group controller.
-     * @param int $ugid
-     * @return void
-     */
+    * Load menu bar of user group controller.
+    * @param int $ugid
+    * @return void
+    */
     function _userGroupBar($ugid = 0)
     {
         $data['clang'] = Yii::app()->lang;

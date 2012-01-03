@@ -97,21 +97,6 @@ class Surveys_languagesettings extends CActiveRecord
         return $this->db->get();
     }
 
-	function update($data, $condition=FALSE)
-	{
-		$criteria = new CDbCriteria;
-
-        if ($condition != FALSE)
-        {
-		    foreach ($condition as $item => $value)
-			{
-				$criteria->addCondition($item.'="'.$value.'"');
-			}
-        }
-
-		$data = $this->updateAll($data, $criteria);
-	}
-
     function getAllData($sid,$lcode)
     {
     	$query = 'SELECT * FROM {{surveys}}, {{surveys_languagesettings}} WHERE sid=? AND surveyls_survey_id=? AND surveyls_language=?';
