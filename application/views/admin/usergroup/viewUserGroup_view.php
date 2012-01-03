@@ -74,7 +74,7 @@ if(isset($groupfound))
 if (!empty($useradddialog))
 {
 	?>
-	<form action='<?php echo $this->createUrl('admin/usergroups/add'); ?>' method='post'>
+	<form action='<?php echo $this->createUrl("admin/usergroups/addusertogroup/ugid/{$ugid}"); ?>' method='post'>
 		<table class='users'><tbody><tr><td>&nbsp;</td>
 		<td>&nbsp;</td>
 		<td align='center'>

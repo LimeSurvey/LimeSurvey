@@ -362,6 +362,58 @@ class Usergroups extends Survey_Common_Action
         }
     }
 
+    function addusertogroup($ugid)
+    {
+        Yii::app()->loadHelper('database');
+	    $clang = Yii::app()->lang;
+	    $postuserid = CHttpRequest::getPost('uid');
+
+        $addsummary = "<div class=\"header\">".$clang->gT("Adding User to group")."...</div>\n";
+        $addsummary .= "<div class=\"messagebox\">\n";
+
+        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
+        {
+            $query = "SELECT ugid, owner_id FROM {{user_groups}} WHERE ugid = " . $ugid . " AND owner_id = ".Yii::app()->session['loginID']." AND owner_id != ".$postuserid;
+            $result = db_execute_assoc($query); //Checked
+            if($result->count() > 0)
+            {
+                if($postuserid > 0)
+                {
+                    $isrresult = User_in_groups::model()->insert(array('ugid' => $ugid, 'uid' => $postuserid)); //Checked
+
+                    if($isrresult)
+                    {
+                        $addsummary .= "<div class=\"successheader\">".$clang->gT("User added.")."</div>\n";
+                    }
+                    else  // ToDo: for this to happen the keys on the table must still be set accordingly
+                    {
+                        // Username already exists.
+                        $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add user.")."</div>\n" . "<br />" . $clang->gT("Username already exists.")."<br />\n";
+                    }
+                }
+                else
+                {
+                    $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add user.")."</div>\n" . "<br />" . $clang->gT("No Username selected.")."<br />\n";
+                }
+                $addsummary .= "<br/><input type=\"submit\" onclick=\"window.location='" . $this->getController()->createUrl('admin/usergroups/view/ugid/') . '/' . $ugid . "'\" value=\"".$clang->gT("Continue")."\"/>\n";
+
+            }
+            else
+            {
+            	die('access denied');
+            }
+        }
+        else
+        {
+        	die('access denied');
+        }
+
+        $addsummary .= "</div>\n";
+        $aViewUrls['output'] = $addsummary;
+
+        $this->_renderWrappedTemplate($aViewUrls);
+    }
+
     /**
      * Renders template(s) wrapped in header and footer
      *
