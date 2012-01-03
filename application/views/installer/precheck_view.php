@@ -26,11 +26,11 @@ function dirReport($dir, $write, $clang)
 
     if ($error)
     {
-       return '<b><font color="red">'.$a.' & '.$b.'</font></b>';
+       return '<b><font color="red">'.$a.' &amp; '.$b.'</font></b>';
     }
     else
     {
-       return $a.' & '.$b;
+       return $a.' &amp; '.$b;
     }
 }
 

@@ -4,8 +4,8 @@
  */
 ?>
 <div class="grid_2 table">
-<p class="title"> &nbsp;Progress</p>
-<p> &nbsp;<?php echo $progressValue ; ?>% Completed</p>
+<p class="title"><?php $clang->eT("Progress"); ?></p>
+<p><?php printf($clang->gT("%s%% completed"),$progressValue); ?></p>
 <div style="width: 280px; height: 20px; margin-left: 6px;" id="progressbar"></div>
 <br />
 <div id="steps">

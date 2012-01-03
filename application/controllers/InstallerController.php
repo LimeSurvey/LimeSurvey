@@ -120,7 +120,7 @@ class InstallerController extends CController {
 	 */
 	protected function _sessioncontrol()
 	{
-		if (!empty(Yii::app()->session['installerLang']))
+		if (empty(Yii::app()->session['installerLang']))
 			Yii::app()->session['installerLang'] = 'en';
 
 		Yii::import('application.libraries.Limesurvey_lang');
@@ -133,18 +133,18 @@ class InstallerController extends CController {
     */
     private function stepWelcome()
     {
-        $aData['clang'] = $clang = $this->lang;
-        // $aData array contain all the information required by view.
-        $aData['title'] = $clang->gT('Welcome');
-        $aData['descp'] = $clang->gT('Welcome to the LimeSurvey installation wizard. This wizard will guide you through the installation, database setup and initial configuration of LimeSurvey.');
-        $aData['classesForStep'] = array('on','off','off','off','off','off');
-        $aData['progressValue'] = 0;
 
         if (!empty($_POST['installerLang']))
         {
             Yii::app()->session['installerLang'] = $_POST['installerLang'];
             $this->redirect($this->createUrl('installer/license'));
         }
+
+        $aData['clang'] = $clang = $this->lang;
+        $aData['title'] = $clang->gT('Welcome');
+        $aData['descp'] = $clang->gT('Welcome to the LimeSurvey installation wizard. This wizard will guide you through the installation, database setup and initial configuration of LimeSurvey.');
+        $aData['classesForStep'] = array('on','off','off','off','off','off');
+        $aData['progressValue'] = 0;
 
         $this->loadHelper('surveytranslator');
         $this->render('/installer/welcome_view',$aData);
