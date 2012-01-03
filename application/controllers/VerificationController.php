@@ -13,22 +13,17 @@
  *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
  */
 
+/**
+ * the Verification class, this is grouped with
+ * other classes in the "limesurvey_yii" package and * is part of "controllers" subpackage
+ * @package limesurvey_yii
+ * @subpackage controllers
+ */
 class VerificationController extends LSYii_Controller
 {
-/**
-* the Verification class, this is grouped with
-* other classes in the "limesurvey_yii" package and * is part of "controllers" subpackage
-* @package limesurvey_yii
-* @subpackage controllers
-*/
-	public function run()
-	{
-		Yii::app()->loadHelper('database');
-		if (isset($_GET['image']))
-			$this->image();
-    }
-    function image()
+    function actionImage()
     {
+        Yii::app()->loadHelper('database');
         $rootdir = Yii::app()->getConfig('rootdir');
 
         // header for png
