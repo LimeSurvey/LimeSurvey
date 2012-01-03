@@ -339,14 +339,11 @@ class SurveyAction extends CAction {
             setcookie ("limesurvey_timers", "", time() - 3600);
         }
 
-
-
         //SEE IF SURVEY USES TOKENS AND GROUP TOKENS
         $i = 0; //$tokensexist = 0;
         if ($surveyExists == 1 && Yii::app()->db->schema->getTable('{{tokens_'.$thissurvey['sid'].'}}') != null)
         {
             $tokensexist = 1;
-
         }
         else
         {
@@ -357,9 +354,6 @@ class SurveyAction extends CAction {
             unset($clienttoken);
         }
 
-
-
-
         //SET THE TEMPLATE DIRECTORY
         if (!$thissurvey['templatedir'])
         {
@@ -369,7 +363,6 @@ class SurveyAction extends CAction {
         {
             $thistpl = sGetTemplatePath($thissurvey['templatedir']);
         }
-
 
         $timeadjust = Yii::app()->getConfig("timeadjust");
         //MAKE SURE SURVEY HASN'T EXPIRED

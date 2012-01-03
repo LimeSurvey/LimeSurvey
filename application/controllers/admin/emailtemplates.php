@@ -50,7 +50,7 @@ class emailtemplates extends Survey_Common_Action {
         $baselang = Survey::model()->findByPk($iSurveyId)->language;
         array_unshift($grplangs,$baselang);
 
-        PrepareEditorScript(true, $this->getController());
+        $sEditScript = PrepareEditorScript(false, $this->getController());
         $aData['attrib'] = array();
         $aData['bplangs'] = array();
         $aData['defaulttexts'] = array();
@@ -64,7 +64,7 @@ class emailtemplates extends Survey_Common_Action {
         $aData['surveyid'] = $iSurveyId;
         $aData['ishtml'] = $ishtml;
         $aData['grplangs'] = $grplangs;
-        $this->_renderWrappedTemplate('emailtemplates_view', $aData);
+        $this->_renderWrappedTemplate(array('output' => $sEditScript, 'emailtemplates_view'), $aData);
     }
 
     /**

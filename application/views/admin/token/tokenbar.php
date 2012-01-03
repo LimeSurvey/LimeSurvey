@@ -13,7 +13,7 @@
                 <img name='SummaryButton' src='<?php echo $imageurl; ?>/summary.png' alt='<?php $clang->eT("Show token summary"); ?>' />
             </a>
             <img src='<?php echo $imageurl; ?>/seperator.gif' alt='' />
-            <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/browse/index/surveyid/$surveyid"); ?>', '_top')"
+            <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/browse/surveyid/$surveyid"); ?>', '_top')"
                title='<?php $clang->eTview("Display tokens"); ?>' >
                 <img name='ViewAllButton' src='<?php echo $imageurl; ?>/document.png' alt='<?php $clang->eT("Display tokens"); ?>' />
             </a>

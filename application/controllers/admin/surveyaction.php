@@ -802,7 +802,7 @@ class SurveyAction extends Survey_Common_Action
 
             Yii::app()->loadHelper("admin/htmleditor");
 
-            PrepareEditorScript(true, $this->getController());
+            $aViewUrls['output'] = PrepareEditorScript(false, $this->getController());
 
             $i = 0;
             foreach ($grplangs as $grouplang)
@@ -819,9 +819,8 @@ class SurveyAction extends Survey_Common_Action
                 if ($esrow['surveyls_language'] == Survey::model()->findByPk($surveyid)->language)
                     $tab_title[$i] .= '(' . $clang->gT("Base Language") . ')';
 
-                //$esrow = array_map('htmlspecialchars', $esrow);
+                $esrow = array_map('htmlspecialchars', $esrow);
                 $aData['esrow'] = $esrow;
-                $x->template_data['surveyid'] = $surveyid;
                 $aData['action'] = "editsurveylocalesettings";
                 $aData['clang'] = $clang;
 

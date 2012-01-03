@@ -327,7 +327,7 @@ class labels extends Survey_Common_Action
 
                 Yii::app()->loadHelper("admin/htmleditor");
 
-                PrepareEditorScript(true, $this->getController());
+                $aViewUrls['output'] = PrepareEditorScript(false, $this->getController());
 
                 $criteria = new CDbCriteria;
                 $criteria->select = 'max(sortorder) as maxsortorder, sortorder';
