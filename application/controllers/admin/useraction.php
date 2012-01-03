@@ -163,7 +163,7 @@ class UserAction extends Survey_Common_Action
             }
         }
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate($aViewUrls);
     }
 
     /**
@@ -208,11 +208,6 @@ class UserAction extends Survey_Common_Action
                         $action = "finaldeluser";
                         foreach ($ownerUser as &$user)
                         {
-                            if ($user['uid'] == $current_user)
-                                $user['selected'] = " selected='selected'";
-                            else
-                                $user['selected'] = '';
-
                             if ($postuserid != $user['uid'])
                                 $transfer_surveys_to = $user['uid'];
                         }
@@ -232,7 +227,7 @@ class UserAction extends Survey_Common_Action
                         $aData['postuser'] = $postuser;
                         $aData['current_user'] = $current_user;
 
-                        $aViewUrls[] = 'deluser';
+                        $aViewUrls['deluser'][] = $aData;
                     }
                 }
                 else
@@ -247,7 +242,7 @@ class UserAction extends Survey_Common_Action
             }
         }
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate($aViewUrls);
     }
 
     function deleteFinalUser($result, $transfer_surveys_to)
@@ -260,13 +255,12 @@ class UserAction extends Survey_Common_Action
             $transfer_surveys_to = sanitize_int($_POST['transfer_surveys_to']);
         }
         if ($transfer_surveys_to > 0) {
-            $model = Survey::model()->updateByPk($postuserid, array('owner_id' => $transfer_surveys_to));
-            $result = $model;
+            $result = Survey::model()->updateAll(array('owner_id' => $transfer_surveys_to), 'owner_id='.$postuserid);
         }
         $sresult = User::model()->findByAttributes(array('uid' => $postuserid));
         $fields = $sresult;
         if (isset($fields['parent_id'])) {
-            $uresult = User::model()->updateByPk(array('parent_id=' => $postuserid), array('parent_id=' => $fields['parent_id']));
+            $uresult = User::model()->updateAll(array('parent_id' => $fields['parent_id']), 'parent_id='.$postuserid);
         }
 
         //DELETE USER FROM TABLE
@@ -288,7 +282,7 @@ class UserAction extends Survey_Common_Action
         }
 
         $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect("", $clang->gT("Success!"), "successheader", $extra);
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate($aViewUrls);
     }
 
     /**
@@ -348,7 +342,8 @@ class UserAction extends Survey_Common_Action
             }
             else
             {
-                if (empty($sPassword)) {
+                if (empty($sPassword))
+                {
                     $uresult = User::model()->updateByPk($postuserid, array('email' => $this->escape($email), 'full_name' => $this->escape($full_name)));
                 }
                 else
@@ -358,7 +353,7 @@ class UserAction extends Survey_Common_Action
 
                 if ($uresult && empty($sPassword)) {
                     $extra = $clang->gT("Username") . ": $users_name<br />" . $clang->gT("Password") . ": (" . $clang->gT("Unchanged") . ")<br />\n";
-                    $aViewUrls['mboxwithredirect'] = $this->_messageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Success!"), "successheader", $extra);
+                    $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Success!"), "successheader", $extra);
                 }
                 elseif ($uresult && !empty($sPassword))
                 {
@@ -376,17 +371,17 @@ class UserAction extends Survey_Common_Action
                     }
 
                     $extra = $clang->gT("Username") . ": {$users_name}<br />" . $clang->gT("Password") . ": {$displayedPwd}<br />\n";
-                    $aViewUrls['mboxwithredirect'] = $this->_messageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Success!"), "successheader", $extra);
+                    $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Success!"), "successheader", $extra);
                 }
                 else
                 {
                     // Username and/or email adress already exists.
-                    $aViewUrls['mboxwithredirect'] = $this->_messageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Could not modify user data. Email address already exists."), 'warningheader');
+                    $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Could not modify user data. Email address already exists."), 'warningheader');
                 }
             }
         }
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate($aViewUrls);
     }
 
     function setuserrights()
@@ -495,19 +490,18 @@ class UserAction extends Survey_Common_Action
                 echo access_denied('userrights');
                 die();
             }
-            $aViewUrls['mboxwithredirect'] = $this->_messageBoxWithRedirect($clang->gT("Set user permissions"), $clang->gT("User permissions were updated successfully."), 'successheader');
+            $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Set user permissions"), $clang->gT("User permissions were updated successfully."), 'successheader');
         }
         else
         {
-            $aViewUrls['mboxwithredirect'] = $this->_messageBoxWithRedirect($clang->gT("Set user permissions"), $clang->gT("You are not allowed to change your own permissions!"), 'warningheader');
+            $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Set user permissions"), $clang->gT("You are not allowed to change your own permissions!"), 'warningheader');
         }
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate($aViewUrls);
     }
 
     function setusertemplates()
     {
-        $aData['clang'] = Yii::app()->lang;
         $postuser = CHttpRequest::getPost("user");
         $postemail = CHttpRequest::getPost("email");
         $postuserid = $_POST["uid"];
@@ -548,11 +542,11 @@ class UserAction extends Survey_Common_Action
                 }
             }
             if ($uresult) {
-                $aViewUrls['mboxwithredirect'] = $this->_messageBoxWithRedirect($clang->gT("Set template permissions"), $clang->gT("Template permissions were updated successfully."), "successheader");
+                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Set template permissions"), $clang->gT("Template permissions were updated successfully."), "successheader");
             }
             else
             {
-                $aViewUrls['mboxwithredirect'] = $this->_messageBoxWithRedirect($clang->gT("Set template permissions"), $clang->gT("Error while updating usertemplates."), "warningheader");
+                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Set template permissions"), $clang->gT("Error while updating usertemplates."), "warningheader");
             }
         }
         else

@@ -3,7 +3,7 @@
 <form method="post" name="deluserform" action="<?php echo $this->createUrl("admin/user/deluser"); ?>">
     <select name='transfer_surveys_to'>
         <?php
-        if ($result->num_rows() > 0)
+        if (count($users) > 0)
         {
             foreach ($users as $user)
             {
@@ -16,7 +16,7 @@
                 if ($postuserid != $intUid)
                 {
 ?>
-                    <option value="<?php echo $intUid; ?>" <?php echo $user['selected']; ?>> <?php echo $sUsersName; ?></option>;
+                    <option value="<?php echo $intUid; ?>" <?php echo $selected; ?>> <?php echo $sUsersName; ?></option>;
 <?php
                 }
 
