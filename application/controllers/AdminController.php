@@ -80,11 +80,6 @@ class AdminController extends LSYii_Controller
 	 */
 	protected function _sessioncontrol()
 	{
-        // From personal settings
-        if (CHttpRequest::getPost('action') == 'savepersonalsettings') {
-            Yii::app()->session['adminlang'] = CHttpRequest::getPost('lang');
-        }
-
 		if (!Yii::app()->session["adminlang"] || Yii::app()->session["adminlang"]=='')
 			Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
 
@@ -106,7 +101,7 @@ class AdminController extends LSYii_Controller
 	public function run($action)
 	{
 		// Check if the DB is up to date
-		if (Yii::app()->db->schema->getTable('{{surveys}}'))
+		if (!Yii::app()->db->schema->getTable('{{surveys}}'))
 		{
 			$usrow = getGlobalSetting('DBVersion');
 			if ((int) $usrow < Yii::app()->getConfig('dbversionnumber') && $action != 'update' && $action != 'authentication')
@@ -114,14 +109,14 @@ class AdminController extends LSYii_Controller
 		}
 
 		if ($action != "update" && $action != "db")
-        if (empty($this->user_id) && $action != "authentication"  && $action != "remotecontrol")
-        {
-            if (!($action == "index" && $action == "index"))
-            Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
-            Yii::app()->session['redirectopage'] = Yii::app()->request->requestUri;
+            if (empty($this->user_id) && $action != "authentication"  && $action != "remotecontrol")
+            {
+                if (!($action == "index" && $action == "index"))
+                    Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
+                Yii::app()->session['redirectopage'] = Yii::app()->request->requestUri;
 
-            $this->redirect($this->createUrl('/admin/authentication/login'));
-        }
+                $this->redirect($this->createUrl('admin/authentication/login'));
+            }
 
 		return parent::run($action);
 	}
@@ -151,7 +146,7 @@ class AdminController extends LSYii_Controller
 			'authentication'   => 'authentication',
 			'browse'           => 'browse',
 			'checkintegrity'   => 'checkintegrity',
-			'conditions'       => 'conditionsaction',
+			'conditions'       => 'conditions',
 			'database'         => 'database',
 			'dataentry'        => 'dataentry',
 			'dumpdb'           => 'dumpdb',
@@ -167,6 +162,7 @@ class AdminController extends LSYii_Controller
 			'question'         => 'question',
 			'questiongroup'    => 'questiongroup',
 			'quotas'           => 'quotas',
+            'remotecontrol'    => 'remotecontrol',
 			'saved'            => 'saved',
 			'statistics'       => 'statistics',
 			'survey'           => 'surveyaction',
@@ -225,6 +221,15 @@ class AdminController extends LSYii_Controller
 			Yii::app()->session['USER_RIGHT_INITIALSUPERADMIN'] = 0;
 	}
 
+    function createUrl($route, $params = array(), $ampersand = '&')
+    {
+        $url = parent::createUrl($route, $params, $ampersand);
+
+        $url = str_replace('/sa/', '/', $url);
+
+        return $url;
+    }
+
 	/**
 	 * Prints Admin Header
 	 *
@@ -235,7 +240,7 @@ class AdminController extends LSYii_Controller
 	 */
 	public function _getAdminHeader($meta = false, $return = false)
 	{
-		if (empty(Yii::app()->session["adminlang"]))
+		if (!Yii::app()->session["adminlang"] || Yii::app()->session["adminlang"]=='')
 			Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
 
 		$data = array();
