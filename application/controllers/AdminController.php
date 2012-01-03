@@ -146,7 +146,7 @@ class AdminController extends LSYii_Controller
 			'authentication'   => 'authentication',
 			'browse'           => 'browse',
 			'checkintegrity'   => 'checkintegrity',
-			'conditions'       => 'conditions',
+			'conditions'       => 'conditionsaction',
 			'database'         => 'database',
 			'dataentry'        => 'dataentry',
 			'dumpdb'           => 'dumpdb',
@@ -220,15 +220,6 @@ class AdminController extends LSYii_Controller
 		else
 			Yii::app()->session['USER_RIGHT_INITIALSUPERADMIN'] = 0;
 	}
-
-    function createUrl($route, $params = array(), $ampersand = '&')
-    {
-        $url = parent::createUrl($route, $params, $ampersand);
-
-        $url = str_replace('/sa/', '/', $url);
-
-        return $url;
-    }
 
 	/**
 	 * Prints Admin Header
