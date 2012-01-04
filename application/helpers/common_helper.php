@@ -6257,7 +6257,7 @@ function checkquestionfordisplay($qid, $gid=null)
     {
         $scenario = $scenariorow['scenario'];
         $totalands=0;
-        $subquery = Conditions::model()->getAllRecords(array('qid'=>$qid,'scenario'=>$scenario),"cqid,cfieldname");
+        $subquery = Conditions::model()->getSomeRecords(array('cqid','cfieldname'),array('qid'=>$qid,'scenario'=>$scenario));
 
         $conditionsfoundforthisscenario=0;
         foreach ($subquery->readAll() as $row)
