@@ -39,8 +39,8 @@ class UserAction extends Survey_Common_Action
      */
     public function index()
     {
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . 'scripts/jquery/jquery.tablesorter.min.js');
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . 'scripts/admin/users.js');
+        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/jquery.tablesorter.min.js');
+        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/admin/users.js');
 
         $userlist = getuserlist();
         $usrhimself = $userlist[0];
@@ -388,7 +388,8 @@ class UserAction extends Survey_Common_Action
 
     function setuserrights()
     {
-        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . 'scripts/admin/users.js');
+        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/jquery.tablesorter.min.js');
+        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/admin/users.js');
         $postuser = CHttpRequest::getPost('user');
         $postemail = CHttpRequest::getPost('email');
         $postuserid = CHttpRequest::getPost('uid');
@@ -504,14 +505,27 @@ class UserAction extends Survey_Common_Action
 
     function setusertemplates()
     {
+        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/jquery.tablesorter.min.js');
+        $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/admin/users.js');
         $postuser = CHttpRequest::getPost("user");
         $postemail = CHttpRequest::getPost("email");
-        $postuserid = $_POST["uid"];
+        $postuserid = CHttpRequest::getPost("uid");
+        $aData['postuserid']=$postuserid;
         $postfull_name = CHttpRequest::getPost("full_name");
         $this->_refreshtemplates();
-        $aData['userlist'] = getuserlist();
-        $aData['postuserid'] = $postuserid;
-
+        foreach (getuserlist() as $usr)
+        {
+            if ($usr['uid'] == $postuserid)
+            {
+                $trights = Templates_rights::model()->findAllByAttributes(array('uid' => $usr['uid']));
+                foreach ($trights as $srow)
+                {
+                    $templaterights[$srow["folder"]] = array("use"=>$srow["use"]);
+                }
+                $templates = Template::model()->findAll();
+                $aData['list'][] = array('templaterights'=>$templaterights,'templates'=>$templates);
+            }
+        }
         $this->_renderWrappedTemplate('setusertemplates', $aData);
     }
 
