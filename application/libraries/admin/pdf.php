@@ -18,7 +18,7 @@ if(!defined('K_TCPDF_EXTERNAL_CONFIG')) {
 }
 
 # include TCPDF
-require(APPPATH.'config/tcpdf_config_ci'.EXT);
+require(APPPATH.'config/tcpdf'.EXT);
 require_once($tcpdf['base_directory'].'/mypdf.php');
 
 
@@ -202,7 +202,7 @@ class pdf extends MyPDF {
 	function __construct() {
 
 		# load the config file
-		require(APPPATH.'config/tcpdf_config_ci'.EXT);
+		require(APPPATH.'config/tcpdf'.EXT);
 		$this->_config = $tcpdf;
 		unset($tcpdf);
 
