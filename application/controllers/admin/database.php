@@ -24,17 +24,18 @@
 */
 class database extends Survey_Common_Action
 {
-	/**
+    /**
     * Database::index()
     *
     * @param mixed $action
     * @return
+    * @todo Implement XSS filter
     */
     function index($sa = null)
     {
 
-      	if(!empty($_POST['action'])) $action=$_POST['action'];
-     	$clang = $this->getController()->lang;
+        if(!empty($_POST['action'])) $action=$_POST['action'];
+        $clang = $this->getController()->lang;
         $postsid=returnglobal('sid');
         $postgid=returnglobal('gid');
         $postqid=returnglobal('qid');
@@ -82,12 +83,12 @@ class database extends Survey_Common_Action
                     {
                         if (isset($_POST['defaultanswerscale_'.$scale_id.'_'.$language]))
                         {
-                        $this->_updateDefaultValues($qid,0,$scale_id,'',$language,$_POST['defaultanswerscale_'.$scale_id.'_'.$language],true);
-						}
+                            $this->_updateDefaultValues($qid,0,$scale_id,'',$language,$_POST['defaultanswerscale_'.$scale_id.'_'.$language],true);
+                        }
                         if (isset($_POST['other_'.$scale_id.'_'.$language]))
                         {
-                        $this->_updateDefaultValues($qid,0,$scale_id,'other',$language,$_POST['other_'.$scale_id.'_'.$language],true);
-						}
+                            $this->_updateDefaultValues($qid,0,$scale_id,'other',$language,$_POST['other_'.$scale_id.'_'.$language],true);
+                        }
                     }
                 }
             }
@@ -102,7 +103,7 @@ class database extends Survey_Common_Action
                     for ($scale_id=0;$scale_id<$qtproperties[$questiontype]['subquestions'];$scale_id++)
                     {
 
-			foreach ($sqresult->readAll() as $aSubquestionrow)
+                        foreach ($sqresult->readAll() as $aSubquestionrow)
                         {
                             if (isset($_POST['defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid']]))
                             {
@@ -125,7 +126,7 @@ class database extends Survey_Common_Action
             }
             else
             {
-                 $this->getController()->redirect($this->getController()->createUrl('/admin/survey/view/'.$surveyid.'/'.$gid.'/'.$qid));
+                $this->getController()->redirect($this->getController()->createUrl('/admin/survey/view/'.$surveyid.'/'.$gid.'/'.$qid));
             }
         }
 
@@ -133,7 +134,7 @@ class database extends Survey_Common_Action
         if ($action == "updateansweroptions" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
         {
 
-	    Yii::app()->loadHelper('database');
+            Yii::app()->loadHelper('database');
             $anslangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
             $baselang = Survey::model()->findByPk($surveyid)->language;
 
@@ -155,8 +156,8 @@ class database extends Survey_Common_Action
             //$myFilter = new InputFilter('','',1,1,1);
 
             //First delete all answers
-            $query = "delete from {{answers}} where qid=".$qid;
-            $result = Yii::app()->db->createCommand($query)->query(); // Checked
+            $query = "delete from {{answers}}";
+            $result = Yii::app()->db->createCommand($query)->where('qid=:qid', array(':qid'=>$qid))->query(); // Checked
 
             for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
             {
@@ -178,34 +179,36 @@ class database extends Survey_Common_Action
                     {
                         $answer=$_POST['answer_'.$language.'_'.$sortorderid.'_'.$scale_id];
 
+                        /*
                         if (Yii::app()->getConfig('filterxsshtml'))
                         {
-                            //Sanitize input, strip XSS
-                            $answer=$this->security->xss_clean($answer);
+                        //Sanitize input, strip XSS
+                        // Todo: Put back in XSS filter
+                        //$answer=$this->security->xss_clean($answer);
                         }
                         else
                         {
-                            $answer=html_entity_decode($answer, ENT_QUOTES, "UTF-8");
-                        }
+                        */
+                        $answer=html_entity_decode($answer, ENT_QUOTES, "UTF-8");
+                        //}
                         // Fix bug with FCKEditor saving strange BR types
                         $answer=fix_FCKeditor_text($answer);
 
                         // Now we insert the answers
-                        $query = "INSERT INTO {{answers}} (code,answer,qid,sortorder,language,assessment_value, scale_id)
-                        VALUES ('".$code."', '".
-                        $answer."', ".
-                        $qid.", ".
-                        $sortorderid.", '".
-                        $language."', ".
-                        $assessmentvalue.",
-                        $scale_id)";
-                        if (!$result = Yii::app()->db->createCommand($query)->query()) // Checked
+                        $result=Answers::model()->insertRecord(array('code'=>$code,
+                        'answer'=>$answer,
+                        'qid'=>$qid,
+                        'sortorder'=>$sortorderid,
+                        'language'=>$language,
+                        'assessment_value'=>$assessmentvalue,
+                        'scale_id'=>$scale_id));
+                        if (!$result) // Checked
                         {
                             $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")." - ".$query." - "."\")\n //-->\n</script>\n";
                         }
                     } // foreach ($alllanguages as $language)
 
-                    if($code !== $oldcode) {
+                    if(isset($oldcode) && $code !== $oldcode) {
                         $query='UPDATE {{conditions}} SET value=\''.$code.'\' WHERE cqid='.$qid.' AND value=\''.$oldcode.'\'';
                         Yii::app()->db->createCommand($query)->query();
                     }
@@ -216,8 +219,7 @@ class database extends Survey_Common_Action
             if ($invalidCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved","js")."\")\n //-->\n</script>\n";
             if ($duplicateCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Duplicate codes found, these entries won't be updated","js")."\")\n //-->\n</script>\n";
 
-            $sortorderid--;
-            $this->session->set_userdata('flashmessage', $clang->gT("Answer options were successfully saved."));
+            Yii::app()->session['flashmessage']= $clang->gT("Answer options were successfully saved.");
 
             if ($databaseoutput != '')
             {
@@ -225,7 +227,7 @@ class database extends Survey_Common_Action
             }
             else
             {
-                 $this->getController()->redirect($this->getController()->createUrl('/admin/question/answeroptions/'.$surveyid.'/'.$gid.'/'.$qid));
+                $this->getController()->redirect($this->getController()->createUrl('/admin/question/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
             }
 
             //$action='editansweroptions';
@@ -360,7 +362,7 @@ class database extends Survey_Common_Action
             }
             else
             {
-                 $this->getController()->redirect($this->getController()->createUrl('/admin/question/subquestions/'.$surveyid.'/'.$gid.'/'.$qid));
+                $this->getController()->redirect($this->getController()->createUrl('/admin/question/subquestions/'.$surveyid.'/'.$gid.'/'.$qid));
             }
         }
 
@@ -384,8 +386,8 @@ class database extends Survey_Common_Action
                     //Need to renumber all questions on or after this
                     $cdquery = "UPDATE {{questions}} SET question_order=question_order+1 WHERE gid=".$gid." AND question_order >= ".$question_order;
 
-		    $cdresult=Yii::app()->db->createCommand($cdquery)->query();
-		    } else {
+                    $cdresult=Yii::app()->db->createCommand($cdquery)->query();
+                } else {
                     $question_order=(getMaxquestionorder($gid,$surveyid));
                     $question_order++;
                 }
@@ -394,49 +396,49 @@ class database extends Survey_Common_Action
                 $_POST['question_'.$baselang] = html_entity_decode($_POST['question_'.$baselang], ENT_QUOTES, "UTF-8");
                 $_POST['help_'.$baselang] = html_entity_decode($_POST['help_'.$baselang], ENT_QUOTES, "UTF-8");
 
-            	$purifier = new CHtmlPurifier();
+                $purifier = new CHtmlPurifier();
 
                 // Fix bug with FCKEditor saving strange BR types
-            	if (Yii::app()->getConfig('filterxsshtml'))
-            	{
-            		$_POST['title']=$purifier->purify($_POST['title']);
-            		$_POST['question_'.$baselang]=$purifier->purify($_POST['question_'.$baselang]);
-            		$_POST['help_'.$baselang]=$purifier->purify($_POST['help_'.$baselang]);
-            	}
-        		else
-        		{
-        			$_POST['title']=fix_FCKeditor_text($_POST['title']);
-        			$_POST['question_'.$baselang]=fix_FCKeditor_text($_POST['question_'.$baselang]);
-        			$_POST['help_'.$baselang]=fix_FCKeditor_text($_POST['help_'.$baselang]);
-        		}
+                if (Yii::app()->getConfig('filterxsshtml'))
+                {
+                    $_POST['title']=$purifier->purify($_POST['title']);
+                    $_POST['question_'.$baselang]=$purifier->purify($_POST['question_'.$baselang]);
+                    $_POST['help_'.$baselang]=$purifier->purify($_POST['help_'.$baselang]);
+                }
+                else
+                {
+                    $_POST['title']=fix_FCKeditor_text($_POST['title']);
+                    $_POST['question_'.$baselang]=fix_FCKeditor_text($_POST['question_'.$baselang]);
+                    $_POST['help_'.$baselang]=fix_FCKeditor_text($_POST['help_'.$baselang]);
+                }
                 //$_POST  = array_map('db_quote', $_POST);
 
                 $data = array();
                 $data = array(
-	                'sid' => $surveyid,
-	                'gid' => $gid,
-	                'type' => $_POST['type'],
-	                'title' => $_POST['title'],
-	                'question' => $_POST['question_'.$baselang],
-	                'preg' => $_POST['preg'],
-	                'help' => $_POST['help_'.$baselang],
-	                'other' => $_POST['other'],
-	                'mandatory' => $_POST['mandatory'],
-	                'question_order' => $question_order,
-	                'language' => $baselang
+                'sid' => $surveyid,
+                'gid' => $gid,
+                'type' => $_POST['type'],
+                'title' => $_POST['title'],
+                'question' => $_POST['question_'.$baselang],
+                'preg' => $_POST['preg'],
+                'help' => $_POST['help_'.$baselang],
+                'other' => $_POST['other'],
+                'mandatory' => $_POST['mandatory'],
+                'question_order' => $question_order,
+                'language' => $baselang
                 );
 
                 $question = new Questions;
-            	foreach ($data as $k => $v)
-            		$question->$k = $v;
-            	$result = $question->save();
+                foreach ($data as $k => $v)
+                    $question->$k = $v;
+                $result = $question->save();
 
                 /**
                 $query = "INSERT INTO ".db_table_name('questions')." (sid, gid, type, title, question, preg, help, other, mandatory, question_order, language)"
                 ." VALUES ('{$postsid}', '{$postgid}', '{$_POST['type']}', '{$_POST['title']}',"
                 ." '{$_POST['question_'.$baselang]}', '{$_POST['preg']}', '{$_POST['help_'.$baselang]}', '{$_POST['other']}', '{$_POST['mandatory']}', $question_order,'{$baselang}')";
                 */
-                  // Checked
+                // Checked
                 // Get the last inserted questionid for other languages
                 $qid=Yii::app()->db->getLastInsertID();
 
@@ -449,29 +451,29 @@ class database extends Survey_Common_Action
                         if ($alang != "")
                         {
                             $data = array(
-	                            'qid' => $qid,
-	                            'sid' => $surveyid,
-	                            'gid' => $gid,
-	                            'type' => $_POST['type'],
-	                            'title' => $_POST['title'],
-	                            'question' => $_POST['question_'.$alang],
-	                            'preg' => $_POST['preg'],
-	                            'help' => $_POST['help_'.$alang],
-	                            'other' => $_POST['other'],
-	                            'mandatory' => $_POST['mandatory'],
-	                            'question_order' => $question_order,
-	                            'language' => $alang
+                            'qid' => $qid,
+                            'sid' => $surveyid,
+                            'gid' => $gid,
+                            'type' => $_POST['type'],
+                            'title' => $_POST['title'],
+                            'question' => $_POST['question_'.$alang],
+                            'preg' => $_POST['preg'],
+                            'help' => $_POST['help_'.$alang],
+                            'other' => $_POST['other'],
+                            'mandatory' => $_POST['mandatory'],
+                            'question_order' => $question_order,
+                            'language' => $alang
                             );
                             $ques = new Questions;
-                        	foreach ($data as $k => $v)
-                        		$ques->$k = $v;
-                        	$result2 = $ques->save();
+                            foreach ($data as $k => $v)
+                                $ques->$k = $v;
+                            $result2 = $ques->save();
 
                             /**
                             $query = "INSERT INTO ".db_table_name('questions')." (qid, sid, gid, type, title, question, preg, help, other, mandatory, question_order, language)"
                             ." VALUES ('$qid','{$postsid}', '{$postgid}', '{$_POST['type']}', '{$_POST['title']}',"
                             ." '{$_POST['question_'.$alang]}', '{$_POST['preg']}', '{$_POST['help_'.$alang]}', '{$_POST['other']}', '{$_POST['mandatory']}', $question_order,'{$alang}')";
-                              // Checked */
+                            // Checked */
                             if (!$result2)
                             {
                                 $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".sprintf($clang->gT("Question in language %s could not be created.","js"),$alang)."\\n\")\n //-->\n</script>\n";
@@ -486,80 +488,80 @@ class database extends Survey_Common_Action
                     $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be created.","js")."\\n\")\n //-->\n</script>\n";
 
                 } else {
-					if ($action == 'copyquestion') {
-						if (returnglobal('copysubquestions') == "Y")
-						{
-							$aSQIDMappings = array();
-							$r1 = Questions::getSubQuestions(returnglobal('oldqid'));
+                    if ($action == 'copyquestion') {
+                        if (returnglobal('copysubquestions') == "Y")
+                        {
+                            $aSQIDMappings = array();
+                            $r1 = Questions::getSubQuestions(returnglobal('oldqid'));
 
-							while ($qr1 = $r1->read())
-							{
-								$qr1['parent_qid'] = $qid;
-								if (isset($aSQIDMappings[$qr1['qid']]))
-								{
-									$qr1['qid'] = $aSQIDMappings[$qr1['qid']];
-								} else {
-									$oldqid = $qr1['qid'];
-									unset($qr1['qid']);
-								}
-								$qr1['gid'] = $postgid;
-								$ir1 = Questions::insertRecords($qr1);
-								if (!isset($qr1['qid']))
-								{
-									$aSQIDMappings[$oldqid] = Yii::app()->db->getLastInsertID('qid');
-								}
-							}
-						}
-						if (returnglobal('copyanswers') == "Y")
-						{
-							$r1 = Answers::getAnswers(returnglobal('oldqid'));
-							while ($qr1 = $r1->read())
-							{
-								Answers::insertRecords(array(
-									'qid' => $qid,
-									'code' => $qr1['code'],
-									'answer' => $qr1['answer'],
-									'sortorder' => $qr1['sortorder'],
-									'language' => $qr1['language'],
-									'scale_id' => $qr1['scale_id']
-								));
-							}
-						}
-						if (returnglobal('copyattributes') == "Y")
-						{
-							$r1 = Question_attributes::getQuestionAttributes(returnglobal('oldqid'));
-							while($qr1 = $r1->read())
-							{
-								Question_attributes::insertRecords(array(
-									'qid' => $qid,
-									'attribute' => $qr1['attribute'],
-									'value' => $qr1['value']
-								));
-							}
-						}
-					} else {
-						$qattributes = questionAttributes();
-						$validAttributes = $qattributes[$_POST['type']];
-						foreach ($validAttributes as $validAttribute)
-						{
-							if (isset($_POST[$validAttribute['name']]))
-							{
-								$data = array(
-									'qid' => $qid,
-									'value' => $_POST[$validAttribute['name']],
-									'attribute' => $validAttribute['name']
-								);
+                            while ($qr1 = $r1->read())
+                            {
+                                $qr1['parent_qid'] = $qid;
+                                if (isset($aSQIDMappings[$qr1['qid']]))
+                                {
+                                    $qr1['qid'] = $aSQIDMappings[$qr1['qid']];
+                                } else {
+                                    $oldqid = $qr1['qid'];
+                                    unset($qr1['qid']);
+                                }
+                                $qr1['gid'] = $postgid;
+                                $ir1 = Questions::insertRecords($qr1);
+                                if (!isset($qr1['qid']))
+                                {
+                                    $aSQIDMappings[$oldqid] = Yii::app()->db->getLastInsertID('qid');
+                                }
+                            }
+                        }
+                        if (returnglobal('copyanswers') == "Y")
+                        {
+                            $r1 = Answers::getAnswers(returnglobal('oldqid'));
+                            while ($qr1 = $r1->read())
+                            {
+                                Answers::insertRecords(array(
+                                'qid' => $qid,
+                                'code' => $qr1['code'],
+                                'answer' => $qr1['answer'],
+                                'sortorder' => $qr1['sortorder'],
+                                'language' => $qr1['language'],
+                                'scale_id' => $qr1['scale_id']
+                                ));
+                            }
+                        }
+                        if (returnglobal('copyattributes') == "Y")
+                        {
+                            $r1 = Question_attributes::getQuestionAttributes(returnglobal('oldqid'));
+                            while($qr1 = $r1->read())
+                            {
+                                Question_attributes::insertRecords(array(
+                                'qid' => $qid,
+                                'attribute' => $qr1['attribute'],
+                                'value' => $qr1['value']
+                                ));
+                            }
+                        }
+                    } else {
+                        $qattributes = questionAttributes();
+                        $validAttributes = $qattributes[$_POST['type']];
+                        foreach ($validAttributes as $validAttribute)
+                        {
+                            if (isset($_POST[$validAttribute['name']]))
+                            {
+                                $data = array(
+                                'qid' => $qid,
+                                'value' => $_POST[$validAttribute['name']],
+                                'attribute' => $validAttribute['name']
+                                );
 
-								Question_attributes::insertRecords($data);
+                                Question_attributes::insertRecords($data);
 
-							}
-						}
-					}
+                            }
+                        }
+                    }
 
-					fixsortorderQuestions($gid, $surveyid);
-					Yii::app()->session['flashmessage'] =  $clang->gT("Question was successfully added.");
+                    fixsortorderQuestions($gid, $surveyid);
+                    Yii::app()->session['flashmessage'] =  $clang->gT("Question was successfully added.");
 
-				}
+                }
 
             }
 
@@ -715,26 +717,26 @@ class database extends Survey_Common_Action
                         $questlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
                         $baselang = Survey::model()->findByPk($surveyid)->language;
                         array_push($questlangs,$baselang);
-                    	$p = new CHtmlPurifier();
-                    	if (Yii::app()->getConfig('filterxsshtml'))
-	                    	$_POST['title'] = $p->purify($_POST['title']);
-                    	else
-							$_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
+                        $p = new CHtmlPurifier();
+                        if (Yii::app()->getConfig('filterxsshtml'))
+                            $_POST['title'] = $p->purify($_POST['title']);
+                        else
+                            $_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
 
                         // Fix bug with FCKEditor saving strange BR types
                         $_POST['title']=fix_FCKeditor_text($_POST['title']);
                         foreach ($questlangs as $qlang)
                         {
-                        	if (Yii::app()->getConfig('filterxsshtml'))
-                        	{
-                        		$_POST['question_'.$qlang] = $p->purify($_POST['question_'.$qlang]);
-                        		$_POST['help_'.$qlang] = $p->purify($_POST['help_'.$qlang]);
-                        	}
-                        	else
-                        	{
-                            	$_POST['question_'.$qlang] = html_entity_decode($_POST['question_'.$qlang], ENT_QUOTES, "UTF-8");
-                            	$_POST['help_'.$qlang] = html_entity_decode($_POST['help_'.$qlang], ENT_QUOTES, "UTF-8");
-                        	}
+                            if (Yii::app()->getConfig('filterxsshtml'))
+                            {
+                                $_POST['question_'.$qlang] = $p->purify($_POST['question_'.$qlang]);
+                                $_POST['help_'.$qlang] = $p->purify($_POST['help_'.$qlang]);
+                            }
+                            else
+                            {
+                                $_POST['question_'.$qlang] = html_entity_decode($_POST['question_'.$qlang], ENT_QUOTES, "UTF-8");
+                                $_POST['help_'.$qlang] = html_entity_decode($_POST['help_'.$qlang], ENT_QUOTES, "UTF-8");
+                            }
 
                             // Fix bug with FCKEditor saving strange BR types
                             $_POST['question_'.$qlang]=fix_FCKeditor_text($_POST['question_'.$qlang]);
@@ -744,15 +746,15 @@ class database extends Survey_Common_Action
                             { // ToDo: Sanitize the POST variables !
 
                                 $udata = array(
-	                                'type' => $_POST['type'],
-	                                'title' => $_POST['title'],
-	                                'question' => $_POST['question_'.$qlang],
-	                                'preg' => $_POST['preg'],
-	                                'help' => $_POST['help_'.$qlang],
-	                                'gid' => $gid,
-	                                'other' => $_POST['other'],
-	                                'mandatory' => $_POST['mandatory'],
-	                                'relevance' => $_POST['relevance'],
+                                'type' => $_POST['type'],
+                                'title' => $_POST['title'],
+                                'question' => $_POST['question_'.$qlang],
+                                'preg' => $_POST['preg'],
+                                'help' => $_POST['help_'.$qlang],
+                                'gid' => $gid,
+                                'other' => $_POST['other'],
+                                'mandatory' => $_POST['mandatory'],
+                                'relevance' => $_POST['relevance'],
                                 );
 
                                 if ($oldgid!=$gid)
@@ -777,9 +779,9 @@ class database extends Survey_Common_Action
                                     }
                                 }
                                 $condn = array('sid' => $surveyid, 'qid' => $qid, 'language' => $qlang);
-                            	$question = Questions::model()->findByAttributes($condn);
-                            	foreach ($udata as $k => $v)
-                            		$question->$k = $v;
+                                $question = Questions::model()->findByAttributes($condn);
+                                foreach ($udata as $k => $v)
+                                    $question->$k = $v;
 
                                 $uqresult = $question->save();//($uqquery); // or safe_die ("Error Update Question: ".$uqquery."<br />");  // Checked)
                                 if (!$uqresult)
@@ -872,7 +874,7 @@ class database extends Survey_Common_Action
             $languagelist = Survey::model()->findByPk($surveyid)->additionalLanguages;
             $languagelist[]=Survey::model()->findByPk($surveyid)->language;
 
-			Yii::app()->loadHelper('database');
+            Yii::app()->loadHelper('database');
 
             foreach ($languagelist as $langname)
             {
@@ -884,10 +886,10 @@ class database extends Survey_Common_Action
                     // Clean XSS attacks
                     if (Yii::app()->getConfig('filterxsshtml'))
                     {
-                    	$purifier = new CHtmlPurifier();
-						$purifier->options = array(
-						    'HTML.Allowed' => 'p,a[href],b,i'
-						);
+                        $purifier = new CHtmlPurifier();
+                        $purifier->options = array(
+                        'HTML.Allowed' => 'p,a[href],b,i'
+                        );
                         $short_title=$purifier->purify(CHttpRequest::getPost('short_title_'.$langname));
                         $description=$purifier->purify(CHttpRequest::getPost('description_'.$langname));
                         $welcome=$purifier->purify(CHttpRequest::getPost('welcome_'.$langname));
@@ -903,7 +905,7 @@ class database extends Survey_Common_Action
                         $endtext = html_entity_decode(CHttpRequest::getPost('endtext_'.$langname), ENT_QUOTES, "UTF-8");
                         $sURLDescription = html_entity_decode(CHttpRequest::getPost('urldescrip_'.$langname), ENT_QUOTES, "UTF-8");
                         $sURL = html_entity_decode(CHttpRequest::getPost('url_'.$langname), ENT_QUOTES, "UTF-8");
-					}
+                    }
 
                     // Fix bug with FCKEditor saving strange BR types
                     $short_title = CHttpRequest::getPost('short_title_'.$langname);
@@ -917,14 +919,14 @@ class database extends Survey_Common_Action
                     $endtext=fix_FCKeditor_text($endtext);
 
                     $data = array(
-	                    'surveyls_title' => $short_title,
-	                    'surveyls_description' => $description,
-	                    'surveyls_welcometext' => $welcome,
-	                    'surveyls_endtext' => $endtext,
-	                    'surveyls_url' => $sURL,
-	                    'surveyls_urldescription' => $sURLDescription,
-	                    'surveyls_dateformat' => CHttpRequest::getPost('dateformat_'.$langname),
-	                    'surveyls_numberformat' => CHttpRequest::getPost('numberformat_'.$langname)
+                    'surveyls_title' => $short_title,
+                    'surveyls_description' => $description,
+                    'surveyls_welcometext' => $welcome,
+                    'surveyls_endtext' => $endtext,
+                    'surveyls_url' => $sURL,
+                    'surveyls_urldescription' => $sURLDescription,
+                    'surveyls_dateformat' => CHttpRequest::getPost('dateformat_'.$langname),
+                    'surveyls_numberformat' => CHttpRequest::getPost('numberformat_'.$langname)
                     );
                     //In 'surveyls_survey_id' => $surveyid, it was initially $postsid. returnglobal not working properly!
                     $condition = array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $langname);
@@ -942,7 +944,7 @@ class database extends Survey_Common_Action
                     $usresult = Yii::app()->db->createCommand($usquery)->query();// or safe_die("Error updating local settings");   // Checked
                 }
             }
-           	Yii::app()->session['flashmessage'] = $clang->gT("Survey text elements successfully saved.");
+            Yii::app()->session['flashmessage'] = $clang->gT("Survey text elements successfully saved.");
 
             if ($databaseoutput != '')
             {
@@ -1018,8 +1020,8 @@ class database extends Survey_Common_Action
                 if ($aURLParam['targetsqid']=='') $aURLParam['targetsqid']='NULL';
                 $aURLParam['sid']=$surveyid;
 
-				//db_execute_assoc("INSERT INTO `{{survey_url_parameters}}` (`sid`, `parameter`, `targetqid`, `targetsqid`) VALUES ('$aURLParam[sid]', '$aURLParam[parameter]', $aURLParam[targetqid], $aURLParam[targetsqid])");
-				Yii::app()->db->createCommand()->insert('{{survey_url_parameters}}', $aURLParam);
+                //db_execute_assoc("INSERT INTO `{{survey_url_parameters}}` (`sid`, `parameter`, `targetqid`, `targetsqid`) VALUES ('$aURLParam[sid]', '$aURLParam[parameter]', $aURLParam[targetqid], $aURLParam[targetsqid])");
+                Yii::app()->db->createCommand()->insert('{{survey_url_parameters}}', $aURLParam);
             }
             $updatearray= array('admin'=> $_POST['admin'],
             'expires'=>$expires,
@@ -1122,8 +1124,8 @@ class database extends Survey_Common_Action
                         'email_admin_responses' => $aDefaultTexts['admin_detailed_notification'],
                         'surveyls_dateformat' => $languagedetails['dateformat']
                         );
-						Yii::app()->db->createCommand()->insert('{{surveys_languagesettings}}', $insertdata);
-						unset($bplang);
+                        Yii::app()->db->createCommand()->insert('{{surveys_languagesettings}}', $insertdata);
+                        unset($bplang);
                     }
                 }
             }
@@ -1163,7 +1165,7 @@ class database extends Survey_Common_Action
 
         if (!$action)
         {
-			$this->getController()->redirect("/admin","refresh");
+            $this->getController()->redirect("/admin","refresh");
         }
 
 
