@@ -1129,6 +1129,7 @@ class SurveyAction extends Survey_Common_Action
 
         //Use the current user details for the default administrator name and email for this survey
         $owner = User::model()->getSomeRecords($fieldstoselect, $condition);
+        $owner = (array) $owner;
         //Degrade gracefully to $siteadmin details if anything is missing.
 
         if (empty($owner['full_name']))
