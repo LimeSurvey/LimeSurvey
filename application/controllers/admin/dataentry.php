@@ -1574,20 +1574,21 @@
      */
     public function insert()
     {
+        $clang = Yii::app()->lang;
         $subaction = CHttpRequest::getPost('subaction');
         $surveyid = CHttpRequest::getPost('sid');
 		$lang = isset($_POST['lang']) ? CHttpRequest::getPost('lang') : NULL;
 
 		$aData = array(
 			'surveyid' => $surveyid,
-			'lang' => $lang
+			'lang' => $lang,
+            'clang' => $clang
 		);
 
         if (bHasSurveyPermission($surveyid, 'responses','read'))
         {
             if ($subaction == "insert" && bHasSurveyPermission($surveyid,'responses','create'))
             {
-                $clang = Yii::app()->lang;
                 $surveytable = "{{survey_{$surveyid}}}";
                 $thissurvey = getSurveyInfo($surveyid);
                 $errormsg = "";
@@ -1955,7 +1956,7 @@
 
 				$aData['dataentrymsgs'] = $aDataentrymsgs;
 
-				$this->getController()->render('/admin/dataentry/insert', $aData);
+                $this->_renderWrappedTemplate('insert', $aData);
             }
 
         }
