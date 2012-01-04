@@ -574,13 +574,17 @@ class SurveyAction extends Survey_Common_Action
         $intSurveyId = sanitize_int($surveyid);
         $owner_id = Yii::app()->session['loginID'];
 
-        $query_condition['sid'] = $intSurveyId;
+        $query_condition = 'sid=:sid';
+        $params[':sid']=$intSurveyId;
         if (!bHasGlobalPermission("USER_RIGHT_SUPERADMIN"))
-            $query_condition['owner_id'] = $owner_id;
+        {
+            $query_condition .= 'AND owner_id=:uid';
+            $params[':uid']=$owner_id;
+        }
 
-        $result = Survey::model()->updateAll($query_condition, array('owner_id' => $intNewOwner));
+        $result = Survey::model()->updateAll(array('owner_id'=>$intNewOwner), $query_condition, $params);
 
-        $result = Surveys::model()->with('users')->findAllByAttributes(array('sid' => $intSurveyId, 'owner_id' => $intNewOwner));
+        $result = Survey::model()->with('owner')->findAllByAttributes(array('sid' => $intSurveyId, 'owner_id' => $intNewOwner));
 
         $intRecordCount = count($result);
 
@@ -589,7 +593,7 @@ class SurveyAction extends Survey_Common_Action
         );
 
         foreach ($result as $row)
-            $aUsers['newowner'] = $row->users->users_name;
+            $aUsers['newowner'] = $row->owner->users_name;
 
         $ajaxoutput = json_encode($aUsers) . "\n";
 
