@@ -49,11 +49,11 @@ p {
     background: #121a28;
     margin: 0;
     padding: 5px;
-    clear:left;
+    clear: both;
 }
 
-.footer, .push {
-    height: 30px;
+.push {
+    height: 40px;
     clear: both;
 }
 
