@@ -179,7 +179,7 @@ class Survey extends CActiveRecord
             }
         }
 
-        return $record->findAll($criteria);
+        return $record->find($criteria);
     }
 
     function updateSurvey($data, $condition=FALSE)

@@ -464,7 +464,6 @@ class SurveyAction extends Survey_Common_Action
             $survey->active = 'N';
             $survey->save();
 
-            debugbreak();
             $prow = Survey::model()->getSomeRecords('savetimings', array('sid' => $postsid));
             if ($prow->savetimings == "Y")
             {
