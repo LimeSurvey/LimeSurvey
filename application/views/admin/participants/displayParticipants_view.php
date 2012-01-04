@@ -219,7 +219,7 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
                 $option[''] = $clang->gT("Select...");
                 foreach ($surveynames as $row)
                 {
-                    $option[$row['surveyls_survey_id']] = $row['surveyls_title'];
+                    $option[$row['languagesettings']['surveyls_survey_id']] = $row['languagesettings']['surveyls_title'];
                 }
                 echo CHtml::dropDownList('survey_id', 'id="survey_id"', $option);
             }
