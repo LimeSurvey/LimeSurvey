@@ -198,18 +198,13 @@ class Usergroups extends Survey_Common_Action
                             list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add Group! Group name length more than 20 characters.")));
 
                         }
+                        elseif (User_groups::model()->find("name='$db_group_name'")) {
+                            list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add Group! Group already exists.")));
+                        }
                         else
                         {
-                            //$this->loadModel("User_groups_model");
                             $ugid = User_groups::model()->addGroup($db_group_name, $db_group_description);
-
-                            if ($ugid > 0) {
-                                list($aViewUrls, $aData) = $this->index($ugid, array("type" => "success", "message" => $clang->gT("User Group successfully added!")));
-                            }
-                            else
-                            {
-                                list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add Group! Group already exists.")));
-                            }
+                            list($aViewUrls, $aData) = $this->index($ugid, array("type" => "success", "message" => $clang->gT("User Group successfully added!")));
                         }
 
                     }

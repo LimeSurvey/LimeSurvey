@@ -86,7 +86,6 @@ class UserAction extends Survey_Common_Action
         $new_email = FlattenText(CHttpRequest::getPost('new_email'), false, true);
         $new_full_name = FlattenText(CHttpRequest::getPost('new_full_name'), false, true);
         $aViewUrls = array();
-
         $valid_email = true;
         if (!validate_email($new_email)) {
             $valid_email = false;
@@ -94,6 +93,9 @@ class UserAction extends Survey_Common_Action
         }
         if (empty($new_user)) {
             $aViewUrls['message'] = array('title' => $clang->gT("Failed to add user"), 'message' => $clang->gT("A username was not supplied or the username is invalid."), 'class'=> 'warningheader');
+        }
+        elseif (User::model()->find("users_name='$new_user'")) {
+            $aViewUrls['message'] = array('title' => $clang->gT("Failed to add user"), 'message' => $clang->gT("The username already exists."), 'class'=> 'warningheader');
         }
         elseif ($valid_email)
         {
