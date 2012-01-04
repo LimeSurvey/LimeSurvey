@@ -18,22 +18,22 @@
                 <div class='header ui-widget-header'><?php $clang->eT("System overview"); ?></div>
                 <br /><table class='statisticssummary'>
                 <tr>
-                <th align='right'><?php $clang->eT("Users"); ?>:</th><td><?php echo $usercount; ?></td>
+                <th ><?php $clang->eT("Users"); ?>:</th><td><?php echo $usercount; ?></td>
                 </tr>
                 <tr>
-                <th align='right'><?php $clang->eT("Surveys"); ?>:</th><td><?php echo $surveycount; ?></td>
+                <th ><?php $clang->eT("Surveys"); ?>:</th><td><?php echo $surveycount; ?></td>
                 </tr>
                 <tr>
-                <th align='right'><?php $clang->eT("Active surveys"); ?>:</th><td><?php echo $activesurveycount; ?></td>
+                <th ><?php $clang->eT("Active surveys"); ?>:</th><td><?php echo $activesurveycount; ?></td>
                 </tr>
                 <tr>
-                <th align='right'><?php $clang->eT("Deactivated result tables"); ?>:</th><td><?php echo $deactivatedsurveys; ?></td>
+                <th ><?php $clang->eT("Deactivated result tables"); ?>:</th><td><?php echo $deactivatedsurveys; ?></td>
                 </tr>
                 <tr>
-                <th align='right'><?php $clang->eT("Active token tables"); ?>:</th><td><?php echo $activetokens; ?></td>
+                <th ><?php $clang->eT("Active token tables"); ?>:</th><td><?php echo $activetokens; ?></td>
                 </tr>
                 <tr>
-                <th align='right'><?php $clang->eT("Deactivated token tables"); ?>:</th><td><?php echo $deactivatedtokens; ?></td>
+                <th ><?php $clang->eT("Deactivated token tables"); ?>:</th><td><?php echo $deactivatedtokens; ?></td>
                 </tr>
             <?php
                 if (Yii::app()->getConfig('iFileUploadTotalSpaceMB')>0)
@@ -41,7 +41,7 @@
                     $fUsed=fCalculateTotalFileUploadUsage();
             ?>
                     <tr>
-                    <th align='right'><?php $clang->eT("Used/free space for file uploads"); ?>:</th><td><?php echo sprintf('%01.2F',$fUsed); ?> MB / <?php echo sprintf('%01.2F',Yii::app()->getConfig('iFileUploadTotalSpaceMB')-$fUsed); ?> MB</td>
+                    <th ><?php $clang->eT("Used/free space for file uploads"); ?>:</th><td><?php echo sprintf('%01.2F',$fUsed); ?> MB / <?php echo sprintf('%01.2F',Yii::app()->getConfig('iFileUploadTotalSpaceMB')-$fUsed); ?> MB</td>
                     </tr>
             <?php
                 }
@@ -56,7 +56,7 @@
                 }
             ?>
 
-            <br /></p><div class='header ui-widget-header'><?php echo $clang->eT("Updates"); ?></div><ul>
+            <br /><br/></p><div class='header ui-widget-header'><?php echo $clang->eT("Updates"); ?></div><br/><ul>
                 <li><label for='updatecheckperiod'><?php echo $clang->eT("Check for updates:"); ?></label>
                     <select name='updatecheckperiod' id='updatecheckperiod'>
                         <option value='0'
@@ -110,7 +110,7 @@
                             foreach ($templatenames as $templatename)
                             {
                                 echo "<option value='$templatename'";
-                                if ($thisdefaulttemplate==$templatename) { echo "selected='selected'";}
+                                if ($thisdefaulttemplate==$templatename) { echo " selected='selected' ";}
                                 echo ">$templatename</option>";
                             }
                         ?>
@@ -191,7 +191,7 @@
                             ><?php $clang->eT("Qmail"); ?></option>
                     </select></li>
                 <li><label for="emailsmtphost"><?php $clang->eT("SMTP host:"); ?></label>
-                    <input type='text' size='50' id='emailsmtphost' name='emailsmtphost' value="<?php echo htmlspecialchars(getGlobalSetting('emailsmtphost')); ?>" />&nbsp;<font size='1'><?php $clang->eT("Enter your hostname and port, e.g.: my.smtp.com:25"); ?></font></li>
+                    <input type='text' size='50' id='emailsmtphost' name='emailsmtphost' value="<?php echo htmlspecialchars(getGlobalSetting('emailsmtphost')); ?>" />&nbsp;<span class='hint'><?php $clang->eT("Enter your hostname and port, e.g.: my.smtp.com:25"); ?></span></li>
                 <li><label for='emailsmtpuser'><?php $clang->eT("SMTP username:"); ?></label>
                     <input type='text' size='50' id='emailsmtpuser' name='emailsmtpuser' value="<?php echo htmlspecialchars(getGlobalSetting('emailsmtpuser')); ?>" /></li>
                 <li><label for='emailsmtppassword'><?php $clang->eT("SMTP password:"); ?></label>
@@ -243,7 +243,7 @@
                     </select></li>
 
                 <li><label for='bounceaccounthost'><?php $clang->eT("Server name & port:"); ?></label>
-                    <input type='text' size='50' id='bounceaccounthost' name='bounceaccounthost' value="<?php echo htmlspecialchars(getGlobalSetting('bounceaccounthost'))?>" /><font size='1'><?php $clang->eT("Enter your hostname and port, e.g.: imap.gmail.com:995"); ?></font>
+                    <input type='text' size='50' id='bounceaccounthost' name='bounceaccounthost' value="<?php echo htmlspecialchars(getGlobalSetting('bounceaccounthost'))?>" /><span class='hint'><?php $clang->eT("Enter your hostname and port, e.g.: imap.gmail.com:995"); ?></span>
                 </li>
                 <li><label for='bounceaccountuser'><?php $clang->eT("User name:"); ?></label>
                     <input type='text' size='50' id='bounceaccountuser' name='bounceaccountuser'
@@ -301,7 +301,7 @@
                 <?php $thisforce_ssl = getGlobalSetting('force_ssl');
                     $opt_force_ssl_on = $opt_force_ssl_off = $opt_force_ssl_neither = '';
                     $warning_force_ssl = $clang->gT('Warning: Before turning on HTTPS, ')
-                    . '<a href="https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'"title="'
+                    . '<a href="https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'" title="'
                     . $clang->gT('Test if your server has SSL enabled by clicking on this link.').'">'
                     . $clang->gT('check if this link works.').'</a><br/> '
                     . $clang->gT("If the link does not work and you turn on HTTPS, LimeSurvey will break and you won't be able to access it.");
@@ -418,9 +418,9 @@
                     </select>
                 </li>
                 <li><label for='includedLanguages'><?php $clang->eT("Available languages:"); ?></label>
-                    <table>
+                    <table id='languageSelection'>
                         <tr>
-                            <td align='left'>
+                            <td>
                                 <select style='min-width:220px;' size='5' id='includedLanguages' name='includedLanguages' multiple='multiple'><?php
                                         foreach ($restrictToLanguages as $sLanguageCode) {?>
                                         <option value='<?php echo $sLanguageCode; ?>'><?php echo $allLanguages[$sLanguageCode]['description']; ?></option>
@@ -429,10 +429,10 @@
 
                                 </select>
                             </td>
-                            <td align='center'>
+                            <td >
                                 <button id="btnAdd" type="button"><span class="ui-icon ui-icon-carat-1-w" style="float:left"></span><?php $clang->eT("Add"); ?></button><br /><button type="button" id="btnRemove"><span class="ui-icon ui-icon-carat-1-e" style="float:right"></span><?php $clang->eT("Remove"); ?></button>
                             </td>
-                            <td align='left'>
+                            <td >
                                 <select size='5' style='min-width:220px;' id='excludedLanguages' name='excludedLanguages' multiple='multiple'>
                                     <?php foreach ($excludedLanguages as $sLanguageCode) {
                                         ?><option value='<?php echo $sLanguageCode; ?>'><?php echo $allLanguages[$sLanguageCode]['description']; ?></option><?php
@@ -464,7 +464,7 @@
 
 </div>
 
-<p><input type='button' onclick='$("#frmglobalsettings").submit();' class='standardbtn' value='<?php $clang->eT("Save settings"); ?>' /><br /></p>
+<p><br/><input type='button' onclick='$("#frmglobalsettings").submit();' class='standardbtn' value='<?php $clang->eT("Save settings"); ?>' /><br /></p>
 <?php if (Yii::app()->getConfig("demoMode")==true)
     { ?>
     <p><?php $clang->eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>

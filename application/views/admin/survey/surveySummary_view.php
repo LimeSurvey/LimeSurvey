@@ -1,17 +1,17 @@
 <table <?php echo $showstyle; ?> id='surveydetails'>
 	<tr>
-		<td align='right' valign='top' width='15%'>
+		<td>
 			<strong><?php $clang->eT("Title");?>:</strong>
 		</td>
-		<td align='left' class='settingentryhighlight'>
+		<td class='settingentryhighlight'>
 			<strong><?php echo $surveyinfo['surveyls_title']." (".$clang->gT("ID")." ".$surveyinfo['sid'].")";?></strong>
 		</td>
 	</tr>
 	<tr>
-		<td align='right' valign='top'>
+		<td>
 			<strong><?php echo $clang->gT("Survey URL") ." (".getLanguageNameFromCode($surveyinfo['language'],false)."):";?></strong>
 		</td>
-		<td align='left'>
+		<td>
 		<?php $tmp_url = $this->createAbsoluteUrl("/survey/index/sid/{$surveyinfo['sid']}");
         echo "<a href='{$tmp_url}/lang/{$surveyinfo['language']}' target='_blank'>{$tmp_url}/lang/{$surveyinfo['language']}</a>";
         foreach ($aAdditionalLanguages as $langname)
@@ -22,10 +22,10 @@
 		</td>
 	</tr>
     <tr>
-    	<td align='right' valign='top'>
+    	<td>
     		<strong><?php $clang->eT("Description:");?></strong>
     	</td>
-    	<td align='left'>
+    	<td>
         	<?php
                 if (trim($surveyinfo['surveyls_description'])!='') {
                     templatereplace($surveyinfo['surveyls_description']);
@@ -35,10 +35,10 @@
         </td>
 	</tr>
 	<tr>
-		<td align='right' valign='top'>
+		<td>
 			<strong><?php $clang->eT("Welcome:");?></strong>
 		</td>
-        <td align='left'>
+        <td>
         	<?php
                 templatereplace($surveyinfo['surveyls_welcometext']);
                 echo LimeExpressionManager::GetLastPrettyPrintExpression();
@@ -46,99 +46,99 @@
         </td>
 	</tr>
     <tr>
-    	<td align='right' valign='top'>
+    	<td>
     		<strong><?php $clang->eT("Administrator:");?></strong>
     	</td>
-        <td align='left'>
+        <td>
         	<?php echo "{$surveyinfo['admin']} ({$surveyinfo['adminemail']})";?>
         </td>
 	</tr>
 	<?php if (trim($surveyinfo['faxto'])!='') { ?>
 	    <tr>
-	    	<td align='right' valign='top'>
+	    	<td>
 	    		<strong><?php $clang->eT("Fax to:");?></strong>
 	    	</td>
-	    	<td align='left'>
+	    	<td>
 	    		<?php echo$surveyinfo['faxto'];?>
 	    	</td>
 	    </tr>
     <?php } ?>
     <tr>
-    	<td align='right' valign='top'>
+    	<td>
     		<strong><?php $clang->eT("Start date/time:");?></strong>
     	</td>
-        <td align='left'>
+        <td>
         	<?php echo $startdate;?>
         </td>
     </tr>
     <tr>
-    	<td align='right' valign='top'>
+    	<td>
     		<strong><?php $clang->eT("Expiry date/time:");?></strong>
     	</td>
-    	<td align='left'>
+    	<td>
     		<?php echo $expdate;?>
     	</td>
     </tr>
     <tr>
-    	<td align='right' valign='top'>
+    	<td>
     		<strong><?php $clang->eT("Template:");?></strong>
     	</td>
-    	<td align='left'>
+    	<td>
     		<?php echo $surveyinfo['template'];?>
     	</td>
     </tr>
     <tr>
-    	<td align='right' valign='top'>
+    	<td>
     		<strong><?php $clang->eT("Base language:");?></strong>
     	</td>
-    	<td align='left'>
+    	<td>
     		<?php echo $language;?>
     	</td>
     </tr>
     <tr>
-    	<td align='right' valign='top'>
+    	<td>
     		<strong><?php $clang->eT("Additional languages:");?></strong>
     	</td>
     		<?php echo $additionnalLanguages;?>
     <tr>
-    	<td align='right' valign='top'>
+    	<td>
     		<strong><?php $clang->eT("End URL");?>:</strong>
     	</td>
-    	<td align='left'>
+    	<td>
     		<?php echo $endurl;?>
     	</td>
     </tr>
     <tr>
-    	<td align='right' valign='top'>
+    	<td>
     		<strong><?php $clang->eT("Number of questions/groups");?>:</strong>
     	</td>
-    	<td align='left'>
+    	<td>
     		<?php echo $sumcount3."/".$sumcount2;?>
     	</td>
     </tr>
     <tr>
-    	<td align='right' valign='top'>
+    	<td>
     		<strong><?php $clang->eT("Survey currently active");?>:</strong>
     	</td>
-    	<td align='left'>
+    	<td>
     		<?php echo $activatedlang;?>
     	</td>
     </tr>
     <?php if($activated=="Y") { ?>
     <tr>
-    	<td align='right' valign='top'>
+    	<td>
     		<strong><?php $clang->eT("Survey table name");?>:</strong>
     	</td>
-    	<td align='left'>
+    	<td>
     		<?php echo $surveydb;?>
     	</td>
     </tr>
     <?php } ?>
     <tr>
-    	<td align='right' valign='top'>
+    	<td>
     		<strong><?php $clang->eT("Hints");?>:</strong>
     	</td>
-    	<td align='left'>
+    	<td>
     		<?php echo $warnings.$hints;?>
     	</td>
     </tr>
@@ -146,12 +146,12 @@
             if ($tableusage['dbtype']=='mysql' || $tableusage['dbtype']=='mysqli'){
                 $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2);
                 $size_usage =  round($tableusage['size'][0]/$tableusage['size'][1] * 100,2); ?>
-                <tr><td align='right' valign='top'><strong><?php $clang->eT("Table column usage");?>: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> </td></tr>
-                <tr><td align='right' valign='top'><strong><?php $clang->eT("Table size usage");?>: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $size_usage;?>'></div></td></tr>
+                <tr><td><strong><?php $clang->eT("Table column usage");?>: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> </td></tr>
+                <tr><td><strong><?php $clang->eT("Table size usage");?>: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $size_usage;?>'></div></td></tr>
             <?php }
             elseif (($arrCols['dbtype'] == 'mssql')||($arrCols['dbtype'] == 'postgre')){
                 $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2); ?>
-                <tr><td align='right' valign='top'><strong><?php $clang->eT("Table column usage");?>: </strong></td><td><strong><?php echo $column_usage;?>%</strong><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> </td></tr>
+                <tr><td><strong><?php $clang->eT("Table column usage");?>: </strong></td><td><strong><?php echo $column_usage;?>%</strong><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> </td></tr>
             <?php }
         } ?>
 </table>

@@ -10,7 +10,7 @@
                 <?php if($canactivate) { ?>
                     <a href="#" onclick="window.open('<?php echo $this->createurl("admin/survey/activate/surveyid/$surveyid");?>', '_top')"
                         title="<?php $clang->eTview("Activate this Survey"); ?>" >
-                        <img src='<?php echo $imageurl; ?>/activate.png' name='ActivateSurvey' alt='<?php $clang->eT("Activate this Survey"); ?>'/></a>
+                        <img src='<?php echo $imageurl; ?>/activate.png' alt='<?php $clang->eT("Activate this Survey"); ?>'/></a>
                     <?php } else { ?>
                     <img src='<?php echo $imageurl; ?>/activate_disabled.png'
                         alt='<?php $clang->eT("Survey cannot be activated. Either you have no permission or there are no questions."); ?>' />
@@ -52,18 +52,18 @@
                     </ul></li>
                 <?php } ?>
             <li><a href='#'>
-                    <img src='<?php echo $imageurl;?>/edit.png' name='EditSurveyProperties' alt='<?php $clang->eT("Survey properties");?>' /></a><ul>
+                    <img src='<?php echo $imageurl;?>/edit.png' alt='<?php $clang->eT("Survey properties");?>' /></a><ul>
                     <?php if($surveylocale) { ?>
                         <li><a href='<?php echo $this->createUrl("admin/survey/editlocalsettings/surveyid/$surveyid");?>'>
-                            <img src='<?php echo $imageurl;?>/edit_30.png' name='EditTextElements' alt=''/> <?php $clang->eT("Edit text elements");?></a></li>
+                            <img src='<?php echo $imageurl;?>/edit_30.png' alt=''/> <?php $clang->eT("Edit text elements");?></a></li>
                         <?php } ?>
                     <?php if($surveysettings) { ?>
                         <li><a href='<?php echo $this->createUrl("admin/survey/editsurveysettings/surveyid/$surveyid");?>' >
-                            <img src='<?php echo $imageurl;?>/token_manage_30.png' name='EditGeneralSettings' alt=''/> <?php $clang->eT("General settings");?></a></li>
+                            <img src='<?php echo $imageurl;?>/token_manage_30.png' alt=''/> <?php $clang->eT("General settings");?></a></li>
                         <?php } ?>
                     <?php if($surveysecurity) { ?>
                         <li><a href='<?php echo $this->createUrl("admin/surveypermission/view/surveyid/$surveyid");?>' >
-                            <img src='<?php echo $imageurl;?>/survey_security_30.png' name='SurveySecurity' alt=''/> <?php $clang->eT("Survey permissions");?></a></li>
+                            <img src='<?php echo $imageurl;?>/survey_security_30.png' alt=''/> <?php $clang->eT("Survey permissions");?></a></li>
                         <?php } ?>
 
                     <?php if($quotas) { ?>
@@ -76,14 +76,14 @@
                         <?php } ?>
                     <?php if($surveylocale) { ?>
                         <li><a href='<?php echo $this->createUrl("admin/emailtemplates/index/surveyid/$surveyid");?>' >
-                            <img src='<?php echo $imageurl;?>/emailtemplates_30.png' name='EditEmailTemplates' alt=''/> <?php $clang->eT("Email templates");?></a></li>
+                            <img src='<?php echo $imageurl;?>/emailtemplates_30.png' alt=''/> <?php $clang->eT("Email templates");?></a></li>
                         <?php } ?>
                 </ul></li>
             <li><a href="#">
-                    <img src='<?php echo $imageurl;?>/tools.png' name='SurveyTools' alt='<?php $clang->eT("Tools");?>' /></a><ul>
+                    <img src='<?php echo $imageurl;?>/tools.png' alt='<?php $clang->eT("Tools");?>' /></a><ul>
                     <?php if ($surveydelete) { ?>
                         <li><a href="<?php echo $this->createUrl("admin/survey/confirmdelete/surveyid/$surveyid"); ?>">
-                            <img src='<?php echo $imageurl;?>/delete_30.png' name='DeleteSurvey' alt=''/> <?php $clang->eT("Delete survey");?></a></li>
+                            <img src='<?php echo $imageurl;?>/delete_30.png' alt=''/> <?php $clang->eT("Delete survey");?></a></li>
                         <?php } ?>
                     <?php if ($surveytranslate) {
                             if($hasadditionallanguages) { ?>
@@ -97,10 +97,10 @@
                     <?php if ($surveycontent) {
                             if($conditionscount) { ?>
                              <li><a href="<?php echo $this->createUrl("admin/conditions/index/subaction/resetsurveylogic/surveyid/$surveyid/gid/1/qid/1"); ?>">
-                                <img src='<?php echo $imageurl;?>/resetsurveylogic_30.png' name='ResetSurveyLogic' alt='' width="30" height="30"/> <?php $clang->eT("Reset conditions");?></a></li>
+                                <img src='<?php echo $imageurl;?>/resetsurveylogic_30.png' alt='' width="30" height="30"/> <?php $clang->eT("Reset conditions");?></a></li>
                             <?php } else { ?>
                             <li><a href="#" onclick="alert('<?php $clang->eT("Currently there are no conditions configured for this survey.", "js");?>');" >
-                                <img src='<?php echo $imageurl;?>/resetsurveylogic_disabled_30.png' name='ResetSurveyLogic' alt='' width="30" height="30"/> <?php $clang->eT("Reset Survey Logic");?></a></li>
+                                <img src='<?php echo $imageurl;?>/resetsurveylogic_disabled_30.png' alt='' width="30" height="30"/> <?php $clang->eT("Reset Survey Logic");?></a></li>
                             <?php } ?>
                         <?php } ?>
                     <?php if(1) { ?>
@@ -113,7 +113,7 @@
                         <?php } ?>
                 </ul></li>
             <li><a href='#'>
-                    <img src='<?php echo $imageurl;?>/display_export.png' name='DisplayExport' alt='<?php $clang->eT("Display / Export");?>' width="40" height="40"/></a><ul>
+                    <img src='<?php echo $imageurl;?>/display_export.png' alt='<?php $clang->eT("Display / Export");?>' width="40" height="40"/></a><ul>
                     <?php if($surveyexport) { ?>
                         <li><a href='#' >
                             <img src='<?php echo $imageurl;?>/export_30.png' alt='' width="30" height="30"/> <?php $clang->eT("Export...");?></a>
@@ -145,10 +145,10 @@
                     </li>
                     <?php if($onelanguage) { ?>
                         <li><a target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/surveyid/$surveyid");?>' >
-                            <img src='<?php echo $imageurl;?>/print_30.png' name='ShowPrintableSurvey' alt='' width="30" height="30"/> <?php $clang->eT("Printable version");?></a></li>
+                            <img src='<?php echo $imageurl;?>/print_30.png' alt='' width="30" height="30"/> <?php $clang->eT("Printable version");?></a></li>
                         <?php } else { ?>
                         <li><a target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/surveyid/$surveyid");?>' >
-                            <img src='<?php echo $imageurl;?>/print_30.png' name='ShowPrintableSurvey' alt='' width="30" height="30"/> <?php $clang->eT("Printable version");?></a><ul>
+                            <img src='<?php echo $imageurl;?>/print_30.png' alt='' width="30" height="30"/> <?php $clang->eT("Printable version");?></a><ul>
                                 <?php foreach ($languagelist as $tmp_lang) { ?>
                                     <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/surveyid/$surveyid/lang/$tmp_lang");?>'>
                                         <img src='<?php echo $imageurl;?>/print_30.png' alt='' /> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
@@ -158,10 +158,10 @@
                     <?php if($surveyexport) {
                             if($onelanguage) { ?>
                             <li><a href='<?php echo $this->createUrl("admin/export/showquexmlsurvey/surveyid/$surveyid");?>' >
-                                <img src='<?php echo $imageurl;?>/scanner_30.png' name='ShowPrintableScannableSurvey' alt='' width="30" height="30"/> <?php $clang->eT("QueXML export");?></a></li>
+                                <img src='<?php echo $imageurl;?>/scanner_30.png' alt='' width="30" height="30"/> <?php $clang->eT("QueXML export");?></a></li>
                             <?php } else { ?>
                             <li><a href='<?php echo $this->createUrl("admin/export/showquexmlsurvey/surveyid/$surveyid");?>' >
-                                <img src='<?php echo $imageurl;?>/scanner_30.png' name='ShowPrintableScannableSurvey' alt='' width="30" height="30"/> <?php $clang->eT("QueXML export");?></a><ul>
+                                <img src='<?php echo $imageurl;?>/scanner_30.png' alt='' width="30" height="30"/> <?php $clang->eT("QueXML export");?></a><ul>
                                     <?php foreach ($languagelist as $tmp_lang) { ?>
                                         <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("admin/export/showquexmlsurvey/surveyid/$surveyid/lang/$tmp_lang");?>'>
                                             <img src='<?php echo $imageurl;?>/scanner_30.png' alt=''/> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
@@ -170,14 +170,14 @@
                             <?php }
                     } ?>
                 </ul></li>
-            <li><a href='#'><img src='<?php echo $imageurl;?>/responses.png' name='Responses' alt='<?php $clang->eT("Responses");?>' width="40" height="40"/></a><ul>
+            <li><a href='#'><img src='<?php echo $imageurl;?>/responses.png' alt='<?php $clang->eT("Responses");?>' width="40" height="40"/></a><ul>
                     <?php if($respstatsread) {
                             if($activated) { ?>
                             <li><a href='<?php echo $this->createUrl("admin/browse/index/surveyid/$surveyid/");?>' >
-                                <img src='<?php echo $imageurl;?>/browse_30.png' name='BrowseSurveyResults' alt='' width="30" height="30"/> <?php $clang->eT("Responses & statistics");?></a></li>
+                                <img src='<?php echo $imageurl;?>/browse_30.png' alt='' width="30" height="30"/> <?php $clang->eT("Responses & statistics");?></a></li>
                             <?php } else { ?>
                             <li><a href="#" onclick="alert('<?php $clang->eT("This survey is not active - no responses are available.","js");?>');" >
-                                <img src='<?php echo $imageurl;?>/browse_disabled_30.png' name='BrowseSurveyResults' alt='' width="30" height="30"/> <?php $clang->eT("Responses & statistics");?></a></li>
+                                <img src='<?php echo $imageurl;?>/browse_disabled_30.png' alt='' width="30" height="30"/> <?php $clang->eT("Responses & statistics");?></a></li>
                             <?php }
                     } ?>
                     <?php if($responsescreate) {
@@ -192,10 +192,10 @@
                     <?php if($responsesread) {
                             if($activated) { ?>
                             <li><a href='<?php echo $this->createUrl("admin/saved/view/surveyid/$surveyid");?>' >
-                                <img src='<?php echo $imageurl;?>/saved_30.png' name='PartialResponses' alt='' width="30" height="30"/> <?php $clang->eT("Partial (saved) responses");?></a></li>
+                                <img src='<?php echo $imageurl;?>/saved_30.png' alt='' width="30" height="30"/> <?php $clang->eT("Partial (saved) responses");?></a></li>
                             <?php } else { ?>
                             <li><a href="#" onclick="alert('<?php $clang->eT("This survey is not active - no responses are available","js");?>');" >
-                                <img src='<?php echo $imageurl;?>/saved_disabled_30.png' name='PartialResponses' alt='' width="30" height="30"/> <?php $clang->eT("Partial (saved) responses");?></a></li>
+                                <img src='<?php echo $imageurl;?>/saved_disabled_30.png' alt='' width="30" height="30"/> <?php $clang->eT("Partial (saved) responses");?></a></li>
                             <?php }
                     } ?>
                 </ul></li>
@@ -204,21 +204,21 @@
                 {
                     if ($activated)
                     { ?><li><a href='#'>
-                            <img name='Organize' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/organize_disabled.png' title='' alt='<?php $clang->eT("Question group/question organizer disabled"); ?> - <?php $clang->eT("This survey is currently active."); ?>'
+                            <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/organize_disabled.png' title='' alt='<?php $clang->eT("Question group/question organizer disabled"); ?> - <?php $clang->eT("This survey is currently active."); ?>'
                                 width="40" height="40"/></a></li>
                     <?php }
                     else
                     { ?><li>
 
                         <a href="<?php echo $this->createUrl("admin/questiongroup/organize/surveyid/$surveyid"); ?>">
-                            <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/organize.png' alt='<?php $clang->eT("Reorder question groups / questions"); ?>' name='Organize' width="40" height="40"/></a></li>
+                            <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/organize.png' alt='<?php $clang->eT("Reorder question groups / questions"); ?>' width="40" height="40"/></a></li>
                     <?php }
             } ?>
 
             <?php if($tokenmanagement) { ?>
                 <li><a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/index/surveyid/$surveyid");?>', '_top')"
                         title="<?php $clang->eTview("Token management");?>" >
-                        <img src='<?php echo $imageurl;?>/tokens.png' name='TokensControl' alt='<?php $clang->eT("Token management");?>' width="40" height="40"/></a>
+                        <img src='<?php echo $imageurl;?>/tokens.png' alt='<?php $clang->eT("Token management");?>' width="40" height="40"/></a>
                 </li>
                 <?php } ?>
         </ul>
@@ -236,11 +236,11 @@
                     <?php if ($GidPrev != "")
                         { ?>
                         <a href='<?php echo $this->createUrl("admin/survey/view/surveyid/$surveyid/gid/$GidPrev"); ?>'>
-                        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/previous_20.png' title='' alt='<?php $clang->eT("Previous question group"); ?>' name='questiongroupprevious' width="20" height="20"/> </a>
+                        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/previous_20.png' title='' alt='<?php $clang->eT("Previous question group"); ?>' width="20" height="20"/> </a>
                         <?php }
                         else
                         { ?>
-                        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/previous_disabled_20.png' title='' alt='<?php $clang->eT("No previous question group"); ?>' name='noquestiongroupprevious' width="20" height="20"/>
+                        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/previous_disabled_20.png' title='' alt='<?php $clang->eT("No previous question group"); ?>' width="20" height="20"/>
                         <?php }
 
 
@@ -250,13 +250,13 @@
 
                         <a href='<?php echo $this->createUrl("admin/survey/view/surveyid/$surveyid/gid/$GidNext"); ?>'>
                             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/next_20.png' title='' alt='<?php $clang->eT("Next question group"); ?>'
-                            name='questiongroupnext' width="20" height="20"/> </a>
+                            width="20" height="20"/> </a>
                         <?php }
                         else
                         { ?>
 
                         <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/next_disabled_20.png' title='' alt='<?php $clang->eT("No next question group"); ?>'
-                            name='noquestiongroupnext' width="20" height="20"/>
+                            width="20" height="20"/>
                         <?php } ?>
                 </span>
                 <?php } ?>
@@ -269,32 +269,29 @@
                     if ($activated)
                     { ?>
                     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/add_disabled.png' title='' alt='<?php $clang->eT("Disabled"); ?> - <?php $clang->eT("This survey is currently active."); ?>'
-                        name='AddNewGroup' width="40" height="40"/>
+                        width="40" height="40"/>
                     <?php }
                     else
                     { ?>
 
                     <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/questiongroup/add/surveyid/$surveyid"); ?>', '_top')"
                         title="<?php $clang->eTview("Add new group to survey"); ?>">
-                        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/add.png' alt='<?php $clang->eT("Add new group to survey"); ?>' name='AddNewGroup' width="40" height="40"/></a>
+                        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/add.png' alt='<?php $clang->eT("Add new group to survey"); ?>' width="40" height="40"/></a>
                     <?php }
             } ?>
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt='' />
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/blank.gif' width='15' alt='' />
             <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/minus.gif' title='<?php $clang->eT("Hide details of this Survey"); ?>'
-                alt='<?php $clang->eT("Hide details of this Survey"); ?>' name='MinimiseSurveyWindow'
-                onclick='document.getElementById("surveydetails").style.display="none";' />
+                alt='<?php $clang->eT("Hide details of this Survey"); ?>' onclick='document.getElementById("surveydetails").style.display="none";' />
 
             <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/plus.gif' title='<?php $clang->eT("Show details of this survey"); ?>'
-                alt='<?php $clang->eT("Show details of this survey"); ?>' name='MaximiseSurveyWindow'
-                onclick='document.getElementById("surveydetails").style.display="";' />
+                alt='<?php $clang->eT("Show details of this survey"); ?>' onclick='document.getElementById("surveydetails").style.display="";' />
 
             <?php if (!$gid)
                 { ?>
 
                 <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/close.gif' title='<?php $clang->eT("Close this survey"); ?>'
-                    alt='<?php $clang->eT("Close this survey"); ?>' name='CloseSurveyWindow'
-                    onclick="window.open('<?php echo $this->createUrl("/admin"); ?>', '_top')" />
+                    alt='<?php $clang->eT("Close this survey"); ?>' onclick="window.open('<?php echo $this->createUrl("/admin"); ?>', '_top')" />
                 <?php }
                 else
                 { ?>

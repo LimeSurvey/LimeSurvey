@@ -1,4 +1,4 @@
-<?php echo"<?"?>xml version="1.0"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html<?php echo $languageRTL;?>>
 <head>
     <?php echo $meta;?>
@@ -43,7 +43,7 @@
 
                 <!-- alert icon -->
                 <span style="float:left; margin:2px 5px 0 0;" class="ui-icon ui-icon-info">&nbsp;</span>
-                <p><?php echo $flashmessage; ?></p>
+                <p><?php echo $flashmessage; ?></p><br>
             </div>
 
             <!-- other templates here, maybe.. -->

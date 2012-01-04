@@ -771,7 +771,7 @@ class Survey_Common_Action extends CAction
         $aData['additionnalLanguages'] = "";
         if ($additionnalLanguagesCount == 0)
         {
-            $aData['additionnalLanguages'] .= "<td align='left'>-</td>\n";
+            $aData['additionnalLanguages'] .= "<td>-</td>\n";
         }
         else
         {
@@ -784,7 +784,7 @@ class Survey_Common_Action extends CAction
                         $aData['additionnalLanguages'].= "<tr><td>&nbsp;</td>";
                     }
                     $first = false;
-                    $aData['additionnalLanguages'] .= "<td align='left'>" . getLanguageNameFromCode($langname, false) . "</td></tr>\n";
+                    $aData['additionnalLanguages'] .= "<td>" . getLanguageNameFromCode($langname, false) . "</td></tr>\n";
                 }
             }
         }

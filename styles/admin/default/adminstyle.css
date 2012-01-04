@@ -378,6 +378,10 @@ textarea {
     color: #E00;
 }
 
+.hint {
+    font-size: 10px;
+}
+
 .annotation {
     font-size: 10px;
     color: #E00;
@@ -757,11 +761,6 @@ a.optoutemail {
 #sendinvitation label {
     font-weight: bold;
     margin-right: 0.5em;
-}
-
-.annotation
-{
-    font-size:10px;
 }
 
 table.templatecontrol {
