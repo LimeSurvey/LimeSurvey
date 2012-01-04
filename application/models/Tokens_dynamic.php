@@ -140,7 +140,7 @@ class Tokens_dynamic extends CActiveRecord
     {
         //get token length from survey settings
         $tlrow = Survey::model()->getSomeRecords("tokenlength",array("sid"=>$iSurveyID));
-        $iTokenLength = $tlrow[0]['tokenlength'];
+        $iTokenLength = $tlrow->tokenlength;
 
         //if tokenlength is not set or there are other problems use the default value (15)
         if(empty($iTokenLength))
