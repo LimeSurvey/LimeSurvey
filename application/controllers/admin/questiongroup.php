@@ -249,7 +249,7 @@ class questiongroup extends Survey_Common_Action
                 else
                     Yii::app()->user->setFlash('flashmessage', $clang->gT('Group could not be deleted'));
 
-                $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/sid/' . $surveyId));
+                $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/surveyid/' . $surveyId));
             }
         }
     }

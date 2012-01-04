@@ -34,7 +34,7 @@
                     if (is_null($condarray))
                     { ?>
 
-                    <a href='#' onclick="if (confirm('<?php $clang->eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js"); ?>')) { <?php echo $this->createUrl("admin/questiongroup/delete/surveyid/$surveyid/gid/$gid"); ?>}"
+                    <a href='#' onclick="if (confirm('<?php $clang->eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js"); ?>')) { window.open('<?php echo $this->createUrl("admin/questiongroup/delete/surveyid/$surveyid/gid/$gid"); ?>','_top'); }"
                         title="<?php $clang->eTview("Delete current question group"); ?>">
                         <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/delete.png' alt='<?php $clang->eT("Delete current question group"); ?>' name='DeleteWholeGroup' title='' width="40" height="40"/></a>
 
