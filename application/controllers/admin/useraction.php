@@ -518,12 +518,12 @@ class UserAction extends Survey_Common_Action
     function usertemplates()
     {
         $clang = Yii::app()->lang;
-        $postuserid = CHttpRequest::getPost("uid");
+        $postuserid = CHttpRequest::getPost('uid');
 
         // SUPERADMINS AND MANAGE_TEMPLATE USERS CAN SET THESE RIGHTS
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'] == 1) {
             $templaterights = array();
-            $tresult = Templates::model()->findAll();
+            $tresult = Template::model()->findAll();
             foreach ($tresult as $trow)
             {
                 if (isset($_POST[$trow["folder"] . "_use"]))
@@ -533,17 +533,16 @@ class UserAction extends Survey_Common_Action
             }
             foreach ($templaterights as $key => $value)
             {
-                $post = new Templates_rights;
+                /*$post = new Templates_rights;
                 $post->uid = $postuserid;
                 $post->folder = $key;
                 $post->use = $value;
                 $uresult = $post->save();
-                if (!$uresult) {
-                    $model = Templates_right::model()->updateByPk(array('use' => $value), array('folder' => $key, 'uid' => $postuserid));
-                    $uresult = $model->save();
-                }
+                if (!$uresult) {*/
+                    $uresult = Templates_rights::model()->updateByPk(array('folder' => $key, 'uid' => $postuserid), array('use' => $value));
+               // }
             }
-            if ($uresult) {
+            if ($uresult !== false) {
                 $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Set template permissions"), $clang->gT("Template permissions were updated successfully."), "successheader");
             }
             else
@@ -553,11 +552,10 @@ class UserAction extends Survey_Common_Action
         }
         else
         {
-            echo access_denied('usertemplates');
-            die();
+            die('access denied');
         }
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate($aViewUrls);
     }
 
     /**
@@ -616,10 +614,10 @@ class UserAction extends Survey_Common_Action
         {
             // check for each folder if there is already an entry in the database
             // if not create it with current user as creator (user with rights "create user" can assign template rights)
-            $result = Templates_model::model()->getSomeRecords(array('folder' => $tp));
+            $result = Template::model()->findByPk($tp);
 
             if (count($result) == 0) {
-                $post = new Templates;
+                $post = new Template;
                 $post->folder = $tp;
                 $post->creator = Yii::app()->session['loginID'];
                 $post->save();

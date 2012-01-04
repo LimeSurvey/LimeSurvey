@@ -1,4 +1,4 @@
-<form action='<?php echo site_url("admin/user/usertemplates");?>' method='post'>
+<form action='<?php echo $this->createUrl("admin/user/usertemplates");?>' method='post'>
 	<div class='header ui-widget-header'><?php $clang->eT('Edit template permissions');?></div>
     <table id="user-template-rights" width='50%' border='0' cellpadding='3' style='margin:5px auto 0 auto;'>
 	<thead>
@@ -12,9 +12,8 @@
         if ($usr['uid'] == $postuserid)
         {
             $templaterights = array();
-            $squery = 'SELECT '.$this->db->escape('folder').','.$this->db->escape('use')." FROM {{templates_rights}} WHERE uid={$usr['uid']}";
-            $sresult = db_execute_assoc($squery) or safe_die();//Checked
-            foreach ($sresult->row_array() as $srow)
+            $sresult = Templates_rights::model()->findAllByAttributes(array('uid' => $usr['uid']));
+            foreach ($sresult as $srow)
             {
                 $templaterights[$srow["folder"]] = array("use"=>$srow["use"]);
             }
@@ -28,22 +27,21 @@
             </thead>
 
             <tfoot>
-            <tr>
-            <td colspan="3">
-            <input type="submit" value="<?php $clang->eT('Save settings');?>" />
-            <input type="hidden" name="action" value="usertemplates" />
-            <input type="hidden" name="uid" value="<?php echo $postuserid;?>" />
-            </td>
-            </tr>
+                <tr>
+                    <td colspan="3">
+                        <input type="submit" value="<?php $clang->eT('Save settings');?>" />
+                        <input type="hidden" name="action" value="usertemplates" />
+                        <input type="hidden" name="uid" value="<?php echo $postuserid; ?>" />
+                    </td>
+                </tr>
             </tfoot>
 
 			<tbody>
 
-            <?php $tquery = "SELECT * FROM {{templates}}";
-            $tresult = db_execute_assoc($tquery) or safe_die(); //Checked
-
+            <?php
+            $tresult = Template::model()->findAll();
             $table_row_odd_even = 'odd';
-            foreach ($tresult->result_array() as $trow)
+            foreach ($tresult as $trow)
             {
                 if($table_row_odd_even == 'odd' )
                 {
