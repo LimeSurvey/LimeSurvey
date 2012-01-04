@@ -169,7 +169,6 @@ class participantsaction extends Survey_Common_Action
      */
     function getShareInfo_json()
     {
-        $aData = new Object();
         $aData->page = 1;
 
         // If super administrator all the share info in the links table will be shown
