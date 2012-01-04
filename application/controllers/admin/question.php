@@ -42,8 +42,6 @@ class question extends Survey_Common_Action
         $clang = $this->getController()->lang;
         $aViewUrls = array();
 
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "/admin/default/superfish.css");
-
         $aData['display']['menu_bars']['surveysummary'] = 'viewquestion';
         $aData['display']['menu_bars']['gid_action'] = 'viewgroup';
 
@@ -113,8 +111,6 @@ class question extends Survey_Common_Action
         $surveyid = sanitize_int($surveyid);
         $gid = sanitize_int($gid);
         $qid = sanitize_int($qid);
-
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
 
         $aData['display']['menu_bars']['surveysummary'] = 'editdefaultvalues';
         $aData['display']['menu_bars']['gid_action'] = 'editdefaultvalues';
@@ -255,10 +251,7 @@ class question extends Survey_Common_Action
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl .'/scripts/admin/answers.js');
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl .'/scripts/jquery/jquery.blockUI.js');
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl .'/scripts/jquery/jquery.selectboxes.min.js');
-
-        $css_admin_includes[] = Yii::app()->baseUrl . 'scripts/jquery/dd.css';
-        $css_admin_includes[] = Yii::app()->getConfig('styleurl') . "admin/default/superfish.css";
-        $this->getController()->_css_admin_includes($css_admin_includes);
+        $this->getController()->_css_admin_includes(Yii::app()->baseUrl . 'scripts/jquery/dd.css');
 
         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
@@ -421,7 +414,6 @@ class question extends Survey_Common_Action
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.blockUI.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery.selectboxes.min.js');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/dd.css');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
         Yii::app()->session['FileManagerContext'] = "edit:answer:{$surveyid}";
 
         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';

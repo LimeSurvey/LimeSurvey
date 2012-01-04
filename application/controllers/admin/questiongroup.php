@@ -41,8 +41,6 @@ class questiongroup extends Survey_Common_Action
         $surveyid = $_POST['sid'];
         $clang = $this->getController()->lang;
 
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
-
         if ($action == 'importgroup')
         {
             $importgroup = "\n";
@@ -111,8 +109,6 @@ class questiongroup extends Survey_Common_Action
         {
             $action = "addgroup";
             $clang = $this->getController()->lang;
-
-            $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
 
             if ($action == "addgroup")
             {
@@ -273,8 +269,6 @@ class questiongroup extends Survey_Common_Action
         {
             $action = "editgroup"; //$this->input->post('action');
             $clang = $this->getController()->lang;
-
-            $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
 
             if ($action == "editgroup")
             {
@@ -468,7 +462,6 @@ class questiongroup extends Survey_Common_Action
 
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.ui.nestedSortable.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'admin/organize.js');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
 
         $this->_renderWrappedTemplate('organizeGroupsAndQuestions_view', $aData);
     }
@@ -508,6 +501,7 @@ class questiongroup extends Survey_Common_Action
      */
     protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
     {
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
         parent::_renderWrappedTemplate('survey', $aViewUrls, $aData);
     }
 }

@@ -362,8 +362,6 @@ class SurveyAction extends Survey_Common_Action
         if (isset($qid))
             $qid = sanitize_int($qid);
 
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
-
         $aData['surveyid'] = $surveyid;
         $aData['gid'] = $gid;
         $aData['qid'] = $qid;
@@ -382,7 +380,6 @@ class SurveyAction extends Survey_Common_Action
     public function deactivate($surveyid = null)
     {
         $surveyid = sanitize_int($surveyid);
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
 
         $postsid = CHttpRequest::getPost('sid', $surveyid);
         $clang = $this->getController()->lang;
@@ -491,8 +488,6 @@ class SurveyAction extends Survey_Common_Action
     public function activate($iSurveyId)
     {
         $iSurveyId = (int) $iSurveyId;
-
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
 
         $aData = array();
         $aData['aSurveysettings'] = getSurveyInfo($iSurveyId);
@@ -751,8 +746,6 @@ class SurveyAction extends Survey_Common_Action
      */
     public function delete($surveyid, $sa = 'confirmdelete')
     {
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
-
         $aData = $aViewUrls = array();
         $aData['surveyid'] = $iSurveyId = $surveyid;
 
@@ -789,7 +782,6 @@ class SurveyAction extends Survey_Common_Action
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
         $aViewUrls = array();
 
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
         $this->getController()->_js_admin_includes($this->getController()->createUrl('scripts/admin/surveysettings.js'));
 
         if (bHasSurveyPermission($surveyid, 'surveylocale', 'read'))
@@ -1421,19 +1413,26 @@ class SurveyAction extends Survey_Common_Action
             $generalscripts_path = Yii::app()->getConfig('generalscripts');
             $styleurl = Yii::app()->getConfig('styleurl');
 
-            $files = array(
+            $js_files = array(
                 $generalscripts_path . 'admin/surveysettings.js',
                 $generalscripts_path . 'jquery/jqGrid/js/i18n/grid.locale-en.js',
                 $generalscripts_path . 'jquery/jqGrid/js/jquery.jqGrid.min.js',
                 $generalscripts_path . 'jquery/jquery.json.min.js',
+            );
+
+            $css_files = array(
                 $generalscripts_path . 'jquery/jqGrid/css/ui.jqgrid.css',
-                $styleurl . 'admin/default/superfish.css',
             );
         }
 
-        foreach ($files as $file)
+        foreach ($js_files as $file)
         {
-            Yii::app()->clientscript->registerScriptFile($file);
+            $this->getController()->_js_admin_includes($file);
+        }
+
+        foreach ($css_files as $file)
+        {
+            $this->getController()->_css_admin_includes($file);
         }
     }
 
@@ -1622,6 +1621,7 @@ class SurveyAction extends Survey_Common_Action
      */
     protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
     {
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
         parent::_renderWrappedTemplate('survey', $aViewUrls, $aData);
     }
 

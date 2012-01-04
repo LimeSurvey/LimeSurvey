@@ -496,14 +496,11 @@ class Survey_Common_Action extends CAction
         //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
         $activated = ($surveyinfo['active'] == 'Y');
 
-        $js_admin_includes = Yii::app()->getConfig("js_admin_includes");
         $js_admin_includes[] = Yii::app()->getConfig('generalscripts') . 'jquery/jquery.coookie.js';
         $js_admin_includes[] = Yii::app()->getConfig('generalscripts') . 'jquery/superfish.js';
         $js_admin_includes[] = Yii::app()->getConfig('generalscripts') . 'jquery/hoverIntent.js';
         $js_admin_includes[] = Yii::app()->getConfig('adminscripts') . 'surveytoolbar.js';
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
-
-        Yii::app()->setConfig("js_admin_includes", $js_admin_includes);
+        $this->getController()->_js_admin_includes($js_admin_includes);
 
         //Parse data to send to view
         $aData['clang'] = $clang;

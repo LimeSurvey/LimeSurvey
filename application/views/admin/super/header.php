@@ -14,6 +14,16 @@
     <link rel="stylesheet" type="text/css" href="<?php echo $baseurl;?>styles/admin/<?php echo $admintheme;?>/printablestyle.css" media="print" />
     <link rel="stylesheet" type="text/css" href="<?php echo $baseurl;?>styles/admin/<?php echo $admintheme;?>/adminstyle.css" />
     <?php
+    if(!empty($css_admin_includes)) {
+        foreach ($css_admin_includes as $cssinclude)
+        {
+            ?>
+            <link rel="stylesheet" type="text/css" media="all" href="<?php echo $cssinclude; ?>" />
+            <?php
+        }
+    }
+    ?>
+    <?php
 
         if ($bIsRTL){?>
         <link rel="stylesheet" type="text/css" href="<?php echo $baseurl;?>styles/admin/<?php echo $admintheme;?>/adminstyle-rtl.css" /><?php

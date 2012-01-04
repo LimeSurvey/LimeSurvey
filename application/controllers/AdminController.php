@@ -285,6 +285,8 @@ class AdminController extends LSYii_Controller
 			unset(Yii::app()->session['flashmessage']);
 		}
 
+		$data['css_admin_includes'] = $this->_css_admin_includes(array(), true);
+
 		return $this->renderPartial("/admin/super/header", $data, $return);
 	}
 
@@ -342,10 +344,10 @@ class AdminController extends LSYii_Controller
 	 */
 	public function _showMessageBox($title,$message,$class="header ui-widget-header")
 	{
-		$data['title']=$title;
-		$data['message']=$message;
-		$data['class']=$class;
-		$data['clang']=$this->lang;
+		$data['title'] = $title;
+        $data['message'] = $message;
+        $data['class'] = $class;
+        $data['clang'] = $this->lang;
 
 		$this->render('/admin/super/messagebox', $data);
 	}
