@@ -208,8 +208,6 @@ class surveypermission extends Survey_Common_Action {
         $aViewUrls = array();
 
         $action = $_POST['action'];
-
-        $this->_renderHeaderAndMenu($surveyid);
         $clang = Yii::app()->lang;
 
         $imageurl = Yii::app()->getConfig('imageurl');
@@ -362,7 +360,6 @@ class surveypermission extends Survey_Common_Action {
 
         $action = $_POST['action'];
 
-        $this->_renderHeaderAndMenu($surveyid);
         $clang = Yii::app()->lang;
         $imageurl = Yii::app()->getConfig('imageurl');
         $postuserid = !empty($_POST['uid']) ? $_POST['uid'] : null;
