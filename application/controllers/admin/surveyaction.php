@@ -129,8 +129,6 @@ class SurveyAction extends Survey_Common_Action
 
         $this->_registerScriptFiles();
 
-        self::_surveybar($surveyid);
-
         //Yii::app()->loadHelper('text');
         Yii::app()->loadHelper('surveytranslator');
         $clang = $this->getController()->lang;
@@ -461,7 +459,7 @@ class SurveyAction extends Survey_Common_Action
             $survey->active = 'N';
             $survey->save();
 
-            $prow = Survey::model()->getSomeRecords('savetimings', array('sid' => $postsid));
+            $prow = Survey::model()->find('sid = :sid', array(':sid' => $postid));
             if ($prow->savetimings == "Y")
             {
                 $oldtable = "{{survey_{$postsid}_timings}}";
@@ -1102,7 +1100,7 @@ class SurveyAction extends Survey_Common_Action
         elseif ($action == 'editsurvey')
         {
             $condition = array('sid' => $surveyid);
-            $esresult = Survey::model()->getOneRecord(array('sid' => $surveyid));
+            $esresult = Survey::model()->find('sid = :sid', array(':sid' => $surveyid));
             if ($esresult)
             {
                 $esrow = $esresult;
