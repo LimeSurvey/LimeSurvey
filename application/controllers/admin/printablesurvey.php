@@ -27,7 +27,7 @@ class printablesurvey extends Survey_Common_Action
     /**
      * Show printable survey
      */
-    function run($surveyid, $lang = null)
+    function index($surveyid, $lang = null)
     {
         $surveyid = sanitize_int($surveyid);
 
@@ -55,7 +55,7 @@ class printablesurvey extends Survey_Common_Action
         $clang = new limesurvey_lang(array('lang' => $surveyprintlang));
 
 
-    $desrow = Survey::model()->getDataOnSurvey($surveyid,  $surveyprintlang)->read();
+        $desrow = Survey::model()->getDataOnSurvey($surveyid,  $surveyprintlang)->read();
 
         if ($desrow==false || count($desrow)==0)
         {
@@ -1809,7 +1809,7 @@ class printablesurvey extends Survey_Common_Action
     }
 
     // TEMP function for debugging
-    function _try_debug($line)
+    private function _try_debug($line)
     {
         $debug = Yii::app()->getConfig("debug");
         if($debug > 0)
@@ -1819,7 +1819,7 @@ class printablesurvey extends Survey_Common_Action
     }
 
 
-    function _populate_template( $template , $input  , $line = '')
+    private function _populate_template( $template , $input  , $line = '')
     {
         global $rootdir, $debug;
         /**
@@ -1887,13 +1887,13 @@ class printablesurvey extends Survey_Common_Action
         }
     }
 
-    function _min_max_answers_help($qidattributes, $surveyprintlang, $surveyid) {
+    private function _min_max_answers_help($qidattributes, $surveyprintlang, $surveyid) {
         $clang = $this->getController()->lang;
         $_POST['qidattributes']=$qidattributes;
     }
 
 
-    function _input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
+    private function _input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
     {
         global $rooturl, $rootdir;
 
@@ -1960,7 +1960,7 @@ class printablesurvey extends Survey_Common_Action
         return $output;
     }
 
-    function _star_replace($input)
+    private function _star_replace($input)
     {
         return preg_replace(
                  '/\*(.*)\*/U'
@@ -1969,7 +1969,7 @@ class printablesurvey extends Survey_Common_Action
                  );
     }
 
-    function _array_filter_help($qidattributes, $surveyprintlang, $surveyid) {
+    private function _array_filter_help($qidattributes, $surveyprintlang, $surveyid) {
         $clang = $this->getController()->lang;
         $_POST['qidattributes']=$qidattributes;
         $_POST['surveyprintlang']=$surveyprintlang;
@@ -1984,7 +1984,7 @@ class printablesurvey extends Survey_Common_Action
      *
      * return: adds the text string to the overview
      */
-    function _addsgqacode($code)
+    private function _addsgqacode($code)
     {
         $showsgqacode = Yii::app()->getConfig('showsgqacode');
         if(isset($showsgqacode) && $showsgqacode == true)
