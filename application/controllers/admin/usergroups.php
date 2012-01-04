@@ -42,12 +42,8 @@ class Usergroups extends Survey_Common_Action
 
         if ($action == "mailsendusergroup") {
 
-            // $usersummary = "<div class=\"header\">".$clang->gT("Mail to all Members")."</div>\n";
-            // $usersummary .= "<div class=\"messagebox\">\n";
-
             // user must be in user group
             // or superadmin
-            //$this->load->model('user_in_groups');
             $result = User_in_groups::model()->getSomeRecords(array('uid'), array('ugid' => $ugid, 'uid' => Yii::app()->session['loginID']));
 
             if (count($result) > 0 || Yii::app()->session['loginID'] == 1)
@@ -196,7 +192,6 @@ class Usergroups extends Survey_Common_Action
                     if (isset($db_group_name) && strlen($db_group_name) > 0) {
                         if (strlen($db_group_name) > 21) {
                             list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add Group! Group name length more than 20 characters.")));
-
                         }
                         elseif (User_groups::model()->find("name='$db_group_name'")) {
                             list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add Group! Group already exists.")));
@@ -206,7 +201,6 @@ class Usergroups extends Survey_Common_Action
                             $ugid = User_groups::model()->addGroup($db_group_name, $db_group_description);
                             list($aViewUrls, $aData) = $this->index($ugid, array("type" => "success", "message" => $clang->gT("User Group successfully added!")));
                         }
-
                     }
                     else
                     {
@@ -279,7 +273,7 @@ class Usergroups extends Survey_Common_Action
         if ($ugid != false)
             $ugid = (int)$ugid;
 
-        if ($header)
+        if (!empty($header))
             $aData['headercfg'] = $header;
         else
             $aData = array();
@@ -342,12 +336,12 @@ class Usergroups extends Survey_Common_Action
                     $aData["useraddusers"] = getgroupuserlist($ugid, 'optionlist');
                     $aData["useraddurl"] = "";
                 }
-
-                $aViewUrls[] = 'viewUserGroup_view';
             }
+
+            $aViewUrls[] = 'viewUserGroup_view';
         }
 
-        if (!empty($headers))
+        if (!empty($header))
         {
             return array($aViewUrls, $aData);
         }

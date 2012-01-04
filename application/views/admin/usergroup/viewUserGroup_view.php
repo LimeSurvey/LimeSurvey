@@ -15,7 +15,6 @@ if(isset($headercfg))
 }
 ?>
 
-
 <?php
 if(isset($groupfound))
 { ?>
@@ -28,48 +27,51 @@ if(isset($groupfound))
 }
 ?>
 
-<table class='users'>
-	<thead><tr>
-    	<th><?php $clang->eT("Action");?></th>
-        <th><?php $clang->eT("Username");?></th>
-        <th><?php $clang->eT("Email");?></th>
-        </tr></thead>
-	<tbody>
-	<?php
-	foreach ($userloop as $currentuser)
-    {
-		?>
-		<tr class='<?php echo $currentuser["rowclass"];?>'>
-			<td align='center'>
-			<?php
-			if($currentuser["displayactions"])
-            { ?>
-				<form method='post' action='<?php echo $this->createUrl('admin/usergroups/delete'); ?>'>
-				<input type='image' src='<?php echo Yii::app()->getConfig('imageurl')?>/token_delete.png' alt='"<?php $clang->eT("Delete this user from group");?>' onclick='return confirm("<?php $clang->eT("Are you sure you want to delete this entry?","js");?>")' />
-				<input type='hidden' name='user' value='<?php echo $currentuser["username"]; ?>' />"
-				<input type='hidden' name='ugid' value='<?php echo $ugid; ?>' />"
-				<input type='hidden' name='action' value='delusergroup' />"
-				<input name='uid' type='hidden' value='<?php echo $currentuser["userid"]; ?>' />"
-				<input name='ugid' type='hidden' value='<?php echo $usergroupid; ?>' />";
-				</form>
-                <?php
-			}
-			else
-			{
-				?>
-				&nbsp;
-			<?php
-			}
-			?>
-            </td>
-            <td align='center'><?php echo $currentuser["username"];?></td>
-            <td align='center'><?php echo $currentuser["email"];?></td>
-		</tr>
+<?php if (!empty($userloop)) { ?>
+    <table class='users'>
+        <thead><tr>
+            <th><?php $clang->eT("Action");?></th>
+            <th><?php $clang->eT("Username");?></th>
+            <th><?php $clang->eT("Email");?></th>
+            </tr></thead>
+        <tbody>
         <?php
-	}
-	?>
-	</tbody>
-</table>
+        foreach ($userloop as $currentuser)
+        {
+            ?>
+            <tr class='<?php echo $currentuser["rowclass"];?>'>
+                <td align='center'>
+                <?php
+                if($currentuser["displayactions"])
+                { ?>
+                    <form method='post' action='<?php echo $this->createUrl('admin/usergroups/delete'); ?>'>
+                    <input type='image' src='<?php echo Yii::app()->getConfig('imageurl')?>/token_delete.png' alt='<?php $clang->eT("Delete this user from group");?>' onclick='return confirm("<?php $clang->eT("Are you sure you want to delete this entry?","js");?>")' />
+                    <input type='hidden' name='user' value='<?php echo $currentuser["username"]; ?>' />
+                    <input type='hidden' name='ugid' value='<?php echo $ugid; ?>' />
+                    <input type='hidden' name='action' value='delusergroup' />
+                    <input name='uid' type='hidden' value='<?php echo $currentuser["userid"]; ?>' />
+                    <input name='ugid' type='hidden' value='<?php echo $usergroupid; ?>' />
+                    </form>
+                    <?php
+                }
+                else
+                {
+                    ?>
+                    &nbsp;
+                <?php
+                }
+                ?>
+                </td>
+                <td align='center'><?php echo $currentuser["username"];?></td>
+                <td align='center'><?php echo $currentuser["email"];?></td>
+            </tr>
+            <?php
+        }
+        ?>
+        </tbody>
+    </table>
+<?php } ?>
+
 <?php
 if (!empty($useradddialog))
 {
