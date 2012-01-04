@@ -723,10 +723,10 @@ class Survey_Common_Action extends CAction
         {
             $surveysummary2 .= $clang->gT("Regenerate question codes:")
             . " [<a href='#' "
-            . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want regenerate the question codes?", "js") . "')) { " . Yii::app()->baseUrl . "?action=renumberquestions&amp;sid=$iSurveyId&amp;style=straight" . "}\" "
+            . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want regenerate the question codes?", "js") . "')) { " .get2post(Yii::app()->baseUrl . "?action=renumberquestions&amp;sid=$iSurveyId&amp;style=straight") . "}\" "
             . ">" . $clang->gT("Straight") . "</a>] "
             . " [<a href='#' "
-            . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want regenerate the question codes?", "js") . "')) { " . Yii::app()->baseUrl . "?action=renumberquestions&amp;sid=$iSurveyId&amp;style=bygroup" . "}\" "
+            . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want regenerate the question codes?", "js") . "')) { " .get2post(Yii::app()->baseUrl . "?action=renumberquestions&amp;sid=$iSurveyId&amp;style=bygroup") . "}\" "
             . ">" . $clang->gT("By Group") . "</a>]";
         }
 
