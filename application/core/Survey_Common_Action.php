@@ -281,6 +281,7 @@ class Survey_Common_Action extends CAction
         }
 
         // Footer
+        Yii::app()->getController()->_loadEndScripts();
         Yii::app()->getController()->_getAdminFooter('http://docs.limesurvey.org', $clang->gT('LimeSurvey online manual'));
     }
 
