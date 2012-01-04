@@ -400,7 +400,17 @@ class participantsaction extends Survey_Common_Action
      */
     function storeUserControlValues()
     {
-        Settings_global::model()->update(array('userideditable', CHttpRequest::getPost('userideditable')));
+        if ($find = Settings_global::model()->findByPk('userideditable'))
+        {
+            Settings_global::model()->updateByPk('userideditable', array('stg_value'=>CHttpRequest::getPost('userideditable')));
+        }
+        else
+        {
+            $stg = new Settings_global;
+            $stg ->stg_name='userideditable';
+            $stg ->stg_value=CHttpRequest::getPost('userideditable');
+            $stg->save();
+        }
         CController::redirect(Yii::app()->getController()->createUrl('admin/participants/userControl'));
     }
 
