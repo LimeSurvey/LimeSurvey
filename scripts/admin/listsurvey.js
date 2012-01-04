@@ -68,11 +68,20 @@ jQuery("#displaysurveys").jqGrid({
     pager: "#pager",
     caption: "Surveys",
     });
-jQuery("#displaysurveys").jqGrid('navGrid','#pager',{ add:false,del:false,edit:false,refresh: true,search: true},{},{},{ msg:delmsg, width : 700 });
+jQuery("#displaysurveys").jqGrid('navGrid','#pager',{ add:false,del:false,edit:false,refresh: false,search: true},{},{},{ msg:delmsg, width : 700 });
 jQuery("#displaysurveys").jqGrid('filterToolbar', {searchOnEnter : false});
 jQuery("#displaysurveys").jqGrid('navButtonAdd','#pager',{
-    caption: "Columns",
-    title: "Reorder Columns",
+    buttonicon:"ui-icon-refresh",
+    caption:"",
+    title: "Refresh",
+    onClickButton : function (){
+        $("#displaysurveys").setGridParam({datatype:'json', page:1}).trigger('reloadGrid');
+    }
+});
+jQuery("#displaysurveys").jqGrid('navButtonAdd','#pager',{
+    buttonicon:"ui-icon-calculator",
+    caption:"",
+    title: "Select Columns",
     onClickButton : function (){
         jQuery("#displaysurveys").jqGrid('columnChooser', {
             done : function (perm) {
