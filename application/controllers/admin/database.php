@@ -70,7 +70,7 @@ class database extends Survey_Common_Action
                 $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\n\")\n //-->\n</script>\n";
             }
             $query = "SELECT type FROM {{questions}} WHERE qid=$qid";
-            $res = Yii::app()->db->createCommand($query)->query;
+            $res = Yii::app()->db->createCommand($query)->query();
             $resrow = $res->read();
             $questiontype = $resrow['type'];
 
@@ -109,16 +109,11 @@ class database extends Survey_Common_Action
                             {
                                 $this->_updateDefaultValues($qid,$aSubquestionrow['qid'],$scale_id,'',$language,$_POST['defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid']],true);
                             }
-                            /*                       if (isset($_POST['other_'.$scale_id.'_'.$language]))
-                            {
-                            Updatedefaultvalues($postqid,$qid,$scale_id,'other',$language,$_POST['other_'.$scale_id.'_'.$language],true);
-                            } */
-
                         }
                     }
                 }
             }
-            $this->session->set_userdata('flashmessage', $clang->gT("Default value settings were successfully saved."));
+            Yii::app()->session['flashmessage'] = $clang->gT("Default value settings were successfully saved.");
 
             if ($databaseoutput != '')
             {
@@ -126,7 +121,7 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $this->getController()->redirect($this->getController()->createUrl('/admin/survey/view/'.$surveyid.'/'.$gid.'/'.$qid));
+                $this->getController()->redirect($this->getController()->createUrl('/admin/survey/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
             }
         }
 
