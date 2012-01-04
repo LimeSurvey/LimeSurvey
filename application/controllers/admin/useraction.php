@@ -533,14 +533,15 @@ class UserAction extends Survey_Common_Action
             }
             foreach ($templaterights as $key => $value)
             {
-                /*$post = new Templates_rights;
-                $post->uid = $postuserid;
-                $post->folder = $key;
-                $post->use = $value;
-                $uresult = $post->save();
-                if (!$uresult) {*/
-                    $uresult = Templates_rights::model()->updateByPk(array('folder' => $key, 'uid' => $postuserid), array('use' => $value));
-               // }
+                $rights = Templates_rights::model()->findByPk(array('folder' => $key, 'uid' => $postuserid));
+                if (empty($rights))
+                {
+                    $rights = new Templates_rights;
+                    $rights->uid = $postuserid;
+                    $rights->folder = $key;
+                }
+                $rights->use = $value;
+                $uresult = $rights->save();
             }
             if ($uresult !== false) {
                 $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Set template permissions"), $clang->gT("Template permissions were updated successfully."), "successheader");
