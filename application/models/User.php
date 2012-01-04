@@ -121,7 +121,7 @@ class User extends CActiveRecord
 			}
         }
 
-		return $record->findAll($criteria);
+		return $record->find($criteria);
     }
 
 	/**

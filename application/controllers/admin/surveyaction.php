@@ -464,9 +464,9 @@ class SurveyAction extends Survey_Common_Action
             $survey->active = 'N';
             $survey->save();
 
-            //$pquery = "SELECT savetimings FROM {{surveys}} WHERE sid={$postsid}";
-            $prow = Survey::model()->getSomeRecords('savetimings', array('sid' => $postsid), TRUE);
-            if ($prow['savetimings'] == "Y")
+            debugbreak();
+            $prow = Survey::model()->getSomeRecords('savetimings', array('sid' => $postsid));
+            if ($prow->savetimings == "Y")
             {
                 $oldtable = "{{survey_{$postsid}_timings}}";
                 $newtable = "{{old_survey_{$postsid}_timings_{$date}}}";
