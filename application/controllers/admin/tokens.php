@@ -647,7 +647,7 @@ function editToken($iSurveyId)
                 $this->_renderWrappedTemplate(array('tokenbar', 'message' => array(
                     'title' => $clang->gT("Success"),
                     'message' => $clang->gT("The token entry was successfully updated.") . "<br /><br />\n"
-                        . "\t\t<input type='button' value='" . $clang->gT("Display tokens") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/browse/index/surveyid/$iSurveyId/") . "', '_top')\" />\n"
+                        . "\t\t<input type='button' value='" . $clang->gT("Display tokens") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/browse/surveyid/$iSurveyId/") . "', '_top')\" />\n"
                 )), $aData);
             }
             else
@@ -873,7 +873,7 @@ function editToken($iSurveyId)
             $fieldcontents.=$fieldname . '=' . strip_tags(CHttpRequest::getPost('description_' . $fieldname)) . "\n";
         }
 
-        Survey::model()->updateByPk($iSurveyId,array("attributedescriptions" => $fieldcontents));
+        Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => $fieldcontents));
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['surveyid'] = $iSurveyId;
         $this->_renderWrappedTemplate(array('tokenbar', 'message' => array(
@@ -927,7 +927,7 @@ function editToken($iSurveyId)
         $aData['surveyid'] = $iSurveyId;
         $aData['sSubAction'] = $sSubAction;
         $aData['bEmail'] = $bEmail;
-        $aData['surveylangs'] = $aSurveyLangs;
+        $aData['aSurveyLangs'] = $aData['surveylangs'] = $aSurveyLangs;
         $aData['baselang'] = $sBaseLanguage;
         $aData['tokenfields'] = $aTokenFields;
         $aData['nrofattributes'] = $iAttributes;
@@ -1090,6 +1090,9 @@ function editToken($iSurveyId)
                     }
                     unset($fieldsarray);
                 }
+
+                $aViewUrls = array('tokenbar', 'emailpost');
+
                 if ($ctcount > $emcount)
                 {
                     $i = 0;
@@ -1100,14 +1103,14 @@ function editToken($iSurveyId)
                             array_shift($aTokenIds);
                             $i++;
                         }
-                        $tids = implode('|', $aTokenIds);
+                        $aData['tids'] = implode('|', $aTokenIds);
                     }
-                    $lefttosend = $ctcount - $iMaxEmails;
+
+                    $aData['lefttosend'] = $ctcount - $iMaxEmails;
+                    $aViewUrls[] = 'emailwarning';
                 }
 
-                $aData['tids'] = $tids;
-
-                $this->_renderWrappedTemplate(array('tokenbar', 'emailpost', 'emailwarning'), $aData);
+                $this->_renderWrappedTemplate($aViewUrls, $aData);
             }
             else
             {

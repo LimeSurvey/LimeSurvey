@@ -2,7 +2,7 @@
     <div class='warningheader'><?php $clang->eT("Warning"); ?></div><br />
     <form method='post' action='<?php echo $this->createUrl("/admin/tokens/{$sSubAction}/surveyid/{$surveyid}"); ?>'>
         <?php $clang->eT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."); ?><br /><br />
-        <?php echo str_replace("{EMAILCOUNT}", "$lefttosend", $clang->gT("There are {EMAILCOUNT} emails still to be sent.")); ?>
+        <?php echo str_replace("{EMAILCOUNT}", (string) $lefttosend, $clang->gT("There are {EMAILCOUNT} emails still to be sent.")); ?>
         <br /><br />
         <input type='submit' value='<?php $clang->eT("Continue"); ?>' />
         <input type='hidden' name='ok' value="absolutely" />
@@ -22,7 +22,7 @@
             <?php }
         }
         ?>
-        <?php if (!empty($tokenids)) { ?>
+        <?php if (!empty($tids)) { ?>
             <input type='hidden' name='tokenids' value="<?php echo $tids; ?>" />
         <?php } ?>
         <?php

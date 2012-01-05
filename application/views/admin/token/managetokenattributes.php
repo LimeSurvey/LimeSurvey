@@ -1,25 +1,40 @@
 <div class='header ui-widget-header'><?php $clang->eT("Manage token attribute fields"); ?></div>
 
 <form action="<?php echo $this->createUrl("admin/tokens/updatetokenattributedescriptions/surveyid/$surveyid"); ?>" method="post">
-    <table class='listsurveys'><tr><th><?php $clang->eT("Attribute field"); ?></th><th><?php $clang->eT("Field description"); ?></th><th><?php $clang->eT("Example data"); ?></th></tr>
+    <table class='listsurveys'>
+        <tr>
+            <th><?php $clang->eT("Attribute field"); ?></th>
+            <th><?php $clang->eT("Field description"); ?></th>
+            <th><?php $clang->eT("Field caption"); ?></th>
+            <th><?php $clang->eT("Mandatory?"); ?></th>
+            <th><?php $clang->eT("Example data"); ?></th>
+        </tr>
 
 
         <?php
-        foreach ($tokenfields as $tokenfield => $tokendescription)
+        foreach ($tokenfields as $tokenfield => $tokenvalues)
         {
             $nrofattributes++;
-            echo "<tr><td>$tokenfield</td><td><input type='text' name='description_$tokenfield' value='" . htmlspecialchars($tokendescription, ENT_QUOTES, 'UTF-8') . "' /></td><td>";
-            if ($examplerow !== false)
-            {
-                if (!$tokenfield[10] == 'c')
-                {
-                    echo htmlspecialchars($examplerow[$tokenfield]);
-                }
-            }
-            else
-            {
-                $clang->eT('<no data>');
-            }
+            echo "<tr>
+                <td>$tokenfield</td>
+                <td><input type='text' name='description_$tokenfield' value='" . htmlspecialchars($tokenvalues['tokendescription'], ENT_QUOTES, 'UTF-8') . "' /></td>
+                <td><input type='text' name='caption_$tokenfield' value='" . htmlspecialchars($tokenvalues['tokencaption'], ENT_QUOTES, 'UTF-8') . "' /></td>
+                <td><input type='checkbox' name='mandatory_$tokenfield' value='Y'";
+                    if($tokenvalues['tokenmandatory'] == 'Y')
+                        echo ' selected="selected"';
+           echo " /></td>
+                <td>";
+                    if ($examplerow !== false)
+                    {
+                        if (!$tokenfield[10] == 'c')
+                        {
+                            echo htmlspecialchars($examplerow[$tokenfield]);
+                        }
+                    }
+                    else
+                    {
+                        $clang->gT('<no data>');
+                    }
             echo "</td></tr>";
         }
         ?>
@@ -28,7 +43,9 @@
         <input type="submit" value="<?php $clang->eT('Save'); ?>" />
         <input type='hidden' name='action' value='tokens' />
         <input type='hidden' name='subaction' value='updatetokenattributedescriptions' />
-</form><br /><br />
+</form>
+
+<br /><br />
 
 <div class='header ui-widget-header'><?php $clang->eT("Add token attributes"); ?></div><p>
 
