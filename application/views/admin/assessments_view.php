@@ -10,7 +10,7 @@
 	<div class='menubar-main'>
 		<div class='menubar-left'>
 			<a href="#" onclick="window.open('<?php echo $this->createUrl("admin/survey/view/surveyid/$surveyid");?>', '_top')" title='<?php $clang->eTview("Return to survey administration");?>'>
-			<img name='Administration' src='<?php echo $imageurl;?>/home.png' alt='<?php $clang->eT("Return to survey administration");?>' /></a>
+			<img src='<?php echo $imageurl;?>/home.png' alt='<?php $clang->eT("Return to survey administration");?>' /></a>
 			<img src='$imageurl/blank.gif' alt='' width='11'  />
 			<img src='$imageurl/seperator.gif' alt='' />
 

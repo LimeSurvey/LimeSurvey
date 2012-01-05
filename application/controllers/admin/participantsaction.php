@@ -255,7 +255,7 @@ class participantsaction extends Survey_Common_Action
         $attribute_types = array(
             'DD' => $clang->gT("Drop-down list"),
             'DP' => $clang->gT("Date"),
-            'TB' => $clang->gT("Text Box")
+            'TB' => $clang->gT("Text box")
         );
 
         $aData->page = $page;

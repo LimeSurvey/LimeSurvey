@@ -841,7 +841,7 @@ class LimeExpressionManager {
                             'type' => 'max_num_value_n',
                             'eqn' => '(' . $sq_name . ' <= (' . $max_num_value_n . '))',
                             'qid' => $questionNum,
-                            'tip' => $this->gT('The entry must not exceed') . ' {' . $max_num_value_n . '}',
+                            'tip' => sprintf($this->gT('The entry must not exceed %s'),'{' . $max_num_value_n . '}')
                         );
                     }
                 }
@@ -1650,7 +1650,7 @@ class LimeExpressionManager {
 
         // Some values changed, so need to update what was registered to ExpressionManager
         $this->em->RegisterVarnamesUsingMerge($this->knownVars);
-        
+
         return true;
     }
 
@@ -2139,7 +2139,7 @@ class LimeExpressionManager {
                 $LEM->surveyMode = 'group';
                 break;
         }
-        
+
         $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$LEM->surveyOptions['anonymized'],$LEM->allOnOnePage);
         $LEM->currentGroupSeq=-1;
         $LEM->currentQuestionSeq=-1;    // for question-by-question mode
@@ -2588,7 +2588,7 @@ class LimeExpressionManager {
             }
             $query .= implode(', ', $setter);
             $query .= " WHERE ID=";
-            
+
             if (isset($_SESSION['srid']) && $this->surveyOptions['active'])
             {
                 $query .= $_SESSION['srid'];
@@ -2610,7 +2610,7 @@ class LimeExpressionManager {
                     if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
                         $message .= ';<br/>'.$query;
                     }
-                    
+
                     // Check Quotas
                     $bQuotaMatched = false;
                     $aQuotas = check_quota('return', $this->sid);
@@ -3200,7 +3200,7 @@ class LimeExpressionManager {
                 'result'=>$qrel,
                 'prettyPrint'=>$prettyPrintRelEqn,
                 'hasErrors'=>$hasErrors,
-                );            
+                );
         }
 
         //////////////////////////////////////
@@ -3504,7 +3504,7 @@ class LimeExpressionManager {
                 default:
                     if (count($unansweredSQs) > 0)
                     {
-                        $qmandViolation = true; 
+                        $qmandViolation = true;
                     }
                     $mandatoryTip .= $LEM->gT('Please answer this question').'.';
                     break;
@@ -3895,7 +3895,7 @@ class LimeExpressionManager {
                     $LEM->currentGroupSeq = $groupSeq;
                     if ($groupSeq > $LEM->maxGroupSeq) {
                         $LEM->maxGroupSeq = $groupSeq;
-                    }                      
+                    }
                 }
 
                 if (!$LEM->allOnOnePage || ($LEM->allOnOnePage && !$LEM->processedRelevance)) {
@@ -4194,7 +4194,7 @@ class LimeExpressionManager {
                             $jsParts[] = "    if (($('#java" . $sq['sgqa'] ."').val() == '" . $listItem . "')";
                             if ($listItem == 'other') {
                                 $jsParts[] = " || ($('#java" . $sq['sgqa'] ."').val() == '-oth-')";
-                            }                        
+                            }
                             $jsParts[] = "){\n";
                             $jsParts[] = "      $('#java" . $sq['sgqa'] . "').val('');\n";
                             $jsParts[] = "      $('#answer" . $sq['sgqa'] . "NANS').attr('checked',true);\n";
@@ -4800,7 +4800,7 @@ EOT;
                         $qattr[$q][$attr] = $value;
                     }
                 }
-            }            
+            }
         }
 
 		return $qattr;
@@ -4973,12 +4973,12 @@ EOT;
         }
         return $updatedValues;
     }
-    
+
     /**
      * Create HTML view of the survey, showing everything that uses EM
      * @param <type> $sid
      * @param <type> $gid
-     * @param <type> $qid 
+     * @param <type> $qid
      */
     static public function ShowSurveyLogicFile($sid, $gid=NULL, $qid=NULL,$LEMdebugLevel=0,$assessments=false)
     {
@@ -5002,7 +5002,7 @@ EOT;
         );
 
         $varNamesUsed = array(); // keeps track of whether variables have been declared
-        
+
         if (!is_null($qid))
         {
             $surveyMode='question';
@@ -5010,7 +5010,7 @@ EOT;
             $qseq = LimeExpressionManager::GetQuestionSeq($qid);
             $moveResult = LimeExpressionManager::JumpTo($qseq+1,true,false,true);
         }
-        else if (!is_null($gid)) 
+        else if (!is_null($gid))
         {
             $surveyMode='group';
             LimeExpressionManager::StartSurvey($sid, 'group', $surveyOptions, false,$LEMdebugLevel);
@@ -5034,7 +5034,7 @@ EOT;
                 'html'=>$LEM->gT('Invalid question - probably missing sub-questions or language-specific settings for language ') . $_SESSION['LEMlang'],
                 );
         }
-        
+
         $out = "<table border='1'>"
         . "<tr><th>#</th><th>".$LEM->gT('Name [ID]')."</th><th>".$LEM->gT('Relevance [Validation] (Default)')."</th><th>".$LEM->gT('Text [Help] (Tip)')."</th></tr>\n";
 

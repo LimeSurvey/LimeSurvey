@@ -11,15 +11,15 @@
         <?php if (!isset($_POST['sql']))
         { ?>
             <a href='<?php echo $this->createUrl("admin/browse/index/surveyid/$surveyid/all/start/0/limit/$limit"); ?>' title='<?php $clang->eTview("Show start..."); ?>' >
-                <img name='DataBegin' align='left' src='<?php echo $imageurl; ?>/databegin.png' alt='<?php $clang->eT("Show start..."); ?>' /></a>
+                <img align='left' src='<?php echo $imageurl; ?>/databegin.png' alt='<?php $clang->eT("Show start..."); ?>' /></a>
             <a href='<?php echo $this->createUrl("admin/browse/index/surveyid/$surveyid/all/start/$last/limit/$limit"); ?>' title='<?php $clang->eTview("Show previous.."); ?>' >
-                <img name='DataBack' align='left'  src='<?php echo $imageurl; ?>/databack.png' alt='<?php $clang->eT("Show previous.."); ?>' /></a>
+                <img align='left'  src='<?php echo $imageurl; ?>/databack.png' alt='<?php $clang->eT("Show previous.."); ?>' /></a>
             <img src='<?php echo $imageurl; ?>/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />
 
             <a href='<?php echo $this->createUrl("admin/browse/index/surveyid/$surveyid/all/start/$next/limit/$limit"); ?>' title='<?php $clang->eT("Show next..."); ?>' >
-                <img name='DataForward' align='left' src='<?php echo $imageurl; ?>/dataforward.png' alt='<?php $clang->eT("Show next.."); ?>' /></a>
+                <img align='left' src='<?php echo $imageurl; ?>/dataforward.png' alt='<?php $clang->eT("Show next.."); ?>' /></a>
             <a href='<?php echo $this->createUrl("admin/browse/index/surveyid/$surveyid/all/start/$end/limit/$limit"); ?>' title='<?php $clang->eT("Show last..."); ?>' >
-                <img name='DataEnd' align='left' src='<?php echo $imageurl; ?>/dataend.png' alt='<?php $clang->eT("Show last.."); ?>' /></a>
+                <img align='left' src='<?php echo $imageurl; ?>/dataend.png' alt='<?php $clang->eT("Show last.."); ?>' /></a>
             <img src='<?php echo $imageurl; ?>/seperator.gif' border='0' hspace='0' align='left' alt='' />
         <?php
         }

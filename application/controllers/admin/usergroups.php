@@ -58,7 +58,7 @@ class Usergroups extends Survey_Common_Action
                 {
                     $to .= $egurow->users->users_name . ' <' . $egurow->users->email . '>' . '; ';
                 }
-                    
+
                 $to = substr($to, 0, -2);
 
                 $from_user_result = User::model()->findByPk(Yii::app()->session['loginID']);
@@ -196,7 +196,7 @@ class Usergroups extends Survey_Common_Action
                         else
                         {
                             $ugid = User_groups::model()->addGroup($db_group_name, $db_group_description);
-                            list($aViewUrls, $aData) = $this->index($ugid, array("type" => "success", "message" => $clang->gT("User Group successfully added!")));
+                            list($aViewUrls, $aData) = $this->index($ugid, array("type" => "success", "message" => $clang->gT("User group successfully added!")));
                         }
                     }
                     else
@@ -233,16 +233,16 @@ class Usergroups extends Survey_Common_Action
                 $db_name = $_POST['name'];
                 $db_description = $_POST['description'];
                 if (User_groups::model()->findByAttributes(array('name'=>$db_name))) {
-                    $headercfg['message'] = $clang->gT("The User Group already exists.");
+                    $headercfg['message'] = $clang->gT("The user group already exists.");
                     $headercfg["type"] = "warning";
                 }
                 else if (User_groups::model()->updateGroup($db_name, $db_description, $ugid)) {
-                    $headercfg["message"] = $clang->gT("Edit User Group Successfully!");
+                    $headercfg["message"] = $clang->gT("Edit user group Successfully!");
                     $headercfg["type"] = "success";
                 }
                 else
                 {
-                    $headercfg["message"] = $clang->gT("Failed to edit User Group!");
+                    $headercfg["message"] = $clang->gT("Failed to edit user group!");
                     $headercfg["type"] = "warning";
                 }
                 list($aViewUrls, $aData) = $this->index($ugid, $headercfg);

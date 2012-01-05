@@ -1,7 +1,7 @@
 <script src="<?php echo Yii::app()->getConfig('generalscripts')."jquery/jquery.js";?>" type="text/javascript"></script>
 <script src="<?php echo Yii::app()->getConfig('generalscripts')."jquery/jquery-ui.js"; ?>" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->getConfig('generalscripts')."jquery/css/start/jquery-ui.css"; ?>" />
-<title><?php $clang->eT("Blacklist Control"); ?></title>
+<title><?php $clang->eT("Blacklist control"); ?></title>
 <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl."templates/default/template.css"; ?>" />
 <style type="text/css" media="aural tty">
     progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
@@ -19,7 +19,7 @@
     <tr>
         <td class="survey-description">
             <br />
-            <h2><?php $clang->eT('Blacklist Control'); ?></h2>
+            <h2><?php $clang->eT('Blacklist control'); ?></h2>
             <p></p>
         </td>
     </tr>

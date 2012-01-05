@@ -29,8 +29,8 @@
         'style' => 'margin-right:1px');
 
     $export = array('src' => Yii::app()->getConfig('imageurl') . '/exportcsv.png',
-        'alt' => 'Export All',
-        'title' => 'Export All',
+        'alt' => 'Export all',
+        'title' => 'Export all',
         'name' => 'export',
         'id' => 'export',
         'style' => 'margin-left:0px',
@@ -43,7 +43,7 @@
 
     $blacklist = array('src' => Yii::app()->getConfig('imageurl') . '/trafficred.png',
         'alt' => 'Blacklist control',
-        'title' => 'BlackList control',
+        'title' => 'Blacklist control',
         'style' => 'margin-left:1px',
         'style' => 'margin-right:1px');
 

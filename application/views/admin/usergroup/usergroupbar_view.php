@@ -1,6 +1,6 @@
 <div class='menubar'>
     <div class='menubar-title ui-widget-header'>
-    <strong><?php $clang->eT("User Group"); ?></strong>
+    <strong><?php $clang->eT("User group"); ?></strong>
     <?php if($ugid && $grpresultcount > 0)
     {
         echo "{$grow['name']}";
@@ -30,8 +30,8 @@
     Yii::app()->session['loginID'] == $grow['owner_id'])
     { ?>
         <a href="#" onclick="window.location='<?php echo $this->createUrl("admin/usergroups/edit/ugid/".$ugid); ?>'"
-         title='<?php $clang->eTview("Edit Current User Group"); ?>'>
-        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/edit.png' alt='<?php $clang->eT("Edit Current User Group"); ?>' name='EditUserGroup' /></a>
+         title='<?php $clang->eTview("Edit current user group"); ?>'>
+        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/edit.png' alt='<?php $clang->eT("Edit current user group"); ?>' name='EditUserGroup' /></a>
     <?php }
     else
     { ?>
@@ -43,8 +43,8 @@
     { ?>
 
         <a href='#' onclick="if (confirm('<?php $clang->eT("Are you sure you want to delete this entry?","js"); ?>')) { <?php echo get2post($this->createUrl('admin/usergroups/delete')."?action=delusergroup&amp;ugid=$ugid"); ?>}"
-         title='<?php $clang->eTview("Delete Current User Group"); ?>'>
-        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/delete.png' alt='<?php $clang->eT("Delete Current User Group"); ?>' name='DeleteUserGroup'  /></a>
+         title='<?php $clang->eTview("Delete current user group"); ?>'>
+        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/delete.png' alt='<?php $clang->eT("Delete current user group"); ?>' name='DeleteUserGroup'  /></a>
     <?php }
     else
     { ?>
@@ -60,9 +60,9 @@
     <?php if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
     { ?>
         <a href='<?php echo $this->createUrl("admin/usergroups/add"); ?>'
-         title='<?php $clang->eTview("Add New User Group"); ?>'>
-        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/add.png' alt='<?php $clang->eT("Add New User Group"); ?>'
-        name='AddNewUserGroup' onclick="window.location=''" /></a>
+         title='<?php $clang->eTview("Add new user group"); ?>'>
+        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/add.png' alt='<?php $clang->eT("Add new user group"); ?>'
+         onclick="window.location=''" /></a>
     <?php } ?>
     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt='' />
     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/blank.gif' alt='' width='82' height='20' />
