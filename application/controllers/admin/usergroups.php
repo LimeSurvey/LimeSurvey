@@ -232,8 +232,11 @@ class Usergroups extends Survey_Common_Action
 
                 $db_name = $_POST['name'];
                 $db_description = $_POST['description'];
-
-                if (User_groups::model()->updateGroup($db_name, $db_description, $ugid)) {
+                if (User_groups::model()->findByAttributes(array('name'=>$db_name))) {
+                    $headercfg['message'] = $clang->gT("The User Group already exists.");
+                    $headercfg["type"] = "warning";
+                }
+                else if (User_groups::model()->updateGroup($db_name, $db_description, $ugid)) {
                     $headercfg["message"] = $clang->gT("Edit User Group Successfully!");
                     $headercfg["type"] = "success";
                 }
