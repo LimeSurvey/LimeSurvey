@@ -784,7 +784,7 @@ class SurveyAction extends Survey_Common_Action
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
         $aViewUrls = array();
 
-        $this->getController()->_js_admin_includes($this->getController()->createUrl('scripts/admin/surveysettings.js'));
+        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts').'/scripts/admin/surveysettings.js');
 
         if (bHasSurveyPermission($surveyid, 'surveylocale', 'read'))
         {
