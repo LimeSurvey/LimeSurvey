@@ -71,12 +71,7 @@ class surveypermission extends Survey_Common_Action {
 
                 foreach ($result2 as $PermissionRow)
                 {
-                    $result3 = User_in_groups::model()->with(array(
-                                'Users' => array(
-                                'joinType' => 'RIGHT OUTER JOIN',
-                                'condition' => 't.uid = Users.uid',
-                            )
-                        ))->findAll('Users.uid = :uid',array(':uid' => $PermissionRow['uid']));
+                    $result3 = User_in_groups::model()->with('users')->findAll('users.uid = :uid',array(':uid' => $PermissionRow['uid']));
                     foreach ($result3 as $resul3row)
                     {
                         if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
@@ -212,7 +207,7 @@ class surveypermission extends Survey_Common_Action {
 
         $imageurl = Yii::app()->getConfig('imageurl');
 
-        $postusergroupid = !empty($_POST['gid']) ? $_POST['gid'] : false;
+        $postusergroupid = !empty($_POST['ugid']) ? $_POST['ugid'] : false;
 
 
         if($action == "addusergroupsurveysecurity")
@@ -221,16 +216,16 @@ class surveypermission extends Survey_Common_Action {
             $addsummary .= "<div class=\"messagebox ui-corner-all\" >\n";
 
             $result = Survey::model()->findAll('sid = :surveyid AND owner_id = :owner_id',array(':surveyid' => $surveyid, ':owner_id' => Yii::app()->session['loginID']));
-            if( (count($result) > 0 && in_array($postusergroupid,getsurveyusergrouplist('simpleugidarray'))) ||Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
+            if( (count($result) > 0 && in_array($postusergroupid,getsurveyusergrouplist('simpleugidarray',$surveyid))) ||Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
             {
                 if($postusergroupid > 0){
-                    $result2 = User::getCommonUID(); //Checked
+                    $result2 = User::getCommonUID($surveyid, $postusergroupid); //Checked
                     if($result2->getRowCount() > 0)
                     {
                         foreach ($result2->readAll() as $row2 )
                         {
                             $uid_arr[] = $row2['uid'];
-                            $isrresult = Survey_permissions::model()->insert(array('sid' => $survey_id,'uid' => $row2->uid, 'permission' => 'survey', 'read_p' => 1)); //Checked
+                            $isrresult = Survey_permissions::model()->insertSomeRecords(array('sid' => $surveyid,'uid' => $row2['uid'], 'permission' => 'survey', 'read_p' => 1));
                             if (!$isrresult) break;
                         }
 
@@ -363,16 +358,18 @@ class surveypermission extends Survey_Common_Action {
         $clang = Yii::app()->lang;
         $imageurl = Yii::app()->getConfig('imageurl');
         $postuserid = !empty($_POST['uid']) ? $_POST['uid'] : null;
-        $postusergroupid = !empty($_POST['gid']) ? $_POST['gid'] : null;
+        $postusergroupid = !empty($_POST['ugid']) ? $_POST['ugid'] : null;
 
         if($action == "setsurveysecurity" || $action == "setusergroupsurveysecurity")
         {
             $where = 'sid = :surveyid AND owner_id = :owner_id ';
+            $params=array(':surveyid' => $surveyid, ':owner_id' => Yii::app()->session['loginID']);
             if ($action == "setsurveysecurity")
             {
                 $where.=  "AND owner_id != :postuserid";
+                $params[':postuserid'] = $postuserid;
             }
-            $result = Survey::model()->findAll($where,array(':surveyid' => $surveyid, ':owner_id' => Yii::app()->session['loginID'], ':postuserid' => $postuserid));
+            $result = Survey::model()->findAll($where,$params);
             if(count($result) > 0 || Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
             {
                 //$js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
@@ -390,7 +387,7 @@ class surveypermission extends Survey_Common_Action {
                 else
                 {
                     $resrow = User_groups::model()->find('ugid = :ugid',array(':ugid' => $postusergroupid));
-                    $sUsergroupName=$resrow->name;
+                    $sUsergroupName=$resrow['name'];
                     $usersummary = "<div class='header ui-widget-header'>".sprintf($clang->gT("Edit survey permissions for group %s"),"<span style='font-style:italic'>".$sUsergroupName."</span>")."</div>";
                 }
                 $usersummary .= "<br /><form action='".$this->getController()->createUrl('admin/surveypermission/surveyright/surveyid/'.$surveyid)."' method='post'>\n"
@@ -531,14 +528,14 @@ class surveypermission extends Survey_Common_Action {
         $clang = Yii::app()->lang;
         $imageurl = Yii::app()->getConfig('imageurl');
         $postuserid = !empty($_POST['uid']) ? $_POST['uid'] : false;
-        $postusergroupid = !empty($_POST['gid']) ? $_POST['gid'] : false;
+        $postusergroupid = !empty($_POST['ugid']) ? $_POST['ugid'] : false;
 
         if ($action == "surveyrights")
         {
             $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Edit survey permissions")."</div>\n";
             $addsummary .= "<div class='messagebox ui-corner-all'>\n";
             $where = ' ';
-            if(isset($postuserid)){
+            if($postuserid){
                 if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
                 {
                     $where .= "sid = :surveyid AND owner_id != :postuserid AND owner_id = :owner_id";
@@ -546,12 +543,9 @@ class surveypermission extends Survey_Common_Action {
                 }
             }
             else{
-                if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
-                {
-                    $where .= "sid = :surveyid AND owner_id = :owner_id";
-                    $resrow = Survey::model()->find($where,array(':sid' => $surveyid, ':owner_id' => Yii::app()->session['loginID']));
-                }
-                $iOwnerID=$resrow->owner_id;
+                $where .= "sid = :sid";
+                $resrow = Survey::model()->find($where,array(':sid' => $surveyid));
+                $iOwnerID=$resrow['owner_id'];
             }
 
             $aBaseSurveyPermissions = Survey_permissions::getBasePermissions();
@@ -615,7 +609,6 @@ class surveypermission extends Survey_Common_Action {
     protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
     {
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
-        $aData['display']['menu_bars']['surveysummary'] = 'addsurveysecurity';
         parent::_renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
 

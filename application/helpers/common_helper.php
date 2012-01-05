@@ -8090,7 +8090,7 @@ function getsurveyusergrouplist($outputformat='htmloptions',$surveyid)
 
     if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true)
     {
-        $authorizedGroupsList=getusergrouplist('simplegidarray');
+        $authorizedGroupsList=getusergrouplist(NULL, 'simplegidarray');
     }
 
     if ($surveyidresult->getRowCount() > 0)
