@@ -131,14 +131,5 @@ class Groups extends CActiveRecord
         }
 		return $command->query();
     }
-
-    function getSomeRecords($fields, $condition=null)
-    {
-        return Yii::app()->db->createCommand()
-        ->select($fields)
-        ->from(self::tableName())
-        ->where($condition)
-        ->query();
-    }
 }
 ?>

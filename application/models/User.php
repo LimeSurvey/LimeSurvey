@@ -98,33 +98,6 @@ class User extends CActiveRecord
 	}
 
 	/**
-	 * Returns users meeting given condition
-	 *
-	 * @access public
-	 * @return string
-	 */
-    public function getSomeRecords($fields=FALSE, $condition=FALSE)
-    {
-    	$record = new self;
-		$criteria = new CDbCriteria;
-
-		if($fields != FALSE)
-		{
-			$criteria->select = $fields;
-		}
-
-        if ($condition != FALSE)
-        {
-		    foreach ($condition as $item => $value)
-			{
-				$criteria->addCondition($item.'='.Yii::app()->db->quoteValue($value));
-			}
-        }
-
-		return $record->find($criteria);
-    }
-
-	/**
 	 * Returns onetime password
 	 *
 	 * @access public

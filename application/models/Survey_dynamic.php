@@ -30,7 +30,7 @@ class Survey_dynamic extends CActiveRecord
 	{
         if (!is_null($sid))
             self::sid($sid);
-        
+
 		return parent::model(__CLASS__);
 	}
 
@@ -87,50 +87,6 @@ class Survey_dynamic extends CActiveRecord
 			$record->$k = $v;
 		}
 		return $record->save();
-	}
-
-	/**
-	 * Queries the database and returns some records or records count
-	 * according to specified conditions
-	 *
-	 * @static
-	 * @access public
-	 * @param array $condition
-	 * @param mixed $select
-	 * @param boolean $return_count
-	 * @return mixed
-	 */
-	public function getSomeRecords($condition=FALSE, $select=FALSE, $return_count=FALSE, $oneonly=FALSE)
-	{
-		$survey = new self;
-		$criteria = new CDbCriteria;
-
-		if( $select != FALSE ) $criteria->select = $select;
-
-		if( $condition != FALSE )
-		{
-			if( is_array($condition) )
-			{
-				foreach($condition as $column => $value)
-				{
-					$criteria->addCondition($column."=".$value."");
-				}
-			}
-			else
-			{
-				$criteria->condition = $condition;
-			}
-		}
-
-		if( $return_count )
-			return $survey->count($criteria);
-		else
-		{
-			if($oneonly)
-				return $survey->find($criteria);
-			else
-				return $survey->findAll($criteria);
-		}
 	}
 
 	/**

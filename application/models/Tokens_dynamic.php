@@ -175,22 +175,6 @@ class Tokens_dynamic extends CActiveRecord
         return $newtokencount;
 
     }
-    public function getSomeRecords($fields,$condition=FALSE)
-    {
-		$criteria = new CDbCriteria;
-
-        if ($condition != FALSE)
-        {
-		    foreach ($condition as $item => $value)
-			{
-				$criteria->addCondition($item.'="'.$value.'"');
-			}
-        }
-
-		$data = $this->findAll($criteria);
-
-        return $data;
-    }
 
     public function search()
 	{

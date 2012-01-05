@@ -26,22 +26,6 @@ class Expression_errors_model extends CI_Model {
 		return $data;
 	}
 
-	function getSomeRecords($fields,$condition=FALSE)
-	{
-		foreach ($fields as $field)
-		{
-			$this->db->select($field);
-		}
-		if ($condition != FALSE)
-		{
-			$this->db->where($condition);
-		}
-
-		$data = $this->db->get('expression_errors');
-
-		return $data;
-	}
-
 	function update($data, $condition=FALSE)
 	{
 

@@ -195,21 +195,6 @@ class Questions extends CActiveRecord
         return $questions->save();
     }
 
-    function getSomeRecords($fields, $condition, $order=NULL, $return_query = TRUE)
-    {
-        $record = Yii::app()->db->createCommand()
-            ->select($fields)
-            ->from(self::tableName())
-            ->where($condition);
-
-        if( $order != NULL )
-        {
-            $record->order($order);
-        }
-
-        return ( $return_query ) ? $record->queryAll() : $record;
-    }
-
     public static function deleteAllById($questionsIds)
     {
         if ( !is_array($questionsIds) )

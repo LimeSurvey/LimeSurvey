@@ -46,43 +46,27 @@ class Saved_control extends CActiveRecord {
 	{
 		return parent::model(__CLASS__);
 	}
-	
+
 	function getAllRecords($condition=FALSE)
 	{
 		if ($condition != FALSE)
 		{
-			$this->db->where($condition);	
+			$this->db->where($condition);
 		}
-		
+
 		$data = $this->db->get('saved_control');
-		
+
 		return $data;
 	}
 
-	public static function getSomeRecords($condition=FALSE)
-	{
-		$record = new self;
-		$criteria = new CDbCriteria;
-		
-		if($condition != FALSE)
-		{
-			foreach ($condition as $column=>$value)
-			{
-				$criteria->addCondition("$column='$value'");
-			}
-		}
-		
-		return $record->findAll($criteria);
-	}
-    
     public function getCountOfAll($sid)
     {
         $data = Yii::app()->db->createCommand("SELECT COUNT(*) AS countall FROM {{saved_control}} WHERE sid=$sid")->query();
         $row = $data->read();
-        
+
         return $row['countall'];
     }
-    
+
     /**
     * Deletes some records meeting speicifed condition
     *
@@ -108,7 +92,7 @@ class Saved_control extends CActiveRecord {
 
     function insertRecords($data)
     {
-        return $this->db->insert('saved_control', $data); 
+        return $this->db->insert('saved_control', $data);
     }
 
 }

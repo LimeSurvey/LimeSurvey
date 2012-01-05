@@ -53,26 +53,6 @@ class Conditions extends CActiveRecord
         return 'cid';
     }
 
-    public function getSomeRecords($fields=FALSE, $conditions=FALSE)
-    {
-        $criteria = new CDbCriteria;
-
-        if( $fields != FALSE )
-        {
-            $criteria->select = $fields;
-        }
-
-        if( $conditions != FALSE )
-        {
-            foreach($conditions as $column=>$value)
-            {
-                $criteria->addCondition("$column='$value'");
-            }
-        }
-
-        return $this->findAll($criteria);
-    }
-
     public function deleteRecords($condition=FALSE)
     {
         $criteria = new CDbCriteria;

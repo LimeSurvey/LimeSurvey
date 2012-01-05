@@ -64,21 +64,6 @@ class Labelsets extends CActiveRecord
         return $data;
 	}
 
-	function getSomeRecords($fields,$condition=FALSE)
-	{
-		if ($condition != FALSE)
-        {
-		    foreach ($condition as $item => $value)
-			{
-				$criteria->addCondition($item.'="'.$value.'"');
-			}
-        }
-
-		$data = $this->findAll($criteria);
-
-        return $data;
-	}
-
     function getLID()
     {
 		return Yii::app()->db->createCommand()->select('lid')->order('lid asc')->from('{{labelsets}}')->query()->readAll();

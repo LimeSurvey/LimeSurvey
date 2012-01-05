@@ -59,7 +59,7 @@ class User_in_groups extends CActiveRecord {
             'users' => array(self::BELONGS_TO, 'User', '', 'on' => 't.uid = users.uid')
         );
     }
-	
+
 	public function getAllRecords($condition=FALSE)
     {
 		$criteria = new CDbCriteria;
@@ -77,30 +77,12 @@ class User_in_groups extends CActiveRecord {
         return $data;
     }
 
-	public function getSomeRecords($fields,$condition=FALSE)
-    {
-
-		$criteria = new CDbCriteria;
-
-        if ($condition != FALSE)
-        {
-		    foreach ($condition as $item => $value)
-			{
-				$criteria->addCondition($item.'='.Yii::app()->db->quoteValue($value));
-			}
-        }
-
-		$data = $this->findAll($criteria);
-
-        return $data;
-    }
-	
 	function insert($data)
 	{
 		$user = Yii::app()->db->createCommand()->insert($this->tableName(), $data);
 		return (bool) $user;
 	}
-	
+
 	function join($fields, $from, $condition=FALSE, $join=FALSE, $order=FALSE)
 	{
 	    $user = Yii::app()->db->createCommand();
@@ -108,29 +90,29 @@ class User_in_groups extends CActiveRecord {
 		{
 			$user->select($field);
 		}
-		
+
 		$user->from($from);
-		
+
 		if ($condition != FALSE)
 		{
-			$user->where($condition);	
+			$user->where($condition);
 		}
 
 		if ($order != FALSE)
 		{
-			$user->order($order);	
+			$user->order($order);
 		}
-		
+
 		if (isset($join['where'], $join['on']))
 		{
 		    if (isset($join['left'])) {
-			    $user->leftjoin($join['where'], $join['on']);	
+			    $user->leftjoin($join['where'], $join['on']);
 			}else
 			{
 			    $user->join($join['where'], $join['on']);
 			}
 		}
-		
+
 		$data = $user->queryRow();
 		return $data;
 	}

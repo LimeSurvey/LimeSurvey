@@ -1866,9 +1866,11 @@ function buildsurveysession($surveyid)
     $aRandomGroups=array();
     $aGIDCompleteMap=array();
     // first find all groups and their groups IDS
-    $oData=Groups::model()->getSomeRecords(array('gid','randomization_group'),
-    "sid={$surveyid} and language='{$_SESSION['s_lang']}' and randomization_group !=''");
-    foreach($oData->readAll() as $aGroup)
+    $criteria = new CDbCriteria;
+    $criteria->addColumnCondition(array('sid' => $surveyid, 'language' => $_SESSION['s_lang']));
+    $criteria->addCondition('randomization_group != ""');
+    $oData = Groups::model()->findAll($criteria);
+    foreach($oData as $aGroup)
     {
         $aRandomGroups[$aGroup['randomization_group']][] = $aGroup['gid'];
     }

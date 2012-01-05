@@ -798,17 +798,27 @@ class translate extends Survey_Common_Action {
 			break;
 
 			case 3 :
+                $result = Questions::model()->findAllByAttributes(array(
+                    'sid' => $surveyid,
+                    'language' => $baselang,
+                    'parent_qid' => 0,
+                ));
+                $rows_base = array();
+                foreach ($result as $r)
+                    $rows_base[] = $r->attributes;
+
+                $result = Questions::model()->findAllByAttributes(array(
+                    'sid' => $surveyid,
+                    'language' => $tplang,
+                    'parent_qid' => 0,
+                ));
+                $rows_to = array();
+                foreach ($result as $r)
+                    $rows_to[] = $r->attributes;
+
 				$amTypeOptions = array_merge($amTypeOptions, array(
-					"querybase" => Questions::model()->getSomeRecords(
-						'*',
-						"sid = '{$surveyid}' AND language = '{$baselang}' AND parent_qid = 0",
-						'qid', FALSE
-					),
-					"queryto" => Questions::model()->getSomeRecords(
-						'*',
-						"sid = '{$surveyid}' AND language = '{$tolang}' AND parent_qid = 0",
-						'qid', FALSE
-					),
+					"querybase" => $rows_base,
+					"queryto" => $rows_to,
 					"queryupdate" => Questions::model()->updateAll(
 						array(
 							$aData['dbColumn'] => $new
@@ -820,16 +830,10 @@ class translate extends Survey_Common_Action {
 
 			case 4 :
 				$amTypeOptions = array_merge($amTypeOptions, array(
-					"querybase" => Questions::model()->getSomeRecords(
-						'*',
-						"sid = '{$surveyid}' AND language = '{$baselang}' AND parent_qid > 0",
-						'parent_qid,qid', FALSE
-					),
-					"queryto" => Questions::model()->getSomeRecords(
-						'*',
-						"sid = '{$surveyid}' AND language = '{$tolang}' AND parent_qid > 0",
-						'parent_qid,qid', FALSE
-					),
+					"querybase" => Questions::model()->findAll("
+                        sid = '{$surveyid}' AND language = '{$baselang}' AND parent_qid > 0"),
+					"queryto" => Questions::model()->findAll(
+						"sid = '{$surveyid}' AND language = '{$tolang}' AND parent_qid > 0"),
 					"queryupdate" => Questions::model()->updateAll(
 						array(
 							'question' => $new

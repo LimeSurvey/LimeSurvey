@@ -82,22 +82,6 @@ class User_groups extends CActiveRecord {
 		return $data;
 	}
 
-	function getSomeRecords($fields,$condition=FALSE, $params=NULL)
-	{
-		$filter = new CDbCriteria;
-		$filter->select = $fields;
-
-		if ($condition != FALSE)
-		{
-			$filter->condition = $condition;
-			$filter->params = $params;
-		}
-
-		$data = $this->findAll($filter);
-
-		return $data;
-	}
-
     function insertRecords($data)
     {
 
