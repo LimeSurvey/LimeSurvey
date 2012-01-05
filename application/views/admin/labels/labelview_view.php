@@ -115,7 +115,7 @@
         <div id='up_resmgmt'>
             <div>
                 <form class='form30' enctype='multipart/form-data' id='importlabelresources' name='importlabelresources'
-                      action='<?php echo $this->createUrl('admin/labels/importlabelresources') ?>' method='post'
+                      action='<?php echo $this->createUrl('/admin/labels/importlabelresources') ?>' method='post'
                       onsubmit='return validatefilename(this, "<?php $clang->eT('Please select a file to import!', 'js') ?>");'>
 
                     <input type='hidden' name='lid' value='<?php echo $lid; ?>' />
@@ -123,14 +123,14 @@
                     <ul style='list-style-type:none; text-align:center'>
                         <li>
                             <label>&nbsp;</label>
-                            <input type='button'<?php hasResources($lid, 'label') === false ? ' disabled="disabled"' : '' ?>
+                            <input type='button'<?php echo hasResources($lid, 'label') === false ? ' disabled="disabled"' : '' ?>
                                    onclick='window.open("<?php echo Yii::app()->getConfig('sCKEditorURL') ?>/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php?", "_blank")'
                                    value="<?php $clang->eT("Browse Uploaded Resources") ?>" />
                         </li>
                         <li>
                             <label>&nbsp;</label>
-                            <input type='button'<?php hasResources($lid, 'label') === false ? ' disabled="disabled"' : '' ?>
-                                   onclick='window.open("scriptname?action=exportlabelresources&amp;lid=<?php echo $lid ?>", "_blank")'
+                            <input type='button'<?php echo hasResources($lid, 'label') === false ? ' disabled="disabled"' : '' ?>
+                                   onclick='window.open("<?php echo $this->createUrl("/admin/labels/exportlabelresources/lid/$lid"); ?>", "_blank")'
                                    value="<?php $clang->eT("Export Resources As ZIP Archive") ?>"  />
                         </li>
                         <li>

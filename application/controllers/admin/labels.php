@@ -80,7 +80,6 @@ class labels extends Survey_Common_Action
 
             if (is_file($zipfile))
             {
-                $importlabelresourcesoutput .= $clang->gT("Reading file..") . "<br /><br />\n";
 
                 if ($z->extract($extractdir, $zipfile) != 'OK')
                     $this->getController()->error($clang->gT("This file is not a valid ZIP file archive. Import failed."));
@@ -145,6 +144,7 @@ class labels extends Survey_Common_Action
             $aData = array(
                 'aErrorFilesInfo' => $aErrorFilesInfo,
                 'aImportedFilesInfo' => $aImportedFilesInfo,
+                'lid' => $lid
             );
 
             $this->_renderWrappedTemplate('importlabelresources_view', $aData);

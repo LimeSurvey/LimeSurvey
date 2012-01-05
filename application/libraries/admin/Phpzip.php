@@ -234,7 +234,7 @@ class Phpzip
 
             $this->createDir($dir);
             $zip  = zip_open($zipfilename);
-            if ($zip) {
+            if ($zip && !is_numeric($zip)) {
                 while ($zip_entry = zip_read($zip)) {
                     if (zip_entry_open($zip, $zip_entry, "r")) {
                         $buf = zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));

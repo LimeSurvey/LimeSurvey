@@ -2,31 +2,33 @@
 <div class='messagebox ui-corner-all'>
     <div class="successheader"><?php $clang->eT("Success") ?></div><br />
     <?php $clang->eT("File upload succeeded.") ?><br /><br />
-
+    <?php $clang->eT("Reading file..") ?><br /><br />
 <?php
     $ImportListHeader = '';
-    if (is_null($aErrorFilesInfo) &&!is_null($aImportedFilesInfo))
+    if (!count($aErrorFilesInfo) &&count($aImportedFilesInfo))
     {
         $status = $clang->gT("Success");
         $statusClass = 'successheader';
         $okfiles = count($aImportedFilesInfo);
+        $errfiles=0;
         $ImportListHeader .= "<br /><strong><u>" . $clang->gT("Imported Files List") . ":</u></strong><br />\n";
     }
-    elseif (!is_null($aErrorFilesInfo) &&!is_null($aImportedFilesInfo))
+    elseif (count($aErrorFilesInfo) &&count($aImportedFilesInfo))
     {
         $status = $clang->gT("Partial");
         $statusClass = 'partialheader';
         $okfiles = count($aImportedFilesInfo);
         $errfiles = count($aErrorFilesInfo);
-        $ErrorListHeader .= "<br /><strong><u>" . $clang->gT("Error Files List") . ":</u></strong><br />\n";
+        $ErrorListHeader = "<br /><strong><u>" . $clang->gT("Error Files List") . ":</u></strong><br />\n";
         $ImportListHeader .= "<br /><strong><u>" . $clang->gT("Imported Files List") . ":</u></strong><br />\n";
     }
     else
     {
+        $okfiles = 0;
         $status = $clang->gT("Error");
         $statusClass = 'warningheader';
         $errfiles = count($aErrorFilesInfo);
-        $ErrorListHeader .= "<br /><strong><u>" . $clang->gT("Error Files List") . ":</u></strong><br />\n";
+        $ErrorListHeader = "<br /><strong><u>" . $clang->gT("Error Files List") . ":</u></strong><br />\n";
     }
 ?>
 
