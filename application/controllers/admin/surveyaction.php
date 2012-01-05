@@ -1128,7 +1128,7 @@ class SurveyAction extends Survey_Common_Action
         $condition = array('users_name' => Yii::app()->session['user']);
 
         //Use the current user details for the default administrator name and email for this survey
-        $owner = User::model()-findAllByAttribtues($condition);
+        $owner = User::model()->findAllByAttribtues($condition);
 
         //Degrade gracefully to $siteadmin details if anything is missing.
 
