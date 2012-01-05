@@ -44,37 +44,34 @@ class Usergroups extends Survey_Common_Action
 
             // user must be in user group
             // or superadmin
-            $result = User_in_groups::model()->getSomeRecords(array('uid'), array('ugid' => $ugid, 'uid' => Yii::app()->session['loginID']));
+            $result = User_in_groups::model()->findAllByPk(array('ugid' => $ugid, 'uid' => Yii::app()->session['loginID']));
 
             if (count($result) > 0 || Yii::app()->session['loginID'] == 1)
             {
-                $where = array('and', 'ugid =' . $ugid, 'b.uid !=' . Yii::app()->session['loginID']);
-                $join = array('where' => "{{users}} b", 'on' => 'a.uid = b.uid');
-                $eguresult = User_in_groups::model()->join(array('*'), "{{user_in_groups}} AS a", $where, $join, 'b.users_name');
+                $criteria = new CDbCriteria;
+                $criteria->compare('ugid',$ugid)->addNotInCondition('users.uid',array(Yii::app()->session['loginID']));
+                $eguresult = User_in_groups::model()->with('users')->findAll($criteria);
                 //die('me');
                 $to = '';
-                if (isset($eguresult[0])) {
-                    foreach ($eguresult as $egurow)
-                    {
-                        $to .= $egurow['users_name'] . ' <' . $egurow['email'] . '>' . '; ';
-                    }
-                } else {
-                    $to .= $eguresult['users_name'] . ' <' . $eguresult['email'] . '>' . '; ';
+
+                foreach ($eguresult as $egurow)
+                {
+                    $to .= $egurow->users->users_name . ' <' . $egurow->users->email . '>' . '; ';
                 }
+                    
                 $to = substr($to, 0, -2);
 
-                //$this->load->model('users');
-                $from_user_result = User::model()->getSomeRecords(array('email', 'users_name', 'full_name'), array('uid' => Yii::app()->session['loginID']));
+                $from_user_result = User::model()->findByPk(Yii::app()->session['loginID']);
                 $from_user_row = $from_user_result;
 
-                if ($from_user_row[0]->full_name) {
-                    $from = $from_user_row[0]->full_name;
+                if ($from_user_row->full_name) {
+                    $from = $from_user_row->full_name;
                     $from .= ' <';
-                    $from .= $from_user_row[0]->email . '> ';
+                    $from .= $from_user_row->email . '> ';
                 }
                 else
                 {
-                    $from = $from_user_row[0]->users_name . ' <' . $from_user_row[0]->email . '> ';
+                    $from = $from_user_row->users_name . ' <' . $from_user_row->email . '> ';
                 }
 
                 $body = $_POST['body'];

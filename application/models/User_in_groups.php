@@ -56,7 +56,7 @@ class User_in_groups extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'Users' => array(self::HAS_MANY, 'User','uid')
+            'users' => array(self::BELONGS_TO, 'User', '', 'on' => 't.uid = users.uid')
         );
     }
 	
