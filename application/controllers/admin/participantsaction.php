@@ -1366,7 +1366,7 @@ class participantsaction extends Survey_Common_Action
      */
     function uploadCSV()
     {
-        $this->session->unset_userdata('summary');
+       unset($_SESSION['summary']);
         $characterset = CHttpRequest::getPost('characterset');
         $seperator = CHttpRequest::getPost('seperatorused');
         $newarray = CHttpRequest::getPost('newarray');
@@ -1482,7 +1482,7 @@ class participantsaction extends Survey_Common_Action
                         'firstname' => $writearray['firstname'],
                         'lastname' => $writearray['lastname'],
                         'email' => $writearray['email'],
-                        'owner_uid' => $this->session->userdata('loginID')
+                        'owner_uid' => $_SESSION['loginID']
                     );
                     $aData = "firstname = '{$writearray['firstname']}' AND lastname = '{$writearray['lastname']}' AND email = '{$writearray['email']}' AND owner_uid = '".Yii::app()->session['loginID']."'";
                     $aData = Participants::model()->checkforDuplicate($aData);
@@ -1581,6 +1581,7 @@ class participantsaction extends Survey_Common_Action
         }
         unlink($sFilePath);
         $clang = $this->getController()->lang;
+        $aData = array();
         $aData['clang'] = $clang;
         $aData['recordcount'] = $recordcount - 1;
         $aData['duplicatelist'] = $duplicatelist;
@@ -1592,7 +1593,7 @@ class participantsaction extends Survey_Common_Action
         $aData['invalidattribute'] = $invalidattribute;
         $aData['mandatory'] = $mandatory;
         $aData['invalidparticipantid'] = $invalidparticipantid;
-        $this->load->view('admin/participants/uploadSummary_view', $aData);
+        $this->getController()->render('/admin/participants/uploadSummary_view', $aData);
     }
 
     function summaryview()

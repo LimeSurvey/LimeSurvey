@@ -1950,10 +1950,8 @@ function cpdb_export($data,$filename)
         foreach($value as $values)
         {
             $tokenoutput .= trim($values).',';
-            $tokenoutput .= ',';
-            $tokenoutput = substr($tokenoutput,0,-1); // remove last comma
-
         }
+        $tokenoutput = substr($tokenoutput,0,-1); // remove last comma
         $tokenoutput .= "\n";
 
     }
