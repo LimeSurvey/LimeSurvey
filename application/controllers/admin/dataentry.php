@@ -189,7 +189,7 @@
 
                  $recordexists = false;
                  if (isset($fielddata['`id`'])) {
-                     $result = $survey->getSomeRecords(array('id' => $fielddata['`id`']), 'id', TRUE);
+                     $result = $survey->findAllByAttributes(array('id' => $fielddata['`id`']));
                      $recordexists = $result > 0;
 
                      // Check if record with same id exists
@@ -541,7 +541,7 @@
                     $password = CHttpRequest::getParam('accesscode');
                 }
 
-                $svresult= Saved_control::getSomeRecords(
+                $svresult= Saved_control::model()->findAllByAttributes(
                 	array(
 	                	'sid' => $surveyid,
 	                	'identifier' => CHttpRequest::getParam('identifier'),
@@ -555,7 +555,7 @@
                     $saver['ip'] = $svrow['ip'];
                 }
 
-                $svresult = Saved_control::getSomeRecords(array('scid'=>$saver['scid']));
+                $svresult = Saved_control::model()->findAllByAttributes(array('scid'=>$saver['scid']));
                 foreach($svresult as $svrow)
                 {
                     $responses[$svrow['fieldname']] = $svrow['value'];

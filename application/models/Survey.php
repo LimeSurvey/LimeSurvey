@@ -111,11 +111,9 @@ class Survey extends CActiveRecord
     */
     public function getAdditionalLanguages()
     {
-        $sLanguages=trim($this->additional_languages);
-        if ($sLanguages!='')
-        {
+        $sLanguages = trim($this->additional_languages);
+        if ($sLanguages != '')
             return explode(' ', $sLanguages);
-        }
         else
             return array();
     }
@@ -154,6 +152,7 @@ class Survey extends CActiveRecord
 		foreach ($data as $k => $v)
 			$survey->$k = $v;
 		$survey->save();
+        
         return $data['sid'];
     }
 

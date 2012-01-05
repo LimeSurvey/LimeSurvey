@@ -1732,7 +1732,7 @@ function getsidgidqidaidtype($fieldcode)
         $fieldtoselect = array('type');
         $condition = "qid = ".$fqid." AND language='".$s_lang."'";
 
-	    $result = Questions::model()->getSomeRecords($fieldtoselect,$condition);
+	    $result = Questions::model()->findAllByAttributes(array('qid' => $fqid, 'language' => $s_lang));
 
 		if ( count($result) == 0 )
         { // question doesn't exist
@@ -1855,8 +1855,8 @@ function getextendedanswer($surveyid, $action, $fieldcode, $value, $format='')
                 $fieldtoselect = array('answer');
                 $condition = "qid = {$fields['qid']} AND code=".$value." AND language='".$s_lang."'";
 
-                $result = Answers::model()->getSomeRecords($fieldtoselect,$condition) or die ("Couldn't get answer type F/H - getextendedanswer() in common_helper.php");   //Checked
-                foreach($result->readAll() as $row)
+                $result = Answers::model()->findAllByAttributes(array('qid' => $fields['qid'], 'code' => $value, 'language' => $s_lang)) or die ("Couldn't get answer type F/H - getextendedanswer() in common_helper.php");   //Checked
+                foreach($result as $row)
                 {
                     $this_answer=$row['answer'];
                 } // while
@@ -4558,7 +4558,7 @@ function getArrayFilterExcludesForGroup($surveyid,$gid)
                 if ($avalue['title'] == $val)
                 {
                     //Get the code for this question, so we can see if any later questions in this group us it for an array_filter_exclude
-                    $cqresult=Questions::model()->getSomeRecords("title",array("qid"=>$qrow['qid']));
+                    $cqresult=Questions::model()->findAllByAttributes(array("qid"=>$qrow['qid']));
                     //$cqresult=db_execute_assoc($cqquery);
                     $xqid="";
                     //while($ftitle=$cqresult->FetchRow())
@@ -4607,7 +4607,7 @@ function getArrayFiltersForQuestion($qid)
                 // we found the target question, now we need to know what the answers where, we know its a multi!
                 $fields[0]=sanitize_int($fields[0]);
                 //$query = "SELECT title FROM ".db_table_name('questions')." where parent_qid='{$fields[0]}' AND language='".$_SESSION['s_lang']."' order by question_order";
-                $qresult=Questions::model()->getSomeRecords("title",array("parent_qid"=>$fields[0],"language"=>Yii::app()->session['s_lang']),"question_order");
+                $qresult=Questions::model()->findAllByAttributes(array("parent_qid"=> $fields[0], "language"=> Yii::app()->session['s_lang']), array('order' => "question_order"));
                 //$qresult = db_execute_assoc($query);  //Checked
                 $selected = array();
                 //while ($code = $qresult->fetchRow())
@@ -4619,7 +4619,7 @@ function getArrayFiltersForQuestion($qid)
 
                 //Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
                 //$query = "SELECT other FROM ".db_table_name('questions')." where qid='{$fields[0]}'";
-                $qresult=Questions::model()->getSomeRecords("other",array("qid"=>$fields[0]));
+                $qresult=Questions::model()->findAllByAttribtues(array("qid"=>$fields[0]));
                 //$qresult = db_execute_assoc($query);
                 //while ($row=$qresult->fetchRow()) {$other=$row['other'];}
                 foreach ($qresult->readAll() as $row) {$other=$row['other'];}
@@ -4648,7 +4648,7 @@ function getGroupsByQuestion($surveyid) {
     $surveyid=sanitize_int($surveyid);
     //$query="SELECT qid, gid FROM ".db_table_name('questions')." WHERE sid='$surveyid'";
     //$result = db_execute_assoc($query);
-    $result=Questions::model()->getSomeRecords("qid, gid",array("sid"=>$surveyid));
+    $result=Questions::model()->findAllByAttributes(array("sid"=>$surveyid));
 
     foreach ($qresult->readAll() as $val)
     //while ($val = $result->FetchRow())
@@ -5092,13 +5092,14 @@ function getEmailFormat($surveyid)
 function hasTemplateManageRights($userid, $templatefolder) {
     $userid=sanitize_int($userid);
     $templatefolder=sanitize_paranoid_string($templatefolder);
-
-    $query=Templates_rights_model::model()->getSomeRecords("use","uid=".$userid." AND folder LIKE '".$templatefolder."'");
-
+    $criteria = new CDbCriteria;
+    $criteria->addColumnCondition(array('uid' => $userid));
+    $criteria->addSearchCondition('folder', $templatefolder);
+    $query=Templates_rights_model::model()->find($criteria);
     //if ($result->RecordCount() == 0)  return false;
-    if ($query->count() == 0)  return false;
+    if (is_null($query))  return false;
 
-    $row = $query->readAll();
+    $row = $query;
     //$row = $result->FetchRow();
 
     return $row["use"];
@@ -5781,7 +5782,7 @@ function usedTokens($token, $surveyid)
 {
     $utresult = true;
     Tokens_dynamic::sid($surveyid);
-    $query=Tokens_dynamic::model()->getSomeRecords(array("tid, usesleft"), array("token"=>$token));
+    $query=Tokens_dynamic::model()->findAllByAttribtues(array("tid, usesleft"), array("token"=>$token));
 
     if (count($query) > 0) {
         $row = $query[0];
@@ -6257,10 +6258,10 @@ function checkquestionfordisplay($qid, $gid=null)
     {
         $scenario = $scenariorow['scenario'];
         $totalands=0;
-        $subquery = Conditions::model()->getSomeRecords(array('cqid','cfieldname'),array('qid'=>$qid,'scenario'=>$scenario));
+        $subquery = Conditions::model()->findAllByAttributes(array('qid'=>$qid,'scenario'=>$scenario));
 
         $conditionsfoundforthisscenario=0;
-        foreach ($subquery->readAll() as $row)
+        foreach ($subquery as $row)
         //while($row=$result->FetchRow())
         {
             // Conditions on different cfieldnames from the same question are ANDed together
@@ -6296,9 +6297,9 @@ function checkquestionfordisplay($qid, $gid=null)
             if (preg_match("/^\+(.*)$/",$row['cfieldname'],$cfieldnamematch))
             { // this condition uses a single checkbox as source
                 $conditionSourceType='question';
-                $query2=Questions::model()->getSomeRecords(array("type, gid"),array('qid'=>$row['cqid'],'language'=>Yii::app()->session['s_lang']));
+                $query2=Questions::model()->findAllByAttributes(array('qid'=>$row['cqid'],'language'=>Yii::app()->session['s_lang']));
                 //while($row2=$result2->FetchRow())
-                foreach ($query2->readAll() as $row2)
+                foreach ($query2 as $row2)
                 {
                     $cq_gid=$row2['gid'];
                     // set type to +M or +P in order to skip
@@ -6316,8 +6317,8 @@ function checkquestionfordisplay($qid, $gid=null)
             else
             { // this is a simple condition using a question as source
                 $conditionSourceType='question';
-                $query2=Questions::model()->getSomeRecords(array("type, gid"),array('qid'=>$row['cqid'],'language'=>Yii::app()->session['s_lang']));
-                foreach ($query2->readAll() as $row2)
+                $query2=Questions::model()->findAllByAttributes(array('qid'=>$row['cqid'],'language'=>Yii::app()->session['s_lang']));
+                foreach ($query2 as $row2)
                 //while($row2=$result2->FetchRow())
                 {
                     $cq_gid=$row2['gid'];

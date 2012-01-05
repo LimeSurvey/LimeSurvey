@@ -139,7 +139,7 @@
 
     	// Get the survey settings for token length
     	//$this->load->model("surveys_model");
-    	$tlresult = Survey::model()->getSomeRecords(array("tokenlength"),array("sid"=>$surveyid));
+    	$tlresult = Survey::model()->findAllByAttributes(array("sid"=>$surveyid));
     	if (isset($tlresult[0])) {
     		$tlrow = $tlresult[0];
     	}

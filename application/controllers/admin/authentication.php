@@ -92,7 +92,7 @@ class Authentication extends Survey_Common_Action
             $postuser = CHttpRequest::getPost('user');
             $sEmailAddr = CHttpRequest::getPost('email');
 
-            $aFields = User::model()->getSomeRecords(array('users_name, password, uid'), array('users_name' => $postuser, 'email' => $sEmailAddr));
+            $aFields = User::model()->findAllByAttributes(array('users_name' => $postuser, 'email' => $sEmailAddr));
 
             if (count($aFields) < 1)
             {

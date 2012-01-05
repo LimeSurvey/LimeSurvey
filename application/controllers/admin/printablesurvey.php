@@ -306,7 +306,7 @@ class printablesurvey extends Survey_Common_Action
                         foreach ($distinctresult->readAll() as $distinctrow)
                         {
                               $condition = "qid = '{$distinctrow['cqid']}' AND parent_qid = 0 AND language = '{$surveyprintlang}'";
-                              $subresult=Questions::model()->getSomeRecords(array('title','question','type'), $condition)->read();
+                              $subresult=Questions::model()->find($condition);
 
                             if($x > 0)
                             {
@@ -473,9 +473,9 @@ class printablesurvey extends Survey_Common_Action
                                     case "O":
                                     case "R":
                                         $condition="qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
-                                        $ansresult=Answers::model()->getSomeRecords(array('answer'), $condition);
+                                        $ansresult=Answers::model()->findAll($condition);
 
-                                        foreach ($ansresult->readAll() as $ansrow)
+                                        foreach ($ansresult as $ansrow)
                                         {
                                             $conditions[]=$ansrow['answer'];
                                         }
@@ -487,8 +487,8 @@ class printablesurvey extends Survey_Common_Action
                                     case "M":
                                     case "P":
                                         $condition=" parent_qid='{$conrow['cqid']}' AND title='{$conrow['value']}' AND language='{$surveyprintlang}'";
-                                        $ansresult=Questions::model()->getSomeRecords(array('question'), $condition);
-                                        foreach ($ansresult->readAll() as $ansrow)
+                                        $ansresult=Questions::model()->findAll($condition);
+                                        foreach ($ansresult as $ansrow)
                                         {
                                             $conditions[]=$ansrow['question'];
                                         }
@@ -526,9 +526,9 @@ class printablesurvey extends Survey_Common_Action
                                     case "K":
                                         $thiscquestion=$fieldmap[$conrow['cfieldname']];
                                         $condition="parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
-                                          $ansresult= Questions::model()->getSomeRecords(array('question'), $condition);
+                                          $ansresult= Questions::model()->findAll($condition);
 
-                                        foreach ($ansresult->readAll() as $ansrow)
+                                        foreach ($ansresult as $ansrow)
                                         {
                                             $answer_section=" (".$ansrow['question'].")";
                                         }
@@ -538,7 +538,7 @@ class printablesurvey extends Survey_Common_Action
                                         $labelIndex=substr($conrow['cfieldname'],-1);
                                         $thiscquestion=$fieldmap[$conrow['cfieldname']];
                                          $condition="parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
-                                         $ansresult= Questions::model()->getSomeRecords(array('question'), $condition);
+                                         $ansresult= Questions::model()->findAll($condition);
                                         $cqidattributes = getQuestionAttributeValues($conrow['cqid'], $conrow['type']);
                                         if ($labelIndex == 0)
                                         {
@@ -565,13 +565,13 @@ class printablesurvey extends Survey_Common_Action
                                     case ";": //multi flexi: ( answer [label] )
                                         $thiscquestion=$fieldmap[$conrow['cfieldname']];
                                         $condition="parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
-                                         $ansresult= Questions::model()->getSomeRecords(array('question'), $condition);
-                                        foreach ($ansresult->readAll() as $ansrow)
+                                         $ansresult= Questions::model()->findAll($condition);
+                                        foreach ($ansresult as $ansrow)
                                         {
 
                                         $condition = "qid = '{$conrow['cqid']}' AND code = '{$conrow['value']}' AND language= '{$surveyprintlang}'";
-                                        $fresult= Answers::model()->getAllRecords( $condition);
-                                            foreach ($fresult->readAll() as $frow)
+                                        $fresult= Answers::model()->findAll($condition);
+                                            foreach ($fresult as $frow)
                                             {
                                                 //$conditions[]=$frow['title'];
                                                 $answer_section=" (".$ansrow['question']."[".$frow['answer']."])";

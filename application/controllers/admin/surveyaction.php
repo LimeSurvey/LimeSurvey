@@ -653,7 +653,7 @@ class SurveyAction extends Survey_Common_Action
             else
             {
                 $condition = "sid={$rows['sid']} AND language='" . $rows['language'] . "'";
-                $questionsCountResult = Questions::model()->getSomeRecords('qid', $condition);
+                $questionsCountResult = Questions::model()->findAll($condition);
 
                 if (count($questionsCountResult) && bHasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
                 {
@@ -1125,11 +1125,10 @@ class SurveyAction extends Survey_Common_Action
         $clang = $this->getController()->lang;
 
         $condition = array('users_name' => Yii::app()->session['user']);
-        $fieldstoselect = array('full_name', 'email');
 
         //Use the current user details for the default administrator name and email for this survey
-        $owner = User::model()->getSomeRecords($fieldstoselect, $condition);
-        $owner = (array) $owner;
+        $owner = User::model()-findAllByAttribtues($condition);
+
         //Degrade gracefully to $siteadmin details if anything is missing.
 
         if (empty($owner['full_name']))
