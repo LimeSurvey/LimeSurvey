@@ -355,37 +355,29 @@ class Usergroups extends Survey_Common_Action
     {
         Yii::app()->loadHelper('database');
 	    $clang = Yii::app()->lang;
-	    $postuserid = CHttpRequest::getPost('uid');
-
-        $addsummary = "<div class=\"header\">".$clang->gT("Adding User to group")."...</div>\n";
-        $addsummary .= "<div class=\"messagebox\">\n";
-
+		$postuserid = CHttpRequest::getPost('uid');
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
-        {
-            $query = "SELECT ugid, owner_id FROM {{user_groups}} WHERE ugid = " . $ugid . " AND owner_id = ".Yii::app()->session['loginID']." AND owner_id != ".$postuserid;
-            $result = db_execute_assoc($query); //Checked
-            if($result->count() > 0)
+        {	       
+            if(User_groups::model()->isGroupDataValid($ugid, Yii::app()->session['loginID']) && (int)Yii::app()->session['loginID'] != (int)$postuserid)
             {
-                if($postuserid > 0)
+                if((int)$postuserid > -1)
                 {
                     $isrresult = User_in_groups::model()->insert(array('ugid' => $ugid, 'uid' => $postuserid)); //Checked
 
                     if($isrresult)
                     {
-                        $addsummary .= "<div class=\"successheader\">".$clang->gT("User added.")."</div>\n";
+						list($aViewUrls, $aData) = $this->index($ugid, array("type" => "success", "message" => $clang->gT("User added.")));
                     }
                     else  // ToDo: for this to happen the keys on the table must still be set accordingly
                     {
                         // Username already exists.
-                        $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add user.")."</div>\n" . "<br />" . $clang->gT("Username already exists.")."<br />\n";
+ 						list($aViewUrls, $aData) = $this->index($ugid, array("type" => "warning", "message" => $clang->gT("Failed to add user.")."<br />".$clang->gT("Username already exists.")));
                     }
                 }
                 else
                 {
-                    $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add user.")."</div>\n" . "<br />" . $clang->gT("No Username selected.")."<br />\n";
+                     	list($aViewUrls, $aData) = $this->index($ugid, array("type" => "warning", "message" => $clang->gT("Failed to add user.")."<br />".$clang->gT("No username selected.")));
                 }
-                $addsummary .= "<br/><input type=\"submit\" onclick=\"window.location='" . $this->getController()->createUrl('admin/usergroups/view/ugid/') . '/' . $ugid . "'\" value=\"".$clang->gT("Continue")."\"/>\n";
-
             }
             else
             {
@@ -396,9 +388,6 @@ class Usergroups extends Survey_Common_Action
         {
         	die('access denied');
         }
-
-        $addsummary .= "</div>\n";
-        $aViewUrls['output'] = $addsummary;
 
         $this->_renderWrappedTemplate($aViewUrls);
     }
