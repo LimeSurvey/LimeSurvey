@@ -6741,7 +6741,7 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
             'language' => $language
             );
 
-            Questions::model()->update($data,$where);
+            Questions::model()->updateByPk($where,$data);
 
         } // Enf if modified
     } // end while qentry

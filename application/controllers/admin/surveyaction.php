@@ -1471,16 +1471,18 @@ class SurveyAction extends Survey_Common_Action
             $sStartDate = $_POST['startdate'];
             if (trim($sStartDate) != '')
             {
-                $this->load->library('Date_Time_Converter', array($sStartDate, $aDateFormatData['phpdate'] . ' H:i:s'));
-                $sStartDate = $this->date_time_converter->convert("Y-m-d H:i:s");
+                Yii::import('application.libraries.Date_Time_Converter');
+                $converter = new Date_Time_Converter($sStartDate, $aDateFormatData['phpdate'] . ' H:i:s');
+                $sExpiryDate = $converter->convert("Y-m-d H:i:s");
             }
 
             // If expiry date supplied convert it to the right format
             $sExpiryDate = $_POST['expires'];
             if (trim($sExpiryDate) != '')
             {
-                $this->load->library('Date_Time_Converter', array($sExpiryDate, $aDateFormatData['phpdate'] . ' H:i:s'));
-                $sExpiryDate = $this->date_time_converter->convert("Y-m-d H:i:s");
+                Yii::import('application.libraries.Date_Time_Converter');
+                $converter = new Date_Time_Converter($sExpiryDate, $aDateFormatData['phpdate'] . ' H:i:s');
+                $sExpiryDate = $converter->convert("Y-m-d H:i:s");
             }
 
             // Insert base settings into surveys table

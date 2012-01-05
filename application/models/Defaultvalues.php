@@ -70,7 +70,7 @@ class Defaultvalues extends CActiveRecord
         $values = new self;
 		foreach ($data as $k => $v)
 			$values->$k = $v;
-		$values->save();
-}
+		return $values->save();
+    }
 }
 ?>

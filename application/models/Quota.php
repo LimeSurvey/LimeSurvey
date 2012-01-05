@@ -69,7 +69,7 @@ class Quota extends CActiveRecord
         $quota = new self;
 		foreach ($data as $k => $v)
 			$quota->$k = $v;
-		$quota->save();
-}
+		return $quota->save();
+    }
 }
 ?>

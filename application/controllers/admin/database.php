@@ -190,7 +190,7 @@ class database extends Survey_Common_Action
                         $answer=fix_FCKeditor_text($answer);
 
                         // Now we insert the answers
-                        $result=Answers::model()->insertRecord(array('code'=>$code,
+                        $result=Answers::model()->insertRecords(array('code'=>$code,
                         'answer'=>$answer,
                         'qid'=>$qid,
                         'sortorder'=>$sortorderid,

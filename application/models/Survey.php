@@ -150,14 +150,10 @@ class Survey extends CActiveRecord
         if (isset($data['expires']) && trim($data['expires']) == '')
             $data['expires'] = null;
 
-
-        try
-        {
-            self::model()->insert($data);
-        } catch (CDbException $e)
-        {
-            return false;
-        }
+        $survey = new self;
+		foreach ($data as $k => $v)
+			$survey->$k = $v;
+		$survey->save();
         return $data['sid'];
     }
 

@@ -210,13 +210,6 @@ class Questions extends CActiveRecord
         return ( $return_query ) ? $record->queryAll() : $record;
     }
 
-	function update($data, $condition=FALSE)
-    {
-
-        return Yii::app()->db->createCommand()->update('{{questions}}', $data, $condition);
-
-    }
-
     public static function deleteAllById($questionsIds)
     {
         if ( !is_array($questionsIds) )

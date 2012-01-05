@@ -558,7 +558,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
                                 $qres = Yii::app()->db->createCommand($qinsert)->query() or safe_die ($clang->gT("Error").": Failed to insert question <br />\n$qinsert<br />\n");
                                 if ($fieldname=='')
                                 {
-                                    $aSQIDReplacements[$labelrow['code'].'_'.$saveqid]=$CI->db->insert_id();
+                                    $aSQIDReplacements[$labelrow['code'].'_'.$saveqid]=Yii::app()->db->getLastInsertID();
                                 }
                             }
                         }
@@ -1515,7 +1515,7 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                         $qres = Yii::app()->db->createCommand($qinsert)->query() or safe_die ("Error: Failed to insert subquestion <br />\n$qinsert<br />\n");
                         if ($fieldname=='')
                         {
-                            $aSQIDReplacements[$labelrow['code']]=$CI->db->insert_id();
+                            $aSQIDReplacements[$labelrow['code']]=Yii::app()->db->getLastInsertID();
                         }
 
                     }
@@ -1601,7 +1601,7 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                 	$qres = $question->save();
                     if (!isset($questionrowdata['qid']))
                     {
-                        $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=$CI->db->insert_id();
+                        $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=Yii::app()->db->getLastInsertID();
                     }
                     $results['subquestions']++;
                     // also convert default values subquestions for multiple choice
@@ -1907,7 +1907,7 @@ function CSVImportLabelset($sFullFilepath, $options)
 {
     $CI =& get_instance();
     $CI->load->helper('database');
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
     $results['labelsets']=0;
     $results['labels']=0;
     $results['warnings']=array();
@@ -1993,7 +1993,7 @@ function CSVImportLabelset($sFullFilepath, $options)
             $results['labelsets']++;
 
             // Get the new insert id for the labels inside this labelset
-            $newlid=$CI->db->insert_id();
+            $newlid=Yii::app()->db->getLastInsertID();
 
             if ($labelsarray) {
                 $count=0;
@@ -2932,7 +2932,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                             $qres = Yii::app()->db->createCommand($qinsert)->query() or safe_die ($clang->gT("Error").": Failed to insert question <br />\n$qinsert<br />\n");
                             if ($fieldname=='')
                             {
-                                $aSQIDReplacements[$labelrow['code'].'_'.$saveqid]=$CI->db->insert_id();
+                                $aSQIDReplacements[$labelrow['code'].'_'.$saveqid]=Yii::app()->db->getLastInsertID();
                             }
                         }
                     }
@@ -3085,10 +3085,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             $newqid="";
             $qarowdata["qid"]=$aQIDReplacements[$qarowdata["qid"]];
             unset($qarowdata["qaid"]);
-
-            $newvalues=array_values($qarowdata);
-            $qainsert = "INSERT INTO {{question_attributes}} (".implode(',',array_keys($qarowdata)).") VALUES (".implode(',',$newvalues).")";
-            $result=Yii::app()->db->createCommand($qainsert)->execute(); // no safe_die since some LimeSurvey version export duplicate question attributes - these are just ignored
+            Question_attributes::model()->insertRecords($qarowdata);
             if ($result>0) {$importresults['question_attributes']++;}
         }
     }
@@ -3736,7 +3733,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             unset($insertdata['id']);
             // now translate any links
             $result=Quota::model()->insertRecords($insertdata) or safe_die($clang->gT("Error").": Failed to insert data<br />");
-            $aQuotaReplacements[$oldid] = $CI->db->insert_id();
+            $aQuotaReplacements[$oldid] = Yii::app()->db->getLastInsertID();
             $results['quota']++;
         }
     }
@@ -3922,17 +3919,14 @@ function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeField
 
 function XMLImportResponses($sFullFilepath,$iSurveyID,$aFieldReMap=array())
 {
-    $CI =& get_instance();
-
-    $CI->load->helper('database');
-    $clang = $CI->limesurvey_lang;
-
+    Yii::app()->loadHelper('database');
+    $clang = Yii::app()->lang;
 
     db_switchIDInsert('survey_'.$iSurveyID,false);
     $results['responses']=0;
     $oXMLReader = new XMLReader();
     $oXMLReader->open($sFullFilepath);
-    $DestinationFields = $CI->db->list_fields('survey_'.$iSurveyID);
+    $DestinationFields = Yii::app()->db->schema->getTable('{{survey_'.$iSurveyID.'}}')->getColumnNames();
     while ($oXMLReader->read()) {
         if ($oXMLReader->name === 'LimeSurveyDocType' && $oXMLReader->nodeType == XMLReader::ELEMENT)
         {
@@ -3969,7 +3963,7 @@ function XMLImportResponses($sFullFilepath,$iSurveyID,$aFieldReMap=array())
                                 $aInsertData[$sFieldname]='';
                         }
                     }
-                    $result = $CI->surveys_dynamic_model->insertRecords($iSurveyID,$aInsertData) or safe_die($clang->gT("Error").": Failed to insert data<br />". $CI->db->last_query());
+                    $result = Survey_dynamic::model($iSurveyID)->insertRecords($aInsertData) or safe_die($clang->gT("Error").": Failed to insert data<br />");
                     $results['responses']++;
                 }
             }
@@ -3988,7 +3982,7 @@ function XMLImportTimings($sFullFilepath,$iSurveyID,$aFieldReMap=array())
     $CI =& get_instance();
 
     $CI->load->helper('database');
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
     $xml = simplexml_load_file($sFullFilepath);
 
     if ($xml->LimeSurveyDocType!='Timings')

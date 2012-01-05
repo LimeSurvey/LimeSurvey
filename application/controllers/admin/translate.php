@@ -809,7 +809,7 @@ class translate extends Survey_Common_Action {
 						"sid = '{$surveyid}' AND language = '{$tolang}' AND parent_qid = 0",
 						'qid', FALSE
 					),
-					"queryupdate" => Questions::model()->update(
+					"queryupdate" => Questions::model()->updateAll(
 						array(
 							$aData['dbColumn'] => $new
 						),
@@ -830,7 +830,7 @@ class translate extends Survey_Common_Action {
 						"sid = '{$surveyid}' AND language = '{$tolang}' AND parent_qid > 0",
 						'parent_qid,qid', FALSE
 					),
-					"queryupdate" => Questions::model()->update(
+					"queryupdate" => Questions::model()->updateAll(
 						array(
 							'question' => $new
 						),

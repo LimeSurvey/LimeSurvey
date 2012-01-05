@@ -89,7 +89,7 @@ class Answers extends CActiveRecord
         return Yii::app()->db->createCommand()->update(self::tableName(), $data, $condition ? $condition : '');
     }
 
-	function insertRecord($data)
+	function insertRecords($data)
     {
         $ans = new self;
 		foreach ($data as $k => $v)

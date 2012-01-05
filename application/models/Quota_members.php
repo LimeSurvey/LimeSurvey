@@ -55,7 +55,7 @@ class Quota_members extends CActiveRecord
         $members = new self;
 		foreach ($data as $k => $v)
 			$members->$k = $v;
-		$members->save();
-}
+	return $members->save();
+    }
 }
 ?>
