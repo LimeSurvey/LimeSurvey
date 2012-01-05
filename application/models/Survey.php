@@ -161,32 +161,6 @@ class Survey extends CActiveRecord
         return $data['sid'];
     }
 
-    public function getSomeRecords($fields=FALSE, $condition=FALSE)
-    {
-        $record = new self;
-        $criteria = new CDbCriteria;
-
-        if($fields != FALSE)
-        {
-            $criteria->select = $fields;
-        }
-
-        if ($condition != FALSE)
-        {
-            foreach ($condition as $item => $value)
-            {
-                $criteria->addCondition($item.'='.Yii::app()->db->quoteValue($value));
-            }
-        }
-
-        return $record->find($criteria);
-    }
-
-    function updateSurvey($data, $condition=FALSE)
-    {
-        return Yii::app()->db->createCommand()->update($this->tableName(), $data, $condition);
-    }
-
     /**
     * !!! DOESN'T WORK !!!
     *
