@@ -572,7 +572,7 @@ class database extends Survey_Common_Action
 
         if ($action == "updatequestion" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
         {
-            Yii::app()->loadHelper('expressions/em_manager');
+//            Yii::app()->loadHelper('expressions/em_manager');
             $cqquery = "SELECT type, gid FROM {{questions}} WHERE qid={$qid}";
             $cqresult=Yii::app()->db->createCommand($cqquery)->query(); // or safe_die ("Couldn't get question type to check for change<br />".$cqquery."<br />"); // Checked
             $cqr=$cqresult->read();
@@ -637,18 +637,21 @@ class database extends Survey_Common_Action
                         $query = "select qaid from {{question_attributes}}
                         WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
                         $result = Yii::app()->db->createCommand($query)->query(); // or safe_die("Error updating attribute value<br />".$query."<br />");  // Checked
-                        $value = sanitize_string_paranoid($_POST[$validAttribute['name']]);
                         if ($result->getRowCount()>0)
                         {
                             $query = "UPDATE {{question_attributes}}
-                            SET value=".$value.",language=NULL WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
-                            $result = Yii::app()->db->createCommand($query)->execute() ; // or safe_die("Error updating attribute value<br />".$query."<br />");  // Checked
+                            SET value=:value,language=NULL WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
+                            $result = Yii::app()->db->createCommand($query)->bindParam(":value",$_POST[$validAttribute['name']],PDO::PARAM_STR)->execute() ; // or safe_die("Error updating attribute value<br />".$query."<br />");  // Checked
                         }
                         else
                         {
                             $query = "INSERT into {{question_attributes}}
-                            (qid, value, attribute) values ($qid,$value,'{$validAttribute['name']}')";
-                            $result = Yii::app()->db->createCommand($query)->execute(); // or safe_die("Error updating attribute value<br />".$query."<br />");  // Checked
+                            (qid, value, attribute) values (:qid,:value,:attributeName)";
+                            $result = Yii::app()->db->createCommand($query)
+                            ->bindParam(":qid",$qid,PDO::PARAM_STR)
+                            ->bindParam(":value",$_POST[$validAttribute['name']],PDO::PARAM_STR)
+                            ->bindParam(":attributeName",$validAttribute['name'],PDO::PARAM_STR)
+                            ->execute(); // or safe_die("Error updating attribute value<br />".$query."<br />");  // Checked
                         }
                     }
                 }
