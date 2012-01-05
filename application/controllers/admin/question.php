@@ -251,7 +251,7 @@ class question extends Survey_Common_Action
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl .'/scripts/admin/answers.js');
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl .'/scripts/jquery/jquery.blockUI.js');
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl .'/scripts/jquery/jquery.selectboxes.min.js');
-        $this->getController()->_css_admin_includes(Yii::app()->baseUrl . 'scripts/jquery/dd.css');
+        $this->getController()->_css_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/dd.css');
 
         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
@@ -284,12 +284,11 @@ class question extends Survey_Common_Action
         $anslangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
         $baselang = Survey::model()->findByPk($surveyid)->language;
 
-        $qrow = Questions::model()->findByAttributes(array('qid' => $qid, 'language' => $baselang))->attributes;
-
+        $qrow = Questions::model()->findByAttributes(array('qid' => $qid, 'language' => $baselang));
         $qtype = $qrow['type'];
 
         $qtypes = getqtypelist('', 'array');
-
+        
         $scalecount = $qtypes[$qtype]['answerscales'];
 
         $clang = $this->getController()->lang;
