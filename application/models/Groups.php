@@ -78,12 +78,6 @@ class Groups extends CActiveRecord
 		}
     }
 
-	function update($data, $condition=FALSE)
-    {
-
-        return Yii::app()->db->createCommand()->update('{{groups}}', $data, $condition);
-
-    }
 
 	public function insertRecords($data)
     {
