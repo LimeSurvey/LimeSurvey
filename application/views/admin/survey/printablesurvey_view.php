@@ -1,4 +1,4 @@
-<?
+<?php
 $welcome=$_POST['welcome'];
 $surveydesc=$_POST['surveydesc'];
 
@@ -10,43 +10,43 @@ echo $numques;
 
 ?>
 
-<?
+<?php
 	echo '<link rel="stylesheet" type="text/css" href="/yii8/templates/default/print_template.css" />';
 	$survey_output=$_POST['survey_output'];
 	if (isset($_POST['qidattributes'])){
 	$qidattributes=$_POST['qidattributes'];
 	}
 	while (list ($key, $val) = each ($survey_output)) {
-	
-	
+
+
 	if($key=="GROUPS"){
-	
+
 	echo "$val<br>";
-	
+
 	}
-	} 
+	}
 	if(!empty($qidattributes['max_answers'])) {
 ?>
 			<br /><p class='extrahelp'>
-<?
+<?php
 sprintf($clang->gT("Please choose no more than %d items"),$qidattributes['max_answers']);
 ?>
 </p><br />
-<?
+<?php
 		}
 	if(!empty($qidattributes['min_answers'])) {
 ?>
 			<br /><p class='extrahelp'>
-<?
+<?php
 			sprintf($clang->gT("Please choose at least %d items"), $qidattributes['min_answers']);
 ?>
 			</p><br />
-<?
+<?php
 		}
 ?>
-<?
+<?php
 		if(isset($_POST['type']) && isset($_POST['type']) && isset($_POST['div_title'])){
-		
+
 		$type=$_POST['type'];
 		$style=$_POST['style'];
 		$div_title=$_POST['div_title'];
@@ -55,7 +55,7 @@ sprintf($clang->gT("Please choose no more than %d items"),$qidattributes['max_an
 	        case 'radio':
 	        case 'checkbox':if(!defined('IMAGE_'.$type.'_SIZE'))
 	        {
-				
+
 	            $image_dimensions = getimagesize(PRINT_TEMPLATE_DIR.'print_img_'.$type.'.png');
 	            // define('IMAGE_'.$type.'_SIZE' , ' width="'.$image_dimensions[0].'" height="'.$image_dimensions[1].'"');
 	            define('IMAGE_'.$type.'_SIZE' , ' width="14" height="14"');
@@ -75,10 +75,10 @@ sprintf($clang->gT("Please choose no more than %d items"),$qidattributes['max_an
 	    }
 	    return $output;
 		}
-		
+
 ?>
 
-<?
+<?php
 		if(isset($_POST['qidattributes']) && isset($_POST['surveyprintlang']) && isset($_POST['surveyid'])){
 		$qidattributes=$_POST['qidattributes'];
 		$surveyprintlang=$_POST['surveyprintlang'];
@@ -90,9 +90,9 @@ sprintf($clang->gT("Please choose no more than %d items"),$qidattributes['max_an
 	        $newquestiontext=$newresult->read();
 			?>
 	        <br /><p class='extrahelp'>
-			    <?sprintf($clang->gT("Only answer this question for the items you selected in question %d ('%s')"),$qidattributes['array_filter'], br2nl($newquestiontext['question']));?>
+			    <?phpsprintf($clang->gT("Only answer this question for the items you selected in question %d ('%s')"),$qidattributes['array_filter'], br2nl($newquestiontext['question']));?>
 			</p><br />
-			<?
+			<?php
 	    }
 	    if(!empty($qidattributes['array_filter_exclude']))
 	    {
@@ -101,15 +101,15 @@ sprintf($clang->gT("Please choose no more than %d items"),$qidattributes['max_an
 	        $newquestiontext=$newresult->read();
 			?>
 	        <br /><p class='extrahelp'>
-			    <?sprintf($clang->gT("Only answer this question for the items you did not select in question %d ('%s')"),$qidattributes['array_filter_exclude'], br2nl($newquestiontext['question'])); ?>
+			    <?phpsprintf($clang->gT("Only answer this question for the items you did not select in question %d ('%s')"),$qidattributes['array_filter_exclude'], br2nl($newquestiontext['question'])); ?>
 			</p><br />
-			<?
+			<?php
 	    }
-	    
+
 		}
 ?>
 
-<?
+<?php
 
 function _input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 	{
@@ -161,7 +161,7 @@ function _input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' 
 
 ?>
 
-<?
+<?php
 echo $survey_output['END']."<br />";
 echo $survey_output['SUBMIT_BY']."<br /><br />";
 echo $survey_output['SUBMIT_TEXT'];
