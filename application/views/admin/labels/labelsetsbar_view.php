@@ -48,3 +48,6 @@
         </div>
     </div>
    </div>
+   <script type="text/javascript"><!--
+   var ci_path = '<?php echo Yii::app()->getConfig('imageurl') ?>'; //-->
+   </script>
