@@ -1815,7 +1815,7 @@ class participantsaction extends Survey_Common_Action
 
     function mapCSVcancelled()
     {
-        unlink('tmp/uploads/' . basename(CHttpRequest::getPost('fullfilepath')));
+        unlink(Yii::app()->getConfig('tempdir') . '/' . basename(CHttpRequest::getPost('fullfilepath')));
     }
 
     function blacklistParticipant()
