@@ -947,7 +947,7 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/'.$surveyid));
+                $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/surveyid/'.$surveyid));
             }
         }
 
@@ -1148,11 +1148,11 @@ class database extends Survey_Common_Action
 
                 if ($_POST['action'] == "updatesurveysettingsandeditlocalesettings")
                 {
-                    $this->getController()->redirect(Yii::app()->homeUrl.('/admin/survey/editlocalsettings/surveyid/'.$surveyid));
+                    $this->getController()->redirect($this->getController()->createUrl('/admin/survey/editlocalsettings/surveyid/'.$surveyid));
                 }
                 else
                 {
-                    $this->getController()->redirect(Yii::app()->homeUrl.('/admin/survey/view/surveyid/'.$surveyid));
+                    $this->getController()->redirect($this->getController()->createUrl('/admin/survey/view/surveyid/'.$surveyid));
                 }
 
             }
