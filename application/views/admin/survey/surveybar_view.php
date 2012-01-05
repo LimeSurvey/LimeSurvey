@@ -82,7 +82,7 @@
             <li><a href="#">
                     <img src='<?php echo $imageurl;?>/tools.png' alt='<?php $clang->eT("Tools");?>' /></a><ul>
                     <?php if ($surveydelete) { ?>
-                        <li><a href="<?php echo $this->createUrl("admin/survey/confirmdelete/surveyid/$surveyid"); ?>">
+                        <li><a href="<?php echo $this->createUrl("admin/survey/delete/surveyid/$surveyid"); ?>">
                             <img src='<?php echo $imageurl;?>/delete_30.png' alt=''/> <?php $clang->eT("Delete survey");?></a></li>
                         <?php } ?>
                     <?php if ($surveytranslate) {

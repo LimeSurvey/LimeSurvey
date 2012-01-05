@@ -746,21 +746,22 @@ class SurveyAction extends Survey_Common_Action
      * @param string $sa
      * @return void
      */
-    public function delete($surveyid, $sa = 'confirmdelete')
+    public function delete($surveyid, $delete = 'no')
     {
         $aData = $aViewUrls = array();
-        $aData['surveyid'] = $iSurveyId = $surveyid;
+        $aData['surveyid'] = $iSurveyId = (int) $surveyid;
+        $clang = $this->getController()->lang;
 
         if (bHasSurveyPermission($iSurveyId, 'survey', 'delete'))
         {
-            $aData['clang'] = $this->getController()->lang;
-
-            if ($sa == 'delete')
+            if ($delete == 'yes')
             {
-                $aData['issuperadmin'] = Yii::app()->session['USER_RIGHT_SUPERADMIN'] == true;
+                $aData['issuperadmin'] = (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == true);
                 $this->_deleteSurvey($iSurveyId);
+                Yii::app()->session['flashmessage'] = $clang->gT("Survey deleted.");
+                $this->getController()->redirect($this->getController()->createUrl("admin/survey/index"));
             }
-            elseif ($sa == 'confirmdelete')
+            else
             {
                 $aViewUrls[] = 'deleteSurvey_view';
             }
@@ -1399,7 +1400,7 @@ class SurveyAction extends Survey_Common_Action
     private function _deleteSurvey($iSurveyId)
     {
         Survey::model()->deleteByPk($iSurveyId);
-        rmdirr(Yii::app()->getConfig("uploaddir") . '/surveys/' . $iSurveyId);
+        rmdirr(Yii::app()->getConfig('uploaddir') . '/surveys/' . $iSurveyId);
     }
 
     /**
