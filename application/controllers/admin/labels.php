@@ -394,7 +394,6 @@ class labels extends Survey_Common_Action
             Yii::app()->loadHelper('admin/label');
             $lid = returnglobal('lid');
 
-            //DO DATABASE UPDATESTUFF <- HAHAHAHAH FAIL! <Dragooon>
             if ($action == "updateset")
                 updateset($lid);
             if ($action == "insertlabelset")
@@ -427,8 +426,10 @@ class labels extends Survey_Common_Action
     /**
      * Renders template(s) wrapped in header and footer
      *
+     * @access protected
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
+     * @return void
      */
     protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
     {

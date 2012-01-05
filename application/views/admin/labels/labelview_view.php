@@ -1,8 +1,4 @@
 <div class='header ui-widget-header'><?php $clang->eT("Labels") ?></div>
-<form method='post' id='mainform' action='<?php echo $this->createUrl('admin/labels/process') ?>' onsubmit="return codeCheck('code_', <?php echo $maxsortorder ?>, '<?php $clang->eT("Error: You are trying to use duplicate label codes.", 'js') ?>', '<?php $clang->eT("Error: 'other' is a reserved keyword.", 'js') ?>');">
-    <input type='hidden' name='sortorder' value='<?php echo $msorow['sortorder'] ?>' />
-    <input type='hidden' name='lid' value='<?php echo $lid ?>' />
-    <input type='hidden' name= 'action' value='modlabelsetanswers' />
     <div id='tabs'>
         <ul>
 <?php
@@ -14,6 +10,10 @@
 ?>
         </ul>
 
+    <form method='post' id='mainform' action='<?php echo $this->createUrl('admin/labels/process') ?>' onsubmit="return codeCheck('code_', <?php echo $maxsortorder ?>, '<?php $clang->eT("Error: You are trying to use duplicate label codes.", 'js') ?>', '<?php $clang->eT("Error: 'other' is a reserved keyword.", 'js') ?>');">
+        <input type='hidden' name='sortorder' value='<?php echo $msorow['sortorder'] ?>' />
+        <input type='hidden' name='lid' value='<?php echo $lid ?>' />
+        <input type='hidden' name= 'action' value='modlabelsetanswers' />
 <?php
     $i = 0;
     $first = true;
@@ -108,9 +108,10 @@
             <p><input type='submit' name='method' value='<?php $clang->eT("Save Changes") ?>'  id='saveallbtn_<?php echo $lslanguage ?>' /></p>
         </div>
 <?php
-$first=false;
-}
+        $first=false;
+    }
 ?>
+    </form>
         <div id='up_resmgmt'>
             <div>
                 <form class='form30' enctype='multipart/form-data' id='importlabelresources' name='importlabelresources'
@@ -156,4 +157,3 @@ $first=false;
             </div>
         </div>
     </div>
-</form>

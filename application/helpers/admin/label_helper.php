@@ -18,86 +18,55 @@
 
 function updateset($lid)
 {
-    //global $labelsoutput;
     $clang = Yii::app()->lang;
 
     // Get added and deleted languagesid arrays
+    if ($_POST['languageids'])
+        $postlanguageids = sanitize_languagecodeS($_POST['languageids']);
 
-    if (!empty($_POST['languageids']))
-    {
-        $postlanguageids=sanitize_languagecodeS($_POST['languageids']);
-    }
+    if ($_POST['label_name'])
+        $postlabel_name = sanitize_labelname($_POST['label_name']);
 
-    if (!empty($_POST['label_name']))
-    {
-        $postlabel_name=sanitize_labelname($_POST['label_name']);
-    }
+    $newlanidarray = explode(" ",trim($postlanguageids));
 
-    $newlanidarray=explode(" ",trim($postlanguageids));
+    $oldlangidsarray = array();
+    $labelset = Labelsets::model()->findByAttributes(array('lid' => $lid));
+    $oldlangidsarray = explode(' ', $labelset->languages);
 
-    //$postlanguageids = db_quoteall($postlanguageids,true);
-    //$postlabel_name = db_quoteall($postlabel_name,true);
-    $oldlangidsarray=array();
-    $query = "SELECT languages FROM {{labelsets}} WHERE lid=".$lid;
-    $result=Yii::app()->db->createCommand($query)->query();
-    if ($result)
-    {
-        foreach ($result->readAll() as $row) {$oldlangids=$row['languages'];}
-        $oldlangidsarray=explode(" ",trim($oldlangids));
-    }
-    $addlangidsarray=array_diff($newlanidarray,$oldlangidsarray);
-    $dellangidsarray=array_diff($oldlangidsarray,$newlanidarray);
+    $addlangidsarray = array_diff($newlanidarray, $oldlangidsarray);
+    $dellangidsarray = array_diff($oldlangidsarray, $newlanidarray);
 
     // If new languages are added, create labels' codes and sortorder for the new languages
-    $query = "SELECT code,sortorder,assessment_value FROM {{labels}} WHERE lid=".$lid." GROUP BY code,sortorder,assessment_value";
-    $result=Yii::app()->db->createCommand($query)->query();
-    if ($result) { foreach ($result->readAll() as $row) {$oldcodesarray[$row['code']]=array('sortorder'=>$row['sortorder'],'assessment_value'=>$row['assessment_value']);} }
+    $result = Label::model()->findAllByAttributes(array('lid' => $lid), array('order' => 'code, sortorder, assessment_value'));
+    if ($result)
+        foreach ($result as $row)
+            $oldcodesarray[$row['code']] = array('sortorder'=> $row['sortorder'], 'assessment_value'=> $row['assessment_value']);
+
     if (isset($oldcodesarray) && count($oldcodesarray) > 0 )
-    {
         foreach ($addlangidsarray as $addedlangid)
-        {
             foreach ($oldcodesarray as $oldcode => $olddata)
-            {
                 $sqlvalues[]= array('lid' => $lid, 'code' => $oldcode, 'sortorder' => $olddata['sortorder'], 'language' => $addedlangid, 'assessment_value' => $olddata['assessment_value']);
-            }
-        }
-    }
+
     if (isset($sqlvalues))
-    {
-        foreach ($sqlvalues as $sqlline)
-        {
-            //$query = "INSERT INTO ".db_table_name('labels')." (lid,code,sortorder,language,assessment_value) VALUES ".($sqlline);
-			$result = Yii::app()->db->createCommand()->insert('{{labels}}', $sqlline);
-            if (!$result)
-            {
-                $labelsoutput= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to Copy already defined labels to added languages","js")." - ".$query."\")\n //-->\n</script>\n";
-            }
-        }
-    }
+        foreach ($sqlvalues as $sqlvalue)
+            Label::model()->insert($sqlvalue);
 
     // If languages are removed, delete labels for these languages
-    $sqlwherelang='';
+    $criteria = new CDbCriteria;
+    $criteria->addColumnCondition(array('lid' => $lid));
+    $langcriteria = new CDbCriteria();
     foreach ($dellangidsarray as $dellangid)
-    {
-        $sqlwherelang .= " OR language='".$dellangid."'";
-    }
-    if ($sqlwherelang)
-    {
-        $query = "DELETE FROM {{labels}} WHERE lid=$lid AND (".trim($sqlwherelang, ' OR').")";
-        $result=Yii::app()->db->createCommand($query)->execute();
-    }
+        $langcriteria->addColumnCondition(array('language' => $dellangid), 'OR');
+    $criteria->mergeWith($langcriteria);
+
+    if (!empty($dellangidsarray))
+        $result = Label::model()->deleteAll($criteria);
 
     // Update the label set itself
-    $query = "UPDATE {{labelsets}} SET label_name='{$postlabel_name}', languages='{$postlanguageids}' WHERE lid=$lid";
-	$result = Yii::app()->db->createCommand($query)->execute();
-
-    if (isset($labelsoutput))
-    {
-        echo $labelsoutput;
-        exit();
-    }
+    $labelset->label_name = $postlabel_name;
+    $labelset->languages = $postlanguageids;
+    $labelset->save();
 }
-
 
 /**
 * Deletes a label set alog with its labels
@@ -170,9 +139,8 @@ function modlabelsetanswers($lid)
 
     $data = json_decode(stripslashes($_POST['dataToSend']));
 
-    if ($ajax){
+    if ($ajax)
         $lid = insertlabelset();
-    }
 
     if (count(array_unique($data->{'codelist'})) == count($data->{'codelist'}))
     {

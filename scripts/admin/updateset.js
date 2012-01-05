@@ -4,7 +4,7 @@ $(document).ready(function(){
 
         if ($(".answertable tbody").children().length == 0)
             add_label(undefined);
-        
+
 
 	$(".btnaddanswer").live('click',add_label);
         $(".btndelanswer").live('click',del_label);
@@ -20,37 +20,36 @@ $(document).ready(function(){
                                 title: $("#quickadd").attr('name')});
 
         $('.btnquickadd').live('click',function(){
-            $('#quickadd').dialog('open');  
+            $('#quickadd').dialog('open');
         });
 
         $('#btnqacancel').click(function(){
            $('#quickadd').dialog('close');
         });
 
-        
+
        $('#btnqareplace').click(quickaddfunction);
        $('#btnqainsert').click(quickaddfunction);
-       
 
-       
-        
+
+
+
         $("#mainform").submit(function(event,ui){
 
                  var dataToSend = {};
                  dataToSend['langs'] = [];
                  dataToSend['codelist'] = [];
-        
-                 $("#tabs>div").each(function(divindex,divelement){
+
+                 $("#tabs>form>div").each(function(divindex,divelement){
                     var div_language = $(".lslanguage",divelement).val();
 
                     if (typeof(div_language)!="undefined")
                         dataToSend['langs'].push(div_language);
                 });
-        
-                $("tbody>tr",$("#tabs>div:first")).each(function(trindex,trelement){
-                    
+
+                $("tbody>tr",$("#tabs>form>div:first")).each(function(trindex,trelement){
+
                     var tr_code = $(trelement).attr('name');
-                    
 
                     dataToSend['codelist'].push(tr_code);
                     dataToSend[tr_code] = {
@@ -74,7 +73,7 @@ function quickaddfunction(){
     if ($(this).attr('id') == 'btnqareplace'){
        lsreplace=true;
     }
-    
+
     if (lsreplace){
         $("#tabs>div:not(:last) tbody>tr").remove();
     }
@@ -117,7 +116,7 @@ function quickaddfunction(){
           i++;
       });
 
-       
+
     });
     $("#quickaddarea").html('');
     $('#quickadd').dialog('close');
@@ -137,7 +136,7 @@ function sort_complete(event, ui){
 
     var position = ui.position;
     var originalposition = ui.originalPosition;
-    
+
     if (originalposition.top > position.top) newposition = newposition - 1;
 
 
@@ -146,7 +145,7 @@ function sort_complete(event, ui){
 
        if (newposition >= 0)
             $($(element).parent().children()[newposition]).after(backup);
-        
+
        else
             $(element).parent().prepend(backup);
 
@@ -158,12 +157,12 @@ function sort_complete(event, ui){
 
 function add_label(event)
 {
-	
+
 	if (typeof(event)=="undefined")
             var next_code = 1;
         else
             var next_code = parseInt($('.hiddencode',$(event.target).parent().parent()).val()) + 1;
-	
+
 	var html = createNewLabelTR(true,true);
 
         if (typeof(event)=="undefined")
@@ -178,14 +177,14 @@ function add_label(event)
 	html = str_replace("###next###",randomid,html);
 	html = str_replace("###lang###",$("#tabs div:first .lslanguage").val(),html);
 
-        
+
 	if (typeof(event) == "undefined")
             $("#tabs div:first tbody").html(html);
         else
             $(event.target).parent().parent().after(html);
 
         html = createNewLabelTR(true,false);
-        
+
         html = str_replace("###assessmentval###",'0',html);
 	html = str_replace("###codeval###",next_code,html);
 	html = str_replace("###next###",randomid,html);
@@ -198,11 +197,11 @@ function add_label(event)
             }
             else
                 $(".answertable tbody",$(element)).html(temp_html);
-            
+
         });
 
         $("tr[name="+randomid+"]").hide().fadeIn(1000);
-	
+
 	fix_highlighting();
 
         return randomid;
@@ -224,7 +223,7 @@ function del_label(event){
 
 function fix_highlighting(){
     $("tbody tr").removeClass("highlight");
-    
+
     $("tbody tr:even").addClass("highlight");
 }
 
@@ -268,7 +267,7 @@ function str_replace (search, replace, subject, count) {
     if (count) {
         this.window[count] = 0;
     }
- 
+
     for (i=0, sl=s.length; i < sl; i++) {
         if (s[i] === '') {
             continue;
