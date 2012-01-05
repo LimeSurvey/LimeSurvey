@@ -1455,8 +1455,8 @@
             $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
             $fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
 
-            $subject=Replacefields($thissurvey['email_invite_subj'], $fieldsarray);
-            $textarea=Replacefields($thissurvey['email_invite'], $fieldsarray);
+            $subject=Replacefields($thissurvey['email_invite_subj'], $fieldsarray,false);
+            $textarea=Replacefields($thissurvey['email_invite'], $fieldsarray,false);
             if ($ishtml!==true){$textarea=str_replace(array('<x>','</x>'),array(''),$textarea);}
             $tokenoutput .= '<div id="'.$language.'">'."\n"; // Language Tab Div
 
@@ -1749,8 +1749,8 @@
             $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
             $fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
 
-            $subject=Replacefields($thissurvey['email_remind_subj'], $fieldsarray);
-            $textarea=Replacefields($thissurvey['email_remind'], $fieldsarray);
+            $subject=Replacefields($thissurvey['email_remind_subj'], $fieldsarray, false);
+            $textarea=Replacefields($thissurvey['email_remind'], $fieldsarray, false);
             if ($ishtml!==true){$textarea=str_replace(array('<x>','</x>'),array(''),$textarea);}
 
             $tokenoutput .= "<input type='text' size='83' id='subject_$language' name='subject_$language' value=\"$subject\" /></li>\n";
