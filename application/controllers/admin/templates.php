@@ -299,7 +299,7 @@ class templates extends Survey_Common_Action
             else
             {
                 $templatename = returnglobal('newname');
-                $this->view("startpage.pstpl", "welcome", $templatename);
+                $this->index("startpage.pstpl", "welcome", $templatename);
             }
         }
     }
@@ -333,7 +333,7 @@ class templates extends Survey_Common_Action
                 }
 
                 $templatename = returnglobal('newname');
-                $this->view("startpage.pstpl", "welcome", $templatename);
+                $this->index("startpage.pstpl", "welcome", $templatename);
             }
             elseif ($mkdirresult == 2)
                 $this->getController()->error(sprintf($clang->gT("Directory with the name `%s` already exists - choose another name", "js"), returnglobal('newname')));
