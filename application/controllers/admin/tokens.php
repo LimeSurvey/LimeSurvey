@@ -873,7 +873,7 @@ function editToken($iSurveyId)
             $fieldcontents.=$fieldname . '=' . strip_tags(CHttpRequest::getPost('description_' . $fieldname)) . "\n";
         }
 
-        Survey::model()->updateSurvey(array("attributedescriptions" => $fieldcontents), "sid=$iSurveyId");
+        Survey::model()->updateByPk($iSurveyId,array("attributedescriptions" => $fieldcontents));
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['surveyid'] = $iSurveyId;
         $this->_renderWrappedTemplate(array('tokenbar', 'message' => array(
