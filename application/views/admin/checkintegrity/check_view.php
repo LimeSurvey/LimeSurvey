@@ -24,7 +24,7 @@
         <?php
             if (isset($questionattributes)) { ?>
             <li><?php printf($clang->gT("There are %s orphaned question attributes."),count($questionattributes)); ?> </li>
-            <? }
+            <?php }
             else
             { ?>
             <li><?php $clang->eT("All question attributes meet consistency standards."); ?> </li> <?php
@@ -33,7 +33,7 @@
         <?php
             if ($defaultvalues) { ?>
             <li><?php printf($clang->gT("There are %s orphaned default value entries which can be deleted."),$dv); ?> </li>
-            <? }
+            <?php }
             else
             { ?>
             <li><?php $clang->eT("All default values meet consistency standards."); ?> </li> <?php
@@ -42,7 +42,7 @@
         <?php
             if ($quotas) { ?>
             <li><?php printf($clang->gT("There are %s orphaned quota entries which can be deleted."),$quotas); ?> </li>
-            <? }
+            <?php }
             else
             { ?>
             <li><?php $clang->eT("All quotas meet consistency standards."); ?> </li> <?php
@@ -51,7 +51,7 @@
         <?php
             if ($quotals) { ?>
             <li><?php printf($clang->gT("There are %s orphaned quota language settings which can be deleted."),$quotals); ?> </li>
-            <? }
+            <?php }
             else
             { ?>
             <li><?php $clang->eT("All quota language settings meet consistency standards."); ?> </li> <?php
@@ -60,7 +60,7 @@
         <?php
             if ($quotamembers) { ?>
             <li><?php printf($clang->gT("There are %s orphaned quota members which can be deleted."),$quotamembers); ?> </li>
-            <? }
+            <?php }
             else
             { ?>
             <li><?php $clang->eT("All quota quota members meet consistency standards."); ?> </li> <?php
