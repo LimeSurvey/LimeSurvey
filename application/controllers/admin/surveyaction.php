@@ -459,7 +459,7 @@ class SurveyAction extends Survey_Common_Action
             $survey->active = 'N';
             $survey->save();
 
-            $prow = Survey::model()->find('sid = :sid', array(':sid' => $postid));
+            $prow = Survey::model()->find('sid = :sid', array(':sid' => $postsid));
             if ($prow->savetimings == "Y")
             {
                 $oldtable = "{{survey_{$postsid}_timings}}";
@@ -483,13 +483,13 @@ class SurveyAction extends Survey_Common_Action
      * @param int $surveyid
      * @return void
      */
-    public function activate($iSurveyId)
+    public function activate($surveyid)
     {
-        $iSurveyId = (int) $iSurveyId;
+        $surveyid = (int) $surveyid;
 
         $aData = array();
-        $aData['aSurveysettings'] = getSurveyInfo($iSurveyId);
-        $aData['surveyid'] = $iSurveyId;
+        $aData['aSurveysettings'] = getSurveyInfo($surveyid);
+        $aData['surveyid'] = $surveyid;
 
         // Die if this is not possible
         if (!isset($aData['aSurveysettings']['active']) || $aData['aSurveysettings']['active'] == 'Y')
@@ -506,18 +506,18 @@ class SurveyAction extends Survey_Common_Action
             }
 
             // Check consistency for groups and questions
-            $failedgroupcheck = checkGroup($iSurveyId);
-            $failedcheck = checkQuestions($iSurveyId, $iSurveyId, $qtypes);
+            $failedgroupcheck = checkGroup($surveyid);
+            $failedcheck = checkQuestions($surveyid, $surveyid, $qtypes);
 
             $aData['failedcheck'] = $failedcheck;
             $aData['failedgroupcheck'] = $failedgroupcheck;
-            $aData['aSurveysettings'] = getSurveyInfo($iSurveyId);
+            $aData['aSurveysettings'] = getSurveyInfo($surveyid);
 
             $this->_renderWrappedTemplate('activateSurvey_view', $aData);
         }
         else
         {
-            $survey = Survey::model()->findByAttributes(array('sid' => $iSurveyId));
+            $survey = Survey::model()->findByAttributes(array('sid' => $surveyid));
             if (!is_null($survey))
             {
                 $survey->anonymized = CHttpRequest::getPost('anonymized');
@@ -528,10 +528,10 @@ class SurveyAction extends Survey_Common_Action
                 $survey->save();
             }
 
-            $activateoutput = activateSurvey($iSurveyId);
-            $aData['output'] = $activateoutput;
+            $activateoutput = activateSurvey($surveyid);
+            $aViewUrls['output'] = $activateoutput;
 
-            $this->_renderWrappedTemplate(array(), $aData);
+            $this->_renderWrappedTemplate($aViewUrls, $aData);
         }
     }
 

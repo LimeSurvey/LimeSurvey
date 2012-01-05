@@ -265,11 +265,11 @@ function activateSurvey($surveyid, $simulate = false)
 
     $clang = Yii::app()->lang;
 
-     $createsurvey='';
-     $activateoutput='';
-     $createsurveytimings='';
-     $fieldstiming = array();
-     $createsurveydirectory=false;
+    $createsurvey='';
+    $activateoutput='';
+    $createsurveytimings='';
+    $fieldstiming = array();
+    $createsurveydirectory=false;
     //Check for any additional fields for this survey and create necessary fields (token and datestamp)
     $pquery = "SELECT anonymized, allowregister, datestamp, ipaddr, refurl, savetimings FROM {{surveys}} WHERE sid={$surveyid}";
     $presult=Yii::app()->db->createCommand($pquery)->query()->readAll();
@@ -499,7 +499,7 @@ function activateSurvey($surveyid, $simulate = false)
         if (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
         {
             $activateoutput .= $clang->gT("This survey allows public registration. A token table must also be created.")."<br /><br />\n";
-            $activateoutput .= "<input type='submit' value='".$clang->gT("Initialise tokens")."' onclick=\"".get2post(Yii::app()->getController()->createUrl("admin/tokens/surveyid/".$surveyid))."\" />\n";
+            $activateoutput .= "<input type='submit' value='".$clang->gT("Initialise tokens")."' onclick=\"".get2post(Yii::app()->getController()->createUrl("admin/tokens/index/surveyid/".$surveyid))."\" />\n";
         }
         else
         {
