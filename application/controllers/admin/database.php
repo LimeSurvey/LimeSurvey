@@ -1062,8 +1062,7 @@ class database extends Survey_Common_Action
             'tokenlength'=>$tokenlength
             );
 
-            $condition = 'sid = \''.$surveyid.'\'';
-            Survey::model()->updateSurvey($updatearray,$condition);
+            Survey::model()->updateByPk($surveyid, $updatearray);
             $sqlstring ='';
 
             foreach (Survey::model()->findByPk($surveyid)->additionalLanguages as $langname)
