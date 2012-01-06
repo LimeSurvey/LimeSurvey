@@ -44,13 +44,9 @@ if(isset($groupfound))
                 <?php
                 if($currentuser["displayactions"])
                 { ?>
-                    <form method='post' action='<?php echo $this->createUrl('admin/usergroups/delete'); ?>'>
+                    <form method='post' action='<?php echo $this->createUrl("admin/usergroups/user/ugid/{$usergroupid}/action/remove"); ?>'>
                     <input type='image' src='<?php echo Yii::app()->getConfig('imageurl')?>/token_delete.png' alt='<?php $clang->eT("Delete this user from group");?>' onclick='return confirm("<?php $clang->eT("Are you sure you want to delete this entry?","js");?>")' />
-                    <input type='hidden' name='user' value='<?php echo $currentuser["username"]; ?>' />
-                    <input type='hidden' name='ugid' value='<?php echo $ugid; ?>' />
-                    <input type='hidden' name='action' value='delusergroup' />
                     <input name='uid' type='hidden' value='<?php echo $currentuser["userid"]; ?>' />
-                    <input name='ugid' type='hidden' value='<?php echo $usergroupid; ?>' />
                     </form>
                     <?php
                 }
@@ -76,17 +72,22 @@ if(isset($groupfound))
 if (!empty($useradddialog))
 {
 	?>
-	<form action='<?php echo $this->createUrl("admin/usergroups/addusertogroup/ugid/{$ugid}"); ?>' method='post'>
-		<table class='users'><tbody><tr><td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td align='center'>
-		<select name='uid'>
-			<?php echo $useraddusers;?>
-		</select>
-		<input type='submit' value='<?php $clang->eT("Add User");?>' />
-		<input type='hidden' name='action' value='addusertogroup' /></td>
-		</tr></tbody></table>
-	</form>
+        <form action='<?php echo $this->createUrl("admin/usergroups/user/ugid/{$ugid}/action/add"); ?>' method='post'>
+            <table class='users'>
+                <tbody>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td align='center'>
+                            <select name='uid'>
+                                <?php echo $useraddusers; ?>
+                            </select>
+                            <input type='submit' value='<?php $clang->eT("Add User"); ?>' />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
 	<?php
 }
 ?>

@@ -351,45 +351,66 @@ class Usergroups extends Survey_Common_Action
         }
     }
 
-    function addusertogroup($ugid)
+    function user($ugid, $action = 'add')
     {
-        Yii::app()->loadHelper('database');
-	    $clang = Yii::app()->lang;
-		$postuserid = CHttpRequest::getPost('uid');
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
-        {	       
-            if(User_groups::model()->isGroupDataValid($ugid, Yii::app()->session['loginID']) && (int)Yii::app()->session['loginID'] != (int)$postuserid)
-            {
-                if((int)$postuserid > -1)
-                {
-                    $isrresult = User_in_groups::model()->insert(array('ugid' => $ugid, 'uid' => $postuserid)); //Checked
+        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != true || !in_array($action, array('add', 'remove')))
+        {
+            die('access denied');
+        }
 
-                    if($isrresult)
-                    {
-						list($aViewUrls, $aData) = $this->index($ugid, array("type" => "success", "message" => $clang->gT("User added.")));
-                    }
-                    else  // ToDo: for this to happen the keys on the table must still be set accordingly
-                    {
-                        // Username already exists.
- 						list($aViewUrls, $aData) = $this->index($ugid, array("type" => "warning", "message" => $clang->gT("Failed to add user.")."<br />".$clang->gT("Username already exists.")));
-                    }
-                }
-                else
+        $clang = Yii::app()->lang;
+        $uid = (int) CHttpRequest::getPost('uid');
+
+        $group = User_groups::model()->findByAttributes(array('ugid' => $ugid, 'owner_id' => Yii::app()->session['loginID']));
+
+        if (empty($group))
+        {
+            list($aViewUrls, $aData) = $this->index(0, array('type' => 'warning', 'message' => $clang->gT('Failed.') . '<br />' . $clang->gT('Group not found.')));
+        }
+        else
+        {
+            if ($uid > 0 && User::model()->findByPk($uid))
+            {
+                if ($group->owner_id == $uid)
                 {
-                     	list($aViewUrls, $aData) = $this->index($ugid, array("type" => "warning", "message" => $clang->gT("Failed to add user.")."<br />".$clang->gT("No username selected.")));
+                    list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => $clang->gT('Failed.') . '<br />' . $clang->gT('You can not add or remove the group owner from the group.')));
+                }
+
+                $user_in_group = User_in_groups::model()->findByPk(array('ugid' => $ugid, 'uid' => $uid));
+
+                switch ($action)
+                {
+                    case 'add' :
+                        if (empty($user_in_group) && User_in_groups::model()->insert(array('ugid' => $ugid, 'uid' => $uid)))
+                        {
+                            list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'success', 'message' => $clang->gT('User added.')));
+                        }
+                        else
+                        {
+                            list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => $clang->gT('Failed to add user.') . '<br />' . $clang->gT('User already exists in the group.')));
+                        }
+
+                        break;
+                    case 'remove' :
+                        if (!empty($user_in_group) && User_in_groups::model()->deleteByPk(array('ugid' => $ugid, 'uid' => $uid)))
+                        {
+                            list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'success', 'message' => $clang->gT('User removed.')));
+                        }
+                        else
+                        {
+                            list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => $clang->gT('Failed to remove user.') . '<br />' . $clang->gT('User does not exist in the group.')));
+                        }
+
+                        break;
                 }
             }
             else
             {
-            	die('access denied');
+                list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => $clang->gT('Failed.') . '<br />' . $clang->gT('User not found.')));
             }
         }
-        else
-        {
-        	die('access denied');
-        }
 
-        $this->_renderWrappedTemplate($aViewUrls);
+        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     /**

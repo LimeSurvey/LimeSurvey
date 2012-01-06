@@ -211,28 +211,5 @@ class User_groups extends CActiveRecord {
 	{
 		return (bool) $this->db->delete('user_groups', $condition);
 	}*/
-	
-	/**
-	 * Verifies that the given groupdata is correct
-	 * @param int $ugid The Usergroup to check
-	 * @param int $ownerid The $ownerid of teh given group to check
-	 * @return bool false if group values do not match, true if they match
-	 * @throws exception Inconsistent database if more then (1) row found
-	 */
-	function isGroupDataValid($ugid,  $ownerid)
-	{
-		if($ownerid)
-		{	
-			$query = "SELECT ugid, owner_id FROM {{user_groups}} WHERE ugid = " . $ugid . " AND owner_id = ".$ownerid;
-		}
-        $result = db_execute_assoc($query);
-        if ((int)$result->count() == 1)
-			return true;
-		elseif ((int)$result->count() == 0)
-			return false;
-		else {
-			throw new Exception("Inconsistent database: More then (1) row with identical ugid and ownerid");
-		}
-	}
 
 }
