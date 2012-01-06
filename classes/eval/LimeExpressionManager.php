@@ -1632,7 +1632,7 @@ class LimeExpressionManager {
             $debugLog_html .= "</table>";
             $this->surveyLogicFile = $debugLog_html;
         }
-        usort($this->questionSeq2relevance,'self::cmpQuestionSeq');
+        usort($this->questionSeq2relevance,'cmpQuestionSeq');
         $this->numQuestions = count($this->questionSeq2relevance);
         $this->numGroups = count($this->groupId2groupSeq);
 
@@ -1668,29 +1668,6 @@ class LimeExpressionManager {
         $grel = (isset($_SESSION['relevanceStatus']['G' . $gid]) ? $_SESSION['relevanceStatus']['G' . $gid] : 1);   // group-level relevance based upon grelevance equation
         $qgrel = (isset($LEM->gid2relevanceStatus[$gid]) ? isset($LEM->gid2relevanceStatus[$gid]) : 1); // group-level relevance based upon ensuring at least one contained question is relevant
         return ($grel && $qgrel);
-    }
-
-    /**
- * Used by usort() to order $this->questionSeq2relevance in proper order
- * @param <type> $a
- * @param <type> $b
- * @return <type>
- */
-    function cmpQuestionSeq($a, $b)
-    {
-        if (is_null($a['qseq'])) {
-            if (is_null($b['qseq'])) {
-                return 0;
-            }
-            return 1;
-        }
-        if (is_null($b['qseq'])) {
-            return -1;
-        }
-        if ($a['qseq'] == $b['qseq']) {
-            return 0;
-        }
-        return ($a['qseq'] < $b['qseq']) ? -1 : 1;
     }
 
     /**
@@ -5392,5 +5369,28 @@ EOT;
             'html'=>$out
             );
     }
+}
+
+/**
+* Used by usort() to order $this->questionSeq2relevance in proper order
+* @param <type> $a
+* @param <type> $b
+* @return <type>
+*/
+function cmpQuestionSeq($a, $b)
+{
+    if (is_null($a['qseq'])) {
+        if (is_null($b['qseq'])) {
+            return 0;
+        }
+        return 1;
+    }
+    if (is_null($b['qseq'])) {
+        return -1;
+    }
+    if ($a['qseq'] == $b['qseq']) {
+        return 0;
+    }
+    return ($a['qseq'] < $b['qseq']) ? -1 : 1;
 }
 ?>
