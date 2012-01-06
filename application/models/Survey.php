@@ -125,7 +125,7 @@ class Survey extends CActiveRecord
     * @param string $data
     * @return mixed
     */
-    public function insertNewSurvey($data)
+    public function insertNewSurvey($data, $xssfiltering = false)
     {
         do
         {
@@ -148,11 +148,23 @@ class Survey extends CActiveRecord
         if (isset($data['expires']) && trim($data['expires']) == '')
             $data['expires'] = null;
 
+		if($xssfiltering)
+		{
+			$filter = new CHtmlPurifier();
+			$filter->options = array('URI.AllowedSchemes'=>array(
+  				'http' => true,
+  				'https' => true,
+			));
+			$data["admin"] = $filter->purify($data["admin"]);
+			$data["adminemail"] = $filter->purify($data["adminemail"]);
+			$data["bounce_email"] = $filter->purify($data["bounce_email"]);
+			$data["faxto"] = $filter->purify($data["faxto"]);
+		}
+
         $survey = new self;
 		foreach ($data as $k => $v)
 			$survey->$k = $v;
 		$survey->save();
-        
         return $data['sid'];
     }
 

@@ -29,7 +29,6 @@ class database extends Survey_Common_Action
     *
     * @param mixed $action
     * @return
-    * @todo Implement XSS filter
     */
     function index($sa = null)
     {
@@ -45,7 +44,19 @@ class database extends Survey_Common_Action
         $gid = returnglobal('gid');
         $qid = returnglobal('qid');
         // if $action is not passed, check post data.
-
+		
+		if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
+		{
+				$filter = new CHtmlPurifier();
+				$filter->options = array('URI.AllowedSchemes'=>array(
+  				'http' => true,
+  				'https' => true,
+			));
+			$xssfilter = true;
+		}
+		else
+			$xssfilter = false;
+		
         if ($action == "updatedefaultvalues" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
         {
 
@@ -174,18 +185,14 @@ class database extends Survey_Common_Action
                     {
                         $answer=$_POST['answer_'.$language.'_'.$sortorderid.'_'.$scale_id];
 
-                        /*
-                        if (Yii::app()->getConfig('filterxsshtml'))
+                        if ($xssfilter)
                         {
-                        //Sanitize input, strip XSS
-                        // Todo: Put back in XSS filter
-                        //$answer=$this->security->xss_clean($answer);
+                        	$answer=$filter->purify($answer);
                         }
                         else
                         {
-                        */
-                        $answer=html_entity_decode($answer, ENT_QUOTES, "UTF-8");
-                        //}
+                        	$answer=html_entity_decode($answer, ENT_QUOTES, "UTF-8");
+                        }
                         // Fix bug with FCKEditor saving strange BR types
                         $answer=fix_FCKeditor_text($answer);
 
@@ -391,14 +398,13 @@ class database extends Survey_Common_Action
                 $_POST['question_'.$baselang] = html_entity_decode($_POST['question_'.$baselang], ENT_QUOTES, "UTF-8");
                 $_POST['help_'.$baselang] = html_entity_decode($_POST['help_'.$baselang], ENT_QUOTES, "UTF-8");
 
-                $purifier = new CHtmlPurifier();
 
                 // Fix bug with FCKEditor saving strange BR types
-                if (Yii::app()->getConfig('filterxsshtml'))
+                if ($xssfilter)
                 {
-                    $_POST['title']=$purifier->purify($_POST['title']);
-                    $_POST['question_'.$baselang]=$purifier->purify($_POST['question_'.$baselang]);
-                    $_POST['help_'.$baselang]=$purifier->purify($_POST['help_'.$baselang]);
+                    $_POST['title']=$filter->purify($_POST['title']);
+                    $_POST['question_'.$baselang]=$filter->purify($_POST['question_'.$baselang]);
+                    $_POST['help_'.$baselang]=$filter->purify($_POST['help_'.$baselang]);
                 }
                 else
                 {
@@ -715,9 +721,8 @@ class database extends Survey_Common_Action
                         $questlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
                         $baselang = Survey::model()->findByPk($surveyid)->language;
                         array_push($questlangs,$baselang);
-                        $p = new CHtmlPurifier();
-                        if (Yii::app()->getConfig('filterxsshtml'))
-                            $_POST['title'] = $p->purify($_POST['title']);
+                        if ($xssfilter)
+                            $_POST['title'] = $filter->purify($_POST['title']);
                         else
                             $_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
 
@@ -725,10 +730,10 @@ class database extends Survey_Common_Action
                         $_POST['title']=fix_FCKeditor_text($_POST['title']);
                         foreach ($questlangs as $qlang)
                         {
-                            if (Yii::app()->getConfig('filterxsshtml'))
+                            if ($xssfilter)
                             {
-                                $_POST['question_'.$qlang] = $p->purify($_POST['question_'.$qlang]);
-                                $_POST['help_'.$qlang] = $p->purify($_POST['help_'.$qlang]);
+                                $_POST['question_'.$qlang] = $filter->purify($_POST['question_'.$qlang]);
+                                $_POST['help_'.$qlang] = $filter->purify($_POST['help_'.$qlang]);
                             }
                             else
                             {
@@ -882,7 +887,7 @@ class database extends Survey_Common_Action
                     if ($url == 'http://') {$url="";}
 
                     // Clean XSS attacks
-                    if (Yii::app()->getConfig('filterxsshtml'))
+                    if ($xssfilter)
                     {
                         $purifier = new CHtmlPurifier();
                         $purifier->options = array(

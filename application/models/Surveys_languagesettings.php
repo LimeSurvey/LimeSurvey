@@ -103,23 +103,54 @@ class Surveys_languagesettings extends CActiveRecord
         return $this->db->query($query, array($sid, $sid, $lcode));
     }
 
-    function insertNewSurvey($data)
+    function insertNewSurvey($data, $xssfiltering = false)
     {
         if (isset($data['surveyls_url']) && $data['surveyls_url']== 'http://') {$data['surveyls_url']="";}
-        return $this->insertSomeRecords($data);
+		
+		if($xssfiltering)
+		{
+			$filter = new CHtmlPurifier();
+			$filter->options = array('URI.AllowedSchemes'=>array(
+  				'http' => true,
+  				'https' => true,
+			));
+			$data["description"] = $filter->purify($data["description"]);
+			$data["title"] = $filter->purify($data["title"]);
+			$data["welcome"] = $filter->purify($data["welcome"]);
+			$data["endtext"] = $filter->purify($data["endtext"]);
+		}
+		        
+		return $this->insertSomeRecords($data);
     }
     function getSurveyNames($surveyid)
     {
         return Yii::app()->db->createCommand()->select('surveyls_title')->from('{{surveys_languagesettings}}')->where('surveyls_language = "'.Yii::app()->session['adminlang'].'" AND surveyls_survey_id = '.$surveyid)->queryAll();
     }
 
-    function updateRecords($data,$condition=FALSE)
+    function updateRecords($data,$condition=FALSE, $xssfiltering = false)
     {
         if ($condition != FALSE)
         {
             $this->db->where($condition);
         }
-
+		
+		if($xssfiltering)
+		{
+			$filter = new CHtmlPurifier();
+			$filter->options = array('URI.AllowedSchemes'=>array(
+  				'http' => true,
+  				'https' => true,
+			));
+			if (isset($data["description"]))
+				$data["description"] = $filter->purify($data["description"]);
+			if (isset($data["title"]))
+				$data["title"] = $filter->purify($data["title"]);
+			if (isset($data["welcome"]))
+				$data["welcome"] = $filter->purify($data["welcome"]);
+			if (isset($data["endtext"]))
+				$data["endtext"] = $filter->purify($data["endtext"]);
+		}
+		
         $this->db->update('surveys_languagesettings',$data);
 
         if ($this->db->affected_rows() <= 0)

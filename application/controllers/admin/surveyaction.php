@@ -1531,13 +1531,18 @@ class SurveyAction extends Survey_Common_Action
                 'emailresponseto' => $_POST['emailresponseto'],
                 'tokenlength' => $_POST['tokenlength']
             );
-
+			
+			if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
+				$xssfilter = true;
+			else 
+				$xssfilter = false;
+			
             if (!is_null($iSurveyId))
             {
                 $aInsertData['wishSID'] = $iSurveyId;
             }
 
-            $iNewSurveyid = Survey::model()->insertNewSurvey($aInsertData);
+            $iNewSurveyid = Survey::model()->insertNewSurvey($aInsertData, $xssfilter);
             if (!$iNewSurveyid)
                 die('Survey could not be created.');
 
@@ -1607,7 +1612,7 @@ class SurveyAction extends Survey_Common_Action
             );
 
             $langsettings = new Surveys_languagesettings;
-            $langsettings->insertNewSurvey($aInsertData);
+            $langsettings->insertNewSurvey($aInsertData, $xssfilter);
 
             Yii::app()->session['flashmessage'] = $this->getController()->lang->gT("Survey was successfully added.");
 
