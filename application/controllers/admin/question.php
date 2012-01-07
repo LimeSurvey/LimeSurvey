@@ -444,7 +444,7 @@ class question extends Survey_Common_Action
         $anslangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
         $baselang = Survey::model()->findByPk($surveyid)->language;
 
-        $resultrow = Questions::model()->findAllByPk(array('qid' => $qid, 'language' => $baselang))->attributes;
+        $resultrow = Questions::model()->findByPk(array('qid' => $qid, 'language' => $baselang))->attributes;
 
         $sQuestiontype = $resultrow['type'];
         $aQuestiontypeInfo = getqtypelist($sQuestiontype, 'array');
@@ -452,13 +452,13 @@ class question extends Survey_Common_Action
 
         for ($iScale = 0; $iScale < $iScaleCount; $iScale++)
         {
-            $subquestiondata = Questions::model()->findAllByAttributes(array(
+            $subquestiondata = Questions::model()->findByAttributes(array(
                 'parent_qid' => $qid,
                 'language' => $baselang,
                 'scale_id' => $iScale
             ));
 
-            if (!is_null($subquestiondata))
+            if (is_null($subquestiondata))
             {
                 Questions::model()->insert(array(
                     'sid' => $surveyid,
@@ -471,7 +471,7 @@ class question extends Survey_Common_Action
                     'scale_id' => $iScale,
                 ));
 
-                $subquestiondata = Questions::model()->findAllByAttributes(array(
+                $subquestiondata = Questions::model()->findByAttributes(array(
                     'parent_qid' => $qid,
                     'language' => $baselang,
                     'scale_id' => $iScale
@@ -518,7 +518,7 @@ class question extends Survey_Common_Action
         // Delete the subquestions in languages not supported by the survey
         $criteria = new CDbCriteria;
         $criteria->addColumnCondition(array('parent_qid' => $qid));
-        $criteria->addNotInCondition('languge', $anslangs);
+        $criteria->addNotInCondition('language', $anslangs);
         Questions::model()->deleteAll($criteria);
 
         // Check sort order for subquestions
@@ -539,7 +539,7 @@ class question extends Survey_Common_Action
                 Answers::updateSortOrder($qid, Survey::model()->findByPk($surveyid)->language);
         }
 
-        Yii::app()->loadHelper('admin/htmleditor_helper');
+        Yii::app()->loadHelper('admin/htmleditor');
 
         // Print Key Control JavaScript
         $result = Questions::model()->findAllBYAttributes(array(
@@ -561,8 +561,8 @@ class question extends Survey_Common_Action
 
         $aData['scalecount'] = $scalecount = $qtypes[$qtype]['subquestions'];
 
-        $sumresult1 = Survey::model()->with('languagesettings')->together()->findByAttributes(array('t.sid' => $surveyid));
-        if ($sumresult1->num_rows() == 0)
+        $sumresult1 = Survey::model()->with('languagesettings')->together()->findByAttributes(array('sid' => $surveyid));
+        if ($sumresult1 == null)
             $this->getController()->error('Invalid survey id');
 
         $surveyinfo = $sumresult1->attributes;
@@ -575,6 +575,18 @@ class question extends Survey_Common_Action
         $aData['qid'] = $qid;
         $aData['anslangs'] = $anslangs;
         $aData['maxsortorder'] = $maxsortorder;
+
+        foreach ($anslangs as $anslang)
+        {
+            for ($scale_id = 0; $scale_id < $scalecount; $scale_id++)
+            {
+                $criteria = new CDbCriteria;
+                $criteria->condition = 'parent_qid = :pqid AND language = :language AND scale_id = :scale_id';
+                $criteria->order = 'question_order, title ASC';
+                $criteria->params = array(':pqid' => $qid, ':language' => $anslang, ':scale_id' => $scale_id);
+                $aData['results'][$anslang][$scale_id] = Questions::model()->findAll($criteria);
+            }
+        }
 
         $aViewUrls['subQuestion_view'][] = $aData;
 

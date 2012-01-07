@@ -354,7 +354,7 @@ class database extends Survey_Common_Action
             }
             //include("surveytable_functions.php");
             //surveyFixColumns($surveyid);
-            $this->session->set_userdata('flashmessage', $clang->gT("Subquestions were successfully saved."));
+            Yii::app()->session['flashmessage'] = $clang->gT("Subquestions were successfully saved.");
 
             //$action='editsubquestions';
 
@@ -364,7 +364,7 @@ class database extends Survey_Common_Action
             }
             else
             {
-                $this->getController()->redirect($this->getController()->createUrl('/admin/question/subquestions/'.$surveyid.'/'.$gid.'/'.$qid));
+                $this->getController()->redirect($this->getController()->createUrl('/admin/question/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
             }
         }
 

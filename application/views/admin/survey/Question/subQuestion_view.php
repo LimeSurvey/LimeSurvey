@@ -55,8 +55,8 @@ $codeids='';
                         <?php $clang->eT("X-Scale"); ?></div>
                     <?php }
                 }
-                $result = Questions::model()->select()->where(array('and', 'parent_qid='.$qid, 'language=:language', 'scale_id='.$scale_id))->order('question_order, title asc')->bindParam(":language", $anslang);
-                $anscount = $result->getRowCount();
+                $result = $results[$anslang][$scale_id];
+                $anscount = count($result);
 				?>
                 <table class='answertable' id='answertable_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' align='center'>
                 <thead>
@@ -70,14 +70,14 @@ $codeids='';
                 </tr></thead>
                 <tbody align='center'>
                 <?php $alternate=false;
-                foreach ($result->readAll() as $row)
+                foreach ($result as $row)
                 {
-                    $row['title'] = htmlspecialchars($row['title']);
-                    $row['question']=htmlspecialchars($row['question']);
+                    $row->title = htmlspecialchars($row->title);
+                    $row->question=htmlspecialchars($row->question);
 
-                    if ($first) {$codeids=$codeids.' '.$row['question_order'];}
+                    if ($first) {$codeids=$codeids.' '.$row->question_order;}
                     ?>
-                    <tr id='row_<?php echo $row['language']; ?>_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>'
+                    <tr id='row_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
                     <?php if ($alternate==true)
                     { ?>
                          class="highlight"
@@ -92,25 +92,25 @@ $codeids='';
 
                     <?php if ($activated == 'Y' ) // if activated
                     { ?>
-                        &nbsp;</td><td><input type='hidden' name='code_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' value="<?php echo $row['title']; ?>" maxlength='5' size='5'
-                         /><?php echo $row['title']; ?>
+                        &nbsp;</td><td><input type='hidden' name='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" maxlength='5' size='5'
+                         /><?php echo $row->title; ?>
                     <?php }
                     elseif ($activated != 'Y' && $first) // If survey is decactivated
                     { ?>
-                        <img class='handle' src='<?php echo Yii::app()->getConfig('imageurl')?>/handle.png' /></td><td><input type='hidden' class='oldcode' id='oldcode_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' name='oldcode_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' value="<?php echo $row['title']; ?>" /><input type='text' id='code_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' class='code' name='code_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' value="<?php echo $row['title']; ?>" maxlength='5' size='5'
+                        <img class='handle' src='<?php echo Yii::app()->getConfig('imageurl')?>/handle.png' /></td><td><input type='hidden' class='oldcode' id='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" /><input type='text' id='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' class='code' name='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->title; ?>" maxlength='5' size='5'
                          onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')"
                          />
 
                     <?php }
                     else
                     { ?>
-                        </td><td><?php echo $row['title']; ?>
+                        </td><td><?php echo $row->title; ?>
 
                     <?php } ?>
 
                     </td><td>
-                    <input type='text' size='100' id='answer_<?php echo $row['language']; ?>_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' name='answer_<?php echo $row['language']; ?>_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' value="<?php echo $row['question']; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
-                    <?php echo  getEditor("editanswer","answer_".$row['language']."_".$row['qid']."_{$row['scale_id']}", "[".$clang->gT("Subquestion:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer'); ?>
+                    <input type='text' size='100' id='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->question; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
+                    <?php echo  getEditor("editanswer","answer_".$row->language."_".$row->qid."_{$row->scale_id}", "[".$clang->gT("Subquestion:", "js")."](".$row->language.")",$surveyid,$gid,$qid,'editanswer'); ?>
                     </td>
                     <td>
 
@@ -133,7 +133,7 @@ $codeids='';
                 } ?>
                 <button class='btnlsbrowser' id='btnlsbrowser_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php $clang->eT('Predefined label sets...'); ?></button>
                 <button class='btnquickadd' id='btnquickadd_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php $clang->eT('Quick add...'); ?></button>
-                <?php if($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1 || $this->session->userdata('USER_RIGHT_MANAGE_LABEL') == 1){ ?>
+                <?php if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1){ ?>
                     <button class='bthsaveaslabel' id='bthsaveaslabel_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php $clang->eT('Save as label set'); ?></button>
                 <?php } ?>
 
