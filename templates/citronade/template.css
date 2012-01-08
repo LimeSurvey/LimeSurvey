@@ -13,142 +13,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /* This part don't have to be modified */
-
-/*** Start jQuery UI Theme Styles ***/
-
-button.ui-button::-moz-focus-inner {
-	border: 0; 
-	padding: 0;   /* Get rid of extra padding in focused button in FF */
-}
-
-.ui-corner-all {
-    -moz-border-radius: 4px;
-}
-
-.ui-button { 
-	position: relative; 
-	padding: 0.1em 0 0.1em 0; 
-	cursor: pointer;
-	font-family: FreeSans,Arial,Helvetica,sans-serif;
-	font-size: 1.0em;
-	font-weight: normal;
-	line-height: normal;
-}
-
-.ui-button-icon-only { 
-	width: 2.2em; /* To make room for the icon, a width needs to be set here */
-} 
-
-button.ui-button-icon-only { 
-	width: 2.4em; /* Button elements seem to need a little more width */
-}
-
-.ui-button-icons-only { 
-	width: 3.4em; 
-} 
-
-button.ui-button-icons-only {
-	width: 3.7em; 
-}
-
-/* Button text elements */
-.ui-button-text-only .ui-button-text {
-	padding: 0 1em; 
-}
-
-.ui-button-icon-only .ui-button-text, 
-.ui-button-icons-only .ui-button-text {
-	text-indent: -9999999px; 
-}
-
-.ui-button-text-icon-primary .ui-button-text {
-	padding: 0 0.7em 0 1.7em; 
-}
-
-.ui-button-text-icon-secondary .ui-button-text {
-	padding: 0 1.7em 0 0.7em; 
-}
-
-.ui-button-text-icons .ui-button-text {
-	padding: 0 1.7em; 
-}
-
-input.ui-button {
-	padding: 0.1em 1em 0.1em 1em;  /* No icon support for input elements, provide padding by default */
-}
-
-/* Button icon element(s) */
-.ui-button-icon-only .ui-icon,
-.ui-button-text-icon-primary .ui-icon,
-.ui-button-text-icon-secondary .ui-icon,
-.ui-button-text-icons .ui-icon,
-.ui-button-icons-only .ui-icon {
-	position: absolute;
-	top: 50%;
-	margin-top: -8px; 
-}
-
-.ui-button-icon-only .ui-icon {
-	left: 50%; 
-	margin-left: -8px; 
-}
-
-.ui-button-text-icon-primary .ui-button-icon-primary, 
-.ui-button-text-icons .ui-button-icon-primary, 
-.ui-button-icons-only .ui-button-icon-primary {
-	left: .4em; 
-}
-
-.ui-button-text-icon-secondary .ui-button-icon-secondary, 
-.ui-button-text-icons .ui-button-icon-secondary, 
-.ui-button-icons-only .ui-button-icon-secondary {
-	right: .4em; 
-}
-
-.ui-button-text-icons .ui-button-icon-secondary, 
-.ui-button-icons-only .ui-button-icon-secondary {
-	right: .4em; 
-}
-
-/* Button sets*/
-.ui-buttonset {
-	margin-right: 7px; 
-}
-
-.ui-buttonset .ui-button {
-	margin-left: 0;
-	margin-right: -.3em; 
-}
-
-/* IE6/7 hacks 8 */
-
-.ui-button,
-input.ui-button { 
-	*padding: 0.1em 0 0.1em 0; 
-}
-
-.ui-button-icon-only .ui-icon,
-.ui-button-text-icon-primary .ui-icon,
-.ui-button-text-icon-secondary .ui-icon,
-.ui-button-text-icons .ui-icon,
-.ui-button-icons-only .ui-icon {
-	*margin-top: -9px;
-}
-
-.ui-button-text-icon-primary .ui-button-text {
-	*padding: 0 0 0 1.0em; 
-}
-
-.ui-button-text-icon-secondary .ui-button-text {
-	*padding: 0 1.2em 0 0; 
-}
-
-.ui-button-text-icons .ui-button-text {
-	*padding: 0 1.0em; 
-}
-
-/*** End jQuery UI Theme Styles ***/
-
 /* Base style only */
 html{font-size:100%}
 body{font-family:Arial, Helvetica, FreeSans, sans-serif;font-size:.85em;line-height:1.4;color:#000;background:#FFF;margin:0;padding:0}
@@ -180,7 +44,7 @@ table td,table th{border:1px solid #ccc;vertical-align:top;padding:4px}
 article,aside,dialog,figure,footer,header,hgroup,menu,nav,section{display:block}
 ul#surveylist{list-style:none}
 .hide{position:absolute;top:-9999px;left:-9999px}
-
+.good{color:#090}
 #progress-wrapper{width:252px;font-size:12px;height:20px;margin:0 auto}
 #progress-wrapper #progress-pre{float:left;width:45px;text-align:right;margin:0 5px 0 0}
 #progress-wrapper .ui-widget-content{float:left;width:150px;height:1em;text-align:left;border-color:#666;border-style:solid;border-width:1px}
@@ -200,8 +64,7 @@ ul#surveylist{list-style:none}
 h5,h6{font-size:1em}
 p,dl{margin:.75em 0}
 em,q,cite{font-style:italic}
-.good{color:#090} 
-.error,.problem{color: #A00};
+.error,.problem{color:#f70}
 .ie .ui-slider{display:inline;}
 /* --------------------------------------------- */
 /* Basic adaptation of the template :            */
@@ -209,6 +72,9 @@ em,q,cite{font-style:italic}
 /* --------------------------------------------- */
 
 body {background:#FEFEFE;color:#444;}
+a:link {color: #5670A1;} 
+a:visited {color: #5670A1;} 
+a:hover, a:focus, a:active {background-color: #E5F8A8;color: #5670A1;text-decoration:none;} 
 /* Global margin and with*/
 /* width of limesurvey contents parts */
 .wrapper,#content{padding:0;margin:0 auto;max-width:1024px;width:auto !important; width:1024px}
@@ -226,7 +92,7 @@ body {background:#FEFEFE;color:#444;}
 #head #sitename a{text-decoration:none;color:#328639;}
 
 /* survey title color */
-#title{color:#FFF;background:#5670A1;border-bottom:2px solid #CCC;}
+#title{color:#FFF;background:#5670A1;border-bottom:2px solid #C9EF50;}
 
 /* survey list */
 #surveylist-container h3{color:#5670A1} 
@@ -243,12 +109,11 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 	.tools input,
 	.tools a,
 	input.submit,
-	button.submit,
 	input#savebutton,
 	input#loadbutton,
 	input#registercontinue,
 	.navigator input
-		{border:1px solid #BBB;background:#FEFEFE;color:#444;
+		{border:1px solid #ABB8D1;background:#FEFEFE;color:#415479;
   -moz-box-shadow: 2px 2px 5px #ccc;
   -webkit-box-shadow: 2px 2px 5px #ccc;
   box-shadow: 2px 2px 5px #ccc;
@@ -259,7 +124,6 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 	.tools a:hover,
 	.navigator input:hover,
 	input.submit:hover,
-	button.submit:hover,
 	input#savebutton:hover,
 	input#loadbutton:hover,
 	input#registercontinue:hover,
@@ -268,14 +132,13 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 	.tools a:focus,
 	.navigator input:focus,
 	input.submit:focus,
-	button.submit:focus,
 	input#savebutton:focus,
 	input#loadbutton:focus,
 	input#registercontinue:focus
-		{color:#333;background:#EEE;border-color:#999;
-  -moz-box-shadow: 2px 2px 5px #555;
-  -webkit-box-shadow: 2px 2px 5px #555;
-  box-shadow: 2px 2px 5px #555;
+		{color:#415479;background:#dcdfe6;border-color:#ABB8D1;
+  -moz-box-shadow: 2px 2px 5px #415479;
+  -webkit-box-shadow: 2px 2px 5px #415479;
+  box-shadow: 2px 2px 5px #415479;
 		}
 #languagechanger select:hover option{background:#FEFEFE;}
 
@@ -283,7 +146,6 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 .tools input[disabled],
 	.navigator input[disabled],
 	input.submit[disabled],
-	button.submit[disabled],
 	input#savebutton[disabled],
 	input#loadbutton[disabled],
 	input#registercontinue[disabled],
@@ -320,19 +182,8 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 
 /* input decoration */
 #tokenform input[type=text],.form input[type=text],.answers input[type=text],.answers textarea
-	{border:1px solid #999;}
-#tokenform input:focus{background-color:#F0F0F0;border-color:#666}
-
-/* LimeSurvey form input decoration */
-.answers textarea:focus, .answers input.text:focus{
-  background-color:#F0F0F0;border-color:#666;
-  -moz-box-shadow: 1px 1px 3px #555;
-  -webkit-box-shadow: 1px 1px 3px #555;
-  box-shadow: 1px 1px 3px #555;
-}
-.mandatory .answers textarea.textarea.empty,.mandatory  .answers input.text.empty{
-  background-color:#FFF0F0;border-color:#600;
-}
+	{border:1px solid #5670A1;}
+#tokenform input:focus,.form input:focus,.answers textarea:focus, .answers input:focus{background-color:#E5F8A8}
 
 /* tip color */
 .error{}
@@ -346,12 +197,12 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 /* Replacement of default progress bar */
 #progress-wrapper .ui-widget-content { border-color: #161c28; background: #fefefe; color: #000; }
 #progress-wrapper .ui-widget-header { border-color:#161c28; background: #5670a1; color: #fefefe; font-weight: bold; }
-.ui-slider{border-color:#666;}
-.slider_showmin {color:#666;}
-.slider_showmax {color:#666;}
-.slider_lefttext {color:#666;}
-.slider_righttext {color:#666;}
-.slider_callout {color: #666;}
+.ui-slider{border-color:#5670A1;}
+.slider_showmin {color:#5670A1;}
+.slider_showmax {color:#5670A1;}
+.slider_lefttext {color:#5670A1;}
+.slider_righttext {color:#5670A1;}
+.slider_callout {color: #161c28;}
 
 /* index */
 #index .container{margin-top: 2em;border: 1px solid #5670A1;background:#EEF6FF;}
@@ -403,19 +254,17 @@ ul#surveylist li a{color:#5670A1;}
 
 /* Tool button and link */
 /* tools input */
-.tools input,.tools a,.navigator input,input.submit,button.submit,input#savebutton,input#loadbutton,input#registercontinue,#languagechanger select
+.tools input,.tools a,.navigator input,input.submit,input#savebutton,input#loadbutton,input#registercontinue,#languagechanger select
 		{font-family:FreeSans,Arial,Helvetica,sans-serif;font-size:1em;vertical-align:middle;}
-tools input,.tools a,input.submit,button.submit,.navigator input,input#savebutton,input#loadbutton,input#registercontinue
+tools input,.tools a,input.submit,.navigator input,input#savebutton,input#loadbutton,input#registercontinue
 	{box-sizing: border-box;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;-ms-box-sizing: border-box;}/* same box sizing for link and button */
-.tools input,.tools a,input.submit,button.submit,input#savebutton,input#loadbutton,input#registercontinue,.navigator input
+.tools input,.tools a,input.submit,input#savebutton,input#loadbutton,input#registercontinue,.navigator input
 	{margin:0;padding:3px 6px;text-decoration:none;cursor: pointer;}
-button.submit
-	{margin:0;padding:3px 0;}
 #languagechanger select
 		{margin:0;padding:1px 2px;}
-.tools input,.tools a,.navigator input,input.submit,button.submit,input#savebutton,input#loadbutton,input#registercontinue
+.tools input,.tools a,.navigator input,input.submit,input#savebutton,input#loadbutton,input#registercontinue
 	{outline: 0;}/* try to remove the outline on click : replaced with focus selector*/
-.tools input,.tools a,.navigator input,input.submit,button.submit,input#savebutton,input#loadbutton,input#registercontinue,#languagechanger select
+.tools input,.tools a,.navigator input,input.submit,input#savebutton,input#loadbutton,input#registercontinue,#languagechanger select
 	{-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;}
 /* tools list */
 ul.tools{list-style: none ;margin: 0.5em ; padding: 0 ;text-align: left;}
@@ -483,29 +332,23 @@ input.error,input.problem{font-weight:bold}/* some width problem : todo :fix it 
 #tokenform input[type=text],.form input[type=text],.answers input[type=text],.answers textarea
 	{-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius:3px;}
 
-/*.answers select
-	{-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;}
-.answers select{color:#333;background:#EEE;border-color:#999;
-		}
-.answers select:hover option{background:#FEFEFE;}*/
-
 /* specific questions color and background*/
-table.question{border-color:#DDD;}
-table.question tbody{border-color:#DDD;}
-table.question tr{border-color:#DDD;}
-table.question th{border-color:#DDD;}
-table.question td{border-color:#EEE;}
-table.question thead td{border-color:#DDD;}
+table.question{border-color:#D5DBE7;}
+table.question tbody{border-color:#D5DBE7;}
+table.question tr{border-color:#D5DBE7;}
+table.question th{border-color:#D5DBE7;}
+table.question td{border-color:#EFF1F6;}
+table.question thead td{border-color:#D5DBE7;}
 
-table.question tbody td.ddarrayseparator:hover{background:#EEE;}
+table.question tbody td.ddarrayseparator:hover{background:#EFF1F6;}
 
 .array-flexible-column table.question col.even td {background:#FEFEFE}
-.array-flexible-column table.question col.odd td {background:#F4F4F4}
+.array-flexible-column table.question col.odd td {background:#F4F6F9}
 table.question tr.array1,table.question tbody tr.array1:hover th {background:#FEFEFE}
-table.question tr.array2,table.question tbody tr.array2:hover th {background:#F4F4F4}
+table.question tr.array2,table.question tbody tr.array2:hover th {background:#F4F6F9}
 
-table.question tbody tr:hover {background:#E9E9E0}
-table.question tbody tr td:hover{background:#E0E0E0}
+table.question tbody tr:hover {background:#D5DBE7}
+table.question tbody tr td:hover{background:#E5F8A8}
 
 /* for boilerplate color and background */
 .boilerplate {}
@@ -606,7 +449,6 @@ table.question thead th{text-align:center;}
 table.question tbody td{text-align:center;}
 
 table.question tbody td.ddarrayseparator{border-top-width: 0px;}
-
 
 /* remove the list dot */
  .choice-5-pt-radio .answers ul
@@ -761,11 +603,13 @@ text-align:left;
  .numeric-multi p.tip.error
 ,.numeric-multi input.tip.error
 {
+	color: #f70;
 	text-align: left;
 }
  .numeric-multi p.tip.good
 ,.numeric-multi input.tip.good
 {
+	color: #090;
 	text-align: left;
 }
 
@@ -953,6 +797,34 @@ text-align:left;
 {
 text-align:center;
 }
+
+/* multi column */
+ .answers ul.cols-2 li ,.answers ul.cols-2-ul li
+,.answers ul.cols-3 li ,.answers ul.cols-3-ul li
+,.answers ul.cols-4 li ,.answers ul.cols-4-ul li
+,.answers ul.cols-5 li ,.answers ul.cols-5-ul li
+,.answers ul.cols-6 li ,.answers ul.cols-6-ul li
+,.answers ul.cols-7 li ,.answers ul.cols-7-ul li
+,.answers ul.cols-8 li ,.answers ul.cols-8-ul li
+{
+	float: left;
+	white-space: normal
+	padding: 0;
+	margin:1em;
+}
+
+ul.cols-2 , ul.cols-2-ul , table.cols-2 td { width: 49.9%; }
+ul.cols-3 , ul.cols-3-ul , table.cols-3 td { width: 33.3%; }
+ul.cols-4 , ul.cols-4-ul , table.cols-4 td { width: 24.9%; }
+ul.cols-5 , ul.cols-5-ul , table.cols-5 td { width: 19.9%; }
+ul.cols-6 , ul.cols-6-ul , table.cols-6 td { width: 16.6%; }
+ul.cols-7 , ul.cols-7-ul , table.cols-7 td { width: 14.2%; }
+ul.cols-8 , ul.cols-8-ul , table.cols-8 td { width: 12.4%; }
+
+input.text,textarea{
+	text-align: start;
+}
+
 
 .ranking .answers table {
     width: 100%; /* fill it, to make it look less ugly */
