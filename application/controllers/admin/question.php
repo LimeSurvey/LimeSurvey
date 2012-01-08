@@ -452,13 +452,13 @@ class question extends Survey_Common_Action
 
         for ($iScale = 0; $iScale < $iScaleCount; $iScale++)
         {
-            $subquestiondata = Questions::model()->findByAttributes(array(
+            $subquestiondata = Questions::model()->findAllByAttributes(array(
                 'parent_qid' => $qid,
                 'language' => $baselang,
                 'scale_id' => $iScale
             ));
 
-            if (is_null($subquestiondata))
+            if (empty($subquestiondata))
             {
                 Questions::model()->insert(array(
                     'sid' => $surveyid,
@@ -471,7 +471,7 @@ class question extends Survey_Common_Action
                     'scale_id' => $iScale,
                 ));
 
-                $subquestiondata = Questions::model()->findByAttributes(array(
+                $subquestiondata = Questions::model()->findAllByAttributes(array(
                     'parent_qid' => $qid,
                     'language' => $baselang,
                     'scale_id' => $iScale
@@ -480,14 +480,18 @@ class question extends Survey_Common_Action
 
             // Check that there are subquestions for every language supported by the survey
             foreach ($anslangs as $language)
-            {
+            {                
                 foreach ($subquestiondata as $row)
                 {
-                    $qrow = Questions::model()->count(array(
-                        'parent_qid' => $qid,
-                        'language' => $language,
-                        'qid' => $row->qid,
-                        'scale_id' => $iScale
+                    $qrow = Questions::model()->count('
+                        parent_qid = :qid AND
+                        language = :language AND
+                        qid = '.$row->qid.' AND
+                        scale_id = :iScale',
+                        array(
+                            ':qid' => $qid,
+                            ':language' => $language,
+                            ':iScale' => $iScale
                     ));
 
                     // Means that no record for the language exists in the questions table
