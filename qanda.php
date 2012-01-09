@@ -3735,7 +3735,7 @@ function do_multiplechoice_withcomments($ia)
 // ---------------------------------------------------------------
 function do_file_upload($ia)
 {
-    global $clang, $js_header_includes, $thissurvey, $surveyid;
+    global $clang, $js_header_includes, $thissurvey, $surveyid,$rooturl;
 
     if ($ia[8] == 'Y')
         $checkconditionFunction = "checkconditions";
@@ -3787,24 +3787,22 @@ function do_file_upload($ia)
     */
     $currentdir = getcwd();
     $pos = stripos($currentdir, "admin");
-
+    $scriptloc = $rooturl.'/uploader.php';
     if ($pos)
     {
         $_SESSION['preview'] = 1;
         $questgrppreview = 1;   // Preview is launched from Question or group level
-        $scriptloc = '../uploader.php';
+
     }
     else if ($thissurvey['active'] != "Y")
         {
             $_SESSION['preview'] = 1;
             $questgrppreview = 0;
-            $scriptloc = 'uploader.php';
         }
         else
         {
             $_SESSION['preview'] = 0;
             $questgrppreview = 0;
-            $scriptloc = 'uploader.php';
     }
 
     $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' href='{$scriptloc}?sid={$surveyid}&amp;fieldname={$ia[1]}&amp;qid={$ia[0]}&amp;preview="
@@ -3816,10 +3814,11 @@ function do_file_upload($ia)
     returnTxt: '" . $clang->gT('Return to survey') . "'
     };
     </script>\n";
-    if ($pos)
-        $answer .= "<script type='text/javascript' src='../scripts/modaldialog.js'></script>";
+    /*if ($pos)
+        $answer .= "<script type='text/javascript' src='{$rooturl}/scripts/modaldialog.js'></script>";
     else
-        $answer .= "<script type='text/javascript' src='scripts/modaldialog.js'></script>";
+        $answer .= "<script type='text/javascript' src='{$rooturl}/scripts/modaldialog.js'></script>";*/
+    $js_header_includes[]= '/scripts/modaldialog.js';
 
     // Modal dialog
     $answer .= $uploadbutton;
@@ -3843,10 +3842,11 @@ function do_file_upload($ia)
         $answer .= "0 />";
     }
 
-    $answer .= "<div id='".$ia[1]."_uploadedfiles'></div>";
+    $answer .= "<div id='".$ia[1]."_uploadedfiles' class='uploadedfiles'></div>";
 
     $answer .= '<script type="text/javascript">
     var surveyid = '.$surveyid.';
+    var rooturl = "'.$rooturl.'";
     $(document).ready(function(){
     var fieldname = "'.$ia[1].'";
     var filecount = $("#"+fieldname+"_filecount").val();
