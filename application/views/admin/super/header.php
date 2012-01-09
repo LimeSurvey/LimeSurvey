@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html<?php echo $languageRTL;?>>
+<html lang="<?php echo $adminlang; ?>"<?php echo $languageRTL;?>>
 <head>
     <?php echo $meta;?>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
