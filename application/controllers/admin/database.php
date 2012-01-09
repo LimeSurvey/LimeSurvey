@@ -883,7 +883,7 @@ class database extends Survey_Common_Action
             {
                 if ($langname)
                 {
-                    $url = CHttpRequest::getPost('url_'.$langname);
+                    $url = Yii::app()->request->getPost('url_'.$langname);
                     if ($url == 'http://') {$url="";}
 
                     // Clean XSS attacks
@@ -893,28 +893,28 @@ class database extends Survey_Common_Action
                         $purifier->options = array(
                         'HTML.Allowed' => 'p,a[href],b,i'
                         );
-                        $short_title=$purifier->purify(CHttpRequest::getPost('short_title_'.$langname));
-                        $description=$purifier->purify(CHttpRequest::getPost('description_'.$langname));
-                        $welcome=$purifier->purify(CHttpRequest::getPost('welcome_'.$langname));
-                        $endtext=$purifier->purify(CHttpRequest::getPost('endtext_'.$langname));
-                        $sURLDescription=$purifier->purify(CHttpRequest::getPost('urldescrip_'.$langname));
-                        $sURL=$purifier->purify(CHttpRequest::getPost('url_'.$langname));
+                        $short_title=$purifier->purify(Yii::app()->request->getPost('short_title_'.$langname));
+                        $description=$purifier->purify(Yii::app()->request->getPost('description_'.$langname));
+                        $welcome=$purifier->purify(Yii::app()->request->getPost('welcome_'.$langname));
+                        $endtext=$purifier->purify(Yii::app()->request->getPost('endtext_'.$langname));
+                        $sURLDescription=$purifier->purify(Yii::app()->request->getPost('urldescrip_'.$langname));
+                        $sURL=$purifier->purify(Yii::app()->request->getPost('url_'.$langname));
                     }
                     else
                     {
-                        $short_title = html_entity_decode(CHttpRequest::getPost('short_title_'.$langname), ENT_QUOTES, "UTF-8");
-                        $description = html_entity_decode(CHttpRequest::getPost('description_'.$langname), ENT_QUOTES, "UTF-8");
-                        $welcome = html_entity_decode(CHttpRequest::getPost('welcome_'.$langname), ENT_QUOTES, "UTF-8");
-                        $endtext = html_entity_decode(CHttpRequest::getPost('endtext_'.$langname), ENT_QUOTES, "UTF-8");
-                        $sURLDescription = html_entity_decode(CHttpRequest::getPost('urldescrip_'.$langname), ENT_QUOTES, "UTF-8");
-                        $sURL = html_entity_decode(CHttpRequest::getPost('url_'.$langname), ENT_QUOTES, "UTF-8");
+                        $short_title = html_entity_decode(Yii::app()->request->getPost('short_title_'.$langname), ENT_QUOTES, "UTF-8");
+                        $description = html_entity_decode(Yii::app()->request->getPost('description_'.$langname), ENT_QUOTES, "UTF-8");
+                        $welcome = html_entity_decode(Yii::app()->request->getPost('welcome_'.$langname), ENT_QUOTES, "UTF-8");
+                        $endtext = html_entity_decode(Yii::app()->request->getPost('endtext_'.$langname), ENT_QUOTES, "UTF-8");
+                        $sURLDescription = html_entity_decode(Yii::app()->request->getPost('urldescrip_'.$langname), ENT_QUOTES, "UTF-8");
+                        $sURL = html_entity_decode(Yii::app()->request->getPost('url_'.$langname), ENT_QUOTES, "UTF-8");
                     }
 
                     // Fix bug with FCKEditor saving strange BR types
-                    $short_title = CHttpRequest::getPost('short_title_'.$langname);
-                    $description = CHttpRequest::getPost('description_'.$langname);
-                    $welcome = CHttpRequest::getPost('welcome_'.$langname);
-                    $endtext = CHttpRequest::getPost('endtext_'.$langname);
+                    $short_title = Yii::app()->request->getPost('short_title_'.$langname);
+                    $description = Yii::app()->request->getPost('description_'.$langname);
+                    $welcome = Yii::app()->request->getPost('welcome_'.$langname);
+                    $endtext = Yii::app()->request->getPost('endtext_'.$langname);
 
                     $short_title=fix_FCKeditor_text($short_title);
                     $description=fix_FCKeditor_text($description);
@@ -928,8 +928,8 @@ class database extends Survey_Common_Action
                     'surveyls_endtext' => $endtext,
                     'surveyls_url' => $sURL,
                     'surveyls_urldescription' => $sURLDescription,
-                    'surveyls_dateformat' => CHttpRequest::getPost('dateformat_'.$langname),
-                    'surveyls_numberformat' => CHttpRequest::getPost('numberformat_'.$langname)
+                    'surveyls_dateformat' => Yii::app()->request->getPost('dateformat_'.$langname),
+                    'surveyls_numberformat' => Yii::app()->request->getPost('numberformat_'.$langname)
                     );
                     //In 'surveyls_survey_id' => $surveyid, it was initially $postsid. returnglobal not working properly!
                     $condition = array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $langname);
@@ -939,9 +939,9 @@ class database extends Survey_Common_Action
                     . "surveyls_welcometext='".$welcome."',\n"
                     . "surveyls_endtext='".$endtext."',\n"
                     . "surveyls_url='".$url."',\n"
-                    . "surveyls_urldescription='".CHttpRequest::getPost('urldescrip_'.$langname)."',\n"
-                    . "surveyls_dateformat='".CHttpRequest::getPost('dateformat_'.$langname)."',\n"
-                    . "surveyls_numberformat='".CHttpRequest::getPost('numberformat_'.$langname)."'\n"
+                    . "surveyls_urldescription='".Yii::app()->request->getPost('urldescrip_'.$langname)."',\n"
+                    . "surveyls_dateformat='".Yii::app()->request->getPost('dateformat_'.$langname)."',\n"
+                    . "surveyls_numberformat='".Yii::app()->request->getPost('numberformat_'.$langname)."'\n"
                     . "WHERE surveyls_survey_id=".$postsid." and surveyls_language='".$langname."'";
 
                     $usresult = Yii::app()->db->createCommand($usquery)->query();// or safe_die("Error updating local settings");   // Checked

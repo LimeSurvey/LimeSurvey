@@ -21,11 +21,12 @@ class Quota extends CActiveRecord
 	 *
 	 * @static
 	 * @access public
+     * @param string $class
 	 * @return CActiveRecord
 	 */
-	public static function model()
+	public static function model($class = __CLASS__)
 	{
-		return parent::model(__CLASS__);
+		return parent::model($class);
 	}
 
 	/**
@@ -63,7 +64,7 @@ class Quota extends CActiveRecord
 				'on' => 't.id = languagesettings.quotals_quota_id'),
 		);
 	}
-	
+
 	function insertRecords($data)
     {
         $quota = new self;

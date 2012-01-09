@@ -7,18 +7,18 @@
         <input type='submit' value='<?php $clang->eT("Continue"); ?>' />
         <input type='hidden' name='ok' value="absolutely" />
         <input type='hidden' name='action' value="tokens" />
-        <input type='hidden' name='bypassbademails' value="<?php echo CHttpRequest::getPost('bypassbademails'); ?>" />
+        <input type='hidden' name='bypassbademails' value="<?php echo Yii::app()->request->getPost('bypassbademails'); ?>" />
         <?php
         //Include values for constraints minreminderdelay and maxremindercount if they exist
         if (!$bEmail)
         {
-            if (intval(CHttpRequest::getPost('minreminderdelay')) != 0)
+            if (intval(Yii::app()->request->getPost('minreminderdelay')) != 0)
             { ?>
-                <input type='hidden' name='minreminderdelay' value="<?php echo CHttpRequest::getPost('minreminderdelay'); ?>" />
+                <input type='hidden' name='minreminderdelay' value="<?php echo Yii::app()->request->getPost('minreminderdelay'); ?>" />
             <?php }
-            if (intval(CHttpRequest::getPost('maxremindercount')) != 0)
+            if (intval(Yii::app()->request->getPost('maxremindercount')) != 0)
             { ?>
-                <input type='hidden' name='maxremindercount' value="<?php echo CHttpRequest::getPost('maxremindercount'); ?>" />
+                <input type='hidden' name='maxremindercount' value="<?php echo Yii::app()->request->getPost('maxremindercount'); ?>" />
             <?php }
         }
         ?>

@@ -75,7 +75,7 @@ class dataentry extends Survey_Common_Action
     {
         $aData = array();
 
-        $surveyid = sanitize_int(CHttpRequest::getParam('surveyid'));
+        $surveyid = sanitize_int(Yii::app()->request->getParam('surveyid'));
         if (!empty($_REQUEST['sid'])) {
             $surveyid = sanitize_int($_REQUEST['sid']);
         }
@@ -87,7 +87,7 @@ class dataentry extends Survey_Common_Action
             // First load the database helper
             Yii::app()->loadHelper('database');
 
-            $subAction = CHttpRequest::getPost('subaction');
+            $subAction = Yii::app()->request->getPost('subaction');
             if ($subAction != "upload")
             {
                 $this->_showUploadForm($this->_getEncodingsArray(), $surveyid, $aData);
@@ -116,10 +116,10 @@ class dataentry extends Survey_Common_Action
 
         $aRealFieldNames = Yii::app()->db->getSchema()->getTable($survey->tableName())->getColumnNames();
 
-        if (CHttpRequest::getPost('noid') == "noid") {
+        if (Yii::app()->request->getPost('noid') == "noid") {
             unset($aRealFieldNames[0]);
         }
-        if (CHttpRequest::getPost('finalized') == "notfinalized") {
+        if (Yii::app()->request->getPost('finalized') == "notfinalized") {
             unset($aRealFieldNames[1]);
         }
 
@@ -135,7 +135,7 @@ class dataentry extends Survey_Common_Action
             }
         }
 
-        if (CHttpRequest::getPost('finalized') == "notfinalized") {
+        if (Yii::app()->request->getPost('finalized') == "notfinalized") {
             $donotimport[] = 1;
             unset($aFieldnames[1]);
         }
@@ -194,18 +194,18 @@ class dataentry extends Survey_Common_Action
 
                     // Check if record with same id exists
                     if ($recordexists) {
-                        if (CHttpRequest::getPost('insert') == "ignore") {
+                        if (Yii::app()->request->getPost('insert') == "ignore") {
                             $aData['msgs'][] .= sprintf($clang->gT("Record ID %s was skipped because of duplicate ID."), $fielddata['`id`']);
                             continue;
                         }
-                        if (CHttpRequest::getPost('insert') == "replace") {
+                        if (Yii::app()->request->getPost('insert') == "replace") {
                             $result = $survey->deleteSomeRecords(array('id' => $fielddata['`id`']));
                             $recordexists = false;
                         }
                     }
                 }
 
-                if (CHttpRequest::getPost('insert') == "renumber") {
+                if (Yii::app()->request->getPost('insert') == "renumber") {
                     unset($fielddata['`id`']);
                 }
 
@@ -233,8 +233,8 @@ class dataentry extends Survey_Common_Action
             }
         }
 
-        $aData['noid'] = CHttpRequest::getPost('noid');
-        $aData['insertstyle'] = CHttpRequest::getPost('insertstyle');
+        $aData['noid'] = Yii::app()->request->getPost('noid');
+        $aData['insertstyle'] = Yii::app()->request->getPost('insertstyle');
 
         $this->_renderWrappedTemplate('vvimport_upload', $aData);
     }
@@ -331,9 +331,9 @@ class dataentry extends Survey_Common_Action
             //if (!isset($surveyid)) $surveyid = $this->input->post('sid');
             if (!isset($oldtable) && isset($_POST['oldtable']))
             {
-                $oldtable = CHttpRequest::getPost('oldtable');
+                $oldtable = Yii::app()->request->getPost('oldtable');
 
-                $subaction = CHttpRequest::getPost('subaction');
+                $subaction = Yii::app()->request->getPost('subaction');
             }
 
             $schema = Yii::app()->db->getSchema();
@@ -534,17 +534,17 @@ class dataentry extends Survey_Common_Action
             {
                 if (isset($_GET['public']) && $_GET['public']=="true")
                 {
-                    $password = md5(CHttpRequest::getParam('accesscode'));
+                    $password = md5(Yii::app()->request->getParam('accesscode'));
                 }
                 else
                 {
-                    $password = CHttpRequest::getParam('accesscode');
+                    $password = Yii::app()->request->getParam('accesscode');
                 }
 
                 $svresult= Saved_control::model()->findAllByAttributes(
                 array(
                 'sid' => $surveyid,
-                'identifier' => CHttpRequest::getParam('identifier'),
+                'identifier' => Yii::app()->request->getParam('identifier'),
                 'access_code' => $password)
                 );
 
@@ -1419,12 +1419,12 @@ class dataentry extends Survey_Common_Action
     */
     public function delete()
     {
-        $subaction = CHttpRequest::getPost('subaction');
+        $subaction = Yii::app()->request->getPost('subaction');
         $surveyid = $_REQUEST['surveyid'];
         if (!empty($_REQUEST['sid'])) $surveyid = (int)$_REQUEST['sid'];
 
         $surveyid = sanitize_int($surveyid);
-        $id = CHttpRequest::getPost('id');
+        $id = Yii::app()->request->getPost('id');
 
         $aData = array(
         'surveyid' => $surveyid,
@@ -1451,12 +1451,12 @@ class dataentry extends Survey_Common_Action
     */
     public function update()
     {
-        $subaction = CHttpRequest::getPost('subaction');
+        $subaction = Yii::app()->request->getPost('subaction');
         $surveyid = $_REQUEST['surveyid'];
         if (!empty($_REQUEST['sid'])) $surveyid = (int)$_REQUEST['sid'];
         $surveyid = sanitize_int($surveyid);
-        $id = CHttpRequest::getPost('id');
-        $lang = CHttpRequest::getPost('lang');
+        $id = Yii::app()->request->getPost('id');
+        $lang = Yii::app()->request->getPost('lang');
 
         if ($subaction == "update"  && bHasSurveyPermission($surveyid, 'responses', 'update'))
         {
@@ -1575,9 +1575,9 @@ class dataentry extends Survey_Common_Action
     public function insert()
     {
         $clang = Yii::app()->lang;
-        $subaction = CHttpRequest::getPost('subaction');
-        $surveyid = CHttpRequest::getPost('sid');
-        $lang = isset($_POST['lang']) ? CHttpRequest::getPost('lang') : NULL;
+        $subaction = Yii::app()->request->getPost('subaction');
+        $surveyid = Yii::app()->request->getPost('sid');
+        $lang = isset($_POST['lang']) ? Yii::app()->request->getPost('lang') : NULL;
 
         $aData = array(
         'surveyid' => $surveyid,

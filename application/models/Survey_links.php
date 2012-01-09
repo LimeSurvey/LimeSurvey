@@ -17,17 +17,18 @@
 class Survey_links extends CActiveRecord
 {
 
-    /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
-     * @return CActiveRecord
-     */
-    public static function model()
-    {
-        return parent::model(__CLASS__);
-    }
+	/**
+	 * Returns the static model of Settings table
+	 *
+	 * @static
+	 * @access public
+     * @param string $class
+	 * @return CActiveRecord
+	 */
+	public static function model($class = __CLASS__)
+	{
+		return parent::model($class);
+	}
 
     /**
      * Returns the setting's table name to be used by the model

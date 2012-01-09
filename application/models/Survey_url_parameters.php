@@ -18,12 +18,13 @@ class Survey_url_parameters extends CActiveRecord{
 	 *
 	 * @static
 	 * @access public
+     * @param string $class
 	 * @return CActiveRecord
 	 */
-	public static function model()
+	public static function model($class = __CLASS__)
 	{
-        return parent::model(__CLASS__);
-    }
+		return parent::model($class);
+	}
 
 	/**
 	 * Returns the setting's table name to be used by the model
@@ -35,7 +36,7 @@ class Survey_url_parameters extends CActiveRecord{
 	{
 		return '{{survey_url_parameters}}';
 	}
-    
+
     function getParametersForSurvey($iSurveyID)
     {
         return Yii::app()->db->createCommand("select '' as act, up.*,q.title, sq.title as sqtitle, q.question, sq.question as sqquestion from {{survey_url_parameters}} up

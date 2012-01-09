@@ -29,14 +29,18 @@
 class Participants extends CActiveRecord
 {
 
-    /**
-     * Returns the static model of the specified AR class.
-     * @return Participants the static model class
-     */
-    public static function model($className=__CLASS__)
-    {
-        return parent::model($className);
-    }
+	/**
+	 * Returns the static model of Settings table
+	 *
+	 * @static
+	 * @access public
+     * @param string $class
+	 * @return CActiveRecord
+	 */
+	public static function model($class = __CLASS__)
+	{
+		return parent::model($class);
+	}
 
     /**
      * @return string the associated database table name

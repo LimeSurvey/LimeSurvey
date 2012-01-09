@@ -38,7 +38,7 @@ class Usergroups extends Survey_Common_Action
         $ugid = sanitize_int($ugid);
         $clang = Yii::app()->lang;
 
-        $action = CHttpRequest::getPost("action");
+        $action = Yii::app()->request->getPost("action");
 
         if ($action == "mailsendusergroup") {
 
@@ -359,7 +359,7 @@ class Usergroups extends Survey_Common_Action
         }
 
         $clang = Yii::app()->lang;
-        $uid = (int) CHttpRequest::getPost('uid');
+        $uid = (int) Yii::app()->request->getPost('uid');
 
         $group = User_groups::model()->findByAttributes(array('ugid' => $ugid, 'owner_id' => Yii::app()->session['loginID']));
 

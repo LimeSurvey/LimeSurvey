@@ -37,15 +37,16 @@ class Surveys_languagesettings extends CActiveRecord
 	}
 
 	/**
-	 * Return the static model for this table
+	 * Returns the static model of Settings table
 	 *
 	 * @static
 	 * @access public
+     * @param string $class
 	 * @return CActiveRecord
 	 */
-	public static function model()
+	public static function model($class = __CLASS__)
 	{
-		return parent::model(__CLASS__);
+		return parent::model($class);
 	}
 
 	/**
@@ -106,7 +107,7 @@ class Surveys_languagesettings extends CActiveRecord
     function insertNewSurvey($data, $xssfiltering = false)
     {
         if (isset($data['surveyls_url']) && $data['surveyls_url']== 'http://') {$data['surveyls_url']="";}
-		
+
 		if($xssfiltering)
 		{
 			$filter = new CHtmlPurifier();
@@ -119,7 +120,7 @@ class Surveys_languagesettings extends CActiveRecord
 			$data["welcome"] = $filter->purify($data["welcome"]);
 			$data["endtext"] = $filter->purify($data["endtext"]);
 		}
-		        
+
 		return $this->insertSomeRecords($data);
     }
     function getSurveyNames($surveyid)
@@ -133,7 +134,7 @@ class Surveys_languagesettings extends CActiveRecord
         {
             $this->db->where($condition);
         }
-		
+
 		if($xssfiltering)
 		{
 			$filter = new CHtmlPurifier();
@@ -150,7 +151,7 @@ class Surveys_languagesettings extends CActiveRecord
 			if (isset($data["endtext"]))
 				$data["endtext"] = $filter->purify($data["endtext"]);
 		}
-		
+
         $this->db->update('surveys_languagesettings',$data);
 
         if ($this->db->affected_rows() <= 0)

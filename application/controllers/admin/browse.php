@@ -51,7 +51,7 @@ class browse extends Survey_Common_Action
         }
         $aData['clang'] = $clang = $this->getController()->lang;
         $aData['imageurl'] = Yii::app()->getConfig('imageurl');
-        $aData['action'] = CHttpRequest::getParam('action');
+        $aData['action'] = Yii::app()->request->getParam('action');
 
         $oCriteria = new CDbCriteria;
         $oCriteria->select = 'sid, active';
@@ -192,15 +192,15 @@ class browse extends Survey_Common_Action
         {
             $iId = 1;
         }
-        if (CHttpRequest::getPost('sql'))
+        if (Yii::app()->request->getPost('sql'))
         {
             if (get_magic_quotes_gpc())
             {
-                $oCriteria->addCondition(stripslashes(CHttpRequest::getPost('sql')));
+                $oCriteria->addCondition(stripslashes(Yii::app()->request->getPost('sql')));
             }
             else
             {
-                $oCriteria->addCondition(CHttpRequest::getPost('sql'));
+                $oCriteria->addCondition(Yii::app()->request->getPost('sql'));
             }
         }
         else
@@ -294,15 +294,15 @@ class browse extends Survey_Common_Action
          * it containts
          *             $fnames[] = array(<dbfieldname>, <some strange title>, <questiontext>, <group_id>, <questiontype>);
          */
-        if (CHttpRequest::getPost('sql'))
+        if (Yii::app()->request->getPost('sql'))
         {
             $aViewUrls[] = 'browseallfiltered_view';
         }
 
         //Delete Individual answer using inrow delete buttons/links - checked
-        if (CHttpRequest::getPost('deleteanswer') && CHttpRequest::getPost('deleteanswer') != '' && CHttpRequest::getPost('deleteanswer') != 'marked' && bHasSurveyPermission($iSurveyId, 'responses', 'delete'))
+        if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') != '' && Yii::app()->request->getPost('deleteanswer') != 'marked' && bHasSurveyPermission($iSurveyId, 'responses', 'delete'))
         {
-            $_POST['deleteanswer'] = (int) CHttpRequest::getPost('deleteanswer'); // sanitize the value
+            $_POST['deleteanswer'] = (int) Yii::app()->request->getPost('deleteanswer'); // sanitize the value
             // delete the files as well if its a fuqt
 
             $fieldmap = createFieldMap($iSurveyId);
@@ -317,7 +317,7 @@ class browse extends Survey_Common_Action
             if (!empty($fuqtquestions))
             {
                 // find all responses (filenames) to the fuqt questions
-                $responses = Survey_dynamic::model($iSurveyId)->findAllByAttributes(array('id' => CHttpRequest::getPost('deleteanswer')));
+                $responses = Survey_dynamic::model($iSurveyId)->findAllByAttributes(array('id' => Yii::app()->request->getPost('deleteanswer')));
 
                 foreach ($responses as $json)
                 {
@@ -334,13 +334,13 @@ class browse extends Survey_Common_Action
             }
 
             // delete the row
-            Survey_dynamic::model($iSurveyId)->deleteAllByAttributes(array('id' => mysql_real_escape_string(CHttpRequest::getPost('deleteanswer'))));
+            Survey_dynamic::model($iSurveyId)->deleteAllByAttributes(array('id' => mysql_real_escape_string(Yii::app()->request->getPost('deleteanswer'))));
         }
         // Marked responses -> deal with the whole batch of marked responses
-        if (CHttpRequest::getPost('markedresponses') && count(CHttpRequest::getPost('markedresponses')) > 0 && bHasSurveyPermission($iSurveyId, 'responses', 'delete'))
+        if (Yii::app()->request->getPost('markedresponses') && count(Yii::app()->request->getPost('markedresponses')) > 0 && bHasSurveyPermission($iSurveyId, 'responses', 'delete'))
         {
             // Delete the marked responses - checked
-            if (CHttpRequest::getPost('deleteanswer') && CHttpRequest::getPost('deleteanswer') === 'marked')
+            if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') === 'marked')
             {
                 $fieldmap = createFieldMap($iSurveyId);
                 $fuqtquestions = array();
@@ -351,7 +351,7 @@ class browse extends Survey_Common_Action
                         $fuqtquestions[] = $field['fieldname'];
                 }
 
-                foreach (CHttpRequest::getPost('markedresponses') as $iResponseID)
+                foreach (Yii::app()->request->getPost('markedresponses') as $iResponseID)
                 {
                     $iResponseID = (int) $iResponseID; // sanitize the value
 
@@ -378,25 +378,25 @@ class browse extends Survey_Common_Action
                 }
             }
             // Download all files for all marked responses  - checked
-            else if (CHttpRequest::getPost('downloadfile') && CHttpRequest::getPost('downloadfile') === 'marked')
+            else if (Yii::app()->request->getPost('downloadfile') && Yii::app()->request->getPost('downloadfile') === 'marked')
             {
                 // Now, zip all the files in the filelist
                 $zipfilename = "Responses_for_survey_{$iSurveyId}.zip";
-                $this->_zipFiles(CHttpRequest::getPost('markedresponses'), $zipfilename);
+                $this->_zipFiles(Yii::app()->request->getPost('markedresponses'), $zipfilename);
             }
         }
         // Download all files for this entry - checked
-        else if (CHttpRequest::getPost('downloadfile') && CHttpRequest::getPost('downloadfile') != '' && CHttpRequest::getPost('downloadfile') !== true)
+        else if (Yii::app()->request->getPost('downloadfile') && Yii::app()->request->getPost('downloadfile') != '' && Yii::app()->request->getPost('downloadfile') !== true)
         {
             // Now, zip all the files in the filelist
-            $zipfilename = "LS_Responses_for_" . CHttpRequest::getPost('downloadfile') . ".zip";
-            $this->_zipFiles(CHttpRequest::getPost('downloadfile'), $zipfilename);
+            $zipfilename = "LS_Responses_for_" . Yii::app()->request->getPost('downloadfile') . ".zip";
+            $this->_zipFiles(Yii::app()->request->getPost('downloadfile'), $zipfilename);
         }
-        else if (CHttpRequest::getPost('downloadindividualfile') != '')
+        else if (Yii::app()->request->getPost('downloadindividualfile') != '')
         {
-            $iId = (int) CHttpRequest::getPost('id');
-            $downloadindividualfile = CHttpRequest::getPost('downloadindividualfile');
-            $fieldname = CHttpRequest::getPost('fieldname');
+            $iId = (int) Yii::app()->request->getPost('id');
+            $downloadindividualfile = Yii::app()->request->getPost('downloadindividualfile');
+            $fieldname = Yii::app()->request->getPost('fieldname');
 
             $row = Survey_dynamic::model($iSurveyId)->findByAttributes(array('id' => $iId));
             $phparray = json_decode(reset($row));
@@ -492,8 +492,8 @@ class browse extends Survey_Common_Action
 
         $fncount = count($fnames);
 
-        $start = CHttpRequest::getParam('start', 0);
-        $limit = CHttpRequest::getParam('limit', 100);
+        $start = Yii::app()->request->getParam('start', 0);
+        $limit = Yii::app()->request->getParam('limit', 100);
 
         $oCriteria = new CDbCriteria;
         //Create the query
@@ -519,10 +519,10 @@ class browse extends Survey_Common_Action
         }
 
         //NOW LETS SHOW THE DATA
-        if (CHttpRequest::getPost('sql') && stripcslashes(CHttpRequest::getPost('sql')) !== "" && CHttpRequest::getPost('sql') != "NULL")
-            $oCriteria->addCondition(stripcslashes(CHttpRequest::getPost('sql')));
+        if (Yii::app()->request->getPost('sql') && stripcslashes(Yii::app()->request->getPost('sql')) !== "" && Yii::app()->request->getPost('sql') != "NULL")
+            $oCriteria->addCondition(stripcslashes(Yii::app()->request->getPost('sql')));
 
-        $oCriteria->order = 'id ' . (CHttpRequest::getParam('order') == 'desc' ? 'desc' : 'asc');
+        $oCriteria->order = 'id ' . (Yii::app()->request->getParam('order') == 'desc' ? 'desc' : 'asc');
         $oCriteria->offset = $start;
         $oCriteria->limit = $limit;
 
@@ -591,14 +591,14 @@ class browse extends Survey_Common_Action
         if ($aData['surveyinfo']['savetimings'] != "Y")
             die();
 
-        if (CHttpRequest::getPost('deleteanswer') != '')
+        if (Yii::app()->request->getPost('deleteanswer') != '')
         {
-            Survey_dynamic::model($iSurveyId)->deleteByAttributes(array('id' => (int) CHttpRequest::getPost('deleteanswer'))) or die("Could not delete response");
+            Survey_dynamic::model($iSurveyId)->deleteByAttributes(array('id' => (int) Yii::app()->request->getPost('deleteanswer'))) or die("Could not delete response");
         }
 
-        if (CHttpRequest::getPost('markedresponses') && count(CHttpRequest::getPost('markedresponses')) > 0)
+        if (Yii::app()->request->getPost('markedresponses') && count(Yii::app()->request->getPost('markedresponses')) > 0)
         {
-            foreach (CHttpRequest::getPost('markedresponses') as $iResponseID)
+            foreach (Yii::app()->request->getPost('markedresponses') as $iResponseID)
             {
                 Survey_dynamic::model($iSurveyId)->deleteByAttributes(array('id' => (int) $iResponseID)) or die("Could not delete response");
             }
@@ -643,8 +643,8 @@ class browse extends Survey_Common_Action
             }
         }
 
-        $start = CHttpRequest::getParam('start', 0);
-        $limit = CHttpRequest::getParam('limit', 50);
+        $start = Yii::app()->request->getParam('start', 0);
+        $limit = Yii::app()->request->getParam('limit', 50);
 
         //LETS COUNT THE DATA
         $oCriteria = new CdbCritera();

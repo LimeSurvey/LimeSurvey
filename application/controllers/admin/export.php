@@ -32,8 +32,8 @@ class export extends Survey_Common_Action {
 
     public function survey()
     {
-        $action = CHttpRequest::getParam('action');
-        $surveyid = sanitize_int(CHttpRequest::getParam('surveyid'));
+        $action = Yii::app()->request->getParam('action');
+        $surveyid = sanitize_int(Yii::app()->request->getParam('surveyid'));
 
         if ( bHasSurveyPermission($surveyid, 'surveycontent', 'export') )
 		{
@@ -108,14 +108,14 @@ class export extends Survey_Common_Action {
 
     public function group()
     {
-        $gid = sanitize_int(CHttpRequest::getParam('gid'));
-        $surveyid = sanitize_int(CHttpRequest::getParam('surveyid'));
+        $gid = sanitize_int(Yii::app()->request->getParam('gid'));
+        $surveyid = sanitize_int(Yii::app()->request->getParam('surveyid'));
 
         if ( Yii::app()->getConfig("export4lsrc") === TRUE && bHasSurveyPermission($surveyid, 'survey', 'export') )
 		{
             if ( ! empty($_POST['action']) )
             {
-                group_export(CHttpRequest::getPost('action'), $surveyid, $gid);
+                group_export(Yii::app()->request->getPost('action'), $surveyid, $gid);
                 return;
             }
 
@@ -133,15 +133,15 @@ class export extends Survey_Common_Action {
 
     public function question()
     {
-        $gid = sanitize_int(CHttpRequest::getParam('gid'));
-        $qid = sanitize_int(CHttpRequest::getParam('qid'));
-        $surveyid = sanitize_int(CHttpRequest::getParam('surveyid'));
+        $gid = sanitize_int(Yii::app()->request->getParam('gid'));
+        $qid = sanitize_int(Yii::app()->request->getParam('qid'));
+        $surveyid = sanitize_int(Yii::app()->request->getParam('surveyid'));
 
         if( Yii::app()->getConfig('export4lsrc') === TRUE && bHasSurveyPermission($surveyid, 'survey', 'export') )
 		{
             if( ! empty($_POST['action']) )
             {
-                question_export(CHttpRequest::getPost('action'), $surveyid, $gid, $qid);
+                question_export(Yii::app()->request->getPost('action'), $surveyid, $gid, $qid);
                 return;
             }
 
@@ -159,7 +159,7 @@ class export extends Survey_Common_Action {
 
     public function exportresults()
     {
-        $surveyid = sanitize_int(CHttpRequest::getParam('surveyid'));
+        $surveyid = sanitize_int(Yii::app()->request->getParam('surveyid'));
 
         if ( ! isset($imageurl) ) { $imageurl = "./images"; }
         if ( ! isset($surveyid) ) { $surveyid = returnglobal('sid'); }
@@ -243,9 +243,9 @@ class export extends Survey_Common_Action {
         //Get together our FormattingOptions and then call into the exportSurvey
         //function.
         $options = new FormattingOptions();
-        $options->selectedColumns = CHttpRequest::getPost('colselect');
-        $options->responseMinRecord = sanitize_int(CHttpRequest::getPost('export_from')) - 1;
-        $options->responseMaxRecord = sanitize_int(CHttpRequest::getPost('export_to')) - 1;
+        $options->selectedColumns = Yii::app()->request->getPost('colselect');
+        $options->responseMinRecord = sanitize_int(Yii::app()->request->getPost('export_from')) - 1;
+        $options->responseMaxRecord = sanitize_int(Yii::app()->request->getPost('export_to')) - 1;
         $options->answerFormat = $answers;
         $options->convertN = $convertnto2;
 
@@ -277,22 +277,22 @@ class export extends Survey_Common_Action {
             $options->responseCompletionState = 'show';
 
             $dquery = '';
-            if ( in_array('first_name', CHttpRequest::getPost('attribute_select')) )
+            if ( in_array('first_name', Yii::app()->request->getPost('attribute_select')) )
             {
                 $dquery .= ", {{tokens_$surveyid}}.firstname";
             }
 
-            if ( in_array('last_name', CHttpRequest::getPost('attribute_select')) )
+            if ( in_array('last_name', Yii::app()->request->getPost('attribute_select')) )
             {
                 $dquery .= ", {{tokens_$surveyid}}.lastname";
             }
 
-            if ( in_array('email_address', CHttpRequest::getPost('attribute_select')) )
+            if ( in_array('email_address', Yii::app()->request->getPost('attribute_select')) )
             {
                 $dquery .= ", {{tokens_$surveyid}}.email";
             }
 
-            if ( in_array('token', CHttpRequest::getPost('attribute_select')) )
+            if ( in_array('token', Yii::app()->request->getPost('attribute_select')) )
             {
                 $dquery .= ", {{tokens_$surveyid}}.token";
             }
@@ -301,7 +301,7 @@ class export extends Survey_Common_Action {
 
             foreach ($attributeFields as $attr_name => $attr_desc)
             {
-                if ( in_array($attr_name, CHttpRequest::getPost('attribute_select')) )
+                if ( in_array($attr_name, Yii::app()->request->getPost('attribute_select')) )
                 {
                     $dquery .= ", {{tokens_$surveyid}}.$attr_name";
                 }
@@ -335,8 +335,8 @@ class export extends Survey_Common_Action {
     */
     public function exportspss()
     {
-        $surveyid = sanitize_int(CHttpRequest::getParam('sid'));
-        $subaction = CHttpRequest::getParam('subaction');
+        $surveyid = sanitize_int(Yii::app()->request->getParam('sid'));
+        $subaction = Yii::app()->request->getParam('subaction');
 
         $clang = $this->getController()->lang;
         //for scale 1=nominal, 2=ordinal, 3=scale
@@ -626,8 +626,8 @@ class export extends Survey_Common_Action {
     */
     public function exportr()
     {
-        $surveyid = sanitize_int(CHttpRequest::getParam('sid'));
-        $subaction = CHttpRequest::getParam('subaction');
+        $surveyid = sanitize_int(Yii::app()->request->getParam('sid'));
+        $subaction = Yii::app()->request->getParam('subaction');
 
         $clang = $this->getController()->lang;
         //for scale 1=nominal, 2=ordinal, 3=scale
@@ -883,8 +883,8 @@ class export extends Survey_Common_Action {
 
     public function vvexport()
     {
-        $surveyid = sanitize_int(CHttpRequest::getParam('surveyid'));
-        $subaction = CHttpRequest::getParam('subaction');
+        $surveyid = sanitize_int(Yii::app()->request->getParam('surveyid'));
+        $subaction = Yii::app()->request->getParam('subaction');
 
         //Exports all responses to a survey in special "Verified Voting" format.
         $clang = $this->getController()->lang;
@@ -1029,8 +1029,8 @@ class export extends Survey_Common_Action {
     */
     public function showquexmlsurvey()
     {
-        $surveyid = sanitize_int(CHttpRequest::getParam('surveyid'));
-        $lang = ( isset($_GET['lang']) ) ? CHttpRequest::getParam('lang') : NULL;
+        $surveyid = sanitize_int(Yii::app()->request->getParam('surveyid'));
+        $lang = ( isset($_GET['lang']) ) ? Yii::app()->request->getParam('lang') : NULL;
         $tempdir = Yii::app()->getConfig("tempdir");
 
         // Set the language of the survey, either from GET parameter of session var
@@ -1095,8 +1095,8 @@ class export extends Survey_Common_Action {
 
     public function resources()
     {
-        $id = sanitize_int(CHttpRequest::getParam('id'));
-        $action = CHttpRequest::getParam('action');
+        $id = sanitize_int(Yii::app()->request->getParam('id'));
+        $action = Yii::app()->request->getParam('action');
 
         $this->load->library("admin/Phpzip");
         $z = $this->phpzip;
@@ -1146,7 +1146,7 @@ class export extends Survey_Common_Action {
 
     public function dumplabel()
     {
-        $lid = sanitize_int(CHttpRequest::getParam('lid'));
+        $lid = sanitize_int(Yii::app()->request->getParam('lid'));
         // DUMP THE RELATED DATA FOR A SINGLE QUESTION INTO A SQL FILE FOR IMPORTING LATER ON OR
         // ON ANOTHER SURVEY SETUP DUMP ALL DATA WITH RELATED QID FROM THE FOLLOWING TABLES
         // 1. questions

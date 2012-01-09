@@ -8,7 +8,7 @@
         <strong><?php $clang->eT("Data view control"); ?></strong>
     </div>
     <div class='menubar-main'>
-        <?php if (!CHttpRequest::getPost('sql'))
+        <?php if (!Yii::app()->request->getPost('sql'))
         { ?>
             <a href='<?php echo $this->createUrl("/admin/browse/time/surveyid/$iSurveyId/start/0/limit/$limit"); ?>' title='<?php $clang->eT("Show start..."); ?>' >
                 <img name='DataBegin' align='left' src='<?php echo $imageurl; ?>/databegin.png' alt='<?php $clang->eT("Show start..."); ?>' />
@@ -32,9 +32,9 @@
             <?php $clang->eT("Starting from:"); ?> <input type='text' size='4' value='<?php echo $start; ?>' name='start' id='start' />
             <input type='submit' value='<?php $clang->eT("Show"); ?>' />
             </font>
-            <?php if (CHttpRequest::getPost('sql'))
+            <?php if (Yii::app()->request->getPost('sql'))
             { ?>
-                <input type='hidden' name='sql' value='<?php echo html_escape(CHttpRequest::getPost('sql')); ?>' />
+                <input type='hidden' name='sql' value='<?php echo html_escape(Yii::app()->request->getPost('sql')); ?>' />
             <?php } ?>
         </form>
     </div>

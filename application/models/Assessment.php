@@ -21,11 +21,12 @@ class Assessment extends CActiveRecord
 	 *
 	 * @static
 	 * @access public
+     * @param string $class
 	 * @return CActiveRecord
 	 */
-	public static function model()
+	public static function model($class = __CLASS__)
 	{
-		return parent::model(__CLASS__);
+		return parent::model($class);
 	}
 
 	/**
@@ -49,7 +50,7 @@ class Assessment extends CActiveRecord
 	{
 		return array('id', 'language');
 	}
-	
+
 	public static function insertRecords($data)
     {
         $assessment = new self;

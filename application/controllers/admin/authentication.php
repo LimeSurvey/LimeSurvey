@@ -38,9 +38,9 @@ class Authentication extends Survey_Common_Action
 
         if ($canLogin && !is_array($canLogin))
         {
-            if (CHttpRequest::getPost('action'))
+            if (Yii::app()->request->getPost('action'))
             {
-                $aData = $this->_doLogin(CHttpRequest::getPost('user'), CHttpRequest::getPost('password'));
+                $aData = $this->_doLogin(Yii::app()->request->getPost('user'), Yii::app()->request->getPost('password'));
 
                 if (!isset($aData['errormsg']))
                 {
@@ -83,14 +83,14 @@ class Authentication extends Survey_Common_Action
     {
         $this->_redirectIfLoggedIn();
 
-        if (!CHttpRequest::getPost('action'))
+        if (!Yii::app()->request->getPost('action'))
         {
             $this->_renderWrappedTemplate('forgotpassword');
         }
         else
         {
-            $postuser = CHttpRequest::getPost('user');
-            $sEmailAddr = CHttpRequest::getPost('email');
+            $postuser = Yii::app()->request->getPost('user');
+            $sEmailAddr = Yii::app()->request->getPost('email');
 
             $aFields = User::model()->findAllByAttributes(array('users_name' => $postuser, 'email' => $sEmailAddr));
 
@@ -304,9 +304,9 @@ class Authentication extends Survey_Common_Action
      */
     private function _setLanguageSettings($user)
     {
-        if (CHttpRequest::getPost('loginlang') !== 'default')
+        if (Yii::app()->request->getPost('loginlang') !== 'default')
         {
-            $user->lang = sanitize_languagecode(CHttpRequest::getPost('loginlang'));
+            $user->lang = sanitize_languagecode(Yii::app()->request->getPost('loginlang'));
             $user->save();
         }
 

@@ -161,7 +161,7 @@ class Survey_Common_Action extends CAction
     {
         $func_args = array();
         foreach ($get_vars as $k => $var)
-            $func_args[$k] = CHttpRequest::getQuery($var);
+            $func_args[$k] = Yii::app()->request->getQuery($var);
 
         return call_user_func_array(array($this, $sa), $func_args);
     }

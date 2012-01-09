@@ -24,12 +24,16 @@
 class ParticipantShares extends CActiveRecord
 {
 	/**
-	 * Returns the static model of the specified AR class.
-	 * @return ParticipantShares the static model class
+	 * Returns the static model of Settings table
+	 *
+	 * @static
+	 * @access public
+     * @param string $class
+	 * @return CActiveRecord
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($class = __CLASS__)
 	{
-		return parent::model($className);
+		return parent::model($class);
 	}
 
 	/**

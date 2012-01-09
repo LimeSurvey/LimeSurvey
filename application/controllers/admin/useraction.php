@@ -82,9 +82,9 @@ class UserAction extends Survey_Common_Action
         }
 
         $clang = Yii::app()->lang;
-        $new_user = FlattenText(CHttpRequest::getPost('new_user'), false, true);
-        $new_email = FlattenText(CHttpRequest::getPost('new_email'), false, true);
-        $new_full_name = FlattenText(CHttpRequest::getPost('new_full_name'), false, true);
+        $new_user = FlattenText(Yii::app()->request->getPost('new_user'), false, true);
+        $new_email = FlattenText(Yii::app()->request->getPost('new_email'), false, true);
+        $new_full_name = FlattenText(Yii::app()->request->getPost('new_full_name'), false, true);
         $aViewUrls = array();
         $valid_email = true;
         if (!validate_email($new_email)) {
@@ -178,15 +178,15 @@ class UserAction extends Survey_Common_Action
             die(access_denied('deluser'));
         }
         $clang = Yii::app()->lang;
-        $action = CHttpRequest::getPost("action");
+        $action = Yii::app()->request->getPost("action");
         $aViewUrls = array();
 
         // CAN'T DELETE ORIGINAL SUPERADMIN
         // Initial SuperAdmin has parent_id == 0
         $row = User::model()->findByAttributes(array('parent_id' => 0));
 
-        $postuserid = CHttpRequest::getPost("uid");
-        $postuser = CHttpRequest::getPost("user");
+        $postuserid = Yii::app()->request->getPost("uid");
+        $postuser = Yii::app()->request->getPost("user");
         if ($row['uid'] == $postuserid) // it's the original superadmin !!!
         {
             $aViewUrls['message'] = array('title' => $clang->gT('Initial Superadmin cannot be deleted!'), 'class' => 'warningheader');
@@ -251,8 +251,8 @@ class UserAction extends Survey_Common_Action
     function deleteFinalUser($result, $transfer_surveys_to)
     {
         $clang = Yii::app()->lang;
-        $postuserid = CHttpRequest::getPost("uid");
-        $postuser = CHttpRequest::getPost("user");
+        $postuserid = Yii::app()->request->getPost("uid");
+        $postuser = Yii::app()->request->getPost("user");
 
         if (isset($_POST['transfer_surveys_to'])) {
             $transfer_surveys_to = sanitize_int($_POST['transfer_surveys_to']);
@@ -318,10 +318,10 @@ class UserAction extends Survey_Common_Action
     function moduser()
     {
         $clang = Yii::app()->lang;
-        $postuser = CHttpRequest::getPost("user");
-        $postemail = CHttpRequest::getPost("email");
-        $postuserid = CHttpRequest::getPost("uid");
-        $postfull_name = CHttpRequest::getPost("full_name");
+        $postuser = Yii::app()->request->getPost("user");
+        $postemail = Yii::app()->request->getPost("email");
+        $postuserid = Yii::app()->request->getPost("uid");
+        $postfull_name = Yii::app()->request->getPost("full_name");
         $display_user_password_in_html = Yii::app()->getConfig("display_user_password_in_html");
         $addsummary = '';
         $aViewUrls = array();
@@ -334,7 +334,7 @@ class UserAction extends Survey_Common_Action
         ) {
             $users_name = html_entity_decode($postuser, ENT_QUOTES, 'UTF-8');
             $email = html_entity_decode($postemail, ENT_QUOTES, 'UTF-8');
-            $sPassword = html_entity_decode(CHttpRequest::getPost('pass'), ENT_QUOTES, 'UTF-8');
+            $sPassword = html_entity_decode(Yii::app()->request->getPost('pass'), ENT_QUOTES, 'UTF-8');
             if ($sPassword == '%%unchanged%%')
                 $sPassword = '';
             $full_name = html_entity_decode($postfull_name, ENT_QUOTES, 'UTF-8');
@@ -391,10 +391,10 @@ class UserAction extends Survey_Common_Action
     {
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/jquery.tablesorter.min.js');
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/admin/users.js');
-        $postuser = CHttpRequest::getPost('user');
-        $postemail = CHttpRequest::getPost('email');
-        $postuserid = CHttpRequest::getPost('uid');
-        $postfull_name = CHttpRequest::getPost('full_name');
+        $postuser = Yii::app()->request->getPost('user');
+        $postemail = Yii::app()->request->getPost('email');
+        $postuserid = Yii::app()->request->getPost('uid');
+        $postfull_name = Yii::app()->request->getPost('full_name');
         if (isset($_POST['uid'])) {
             $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
             $sresultcount = count($sresult);
@@ -424,7 +424,7 @@ class UserAction extends Survey_Common_Action
     function userrights()
     {
         $clang = Yii::app()->lang;
-        $postuserid = CHttpRequest::getPost("uid");
+        $postuserid = Yii::app()->request->getPost("uid");
         $aViewUrls = array();
 
         // A user can't modify his own rights ;-)
@@ -508,11 +508,11 @@ class UserAction extends Survey_Common_Action
     {
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/jquery.tablesorter.min.js');
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/admin/users.js');
-        $postuser = CHttpRequest::getPost("user");
-        $postemail = CHttpRequest::getPost("email");
-        $postuserid = CHttpRequest::getPost("uid");
+        $postuser = Yii::app()->request->getPost("user");
+        $postemail = Yii::app()->request->getPost("email");
+        $postuserid = Yii::app()->request->getPost("uid");
         $aData['postuserid']=$postuserid;
-        $postfull_name = CHttpRequest::getPost("full_name");
+        $postfull_name = Yii::app()->request->getPost("full_name");
         $this->_refreshtemplates();
         foreach (getuserlist() as $usr)
         {
@@ -533,7 +533,7 @@ class UserAction extends Survey_Common_Action
     function usertemplates()
     {
         $clang = Yii::app()->lang;
-        $postuserid = CHttpRequest::getPost('uid');
+        $postuserid = Yii::app()->request->getPost('uid');
 
         // SUPERADMINS AND MANAGE_TEMPLATE USERS CAN SET THESE RIGHTS
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'] == 1) {
@@ -582,22 +582,22 @@ class UserAction extends Survey_Common_Action
         $clang = Yii::app()->lang;
 
         // Save Data
-        if (CHttpRequest::getPost("action")) {
+        if (Yii::app()->request->getPost("action")) {
             $aData = array(
-                'lang' => CHttpRequest::getPost('lang'),
-                'dateformat' => CHttpRequest::getPost('dateformat'),
-                'htmleditormode' => CHttpRequest::getPost('htmleditormode'),
-                'questionselectormode' => CHttpRequest::getPost('questionselectormode'),
-                'templateeditormode' => CHttpRequest::getPost('templateeditormode')
+                'lang' => Yii::app()->request->getPost('lang'),
+                'dateformat' => Yii::app()->request->getPost('dateformat'),
+                'htmleditormode' => Yii::app()->request->getPost('htmleditormode'),
+                'questionselectormode' => Yii::app()->request->getPost('questionselectormode'),
+                'templateeditormode' => Yii::app()->request->getPost('templateeditormode')
             );
 
             $uresult = User::model()->updateByPk(Yii::app()->session['loginID'], $aData);
 
-            Yii::app()->session['adminlang'] = CHttpRequest::getPost('lang');
-            Yii::app()->session['htmleditormode'] = CHttpRequest::getPost('htmleditormode');
-            Yii::app()->session['questionselectormode'] = CHttpRequest::getPost('questionselectormode');
-            Yii::app()->session['templateeditormode'] = CHttpRequest::getPost('templateeditormode');
-            Yii::app()->session['dateformat'] = CHttpRequest::getPost('dateformat');
+            Yii::app()->session['adminlang'] = Yii::app()->request->getPost('lang');
+            Yii::app()->session['htmleditormode'] = Yii::app()->request->getPost('htmleditormode');
+            Yii::app()->session['questionselectormode'] = Yii::app()->request->getPost('questionselectormode');
+            Yii::app()->session['templateeditormode'] = Yii::app()->request->getPost('templateeditormode');
+            Yii::app()->session['dateformat'] = Yii::app()->request->getPost('dateformat');
             Yii::app()->session['flashmessage'] = $clang->gT("Your personal settings were successfully saved.");
         }
 

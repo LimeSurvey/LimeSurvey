@@ -44,7 +44,7 @@ class CheckIntegrity extends Survey_Common_Action
     {
         $clang = Yii::app()->lang;
 
-        if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1 && CHttpRequest::getPost('ok') == 'Y') {
+        if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1 && Yii::app()->request->getPost('ok') == 'Y') {
             $aDelete = $this->_checkintegrity();
 
             if (isset($aDelete['redundanttokentables'])) {
@@ -71,7 +71,7 @@ class CheckIntegrity extends Survey_Common_Action
     {
         $aData = array();
         $clang = Yii::app()->lang;
-        if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1 && CHttpRequest::getPost('ok') == 'Y') {
+        if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1 && Yii::app()->request->getPost('ok') == 'Y') {
             $aDelete = $this->_checkintegrity();
 
             // TMSW Conditions->Relevance:  Update this to process relevance instead

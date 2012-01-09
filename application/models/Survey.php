@@ -40,17 +40,18 @@ class Survey extends CActiveRecord
         return 'sid';
     }
 
-    /**
-    * Return the static model for this table
-    *
-    * @static
-    * @access public
-    * @return CActiveRecord
-    */
-    public static function model()
-    {
-        return parent::model(__CLASS__);
-    }
+	/**
+	 * Returns the static model of Settings table
+	 *
+	 * @static
+	 * @access public
+     * @param string $class
+	 * @return CActiveRecord
+	 */
+	public static function model($class = __CLASS__)
+	{
+		return parent::model($class);
+	}
 
     /**
     * Returns this model's relations

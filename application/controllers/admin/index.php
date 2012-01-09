@@ -32,19 +32,8 @@ class Index extends Survey_Common_Action
             unset(Yii::app()->session['just_logged_in'], Yii::app()->session['loginsummary']);
         }
 
-        $this->_renderWrappedTemplate($aViewUrls);
+        $this->_renderWrappedTemplate('super', $aViewUrls);
 
 	}
-
-    /**
-     * Renders template(s) wrapped in header and footer
-     *
-     * @param string|array $aViewUrls View url(s)
-     * @param array $aData Data to be passed on. Optional.
-     */
-    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
-    {
-        parent::_renderWrappedTemplate('super', $aViewUrls, $aData);
-    }
 
 }

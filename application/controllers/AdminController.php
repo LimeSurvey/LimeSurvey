@@ -81,8 +81,8 @@ class AdminController extends LSYii_Controller
 	protected function _sessioncontrol()
 	{
         // From personal settings
-         if (CHttpRequest::getPost('action') == 'savepersonalsettings') {
-             Yii::app()->session['adminlang'] = CHttpRequest::getPost('lang');
+         if (Yii::app()->request->getPost('action') == 'savepersonalsettings') {
+             Yii::app()->session['adminlang'] = Yii::app()->request->getPost('lang');
          }
 
 		if (empty(Yii::app()->session['adminlang']))

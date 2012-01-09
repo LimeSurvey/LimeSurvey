@@ -9,7 +9,7 @@
 <script src="<?php echo Yii::app()->getConfig('adminscripts') . "viewAttribute.js" ?>" type="text/javascript"></script>
 <div class='header ui-widget-header'><strong><?php $clang->eT("Attribute settings"); ?></strong></div><br/>
 <?php
-echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/participants/saveAttribute/aid/' . CHttpRequest::getQuery('aid')) . '/', "post");
+echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/participants/saveAttribute/aid/' . Yii::app()->request->getQuery('aid')) . '/', "post");
 $plus = array('src' => Yii::app()->baseUrl . "/images/plus.png",
     'alt' => 'Add language',
     'title' => 'Add language',

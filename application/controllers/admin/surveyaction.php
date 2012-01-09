@@ -166,8 +166,8 @@ class SurveyAction extends Survey_Common_Action
     function importsurveyresources()
     {
         $clang = $this->getController()->lang;
-        $action = CHttpRequest::getPost('action');
-        $surveyid = CHttpRequest::getPost('sid');
+        $action = Yii::app()->request->getPost('action');
+        $surveyid = Yii::app()->request->getPost('sid');
         $aViewUrls = array();
 
         $aData = array(
@@ -377,7 +377,7 @@ class SurveyAction extends Survey_Common_Action
     {
         $surveyid = sanitize_int($surveyid);
 
-        $postsid = CHttpRequest::getPost('sid', $surveyid);
+        $postsid = Yii::app()->request->getPost('sid', $surveyid);
         $clang = $this->getController()->lang;
         $date = date('YmdHis'); //'Hi' adds 24hours+minutes to name to allow multiple deactiviations in a day
 
@@ -518,11 +518,11 @@ class SurveyAction extends Survey_Common_Action
             $survey = Survey::model()->findByAttributes(array('sid' => $surveyid));
             if (!is_null($survey))
             {
-                $survey->anonymized = CHttpRequest::getPost('anonymized');
-                $survey->datestamp = CHttpRequest::getPost('datestamp');
-                $survey->ipaddr = CHttpRequest::getPost('ipaddr');
-                $survey->refurl = CHttpRequest::getPost('refurl');
-                $survey->savetimings = CHttpRequest::getPost('savetimings');
+                $survey->anonymized = Yii::app()->request->getPost('anonymized');
+                $survey->datestamp = Yii::app()->request->getPost('datestamp');
+                $survey->ipaddr = Yii::app()->request->getPost('ipaddr');
+                $survey->refurl = Yii::app()->request->getPost('refurl');
+                $survey->savetimings = Yii::app()->request->getPost('savetimings');
                 $survey->save();
             }
 
@@ -610,8 +610,8 @@ class SurveyAction extends Survey_Common_Action
         $clang = $this->getController()->lang;
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
 
-        $page = CHttpRequest::getPost('page');
-        $limit = CHttpRequest::getPost('rows');
+        $page = Yii::app()->request->getPost('page');
+        $limit = Yii::app()->request->getPost('rows');
 
         $surveys = Survey::model();
         //!!! Is this even possible to execute?
@@ -922,18 +922,18 @@ class SurveyAction extends Survey_Common_Action
                 }
                 else
                 {
-                    $sNewSurveyName = CHttpRequest::getPost('copysurveyname');
+                    $sNewSurveyName = Yii::app()->request->getPost('copysurveyname');
                 }
 
-                if (CHttpRequest::getPost('copysurveyexcludequotas') == "on")
+                if (Yii::app()->request->getPost('copysurveyexcludequotas') == "on")
                 {
                     $exclude['quotas'] = true;
                 }
-                if (CHttpRequest::getPost('copysurveyexcludeanswers') == "on")
+                if (Yii::app()->request->getPost('copysurveyexcludeanswers') == "on")
                 {
                     $exclude['answers'] = true;
                 }
-                if (CHttpRequest::getPost('copysurveyresetconditions') == "on")
+                if (Yii::app()->request->getPost('copysurveyresetconditions') == "on")
                 {
                     $exclude['conditions'] = true;
                 }

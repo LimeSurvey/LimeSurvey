@@ -20,11 +20,12 @@ class Answers extends CActiveRecord
 	 *
 	 * @static
 	 * @access public
+     * @param string $class
 	 * @return CActiveRecord
 	 */
-	public static function model()
+	public static function model($class = __CLASS__)
 	{
-		return parent::model(__CLASS__);
+		return parent::model($class);
 	}
 
 	/**

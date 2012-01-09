@@ -24,10 +24,10 @@ class translate extends Survey_Common_Action {
 
     public function index()
     {
-        $surveyid = sanitize_int(CHttpRequest::getParam('surveyid'));
-        $tolang = CHttpRequest::getParam('lang');
-        $action = CHttpRequest::getParam('action');
-		$actionvalue = CHttpRequest::getPost('actionvalue');
+        $surveyid = sanitize_int(Yii::app()->request->getParam('surveyid'));
+        $tolang = Yii::app()->request->getParam('lang');
+        $action = Yii::app()->request->getParam('action');
+		$actionvalue = Yii::app()->request->getPost('actionvalue');
 
         if ( $action == "ajaxtranslategoogleapi" )
         {
@@ -99,7 +99,7 @@ class translate extends Survey_Common_Action {
 
 		foreach( $tab_names_full as $type )
 		{
-			$size = (int) CHttpRequest::getPost("{$type}_size");
+			$size = (int) Yii::app()->request->getPost("{$type}_size");
 
 			// start a loop in order to update each record
 			$i = 0;
@@ -108,14 +108,14 @@ class translate extends Survey_Common_Action {
 				// define each variable
 				if ( isset($_POST["{$type}_newvalue_{$i}"]) )
 				{
-					$old = CHttpRequest::getPost("{$type}_oldvalue_{$i}");
-					$new = CHttpRequest::getPost("{$type}_newvalue_{$i}");
+					$old = Yii::app()->request->getPost("{$type}_oldvalue_{$i}");
+					$new = Yii::app()->request->getPost("{$type}_newvalue_{$i}");
 
 					// check if the new value is different from old, and then update database
 					if ( $new != $old )
 					{
-						$id1 = CHttpRequest::getPost("{$type}_id1_{$i}");
-						$id2 = CHttpRequest::getPost("{$type}_id2_{$i}");
+						$id1 = Yii::app()->request->getPost("{$type}_id1_{$i}");
+						$id2 = Yii::app()->request->getPost("{$type}_id2_{$i}");
 
 						$amTypeOptions = $this->setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1, $id2, $new);
 					}
@@ -1030,9 +1030,9 @@ class translate extends Survey_Common_Action {
     {
         header('Content-type: application/json');
 
-        $sBaselang   = CHttpRequest::getPost('baselang');
-        $sTolang     = CHttpRequest::getPost('tolang');
-        $sToconvert  = CHttpRequest::getPost('text');
+        $sBaselang   = Yii::app()->request->getPost('baselang');
+        $sTolang     = Yii::app()->request->getPost('tolang');
+        $sToconvert  = Yii::app()->request->getPost('text');
 
         $aSearch     = array('zh-Hans','zh-Hant-HK','zh-Hant-TW',
 						'nl-informal','de-informal','it-formal','pt-BR','es-MX','nb','nn');

@@ -38,15 +38,16 @@ class Survey_permissions extends CActiveRecord
 	}
 
 	/**
-	 * Return the static model for this table
+	 * Returns the static model of Settings table
 	 *
 	 * @static
 	 * @access public
+     * @param string $class
 	 * @return CActiveRecord
 	 */
-	public static function model()
+	public static function model($class = __CLASS__)
 	{
-		return parent::model(__CLASS__);
+		return parent::model($class);
 	}
 
 	/**
@@ -121,7 +122,7 @@ class Survey_permissions extends CActiveRecord
 
 		return true;
 	}
-	
+
 	function giveAllSurveyPermissions($iUserID, $iSurveyID)
     {
         $aPermissions=$this->getBasePermissions();
@@ -141,7 +142,7 @@ class Survey_permissions extends CActiveRecord
 
         $this->setSurveyPermissions($iUserID, $iSurveyID, $aPermissionsToSet);
     }
-	
+
 	/** setSurveyPermissions
     * Set the survey permissions for a user. Beware that all survey permissions for the particual survey are removed before the new ones are written.
     *
@@ -183,7 +184,7 @@ class Survey_permissions extends CActiveRecord
             }
         }
     }
-	
+
 	function deleteSomeRecords($condition)
     {
         $criteria = new CDbCriteria;
@@ -192,7 +193,7 @@ class Survey_permissions extends CActiveRecord
 		{
 			$criteria->addCondition($item.'="'.$value.'"');
 		}
-		
+
 		$this->deleteAll($criteria);
     }
 
@@ -201,7 +202,7 @@ class Survey_permissions extends CActiveRecord
 		foreach ($item as $data)
 			$this->insertSomeRecords($item);
 	}
-	
+
     function insertSomeRecords($data)
     {
         $permission = new self;

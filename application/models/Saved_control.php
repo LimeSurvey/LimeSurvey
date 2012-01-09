@@ -36,15 +36,16 @@ class Saved_control extends CActiveRecord {
 	}
 
 	/**
-	 * Return the static model for this table
+	 * Returns the static model of Settings table
 	 *
 	 * @static
 	 * @access public
+     * @param string $class
 	 * @return CActiveRecord
 	 */
-	public static function model()
+	public static function model($class = __CLASS__)
 	{
-		return parent::model(__CLASS__);
+		return parent::model($class);
 	}
 
 	function getAllRecords($condition=FALSE)

@@ -32,7 +32,7 @@ class conditionsaction extends Survey_Common_Action {
 		$imageurl = Yii::app()->getConfig("imageurl");
 		Yii::app()->loadHelper("database");
 
-		if( !empty($_POST['subaction']) ) $subaction=CHttpRequest::getPost('subaction');
+		if( !empty($_POST['subaction']) ) $subaction=Yii::app()->request->getPost('subaction');
 
 		//BEGIN Sanitizing POSTed data
 		if ( !isset($surveyid) ) { $surveyid = returnglobal('sid'); }
@@ -264,19 +264,19 @@ class conditionsaction extends Survey_Common_Action {
 		        // so we only need to db_quote _POST variables
 		        if (isset($_POST['ConditionConst']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#CONST")
 		        {
-		            $posted_condition_value = db_quoteall(CHttpRequest::getPost('ConditionConst'));
+		            $posted_condition_value = db_quoteall(Yii::app()->request->getPost('ConditionConst'));
 		        }
 		        elseif (isset($_POST['prevQuestionSGQA']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#PREVQUESTIONS")
 		        {
-		            $posted_condition_value = db_quoteall(CHttpRequest::getPost('prevQuestionSGQA'));
+		            $posted_condition_value = db_quoteall(Yii::app()->request->getPost('prevQuestionSGQA'));
 		        }
 		        elseif (isset($_POST['tokenAttr']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#TOKENATTRS")
 		        {
-		            $posted_condition_value = db_quoteall(CHttpRequest::getPost('tokenAttr'));
+		            $posted_condition_value = db_quoteall(Yii::app()->request->getPost('tokenAttr'));
 		        }
 		        elseif (isset($_POST['ConditionRegexp']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#REGEXP")
 		        {
-		            $posted_condition_value = db_quoteall(CHttpRequest::getPost('ConditionRegexp'));
+		            $posted_condition_value = db_quoteall(Yii::app()->request->getPost('ConditionRegexp'));
 		        }
 
 		        if (isset($posted_condition_value))
@@ -333,19 +333,19 @@ class conditionsaction extends Survey_Common_Action {
 		        // so we only need to db_quote _POST variables
 		        if (isset($_POST['ConditionConst']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#CONST")
 		        {
-		            $posted_condition_value = db_quoteall(CHttpRequest::getPost('ConditionConst'));
+		            $posted_condition_value = db_quoteall(Yii::app()->request->getPost('ConditionConst'));
 		        }
 		        elseif (isset($_POST['prevQuestionSGQA']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#PREVQUESTIONS")
 		        {
-		            $posted_condition_value = db_quoteall(CHttpRequest::getPost('prevQuestionSGQA'));
+		            $posted_condition_value = db_quoteall(Yii::app()->request->getPost('prevQuestionSGQA'));
 		        }
 		        elseif (isset($_POST['tokenAttr']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#TOKENATTRS")
 		        {
-		            $posted_condition_value = db_quoteall(CHttpRequest::getPost('tokenAttr'));
+		            $posted_condition_value = db_quoteall(Yii::app()->request->getPost('tokenAttr'));
 		        }
 		        elseif (isset($_POST['ConditionRegexp']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#REGEXP")
 		        {
-		            $posted_condition_value = db_quoteall(CHttpRequest::getPost('ConditionRegexp'));
+		            $posted_condition_value = db_quoteall(Yii::app()->request->getPost('ConditionRegexp'));
 		        }
 
 		        if (isset($posted_condition_value))

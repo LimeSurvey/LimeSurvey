@@ -277,10 +277,10 @@ class tokens extends Survey_Common_Action
         $aData['next'] = $next;
         $aData['last'] = $last;
         $aData['end'] = $end;
-        $limit = CHttpRequest::getPost('limit');
-        $start = CHttpRequest::getPost('start');
-        $searchstring = CHttpRequest::getPost('searchstring');
-        $order = CHttpRequest::getPost('order');
+        $limit = Yii::app()->request->getPost('limit');
+        $start = Yii::app()->request->getPost('start');
+        $searchstring = Yii::app()->request->getPost('searchstring');
+        $order = Yii::app()->request->getPost('order');
         $order = preg_replace('/[^_ a-z0-9-]/i', '', $order);
         if ($order == '')
         {
@@ -327,8 +327,8 @@ class tokens extends Survey_Common_Action
     function getTokens_json($iSurveyId)
     {
         $clang = $this->getController()->lang;
-        $page  = CHttpRequest::getPost('page');
-        $limit = CHttpRequest::getPost('rows');
+        $page  = Yii::app()->request->getPost('page');
+        $limit = Yii::app()->request->getPost('rows');
 
         $tokens = Tokens_dynamic::model($iSurveyId)->findAll();
 
@@ -374,7 +374,7 @@ class tokens extends Survey_Common_Action
 
 function editToken($iSurveyId)
 {
-    $sOperation = CHttpRequest::getPost('oper');
+    $sOperation = Yii::app()->request->getPost('oper');
 
     if (trim($_POST['validfrom']) == '')
     {
@@ -395,37 +395,37 @@ function editToken($iSurveyId)
     // if edit it will update the row
     if ($sOperation == 'edit')
         {
-            //            if (CHttpRequest::getPost('language') == '')
+            //            if (Yii::app()->request->getPost('language') == '')
             //            {
             //                $sLang = Yii::app()->session['adminlang'];
             //            }
             //            else
             //            {
-            //                $sLang = CHttpRequest::getPost('language');
+            //                $sLang = Yii::app()->request->getPost('language');
             //            }
             Tokens_dynamic::sid($iSurveyId);
 
             echo $from . ',' . $until;
             $aData = array(
-                'firstname' => CHttpRequest::getPost('firstname'),
-                'lastname' => CHttpRequest::getPost('lastname'),
-                'email' => CHttpRequest::getPost('email'),
-                'emailstatus' => CHttpRequest::getPost('emailstatus'),
-                'token' => CHttpRequest::getPost('token'),
-                'language' => CHttpRequest::getPost('language'),
-                'sent' => CHttpRequest::getPost('sent'),
-                'remindersent' => CHttpRequest::getPost('remindersent'),
-                'remindercount' => CHttpRequest::getPost('remindercount'),
-                'completed' => CHttpRequest::getPost('completed'),
-                'usesleft' => CHttpRequest::getPost('usesleft'),
+                'firstname' => Yii::app()->request->getPost('firstname'),
+                'lastname' => Yii::app()->request->getPost('lastname'),
+                'email' => Yii::app()->request->getPost('email'),
+                'emailstatus' => Yii::app()->request->getPost('emailstatus'),
+                'token' => Yii::app()->request->getPost('token'),
+                'language' => Yii::app()->request->getPost('language'),
+                'sent' => Yii::app()->request->getPost('sent'),
+                'remindersent' => Yii::app()->request->getPost('remindersent'),
+                'remindercount' => Yii::app()->request->getPost('remindercount'),
+                'completed' => Yii::app()->request->getPost('completed'),
+                'usesleft' => Yii::app()->request->getPost('usesleft'),
                 'validfrom' => $from,
                 'validuntil' => $until);
             $attributes = GetAttributeFieldNames($iSurveyId);
             foreach ($attributes as $attribute)
             {
-                $aData[$attribute] = CHttpRequest::getPost($attribute);
+                $aData[$attribute] = Yii::app()->request->getPost($attribute);
             }
-            $token = Tokens_dynamic::model()->find('tid=' . CHttpRequest::getPost('id'));
+            $token = Tokens_dynamic::model()->find('tid=' . Yii::app()->request->getPost('id'));
             foreach ($aData as $k => $v)
                 $token->$k = $v;
             echo $token->update();
@@ -433,24 +433,24 @@ function editToken($iSurveyId)
         // if add it will insert a new row
         elseif ($sOperation == 'add')
         {
-            if (CHttpRequest::getPost('language') == '')
-                $aData = array('firstname' => CHttpRequest::getPost('firstname'),
-                    'lastname' => CHttpRequest::getPost('lastname'),
-                    'email' => CHttpRequest::getPost('email'),
-                    'emailstatus' => CHttpRequest::getPost('emailstatus'),
-                    'token' => CHttpRequest::getPost('token'),
-                    'language' => CHttpRequest::getPost('language'),
-                    'sent' => CHttpRequest::getPost('sent'),
-                    'remindersent' => CHttpRequest::getPost('remindersent'),
-                    'remindercount' => CHttpRequest::getPost('remindercount'),
-                    'completed' => CHttpRequest::getPost('completed'),
-                    'usesleft' => CHttpRequest::getPost('usesleft'),
+            if (Yii::app()->request->getPost('language') == '')
+                $aData = array('firstname' => Yii::app()->request->getPost('firstname'),
+                    'lastname' => Yii::app()->request->getPost('lastname'),
+                    'email' => Yii::app()->request->getPost('email'),
+                    'emailstatus' => Yii::app()->request->getPost('emailstatus'),
+                    'token' => Yii::app()->request->getPost('token'),
+                    'language' => Yii::app()->request->getPost('language'),
+                    'sent' => Yii::app()->request->getPost('sent'),
+                    'remindersent' => Yii::app()->request->getPost('remindersent'),
+                    'remindercount' => Yii::app()->request->getPost('remindercount'),
+                    'completed' => Yii::app()->request->getPost('completed'),
+                    'usesleft' => Yii::app()->request->getPost('usesleft'),
                     'validfrom' => $from,
                     'validuntil' => $until);
             $attributes = GetAttributeFieldNames($iSurveyId);
             foreach ($attributes as $attribute)
             {
-                $aData[$attribute] = CHttpRequest::getPost($attribute);
+                $aData[$attribute] = Yii::app()->request->getPost($attribute);
             }
             echo ls_json_encode(var_export($aData));
             $token = new Tokens_dynamic;
@@ -460,7 +460,7 @@ function editToken($iSurveyId)
         }
         elseif ($sOperation == 'del')
         {
-            $_POST['tid'] = CHttpRequest::getPost('id');
+            $_POST['tid'] = Yii::app()->request->getPost('id');
             $this->delete($iSurveyId);
         }
     }
@@ -480,32 +480,32 @@ function editToken($iSurveyId)
             die("no permissions"); // TODO Replace
         }
 
-        if (CHttpRequest::getPost('subaction'))
+        if (Yii::app()->request->getPost('subaction'))
         {
             $clang = $this->getController()->lang;
 
             Yii::import('application.libraries.Date_Time_Converter');
             //Fix up dates and match to database format
-            if (trim(CHttpRequest::getPost('validfrom')) == '')
+            if (trim(Yii::app()->request->getPost('validfrom')) == '')
             {
                 $_POST['validuntil'] = null;
             }
             else
             {
-                $datetimeobj = new Date_Time_Converter(array(trim(CHttpRequest::getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i'));
+                $datetimeobj = new Date_Time_Converter(array(trim(Yii::app()->request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i'));
                 $_POST['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
-            if (trim(CHttpRequest::getPost('validuntil')) == '')
+            if (trim(Yii::app()->request->getPost('validuntil')) == '')
             {
                 $_POST['validuntil'] = null;
             }
             else
             {
-                $datetimeobj = new Date_Time_Converter(array(trim(CHttpRequest::getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i'));
+                $datetimeobj = new Date_Time_Converter(array(trim(Yii::app()->request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i'));
                 $_POST['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
-            $sanitizedtoken = sanitize_token(CHttpRequest::getPost('token'));
+            $sanitizedtoken = sanitize_token(Yii::app()->request->getPost('token'));
 
             if (empty($sanitizedtoken))
             {
@@ -523,18 +523,18 @@ function editToken($iSurveyId)
             }
 
             $aData = array(
-                'firstname' => CHttpRequest::getPost('firstname'),
-                'lastname' => CHttpRequest::getPost('lastname'),
-                'email' => sanitize_email(CHttpRequest::getPost('email')),
-                'emailstatus' => CHttpRequest::getPost('emailstatus'),
+                'firstname' => Yii::app()->request->getPost('firstname'),
+                'lastname' => Yii::app()->request->getPost('lastname'),
+                'email' => sanitize_email(Yii::app()->request->getPost('email')),
+                'emailstatus' => Yii::app()->request->getPost('emailstatus'),
                 'token' => $sanitizedtoken,
-                'language' => sanitize_languagecode(CHttpRequest::getPost('language')),
-                'sent' => CHttpRequest::getPost('sent'),
-                'remindersent' => CHttpRequest::getPost('remindersent'),
-                'completed' => CHttpRequest::getPost('completed'),
-                'usesleft' => CHttpRequest::getPost('usesleft'),
-                'validfrom' => CHttpRequest::getPost('validfrom'),
-                'validuntil' => CHttpRequest::getPost('validuntil'),
+                'language' => sanitize_languagecode(Yii::app()->request->getPost('language')),
+                'sent' => Yii::app()->request->getPost('sent'),
+                'remindersent' => Yii::app()->request->getPost('remindersent'),
+                'completed' => Yii::app()->request->getPost('completed'),
+                'usesleft' => Yii::app()->request->getPost('usesleft'),
+                'validfrom' => Yii::app()->request->getPost('validfrom'),
+                'validuntil' => Yii::app()->request->getPost('validuntil'),
             );
 
             // add attributes
@@ -586,47 +586,47 @@ function editToken($iSurveyId)
         Yii::app()->loadHelper("surveytranslator");
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
 
-        if (CHttpRequest::getPost('subaction'))
+        if (Yii::app()->request->getPost('subaction'))
         {
             $clang = $this->getController()->lang;
 
             Yii::import('application.libraries.Date_Time_Converter', true);
-            if (trim(CHttpRequest::getPost('validfrom')) == '')
+            if (trim(Yii::app()->request->getPost('validfrom')) == '')
             {
                 $_POST['validfrom'] = null;
             }
             else
             {
-                $datetimeobj = new Date_Time_Converter(array(trim(CHttpRequest::getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i'));
+                $datetimeobj = new Date_Time_Converter(array(trim(Yii::app()->request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i'));
                 $_POST['validfrom'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
-            if (trim(CHttpRequest::getPost('validuntil')) == '')
+            if (trim(Yii::app()->request->getPost('validuntil')) == '')
             {
                 $_POST['validuntil'] = null;
             }
             else
             {
-                $datetimeobj = new Date_Time_Converter(array(trim(CHttpRequest::getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i'));
+                $datetimeobj = new Date_Time_Converter(array(trim(Yii::app()->request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i'));
                 $_POST['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
             $aData['thissurvey'] = getSurveyInfo($iSurveyId);
             $aData['surveyid'] = $iSurveyId;
 
-            $aTokenData['firstname'] = CHttpRequest::getPost('firstname');
-            $aTokenData['lastname'] = CHttpRequest::getPost('lastname');
-            $aTokenData['email'] = sanitize_email(CHttpRequest::getPost('email'));
-            $aTokenData['emailstatus'] = CHttpRequest::getPost('emailstatus');
-            $santitizedtoken = sanitize_token(CHttpRequest::getPost('token'));
+            $aTokenData['firstname'] = Yii::app()->request->getPost('firstname');
+            $aTokenData['lastname'] = Yii::app()->request->getPost('lastname');
+            $aTokenData['email'] = sanitize_email(Yii::app()->request->getPost('email'));
+            $aTokenData['emailstatus'] = Yii::app()->request->getPost('emailstatus');
+            $santitizedtoken = sanitize_token(Yii::app()->request->getPost('token'));
             $aTokenData['token'] = $santitizedtoken;
-            $aTokenData['language'] = sanitize_languagecode(CHttpRequest::getPost('language'));
-            $aTokenData['sent'] = CHttpRequest::getPost('sent');
-            $aTokenData['completed'] = CHttpRequest::getPost('completed');
-            $aTokenData['usesleft'] = CHttpRequest::getPost('usesleft');
-            $aTokenData['validfrom'] = CHttpRequest::getPost('validfrom');
-            $aTokenData['validuntil'] = CHttpRequest::getPost('validuntil');
-            $aTokenData['remindersent'] = CHttpRequest::getPost('remindersent');
-            $aTokenData['remindercount'] = intval(CHttpRequest::getPost('remindercount'));
+            $aTokenData['language'] = sanitize_languagecode(Yii::app()->request->getPost('language'));
+            $aTokenData['sent'] = Yii::app()->request->getPost('sent');
+            $aTokenData['completed'] = Yii::app()->request->getPost('completed');
+            $aTokenData['usesleft'] = Yii::app()->request->getPost('usesleft');
+            $aTokenData['validfrom'] = Yii::app()->request->getPost('validfrom');
+            $aTokenData['validuntil'] = Yii::app()->request->getPost('validuntil');
+            $aTokenData['remindersent'] = Yii::app()->request->getPost('remindersent');
+            $aTokenData['remindercount'] = intval(Yii::app()->request->getPost('remindercount'));
 
             $udresult = Tokens_dynamic::model($iSurveyId)->findAll("tid <> '$iTokenId' and token <> '' and token = '$santitizedtoken'");
 
@@ -636,7 +636,7 @@ function editToken($iSurveyId)
                 $attrfieldnames = GetAttributeFieldnames($iSurveyId);
                 foreach ($attrfieldnames as $attr_name)
                 {
-                    $aTokenData[$attr_name] = CHttpRequest::getPost($attr_name);
+                    $aTokenData[$attr_name] = Yii::app()->request->getPost($attr_name);
                 }
 
                 $token = Tokens_dynamic::model($iSurveyId)->findByPk($iTokenId);
@@ -671,7 +671,7 @@ function editToken($iSurveyId)
     function delete($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
-        $iTokenId = CHttpRequest::getPost('tid');
+        $iTokenId = Yii::app()->request->getPost('tid');
 
         if (bHasSurveyPermission($iSurveyId, 'tokens', 'delete'))
         {
@@ -701,49 +701,49 @@ function editToken($iSurveyId)
             $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
 
             //Fix up dates and match to database format
-            if (trim(CHttpRequest::getPost('validfrom')) == '')
+            if (trim(Yii::app()->request->getPost('validfrom')) == '')
             {
                 $_POST['validfrom'] = null;
             }
             else
             {
-                $datetimeobj = new Date_Time_Converter(array(trim(CHttpRequest::getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i'));
+                $datetimeobj = new Date_Time_Converter(array(trim(Yii::app()->request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i'));
                 $_POST['validfrom'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
-            if (trim(CHttpRequest::getPost('validuntil')) == '')
+            if (trim(Yii::app()->request->getPost('validuntil')) == '')
             {
                 $_POST['validuntil'] = null;
             }
             else
             {
-                $datetimeobj = new Date_Time_Converter(array(trim(CHttpRequest::getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i'));
+                $datetimeobj = new Date_Time_Converter(array(trim(Yii::app()->request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i'));
                 $_POST['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
             $santitizedtoken = '';
 
-            $aData = array('firstname' => CHttpRequest::getPost('firstname'),
-                'lastname' => CHttpRequest::getPost('lastname'),
-                'email' => sanitize_email(CHttpRequest::getPost('email')),
+            $aData = array('firstname' => Yii::app()->request->getPost('firstname'),
+                'lastname' => Yii::app()->request->getPost('lastname'),
+                'email' => sanitize_email(Yii::app()->request->getPost('email')),
                 'emailstatus' => 'OK',
                 'token' => $santitizedtoken,
-                'language' => sanitize_languagecode(CHttpRequest::getPost('language')),
+                'language' => sanitize_languagecode(Yii::app()->request->getPost('language')),
                 'sent' => 'N',
                 'remindersent' => 'N',
                 'completed' => 'N',
-                'usesleft' => CHttpRequest::getPost('usesleft'),
-                'validfrom' => CHttpRequest::getPost('validfrom'),
-                'validuntil' => CHttpRequest::getPost('validuntil'));
+                'usesleft' => Yii::app()->request->getPost('usesleft'),
+                'validfrom' => Yii::app()->request->getPost('validfrom'),
+                'validuntil' => Yii::app()->request->getPost('validuntil'));
 
             // add attributes
             $attrfieldnames = GetAttributeFieldnames($iSurveyId);
             foreach ($attrfieldnames as $attr_name)
             {
-                $aData[$attr_name] = CHttpRequest::getPost($attr_name);
+                $aData[$attr_name] = Yii::app()->request->getPost($attr_name);
             }
 
-            $amount = sanitize_int(CHttpRequest::getPost('amount'));
-            $tokenlength = sanitize_int(CHttpRequest::getPost('tokenlen'));
+            $amount = sanitize_int(Yii::app()->request->getPost('amount'));
+            $tokenlength = sanitize_int(Yii::app()->request->getPost('tokenlen'));
 
             for ($i = 0; $i < $amount; $i++)
             {
@@ -829,7 +829,7 @@ function editToken($iSurveyId)
             die();
         }
 
-        $number2add = sanitize_int(CHttpRequest::getPost('addnumber'), 1, 100);
+        $number2add = sanitize_int(Yii::app()->request->getPost('addnumber'), 1, 100);
         $tokenattributefieldnames = GetAttributeFieldNames($iSurveyId);
         $i = 1;
 
@@ -870,7 +870,7 @@ function editToken($iSurveyId)
         $fieldcontents = '';
         foreach ($tokenattributefieldnames as $fieldname)
         {
-            $fieldcontents.=$fieldname . '=' . strip_tags(CHttpRequest::getPost('description_' . $fieldname)) . "\n";
+            $fieldcontents.=$fieldname . '=' . strip_tags(Yii::app()->request->getPost('description_' . $fieldname)) . "\n";
         }
 
         Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => $fieldcontents));
@@ -895,7 +895,7 @@ function editToken($iSurveyId)
             die("no permissions"); // TODO Replace
         }
 
-        $sSubAction = CHttpRequest::getParam('action');
+        $sSubAction = Yii::app()->request->getParam('action');
         $sSubAction = !in_array($sSubAction, array('email', 'remind')) ? 'email' : $sSubAction;
         $bEmail = $sSubAction == 'email';
 
@@ -934,9 +934,9 @@ function editToken($iSurveyId)
         $aData['examplerow'] = $aExampleRow;
         $aData['tokenids'] = $aTokenIds;
         $aData['ishtml'] = $bHtml;
-        $iMaxEmails = CHttpRequest::getPost('maxemails');
+        $iMaxEmails = Yii::app()->request->getPost('maxemails');
 
-        if (CHttpRequest::getPost('bypassbademails') == 'Y')
+        if (Yii::app()->request->getPost('bypassbademails') == 'Y')
         {
             $SQLemailstatuscondition = " AND emailstatus = 'OK'";
         }
@@ -945,7 +945,7 @@ function editToken($iSurveyId)
             $SQLemailstatuscondition = " AND emailstatus <> 'OptOut'";
         }
 
-        if (!CHttpRequest::getPost('ok'))
+        if (!Yii::app()->request->getPost('ok'))
         {
             if (empty($aData['tokenids']))
             {
@@ -964,20 +964,20 @@ function editToken($iSurveyId)
 
             if (!$bEmail)
             {
-                if (CHttpRequest::getPost('maxremindercount') &&
-                        CHttpRequest::getPost('maxremindercount') != '' &&
-                        intval(CHttpRequest::getPost('maxremindercount')) != 0)
+                if (Yii::app()->request->getPost('maxremindercount') &&
+                        Yii::app()->request->getPost('maxremindercount') != '' &&
+                        intval(Yii::app()->request->getPost('maxremindercount')) != 0)
                 {
-                    $SQLremindercountcondition = " AND remindercount < " . intval(CHttpRequest::getPost('maxremindercount'));
+                    $SQLremindercountcondition = " AND remindercount < " . intval(Yii::app()->request->getPost('maxremindercount'));
                 }
 
-                if (CHttpRequest::getPost('minreminderdelay') &&
-                        CHttpRequest::getPost('minreminderdelay') != '' &&
-                        intval(CHttpRequest::getPost('minreminderdelay')) != 0)
+                if (Yii::app()->request->getPost('minreminderdelay') &&
+                        Yii::app()->request->getPost('minreminderdelay') != '' &&
+                        intval(Yii::app()->request->getPost('minreminderdelay')) != 0)
                 {
-                    // CHttpRequest::getPost('minreminderdelay') in days (86400 seconds per day)
+                    // Yii::app()->request->getPost('minreminderdelay') in days (86400 seconds per day)
                     $compareddate = date_shift(
-                            date("Y-m-d H:i:s", time() - 86400 * intval(CHttpRequest::getPost('minreminderdelay'))), "Y-m-d H:i", $timeadjust);
+                            date("Y-m-d H:i:s", time() - 86400 * intval(Yii::app()->request->getPost('minreminderdelay'))), "Y-m-d H:i", $timeadjust);
                     $SQLreminderdelaycondition = " AND ( "
                             . " (remindersent = 'N' AND sent < '" . $compareddate . "') "
                             . " OR "
@@ -993,10 +993,10 @@ function editToken($iSurveyId)
 
             foreach ($aSurveyLangs as $language)
             {
-                $_POST['message_' . $language] = auto_unescape(CHttpRequest::getPost('message_' . $language));
-                $_POST['subject_' . $language] = auto_unescape(CHttpRequest::getPost('subject_' . $language));
+                $_POST['message_' . $language] = auto_unescape(Yii::app()->request->getPost('message_' . $language));
+                $_POST['subject_' . $language] = auto_unescape(Yii::app()->request->getPost('subject_' . $language));
                 if ($bHtml)
-                    $_POST['message_' . $language] = html_entity_decode(CHttpRequest::getPost('message_' . $language), ENT_QUOTES, Yii::app()->getConfig("emailcharset"));
+                    $_POST['message_' . $language] = html_entity_decode(Yii::app()->request->getPost('message_' . $language), ENT_QUOTES, Yii::app()->getConfig("emailcharset"));
             }
 
             $attributes = GetTokenFieldsAndNames($iSurveyId);
@@ -1030,7 +1030,7 @@ function editToken($iSurveyId)
                         $emrow['language'] = $sBaseLanguage;
                     }
 
-                    $from = CHttpRequest::getPost('from_' . $emrow['language']);
+                    $from = Yii::app()->request->getPost('from_' . $emrow['language']);
 
                     $fieldsarray["{OPTOUTURL}"] = $this->getController()->createUrl("/optout/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
                     $fieldsarray["{OPTINURL}"] = $this->getController()->createUrl("/optin/langcode/" . trim($emrow['language']) . "/surveyid/{$iSurveyId}/token/{$emrow['token']}");
@@ -1050,8 +1050,8 @@ function editToken($iSurveyId)
                         '2' => "X-tokenid: " . $fieldsarray["{TOKEN}"]);
 
                     global $maildebug;
-                    $modsubject = Replacefields(CHttpRequest::getPost('subject_' . $emrow['language']), $fieldsarray);
-                    $modmessage = Replacefields(CHttpRequest::getPost('message_' . $emrow['language']), $fieldsarray);
+                    $modsubject = Replacefields(Yii::app()->request->getPost('subject_' . $emrow['language']), $fieldsarray);
+                    $modmessage = Replacefields(Yii::app()->request->getPost('message_' . $emrow['language']), $fieldsarray);
 
                     if (trim($emrow['validfrom']) != '' && convertDateTimeFormat($emrow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1)
                     {
@@ -1138,7 +1138,7 @@ function editToken($iSurveyId)
             die();
         }
 
-        if (CHttpRequest::getPost('submit'))
+        if (Yii::app()->request->getPost('submit'))
         {
             Yii::app()->loadHelper("export");
             tokens_export($iSurveyId);
@@ -1176,7 +1176,7 @@ function editToken($iSurveyId)
         $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
         $aData['ldap_queries'] = Yii::app()->getConfig('ldap_queries');
 
-        if (!CHttpRequest::getPost('submit'))
+        if (!Yii::app()->request->getPost('submit'))
         {
             $this->_renderWrappedTemplate(array('tokenbar', 'ldapform'), $aData);
         }
@@ -1190,7 +1190,7 @@ function editToken($iSurveyId)
             $tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
                     . $clang->gT("Uploading LDAP Query") . "</strong></td></tr>\n"
                     . "\t<tr><td align='center'>\n";
-            $ldapq = CHttpRequest::getPost('ldapQueries'); // the ldap query id
+            $ldapq = Yii::app()->request->getPost('ldapQueries'); // the ldap query id
 
             $ldap_server_id = $ldap_queries[$ldapq]['ldapServerId'];
             $ldapserver = $ldap_server[$ldap_server_id]['server'];
@@ -1468,17 +1468,17 @@ function editToken($iSurveyId)
             , "ujis" => $clang->gT("EUC-JP Japanese")
             , "utf8" => $clang->gT("UTF-8 Unicode"));
 
-        if (CHttpRequest::getPost('submit'))
+        if (Yii::app()->request->getPost('submit'))
         {
-            if (CHttpRequest::getPost('csvcharset') && CHttpRequest::getPost('csvcharset'))  //sanitize charset - if encoding is not found sanitize to 'auto'
+            if (Yii::app()->request->getPost('csvcharset') && Yii::app()->request->getPost('csvcharset'))  //sanitize charset - if encoding is not found sanitize to 'auto'
             {
-                $uploadcharset = CHttpRequest::getPost('csvcharset');
+                $uploadcharset = Yii::app()->request->getPost('csvcharset');
                 if (!array_key_exists($uploadcharset, $aEncodings))
                 {
                     $uploadcharset = 'auto';
                 }
-                $filterduplicatetoken = (CHttpRequest::getPost('filterduplicatetoken') && CHttpRequest::getPost('filterduplicatetoken') == 'on');
-                $filterblankemail = (CHttpRequest::getPost('filterblankemail') && CHttpRequest::getPost('filterblankemail') == 'on');
+                $filterduplicatetoken = (Yii::app()->request->getPost('filterduplicatetoken') && Yii::app()->request->getPost('filterduplicatetoken') == 'on');
+                $filterblankemail = (Yii::app()->request->getPost('filterblankemail') && Yii::app()->request->getPost('filterblankemail') == 'on');
             }
 
             $attrfieldnames = GetAttributeFieldnames($iSurveyId);
@@ -1510,13 +1510,13 @@ function editToken($iSurveyId)
                 // open it and trim the ednings
                 $tokenlistarray = file($sFilePath);
                 $sBaseLanguage = Survey::model()->findByPk($iSurveyId)->language;
-                if (!CHttpRequest::getPost('filterduplicatefields') || (CHttpRequest::getPost('filterduplicatefields') && count(CHttpRequest::getPost('filterduplicatefields')) == 0))
+                if (!Yii::app()->request->getPost('filterduplicatefields') || (Yii::app()->request->getPost('filterduplicatefields') && count(Yii::app()->request->getPost('filterduplicatefields')) == 0))
                 {
                     $filterduplicatefields = array('firstname', 'lastname', 'email');
                 }
                 else
                 {
-                    $filterduplicatefields = CHttpRequest::getPost('filterduplicatefields');
+                    $filterduplicatefields = Yii::app()->request->getPost('filterduplicatefields');
                 }
                 $separator = returnglobal('separator');
                 foreach ($tokenlistarray as $buffer)
@@ -1721,7 +1721,7 @@ function editToken($iSurveyId)
             die();
         }
 
-        if (!CHttpRequest::getParam('ok'))
+        if (!Yii::app()->request->getParam('ok'))
         {
             $this->_renderWrappedTemplate(array('tokenbar', 'message' => array(
                 'title' => $clang->gT("Create tokens"),
@@ -1760,7 +1760,7 @@ function editToken($iSurveyId)
         }
 
         $date = date('YmdHis');
-        if (!CHttpRequest::getPost('ok'))
+        if (!Yii::app()->request->getPost('ok'))
         {
             $this->_renderWrappedTemplate(array('tokenbar', 'message' => array(
                 'title' => $clang->gT("Delete Tokens Table"),
@@ -1799,17 +1799,17 @@ function editToken($iSurveyId)
         if (!empty($_POST))
         {
             $fieldvalue = array(
-                "bounceprocessing" => CHttpRequest::getPost('bounceprocessing'),
-                "bounce_email" => CHttpRequest::getPost('bounce_email'),
+                "bounceprocessing" => Yii::app()->request->getPost('bounceprocessing'),
+                "bounce_email" => Yii::app()->request->getPost('bounce_email'),
             );
 
-            if (CHttpRequest::getPost('bounceprocessing') == 'L')
+            if (Yii::app()->request->getPost('bounceprocessing') == 'L')
             {
-                $fieldvalue['bounceaccountencryption'] = CHttpRequest::getPost('bounceaccountencryption');
-                $fieldvalue['bounceaccountuser'] = CHttpRequest::getPost('bounceaccountuser');
-                $fieldvalue['bounceaccountpass'] = CHttpRequest::getPost('bounceaccountpass');
-                $fieldvalue['bounceaccounttype'] = CHttpRequest::getPost('bounceaccounttype');
-                $fieldvalue['bounceaccounthost'] = CHttpRequest::getPost('bounceaccounthost');
+                $fieldvalue['bounceaccountencryption'] = Yii::app()->request->getPost('bounceaccountencryption');
+                $fieldvalue['bounceaccountuser'] = Yii::app()->request->getPost('bounceaccountuser');
+                $fieldvalue['bounceaccountpass'] = Yii::app()->request->getPost('bounceaccountpass');
+                $fieldvalue['bounceaccounttype'] = Yii::app()->request->getPost('bounceaccounttype');
+                $fieldvalue['bounceaccounthost'] = Yii::app()->request->getPost('bounceaccounthost');
             }
 
             $survey = Survey::model()->findByAttributes(array('sid' => $iSurveyId));
@@ -1857,7 +1857,7 @@ function editToken($iSurveyId)
     {
         if (empty($aTokenIds))
         {
-            $aTokenIds = CHttpRequest::getPost('tokenids', false);
+            $aTokenIds = Yii::app()->request->getPost('tokenids', false);
         }
         if (!empty($aTokenIds))
         {
@@ -1875,7 +1875,7 @@ function editToken($iSurveyId)
     function _newtokentable($iSurveyId)
     {
         $clang = $this->getController()->lang;
-        if (CHttpRequest::getPost('createtable') == "Y" && bHasSurveyPermission($iSurveyId, 'surveyactivation', 'update'))
+        if (Yii::app()->request->getPost('createtable') == "Y" && bHasSurveyPermission($iSurveyId, 'surveyactivation', 'update'))
         {
             $fields = array(
                 'tid' => 'int(11) not null auto_increment primary key',
@@ -1921,9 +1921,9 @@ function editToken($iSurveyId)
                     . $clang->gT("Continue") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
             )));
         }
-        elseif (returnglobal('restoretable') == "Y" && tableExists(CHttpRequest::getPost('oldtable')) && bHasSurveyPermission($iSurveyId, 'surveyactivation', 'update'))
+        elseif (returnglobal('restoretable') == "Y" && tableExists(Yii::app()->request->getPost('oldtable')) && bHasSurveyPermission($iSurveyId, 'surveyactivation', 'update'))
         {
-            Yii::app()->db->createCommand()->renameTable(CHttpRequest::getPost('oldtable'), "{{tokens_$iSurveyId}}");
+            Yii::app()->db->createCommand()->renameTable(Yii::app()->request->getPost('oldtable'), "{{tokens_$iSurveyId}}");
 
             $this->_renderWrappedTemplate(array('message' => array(
                 'title' => $clang->gT("Import old tokens"),
@@ -1958,10 +1958,10 @@ function editToken($iSurveyId)
 
     function getSearch_json($iSurveyId)
     {
-        $page = CHttpRequest::getPost('page');
-        $limit = CHttpRequest::getPost('rows');
+        $page = Yii::app()->request->getPost('page');
+        $limit = Yii::app()->request->getPost('rows');
         $fields = array('tid', 'firstname', 'lastname', 'email', 'emailstatus', 'token', 'language', 'sent', 'sentreminder', 'remindercount', 'completed', 'usesleft', 'validfrom', 'validuntil');
-        $searchcondition = CHttpRequest::getQuery('search');
+        $searchcondition = Yii::app()->request->getQuery('search');
         $searchcondition = urldecode($searchcondition);
         $finalcondition = array();
         $condition = explode("||", $searchcondition);
@@ -2009,8 +2009,8 @@ function editToken($iSurveyId)
 
         if (!empty($sortablearray))
         {
-            $indexsort = array_search(CHttpRequest::getPost('sidx'), $fields);
-            $sortedarray = subval_sort($sortablearray, $indexsort, CHttpRequest::getPost('sord'));
+            $indexsort = array_search(Yii::app()->request->getPost('sidx'), $fields);
+            $sortedarray = subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
             $i = 0;
             $count = count($sortedarray[0]);
             foreach ($sortedarray as $key => $value)

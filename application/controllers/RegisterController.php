@@ -60,10 +60,10 @@
     {
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('replacements');
-        $postlang = CHttpRequest::getPost('lang');
+        $postlang = Yii::app()->request->getPost('lang');
         if($surveyid == null)
         {
-            $surveyid = CHttpRequest::getPost('sid');
+            $surveyid = Yii::app()->request->getPost('sid');
         }
         if (!$surveyid)
         {
@@ -107,14 +107,14 @@
         {
             if (!isset($_POST['loadsecurity']) ||
             !isset(Yii::app()->session['secanswer']) ||
-            CHttpRequest::getPost('loadsecurity') != Yii::app()->session['secanswer'])
+            Yii::app()->request->getPost('loadsecurity') != Yii::app()->session['secanswer'])
             {
                 $register_errormsg .= $clang->gT("The answer to the security question is incorrect.")."<br />\n";
             }
         }
 
         //Check that the email is a valid style address
-        if (!validate_email(CHttpRequest::getPost('register_email')))
+        if (!validate_email(Yii::app()->request->getPost('register_email')))
         {
             $register_errormsg .= $clang->gT("The email you used is not valid. Please try again.");
         }
@@ -125,7 +125,7 @@
 
         //Check if this email already exists in token database
         $query = "SELECT email FROM {{tokens_$surveyid}}\n"
-        . "WHERE email = '".sanitize_email(CHttpRequest::getPost('register_email'))."'";
+        . "WHERE email = '".sanitize_email(Yii::app()->request->getPost('register_email'))."'";
         $result = db_execute_assoc($query) or show_error("Unable to execute this query : \n <br/>".$query."<br />");   //Checked)
         if (($result->count()) > 0)
         {
@@ -162,10 +162,10 @@
             if (!$ntresult->count()) {$mayinsert = true;}
         }
 
-        $postfirstname=sanitize_xss_string(strip_tags(CHttpRequest::getPost('register_firstname')));
-        $postlastname=sanitize_xss_string(strip_tags(CHttpRequest::getPost('register_lastname')));
-        $starttime = sanitize_xss_string(CHttpRequest::getPost('startdate'));
-        $endtime = sanitize_xss_string(CHttpRequest::getPost('enddate'));
+        $postfirstname=sanitize_xss_string(strip_tags(Yii::app()->request->getPost('register_firstname')));
+        $postlastname=sanitize_xss_string(strip_tags(Yii::app()->request->getPost('register_lastname')));
+        $starttime = sanitize_xss_string(Yii::app()->request->getPost('startdate'));
+        $endtime = sanitize_xss_string(Yii::app()->request->getPost('enddate'));
         /*$postattribute1=sanitize_xss_string(strip_tags(returnglobal('register_attribute1')));
          $postattribute2=sanitize_xss_string(strip_tags(returnglobal('register_attribute2')));   */
 
@@ -177,7 +177,7 @@
         $query .= ", validfrom, validuntil";
 
         $query .=")\n"
-        . "VALUES ('$postfirstname', '$postlastname', '".CHttpRequest::getPost('register_email')."', 'OK', '$newtoken'";
+        . "VALUES ('$postfirstname', '$postlastname', '".Yii::app()->request->getPost('register_email')."', 'OK', '$newtoken'";
 
         if ($starttime && $endtime)
         $query .= ",$starttime,$endtime";
@@ -235,7 +235,7 @@
         $html = ""; //Set variable
 		$sitename =  Yii::app()->getConfig('sitename');
 
-        if (SendEmailMessage($message, $subject, CHttpRequest::getPost('register_email'), $from, $sitename,$useHtmlEmail,getBounceEmail($surveyid)))
+        if (SendEmailMessage($message, $subject, Yii::app()->request->getPost('register_email'), $from, $sitename,$useHtmlEmail,getBounceEmail($surveyid)))
         {
             // TLR change to put date into sent
             $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);

@@ -21,11 +21,12 @@ class Quota_members extends CActiveRecord
 	 *
 	 * @static
 	 * @access public
+     * @param string $class
 	 * @return CActiveRecord
 	 */
-	public static function model()
+	public static function model($class = __CLASS__)
 	{
-		return parent::model(__CLASS__);
+		return parent::model($class);
 	}
 
 	/**
@@ -49,7 +50,7 @@ class Quota_members extends CActiveRecord
 	{
 		return 'id';
 	}
-	
+
 	function insertRecords($data)
     {
         $members = new self;
