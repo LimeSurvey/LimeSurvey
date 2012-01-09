@@ -4303,7 +4303,7 @@ class LimeExpressionManager {
                 $jsParts[] = "}\n";
             }
             // now make sure any needed variables are accessible
-            $vars = explode('|',$arg['relevanceVars']);
+            $vars = explode('|',$gr['relevanceVars']);
             if (is_array($vars))
             {
                 $allJsVarsUsed = array_merge($allJsVarsUsed,$vars);
