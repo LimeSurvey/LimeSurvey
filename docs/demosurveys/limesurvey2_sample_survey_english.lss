@@ -7211,48 +7211,12 @@ You must enter values for <b>age</b> and <b>yearsMarried</b> in order to complet
     <type><![CDATA[:]]></type>
     <title><![CDATA[v1AMF]]></title>
     <question><![CDATA[[:] Multi-Flex 1-10 (multiflex min/max)]]></question>
-    <preg><![CDATA[]]></preg>
+    <preg><![CDATA[/^\d\d?$/]]></preg>
     <help><![CDATA[]]></help>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[41]]></question_order>
     <language><![CDATA[en]]></language>
-    <scale_id><![CDATA[0]]></scale_id>
-    <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[1]]></relevance>
-   </row>
-   <row>
-    <qid><![CDATA[3177]]></qid>
-    <parent_qid><![CDATA[0]]></parent_qid>
-    <sid><![CDATA[82556]]></sid>
-    <gid><![CDATA[125]]></gid>
-    <type><![CDATA[:]]></type>
-    <title><![CDATA[v1AMF]]></title>
-    <question><![CDATA[[:] Multi-Flex 1-10 (multiflex min/max)]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
-    <other><![CDATA[N]]></other>
-    <mandatory><![CDATA[N]]></mandatory>
-    <question_order><![CDATA[41]]></question_order>
-    <language><![CDATA[fr]]></language>
-    <scale_id><![CDATA[0]]></scale_id>
-    <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[1]]></relevance>
-   </row>
-   <row>
-    <qid><![CDATA[3177]]></qid>
-    <parent_qid><![CDATA[0]]></parent_qid>
-    <sid><![CDATA[82556]]></sid>
-    <gid><![CDATA[125]]></gid>
-    <type><![CDATA[:]]></type>
-    <title><![CDATA[v1AMF]]></title>
-    <question><![CDATA[[:] Multi-Flex 1-10 (multiflex min/max)]]></question>
-    <preg><![CDATA[]]></preg>
-    <help><![CDATA[]]></help>
-    <other><![CDATA[N]]></other>
-    <mandatory><![CDATA[N]]></mandatory>
-    <question_order><![CDATA[41]]></question_order>
-    <language><![CDATA[de]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
     <relevance><![CDATA[1]]></relevance>
@@ -8351,42 +8315,6 @@ You must enter values for <b>age</b> and <b>yearsMarried</b> in order to complet
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[49]]></question_order>
     <language><![CDATA[en]]></language>
-    <scale_id><![CDATA[0]]></scale_id>
-    <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[1]]></relevance>
-   </row>
-   <row>
-    <qid><![CDATA[3201]]></qid>
-    <parent_qid><![CDATA[0]]></parent_qid>
-    <sid><![CDATA[82556]]></sid>
-    <gid><![CDATA[125]]></gid>
-    <type><![CDATA[Q]]></type>
-    <title><![CDATA[vQ]]></title>
-    <question><![CDATA[Multiple emails]]></question>
-    <preg><![CDATA[/(\w[-._\w]*\w@\w[-._\w]*\w\.\w{2,3})/]]></preg>
-    <help><![CDATA[Validation equation (if used) is /(\w[-._\w]*\w@\w[-._\w]*\w\.\w{2,3})/]]></help>
-    <other><![CDATA[N]]></other>
-    <mandatory><![CDATA[N]]></mandatory>
-    <question_order><![CDATA[50]]></question_order>
-    <language><![CDATA[de]]></language>
-    <scale_id><![CDATA[0]]></scale_id>
-    <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[1]]></relevance>
-   </row>
-   <row>
-    <qid><![CDATA[3201]]></qid>
-    <parent_qid><![CDATA[0]]></parent_qid>
-    <sid><![CDATA[82556]]></sid>
-    <gid><![CDATA[125]]></gid>
-    <type><![CDATA[Q]]></type>
-    <title><![CDATA[vQ]]></title>
-    <question><![CDATA[Multiple emails]]></question>
-    <preg><![CDATA[/(\w[-._\w]*\w@\w[-._\w]*\w\.\w{2,3})/]]></preg>
-    <help><![CDATA[Validation equation (if used) is /(\w[-._\w]*\w@\w[-._\w]*\w\.\w{2,3})/]]></help>
-    <other><![CDATA[N]]></other>
-    <mandatory><![CDATA[N]]></mandatory>
-    <question_order><![CDATA[50]]></question_order>
-    <language><![CDATA[fr]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
     <relevance><![CDATA[1]]></relevance>
@@ -31868,7 +31796,7 @@ Please correct this or you won't be able to pass some of the Validation Tests la
    <row>
     <qid><![CDATA[3177]]></qid>
     <attribute><![CDATA[input_boxes]]></attribute>
-    <value><![CDATA[0]]></value>
+    <value><![CDATA[1]]></value>
    </row>
    <row>
     <qid><![CDATA[3177]]></qid>
@@ -31899,11 +31827,6 @@ Please correct this or you won't be able to pass some of the Validation Tests la
     <qid><![CDATA[3177]]></qid>
     <attribute><![CDATA[page_break]]></attribute>
     <value><![CDATA[0]]></value>
-   </row>
-   <row>
-    <qid><![CDATA[3177]]></qid>
-    <attribute><![CDATA[parent_order]]></attribute>
-    <value><![CDATA[]]></value>
    </row>
    <row>
     <qid><![CDATA[3177]]></qid>

@@ -497,7 +497,7 @@ if(isset($surveyid))
 
         // These are the questions types that have no validation - so zap it accordingly
         if ($_POST['type']== "!" || $_POST['type']== "L" || $_POST['type']== "M" || $_POST['type']== "P" ||
-        $_POST['type']== "F" || $_POST['type']== "H" || $_POST['type']== ":" || 
+        $_POST['type']== "F" || $_POST['type']== "H" || 
         $_POST['type']== "X" || $_POST['type']== "")
         {
             $_POST['preg']='';

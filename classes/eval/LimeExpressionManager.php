@@ -872,11 +872,11 @@ class LimeExpressionManager {
                 }
             }
 
-            // num_value_equals_sgqa
-            // Validation:= sum(sq1,...,sqN) == value (which could be an expression).
-            if (isset($qattr['num_value_equals_sgqa']) && trim($qattr['num_value_equals_sgqa']) != '')
+            // max_num_value_sgqa
+            // Validation:= sum(sq1,...,sqN) <= value (which could be an expression).
+            if (isset($qattr['max_num_value_sgqa']) && trim($qattr['max_num_value_sgqa']) != '')
             {
-                $num_value_equals_sgqa = $qattr['num_value_equals_sgqa'];
+                $max_num_value_sgqa = $qattr['max_num_value_sgqa'];
                 if ($hasSubqs) {
                     $subqs = $qinfo['subqs'];
                     $sq_names = array();
@@ -901,10 +901,100 @@ class LimeExpressionManager {
                         }
                         $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
-                            'type' => 'num_value_equals_sgqa',
-                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') == (' . $num_value_equals_sgqa . '))',
+                            'type' => 'max_num_value_sgqa',
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') <= (' . $max_num_value_sgqa . '))',
                             'qid' => $questionNum,
-                            'tip' => $this->gT('Total of all entries must equal') . ' {' . $num_value_equals_sgqa . '}',
+                            'tip' => $this->gT('Total of all entries must not exceed') . ' {' . $max_num_value_sgqa . '}',
+                        );
+                    }
+                }
+            }
+
+            // multiflexible_min
+            // Validation:= sqN >= value (which could be an expression).
+            if (isset($qattr['multiflexible_min']) && trim($qattr['multiflexible_min']) != '')
+            {
+                $multiflexible_min = $qattr['multiflexible_min'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    $subqValidEqns = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                        {
+                            case ':': //MULTIPLE NUMERICAL QUESTION
+                                $sq_name = '(is_empty(' . $sq['varName'] . ') || ' . $sq['varName'] . '.NAOK >= (' . $multiflexible_min . '))';
+                                $subqValidSelector = $sq['jsVarName_on'];
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $sq_names[] = $sq_name;
+                            $subqValidEqns[$subqValidSelector] = array(
+                                'subqValidEqn' => $sq_name,
+                                'subqValidSelector' => $subqValidSelector,
+                                );
+                        }
+                    }
+                    if (count($sq_names) > 0) {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'multiflexible_min',
+                            'eqn' => implode(' && ', $sq_names),
+                            'qid' => $questionNum,
+                            'tip' => $this->gT('Each entry must be at least') . ' {' . $multiflexible_min . '}',
+                            'subqValidEqns' => $subqValidEqns,
+                        );
+                    }
+                }
+            }
+
+            // multiflexible_max
+            // Validation:= sqN <= value (which could be an expression).
+            if (isset($qattr['multiflexible_max']) && trim($qattr['multiflexible_max']) != '')
+            {
+                $multiflexible_max = $qattr['multiflexible_max'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    $subqValidEqns = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                        {
+                            case ':': //MULTIPLE NUMERICAL QUESTION
+                                $sq_name = '(is_empty(' . $sq['varName'] . ') || ' . $sq['varName'] . '.NAOK <= (' . $multiflexible_max . '))';
+                                $subqValidSelector = $sq['jsVarName_on'];
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $sq_names[] = $sq_name;
+                            $subqValidEqns[$subqValidSelector] = array(
+                                'subqValidEqn' => $sq_name,
+                                'subqValidSelector' => $subqValidSelector,
+                                );
+                        }
+                    }
+                    if (count($sq_names) > 0) {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'multiflexible_max',
+                            'eqn' => implode(' && ', $sq_names),
+                            'qid' => $questionNum,
+                            'tip' => $this->gT('Each entry must be no more than') . ' {' . $multiflexible_max . '}',
+                            'subqValidEqns' => $subqValidEqns,
                         );
                     }
                 }
@@ -934,6 +1024,7 @@ class LimeExpressionManager {
                             case 'K': //MULTIPLE NUMERICAL QUESTION
                             case 'Q': //MULTIPLE SHORT TEXT
                             case ';': //ARRAY (Multi Flexi) Text
+                            case ':': //ARRAY (Multi Flexi) 1 to 10
                             case 'S': //SHORT FREE TEXT
                             case 'T': //LONG FREE TEXT
                             case 'U': //HUGE FREE TEXT
@@ -948,14 +1039,15 @@ class LimeExpressionManager {
                             case 'K': //MULTIPLE NUMERICAL QUESTION
                             case 'Q': //MULTIPLE SHORT TEXT
                             case ';': //ARRAY (Multi Flexi) Text
-                                $subqValidEqn = 'strlen('.$sq['varName'].'.NAOK)==0 || regexMatch("' . $preg . '", ' . $sq['varName'] . '.NAOK)';
+                            case ':': //ARRAY (Multi Flexi) 1 to 10
+                                $subqValidEqn = '(strlen('.$sq['varName'].'.NAOK)==0 || regexMatch("' . $preg . '", ' . $sq['varName'] . '.NAOK))';
                                 $subqValidSelector = $sq['jsVarName_on'];
                                 break;
                             case 'N': //NUMERICAL QUESTION TYPE
                             case 'S': //SHORT FREE TEXT
                             case 'T': //LONG FREE TEXT
                             case 'U': //HUGE FREE TEXT
-                                $subqValidEqn = 'strlen('.$sq['varName'].'.NAOK)==0 || regexMatch("' . $preg . '", ' . $sq['varName'] . '.NAOK)';
+                                $subqValidEqn = '(strlen('.$sq['varName'].'.NAOK)==0 || regexMatch("' . $preg . '", ' . $sq['varName'] . '.NAOK))';
                                 $subqValidSelector = 'question' . $questionNum . ' :input';
                                 break;
                             default:
@@ -967,7 +1059,7 @@ class LimeExpressionManager {
                         // (3) Let overall validation equation assess those flags, not re-do full regex for all
                         if (!is_null($sq_name)) {
                             $sq_names[] = $sq_name;
-                            $subqValidEqns[] = array(
+                            $subqValidEqns[$subqValidSelector] = array(
                                 'subqValidEqn' => $subqValidEqn,
                                 'subqValidSelector' => $subqValidSelector,
                                 );
@@ -1044,10 +1136,33 @@ class LimeExpressionManager {
                     $subqValidEqns[] = $v['subqValidEqns'];
                 }
             }
+            // combine the sub-question level validation equations into a single validation equation per sub-question
+            $subqValidComposite = array();
+            foreach ($subqValidEqns as $sqs) {
+                foreach ($sqs as $sq)
+                {
+                    if (!isset($subqValidComposite[$sq['subqValidSelector']]))
+                    {
+                        $subqValidComposite[$sq['subqValidSelector']] = array(
+                            'subqValidSelector' => $sq['subqValidSelector'],
+                            'subqValidEqns' => array(),
+                            );
+                    }
+                    $subqValidComposite[$sq['subqValidSelector']]['subqValidEqns'][] = $sq['subqValidEqn'];
+                }
+            }
+            $csubqValidEqns = array();
+            foreach ($subqValidComposite as $csq)
+            {
+                $csubqValidEqns[$csq['subqValidSelector']] = array(
+                    'subqValidSelector' => $csq['subqValidSelector'],
+                    'subqValidEqn' => implode(' && ', $csq['subqValidEqns']),
+                    );
+            }
             $this->qid2validationEqn[$key] = array(
                 'eqn' => '(' . implode(' and ', $parts) . ')',
                 'tips' => $tips,
-                'subqValidEqns' => $subqValidEqns,
+                'subqValidEqns' => $csubqValidEqns,
             );
         }
 
@@ -1403,10 +1518,10 @@ class LimeExpressionManager {
                 case 'H': //ARRAY (Flexible) - Column Format
                 case 'M': //Multiple choice checkbox
                 case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                case ':': //ARRAY (Multi Flexi) 1 to 10
                     $jsVarName = 'java' . $sgqa;
                     $jsVarName_on = $jsVarName;
                     break;
+                case ':': //ARRAY (Multi Flexi) 1 to 10
                 case ';': //ARRAY (Multi Flexi) Text
                     $jsVarName = 'java' . $sgqa;
                     $jsVarName_on = 'answer' . $sgqa;;
@@ -4091,20 +4206,17 @@ class LimeExpressionManager {
                 {
                     if (isset($LEM->qid2validationEqn[$arg['qid']]['subqValidEqns']))
                     {
-                        $_veqList = $LEM->qid2validationEqn[$arg['qid']]['subqValidEqns'];
-                        foreach($_veqList as $_veqs)
+                        $_veqs = $LEM->qid2validationEqn[$arg['qid']]['subqValidEqns'];
+                        foreach($_veqs as $_veq)
                         {
-                            foreach ($_veqs as $_veq)
-                            {
-                                // generate JavaScript for each - tests whether invalid.
-                                if (strlen(trim($_veq['subqValidEqn'])) == 0) {
-                                    continue;
-                                }
-                                $subqValidations[] = array(
-                                    'subqValidEqn' => $_veq['subqValidEqn'],
-                                    'subqValidSelector' => $_veq['subqValidSelector'],
-                                );
+                            // generate JavaScript for each - tests whether invalid.
+                            if (strlen(trim($_veq['subqValidEqn'])) == 0) {
+                                continue;
                             }
+                            $subqValidations[] = array(
+                                'subqValidEqn' => $_veq['subqValidEqn'],
+                                'subqValidSelector' => $_veq['subqValidSelector'],
+                            );
                         }
                     }
                 }
