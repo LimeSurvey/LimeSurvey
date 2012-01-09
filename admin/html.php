@@ -381,8 +381,16 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             {
                 $surveysummary .= "<li><a href=\"#\" onclick=\"alert('".$clang->gT("Currently there are no conditions configured for this survey.", "js")."');\" >"
                 . "<img src='{$imageurl}/resetsurveylogic_disabled_30.png' name='ResetSurveyLogic' /> ".$clang->gT("Reset Survey Logic")."</a></li>\n";
-            }
+            }            
         }
+        
+        // EXPRESSION MANAGER TEST SUITE
+        if (bHasSurveyPermission($surveyid,'surveycontent','update'))
+        {
+            $surveysummary .= "<li><a target='_blank' href='{$scriptname}?action=EMtest'>"
+            . "<img src='{$imageurl}/expressionManager_30.png' name='ExpressionManager' /> ".$clang->gT("Expression Manager")."</a></li>\n";
+        }
+
         $surveysummary .='</ul></li>' ;
 
 

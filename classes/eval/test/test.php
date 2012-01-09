@@ -8,6 +8,7 @@ if (!((isset($action) && $action == 'EMtest'))) {die("Cannot run this script dir
         <title>Test Suite for Expression Manager</title>
     </head>
     <body>
+        <h1>Test Suite for Expression Manager</h1>
         <table border="1">
             <tr><th>Test</th><th>Description</th></tr>
             <tr>
