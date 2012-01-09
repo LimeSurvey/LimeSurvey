@@ -62,7 +62,7 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
     }
     else die('Invalid filename');
 
-    $sJSON = $_SESSION[$fieldname];
+    $sJSON = $_SESSION[$sFieldname];
     $aFiles = json_decode(stripslashes($sJSON),true);
 
     if(substr($sFilename,0,3)=='fu_'){
@@ -78,7 +78,7 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
            $iFileIndex++;
         }
         if ($found==true) unset($aFiles[$iFileIndex]);
-       $_SESSION[$fieldname] = json_encode($aFiles);
+       $_SESSION[$sFieldname] = json_encode($aFiles);
     }
 
     if (@unlink($sFileDir.$sFilename))

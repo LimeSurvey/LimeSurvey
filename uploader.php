@@ -15,22 +15,6 @@ else
     $surveyid=sanitize_int($surveyid);
 }
 
-if (isset($_GET['filegetcontents']))
-{
-    $sFileName=sanitize_filename($_GET['filegetcontents']);
-    if (substr($sFileName,0,6)=='futmp_')
-    {
-        $sFileDir = $tempdir.'/upload/';
-    }
-    elseif(substr($sFileName,0,3)=='fu_'){
-        $sFileDir = "{$uploaddir}/surveys/{$surveyid}/files/";
-    }
-    readfile($sFileDir.$sFileName);
-    exit();
-}
-
-
-
 // Compute the Session name
 // Session name is based:
 // * on this specific limesurvey installation (Value SessionName in DB)
@@ -68,11 +52,25 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
 {
     die("You don't have a valid session !");
 }
+if (isset($_GET['filegetcontents']))
+{
+    $sFileName=sanitize_filename($_GET['filegetcontents']);
+    if (substr($sFileName,0,6)=='futmp_')
+    {
+        $sFileDir = $tempdir.'/upload/';
+    }
+    elseif(substr($sFileName,0,3)=='fu_'){
+        $sFileDir = "{$uploaddir}/surveys/{$surveyid}/files/";
+    }
+    readfile($sFileDir.$sFileName);
+    exit();
+}
 
 $meta = '<script type="text/javascript">
     var surveyid = "'.$surveyid.'";
     var fieldname = "'.$_GET['fieldname'].'";
     var questgrppreview  = '.$_GET['preview'].';
+    var rooturl ="'.$rooturl.'";
 </script>';
 
 $meta .='<script type="text/javascript" src="scripts/ajaxupload.js"></script>
