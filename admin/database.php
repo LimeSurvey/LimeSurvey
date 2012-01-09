@@ -248,9 +248,9 @@ if(isset($surveyid))
             $_POST['help_'.$baselang]=fix_FCKeditor_text($_POST['help_'.$baselang]);
 
             $_POST  = array_map('db_quote', $_POST);
-            $query = "INSERT INTO ".db_table_name('questions')." (sid, gid, type, title, question, preg, help, other, mandatory, question_order, language)"
+            $query = "INSERT INTO ".db_table_name('questions')." (sid, gid, type, title, question, preg, help, other, mandatory, question_order, relevance, language)"
             ." VALUES ('{$postsid}', '{$postgid}', '{$_POST['type']}', '{$_POST['title']}',"
-            ." '{$_POST['question_'.$baselang]}', '{$_POST['preg']}', '{$_POST['help_'.$baselang]}', '{$_POST['other']}', '{$_POST['mandatory']}', $question_order,'{$baselang}')";
+            ." '{$_POST['question_'.$baselang]}', '{$_POST['preg']}', '{$_POST['help_'.$baselang]}', '{$_POST['other']}', '{$_POST['mandatory']}', $question_order,'".db_quote($_POST['relevance'])."','{$baselang}')";
             $result = $connect->Execute($query);  // Checked
             // Get the last inserted questionid for other languages
             $qid=$connect->Insert_ID(db_table_name_nq('questions'),"qid");
