@@ -925,6 +925,7 @@ class LimeExpressionManager {
                 if ($hasSubqs) {
                     $subqs = $qinfo['subqs'];
                     $sq_names = array();
+                    $subqValidEqns = array();
                     foreach ($subqs as $sq) {
                         $sq_name = NULL;
                         switch ($type)
@@ -942,12 +943,34 @@ class LimeExpressionManager {
                             default:
                                 break;
                         }
+                        switch ($type)
+                        {
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                            case 'Q': //MULTIPLE SHORT TEXT
+                            case ';': //ARRAY (Multi Flexi) Text
+                                $subqValidEqn = 'strlen('.$sq['varName'].'.NAOK)==0 || regexMatch("' . $preg . '", ' . $sq['varName'] . '.NAOK)';
+                                $subqValidSelector = $sq['jsVarName_on'];
+                                break;
+                            case 'N': //NUMERICAL QUESTION TYPE
+                            case 'S': //SHORT FREE TEXT
+                            case 'T': //LONG FREE TEXT
+                            case 'U': //HUGE FREE TEXT
+                                $subqValidEqn = 'strlen('.$sq['varName'].'.NAOK)==0 || regexMatch("' . $preg . '", ' . $sq['varName'] . '.NAOK)';
+                                $subqValidSelector = 'question' . $questionNum . ' :input';
+                                break;
+                            default:
+                                break;
+                        }
                         // TODO - refactor this so validate each resposne separately:
                         // (1) store a flag in $_SESSION and JavaScript indicating valiations status
                         // (2) Use that flag to color-code individual responses that fail validation
                         // (3) Let overall validation equation assess those flags, not re-do full regex for all
                         if (!is_null($sq_name)) {
                             $sq_names[] = $sq_name;
+                            $subqValidEqns[] = array(
+                                'subqValidEqn' => $subqValidEqn,
+                                'subqValidSelector' => $subqValidSelector,
+                                );
                         }
                     }
                     if (count($sq_names) > 0) {
@@ -961,6 +984,7 @@ class LimeExpressionManager {
                             'eqn' => '(sum(' . implode(', ', $sq_names) . ') == 0)',
                             'qid' => $questionNum,
                             'tip' => $this->gT('All entries must conform to this regular expression:') . " " . str_replace(array('{','}'),array('{ ',' }'), $preg),
+                            'subqValidEqns' => $subqValidEqns,
                         );
                     }
                 }
@@ -1012,13 +1036,18 @@ class LimeExpressionManager {
         {
             $parts = array();
             $tips = array();
+            $subqValidEqns = array();
             foreach ($val as $v) {
                 $parts[] = $v['eqn'];
                 $tips[] = $v['tip'];
+                if (isset($v['subqValidEqns'])) {
+                    $subqValidEqns[] = $v['subqValidEqns'];
+                }
             }
             $this->qid2validationEqn[$key] = array(
                 'eqn' => '(' . implode(' and ', $parts) . ')',
                 'tips' => $tips,
+                'subqValidEqns' => $subqValidEqns,
             );
         }
 
@@ -1375,9 +1404,12 @@ class LimeExpressionManager {
                 case 'M': //Multiple choice checkbox
                 case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
                 case ':': //ARRAY (Multi Flexi) 1 to 10
-                case ';': //ARRAY (Multi Flexi) Text
                     $jsVarName = 'java' . $sgqa;
                     $jsVarName_on = $jsVarName;
+                    break;
+                case ';': //ARRAY (Multi Flexi) Text
+                    $jsVarName = 'java' . $sgqa;
+                    $jsVarName_on = 'answer' . $sgqa;;
                     break;
                 case '|': //File Upload
                     // Only want the use the one that ends in '_filecount'
@@ -4053,9 +4085,33 @@ class LimeExpressionManager {
 
                 $qidList[$arg['qid']] = $arg['qid'];
 
+                // Now check whether any sub-question validation needs to be performed
+                $subqValidations = array();
+                if (isset($LEM->qid2validationEqn[$arg['qid']]))
+                {
+                    if (isset($LEM->qid2validationEqn[$arg['qid']]['subqValidEqns']))
+                    {
+                        $_veqList = $LEM->qid2validationEqn[$arg['qid']]['subqValidEqns'];
+                        foreach($_veqList as $_veqs)
+                        {
+                            foreach ($_veqs as $_veq)
+                            {
+                                // generate JavaScript for each - tests whether invalid.
+                                if (strlen(trim($_veq['subqValidEqn'])) == 0) {
+                                    continue;
+                                }
+                                $subqValidations[] = array(
+                                    'subqValidEqn' => $_veq['subqValidEqn'],
+                                    'subqValidSelector' => $_veq['subqValidSelector'],
+                                );
+                            }
+                        }
+                    }
+                }
+
                 $relevance = $arg['relevancejs'];
 
-                if (($relevance == '' || $relevance == '1') && count($tailorParts) == 0 && count($subqParts) == 0)
+                if (($relevance == '' || $relevance == '1') && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0)
                 {
                     // Only show constitutively true relevances if there is tailoring that should be done.
 //                    $jsParts[] = "document.getElementById('relevance" . $arg['qid'] . "').value='1'; // always true\n";
@@ -4074,6 +4130,21 @@ class LimeExpressionManager {
                 $jsParts[] = "\n  )\n{\n";
                 // Do all tailoring
                 $jsParts[] = implode("\n",$tailorParts);
+
+                // Do custom validation
+                foreach ($subqValidations as $_veq)
+                {
+                    $isValid = $LEM->em->ProcessBooleanExpression($_veq['subqValidEqn']);
+                    $_sqValidVars = $LEM->em->GetJSVarsUsed();
+                    $allJsVarsUsed = array_merge($allJsVarsUsed,$_sqValidVars);
+                    $validationJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
+
+                    $jsParts[] = "\n  if(" . $validationJS . "){\n";
+                    $jsParts[] = "    $('#" . $_veq['subqValidSelector'] . "').css('background-color','');\n";
+                    $jsParts[] = "  }\n  else {\n";
+                    $jsParts[] = "    $('#" . $_veq['subqValidSelector'] . "').css('background-color','red');\n";
+                    $jsParts[] = "  }\n";
+                }
 
                 // Do all sub-question filtering (e..g array_filter)
                 foreach ($subqParts as $sq)
