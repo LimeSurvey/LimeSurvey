@@ -97,23 +97,23 @@ class Survey_Common_Action extends CAction
         }
 
         $pseudos = array(
-        'id' => 'iId',
-        'gid' => 'iGroupId',
-        'qid' => 'iQuestionId',
-        'sid' => 'iSurveyId',
-        'surveyid' => 'iSurveyId',
-        'srid' => 'iSurveyResponseId',
-        'scid' => 'iSavedControlId',
-        'uid' => 'iUserId',
-        'ugid' => 'iUserGroupId',
-        'fieldname' => 'sFieldName',
-        'fieldtext' => 'sFieldText',
-        'action' => 'sAction',
-        'lang' => 'sLanguage',
-        'browselang' => 'sBrowseLang',
-        'tokenids' => 'aTokenIds',
-        'tokenid' => 'iTokenId',
-        'subaction' => 'sSubAction',
+            'id' => 'iId',
+            'gid' => 'iGroupId',
+            'qid' => 'iQuestionId',
+            'sid' => 'iSurveyId',
+            'surveyid' => 'iSurveyId',
+            'srid' => 'iSurveyResponseId',
+            'scid' => 'iSavedControlId',
+            'uid' => 'iUserId',
+            'ugid' => 'iUserGroupId',
+            'fieldname' => 'sFieldName',
+            'fieldtext' => 'sFieldText',
+            'action' => 'sAction',
+            'lang' => 'sLanguage',
+            'browselang' => 'sBrowseLang',
+            'tokenids' => 'aTokenIds',
+            'tokenid' => 'iTokenId',
+            'subaction' => 'sSubAction',
         );
 
         // Foreach pseudo, take the key, if it exists,
@@ -206,7 +206,7 @@ class Survey_Common_Action extends CAction
                     {
                         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
                     }
-                    $this->_surveysummary($aData['surveyid'], $sAction, !empty($aData['gid']) ? $aData['gid'] : null);
+                    $this->_surveysummary($aData['surveyid'], !empty($aData['display']['menu_bars']['surveysummary']) ? $aData['display']['menu_bars']['surveysummary'] : null, !empty($aData['gid']) ? $aData['gid'] : null);
                 }
 
                 if (!empty($aData['gid']))
@@ -842,13 +842,13 @@ class Survey_Common_Action extends CAction
         //
 
         $aData['tableusage'] = false;
-        if ($gid || in_array($action, array('deactivate', 'activate', 'surveysecurity', 'editdefaultvalues', 'editemailtemplates',
+        if ($gid || ($action !== true && in_array($action, array('deactivate', 'activate', 'surveysecurity', 'editdefaultvalues', 'editemailtemplates',
         'surveyrights', 'addsurveysecurity', 'addusergroupsurveysecurity',
         'setsurveysecurity', 'setusergroupsurveysecurity', 'delsurveysecurity',
         'editsurveysettings', 'editsurveylocalesettings', 'updatesurveysettingsandeditlocalesettings', 'addgroup', 'importgroup',
         'ordergroups', 'deletesurvey', 'resetsurveylogic',
         'importsurveyresources', 'translate', 'emailtemplates',
-        'exportstructure', 'quotas', 'copysurvey', 'viewgroup', 'viewquestion')))
+        'exportstructure', 'quotas', 'copysurvey', 'viewgroup', 'viewquestion'))))
         {
             $showstyle = "style='display: none'";
         }

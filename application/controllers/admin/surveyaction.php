@@ -134,7 +134,6 @@ class SurveyAction extends Survey_Common_Action
         $clang = $this->getController()->lang;
 
         $esrow = array();
-        $editsurvey = '';
         $esrow = self::_fetchSurveyInfo('editsurvey', $surveyid);
         //$esrow = $esrow[0]->tableSchema->columns;
         $aData['esrow'] = $esrow;
@@ -152,8 +151,7 @@ class SurveyAction extends Survey_Common_Action
         $oResult = Questions::model()->getQuestionsWithSubQuestions($surveyid, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
 
         $aData['questions'] = $oResult;
-        $aData['display'] = $editsurvey;
-        $aData['action'] = "editsurveysettings";
+        $aData['display']['menu_bars']['surveysummary'] = "editsurveysettings";
         $aData['data'] = $aData;
 
         $this->_renderWrappedTemplate('editSurvey_view', $aData);
@@ -352,7 +350,7 @@ class SurveyAction extends Survey_Common_Action
      * @param mixed $qid
      * @return void
      */
-    public function view($surveyid, $gid=null, $qid=null)
+    public function view($surveyid, $gid = null, $qid = null)
     {
         $surveyid = sanitize_int($surveyid);
         if (isset($gid))
@@ -1531,12 +1529,12 @@ class SurveyAction extends Survey_Common_Action
                 'emailresponseto' => $_POST['emailresponseto'],
                 'tokenlength' => $_POST['tokenlength']
             );
-			
+
 			if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
 				$xssfilter = true;
-			else 
+			else
 				$xssfilter = false;
-			
+
             if (!is_null($iSurveyId))
             {
                 $aInsertData['wishSID'] = $iSurveyId;
