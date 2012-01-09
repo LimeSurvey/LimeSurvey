@@ -14,6 +14,7 @@
  */
 function &db_execute_assoc($sql,$inputarr=false,$silent=false)
 {
+
 	try {
 		if($inputarr)
 		{
@@ -48,7 +49,7 @@ function &db_execute($sql,$inputarr=false,$silent=false)
 		$affected=false;
 	}
 
-    if (!$silent && !$affected)  {safe_die('Error executing query in db_execute_assoc:'.$sql);}
+    if (!$silent && !$affected)  {safe_die('Error executing query in db_execute:'.$sql);}
     return $affected;
 }
 

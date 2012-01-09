@@ -3959,7 +3959,6 @@ class LimeExpressionManager {
 
         if (count($LEM->syntaxErrors) > 0 && (($LEM->debugLevel & LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB) == LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB))
         {
-            global $connect;
             foreach ($LEM->syntaxErrors as $err)
             {
                 $query = "INSERT INTO {{expression_errors}} (errortime,sid,gid,qid,gseq,qseq,type,eqn,prettyprint) VALUES("
@@ -4014,7 +4013,6 @@ class LimeExpressionManager {
      */
     static function GetRelevanceAndTailoringJavaScript()
     {
-        global $rooturl;
         $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
 
@@ -4022,6 +4020,7 @@ class LimeExpressionManager {
 
         $jsParts=array();
         $allJsVarsUsed=array();
+        $jsParts[] = '<script type="text/javascript" src="'.Yii::app()->getConfig('publicurl').'scripts/admin/expressions/em_javascript.js"></script>';
         $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
         $jsParts[] = "var LEMgid=" . $LEM->groupNum . ";\n";    // current group num so can compute isOnCurrentPage
         $jsParts[] = "var LEMallOnOnePage=" . (($LEM->allOnOnePage) ? 'true' : 'false') . ";\n";
@@ -4720,7 +4719,6 @@ EOT;
     private function gT($string)
     {
         // eventually replace this with i8n
-        global $clang;
         if (isset($clang))  {
             return $clang->gT($string);
         }
@@ -4989,7 +4987,6 @@ EOT;
         // SQ1, name [scale], relevance [validation], text
         // A1, code, assessment_value, text
         // End Message
-        global $rooturl;
 
         $LEM =& LimeExpressionManager::singleton();
 

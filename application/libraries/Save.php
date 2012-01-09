@@ -472,7 +472,6 @@ class Save {
     {
 
 
-
         global $thistpl;
 
         $clang = Yii::app()->lang;
@@ -735,7 +734,7 @@ class Save {
                                 {
                                     $qfield = $_POST[$field];
                                 }
-                                $query .= db_quote_id($field)." = ".$qfield.",";
+                                $query .= db_quote_id($field)." = ".Yii::app()->db->quoteValue($qfield).",";
                             }
                         }
                     }
