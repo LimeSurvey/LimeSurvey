@@ -1451,6 +1451,10 @@ div.translate {
   width: 90%;
 }
 
+#translateform table td{
+  padding: 1px 4px;
+}
+
 
 #translateform textarea:focus{
   outline: blue solid thin;
