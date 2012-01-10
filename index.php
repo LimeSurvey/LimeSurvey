@@ -104,7 +104,6 @@ if ($surveyid)
         $surveyexists=false;
     }
 }
-
 if ($clienttoken != '' && isset($_SESSION['token']) &&
 $clienttoken != $_SESSION['token'])
 {
@@ -1833,9 +1832,8 @@ function checkpregs($move,$backok=null)
                 //$maxvalue_answername="maxvalue_answer".$maxvalueanswer;
                 if (!empty($_POST['qattribute_answer'.$maxvalueanswer]) && $_POST['display'.$maxvalueanswer] == "on")
                 {
-                        $_SESSION['step'] = $thisstep;
+                    $_SESSION['step'] = $thisstep;
                     $notvalidated[]=$maxvalueanswer;
-                    return $notvalidated;
                 }
             }
         }
