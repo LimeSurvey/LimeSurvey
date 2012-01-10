@@ -965,7 +965,7 @@ class Survey_Common_Action extends CAction
                 }
                 elseif (is_dir($extractdir . "/" . $direntry))
                 {
-                    list($_aImportedFilesInfo, $_aErrorFilesInfo) = $this->_filterImportedFiles($extractdir . "/" . $direntry, $destdir . "/" . $direntry);
+                    list($_aImportedFilesInfo, $_aErrorFilesInfo) = $this->_filterImportedResources($extractdir . "/" . $direntry, $destdir . "/" . $direntry);
                     $aImportedFilesInfo = array_merge($aImportedFilesInfo, $_aImportedFilesInfo);
                     $aErrorFilesInfo = array_merge($aErrorFilesInfo, $_aErrorFilesInfo);
                 }
