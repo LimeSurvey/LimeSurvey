@@ -354,8 +354,8 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
 
     case 'question':
       $amTypeOptions = array(
-        "querybase" => "SELECT * "
-                                   ."FROM ".db_table_name('questions')
+                "querybase" => "SELECT q.qid as questionid, q.* "
+                    ."FROM ".db_table_name('questions')." q "
                                    ."WHERE sid=".db_quoteall($surveyid,true)
                                      ."AND language='{$baselang}' "
                                      ."AND parent_qid=0 "
@@ -386,8 +386,8 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
 
     case 'question_help':
       $amTypeOptions = array(
-        "querybase" => "SELECT * "
-                                   ."FROM ".db_table_name('questions')
+                "querybase" => "SELECT q.qid as questionid, q.* "
+                    ."FROM ".db_table_name('questions')." q "
                                    ."WHERE sid=".db_quoteall($surveyid,true)
                                      ."AND language='{$baselang}' "
                                      ."AND parent_qid=0 "
@@ -418,16 +418,20 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
 
     case 'subquestion':
       $amTypeOptions = array(
-        "querybase" => "SELECT * "
-                                   ."FROM ".db_table_name('questions')
-                                   ."WHERE sid=".db_quoteall($surveyid,true)
-                                     ."AND language='{$baselang}' AND parent_qid>0 "
-                                   ."ORDER BY parent_qid,qid ",
-        "queryto"   => "SELECT * "
-                                    ."FROM ".db_table_name('questions')
-                                    ."WHERE sid=".db_quoteall($surveyid,true)
-                                      ."AND language=".db_quoteall($tolang,true)
-                                    ." AND parent_qid>0 ORDER BY parent_qid,qid ",
+                "querybase" => "SELECT q.qid as questionid, q.title, sq.qid, sq.question, sq.gid "
+                    ."FROM ".db_table_name('questions')." sq "
+                    ."JOIN ".db_table_name('questions')." q ON sq.parent_qid=q.qid  "
+                    ."JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
+                    ."WHERE sq.sid=".db_quoteall($surveyid,true)
+                    ."AND sq.language='{$baselang}' AND q.language='{$baselang}' AND g.language='{$baselang}' AND sq.parent_qid>0 "
+                    ."ORDER BY g.group_order, q.question_order, sq.question_order ",
+                "queryto"   => "SELECT sq.question "
+                    ."FROM ".db_table_name('questions')." sq "
+                    ."JOIN ".db_table_name('questions')." q ON sq.parent_qid=q.qid  "
+                    ."JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
+                    ."WHERE sq.sid=".db_quoteall($surveyid,true)
+                    ."AND sq.language=".db_quoteall($tolang,true)." AND q.language=".db_quoteall($tolang,true)." AND g.language=".db_quoteall($tolang,true)." AND sq.parent_qid>0 "
+                    ."ORDER BY g.group_order, q.question_order, sq.question_order ",
         "queryupdate" => "UPDATE ".db_table_name('questions')
                          ."SET question = ".db_quoteall($new,true)
                          ."WHERE qid = '{$id1}' "
@@ -447,20 +451,26 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
 
     case 'answer':
       $amTypeOptions = array(
-        "querybase" => "SELECT".db_table_name('answers').".*, ".db_table_name('questions').".gid "
-                                     ." FROM ".db_table_name('answers').", ".db_table_name('questions')
-                                    ." WHERE ".db_table_name('questions').".sid ='{$surveyid}' "
-                                      ." AND ".db_table_name('questions').".qid = ".db_table_name('answers').".qid "
-                                      ." AND ".db_table_name('questions').".language = ".db_table_name('answers').".language "
-                                      ." AND ".db_table_name('questions').".language='{$baselang}' "
-                                    ." ORDER BY qid,code,sortorder" ,
-        "queryto" => "SELECT".db_table_name('answers').".*, ".db_table_name('questions').".gid "
-                                     ." FROM ".db_table_name('answers').", ".db_table_name('questions')
-                                    ." WHERE ".db_table_name('questions').".sid ='{$surveyid}' "
-                                      ." AND ".db_table_name('questions').".qid = ".db_table_name('answers').".qid "
-                                      ." AND ".db_table_name('questions').".language = ".db_table_name('answers').".language "
-                                      ." AND ".db_table_name('questions').".language=".db_quoteall($tolang,true)
-                                  ."ORDER BY qid,code,sortorder" ,
+                "querybase" => "SELECT q.qid as questionid, a.code, a.answer, q.qid, q.title "
+                    ." FROM ".db_table_name('answers')." a "
+                    ." JOIN ".db_table_name('questions')." q ON a.qid=q.qid  "
+                    ." JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
+                    ." WHERE q.sid ='{$surveyid}' "
+                    ." AND q.qid = q.qid "
+                    ." AND a.language = '{$baselang}'"
+                    ." AND q.language = '{$baselang}'"
+                    ." AND g.language = '{$baselang}'"
+                    ." ORDER BY g.group_order, q.question_order, a.sortorder",
+                "queryto" => "SELECT a.code, a.answer, q.qid, q.title "
+                    ." FROM ".db_table_name('answers')." a "
+                    ." JOIN ".db_table_name('questions')." q ON a.qid=q.qid  "
+                    ." JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
+                    ." WHERE q.sid ='{$surveyid}' "
+                    ." AND q.qid = q.qid "
+                    ." AND a.language = ".db_quoteall($tolang,true)
+                    ." AND q.language = ".db_quoteall($tolang,true)
+                    ." AND g.language = ".db_quoteall($tolang,true)
+                    ." ORDER BY g.group_order, q.question_order, a.sortorder",
         "queryupdate" => "UPDATE ".db_table_name('answers')
                          ."SET answer = ".db_quoteall($new,true)
                          ."WHERE qid = '{$id1}' "
@@ -707,16 +717,26 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
  * displayTranslateFieldsHeader() Formats and displays header of translation fields table
  * @param string $baselangdesc The source translation language, e.g. "English"
  * @param string $tolangdesc The target translation language, e.g. "German"
+    * @param string $type The target translation language, e.g. "German"
  * @return string $translateoutput
  */
-function displayTranslateFieldsHeader($baselangdesc, $tolangdesc)
+    function displayTranslateFieldsHeader($baselangdesc, $tolangdesc, $type)
 {
-  $translateoutput = '<table class="translate">'
-      . '<colgroup valign="top" width="45%" />'
+        global $clang;
+        $translateoutput = '<table class="translate">';
+        if ($type=='question' || $type=='subquestion' || $type=='question_help' || $type=='answer')
+        {
+            $translateoutput.='<colgroup valign="top" width="8%" />';
+        }
+        $translateoutput.='<colgroup valign="top" width="37%" />'
       . '<colgroup valign="top" width="55%" />'
-      . "<tr>\n"
-          . "<td><b>$baselangdesc</b></td>\n"
-          . "<td><b>$tolangdesc</b></td>\n"
+        . "<tr>\n";
+        if ($type=='question' || $type=='subquestion' || $type=='question_help' || $type=='answer')
+        {
+            $translateoutput.="<th>{$clang->gT('Question code / ID')}</th>\n";
+        }
+        $translateoutput.="<th>{$baselangdesc}</th>\n"
+        . "<th>{$tolangdesc}</th>\n"
       . "</tr>\n";
   return($translateoutput);
 }
@@ -773,8 +793,13 @@ function displayTranslateFields($surveyid, $gid, $qid, $type, $amTypeOptions,
 
   // Display text in original language
   // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
+        if ($type=='question' || $type=='subquestion' || $type=='question_help' || $type=='answer')
+        {
   $translateoutput .= ""
-    . "<td class='_from_' id='${type}_from_${i}'>$textfrom</td>\n"
+            . "<td>".htmlspecialchars($rowfrom['title'])." ({$rowfrom['questionid']})</td>\n";
+        }
+
+        $translateoutput .= "<td class='_from_' id='${type}_from_${i}'>$textfrom</td>\n"
     . "<td>\n";
       $translateoutput .= "<input type='hidden' name='{$type}_id1_{$i}' value='{$value1}' />\n";
       $translateoutput .= "<input type='hidden' name='{$type}_id2_{$i}' value='{$value2}' />\n";
@@ -782,7 +807,7 @@ function displayTranslateFields($surveyid, $gid, $qid, $type, $amTypeOptions,
       $translateoutput .= "<input type='hidden' "
         ."name='".$type."_oldvalue_".$i."' "
         ."value='".htmlspecialchars($textto, ENT_QUOTES)."' />\n";
-      $translateoutput .= "<textarea cols='80' rows='".($nrows)."' "
+        $translateoutput .= "<textarea cols='75' rows='".($nrows)."' "
         ." name='{$type}_newvalue_{$i}' >".htmlspecialchars($textto)."</textarea>\n";
 
       if ($amTypeOptions["HTMLeditorDisplay"]=="Inline")

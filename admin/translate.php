@@ -204,7 +204,7 @@ END;
         $translateoutput .="<div class='translate'>\n";
         $translateoutput .="<input type='button' class='auto-trans' value='".$clang->gT("Auto Translate")."' id='auto-trans-tab-$type' />";
         $translateoutput .="<img src='../images/ajax-loader.gif' style='display: none' class='ajax-loader' alt='".$clang->gT("Loading...")."' />\n";
-        $translateoutput .= displayTranslateFieldsHeader($baselangdesc, $tolangdesc);
+        $translateoutput .= displayTranslateFieldsHeader($baselangdesc, $tolangdesc, $type);
         while ($rowfrom = $resultbase->FetchRow())
         {
           $textfrom = htmlspecialchars_decode($rowfrom[$amTypeOptions["dbColumn"]]);
