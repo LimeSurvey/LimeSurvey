@@ -54,16 +54,38 @@ class AdminController extends LSYii_Controller
      *
      * @access public
      * @param string $message The error message
+     * @param string|array $url URL. Either a string. Or array with keys url and title
      * @return void
      */
-    public function error($message)
+    public function error($message, $url = array())
     {
         $clang = $this->lang;
 
         $this->_getAdminHeader();
         $output = '<div class="warningheader">'.$clang->gT('Error').'</div><br />'."\n";
         $output .= $message . '<br /><br />'."\n";
-        $output .= '<input type="submit" value="'.$clang->gT('Main Admin Screen').'" onclick="window.open("'.Yii::app()->baseUrl.'", "_top")" /><br /><br />'."\n";
+        if (!empty($url) && !is_array($url))
+        {
+            $title = $clang->gT('Back');
+        }
+        elseif (!empty($url['url']))
+        {
+            if (!empty($url['title']))
+            {
+                $title = $url['title'];
+            }
+            else
+            {
+                $title = $clang->gT('Back');
+            }
+            $url = $url['url'];
+        }
+        else
+        {
+            $title = $clang->gT('Main Admin Screen');
+            $url = $this->createUrl('/admin');
+        }
+        $output .= '<input type="submit" value="'.$title.'" onclick=\'window.open("'.$url.'", "_top")\' /><br /><br />'."\n";
         $output .= '</div>'."\n";
 
         echo $output;
