@@ -257,7 +257,7 @@ class question extends Survey_Common_Action
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
         $aData['display']['menu_bars']['qid_action'] = 'editansweroptions';
 
-        Yii::app()->session['FileManagerContext'] = "edit:answer:{$surveyid}";
+        $_SESSION['FileManagerContext'] = "edit:answer:{$surveyid}";
 
         $aViewUrls = $this->_editansweroptions($surveyid, $gid, $qid);
 
@@ -413,7 +413,7 @@ class question extends Survey_Common_Action
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.blockUI.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery.selectboxes.min.js');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/dd.css');
-        Yii::app()->session['FileManagerContext'] = "edit:answer:{$surveyid}";
+        $_SESSION['FileManagerContext'] = "edit:answer:{$surveyid}";
 
         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
@@ -631,8 +631,6 @@ class question extends Survey_Common_Action
 
         if (bHasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
-            Yii::app()->session['FileManagerContext'] = "edit:question:" . $surveyid;
-
             $clang = $this->getController()->lang;
             Yii::app()->loadHelper('admin/htmleditor');
             Yii::app()->loadHelper('surveytranslator');
