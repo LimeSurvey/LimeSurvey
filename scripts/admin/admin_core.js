@@ -713,7 +713,7 @@ function js2php(object){
     for (property in object){
         var value = object[property];
         if (typeof(value)=="string"){
-            json += '"'+property+'":"'+value+'",'
+            json += '"'+property+'":"'+value.replace(/[\\"']/g, '\\$&')+'",'
         }
         else{
             if (!value[0]){

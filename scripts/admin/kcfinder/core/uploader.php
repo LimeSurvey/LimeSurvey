@@ -54,7 +54,7 @@ class uploader {
             $this->file = &$_FILES[key($_FILES)];
 
         // LOAD DEFAULT CONFIGURATION
-        require "config.php";
+        require ROOT . "/scripts/admin/kcfinder/config.php";
 
         // SETTING UP SESSION
         if (isset($_CONFIG['_sessionLifetime']))
@@ -66,7 +66,7 @@ class uploader {
         @session_start();
 
         // RELOAD DEFAULT CONFIGURATION
-        require "config.php";
+        require ROOT . "/scripts/admin/kcfinder/config.php";
         $this->config = $_CONFIG;
 
         // LOAD SESSION CONFIGURATION IF EXISTS
@@ -414,7 +414,7 @@ class uploader {
     }
 
     protected function localize($langCode) {
-        require "lang/{$langCode}.php";
+        require ROOT . "/scripts/admin/kcfinder/lang/{$langCode}.php";
         setlocale(LC_ALL, $lang['_locale']);
         $this->charset = $lang['_charset'];
         $this->dateTimeFull = $lang['_dateTimeFull'];

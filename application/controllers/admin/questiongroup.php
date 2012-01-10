@@ -110,6 +110,8 @@ class questiongroup extends Survey_Common_Action
             $action = "addgroup";
             $clang = $this->getController()->lang;
 
+            $_SESSION['FileManagerContext'] = "create:group:{$surveyid}";
+
             if ($action == "addgroup")
             {
                 Yii::app()->loadHelper('admin/htmleditor');
@@ -267,8 +269,10 @@ class questiongroup extends Survey_Common_Action
 
         if (bHasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
-            $action = "editgroup"; //$this->input->post('action');
+            $action = "editgroup";
             $clang = $this->getController()->lang;
+
+            $_SESSION['FileManagerContext'] = "edit:group:{$surveyid}";
 
             if ($action == "editgroup")
             {

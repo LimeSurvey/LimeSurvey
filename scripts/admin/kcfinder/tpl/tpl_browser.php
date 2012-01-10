@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>KCFinder: /<?php echo $this->session['dir'] ?></title>
-<?php INCLUDE "tpl/tpl__css.php" ?>
-<?php INCLUDE "tpl/tpl__javascript.php" ?>
+<?php INCLUDE ROOT . "/scripts/admin/kcfinder/tpl/tpl__css.php" ?>
+<?php INCLUDE ROOT . "/scripts/admin/kcfinder/tpl/tpl__javascript.php" ?>
 </head>
 <body>
 <script type="text/javascript">

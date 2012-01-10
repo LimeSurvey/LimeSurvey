@@ -137,7 +137,7 @@ function modlabelsetanswers($lid)
         $_POST['method'] = $clang->gT("Save");
     }
 
-    $data = json_decode(stripslashes($_POST['dataToSend']));
+    $data = json_decode(CHttpRequest::getPost('dataToSend'));
 
     if ($ajax)
         $lid = insertlabelset();
@@ -145,7 +145,7 @@ function modlabelsetanswers($lid)
     if (count(array_unique($data->{'codelist'})) == count($data->{'codelist'}))
     {
 
-        $query = "DELETE FROM {{labels}}  WHERE `lid` = '$lid'";
+        $query = "DELETE FROM {{labels}} WHERE `lid` = '$lid'";
 
         $result = Yii::app()->db->createCommand($query)->execute();
 

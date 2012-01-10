@@ -917,4 +917,64 @@ class Survey_Common_Action extends CAction
         $this->getController()->render('/admin/usergroup/usergroupbar_view', $data);
     }
 
+    protected function _filterImportedResources($extractdir, $destdir)
+    {
+        $clang = $this->getController()->lang;
+        $dh = opendir($extractdir);
+        $aErrorFilesInfo = array();
+        $aImportedFilesInfo = array();
+
+        if (!is_dir($destdir))
+            mkdir($destdir);
+
+        while ($direntry = readdir($dh))
+        {
+            if ($direntry != "." && $direntry != "..")
+            {
+                if (is_file($extractdir . "/" . $direntry))
+                {
+                    // is  a file
+                    $extfile = substr(strrchr($direntry, '.'), 1);
+                    if (!(stripos(',' . Yii::app()->getConfig('allowedresourcesuploads') . ',', ',' . $extfile . ',') === false))
+                    {
+                        // Extension allowed
+                        if (!copy($extractdir . "/" . $direntry, $destdir . "/" . $direntry))
+                        {
+                            $aErrorFilesInfo[] = Array(
+                                "filename" => $direntry,
+                                "status" => $clang->gT("Copy failed")
+                            );
+                        }
+                        else
+                        {
+                            $aImportedFilesInfo[] = Array(
+                                "filename" => $direntry,
+                                "status" => $clang->gT("OK")
+                            );
+                        }
+                    }
+                    else
+                    {
+                        // Extension forbidden
+                        $aErrorFilesInfo[] = Array(
+                            "filename" => $direntry,
+                            "status" => $clang->gT("Forbidden Extension")
+                        );
+                    }
+                    unlink($extractdir . "/" . $direntry);
+                }
+                elseif (is_dir($extractdir . "/" . $direntry))
+                {
+                    list($_aImportedFilesInfo, $_aErrorFilesInfo) = $this->_filterImportedFiles($extractdir . "/" . $direntry, $destdir . "/" . $direntry);
+                    $aImportedFilesInfo = array_merge($aImportedFilesInfo, $_aImportedFilesInfo);
+                    $aErrorFilesInfo = array_merge($aErrorFilesInfo, $_aErrorFilesInfo);
+                }
+            }
+        }
+
+        rmdir($extractdir);
+
+        return array($aImportedFilesInfo, $aErrorFilesInfo);
+    }
+
 }

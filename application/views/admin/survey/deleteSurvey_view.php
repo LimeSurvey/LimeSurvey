@@ -8,7 +8,7 @@
         <font color='red'><strong><?php $clang->eT("Error"); ?></strong></font>
         <?php $clang->eT("You have not selected a survey to delete"); ?>
         <br /><br />
-        <input type='submit' value='<?php $clang->eT("Main Admin Screen"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin"); ?>', '_top')"/>
+        <input type='submit' value='<?php $clang->eT("Main Admin Screen"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/index'); ?>', '_top')"/>
         </td></tr></table>
         </body></html>
         <?php return;
@@ -21,18 +21,18 @@
         <?php $clang->eT("It will also delete any resources/files that have been uploaded for this survey."); ?><br /><br />
         <?php $clang->eT("We recommend that before you delete this survey you export the entire survey from the main administration screen.");
 
-        if (Yii::app()->db->schema->getTable('{{survey_$surveyid}}'))
+        if (tableExists("{{survey_{$surveyid}}}"))
         { ?>
             <br /><br /><?php $clang->eT("This survey is active and a responses table exists. If you delete this survey, these responses (and files) will be deleted. We recommend that you export the responses before deleting this survey."); ?><br /><br />
         <?php }
 
-        if (Yii::app()->db->schema->getTable('{{tokens_$surveyid}}'))
+        if (tableExists("{{tokens_{$surveyid}}}"))
         { ?>
             <?php $clang->eT("This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."); ?><br /><br />
         <?php } ?>
 
         <p>
-        <input type='submit'  value='<?php $clang->eT("Delete survey"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/survey/delete/surveyid/$surveyid"); ?>', '_top')" />
-        <input type='submit'  value='<?php $clang->eT("Cancel"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/survey/view/$surveyid"); ?>', '_top')" />
+        <input type='submit' value='<?php $clang->eT("Delete survey"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/survey/delete/surveyid/$surveyid/delete/yes"); ?>', '_top')" />
+        <input type='submit' value='<?php $clang->eT("Cancel"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/survey/view/$surveyid"); ?>', '_top')" />
     <?php } ?>
 </div><br />&nbsp;

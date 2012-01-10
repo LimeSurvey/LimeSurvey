@@ -34,7 +34,7 @@ class AdminController extends LSYii_Controller
 		if (Yii::app()->getConfig('buildnumber') != "" && Yii::app()->getConfig('updatecheckperiod') > 0 && $updatelastcheck < date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", "-". Yii::app()->getConfig('updatecheckperiod')." days"))
 			updatecheck();
 
-		unset(Yii::app()->session['FileManagerContext']);
+		//unset(Yii::app()->session['FileManagerContext']);
 
 		$this->user_id = Yii::app()->user->getId();
 
@@ -184,6 +184,7 @@ class AdminController extends LSYii_Controller
 			'globalsettings'   => 'globalsettings',
 			'htmleditor_pop'   => 'htmleditor_pop',
 			'index'            => 'index',
+            'kcfinder'         => 'kcfinder',
 			'labels'           => 'labels',
 			'participants'     => 'participantsaction',
 			'printablesurvey'  => 'printablesurvey',

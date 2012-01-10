@@ -1095,52 +1095,50 @@ class export extends Survey_Common_Action {
 
     public function resources()
     {
-        $id = sanitize_int(Yii::app()->request->getParam('id'));
-        $action = Yii::app()->request->getParam('action');
-
-        $this->load->library("admin/Phpzip");
-        $z = $this->phpzip;
-
-        if ( $action == "exportsurvresources" )
+        switch ( Yii::app()->request->getParam('export') )
 		{
-            $surveyid = $id;
-            $resourcesdir = $this->config->item("uploaddir") . "/surveys/$surveyid/";
-            $zipfile = $this->config->item("tempdir") . "/resources-survey-$surveyid.zip";
-            $z -> Zip($resourcesdir, $zipfile);
+            case 'survey' :
+                $surveyid = sanitize_int(CHttpRequest::getParam('surveyid'));
+                $resourcesdir = Yii::app()->getConfig('uploaddir') . "/surveys/{$surveyid}/";
+                $tmpdir = Yii::app()->getConfig('tempdir') . '/';
+                $zipfilename = "resources-survey-$surveyid.zip";
+                $zipfilepath = $tmpdir . $zipfilename;
 
-            if ( is_file($zipfile) )
-			{
-                //Send the file for download!
-				$fn = "resources-survey-{$surveyid}.zip";
-				$this->_addHeaders($fn, "application/force-download", 0);
+                Yii::app()->loadLibrary('admin.pclzip.pclzip');
+                $zip = new PclZip($zipfilepath);
+                if ($zip->create($resourcesdir, PCLZIP_OPT_REMOVE_PATH, $resourcesdir) === 0)
+                {
+                    die("Error : ".$archive->errorInfo(true));
+                }
+                elseif (file_exists($zipfilepath))
+                {
+                    $this->_addHeaders($zipfilename, 'application/force-download', 0);
+                    readfile($zipfilepath);
+                    unlink($zipfilepath);
+                    exit;
+                }
+                break;
+            case 'label' :
+                $lid = sanitize_int(CHttpRequest::getParam('lid'));
+                $resourcesdir = Yii::app()->getConfig('uploaddir') . "/labels/{$lid}/";
+                $tmpdir = Yii::app()->getConfig('tempdir') . '/';
+                $zipfilename = "resources-labelset-$lid.zip";
+                $zipfilepath = $tmpdir . $zipfilename;
 
-                @readfile($zipfile);
-
-                //Delete the temporary file
-                unlink($zipfile);
-                return;
-            }
-        }
-
-        if ( $action == "exportlabelresources" )
-		{
-            $lid = $id;
-            $resourcesdir = $this->config->item("uploaddir") . "/labels/$lid/";
-            $zipfile = $this->config->item("tempdir") . "/resources-labelset-$lid.zip";
-            $z -> Zip($resourcesdir, $zipfile);
-
-            if ( is_file($zipfile) )
-			{
-                //Send the file for download!
-				$fn = "resources-label-{$lid}.zip";
-				$this->_addHeaders($fn, "application/force-download", 0);
-
-                @readfile($zipfile);
-
-                //Delete the temporary file
-                unlink($zipfile);
-                return;
-            }
+                Yii::app()->loadLibrary('admin.pclzip.pclzip');
+                $zip = new PclZip($zipfilepath);
+                if ($zip->create($resourcesdir, PCLZIP_OPT_REMOVE_PATH, $resourcesdir) === 0)
+                {
+                    die("Error : ".$archive->errorInfo(true));
+                }
+                elseif (file_exists($zipfilepath))
+                {
+                    $this->_addHeaders($zipfilename, 'application/force-download', 0);
+                    readfile($zipfilepath);
+                    unlink($zipfilepath);
+                    exit;
+                }
+                break;
         }
     }
 

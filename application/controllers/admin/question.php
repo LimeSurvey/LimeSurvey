@@ -288,7 +288,7 @@ class question extends Survey_Common_Action
         $qtype = $qrow['type'];
 
         $qtypes = getqtypelist('', 'array');
-        
+
         $scalecount = $qtypes[$qtype]['answerscales'];
 
         $clang = $this->getController()->lang;
@@ -480,7 +480,7 @@ class question extends Survey_Common_Action
 
             // Check that there are subquestions for every language supported by the survey
             foreach ($anslangs as $language)
-            {                
+            {
                 foreach ($subquestiondata as $row)
                 {
                     $qrow = Questions::model()->count('
@@ -621,9 +621,13 @@ class question extends Survey_Common_Action
         $aData['qid'] = $qid;
         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
+        $_SESSION['FileManagerContext'] = "create:question:{$surveyid}";
 
         if ($action != "addquestion")
+        {
+            $_SESSION['FileManagerContext'] = "edit:question:{$surveyid}";
             $aData['display']['menu_bars']['qid_action'] = 'editquestion';
+        }
 
         if (bHasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {

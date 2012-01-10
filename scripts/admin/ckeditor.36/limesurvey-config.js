@@ -1,13 +1,13 @@
 CKEDITOR.editorConfig = function( config )
 {
 
-    config.filebrowserBrowseUrl = CKEDITOR.basePath+'../kcfinder/browse.php?type=files';
-    config.filebrowserImageBrowseUrl = CKEDITOR.basePath+'../kcfinder/browse.php?type=images';
-    config.filebrowserFlashBrowseUrl = CKEDITOR.basePath+'../kcfinder/browse.php?type=flash';
+    config.filebrowserBrowseUrl = CKEDITOR.basePath+'../../../../admin/kcfinder/index/load/browse?type=files';
+    config.filebrowserImageBrowseUrl = CKEDITOR.basePath+'../../../../admin/kcfinder/index/load/browse?type=images';
+    config.filebrowserFlashBrowseUrl = CKEDITOR.basePath+'../../../../admin/kcfinder/index/load/browse?type=flash';
 
-    config.filebrowserUploadUrl = CKEDITOR.basePath+'../kcfinder/upload.php?type=files';
-    config.filebrowserImageUploadUrl = CKEDITOR.basePath+'../kcfinder/upload.php?type=images';
-    config.filebrowserFlashUploadUrl = CKEDITOR.basePath+'../kcfinder/upload.php?type=flash';
+    config.filebrowserUploadUrl = CKEDITOR.basePath+'../../../../admin/kcfinder/index/load/upload?type=files';
+    config.filebrowserImageUploadUrl = CKEDITOR.basePath+'../../../../admin/kcfinder/index/load/upload?type=images';
+    config.filebrowserFlashUploadUrl = CKEDITOR.basePath+'../../../../admin/kcfinder/index/load/upload?type=flash';
 
 	config.skin = 'office2003';
 	config.toolbarCanCollapse = false;

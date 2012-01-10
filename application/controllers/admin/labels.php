@@ -49,28 +49,26 @@ class labels extends Survey_Common_Action
     public function importlabelresources()
     {
         $clang = $this->getController()->lang;
-        $action = returnglobal('action');
         $lid = returnglobal('lid');
 
-        if ($action == "importlabelresources" && $lid)
+        if (!empty($lid))
         {
             if (Yii::app()->getConfig('demoMode'))
-                $this->getController()->error($clang->gT("Demo mode only: Uploading files is disabled in this system."));
-
-            Yii::import('application.libraries.admin.Phpzip');
-
-            $zipfile = $_FILES['the_file']['tmp_name'];
-            $z = new Phpzip();
+                $this->getController()->error($clang->gT("Demo mode only: Uploading files is disabled in this system."), $this->getController()->createUrl("admin/labels/view/lid/{$lid}"));
 
             // Create temporary directory
             // If dangerous content is unzipped
             // then no one will know the path
             $extractdir = self::_tempdir(Yii::app()->getConfig('tempdir'));
-            $basedestdir = Yii::app()->getConfig('publicdir') . "/upload/labels";
+            $zipfilename = $_FILES['the_file']['tmp_name'];
+            $basedestdir = Yii::app()->getConfig('uploaddir') . "/labels";
             $destdir = $basedestdir . "/$lid/";
 
+            Yii::app()->loadLibrary('admin.pclzip.pclzip');
+            $zip = new PclZip($zipfilename);
+
             if (!is_writeable($basedestdir))
-                $this->getController()->error(sprintf($clang->gT("Incorrect permissions in your %s folder."), $basedestdir));
+                $this->getController()->error(sprintf($clang->gT("Incorrect permissions in your %s folder."), $basedestdir), $this->getController()->createUrl("admin/labels/view/lid/{$lid}"));
 
             if (!is_dir($destdir))
                 mkdir($destdir);
@@ -78,68 +76,22 @@ class labels extends Survey_Common_Action
             $aImportedFilesInfo = null;
             $aErrorFilesInfo = null;
 
-            if (is_file($zipfile))
+            if (is_file($zipfilename))
             {
-
-                if ($z->extract($extractdir, $zipfile) != 'OK')
-                    $this->getController()->error($clang->gT("This file is not a valid ZIP file archive. Import failed."));
+                if ($zip->extract($extractdir) <= 0)
+                    $this->getController()->error($clang->gT("This file is not a valid ZIP file archive. Import failed. " . $zip->errorInfo(true)), $this->getController()->createUrl("admin/labels/view/lid/{$lid}"));
 
                 // now read tempdir and copy authorized files only
-                $dh = opendir($extractdir);
-                $aErrorFilesInfo = array();
-                $aImportedFilesInfo = array();
-                while ($direntry = readdir($dh))
-                {
-                    if (($direntry != ".") && ($direntry != ".."))
-                    {
-                        if (is_file($extractdir . "/" . $direntry))
-                        {
-                            // is  a file
-                            $extfile = substr(strrchr($direntry, '.'), 1);
-                            if (!(stripos(',' . Yii::app()->getConfig('allowedresourcesuploads') . ',', ',' . $extfile . ',') === false))
-                            {
-                                // Extension allowed
-                                if (!copy($extractdir . "/" . $direntry, $destdir . $direntry))
-                                {
-                                    $aErrorFilesInfo[] = Array(
-                                        "filename" => $direntry,
-                                        "status" => $clang->gT("Copy failed")
-                                    );
-                                    unlink($extractdir . "/" . $direntry);
-                                }
-                                else
-                                {
-                                    $aImportedFilesInfo[] = Array(
-                                        "filename" => $direntry,
-                                        "status" => $clang->gT("OK")
-                                    );
-                                    unlink($extractdir . "/" . $direntry);
-                                }
-                            }
-                            else
-                            {
-                                // Extension forbidden
-                                $aErrorFilesInfo[] = Array(
-                                    "filename" => $direntry,
-                                    "status" => $clang->gT("Error") . " (" . $clang->gT("Forbidden Extension") . ")"
-                                );
-                                unlink($extractdir . "/" . $direntry);
-                            }
-                        }
-                    }
-                }
+                list($aImportedFilesInfo, $aErrorFilesInfo) = $this->_filterImportedResources($extractdir, $destdir);
 
                 // Delete the temporary file
-                unlink($zipfile);
-
-                // Delete temporary folder
-                rmdir($extractdir);
+                unlink($zipfilename);
 
                 if (is_null($aErrorFilesInfo) && is_null($aImportedFilesInfo))
-                    $this->getController()->error($clang->gT("This ZIP archive contains no valid Resources files. Import failed.") . '<br /><br />' . $clang->gT("Remember that we do not support subdirectories in ZIP archives."));
+                    $this->getController()->error($clang->gT("This ZIP archive contains no valid Resources files. Import failed."), $this->getController()->createUrl("admin/labels/view/lid/{$lid}"));
             }
             else
-                $this->getController()->error(sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir));
+                $this->getController()->error(sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir), $this->getController()->createUrl("admin/labels/view/lid/{$lid}"));
 
             $aData = array(
                 'aErrorFilesInfo' => $aErrorFilesInfo,
@@ -213,7 +165,7 @@ class labels extends Survey_Common_Action
             $aViewUrls['import_view'][] = array('aImportResults' => $aImportResults);
         }
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate($aViewUrls);
     }
 
     /**
@@ -290,6 +242,8 @@ class labels extends Survey_Common_Action
         // Escapes the id variable
         if ($lid != false)
             $lid = sanitize_int($lid);
+
+        $_SESSION['FileManagerContext'] = "edit:label:{$lid}";
 
         // Gets the current language
         $clang = $this->getController()->lang;

@@ -124,13 +124,13 @@
                         <li>
                             <label>&nbsp;</label>
                             <input type='button'<?php echo hasResources($lid, 'label') === false ? ' disabled="disabled"' : '' ?>
-                                   onclick='window.open("<?php echo Yii::app()->getConfig('sCKEditorURL') ?>/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php?", "_blank")'
+                                   onclick='window.open("<?php echo $this->createUrl("admin/kcfinder/index/load/browse"); ?>", "_blank")'
                                    value="<?php $clang->eT("Browse Uploaded Resources") ?>" />
                         </li>
                         <li>
                             <label>&nbsp;</label>
                             <input type='button'<?php echo hasResources($lid, 'label') === false ? ' disabled="disabled"' : '' ?>
-                                   onclick='window.open("<?php echo $this->createUrl("/admin/labels/exportlabelresources/lid/$lid"); ?>", "_blank")'
+                                   onclick='window.open("<?php echo $this->createUrl("/admin/export/resources/export/label/lid/$lid"); ?>", "_blank")'
                                    value="<?php $clang->eT("Export Resources As ZIP Archive") ?>"  />
                         </li>
                         <li>

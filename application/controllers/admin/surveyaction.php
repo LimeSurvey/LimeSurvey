@@ -133,9 +133,10 @@ class SurveyAction extends Survey_Common_Action
         Yii::app()->loadHelper('surveytranslator');
         $clang = $this->getController()->lang;
 
+        $_SESSION['FileManagerContext'] = "edit:survey:{$surveyid}";
+
         $esrow = array();
         $esrow = self::_fetchSurveyInfo('editsurvey', $surveyid);
-        //$esrow = $esrow[0]->tableSchema->columns;
         $aData['esrow'] = $esrow;
 
         $aData = array_merge($aData, $this->_generalTabEditSurvey($surveyid, $esrow));
@@ -146,8 +147,6 @@ class SurveyAction extends Survey_Common_Action
         $aData = array_merge($aData, $this->_tabPanelIntegration($esrow));
         $aData = array_merge($aData, $this->_tabResourceManagement($surveyid));
 
-        //echo $editsurvey;
-        //$this->load->model('questions_model');
         $oResult = Questions::model()->getQuestionsWithSubQuestions($surveyid, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
 
         $aData['questions'] = $oResult;
@@ -158,43 +157,36 @@ class SurveyAction extends Survey_Common_Action
     }
 
     /**
-     * survey::importsurveyresources()
-     * Function responsible to import survey resources.
+     * Function responsible to import survey resources from a '.zip' file.
+     *
      * @access public
      * @return void
      */
     function importsurveyresources()
     {
         $clang = $this->getController()->lang;
-        $action = Yii::app()->request->getPost('action');
-        $surveyid = Yii::app()->request->getPost('sid');
-        $aViewUrls = array();
+        $surveyid = Yii::app()->request->getPost('surveyid');
 
-        $aData = array(
-            'surveyid' => $surveyid,
-            'clang' => $clang
-        );
-
-        $aData['display']['menu_bars']['surveysummary'] = $action;
-
-        if ($action == "importsurveyresources" && $surveyid)
+        if (!empty($surveyid))
         {
+            $aData['display']['menu_bars']['surveysummary'] = 'importsurveyresources';
+
             if (Yii::app()->getConfig('demoMode'))
-                $this->getController()->error($clang->gT("Demo Mode Only: Uploading file is disabled in this system."));
-
-            Yii::app()->loadLibrary('admin/Phpzip');
-
-            $zipfile = $_FILES['the_file']['tmp_name'];
-            $z = new PHPZip();
+                $this->getController()->error($clang->gT("Demo mode only: Uploading files is disabled in this system."), $this->getController()->createUrl("admin/survey/view/surveyid/{$surveyid}"));
 
             // Create temporary directory
-            // If dangerous content is unzipped then no one will know the path
-            $extractdir = $this->_tempdir(Yii::app()->getConfig('tempdir'));
-            $basedestdir = Yii::app()->getConfig('publicdir') . "/upload/surveys";
+            // If dangerous content is unzipped
+            // then no one will know the path
+            $extractdir = self::_tempdir(Yii::app()->getConfig('tempdir'));
+            $zipfilename = $_FILES['the_file']['tmp_name'];
+            $basedestdir = Yii::app()->getConfig('uploaddir') . "/surveys";
             $destdir = $basedestdir . "/$surveyid/";
 
+            Yii::app()->loadLibrary('admin.pclzip.pclzip');
+            $zip = new PclZip($zipfilename);
+
             if (!is_writeable($basedestdir))
-                $this->getController()->error(sprintf($clang->gT("Incorrect permissions in your %s folder."), $basedestdir));
+                $this->getController()->error(sprintf($clang->gT("Incorrect permissions in your %s folder."), $basedestdir), $this->getController()->createUrl("admin/survey/view/surveyid/{$surveyid}"));
 
             if (!is_dir($destdir))
                 mkdir($destdir);
@@ -202,75 +194,31 @@ class SurveyAction extends Survey_Common_Action
             $aImportedFilesInfo = null;
             $aErrorFilesInfo = null;
 
-            if (is_file($zipfile))
+            if (is_file($zipfilename))
             {
-                if ($z->extract($extractdir, $zipfile) != 'OK')
-                    $this->getController()->error($clang->gT("This file is not a valid ZIP file $CI. Import failed."));
+                if ($zip->extract($extractdir) <= 0)
+                    $this->getController()->error($clang->gT("This file is not a valid ZIP file archive. Import failed. " . $zip->errorInfo(true)), $this->getController()->createUrl("admin/survey/view/surveyid/{$surveyid}"));
 
                 // now read tempdir and copy authorized files only
-                $dh = opendir($extractdir);
-                while ($direntry = readdir($dh))
-                {
-                    if (($direntry != ".") && ($direntry != ".."))
-                    {
-                        if (is_file($extractdir . "/" . $direntry))
-                        {
-                            // is  a file
-                            $extfile = substr(strrchr($direntry, '.'), 1);
-                            if (!(stripos(',' . $allowedresourcesuploads . ',', ',' . $extfile . ',') === false))
-                            {
-                                // Extension allowed
-                                if (!copy($extractdir . "/" . $direntry, $destdir . $direntry))
-                                {
-                                    $aErrorFilesInfo[] = Array(
-                                        "filename" => $direntry,
-                                        "status" => $clang->gT("Copy failed")
-                                    );
-                                    unlink($extractdir . "/" . $direntry);
-                                }
-                                else
-                                {
-                                    $aImportedFilesInfo[] = Array(
-                                        "filename" => $direntry,
-                                        "status" => $clang->gT("OK")
-                                    );
-                                    unlink($extractdir . "/" . $direntry);
-                                }
-                            }
-                            else
-                            { // Extension forbidden
-                                $aErrorFilesInfo[] = Array(
-                                    "filename" => $direntry,
-                                    "status" => $clang->gT("Error") . " (" . $clang->gT("Forbidden Extension") . ")"
-                                );
-                                unlink($extractdir . "/" . $direntry);
-                            }
-                        }
-                    }
-                }
+                list($aImportedFilesInfo, $aErrorFilesInfo) = $this->_filterImportedResources($extractdir, $destdir);
 
                 // Delete the temporary file
-                unlink($zipfile);
-                // Delete temporary folder
-                rmdir($extractdir);
+                unlink($zipfilename);
 
-                // display summary
                 if (is_null($aErrorFilesInfo) && is_null($aImportedFilesInfo))
-                    $this->getController()->error(
-                         $clang->gT("This ZIP $CI contains no valid Resources files. Import failed.") . '<br />' .
-                         $clang->gT("Remember that we do not support subdirectories in ZIP $CIs.")
-                    );
-
-                $aData['aErrorFilesInfo'] = $aErrorFilesInfo;
-                $aData['aImportedFilesInfo'] = $aImportedFilesInfo;
+                    $this->getController()->error($clang->gT("This ZIP archive contains no valid Resources files. Import failed."), $this->getController()->createUrl("admin/survey/view/surveyid/{$surveyid}"));
             }
             else
-                $this->getController()->error(sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir));
+                $this->getController()->error(sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), $basedestdir), $this->getController()->createUrl("admin/survey/view/surveyid/{$surveyid}"));
 
-            $aViewUrls[] = 'importSurveyResources_view';
+            $aData = array(
+                'aErrorFilesInfo' => $aErrorFilesInfo,
+                'aImportedFilesInfo' => $aImportedFilesInfo,
+                'surveyid' => $surveyid
+            );
+
+            $this->_renderWrappedTemplate('importSurveyResources_view', $aData);
         }
-
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
     /**

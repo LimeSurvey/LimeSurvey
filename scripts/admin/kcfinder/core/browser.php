@@ -743,14 +743,14 @@ class browser extends uploader {
         if ($template === null)
             $template = $this->action;
 
-        if (file_exists("tpl/tpl_$template.php")) {
+        if (file_exists(ROOT . "/scripts/admin/kcfinder/tpl/tpl_$template.php")) {
             ob_start();
             $eval = "unset(\$data);unset(\$template);unset(\$eval);";
             $_ = $data;
             foreach (array_keys($data) as $key)
                 if (preg_match('/^[a-z\d_]+$/i', $key))
                     $eval .= "\$$key=\$_['$key'];";
-            $eval .= "unset(\$_);require \"tpl/tpl_$template.php\";";
+            $eval .= "unset(\$_);require ROOT . \"/scripts/admin/kcfinder/tpl/tpl_$template.php\";";
             eval($eval);
             return ob_get_clean();
         }

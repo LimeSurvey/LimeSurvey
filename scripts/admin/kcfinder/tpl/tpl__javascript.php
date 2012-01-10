@@ -1,14 +1,14 @@
-<script src="js/jquery.js" type="text/javascript"></script>
-<script src="js/jquery.rightClick.js" type="text/javascript"></script>
-<script src="js/jquery.drag.js" type="text/javascript"></script>
-<script src="js/helper.js" type="text/javascript"></script>
-<script src="js/browser/joiner.php" type="text/javascript"></script>
-<script src="js_localize.php?lng=<?php echo $this->lang ?>" type="text/javascript"></script>
+<script src="<?php echo Yii::app()->createUrl('scripts/admin/kcfinder/js/jquery.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo Yii::app()->createUrl('scripts/admin/kcfinder/js/jquery.rightClick.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo Yii::app()->createUrl('scripts/admin/kcfinder/js/jquery.drag.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo Yii::app()->createUrl('scripts/admin/kcfinder/js/helper.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo Yii::app()->createUrl('scripts/admin/kcfinder/js/browser/joiner.php'); ?>" type="text/javascript"></script>
+<script src="<?php echo Yii::app()->createUrl("admin/kcfinder/js_localize?lng={$this->lang}"); ?>" type="text/javascript"></script>
 <?php IF (isset($this->opener['TinyMCE']) && $this->opener['TinyMCE']): ?>
 <script src="<?php echo $this->config['_tinyMCEPath'] ?>/tiny_mce_popup.js" type="text/javascript"></script>
 <?php ENDIF ?>
-<?php IF (file_exists("themes/{$this->config['theme']}/init.js")): ?>
-<script src="themes/<?php echo $this->config['theme'] ?>/init.js" type="text/javascript"></script>
+<?php IF (file_exists(ROOT . "/scripts/admin/kcfinder/themes/{$this->config['theme']}/init.js")): ?>
+<script src="<?php echo Yii::app()->createUrl("scripts/admin/kcfinder/themes/{$this->config['theme']}/init.js"); ?>" type="text/javascript"></script>
 <?php ENDIF ?>
 <script type="text/javascript">
 browser.support.chromeFrame = <?php echo (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), " chromeframe") !== false) ? "true" : "false" ?>;

@@ -19,14 +19,14 @@ class htmleditor_pop extends Survey_Common_Action
 
     function index()
     {
-        $sFieldName = isset($_GET['name'])?$_GET['name']:0;
-        $sFieldText = isset($_GET['text'])?$_GET['text']:0;
-        $sFieldType = isset($_GET['type'])?$_GET['type']:0;
-        $sAction = isset($_GET['action'])?$_GET['action']:0;
-        $iSurveyId = isset($_GET['sid'])?$_GET['sid']:0;
-        $iGroupId = isset($_GET['gid'])?$_GET['gid']:0;
-        $iQuestionId = isset($_GET['qid'])?$_GET['qid']:0;
-        $sLanguage = isset($_GET['lang'])?$_GET['lang']:0;
+        $sFieldName = isset($_GET['name']) ? $_GET['name'] : 0;
+        $sFieldText = isset($_GET['text']) ? $_GET['text'] : 0;
+        $sFieldType = isset($_GET['type']) ? $_GET['type'] : 0;
+        $sAction = isset($_GET['action']) ? $_GET['action'] : 0;
+        $iSurveyId = isset($_GET['sid']) ? $_GET['sid'] : 0;
+        $iGroupId = isset($_GET['gid']) ? $_GET['gid'] : 0;
+        $iQuestionId = isset($_GET['qid']) ? $_GET['qid'] : 0;
+        $sLanguage = isset($_GET['lang']) ? $_GET['lang'] : 0;
         $aData['clang'] = $this->getController()->lang;
         $aData['sFieldName'] = $sFieldName;
         if (get_magic_quotes_gpc())
