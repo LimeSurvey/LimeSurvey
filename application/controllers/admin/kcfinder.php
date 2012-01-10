@@ -62,7 +62,7 @@ class kcfinder extends Survey_Common_Action
             }
         }
 
-        Yii::registerAutoloader(array($this, 'kcfinder_autoload'), true);
+        Yii::registerAutoloader(array($this, 'kcfinder_autoload'));
         if (!empty($load) && file_exists(ROOT . "/scripts/admin/kcfinder/" . $load . EXT))
         {
             require_once(ROOT . "/scripts/admin/kcfinder/" . $load . EXT);
