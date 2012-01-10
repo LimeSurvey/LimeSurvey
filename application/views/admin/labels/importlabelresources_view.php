@@ -12,6 +12,7 @@
         $okfiles = count($aImportedFilesInfo);
         $errfiles=0;
         $ImportListHeader .= "<br /><strong><u>" . $clang->gT("Imported Files List") . ":</u></strong><br />\n";
+        $ErrorListHeader = '';
     }
     elseif (count($aErrorFilesInfo) &&count($aImportedFilesInfo))
     {
@@ -28,6 +29,7 @@
         $status = $clang->gT("Error");
         $statusClass = 'warningheader';
         $errfiles = count($aErrorFilesInfo);
+        $ImportListHeader = '';
         $ErrorListHeader = "<br /><strong><u>" . $clang->gT("Error Files List") . ":</u></strong><br />\n";
     }
 ?>

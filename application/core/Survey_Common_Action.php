@@ -920,12 +920,16 @@ class Survey_Common_Action extends CAction
     protected function _filterImportedResources($extractdir, $destdir)
     {
         $clang = $this->getController()->lang;
-        $dh = opendir($extractdir);
         $aErrorFilesInfo = array();
         $aImportedFilesInfo = array();
 
+        if (!is_dir($extractdir))
+            return array(array(), array());
+
         if (!is_dir($destdir))
             mkdir($destdir);
+
+        $dh = opendir($extractdir);
 
         while ($direntry = readdir($dh))
         {
@@ -963,16 +967,8 @@ class Survey_Common_Action extends CAction
                     }
                     unlink($extractdir . "/" . $direntry);
                 }
-                elseif (is_dir($extractdir . "/" . $direntry))
-                {
-                    list($_aImportedFilesInfo, $_aErrorFilesInfo) = $this->_filterImportedResources($extractdir . "/" . $direntry, $destdir . "/" . $direntry);
-                    $aImportedFilesInfo = array_merge($aImportedFilesInfo, $_aImportedFilesInfo);
-                    $aErrorFilesInfo = array_merge($aErrorFilesInfo, $_aErrorFilesInfo);
-                }
             }
         }
-
-        rmdir($extractdir);
 
         return array($aImportedFilesInfo, $aErrorFilesInfo);
     }
@@ -998,6 +994,30 @@ class Survey_Common_Action extends CAction
         while (!mkdir($path, $mode));
 
         return $path;
+    }
+
+    /**
+     * Recursively delete a directory
+     * @param type $dir
+     */
+    protected function _rrmdir($dir)
+    {
+        if (is_dir($dir))
+        {
+            $objects = scandir($dir);
+            foreach ($objects as $object)
+            {
+                if ($object != "." && $object != "..")
+                {
+                    if (filetype($dir . "/" . $object) == "dir")
+                        $this->_rrmdir($dir . "/" . $object);
+                    else
+                        unlink($dir . "/" . $object);
+                }
+            }
+            reset($objects);
+            rmdir($dir);
+        }
     }
 
 }

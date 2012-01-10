@@ -114,18 +114,13 @@
     </form>
         <div id='up_resmgmt'>
             <div>
-                <form class='form30' enctype='multipart/form-data' id='importlabelresources' name='importlabelresources'
-                      action='<?php echo $this->createUrl('/admin/labels/importlabelresources') ?>' method='post'
-                      onsubmit='return validatefilename(this, "<?php $clang->eT('Please select a file to import!', 'js') ?>");'>
-
-                    <input type='hidden' name='lid' value='<?php echo $lid; ?>' />
-                    <input type='hidden' name='action' value='importlabelresources' />
+                <form class='form30' id='browselabelresources' name='browselabelresources'
+                      action='<?php echo $this->createUrl("admin/kcfinder/index/load/browse"); ?>' method='get' target="_blank">
                     <ul style='list-style-type:none; text-align:center'>
                         <li>
                             <label>&nbsp;</label>
-                            <input type='button'
-                                   onclick='window.open("<?php echo $this->createUrl("admin/kcfinder/index/load/browse"); ?>", "_blank")'
-                                   value="<?php $clang->eT("Browse Uploaded Resources") ?>" />
+                            <?php echo CHtml::dropDownList('type', 'files', array('files' => $clang->gT('Files'), 'flash' => $clang->gT('Flash'), 'images' => $clang->gT('Images'))); ?>
+                            <input type='submit' value="<?php $clang->eT("Browse Uploaded Resources") ?>" />
                         </li>
                         <li>
                             <label>&nbsp;</label>
@@ -133,6 +128,15 @@
                                    onclick='window.open("<?php echo $this->createUrl("/admin/export/resources/export/label/lid/$lid"); ?>", "_blank")'
                                    value="<?php $clang->eT("Export Resources As ZIP Archive") ?>"  />
                         </li>
+                    </ul>
+                </form>
+                <form class='form30' enctype='multipart/form-data' id='importlabelresources' name='importlabelresources'
+                      action='<?php echo $this->createUrl('/admin/labels/importlabelresources') ?>' method='post'
+                      onsubmit='return validatefilename(this, "<?php $clang->eT('Please select a file to import!', 'js') ?>");'>
+
+                    <input type='hidden' name='lid' value='<?php echo $lid; ?>' />
+                    <input type='hidden' name='action' value='importlabelresources' />
+                    <ul style='list-style-type:none; text-align:center'>
                         <li>
                             <label for='the_file'><?php $clang->eT("Select ZIP File:") ?></label>
                             <input id='the_file' name="the_file" type="file" size="50" />

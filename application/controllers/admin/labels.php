@@ -73,8 +73,8 @@ class labels extends Survey_Common_Action
             if (!is_dir($destdir))
                 mkdir($destdir);
 
-            $aImportedFilesInfo = null;
-            $aErrorFilesInfo = null;
+            $aImportedFilesInfo = array();
+            $aErrorFilesInfo = array();
 
             if (is_file($zipfilename))
             {
@@ -82,10 +82,16 @@ class labels extends Survey_Common_Action
                     $this->getController()->error($clang->gT("This file is not a valid ZIP file archive. Import failed. " . $zip->errorInfo(true)), $this->getController()->createUrl("admin/labels/view/lid/{$lid}"));
 
                 // now read tempdir and copy authorized files only
-                list($aImportedFilesInfo, $aErrorFilesInfo) = $this->_filterImportedResources($extractdir, $destdir);
+                $folders = array('flash', 'files', 'images');
+                foreach ($folders as $folder)
+                {
+                    list($_aImportedFilesInfo, $_aErrorFilesInfo) = $this->_filterImportedResources($extractdir . "/" . $folder, $destdir . $folder);
+                    $aImportedFilesInfo = array_merge($aImportedFilesInfo, $_aImportedFilesInfo);
+                    $aErrorFilesInfo = array_merge($aErrorFilesInfo, $_aErrorFilesInfo);
+                }
 
-                if (is_dir($extractdir))
-                    rmdir($extractdir);
+                // Deletes the temp directory
+                $this->_rrmdir($extractdir);
 
                 // Delete the temporary file
                 unlink($zipfilename);
