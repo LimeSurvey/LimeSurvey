@@ -977,4 +977,27 @@ class Survey_Common_Action extends CAction
         return array($aImportedFilesInfo, $aErrorFilesInfo);
     }
 
+    /**
+     * Creates a temporary directory
+     *
+     * @access protected
+     * @param string $dir
+     * @param string $prefix
+     * @param int $mode
+     * @return string
+     */
+    protected function _tempdir($dir, $prefix='', $mode=0700)
+    {
+        if (substr($dir, -1) != PATH_SEPARATOR)
+            $dir .= PATH_SEPARATOR;
+
+        do
+        {
+            $path = $dir . $prefix . mt_rand(0, 9999999);
+        }
+        while (!mkdir($path, $mode));
+
+        return $path;
+    }
+
 }

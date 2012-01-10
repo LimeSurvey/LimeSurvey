@@ -123,7 +123,7 @@
                     <ul style='list-style-type:none; text-align:center'>
                         <li>
                             <label>&nbsp;</label>
-                            <input type='button'<?php echo hasResources($lid, 'label') === false ? ' disabled="disabled"' : '' ?>
+                            <input type='button'
                                    onclick='window.open("<?php echo $this->createUrl("admin/kcfinder/index/load/browse"); ?>", "_blank")'
                                    value="<?php $clang->eT("Browse Uploaded Resources") ?>" />
                         </li>

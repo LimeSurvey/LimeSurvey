@@ -59,7 +59,7 @@ class labels extends Survey_Common_Action
             // Create temporary directory
             // If dangerous content is unzipped
             // then no one will know the path
-            $extractdir = self::_tempdir(Yii::app()->getConfig('tempdir'));
+            $extractdir = $this->_tempdir(Yii::app()->getConfig('tempdir'));
             $zipfilename = $_FILES['the_file']['tmp_name'];
             $basedestdir = Yii::app()->getConfig('uploaddir') . "/labels";
             $destdir = $basedestdir . "/$lid/";
@@ -84,6 +84,9 @@ class labels extends Survey_Common_Action
                 // now read tempdir and copy authorized files only
                 list($aImportedFilesInfo, $aErrorFilesInfo) = $this->_filterImportedResources($extractdir, $destdir);
 
+                if (is_dir($extractdir))
+                    rmdir($extractdir);
+
                 // Delete the temporary file
                 unlink($zipfilename);
 
@@ -101,29 +104,6 @@ class labels extends Survey_Common_Action
 
             $this->_renderWrappedTemplate('importlabelresources_view', $aData);
         }
-    }
-
-    /**
-     * Gives a temporary directory in given $dir that doesn't exist previously
-     *
-     * @access protected
-     * @param string $dir
-     * @param type $prefix
-     * @param type $mode
-     * @return string
-     */
-    protected function _tempdir($dir, $prefix='', $mode=0700)
-    {
-        if (substr($dir, -1) != '/')
-            $dir .= '/';
-
-        do
-        {
-            $path = $dir . $prefix . mt_rand(0, 9999999);
-        }
-        while (!mkdir($path, $mode));
-
-        return $path;
     }
 
     /**

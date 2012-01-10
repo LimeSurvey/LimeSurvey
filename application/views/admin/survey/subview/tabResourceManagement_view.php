@@ -4,7 +4,7 @@
         <input type='hidden' name='action' value='importsurveyresources' />
         <ul>
             <li><label>&nbsp;</label>
-                <input type='button' onclick='window.open("<?php echo $this->createUrl("admin/kcfinder/index/load/browse"); ?>", "_blank")' value="<?php $clang->eT("Browse Uploaded Resources"); ?>" <?php echo $disabledIfNoResources; ?> /></li>
+                <input type='button' onclick='window.open("<?php echo $this->createUrl("admin/kcfinder/index/load/browse"); ?>", "_blank")' value="<?php $clang->eT("Browse Uploaded Resources"); ?>" /></li>
             <li><label>&nbsp;</label>
                 <input type='button' onclick='window.open("<?php echo $this->createUrl("admin/export/resources/export/survey/surveyid/$surveyid/"); ?>", "_blank")' value="<?php $clang->eT("Export Resources As ZIP Archive"); ?>" <?php echo $disabledIfNoResources; ?> /></li>
             <li><label for='the_file'><?php $clang->eT("Select ZIP File:"); ?></label>

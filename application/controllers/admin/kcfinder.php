@@ -18,22 +18,6 @@ class kcfinder extends Survey_Common_Action
 
     function index($load = false)
     {
-        $usquery = "SELECT stg_value FROM {{settings_global}} where stg_name='SessionName'";
-        $usresult = Yii::app()->db->createCommand($usquery)->queryRow();
-        if ($usresult)
-        {
-            @session_name($usrow['stg_value']);
-        }
-        else
-        {
-            session_name("LimeSurveyAdmin");
-        }
-
-        session_set_cookie_params(0, Yii::app()->createUrl('admin/kcfinder/index/load/' . (string) $load . '/'));
-
-        if (session_id() == "")
-            @session_start();
-
         $_SESSION['KCFINDER'] = array();
 
         $sAllowedExtensions = implode(' ', array_map('trim', explode(',', Yii::app()->getConfig('allowedresourcesuploads'))));

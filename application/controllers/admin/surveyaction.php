@@ -177,7 +177,7 @@ class SurveyAction extends Survey_Common_Action
             // Create temporary directory
             // If dangerous content is unzipped
             // then no one will know the path
-            $extractdir = self::_tempdir(Yii::app()->getConfig('tempdir'));
+            $extractdir = $this->_tempdir(Yii::app()->getConfig('tempdir'));
             $zipfilename = $_FILES['the_file']['tmp_name'];
             $basedestdir = Yii::app()->getConfig('uploaddir') . "/surveys";
             $destdir = $basedestdir . "/$surveyid/";
@@ -202,6 +202,9 @@ class SurveyAction extends Survey_Common_Action
                 // now read tempdir and copy authorized files only
                 list($aImportedFilesInfo, $aErrorFilesInfo) = $this->_filterImportedResources($extractdir, $destdir);
 
+                if (is_dir($extractdir))
+                    rmdir($extractdir);
+
                 // Delete the temporary file
                 unlink($zipfilename);
 
@@ -219,29 +222,6 @@ class SurveyAction extends Survey_Common_Action
 
             $this->_renderWrappedTemplate('importSurveyResources_view', $aData);
         }
-    }
-
-    /**
-     * Creates a temporary directory
-     *
-     * @access protected
-     * @param string $dir
-     * @param string $prefix
-     * @param int $mode
-     * @return string
-     */
-    protected function _tempdir($dir, $prefix='', $mode=0700)
-    {
-        if (substr($dir, -1) != PATH_SEPARATOR)
-            $dir .= PATH_SEPARATOR;
-
-        do
-        {
-            $path = $dir . $prefix . mt_rand(0, 9999999);
-        }
-        while (!mkdir($path, $mode));
-
-        return $path;
     }
 
     /**
