@@ -544,6 +544,48 @@ function templatereplace($line, $replacements=array(), $anonymized=false, $quest
         $_assessment_current_total = '';
     }
 
+    $_googleAnalyticsAPIKey = (isset($thissurvey['googleAnalyticsAPIKey']) ? $thissurvey['googleAnalyticsAPIKey'] : '');
+    $_googleAnalyticsStyle = (isset($thissurvey['googleAnalyticsStyle']) ? $thissurvey['googleAnalyticsStyle'] : '0');
+
+    switch ($_googleAnalyticsStyle)
+    {
+        case '0':
+        default:
+            $_googleAnalyticsJavaScript = '';
+            break;
+        case '1':
+            // Default Google Tracking
+            $_googleAnalyticsJavaScript = <<<EOD
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try{
+var pageTracker = _gat._getTracker("$_googleAnalyticsAPIKey");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+EOD;
+            break;
+        case '2':
+            // SurveyName-[SID]/GroupName
+            $_trackURL = htmlspecialchars($thissurvey['name'] . '-[' . $surveyid . ']/' . $_groupname);
+            $_googleAnalyticsJavaScript = <<<EOD
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try{
+var pageTracker = _gat._getTracker("$_googleAnalyticsAPIKey");
+pageTracker._trackPageview("$_trackURL");
+} catch(err) {}
+</script>
+EOD;
+            break;
+    }
+
     // Set the array of replacement variables here - don't include curly braces
 	$corecoreReplacements = array();
 	$coreReplacements['ANSWER'] = $answer;  // global
@@ -557,6 +599,8 @@ function templatereplace($line, $replacements=array(), $anonymized=false, $quest
 	$coreReplacements['COMPLETED'] = $completed;    // global
 	$coreReplacements['DATESTAMP'] = $_datestamp;
 	$coreReplacements['EXPIRY'] = $_dateoutput;
+    $coreReplacements['GOOGLE_ANALYTICS_API_KEY'] = $_googleAnalyticsAPIKey;
+    $coreReplacements['GOOGLE_ANALYTICS_JAVASCRIPT'] = $_googleAnalyticsJavaScript;
 	$coreReplacements['GROUPDESCRIPTION'] = $_groupdescription;
 	$coreReplacements['GROUPNAME'] = $_groupname;
 	$coreReplacements['LANG'] = $clang->getlangcode();

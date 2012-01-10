@@ -94,6 +94,7 @@ function globalsettingssave()
             setGlobalSetting('sessionlifetime',$sessionlifetimetemp);
             setGlobalSetting('ipInfoDbAPIKey',$_POST['ipInfoDbAPIKey']);
             setGlobalSetting('googleMapsAPIKey',$_POST['googleMapsAPIKey']);
+            setGlobalSetting('googleAnalyticsAPIKey',$_POST['googleAnalyticsAPIKey']);
             setGlobalSetting('force_ssl',$_POST['force_ssl']);
             setGlobalSetting('surveyPreview_require_Auth',strip_tags($_POST['surveyPreview_require_Auth']));
             $savetime=trim(strip_tags((float) $_POST['timeadjust']).' hours'); //makes sure it is a number, at least 0
@@ -261,7 +262,8 @@ function globalsettingsdisplay()
             . "<input type='text' size='35' id='ipInfoDbAPIKey' name='ipInfoDbAPIKey' value=\"".htmlspecialchars(getGlobalSetting('ipInfoDbAPIKey'))."\" /></li>"
             . "<li><label for='googleMapsAPIKey'>".$clang->gT("Google Maps API key:")."</label>\n"
             . "<input type='text' size='35' id='googleMapsAPIKey' name='googleMapsAPIKey' value=\"".htmlspecialchars(getGlobalSetting('googleMapsAPIKey'))."\" /></li>"
-
+            . "<li><label for='googleAnalyticsAPIKey'>".$clang->gT("Google Analytics API key:")."</label>\n"
+            . "<input type='text' size='35' id='googleAnalyticsAPIKey' name='googleAnalyticsAPIKey' value=\"".htmlspecialchars(getGlobalSetting('googleAnalyticsAPIKey'))."\" /></li>"
                     ;
 
 

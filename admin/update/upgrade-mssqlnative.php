@@ -591,6 +591,12 @@ function db_upgrade($oldversion) {
         modify_database("","ALTER TABLE [prefix_groups] ADD [grelevance] text DEFAULT NULL;"); echo $modifyoutput; flush();@ob_flush();
         modify_database("","update [prefix_settings_global] set [stg_value]='154' where stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
     }
+    if ($oldversion < 155)
+    {
+        modify_database("","ALTER TABLE [prefix_surveys] ADD [googleAnalyticsStyle] char(1) DEFAULT NULL;"); echo $modifyoutput; flush();@ob_flush();
+        modify_database("","ALTER TABLE [prefix_surveys] ADD [googleAnalyticsAPIKey] varchar(25) DEFAULT NULL;"); echo $modifyoutput; flush();@ob_flush();
+        modify_database("", "UPDATE [prefix_settings_global] SET [stg_value]='155' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
+    }
 
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br />';
   	return true;

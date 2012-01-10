@@ -836,6 +836,31 @@
         $editsurvey .= ">".$clang->gT("No")."</option>\n"
         . "</select></li>\n";
 
+        //GOOGLE ANALYTICS PROCESSING
+        //GOOGLE ANALYTICS API KEY
+        $editsurvey .= "<li><label for='googleAnalyticsAPIKey'>".$clang->gT("Google Analytics API Key for this Survey?")."</label>\n"
+        . "<input type='text' value=\"{$esrow['googleAnalyticsAPIKey']}\" name='googleAnalyticsAPIKey' id='googleAnalyticsAPIKey' size='20'/>\n"
+        . "</li>\n";
+
+        //GOOGLE ANALYTICS STYLE
+        $editsurvey .= "<li><label for='googleAnalyticsStyle'>".$clang->gT("Google Analytics Style for this Survey?")."</label>\n"
+        . "<select id='googleAnalyticsStyle' name='googleAnalyticsStyle'>\n"
+        . "<option value='0'";
+        if (!$esrow['googleAnalyticsStyle'] || $esrow['googleAnalyticsStyle'] == "0") {
+            $editsurvey .= " selected='selected'";
+        }
+            $editsurvey .= ">".$clang->gT("Do not use Google Analytics")."</option>\n"
+            . "<option value='1'";
+        if ($esrow['googleAnalyticsStyle'] == "1") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">".$clang->gT("Default Google Analytics")."</option>\n"
+            . "<option value='2'";
+        if ($esrow['googleAnalyticsStyle'] == "2") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">".$clang->gT("SurveyName-[SID]/GroupName")."</option>\n"
+        . "</select></li>\n";
 
         // End Notification and Data management TAB
         $editsurvey .= "</ul></div>\n";

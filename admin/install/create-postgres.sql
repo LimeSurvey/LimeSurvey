@@ -313,6 +313,8 @@ CREATE TABLE prefix_surveys (
     navigationdelay smallint DEFAULT '0',
     nokeyboard character(1) DEFAULT 'N'::bpchar,
     alloweditaftercompletion character(1) DEFAULT 'N'::bpchar,
+    googleAnalyticsStyle character(1) DEFAULT NULL,
+    googleAnalyticsAPIKey character varying(25) DEFAULT NULL,
     CONSTRAINT prefix_surveys_pkey PRIMARY KEY (sid)
 );
 
@@ -549,7 +551,7 @@ create index parent_qid_idx on prefix_questions (parent_qid);
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '154');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '155');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
 
