@@ -141,7 +141,7 @@ class ParticipantAttributeNames extends CActiveRecord
 
     function getAttributes($count = false, $limit = -1, $offset = -1)
     {
-        $command = Yii::app()->db->createCommand()->from('{{participant_attribute_names}}')->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')->where('lang = "'.Yii::app()->session['adminlang'].'"')->limit($limit, $offset);
+        $command = Yii::app()->db->createCommand()->from('{{participant_attribute_names}}')->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')->where('lang = "'.Yii::app()->session['adminlang'].'"')->limit(intval($limit), intval($offset));
         if (empty($count))
         {
             return $command->select('{{participant_attribute_names}}.*,{{participant_attribute_names_lang}}.*')->queryAll();
@@ -154,7 +154,7 @@ class ParticipantAttributeNames extends CActiveRecord
 
     function getAttributesValues($attribute_id)
     {
-       return Yii::app()->db->createCommand()->select('*')->from('{{participant_attribute_values}}')->where('attribute_id = '.$attribute_id)->queryAll();
+       return Yii::app()->db->createCommand()->select('*')->from('{{participant_attribute_values}}')->where('attribute_id = :attribute_id')->bindParam(":attribute_id", $attribute_id, PDO::PARAM_INT)->queryAll();
     }
 
     // this is a very specific function used to get the attributes that are not present for the participant
@@ -175,8 +175,8 @@ class ParticipantAttributeNames extends CActiveRecord
                             'visible' => $data['visible']);
         Yii::app()->db->createCommand()->insert('{{participant_attribute_names}}',$insertnames);
         $attribute_id = Yii::app()->db->getLastInsertID();
-        $insertnameslang = array('attribute_id' => $attribute_id,
-                                 'attribute_name'=>$data['attribute_name'],
+        $insertnameslang = array('attribute_id' => intval($attribute_id),
+                                 'attribute_name'=> Yii::app()->db->quoteValue($data['attribute_name']),
                                  'lang' => Yii::app()->session['adminlang']);
         Yii::app()->db->createCommand()->insert('{{participant_attribute_names_lang}}',$insertnameslang);
 
@@ -186,15 +186,15 @@ class ParticipantAttributeNames extends CActiveRecord
 
     function editParticipantAttributeValue($data)
     {
-	   	$query = Yii::app()->db->createCommand()->where('participant_id = "'.$data['participant_id'].'" AND attribute_id = '. $data['attribute_id'])->from('{{participant_attribute}}')->select('*')->queryAll();
+	   	$query = Yii::app()->db->createCommand()->where('participant_id = :participant_id AND attribute_id = :attribute_id')->from('{{participant_attribute}}')->select('*')->bindParam(":participant_id", $data["participant_id"], PDO::PARAM_INT)->bindParam(":attribute_id", $data["attribute_id"], PDO::PARAM_INT)->queryAll();
 	        if(count($query) == 0)
 	        {
 	            Yii::app()->db->createCommand()->insert('{{participant_attribute}}',$data);
 	        }
 	        else
 	        {
-	        Yii::app()->db->createCommand()->update('{{participant_attribute}}',$data,'participant_id = "'.$data['participant_id'].'" AND attribute_id = '.$data['attribute_id']);
-	    }
+	        	Yii::app()->db->createCommand()->update('{{participant_attribute}}',$data,'participant_id = :participant_id  AND attribute_id = :attribute_id')->bindParam(":participant_id", $data["participant_id"], PDO::PARAM_INT)->bindParam(":attribute_id", $data["attribute_id"], PDO::PARAM_INT);
+		    }
 
     }
 
@@ -208,12 +208,12 @@ class ParticipantAttributeNames extends CActiveRecord
 
     function delAttributeValues($attid,$valid)
     {
-        Yii::app()->db->createCommand()->delete('{{participant_attribute_values}}', 'attribute_id = '.$attid.' AND value_id = '.$valid);
+        Yii::app()->db->createCommand()->delete('{{participant_attribute_values}}', 'attribute_id = :attribute_id AND value_id = :value_id')->bindParam(":attribute_id", $attid, PDO::PARAM_INT)->bindParam(":value_id", $valid, PDO::PARAM_INT);
     }
 
     function getAttributeNames($attributeid)
     {
-        return Yii::app()->db->createCommand()->where("attribute_id = {$attributeid}")->from('{{participant_attribute_names_lang}}')->select('*')->queryAll();
+        return Yii::app()->db->createCommand()->where("attribute_id = :attribute_id")->from('{{participant_attribute_names_lang}}')->select('*')->bindParam(":attribute_id", $attributeid, PDO::PARAM_INT)->queryAll();
     }
     function getAttribute($attribute_id)
     {
@@ -239,18 +239,18 @@ class ParticipantAttributeNames extends CActiveRecord
         }
         if (!empty($insertnames))
         {
-            Yii::app()->db->createCommand()->update('{{participant_attribute_names}}', $insertnames, 'attribute_id = '.$data['attribute_id']);
+            Yii::app()->db->createCommand()->update('{{participant_attribute_names}}', $insertnames, 'attribute_id = :attribute_id')->bindParam(":attribute_id", $data['attribute_id'], PDO::PARAM_INT);
         }
 
         if (!empty($data['attribute_name']))
         {
-            Yii::app()->db->createCommand()->update('{{participant_attribute_names_lang}}', array('attribute_name' => $data['attribute_name']), 'attribute_id = '.$data['attribute_id'].' AND lang="'.Yii::app()->session['adminlang'].'"');
+            Yii::app()->db->createCommand()->update('{{participant_attribute_names_lang}}', array('attribute_name' => $data['attribute_name']), 'attribute_id = :attribute_id AND lang="'.Yii::app()->session['adminlang'].'"')->bindParam(":attribute_id", $data['attribute_id'], PDO::PARAM_INT);
         }
     }
 
     function saveAttributeLanguages($data)
     {
-        $query = Yii::app()->db->createCommand()->from('{{participant_attribute_names_lang}}')->where('attribute_id = '.$data['attribute_id'].' AND lang = "'.$data['lang'].'"')->select('*')->queryAll();
+        $query = Yii::app()->db->createCommand()->from('{{participant_attribute_names_lang}}')->where('attribute_id = :attribute_id AND lang = :lang')->select('*')->bindParam(":attribute_id", $data['attribute_id'], PDO::PARAM_INT)->bindParam(":lang", $data['lang'], PDO::PARAM_STR)->queryAll();
         if (count($query) == 0)
         {
               // A record does not exist, insert one.
@@ -260,7 +260,7 @@ class ParticipantAttributeNames extends CActiveRecord
         else
         {
              // A record does exist, update it.
-            $query = Yii::app()->db->createCommand()->update('{{participant_attribute_names_lang}}',array('attribute_name'=>$data['attribute_name'],),'attribute_id = '.$data['attribute_id'].' AND lang="'.$data['lang'].'"');
+            $query = Yii::app()->db->createCommand()->update('{{participant_attribute_names_lang}}',array('attribute_name'=>$data['attribute_name'],),'attribute_id = :attribute_id  AND lang= :lang')->bindParam(":attribute_id", $data['attribute_id'], PDO::PARAM_INT)->bindParam(":lang", $data['lang'], PDO::PARAM_STR);
         }
     }
 
@@ -288,7 +288,7 @@ class ParticipantAttributeNames extends CActiveRecord
     //updates the attribute values in participant_attribute_values
     function saveAttributeValue($data)
     {
-        Yii::app()->db->createCommand()->update('{{participant_attribute_values}}', $data, "attribute_id='{$data['attribute_id']}' AND value_id='{$data['value_id']}'");
+        Yii::app()->db->createCommand()->update('{{participant_attribute_values}}', $data, "attribute_id = :attribute_id AND value_id = :value_id")->bindParam(":attribute_id", $data['attribute_id'], PDO::PARAM_INT)->bindParam(":value_id", $data['value_id'], PDO::PARAM_INT);
     }
 
     function saveAttributeVisible($attid,$visiblecondition)
@@ -300,7 +300,7 @@ class ParticipantAttributeNames extends CActiveRecord
         {
             $data=array('visible'=>'FALSE');
         }
-        Yii::app()->db->createCommand()->update('{{participant_attribute_names}}',$data,'attribute_id = '.$attribute_id[1]);
+        Yii::app()->db->createCommand()->update('{{participant_attribute_names}}',$data,'attribute_id = :attribute_id')->bindParam(":attribute_id", $attribute_id[1], PDO::PARAM_INT);
     }
 
     function getAttributeID()

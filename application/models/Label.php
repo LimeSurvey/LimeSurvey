@@ -73,7 +73,7 @@ class Label extends CActiveRecord
 
     function getLabelCodeInfo($lid)
     {
-		return Yii::app()->db->createCommand()->select('code, title, sortorder, language, assessment_value')->order('language, sortorder, code')->where('lid='.$lid)->from(tableName())->query()->readAll();
+		return Yii::app()->db->createCommand()->select('code, title, sortorder, language, assessment_value')->order('language, sortorder, code')->where('lid=:lid')->from(tableName())->bindParam(":lid", $lid, PDO::PARAM_INT)->query()->readAll();
     }
 
 	function insertRecords($data)

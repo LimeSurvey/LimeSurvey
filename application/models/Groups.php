@@ -70,8 +70,15 @@ class Groups extends CActiveRecord
 
 	function updateGroupOrder($sid,$lang,$position=0)
     {
-		$data=Yii::app()->db->createCommand()->select('gid')->where(array('and','sid='.$sid,'language="'.$lang.'"'))->order('group_order, group_name ASC')->from('{{groups}}')->query();
-
+		$data=Yii::app()->db->createCommand()->select('gid')
+			->where(array('and','sid=:sid','language=:language'))
+			->order('group_order, group_name ASC')
+			->from('{{groups}}')
+			->bindParam(':sid', $sid, PDO::PARAM_INT)
+			->bindParam(':language', $language, PDO::PARAM_STR)
+			->query();
+		
+		$position = intval($position);
         foreach($data->readAll() as $row)
         {
             Yii::app()->db->createCommand()->update($this->tableName(),array('group_order' => $position),'gid='.$row['gid']);
@@ -93,9 +100,10 @@ class Groups extends CActiveRecord
 		return Yii::app()->db->createCommand()
 			->select(array('gid', 'group_name'))
 			->from($this->tableName())
-			->where(array('and', 'sid='.$surveyid, 'language=:language'))
+			->where(array('and', 'sid=:surveyid', 'language=:language'))
 			->order('group_order asc')
 			->bindParam(":language", $language, PDO::PARAM_STR)
+			->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)
 			->query()->readAll();
     }
 
@@ -111,8 +119,10 @@ class Groups extends CActiveRecord
         $questions = Yii::app()->db->createCommand()
                 ->select('qid')
                 ->from('{{questions}} q')
-                ->join('{{groups}} g', 'g.gid=q.gid AND g.gid=' . $groupId . ' AND q.parent_qid=0')
-                ->group('qid')->queryAll();
+                ->join('{{groups}} g', 'g.gid=q.gid AND g.gid=:groupid AND q.parent_qid=0')
+                ->group('qid')
+                ->bindParam(":groupid", $groupId, PDO::PARAM_INT)
+                ->queryAll();
 
         $questionIds = array();
         foreach ($questions as $question) {
@@ -121,10 +131,9 @@ class Groups extends CActiveRecord
 
         return $questionIds;
     }
+	
 	function getAllGroups($condition, $order=false)
     {
-
-
         $command = Yii::app()->db->createCommand()->where($condition)->select('*')->from($this->tableName());
 	    if ($order != FALSE)
         {

@@ -65,14 +65,20 @@ class Answers extends CActiveRecord
 		return Yii::app()->db->createCommand()
 			->select(array('code', 'answer'))
 			->from(self::tableName())
-			->where(array('and', 'qid='.$qid, 'code="'.$code.'"', 'scale_id=0', 'language="'.$lang.'"'))
+			->where(array('and', 'qid=:qid', 'code=:code', 'scale_id=0', 'language=:lang'))
+			->bindParam(":qid", $qid, PDO::PARAM_INT)
+			->bindParam(":code", $code, PDO::PARAM_STR)
+			->bindParam(":lang", $lang, PDO::PARAM_STR)
 			->query();
     }
 
 	public function oldNewInsertansTags($newsid,$oldsid)
 	{
-		$sql = "SELECT a.qid, a.language, a.code, a.answer from {{answers}} as a INNER JOIN {{questions}} as b ON a.qid=b.qid WHERE b.sid=".$newsid." AND a.answer LIKE '%{INSERTANS:".$oldsid."X%'";
-    	return Yii::app()->db->createCommand($sql)->query();
+		$sql = "SELECT a.qid, a.language, a.code, a.answer from {{answers}} as a INNER JOIN {{questions}} as b ON a.qid=b.qid WHERE b.sid=:newsid AND a.answer LIKE '%{INSERTANS::oldsidX%'";
+    	return Yii::app()->db->createCommand($sql)
+    	->bindParam(":newsid", $newsid, PDO::PARAM_INT)
+		->bindParam(":oldsid", $oldsid, PDO::PARAM_INT)
+    	->query();
 	}
 
 	public function updateRecord($data, $condition=FALSE)
@@ -114,8 +120,10 @@ class Answers extends CActiveRecord
 		$query = Yii::app()->db->createCommand();
 		$query->select("{{answers}}.*, {{questions}}.gid");
 		$query->from("{{answers}}, {{questions}}");
-		$query->where("{{questions}}.sid = '{$surveyid}' AND {{questions}}.qid = {{answers}}.qid AND {{questions}}.language = {{answers}}.language AND {{questions}}.language = '{$lang}'");
+		$query->where("{{questions}}.sid = :surveyid AND {{questions}}.qid = {{answers}}.qid AND {{questions}}.language = {{answers}}.language AND {{questions}}.language = :lang");
 		$query->order('qid, code, sortorder');
+		$query->bindParams(":surveyid", $surveyid, PDO::PARAM_INT);
+		$query->bindParams(":lang", $lang, PDO::PARAM_STR);
 		return ( $return_query ) ? $query->queryAll() : $query;
     }
 

@@ -62,7 +62,7 @@ class Conditions extends CActiveRecord
         {
             if( is_array($condition) )
             {
-                foreach($condition as $column=>$value)
+               	foreach($condition as $column=>$value)
                 {
                     $criteria->addCondition("$column='$value'");
                 }
@@ -131,15 +131,19 @@ class Conditions extends CActiveRecord
     }
     function getConditionsQuestions($distinctrow,$deqrow,$scenariorow,$surveyprintlang)
     {
-    $conquery="SELECT cid, cqid, q.title,\n"
-        ."q.question, value, q.type, cfieldname\n"
-        ."FROM {{conditions}} c, {{questions}} q\n"
-        ."WHERE c.cqid=q.qid\n"
-        ."AND c.cqid={$distinctrow}\n"
-        ."AND c.qid={$deqrow} \n"
-        ."AND c.scenario={$scenariorow} \n"
-        ."AND language='{$surveyprintlang}'";
-    return Yii::app()->db->createCommand($conquery)->query();
+    $conquery="SELECT cid, cqid, q.title, q.question, value, q.type, cfieldname"
+        ."FROM {{conditions}} c, {{questions}} q"
+        ."WHERE c.cqid=q.qid"
+        ."AND c.cqid=:distinctrow"
+        ."AND c.qid=:deqrow"
+        ."AND c.scenario=:scenariorow"
+        ."AND language=:surveyprintlang";
+    return Yii::app()->db->createCommand($conquery)
+    	->bindParam(":distinctrow", $distinctrow, PDO::PARAM_INT)
+    	->bindParam(":deqrow", $deqrow, PDO::PARAM_INT)
+    	->bindParam(":scenariorow", $scenariorow, PDO::PARAM_INT)
+		->bindParam(":surveyprintlang", $surveyprintlang, PDO::PARAM_STR)
+    	->query();
     }
 }
 
