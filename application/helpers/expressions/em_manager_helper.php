@@ -1801,7 +1801,7 @@ class LimeExpressionManager {
                 'qid' => $qnum,
                 'qseq' => $questionSeq,
                 'eqn' => $stringToParse,
-                'prettyPrint' => $LEM->em->GetLastPrettyPrintExpression(),
+                'prettyprint' => $LEM->em->GetLastPrettyPrintExpression(),
             );
             $LEM->syntaxErrors[] = $error;
         }
@@ -1889,7 +1889,7 @@ class LimeExpressionManager {
                 'qid' => $questionNum,
                 'qseq' => $questionSeq,
                 'eqn' => $stringToParse,
-                'prettyPrint' => $prettyPrint,
+                'prettyprint' => $prettyPrint,
                 'hasErrors' => $hasErrors,
             );
             $this->syntaxErrors[] = $error;
@@ -1956,7 +1956,7 @@ class LimeExpressionManager {
                 'qid' => $questionNum,
                 'qseq' => $questionSeq,
                 'eqn' => $stringToParse,
-                'prettyPrint' => $prettyPrint,
+                'prettyprint' => $prettyPrint,
             );
             $this->syntaxErrors[] = $error;
         }
@@ -2005,7 +2005,7 @@ class LimeExpressionManager {
                 'numJsVars' => 0,
                 'relevancejs' => '',
                 'relevanceVars' => '',
-                'prettyPrint'=> '',
+                'prettyprint'=> '',
             );
             return;
         }
@@ -2024,7 +2024,7 @@ class LimeExpressionManager {
                 'qid' => -1,
                 'qseq' => -1,
                 'eqn' => $stringToParse,
-                'prettyPrint' => $prettyPrint,
+                'prettyprint' => $prettyPrint,
             );
             $this->syntaxErrors[] = $error;
         }
@@ -2042,7 +2042,7 @@ class LimeExpressionManager {
                 'numJsVars' => count($jsVars),
                 'relevancejs' => $relevanceJS,
                 'relevanceVars' => $relevanceVars,
-                'prettyPrint'=> $prettyPrint,
+                'prettyprint'=> $prettyPrint,
                 'hasErrors' => $hasErrors,
             );
             $_SESSION['relevanceStatus']['G' . $gid] = $result;
@@ -3062,7 +3062,7 @@ class LimeExpressionManager {
                     . "[<a href='$editlink'>"
                     .  'GID:' . $gid . "</a>]:  "
                     . ($grel ? 'relevant ' : " <span style='color:red'>irrelevant</span> ")
-                    . (($gRelInfo['eqn'] != '') ? $gRelInfo['prettyPrint'] : '')
+                    . (($gRelInfo['eqn'] != '') ? $gRelInfo['prettyprint'] : '')
                     . (($ghidden && $grel) ? " <span style='color:red'>always-hidden</span> " : ' ')
                     . ($gmandViolation ? " <span style='color:red'>(missing a relevant mandatory)</span> " : ' ')
                     . ($gvalid ? '' : " <span style='color:red'>(fails at least one validation rule)</span> ")
@@ -3185,7 +3185,7 @@ class LimeExpressionManager {
             $qrel = $LEM->ParseResultCache[$relevanceEqn]['result'];
             if (($LEM->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX)
             {
-                $prettyPrintRelEqn = $LEM->ParseResultCache[$relevanceEqn]['prettyPrint'];
+                $prettyPrintRelEqn = $LEM->ParseResultCache[$relevanceEqn]['prettyprint'];
             }
         }
         else
@@ -3198,7 +3198,7 @@ class LimeExpressionManager {
             }
             $LEM->ParseResultCache[$relevanceEqn] = array(
                 'result'=>$qrel,
-                'prettyPrint'=>$prettyPrintRelEqn,
+                'prettyprint'=>$prettyPrintRelEqn,
                 'hasErrors'=>$hasErrors,
                 );
         }
@@ -3248,7 +3248,7 @@ class LimeExpressionManager {
                                     $sqrel = $LEM->ParseResultCache[$sq['eqn']]['result'];
                                     if (($LEM->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX)
                                     {
-                                        $prettyPrintSQRelEqns[$sq['rowdivid']] = $LEM->ParseResultCache[$sq['eqn']]['prettyPrint'];
+                                        $prettyPrintSQRelEqns[$sq['rowdivid']] = $LEM->ParseResultCache[$sq['eqn']]['prettyprint'];
                                     }
                                 }
                                 else
@@ -3263,7 +3263,7 @@ class LimeExpressionManager {
                                     }
                                     $LEM->ParseResultCache[$sq['eqn']] = array(
                                         'result'=>$sqrel,
-                                        'prettyPrint'=>$prettyPrintSQRelEqn,
+                                        'prettyprint'=>$prettyPrintSQRelEqn,
                                         'hasErrors'=>$hasErrors,
                                         );
                                 }
@@ -3287,7 +3287,7 @@ class LimeExpressionManager {
                                     $sqrel = $LEM->ParseResultCache[$sq['eqn']]['result'];
                                     if (($LEM->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX)
                                     {
-                                        $prettyPrintSQRelEqns[$sq['rowdivid']] = $LEM->ParseResultCache[$sq['eqn']]['prettyPrint'];
+                                        $prettyPrintSQRelEqns[$sq['rowdivid']] = $LEM->ParseResultCache[$sq['eqn']]['prettyprint'];
                                     }
                                 }
                                 else
@@ -3302,7 +3302,7 @@ class LimeExpressionManager {
                                     }
                                     $LEM->ParseResultCache[$sq['eqn']] = array(
                                         'result'=>$sqrel,
-                                        'prettyPrint'=>$prettyPrintSQRelEqn,
+                                        'prettyprint'=>$prettyPrintSQRelEqn,
                                         'hasErrors'=>$hasErrors,
                                         );
                                 }
@@ -3331,7 +3331,7 @@ class LimeExpressionManager {
                                     $sqrel = $LEM->ParseResultCache[$sq['eqn']]['result'];
                                     if (($LEM->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX)
                                     {
-                                        $prettyPrintSQRelEqns[$sq['rowdivid']] = $LEM->ParseResultCache[$sq['eqn']]['prettyPrint'];
+                                        $prettyPrintSQRelEqns[$sq['rowdivid']] = $LEM->ParseResultCache[$sq['eqn']]['prettyprint'];
                                     }
                                 }
                                 else
@@ -3346,7 +3346,7 @@ class LimeExpressionManager {
                                     }
                                     $LEM->ParseResultCache[$sq['eqn']] = array(
                                         'result'=>$sqrel,
-                                        'prettyPrint'=>$prettyPrintSQRelEqn,
+                                        'prettyprint'=>$prettyPrintSQRelEqn,
                                         'hasErrors'=>$hasErrors,
                                         );
                                 }
@@ -3369,7 +3369,7 @@ class LimeExpressionManager {
                                     $sqrel = $LEM->ParseResultCache[$sq['eqn']]['result'];
                                     if (($LEM->debugLevel & LEM_PRETTY_PRINT_ALL_SYNTAX) == LEM_PRETTY_PRINT_ALL_SYNTAX)
                                     {
-                                        $prettyPrintSQRelEqns[$sq['rowdivid']] = $LEM->ParseResultCache[$sq['eqn']]['prettyPrint'];
+                                        $prettyPrintSQRelEqns[$sq['rowdivid']] = $LEM->ParseResultCache[$sq['eqn']]['prettyprint'];
                                     }
                                 }
                                 else
@@ -3384,7 +3384,7 @@ class LimeExpressionManager {
                                     }
                                     $LEM->ParseResultCache[$sq['eqn']] = array(
                                         'result'=>$sqrel,
-                                        'prettyPrint'=>$prettyPrintSQRelEqn,
+                                        'prettyprint'=>$prettyPrintSQRelEqn,
                                         'hasErrors'=>$hasErrors,
                                         );
                                 }
@@ -5149,11 +5149,11 @@ EOT;
                 $hasErrors =  $LEM->em->HasErrors();
                 $LEM->ParseResultCache[$relevanceEqn] = array(
                     'result' => $result,
-                    'prettyPrint' => $prettyPrint,
+                    'prettyprint' => $prettyPrint,
                     'hasErrors' => $hasErrors,
                 );
             }
-            $relevance = $LEM->ParseResultCache[$relevanceEqn]['prettyPrint'];
+            $relevance = $LEM->ParseResultCache[$relevanceEqn]['prettyprint'];
             if ($LEM->ParseResultCache[$relevanceEqn]['hasErrors']) {
                 ++$errorCount;
             }
@@ -5172,11 +5172,11 @@ EOT;
                     $hasErrors =  $LEM->em->HasErrors();
                     $LEM->ParseResultCache[$validationEqn] = array(
                         'result' => $result,
-                        'prettyPrint' => $prettyPrint,
+                        'prettyprint' => $prettyPrint,
                         'hasErrors' => $hasErrors,
                     );
                 }
-                $prettyValidEqn = '<hr/>(VALIDATION: ' . $LEM->ParseResultCache[$validationEqn]['prettyPrint'] . ')';
+                $prettyValidEqn = '<hr/>(VALIDATION: ' . $LEM->ParseResultCache[$validationEqn]['prettyprint'] . ')';
                 if ($LEM->ParseResultCache[$validationEqn]['hasErrors']) {
                     ++$errorCount;
                 }
