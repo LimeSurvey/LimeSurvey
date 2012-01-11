@@ -2075,7 +2075,7 @@ class LimeExpressionManager {
         $LEM->surveyLogicFile='';
         $LEM->processedRelevance=false;
         if (!is_null($rooturl)) {
-            $LEM->surveyOptions['rooturl'] = $rooturl;
+            $LEM->surveyOptions['rooturl'] = Yii::app()->baseUrl;
             $LEM->surveyOptions['hyperlinkSyntaxHighlighting']=true;    // this will be temporary - should be reset in running survey
         }
 
@@ -2638,7 +2638,7 @@ class LimeExpressionManager {
                 }
                 else if ($this->surveyOptions['allowsave'] && isset($_SESSION['scid']))
                 {
-                    $connect->Execute("UPDATE {{saved_control}} SET saved_thisstep=" . db_quoteall($thisstep) . " where scid=" . $_SESSION['scid']);  // Checked
+                    Saved_control::model()->updateByPk($_SESSION['scid'], array('saved_thisstep'=>$thisstep))
                 }
             }
             if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
@@ -3961,21 +3961,10 @@ class LimeExpressionManager {
         {
             foreach ($LEM->syntaxErrors as $err)
             {
-                $query = "INSERT INTO {{expression_errors}} (errortime,sid,gid,qid,gseq,qseq,type,eqn,prettyprint) VALUES("
-                    .db_quoteall($err['errortime'])
-                    .",".$err['sid']
-                    .",".$err['gid']
-                    .",".$err['qid']
-                    .",".$err['gseq']
-                    .",".$err['qseq']
-                    .",".db_quoteall($err['type'])
-                    .",".db_quoteall($err['eqn'])
-                    .",".db_quoteall($err['prettyPrint'])
-                    .")";
-                if (!$connect->Execute($query))
-                {
-                    print $connect->ErrorMsg();
-                }
+                $error = new Expression_errors;
+                foreach ($err as $k => $v)
+                    $error->$k = $v;
+                $result = $error->save();
             }
         }
         $LEM->initialized=false;    // so detect calls after done
@@ -4995,7 +4984,7 @@ EOT;
         $surveyOptions = array(
             'assessments'=>$assessments,
             'hyperlinkSyntaxHighlighting'=>true,
-            'rooturl'=>$rooturl,
+            'rooturl'=>Yii::app()->baseUrl,
         );
 
         $varNamesUsed = array(); // keeps track of whether variables have been declared
