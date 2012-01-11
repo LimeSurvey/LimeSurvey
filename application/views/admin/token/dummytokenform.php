@@ -40,12 +40,13 @@
         </li>
         <?php
         // now the attribute fieds
-        $attrfieldnames = GetTokenFieldsAndNames($surveyid, true);
+        $attrfieldnames = $thissurvey['attributedescriptions'];
         foreach ($attrfieldnames as $attr_name => $attr_description)
         {
-            ?><li>
-                <label for='<?php echo $attr_name; ?>'><?php echo $attr_description; ?>:</label>
-                <input type='text' size='55' id='<?php echo $attr_name; ?>' name='<?php echo $attr_name; ?>' value='<?php
+            ?>
+                    <li>
+                        <label for='<?php echo $attr_name; ?>'><?php echo $attr_description['description'] . ($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:</label>
+                        <input type='text' size='55' id='<?php echo $attr_name; ?>' name='<?php echo $attr_name; ?>' value='<?php
             if (isset($$attr_name))
             {
                 echo htmlspecialchars($$attr_name, ENT_QUOTES, 'UTF-8');

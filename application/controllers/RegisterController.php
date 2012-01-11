@@ -43,8 +43,6 @@
         $data['sid'] = $surveyid;
         $data['startdate'] = $row['startdate'];
         $data['enddate'] = $row['expires'];
-
-        $baselang = Survey::model()->findByPk($surveyid)->language;
         Yii::import('application.libraries.Limesurvey_lang');
 		Yii::app()->lang = new Limesurvey_lang(array('langcode' => $baselang));
         echo templatereplace(file_get_contents("$thistpl/register.pstpl"),array(),$redata,'register.php',false,NULL,$data);
@@ -118,6 +116,19 @@
         {
             $register_errormsg .= $clang->gT("The email you used is not valid. Please try again.");
         }
+
+        // Check for additional fields
+        $attributeinsertdata = array();
+        foreach ($thissurvey['attributedescriptions'] as $field => $data)
+        {
+            if (empty($data['show_register']) || $data['show_register'] != 'Y')
+                continue;
+
+            $value = sanitize_xss_string(Yii::app()->request->getPost('register_' . $field));
+            if (trim($value) == '' && $data['mandatory'] == 'Y')
+                $register_errormsg .= sprintf($clang->gT("%s cannot be left empty"), $thissurvey['attributecaptions'][$field]);
+            $attributeinsertdata[$field] = $value;
+        }
         if ($register_errormsg != "")
         {
             Yii::app()->request->redirect(Yii::app()->createUrl('survey/index/sid/'.$surveyid));
@@ -169,21 +180,23 @@
         /*$postattribute1=sanitize_xss_string(strip_tags(returnglobal('register_attribute1')));
          $postattribute2=sanitize_xss_string(strip_tags(returnglobal('register_attribute2')));   */
 
-        //Insert new entry into tokens db
-        $query = "INSERT INTO {{tokens_$surveyid}}\n"
-        . "(firstname, lastname, email, emailstatus, token";
-
+        // Insert new entry into tokens db
+        Tokens_dynamic::sid($thissurvey['sid']);
+        $token = new Tokens_dynamic;
+        $token->firstname = $postfirstname;
+        $token->lastname = $postlastname;
+        $token->email = Yii::app()->request->getPost('register_email');
+        $token->emailstatus = 'OK';
+        $token->token = $newtoken;
         if ($starttime && $endtime)
-        $query .= ", validfrom, validuntil";
+        {
+            $token->validfrom = $starttime;
+            $token->validuntil = $endtime;
+        }
+        foreach ($attributeinsertdata as $k => $v)
+            $token->$k = $v;
+        $result = $token->save();
 
-        $query .=")\n"
-        . "VALUES ('$postfirstname', '$postlastname', '".Yii::app()->request->getPost('register_email')."', 'OK', '$newtoken'";
-
-        if ($starttime && $endtime)
-        $query .= ",$starttime,$endtime";
-
-        $query .=")";
-        $result = db_execute_assoc($query);
         /**
         $result = $connect->Execute($query, array($postfirstname,
         $postlastname,
@@ -238,7 +251,7 @@
         if (SendEmailMessage($message, $subject, Yii::app()->request->getPost('register_email'), $from, $sitename,$useHtmlEmail,getBounceEmail($surveyid)))
         {
             // TLR change to put date into sent
-            $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
+            $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
             $query = "UPDATE {{tokens_$surveyid}}\n"
             ."SET sent='$today' WHERE tid=$tid";
             $result=db_execute_assoc($query) or show_error("Unable to execute this query : $query<br />");     //Checked

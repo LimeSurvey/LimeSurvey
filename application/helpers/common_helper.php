@@ -1460,6 +1460,8 @@ function getSurveyInfo($surveyid, $languagecode='')
         $thissurvey['email_confirm']=$thissurvey['surveyls_email_confirm'];
         $thissurvey['email_register_subj']=$thissurvey['surveyls_email_register_subj'];
         $thissurvey['email_register']=$thissurvey['surveyls_email_register'];
+        $thissurvey['attributedescriptions'] = $row->survey->tokenAttributes;
+        $thissurvey['attributecaptions'] = $row->attributeCaptions;
         if (!isset($thissurvey['adminname'])) {$thissurvey['adminname']=$siteadminname;}
         if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail']=$siteadminemail;}
         if (!isset($thissurvey['urldescrip']) ||
@@ -5383,50 +5385,44 @@ function GetTokenConditionsFieldNames($surveyid)
 *
 * @param mixed $surveyid  The survey ID
 * @param boolean $onlyAttributes Set this to true if you only want the fieldnames of the additional attribue fields - defaults to false
+ *                               Use Survey::model()->findByPk($surveyid)->tokenAttributes instead
 * @return array The fieldnames as key and names as value in an Array
 */
-function GetTokenFieldsAndNames($surveyid, $onlyAttributes=false)
+function GetTokenFieldsAndNames($surveyid, $onlyAttributes = false)
 {
     $clang = Yii::app()->lang;
-    /*if (is_null(Yii::app()->db->schema->getTable("{{token_$surveyid}}")))
-    {
-        return Array();
-    }*/
+
     $extra_attrs=GetAttributeFieldNames($surveyid);
     $basic_attrs=Array('firstname','lastname','email','token','language','sent','remindersent','remindercount','usesleft');
     $basic_attrs_names=Array(
-    $clang->gT('First name'),
-    $clang->gT('Last name'),
-    $clang->gT('Email address'),
-    $clang->gT('Token code'),
-    $clang->gT('Language code'),
-    $clang->gT('Invitation sent date'),
-    $clang->gT('Last Reminder sent date'),
-    $clang->gT('Total numbers of sent reminders'),
-    $clang->gT('Uses left')
+        $clang->gT('First name'),
+        $clang->gT('Last name'),
+        $clang->gT('Email address'),
+        $clang->gT('Token code'),
+        $clang->gT('Language code'),
+        $clang->gT('Invitation sent date'),
+        $clang->gT('Last Reminder sent date'),
+        $clang->gT('Total numbers of sent reminders'),
+        $clang->gT('Uses left')
     );
     $thissurvey=getSurveyInfo($surveyid);
-    $attdescriptiondata=array();
-    if (!empty($thissurvey['attributedescriptions']))
-    {
-        $attdescriptiondata=explode("\n",$thissurvey['attributedescriptions']);
-    }
-    $attributedescriptions=array();
-    $basic_attrs_and_names=array();
-    $extra_attrs_and_names=array();
-    foreach ($attdescriptiondata as $attdescription)
-    {
-        $attributedescriptions['attribute_'.substr($attdescription,10,strpos($attdescription,'=')-10)] = substr($attdescription,strpos($attdescription,'=')+1);
-    }
+    $attdescriptiondata = array();
+    $attributedescriptions = array();
+    $basic_attrs_and_names = array();
+    $extra_attrs_and_names = array();
+    // !!! This is actually deprecated, use Survey::model()->findByPk($surveyid)->tokenAttributes instead
+    $attdescriptiondata = Survey::model()->findByPk($surveyid)->tokenAttributes;
+    foreach ($attdescriptiondata as $attname => $attdata)
+        $attributedescriptions[$attname] = $attdata['description'];
     foreach ($extra_attrs as $fieldname)
     {
         if (isset($attributedescriptions[$fieldname]))
         {
-            $extra_attrs_and_names[$fieldname]=$attributedescriptions[$fieldname];
+            $extra_attrs_and_names[$fieldname] = $attributedescriptions[$fieldname];
         }
         else
         {
-            $extra_attrs_and_names[$fieldname]=sprintf($clang->gT('Attribute %s'),substr($fieldname,10));
+            $extra_attrs_and_names[$fieldname] = sprintf($clang->gT('Attribute %s'),substr($fieldname,10));
         }
     }
     if ($onlyAttributes===false)

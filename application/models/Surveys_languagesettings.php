@@ -64,6 +64,18 @@ class Surveys_languagesettings extends CActiveRecord
 		);
 	}
 
+    /**
+     * Returns the token's captions
+     *
+     * @access public
+     * @return array
+     */
+    public function getAttributeCaptions()
+    {
+        $captions = @unserialize($this->surveyls_attributecaptions);
+        return $captions !== false ? $captions : array();
+    }
+
 	function getAllRecords($condition=FALSE, $return_query = TRUE)
 	{
 		$query = Yii::app()->db->createCommand()->select('*')->from('{{surveys_languagesettings}}');

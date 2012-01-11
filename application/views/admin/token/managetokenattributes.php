@@ -1,28 +1,71 @@
 <div class='header ui-widget-header'><?php $clang->eT("Manage token attribute fields"); ?></div>
 
 <form action="<?php echo $this->createUrl("admin/tokens/updatetokenattributedescriptions/surveyid/$surveyid"); ?>" method="post">
-    <table class='listsurveys'>
-        <tr>
-            <th><?php $clang->eT("Attribute field"); ?></th>
-            <th><?php $clang->eT("Field description"); ?></th>
-            <th><?php $clang->eT("Field caption"); ?></th>
-            <th><?php $clang->eT("Mandatory?"); ?></th>
-            <th><?php $clang->eT("Example data"); ?></th>
-        </tr>
+    <div id="tabs">
+        <ul>
+        <?php
+        foreach ($languages as $language)
+        {
+        ?>
+            <li><a href="#language_<?php echo $language ?>"><?php echo getLanguageNameFromCode($language) ?></a></li>
+        <?php
+        }
+        ?>
+        </ul>
+<?php
+    foreach ($languages as $language)
+    {
+?>
+        <div id="language_<?php echo $language ?>">
+            <table class='listsurveys'>
+                <tr>
+                    <th><?php $clang->eT("Attribute field"); ?></th>
+                    <th><?php $clang->eT("Field description"); ?></th>
+                    <th><?php $clang->eT("Mandatory?"); ?></th>
+                    <th><?php $clang->eT("Show during registration?") ?></th>
+                    <th><?php $clang->eT("Field caption"); ?></th>
+                    <th><?php $clang->eT("Example data"); ?></th>
+                </tr>
 
 
         <?php
-        foreach ($tokenfields as $tokenfield => $tokenvalues)
+        $nrofattributes = 0;
+        foreach ($tokenfields as $tokenfield)
         {
+            if (isset($tokenfielddata[$tokenfield]))
+                $tokenvalues = $tokenfielddata[$tokenfield];
+            else
+                $tokenvalues = array(
+                    'description' => '',
+                    'mandatory' => 'N',
+                    'show_register' => 'N',
+                );
             $nrofattributes++;
-            echo "<tr>
-                <td>$tokenfield</td>
-                <td><input type='text' name='description_$tokenfield' value='" . htmlspecialchars($tokenvalues['tokendescription'], ENT_QUOTES, 'UTF-8') . "' /></td>
-                <td><input type='text' name='caption_$tokenfield' value='" . htmlspecialchars($tokenvalues['tokencaption'], ENT_QUOTES, 'UTF-8') . "' /></td>
-                <td><input type='checkbox' name='mandatory_$tokenfield' value='Y'";
-                    if($tokenvalues['tokenmandatory'] == 'Y')
-                        echo ' selected="selected"';
-           echo " /></td>
+            echo "
+                <tr>
+                    <td>$tokenfield</td>";
+            if ($language == $thissurvey['language'])
+            {
+                echo "
+                    <td><input type='text' name='description_$tokenfield' value='" . htmlspecialchars($tokenvalues['description'], ENT_QUOTES, 'UTF-8') . "' /></td>
+                    <td><input type='checkbox' name='mandatory_$tokenfield' value='Y'";
+                if ($tokenvalues['mandatory'] == 'Y')
+                    echo ' checked="checked"';
+                echo " /></td>
+                    <td><input type='checkbox' name='show_register_$tokenfield' value='Y'";
+                if (!empty($tokenvalues['show_register']) && $tokenvalues['show_register'] == 'Y')
+                    echo ' checked="checked"';
+                echo " /></td>";
+            }
+            else
+            {
+                echo "
+                    <td>", htmlspecialchars($tokenvalues['description'], ENT_QUOTES, 'UTF-8'), "</td>
+                    <td>", $tokenvalues['mandatory'] == 'Y' ? $clang->eT('Yes') : $clang->eT('No'), "</td>
+                    <td>", $tokenvalues['show_register'] == 'Y' ? $clang->eT('Yes') : $clang->eT('No'), "</td>";
+            }
+            echo "
+                <td><input type='text' name='caption_{$tokenfield}_$language' value='" . htmlspecialchars(!empty($tokencaptions[$language][$tokenfield]) ? $tokencaptions[$language][$tokenfield] : '', ENT_QUOTES, 'UTF-8') . "' /></td>
                 <td>";
                     if ($examplerow !== false)
                     {
@@ -38,11 +81,16 @@
             echo "</td></tr>";
         }
         ?>
-    </table><p>
-
+    </table></div>
+<?php
+    }
+?>
+    </div>
+    <p>
         <input type="submit" value="<?php $clang->eT('Save'); ?>" />
         <input type='hidden' name='action' value='tokens' />
         <input type='hidden' name='subaction' value='updatetokenattributedescriptions' />
+    </p>
 </form>
 
 <br /><br />

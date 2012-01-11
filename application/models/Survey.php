@@ -120,6 +120,41 @@ class Survey extends CActiveRecord
     }
 
     /**
+     * Returns the additional token attributes
+     *
+     * @access public
+     * @return array
+     */
+    public function getTokenAttributes()
+    {
+        // !!! Legacy records support
+        if (($attdescriptiondata = @unserialize($this->attributedescriptions)) === false)
+        {
+            $attdescriptiondata = explode("\n", $this->attributedescriptions);
+            $fields = array();
+            $languagesettings = array();
+            foreach ($attdescriptiondata as $attdescription)
+                if (trim($attdescription) != '')
+                {
+                    $fieldname = substr($attdescription, 0, strpos($attdescription, '='));
+                    $desc = substr($attdescription, strpos($attdescription, '=') + 1);
+                    $fields[$fieldname] = array(
+                        'description' => $desc,
+                        'mandatory' => 'N',
+                        'show_register' => 'N',
+                    );
+                    $languagesettings[$fieldname] = $desc;
+                }
+            $ls = Surveys_languagesettings::model()->findByAttributes(array('surveyls_survey_id' => $this->sid, 'surveyls_language' => $this->language));
+            self::model()->updateByPk($this->sid, array('attributedescriptions' => serialize($fields)));
+            $ls->surveyls_attributecaptions = serialize($languagesettings);
+            $ls->save();
+            $attdescriptiondata = $fields;
+        }
+        return $attdescriptiondata;
+    }
+
+    /**
     * !!! Shouldn't this be moved to beforeSave?
     * Creates a new survey - does some basic checks of the suppplied data
     *

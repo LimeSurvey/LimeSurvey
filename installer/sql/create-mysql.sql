@@ -324,6 +324,7 @@ CREATE TABLE `prefix_surveys_languagesettings` (
   `surveyls_email_confirm_subj` varchar(255) NULL,
   `surveyls_email_confirm` TEXT NULL,
   `surveyls_dateformat` INT UNSIGNED NOT NULL DEFAULT 1,
+  `surveyls_attributecaptions` TEXT NOT NULL DEFAULT '',
   `email_admin_notification_subj`  varchar(255) NULL,
   `email_admin_notification` TEXT NULL,
   `email_admin_responses_subj` varchar(255) NULL,
@@ -532,4 +533,4 @@ create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '153');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '155');

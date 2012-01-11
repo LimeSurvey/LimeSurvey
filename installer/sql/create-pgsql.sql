@@ -334,6 +334,7 @@ CREATE TABLE prefix_surveys_languagesettings (
     surveyls_email_confirm_subj character varying(255),
     surveyls_email_confirm text,
     surveyls_dateformat integer DEFAULT 1 NOT NULL,
+    surveyls_attributecaptions character varying(255) DEFAULT ''::character varying NOT NULL,
     email_admin_notification_subj character varying(255),
     email_admin_notification text,
     email_admin_responses_subj character varying(255),
@@ -544,4 +545,4 @@ create index parent_qid_idx on prefix_questions (parent_qid);
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '153');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '155');

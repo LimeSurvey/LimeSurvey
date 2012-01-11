@@ -420,12 +420,16 @@ function editToken($iSurveyId)
                 'usesleft' => Yii::app()->request->getPost('usesleft'),
                 'validfrom' => $from,
                 'validuntil' => $until);
-            $attributes = GetAttributeFieldNames($iSurveyId);
-            foreach ($attributes as $attribute)
-            {
-                $aData[$attribute] = Yii::app()->request->getPost($attribute);
-            }
-            $token = Tokens_dynamic::model()->find('tid=' . Yii::app()->request->getPost('id'));
+                $attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
+                foreach ($attrfieldnames as $attr_name => $desc)
+                {
+                    $value = Yii::app()->request->getPost($attr_name);
+                    if ($desc['mandatory'] == 'Y' && trim($value) == '')
+                        $this->getController()->error(sprintf($clang->gT('%s cannot be empty'), $desc['description']));
+                    $aData[$attr_name] = Yii::app()->request->getPost($attr_name);
+                }
+            $token = Tokens_dynamic::model()->find('tid=' . CHttpRequest::getPost('id'));
+
             foreach ($aData as $k => $v)
                 $token->$k = $v;
             echo $token->update();
@@ -447,11 +451,14 @@ function editToken($iSurveyId)
                     'usesleft' => Yii::app()->request->getPost('usesleft'),
                     'validfrom' => $from,
                     'validuntil' => $until);
-            $attributes = GetAttributeFieldNames($iSurveyId);
-            foreach ($attributes as $attribute)
-            {
-                $aData[$attribute] = Yii::app()->request->getPost($attribute);
-            }
+                $attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
+                foreach ($attrfieldnames as $attr_name => $desc)
+                {
+                    $value = Yii::app()->request->getPost($attr_name);
+                    if ($desc['mandatory'] == 'Y' && trim($value) == '')
+                        $this->getController()->error(sprintf($clang->gT('%s cannot be empty'), $desc['description']));
+                    $aData[$attr_name] = Yii::app()->request->getPost($attr_name);
+                }
             echo ls_json_encode(var_export($aData));
             $token = new Tokens_dynamic;
             foreach ($aData as $k => $v)
@@ -538,10 +545,13 @@ function editToken($iSurveyId)
             );
 
             // add attributes
-            $attrfieldnames = GetAttributeFieldnames($iSurveyId);
-            foreach ($attrfieldnames as $attr_name)
+            $attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
+            foreach ($attrfieldnames as $attr_name => $desc)
             {
-                $aData[$attr_name] = $_POST[$attr_name];
+                $value = CHttpRequest::getPost($attr_name);
+                if ($desc['mandatory'] == 'Y' && trim($value) == '')
+                    $this->getController()->error(sprintf($clang->gT('%s cannot be empty'), $desc['description']));
+                $aData[$attr_name] = CHttpRequest::getPost($attr_name);
             }
 
             $udresult = Tokens_dynamic::model($iSurveyId)->findAll("token <> '' and token = '$sanitizedtoken'");
@@ -633,9 +643,13 @@ function editToken($iSurveyId)
             if (count($udresult) == 0)
             {
                 //$aTokenData = array();
-                $attrfieldnames = GetAttributeFieldnames($iSurveyId);
-                foreach ($attrfieldnames as $attr_name)
+                $attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
+                foreach ($attrfieldnames as $attr_name => $desc)
                 {
+
+                    $value = Yii::app()->request->getPost($attr_name);
+                    if ($desc['mandatory'] == 'Y' && trim($value) == '')
+                        $this->getController()->error(sprintf($clang->gT('%s cannot be empty'), $desc['description']));
                     $aTokenData[$attr_name] = Yii::app()->request->getPost($attr_name);
                 }
 
@@ -736,9 +750,12 @@ function editToken($iSurveyId)
                 'validuntil' => Yii::app()->request->getPost('validuntil'));
 
             // add attributes
-            $attrfieldnames = GetAttributeFieldnames($iSurveyId);
-            foreach ($attrfieldnames as $attr_name)
+            $attrfieldnames = Survey::model()->findByPk($iSurveyId)->tokenAttributes;
+            foreach ($attrfieldnames as $attr_name => $desc)
             {
+                $value = Yii::app()->request->getPost($attr_name);
+                if ($desc['mandatory'] == 'Y' && trim($value) == '')
+                    $this->getController()->error(sprintf($clang->gT('%s cannot be empty'), $desc['description']));
                 $aData[$attr_name] = Yii::app()->request->getPost($attr_name);
             }
 
@@ -779,9 +796,7 @@ function editToken($iSurveyId)
             $tokenlength = Yii::app()->db->createCommand()->select('tokenlength')->from('{{surveys}}')->where('sid=' . $iSurveyId)->query()->readColumn(0);
 
             if (empty($tokenlength))
-            {
                 $tokenlength = 15;
-            }
 
             $thissurvey = getSurveyInfo($iSurveyId);
             $aData['thissurvey'] = $thissurvey;
@@ -810,7 +825,14 @@ function editToken($iSurveyId)
 
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['surveyid'] = $iSurveyId;
-        $aData['tokenfields'] = GetTokenFieldsAndNames($iSurveyId, true);
+        $aData['tokenfields'] = GetAttributeFieldNames($iSurveyId);
+        $aData['tokenfielddata'] = $aData['thissurvey']['attributedescriptions'];
+        $languages = array_merge((array) Survey::model()->findByPk($iSurveyId)->language, Survey::model()->findByPk($iSurveyId)->additionalLanguages);
+        $captions = array();
+        foreach ($languages as $language)
+            $captions[$language] = Surveys_languagesettings::model()->findByAttributes(array('surveyls_survey_id' => $iSurveyId, 'surveyls_language' => $language))->attributeCaptions;
+        $aData['languages'] = $languages;
+        $aData['tokencaptions'] = $captions;
         $aData['nrofattributes'] = 0;
         $aData['examplerow'] = Tokens_dynamic::model($iSurveyId)->find();
 
@@ -867,13 +889,27 @@ function editToken($iSurveyId)
 
         // find out the existing token attribute fieldnames
         $tokenattributefieldnames = GetAttributeFieldNames($iSurveyId);
-        $fieldcontents = '';
+        $languages = array_merge((array) Survey::model()->findByPk($iSurveyId)->language, Survey::model()->findByPk($iSurveyId)->additionalLanguages);
+        $fieldcontents = array();
+        $captions = array();
         foreach ($tokenattributefieldnames as $fieldname)
         {
-            $fieldcontents.=$fieldname . '=' . strip_tags(Yii::app()->request->getPost('description_' . $fieldname)) . "\n";
+            $fieldcontents[$fieldname] = array(
+                'description' => strip_tags(Yii::app()->request->getPost('description_' . $fieldname)),
+                'mandatory' => Yii::app()->request->getPost('mandatory_' . $fieldname) == 'Y' ? 'Y' : 'N',
+                'show_register' => Yii::app()->request->getPost('show_register_' . $fieldname) == 'Y' ? 'Y' : 'N',
+            );
+            foreach ($languages as $language)
+                $captions[$language][$fieldname] = $_POST["caption_{$fieldname}_$language"];
         }
 
-        Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => $fieldcontents));
+        Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => serialize($fieldcontents)));
+        foreach ($languages as $language)
+        {
+            $ls = Surveys_languagesettings::model()->findByAttributes(array('surveyls_survey_id' => $iSurveyId, 'surveyls_language' => $language));
+            $ls->surveyls_attributecaptions = serialize($captions[$language]);
+            $ls->save();
+        }
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['surveyid'] = $iSurveyId;
         $this->_renderWrappedTemplate(array('tokenbar', 'message' => array(

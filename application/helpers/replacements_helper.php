@@ -581,7 +581,17 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
             $_registerform .= " value='" . htmlentities(returnglobal('register_email'), ENT_QUOTES, 'UTF-8') . "'";
         }
         $_registerform .= " /></td></tr>\n";
+        foreach ($thissurvey['attributedescriptions'] as $field => $attribute)
+        {
+            if (empty($attribute['show_register']) || $attribute['show_register'] != 'Y')
+                continue;
 
+            $_registerform .= '
+                <tr>
+                    <td align="right">' . $thissurvey['attributecaptions'][$field] . ($attribute['mandatory'] == 'Y' ? '*' : '') . ':</td>
+                    <td align="left"><input class="text" type="text" name="register_' . $field . '" /></td>
+                </tr>';
+        }
         if ((count($registerdata) > 1 || isset($thissurvey['usecaptcha'])) && function_exists("ImageCreate") && captcha_enabled('registrationscreen', $thissurvey['usecaptcha']))
         {
 			$_registerform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image')."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
