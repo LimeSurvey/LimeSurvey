@@ -94,23 +94,6 @@
                                 <img src='<?php echo $imageurl;?>/translate_disabled_30.png' alt=''/> <?php $clang->eT("Quick-translation");?></a></li>
                             <?php } ?>
                         <?php } ?>
-                    <?php if ($surveycontent) {
-                            if($conditionscount) { ?>
-                             <li><a href="<?php echo $this->createUrl("admin/conditions/index/subaction/resetsurveylogic/surveyid/$surveyid/gid/1/qid/1"); ?>">
-                                <img src='<?php echo $imageurl;?>/resetsurveylogic_30.png' alt='' width="30" height="30"/> <?php $clang->eT("Reset conditions");?></a></li>
-                            <?php } else { ?>
-                            <li><a href="#" onclick="alert('<?php $clang->eT("Currently there are no conditions configured for this survey.", "js");?>');" >
-                                <img src='<?php echo $imageurl;?>/resetsurveylogic_disabled_30.png' alt='' width="30" height="30"/> <?php $clang->eT("Reset Survey Logic");?></a></li>
-                            <?php } ?>
-                        <?php } ?>
-                    <?php if(1) { ?>
-                        <li><a href='<?php echo $this->createUrl("admin/survey/showsyntaxerrors/surveyid/$surveyid");?>' >
-                            <?php $clang->eT("Show log of syntax errors");?></a></li>
-                        <?php } ?>
-                    <?php if(1) { ?>
-                        <li><a href='<?php echo $this->createUrl("admin/survey/resetsyntaxerrorlog/surveyid/$surveyid");?>' >
-                            <?php $clang->eT("Delete log of syntax errors");?></a></li>
-                        <?php } ?>
                 </ul></li>
             <li><a href='#'>
                     <img src='<?php echo $imageurl;?>/display_export.png' alt='<?php $clang->eT("Display / Export");?>' width="40" height="40"/></a><ul>

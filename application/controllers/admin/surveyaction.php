@@ -231,51 +231,6 @@ class SurveyAction extends Survey_Common_Action
     }
 
     /**
-     * Shows syntax errors in a survey
-     *
-     * @access public
-     * @param int $surveyid
-     * @return void
-     */
-    public function showsyntaxerrors($surveyid)
-    {
-        $surveyid = (int) $surveyid;
-
-        if (is_null($surveyid) || !$surveyid)
-            $this->getController()->error('Invalid survey id');
-
-        if (!bHasSurveyPermission($surveyid, 'surveysettings', 'read') && !bHasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
-            $this->getController()->error('No permission');
-
-        $this->_registerScriptFiles();
-
-        $aData['errors'] = LimeExpressionManager::GetSyntaxErrors();
-
-        $this->_renderWrappedTemplate('showSyntaxErrors_view', $aData);
-    }
-
-    /**
-     * Resets syntax error logs
-     *
-     * @access public
-     * @param int $surveyid
-     * @return void
-     */
-    public function resetsyntaxerrorlog($surveyid)
-    {
-        $surveyid = (int) $surveyid;
-        if (is_null($surveyid) || !$surveyid)
-            $this->getController()->error('Invalid survey id');
-
-        if (!bHasSurveyPermission($surveyid, 'surveysettings', 'read') && !bHasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
-            $this->getController()->error('No permission');
-
-        LimeExpressionManager::ResetSyntaxErrorLog();
-
-        $this->_renderWrappedTemplate('resetSyntaxErrorLog_view');
-    }
-
-    /**
      * Load complete view of survey properties and actions specified by $surveyid
      *
      * @access public
@@ -978,7 +933,7 @@ class SurveyAction extends Survey_Common_Action
             }
 
             $aData['action'] = $action;
-            $aData['sLink'] = $this->getController()->createUrl('admin/survey/view/' . $aImportResults['newsid']);
+            $aData['sLink'] = $this->getController()->createUrl('admin/survey/view/surveyid/' . $aImportResults['newsid']);
             $aData['aImportResults'] = $aImportResults;
         }
 
