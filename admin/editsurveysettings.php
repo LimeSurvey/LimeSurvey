@@ -60,6 +60,8 @@
             $esrow['showwelcome']              = 'Y';
             $esrow['emailresponseto']          = '';
             $esrow['assessments']              = 'N';
+            $esrow['googleAnalyticsAPIKey']    = '';
+            $esrow['googleAnalyticsStyle']     = '0';
 
             $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 
