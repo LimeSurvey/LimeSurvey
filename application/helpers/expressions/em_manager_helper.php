@@ -2638,7 +2638,7 @@ class LimeExpressionManager {
                 }
                 else if ($this->surveyOptions['allowsave'] && isset($_SESSION['scid']))
                 {
-                    Saved_control::model()->updateByPk($_SESSION['scid'], array('saved_thisstep'=>$thisstep))
+                    Saved_control::model()->updateByPk($_SESSION['scid'], array('saved_thisstep'=>$thisstep));
                 }
             }
             if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
