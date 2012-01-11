@@ -3961,6 +3961,11 @@ class LimeExpressionManager {
         {
             foreach ($LEM->syntaxErrors as $err)
             {
+                if (!empty($err['prettyPrint']))
+                {
+                    $err['prettyprint'] = $err['prettyPrint'];
+                    unset($err['prettyPrint']);
+                }
                 $error = new Expression_errors;
                 foreach ($err as $k => $v)
                     $error->$k = $v;
