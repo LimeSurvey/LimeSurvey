@@ -31,7 +31,6 @@ class SurveyAction extends CAction {
         global $thissurvey, $thisstep;
         global $clienttoken, $tokensexist, $token;
         $clang = Yii::app()->lang;
-        debugbreak();
         @ini_set('session.gc_maxlifetime', Yii::app()->getConfig('sess_expiration'));
 
         $this->_loadRequiredHelpersAndLibraries();

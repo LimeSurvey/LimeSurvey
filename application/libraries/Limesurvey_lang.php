@@ -32,8 +32,8 @@ class Limesurvey_lang {
 			trigger_error('langcode param is undefined ', E_USER_WARNING);
 
     	Yii::app()->loadHelper('sanitize');
-        $sLanguageCode[0]=sanitize_languagecode($langcode);
-        $streamer = new FileReader(getcwd().'/locale/'.$langcode.'/LC_MESSAGES/'.$langcode.'.mo');
+        $sLanguageCode[0]=sanitize_languagecode($sLanguageCode);
+        $streamer = new FileReader(getcwd().'/locale/'.$sLanguageCode.'/LC_MESSAGES/'.$sLanguageCode.'.mo');
         $this->gettextclass = new gettext_reader($streamer);
         $this->langcode = $sLanguageCode;
     }

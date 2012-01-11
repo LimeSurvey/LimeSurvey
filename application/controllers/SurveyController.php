@@ -24,7 +24,6 @@ class SurveyController extends LSYii_Controller
     */
     protected function _init()
     {
-        DebugBreak();
         parent::_init();
         $updatelastcheck = Yii::app()->getConfig('updatelastcheck');
 
