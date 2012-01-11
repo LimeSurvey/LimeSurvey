@@ -119,7 +119,9 @@ $(document).ready(function()
          var row = $("#index .row.current");
          idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);
     */
-   ExprMgr_process_relevance_and_tailoring();
+    if (typeof ExprMgr_process_relevance_and_tailoring === 'function') {
+        ExprMgr_process_relevance_and_tailoring();
+    }
 });
 
 gmaps = new Object;
