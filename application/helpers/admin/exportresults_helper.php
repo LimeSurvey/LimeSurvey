@@ -225,7 +225,7 @@ class SurveyDao
         $survey->id = $intId;
         //$clang must be set up prior to calling the createFieldMap function.
         $lang = Survey::model()->findByPk($intId)->language;
-        $clang = new limesurvey_lang(array($lang));
+        $clang = new limesurvey_lang($lang);
         $survey->fieldMap = createFieldMap($id, 'full');
 
         if (empty($intId))
@@ -782,7 +782,7 @@ class Translator
         $library = null;
         if (!array_key_exists($languageCode, $this->translations))
         {
-            $library = new limesurvey_lang(array($languageCode));
+            $library = new limesurvey_lang($languageCode);
             $this->translations[$languageCode] = $library;
         }
         else

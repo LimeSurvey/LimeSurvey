@@ -312,7 +312,7 @@ function getsurveylist($returnarray=false, $returnwithouturl=false, $surveyid=fa
     static $cached = null;
 
 	$timeadjust = getGlobalSetting('timeadjust');
-	$clang = new Limesurvey_lang(array('langcode' => Yii::app()->session['adminlang']));
+	$clang = new Limesurvey_lang(Yii::app()->session['adminlang']);
 
     if(is_null($cached)) {
     	if (!bHasGlobalPermission('USER_RIGHT_SUPERADMIN'))
@@ -2934,12 +2934,12 @@ function SetSurveyLanguage($surveyid, $language)
             //echo "Language will be set to ".$_SESSION['s_lang']."<br />";
         }
         Yii::import('application.libraries.Limesurvey_lang', true);
-        $clang = new limesurvey_lang(array('langcode' => $_SESSION['s_lang']));
+        $clang = new limesurvey_lang($_SESSION['s_lang']);
     }
     else {
         $_SESSION['s_lang'] = $language;
         Yii::import('application.libraries.Limesurvey_lang', true);
-        $clang = new Limesurvey_lang(array('langcode' => $defaultlang));
+        $clang = new Limesurvey_lang($defaultlang);
     }
 
     $thissurvey=getSurveyInfo($surveyid, @$_SESSION['s_lang']);

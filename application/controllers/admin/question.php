@@ -961,7 +961,7 @@ class question extends Survey_Common_Action
             if (isset($field['defaultvalue']))
                 $_SESSION[$field['fieldname']] = $field['defaultvalue'];
 
-        $clang = new limesurvey_lang(array($language));
+        $clang = new limesurvey_lang($language);
 
         $thissurvey = getSurveyInfo($surveyid);
 

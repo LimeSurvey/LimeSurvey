@@ -238,7 +238,7 @@ class export extends Survey_Common_Action {
         // In the future it might be possible to 'post' the 'export language' from
         // the exportresults form
         $explang = $surveybaselang;
-        $elang = new limesurvey_lang(array($explang));
+        $elang = new limesurvey_lang($explang);
 
         //Get together our FormattingOptions and then call into the exportSurvey
         //function.
@@ -412,7 +412,7 @@ class export extends Survey_Common_Action {
             // Get Base language:
 
             $language = Survey::model()->findByPk($surveyid)->language;
-            $clang = new limesurvey_lang(array($language));
+            $clang = new limesurvey_lang($language);
             Yii::app()->loadHelper("admin/exportresults");
         }
 
@@ -677,9 +677,6 @@ class export extends Survey_Common_Action {
         }
         else
         {
-            // Get Base language:
-            //$language = Survey::model()->findByPk($surveyid)->language;
-            //$clang = new limesurvey_lang(array($language));
             Yii::app()->loadHelper("admin/exportresults");
         }
 
@@ -1045,7 +1042,7 @@ class export extends Survey_Common_Action {
         }
 
         // Setting the selected language for printout
-        $clang = new limesurvey_lang(array($surveyprintlang));
+        $clang = new limesurvey_lang($surveyprintlang);
 
         Yii::import("application.libraries.admin.queXMLPDF", TRUE);
         $quexmlpdf = new queXMLPDF($this->getController());

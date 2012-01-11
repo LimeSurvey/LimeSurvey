@@ -27,20 +27,15 @@ class Limesurvey_lang {
     var $gettextclass;
     var $langcode;
 
-    function limesurvey_lang($params = array()){
-		if(empty($params))
+    function limesurvey_lang($sLanguageCode){
+		if(empty($sLanguageCode))
 			trigger_error('langcode param is undefined ', E_USER_WARNING);
-		$langcode=reset($params);
 
     	Yii::app()->loadHelper('sanitize');
-
-        $langcode[0]=sanitize_languagecode($langcode);
-
+        $sLanguageCode[0]=sanitize_languagecode($langcode);
         $streamer = new FileReader(getcwd().'/locale/'.$langcode.'/LC_MESSAGES/'.$langcode.'.mo');
-
         $this->gettextclass = new gettext_reader($streamer);
-
-        $this->langcode = $langcode;
+        $this->langcode = $sLanguageCode;
     }
 
     function getlangcode()

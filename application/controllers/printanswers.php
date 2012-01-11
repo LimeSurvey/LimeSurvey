@@ -100,7 +100,7 @@ class printanswers extends LSYii_Controller {
             //require_once($rootdir.'/classes/core/language.php');
             $baselang = Survey::model()->findByPk($surveyid)->language;
             Yii::import('application.libraries.Limesurvey_lang', true);
-            $clang = new Limesurvey_lang(array('langcode' => $baselang));
+            $clang = new Limesurvey_lang($baselang);
             //A nice exit
 
             sendcacheheaders();

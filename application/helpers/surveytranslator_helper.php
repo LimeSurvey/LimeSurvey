@@ -68,11 +68,11 @@
 			{
 				$lang = "en";
         }
-			$clang = new Limesurvey_lang(array('langcode' => $lang));
+			$clang = new Limesurvey_lang($lang);
         }
         else
         {
-            $clang = new Limesurvey_lang(array('langcode' => Yii::app()->session['adminlang']));
+            $clang = new Limesurvey_lang(Yii::app()->session['adminlang']);
         }
 
         static $supportedLanguages;

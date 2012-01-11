@@ -340,7 +340,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     }
     else
     {
-        $statlang = new limesurvey_lang(array($statlangcode));
+        $statlang = new limesurvey_lang($statlangcode);
     }
 
     /*

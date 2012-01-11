@@ -811,7 +811,7 @@ function quexml_fixed_array($array)
 function quexml_skipto($qid,$value,$cfieldname = "")
 {
 	global $surveyid, $quexmllang;
-	$qlang = new limesurvey_lang(array($quexmllang));
+	$qlang = new limesurvey_lang($quexmllang);
 
 	$zeros = "0000000000";
 
@@ -876,7 +876,7 @@ function quexml_create_fixed($qid,$rotate=false,$labels=true,$scale=0,$other=fal
 	global $dom;
 
 	global $quexmllang;
-	$qlang = new limesurvey_lang(array($quexmllang));
+	$qlang = new limesurvey_lang($quexmllang);
 
 	if ($labels)
 		$Query = "SELECT * FROM {{labels}} WHERE lid = $labels  AND language='$quexmllang' ORDER BY sortorder ASC";
@@ -976,7 +976,7 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
 	global $dom;
 	global $quexmllang ;
 	global $surveyid;
-	$qlang = new limesurvey_lang(array($quexmllang));
+	$qlang = new limesurvey_lang($quexmllang);
 
 
 	$Query = "SELECT * FROM {{questions}} WHERE parent_qid = $qid  AND language='$quexmllang' ";
@@ -1110,7 +1110,7 @@ function quexml_export($surveyi, $quexmllan)
 	$quexmllang = $quexmllan;
 	$surveyid = $surveyi;
 
-	$qlang = new limesurvey_lang(array($quexmllang));
+	$qlang = new limesurvey_lang($quexmllang);
 
 	Yii::app()->loadHelper("admin/domxml_wrapper");
 	$dom = domxml_new_doc("1.0");

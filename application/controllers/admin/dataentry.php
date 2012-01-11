@@ -1993,7 +1993,7 @@ class dataentry extends Survey_Common_Action
                 $blang = $clang;
             } else {
                 Yii::app()->loadLibrary('Limesurvey_lang',array($lang));
-                $blang = new Limesurvey_lang(array($lang)); //new limesurvey_lang($lang);
+                $blang = new Limesurvey_lang($lang); 
                 $sDataEntryLanguage = $lang;
             }
 
@@ -2424,19 +2424,10 @@ class dataentry extends Survey_Common_Action
                             $choicelist .= "<select size='$anscount' class='choicelist' name='CHOICES' id='CHOICES_$thisqid' onclick=\"rankthis_$thisqid(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" >\n";
                             foreach ($answers as $ans)
                             {
-                                if (_PHPVERSION < "4.2.0")
+
+                                if (!in_array($ans, $chosen))
                                 {
-                                    if (!array_in_array($ans, $chosen))
-                                    {
-                                        $choicelist .= "\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
-                                    }
-                                }
-                                else
-                                {
-                                    if (!in_array($ans, $chosen))
-                                    {
-                                        $choicelist .= "\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
-                                    }
+                                    $choicelist .= "\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
                                 }
                             }
                             $choicelist .= "</select>\n";

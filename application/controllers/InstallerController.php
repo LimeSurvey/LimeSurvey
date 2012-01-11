@@ -124,7 +124,7 @@ class InstallerController extends CController {
             Yii::app()->session['installerLang'] = 'en';
 
         Yii::import('application.libraries.Limesurvey_lang');
-        $this->lang = new Limesurvey_lang(array('langcode' => Yii::app()->session['installerLang']));
+        $this->lang = new Limesurvey_lang(Yii::app()->session['installerLang']);
         Yii::app()->setLang($this->lang);
     }
 

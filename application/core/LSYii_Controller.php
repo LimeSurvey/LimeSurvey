@@ -38,9 +38,8 @@ abstract class LSYii_Controller extends CController
 	}
 
 	/**
-	 * Check that installation was already done.
-	 *
-	 * Will exit the script if not.
+	 * Check that installation was already done by looking for config.php
+	 * Will redirect to the installer script if not exists.
 	 *
 	 * @access protected
 	 * @return void
@@ -94,27 +93,10 @@ abstract class LSYii_Controller extends CController
 		if ($dieoutput != '')
 			throw new CException($dieoutput);
 
-		if (!isset($debug)) $debug=0;  // for some older config.php's
-
-		//Currently set at root index.php
-		//if ($debug>0) {//For debug purposes - switch on in config.php
-		//    @ini_set("display_errors", 1);
-		//    error_reporting(E_ALL);
-		//}
-
-		//if ($debug>2) {//For debug purposes - switch on in config.php
-		//    error_reporting(E_ALL | E_STRICT);
-		//}
-
-		if (ini_get("max_execution_time") < 1200) @set_time_limit(1200); // Maximum execution time - works only if safe_mode is off
-		//@ini_set("memory_limit",$memorylimit); // Set Memory Limit for big surveys
-
-		$maildebug='';
+   		if (ini_get("max_execution_time") < 1200) @set_time_limit(1200); // Maximum execution time - works only if safe_mode is off
 
 		// The following function (when called) includes FireBug Lite if true
 		defined('FIREBUG') or define('FIREBUG' , Yii::app()->getConfig('use_firebug_lite'));
-
-		defined('_PHPVERSION') or define("_PHPVERSION", phpversion()); // This is the same as the server defined 'PHP_VERSION'
 
 		// Deal with server systems having not set a default time zone
 		if(function_exists("date_default_timezone_set") and function_exists("date_default_timezone_get"))
@@ -122,50 +104,15 @@ abstract class LSYii_Controller extends CController
 
 		//Every 50th time clean up the temp directory of old files (older than 1 day)
 		//depending on the load the  probability might be set higher or lower
-		if (rand(1,50)==25)
+		if (rand(1,50)==1)
 		{
 			cleanTempDirectory();
 		}
-
-		// Array of JS and CSS scripts to include in client header
-		//$js_header_includes = array();
-		//$css_header_includes =  array();
-
-		// JS scripts and CSS to include in admin header
-		// updated by admin scripts
-		//$js_admin_includes = array();
-		//$css_admin_includes = array();
-
-		//if (!$this->config->item('database'))
-		//{
-		//    show_error("Database Information not provided. If you try to install LimeSurvey please refer to the <a href='http://docs.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage.");
-			//}
-
-			//if (!tableExists('surveys') && (strcasecmp($slashlesspath,str_replace(array("\\", "/"), "", $homedir."install")) != 0)) {
-			//    show_error("<br />The LimeSurvey database does exist but it seems to be empty. Please run the <a href='$homeurl/install/index.php'>install script</a> to create the necessary tables.");
-			//}
-
-			// Default global values that should not appear in config-defaults.php
-			//$updateavailable=0;
-			//$updatebuild='';
-			//$updateversion='';
-			//$updatelastcheck='';
-			//$updatekey='';
-			//$updatekeyvaliduntil='';
-			Yii::app()->setConfig("updateavailable", 0);
 
 		//GlobalSettings Helper
 		Yii::import("application.helpers.globalsettings");
 
 		SSL_mode();// This really should be at the top but for it to utilise getGlobalSetting() it has to be here
-
-		//$showXquestions = getGlobalSetting('showXquestions');
-		//$showgroupinfo = getGlobalSetting('showgroupinfo');
-		//$showqnumcode = getGlobalSetting('showqnumcode');
-		Yii::app()->setConfig("showXquestions", getGlobalSetting('showXquestions'));
-		Yii::app()->setConfig("showgroupinfo", getGlobalSetting('showgroupinfo'));
-		Yii::app()->setConfig("showqnumcode", getGlobalSetting('showqnumcode'));
-
 
 		//SET LOCAL TIME
 		$timeadjust = Yii::app()->getConfig("timeadjust");
@@ -175,8 +122,5 @@ abstract class LSYii_Controller extends CController
 			Yii::app()->setConfig("timeadjust",$timeadjust.' hours');
 		}
 
-		// SITE STYLES
-		//$setfont = "<font size='2' face='verdana'>";
-		//$singleborderstyle = "style='border: 1px solid #111111'";
 	}
 }

@@ -1458,7 +1458,7 @@ class SurveyAction extends Survey_Common_Action
             $sWelcome = fix_FCKeditor_text($sWelcome);
 
             // Load default email templates for the chosen language
-            $oLanguage = new Limesurvey_lang(array($_POST['language']));
+            $oLanguage = new Limesurvey_lang($_POST['language']);
             $aDefaultTexts = aTemplateDefaultTexts($oLanguage, 'unescaped');
             unset($oLanguage);
 

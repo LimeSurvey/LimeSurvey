@@ -111,7 +111,7 @@ class AdminController extends LSYii_Controller
 			Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
 
 		Yii::import('application.libraries.Limesurvey_lang');
-		$this->lang = new Limesurvey_lang(array('langcode' => Yii::app()->session['adminlang']));
+		$this->lang = new Limesurvey_lang(Yii::app()->session['adminlang']);
 		Yii::app()->setLang($this->lang);
 
 		if (!empty($this->user_id))

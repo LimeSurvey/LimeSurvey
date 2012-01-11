@@ -44,7 +44,7 @@
         $data['startdate'] = $row['startdate'];
         $data['enddate'] = $row['expires'];
         Yii::import('application.libraries.Limesurvey_lang');
-		Yii::app()->lang = new Limesurvey_lang(array('langcode' => $baselang));
+		Yii::app()->lang = new Limesurvey_lang($baselang);
         echo templatereplace(file_get_contents("$thistpl/register.pstpl"),array(),$redata,'register.php',false,NULL,$data);
 
     }
@@ -88,11 +88,11 @@
         {
             $baselang = Survey::model()->findByPk($surveyid)->language;
             Yii::import('application.libraries.Limesurvey_lang');
-			Yii::app()->lang = new Limesurvey_lang(array('langcode' => $baselang));
+			Yii::app()->lang = new Limesurvey_lang($baselang);
             $clang = Yii::app()->lang;
         } else {
             Yii::import('application.libraries.Limesurvey_lang');
-			Yii::app()->lang = new Limesurvey_lang(array('langcode' => $postlang));
+			Yii::app()->lang = new Limesurvey_lang($postlang);
             $clang = Yii::app()->lang;
             $baselang = $postlang;
         }

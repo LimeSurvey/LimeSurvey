@@ -58,7 +58,7 @@ class emailtemplates extends Survey_Common_Action {
         $aData['defaulttexts'] = array();
         foreach ($grplangs as $key => $grouplang)
         {
-            $aData['bplangs'][$key] = new limesurvey_lang(array($grouplang));
+            $aData['bplangs'][$key] = new limesurvey_lang($grouplang);
             $aData['attrib'][$key] = Surveys_languagesettings::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :ls', array(':ssid' => $iSurveyId, ':ls' => $grouplang));
             $aData['defaulttexts'][$key] = aTemplateDefaultTexts($aData['bplangs'][$key]);
         }

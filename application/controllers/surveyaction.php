@@ -31,7 +31,7 @@ class SurveyAction extends CAction {
         global $thissurvey, $thisstep;
         global $clienttoken, $tokensexist, $token;
         $clang = Yii::app()->lang;
-
+        debugbreak();
         @ini_set('session.gc_maxlifetime', Yii::app()->getConfig('sess_expiration'));
 
         $this->_loadRequiredHelpersAndLibraries();
@@ -1009,7 +1009,7 @@ class SurveyAction extends CAction {
 
         Yii::import("application.libraries.Limesurvey_lang");
 
-        return new Limesurvey_lang(array("langcode"=>$baselang));
+        return new Limesurvey_lang($baselang);
     }
 
     function _surveyExistsAndIsActive($surveyId)

@@ -27,7 +27,7 @@
             foreach ($surveylangs as $language)
             {
                 //GET SURVEY DETAILS
-                $bplang = new limesurvey_lang(array($language));
+                $bplang = new limesurvey_lang($language);
 
                 if ($ishtml === true)
                 {
