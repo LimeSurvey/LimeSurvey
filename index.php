@@ -372,7 +372,8 @@ if (isset($_REQUEST['embedded_inc']))
 {
     safe_die('You cannot start this script directly');
 }
-
+if ( $embedded && $embedded_inc != '' )
+    require_once( $embedded_inc );
 
 //CHECK FOR REQUIRED INFORMATION (sid)
 if (!$surveyid)
