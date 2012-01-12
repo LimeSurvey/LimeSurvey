@@ -4179,11 +4179,12 @@ function getHeader($meta = false)
 
         return $header;
     }
-
-    global $embedded_headerfunc;
-
-    if ( function_exists( $embedded_headerfunc ) )
-    return $embedded_headerfunc();
+    else
+    {
+        global $embedded_headerfunc;
+        if ( function_exists( $embedded_headerfunc ) )
+            return $embedded_headerfunc();
+    }
 }
 
 function doHeader()
@@ -4276,11 +4277,12 @@ function getFooter()
     {
         return "\n\n\t</body>\n</html>\n";
     }
-
-    global $embedded_footerfunc;
-
-    if ( function_exists( $embedded_footerfunc ) )
-    return $embedded_footerfunc();
+    else
+    {
+        global $embedded_footerfunc;
+        if ( function_exists( $embedded_footerfunc ) )
+            return $embedded_footerfunc();
+    }
 }
 
 
