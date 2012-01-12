@@ -70,7 +70,7 @@ class Quota_languagesettings extends CActiveRecord
         $settings = new self;
 		foreach ($data as $k => $v)
 			$settings->$k = $v;
-		$settings->save();
+		return $settings->save();
     }
 }
 ?>

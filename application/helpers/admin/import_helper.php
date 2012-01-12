@@ -3777,7 +3777,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['sid']=$newsid; // remap the survey id
 
             // now translate any links
-            $result=Assessments::model()->insertRecords($insertdata) or safe_die($clang->gT("Error").": Failed to insert data<br />");
+            $result=Assessment::model()->insertRecords($insertdata) or safe_die($clang->gT("Error").": Failed to insert data<br />");
             $results['assessments']++;
         }
     }
