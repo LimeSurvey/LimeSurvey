@@ -188,10 +188,10 @@ class Usergroups extends Survey_Common_Action
 
                     if (isset($db_group_name) && strlen($db_group_name) > 0) {
                         if (strlen($db_group_name) > 21) {
-                            list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add Group! Group name length more than 20 characters.")));
+                            list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add group! Group name length more than 20 characters.")));
                         }
                         elseif (User_groups::model()->find("name='$db_group_name'")) {
-                            list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add Group! Group already exists.")));
+                            list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add group! Group already exists.")));
                         }
                         else
                         {
@@ -201,7 +201,7 @@ class Usergroups extends Survey_Common_Action
                     }
                     else
                     {
-                        list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add Group! Group Name was not supplied.")));
+                        list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => $clang->gT("Failed to add group! Group Name was not supplied.")));
                     }
                 }
             }
@@ -237,7 +237,7 @@ class Usergroups extends Survey_Common_Action
                     $headercfg["type"] = "warning";
                 }
                 else if (User_groups::model()->updateGroup($db_name, $db_description, $ugid)) {
-                    $headercfg["message"] = $clang->gT("Edit user group Successfully!");
+                    $headercfg["message"] = $clang->gT("User group successfully saved!");
                     $headercfg["type"] = "success";
                 }
                 else

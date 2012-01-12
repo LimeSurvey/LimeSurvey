@@ -533,7 +533,7 @@ class LimeExpressionManager {
                             'type' => 'equals_num_value',
                             'eqn' => '(sum(' . implode(', ', $sq_names) . ') == (' . $equals_num_value . '))',
                             'qid' => $questionNum,
-                            'tip' => $this->gT('Total of all entries must equal') . ' {' . $equals_num_value . '}',
+                            'tip' => sprintf($this->gT('Total of all entries must equal %s') , ' {' . $equals_num_value . '}'),
                             );
                     }
                 }
@@ -618,7 +618,7 @@ class LimeExpressionManager {
                             'type' => 'min_answers',
                             'eqn' => '(count(' . implode(', ', $sq_names) . ') >= (' . $min_answers . '))',
                             'qid' => $questionNum,
-                            'tip' => $this->gT('The minimum number of answers for this question is') . ' {' . $min_answers . '}',
+                            'tip' => sprintf($this->gT('The minimum number of answers for this question is %s'),' {' . $min_answers . '}'),
                         );
                     }
                 }
@@ -656,7 +656,7 @@ class LimeExpressionManager {
                             'type' => 'min_num_value',
                             'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value . '))',
                             'qid' => $questionNum,
-                            'tip' => $this->gT('Total of all entries must be at least') . ' {' . $min_num_value . '}',
+                            'tip' => sprintf($this->gT('Total of all entries must be at least %s'), ' {' . $min_num_value . '}')
                         );
                     }
                 }
@@ -687,7 +687,7 @@ class LimeExpressionManager {
                             'type' => 'min_num_value_n',
                             'eqn' => '(' . $sq_name . ' >= (' . $min_num_value_n . '))',
                             'qid' => $questionNum,
-                            'tip' => $this->gT('The entry must be at least') . ' {' . $min_num_value_n . '}',
+                            'tip' => sprintf($this->gT('The entry must be at least %s'),'{' . $min_num_value_n . '}'),
                         );
                     }
                 }
@@ -725,7 +725,7 @@ class LimeExpressionManager {
                             'type' => 'min_num_value_sgqa',
                             'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value_sgqa . '))',
                             'qid' => $questionNum,
-                            'tip' => $this->gT('Total of all entries must be at least') . ' {' . $min_num_value_sgqa . '}',
+                            'tip' => sprintf($this->gT('Total of all entries must be at least %s'), ' {' . $min_num_value_sgqa . '}')
                         );
                     }
                 }
@@ -772,7 +772,7 @@ class LimeExpressionManager {
                             'type' => 'max_answers',
                             'eqn' => '(count(' . implode(', ', $sq_names) . ') <= (' . $max_answers . '))',
                             'qid' => $questionNum,
-                            'tip' => $this->gT('The maximum number of answers for this question is') . ' {' . $max_answers . '}',
+                            'tip' => sprintf($this->gT('The maximum number of answers for this question is %s'),' {' . $max_answers . '}'),
                         );
                     }
                 }
@@ -810,7 +810,7 @@ class LimeExpressionManager {
                             'type' => 'max_num_value',
                             'eqn' =>  '(sum(' . implode(', ', $sq_names) . ') <= (' . $max_num_value . '))',
                             'qid' => $questionNum,
-                            'tip' => $this->gT('Total of all entries must not exceed') . ' {' . $max_num_value . '}',
+                            'tip' => sprintf($this->gT('Total of all entries must not exceed %s'),' {' . $max_num_value . '}'),
                         );
                     }
                 }
@@ -879,7 +879,7 @@ class LimeExpressionManager {
                             'type' => 'max_num_value_sgqa',
                             'eqn' => '(sum(' . implode(', ', $sq_names) . ') <= (' . $max_num_value_sgqa . '))',
                             'qid' => $questionNum,
-                            'tip' => $this->gT('Total of all entries must not exceed') . ' {' . $max_num_value_sgqa . '}',
+                            'tip' => sprintf($this->gT('Total of all entries must not exceed %s'),' {' . $max_num_value_sgqa . '}'),
                         );
                     }
                 }
@@ -917,7 +917,7 @@ class LimeExpressionManager {
                             'type' => 'num_value_equals_sgqa',
                             'eqn' => '(sum(' . implode(', ', $sq_names) . ') == (' . $num_value_equals_sgqa . '))',
                             'qid' => $questionNum,
-                            'tip' => $this->gT('Total of all entries must equal') . ' {' . $num_value_equals_sgqa . '}',
+                            'tip' => sprintf($this->gT('Total of all entries must equal %s'),' {' . $num_value_equals_sgqa . '}'),
                         );
                     }
                 }
@@ -5376,7 +5376,7 @@ EOT;
         }
 
         if (count($allErrors) > 0) {
-            $out = "<p class='LEMerror'>". count($allErrors) . $LEM->gT(" Question(s) contain errors that need to be corrected") . "</p>\n" . $out;
+            $out = "<p class='LEMerror'>".sprintf($LEM->gT("%d question(s) contain errors that need to be corrected"),count($allErrors)) . "</p>\n" . $out;
         }
         else {
             switch ($surveyMode)

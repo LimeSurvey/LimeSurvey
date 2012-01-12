@@ -41,11 +41,11 @@
                 {
                     if($blacklist == 'Y')
                     {
-                        $clang->eT("You have successfully blacklisted from any survey on this server");
+                        $clang->eT("You have been successfully blacklisted from any survey on this server");
                     }
                     else if($blacklist == 'N')
                         {
-                            $clang->eT("You have successfully un-blacklisted from any survey on this server");
+                            $clang->eT("You have been successfully un-blacklisted from any survey on this server");
                         }
                 }
                 else if($is_participant)
@@ -76,11 +76,11 @@
                     {
                         if($blacklist == 'Y')
                         {
-                            $clang->eT("You have successfully blacklisted from this survey");
+                            $clang->eT("You have been successfully blacklisted from this survey");
                         }
                         else if($blacklist == 'N')
                             {
-                                $clang->eT("You have successfully un-blacklisted from this survey");
+                                $clang->eT("You have been successfully un-blacklisted from this survey");
                             }
                 }
                 else if($is_participant)
@@ -104,7 +104,7 @@
             }
             else
             {
-                $clang->eT("You have successfully blacklisted from this survey");
+                $clang->eT("You have been successfully blacklisted from this survey");
             }
         ?>
     </p>
