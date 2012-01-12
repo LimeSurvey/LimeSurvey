@@ -153,7 +153,7 @@ class Questions extends CActiveRecord
         return $aAttributeNames;
     }
 
-    function getQuestions2($sid, $gid, $language)
+    function getQuestions($sid, $gid, $language)
     {
         return Yii::app()->db->createCommand()
             ->select()
