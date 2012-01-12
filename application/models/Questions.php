@@ -65,7 +65,10 @@ class Questions extends CActiveRecord
     {
         return array(
             'groups' => array(self::HAS_ONE, 'Groups', '',
-                'on' => 't.gid = groups.gid',
+                'on' => 't.gid = groups.gid'
+            ),
+            'parents' => array(self::HAS_ONE, 'Questions', '',
+                'on' => 't.parent_qid = parents.qid',
             ),
         );
     }
@@ -150,7 +153,7 @@ class Questions extends CActiveRecord
         return $aAttributeNames;
     }
 
-    function getQuestions($sid, $gid, $language)
+    function getQuestions2($sid, $gid, $language)
     {
         return Yii::app()->db->createCommand()
             ->select()

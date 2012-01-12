@@ -50,6 +50,17 @@ class Groups extends CActiveRecord
 	{
 		return 'gid';
 	}
+    
+    /**
+     * Defines the relations for this model
+     *
+     * @access public
+     * @return array
+     */
+    public function relations()
+    {
+        return array('questions' => array(self::HAS_MANY, 'Questions', 'gid'));
+    }
 
 	function getAllRecords($condition=FALSE, $order=FALSE, $return_query = TRUE)
 	{

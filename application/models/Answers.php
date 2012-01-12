@@ -50,6 +50,24 @@ class Answers extends CActiveRecord
 		return array('qid', 'code');
 	}
 
+    /**
+     * Defines the relations for this model
+     *
+     * @access public
+     * @return array
+     */
+    public function relations()
+    {
+        return array(
+            'questions' => array(self::HAS_ONE, 'Questions', '',
+                'on' => 't.qid = questions.gid',
+            ),
+            'groups' => array(self::HAS_ONE, 'Groups', '', 'through' => 'questions',
+                'on' => 'questions.gid = groups.gid'
+            ),
+        );
+    }
+    
     function getAnswers($qid)
     {
 		return Yii::app()->db->createCommand()
