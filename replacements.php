@@ -134,14 +134,26 @@ function templatereplace($line, $replacements=array(), $anonymized=false, $quest
         $_question_man_message = $question['man_message'];
         $_question_valid_message = $question['valid_message'];
         $_question_file_valid_message = $question['file_valid_message'];
-        $_question_sgq = (isset($question['sgq']) ? $question['sgq'] : '');
+        if (isset($question['sgq']))
+        {
+            $_question_sgq = $question['sgq'];
+            $_parts = explode('X',$_question_sgq);
+            $_question_gid = $_parts[1];
+        }
+        else
+        {
+            $_question_sgq = '';
+            $_question_gid = '';
+        }
         $_question_essentials = $question['essentials'];
         $_question_class = $question['class'];
         $_question_man_class = $question['man_class'];
         $_question_input_error_class = $question['input_error_class'];
-        }
-        else
-        {
+        $_aid = $question['aid'];
+        $_sqid = $question['sqid'];
+    }
+    else
+    {
         $_question = $question;
         $_question_text = '';
         $_question_help = '';
@@ -149,11 +161,14 @@ function templatereplace($line, $replacements=array(), $anonymized=false, $quest
         $_question_man_message = '';
         $_question_valid_message = '';
         $_question_file_valid_message = '';
+        $_question_gid = '';
         $_question_sgq = '';
         $_question_essentials = '';
         $_question_class = '';
         $_question_man_class = '';
         $_question_input_error_class = '';
+        $_aid = '';
+        $_sqid = '';
     };
 
     if (
@@ -588,6 +603,7 @@ EOD;
 
     // Set the array of replacement variables here - don't include curly braces
 	$corecoreReplacements = array();
+	$coreReplacements['AID'] = $_aid;  // global
 	$coreReplacements['ANSWER'] = $answer;  // global
 	$coreReplacements['ANSWERSCLEARED'] = $clang->gT("Answers Cleared");
 	$coreReplacements['ASSESSMENTS'] = $assessments;    // global
@@ -599,6 +615,7 @@ EOD;
 	$coreReplacements['COMPLETED'] = $completed;    // global
 	$coreReplacements['DATESTAMP'] = $_datestamp;
 	$coreReplacements['EXPIRY'] = $_dateoutput;
+    $coreReplacements['GID'] = $_question_gid;
     $coreReplacements['GOOGLE_ANALYTICS_API_KEY'] = $_googleAnalyticsAPIKey;
     $coreReplacements['GOOGLE_ANALYTICS_JAVASCRIPT'] = $_googleAnalyticsJavaScript;
 	$coreReplacements['GROUPDESCRIPTION'] = $_groupdescription;
@@ -615,6 +632,7 @@ EOD;
 	$coreReplacements['PERCENTCOMPLETE'] = $percentcomplete;    // global
 	$coreReplacements['PRIVACY'] = $privacy;    // global
 	$coreReplacements['PRIVACYMESSAGE'] = "<span style='font-weight:bold; font-style: italic;'>".$clang->gT("A Note On Privacy")."</span><br />".$clang->gT("This survey is anonymous.")."<br />".$clang->gT("The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey.");
+    $coreReplacements['QID'] = isset($questionNum) ? $questionNum : '';
 	$coreReplacements['QUESTION'] = $_question;
 	$coreReplacements['QUESTIONHELP'] = $_questionhelp;
 	$coreReplacements['QUESTIONHELPPLAINTEXT'] = strip_tags(addslashes($help)); // global
@@ -646,6 +664,7 @@ EOD;
 	$coreReplacements['SGQ'] = $_question_sgq;
 	$coreReplacements['SID'] = $surveyid;   // global
 	$coreReplacements['SITENAME'] = $sitename;  // global
+	$coreReplacements['SQID'] = $_sqid;  // global
 	$coreReplacements['SUBMITBUTTON'] = $_submitbutton;
 	$coreReplacements['SUBMITCOMPLETE'] = "<strong>".$clang->gT("Thank you!")."<br /><br />".$clang->gT("You have completed answering the questions in this survey.")."</strong><br /><br />".$clang->gT("Click on 'Submit' now to complete the process and save your answers.");
 	$coreReplacements['SUBMITREVIEW'] = $_strreview;

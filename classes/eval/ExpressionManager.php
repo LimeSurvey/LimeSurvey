@@ -2308,6 +2308,7 @@ class ExpressionManager {
     {
        $tests = <<<EOD
 "this is a string that contains {something in curly brace}"
+How about nested curly braces, like {INSERTANS:{SGQ}}?
 This example has escaped curly braces like \{this is not an equation\}
 Should the parser check for unmatched { opening curly braces?
 What about for unmatched } closing curly braces?

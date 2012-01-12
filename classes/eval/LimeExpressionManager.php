@@ -1292,6 +1292,8 @@ class LimeExpressionManager {
             $mandatory = $fielddata['mandatory'];
             $fieldNameParts = explode('X',$sgqa);
             $groupNum = $fieldNameParts[1];
+            $aid = (isset($fielddata['aid']) ? $fielddata['aid'] : '');
+            $sqid = (isset($fielddata['sqid']) ? $fielddata['sqid'] : '');
 
             $questionId = $fieldNameParts[2];
             $questionNum = $fielddata['qid'];
@@ -1670,6 +1672,8 @@ class LimeExpressionManager {
                 'other'=>$other,
                 'default'=>$defaultValue,
                 'rootVarName'=>$fielddata['title'],
+                'aid'=>$aid,
+                'sqid'=>$sqid,
                 );
 
             $this->knownVars[$varName] = $varInfo_Code;

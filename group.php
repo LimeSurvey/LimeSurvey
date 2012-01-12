@@ -785,6 +785,8 @@ foreach ($_SESSION['grouplist'] as $gl)
         $question['man_class'] = $man_class;
         $question['code']=$qa[5];
         $question['sgq']=$qa[7];
+        $question['aid']=$qinfo['info']['aid'];
+        $question['sqid']=$qinfo['info']['sqid'];
         //===================================================================
         $answer=$qa[1];
         $help=$qinfo['info']['help'];   // $qa[2];
