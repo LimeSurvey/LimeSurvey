@@ -1309,7 +1309,7 @@ class ExpressionManager {
         $errIndex = 0;
         if ($errCount > 0)
         {
-            usort($errs,"self::cmpErrorTokens");
+            usort($errs,"cmpErrorTokens");
         }
         $errSpecificStyle= "style='border-style: solid; border-width: 2px; border-color: red;'";
         $stringParts=array();
@@ -2905,29 +2905,30 @@ EOD;
             return $string;
         }
     }
+}
 
-    /**
-     * Used by usort() to order Error tokens by their position within the string
-     * @param <type> $a
-     * @param <type> $b
-     * @return <type>
-     */
-    function cmpErrorTokens($a, $b)
-    {
-        if (is_null($a[1])) {
-            if (is_null($b[1])) {
-                return 0;
-            }
-            return 1;
-        }
+/**
+ * Used by usort() to order Error tokens by their position within the string
+ * This must be outside of the class in order to work in PHP 5.2
+ * @param <type> $a
+ * @param <type> $b
+ * @return <type>
+ */
+function cmpErrorTokens($a, $b)
+{
+    if (is_null($a[1])) {
         if (is_null($b[1])) {
-            return -1;
-        }
-        if ($a[1][1] == $b[1][1]) {
             return 0;
         }
-        return ($a[1][1] < $b[1][1]) ? -1 : 1;
+        return 1;
     }
+    if (is_null($b[1])) {
+        return -1;
+    }
+    if ($a[1][1] == $b[1][1]) {
+        return 0;
+    }
+    return ($a[1][1] < $b[1][1]) ? -1 : 1;
 }
 
 /**
