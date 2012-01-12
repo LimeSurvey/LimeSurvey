@@ -13,7 +13,7 @@ if (!defined('BASEPATH'))
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
+ *	$Id$
  */
 
  /**
@@ -22,7 +22,7 @@ if (!defined('BASEPATH'))
  * @package LimeSurvey
  * @author
  * @copyright 2011
- * @version $Id: question.php 11260 2011-10-25 18:34:55Z tmswhite $
+ * @version $Id$
  * @access public
  */
 class question extends Survey_Common_Action

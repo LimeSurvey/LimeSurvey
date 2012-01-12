@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-* $Id: database.php 11349 2011-11-09 21:49:00Z tpartner $
+* $Id$
 *
 */
 /**
@@ -19,7 +19,7 @@
 * @package LimeSurvey
 * @author
 * @copyright 2011
-* @version $Id: database.php 11349 2011-11-09 21:49:00Z tpartner $
+* @version $Id$
 * @access public
 */
 class database extends Survey_Common_Action

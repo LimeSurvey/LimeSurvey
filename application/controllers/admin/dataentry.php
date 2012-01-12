@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
+*	$Id$
 */
 /*
 * We need this later:
@@ -52,7 +52,7 @@ Y - Yes/No
 * @package LimeSurvey
 * @author
 * @copyright 2011
-* @version $Id: dataentry.php 11299 2011-10-29 14:57:24Z c_schmitz $
+* @version $Id$
 * @access public
 */
 class dataentry extends Survey_Common_Action

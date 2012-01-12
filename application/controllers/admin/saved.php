@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
+ *	$Id$
  */
 
 /**
@@ -18,7 +18,7 @@
  *
  * @package LimeSurvey
  * @copyright 2011
- * @version $Id: saved.php 11128 2011-10-08 22:23:24Z dionet $
+ * @version $Id$
  * @access public
  */
 class saved extends Survey_Common_Action

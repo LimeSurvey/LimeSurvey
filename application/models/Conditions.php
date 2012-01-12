@@ -13,7 +13,7 @@ if (!defined('BASEPATH'))
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *     $Id: common_helper.php 11335 2011-11-08 12:06:48Z c_schmitz $
+ *     $Id$
  *     Files Purpose: lots of common functions
  */
 

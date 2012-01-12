@@ -10,7 +10,7 @@
    * other free or open source software licenses.
    * See COPYRIGHT.php for copyright notices and details.
    *
-   *	$Id: LSCI_Controller.php 11188 2011-10-17 14:28:02Z mot3 $
+   *	$Id$
 */
 
 class User extends CActiveRecord

@@ -13,7 +13,7 @@ if (!defined('BASEPATH'))
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id: user.php 11221 2011-10-19 20:47:40Z tmswhite $
+ * $Id$
  */
 
 /**

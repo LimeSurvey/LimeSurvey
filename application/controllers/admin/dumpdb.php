@@ -10,14 +10,14 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
+ *	$Id$
  */
 /**
  * Dump Database
  *
  * @package LimeSurvey
  * @copyright 2011
- * @version $Id: dumpdb.php 11155 2011-10-13 12:59:49Z c_schmitz $
+ * @version $Id$
  * @access public
  */
 class Dumpdb extends Survey_Common_Action {

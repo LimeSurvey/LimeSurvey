@@ -10,10 +10,10 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id: Admin_Controller.php 11256 2011-10-25 13:52:18Z c_schmitz $
+ *	$Id$
  */
 /*
- * $Id: sanitize.php 9858 2011-03-08 12:50:47Z c_schmitz $
+ * $Id$
  *
  * Copyright (c) 2002,2003 Free Software Foundation
  * developed under the custody of the

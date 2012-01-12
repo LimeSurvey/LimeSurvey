@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id: fck_LimeReplacementFields.php 11184 2011-10-17 08:02:36Z aniesshsethh $
+ * $Id$
  */
 class fck_LimeReplacementFields extends Survey_Common_Action
 {
