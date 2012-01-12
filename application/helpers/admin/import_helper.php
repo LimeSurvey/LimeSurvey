@@ -3139,7 +3139,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             $newqid="";
             $qarowdata["qid"]=$aQIDReplacements[$qarowdata["qid"]];
             unset($qarowdata["qaid"]);
-            Question_attributes::model()->insertRecords($qarowdata);
+            $result=Question_attributes::model()->insertRecords($qarowdata);
             if ($result>0) {$importresults['question_attributes']++;}
         }
     }

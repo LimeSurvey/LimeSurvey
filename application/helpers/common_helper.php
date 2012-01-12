@@ -6748,7 +6748,7 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
     $result=Answers::model()->oldNewInsertansTags($newsid,$oldsid);
 
     //while ($qentry = $res->FetchRow())
-    foreach ($result->readAll() as $qentry)
+    foreach ($result as $qentry)
     {
         $answer = $qentry['answer'];
         $code = $qentry['code'];

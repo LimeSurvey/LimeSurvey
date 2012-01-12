@@ -92,11 +92,10 @@ class Answers extends CActiveRecord
 
 	public function oldNewInsertansTags($newsid,$oldsid)
 	{
-		$sql = "SELECT a.qid, a.language, a.code, a.answer from {{answers}} as a INNER JOIN {{questions}} as b ON a.qid=b.qid WHERE b.sid=:newsid AND a.answer LIKE '%{INSERTANS::oldsidX%'";
-    	return Yii::app()->db->createCommand($sql)
-    	->bindParam(":newsid", $newsid, PDO::PARAM_INT)
-		->bindParam(":oldsid", $oldsid, PDO::PARAM_INT)
-    	->query();
+		$criteria = new CDbCriteria;
+		$criteria->compare('questions.sid',$newsid);
+		$criteria->compare('answer','{INSERTANS::'.$oldsid.'X');
+		return $this->with('questions')->findAll($criteria);
 	}
 
 	public function updateRecord($data, $condition=FALSE)
