@@ -499,22 +499,16 @@ class SurveyAction extends Survey_Common_Action
         $clang = $this->getController()->lang;
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
 
-        $page = Yii::app()->request->getPost('page');
-        $limit = Yii::app()->request->getPost('rows');
-
         $surveys = Survey::model();
         //!!! Is this even possible to execute?
         if (empty(Yii::app()->session['USER_RIGHT_SUPERADMIN']))
             $surveys->permission(Yii::app()->user->getId());
         $surveys = $surveys->with('languagesettings', 'owner')->findAll();
 
-        $aSurveyEntries->page = $page;
-        $aSurveyEntries->records = count($surveys);
-        $aSurveyEntries->total = ceil($aSurveyEntries->records / $limit);
-        for ($i = 0, $j = ($page - 1) * $limit; $i < $limit && $j < $aSurveyEntries->records; $i++, $j++)
+        $aSurveyEntries->page = 1;
+        foreach ($surveys as $rows)
         {
             $aSurveyEntry = array();
-            $rows = $surveys[$j];
             $rows = array_merge($rows->attributes, $rows->languagesettings->attributes, $rows->owner->attributes);
 
             // Set status
@@ -557,7 +551,7 @@ class SurveyAction extends Survey_Common_Action
             '<a href="' . $this->getController()->createUrl("/admin/survey/view/surveyid/" . $rows['sid']) . '">' . $rows['sid'] . '</a>';
 
             //Set Title
-            $aSurveyEntry[] = '<!--' . $rows['surveyls_title'] . '--><a href="' . $this->getController()->createUrl("/admin/survey/view/surveyid/" . $rows['sid']) . '">' . $rows['surveyls_title'] . '</a>';
+            $aSurveyEntry[] = '<!--' . $rows['surveyls_title'] . '--><a href="' . $this->getController()->createUrl("/admin/survey/view/surveyid/" . $rows['sid']) . '" title="' . $rows['surveyls_title'] . '">' . $rows['surveyls_title'] . '</a>';
 
             //Set Date
             Yii::import('application.libraries.Date_Time_Converter', true);
@@ -618,8 +612,7 @@ class SurveyAction extends Survey_Common_Action
             {
                 $aSurveyEntry[] = $aSurveyEntry[] = $aSurveyEntry[] = $aSurveyEntry[] = $aSurveyEntry[] = '';
             }
-            $aSurveyEntries->rows[$i]['id'] = $rows['sid'];
-            $aSurveyEntries->rows[$i]['cell'] = $aSurveyEntry;
+            $aSurveyEntries->rows[] = array('id' => $rows['sid'], 'cell' => $aSurveyEntry);
         }
 
         echo ls_json_encode($aSurveyEntries);
@@ -659,6 +652,24 @@ class SurveyAction extends Survey_Common_Action
         $this->_renderWrappedTemplate($aViewUrls, $aData);
     }
 
+	/**
+     * Takes the edit call from the detailed survey view, which either deletes the survey information
+     */
+    function editSurvey_json()
+    {
+        $operation = Yii::app()->request->getPost('oper');
+		$surveyids = Yii::app()->request->getPost('id');
+        if ($operation == 'del') // If operation is delete , it will delete, otherwise edit it
+        {
+			foreach(explode(',',$surveyids) as $surveyid)
+			{
+				if (bHasSurveyPermission($surveyid, 'survey', 'delete'))
+				{
+					$this->_deleteSurvey($surveyid);
+				}
+			}
+		}
+    }
     /**
      * Load editing of local settings of a survey screen.
      *

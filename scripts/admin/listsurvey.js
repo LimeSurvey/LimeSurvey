@@ -68,7 +68,7 @@ jQuery("#displaysurveys").jqGrid({
     pager: "#pager",
     caption: "Surveys",
     });
-jQuery("#displaysurveys").jqGrid('navGrid','#pager',{ add:false,del:false,edit:false,refresh: false,search: true},{},{},{ msg:delmsg, width : 700 });
+jQuery("#displaysurveys").jqGrid('navGrid','#pager',{ add:false,del:true,edit:false,refresh: false,search: true},{},{},{ msg:delmsg, width : 700 });
 jQuery("#displaysurveys").jqGrid('filterToolbar', {searchOnEnter : false});
 jQuery("#displaysurveys").jqGrid('navButtonAdd','#pager',{
     buttonicon:"ui-icon-refresh",
