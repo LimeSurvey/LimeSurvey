@@ -58,6 +58,9 @@ class Survey_Common_Action extends CAction
         // Populate the params. eg. surveyid -> iSurveyId
         $params = $this->_addPseudoParams($params);
 
+        if (!empty($params['iSurveyId']))
+            LimeExpressionManager::SetSurveyId($params['iSurveyId']); // must be called early - it clears internal cache if a new survey is being used
+
         // Check if the method is public and of the action class, not its parents
         // ReflectionClass gets us the methods of the class and parent class
         // If the above method existence check passed, it might not be neceessary that it is of the action class
