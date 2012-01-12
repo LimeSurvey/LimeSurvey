@@ -168,6 +168,7 @@ if ( !$embedded )
     . "</head>\n<body>\n";
 
     echo $header;
+}
 else
 {
     if ( function_exists( $embedded_headerfunc ) )
