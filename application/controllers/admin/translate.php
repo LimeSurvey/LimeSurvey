@@ -56,7 +56,7 @@ class translate extends Survey_Common_Action {
         $survey_title = $surveyinfo['name'];
 
         Yii::app()->loadHelper("surveytranslator");
-        $supportedLanguages = getLanguageData(FALSE);
+        $supportedLanguages = getLanguageData(FALSE,Yii::app()->session['adminlang']);
 
         $baselangdesc = $supportedLanguages[$baselang]['description'];
 
@@ -373,7 +373,7 @@ class translate extends Survey_Common_Action {
         $clang = Yii::app()->lang;
 
         $langs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-        $supportedLanguages = getLanguageData(FALSE);
+        $supportedLanguages = getLanguageData(FALSE,Yii::app()->session['adminlang']);
 
 		$language_list .= CHtml::openTag('div', array('class'=>'menubar-right')); // Opens .menubar-right div
 		$language_list .= CHtml::tag('label', array('for'=>'translationlanguage'), $clang->gT("Translate to") . ":");
@@ -772,7 +772,7 @@ class translate extends Survey_Common_Action {
                     case 'group':
                     case 'group_desc':
                         return Groups::model()->findAllByAttributes(array('sid'=>$surveyid, 'language'=>$baselang), array('order' => 'gid'));
-                    case 'question': 
+                    case 'question':
                     case 'question_help':
                         return Questions::model()->findAllByAttributes(array('sid' => $surveyid,'language' => $baselang,'parent_qid' => 0), array('order' => 'qid'));
                     case 'subquestion':
@@ -815,7 +815,7 @@ class translate extends Survey_Common_Action {
                         return Groups::model()->updateByPk(array('gid'=>$id1, 'language'=>$tolang),array('group_name' => $new), 'sid=:sid', array(':sid'=>$surveyid));
                     case 'group_desc':
                         return Groups::model()->updateByPk(array('gid'=>$id1, 'language'=>$tolang),array('description' => $new), 'sid=:sid', array(':sid'=>$surveyid));
-                    case 'question': 
+                    case 'question':
                         return Questions::model()->updateByPk(array('qid'=>$id1, 'language'=>$tolang),array('question' => $new), 'sid=:sid AND parent_qid=0', array(':sid'=>$surveyid));
                     case 'question_help':
                         return Questions::model()->updateByPk(array('qid'=>$id1, 'language'=>$tolang),array('help' => $new), 'sid=:sid AND parent_qid=0', array(':sid'=>$surveyid));

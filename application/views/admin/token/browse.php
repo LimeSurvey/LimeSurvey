@@ -2,7 +2,7 @@
 $uidNames = array();
 /* Build the options for additional languages */
 $j = 1;
-$getlangvalues = getLanguageData();
+$getlangvalues = getLanguageData(false,Yii::app()->session['adminlang']);
 if (Yii::app()->session['adminlang'] != 'auto')
 {
     $lname[0] = Yii::app()->session['adminlang'] . ":" . $getlangvalues[Yii::app()->session['adminlang']]['description'];

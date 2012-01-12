@@ -139,6 +139,7 @@ class InstallerController extends CController {
             Yii::app()->session['installerLang'] = $_POST['installerLang'];
             $this->redirect($this->createUrl('installer/license'));
         }
+        $this->loadHelper('surveytranslator');
 
         $aData['clang'] = $clang = $this->lang;
         $aData['title'] = $clang->gT('Welcome');
@@ -146,7 +147,18 @@ class InstallerController extends CController {
         $aData['classesForStep'] = array('on','off','off','off','off','off');
         $aData['progressValue'] = 0;
 
-        $this->loadHelper('surveytranslator');
+        if (isset(Yii::app()->session['installerLang']))
+        {
+            $currentLanguage=Yii::app()->session['installerLang'];
+        }
+        else
+            $currentLanguage='en';
+
+        foreach(getLanguageData(true, $currentLanguage) as $langkey => $languagekind)
+        {
+            $languages[htmlspecialchars($langkey)] = sprintf('%s - %s', $languagekind['nativedescription'], $languagekind['description']);
+        }
+        $aData['languages']=$languages;
         $this->render('/installer/welcome_view',$aData);
     }
 

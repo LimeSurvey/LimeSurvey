@@ -3,7 +3,7 @@
         <li>
         <label for='language' title='<?php $clang->eT("This is the base language of your survey and it can't be changed later. You can add more languages after you have created the survey."); ?>'><span class='annotationasterisk'>*</span><?php $clang->eT("Base language:"); ?></label>
         <select id='language' name='language'>
-                <?php foreach (getLanguageDataRestricted () as $langkey2 => $langname) { ?>
+                <?php foreach (getLanguageDataRestricted (false, Yii::app()->session['adminlang']) as $langkey2 => $langname) { ?>
                     <option value='<?php echo $langkey2; ?>'
                     <?php if (Yii::app()->getConfig('defaultlang') == $langkey2) { ?>
                          selected='selected'

@@ -68,7 +68,7 @@ class GlobalSettings extends Survey_Common_Action
         $data['updatelastcheck'] = Yii::app()->getConfig("updatelastcheck");
         $data['updateavailable'] = Yii::app()->getConfig("updateavailable");
         $data['updateinfo'] = Yii::app()->getConfig("updateinfo");
-        $data['allLanguages'] = getLanguageData();
+        $data['allLanguages'] = getLanguageData(false, Yii::app()->session['adminlang']);
         if (trim(Yii::app()->getConfig('restrictToLanguages')) == '') {
             $data['restrictToLanguages'] = array_keys($data['allLanguages']);
             $data['excludedLanguages'] = array();
@@ -100,7 +100,7 @@ class GlobalSettings extends Survey_Common_Action
         }
 
         $aRestrictToLanguages = explode(' ', sanitize_languagecodeS($_POST['restrictToLanguages']));
-        if (count(array_diff(array_keys(getLanguageData()), $aRestrictToLanguages)) == 0) {
+        if (count(array_diff(array_keys(getLanguageData(false,Yii::app()->session['adminlang'])), $aRestrictToLanguages)) == 0) {
             $aRestrictToLanguages = '';
         } else {
             $aRestrictToLanguages = implode(' ', $aRestrictToLanguages);

@@ -22,7 +22,7 @@ $plus = array('src' => Yii::app()->baseUrl . "/images/plus.png",
     <?php
     $options = array();
     $options[''] = $clang->gT('Select...');
-    foreach (getLanguageData() as $langkey2 => $langname)
+    foreach (getLanguageData(false, Yii::app()->session['adminlang']) as $langkey2 => $langname)
     {
         $options[$langkey2] = $langname['description'];
     }

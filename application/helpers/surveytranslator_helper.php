@@ -1,17 +1,17 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-/*
- * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- *	$Id$
- */
+    /*
+    * LimeSurvey
+    * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+    * All rights reserved.
+    * License: GNU/GPL License v2 or later, see LICENSE.php
+    * LimeSurvey is free software. This version may have been modified pursuant
+    * to the GNU General Public License, and as distributed it includes or
+    * is derivative of works licensed under the GNU General Public License or
+    * other free or open source software licenses.
+    * See COPYRIGHT.php for copyright notices and details.
+    *
+    *	$Id$
+    */
 
 
     /*
@@ -59,21 +59,9 @@
 
     }
 
-    function getLanguageData($orderbynative=false,$installer=false) {
+    function getLanguageData($orderbynative=false,$sLanguageCode='en') {
 
-        if ($installer)
-        {
-            $lang = Yii::app()->getConfig("installerLang");
-			if (!$lang)
-			{
-				$lang = "en";
-        }
-			$clang = new Limesurvey_lang($lang);
-        }
-        else
-        {
-            $clang = new Limesurvey_lang(Yii::app()->session['adminlang']);
-        }
+        $clang = new Limesurvey_lang($sLanguageCode);
 
         static $supportedLanguages;
         static $result = array();
@@ -692,7 +680,7 @@
 
     function getLanguageCodefromLanguage($languagetosearch)
     {
-        $detaillanguages = getLanguageData();
+        $detaillanguages = getLanguageData(false,Yii::app()->session['adminlang']);
         foreach ($detaillanguages as $key2=>$languagename)
         {
             if ($languagetosearch==$languagename['description'])
@@ -709,7 +697,7 @@
 
     function getLanguageNameFromCode($codetosearch, $withnative=true)
     {
-        $detaillanguages = getLanguageData();
+        $detaillanguages = getLanguageData(false,Yii::app()->session['adminlang']);
         if (isset($detaillanguages[$codetosearch]['description']))
         {
             if ($withnative) {
@@ -725,7 +713,7 @@
 
     function getLanguageRTL($codetosearch)
     {
-        $detaillanguages = getLanguageData();
+        $detaillanguages = getLanguageData(false,Yii::app()->session['adminlang']);
         if (isset($detaillanguages[$codetosearch]['rtl']))
         {
             return $detaillanguages[$codetosearch]['rtl'];
@@ -745,7 +733,7 @@
     */
     function getLanguageDetails($codetosearch)
     {
-        $detaillanguages = getLanguageData();
+        $detaillanguages = getLanguageData(false,Yii::app()->session['adminlang']);
         if (isset($detaillanguages[$codetosearch]))
         {
             return $detaillanguages[$codetosearch];
@@ -767,7 +755,7 @@
         }
         else
         {
-           $aArray=$aLanguageData;
+            $aArray=$aLanguageData;
         }
         return $aArray;
     }

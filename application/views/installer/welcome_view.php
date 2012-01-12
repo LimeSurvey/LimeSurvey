@@ -25,10 +25,6 @@
 </td>
 <td align="right">
 <?php
-foreach(getlanguagedata(true, true) as $langkey => $languagekind)
-{
-	$languages[htmlspecialchars($langkey)] = sprintf('%s - %s', $languagekind['nativedescription'], $languagekind['description']);
-}
 echo CHtml::dropDownList('installerLang', 'en', $languages, array('style' => 'width: 190px', 'id' => 'installerLang', 'encode' => false));
 ?>
 </td>

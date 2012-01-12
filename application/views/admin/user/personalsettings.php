@@ -11,7 +11,7 @@
                     <option value='auto'<?php if ($sSavedLanguage == 'auto') { echo " selected='selected'"; } ?>>
                         <?php $clang->eT("(Autodetect)"); ?>
                     </option>
-                    <?php foreach (getlanguagedata(true) as $langkey => $languagekind)
+                    <?php foreach (getLanguageData(true, Yii::app()->session['adminlang']) as $langkey => $languagekind)
                     { ?>
                     <option value='<?php echo $langkey; ?>'<?php if ($langkey == $sSavedLanguage) {
                         echo " selected='selected'";

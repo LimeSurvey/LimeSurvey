@@ -275,7 +275,7 @@ function makelanguagechanger($baselang)
         $defaultlang = Yii::app()->getConfig("defaultlang");
         $htmlcode = "<select name=\"select\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
         $htmlcode .= "<option value=\"".Yii::app()->getController()->createUrl("/survey/index")."?lang=". $defaultlang ."$tokenparam\">".getLanguageNameFromCode($defaultlang,false)."</option>\n";
-        foreach(getlanguagedataRestricted() as $key=>$val)
+        foreach(getLanguageDataRestricted() as $key=>$val)
         {
             $htmlcode .= "\t<option value=\"".Yii::app()->getController()->createUrl("/survey/index")."?lang=".$key."$tokenparam\" ";
             if($key == $baselang)
