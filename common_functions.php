@@ -2823,7 +2823,7 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
     $surveyid=sanitize_int($surveyid);
     //checks to see if fieldmap has already been built for this page.
     if (isset($timingsFieldMap[$surveyid][$style][$clang->langcode]) && $force_refresh==false) {
-        return $timingsFielsdMap[$surveyid][$style][$clang->langcode];
+        return $timingsFieldMap[$surveyid][$style][$clang->langcode];
     }
 
     //do something
@@ -2971,7 +2971,7 @@ function SetSurveyLanguage($surveyid, $language)
 
     $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
     $_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
-    
+
     LimeExpressionManager::SetEMLanguage($_SESSION['s_lang']);
     return $clang;
 }
