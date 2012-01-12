@@ -711,12 +711,12 @@
     }
 
 
-    function getLanguageRTL($codetosearch)
+    function getLanguageRTL($sLanguageCode)
     {
-        $detaillanguages = getLanguageData(false,Yii::app()->session['adminlang']);
-        if (isset($detaillanguages[$codetosearch]['rtl']))
+        $aLanguageData= getLanguageData(false,$sLanguageCode);
+        if (isset($aLanguageData[$sLanguageCode]['rtl']))
         {
-            return $detaillanguages[$codetosearch]['rtl'];
+            return $aLanguageData[$sLanguageCode]['rtl'];
         }
         else
         {
