@@ -726,19 +726,19 @@ class SurveyAction extends CAction {
         switch ($thissurvey['format'])
         {
             case "A": //All in one
-                Yii::import("application.libraries.survey_format");
-                $tmp = new survey_format();
+                Yii::import("application.libraries.Survey_format");
+                $tmp = new Survey_format();
                 $tmp->run($redata);
                 break;
             case "G": //Group at a time
-                Yii::import("application.libraries.group_format");
-                $tmp = new group_format();
+                Yii::import("application.libraries.Group_format");
+                $tmp = new Group_format();
                 $tmp->run($redata);
                 break;
             case "S": //One at a time
              default:
-                Yii::import("application.libraries.question_format");
-                $tmp = new question_format();
+                Yii::import("application.libraries.Question_format");
+                $tmp = new Question_format();
                 $tmp->run($redata);
         }
 
