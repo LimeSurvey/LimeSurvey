@@ -205,13 +205,13 @@ class Survey extends CActiveRecord
     }
 
     /**
-    * !!! DOESN'T WORK !!!
-    *
-    * @access public
-    * @param int $iSurveyID
-    * @param bool @recursive
-    * @return void
-    */
+     * Deletes a survey and all its data
+     *
+     * @access public
+     * @param int $iSurveyID
+     * @param bool @recursive
+     * @return void
+     */
     public function deleteSurvey($iSurveyID, $recursive=true)
     {
         Survey::model()->deleteByPk($iSurveyID);

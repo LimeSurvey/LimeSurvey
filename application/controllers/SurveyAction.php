@@ -721,6 +721,9 @@ class SurveyAction extends CAction {
 
         //Send local variables to the appropriate survey type
         $redata = compact(array_keys(get_defined_vars()));
+//        Yii::import('application.helpers.SurveyRuntimeHelper');
+//        $tmp = new SurveyRuntimeHelper();
+//        $tmp->run($redata);
 
         //CALL APPROPRIATE SCRIPT
         switch ($thissurvey['format'])
