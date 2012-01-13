@@ -2019,7 +2019,15 @@ class ExpressionManager {
                         return false;
                     }
                     if (!$this->RDP_onlyparse) {
-                        $result = $funcName($params);
+                        switch($funcName) {
+                            case 'sprintf':
+                                // PHP doesn't let you pass array of parameters to sprintf, so must use call_user_func_array
+                                $result = call_user_func_array('sprintf',$params);
+                                break;
+                            default:
+                                $result = $funcName($params);
+                                break;
+                        }
                     }
                 // Call  function with the params passed
                 } elseif (in_array($argsPassed, $numArgsAllowed)) {
@@ -2043,7 +2051,7 @@ class ExpressionManager {
                                 case 'sin':
                                 case 'sqrt':
                                 case 'tan':
-                                    if (is_float($params[0]))
+                                    if (is_numeric($params[0]))
                                     {
                                         $result = $funcName(floatval($params[0]));
                                     }
@@ -2062,7 +2070,7 @@ class ExpressionManager {
                         if (!$this->RDP_onlyparse) {
                             switch($funcName) {
                                 case 'atan2':
-                                    if (is_float($params[0]) && is_float($params[1]))
+                                    if (is_numeric($params[0]) && is_numeric($params[1]))
                                     {
                                         $result = $funcName(floatval($params[0]),floatval($params[1]));
                                     }
