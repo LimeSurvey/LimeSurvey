@@ -33,8 +33,7 @@ function loadanswers()
         }
         $query .="AND {{saved_control}}.identifier = '".auto_escape($_SESSION['holdname'])."' ";
 
-        $databasetype = $CI->db->platform();
-        if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n' || $databasetype=='mssqlnative')
+        if (in_array(Yii::app()->db->getDriverName(), array('odbc_mssql', 'odbtp', 'mssql_n', 'mssqlnative')))
         {
             $query .="AND CAST({{saved_control}}.access_code as varchar(32))= '".md5(auto_unescape($_SESSION['holdpass']))."'\n";
         }
@@ -786,11 +785,7 @@ function checkconditionalmandatorys($move, $backok=null)
 function checkUploadedFileValidity($surveyid, $move, $backok=null)
 {
     global $thisstep;
-
-
-
     $clang = Yii::app()->lang;
-    //$_SESSION = $CI->session->userdata;
 
     if (!isset($backok) || $backok != "Y")
     {
@@ -807,8 +802,8 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
                     $validation = array();
 
                     $query = "SELECT * FROM {{question_attributes}} WHERE qid = ".$fieldmap[$field]['qid'];
-                    $result = db_execute_assoc($query);
-                    foreach($result->readAll() as $row)
+                    $result = Yii::app()->db->createCommand($query)->readAll();
+                    foreach($result as $row)
                         $validation[$row['attribute']] = $row['value'];
 
                     $filecount = 0;
@@ -867,7 +862,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
                     else
                         $filecount = 0;
 
-                    if (isset($validation['min_num_of_files']) && $filecount < $validation['min_num_of_files'] && checkquestionfordisplay($fieldmap[$field]['qid']))
+                    if ($filecount < $validation['min_num_of_files'] && LimeExpressionManager::QuestionIsRelevant($fieldmap[$field]['qid']))
                     {
                         $filenotvalidated = array();
                         $filenotvalidated[$field] = $clang->gT("The minimum number of files has not been uploaded.");
@@ -1400,20 +1395,16 @@ function submitfailed($errormsg='')
 */
 function buildsurveysession($surveyid)
 {
-    global $thissurvey, $secerror, $clienttoken, $databasetype;
+    global $thissurvey, $secerror, $clienttoken;
     global $tokensexist, $thistpl;
     //global $surveyid;
     global $register_errormsg;
     global $totalBoilerplatequestions, $totalquestions;
     global $templang, $move, $rooturl;
 
-
-
-
-    //$_SESSION = $CI->session->userdata;
     $clang = Yii::app()->lang;
 
-    if (!isset($templang) || $templang=='')
+    if (empty($templang))
     {
         $templang=$thissurvey['language'];
     }
@@ -1933,7 +1924,7 @@ function buildsurveysession($surveyid)
 
     // Find all defined randomization groups through question attribute values
     $randomGroups=array();
-    if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n' || $databasetype=='mssqlnative')
+    if (in_array(Yii::app()->db->getDriverName(), array('odbc_mssql', 'odbtp', 'mssql_n', 'mssqlnative')))
     {
         $rgquery = "SELECT attr.qid, CAST(value as varchar(255)) FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and CAST(value as varchar(255)) <> '' and sid=$surveyid GROUP BY attr.qid, CAST(value as varchar(255))";
     }
@@ -2068,10 +2059,10 @@ function buildsurveysession($surveyid)
         }
     }
 
-    $_SESSION['fieldarray']=array_values($_SESSION['fieldarray']);
+    if (isset($_SESSION['fieldarray'])) $_SESSION['fieldarray']=array_values($_SESSION['fieldarray']);
 
     //Check if a passthru label and value have been included in the query url
-    $oResult=Survey_url_parameters::model()->getParametersForSurvey($surveyid);
+    $oResult = Survey_url_parameters::model()->getParametersForSurvey($surveyid);
     foreach($oResult->readAll() as $aRow)
     {
         if(isset($_GET[$aRow['parameter']]))
@@ -2726,15 +2717,15 @@ function GetReferringUrl()
 function display_first_page() {
     global $thistpl, $token, $surveyid, $thissurvey, $navigator, $totalquestions;
 
-
-
-    //$_SESSION = $CI->session->userdata;
     $clang = Yii::app()->lang;
 
     $navigator = surveymover();
 
     sendcacheheaders();
     doHeader();
+
+    LimeExpressionManager::StartProcessingPage();
+    LimeExpressionManager::StartProcessingGroup(0, false, $surveyid);
 
     $redata = compact(array_keys(get_defined_vars()));
     echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'frontend_helper[2757]');
@@ -2763,6 +2754,9 @@ function display_first_page() {
     }
     echo "\n</form>\n";
     echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'frontend_helper[2782]');
+
+    echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
+    LimeExpressionManager::FinishProcessingPage();
     doFooter();
 }
 
