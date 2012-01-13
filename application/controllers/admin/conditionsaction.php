@@ -691,16 +691,7 @@ class conditionsaction extends Survey_Common_Action {
 			        $rows['type'] == "H"
 			    )
 		        {
-		            /*$aquery = "SELECT * "
-		            ."FROM {{questions}} "
-		            ."WHERE parent_qid={$rows['qid']} "
-		            ."AND language='".Survey::model()->findByPk($surveyid)->language."' "
-		            ."ORDER BY question_order";*/
-
-		            $aresult = Questions::model()->findAllByAttributes(array( 'and',
-			        	"parent_qid=".$rows['qid']."",
-			        	"language='".Survey::model()->findByPk($surveyid)->language."'"
-			        ), array('order' => 'question_order ASC'));
+		            $aresult = Questions::model()->findAllByAttributes(array('parent_qid'=>$rows['qid'], 'language' => Survey::model()->findByPk($surveyid)->language), array('order' => 'question_order ASC'));
 
 		            foreach ($aresult as $arows)
 		            {
@@ -834,10 +825,7 @@ class conditionsaction extends Survey_Common_Action {
 		        } //if A,B,C,E,F,H
 		        elseif ($rows['type'] == "1") //Multi Scale
 		        {
-		        	$aresult = Questions::model()->findAllByAttributes(array(
-                            "parent_qid" => $rows['qid'],
-		            		"language=" => Survey::model()->findByPk($surveyid)->language,
-                    ), array('sortorder' => 'question_order desc'));
+		        	$aresult = Questions::model()->findAllByAttributes(array('parent_qid' => $rows['qid'], 'language' => Survey::model()->findByPk($surveyid)->language), array('order' => 'question_order desc'));
 
 		            foreach ($aresult as $arows)
 		            {
@@ -853,11 +841,7 @@ class conditionsaction extends Survey_Common_Action {
 		                $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1");
 
 		                // first label
-		                $lresult = Answers::model()->findAllByAttributes(array(
-		                	"qid" => $rows['qid'],
-                            'scale_id' => 0,
-                            'langiuage' => Survey::model()->findByPk($surveyid)->language,
-		                ), array('order' => 'sortorder, answer'));
+		                $lresult = Answers::model()->findAllByAttributes(array('qid' => $rows['qid'], 'scale_id' => 0, 'language' => Survey::model()->findByPk($surveyid)->language), array('order' => 'sortorder, answer'));
 		                foreach ($lresult as $lrows)
 		                {
 		                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0", "{$lrows['code']}", "{$lrows['code']}");
