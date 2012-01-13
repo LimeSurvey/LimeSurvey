@@ -2033,7 +2033,15 @@ class ExpressionManager {
                         return false;
                     }
                     if (!$this->RDP_onlyparse) {
-                        $result = $funcName($params);
+                        switch($funcName) {
+                            case 'sprintf':
+                                // PHP doesn't let you pass array of parameters to sprintf, so must use call_user_func_array
+                                $result = call_user_func_array('sprintf',$params);
+                                break;
+                            default:
+                                $result = $funcName($params);
+                                break;
+                        }
                     }
                 // Call  function with the params passed
                 } elseif (in_array($argsPassed, $numArgsAllowed)) {
@@ -2484,7 +2492,7 @@ Can strings have embedded &lt;tags&gt; like &lt;html&gt;, or even unbalanced &qu
 5~count(1,2,3,4,5)
 0~count()
 5~count(one,two,three,four,five)
-2~count(a,b,c)
+2~count(a,'',c)
 NULL~date('F j, Y, g:i a',time())
 April 5, 2006, 1:02 am~date('F j, Y, g:i a',mktime(1,2,3,4,5,6))
 20~floor(exp(3))
@@ -2588,8 +2596,8 @@ I was trimmed   ~ltrim('     I was trimmed   ')
 \\$~quotemeta('$')
 IGNORE THIS ERROR~rand(3,5)
 0~(a=rand())-a
-1~regexMatch('/there/',c)
-1~regexMatch('/^.*there.*$/',c)
+1~regexMatch('/embedded/',c)
+1~regexMatch('/^.*embedded.*$/',c)
 0~regexMatch('/joe/',c)
 1~regexMatch('/(?:dog|cat)food/','catfood stinks')
 1~regexMatch('/(?:dog|cat)food/','catfood stinks')
