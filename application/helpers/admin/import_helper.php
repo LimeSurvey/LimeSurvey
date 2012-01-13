@@ -1,17 +1,17 @@
 <?php
 /*
- * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- *	$Id$
- */
+* LimeSurvey
+* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*	$Id$
+*/
 
 
 /**
@@ -616,7 +616,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
                     $insertdata['qid']=$newqid;
                     $insertdata['language']=$answerrowdata['language'];
                     $insertdata['defaultvalue']=$answerrowdata['answer'];
-                	$qres = Yii::app()->db->createCommand()->insert('{{defaultvalues}}', $insertdata);
+                    $qres = Yii::app()->db->createCommand()->insert('{{defaultvalues}}', $insertdata);
                 }
                 // translate internal links
                 $answerrowdata['answer']=translink('survey', $oldsid, $newsid, $answerrowdata['answer']);
@@ -653,14 +653,14 @@ function CSVImportGroup($sFullFilepath, $newsid)
                         $insertdata['sqid']=$aSQIDReplacements[$answerrowdata['code']];
                         $insertdata['language']=$answerrowdata['language'];
                         $insertdata['defaultvalue']='Y';
-                    	$qres = Yii::app()->db->createCommand()->insert('{{defaultvalues}}', $insertdata);
+                        $qres = Yii::app()->db->createCommand()->insert('{{defaultvalues}}', $insertdata);
                     }
 
                 }
                 else   // insert answers
                 {
                     unset($answerrowdata['default_value']);
-                	$ares = Yii::app()->db->createCommand()->insert('{{answers}}', $answerrowdata);
+                    $ares = Yii::app()->db->createCommand()->insert('{{answers}}', $answerrowdata);
                     $results['answers']++;
                 }
 
@@ -699,7 +699,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
 
             unset($qarowdata["qaid"]);
 
-        	$result = Yii::app()->db->createCommand()->insert('{{question_attributes}}', $qarowdata);
+            $result = Yii::app()->db->createCommand()->insert('{{question_attributes}}', $qarowdata);
             if ($result!==false) $results['question_attributes']++;
         }
     }
@@ -850,7 +850,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
         {
             $insertdata['gid']=$aGIDReplacements[$oldgid];
         }
-    	$result = Yii::app()->db->createCommand()->insert('{{groups}}', $insertdata);
+        $result = Yii::app()->db->createCommand()->insert('{{groups}}', $insertdata);
         $results['groups']++;
 
         if (!isset($aGIDReplacements[$oldgid]))
@@ -890,14 +890,14 @@ function XMLImportGroup($sFullFilepath, $newsid)
         {
             $insertdata['qid']=$aQIDReplacements[$oldqid];
         }
-    	$result = Yii::app()->db->createCommand()->insert('{{questions}}', $insertdata);
+        $result = Yii::app()->db->createCommand()->insert('{{questions}}', $insertdata);
         if (!isset($aQIDReplacements[$oldqid]))
         {
             $newqid=Yii::app()->db->getLastInsertID();
             $aQIDReplacements[$oldqid]=$newqid; // add old and new qid to the mapping array
             $results['questions']++;
         }
-	}
+    }
 
     // Import subquestions --------------------------------------------------------------
     if (isset($xml->subquestions))
@@ -925,7 +925,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
                 $insertdata['qid']=$aQIDReplacements[$oldsqid];
             }
 
-        	$result = Yii::app()->db->createCommand()->insert('{{questions}}', $insertdata);
+            $result = Yii::app()->db->createCommand()->insert('{{questions}}', $insertdata);
             $newsqid=Yii::app()->db->getLastInsertID();
             if (!isset($insertdata['qid']))
             {
@@ -953,7 +953,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
             $insertdata['qid']=$aQIDReplacements[(int)$insertdata['qid']]; // remap the parent_qid
 
             // now translate any links
-        	$result = Yii::app()->db->createCommand()->insert('{{answers}}', $insertdata);
+            $result = Yii::app()->db->createCommand()->insert('{{answers}}', $insertdata);
             $results['answers']++;
         }
     }
@@ -982,12 +982,12 @@ function XMLImportGroup($sFullFilepath, $newsid)
                 foreach ($importlanguages as $sLanguage)
                 {
                     $insertdata['language']=$sLanguage;
-                	$result = Yii::app()->db->createCommand()->insert('{{question_attributes}}', $insertdata);
+                    $result = Yii::app()->db->createCommand()->insert('{{question_attributes}}', $insertdata);
                 }
             }
             else
             {
-            	$result = Yii::app()->db->createCommand()->insert('{{question_attributes}}', $insertdata);
+                $result = Yii::app()->db->createCommand()->insert('{{question_attributes}}', $insertdata);
             }
             $results['question_attributes']++;
         }
@@ -1011,7 +1011,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
             $insertdata['sqid']=$aQIDReplacements[(int)$insertdata['sqid']]; // remap the subqeustion id
 
             // now translate any links
-        	$result = Yii::app()->db->createCommand()->insert('{{defaultvalues}}', $insertdata);
+            $result = Yii::app()->db->createCommand()->insert('{{defaultvalues}}', $insertdata);
             $results['defaultvalues']++;
         }
     }
@@ -1064,7 +1064,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
             }
 
             // now translate any links
-        	$result = Yii::app()->db->createCommand()->insert('{{conditions}}', $insertdata);
+            $result = Yii::app()->db->createCommand()->insert('{{conditions}}', $insertdata);
             $results['conditions']++;
         }
     }
@@ -1089,10 +1089,10 @@ function XMLImportGroup($sFullFilepath, $newsid)
 function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
 {
     $clang = Yii::app()->lang;
-	if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
-		$xssfilter = true;
-	else
-		$xssfilter = false;
+    if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
+        $xssfilter = true;
+    else
+        $xssfilter = false;
 
     $aLIDReplacements=array();
     $aQIDReplacements=array(); // this array will have the "new qid" for the questions, the key will be the "old qid"
@@ -1341,8 +1341,8 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                         $labelrowdata['title']=translink('label', $oldlid, $newlid, $labelrowdata['title']);
 
                         $newvalues=array_values($labelrowdata);
-						if ($xssfilter)
-							XSSFilterArray($newvalues);
+                        if ($xssfilter)
+                            XSSFilterArray($newvalues);
                         $lainsert = "INSERT INTO {{labels}} (".implode(',',array_keys($labelrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
                         $liresult=Yii::app()->db->createCommand($lainsert)->query();
                         $results['labels']++;
@@ -1474,8 +1474,8 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
             $questionrowdata['help']=translink('survey', $oldsid, $newsid, $questionrowdata['help']);
 
             $newvalues=array_values($questionrowdata);
-			if ($xssfilter)
-				XSSFilterArray($newvalues);
+            if ($xssfilter)
+                XSSFilterArray($newvalues);
             $qinsert = "INSERT INTO {{questions}} (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")";
             $qres = Yii::app()->db->createCommand($qinsert)->query() or safe_die("Error: Failed to insert question<br />\n$qinsert<br />\n");
 
@@ -1498,8 +1498,8 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
             foreach($oldlabelsresult->readAll() as $labelrow)
             {
                 if (in_array($labelrow['language'],$aLanguagesSupported)){
-				    if ($xssfilter)
-						XSSFilterArray($labelrow);
+                    if ($xssfilter)
+                        XSSFilterArray($labelrow);
                     if ($qtypes[$oldquestion['newtype']]['subquestions']<2)
                     {
                         $qinsert = "insert INTO {{answers}} (qid,code,answer,sortorder,language,assessment_value,scale_id)
@@ -1537,7 +1537,7 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                 foreach($oldlabelsresult->readAll() as $labelrow)
                 {
                     if ($xssfilter)
-						XSSFilterArray($labelrow);
+                        XSSFilterArray($labelrow);
                     if (in_array($labelrow['language'],$aLanguagesSupported)){
                         $qinsert = "insert INTO {{answers}} (qid,code,answer,sortorder,language,assessment_value,scale_id)
                         VALUES ($newqid,'".$labelrow['code']."','".$labelrow['title']."','".$labelrow['sortorder']."','".$labelrow['language']."','".$labelrow['assessment_value']."',1)";
@@ -1579,10 +1579,10 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                     $insertdata['language']=$answerrowdata['language'];
                     $insertdata['defaultvalue']=$answerrowdata['answer'];
 
-    				$dvalue = new Defaultvalues;
-                	foreach ($insertdata as $k => $v)
-                		$dvalue->$k = $v;
-                	$qres = $dvalue->save();
+                    $dvalue = new Defaultvalues;
+                    foreach ($insertdata as $k => $v)
+                        $dvalue->$k = $v;
+                    $qres = $dvalue->save();
 
                 }
                 // translate internal links
@@ -1604,12 +1604,12 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                     $questionrowdata['question_order']=$answerrowdata['sortorder'];
                     $questionrowdata['language']=$answerrowdata['language'];
                     $questionrowdata['type']=$oldquestion['newtype'];
-					if ($xssfilter)
-						XSSFilterArray($questionrowdata);
-                	$question = new Questions;
-                	foreach ($questionrowdata as $k => $v)
-                		$question->$k = $v;
-                	$qres = $question->save();
+                    if ($xssfilter)
+                        XSSFilterArray($questionrowdata);
+                    $question = new Questions;
+                    foreach ($questionrowdata as $k => $v)
+                        $question->$k = $v;
+                    $qres = $question->save();
                     if (!isset($questionrowdata['qid']))
                     {
                         $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=Yii::app()->db->getLastInsertID();
@@ -1632,10 +1632,10 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                 {
                     unset($answerrowdata['default_value']);
 
-                	$answer = new Answers;
-                	foreach ($answerrowdata as $k => $v)
-                		$answer->$k = $v;
-                	$ares = $answer->save();
+                    $answer = new Answers;
+                    foreach ($answerrowdata as $k => $v)
+                        $answer->$k = $v;
+                    $ares = $answer->save();
                     $results['answers']++;
                 }
             }
@@ -1652,12 +1652,12 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                 $qarowdata=array_combine($fieldorders,$fieldcontents);
                 $qarowdata["qid"]=$newqid;
                 unset($qarowdata["qaid"]);
-            	$attr = new Question_attributes;
-				if ($xssfilter)
-					XSSFilterArray($qarowdata);
-            	foreach ($qarowdata as $k => $v)
-            		$attr->$k = $v;
-				$result = $attr->save();
+                $attr = new Question_attributes;
+                if ($xssfilter)
+                    XSSFilterArray($qarowdata);
+                foreach ($qarowdata as $k => $v)
+                    $attr->$k = $v;
+                $result = $attr->save();
                 $results['question_attributes']++;
 
             }
@@ -1684,10 +1684,10 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
     $clang = Yii::app()->lang;
     $aLanguagesSupported = array();  // this array will keep all the languages supported for the survey
 
-	if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
-		$xssfilter = true;
-	else
-		$xssfilter = false;
+    if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
+        $xssfilter = true;
+    else
+        $xssfilter = false;
 
     $sBaseLanguage = Survey::model()->findByPk($newsid)->language;
     $aLanguagesSupported[]=$sBaseLanguage;     // adds the base language to the list of supported languages
@@ -1765,12 +1765,12 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
             $insertdata['qid']=$aQIDReplacements[$oldqid];
         }
 
-    	$ques = new Questions;
-		if ($insertdata)
-			XSSFilterArray($insertdata);
-    	foreach ($insertdata as $k => $v)
-    		$ques->$k = $v;
-    	$result = $ques->save();
+        $ques = new Questions;
+        if ($insertdata)
+            XSSFilterArray($insertdata);
+        foreach ($insertdata as $k => $v)
+            $ques->$k = $v;
+        $result = $ques->save();
         if (!isset($aQIDReplacements[$oldqid]))
         {
             $newqid=Yii::app()->db->getLastInsertID();
@@ -1803,12 +1803,12 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
             if (isset($aQIDReplacements[$oldsqid])){
                 $insertdata['qid']=$aQIDReplacements[$oldsqid];
             }
-			if ($xssfilter)
-				XSSFilterArray($insertdata);
-        	$ques = new Questions;
-        	foreach ($insertdata as $k => $v)
-        		$ques->$k = $v;
-        	$result = $ques->save();
+            if ($xssfilter)
+                XSSFilterArray($insertdata);
+            $ques = new Questions;
+            foreach ($insertdata as $k => $v)
+                $ques->$k = $v;
+            $result = $ques->save();
             $newsqid=Yii::app()->db->getLastInsertID();
             if (!isset($insertdata['qid']))
             {
@@ -1833,12 +1833,12 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
             $insertdata['qid']=$aQIDReplacements[(int)$insertdata['qid']]; // remap the parent_qid
 
             // now translate any links
-        	$answers = new Answers;
-			if ($xssfilter)
-				XSSFilterArray($insertdata);
-        	foreach ($insertdata as $k => $v)
-        		$answers->$k = $v;
-        	$result = $answers->save();
+            $answers = new Answers;
+            if ($xssfilter)
+                XSSFilterArray($insertdata);
+            foreach ($insertdata as $k => $v)
+                $answers->$k = $v;
+            $result = $answers->save();
             $results['answers']++;
         }
     }
@@ -1865,22 +1865,22 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
                 foreach ($importlanguages as $sLanguage)
                 {
                     $insertdata['language']=$sLanguage;
-                	$attributes = new Question_attributes;
-            		if ($xssfilter)
-						XSSFilterArray($insertdata);
-                	foreach ($insertdata as $k => $v)
-                		$attributes->$k = $v;
-                	$result = $attributes->save();
+                    $attributes = new Question_attributes;
+                    if ($xssfilter)
+                        XSSFilterArray($insertdata);
+                    foreach ($insertdata as $k => $v)
+                        $attributes->$k = $v;
+                    $result = $attributes->save();
                 }
             }
             else
             {
-            	$attributes = new Question_attributes;
-            	if ($xssfilter)
-					XSSFilterArray($insertdata);
-            	foreach ($insertdata as $k => $v)
-            		$attributes->$k = $v;
-            	$result = $attributes->save();
+                $attributes = new Question_attributes;
+                if ($xssfilter)
+                    XSSFilterArray($insertdata);
+                foreach ($insertdata as $k => $v)
+                    $attributes->$k = $v;
+                $result = $attributes->save();
             }
             $results['question_attributes']++;
         }
@@ -1904,12 +1904,12 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
             $insertdata['sqid']=$aSQIDReplacements[(int)$insertdata['sqid']]; // remap the subquestion id
 
             // now translate any links
-        	$default = new Defaultvalues;
+            $default = new Defaultvalues;
             if ($xssfilter)
-				XSSFilterArray($insertdata);
-        	foreach ($insertdata as $k => $v)
-        		$default->$k = $v;
-        	$result = $default->save();
+                XSSFilterArray($insertdata);
+            foreach ($insertdata as $k => $v)
+                $default->$k = $v;
+            $result = $default->save();
             $results['defaultvalues']++;
         }
     }
@@ -1942,10 +1942,10 @@ function CSVImportLabelset($sFullFilepath, $options)
     $csarray=buildLabelSetCheckSumArray();
     //$csarray is now a keyed array with the Checksum of each of the label sets, and the lid as the key
 
-	if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
-		$xssfilter = true;
-	else
-		$xssfilter = false;
+    if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
+        $xssfilter = true;
+    else
+        $xssfilter = false;
 
     $handle = fopen($sFullFilepath, "r");
     while (!feof($handle))
@@ -2021,8 +2021,8 @@ function CSVImportLabelset($sFullFilepath, $options)
             unset($labelsetrowdata['lid']);
 
             $newvalues=array_values($labelsetrowdata);
-			if ($xssfilter)
-				XSSFilterArray($newvalues);
+            if ($xssfilter)
+                XSSFilterArray($newvalues);
             $lsainsert = "insert INTO {{labelsets}} (".implode(',',array_keys($labelsetrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
             $lsiresult= Yii::app()->db->createCommand($lsainsert)->query();
             $results['labelsets']++;
@@ -2052,8 +2052,8 @@ function CSVImportLabelset($sFullFilepath, $options)
                         }
 
                         $newvalues=array_values($labelrowdata);
-						if ($xssfilter)
-							XSSFilterArray($newvalues);
+                        if ($xssfilter)
+                            XSSFilterArray($newvalues);
                         $lainsert = "insert INTO {{labels}} (".implode(',',array_keys($labelrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
                         $liresult=Yii::app()->db->createCommand($lainsert)->query();
 
@@ -2131,10 +2131,10 @@ function XMLImportLabelsets($sFullFilepath, $options)
     $results['labels']=0;
     $results['warnings']=array();
 
-	if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
-		$xssfilter = true;
-	else
-		$xssfilter = false;
+    if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
+        $xssfilter = true;
+    else
+        $xssfilter = false;
 
     // Import labels table ===================================================================================
 
@@ -2149,10 +2149,10 @@ function XMLImportLabelsets($sFullFilepath, $options)
         $oldlsid=$insertdata['lid'];
         unset($insertdata['lid']); // save the old qid
 
-		if ($xssfilter)
-				XSSFilterArray($insertdata);
+        if ($xssfilter)
+            XSSFilterArray($insertdata);
         // Insert the new question
-    	$result = Yii::app()->db->createCommand()->insert('{{labelsets}}', $insertdata);
+        $result = Yii::app()->db->createCommand()->insert('{{labelsets}}', $insertdata);
         $results['labelsets']++;
 
         $newlsid=Yii::app()->db->getLastInsertID();
@@ -2171,9 +2171,9 @@ function XMLImportLabelsets($sFullFilepath, $options)
             $insertdata[(string)$key]=(string)$value;
         }
         $insertdata['lid']=$aLSIDReplacements[$insertdata['lid']];
-		if ($xssfilter)
-			XSSFilterArray($insertdata);
-    	$result = Yii::app()->db->createCommand()->insert('{{labels}}', $insertdata);
+        if ($xssfilter)
+            XSSFilterArray($insertdata);
+        $result = Yii::app()->db->createCommand()->insert('{{labels}}', $insertdata);
         $results['labels']++;
     }
 
@@ -2241,10 +2241,10 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
     Yii::app()->loadHelper('database');
     $clang = Yii::app()->lang;
 
-	if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
-		$xssfilter = true;
-	else
-		$xssfilter = false;
+    if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
+        $xssfilter = true;
+    else
+        $xssfilter = false;
 
     $handle = fopen($sFullFilepath, "r");
     while (!feof($handle))
@@ -2730,13 +2730,13 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
 
             unset($labelsetrowdata['lid']);
 
-			$lblsets=Labelsets::model();
+            $lblsets=Labelsets::model();
             $lsiresult = $lblsets->insertRecords($labelsetrowdata);
 
             $results['labelsets']++;
             // Get the new insert id for the labels inside this labelset
             $newlid=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
-			$newlid=$newlid['LAST_INSERT_ID()'];
+            $newlid=$newlid['LAST_INSERT_ID()'];
 
             if ($labelsarray) {
                 $count=0;
@@ -2859,10 +2859,10 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
 
             if (isset($grouprowdata['gid'])) db_switchIDInsert('groups',false);
             if (!isset($grouprowdata['gid']))
-			{
-				$aGIDReplacements[$oldgid]=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
-				$aGIDReplacements[$oldgid]=$aGIDReplacements[$oldgid]['LAST_INSERT_ID()'];
-        	}
+            {
+                $aGIDReplacements[$oldgid]=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
+                $aGIDReplacements[$oldgid]=$aGIDReplacements[$oldgid]['LAST_INSERT_ID()'];
+            }
         }
         // Fix sortorder of the groups  - if users removed groups manually from the csv file there would be gaps
         fixSortOrderGroups($newsid);
@@ -2943,8 +2943,8 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             }
             else
             {
-				$aQIDReplacements[$oldqid]=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
-				$aQIDReplacements[$oldqid]=$aQIDReplacements[$oldqid]['LAST_INSERT_ID()'];
+                $aQIDReplacements[$oldqid]=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
+                $aQIDReplacements[$oldqid]=$aQIDReplacements[$oldqid]['LAST_INSERT_ID()'];
                 $saveqid=$aQIDReplacements[$oldqid];
             }
 
@@ -3079,14 +3079,14 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
 
 
                 if (isset($questionrowdata['qid'])) db_switchIDInsert('questions',true);
-				if ($xssfilter)
-					XSSFilterArray($questionrowdata);
+                if ($xssfilter)
+                    XSSFilterArray($questionrowdata);
                 $qres= Questions::model()->insertRecords($questionrowdata) or safe_die("Error: Failed to insert subquestion <br />");
 
                 if (!isset($questionrowdata['qid']))
                 {
-					$aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
-					$aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=$aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]['LAST_INSERT_ID()'];
+                    $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
+                    $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=$aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]['LAST_INSERT_ID()'];
                 }
                 else
                 {
@@ -3102,8 +3102,8 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                     $insertdata['sqid']=$aSQIDReplacements[$answerrowdata['code']];
                     $insertdata['language']=$answerrowdata['language'];
                     $insertdata['defaultvalue']='Y';
-					if ($xssfilter)
-						XSSFilterArray($insertdata);
+                    if ($xssfilter)
+                        XSSFilterArray($insertdata);
                     $qres = Defaultvalues::model()->insertRecords($insertdata) or safe_die("Error: Failed to insert defaultvalue <br />");
                 }
 
@@ -3111,8 +3111,8 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             else   // insert answers
             {
                 unset($answerrowdata['default_value']);
-				if ($xssfilter)
-					XSSFilterArray($answerrowdata);
+                if ($xssfilter)
+                    XSSFilterArray($answerrowdata);
                 $ares = Answers::model()->insertRecords($answerrowdata) or safe_die("Error: Failed to insert answer<br />");
                 $results['answers']++;
             }
@@ -3189,8 +3189,8 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             unset($asrowdata["id"]);
             $quotadata[]=$asrowdata; //For use later if needed
             $result=Quota::model()->insertRecords($asrowdata) or safe_die ("Couldn't insert quota<br />");
-			$aQuotaReplacements[$oldid]=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
-			$aQuotaReplacements[$oldid]=$aQuotaReplacements[$oldid]['LAST_INSERT_ID()'];
+            $aQuotaReplacements[$oldid]=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
+            $aQuotaReplacements[$oldid]=$aQuotaReplacements[$oldid]['LAST_INSERT_ID()'];
         }
     }
 
@@ -3320,10 +3320,10 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     Yii::app()->loadHelper('database');
     $clang = Yii::app()->lang;
 
-	if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
-		$xssfilter = true;
-	else
-		$xssfilter = false;
+    if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
+        $xssfilter = true;
+    else
+        $xssfilter = false;
 
     $aGIDReplacements = array();
     if ($sXMLdata == NULL)
@@ -3417,8 +3417,8 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         }
 
         db_switchIDInsert('surveys',true);
-		if ($xssfilter)
-			XSSFilterArray($insertdata);
+        if ($xssfilter)
+            XSSFilterArray($insertdata);
         $newsid = Survey::model()->insertNewSurvey($insertdata) or safe_die($clang->gT("Error").": Failed to insert data<br />");
 
         $results['surveys']++;
@@ -3466,46 +3466,46 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     // Import groups table ===================================================================================
 
 
-	if (isset($xml->groups->rows->row))
-	{
-    foreach ($xml->groups->rows->row as $row)
+    if (isset($xml->groups->rows->row))
     {
-        $insertdata=array();
-        foreach ($row as $key=>$value)
+        foreach ($xml->groups->rows->row as $row)
         {
-            $insertdata[(string)$key]=(string)$value;
-        }
-        $oldsid=$insertdata['sid'];
-        $insertdata['sid']=$newsid;
-        $oldgid=$insertdata['gid']; unset($insertdata['gid']); // save the old qid
+            $insertdata=array();
+            foreach ($row as $key=>$value)
+            {
+                $insertdata[(string)$key]=(string)$value;
+            }
+            $oldsid=$insertdata['sid'];
+            $insertdata['sid']=$newsid;
+            $oldgid=$insertdata['gid']; unset($insertdata['gid']); // save the old qid
 
-        // now translate any links
-        if ($bTranslateInsertansTags)
-        {
-            $insertdata['group_name']=translink('survey', $oldsid, $newsid, $insertdata['group_name']);
-            $insertdata['description']=translink('survey', $oldsid, $newsid, $insertdata['description']);
-        }
-        // Insert the new group
-        if (isset($aGIDReplacements[$oldgid]))
-        {
-            db_switchIDInsert('groups',true);
-            $insertdata['gid']=$aGIDReplacements[$oldgid];
-        }
-			$result = Groups::model()->insertRecords($insertdata) or safe_die($clang->gT("Error").": Failed to insert data<br />");
-        $results['groups']++;
+            // now translate any links
+            if ($bTranslateInsertansTags)
+            {
+                $insertdata['group_name']=translink('survey', $oldsid, $newsid, $insertdata['group_name']);
+                $insertdata['description']=translink('survey', $oldsid, $newsid, $insertdata['description']);
+            }
+            // Insert the new group
+            if (isset($aGIDReplacements[$oldgid]))
+            {
+                db_switchIDInsert('groups',true);
+                $insertdata['gid']=$aGIDReplacements[$oldgid];
+            }
+            $result = Groups::model()->insertRecords($insertdata) or safe_die($clang->gT("Error").": Failed to insert data<br />");
+            $results['groups']++;
 
-        if (!isset($aGIDReplacements[$oldgid]))
-        {
-				$newgid=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
-					$newgid=$newgid['LAST_INSERT_ID()'];
-            $aGIDReplacements[$oldgid]=$newgid; // add old and new qid to the mapping array
-        }
-        else
-        {
-            db_switchIDInsert('groups',false);
+            if (!isset($aGIDReplacements[$oldgid]))
+            {
+                $newgid=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
+                $newgid=$newgid['LAST_INSERT_ID()'];
+                $aGIDReplacements[$oldgid]=$newgid; // add old and new qid to the mapping array
+            }
+            else
+            {
+                db_switchIDInsert('groups',false);
+            }
         }
     }
-	}
 
     // Import questions table ===================================================================================
 
@@ -3539,13 +3539,13 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 db_switchIDInsert('questions',true);
 
             }
-			if ($xssfilter)
-				XSSFilterArray($insertdata);
+            if ($xssfilter)
+                XSSFilterArray($insertdata);
             $result = Questions::model()->insertRecords($insertdata) or safe_die($clang->gT("Error").": Failed to insert data<br />");
             if (!isset($aQIDReplacements[$oldqid]))
             {
-				$newqid=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
-				$aQIDReplacements[$oldqid]=$newqid['LAST_INSERT_ID()'];
+                $newqid=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
+                $aQIDReplacements[$oldqid]=$newqid['LAST_INSERT_ID()'];
                 $results['questions']++;
             }
             else
@@ -3581,11 +3581,11 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $insertdata['qid']=$aQIDReplacements[$oldsqid];
                 db_switchIDInsert('questions',true);
             }
-			if ($xssfilter)
-				XSSFilterArray($insertdata);
+            if ($xssfilter)
+                XSSFilterArray($insertdata);
             $result =Questions::model()->insertRecords($insertdata) or safe_die($clang->gT("Error").": Failed to insert data<br />");
-			$newsqid=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
-			$newsqid=$newsqid['LAST_INSERT_ID()'];
+            $newsqid=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read();
+            $newsqid=$newsqid['LAST_INSERT_ID()'];
             if (!isset($insertdata['qid']))
             {
                 $aQIDReplacements[$oldsqid]=$newsqid; // add old and new qid to the mapping array
@@ -3616,8 +3616,8 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             {
                 $insertdata['answer']=translink('survey', $oldsid, $newsid, $insertdata['answer']);
             }
-			if ($xssfilter)
-				XSSFilterArray($insertdata);
+            if ($xssfilter)
+                XSSFilterArray($insertdata);
             $result=Answers::model()->insertRecords($insertdata) or safe_die($clang->gT("Error").": Failed to insert data<br />");
             $results['answers']++;
         }
@@ -3643,8 +3643,8 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 foreach ($aLanguagesSupported as $sLanguage)
                 {
                     $insertdata['language']=$sLanguage;
-					if ($xssfilter)
-						XSSFilterArray($insertdata);
+                    if ($xssfilter)
+                        XSSFilterArray($insertdata);
                     $result=Question_attributes::model()->insertRecords($insertdata) or safe_die($clang->gT("Error").": Failed to insert data<br />");
                 }
             }
@@ -3671,8 +3671,8 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             $insertdata['qid']=$aQIDReplacements[(int)$insertdata['qid']]; // remap the qid
             if (isset($aQIDReplacements[(int)$insertdata['sqid']])) $insertdata['sqid']=$aQIDReplacements[(int)$insertdata['sqid']]; // remap the subquestion id
-			if ($xssfilter)
-				XSSFilterArray($insertdata);
+            if ($xssfilter)
+                XSSFilterArray($insertdata);
             // now translate any links
             $result=Defaultvalues::model()->insertRecords($insertdata) or safe_die($clang->gT("Error").": Failed to insert data<br />");
             $results['defaultvalues']++;
@@ -3873,11 +3873,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     Survey_permissions::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'],$newsid);
     $aOldNewFieldmap=aReverseTranslateFieldnames($oldsid,$newsid,$aGIDReplacements,$aQIDReplacements);
     $results['FieldReMap']=$aOldNewFieldmap;
-    if ($bTranslateInsertansTags)
-    {
-
-        TranslateInsertansTags($newsid,$oldsid,$aOldNewFieldmap);
-    }
+    TranslateInsertansTags($newsid,$oldsid,$aOldNewFieldmap);
 
     return $results;
 }
@@ -3896,10 +3892,10 @@ function GetNewSurveyID($oldsid)
     $res = Yii::app()->db->createCommand($query)->query();
     $isresult = $res->read();
 
-	if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
-		$xssfilter = true;
-	else
-		$xssfilter = false;
+    if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
+        $xssfilter = true;
+    else
+        $xssfilter = false;
 
     //if (!is_null($isresult))
     if($res->count() > 0)
@@ -3929,9 +3925,9 @@ function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeField
     $xml = simplexml_load_file($sFullFilepath);
 
     if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
-		$xssfilter = true;
-	else
-		$xssfilter = false;
+        $xssfilter = true;
+    else
+        $xssfilter = false;
 
     if ($xml->LimeSurveyDocType!='Tokens')
     {
@@ -3998,10 +3994,10 @@ function XMLImportResponses($sFullFilepath,$iSurveyID,$aFieldReMap=array())
     Yii::app()->loadHelper('database');
     $clang = Yii::app()->lang;
 
-	if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
-		$xssfilter = true;
-	else
-		$xssfilter = false;
+    if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
+        $xssfilter = true;
+    else
+        $xssfilter = false;
 
     db_switchIDInsert('survey_'.$iSurveyID,false);
     $results['responses']=0;
@@ -4110,13 +4106,13 @@ function XMLImportTimings($sFullFilepath,$iSurveyID,$aFieldReMap=array())
 
 function XSSFilterArray(&$array)
 {
-	$filter = new CHtmlPurifier();
-	$filter->options = array('URI.AllowedSchemes'=>array(
-  		'http' => true,
-  		'https' => true,
-	));
-	foreach($array as &$value)
-	{
-		$value = $filter->purify($value);
-	}
+    $filter = new CHtmlPurifier();
+    $filter->options = array('URI.AllowedSchemes'=>array(
+    'http' => true,
+    'https' => true,
+    ));
+    foreach($array as &$value)
+    {
+        $value = $filter->purify($value);
+    }
 }
