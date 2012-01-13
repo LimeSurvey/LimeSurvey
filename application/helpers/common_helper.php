@@ -6532,7 +6532,6 @@ function sStripDBPrefix($sTableName)
 */
 function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 {
-    DebugBreak();
     uksort($fieldnames, create_function('$a,$b', 'return strlen($a) < strlen($b);'));
     Yii::app()->loadHelper('database');
     $newsid=sanitize_int($newsid);
