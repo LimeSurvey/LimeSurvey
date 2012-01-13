@@ -1297,7 +1297,7 @@ function getgrouplist3($gid,$surveyid)
 * @param mixed $gid
 * @param mixed $language
 */
-function getgrouplistlang($gid, $language,$surveyid)
+function getgrouplistlang($gid, $language, $surveyid)
 {
 
     $clang = Yii::app()->lang;
@@ -1305,7 +1305,9 @@ function getgrouplistlang($gid, $language,$surveyid)
     $groupselecter="";
     if (!$surveyid) {$surveyid=returnglobal('sid');}
 
-    $gidresult = Groups::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $language));   //Checked)
+    $gidresult = Groups::model()->findAll(array('condition'=>'sid=:surveyid AND language=:language',
+                                                'order'=>'group_order',
+                                                'params'=>array(':surveyid'=>$surveyid,':language'=>$language)));   //Checked)
     foreach ($gidresult as $gv)
     {
     	$gv = $gv->attributes;
@@ -2307,7 +2309,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     {
         if ($dv['specialtype'] != '') {
             $sq = $dv['specialtype'];
-        }
+    }
         else {
             $sq = $dv['sqid'];
         }
@@ -2329,7 +2331,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     {
         if ($dv['specialtype'] != '') {
             $sq = $dv['specialtype'];
-        }
+    }
         else {
             $sq = $dv['sqid'];
         }
@@ -2385,8 +2387,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
                 if (isset($defaultValues[$arow['qid'].'~0'])) {
                     $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$arow['qid'].'~0'];
-                }
-            }
+                    }
+                    }
             switch($arow['type'])
             {
                 case "L":  //RADIO LIST
@@ -2416,9 +2418,9 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                             $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
                             if (isset($defaultValues[$arow['qid'].'~other'])) {
                                 $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$arow['qid'].'~other'];
+                                }
+                                }
                             }
-                        }
-                    }
                     break;
                 case "O": //DROPDOWN LIST WITH COMMENT
                     $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}comment";
@@ -2571,46 +2573,46 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
             for ($i = 1; $i <= $abvalue; $i++)
             {
-                $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
-                'type'=>$arow['type'],
-                'sid'=>$surveyid,
-                "gid"=>$arow['gid'],
-                "qid"=>$arow['qid'],
-                "aid"=>''
-                );
-                if ($style == "full")
-                {
-                    $fieldmap[$fieldname]['title']=$arow['title'];
-                    $fieldmap[$fieldname]['question']=$arow['question'];
+            $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
+            $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
+            'type'=>$arow['type'],
+            'sid'=>$surveyid,
+            "gid"=>$arow['gid'],
+            "qid"=>$arow['qid'],
+            "aid"=>''
+            );
+            if ($style == "full")
+            {
+                $fieldmap[$fieldname]['title']=$arow['title'];
+                $fieldmap[$fieldname]['question']=$arow['question'];
                     $fieldmap[$fieldname]['max_files']=$abvalue;
-                    $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                    $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
-                    $fieldmap[$fieldname]['hasconditions']=$conditions;
-                    $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                    $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                    $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
-                }
-                $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}"."_filecount";
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
-                'type'=>$arow['type'],
-                'sid'=>$surveyid,
-                "gid"=>$arow['gid'],
-                "qid"=>$arow['qid'],
-                "aid"=>"filecount"
-                );
-                if ($style == "full")
-                {
-                    $fieldmap[$fieldname]['title']=$arow['title'];
-                    $fieldmap[$fieldname]['question']="filecount - ".$arow['question'];
-                    $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                    $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
-                    $fieldmap[$fieldname]['hasconditions']=$conditions;
-                    $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                    $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                    $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
-                }
+                $fieldmap[$fieldname]['group_name']=$arow['group_name'];
+                $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
+                $fieldmap[$fieldname]['hasconditions']=$conditions;
+                $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
             }
+            $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}"."_filecount";
+            $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
+            'type'=>$arow['type'],
+            'sid'=>$surveyid,
+            "gid"=>$arow['gid'],
+            "qid"=>$arow['qid'],
+            "aid"=>"filecount"
+            );
+            if ($style == "full")
+            {
+                $fieldmap[$fieldname]['title']=$arow['title'];
+                $fieldmap[$fieldname]['question']="filecount - ".$arow['question'];
+                $fieldmap[$fieldname]['group_name']=$arow['group_name'];
+                $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
+                $fieldmap[$fieldname]['hasconditions']=$conditions;
+                $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+            }
+        }
         }
         else  // Question types with subquestions and one answer per subquestion  (M/A/B/C/E/F/H/P)
         {
@@ -2641,8 +2643,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['preg']=$arow['preg'];
                     if (isset($defaultValues[$arow['qid'].'~'.$abrow['qid']])) {
                         $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$arow['qid'].'~'.$abrow['qid']];
-                    }
-                }
+                        }
+                        }
                 if ($arow['type'] == "P")
                 {
                     $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}comment";
@@ -2828,7 +2830,7 @@ function setuserrights($uid, $rights)
 */
 function getSavedCount($surveyid)
 {
-    $surveyid = (int)$surveyid;
+    $surveyid=(int)$surveyid;
 
     return Saved_control::getCountOfAll($surveyid);
 }
@@ -4714,7 +4716,7 @@ function getArrayFilterExcludesForQuestion($qid)
                 {
                     // we found the target question, now we need to know what the answers were!
                     $fields[0]=sanitize_int($fields[0]);
-                    $query = "SELECT title FROM {{questions}} where parent_qid='{$fields[0]}' AND language='".$_SESSION['s_lang']."' order by question_order";
+                    $query = "SELECT title FROM {{questions}} where parent_qid='{$fields[0]}' AND language='".$_SESSION[$surveyid]['s_lang']."' order by question_order";
                     $qresult = db_execute_assoc($query);  //Checked
                     foreach ($qresult->readAll() as $code)
                     {
@@ -5846,13 +5848,13 @@ function get_quotaCompletedCount($iSurveyId, $quotaid)
 * @param mixed $sLanguageCode
 * @param boolean $bHonorConditions Apply conditions
 */
-function aGetFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorConditions = false)
+function aGetFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorConditions=false)
 {
     $aFieldMap = createFieldMap($iSurveyID,'full',false,false,$sLanguageCode);
     //Get response data
     $idrow = Surveys_dynamic::model($iSurveyID)->findByAttributes(array('id'=>$iResponseID));
 
-    $aResultTable = array();
+    $aResultTable=array();
     $oldgid = 0;
     $oldqid = 0;
     foreach ($aFieldMap as $sKey=>$fname)
@@ -5872,39 +5874,39 @@ function aGetFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonor
             if ($oldgid !== $fname['gid'])
             {
                 $oldgid = $fname['gid'];
-                $aResultTable['gid_'.$fname['gid']] = array($fname['group_name']);
+                    $aResultTable['gid_'.$fname['gid']]=array($fname['group_name']);
+                }
             }
-        }
         if (!empty($fname['qid']))
         {
-            if ($oldqid !== $fname['qid'])
-            {
-                $oldqid = $fname['qid'];
-                if (($bHonorConditions && LimeExpressionManager::QuestionIsRelevant($fname['qid'])) || !$bHonorConditions)
+                if ($oldqid !== $fname['qid'])
                 {
-                    if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2']))
+                    $oldqid = $fname['qid'];
+                if (($bHonorConditions && LimeExpressionManager::QuestionIsRelevant($fname['qid'])) || !$bHonorConditions)
                     {
-                        $aResultTable['qid_' . $fname['sid'] . 'X' . $fname['gid'] . 'X' . $fname['qid']] = array($fname['question'], '', '');
+                        if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2']))
+                        {
+                            $aResultTable['qid_'.$fname['sid'].'X'.$fname['gid'].'X'.$fname['qid']]=array($fname['question'],'','');
+                        }
+                        else
+                        {
+                        $answer = getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]);
+                            $aResultTable[$fname['fieldname']]=array($question,'',$answer);
+                            continue;
+                        }
                     }
                     else
                     {
-                        $answer = getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]);
-                        $aResultTable[$fname['fieldname']] = array($question, '', $answer);
                         continue;
                     }
                 }
-                else
-                {
-                    continue;
-                }
             }
-        }
-        else
-        {
+            else
+            {
             $answer=getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]);
-            $aResultTable[$fname['fieldname']]=array($question,'',$answer);
-            continue;
-        }
+                $aResultTable[$fname['fieldname']]=array($question,'',$answer);
+                continue;
+            }
         if (isset($fname['subquestion']))
             $subquestion = "{$fname['subquestion']}";
 
@@ -5915,8 +5917,8 @@ function aGetFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonor
             $subquestion .= "[{$fname['subquestion2']}]";
 
         $answer = getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]);
-        $aResultTable[$fname['fieldname']] = array('',$subquestion,$answer);
-    }
+            $aResultTable[$fname['fieldname']]=array('',$subquestion,$answer);
+        }
     return $aResultTable;
 }
 
@@ -6641,7 +6643,7 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 
     # translate 'question' and 'help' INSERTANS tags in questions
     $sql = "SELECT qid, language, question, help from {{questions}} WHERE sid=".$newsid." AND (question LIKE '%{INSERTANS:".$oldsid."X%' OR help LIKE '%{INSERTANS:".$oldsid."X%')";
-    $res = db_execute_assoc($sql) or show_error("Can't read question table in transInsertAns ");     // Checked
+    $result = db_execute_assoc($sql) or show_error("Can't read question table in transInsertAns ");     // Checked
 
     //while ($qentry = $res->FetchRow())
     foreach ($result->readAll() as $qentry)
