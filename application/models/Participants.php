@@ -412,11 +412,11 @@ class Participants extends CActiveRecord
                 }
                 else
                 {
-                    $data = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->limit($limit, $start)->queryAll();
+                    $data = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->limit(intval($limit), $start)->queryAll();
                 }
                 foreach ($data as $key => $value)
                 {
-                    $count = count(Yii::app()->db->createCommand()->select('*')->from('{{survey_links}}')->where('participant_id = "' . $value['participant_id'] . '"')->queryAll());
+                    $count = count(Yii::app()->db->createCommand()->select('*')->from('{{survey_links}}')->where('participant_id = :participant_id')->bindParam(":participant_id", $value['participant_id'], PDO::PARAM_INT)->queryAll());
                     if ($count != $condition[2])
                     {
                         array_push($resultarray, $value);
@@ -429,7 +429,7 @@ class Participants extends CActiveRecord
 
                 $userid = Yii::app()->db->createCommand()->select('uid')->where(array('not in', 'full_name', $condition[2]))->from('{{users}}')->queryAll();
                 $uid = $userid[0];
-                $command = Yii::app()->db->createCommand()->where('owner_uid = ' . $uid['uid'])->from('{{participants}}')->select('*');
+                $command = Yii::app()->db->createCommand()->where('owner_uid = :uid')->bindParam(":uid", $uid['uid'], PDO::PARAM_INT)->from('{{participants}}')->select('*');
                 if ($page == 0 && $limit == 0)
                 {
                     $data = $command->queryAll();
@@ -442,14 +442,14 @@ class Participants extends CActiveRecord
             }
             else if (is_numeric($condition[0]))
             {
-                $command = Yii::app()->db->createCommand()->select('{{participant_attribute}}.*,{{participants}}.*')->from('{{participant_attribute}}')->join('{{participants}}', '{{participant_attribute}}.participant_id = {{participants}}.participant_id')->where('{{participant_attribute}}.attribute_id = ' . $condition[0])->where(array('not in', '{{participant_attribute}}.value', $condition[2]));
+                $command = Yii::app()->db->createCommand()->select('{{participant_attribute}}.*,{{participants}}.*')->from('{{participant_attribute}}')->join('{{participants}}', '{{participant_attribute}}.participant_id = {{participants}}.participant_id')->where('{{participant_attribute}}.attribute_id = :condition_0')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->where(array('not in', '{{participant_attribute}}.value', Yii::app()->db->quoteValue($condition[2])));
                 if ($page == 0 && $limit == 0)
                 {
                     $data = $command->queryAll();
                 }
                 else
                 {
-                    $data = $command->limit($limit, $start)->queryAll();
+                    $data = $command->limit(intval($limit), $start)->queryAll();
                 }
                 return $data;
             }
@@ -462,7 +462,7 @@ class Participants extends CActiveRecord
                 }
                 else
                 {
-                    $data = $command->limit($limit, $start)->queryAll();
+                    $data = $command->limit(intval($limit), $start)->queryAll();
                 }
                 return $data;
             }
@@ -480,11 +480,11 @@ class Participants extends CActiveRecord
                 }
                 else
                 {
-                    $data = $command->limit($limit, $start);
+                    $data = $command->limit(intval($limit), $start);
                 }
                 foreach ($data as $key => $value)
                 {
-                    $count = count(Yii::app()->db->createCommand()->where('participant_id = "', $value['participant_id'] . '"')->from('{{survey_links}}')->select('*')->queryAll());
+                    $count = count(Yii::app()->db->createCommand()->where('participant_id = :participant_id')->from('{{survey_links}}')->select('*')->bindParam(":participant_id", $value['participant_id'], PDO::PARAM_INT)->queryAll());
                     if ($count != $condition[2])
                     {
                         array_push($resultarray, $value);
@@ -496,20 +496,20 @@ class Participants extends CActiveRecord
             {
                 $userid = Yii::app()->db->createCommand()->select('uid')->where(array('not like', 'full_name', $condition[2]))->from('{{users}}')->queryAll();
                 $uid = $userid[0];
-                $command = Yii::app()->db->createCommand()->where('owner_uid = ' . $uid['uid'])->from('{{participants}}')->select('*');
+                $command = Yii::app()->db->createCommand()->where('owner_uid = :uid')->bindParam(":uid", $uid['uid'], PDO::PARAM_INT)->from('{{participants}}')->select('*');
                 if ($page == 0 && $limit == 0)
                 {
                     $data = $command->queryAll();
                 }
                 else
                 {
-                    $data = $command->limit($limit, $start)->queryAll();
+                    $data = $command->limit(intval($limit), $start)->queryAll();
                 }
                 return $data;
             }
             else if (is_numeric($condition[0]))
             {
-                $command = Yii::app()->db->createCommand()->select('{{participant_attribute}}.*,{{participants}}.*')->from('{{participant_attribute}}')->join('{{participants}}', '{{participant_attribute}}.participant_id = {{participants}}.participant_id')->where('{{participant_attribute}}.attribute_id = ' . $condition[0])->where(array('not like', 'participant_attribute.value', $condition[2]));
+                $command = Yii::app()->db->createCommand()->select('{{participant_attribute}}.*,{{participants}}.*')->from('{{participant_attribute}}')->join('{{participants}}', '{{participant_attribute}}.participant_id = {{participants}}.participant_id')->where('{{participant_attribute}}.attribute_id = :condition_0')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->where(array('not like', 'participant_attribute.value', $condition[2]));
                 if ($page == 0 && $limit == 0)
                 {
                     $data = $command->queryAll();
@@ -529,7 +529,7 @@ class Participants extends CActiveRecord
                 }
                 else
                 {
-                    $data = $command->limit($limit, $start)->queryAll();
+                    $data = $command->limit(intval($limit), $start)->queryAll();
                 }
                 return $data;
             }
@@ -549,7 +549,7 @@ class Participants extends CActiveRecord
                 }
                 foreach ($data->result_array() as $key => $value)
                 {
-                    $this->db->where('participant_id', $value['participant_id']);
+                    $this->db->where('participant_id=:participant_id')->bindParam(":participant_id", $value['participant_id'], PDO::PARAM_INT);
                     $this->db->from('survey_links');
                     $count = $this->db->count_all_results();
                     if ($count > $condition[2])
@@ -561,9 +561,9 @@ class Participants extends CActiveRecord
             }
             else if ($condition[0] == 'owner_name')
             {
-                $userid = Yii::app()->db->createCommand()->select('uid')->where('full_name = "' . $condition[2] . '"')->from('{{users}}')->queryAll();
+                $userid = Yii::app()->db->createCommand()->select('uid')->where('full_name = :condition_2')->bindParam(":condition_2", $condition[2], PDO::PARAM_STR)->from('{{users}}')->queryAll();
                 $uid = $userid[0];
-                $command = Yii::app()->db->createCommand()->where('owner_uid = ' . $uid['uid'])->order("lastname", "asc")->select('*')->from('{{participants}}');
+                $command = Yii::app()->db->createCommand()->where('owner_uid = :uid')->bindParam(":uid", $uid['uid'], PDO::PARAM_INT)->order("lastname", "asc")->select('*')->from('{{participants}}');
                 if ($page == 0 && $limit == 0)
                 {
                     $data = $command->queryAll();
@@ -589,7 +589,7 @@ class Participants extends CActiveRecord
             }
             else
             {
-                $command = Yii::app()->db->createCommand()->where($condition[0] . ' > "' . $condition[2] . '"')->order("lastname", "asc")->select('*')->from('{{participants}}');
+                $command = Yii::app()->db->createCommand()->where(Yii::app()->db->quoteColumnName($condition[0]) . ' > :condition')->bindParam(":condition", $condition[2], PDO::PARAM_INT)->order("lastname", "asc")->select('*')->from('{{participants}}');
                 if ($page == 0 && $limit == 0)
                 {
                     $data = $command->queryAll();
@@ -617,7 +617,7 @@ class Participants extends CActiveRecord
                 }
                 foreach ($data as $key => $value)
                 {
-                    $count = count(Yii::app()->db->createCommand()->where('participant_id = "' . $value['participant_id'] . '"')->from('{{survey_links}}')->select('*')->queryAll());
+                    $count = count(Yii::app()->db->createCommand()->where('participant_id = :participant_id')->bindParam(":participant_id", $value['participant_id'], PDO::PARAM_INT)->from('{{survey_links}}')->select('*')->queryAll());
                     if ($count < $condition[2])
                     {
                         array_push($resultarray, $value);
@@ -628,9 +628,9 @@ class Participants extends CActiveRecord
             else if ($condition[0] == 'owner_name')
             {
 
-                $userid = Yii::app()->db->createCommand()->select('uid')->where('full_name = "' . $condition[2] . '"')->from('{{users}}')->queryAll();
+                $userid = Yii::app()->db->createCommand()->select('uid')->where('full_name = :condition_2')->bindParam(":condition_2", $condition[2], PDO::PARAM_STR)->from('{{users}}')->queryAll();
                 $uid = $userid[0];
-                $command = Yii::app()->db->createCommand()->where('owner_uid < ' . $uid['uid'])->select('*')->from('{{participants}}');
+                $command = Yii::app()->db->createCommand()->where('owner_uid < :uid')->bindParam(":uid", $uid['uid'], PDO::PARAM_INT)->select('*')->from('{{participants}}');
 
                 if ($page == 0 && $limit == 0)
                 {
@@ -644,7 +644,7 @@ class Participants extends CActiveRecord
             }
             else if (is_numeric($condition[0]))
             {
-                $command = Yii::app()->db->createCommand()->select('{{participant_attribute}}.*,{{participants}}.*')->from('{{participant_attribute}}')->join('{{participants}}', '{{participant_attribute}}.participant_id = {{participants}}.participant_id')->where('{{participant_attribute}}.attribute_id = ' . $condition[0])->where(array('not like', 'participant_attribute.value < "' . $condition[2] . '"'));
+                $command = Yii::app()->db->createCommand()->select('{{participant_attribute}}.*,{{participants}}.*')->from('{{participant_attribute}}')->join('{{participants}}', '{{participant_attribute}}.participant_id = {{participants}}.participant_id')->where('{{participant_attribute}}.attribute_id = :condition_0')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->where(array('not like', 'participant_attribute.value < :condition_2'))->bindParam(":condition_2", $condition[2], PDO::PARAM_INT);
                 if ($page == 0 && $limit == 0)
                 {
                     $data = $command->queryAll();
@@ -658,7 +658,7 @@ class Participants extends CActiveRecord
             }
             else
             {
-                $command = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->where($condition[0] . ' < "' . $condition[2] . '"');
+                $command = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->where(Yii::app()->db->quoteColumnName($condition[0]) . ' < :condition_2')->bindParam(":condition_2", $condition[2], PDO::PARAM_INT);
                 if ($page == 0 && $limit == 0)
                 {
                     $data = $command->queryAll();
@@ -705,7 +705,7 @@ class Participants extends CActiveRecord
                     if (is_numeric($condition[0]))
                     {
                         $newsub = $j;
-                        $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = ' . $condition[0] . ' AND {{participant_attribute}}.value LIKE "%' . $condition[2] . '%"')->queryAll();
+                        $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value LIKE :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", "%".$condition[2]."%", PDO::PARAM_STR)->queryAll();
 
 
 
@@ -714,7 +714,7 @@ class Participants extends CActiveRecord
                     }
                     else
                     {
-                        $command->addCondition($condition[0] . ' LIKE "%' . $condition[2] . '%"');
+                        $command->addCondition(':condition_0 LIKE :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_STR)->bindParam(":condition_2", "%".$condition[2]."%", PDO::PARAM_STR);
                     }
                 }
                 else if ($condition[1] == 'notequal')
@@ -722,7 +722,7 @@ class Participants extends CActiveRecord
                     if (is_numeric($condition[0]))
                     {
                         $newsub = $j;
-                        $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = ' . $condition[0] . ' AND {{participant_attribute}}.value NOT IN ("' . $condition[2] . '")')->queryAll();
+                        $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value NOT IN (:condition_2)')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", $condition[2], PDO::PARAM_STR)->queryAll();
 
 
                         $command->addInCondition('participant_id', $arr);
@@ -730,7 +730,7 @@ class Participants extends CActiveRecord
                     }
                     else
                     {
-                        $command->addCondition($condition[0] . ' NOT IN ("' . $condition[2] . '")');
+                        $command->addCondition(':condition_0 NOT IN (:condition_2)')->bindParam(":condition_0", $condition[0], PDO::PARAM_STR)->bindParam(":condition_2", $condition[2], PDO::PARAM_STR);
                     }
                 }
                 else if ($condition[1] == 'notcontains')
@@ -738,7 +738,7 @@ class Participants extends CActiveRecord
                     if (is_numeric($condition[0]))
                     {
                         $newsub = $j;
-                        $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = ' . $condition[0] . ' AND {{participant_attribute}}.value NOT LIKE "%' . $condition[2] . '%"')->queryAll();
+                        $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value NOT LIKE :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", "%".$condition[2]."%", PDO::PARAM_STR)->queryAll();
 
 
                         $command->addInCondition('participant_id', $arr);
@@ -746,7 +746,7 @@ class Participants extends CActiveRecord
                     }
                     else
                     {
-                        $command->addCondition($condition[0] . ' NOT LIKE "%' . $condition[2] . '%"');
+                        $command->addCondition(':condition_0 NOT LIKE  :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", "%".$condition[2]."%", PDO::PARAM_STR);
                     }
                 }
                 else if ($condition[1] == 'greaterthan')
@@ -754,7 +754,7 @@ class Participants extends CActiveRecord
                     if (is_numeric($condition[0]))
                     {
                         $newsub = $j;
-                        $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = ' . $condition[0] . ' AND {{participant_attribute}}.value > "' . $condition[2] . '"')->queryAll();
+                        $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value > :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", $condition[2], PDO::PARAM_INT)->queryAll();
 
 
                         $command->addInCondition('participant_id', $arr);
@@ -762,7 +762,7 @@ class Participants extends CActiveRecord
                     }
                     else
                     {
-                        $command->addCondition($condition[0] . ' > "' . $condition[2] . '"');
+                        $command->addCondition(':condition_0 > :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", $condition[2], PDO::PARAM_INT);
                     }
                 }
                 else if ($condition[1] == 'lessthan')
@@ -770,7 +770,7 @@ class Participants extends CActiveRecord
                     if (is_numeric($condition[0]))
                     {
                         $newsub = $j;
-                        $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = ' . $condition[0] . ' AND {{participant_attribute}}.value < "' . $condition[2] . '"')->queryAll();
+                        $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value < :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", $condition[2], PDO::PARAM_INT)->queryAll();
 
 
                         $command->addInCondition('participant_id', $arr);
@@ -778,7 +778,7 @@ class Participants extends CActiveRecord
                     }
                     else
                     {
-                        $command->addCondition($condition[0] . ' < "' . $condition[2] . '"');
+                        $command->addCondition(':condition_0 < :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", $condition[2], PDO::PARAM_INT);
                     }
                 }
             }
@@ -792,9 +792,7 @@ class Participants extends CActiveRecord
                         {
 
                             $newsub = $j;
-                            $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = ' . $condition[$i + 1] . ' AND {{participant_attribute}}.value = "' . $condition[$i + 3] . '"')->queryAll();
-
-
+                            $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value = :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_STR)->queryAll();
                             $command->addInCondition('participant_id', $arr);
                             $j++;
                         }
@@ -808,11 +806,11 @@ class Participants extends CActiveRecord
                     {
                         if ($condition[$i] == 'and')
                         {
-                            $command->addCondition($condition[$i + 1] . ' = "' . $condition[$i + 3] . '"');
+                            $command->addCondition(':condition_p1 = :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_STR);
                         }
                         else
                         {
-                            $command->addCondition($condition[$i + 1] . ' = "' . $condition[$i + 3] . '"', 'OR');
+                            $command->addCondition(':condition_p1 = :condition_p3', 'OR')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_STR);
                         }
                     }
                 }
@@ -823,7 +821,7 @@ class Participants extends CActiveRecord
                         if ($condition[$i] == 'and')
                         {
                             $newsub = $j;
-                            $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = ' . $condition[$i + 1] . ' AND {{participant_attribute}}.value LIKE "%' . $condition[$i + 3] . '%"')->queryAll();
+                            $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value LIKE :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR)->queryAll();
 
 
                             $command->addInCondition('participant_id', $arr);
@@ -840,11 +838,11 @@ class Participants extends CActiveRecord
                         if ($condition[$i] == 'and')
                         {
 
-                            $command->addCondition($condition[$i + 1] . ' LIKE "%' . $condition[$i + 3] . '%"');
+                            $command->addCondition(':condition_p1 LIKE :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_STR)->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR);
                         }
                         else
                         {
-                            $command->addCondition($condition[$i + 1] . ' LIKE "%' . $condition[$i + 3] . '%"', 'OR');
+                            $command->addCondition(':condition_p1 LIKE :condition_p3', 'OR')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_STR)->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR);
                         }
                     }
                 }
@@ -855,7 +853,7 @@ class Participants extends CActiveRecord
                         if ($condition[$i] == 'and')
                         {
                             $newsub = $j;
-                            $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = ' . $condition[$i + 1] . ' AND {{participant_attribute}}.value NOT IN ("' . $condition[$i + 3] . '")')->queryAll();
+                            $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value NOT IN (:condition_p3)')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_STR)->queryAll();
 
 
                             $command->addInCondition('participant_id', $arr);
@@ -871,11 +869,12 @@ class Participants extends CActiveRecord
                     {
                         if ($condition[$i] == 'and')
                         {
-                            $command->addCondition($condition[$i + 1] . ' NOT IN ("' . $condition[$i + 3] . '")');
+
+                            $command->addCondition(':condition_p1 NOT IN :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_STR)->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR);
                         }
                         else
                         {
-                            $command->addCondition($condition[$i + 1] . ' NOT IN ("' . $condition[$i + 3] . '")', 'OR');
+                            $command->addCondition(':condition_p1 NOT IN :condition_p3', 'OR')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_STR)->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR);
                         }
                     }
                 }
@@ -886,7 +885,7 @@ class Participants extends CActiveRecord
                         if ($condition[$i] == 'and')
                         {
                             $newsub = $j;
-                            $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = ' . $condition[$i + 1] . ' AND {{participant_attribute}}.value NOT LIKE "%' . $condition[$i + 3] . '%"')->queryAll();
+                            $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value NOT LIKE :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR)->queryAll();
 
 
                             $command->addInCondition('participant_id', $arr);
@@ -902,11 +901,12 @@ class Participants extends CActiveRecord
                     {
                         if ($condition[$i] == 'and')
                         {
-                            $command->addCondition($condition[$i + 1] . ' NOT LIKE "%' . $condition[$i + 3] . '%"');
+
+                            $command->addCondition(':condition_p1 NOT LIKE :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_STR)->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR);
                         }
                         else
                         {
-                            $command->addCondition($condition[$i + 1] . ' NOT LIKE "%' . $condition[$i + 3] . '%"', 'OR');
+                            $command->addCondition(':condition_p1 NOT LIKE :condition_p3', 'OR')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_STR)->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR);
                         }
                     }
                 }
@@ -917,7 +917,7 @@ class Participants extends CActiveRecord
                         if ($condition[$i] == 'and')
                         {
                             $newsub = $j;
-                            $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = ' . $condition[$i + 1] . ' AND {{participant_attribute}}.value > "' . $condition[$i + 3] . '"')->queryAll();
+                            $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value > :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_INT)->queryAll();
 
 
                             $command->addInCondition('participant_id', $arr);
@@ -933,11 +933,12 @@ class Participants extends CActiveRecord
                     {
                         if ($condition[$i] == 'and')
                         {
-                            $command->addCondition($condition[$i + 1] . ' > "' . $condition[$i + 3] . '"');
+
+                            $command->addCondition(':condition_p1 > :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_INT);
                         }
                         else
                         {
-                            $command->addCondition($condition[$i + 1] . ' > "' . $condition[$i + 3] . '"', 'OR');
+                            $command->addCondition(':condition_p1 > :condition_p3', 'OR')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3",$condition[$i + 3], PDO::PARAM_INT);
                         }
                     }
                 }
@@ -948,7 +949,7 @@ class Participants extends CActiveRecord
                         if ($condition[$i] == 'and')
                         {
                             $newsub = $j;
-                            $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = ' . $condition[$i + 1] . ' AND {{participant_attribute}}.value < "' . $condition[$i + 3] . '"')->queryAll();
+                            $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value < :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_INT)->queryAll();
 
 
                             $command->addInCondition('participant_id', $arr);
@@ -964,11 +965,11 @@ class Participants extends CActiveRecord
                     {
                         if ($condition[$i] == 'and')
                         {
-                            $command->addCondition($condition[$i + 1] . ' < "' . $condition[$i + 3] . '"');
+                            $command->addCondition(':condition_p1 < :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_INT);
                         }
                         else
                         {
-                            $command->addCondition($condition[$i + 1] . ' < "' . $condition[$i + 3] . '"', 'OR');
+                            $command->addCondition(':condition_p1 < :condition_p3', 'OR')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", $condition[$i + 3], PDO::PARAM_INT);
                         }
                     }
                 }
@@ -1011,28 +1012,28 @@ class Participants extends CActiveRecord
             {
                 if ($value[0] == 'equal')
                 {
-                    $command->addCondition('attribute_id = ' . $key, 'OR');
-                    $command->addCondition('value = "' . $value[1] . '"');
+                    $command->addCondition('attribute_id = :attrid', 'OR')->bindParam(":attrid", $key, PDO::PARAM_INT);
+                    $command->addCondition('value = :val1')->bindParam(":val1", $value[1], PDO::PARAM_STR);
                 }
                 if ($value[0] == 'contains')
                 {
-                    $command->addCondition('attribute_id = ' . $key, 'OR');
-                    $command->addCondition('value LIKE "%' . $value[1] . '%"');
+                    $command->addCondition('attribute_id = :attrid', 'OR')->bindParam(":attrid", $key, PDO::PARAM_INT);
+                    $command->addCondition('value LIKE :val1')->bindParam(":val1", "%".$value[1]."%", PDO::PARAM_STR);
                 }
                 if ($value[0] == 'notequal')
                 {
-                    $command->addCondition('attribute_id = ' . $key, 'OR');
-                    $command->addCondition('value != "' . $value[1] . '"');
+                    $command->addCondition('attribute_id = :attrid', 'OR')->bindParam(":attrid", $key, PDO::PARAM_INT);
+                    $command->addCondition('value != :val1')->bindParam(":val1", $value[1], PDO::PARAM_STR);
                 }
                 if ($value[0] == 'greaterthan')
                 {
-                    $command->addCondition('attribute_id = ' . $key, 'OR');
-                    $command->addCondition('value > "' . $value[1] . '"');
+                    $command->addCondition('attribute_id = :attrid', 'OR')->bindParam(":attrid", $key, PDO::PARAM_INT);
+                    $command->addCondition('value > :val1')->bindParam(":val1", $value[1], PDO::PARAM_STR);
                 }
                 if ($value[0] == 'lessthan')
                 {
-                    $command->addCondition('attribute_id = ' . $key, 'OR');
-                    $command->addCondition('value < "' . $value[1] . '"');
+                    $command->addCondition('attribute_id = :attrid', 'OR')->bindParam(":attrid", $key, PDO::PARAM_INT);
+                    $command->addCondition('value < :val1')->bindParam(":val1", $value[1], PDO::PARAM_STR);
                 }
             }
             $participant_id = ParticipantAttributeNames::model()->findAll($command);
@@ -1041,7 +1042,7 @@ class Participants extends CActiveRecord
             $command->condition = '';
             foreach ($participant_id as $key => $value)
             {
-                $command->addCondition('participant_id = "' . $value->participant_id . '"');
+                $command->addCondition('participant_id = :participant_id')->bindParam(":participant_id", $value->participant_id, PDO::PARAM_STR);
             }
             if ($page == 0 && $limit == 0)
             {
@@ -1078,9 +1079,9 @@ class Participants extends CActiveRecord
     function is_owner($participant_id)
     {
         $userid = Yii::app()->session['loginID'];
-        $is_owner = Yii::app()->db->createCommand()->select('participant_id')->where('participant_id = "' . $participant_id . '" AND owner_uid = ' . $userid)->from('{{participants}}')->queryAll();
+        $is_owner = Yii::app()->db->createCommand()->select('participant_id')->where('participant_id = :participant_id AND owner_uid = :userid')->from('{{participants}}')->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll();
         //$is_owner->num_rows();
-        $is_shared = Yii::app()->db->createCommand()->select('participant_id')->where('participant_id = "' . $participant_id . '" AND share_uid = ' . $userid)->from('{{participant_shares}}')->queryAll();
+        $is_shared = Yii::app()->db->createCommand()->select('participant_id')->where('participant_id = :participant_id AND share_uid = :userid')->from('{{participant_shares}}')->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll();
         if (count($is_shared) || count($is_owner))
         {
             return true;
@@ -1097,7 +1098,7 @@ class Participants extends CActiveRecord
 
     function getParticipantShared($userid)
     {
-        return Yii::app()->db->createCommand()->select('{{participants}}.*, {{participant_shares}}.*')->from('{{participants}}')->join('{{participant_shares}}', '{{participant_shares}}.participant_id = {{participants}}.participant_id')->where('owner_uid = ' . $userid)->queryAll();
+        return Yii::app()->db->createCommand()->select('{{participants}}.*, {{participant_shares}}.*')->from('{{participants}}')->join('{{participant_shares}}', '{{participant_shares}}.participant_id = {{participants}}.participant_id')->where('owner_uid = :userid')->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll();
     }
 
     /*
@@ -1146,19 +1147,19 @@ class Participants extends CActiveRecord
             foreach ($newcreate as $key => $value)
             {
                 $fields['attribute_cpdb_' . $value] = array('type' => 'VARCHAR', 'constraint' => '255');
-                $attname = Yii::app()->db->createCommand()->select('{{participant_attribute_names_lang}}.attribute_name')->from('{{participant_attribute_names}}')->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')->where('{{participant_attribute_names}}.attribute_id = ' . $value . ' AND lang = "' . Yii::app()->session['adminlang'] . '"');
+                $attname = Yii::app()->db->createCommand()->select('{{participant_attribute_names_lang}}.attribute_name')->from('{{participant_attribute_names}}')->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')->where('{{participant_attribute_names}}.attribute_id = :attrid AND lang = "' . Yii::app()->session['adminlang'] . '"')->bindParam(":attrid", $value, PDO::PARAM_INT);
                 $attributename = $attname->queryRow();
                 $tokenattributefieldnames[] = 'attribute_cpdb_' . $value;
                 $fieldcontents.= 'attribute_cpdb_' . $value . '=' . $attributename['attribute_name'] . "\n";
                 array_push($attributeidadded, 'attribute_cpdb_' . $value);
                 array_push($attributesadded, $value);
             }
-            $previousatt = Yii::app()->db->createCommand()->select('attributedescriptions')->where("sid = " . $surveyid)->from('{{surveys}}');
+            $previousatt = Yii::app()->db->createCommand()->select('attributedescriptions')->where("sid = :sid")->from('{{surveys}}')->bindParam(":sid", $surveyid, PDO::PARAM_INT);
             $previouseattribute = $previousatt->queryRow();
-            Yii::app()->db->createCommand()->update('{{surveys}}', array("attributedescriptions" => $previouseattribute['attributedescriptions'] . $fieldcontents), 'sid = ' . $surveyid); // load description in the surveys table
+            Yii::app()->db->createCommand()->update('{{surveys}}', array("attributedescriptions" => Yii::app()->db->quoteValue($previouseattribute['attributedescriptions'] . $fieldcontents)), 'sid = :sid')->bindParam(":sid", $surveyid, PDO::PARAM_INT); // load description in the surveys table
             foreach ($fields as $key => $value)
-            {
-                Yii::app()->db->createCommand("ALTER TABLE {{tokens_$surveyid}} ADD COLUMN $key " . $value['type'] . '(' . $value['constraint'] . ')')->query(); // add columns in token's table
+            {	
+                Yii::app()->db->createCommand("ALTER TABLE {{tokens_$surveyid}} ADD COLUMN :key :type ( :val_const )")->bindParam(":key", $key, PDO::PARAM_STR)->bindParam(":type", $value["type"], PDO::PARAM_STR)->bindParam(":val_const", $value['constraint'], PDO::PARAM_STR)->query(); // add columns in token's table
             }
         }
         //Function for pushing associative array
@@ -1189,14 +1190,14 @@ class Participants extends CActiveRecord
                     $numberofattributes = count($attributesadded);
                     for ($a = 0; $a < $numberofattributes; $a++)
                     {
-                        $val = Yii::app()->db->createCommand()->select('value')->where('participant_id = "' . $participant . '" AND attribute_id = ' . $attributesadded[$a])->from('{{participant_attribute}}');
+                        $val = Yii::app()->db->createCommand()->select('value')->where('participant_id = :participant_id AND attribute_id = :attrid')->from('{{participant_attribute}}')->bindParam("participant_id", $participant, PDO::PARAM_STR)->bindParam(":attrid", $attributesadded[$a], PDO::PARAM_INT);
                         if (count($val->queryAll()) > 0)
                         {
                             $value = $val->queryRow();
                             $data = array($attributeidadded[$a] => $value['value']);
                             if (!empty($value))
                             {
-                                Yii::app()->db->createCommand()->update("{{tokens_$surveyid}}", $data, 'participant_id = "' . $participant . '"');
+                                Yii::app()->db->createCommand()->update("{{tokens_$surveyid}}", $data, 'participant_id = :participant_id')->bindParam("participant_id", $participant, PDO::PARAM_STR);
                             }
                         }
                     }
@@ -1205,12 +1206,12 @@ class Participants extends CActiveRecord
                 {
                     foreach ($mapped as $key => $value)
                     {
-                        $val = Yii::app()->db->createCommand()->select('value')->where('participant_id = "' . $participant . '" AND attribute_id = ' . $value)->from('{{participant_attribute}}');
+                        $val = Yii::app()->db->createCommand()->select('value')->where('participant_id = :participant_id AND attribute_id = :attrid')->from('{{participant_attribute}}')->bindParam("participant_id", $participant, PDO::PARAM_STR)->bindParam(":attrid", $attributesadded[$a], PDO::PARAM_INT);
                         $value = $val->queryRow();
                         if (isset($value['value']))
                         {
                             $data = array($key => $value['value']);
-                            Yii::app()->db->createCommand()->update("{{tokens_$surveyid}}", $data, 'participant_id = "' . $participant . '"');
+                            Yii::app()->db->createCommand()->update("{{tokens_$surveyid}}", $data, 'participant_id = :participant_id')->bindParam("participant_id", $participant, PDO::PARAM_STR);
                         }
                     }
                 }
@@ -1268,8 +1269,8 @@ class Participants extends CActiveRecord
         {
             if (is_numeric($tid) && $tid != "")
             {
-                $tobeinserted = Yii::app()->db->createCommand()->select('participant_id,firstname,lastname,email,language')->where('tid = ' . $tid)->from('{{tokens_' . $surveyid . '}}')->queryRow();
-                $query = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->where('firstname = "' . $tobeinserted['firstname'] . '" AND lastname = "' . $tobeinserted['lastname'] . '" AND email = "' . $tobeinserted['email'] . '"')->queryAll();
+                $tobeinserted = Yii::app()->db->createCommand()->select('participant_id,firstname,lastname,email,language')->where('tid = :tid')->from('{{tokens_' . intval($surveyid) . '}}')->bindParam(":tid", $tid, PDO::PARAM_INT)->queryRow();
+                $query = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->where('firstname = :firstname AND lastname = :lastname AND email = :email')->bindParam(":firstname", $tobeinserted['firstname'], PDO::PARAM_STR)->bindParam(":lastname", $tobeinserted['lastname'], PDO::PARAM_STR)->bindParam(":email", $tobeinserted['email'], PDO::PARAM_STR)->queryAll();
                 if (count($query) > 0)
                 {
                     $duplicate++;
@@ -1298,7 +1299,7 @@ class Participants extends CActiveRecord
                     {
                         foreach ($newarr as $key => $value)
                         {
-                            $val = Yii::app()->db->createCommand()->select($value)->where('tid = ' . $tid)->from('{{tokens_' . $surveyid . '}}');
+                            $val = Yii::app()->db->createCommand()->select($value)->where('tid = :tid')->from('{{tokens_' . intval($surveyid) . '}}')->bindParam(":tid", $tid, PDO::PARAM_INT);
                             $value2 = $val->queryRow();
                             $data = array('participant_id' => $pid,
                                 'value' => $value2["$value"],
@@ -1314,7 +1315,7 @@ class Participants extends CActiveRecord
                     {
                         foreach ($mapped as $cpdbatt => $tatt)
                         {
-                            $val = Yii::app()->db->createCommand()->select($tatt)->where('tid = ' . $tid)->from('{{tokens_' . $surveyid . '}}');
+                            $val = Yii::app()->db->createCommand()->select($tatt)->where('tid = :tid')->from('{{tokens_' . intval($surveyid) . '}}')->bindParam(":tid", $tid, PDO::PARAM_INT);
                             $value = $val->queryRow();
                             $data = array('participant_id' => $pid,
                                 'value' => $value["$tatt"],
@@ -1333,14 +1334,14 @@ class Participants extends CActiveRecord
         {
             foreach ($newarr as $key => $value)
             {
-                $newname = 'attribute_cpdb_' . $attid[$key];
+                $newname = 'attribute_cpdb_' . intval($attid[$key]);
                 $fields = array($value => array('name' => $newname, 'type' => 'TEXT'));
-                Yii::app()->db->createCommand()->renameColumn('{{tokens_' . $surveyid . '}}', $value, $newname);
-                Yii::app()->db->createCommand()->alterColumn('{{tokens_' . $surveyid . '}}', $newname, 'TEXT');
-                $previousatt = Yii::app()->db->createCommand()->select('attributedescriptions')->where("sid = " . $surveyid)->from('{{surveys}}');
+                Yii::app()->db->createCommand()->renameColumn('{{tokens_' . intval($surveyid) . '}}', $value, $newname);
+                Yii::app()->db->createCommand()->alterColumn('{{tokens_' . intval($surveyid) . '}}', $newname, 'TEXT');
+                $previousatt = Yii::app()->db->createCommand()->select('attributedescriptions')->where("sid = :sid")->bindParam(":sid", $surveyid, PDO::PARAM_INT)->from('{{surveys}}');
                 $previouseattribute = $previousatt->queryRow();
                 $newstring = str_replace($value, $newname, $previouseattribute['attributedescriptions']);
-                Yii::app()->db->createCommand()->update('{{surveys}}', array("attributedescriptions" => $newstring), 'sid = ' . $surveyid); // load description in the surveys table
+                Yii::app()->db->createCommand()->update('{{surveys}}', array("attributedescriptions" => $newstring), 'sid = :sid')->bindParam(":sid", $surveyid, PDO::PARAM_INT); // load description in the surveys table
             }
         }
         if (!empty($mapped))
@@ -1351,12 +1352,12 @@ class Participants extends CActiveRecord
                 {
                     $newname = 'attribute_cpdb_' . $cpdbatt;
                     $fields = array($tatt => array('name' => $newname, 'type' => 'TEXT'));
-                    Yii::app()->db->createCommand()->renameColumn('{{tokens_' . $surveyid . '}}', $tatt, $newname);
-                    Yii::app()->db->createCommand()->alterColumn('{{tokens_' . $surveyid . '}}', $newname, 'TEXT');
-                    $previousatt = Yii::app()->db->createCommand()->select('attributedescriptions')->where("sid = " . $surveyid)->from('{{surveys}}');
+                    Yii::app()->db->createCommand()->renameColumn('{{tokens_' . intval($surveyid) . '}}', $tatt, $newname);
+                    Yii::app()->db->createCommand()->alterColumn('{{tokens_' . intval($surveyid) . '}}', $newname, 'TEXT');
+                    $previousatt = Yii::app()->db->createCommand()->select('attributedescriptions')->where("sid = :sid")->bindParam(":sid", $surveyid, PDO::PARAM_INT)->from('{{surveys}}');
                     $previouseattribute = $previousatt->queryRow();
                     $newstring = str_replace($tatt, $newname, $previouseattribute['attributedescriptions']);
-                    Yii::app()->db->createCommand()->update('{{surveys}}', array("attributedescriptions" => $newstring), 'sid = ' . $surveyid); // load description in the surveys table
+                    Yii::app()->db->createCommand()->update('{{surveys}}', array("attributedescriptions" => $newstring), 'sid = :sid')->bindParam(":sid", $surveyid, PDO::PARAM_INT); // load description in the surveys table
                 }
             }
         }
