@@ -427,7 +427,7 @@ class CheckIntegrity extends Survey_Common_Action
         {
             $iRowCount = Questions::model()->countByAttributes(array('qid' => $question_attribute['qid']));
             if (Questions::model()->hasErrors()) safe_die(Questions::model()->getError());
-            if (!$iRowCount < 1) {
+            if (!$iRowCount) {
                 $aDelete['questionattributes'][] = array('qid' => $question_attribute['qid']);
             }
         } // foreach

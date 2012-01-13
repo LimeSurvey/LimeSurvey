@@ -239,6 +239,7 @@ class Survey extends CActiveRecord
                 Answers::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
                 Conditions::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
                 Question_attributes::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
+                Defaultvalues::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
             }
 
             Questions::model()->deleteAllByAttributes(array('sid' => $iSurveyID));

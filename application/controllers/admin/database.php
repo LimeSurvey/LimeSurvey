@@ -897,7 +897,7 @@ class database extends Survey_Common_Action
                     'surveyls_numberformat' => Yii::app()->request->getPost('numberformat_'.$langname)
                     );
 
-                    Surveys_languagesettings::model()->updateByPk(array('surveyls_survey_id'=>$postsid, 'surveyls_language='=>$langname), $data);
+                    Surveys_languagesettings::model()->updateByPk(array('surveyls_survey_id'=>$postsid, 'surveyls_language'=>$langname), $data);
                 }
             }
             Yii::app()->session['flashmessage'] = $clang->gT("Survey text elements successfully saved.");
@@ -1040,6 +1040,7 @@ class database extends Survey_Common_Action
             }
 
             Surveys_languagesettings::model()->deleteAll($sqlstring, $params);
+            $usresult=true;
 
             foreach (Survey::model()->findByPk($surveyid)->additionalLanguages as $langname)
             {
@@ -1090,33 +1091,25 @@ class database extends Survey_Common_Action
 
             if ($usresult)
             {
-                $surveyselect = getsurveylist();
                 Yii::app()->session['flashmessage'] = $clang->gT("Survey settings were successfully saved.");
-
             }
             else
             {
-                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Survey could not be updated","js")."\n\")\n //-->\n</script>\n";
+                Yii::app()->session['flashmessage'] = $clang->gT("Error:").'<br>'.$clang->gT("Survey could not be updated.");
             }
 
-            if ($databaseoutput != '')
+
+            //redirect(site_url('admin/survey/view/'.$surveyid));
+
+            if (Yii::app()->request->getPost('action') == "updatesurveysettingsandeditlocalesettings")
             {
-                echo $databaseoutput;
+                $this->getController()->redirect($this->getController()->createUrl('/admin/survey/editlocalsettings/surveyid/'.$surveyid));
             }
             else
             {
-                //redirect(site_url('admin/survey/view/'.$surveyid));
-
-                if (Yii::app()->request->getPost('action') == "updatesurveysettingsandeditlocalesettings")
-                {
-                    $this->getController()->redirect($this->getController()->createUrl('/admin/survey/editlocalsettings/surveyid/'.$surveyid));
-                }
-                else
-                {
-                    $this->getController()->redirect($this->getController()->createUrl('/admin/survey/view/surveyid/'.$surveyid));
-                }
-
+                $this->getController()->redirect($this->getController()->createUrl('/admin/survey/view/surveyid/'.$surveyid));
             }
+
         }
 
         if (!$action)

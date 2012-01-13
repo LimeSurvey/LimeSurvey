@@ -639,7 +639,7 @@ class SurveyAction extends Survey_Common_Action
                 $aData['issuperadmin'] = (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == true);
                 $this->_deleteSurvey($iSurveyId);
                 Yii::app()->session['flashmessage'] = $clang->gT("Survey deleted.");
-                $this->getController()->redirect($this->getController()->createUrl("admin/survey/index"));
+                $this->getController()->redirect($this->getController()->createUrl("admin/index"));
             }
             else
             {
