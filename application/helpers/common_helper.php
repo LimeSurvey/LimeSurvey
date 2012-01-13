@@ -2175,14 +2175,25 @@ function validate_templatedir($templatename)
 * @return array
 */
 function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
-    // TMSW Conditions->Relevance:  Refactor this function so that doesn't query conditions table, and so that only 3 db calls total to build array (questions, answers, attributes)
-    // TMSW Conditions->Relevance:  'hasconditions' and 'usedinconditions' are no longer needed.
-
     global $globalfieldmap, $aDuplicateQIDs;
 
-    $clang = Yii::app()->lang;
+    $surveyid = sanitize_int($surveyid);
+    //Get list of questions
+    if (is_null($sQuestionLanguage))
+    {
+        if (isset($_SESSION['s_lang'])) {
+            $sQuestionLanguage = $_SESSION['s_lang'];
+        }
+        else {
+            $sQuestionLanguage = Survey::model()->findByPk($surveyid)->language;
+        }
+    }
+    $sQuestionLanguage = sanitize_languagecode($sQuestionLanguage);
+    if ($clang->langcode != $sQuestionLanguage) {
+        SetSurveyLanguage($surveyid, $sQuestionLanguage);
+    }
     $s_lang = $clang->langcode;
-    $surveyid=sanitize_int($surveyid);
+
     //checks to see if fieldmap has already been built for this page.
     if (isset($globalfieldmap[$surveyid][$style][$s_lang]) && $force_refresh==false) {
         return $globalfieldmap[$surveyid][$style][$s_lang];
@@ -2585,7 +2596,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             {
                 $fieldmap[$fieldname]['title']=$arow['title'];
                 $fieldmap[$fieldname]['question']=$arow['question'];
-                    $fieldmap[$fieldname]['max_files']=$abvalue;
+                $fieldmap[$fieldname]['max_files']=$abvalue;
                 $fieldmap[$fieldname]['group_name']=$arow['group_name'];
                 $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                 $fieldmap[$fieldname]['hasconditions']=$conditions;
@@ -2643,8 +2654,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['preg']=$arow['preg'];
                     if (isset($defaultValues[$arow['qid'].'~'.$abrow['qid']])) {
                         $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$arow['qid'].'~'.$abrow['qid']];
-                        }
-                        }
+                    }
+                }
                 if ($arow['type'] == "P")
                 {
                     $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}comment";
