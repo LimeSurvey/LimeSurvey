@@ -27,11 +27,12 @@
     	</td>
     	<td>
         	<?php
-                if (trim($surveyinfo['surveyls_description'])!='') {
+                if (trim($surveyinfo['surveyls_description']) != '')
+                {
                     templatereplace($surveyinfo['surveyls_description']);
                     echo LimeExpressionManager::GetLastPrettyPrintExpression();
-                    }
-                    ?>
+                }
+            ?>
         </td>
 	</tr>
 	<tr>

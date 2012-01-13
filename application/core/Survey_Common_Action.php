@@ -59,7 +59,9 @@ class Survey_Common_Action extends CAction
         $params = $this->_addPseudoParams($params);
 
         if (!empty($params['iSurveyId']))
+        {
             LimeExpressionManager::SetSurveyId($params['iSurveyId']); // must be called early - it clears internal cache if a new survey is being used
+        }
 
         // Check if the method is public and of the action class, not its parents
         // ReflectionClass gets us the methods of the class and parent class
@@ -200,6 +202,10 @@ class Survey_Common_Action extends CAction
 
             if (!empty($aData['surveyid']))
             {
+
+                LimeExpressionManager::StartProcessingPage(false, Yii::app()->baseUrl);  // so can click on syntax highlighting to edit questions
+                LimeExpressionManager::StartProcessingGroup(!empty($aData['gid']) ? $aData['gid'] : null, false, $aData['surveyid']);  // loads list of replacement values available for this group
+
                 $this->_surveybar($aData['surveyid'], !empty($aData['gid']) ? $aData['gid'] : null);
 
                 if (isset($aData['display']['menu_bars']['surveysummary']))
@@ -226,6 +232,9 @@ class Survey_Common_Action extends CAction
                         $this->_questionbar($aData['surveyid'], $aData['gid'], $aData['qid'], !empty($aData['display']['menu_bars']['qid_action']) ? $aData['display']['menu_bars']['qid_action'] : null);
                     }
                 }
+
+                LimeExpressionManager::FinishProcessingPage();
+
             }
         }
 
@@ -335,11 +344,7 @@ class Survey_Common_Action extends CAction
             $qrrow = array_map('FlattenText', $qrrow);
             if (bHasSurveyPermission($iSurveyId, 'surveycontent', 'read'))
             {
-                if (count(Survey::model()->findByPk($iSurveyId)->additionalLanguages) == 0)
-                {
-
-                }
-                else
+                if (count(Survey::model()->findByPk($iSurveyId)->additionalLanguages) != 0)
                 {
                     Yii::app()->loadHelper('surveytranslator');
                     $tmp_survlangs = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
@@ -390,18 +395,9 @@ class Survey_Common_Action extends CAction
                     $DisplayArray[] = $aAttribute;
                 }
             }
-            if (is_null($qrrow['relevance']) || trim($qrrow['relevance']) == '')
-            {
-                $aData['relevance'] = 1;
-            }
-            else
-            {
-                LimeExpressionManager::ProcessString("{" . $qrrow['relevance'] . "}", $aData['qid']);    // tests Relevance equation so can pretty-print it
-                $aData['relevance'] = LimeExpressionManager::GetLastPrettyPrintExpression();
-            }
             $aData['advancedsettings'] = $DisplayArray;
             $aData['condarray'] = $condarray;
-            $questionsummary .= $this->getController()->render("/admin/survey/Question/questionbar_view", $aData, true);
+            $questionsummary .= $this->getController()->render('/admin/survey/Question/questionbar_view', $aData, true);
         }
         $finaldata['display'] = $questionsummary;
 
@@ -864,6 +860,7 @@ class Survey_Common_Action extends CAction
         $aData['aAdditionalLanguages'] = $aAdditionalLanguages;
         $aData['clang'] = $clang;
         $aData['surveyinfo'] = $surveyinfo;
+
         $this->getController()->render("/admin/survey/surveySummary_view", $aData);
     }
 

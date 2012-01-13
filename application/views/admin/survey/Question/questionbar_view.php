@@ -187,7 +187,6 @@
     <tr><td><strong>
             <?php $clang->eT("Question:"); ?></strong></td><td>
             <?php
-                $junk = array();
                 templatereplace($qrrow['question']);
                 echo LimeExpressionManager::GetLastPrettyPrintExpression();
         ?></td></tr>
@@ -195,7 +194,6 @@
             <?php $clang->eT("Help:"); ?></strong></td><td>
             <?php
                 if (trim($qrrow['help'])!=''){
-                    $junk = array();
                     templatereplace($qrrow['help']);
                     echo LimeExpressionManager::GetLastPrettyPrintExpression();
             } ?>
@@ -257,36 +255,29 @@
                     <?php $clang->eT("No"); ?>
 
                     <?php } ?>
-            </td></tr>
+            </td>
+        </tr>
+        <?php } ?>
+        <?php if (trim($qrrow['relevance']) != '') { ?>
         <tr>
             <td><?php $clang->eT("Relevance equation:"); ?></td>
-            <td><?php echo $relevance; ?></td>
+            <td>
+            <?php
+                LimeExpressionManager::ProcessString("{" . $qrrow['relevance'] . "}", $qid);    // tests Relevance equation so can pretty-print it
+                echo LimeExpressionManager::GetLastPrettyPrintExpression();
+            ?>
+            </td>
         </tr>
-        <?php }
-        // TMSW Conditions->Relevance:  not needed?  Or use relevance output or custom EM query to compute this?
-
-        if (!is_null($condarray))
-        { ?>
-        <tr>
-            <td ><strong>
-                    <?php $clang->eT("Other questions having conditions on this question:"); ?>
-                </strong></td><td>
-                <?php foreach ($condarray[$qid] as $depqid => $depcid)
-                    {
-                        $listcid=implode("-",$depcid); ?>
-                    <a href='#' onclick="window.open('<?php echo $this->createUrl("admin/conditions/markcid/" . $listcid . "/surveyid/$surveyid/qid/$depqid"); ?>','_top')">[QID: <?php echo $depqid; ?>]</a>
-                    <?php } ?>
-            </td></tr>
-        <?php }
+        <?php } ?>
+        <?php
         $sCurrentCategory='';
         foreach ($advancedsettings as $aAdvancedSetting)
-        {?>
+        { ?>
         <tr>
             <td><?php echo $aAdvancedSetting['caption'];?>:</td>
             <td><?php
                     if ($aAdvancedSetting['i18n']==false)  echo $aAdvancedSetting['value']; else echo $aAdvancedSetting[$baselang]['value']?>
             </td>
         </tr>
-        <?php
-    }?>
+        <?php } ?>
             </table>

@@ -142,7 +142,8 @@
     <td>
         <?php echo $grow['group_name']; ?> (<?php echo $grow['gid']; ?>)</td>
 </tr>
-<tr><td><strong>
+<tr>
+    <td><strong>
         <?php $clang->eT("Description:"); ?></strong>
     </td>
     <td>
@@ -152,6 +153,19 @@
         } ?>
     </td>
 </tr>
+<?php if (trim($grow['grelevance'])!='') { ?>
+    <tr>
+        <td><strong>
+            <?php $clang->eT("Relevance:"); ?></strong>
+        </td>
+        <td>
+            <?php
+                templatereplace('{' . $grow['grelevance'] . '}');
+                echo LimeExpressionManager::GetLastPrettyPrintExpression();
+            ?>
+        </td>
+    </tr>
+<?php } ?>
 <?php
     if (trim($grow['randomization_group'])!='')
     {?>
