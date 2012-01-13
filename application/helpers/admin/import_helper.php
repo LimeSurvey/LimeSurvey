@@ -3448,7 +3448,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         {
             $insertdata[(string)$key]=(string)$value;
         }
-        if (!in_array($insertdata['language'],$aLanguagesSupported)) continue;
+        if (!in_array($insertdata['surveyls_language'],$aLanguagesSupported)) continue;
 
         $insertdata['surveyls_survey_id']=$newsid;
         if ($bTranslateInsertansTags)
