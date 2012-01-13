@@ -3386,9 +3386,9 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $newsid=GetNewSurveyID($oldsid);
         }
 
-        if ($iDBVersion<=143)
+        if ($iDBVersion>143)
         {
-            $insertdata['anonymized']=$insertdata['private'];
+            if(is_set($insertdata['private'])) $insertdata['anonymized']=$insertdata['private'];
             unset($insertdata['private']);
             unset($insertdata['notification']);
         }

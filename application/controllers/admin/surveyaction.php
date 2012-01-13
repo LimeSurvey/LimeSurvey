@@ -943,6 +943,8 @@ class SurveyAction extends Survey_Common_Action
                 unlink($sFullFilepath);
             }
 
+            if (isset($aImportResults['error']) && $aImportResults['error']) safe_die($aImportResults['error']);
+            
             $aData['action'] = $action;
             $aData['sLink'] = $this->getController()->createUrl('admin/survey/view/surveyid/' . $aImportResults['newsid']);
             $aData['aImportResults'] = $aImportResults;
