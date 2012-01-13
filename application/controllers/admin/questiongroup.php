@@ -107,27 +107,23 @@ class questiongroup extends Survey_Common_Action
 
         if (bHasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
-            $action = "addgroup";
             $clang = $this->getController()->lang;
 
             $_SESSION['FileManagerContext'] = "create:group:{$surveyid}";
 
-            if ($action == "addgroup")
-            {
-                Yii::app()->loadHelper('admin/htmleditor');
-                Yii::app()->loadHelper('surveytranslator');
-                $grplangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-                $baselang = Survey::model()->findByPk($surveyid)->language;
-                $grplangs[] = $baselang;
-                $grplangs = array_reverse($grplangs);
+            Yii::app()->loadHelper('admin/htmleditor');
+            Yii::app()->loadHelper('surveytranslator');
+            $grplangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+            $baselang = Survey::model()->findByPk($surveyid)->language;
+            $grplangs[] = $baselang;
+            $grplangs = array_reverse($grplangs);
 
-                $aData['display']['menu_bars']['surveysummary'] = 'addgroup';
-                $aData['surveyid'] = $surveyid;
-                $aData['action'] = $action;
-                $aData['grplangs'] = $grplangs;
-                $aData['baselang'] = $baselang;
-                $aViewUrls = 'QuestionGroups/addGroup_view';
-            }
+            $aData['display']['menu_bars']['surveysummary'] = 'addgroup';
+            $aData['surveyid'] = $surveyid;
+            $aData['action'] = $action;
+            $aData['grplangs'] = $grplangs;
+            $aData['baselang'] = $baselang;
+            $aViewUrls = 'QuestionGroups/addGroup_view';
 
             $this->_renderWrappedTemplate($aViewUrls, $aData);
         }
@@ -227,28 +223,30 @@ class questiongroup extends Survey_Common_Action
      * @access public
      * @return void
      */
-    public function delete()
+    public function delete($iSurveyId, $iGroupId)
     {
-        $surveyId = sanitize_int($_GET['surveyid']);
-        if (bHasSurveyPermission($surveyId, 'surveycontent', 'delete'))
+        $iSurveyId = sanitize_int($iSurveyId);
+
+        if (bHasSurveyPermission($iSurveyId, 'surveycontent', 'delete'))
         {
-            $groupId = sanitize_int($_GET['gid']);
+            LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyId);
+
+            $iGroupId = sanitize_int($iGroupId);
             $clang = $this->getController()->lang;
 
-            if (isset($_GET['sa']) && $_GET['sa'] == 'delete')
+            $iGroupsDeleted = Groups::deleteWithDependency($iGroupId, $iSurveyId);
+
+            if ($iGroupsDeleted !== 1)
             {
-                $iGroupsDeleted = Groups::deleteWithDependency($groupId, $surveyId);
-
-                if ($iGroupsDeleted !== 1)
-                {
-                    fixSortOrderGroups($surveyId);
-                    Yii::app()->user->setFlash('flashmessage', $clang->gT('The question group was deleted.'));
-                }
-                else
-                    Yii::app()->user->setFlash('flashmessage', $clang->gT('Group could not be deleted'));
-
-                $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/surveyid/' . $surveyId));
+                fixSortOrderGroups($iSurveyId);
+                Yii::app()->user->setFlash('flashmessage', $clang->gT('The question group was deleted.'));
             }
+            else
+                Yii::app()->user->setFlash('flashmessage', $clang->gT('Group could not be deleted'));
+
+            $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/surveyid/' . $iSurveyId));
+
+            LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyId);
         }
     }
 
@@ -263,84 +261,77 @@ class questiongroup extends Survey_Common_Action
      */
     public function edit($surveyid, $gid)
     {
+        $clang = $this->getController()->lang;
         $surveyid = sanitize_int($surveyid);
         $gid = sanitize_int($gid);
         $aViewUrls = $aData = array();
 
         if (bHasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
-            $action = "editgroup";
-            $clang = $this->getController()->lang;
-
             $_SESSION['FileManagerContext'] = "edit:group:{$surveyid}";
 
-            if ($action == "editgroup")
+            Yii::app()->loadHelper('admin/htmleditor');
+            Yii::app()->loadHelper('surveytranslator');
+
+            $aAdditionalLanguages = Survey::model()->findByPk($surveyid)->additionalLanguages;
+            $aBaseLanguage = Survey::model()->findByPk($surveyid)->language;
+
+            $aLanguages = array_merge(array($aBaseLanguage), $aAdditionalLanguages);
+
+            $grplangs = array_flip($aLanguages);
+
+            // Check out the intgrity of the language versions of this group
+            $egresult = Groups::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid));
+            foreach ($egresult as $esrow)
             {
-                Yii::app()->loadHelper('admin/htmleditor');
-                Yii::app()->loadHelper('surveytranslator');
+                $esrow = $esrow->attributes;
 
-                $aAdditionalLanguages = Survey::model()->findByPk($surveyid)->additionalLanguages;
-                $aBaseLanguage = Survey::model()->findByPk($surveyid)->language;
-
-                $aLanguages = array_merge(array($aBaseLanguage), $aAdditionalLanguages);
-
-                $grplangs = array_flip($aLanguages);
-
-                // Check out the intgrity of the language versions of this group
-                $egresult = Groups::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid));
-                foreach ($egresult as $esrow)
+                // Language Exists, BUT ITS NOT ON THE SURVEY ANYMORE
+                if (!in_array($esrow['language'], $aLanguages))
                 {
-                    $esrow = $esrow->attributes;
-
-                    // Language Exists, BUT ITS NOT ON THE SURVEY ANYMORE
-                    if (!in_array($esrow['language'], $aLanguages))
-                    {
-                        Groups::model()->deleteAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $esrow['language']));
-                    }
-                    else
-                    {
-                        $grplangs[$esrow['language']] = 'exists';
-                    }
-
-                    if ($esrow['language'] == $aBaseLanguage)
-                        $basesettings = $esrow;
+                    Groups::model()->deleteAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $esrow['language']));
+                }
+                else
+                {
+                    $grplangs[$esrow['language']] = 'exists';
                 }
 
-                // Create groups in missing languages
-                while (list($key, $value) = each($grplangs))
-                {
-                    if ($value != 'exists')
-                    {
-                        $basesettings['language'] = $key;
-                        $group = new Groups;
-                        foreach ($basesettings as $k => $v)
-                            $group->$k = $v;
-                        $group->save();
-                    }
-                }
-                $first = true;
-                foreach ($aLanguages as $sLanguage)
-                {
-                    $oResult = Groups::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $sLanguage));
-                    $aData['aGroupData'][$sLanguage] = $oResult->attributes;
-                    $aTabTitles[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
-                    if ($first)
-                    {
-                        $aTabTitles[$sLanguage].= ' (' . $clang->gT("Base language") . ')';
-                        $first = false;
-                    }
-                }
-
-                $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'editgroup';
-                $aData['surveyid'] = $surveyid;
-                $aData['gid'] = $gid;
-                $aData['tabtitles'] = $aTabTitles;
-                $aData['aBaseLanguage'] = $aBaseLanguage;
-
-                $aViewUrls = 'QuestionGroups/editGroup_view';
+                if ($esrow['language'] == $aBaseLanguage)
+                    $basesettings = $esrow;
             }
 
-            $this->_renderWrappedTemplate($aViewUrls, $aData);
+            // Create groups in missing languages
+            while (list($key, $value) = each($grplangs))
+            {
+                if ($value != 'exists')
+                {
+                    $basesettings['language'] = $key;
+                    $group = new Groups;
+                    foreach ($basesettings as $k => $v)
+                        $group->$k = $v;
+                    $group->save();
+                }
+            }
+            $first = true;
+            foreach ($aLanguages as $sLanguage)
+            {
+                $oResult = Groups::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $sLanguage));
+                $aData['aGroupData'][$sLanguage] = $oResult->attributes;
+                $aTabTitles[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
+                if ($first)
+                {
+                    $aTabTitles[$sLanguage].= ' (' . $clang->gT("Base language") . ')';
+                    $first = false;
+                }
+            }
+
+            $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'editgroup';
+            $aData['surveyid'] = $surveyid;
+            $aData['gid'] = $gid;
+            $aData['tabtitles'] = $aTabTitles;
+            $aData['aBaseLanguage'] = $aBaseLanguage;
+
+            $this->_renderWrappedTemplate('QuestionGroups/editGroup_view', $aData);
         }
 
     }
@@ -417,10 +408,12 @@ class questiongroup extends Survey_Common_Action
     {
         $iSurveyId = (int)$iSurveyId;
 
-        if (!empty($_POST['orgdata']) && bHasSurveyPermission($iSurveyId, 'surveycontent', 'update')) {
+        if (!empty($_POST['orgdata']) && bHasSurveyPermission($iSurveyId, 'surveycontent', 'update'))
+        {
             $this->_reorderGroup($iSurveyId);
         }
-        else {
+        else
+        {
             $this->_showReorderForm($iSurveyId);
         }
     }
@@ -430,7 +423,7 @@ class questiongroup extends Survey_Common_Action
         // Prepare data for the view
         $sBaseLanguage = Survey::model()->findByPk($iSurveyId)->language;
 
-        LimeExpressionManager::StartProcessingPage(true, $this->getController()->createUrl('/'));
+        LimeExpressionManager::StartProcessingPage(true, Yii::app()->baseUrl);
 
         $aGrouplist = Groups::model()->getGroups($iSurveyId);
         $initializedReplacementFields = false;
@@ -450,14 +443,15 @@ class questiongroup extends Survey_Common_Action
 
             foreach ($oQuestionData->readAll() as $q)
             {
-                $relevance = (trim($q['relevance']) == '') ? 1 : $q['relevance'];
+                $relevance = ($q['relevance'] == '') ? 1 : $q['relevance'];
                 $question = '[{' . $relevance . '}] ' . $q['question'];
-                LimeExpressionManager::ProcessString($question, $q['qid'], $junk, false, 1, 1);
+                LimeExpressionManager::ProcessString($question, $q['qid']);
                 $q['question'] = LimeExpressionManager::GetLastPrettyPrintExpression();
                 $q['gid'] = $aGroup['gid'];
                 $qs[] = $q;
             }
             $aGrouplist[$iGID]['questions'] = $qs;
+            LimeExpressionManager::FinishProcessingGroup();
         }
         LimeExpressionManager::FinishProcessingPage();
 
@@ -478,7 +472,7 @@ class questiongroup extends Survey_Common_Action
         foreach ($AOrgData['list'] as $ID => $parent)
         {
             if ($parent == 'root' && $ID[0] == 'g') {
-                Groups::model()->update(array('group_order' => $grouporder), 'gid=' . (int)substr($ID, 1));
+                Groups::model()->updateAll(array('group_order' => $grouporder), array('gid' => (int)substr($ID, 1)));
                 $grouporder++;
             }
             elseif ($ID[0] == 'q')
@@ -486,13 +480,14 @@ class questiongroup extends Survey_Common_Action
                 if (!isset($questionorder[(int)substr($parent, 1)]))
                     $questionorder[(int)substr($parent, 1)] = 0;
 
-                Questions::model()->updateAll(array('question_order' => $questionorder[(int)substr($parent, 1)], 'gid' => (int)substr($parent, 1)), 'qid=' . (int)substr($ID, 1));
+                Questions::model()->updateAll(array('question_order' => $questionorder[(int)substr($parent, 1)], 'gid' => (int)substr($parent, 1)), array('qid' => (int)substr($ID, 1)));
 
-                Questions::model()->updateAll(array('gid' => (int)substr($parent, 1)), 'parent_qid=' . (int)substr($ID, 1));
+                Questions::model()->updateAll(array('gid' => (int)substr($parent, 1)), array('parent_qid' => (int)substr($ID, 1)));
 
                 $questionorder[(int)substr($parent, 1)]++;
             }
         }
+        LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
         Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("The new question group/question order was successfully saved.");
         $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/surveyid/' . $iSurveyId));
     }
