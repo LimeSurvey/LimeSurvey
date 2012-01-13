@@ -6545,12 +6545,14 @@ function sStripDBPrefix($sTableName)
 function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 {
     uksort($fieldnames, create_function('$a,$b', 'return strlen($a) < strlen($b);'));
+
     Yii::app()->loadHelper('database');
     $newsid=sanitize_int($newsid);
     $oldsid=sanitize_int($oldsid);
 
     # translate 'surveyls_urldescription' and 'surveyls_url' INSERTANS tags in surveyls
-    $sql = "SELECT surveyls_survey_id, surveyls_language, surveyls_urldescription, surveyls_url from {{surveys_languagesettings}} WHERE surveyls_survey_id=".$newsid." AND (surveyls_urldescription LIKE '%{INSERTANS:".$oldsid."X%' OR surveyls_url LIKE '%{INSERTANS:".$oldsid."X%')";
+    $sql = "SELECT surveyls_survey_id, surveyls_language, surveyls_urldescription, surveyls_url from {{surveys_languagesettings}}
+    WHERE surveyls_survey_id=".$newsid." AND (surveyls_urldescription LIKE '%{$oldsid}X%' OR surveyls_url LIKE '%{$oldsid}X%')";
     $result = db_execute_assoc($sql) or show_error("Can't read groups table in transInsertAns ");     // Checked
 
     //while ($qentry = $res->FetchRow())
@@ -6590,7 +6592,8 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
     } // end while qentry
 
     # translate 'quotals_urldescrip' and 'quotals_url' INSERTANS tags in quota_languagesettings
-    $sql = "SELECT quotals_id, quotals_urldescrip, quotals_url from {{quota_languagesettings}} qls, {{quota}} q WHERE sid=".$newsid." AND q.id=qls.quotals_quota_id AND (quotals_urldescrip LIKE '%{INSERTANS:".$oldsid."X%' OR quotals_url LIKE '%{INSERTANS:".$oldsid."X%')";
+    $sql = "SELECT quotals_id, quotals_urldescrip, quotals_url from {{quota_languagesettings}} qls, {{quota}} q
+    WHERE sid=".$newsid." AND q.id=qls.quotals_quota_id AND (quotals_urldescrip LIKE '%{$oldsid}X%' OR quotals_url LIKE '%{$oldsid}X%')";
     $res = db_execute_assoc($sql) or safe_die("Can't read quota table in transInsertAns");     // Checked
 
     foreach ($result->readAll() as $qentry)
@@ -6615,7 +6618,8 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
     } // end while qentry
 
     # translate 'description' INSERTANS tags in groups
-    $sql = "SELECT gid, language, group_name, description from {{groups}} WHERE sid=".$newsid." AND description LIKE '%{INSERTANS:".$oldsid."X%' OR group_name LIKE '%{INSERTANS:".$oldsid."X%'";
+    $sql = "SELECT gid, language, group_name, description from {{groups}}
+    WHERE sid=".$newsid." AND description LIKE '%{$oldsid}X%' OR group_name LIKE '%{$oldsid}X%'";
     $res = db_execute_assoc($sql) or show_error("Can't read groups table in transInsertAns");     // Checked
 
     //while ($qentry = $res->FetchRow())
@@ -6655,11 +6659,13 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
     } // end while qentry
 
     # translate 'question' and 'help' INSERTANS tags in questions
-    $sql = "SELECT qid, language, question, help from {{questions}} WHERE sid=".$newsid." AND (question LIKE '%{INSERTANS:".$oldsid."X%' OR help LIKE '%{INSERTANS:".$oldsid."X%' OR question LIKE '%{".$oldsid."X%' OR help LIKE '%{".$oldsid."X%')";
-    $result = db_execute_assoc($sql) or show_error("Can't read question table in transInsertAns ");     // Checked
+    $sql = "SELECT qid, language, question, help from {{questions}}
+            WHERE sid=".$newsid." AND (question LIKE '%{$oldsid}X%' OR help LIKE '%{$oldsid}X%')";
+    $result = db_execute_assoc($sql) or die("Can't read question table in transInsertAns ");     // Checked
 
     //while ($qentry = $res->FetchRow())
-    foreach ($result->readAll() as $qentry)
+    $aResultData=$result->readAll() ;
+    foreach ($aResultData as $qentry)
     {
         $question = $qentry['question'];
         $help = $qentry['help'];

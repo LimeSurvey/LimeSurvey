@@ -3448,6 +3448,8 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         {
             $insertdata[(string)$key]=(string)$value;
         }
+        if (!in_array($insertdata['language'],$aLanguagesSupported)) continue;
+
         $insertdata['surveyls_survey_id']=$newsid;
         if ($bTranslateInsertansTags)
         {
@@ -3483,6 +3485,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             {
                 $insertdata[(string)$key]=(string)$value;
             }
+            if (!in_array($insertdata['language'],$aLanguagesSupported)) continue;
             $oldsid=$insertdata['sid'];
             $insertdata['sid']=$newsid;
             $oldgid=$insertdata['gid']; unset($insertdata['gid']); // save the old qid
@@ -3529,6 +3532,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             {
                 $insertdata[(string)$key]=(string)$value;
             }
+            if (!in_array($insertdata['language'],$aLanguagesSupported)) continue;
             $oldsid=$insertdata['sid'];
             $insertdata['sid']=$newsid;
             $insertdata['gid']=$aGIDReplacements[$insertdata['gid']];
@@ -3574,6 +3578,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             {
                 $insertdata[(string)$key]=(string)$value;
             }
+            if (!in_array($insertdata['language'],$aLanguagesSupported)) continue;
             $insertdata['sid']=$newsid;
             $insertdata['gid']=$aGIDReplacements[(int)$insertdata['gid']];;
             $oldsqid=(int)$insertdata['qid']; unset($insertdata['qid']); // save the old qid
@@ -3613,10 +3618,12 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         foreach ($xml->answers->rows->row as $row)
         {
             $insertdata=array();
+
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
             }
+            if (!in_array($insertdata['language'],$aLanguagesSupported)) continue;
             $insertdata['qid']=$aQIDReplacements[(int)$insertdata['qid']]; // remap the parent_qid
 
             // now translate any links
