@@ -2432,17 +2432,200 @@ EOD;
 // also include SGQA values and read-only variable attributes
 '12X34X56' => array('sgqa'=>'12X34X56', 'code'=>5, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
 '12X3X5lab1_ber' => array('sgqa'=>'12X3X5lab1_ber', 'code'=>10, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
-'q5pointChoice' => array('sgqa'=>'q5pointChoice', 'code'=>3, 'jsName'=>'java_q5pointChoice', 'readWrite'=>'N','shown'=>'Father', 'relevance'=>1, 'type'=>'5', 'question'=>'(question for q5pointChoice)', 'qid'=>13,'gseq'=>2,'qseq'=>13),
+'q5pointChoice' => array('sgqa'=>'q5pointChoice', 'code'=>3, 'jsName'=>'java_q5pointChoice', 'readWrite'=>'N','shown'=>'Father', 'relevance'=>1, 'type'=>'5', 'question'=>'(question for q5pointChoice)', 'qid'=>14,'gseq'=>2,'qseq'=>14),
 'qArrayNumbers_ls1_min' => array('sgqa'=>'qArrayNumbers_ls1_min', 'code'=> 7, 'jsName'=>'java_qArrayNumbers_ls1_min', 'readWrite'=>'N','shown'=> 'I love LimeSurvey', 'relevance'=>1, 'type'=>'A', 'question'=>'(question for qArrayNumbers)', 'qid'=>6,'gseq'=>2,'qseq'=>6),
 '12X3X5lab1_ber#1' => array('sgqa'=>'12X3X5lab1_ber#1', 'code'=> 15, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
 'zero' => array('sgqa'=>'zero', 'code'=>0, 'jsName'=>'java_zero', 'gseq'=>0,'qseq'=>0),
 'empty' => array('sgqa'=>'empty', 'code'=>'', 'jsName'=>'java_empty', 'gseq'=>0,'qseq'=>0),
+'BREAKS' => array('sgqa'=>'BREAKS', 'code'=>'1\n2\n3', 'jsName'=>'', 'readWrite'=>'N'),
         );
 
         // Syntax for $tests is
         // expectedResult~expression
         // if the expected result is an error, use NULL for the expected result
         $tests  = <<<EOD
+<b>SETUP</b>~'<b>SETUP</b>'
+&quot;Can strings contain embedded \&quot;quoted passages\&quot; (and parentheses + other characters?)?&quot;~a=htmlspecialchars(ASSESSMENT_HEADING)
+&quot;can single quoted strings&quot; . &#039;contain nested &#039;quoted sections&#039;?~b=htmlspecialchars(QUESTIONHELP)
+Can strings have embedded &lt;tags&gt; like &lt;html&gt;, or even unbalanced &quot;quotes or entities without terminal semicolons like &amp;amp and  &amp;lt?~c=htmlspecialchars(QUESTION_HELP)
+<span id="d" style="border-style: solid; border-width: 2px; border-color: green">Hi there!</span>~d='<span id="d" style="border-style: solid; border-width: 2px; border-color: green">Hi there!</span>'
+<b>FUNCTIONS</b>~'<b>FUNCTIONS</b>'
+5~abs(five)
+5~abs(-five)
+0.2~acos(cos(0.2))
+0~acos(cos(pi()))-pi()
+&quot;Can strings contain embedded \\&quot;quoted passages\\&quot; (and parentheses + other characters?)?&quot;~addslashes(a)
+&quot;can single quoted strings&quot; . &#039;contain nested &#039;quoted sections&#039;?~addslashes(b)
+Can strings have embedded &lt;tags&gt; like &lt;html&gt;, or even unbalanced &quot;quotes or entities without terminal semicolons like &amp;amp and  &amp;lt?~addslashes(c)
+0.2~asin(sin(0.2))
+0.2~atan(tan(0.2))
+0~atan2(0,1)
+1~ceil(0.3)
+1~ceil(0.7)
+0~ceil(-0.3)
+0~ceil(-0.7)
+10~ceil(9.1)
+1~checkdate(1,29,1967)
+0~checkdate(2,29,1967)
+0.2~cos(acos(0.2))
+5~count(1,2,3,4,5)
+0~count()
+5~count(one,two,three,four,five)
+2~count(a,'',c)
+NULL~date('F j, Y, g:i a',time())
+April 5, 2006, 1:02 am~date('F j, Y, g:i a',mktime(1,2,3,4,5,6))
+20~floor(exp(3))
+0~floor(asin(sin(pi())))
+9~floor(9.9)
+3~floor(pi())
+January 12, 2012, 5:27 pm~date('F j, Y, g:i a',1326410867)
+January 12, 2012, 11:27 pm~gmdate('F j, Y, g:i a',1326410867)
+"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"~html_entity_decode(a)
+"can single quoted strings" . &#039;contain nested &#039;quoted sections&#039;?~html_entity_decode(b)
+Can strings have embedded <tags> like <html>, or even unbalanced "quotes or entities without terminal semicolons like &amp and  &lt?~html_entity_decode(c)
+&quot;Can strings contain embedded \&quot;quoted passages\&quot; (and parentheses + other characters?)?&quot;~htmlentities(a)
+&quot;can single quoted strings&quot; . &#039;contain nested &#039;quoted sections&#039;?~htmlentities(b)
+Can strings have embedded &lt;tags&gt; like &lt;html&gt;, or even unbalanced &quot;quotes or entities without terminal semicolons like &amp;amp and &amp;lt?~htmlentities(c)
+1~c==htmlspecialchars(htmlspecialchars_decode(c))
+1~b==htmlspecialchars(htmlspecialchars_decode(b))
+1~a==htmlspecialchars(htmlspecialchars_decode(a))
+"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"~htmlspecialchars_decode(a)
+"can single quoted strings" . 'contain nested 'quoted sections'?~htmlspecialchars_decode(b)
+Can strings have embedded like , or even unbalanced "quotes or entities without terminal semicolons like & and <?~htmlspecialchars_decode(c)
+"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"~htmlspecialchars(a)
+"can single quoted strings" . 'contain nested 'quoted sections'?~htmlspecialchars(b)
+Can strings have embedded <tags> like <html>, or even unbalanced "quotes or entities without terminal semicolons like &amp and &lt?~htmlspecialchars(c)
+9~idate('B',1326410867)
+0~if('0',1,0)
+0~if(0,1,0)
+1~if(!0,1,0)
+0~if(!(!0),1,0)
+1~if('true',1,0)
+1~if('false',1,0)
+1~if('00',1,0)
+0~if('',1,0)
+1~if('A',1,0)
+0~if(empty,1,0)
+4~if(5 > 7,2,4)
+1~if(' ',1,0)
+there~if((one > two),'hi','there')
+64~if((one < two),pow(2,6),pow(6,2))
+H e l l o~implode(' ','H','e','l','l','o')
+1|2|3|4|5~implode('|',one,two,three,four,five)
+4~intval('4')
+4~intval('100',2)
+5~intval(5.7)
+0~is_empty(four)
+1~is_empty(empty)
+1~is_empty('')
+0~is_empty(0)
+0~is_empty('0')
+0~is_empty('false')
+0~is_empty('NULL')
+0~is_empty(1)
+1~is_empty(one==two)
+0~!is_empty(one==two)
+1~is_float(half)
+0~is_float(one)
+1~is_float(pi())
+0~is_float(5)
+0~is_int(half)
+1~is_int(one)
+0~is_nan(half)
+1~is_nan(WELCOME)
+1~is_null(sdfjskdfj)
+0~is_null(four)
+0~is_numeric(empty)
+1~is_numeric('1')
+1~is_numeric(four)
+0~is_numeric('hi')
+1~is_numeric(five)
+0~is_numeric(hi)
+0~is_string(four)
+1~is_string('hi')
+1~is_string(hi)
+1, 2, 3, 4, 5~list(one,two,three,min(four,five,six),max(three,four,five))
+11, 12~list(eleven,twelve)
+0, 1, 3, 5~list(0,one,'',three,'',five)
+1~log(exp(1))
+2~log(exp(2))
+I was trimmed   ~ltrim('     I was trimmed   ')
+10~max(5,6,10,-20)
+6~max(five,(one + (two * four)- three))
+6~max((one + (two * four)- three))
+212~5 + max(1,(2+3),(4 + (5 + 6)),((7 + 8) + 9),((10 + 11), 12),(13 + (14 * 15) - 16))
+29~five + max(one, (two + three), (four + (five + six)),((seven + eight) + nine),((ten + eleven), twelve),(one + (two * three) - four))
+1024~max(one,(two*three),pow(four,five),six)
+2~max(one,two)
+5~max(one,two,three,four,five)
+-5~min(-5,10,15,12,-3)
+1~min(five,four,one,two,three)
+1344765967~mktime(5,6,7,8)
+1144191723~mktime(1,2,3,4,5,6)
+1\\n2\\n3~nl2br(BREAKS)
+1,000~number_format(1000)
+1,000.23~number_format(1000.23)
+1,234,567~number_format(1234567)
+315~ceil(100*pi())
+1~pi() == pi() * 2 - pi()
+4~pow(2,2)
+27~pow(3,3)
+=~quoted_printable_decode(quoted_printable_encode('='))
+1\\n2\\n3=~nl2br(quoted_printable_decode(quoted_printable_encode(BREAKS)+'='))
+\\$~quotemeta('$')
+IGNORE THIS ERROR~rand(3,5)
+0~(a=rand())-a
+1~regexMatch('/embedded/',c)
+1~regexMatch('/^.*embedded.*$/',c)
+0~regexMatch('/joe/',c)
+1~regexMatch('/(?:dog|cat)food/','catfood stinks')
+1~regexMatch('/(?:dog|cat)food/','catfood stinks')
+1~regexMatch('/[0-9]{3}-[0-9]{2}-[0-9]{4}/','123-45-6789')
+1~regexMatch('/\d{3}-\d{2}-\d{4}/','123-45-6789')
+1~regexMatch('/(?:\(\d{3}\))\s*\d{3}-\d{4}/','(212) 555-1212')
+0~round(0.2)
+1~round(.8)
+     I was trimmed~rtrim('     I was trimmed   ')
+0.2~sin(asin(0.2))
+1~sin(pi()/2)
+1~sin(pi()/2) == sin(.5 * pi())
+1~sin(0.5 * pi())
+hello,5~sprintf('%s,%d','hello',5)
+2~sqrt(4)
+158~round(stddev(4,5,6,7,8)*100)
+hello-----~str_pad('hello',10,'-')
+hello     ~str_pad('hello',10)
+hello~str_pad('hello',3)
+testtesttest~str_repeat('test',3)
+I am awesome~str_replace('You are','I am','You are awesome')
+I love LimeSurvey~str_replace('like','love','I like LimeSurvey')
+1~0==strcasecmp('Hello','hello')
+0~0==strcasecmp('Hello','hi')
+1~0==strcmp('Hello','Hello')
+0~0==strcmp('Hello','hi')
+Hi there!~c=strip_tags(d)
+hello~strip_tags('<b>hello</b>')
+5~stripos('ABCDEFGHI','f')
+hi~stripslashes('\\h\\i')
+FGHI~stristr('ABCDEFGHI','fg')
+5~strlen('12345')
+5~strlen(hi)
+0~strpos('ABCDEFGHI','f')
+5~strpos('ABCDEFGHI','F')
+2~strpos('I like LimeSurvey','like')
+54321~strrev('12345')
+0~strstr('ABCDEFGHI','fg')
+FGHI~strstr('ABCDEFGHI','FG')
+hi there!~strtolower(c)
+HI THERE!~strtoupper(c)
+678~substr('1234567890',5,3)
+15~sum(1,2,3,4,5)
+15~sum(one,two,three,four,five)
+0.2~tan(atan(0.2))
+IGNORE THIS ERROR~time()
+I was trimmed~trim('     I was trimmed   ')
+Hi There You~ucwords('hi there you')
+<b>EXPRESSIONS</b>~'<b>EXPRESSIONS</b>'
 1~!'0'
 1~0 eq '0'
 0~0 ne '0'
@@ -2450,12 +2633,6 @@ EOD;
 1~0 ne empty
 0~0 eq ''
 1~0 ne ''
-1~is_empty(empty)
-1~is_empty('')
-0~is_empty(0)
-0~is_empty('0')
-0~is_empty('false')
-0~is_empty('NULL')
 0~'' < 10
 0~0 < empty
 1~0 <= empty
@@ -2469,14 +2646,6 @@ EOD;
 1~'0' >= empty
 1~empty eq empty
 0~empty ne empty
-0~if('0',1,0)
-0~if(0,1,0)
-1~if(!0,1,0)
-0~if(!(!0),1,0)
-1~if('true',1,0)
-1~if('false',1,0)
-1~if('00',1,0)
-0~if('',1,0)
 0~'' > 0
 0~' ' > 0
 1~!0
@@ -2528,11 +2697,6 @@ NAN~'A' / empty
 0~0 - empty
 0~0 * empty
 NAN~0 / empty
-0~is_numeric(empty)
-1~if('A',1,0)
-0~if(empty,1,0)
-0~if(0,1,0)
-1~if('false',1,0)
 0~(-1 > 0)
 0~zero
 ~empty
@@ -2546,36 +2710,23 @@ NAN~0 / empty
 1~q5pointChoice.relevance
 4~q5pointChoice.NAOK + 1
 NULL~q5pointChoice.bogus
-13~q5pointChoice.qid
+14~q5pointChoice.qid
 7~qArrayNumbers_ls1_min.code
-6~max(five,(one + (two * four)- three))
-6~max((one + (two * four)- three))
-212~5 + max(1,(2+3),(4 + (5 + 6)),((7 + 8) + 9),((10 + 11), 12),(13 + (14 * 15) - 16))
-29~five + max(one, (two + three), (four + (five + six)),((seven + eight) + nine),((ten + eleven), twelve),(one + (two * three) - four))
-1024~max(one,(two*three),pow(four,five),six)
 1~(one * (two + (three - four) + five) / six)
-2~max(one,two)
-5~max(one,two,three,four,five)
-1~min(five,four,one,two,three)
-0~(a=rand())-a
-3~floor(pi())
 2.4~(one  * two) + (three * four) / (five * six)
-1~sin(0.5 * pi())
 50~12X34X56 * 12X3X5lab1_ber
+1~c == 'Hi there!'
+1~c == "Hi there!"
 3~a=three
 3~c=a
 12~c*=four
 15~c+=a
 5~c/=a
 -1~c-=six
-27~pow(3,3)
 24~one * two * three * four
 -4~five - four - three - two
 0~two * three - two - two - two
 4~two * three - two
-1~pi() == pi() * 2 - pi()
-1~sin(pi()/2)
-1~sin(pi()/2) == sin(.5 * pi())
 105~5 + 1, 7 * 15
 7~7
 15~10 + 5
@@ -2600,23 +2751,9 @@ there~hi
 1~four != three
 0~four ne four
 NAN~one * hi
-5~abs(-five)
-0~acos(cos(pi()))-pi()
-0~floor(asin(sin(pi())))
-10~ceil(9.1)
-9~floor(9.9)
-15~sum(one,two,three,four,five)
-5~count(one,two,three,four,five)
 0~a='hello',b='',c=0
 hello~a
 0~c
-2~count(a,b,c)
-5~intval(5.7)
-1~is_float(pi())
-0~is_float(5)
-1~is_numeric(five)
-0~is_numeric(hi)
-1~is_string(hi)
 0~one && 0
 0~two and 0
 1~five && 6
@@ -2624,11 +2761,6 @@ hello~a
 1~one or 0
 1~one || 0
 1~(one and 0) || (two and three)
-NULL~hi(there);
-NULL~(one * two + (three - four)
-NULL~(one * two + (three - four)))
-NULL~++a
-NULL~--b
 value for {QID}~QID
 "Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"~ASSESSMENT_HEADING
 "can single quoted strings" . 'contain nested 'quoted sections'?~QUESTIONHELP
@@ -2636,17 +2768,20 @@ Can strings have embedded <tags> like <html>, or even unbalanced "quotes or enti
 value for {TOKEN:FIRSTNAME}~TOKEN:FIRSTNAME
 value for {THEREAREXQUESTIONS}~THEREAREXQUESTIONS
 15~12X3X5lab1_ber#1
+1~three == three
+1~three == 3
+11~eleven
+144~twelve * twelve
+0~!three
+8~five + + three
+2~five + - three
+<b>SYNTAX ERRORS</b>~'<b>SYNTAX ERRORS</b>'
 NULL~*
 NULL~three +
 NULL~four * / seven
 NULL~(five - three
 NULL~five + three)
 NULL~seven + = four
-NULL~if(seven,three,four))
-NULL~if(seven)
-NULL~if(seven,three)
-NULL~if(seven,three,four,five)
-NULL~if(seven,three,)
 NULL~>
 NULL~five > > three
 NULL~seven > = four
@@ -2657,11 +2792,8 @@ NULL~three +
 NULL~three >=
 NULL~three +=
 NULL~three !
-0~!three
 NULL~three *
 NULL~five ! three
-8~five + + three
-2~five + - three
 NULL~(5 + 7) = 8
 NULL~&& four
 NULL~min(
@@ -2676,84 +2808,6 @@ NULL~NUMBEROFQUESTIONS/=5
 NULL~NUMBEROFQUESTIONS-=6
 NULL~'Tom'='tired'
 NULL~max()
-1|2|3|4|5~implode('|',one,two,three,four,five)
-0, 1, 3, 5~list(0,one,'',three,'',five)
-5~strlen(hi)
-I love LimeSurvey~str_replace('like','love','I like LimeSurvey')
-2~strpos('I like LimeSurvey','like')
-<span id="d" style="border-style: solid; border-width: 2px; border-color: green">Hi there!</span>~d='<span id="d" style="border-style: solid; border-width: 2px; border-color: green">Hi there!</span>'
-Hi there!~c=strip_tags(d)
-Hi there!~c
-+,-,*,/,!,,,and,&&,or,||,gt,>,lt,<,ge,>=,le,<=,eq,==,ne,!=~implode(',','+','-','*','/','!',',','and','&&','or','||','gt','>','lt','<','ge','>=','le','<=','eq','==','ne','!=')
-HI THERE!~strtoupper(c)
-hi there!~strtolower(c)
-1~three == three
-1~three == 3
-1~c == 'Hi there!'
-1~c == "Hi there!"
-1~strpos(c,'there')>1
-1~regexMatch('/there/',c)
-1~regexMatch('/^.*there.*$/',c)
-0~regexMatch('/joe/',c)
-1~regexMatch('/(?:dog|cat)food/','catfood stinks')
-1~regexMatch('/(?:dog|cat)food/','catfood stinks')
-1~regexMatch('/[0-9]{3}-[0-9]{2}-[0-9]{4}/','123-45-6789')
-1~regexMatch('/\d{3}-\d{2}-\d{4}/','123-45-6789')
-1~regexMatch('/(?:\(\d{3}\))\s*\d{3}-\d{4}/','(212) 555-1212')
-1~regexMatch('/^(([1-9][0-9]?)|888|999)$/',1)
-1~regexMatch('/^(([1-9][0-9]?)|888|999)$/',999)
-1~regexMatch('/^(([1-9][0-9]?)|888|999)$/',95)
-1~regexMatch('/^(([1-9][0-9]?)|888|999)$/',888)
-0~regexMatch('/^(([1-9][0-9]?)|888|999)$/',123)
-0~regexMatch('/^(([1-9][0-9]?)|888|999)$/',0)
-0~regexMatch('/^[1-9][0-9]?$/',123)
-11~eleven
-144~twelve * twelve
-4~if(5 > 7,2,4)
-there~if((one > two),'hi','there')
-64~if((one < two),pow(2,6),pow(6,2))
-1, 2, 3, 4, 5~list(one,two,three,min(four,five,six),max(three,four,five))
-11, 12~list(eleven,twelve)
-1~is_empty('0')
-1~is_empty('')
-0~is_empty(1)
-1~is_empty(one==two)
-0~if('',1,0)
-1~if(' ',1,0)
-0~!is_empty(one==two)
-1~!is_empty(1)
-&quot;Can strings contain embedded \&quot;quoted passages\&quot; (and parentheses + other characters?)?&quot;~a=htmlspecialchars(ASSESSMENT_HEADING)
-&quot;can single quoted strings&quot; . &#039;contain nested &#039;quoted sections&#039;?~b=htmlspecialchars(QUESTIONHELP)
-Can strings have embedded &lt;tags&gt; like &lt;html&gt;, or even unbalanced &quot;quotes or entities without terminal semicolons like &amp;amp and  &amp;lt?~c=htmlspecialchars(QUESTION_HELP)
-1~c==htmlspecialchars(htmlspecialchars_decode(c))
-1~b==htmlspecialchars(htmlspecialchars_decode(b))
-1~a==htmlspecialchars(htmlspecialchars_decode(a))
-&quot;Can strings contain embedded \\&quot;quoted passages\\&quot; (and parentheses + other characters?)?&quot;~addslashes(a)
-&quot;can single quoted strings&quot; . &#039;contain nested &#039;quoted sections&#039;?~addslashes(b)
-Can strings have embedded &lt;tags&gt; like &lt;html&gt;, or even unbalanced &quot;quotes or entities without terminal semicolons like &amp;amp and  &amp;lt?~addslashes(c)
-"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"~html_entity_decode(a)
-"can single quoted strings" . &#039;contain nested &#039;quoted sections&#039;?~html_entity_decode(b)
-Can strings have embedded <tags> like <html>, or even unbalanced "quotes or entities without terminal semicolons like &amp and  &lt?~html_entity_decode(c)
-&quot;Can strings contain embedded \&quot;quoted passages\&quot; (and parentheses + other characters?)?&quot;~htmlentities(a)
-&quot;can single quoted strings&quot; . &#039;contain nested &#039;quoted sections&#039;?~htmlentities(b)
-Can strings have embedded &lt;tags&gt; like &lt;html&gt;, or even unbalanced &quot;quotes or entities without terminal semicolons like &amp;amp and &amp;lt?~htmlentities(c)
-"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"~htmlspecialchars_decode(a)
-"can single quoted strings" . 'contain nested 'quoted sections'?~htmlspecialchars_decode(b)
-Can strings have embedded like , or even unbalanced "quotes or entities without terminal semicolons like & and <?~htmlspecialchars_decode(c)
-"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"~htmlspecialchars(a)
-"can single quoted strings" . 'contain nested 'quoted sections'?~htmlspecialchars(b)
-Can strings have embedded <tags> like <html>, or even unbalanced "quotes or entities without terminal semicolons like &amp and &lt?~htmlspecialchars(c)
-I was trimmed   ~ltrim('     I was trimmed   ')
-     I was trimmed~rtrim('     I was trimmed   ')
-I was trimmed~trim('     I was trimmed   ')
-1,234,567~number_format(1234567)
-Hi There You~ucwords('hi there you')
-1~checkdate(1,29,1967)
-0~checkdate(2,29,1967)
-1144191723~mktime(1,2,3,4,5,6)
-April 5, 2006, 1:02 am~date('F j, Y, g:i a',mktime(1,2,3,4,5,6))
-NULL~time()
-NULL~date('F j, Y, g:i a',time())
 EOD;
 
         $em = new ExpressionManager();
