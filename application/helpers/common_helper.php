@@ -6532,6 +6532,8 @@ function sStripDBPrefix($sTableName)
 */
 function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 {
+    DebugBreak();
+    uksort($fieldnames, create_function('$a,$b', 'return strlen($a) < strlen($b);'));
     Yii::app()->loadHelper('database');
     $newsid=sanitize_int($newsid);
     $oldsid=sanitize_int($oldsid);
@@ -6642,7 +6644,7 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
     } // end while qentry
 
     # translate 'question' and 'help' INSERTANS tags in questions
-    $sql = "SELECT qid, language, question, help from {{questions}} WHERE sid=".$newsid." AND (question LIKE '%{INSERTANS:".$oldsid."X%' OR help LIKE '%{INSERTANS:".$oldsid."X%')";
+    $sql = "SELECT qid, language, question, help from {{questions}} WHERE sid=".$newsid." AND (question LIKE '%{INSERTANS:".$oldsid."X%' OR help LIKE '%{INSERTANS:".$oldsid."X%' OR question LIKE '%{".$oldsid."X%' OR help LIKE '%{".$oldsid."X%')";
     $result = db_execute_assoc($sql) or show_error("Can't read question table in transInsertAns ");     // Checked
 
     //while ($qentry = $res->FetchRow())
