@@ -58,8 +58,8 @@
                 $fieldsarray["{SURVEYDESCRIPTION}"] = $thissurvey['description'];
                 $fieldsarray["{EXPIRY}"] = $thissurvey["expiry"];
 
-                $subject = Replacefields($thissurvey['email_invite_subj'], $fieldsarray);
-                $textarea = Replacefields($thissurvey['email_invite'], $fieldsarray);
+                $subject = Replacefields($thissurvey['email_invite_subj'], $fieldsarray, false);
+                $textarea = Replacefields($thissurvey['email_invite'], $fieldsarray, false);
                 if ($ishtml !== true)
                 {
                     $textarea = str_replace(array('<x>', '</x>'), array(''), $textarea);

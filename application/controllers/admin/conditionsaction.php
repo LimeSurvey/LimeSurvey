@@ -195,6 +195,7 @@ class conditionsaction extends Survey_Common_Action {
 		    }
 			else
 		    {
+                LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
 		    	Conditions::model()->deleteRecords('qid in (select qid from {{questions}} where sid=$surveyid)');
 
 				$resetsurveylogicoutput .= CHtml::openTag('tr');
@@ -285,6 +286,7 @@ class conditionsaction extends Survey_Common_Action {
 		           	$result = Conditions::model()->insertRecords($condition_data);
 		        }
 		    }
+            LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
 		}
 
 		// UPDATE ENTRY IF THIS IS AN EDIT
@@ -361,18 +363,23 @@ class conditionsaction extends Survey_Common_Action {
 				    $result = Conditions::model()->insertRecords($updated_data, TRUE, array('cid'=>$p_cid));
 		        }
 		    }
+            LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
 		}
 
 		// DELETE ENTRY IF THIS IS DELETE
 		if (isset($p_subaction) && $p_subaction == "delete")
 		{
+            LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
 			$result = Conditions::model()->deleteRecords(array('cid'=>$p_cid));
+            LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
 		}
 
 		// DELETE ALL CONDITIONS IN THIS SCENARIO
 		if (isset($p_subaction) && $p_subaction == "deletescenario")
 		{
+            LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
 			$result = Conditions::model()->deleteRecords(array('qid'=>$qid, 'scenario'=>$p_scenario));
+            LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
 		}
 
 		// UPDATE SCENARIO
@@ -380,11 +387,13 @@ class conditionsaction extends Survey_Common_Action {
 		{
 			$result = Conditions::model()->insertRecords(array('scenario'=>$p_newscenarionum), TRUE, array(
 				'qid'=>$qid, 'scenario'=>$p_scenario));
+            LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
 		}
 
 		// DELETE ALL CONDITIONS FOR THIS QUESTION
 		if (isset($p_subaction) && $p_subaction == "deleteallconditions")
 		{
+            LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
 			$result = Conditions::model()->deleteRecords(array('qid'=>$qid));
 		}
 
@@ -403,6 +412,7 @@ class conditionsaction extends Survey_Common_Action {
 		    	);
 		        $newindex++;
 		    }
+            LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
 
 		}
 
@@ -497,7 +507,7 @@ class conditionsaction extends Survey_Common_Action {
 		        	);
 		        }
 		    }
-
+            LimeExpressionManager::UpgradeConditionsToRelevance($surveyid); // do for whole survey, since don't know which questions affected.
 		}
 		//END PROCESS ACTIONS
 

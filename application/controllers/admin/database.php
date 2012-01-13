@@ -44,7 +44,7 @@ class database extends Survey_Common_Action
         $gid = returnglobal('gid');
         $qid = returnglobal('qid');
         // if $action is not passed, check post data.
-        
+
         if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
         {
                 $filter = new CHtmlPurifier();
@@ -56,7 +56,7 @@ class database extends Survey_Common_Action
         }
         else
             $xssfilter = false;
-        
+
         if ($action == "updatedefaultvalues" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
         {
 
@@ -69,7 +69,7 @@ class database extends Survey_Common_Action
             {
                 $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\n\")\n //-->\n</script>\n";
             }
-            
+
             $resrow = Questions::model()->findByAttributes(array('qid'=>$qid));
             $questiontype = $resrow['type'];
 
@@ -96,7 +96,7 @@ class database extends Survey_Common_Action
 
                 foreach ($questlangs as $language)
                 {
-                    
+
                     $sqresult = Questions::model()->findByAttributes(array('sid'=>$surveyid, 'gid'=>$gid, 'parent_qid'=>$qid, 'language'=>$language, 'scale_id'=>0));
 
                     for ($scale_id=0;$scale_id<$qtproperties[$questiontype]['subquestions'];$scale_id++)
@@ -113,6 +113,7 @@ class database extends Survey_Common_Action
                 }
             }
             Yii::app()->session['flashmessage'] = $clang->gT("Default value settings were successfully saved.");
+            LimeExpressionManager::SetDirtyFlag();
 
             if ($databaseoutput != '')
             {
@@ -127,7 +128,6 @@ class database extends Survey_Common_Action
 
         if ($action == "updateansweroptions" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
         {
-
             Yii::app()->loadHelper('database');
             $anslangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
             $baselang = Survey::model()->findByPk($surveyid)->language;
@@ -149,6 +149,8 @@ class database extends Survey_Common_Action
 
             //First delete all answers
             Answers::model()->deleteAllByAttributes(array('qid'=>$qid));
+
+            LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
 
             for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
             {
@@ -201,6 +203,8 @@ class database extends Survey_Common_Action
                 }  // for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)
             }  //  for ($scale_id=0;
 
+            LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
+
             if ($invalidCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved","js")."\")\n //-->\n</script>\n";
             if ($duplicateCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Duplicate codes found, these entries won't be updated","js")."\")\n //-->\n</script>\n";
 
@@ -236,6 +240,8 @@ class database extends Survey_Common_Action
             $clang = $this->getController()->lang;
             // First delete any deleted ids
             $deletedqids=explode(' ', trim(Yii::app()->request->getPost('deletedqids')));
+
+            LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
 
             foreach ($deletedqids as $deletedqid)
             {
@@ -306,7 +312,7 @@ class database extends Survey_Common_Action
                             if(isset($oldcodes[$scale_id][$position]) && $codes[$scale_id][$position] !== $oldcodes[$scale_id][$position])
                             {
                                 Conditions::model()->updateAll(array('cfieldname'=>'+'.$surveyid.'X'.$gid.'X'.$qid.$codes[$scale_id][$position], 'value'=>$codes[$scale_id][$position]), 'cqid=:cqid AND cfieldname=:cfieldname AND value=:value', array(':cqid'=>$qid, ':cfieldname'=>$surveyid.'X'.$gid.'X'.$qid, ':value'=>$oldcodes[$scale_id][$position]));
-                                
+
                             }
 
                         }
@@ -329,6 +335,9 @@ class database extends Survey_Common_Action
 
                 }
             }
+
+            LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
+
             //include("surveytable_functions.php");
             //surveyFixColumns($surveyid);
             Yii::app()->session['flashmessage'] = $clang->gT("Subquestions were successfully saved.");
@@ -532,6 +541,8 @@ class database extends Survey_Common_Action
 
             }
 
+            LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
+
             if ($databaseoutput != '')
             {
                 echo $databaseoutput;
@@ -544,13 +555,15 @@ class database extends Survey_Common_Action
 
         if ($action == "updatequestion" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
         {
+            LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
+
             $cqr=Questions::model()->findByAttributes(array('qid'=>$qid));
             $oldtype=$cqr['type'];
             $oldgid=$cqr['gid'];
 
             // Remove invalid question attributes on saving
             $qattributes=questionAttributes();
-            
+
             $criteria = new CDbCriteria;
             $criteria->compare('qid',$qid);
             if (isset($qattributes[Yii::app()->request->getPost('type')])){
@@ -561,17 +574,17 @@ class database extends Survey_Common_Action
                 }
             }
             Question_attributes::model()->deleteAll($criteria);
-            
+
             $aLanguages=array_merge(array(Survey::model()->findByPk($surveyid)->language),Survey::model()->findByPk($surveyid)->additionalLanguages);
 
 
             //now save all valid attributes
             $validAttributes=$qattributes[Yii::app()->request->getPost('type')];
-            // if there are conditions, create a relevance equation, over-writing any default relevance value
-            $cond2rel = LimeExpressionManager::ConvertConditionsToRelevance($surveyid,$qid);
-            if (!is_null($cond2rel)) {
-                $_POST['relevance'] = $cond2rel;
-            }
+//            // if there are conditions, create a relevance equation, over-writing any default relevance value
+//            $cond2rel = LimeExpressionManager::ConvertConditionsToRelevance($surveyid,$qid);
+//            if (!is_null($cond2rel)) {
+//                $_POST['relevance'] = $cond2rel;
+//            }
 
             foreach ($validAttributes as $validAttribute)
             {
@@ -582,9 +595,9 @@ class database extends Survey_Common_Action
                         if (Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage))
                         {
                             $value=Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
-                            
+
                             $result = Question_attributes::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$qid, 'language'=>$sLanguage));
-                            
+
                             if (count($result)>0)
                             {
                                 Question_attributes::model()->updateAll(array('value'=>$value), 'attribute=:attribute AND qid=:qid AND language=:$sLanguage', array(':attribute'=>$validAttribute['name'], ':qid'=>$qid, ':language'=>$sLanguage));
@@ -668,14 +681,11 @@ class database extends Survey_Common_Action
                 if (isset($gid) && $gid != "")
                 {
 
-                    // TMSW Conditions->Relevance:  not needed?
-
-                    $array_result=checkMovequestionConstraintsForConditions(sanitize_int($surveyid),sanitize_int($qid), sanitize_int($gid));
-                    // If there is no blocking conditions that could prevent this move
-
-                    if (is_null($array_result['notAbove']) && is_null($array_result['notBelow']))
-                    {
-
+//                    $array_result=checkMovequestionConstraintsForConditions(sanitize_int($surveyid),sanitize_int($qid), sanitize_int($gid));
+//                    // If there is no blocking conditions that could prevent this move
+//
+//                    if (is_null($array_result['notAbove']) && is_null($array_result['notBelow']))
+//                    {
                         $questlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
                         $baselang = Survey::model()->findByPk($surveyid)->language;
                         array_push($questlangs,$baselang);
@@ -768,51 +778,53 @@ class database extends Survey_Common_Action
                         {
                             Questions::model()->updateAll(array('type'=>Yii::app()->request->getPost('type')), 'parent_qid=:qid', array(':gid'=>$qid));
                         }
-                        
+
                         Answers::model()->deleteAllByAttributes(array('qid'=>$qid, 'scale_id'=>$iAnswerScales));
- 
+
                         // Remove old subquestion scales
                         Questions::model()->deleteAllByAttributes(array('qid'=>$qid, 'scale_id'=>$iSubquestionScales));
-                    }
-                    else
-                    {
-                        // TMSW Conditions->Relevance:  not needed since such a move is no longer an error?
 
-                        // There are conditions constraints: alert the user
-                        $errormsg="";
-                        if (!is_null($array_result['notAbove']))
-                        {
-                            $errormsg.=$clang->gT("This question relies on other question's answers and can't be moved above groupId:","js")
-                            . " " . $array_result['notAbove'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notAbove'][0][1]."\\n"
-                            . $clang->gT("See conditions:")."\\n";
-
-                            foreach ($array_result['notAbove'] as $notAboveCond)
-                            {
-                                $errormsg.="- cid:". $notAboveCond[3]."\\n";
-                            }
-
-                        }
-                        if (!is_null($array_result['notBelow']))
-                        {
-                            $errormsg.=$clang->gT("Some questions rely on this question's answers. You can't move this question below groupId:","js")
-                            . " " . $array_result['notBelow'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notBelow'][0][1]."\\n"
-                            . $clang->gT("See conditions:")."\\n";
-
-                            foreach ($array_result['notBelow'] as $notBelowCond)
-                            {
-                                $errormsg.="- cid:". $notBelowCond[3]."\\n";
-                            }
-                        }
-
-                        $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
-                        $gid= $oldgid; // group move impossible ==> keep display on oldgid
-                    }
+                        $_SESSION['flashmessage'] = $clang->gT("Question was successfully saved.");
+//                    }
+//                    else
+//                    {
+//
+//                        // There are conditions constraints: alert the user
+//                        $errormsg="";
+//                        if (!is_null($array_result['notAbove']))
+//                        {
+//                            $errormsg.=$clang->gT("This question relies on other question's answers and can't be moved above groupId:","js")
+//                            . " " . $array_result['notAbove'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notAbove'][0][1]."\\n"
+//                            . $clang->gT("See conditions:")."\\n";
+//
+//                            foreach ($array_result['notAbove'] as $notAboveCond)
+//                            {
+//                                $errormsg.="- cid:". $notAboveCond[3]."\\n";
+//                            }
+//
+//                        }
+//                        if (!is_null($array_result['notBelow']))
+//                        {
+//                            $errormsg.=$clang->gT("Some questions rely on this question's answers. You can't move this question below groupId:","js")
+//                            . " " . $array_result['notBelow'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notBelow'][0][1]."\\n"
+//                            . $clang->gT("See conditions:")."\\n";
+//
+//                            foreach ($array_result['notBelow'] as $notBelowCond)
+//                            {
+//                                $errormsg.="- cid:". $notBelowCond[3]."\\n";
+//                            }
+//                        }
+//
+//                        $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
+//                        $gid= $oldgid; // group move impossible ==> keep display on oldgid
+//                    }
                 }
                 else
                 {
                     $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\")\n //-->\n</script>\n";
                 }
             }
+            LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
 
             if ($databaseoutput != '')
             {
@@ -1141,7 +1153,7 @@ class database extends Survey_Common_Action
             if ($exists == 0)
             {
                 $data=array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language, 'defaultvalue'=>$defaultvalue);
-                
+
                 $value = new Defaultvalues;
                 foreach ($data as $k => $v)
                     $value->$k = $v;

@@ -1,17 +1,17 @@
 <?php
 /*
-* LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: GNU/GPL License v2 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*
-*	$Id$
-*/
+ * LimeSurvey
+ * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ *
+ *	$Id$
+ */
 
 
 /**
@@ -761,6 +761,9 @@ function CSVImportGroup($sFullFilepath, $newsid)
             $results['conditions']++;
         }
     }
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance($newsid);
+    LimeExpressionManager::UpgradeConditionsToRelevance($newsid);
+
     $results['groups']=1;
     $results['newgid']=$newgid;
     return $results;
@@ -1068,8 +1071,8 @@ function XMLImportGroup($sFullFilepath, $newsid)
             $results['conditions']++;
         }
     }
-    // TMSW Conditions->Relevance:  Call  LEM->ConvertConditionsToRelevance
-
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance($newsid);
+    LimeExpressionManager::UpgradeConditionsToRelevance($newsid);
 
     $results['newgid']=$newgid;
     $results['labelsets']=0;
@@ -1664,6 +1667,8 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
         }
 
     }
+    LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
+
     $results['newqid']=$newqid;
     $results['questions']=1;
     $results['newqid']=$newqid;
@@ -1913,6 +1918,7 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
             $results['defaultvalues']++;
         }
     }
+    LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
 
     $results['newqid']=$newqid;
     $results['questions']=1;
@@ -3299,9 +3305,11 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
 
             $result=Conditions::model()->insertRecords($conditionrowdata) or safe_die("Couldn't insert condition<br />");
 
-            // TMSW Conditions->Relevance:  Call  LEM->ConvertConditionsToRelevance
         }
     }
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance($newsid);
+    LimeExpressionManager::UpgradeConditionsToRelevance($newsid);
+
     $importresults['importversion']=$importversion;
     $importresults['newsid']=$newsid;
     $importresults['oldsid']=$oldsid;
@@ -3874,6 +3882,8 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     $aOldNewFieldmap=aReverseTranslateFieldnames($oldsid,$newsid,$aGIDReplacements,$aQIDReplacements);
     $results['FieldReMap']=$aOldNewFieldmap;
     TranslateInsertansTags($newsid,$oldsid,$aOldNewFieldmap);
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance($newsid);
+    LimeExpressionManager::UpgradeConditionsToRelevance($newsid);
 
     return $results;
 }

@@ -107,7 +107,11 @@ class printablesurvey extends Survey_Common_Action
             define('PRINT_TEMPLATE_URL' , Yii::app()->getConfig('standardtemplaterooturl').'/default/' , true);
         }
 
-        $fieldmap=createFieldMap($surveyid);
+        LimeExpressionManager::StartSurvey($surveyid, 'survey',NULL,false,LEM_PRETTY_PRINT_ALL_SYNTAX);
+        $moveResult = LimeExpressionManager::NavigateForwards();
+
+
+        //$fieldmap=createFieldMap($surveyid);
 
 
                 $condition = "sid = '{$surveyid}' AND language = '{$surveyprintlang}'";
@@ -279,340 +283,345 @@ class printablesurvey extends Survey_Common_Action
                     $printablesurveyoutput = '';
                     $explanation = ''; //reset conditions explanation
                     $s=0;
-                    // TMSW Conditions->Relevance:  show relevance instead of this whole section to create $explanation
+//                    // TMSW Conditions->Relevance:  show relevance instead of this whole section to create $explanation
+//
+//
+//                            $scenarioresult=Conditions::model()->getScenarios($deqrow['qid']);
+//
+//                    //Loop through distinct scenarios, thus grouping them together.
+//                    foreach ($scenarioresult->readAll() as $scenariorow)
+//                    {
+//                        if($s == 0 && $scenarioresult->getRowCount() > 1)
+//                        {
+//                            $explanation .= '<p class="scenario">'.self::_try_debug(__LINE__)." -------- Scenario {$scenariorow['scenario']} --------</p>\n\n";
+//                        }
+//                        if($s > 0)
+//                        {
+//                            $explanation .= '<p class="scenario">'.self::_try_debug(__LINE__).' -------- '.$clang->gT("or")." Scenario {$scenariorow['scenario']} --------</p>\n\n";
+//                        }
+//
+//                        $x=0;
+//
+//                        $conditions1="qid={$deqrow['qid']} AND scenario={$scenariorow['scenario']}";
+//                        $distinctresult=Conditions::model()->getSomeConditions(array('cqid','method', 'cfieldname', 'value'), $conditions1, array('cqid'),array('cqid', 'method'));
+//
+//                        //Loop through each condition for a particular scenario.
+//                        foreach ($distinctresult->readAll() as $distinctrow)
+//                        {
+//                              $condition = "qid = '{$distinctrow['cqid']}' AND parent_qid = 0 AND language = '{$surveyprintlang}'";
+//                              $subresult=Questions::model()->find($condition);
+//
+//                            if($x > 0)
+//                            {
+//                                $explanation .= ' <em class="scenario-and-seperator">'.$clang->gT('and').'</em> ';
+//                            }
+//                            if(trim($distinctrow['method'])=='') //If there is no method chosen assume "equals"
+//                            {
+//                                $distinctrow['method']='==';
+//                            }
+//
+//                            if($distinctrow['cqid']){ // cqid != 0  ==> previous answer match
+//                                if($distinctrow['method']=='==')
+//                                {
+//                                    $explanation .= $clang->gT("Answer was")." ";
+//                                }
+//                                elseif($distinctrow['method']=='!=')
+//                                {
+//                                    $explanation .= $clang->gT("Answer was NOT")." ";
+//                                }
+//                                elseif($distinctrow['method']=='<')
+//                                {
+//                                    $explanation .= $clang->gT("Answer was less than")." ";
+//                                }
+//                                elseif($distinctrow['method']=='<=')
+//                                {
+//                                    $explanation .= $clang->gT("Answer was less than or equal to")." ";
+//                                }
+//                                elseif($distinctrow['method']=='>=')
+//                                {
+//                                    $explanation .= $clang->gT("Answer was greater than or equal to")." ";
+//                                }
+//                                elseif($distinctrow['method']=='>')
+//                                {
+//                                    $explanation .= $clang->gT("Answer was greater than")." ";
+//                                }
+//                                elseif($distinctrow['method']=='RX')
+//                                {
+//                                    $explanation .= $clang->gT("Answer matched (regexp)")." ";
+//                                }
+//                                else
+//                                {
+//                                    $explanation .= $clang->gT("Answer was")." ";
+//                                }
+//                                if($distinctrow['value'] == '') {
+//                                    $explanation .= ' '.$clang->gT("Not selected").' ';
+//                                }
+//                                //If question type is numerical or multi-numerical, show the actual value - otherwise, don't.
+//                                if($subresult['type'] == 'N' || $subresult['type'] == 'K') {
+//                                    $explanation .= ' '.$distinctrow['value']. ' ';
+//                                }
+//                            }
+//                            if(!$distinctrow['cqid']) { // cqid == 0  ==> token attribute match
+//                                $tokenData = GetTokenFieldsAndNames($surveyid);
+//                                preg_match('/^{TOKEN:([^}]*)}$/',$distinctrow['cfieldname'],$extractedTokenAttr);
+//                                $explanation .= "Your ".$tokenData[strtolower($extractedTokenAttr[1])]." ";
+//                                if($distinctrow['method']=='==')
+//                                {
+//                                    $explanation .= $clang->gT("is")." ";
+//                                }
+//                                elseif($distinctrow['method']=='!=')
+//                                {
+//                                    $explanation .= $clang->gT("is NOT")." ";
+//                                }
+//                                elseif($distinctrow['method']=='<')
+//                                {
+//                                    $explanation .= $clang->gT("is less than")." ";
+//                                }
+//                                elseif($distinctrow['method']=='<=')
+//                                {
+//                                    $explanation .= $clang->gT("is less than or equal to")." ";
+//                                }
+//                                elseif($distinctrow['method']=='>=')
+//                                {
+//                                    $explanation .= $clang->gT("is greater than or equal to")." ";
+//                                }
+//                                elseif($distinctrow['method']=='>')
+//                                {
+//                                    $explanation .= $clang->gT("is greater than")." ";
+//                                }
+//                                elseif($distinctrow['method']=='RX')
+//                                {
+//                                    $explanation .= $clang->gT("is matched (regexp)")." ";
+//                                }
+//                                else
+//                                {
+//                                    $explanation .= $clang->gT("is")." ";
+//                                }
+//                                $answer_section = ' '.$distinctrow['value'].' ';
+//                            }
+//
+//                            $conresult=Conditions::model()->getConditionsQuestions($distinctrow['cqid'],$deqrow['qid'],$scenariorow['scenario'],$surveyprintlang);
+//
+//                            $conditions=array();
+//                            foreach ($conresult->readAll() as $conrow)
+//                            {
+//
+//                                $postans="";
+//                                $value=$conrow['value'];
+//                                switch($conrow['type'])
+//                                {
+//                                    case "Y":
+//                                        switch ($conrow['value'])
+//                                        {
+//                                            case "Y": $conditions[]=$clang->gT("Yes"); break;
+//                                            case "N": $conditions[]=$clang->gT("No"); break;
+//                                        }
+//                                        break;
+//                                    case "G":
+//                                        switch($conrow['value'])
+//                                        {
+//                                            case "M": $conditions[]=$clang->gT("Male"); break;
+//                                            case "F": $conditions[]=$clang->gT("Female"); break;
+//                                        } // switch
+//                                        break;
+//                                    case "A":
+//                                    case "B":
+//                                    case ":":
+//                                    case ";":
+//                                        $conditions[]=$conrow['value'];
+//                                        break;
+//                                    case "C":
+//                                        switch($conrow['value'])
+//                                        {
+//                                            case "Y": $conditions[]=$clang->gT("Yes"); break;
+//                                            case "U": $conditions[]=$clang->gT("Uncertain"); break;
+//                                            case "N": $conditions[]=$clang->gT("No"); break;
+//                                        } // switch
+//                                        break;
+//                                    case "E":
+//                                        switch($conrow['value'])
+//                                        {
+//                                            case "I": $conditions[]=$clang->gT("Increase"); break;
+//                                            case "D": $conditions[]=$clang->gT("Decrease"); break;
+//                                            case "S": $conditions[]=$clang->gT("Same"); break;
+//                                        }
+//                                    case "1":
+//                                        $labelIndex=preg_match("/^[^#]+#([01]{1})$/",$conrow['cfieldname']);
+//                                        if ($labelIndex == 0)
+//                                        { // TIBO
+//
+//                                        $condition="qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND scale_id=0 AND language='{$surveyprintlang}'";
+//                                        $fresult=Answers::model()->getAllRecords($condition);
+//
+//                                            foreach($fresult->readAll() as $frow)
+//                                            {
+//                                                $postans=$frow['answer'];
+//                                                $conditions[]=$frow['answer'];
+//                                            } // while
+//                                        }
+//                                        elseif ($labelIndex == 1)
+//                                        {
+//
+//                                        $condition="qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND scale_id=1 AND language='{$surveyprintlang}'";
+//                                        $fresult=Answers::model()->getAllRecords($condition);
+//                                            foreach($fresult->readAll() as $frow)
+//                                            {
+//                                                $postans=$frow['answer'];
+//                                                $conditions[]=$frow['answer'];
+//                                            } // while
+//                                        }
+//                                        break;
+//                                    case "L":
+//                                    case "!":
+//                                    case "O":
+//                                    case "R":
+//                                        $condition="qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
+//                                        $ansresult=Answers::model()->findAll($condition);
+//
+//                                        foreach ($ansresult as $ansrow)
+//                                        {
+//                                            $conditions[]=$ansrow['answer'];
+//                                        }
+//                                        if($conrow['value'] == "-oth-") {
+//                                            $conditions[]=$clang->gT("Other");
+//                                        }
+//                                        $conditions = array_unique($conditions);
+//                                        break;
+//                                    case "M":
+//                                    case "P":
+//                                        $condition=" parent_qid='{$conrow['cqid']}' AND title='{$conrow['value']}' AND language='{$surveyprintlang}'";
+//                                        $ansresult=Questions::model()->findAll($condition);
+//                                        foreach ($ansresult as $ansrow)
+//                                        {
+//                                            $conditions[]=$ansrow['question'];
+//                                        }
+//                                        $conditions = array_unique($conditions);
+//                                        break;
+//                                    case "N":
+//                                        $conditions[]=$value;
+//                                        break;
+//                                    case "F":
+//                                    case "H":
+//                                    default:
+//                                        $value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
+//
+//                                        $condition=" qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
+//
+//                                        $fresult=Answers::model()->getAllRecords($condition);
+//                                        foreach ($fresult->readAll() as $frow)
+//                                        {
+//                                            $postans=$frow['answer'];
+//                                            $conditions[]=$frow['answer'];
+//                                        } // while
+//                                        break;
+//                                } // switch
+//
+//                                // Now let's complete the answer text with the answer_section
+//                                $answer_section="";
+//                                switch($conrow['type'])
+//                                {
+//                                    case "A":
+//                                    case "B":
+//                                    case "C":
+//                                    case "E":
+//                                    case "F":
+//                                    case "H":
+//                                    case "K":
+//                                        $thiscquestion=$fieldmap[$conrow['cfieldname']];
+//                                        $condition="parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
+//                                          $ansresult= Questions::model()->findAll($condition);
+//
+//                                        foreach ($ansresult as $ansrow)
+//                                        {
+//                                            $answer_section=" (".$ansrow['question'].")";
+//                                        }
+//                                        break;
+//
+//                                    case "1": // dual: (Label 1), (Label 2)
+//                                        $labelIndex=substr($conrow['cfieldname'],-1);
+//                                        $thiscquestion=$fieldmap[$conrow['cfieldname']];
+//                                         $condition="parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
+//                                         $ansresult= Questions::model()->findAll($condition);
+//                                        $cqidattributes = getQuestionAttributeValues($conrow['cqid'], $conrow['type']);
+//                                        if ($labelIndex == 0)
+//                                        {
+//                                            if (trim($cqidattributes['dualscale_headerA']) != '') {
+//                                                $header = $clang->gT($cqidattributes['dualscale_headerA']);
+//                                            } else {
+//                                                $header = '1';
+//                                            }
+//                                        }
+//                                        elseif ($labelIndex == 1)
+//                                        {
+//                                            if (trim($cqidattributes['dualscale_headerB']) != '') {
+//                                                $header = $clang->gT($cqidattributes['dualscale_headerB']);
+//                                            } else {
+//                                                $header = '2';
+//                                            }
+//                                        }
+//                                        foreach ($ansresult->readAll() as $ansrow)
+//                                        {
+//                                            $answer_section=" (".$ansrow['question']." ".sprintf($clang->gT("Label %s"),$header).")";
+//                                        }
+//                                        break;
+//                                    case ":":
+//                                    case ";": //multi flexi: ( answer [label] )
+//                                        $thiscquestion=$fieldmap[$conrow['cfieldname']];
+//                                        $condition="parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
+//                                         $ansresult= Questions::model()->findAll($condition);
+//                                        foreach ($ansresult as $ansrow)
+//                                        {
+//
+//                                        $condition = "qid = '{$conrow['cqid']}' AND code = '{$conrow['value']}' AND language= '{$surveyprintlang}'";
+//                                        $fresult= Answers::model()->findAll($condition);
+//                                            foreach ($fresult as $frow)
+//                                            {
+//                                                //$conditions[]=$frow['title'];
+//                                                $answer_section=" (".$ansrow['question']."[".$frow['answer']."])";
+//                                            } // while
+//                                        }
+//                                        break;
+//                                    case "R": // (Rank 1), (Rank 2)... TIBO
+//                                        $thiscquestion=$fieldmap[$conrow['cfieldname']];
+//                                        $rankid=$thiscquestion['aid'];
+//                                        $answer_section=" (".$clang->gT("RANK")." $rankid)";
+//                                        break;
+//                                    default: // nothing to add
+//                                        break;
+//                                }
+//                            }
+//
+//                            if (count($conditions) > 1)
+//                            {
+//                                $explanation .=  "'".implode("' <em class='scenario-or-seperator'>".$clang->gT("or")."</em> '", $conditions)."'";
+//                            }
+//                            elseif (count($conditions) == 1)
+//                            {
+//                                $explanation .= "'".$conditions[0]."'";
+//                            }
+//                            unset($conditions);
+//                            // Following line commented out because answer_section  was lost, but is required for some question types
+//                            //$explanation .= " ".$clang->gT("to question")." '".$mapquestionsNumbers[$distinctrow['cqid']]."' $answer_section ";
+//                            if($distinctrow['cqid']){
+//                                $explanation .= " <span class='scenario-at-seperator'>".$clang->gT("at question")."</span> '".$mapquestionsNumbers[$distinctrow['cqid']]." [".$subresult['title']."]' (".strip_tags($subresult['question'])."$answer_section)" ;
+//                            }
+//                            else{
+//                                $explanation .= " ".$distinctrow['value'] ;
+//                            }
+//                            //$distinctrow
+//                            $x++;
+//                        }
+//                        $s++;
+//                    }
 
+                    $qinfo = LimeExpressionManager::GetQuestionStatus($deqrow['qid']);
+                    $relevance = trim($qinfo['info']['relevance']);
+                    $explanation = $qinfo['relEqn'];
 
-                            $scenarioresult=Conditions::model()->getScenarios($deqrow['qid']);
-
-                    //Loop through distinct scenarios, thus grouping them together.
-                    foreach ($scenarioresult->readAll() as $scenariorow)
-                    {
-                        if($s == 0 && $scenarioresult->getRowCount() > 1)
-                        {
-                            $explanation .= '<p class="scenario">'.self::_try_debug(__LINE__)." -------- Scenario {$scenariorow['scenario']} --------</p>\n\n";
-                        }
-                        if($s > 0)
-                        {
-                            $explanation .= '<p class="scenario">'.self::_try_debug(__LINE__).' -------- '.$clang->gT("or")." Scenario {$scenariorow['scenario']} --------</p>\n\n";
-                        }
-
-                        $x=0;
-
-                        $conditions1="qid={$deqrow['qid']} AND scenario={$scenariorow['scenario']}";
-                        $distinctresult=Conditions::model()->getSomeConditions(array('cqid','method', 'cfieldname', 'value'), $conditions1, array('cqid'),array('cqid', 'method'));
-
-                        //Loop through each condition for a particular scenario.
-                        foreach ($distinctresult->readAll() as $distinctrow)
-                        {
-                              $condition = "qid = '{$distinctrow['cqid']}' AND parent_qid = 0 AND language = '{$surveyprintlang}'";
-                              $subresult=Questions::model()->find($condition);
-
-                            if($x > 0)
-                            {
-                                $explanation .= ' <em class="scenario-and-seperator">'.$clang->gT('and').'</em> ';
-                            }
-                            if(trim($distinctrow['method'])=='') //If there is no method chosen assume "equals"
-                            {
-                                $distinctrow['method']='==';
-                            }
-
-                            if($distinctrow['cqid']){ // cqid != 0  ==> previous answer match
-                                if($distinctrow['method']=='==')
-                                {
-                                    $explanation .= $clang->gT("Answer was")." ";
-                                }
-                                elseif($distinctrow['method']=='!=')
-                                {
-                                    $explanation .= $clang->gT("Answer was NOT")." ";
-                                }
-                                elseif($distinctrow['method']=='<')
-                                {
-                                    $explanation .= $clang->gT("Answer was less than")." ";
-                                }
-                                elseif($distinctrow['method']=='<=')
-                                {
-                                    $explanation .= $clang->gT("Answer was less than or equal to")." ";
-                                }
-                                elseif($distinctrow['method']=='>=')
-                                {
-                                    $explanation .= $clang->gT("Answer was greater than or equal to")." ";
-                                }
-                                elseif($distinctrow['method']=='>')
-                                {
-                                    $explanation .= $clang->gT("Answer was greater than")." ";
-                                }
-                                elseif($distinctrow['method']=='RX')
-                                {
-                                    $explanation .= $clang->gT("Answer matched (regexp)")." ";
-                                }
-                                else
-                                {
-                                    $explanation .= $clang->gT("Answer was")." ";
-                                }
-                                if($distinctrow['value'] == '') {
-                                    $explanation .= ' '.$clang->gT("Not selected").' ';
-                                }
-                                //If question type is numerical or multi-numerical, show the actual value - otherwise, don't.
-                                if($subresult['type'] == 'N' || $subresult['type'] == 'K') {
-                                    $explanation .= ' '.$distinctrow['value']. ' ';
-                                }
-                            }
-                            if(!$distinctrow['cqid']) { // cqid == 0  ==> token attribute match
-                                $tokenData = GetTokenFieldsAndNames($surveyid);
-                                preg_match('/^{TOKEN:([^}]*)}$/',$distinctrow['cfieldname'],$extractedTokenAttr);
-                                $explanation .= "Your ".$tokenData[strtolower($extractedTokenAttr[1])]." ";
-                                if($distinctrow['method']=='==')
-                                {
-                                    $explanation .= $clang->gT("is")." ";
-                                }
-                                elseif($distinctrow['method']=='!=')
-                                {
-                                    $explanation .= $clang->gT("is NOT")." ";
-                                }
-                                elseif($distinctrow['method']=='<')
-                                {
-                                    $explanation .= $clang->gT("is less than")." ";
-                                }
-                                elseif($distinctrow['method']=='<=')
-                                {
-                                    $explanation .= $clang->gT("is less than or equal to")." ";
-                                }
-                                elseif($distinctrow['method']=='>=')
-                                {
-                                    $explanation .= $clang->gT("is greater than or equal to")." ";
-                                }
-                                elseif($distinctrow['method']=='>')
-                                {
-                                    $explanation .= $clang->gT("is greater than")." ";
-                                }
-                                elseif($distinctrow['method']=='RX')
-                                {
-                                    $explanation .= $clang->gT("is matched (regexp)")." ";
-                                }
-                                else
-                                {
-                                    $explanation .= $clang->gT("is")." ";
-                                }
-                                $answer_section = ' '.$distinctrow['value'].' ';
-                            }
-
-                            $conresult=Conditions::model()->getConditionsQuestions($distinctrow['cqid'],$deqrow['qid'],$scenariorow['scenario'],$surveyprintlang);
-
-                            $conditions=array();
-                            foreach ($conresult->readAll() as $conrow)
-                            {
-
-                                $postans="";
-                                $value=$conrow['value'];
-                                switch($conrow['type'])
-                                {
-                                    case "Y":
-                                        switch ($conrow['value'])
-                                        {
-                                            case "Y": $conditions[]=$clang->gT("Yes"); break;
-                                            case "N": $conditions[]=$clang->gT("No"); break;
-                                        }
-                                        break;
-                                    case "G":
-                                        switch($conrow['value'])
-                                        {
-                                            case "M": $conditions[]=$clang->gT("Male"); break;
-                                            case "F": $conditions[]=$clang->gT("Female"); break;
-                                        } // switch
-                                        break;
-                                    case "A":
-                                    case "B":
-                                    case ":":
-                                    case ";":
-                                        $conditions[]=$conrow['value'];
-                                        break;
-                                    case "C":
-                                        switch($conrow['value'])
-                                        {
-                                            case "Y": $conditions[]=$clang->gT("Yes"); break;
-                                            case "U": $conditions[]=$clang->gT("Uncertain"); break;
-                                            case "N": $conditions[]=$clang->gT("No"); break;
-                                        } // switch
-                                        break;
-                                    case "E":
-                                        switch($conrow['value'])
-                                        {
-                                            case "I": $conditions[]=$clang->gT("Increase"); break;
-                                            case "D": $conditions[]=$clang->gT("Decrease"); break;
-                                            case "S": $conditions[]=$clang->gT("Same"); break;
-                                        }
-                                    case "1":
-                                        $labelIndex=preg_match("/^[^#]+#([01]{1})$/",$conrow['cfieldname']);
-                                        if ($labelIndex == 0)
-                                        { // TIBO
-
-                                        $condition="qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND scale_id=0 AND language='{$surveyprintlang}'";
-                                        $fresult=Answers::model()->getAllRecords($condition);
-
-                                            foreach($fresult->readAll() as $frow)
-                                            {
-                                                $postans=$frow['answer'];
-                                                $conditions[]=$frow['answer'];
-                                            } // while
-                                        }
-                                        elseif ($labelIndex == 1)
-                                        {
-
-                                        $condition="qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND scale_id=1 AND language='{$surveyprintlang}'";
-                                        $fresult=Answers::model()->getAllRecords($condition);
-                                            foreach($fresult->readAll() as $frow)
-                                            {
-                                                $postans=$frow['answer'];
-                                                $conditions[]=$frow['answer'];
-                                            } // while
-                                        }
-                                        break;
-                                    case "L":
-                                    case "!":
-                                    case "O":
-                                    case "R":
-                                        $condition="qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
-                                        $ansresult=Answers::model()->findAll($condition);
-
-                                        foreach ($ansresult as $ansrow)
-                                        {
-                                            $conditions[]=$ansrow['answer'];
-                                        }
-                                        if($conrow['value'] == "-oth-") {
-                                            $conditions[]=$clang->gT("Other");
-                                        }
-                                        $conditions = array_unique($conditions);
-                                        break;
-                                    case "M":
-                                    case "P":
-                                        $condition=" parent_qid='{$conrow['cqid']}' AND title='{$conrow['value']}' AND language='{$surveyprintlang}'";
-                                        $ansresult=Questions::model()->findAll($condition);
-                                        foreach ($ansresult as $ansrow)
-                                        {
-                                            $conditions[]=$ansrow['question'];
-                                        }
-                                        $conditions = array_unique($conditions);
-                                        break;
-                                    case "N":
-                                        $conditions[]=$value;
-                                        break;
-                                    case "F":
-                                    case "H":
-                                    default:
-                                        $value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
-
-                                        $condition=" qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
-
-                                        $fresult=Answers::model()->getAllRecords($condition);
-                                        foreach ($fresult->readAll() as $frow)
-                                        {
-                                            $postans=$frow['answer'];
-                                            $conditions[]=$frow['answer'];
-                                        } // while
-                                        break;
-                                } // switch
-
-                                // Now let's complete the answer text with the answer_section
-                                $answer_section="";
-                                switch($conrow['type'])
-                                {
-                                    case "A":
-                                    case "B":
-                                    case "C":
-                                    case "E":
-                                    case "F":
-                                    case "H":
-                                    case "K":
-                                        $thiscquestion=$fieldmap[$conrow['cfieldname']];
-                                        $condition="parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
-                                          $ansresult= Questions::model()->findAll($condition);
-
-                                        foreach ($ansresult as $ansrow)
-                                        {
-                                            $answer_section=" (".$ansrow['question'].")";
-                                        }
-                                        break;
-
-                                    case "1": // dual: (Label 1), (Label 2)
-                                        $labelIndex=substr($conrow['cfieldname'],-1);
-                                        $thiscquestion=$fieldmap[$conrow['cfieldname']];
-                                         $condition="parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
-                                         $ansresult= Questions::model()->findAll($condition);
-                                        $cqidattributes = getQuestionAttributeValues($conrow['cqid'], $conrow['type']);
-                                        if ($labelIndex == 0)
-                                        {
-                                            if (trim($cqidattributes['dualscale_headerA']) != '') {
-                                                $header = $clang->gT($cqidattributes['dualscale_headerA']);
-                                            } else {
-                                                $header = '1';
-                                            }
-                                        }
-                                        elseif ($labelIndex == 1)
-                                        {
-                                            if (trim($cqidattributes['dualscale_headerB']) != '') {
-                                                $header = $clang->gT($cqidattributes['dualscale_headerB']);
-                                            } else {
-                                                $header = '2';
-                                            }
-                                        }
-                                        foreach ($ansresult->readAll() as $ansrow)
-                                        {
-                                            $answer_section=" (".$ansrow['question']." ".sprintf($clang->gT("Label %s"),$header).")";
-                                        }
-                                        break;
-                                    case ":":
-                                    case ";": //multi flexi: ( answer [label] )
-                                        $thiscquestion=$fieldmap[$conrow['cfieldname']];
-                                        $condition="parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
-                                         $ansresult= Questions::model()->findAll($condition);
-                                        foreach ($ansresult as $ansrow)
-                                        {
-
-                                        $condition = "qid = '{$conrow['cqid']}' AND code = '{$conrow['value']}' AND language= '{$surveyprintlang}'";
-                                        $fresult= Answers::model()->findAll($condition);
-                                            foreach ($fresult as $frow)
-                                            {
-                                                //$conditions[]=$frow['title'];
-                                                $answer_section=" (".$ansrow['question']."[".$frow['answer']."])";
-                                            } // while
-                                        }
-                                        break;
-                                    case "R": // (Rank 1), (Rank 2)... TIBO
-                                        $thiscquestion=$fieldmap[$conrow['cfieldname']];
-                                        $rankid=$thiscquestion['aid'];
-                                        $answer_section=" (".$clang->gT("RANK")." $rankid)";
-                                        break;
-                                    default: // nothing to add
-                                        break;
-                                }
-                            }
-
-                            if (count($conditions) > 1)
-                            {
-                                $explanation .=  "'".implode("' <em class='scenario-or-seperator'>".$clang->gT("or")."</em> '", $conditions)."'";
-                            }
-                            elseif (count($conditions) == 1)
-                            {
-                                $explanation .= "'".$conditions[0]."'";
-                            }
-                            unset($conditions);
-                            // Following line commented out because answer_section  was lost, but is required for some question types
-                            //$explanation .= " ".$clang->gT("to question")." '".$mapquestionsNumbers[$distinctrow['cqid']]."' $answer_section ";
-                            if($distinctrow['cqid']){
-                                $explanation .= " <span class='scenario-at-seperator'>".$clang->gT("at question")."</span> '".$mapquestionsNumbers[$distinctrow['cqid']]." [".$subresult['title']."]' (".strip_tags($subresult['question'])."$answer_section)" ;
-                            }
-                            else{
-                                $explanation .= " ".$distinctrow['value'] ;
-                            }
-                            //$distinctrow
-                            $x++;
-                        }
-                        $s++;
-                    }
-                    if ($explanation)
+                    if (trim($relevance) != '' && trim($relevance) != '1')
                     {
                         $explanation = "<b>".$clang->gT('Only answer this question if the following conditions are met:')."</b>"
-                        ."<br/> ° ".$explanation;//"[".sprintf($clang->gT("Only answer this question %s"), $explanation)."]";
+                        ."<br/> ° ".$explanation;
                     }
                     else
                     {
@@ -620,7 +629,6 @@ class printablesurvey extends Survey_Common_Action
                     }
 
                     ++$total_questions;
-
 
                     //TIBO map question qid to their q number
                     $mapquestionsNumbers[$deqrow['qid']]=$total_questions;

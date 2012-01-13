@@ -25,7 +25,7 @@
 * @param questionNum - needed to support dynamic JavaScript-based tailoring within questions
 * @return string  Text with replaced strings
 */
-function templatereplace($line, $replacements=array(),&$redata=array(), $debugSrc='Unspecified', $anonymized=false, $questionNum=NULL, $registerdata=array())
+function templatereplace($line, $replacements = array(), &$redata = array(), $debugSrc = 'Unspecified', $anonymized = false, $questionNum = NULL, $registerdata = array())
 {
     /*
     global $clienttoken,$token,$sitename,$move,$showXquestions,$showqnumcode,$questioncode,$register_errormsg;
@@ -759,17 +759,24 @@ function tokenReplace($line)
 
 // This function replaces field names in a text with the related values
 // (e.g. for email and template functions)
-function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=false)
+function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=true)
 {
-
-    foreach ( $fieldsarray as $key => $value )
-    {
-        $text=str_replace($key, $value, $text);
-    }
 
     if ($bReplaceInsertans)
     {
-        $text = insertansReplace($text);
+        $replacements = array();
+        foreach ( $fieldsarray as $key => $value )
+        {
+            $replacements[substr($key,1,-1)] = $value;
+        }
+        $text = LimeExpressionManager::ProcessString($text, NULL, $replacements, false, 2, 1);
+    }
+    else
+    {
+        foreach ( $fieldsarray as $key => $value )
+        {
+            $text=str_replace($key, $value, $text);
+        }
     }
     return $text;
 }

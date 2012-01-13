@@ -389,7 +389,7 @@ class SurveyAction extends Survey_Common_Action
         {
             if (isset($_GET['fixnumbering']) && $_GET['fixnumbering'])
             {
-                fixNumbering($_GET['fixnumbering']);
+                fixNumbering($_GET['fixnumbering'], $surveyid);
             }
 
             // Check consistency for groups and questions

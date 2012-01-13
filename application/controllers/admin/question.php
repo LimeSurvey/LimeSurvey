@@ -623,15 +623,10 @@ class question extends Survey_Common_Action
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
         $_SESSION['FileManagerContext'] = "create:question:{$surveyid}";
 
-        if ($action != "addquestion")
-        {
-            $_SESSION['FileManagerContext'] = "edit:question:{$surveyid}";
-            $aData['display']['menu_bars']['qid_action'] = 'editquestion';
-        }
-
         if (bHasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
             $clang = $this->getController()->lang;
+            $surveyinfo = getSurveyInfo($surveyid);
             Yii::app()->loadHelper('admin/htmleditor');
             Yii::app()->loadHelper('surveytranslator');
 
@@ -648,6 +643,9 @@ class question extends Survey_Common_Action
             // Prepare selector Mode TODO: with and without image
             if (!$adding)
             {
+                $_SESSION['FileManagerContext'] = "edit:question:{$surveyid}";
+                $aData['display']['menu_bars']['qid_action'] = 'editquestion';
+
                 $egresult = Questions::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'qid' => $qid));
 
                 foreach ($egresult as $esrow)
@@ -703,6 +701,12 @@ class question extends Survey_Common_Action
                     'qid' => $qid,
                     'language' => $baselang
                 ));
+            }
+            else
+            {
+                // This is needed to properly color-code content if it contains replacements
+                LimeExpressionManager::StartProcessingPage(false,Yii::app()->baseUrl);  // so can click on syntax highlighting to edit questions
+                LimeExpressionManager::StartProcessingGroup($gid, ($surveyinfo['anonymized']!="N"), $surveyinfo['sid']);  // loads list of replacement values available for this group
             }
 
             $qtypelist = getqtypelist('', 'array');
@@ -819,6 +823,8 @@ class question extends Survey_Common_Action
             if (!isset($qid))
                 $qid = returnglobal('qid');
 
+            LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);
+
             // Check if any other questions have conditions which rely on this question. Don't delete if there are.
             // TMSW Conditions->Relevance:  Allow such deletes - can warn about missing relevance separately.
             $ccresult = Conditions::model()->findAllByAttributes(array('cqid' => $qid));
@@ -930,6 +936,7 @@ class question extends Survey_Common_Action
     {
         $surveyid = sanitize_int($surveyid);
         $qid = sanitize_int($qid);
+        $LEMdebugLevel=0;
 
         Yii::app()->loadHelper("qanda");
 
@@ -984,8 +991,9 @@ class question extends Survey_Common_Action
             8 => 'N'
         );
 
-        // This is needed to properly detect and color code EM syntax errors
-        LimeExpressionManager::StartProcessingPage();
+        LimeExpressionManager::StartSurvey($surveyid, 'question', NULL, false, $LEMdebugLevel);
+        $qseq = LimeExpressionManager::GetQuestionSeq($qid);
+        $moveResult = LimeExpressionManager::JumpTo($qseq + 1, false, false, true);
 
         $answers = retrieveAnswers($ia);
 
@@ -1038,35 +1046,40 @@ class question extends Survey_Common_Action
             $question['man_class'] = '';
 
         $redata = compact(array_keys(get_defined_vars()));
-        $content = templatereplace(file_get_contents("$thistpl/startpage.pstpl"), array(), $redata, 'question[1312]');
+        $content = templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
         $content .='<form method="post" action="index.php" id="limesurvey" name="limesurvey" autocomplete="off">';
-        $content .= templatereplace(file_get_contents("$thistpl/startgroup.pstpl"), array(), $redata, 'question[1314]');
+        $content .= templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));
 
         $question_template = file_get_contents("$thistpl/question.pstpl");
         // the following has been added for backwards compatiblity.
         if (substr_count($question_template, '{QUESTION_ESSENTIALS}') > 0)
         {
             // LS 1.87 and newer templates
-            $content .= "\n" . templatereplace($question_template, array(), $redata, 'question[1319]', false, $qid) . "\n";
+            $content .= "\n" . templatereplace($question_template, false, $qid) . "\n";
         }
         else
         {
             // LS 1.86 and older templates
             $content .= '<div ' . $question['essentials'] . ' class="' . $question['class'] . $question['man_class'] . '">';
-            $content .= "\n" . templatereplace($question_template, array(), $redata, 'question[1324]', false, $qid) . "\n";
+            $content .= "\n" . templatereplace($question_template, false, $qid) . "\n";
             $content .= "\n\t</div>\n";
         };
 
-        $content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl"), array(), $redata, 'question[1328]') . $dummy_js;
+        $content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl")) . $dummy_js;
         $content .= '<p>&nbsp;</form>';
-        $content .= templatereplace(file_get_contents("$thistpl/endpage.pstpl"), array(), $redata, 'question[1330]');
+        $content .= templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 
-        // If want to  include Javascript in question preview, uncomment these.
-        // However, Group level preview is probably adequate
-        LimeExpressionManager::FinishProcessingGroup();
         LimeExpressionManager::FinishProcessingPage();
 
         echo $content;
+
+        if ($LEMdebugLevel >= 1) {
+            echo LimeExpressionManager::GetDebugTimingMessage();
+        }
+        if ($LEMdebugLevel >= 2) {
+             echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>".$moveResult['message']."</td></tr></table>\n";
+        }
+
         echo "</html>\n";
 
         exit;

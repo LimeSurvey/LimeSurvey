@@ -2179,10 +2179,11 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     global $globalfieldmap, $aDuplicateQIDs;
 
     $clang = Yii::app()->lang;
+    $s_lang = $clang->langcode;
     $surveyid=sanitize_int($surveyid);
     //checks to see if fieldmap has already been built for this page.
-    if (isset($globalfieldmap[$surveyid][$style][$clang->langcode]) && $force_refresh==false) {
-        return $globalfieldmap[$surveyid][$style][$clang->langcode];
+    if (isset($globalfieldmap[$surveyid][$style][$s_lang]) && $force_refresh==false) {
+        return $globalfieldmap[$surveyid][$style][$s_lang];
     }
 
     $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
@@ -2224,11 +2225,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 		$aDefaultValues[] = $v->qid;
 
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
-    //$pquery = "SELECT anonymized, datestamp, ipaddr, refurl FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
-    $fieldtoselect = array('anonymized', 'datestamp', 'ipaddr', 'refurl','language');
-    $conditiontoselect = array('sid' => $surveyid); //"WHERE sid=$surveyid";
-    $prow = Survey::model()->findByPk($surveyid); //Checked)
-    $prow=$prow->attributes;
+    $prow = Survey::model()->findByPk($surveyid)->getAttributes(); //Checked
     if ($prow['anonymized'] == "N")
     {
         $fieldmap["token"]=array("fieldname"=>"token", 'sid'=>$surveyid, 'type'=>"token", "gid"=>"", "qid"=>"", "aid"=>"");
@@ -2294,56 +2291,74 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         }
     }
 
-    //Get list of questions
-    if (is_null($sQuestionLanguage))
+    // Collect all default values once so don't need separate query for each question with defaults
+    // First collect language specific defaults
+    $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
+        . " FROM {{defaultvalues}} as a, {{questions}} as b"
+        . " WHERE a.qid = b.qid"
+        . " AND a.language = b.language"
+        . " AND a.language = '{$s_lang}'"
+        . " AND b.same_default=0"
+        . " AND b.sid = ".$surveyid;
+    $defaultResults = Yii::app()->db->createCommand($defaultsQuery)->queryAll();
+
+    $defaultValues = array();   // indexed by question then subquestion
+    foreach($defaultResults as $dv)
     {
-        $s_lang = $prow['language'];
+        if ($dv['specialtype'] != '') {
+            $sq = $dv['specialtype'];
+        }
+        else {
+            $sq = $dv['sqid'];
+        }
+        $defaultValues[$dv['qid'].'~'.$sq] = $dv['defaultvalue'];
     }
-    else
+
+    // Now overwrite language-specific defaults (if any) base language values for each question that uses same_defaults=1
+    $baseLanguage = GetBaseLanguageFromSurveyID($surveyid);
+    $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
+        . " FROM {{defaultvalues}} as a, {{questions}} as b"
+        . " WHERE a.qid = b.qid"
+        . " AND a.language = b.language"
+        . " AND a.language = '{$baseLanguage}'"
+        . " AND b.same_default=1"
+        . " AND b.sid = ".$surveyid;
+    $defaultResults = Yii::app()->db->createCommand($defaultsQuery)->queryAll();
+
+    foreach($defaultResults as $dv)
     {
-        $s_lang = $sQuestionLanguage;
+        if ($dv['specialtype'] != '') {
+            $sq = $dv['specialtype'];
+        }
+        else {
+            $sq = $dv['sqid'];
+        }
+        $defaultValues[$dv['qid'].'~'.$sq] = $dv['defaultvalue'];
     }
     $qtypes=getqtypelist('','array');
 
-	$language = $s_lang;
-	$aquery = "SELECT questions.*, groups.group_order, groups.group_name,"
-	." (SELECT count(1) FROM {{conditions}} c\n"
-	." WHERE questions.qid = c.qid) AS hasconditions,\n"
-	." (SELECT count(1) FROM {{conditions}} c\n"
-	." WHERE questions.qid = c.cqid) AS usedinconditions\n"
+	$aquery = "SELECT * "
 	." FROM {{questions}} as questions, {{groups}} as groups"
 	." WHERE questions.gid=groups.gid AND "
 	." questions.sid=$surveyid AND "
-	." questions.language='{$language}' AND "
+	." questions.language='{$s_lang}' AND "
 	." questions.parent_qid=0 AND "
-	." groups.language='{$language}' ";
+	." groups.language='{$s_lang}' ";
 	if ($questionid!==false)
 	{
 		$aquery.=" and questions.qid={$questionid} ";
 	}
 	$aquery.=" ORDER BY group_order, question_order";
-    $aresult = Yii::app()->db->createCommand($aquery)->query();
+    $aresult = Yii::app()->db->createCommand($aquery)->queryAll();
     $questionSeq=-1; // this is incremental question sequence across all groups
 
-    foreach ($aresult->readAll() as $arow) //With each question, create the appropriate field(s))
+    foreach ($aresult as $arow) //With each question, create the appropriate field(s))
     {
         ++$questionSeq;
-        if ($arow['hasconditions']>0)
-        {
-            $conditions = "Y";
-        }
-        else
-        {
-            $conditions = "N";
-        }
-        if ($arow['usedinconditions']>0)
-        {
-            $usedinconditions = "Y";
-        }
-        else
-        {
-            $usedinconditions = "N";
-        }
+
+        // Conditions indicators are obsolete with EM.  However, they are so tightly coupled into LS code that easider to just set values to 'N' for now and refactor later.
+        $conditions = 'N';
+        $usedinconditions = 'N';
 
         // Field identifier
         // GXQXSXA
@@ -2352,10 +2367,10 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         // Implicit (subqestion intermal to a question type ) or explicit qubquestions/answer count starts at 1
 
         // Types "L", "!" , "O", "D", "G", "N", "X", "Y", "5","S","T","U"
+        $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
 
         if ($qtypes[$arow['type']]['subquestions']==0  && $arow['type'] != "R" && $arow['type'] != "|")
         {
-            $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
             if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
             $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"{$arow['type']}", 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"");
             if ($style == "full")
@@ -2368,38 +2383,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                 $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                 $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
-                $fieldtoselect = array('defaultvalue');
-
-                if ($qtypes[$arow['type']]['hasdefaultvalues'] && in_array($arow['qid'],$aDefaultValues))
-                {
-                    if ($arow['same_default'])
-                    {
-                        $conditiontoselect = array(
-                        'qid' => $arow['qid'],
-                        'scale_id' => 0,
-                        'language' => Survey::model()->findByPk($surveyid)->language
-                        ); //"WHERE qid={$arow['qid']} AND scale_id=0 AND language='".Survey::model()->findByPk($surveyid)->language."'";
-                        $data = Defaultvalues::model()->findByAttributes($conditiontoselect);
-                        $data  = $data->attributes;
-                        $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];
-                    }
-                    else
-                    {
-                        //$conditiontoselect = "WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'";
-                        $conditiontoselect = array(
-                        'qid' => $arow['qid'],
-                        'scale_id' => 0,
-                        'language' => $clang->langcode
-                        );
-                        $data = Defaultvalues::model()->findAllByAttributes($conditiontoselect);
-
-                        $row  = $data[0]->attributes;
-                        if (count($data) >0)
-                            $fieldmap[$fieldname]['defaultvalue']=$row['defaultvalue'];
-                        else
-                            $fieldmap[$fieldname]['defaultvalue']='';
-
-                    }
+                if (isset($defaultValues[$arow['qid'].'~0'])) {
+                    $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$arow['qid'].'~0'];
                 }
             }
             switch($arow['type'])
@@ -2429,35 +2414,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                             $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                             $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                             $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
-                            if (in_array($arow['qid'],$aDefaultValues))
-                            {
-                                if ($arow['same_default'])
-                                {
-                                    //$conditiontoselect = "WHERE qid={$arow['qid']} AND scale_id=0 AND language='".Survey::model()->findByPk($surveyid)->language."'";
-                                    $conditiontoselect = array(
-                                    'qid' => $arow['qid'],
-                                    'scale_id' => 0,
-                                    'language' => Survey::model()->findByPk($surveyid)->language
-                                    );
-                                    $data = Defaultvalues::model()->findByAttributes($conditiontoselect);
-                                    $data  = $data->attributes;
-                                    if (!isset($data['defaultvalue'])) $data['defaultvalue']=null;
-                                    $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];
-                                }
-                                else
-                                {
-                                    //$conditiontoselect = "WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'";
-                                    $conditiontoselect = array(
-                                    'qid' => $arow['qid'],
-                                    'scale_id' => 0,
-                                    'language' => $clang->langcode
-                                    );
-                                    $data = Defaultvalues::model()->findByAttributes($conditiontoselect);
-                                    $data  = $data->attributes;
-                                    if (!isset($data['defaultvalue'])) $data['defaultvalue']=null;
-                                    $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];
-                                }
-
+                            if (isset($defaultValues[$arow['qid'].'~other'])) {
+                                $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$arow['qid'].'~other'];
                             }
                         }
                     }
@@ -2495,10 +2453,15 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             $abrows = getSubQuestions($surveyid,$arow['qid'],$s_lang);
             //Now first process scale=1
             $answerset=array();
+            $answerList = array();
             foreach ($abrows as $key=>$abrow)
             {
                 if($abrow['scale_id']==1) {
                     $answerset[]=$abrow;
+                    $answerList[] = array(
+                        'code'=>$abrow['title'],
+                        'answer'=>$abrow['question'],
+                    );
                     unset($abrows[$key]);
                 }
             }
@@ -2529,6 +2492,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                         $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                         $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                        $fieldmap[$fieldname]['preg']=$arow['preg'];
+                        $fieldmap[$fieldname]['answerList']=$answerList;
                     }
                 }
             }
@@ -2602,43 +2567,49 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         }
         elseif ($arow['type'] == "|")
         {
-            $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
-            $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
-            'type'=>$arow['type'],
-            'sid'=>$surveyid,
-            "gid"=>$arow['gid'],
-            "qid"=>$arow['qid'],
-            "aid"=>''
-            );
-            if ($style == "full")
+            $abvalue = Question_attributes::model()->findByAttributes(array('attribute' => 'max_num_of_files', 'qid' => $arow['qid']))->getAttribute('value');
+
+            for ($i = 1; $i <= $abvalue; $i++)
             {
-                $fieldmap[$fieldname]['title']=$arow['title'];
-                $fieldmap[$fieldname]['question']=$arow['question'];
-                $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
-                $fieldmap[$fieldname]['hasconditions']=$conditions;
-                $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
-            }
-            $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}"."_filecount";
-            $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
-            'type'=>$arow['type'],
-            'sid'=>$surveyid,
-            "gid"=>$arow['gid'],
-            "qid"=>$arow['qid'],
-            "aid"=>"filecount"
-            );
-            if ($style == "full")
-            {
-                $fieldmap[$fieldname]['title']=$arow['title'];
-                $fieldmap[$fieldname]['question']="filecount - ".$arow['question'];
-                $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
-                $fieldmap[$fieldname]['hasconditions']=$conditions;
-                $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
+                $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
+                'type'=>$arow['type'],
+                'sid'=>$surveyid,
+                "gid"=>$arow['gid'],
+                "qid"=>$arow['qid'],
+                "aid"=>''
+                );
+                if ($style == "full")
+                {
+                    $fieldmap[$fieldname]['title']=$arow['title'];
+                    $fieldmap[$fieldname]['question']=$arow['question'];
+                    $fieldmap[$fieldname]['max_files']=$abvalue;
+                    $fieldmap[$fieldname]['group_name']=$arow['group_name'];
+                    $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
+                    $fieldmap[$fieldname]['hasconditions']=$conditions;
+                    $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                    $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                    $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                }
+                $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}"."_filecount";
+                $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
+                'type'=>$arow['type'],
+                'sid'=>$surveyid,
+                "gid"=>$arow['gid'],
+                "qid"=>$arow['qid'],
+                "aid"=>"filecount"
+                );
+                if ($style == "full")
+                {
+                    $fieldmap[$fieldname]['title']=$arow['title'];
+                    $fieldmap[$fieldname]['question']="filecount - ".$arow['question'];
+                    $fieldmap[$fieldname]['group_name']=$arow['group_name'];
+                    $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
+                    $fieldmap[$fieldname]['hasconditions']=$conditions;
+                    $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                    $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                    $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                }
             }
         }
         else  // Question types with subquestions and one answer per subquestion  (M/A/B/C/E/F/H/P)
@@ -2667,28 +2638,9 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                     $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                     $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
-                    if (in_array($arow['qid'],$aDefaultValues))
-                    {
-
-                        if ($arow['same_default'])
-                        {
-                            $conditiontoselect = "sqid = '{$abrow['qid']}' AND qid={$arow['qid']} AND scale_id=0 AND language='".Survey::model()->findByPk($surveyid)->language."'";
-
-                            $data = Defaultvalues::model()->find($conditiontoselect);
-                            $data  = $data->attributes;
-                            if(isset($data['defaultvalue']))
-                                $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];
-                        }
-                        else
-                        {
-                            $conditiontoselect = "sqid = '{$abrow['qid']}' AND qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'";
-                            $data = Defaultvalues::model()->find($conditiontoselect);
-                            if(isset($data))
-                                $data  = $data->attributes;
-                            if(isset($data['defaultvalue']))
-                                $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];
-
-                        }
+                    $fieldmap[$fieldname]['preg']=$arow['preg'];
+                    if (isset($defaultValues[$arow['qid'].'~'.$abrow['qid']])) {
+                        $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$arow['qid'].'~'.$abrow['qid']];
                     }
                 }
                 if ($arow['type'] == "P")
@@ -2726,6 +2678,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                     $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                     $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                    $fieldmap[$fieldname]['other']=$arow['other'];
                 }
                 if ($arow['type']=="P")
                 {
@@ -2743,16 +2696,22 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                         $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                         $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                        $fieldmap[$fieldname]['other']=$arow['other'];
                     }
                 }
             }
         }
-        $fieldmap[$fieldname]['relevance'] = isset($arow['relevance']) ? $arow['relevance'] : null;
+        $fieldmap[$fieldname]['relevance']=$arow['relevance'];
+        $fieldmap[$fieldname]['grelevance']=$arow['grelevance'];
         $fieldmap[$fieldname]['questionSeq']=$questionSeq;
         $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+        $fieldmap[$fieldname]['preg']=$arow['preg'];
+        $fieldmap[$fieldname]['other']=$arow['other'];
+        $fieldmap[$fieldname]['help']=$arow['help'];
     }
     if (isset($fieldmap)) {
-        $globalfieldmap[$surveyid][$style][$clang->langcode] = $fieldmap;
+        $globalfieldmap[$surveyid][$style][$s_lang] = $fieldmap;
+        $_SESSION['fieldmap-' . $surveyid . $s_lang]=$fieldmap;
         return $fieldmap;
     }
 }
@@ -2769,8 +2728,6 @@ function bHasFileUploadQuestion($surveyid) {
         if (isset($field['type']) &&  $field['type'] === '|') return true;
     }
 }
-
-
 
 /**
 * This function generates an array containing the fieldcode, and matching data in the same order as the activate script
@@ -2843,8 +2800,6 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
     return $output;
 }
 
-
-
 /**
 * set the rights of a user and his children
 *
@@ -2873,11 +2828,9 @@ function setuserrights($uid, $rights)
 */
 function getSavedCount($surveyid)
 {
-    $surveyid=(int)$surveyid;
+    $surveyid = (int)$surveyid;
 
-    //$query = "SELECT COUNT(*) FROM ".db_table_name('saved_control')." WHERE sid=$surveyid";
-    $count=Saved_control::getCountOfAll($surveyid);
-    return $count;
+    return Saved_control::getCountOfAll($surveyid);
 }
 
 /**
@@ -2930,7 +2883,7 @@ function SetSurveyLanguage($surveyid, $language)
             $_SESSION['s_lang'] = $default_language;
             //echo "Language not supported, resorting to ".$_SESSION['s_lang']."<br />";
         } else {
-            $_SESSION['s_lang'] =  $language;
+            $_SESSION['s_lang'] = $language;
             //echo "Language will be set to ".$_SESSION['s_lang']."<br />";
         }
         Yii::import('application.libraries.Limesurvey_lang', true);
@@ -2945,6 +2898,8 @@ function SetSurveyLanguage($surveyid, $language)
     $thissurvey=getSurveyInfo($surveyid, @$_SESSION['s_lang']);
     Yii::app()->loadHelper('surveytranslator');
     $_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
+
+    LimeExpressionManager::SetEMLanguage($_SESSION['s_lang']);
     return $clang;
 }
 
@@ -5884,30 +5839,32 @@ function get_quotaCompletedCount($iSurveyId, $quotaid)
 
 /**
 * Creates an array with details on a particular response for display purposes
-* Used in Print answers (done), Detailed response view (Todo:)and Detailed admin notification email (done)
+* Used in Print answers, Detailed response view and Detailed admin notification email
 *
 * @param mixed $iSurveyID
 * @param mixed $iResponseID
 * @param mixed $sLanguageCode
 * @param boolean $bHonorConditions Apply conditions
 */
-function aGetFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorConditions=false)
+function aGetFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorConditions = false)
 {
     $aFieldMap = createFieldMap($iSurveyID,'full',false,false,$sLanguageCode);
     //Get response data
-    Surveys_dynamic::sid($iSurveyID);
-    $idquery = Surveys_dynamic::model()->getAllRecords(array('id'=>$iResponseID));
-    $idrow = $idquery->readAll();
+    $idrow = Surveys_dynamic::model($iSurveyID)->findByAttributes(array('id'=>$iResponseID));
 
-    $aResultTable=array();
-
-    // Filter out irrelevant questions
-    $relevanceStatus = $_SESSION['relevanceStatus'];
-
+    $aResultTable = array();
     $oldgid = 0;
     $oldqid = 0;
     foreach ($aFieldMap as $sKey=>$fname)
     {
+        if (!empty($fname['qid']))
+        {
+            $attributes = getQuestionAttributes($fname['qid']);
+            if (getQuestionAttributeValue($attributes, 'hidden') == 1)
+            {
+                continue;
+            }
+        }
         $question = $fname['question'];
         $subquestion='';
         if (isset($fname['gid']) && !empty($fname['gid'])) {
@@ -5915,58 +5872,38 @@ function aGetFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonor
             if ($oldgid !== $fname['gid'])
             {
                 $oldgid = $fname['gid'];
-                if (checkgroupfordisplay($fname['gid']) || !$bHonorConditions)
-                {
-                    $aResultTable['gid_'.$fname['gid']]=array($fname['group_name']);
-                }
+                $aResultTable['gid_'.$fname['gid']] = array($fname['group_name']);
             }
         }
-        if (isset($fname['qid']))
+        if (!empty($fname['qid']))
         {
-            $qid = $fname['qid'];
-            if (isset($relevanceStatus[$qid]) && $relevanceStatus[$qid] != 1) {
-                continue;   // skip irrelevant questions
-            }
-            if (isset($fname['qid']) && !empty($fname['qid']))
+            if ($oldqid !== $fname['qid'])
             {
-                if ($bHonorConditions)
+                $oldqid = $fname['qid'];
+                if (($bHonorConditions && LimeExpressionManager::QuestionIsRelevant($fname['qid'])) || !$bHonorConditions)
                 {
-                     $bQuestionVisible=checkquestionfordisplay($fname['qid'],null);
-                }
-                else
-                {
-                     $bQuestionVisible=true;
-                }
-                if ($oldqid !== $fname['qid'])
-                {
-                    $oldqid = $fname['qid'];
-                    if ($bQuestionVisible)
+                    if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2']))
                     {
-
-                        if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2']))
-                        {
-                            $aResultTable['qid_'.$fname['sid'].'X'.$fname['gid'].'X'.$fname['qid']]=array($fname['question'],'','');
-                        }
-                        else
-                        {
-                            $answer=getextendedanswer($iSurveyID, NULL,$fname['fieldname'], $idrow[$fname['fieldname']]);
-                            $aResultTable[$fname['fieldname']]=array($question,'',$answer);
-                            continue;
-                        }
-
+                        $aResultTable['qid_' . $fname['sid'] . 'X' . $fname['gid'] . 'X' . $fname['qid']] = array($fname['question'], '', '');
                     }
                     else
                     {
+                        $answer = getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]);
+                        $aResultTable[$fname['fieldname']] = array($question, '', $answer);
                         continue;
                     }
                 }
+                else
+                {
+                    continue;
+                }
             }
-            else
-            {
-                $answer=getextendedanswer($iSurveyID, NULL,$fname['fieldname'], $idrow[$fname['fieldname']]);
-                $aResultTable[$fname['fieldname']]=array($question,'',$answer);
-                continue;
-            }
+        }
+        else
+        {
+            $answer=getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]);
+            $aResultTable[$fname['fieldname']]=array($question,'',$answer);
+            continue;
         }
         if (isset($fname['subquestion']))
             $subquestion = "{$fname['subquestion']}";
@@ -5976,11 +5913,9 @@ function aGetFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonor
 
         if (isset($fname['subquestion2']))
             $subquestion .= "[{$fname['subquestion2']}]";
-        if ($bQuestionVisible)
-        {
-            $answer=getextendedanswer($iSurveyID, NULL,$fname['fieldname'], $idrow[$fname['fieldname']]);
-            $aResultTable[$fname['fieldname']]=array('',$subquestion,$answer);
-        }
+
+        $answer = getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]);
+        $aResultTable[$fname['fieldname']] = array('',$subquestion,$answer);
     }
     return $aResultTable;
 }

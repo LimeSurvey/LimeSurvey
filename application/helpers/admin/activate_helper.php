@@ -17,11 +17,12 @@
  * fixes the numbering of questions
  * @param <type> $fixnumbering
  */
-function fixNumbering($fixnumbering)
+function fixNumbering($fixnumbering, $surveyid)
 {
 
     Yii::app()->loadHelper("database");
 
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
      //Fix a question id - requires renumbering a question
     $oldqid = $fixnumbering;
     $query = "SELECT qid FROM {{questions}} ORDER BY qid DESC";
@@ -61,6 +62,8 @@ function fixNumbering($fixnumbering)
     //Now answers
     $query = "UPDATE {{answers}} SET qid=$newqid WHERE qid=$oldqid";
     $result = db_execute_assosc($query);
+
+    LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
 }
 /**
  * checks consistency of groups
