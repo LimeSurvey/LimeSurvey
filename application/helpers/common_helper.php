@@ -2177,6 +2177,7 @@ function validate_templatedir($templatename)
 function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
     global $globalfieldmap, $aDuplicateQIDs;
 
+    $clang = Yii::app()->lang;
     $surveyid = sanitize_int($surveyid);
     //Get list of questions
     if (is_null($sQuestionLanguage))
