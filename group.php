@@ -76,7 +76,8 @@ else
         }
         else if (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N') {
             //If explicitply set, hide the welcome screen
-            $_SESSION['step'] = 1;
+            $_SESSION['step'] = 0;
+            $move = "movenext";
         }
     }
 
