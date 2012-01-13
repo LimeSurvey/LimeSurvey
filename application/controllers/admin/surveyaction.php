@@ -209,7 +209,7 @@ class SurveyAction extends Survey_Common_Action
                 }
 
                 // Deletes the temp directory
-                $this->_rrmdir($extractdir);
+                rmdirr($extractdir);
 
                 // Delete the temporary file
                 unlink($zipfilename);
@@ -944,7 +944,7 @@ class SurveyAction extends Survey_Common_Action
             }
 
             if (isset($aImportResults['error']) && $aImportResults['error']) safe_die($aImportResults['error']);
-            
+
             $aData['action'] = $action;
             $aData['sLink'] = $this->getController()->createUrl('admin/survey/view/surveyid/' . $aImportResults['newsid']);
             $aData['aImportResults'] = $aImportResults;
@@ -1299,7 +1299,7 @@ class SurveyAction extends Survey_Common_Action
      */
     private function _deleteSurvey($iSurveyId)
     {
-        Survey::model()->deleteByPk($iSurveyId);
+        Survey::model()->deleteSurvey($iSurveyId);
         rmdirr(Yii::app()->getConfig('uploaddir') . '/surveys/' . $iSurveyId);
     }
 

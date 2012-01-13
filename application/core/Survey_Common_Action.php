@@ -996,28 +996,4 @@ class Survey_Common_Action extends CAction
         return $path;
     }
 
-    /**
-     * Recursively delete a directory
-     * @param type $dir
-     */
-    protected function _rrmdir($dir)
-    {
-        if (is_dir($dir))
-        {
-            $objects = scandir($dir);
-            foreach ($objects as $object)
-            {
-                if ($object != "." && $object != "..")
-                {
-                    if (filetype($dir . "/" . $object) == "dir")
-                        $this->_rrmdir($dir . "/" . $object);
-                    else
-                        unlink($dir . "/" . $object);
-                }
-            }
-            reset($objects);
-            rmdir($dir);
-        }
-    }
-
 }

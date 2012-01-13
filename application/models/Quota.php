@@ -72,5 +72,20 @@ class Quota extends CActiveRecord
 			$quota->$k = $v;
 		return $quota->save();
     }
+
+    function deleteQuota($condition = false, $recursive = true)
+    {
+        if ($recursive == true)
+        {
+            $oResult = Quota::model()->findAllByAttributes($condition);
+            foreach ($oResult as $aRow)
+            {
+                Quota_languagesettings::model()->deleteAllByAttributes(array('quotals_quota_id' => $aRow['id']));
+                Quota_members::model()->deleteAllByAttributes(array('quota_id' => $aRow['id']));
+            }
+        }
+
+        Quota::model()->deleteAllByAttributes($condition);
+    }
 }
 ?>

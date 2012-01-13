@@ -2199,6 +2199,9 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     if (isset($globalfieldmap[$surveyid][$style][$s_lang]) && $force_refresh==false) {
         return $globalfieldmap[$surveyid][$style][$s_lang];
     }
+    if (isset($_SESSION['fieldmap-' . $surveyid . $s_lang]) && !$force_refresh) {
+        return $_SESSION['fieldmap-' . $surveyid . $s_lang];
+    }
 
     $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
     if ($style == "full")

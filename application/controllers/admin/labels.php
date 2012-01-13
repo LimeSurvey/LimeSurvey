@@ -91,7 +91,7 @@ class labels extends Survey_Common_Action
                 }
 
                 // Deletes the temp directory
-                $this->_rrmdir($extractdir);
+                rmdirr($extractdir);
 
                 // Delete the temporary file
                 unlink($zipfilename);

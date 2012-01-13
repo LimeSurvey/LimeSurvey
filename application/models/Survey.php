@@ -214,48 +214,41 @@ class Survey extends CActiveRecord
     */
     public function deleteSurvey($iSurveyID, $recursive=true)
     {
-        $this->db->delete('surveys', array('sid' => $iSurveyID));
+        Survey::model()->deleteByPk($iSurveyID);
 
-        if ($recursive)
+        if ($recursive == true)
         {
-
-            $this->load->helper('database');
-            $this->load->dbforge();
-            $this->load->model('questions_model');
-            if (tableExists("survey_{$iSurveyID}"))  //delete the survey_$iSurveyID table
+            if (tableExists("{{survey_{$iSurveyID}}}"))  //delete the survey_$iSurveyID table
             {
-                $dsresult = $this->dbforge->drop_table('survey_' . $iSurveyID) or safe_die("Couldn't drop table survey_" . $iSurveyID);
+                Yii::app()->db->createCommand()->dropTable("{{survey_{$iSurveyID}}}");
             }
 
-            if (tableExists("survey_{$iSurveyID}_timings"))  //delete the survey_$iSurveyID_timings table
+            if (tableExists("{{survey_{$iSurveyID}_timings}}"))  //delete the survey_$iSurveyID_timings table
             {
-                $dsresult = $this->dbforge->drop_table('survey_' . $iSurveyID . '_timings') or safe_die("Couldn't drop table survey_" . $iSurveyID . "_timings");
+                Yii::app()->db->createCommand()->dropTable("{{survey_{$iSurveyID}_timings}}");
             }
 
-            if (tableExists("tokens_$iSurveyID")) //delete the tokens_$iSurveyID table
+            if (tableExists("{{tokens_{$iSurveyID}}}")) //delete the tokens_$iSurveyID table
             {
-                $dsresult = $this->dbforge->drop_table('tokens_' . $iSurveyID) or safe_die("Couldn't drop table token_" . $iSurveyID);
+                Yii::app()->db->createCommand()->dropTable("{{tokens_{$iSurveyID}}}");
             }
 
-            $oResult = $this->questions_model->getSomeRecords(array('qid'), array('sid' => $iSurveyID));
-            foreach ($oResult->result_array() as $aRow)
+            $oResult = Questions::model()->findAllByAttributes(array('sid' => $iSurveyID));
+            foreach ($oResult as $aRow)
             {
-                $this->db->delete('answers', array('qid' => $aRow['qid']));
-                $this->db->delete('conditions', array('qid' => $aRow['qid']));
-                $this->db->delete('question_attributes', array('qid' => $aRow['qid']));
+                Answers::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
+                Conditions::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
+                Question_attributes::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
             }
 
-            $this->db->delete('questions', array('sid' => $iSurveyID));
-            $this->db->delete('assessments', array('sid' => $iSurveyID));
-            $this->db->delete('groups', array('sid' => $iSurveyID));
-            $this->db->delete('surveys_languagesettings', array('surveyls_survey_id' => $iSurveyID));
-            $this->db->delete('survey_permissions', array('sid' => $iSurveyID));
-            $this->db->delete('saved_control', array('sid' => $iSurveyID));
-            $this->load->model('survey_url_parameters_model');
-            $this->survey_url_parameters_model->deleteRecords(array('sid' => $iSurveyID));
-
-            $this->load->model('quota_model');
-            $this->quota_model->deleteQuota(array('sid' => $iSurveyID));
+            Questions::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
+            Assessment::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
+            Groups::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
+            Surveys_languagesettings::model()->deleteAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
+            Survey_permissions::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
+            Saved_control::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
+            Survey_url_parameters::model()->deleteAllByAttributes(array('sid' => $iSurveyID));
+            Quota::model()->deleteQuota(array('sid' => $iSurveyID), true);
         }
     }
 }

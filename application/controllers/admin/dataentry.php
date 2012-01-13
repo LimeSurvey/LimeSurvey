@@ -1805,7 +1805,7 @@ class dataentry extends Survey_Common_Action
                     VALUES
                     (".implode(',', $values).")";
 
-                    $iinsert = db_execute_assoc($SQL);
+                    $iinsert = Yii::app()->db->createCommand($SQL)->execute();
                     $last_db_id = Yii::app()->db->getLastInsertID();
                     if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') // submittoken
                     {
