@@ -5876,7 +5876,7 @@ function aGetFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonor
     {
         if (!empty($fname['qid']))
         {
-            $attributes = Question_attributes::model()->getQuestionAttributes($fname['qid']);
+            $attributes = getQuestionAttributeValues($fname['qid']);
             if (getQuestionAttributeValue($attributes, 'hidden') == 1)
             {
                 continue;

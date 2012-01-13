@@ -721,29 +721,29 @@ class SurveyAction extends CAction {
 
         //Send local variables to the appropriate survey type
         $redata = compact(array_keys(get_defined_vars()));
-//        Yii::import('application.helpers.SurveyRuntimeHelper');
-//        $tmp = new SurveyRuntimeHelper();
-//        $tmp->run($redata);
+        Yii::import('application.helpers.SurveyRuntimeHelper');
+        $tmp = new SurveyRuntimeHelper();
+        $tmp->run($redata);
 
-        //CALL APPROPRIATE SCRIPT
-        switch ($thissurvey['format'])
-        {
-            case "A": //All in one
-                Yii::import("application.libraries.Survey_format");
-                $tmp = new Survey_format();
-                $tmp->run($redata);
-                break;
-            case "G": //Group at a time
-                Yii::import("application.libraries.Group_format");
-                $tmp = new Group_format();
-                $tmp->run($redata);
-                break;
-            case "S": //One at a time
-             default:
-                Yii::import("application.libraries.Question_format");
-                $tmp = new Question_format();
-                $tmp->run($redata);
-        }
+//        //CALL APPROPRIATE SCRIPT
+//        switch ($thissurvey['format'])
+//        {
+//            case "A": //All in one
+//                Yii::import("application.libraries.Survey_format");
+//                $tmp = new Survey_format();
+//                $tmp->run($redata);
+//                break;
+//            case "G": //Group at a time
+//                Yii::import("application.libraries.Group_format");
+//                $tmp = new Group_format();
+//                $tmp->run($redata);
+//                break;
+//            case "S": //One at a time
+//             default:
+//                Yii::import("application.libraries.Question_format");
+//                $tmp = new Question_format();
+//                $tmp->run($redata);
+//        }
 
 		if (isset($_POST['saveall']) || isset($flashmessage))
 		{

@@ -83,7 +83,8 @@ class SurveyRuntimeHelper {
                 else if (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N')
                 {
                     //If explicitply set, hide the welcome screen
-                    $_SESSION['step'] = 1;
+                    $_SESSION['step'] = 0;
+                    $move = "movenext";
                 }
             }
 
@@ -584,7 +585,7 @@ class SurveyRuntimeHelper {
                     {
                         continue;
                     }
-                    $qidattributes = Question_attributes::model()->getQuestionAttributes($ia[0], $ia[4])->read();
+                    $qidattributes = getQuestionAttributeValues($ia[0], $ia[4]);
                     if ($ia[4] != '*' && ($qidattributes === false || !isset($qidattributes['hidden']) || $qidattributes['hidden'] == 1))
                     {
                         continue;
@@ -802,8 +803,8 @@ END;
 
             echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
 
-            if (!empty($qanda))
-            {
+            //if (!empty($qanda))
+            //{
                 foreach ($qanda as $qa) // one entry per QID
                 {
                     if ($gid != $qa[6])
@@ -881,7 +882,7 @@ END;
                 {
                     echo "<input type='hidden' name='lastgroup' value='$lastgroup' id='lastgroup' />\n"; // for counting the time spent on each group
                 }
-            }
+            //}
             echo "\n\n<!-- END THE GROUP -->\n";
             echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"), array(), $redata);
             echo "\n\n</div>\n";
