@@ -2951,22 +2951,22 @@ function buildLabelSetCheckSumArray()
 
 /**
  * Returns a flat array with all question attributes for the question only (and the qid we gave it)!
- * @param $qid The question ID
+ * @param $iQID The question ID
  * @return array{attribute=>value, attribute=>value} or false if the question ID does not exist (anymore)
  */
-function getQuestionAttributeValues($qid)
+function getQuestionAttributeValues($iQID)
 {
     static $cache = array();
     static $availableattributesarr = null;
-    $qid = sanitize_int($qid);
+    $iQID = sanitize_int($iQID);
 
-    if (isset($cache[$qid])) {
-        return $cache[$qid];
+    if (isset($cache[$iQID])) {
+        return $cache[$iQID];
     }
-    $row = Questions::model()->findByAttributes(array('qid' => $qid))->getAttributes(); //, 'parent_qid' => 0), array('group' => 'type')
+    $row = Questions::model()->findByAttributes(array('qid' => $iQID))->getAttributes(); //, 'parent_qid' => 0), array('group' => 'type')
     if (empty($row)) // Question was deleted while running the survey
     {
-        $cache[$qid] = false;
+        $cache[$iQID] = false;
         return false;
     }
     $type = $row['type'];
@@ -2979,50 +2979,48 @@ function getQuestionAttributeValues($qid)
     if (is_null($availableattributesarr)) $availableattributesarr = questionAttributes();
     if (isset($availableattributesarr[$type]))
     {
-        $availableattributes = $availableattributesarr[$type];
+        $aAvailableAttributes = $availableattributesarr[$type];
     }
     else
     {
-        $cache[$qid] = array();
+        $cache[$iQID] = array();
         return array();
     }
 
-    $setattributes = array();
-    foreach($availableattributes as $attribute){
+    $aResultAttributes = array();
+    foreach($aAvailableAttributes as $attribute){
         if ($attribute['i18n'])
         {
             foreach ($aLanguages as $sLanguage)
             {
-               // This is an exception  - in this case we set the setattributes array because on the array_merge later the subkeys get lost
-                $setattributes[$attribute['name']][$sLanguage]=$attribute['default'];
+                $aResultAttributes[$attribute['name']][$sLanguage]=$attribute['default'];
             }
         }
         else
         {
-            $defaultattributes[$attribute['name']]=$attribute['default'];
+            $aResultAttributes[$attribute['name']]=$attribute['default'];
         }
     }
 
-    $result = Question_attributes::model()->findAllByAttributes(array('qid' => $qid));
+    $result = Question_attributes::model()->findAllByAttributes(array('qid' => $iQID));
     foreach ($result as $row)
     {
     	$row = $row->attributes;
-        if (!isset($availableattributes[$row['attribute']]))
+        if (!isset($aAvailableAttributes[$row['attribute']]))
         {
-            continue; // Sort out attribuets not belonging to this question
+            continue; // Sort out attributes not belonging to this question
         }
-        if (!($availableattributes[$row['attribute']]['i18n']))
+        if (!($aAvailableAttributes[$row['attribute']]['i18n']))
         {
-            $setattributes[$row['attribute']]=$row['value'];
+            $aResultAttributes[$row['attribute']]=$row['value'];
         }
         elseif(!empty($row['language']))
         {
-            $setattributes[$row['attribute']][$row['language']]=$row['value'];
+            $aResultAttributes[$row['attribute']][$row['language']]=$row['value'];
         }
     }
-    $qid_attributes = array_merge($defaultattributes, $setattributes);
-    $cache[$qid] = $qid_attributes;
-    return $qid_attributes;
+    $cache[$iQID] = $aResultAttributes;
+    return $aResultAttributes;
 }
 
 /**
