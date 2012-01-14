@@ -91,8 +91,10 @@ class Surveys_languagesettings extends CActiveRecord
 		$query=Yii::app()->db->createCommand();
         $query->select('surveyls_dateformat');
         $query->from('{{surveys_languagesettings}}');
-		$query->join('surveys','surveys.sid = surveys_languagesettings.surveyls_survey_id AND surveyls_survey_id = '.$surveyid);
-        $query->where('surveyls_language = \''.$languagecode.'\'');
+		$query->join('surveys','surveys.sid = surveys_languagesettings.surveyls_survey_id AND surveyls_survey_id = :surveyid');
+        $query->where('surveyls_language = :langcode');
+		$query->bindParam(":langcode", $languagecode, PDO::PARAM_STR)
+			->bindParam(":surveyid", $surveyid, PDO::PARAM_INT);
         return $query->query();
     }
 
@@ -104,7 +106,7 @@ class Surveys_languagesettings extends CActiveRecord
 
         if ($hasPermission)
         {
-            $this->db->where('a.sid IN (SELECT sid FROM {{survey_permissions}} WHERE uid='.$this->session->userdata("loginID").' AND permission=\'survey\' and read_p=1) ');
+            $this->db->where('a.sid IN (SELECT sid FROM {{survey_permissions}} WHERE uid=:uid AND permission=\'survey\' and read_p=1) ')->bindParam(":uid", $this->session->userdata("loginID"), PDO::PARAM_INT);
         }
         $this->db->order_by('active DESC, surveyls_title');
         return $this->db->get();
@@ -137,7 +139,7 @@ class Surveys_languagesettings extends CActiveRecord
     }
     function getSurveyNames($surveyid)
     {
-        return Yii::app()->db->createCommand()->select('surveyls_title')->from('{{surveys_languagesettings}}')->where('surveyls_language = "'.Yii::app()->session['adminlang'].'" AND surveyls_survey_id = '.$surveyid)->queryAll();
+        return Yii::app()->db->createCommand()->select('surveyls_title')->from('{{surveys_languagesettings}}')->where('surveyls_language = :adminlang AND surveyls_survey_id = :surveyid')->bindParam(":adminlang", Yii::app()->session['adminlang'], PDO::PARAM_STR)->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)->queryAll();
     }
 
     function updateRecords($data,$condition=FALSE, $xssfiltering = false)

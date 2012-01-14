@@ -56,7 +56,7 @@ class Question_attributes extends CActiveRecord
 		return Yii::app()->db->createCommand()
 			->select()
 			->from(self::tableName())
-			->where(array('and', 'qid='.$qid))
+			->where(array('and', 'qid=:qid'))->bindParam(":qid", $qid, PDO::PARAM_STR)
 			->order('qaid asc')
 			->query();
     }

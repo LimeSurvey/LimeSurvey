@@ -109,7 +109,7 @@ class ParticipantShares extends CActiveRecord
 
 	public function storeParticipantShare($data)
     {
-		$ownerid = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->where('participant_id = "'.$data['participant_id'].'"')->queryRow();
+		$ownerid = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->where('participant_id = :participant_id')->bindParam(":participant_id", $data['participant_id'], PDO::PARAM_STR)->queryRow();
 		if($ownerid['owner_uid'] != $data['share_uid'])// A check to ensure that the participant is not added to it's owner
 		{
 			Yii::app()->db->createCommand()->insert('{{participant_shares}}',$data);
@@ -119,8 +119,8 @@ class ParticipantShares extends CActiveRecord
     function updateShare($data)
     {
 		$criteria = new CDbCriteria;
-		$criteria->addCondition('participant_id = "'.$data['participant_id'].'"');
-		$criteria->addCondition('share_uid = '.$data['share_uid']);
+		$criteria->addCondition('participant_id = :participant_id')->bindParam(":participant_id", $data['participant_id'], PDO::PARAM_STR);
+		$criteria->addCondition('share_uid = :shareuid')->bindParam(":shareuid", $data['shareuid'], PDO::PARAM_INT);
 		ParticipantShares::model()->updateAll($data,$criteria);
     }
 
@@ -130,7 +130,7 @@ class ParticipantShares extends CActiveRecord
 		$rowid=explode(",",$rows['id']);
 		foreach($rowid as $row)
 		{
-			Yii::app()->db->createCommand()->delete('{{participant_shares}}','participant_id = "'.$row.'"');
+			Yii::app()->db->createCommand()->delete('{{participant_shares}}','participant_id = :participant_id')->bindParam(":participant_id", $row, PDO::PARAM_STR);
 	    }
 	}
 }

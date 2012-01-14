@@ -91,9 +91,10 @@ class User extends CActiveRecord
 		$user = Yii::app()->db->createCommand()
         ->select('a.users_name, a.full_name, a.email, a.uid,  b.users_name AS parent')
         ->limit(1)
-        ->where('a.uid = ' . $postuserid)
+        ->where('a.uid = :postuserid')
         ->from("{{users}} a")
         ->leftJoin('{{users}} AS b', 'a.parent_id = b.uid')
+		->bindParam(":postuserid", $postuserid, PDO::PARAM_INT)
         ->queryRow();
 		return $user;
 	}
@@ -136,8 +137,8 @@ class User extends CActiveRecord
 	 */
     public function insert($new_user, $new_pass,$new_full_name,$parent_user,$new_email)
     {
-    	   	$tablename = $this->tableName();
-    	 $data=array('users_name' => $new_user, 'password' => hash('sha256', $new_pass),'full_name' => $new_full_name,'parent_id' => $parent_user,'lang' => 'auto','email' => $new_email);
+    	$tablename = $this->tableName();
+    	$data=array('users_name' => Yii::app()->db->quoteValue($new_user), 'password' => hash('sha256', $new_pass),'full_name' => Yii::app()->db->quoteValue($new_full_name),'parent_id' => Yii::app()->db->quoteValue($parent_user),'lang' => 'auto','email' => Yii::app()->db->quoteValue($new_email));
 		return Yii::app()->db->createCommand()->insert('{{users}}', $data);
     }
 	    function delete($where)
@@ -168,11 +169,11 @@ class User extends CActiveRecord
 	 */
     public function getName($userid)
     {
-        return Yii::app()->db->createCommand()->select('full_name')->from('{{users}}')->where("uid = $userid")->queryAll();
+        return Yii::app()->db->createCommand()->select('full_name')->from('{{users}}')->where("uid = :userid")->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll();
     }
 	 public function getuidfromparentid($parentid)
     {
-        return Yii::app()->db->createCommand()->select('uid')->from('{{users}}')->where('parent_id=' . $parentid)->queryRow();
+        return Yii::app()->db->createCommand()->select('uid')->from('{{users}}')->where('parent_id = :parent_id')->bindParam(":parent_id", $parentid, PDO::PARAM_INT)->queryRow();
     }
 	/**
 	 * Returns id of user
@@ -184,7 +185,7 @@ class User extends CActiveRecord
     {
         $this->db->select('uid');
         $this->db->from('users');
-        $this->db->where(array("full_name"=>$fullname));
+        $this->db->where(array("full_name"=>Yii::app()->db->quoteValue($fullname)));
         $result = $this->db->get();
         return $result->row();
     }
@@ -197,7 +198,7 @@ class User extends CActiveRecord
 	 */
     public function updatePassword($uid,$password)
     {
-        $data = array('password' => $password);
+        $data = array('password' => Yii::app()->db->quoteValue($password));
         //$this->db->where(array("uid"=>$uid));
         //$this->db->update('users',$data);
          $this->updateByPk($uid, $data);
@@ -224,7 +225,7 @@ class User extends CActiveRecord
     */
     public function getCommonUID($surveyid, $postusergroupid)
     {
-        $query2 = "SELECT b.uid FROM (SELECT uid FROM {{survey_permissions}} WHERE sid = {$surveyid}) AS c RIGHT JOIN {{user_in_groups}} AS b ON b.uid = c.uid WHERE c.uid IS NULL AND b.ugid = {$postusergroupid}";
-        return Yii::app()->db->createCommand($query2)->query(); //Checked
+        $query2 = "SELECT b.uid FROM (SELECT uid FROM {{survey_permissions}} WHERE sid = :surveyid) AS c RIGHT JOIN {{user_in_groups}} AS b ON b.uid = c.uid WHERE c.uid IS NULL AND b.ugid = :postugid";
+        return Yii::app()->db->createCommand($query2)->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)->bindParam(":postugid", $postusergroupid, PDO::PARAM_INT)->query(); //Checked
     }
 }

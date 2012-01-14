@@ -56,7 +56,7 @@ class Survey_timings extends CActiveRecord
      */
     public function tableName()
     {
-        return '{{survey_' . self::sid . '_timings}}';
+        return '{{survey_' . intval(self::sid) . '_timings}}';
     }
 
 }

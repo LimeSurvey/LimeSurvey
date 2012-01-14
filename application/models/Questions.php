@@ -158,8 +158,10 @@ class Questions extends CActiveRecord
         return Yii::app()->db->createCommand()
             ->select()
             ->from(self::tableName())
-            ->where(array('and', 'sid=' . $sid, 'gid=' . $gid, 'language=:language', 'parent_qid=0'))
+            ->where(array('and', 'sid=:sid', 'gid=:gid', 'language=:language', 'parent_qid=0'))
             ->order('question_order asc')
+			->bindParam(":sid", $sid, PDO::PARAM_INT)
+			->bindParam(":gid", $gid, PDO::PARAM_INT)
             ->bindParam(":language", $language, PDO::PARAM_STR)
             ->query();
     }
@@ -169,7 +171,8 @@ class Questions extends CActiveRecord
         return Yii::app()->db->createCommand()
         ->select()
         ->from(self::tableName())
-        ->where(array('and', 'parent_qid=' . $parent_qid))
+        ->where(array('and', 'parent_qid=:parent_qid'))
+		->bindParam(":parent_qid", $qid, PDO::PARAM_INT)
         ->order('question_order asc')
         ->query();
     }
@@ -184,7 +187,10 @@ class Questions extends CActiveRecord
         $command->where("({{questions}}.sid = '$iSurveyID' AND {{questions}}.language = '$sLanguage' AND {{questions}}.parent_qid = 0)");
         if ($sCondition != FALSE)
         {
-            $command->where("({{questions}}.sid = '$iSurveyID' AND {{questions}}.language = '$sLanguage' AND {{questions}}.parent_qid = 0) AND " . $sCondition);
+            $command->where("({{questions}}.sid = :iSurveyID AND {{questions}}.language = :sLanguage AND {{questions}}.parent_qid = 0) AND :scondition")
+				->bindParam(":iSurveyID", $iSurveyID, PDO::PARAM_STR)
+				->bindParam(":sLanguage", $sLanguage, PDO::PARAM_STR)
+				->bindParam(":scondition", $sCondition, PDO::PARAM_STR);
         }
         $command->order("{{groups}}.group_order asc, {{questions}}.question_order asc");
 
@@ -240,11 +246,11 @@ class Questions extends CActiveRecord
         $query = "SELECT questions.*, groups.group_name, groups.group_order\n"
         ." FROM {{questions}} as questions, {{groups}} as groups\n"
         ." WHERE groups.gid=questions.gid\n"
-        ." AND groups.language='".$language."'\n"
-        ." AND questions.language='".$language."'\n"
+        ." AND groups.language=:language"
+        ." AND questions.language=:language"
         ." AND questions.parent_qid=0\n"
-        ." AND questions.sid=$surveyid";
-        return Yii::app()->db->createCommand($query)->queryAll();
+        ." AND questions.sid=:sid";
+        return Yii::app()->db->createCommand($query)->bindParam(":language", $language, PDO::PARAM_STR)->bindParam(":sid", $surveyid, PDO::PARAM_INT)->queryAll();
     }
 
 }

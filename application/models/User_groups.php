@@ -124,14 +124,14 @@ class User_groups extends CActiveRecord {
 	}
 
  	function addGroup($group_name, $group_description) {
-	    $iquery = "INSERT INTO {{user_groups}} (`name`, `description`, `owner_id`) VALUES('{$group_name}', '{$group_description}', '{$_SESSION['loginID']}')";
-	    $command = Yii::app()->db->createCommand($iquery);
+	    $iquery = "INSERT INTO {{user_groups}} (`name`, `description`, `owner_id`) VALUES(:group_name, :group_desc, :loginID)";
+	    $command = Yii::app()->db->createCommand($iquery)->bindParam(":group_name", $group_name, PDO::PARAM_STR)->bindParam(":group_desc", $group_description, PDO::PARAM_STR)->bindParam(":loginID", $_SESSION['loginID'], PDO::PARAM_INT);
 	    $result = $command->query();
 	    if($result) { //Checked
 	    	$id = Yii::app()->db->getLastInsertID(); //Yii::app()->db->Insert_Id(db_table_name_nq('user_groups'),'ugid');
 	        if($id > 0) {
-	           	$user_in_groups_query = 'INSERT INTO {{user_in_groups}} (ugid, uid) VALUES ('.$id.','.Yii::app()->session['loginID'].')';
-	           	db_execute_assoc($user_in_groups_query);
+	           	$user_in_groups_query = 'INSERT INTO {{user_in_groups}} (ugid, uid) VALUES (:ugid, :uid)';
+	           	$command = Yii::app()->db->createCommand($user_in_groups_query)->bindParam(":ugid", $id, PDO::PARAM_INT)->bindParam(":uid", Yii::app()->session['loginID'], PDO::PARAM_INT);
 	        }
 	        return $id;
 		}
@@ -139,10 +139,10 @@ class User_groups extends CActiveRecord {
 	    	return -1;
 
     	}
-
+	// Many CI based functions ahead, they need refactoring!
 	function updateGroup($name, $description, $ugid)
     {
-    	$query = 'UPDATE {{user_groups}} SET name=\''.$name.'\', description=\''.$description.'\' WHERE ugid=\''.$ugid.'\'';
+    	$query = 'UPDATE {{user_groups}} SET name=:name, description=\''.$description.'\' WHERE ugid=\''.$ugid.'\'';
        	$uquery = db_execute_assoc($query);
         return $uquery;
     }

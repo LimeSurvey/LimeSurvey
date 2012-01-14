@@ -218,27 +218,27 @@ class Survey extends CActiveRecord
 
         if ($recursive == true)
         {
-            if (tableExists("{{survey_{$iSurveyID}}}"))  //delete the survey_$iSurveyID table
+            if (tableExists("{{survey_{intval($iSurveyID)}}}"))  //delete the survey_$iSurveyID table
             {
-                Yii::app()->db->createCommand()->dropTable("{{survey_{$iSurveyID}}}");
+                Yii::app()->db->createCommand()->dropTable("{{survey_{intval($iSurveyID)}}}");
             }
 
-            if (tableExists("{{survey_{$iSurveyID}_timings}}"))  //delete the survey_$iSurveyID_timings table
+            if (tableExists("{{survey_{intval($iSurveyID)}_timings}}"))  //delete the survey_$iSurveyID_timings table
             {
-                Yii::app()->db->createCommand()->dropTable("{{survey_{$iSurveyID}_timings}}");
+                Yii::app()->db->createCommand()->dropTable("{{survey_{intval($iSurveyID)}_timings}}");
             }
 
-            if (tableExists("{{tokens_{$iSurveyID}}}")) //delete the tokens_$iSurveyID table
+            if (tableExists("{{tokens_{intval($iSurveyID)}}}")) //delete the tokens_$iSurveyID table
             {
-                Yii::app()->db->createCommand()->dropTable("{{tokens_{$iSurveyID}}}");
+                Yii::app()->db->createCommand()->dropTable("{{tokens_{intval($iSurveyID)}}}");
             }
 
             $oResult = Questions::model()->findAllByAttributes(array('sid' => $iSurveyID));
             foreach ($oResult as $aRow)
             {
-                Answers::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
-                Conditions::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
-                Question_attributes::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
+                Answers::model()->deleteAllByAttributes(array('qid' => Yii::app()->db->quoteValue($aRow['qid'])));
+                Conditions::model()->deleteAllByAttributes(array('qid' => Yii::app()->db->quoteValue($aRow['qid'])));
+                Question_attributes::model()->deleteAllByAttributes(array('qid' => Yii::app()->db->quoteValue($aRow['qid'])));
                 Defaultvalues::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
             }
 

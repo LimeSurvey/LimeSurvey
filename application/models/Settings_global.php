@@ -58,16 +58,16 @@ class Settings_global extends CActiveRecord
             'stg_value' => $settingvalue
         );
 
-        $user = Yii::app()->db->createCommand()->from("{{settings_global}}")->where("stg_name ='" . $settingname . "'");
+        $user = Yii::app()->db->createCommand()->from("{{settings_global}}")->where("stg_name = :setting_name")->bindParam(":setting_name", $settingname, PDO::PARAM_STR);
         $query = $user->queryRow('settings_global');
-        $user1 = Yii::app()->db->createCommand()->from("{{settings_global}}")->where("stg_name = '" . $settingname . "'");
+        $user1 = Yii::app()->db->createCommand()->from("{{settings_global}}")->where("stg_name = :setting_name")->bindParam(":setting_name", $settingname, PDO::PARAM_STR);
         if(count($query) == 0)
         {
             return $user1->insert('{{settings_global}}', $data);
         }
         else
         {
-            $user2 = Yii::app()->db->createCommand()->from("{{settings_global}}")->where('stg_name =' . $settingname);
+            $user2 = Yii::app()->db->createCommand()->from("{{settings_global}}")->where('stg_name = :setting_name')->bindParam(":setting_name", $settingname, PDO::PARAM_STR);
             return $user2->update('{{settings_global}}', array('stg_value' => $settingvalue));
         }
 

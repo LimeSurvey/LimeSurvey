@@ -62,7 +62,7 @@ class Saved_control extends CActiveRecord {
 
     public function getCountOfAll($sid)
     {
-        $data = Yii::app()->db->createCommand("SELECT COUNT(*) AS countall FROM {{saved_control}} WHERE sid=$sid")->query();
+        $data = Yii::app()->db->createCommand("SELECT COUNT(*) AS countall FROM {{saved_control}} WHERE sid=:sid")->bindParam(":sid", $sid, PDO::PARAM_INT)->query();
         $row = $data->read();
 
         return $row['countall'];
