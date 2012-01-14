@@ -2987,12 +2987,14 @@ function getQuestionAttributeValues($qid)
         return array();
     }
 
+    $setattributes = array();
     foreach($availableattributes as $attribute){
         if ($attribute['i18n'])
         {
             foreach ($aLanguages as $sLanguage)
             {
-                $defaultattributes[$attribute['name']][$sLanguage]=$attribute['default'];
+               // This is an exception  - in this case we set the setattributes array because on the array_merge later the subkeys get lost
+                $setattributes[$attribute['name']][$sLanguage]=$attribute['default'];
             }
         }
         else
@@ -3001,7 +3003,6 @@ function getQuestionAttributeValues($qid)
         }
     }
 
-    $setattributes = array();
     $result = Question_attributes::model()->findAllByAttributes(array('qid' => $qid));
     foreach ($result as $row)
     {
