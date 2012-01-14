@@ -44,12 +44,16 @@ function getGlobalSetting($settingname)
 
     if ($dbvalue === false)
     {
-    	$dbvalue = Settings_global::model()->findByPk($settingname)->getAttribute('stg_value');
+    	$dbvalue = Settings_global::model()->findByPk($settingname);
 
-        if (empty($dbvalue))
+        if ($dbvalue === null)
         {
             Yii::app()->setRegistry($settingname, null);
 			$dbvalue = '';
+        }
+        else
+        {
+            $dbvalue = $dbvalue->getAttribute('stg_value');
         }
 
 		if (Yii::app()->getConfig($settingname) !== false)

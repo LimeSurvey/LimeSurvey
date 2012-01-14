@@ -57,8 +57,8 @@ class SurveyRuntimeHelper {
         {
             $previewgrp = true;
         }
-        if (isset($param['newtest']) && $param['newtest'] == "Y")
-            setcookie("limesurvey_timers", "0");
+//        if (isset($param['newtest']) && $param['newtest'] == "Y")
+//            setcookie("limesurvey_timers", "0");   //@todo fix - sometimes results in headers already sent error
         $show_empty_group = false;
 
         if ($previewgrp)
@@ -283,7 +283,7 @@ class SurveyRuntimeHelper {
             //SUBMIT ###############################################################################
             if ((isset($move) && $move == "movesubmit"))
             {
-                setcookie("limesurvey_timers", "", time() - 3600); // remove the timers cookies
+//                setcookie("limesurvey_timers", "", time() - 3600); // remove the timers cookies   //@todo fix - sometimes results in headers already sent error
                 if ($thissurvey['refurl'] == "Y")
                 {
                     if (!in_array("refurl", $_SESSION['insertarray'])) //Only add this if it doesn't already exist
@@ -338,7 +338,7 @@ class SurveyRuntimeHelper {
                     if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1) //don't use cookies if tokens are being used
                     {
                         $cookiename = "PHPSID" . returnglobal('sid') . "STATUS";
-                        setcookie("$cookiename", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days
+//                        setcookie("$cookiename", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days   //@todo fix - sometimes results in headers already sent error
                     }
 
                     //Before doing the "templatereplace()" function, check the $thissurvey['url']
@@ -483,7 +483,7 @@ class SurveyRuntimeHelper {
 
         if ($surveyMode == 'group' && $previewgrp)
         {
-            setcookie("limesurvey_timers", "0");
+//            setcookie("limesurvey_timers", "0"); //@todo fix - sometimes results in headers already sent error
             $_gid = sanitize_int($param['gid']);
 
             LimeExpressionManager::StartSurvey($thissurvey['sid'], 'group', $surveyOptions, false, $LEMdebugLevel);

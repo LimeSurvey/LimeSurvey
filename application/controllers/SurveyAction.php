@@ -91,6 +91,9 @@ class SurveyAction extends CAction {
         {
             // TODO where is $stg_SessionName comming from?
             // TODO where is $sessionhandler comming from?
+            // NOTE: THESE ARE *TEMPORARY FIXES*, should be changed
+            $stg_SessionName = getGlobalSetting('session_name');
+            $sessionhandler = '';
             $bPreviewRight = $this->_importAdminSessionForSurveyToGetPreviewAccess($surveyid, $stg_SessionName, $sessionhandler, $clang);
 
             if ($bPreviewRight === false)
@@ -332,11 +335,11 @@ class SurveyAction extends CAction {
         $totalBoilerplatequestions =0;
         $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
 
-        if (isset($param['newtest']) && $param['newtest'] == "Y")
-        {
-            //Removes any existing timer cookies so timers will start again
-            setcookie ("limesurvey_timers", "", time() - 3600);
-        }
+//        if (isset($param['newtest']) && $param['newtest'] == "Y")
+//        {
+//            //Removes any existing timer cookies so timers will start again
+//            setcookie ("limesurvey_timers", "", time() - 3600);  //@todo fix - sometimes results in headers already sent error
+//        }
 
         //SEE IF SURVEY USES TOKENS AND GROUP TOKENS
         $i = 0; //$tokensexist = 0;
@@ -622,7 +625,7 @@ class SurveyAction extends CAction {
             }
             session_unset();
             session_destroy();
-            setcookie(session_name(),"EXPIRED",time()-120);
+//            setcookie(session_name(),"EXPIRED",time()-120);  //@todo fix - sometimes results in headers already sent error
             sendcacheheaders();
             if (isset($_GET['redirect']))
             {
@@ -664,7 +667,7 @@ class SurveyAction extends CAction {
                 $_SESSION[$sesskey]=$sessval;
             }
             //DELETE COOKIE (allow to use multiple times)
-            setcookie($cookiename, "INCOMPLETE", time()-120);
+//            setcookie($cookiename, "INCOMPLETE", time()-120);  //@todo fix - sometimes results in headers already sent error
             //echo "Reset Cookie!";
         }
 

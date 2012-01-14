@@ -1147,7 +1147,7 @@ class printablesurvey extends Survey_Common_Action
 
                             // ==================================================================
                         case "B":  //ARRAY (10 POINT CHOICE)
-                            $mearesult=Questions::model()->getAllRecords(" parent_qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}' ", array(' question_order'));
+                            $mearesult=Questions::model()->getAllRecords(" parent_qid='{$deqrow['qid']}' AND language='{$surveyprintlang}' ", array('question_order'));
 
                             $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
                             $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
@@ -1392,7 +1392,7 @@ class printablesurvey extends Survey_Common_Action
                             $question['QUESTION_TYPE_HELP'] = self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
                             $question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
-                            $fresult=Questions::model()->getAllRecords(" parent_qid='{$deqrow['qid']}'  AND scale_id=1 language='{$surveyprintlang}' ", array('question_order'));
+                            $fresult=Questions::model()->getAllRecords(" parent_qid='{$deqrow['qid']}'  AND scale_id=1 AND language='{$surveyprintlang}' ", array('question_order'));
 
                             $fcount = $fresult->getRowCount();
                             $fwidth = "120";
@@ -1688,7 +1688,7 @@ class printablesurvey extends Survey_Common_Action
 
                             foreach ($mearesult->readAll() as $mearow)
                             {
-                                $_POST['type']=$type;
+                                //$_POST['type']=$type;
                                 $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
                                 $rowclass = alternation($rowclass,'row');
                                 $question['ANSWER'] .= "\t\t\t<th class=\"answertext\">{$mearow['answer']}".self::_addsgqacode(" (".$mearow['code'].")")."</th>\n";
