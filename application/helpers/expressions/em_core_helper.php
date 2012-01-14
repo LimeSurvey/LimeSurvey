@@ -61,7 +61,7 @@ class ExpressionManager {
     private $questionSeq;   // sequence order of question - so can detect if try to use variable before it is set
     private $groupSeq;  // sequence order of groups - so can detect if try to use variable before it is set
     private $allOnOnePage=false;
-    
+
     // The following are only needed to enable click on variable names within pretty print and open new window to edit them
     private $sid=NULL; // the survey ID
     private $rooturl='';    // the root URL for LimeSurvey
@@ -1322,7 +1322,7 @@ class ExpressionManager {
         $errIndex = 0;
         if ($errCount > 0)
         {
-            usort($errs,"self::cmpErrorTokens");
+            usort($errs,"cmpErrorTokens");
         }
         $errSpecificStyle= "style='border-style: solid; border-width: 2px; border-color: red;'";
         $stringParts=array();
@@ -1475,8 +1475,7 @@ class ExpressionManager {
                         $stringParts[] = "<span title='"  . implode('; ',$messages) . "' style='color: ". $color . "; font-weight: bold'";
                         if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid)) {
                             // Modify this link to utilize a different framework
-                            $_editurl = '/admin/survey/view/surveyid/' . $this->sid . '/gid/' . $gid . '/qid/' . $qid;
-                            $editlink = Yii::app()->getController()->createUrl($_editurl);
+                            $editlink = Yii::app()->getController()->createUrl('/admin/survey/view/surveyid/' . $this->sid . '/gid/' . $gid . '/qid/' . $qid);
                             $stringParts[] = " onclick='window.open(\"" . $editlink . "\");'";
                         }
                         $stringParts[] = ">";
@@ -2330,6 +2329,7 @@ class ExpressionManager {
     {
        $tests = <<<EOD
 "this is a string that contains {something in curly brace}"
+How about nested curly braces, like {INSERTANS:{SGQ}}?
 This example has escaped curly braces like \{this is not an equation\}
 Should the parser check for unmatched { opening curly braces?
 What about for unmatched } closing curly braces?
@@ -2980,29 +2980,30 @@ EOD;
             return $string;
         }
     }
+}
 
-    /**
-     * Used by usort() to order Error tokens by their position within the string
-     * @param <type> $a
-     * @param <type> $b
-     * @return <type>
-     */
-    function cmpErrorTokens($a, $b)
-    {
-        if (is_null($a[1])) {
-            if (is_null($b[1])) {
-                return 0;
-            }
-            return 1;
-        }
+/**
+ * Used by usort() to order Error tokens by their position within the string
+ * This must be outside of the class in order to work in PHP 5.2
+ * @param <type> $a
+ * @param <type> $b
+ * @return <type>
+ */
+function cmpErrorTokens($a, $b)
+{
+    if (is_null($a[1])) {
         if (is_null($b[1])) {
-            return -1;
-        }
-        if ($a[1][1] == $b[1][1]) {
             return 0;
         }
-        return ($a[1][1] < $b[1][1]) ? -1 : 1;
+        return 1;
     }
+    if (is_null($b[1])) {
+        return -1;
+    }
+    if ($a[1][1] == $b[1][1]) {
+        return 0;
+    }
+    return ($a[1][1] < $b[1][1]) ? -1 : 1;
 }
 
 /**

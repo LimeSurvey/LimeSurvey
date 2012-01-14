@@ -3728,7 +3728,7 @@ function do_multiplenumeric($ia)
         )
         {
             $qinfo = LimeExpressionManager::GetQuestionStatus($ia[0]);
-            if ((trim($aQuestionAttributes['equals_num_value']) != '' || trim($aQuestionAttributes['num_value_equals_sgqa']) != '') && !empty($qinfo['sumRemainingEqn']))
+            if (trim($aQuestionAttributes['equals_num_value']) != '' || trim($aQuestionAttributes['num_value_equals_sgqa']) != '')
             {
                 $answer_main .= "\t<li class='multiplenumerichelp'>\n"
                         . "<label for=\"remainingvalue_{$ia[0]}\">" . $clang->gT('Remaining: ') . "</label>\n"
@@ -3738,15 +3738,12 @@ function do_multiplenumeric($ia)
                         . "\t</li>\n";
             }
 
-            if (!empty($qinfo['sumEqn']))
-            {
-                $answer_main .= "\t<li class='multiplenumerichelp'>\n"
-                        . "<label for=\"totalvalue_{$ia[0]}\">" . $clang->gT('Total: ') . "</label>\n"
-                        . "<span id=\"totalvalue_{$ia[0]}\">$prefix\n"
-                        . "{" . $qinfo['sumEqn'] . "}\n"
-                        . "$suffix</span>\n"
-                        . "\t</li>\n";
-            }
+            $answer_main .= "\t<li class='multiplenumerichelp'>\n"
+                    . "<label for=\"totalvalue_{$ia[0]}\">" . $clang->gT('Total: ') . "</label>\n"
+                    . "<span id=\"totalvalue_{$ia[0]}\">$prefix\n"
+                    . "{" . $qinfo['sumEqn'] . "}\n"
+                    . "$suffix</span>\n"
+                    . "\t</li>\n";
         }
 
         $answer .= $question_tip . "<ul>\n" . $answer_main . "</ul>\n";
