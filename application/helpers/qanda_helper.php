@@ -3407,16 +3407,16 @@ function do_multiplenumeric($ia)
 //        $max_num_value = 0;
 //    }
 
-    if (trim($aQuestionAttributes['prefix'][$_SESSION['s_lang']][$_SESSION['s_lang']]) != '') {
-        $prefix = $aQuestionAttributes['prefix'][$_SESSION['s_lang']][$_SESSION['s_lang']];
+    if (trim($aQuestionAttributes['prefix'][$_SESSION['s_lang']]) != '') {
+        $prefix = $aQuestionAttributes['prefix'][$_SESSION['s_lang']];
     }
     else
     {
         $prefix = '';
     }
 
-    if (trim($aQuestionAttributes['suffix'][$_SESSION['s_lang']][$_SESSION['s_lang']]) != '') {
-        $suffix = $aQuestionAttributes['suffix'][$_SESSION['s_lang']][$_SESSION['s_lang']];
+    if (trim($aQuestionAttributes['suffix'][$_SESSION['s_lang']]) != '') {
+        $suffix = $aQuestionAttributes['suffix'][$_SESSION['s_lang']];
     }
     else
     {
