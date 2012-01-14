@@ -363,6 +363,61 @@ class labels extends Survey_Common_Action
         $this->_renderWrappedTemplate('exportmulti_view');
     }
 
+    public function getAllSets()
+    {
+        $results = Labelsets::model()->findAll();
+
+        $output = array();
+
+        foreach($results as $row)
+        {
+            $output[$row->lid] = $row->getAttribute('label_name');
+        }
+
+        echo json_encode($output);
+    }
+
+    public function ajaxSets()
+    {
+        $lid = CHttpRequest::getPost('lid');
+        $answers = CHttpRequest::getPost('answers');
+        $code = CHttpRequest::getPost('code');
+        //Create new label set
+        $language = "";
+        foreach ($answers as $lang => $answer) {
+            $language .= $lang." ";
+        }
+        $language = trim($language);
+        if ($lid == 0)
+        {
+            $lset = new Labelsets;
+            $lset->label_name = sanitize_xss_string(CHttpRequest::getPost('laname'));
+            $lset->languages = sanitize_xss_string($language);
+            $lset->save();
+
+            $lid = Yii::app()->db->getLastInsertID();
+        }
+        else
+        {
+            Label::model()->deleteAll('lid = :lid', array(':lid' => $lid));
+        }
+        $res = 'ok'; //optimistic
+        foreach($answers as $lang => $answer) {
+            foreach ($answer as $key => $ans)
+            {
+                $label = new Label;
+                $label->lid = $lid;
+                $label->code = $code[$key];
+                $label->title = $ans;
+                $label->sortorder = $key;
+                $label->language = $lang;                               
+                if(!$label->save())
+                    $res = 'fail';
+            }
+        }
+        echo json_encode($res);        
+    }
+
     /**
      * Renders template(s) wrapped in header and footer
      *

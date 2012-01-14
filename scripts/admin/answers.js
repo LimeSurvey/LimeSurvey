@@ -30,6 +30,18 @@ $(document).ready(function(){
        $('#btnqareplace').click(quickaddlabels);
        $('#btnqainsert').click(quickaddlabels);
        $('.btnquickadd').click(quickadddialog);
+       $('#saveaslabel').dialog({ autoOpen: false,
+                                    modal: true,
+                                    width: 300,
+                                    title: saveaslabletitle});
+       $('.bthsaveaslabel').click(getlabel);
+       $('#btnlacancel').click(function(){
+          $('#saveaslabel').dialog('close'); 
+       });
+       $('input[name=savelabeloption]:radio').click(setlabel);
+       flag = [false, false];
+       $('#btnsave').click(savelabel);
+       
 
        updaterowproperties();
 });
@@ -619,12 +631,162 @@ function quickaddlabels()
     updaterowproperties();
 }
 
+function getlabel()
+{
+    var answer_table = $(this).parent().children().eq(0);
+    scale_id=removechars($(this).attr('id'));
+
+    $('#saveaslabel').dialog('open');
+    updaterowproperties();
+}
+
+function setlabel()
+{
+    switch($(this).attr('id'))
+    {
+        case 'newlabel':
+            if(!flag[0]){
+                $('#lasets').remove();
+                $($(this).next().next()).after('<label for="laname">Label Set Name :</label> ' +
+                                        '<input type="text" name="laname" id="laname">');
+                flag[0] = true;
+                flag[1] = false;
+            }
+            break;
+
+        case 'replacelabel':
+            if(!flag[1]){
+                $('#laname').remove();
+                $('[for=laname]').remove();
+                $($(this).next().next()).after('<select name="laname" id="lasets">');
+                jQuery.getJSON(lanameurl, function(data) {
+                    $.each(data, function(key, val) {
+                        $('#lasets').append('<option value="' + key + '">' + val + '</option>');
+                    });
+                });
+                $('#lasets').append('</select>');
+                flag[1] = true;
+                flag[0] = false;
+            }
+            break;
+    }
+}
+
+function savelabel()
+{
+    var lid = $('#lasets').val() ? $('#lasets').val() : 0;
+    if(lid == 0)
+    {
+        var response = ajaxcheckdup();
+        response.complete(function() {
+            if(check)
+            {
+                ajaxreqsave();
+            }
+        })
+    }
+    else
+    {
+        $('#dialog-confirm-replace').dialog({
+            resizable: false,
+            height: 160,
+            modal: true,
+            buttons: [{
+                text: ok,
+                click: function() {
+                    $(this).dialog("close");
+                    ajaxreqsave();
+                }},{
+                text: cancel,
+                click: function() {
+                    check = false;
+                    $(this).dialog("close");
+                }}
+            ]
+        });
+    }
+}
+
+function ajaxcheckdup()
+{
+    check = true; //set check to true everytime on call
+    return jQuery.getJSON(lanameurl, function(data) {
+        $.each(data, function(key, val) {
+            if($('#laname').val() == val)
+            {
+                $("#dialog-duplicate").dialog({
+                    resizable: false,
+                    height: 160,
+                    modal: true,
+                    buttons: [{
+                        text: ok,
+                        click: function() {
+                            $(this).dialog("close");
+                        }
+                    }]
+                });
+                check = false;
+                return false;
+            }
+        });
+    });
+}
+
+function ajaxreqsave() {
+    var lid = $('#lasets').val() ? $('#lasets').val() : 0;
+
+    // get code for the current scale
+    var code = new Array();
+    $('.code').each(function(index) {
+        if($(this).attr('id').substr(-1) === scale_id)
+            code.push($(this).val());
+    });
+
+    answers = new Object();
+    languages = langs.split(';');
+
+    for(x in languages)
+    {
+        answers[languages[x]] = new Array();
+        $('.answer').each(function(index) {
+            if($(this).attr('id').substr(-1) === scale_id && $(this).attr('id').indexOf(languages[x]) != -1)
+                answers[languages[x]].push($(this).val());
+        });
+    }
 
 
-
-
-
-
+    $.post(lasaveurl, { laname: $('#laname').val(), lid: lid, code: code, answers: answers }, function(data) {
+            $("#saveaslabel").dialog('close');
+            if(jQuery.parseJSON(data) == "ok")
+            {                
+                $("#dialog-result").html(lasuccess);
+                $('#dialog-result').dialog({
+                    height: 160,
+                    width: 250,
+                    buttons: [{
+                        text: ok,
+                        click: function() {
+                            $(this).dialog("close");
+                        }
+                    }]
+                });
+            }
+            else
+            {
+                $("#dialog-result").html(lafail);
+                $('#dialog-result').dialog({
+                    height: 160,
+                    width: 250,
+                    buttons: [{
+                        text: ok,
+                        click: function() {
+                            $(this).dialog("close");
+                        }
+                    }]
+                });
+            }
+    });
+}
 
 function quickadddialog()
 {

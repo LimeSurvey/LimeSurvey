@@ -9,6 +9,14 @@
     var duplicateanswercode='<?php $clang->eT('Error: You are trying to use duplicate subquestion codes.','js'); ?>';
     var langs='<?php echo implode(';',$anslangs); ?>';
     var ci_path='<?php echo Yii::app()->getConfig('imageurl'); ?>';
+    var saveaslabletitle  = '<?php $clang->eT('Save as Label','js'); ?>';
+    var lanameurl = '<?php echo Yii::app()->createUrl('/admin/labels/getAllSets'); ?>';
+    var lasaveurl = '<?php echo Yii::app()->createUrl('/admin/labels/ajaxSets'); ?>';
+    var check = true;
+    var lasuccess = '<?php $clang->eT('The records have been saved successfully!'); ?>';
+    var lafail = '<?php $clang->eT('Sorry, the request failed!'); ?>';
+    var ok = '<?php $clang->eT('Ok'); ?>';
+    var cancel = '<?php $clang->eT('Cancel'); ?>';
 </script>
 <?php echo PrepareEditorScript(); ?>
 <div class='header ui-widget-header'>
@@ -109,7 +117,7 @@ $codeids='';
                     <?php } ?>
 
                     </td><td>
-                    <input type='text' size='100' id='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->question; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
+                    <input type='text' size='100' class='answer' id='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->question; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
                     <?php echo  getEditor("editanswer","answer_".$row->language."_".$row->qid."_{$row->scale_id}", "[".$clang->gT("Subquestion:", "js")."](".$row->language.")",$surveyid,$gid,$qid,'editanswer'); ?>
                     </td>
                     <td>
@@ -134,7 +142,7 @@ $codeids='';
                 <button class='btnlsbrowser' id='btnlsbrowser_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php $clang->eT('Predefined label sets...'); ?></button>
                 <button class='btnquickadd' id='btnquickadd_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php $clang->eT('Quick add...'); ?></button>
                 <?php if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1){ ?>
-                    <button class='bthsaveaslabel' id='bthsaveaslabel_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php $clang->eT('Save as label set'); ?></button>
+                    <button class='bthsaveaslabel' id='bthsaveaslabel_<?php echo $scale_id; ?>' type='button'><?php $clang->eT('Save as label set'); ?></button>
                 <?php } ?>
 
             <?php }
@@ -161,6 +169,23 @@ $codeids='';
         <button id='btnqainsert' type='button'><?php $clang->eT('Add'); ?></button>
         <button id='btnqacancel' type='button'><?php $clang->eT('Cancel'); ?></button>
     </div>
+</div>
+<div id="saveaslabel" style='display:none;'>
+    <input type="radio" name="savelabeloption" id="newlabel"> <label for="newlabel"><?php $clang->eT('New Label Set'); ?></label><br /><br />
+    <input type="radio" name="savelabeloption" id="replacelabel"> <label for="replacelabel"><?php $clang->eT('Replace Existing Label'); ?></label><br /><br />
+    <button id='btnsave' type='button'><?php $clang->eT('Save'); ?></button>
+    <button id='btnlacancel' type='button'><?php $clang->eT('Cancel'); ?></button>
+</div>
+<div id="dialog-confirm-replace" title="Replace Label Set?" style='display:none;'>
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><?php $clang->eT('You are about to replace a given label set with the current sub questions. Continue?'); ?></p>
+</div>
+
+<div id="dialog-duplicate" title="Duplicate Label Set Name" style='display:none;'>
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><?php $clang->eT('Sorry, the name you entered for the label set is already in the database. Please select a different name.'); ?></p>
+</div>
+
+<div id="dialog-result" title="Query Result" style='display:none;'>
+    
 </div>
 <p>
     <input type='submit' id='saveallbtn_<?php echo $anslang; ?>' name='method' value='<?php $clang->eT("Save changes"); ?>' />
