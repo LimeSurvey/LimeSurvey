@@ -712,12 +712,11 @@ class SurveyAction extends CAction {
             }
         }
 
-        if (isset($_REQUEST['action']) && ($_REQUEST['action'] == 'previewgroup')){
+        if (isset($param['action']) && $param['action'] == 'previewgroup')
+        {
                 $thissurvey['format'] = 'G';
                 buildsurveysession();
         }
-
-        $rooturl = Yii::app()->baseUrl;
 
         sendcacheheaders();
 
@@ -766,12 +765,11 @@ class SurveyAction extends CAction {
         }
 
         if( !isset($param['action']) )
-            $param['action'] = isset($post['action']) ? $post['action'] : null;
+            $param['action'] = returnglobal('action');
         if( !isset($param['newtest']) )
-            $param['newtest'] = isset($post['newtest']) ? $post['newtest'] : null;
+            $param['newtest'] = returnglobal('newtest');
         if( !isset($param['gid']) )
-            $param['gid'] = isset($post['gid']) ? $post['gid'] : null;
-
+            $param['gid'] = returnglobal('gid');
         if ( !isset($param['sid']) )
             $param['sid'] = returnglobal('sid');
         if ( !isset($param['loadname']) )
@@ -1003,13 +1001,17 @@ class SurveyAction extends CAction {
 
     function _loadLimesurveyLang($mvSurveyIdOrBaseLang)
     {
-        if ( is_int($mvSurveyIdOrBaseLang) )
+        if (is_int($mvSurveyIdOrBaseLang))
         {
             $baselang = Survey::model()->findByPk($surveyId)->language;
         }
-        else
+        elseif (!empty($mvSurveyIdOrBaseLang))
         {
             $baselang = $mvSurveyIdOrBaseLang;
+        }
+        else
+        {
+            $baselang = Yii::app()->getConfig('defaultlang');
         }
 
         Yii::import("application.libraries.Limesurvey_lang");
@@ -1111,7 +1113,6 @@ class SurveyAction extends CAction {
 
     function _createNewUserSessionAndRedirect($surveyId, &$redata, $iDebugLine, $asMessage = array())
     {
-        $baselang = Survey::model()->findByPk($surveyId)->language;
         $clang = Yii::app()->lang;
         // Let's first regenerate a session id
         killSession();
