@@ -46,6 +46,15 @@
 * $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
 */
 
+if(!empty($shownoanswer) && $shownoanswer > 0 && !empty($thissurvey['shownoanswer']) && $thissurvey['shownoanswer'] != 'N')
+{
+    define('SHOW_NO_ANSWER', 1);
+}
+else
+{
+    define('SHOW_NO_ANSWER', 0);
+}
+
 /**
 * This function returns an array containing the "question/answer" html display
 * and a list of the question/answer fieldnames associated. It is called from

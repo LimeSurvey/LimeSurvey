@@ -220,7 +220,7 @@ class SurveyRuntimeHelper {
             {
                 $backok = "N";    // NA, since not moving backwards
             }
-
+// TODO FIXME
             if ($thissurvey['active'] == "Y" && isset($_POST['saveall']))
             {
                 // must do this here to process the POSTed values
@@ -229,7 +229,7 @@ class SurveyRuntimeHelper {
                 require_once("save.php");   // for supporting functions only
                 showsaveform(); // generates a form and exits, awaiting input
             }
-
+// TODO FIXME
             if ($thissurvey['active'] == "Y" && isset($_POST['saveprompt']))
             {
                 // The response from the save form
@@ -808,15 +808,16 @@ END;
             //{
                 foreach ($qanda as $qa) // one entry per QID
                 {
-                    if ($gid != $qa[6])
-                    {
-                        continue;
-                    }
 
                     $qid = $qa[4];
                     $qinfo = LimeExpressionManager::GetQuestionStatus($qid);
                     $lastgrouparray = explode("X", $qa[7]);
                     $lastgroup = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
+
+//                    if ($gid != $qa[6])
+//                    {
+//                        continue;
+//                    }
 
                     $q_class = question_class($qinfo['info']['type']);
 
@@ -852,8 +853,8 @@ END;
                     $question['man_class'] = $man_class;
                     $question['code'] = $qa[5];
                     $question['sgq'] = $qa[7];
-                    $question['aid'] = $qinfo['info']['aid'];
-                    $question['sqid'] = $qinfo['info']['sqid'];
+                    $question['aid'] = !empty($qinfo['info']['aid']) ? $qinfo['info']['aid'] : 0;
+                    $question['sqid'] = !empty($qinfo['info']['sqid']) ? $qinfo['info']['sqid'] : 0;
                     //===================================================================
                     $answer = $qa[1];
                     $help = $qinfo['info']['help'];   // $qa[2];
@@ -877,7 +878,7 @@ END;
                         // TMSW - eventually refactor so that only substitutes the QUESTION_** fields - doesn't need full power of template replace
                         // TMSW - also, want to return a string, and call templatereplace once on that result string once all done.
                         echo templatereplace($question_template, array(), $redata, false, $qa[4]);
-                    };
+                    }
                 }
                 if ($surveyMode != 'survey')
                 {
