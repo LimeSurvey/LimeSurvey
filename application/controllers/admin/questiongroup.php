@@ -120,7 +120,7 @@ class questiongroup extends Survey_Common_Action
 
             $aData['display']['menu_bars']['surveysummary'] = 'addgroup';
             $aData['surveyid'] = $surveyid;
-            $aData['action'] = $action;
+            $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'addgroup';
             $aData['grplangs'] = $grplangs;
             $aData['baselang'] = $baselang;
             $aViewUrls = 'QuestionGroups/addGroup_view';
