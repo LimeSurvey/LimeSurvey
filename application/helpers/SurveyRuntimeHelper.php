@@ -52,6 +52,8 @@ class SurveyRuntimeHelper {
             'token' => (isset($clienttoken) ? $clienttoken : NULL),
         );
 
+        // LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions);
+
         //Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
         $previewgrp = false;
         if ($surveyMode == 'group' && isset($param['action']) && ($param['action'] == 'previewgroup'))
@@ -524,7 +526,6 @@ class SurveyRuntimeHelper {
             {
 
                 $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
-               // print_r($stepInfo);die();
                 $gid = $stepInfo['gid'];
                 $groupname = $stepInfo['gname'];
                 $groupdescription = $stepInfo['gtext'];

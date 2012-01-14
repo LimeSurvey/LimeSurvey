@@ -2950,51 +2950,46 @@ function buildLabelSetCheckSumArray()
 
 
 /**
-*
-* Returns a flat array with all saved question attributes for the question only (and the qid we gave it)!
-* @author: c_schmitz
-* @param $qid The question ID
-* @param $type optional The question type - saves a DB query if you provide it
-* @return array{attribute=>value , attribute=>value} or false if the question ID does not exist (anymore)
-*/
-function getQuestionAttributeValues($qid, $type='')
+ * Returns a flat array with all question attributes for the question only (and the qid we gave it)!
+ * @param $qid The question ID
+ * @return array{attribute=>value, attribute=>value} or false if the question ID does not exist (anymore)
+ */
+function getQuestionAttributeValues($qid)
 {
     static $cache = array();
     static $availableattributesarr = null;
+    $qid = sanitize_int($qid);
 
     if (isset($cache[$qid])) {
         return $cache[$qid];
     }
-    $result = Questions::model()->findByAttributes(array('qid' => $qid));  //Checked
-
-    $row=$result['attributes'];
-
+    $row = Questions::model()->findByAttributes(array('qid' => $qid))->getAttributes(); //, 'parent_qid' => 0), array('group' => 'type')
     if (empty($row)) // Question was deleted while running the survey
     {
-        $cache[$qid]=false;
+        $cache[$qid] = false;
         return false;
     }
-    $type=$row['type'];
-    $surveyid=$row['sid'];
+    $type = $row['type'];
+    $surveyid = $row['sid'];
 
-    $aLanguages=array_merge(array(Survey::model()->findByPk($surveyid)->language),Survey::model()->findByPk($surveyid)->additionalLanguages);
-
+    $aLanguages = array_merge((array)Survey::model()->findByPk($surveyid)->language, Survey::model()->findByPk($surveyid)->additionalLanguages);
 
     //Now read available attributes, make sure we do this only once per request to save
     //processing cycles and memory
-    if (is_null($availableattributesarr)) $availableattributesarr=questionAttributes();
+    if (is_null($availableattributesarr)) $availableattributesarr = questionAttributes();
     if (isset($availableattributesarr[$type]))
     {
-        $availableattributes=$availableattributesarr[$type];
+        $availableattributes = $availableattributesarr[$type];
     }
     else
     {
-        $cache[$qid]=array();
+        $cache[$qid] = array();
         return array();
     }
 
     foreach($availableattributes as $attribute){
-        if ($attribute['i18n']){
+        if ($attribute['i18n'])
+        {
             foreach ($aLanguages as $sLanguage)
             {
                 $defaultattributes[$attribute['name']][$sLanguage]=$attribute['default'];
@@ -3005,28 +3000,27 @@ function getQuestionAttributeValues($qid, $type='')
             $defaultattributes[$attribute['name']]=$attribute['default'];
         }
     }
-    $setattributes=array();
-    $qid=sanitize_int($qid);
-    $fields = array('attribute', 'value', 'language');
-    $condition = "qid = $qid";
 
-    $result = Question_attributes::model()->findAll($condition);  //Checked)
-    $setattributes=array();
-
+    $setattributes = array();
+    $result = Question_attributes::model()->findAllByAttributes(array('qid' => $qid));
     foreach ($result as $row)
     {
     	$row = $row->attributes;
-        if (!isset($availableattributes[$row['attribute']])) continue; // Sort out attribuets not belonging to this question type
+        if (!isset($availableattributes[$row['attribute']]))
+        {
+            continue; // Sort out attribuets not belonging to this question
+        }
         if (!($availableattributes[$row['attribute']]['i18n']))
         {
             $setattributes[$row['attribute']]=$row['value'];
         }
-        elseif(!empty($row['language'])){
+        elseif(!empty($row['language']))
+        {
             $setattributes[$row['attribute']][$row['language']]=$row['value'];
         }
     }
-    $qid_attributes=array_merge($defaultattributes,$setattributes);
-    $cache[$qid]=$qid_attributes;
+    $qid_attributes = array_merge($defaultattributes, $setattributes);
+    $cache[$qid] = $qid_attributes;
     return $qid_attributes;
 }
 

@@ -2708,7 +2708,6 @@ function GetReferringUrl()
     {
         $_SESSION['refurl'] = null;
     }
-    //$CI->session->userdata = $_SESSION;
 }
 
 /**

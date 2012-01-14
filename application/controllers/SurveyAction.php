@@ -717,9 +717,12 @@ class SurveyAction extends CAction {
                 buildsurveysession();
         }
 
+        $rooturl = Yii::app()->baseUrl;
+
         sendcacheheaders();
 
         //Send local variables to the appropriate survey type
+        unset($redata);
         $redata = compact(array_keys(get_defined_vars()));
         Yii::import('application.helpers.SurveyRuntimeHelper');
         $tmp = new SurveyRuntimeHelper();

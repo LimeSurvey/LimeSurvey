@@ -585,14 +585,14 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
     $disable_prev=trim($aQuestionAttributes['time_limit_disable_prev']) != '' ? $aQuestionAttributes['time_limit_disable_prev'] : 0;
     $time_limit_action=trim($aQuestionAttributes['time_limit_action']) != '' ? $aQuestionAttributes['time_limit_action'] : 1;
     $time_limit_message_delay=trim($aQuestionAttributes['time_limit_message_delay']) != '' ? $aQuestionAttributes['time_limit_message_delay']*1000 : 1000;
-    $time_limit_message=trim($aQuestionAttributes['time_limit_message']) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_message'], ENT_QUOTES) : $clang->gT("Your time to answer this question has expired");
+    $time_limit_message=trim($aQuestionAttributes['time_limit_message'][$_SESSION['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_message'][$_SESSION['s_lang']], ENT_QUOTES) : $clang->gT("Your time to answer this question has expired");
     $time_limit_warning=trim($aQuestionAttributes['time_limit_warning']) != '' ? $aQuestionAttributes['time_limit_warning'] : 0;
     $time_limit_warning_2=trim($aQuestionAttributes['time_limit_warning_2']) != '' ? $aQuestionAttributes['time_limit_warning_2'] : 0;
-    $time_limit_countdown_message=trim($aQuestionAttributes['time_limit_countdown_message']) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_countdown_message'], ENT_QUOTES) : $clang->gT("Time remaining");
-    $time_limit_warning_message=trim($aQuestionAttributes['time_limit_warning_message']) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_warning_message'], ENT_QUOTES) : $clang->gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
+    $time_limit_countdown_message=trim($aQuestionAttributes['time_limit_countdown_message'][$_SESSION['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_countdown_message'][$_SESSION['s_lang']], ENT_QUOTES) : $clang->gT("Time remaining");
+    $time_limit_warning_message=trim($aQuestionAttributes['time_limit_warning_message'][$_SESSION['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_warning_message'][$_SESSION['s_lang']], ENT_QUOTES) : $clang->gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
     $time_limit_warning_message=str_replace("{TIME}", "<div style='display: inline' id='LS_question".$ia[0]."_Warning'> </div>", $time_limit_warning_message);
     $time_limit_warning_display_time=trim($aQuestionAttributes['time_limit_warning_display_time']) != '' ? $aQuestionAttributes['time_limit_warning_display_time']+1 : 0;
-    $time_limit_warning_2_message=trim($aQuestionAttributes['time_limit_warning_2_message']) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_warning_2_message'], ENT_QUOTES) : $clang->gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
+    $time_limit_warning_2_message=trim($aQuestionAttributes['time_limit_warning_2_message'][$_SESSION['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_warning_2_message'][$_SESSION['s_lang']], ENT_QUOTES) : $clang->gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
     $time_limit_warning_2_message=str_replace("{TIME}", "<div style='display: inline' id='LS_question".$ia[0]."_Warning_2'> </div>", $time_limit_warning_2_message);
     $time_limit_warning_2_display_time=trim($aQuestionAttributes['time_limit_warning_2_display_time']) != '' ? $aQuestionAttributes['time_limit_warning_2_display_time']+1 : 0;
     $time_limit_message_style=trim($aQuestionAttributes['time_limit_message_style']) != '' ? $aQuestionAttributes['time_limit_message_style'] : "position: absolute;
@@ -1307,9 +1307,9 @@ function do_list_dropdown($ia)
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
 
-    if (trim($aQuestionAttributes['other_replace_text']) != '')
+    if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['s_lang']]) != '')
     {
-        $othertext = $aQuestionAttributes['other_replace_text'];
+        $othertext = $aQuestionAttributes['other_replace_text'][$_SESSION['s_lang']];
     }
     else
     {
@@ -1634,9 +1634,9 @@ function do_list_radio($ia)
         $dcols= 1;
     }
 
-    if (trim($aQuestionAttributes['other_replace_text']) != '')
+    if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['s_lang']]) != '')
     {
-        $othertext = $aQuestionAttributes['other_replace_text'];
+        $othertext = $aQuestionAttributes['other_replace_text'][$_SESSION['s_lang']];
     }
     else
     {
@@ -2301,9 +2301,9 @@ function do_multiplechoice($ia)
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
 
-    if (trim($aQuestionAttributes['other_replace_text']) != '')
+    if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['s_lang']]) != '')
     {
-        $othertext = $aQuestionAttributes['other_replace_text'];
+        $othertext = $aQuestionAttributes['other_replace_text'][$_SESSION['s_lang']];
     }
     else
     {
@@ -2711,9 +2711,9 @@ function do_multiplechoice_withcomments($ia)
         $numbersonly = '';
     }
 
-    if (trim($aQuestionAttributes['other_replace_text']) != '')
+    if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['s_lang']]) != '')
     {
-        $othertext = $aQuestionAttributes['other_replace_text'];
+        $othertext = $aQuestionAttributes['other_replace_text'][$_SESSION['s_lang']];
     }
     else
     {
@@ -3187,16 +3187,16 @@ function do_multipleshorttext($ia)
         $tiwidth=20;
     }
 
-    if (trim($aQuestionAttributes['prefix']) != '') {
-        $prefix = $aQuestionAttributes['prefix'];
+    if (trim($aQuestionAttributes['prefix'][$_SESSION['s_lang']]) != '') {
+        $prefix = $aQuestionAttributes['prefix'][$_SESSION['s_lang']];
     }
     else
     {
         $prefix = '';
     }
 
-    if (trim($aQuestionAttributes['suffix']) != '') {
-        $suffix = $aQuestionAttributes['suffix'];
+    if (trim($aQuestionAttributes['suffix'][$_SESSION['s_lang']]) != '') {
+        $suffix = $aQuestionAttributes['suffix'][$_SESSION['s_lang']];
     }
     else
     {
@@ -3398,16 +3398,16 @@ function do_multiplenumeric($ia)
 //        $max_num_value = 0;
 //    }
 
-    if (trim($aQuestionAttributes['prefix'][$_SESSION['s_lang']]) != '') {
-        $prefix = $aQuestionAttributes['prefix'][$_SESSION['s_lang']];
+    if (trim($aQuestionAttributes['prefix'][$_SESSION['s_lang']][$_SESSION['s_lang']]) != '') {
+        $prefix = $aQuestionAttributes['prefix'][$_SESSION['s_lang']][$_SESSION['s_lang']];
     }
     else
     {
         $prefix = '';
     }
 
-    if (trim($aQuestionAttributes['suffix'][$_SESSION['s_lang']]) != '') {
-        $suffix = $aQuestionAttributes['suffix'][$_SESSION['s_lang']];
+    if (trim($aQuestionAttributes['suffix'][$_SESSION['s_lang']][$_SESSION['s_lang']]) != '') {
+        $suffix = $aQuestionAttributes['suffix'][$_SESSION['s_lang']][$_SESSION['s_lang']];
     }
     else
     {
@@ -3866,15 +3866,15 @@ function do_numerical($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
     $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
-    if (trim($aQuestionAttributes['prefix']) != '') {
-        $prefix = $aQuestionAttributes['prefix'];
+    if (trim($aQuestionAttributes['prefix'][$_SESSION['s_lang']]) != '') {
+        $prefix = $aQuestionAttributes['prefix'][$_SESSION['s_lang']];
     }
     else
     {
         $prefix = '';
     }
-    if (trim($aQuestionAttributes['suffix']) != '') {
-        $suffix = $aQuestionAttributes['suffix'];
+    if (trim($aQuestionAttributes['suffix'][$_SESSION['s_lang']]) != '') {
+        $suffix = $aQuestionAttributes['suffix'][$_SESSION['s_lang']];
     }
     else
     {
@@ -3988,15 +3988,15 @@ function do_shortfreetext($ia)
     {
         $tiwidth=50;
     }
-    if (trim($aQuestionAttributes['prefix']) != '') {
-        $prefix = $aQuestionAttributes['prefix'];
+    if (trim($aQuestionAttributes['prefix'][$_SESSION['s_lang']]) != '') {
+        $prefix = $aQuestionAttributes['prefix'][$_SESSION['s_lang']];
     }
     else
     {
         $prefix = '';
     }
-    if (trim($aQuestionAttributes['suffix']) != '') {
-        $suffix = $aQuestionAttributes['suffix'];
+    if (trim($aQuestionAttributes['suffix'][$_SESSION['s_lang']]) != '') {
+        $suffix = $aQuestionAttributes['suffix'][$_SESSION['s_lang']];
     }
     else
     {
@@ -6291,17 +6291,17 @@ function do_array_dual($ia)
         $useDropdownLayout = false;
     }
 
-    if (trim($aQuestionAttributes['dualscale_headerA']) != '') {
-        $leftheader= $clang->gT($aQuestionAttributes['dualscale_headerA']);
+    if (trim($aQuestionAttributes['dualscale_headerA'][$_SESSION['s_lang']]) != '') {
+        $leftheader= $clang->gT($aQuestionAttributes['dualscale_headerA'][$_SESSION['s_lang']]);
     }
     else
     {
         $leftheader ='';
     }
 
-    if (trim($aQuestionAttributes['dualscale_headerB']) != '')
+    if (trim($aQuestionAttributes['dualscale_headerB'][$_SESSION['s_lang']]) != '')
     {
-        $rightheader= $clang->gT($aQuestionAttributes['dualscale_headerB']);
+        $rightheader= $clang->gT($aQuestionAttributes['dualscale_headerB'][$_SESSION['s_lang']]);
     }
     else
     {
@@ -6675,8 +6675,8 @@ function do_array_dual($ia)
 
             // Get attributes for Headers and Prefix/Suffix
 
-            if (trim($aQuestionAttributes['dropdown_prepostfix']) != '') {
-                list ($ddprefix, $ddsuffix) =explode("|",$aQuestionAttributes['dropdown_prepostfix']);
+            if (trim($aQuestionAttributes['dropdown_prepostfix'][$_SESSION['s_lang']]) != '') {
+                list ($ddprefix, $ddsuffix) =explode("|",$aQuestionAttributes['dropdown_prepostfix'][$_SESSION['s_lang']]);
                 $ddprefix = $ddprefix;
                 $ddsuffix = $ddsuffix;
             }
@@ -6855,7 +6855,7 @@ function do_array_dual($ia)
                 if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
                 {
                     $answer .= "\t<option value='' ";
-                    if (empty($_SESSION[$myfname]))
+                    if (empty($_SESSION[$myfname1]))
                     {
                         $answer .= SELECTED;
                     }
