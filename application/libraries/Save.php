@@ -220,10 +220,10 @@ class Save {
         {
             if ($thissurvey['active'] == "Y") 	// Only save if active
             {
-                $flashmessage=savedcontrol();
+                $flashmessage = $this->savedcontrol();
                 if (isset($errormsg) && $errormsg != "")
                 {
-                    showsaveform();
+                    $this->showsaveform();
                 }
             }
             else
@@ -340,9 +340,9 @@ class Save {
         //All the fields are correct. Now make sure there's not already a matching saved item
         $query = "SELECT COUNT(*) FROM {{saved_control}}\n"
         ."WHERE sid=$surveyid\n"
-        ."AND identifier=".$_POST['savename'];
-        $result = db_execute_num($query) or safe_die("Error checking for duplicates!<br />$query<br />");   // Checked
-        list($count) = $result->read();
+        ."AND identifier='{$_POST['savename']}'";
+        $result = Yii::app()->db->createCommand($query)->query() or safe_die("Error checking for duplicates!<br />$query<br />");   // Checked
+        list($count) = $result->getRowCount();
         if ($count > 0)
         {
             $errormsg.=$clang->gT("This name has already been used for this survey. You must use a unique save name.")."<br />\n";
@@ -358,7 +358,7 @@ class Save {
                 "ipaddr"=>get_current_ip_address(),
                 "startlanguage"=>$_SESSION['s_lang'],
                 "refurl"=>getenv("HTTP_REFERER"));
-                if (db_execute_assoc($CI->db->insert_string($thissurvey['tablename'], $sdata)))    // Checked
+                if (Survey_dynamic::model($thissurvey['sid'])->insert($sdata))    // Checked
                 {
                     $srid = Yii::app()->db->getLastInsertID();
                     $_SESSION['srid'] = $srid;
@@ -382,7 +382,7 @@ class Save {
             "saved_date"=>$today);
 
 
-            if (db_execute_assoc($CI->db->insert_string("{{saved_control}}", $scdata)))   // Checked
+            if (Saved_control::model()->insert($scdata))   // Checked
             {
                 $scid = Yii::app()->db->getLastInsertID();
                 $_SESSION['scid'] = $scid;
@@ -396,28 +396,25 @@ class Save {
             $_SESSION['holdpass']=$_POST['savepass']; //Session variable used to load answers every page.  Unsafe - so it has to be taken care of on output
 
             //Email if needed
-            if (isset($_POST['saveemail']) )
+            if (isset($_POST['saveemail']) && validate_email($_POST['saveemail']))
             {
-                if (validate_email($_POST['saveemail']))
-                {
-                    $subject=$clang->gT("Saved Survey Details") . " - " . $thissurvey['name'];
-                    $message=$clang->gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.","unescaped");
-                    $message.="\n\n".$thissurvey['name']."\n\n";
-                    $message.=$clang->gT("Name","unescaped").": ".$_POST['savename']."\n";
-                    $message.=$clang->gT("Password","unescaped").": ".$_POST['savepass']."\n\n";
-                    $message.=$clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):","unescaped").":\n";
-                    $message.=$publicurl."/index.php?sid=$surveyid&loadall=reload&scid=".$scid."&loadname=".urlencode($_POST['savename'])."&loadpass=".urlencode($_POST['savepass']);
+                $subject=$clang->gT("Saved Survey Details") . " - " . $thissurvey['name'];
+                $message=$clang->gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.","unescaped");
+                $message.="\n\n".$thissurvey['name']."\n\n";
+                $message.=$clang->gT("Name","unescaped").": ".$_POST['savename']."\n";
+                $message.=$clang->gT("Password","unescaped").": ".$_POST['savepass']."\n\n";
+                $message.=$clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):","unescaped").":\n";
+                $message.=$publicurl."/index.php?sid=$surveyid&loadall=reload&scid=".$scid."&loadname=".urlencode($_POST['savename'])."&loadpass=".urlencode($_POST['savepass']);
 
-                    if ($clienttoken){$message.="&token=".$clienttoken;}
-                    $from="{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
-                    if (SendEmailMessage($message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid)))
-                    {
-                        $emailsent="Y";
-                    }
-                    else
-                    {
-                        echo "Error: Email failed, this may indicate a PHP Mail Setup problem on your server. Your survey details have still been saved, however you will not get an email with the details. You should note the \"name\" and \"password\" you just used for future reference.";
-                    }
+                if ($clienttoken){$message.="&token=".$clienttoken;}
+                $from="{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
+                if (SendEmailMessage($message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid)))
+                {
+                    $emailsent="Y";
+                }
+                else
+                {
+                    echo "Error: Email failed, this may indicate a PHP Mail Setup problem on your server. Your survey details have still been saved, however you will not get an email with the details. You should note the \"name\" and \"password\" you just used for future reference.";
                 }
             }
             return  $clang->gT('Your survey was successfully saved.');

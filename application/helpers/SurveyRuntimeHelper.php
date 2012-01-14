@@ -804,16 +804,14 @@ END;
             //{
                 foreach ($qanda as $qa) // one entry per QID
                 {
-
-                    $qid = $qa[4];
-                    $qinfo = LimeExpressionManager::GetQuestionStatus($qid);
-                    $lastgrouparray = explode("X", $qa[7]);
-                    $lastgroup = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
-
 //                    if ($gid != $qa[6])
 //                    {
 //                        continue;
 //                    }
+                    $qid = $qa[4];
+                    $qinfo = LimeExpressionManager::GetQuestionStatus($qid);
+                    $lastgrouparray = explode("X", $qa[7]);
+                    $lastgroup = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
 
                     $q_class = question_class($qinfo['info']['type']);
 

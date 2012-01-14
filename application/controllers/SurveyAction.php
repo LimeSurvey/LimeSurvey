@@ -340,7 +340,7 @@ class SurveyAction extends CAction {
 
         //SEE IF SURVEY USES TOKENS AND GROUP TOKENS
         $i = 0; //$tokensexist = 0;
-        if ($surveyExists == 1 && Yii::app()->db->schema->getTable('{{tokens_'.$thissurvey['sid'].'}}') != null)
+        if ($surveyExists == 1 && tableExists('{{tokens_'.$thissurvey['sid'].'}}'))
         {
             $tokensexist = 1;
         }
