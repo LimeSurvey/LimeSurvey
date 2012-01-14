@@ -122,7 +122,7 @@ class Dumpdb extends Survey_Common_Action {
         echo '--'."\n\n";
         echo 'DROP TABLE IF EXISTS `'.$sTableName.'`;'."\n";
 
-        $aCreateTable = Yii::app()->db->createCommand('SHOW CREATE TABLE `'.$sTableName.'`')->queryRow();
+        $aCreateTable = Yii::app()->db->createCommand('SHOW CREATE TABLE '.Yii::app()->db->quoteTableName($sTableName))->queryRow();
         echo $aCreateTable['Create Table'].';'."\n\n";
     }
 
@@ -144,8 +144,8 @@ class Dumpdb extends Survey_Common_Action {
             {
                 $aRecords = Yii::app()->db->createCommand()
                         ->select()
-                        ->from($sTableName)
-                        ->limit($iMaxNbRecords, ($i != 0 ? ($i * $iMaxNbRecords) + 1 : null))
+                        ->from(Yii::app()->db->quoteTableName($sTableName))
+                        ->limit(intval($iMaxNbRecords), ($i != 0 ? ($i * $iMaxNbRecords) + 1 : null))
                         ->query()->readAll();
 
                 foreach ($aRecords as $aRecord)
@@ -185,7 +185,7 @@ class Dumpdb extends Survey_Common_Action {
 
     private function _countNumberOfEntries($sTableName)
     {
-        $aNumRows = Yii::app()->db->createCommand('SELECT COUNT(*) FROM `' . $sTableName . '`')->queryRow();
+        $aNumRows = Yii::app()->db->createCommand('SELECT COUNT(*) FROM ' . Yii::app()->db->quoteTableName($sTableName))->queryRow();
         $iNumRows = $aNumRows['COUNT(*)'];
         return $iNumRows;
     }

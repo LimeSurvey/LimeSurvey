@@ -804,11 +804,11 @@ class InstallerController extends CController {
         switch ($sDatabaseType) {
             case 'mysql':
             case 'mysqli':
-                $this->connection->createCommand("ALTER DATABASE `{$sDatabaseName}` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;")->execute();
+                $this->connection->createCommand("ALTER DATABASE ". Yii::app()->db->quoteTableName($sDatabaseName) ." DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;")->execute();
                 break;
             case 'pgsql':
                 if ($this->connection->getClientVersion() == '9') {
-                    $this->connection->createCommand("ALTER DATABASE {$sDatabaseName} SET bytea_output='escape';")->execute();
+                    $this->connection->createCommand("ALTER DATABASE ". Yii::app()->db->quoteTableName($sDatabaseName) ." SET bytea_output='escape';")->execute();
                 }
                 break;
         }

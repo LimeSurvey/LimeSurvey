@@ -185,7 +185,7 @@ class Statistics_userController extends LSYii_Controller {
 		 * only show questions where question attribute "public_statistics" is set to "1"
 		 */
 
-        $query = "SELECT q.* , group_name, group_order FROM {{questions}} q, {{groups}} g, {{question_attributes}} qa WHERE 'g.gid' = 'q.gid' AND 'g.language' = '".$language."' AND 'q.language' = '".$language."' AND 'q.sid' = {$surveyid} AND 'q.qid' = 'qa.qid' AND 'q.parent_qid' = 0 AND 'qa.attribute' = 'public_statistics'";
+        $query = "SELECT q.* , group_name, group_order FROM {{questions}} q, {{groups}} g, {{question_attributes}} qa WHERE 'g.gid' = 'q.gid' AND 'g.language' = :lang AND 'q.language' = :lang AND 'q.sid' = :surveyid AND 'q.qid' = 'qa.qid' AND 'q.parent_qid' = 0 AND 'qa.attribute' = 'public_statistics'";
         $databasetype = Yii::app()->db->getDriverName();
         if ($databasetype=='mssql_n' or $databasetype=='mssql' or $databasetype=='odbc_mssql' or $databasetype=="mssqlnative")
         {
@@ -197,7 +197,7 @@ class Statistics_userController extends LSYii_Controller {
         }
 
 		//execute query
-		$result = Yii::app()->db->createCommand($query)->queryAll();
+		$result = Yii::app()->db->createCommand($query)->bindParam(":lang", $language, PDO::PARAM_STR)->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)->queryAll();
 
 		//store all the data in $rows
 		$rows = $result;
@@ -222,13 +222,13 @@ class Statistics_userController extends LSYii_Controller {
 		$totalrecords = 0;
 
 		//count number of answers
-		$query = "SELECT count(*) FROM {{survey_$surveyid}}";
+		$query = "SELECT count(*) FROM {{survey_{intval($surveyid)}}}";
 
 		//if incompleted answers should be filtert submitdate has to be not null
 		//this setting is taken from config-defaults.php
 		if (Yii::app()->getConfig("filterout_incomplete_answers") == true)
 		{
-		    $query .= " WHERE {{survey_$surveyid}}.submitdate is not null";
+		    $query .= " WHERE {{survey_{intval($surveyid)}}}.submitdate is not null";
 		}
 		$result = Yii::app()->db->createCommand($query)->queryAll();
 
@@ -271,8 +271,8 @@ class Statistics_userController extends LSYii_Controller {
 		        case "K": // Multiple Numerical
 		        case "Q": // Multiple Short Text
 		            //get answers
-		            $query = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order";
-		            $result =  Yii::app()->db->createCommand($query)->queryAll();
+		            $query = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid=:flt_0 AND language = :lang ORDER BY question_order";
+		            $result =  Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":flt_0", $language, PDO::PARAM_STR)->queryAll();
 
 		            //go through all the (multiple) answers
 		            foreach($result as $row)
@@ -288,8 +288,8 @@ class Statistics_userController extends LSYii_Controller {
 		        case "F": // FlEXIBLE ARRAY
 		        case "H": // ARRAY (By Column)
 		            //get answers
-		            $query = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order";
-		            $result = Yii::app()->db->createCommand($query)->queryAll();
+		            $query = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid=:flt_0 AND language = :lang ORDER BY question_order";
+		            $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":flt_0", $language, PDO::PARAM_STR)->queryAll();
 
 		            //go through all the (multiple) answers
 		            foreach($result as $row)
@@ -307,12 +307,12 @@ class Statistics_userController extends LSYii_Controller {
 		            break;
 		        case ";":  //ARRAY (Multi Flex) (Text)
 		        case ":":  //ARRAY (Multi Flex) (Numbers)
-                    $query = "SELECT title, question FROM {{questions}} WHERE parent_qid='$flt[0]' AND language='{$language}' AND scale_id = 0 ORDER BY question_order";
-		            $result = Yii::app()->db->createCommand($query)->queryAll();
+                    $query = "SELECT title, question FROM {{questions}} WHERE parent_qid=:flt_0 AND language=:lang AND scale_id = 0 ORDER BY question_order";
+		            $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":flt_0", $language, PDO::PARAM_STR)->queryAll();
 		            foreach($result as $row)
 		            {
-		                $fquery = "SELECT * FROM {{questions}} WHERE parent_qid = {$flt[0]} AND language = '{$language}' AND scale_id = 1 ORDER BY question_order, title";
-		                $fresult = Yii::app()->db->createCommand($query)->queryAll();
+		                $fquery = "SELECT * FROM {{questions}} WHERE parent_qid = :flt_0 AND language = :lang AND scale_id = 1 ORDER BY question_order, title";
+		                $fresult = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":flt_0", $language, PDO::PARAM_STR)->queryAll();
 		                foreach($fresult as $frow)
 		                {
 		                    $myfield2 = $myfield . reset($row) . "_" . $frow['title'];
@@ -322,8 +322,8 @@ class Statistics_userController extends LSYii_Controller {
 		            break;
 		        case "R": //RANKING
 		            //get some answers
-		            $query = "SELECT code, answer FROM {{answers}} WHERE qid = '$flt[0]' AND language = '{$language}' ORDER BY sortorder, answer";
-		            $result = Yii::app()->db->createCommand($query)->queryAll();
+		            $query = "SELECT code, answer FROM {{answers}} WHERE qid = :flt_0 AND language = :lang ORDER BY sortorder, answer";
+		            $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":flt_0", $language, PDO::PARAM_STR)->queryAll();
 
 		            //get number of answers
 		            $count = $result->num_rows();
@@ -340,8 +340,8 @@ class Statistics_userController extends LSYii_Controller {
 		            break;
 		        case "1": // MULTI SCALE
 		            //get answers
-		            $query = "SELECT title, question FROM {{questions}} WHERE parent_qid = '$flt[0]' AND language = '{$language}' ORDER BY question_order";
-		            $result = Yii::app()->db->createCommand($query)->queryAll();
+		            $query = "SELECT title, question FROM {{questions}} WHERE parent_qid = :flt_0 AND language = :lang ORDER BY question_order";
+		            $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":flt_0", $language, PDO::PARAM_STR)->queryAll();
 
 		            //loop through answers
 		            foreach($result as $row)

@@ -1799,7 +1799,12 @@ class dataentry extends Survey_Common_Action
                     }
 
                     $surveytable = "{{survey_{$surveyid}}}";
-
+					
+					foreach($columns as &$colrow)
+						$colrow = Yii::app()->db->quoteColumnName($colrow);
+					foreach($values as &$valrow)
+						$valrow = Yii::app()->db->quoteValue($valrow);
+										
                     $SQL = "INSERT INTO $surveytable
                     (".implode(',', $columns).")
                     VALUES

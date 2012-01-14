@@ -793,7 +793,7 @@ function editToken($iSurveyId)
         else
         {
             $tkcount = Tokens_dynamic::model($iSurveyId)->count();
-            $tokenlength = Yii::app()->db->createCommand()->select('tokenlength')->from('{{surveys}}')->where('sid=' . $iSurveyId)->query()->readColumn(0);
+            $tokenlength = Yii::app()->db->createCommand()->select('tokenlength')->from('{{surveys}}')->where('sid=:sid')->bindParam(":sid", $iSurveyId, PDO::PARAM_INT)->query()->readColumn(0);
 
             if (empty($tokenlength))
                 $tokenlength = 15;
@@ -862,7 +862,7 @@ function editToken($iSurveyId)
                 $i++;
             }
             $tokenattributefieldnames[] = 'attribute_' . $i;
-            Yii::app()->db->createCommand(Yii::app()->db->getSchema()->addColumn("{{tokens_{$iSurveyId}}}", 'attribute_' . $i, 'VARCHAR(255)'))->execute();
+            Yii::app()->db->createCommand(Yii::app()->db->getSchema()->addColumn("{{tokens_{intval($iSurveyId)}}}", 'attribute_' . $i, 'VARCHAR(255)'))->execute();
             $fields['attribute_' . $i] = array('type' => 'VARCHAR', 'constraint' => '255');
         }
 
@@ -1361,8 +1361,8 @@ function editToken($iSurveyId)
                                 $invalidemail = false;
                                 if ($filterduplicatetoken)
                                 {
-                                    $dupquery = "SELECT firstname, lastname from {{tokens_$iSurveyId}} where email=" . db_quoteall($myemail) . " and firstname=" . db_quoteall($myfirstname) . " and lastname=" . db_quoteall($mylastname);
-                                    $dupresult = Yii::app()->db->createCommand($dupquery)->query();
+                                    $dupquery = "SELECT firstname, lastname from {{tokens_{intval($iSurveyId)}}} where email=:email and firstname=:firstname and lastname=:lastname";
+                                    $dupresult = Yii::app()->db->createCommand($dupquery)->bindParam(":email", $myemail, PDO::PARAM_STR)->bindParam(":firstname", $myfirstname, PDO::PARAM_STR)->bindParam(":lastname", $mylastname, PDO::PARAM_STR)->query();
                                     if ($dupresult->getRowCount() > 0)
                                     {
                                         $dupfound = true;
@@ -1392,7 +1392,7 @@ function editToken($iSurveyId)
                                 elseif ($meetminirequirements === true)
                                 {
                                     // No issue, let's import
-                                    $iq = "INSERT INTO {{tokens_$iSurveyId}} \n"
+                                    $iq = "INSERT INTO {{tokens_{intval($iSurveyId)}}} \n"
                                             . "(firstname, lastname, email, emailstatus, token, language";
 
                                     foreach ($aTokenAttr as $thisattrfieldname)
@@ -1400,18 +1400,18 @@ function editToken($iSurveyId)
                                         $attridx = substr($thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
                                         if (!empty($myattrArray[$attridx]))
                                         {
-                                            $iq .= ", $thisattrfieldname";
+                                            $iq .= ", ".Yii::app()->db->quoteColumnName($thisattrfieldname);
                                         }
                                     }
                                     $iq .=") \n"
-                                            . "VALUES (" . db_quoteall($myfirstname) . ", " . db_quoteall($mylastname) . ", " . db_quoteall($myemail) . ", 'OK', " . db_quoteall($mytoken) . ", " . db_quoteall($mylanguage) . "";
+                                            . "VALUES (" . Yii::app()->db->quoteValue($myfirstname) . ", " . Yii::app()->db->quoteValue($mylastname) . ", " . Yii::app()->db->quoteValue($myemail) . ", 'OK', " . Yii::app()->db->quoteValue($mytoken) . ", " . Yii::app()->db->quoteValue($mylanguage) . "";
 
                                     foreach ($aTokenAttr as $thisattrfieldname)
                                     {
                                         $attridx = substr($thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
                                         if (!empty($myattrArray[$attridx]))
                                         {
-                                            $iq .= ", " . db_quoteall($myattrArray[$attridx]) . "";
+                                            $iq .= ", " . Yii::app()->db->quoteValue($myattrArray[$attridx]) . "";
                                         }// dbquote_all encloses str with quotes
                                     }
                                     $iq .= ")";
@@ -1630,19 +1630,19 @@ function editToken($iSurveyId)
 
                         if ($filterduplicatetoken != false)
                         {
-                            $dupquery = "SELECT tid from {{tokens_$iSurveyId}} where 1=1";
+                            $dupquery = "SELECT tid from {{tokens_{intval($iSurveyId)}}} where 1=1";
                             foreach ($filterduplicatefields as $field)
                             {
                                 if (isset($writearray[$field]))
                                 {
-                                    $dupquery.= " and {$field} = '$writearray[$field]'";
+                                    $dupquery.= " and {Yii:app()->db->quoteColumnName($field)} = '{Yii:app()->db->quoteValue($writearray[$field])}'";
                                 }
                             }
                             $dupresult = Yii::app()->db->createCommand($dupquery)->query();
                             if ($dupresult->getRowCount() > 0)
                             {
                                 $dupfound = true;
-                                $duplicatelist[] = $writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")";
+                                $duplicatelist[] = Yii::app()->db->quoteValue($writearray['firstname']) . " " . Yii::app()->db->quoteValue($writearray['lastname']) . " (" . Yii::app()->db->quoteValue($writearray['email']) . ")";
                             }
                         }
 
@@ -1694,7 +1694,10 @@ function editToken($iSurveyId)
 
                             // sanitize it before writing into table
                             $sanitizedArray = array_map('db_quoteall', array_values($writearray));
-
+							foreach ($writearray as &$row)
+								$row = Yii::app()->db->quoteColumnName($row);
+							foreach ($sanitizedArray as &$row)
+								$row = Yii::app()->db->quoteValue($row);							
                             $iq = "INSERT INTO {{tokens_$iSurveyId}} \n"
                                     . "(" . implode(',', array_keys($writearray)) . ") \n"
                                     . "VALUES (" . implode(",", $sanitizedArray) . ")";
@@ -1933,7 +1936,7 @@ function editToken($iSurveyId)
                 'mpid' => 'INT(11)'
             );
             $comm = Yii::app()->db->createCommand();
-            $comm->createTable('{{tokens_' . $iSurveyId . '}}', $fields);
+            $comm->createTable('{{tokens_{intval($iSurveyId)}}}', $fields);
 
             //$tabname = "{{tokens_{$iSurveyId}}}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
             /* $taboptarray = array('mysql' => 'ENGINE='.$aDatabasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci',
@@ -1959,7 +1962,7 @@ function editToken($iSurveyId)
         }
         elseif (returnglobal('restoretable') == "Y" && tableExists(Yii::app()->request->getPost('oldtable')) && bHasSurveyPermission($iSurveyId, 'surveyactivation', 'update'))
         {
-            Yii::app()->db->createCommand()->renameTable(Yii::app()->request->getPost('oldtable'), "{{tokens_$iSurveyId}}");
+            Yii::app()->db->createCommand()->renameTable(Yii::app()->request->getPost('oldtable'), "tokens_".intval($iSurveyId));
 
             $this->_renderWrappedTemplate(array('message' => array(
                 'title' => $clang->gT("Import old tokens"),
@@ -1971,7 +1974,7 @@ function editToken($iSurveyId)
         else
         {
             $this->getController()->loadHelper('database');
-            $result = Yii::app()->db->createCommand(db_select_tables_like('{{old_tokens_' . $iSurveyId . '_%}}'))->queryAll();
+            $result = Yii::app()->db->createCommand(db_select_tables_like('{{old_tokens_{intval($iSurveyId)}_%}}'))->queryAll();
             $tcount = count($result);
             if ($tcount > 0)
             {

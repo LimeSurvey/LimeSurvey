@@ -218,7 +218,7 @@ class export extends Survey_Common_Action {
             $data['excesscols'] = $excesscols;
 
             //get max number of datasets
-            $max_datasets_query = Yii::app()->db->createCommand("SELECT COUNT(id) AS count FROM {{survey_$surveyid}}")->query()->read();
+            $max_datasets_query = Yii::app()->db->createCommand("SELECT COUNT(id) AS count FROM {{survey_{intval($surveyid)}}}")->query()->read();
             $max_datasets = $max_datasets_query['count'];
 
             $data['max_datasets'] = $max_datasets;
@@ -955,7 +955,7 @@ class export extends Survey_Common_Action {
 
             $vvoutput = $firstline . "\n";
             $vvoutput .= $secondline . "\n";
-            $query = "SELECT * FROM $surveytable";
+            $query = "SELECT * FROM {{Yii::app()->db->quoteTableName($surveytable)}}";
 
 			if (incompleteAnsFilterstate() == "inc")
             {

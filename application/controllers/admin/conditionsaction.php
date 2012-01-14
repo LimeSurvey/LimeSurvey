@@ -400,8 +400,8 @@ class conditionsaction extends Survey_Common_Action {
 		// RENUMBER SCENARIOS
 		if (isset($p_subaction) && $p_subaction == "renumberscenarios")
 		{
-		    $query = "SELECT DISTINCT scenario FROM {{conditions}} WHERE qid={$qid} ORDER BY scenario";
-		    $result = Yii::app()->db->createCommand($query)->query() or safe_die ("Couldn't select scenario<br />$query<br />");
+		    $query = "SELECT DISTINCT scenario FROM {{conditions}} WHERE qid=:qid ORDER BY scenario";
+		    $result = Yii::app()->db->createCommand($query)->bindParam(":qid", $qid, PDO::PARAM_INT)->query() or safe_die ("Couldn't select scenario<br />$query<br />");
 		    $newindex = 1;
 
 		    foreach ($result->readAll() as $srow)
@@ -426,9 +426,11 @@ class conditionsaction extends Survey_Common_Action {
 		    if (isset($copyconditionsto) && is_array($copyconditionsto) && isset($copyconditionsfrom) && is_array($copyconditionsfrom))
 		    {
 		        //Get the conditions we are going to copy
+		        foreach($copyconditionsfrom as &$entry)
+					$entry = Yii::app()->db->quoteValue($entry);
 		        $query = "SELECT * FROM {{conditions}}\n"
 		        ."WHERE cid in ('";
-		        $query .= implode("', '", $copyconditionsfrom);
+		        $query .= implode(", ", $copyconditionsfrom);
 		        $query .= "')";
 		        $result = Yii::app()->db->createCommand($query)->query() or
 		        	safe_die("Couldn't get conditions for copy<br />$query<br />");
@@ -524,10 +526,10 @@ class conditionsaction extends Survey_Common_Action {
 			."FROM {{questions}}, "
 			."{{groups}} "
 			."WHERE {{questions}}.gid={{groups}}.gid "
-			."AND qid=$qid "
+			."AND qid=:qid "
 			."AND parent_qid=0 "
-			."AND {{questions}}.language='".Survey::model()->findByPk($surveyid)->language."'";
-		$result = Yii::app()->db->createCommand($query)->query() or safe_die ("Couldn't get information for question $qid<br />$query<br />");
+			."AND {{questions}}.language=:lang";
+		$result = Yii::app()->db->createCommand($query)->bindParam(":qid", $qid, PDO::PARAM_INT)->bindParam(":lang", Survey::model()->findByPk($surveyid)->language, PDO::PARAM_STR)->query() or safe_die ("Couldn't get information for question $qid<br />$query<br />");
 		foreach ($result->readAll() as $rows)
 		{
 		    $questiongroupname = $rows['group_name'];
@@ -547,10 +549,10 @@ class conditionsaction extends Survey_Common_Action {
 			."WHERE {{questions}}.gid={{groups}}.gid "
 			."AND parent_qid=0 "
 			."AND {{questions}}.sid=$surveyid "
-			."AND {{questions}}.language='".Survey::model()->findByPk($surveyid)->language."' "
-			."AND {{groups}}.language='".Survey::model()->findByPk($surveyid)->language."' " ;
+			."AND {{questions}}.language=:lang "
+			."AND {{groups}}.language=:lang " ;
 
-		$qresult = Yii::app()->db->createCommand($qquery)->query() or safe_die ("$qquery<br />");
+		$qresult = Yii::app()->db->createCommand($qquery)->bindParam(":lang", Survey::model()->findByPk($surveyid)->language, PDO::PARAM_STR)->query() or safe_die ("$qquery<br />");
 		$qrows = $qresult->readAll();
 		// Perform a case insensitive natural sort on group name then question title (known as "code" in the form) of a multidimensional array
 		usort($qrows, 'GroupOrderThenQuestionOrder');
@@ -607,10 +609,10 @@ class conditionsaction extends Survey_Common_Action {
 			        ."WHERE {{questions}}.gid={{groups}}.gid "
 			        ."AND parent_qid=0 "
 			        ."AND {{questions}}.qid=$ql "
-			        ."AND {{questions}}.language='".Survey::model()->findByPk($surveyid)->language."' "
-			        ."AND {{groups}}.language='".Survey::model()->findByPk($surveyid)->language."'" ;
+			        ."AND {{questions}}.language=:lang"
+			        ."AND {{groups}}.language=:lang" ;
 
-		        $result = Yii::app()->db->createCommand($query)->query() or die("Couldn't get question $qid");
+		        $result = Yii::app()->db->createCommand($query)->bindParam(":lang", Survey::model()->findByPk($surveyid)->language, PDO::PARAM_STR)->query() or die("Couldn't get question $qid");
 
 		        $thiscount = count($result);
 
@@ -648,11 +650,11 @@ class conditionsaction extends Survey_Common_Action {
 			        ."WHERE q.gid=g.gid AND "
 			        ."q.parent_qid=0 AND "
 			        ."q.qid=$pq AND "
-			        ."q.language='".Survey::model()->findByPk($surveyid)->language."' AND "
-			        ."g.language='".Survey::model()->findByPk($surveyid)->language."'";
+			        ."q.language=:lang AND "
+			        ."g.language=:lang";
 
 
-		        $result = Yii::app()->db->createCommand($query)->query() or safe_die("Couldn't get postquestions $qid<br />$query<br />");
+		        $result = Yii::app()->db->createCommand($query)->bindParam(":lang", Survey::model()->findByPk($surveyid)->language, PDO::PARAM_STR)->query() or safe_die("Couldn't get postquestions $qid<br />$query<br />");
 
 		        $postcount = count($result);
 
@@ -789,26 +791,26 @@ class conditionsaction extends Survey_Common_Action {
 		            $fquery = "SELECT sq.*, q.other"
 			            ." FROM {{questions sq}}, {{questions q}}"
 			            ." WHERE sq.sid=$surveyid AND sq.parent_qid=q.qid "
-			            . "AND q.language='".Survey::model()->findByPk($surveyid)->language."'"
-			            ." AND sq.language='".Survey::model()->findByPk($surveyid)->language."'"
-			            ." AND q.qid={$rows['qid']}
+			            . "AND q.language=:lang"
+			            ." AND sq.language=:lang"
+			            ." AND q.qid=:qid
 			               AND sq.scale_id=0
 			               ORDER BY sq.question_order";
 
-		            $y_axis_db = Yii::app()->db->createCommand($fquery)->query();
+		            $y_axis_db = Yii::app()->db->createCommand($fquery)->bindParam(":lang", Survey::model()->findByPk($surveyid)->language, PDO::PARAM_STR)->bindParam(":qid", $rows["qid"], PDO::PARAM_INT)->query();
 
 					// Get the X-Axis
 					$aquery = "SELECT sq.*
 						FROM {{questions q}}, {{questions sq}}
 						WHERE q.sid=$surveyid
 						AND sq.parent_qid=q.qid
-						AND q.language='".Survey::model()->findByPk($surveyid)->language."'
-						AND sq.language='".Survey::model()->findByPk($surveyid)->language."'
-						AND q.qid=".$rows['qid']."
+						AND q.language=:lang
+						AND sq.language=:lang
+						AND q.qid=:qid
 						AND sq.scale_id=1
 						ORDER BY sq.question_order";
 
-		            $x_axis_db=Yii::app()->db->createCommand($aquery)->query() or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />");
+		            $x_axis_db=Yii::app()->db->createCommand($aquery)->bindParam(":lang", Survey::model()->findByPk($surveyid)->language, PDO::PARAM_STR)->bindParam(":qid", $rows[qid], PDO::PARAM_INT)->query() or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />");
 
 		            foreach ($x_axis_db->readAll() as $frow)
 		            {
@@ -1192,9 +1194,9 @@ class conditionsaction extends Survey_Common_Action {
 		    $s=0;
 		    $scenarioquery = "SELECT DISTINCT {{conditions}}.scenario "
 			    ."FROM {{conditions}} "
-			    ."WHERE {{conditions}}.qid=$qid\n"
+			    ."WHERE {{conditions}}.qid=:qid"
 			    ."ORDER BY {{conditions}}.scenario";
-		    $scenarioresult = Yii::app()->db->createCommand($scenarioquery)->query() or safe_die ("Couldn't get other (scenario) conditions for question $qid<br />$query<br />");
+		    $scenarioresult = Yii::app()->db->createCommand($scenarioquery)->bindParam(":qid", $qid, PDO::PARAM_INT)->query() or safe_die ("Couldn't get other (scenario) conditions for question $qid<br />$query<br />");
 		    $scenariocount=count($scenarioresult);
 
 		    $showreplace="$questiontitle". $this->_showSpeaker($questiontext);
@@ -1286,13 +1288,13 @@ class conditionsaction extends Survey_Common_Action {
 			            ."WHERE {{conditions}}.cqid={{questions}}.qid "
 			            ."AND {{questions}}.gid={{groups}}.gid "
 			            ."AND {{questions}}.parent_qid=0 "
-			            ."AND {{questions}}.language='".Survey::model()->findByPk($surveyid)->language."' "
-			            ."AND {{groups}}.language='".Survey::model()->findByPk($surveyid)->language."' "
-			            ."AND {{conditions}}.qid=$qid "
-			            ."AND {{conditions}}.scenario={$scenarionr['scenario']}\n"
+			            ."AND {{questions}}.language=:lang "
+			            ."AND {{groups}}.language=:lang "
+			            ."AND {{conditions}}.qid=:qid "
+			            ."AND {{conditions}}.scenario=:scenario"
 			            ."AND {{conditions}}.cfieldname NOT LIKE '{%' \n" // avoid catching SRCtokenAttr conditions
 			            ."ORDER BY {{groups}}.group_order,{{questions}}.question_order";
-		            $result = Yii::app()->db->createCommand($query)->query() or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />");
+		            $result = Yii::app()->db->createCommand($query)->bindParam(":scenario", $scenarionr['scenario'], PDO::PARAM_INT)->bindParam(":qid", $qid, PDO::PARAM_INT)->bindParam(":lang", Survey::model()->findByPk($surveyid)->language, PDO::PARAM_STR)->query() or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />");
 		            $conditionscount=count($result);
 
 		            $querytoken = "SELECT {{conditions}}.cid, "
@@ -1304,11 +1306,11 @@ class conditionsaction extends Survey_Common_Action {
 			            ."'' AS type "
 			            ."FROM {{conditions}} "
 			            ."WHERE "
-			            ." {{conditions}}.qid=$qid "
-			            ."AND {{conditions}}.scenario={$scenarionr['scenario']}\n"
+			            ." {{conditions}}.qid=:qid "
+			            ."AND {{conditions}}.scenario=:scenario\n"
 			            ."AND {{conditions}}.cfieldname LIKE '{%' \n" // only catching SRCtokenAttr conditions
 			            ."ORDER BY {{conditions}}.cfieldname";
-		            $resulttoken = Yii::app()->db->createCommand($querytoken)->query() or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />");
+		            $resulttoken = Yii::app()->db->createCommand($querytoken)->bindParam(":scenario", $scenarionr['scenario'], PDO::PARAM_INT)->bindParam(":qid", $qid, PDO::PARAM_INT)->query() or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />");
 		            $conditionscounttoken=count($resulttoken);
 
 		            $conditionscount=$conditionscount+$conditionscounttoken;

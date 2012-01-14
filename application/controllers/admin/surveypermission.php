@@ -378,8 +378,8 @@ class surveypermission extends Survey_Common_Action {
                 $this->getController()->_js_admin_includes(Yii::app()->baseUrl.'/scripts/admin/surveysecurity.js');
                 if ($action == "setsurveysecurity")
                 {
-                    $query = "select users_name from {{users}} where uid={$postuserid}";
-                    $res = Yii::app()->db->createCommand($query)->query();
+                    $query = "select users_name from {{users}} where uid=:uid";
+                    $res = Yii::app()->db->createCommand($query)->bindParam(":uid", $postuserid, PDO::PARAM_INT)->query();
                     $resrow = $res->read();
                     $sUsername=$resrow['users_name'];
                     $usersummary = "<div class='header ui-widget-header'>".sprintf($clang->gT("Edit survey permissions for user %s"),"<span style='font-style:italic'>".$sUsername."</span>")."</div>";
