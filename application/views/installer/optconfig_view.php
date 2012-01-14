@@ -65,7 +65,7 @@
 </td>
 <td align="right">
 <?php
-foreach(getLanguageData(true, Yii::app()->getConfig("installerLang")) as $langkey => $languagekind)
+foreach(getLanguageData(true, Yii::app()->session['installerLang']) as $langkey => $languagekind)
 {
 	$languages[htmlspecialchars($langkey)] = sprintf('%s - %s', $languagekind['nativedescription'], $languagekind['description']);
 }
