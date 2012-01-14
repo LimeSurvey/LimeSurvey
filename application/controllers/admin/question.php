@@ -939,25 +939,21 @@ class question extends Survey_Common_Action
         $LEMdebugLevel=0;
 
         Yii::app()->loadHelper("qanda");
-
         Yii::app()->loadHelper("surveytranslator");
-
-        if (!isset($surveyid))
-            $surveyid = returnglobal('sid');
-
-        $surveyid = (int) $surveyid;
-        if (!isset($qid))
-            $qid = returnglobal('qid');
 
         if (empty($surveyid))
             $this->getController()->error('No Survey ID provided');
         if (empty($qid))
             $this->getController()->error('No Question ID provided');
 
-        if (!isset($lang) || $lang == "")
+        if (empty($lang))
             $language = Survey::model()->findByPk($surveyid)->language;
         else
             $language = $lang;
+
+        if (!isset($_SESSION['step'])) { $_SESSION['step'] = 0; }
+        if (!isset($_SESSION['prevstep'])) { $_SESSION['prevstep'] = 0; }
+        if (!isset($_SESSION['maxstep'])) { $_SESSION['maxstep'] = 0; }
 
         // Use $_SESSION instead of $this->session for frontend features.
         $_SESSION['s_lang'] = $language;
@@ -976,9 +972,8 @@ class question extends Survey_Common_Action
 
         $_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
 
-        $qresult = Questions::model()->findByAttributes(array('sid' => $surveyid, 'qid' => $qid, 'language' => $language));
+        $qrows = Questions::model()->findByAttributes(array('sid' => $surveyid, 'qid' => $qid, 'language' => $language))->getAttributes();
 
-        $qrows = $qresult->attributes;
         $ia = array(
             0 => $qid,
             1 => $surveyid . 'X' . $qrows['gid'] . 'X' . $qid,
@@ -1046,28 +1041,28 @@ class question extends Survey_Common_Action
             $question['man_class'] = '';
 
         $redata = compact(array_keys(get_defined_vars()));
-        $content = templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+        $content = templatereplace(file_get_contents("$thistpl/startpage.pstpl"), array(), $redata);
         $content .='<form method="post" action="index.php" id="limesurvey" name="limesurvey" autocomplete="off">';
-        $content .= templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));
+        $content .= templatereplace(file_get_contents("$thistpl/startgroup.pstpl"), array(), $redata);
 
         $question_template = file_get_contents("$thistpl/question.pstpl");
         // the following has been added for backwards compatiblity.
         if (substr_count($question_template, '{QUESTION_ESSENTIALS}') > 0)
         {
             // LS 1.87 and newer templates
-            $content .= "\n" . templatereplace($question_template, false, $qid) . "\n";
+            $content .= "\n" . templatereplace($question_template, array(), $redata, 'Unspecified', false, $qid) . "\n";
         }
         else
         {
             // LS 1.86 and older templates
             $content .= '<div ' . $question['essentials'] . ' class="' . $question['class'] . $question['man_class'] . '">';
-            $content .= "\n" . templatereplace($question_template, false, $qid) . "\n";
+            $content .= "\n" . templatereplace($question_template, array(), $redata, 'Unspecified', false, $qid) . "\n";
             $content .= "\n\t</div>\n";
         };
 
-        $content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl")) . $dummy_js;
+        $content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl"), array(), $redata) . $dummy_js;
         $content .= '<p>&nbsp;</form>';
-        $content .= templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+        $content .= templatereplace(file_get_contents("$thistpl/endpage.pstpl"), array(), $redata);
 
         LimeExpressionManager::FinishProcessingPage();
 

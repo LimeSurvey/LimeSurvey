@@ -40,20 +40,17 @@ function injectglobalsettings()
 
 function getGlobalSetting($settingname)
 {
-    if (Yii::app()->getRegistry($settingname) === false) {
-        //$usquery = "SELECT stg_value FfROM ".db_table_name("settings_global")." where stg_name='$settingname'";
+    $dbvalue = Yii::app()->getRegistry($settingname);
 
-    	$dbvalue = Settings_global::model()->findByPk($settingname);
-		//$dbvalue = $dbvalue['stg_value'];
-		//var_dump($dbvalue);
+    if ($dbvalue === false)
+    {
+    	$dbvalue = Settings_global::model()->findByPk($settingname)->getAttribute('stg_value');
 
         if (empty($dbvalue))
         {
             Yii::app()->setRegistry($settingname, null);
-			$dbvalue="";
+			$dbvalue = '';
         }
-    	else
-    		$dbvalue = $dbvalue->getAttribute('stg_value');
 
 		if (Yii::app()->getConfig($settingname) !== false)
 		{
@@ -63,8 +60,6 @@ function getGlobalSetting($settingname)
             $dbvalue = Yii::app()->getConfig($settingname);
         }
     }
-	else
-        $dbvalue = Yii::app()->getRegistry($settingname);
 
     return $dbvalue;
 }

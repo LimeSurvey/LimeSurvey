@@ -556,6 +556,7 @@ class SurveyRuntimeHelper {
         $okToShowErrors = (!$previewgrp && (isset($invalidLastPage) || $_SESSION['prevstep'] == $_SESSION['step']));
 
         Yii::app()->getController()->loadHelper('qanda');
+        setNoAnswerMode($thissurvey);
 
         //Iterate through the questions about to be displayed:
         $inputnames = array();
