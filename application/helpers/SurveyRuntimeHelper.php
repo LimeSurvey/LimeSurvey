@@ -42,7 +42,6 @@ class SurveyRuntimeHelper {
             'hyperlinkSyntaxHighlighting' => (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY), // TODO set this to true if in admin mode but not if running a survey
             'ipaddr' => ($thissurvey['ipaddr'] == 'Y'),
             'refurl' => (($thissurvey['refurl'] == "Y") ? $_SESSION['refurl'] : NULL),
-            'rooturl' => (isset($rooturl) ? $rooturl : ''),
             'savetimings' => ($thissurvey['savetimings'] == "Y"),
             'surveyls_dateformat' => (isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
             'startlanguage' => (isset($_SESSION['s_lang']) ? $_SESSION['s_lang'] : 'en'),
@@ -52,17 +51,14 @@ class SurveyRuntimeHelper {
             'token' => (isset($clienttoken) ? $clienttoken : NULL),
         );
 
-        // LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions);
-
         //Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
         $previewgrp = false;
         if ($surveyMode == 'group' && isset($param['action']) && ($param['action'] == 'previewgroup'))
         {
             $previewgrp = true;
         }
-        if (isset($param['newtest']))
-            if ($param['newtest'] == "Y")
-                setcookie("limesurvey_timers", "0");
+        if (isset($param['newtest']) && $param['newtest'] == "Y")
+            setcookie("limesurvey_timers", "0");
         $show_empty_group = false;
 
         if ($previewgrp)
@@ -200,7 +196,6 @@ class SurveyRuntimeHelper {
                 exit;
             }
 
-
             //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
             //First, see if we are moving backwards or doing a Save so far, and its OK not to check:
             if (
@@ -229,7 +224,7 @@ class SurveyRuntimeHelper {
                 require_once("save.php");   // for supporting functions only
                 showsaveform(); // generates a form and exits, awaiting input
             }
-// TODO FIXME
+
             if ($thissurvey['active'] == "Y" && isset($_POST['saveprompt']))
             {
                 // The response from the save form

@@ -615,7 +615,7 @@ class SurveyAction extends CAction {
 
 
                 // delete the response but only if not already completed
-                db_execute_assoc('DELETE FROM {{survey_".$surveyid)."}} WHERE id='.$_SESSION['srid']." AND submitdate IS NULL");
+                db_execute_assoc('DELETE FROM {{survey_'.$surveyid.'}} WHERE id='.$_SESSION['srid']." AND submitdate IS NULL");
 
                 // also delete a record from saved_control when there is one
                 db_execute_assoc('DELETE FROM {{saved_control}} WHERE srid='.$_SESSION['srid'].' AND sid='.$surveyid);
@@ -715,7 +715,7 @@ class SurveyAction extends CAction {
         if (isset($param['action']) && $param['action'] == 'previewgroup')
         {
                 $thissurvey['format'] = 'G';
-                buildsurveysession();
+                buildsurveysession($surveyid);
         }
 
         sendcacheheaders();
@@ -726,26 +726,6 @@ class SurveyAction extends CAction {
         Yii::import('application.helpers.SurveyRuntimeHelper');
         $tmp = new SurveyRuntimeHelper();
         $tmp->run($redata);
-
-//        //CALL APPROPRIATE SCRIPT
-//        switch ($thissurvey['format'])
-//        {
-//            case "A": //All in one
-//                Yii::import("application.libraries.Survey_format");
-//                $tmp = new Survey_format();
-//                $tmp->run($redata);
-//                break;
-//            case "G": //Group at a time
-//                Yii::import("application.libraries.Group_format");
-//                $tmp = new Group_format();
-//                $tmp->run($redata);
-//                break;
-//            case "S": //One at a time
-//             default:
-//                Yii::import("application.libraries.Question_format");
-//                $tmp = new Question_format();
-//                $tmp->run($redata);
-//        }
 
 		if (isset($_POST['saveall']) || isset($flashmessage))
 		{

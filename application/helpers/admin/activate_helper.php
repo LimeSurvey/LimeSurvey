@@ -275,8 +275,7 @@ function activateSurvey($surveyid, $simulate = false)
     $createsurveydirectory=false;
     //Check for any additional fields for this survey and create necessary fields (token and datestamp)
     $pquery = "SELECT anonymized, allowregister, datestamp, ipaddr, refurl, savetimings FROM {{surveys}} WHERE sid={$surveyid}";
-    $presult=Yii::app()->db->createCommand($pquery)->query()->readAll();
-    $prow=$presult[0];
+    $prow = Yii::app()->db->createCommand($pquery)->query()->read();
     if ($prow['allowregister'] == "Y")
     {
         $surveyallowsregistration="TRUE";
@@ -287,7 +286,7 @@ function activateSurvey($surveyid, $simulate = false)
     }
 
     //Get list of questions for the base language
-    $fieldmap=createFieldMap($surveyid);
+    $fieldmap = createFieldMap($surveyid);
 
     $createsurvey = array();
     foreach ($fieldmap as $j=>$arow) //With each question, create the appropriate field(s)

@@ -2654,7 +2654,7 @@ class LimeExpressionManager {
                 "datestamp"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : NULL),
                 "startdate"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : date("Y-m-d H:i:s",0)),
                 );
-            //One of the strengths of ADOdb's AutoExecute() is that only valid field names for $table are updated
+            $sdata = array_filter($sdata);
             if (Yii::app()->db->createCommand()->insert($this->surveyOptions['tablename'], $sdata))    // Checked
             {
                 $srid = Yii::app()->db->getLastInsertID();
@@ -2668,7 +2668,7 @@ class LimeExpressionManager {
 
         if (count($updatedValues) > 0 || $finished)
         {
-            $query = 'UPDATE {{'.$this->surveyOptions['tablename'] . "}} SET ";
+            $query = 'UPDATE ' . $this->surveyOptions['tablename'] . ' SET ';
             $setter = array();
             switch ($this->surveyMode)
             {
@@ -4947,11 +4947,12 @@ EOT;
     private function gT($string)
     {
         // eventually replace this with i8n
-        $clang = Yii::app()->lang;
-        if (isset($clang))  {
-            return $clang->gT($string);
+        if (isset(Yii::app()->lang))
+        {
+            return Yii::app()->lang->gT($string);
         }
-        else {
+        else
+        {
             return $string;
         }
     }

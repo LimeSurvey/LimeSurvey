@@ -783,7 +783,6 @@ class Save {
     {
         global $thissurvey;
         global $surveyid, $move;
-        $CI = &get_instance();
         $clang = Yii::app()->lang;
         $timeadjust = Yii::app()->getConfig('timeadjust');
 
@@ -840,7 +839,6 @@ class Save {
     */
     function set_answer_time()
     {
-        $CI = &get_instance();
         global $thissurvey;
         if (isset($_POST['lastanswer']))
         {
@@ -852,30 +850,30 @@ class Save {
             $setField = $_POST['lastgroup'];
         if(!isset($setField)){ //we show the whole survey on one page - we don't have to save time for group/question
             if(Yii::app()->db->getLastInsertID() > 0){	// means that the last operation was INSERT
-                $query = "INSERT INTO ".$thissurvey['tablename']."_timings" ." ("
+                $query = "INSERT INTO {{survey_{$thissurvey['sid']}_timings}} ("
                 ."id, interviewtime)"
                 ." VALUES (" .$_SESSION['srid'] ."," .$passedTime .")";
             }else{	// UPDATE
-                $query = "UPDATE {$thissurvey['tablename']}_timings SET "
+                $query = "UPDATE {{survey_{$thissurvey['sid']}_timings}} SET "
                 ."interviewtime = interviewtime" ." + " .$passedTime
                 ." WHERE id = " .$_SESSION['srid'];
             }
-            db_execute_assoc($query);
+            Yii::app()->db->createCommand($query)->execute();
             return;
         }
 
         $setField .= "time";
         //saving the times
         if(Yii::app()->db->getLastInsertID() > 0){	// means that the last operation was INSERT
-            $query = "INSERT INTO ".$thissurvey['tablename']."_timings" ." ("
+            $query = "INSERT INTO {{survey_{$thissurvey['sid']}_timings}} ("
             ."id, interviewtime, " .$setField .")"
             ." VALUES (" .$_SESSION['srid'] ."," .$passedTime ."," .$passedTime.")";
         }else{	// UPDATE
-            $query = "UPDATE {$thissurvey['tablename']}_timings SET "
+            $query = "UPDATE {{survey_{$thissurvey['sid']}_timings}} SET "
             ."interviewtime = interviewtime" ." + " .$passedTime .","
             .$setField." = ".$setField." + ".$passedTime
             ." WHERE id = " .$_SESSION['srid'];
         }
-        db_execute_assoc($query);
+        Yii::app()->db->createCommand($query)->execute();
     }
 }

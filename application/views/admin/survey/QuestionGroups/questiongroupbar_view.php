@@ -9,7 +9,7 @@
         <?php if(bHasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
-            <a href="#" onclick="window.open('<?php echo $this->createUrl("survey/index/sid/$surveyid/gid/$gid/");?>','_blank')"
+            <a href="#" onclick="window.open('<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/");?>','_blank')"
                 title="<?php $clang->eTview("Preview current question group"); ?>">
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/preview.png' alt='<?php $clang->eT("Preview current question group"); ?>' width="40" height="40"/></a>
             <?php }

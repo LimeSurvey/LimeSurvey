@@ -28,11 +28,6 @@ if (!defined('BASEPATH'))
 class SurveyAction extends Survey_Common_Action
 {
     /**
-     * @deprecated No need for a class wide variable
-     */
-    protected $aData = array();
-
-    /**
      * Initiates the survey action, checks for superadmin permission
      *
      * @access public
@@ -415,8 +410,7 @@ class SurveyAction extends Survey_Common_Action
                 $survey->save();
             }
 
-            $activateoutput = activateSurvey($surveyid);
-            $aViewUrls['output'] = $activateoutput;
+            $aViewUrls['output'] = activateSurvey($surveyid);
 
             $this->_renderWrappedTemplate($aViewUrls, $aData);
         }
