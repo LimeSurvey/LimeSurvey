@@ -86,7 +86,7 @@ function retrieveAnswers($ia)
     //A bit of housekeeping to stop PHP Notices
     $answer = "";
     if (!isset($_SESSION[$ia[1]])) {$_SESSION[$ia[1]] = "";}
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     //Create the question/answer html
 
     // Previously in limesurvey, it was virtually impossible to control how the start of questions were formatted.
@@ -897,7 +897,7 @@ define('SELECTED' , ' selected="selected"' , true);
 function do_boilerplate($ia)
 {
     global $js_header_includes;
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     $answer='';
 
     if (trim($aQuestionAttributes['time_limit']) != '')
@@ -934,7 +934,7 @@ function do_5pointchoice($ia)
     {
         $checkconditionFunction = "noop_checkconditions";
     }
-    $aQuestionAttributes=  getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes=  getQuestionAttributeValues($ia[0], $ia[4]);
 	$id = 'slider'.time().rand(0,100);
     $answer = "\n<ul id=\"{$id}\">\n";
     for ($fp=1; $fp<=5; $fp++)
@@ -1314,7 +1314,7 @@ function do_list_dropdown($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
     if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['s_lang']]) != '')
     {
@@ -1606,7 +1606,7 @@ function do_list_radio($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
     $query = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
     $result = Yii::app()->db->createCommand($query)->query();
@@ -1870,7 +1870,7 @@ function do_listwithcomment($ia)
 
     $answer = '';
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     if (!isset($maxoptionsize)) {$maxoptionsize=35;}
 
     //question attribute random order set?
@@ -2039,7 +2039,7 @@ function do_ranking($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     $answer = '';
     if ($aQuestionAttributes['random_order']==1) {
         $ansquery = "SELECT * FROM {{answers}} WHERE qid = $ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
@@ -2308,7 +2308,7 @@ function do_multiplechoice($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
     if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['s_lang']]) != '')
     {
@@ -2707,7 +2707,7 @@ function do_multiplechoice_withcomments($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
     if ($aQuestionAttributes['other_numbers_only']==1)
     {
@@ -3167,7 +3167,7 @@ function do_multipleshorttext($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
     $answer='';
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
     if ($aQuestionAttributes['numbers_only']==1)
     {
@@ -3343,7 +3343,7 @@ function do_multiplenumeric($ia)
     {
         $checkconditionFunction = "noop_checkconditions";
     }
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     $answer='';
     $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeperator = $sSeperator['seperator'];
@@ -3543,9 +3543,9 @@ function do_multiplenumeric($ia)
 
     $answer_main = '';
 
-    if ($anscount==0)
+    if ($anscount == 0)
     {
-        $inputnames=array();
+        $inputnames = array();
         $answer_main .= '	<li>'.$clang->gT('Error: This question has no answers.')."</li>\n";
     }
     else
@@ -3626,7 +3626,7 @@ function do_multiplenumeric($ia)
                 $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
                 $js_header_includes[] = '/scripts/jquery/lime-slider.js';
 
-                if (!empty($_SESSION[$myfname]) != '')
+                if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] != '')
                 {
                     $slider_startvalue = $_SESSION[$myfname] * $slider_divisor;
                     $displaycallout_atstart=1;
@@ -3664,7 +3664,7 @@ function do_multiplenumeric($ia)
                 . "\t</div>"
                 . "</div>$sliderright\n"
                 . "<input class=\"text\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" value=\"";
-                if (!empty($_SESSION[$myfname]) != '')
+                if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] != '')
                 {
                     $answer_main .= $_SESSION[$myfname];
                 }
@@ -3722,7 +3722,7 @@ function do_multiplenumeric($ia)
         )
         {
             $qinfo = LimeExpressionManager::GetQuestionStatus($ia[0]);
-            if (trim($aQuestionAttributes['equals_num_value']) != '' || trim($aQuestionAttributes['num_value_equals_sgqa']) != '')
+            if ((trim($aQuestionAttributes['equals_num_value']) != '' || trim($aQuestionAttributes['num_value_equals_sgqa']) != '') && !empty($qinfo['sumRemainingEqn']))
             {
                 $answer_main .= "\t<li class='multiplenumerichelp'>\n"
                         . "<label for=\"remainingvalue_{$ia[0]}\">" . $clang->gT('Remaining: ') . "</label>\n"
@@ -3731,12 +3731,16 @@ function do_multiplenumeric($ia)
                         . "$suffix</span>\n"
                         . "\t</li>\n";
             }
-            $answer_main .= "\t<li class='multiplenumerichelp'>\n"
-                    . "<label for=\"totalvalue_{$ia[0]}\">" . $clang->gT('Total: ') . "</label>\n"
-                    . "<span id=\"totalvalue_{$ia[0]}\">$prefix\n"
-                    . "{" . $qinfo['sumEqn'] . "}\n"
-                    . "$suffix</span>\n"
-                    . "\t</li>\n";
+
+            if (!empty($qinfo['sumEqn']))
+            {
+                $answer_main .= "\t<li class='multiplenumerichelp'>\n"
+                        . "<label for=\"totalvalue_{$ia[0]}\">" . $clang->gT('Total: ') . "</label>\n"
+                        . "<span id=\"totalvalue_{$ia[0]}\">$prefix\n"
+                        . "{" . $qinfo['sumEqn'] . "}\n"
+                        . "$suffix</span>\n"
+                        . "\t</li>\n";
+            }
         }
 
         $answer .= $question_tip . "<ul>\n" . $answer_main . "</ul>\n";
@@ -3874,7 +3878,7 @@ function do_numerical($ia)
     {
         $checkconditionFunction = "noop_checkconditions";
     }
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     if (trim($aQuestionAttributes['prefix'][$_SESSION['s_lang']]) != '') {
         $prefix = $aQuestionAttributes['prefix'][$_SESSION['s_lang']];
     }
@@ -3969,7 +3973,7 @@ function do_shortfreetext($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
     if ($aQuestionAttributes['numbers_only']==1)
     {
@@ -4184,7 +4188,7 @@ function do_longfreetext($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-   	$aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
+   	$aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
     if (trim($aQuestionAttributes['maximum_chars']) != '')
     {
@@ -4261,7 +4265,7 @@ function do_hugefreetext($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
     if (trim($aQuestionAttributes['maximum_chars']) != '')
     {
@@ -4378,7 +4382,7 @@ function do_gender($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
     $answer = "<ul>\n"
     . "\t<li>\n"
@@ -4442,7 +4446,7 @@ function do_array_5point($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
     if (trim($aQuestionAttributes['answer_width']) != '')
     {
@@ -4547,7 +4551,7 @@ function do_array_5point($ia)
         {
             $answer_t_content .= "\t<td class=\"answer_cell_00$i\">\n<label for=\"answer$myfname-$i\">"
             ."\n\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-$i\" value=\"$i\" title=\"$i\"";
-            if (!empty($_SESSION[$myfname]) == $i)
+            if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $i)
             {
                 $answer_t_content .= CHECKED;
             }
@@ -4616,7 +4620,7 @@ function do_array_10point($ia)
     $qresult = db_execute_assoc($qquery);      //Checked
     $qrow = $qresult->read(); $other = $qrow['other'];
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     if (trim($aQuestionAttributes['answer_width']) != '')
     {
         $answerwidth = $aQuestionAttributes['answer_width'];
@@ -4704,7 +4708,7 @@ function do_array_10point($ia)
         {
             $answer_t_content .= "\t<td class=\"answer_cell_00$i\">\n<label for=\"answer$myfname-$i\">\n"
             ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-$i\" value=\"$i\" title=\"$i\"";
-            if (!empty($_SESSION[$myfname]) == $i)
+            if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $i)
             {
                 $answer_t_content .= CHECKED;
             }
@@ -4752,7 +4756,7 @@ function do_array_yesnouncertain($ia)
     $qresult = db_execute_assoc($qquery);	//Checked
     $qrow = $qresult->readAll();
     $other = isset($qrow['other']) ? $qrow['other'] : '';
-    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0], $ia[4]);
     if (trim($aQuestionAttributes['answer_width']) != '')
     {
         $answerwidth = $aQuestionAttributes['answer_width'];
@@ -4836,7 +4840,7 @@ function do_array_yesnouncertain($ia)
             . "\t\t\t\t$answertext</th>\n"
             . "\t<td class=\"answer_cell_Y\">\n<label for=\"answer$myfname-Y\">\n"
             . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-Y\" value=\"Y\" title=\"".$clang->gT('Yes').'"';
-            if (!empty($_SESSION[$myfname]) == 'Y')
+            if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'Y')
             {
                 $answer_t_content .= CHECKED;
             }
@@ -4846,7 +4850,7 @@ function do_array_yesnouncertain($ia)
             . "<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-U\" value=\"U\" title=\"".$clang->gT('Uncertain')."\"";
             // --> END NEW FEATURE - SAVE
 
-            if (!empty($_SESSION[$myfname]) == 'U')
+            if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'U')
             {
                 $answer_t_content .= CHECKED;
             }
@@ -4856,7 +4860,7 @@ function do_array_yesnouncertain($ia)
             . "<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-N\" value=\"N\" title=\"".$clang->gT('No').'"';
             // --> END NEW FEATURE - SAVE
 
-            if (!empty($_SESSION[$myfname]) == 'N')
+            if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'N')
             {
                 $answer_t_content .= CHECKED;
             }
@@ -4910,7 +4914,7 @@ function do_array_increasesamedecrease($ia)
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);   //Checked
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     if (trim($aQuestionAttributes['answer_width']) != '')
     {
         $answerwidth = $aQuestionAttributes['answer_width'];
@@ -5006,7 +5010,7 @@ function do_array_increasesamedecrease($ia)
         $answer_body .= "\t<td class=\"answer_cell_I\">\n"
         . "<label for=\"answer$myfname-I\">\n"
         ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-I\" value=\"I\" title=\"".$clang->gT('Increase').'"';
-        if (!empty($_SESSION[$myfname]) == 'I')
+        if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'I')
         {
             $answer_body .= CHECKED;
         }
@@ -5018,7 +5022,7 @@ function do_array_increasesamedecrease($ia)
         . "<label for=\"answer$myfname-S\">\n"
         . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-S\" value=\"S\" title=\"".$clang->gT('Same').'"';
 
-        if (!empty($_SESSION[$myfname]) == 'S')
+        if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'S')
         {
             $answer_body .= CHECKED;
         }
@@ -5030,7 +5034,7 @@ function do_array_increasesamedecrease($ia)
         . "<label for=\"answer$myfname-D\">\n"
         . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-D\" value=\"D\" title=\"".$clang->gT('Decrease').'"';
         // --> END NEW FEATURE - SAVE
-        if (!empty($_SESSION[$myfname]) == 'D')
+        if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'D')
         {
             $answer_body .= CHECKED;
         }
@@ -5088,7 +5092,7 @@ function do_array($ia)
     $qrow = $qresult->read(); $other = $qrow['other'];
     $lquery = "SELECT * FROM {{answers}} WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     if (trim($aQuestionAttributes['answer_width']) != '')
     {
         $answerwidth = $aQuestionAttributes['answer_width'];
@@ -5229,7 +5233,7 @@ function do_array($ia)
                 . "<label for=\"answer$myfname-$ld\">\n"
                 . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\" title=\""
                 . html_escape(strip_tags($labelans[$thiskey])).'"';
-                if (!empty($_SESSION[$myfname]) == $ld)
+                if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ld)
                 {
                     $answer .= CHECKED;
                 }
@@ -5374,7 +5378,7 @@ function do_array($ia)
            foreach ($labels as $lrow)
            {
                $answer .= "\t<option value=\"".$lrow['code'].'" ';
-               if (!empty($_SESSION[$myfname]) == $lrow['code'])
+               if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $lrow['code'])
                {
                    $answer .= SELECTED;
                }
@@ -5458,7 +5462,7 @@ function do_array_multitext($ia)
     $qresult = Yii::app()->db->createCommand($qquery)->query();
     $qrow = $qresult->read(); $other = $qrow['other'];
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
     $show_grand = $aQuestionAttributes['show_grand_total'];
     $totals_class = '';
@@ -5795,7 +5799,7 @@ function do_array_multiflexi($ia)
     $qresult = db_execute_assoc($qquery);
     $qrow = $qresult->read(); $other = $qrow['other'];
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     if (trim($aQuestionAttributes['multiflexible_max']) != '' && trim($aQuestionAttributes['multiflexible_min']) ==''){
         $maxvalue = $aQuestionAttributes['multiflexible_max'];
         if(isset($minvalue['value']) && $minvalue['value'] == 0) {$minvalue = 0;} else {$minvalue=1;}
@@ -6125,7 +6129,7 @@ function do_arraycolumns($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);    //Checked
     $qrow = $qresult->read(); $other = $qrow['other'];
@@ -6217,7 +6221,7 @@ function do_arraycolumns($ia)
                     . "\t<input class=\"radio\" type=\"radio\" name=\"".$myfname.'" value="'.$ansrow['code'].'" '
                     . 'id="answer'.$myfname.'-'.$ansrow['code'].'" '
                     . 'title="'.html_escape(strip_tags($ansrow['answer'])).'"';
-                    if (!empty($_SESSION[$myfname]) == $ansrow['code'])
+                    if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ansrow['code'])
                     {
                         $answer .= CHECKED;
                     }
@@ -6289,7 +6293,7 @@ function do_array_dual($ia)
     $other = reset(db_execute_assoc($qquery)->read());    //Checked
     $lquery =  "SELECT * FROM {{answers}} WHERE scale_id=0 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
     $lquery1 = "SELECT * FROM {{answers}} WHERE scale_id=1 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
-    $aQuestionAttributes = getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
     if ($aQuestionAttributes['use_dropdown'] == 1)
     {
