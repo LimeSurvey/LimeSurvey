@@ -1272,10 +1272,9 @@ class LimeExpressionManager {
         );
 
         $this->gseq2info = $this->getGroupInfoForEM($surveyid,$_SESSION['LEMlang']);
-        for ($i=0;$i<count($this->gseq2info);++$i)
+        foreach ($this->gseq2info as $aGroupInfo)
         {
-            $gseq = $this->gseq2info[$i];
-            $this->groupId2groupSeq[$gseq['gid']] = $i;
+            $this->groupId2groupSeq[$aGroupInfo['gid']] = $aGroupInfo['group_order'];
         }
 
         $qattr = $this->getQuestionAttributesForEM($surveyid,NULL,$_SESSION['LEMlang']);
