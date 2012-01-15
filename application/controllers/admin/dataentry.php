@@ -145,7 +145,7 @@ class dataentry extends Survey_Common_Action
         $aFieldnames = array_map('db_quote_id', $aFieldnames);
 
         // Find out which fields are datefields, these have to be null if the imported string is empty
-        $fieldmap = createFieldMap($surveyid);
+        // $fieldmap = createFieldMap($surveyid);
 
         LimeExpressionManager::StartSurvey($surveyid, 'survey', NULL, false, LEM_PRETTY_PRINT_ALL_SYNTAX);
         $moveResult = LimeExpressionManager::NavigateForwards();
@@ -1713,8 +1713,7 @@ class dataentry extends Survey_Common_Action
                     //BUILD THE SQL TO INSERT RESPONSES
                     $baselang = Survey::model()->findByPk($surveyid)->language;
                     $fieldmap = createFieldMap($surveyid);
-                    $columns = array();
-                    $values = array();
+                    $insert_data = array();
 
                     $_POST['startlanguage'] = $baselang;
                     if ($thissurvey['datestamp'] == "Y") { $_POST['startdate'] = $_POST['datestamp']; }
@@ -1767,51 +1766,37 @@ class dataentry extends Survey_Common_Action
                                         }
                                     }
 
-                                    $columns[] .= $fieldname; //db_quote_id($fieldname);
-                                    //$values = array_merge($values,array($fieldname => ls_json_encode($phparray))); // .= ls_json_encode($phparray); //db_quoteall(ls_json_encode($phparray), true);
+                                    $insert_data[$fieldname] = json_encode($phparray);
 
                                 }
                                 else
                                 {
-                                    $columns[] .= $fieldname; //db_quote_id($fieldname);
-                                    $values[] .= count($phparray); // db_quoteall(count($phparray), true);
-                                    //$values = array_merge($values,array($fieldname => count($phparray)));
+                                    $insert_data[$fieldname] = count($phparray);
                                 }
                             }
                             elseif ($irow['type'] == 'D')
                             {
+                                Yii::app()->loadLibrary('Date_Time_Converter');
                                 $qidattributes = getQuestionAttributeValues($irow['qid'], $irow['type']);
                                 $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
-                                $items = array($_POST[$fieldname],$dateformatdetails['phpdate']);
-                                Yii::app()->loadLibrary('Date_Time_Converter',$items);
-                                $datetimeobj = $this->date_time_converter ; //new Date_Time_Converter($_POST[$fieldname],$dateformatdetails['phpdate']);
-                                $columns[] .= $fieldname; //db_quote_id($fieldname);
-                                $values[] .= $datetimeobj->convert("Y-m-d H:i:s"); //db_quoteall($datetimeobj->convert("Y-m-d H:i:s"),true);
-                                //$values = array_merge($values,array($fieldname => $datetimeobj->convert("Y-m-d H:i:s")));
+                                $datetimeobj = new Date_Time_Converter($_POST[$fieldname],$dateformatdetails['phpdate']);
+                                $insert_data[$fieldname] = $datetimeobj->convert("Y-m-d H:i:s");
                             }
                             else
                             {
-                                $columns[] .= $fieldname ; //db_quote_id($fieldname);
-                                $values[] .= "'".$_POST[$fieldname]."'"; //db_quoteall($_POST[$fieldname],true);
-                                //$values = array_merge($values,array($fieldname => $_POST[$fieldname]));
+                                $insert_data[$fieldname] = $_POST[$fieldname];
                             }
                         }
                     }
 
-                    $surveytable = "{{survey_{$surveyid}}}";
-					
-					foreach($columns as &$colrow)
-						$colrow = Yii::app()->db->quoteColumnName($colrow);
-					foreach($values as &$valrow)
-						$valrow = Yii::app()->db->quoteValue($valrow);
-										
-                    $SQL = "INSERT INTO $surveytable
-                    (".implode(',', $columns).")
-                    VALUES
-                    (".implode(',', $values).")";
-
-                    $iinsert = Yii::app()->db->createCommand($SQL)->execute();
-                    $last_db_id = Yii::app()->db->getLastInsertID();
+                    Survey_dynamic::sid($surveyid);
+                    $new_response = new Survey_dynamic;
+                    foreach($insert_data as $column => $value)
+                    {
+                        $new_response->$column = $value;
+                    }
+                    $new_response->save();
+                    $last_db_id = $new_response->getPrimaryKey();
                     if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') // submittoken
                     {
                         // get submit date
@@ -2034,16 +2019,13 @@ class dataentry extends Survey_Common_Action
                 LimeExpressionManager::StartProcessingGroup($degrow['gid'], ($thissurvey['anonymized']!="N"),$surveyid);
 
                 $deqquery = "SELECT * FROM {{questions}} WHERE sid=$surveyid AND parent_qid=0 AND gid={$degrow['gid']} AND language='{$sDataEntryLanguage}'";
-                $deqresult = db_execute_assoc($deqquery);
+                $deqrows = (array) db_execute_assoc($deqquery)->readAll();
                 $aDataentryoutput .= "\t<tr>\n"
                 ."<td colspan='3' align='center'><strong>".FlattenText($degrow['group_name'],true)."</strong></td>\n"
                 ."\t</tr>\n";
                 $gid = $degrow['gid'];
 
                 $aDataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
-
-                $deqrows = array(); //Create an empty array in case FetchRow does not return any rows
-                foreach ($deqresult->readAll() as $deqrow) {$deqrows[] = $deqrow;} //Get table output into array
 
                 // Perform a case insensitive natural sort on group name then question title of a multidimensional array
                 usort($deqrows, 'GroupOrderThenQuestionOrder');
@@ -2059,8 +2041,8 @@ class dataentry extends Survey_Common_Action
                     // TMSW Conditions->Relevance:  Show relevance equation instead of conditions here - better yet, have data entry use survey-at-a-time but with different view
 
                     //GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
-                    $explanation = ""; //reset conditions explanation
-                    $s=0;
+//                    $explanation = ""; //reset conditions explanation
+//                    $s=0;
 //                    $scenarioquery="SELECT DISTINCT scenario FROM {{conditions}} WHERE {{conditions}}.qid={$deqrow['qid']} ORDER BY scenario";
 //                    $scenarioresult=db_execute_assoc($scenarioquery);
 //
@@ -2217,10 +2199,10 @@ class dataentry extends Survey_Common_Action
 
                     if (trim($relevance) != '' && trim($relevance) != '1')
                     {
-                        if ($bgc == "even") {$bgc = "odd";} else {$bgc = "even";} //Do no alternate on explanation row
-                        $cdata['explanation'] = "[" . $blang->gT("Only answer this if the following conditions are met:") . "]<br />$explanation\n";
-                        //$dataentryoutput .= "<tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'>$explanation</td></tr>\n";
+                        $explanation = "[" . $blang->gT("Only answer this if the following conditions are met:") . "]<br />$explanation\n";
                     }
+
+                    $cdata['explanation'] = $explanation;
 
                     //END OF GETTING CONDITIONS
 

@@ -1,5 +1,5 @@
 <?php
-    if (isset($explanation) && $explanation)
+    if (!empty($explanation))
     { ?>
     <tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'><?php echo $explanation; ?></td></tr>
     <?php } ?>
@@ -220,9 +220,6 @@
         </table>
         <input type='hidden' name='multi' value='<?php echo $anscount; ?>' />
         <input type='hidden' name='lastfield' value='<?php if (isset($multifields)) {echo $multifields;} ?>' />
-        $choicelist="";
-        $ranklist="";
-        unset($answers);
         <?php
             break;
         case "M": //Multiple choice checkbox (Quite tricky really!)
