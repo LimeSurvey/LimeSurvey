@@ -4980,21 +4980,13 @@ function convertCsvreturn2return($string)
 /**
 * Check if a table does exist in the database
 *
-* @param string $tablename Table name to check for (without dbprefix!))
+* @param string $sTableName Table name to check for (without dbprefix!))
 * @return boolean True or false if table exists or not
 */
-function tableExists($tablename)
+function tableExists($sTableName)
 {
-    try
-    {
-        $exists = (bool) Yii::app()->db->schema->getTable($tablename);
-    }
-    catch(PDOException $e)
-    {
-        $exists = false;
-    }
-
-    return $exists;
+    $sTableName=Yii::app()->db->tablePrefix.str_replace(array('{','}'),array('',''),$sTableName);
+    return in_array($sTableName,Yii::app()->db->schema->getTableNames());
 }
 
 // Returns false if the survey is anonymous,
