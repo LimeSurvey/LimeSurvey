@@ -74,8 +74,8 @@ class printablesurvey extends Survey_Common_Action
         $surveyfaxto = $desrow['faxto'];
         $dateformattype = $desrow['surveyls_dateformat'];
 
-        $_POST['welcome']=$welcome;
-        $_POST['surveydesc']=$surveydesc;
+        $data['welcome']=$welcome;
+        $data['surveydesc']=$surveydesc;
 
         if(isset($_POST['printableexport'])){$pdf->titleintopdf($surveyname,$surveydesc);}
 
@@ -1708,7 +1708,7 @@ class printablesurvey extends Survey_Common_Action
         }
 
         $survey_output['THEREAREXQUESTIONS'] =  str_replace( '{NUMBEROFQUESTIONS}' , $total_questions , $clang->gT('There are {NUMBEROFQUESTIONS} questions in this survey'));
-        $_POST['numques']=$survey_output['THEREAREXQUESTIONS'];
+        $data['numques']=$survey_output['THEREAREXQUESTIONS'];
         // START recursive tag stripping.
         // PHP 5.1.0 introduced the count parameter for preg_replace() and thus allows this procedure to run with only one regular expression.
         // Previous version of PHP needs two regular expressions to do the same thing and thus will run a bit slower.
@@ -1777,7 +1777,7 @@ class printablesurvey extends Survey_Common_Action
         }
 
         $survey_output['GROUPS'] = preg_replace( '/(<div[^>]*>){NOTEMPTY}(<\/div>)/' , '\1&nbsp;\2' , $survey_output['GROUPS']);
-        $_POST['survey_output']=$survey_output;
+        $data['survey_output']=$survey_output;
 
         // END recursive empty tag stripping.
 
@@ -1794,7 +1794,7 @@ class printablesurvey extends Survey_Common_Action
             $pdf->titleintopdf($clang->gT("Submit Your Survey."),$clang->gT("Thank you for completing this survey."));
             $pdf->write_out($clang->gT($surveyname)." ".$surveyid.".pdf");
         }
-        $data='';
+
         $this->getController()->render('/admin/survey/printablesurvey_view', $data);
     }
 
