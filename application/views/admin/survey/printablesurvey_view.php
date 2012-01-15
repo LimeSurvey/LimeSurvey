@@ -11,7 +11,7 @@ echo $numques;
 ?>
 
 <?php
-	echo '<link rel="stylesheet" type="text/css" href="/yii8/templates/default/print_template.css" />';
+	echo '<link rel="stylesheet" type="text/css" href="' . sGetTemplateURL(Yii::app()->getConfig('defaulttemplate')) . '/print_template.css" />';
 	$survey_output=$_POST['survey_output'];
 	if (isset($_POST['qidattributes'])){
 	$qidattributes=$_POST['qidattributes'];
