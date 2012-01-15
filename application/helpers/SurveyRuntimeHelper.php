@@ -800,85 +800,79 @@ END;
 
             echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
 
-            //if (!empty($qanda))
-            //{
-                foreach ($qanda as $qa) // one entry per QID
+            foreach ($qanda as $qa) // one entry per QID
+            {
+                $qid = $qa[4];
+                $qinfo = LimeExpressionManager::GetQuestionStatus($qid);
+                $lastgrouparray = explode("X", $qa[7]);
+                $lastgroup = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
+
+                $q_class = question_class($qinfo['info']['type']);
+
+                $man_class = '';
+                if ($qinfo['info']['mandatory'] == 'Y')
                 {
-//                    if ($gid != $qa[6])
-//                    {
-//                        continue;
-//                    }
-                    $qid = $qa[4];
-                    $qinfo = LimeExpressionManager::GetQuestionStatus($qid);
-                    $lastgrouparray = explode("X", $qa[7]);
-                    $lastgroup = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
-
-                    $q_class = question_class($qinfo['info']['type']);
-
-                    $man_class = '';
-                    if ($qinfo['info']['mandatory'] == 'Y')
-                    {
-                        $man_class .= ' mandatory';
-                    }
-
-                    if ($qinfo['anyUnanswered'] && $_SESSION['maxstep'] != $_SESSION['step'])
-                    {
-                        $man_class .= ' missing';
-                    }
-
-                    $n_q_display = '';
-                    if ($qinfo['hidden'] && $qinfo['info']['type'] != '*')
-                    {
-                        continue; // skip this one
-                    }
-
-                    if (!$qinfo['relevant'] || ($qinfo['hidden'] && $qinfo['info']['type'] == '*'))
-                    {
-                        $n_q_display = ' style="display: none;"';
-                    }
-
-                    $question = $qa[0];
-                    //===================================================================
-                    // The following four variables offer the templating system the
-                    // capacity to fully control the HTML output for questions making the
-                    // above echo redundant if desired.
-                    $question['essentials'] = 'id="question' . $qa[4] . '"' . $n_q_display;
-                    $question['class'] = $q_class;
-                    $question['man_class'] = $man_class;
-                    $question['code'] = $qa[5];
-                    $question['sgq'] = $qa[7];
-                    $question['aid'] = !empty($qinfo['info']['aid']) ? $qinfo['info']['aid'] : 0;
-                    $question['sqid'] = !empty($qinfo['info']['sqid']) ? $qinfo['info']['sqid'] : 0;
-                    //===================================================================
-                    $answer = $qa[1];
-                    $help = $qinfo['info']['help'];   // $qa[2];
-
-                    $redata = compact(array_keys(get_defined_vars()));
-
-                    $question_template = file_get_contents($thistpl . '/question.pstpl');
-                    if (preg_match('/\{QUESTION_ESSENTIALS\}/', $question_template) === false || preg_match('/\{QUESTION_CLASS\}/', $question_template) === false)
-                    {
-                        // if {QUESTION_ESSENTIALS} is present in the template but not {QUESTION_CLASS} remove it because you don't want id="" and display="" duplicated.
-                        $question_template = str_replace('{QUESTION_ESSENTIALS}', '', $question_template);
-                        $question_template = str_replace('{QUESTION_CLASS}', '', $question_template);
-                        echo '
-                <!-- NEW QUESTION -->
-                            <div id="question' . $qa[4] . '" class="' . $q_class . $man_class . '"' . $n_q_display . '>';
-                        echo templatereplace($question_template, array(), $redata, false, $qa[4]);
-                        echo '</div>';
-                    }
-                    else
-                    {
-                        // TMSW - eventually refactor so that only substitutes the QUESTION_** fields - doesn't need full power of template replace
-                        // TMSW - also, want to return a string, and call templatereplace once on that result string once all done.
-                        echo templatereplace($question_template, array(), $redata, false, $qa[4]);
-                    }
+                    $man_class .= ' mandatory';
                 }
-                if ($surveyMode != 'survey')
+
+                if ($qinfo['anyUnanswered'] && $_SESSION['maxstep'] != $_SESSION['step'])
                 {
-                    echo "<input type='hidden' name='lastgroup' value='$lastgroup' id='lastgroup' />\n"; // for counting the time spent on each group
+                    $man_class .= ' missing';
                 }
-            //}
+
+                $n_q_display = '';
+                if ($qinfo['hidden'] && $qinfo['info']['type'] != '*')
+                {
+                    continue; // skip this one
+                }
+
+                if (!$qinfo['relevant'] || ($qinfo['hidden'] && $qinfo['info']['type'] == '*'))
+                {
+                    $n_q_display = ' style="display: none;"';
+                }
+
+                $question = $qa[0];
+                //===================================================================
+                // The following four variables offer the templating system the
+                // capacity to fully control the HTML output for questions making the
+                // above echo redundant if desired.
+                $question['essentials'] = 'id="question' . $qa[4] . '"' . $n_q_display;
+                $question['class'] = $q_class;
+                $question['man_class'] = $man_class;
+                $question['code'] = $qa[5];
+                $question['sgq'] = $qa[7];
+                $question['aid'] = !empty($qinfo['info']['aid']) ? $qinfo['info']['aid'] : 0;
+                $question['sqid'] = !empty($qinfo['info']['sqid']) ? $qinfo['info']['sqid'] : 0;
+                //===================================================================
+                $answer = $qa[1];
+                $help = $qinfo['info']['help'];   // $qa[2];
+
+                $redata = compact(array_keys(get_defined_vars()));
+
+                $question_template = file_get_contents($thistpl . '/question.pstpl');
+                if (preg_match('/\{QUESTION_ESSENTIALS\}/', $question_template) === false || preg_match('/\{QUESTION_CLASS\}/', $question_template) === false)
+                {
+                    // if {QUESTION_ESSENTIALS} is present in the template but not {QUESTION_CLASS} remove it because you don't want id="" and display="" duplicated.
+                    $question_template = str_replace('{QUESTION_ESSENTIALS}', '', $question_template);
+                    $question_template = str_replace('{QUESTION_CLASS}', '', $question_template);
+                    echo '
+            <!-- NEW QUESTION -->
+                        <div id="question' . $qa[4] . '" class="' . $q_class . $man_class . '"' . $n_q_display . '>';
+                    echo templatereplace($question_template, array(), $redata, false, false, $qa[4]);
+                    echo '</div>';
+                }
+                else
+                {
+                    // TMSW - eventually refactor so that only substitutes the QUESTION_** fields - doesn't need full power of template replace
+                    // TMSW - also, want to return a string, and call templatereplace once on that result string once all done.
+                    echo templatereplace($question_template, array(), $redata, false, false, $qa[4]);
+                }
+            }
+            if ($surveyMode != 'survey')
+            {
+                echo "<input type='hidden' name='lastgroup' value='$lastgroup' id='lastgroup' />\n"; // for counting the time spent on each group
+            }
+
             echo "\n\n<!-- END THE GROUP -->\n";
             echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"), array(), $redata);
             echo "\n\n</div>\n";

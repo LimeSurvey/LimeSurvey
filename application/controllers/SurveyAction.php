@@ -91,7 +91,7 @@ class SurveyAction extends CAction {
         {
             // TODO where is $stg_SessionName comming from?
             // TODO where is $sessionhandler comming from?
-            // NOTE: THESE ARE *TEMPORARY FIXES*, should be changed
+            // @todo NOTE: THESE ARE *TEMPORARY FIXES*, should be changed
             $stg_SessionName = getGlobalSetting('session_name');
             $sessionhandler = '';
             $bPreviewRight = $this->_importAdminSessionForSurveyToGetPreviewAccess($surveyid, $stg_SessionName, $sessionhandler, $clang);
