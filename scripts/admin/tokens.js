@@ -122,11 +122,9 @@ jQuery("#displaytokens").jqGrid({
     colModel: colModels,
     toppager: true,
     height: "100%",
-    width: "100%",
     rowNum: 25,
     editable:true,
     scrollOffset:0,
-    autowidth: true,
     sortable : true,
     sortname: 'id',
     sortorder: 'asc',
@@ -134,15 +132,55 @@ jQuery("#displaytokens").jqGrid({
     rowList: [25,50,100,250,500,1000,5000,10000],
     multiselect: true,
     loadonce : false,
-    /*ondblClickRow: function(id)
+    loadComplete: function()
+    {
+        window.editing = false;
+        jQuery(".token_edit").unbind('click').bind('click', function(e)
         {
-            if(id && id!==lastSel)
-            {   
-                jQuery('#displaytokens').saveRow(lastSel);
-                lastSel=id;
+            if (window.editing)
+                return true;
+            var row = jQuery(this).closest('.jqgrow');
+            var func = function()
+            {
+                jQuery('#displaytokens').restoreRow(row.attr('id'));
+                row.find('input').show();
+                row.find('.drop_editing').remove();
+                row.find('.save').remove();
+                window.editing = false;
             }
-            jQuery('#displaytokens').editRow(id,true);
-        },*/
+
+            jQuery('#displaytokens').editRow(row.attr('id'), true, null, null, null, null, func);
+            jQuery(this).parent().find('input').hide();
+            window.editing = true;
+
+            var validfrom = row.find('[aria-describedby="displaytokens_validfrom"]');
+            validfrom.find('input').css('width', '119px').datetimepicker({
+                showOn: 'button',
+                dateFormat: userdateformat,
+            });
+            var validuntil = row.find('[aria-describedby="displaytokens_validuntil"]');
+            validuntil.find('input').css('width', '119px').datetimepicker({
+                showOn: 'button',
+                dateFormat: userdateformat,
+            });
+    
+            jQuery('<input type="image" class="drop_editing" src="' + jQuery(this).parent().find('input:eq(1)').attr('src') + '" />')
+                .appendTo(jQuery(this).parent())
+                .click(func);
+            jQuery('<input type="image" class="save" src="' + imageurl + '/success_notice.png" width="16" />')
+                .appendTo(jQuery(this).parent())
+                .click(function()
+                {
+                     jQuery('#displaytokens').saveRow(row.attr('id'));
+                     func();
+                });
+        });
+    },
+    ondblClickRow: function(id)
+    {
+        var row = jQuery('#' + id);
+        row.find('.token_edit').click();
+    },
     pager: "#pager",
     caption: "Tokens",
     });

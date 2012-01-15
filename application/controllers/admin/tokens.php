@@ -336,15 +336,19 @@ class tokens extends Survey_Common_Action
         $aData->records = count($tokens);
         $aData->total = ceil($aData->records / $limit);
 
+        Yii::app()->loadHelper("surveytranslator");
+
+        $format = getDateFormatData(Yii::app()->session['dateformat']);
+
         for ($i = 0, $j = ($page - 1) * $limit; $i < $limit && $j < $aData->records; $i++, $j++)
         {
             $token = $tokens[$j];
             if ((int) $token['validfrom'])
-                $token['validfrom'] = date('m/d/Y', strtotime(trim($token['validfrom'])));
+                $token['validfrom'] = date($format['phpdate'] . ' H:i', strtotime(trim($token['validfrom'])));
             else
                 $token['validfrom'] = '';
             if ((int) $token['validuntil'])
-                $token['validuntil'] = date('m/d/Y', strtotime(trim($token['validuntil'])));
+                $token['validuntil'] = date($format['phpdate'] . ' H:i', strtotime(trim($token['validuntil'])));
             else
                 $token['validuntil'] = '';
 
@@ -359,8 +363,7 @@ class tokens extends Survey_Common_Action
                 else
                     $action .= '<input type="image" src="' . Yii::app()->getConfig('imageurl') . '/token_remind.png" name="sendreminders" id="sendreminders" title="' . $clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("admin/tokens/email/action/remind/surveyid/{$iSurveyId}/tokenids/" . $token['tid']) . '", "_blank")\' />';
             }
-            $action .= '<input style="height: 16; width: 16px; font-size: 8; font-family: verdana" type="image" src="' . Yii::app()->getConfig('imageurl') . '/token_edit.png" title="' . $clang->gT("Edit token entry") . '" alt="' . $clang->gT("Edit token entry") . '" onclick=\'window.open("' . Yii::app()->getController()->createUrl("/admin/tokens/edit/surveyid/{$iSurveyId}/tokenid/{$token['tid']}") . '", "_top")\'>';
-
+            $action .= '<input style="height: 16; width: 16px; font-size: 8; font-family: verdana" type="image" src="' . Yii::app()->getConfig('imageurl') . '/token_edit.png" class="token_edit" title="' . $clang->gT("Edit token entry") . '" alt="' . $clang->gT("Edit token entry") . '">';
             $aData->rows[$i]['cell'] = array($token['tid'], $action, $token['firstname'], $token['lastname'], $token['email'], $token['emailstatus'], $token['token'], $token['language'], $token['sent'], $token['remindersent'], $token['remindercount'], $token['completed'], $token['usesleft'], $token['validfrom'], $token['validuntil']);
             $attributes = GetAttributeFieldNames($iSurveyId);
             foreach ($attributes as $attribute)
@@ -372,28 +375,22 @@ class tokens extends Survey_Common_Action
         echo ls_json_encode($aData);
     }
 
-function editToken($iSurveyId)
-{
-    $sOperation = Yii::app()->request->getPost('oper');
+    function editToken($iSurveyId)
+    {
+        $sOperation = Yii::app()->request->getPost('oper');
 
-    if (trim($_POST['validfrom']) == '')
-    {
-        $from = null;
-    }
-    else
-    {
-        $from = date('Y-m-d H:i:s', strtotime(trim($_POST['validfrom'])));
-    }
-    if (trim($_POST['validuntil']) == '')
-    {
-        $until = null;
-    }
-    else
-    {
-        $until = date('Y-m-d H:i:s', strtotime(trim($_POST['validuntil'])));
-    }
-    // if edit it will update the row
-    if ($sOperation == 'edit')
+        if (trim($_POST['validfrom']) == '')
+            $from = null;
+        else
+            $from = date('Y-m-d H:i:s', strtotime(trim($_POST['validfrom'])));
+
+        if (trim($_POST['validuntil']) == '')
+            $until = null;
+        else
+            $until = date('Y-m-d H:i:s', strtotime(trim($_POST['validuntil'])));
+
+        // if edit it will update the row
+        if ($sOperation == 'edit')
         {
             //            if (Yii::app()->request->getPost('language') == '')
             //            {
@@ -425,7 +422,7 @@ function editToken($iSurveyId)
                 {
                     $value = Yii::app()->request->getPost($attr_name);
                     if ($desc['mandatory'] == 'Y' && trim($value) == '')
-                        $this->getController()->error(sprintf($clang->gT('%s cannot be empty'), $desc['description']));
+                        $this->getController()->error(sprintf($this->controller->lang->gT('%s cannot be empty'), $desc['description']));
                     $aData[$attr_name] = Yii::app()->request->getPost($attr_name);
                 }
             $token = Tokens_dynamic::model()->find('tid=' . CHttpRequest::getPost('id'));

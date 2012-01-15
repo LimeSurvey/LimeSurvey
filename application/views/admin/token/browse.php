@@ -40,6 +40,7 @@ else
 /* Build the javasript variables to pass to the jqGrid */
 ?>
 <script type="text/javascript">
+    var imageurl = "<?php echo Yii::app()->getRequest()->getBaseUrl() ?>/images";
     var mapButton = "<?php $clang->eT("Next") ?>";
     var error = "<?php $clang->eT("Error") ?>";
     var removecondition = "<?php $clang->eT("Remove condition") ?>";
@@ -66,21 +67,23 @@ else
     var inviteurl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/email/surveyid/{$surveyid}/tids/|"); ?>";
     var searchtypes = ["<?php $clang->eT("Equals") ?>","<?php $clang->eT("Contains") ?>","<?php $clang->eT("Not equal") ?>","<?php $clang->eT("Not contains") ?>","<?php $clang->eT("Greater than") ?>","<?php $clang->eT("Less than") ?>"]
     var colNames = ["ID","<?php $clang->eT("Action") ?>","<?php $clang->eT("First name") ?>","<?php $clang->eT("Last name") ?>","<?php $clang->eT("Email address") ?>","<?php $clang->eT("Email status") ?>","<?php $clang->eT("Token") ?>","<?php $clang->eT("Language") ?>","<?php $clang->eT("Invitation sent?") ?>","<?php $clang->eT("Reminder sent?") ?>","<?php $clang->eT("Reminder count") ?>","<?php $clang->eT("Completed?") ?>","<?php $clang->eT("Uses left") ?>","<?php $clang->eT("Valid from") ?>","<?php $clang->eT("Valid until") ?>",<?php echo $columnNames; ?>];
-    var colModels = [{ "name":"tid", "index":"tid", "width":20, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":false},
-        { "name":"action", "index":"action", "sorttype":"string", "sortable": false, "width":70, "align":"center", "editable":false},
+    var colModels = [
+        { "name":"tid", "index":"tid", "width":30, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":false},
+        { "name":"action", "index":"action", "sorttype":"string", "sortable": false, "width":90, "align":"center", "editable":false},
         { "name":"firstname", "index":"firstname", "sorttype":"string", "sortable": true, "width":100, "align":"center", "editable":true},
         { "name":"lastname", "index":"lastname", "sorttype":"string", "sortable": true,"width":100, "align":"center", "editable":true},
-        { "name":"email", "index":"email","align":"center","width":100, "sorttype":"string", "sortable": true, "editable":true},
-        { "name":"emailstatus", "index":"emailstatus","align":"center","width":80,"sorttype":"string", "sortable": true, "editable":true, "edittype":"checkbox", "editoptions":{ "value":"OK:N"}},
-        { "name":"token", "index":"token","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true},
-        { "name":"language", "index":"language","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true, "edittype":"select", "editoptions":{"value":"<?php echo $langnames; ?>"}},
-        { "name":"sent", "index":"sent","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true, "edittype":"checkbox", "editoptions":{ "value":"Y:N"}},
-        { "name":"remindersent", "index":"remindersent","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true, "edittype":"checkbox", "editoptions":{ "value":"Y:N"}},
+        { "name":"email", "index":"email","align":"center","width":170, "sorttype":"string", "sortable": true, "editable":true},
+        { "name":"emailstatus", "index":"emailstatus","align":"center","width":80,"sorttype":"string", "sortable": true, "editable":true},
+        { "name":"token", "index":"token","align":"center", "sorttype":"int", "sortable": true,"width":150,"editable":true},
+        { "name":"language", "index":"language","align":"center", "sorttype":"int", "sortable": true,"width":100,"editable":true, "edittype":"select", "editoptions":{"value":"<?php echo $langnames; ?>"}},
+        { "name":"sent", "index":"sent","align":"center", "sorttype":"int", "sortable": true,"width":130,"editable":true},
+        { "name":"remindersent", "index":"remindersent","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true},
         { "name":"remindercount", "index":"remindercount","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true},
-        { "name":"completed", "index":"completed","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true, "edittype":"checkbox", "editoptions":{ "value":"Y:N"}},
+        { "name":"completed", "index":"completed","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true},
         { "name":"usesleft", "index":"usesleft","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true},
-        { "name":"validfrom", "index":"validfrom","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true, "editoptions":{ dataInit:function (elem) {$(elem).datepicker();}}},
-        { "name":"validuntil", "index":"validuntil","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":true, "editoptions":{ dataInit:function (elem) {$(elem).datepicker();}}},<?php echo implode(",\n", $uidNames); ?>];
+        { "name":"validfrom", "index":"validfrom","align":"center", "sorttype":"int", "sortable": true,"width":160,"editable":true},
+        { "name":"validuntil", "index":"validuntil","align":"center", "sorttype":"int", "sortable": true,"width":160,"editable":true},
+        <?php echo implode(",\n", $uidNames); ?>];
     <!--
     for(i=0; i<document.forms.length; i++)
     {
