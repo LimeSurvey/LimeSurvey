@@ -1156,10 +1156,10 @@ class Participants extends CActiveRecord
             }
             $previousatt = Yii::app()->db->createCommand()->select('attributedescriptions')->where("sid = :sid")->from('{{surveys}}')->bindParam(":sid", $surveyid, PDO::PARAM_INT);
             $previouseattribute = $previousatt->queryRow();
-            Yii::app()->db->createCommand()->update('{{surveys}}', array("attributedescriptions" => Yii::app()->db->quoteValue($previouseattribute['attributedescriptions'] . $fieldcontents)), 'sid = :sid')->bindParam(":sid", $surveyid, PDO::PARAM_INT); // load description in the surveys table
+            Yii::app()->db->createCommand()->update('{{surveys}}', array("attributedescriptions" => Yii::app()->db->quoteValue($previouseattribute['attributedescriptions'] . $fieldcontents)), 'sid = '.intval($surveyid)); // load description in the surveys table
             foreach ($fields as $key => $value)
             {	
-                Yii::app()->db->createCommand("ALTER TABLE {{tokens_$surveyid}} ADD COLUMN :key :type ( :val_const )")->bindParam(":key", $key, PDO::PARAM_STR)->bindParam(":type", $value["type"], PDO::PARAM_STR)->bindParam(":val_const", $value['constraint'], PDO::PARAM_STR)->query(); // add columns in token's table
+                Yii::app()->db->createCommand("ALTER TABLE {{tokens_$surveyid}} ADD COLUMN ". Yii::app()->db->quoteColumnName($key) ." ". $value['type'] ." ( ".intval($value['constraint'])." )")->query(); // add columns in token's table
             }
         }
         //Function for pushing associative array
