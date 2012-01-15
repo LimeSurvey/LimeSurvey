@@ -161,7 +161,7 @@ class browse extends Survey_Common_Action
                 {
                     $qidattributes = getQuestionAttributeValues($field['qid']);
 
-                    for ($i = 0; $i < $qidattributes['max_files']; $i++)
+                    for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
                     {
                         if ($qidattributes['show_title'] == 1)
                             $fnames[] = array($field['fieldname'], "File " . ($i + 1) . " - " . $field['question'] . " (Title)", "type" => "|", "metadata" => "title", "index" => $i);
@@ -472,7 +472,7 @@ class browse extends Survey_Common_Action
                 {
                     $qidattributes = getQuestionAttributeValues($fielddetails['qid']);
 
-                    for ($i = 0; $i < $qidattributes['max_files']; $i++)
+                    for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
                     {
                         if ($qidattributes['show_title'] == 1)
                             $fnames[] = array($fielddetails['fieldname'], "File " . ($i + 1) . " - " . $fielddetails['question'] . "(Title)", "type" => "|", "metadata" => "title", "index" => $i);

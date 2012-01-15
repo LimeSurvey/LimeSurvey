@@ -1757,14 +1757,14 @@ function getsidgidqidaidtype($fieldcode)
 }
 
 /**
-* put your comment there...
-*
-* @param mixed $fieldcode
-* @param mixed $value
-* @param mixed $format
-* @param mixed $dateformatid
-* @return string
-*/
+ *
+ * @param type $surveyid
+ * @param type $action
+ * @param type $fieldcode
+ * @param type $value
+ * @param type $format
+ * @return type
+ */
 function getextendedanswer($surveyid, $action, $fieldcode, $value, $format='')
 {
 	$clang = Yii::app()->getController()->lang;

@@ -145,10 +145,7 @@ class dataentry extends Survey_Common_Action
         $aFieldnames = array_map('db_quote_id', $aFieldnames);
 
         // Find out which fields are datefields, these have to be null if the imported string is empty
-        // $fieldmap = createFieldMap($surveyid);
-
-        LimeExpressionManager::StartSurvey($surveyid, 'survey', NULL, false, LEM_PRETTY_PRINT_ALL_SYNTAX);
-        $moveResult = LimeExpressionManager::NavigateForwards();
+        $fieldmap = createFieldMap($surveyid);
 
         $datefields = array();
         $numericfields = array();
@@ -1994,7 +1991,10 @@ class dataentry extends Survey_Common_Action
             $langlistbox = languageDropdown($surveyid,$sDataEntryLanguage);
             $thissurvey=getSurveyInfo($surveyid);
             //This is the default, presenting a blank dataentry form
-            $fieldmap=createFieldMap($surveyid);
+            //$fieldmap=createFieldMap($surveyid);
+
+            LimeExpressionManager::StartSurvey($surveyid, 'survey', NULL, false, LEM_PRETTY_PRINT_ALL_SYNTAX);
+            $moveResult = LimeExpressionManager::NavigateForwards();
 
             $aData['thissurvey'] = $thissurvey;
             $aData['langlistbox'] = $langlistbox;
@@ -2195,14 +2195,12 @@ class dataentry extends Survey_Common_Action
 
                     $qinfo = LimeExpressionManager::GetQuestionStatus($deqrow['qid']);
                     $relevance = trim($qinfo['info']['relevance']);
-                    $explanation = $qinfo['relEqn'];
+                    $cdata['explanation'] = '';
 
-                    if (trim($relevance) != '' && trim($relevance) != '1')
+                    if ($relevance != '' && $relevance != '1')
                     {
-                        $explanation = "[" . $blang->gT("Only answer this if the following conditions are met:") . "]<br />$explanation\n";
+                        $cdata['explanation'] = "[" . $blang->gT("Only answer this if the following conditions are met:") . "]<br />{$qinfo['relEqn']}\n";
                     }
-
-                    $cdata['explanation'] = $explanation;
 
                     //END OF GETTING CONDITIONS
 
