@@ -218,19 +218,19 @@ class Survey extends CActiveRecord
 
         if ($recursive == true)
         {
-            if (tableExists("{{survey_{intval($iSurveyID)}}}"))  //delete the survey_$iSurveyID table
+            if (tableExists("{{survey_".intval($iSurveyID)."}}"))  //delete the survey_$iSurveyID table
             {
-                Yii::app()->db->createCommand()->dropTable("{{survey_{intval($iSurveyID)}}}");
+                Yii::app()->db->createCommand()->dropTable("{{survey_".intval($iSurveyID)."}}");
             }
 
-            if (tableExists("{{survey_{intval($iSurveyID)}_timings}}"))  //delete the survey_$iSurveyID_timings table
+            if (tableExists("{{survey_".intval($iSurveyID)."_timings}}"))  //delete the survey_$iSurveyID_timings table
             {
-                Yii::app()->db->createCommand()->dropTable("{{survey_{intval($iSurveyID)}_timings}}");
+                Yii::app()->db->createCommand()->dropTable("{{survey_".intval($iSurveyID)."_timings}}");
             }
 
-            if (tableExists("{{tokens_{intval($iSurveyID)}}}")) //delete the tokens_$iSurveyID table
+            if (tableExists("{{tokens_".intval($iSurveyID)."}}")) //delete the tokens_$iSurveyID table
             {
-                Yii::app()->db->createCommand()->dropTable("{{tokens_{intval($iSurveyID)}}}");
+                Yii::app()->db->createCommand()->dropTable("{{tokens_".intval($iSurveyID)."}}");
             }
 
             $oResult = Questions::model()->findAllByAttributes(array('sid' => $iSurveyID));

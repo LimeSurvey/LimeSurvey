@@ -859,7 +859,7 @@ class tokens extends Survey_Common_Action
                 $i++;
             }
             $tokenattributefieldnames[] = 'attribute_' . $i;
-            Yii::app()->db->createCommand(Yii::app()->db->getSchema()->addColumn("{{tokens_{intval($iSurveyId)}}}", 'attribute_' . $i, 'VARCHAR(255)'))->execute();
+            Yii::app()->db->createCommand(Yii::app()->db->getSchema()->addColumn("{{tokens_".intval($iSurveyId)."}}", 'attribute_' . $i, 'VARCHAR(255)'))->execute();
             $fields['attribute_' . $i] = array('type' => 'VARCHAR', 'constraint' => '255');
         }
 
@@ -1358,7 +1358,7 @@ class tokens extends Survey_Common_Action
                                 $invalidemail = false;
                                 if ($filterduplicatetoken)
                                 {
-                                    $dupquery = "SELECT firstname, lastname from {{tokens_{intval($iSurveyId)}}} where email=:email and firstname=:firstname and lastname=:lastname";
+                                    $dupquery = "SELECT firstname, lastname from {{tokens_".intval($iSurveyId)."}} where email=:email and firstname=:firstname and lastname=:lastname";
                                     $dupresult = Yii::app()->db->createCommand($dupquery)->bindParam(":email", $myemail, PDO::PARAM_STR)->bindParam(":firstname", $myfirstname, PDO::PARAM_STR)->bindParam(":lastname", $mylastname, PDO::PARAM_STR)->query();
                                     if ($dupresult->getRowCount() > 0)
                                     {
@@ -1389,7 +1389,7 @@ class tokens extends Survey_Common_Action
                                 elseif ($meetminirequirements === true)
                                 {
                                     // No issue, let's import
-                                    $iq = "INSERT INTO {{tokens_{intval($iSurveyId)}}} \n"
+                                    $iq = "INSERT INTO {{tokens_".intval($iSurveyId)."}} \n"
                                             . "(firstname, lastname, email, emailstatus, token, language";
 
                                     foreach ($aTokenAttr as $thisattrfieldname)
@@ -1627,12 +1627,12 @@ class tokens extends Survey_Common_Action
 
                         if ($filterduplicatetoken != false)
                         {
-                            $dupquery = "SELECT tid from {{tokens_{intval($iSurveyId)}}} where 1=1";
+                            $dupquery = "SELECT tid from {{tokens_".intval($iSurveyId)."}} where 1=1";
                             foreach ($filterduplicatefields as $field)
                             {
                                 if (isset($writearray[$field]))
                                 {
-                                    $dupquery.= " and {Yii:app()->db->quoteColumnName($field)} = '{Yii:app()->db->quoteValue($writearray[$field])}'";
+                                    $dupquery.= " and ".Yii::app()->db->quoteColumnName($field)." = " . Yii::app()->db->quoteValue($writearray[$field])."'";
                                 }
                             }
                             $dupresult = Yii::app()->db->createCommand($dupquery)->query();
@@ -1933,7 +1933,7 @@ class tokens extends Survey_Common_Action
                 'mpid' => 'INT(11)'
             );
             $comm = Yii::app()->db->createCommand();
-            $comm->createTable('{{tokens_{intval($iSurveyId)}}}', $fields);
+            $comm->createTable("{{tokens_".intval($iSurveyId)."}}", $fields);
 
             //$tabname = "{{tokens_{$iSurveyId}}}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
             /* $taboptarray = array('mysql' => 'ENGINE='.$aDatabasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci',
@@ -1971,7 +1971,7 @@ class tokens extends Survey_Common_Action
         else
         {
             $this->getController()->loadHelper('database');
-            $result = Yii::app()->db->createCommand(db_select_tables_like('{{old_tokens_{intval($iSurveyId)}_%}}'))->queryAll();
+            $result = Yii::app()->db->createCommand(db_select_tables_like('{{old_tokens_".intval($iSurveyId)."_%}}'))->queryAll();
             $tcount = count($result);
             if ($tcount > 0)
             {

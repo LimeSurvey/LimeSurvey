@@ -222,13 +222,13 @@ class Statistics_userController extends LSYii_Controller {
 		$totalrecords = 0;
 
 		//count number of answers
-		$query = "SELECT count(*) FROM {{survey_{intval($surveyid)}}}";
+		$query = "SELECT count(*) FROM {{survey_".intval($surveyid)."}}";
 
 		//if incompleted answers should be filtert submitdate has to be not null
 		//this setting is taken from config-defaults.php
 		if (Yii::app()->getConfig("filterout_incomplete_answers") == true)
 		{
-		    $query .= " WHERE {{survey_{intval($surveyid)}}}.submitdate is not null";
+		    $query .= " WHERE {{survey_".intval($surveyid)."}}.submitdate is not null";
 		}
 		$result = Yii::app()->db->createCommand($query)->queryAll();
 

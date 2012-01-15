@@ -280,7 +280,7 @@ class SurveyAction extends Survey_Common_Action
                 if (Yii::app()->db->getDriverName() == 'postgre')
                 {
                     $deactivateresult = Yii::app()->db->createCommand()->renameTable($toldtable . '_tid_seq', $tnewtable . '_tid_seq');
-                    $setsequence = "ALTER TABLE {{{Yii::app->db->quoteTableName($tnewtable)}}} ALTER COLUMN tid SET DEFAULT nextval('{{{$tnewtable}}}_tid_seq'::regclass);";
+                    $setsequence = "ALTER TABLE ".Yii::app()->db->quoteTableName($tnewtable)." ALTER COLUMN tid SET DEFAULT nextval('{{{$tnewtable}}}_tid_seq'::regclass);";
                     $deactivateresult = Yii::app()->db->createCommand($setsequence)->query();
                     $setidx = "ALTER INDEX {{{$toldtable}}}_idx RENAME TO {{{$tnewtable}}}_idx;";
                     $deactivateresult = Yii::app()->db->createCommand($setidx)->query();

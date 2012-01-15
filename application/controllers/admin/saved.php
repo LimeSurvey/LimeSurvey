@@ -55,7 +55,7 @@ class saved extends Survey_Common_Action
         $clang = $this->getController()->lang;
 
         Saved_control::model()->deleteAllByAttributes(array('scid' => $iSavedControlId, 'sid' => $iSurveyId)) or die($clang->gT("Couldn't delete"));
-        Yii::app()->db->createCommand()->delete("{{survey_{intval($iSurveyId)}}}", 'id=:id', array('id' => $iSurveyResponseId)) or die($clang->gT("Couldn't delete"));
+        Yii::app()->db->createCommand()->delete("{{survey_".intval($iSurveyId)."}}", 'id=:id', array('id' => $iSurveyResponseId)) or die($clang->gT("Couldn't delete"));
 
         $this->getController()->redirect($this->getController()->createUrl("admin/saved/view/surveyid/{$iSurveyId}"));
     }
