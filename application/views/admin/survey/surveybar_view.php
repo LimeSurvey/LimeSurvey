@@ -78,6 +78,19 @@
                         <li><a href='<?php echo $this->createUrl("admin/emailtemplates/index/surveyid/$surveyid");?>' >
                             <img src='<?php echo $imageurl;?>/emailtemplates_30.png' alt=''/> <?php $clang->eT("Email templates");?></a></li>
                         <?php } ?>
+                    <?php if($onelanguage) { ?>
+                        <li><a target='_blank' href='<?php echo $this->createUrl("admin/expressions/survey_logic_file/surveyid/$surveyid/");?>' >
+                            <img src='<?php echo $imageurl;?>/quality_assurance.png' alt='' width="30" height="30"/> <?php $clang->eT("Survey Logic File");?></a></li>
+                        <?php } else { ?>
+                        <li><a target='_blank' href='<?php echo $this->createUrl("admin/expressions/survey_logic_file/surveyid/$surveyid/");?>' >
+                            <img src='<?php echo $imageurl;?>/quality_assurance.png' alt='' width="30" height="30"/> <?php $clang->eT("Survey Logic File");?></a><ul>
+                                <?php foreach ($languagelist as $tmp_lang) { ?>
+                                    <li><a accesskey='d' target='_blank' href='<?php echo $this->createUrl("admin/expressions/survey_logic_file/surveyid/$surveyid/lang/$tmp_lang");?>'>
+                                        <img src='<?php echo $imageurl;?>/quality_assurance.png' alt='' /> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
+                                    <?php } ?>
+                            </ul>
+                        </li>
+                    <?php } ?>
                 </ul></li>
             <li><a href="#">
                     <img src='<?php echo $imageurl;?>/tools.png' alt='<?php $clang->eT("Tools");?>' /></a><ul>
@@ -94,6 +107,10 @@
                                 <img src='<?php echo $imageurl;?>/translate_disabled_30.png' alt=''/> <?php $clang->eT("Quick-translation");?></a></li>
                             <?php } ?>
                         <?php } ?>
+                    <?php if (bHasSurveyPermission($surveyid,'surveycontent','update')) { ?>
+                        <li><a href="<?php echo $this->createUrl("admin/expressions"); ?>">
+                            <img src='<?php echo $imageurl;?>/expressionManager_30.png' alt=''/> <?php $clang->eT("Expression Manager");?></a></li>
+                    <?php } ?>
                 </ul></li>
             <li><a href='#'>
                     <img src='<?php echo $imageurl;?>/display_export.png' alt='<?php $clang->eT("Display / Export");?>' width="40" height="40"/></a><ul>
