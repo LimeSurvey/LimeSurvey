@@ -880,27 +880,67 @@ text-align:center;
 }
 
 /* multi column */
- .answers ul.cols-2 li ,.answers ul.cols-2-ul li
-,.answers ul.cols-3 li ,.answers ul.cols-3-ul li
-,.answers ul.cols-4 li ,.answers ul.cols-4-ul li
-,.answers ul.cols-5 li ,.answers ul.cols-5-ul li
-,.answers ul.cols-6 li ,.answers ul.cols-6-ul li
-,.answers ul.cols-7 li ,.answers ul.cols-7-ul li
-,.answers ul.cols-8 li ,.answers ul.cols-8-ul li
+  ul.cols-2 , table.cols-2
+, ul.cols-3 , table.cols-3
+, ul.cols-4 , table.cols-4
+, ul.cols-5 , table.cols-5
+, ul.cols-6 , table.cols-6
+, ul.cols-7 , table.cols-7
+, ul.cols-8 , table.cols-8
+{
+	width: 98%;
+	margin: 0% auto 0% auto;
+}
+  ul.cols-2 li , ul.cols-2-ul
+, ul.cols-3 li , ul.cols-3-ul
+, ul.cols-4 li , ul.cols-4-ul
+, ul.cols-5 li , ul.cols-5-ul
+, ul.cols-6 li , ul.cols-6-ul
+, ul.cols-7 li , ul.cols-7-ul
+, ul.cols-8 li , ul.cols-8-ul
 {
 	float: left;
-	white-space: normal
 	padding: 0;
-	margin:1em;
+	white-space: normal
 }
-
-ul.cols-2 , ul.cols-2-ul , table.cols-2 td { width: 49.9%; }
-ul.cols-3 , ul.cols-3-ul , table.cols-3 td { width: 33.3%; }
-ul.cols-4 , ul.cols-4-ul , table.cols-4 td { width: 24.9%; }
-ul.cols-5 , ul.cols-5-ul , table.cols-5 td { width: 19.9%; }
-ul.cols-6 , ul.cols-6-ul , table.cols-6 td { width: 16.6%; }
-ul.cols-7 , ul.cols-7-ul , table.cols-7 td { width: 14.2%; }
-ul.cols-8 , ul.cols-8-ul , table.cols-8 td { width: 12.4%; }
+ .list-radio-flexible .answers ul.cols-2 li ,.list-radio-flexible .answers ul.cols-2-ul li
+,.list-radio-flexible .answers ul.cols-3 li ,.list-radio-flexible .answers ul.cols-3-ul li
+,.list-radio-flexible .answers ul.cols-4 li ,.list-radio-flexible .answers ul.cols-4-ul li
+,.list-radio-flexible .answers ul.cols-5 li ,.list-radio-flexible .answers ul.cols-5-ul li
+,.list-radio-flexible .answers ul.cols-6 li ,.list-radio-flexible .answers ul.cols-6-ul li
+,.list-radio-flexible .answers ul.cols-7 li ,.list-radio-flexible .answers ul.cols-7-ul li
+,.list-radio-flexible .answers ul.cols-8 li ,.list-radio-flexible .answers ul.cols-8-ul li
+,.list-radio .answers ul.cols-2 li ,.list-radio .answers ul.cols-2-ul li
+,.list-radio .answers ul.cols-3 li ,.list-radio .answers ul.cols-3-ul li
+,.list-radio .answers ul.cols-4 li ,.list-radio .answers ul.cols-4-ul li
+,.list-radio .answers ul.cols-5 li ,.list-radio .answers ul.cols-5-ul li
+,.list-radio .answers ul.cols-6 li ,.list-radio .answers ul.cols-6-ul li
+,.list-radio .answers ul.cols-7 li ,.list-radio .answers ul.cols-7-ul li
+,.list-radio .answers ul.cols-8 li ,.list-radio .answers ul.cols-8-ul li
+,.multiple-opt .answers ul.cols-2 li ,.multiple-opt .answers ul.cols-2-ul li
+,.multiple-opt .answers ul.cols-3 li ,.multiple-opt .answers ul.cols-3-ul li
+,.multiple-opt .answers ul.cols-4 li ,.multiple-opt .answers ul.cols-4-ul li
+,.multiple-opt .answers ul.cols-5 li ,.multiple-opt .answers ul.cols-5-ul li
+,.multiple-opt .answers ul.cols-6 li ,.multiple-opt .answers ul.cols-6-ul li
+,.multiple-opt .answers ul.cols-7 li ,.multiple-opt .answers ul.cols-7-ul li
+,.multiple-opt .answers ul.cols-8 li ,.multiple-opt .answers ul.cols-8-ul li
+, ul.cols-2 li , ul.cols-2-ul li
+, ul.cols-3 li , ul.cols-3-ul li
+, ul.cols-4 li , ul.cols-4-ul li
+, ul.cols-5 li , ul.cols-5-ul li
+, ul.cols-6 li , ul.cols-6-ul li
+, ul.cols-7 li , ul.cols-7-ul li
+, ul.cols-8 li , ul.cols-8-ul li
+{
+	padding: 0 0.5em;margin:0 0 0.5em;
+}
+ul.cols-2 li , ul.cols-2-ul , table.cols-2 td { width: 49.9%; }
+ul.cols-3 li , ul.cols-3-ul , table.cols-3 td { width: 33.3%; }
+ul.cols-4 li , ul.cols-4-ul , table.cols-4 td { width: 24.9%; }
+ul.cols-5 li , ul.cols-5-ul , table.cols-5 td { width: 19.9%; }
+ul.cols-6 li , ul.cols-6-ul , table.cols-6 td { width: 16.6%; }
+ul.cols-7 li , ul.cols-7-ul , table.cols-7 td { width: 14.2%; }
+ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 12.4%; }
 
 
 input.text,textarea{
