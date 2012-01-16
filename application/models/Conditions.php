@@ -66,7 +66,7 @@ class Conditions extends CActiveRecord
             'question' => array(self::HAS_ONE, 'Questions', '',
                 'on' => 't.cqid = question.qid',
             ),
-        )
+        );
     }
     public function deleteRecords($condition=FALSE)
     {
