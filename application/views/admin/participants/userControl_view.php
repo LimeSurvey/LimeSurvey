@@ -9,7 +9,9 @@
 <div id='tabs'>
     <ul>
         <li>
-            <a href='#usercontrol'>User Control</a>
+            <a href='#usercontrol'><?php
+        $clang->eT("User control");
+        ?></a>
         </li>
     </ul>
     <div id='usercontrol-1'>

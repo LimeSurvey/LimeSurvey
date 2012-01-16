@@ -1694,7 +1694,7 @@ class tokens extends Survey_Common_Action
 							foreach ($writearray as &$row)
 								$row = Yii::app()->db->quoteColumnName($row);
 							foreach ($sanitizedArray as &$row)
-								$row = Yii::app()->db->quoteValue($row);							
+								$row = Yii::app()->db->quoteValue($row);
                             $iq = "INSERT INTO {{tokens_$iSurveyId}} \n"
                                     . "(" . implode(',', array_keys($writearray)) . ") \n"
                                     . "VALUES (" . implode(",", $sanitizedArray) . ")";
@@ -1934,21 +1934,6 @@ class tokens extends Survey_Common_Action
             );
             $comm = Yii::app()->db->createCommand();
             $comm->createTable("{{tokens_".intval($iSurveyId)."}}", $fields);
-
-            //$tabname = "{{tokens_{$iSurveyId}}}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
-            /* $taboptarray = array('mysql' => 'ENGINE='.$aDatabasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci',
-              'mysqli' => 'ENGINE='.$aDatabasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
-              $dict = NewDataDictionary($connect);
-              $sqlarray = $dict->CreateTableSQL($tabname, $createtokentable, $taboptarray);
-              $execresult=$dict->ExecuteSQLArray($sqlarray, false);
-
-              $createtokentableindex = $dict->CreateIndexSQL("{$tabname}_idx", $tabname, array('token'));
-              $dict->ExecuteSQLArray($createtokentableindex, false) or die ("Failed to create token table index<br />$createtokentableindex<br /><br />".$connect->ErrorMsg());
-              if ($connect->databaseType == 'mysql' || $connect->databaseType == 'mysqli')
-              {
-              $query = 'CREATE INDEX idx_'.$tabname.'_efl ON '.$tabname.' ( email(120), firstname, lastname )';
-              $result=$connect->Execute($query) or die("Failed Rename!<br />".$query."<br />".$connect->ErrorMsg());
-              } */
 
             $this->_renderWrappedTemplate(array('message' =>array(
                 'title' => $clang->gT("Token control"),

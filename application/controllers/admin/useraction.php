@@ -100,7 +100,7 @@ class UserAction extends Survey_Common_Action
         elseif ($valid_email)
         {
             $new_pass = createPassword();
-            $uresult = User::model()->insert($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email);
+            $uresult = User::model()->insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email);
 
             if ($uresult) {
                 // add default template to template rights for user
@@ -147,6 +147,7 @@ class UserAction extends Survey_Common_Action
                     $extra .= "<br />" . $clang->gT("Username") . ": $new_user<br />" . $clang->gT("Email") . ": $new_email<br />";
                     $extra .= "<br />" . $clang->gT("An email with a generated password was sent to the user.");
                     $classMsg = 'successheader';
+                    $sHeader= $clang->gT("Success");
                 }
                 else
                 {
@@ -154,9 +155,10 @@ class UserAction extends Survey_Common_Action
                     $tmp = str_replace("{NAME}", "<strong>" . $new_user . "</strong>", $clang->gT("Email to {NAME} ({EMAIL}) failed."));
                     $extra .= "<br />" . str_replace("{EMAIL}", $new_email, $tmp) . "<br />";
                     $classMsg = 'warningheader';
+                    $sHeader= $clang->gT("Warning");
                 }
 
-                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Add user"), "", $classMsg, $extra,
+                $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Add user"), $sHeader, $classMsg, $extra,
                                                   $this->getController()->createUrl("admin/user/setuserrights"), $clang->gT("Set user permissions"),
                                                   array('action' => 'setuserrights', 'user' => $new_user, 'uid' => $newqid));
             }
@@ -216,7 +218,7 @@ class UserAction extends Survey_Common_Action
                         }
                     }
 
-                    $ownerUser = Survey::model()->findAllByAttributes(array('owner_id' => $current_user));
+                    $ownerUser = Survey::model()->findAllByAttributes(array('owner_id' => $postuserid));
                     if (count($ownerUser) == 0) {
                         $action = "finaldeluser";
                     }
@@ -258,7 +260,7 @@ class UserAction extends Survey_Common_Action
             $transfer_surveys_to = sanitize_int($_POST['transfer_surveys_to']);
         }
         if ($transfer_surveys_to > 0) {
-            $result = Survey::model()->updateAll(array('owner_id' => $transfer_surveys_to), 'owner_id='.$postuserid);
+            $iSurveysTransferred = Survey::model()->updateAll(array('owner_id' => $transfer_surveys_to), 'owner_id='.$postuserid);
         }
         $sresult = User::model()->findByAttributes(array('uid' => $postuserid));
         $fields = $sresult;
@@ -267,7 +269,7 @@ class UserAction extends Survey_Common_Action
         }
 
         //DELETE USER FROM TABLE
-        $dresult = User::model()->delete('uid=' . $postuserid);
+        $dresult = User::model()->deleteUser($postuserid);
 
         // Delete user rights
         $dresult = Survey_permissions::model()->deleteAllByAttributes(array('uid' => $postuserid));
@@ -275,9 +277,8 @@ class UserAction extends Survey_Common_Action
         if ($postuserid == Yii::app()->session['loginID'])
             killSession(); // user deleted himself
 
-        $extra = "";
-        $extra .= "<br />" . $clang->gT("Username") . ": {$postuser}<br /><br />\n";
-        if ($transfer_surveys_to > 0) {
+        $extra = "<br />" . sprintf($clang->gT("User '%s' was successfully deleted."),$postuser)."<br /><br />\n";
+        if ($transfer_surveys_to > 0 && $iSurveysTransferred>0) {
             $user = User::model()->findByPk($transfer_surveys_to);
             $sTransferred_to = $user->users_name;
             //$sTransferred_to = $this->getController()->_getUserNameFromUid($transfer_surveys_to);

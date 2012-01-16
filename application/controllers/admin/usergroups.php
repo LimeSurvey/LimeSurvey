@@ -196,7 +196,8 @@ class Usergroups extends Survey_Common_Action
                         else
                         {
                             $ugid = User_groups::model()->addGroup($db_group_name, $db_group_description);
-                            list($aViewUrls, $aData) = $this->index($ugid, array("type" => "success", "message" => $clang->gT("User group successfully added!")));
+                            Yii::app()->session['flashmessage'] = $clang->gT("User group successfully added!");
+                            list($aViewUrls, $aData) = $this->index($ugid);
                         }
                     }
                     else
@@ -232,20 +233,16 @@ class Usergroups extends Survey_Common_Action
 
                 $db_name = $_POST['name'];
                 $db_description = $_POST['description'];
-                if (User_groups::model()->findByAttributes(array('name'=>$db_name))) {
-                    $headercfg['message'] = $clang->gT("The user group already exists.");
-                    $headercfg["type"] = "warning";
-                }
-                else if (User_groups::model()->updateGroup($db_name, $db_description, $ugid)) {
-                    $headercfg["message"] = $clang->gT("User group successfully saved!");
-                    $headercfg["type"] = "success";
+                if (User_groups::model()->updateGroup($db_name, $db_description, $ugid)) {
+                    Yii::app()->session['flashmessage'] = $clang->gT("User group successfully saved!");
+
                 }
                 else
                 {
                     $headercfg["message"] = $clang->gT("Failed to edit user group!");
                     $headercfg["type"] = "warning";
+                    list($aViewUrls, $aData) = $this->index($ugid, $headercfg);
                 }
-                list($aViewUrls, $aData) = $this->index($ugid, $headercfg);
 
             }
             else

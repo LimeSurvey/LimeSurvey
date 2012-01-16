@@ -142,8 +142,10 @@ class User_groups extends CActiveRecord {
 	// Many CI based functions ahead, they need refactoring!
 	function updateGroup($name, $description, $ugid)
     {
-    	$query = 'UPDATE {{user_groups}} SET name=:name, description=\''.$description.'\' WHERE ugid=\''.$ugid.'\'';
-       	$uquery = db_execute_assoc($query);
+    	$query = 'UPDATE {{user_groups}} SET name=:name, description=:description WHERE ugid=:ugid';
+       	$uquery = db_execute_assoc($query, array(':name'=>$name,
+                                                 ':description'=>$description,
+                                                 ':ugid'=>$ugid));
         return $uquery;
     }
 

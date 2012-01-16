@@ -12,7 +12,7 @@
  *
  *	$Id$
  */
-function &db_execute_assoc($sql,$inputarr=false,$silent=false)
+function db_execute_assoc($sql,$inputarr=false,$silent=false)
 {
 
 	try {
@@ -33,25 +33,6 @@ function &db_execute_assoc($sql,$inputarr=false,$silent=false)
     return $dataset;
 }
 
-function &db_execute($sql,$inputarr=false,$silent=false)
-{
-	try {
-		if($inputarr)
-		{
-				$affected=Yii::app()->db->createCommand($sql)->bindValues($inputarr)->execute();	//Checked
-		}
-		else
-		{
-				$affected=Yii::app()->db->createCommand($sql)->execute();
-
-		}
-	} catch(CDbException $e) {
-		$affected=false;
-	}
-
-    if (!$silent && !$affected)  {safe_die('Error executing query in db_execute:'.$sql);}
-    return $affected;
-}
 
 function &db_query_or_false($sql)
 {

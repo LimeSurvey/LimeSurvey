@@ -434,7 +434,6 @@ class SurveyAction extends Survey_Common_Action
             foreach ($result as $rows)
                 $aUsers[] = array($rows['uid'], $rows['users_name']);
         }
-
         $ajaxoutput = json_encode($aUsers) . "\n";
         echo $ajaxoutput;
     }
@@ -553,7 +552,7 @@ class SurveyAction extends Survey_Common_Action
             $aSurveyEntry[] = '<!--' . $rows['datecreated'] . '-->' . $datetimeobj->convert($dateformatdetails['phpdate']);
 
             //Set Owner
-            $aSurveyEntry[] = $rows['users_name'] . ' (<a href="#" class="ownername_edit" translate_to="' . $clang->gT('Edit') . '" id="ownername_edit_' . $rows['sid'] . '">Edit</a>)';
+            $aSurveyEntry[] = $rows['users_name'] . ' (<a href="#" class="ownername_edit" translate_to="' . $clang->gT('Edit') . '" id="ownername_edit_' . $rows['sid'] . '">'. $clang->gT('Edit') .'</a>)';
 
             //Set Access
             if (Yii::app()->db->schema->getTable('{{tokens_' . $rows['sid'] . '}}'))

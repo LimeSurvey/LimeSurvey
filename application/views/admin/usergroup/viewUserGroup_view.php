@@ -4,12 +4,12 @@ if(isset($headercfg))
 {
 	if ($headercfg["type"] == "success")
 	{ ?>
-		<div class="successheader"><?php echo $headercfg["message"];?></div>
+		<div class="header successheader"><?php echo $headercfg["message"];?></div>
 		<?php
 	}
 	if ($headercfg["type"] == "warning")
 	{ ?>
-		<div class="warningheader"><?php echo $headercfg["message"];?></div>
+		<div class="header warningheader"><?php echo $headercfg["message"];?></div>
 		<?php
 	}
 }

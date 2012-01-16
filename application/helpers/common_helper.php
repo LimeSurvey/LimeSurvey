@@ -4527,7 +4527,6 @@ function getArrayFilterExcludesForGroup($surveyid,$gid)
                 {
                     //Get the code for this question, so we can see if any later questions in this group us it for an array_filter_exclude
                     $cqresult=Questions::model()->findAllByAttributes(array("qid"=>$qrow['qid']));
-                    //$cqresult=db_execute_assoc($cqquery);
                     $xqid="";
                     //while($ftitle=$cqresult->FetchRow())
                     foreach ($cqresult->readAll() as $ftitle)
@@ -4576,7 +4575,6 @@ function getArrayFiltersForQuestion($qid)
                 $fields[0]=sanitize_int($fields[0]);
                 //$query = "SELECT title FROM ".db_table_name('questions')." where parent_qid='{$fields[0]}' AND language='".$_SESSION['s_lang']."' order by question_order";
                 $qresult=Questions::model()->findAllByAttributes(array("parent_qid"=> $fields[0], "language"=> Yii::app()->session['s_lang']), array('order' => "question_order"));
-                //$qresult = db_execute_assoc($query);  //Checked
                 $selected = array();
                 //while ($code = $qresult->fetchRow())
                 foreach ($qresult->readAll() as $code)
@@ -4588,8 +4586,6 @@ function getArrayFiltersForQuestion($qid)
                 //Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
                 //$query = "SELECT other FROM ".db_table_name('questions')." where qid='{$fields[0]}'";
                 $qresult=Questions::model()->findAllByAttribtues(array("qid"=>$fields[0]));
-                //$qresult = db_execute_assoc($query);
-                //while ($row=$qresult->fetchRow()) {$other=$row['other'];}
                 foreach ($qresult->readAll() as $row) {$other=$row['other'];}
                 if($other == "Y")
                 {
@@ -4614,12 +4610,9 @@ function getGroupsByQuestion($surveyid) {
     $output=array();
 
     $surveyid=sanitize_int($surveyid);
-    //$query="SELECT qid, gid FROM ".db_table_name('questions')." WHERE sid='$surveyid'";
-    //$result = db_execute_assoc($query);
     $result=Questions::model()->findAllByAttributes(array("sid"=>$surveyid));
 
     foreach ($qresult->readAll() as $val)
-    //while ($val = $result->FetchRow())
     {
         $output[$val['qid']]=$val['gid'];
     }
@@ -6184,9 +6177,6 @@ function checkquestionfordisplay($qid, $gid=null)
         $local_thissurvey=$thissurvey;
     }
 
-    /*$scenarioquery = "SELECT DISTINCT scenario FROM ".db_table_name("conditions")
-    ." WHERE ".db_table_name("conditions").".qid=$qid ORDER BY scenario";
-    $scenarioresult=db_execute_assoc($scenarioquery);*/
     $query = Conditions::model()->getScenarios($qid);
 
     //if ($scenarioresult->RecordCount() == 0)
