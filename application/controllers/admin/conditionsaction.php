@@ -522,38 +522,26 @@ class conditionsaction extends Survey_Common_Action {
 		if (!isset($surveyid)) { $surveyid = returnglobal('sid'); }
 		$thissurvey = getSurveyInfo($surveyid);
 
-		$query = "SELECT * "
-			."FROM {{questions}}, "
-			."{{groups}} "
-			."WHERE {{questions}}.gid={{groups}}.gid "
-			."AND qid=:qid "
-			."AND parent_qid=0 "
-			."AND {{questions}}.language=:lang";
-		$result = Yii::app()->db->createCommand($query)->bindParam(":qid", $qid, PDO::PARAM_INT)->bindParam(":lang", Survey::model()->findByPk($surveyid)->language, PDO::PARAM_STR)->query() or safe_die ("Couldn't get information for question $qid<br />$query<br />");
-		foreach ($result->readAll() as $rows)
-		{
-		    $questiongroupname = $rows['group_name'];
-		    $questiontitle = $rows['title'];
-		    $questiontext = $rows['question'];
-		    $questiontype = $rows['type'];
-		}
+		$qresult = Questions::model()->with('groups')->findByAttributes(array('qid' => $qid, 'parent_qid' => 0, 'language' => Survey::model()->findByPk($surveyid)->language));
+		$questiongroupname = $qresult->groups->group_name;
+		$questiontitle = $qresult['title'];
+		$questiontext = $qresult['question'];
+		$questiontype = $qresult['type'];
 
 		// 2: Get all other questions that occur before this question that are pre-determined answer types
 
 		// To avoid natural sort order issues,
 		// first get all questions in natural sort order
 		// , and find out which number in that order this question is
-		$qquery = "SELECT * "
-			."FROM {{questions}}, "
-			."{{groups}} "
-			."WHERE {{questions}}.gid={{groups}}.gid "
-			."AND parent_qid=0 "
-			."AND {{questions}}.sid=$surveyid "
-			."AND {{questions}}.language=:lang "
-			."AND {{groups}}.language=:lang " ;
-
-		$qresult = Yii::app()->db->createCommand($qquery)->bindParam(":lang", Survey::model()->findByPk($surveyid)->language, PDO::PARAM_STR)->query() or safe_die ("$qquery<br />");
-		$qrows = $qresult->readAll();
+		$qresult = Questions::model()->with(array(
+			'groups' => array(
+				'condition' => 'groups.language = :lang',
+				'params' => array(':lang' => Survey::model()->findByPk($surveyid)->language),
+			),
+		))->findAllByAttributes(array('parent_qid' => 0, 'sid' => $surveyid, 'language' => Survey::model()->findByPk($surveyid)->language));
+		$qrows = array();
+		foreach ($qresult as $k => $v)
+			$qrows[$k] = array_merge($v->attributes, $v->groups->attributes);
 		// Perform a case insensitive natural sort on group name then question title (known as "code" in the form) of a multidimensional array
 		usort($qrows, 'GroupOrderThenQuestionOrder');
 
@@ -596,28 +584,18 @@ class conditionsaction extends Survey_Common_Action {
 		{
 		    foreach ($questionlist as $ql)
 		    {
-		        $query = "SELECT {{questions}}.qid, "
-			        ."{{questions}}.sid, "
-			        ."{{questions}}.gid, "
-			        ."{{questions}}.question, "
-			        ."{{questions}}.type, "
-			        ."{{questions}}.title, "
-			        ."{{questions}}.other, "
-			        ."{{questions}}.mandatory "
-			        ."FROM {{questions}}, "
-			        ."{{groups}} "
-			        ."WHERE {{questions}}.gid={{groups}}.gid "
-			        ."AND parent_qid=0 "
-			        ."AND {{questions}}.qid=$ql "
-			        ."AND {{questions}}.language=:lang"
-			        ."AND {{groups}}.language=:lang" ;
-
-		        $result = Yii::app()->db->createCommand($query)->bindParam(":lang", Survey::model()->findByPk($surveyid)->language, PDO::PARAM_STR)->query() or die("Couldn't get question $qid");
+		    	
+		    	$result = Questions::model()->with(array(
+					'groups' => array(
+						'condition' => 'groups.language = :lang',
+						'params' => array(':lang' => Survey::model()->findByPk($surveyid)->language),
+					),
+				))->findAllByAttributes(array('qid' => $ql, 'parent_qid' => 0, 'sid' => $surveyid, 'language' => Survey::model()->findByPk($surveyid)->language));
 
 		        $thiscount = count($result);
 
 		        // And store again these questions in this array...
-		        foreach ($result->readAll() as $myrows)
+		        foreach ($result as $myrows)
 		        {                   //key => value
 		            $theserows[] = array(
 			            	"qid"		=>	$myrows['qid'],
@@ -637,28 +615,16 @@ class conditionsaction extends Survey_Common_Action {
 		{
 		    foreach ($postquestionlist as $pq)
 		    {
-		        $query = "SELECT q.qid, "
-			        ."q.sid, "
-			        ."q.gid, "
-			        ."q.question, "
-			        ."q.type, "
-			        ."q.title, "
-			        ."q.other, "
-			        ."q.mandatory "
-			        ."FROM {{questions}} q, "
-			        ."{{groups}} g "
-			        ."WHERE q.gid=g.gid AND "
-			        ."q.parent_qid=0 AND "
-			        ."q.qid=$pq AND "
-			        ."q.language=:lang AND "
-			        ."g.language=:lang";
-
-
-		        $result = Yii::app()->db->createCommand($query)->bindParam(":lang", Survey::model()->findByPk($surveyid)->language, PDO::PARAM_STR)->query() or safe_die("Couldn't get postquestions $qid<br />$query<br />");
+		    	$result = Questions::model()->with(array(
+					'groups' => array(
+						'condition' => 'groups.language = :lang',
+						'params' => array(':lang' => Survey::model()->findByPk($surveyid)->language),
+					),
+				))->findAllByAttributes(array('qid' => $pq, 'parent_qid' => 0, 'sid' => $surveyid, 'language' => Survey::model()->findByPk($surveyid)->language));
 
 		        $postcount = count($result);
 
-		        foreach ($result->readAll() as $myrows)
+		        foreach ($result as $myrows)
 		        {
 		            $postrows[]=array(
 			            		"qid"		=>	$myrows['qid'],
@@ -1072,7 +1038,7 @@ class conditionsaction extends Survey_Common_Action {
 		}
 		$questionNavOptions .= CHtml::closeTag('optgroup');
 		$questionNavOptions .= CHtml::openTag('optgroup', array('class'=>'activesurveyselect', 'label'=>$clang->gT("Current","js")));
-		$question = strip_tags($question);
+		$question = strip_tags($questiontitle);
 		if (strlen($question)<35)
 		{
 		    $questiontextshort = $question;
@@ -1192,11 +1158,10 @@ class conditionsaction extends Survey_Common_Action {
 		    //3: Get other conditions currently set for this question
 		    $conditionscount = 0;
 		    $s=0;
-		    $scenarioquery = "SELECT DISTINCT {{conditions}}.scenario "
-			    ."FROM {{conditions}} "
-			    ."WHERE {{conditions}}.qid=:qid"
-			    ."ORDER BY {{conditions}}.scenario";
-		    $scenarioresult = Yii::app()->db->createCommand($scenarioquery)->bindParam(":qid", $qid, PDO::PARAM_INT)->query() or safe_die ("Couldn't get other (scenario) conditions for question $qid<br />$query<br />");
+		    $scenarioresult = Conditions::model()->findAllByAttributes(array('qid' => $qid), array(
+		    		'order' => 'scenario',
+		    		'distinct' => true,
+			    ));
 		    $scenariocount=count($scenarioresult);
 
 		    $showreplace="$questiontitle". $this->_showSpeaker($questiontext);
@@ -1218,7 +1183,7 @@ class conditionsaction extends Survey_Common_Action {
 
 				//self::_js_admin_includes($this->config->item("generalscripts").'jquery/jquery.checkgroup.js');
 				$this->getController()->_js_admin_includes(Yii::app()->getConfig("generalscripts").'jquery/jquery.checkgroup.js');
-		        foreach ($scenarioresult->readAll() as $scenarionr)
+		        foreach ($scenarioresult as $scenarionr)
 		        {
 		            $scenariotext = "";
 		            if ($s == 0 && $scenariocount > 1)

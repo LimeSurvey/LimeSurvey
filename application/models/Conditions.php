@@ -54,6 +54,20 @@ class Conditions extends CActiveRecord
         return 'cid';
     }
 
+    /**
+     * Defines the relations for this model
+     *
+     * @access public
+     * @return array
+     */
+    public function relatiosn()
+    {
+        return array(
+            'question' => array(self::HAS_ONE, 'Questions', '',
+                'on' => 't.cqid = question.qid',
+            ),
+        )
+    }
     public function deleteRecords($condition=FALSE)
     {
         $criteria = new CDbCriteria;
