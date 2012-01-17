@@ -5050,7 +5050,7 @@ function FixLanguageConsistency($sid, $availlangs='')
             array_push($quests,$question['qid']);
             foreach ($langs as $lang)
             {
-                $query = "SELECT qid FROM ".db_table_name('questions')." WHERE sid='{$sid}' AND qid='{$question['qid']}' AND language='{$lang}'";
+                $query = "SELECT qid FROM ".db_table_name('questions')." WHERE sid='{$sid}' AND qid='{$question['qid']}' AND language='{$lang}' AND scale_id={$question['scale_id']}";
                 $gresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg());   //Checked
                 if ($gresult->RecordCount() < 1)
                 {
@@ -5077,7 +5077,7 @@ function FixLanguageConsistency($sid, $availlangs='')
             {
                 foreach ($langs as $lang)
                 {
-                    $query = "SELECT qid FROM ".db_table_name('answers')." WHERE code='{$answer['code']}' AND qid='{$answer['qid']}' AND language='{$lang}'";
+                    $query = "SELECT qid FROM ".db_table_name('answers')." WHERE code='{$answer['code']}' AND qid='{$answer['qid']}' AND language='{$lang}' AND scale_id={$answer['scale_id']}";
                     $gresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg());  //Checked
                     if ($gresult->RecordCount() < 1)
                     {
