@@ -3,24 +3,6 @@
 <!--
     var strnogroup='<?php $clang->eT("There are no groups available.", "js");?>';
 --></script>
-<div class='menubar'>
-	<div class='menubar-title ui-widget-header'>
-		<strong><?php $clang->eT("Assessments");?></strong>
-	</div>
-	<div class='menubar-main'>
-		<div class='menubar-left'>
-			<a href="#" onclick="window.open('<?php echo $this->createUrl("admin/survey/view/surveyid/$surveyid");?>', '_top')" title='<?php $clang->eTview("Return to survey administration");?>'>
-			<img src='<?php echo $imageurl;?>/home.png' alt='<?php $clang->eT("Return to survey administration");?>' /></a>
-			<img src='$imageurl/blank.gif' alt='' width='11'  />
-			<img src='$imageurl/seperator.gif' alt='' />
-
-			<?php if ($surveyinfo['assessments']!='Y') { ?>
-				<span style="font-size:11px;"><?php echo sprintf($clang->gT("Notice: Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."),'<a href="admin.php?action=editsurvey&amp;sid='.$surveyid.'">','</a>');?></span>
-			<?php } ?>
-		</div>
-	</div>
-</div>
-<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p> <!-- CSS Firefox 2 transition fix -->
 <div class='header ui-widget-header'><?php $clang->eT("Assessment rules");?></div>
 
 <table class='assessmentlist'><thead>

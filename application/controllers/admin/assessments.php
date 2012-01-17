@@ -76,8 +76,9 @@ class Assessments extends Survey_Common_Action
     {
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'assessments.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.tablesorter.min.js');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
 
-        $aData['display']['menu_bars'] = false;
+        //$aData['display']['menu_bars'] = false;
 
         parent::_renderWrappedTemplate('', $aViewUrls, $aData);
     }
@@ -108,7 +109,10 @@ class Assessments extends Survey_Common_Action
         $aData['gid'] = empty($_POST['gid']) ? '' : sanitize_int($_POST['gid']);
 
         Yii::app()->loadHelper('admin/htmleditor');
-        $this->_renderWrappedTemplate("assessments_view", $aData);
+        if ($surveyinfo['assessments']!='Y')
+            $urls['message'] = array('title' => $clang->gT("Assessments mode not activated"), 'message' => sprintf($clang->gT("Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."),'<a href="'.$this->getController()->createUrl('/admin/survey/editsurveysettings/surveyid/'.$iSurveyId).'">','</a>'), 'class'=> 'warningheader');
+        $urls['assessments_view'][]= $aData;
+        $this->_renderWrappedTemplate($urls, $aData);
     }
 
     private function _collectGroupData($iSurveyId)
