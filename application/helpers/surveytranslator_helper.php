@@ -24,38 +24,38 @@
 
     /**
     * Returns all available dateformats in a structured aray
-    * If $format is given only the particual dateformat will be returned
+    * If $iDateFormat is given only the particual dateformat will be returned
     *
-    * @param $format integer
+    * @param $iDateFormat integer
     * @returns array
     *
     */
-    function getDateFormatData($format=0)
+    function getDateFormatData($iDateFormat=0)
     {
-        $dateformats= array(
+        $aDateFormats= array(
         1=> array ('phpdate' => 'd.m.Y', 'jsdate' => 'dd.mm.yy', 'dateformat' => 'dd.mm.yyyy'),
         2=> array ('phpdate' => 'd-m-Y', 'jsdate' => 'dd-mm-yy', 'dateformat' => 'dd-mm-yyyy'),
-        5=> array ('phpdate' => 'd/m/Y', 'jsdate' => 'dd/mm/yy', 'dateformat' => 'dd/mm/yyyy'),
         3=> array ('phpdate' => 'Y.m.d', 'jsdate' => 'yy.mm.dd', 'dateformat' => 'yyyy.mm.dd'),
+        4=> array ('phpdate' => 'j.n.Y', 'jsdate' => 'd.m.yy',   'dateformat' => 'd.m.yyyy'),
+        5=> array ('phpdate' => 'd/m/Y', 'jsdate' => 'dd/mm/yy', 'dateformat' => 'dd/mm/yyyy'),
         6=> array ('phpdate' => 'Y-m-d', 'jsdate' => 'yy-mm-dd', 'dateformat' => 'yyyy-mm-dd'),
         7=> array ('phpdate' => 'Y/m/d', 'jsdate' => 'yy/mm/dd', 'dateformat' => 'yyyy/mm/dd'),
-        4=> array ('phpdate' => 'j.n.Y', 'jsdate' => 'd.m.yy', 'dateformat' => 'd.m.yyyy'),
-        12=>array ('phpdate' => 'j-n-Y', 'jsdate' => 'd-m-yy',    'dateformat' => 'd-m-yyyy'),
-        8=> array ('phpdate' => 'j/n/Y', 'jsdate' => 'd/m/yy', 'dateformat' => 'd/m/yyyy'),
+        8=> array ('phpdate' => 'j/n/Y', 'jsdate' => 'd/m/yy',   'dateformat' => 'd/m/yyyy'),
         9=> array ('phpdate' => 'm-d-Y', 'jsdate' => 'mm-dd-yy', 'dateformat' => 'mm-dd-yyyy'),
-        10=>array ('phpdate' => 'm.d.Y', 'jsdate' => 'mm.dd.yy',  'dateformat' => 'mm.dd.yyyy'),
-        11=>array ('phpdate' => 'm/d/Y', 'jsdate' => 'mm/dd/yy',  'dateformat' => 'mm/dd/yyyy')
+        10=>array ('phpdate' => 'm.d.Y', 'jsdate' => 'mm.dd.yy', 'dateformat' => 'mm.dd.yyyy'),
+        11=>array ('phpdate' => 'm/d/Y', 'jsdate' => 'mm/dd/yy', 'dateformat' => 'mm/dd/yyyy'),
+        12=>array ('phpdate' => 'j-n-Y', 'jsdate' => 'd-m-yy',   'dateformat' => 'd-m-yyyy')
         );
 
-        if ($format > 11) {
-            $format = 11;   // TODO - what should default be?
+        if ($iDateFormat > 12 || $iDateFormat<0) {
+            $iDateFormat = 11;   // TODO - what should default be?
         }
-        if ($format >0)
+        if ($iDateFormat >0)
         {
-            return $dateformats[$format];
+            return $aDateFormats[$iDateFormat];
         }
         else
-            return $dateformats;
+            return $aDateFormats;
 
     }
 

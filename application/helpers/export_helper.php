@@ -496,7 +496,6 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
     $iStart=0;
     do
     {
-   //     debugbreak();
     	$QueryResult = Yii::app()->db->createCommand($Query)->limit($iChunkSize, $iStart)->query();
     	$result = $QueryResult->readAll();
         if ($iStart==0 && $QueryResult->getRowCount()>0)

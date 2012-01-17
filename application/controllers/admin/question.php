@@ -956,8 +956,8 @@ class question extends Survey_Common_Action
         if (!isset($_SESSION['maxstep'])) { $_SESSION['maxstep'] = 0; }
 
         // Use $_SESSION instead of $this->session for frontend features.
-        $_SESSION['s_lang'] = $language;
-        $_SESSION['fieldmap'] = createFieldMap($surveyid, 'full', true, $qid);
+        $_SESSION[$surveyid]['s_lang'] = $language;
+        $_SESSION[$surveyid]['fieldmap'] = createFieldMap($surveyid, 'full', true, $qid);
 
         // Prefill question/answer from defaultvalues
         foreach ($_SESSION['fieldmap'] as $field)
@@ -990,7 +990,7 @@ class question extends Survey_Common_Action
         $qseq = LimeExpressionManager::GetQuestionSeq($qid);
         $moveResult = LimeExpressionManager::JumpTo($qseq + 1, false, false, true);
 
-        $answers = retrieveAnswers($ia);
+        $answers = retrieveAnswers($ia,$surveyid);
 
         if (!$thissurvey['template'])
             $thistpl = sGetTemplatePath(Yii::app()->getConfig('defaulttemplate'));

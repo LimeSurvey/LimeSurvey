@@ -275,7 +275,7 @@ class UserAction extends Survey_Common_Action
         $dresult = Survey_permissions::model()->deleteAllByAttributes(array('uid' => $postuserid));
 
         if ($postuserid == Yii::app()->session['loginID'])
-            killSession(); // user deleted himself
+            session_destroy();
 
         $extra = "<br />" . sprintf($clang->gT("User '%s' was successfully deleted."),$postuser)."<br /><br />\n";
         if ($transfer_surveys_to > 0 && $iSurveysTransferred>0) {

@@ -535,7 +535,7 @@ class Survey_Common_Action extends CAction
         }
 
         $aData['baselang'] = Survey::model()->findByPk($iSurveyId)->language;
-        //        DebugBreak();
+
         $tmp_survlangs = Survey::model()->findByPk($iSurveyId)->getAdditionalLanguages();
         $aData['onelanguage']=(count($tmp_survlangs)==0);
         $aData['additionallanguages'] = $tmp_survlangs;

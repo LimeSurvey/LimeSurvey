@@ -96,7 +96,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $_surveyid = (isset($surveyid) ? $surveyid : 0);
     if (!isset($totalBoilerplatequestions)) { $totalBoilerplatequestions = 0; }
     if (!isset($showXquestions)) { $showXquestions = Yii::app()->getConfig('showXquestions'); }
-    if (!isset($s_lang)) { $s_lang = (isset($_SESSION['s_lang']) ? $_SESSION['s_lang'] : 'en'); }
+    if (!isset($s_lang)) { $s_lang = (isset($_SESSION[$_surveyid]['s_lang']) ? $_SESSION[$_surveyid]['s_lang'] : 'en'); }
     if (!isset($captchapath)) { $captchapath = ''; }
 
     if (file_exists($line))

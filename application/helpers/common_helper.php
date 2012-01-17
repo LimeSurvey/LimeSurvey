@@ -1773,7 +1773,7 @@ function getextendedanswer($surveyid, $action, $fieldcode, $value, $format='')
     $s_lang = Survey::model()->findByPk($surveyid)->language;
     if  (!isset($action) || (isset($action) && $action!='browse') || $action == NULL )
     {
-        if (Yii::app()->session['s_lang']) $s_lang = Yii::app()->session['s_lang'];  //This one does not work in admin mode when you browse a particular answer
+        if (Yii::app()->session[$surveyid]['s_lang']) $s_lang = Yii::app()->session[$surveyid]['s_lang'];  //This one does not work in admin mode when you browse a particular answer
     }
 
     //Fieldcode used to determine question, $value used to match against answer code
@@ -2897,26 +2897,26 @@ function SetSurveyLanguage($surveyid, $language)
         or (isset($default_language) && $default_language == $language)
         ) {
             // Language not supported, or default language for survey, fall back to survey's default language
-            $_SESSION['s_lang'] = $default_language;
+            $_SESSION[$surveyid]['s_lang'] = $default_language;
             //echo "Language not supported, resorting to ".$_SESSION['s_lang']."<br />";
         } else {
-            $_SESSION['s_lang'] = $language;
+            $_SESSION[$surveyid]['s_lang'] =  $language;
             //echo "Language will be set to ".$_SESSION['s_lang']."<br />";
         }
         Yii::import('application.libraries.Limesurvey_lang', true);
-        $clang = new limesurvey_lang($_SESSION['s_lang']);
+        $clang = new limesurvey_lang($_SESSION[$surveyid]['s_lang']);
     }
     else {
-        $_SESSION['s_lang'] = $language;
+        $_SESSION[$surveyid]['s_lang'] = $language;
         Yii::import('application.libraries.Limesurvey_lang', true);
         $clang = new Limesurvey_lang($defaultlang);
     }
 
-    $thissurvey=getSurveyInfo($surveyid, @$_SESSION['s_lang']);
+    $thissurvey=getSurveyInfo($surveyid, @$_SESSION[$surveyid]['s_lang']);
     Yii::app()->loadHelper('surveytranslator');
     $_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
 
-    LimeExpressionManager::SetEMLanguage($_SESSION['s_lang']);
+    LimeExpressionManager::SetEMLanguage($_SESSION[$surveyid]['s_lang']);
     return $clang;
 }
 
@@ -4573,8 +4573,8 @@ function getArrayFiltersForQuestion($qid)
             {
                 // we found the target question, now we need to know what the answers where, we know its a multi!
                 $fields[0]=sanitize_int($fields[0]);
-                //$query = "SELECT title FROM ".db_table_name('questions')." where parent_qid='{$fields[0]}' AND language='".$_SESSION['s_lang']."' order by question_order";
-                $qresult=Questions::model()->findAllByAttributes(array("parent_qid"=> $fields[0], "language"=> Yii::app()->session['s_lang']), array('order' => "question_order"));
+                //$query = "SELECT title FROM ".db_table_name('questions')." where parent_qid='{$fields[0]}' AND language='".$_SESSION[$surveyid]['s_lang']."' order by question_order";
+                $qresult=Questions::model()->findAllByAttributes(array("parent_qid"=> $fields[0], "language"=> Yii::app()->session[$surveyid]['s_lang']), array('order' => "question_order"));
                 $selected = array();
                 //while ($code = $qresult->fetchRow())
                 foreach ($qresult->readAll() as $code)
@@ -4750,13 +4750,7 @@ function getArrayFilterExcludesForQuestion($qid)
     return $cache[$qid];
 }
 
-/**
-* Unsets all Session variables to kill session
-*/
-function killSession()  //added by Dennis
-{
-    session_destroy();
-}
+
 
 function CSVEscape($str)
 {
@@ -5961,10 +5955,10 @@ function aArrayInvert($aArr)
 * @param integer $q - Question id
 * @param array $aFieldnamesInfoInv - Inverted fieldnamesInfo
 */
-function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
+function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv, $surveyid)
 {
 
-    $qtype = $_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'];
+    $qtype = $_SESSION[$surveyid]['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'];
 
     switch ($qtype) {
         case 'X':
@@ -5974,13 +5968,13 @@ function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
         case 'O':
             // multiple choice and list with comments question types - just one answer is required and comments are not required
             foreach($aFieldnamesInfoInv[$q] as $sField)
-                if(!strstr($sField, 'comment') && isset($_SESSION[$sField]) && trim($_SESSION[$sField])!='')
+                if(!strstr($sField, 'comment') && isset($_SESSION[$surveyid][$sField]) && trim($_SESSION[$surveyid][$sField])!='')
                     return true;
                 return false;
         case 'L': // List questions only need one answer (including the 'other' option)
             foreach($aFieldnamesInfoInv[$q] as $sField)
             {
-                if(isset($_SESSION[$sField]) && trim($_SESSION[$sField])!='')
+                if(isset($_SESSION[$surveyid][$sField]) && trim($_SESSION[$surveyid][$sField])!='')
                     return true;
             }
             return false;
@@ -5993,13 +5987,13 @@ function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
         case 'A':
         case 'E':
             // array question types - if filtered only displayed answer are required
-            $qattr = getQuestionAttributeValues(@$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['qid'], $qtype);
+            $qattr = getQuestionAttributeValues(@$_SESSION[$surveyid]['fieldmap'][$aFieldnamesInfoInv[$q][0]]['qid'], $qtype);
 
             $qcodefilter = @$qattr['array_filter'];
 
             $sgqfilter = '';
 
-            foreach($_SESSION['fieldarray'] as $field)
+            foreach($_SESSION[$surveyid]['fieldarray'] as $field)
                 //look for the multiple choice filter
                 if ($field[2] == $qcodefilter && $field[4] == 'M')
                 {
@@ -6013,7 +6007,7 @@ function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
             {
                 // all answers required
                 foreach($aFieldnamesInfoInv[$q] as $sField)
-                    if(!isset($_SESSION[$sField]) || trim($_SESSION[$sField])=='')
+                    if(!isset($_SESSION[$surveyid][$sField]) || trim($_SESSION[$surveyid][$sField])=='')
                         return false;
                     return true;
             }
@@ -6021,24 +6015,24 @@ function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
             foreach($aFieldnamesInfoInv[$q] as $sField)
             {
                 //keep only first subquestion code for multiple scale answer
-                $aid = explode('_',$_SESSION['fieldmap'][$sField]['aid']);
+                $aid = explode('_',$_SESSION[$surveyid]['fieldmap'][$sField]['aid']);
                 $aid = explode('#',$aid[0]);
                 //if a checked answer in the multiple choice is not present
-                if (!isset($_SESSION[$sgqfilter.$aid[0]])) {
+                if (!isset($_SESSION[$surveyid][$sgqfilter.$aid[0]])) {
                     return false;
                 }
-                if (!isset($_SESSION[$sField]))
+                if (!isset($_SESSION[$surveyid][$sField]))
                 {
                     return false;
                 }
-                if ($_SESSION[$sgqfilter.$aid[0]] == 'Y' && $_SESSION[$sField] == '')
+                if ($_SESSION[$surveyid][$sgqfilter.$aid[0]] == 'Y' && $_SESSION[$surveyid][$sField] == '')
                     return false;
             }
             return true;
         default:
             // all answers required for all other question types
             foreach($aFieldnamesInfoInv[$q] as $sField)
-                if(!isset($_SESSION[$sField]) || trim($_SESSION[$sField])=='')
+                if(!isset($_SESSION[$surveyid][$sField]) || trim($_SESSION[$surveyid][$sField])=='')
                     return false;
                 return true;
     }
@@ -6229,7 +6223,7 @@ function checkquestionfordisplay($qid, $gid=null)
             if (preg_match("/^\+(.*)$/",$row['cfieldname'],$cfieldnamematch))
             { // this condition uses a single checkbox as source
                 $conditionSourceType='question';
-                $query2=Questions::model()->findAllByAttributes(array('qid'=>$row['cqid'],'language'=>Yii::app()->session['s_lang']));
+                $query2=Questions::model()->findAllByAttributes(array('qid'=>$row['cqid'],'language'=>Yii::app()->session[$surveyid]['s_lang']));
                 //while($row2=$result2->FetchRow())
                 foreach ($query2 as $row2)
                 {
@@ -6249,7 +6243,7 @@ function checkquestionfordisplay($qid, $gid=null)
             else
             { // this is a simple condition using a question as source
                 $conditionSourceType='question';
-                $query2=Questions::model()->findAllByAttributes(array('qid'=>$row['cqid'],'language'=>Yii::app()->session['s_lang']));
+                $query2=Questions::model()->findAllByAttributes(array('qid'=>$row['cqid'],'language'=>Yii::app()->session[$surveyid]['s_lang']));
                 foreach ($query2 as $row2)
                 //while($row2=$result2->FetchRow())
                 {
@@ -7629,9 +7623,9 @@ function getHeader($meta = false)
     //$clang = Yii::app()->lang;
 	$clang=Yii::app()->lang;
 
-    if (!empty(Yii::app()->session['s_lang']))
+    if (!empty(Yii::app()->session[$surveyid]['s_lang']))
     {
-        $surveylanguage= Yii::app()->session['s_lang'];
+        $surveylanguage= Yii::app()->session[$surveyid]['s_lang'];
     }
     elseif (isset($surveyid) && $surveyid)
     {
@@ -7910,7 +7904,7 @@ function retrieve_Answer($surveyid, $code, $phpdateformat=null)
         if ($questiondetails['type'] == "M" ||
         $questiondetails['type'] == "P")
         {
-            $query="SELECT * FROM {{questions}} WHERE parent_qid='".$questiondetails['qid']."' AND language='".$_SESSION['s_lang']."'";
+            $query="SELECT * FROM {{questions}} WHERE parent_qid='".$questiondetails['qid']."' AND language='".$_SESSION[$surveyid]['s_lang']."'";
             $result=db_execute_assoc($query) or safe_die("Error getting answer<br />$query<br />");
             foreach ($result->readAll() as  $row)
             {

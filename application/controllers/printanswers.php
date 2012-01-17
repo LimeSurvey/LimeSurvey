@@ -56,36 +56,10 @@ class printanswers extends LSYii_Controller {
         $surveyid = (int)($surveyid);
         //}
         Yii::app()->loadHelper('database');
-        //$clang = $this->limesurvey_lang;
 
-        // Compute the Session name
-        // Session name is based:
-        // * on this specific limesurvey installation (Value SessionName in DB)
-        // * on the surveyid (from Get or Post param). If no surveyid is given we are on the public surveys portal
-        $usresult = Settings_global::model()->find('stg_name = "SessionName"');
-        $session = new CHttpSession;
-        if ($usresult != null)
+        if (isset($_SESSION[$surveyid]['sid']))
         {
-            $stg_SessionName = $usrow->stg_value;
-            if ($surveyid)
-            {
-                $session->sessionName = $stg_SessionName.'-runtime-'.$surveyid;
-            }
-            else
-            {
-                $session->sessionName = $stg_SessionName.'-runtime-publicportal';
-            }
-        }
-        else
-        {
-            $session->sessionName = "LimeSurveyRuntime-$surveyid";
-        }
-        $session->setCookieParams(array('lifetime' => 0, 'path' => Yii::app()->getConfig('relativeurl').'/'));
-        $session->open;
-
-        if (isset($session['sid']))
-        {
-            $surveyid = $session['sid'];
+            $surveyid = $_SESSION[$surveyid]['sid'];
         }
         else
         {
@@ -93,7 +67,7 @@ class printanswers extends LSYii_Controller {
         }
 
         //Debut session time out
-        if (!isset($session['finished']) || !isset($session['srid']))
+        if (!isset($_SESSION[$surveyid]['finished']) || !isset($_SESSION[$surveyid]['srid']))
         // Argh ... a session time out! RUN!
         //display "sorry but your session has expired"
         {
@@ -119,19 +93,19 @@ class printanswers extends LSYii_Controller {
         }
         //Fin session time out
 
-        $id = $session['srid']; //I want to see the answers with this id
-        $clang = $session['s_lang'];
+        $id = $_SESSION[$surveyid]['srid']; //I want to see the answers with this id
+        $clang = $_SESSION[$surveyid]['s_lang'];
 
         //Ensure script is not run directly, avoid path disclosure
         //if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die( "browse - Cannot run this script directly");}
 
         // Set the language for dispay
         //require_once($rootdir.'/classes/core/language.php');  // has been secured
-        if (isset($session['s_lang']))
+        if (isset($_SESSION[$surveyid]['s_lang']))
         {
 
-            $clang = SetSurveyLanguage( $surveyid, $session['s_lang']);
-            $language = $session['s_lang'];
+            $clang = SetSurveyLanguage( $surveyid, $_SESSION[$surveyid]['s_lang']);
+            $language = $_SESSION[$surveyid]['s_lang'];
         }
         else
         {

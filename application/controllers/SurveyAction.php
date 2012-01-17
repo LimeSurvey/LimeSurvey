@@ -48,7 +48,6 @@ class SurveyAction extends CAction {
         @$loadpass = $param['loadpass'];
         $sitename = Yii::app()->getConfig('sitename');
 
-        $this->_setSessionToSurvey($surveyid);
 
         list($surveyExists, $isSurveyActive) = $this->_surveyExistsAndIsActive($surveyid);
 
@@ -67,7 +66,7 @@ class SurveyAction extends CAction {
             $this->_createNewUserSessionAndRedirect($surveyid, $redata, __LINE__, $asMessage);
         }
 
-        if ( $this->_isSurveyFinished() )
+        if ( $this->_isSurveyFinished($surveyid) )
         {
             $asMessage = array(
                     $clang->gT('Previous session is set to be finished.'),
@@ -89,12 +88,7 @@ class SurveyAction extends CAction {
 
         if ( $this->_surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $isSurveyActive, $surveyExists) )
         {
-            // TODO where is $stg_SessionName comming from?
-            // TODO where is $sessionhandler comming from?
-            // @todo NOTE: THESE ARE *TEMPORARY FIXES*, should be changed
-            $stg_SessionName = getGlobalSetting('session_name');
-            $sessionhandler = '';
-            $bPreviewRight = $this->_importAdminSessionForSurveyToGetPreviewAccess($surveyid, $stg_SessionName, $sessionhandler, $clang);
+            $bPreviewRight = $this->_importAdminSessionForSurveyToGetPreviewAccess($surveyid, $clang);
 
             if ($bPreviewRight === false)
             {
@@ -121,9 +115,9 @@ class SurveyAction extends CAction {
         // TODO can this be moved to the top?
         // (Used to be global, used in ExpressionManager, merged into amVars. If not filled in === '')
         // can this be added in the first computation of $redata?
-        if (isset($_SESSION['srid']))
+        if (isset($_SESSION[$surveyid]['srid']))
         {
-            $saved_id = $_SESSION['srid'];
+            $saved_id = $_SESSION[$surveyid]['srid'];
         }
         // recompute $redata since $saved_id used to be a global
         $redata = compact(array_keys(get_defined_vars()));
@@ -169,10 +163,10 @@ class SurveyAction extends CAction {
             UpdateFieldArray();                                        // to refresh question titles and question text
         }
 
-        if (isset($_SESSION['s_lang']))
+        if (isset($_SESSION[$surveyid]['s_lang']))
         {
-            $baselang = sanitize_languagecode($_SESSION['s_lang']);
-            $clang = SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
+            $baselang = sanitize_languagecode($_SESSION[$surveyid]['s_lang']);
+            $clang = SetSurveyLanguage( $surveyid, $_SESSION[$surveyid]['s_lang']);
         }
         elseif (!empty($surveyid))
         {
@@ -333,7 +327,7 @@ class SurveyAction extends CAction {
 
         //GET BASIC INFORMATION ABOUT THIS SURVEY
         $totalBoilerplatequestions =0;
-        $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
+        $thissurvey=getSurveyInfo($surveyid, $_SESSION[$surveyid]['s_lang']);
 
 //        if (isset($param['newtest']) && $param['newtest'] == "Y")
 //        {
@@ -408,37 +402,6 @@ class SurveyAction extends CAction {
             $this->_niceExit($redata, __LINE__, $thistpl, $asMessage);
         }
 
-
-        //CHECK IF SURVEY ID DETAILS HAVE CHANGED
-        if (isset($_SESSION['oldsid']))
-        {
-            $oldsid=$_SESSION['oldsid'];
-        }
-
-        if (!isset($oldsid))
-        {
-            $_SESSION['oldsid'] = $surveyid;
-        }
-
-        if (isset($oldsid) && $oldsid && $oldsid != $surveyid)
-        {
-            $savesessionvars=Array();
-            if (isset($_SESSION['USER_RIGHT_PREVIEW']))
-            {
-                $savesessionvars["USER_RIGHT_PREVIEW"]=$surveyid;
-                $savesessionvars["loginID"]=$_SESSION['loginID'];
-                $savesessionvars["user"]=$_SESSION['user'];
-            }
-            session_unset();
-            $_SESSION['oldsid']=$surveyid;
-            foreach ($savesessionvars as $sesskey => $sessval)
-            {
-                $_SESSION[$sesskey]=$sessval;
-            }
-        }
-
-
-
         if (isset($_GET['loadall']) && $_GET['loadall'] == "reload")
         {
             if (returnglobal('loadname') && returnglobal('loadpass'))
@@ -465,8 +428,8 @@ class SurveyAction extends CAction {
             if (function_exists("ImageCreate") && captcha_enabled('saveandloadscreen',$thissurvey['usecaptcha']))
             {
                 if ( (!isset($_POST['loadsecurity']) ||
-                !isset($_SESSION['secanswer']) ||
-                $_POST['loadsecurity'] != $_SESSION['secanswer']) &&
+                !isset($_SESSION[$surveyid]['secanswer']) ||
+                $_POST['loadsecurity'] != $_SESSION[$surveyid]['secanswer']) &&
                 !isset($_GET['scid']))
                 {
                     $errormsg .= $clang->gT("The answer to the security question is incorrect.")."<br />\n";
@@ -479,8 +442,8 @@ class SurveyAction extends CAction {
                 buildsurveysession();
             }
 
-            $_SESSION['holdname'] = $param['loadname']; //Session variable used to load answers every page.
-            $_SESSION['holdpass'] = $param['loadpass']; //Session variable used to load answers every page.
+            $_SESSION[$surveyid]['holdname'] = $param['loadname']; //Session variable used to load answers every page.
+            $_SESSION[$surveyid]['holdpass'] = $param['loadpass']; //Session variable used to load answers every page.
 
             if ($errormsg == "") loadanswers();
             $move = "movenext";
@@ -507,7 +470,7 @@ class SurveyAction extends CAction {
         // this check is done in buildsurveysession and error message
         // could be more interresting there (takes into accound captcha if used)
         if ($tokensexist == 1 && isset($token) && $token &&
-            isset($_SESSION['step']) && $_SESSION['step']>0 && tableExists("tokens_{$surveyid}}}"))
+            isset($_SESSION[$surveyid]['step']) && $_SESSION[$surveyid]['step']>0 && tableExists("tokens_{$surveyid}}}"))
         {
             //check if tokens actually haven't been already used
             $areTokensUsed = usedTokens(trim(strip_tags(returnglobal('token'))),$surveyid);
@@ -575,8 +538,8 @@ class SurveyAction extends CAction {
         //Clear session and remove the incomplete response if requested.
         if (isset($move) && $move == "clearall")
         {
-            $s_lang = $_SESSION['s_lang'];
-            if (isset($_SESSION['srid']))
+            $s_lang = $_SESSION[$surveyid]['s_lang'];
+            if (isset($_SESSION[$surveyid]['srid']))
             {
                 // find out if there are any fuqt questions - checked
                 $fieldmap = createFieldMap($surveyid);
@@ -592,7 +555,7 @@ class SurveyAction extends CAction {
                 // if yes, extract the response json to those questions
                 if (isset($qid))
                 {
-                    $query = "SELECT * FROM {{survey_".$surveyid."}} WHERE id=".$_SESSION['srid'];
+                    $query = "SELECT * FROM {{survey_".$surveyid."}} WHERE id=".$_SESSION[$surveyid]['srid'];
                     $result = db_execute_assoc($query);
                     foreach($result->readAll() as $row)
                     {
@@ -618,18 +581,16 @@ class SurveyAction extends CAction {
 
 
                 // delete the response but only if not already completed
-                db_execute_assoc('DELETE FROM {{survey_'.$surveyid.'}} WHERE id='.$_SESSION['srid']." AND submitdate IS NULL");
+                db_execute_assoc('DELETE FROM {{survey_'.$surveyid.'}} WHERE id='.$_SESSION[$surveyid]['srid']." AND submitdate IS NULL");
 
                 // also delete a record from saved_control when there is one
-                db_execute_assoc('DELETE FROM {{saved_control}} WHERE srid='.$_SESSION['srid'].' AND sid='.$surveyid);
+                db_execute_assoc('DELETE FROM {{saved_control}} WHERE srid='.$_SESSION[$surveyid]['srid'].' AND sid='.$surveyid);
             }
-            session_unset();
-            session_destroy();
-//            setcookie(session_name(),"EXPIRED",time()-120);  //@todo fix - sometimes results in headers already sent error
+            killSurveySession($surveyid);
             sendcacheheaders();
             if (isset($_GET['redirect']))
             {
-                session_write_close();
+                killSurveySession($surveyid);
                 header("Location: {$_GET['redirect']}");
             }
             doHeader();
@@ -653,26 +614,15 @@ class SurveyAction extends CAction {
 
         if (isset($param['newtest']) && $param['newtest'] == "Y")
         {
-            $savesessionvars=Array();
-            if (isset($_SESSION['USER_RIGHT_PREVIEW']))
-            {
-                $savesessionvars["USER_RIGHT_PREVIEW"]=$surveyid;
-                $savesessionvars["loginID"]=$_SESSION['loginID'];
-                $savesessionvars["user"]=$_SESSION['user'];
-            }
-            session_unset();
-            $_SESSION['oldsid']=$surveyid;
-            foreach ($savesessionvars as $sesskey => $sessval)
-            {
-                $_SESSION[$sesskey]=$sessval;
-            }
-            //DELETE COOKIE (allow to use multiple times)
-//            setcookie($cookiename, "INCOMPLETE", time()-120);  //@todo fix - sometimes results in headers already sent error
-            //echo "Reset Cookie!";
+            killSurveySession($surveyid);
         }
 
         //Check to see if a refering URL has been captured.
-        GetReferringUrl();
+        if (!isset($_SESSION[$surveyid]['refurl']))
+        {
+            $_SESSION[$surveyid]['refurl']=GetReferringUrl(); // do not overwrite refurl
+        }
+
         // Let's do this only if
         //  - a saved answer record hasn't been loaded through the saved feature
         //  - the survey is not anonymous
@@ -680,7 +630,7 @@ class SurveyAction extends CAction {
         //  - a token information has been provided
         //  - the survey is setup to allow token-response-persistence
 
-        if ($thissurvey['tokenanswerspersistence'] == 'Y' && !isset($_SESSION['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
+        if ($thissurvey['tokenanswerspersistence'] == 'Y' && !isset($_SESSION[$surveyid]['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
         {
 
             // load previous answers if any (dataentry with nosubmit)
@@ -692,7 +642,7 @@ class SurveyAction extends CAction {
             {
                 $row=reset($result->read());
                 if($row['submitdate']=='' || ($row['submitdate']!='' && $thissurvey['alloweditaftercompletion'] == 'Y'))
-                    $_SESSION['srid'] = $row['id'];
+                    $_SESSION[$surveyid]['srid'] = $row['id'];
             }
             buildsurveysession();
             loadanswers();
@@ -728,7 +678,7 @@ class SurveyAction extends CAction {
         $redata = compact(array_keys(get_defined_vars()));
         Yii::import('application.helpers.SurveyRuntimeHelper');
         $tmp = new SurveyRuntimeHelper();
-        $tmp->run($redata);
+        $tmp->run($surveyid,$redata);
 
 		if (isset($_POST['saveall']) || isset($flashmessage))
 		{
@@ -774,217 +724,17 @@ class SurveyAction extends CAction {
         return $param;
     }
 
-    function _getSessionName($surveyId)
-    {
-        // Compute the Session name
-        // Session name is based:
-        // * on this specific limesurvey installation (Value SessionName in DB)
-        // * on the surveyid (from Get or Post param). If no surveyid is given we are on the public surveys portal
-        $sSessionname = getGlobalSetting('SessionName');
-        if ($sSessionname != '')
-        {
-            if ($surveyId)
-            {
-                return $sSessionname.'-runtime-'.$surveyId;
-            }
-            return $sSessionname.'-runtime-publicportal';
-        }
-        if ($surveyId)
-        {
-            return $sSessionname.'LimeSurveyRuntime-'.$surveyId;
-        }
-        return 'LimeSurveyRuntime-runtime-publicportal';
-    }
-
-    /**
-     * Switch to survey session, from admin session if applicable.
-     *
-     * @param string $surveyId
-     */
-    function _setSessionToSurvey($surveyId)
-    {
-        $sSessionname = $this->_getSessionName($surveyId);
-        Yii::import("application.libraries.LS.LS");
-        LS('LS_PHP_Session');
-        session_name($sSessionname);
-        $sCurrentname = session_name();
-        if ($sCurrentname !== $sSessionname)
-        {
-            throw new RuntimeException(sprintf('Session name mismatch, must be %s, is %s.', $sSessionname, $sCurrentname));
-        }
-        // check if session is new, if not check for admin session, pick data to merge if available
-        // and get back on survey session name.
-        $aMergevars = array('loginID', 'USER_RIGHT_SUPERADMIN');
-        $aMerge = array();
-        if (!$_SESSION)
-        {
-            session_destroy();
-            $sAdminName = 'PHPSESSID';
-            session_name($sAdminName);
-            $sCurrentname = $this->session->getActiveName();
-            if ($sCurrentname !== $sAdminName)
-            {
-                throw new RuntimeException(sprintf('Session name mismatch, must be %s, is %s.', $sAdminName, $sCurrentname));
-            }
-            if ($aData = $_SESSION)
-            {
-                foreach ($aMergevars as $sVar)
-                {
-                    if (isset ($aData[$sVar]))
-                    {
-                        $aMerge[$sVar] = $aData[$sVar];
-                    }
-                }
-                // switch session from admin to survey
-                LS_PHP_Session::changeTo($sSessionname);
-                session_write_close();
-            }
-            else
-            {
-                // there is no admin session (data), destroy it
-                // and change the session name
-                session_destroy();
-                session_name($sSessionname);
-            }
-        }
-
-        // @todo check if $this->session handles PHP configuration
-        //       -> on start(). check what is required. -> give a setCookieParams() to private config
-        session_set_cookie_params(0, Yii::app()->getConfig("relativeurl"));
-        // @todo move that up and/or where it belongs to, session might need to be restarted if necessary to set
-        //       for survey session
-        $sCurrentname = session_name();
-        if ($sCurrentname !== $sSessionname)
-        {
-            throw new RuntimeException(sprintf('Session name mismatch, must be %s, is %s.', $sSessionname, $sCurrentname));
-        }
-        foreach($aMerge as $sVar => $mValue)
-        {
-            isset ($_SESSION[$sVar]) || $_SESSION[$sVar] = $mValue;
-        }
-    }
-
-    function _saveSessionVars($surveyId, $bPreviewRight)
-    {
-        if ( !$bPreviewRight )
-            return array();
-
-        $saveSessionVars['USER_RIGHT_PREVIEW'] = $surveyId;
-        $saveSessionVars['loginID'] = $_SESSION['loginID'];
-        $saveSessionVars['user'] = $_SESSION['user'];
-
-        return $saveSessionVars;
-    }
-
-    function _loadAdminSession($stg_SessionName) {
-        // Store initial session name
-        $sOriginalSessionName = session_name();
-
-        // One way (not implemented here) would be to start the
-        // user session from a duplicate of the admin session
-        // - destroy the new session
-        // - load admin session (with correct session name)
-        // - close admin session
-        // - change used session name to default
-        // - open new session (takes admin session id)
-        // - regenerate brand new session id for this session
-
-        // The solution implemented here is to copy some
-        // fields from the admin session to the new session
-        // - first destroy the new (empty) user session
-        // - then open admin session
-        // - record interresting values from the admin session
-        // - duplicate admin session under another name and Id
-        // - destroy the duplicated admin session
-        // - start a brand new user session
-        // - copy interresting values in this user session
-
-        session_destroy();    // make it silent because for
-        // some strange reasons it fails sometimes
-        // which is not a problem
-        // but if it throws an error then future
-        // session functions won't work because
-        // headers are already sent.
-
-        if (!empty($stg_SessionName))
-        {
-            session_name($stg_SessionName);
-        }
-        else
-        {
-            session_name('LimeSurveyAdmin');
-        }
-        session_start(); // Loads Admin Session
-
-        return $sOriginalSessionName;
-
-    }
-
-    function _destroyOldSession($sInitialSessionName, $sSessionHandler, $clang)
-    {
-        // change session name and id
-        // then delete this new session
-        // ==> the original admin session remains valid
-        // ==> it is possible to start a new session
-        // @todo session_destroy() used in here (and elsewehere in this file)
-        //       , not ->session->sess_destroy(), check.
-        session_name($sInitialSessionName);
-        if ( $sSessionHandler == 'db' )
-        {
-            adodb_session_regenerate_id();
-        }
-        elseif ( session_regenerate_id() === false )
-        {
-            $asMessage = array(
-                $clang->gT('Error'),
-                'Error Regenerating Session Id'
-            );
-            $this->_niceExit($redata, __LINE__, null, $asMessage);
-        }
-        session_destroy();
-    }
-
-    function _restoreSavedSession($sSessionHandler, $amSavedSessionVars, $bPreviewRight, $clang)
-    {
-        // start new session
-        session_start();
-        // regenerate id so that the header geenrated by previous
-        // regenerate_id is overwritten
-        // needed after clearall
-        if  ( $sSessionHandler == 'db' )
-        {
-            adodb_session_regenerate_id();
-        }
-        elseif ( session_regenerate_id() === false )
-        {
-            $asMessage = array(
-                    $clang->gT('Error'),
-                	'Error Regenerating Session Id'
-                );
-            $this->_niceExit($redata, __LINE__, null, $asMessage);
-        }
-
-        if ( $bPreviewRight )
-        {
-            foreach ($amSavedSessionVars as $sSessionKey => $mSessionValue)
-            {
-                $_SESSION[$sSessionKey] = $mSessionValue;
-            }
-        }
-    }
-
     function _loadRequiredHelpersAndLibraries()
     {
         //Load helpers, libraries and config vars
         Yii::app()->loadHelper("database");
         Yii::app()->loadHelper("frontend");
         Yii::app()->loadHelper("surveytranslator");
-//        $this->load->library("Dtexts");
     }
 
     function _loadLimesurveyLang($mvSurveyIdOrBaseLang)
     {
-        if (is_int($mvSurveyIdOrBaseLang))
+        if ( is_int($mvSurveyIdOrBaseLang) )
         {
             $baselang = Survey::model()->findByPk($surveyId)->language;
         }
@@ -1026,12 +776,12 @@ class SurveyAction extends CAction {
 
     function _isClientTokenDifferentFromSessionToken($clientToken)
     {
-        return $clientToken != '' && isset($_SESSION['token']) && $clientToken != $_SESSION['token'];
+        return $clientToken != '' && isset($_SESSION[$surveyid]['token']) && $clientToken != $_SESSION[$surveyid]['token'];
     }
 
-    function _isSurveyFinished()
+    function _isSurveyFinished($surveyid)
     {
-        return isset($_SESSION['finished']) && $_SESSION['finished'] === true;
+        return isset($_SESSION[$surveyid]['finished']) && $_SESSION[$surveyid]['finished'] === true;
     }
 
     function _isPreviewAction($param = array())
@@ -1047,22 +797,22 @@ class SurveyAction extends CAction {
 
     function _didSessionTimeout()
     {
-        return !isset($_SESSION['s_lang']);
+        return !isset($_SESSION[$surveyid]['s_lang']);
     }
 
     function _canUserPreviewSurvey($surveyId)
     {
-        if ( !isset($_SESSION['loginID'], $_SESSION['USER_RIGHT_SUPERADMIN']) )
+        if ( !isset($_SESSION[$surveyid]['loginID'], $_SESSION[$surveyid]['USER_RIGHT_SUPERADMIN']) )
             return false;
 
-        if ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 )
+        if ( $_SESSION[$surveyid]['USER_RIGHT_SUPERADMIN'] == 1 )
             return true;
 
         $rightresult = db_execute_assoc(
         	"SELECT uid
         	FROM {{survey_permissions}}
         	WHERE sid = ".$surveyId."
-        	AND uid = '".$_SESSION['loginID']."'
+        	AND uid = '".$_SESSION[$surveyid]['loginID']."'
         	GROUP BY uid");
         if ( $rightresult->count() > 0 )
             return true;
@@ -1070,10 +820,10 @@ class SurveyAction extends CAction {
     }
 
     function _userHasPreviewAccessSession($surveyId){
-        return (!(isset($_SESSION['USER_RIGHT_PREVIEW']) && ($_SESSION['USER_RIGHT_PREVIEW'] == $surveyId)));
+        return (!(isset($_SESSION[$surveyid]['USER_RIGHT_PREVIEW']) && ($_SESSION[$surveyid]['USER_RIGHT_PREVIEW'] == $surveyId)));
     }
 
-    function _niceExit(&$redata, $iDebugLine, $sTemplateDir = null, $asMessage = array(), $bKillSession = false)
+    function _niceExit(&$redata, $iDebugLine, $sTemplateDir = null, $asMessage = array())
     {
         if ( $sTemplateDir === null )
             $sTemplateDir = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'default';
@@ -1088,35 +838,27 @@ class SurveyAction extends CAction {
 
         doFooter();
 
-        if ( $bKillSession )
-            killSession();
-
         exit;
     }
 
     function _createNewUserSessionAndRedirect($surveyId, &$redata, $iDebugLine, $asMessage = array())
     {
         $clang = Yii::app()->lang;
-        // Let's first regenerate a session id
-        killSession();
-        // Let's redirect the client to the same URL after having reseted the session
-        //header("Location: $rooturl/index.php?" .$_SERVER['QUERY_STRING']);
+        killSurveySession($surveyId);
+        // Let's redirect the client to the same URL after having reset the session
         $this->_niceExit($redata, $iDebugLine, null, $asMessage);
     }
 
-    function _importAdminSessionForSurveyToGetPreviewAccess($surveyId, $stg_SessionName, $sSessionHandler, $clang)
+    function _importAdminSessionForSurveyToGetPreviewAccess($surveyId, $clang)
     {
         // admin session and permission have not already been imported
         // for this particular survey
         if ( !$this->_userHasPreviewAccessSession($surveyId) )
         {
-            $sOriginalSessionName = $this->_loadAdminSession($stg_SessionName);
 
-            $bPreviewRight = $this->_canUserPreviewSurvey($surveyId);
-            $amSavedSessionVars = $this->_saveSessionVars($surveyId, $bPreviewRight);
 
-            $this->_destroyOldSession($sOriginalSessionName, $sSessionHandler, $clang);
-            $this->_restoreSavedSession($sSessionHandler, $amSavedSessionVars, $bPreviewRight, $clang);
+            $bPreviewRight = true;
+
         }
         else
         {
@@ -1153,10 +895,7 @@ class SurveyAction extends CAction {
         echo templatereplace(file_get_contents($sTemplateFile),array(),$redata,'survey['.$iDebugLine.']');
     }
 
-    function test($yes)
-    {
-        debugbreak();
-    }
+
 }
 
 /* End of file survey.php */

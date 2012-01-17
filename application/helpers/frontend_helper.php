@@ -1,24 +1,23 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
- * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- *	$Id$
- */
+* LimeSurvey
+* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*	$Id$
+*/
 function loadanswers()
 {
     global $surveyid;
     global $thissurvey, $thisstep;
     global $clienttoken;
     $clang = Yii::app()->lang;
-    //$_SESSION = $CI->session->userdata;
 
     $scid=returnglobal('scid');
     if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
@@ -31,21 +30,21 @@ function loadanswers()
         {
             $query .= "AND {{saved_control}}.scid={$scid}\n";
         }
-        $query .="AND {{saved_control}}.identifier = '".auto_escape($_SESSION['holdname'])."' ";
+        $query .="AND {{saved_control}}.identifier = '".auto_escape($_SESSION[$surveyid]['holdname'])."' ";
 
         if (in_array(Yii::app()->db->getDriverName(), array('odbc_mssql', 'odbtp', 'mssql_n', 'mssqlnative')))
         {
-            $query .="AND CAST({{saved_control}}.access_code as varchar(32))= '".md5(auto_unescape($_SESSION['holdpass']))."'\n";
+            $query .="AND CAST({{saved_control}}.access_code as varchar(32))= '".md5(auto_unescape($_SESSION[$surveyid]['holdpass']))."'\n";
         }
         else
         {
-            $query .="AND {{saved_control}}.access_code = '".md5(auto_unescape($_SESSION['holdpass']))."'\n";
+            $query .="AND {{saved_control}}.access_code = '".md5(auto_unescape($_SESSION[$surveyid]['holdpass']))."'\n";
         }
     }
-    elseif (isset($_SESSION['srid']))
+    elseif (isset($_SESSION[$surveyid]['srid']))
     {
         $query = "SELECT * FROM {$thissurvey['tablename']}
-        WHERE {$thissurvey['tablename']}.id=".$_SESSION['srid']."\n";
+        WHERE {$thissurvey['tablename']}.id=".$_SESSION[$surveyid]['srid']."\n";
     }
     else
     {
@@ -70,13 +69,13 @@ function loadanswers()
             }
             elseif ($column == "saved_thisstep" && $thissurvey['alloweditaftercompletion'] != 'Y' )
             {
-                $_SESSION['step']=$value;
+                $_SESSION[$surveyid]['step']=$value;
                 $thisstep=$value-1;
             }
             elseif ($column =='lastpage' && isset($_GET['token']) && $thissurvey['alloweditaftercompletion'] != 'Y' )
             {
                 if ($value<1) $value=1;
-                $_SESSION['step']=$value;
+                $_SESSION[$surveyid]['step']=$value;
                 $thisstep=$value-1;
             }
             /*
@@ -91,38 +90,38 @@ function loadanswers()
             }*/
             elseif ($column == "scid")
             {
-                $_SESSION['scid']=$value;
+                $_SESSION[$surveyid]['scid']=$value;
             }
             elseif ($column == "srid")
             {
-                $_SESSION['srid']=$value;
+                $_SESSION[$surveyid]['srid']=$value;
             }
             elseif ($column == "datestamp")
             {
-                $_SESSION['datestamp']=$value;
+                $_SESSION[$surveyid]['datestamp']=$value;
             }
             if ($column == "startdate")
             {
-                $_SESSION['startdate']=$value;
+                $_SESSION[$surveyid]['startdate']=$value;
             }
             else
             {
                 //Only make session variables for those in insertarray[]
-                if (in_array($column, $_SESSION['insertarray']))
+                if (in_array($column, $_SESSION[$surveyid]['insertarray']))
                 {
-                    if (($_SESSION['fieldmap'][$column]['type'] == 'N' ||
-                    $_SESSION['fieldmap'][$column]['type'] == 'K' ||
-                    $_SESSION['fieldmap'][$column]['type'] == 'D') && $value == null)
+                    if (($_SESSION[$surveyid]['fieldmap'][$column]['type'] == 'N' ||
+                    $_SESSION[$surveyid]['fieldmap'][$column]['type'] == 'K' ||
+                    $_SESSION[$surveyid]['fieldmap'][$column]['type'] == 'D') && $value == null)
                     {   // For type N,K,D NULL in DB is to be considered as NoAnswer in any case.
                         // We need to set the _SESSION[field] value to '' in order to evaluate conditions.
                         // This is especially important for the deletenonvalue feature,
                         // otherwise we would erase any answer with condition such as EQUALS-NO-ANSWER on such
                         // question types (NKD)
-                        $_SESSION[$column]='';
+                        $_SESSION[$surveyid][$column]='';
                     }
                     else
                     {
-                        $_SESSION[$column]=$value;
+                        $_SESSION[$surveyid][$column]=$value;
                     }
                 }  // if (in_array(
             }  // else
@@ -137,7 +136,6 @@ function makegraph($currentstep, $total)
     global $js_header_includes, $css_header_includes;
 
     $clang = Yii::app()->lang;
-    //$_SESSION = $CI->session->userdata;
 
     $js_admin_includes = Yii::app()->getConfig("js_admin_includes");
     $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
@@ -232,11 +230,11 @@ function makelanguagechanger($baselang)
         if ($_REQUEST['action']=='previewgroup')
             $previewgrp = true;
 
-    if (!empty($slangs) && $slangs[0]!='')
+        if (!empty($slangs) && $slangs[0]!='')
     {
-        if (isset($_SESSION['s_lang']) && $_SESSION['s_lang'] != '')
+        if (isset($_SESSION[$surveyid]['s_lang']) && $_SESSION[$surveyid]['s_lang'] != '')
         {
-            $lang = sanitize_languagecode($_SESSION['s_lang']);
+            $lang = sanitize_languagecode($_SESSION[$surveyid]['s_lang']);
         }
         else if(isset($_POST['lang']) && $_POST['lang']!='')
             {
@@ -294,7 +292,6 @@ function checkconfield($value)
 {
     global $surveyid,$thissurvey,$qattributes;
 
-    //$_SESSION = $CI->session->userdata;
 
     $fieldisdisplayed=true;
     if (!is_array($thissurvey))
@@ -310,9 +307,9 @@ function checkconfield($value)
     // and we want to compare it to the values stored in $_SESSION['fieldarray'] which are simple fieldnames
     // ==> We first translate $value to the simple fieldname (let's call it the masterFieldName) from
     //     the $_SESSION['fieldnamesInfo'] translation table
-    if (isset($_SESSION['fieldnamesInfo'][$value]))
+    if (isset($_SESSION[$surveyid]['fieldnamesInfo'][$value]))
     {
-        $masterFieldName = $_SESSION['fieldnamesInfo'][$value];
+        $masterFieldName = $_SESSION[$surveyid]['fieldnamesInfo'][$value];
     }
     else
     { // for token refurl, ipaddr...
@@ -323,7 +320,7 @@ function checkconfield($value)
     $value_isconditionnal='N';
 
     //$value is the fieldname for the field we are checking for conditions
-    foreach ($_SESSION['fieldarray'] as $sfa) //Go through each field
+    foreach ($_SESSION[$surveyid]['fieldarray'] as $sfa) //Go through each field
     {
         // record the qid and question type for future use
         if ($sfa[1]  == $masterFieldName)
@@ -336,7 +333,7 @@ function checkconfield($value)
     }
 
     // check if this question is conditionnal ($sfa[7]): if yes eval conditions
-    if ($value_isconditionnal  == "Y" && isset($_SESSION[$value]) ) //Do this if there is a condition based on this answer
+    if ($value_isconditionnal  == "Y" && isset($_SESSION[$surveyid][$value]) ) //Do this if there is a condition based on this answer
     {
 
         $scenarioquery = "SELECT DISTINCT scenario FROM {{conditions}}"
@@ -434,9 +431,9 @@ function checkconfield($value)
                         // By corresponding value
                         if (preg_match('/^@([0-9]+X[0-9]+X[^@]+)@/',$cqv["matchvalue"], $targetconditionfieldname))
                         {
-                            if (isset($_SESSION[$targetconditionfieldname[1]]))
+                            if (isset($_SESSION[$surveyid][$targetconditionfieldname[1]]))
                             {
-                                $cqv["matchvalue"] = $_SESSION[$targetconditionfieldname[1]];
+                                $cqv["matchvalue"] = $_SESSION[$surveyid][$targetconditionfieldname[1]];
                             }
                             else
                             {
@@ -448,9 +445,9 @@ function checkconfield($value)
                         if ($local_thissurvey['anonymized'] == 'N' &&
                         preg_match('/^{TOKEN:([^}]*)}$/',$cqv["matchvalue"], $targetconditiontokenattr))
                         {
-                            if (isset($_SESSION['token']) && in_array(strtolower($targetconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
+                            if (isset($_SESSION[$surveyid]['token']) && in_array(strtolower($targetconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
                             {
-                                $cqv["matchvalue"] = GetAttributeValue($surveyid,strtolower($targetconditiontokenattr[1]),$_SESSION['token']);
+                                $cqv["matchvalue"] = GetAttributeValue($surveyid,strtolower($targetconditiontokenattr[1]),$_SESSION[$surveyid]['token']);
                             }
                             else
                             {
@@ -466,9 +463,9 @@ function checkconfield($value)
                         {
                             if (!preg_match("/^{/",$cqv['cfieldname']))
                             {
-                                if (isset($_SESSION[$cqv['matchfield']]))
+                                if (isset($_SESSION[$surveyid][$cqv['matchfield']]))
                                 {
-                                    $comparisonLeftOperand =  $_SESSION[$cqv['matchfield']];
+                                    $comparisonLeftOperand =  $_SESSION[$surveyid][$cqv['matchfield']];
                                 }
                                 else
                                 {
@@ -477,10 +474,10 @@ function checkconfield($value)
                             }
                             elseif ($local_thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$cqv['cfieldname'],$sourceconditiontokenattr))
                             {
-                                if ( isset($_SESSION['token']) &&
+                                if ( isset($_SESSION[$surveyid]['token']) &&
                                 in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
                                 {
-                                    $comparisonLeftOperand = GetAttributeValue($surveyid,strtolower($sourceconditiontokenattr[1]),$_SESSION['token']);
+                                    $comparisonLeftOperand = GetAttributeValue($surveyid,strtolower($sourceconditiontokenattr[1]),$_SESSION[$surveyid]['token']);
                                 }
                                 else
                                 {
@@ -542,7 +539,7 @@ function checkconfield($value)
             // Reset the value in SESSION
             //if(isset($move) && $move != "moveprev")
             //{
-            $_SESSION[$value]="";
+            $_SESSION[$surveyid][$value]="";
             $fieldisdisplayed=false;
             //}
         }
@@ -593,9 +590,6 @@ function checkmandatorys($move, $backok=null)
 {
     global $thisstep;
 
-
-    //$_SESSION = $CI->session->userdata;
-
     if ((isset($_POST['mandatory']) && $_POST['mandatory']) && (!isset($backok) || $backok != "Y"))
     {
         $chkmands=explode("|", $_POST['mandatory']); //These are the mandatory questions to check
@@ -614,7 +608,7 @@ function checkmandatorys($move, $backok=null)
                     {
                         //The number of questions not answered is equal to the number of questions
                         //This section gets used if it is a multiple choice type question
-                        $_SESSION['step'] = $thisstep;
+                        $_SESSION[$surveyid]['step'] = $thisstep;
                         $notanswered[]=substr($multiname, 5, strlen($multiname));
                         $$multiname=0;
                         $$multiname2=0;
@@ -630,13 +624,13 @@ function checkmandatorys($move, $backok=null)
                 $multiname="MULTI$mfns[$mi]";
             }
             $dtcm = "tbdisp$cm";
-            if (isset($_SESSION[$cm]) && ($_SESSION[$cm] == "0" || $_SESSION[$cm]))
+            if (isset($_SESSION[$surveyid][$cm]) && ($_SESSION[$surveyid][$cm] == "0" || $_SESSION[$surveyid][$cm]))
             {
             }
             elseif ((!isset($_POST[$multiname]) || !$_POST[$multiname]) && (!isset($_POST[$dtcm]) || $_POST[$dtcm] == "on"))
             {
                 //One of the mandatory questions hasn't been asnwered
-                $_SESSION['step'] = $thisstep;
+                $_SESSION[$surveyid]['step'] = $thisstep;
                 $notanswered[]=$mfns[$mi];
             }
             else
@@ -669,11 +663,11 @@ function checkmandatorys($move, $backok=null)
                 //The number of questions not answered is equal to the number of questions
                 if (isset($move) && $move == "moveprev")
                 {
-                    $_SESSION['step'] = $thisstep;
+                    $_SESSION[$surveyid]['step'] = $thisstep;
                 }
                 if (isset($move) && $move == "movenext")
                 {
-                    $_SESSION['step'] = $thisstep;
+                    $_SESSION[$surveyid]['step'] = $thisstep;
                 }
                 $notanswered[]=substr($multiname, 5, strlen($multiname));
                 $$multiname="";
@@ -693,9 +687,6 @@ function checkconditionalmandatorys($move, $backok=null)
 {
     global $thisstep;
 
-
-    //$_SESSION = $CI->session->userdata;
-
     // TODO - also check whether relevance set?
     if ((isset($_POST['conmandatory']) && $_POST['conmandatory']) && (!isset($backok) || $backok != "Y")) //Mandatory conditional questions that should only be checked if the conditions for displaying that question are met
 
@@ -714,7 +705,7 @@ function checkconditionalmandatorys($move, $backok=null)
 
                     {
                         //The number of questions not answered is equal to the number of questions
-                        $_SESSION['step'] = $thisstep;
+                        $_SESSION[$surveyid]['step'] = $thisstep;
                         $notanswered[]=substr($multiname, 5, strlen($multiname));
                         $$multiname=0;
                         $$multiname2=0;
@@ -731,7 +722,7 @@ function checkconditionalmandatorys($move, $backok=null)
             }
             $dccm="display$cmfns[$mi]";
             $dtccm = "tbdisp$ccm";
-            if (isset($_SESSION[$ccm]) && ($_SESSION[$ccm] == "0" || $_SESSION[$ccm]) && isset($_POST[$dccm]) && $_POST[$dccm] == "on") //There is an answer
+            if (isset($_SESSION[$surveyid][$ccm]) && ($_SESSION[$surveyid][$ccm] == "0" || $_SESSION[$surveyid][$ccm]) && isset($_POST[$dccm]) && $_POST[$dccm] == "on") //There is an answer
 
             {
                 //The question has an answer, and the answer was displaying
@@ -741,11 +732,11 @@ function checkconditionalmandatorys($move, $backok=null)
             {
                 if (isset($move) && $move == "moveprev")
                 {
-                    $_SESSION['step'] = $thisstep;
+                    $_SESSION[$surveyid]['step'] = $thisstep;
                 }
                 if (isset($move) && $move == "movenext")
                 {
-                    $_SESSION['step'] = $thisstep;
+                    $_SESSION[$surveyid]['step'] = $thisstep;
                 }
                 $notanswered[]=$cmfns[$mi];
             }
@@ -765,11 +756,11 @@ function checkconditionalmandatorys($move, $backok=null)
                 //The number of questions not answered is equal to the number of questions
                 if (isset($move) && $move == "moveprev")
                 {
-                    $_SESSION['step'] = $thisstep;
+                    $_SESSION[$surveyid]['step'] = $thisstep;
                 }
                 if (isset($move) && $move == "movenext")
                 {
-                    $_SESSION['step'] = $thisstep;
+                    $_SESSION[$surveyid]['step'] = $thisstep;
                 }
                 $notanswered[]=substr($multiname, 5, strlen($multiname));
             }
@@ -873,9 +864,9 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
         if (isset($filenotvalidated))
         {
             if (isset($move) && $move == "moveprev")
-                $_SESSION['step'] = $thisstep;
+                $_SESSION[$surveyid]['step'] = $thisstep;
             if (isset($move) && $move == "movenext")
-                $_SESSION['step'] = $thisstep;
+                $_SESSION[$surveyid]['step'] = $thisstep;
             return $filenotvalidated;
         }
     }
@@ -899,14 +890,14 @@ function aCheckInput($surveyid, $move,$backok=null)
             foreach ($fields as $field)
             {
                 //Get question information
-                if (isset($_POST[$field]) && isset($_SESSION['s_lang']) && ($_POST[$field] == "0" || $_POST[$field])) //Only do this if there is an answer
+                if (isset($_POST[$field]) && isset($_SESSION[$surveyid]['s_lang']) && ($_POST[$field] == "0" || $_POST[$field])) //Only do this if there is an answer
 
                 {
                     $fieldinfo=$fieldmap[$field];
                     $pregquery="SELECT preg\n"
                     ."FROM {{questions}}\n"
                     ."WHERE qid=".$fieldinfo['qid']." "
-                    . "AND language='".$_SESSION['s_lang']."'";
+                    . "AND language='".$_SESSION[$surveyid]['s_lang']."'";
                     $pregresult=db_execute_assoc($pregquery) or safe_die("ERROR: $pregquery<br />");      //Checked
                     foreach($pregresult->readAll() as $pregrow)
                     {
@@ -955,7 +946,7 @@ function aCheckInput($surveyid, $move,$backok=null)
                     }
                     elseif ($fieldinfo['type'] == 'D')
                     {
-                        // $_SESSION[$fieldinfo['fieldname']] now contains the crappy value parsed by
+                        // $_SESSION[$surveyid][$fieldinfo['fieldname']] now contains the crappy value parsed by
                         // Date_Time_Converter in save.php. We can leave it there. We just do validation here.
                         $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
                         $datetimeobj = DateTime::createFromFormat($dateformatdetails['phpdate'], $_POST[$field]);
@@ -976,7 +967,7 @@ function aCheckInput($surveyid, $move,$backok=null)
                 //$maxvalue_answername="maxvalue_answer".$maxvalueanswer;
                 if (!empty($_POST['qattribute_answer'.$maxvalueanswer]) && $_POST['display'.$maxvalueanswer] == "on")
                 {
-                    $_SESSION['step'] = $thisstep;
+                    $_SESSION[$surveyid]['step'] = $thisstep;
                     $notvalidated[]=$maxvalueanswer;
                     return $notvalidated;
                 }
@@ -987,11 +978,11 @@ function aCheckInput($surveyid, $move,$backok=null)
         {
             if (isset($move) && $move == "moveprev")
             {
-                $_SESSION['step'] = $thisstep;
+                $_SESSION[$surveyid]['step'] = $thisstep;
             }
             if (isset($move) && $move == "movenext")
             {
-                $_SESSION['step'] = $thisstep;
+                $_SESSION[$surveyid]['step'] = $thisstep;
             }
             return $notvalidated;
         }
@@ -1046,9 +1037,6 @@ function submittokens($quotaexit=false)
     global $surveyid;
     global $thistpl, $clienttoken;
 
-
-
-    //$_SESSION = $CI->session->userdata;
     $clang = Yii::app()->lang;
     $sitename = Yii::app()->getConfig("sitename");
 
@@ -1185,9 +1173,6 @@ function SendSubmitNotifications()
     global $emailcharset;
     global $homeurl, $surveyid, $maildebug, $tokensexist;
 
-
-
-    //$_SESSION = $CI->session->userdata;
     $clang = Yii::app()->lang;
     $sitename = Yii::app()->getConfig("sitename");
 
@@ -1195,9 +1180,9 @@ function SendSubmitNotifications()
 
     $aReplacementVars=array();
 
-    if ($thissurvey['allowsave'] == "Y" && isset($_SESSION['scid']))
+    if ($thissurvey['allowsave'] == "Y" && isset($_SESSION[$surveyid]['scid']))
     {
-        $aReplacementVars['RELOADURL']="".Yii::app()->getController()->createUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/".$_SESSION['scid']."/loadname/".urlencode($_SESSION['holdname'])."/loadpass/".urlencode($_SESSION['holdpass']));
+        $aReplacementVars['RELOADURL']="".Yii::app()->getController()->createUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/".$_SESSION[$surveyid]['scid']."/loadname/".urlencode($_SESSION[$surveyid]['holdname'])."/loadpass/".urlencode($_SESSION[$surveyid]['holdpass']));
         if ($bIsHTML)
         {
             $aReplacementVars['RELOADURL']="<a href='{$aReplacementVars['RELOADURL']}'>{$aReplacementVars['RELOADURL']}</a>";
@@ -1210,8 +1195,8 @@ function SendSubmitNotifications()
 
     $aReplacementVars['ADMINNAME'] = $thissurvey['adminname'];
     $aReplacementVars['ADMINEMAIL'] = $thissurvey['adminemail'];
-    $aReplacementVars['VIEWRESPONSEURL']="{$homeurl}/admin.php?action=browse&sid={$surveyid}&subaction=id&id={$_SESSION['srid']}";
-    $aReplacementVars['EDITRESPONSEURL']="{$homeurl}/admin.php?action=dataentry&sid={$surveyid}&subaction=edit&surveytable=survey_{$surveyid}&id=".$_SESSION['srid'];
+    $aReplacementVars['VIEWRESPONSEURL']="{$homeurl}/admin.php?action=browse&sid={$surveyid}&subaction=id&id={$_SESSION[$surveyid]['srid']}";
+    $aReplacementVars['EDITRESPONSEURL']="{$homeurl}/admin.php?action=dataentry&sid={$surveyid}&subaction=edit&surveytable=survey_{$surveyid}&id=".$_SESSION[$surveyid]['srid'];
     $aReplacementVars['STATISTICSURL']="{$homeurl}/admin.php?action=statistics&sid={$surveyid}";
     if ($bIsHTML)
     {
@@ -1241,15 +1226,15 @@ function SendSubmitNotifications()
 
     if (!empty($thissurvey['emailresponseto']))
     {
-        if (isset($_SESSION['token']) && $_SESSION['token'] != '' && db_tables_exist('{{tokens_'.$surveyid.'}}'))
+        if (isset($_SESSION[$surveyid]['token']) && $_SESSION[$surveyid]['token'] != '' && db_tables_exist('{{tokens_'.$surveyid.'}}'))
         {
             //Gather token data for tokenised surveys
-            $_SESSION['thistoken']=getTokenData($surveyid, $_SESSION['token']);
+            $_SESSION[$surveyid]['thistoken']=getTokenData($surveyid, $_SESSION[$surveyid]['token']);
         }
         // there was no token used so lets remove the token field from insertarray
-        elseif ($_SESSION['insertarray'][0]=='token')
+        elseif ($_SESSION[$surveyid]['insertarray'][0]=='token')
         {
-            unset($_SESSION['insertarray'][0]);
+            unset($_SESSION[$surveyid]['insertarray'][0]);
         }
         //Make an array of email addresses to send to
         $aRecipient=explode(";", $thissurvey['emailresponseto']);
@@ -1264,7 +1249,7 @@ function SendSubmitNotifications()
             }
         }
 
-        $aFullResponseTable=aGetFullResponseTable($surveyid,$_SESSION['srid'],$_SESSION['s_lang']);
+        $aFullResponseTable=aGetFullResponseTable($surveyid,$_SESSION[$surveyid]['srid'],$_SESSION[$surveyid]['s_lang']);
         $ResultTableHTML = "<table class='printouttable' >\n";
         $ResultTableText ="\n\n";
         $oldgid = 0;
@@ -1345,9 +1330,6 @@ function submitfailed($errormsg='')
     global $thissurvey;
     global $thistpl, $subquery, $surveyid;
 
-
-
-    //$_SESSION = $CI->session->userdata;
     $clang = Yii::app()->lang;
 
     $completed = "<br /><strong><font size='2' color='red'>"
@@ -1362,9 +1344,9 @@ function submitfailed($errormsg='')
         }
         $email=$clang->gT("An error occurred saving a response to survey id","unescaped")." ".$thissurvey['name']." - $surveyid\n\n";
         $email .= $clang->gT("DATA TO BE ENTERED","unescaped").":\n";
-        foreach ($_SESSION['insertarray'] as $value)
+        foreach ($_SESSION[$surveyid]['insertarray'] as $value)
         {
-            $email .= "$value: {$_SESSION[$value]}\n";
+            $email .= "$value: {$_SESSION[$surveyid][$value]}\n";
         }
         $email .= "\n".$clang->gT("SQL CODE THAT FAILED","unescaped").":\n"
         . "$subquery\n\n"
@@ -1373,8 +1355,7 @@ function submitfailed($errormsg='')
         SendEmailMessage($email, $clang->gT("Error saving results","unescaped"), $thissurvey['adminemail'], $thissurvey['adminemail'], "LimeSurvey", false, getBounceEmail($surveyid));
         //echo "<!-- EMAIL CONTENTS:\n$email -->\n";
         //An email has been sent, so we can kill off this session.
-        session_unset();
-        session_destroy();
+        killSurveySession($surveyid);
     }
     else
     {
@@ -1419,8 +1400,8 @@ function buildsurveysession($surveyid)
 
         // IF CAPTCHA ANSWER IS NOT CORRECT OR NOT SET
         if (!isset($loadsecurity) ||
-        !isset($_SESSION['secanswer']) ||
-        $loadsecurity != $_SESSION['secanswer'])
+        !isset($_SESSION[$surveyid]['secanswer']) ||
+        $loadsecurity != $_SESSION[$surveyid]['secanswer'])
         {
             sendcacheheaders();
             doHeader();
@@ -1572,7 +1553,7 @@ function buildsurveysession($surveyid)
         {
             //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 
-            killSession();
+            killSurveySession($surveyid);
             sendcacheheaders();
             doHeader();
 
@@ -1597,8 +1578,8 @@ function buildsurveysession($surveyid)
 
         // IF CAPTCHA ANSWER IS CORRECT
         if (isset($loadsecurity) &&
-        isset($_SESSION['secanswer']) &&
-        $loadsecurity == $_SESSION['secanswer'])
+        isset($_SESSION[$surveyid]['secanswer']) &&
+        $loadsecurity == $_SESSION[$surveyid]['secanswer'])
         {
             //check if tokens actually haven't been already used
             $areTokensUsed = usedTokens(trim(strip_tags($clienttoken)),$surveyid);
@@ -1640,7 +1621,7 @@ function buildsurveysession($surveyid)
         // IF CAPTCHA ANSWER IS NOT CORRECT
         else if (!isset($move) || is_null($move))
             {
-                unset($_SESSION['srid']);
+                unset($_SESSION[$surveyid]['srid']);
                 $gettoken = $clienttoken;
                 sendcacheheaders();
                 doHeader();
@@ -1725,16 +1706,15 @@ function buildsurveysession($surveyid)
     }
 
     //RESET ALL THE SESSION VARIABLES AND START AGAIN
-    unset($_SESSION['grouplist']);
-    unset($_SESSION['fieldarray']);
-    unset($_SESSION['insertarray']);
-    unset($_SESSION['thistoken']);
-    unset($_SESSION['fieldnamesInfo']);
-    $_SESSION['fieldnamesInfo'] = Array();
+    unset($_SESSION[$surveyid]['grouplist']);
+    unset($_SESSION[$surveyid]['fieldarray']);
+    unset($_SESSION[$surveyid]['insertarray']);
+    unset($_SESSION[$surveyid]['thistoken']);
+    unset($_SESSION[$surveyid]['fieldnamesInfo']);
+    $_SESSION[$surveyid]['fieldnamesInfo'] = Array();
 
 
     //RL: multilingual support
-
     if (isset($_GET['token']) && db_tables_exist('{{tokens_'.$surveyid.'}}'))
     {
 
@@ -1759,13 +1739,13 @@ function buildsurveysession($surveyid)
         $language_to_set = $thissurvey['language'];
     }
 
-    if (!isset($_SESSION['s_lang']))
+    if (!isset($_SESSION[$surveyid]['s_lang']))
     {
         SetSurveyLanguage($surveyid, $language_to_set);
     }
 
 
-    UpdateSessionGroupList($surveyid, $_SESSION['s_lang']);
+    UpdateSessionGroupList($surveyid, $_SESSION[$surveyid]['s_lang']);
 
 
     // TMSW Conditions->Relevance:  Duplicates refactoring of createFieldMap?  Conditions tables not needed here.
@@ -1779,12 +1759,11 @@ function buildsurveysession($surveyid)
     ." WHERE {{questions}}.qid = {{conditions}}.cqid) AS usedinconditions\n"
     ." FROM {{groups}} INNER JOIN {{questions}} ON {{groups}}.gid = {{questions}}.gid\n"
     ." WHERE {{questions}}.sid=".$surveyid."\n"
-    ." AND {{groups}}.language='".$_SESSION['s_lang']."'\n"
-    ." AND {{questions}}.language='".$_SESSION['s_lang']."'\n"
+    ." AND {{groups}}.language='".$_SESSION[$surveyid]['s_lang']."'\n"
+    ." AND {{questions}}.language='".$_SESSION[$surveyid]['s_lang']."'\n"
     ." AND {{questions}}.parent_qid=0\n"
     ." ORDER BY {{groups}}.group_order,{{questions}}.question_order";
 
-    //var_dump($_SESSION);
     $result = db_execute_assoc($query);    //Checked
 
     $totalquestions = $result->count();
@@ -1795,16 +1774,16 @@ function buildsurveysession($surveyid)
     switch($thissurvey['format'])
     {
         case "A":
-            $_SESSION['totalsteps']=1;
+            $_SESSION[$surveyid]['totalsteps']=1;
             break;
         case "G":
-            if (isset($_SESSION['grouplist']))
+            if (isset($_SESSION[$surveyid]['grouplist']))
             {
-                $_SESSION['totalsteps']=count($_SESSION['grouplist']);
+                $_SESSION[$surveyid]['totalsteps']=count($_SESSION[$surveyid]['grouplist']);
             }
             break;
         case "S":
-            $_SESSION['totalsteps']=$totalquestions;
+            $_SESSION[$surveyid]['totalsteps']=$totalquestions;
     }
 
 
@@ -1837,20 +1816,20 @@ function buildsurveysession($surveyid)
     //An array containing information about used to insert the data into the db at the submit stage
     //4. SESSION VARIABLE - fieldarray
     //See rem at end..
-    $_SESSION['token'] = $clienttoken;
+    $_SESSION[$surveyid]['token'] = $clienttoken;
 
     if ($thissurvey['anonymized'] == "N")
     {
-        $_SESSION['insertarray'][]= "token";
+        $_SESSION[$surveyid]['insertarray'][]= "token";
     }
 
     if ($tokensexist == 1 && $thissurvey['anonymized'] == "N"  && db_tables_exist('{{tokens_'.$surveyid.'}}'))
     {
         //Gather survey data for "non anonymous" surveys, for use in presenting questions
-        $_SESSION['thistoken']=getTokenData($surveyid, $clienttoken);
+        $_SESSION[$surveyid]['thistoken']=getTokenData($surveyid, $clienttoken);
     }
     $qtypes=getqtypelist('','array');
-    $fieldmap=createFieldMap($surveyid,'full',false,false,$_SESSION['s_lang']);
+    $fieldmap=createFieldMap($surveyid,'full',false,false,$_SESSION[$surveyid]['s_lang']);
 
 
     // Randomization groups for groups
@@ -1858,7 +1837,7 @@ function buildsurveysession($surveyid)
     $aGIDCompleteMap=array();
     // first find all groups and their groups IDS
     $criteria = new CDbCriteria;
-    $criteria->addColumnCondition(array('sid' => $surveyid, 'language' => $_SESSION['s_lang']));
+    $criteria->addColumnCondition(array('sid' => $surveyid, 'language' => $_SESSION[$surveyid]['s_lang']));
     $criteria->addCondition('randomization_group != ""');
     $oData = Groups::model()->findAll($criteria);
     foreach($oData as $aGroup)
@@ -1872,7 +1851,7 @@ function buildsurveysession($surveyid)
         shuffle($aShuffledIDs);
         $aGIDCompleteMap=$aGIDCompleteMap+array_combine($aGIDs,$aShuffledIDs);
     }
-    $_SESSION['groupReMap']=$aGIDCompleteMap;
+    $_SESSION[$surveyid]['groupReMap']=$aGIDCompleteMap;
 
     // Now adjust the grouplist
     if (count($aRandomGroups)>0)
@@ -1880,11 +1859,11 @@ function buildsurveysession($surveyid)
         // Now adjust the grouplist
         foreach ($aGIDCompleteMap as $iOldGid=>$iNewGid)
         {
-            if (!isset($_SESSION['grouplist'][$iOldGid]['shuffled']) && $iOldGid!=$iNewGid)
+            if (!isset($_SESSION[$surveyid]['grouplist'][$iOldGid]['shuffled']) && $iOldGid!=$iNewGid)
             {
-                $_SESSION['grouplist']=array_swap_assoc($iOldGid,$iNewGid,$_SESSION['grouplist']);
+                $_SESSION[$surveyid]['grouplist']=array_swap_assoc($iOldGid,$iNewGid,$_SESSION[$surveyid]['grouplist']);
             }
-            $_SESSION['grouplist'][$iNewGid]['shuffled']=true;
+            $_SESSION[$surveyid]['grouplist'][$iNewGid]['shuffled']=true;
         }
         // ... and the fieldmap
 
@@ -1967,7 +1946,7 @@ function buildsurveysession($surveyid)
                 {
                     // Get the swapped question
                     $oldQuestFlip = array_flip($oldQuestOrder[$gkey]);
-                    $qfieldmap = createFieldMap($surveyid,'full',true,$newQuestOrder[$gkey][$oldQuestFlip[$fieldval['qid']]],$_SESSION['s_lang']);
+                    $qfieldmap = createFieldMap($surveyid,'full',true,$newQuestOrder[$gkey][$oldQuestFlip[$fieldval['qid']]],$_SESSION[$surveyid]['s_lang']);
                     unset($qfieldmap['id']);
                     unset($qfieldmap['submitdate']);
                     unset($qfieldmap['lastpage']);
@@ -1999,13 +1978,13 @@ function buildsurveysession($surveyid)
 
     // TMSW Conditions->Relevance:  don't need hasconditions, or usedinconditions
 
-    $_SESSION['fieldmap']=$fieldmap;
+    $_SESSION[$surveyid]['fieldmap']=$fieldmap;
     foreach ($fieldmap as $field)
     {
         if (isset($field['qid']) && $field['qid']!='')
         {
-            $_SESSION['fieldnamesInfo'][$field['fieldname']]=$field['sid'].'X'.$field['gid'].'X'.$field['qid'];
-            $_SESSION['insertarray'][]=$field['fieldname'];
+            $_SESSION[$surveyid]['fieldnamesInfo'][$field['fieldname']]=$field['sid'].'X'.$field['gid'].'X'.$field['qid'];
+            $_SESSION[$surveyid]['insertarray'][]=$field['fieldname'];
             //fieldarray ARRAY CONTENTS -
             //            [0]=questions.qid,
             //			[1]=fieldname,
@@ -2019,9 +1998,9 @@ function buildsurveysession($surveyid)
             //			[8]=usedinconditions
             //			[9]=used in group.php for question count
             //			[10]=new group id for question in randomization group (GroupbyGroup Mode)
-            if (!isset($_SESSION['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]))
+            if (!isset($_SESSION[$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]))
             {
-                $_SESSION['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]=array($field['qid'],
+                $_SESSION[$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]=array($field['qid'],
                 $field['sid'].'X'.$field['gid'].'X'.$field['qid'],
                 $field['title'],
                 $field['question'],
@@ -2033,7 +2012,7 @@ function buildsurveysession($surveyid)
             }
             if (isset($field['random_gid']))
             {
-                $_SESSION['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']][10] = $field['random_gid'];
+                $_SESSION[$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']][10] = $field['random_gid'];
             }
         }
 
@@ -2044,30 +2023,30 @@ function buildsurveysession($surveyid)
     {
         if (isset($field['defaultvalue']))
         {
-            $_SESSION[$field['fieldname']]=$field['defaultvalue'];
+            $_SESSION[$surveyid][$field['fieldname']]=$field['defaultvalue'];
         }
     }
     // Prefill questions/answers from command line params
-    if (isset($_SESSION['insertarray']))
+    if (isset($_SESSION[$surveyid]['insertarray']))
     {
-        foreach($_SESSION['insertarray'] as $field)
+        foreach($_SESSION[$surveyid]['insertarray'] as $field)
         {
             if (isset($_GET[$field]) && $field!='token')
             {
-                $_SESSION[$field]=$_GET[$field];
+                $_SESSION[$surveyid][$field]=$_GET[$field];
             }
         }
     }
 
-    if (isset($_SESSION['fieldarray'])) $_SESSION['fieldarray']=array_values($_SESSION['fieldarray']);
+    if (isset($_SESSION[$surveyid]['fieldarray'])) $_SESSION[$surveyid]['fieldarray']=array_values($_SESSION[$surveyid]['fieldarray']);
 
     //Check if a passthru label and value have been included in the query url
-    $oResult = Survey_url_parameters::model()->getParametersForSurvey($surveyid);
+    $oResult=Survey_url_parameters::model()->getParametersForSurvey($surveyid);
     foreach($oResult->readAll() as $aRow)
     {
         if(isset($_GET[$aRow['parameter']]))
         {
-            $_SESSION['urlparams'][$aRow['parameter']]=$_GET[$aRow['parameter']];
+            $_SESSION[$surveyid]['urlparams'][$aRow['parameter']]=$_GET[$aRow['parameter']];
             if ($aRow['targetqid']!='')
             {
                 foreach ($fieldmap as $sFieldname=>$aField)
@@ -2076,14 +2055,14 @@ function buildsurveysession($surveyid)
                     {
                         if ($aField['qid']==$aRow['targetqid'] && $aField['sqid']==$aRow['targetsqid'])
                         {
-                            $_SESSION[$sFieldname]=$_GET[$aRow['parameter']];
+                            $_SESSION[$surveyid][$sFieldname]=$_GET[$aRow['parameter']];
                         }
                     }
                     else
                     {
                         if ($aField['qid']==$aRow['targetqid'])
                         {
-                            $_SESSION[$sFieldname]=$_GET[$aRow['parameter']];
+                            $_SESSION[$surveyid][$sFieldname]=$_GET[$aRow['parameter']];
                         }
                     }
                 }
@@ -2093,14 +2072,15 @@ function buildsurveysession($surveyid)
     }
 
     // Fix totalquestions by substracting Test Display questions
-    $sNoOfTextDisplayQuestions=(int) reset(db_execute_assoc("SELECT count(*)\n"
+    $iNumberofQuestions=db_execute_assoc("SELECT count(*)\n"
     ." FROM {{questions}}"
     ." WHERE type in ('X','*')\n"
     ." AND sid={$surveyid}"
-    ." AND language='".$_SESSION['s_lang']."'"
-    ." AND parent_qid=0")->read());
+    ." AND language='".$_SESSION[$surveyid]['s_lang']."'"
+    ." AND parent_qid=0")->read();
+    $sNoOfTextDisplayQuestions=(int) reset($iNumberofQuestions);
 
-    $_SESSION['therearexquestions'] = $totalquestions - $sNoOfTextDisplayQuestions; // must be global for THEREAREXQUESTIONS replacement field to work
+    $_SESSION[$surveyid]['therearexquestions'] = $totalquestions - $sNoOfTextDisplayQuestions; // must be global for THEREAREXQUESTIONS replacement field to work
 
     return $totalquestions-$sNoOfTextDisplayQuestions;
 
@@ -2118,15 +2098,12 @@ function surveymover()
     global $thissurvey, $clang;
     global $surveyid, $presentinggroupdescription;
 
-
-
-    //$_SESSION = $CI->session->userdata;
     $clang = Yii::app()->lang;
 
     $surveymover = "";
 
     if ($thissurvey['navigationdelay'] > 0 && (
-    isset($_SESSION['maxstep']) && $_SESSION['maxstep'] > 0 && $_SESSION['maxstep'] == $_SESSION['step']))
+    isset($_SESSION[$surveyid]['maxstep']) && $_SESSION[$surveyid]['maxstep'] > 0 && $_SESSION[$surveyid]['maxstep'] == $_SESSION[$surveyid]['step']))
     {
         $disabled = "disabled=\"disabled\"";
         $surveymover .= "<script type=\"text/javascript\">\n"
@@ -2138,7 +2115,7 @@ function surveymover()
         $disabled = "";
     }
 
-    if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] != "A")
+    if (isset($_SESSION[$surveyid]['step']) && $_SESSION[$surveyid]['step'] && ($_SESSION[$surveyid]['step'] == $_SESSION[$surveyid]['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] != "A")
     {
         $surveymover .= "<input type=\"hidden\" name=\"move\" value=\"movesubmit\" id=\"movesubmit\" />";
     }
@@ -2147,42 +2124,41 @@ function surveymover()
         $surveymover .= "<input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" />";
     }
 
-    if (isset($_SESSION['step']) && $thissurvey['format'] != "A" && ($thissurvey['allowprev'] != "N" || $thissurvey['allowjumps'] == "Y") &&
-    ($_SESSION['step'] > 0 || (!$_SESSION['step'] && $presentinggroupdescription && $thissurvey['showwelcome'] == 'Y')))
+    if (isset($_SESSION[$surveyid]['step']) && $thissurvey['format'] != "A" && ($thissurvey['allowprev'] != "N" || $thissurvey['allowjumps'] == "Y") &&
+    ($_SESSION[$surveyid]['step'] > 0 || (!$_SESSION[$surveyid]['step'] && $presentinggroupdescription && $thissurvey['showwelcome'] == 'Y')))
     {
         //To prevent too much complication in the if statement above I put it here...
-        if ($thissurvey['showwelcome'] == 'N' && $_SESSION['step'] == 1) {
+        if ($thissurvey['showwelcome'] == 'N' && $_SESSION[$surveyid]['step'] == 1) {
             //first step and we do not want to go back to the welcome screen since we don't show that...
             //so skip the prev button
         } else {
             $surveymover .= "<button class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; $('#limesurvey').submit();\" value='"
-			. $clang->gT("Previous")."' name='move2' id='moveprevbtn' $disabled>". $clang->gT("Previous")."</button>\n";
+            . $clang->gT("Previous")."' name='move2' id='moveprevbtn' $disabled>". $clang->gT("Previous")."</button>\n";
         }
     }
 
-    if (isset($_SESSION['step']) && $_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
+    if (isset($_SESSION[$surveyid]['step']) && $_SESSION[$surveyid]['step'] && (!$_SESSION[$surveyid]['totalsteps'] || ($_SESSION[$surveyid]['step'] < $_SESSION[$surveyid]['totalsteps'])))
     {
         $surveymover .=  "\t<button class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\"
-		value='".$clang->gT("Next")."' name='move2' id='movenextbtn' $disabled>".$clang->gT("Next")."</button>\n";
+        value='".$clang->gT("Next")."' name='move2' id='movenextbtn' $disabled>".$clang->gT("Next")."</button>\n";
     }
     // here, in some lace, is where I must modify to turn the next button conditionable
-    if (!isset($_SESSION['step']) || !$_SESSION['step'])
+    if (!isset($_SESSION[$surveyid]['step']) || !$_SESSION[$surveyid]['step'])
     {
         $surveymover .=  "\t<button class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\"
-		value='".$clang->gT("Next")."' name='move2' id='movenextbtn' $disabled>".$clang->gT("Next")."</button>\n";
+        value='".$clang->gT("Next")."' name='move2' id='movenextbtn' $disabled>".$clang->gT("Next")."</button>\n";
     }
-    if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && $presentinggroupdescription == "yes")
+    if (isset($_SESSION[$surveyid]['step']) && $_SESSION[$surveyid]['step'] && ($_SESSION[$surveyid]['step'] == $_SESSION[$surveyid]['totalsteps']) && $presentinggroupdescription == "yes")
     {
         $surveymover .=  "\t<button class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\"
-		value='".$clang->gT("Next")."' name='move2' id=\"movenextbtn\" $disabled>".$clang->gT("Next")."</button>\n";
+        value='".$clang->gT("Next")."' name='move2' id=\"movenextbtn\" $disabled>".$clang->gT("Next")."</button>\n";
     }
-    if (($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription) || $thissurvey['format'] == 'A')
+    if (($_SESSION[$surveyid]['step'] && ($_SESSION[$surveyid]['step'] == $_SESSION[$surveyid]['totalsteps']) && !$presentinggroupdescription) || $thissurvey['format'] == 'A')
     {
         $surveymover .= "\t<button class=\"submit\" type=\"submit\" accesskey=\"l\" onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\"
-		value=\"".$clang->gT("Submit")."\" name=\"move2\" id=\"movesubmitbtn\" $disabled>".$clang->gT("Submit")."</button>\n";
+        value=\"".$clang->gT("Submit")."\" name=\"move2\" id=\"movesubmitbtn\" $disabled>".$clang->gT("Submit")."</button>\n";
     }
 
-    //	$surveymover .= "<input type='hidden' name='PHPSESSID' value='".session_id()."' id='PHPSESSID' />\n";
     return $surveymover;
 }
 
@@ -2196,19 +2172,16 @@ function doAssessment($surveyid, $returndataonly=false)
 {
     global $thistpl;
 
-
-
-    //$_SESSION = $CI->session->userdata;
     $clang = Yii::app()->lang;
 
     $baselang=Survey::model()->findByPk($surveyid)->language;
     $total=0;
-    if (!isset($_SESSION['s_lang']))
+    if (!isset($_SESSION[$surveyid]['s_lang']))
     {
-        $_SESSION['s_lang']=$baselang;
+        $_SESSION[$surveyid]['s_lang']=$baselang;
     }
     $query = "SELECT * FROM {{assessments}}
-    WHERE sid=$surveyid and language='{$_SESSION['s_lang']}'
+    WHERE sid=$surveyid and language='{$_SESSION[$surveyid]['s_lang']}'
     ORDER BY scope, id";
     if ($result = db_execute_assoc($query))   //Checked
 
@@ -2241,18 +2214,18 @@ function doAssessment($surveyid, $returndataonly=false)
                 if (in_array($field['type'],array('1','F','H','W','Z','L','!','M','O','P',":")))
                 {
                     $fieldmap[$field['fieldname']]['assessment_value']=0;
-                    if (isset($_SESSION[$field['fieldname']]))
+                    if (isset($_SESSION[$surveyid][$field['fieldname']]))
                     {
                         if ($field['type']==':') //Multiflexi numbers  - result is the assessment value
 
                         {
-                            $fieldmap[$field['fieldname']]['assessment_value']=$_SESSION[$field['fieldname']];
-                            $total=$total+$_SESSION[$field['fieldname']];
+                            $fieldmap[$field['fieldname']]['assessment_value']=$_SESSION[$surveyid][$field['fieldname']];
+                            $total=$total+$_SESSION[$surveyid][$field['fieldname']];
                         }
                         else
                         {
 
-                            $usquery = "SELECT assessment_value FROM {{answers}} where qid=".$field['qid']." and language='$baselang' and code=".db_quoteall($_SESSION[$field['fieldname']]);
+                            $usquery = "SELECT assessment_value FROM {{answers}} where qid=".$field['qid']." and language='$baselang' and code=".db_quoteall($_SESSION[$surveyid][$field['fieldname']]);
                             $usresult = db_execute_assoc($usquery);          //Checked
                             if ($usresult)
                             {
@@ -2260,7 +2233,7 @@ function doAssessment($surveyid, $returndataonly=false)
 
                                 if (($field['type'] == "M") || ($field['type'] == "P"))
                                 {
-                                    if ($_SESSION[$field['fieldname']] == "Y")     // for Multiple choice type questions
+                                    if ($_SESSION[$surveyid][$field['fieldname']] == "Y")     // for Multiple choice type questions
                                     {
                                         $aAttributes=getQuestionAttributeValues($field['qid'],$field['type']);
                                         $fieldmap[$field['fieldname']]['assessment_value']=(int)$aAttributes['assessment_value'];
@@ -2291,9 +2264,9 @@ function doAssessment($surveyid, $returndataonly=false)
                     if ($field['gid'] == $group && isset($field['assessment_value']))
                     {
                         //$grouptotal=$grouptotal+$field['answer'];
-                        if (isset ($_SESSION[$field['fieldname']]))
+                        if (isset ($_SESSION[$surveyid][$field['fieldname']]))
                         {
-                            if (($field['type'] == "M") and ($_SESSION[$field['fieldname']] == "Y")) 	// for Multiple choice type questions
+                            if (($field['type'] == "M") and ($_SESSION[$surveyid][$field['fieldname']] == "Y")) 	// for Multiple choice type questions
                                 $grouptotal=$grouptotal+$field['assessment_value'];
                             else																		// any other type of question
                                 $grouptotal=$grouptotal+$field['assessment_value'];
@@ -2359,32 +2332,31 @@ function doAssessment($surveyid, $returndataonly=false)
     }
 }
 
-function UpdateSessionGroupList($surveyid, $language)
+function UpdateGroupList($surveyid, $language)
 //1. SESSION VARIABLE: grouplist
 //A list of groups in this survey, ordered by group name.
 
 {
 
 
-    //$_SESSION = $CI->session->userdata;
     $clang = Yii::app()->lang;
-    unset ($_SESSION['grouplist']);
+    unset ($_SESSION[$surveyid]['grouplist']);
     $query = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
     $result = db_execute_assoc($query) or safe_die ("Couldn't get group list<br />$query<br />");  //Checked
     foreach ($result->readAll() as $row)
     {
-        $_SESSION['grouplist'][$row['gid']]=array($row['gid'], $row['group_name'], $row['description']);
+        $_SESSION[$surveyid]['grouplist'][$row['gid']]=array($row['gid'], $row['group_name'], $row['description']);
     }
-    if (isset($_SESSION['groupReMap']) && count($_SESSION['groupReMap'])>0)
+    if (isset($_SESSION[$surveyid]['groupReMap']) && count($_SESSION[$surveyid]['groupReMap'])>0)
     {
         // Now adjust the grouplist
-        foreach ($_SESSION['groupReMap'] as $iOldGid=>$iNewGid)
+        foreach ($_SESSION[$surveyid]['groupReMap'] as $iOldGid=>$iNewGid)
         {
-            if (!isset($_SESSION['grouplist'][$iOldGid]['shuffled']) && $iOldGid!=$iNewGid)
+            if (!isset($_SESSION[$surveyid]['grouplist'][$iOldGid]['shuffled']) && $iOldGid!=$iNewGid)
             {
-                $_SESSION['grouplist']=array_swap_assoc($iOldGid,$iNewGid,$_SESSION['grouplist']);
+                $_SESSION[$surveyid]['grouplist']=array_swap_assoc($iOldGid,$iNewGid,$_SESSION[$surveyid]['grouplist']);
             }
-            $_SESSION['grouplist'][$iNewGid]['shuffled']=true;
+            $_SESSION[$surveyid]['grouplist'][$iNewGid]['shuffled']=true;
         }
     }
 }
@@ -2396,19 +2368,16 @@ function UpdateFieldArray()
 {
     global $surveyid;
 
-
-
-    //$_SESSION = $CI->session->userdata;
     $clang = Yii::app()->lang;
 
-    if (isset($_SESSION['fieldarray']))
+    if (isset($_SESSION[$surveyid]['fieldarray']))
     {
-        reset($_SESSION['fieldarray']);
-        while ( list($key) = each($_SESSION['fieldarray']) )
+        reset($_SESSION[$surveyid]['fieldarray']);
+        while ( list($key) = each($_SESSION[$surveyid]['fieldarray']) )
         {
-            $questionarray =& $_SESSION['fieldarray'][$key];
+            $questionarray =& $_SESSION[$surveyid]['fieldarray'][$key];
 
-            $query = "SELECT * FROM {{questions}} WHERE qid=".$questionarray[0]." AND language='".$_SESSION['s_lang']."'";
+            $query = "SELECT * FROM {{questions}} WHERE qid=".$questionarray[0]." AND language='".$_SESSION[$surveyid]['s_lang']."'";
             $result = db_execute_assoc($query) or safe_die ("Couldn't get question <br />$query<br />");      //Checked
             $row = $result->read();
             $questionarray[2]=$row['title'];
@@ -2429,17 +2398,14 @@ function UpdateFieldArray()
 */
 function check_quota($checkaction,$surveyid)
 {
-    if (!isset($_SESSION['s_lang'])){
+    if (!isset($_SESSION[$surveyid]['s_lang'])){
         return;
     }
     global $thistpl, $clang, $clienttoken;
     $global_matched = false;
-    $quota_info = getQuotaInformation($surveyid, $_SESSION['s_lang']);
+    $quota_info = getQuotaInformation($surveyid, $_SESSION[$surveyid]['s_lang']);
     $x=0;
 
-
-
-    //$_SESSION = $CI->session->userdata;
     $clang = Yii::app()->lang;
 
     if(count($quota_info) > 0) // Quota's have to exist
@@ -2484,9 +2450,9 @@ function check_quota($checkaction,$surveyid)
                 {
                     foreach($member['fieldnames'] as $fieldname)
                     {
-                        if (isset($_SESSION[$fieldname]))
+                        if (isset($_SESSION[$surveyid][$fieldname]))
                         {
-                            if (in_array($_SESSION[$fieldname],$fields_value_array[$fieldname])){
+                            if (in_array($_SESSION[$surveyid][$fieldname],$fields_value_array[$fieldname])){
                                 $quota_info[$x]['members'][$y]['insession'] = "true";
                             }
                         }
@@ -2565,7 +2531,8 @@ function check_quota($checkaction,$surveyid)
     if ($checkaction == 'return')
     {
         return $quota_info;
-    } else if ($global_matched == true && $checkaction == 'enforce')
+    }
+    else if ($global_matched == true && $checkaction == 'enforce')
         {
             // Need to add Quota action enforcement here.
             reset($quota_info);
@@ -2581,7 +2548,8 @@ function check_quota($checkaction,$surveyid)
                     {
                         submittokens(true);
                     }
-                    session_destroy();
+
+                    killSurveySession($surveyid);
                 sendcacheheaders();
                 if($quota['AutoloadUrl'] == 1 && $quota['Url'] != "")
                 {
@@ -2612,7 +2580,7 @@ function check_quota($checkaction,$surveyid)
                 echo "\t".$quota['Message']."<br /><br />\n";
                 echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
                 echo "<form method='post' action='".Yii::app()->getController()->createUrl("/survey/index")."' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><button class='nav-button nav-button-icon-left ui-corner-all' class='submit' accesskey='p' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" name='move2'><span class='ui-icon ui-icon-seek-prev'></span>".$clang->gT("Previous")."</button>
-                <input type='hidden' name='thisstep' value='".($_SESSION['step'])."' id='thisstep' />
+                <input type='hidden' name='thisstep' value='".($_SESSION[$surveyid]['step'])."' id='thisstep' />
                 <input type='hidden' name='sid' value='".returnglobal('sid')."' id='sid' />
                 <input type='hidden' name='token' value='".$clienttoken."' id='token' />
                 </form>\n";
@@ -2668,45 +2636,38 @@ function encodeEmail($mail, $text="", $class="", $params=array())
 }
 
 /**
-* GetReferringUrl() returns the reffering URL
+* GetReferringUrl() returns the referring URL
+* @return string
 */
 function GetReferringUrl()
 {
     global $clang,$stripQueryFromRefurl;
 
-
-
-    //$_SESSION = $CI->session->userdata;
     $clang = Yii::app()->lang;
 
-    if (isset($_SESSION['refurl']))
-    {
-        return; // do not overwrite refurl
-    }
-
-    // refurl is not set in session, read it from server variable
+    // read it from server variable
     if(isset($_SERVER["HTTP_REFERER"]))
     {
         if(!preg_match('/'.$_SERVER["SERVER_NAME"].'/', $_SERVER["HTTP_REFERER"]))
         {
             if (!isset($stripQueryFromRefurl) || !$stripQueryFromRefurl)
             {
-                $_SESSION['refurl'] = $_SERVER["HTTP_REFERER"];
+                return $_SERVER["HTTP_REFERER"];
             }
             else
             {
                 $aRefurl = explode("?",$_SERVER["HTTP_REFERER"]);
-                $_SESSION['refurl'] = $aRefurl[0];
+                return $aRefurl[0];
             }
         }
         else
         {
-            $_SESSION['refurl'] = '-';
+            return '-';
         }
     }
     else
     {
-        $_SESSION['refurl'] = null;
+        return null;
     }
 }
 
@@ -2774,6 +2735,24 @@ function get_current_ip_address()
     }
 
     return  $sIPAddress;
+}
+
+function killSurveySession($iSurveyID)
+{
+    unset($_SESSION[$iSurveyID]);
+}
+
+function UpdateSessionGroupList($surveyid, $language)
+//1. SESSION VARIABLE: grouplist
+//A list of groups in this survey, ordered by group name.
+{
+    unset ($_SESSION[$surveyid]['grouplist']);
+    $query = "SELECT * FROM {{groups}} WHERE sid={$surveyid} AND language='".$language."' ORDER BY group_order";
+    $result = db_execute_assoc($query) or safe_die ("Couldn't get group list<br />$query<br />".$connect->ErrorMsg());  //Checked
+    foreach($result->readAll() as $row)
+    {
+        $_SESSION[$surveyid]['grouplist'][]=array($row['gid'], $row['group_name'], $row['description']);
+    }
 }
 
 // Closing PHP tag intentionally left out - yes, it is okay
