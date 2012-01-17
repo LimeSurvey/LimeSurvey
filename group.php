@@ -14,6 +14,8 @@
  */
 if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 
+require_once("save.php");   // for supporting functions only
+
 // $LEMdebugLevel - customizable debugging for Lime Expression Manager
 $LEMdebugLevel=0;   // LEM_DEBUG_TIMING;    // (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
 switch ($thissurvey['format'])
@@ -201,14 +203,12 @@ else
         // must do this here to process the POSTed values
         $moveResult = LimeExpressionManager::JumpTo($_SESSION['step'],false);   // by jumping to current step, saves data so far
 
-        require_once("save.php");   // for supporting functions only
         showsaveform(); // generates a form and exits, awaiting input
     }
 
     if ($thissurvey['active'] == "Y" && isset($_POST['saveprompt']))
     {
         // The response from the save form
-        require_once("save.php");   // for supporting functions only
         // CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
         $flashmessage = savedcontrol();
         
@@ -755,6 +755,7 @@ foreach ($_SESSION['grouplist'] as $gl)
         $qinfo = LimeExpressionManager::GetQuestionStatus($qid);
 		$lastgrouparray = explode("X",$qa[7]);
 		$lastgroup = $lastgrouparray[0]."X".$lastgrouparray[1]; // id of the last group, derived from question id
+        $lastanswer = $qa[7];
 
         $q_class = question_class($qinfo['info']['type']);
 
@@ -814,8 +815,11 @@ foreach ($_SESSION['grouplist'] as $gl)
             echo templatereplace($question_template,NULL,false,$qa[4]);
         };
     }
-    if ($surveyMode != 'survey') {
+    if ($surveyMode == 'group') {
         echo "<input type='hidden' name='lastgroup' value='$lastgroup' id='lastgroup' />\n"; // for counting the time spent on each group
+    }
+    if ($surveyMode == 'question') {
+        echo "<input type='hidden' name='lastanswer' value='$lastanswer' id='lastanswer' />\n";
     }
     echo "\n\n<!-- END THE GROUP -->\n";
     echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"));

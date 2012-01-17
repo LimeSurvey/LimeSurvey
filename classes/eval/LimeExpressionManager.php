@@ -2251,6 +2251,7 @@ class LimeExpressionManager {
         $LEM->surveyOptions['startlanguage'] = (isset($options['startlanguage']) ? $options['startlanguage'] : 'en');
         $LEM->surveyOptions['surveyls_dateformat'] = (isset($options['surveyls_dateformat']) ? $options['surveyls_dateformat'] : 1);
         $LEM->surveyOptions['tablename'] = (isset($options['tablename']) ? $options['tablename'] : db_table_name('survey_' . $LEM->sid));
+        $LEM->surveyOptions['tablename_timings'] = ((isset($options['savetimings']) && $options['savetimings'] == 'Y') ? db_table_name('survey_' . $LEM->sid . '_timings') : '');
         $LEM->surveyOptions['target'] = (isset($options['target']) ? $options['target'] : '/temp/files/');
         $LEM->surveyOptions['timeadjust'] = (isset($options['timeadjust']) ? $options['timeadjust'] : 0);
         $LEM->surveyOptions['tempdir'] = (isset($options['tempdir']) ? $options['tempdir'] : '/temp/');
@@ -2648,6 +2649,7 @@ class LimeExpressionManager {
                 "startlanguage"=>$this->surveyOptions['startlanguage'],
                 "token"=>($this->surveyOptions['token']),
                 "datestamp"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : NULL),
+                "refurl"=>(($this->surveyOptions['refurl']) ? getenv("HTTP_REFERER") : NULL),
                 "startdate"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : date("Y-m-d H:i:s",0)),
                 );
             //One of the strengths of ADOdb's AutoExecute() is that only valid field names for $table are updated
@@ -2656,9 +2658,28 @@ class LimeExpressionManager {
                 $srid = $connect->Insert_ID($this->surveyOptions['tablename'],"sid");
                 $_SESSION['srid'] = $srid;
             }
-            else if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY)
+            else
             {
-                $message .= "Unable to insert record into survey table.<br />".$connect->ErrorMsg() . "<br/>";
+                $message .= $this->gT("Unable to insert record into survey table: ") .$connect->ErrorMsg() . "<br/>";
+                $_SESSION['flashmessage'] = $message;
+                echo $message;
+            }
+            //Insert Row for Timings, if needed
+            if ($this->surveyOptions['savetimings']) {
+                $tdata = array(
+                    'id'=>$srid,
+                    'interviewtime'=>0
+                    );
+                if ($connect->AutoExecute($this->surveyOptions['tablename_timings'], $tdata,'INSERT'))    // Checked
+                {
+                    $trid = $connect->Insert_ID($this->surveyOptions['tablename_timings'],"sid");
+                }
+                else 
+                {
+                    $message .= $this->gT("Unable to insert record into timings table "). $connect->ErrorMsg() . "<br/>";
+                    $_SESSION['flashmessage'] = $message;
+                    echo $message;
+                }
             }
         }
 
@@ -2738,6 +2759,11 @@ class LimeExpressionManager {
                         $message .= 'Error in SQL update: '. $connect->ErrorMsg() . '<br/>';
                     }
                 }
+                    // Save Timings if needed
+                if ($this->surveyOptions['savetimings']) {
+                    set_answer_time();
+                }
+
                 if ($finished)
                 {
                     // Delete the save control record if successfully finalize the submission
@@ -2766,11 +2792,6 @@ class LimeExpressionManager {
                     if ($bQuotaMatched)
                     {
                         check_quota('enforce',$this->sid);  // will create a page and quit.
-                    }
-
-                    // Save Timings if needed
-                    if ($this->surveyOptions['savetimings']) {
-                        set_answer_time();
                     }
                 }
                 else if ($this->surveyOptions['allowsave'] && isset($_SESSION['scid']))
