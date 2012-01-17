@@ -663,7 +663,7 @@ class LimeExpressionManager {
                     switch ($type)
                     {
                         case 'N': //NUMERICAL QUESTION TYPE
-                            $sq_name = '(' . $sq['varName'] . ' >= (' . $min_num_value_n . '))';
+                            $sq_name = '(is_empty(' . $sq['varName'] . ') || '. $sq['varName'] . ' >= (' . $min_num_value_n . '))';
                             break;
                         default:
                             break;
@@ -820,7 +820,7 @@ class LimeExpressionManager {
                     switch ($type)
                     {
                         case 'N': //NUMERICAL QUESTION TYPE
-                            $sq_name = '(' . $sq['varName'] . ' <= (' . $max_num_value_n . '))';
+                            $sq_name = '(is_empty(' . $sq['varName'] . ') || ' . $sq['varName'] . ' <= (' . $max_num_value_n . '))';
                             break;
                         default:
                             break;
