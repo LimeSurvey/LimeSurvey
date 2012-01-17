@@ -217,6 +217,6 @@ class Survey_permissions extends CActiveRecord
             WHERE p.sid = :surveyid AND u.uid != :userid
             GROUP BY p.sid, p.uid, u.users_name, u.full_name
             ORDER BY u.users_name";
-        return Yii::app()->db->createCommand($query2)->bindParam(":userid", Yii::app()->session['loginID'], PDO::PARAM_INT)->bindParam("surveyid", $surveyid, PDO::PARAM_INT)->query(); //Checked
+        return Yii::app()->db->createCommand($query2)->bindParam(":userid", Yii::app()->user->getId(), PDO::PARAM_INT)->bindParam("surveyid", $surveyid, PDO::PARAM_INT)->query(); //Checked
     }
 }
