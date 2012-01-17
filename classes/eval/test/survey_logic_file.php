@@ -78,7 +78,14 @@ EOD;
             else {
                 $surveyInfo = explode('|',$_POST['sid']);
                 $surveyid = $surveyInfo[0];
-                $assessments = ($surveyInfo[1] == 'Y');
+                if (isset($_POST['assessments']))
+                {
+                    $assessments = ($_POST['assessments'] == 'Y');
+                }
+                else
+                {
+                    $assessments = ($surveyInfo[1] == 'Y');
+                }
                 $surveyMode = $_POST['surveyMode'];
                 $LEMdebugLevel = (
                         ((isset($_POST['LEM_DEBUG_TIMING']) && $_POST['LEM_DEBUG_TIMING'] == 'Y') ? LEM_DEBUG_TIMING : 0) +
