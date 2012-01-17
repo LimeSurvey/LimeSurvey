@@ -6981,7 +6981,7 @@ function FixLanguageConsistency($sid, $availlangs='')
             array_push($quests,$question['qid']);
             foreach ($langs as $lang)
             {
-                $query = "SELECT qid FROM {{questions}} WHERE sid='{$sid}' AND qid='{$question['qid']}' AND language='{$lang}'";
+                $query = "SELECT qid FROM {{questions}} WHERE sid='{$sid}' AND qid='{$question['qid']}' AND language='{$lang}' AND scale_id={$question['scale_id']}";
                 $gresult = Yii::app()->db->createCommand($query)->query();
                 if ($gresult->getRowCount() < 1)
                 {
@@ -7013,7 +7013,6 @@ function FixLanguageConsistency($sid, $availlangs='')
         {
             $sqlans .= " OR qid = '".$quest."' ";
         }
-
         $query = "SELECT * FROM {{answers}} WHERE language='{$baselang}' and (".trim($sqlans,' OR').") ORDER BY qid, code";
         $result = Yii::app()->db->createCommand($query)->query();
         if ($result->getRowCount() > 0)
@@ -7022,7 +7021,7 @@ function FixLanguageConsistency($sid, $availlangs='')
             {
                 foreach ($langs as $lang)
                 {
-                    $query = "SELECT qid FROM {{answers}} WHERE code='{$answer['code']}' AND qid='{$answer['qid']}' AND language='{$lang}'";
+                    $query = "SELECT qid FROM {{answers}} WHERE code='{$answer['code']}' AND qid='{$answer['qid']}' AND language='{$lang}' AND scale_id={$answer['scale_id']}";
                     $gresult = Yii::app()->db->createCommand($query)->query();
                     if ($gresult->getRowCount() < 1)
                     {
