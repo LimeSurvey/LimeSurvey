@@ -226,7 +226,7 @@ function LEMval(alias)
         }
     }
     var whichJsName;    // correct name whether on- or off-page
-    if (LEMallOnOnePage==true || attr.gid == LEMgid) {
+    if (LEMmode=='survey' || (LEMmode=='group' && attr.gid == LEMgid) || (LEMmode=='question' && attr.qid == LEMqid)) {
         whichJsName = (typeof attr.jsName_on === 'undefined') ? attr.jsName : attr.jsName_on;
     }
     else {
@@ -487,9 +487,6 @@ function  LEMsetTabIndexes()
 {
     if (typeof tabIndexesSet == 'undefined') {
         $(':input[type!=hidden][id!=runonce]').each(function(index){
-            if (index==0) {
-                $(this).focus();    // focus on first active element on page
-            }
             $(this).bind('keydown',function(e) {
                 if (e.keyCode == 9) {
                     ExprMgr_process_relevance_and_tailoring(e.type);
@@ -499,6 +496,9 @@ function  LEMsetTabIndexes()
             })
         })	// MUST DO THIS FIRST
         tabIndexesSet = true;
+        
+        // focus on first element by default
+    	$('#limesurvey :input:visible:enabled:first').focus();
     }
 }
 

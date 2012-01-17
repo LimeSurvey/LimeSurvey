@@ -47,7 +47,7 @@ class LimeExpressionManager {
     private $questionSeq2relevance; // keeps relevance in proper sequence so can minimize relevance processing to see what should be see on page and in indexes
     private $currentGroupSeq;   // current Group sequence (0-based index)
     private $currentQuestionSeq;    // for Question-by-Question mode, the 0-based index
-    private $currentQID;        // used in Question-by-Question modecu
+    private $currentQID;        // used in Question-by-Question mode
     private $currentQset=NULL;   // set of the current set of questions to be displayed, indexed by QID - at least one must be relevant
     private $lastMoveResult=NULL;   // last result of NavigateForwards, NavigateBackwards, or JumpTo
     private $indexQseq;         // array of information needed to generate navigation index in question-by-question mode
@@ -4187,8 +4187,16 @@ class LimeExpressionManager {
         $allJsVarsUsed=array();
         $jsParts[] = '<script type="text/javascript" src="'.$rooturl.'/classes/eval/em_javascript.js"></script>';
         $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
-        $jsParts[] = "var LEMgid=" . $LEM->groupNum . ";\n";    // current group num so can compute isOnCurrentPage
-        $jsParts[] = "var LEMallOnOnePage=" . (($LEM->allOnOnePage) ? 'true' : 'false') . ";\n";
+        $jsParts[] = "var LEMmode='" . $LEM->surveyMode . "';\n";
+        if ($LEM->surveyMode == 'group')
+        {
+            $jsParts[] = "var LEMgid=" . $LEM->groupNum . ";\n";    // current group num so can compute isOnCurrentPage
+        }
+        if ($LEM->surveyMode == 'question')
+        {
+            $jsParts[] = "var LEMqid=" . $LEM->currentQID . ";\n";  // current group num so can compute isOnCurrentPage
+        }
+
         $jsParts[] = "function ExprMgr_process_relevance_and_tailoring(evt_type){\n";
         $jsParts[] = "if (typeof LEM_initialized == 'undefined') {\nLEM_initialized=true;\nLEMsetTabIndexes();\n}\n";
         $jsParts[] = "if (evt_type == 'onchange' && (typeof last_evt_type != 'undefined' && last_evt_type == 'keydown') && (typeof target_tabIndex != 'undefined' && target_tabIndex == document.activeElement.tabIndex)) {\nreturn;\n}\n";
