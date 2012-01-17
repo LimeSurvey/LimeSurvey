@@ -97,13 +97,20 @@ $dummy_js = '
 
 
 $answer=$answers[0][1];
-$help=$answers[0][2];
+
+//GET HELP
+$hquery="SELECT help FROM {$dbprefix}questions WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."'";
+$hresult=db_execute_num($hquery) or safe_die($connect->ErrorMsg());       //Checked
+$help="";
+while ($hrow=$hresult->FetchRow()) {$help=$hrow[0];}
 
 $question = $answers[0][0];
 $question['code']=$answers[0][5];
 $question['class'] = question_class($qrows['type']);
 $question['essentials'] = 'id="question'.$qrows['qid'].'"';
 $question['sgq']=$ia[1];
+$question['aid']='unknown';
+$question['sqid']='unknown';
 
 if ($qrows['mandatory'] == 'Y')
 {
