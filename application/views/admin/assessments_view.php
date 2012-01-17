@@ -77,13 +77,13 @@ else {echo "<tr class='evenrow'>\n";} ?>
     if (isset($editdata)) {echo " value='{$editdata['maximum']}' ";} ?>/></li>
 
 	</ul><div id="languagetabs">
-    <ul>
+    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
     <?php foreach ($assessmentlangs as $assessmentlang)
     {
 	    $position=0;
-	    echo '<li><a href="#tablang'.$assessmentlang.'"><span>'.getLanguageNameFromCode($assessmentlang, false);
+	    echo '<li class="ui-state-default ui-corner-top" style="clear: none;"><a href="#tablang'.$assessmentlang.'">'.getLanguageNameFromCode($assessmentlang, false);
 	    if ($assessmentlang==$baselang) {echo ' ('.$clang->gT("Base language").')';}
-	    echo '</span></a></li>';
+	    echo '</a></li>';
     } ?>
     </ul>
     <?php foreach ($assessmentlangs as $assessmentlang)
@@ -99,16 +99,15 @@ else {echo "<tr class='evenrow'>\n";} ?>
 		    $message=htmlspecialchars($editdata['message']);
 	    } ?>
 	    <div id="tablang<?php echo $assessmentlang;?>">
-	    <?php $clang->eT("Heading");?><br/>
-	    <input type='text' name='name_<?php echo $assessmentlang;?>' size='80' value='<?php echo $heading;?>'/><br /><br />
-	    <?php $clang->eT("Message");?>
-	    <textarea name='assessmentmessage_<?php echo $assessmentlang;?>' id='assessmentmessage_<?php echo $assessmentlang;?>' rows='10' cols='80'><?php echo $message;?></textarea >
-
+	    <ul><li><label style="width:100px;" for='name_<?php echo $assessmentlang;?>'><?php $clang->eT("Heading");?>:</label>
+	    <input type='text' name='name_<?php echo $assessmentlang;?>' id='name_<?php echo $assessmentlang;?>' size='80' value='<?php echo $heading;?>'/></li>
+	    <li><label style="width:100px;" for='assessmentmessage_<?php echo $assessmentlang;?>'><?php $clang->eT("Message");?>:</label>
+	    <textarea name='assessmentmessage_<?php echo $assessmentlang;?>' id='assessmentmessage_<?php echo $assessmentlang;?>' rows='10' cols='80'><?php echo $message;?></textarea></li>
+        <li style="text-align:center;"><input type='submit' value='<?php $clang->eT("Save");?>'/></li></ul>
 	    </div>
     <?php } ?>
     </div>
-
-    <div><input type='submit' value='<?php $clang->eT("Save");?>' />
+    <div>
     <?php if ($action == "assessmentedit") echo "&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' value='".$clang->gT("Cancel")."' onclick=\"document.assessmentsform.action.value='assessments'\" />\n ";?>
     <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
     <input type='hidden' name='action' value='<?php echo $actionvalue;?>' />
