@@ -300,12 +300,12 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
                                      ."FROM ".db_table_name('groups')
                                      ."WHERE sid=".db_quoteall($surveyid,true)
                                        ."AND language='{$baselang}' "
-                                     ."ORDER BY gid ",
+                ."ORDER BY group_order ",
         "queryto"   => "SELECT * "
                                      ."FROM ".db_table_name('groups')
                                      ."WHERE sid=".db_quoteall($surveyid,true)
                                        ."AND language=".db_quoteall($tolang,true)
-                                     ."ORDER BY gid ",
+                ."ORDER BY group_order ",
         "queryupdate" => "UPDATE ".db_table_name('groups')
                          ."SET group_name = ".db_quoteall($new,true)
                          ."WHERE gid = '{$id1}' "
@@ -329,12 +329,12 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
                                      ."FROM ".db_table_name('groups')
                                      ."WHERE sid=".db_quoteall($surveyid,true)
                                        ."AND language='{$baselang}' "
-                                     ."ORDER BY gid ",
+                ."ORDER BY group_order ",
         "queryto"   => "SELECT *"
                                      ."FROM ".db_table_name('groups')
                                      ."WHERE sid=".db_quoteall($surveyid,true)
                                        ."AND language=".db_quoteall($tolang,true)
-                                     ."ORDER BY gid ",
+                ."ORDER BY group_order ",
         "queryupdate" => "UPDATE ".db_table_name('groups')
                          ."SET description = ".db_quoteall($new,true)
                          ."WHERE gid = '{$id1}' "
@@ -354,18 +354,22 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
 
     case 'question':
       $amTypeOptions = array(
-                "querybase" => "SELECT q.qid as questionid, q.* "
+                "querybase" => "SELECT q.qid as questionid, q.title, q.question, q.qid, q.gid "
                     ."FROM ".db_table_name('questions')." q "
-                                   ."WHERE sid=".db_quoteall($surveyid,true)
-                                     ."AND language='{$baselang}' "
+                    ."JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
+                    ."WHERE q.sid=".db_quoteall($surveyid,true)
+                    ."AND q.language='{$baselang}' "
+                    ."AND g.language='{$baselang}' "
                                      ."AND parent_qid=0 "
-                                   ."ORDER BY qid ",
-        "queryto"   => "SELECT * "
-                                    ."FROM ".db_table_name('questions')
-                                    ."WHERE sid=".db_quoteall($surveyid,true)
-                                      ."AND language='{$tolang}' "
+                    ."ORDER BY group_order,question_order ",
+                "queryto" => "SELECT q.qid as questionid, q.title, q.question, q.qid, q.gid "
+                    ."FROM ".db_table_name('questions')." q "
+                    ."JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
+                    ."WHERE q.sid=".db_quoteall($surveyid,true)
+                    ."AND q.language='{$tolang}' "
+                    ."AND g.language='{$tolang}' "
                                      ." AND parent_qid=0 "
-                                    ."ORDER BY qid ",
+                    ."ORDER BY group_order,question_order ",
         "queryupdate" => "UPDATE ".db_table_name('questions')
                          ."SET question = ".db_quoteall($new,true)
                          ."WHERE qid = '{$id1}' "
@@ -386,18 +390,22 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
 
     case 'question_help':
       $amTypeOptions = array(
-                "querybase" => "SELECT q.qid as questionid, q.* "
+                "querybase" => "SELECT q.qid as questionid, q.help, q.qid, q.title "
                     ."FROM ".db_table_name('questions')." q "
-                                   ."WHERE sid=".db_quoteall($surveyid,true)
-                                     ."AND language='{$baselang}' "
+                    ."JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
+                    ."WHERE g.sid=".db_quoteall($surveyid,true)
+                    ."AND q.language='{$baselang}' "
+                    ."AND g.language='{$baselang}' "
                                      ."AND parent_qid=0 "
-                                   ."ORDER BY qid ",
-        "queryto"   => "SELECT * "
-                                    ."FROM ".db_table_name('questions')
-                                    ."WHERE sid=".db_quoteall($surveyid,true)
-                                      ."AND language='{$tolang}' "
+                    ."ORDER BY group_order,question_order ",
+                "queryto" => "SELECT q.qid as questionid, q.help, q.qid, q.title "
+                    ."FROM ".db_table_name('questions')." q "
+                    ."JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
+                    ."WHERE g.sid=".db_quoteall($surveyid,true)
+                    ."AND q.language='{$tolang}' "
+                    ."AND g.language='{$tolang}' "
                                      ." AND parent_qid=0 "
-                                    ."ORDER BY qid ",
+                    ."ORDER BY group_order,question_order ",
         "queryupdate" => "UPDATE ".db_table_name('questions')
                          ."SET help = ".db_quoteall($new,true)
                          ."WHERE qid = '{$id1}' "
