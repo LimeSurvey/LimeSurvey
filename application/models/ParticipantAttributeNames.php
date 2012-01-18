@@ -239,12 +239,17 @@ class ParticipantAttributeNames extends CActiveRecord
         }
         if (!empty($insertnames))
         {
-            Yii::app()->db->createCommand()->update('{{participant_attribute_names}}', $insertnames, 'attribute_id = :attribute_id')->bindParam(":attribute_id", $data['attribute_id'], PDO::PARAM_INT);
+            self::model()->updateAll($insertnames, 'attribute_id = :id', array(':id' => $data['attribute_id']));
         }
 
         if (!empty($data['attribute_name']))
         {
-            Yii::app()->db->createCommand()->update('{{participant_attribute_names_lang}}', array('attribute_name' => $data['attribute_name']), 'attribute_id = :attribute_id AND lang="'.Yii::app()->session['adminlang'].'"')->bindParam(":attribute_id", $data['attribute_id'], PDO::PARAM_INT);
+            Yii::app()->db->createCommand()
+                    ->update('{{participant_attribute_names_lang}}', array('attribute_name' => $data['attribute_name']),
+                                'attribute_id = :attribute_id AND lang=:lang', array(
+                                        ':lang' => Yii::app()->session['adminlang'],
+                                        ':attribute_id' => $data['attribute_id'],
+                                    ));
         }
     }
 
@@ -260,7 +265,12 @@ class ParticipantAttributeNames extends CActiveRecord
         else
         {
              // A record does exist, update it.
-            $query = Yii::app()->db->createCommand()->update('{{participant_attribute_names_lang}}',array('attribute_name'=>$data['attribute_name'],),'attribute_id = :attribute_id  AND lang= :lang')->bindParam(":attribute_id", $data['attribute_id'], PDO::PARAM_INT)->bindParam(":lang", $data['lang'], PDO::PARAM_STR);
+            $query = Yii::app()->db->createCommand()
+                ->update('{{participant_attribute_names_lang}}', array('attribute_name' => $data['attribute_name']),
+                            'attribute_id = :attribute_id  AND lang= :lang', array(
+                                    ':attribute_id' => $data['attribute_id'],
+                                    ':lang' => $data['lang'],
+                                ));
         }
     }
 
