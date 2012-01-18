@@ -232,6 +232,9 @@ function LEMval(alias)
     else {
         whichJsName = attr.jsName;
     }
+    if (whichJsName === null || typeof document.getElementById(whichJsName) === 'undefined' || document.getElementById(whichJsName) === null) {
+        an_error = true;    // this line is here to make debugging easier
+    }
 
     // values should always be stored encoded with htmlspecialchars()
     switch (suffix) {

@@ -629,6 +629,64 @@ class LimeExpressionManager {
                 }
             }
 
+            // max_answers
+            // Validation:= count(sq1,...,sqN) <= value (which could be an expression).
+            if (isset($qattr['max_answers']) && trim($qattr['max_answers']) != '')
+            {
+                $max_answers = $qattr['max_answers'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                        {
+                            case '1':   //Array (Flexible Labels) dual scale
+                            case ':': //ARRAY (Multi Flexi) 1 to 10
+                            case ';': //ARRAY (Multi Flexi) Text
+                            case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                            case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                            case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                            case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                            case 'F': //ARRAY (Flexible) - Row Format
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                            case 'Q': //MULTIPLE SHORT TEXT
+                            case 'M': //Multiple choice checkbox
+                                $sq_name = $sq['varName'] . '.NAOK';
+                                break;
+                            case 'P': //Multiple choice with comments checkbox + text
+                                if (!preg_match('/comment$/',$sq['varName'])) {
+                                    $sq_name = $sq['varName'] . '.NAOK';
+                                }
+                                break;
+                            case 'R': //RANKING STYLE
+                                // TODO - does not have sub-questions, so how should this be done?
+                                // Current JavaScript works fine, but can't use expression value
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $sq_names[] = $sq_name;
+                        }
+                    }
+                    if (count($sq_names) > 0) {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'max_answers',
+                            'eqn' => '(count(' . implode(', ', $sq_names) . ') <= (' . $max_answers . '))',
+                            'qid' => $questionNum,
+                            'tip' => $this->gT('The maximum number of answers for this question is') . ' {' . $max_answers . '}.',
+//                            'countEqn' => 'count(' . implode(', ', $sq_names) . ')',
+                        );
+                    }
+                }
+            }
+
             // min_num_value
             // Validation:= sum(sq1,...,sqN) >= value (which could be an expression).
             if (isset($qattr['min_num_value']) && trim($qattr['min_num_value']) != '')
@@ -710,7 +768,7 @@ class LimeExpressionManager {
                             'type' => 'min_num_value_n',
                             'eqn' => implode(' && ', $sq_names),
                             'qid' => $questionNum,
-                            'tip' => $this->gT('Each entry must be at least') . ' {' . $min_num_value_n . '}.',
+                            'tip' => $this->gT('Each answer must be at least') . ' {' . $min_num_value_n . '}.',
                             'subqValidEqns' => $subqValidEqns,
                         );
                     }
@@ -751,64 +809,6 @@ class LimeExpressionManager {
                             'qid' => $questionNum,
                             'tip' => $this->gT('Total of all entries must be at least') . ' {' . $min_num_value_sgqa . '}.',
                             'sumEqn' => 'sum(' . implode(', ', $sq_names) . ')',
-                        );
-                    }
-                }
-            }
-
-            // max_answers
-            // Validation:= count(sq1,...,sqN) <= value (which could be an expression).
-            if (isset($qattr['max_answers']) && trim($qattr['max_answers']) != '')
-            {
-                $max_answers = $qattr['max_answers'];
-                if ($hasSubqs) {
-                    $subqs = $qinfo['subqs'];
-                    $sq_names = array();
-                    foreach ($subqs as $sq) {
-                        $sq_name = NULL;
-                        switch ($type)
-                        {
-                            case '1':   //Array (Flexible Labels) dual scale
-                            case ':': //ARRAY (Multi Flexi) 1 to 10
-                            case ';': //ARRAY (Multi Flexi) Text
-                            case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                            case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                            case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                            case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                            case 'F': //ARRAY (Flexible) - Row Format
-                            case 'K': //MULTIPLE NUMERICAL QUESTION
-                            case 'Q': //MULTIPLE SHORT TEXT
-                            case 'M': //Multiple choice checkbox
-                                $sq_name = $sq['varName'] . '.NAOK';
-                                break;
-                            case 'P': //Multiple choice with comments checkbox + text
-                                if (!preg_match('/comment$/',$sq['varName'])) {
-                                    $sq_name = $sq['varName'] . '.NAOK';
-                                }
-                                break;
-                            case 'R': //RANKING STYLE
-                                // TODO - does not have sub-questions, so how should this be done?
-                                // Current JavaScript works fine, but can't use expression value
-                                break;
-                            default:
-                                break;
-                        }
-                        if (!is_null($sq_name)) {
-                            $sq_names[] = $sq_name;
-                        }
-                    }
-                    if (count($sq_names) > 0) {
-                        if (!isset($validationEqn[$questionNum]))
-                        {
-                            $validationEqn[$questionNum] = array();
-                        }
-                        $validationEqn[$questionNum][] = array(
-                            'qtype' => $type,
-                            'type' => 'max_answers',
-                            'eqn' => '(count(' . implode(', ', $sq_names) . ') <= (' . $max_answers . '))',
-                            'qid' => $questionNum,
-                            'tip' => $this->gT('The maximum number of answers for this question is') . ' {' . $max_answers . '}.',
-//                            'countEqn' => 'count(' . implode(', ', $sq_names) . ')',
                         );
                     }
                 }
@@ -895,7 +895,7 @@ class LimeExpressionManager {
                             'type' => 'max_num_value_n',
                             'eqn' => implode(' && ', $sq_names),
                             'qid' => $questionNum,
-                            'tip' => $this->gT('Each entry must be at most') . ' {' . $max_num_value_n . '}.',
+                            'tip' => $this->gT('Each answer must be at most') . ' {' . $max_num_value_n . '}.',
                             'subqValidEqns' => $subqValidEqns,
                         );
                     }
@@ -1019,7 +1019,7 @@ class LimeExpressionManager {
                             'type' => 'multiflexible_min',
                             'eqn' => implode(' && ', $sq_names),
                             'qid' => $questionNum,
-                            'tip' => $this->gT('Each entry must be at least') . ' {' . $multiflexible_min . '}.',
+                            'tip' => $this->gT('Each answer must be at least') . ' {' . $multiflexible_min . '}.',
                             'subqValidEqns' => $subqValidEqns,
                         );
                     }
@@ -1064,7 +1064,7 @@ class LimeExpressionManager {
                             'type' => 'multiflexible_max',
                             'eqn' => implode(' && ', $sq_names),
                             'qid' => $questionNum,
-                            'tip' => $this->gT('Each entry must be no more than') . ' {' . $multiflexible_max . '}.',
+                            'tip' => $this->gT('Each answer must be no more than') . ' {' . $multiflexible_max . '}.',
                             'subqValidEqns' => $subqValidEqns,
                         );
                     }
@@ -1613,7 +1613,7 @@ class LimeExpressionManager {
                     $jsVarName_on = $jsVarName;
                     break;
                 case 'P': //Multiple choice with comments checkbox + text
-                    if (preg_match("/comment$/",$sgqa))
+                    if (preg_match("/(other|comment)$/",$sgqa))
                     {
                         $jsVarName_on = 'answer' . $sgqa;  // is this true for survey.php and not for group.php?
                         $jsVarName = 'java' . $sgqa;
@@ -4384,13 +4384,7 @@ class LimeExpressionManager {
                 }
 
                 // Set color-coding for validation equations
-                if ($validationEqn != '' && (
-                           $arg['type'] == 'K'
-                        || $arg['type'] == 'N'
-                        || $arg['type'] == 'S'
-                        || $arg['type'] == 'T'
-                        || $arg['type'] == 'U'
-                    ))
+                if ($validationEqn != '')
                 {
                     $_isValid = $LEM->em->ProcessBooleanExpression($validationEqn);
                     $_vars = $LEM->em->GetJSVarsUsed();
@@ -4413,6 +4407,7 @@ class LimeExpressionManager {
                         default:
                             break;
                     }
+                    $jsParts[] = "    $('#" . $arg['qid'] . "_vmsg').css('color','green');\n";
                     $jsParts[] = "  }\n  else {\n";
                     switch ($arg['type'])
                     {
@@ -4429,6 +4424,7 @@ class LimeExpressionManager {
                         default:
                             break;
                     }
+                    $jsParts[] = "    $('#" . $arg['qid'] . "_vmsg').css('color','red').show();\n";
                     $jsParts[] = "  }\n";
                 }
 

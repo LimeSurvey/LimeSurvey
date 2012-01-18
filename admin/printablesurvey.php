@@ -1435,23 +1435,23 @@ while ($degrow = $degresult->FetchRow())
                     $meaquery = "SELECT * FROM ".db_table_name("questions")." WHERE parent_qid={$deqrow['qid']}  AND scale_id=0 AND language='{$surveyprintlang}' ORDER BY question_order";
                     $mearesult = db_execute_assoc($meaquery);
 
-                    if ($checkboxlayout === false)
-                    {
-                        if ($stepvalue > 1)
-                        {
-                            $question['QUESTION_TYPE_HELP'] = sprintf($clang->gT("Please write a multiple of %d between (%s) and (%s) for each item:"),$stepvalue,$minvalue,$maxvalue);
-                            if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT("Please write a multiple of %d between (%s) and (%s) for each item:"),$stepvalue,$minvalue,$maxvalue),"U");}
-                        }
-                        else {
-                            $question['QUESTION_TYPE_HELP'] = sprintf($clang->gT("Please enter a number between (%s) and (%s) for each item:"),$minvalue,$maxvalue);
-                            if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT("Please enter a number between (%s) and (%s) for each item:"),$minvalue,$maxvalue),"U");}
-                        }
-                    }
-                    else
-                    {
-                        $question['QUESTION_TYPE_HELP'] .= $clang->gT("Check any that apply").":";
-                        if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Check any that apply"),"U");}
-                    }
+//                    if ($checkboxlayout === false)
+//                    {
+//                        if ($stepvalue > 1)
+//                        {
+//                            $question['QUESTION_TYPE_HELP'] = sprintf($clang->gT("Please write a multiple of %d between (%s) and (%s) for each item:"),$stepvalue,$minvalue,$maxvalue);
+//                            if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT("Please write a multiple of %d between (%s) and (%s) for each item:"),$stepvalue,$minvalue,$maxvalue),"U");}
+//                        }
+//                        else {
+//                            $question['QUESTION_TYPE_HELP'] = sprintf($clang->gT("Please enter a number between (%s) and (%s) for each item:"),$minvalue,$maxvalue);
+//                            if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT("Please enter a number between (%s) and (%s) for each item:"),$minvalue,$maxvalue),"U");}
+//                        }
+//                    }
+//                    else
+//                    {
+//                        $question['QUESTION_TYPE_HELP'] .= $clang->gT("Check any that apply").":";
+//                        if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Check any that apply"),"U");}
+//                    }
                     $question['QUESTION_TYPE_HELP'] .= array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
                     $question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";

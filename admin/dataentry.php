@@ -1759,13 +1759,31 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
 
                 $qinfo = LimeExpressionManager::GetQuestionStatus($deqrow['qid']);
                 $relevance = trim($qinfo['info']['relevance']);
-                $explanation = $qinfo['relEqn'];
+                $explanation = trim($qinfo['relEqn']);
+                $validation = trim($qinfo['prettyValidTip']);
+                $qidattributes=getQuestionAttributes($deqrow['qid']);
+                $array_filter_help = FlattenText(array_filter_help($qidattributes, $sDataEntryLanguage, $surveyid));
 
-                if (trim($relevance) != '' && trim($relevance) != '1')
+                if (($relevance != '' && $relevance != '1') || ($validation != '') || ($array_filter_help != ''))
                 {
+                    $showme = '';
                     if ($bgc == "even") {$bgc = "odd";} else {$bgc = "even";} //Do no alternate on explanation row
-                    $explanation = "[".$blang->gT("Only answer this if the following conditions are met:")."]<br />$explanation\n";
-                    $dataentryoutput .= "<tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'>$explanation</td></tr>\n";
+                    if ($relevance != '' && $relevance != '1') {
+                        $showme = "[".$blang->gT("Only answer this if the following conditions are met:")."]<br />$explanation\n";
+                    }
+                    if ($showme != '' && $validation != '') {
+                        $showme .= '<br/>';
+                    }
+                    if ($validation != '') {
+                        $showme .= "[".$blang->gT("The answer(s) must meet these validation criteria:")."]<br />$validation\n";
+                    }
+                    if ($showme != '' && $array_filter_help != '') {
+                        $showme .= '<br/>';
+                    }
+                    if ($array_filter_help != '') {
+                        $showme .= "[".$blang->gT("The answer(s) must meet these array_filter criteria:")."]<br />$array_filter_help\n";
+                    }
+                    $dataentryoutput .= "<tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'>$showme</td></tr>\n";
                 }
 
                 //END OF GETTING CONDITIONS
@@ -2727,6 +2745,33 @@ function array_in_array($needle, $haystack)
         return true;
     }
     return false;
+}
+
+/*
+ * This is a duplicate of the array_filter_help function in printablesurvey.php
+ */
+function array_filter_help($qidattributes, $surveyprintlang, $surveyid) {
+    global $clang;
+    $output = "";
+    if(!empty($qidattributes['array_filter']))
+    {
+        $newquery="SELECT question FROM ".db_table_name("questions")." WHERE title='{$qidattributes['array_filter']}' AND language='{$surveyprintlang}' AND sid = '$surveyid'";
+        $newresult=db_execute_assoc($newquery);
+        $newquestiontext=$newresult->fetchRow();
+        $output .= "\n<p class='extrahelp'>
+		    ".sprintf($clang->gT("Only answer this question for the items you selected in question *%s* ('%s')"),$qidattributes['array_filter'], FlattenText(br2nl($newquestiontext['question'])))."
+		</p>\n";
+    }
+    if(!empty($qidattributes['array_filter_exclude']))
+    {
+        $newquery="SELECT question FROM ".db_table_name("questions")." WHERE title='{$qidattributes['array_filter_exclude']}' AND language='{$surveyprintlang}' AND sid = '$surveyid'";
+        $newresult=db_execute_assoc($newquery);
+        $newquestiontext=$newresult->fetchRow();
+        $output .= "\n    <p class='extrahelp'>
+		    ".sprintf($clang->gT("Only answer this question for the items you did not select in question *%s* ('%s')"),$qidattributes['array_filter_exclude'], br2nl($newquestiontext['question']))."
+		</p>\n";
+    }
+    return $output;
 }
 
 ?>

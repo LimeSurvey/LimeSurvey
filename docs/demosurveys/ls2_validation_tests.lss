@@ -4816,7 +4816,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
    <row>
     <qid><![CDATA[1235]]></qid>
     <attribute><![CDATA[hide_tip]]></attribute>
-    <value><![CDATA[0]]></value>
+    <value><![CDATA[1]]></value>
    </row>
    <row>
     <qid><![CDATA[1235]]></qid>
@@ -4876,7 +4876,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
    <row>
     <qid><![CDATA[1236]]></qid>
     <attribute><![CDATA[hide_tip]]></attribute>
-    <value><![CDATA[0]]></value>
+    <value><![CDATA[1]]></value>
    </row>
    <row>
     <qid><![CDATA[1236]]></qid>
@@ -4936,7 +4936,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
    <row>
     <qid><![CDATA[1237]]></qid>
     <attribute><![CDATA[hide_tip]]></attribute>
-    <value><![CDATA[0]]></value>
+    <value><![CDATA[1]]></value>
    </row>
    <row>
     <qid><![CDATA[1237]]></qid>
@@ -5081,7 +5081,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
    <row>
     <qid><![CDATA[1244]]></qid>
     <attribute><![CDATA[hide_tip]]></attribute>
-    <value><![CDATA[0]]></value>
+    <value><![CDATA[1]]></value>
    </row>
    <row>
     <qid><![CDATA[1244]]></qid>
@@ -5141,7 +5141,7 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
    <row>
     <qid><![CDATA[1245]]></qid>
     <attribute><![CDATA[hide_tip]]></attribute>
-    <value><![CDATA[0]]></value>
+    <value><![CDATA[1]]></value>
    </row>
    <row>
     <qid><![CDATA[1245]]></qid>
@@ -5741,12 +5741,12 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
    <row>
     <qid><![CDATA[1260]]></qid>
     <attribute><![CDATA[max_answers]]></attribute>
-    <value><![CDATA[3]]></value>
+    <value><![CDATA[maxSelect]]></value>
    </row>
    <row>
     <qid><![CDATA[1260]]></qid>
     <attribute><![CDATA[min_answers]]></attribute>
-    <value><![CDATA[1]]></value>
+    <value><![CDATA[minSelect]]></value>
    </row>
    <row>
     <qid><![CDATA[1260]]></qid>
@@ -5816,12 +5816,12 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
    <row>
     <qid><![CDATA[1261]]></qid>
     <attribute><![CDATA[max_answers]]></attribute>
-    <value><![CDATA[3]]></value>
+    <value><![CDATA[maxSelect]]></value>
    </row>
    <row>
     <qid><![CDATA[1261]]></qid>
     <attribute><![CDATA[min_answers]]></attribute>
-    <value><![CDATA[1]]></value>
+    <value><![CDATA[minSelect]]></value>
    </row>
    <row>
     <qid><![CDATA[1261]]></qid>
@@ -6301,7 +6301,8 @@ Enter at least {minSelect} and at most {maxSelect} values.]]></help>
     <surveyls_survey_id><![CDATA[26626]]></surveyls_survey_id>
     <surveyls_language><![CDATA[en]]></surveyls_language>
     <surveyls_title><![CDATA[LS2 Validation Samples]]></surveyls_title>
-    <surveyls_description><![CDATA[This demonstrates how Expression Manager can support dynamic validation.&nbsp; It also shows how you can mix and match array_filter, min/max values, and regular-ex<x>pression-based validation.]]></surveyls_description>
+    <surveyls_description><![CDATA[This demonstrates how Expression Manager can support dynamic validation.&nbsp; It also shows how you can mix and match array_filter, min/max values, and regular-ex<x>pression-based validation.<br/>
+It also shows how color coding is used to show whether each question and sub-question is  valid.]]></surveyls_description>
     <surveyls_welcometext><![CDATA[]]></surveyls_welcometext>
     <surveyls_endtext><![CDATA[]]></surveyls_endtext>
     <surveyls_url><![CDATA[]]></surveyls_url>
