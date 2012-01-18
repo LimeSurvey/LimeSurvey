@@ -1,22 +1,22 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
- * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- *	$Id$
- */
+* LimeSurvey
+* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*	$Id$
+*/
 
 class SurveyAction extends CAction {
 
     public function run()
-	{
+    {
         $this->action();
     }
 
@@ -60,20 +60,20 @@ class SurveyAction extends CAction {
         if ( $this->_isClientTokenDifferentFromSessionToken($clienttoken) )
         {
             $asMessage = array(
-                    $clang->gT('Token mismatch'),
-                    $clang->gT('The token you provided doesn\'t match the one in your session.'),
-                    $clang->gT('Please wait to begin with a new session.')
-                );
+            $clang->gT('Token mismatch'),
+            $clang->gT('The token you provided doesn\'t match the one in your session.'),
+            $clang->gT('Please wait to begin with a new session.')
+            );
             $this->_createNewUserSessionAndRedirect($surveyid, $redata, __LINE__, $asMessage);
         }
 
         if ( $this->_isSurveyFinished($surveyid) )
         {
             $asMessage = array(
-                    $clang->gT('Previous session is set to be finished.'),
-                    $clang->gT('Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning.'),
-                    $clang->gT('Please wait to begin with a new session.')
-                );
+            $clang->gT('Previous session is set to be finished.'),
+            $clang->gT('Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning.'),
+            $clang->gT('Please wait to begin with a new session.')
+            );
             $this->_createNewUserSessionAndRedirect($surveyid, $redata, __LINE__, $asMessage);
         }
 
@@ -81,33 +81,23 @@ class SurveyAction extends CAction {
         if ($this->_isPreviewAction($param) && !$this->_canUserPreviewSurvey($surveyid))
         {
             $asMessage = array(
-                    $clang->gT('Error'),
-                    $clang->gT('We are sorry but you don\'t have permissions to do this.')
-                );
+            $clang->gT('Error'),
+            $clang->gT('We are sorry but you don\'t have permissions to do this.')
+            );
             $this->_niceExit($redata, __LINE__, null, $asMessage);
         }
 
         if ( $this->_surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $isSurveyActive, $surveyExists) )
         {
-            $bPreviewRight = $this->_importAdminSessionForSurveyToGetPreviewAccess($surveyid, $clang);
+            $bPreviewRight = $this->_userHasPreviewAccessSession($surveyid);
 
             if ($bPreviewRight === false)
             {
-                // TODO is this still required (we have the basepath check at the top)
-                if (isset($_REQUEST['rootdir']))
-                {
-                    $asMessage = array(
-                        $clang->gT('Error'),
-                        'You cannot start this script directly'
-                    );
-                    $this->_niceExit($redata, __LINE__, null, $asMessage);
-                }
-
                 $asMessage = array(
-                        $clang->gT("Error"),
-                        $clang->gT("We are sorry but you don't have permissions to do this."),
-                        sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
-                    );
+                $clang->gT("Error"),
+                $clang->gT("We are sorry but you don't have permissions to do this."),
+                sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
+                );
                 $this->_niceExit($redata, __LINE__, null, $asMessage);
             }
         }
@@ -126,23 +116,23 @@ class SurveyAction extends CAction {
 
         /*if ( $this->_didSessionTimeOut() )
         {
-            // TODO is this still required (we have the basepath check at the top)
-            if (isset($param['rootdir']))
-            {
-                $asMessage = array(
-                        $clang->gT('Error'),
-                        'You cannot start this script directly'
-                    );
-                $this->_kil_niceExitlPage($redata, __LINE__, null, $asMessage);
-            }
+        // TODO is this still required (we have the basepath check at the top)
+        if (isset($param['rootdir']))
+        {
+        $asMessage = array(
+        $clang->gT('Error'),
+        'You cannot start this script directly'
+        );
+        $this->_kil_niceExitlPage($redata, __LINE__, null, $asMessage);
+        }
 
-            $asMessage = array(
-                    $clang->gT("Error"),
-                    $clang->gT("We are sorry but your session has expired."),
-                    $clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."),
-                    sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
-                );
-            $this->_niceExit($redata, __LINE__, null, $asMessage);
+        $asMessage = array(
+        $clang->gT("Error"),
+        $clang->gT("We are sorry but your session has expired."),
+        $clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."),
+        sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
+        );
+        $this->_niceExit($redata, __LINE__, null, $asMessage);
         };*/
 
         // Set the language of the survey, either from POST, GET parameter of session var
@@ -152,11 +142,11 @@ class SurveyAction extends CAction {
             $sTempLanguage = $_REQUEST['lang'];
         }
         else if ( isset($param['lang']) && !empty($surveyid) )
-        {
-            $sTempLanguage = $param['lang'];
-        }
+            {
+                $sTempLanguage = $param['lang'];
+            }
 
-        if ( $sTempLanguage !== null )
+            if ( $sTempLanguage !== null )
         {
             $sTempLanguage = sanitize_languagecode($sTempLanguage);
             $clang = SetSurveyLanguage( $surveyid, $sTempLanguage);
@@ -181,19 +171,19 @@ class SurveyAction extends CAction {
                 $baselang = sanitize_languagecode($_POST['lang']);
             }
             else if (isset($_GET['lang']) && $_GET['lang'] != '')
-            {
-                $baselang = sanitize_languagecode($_GET['lang']);
-            }
-            else
-                $baselang = Yii::app()->getConfig("defaultlang");
+                {
+                    $baselang = sanitize_languagecode($_GET['lang']);
+                }
+                else
+                    $baselang = Yii::app()->getConfig("defaultlang");
         }
 
         if (isset($param['embedded_inc']))
         {
             $asMessage = array(
-                    $clang->gT('Error'),
-                    'You cannot start this script directly'
-                );
+            $clang->gT('Error'),
+            'You cannot start this script directly'
+            );
             $this->_niceExit($redata, __LINE__, null, $asMessage);
         }
 
@@ -210,17 +200,17 @@ class SurveyAction extends CAction {
             $languagechanger = makelanguagechanger($baselang);
             //Find out if there are any publicly available surveys
             $query = "SELECT a.sid, b.surveyls_title, a.publicstatistics
-                      FROM {{surveys}} AS a
-                      INNER JOIN {{surveys_languagesettings}} AS b
-                      ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language )
-                      WHERE surveyls_survey_id=a.sid
-                      AND surveyls_language=a.language
-                      AND surveyls_language='$baselang'
-                      AND a.active='Y'
-                      AND a.listpublic='Y'
-                      AND ((a.expires >= '".date("Y-m-d H:i")."') OR (a.expires is null))
-                      AND ((a.startdate <= '".date("Y-m-d H:i")."') OR (a.startdate is null))
-                      ORDER BY surveyls_title";
+            FROM {{surveys}} AS a
+            INNER JOIN {{surveys_languagesettings}} AS b
+            ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language )
+            WHERE surveyls_survey_id=a.sid
+            AND surveyls_language=a.language
+            AND surveyls_language='$baselang'
+            AND a.active='Y'
+            AND a.listpublic='Y'
+            AND ((a.expires >= '".date("Y-m-d H:i")."') OR (a.expires is null))
+            AND ((a.startdate <= '".date("Y-m-d H:i")."') OR (a.startdate is null))
+            ORDER BY surveyls_title";
             $result = db_execute_assoc($query,false,true) or safe_die("Could not connect to database. If you try to install LimeSurvey please refer to the <a href='http://docs.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage."); //Checked
             $list=array();
 
@@ -241,18 +231,18 @@ class SurveyAction extends CAction {
             }
             //Check for inactive surveys which allow public registration.
             $squery = "SELECT a.sid, b.surveyls_title, a.publicstatistics
-                      FROM {{surveys}} AS a
-                      INNER JOIN {{surveys_languagesettings}} AS b
-                      ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language )
-                      WHERE surveyls_survey_id=a.sid
-                      AND surveyls_language=a.language
-                      AND surveyls_language='$baselang'
-                      AND a.allowregister='Y'
-                      AND a.active='N'
-                      AND a.listpublic='Y'
-                      AND a.expires is not null
-                      AND a.startdate is not null
-                      ORDER BY surveyls_title";
+            FROM {{surveys}} AS a
+            INNER JOIN {{surveys_languagesettings}} AS b
+            ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language )
+            WHERE surveyls_survey_id=a.sid
+            AND surveyls_language=a.language
+            AND surveyls_language='$baselang'
+            AND a.allowregister='Y'
+            AND a.active='N'
+            AND a.listpublic='Y'
+            AND a.expires is not null
+            AND a.startdate is not null
+            ORDER BY surveyls_title";
 
             $sresult = db_execute_assoc($squery) or safe_die("Couldn't execute $squery");
 
@@ -276,10 +266,10 @@ class SurveyAction extends CAction {
                 $list[]="<li class='surveytitle'>".$clang->gT("No available surveys")."</li>";
             }
             $surveylist=array(
-                    "nosid"=>$clang->gT("You have not provided a survey identification number"),
-                    "contact"=>sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),Yii::app()->getConfig("siteadminname"),encodeEmail(Yii::app()->getConfig("siteadminemail"))),
-                    "listheading"=>$clang->gT("The following surveys are available:"),
-                    "list"=>implode("\n",$list),
+            "nosid"=>$clang->gT("You have not provided a survey identification number"),
+            "contact"=>sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),Yii::app()->getConfig("siteadminname"),encodeEmail(Yii::app()->getConfig("siteadminemail"))),
+            "listheading"=>$clang->gT("The following surveys are available:"),
+            "list"=>implode("\n",$list),
             );
 
             $thissurvey['name'] = Yii::app()->getConfig("sitename");
@@ -306,12 +296,12 @@ class SurveyAction extends CAction {
             function sendreq(surveyid)
             {
 
-                $.ajax({
-                  type: "GET",
-                  url: "'.$this->getController()->createUrl("/register/ajaxregisterform/surveyid").'/" + surveyid,
-                }).done(function(msg) {
-                  document.getElementById("regform").innerHTML = msg;
-                });
+            $.ajax({
+            type: "GET",
+            url: "'.$this->getController()->createUrl("/register/ajaxregisterform/surveyid").'/" + surveyid,
+            }).done(function(msg) {
+            document.getElementById("regform").innerHTML = msg;
+            });
             }
             </script>';
 
@@ -360,10 +350,10 @@ class SurveyAction extends CAction {
         {
             $redata = compact(array_keys(get_defined_vars()));
             $asMessage = array(
-                    $clang->gT("Error"),
-                    $clang->gT("This survey is no longer available."),
-                    sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
-                );
+            $clang->gT("Error"),
+            $clang->gT("This survey is no longer available."),
+            sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
+            );
 
             $this->_niceExit($redata, __LINE__, $thistpl, $asMessage);
         }
@@ -373,10 +363,10 @@ class SurveyAction extends CAction {
         {
             $redata = compact(array_keys(get_defined_vars()));
             $asMessage = array(
-                    $clang->gT("Error"),
-                    $clang->gT("This survey is not yet started."),
-                    sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
-                );
+            $clang->gT("Error"),
+            $clang->gT("This survey is not yet started."),
+            sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
+            );
 
             $this->_niceExit($redata, __LINE__, $thistpl, $asMessage);
         }
@@ -388,10 +378,10 @@ class SurveyAction extends CAction {
         {
             $redata = compact(array_keys(get_defined_vars()));
             $asMessage = array(
-                    $clang->gT("Error"),
-                    $clang->gT("You have already completed this survey."),
-                    sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
-                );
+            $clang->gT("Error"),
+            $clang->gT("You have already completed this survey."),
+            sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
+            );
 
             $this->_niceExit($redata, __LINE__, $thistpl, $asMessage);
         }
@@ -464,7 +454,7 @@ class SurveyAction extends CAction {
         // this check is done in buildsurveysession and error message
         // could be more interresting there (takes into accound captcha if used)
         if ($tokensexist == 1 && isset($token) && $token &&
-            isset($_SESSION['survey_'.$surveyid]['step']) && $_SESSION['survey_'.$surveyid]['step']>0 && tableExists("tokens_{$surveyid}}}"))
+        isset($_SESSION['survey_'.$surveyid]['step']) && $_SESSION['survey_'.$surveyid]['step']>0 && tableExists("tokens_{$surveyid}}}"))
         {
             //check if tokens actually haven't been already used
             $areTokensUsed = usedTokens(trim(strip_tags(returnglobal('token'))),$surveyid);
@@ -487,10 +477,10 @@ class SurveyAction extends CAction {
                 $this->_printTemplateContent($thistpl.'/startpage.pstpl', $redata, __LINE__);
                 $this->_printTemplateContent($thistpl.'/survey.pstpl', $redata, __LINE__);
                 $asMessage = array(
-                        null,
-                        $clang->gT("This is a controlled survey. You need a valid token to participate."),
-                        sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname']." (<a href='mailto:{$thissurvey['adminemail']}'>"."{$thissurvey['adminemail']}</a>)")
-                    );
+                null,
+                $clang->gT("This is a controlled survey. You need a valid token to participate."),
+                sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname']." (<a href='mailto:{$thissurvey['adminemail']}'>"."{$thissurvey['adminemail']}</a>)")
+                );
 
                 $this->_niceExit($redata, __LINE__, $thistpl, $asMessage, true);
             }
@@ -517,11 +507,11 @@ class SurveyAction extends CAction {
                 $this->_printTemplateContent($thistpl.'/survey.pstpl', $redata, __LINE__);
 
                 $asMessage = array(
-                        null,
-                        $clang->gT("We are sorry but you are not allowed to enter this survey."),
-                        $clang->gT("Your token seems to be valid but can be used only during a certain time period."),
-                        sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname']." (<a href='mailto:{$thissurvey['adminemail']}'>"."{$thissurvey['adminemail']}</a>)")
-                    );
+                null,
+                $clang->gT("We are sorry but you are not allowed to enter this survey."),
+                $clang->gT("Your token seems to be valid but can be used only during a certain time period."),
+                sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname']." (<a href='mailto:{$thissurvey['adminemail']}'>"."{$thissurvey['adminemail']}</a>)")
+                );
 
                 $this->_niceExit($redata, __LINE__, $thistpl, $asMessage, true);
             }
@@ -649,7 +639,7 @@ class SurveyAction extends CAction {
 
             // RELOAD THE ANSWERS INCASE SOMEONE ELSE CHANGED THEM
             if ($thissurvey['active'] == "Y" &&
-                    ( $thissurvey['allowsave'] == "Y" || $thissurvey['tokenanswerspersistence'] == "Y") )
+            ( $thissurvey['allowsave'] == "Y" || $thissurvey['tokenanswerspersistence'] == "Y") )
             {
                 loadanswers();
             }
@@ -657,8 +647,8 @@ class SurveyAction extends CAction {
 
         if (isset($param['action']) && $param['action'] == 'previewgroup')
         {
-                $thissurvey['format'] = 'G';
-                buildsurveysession($surveyid);
+            $thissurvey['format'] = 'G';
+            buildsurveysession($surveyid);
         }
 
         sendcacheheaders();
@@ -670,10 +660,10 @@ class SurveyAction extends CAction {
         $tmp = new SurveyRuntimeHelper();
         $tmp->run($surveyid,$redata);
 
-		if (isset($_POST['saveall']) || isset($flashmessage))
-		{
-		    echo "<script language='JavaScript'> $(document).ready( function() { alert('".$clang->gT("Your responses were successfully saved.","js")."');}) </script>";
-		}
+        if (isset($_POST['saveall']) || isset($flashmessage))
+        {
+            echo "<script language='JavaScript'> $(document).ready( function() { alert('".$clang->gT("Your responses were successfully saved.","js")."');}) </script>";
+        }
     }
 
     function _getParameters($args = array(), $post = array())
@@ -790,27 +780,27 @@ class SurveyAction extends CAction {
         return !isset($_SESSION['survey_'.$surveyid]['s_lang']);
     }
 
-    function _canUserPreviewSurvey($surveyId)
+    function _canUserPreviewSurvey($iSurveyID)
     {
-        if ( !isset($_SESSION['survey_'.$surveyid]['loginID'], $_SESSION['survey_'.$surveyid]['USER_RIGHT_SUPERADMIN']) )
+        if ( !isset($_SESSION['loginID'], $_SESSION['USER_RIGHT_SUPERADMIN']) )
             return false;
 
-        if ( $_SESSION['survey_'.$surveyid]['USER_RIGHT_SUPERADMIN'] == 1 )
+        if ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 )
             return true;
 
         $rightresult = db_execute_assoc(
-        	"SELECT uid
-        	FROM {{survey_permissions}}
-        	WHERE sid = ".$surveyId."
-        	AND uid = '".$_SESSION['survey_'.$surveyid]['loginID']."'
-        	GROUP BY uid");
+        "SELECT uid
+        FROM {{survey_permissions}}
+        WHERE sid = ".$iSurveyID."
+        AND uid = '".$_SESSION['loginID']."'
+        GROUP BY uid");
         if ( $rightresult->count() > 0 )
             return true;
         return false;
     }
 
-    function _userHasPreviewAccessSession($surveyId){
-        return (!(isset($_SESSION['survey_'.$surveyid]['USER_RIGHT_PREVIEW']) && ($_SESSION['survey_'.$surveyid]['USER_RIGHT_PREVIEW'] == $surveyId)));
+    function _userHasPreviewAccessSession($iSurveyID){
+        return (isset($_SESSION['USER_RIGHT_PREVIEW']) && ($_SESSION['USER_RIGHT_PREVIEW'] == $iSurveyID));
     }
 
     function _niceExit(&$redata, $iDebugLine, $sTemplateDir = null, $asMessage = array())
@@ -839,25 +829,7 @@ class SurveyAction extends CAction {
         $this->_niceExit($redata, $iDebugLine, null, $asMessage);
     }
 
-    function _importAdminSessionForSurveyToGetPreviewAccess($surveyId, $clang)
-    {
-        // admin session and permission have not already been imported
-        // for this particular survey
-        if ( !$this->_userHasPreviewAccessSession($surveyId) )
-        {
 
-
-            $bPreviewRight = true;
-
-        }
-        else
-        {
-            // already authorized
-            $bPreviewRight = true;
-        }
-
-        return $bPreviewRight;
-    }
 
     function _printMessage($asLines)
     {

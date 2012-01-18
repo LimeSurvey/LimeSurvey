@@ -21,7 +21,7 @@ class kcfinder extends Survey_Common_Action
         Yii::app()->session['KCFINDER'] = array();
 
         $sAllowedExtensions = implode(' ', array_map('trim', explode(',', Yii::app()->getConfig('allowedresourcesuploads'))));
-        Yii::app()->session['KCFINDER']['types'] = array(
+        $_SESSION['KCFINDER']['types'] = array(
             'files' => $sAllowedExtensions,
             'flash' => $sAllowedExtensions,
             'images' => $sAllowedExtensions
@@ -43,9 +43,9 @@ class kcfinder extends Survey_Common_Action
 
                 if (bHasSurveyPermission($surveyid, 'surveycontent', 'update'))
                 {
-                    Yii::app()->session['KCFINDER']['disabled'] = false;
-                    Yii::app()->session['KCFINDER']['uploadURL'] = $this->getController()->createUrl("upload/surveys/{$surveyid}/");
-                    Yii::app()->session['KCFINDER']['uploadDir'] = ROOT . "/upload/surveys/{$surveyid}/";
+                    $_SESSION['KCFINDER']['disabled'] = false;
+                    $_SESSION['KCFINDER']['uploadURL'] = $this->getController()->createUrl("upload/surveys/{$surveyid}/");
+                    $_SESSION['KCFINDER']['uploadDir'] = ROOT . "/upload/surveys/{$surveyid}/";
                 }
             }
             elseif (preg_match('/^edit:label/', Yii::app()->session['FileManagerContext']) != 0)
@@ -55,9 +55,9 @@ class kcfinder extends Survey_Common_Action
                 // check if the user has label management right and labelid defined
                 if (Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1 && isset($labelid) && $labelid != '')
                 {
-                    Yii::app()->session['KCFINDER']['disabled'] = false;
-                    Yii::app()->session['KCFINDER']['uploadURL'] = $this->getController()->createUrl("upload/labels/{$labelid}/");
-                    Yii::app()->session['KCFINDER']['uploadDir'] = ROOT . "/upload/labels/{$labelid}/";
+                    $_SESSION['KCFINDER']['disabled'] = false;
+                    $_SESSION['KCFINDER']['uploadURL'] = $this->getController()->createUrl("upload/labels/{$labelid}/");
+                    $_SESSION['KCFINDER']['uploadDir'] = ROOT . "/upload/labels/{$labelid}/";
                 }
             }
         }
