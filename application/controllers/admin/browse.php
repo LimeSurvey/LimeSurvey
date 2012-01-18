@@ -86,12 +86,12 @@ class browse extends Survey_Common_Action
 
         if (isset($browselang) && $browselang != '')
         {
-            $_SESSION['browselang'] = $browselang;
-            $aData['language'] = $_SESSION['browselang'];
+            Yii::app()->session['browselang'] = $browselang;
+            $aData['language'] = Yii::app()->session['browselang'];
         }
-        elseif (isset($_SESSION['browselang']))
+        elseif (isset(Yii::app()->session['browselang']))
         {
-            $aData['language'] = $_SESSION['browselang'];
+            $aData['language'] = Yii::app()->session['browselang'];
             $aData['languagelist'] = $languagelist = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
             $aData['languagelist'][] = Survey::model()->findByPk($iSurveyId)->language;
             if (!in_array($aData['language'], $languagelist))

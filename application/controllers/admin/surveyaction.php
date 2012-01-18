@@ -128,7 +128,7 @@ class SurveyAction extends Survey_Common_Action
         Yii::app()->loadHelper('surveytranslator');
         $clang = $this->getController()->lang;
 
-        $_SESSION['FileManagerContext'] = "edit:survey:{$surveyid}";
+        Yii::app()->session['FileManagerContext'] = "edit:survey:{$surveyid}";
 
         $esrow = array();
         $esrow = self::_fetchSurveyInfo('editsurvey', $surveyid);
@@ -1360,7 +1360,7 @@ class SurveyAction extends Survey_Common_Action
 
 
             // If start date supplied convert it to the right format
-            $aDateFormatData = getDateFormatData($_SESSION['dateformat']);
+            $aDateFormatData = getDateFormatData(Yii::app()->session['dateformat']);
             $sStartDate = $_POST['startdate'];
             if (trim($sStartDate) != '')
             {

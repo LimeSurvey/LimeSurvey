@@ -109,7 +109,7 @@ class questiongroup extends Survey_Common_Action
         {
             $clang = $this->getController()->lang;
 
-            $_SESSION['FileManagerContext'] = "create:group:{$surveyid}";
+            Yii::app()->session['FileManagerContext'] = "create:group:{$surveyid}";
 
             Yii::app()->loadHelper('admin/htmleditor');
             Yii::app()->loadHelper('surveytranslator');
@@ -268,7 +268,7 @@ class questiongroup extends Survey_Common_Action
 
         if (bHasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
-            $_SESSION['FileManagerContext'] = "edit:group:{$surveyid}";
+            Yii::app()->session['FileManagerContext'] = "edit:group:{$surveyid}";
 
             Yii::app()->loadHelper('admin/htmleditor');
             Yii::app()->loadHelper('surveytranslator');

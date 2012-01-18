@@ -13,8 +13,8 @@
  *	$Id$
  */
 class Load_answers {
-	
-	function run($args) {	
+
+	function run($args) {
 		extract($args);
 
 		if (!isset($thistpl)) {die ("Error!");}
@@ -30,7 +30,7 @@ class Load_answers {
 		."\t{\n"
 		."\t}\n"
 		."\t</script>\n\n";
-		
+
 		echo "<form method='post' action='".Yii::app()->getController()->createUrl("/survey/index")."'>\n";
 		foreach(file("$thistpl/load.pstpl") as $op)
 		{
@@ -38,15 +38,14 @@ class Load_answers {
 		}
 		//PRESENT OPTIONS SCREEN (Replace with Template Later)
 		//END
-		//echo "<input type='hidden' name='PHPSESSID' value='".session_id()."'>\n";
-		echo "<input type='hidden' name='sid' value='$surveyid' />\n";
+		echo "<input type='hidden' name='sid' value='{$surveyid}' />\n";
 		echo "<input type='hidden' name='loadall' value='reload' />\n";
 		if (isset($clienttoken) && $clienttoken != "")
 		{
 		    echo "<input type='hidden' name='token' value='$clienttoken' />\n";
 		}
 		echo "</form>";
-		
+
 		foreach(file("$thistpl/endpage.pstpl") as $op)
 		{
 		    echo templatereplace($op);
@@ -54,6 +53,6 @@ class Load_answers {
 		doFooter();
 		exit;
 
-		
+
 	}
 }

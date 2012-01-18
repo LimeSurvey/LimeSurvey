@@ -1366,7 +1366,7 @@ class participantsaction extends Survey_Common_Action
      */
     function uploadCSV()
     {
-       unset($_SESSION['summary']);
+       unset(Yii::app()->session['summary']);
         $characterset = Yii::app()->request->getPost('characterset');
         $seperator = Yii::app()->request->getPost('seperatorused');
         $newarray = Yii::app()->request->getPost('newarray');
@@ -1482,7 +1482,7 @@ class participantsaction extends Survey_Common_Action
                         'firstname' => $writearray['firstname'],
                         'lastname' => $writearray['lastname'],
                         'email' => $writearray['email'],
-                        'owner_uid' => $_SESSION['loginID']
+                        'owner_uid' => Yii::app()->session['loginID']
                     );
                     $aData = "firstname = '{$writearray['firstname']}' AND lastname = '{$writearray['lastname']}' AND email = '{$writearray['email']}' AND owner_uid = '".Yii::app()->session['loginID']."'";
                     $aData = Participants::model()->checkforDuplicate($aData);

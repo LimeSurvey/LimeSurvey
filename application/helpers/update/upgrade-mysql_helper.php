@@ -892,30 +892,30 @@ function upgrade_tables143()
         foreach ( $answerresult as $row )
         {
 
-            $insertarray=array();
+            $aInsert=array();
             if (isset($aQIDReplacements[$row['qid'].'_'.$row['code']]))
             {
-                $insertarray['qid']=$aQIDReplacements[$row['qid'].'_'.$row['code']];
+                $aInsert['qid']=$aQIDReplacements[$row['qid'].'_'.$row['code']];
             }
-            $insertarray['sid']=$row['sid'];
-            $insertarray['gid']=$row['gid'];
-            $insertarray['parent_qid']=$row['qid'];
-            $insertarray['type']=$row['type'];
-            $insertarray['title']=$row['code'];
-            $insertarray['question']=$row['answer'];
-            $insertarray['question_order']=$row['sortorder'];
-            $insertarray['language']=$row['language'];
+            $aInsert['sid']=$row['sid'];
+            $aInsert['gid']=$row['gid'];
+            $aInsert['parent_qid']=$row['qid'];
+            $aInsert['type']=$row['type'];
+            $aInsert['title']=$row['code'];
+            $aInsert['question']=$row['answer'];
+            $aInsert['question_order']=$row['sortorder'];
+            $aInsert['language']=$row['language'];
             $tablename="{{questions}}";
-            $query=Yii::app()->db->createCommand()->insert($tablename,$insertarray)->getText();
+            $query=Yii::app()->db->createCommand()->insert($tablename,$aInsert)->getText();
             modify_database("",$query); echo $modifyoutput; flush();@ob_flush();
-            if (!isset($insertarray['qid']))
+            if (!isset($aInsert['qid']))
             {
                $aQIDReplacements[$row['qid'].'_'.$row['code']]=Yii::app()->db->getLastInsertId();
                $iSaveSQID=$aQIDReplacements[$row['qid'].'_'.$row['code']];
             }
             else
             {
-               $iSaveSQID=$insertarray['qid'];
+               $iSaveSQID=$aInsert['qid'];
             }
             if (($row['type']=='M' || $row['type']=='P') && $row['default_value']=='Y')
             {
@@ -971,24 +971,24 @@ function upgrade_tables143()
             $labelresult = Yii::app()->db->createCommand($labelquery)->queryAll();
             foreach ( $labelresult as $lrow )
             {
-                $insertarray=array();
+                $aInsert=array();
                 if (isset($aQIDReplacements[$row['qid'].'_'.$lrow['code'].'_1']))
                 {
-                    $insertarray['qid']=$aQIDReplacements[$row['qid'].'_'.$lrow['code'].'_1'];
+                    $aInsert['qid']=$aQIDReplacements[$row['qid'].'_'.$lrow['code'].'_1'];
                 }
-                $insertarray['sid']=$row['sid'];
-                $insertarray['gid']=$row['gid'];
-                $insertarray['parent_qid']=$row['qid'];
-                $insertarray['type']=$row['type'];
-                $insertarray['title']=$lrow['code'];
-                $insertarray['question']=$lrow['title'];
-                $insertarray['question_order']=$lrow['sortorder'];
-                $insertarray['language']=$lrow['language'];
-                $insertarray['scale_id']=1;
+                $aInsert['sid']=$row['sid'];
+                $aInsert['gid']=$row['gid'];
+                $aInsert['parent_qid']=$row['qid'];
+                $aInsert['type']=$row['type'];
+                $aInsert['title']=$lrow['code'];
+                $aInsert['question']=$lrow['title'];
+                $aInsert['question_order']=$lrow['sortorder'];
+                $aInsert['language']=$lrow['language'];
+                $aInsert['scale_id']=1;
                 $tablename="{{questions}}";
-                $query=Yii::app()->db->createCommand()->insert($tablename,$insertarray)->getText();
+                $query=Yii::app()->db->createCommand()->insert($tablename,$aInsert)->getText();
                 modify_database("",$query); echo $modifyoutput; flush();@ob_flush();
-                if (isset($insertarray['qid']))
+                if (isset($aInsert['qid']))
                 {
                    $aQIDReplacements[$row['qid'].'_'.$lrow['code'].'_1']=Yii::app()->db->getLastInsertID();
                 }

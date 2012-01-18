@@ -232,7 +232,7 @@ class surveypermission extends Survey_Common_Action {
                         if($isrresult)
                         {
                             $addsummary .= "<div class=\"successheader\">".$clang->gT("User group added.")."</div>\n";
-                            $_SESSION['uids'] = $uid_arr;
+                            Yii::app()->session['uids'] = $uid_arr;
                             $addsummary .= "<br /><form method='post' action='".$this->getController()->createUrl('admin/surveypermission/set/surveyid/'.$surveyid)."'>"
                             ."<input type='submit' value='".$clang->gT("Set Survey Rights")."' />"
                             ."<input type='hidden' name='action' value='setusergroupsurveysecurity' />"
@@ -570,7 +570,7 @@ class surveypermission extends Survey_Common_Action {
             }
             if (isset($postusergroupid) && $postusergroupid>0)
             {
-                $oResult = User_in_groups::model()->findAll('ugid = :ugid AND uid <> :uid AND uid <> :iOwnerID',array(':ugid' => $postusergroupid, ':uid' => $_SESSION['loginID'], ':iOwnerID' => $iOwnerID));
+                $oResult = User_in_groups::model()->findAll('ugid = :ugid AND uid <> :uid AND uid <> :iOwnerID',array(':ugid' => $postusergroupid, ':uid' => Yii::app()->session['loginID'], ':iOwnerID' => $iOwnerID));
                 if(count($oResult) > 0)
                 {
                     foreach ($oResult as $aRow)

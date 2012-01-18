@@ -20,11 +20,6 @@ class SurveyAction extends CAction {
         $this->action();
     }
 
-    public function newtest()
-	{
-        $this->action();
-    }
-
     function action()
     {
         global $surveyid, $thistpl, $totalquestions;
@@ -37,16 +32,22 @@ class SurveyAction extends CAction {
 
         $param = $this->_getParameters(func_get_args(), $_POST);
 
-        @$surveyid = $param['sid'];
-        @$thisstep = $param['thisstep'];
-        @$move = $param['move'];
-        @$clienttoken = $param['token'];
+        $surveyid = $param['sid'];
+        Yii::app()->setConfig('surveyID',$surveyid);
+        $thisstep = $param['thisstep'];
+        $move = $param['move'];
+        $clienttoken = $param['token'];
         $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
 
         // unused vars in this method (used in methods using compacted method vars)
         @$loadname = $param['loadname'];
         @$loadpass = $param['loadpass'];
         $sitename = Yii::app()->getConfig('sitename');
+
+        if (isset($param['newtest']) && $param['newtest'] == "Y")
+        {
+            killSurveySession($surveyid);
+        }
 
 
         list($surveyExists, $isSurveyActive) = $this->_surveyExistsAndIsActive($surveyid);
@@ -115,9 +116,9 @@ class SurveyAction extends CAction {
         // TODO can this be moved to the top?
         // (Used to be global, used in ExpressionManager, merged into amVars. If not filled in === '')
         // can this be added in the first computation of $redata?
-        if (isset($_SESSION[$surveyid]['srid']))
+        if (isset($_SESSION['survey_'.$surveyid]['srid']))
         {
-            $saved_id = $_SESSION[$surveyid]['srid'];
+            $saved_id = $_SESSION['survey_'.$surveyid]['srid'];
         }
         // recompute $redata since $saved_id used to be a global
         $redata = compact(array_keys(get_defined_vars()));
@@ -163,10 +164,10 @@ class SurveyAction extends CAction {
             UpdateFieldArray();                                        // to refresh question titles and question text
         }
 
-        if (isset($_SESSION[$surveyid]['s_lang']))
+        if (isset($_SESSION['survey_'.$surveyid]['s_lang']))
         {
-            $baselang = sanitize_languagecode($_SESSION[$surveyid]['s_lang']);
-            $clang = SetSurveyLanguage( $surveyid, $_SESSION[$surveyid]['s_lang']);
+            $baselang = sanitize_languagecode($_SESSION['survey_'.$surveyid]['s_lang']);
+            $clang = SetSurveyLanguage( $surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
         }
         elseif (!empty($surveyid))
         {
@@ -327,16 +328,9 @@ class SurveyAction extends CAction {
 
         //GET BASIC INFORMATION ABOUT THIS SURVEY
         $totalBoilerplatequestions =0;
-        $thissurvey=getSurveyInfo($surveyid, $_SESSION[$surveyid]['s_lang']);
+        $thissurvey=getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
-//        if (isset($param['newtest']) && $param['newtest'] == "Y")
-//        {
-//            //Removes any existing timer cookies so timers will start again
-//            setcookie ("limesurvey_timers", "", time() - 3600);  //@todo fix - sometimes results in headers already sent error
-//        }
-
-        //SEE IF SURVEY USES TOKENS AND GROUP TOKENS
-        $i = 0; //$tokensexist = 0;
+        //SEE IF SURVEY USES TOKENS
         if ($surveyExists == 1 && tableExists('{{tokens_'.$thissurvey['sid'].'}}'))
         {
             $tokensexist = 1;
@@ -389,8 +383,8 @@ class SurveyAction extends CAction {
 
         //CHECK FOR PREVIOUSLY COMPLETED COOKIE
         //If cookies are being used, and this survey has been completed, a cookie called "PHPSID[sid]STATUS" will exist (ie: SID6STATUS) and will have a value of "COMPLETE"
-        $cookiename="PHPSID".returnglobal('sid')."STATUS";
-        if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $thissurvey['usecookie'] == "Y" && $tokensexist != 1 && (!isset($param['newtest']) || $param['newtest'] != "Y"))
+        $sCookieName="LS_".$surveyid."_STATUS";
+        if (isset($_COOKIE[$sCookieName]) && $_COOKIE[$sCookieName] == "COMPLETE" && $thissurvey['usecookie'] == "Y" && $tokensexist != 1 && (!isset($param['newtest']) || $param['newtest'] != "Y"))
         {
             $redata = compact(array_keys(get_defined_vars()));
             $asMessage = array(
@@ -428,8 +422,8 @@ class SurveyAction extends CAction {
             if (function_exists("ImageCreate") && captcha_enabled('saveandloadscreen',$thissurvey['usecaptcha']))
             {
                 if ( (!isset($_POST['loadsecurity']) ||
-                !isset($_SESSION[$surveyid]['secanswer']) ||
-                $_POST['loadsecurity'] != $_SESSION[$surveyid]['secanswer']) &&
+                !isset($_SESSION['survey_'.$surveyid]['secanswer']) ||
+                $_POST['loadsecurity'] != $_SESSION['survey_'.$surveyid]['secanswer']) &&
                 !isset($_GET['scid']))
                 {
                     $errormsg .= $clang->gT("The answer to the security question is incorrect.")."<br />\n";
@@ -442,8 +436,8 @@ class SurveyAction extends CAction {
                 buildsurveysession();
             }
 
-            $_SESSION[$surveyid]['holdname'] = $param['loadname']; //Session variable used to load answers every page.
-            $_SESSION[$surveyid]['holdpass'] = $param['loadpass']; //Session variable used to load answers every page.
+            $_SESSION['survey_'.$surveyid]['holdname'] = $param['loadname']; //Session variable used to load answers every page.
+            $_SESSION['survey_'.$surveyid]['holdpass'] = $param['loadpass']; //Session variable used to load answers every page.
 
             if ($errormsg == "") loadanswers();
             $move = "movenext";
@@ -470,7 +464,7 @@ class SurveyAction extends CAction {
         // this check is done in buildsurveysession and error message
         // could be more interresting there (takes into accound captcha if used)
         if ($tokensexist == 1 && isset($token) && $token &&
-            isset($_SESSION[$surveyid]['step']) && $_SESSION[$surveyid]['step']>0 && tableExists("tokens_{$surveyid}}}"))
+            isset($_SESSION['survey_'.$surveyid]['step']) && $_SESSION['survey_'.$surveyid]['step']>0 && tableExists("tokens_{$surveyid}}}"))
         {
             //check if tokens actually haven't been already used
             $areTokensUsed = usedTokens(trim(strip_tags(returnglobal('token'))),$surveyid);
@@ -538,8 +532,8 @@ class SurveyAction extends CAction {
         //Clear session and remove the incomplete response if requested.
         if (isset($move) && $move == "clearall")
         {
-            $s_lang = $_SESSION[$surveyid]['s_lang'];
-            if (isset($_SESSION[$surveyid]['srid']))
+            $s_lang = $_SESSION['survey_'.$surveyid]['s_lang'];
+            if (isset($_SESSION['survey_'.$surveyid]['srid']))
             {
                 // find out if there are any fuqt questions - checked
                 $fieldmap = createFieldMap($surveyid);
@@ -555,7 +549,7 @@ class SurveyAction extends CAction {
                 // if yes, extract the response json to those questions
                 if (isset($qid))
                 {
-                    $query = "SELECT * FROM {{survey_".$surveyid."}} WHERE id=".$_SESSION[$surveyid]['srid'];
+                    $query = "SELECT * FROM {{survey_".$surveyid."}} WHERE id=".$_SESSION['survey_'.$surveyid]['srid'];
                     $result = db_execute_assoc($query);
                     foreach($result->readAll() as $row)
                     {
@@ -581,10 +575,10 @@ class SurveyAction extends CAction {
 
 
                 // delete the response but only if not already completed
-                db_execute_assoc('DELETE FROM {{survey_'.$surveyid.'}} WHERE id='.$_SESSION[$surveyid]['srid']." AND submitdate IS NULL");
+                db_execute_assoc('DELETE FROM {{survey_'.$surveyid.'}} WHERE id='.$_SESSION['survey_'.$surveyid]['srid']." AND submitdate IS NULL");
 
                 // also delete a record from saved_control when there is one
-                db_execute_assoc('DELETE FROM {{saved_control}} WHERE srid='.$_SESSION[$surveyid]['srid'].' AND sid='.$surveyid);
+                db_execute_assoc('DELETE FROM {{saved_control}} WHERE srid='.$_SESSION['survey_'.$surveyid]['srid'].' AND sid='.$surveyid);
             }
             killSurveySession($surveyid);
             sendcacheheaders();
@@ -612,15 +606,11 @@ class SurveyAction extends CAction {
             $this->_niceExit($redata, __LINE__, $thistpl);
         }
 
-        if (isset($param['newtest']) && $param['newtest'] == "Y")
-        {
-            killSurveySession($surveyid);
-        }
 
         //Check to see if a refering URL has been captured.
-        if (!isset($_SESSION[$surveyid]['refurl']))
+        if (!isset($_SESSION['survey_'.$surveyid]['refurl']))
         {
-            $_SESSION[$surveyid]['refurl']=GetReferringUrl(); // do not overwrite refurl
+            $_SESSION['survey_'.$surveyid]['refurl']=GetReferringUrl(); // do not overwrite refurl
         }
 
         // Let's do this only if
@@ -630,7 +620,7 @@ class SurveyAction extends CAction {
         //  - a token information has been provided
         //  - the survey is setup to allow token-response-persistence
 
-        if ($thissurvey['tokenanswerspersistence'] == 'Y' && !isset($_SESSION[$surveyid]['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
+        if ($thissurvey['tokenanswerspersistence'] == 'Y' && !isset($_SESSION['survey_'.$surveyid]['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
         {
 
             // load previous answers if any (dataentry with nosubmit)
@@ -642,7 +632,7 @@ class SurveyAction extends CAction {
             {
                 $row=reset($result->read());
                 if($row['submitdate']=='' || ($row['submitdate']!='' && $thissurvey['alloweditaftercompletion'] == 'Y'))
-                    $_SESSION[$surveyid]['srid'] = $row['id'];
+                    $_SESSION['survey_'.$surveyid]['srid'] = $row['id'];
             }
             buildsurveysession();
             loadanswers();
@@ -776,12 +766,12 @@ class SurveyAction extends CAction {
 
     function _isClientTokenDifferentFromSessionToken($clientToken)
     {
-        return $clientToken != '' && isset($_SESSION[$surveyid]['token']) && $clientToken != $_SESSION[$surveyid]['token'];
+        return $clientToken != '' && isset($_SESSION['survey_'.$surveyid]['token']) && $clientToken != $_SESSION['survey_'.$surveyid]['token'];
     }
 
     function _isSurveyFinished($surveyid)
     {
-        return isset($_SESSION[$surveyid]['finished']) && $_SESSION[$surveyid]['finished'] === true;
+        return isset($_SESSION['survey_'.$surveyid]['finished']) && $_SESSION['survey_'.$surveyid]['finished'] === true;
     }
 
     function _isPreviewAction($param = array())
@@ -797,22 +787,22 @@ class SurveyAction extends CAction {
 
     function _didSessionTimeout()
     {
-        return !isset($_SESSION[$surveyid]['s_lang']);
+        return !isset($_SESSION['survey_'.$surveyid]['s_lang']);
     }
 
     function _canUserPreviewSurvey($surveyId)
     {
-        if ( !isset($_SESSION[$surveyid]['loginID'], $_SESSION[$surveyid]['USER_RIGHT_SUPERADMIN']) )
+        if ( !isset($_SESSION['survey_'.$surveyid]['loginID'], $_SESSION['survey_'.$surveyid]['USER_RIGHT_SUPERADMIN']) )
             return false;
 
-        if ( $_SESSION[$surveyid]['USER_RIGHT_SUPERADMIN'] == 1 )
+        if ( $_SESSION['survey_'.$surveyid]['USER_RIGHT_SUPERADMIN'] == 1 )
             return true;
 
         $rightresult = db_execute_assoc(
         	"SELECT uid
         	FROM {{survey_permissions}}
         	WHERE sid = ".$surveyId."
-        	AND uid = '".$_SESSION[$surveyid]['loginID']."'
+        	AND uid = '".$_SESSION['survey_'.$surveyid]['loginID']."'
         	GROUP BY uid");
         if ( $rightresult->count() > 0 )
             return true;
@@ -820,7 +810,7 @@ class SurveyAction extends CAction {
     }
 
     function _userHasPreviewAccessSession($surveyId){
-        return (!(isset($_SESSION[$surveyid]['USER_RIGHT_PREVIEW']) && ($_SESSION[$surveyid]['USER_RIGHT_PREVIEW'] == $surveyId)));
+        return (!(isset($_SESSION['survey_'.$surveyid]['USER_RIGHT_PREVIEW']) && ($_SESSION['survey_'.$surveyid]['USER_RIGHT_PREVIEW'] == $surveyId)));
     }
 
     function _niceExit(&$redata, $iDebugLine, $sTemplateDir = null, $asMessage = array())

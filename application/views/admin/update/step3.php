@@ -3,7 +3,7 @@
 echo '<div class="header ui-widget-header">'.sprintf($clang->gT('ComfortUpdate step %s'),'3').'</div><div class="updater-background">';
 echo '<h3>'.$clang->gT('Creating DB & file backup').'</h3>';
 
-if (!isset( $_SESSION['updateinfo']))
+if (!isset( Yii::app()->session['updateinfo']))
 {
     $clang->eT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
 

@@ -603,7 +603,7 @@ class statistics extends Survey_Common_Action {
 
                     $bChartType = $qtype != "M" && $qtype != "P" && $aattr["statistics_graphtype"] == "1";
 
-                    $adata = $_SESSION['stats'][$_POST['id']];
+                    $adata = Yii::app()->session['stats'][$_POST['id']];
 	                $aData['chartdata'] = createChart($qqid, $qsid, $bChartType, $adata['lbl'], $adata['gdata'], $adata['grawdata'], $MyCache);
 
 
@@ -620,7 +620,7 @@ class statistics extends Survey_Common_Action {
 
                     Question_attributes::model()->setAttribute($qqid, 'statistics_graphtype', 0);
 
-                    $adata = $_SESSION['stats'][$_POST['id']];
+                    $adata = Yii::app()->session['stats'][$_POST['id']];
 	                $aData['chartdata'] =  createChart($qqid, $qsid, 0, $adata['lbl'], $adata['gdata'], $adata['grawdata'], $MyCache);
 
 	                break;
@@ -633,7 +633,7 @@ class statistics extends Survey_Common_Action {
 
                     Question_attributes::model()->setAttribute($qqid, 'statistics_graphtype', 1);
 
-                    $adata = $_SESSION['stats'][$_POST['id']];
+                    $adata = Yii::app()->session['stats'][$_POST['id']];
 	                $aData['chartdata'] =  createChart($qqid, $qsid, 1, $adata['lbl'], $adata['gdata'], $adata['grawdata'], $MyCache);
 
 

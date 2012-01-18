@@ -784,7 +784,7 @@ class database extends Survey_Common_Action
                         // Remove old subquestion scales
                         Questions::model()->deleteAllByAttributes(array('qid'=>$qid, 'scale_id'=>$iSubquestionScales));
 
-                        $_SESSION['flashmessage'] = $clang->gT("Question was successfully saved.");
+                        Yii::app()->session['flashmessage'] = $clang->gT("Question was successfully saved.");
 //                    }
 //                    else
 //                    {

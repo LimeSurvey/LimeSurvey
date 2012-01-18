@@ -121,8 +121,8 @@ class update extends Survey_Common_Action
         $readonlyfiles = $this->_getReadOnlyFiles($updateinfo);
 
 
-        $_SESSION['updateinfo'] = $updateinfo;
-        $_SESSION['updatesession'] = $cookies;
+        Yii::app()->session['updateinfo'] = $updateinfo;
+        Yii::app()->session['updatesession'] = $cookies;
 
         $aData['error'] = $error;
         $aData['updateinfo'] = $updateinfo;
@@ -207,7 +207,7 @@ class update extends Survey_Common_Action
         // Request the list with changed files from the server
         $updatekey=getGlobalSetting('updatekey');
 
-        if (!isset( $_SESSION['updateinfo']))
+        if (!isset( Yii::app()->session['updateinfo']))
         {
             if ($updateinfo['error']==1)
             {
@@ -216,7 +216,7 @@ class update extends Survey_Common_Action
         }
         else
         {
-            $updateinfo=$_SESSION['updateinfo'];
+            $updateinfo=Yii::app()->session['updateinfo'];
         }
 
         $aData['updateinfo'] = $updateinfo;
@@ -298,7 +298,7 @@ class update extends Survey_Common_Action
         $updatekey=getGlobalSetting('updatekey');
         $aData = array('clang' => $clang);
 
-        if (!isset( $_SESSION['updateinfo']))
+        if (!isset( Yii::app()->session['updateinfo']))
         {
             if ($updateinfo['error']==1)
             {
@@ -307,7 +307,7 @@ class update extends Survey_Common_Action
         }
         else
         {
-            $updateinfo=$_SESSION['updateinfo'];
+            $updateinfo=Yii::app()->session['updateinfo'];
         }
         // this is the last step - Download the zip file, unpack it and replace files accordingly
         // Create DB and file backups now
@@ -323,7 +323,7 @@ class update extends Survey_Common_Action
         $http->data_timeout=0;
         $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
         $http->GetRequestArguments("http://update.limesurvey.org/updates/download/{$updateinfo['downloadid']}",$arguments);
-        $http->RestoreCookies($_SESSION['updatesession']);
+        $http->RestoreCookies(Yii::app()->session['updatesession']);
 
         $error=$http->Open($arguments);
         $error=$http->SendRequest($arguments);
@@ -397,7 +397,7 @@ class update extends Survey_Common_Action
             {
                 if(strpos($line,'buildnumber')!==false)
                 {
-                    $line='$config[\'buildnumber\']'." = '{$_SESSION['updateinfo']['toversion']}';\r\n";
+                    $line='$config[\'buildnumber\']'." = '{Yii::app()->session['updateinfo']['toversion']}';\r\n";
                 }
                 fwrite($handle,$line);
             }

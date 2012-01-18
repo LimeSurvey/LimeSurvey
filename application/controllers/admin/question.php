@@ -257,7 +257,7 @@ class question extends Survey_Common_Action
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
         $aData['display']['menu_bars']['qid_action'] = 'editansweroptions';
 
-        $_SESSION['FileManagerContext'] = "edit:answer:{$surveyid}";
+        Yii::app()->session['FileManagerContext'] = "edit:answer:{$surveyid}";
 
         $aViewUrls = $this->_editansweroptions($surveyid, $gid, $qid);
 
@@ -413,7 +413,7 @@ class question extends Survey_Common_Action
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.blockUI.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.selectboxes.min.js');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/dd.css');
-        $_SESSION['FileManagerContext'] = "edit:answer:{$surveyid}";
+        Yii::app()->session['FileManagerContext'] = "edit:answer:{$surveyid}";
 
         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
@@ -621,7 +621,7 @@ class question extends Survey_Common_Action
         $aData['qid'] = $qid;
         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
-        $_SESSION['FileManagerContext'] = "create:question:{$surveyid}";
+        Yii::app()->session['FileManagerContext'] = "create:question:{$surveyid}";
 
         if (bHasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
@@ -643,7 +643,7 @@ class question extends Survey_Common_Action
             // Prepare selector Mode TODO: with and without image
             if (!$adding)
             {
-                $_SESSION['FileManagerContext'] = "edit:question:{$surveyid}";
+                Yii::app()->session['FileManagerContext'] = "edit:question:{$surveyid}";
                 $aData['display']['menu_bars']['qid_action'] = 'editquestion';
 
                 $egresult = Questions::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'qid' => $qid));
@@ -951,18 +951,18 @@ class question extends Survey_Common_Action
         else
             $language = $lang;
 
-        if (!isset($_SESSION['step'])) { $_SESSION['step'] = 0; }
-        if (!isset($_SESSION['prevstep'])) { $_SESSION['prevstep'] = 0; }
-        if (!isset($_SESSION['maxstep'])) { $_SESSION['maxstep'] = 0; }
+        if (!isset(Yii::app()->session['step'])) { Yii::app()->session['step'] = 0; }
+        if (!isset(Yii::app()->session['prevstep'])) { Yii::app()->session['prevstep'] = 0; }
+        if (!isset(Yii::app()->session['maxstep'])) { Yii::app()->session['maxstep'] = 0; }
 
         // Use $_SESSION instead of $this->session for frontend features.
-        $_SESSION[$surveyid]['s_lang'] = $language;
-        $_SESSION[$surveyid]['fieldmap'] = createFieldMap($surveyid, 'full', true, $qid);
+        Yii::app()->session[$surveyid]['s_lang'] = $language;
+        Yii::app()->session[$surveyid]['fieldmap'] = createFieldMap($surveyid, 'full', true, $qid);
 
         // Prefill question/answer from defaultvalues
-        foreach ($_SESSION['fieldmap'] as $field)
+        foreach (Yii::app()->session['fieldmap'] as $field)
             if (isset($field['defaultvalue']))
-                $_SESSION[$field['fieldname']] = $field['defaultvalue'];
+                Yii::app()->session[$field['fieldname']] = $field['defaultvalue'];
 
         $clang = new limesurvey_lang($language);
 
@@ -970,7 +970,7 @@ class question extends Survey_Common_Action
 
         setNoAnswerMode($thissurvey);
 
-        $_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
+        Yii::app()->session['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
 
         $qrows = Questions::model()->findByAttributes(array('sid' => $surveyid, 'qid' => $qid, 'language' => $language))->getAttributes();
 

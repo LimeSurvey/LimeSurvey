@@ -229,7 +229,7 @@ class labels extends Survey_Common_Action
         if ($lid != false)
             $lid = sanitize_int($lid);
 
-        $_SESSION['FileManagerContext'] = "edit:label:{$lid}";
+        Yii::app()->session['FileManagerContext'] = "edit:label:{$lid}";
 
         // Gets the current language
         $clang = $this->getController()->lang;

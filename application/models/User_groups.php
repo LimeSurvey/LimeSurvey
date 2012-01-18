@@ -125,7 +125,7 @@ class User_groups extends CActiveRecord {
 
  	function addGroup($group_name, $group_description) {
 	    $iquery = "INSERT INTO {{user_groups}} (`name`, `description`, `owner_id`) VALUES(:group_name, :group_desc, :loginID)";
-	    $command = Yii::app()->db->createCommand($iquery)->bindParam(":group_name", $group_name, PDO::PARAM_STR)->bindParam(":group_desc", $group_description, PDO::PARAM_STR)->bindParam(":loginID", $_SESSION['loginID'], PDO::PARAM_INT);
+	    $command = Yii::app()->db->createCommand($iquery)->bindParam(":group_name", $group_name, PDO::PARAM_STR)->bindParam(":group_desc", $group_description, PDO::PARAM_STR)->bindParam(":loginID", Yii::app()->session['loginID'], PDO::PARAM_INT);
 	    $result = $command->query();
 	    if($result) { //Checked
 	    	$id = Yii::app()->db->getLastInsertID(); //Yii::app()->db->Insert_Id(db_table_name_nq('user_groups'),'ugid');

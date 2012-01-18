@@ -51,7 +51,7 @@
             <tr>
 
                 <td align='center' style='padding:3px;'>
-                    <?php if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || $usr['uid'] == $_SESSION['loginID'] || (Yii::app()->session['USER_RIGHT_CREATE_USER'] == 1 && $usr['parent_id'] == Yii::app()->session['loginID'])) { ?>
+                    <?php if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || $usr['uid'] == Yii::app()->session['loginID'] || (Yii::app()->session['USER_RIGHT_CREATE_USER'] == 1 && $usr['parent_id'] == Yii::app()->session['loginID'])) { ?>
                         <form method='post' action='<?php echo $this->createUrl("admin/user/modifyuser");?>'>
                             <input type='image' src='<?php echo $imageurl;?>/token_edit.png' alt='<?php $clang->eT("Edit this user");?>' />
                             <input type='hidden' name='action' value='modifyuser' />

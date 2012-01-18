@@ -57,9 +57,9 @@ class printanswers extends LSYii_Controller {
         //}
         Yii::app()->loadHelper('database');
 
-        if (isset($_SESSION[$surveyid]['sid']))
+        if (isset(Yii::app()->session[$surveyid]['sid']))
         {
-            $surveyid = $_SESSION[$surveyid]['sid'];
+            $surveyid = Yii::app()->session[$surveyid]['sid'];
         }
         else
         {
@@ -67,7 +67,7 @@ class printanswers extends LSYii_Controller {
         }
 
         //Debut session time out
-        if (!isset($_SESSION[$surveyid]['finished']) || !isset($_SESSION[$surveyid]['srid']))
+        if (!isset(Yii::app()->session[$surveyid]['finished']) || !isset(Yii::app()->session[$surveyid]['srid']))
         // Argh ... a session time out! RUN!
         //display "sorry but your session has expired"
         {
@@ -93,19 +93,19 @@ class printanswers extends LSYii_Controller {
         }
         //Fin session time out
 
-        $id = $_SESSION[$surveyid]['srid']; //I want to see the answers with this id
-        $clang = $_SESSION[$surveyid]['s_lang'];
+        $id = Yii::app()->session[$surveyid]['srid']; //I want to see the answers with this id
+        $clang = Yii::app()->session[$surveyid]['s_lang'];
 
         //Ensure script is not run directly, avoid path disclosure
         //if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die( "browse - Cannot run this script directly");}
 
         // Set the language for dispay
         //require_once($rootdir.'/classes/core/language.php');  // has been secured
-        if (isset($_SESSION[$surveyid]['s_lang']))
+        if (isset(Yii::app()->session[$surveyid]['s_lang']))
         {
 
-            $clang = SetSurveyLanguage( $surveyid, $_SESSION[$surveyid]['s_lang']);
-            $language = $_SESSION[$surveyid]['s_lang'];
+            $clang = SetSurveyLanguage( $surveyid, Yii::app()->session[$surveyid]['s_lang']);
+            $language = Yii::app()->session[$surveyid]['s_lang'];
         }
         else
         {

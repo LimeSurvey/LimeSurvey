@@ -2182,8 +2182,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     //Get list of questions
     if (is_null($sQuestionLanguage))
     {
-        if (isset($_SESSION['s_lang'])) {
-            $sQuestionLanguage = $_SESSION['s_lang'];
+        if (isset(Yii::app()->session['s_lang'])) {
+            $sQuestionLanguage = Yii::app()->session['s_lang'];
         }
         else {
             $sQuestionLanguage = Survey::model()->findByPk($surveyid)->language;
@@ -2199,8 +2199,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     if (isset($globalfieldmap[$surveyid][$style][$s_lang]) && $force_refresh==false) {
         return $globalfieldmap[$surveyid][$style][$s_lang];
     }
-    if (isset($_SESSION['fieldmap-' . $surveyid . $s_lang]) && !$force_refresh) {
-        return $_SESSION['fieldmap-' . $surveyid . $s_lang];
+    if (isset(Yii::app()->session['fieldmap-' . $surveyid . $s_lang]) && !$force_refresh) {
+        return Yii::app()->session['fieldmap-' . $surveyid . $s_lang];
     }
 
     $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
@@ -2728,7 +2728,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     }
     if (isset($fieldmap)) {
         $globalfieldmap[$surveyid][$style][$s_lang] = $fieldmap;
-        $_SESSION['fieldmap-' . $surveyid . $s_lang]=$fieldmap;
+        Yii::app()->session['fieldmap-' . $surveyid . $s_lang]=$fieldmap;
         return $fieldmap;
     }
 }
@@ -2873,53 +2873,6 @@ function GetAdditionalLanguagesFromSurveyID($surveyid)
 {
     return Survey::model()->findByPk($surveyid)->additionalLanguages;
 }
-
-
-
-//For multilanguage surveys
-// If null or 0 is given for $surveyid then the default language from config-defaults.php is returned
-function SetSurveyLanguage($surveyid, $language)
-{
-    $surveyid=sanitize_int($surveyid);
-    $defaultlang = Yii::app()->getConfig('defaultlang');
-
-    if (isset($surveyid) && $surveyid>0)
-    {
-        // see if language actually is present in survey
-        $result = Survey::model()->findAll('sid = :sid', array(':sid' => $surveyid));
-
-        foreach ($result as $row) {//while ($result && ($row=$result->FetchRow())) {)
-            $additional_languages = $row->additional_languages;
-            $default_language = $row->language;
-        }
-
-        if (!isset($language) || ($language=='') || (isset($additional_languages) && strpos($additional_languages, $language) === false)
-        or (isset($default_language) && $default_language == $language)
-        ) {
-            // Language not supported, or default language for survey, fall back to survey's default language
-            $_SESSION[$surveyid]['s_lang'] = $default_language;
-            //echo "Language not supported, resorting to ".$_SESSION['s_lang']."<br />";
-        } else {
-            $_SESSION[$surveyid]['s_lang'] =  $language;
-            //echo "Language will be set to ".$_SESSION['s_lang']."<br />";
-        }
-        Yii::import('application.libraries.Limesurvey_lang', true);
-        $clang = new limesurvey_lang($_SESSION[$surveyid]['s_lang']);
-    }
-    else {
-        $_SESSION[$surveyid]['s_lang'] = $language;
-        Yii::import('application.libraries.Limesurvey_lang', true);
-        $clang = new Limesurvey_lang($defaultlang);
-    }
-
-    $thissurvey=getSurveyInfo($surveyid, @$_SESSION[$surveyid]['s_lang']);
-    Yii::app()->loadHelper('surveytranslator');
-    $_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
-
-    LimeExpressionManager::SetEMLanguage($_SESSION[$surveyid]['s_lang']);
-    return $clang;
-}
-
 
 function buildLabelSetCheckSumArray()
 {
@@ -4573,7 +4526,7 @@ function getArrayFiltersForQuestion($qid)
             {
                 // we found the target question, now we need to know what the answers where, we know its a multi!
                 $fields[0]=sanitize_int($fields[0]);
-                //$query = "SELECT title FROM ".db_table_name('questions')." where parent_qid='{$fields[0]}' AND language='".$_SESSION[$surveyid]['s_lang']."' order by question_order";
+                //$query = "SELECT title FROM ".db_table_name('questions')." where parent_qid='{$fields[0]}' AND language='".Yii::app()->session[$surveyid]['s_lang']."' order by question_order";
                 $qresult=Questions::model()->findAllByAttributes(array("parent_qid"=> $fields[0], "language"=> Yii::app()->session[$surveyid]['s_lang']), array('order' => "question_order"));
                 $selected = array();
                 //while ($code = $qresult->fetchRow())
@@ -4711,19 +4664,19 @@ function getArrayFilterExcludesForQuestion($qid)
         /* For each $val (question title) that applies to this, check what values exist and add them to the $selected array */
         foreach ($excludevals as $val)
         {
-            foreach ($_SESSION['fieldarray'] as $fields) //iterate through every question in the survey
+            foreach (Yii::app()->session['fieldarray'] as $fields) //iterate through every question in the survey
             {
                 if ($fields[2] == $val)
                 {
                     // we found the target question, now we need to know what the answers were!
                     $fields[0]=sanitize_int($fields[0]);
-                    $query = "SELECT title FROM {{questions}} where parent_qid='{$fields[0]}' AND language='".$_SESSION[$surveyid]['s_lang']."' order by question_order";
+                    $query = "SELECT title FROM {{questions}} where parent_qid='{$fields[0]}' AND language='".Yii::app()->session[$surveyid]['s_lang']."' order by question_order";
                     $qresult = db_execute_assoc($query);  //Checked
                     foreach ($qresult->readAll() as $code)
                     {
-                        if (isset($_SESSION[$fields[1]]))
-                            if ((isset($_SESSION[$fields[1].$code['title']]) && $_SESSION[$fields[1].$code['title']] == "Y")
-                            || $_SESSION[$fields[1]] == $code['title'])
+                        if (isset(Yii::app()->session[$fields[1]]))
+                            if ((isset(Yii::app()->session[$fields[1].$code['title']]) && Yii::app()->session[$fields[1].$code['title']] == "Y")
+                            || Yii::app()->session[$fields[1]] == $code['title'])
                                 array_push($selected,$code['title']);
                     }
                     //Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
@@ -4732,7 +4685,7 @@ function getArrayFilterExcludesForQuestion($qid)
                     foreach ($qresult->readAll() as $row) {$other=$row['other'];}
                     if($other == "Y")
                     {
-                        if($_SESSION[$fields[1].'other'] != "") {array_push($selected, "other");}
+                        if(Yii::app()->session[$fields[1].'other'] != "") {array_push($selected, "other");}
                     }
                 }
             }
@@ -5958,7 +5911,7 @@ function aArrayInvert($aArr)
 function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv, $surveyid)
 {
 
-    $qtype = $_SESSION[$surveyid]['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'];
+    $qtype = Yii::app()->session[$surveyid]['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'];
 
     switch ($qtype) {
         case 'X':
@@ -5968,13 +5921,13 @@ function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv, $surveyid)
         case 'O':
             // multiple choice and list with comments question types - just one answer is required and comments are not required
             foreach($aFieldnamesInfoInv[$q] as $sField)
-                if(!strstr($sField, 'comment') && isset($_SESSION[$surveyid][$sField]) && trim($_SESSION[$surveyid][$sField])!='')
+                if(!strstr($sField, 'comment') && isset(Yii::app()->session[$surveyid][$sField]) && trim(Yii::app()->session[$surveyid][$sField])!='')
                     return true;
                 return false;
         case 'L': // List questions only need one answer (including the 'other' option)
             foreach($aFieldnamesInfoInv[$q] as $sField)
             {
-                if(isset($_SESSION[$surveyid][$sField]) && trim($_SESSION[$surveyid][$sField])!='')
+                if(isset(Yii::app()->session[$surveyid][$sField]) && trim(Yii::app()->session[$surveyid][$sField])!='')
                     return true;
             }
             return false;
@@ -5987,13 +5940,13 @@ function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv, $surveyid)
         case 'A':
         case 'E':
             // array question types - if filtered only displayed answer are required
-            $qattr = getQuestionAttributeValues(@$_SESSION[$surveyid]['fieldmap'][$aFieldnamesInfoInv[$q][0]]['qid'], $qtype);
+            $qattr = getQuestionAttributeValues(@Yii::app()->session[$surveyid]['fieldmap'][$aFieldnamesInfoInv[$q][0]]['qid'], $qtype);
 
             $qcodefilter = @$qattr['array_filter'];
 
             $sgqfilter = '';
 
-            foreach($_SESSION[$surveyid]['fieldarray'] as $field)
+            foreach(Yii::app()->session[$surveyid]['fieldarray'] as $field)
                 //look for the multiple choice filter
                 if ($field[2] == $qcodefilter && $field[4] == 'M')
                 {
@@ -6007,7 +5960,7 @@ function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv, $surveyid)
             {
                 // all answers required
                 foreach($aFieldnamesInfoInv[$q] as $sField)
-                    if(!isset($_SESSION[$surveyid][$sField]) || trim($_SESSION[$surveyid][$sField])=='')
+                    if(!isset(Yii::app()->session[$surveyid][$sField]) || trim(Yii::app()->session[$surveyid][$sField])=='')
                         return false;
                     return true;
             }
@@ -6015,24 +5968,24 @@ function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv, $surveyid)
             foreach($aFieldnamesInfoInv[$q] as $sField)
             {
                 //keep only first subquestion code for multiple scale answer
-                $aid = explode('_',$_SESSION[$surveyid]['fieldmap'][$sField]['aid']);
+                $aid = explode('_',Yii::app()->session[$surveyid]['fieldmap'][$sField]['aid']);
                 $aid = explode('#',$aid[0]);
                 //if a checked answer in the multiple choice is not present
-                if (!isset($_SESSION[$surveyid][$sgqfilter.$aid[0]])) {
+                if (!isset(Yii::app()->session[$surveyid][$sgqfilter.$aid[0]])) {
                     return false;
                 }
-                if (!isset($_SESSION[$surveyid][$sField]))
+                if (!isset(Yii::app()->session[$surveyid][$sField]))
                 {
                     return false;
                 }
-                if ($_SESSION[$surveyid][$sgqfilter.$aid[0]] == 'Y' && $_SESSION[$surveyid][$sField] == '')
+                if (Yii::app()->session[$surveyid][$sgqfilter.$aid[0]] == 'Y' && Yii::app()->session[$surveyid][$sField] == '')
                     return false;
             }
             return true;
         default:
             // all answers required for all other question types
             foreach($aFieldnamesInfoInv[$q] as $sField)
-                if(!isset($_SESSION[$surveyid][$sField]) || trim($_SESSION[$surveyid][$sField])=='')
+                if(!isset(Yii::app()->session[$surveyid][$sField]) || trim(Yii::app()->session[$surveyid][$sField])=='')
                     return false;
                 return true;
     }
@@ -7419,7 +7372,7 @@ function checkMovequestionConstraintsForConditions($sid,$qid,$newgid="all")
 function getusergrouplist($ugid=NULL,$outputformat='optionlist')
 {
     $clang = Yii::app()->lang;
-    //$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE owner_id = {$_SESSION['loginID']} ORDER BY name";
+    //$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE owner_id = {Yii::app()->session['loginID']} ORDER BY name";
     $squery = "SELECT a.ugid, a.name, a.owner_id, b.uid FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE uid = ".Yii::app()->session['loginID']." ORDER BY name";
 
     $sresult = Yii::app()->db->createCommand($squery)->query(); //Checked
@@ -7893,7 +7846,7 @@ function retrieve_Answer($surveyid, $code, $phpdateformat=null)
     $clang = Yii::app()->lang;
 
     //Find question details
-    if (isset($_SESSION[$code]))
+    if (isset(Yii::app()->session[$code]))
     {
         $questiondetails=getsidgidqidaidtype($code);
         //the getsidgidqidaidtype function is in common.php and returns
@@ -7904,22 +7857,22 @@ function retrieve_Answer($surveyid, $code, $phpdateformat=null)
         if ($questiondetails['type'] == "M" ||
         $questiondetails['type'] == "P")
         {
-            $query="SELECT * FROM {{questions}} WHERE parent_qid='".$questiondetails['qid']."' AND language='".$_SESSION[$surveyid]['s_lang']."'";
+            $query="SELECT * FROM {{questions}} WHERE parent_qid='".$questiondetails['qid']."' AND language='".Yii::app()->session[$surveyid]['s_lang']."'";
             $result=db_execute_assoc($query) or safe_die("Error getting answer<br />$query<br />");
             foreach ($result->readAll() as  $row)
             {
-                if (isset($_SESSION[$code.$row['title']]) && $_SESSION[$code.$row['title']] == "Y")
+                if (isset(Yii::app()->session[$code.$row['title']]) && Yii::app()->session[$code.$row['title']] == "Y")
                 {
                     $returns[] = $row['question'];
                 }
-                elseif (isset($_SESSION[$code]) && $_SESSION[$code] == "Y" && $questiondetails['aid']==$row['title'])
+                elseif (isset(Yii::app()->session[$code]) && Yii::app()->session[$code] == "Y" && $questiondetails['aid']==$row['title'])
                 {
                     return $row['question'];
                 }
             }
-            if (isset($_SESSION[$code."other"]) && $_SESSION[$code."other"])
+            if (isset(Yii::app()->session[$code."other"]) && Yii::app()->session[$code."other"])
             {
-                $returns[]=$_SESSION[$code."other"];
+                $returns[]=Yii::app()->session[$code."other"];
             }
             if (isset($returns))
             {
@@ -7934,13 +7887,13 @@ function retrieve_Answer($surveyid, $code, $phpdateformat=null)
                 $return=$clang->gT("No answer");
             }
         }
-        elseif (!$_SESSION[$code] && $_SESSION[$code] !=0)
+        elseif (!Yii::app()->session[$code] && Yii::app()->session[$code] !=0)
         {
             $return=$clang->gT("No answer");
         }
         else
         {
-            $return=getextendedanswer($surveyid, NULL, $code, $_SESSION[$code], 'INSERTANS');
+            $return=getextendedanswer($surveyid, NULL, $code, Yii::app()->session[$code], 'INSERTANS');
         }
     }
     else
@@ -8133,7 +8086,7 @@ function checkgroupfordisplay($gid,$anonymized,$surveyid)
     LimeExpressionManager::StartProcessingPage(false);
     LimeExpressionManager::StartProcessingGroup($gid,$anonymized,$surveyid);
 
-    foreach ($_SESSION['fieldarray'] as $ia) //Run through all the questions
+    foreach (Yii::app()->session['fieldarray'] as $ia) //Run through all the questions
 
     {
         if ($ia[5] == $gid) //If the question is in the group we are checking:
@@ -8220,7 +8173,6 @@ function ellipsize($str, $max_length, $position = 1, $ellipsis = '&hellip;')
 	}
 
 	$beg = substr($str, 0, floor($max_length * $position));
-
 	$position = ($position > 1) ? 1 : $position;
 
 	if ($position === 1)

@@ -18,46 +18,46 @@ class kcfinder extends Survey_Common_Action
 
     function index($load = false)
     {
-        $_SESSION['KCFINDER'] = array();
+        Yii::app()->session['KCFINDER'] = array();
 
         $sAllowedExtensions = implode(' ', array_map('trim', explode(',', Yii::app()->getConfig('allowedresourcesuploads'))));
-        $_SESSION['KCFINDER']['types'] = array(
+        Yii::app()->session['KCFINDER']['types'] = array(
             'files' => $sAllowedExtensions,
             'flash' => $sAllowedExtensions,
             'images' => $sAllowedExtensions
         );
 
         if (Yii::app()->getConfig('demoMode') === false &&
-                isset($_SESSION['loginID']) &&
-                isset($_SESSION['FileManagerContext']))
+                isset(Yii::app()->session['loginID']) &&
+                isset(Yii::app()->session['FileManagerContext']))
         {
             // disable upload at survey creation time
             // because we don't know the sid yet
-            if (preg_match('/^(create|edit):(question|group|answer)/', $_SESSION['FileManagerContext']) != 0 ||
-                    preg_match('/^edit:survey/', $_SESSION['FileManagerContext']) != 0 ||
-                    preg_match('/^edit:assessments/', $_SESSION['FileManagerContext']) != 0 ||
-                    preg_match('/^edit:emailsettings/', $_SESSION['FileManagerContext']) != 0)
+            if (preg_match('/^(create|edit):(question|group|answer)/', Yii::app()->session['FileManagerContext']) != 0 ||
+                    preg_match('/^edit:survey/', Yii::app()->session['FileManagerContext']) != 0 ||
+                    preg_match('/^edit:assessments/', Yii::app()->session['FileManagerContext']) != 0 ||
+                    preg_match('/^edit:emailsettings/', Yii::app()->session['FileManagerContext']) != 0)
             {
-                $contextarray = explode(':', $_SESSION['FileManagerContext'], 3);
+                $contextarray = explode(':', Yii::app()->session['FileManagerContext'], 3);
                 $surveyid = $contextarray[2];
 
                 if (bHasSurveyPermission($surveyid, 'surveycontent', 'update'))
                 {
-                    $_SESSION['KCFINDER']['disabled'] = false;
-                    $_SESSION['KCFINDER']['uploadURL'] = $this->getController()->createUrl("upload/surveys/{$surveyid}/");
-                    $_SESSION['KCFINDER']['uploadDir'] = ROOT . "/upload/surveys/{$surveyid}/";
+                    Yii::app()->session['KCFINDER']['disabled'] = false;
+                    Yii::app()->session['KCFINDER']['uploadURL'] = $this->getController()->createUrl("upload/surveys/{$surveyid}/");
+                    Yii::app()->session['KCFINDER']['uploadDir'] = ROOT . "/upload/surveys/{$surveyid}/";
                 }
             }
-            elseif (preg_match('/^edit:label/', $_SESSION['FileManagerContext']) != 0)
+            elseif (preg_match('/^edit:label/', Yii::app()->session['FileManagerContext']) != 0)
             {
-                $contextarray = explode(':', $_SESSION['FileManagerContext'], 3);
+                $contextarray = explode(':', Yii::app()->session['FileManagerContext'], 3);
                 $labelid = $contextarray[2];
                 // check if the user has label management right and labelid defined
-                if ($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1 && isset($labelid) && $labelid != '')
+                if (Yii::app()->session['USER_RIGHT_MANAGE_LABEL'] == 1 && isset($labelid) && $labelid != '')
                 {
-                    $_SESSION['KCFINDER']['disabled'] = false;
-                    $_SESSION['KCFINDER']['uploadURL'] = $this->getController()->createUrl("upload/labels/{$labelid}/");
-                    $_SESSION['KCFINDER']['uploadDir'] = ROOT . "/upload/labels/{$labelid}/";
+                    Yii::app()->session['KCFINDER']['disabled'] = false;
+                    Yii::app()->session['KCFINDER']['uploadURL'] = $this->getController()->createUrl("upload/labels/{$labelid}/");
+                    Yii::app()->session['KCFINDER']['uploadDir'] = ROOT . "/upload/labels/{$labelid}/";
                 }
             }
         }

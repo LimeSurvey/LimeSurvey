@@ -39,7 +39,7 @@ class Assessments extends Survey_Common_Action
         $languages = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
         $surveyLanguage = Survey::model()->findByPk($iSurveyId)->language;
 
-        $_SESSION['FileManagerContext'] = "edit:assessments:{$iSurveyId}";
+        Yii::app()->session['FileManagerContext'] = "edit:assessments:{$iSurveyId}";
 
         array_unshift($languages, $surveyLanguage); // makes an array with ALL the languages supported by the survey -> $assessmentlangs
 

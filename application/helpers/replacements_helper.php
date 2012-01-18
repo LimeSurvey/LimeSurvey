@@ -96,7 +96,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $_surveyid = (isset($surveyid) ? $surveyid : 0);
     if (!isset($totalBoilerplatequestions)) { $totalBoilerplatequestions = 0; }
     if (!isset($showXquestions)) { $showXquestions = Yii::app()->getConfig('showXquestions'); }
-    if (!isset($s_lang)) { $s_lang = (isset($_SESSION[$_surveyid]['s_lang']) ? $_SESSION[$_surveyid]['s_lang'] : 'en'); }
+    if (!isset($s_lang)) { $s_lang = (isset(Yii::app()->session[$_surveyid]['s_lang']) ? Yii::app()->session[$_surveyid]['s_lang'] : 'en'); }
     if (!isset($captchapath)) { $captchapath = ''; }
 
     if (file_exists($line))
@@ -144,12 +144,12 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $surveyformat = "";
     }
-    if ((isset($_SESSION['step']) && $_SESSION['step'] % 2) && $surveyformat!="allinone")
+    if ((isset(Yii::app()->session['step']) && Yii::app()->session['step'] % 2) && $surveyformat!="allinone")
     {
         $surveyformat .= " page-odd";
     }
 
-    if (isset($thissurvey['allowjumps']) && $thissurvey['allowjumps']=="Y" && $surveyformat!="allinone" && (isset($_SESSION['step']) && $_SESSION['step']>0)){
+    if (isset($thissurvey['allowjumps']) && $thissurvey['allowjumps']=="Y" && $surveyformat!="allinone" && (isset(Yii::app()->session['step']) && Yii::app()->session['step']>0)){
         $surveyformat .= " withindex";
     }
     if (isset($thissurvey['showprogress']) && $thissurvey['showprogress']=="Y"){
@@ -351,9 +351,9 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_clearall = "";
     }
 
-    if (isset($_SESSION['datestamp']))
+    if (isset(Yii::app()->session['datestamp']))
     {
-        $_datestamp = $_SESSION['datestamp'];
+        $_datestamp = Yii::app()->session['datestamp'];
     }
     else
     {
@@ -375,7 +375,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
                 $_saveall = "\t\t\t<input type='button' name='saveallbtn' value='" . $clang->gT("Resume Later") . "' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";  // Show Save So Far button
             };
         }
-        elseif (!isset($_SESSION['step']) || !$_SESSION['step'])
+        elseif (!isset(Yii::app()->session['step']) || !Yii::app()->session['step'])
         {  //First page, show LOAD
             if ($thissurvey['tokenanswerspersistence'] != 'Y')
             {
@@ -386,7 +386,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
                 $_saveall = '';
             }
         }
-        elseif (isset($_SESSION['scid']) && (isset($move) && $move == "movelast"))
+        elseif (isset(Yii::app()->session['scid']) && (isset($move) && $move == "movelast"))
         {  //Already saved and on Submit Page, dont show Save So Far button
             $_saveall = '';
         }
@@ -805,9 +805,9 @@ function PassthruReplace($line, $thissurvey)
 
         // lookup for the fitting arg
         $sValue='';
-        if (isset($_SESSION['urlparams'][$arg]))
+        if (isset(Yii::app()->session['urlparams'][$arg]))
         {
-            $sValue=urlencode($_SESSION['urlparams'][$arg]);
+            $sValue=urlencode(Yii::app()->session['urlparams'][$arg]);
         }
         $line=str_replace($cmd, $sValue, $line); // replace
     }

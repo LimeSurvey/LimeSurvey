@@ -1542,11 +1542,11 @@ class ExpressionManager {
                     return $var['code'];    // for static values like TOKEN
                 }
                 else {
-                    if (isset($_SESSION[$sgqa])) {
-//                        if ($_SESSION[$sgqa] == 'false') {
+                    if (isset(Yii::app()->session[$sgqa])) {
+//                        if (Yii::app()->session[$sgqa] == 'false') {
 //                            return $default;  // TODO - is is safe to assume that a value of 'false' means boolean false and should be blanked?
 //                        }
-                        return $_SESSION[$sgqa];
+                        return Yii::app()->session[$sgqa];
                     }
                     if (isset($var['default']) && !is_null($var['default'])) {
                         return $var['default'];
@@ -1709,9 +1709,9 @@ class ExpressionManager {
                 if (isset($args[1]) && $args[1]=='NAOK') {
                     return 1;
                 }
-                $grel = (isset($_SESSION['relevanceStatus']['G'.$gid]) ? $_SESSION['relevanceStatus']['G'.$gid] : 1);   // true by default
-                $qrel = (isset($_SESSION['relevanceStatus'][$qid]) ? $_SESSION['relevanceStatus'][$qid] : 0);
-                $sqrel = (isset($_SESSION['relevanceStatus'][$sgqa]) ? $_SESSION['relevanceStatus'][$sgqa] : 1);    // true by default - only want false if a subquestion is irrelevant
+                $grel = (isset(Yii::app()->session['relevanceStatus']['G'.$gid]) ? Yii::app()->session['relevanceStatus']['G'.$gid] : 1);   // true by default
+                $qrel = (isset(Yii::app()->session['relevanceStatus'][$qid]) ? Yii::app()->session['relevanceStatus'][$qid] : 0);
+                $sqrel = (isset(Yii::app()->session['relevanceStatus'][$sgqa]) ? Yii::app()->session['relevanceStatus'][$sgqa] : 1);    // true by default - only want false if a subquestion is irrelevant
                 return ($grel && $qrel && $sqrel);
             default:
                 print 'UNDEFINED ATTRIBUTE: ' . $attr . "<br/>\n";
@@ -2833,10 +2833,10 @@ EOD;
         $em->RegisterVarnamesUsingMerge($vars);
 
         // manually set relevance status
-        $_SESSION['relevanceStatus'] = array();
+        Yii::app()->session['relevanceStatus'] = array();
         foreach ($vars as $var) {
             if (isset($var['qseq'])) {
-                $_SESSION['relevanceStatus'][$var['qseq']] = 1;
+                Yii::app()->session['relevanceStatus'][$var['qseq']] = 1;
             }
         }
 

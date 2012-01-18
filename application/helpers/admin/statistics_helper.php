@@ -706,7 +706,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             elseif (substr($pv, 0, 9) == "datestamp")
             {
                 //timestamp equals
-                $formatdata=getDateFormatData($_SESSION['dateformat']);
+                $formatdata=getDateFormatData(Yii::app()->session['dateformat']);
                 if (substr($pv, -1, 1) == "E" && !empty($_POST[$pv]))
                 {
                     $datetimeobj = new Date_Time_Converter($_POST[$pv], $formatdata['phpdate'].' H:i');
@@ -3324,7 +3324,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         'sp' => $bShowPieChart
                     );
 
-                    $_SESSION['stats'][$rt] = array(
+                    Yii::app()->session['stats'][$rt] = array(
                         'lbl' => $lbl,
                         'gdata' => $gdata,
                         'grawdata' => $grawdata
