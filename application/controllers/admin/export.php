@@ -121,7 +121,7 @@ class export extends Survey_Common_Action {
 
 			$data = array("surveyid" => $surveyid, "gid" => $gid);
 
-			$this->_renderWrappedTemplate("group_view", $data);
+			$this->_renderWrappedTemplate('export', "group_view", $data);
         }
         else
         {
@@ -147,7 +147,7 @@ class export extends Survey_Common_Action {
 
 			$data = array("surveyid" => $surveyid, "gid" => $gid, "qid" =>$qid);
 
-			$this->_renderWrappedTemplate("question_view", $data);
+			$this->_renderWrappedTemplate('export', "question_view", $data);
         }
         else
         {
@@ -227,7 +227,7 @@ class export extends Survey_Common_Action {
         	$data['thissurvey'] = $thissurvey;
             $data['display']['menu_bars']['browse'] = $clang->gT("Export results");
 
-            $this->_renderWrappedTemplate('exportresults_view', $data);
+            $this->_renderWrappedTemplate('export', 'exportresults_view', $data);
 
             return;
         }
@@ -405,7 +405,7 @@ class export extends Survey_Common_Action {
         	$data['surveyid'] = $surveyid;
             $data['display']['menu_bars']['browse'] = $clang->gT('Export results');
 
-            $this->_renderWrappedTemplate('spss_view', $data);
+            $this->_renderWrappedTemplate('export', 'spss_view', $data);
         }
 		else
 		{
@@ -673,7 +673,7 @@ class export extends Survey_Common_Action {
         	$data['surveyid'] = $surveyid;
             $data['display']['menu_bars']['browse'] = $clang->gT("Export results");
 
-            $this->_renderWrappedTemplate('r_view', $data);
+            $this->_renderWrappedTemplate('export', 'r_view', $data);
         }
         else
         {
@@ -915,7 +915,7 @@ class export extends Survey_Common_Action {
         	$data['surveyid'] = $surveyid;
             $data['display']['menu_bars']['browse'] = $clang->gT("Export VV file");
 
-            $this->_renderWrappedTemplate('vv_view', $data);
+            $this->_renderWrappedTemplate('export', 'vv_view', $data);
         }
         elseif ( isset($surveyid) && $surveyid )
         {
@@ -1325,15 +1325,16 @@ class export extends Survey_Common_Action {
     /**
      * Renders template(s) wrapped in header and footer
      *
+     * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array())
 	{
 		$this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . 'admin/default/superfish.css');
 
         $aData['display']['menu_bars']['gid_action'] = 'exportstructureGroup';
 
-        parent::_renderWrappedTemplate('export', $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
 	}
 }

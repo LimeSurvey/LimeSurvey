@@ -36,17 +36,18 @@ class participantsaction extends Survey_Common_Action
         if (!empty($sScript))
         {
             $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . $sScript . '.js');
-            $this->_renderWrappedTemplate(array('participantsPanel', $sScript), $aData);
+            $this->_renderWrappedTemplate('participants', array('participantsPanel', $sScript), $aData);
         }
     }
 
     /**
      * Renders template(s) wrapped in header and footer
      *
+     * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'participants', $aViewUrls = array(), $aData = array())
     {
         $aData['display']['menu_bars'] = false;
 
@@ -55,7 +56,7 @@ class participantsaction extends Survey_Common_Action
             $a_ViewUrls[] = $sViewUrl . '_view';
         }
 
-        parent::_renderWrappedTemplate('participants', $a_ViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $a_ViewUrls, $aData);
     }
 
     /**
@@ -85,7 +86,7 @@ class participantsaction extends Survey_Common_Action
         );
 
         // loads the participant panel and summary view
-        $this->_renderWrappedTemplate(array('participantsPanel', 'summary'), $aData);
+        $this->_renderWrappedTemplate('participants', array('participantsPanel', 'summary'), $aData);
     }
 
     /**
@@ -93,7 +94,7 @@ class participantsaction extends Survey_Common_Action
      */
     function importCSV()
     {
-        $this->_renderWrappedTemplate(array('participantsPanel', 'importCSV'));
+        $this->_renderWrappedTemplate('participants', array('participantsPanel', 'importCSV'));
     }
 
     /**
@@ -130,7 +131,7 @@ class participantsaction extends Survey_Common_Action
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jqGrid/css/jquery.ui.datepicker.css');
 
         // loads the participant panel view and display participant view
-        $this->_renderWrappedTemplate(array('participantsPanel', 'displayParticipants'), $aData);
+        $this->_renderWrappedTemplate('participants', array('participantsPanel', 'displayParticipants'), $aData);
     }
 
     /**
@@ -138,7 +139,7 @@ class participantsaction extends Survey_Common_Action
      */
     function blacklistControl()
     {
-        $this->_renderWrappedTemplate(array('participantsPanel', 'blacklist'));
+        $this->_renderWrappedTemplate('participants', array('participantsPanel', 'blacklist'));
     }
 
     /**
@@ -150,7 +151,7 @@ class participantsaction extends Survey_Common_Action
             'userideditable' => Yii::app()->getConfig('userideditable')
         );
 
-        $this->_renderWrappedTemplate(array('participantsPanel', 'userControl'), $aData);
+        $this->_renderWrappedTemplate('participants', array('participantsPanel', 'userControl'), $aData);
     }
 
     /**
@@ -1217,7 +1218,7 @@ class participantsaction extends Survey_Common_Action
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . 'admin/default/participants.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . 'admin/default/viewAttribute.css');
 
-        $this->_renderWrappedTemplate(array('participantsPanel', 'viewAttribute'), $aData);
+        $this->_renderWrappedTemplate('participants', array('participantsPanel', 'viewAttribute'), $aData);
     }
 
     /*
@@ -1327,7 +1328,7 @@ class participantsaction extends Survey_Common_Action
             $templateData['error_msg'] = sprintf($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."), Yii::app()->getConfig('tempdir'));
             $errorinupload = array('error' => $this->upload->display_errors());
             Yii::app()->session['summary'] = array('errorinupload' => $errorinupload);
-            $this->_renderWrappedTemplate(array('participantsPanel', 'uploadSummary'));
+            $this->_renderWrappedTemplate('participants', array('participantsPanel', 'uploadSummary'));
         }
         else
         {
@@ -1357,7 +1358,7 @@ class participantsaction extends Survey_Common_Action
                 'fullfilepath' => $sFilePath,
                 'linecount' => $linecount - 1
             );
-            $this->_renderWrappedTemplate('attributeMapCSV', $aData);
+            $this->_renderWrappedTemplate('participants', 'attributeMapCSV', $aData);
         }
     }
 
@@ -1598,7 +1599,7 @@ class participantsaction extends Survey_Common_Action
 
     function summaryview()
     {
-        $this->_renderWrappedTemplate(array('participantsPanel', 'uploadSummary'));
+        $this->_renderWrappedTemplate('participants', array('participantsPanel', 'uploadSummary'));
     }
 
     /*
@@ -1762,7 +1763,7 @@ class participantsaction extends Survey_Common_Action
             'count' => $count
         );
 
-        $this->_renderWrappedTemplate('attributeMap', $aData);
+        $this->_renderWrappedTemplate('participants', 'attributeMap', $aData);
     }
 
     /*
@@ -1810,7 +1811,7 @@ class participantsaction extends Survey_Common_Action
             'alreadymappedattributename' => $alreadymappedattdisplay
         );
 
-        $this->_renderWrappedTemplate('attributeMapToken', $aData);
+        $this->_renderWrappedTemplate('participants', 'attributeMapToken', $aData);
     }
 
     function mapCSVcancelled()

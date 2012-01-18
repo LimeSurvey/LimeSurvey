@@ -78,7 +78,7 @@ class SurveyAction extends Survey_Common_Action
             $aData['issuperadmin'] = true;
         }
 
-        $this->_renderWrappedTemplate('listSurveys_view', $aData);
+        $this->_renderWrappedTemplate('survey', 'listSurveys_view', $aData);
     }
 
     /**
@@ -106,7 +106,7 @@ class SurveyAction extends Survey_Common_Action
         $aData = array_merge($aData, $this->_tabTokens($esrow));
         $arrayed_data['data'] = $aData;
 
-        $this->_renderWrappedTemplate('newSurvey_view', $arrayed_data);
+        $this->_renderWrappedTemplate('survey', 'newSurvey_view', $arrayed_data);
     }
 
     /**
@@ -148,7 +148,7 @@ class SurveyAction extends Survey_Common_Action
         $aData['display']['menu_bars']['surveysummary'] = "editsurveysettings";
         $aData['data'] = $aData;
 
-        $this->_renderWrappedTemplate('editSurvey_view', $aData);
+        $this->_renderWrappedTemplate('survey', 'editSurvey_view', $aData);
     }
 
     /**
@@ -221,7 +221,7 @@ class SurveyAction extends Survey_Common_Action
                 'surveyid' => $surveyid
             );
 
-            $this->_renderWrappedTemplate('importSurveyResources_view', $aData);
+            $this->_renderWrappedTemplate('survey', 'importSurveyResources_view', $aData);
         }
     }
 
@@ -247,7 +247,7 @@ class SurveyAction extends Survey_Common_Action
         $aData['qid'] = $qid;
         $aData['display']['menu_bars']['surveysummary'] = true;
 
-        $this->_renderWrappedTemplate(array(), $aData);
+        $this->_renderWrappedTemplate('survey', array(), $aData);
     }
 
     /**
@@ -355,7 +355,7 @@ class SurveyAction extends Survey_Common_Action
             $aData['newtable'] = $newtable;
         }
 
-        $this->_renderWrappedTemplate('deactivateSurvey_view', $aData);
+        $this->_renderWrappedTemplate('survey', 'deactivateSurvey_view', $aData);
     }
 
     /**
@@ -395,7 +395,7 @@ class SurveyAction extends Survey_Common_Action
             $aData['failedgroupcheck'] = $failedgroupcheck;
             $aData['aSurveysettings'] = getSurveyInfo($surveyid);
 
-            $this->_renderWrappedTemplate('activateSurvey_view', $aData);
+            $this->_renderWrappedTemplate('survey', 'activateSurvey_view', $aData);
         }
         else
         {
@@ -412,7 +412,7 @@ class SurveyAction extends Survey_Common_Action
 
             $aViewUrls['output'] = activateSurvey($surveyid);
 
-            $this->_renderWrappedTemplate($aViewUrls, $aData);
+            $this->_renderWrappedTemplate('survey', $aViewUrls, $aData);
         }
     }
 
@@ -642,7 +642,7 @@ class SurveyAction extends Survey_Common_Action
         else
             $this->getController()->error('Access denied');
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('survey', $aViewUrls, $aData);
     }
 
 	/**
@@ -737,7 +737,7 @@ class SurveyAction extends Survey_Common_Action
         else
             $this->getController()->error('Access denied');
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('survey', $aViewUrls, $aData);
     }
 
     /**
@@ -943,7 +943,7 @@ class SurveyAction extends Survey_Common_Action
             $aData['aImportResults'] = $aImportResults;
         }
 
-        $this->_renderWrappedTemplate('importSurvey_view', $aData);
+        $this->_renderWrappedTemplate('survey', 'importSurvey_view', $aData);
     }
 
     /**
@@ -1519,13 +1519,14 @@ class SurveyAction extends Survey_Common_Action
     /**
      * Renders template(s) wrapped in header and footer
      *
+     * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'survey', $aViewUrls = array(), $aData = array())
     {
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
-        parent::_renderWrappedTemplate('survey', $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
 }

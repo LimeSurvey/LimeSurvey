@@ -56,7 +56,7 @@ class update extends Survey_Common_Action
         $aData['changelog'] = isset($changelog) ? $changelog : '';
         $aData['httperror'] = isset($httperror) ? $httperror : '';
 
-        $this->_renderWrappedTemplate('update', $aData);
+        $this->_renderWrappedTemplate('update', 'update', $aData);
     }
 
     private function _getChangelog($buildnumber, $updaterversion, $updatekey)
@@ -127,7 +127,7 @@ class update extends Survey_Common_Action
         $aData['error'] = $error;
         $aData['updateinfo'] = $updateinfo;
         $aData['readonlyfiles'] = $readonlyfiles;
-        $this->_renderWrappedTemplate('step2', $aData);
+        $this->_renderWrappedTemplate('update', 'step2', $aData);
     }
 
     private function _getReadOnlyFiles($updateinfo)
@@ -278,7 +278,7 @@ class update extends Survey_Common_Action
             }
         }
 
-        $this->_renderWrappedTemplate('step3', $aData);
+        $this->_renderWrappedTemplate('update', 'step3', $aData);
     }
 
 
@@ -408,7 +408,7 @@ class update extends Survey_Common_Action
         setGlobalSetting('updatebuild','');
         setGlobalSetting('updateversion','');
 
-        $this->_renderWrappedTemplate('step4', $aData);
+        $this->_renderWrappedTemplate('update', 'step4', $aData);
     }
 
     private function _RunUpdaterUpdate()
@@ -543,19 +543,22 @@ class update extends Survey_Common_Action
             $aViewUrls['output'] = CheckForDBUpgrades();
         }
 
-        $this->_renderWrappedTemplate($aViewUrls,array(),$getHeader);
+        $aData['display']['header'] = false;
+
+        $this->_renderWrappedTemplate('update', $aViewUrls, $aData);
     }
 
     /**
      * Renders template(s) wrapped in header and footer
      *
+     * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array(), $getHeader)
+    protected function _renderWrappedTemplate($sAction = 'update', $aViewUrls = array(), $aData = array())
     {
         $aData['display']['menu_bars'] = false;
-        parent::_renderWrappedTemplate('update', $aViewUrls, $aData, $getHeader);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
 }

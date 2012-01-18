@@ -44,7 +44,7 @@ class saved extends Survey_Common_Action
         $aViewUrls[] = 'savedbar_view';
         $aViewUrls['savedlist_view'][] = $this->_showSavedList($iSurveyId);
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('saved', $aViewUrls, $aData);
     }
 
     /**
@@ -63,13 +63,14 @@ class saved extends Survey_Common_Action
     /**
      * Renders template(s) wrapped in header and footer
      *
+     * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'saved', $aViewUrls = array(), $aData = array())
     {
         $aData['display']['menu_bars'] = false;
-        parent::_renderWrappedTemplate('saved', $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
     /**

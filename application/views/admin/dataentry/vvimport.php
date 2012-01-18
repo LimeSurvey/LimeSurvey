@@ -1,4 +1,4 @@
-<?php 
+<?php
 if ($tableExists) {
 ?>
 		<div class='header ui-widget-header'><?php $clang->eT("Import a VV survey file"); ?></div>
@@ -7,10 +7,6 @@ if ($tableExists) {
 				<li>
 					<label for='the_file'><?php $clang->eT("File:"); ?></label>
 					<input type='file' size=50 id='the_file' name='the_file' />
-				</li>
-				<li>
-					<label for='sid'><?php $clang->eT("Survey ID:"); ?></label>
-					<input type='text' size=10 id='sid' name='sid' value='<?php echo $surveyid; ?>' readonly='readonly' />
 				</li>
 				<li>
 					<label for='noid'><?php $clang->eT("Exclude record IDs?"); ?></label>
@@ -39,6 +35,7 @@ if ($tableExists) {
 				<input type='submit' value='<?php $clang->eT("Import"); ?>' />
 				<input type='hidden' name='action' value='vvimport' />
 				<input type='hidden' name='subaction' value='upload' />
+                <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
 			</p>
 		</form>
 		<br />

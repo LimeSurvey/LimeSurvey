@@ -63,7 +63,7 @@ class tokens extends Survey_Common_Action
             $aData['surveyid'] = $iSurveyId;
             $aData['queries'] = Tokens_dynamic::model($iSurveyId)->summary();
 
-            $this->_renderWrappedTemplate(array('tokenbar', 'tokensummary'), $aData);
+            $this->_renderWrappedTemplate('token', array('tokenbar', 'tokensummary'), $aData);
         }
     }
 
@@ -314,7 +314,7 @@ class tokens extends Survey_Common_Action
         $aData['surveyprivate'] = $aData['thissurvey']['anonymized'];
         $aData['dateformatdetails'] = $dateformatdetails;
 
-        $this->_renderWrappedTemplate(array('tokenbar', 'browse'), $aData);
+        $this->_renderWrappedTemplate('token', array('tokenbar', 'browse'), $aData);
     }
 
     /**
@@ -569,7 +569,7 @@ class tokens extends Survey_Common_Action
             $aData['thissurvey'] = getSurveyInfo($iSurveyId);
             $aData['surveyid'] = $iSurveyId;
 
-            $this->_renderWrappedTemplate(array('tokenbar', 'addtokenpost'), $aData);
+            $this->_renderWrappedTemplate('token', array('tokenbar', 'addtokenpost'), $aData);
         }
         else
         {
@@ -655,7 +655,7 @@ class tokens extends Survey_Common_Action
                     $token->$k = $v;
                 $token->save();
 
-                $this->_renderWrappedTemplate(array('tokenbar', 'message' => array(
+                $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
                     'title' => $clang->gT("Success"),
                     'message' => $clang->gT("The token entry was successfully updated.") . "<br /><br />\n"
                         . "\t\t<input type='button' value='" . $clang->gT("Display tokens") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/browse/surveyid/$iSurveyId/") . "', '_top')\" />\n"
@@ -663,7 +663,7 @@ class tokens extends Survey_Common_Action
             }
             else
             {
-                $this->_renderWrappedTemplate(array('tokenbar', 'message' => array(
+                $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
                     'title' => $clang->gT("Failed"),
                     'message' => $clang->gT("There is already an entry with that exact token in the table. The same token cannot be used in multiple entries.") . "<br /><br />\n"
                         . "\t\t<input type='button' value='" . $clang->gT("Show this token entry") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/edit/surveyid/$iSurveyId/tokenid/$iTokenId") . "', '_top')\" />\n"
@@ -781,7 +781,7 @@ class tokens extends Survey_Common_Action
                 Tokens_dynamic::insertToken($iSurveyId, $aDataToInsert);
             }
 
-            $this->_renderWrappedTemplate(array('message' => array(
+            $this->_renderWrappedTemplate('token', array('message' => array(
                 'title' => $clang->gT("Success"),
                 'message' => $clang->gT("New dummy tokens were added.") . "<br /><br />\n<input type='button' value='"
                     . $clang->gT("Display tokens") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/browse/surveyid/$iSurveyId") . "', '_top')\" />\n"
@@ -801,7 +801,7 @@ class tokens extends Survey_Common_Action
             $aData['tokenlength'] = $tokenlength;
             $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
 
-            $this->_renderWrappedTemplate(array('tokenbar', 'dummytokenform'), $aData);
+            $this->_renderWrappedTemplate('token', array('tokenbar', 'dummytokenform'), $aData);
         }
     }
 
@@ -833,7 +833,7 @@ class tokens extends Survey_Common_Action
         $aData['nrofattributes'] = 0;
         $aData['examplerow'] = Tokens_dynamic::model($iSurveyId)->find();
 
-        $this->_renderWrappedTemplate(array('tokenbar', 'managetokenattributes'), $aData);
+        $this->_renderWrappedTemplate('token', array('tokenbar', 'managetokenattributes'), $aData);
     }
 
     /**
@@ -866,7 +866,7 @@ class tokens extends Survey_Common_Action
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['surveyid'] = $iSurveyId;
 
-        $this->_renderWrappedTemplate(array('tokenbar', 'message' => array(
+        $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
             'title' => sprintf($clang->gT("%s field(s) were successfully added."), $number2add),
             'message' => "<br /><input type='button' value='" . $clang->gT("Back to attribute field management.") . "' onclick=\"window.open('" . $this->getController()->createUrl("/admin/tokens/managetokenattributes/surveyid/$iSurveyId") . "', '_top')\" />"
         )), $aData);
@@ -909,7 +909,7 @@ class tokens extends Survey_Common_Action
         }
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['surveyid'] = $iSurveyId;
-        $this->_renderWrappedTemplate(array('tokenbar', 'message' => array(
+        $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
             'title' => $clang->gT('Token attribute descriptions were successfully updated.'),
             'message' => "<br /><input type='button' value='" . $clang->gT('Back to attribute field management.') . "' onclick=\"window.open('" . $this->getController()->createUrl("/admin/tokens/managetokenattributes/surveyid/$iSurveyId") . "', '_top')\" />"
         )), $aData);
@@ -988,7 +988,7 @@ class tokens extends Survey_Common_Action
                     $aData['tokenids'][] = $aToken['tid'];
                 }
             }
-            $this->_renderWrappedTemplate(array('tokenbar', $sSubAction), $aData);
+            $this->_renderWrappedTemplate('token', array('tokenbar', $sSubAction), $aData);
         }
         else
         {
@@ -1143,11 +1143,11 @@ class tokens extends Survey_Common_Action
                     $aViewUrls[] = 'emailwarning';
                 }
 
-                $this->_renderWrappedTemplate($aViewUrls, $aData);
+                $this->_renderWrappedTemplate('token', $aViewUrls, $aData);
             }
             else
             {
-                $this->_renderWrappedTemplate(array('tokenbar', 'message' => array(
+                $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
                     'title' => $clang->gT("Warning"),
                     'message' => $clang->gT("There were no eligible emails to send. This will be because none satisfied the criteria of:")
                             . "<br/>&nbsp;<ul><li>" . $clang->gT("having a valid email address") . "</li>"
@@ -1181,7 +1181,7 @@ class tokens extends Survey_Common_Action
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['surveyid'] = $iSurveyId;
 
-        $this->_renderWrappedTemplate(array('tokenbar', 'exportdialog'), $aData);
+        $this->_renderWrappedTemplate('token', array('tokenbar', 'exportdialog'), $aData);
     }
 
     /**
@@ -1211,7 +1211,7 @@ class tokens extends Survey_Common_Action
 
         if (!Yii::app()->request->getPost('submit'))
         {
-            $this->_renderWrappedTemplate(array('tokenbar', 'ldapform'), $aData);
+            $this->_renderWrappedTemplate('token', array('tokenbar', 'ldapform'), $aData);
         }
         else
         {
@@ -1430,19 +1430,19 @@ class tokens extends Survey_Common_Action
                     $aData['xy'] = $xy;
                     $aData['xz'] = $xz;
 
-                    $this->_renderWrappedTemplate(array('tokenbar', 'ldappost'), $aData);
+                    $this->_renderWrappedTemplate('token', array('tokenbar', 'ldappost'), $aData);
                 }
                 else
                 {
                     $aData['sError'] = $clang->gT("Can't bind to the LDAP directory");
-                    $this->_renderWrappedTemplate(array('tokenbar', 'ldapform'), $aData);
+                    $this->_renderWrappedTemplate('token', array('tokenbar', 'ldapform'), $aData);
                 }
                 @ldap_close($ds);
             }
             else
             {
                 $aData['sError'] = $clang->gT("Can't connect to the LDAP directory");
-                $this->_renderWrappedTemplate(array('tokenbar', 'ldapform'), $aData);
+                $this->_renderWrappedTemplate('token', array('tokenbar', 'ldapform'), $aData);
             }
         }
     }
@@ -1531,7 +1531,7 @@ class tokens extends Survey_Common_Action
                 $aData['aEncodings'] = $aEncodings;
                 $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
                 $aData['thissurvey'] = getSurveyInfo($iSurveyId);
-                $this->_renderWrappedTemplate(array('tokenbar', 'csvupload'), $aData);
+                $this->_renderWrappedTemplate('token', array('tokenbar', 'csvupload'), $aData);
             }
             else
             {
@@ -1728,7 +1728,7 @@ class tokens extends Survey_Common_Action
                 $aData['thissurvey'] = getSurveyInfo($iSurveyId);
                 $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
 
-                $this->_renderWrappedTemplate(array('tokenbar', 'csvpost'), $aData);
+                $this->_renderWrappedTemplate('token', array('tokenbar', 'csvpost'), $aData);
             }
 
         }
@@ -1738,7 +1738,7 @@ class tokens extends Survey_Common_Action
             $aData['iSurveyId'] = $iSurveyId;
             $aData['thissurvey'] = getSurveyInfo($iSurveyId);
             $aData['surveyid'] = $iSurveyId;
-            $this->_renderWrappedTemplate(array('tokenbar', 'csvupload'), $aData);
+            $this->_renderWrappedTemplate('token', array('tokenbar', 'csvupload'), $aData);
         }
     }
 
@@ -1759,7 +1759,7 @@ class tokens extends Survey_Common_Action
 
         if (!Yii::app()->request->getParam('ok'))
         {
-            $this->_renderWrappedTemplate(array('tokenbar', 'message' => array(
+            $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
                 'title' => $clang->gT("Create tokens"),
                 'message' => $clang->gT("Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?") . "<br /><br />\n"
                     . "<input type='submit' value='"
@@ -1773,7 +1773,7 @@ class tokens extends Survey_Common_Action
         {
             //get token length from survey settings
             $newtokencount = Tokens_dynamic::model($iSurveyId)->createTokens($iSurveyId);
-            $this->_renderWrappedTemplate(array('tokenbar', 'message' => array(
+            $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
                 'title' => $clang->gT("Create tokens"),
                 'message' => str_replace("{TOKENCOUNT}", $newtokencount, $clang->gT("{TOKENCOUNT} tokens have been created"))
             )), $aData);
@@ -1798,7 +1798,7 @@ class tokens extends Survey_Common_Action
         $date = date('YmdHis');
         if (!Yii::app()->request->getPost('ok'))
         {
-            $this->_renderWrappedTemplate(array('tokenbar', 'message' => array(
+            $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
                 'title' => $clang->gT("Delete Tokens Table"),
                 'message' => $clang->gT("If you delete this table tokens will no longer be required to access this survey.") . "<br />" . $clang->gT("A backup of this table will be made if you proceed. Your system administrator will be able to access this table.") . "<br />\n"
                     . "( \"old_tokens_{$iSurveyId}_$date\" )<br /><br />\n"
@@ -1815,7 +1815,7 @@ class tokens extends Survey_Common_Action
 
             Yii::app()->db->createCommand()->renameTable("{{{$oldtable}}}", "{{{$newtable}}}");
 
-            $this->_renderWrappedTemplate(array('tokenbar', 'message' => array(
+            $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
                 'title' => $clang->gT("Delete Tokens Table"),
                 'message' => '<br />' . $clang->gT("The tokens table has now been removed and tokens are no longer required to access this survey.") . "<br /> " . $clang->gT("A backup of this table has been made and can be accessed by your system administrator.") . "<br />\n"
                     . "(\"old_tokens_{$iSurveyId}_$date\")" . "<br /><br />\n"
@@ -1853,7 +1853,7 @@ class tokens extends Survey_Common_Action
                 $survey->$k = $v;
             $survey->save();
 
-            $this->_renderWrappedTemplate(array('tokenbar', 'message' => array(
+            $this->_renderWrappedTemplate('token', array('tokenbar', 'message' => array(
                 'title' => $clang->gT("Bounce settings"),
                 'message' => $clang->gT("Bounce settings have been saved."),
                 'class' => 'successheader'
@@ -1861,7 +1861,7 @@ class tokens extends Survey_Common_Action
         }
         else
         {
-            $this->_renderWrappedTemplate(array('tokenbar', 'bounce'), $aData);
+            $this->_renderWrappedTemplate('token', array('tokenbar', 'bounce'), $aData);
         }
     }
 
@@ -1886,7 +1886,7 @@ class tokens extends Survey_Common_Action
         $aData['subaction'] = $subaction;
         $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
 
-        $this->_renderWrappedTemplate(array('tokenbar', 'tokenform'), $aData);
+        $this->_renderWrappedTemplate('token', array('tokenbar', 'tokenform'), $aData);
     }
 
     private function _getTokenIds($aTokenIds)
@@ -1935,7 +1935,7 @@ class tokens extends Survey_Common_Action
             $comm = Yii::app()->db->createCommand();
             $comm->createTable("{{tokens_".intval($iSurveyId)."}}", $fields);
 
-            $this->_renderWrappedTemplate(array('message' =>array(
+            $this->_renderWrappedTemplate('token', array('message' =>array(
                 'title' => $clang->gT("Token control"),
                 'message' => $clang->gT("A token table has been created for this survey.") . " (\"" . Yii::app()->db->tablePrefix . "tokens_$iSurveyId\")<br /><br />\n"
                     . "<input type='submit' value='"
@@ -1946,7 +1946,7 @@ class tokens extends Survey_Common_Action
         {
             Yii::app()->db->createCommand()->renameTable(Yii::app()->request->getPost('oldtable'), "tokens_".intval($iSurveyId));
 
-            $this->_renderWrappedTemplate(array('message' => array(
+            $this->_renderWrappedTemplate('token', array('message' => array(
                 'title' => $clang->gT("Import old tokens"),
                 'message' => $clang->gT("A token table has been created for this survey and the old tokens were imported.") . " (\"" . Yii::app()->db->tablePrefix . "tokens_$iSurveyId" . "\")<br /><br />\n"
                     . "<input type='submit' value='"
@@ -1973,7 +1973,7 @@ class tokens extends Survey_Common_Action
             $aData['tcount'] = $tcount;
             $aData['databasetype'] = Yii::app()->db->getDriverName();
 
-            $this->_renderWrappedTemplate('tokenwarning', $aData);
+            $this->_renderWrappedTemplate('token', 'tokenwarning', $aData);
         }
     }
 
@@ -2051,14 +2051,15 @@ class tokens extends Survey_Common_Action
     /**
      * Renders template(s) wrapped in header and footer
      *
+     * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'token', $aViewUrls = array(), $aData = array())
     {
         $aData['imageurl'] = Yii::app()->getConfig('imageurl');
         $aData['display']['menu_bars'] = false;
-        parent::_renderWrappedTemplate('token', $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
 }

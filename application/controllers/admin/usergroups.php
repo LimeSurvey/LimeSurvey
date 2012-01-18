@@ -122,7 +122,7 @@ class Usergroups extends Survey_Common_Action
             $aViewUrls = 'mailUserGroup_view';
         }
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
     }
 
     /**
@@ -167,7 +167,7 @@ class Usergroups extends Survey_Common_Action
 
         }
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
     }
 
 
@@ -212,7 +212,7 @@ class Usergroups extends Survey_Common_Action
             }
         }
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
     }
 
     /**
@@ -255,7 +255,7 @@ class Usergroups extends Survey_Common_Action
             }
         }
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
     }
 
 
@@ -344,7 +344,7 @@ class Usergroups extends Survey_Common_Action
         }
         else
         {
-            $this->_renderWrappedTemplate($aViewUrls, $aData);
+            $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
         }
     }
 
@@ -407,22 +407,23 @@ class Usergroups extends Survey_Common_Action
             }
         }
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
     }
 
     /**
      * Renders template(s) wrapped in header and footer
      *
+     * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'usergroup', $aViewUrls = array(), $aData = array())
     {
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . 'scripts/admin/users.js');
 
         $aData['display']['menu_bars']['user_group'] = true;
 
-        parent::_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 }

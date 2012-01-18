@@ -544,7 +544,7 @@ class statistics extends Survey_Common_Action {
 
 		$aData['output'] = $statisticsoutput;
 
-        $this->_renderWrappedTemplate('statistics_view', $aData);
+        $this->_renderWrappedTemplate('export', 'statistics_view', $aData);
 
 	}
 
@@ -646,18 +646,19 @@ class statistics extends Survey_Common_Action {
 	        $aData['success'] = 0;
 	    }
 
-        $this->_renderWrappedTemplate('statistics_graph_view', $aData);
+        $this->_renderWrappedTemplate('export', 'statistics_graph_view', $aData);
 	}
 
     /**
      * Renders template(s) wrapped in header and footer
      *
+     * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array())
     {
-        parent::_renderWrappedTemplate('export', $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
 }

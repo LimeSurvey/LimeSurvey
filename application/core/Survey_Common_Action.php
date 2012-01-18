@@ -172,13 +172,15 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-    * Renders template(s) wrapped in header and footer
-    *
-    * @param string $sAction Current action, the folder to fetch views from
-    * @param string|array $aViewUrls View url(s)
-    * @param array $aData Data to be passed on. Optional.
-    */
-    protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array(), $getHeader = true)
+     * Renders template(s) wrapped in header and footer
+     *
+     * Addition of parameters should be avoided if they can be added to $aData
+     *
+     * @param string $sAction Current action, the folder to fetch views from
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
     {
         // Gather the data
         $aData['clang'] = $clang = Yii::app()->lang;
@@ -192,7 +194,7 @@ class Survey_Common_Action extends CAction
         }
 
         // Header
-        if($getHeader)
+        if(!isset($aData['display']['header']) || $aData['display']['header'] !== false)
             Yii::app()->getController()->_getAdminHeader();
 
         // Menu bars
@@ -248,8 +250,6 @@ class Survey_Common_Action extends CAction
             $this->_userGroupBar(!empty($aData['ugid']) ? $aData['ugid'] : 0);
         }
 
-        unset($aData['display']);
-
         // Load views
         foreach ($aViewUrls as $sViewKey => $viewUrl)
         {
@@ -293,8 +293,11 @@ class Survey_Common_Action extends CAction
         }
 
         // Footer
-        Yii::app()->getController()->_loadEndScripts();
-        Yii::app()->getController()->_getAdminFooter('http://docs.limesurvey.org', $clang->gT('LimeSurvey online manual'));
+        if(!isset($aData['display']['endscripts']) || $aData['display']['endscripts'] !== false)
+            Yii::app()->getController()->_loadEndScripts();
+
+        if(!isset($aData['display']['footer']) || $aData['display']['footer'] !== false)
+            Yii::app()->getController()->_getAdminFooter('http://docs.limesurvey.org', $clang->gT('LimeSurvey online manual'));
     }
 
     /**

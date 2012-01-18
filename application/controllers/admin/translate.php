@@ -85,7 +85,7 @@ class translate extends Survey_Common_Action {
             //var_dump(array_keys($aViewUrls));die();
         }
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('translate', $aViewUrls, $aData);
     }
 
 	private function _translateSave($surveyid, $tolang, $baselang, $tab_names)
@@ -1082,12 +1082,13 @@ class translate extends Survey_Common_Action {
     /**
      * Renders template(s) wrapped in header and footer
      *
+     * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'translate', $aViewUrls = array(), $aData = array())
     {
         $aData['display']['menu_bars'] = false;
-        parent::_renderWrappedTemplate('translate', $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 }

@@ -188,7 +188,7 @@ class surveypermission extends Survey_Common_Action {
 
         }
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
 
     /**
@@ -269,7 +269,7 @@ class surveypermission extends Survey_Common_Action {
             $aViewUrls['output'] = $addsummary;
         }
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
 
 
@@ -339,7 +339,7 @@ class surveypermission extends Survey_Common_Action {
             $aViewUrls['output'] = $addsummary;
         }
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
 
     /**
@@ -458,7 +458,7 @@ class surveypermission extends Survey_Common_Action {
             }
         }
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
 
     /**
@@ -510,7 +510,7 @@ class surveypermission extends Survey_Common_Action {
             $aViewUrls['output'] = $addsummary;
         }
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
 
     /**
@@ -597,19 +597,20 @@ class surveypermission extends Survey_Common_Action {
             $aViewUrls['output'] = $addsummary;
         }
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
 
     /**
      * Renders template(s) wrapped in header and footer
      *
+     * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'authentication', $aViewUrls = array(), $aData = array())
     {
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
-        parent::_renderWrappedTemplate('authentication', $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
 }

@@ -53,7 +53,7 @@ class Authentication extends Survey_Common_Action
                     die();
                 }
                 else {
-                    $this->_renderWrappedTemplate('error', $aData);
+                    $this->_renderWrappedTemplate('authentication', 'error', $aData);
                 }
             }
             else
@@ -63,7 +63,7 @@ class Authentication extends Survey_Common_Action
         }
         else
         {
-            $this->_renderWrappedTemplate('error', $canLogin);
+            $this->_renderWrappedTemplate('authentication', 'error', $canLogin);
         }
     }
 
@@ -85,7 +85,7 @@ class Authentication extends Survey_Common_Action
 
         if (!Yii::app()->request->getPost('action'))
         {
-            $this->_renderWrappedTemplate('forgotpassword');
+            $this->_renderWrappedTemplate('authentication', 'forgotpassword');
         }
         else
         {
@@ -99,12 +99,12 @@ class Authentication extends Survey_Common_Action
                 // wrong or unknown username and/or email
                 $aData['errormsg'] = $this->getController()->lang->gT('User name and/or email not found!');
                 $aData['maxattempts'] = '';
-                $this->_renderWrappedTemplate('error', $aData);
+                $this->_renderWrappedTemplate('authentication', 'error', $aData);
             }
             else
             {
                 $aData['message'] = $this->_sendPasswordEmail($sEmailAddr, $aFields);
-                $this->_renderWrappedTemplate('message', $aData);
+                $this->_renderWrappedTemplate('authentication', 'message', $aData);
             }
         }
     }
@@ -156,7 +156,7 @@ class Authentication extends Survey_Common_Action
     protected function _showLoginForm($sLogoutSummary = '')
     {
         $aData['summary'] = $this->_getSummary('logout', $sLogoutSummary);
-        $this->_renderWrappedTemplate('login', $aData);
+        $this->_renderWrappedTemplate('authentication', 'login', $aData);
     }
 
     /**
@@ -365,13 +365,14 @@ class Authentication extends Survey_Common_Action
     /**
      * Renders template(s) wrapped in header and footer
      *
+     * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'authentication', $aViewUrls = array(), $aData = array())
     {
         $aData['display']['menu_bars'] = false;
-        parent::_renderWrappedTemplate('authentication', $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
 }

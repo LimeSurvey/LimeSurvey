@@ -146,7 +146,7 @@ class quotas extends Survey_Common_Action
         if ($quickreport == false)
         {
             $aViewUrls[] = 'viewquotasfooter_view';
-            $this->_renderWrappedTemplate($aViewUrls, $aData);
+            $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
         }
         else
         {
@@ -342,7 +342,7 @@ class quotas extends Survey_Common_Action
 
         $aViewUrls[] = 'editquotafooter_view';
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
     }
 
     function new_answer($iSurveyId, $sSubAction = 'new_answer')
@@ -396,7 +396,7 @@ class quotas extends Survey_Common_Action
             $aViewUrls[] = 'newanswertwo_view';
         }
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('quotas', $aViewUrls, $aData);
     }
 
     function newquota($iSurveyId)
@@ -410,7 +410,7 @@ class quotas extends Survey_Common_Action
         $aData['langs'] = $aData['aLangs'];
         $aData['baselang'] = $aData['sBaseLang'];
 
-        $this->_renderWrappedTemplate('newquota_view', $aData);
+        $this->_renderWrappedTemplate('quotas', 'newquota_view', $aData);
     }
 
     function getQuotaAnswers($iQuestionId, $iSurveyId, $iQuotaId)
@@ -553,16 +553,17 @@ class quotas extends Survey_Common_Action
     /**
      * Renders template(s) wrapped in header and footer
      *
+     * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'quotas', $aViewUrls = array(), $aData = array())
     {
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . '/jquery/jquery.tablesorter.min.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . '/quotas.js');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . 'admin/default/superfish.css');
 
-        parent::_renderWrappedTemplate('quotas', $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
 }

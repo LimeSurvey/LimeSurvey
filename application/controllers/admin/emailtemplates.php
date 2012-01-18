@@ -66,7 +66,7 @@ class emailtemplates extends Survey_Common_Action {
         $aData['surveyid'] = $iSurveyId;
         $aData['ishtml'] = $ishtml;
         $aData['grplangs'] = $grplangs;
-        $this->_renderWrappedTemplate(array('output' => $sEditScript, 'emailtemplates_view'), $aData);
+        $this->_renderWrappedTemplate('emailtemplates', array('output' => $sEditScript, 'emailtemplates_view'), $aData);
     }
 
     /**
@@ -110,16 +110,17 @@ class emailtemplates extends Survey_Common_Action {
     /**
      * Renders template(s) wrapped in header and footer
      *
+     * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'emailtemplates', $aViewUrls = array(), $aData = array())
 	{
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'emailtemplates.js');
 
         $aData['display']['menu_bars']['surveysummary'] = 'editemailtemplates';
 
-        parent::_renderWrappedTemplate('emailtemplates', $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
 }

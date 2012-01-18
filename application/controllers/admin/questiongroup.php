@@ -90,7 +90,7 @@ class questiongroup extends Survey_Common_Action
             $aData['sExtension'] = $sExtension;
             $aData['display']['menu_bars']['surveysummary'] = 'importgroup';
 
-            $this->_renderWrappedTemplate('QuestionGroups/import_view', $aData);
+            $this->_renderWrappedTemplate('survey', 'QuestionGroups/import_view', $aData);
             // TMSW Conditions->Relevance:  call LEM->ConvertConditionsToRelevance() after import
         }
     }
@@ -125,7 +125,7 @@ class questiongroup extends Survey_Common_Action
             $aData['baselang'] = $baselang;
             $aViewUrls = 'QuestionGroups/addGroup_view';
 
-            $this->_renderWrappedTemplate($aViewUrls, $aData);
+            $this->_renderWrappedTemplate('survey', $aViewUrls, $aData);
         }
     }
 
@@ -331,7 +331,7 @@ class questiongroup extends Survey_Common_Action
             $aData['tabtitles'] = $aTabTitles;
             $aData['aBaseLanguage'] = $aBaseLanguage;
 
-            $this->_renderWrappedTemplate('QuestionGroups/editGroup_view', $aData);
+            $this->_renderWrappedTemplate('survey', 'QuestionGroups/editGroup_view', $aData);
         }
 
     }
@@ -461,7 +461,7 @@ class questiongroup extends Survey_Common_Action
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.ui.nestedSortable.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'admin/organize.js');
 
-        $this->_renderWrappedTemplate('organizeGroupsAndQuestions_view', $aData);
+        $this->_renderWrappedTemplate('survey', 'organizeGroupsAndQuestions_view', $aData);
     }
 
     private function _reorderGroup($iSurveyId)
@@ -495,12 +495,13 @@ class questiongroup extends Survey_Common_Action
     /**
      * Renders template(s) wrapped in header and footer
      *
+     * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'survey', $aViewUrls = array(), $aData = array())
     {
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
-        parent::_renderWrappedTemplate('survey', $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 }

@@ -69,18 +69,17 @@ class Assessments extends Survey_Common_Action
     /**
      * Renders template(s) wrapped in header and footer
      *
+     * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'assessments', $aViewUrls = array(), $aData = array())
     {
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . 'assessments.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.tablesorter.min.js');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
 
-        //$aData['display']['menu_bars'] = false;
-
-        parent::_renderWrappedTemplate('', $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
     private function _showAssessments($iSurveyId, $action, $surveyLanguage, Limesurvey_lang $clang)
@@ -112,7 +111,7 @@ class Assessments extends Survey_Common_Action
         if ($surveyinfo['assessments']!='Y')
             $urls['message'] = array('title' => $clang->gT("Assessments mode not activated"), 'message' => sprintf($clang->gT("Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."),'<a href="'.$this->getController()->createUrl('/admin/survey/editsurveysettings/surveyid/'.$iSurveyId).'">','</a>'), 'class'=> 'warningheader');
         $urls['assessments_view'][]= $aData;
-        $this->_renderWrappedTemplate($urls, $aData);
+        $this->_renderWrappedTemplate('', $urls, $aData);
     }
 
     private function _collectGroupData($iSurveyId)

@@ -67,7 +67,7 @@ class UserAction extends Survey_Common_Action
         $aData['imageurl'] = Yii::app()->getConfig("imageurl");
         $aData['noofsurveyslist'] = $noofsurveyslist;
 
-        $this->_renderWrappedTemplate('editusers', $aData);
+        $this->_renderWrappedTemplate('user', 'editusers', $aData);
     }
 
     private function _getSurveyCountForUser(array $user)
@@ -168,7 +168,7 @@ class UserAction extends Survey_Common_Action
             }
         }
 
-        $this->_renderWrappedTemplate($aViewUrls);
+        $this->_renderWrappedTemplate('user', $aViewUrls);
     }
 
     /**
@@ -247,7 +247,7 @@ class UserAction extends Survey_Common_Action
             }
         }
 
-        $this->_renderWrappedTemplate($aViewUrls);
+        $this->_renderWrappedTemplate('user', $aViewUrls);
     }
 
     function deleteFinalUser($result, $transfer_surveys_to)
@@ -286,7 +286,7 @@ class UserAction extends Survey_Common_Action
         }
 
         $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect("", $clang->gT("Success!"), "successheader", $extra);
-        $this->_renderWrappedTemplate($aViewUrls);
+        $this->_renderWrappedTemplate('user', $aViewUrls);
     }
 
     /**
@@ -305,7 +305,7 @@ class UserAction extends Survey_Common_Action
                 $sresult = User::model()->parentAndUser($postuserid);
                 $aData['mur'] = $sresult;
 
-                $this->_renderWrappedTemplate('modifyuser', $aData);
+                $this->_renderWrappedTemplate('user', 'modifyuser', $aData);
             }
             return;
         }
@@ -385,7 +385,7 @@ class UserAction extends Survey_Common_Action
             }
         }
 
-        $this->_renderWrappedTemplate($aViewUrls);
+        $this->_renderWrappedTemplate('user', $aViewUrls);
     }
 
     function setuserrights()
@@ -410,7 +410,7 @@ class UserAction extends Survey_Common_Action
         ) //	if(Yii::app()->session['loginID'] != $postuserid)
         {
             $aData['postuserid'] = $postuserid;
-            $this->_renderWrappedTemplate('setuserrights', $aData);
+            $this->_renderWrappedTemplate('user', 'setuserrights', $aData);
         } // if
         else
         {
@@ -502,7 +502,7 @@ class UserAction extends Survey_Common_Action
             $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Set user permissions"), $clang->gT("You are not allowed to change your own permissions!"), 'warningheader');
         }
 
-        $this->_renderWrappedTemplate($aViewUrls);
+        $this->_renderWrappedTemplate('user', $aViewUrls);
     }
 
     function setusertemplates()
@@ -528,7 +528,7 @@ class UserAction extends Survey_Common_Action
                 $aData['list'][] = array('templaterights'=>$templaterights,'templates'=>$templates);
             }
         }
-        $this->_renderWrappedTemplate('setusertemplates', $aData);
+        $this->_renderWrappedTemplate('user', 'setusertemplates', $aData);
     }
 
     function usertemplates()
@@ -572,7 +572,7 @@ class UserAction extends Survey_Common_Action
             die('access denied');
         }
 
-        $this->_renderWrappedTemplate($aViewUrls);
+        $this->_renderWrappedTemplate('user', $aViewUrls);
     }
 
     /**
@@ -607,7 +607,7 @@ class UserAction extends Survey_Common_Action
         $aData['sSavedLanguage'] = $user->lang;
 
         // Render personal settings view
-        $this->_renderWrappedTemplate('personalsettings', $aData);
+        $this->_renderWrappedTemplate('user', 'personalsettings', $aData);
     }
 
     private function _getUserNameFromUid($uid)
@@ -720,12 +720,13 @@ class UserAction extends Survey_Common_Action
     /**
      * Renders template(s) wrapped in header and footer
      *
+     * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'user', $aViewUrls = array(), $aData = array())
     {
-        parent::_renderWrappedTemplate('user', $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
 }

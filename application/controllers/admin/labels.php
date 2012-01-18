@@ -108,7 +108,7 @@ class labels extends Survey_Common_Action
                 'lid' => $lid
             );
 
-            $this->_renderWrappedTemplate('importlabelresources_view', $aData);
+            $this->_renderWrappedTemplate('labels', 'importlabelresources_view', $aData);
         }
     }
 
@@ -151,7 +151,7 @@ class labels extends Survey_Common_Action
             $aViewUrls['import_view'][] = array('aImportResults' => $aImportResults);
         }
 
-        $this->_renderWrappedTemplate($aViewUrls);
+        $this->_renderWrappedTemplate('labels', $aViewUrls);
     }
 
     /**
@@ -212,7 +212,7 @@ class labels extends Survey_Common_Action
             $aViewUrls['editlabel_view'][] = $aData;
         }
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);
 
     }
 
@@ -311,7 +311,7 @@ class labels extends Survey_Common_Action
             }
         }
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);
     }
 
     /**
@@ -360,7 +360,7 @@ class labels extends Survey_Common_Action
     public function exportmulti()
     {
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/admin/labels.js');
-        $this->_renderWrappedTemplate('exportmulti_view');
+        $this->_renderWrappedTemplate('labels', 'exportmulti_view');
     }
 
     public function getAllSets()
@@ -410,23 +410,22 @@ class labels extends Survey_Common_Action
                 $label->code = $code[$key];
                 $label->title = $ans;
                 $label->sortorder = $key;
-                $label->language = $lang;                               
+                $label->language = $lang;
                 if(!$label->save())
                     $res = 'fail';
             }
         }
-        echo json_encode($res);        
+        echo json_encode($res);
     }
 
     /**
      * Renders template(s) wrapped in header and footer
      *
-     * @access protected
+     * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
-     * @return void
      */
-    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'labels', $aViewUrls = array(), $aData = array())
     {
         if (!isset($aData['display']['menu_bars']['labels']) || $aData['display']['menu_bars']['labels'] != false)
         {
@@ -447,6 +446,6 @@ class labels extends Survey_Common_Action
 
         $aData['display']['menu_bars'] = false;
 
-        parent::_renderWrappedTemplate('labels', $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
  }

@@ -94,7 +94,7 @@ class question extends Survey_Common_Action
             $aViewUrls[] = 'import_view';
         }
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
 
     /**
@@ -230,7 +230,7 @@ class question extends Survey_Common_Action
             'baselang' => $baselang,
         );
 
-        $this->_renderWrappedTemplate('editdefaultvalues_view', $aData);
+        $this->_renderWrappedTemplate('survey/Question', 'editdefaultvalues_view', $aData);
     }
 
     /**
@@ -261,7 +261,7 @@ class question extends Survey_Common_Action
 
         $aViewUrls = $this->_editansweroptions($surveyid, $gid, $qid);
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
 
     /**
@@ -420,7 +420,7 @@ class question extends Survey_Common_Action
         $aData['display']['menu_bars']['qid_action'] = 'editsubquestions';
         $aViewUrls = $this->_editsubquestion($surveyid, $gid, $qid);
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
 
     /**
@@ -798,7 +798,7 @@ class question extends Survey_Common_Action
         else
             include('access_denied.php');
 
-        $this->_renderWrappedTemplate($aViewUrls, $aData);
+        $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
 
     /**
@@ -1083,15 +1083,16 @@ class question extends Survey_Common_Action
     /**
      * Renders template(s) wrapped in header and footer
      *
+     * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'survey/Question', $aViewUrls = array(), $aData = array())
     {
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/jquery.dd.js');
         $this->getController()->_css_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/dd.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
 
-        parent::_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 }

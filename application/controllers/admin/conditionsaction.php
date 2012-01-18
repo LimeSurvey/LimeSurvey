@@ -187,7 +187,7 @@ class conditionsaction extends Survey_Common_Action {
 			        . $br . $clang->gT("We recommend that before you proceed, you export the entire survey from the main administration screen.")
 			        . $br . $button_yes . $button_cancel;
 
-                $this->_renderWrappedTemplate(array('message' => array(
+                $this->_renderWrappedTemplate('conditions', array('message' => array(
                     'title' => $clang->gT("Warning"),
                     'message' => $messagebox_content
                 )));
@@ -584,7 +584,7 @@ class conditionsaction extends Survey_Common_Action {
 		{
 		    foreach ($questionlist as $ql)
 		    {
-		    	
+
 		    	$result = Questions::model()->with(array(
 					'groups' => array(
 						'condition' => 'groups.language = :lang',
@@ -2050,7 +2050,7 @@ class conditionsaction extends Survey_Common_Action {
 		$conditionsoutput = $aViewUrls['output'];
 
 		$data['conditionsoutput'] = $conditionsoutput;
-        $this->_renderWrappedTemplate('conditionsforms_view', $data);
+        $this->_renderWrappedTemplate('conditions', 'conditionsforms_view', $data);
 
         // TMSW Conditions->Relevance:  Must call LEM->ConvertConditionsToRelevance() whenever Condition is added or updated - what is best location for that action?
 	}
@@ -2095,13 +2095,14 @@ class conditionsaction extends Survey_Common_Action {
     /**
      * Renders template(s) wrapped in header and footer
      *
+     * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'conditions', $aViewUrls = array(), $aData = array())
     {
         $aData['display']['menu_bars'] = false;
-        parent::_renderWrappedTemplate('conditions', $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
 }
