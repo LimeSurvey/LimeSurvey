@@ -3277,7 +3277,9 @@ function do_multipleshorttext($ia)
                 }
 
                 //NEW: textarea instead of input=text field
-                $answer_main .= "\t<li>\n"
+                list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li");
+
+                $answer_main .= "\t$htmltbody2\n"
                 . "<label for=\"answer$myfname\">{$ansrow['question']}</label>\n"
                 . "\t<span>\n".$prefix."\n".'
 				<textarea class="textarea '.$kpclass.'" name="'.$myfname.'" id="answer'.$myfname.'"
@@ -3307,7 +3309,10 @@ function do_multipleshorttext($ia)
             {
                 $myfname = $ia[1].$ansrow['title'];
                 if ($ansrow['question'] == "") {$ansrow['question'] = "&nbsp;";}
-                $answer_main .= "\t<li>\n"
+
+                list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li");
+
+                $answer_main .= "\t$htmltbody2\n"
                 . "<label for=\"answer$myfname\">{$ansrow['question']}</label>\n"
                 . "\t<span>\n".$prefix."\n".'<input class="text '.$kpclass.'" type="text" size="'.$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
 
@@ -3591,14 +3596,17 @@ function do_multiplenumeric($ia)
                 $sliderright="<div class=\"slider_righttext\">$sliderright</div>";
             }
 
+            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li");
+            $answer_main .= "\t$htmltbody2\n";
+
             if ($slider_layout === false)
             {
-                $answer_main .= "\t<li>\n<label for=\"answer$myfname\">{$theanswer}</label>\n";
+                $answer_main .= "<label for=\"answer$myfname\">{$theanswer}</label>\n";
 
             }
             else
             {
-                $answer_main .= "\t<li>\n<label for=\"answer$myfname\" class=\"slider-label\">{$theanswer}</label>\n";
+                $answer_main .= "<label for=\"answer$myfname\" class=\"slider-label\">{$theanswer}</label>\n";
 
             }
 

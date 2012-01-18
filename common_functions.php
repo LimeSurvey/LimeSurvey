@@ -3121,7 +3121,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Answer width'));
 
     $qattributes["array_filter"]=array(
-    "types"=>"1ABCEF:;MPL",
+    "types"=>"1ABCEF:;MPLKQ",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3129,7 +3129,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Array filter'));
 
     $qattributes["array_filter_exclude"]=array(
-    "types"=>"1ABCEF:;MPL",
+    "types"=>"1ABCEF:;MPLKQ",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3248,7 +3248,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Equals sum value'));
 
     $qattributes["exclude_all_others"]=array(
-    "types"=>"M",
+    "types"=>"MP",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>130,
     'inputtype'=>'text',
@@ -3392,7 +3392,7 @@ function questionAttributes($returnByName=false)
     'caption'=>$clang->gT('Always hide this question'));
 
     $qattributes["max_answers"]=array(
-    "types"=>"MPR",
+    "types"=>"MPR1:;ABCEFKQ",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>11,
     'inputtype'=>'integer',
@@ -3408,7 +3408,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Maximum sum value'));
 
     $qattributes["max_num_value_n"]=array(
-    "types"=>"N",
+    "types"=>"NK",
     'category'=>$clang->gT('Input'),
     'sortorder'=>110,
     'inputtype'=>'integer',
@@ -3432,7 +3432,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Maximum characters'));
 
     $qattributes["min_answers"]=array(
-    "types"=>"MPR",
+    "types"=>"MPR1:;ABCEFKQ",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>10,
     'inputtype'=>'integer',
@@ -3448,7 +3448,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Minimum sum value'));
 
     $qattributes["min_num_value_n"]=array(
-    "types"=>"N",
+    "types"=>"NK",
     'category'=>$clang->gT('Input'),
     'sortorder'=>100,
     'inputtype'=>'integer',

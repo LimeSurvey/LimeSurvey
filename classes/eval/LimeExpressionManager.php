@@ -423,6 +423,8 @@ class LimeExpressionManager {
                             case 'L': //LIST drop-down/radio-button list
                             case 'M': //Multiple choice checkbox
                             case 'P': //Multiple choice with comments checkbox + text
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                            case 'Q': //MULTIPLE SHORT TEXT
                                 $sq_name = $array_filter . $sq['sqsuffix'];
                                 break;
                             default:
@@ -466,6 +468,8 @@ class LimeExpressionManager {
                             case 'L': //LIST drop-down/radio-button list
                             case 'M': //Multiple choice checkbox
                             case 'P': //Multiple choice with comments checkbox + text
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                            case 'Q': //MULTIPLE SHORT TEXT
                                 $sq_name = $array_filter_exclude . $sq['sqsuffix'];
                                 break;
                             default:
@@ -544,6 +548,7 @@ class LimeExpressionManager {
                         switch ($type)
                         {
                             case 'M': //Multiple choice checkbox
+                            case 'P': //Multiple choice with comments checkbox + text
                                 $sq_name = $qinfo['sgqa'] . $exclusive_option;
                                 break;
                             default:
@@ -578,6 +583,16 @@ class LimeExpressionManager {
                         $sq_name = NULL;
                         switch ($type)
                         {
+                            case '1':   //Array (Flexible Labels) dual scale
+                            case ':': //ARRAY (Multi Flexi) 1 to 10
+                            case ';': //ARRAY (Multi Flexi) Text
+                            case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                            case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                            case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                            case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                            case 'F': //ARRAY (Flexible) - Row Format
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                            case 'Q': //MULTIPLE SHORT TEXT
                             case 'M': //Multiple choice checkbox
                                 $sq_name = $sq['varName'] . '.NAOK';
                                 break;
@@ -659,16 +674,33 @@ class LimeExpressionManager {
             {
                 $min_num_value_n = $qattr['min_num_value_n'];
                 if ($hasSubqs) {
-                    $sq = $qinfo['subqs'][0];
-                    switch ($type)
-                    {
-                        case 'N': //NUMERICAL QUESTION TYPE
-                            $sq_name = '(is_empty(' . $sq['varName'] . ') || '. $sq['varName'] . ' >= (' . $min_num_value_n . '))';
-                            break;
-                        default:
-                            break;
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    $subqValidEqns = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                        {
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                                $sq_name = '(is_empty(' . $sq['varName'] . ') || '. $sq['varName'] . ' >= (' . $min_num_value_n . '))';
+                                $subqValidSelector = $sq['jsVarName_on'];
+                                break;
+                            case 'N': //NUMERICAL QUESTION TYPE
+                                $sq_name = '(is_empty(' . $sq['varName'] . ') || '. $sq['varName'] . ' >= (' . $min_num_value_n . '))';
+                                $subqValidSelector = '';
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $sq_names[] = $sq_name;
+                            $subqValidEqns[$subqValidSelector] = array(
+                                'subqValidEqn' => $sq_name,
+                                'subqValidSelector' => $subqValidSelector,
+                                );
+                        }
                     }
-                    if (!is_null($sq_name)) {
+                    if (count($sq_names) > 0) {
                         if (!isset($validationEqn[$questionNum]))
                         {
                             $validationEqn[$questionNum] = array();
@@ -676,9 +708,10 @@ class LimeExpressionManager {
                         $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'min_num_value_n',
-                            'eqn' => $sq_name,
+                            'eqn' => implode(' && ', $sq_names),
                             'qid' => $questionNum,
-                            'tip' => $this->gT('The entry must be at least') . ' {' . $min_num_value_n . '}.',
+                            'tip' => $this->gT('Each entry must be at least') . ' {' . $min_num_value_n . '}.',
+                            'subqValidEqns' => $subqValidEqns,
                         );
                     }
                 }
@@ -735,6 +768,16 @@ class LimeExpressionManager {
                         $sq_name = NULL;
                         switch ($type)
                         {
+                            case '1':   //Array (Flexible Labels) dual scale
+                            case ':': //ARRAY (Multi Flexi) 1 to 10
+                            case ';': //ARRAY (Multi Flexi) Text
+                            case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                            case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                            case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                            case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                            case 'F': //ARRAY (Flexible) - Row Format
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                            case 'Q': //MULTIPLE SHORT TEXT
                             case 'M': //Multiple choice checkbox
                                 $sq_name = $sq['varName'] . '.NAOK';
                                 break;
@@ -816,16 +859,33 @@ class LimeExpressionManager {
             {
                 $max_num_value_n = $qattr['max_num_value_n'];
                 if ($hasSubqs) {
-                    $sq = $qinfo['subqs'][0];
-                    switch ($type)
-                    {
-                        case 'N': //NUMERICAL QUESTION TYPE
-                            $sq_name = '(is_empty(' . $sq['varName'] . ') || ' . $sq['varName'] . ' <= (' . $max_num_value_n . '))';
-                            break;
-                        default:
-                            break;
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    $subqValidEqns = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                        {
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                                $sq_name = '(is_empty(' . $sq['varName'] . ') || '. $sq['varName'] . ' <= (' . $max_num_value_n . '))';
+                                $subqValidSelector = $sq['jsVarName_on'];
+                                break;
+                            case 'N': //NUMERICAL QUESTION TYPE
+                                $sq_name = '(is_empty(' . $sq['varName'] . ') || '. $sq['varName'] . ' <= (' . $max_num_value_n . '))';
+                                $subqValidSelector = '';
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $sq_names[] = $sq_name;
+                            $subqValidEqns[$subqValidSelector] = array(
+                                'subqValidEqn' => $sq_name,
+                                'subqValidSelector' => $subqValidSelector,
+                                );
+                        }
                     }
-                    if (!is_null($sq_name)) {
+                    if (count($sq_names) > 0) {
                         if (!isset($validationEqn[$questionNum]))
                         {
                             $validationEqn[$questionNum] = array();
@@ -833,9 +893,10 @@ class LimeExpressionManager {
                         $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'max_num_value_n',
-                            'eqn' => $sq_name,
+                            'eqn' => implode(' && ', $sq_names),
                             'qid' => $questionNum,
-                            'tip' => $this->gT('The entry must not exceed') . ' {' . $max_num_value_n . '}.',
+                            'tip' => $this->gT('Each entry must be at most') . ' {' . $max_num_value_n . '}.',
+                            'subqValidEqns' => $subqValidEqns,
                         );
                     }
                 }
@@ -1482,7 +1543,7 @@ class LimeExpressionManager {
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['subquestion'];
 //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
-                    if ($type != 'H' && $type != 'Q' && $type != 'R') {
+                    if ($type != 'H' & $type != 'R') {
                         if ($type == 'P' && preg_match("/comment$/", $sgqa)) {
 //                            $rowdivid = substr($sgqa,0,-7);
                         }
@@ -4307,6 +4368,9 @@ class LimeExpressionManager {
                 // Do custom validation
                 foreach ($subqValidations as $_veq)
                 {
+                    if ($_veq['subqValidSelector'] == '') {
+                        continue;
+                    }
                     $isValid = $LEM->em->ProcessBooleanExpression($_veq['subqValidEqn']);
                     $_sqValidVars = $LEM->em->GetJSVarsUsed();
                     $allJsVarsUsed = array_merge($allJsVarsUsed,$_sqValidVars);
