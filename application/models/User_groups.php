@@ -142,20 +142,23 @@ class User_groups extends CActiveRecord {
 	// Many CI based functions ahead, they need refactoring!
 	function updateGroup($name, $description, $ugid)
     {
-    	$query = 'UPDATE {{user_groups}} SET name=:name, description=:description WHERE ugid=:ugid';
-       	$uquery = db_execute_assoc($query, array(':name'=>$name,
-                                                 ':description'=>$description,
-                                                 ':ugid'=>$ugid));
-        return $uquery;
+		$group = User_groups::model()->findByPk($ugid);
+		$group->name=$name;
+		$group->description=$description;
+		$group->save();
+		if ($group->getErrors())
+			return false;
+		else
+			return true;							 
     }
 
 	function requestEditGroup($ugid, $ownerid)
 	{
 		$criteria=new CDbCriteria;
-		$criteria->select='*';  // only select the 'title' column
+		$criteria->select='*';
 		$criteria->condition="ugid=:ugid AND owner_id=:ownerid";
 		$criteria->params=array(':ugid'=>$ugid, ':ownerid'=>$ownerid);
-		$result=User_groups::model()->find($criteria); // $params is not needed
+		$result=User_groups::model()->find($criteria);
 		return $result;
 	}
 
@@ -170,9 +173,12 @@ class User_groups extends CActiveRecord {
 
 	function deleteGroup($ugid, $ownerid)
 	{
-		$del_query = 'DELETE FROM {{user_groups}} WHERE owner_id=\''.$ownerid.'\' AND ugid='.$ugid;
-        //$remquery = $this->user_groups_model->delete(array('owner_id' => $this->session->userdata('loginID'), 'ugid' => $ugid));
-        return db_execute_assoc($del_query);
+		$group = User_groups::model()->find("owner_id = :ownerid AND ugid = :ugid", array(":ownerid"=>$ownerid, ":ugid"=>$ugid));
+		$group->delete();
+		if($group->getErrors())
+			return false;
+		else 
+			return true;
 	}
 
 	/*
