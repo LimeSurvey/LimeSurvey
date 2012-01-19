@@ -881,6 +881,10 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 function return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null) {
     $htmltbody2 = "\n\n\t<$method id='javatbd$rowname'";
     $htmltbody2 .= ($class !== null) ? " class='$class'": "";
+    if (isset($_SESSION['relevanceStatus'][$rowname]) && !$_SESSION['relevanceStatus'][$rowname])
+    {
+        $htmltbody2 .= " style='display: none'";
+    }
     $htmltbody2 .= ">\n";
     if($ia[4]=="1") {
         //This is an array dual scale question and we have to massage the tbidpslay rowname

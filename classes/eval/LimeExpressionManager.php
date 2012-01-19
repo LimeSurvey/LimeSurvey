@@ -275,17 +275,17 @@ class LimeExpressionManager {
             else if ($row['type'] == 'M' || $row['type'] == 'P') {
                 if (substr($row['cfieldname'],0,1) == '+') {
                     // if prefixed with +, then a fully resolved name
-                    $fieldname = substr($row['cfieldname'],1);
+                    $fieldname = substr($row['cfieldname'],1) . '.NAOK';
                     $value = $row['value'];
                 }
                 else {
                     // else create name by concatenating two parts together
-                    $fieldname = $row['cfieldname'] . $row['value'];
+                    $fieldname = $row['cfieldname'] . $row['value'] . '.NAOK';
                     $value = 'Y';
                 }
             }
             else {
-                $fieldname = $row['cfieldname'];
+                $fieldname = $row['cfieldname'] . '.NAOK';
                 $value = $row['value'];
             }
 
@@ -549,7 +549,7 @@ class LimeExpressionManager {
                         {
                             case 'M': //Multiple choice checkbox
                             case 'P': //Multiple choice with comments checkbox + text
-                                $sq_name = $qinfo['sgqa'] . $exclusive_option;
+                                $sq_name = $qinfo['sgqa'] . trim($exclusive_option) . '.NAOK';
                                 break;
                             default:
                                 break;
@@ -701,11 +701,11 @@ class LimeExpressionManager {
                         switch ($type)
                         {
                             case 'K': //MULTIPLE NUMERICAL QUESTION
-                                $sq_name = '(is_empty(' . $sq['varName'] . ') || '. $sq['varName'] . ' >= (' . $min_num_value_n . '))';
+                                $sq_name = '(is_empty(' . $sq['varName'] . '.NAOK) || '. $sq['varName'] . '.NAOK >= (' . $min_num_value_n . '))';
                                 $subqValidSelector = $sq['jsVarName_on'];
                                 break;
                             case 'N': //NUMERICAL QUESTION TYPE
-                                $sq_name = '(is_empty(' . $sq['varName'] . ') || '. $sq['varName'] . ' >= (' . $min_num_value_n . '))';
+                                $sq_name = '(is_empty(' . $sq['varName'] . '.NAOK) || '. $sq['varName'] . '.NAOK >= (' . $min_num_value_n . '))';
                                 $subqValidSelector = '';
                                 break;
                             default:
@@ -750,11 +750,11 @@ class LimeExpressionManager {
                         switch ($type)
                         {
                             case 'K': //MULTIPLE NUMERICAL QUESTION
-                                $sq_name = '(is_empty(' . $sq['varName'] . ') || '. $sq['varName'] . ' <= (' . $max_num_value_n . '))';
+                                $sq_name = '(is_empty(' . $sq['varName'] . '.NAOK) || '. $sq['varName'] . '.NAOK <= (' . $max_num_value_n . '))';
                                 $subqValidSelector = $sq['jsVarName_on'];
                                 break;
                             case 'N': //NUMERICAL QUESTION TYPE
-                                $sq_name = '(is_empty(' . $sq['varName'] . ') || '. $sq['varName'] . ' <= (' . $max_num_value_n . '))';
+                                $sq_name = '(is_empty(' . $sq['varName'] . '.NAOK) || '. $sq['varName'] . '.NAOK <= (' . $max_num_value_n . '))';
                                 $subqValidSelector = '';
                                 break;
                             default:
@@ -995,7 +995,7 @@ class LimeExpressionManager {
                         switch ($type)
                         {
                             case ':': //MULTIPLE NUMERICAL QUESTION
-                                $sq_name = '(is_empty(' . $sq['varName'] . ') || ' . $sq['varName'] . '.NAOK >= (' . $multiflexible_min . '))';
+                                $sq_name = '(is_empty(' . $sq['varName'] . '.NAOK) || ' . $sq['varName'] . '.NAOK >= (' . $multiflexible_min . '))';
                                 $subqValidSelector = $sq['jsVarName_on'];
                                 break;
                             default:
@@ -1040,7 +1040,7 @@ class LimeExpressionManager {
                         switch ($type)
                         {
                             case ':': //MULTIPLE NUMERICAL QUESTION
-                                $sq_name = '(is_empty(' . $sq['varName'] . ') || ' . $sq['varName'] . '.NAOK <= (' . $multiflexible_max . '))';
+                                $sq_name = '(is_empty(' . $sq['varName'] . '.NAOK) || ' . $sq['varName'] . '.NAOK <= (' . $multiflexible_max . '))';
                                 $subqValidSelector = $sq['jsVarName_on'];
                                 break;
                             default:
@@ -1713,6 +1713,7 @@ class LimeExpressionManager {
                 'default'=>$defaultValue,
                 'rootVarName'=>$fielddata['title'],
                 'subqtext'=>$subqtext,
+                'rowdivid'=>(is_null($rowdivid) ? '' : $rowdivid),
                 );
 
             $this->questionSeq2relevance[$questionSeq] = array(
@@ -1734,6 +1735,7 @@ class LimeExpressionManager {
                 'other'=>$other,
                 'default'=>$defaultValue,
                 'rootVarName'=>$fielddata['title'],
+                'rowdivid'=>(is_null($rowdivid) ? '' : $rowdivid),
                 'aid'=>$aid,
                 'sqid'=>$sqid,
                 );
@@ -1760,6 +1762,7 @@ class LimeExpressionManager {
                 . "','readWrite':'" . $readWrite
                 . "','grelevance':'" . (($grelevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$grelevance),ENT_QUOTES) : 1)
                 . "','default':'" . (is_null($defaultValue) ? '' : $defaultValue)
+                . "','rowdivid':'" . (is_null($rowdivid) ?  '' : $rowdivid)
                 . "','gseq':" . $groupSeq
                 . ",'qseq':" . $questionSeq
                 .$ansList."}";
@@ -1871,6 +1874,31 @@ class LimeExpressionManager {
         $this->em->RegisterVarnamesUsingMerge($this->knownVars);
         
         return true;
+    }
+
+    /**
+     * Return whether a sub-question is relevant
+     * @param <type> $sgqa
+     * @return <boolean>
+     */
+    static function SubQuestionIsRelevant($sgqa)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        if (!isset($LEM->knownVars[$sgqa]))
+        {
+            return false;
+        }
+        $var = $LEM->knownVars[$sgqa];
+        $sqrel=1;
+        if (isset($var['rowdivid']) && $var['rowdivid'] != '')
+        {
+            $sqrel = (isset($_SESSION['relevanceStatus'][$var['rowdivid']]) ? $_SESSION['relevanceStatus'][$var['rowdivid']] : 1);
+        }
+        $qid = $var['qid'];
+        $qrel = (isset($_SESSION['relevanceStatus'][$qid]) ? $_SESSION['relevanceStatus'][$qid] : 1);
+        $gid = $var['gid'];
+        $grel = (isset($_SESSION['relevanceStatus']['G' . $gid]) ? $_SESSION['relevanceStatus']['G' . $gid] : 1);   // group-level relevance based upon grelevance equation
+        return ($grel && $qrel && $sqrel);
     }
 
     /**
@@ -3488,10 +3516,12 @@ class LimeExpressionManager {
                                 if ($sqrel)
                                 {
                                     $relevantSQs[] = $sgqa;
+                                    $_SESSION['relevanceStatus'][$sq['rowdivid']]=true;
                                 }
                                 else
                                 {
                                     $irrelevantSQs[] = $sgqa;
+                                    $_SESSION['relevanceStatus'][$sq['rowdivid']]=false;
                                 }
                             }
                             break;
@@ -3527,10 +3557,12 @@ class LimeExpressionManager {
                                 if ($sqrel)
                                 {
                                     $relevantSQs[] = $sgqa;
+                                    $_SESSION['relevanceStatus'][$sq['rowdivid']]=true;
                                 }
                                 else
                                 {
                                     $irrelevantSQs[] = $sgqa;
+                                    $_SESSION['relevanceStatus'][$sq['rowdivid']]=false;
                                 }
                             }
                         case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
@@ -3571,10 +3603,12 @@ class LimeExpressionManager {
                                 if ($sqrel)
                                 {
                                     $relevantSQs[] = $sgqa;
+                                    $_SESSION['relevanceStatus'][$sq['rowdivid']]=true;
                                 }
                                 else
                                 {
                                     $irrelevantSQs[] = $sgqa;
+                                    $_SESSION['relevanceStatus'][$sq['rowdivid']]=false;
                                 }
                             }
                             break;
@@ -4247,6 +4281,7 @@ class LimeExpressionManager {
 
         $jsParts=array();
         $allJsVarsUsed=array();
+        $rowdividList=array();   // list of subquestions needing relevance entries
         $jsParts[] = '<script type="text/javascript" src="'.$rooturl.'/classes/eval/em_javascript.js"></script>';
         $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
         $jsParts[] = "var LEMmode='" . $LEM->surveyMode . "';\n";
@@ -4364,6 +4399,108 @@ class LimeExpressionManager {
                 $jsParts[] = "\nif (\n  ";
                 $jsParts[] = $relevance;
                 $jsParts[] = "\n  )\n{\n";
+
+                ////////////////////////////////////////////////////////////////////////
+                // DO ALL ARRAY FILTERING FIRST - MAY AFFECT VALIDATION AND TAILORING //
+                ////////////////////////////////////////////////////////////////////////
+
+                // Do all sub-question filtering (e..g array_filter)
+                foreach ($subqParts as $sq)
+                {
+                    $rowdividList[$sq['rowdivid']] = $sq['result'];
+                    $jsParts[] = "  // Apply " . $sq['type'] . ": " . $sq['eqn'] ."\n";
+                    $jsParts[] = "  if ( " . $sq['relevancejs'] . " ) {\n";
+                    $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').show();\n";
+                    $jsParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('1');";
+                    switch ($sq['qtype'])
+                    {
+                        case '1': //Array (Flexible Labels) dual scale
+                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#0').val('on');\n";
+                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#1').val('on');\n";
+                            break;
+                        case ':': //ARRAY (Multi Flexi) 1 to 10
+                        case ';': //ARRAY (Multi Flexi) Text
+                        case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                        case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                        case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                        case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                        case 'F': //ARRAY (Flexible) - Row Format
+                        case 'L': //LIST drop-down/radio-button list
+                        case 'M': //Multiple choice checkbox
+                        case 'P': //Multiple choice with comments checkbox + text
+                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('on');\n";
+                            break;
+                        default:
+                            break;
+                    }
+                    $jsParts[] = "  }\n  else {\n";
+                    $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
+                    $jsParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('');";
+                    switch ($sq['qtype'])
+                    {
+                        /*  No longer need to explicitly clear values - can simply hide them via sub-question-level relevance
+                        case '1': //Array (Flexible Labels) dual scale
+                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#0').val('off');\n";
+                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#1').val('off');\n";
+                            $jsParts[] = "    $('#java" . $sq['rowdivid'] . "#0').val('');\n";
+                            $jsParts[] = "    $('#java" . $sq['rowdivid'] . "#1').val('');\n";
+                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=radio]').attr('checked',false);\n";
+                            $jsParts[] = "    $('#answer" . $sq['rowdivid'] . "#0-').attr('checked',true);\n";
+                            break;
+                        case ';': //ARRAY (Multi Flexi) Text
+                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
+                            $jsParts[] = "    $('#java" . $sq['rowdivid'] . "').val('');\n";
+                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=text]').val('');\n";
+                            break;
+                        case ':': //ARRAY (Multi Flexi) 1 to 10
+                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
+                            $jsParts[] = "    $('#java" . $sq['rowdivid'] . "').val('');\n";
+                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " select').val('');\n";
+                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=checkbox]').attr('checked',false);\n";
+                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=text]').val('');\n";
+                            break;
+                        case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                        case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                        case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                        case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                        case 'F': //ARRAY (Flexible) - Row Format
+                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
+                            $jsParts[] = "    $('#java" . $sq['rowdivid'] . "').val('');\n";
+                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=radio]').attr('checked',false);\n";
+                            $jsParts[] = "    $('#answer" . $sq['rowdivid'] . "-').attr('checked',true);\n";
+                            break;
+                        case 'M': //Multiple choice checkbox
+                        case 'P': //Multiple choice with comments checkbox + text
+                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
+                            $jsParts[] = "    $('#java" . $sq['rowdivid'] . "').val('');\n";
+                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=checkbox]').attr('checked',false);\n";
+                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=text]').val('');\n";
+                            break;
+                         */
+                        case 'L': //LIST drop-down/radio-button list
+                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
+                            $listItem = substr($sq['rowdivid'],strlen($sq['sgqa']));    // gets the part of the rowdiv id past the end of the sgqa code.
+                            $jsParts[] = "    if (($('#java" . $sq['sgqa'] ."').val() == '" . $listItem . "')";
+                            if ($listItem == 'other') {
+                                $jsParts[] = " || ($('#java" . $sq['sgqa'] ."').val() == '-oth-')";
+                            }
+                            $jsParts[] = "){\n";
+                            $jsParts[] = "      $('#java" . $sq['sgqa'] . "').val('');\n";
+                            $jsParts[] = "      $('#answer" . $sq['sgqa'] . "NANS').attr('checked',true);\n";
+                            $jsParts[] = "    }\n";
+                            break;
+                        default:
+                            break;
+                    }
+                    $jsParts[] = "  }\n";
+
+                    $sqvars = explode('|',$sq['relevanceVars']);
+                    if (is_array($sqvars))
+                    {
+                        $allJsVarsUsed = array_merge($allJsVarsUsed,$sqvars);
+                    }
+                }
+
                 // Do all tailoring
                 $jsParts[] = implode("\n",$tailorParts);
 
@@ -4430,133 +4567,25 @@ class LimeExpressionManager {
                     $jsParts[] = "  }\n";
                 }
 
-                // Do all sub-question filtering (e..g array_filter)
-                foreach ($subqParts as $sq)
-                {
-                    $jsParts[] = "  // Apply " . $sq['type'] . ": " . $sq['eqn'] ."\n";
-                    $jsParts[] = "  if ( " . $sq['relevancejs'] . " ) {\n";
-                    $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').show();\n";
-                    switch ($sq['qtype'])
-                    {
-                        case '1': //Array (Flexible Labels) dual scale
-//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "#0').value = 'on';\n";
-//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "#1').value = 'on';\n";
-                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#0').val('on');\n";
-                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#1').val('on');\n";
-                            break;
-                        case ':': //ARRAY (Multi Flexi) 1 to 10
-                        case ';': //ARRAY (Multi Flexi) Text
-                        case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                        case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                        case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                        case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                        case 'F': //ARRAY (Flexible) - Row Format
-                        case 'L': //LIST drop-down/radio-button list
-                        case 'M': //Multiple choice checkbox
-                        case 'P': //Multiple choice with comments checkbox + text
-//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'on';\n";
-                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('on');\n";
-                            break;
-                        default:
-                            break;
-                    }
-                    $jsParts[] = "  }\n  else {\n";
-                    $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
-                    switch ($sq['qtype'])
-                    {
-                        case '1': //Array (Flexible Labels) dual scale
-//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "#0').value = 'off';\n";
-//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "#1').value = 'off';\n";
-                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#0').val('off');\n";
-                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#1').val('off');\n";
-                            $jsParts[] = "    $('#java" . $sq['rowdivid'] . "#0').val('');\n";
-                            $jsParts[] = "    $('#java" . $sq['rowdivid'] . "#1').val('');\n";
-                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=radio]').attr('checked',false);\n";
-                            $jsParts[] = "    $('#answer" . $sq['rowdivid'] . "#0-').attr('checked',true);\n";
-                            break;
-                        case ';': //ARRAY (Multi Flexi) Text
-//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
-                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
-                            $jsParts[] = "    $('#java" . $sq['rowdivid'] . "').val('');\n";
-                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=text]').val('');\n";
-                            break;
-                        case ':': //ARRAY (Multi Flexi) 1 to 10
-//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
-                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
-                            $jsParts[] = "    $('#java" . $sq['rowdivid'] . "').val('');\n";
-                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " select').val('');\n";
-                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=checkbox]').attr('checked',false);\n";
-                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=text]').val('');\n";
-                            break;
-                        case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                        case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                        case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                        case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                        case 'F': //ARRAY (Flexible) - Row Format
-//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
-                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
-                            $jsParts[] = "    $('#java" . $sq['rowdivid'] . "').val('');\n";
-                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=radio]').attr('checked',false);\n";
-                            $jsParts[] = "    $('#answer" . $sq['rowdivid'] . "-').attr('checked',true);\n";
-                            break;
-                        case 'M': //Multiple choice checkbox
-                        case 'P': //Multiple choice with comments checkbox + text
-//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
-                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
-                            $jsParts[] = "    $('#java" . $sq['rowdivid'] . "').val('');\n";
-                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=checkbox]').attr('checked',false);\n";
-                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=text]').val('');\n";
-                            break;
-                        case 'L': //LIST drop-down/radio-button list
-//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
-                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
-                            $listItem = substr($sq['rowdivid'],strlen($sq['sgqa']));    // gets the part of the rowdiv id past the end of the sgqa code.
-                            $jsParts[] = "    if (($('#java" . $sq['sgqa'] ."').val() == '" . $listItem . "')";
-                            if ($listItem == 'other') {
-                                $jsParts[] = " || ($('#java" . $sq['sgqa'] ."').val() == '-oth-')";
-                            }                        
-                            $jsParts[] = "){\n";
-                            $jsParts[] = "      $('#java" . $sq['sgqa'] . "').val('');\n";
-                            $jsParts[] = "      $('#answer" . $sq['sgqa'] . "NANS').attr('checked',true);\n";
-                            $jsParts[] = "    }\n";
-                            break;
-                        default:
-                            break;
-                    }
-                    $jsParts[] = "  }\n";
-
-                    $sqvars = explode('|',$sq['relevanceVars']);
-                    if (is_array($sqvars))
-                    {
-                        $allJsVarsUsed = array_merge($allJsVarsUsed,$sqvars);
-                    }
-                }
-
                 if ($arg['hidden']) {
                     $jsParts[] = "  // This question should always be hidden\n";
                     $jsParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
-//                    $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='';\n";
                     $jsParts[] = "  $('#display" . $arg['qid'] . "').val('');\n";
                 }
                 else {
                     $jsParts[] = "  $('#question" . $arg['qid'] . "').show();\n";
-//                    $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='on';\n";
                     $jsParts[] = "  $('#display" . $arg['qid'] . "').val('on');\n";
                 }
                 // If it is an equation, and relevance is true, then write the value from the question to the answer field storing the result
                 if ($arg['type'] == '*')
                 {
                     $jsParts[] = "  // Write value from the question into the answer field\n";
-//                    $jsParts[] = "  document.getElementById('" . $jsResultVar . "').value=escape(jQuery.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .questiontext').find('span').next().next().html()))).replace(/%20/g,' ');\n";
                     $jsParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val(escape(jQuery.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .questiontext').find('span').next().next().html()))).replace(/%20/g,' '));\n";
                 }
-//                $jsParts[] = "  document.getElementById('relevance" . $arg['qid'] . "').value='1';\n";
                 $jsParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
                 $jsParts[] = "}\nelse {\n";
                 $jsParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
-//                $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='';\n";
                 $jsParts[] = "  $('#display" . $arg['qid'] . "').val('');\n";
-//                $jsParts[] = "  document.getElementById('relevance" . $arg['qid'] . "').value='0';\n";
                 $jsParts[] = "  $('#relevance" . $arg['qid'] . "').val('0');\n";
                 $jsParts[] = "}\n";
 
@@ -4707,6 +4736,10 @@ class LimeExpressionManager {
                 $relStatus = 1;
             }
             $jsParts[] = "<input type='hidden' id='relevanceG" . $gid . "' name='relevanceG" . $gid .  "' value='" . $relStatus . "'/>\n";
+        }
+        foreach ($rowdividList as $key=>$val)
+        {
+            $jsParts[] = "<input type='hidden' id='relevance" . $key . "' name='relevance" . $key .  "' value='" . $val . "'/>\n";
         }
         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
@@ -5222,6 +5255,15 @@ EOT;
             $qid = $qinfo['info']['qid'];
             $relevant = (isset($_POST['relevance' . $qid]) ? ($_POST['relevance' . $qid] == 1) : false);
             $_SESSION['relevanceStatus'][$qid] = $relevant;
+            if (isset($qinfo['info']['rowdivid']) && $qinfo['info']['rowdivid']!='')
+            {
+                $rowdivid=$qinfo['info']['rowdivid'];
+                if ($rowdivid!='' && isset($_POST['relevance' . $rowdivid]))
+                {
+                    $sqrelevant = ($_POST['relevance' . $rowdivid] == 1);
+                    $_SESSION['relevanceStatus'][$rowdivid] = $sqrelevant;
+                }
+            }
             foreach (explode('|',$qinfo['sgqa']) as $sq)
             {
                 if ($relevant)
