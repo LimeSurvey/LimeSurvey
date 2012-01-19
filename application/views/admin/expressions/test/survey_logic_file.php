@@ -4,13 +4,14 @@ if (count($_GET) > 0) {
         if ($key == 'sid') {
             $val = $val . '|N'; // hack to pretend this is not an assessment
         }
-        $_POST[$key] = $val;
+        $_REQUEST[$key] = $val;
     }
 }
 
 $clang = Yii::app()->lang;
+$this->loadHelper('frontend');
 
-if (empty($_POST['sid']))   //  || count($_POST) == 0) {
+if (empty($_REQUEST['sid']))   //  || count($_REQUEST) == 0) {
 {
     $query = "select a.surveyls_survey_id as sid, a.surveyls_title as title, b.datecreated, b.assessments "
     . "from {{surveys_languagesettings}} as a join {{surveys}} as b on a.surveyls_survey_id = b.sid"
@@ -20,7 +21,7 @@ if (empty($_POST['sid']))   //  || count($_POST) == 0) {
     foreach($data->readAll() as $row) {
         $surveyList .= "<option value='" . $row['sid'] .'|' . $row['assessments'] . "'>#" . $row['sid'] . " [" . $row['datecreated'] . '] ' . FlattenText($row['title']) . "</option>\n";
     }
-    $url=$this->createUrl('admin/expressions/survey_logic_file');
+    $url = $this->createUrl('admin/expressions/survey_logic_file');
     $form = <<< EOD
 <form method='post' action='$url'>
 <h3>Generate a logic file for the survey</h3>
@@ -29,12 +30,6 @@ if (empty($_POST['sid']))   //  || count($_POST) == 0) {
 <tr><td>Survey ID (SID)</td>
 <td><select name='sid' id='sid'>
 $surveyList
-</select></td></tr>
-<tr><td>Navigation Style</td>
-<td><select name='surveyMode' id='surveyMode'>
-<option value='question'>Question (One-at-a-time)</option>
-<option value='group'>Group (Group-at-a-time)</option>
-<option value='survey' selected='selected'>Survey (All-in-one)</option>
 </select></td></tr>
 <tr><td>Debug Log Level</td>
 <td>
@@ -55,22 +50,21 @@ EOD;
     echo $form;
 }
 else {
-    $surveyInfo = explode('|',$_POST['sid']);
+    $surveyInfo = (array) explode('|', $_REQUEST['sid']);
     $surveyid = $surveyInfo[0];
-    $assessments = ($surveyInfo[1] == 'Y');
-    $surveyMode = $_POST['surveyMode'];
+    $assessments = (!empty($surveyInfo[1]) && $surveyInfo[1] == 'Y');
     $LEMdebugLevel = (
-            ((isset($_POST['LEM_DEBUG_TIMING']) && $_POST['LEM_DEBUG_TIMING'] == 'Y') ? LEM_DEBUG_TIMING : 0) +
-            ((isset($_POST['LEM_DEBUG_VALIDATION_SUMMARY']) && $_POST['LEM_DEBUG_VALIDATION_SUMMARY'] == 'Y') ? LEM_DEBUG_VALIDATION_SUMMARY : 0) +
-            ((isset($_POST['LEM_DEBUG_VALIDATION_DETAIL']) && $_POST['LEM_DEBUG_VALIDATION_DETAIL'] == 'Y') ? LEM_DEBUG_VALIDATION_DETAIL : 0) +
-            ((isset($_POST['LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB']) && $_POST['LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB'] == 'Y') ? LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB : 0) +
-            ((isset($_POST['LEM_DEBUG_TRANSLATION_DETAIL']) && $_POST['LEM_DEBUG_TRANSLATION_DETAIL'] == 'Y') ? LEM_DEBUG_TRANSLATION_DETAIL : 0) +
-            ((isset($_POST['LEM_PRETTY_PRINT_ALL_SYNTAX']) && $_POST['LEM_PRETTY_PRINT_ALL_SYNTAX'] == 'Y') ? LEM_PRETTY_PRINT_ALL_SYNTAX : 0)
+            ((isset($_REQUEST['LEM_DEBUG_TIMING']) && $_REQUEST['LEM_DEBUG_TIMING'] == 'Y') ? LEM_DEBUG_TIMING : 0) +
+            ((isset($_REQUEST['LEM_DEBUG_VALIDATION_SUMMARY']) && $_REQUEST['LEM_DEBUG_VALIDATION_SUMMARY'] == 'Y') ? LEM_DEBUG_VALIDATION_SUMMARY : 0) +
+            ((isset($_REQUEST['LEM_DEBUG_VALIDATION_DETAIL']) && $_REQUEST['LEM_DEBUG_VALIDATION_DETAIL'] == 'Y') ? LEM_DEBUG_VALIDATION_DETAIL : 0) +
+            ((isset($_REQUEST['LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB']) && $_REQUEST['LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB'] == 'Y') ? LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB : 0) +
+            ((isset($_REQUEST['LEM_DEBUG_TRANSLATION_DETAIL']) && $_REQUEST['LEM_DEBUG_TRANSLATION_DETAIL'] == 'Y') ? LEM_DEBUG_TRANSLATION_DETAIL : 0) +
+            ((isset($_REQUEST['LEM_PRETTY_PRINT_ALL_SYNTAX']) && $_REQUEST['LEM_PRETTY_PRINT_ALL_SYNTAX'] == 'Y') ? LEM_PRETTY_PRINT_ALL_SYNTAX : 0)
             );
 
-    $language = (isset($_POST['lang']) ? sanitize_languagecode($_POST['lang']) : NULL);
-    $gid = (isset($_POST['gid']) ? sanitize_int($_POST['gid']) : NULL);
-    $qid = (isset($_POST['qid']) ? sanitize_int($_POST['qid']) : NULL);
+    $language = (isset($_REQUEST['lang']) ? sanitize_languagecode($_REQUEST['lang']) : NULL);
+    $gid = (isset($_REQUEST['gid']) ? sanitize_int($_REQUEST['gid']) : NULL);
+    $qid = (isset($_REQUEST['qid']) ? sanitize_int($_REQUEST['qid']) : NULL);
 
     print <<< EOD
 <html>

@@ -42,7 +42,7 @@
         <?php if(bHasSurveyPermission($surveyid,'surveyactivation','read'))
         { ?>
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
-            <a href="#" onclick="window.open('<?php echo $this->createUrl('admin/expressions/survey_logic_file/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>','_blank')"
+            <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/expressions/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/"); ?>','_blank')"
                 title="<?php $clang->eTview("Survey Logic File for current question"); ?>">
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/quality_assurance.png' alt='<?php $clang->eT("Survey Logic File for current question"); ?>' /></a>
         <?php } ?>
