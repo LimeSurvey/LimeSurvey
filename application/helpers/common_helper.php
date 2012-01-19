@@ -1714,7 +1714,7 @@ function getsidgidqidaidtype($fieldcode)
     // but fails for type M and type P multiple choice
     // questions because the SESSION fieldcode is combined
     // and we want here to pass only the sidXgidXqid for type M and P
-    $fields=arraySearchByKey($fieldcode, createFieldMap($fsid,'full'), "fieldname", 1);
+    $fields=arraySearchByKey($fieldcode, createFieldMap($fsid,'full',false,false,GetbaseLanguageFromSurveyid($fsid)), "fieldname", 1);
 
     if (count($fields) != 0)
     {
@@ -1780,7 +1780,7 @@ function getextendedanswer($surveyid, $action, $fieldcode, $value, $format='')
     //Returns NULL if question type does not suit
     if (substr_count($fieldcode, "X") > 1) //Only check if it looks like a real fieldcode
     {
-        $fieldmap = createFieldMap($surveyid);
+        $fieldmap = createFieldMap($surveyid,'short',false,false,GetbaseLanguageFromSurveyid($surveyid));
         if (isset($fieldmap[$fieldcode]))
             $fields = $fieldmap[$fieldcode];
         else
@@ -2174,33 +2174,19 @@ function validate_templatedir($templatename)
 * @param int $questionid Limit to a certain qid only (for question preview) - default is false
 * @return array
 */
-function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
+function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sLanguage) {
     global $globalfieldmap, $aDuplicateQIDs;
 
-    $clang = Yii::app()->lang;
+    $sLanguage = sanitize_languagecode($sLanguage);
     $surveyid = sanitize_int($surveyid);
-    //Get list of questions
-    if (is_null($sQuestionLanguage))
-    {
-        if (isset(Yii::app()->session['s_lang'])) {
-            $sQuestionLanguage = Yii::app()->session['s_lang'];
-        }
-        else {
-            $sQuestionLanguage = Survey::model()->findByPk($surveyid)->language;
-        }
-    }
-    $sQuestionLanguage = sanitize_languagecode($sQuestionLanguage);
-    if ($clang->langcode != $sQuestionLanguage) {
-        SetSurveyLanguage($surveyid, $sQuestionLanguage);
-    }
-    $s_lang = $clang->langcode;
+    $clang = new Limesurvey_lang($sLanguage); ;
 
     //checks to see if fieldmap has already been built for this page.
-    if (isset($globalfieldmap[$surveyid][$style][$s_lang]) && $force_refresh==false) {
-        return $globalfieldmap[$surveyid][$style][$s_lang];
+    if (isset($globalfieldmap[$surveyid][$style][$sLanguage]) && $force_refresh==false) {
+        return $globalfieldmap[$surveyid][$style][$sLanguage];
     }
-    if (isset(Yii::app()->session['fieldmap-' . $surveyid . $s_lang]) && !$force_refresh) {
-        return Yii::app()->session['fieldmap-' . $surveyid . $s_lang];
+    if (isset(Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]) && !$force_refresh) {
+        return Yii::app()->session['fieldmap-' . $surveyid . $sLanguage];
     }
 
     $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
@@ -2314,7 +2300,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         . " FROM {{defaultvalues}} as a, {{questions}} as b"
         . " WHERE a.qid = b.qid"
         . " AND a.language = b.language"
-        . " AND a.language = '{$s_lang}'"
+        . " AND a.language = '{$sLanguage}'"
         . " AND b.same_default=0"
         . " AND b.sid = ".$surveyid;
     $defaultResults = Yii::app()->db->createCommand($defaultsQuery)->queryAll();
@@ -2358,9 +2344,9 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 	." FROM {{questions}} as questions, {{groups}} as groups"
 	." WHERE questions.gid=groups.gid AND "
 	." questions.sid=$surveyid AND "
-	." questions.language='{$s_lang}' AND "
+	." questions.language='{$sLanguage}' AND "
 	." questions.parent_qid=0 AND "
-	." groups.language='{$s_lang}' ";
+	." groups.language='{$sLanguage}' ";
 	if ($questionid!==false)
 	{
 		$aquery.=" and questions.qid={$questionid} ";
@@ -2467,7 +2453,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         elseif ($qtypes[$arow['type']]['subquestions']==2 && $qtypes[$arow['type']]['answerscales']==0)
         {
             //MULTI FLEXI
-            $abrows = getSubQuestions($surveyid,$arow['qid'],$s_lang);
+            $abrows = getSubQuestions($surveyid,$arow['qid'],$sLanguage);
             //Now first process scale=1
             $answerset=array();
             $answerList = array();
@@ -2518,7 +2504,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         }
         elseif ($arow['type'] == "1")
         {
-            $abrows = getSubQuestions($surveyid,$arow['qid'],$s_lang);
+            $abrows = getSubQuestions($surveyid,$arow['qid'],$sLanguage);
             foreach ($abrows as $abrow)
             {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#0";
@@ -2560,7 +2546,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         elseif ($arow['type'] == "R")
         {
             //MULTI ENTRY
-            $data = Answers::model()->findAllByAttributes(array('qid' => $arow['qid'], 'language' => $s_lang));
+            $data = Answers::model()->findAllByAttributes(array('qid' => $arow['qid'], 'language' => $sLanguage));
             $data = count($data);
             $slots=$data;
             for ($i=1; $i<=$slots; $i++)
@@ -2632,7 +2618,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         else  // Question types with subquestions and one answer per subquestion  (M/A/B/C/E/F/H/P)
         {
             //MULTI ENTRY
-            $abrows = getSubQuestions($surveyid,$arow['qid'],$s_lang);
+            $abrows = getSubQuestions($surveyid,$arow['qid'],$sLanguage);
             foreach ($abrows as $abrow)
             {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}";
@@ -2727,8 +2713,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap[$fieldname]['help']=$arow['help'];
     }
     if (isset($fieldmap)) {
-        $globalfieldmap[$surveyid][$style][$s_lang] = $fieldmap;
-        Yii::app()->session['fieldmap-' . $surveyid . $s_lang]=$fieldmap;
+        $globalfieldmap[$surveyid][$style][$sLanguage] = $fieldmap;
+        Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]=$fieldmap;
         return $fieldmap;
     }
 }
@@ -2739,7 +2725,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 * @return bool
 */
 function bHasFileUploadQuestion($surveyid) {
-    $fieldmap = createFieldMap($surveyid);
+    $fieldmap = createFieldMap($surveyid,'short',false,false,GetbaseLanguageFromSurveyid($surveyid));
 
     foreach ($fieldmap as $field) {
         if (isset($field['type']) &&  $field['type'] === '|') return true;
@@ -4306,51 +4292,6 @@ function FlattenText($sTextToFlatten, $keepSpan=false, $bDecodeHTMLEntities=fals
     return  $sNicetext;
 }
 
-/**
-* getArrayFiltersForGroup() queries the database and produces a list of array_filter questions and targets with in the same group
-* @return returns an nested array which contains arrays with the keys: question id (qid), question manditory, target type (type), and list_filter id (fid)
-*/
-function getArrayFiltersForGroup($surveyid,$gid)
-{
-    // TODO: Check list_filter values to make sure questions are previous?
-    $surveyid=sanitize_int($surveyid);
-    $gid=sanitize_int($gid);
-    // Get All Questions in Current Group
-    $fieldmap = createFieldMap($surveyid,'full');
-    if($gid != "") {
-        $qrows = arraySearchByKey($gid, $fieldmap, 'gid');
-    } else {
-        $qrows = $fieldmap;
-    }
-    $grows = array(); //Create an empty array in case query not return any rows
-    // Store each result as an array with in the $grows array
-    foreach ($qrows as $qrow) {
-        if (isset($qrow['gid']) && !empty($qrow['gid'])) {
-            $grows[$qrow['qid']] = array('qid' => $qrow['qid'],'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title'], 'gid' => $qrow['gid']);
-        }
-    }
-    $attrmach = array(); // Stores Matches of filters that have their values as questions with in current group
-    $grows2 = $grows;
-    foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
-    {
-        $qresult = getQuestionAttributeValues($qrow['qid']);
-        if (isset($qresult['array_filter'])) // We Found a array_filter attribute
-        {
-            $val = $qresult['array_filter']; // Get the Value of the Attribute ( should be a previous question's title in same group )
-            foreach ($grows2 as $avalue)
-            {
-                if ($avalue['title'] == $val)
-                {
-                    $filter = array('qid' => $qrow['qid'], 'mandatory' => $qrow['mandatory'], 'type' => $avalue['type'], 'fid' => $avalue['qid'], 'gid' => $qrow['gid'], 'gid2'=>$avalue['gid']);
-                    array_push($attrmach,$filter);
-                }
-            }
-            reset($grows2);
-        }
-    }
-    return $attrmach;
-}
-
 
 /**
 * getArrayFilterExcludesCascadesForGroup() queries the database and produces a list of array_filter_exclude questions and targets with in the same group
@@ -4364,7 +4305,8 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
     $cascaded=array();
     $sources=array();
     $qidtotitle=array();
-    $fieldmap = createFieldMap($surveyid,'full');
+    $fieldmap = createFieldMap($surveyid,'full',false,false,GetbaseLanguageFromSurveyid($surveyid));
+
     if($gid != "") {
         $qrows = arraySearchByKey($gid, $fieldmap, 'gid');
     } else {
@@ -4443,67 +4385,7 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
     return $cascaded;
 }
 
-/**
-* getArrayFilterExcludesForGroup() queries the database and produces a list of array_filter_exclude questions and targets with in the same group
-* @return returns an nested array which contains arrays with the keys: question id (qid), question manditory, target type (type), and list_filter id (fid)
-*/
-function getArrayFilterExcludesForGroup($surveyid,$gid)
-{
-    // TODO: Check list_filter values to make sure questions are previous?
-    $surveyid=sanitize_int($surveyid);
-    $gid=sanitize_int($gid);
-    // Get All Questions in Current Group
-    $fieldmap = createFieldMap($surveyid,'full');
-    if($gid != "") {
-        $qrows = arraySearchByKey($gid, $fieldmap, 'gid');
-    } else {
-        $qrows = $fieldmap;
-    }
-    $grows = array(); //Create an empty array in case query not return any rows
-    // Store each result as an array with in the $grows array
-    foreach ($qrows as $qrow) {
-        if (isset($qrow['gid']) && !empty($qrow['gid'])) {
-            $grows[$qrow['qid']] = array('qid' => $qrow['qid'],'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title'], 'gid' => $qrow['gid']);
-        }
-    }
-    $attrmach = array(); // Stores Matches of filters that have their values as questions within current group
-    $grows2 = $grows;
-    foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
-    {
-        $qresult = getQuestionAttributeValues($qrow['qid'],$qrow['type']);
-        if (isset($qresult['array_filter_exclude'])) // We Found a array_filter attribute
-        {
-            $val = $qresult['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
-            foreach ($grows2 as $avalue)
-            {
-                if ($avalue['title'] == $val)
-                {
-                    //Get the code for this question, so we can see if any later questions in this group us it for an array_filter_exclude
-                    $cqresult=Questions::model()->findAllByAttributes(array("qid"=>$qrow['qid']));
-                    $xqid="";
-                    //while($ftitle=$cqresult->FetchRow())
-                    foreach ($cqresult->readAll() as $ftitle)
-                    {
-                        $xqid=$ftitle['title'];
-                    }
 
-                    $filter = array('qid'           => $qrow['qid'],
-                    'mandatory'     => $qrow['mandatory'],
-                    'type'          => $avalue['type'],
-                    'fid'           => $avalue['qid'],
-                    'gid'           => $qrow['gid'],
-                    'gid2'          => $avalue['gid'],
-                    'source_title'  => $avalue['title'],
-                    'source_qid'    => $avalue['qid'],
-                    'this_title'    => $xqid);
-                    array_push($attrmach,$filter);
-                }
-            }
-            reset($grows2);
-        }
-    }
-    return $attrmach;
-}
 
 /**
 * getArrayFiltersForQuestion($qid) finds out if a question has an array_filter attribute and what codes where selected on target question
@@ -4572,58 +4454,6 @@ function getGroupsByQuestion($surveyid) {
     return $output;
 }
 
-/**
-* getArrayFiltersForGroup($qid) finds out if a question is in the current group or not for array filter
-* @return returns true if its not in currect group and false if it is..
-*/
-function getArrayFiltersOutGroup($qid)
-{
-    // TODO: Check list_filter values to make sure questions are previous?
-    global $gid;
-    $surveyid = Yii::app()->getConfig('sid');
-
-    $qid=sanitize_int($qid);
-    $attributes = getQuestionAttributeValues($qid);
-    if (isset($attributes['array_filter'])) // We Found a array_filter attribute
-    {
-        $val = $attributes['array_filter']; // Get the Value of the Attribute ( should be a previous question's title in same group )
-
-        // we found the target question, now we need to know what the answers where, we know its a multi!
-        $surveyid=returnglobal('sid');
-        $fieldmap = createFieldMap($surveyid, 'full');
-        $val2 = arraySearchByKey($val, $fieldmap, 'title', 1);
-        if ($val2['gid'] != $gid) return true;
-        if ($val2['gid'] == $gid) return false;
-        return false;
-    }
-    return false;
-}
-
-/**
-* getArrayFiltersExcludesOutGroup($qid) finds out if a question is in the current group or not for array filter exclude
-* @return returns true if its not in currect group and false if it is..
-*/
-function getArrayFiltersExcludesOutGroup($qid)
-{
-    // TODO: Check list_filter values to make sure questions are previous?
-    global $gid;
-    $surveyid = Yii::app()->getConfig('sid');
-
-    $qid=sanitize_int($qid);
-    $attributes = getQuestionAttributeValues($qid);
-    if (isset($attributes['array_filter_exclude'])) // We Found a array_filter attribute
-    {
-        $val = $attributes['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
-
-        // we found the target question, now we need to know what the answers where, we know its a multi!
-        $surveyid=returnglobal('sid');
-        $fieldmap = createFieldMap($surveyid, 'full');
-        $val2 = arraySearchByKey($val, $fieldmap, 'title', 1);
-        if ($val2['gid'] != $gid) return true;
-        if ($val2['gid'] == $gid) return false;
-    }
-    return false;
-}
 
 /**
 * getArrayFilterExcludesForQuestion($qid) finds out if a question has an array_filter_exclude attribute and what codes where selected on target question
@@ -5086,7 +4916,7 @@ function aReverseTranslateFieldnames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRe
 {
     $aGIDReplacements=array_flip($aGIDReplacements);
     $aQIDReplacements=array_flip($aQIDReplacements);
-    $aFieldMap=createFieldMap($iNewSID);
+    $aFieldMap = createFieldMap($surveyid,'short',false,false,GetbaseLanguageFromSurveyid($iNewSID));
 
     $aFieldMappings=array();
     foreach ($aFieldMap as $sFieldname=>$aFieldinfo)

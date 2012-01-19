@@ -476,7 +476,6 @@ class SurveyAction extends CAction {
         }
 
 
-
         //Clear session and remove the incomplete response if requested.
         if (isset($move) && $move == "clearall")
         {
@@ -484,7 +483,7 @@ class SurveyAction extends CAction {
             if (isset($_SESSION['survey_'.$surveyid]['srid']))
             {
                 // find out if there are any fuqt questions - checked
-                $fieldmap = createFieldMap($surveyid);
+                $fieldmap = createFieldMap($surveyid,'short',false,false,$s_lang);
                 foreach ($fieldmap as $field)
                 {
                     if ($field['type'] == "|" && !strpos($field['fieldname'], "_filecount"))

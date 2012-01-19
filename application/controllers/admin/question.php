@@ -956,8 +956,9 @@ class question extends Survey_Common_Action
         if (!isset(Yii::app()->session['maxstep'])) { Yii::app()->session['maxstep'] = 0; }
 
         // Use $_SESSION instead of $this->session for frontend features.
-        Yii::app()->session[$surveyid]['s_lang'] = $language;
-        Yii::app()->session[$surveyid]['fieldmap'] = createFieldMap($surveyid, 'full', true, $qid);
+        $_SESSION[$surveyid]['s_lang'] = $language;
+        $_SESSION[$surveyid]['fieldmap'] = createFieldMap($surveyid, 'full', true, $qid, $language);
+
 
         // Prefill question/answer from defaultvalues
         foreach (Yii::app()->session['fieldmap'] as $field)

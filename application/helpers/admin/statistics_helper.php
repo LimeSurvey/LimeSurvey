@@ -326,7 +326,6 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	$tempurl = Yii::app()->getConfig("tempurl");
 	$clang = Yii::app()->lang;
 
-    $fieldmap=createFieldMap($surveyid, "full");
 
      $astatdata = array();
 
@@ -342,6 +341,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     {
         $statlang = new limesurvey_lang($statlangcode);
     }
+
+    $fieldmap=createFieldMap($surveyid, "full", false, false, $statlang);
 
     /*
      * this variable is used in the function shortencode() which cuts off a question/answer title

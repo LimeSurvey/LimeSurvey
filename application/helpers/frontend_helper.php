@@ -780,7 +780,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
 
     if (!isset($backok) || $backok != "Y")
     {
-        $fieldmap = createFieldMap($surveyid,'full');
+        $fieldmap = createFieldMap($surveyid,'full',false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
         if (isset($_POST['fieldnames']) && $_POST['fieldnames']!="")
         {
@@ -883,7 +883,8 @@ function aCheckInput($surveyid, $move,$backok=null)
 
     if (!isset($backok) || $backok != "Y")
     {
-        $fieldmap=createFieldMap($surveyid, 'full');
+        $fieldmap = createFieldMap($surveyid,'full',false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
+
         if (isset($_POST['fieldnames']))
         {
             $fields=explode("|", $_POST['fieldnames']);

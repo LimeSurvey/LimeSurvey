@@ -19,10 +19,10 @@ class UploaderController extends AdminController {
 
 		$uploaddir = Yii::app()->getConfig("uploaddir");
 		$tempdir = Yii::app()->getConfig("tempdir");
-		
+
 		Yii::app()->loadHelper("database");
         $param = $_REQUEST;
-	
+
 		if (isset($param['filegetcontents']))
 		{
 		    $sFileName=$param['filegetcontents'];
@@ -37,7 +37,7 @@ class UploaderController extends AdminController {
 		    readfile($sFileDir.$sFileName);
 		    exit();
 		}
-			
+
 		if (!isset($surveyid))
 		{
 		    $surveyid=sanitize_int(@$param['sid']);
@@ -47,11 +47,11 @@ class UploaderController extends AdminController {
 		    //This next line ensures that the $surveyid value is never anything but a number.
 		    $surveyid=sanitize_int($surveyid);
 		}
-		
+
 		if(isset($param['mode']) && $param['mode'] == "upload")
 		{
 			$clang = Yii::app()->lang;
-		
+
 		    $sTempUploadDir = $tempdir.'/uploads/';
 		    $filename = $_FILES['uploadfile']['name'];
 		    $size = 0.001 * $_FILES['uploadfile']['size'];
@@ -59,18 +59,18 @@ class UploaderController extends AdminController {
 		    $maxfilesize = (int) $_POST['max_filesize'];
 		    $preview = $_POST['preview'];
 		    $fieldname = $_POST['fieldname'];
-		    $aFieldMap=createFieldMap($surveyid);
+            $aFieldMap = createFieldMap($surveyid,'short',false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 		    if (!isset($aFieldMap[$fieldname])) die();
 		    $aAttributes=getQuestionAttributeValues($aFieldMap[$fieldname]['qid'],$aFieldMap[$fieldname]['type']);
-		
+
 		    $valid_extensions_array = explode(",", $aAttributes['allowed_filetypes']);
 		    $valid_extensions_array = array_map('trim',$valid_extensions_array);
-		
+
 		    $pathinfo = pathinfo($_FILES['uploadfile']['name']);
 		    $ext = $pathinfo['extension'];
             $randfilename = 'futmp_'.sRandomChars(15).'.'.$pathinfo['extension'];
             $randfileloc = $sTempUploadDir . $randfilename;
-		
+
 		    // check to see that this file type is allowed
 		    // it is also  checked at the client side, but jst double checking
 		    if (!in_array(strtolower($ext), $valid_extensions_array))
@@ -79,11 +79,11 @@ class UploaderController extends AdminController {
 		                        "success" => false,
 		                        "msg" => sprintf($clang->gT("Sorry, this file extension (%s) is not allowed!"),$ext)
 		                    );
-		
+
 		        echo ls_json_encode($return);
 		        exit ();
 		    }
-		
+
 		    // If this is just a preview, don't save the file
 		    if ($preview)
 		    {
@@ -95,10 +95,10 @@ class UploaderController extends AdminController {
 		            );
 		            echo ls_json_encode($return);
 		        }
-		
+
 		        else if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc))
 		        {
-		
+
 		            $return = array(
 		                        "success"       => true,
 		                        "file_index"    => $filecount,
@@ -109,7 +109,7 @@ class UploaderController extends AdminController {
 		                        "msg"           => $clang->gT("The file has been successfuly uploaded.")
 		                    );
 		            echo ls_json_encode($return);
-		
+
 		            // TODO : unlink this file since this is just a preview
 		            // unlink($randfileloc);
 		        }
@@ -136,8 +136,8 @@ class UploaderController extends AdminController {
 		        }
 		        elseif (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc))
 		        {
-		
-		
+
+
 		            $return = array(
 		                "success" => true,
 		                "size"    => $size,
@@ -146,7 +146,7 @@ class UploaderController extends AdminController {
 		                "filename"      => $randfilename,
 		                "msg"     => $clang->gT("The file has been successfuly uploaded.")
 		            );
-		
+
 		            echo ls_json_encode($return);
 		        }
 		        // if there was some error, report error message
@@ -159,7 +159,7 @@ class UploaderController extends AdminController {
 		                                "success" => false,
 		                                "msg" => $clang->gT("Sorry, there was an error uploading your file")
 		                            );
-		
+
 		                echo ls_json_encode($return);
 		            }
 		            // check to ensure that the file does not cross the maximum file size
@@ -169,7 +169,7 @@ class UploaderController extends AdminController {
 		                                "success" => false,
 		                                "msg" => sprintf($clang->gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
 		                            );
-		
+
 		                echo ls_json_encode($return);
 		            }
 		            else
@@ -184,7 +184,7 @@ class UploaderController extends AdminController {
 		    }
 		return;
 		}
-		
+
 		$meta = '<script type="text/javascript">
 		    var uploadurl = "'.$this->createUrl('/uploader/index/mode/upload/').'";
             var imageurl = "'.Yii::app()->getConfig('imageurl').'/";
@@ -192,17 +192,17 @@ class UploaderController extends AdminController {
 		    var fieldname = "'.$param['fieldname'].'";
 		    var questgrppreview  = '.$param['preview'].';
 		</script>';
-		
+
 		$meta .='<script type="text/javascript" src="'.Yii::app()->getConfig("generalscripts").'/ajaxupload.js"></script>
 		<script type="text/javascript" src="'.Yii::app()->getConfig("generalscripts").'/uploader.js"></script>
 		<link type="text/css" href="'.Yii::app()->getConfig("generalscripts").'/uploader.css" rel="stylesheet" />';
-		
+
 		$clang = Yii::app()->lang;
-					
+
 		$header = getHeader($meta);
-		
+
 		echo $header;
-		
+
 		echo "<script type='text/javascript'>
 		        var translt = {
 		             titleFld: '" . $clang->gT('Title','js') . "',
@@ -218,11 +218,11 @@ class UploaderController extends AdminController {
 		             errorNeedMoreConfirm: '" . $clang->gT("You need to upload %s more files for this question.\nAre you sure you want to exit?",'js') . "'
 		            };
 		    </script>\n";
-		
+
 		$fn = $param['fieldname'];
 		$qid = $param['qid'];
 		$qidattributes=getQuestionAttributeValues($qid);
-		
+
 		$body = '
 		        <div id="notice"></div>
 		        <input type="hidden" id="ia"                value="'.$fn.'" />
@@ -235,23 +235,23 @@ class UploaderController extends AdminController {
 		        <input type="hidden" id="'.$fn.'_show_title"        value="'.$qidattributes['show_title'].'" />
 		        <input type="hidden" id="'.$fn.'_licount"           value="0" />
 		        <input type="hidden" id="'.$fn.'_filecount"         value="0" />
-		
+
 		        <!-- The upload button -->
 		        <div align="center" class="upload-div">
 		            <button id="button1" class="upload-button" type="button" >'.$clang->gT("Select file").'</button>
 		        </div>
-		
+
 		        <p class="uploadmsg">'.sprintf($clang->gT("You can upload %s under %s KB each.",'js'),$qidattributes['allowed_filetypes'],$qidattributes['max_filesize']).'</p>
 		        <div class="uploadstatus" id="uploadstatus"></div>
-		
+
 		        <!-- The list of uploaded files -->
 		        <ul id="'.$fn.'_listfiles"></ul>
-		
+
 		    </body>
 		</html>';
 		echo $body;
-		
-		
+
+
 	}
-	
+
 }

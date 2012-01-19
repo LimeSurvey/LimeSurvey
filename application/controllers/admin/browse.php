@@ -305,7 +305,7 @@ class browse extends Survey_Common_Action
             $_POST['deleteanswer'] = (int) Yii::app()->request->getPost('deleteanswer'); // sanitize the value
             // delete the files as well if its a fuqt
 
-            $fieldmap = createFieldMap($iSurveyId);
+            $fieldmap = createFieldMap($iSurveyId,'short',false,false,Yii::app()->session['browselang'];);
             $fuqtquestions = array();
             // find all fuqt questions
             foreach ($fieldmap as $field)
@@ -342,7 +342,7 @@ class browse extends Survey_Common_Action
             // Delete the marked responses - checked
             if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') === 'marked')
             {
-                $fieldmap = createFieldMap($iSurveyId);
+                $fieldmap = createFieldMap($iSurveyId,'short',false,false,Yii::app()->session['browselang'];);
                 $fuqtquestions = array();
                 // find all fuqt questions
                 foreach ($fieldmap as $field)
@@ -826,7 +826,7 @@ class browse extends Survey_Common_Action
         $tmpdir = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyId . "/files/";
 
         $filelist = array();
-        $fieldmap = createFieldMap($iSurveyId, 'full');
+        $fieldmap = createFieldMap($iSurveyId, 'full' ,false, false, Yii::app()->session['browselang'];);
 
         foreach ($fieldmap as $field)
         {

@@ -485,7 +485,7 @@ class SurveyRuntimeHelper {
             doFooter();
             exit;
         }
-        createFieldMap($surveyid);
+        createFieldMap($surveyid,'full',false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
         //GET GROUP DETAILS
 
         if ($surveyMode == 'group' && $previewgrp)

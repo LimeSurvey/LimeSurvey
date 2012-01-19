@@ -188,7 +188,7 @@ class export extends Survey_Common_Action {
         if ( ! $exportstyle )
         {
             //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-            $excesscols = createFieldMap($surveyid);
+            $excesscols = createFieldMap($surveyid,'short',false,false,GetbaseLanguageFromSurveyid($surveyid));
             $excesscols = array_keys($excesscols);
 
             $afieldcount = count($excesscols);
@@ -927,7 +927,7 @@ class export extends Survey_Common_Action {
 
             $s="\t";
 
-            $fieldmap=createFieldMap($surveyid, "full");
+            $fieldmap = createFieldMap($surveyid,'full',false,false,GetbaseLanguageFromSurveyid($surveyid));
             $surveytable = "{{survey_$surveyid}}";
 
             Survey::model()->findByPk($surveyid)->language;

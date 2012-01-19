@@ -41,7 +41,7 @@ class fck_LimeReplacementFields extends Survey_Common_Action
             }
 
             //2: Get all other questions that occur before this question that are pre-determined answer types
-            $fieldmap = createFieldMap($surveyid, 'full');
+            $fieldmap = createFieldMap($surveyid,'full',false,false,GetbaseLanguageFromSurveyid($surveyid));
 
             $surveyInfo = getSurveyInfo($surveyid);
             $surveyformat = $surveyInfo['format']; // S, G, A

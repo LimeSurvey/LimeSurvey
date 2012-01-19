@@ -229,7 +229,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
     }
 
     //CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
-    $fieldmap=createFieldMap($surveyid, "full");
+    $fieldmap = createFieldMap($surveyid,'full',false,false,GetbaseLanguageFromSurveyid($surveyid));
     if (isset($fieldmap))
     {
         foreach($fieldmap as $fielddata)
@@ -286,7 +286,7 @@ function activateSurvey($surveyid, $simulate = false)
     }
 
     //Get list of questions for the base language
-    $fieldmap = createFieldMap($surveyid);
+    $fieldmap = createFieldMap($surveyid,'short',false,false,GetbaseLanguageFromSurveyid($surveyid));
 
     $createsurvey = array();
     foreach ($fieldmap as $j=>$arow) //With each question, create the appropriate field(s)

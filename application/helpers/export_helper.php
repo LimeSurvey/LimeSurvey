@@ -281,7 +281,7 @@ function spss_getvalues ($field = array(), $qidattributes = null ) {
 function spss_fieldmap($prefix = 'V') {
     global $surveyid, $typeMap, $clang, $surveyprivate, $tokensexist, $language;
 
-    $fieldmap = createFieldMap($surveyid, 'full');		//Create a FULL fieldmap
+    $fieldmap = createFieldMap($surveyid,'full',false,false,GetbaseLanguageFromSurveyid($surveyid));
 
     #See if tokens are being used
     $tokensexist = Yii::app()->db->schema->getTable('{{tokens_'.$surveyid . '}}');

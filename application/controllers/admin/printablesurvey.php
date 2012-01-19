@@ -110,10 +110,6 @@ class printablesurvey extends Survey_Common_Action
         LimeExpressionManager::StartSurvey($surveyid, 'survey',NULL,false,LEM_PRETTY_PRINT_ALL_SYNTAX);
         $moveResult = LimeExpressionManager::NavigateForwards();
 
-
-        //$fieldmap=createFieldMap($surveyid);
-
-
         $condition = "sid = '{$surveyid}' AND language = '{$surveyprintlang}'";
         $degresult = Groups::model()->getAllGroups($condition, array('group_order'));  //xiao,
 

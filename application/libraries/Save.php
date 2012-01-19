@@ -187,7 +187,8 @@ class Save {
             elseif (isset($move))
             {
                 // This else block is only there to take care of date conversion if the survey is not active - otherwise this is done in creatInsertQuery
-                $fieldmap=createFieldMap($surveyid,'full'); //Creates a list of the legitimate questions for this survey
+                $fieldmap = createFieldMap($surveyid,'full',false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
+
                 $inserts=array_unique($_SESSION['survey_'.$surveyid]['insertarray']);
                 foreach ($inserts as $value)
                 {
@@ -475,7 +476,7 @@ class Save {
         $timeadjust = Yii::app()->getConfig("timeadjust");
         $deletenonvalues = Yii::app()->getConfig("deletenonvalues");
 
-        $fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
+        $fieldmap = createFieldMap($surveyid,'short',false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
         if (isset($_SESSION['survey_'.$surveyid]['insertarray']) && is_array($_SESSION['survey_'.$surveyid]['insertarray']))
         {

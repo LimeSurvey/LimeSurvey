@@ -145,7 +145,7 @@ class dataentry extends Survey_Common_Action
         $aFieldnames = array_map('db_quote_id', $aFieldnames);
 
         // Find out which fields are datefields, these have to be null if the imported string is empty
-        $fieldmap = createFieldMap($surveyid);
+        $fieldmap = createFieldMap($surveyid,'short',false,false,GetbaseLanguageFromSurveyid($surveyid));
 
         $datefields = array();
         $numericfields = array();
@@ -562,7 +562,7 @@ class dataentry extends Survey_Common_Action
                     $responses[$svrow['fieldname']] = $svrow['value'];
                 } // while
 
-                $fieldmap = createFieldMap($surveyid);
+                $fieldmap = createFieldMap($surveyid,'short',false,false,GetbaseLanguageFromSurveyid($surveyid));
                 foreach($fieldmap as $fm)
                 {
                     if (isset($responses[$fm['fieldname']]))
@@ -1469,7 +1469,7 @@ class dataentry extends Survey_Common_Action
 
             $aDataentryoutput = "<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n";
 
-            $fieldmap= createFieldMap($surveyid);
+            $fieldmap = createFieldMap($surveyid,'short',false,false,GetbaseLanguageFromSurveyid($surveyid));
 
             // unset timings
             foreach ($fieldmap as $fname)
@@ -1709,7 +1709,7 @@ class dataentry extends Survey_Common_Action
 
                     //BUILD THE SQL TO INSERT RESPONSES
                     $baselang = Survey::model()->findByPk($surveyid)->language;
-                    $fieldmap = createFieldMap($surveyid);
+                    $fieldmap = createFieldMap($surveyid,'short',false,false,GetbaseLanguageFromSurveyid($surveyid));
                     $insert_data = array();
 
                     $_POST['startlanguage'] = $baselang;
@@ -1990,9 +1990,8 @@ class dataentry extends Survey_Common_Action
 
             $langlistbox = languageDropdown($surveyid,$sDataEntryLanguage);
             $thissurvey=getSurveyInfo($surveyid);
-            //This is the default, presenting a blank dataentry form
-            //$fieldmap=createFieldMap($surveyid);
 
+            //This is the default, presenting a blank dataentry form
             LimeExpressionManager::StartSurvey($surveyid, 'survey', NULL, false, LEM_PRETTY_PRINT_ALL_SYNTAX);
             $moveResult = LimeExpressionManager::NavigateForwards();
 
