@@ -136,7 +136,8 @@ if(isset($showsgqacode) && $showsgqacode == true)
 }
 else
 {
-	$surveyname = "";
+    //We need the surveyname to be correct later!
+	//$surveyname = "";
 }
 
 $survey_output = array(
@@ -1929,9 +1930,9 @@ if(isset($_POST['printableexport']))
     }
     $pdf->titleintopdf($clang->gT("Submit Your Survey."),$clang->gT("Thank you for completing this survey."));
     $pdf->write_out($clang->gT($surveyname)." ".$surveyid.".pdf");
+} else {
+    echo populate_template( 'survey' , $survey_output );
 }
-
-echo populate_template( 'survey' , $survey_output );
 
 exit;
 
