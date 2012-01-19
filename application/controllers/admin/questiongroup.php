@@ -90,7 +90,7 @@ class questiongroup extends Survey_Common_Action
             $aData['sExtension'] = $sExtension;
             $aData['display']['menu_bars']['surveysummary'] = 'importgroup';
 
-            $this->_renderWrappedTemplate('survey', 'QuestionGroups/import_view', $aData);
+            $this->_renderWrappedTemplate('survey/QuestionGroups', 'import_view', $aData);
             // TMSW Conditions->Relevance:  call LEM->ConvertConditionsToRelevance() after import
         }
     }
@@ -123,9 +123,8 @@ class questiongroup extends Survey_Common_Action
             $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'addgroup';
             $aData['grplangs'] = $grplangs;
             $aData['baselang'] = $baselang;
-            $aViewUrls = 'QuestionGroups/addGroup_view';
 
-            $this->_renderWrappedTemplate('survey', $aViewUrls, $aData);
+            $this->_renderWrappedTemplate('survey/QuestionGroups', 'addGroup_view', $aData);
         }
     }
 
@@ -332,7 +331,7 @@ class questiongroup extends Survey_Common_Action
             $aData['tabtitles'] = $aTabTitles;
             $aData['aBaseLanguage'] = $aBaseLanguage;
 
-            $this->_renderWrappedTemplate('survey', 'QuestionGroups/editGroup_view', $aData);
+            $this->_renderWrappedTemplate('survey/QuestionGroups', 'editGroup_view', $aData);
         }
 
     }
@@ -402,106 +401,13 @@ class questiongroup extends Survey_Common_Action
     }
 
     /**
-     * questiongroup::organize()
-     * Load ordering of question group screen.
-     * @return
-     */
-    public function organize($iSurveyId)
-    {
-        $iSurveyId = (int)$iSurveyId;
-
-        if (!empty($_POST['orgdata']) && bHasSurveyPermission($iSurveyId, 'surveycontent', 'update'))
-        {
-            $this->_reorderGroup($iSurveyId);
-        }
-        else
-        {
-            $this->_showReorderForm($iSurveyId);
-        }
-    }
-
-    private function _showReorderForm($iSurveyId)
-    {
-        // Prepare data for the view
-        $sBaseLanguage = Survey::model()->findByPk($iSurveyId)->language;
-
-        LimeExpressionManager::StartProcessingPage(true, Yii::app()->baseUrl);
-
-        $aGrouplist = Groups::model()->getGroups($iSurveyId);
-        $initializedReplacementFields = false;
-
-        foreach ($aGrouplist as $iGID => $aGroup)
-        {
-            LimeExpressionManager::StartProcessingGroup($aGroup['gid'], false, $iSurveyId);
-            if (!$initializedReplacementFields) {
-                templatereplace("{SITENAME}"); // Hack to ensure the EM sets values of LimeReplacementFields
-                $initializedReplacementFields = true;
-            }
-
-            $oQuestionData = Questions::model()->getQuestions($iSurveyId, $aGroup['gid'], $sBaseLanguage);
-
-            $qs = array();
-            $junk = array();
-
-            foreach ($oQuestionData->readAll() as $q)
-            {
-                $relevance = ($q['relevance'] == '') ? 1 : $q['relevance'];
-                $question = '[{' . $relevance . '}] ' . $q['question'];
-                LimeExpressionManager::ProcessString($question, $q['qid']);
-                $q['question'] = LimeExpressionManager::GetLastPrettyPrintExpression();
-                $q['gid'] = $aGroup['gid'];
-                $qs[] = $q;
-            }
-            $aGrouplist[$iGID]['questions'] = $qs;
-            LimeExpressionManager::FinishProcessingGroup();
-        }
-        LimeExpressionManager::FinishProcessingPage();
-
-        $aData['aGroupsAndQuestions'] = $aGrouplist;
-        $aData['surveyid'] = $iSurveyId;
-
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'jquery/jquery.ui.nestedSortable.js');
-        $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . 'admin/organize.js');
-
-        $this->_renderWrappedTemplate('survey', 'organizeGroupsAndQuestions_view', $aData);
-    }
-
-    private function _reorderGroup($iSurveyId)
-    {
-        $AOrgData = array();
-        parse_str($_POST['orgdata'], $AOrgData);
-        $grouporder = 0;
-        foreach ($AOrgData['list'] as $ID => $parent)
-        {
-            if ($parent == 'root' && $ID[0] == 'g') {
-                Groups::model()->updateAll(array('group_order' => $grouporder), array('gid' => (int)substr($ID, 1)));
-                $grouporder++;
-            }
-            elseif ($ID[0] == 'q')
-            {
-                if (!isset($questionorder[(int)substr($parent, 1)]))
-                    $questionorder[(int)substr($parent, 1)] = 0;
-
-                Questions::model()->updateAll(array('question_order' => $questionorder[(int)substr($parent, 1)], 'gid' => (int)substr($parent, 1)), array('qid' => (int)substr($ID, 1)));
-
-                Questions::model()->updateAll(array('gid' => (int)substr($parent, 1)), array('parent_qid' => (int)substr($ID, 1)));
-
-                $questionorder[(int)substr($parent, 1)]++;
-            }
-        }
-        LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
-        Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("The new question group/question order was successfully saved.");
-        $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/surveyid/' . $iSurveyId));
-    }
-
-    /**
      * Renders template(s) wrapped in header and footer
      *
      * @param string $sAction Current action, the folder to fetch views from
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction = 'survey', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'survey/QuestionGroups', $aViewUrls = array(), $aData = array())
     {
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
