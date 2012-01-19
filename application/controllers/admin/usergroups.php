@@ -235,7 +235,8 @@ class Usergroups extends Survey_Common_Action
                 $db_description = $_POST['description'];
                 if (User_groups::model()->updateGroup($db_name, $db_description, $ugid)) {
                     Yii::app()->session['flashmessage'] = $clang->gT("User group successfully saved!");
-
+					$aData['ugid'] = $ugid;
+					list($aViewUrls) = $this->index($ugid);
                 }
                 else
                 {
@@ -248,9 +249,8 @@ class Usergroups extends Survey_Common_Action
             else
             {
                 $result = User_groups::model()->requestEditGroup($ugid, Yii::app()->session['loginID']);
-                $esrow = $result->readAll();
-                $aData['esrow'] = $esrow[0];
-                $aData['ugid'] = $ugid;
+                $aData['esrow'] = $result;
+                $aData['ugid'] = $result->ugid;
                 $aViewUrls = 'editUserGroup_view';
             }
         }

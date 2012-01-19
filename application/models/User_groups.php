@@ -151,8 +151,11 @@ class User_groups extends CActiveRecord {
 
 	function requestEditGroup($ugid, $ownerid)
 	{
-		$query = 'SELECT * FROM {{user_groups}} WHERE ugid='.$ugid.' AND owner_id='.$ownerid;
-        $result = db_execute_assoc($query);
+		$criteria=new CDbCriteria;
+		$criteria->select='*';  // only select the 'title' column
+		$criteria->condition="ugid=:ugid AND owner_id=:ownerid";
+		$criteria->params=array(':ugid'=>$ugid, ':ownerid'=>$ownerid);
+		$result=User_groups::model()->find($criteria); // $params is not needed
 		return $result;
 	}
 

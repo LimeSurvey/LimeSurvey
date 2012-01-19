@@ -9,17 +9,28 @@
     var copyUrl = "<?php echo Yii::app()->baseUrl . "/index.php/admin/participants/addToTokenattmap"; ?>";
     var participant_id = "<?php echo $participant_id; ?>";
 </script>
+<?php
+	$columncount = 0;
+	if (!empty($selectedcentralattribute))
+		$columncount = $columncount + 2;
+	if (!empty($selectedtokenattribute))
+		$columncount++;
+	$columnstyle = "attrcol_".$columncount;
+?>	
 <div class='header ui-widget-header'>
     <strong>
         <?php echo $count ?>
     </strong>
 </div>
 <div class="main">
+	<p><?php $clang->eT("To add or not add participants to the survey just drag and drop their attributes in the correct boxes."); ?><br />
+		<?php $clang->eT("Click on 'Continue' when you are done."); ?>
+	</p>
     <?php
     if (!empty($selectedcentralattribute))
     {
         ?>
-        <div id="centralattribute">
+        <div id="centralattribute" class="<?php echo $columnstyle ?>">
             <div class="heading"><?php $clang->eT("Already mapped"); ?></div>
             <ul id="cpdbatt">
                 <?php
@@ -46,7 +57,7 @@
         if (!empty($selectedcentralattribute))
         {
             ?>
-            <div id="newcreated">
+            <div id="newcreated" class="<?php echo $columnstyle ?>">
                 <div class="heading"><?php $clang->eT("Attributes to be created"); ?></div>
                 <ul class="newcreate" id="sortable" style ="height:40px">
                 </ul>
@@ -57,7 +68,7 @@
     if (!empty($selectedtokenattribute))
     {
         ?>
-        <div id="tokenattribute">
+        <div id="tokenattribute" class="<?php echo $columnstyle ?>">
             <div class="heading">
                 <?php $clang->eT("Token table attribute"); ?>
             </div>
@@ -72,8 +83,10 @@
         </div>
     <?php }
     ?>
-
-    <p> <input type="button" name="attmap" id="attmap" value="Continue" /></p>
+	<div id="controllingarea">
+		<input type="button" name="goback" onclick="history.back();" id="back" value="<?php $clang->eT('Back')?>" />
+		<input type="button" name="attmap" id="attmap" value="<?php $clang->eT('Continue')?>" />
+   	</div>
     <?php
     $ajaxloader = array(
         'src' => Yii::app()->baseUrl . '/images/ajax-loader.gif',
