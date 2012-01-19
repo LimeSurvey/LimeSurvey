@@ -82,6 +82,7 @@ function retrieveAnswers($ia)
     $name = $ia[0];
 
     $qtitle=$ia[3];
+    $inputnames=array();
 
     // TMSW - eliminate this - get from LEM
     //A bit of housekeeping to stop PHP Notices
@@ -2702,6 +2703,7 @@ function do_multiplechoice_withcomments($ia)
         $kpclass = "";
     }
 
+    $inputnames = array();
     $attribute_ref=false;
     $qaquery = "SELECT qid,attribute FROM ".db_table_name('question_attributes')." WHERE value LIKE '".strtolower($ia[2])."'";
     $qaresult = db_execute_assoc($qaquery);     //Checked
@@ -2802,6 +2804,9 @@ function do_multiplechoice_withcomments($ia)
     $answer_main = '';
 
     $fn = 1;
+    if (!isset($other)){
+        $other = 'N';
+    }
     if($other == 'Y')
     {
         $label_width = 25;

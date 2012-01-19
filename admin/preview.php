@@ -67,7 +67,7 @@ $ia = array(0 => $qid,
 
 LimeExpressionManager::StartSurvey($thissurvey['sid'], 'question', NULL, false,$LEMdebugLevel);
 $qseq = LimeExpressionManager::GetQuestionSeq($qid);
-$moveResult = LimeExpressionManager::JumpTo($qseq+1,false,false,true);
+$moveResult = LimeExpressionManager::JumpTo($qseq+1,true,false,true);
 
 $answers = retrieveAnswers($ia);
 
@@ -81,20 +81,55 @@ else
 }
 
 doHeader();
-$dummy_js = '
-		<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
-		<script type="text/javascript">
-        /* <![CDATA[ */
+$showQuestion = "$('#question$qid').show();";
+$dummy_js = <<< EOD
+    <script type='text/javascript'>
+    <!--
+	function noop_checkconditions(value, name, type)
+	{
+        checkconditions(value, name, type);
+	}
+
 	function checkconditions(value, name, type)
 	{
-        }
-		function noop_checkconditions(value, name, type)
+        if (type == 'radio' || type == 'select-one')
         {
-            }
-        /* ]]> */
-</script>
-        ';
+            var hiddenformname='java'+name;
+            document.getElementById(hiddenformname).value=value;
+        }
 
+        if (type == 'checkbox')
+        {
+            var hiddenformname='java'+name;
+			var chkname='answer'+name;
+            if (document.getElementById(chkname).checked)
+            {
+                document.getElementById(hiddenformname).value='Y';
+            } else
+            {
+		        document.getElementById(hiddenformname).value='';
+            }
+        }
+        ExprMgr_process_relevance_and_tailoring();
+        $showQuestion
+	}
+    // have to add all these "$showQuestion" calls to ensure we can see the question, even if it might be irrelevant during survey
+    $(document).ready(function() {
+        $showQuestion
+    });
+    $(document).change(function() {
+        $showQuestion
+    });
+    $(document).bind('keydown',function(e) {
+                if (e.keyCode == 9) {
+                    $showQuestion
+                    return true;
+                }
+                return true;
+            });
+// -->
+</script>
+EOD;
 
 $answer=$answers[0][1];
 
@@ -138,6 +173,8 @@ else
 };
 
 $content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl")).$dummy_js;
+LimeExpressionManager::FinishProcessingGroup();
+$content .= LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
 $content .= '<p>&nbsp;</form>';
 
 LimeExpressionManager::FinishProcessingPage();

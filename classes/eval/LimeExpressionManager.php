@@ -687,45 +687,6 @@ class LimeExpressionManager {
                 }
             }
 
-            // min_num_value
-            // Validation:= sum(sq1,...,sqN) >= value (which could be an expression).
-            if (isset($qattr['min_num_value']) && trim($qattr['min_num_value']) != '')
-            {
-                $min_num_value = $qattr['min_num_value'];
-                if ($hasSubqs) {
-                    $subqs = $qinfo['subqs'];
-                    $sq_names = array();
-                    foreach ($subqs as $sq) {
-                        $sq_name = NULL;
-                        switch ($type)
-                        {
-                            case 'K': //MULTIPLE NUMERICAL QUESTION
-                                $sq_name = $sq['varName'] . '.NAOK';
-                                break;
-                            default:
-                                break;
-                        }
-                        if (!is_null($sq_name)) {
-                            $sq_names[] = $sq_name;
-                        }
-                    }
-                    if (count($sq_names) > 0) {
-                        if (!isset($validationEqn[$questionNum]))
-                        {
-                            $validationEqn[$questionNum] = array();
-                        }
-                        $validationEqn[$questionNum][] = array(
-                            'qtype' => $type,
-                            'type' => 'min_num_value',
-                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
-                            'qid' => $questionNum,
-                            'tip' => $this->gT('Total of all entries must be at least') . ' {' . $min_num_value . '}.',
-                            'sumEqn' => 'sum(' . implode(', ', $sq_names) . ')',
-                        );
-                    }
-                }
-            }
-
             // min_num_value_n
             // Validation:= N >= value (which could be an expression).
             if (isset($qattr['min_num_value_n']) && trim($qattr['min_num_value_n']) != '')
@@ -770,6 +731,94 @@ class LimeExpressionManager {
                             'qid' => $questionNum,
                             'tip' => $this->gT('Each answer must be at least') . ' {' . $min_num_value_n . '}.',
                             'subqValidEqns' => $subqValidEqns,
+                        );
+                    }
+                }
+            }
+
+            // max_num_value_n
+            // Validation:= N <= value (which could be an expression).
+            if (isset($qattr['max_num_value_n']) && trim($qattr['max_num_value_n']) != '')
+            {
+                $max_num_value_n = $qattr['max_num_value_n'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    $subqValidEqns = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                        {
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                                $sq_name = '(is_empty(' . $sq['varName'] . ') || '. $sq['varName'] . ' <= (' . $max_num_value_n . '))';
+                                $subqValidSelector = $sq['jsVarName_on'];
+                                break;
+                            case 'N': //NUMERICAL QUESTION TYPE
+                                $sq_name = '(is_empty(' . $sq['varName'] . ') || '. $sq['varName'] . ' <= (' . $max_num_value_n . '))';
+                                $subqValidSelector = '';
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $sq_names[] = $sq_name;
+                            $subqValidEqns[$subqValidSelector] = array(
+                                'subqValidEqn' => $sq_name,
+                                'subqValidSelector' => $subqValidSelector,
+                                );
+                        }
+                    }
+                    if (count($sq_names) > 0) {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'max_num_value_n',
+                            'eqn' => implode(' && ', $sq_names),
+                            'qid' => $questionNum,
+                            'tip' => $this->gT('Each answer must be at most') . ' {' . $max_num_value_n . '}.',
+                            'subqValidEqns' => $subqValidEqns,
+                        );
+                    }
+                }
+            }
+
+            // min_num_value
+            // Validation:= sum(sq1,...,sqN) >= value (which could be an expression).
+            if (isset($qattr['min_num_value']) && trim($qattr['min_num_value']) != '')
+            {
+                $min_num_value = $qattr['min_num_value'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                        {
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                                $sq_name = $sq['varName'] . '.NAOK';
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $sq_names[] = $sq_name;
+                        }
+                    }
+                    if (count($sq_names) > 0) {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'min_num_value',
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
+                            'qid' => $questionNum,
+                            'tip' => $this->gT('Total of all entries must be at least') . ' {' . $min_num_value . '}.',
+                            'sumEqn' => 'sum(' . implode(', ', $sq_names) . ')',
                         );
                     }
                 }
@@ -848,55 +897,6 @@ class LimeExpressionManager {
                             'qid' => $questionNum,
                             'tip' => $this->gT('Total of all entries must not exceed') . ' {' . $max_num_value . '}.',
                             'sumEqn' => 'sum(' . implode(', ', $sq_names) . ')',
-                        );
-                    }
-                }
-            }
-
-            // max_num_value_n
-            // Validation:= N <= value (which could be an expression).
-            if (isset($qattr['max_num_value_n']) && trim($qattr['max_num_value_n']) != '')
-            {
-                $max_num_value_n = $qattr['max_num_value_n'];
-                if ($hasSubqs) {
-                    $subqs = $qinfo['subqs'];
-                    $sq_names = array();
-                    $subqValidEqns = array();
-                    foreach ($subqs as $sq) {
-                        $sq_name = NULL;
-                        switch ($type)
-                        {
-                            case 'K': //MULTIPLE NUMERICAL QUESTION
-                                $sq_name = '(is_empty(' . $sq['varName'] . ') || '. $sq['varName'] . ' <= (' . $max_num_value_n . '))';
-                                $subqValidSelector = $sq['jsVarName_on'];
-                                break;
-                            case 'N': //NUMERICAL QUESTION TYPE
-                                $sq_name = '(is_empty(' . $sq['varName'] . ') || '. $sq['varName'] . ' <= (' . $max_num_value_n . '))';
-                                $subqValidSelector = '';
-                                break;
-                            default:
-                                break;
-                        }
-                        if (!is_null($sq_name)) {
-                            $sq_names[] = $sq_name;
-                            $subqValidEqns[$subqValidSelector] = array(
-                                'subqValidEqn' => $sq_name,
-                                'subqValidSelector' => $subqValidSelector,
-                                );
-                        }
-                    }
-                    if (count($sq_names) > 0) {
-                        if (!isset($validationEqn[$questionNum]))
-                        {
-                            $validationEqn[$questionNum] = array();
-                        }
-                        $validationEqn[$questionNum][] = array(
-                            'qtype' => $type,
-                            'type' => 'max_num_value_n',
-                            'eqn' => implode(' && ', $sq_names),
-                            'qid' => $questionNum,
-                            'tip' => $this->gT('Each answer must be at most') . ' {' . $max_num_value_n . '}.',
-                            'subqValidEqns' => $subqValidEqns,
                         );
                     }
                 }
@@ -1125,10 +1125,12 @@ class LimeExpressionManager {
                         }
                         if (!is_null($sq_name)) {
                             $sq_names[] = $sq_name;
-                            $subqValidEqns[$subqValidSelector] = array(
-                                'subqValidEqn' => $subqValidEqn,
-                                'subqValidSelector' => $subqValidSelector,
-                                );
+                            if (isset($subqValidSelector)) {
+                                $subqValidEqns[$subqValidSelector] = array(
+                                    'subqValidEqn' => $subqValidEqn,
+                                    'subqValidSelector' => $subqValidSelector,
+                                    );
+                            }
                         }
                     }
                     if (count($sq_names) > 0) {
