@@ -116,16 +116,7 @@ class SurveyAction extends CAction {
 
         /*if ( $this->_didSessionTimeOut() )
         {
-        // TODO is this still required (we have the basepath check at the top)
-        if (isset($param['rootdir']))
-        {
-        $asMessage = array(
-        $clang->gT('Error'),
-        'You cannot start this script directly'
-        );
-        $this->_kil_niceExitlPage($redata, __LINE__, null, $asMessage);
-        }
-
+        // @TODO is this still required ?
         $asMessage = array(
         $clang->gT("Error"),
         $clang->gT("We are sorry but your session has expired."),
@@ -136,56 +127,23 @@ class SurveyAction extends CAction {
         };*/
 
         // Set the language of the survey, either from POST, GET parameter of session var
-        $sTempLanguage = null;
         if ( !empty($_REQUEST['lang']) )
         {
-            $sTempLanguage = $_REQUEST['lang'];
+            $sTempLanguage = sanitize_languagecode($_REQUEST['lang']);
         }
-        else if ( isset($param['lang']) && !empty($surveyid) )
-            {
-                $sTempLanguage = $param['lang'];
-            }
-
-            if ( $sTempLanguage !== null )
+        elseif ( !empty($param['lang']) )
         {
-            $sTempLanguage = sanitize_languagecode($sTempLanguage);
-            $clang = SetSurveyLanguage( $surveyid, $sTempLanguage);
-            if ($surveyid) UpdateSessionGroupList($surveyid, $sTempLanguage);         // to refresh the language strings in the group list session variable
-            UpdateFieldArray();                                        // to refresh question titles and question text
+            $sTempLanguage = sanitize_languagecode($param['lang']);
         }
-
-        if (isset($_SESSION['survey_'.$surveyid]['s_lang']))
+        elseif (isset($_SESSION['survey_'.$surveyid]['s_lang']))
         {
-            $baselang = sanitize_languagecode($_SESSION['survey_'.$surveyid]['s_lang']);
-            $clang = SetSurveyLanguage( $surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
-        }
-        elseif (!empty($surveyid))
-        {
-            $baselang = Survey::model()->findByPk($surveyid)->language;
-            $clang = SetSurveyLanguage( $surveyid, $baselang);
+            $sTempLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
         }
         else
         {
-            if(isset($_POST['lang']) && $_POST['lang']!='')
-            {
-                $baselang = sanitize_languagecode($_POST['lang']);
-            }
-            else if (isset($_GET['lang']) && $_GET['lang'] != '')
-                {
-                    $baselang = sanitize_languagecode($_GET['lang']);
-                }
-                else
-                    $baselang = Yii::app()->getConfig("defaultlang");
+           $sTempLanguage='';
         }
-
-        if (isset($param['embedded_inc']))
-        {
-            $asMessage = array(
-            $clang->gT('Error'),
-            'You cannot start this script directly'
-            );
-            $this->_niceExit($redata, __LINE__, null, $asMessage);
-        }
+        $clang = SetSurveyLanguage( $surveyid, $sTempLanguage);
 
 
         //CHECK FOR REQUIRED INFORMATION (sid)

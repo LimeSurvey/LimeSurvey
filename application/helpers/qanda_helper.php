@@ -67,7 +67,6 @@ function setNoAnswerMode($thissurvey)
 * question.php, group.php, survey.php or preview.php
 *
 * @param mixed $ia
-* @param mixed Yii::app()->getConfig('surveyID')
 * @return mixed
 */
 function retrieveAnswers($ia)

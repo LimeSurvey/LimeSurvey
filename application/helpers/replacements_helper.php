@@ -93,10 +93,10 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     // Local over-rides in case not set above
     if (!isset($showgroupinfo)) { $showgroupinfo = Yii::app()->getConfig('showgroupinfo'); }
     if (!isset($showqnumcode)) { $showqnumcode = Yii::app()->getConfig('showqnumcode'); }
-    $_surveyid = (isset($surveyid) ? $surveyid : 0);
+    $_surveyid = Yii::app()->getConfig('surveyID');
     if (!isset($totalBoilerplatequestions)) { $totalBoilerplatequestions = 0; }
     if (!isset($showXquestions)) { $showXquestions = Yii::app()->getConfig('showXquestions'); }
-    if (!isset($s_lang)) { $s_lang = (isset(Yii::app()->session[$_surveyid]['s_lang']) ? Yii::app()->session[$_surveyid]['s_lang'] : 'en'); }
+    if (!isset($s_lang)) { $s_lang = (isset(Yii::app()->session['survey_'.$_surveyid]['s_lang']) ? Yii::app()->session['survey_'.$_surveyid]['s_lang'] : 'en'); }
     if (!isset($captchapath)) { $captchapath = ''; }
 
     if (file_exists($line))
