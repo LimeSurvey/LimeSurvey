@@ -1693,7 +1693,7 @@ class printablesurvey extends Survey_Common_Action
                     }
                     if(isset($_POST['printableexport'])){$pdf->ln(5);}
 
-                    $question['QUESTION_TYPE_HELP'] .= self::_star_replace($question['QUESTION_TYPE_HELP']);
+                    $question['QUESTION_TYPE_HELP'] = self::_star_replace($question['QUESTION_TYPE_HELP']);
                     $group['QUESTIONS'] .= self::_populate_template( 'question' , $question);
 
                 }
