@@ -144,42 +144,54 @@ class Dumpdb extends Survey_Common_Action {
             {
                 $aRecords = Yii::app()->db->createCommand()
                         ->select()
-                        ->from(Yii::app()->db->quoteTableName($sTableName))
+                        ->from($sTableName)
                         ->limit(intval($iMaxNbRecords), ($i != 0 ? ($i * $iMaxNbRecords) + 1 : null))
                         ->query()->readAll();
 
-                foreach ($aRecords as $aRecord)
-                {
-                    $aFieldNames = $this->_outputRecord($sTableName, $aFieldNames, $aRecord);
-                }
+                $aFieldNames = $this->_outputRecords($sTableName, $aFieldNames, $aRecords);
 
             }
             echo "\n";
         }
     }
 
-    private function _outputRecord($sTableName, $aFieldNames, $aRecord)
+    private function _outputRecords($sTableName, $aFieldNames, $aRecords)
     {
-        echo 'INSERT INTO `' . $sTableName . '` VALUES(';
-
-        foreach ($aFieldNames as $sFieldName)
+        $i=0;
+        foreach ($aRecords as $aRecord)
         {
-            if (isset($aRecord[$sFieldName]) && !is_null($aRecord[$sFieldName])) {
-                $aRecord[$sFieldName] = addslashes($aRecord[$sFieldName]);
-                $aRecord[$sFieldName] = preg_replace("#\n#", "\\n", $aRecord[$sFieldName]);
-                echo '"' . $aRecord[$sFieldName] . '"';
+            if ($i==0){
+                echo 'INSERT INTO `' . $sTableName . "` VALUES\n";
+            }
+            echo '(';
+            foreach ($aFieldNames as $sFieldName)
+            {
+
+                if (isset($aRecord[$sFieldName]) && !is_null($aRecord[$sFieldName])) {
+                    $sValue= addslashes($aRecord[$sFieldName]);
+                    $sValue = preg_replace("#\n#", "\\n", $sValue);
+                    echo '"' . $sValue . '"';
+                }
+                else
+                {
+                    echo 'NULL';
+                }
+
+                if (end($aFieldNames) != $sFieldName) {
+                    echo ', ';
+                }
+            }
+            $i++;
+            if ($i==200 || (end($aRecords) == $aRecord))
+            {
+               echo ');' . "\n";
+               $i=0;
             }
             else
             {
-                echo 'NULL';
-            }
-
-            if (end($aFieldNames) != $sFieldName) {
-                echo ', ';
+                echo '),' . "\n";
             }
         }
-
-        echo ');' . "\n";
         return $aFieldNames;
     }
 

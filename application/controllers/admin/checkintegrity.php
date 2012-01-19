@@ -196,7 +196,7 @@ class CheckIntegrity extends Survey_Common_Action
     {
         foreach ($surveys as $survey) $surveys_ids[] = $survey['sid'];
 
-        Survey::model()->deleteByPk($surveys_ids);
+        Survey::model()->deleteByPk('sid',$surveys_ids);
         if (Survey::model()->hasErrors()) safe_die(Survey::model()->getError());
         $aData['messages'][] = sprintf($clang->gT('Deleting surveys: %u surveys deleted'), count($surveys));
         return $aData;
@@ -205,7 +205,7 @@ class CheckIntegrity extends Survey_Common_Action
     private function _deleteAnswers(array $answers, array $aData, Limesurvey_lang $clang)
     {
         foreach ($answers as $aAnswer) {
-            Answers::model()->deleteByPk($aAnswer);
+            Answers::model()->deleteAll('qid=:qid AND code=:code',array(':qid'=>$aAnswer['qid'],':code'=>$aAnswer['code']));
             if (Answers::model()->hasErrors()) safe_die(Answers::model()->getError());
         }
         $aData['messages'][] = sprintf($clang->gT('Deleting answers: %u answers deleted'), count($answers));
@@ -217,7 +217,7 @@ class CheckIntegrity extends Survey_Common_Action
         foreach ($assessments as $assessment) $assessments_ids[] = $assessment['id'];
 
         $assessments_ids = array();
-        Assessment::model()->deleteByPk($assessments_ids);
+        Assessment::model()->deleteByPk('id',$assessments_ids);
         if (Assessment::model()->hasErrors()) safe_die(Assessment::model()->getError());
         $aData['messages'][] = sprintf($clang->gT('Deleting assessments: %u assessment entries deleted'), count($assessments));
         return $aData;
@@ -293,7 +293,7 @@ class CheckIntegrity extends Survey_Common_Action
         $criteria = new CDbCriteria;
         $criteria->addInCondition('qid', $qids);
 
-        Question_attributes::model()->deleteByPk($criteria);
+        Question_attributes::model()->deleteAll($criteria);
         if (Question_attributes::model()->hasErrors()) safe_die(Question_attributes::model()->getError());
         $aData['messages'][] = sprintf($clang->gT('Deleting question attributes: %u attributes deleted'), count($questionAttributes));
         return $aData;
