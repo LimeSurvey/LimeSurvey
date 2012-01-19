@@ -180,6 +180,7 @@ class questiongroup extends Survey_Common_Action
                             'group_order' => getMaxgrouporder($surveyid),
                             'language' => $grouplang,
                             'randomization_group' => $_POST['randomization_group'],
+                            'grelevance' => $_POST['grelevance'],
                         );
 
                         $group = new Groups;
@@ -377,6 +378,7 @@ class questiongroup extends Survey_Common_Action
                         'group_name' => $group_name,
                         'description' => $group_description,
                         'randomization_group' => $_POST['randomization_group'],
+                        'grelevance' => $_POST['grelevance'],
                     );
                     $condition = array(
                         'gid' => $gid,

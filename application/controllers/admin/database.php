@@ -409,6 +409,7 @@ class database extends Survey_Common_Action
                 'help' => Yii::app()->request->getPost('help_'.$baselang),
                 'other' => Yii::app()->request->getPost('other'),
                 'mandatory' => Yii::app()->request->getPost('mandatory'),
+                'relevance' => Yii::app()->request->getPost('relevance'),
                 'question_order' => $question_order,
                 'language' => $baselang
                 );
@@ -580,11 +581,6 @@ class database extends Survey_Common_Action
 
             //now save all valid attributes
             $validAttributes=$qattributes[Yii::app()->request->getPost('type')];
-//            // if there are conditions, create a relevance equation, over-writing any default relevance value
-//            $cond2rel = LimeExpressionManager::ConvertConditionsToRelevance($surveyid,$qid);
-//            if (!is_null($cond2rel)) {
-//                $_POST['relevance'] = $cond2rel;
-//            }
 
             foreach ($validAttributes as $validAttribute)
             {
@@ -604,7 +600,7 @@ class database extends Survey_Common_Action
                             }
                             else
                             {
-                                $attribute = new Questions;
+                                $attribute = new Question_attributes;
                                 $attribute->qid = $qid;
                                 $attribute->value = $value;
                                 $attribute->attribute = $validAttribute['name'];
@@ -625,7 +621,7 @@ class database extends Survey_Common_Action
                         }
                         else
                         {
-                            $attribute = new Questions;
+                            $attribute = new Question_attributes;
                             $attribute->qid = $qid;
                             $attribute->value = $validAttribute['name'];
                             $attribute->attribute = $validAttribute['name'];
