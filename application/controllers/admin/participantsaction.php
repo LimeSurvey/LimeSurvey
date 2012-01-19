@@ -243,7 +243,7 @@ class participantsaction extends Survey_Common_Action
 
     /**
      * Sends the attributes info using JSON encoding
-     * Called after the attribute control grid is loaded
+     * Called after the Attribute management grid is loaded
      * @return JSON encoded string containg sharing information
      */
     function getAttributeInfo_json()

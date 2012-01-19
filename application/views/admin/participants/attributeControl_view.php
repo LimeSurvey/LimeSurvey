@@ -7,7 +7,7 @@
     var attributeEditUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/viewAttribute/aid"); ?>";
 </script>
 
-<div class='header ui-widget-header'><strong><?php $clang->eT("Attribute control"); ?></strong></div>
+<div class='header ui-widget-header'><strong><?php $clang->eT("Attribute management"); ?></strong></div>
 
 <br/>
 

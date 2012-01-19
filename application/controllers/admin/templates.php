@@ -926,7 +926,7 @@ class templates extends Survey_Common_Action
                     $files[] = array("name" => $qs);
 
                 $myoutput[] = templatereplace("$templatedir/startpage.pstpl", array(), $aData);
-                $myoutput[] = templatereplace("$templatedir/clear.pstpl", array(), $aData);
+                $myoutput[] = templatereplace("$templatedir/clearall.pstpl", array(), $aData);
                 $myoutput[] = templatereplace("$templatedir/endpage.pstpl", array(), $aData);
                 $myoutput[] = "\n";
                 break;

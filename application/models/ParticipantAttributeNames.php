@@ -110,7 +110,12 @@ class ParticipantAttributeNames extends CActiveRecord
 
     function getAllAttributes()
     {
-        return Yii::app()->db->createCommand()->select('{{participant_attribute_names}}.*,{{participant_attribute_names}}_lang.*')->from('{{participant_attribute_names}}')->order('{{participant_attribute_names}}.attribute_id', 'desc')->join('{{participant_attribute_names}}_lang', '{{participant_attribute_names}}_lang.attribute_id = {{participant_attribute_names}}.attribute_id')->where('{{participant_attribute_names}}_lang.lang = "'.Yii::app()->session['adminlang'].'"')->queryAll();
+        return Yii::app()->db->createCommand()->select('{{participant_attribute_names}}.*,{{participant_attribute_names}}_lang.*')
+                                              ->from('{{participant_attribute_names}}')
+                                              ->order('{{participant_attribute_names}}.attribute_id', 'desc')
+                                              ->join('{{participant_attribute_names}}_lang', '{{participant_attribute_names}}_lang.attribute_id = {{participant_attribute_names}}.attribute_id')
+                                              ->where('{{participant_attribute_names}}_lang.lang = "'.Yii::app()->session['adminlang'].'"')
+                                              ->queryAll();
     }
 
     function getAllAttributesValues()
@@ -176,7 +181,7 @@ class ParticipantAttributeNames extends CActiveRecord
         Yii::app()->db->createCommand()->insert('{{participant_attribute_names}}',$insertnames);
         $attribute_id = Yii::app()->db->getLastInsertID();
         $insertnameslang = array('attribute_id' => intval($attribute_id),
-                                 'attribute_name'=> Yii::app()->db->quoteValue($data['attribute_name']),
+                                 'attribute_name'=> $data['attribute_name'],
                                  'lang' => Yii::app()->session['adminlang']);
         Yii::app()->db->createCommand()->insert('{{participant_attribute_names_lang}}',$insertnameslang);
 

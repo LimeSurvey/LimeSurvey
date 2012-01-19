@@ -53,9 +53,9 @@
         'style' => 'margin-left:5px',
         'style' => 'margin-right:1px');
 
-    $attributecontrol = array('src' => Yii::app()->getConfig('imageurl') . '/tag_green.png',
-        'alt' => 'Attribute control',
-        'title' => 'Attribute control',
+    $attributecontrol = array('src' => Yii::app()->getConfig('imageurl') . '/tag.png',
+        'alt' => $clang->gT("Attribute management"),
+        'title' => $clang->gT("Attribute management"),
         'width' => 50,
         'height' => 35,
         'style' => 'margin-left:0px',
