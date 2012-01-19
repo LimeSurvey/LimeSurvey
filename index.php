@@ -877,7 +877,7 @@ if ($thissurvey['tokenanswerspersistence'] == 'Y' && !isset($_SESSION['srid']) &
 
 if (isset($_REQUEST['action']) && ($_REQUEST['action'] == 'previewgroup')){
         $thissurvey['format'] = 'G';
-        buildsurveysession();
+        buildsurveysession(true);
 }
 
 sendcacheheaders();
@@ -1648,7 +1648,7 @@ function submitfailed($errormsg='')
 * @returns  $totalquestions Total number of questions in the survey
 *
 */
-function buildsurveysession()
+function buildsurveysession($previewGroup=false)
 {
     global $thissurvey, $secerror, $clienttoken, $databasetype;
     global $tokensexist, $thistpl;
@@ -1729,7 +1729,7 @@ function buildsurveysession()
     //BEFORE BUILDING A NEW SESSION FOR THIS SURVEY, LET'S CHECK TO MAKE SURE THE SURVEY SHOULD PROCEED!
 
     // TOKEN REQUIRED BUT NO TOKEN PROVIDED
-    if ($tokensexist == 1 && !returnglobal('token'))
+    if ($tokensexist == 1 && !returnglobal('token') && !$previewGroup)
     {
         if ($thissurvey['nokeyboard']=='Y')
         {

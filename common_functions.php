@@ -6680,6 +6680,7 @@ function getTokenData($surveyid, $token)
     global $dbprefix, $connect;
     $query = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."'";
     $result = db_execute_assoc($query) or safe_die("Couldn't get token info in getTokenData()<br />".$query."<br />".$connect->ErrorMsg());    //Checked
+    $thistoken=array(); // so has default value
     while($row=$result->FetchRow())
     {
         $thistoken=array("firstname"=>$row['firstname'],
