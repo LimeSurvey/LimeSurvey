@@ -1087,8 +1087,8 @@ class SurveyAction extends Survey_Common_Action
             $esrow['emailresponseto'] = '';
             $esrow['assessments'] = 'N';
             $esrow['navigationdelay'] = 0;
-            $esrow['googleAnalyticsAPIKey']    = '';
-            $esrow['googleAnalyticsStyle']     = '0';
+            $esrow['googleanalyticsapikey']    = '';
+            $esrow['googleanalyticsstyle']     = '0';
         }
         elseif ($action == 'editsurvey')
         {

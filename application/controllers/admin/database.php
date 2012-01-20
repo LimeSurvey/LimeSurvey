@@ -1017,8 +1017,8 @@ class database extends Survey_Common_Action
             'usecaptcha'=> Yii::app()->request->getPost('usecaptcha'),
             'emailresponseto'=>trim(Yii::app()->request->getPost('emailresponseto')),
             'emailnotificationto'=>trim(Yii::app()->request->getPost('emailnotificationto')),
-            'googleAnalyticsAPIKey'=>trim(Yii::app()->request->getPost('googleAnalyticsAPIKey')),
-            'googleAnalyticsStyle'=>trim(Yii::app()->request->getPost('googleAnalyticsStyle')),
+            'googleanalyticsapikey'=>trim(Yii::app()->request->getPost('googleanalyticsapikey')),
+            'googleanalyticsstyle'=>trim(Yii::app()->request->getPost('googleanalyticsstyle')),
             'tokenlength'=>$tokenlength
             );
 

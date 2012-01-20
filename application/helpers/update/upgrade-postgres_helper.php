@@ -389,8 +389,8 @@ function db_upgrade($oldversion) {
     }
     if ($oldversion < 155)
     {
-        modifyDatabase("","ALTER TABLE prefix_surveys ADD googleAnalyticsStyle char(1) DEFAULT NULL;"); echo $modifyoutput; flush();@ob_flush();
-        modifyDatabase("","ALTER TABLE prefix_surveys ADD googleAnalyticsAPIKey character varying(25) DEFAULT NULL;"); echo $modifyoutput; flush();@ob_flush();
+        modifyDatabase("","ALTER TABLE prefix_surveys ADD googleanalyticsstyle char(1) DEFAULT NULL;"); echo $modifyoutput; flush();@ob_flush();
+        modifyDatabase("","ALTER TABLE prefix_surveys ADD googleanalyticsapikey character varying(25) DEFAULT NULL;"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("", "UPDATE prefix_settings_global SET stg_value='155' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
     }
 
