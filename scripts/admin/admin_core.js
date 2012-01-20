@@ -333,7 +333,7 @@ function validatefilename (form, strmessage )
 // If the length of the element's string is 0 then display helper message
 function isEmpty(elem, helperMsg)
 {
-	if(elem.value.length == 0){
+	if($.trim(elem.value).length == 0){
 		alert(helperMsg);
 		elem.focus(); // set the focus to this input
 		return false;
