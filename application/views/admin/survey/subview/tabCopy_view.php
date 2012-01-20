@@ -3,7 +3,7 @@
         <ul>
             <li><label for='copysurveylist'><span class='annotationasterisk'>*</span><?php $clang->eT("Select survey to copy:"); ?> </label>
                 <select id='copysurveylist' name='copysurveylist'>
-                <?php  echo getsurveylist(false, true); ?> </select> <span class='annotation'><?php echo  $clang->gT("*Required"); ?> </span></li>
+                <?php  echo getSurveyList(false, true); ?> </select> <span class='annotation'><?php echo  $clang->gT("*Required"); ?> </span></li>
             <li><label for='copysurveyname'><span class='annotationasterisk'>*</span><?php echo  $clang->gT("New survey title:"); ?> </label>
                 <input type='text' id='copysurveyname' size='82' maxlength='200' name='copysurveyname' value='' />
                 <span class='annotation'><?php echo  $clang->gT("*Required"); ?> </span></li>

@@ -169,7 +169,7 @@ class SurveyAction extends CAction {
             AND ((a.expires >= '".date("Y-m-d H:i")."') OR (a.expires is null))
             AND ((a.startdate <= '".date("Y-m-d H:i")."') OR (a.startdate is null))
             ORDER BY surveyls_title";
-            $result = db_execute_assoc($query,false,true) or safe_die("Could not connect to database. If you try to install LimeSurvey please refer to the <a href='http://docs.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage."); //Checked
+            $result = db_execute_assoc($query,false,true) or safeDie("Could not connect to database. If you try to install LimeSurvey please refer to the <a href='http://docs.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage."); //Checked
             $list=array();
 
             if($result->count() > 0)
@@ -202,7 +202,7 @@ class SurveyAction extends CAction {
             AND a.startdate is not null
             ORDER BY surveyls_title";
 
-            $sresult = db_execute_assoc($squery) or safe_die("Couldn't execute $squery");
+            $sresult = db_execute_assoc($squery) or safeDie("Couldn't execute $squery");
 
 
             if($sresult->count() > 0)
@@ -211,7 +211,7 @@ class SurveyAction extends CAction {
                 foreach($sresult->readAll() as $rows)
                 {
                     $link = "<li><a href=\"#\" id='inactivesurvey' onclick = 'sendreq(".$rows['sid'].");' ";
-                    //$link = "<li><a href=\"#\" id='inactivesurvey' onclick = 'get2post(".$this->getController()->createUrl('survey/send/')."?sid={$rows['sid']}&amp;)sendreq(".$rows['sid'].",".$rows['startdate'].",".$rows['expires'].");' ";
+                    //$link = "<li><a href=\"#\" id='inactivesurvey' onclick = 'convertGETtoPOST(".$this->getController()->createUrl('survey/send/')."?sid={$rows['sid']}&amp;)sendreq(".$rows['sid'].",".$rows['startdate'].",".$rows['expires'].");' ";
                     $link .= "  class='surveytitle'>".$rows['surveyls_title']."</a>\n";
                     if ($rows['publicstatistics'] == 'Y') $link .= "<a href='".$this->getController()->createUrl("/statistics_user/action/surveyid/".$rows['sid'])."'>(".$clang->gT('View statistics').")</a>";
                     $link .= "</li><div id='regform'></div>\n";
@@ -237,18 +237,18 @@ class SurveyAction extends CAction {
             //$data['privacy'] = $privacy;
             $data['surveylist'] = $surveylist;
             $data['surveyid'] = $surveyid;
-            $data['templatedir'] = sGetTemplatePath($defaulttemplate);
-            $data['templateurl'] = sGetTemplateURL($defaulttemplate)."/";
+            $data['templatedir'] = getTemplatePath($defaulttemplate);
+            $data['templateurl'] = getTemplateURL($defaulttemplate)."/";
             $data['templatename'] = $defaulttemplate;
             $data['sitename'] = Yii::app()->getConfig("sitename");
             $data['languagechanger'] = $languagechanger;
 
             //A nice exit
-            sendcacheheaders();
+            sendCacheHeaders();
             doHeader();
-            $this->_printTemplateContent(sGetTemplatePath($defaulttemplate)."/startpage.pstpl", $data, __LINE__);
+            $this->_printTemplateContent(getTemplatePath($defaulttemplate)."/startpage.pstpl", $data, __LINE__);
 
-            $this->_printTemplateContent(sGetTemplatePath($defaulttemplate)."/surveylist.pstpl", $data, __LINE__);
+            $this->_printTemplateContent(getTemplatePath($defaulttemplate)."/surveylist.pstpl", $data, __LINE__);
 
             echo '<script type="text/javascript" >
             function sendreq(surveyid)
@@ -295,16 +295,16 @@ class SurveyAction extends CAction {
         //SET THE TEMPLATE DIRECTORY
         if (!$thissurvey['templatedir'])
         {
-            $thistpl = sGetTemplatePath($defaulttemplate);
+            $thistpl = getTemplatePath($defaulttemplate);
         }
         else
         {
-            $thistpl = sGetTemplatePath($thissurvey['templatedir']);
+            $thistpl = getTemplatePath($thissurvey['templatedir']);
         }
 
         $timeadjust = Yii::app()->getConfig("timeadjust");
         //MAKE SURE SURVEY HASN'T EXPIRED
-        if ($thissurvey['expiry']!='' and date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)>$thissurvey['expiry'] && $thissurvey['active']!='N')
+        if ($thissurvey['expiry']!='' and dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)>$thissurvey['expiry'] && $thissurvey['active']!='N')
         {
             $redata = compact(array_keys(get_defined_vars()));
             $asMessage = array(
@@ -317,7 +317,7 @@ class SurveyAction extends CAction {
         }
 
         //MAKE SURE SURVEY IS ALREADY VALID
-        if ($thissurvey['startdate']!='' and  date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)<$thissurvey['startdate'] && $thissurvey['active']!='N')
+        if ($thissurvey['startdate']!='' and  dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)<$thissurvey['startdate'] && $thissurvey['active']!='N')
         {
             $redata = compact(array_keys(get_defined_vars()));
             $asMessage = array(
@@ -346,7 +346,7 @@ class SurveyAction extends CAction {
 
         if (isset($_GET['loadall']) && $_GET['loadall'] == "reload")
         {
-            if (returnglobal('loadname') && returnglobal('loadpass'))
+            if (returnGlobal('loadname') && returnGlobal('loadpass'))
             {
                 $_POST['loadall']="reload";
             }
@@ -367,7 +367,7 @@ class SurveyAction extends CAction {
 
             // if security question answer is incorrect
             // Not called if scid is set in GET params (when using email save/reload reminder URL)
-            if (function_exists("ImageCreate") && captcha_enabled('saveandloadscreen',$thissurvey['usecaptcha']))
+            if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen',$thissurvey['usecaptcha']))
             {
                 if ( (!isset($_POST['loadsecurity']) ||
                 !isset($_SESSION['survey_'.$surveyid]['secanswer']) ||
@@ -415,7 +415,7 @@ class SurveyAction extends CAction {
         isset($_SESSION['survey_'.$surveyid]['step']) && $_SESSION['survey_'.$surveyid]['step']>0 && tableExists("tokens_{$surveyid}}}"))
         {
             //check if tokens actually haven't been already used
-            $areTokensUsed = usedTokens(trim(strip_tags(returnglobal('token'))),$surveyid);
+            $areTokensUsed = usedTokens(trim(strip_tags(returnGlobal('token'))),$surveyid);
             // check if token actually does exist
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
@@ -427,7 +427,7 @@ class SurveyAction extends CAction {
             $tokendata = $tkresult->read();
             if ($tkresult->count()==0 || $areTokensUsed)
             {
-                sendcacheheaders();
+                sendCacheHeaders();
                 doHeader();
                 //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 
@@ -453,10 +453,10 @@ class SurveyAction extends CAction {
             }
             $tkresult = db_execute_assoc($tkquery); //Checked
             $tokendata = $tkresult->read();
-            if (isset($tokendata['validfrom']) && (trim($tokendata['validfrom'])!='' && $tokendata['validfrom']>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) ||
-            isset($tokendata['validuntil']) && (trim($tokendata['validuntil'])!='' && $tokendata['validuntil']<date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)))
+            if (isset($tokendata['validfrom']) && (trim($tokendata['validfrom'])!='' && $tokendata['validfrom']>dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) ||
+            isset($tokendata['validuntil']) && (trim($tokendata['validuntil'])!='' && $tokendata['validuntil']<dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)))
             {
-                sendcacheheaders();
+                sendCacheHeaders();
                 doHeader();
                 //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 
@@ -528,7 +528,7 @@ class SurveyAction extends CAction {
                 db_execute_assoc('DELETE FROM {{saved_control}} WHERE srid='.$_SESSION['survey_'.$surveyid]['srid'].' AND sid='.$surveyid);
             }
             killSurveySession($surveyid);
-            sendcacheheaders();
+            sendCacheHeaders();
             if (isset($_GET['redirect']))
             {
                 killSurveySession($surveyid);
@@ -608,7 +608,7 @@ class SurveyAction extends CAction {
             buildsurveysession($surveyid,true);
         }
 
-        sendcacheheaders();
+        sendCacheHeaders();
 
         //Send local variables to the appropriate survey type
         unset($redata);
@@ -629,31 +629,31 @@ class SurveyAction extends CAction {
         if(@$args[0]==__CLASS__) array_shift($args);
         if(count($args)%2 == 0) {
             for ($i = 0; $i < count($args); $i+=2) {
-                //Sanitize input from URL with returnglobal
-                $param[$args[$i]] = returnglobal($args[$i], $args[$i+1]);
+                //Sanitize input from URL with returnGlobal
+                $param[$args[$i]] = returnGlobal($args[$i], $args[$i+1]);
             }
         }
 
         if( !isset($param['action']) )
-            $param['action'] = returnglobal('action');
+            $param['action'] = returnGlobal('action');
         if( !isset($param['newtest']) )
-            $param['newtest'] = returnglobal('newtest');
+            $param['newtest'] = returnGlobal('newtest');
         if( !isset($param['gid']) )
-            $param['gid'] = returnglobal('gid');
+            $param['gid'] = returnGlobal('gid');
         if ( !isset($param['sid']) )
-            $param['sid'] = returnglobal('sid');
+            $param['sid'] = returnGlobal('sid');
         if ( !isset($param['loadname']) )
-            $param['loadname'] = returnglobal('loadname');
+            $param['loadname'] = returnGlobal('loadname');
         if ( !isset($param['loadpass']) )
-            $param['loadpass'] = returnglobal('loadpass');
+            $param['loadpass'] = returnGlobal('loadpass');
         if ( !isset($param['scid']) )
-            $param['scid'] = returnglobal('scid');
+            $param['scid'] = returnGlobal('scid');
         if ( !isset($param['thisstep']) )
-            $param['thisstep'] = returnglobal('thisstep');
+            $param['thisstep'] = returnGlobal('thisstep');
         if ( !isset($param['move']) )
-            $param['move'] = returnglobal('move');
+            $param['move'] = returnGlobal('move');
         if ( !isset($param['token']) )
-            $param['token'] = returnglobal('token');
+            $param['token'] = returnGlobal('token');
 
         if ( !isset($param['thisstep']) )
             $param['thisstep'] = '';
@@ -765,7 +765,7 @@ class SurveyAction extends CAction {
         if ( $sTemplateDir === null )
             $sTemplateDir = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.'default';
 
-        sendcacheheaders();
+        sendCacheHeaders();
 
         doHeader();
 

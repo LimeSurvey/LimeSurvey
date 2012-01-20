@@ -34,7 +34,7 @@
             </font>
             <?php if (Yii::app()->request->getPost('sql'))
             { ?>
-                <input type='hidden' name='sql' value='<?php echo html_escape(Yii::app()->request->getPost('sql')); ?>' />
+                <input type='hidden' name='sql' value='<?php echo HTMLEscape(Yii::app()->request->getPost('sql')); ?>' />
             <?php } ?>
         </form>
     </div>

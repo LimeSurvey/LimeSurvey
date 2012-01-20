@@ -37,11 +37,11 @@ class fck_LimeReplacementFields extends Survey_Common_Action
 
         if ($isInstertAnswerEnabled === true) {
             if (empty($surveyid)) {
-                safe_die("No SID provided.");
+                safeDie("No SID provided.");
             }
 
             //2: Get all other questions that occur before this question that are pre-determined answer types
-            $fieldmap = createFieldMap($surveyid,'full',false,false,GetbaseLanguageFromSurveyid($surveyid));
+            $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
 
             $surveyInfo = getSurveyInfo($surveyid);
             $surveyformat = $surveyInfo['format']; // S, G, A
@@ -100,7 +100,7 @@ class fck_LimeReplacementFields extends Survey_Common_Action
             case 'editgroup_desc':
             case 'translategroup':
                 if (empty($gid)) {
-                    safe_die("No GID provided.");
+                    safeDie("No GID provided.");
                 }
 
                 if ($question['gid'] == $gid) {
@@ -110,7 +110,7 @@ class fck_LimeReplacementFields extends Survey_Common_Action
 
             case 'addquestion':
                 if (empty($gid)) {
-                    safe_die("No GID provided.");
+                    safeDie("No GID provided.");
                 }
 
                 if (!is_null($previousQuestion) && $previousQuestion['gid'] == $gid && $question['gid'] != $gid ) {
@@ -124,10 +124,10 @@ class fck_LimeReplacementFields extends Survey_Common_Action
             case 'translatequestion':
             case 'translateanswer':
                 if (empty($gid)) {
-                    safe_die("No GID provided.");
+                    safeDie("No GID provided.");
                 }
                 if (empty($qid)) {
-                    safe_die("No QID provided.");
+                    safeDie("No QID provided.");
                 }
 
                 if ($question['gid'] == $gid && $question['qid'] == $qid) {
@@ -138,7 +138,7 @@ class fck_LimeReplacementFields extends Survey_Common_Action
                 // this is the case for email-conf
                 return true;
             default:
-                safe_die("No Action provided.");
+                safeDie("No Action provided.");
         }
     }
 
@@ -183,7 +183,7 @@ class fck_LimeReplacementFields extends Survey_Common_Action
                 $question = "[{$row['subquestion2']}] " . $question;
             }
 
-            $shortquestion = $row['title'] . ": " . FlattenText($question);
+            $shortquestion = $row['title'] . ": " . flattenText($question);
             $cquestions[] = array($shortquestion, $row['qid'], $row['type'], $row['fieldname'], $row['previouspage']);
         }
         return $cquestions;
@@ -206,7 +206,7 @@ class fck_LimeReplacementFields extends Survey_Common_Action
                 $replFields[] = array('TOKEN:FIRSTNAME', $clang->gT("Firstname from token"));
                 $replFields[] = array('TOKEN:LASTNAME', $clang->gT("Lastname from token"));
                 $replFields[] = array('TOKEN:EMAIL', $clang->gT("Email from the token"));
-                $attributes = GetTokenFieldsAndNames($surveyid, true);
+                $attributes = getTokenFieldsAndNames($surveyid, true);
                 foreach ($attributes as $attributefield => $attributedescription)
                 {
                     $replFields[] = array('TOKEN:' . strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"), $attributedescription));
@@ -224,7 +224,7 @@ class fck_LimeReplacementFields extends Survey_Common_Action
                 $replFields[] = array('TOKEN:LASTNAME', $clang->gT("Last name from token"));
                 $replFields[] = array('SURVEYNAME', $clang->gT("Name of the survey"));
                 $replFields[] = array('SURVEYDESCRIPTION', $clang->gT("Description of the survey"));
-                $attributes = GetTokenFieldsAndNames($surveyid, true);
+                $attributes = getTokenFieldsAndNames($surveyid, true);
                 foreach ($attributes as $attributefield => $attributedescription)
                 {
                     $replFields[] = array(strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"), $attributedescription));
@@ -244,7 +244,7 @@ class fck_LimeReplacementFields extends Survey_Common_Action
                 $replFields[] = array('TOKEN:LASTNAME', $clang->gT("Last name from token"));
                 $replFields[] = array('SURVEYNAME', $clang->gT("Name of the survey"));
                 $replFields[] = array('SURVEYDESCRIPTION', $clang->gT("Description of the survey"));
-                $attributes = GetTokenFieldsAndNames($surveyid, true);
+                $attributes = getTokenFieldsAndNames($surveyid, true);
                 foreach ($attributes as $attributefield => $attributedescription)
                 {
                     $replFields[] = array(strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"), $attributedescription));
@@ -266,7 +266,7 @@ class fck_LimeReplacementFields extends Survey_Common_Action
                 $replFields[] = array('LASTNAME', $clang->gT("Lastname from token"));
                 $replFields[] = array('SURVEYNAME', $clang->gT("Name of the survey"));
                 $replFields[] = array('SURVEYDESCRIPTION', $clang->gT("Description of the survey"));
-                $attributes = GetTokenFieldsAndNames($surveyid, true);
+                $attributes = getTokenFieldsAndNames($surveyid, true);
                 foreach ($attributes as $attributefield => $attributedescription)
                 {
                     $replFields[] = array(strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"), $attributedescription));
@@ -283,7 +283,7 @@ class fck_LimeReplacementFields extends Survey_Common_Action
                 $replFields[] = array('LASTNAME', $clang->gT("Lastname from token"));
                 $replFields[] = array('SURVEYNAME', $clang->gT("Name of the survey"));
                 $replFields[] = array('SURVEYDESCRIPTION', $clang->gT("Description of the survey"));
-                $attributes = GetTokenFieldsAndNames($surveyid, true);
+                $attributes = getTokenFieldsAndNames($surveyid, true);
                 foreach ($attributes as $attributefield => $attributedescription)
                 {
                     $replFields[] = array(strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"), $attributedescription));
@@ -316,7 +316,7 @@ class fck_LimeReplacementFields extends Survey_Common_Action
                 $replFields[] = array('GID', $clang->gT("This question's group ID number"));
                 $replFields[] = array('QID', $clang->gT("This question's question ID number"));
                 $replFields[] = array('SGQ', $clang->gT("This question's SGQA code"));
-                $attributes = GetTokenFieldsAndNames($surveyid, true);
+                $attributes = getTokenFieldsAndNames($surveyid, true);
                 foreach ($attributes as $attributefield => $attributedescription)
                 {
                     $replFields[] = array('TOKEN:' . strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"), $attributedescription));

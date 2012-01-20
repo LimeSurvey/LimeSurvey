@@ -87,7 +87,7 @@ class SurveyAction extends Survey_Common_Action
      */
     function newsurvey()
     {
-        if (!bHasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
+        if (!hasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
             $this->getController()->error('No permission');
 
         $this->_registerScriptFiles();
@@ -119,7 +119,7 @@ class SurveyAction extends Survey_Common_Action
         if (is_null($surveyid) || !$surveyid)
             $this->getController()->error('Invalid survey id');
 
-        if (!bHasSurveyPermission($surveyid, 'surveysettings', 'read') && !bHasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
+        if (!hasSurveyPermission($surveyid, 'surveysettings', 'read') && !hasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
             $this->getController()->error('No permission');
 
         $this->_registerScriptFiles();
@@ -377,7 +377,7 @@ class SurveyAction extends Survey_Common_Action
         if (!isset($aData['aSurveysettings']['active']) || $aData['aSurveysettings']['active'] == 'Y')
             $this->getController()->error('Survey not active');
 
-        $qtypes = getqtypelist('', 'array');
+        $qtypes = getQuestionTypeList('', 'array');
         Yii::app()->loadHelper("admin/activate");
 
         if (empty($_POST['ok']))
@@ -456,7 +456,7 @@ class SurveyAction extends Survey_Common_Action
 
         $query_condition = 'sid=:sid';
         $params[':sid']=$intSurveyId;
-        if (!bHasGlobalPermission("USER_RIGHT_SUPERADMIN"))
+        if (!hasGlobalPermission("USER_RIGHT_SUPERADMIN"))
         {
             $query_condition .= 'AND owner_id=:uid';
             $params[':uid']=$owner_id;
@@ -505,17 +505,17 @@ class SurveyAction extends Survey_Common_Action
             $rows = array_merge($rows->attributes, $rows->languagesettings->attributes, $rows->owner->attributes);
 
             // Set status
-            if ($rows['active'] == "Y" && $rows['expires'] != '' && $rows['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')))
+            if ($rows['active'] == "Y" && $rows['expires'] != '' && $rows['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')))
             {
                 $aSurveyEntry[] = '<!--a--><img src="' . Yii::app()->getConfig('imageurl') . '/expired.png" alt="' . $clang->gT("This survey is active but expired.") . '" />';
             }
-            elseif ($rows['active'] == "Y" && $rows['startdate'] != '' && $rows['startdate'] > date_shift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')))
+            elseif ($rows['active'] == "Y" && $rows['startdate'] != '' && $rows['startdate'] > dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')))
             {
                 $aSurveyEntry[] = '<!--b--><img src="' . Yii::app()->getConfig('imageurl') . '"/notyetstarted.png" alt="' . $clang->gT("This survey is active but has a start date.") . '" />';
             }
             elseif ($rows['active'] == "Y")
             {
-                if (bHasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
+                if (hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
                 {
                     $aSurveyEntry[] = '<!--c--><a href="' . $this->getController()->createUrl('admin/survey/deactivate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('imageurl') . '/active.png" alt="' . $clang->gT("This survey is active - click here to stop this survey.") . '"/></a>';
                 }
@@ -529,7 +529,7 @@ class SurveyAction extends Survey_Common_Action
                 $condition = "sid={$rows['sid']} AND language='" . $rows['language'] . "'";
                 $questionsCountResult = Questions::model()->findAll($condition);
 
-                if (count($questionsCountResult) && bHasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
+                if (count($questionsCountResult) && hasSurveyPermission($rows['sid'], 'surveyactivation', 'update'))
                 {
                     $aSurveyEntry[] = '<!--e--><a href="' . $this->getController()->createUrl('admin/survey/activate/surveyid/' . $rows['sid']) . '"><img src="' . Yii::app()->getConfig('imageurl') . '/inactive.png" title="" alt="' . $clang->gT("This survey is currently not active - click here to activate this survey.") . '" /></a>';
                 }
@@ -608,7 +608,7 @@ class SurveyAction extends Survey_Common_Action
             $aSurveyEntries->rows[] = array('id' => $rows['sid'], 'cell' => $aSurveyEntry);
         }
 
-        echo ls_json_encode($aSurveyEntries);
+        echo lsJSONEncode($aSurveyEntries);
     }
 
     /**
@@ -625,7 +625,7 @@ class SurveyAction extends Survey_Common_Action
         $aData['surveyid'] = $iSurveyId = (int) $surveyid;
         $clang = $this->getController()->lang;
 
-        if (bHasSurveyPermission($iSurveyId, 'survey', 'delete'))
+        if (hasSurveyPermission($iSurveyId, 'survey', 'delete'))
         {
             if ($delete == 'yes')
             {
@@ -656,7 +656,7 @@ class SurveyAction extends Survey_Common_Action
         {
 			foreach(explode(',',$surveyids) as $surveyid)
 			{
-				if (bHasSurveyPermission($surveyid, 'survey', 'delete'))
+				if (hasSurveyPermission($surveyid, 'survey', 'delete'))
 				{
 					$this->_deleteSurvey($surveyid);
 				}
@@ -678,7 +678,7 @@ class SurveyAction extends Survey_Common_Action
 
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts').'/scripts/admin/surveysettings.js');
 
-        if (bHasSurveyPermission($surveyid, 'surveylocale', 'read'))
+        if (hasSurveyPermission($surveyid, 'surveylocale', 'read'))
         {
             $editsurvey = '';
             $grplangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
@@ -728,7 +728,7 @@ class SurveyAction extends Survey_Common_Action
             }
             $editsurvey .= CHtml::closeTag('div');
 
-            $aData['has_permissions'] = bHasSurveyPermission($surveyid, 'surveylocale', 'update');
+            $aData['has_permissions'] = hasSurveyPermission($surveyid, 'surveylocale', 'update');
             $aData['surveyls_language'] = $esrow["surveyls_language"];
             $aData['additional_content'] = $editsurvey;
 
@@ -936,7 +936,7 @@ class SurveyAction extends Survey_Common_Action
                 unlink($sFullFilepath);
             }
 
-            if (isset($aImportResults['error']) && $aImportResults['error']) safe_die($aImportResults['error']);
+            if (isset($aImportResults['error']) && $aImportResults['error']) safeDie($aImportResults['error']);
 
             $aData['action'] = $action;
             $aData['sLink'] = $this->getController()->createUrl('admin/survey/view/surveyid/' . $aImportResults['newsid']);
@@ -955,7 +955,7 @@ class SurveyAction extends Survey_Common_Action
     {
         $iSurveyId = (int)$iSurveyId;
 
-        if (!empty($_POST['orgdata']) && bHasSurveyPermission($iSurveyId, 'surveycontent', 'update'))
+        if (!empty($_POST['orgdata']) && hasSurveyPermission($iSurveyId, 'surveycontent', 'update'))
         {
             $this->_reorderGroup($iSurveyId);
         }
@@ -1319,15 +1319,15 @@ class SurveyAction extends Survey_Common_Action
     function expire($iSurveyId)
     {
         $iSurveyId = (int) $iSurveyId;
-        if (!bHasSurveyPermission($iSurveyId, 'surveysettings', 'update'))
+        if (!hasSurveyPermission($iSurveyId, 'surveysettings', 'update'))
         {
             die();
         }
         $clang = $this->getController()->lang;
         Yii::app()->session['flashmessage'] = $clang->gT("The survey was successfully expired by setting an expiration date in the survey settings.");
         $this->_expireSurvey($iSurveyId);
-        $dExpirationdate = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
-        $dExpirationdate = date_shift($dExpirationdate, "Y-m-d H:i:s", '-1 day');
+        $dExpirationdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
+        $dExpirationdate = dateShift($dExpirationdate, "Y-m-d H:i:s", '-1 day');
         Survey::model()->updateSurvey(array('expires' => $dExpirationdate), 'sid= \'' . $iSurveyId . '\'');
         $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/surveyid/' . $iSurveyId));
     }
@@ -1340,8 +1340,8 @@ class SurveyAction extends Survey_Common_Action
      */
     private function _expireSurvey($iSurveyId)
     {
-        $dExpirationdate = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
-        $dExpirationdate = date_shift($dExpirationdate, "Y-m-d H:i:s", '-1 day');
+        $dExpirationdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
+        $dExpirationdate = dateShift($dExpirationdate, "Y-m-d H:i:s", '-1 day');
         return Survey::model()->updateSurvey(array('expires' => $dExpirationdate), 'sid=\'' . $iSurveyId . '\'');
     }
 
@@ -1358,11 +1358,11 @@ class SurveyAction extends Survey_Common_Action
         foreach ($oResult->readAll() as $oRow)
         {
             $aData->rows[$i]['id'] = $oRow['id'];
-            $oRow['title'] = $oRow['title'] . ': ' . ellipsize(FlattenText($oRow['question'], false, true), 43, .70);
+            $oRow['title'] = $oRow['title'] . ': ' . ellipsize(flattenText($oRow['question'], false, true), 43, .70);
 
             if ($oRow['sqquestion'] != '')
             {
-                echo (' - ' . ellipsize(FlattenText($oRow['sqquestion'], false, true), 30, .75));
+                echo (' - ' . ellipsize(flattenText($oRow['sqquestion'], false, true), 30, .75));
             }
             unset($oRow['sqquestion']);
             unset($oRow['sqtitle']);
@@ -1376,7 +1376,7 @@ class SurveyAction extends Survey_Common_Action
         $aData->records = $oResult->getRowCount();
         $aData->total = 1;
 
-        echo ls_json_encode($aData);
+        echo lsJSONEncode($aData);
     }
 
     /**
@@ -1554,19 +1554,19 @@ class SurveyAction extends Survey_Common_Action
             $sURLDescription = html_entity_decode($sURLDescription, ENT_QUOTES, "UTF-8");
 
             // Fix bug with FCKEditor saving strange BR types
-            $sTitle = fix_FCKeditor_text($sTitle);
-            $sDescription = fix_FCKeditor_text($sDescription);
-            $sWelcome = fix_FCKeditor_text($sWelcome);
+            $sTitle = fixCKeditorText($sTitle);
+            $sDescription = fixCKeditorText($sDescription);
+            $sWelcome = fixCKeditorText($sWelcome);
 
             // Load default email templates for the chosen language
             $oLanguage = new Limesurvey_lang($_POST['language']);
-            $aDefaultTexts = aTemplateDefaultTexts($oLanguage, 'unescaped');
+            $aDefaultTexts = templateDefaultTexts($oLanguage, 'unescaped');
             unset($oLanguage);
 
             if ($_POST['htmlemail'] && $_POST['htmlemail'] == "Y")
             {
                 $bIsHTMLEmail = true;
-                $aDefaultTexts['admin_detailed_notification'] = $aDefaultTexts['admin_detailed_notification_css'] . conditional_nl2br($aDefaultTexts['admin_detailed_notification'], $bIsHTMLEmail, 'unescaped');
+                $aDefaultTexts['admin_detailed_notification'] = $aDefaultTexts['admin_detailed_notification_css'] . conditionalNewlineToBreak($aDefaultTexts['admin_detailed_notification'], $bIsHTMLEmail, 'unescaped');
             }
             else
             {
@@ -1584,15 +1584,15 @@ class SurveyAction extends Survey_Common_Action
                 'surveyls_endtext' => $_POST['endtext'],
                 'surveyls_url' => $_POST['url'],
                 'surveyls_email_invite_subj' => $aDefaultTexts['invitation_subject'],
-                'surveyls_email_invite' => conditional_nl2br($aDefaultTexts['invitation'], $bIsHTMLEmail, 'unescaped'),
+                'surveyls_email_invite' => conditionalNewlineToBreak($aDefaultTexts['invitation'], $bIsHTMLEmail, 'unescaped'),
                 'surveyls_email_remind_subj' => $aDefaultTexts['reminder_subject'],
-                'surveyls_email_remind' => conditional_nl2br($aDefaultTexts['reminder'], $bIsHTMLEmail, 'unescaped'),
+                'surveyls_email_remind' => conditionalNewlineToBreak($aDefaultTexts['reminder'], $bIsHTMLEmail, 'unescaped'),
                 'surveyls_email_confirm_subj' => $aDefaultTexts['confirmation_subject'],
-                'surveyls_email_confirm' => conditional_nl2br($aDefaultTexts['confirmation'], $bIsHTMLEmail, 'unescaped'),
+                'surveyls_email_confirm' => conditionalNewlineToBreak($aDefaultTexts['confirmation'], $bIsHTMLEmail, 'unescaped'),
                 'surveyls_email_register_subj' => $aDefaultTexts['registration_subject'],
-                'surveyls_email_register' => conditional_nl2br($aDefaultTexts['registration'], $bIsHTMLEmail, 'unescaped'),
+                'surveyls_email_register' => conditionalNewlineToBreak($aDefaultTexts['registration'], $bIsHTMLEmail, 'unescaped'),
                 'email_admin_notification_subj' => $aDefaultTexts['admin_notification_subject'],
-                'email_admin_notification' => conditional_nl2br($aDefaultTexts['admin_notification'], $bIsHTMLEmail, 'unescaped'),
+                'email_admin_notification' => conditionalNewlineToBreak($aDefaultTexts['admin_notification'], $bIsHTMLEmail, 'unescaped'),
                 'email_admin_responses_subj' => $aDefaultTexts['admin_detailed_notification_subject'],
                 'email_admin_responses' => $aDefaultTexts['admin_detailed_notification'],
                 'surveyls_dateformat' => (int) $_POST['dateformat'],

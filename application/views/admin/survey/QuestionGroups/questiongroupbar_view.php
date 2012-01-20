@@ -6,7 +6,7 @@
 
         <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/blank.gif' alt='' width='54' height='20'  />
 
-        <?php if(bHasSurveyPermission($surveyid,'surveycontent','update'))
+        <?php if(hasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
             <a href="#" onclick="window.open('<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/");?>','_blank')"
@@ -17,7 +17,7 @@
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
             <?php } ?>
 
-        <?php if(bHasSurveyPermission($surveyid,'surveycontent','update'))
+        <?php if(hasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
             <a href="#" onclick="window.open('<?php echo $this->createUrl('admin/questiongroup/edit/surveyid/'.$surveyid.'/gid/'.$gid); ?>','_top')"
@@ -25,7 +25,7 @@
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/edit.png' alt='<?php $clang->eT("Edit current question group"); ?>' width="40" height="40"/></a>
         <?php } ?>
 
-        <?php if(bHasSurveyPermission($surveyid,'surveyactivation','read'))
+        <?php if(hasSurveyPermission($surveyid,'surveyactivation','read'))
         { ?>
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
             <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/expressions/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>','_blank')"
@@ -34,7 +34,7 @@
         <?php } ?>
 
         <?php
-            if (bHasSurveyPermission($surveyid,'surveycontent','delete'))
+            if (hasSurveyPermission($surveyid,'surveycontent','delete'))
             {
                 if ((($sumcount4 == 0 && $activated != "Y") || $activated != "Y"))
                 {
@@ -60,7 +60,7 @@
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/blank.gif' alt='' width='40' />
                 <?php }
             }
-            if(bHasSurveyPermission($surveyid,'surveycontent','export'))
+            if(hasSurveyPermission($surveyid,'surveycontent','export'))
             { ?>
 
             <a href='<?php echo $this->createUrl("admin/export/group/surveyid/$surveyid/gid/$gid");?>' title="<?php $clang->eTview("Export this question group"); ?>" >
@@ -115,7 +115,7 @@
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/add_disabled.png' title='' alt='<?php echo $clang->gT("Disabled").' - '.$clang->gT("This survey is currently active."); ?>'
                    onclick="window.open('', '_top')" width="40" height="40"/></a>
             <?php }
-            elseif(bHasSurveyPermission($surveyid,'surveycontent','create'))
+            elseif(hasSurveyPermission($surveyid,'surveycontent','create'))
             { ?>
             <a href='<?php echo $this->createUrl("admin/question/addquestion/surveyid/".$surveyid."/gid/".$gid); ?>'
                 title="<?php $clang->eTview("Add new question to group"); ?>" >

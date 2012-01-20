@@ -57,7 +57,7 @@ class SurveyRuntimeHelper {
             'token' => (isset($clienttoken) ? $clienttoken : NULL),
         );
 
-        //Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
+        //Security Checked: POST, GET, SESSION, REQUEST, returnGlobal, DB
         $previewgrp = false;
         if ($surveyMode == 'group' && isset($param['action']) && ($param['action'] == 'previewgroup'))
         {
@@ -158,7 +158,7 @@ class SurveyRuntimeHelper {
                     // jump to current step using new language, processing POST values
                     $moveResult = LimeExpressionManager::JumpTo($_SESSION['survey_'.$surveyid]['step'], false, true, false, true);  // do process the POST data
                 }
-                if (isset($move) && bIsNumericInt($move) && $thissurvey['allowjumps'] == 'Y')
+                if (isset($move) && isNumericInt($move) && $thissurvey['allowjumps'] == 'Y')
                 {
                     $move = (int) $move;
                     if ($move > 0 && (($move <= $_SESSION['survey_'.$surveyid]['step']) || (isset($_SESSION['survey_'.$surveyid]['maxstep']) && $move <= $_SESSION['survey_'.$surveyid]['maxstep'])))
@@ -313,7 +313,7 @@ class SurveyRuntimeHelper {
                         killSession();
                     }
 
-                    sendcacheheaders();
+                    sendCacheHeaders();
                     doHeader();
 
                     echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"), array(), $redata);
@@ -346,7 +346,7 @@ class SurveyRuntimeHelper {
                 {
                     if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1) //don't use cookies if tokens are being used
                     {
-                        $cookiename = "PHPSID" . returnglobal('sid') . "STATUS";
+                        $cookiename = "PHPSID" . returnGlobal('sid') . "STATUS";
 //                        setcookie("$cookiename", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days   //@todo fix - sometimes results in headers already sent error
                     }
 
@@ -432,7 +432,7 @@ class SurveyRuntimeHelper {
                     $_SESSION['survey_'.$surveyid]['finished'] = true;
                     $_SESSION['survey_'.$surveyid]['sid'] = $surveyid;
 
-                    sendcacheheaders();
+                    sendCacheHeaders();
                     if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
                     {
                         //Automatically redirect the page to the "url" setting for the survey
@@ -653,7 +653,7 @@ class SurveyRuntimeHelper {
         }
 
         //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
-        sendcacheheaders();
+        sendCacheHeaders();
         doHeader();
 
         if (isset($popup))
@@ -816,7 +816,7 @@ END;
                 $lastgrouparray = explode("X", $qa[7]);
                 $lastgroup = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
 
-                $q_class = question_class($qinfo['info']['type']);
+                $q_class = getQuestionClass($qinfo['info']['type']);
 
                 $man_class = '';
                 if ($qinfo['info']['mandatory'] == 'Y')
@@ -930,11 +930,11 @@ END;
                     if ($surveyMode == 'question' && $lastGseq != $stepInfo['gseq'])
                     {
                         // show the group label
-                        echo '<h3>' . FlattenText($stepInfo['gname']) . "</h3>";
+                        echo '<h3>' . flattenText($stepInfo['gname']) . "</h3>";
                         $lastGseq = $stepInfo['gseq'];
                     }
 
-                    $sText = (($surveyMode == 'group') ? FlattenText($stepInfo['gname'] . ': ' . $stepInfo['gtext']) : FlattenText($stepInfo['qtext']));
+                    $sText = (($surveyMode == 'group') ? flattenText($stepInfo['gname'] . ': ' . $stepInfo['gtext']) : flattenText($stepInfo['qtext']));
                     $bGAnsw = !$stepInfo['anyUnanswered'];
 
                     ++$v;

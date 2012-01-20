@@ -15,7 +15,7 @@
             <label for='separator'><?php $clang->eT("Separator used:"); ?> </label>
             <?php
             $aSeparator = array('auto' => $clang->gT("(Autodetect)"), 'comma' => $clang->gT("Comma"), 'semicolon' => $clang->gT("Semicolon"));
-            echo CHtml::dropDownList('separator', returnglobal('separator'), $aSeparator, array('size' => '1'));
+            echo CHtml::dropDownList('separator', returnGlobal('separator'), $aSeparator, array('size' => '1'));
             ?>
         </li>
         <li>
@@ -30,7 +30,7 @@
             <label for='filterduplicatefields[]'><?php $clang->eT("Duplicates are determined by:"); ?></label>
             <?php
             $aFilterDuplicateFields = array('firstname' => 'firstname', 'lastname' => 'lastname', 'email' => 'email', 'token' => 'token', 'language' => 'language');
-            array_merge($aFilterDuplicateFields, GetAttributeFieldNames($iSurveyId));
+            array_merge($aFilterDuplicateFields, getAttributeFieldNames($iSurveyId));
             echo CHtml::listBox('filterduplicatefields', array('firstname', 'lastname', 'email'), $aFilterDuplicateFields, array('multiple' => 'multiple', 'size' => '5'));
             ?>
         </li>

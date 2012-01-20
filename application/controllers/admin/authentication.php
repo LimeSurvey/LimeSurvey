@@ -295,7 +295,7 @@ class Authentication extends Survey_Common_Action
         Yii::app()->session['templateeditormode'] = $user->templateeditormode;
         Yii::app()->session['questionselectormode'] = $user->questionselectormode;
         Yii::app()->session['dateformat'] = $user->dateformat;
-        Yii::app()->session['checksessionpost'] = sRandomChars(10);
+        Yii::app()->session['checksessionpost'] = randomChars(10);
     }
 
     /**

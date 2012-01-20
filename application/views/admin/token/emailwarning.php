@@ -28,8 +28,8 @@
         <?php
         foreach ($aSurveyLangs as $language)
         {
-            $message = html_escape($_POST['message_' . $language]);
-            $subject = html_escape($_POST['subject_' . $language]); ?>
+            $message = HTMLEscape($_POST['message_' . $language]);
+            $subject = HTMLEscape($_POST['subject_' . $language]); ?>
             <input type='hidden' name='from_<?php echo $language; ?>' value="<?php echo $_POST['from_' . $language]; ?>" />
             <input type='hidden' name='subject_<?php echo $language; ?>' value="<?php echo $_POST['subject_' . $language]; ?>" />
             <input type='hidden' name='message_<?php echo $language; ?>' value="<?php echo $message; ?>" />

@@ -68,7 +68,7 @@ class UploaderController extends AdminController {
 
 		    $pathinfo = pathinfo($_FILES['uploadfile']['name']);
 		    $ext = $pathinfo['extension'];
-            $randfilename = 'futmp_'.sRandomChars(15).'.'.$pathinfo['extension'];
+            $randfilename = 'futmp_'.randomChars(15).'.'.$pathinfo['extension'];
             $randfileloc = $sTempUploadDir . $randfilename;
 
 		    // check to see that this file type is allowed
@@ -80,7 +80,7 @@ class UploaderController extends AdminController {
 		                        "msg" => sprintf($clang->gT("Sorry, this file extension (%s) is not allowed!"),$ext)
 		                    );
 
-		        echo ls_json_encode($return);
+		        echo lsJSONEncode($return);
 		        exit ();
 		    }
 
@@ -93,7 +93,7 @@ class UploaderController extends AdminController {
 		                "success" => false,
 		                "msg" => sprintf($clang->gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
 		            );
-		            echo ls_json_encode($return);
+		            echo lsJSONEncode($return);
 		        }
 
 		        else if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc))
@@ -108,7 +108,7 @@ class UploaderController extends AdminController {
 		                        "filename"      => $randfilename,
 		                        "msg"           => $clang->gT("The file has been successfuly uploaded.")
 		                    );
-		            echo ls_json_encode($return);
+		            echo lsJSONEncode($return);
 
 		            // TODO : unlink this file since this is just a preview
 		            // unlink($randfileloc);
@@ -124,15 +124,15 @@ class UploaderController extends AdminController {
 		                "success" => false,
 		                 "msg" => sprintf($clang->gT("Sorry, this file is too large. Only files up to %s KB are allowed.",'unescaped'), $maxfilesize)
 		            );
-		            echo ls_json_encode($return);
+		            echo lsJSONEncode($return);
 		        }
-		        elseif ($iFileUploadTotalSpaceMB>0 && ((fCalculateTotalFileUploadUsage()+($size/1024/1024))>$iFileUploadTotalSpaceMB))
+		        elseif ($iFileUploadTotalSpaceMB>0 && ((calculateTotalFileUploadUsage()+($size/1024/1024))>$iFileUploadTotalSpaceMB))
 		        {
 		            $return = array(
 		                "success" => false,
 		                 "msg" => $clang->gT("We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator.",'unescaped')
 		            );
-		            echo ls_json_encode($return);
+		            echo lsJSONEncode($return);
 		        }
 		        elseif (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc))
 		        {
@@ -147,7 +147,7 @@ class UploaderController extends AdminController {
 		                "msg"     => $clang->gT("The file has been successfuly uploaded.")
 		            );
 
-		            echo ls_json_encode($return);
+		            echo lsJSONEncode($return);
 		        }
 		        // if there was some error, report error message
 		        else
@@ -160,7 +160,7 @@ class UploaderController extends AdminController {
 		                                "msg" => $clang->gT("Sorry, there was an error uploading your file")
 		                            );
 
-		                echo ls_json_encode($return);
+		                echo lsJSONEncode($return);
 		            }
 		            // check to ensure that the file does not cross the maximum file size
 		            else if ( $_FILES['uploadfile']['error'] == 1 ||  $_FILES['uploadfile']['error'] == 2 || $size > $maxfilesize)
@@ -170,7 +170,7 @@ class UploaderController extends AdminController {
 		                                "msg" => sprintf($clang->gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
 		                            );
 
-		                echo ls_json_encode($return);
+		                echo lsJSONEncode($return);
 		            }
 		            else
 		            {
@@ -178,7 +178,7 @@ class UploaderController extends AdminController {
 		                            "success" => false,
 		                            "msg" => $clang->gT("Unknown error")
 		                        );
-		                echo ls_json_encode($return);
+		                echo lsJSONEncode($return);
 		            }
 		        }
 		    }

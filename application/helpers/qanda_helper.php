@@ -12,7 +12,7 @@
 *
 *	$Id$
 */
-// Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
+// Security Checked: POST, GET, SESSION, REQUEST, returnGlobal, DB
 
 //if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 
@@ -369,7 +369,7 @@ function retrieveAnswers($ia)
     // are put.
 
     $sTemplate = isset($thissurvey['template']) ? $thissurvey['template'] : NULL;
-    if(is_file('templates/'.validate_templatedir($sTemplate).'/question_start.pstpl'))
+    if(is_file('templates/'.validateTemplateDir($sTemplate).'/question_start.pstpl'))
     {
         $qtitle_custom = '';
 
@@ -381,7 +381,7 @@ function retrieveAnswers($ia)
         };
         if(!defined('QUESTION_START'))
         {
-            define('QUESTION_START' , file_get_contents(sGetTemplatePath($thissurvey['template']).'/question_start.pstpl' , true));
+            define('QUESTION_START' , file_get_contents(getTemplatePath($thissurvey['template']).'/question_start.pstpl' , true));
         };
         $qtitle_custom = str_replace( $find , $replace , QUESTION_START);
 
@@ -1377,7 +1377,7 @@ function do_list_dropdown($ia)
         $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
     }
 
-    $ansresult = Yii::app()->db->createCommand($ansquery)->query() or safe_die('Couldn\'t get answers<br />'.$ansquery.'<br />');    //Checked
+    $ansresult = Yii::app()->db->createCommand($ansquery)->query() or safeDie('Couldn\'t get answers<br />'.$ansquery.'<br />');    //Checked
 
     $dropdownSize = '';
     if (isset($aQuestionAttributes['dropdown_size']) && $aQuestionAttributes['dropdown_size'] > 0)
@@ -1585,7 +1585,7 @@ function do_list_dropdown($ia)
         . "\tothercommentval=document.getElementById('othertext{$ia[1]}').value;\n"
         . "\totherval=document.getElementById('answer{$ia[1]}').value;\n"
         . "\tif (otherval == '-oth-' && othercommentval == '') {\n"
-        . "alert('".sprintf($clang->gT("You've selected the \"%s\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascript_escape($othertext,true,true)),trim(javascript_escape($ia[3],true,true)))."');\n"
+        . "alert('".sprintf($clang->gT("You've selected the \"%s\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($othertext,true,true)),trim(javascriptEscape($ia[3],true,true)))."');\n"
         . "return false;\n"
         . "\t}\n"
         . "\telse {\n"
@@ -1613,7 +1613,7 @@ function do_list_radio($ia)
     $clang=Yii::app()->lang;
     if ($thissurvey['nokeyboard']=='Y')
     {
-        vIncludeKeypad();
+        includeKeypad();
         $kpclass = "text-keypad";
     }
     else
@@ -1679,7 +1679,7 @@ function do_list_radio($ia)
     if (isset($other) && $other=='Y') {$anscount++;} //Count up for the Other answer
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$anscount++;} //Count up if "No answer" is showing
 
-    $wrapper = setup_columns($dcols , $anscount);
+    $wrapper = setupColumns($dcols , $anscount);
     $answer = $wrapper['whole-start'];
 
     // Get array_filter stuff
@@ -1846,7 +1846,7 @@ function do_list_radio($ia)
         . "\tothercommentval=document.getElementById('answer{$ia[1]}othertext').value;\n"
         . "\totherval=document.getElementById('SOTH{$ia[1]}').checked;\n"
         . "\tif (otherval == true && othercommentval == '') {\n"
-        . "alert('".sprintf($clang->gT("You've selected the \"%s\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascript_escape($othertext,true,true)),trim(javascript_escape($ia[3],true,true)))."');\n"
+        . "alert('".sprintf($clang->gT("You've selected the \"%s\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($othertext,true,true)),trim(javascriptEscape($ia[3],true,true)))."');\n"
         . "return false;\n"
         . "\t}\n"
         . "\telse {\n"
@@ -1875,7 +1875,7 @@ function do_listwithcomment($ia)
 
     if ($thissurvey['nokeyboard']=='Y')
     {
-        vIncludeKeypad();
+        includeKeypad();
         $kpclass = "text-keypad";
     }
     else
@@ -2267,7 +2267,7 @@ function do_ranking($ia)
             document.getElementById('rankingminanswarning{$ia[0]}').style.display='';\n";
         } else {
             $minanswscript .="
-            alert('".sprintf($clang->ngT("Please rank at least %d item for question \"%s\"","Please rank at least %d items for question \"%s\"",$minansw,'js'),$minansw, trim(javascript_escape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n";
+            alert('".sprintf($clang->ngT("Please rank at least %d item for question \"%s\"","Please rank at least %d items for question \"%s\"",$minansw,'js'),$minansw, trim(javascriptEscape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n";
         }
         $minanswscript .= ""
         . "     return false;\n"
@@ -2296,7 +2296,7 @@ function do_multiplechoice($ia)
     $clang = Yii::app()->lang;
     if ($thissurvey['nokeyboard']=='Y')
     {
-        vIncludeKeypad();
+        includeKeypad();
         $kpclass = "text-keypad";
     }
     else
@@ -2444,7 +2444,7 @@ function do_multiplechoice($ia)
         $anscount++; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
     }
 
-    $wrapper = setup_columns($dcols, $anscount);
+    $wrapper = setupColumns($dcols, $anscount);
 
     $answer = '<input type="hidden" name="MULTI'.$ia[1].'" value="'.$anscount."\" />\n\n".$wrapper['whole-start'];
 
@@ -2617,7 +2617,7 @@ function do_multiplechoice($ia)
     //        $maxanswscript .= "
     //        if (count > max)
     //        {
-    //            alert('".sprintf($clang->gT("Please choose at most %d answers for question \"%s\"","js"), $maxansw, trim(javascript_escape(str_replace(array("\n", "\r"), "", $ia[3]),true,true)))."');
+    //            alert('".sprintf($clang->gT("Please choose at most %d answers for question \"%s\"","js"), $maxansw, trim(javascriptEscape(str_replace(array("\n", "\r"), "", $ia[3]),true,true)))."');
     //            if (me.type == 'checkbox') { me.checked = false; }
     //            if (me.type == 'text') {
     //                me.value = '';
@@ -2639,7 +2639,7 @@ function do_multiplechoice($ia)
     //        $minanswscript .=
     //        "\tif (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n"
     //        . "alert('".sprintf($clang->gT("Please choose at least %d answer(s) for question \"%s\"","js"),
-    //        $minansw, trim(javascript_escape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n"
+    //        $minansw, trim(javascriptEscape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n"
     //        . "return false;\n"
     //        . "\t} else {\n"
     //        . "if (oldonsubmit_{$ia[0]}){\n"
@@ -2673,7 +2673,7 @@ function do_multiplechoice($ia)
         . "}\n"
         . "\t}\n"
         . "\telse {\n"
-        . "alert('".sprintf($clang->gT("You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascript_escape($ia[3],true,true)))."');\n"
+        . "alert('".sprintf($clang->gT("You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($ia[3],true,true)))."');\n"
         . "return false;\n"
         . "\t}\n"
         . "}\n"
@@ -2698,7 +2698,7 @@ function do_multiplechoice_withcomments($ia)
     $inputnames= array();
     if ($thissurvey['nokeyboard']=='Y')
     {
-        vIncludeKeypad();
+        includeKeypad();
         $kpclass = "text-keypad";
     }
     else
@@ -2931,7 +2931,7 @@ function do_multiplechoice_withcomments($ia)
     //    {
     //        $maxanswscript .= "\tif (count > max)\n"
     //        . "{\n"
-    //        . "alert('".sprintf($clang->gT("Please choose at most %d answers for question \"%s\"","js"), $maxansw, trim(javascript_escape($ia[3],true,true)))."');\n"
+    //        . "alert('".sprintf($clang->gT("Please choose at most %d answers for question \"%s\"","js"), $maxansw, trim(javascriptEscape($ia[3],true,true)))."');\n"
     //        . "var commentname='answer'+me.name+'comment';\n"
     //        . "if (me.type == 'checkbox') {\n"
     //        . "\tme.checked = false;\n"
@@ -2957,7 +2957,7 @@ function do_multiplechoice_withcomments($ia)
     //        $minanswscript .=
     //        "\tif (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n"
     //        . "alert('".sprintf($clang->gT("Please choose at least %d answer(s) for question \"%s\"","js"),
-    //        $minansw, trim(javascript_escape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n"
+    //        $minansw, trim(javascriptEscape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n"
     //        . "return false;\n"
     //        . "\t} else {\n"
     //        . "if (oldonsubmit_{$ia[0]}){\n"
@@ -2987,7 +2987,7 @@ function do_multiplechoice_withcomments($ia)
         . "\tothercommentval=document.getElementById('answer".$myfname2."').value;\n"
         . "\totherval=document.getElementById('answer".$myfname."').value;\n"
         . "\tif (otherval != '' && othercommentval == '') {\n"
-        . "alert('".sprintf($clang->gT("You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascript_escape($ia[3],true,true)))."');\n"
+        . "alert('".sprintf($clang->gT("You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($ia[3],true,true)))."');\n"
         . "return false;\n"
         . "\t}\n"
         . "\telse {\n"
@@ -3201,7 +3201,7 @@ function do_multipleshorttext($ia)
 
     if ($thissurvey['nokeyboard']=='Y')
     {
-        vIncludeKeypad();
+        includeKeypad();
         $kpclass = "text-keypad";
     }
     else
@@ -3416,7 +3416,7 @@ function do_multiplenumeric($ia)
 
     if ($thissurvey['nokeyboard']=='Y')
     {
-        vIncludeKeypad();
+        includeKeypad();
         $kpclass = "num-keypad";
     }
     else
@@ -3920,7 +3920,7 @@ function do_numerical($ia)
 
     if ($thissurvey['nokeyboard']=='Y')
     {
-        vIncludeKeypad();
+        includeKeypad();
         $kpclass = "num-keypad";
     }
     else
@@ -4007,7 +4007,7 @@ function do_shortfreetext($ia)
     }
     if ($thissurvey['nokeyboard']=='Y')
     {
-        vIncludeKeypad();
+        includeKeypad();
         $kpclass = "text-keypad";
     }
     else
@@ -4164,7 +4164,7 @@ function do_longfreetext($ia)
 
     if ($thissurvey['nokeyboard']=='Y')
     {
-        vIncludeKeypad();
+        includeKeypad();
         $kpclass = "text-keypad";
     }
     else
@@ -4241,7 +4241,7 @@ function do_hugefreetext($ia)
 
     if ($thissurvey['nokeyboard']=='Y')
     {
-        vIncludeKeypad();
+        includeKeypad();
         $kpclass = "text-keypad";
     }
     else
@@ -5225,7 +5225,7 @@ function do_array($ia)
                 $answer .= "\t\t\t<td class=\"answer_cell_00$ld\">\n"
                 . "<label for=\"answer$myfname-$ld\">\n"
                 . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\" title=\""
-                . html_escape(strip_tags($labelans[$thiskey])).'"';
+                . HTMLEscape(strip_tags($labelans[$thiskey])).'"';
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ld)
                 {
                     $answer .= CHECKED;
@@ -5431,7 +5431,7 @@ function do_array_multitext($ia)
 
     if ($thissurvey['nokeyboard']=='Y')
     {
-        vIncludeKeypad();
+        includeKeypad();
         $kpclass = "text-keypad";
     }
     else
@@ -5720,7 +5720,7 @@ function do_array_multitext($ia)
                 . "\t\t\t\t<label for=\"answer{$myfname2}\">\n"
                 . "\t\t\t\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" />\n"
                 . "\t\t\t\t<input type=\"text\" name=\"$myfname2\" id=\"answer{$myfname2}\" class=\"".$kpclass."\" title=\""
-                . FlattenText($labelans[$thiskey]).'" '
+                . flattenText($labelans[$thiskey]).'" '
                 . 'size="'.$inputwidth.'" '
                 . ' value="'.str_replace ('"', "'", str_replace('\\', '', $myfname2value))."\" />\n";
                 $inputnames[]=$myfname2;
@@ -5859,7 +5859,7 @@ function do_array_multiflexi($ia)
 
     if ($thissurvey['nokeyboard']=='Y')
     {
-        vIncludeKeypad();
+        includeKeypad();
         $kpclass = "num-keypad";
     }
     else
@@ -6033,7 +6033,7 @@ function do_array_multiflexi($ia)
 
                     if($inputboxlayout == false) {
                         $answer .= "\t<select class=\"multiflexiselect\" name=\"$myfname2\" id=\"answer{$myfname2}\" title=\""
-                        . html_escape($labelans[$thiskey]).'"'
+                        . HTMLEscape($labelans[$thiskey]).'"'
                         . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\">\n"
                         . "<option value=\"\">".$clang->gT('...')."</option>\n";
 
@@ -6050,7 +6050,7 @@ function do_array_multiflexi($ia)
                         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
                         $sSeperator = $sSeperator['seperator'];
                         $answer .= "\t<input type='text' class=\"multiflexitext $kpclass\" name=\"$myfname2\" id=\"answer{$myfname2}\" maxlength=\"{$maxsize}\" size=5 title=\""
-                        . html_escape($labelans[$thiskey]).'"'
+                        . HTMLEscape($labelans[$thiskey]).'"'
                         . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" onkeypress=\"return goodchars(event,'0123456789$sSeperator')\""
                         . " value=\"";
                         if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) {
@@ -6232,7 +6232,7 @@ function do_arraycolumns($ia)
                     . "<label for=\"answer".$myfname.'-'.$ansrow['code']."\">\n"
                     . "\t<input class=\"radio\" type=\"radio\" name=\"".$myfname.'" value="'.$ansrow['code'].'" '
                     . 'id="answer'.$myfname.'-'.$ansrow['code'].'" '
-                    . 'title="'.html_escape(strip_tags($ansrow['answer'])).'"';
+                    . 'title="'.HTMLEscape(strip_tags($ansrow['answer'])).'"';
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ansrow['code'])
                     {
                         $answer .= CHECKED;
@@ -6567,7 +6567,7 @@ function do_array_dual($ia)
                 $answer .= "\t<td class=\"answer_cell_1_00$ld\">\n"
                 . "<label for=\"answer$myfname-$ld\">\n"
                 . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\" title=\""
-                . html_escape(strip_tags($labelans[$thiskey])).'"';
+                . HTMLEscape(strip_tags($labelans[$thiskey])).'"';
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ld)
                 {
                     $answer .= CHECKED;
@@ -6598,7 +6598,7 @@ function do_array_dual($ia)
                     }
                     $answer .= "<label for=\"answer$myfname1-$ld\">\n"
                     . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname1\" value=\"$ld\" id=\"answer$myfname1-$ld\" title=\""
-                    . html_escape(strip_tags($labelans1[$thiskey])).'"';
+                    . HTMLEscape(strip_tags($labelans1[$thiskey])).'"';
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == $ld)
                     {
                         $answer .= CHECKED;

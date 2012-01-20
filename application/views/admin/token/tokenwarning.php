@@ -5,7 +5,7 @@
     <div class='warningheader'><?php $clang->eT("Warning"); ?></div>
     <br /><strong><?php $clang->eT("Tokens have not been initialised for this survey."); ?></strong><br /><br />
     <?php
-    if (bHasSurveyPermission($surveyid, 'surveyactivation', 'update'))
+    if (hasSurveyPermission($surveyid, 'surveyactivation', 'update'))
     {
         $clang->eT("If you initialise tokens for this survey then this survey will only be accessible to users who provide a token either manually or by URL.");
         ?><br /><br />
@@ -20,7 +20,7 @@
         $clang->eT("Do you want to create a token table for this survey?");
         ?>
         <br /><br />
-        <input type='submit' value='<?php $clang->eT("Initialise tokens"); ?>' onclick="<?php echo get2post($this->createUrl("admin/tokens/index/surveyid/$surveyid") . "?action=tokens&amp;sid=$surveyid&amp;createtable=Y"); ?>" />
+        <input type='submit' value='<?php $clang->eT("Initialise tokens"); ?>' onclick="<?php echo convertGETtoPOST($this->createUrl("admin/tokens/index/surveyid/$surveyid") . "?action=tokens&amp;sid=$surveyid&amp;createtable=Y"); ?>" />
         <input type='submit' value='<?php $clang->eT("No, thanks."); ?>' onclick="window.open('<?php echo$this->createUrl("admin/survey/view/surveyid/$surveyid"); ?>', '_top')" /></div>
 <?php
 }
@@ -34,7 +34,7 @@ else
 }
 
 // Do not offer old postgres token tables for restore since these are having an issue with missing index
-if ($tcount > 0 && $databasetype != 'postgre' && bHasSurveyPermission($surveyid, 'surveyactivation', 'update'))
+if ($tcount > 0 && $databasetype != 'postgre' && hasSurveyPermission($surveyid, 'surveyactivation', 'update'))
 {
     ?>
     <br /><div class='header ui-widget-header'><?php $clang->eT("Restore options"); ?></div>

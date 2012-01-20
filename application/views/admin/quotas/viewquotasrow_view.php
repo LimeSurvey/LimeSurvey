@@ -23,7 +23,7 @@
 	<td align="center"><?php echo $quotalisting['qlimit'];?></td>
 	<td align="center" <?php echo $highlight;?>><?php echo $completed;?></td>
 	<td align="center" style="padding: 3px;">
-<?php if (bHasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
+<?php if (hasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
     <form action="<?php echo $this->createUrl("admin/quotas/editquota/surveyid/$iSurveyId");?>" method="post">
                         <input name="submit" type="submit" class="submit" value="<?php $clang->eT("Edit");?>" />
                         <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
@@ -31,7 +31,7 @@
                         <input type="hidden" name="quota_id" value="<?php echo $quotalisting['id'];?>" />
                         <input type="hidden" name="subaction" value="quota_editquota" />
                     </form>
-<?php } if (bHasSurveyPermission($iSurveyId, 'quotas','delete')) { ?>
+<?php } if (hasSurveyPermission($iSurveyId, 'quotas','delete')) { ?>
     <form action="<?php echo $this->createUrl("admin/quotas/delquota/surveyid/$iSurveyId");?>" method="post">
 			            <input name="submit" type="submit" class="submit" value="<?php $clang->eT("Remove");?>" />
 			            <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
@@ -49,7 +49,7 @@
 	<td align="center">&nbsp;</td>
 	<td align="center">&nbsp;</td>
 	<td style="padding: 3px;" align="center">
-<?php if (bHasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
+<?php if (hasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
     <form action="<?php echo $this->createUrl("admin/quotas/new_answer/surveyid/$iSurveyId");?>" method="post">
                         <input name="submit" type="submit" class="quota_new" value="<?php $clang->eT("Add Answer");?>" />
                         <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />

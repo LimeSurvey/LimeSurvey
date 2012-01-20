@@ -163,7 +163,7 @@ class Tokens_dynamic extends CActiveRecord
             $bIsValidToken = false;
             while ($bIsValidToken == false)
             {
-                $newtoken = sRandomChars($iTokenLength);
+                $newtoken = randomChars($iTokenLength);
                 if (!in_array($newtoken, $existingtokens)) {
                     $existingtokens[] = $newtoken;
                     $bIsValidToken = true;

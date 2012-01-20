@@ -99,14 +99,14 @@
                         { ?>
 
                         <select id='question_type' style='margin-bottom:5px' name='type' class='<?php echo $selectormodeclass; ?>'>
-                            <?php echo getqtypelist($eqrow['type'],'group'); ?>
+                            <?php echo getQuestionTypeList($eqrow['type'],'group'); ?>
 
                         </select>
                         <?php }
                         else
                         {
 
-                            $qtypelist=getqtypelist('','array');
+                            $qtypelist=getQuestionTypeList('','array');
                             echo "{$qtypelist[$eqrow['type']]['description']} - ".$clang->gT("Cannot be changed (survey is active)"); ?>
                         <input type='hidden' name='type' id='question_type' value='<?php echo $eqrow['type']; ?>' />
                         <?php } ?>
@@ -121,7 +121,7 @@
                         <label for='gid'><?php $clang->eT("Question group:"); ?></label>
                         <select name='gid' id='gid'>
 
-                            <?php echo getgrouplist3($eqrow['gid'],$surveyid); ?>
+                            <?php echo getGroupList3($eqrow['gid'],$surveyid); ?>
                         </select></li>
                     <?php }
                     else
@@ -256,7 +256,7 @@
     {
 
 
-        if (bHasSurveyPermission($surveyid,'surveycontent','import'))
+        if (hasSurveyPermission($surveyid,'surveycontent','import'))
         { ?>
         <br /><div class='header ui-widget-header'><?php $clang->eT("...or import a question"); ?></div>
         <form enctype='multipart/form-data' id='importquestion' name='importquestion' action='<?php echo $this->createUrl('admin/question/import'); ?>' method='post' onsubmit='return validatefilename(this,"<?php $clang->eT('Please select a file to import!','js'); ?>");'>

@@ -19,8 +19,8 @@ foreach ($getlangvalues as $keycode => $keydesc)
 $langnames = implode(";", $lname);
 /* Build the columnNames for the extra attributes */
 /* and, build the columnModel */
-$names = GetTokenFieldsAndNames($surveyid, true);
-$attributes = GetAttributeFieldNames($surveyid);
+$names = getTokenFieldsAndNames($surveyid, true);
+$attributes = getAttributeFieldNames($surveyid);
 if (count($attributes) > 0)
 {
     foreach ($names as $name)

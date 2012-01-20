@@ -173,7 +173,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
     //CHECK THAT ALL CONDITIONS SET ARE FOR QUESTIONS THAT PRECEED THE QUESTION CONDITION
     //A: Make an array of all the qids in order of appearance
     //	$qorderquery="SELECT * FROM {{questions}}, {{groups}} WHERE {{questions}}.gid={{groups}}.gid AND {{questions}}.sid={$_GET['sid']} ORDER BY {{groups}}.sortorder, {{questions}}.title";
-    //	$qorderresult=db_execute_assosc($qorderquery) or safe_die("Couldn't generate a list of questions in order<br />$qorderquery<br />");
+    //	$qorderresult=db_execute_assosc($qorderquery) or safeDie("Couldn't generate a list of questions in order<br />$qorderquery<br />");
     //	$qordercount=$qorderresult->RecordCount();
     //	$c=0;
     //	while ($qorderrow=$qorderresult->FetchRow())
@@ -186,7 +186,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
     $qorderresult = Yii::app()->db->createCommand($qorderquery)->query()->readAll();
     $qrows = array(); //Create an empty array in case FetchRow does not return any rows
     foreach ($qorderresult as $qrow) {$qrows[] = $qrow;} // Get table output into array
-    usort($qrows, 'GroupOrderThenQuestionOrder'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
+    usort($qrows, 'groupOrderThenQuestionOrder'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
     $c=0;
     foreach ($qrows as $qr)
     {
@@ -229,7 +229,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
     }
 
     //CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
-    $fieldmap = createFieldMap($surveyid,'full',false,false,GetbaseLanguageFromSurveyid($surveyid));
+    $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
     if (isset($fieldmap))
     {
         foreach($fieldmap as $fielddata)
@@ -286,7 +286,7 @@ function activateSurvey($surveyid, $simulate = false)
     }
 
     //Get list of questions for the base language
-    $fieldmap = createFieldMap($surveyid,'short',false,false,GetbaseLanguageFromSurveyid($surveyid));
+    $fieldmap = createFieldMap($surveyid,'short',false,false,getBaseLanguageFromSurveyID($surveyid));
 
     $createsurvey = array();
     foreach ($fieldmap as $j=>$arow) //With each question, create the appropriate field(s)
@@ -501,7 +501,7 @@ function activateSurvey($surveyid, $simulate = false)
         if (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
         {
             $activateoutput .= $clang->gT("This survey allows public registration. A token table must also be created.")."<br /><br />\n";
-            $activateoutput .= "<input type='submit' value='".$clang->gT("Initialise tokens")."' onclick=\"".get2post(Yii::app()->getController()->createUrl("admin/tokens/index/surveyid/".$surveyid))."\" />\n";
+            $activateoutput .= "<input type='submit' value='".$clang->gT("Initialise tokens")."' onclick=\"".convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/index/surveyid/".$surveyid))."\" />\n";
         }
         else
         {
@@ -509,8 +509,8 @@ function activateSurvey($surveyid, $simulate = false)
 
             $activateoutput .= $clang->gT("This survey is now active, and responses can be recorded.")."<br /><br />\n";
             $activateoutput .= "<strong>".$clang->gT("Open-access mode").":</strong> ".$clang->gT("No invitation code is needed to complete the survey.")."<br />".$clang->gT("You can switch to the closed-access mode by initialising a token table with the button below.")."<br /><br />\n";
-            $activateoutput .= "<input type='submit' value='".$clang->gT("Switch to closed-access mode")."' onclick=\"".get2post(Yii::app()->getController()->createUrl("admin/tokens/surveyid/".$surveyid))."\" />\n";
-            $activateoutput .= "<input type='submit' value='".$clang->gT("No, thanks.")."' onclick=\"".get2post("$link")."\" />\n";
+            $activateoutput .= "<input type='submit' value='".$clang->gT("Switch to closed-access mode")."' onclick=\"".convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/surveyid/".$surveyid))."\" />\n";
+            $activateoutput .= "<input type='submit' value='".$clang->gT("No, thanks.")."' onclick=\"".convertGETtoPOST("$link")."\" />\n";
         }
         $activateoutput .= "</div><br />&nbsp;\n";
         $lsrcOutput = true;
@@ -538,7 +538,7 @@ function mssql_drop_constraint($fieldname, $tablename)
     $defaultname=$result['CONTRAINT_NAME'];
     if ($defaultname!=false)
     {
-        modify_database("","ALTER TABLE {{{$tablename}}} DROP CONSTRAINT {$defaultname[0]}"); echo $modifyoutput; flush();
+        modifyDatabase("","ALTER TABLE {{{$tablename}}} DROP CONSTRAINT {$defaultname[0]}"); echo $modifyoutput; flush();
     }
 }
 
@@ -557,6 +557,6 @@ function mssql_drop_primary_index($tablename)
     $primarykey=$result['CONTSTRAINT_NAME'];
     if ($primarykey!=false)
     {
-        modify_database("","ALTER TABLE {{{$tablename}}} DROP CONSTRAINT {$primarykey}"); echo $modifyoutput; flush();
+        modifyDatabase("","ALTER TABLE {{{$tablename}}} DROP CONSTRAINT {$primarykey}"); echo $modifyoutput; flush();
     }
 }

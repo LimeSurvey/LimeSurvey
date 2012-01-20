@@ -76,7 +76,7 @@ class Survey_permissions extends CActiveRecord
 			'translations'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Quick translation"),'description'=>$clang->gT("Permission to view & update the translations using the quick-translation feature"),'img'=>'translate')
 		);
 
-		uasort($aPermissions,"aComparePermission");
+		uasort($aPermissions,"comparePermission");
 		return $aPermissions;
 	}
 

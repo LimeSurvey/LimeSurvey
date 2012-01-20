@@ -93,18 +93,18 @@ class OptinController extends LSYii_Controller {
         //PRINT COMPLETED PAGE
         if (!$thissurvey['templatedir'])
         {
-            $thistpl=sGetTemplatePath($defaulttemplate);
+            $thistpl=getTemplatePath($defaulttemplate);
         }
         else
         {
-            $thistpl=sGetTemplatePath($thissurvey['templatedir']);
+            $thistpl=getTemplatePath($thissurvey['templatedir']);
         }
         $this->_renderHtml($html,$thistpl,$clang);
     }
 
     private function _renderHtml($html,$thistpl,$clang)
     {
-        sendcacheheaders();
+        sendCacheHeaders();
         doHeader();
         $data['html'] = $html;
         $data['thistpl'] = $thistpl;

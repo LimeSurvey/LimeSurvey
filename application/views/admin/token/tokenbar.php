@@ -17,7 +17,7 @@
                title='<?php $clang->eTview("Display tokens"); ?>' >
                 <img name='ViewAllButton' src='<?php echo $imageurl; ?>/document.png' alt='<?php $clang->eT("Display tokens"); ?>' />
             </a>
-            <?php if (bHasSurveyPermission($surveyid, 'tokens', 'create'))
+            <?php if (hasSurveyPermission($surveyid, 'tokens', 'create'))
             { ?>
                 <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/addnew/surveyid/$surveyid"); ?>', '_top')"
                    title='<?php $clang->eTview("Add new token entry"); ?>' >
@@ -30,7 +30,7 @@
 
             <?php
             }
-            if (bHasSurveyPermission($surveyid, 'tokens', 'update'))
+            if (hasSurveyPermission($surveyid, 'tokens', 'update'))
             {
                 ?>
                 <img src='<?php echo $imageurl; ?>/seperator.gif' alt='' />
@@ -40,7 +40,7 @@
                 </a>
 <?php
 }
-if (bHasSurveyPermission($surveyid, 'tokens', 'import'))
+if (hasSurveyPermission($surveyid, 'tokens', 'import'))
 {
     ?>
                 <img src='<?php echo $imageurl; ?>/seperator.gif' alt='' />
@@ -54,7 +54,7 @@ if (bHasSurveyPermission($surveyid, 'tokens', 'import'))
                 </a>
 <?php
 }
-if (bHasSurveyPermission($surveyid, 'tokens', 'export'))
+if (hasSurveyPermission($surveyid, 'tokens', 'export'))
 {
     ?>
                 <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/exportdialog/surveyid/$surveyid"); ?>', '_top')"
@@ -63,7 +63,7 @@ if (bHasSurveyPermission($surveyid, 'tokens', 'export'))
                 </a>
 <?php
 }
-if (bHasSurveyPermission($surveyid, 'tokens', 'update'))
+if (hasSurveyPermission($surveyid, 'tokens', 'update'))
 {
     ?>
                 <img src='<?php echo $imageurl; ?>/seperator.gif' alt='' />
@@ -86,7 +86,7 @@ if (bHasSurveyPermission($surveyid, 'tokens', 'update'))
                 <img src='<?php echo $imageurl; ?>/seperator.gif' alt='' />
             <?php
             }
-            if (bHasSurveyPermission($surveyid, 'tokens', 'update'))
+            if (hasSurveyPermission($surveyid, 'tokens', 'update'))
             {
                 ?>
                 <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/bouncesettings/surveyid/$surveyid"); ?>', '_top')"
@@ -96,7 +96,7 @@ if (bHasSurveyPermission($surveyid, 'tokens', 'update'))
                 <img src='<?php echo $imageurl; ?>/seperator.gif' alt='' />
             <?php
             }
-            if (bHasSurveyPermission($surveyid, 'surveyactivation', 'update'))
+            if (hasSurveyPermission($surveyid, 'surveyactivation', 'update'))
             {
                 ?>
                 <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/kill/surveyid/$surveyid"); ?>', '_top')"

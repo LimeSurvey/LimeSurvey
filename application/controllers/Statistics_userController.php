@@ -66,7 +66,7 @@ class Statistics_userController extends LSYii_Controller {
 
 		if(!isset($surveyid))
 		{
-			$surveyid=returnglobal('sid');
+			$surveyid=returnGlobal('sid');
 		}
 		else
 		{
@@ -75,7 +75,7 @@ class Statistics_userController extends LSYii_Controller {
 		if (!$surveyid)
 		{
 		    //This next line ensures that the $surveyid value is never anything but a number.
-		    safe_die('You have to provide a valid survey ID.');
+		    safeDie('You have to provide a valid survey ID.');
 		}
 
 
@@ -84,7 +84,7 @@ class Statistics_userController extends LSYii_Controller {
 		    $actresult = Survey::model()->findAll('sid = :sid AND active = :active', array(':sid' => $surveyid, ':active' => 'Y'));      //Checked
 		    if (count($actresult) == 0)
 		    {
-			    safe_die('You have to provide a valid survey ID.');
+			    safeDie('You have to provide a valid survey ID.');
 			}
 		    else
 		    {
@@ -92,10 +92,10 @@ class Statistics_userController extends LSYii_Controller {
 		        // CHANGE JSW_NZ - let's get the survey title for display
 		        $thisSurveyTitle = $surveyinfo["name"];
 		        // CHANGE JSW_NZ - let's get css from individual template.css - so define path
-		        $thisSurveyCssPath = sGetTemplateURL($surveyinfo["template"]);
+		        $thisSurveyCssPath = getTemplateURL($surveyinfo["template"]);
 		        if ($surveyinfo['publicstatistics']!='Y')
 		        {
-		            safe_die('The public statistics for this survey are deactivated.');
+		            safeDie('The public statistics for this survey are deactivated.');
 		        }
 
 		        //check if graphs should be shown for this survey
@@ -165,7 +165,7 @@ class Statistics_userController extends LSYii_Controller {
 
 		//Create header (fixes bug #3097)
 		$surveylanguage= $language;
-		sendcacheheaders();
+		sendCacheHeaders();
 		$condition = false;
 		$header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
 		. "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"".$surveylanguage."\" lang=\"".$surveylanguage."\"";
@@ -204,7 +204,7 @@ class Statistics_userController extends LSYii_Controller {
 
 
 		//SORT IN NATURAL ORDER!
-		usort($rows, 'GroupOrderThenQuestionOrder');
+		usort($rows, 'groupOrderThenQuestionOrder');
 
 		//put the question information into the filter array
 		foreach ($rows as $row)
@@ -215,7 +215,7 @@ class Statistics_userController extends LSYii_Controller {
 		    $row['type'],
 		    $row['title'],
 		    $row['group_name'],
-		    FlattenText($row['question']));
+		    flattenText($row['question']));
 		}
 
 		//number of records for this survey

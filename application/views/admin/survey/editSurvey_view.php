@@ -23,7 +23,7 @@
 </div>
 
 <?php
-    if (bHasSurveyPermission($surveyid,'surveysettings','update'))
+    if (hasSurveyPermission($surveyid,'surveysettings','update'))
     {?>
     <p><button onclick="if (UpdateLanguageIDs(mylangs,'<?php $clang->eT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js");?>')) {$('#addnewsurvey').submit();}" class='standardbtn' ><?php $clang->eT("Save"); ?></button></p>
     <p><button onclick="if (UpdateLanguageIDs(mylangs,'<?php $clang->eT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js");?>')) { document.getElementById('surveysettingsaction').value = 'updatesurveysettingsandeditlocalesettings'; $('#addnewsurvey').submit();}" class='standardbtn' ><?php $clang->eT("Save & edit survey text elements");?> >></button></p><br /><?php
@@ -36,10 +36,10 @@
             <li><label for='targetquestion'><?php $clang->eT('Target (sub-)question:'); ?></label><select name='targetquestion' id='targetquestion' size='1'>
                     <option value=''><?php $clang->eT('(No target question)'); ?></option>
                     <?php foreach ($questions as $question){?>
-                        <option value='<?php echo $question['qid'].'-'.$question['sqid'];?>'><?php echo $question['title'].': '.ellipsize(FlattenText($question['question'],true,true),43,.70);
+                        <option value='<?php echo $question['qid'].'-'.$question['sqid'];?>'><?php echo $question['title'].': '.ellipsize(flattenText($question['question'],true,true),43,.70);
                                 if ($question['sqquestion']!='')
                                 {
-                                    echo ' - '.ellipsize(FlattenText($question['sqquestion'],true,true),30,.75);
+                                    echo ' - '.ellipsize(flattenText($question['sqquestion'],true,true),30,.75);
                                 }
                         ?></option> <?php
                     }?>

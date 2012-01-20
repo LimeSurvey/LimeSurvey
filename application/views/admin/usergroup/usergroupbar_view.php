@@ -42,7 +42,7 @@
     Yii::app()->session['loginID'] == $grow['owner_id'])
     { ?>
 
-        <a href='#' onclick="if (confirm('<?php $clang->eT("Are you sure you want to delete this entry?","js"); ?>')) { <?php echo get2post($this->createUrl('admin/usergroups/delete')."?action=delusergroup&amp;ugid=$ugid"); ?>}"
+        <a href='#' onclick="if (confirm('<?php $clang->eT("Are you sure you want to delete this entry?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl('admin/usergroups/delete')."?action=delusergroup&amp;ugid=$ugid"); ?>}"
          title='<?php $clang->eTview("Delete current user group"); ?>'>
         <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/delete.png' alt='<?php $clang->eT("Delete current user group"); ?>' name='DeleteUserGroup'  /></a>
     <?php }
@@ -55,7 +55,7 @@
     </div>
     <div class='menubar-right'>
     <label for="ugid"><?php $clang->eT("User groups"); ?>:</label>  <select name='ugid' id='ugid' onchange="window.location=this.options[this.selectedIndex].value">
-    <?php echo getusergrouplist($ugid,'optionlist'); ?>
+    <?php echo getUserGroupList($ugid,'optionlist'); ?>
     </select>
     <?php if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
     { ?>

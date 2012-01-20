@@ -63,9 +63,9 @@
                         $usr['uid'] != Yii::app()->session['loginID'] ) ||
                         (Yii::app()->session['USER_RIGHT_CREATE_USER'] == 1 &&
                         $usr['parent_id'] == Yii::app()->session['loginID'])) && $usr['uid']!=1) { ?>
-                        <form method='post' action='<?php echo $this->createUrl("admin/user/setuserrights/");?>'>
+                        <form method='post' action='<?php echo $this->createUrl("admin/user/setUserRights/");?>'>
                             <input type='image' src='<?php echo $imageurl;?>/security_16.png' alt='<?php $clang->eT("Set global permissions for this user");?>' />
-                            <input type='hidden' name='action' value='setuserrights' />
+                            <input type='hidden' name='action' value='setUserRights' />
                             <input type='hidden' name='user' value='<?php echo $usr['user'];?>' />
                             <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
                         </form>

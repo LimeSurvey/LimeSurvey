@@ -12,7 +12,7 @@
  *
  *	$Id$
  */
-// Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
+// Security Checked: POST, GET, SESSION, REQUEST, returnGlobal, DB
 
 /*************** LDAP Functions *************/
 /*					    */
@@ -114,7 +114,7 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid) {
 			'email_attr','token_attr', 'language');
     //			'attr1', 'attr2');
 
-    $aTokenAttr=GetAttributeFieldNames($surveyid);
+    $aTokenAttr=getAttributeFieldNames($surveyid);
     foreach ($aTokenAttr as $thisattrfieldname)
     {
         $attridx=substr($thisattrfieldname,10); // the 'attribute_' prefix is 10 chars long

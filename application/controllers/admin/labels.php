@@ -49,7 +49,7 @@ class labels extends Survey_Common_Action
     public function importlabelresources()
     {
         $clang = $this->getController()->lang;
-        $lid = returnglobal('lid');
+        $lid = returnGlobal('lid');
 
         if (!empty($lid))
         {
@@ -121,7 +121,7 @@ class labels extends Survey_Common_Action
     public function import()
     {
         $clang = $this->getController()->lang;
-        $action = returnglobal('action');
+        $action = returnGlobal('action');
         $aViewUrls = array();
 
         if ($action == 'importlabels')
@@ -330,9 +330,9 @@ class labels extends Survey_Common_Action
             if (isset($_POST['method']) && get_magic_quotes_gpc())
                 $_POST['method'] = stripslashes($_POST['method']);
 
-            $action = returnglobal('action');
+            $action = returnGlobal('action');
             Yii::app()->loadHelper('admin/label');
-            $lid = returnglobal('lid');
+            $lid = returnGlobal('lid');
 
             if ($action == "updateset")
             {
@@ -438,7 +438,7 @@ class labels extends Survey_Common_Action
         {
             if (empty($aData['labelsets']))
             {
-                $aData['labelsets'] = getlabelsets();
+                $aData['labelsets'] = getLabelSets();
             }
 
             if (empty($aData['lid']))

@@ -38,7 +38,7 @@
             <?php
                 if (Yii::app()->getConfig('iFileUploadTotalSpaceMB')>0)
                 {
-                    $fUsed=fCalculateTotalFileUploadUsage();
+                    $fUsed=calculateTotalFileUploadUsage();
             ?>
                     <tr>
                     <th ><?php $clang->eT("Used/free space for file uploads"); ?>:</th><td><?php echo sprintf('%01.2F',$fUsed); ?> MB / <?php echo sprintf('%01.2F',Yii::app()->getConfig('iFileUploadTotalSpaceMB')-$fUsed); ?> MB</td>
@@ -100,7 +100,7 @@
                 <?php
 
                     $thisdefaulttemplate=getGlobalSetting('defaulttemplate');
-                    $templatenames=array_keys(gettemplatelist());
+                    $templatenames=array_keys(getTemplateList());
 
                 ?>
 
@@ -136,7 +136,7 @@
                 <?php $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']); ?>
                 <li><label for='timeadjust'><?php $clang->eT("Time difference (in hours):"); ?></label>
                     <span><input type='text' size='10' id='timeadjust' name='timeadjust' value="<?php echo htmlspecialchars(str_replace(array('+',' hours'),array('',''),getGlobalSetting('timeadjust'))); ?>" />
-                        <?php $clang->eT("Server time:").' '.convertDateTimeFormat(date('Y-m-d H:i:s'),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i')." - ". $clang->gT("Corrected time :").' '.convertDateTimeFormat(date_shift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i'); ?>
+                        <?php $clang->eT("Server time:").' '.convertDateTimeFormat(date('Y-m-d H:i:s'),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i')." - ". $clang->gT("Corrected time :").' '.convertDateTimeFormat(dateShift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i'); ?>
                     </span></li>
 
                 <?php $thisusepdfexport=getGlobalSetting('usepdfexport'); ?>

@@ -115,7 +115,7 @@ class remotecontrol_handle
         if ($this->_doLogin($username, $password))
         {
             $this->_jumpStartSession($username);
-            $session_key = sRandomChars(32);
+            $session_key = randomChars(32);
 
             $session = new Sessions;
             $session->id = $session_key;
@@ -158,7 +158,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($session_key))
         {
-            if (bHasSurveyPermission($sid, 'survey', 'delete'))
+            if (hasSurveyPermission($sid, 'survey', 'delete'))
             {
                 Survey::model()->deleteAllByAttributes(array('sid' => $sid));
                 rmdirr(Yii::app()->getConfig("uploaddir") . '/surveys/' . $sid);
@@ -184,7 +184,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($session_key))
         {
-            if (bHasSurveyPermission($sid, 'response', 'create'))
+            if (hasSurveyPermission($sid, 'response', 'create'))
             {
                 if (!Yii::app()->db->schema->getTable('{{survey_' . $sid . '}}'))
                     throw new Zend_XmlRpc_Server_Exception('No survey response table', 12);
@@ -197,7 +197,7 @@ class remotecontrol_handle
                 if (!isset($aResponseData['startdate']))
                     $aResponseData['startdate'] = date("Y-m-d H:i:s");
                 if (!isset($aResponseData['startlanguage']))
-                    $aResponseData['startlanguage'] = GetBaseLanguageFromSurveyID($iSurveyID);
+                    $aResponseData['startlanguage'] = getBaseLanguageFromSurveyID($iSurveyID);
 
                 Survey_dynamic::sid($sid);
                 $survey_dynamic = new Survey_dynamic;
@@ -229,7 +229,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($session_key))
         {
-            if (bHasSurveyPermission($sid, 'tokens', 'create'))
+            if (hasSurveyPermission($sid, 'tokens', 'create'))
             {
                 if (!Yii::app()->db->schema->getTable('{{tokens_' . $sid . '}}'))
                     throw new Zend_XmlRpc_Server_Exception('No token table', 11);

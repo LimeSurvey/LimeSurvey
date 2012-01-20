@@ -121,7 +121,7 @@ class Questions extends CActiveRecord
         }
         $aAttributeNames = questionAttributes();
         $aAttributeNames = $aAttributeNames[$sQuestionType];
-        uasort($aAttributeNames, 'CategorySort');
+        uasort($aAttributeNames, 'categorySort');
         foreach ($aAttributeNames as $iKey => $aAttribute)
         {
             if ($aAttribute['i18n'] == false)

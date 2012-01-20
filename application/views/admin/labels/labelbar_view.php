@@ -8,7 +8,7 @@
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' border='0' hspace='0' align='left' alt='' />
             <a href='<?php echo $this->createUrl("admin/labels/editlabelset/lid/".$lid); ?>' title="<?php $clang->eTview("Edit label set"); ?>" >
  			<img name='EditLabelsetButton' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/edit.png' alt='<?php $clang->eT("Edit label set"); ?>' align='left'  /></a>
- 			<a href='#' title='<?php $clang->eTview("Delete label set"); ?>' onclick="if (confirm('<?php $clang->eT("Do you really want to delete this label set?","js"); ?>')) { <?php echo get2post($this->createUrl("admin/labels/process")."?action=deletelabelset&amp;lid=$lid"); ?>}" >
+ 			<a href='#' title='<?php $clang->eTview("Delete label set"); ?>' onclick="if (confirm('<?php $clang->eT("Do you really want to delete this label set?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/labels/process")."?action=deletelabelset&amp;lid=$lid"); ?>}" >
  			<img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/delete.png' border='0' alt='<?php $clang->eT("Delete label set"); ?>' align='left' /></a>
  			<img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' border='0' hspace='0' align='left' alt='' />
  			<a href='<?php echo $this->createUrl("admin/export/dumplabel/lid/$lid");?>' title="<?php $clang->eTview("Export this label set"); ?>" >

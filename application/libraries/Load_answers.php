@@ -18,7 +18,7 @@ class Load_answers {
 		extract($args);
 
 		if (!isset($thistpl)) {die ("Error!");}
-		sendcacheheaders();
+		sendCacheHeaders();
 		doHeader();
 		foreach(file("$thistpl/startpage.pstpl") as $op)
 		{

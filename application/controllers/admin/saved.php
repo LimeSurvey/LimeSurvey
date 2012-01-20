@@ -30,7 +30,7 @@ class saved extends Survey_Common_Action
         $clang = $this->getController()->lang;
         $aViewUrls = array();
 
-        if (!bHasSurveyPermission($iSurveyId, 'responses', 'read'))
+        if (!hasSurveyPermission($iSurveyId, 'responses', 'read'))
         {
             die();
         }

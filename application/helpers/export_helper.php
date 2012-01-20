@@ -25,7 +25,7 @@ function strip_tags_full($string) {
     //$string = str_replace(array("\r\n","\r","\n",'-oth-'), '', $string);
     //The backslashes must be escaped twice, once for php, and again for the regexp
     //$string = str_replace("'|\\\\'", "&apos;", $string);
-    return FlattenText($string);
+    return flattenText($string);
 }
 
 /**
@@ -59,7 +59,7 @@ function spss_export_data ($na = null) {
     $num_fields = isset($result[0]) ? count($result[0]) : 0;
 
     //This shouldn't occur, but just to be safe:
-    if (count($fields)<>$num_fields) safe_die("Database inconsistency error");
+    if (count($fields)<>$num_fields) safeDie("Database inconsistency error");
 
     foreach ($result as $row) {
         $row = array_change_key_case($row,CASE_UPPER);
@@ -281,7 +281,7 @@ function spss_getvalues ($field = array(), $qidattributes = null ) {
 function spss_fieldmap($prefix = 'V') {
     global $surveyid, $typeMap, $clang, $surveyprivate, $tokensexist, $language;
 
-    $fieldmap = createFieldMap($surveyid,'full',false,false,GetbaseLanguageFromSurveyid($surveyid));
+    $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
 
     #See if tokens are being used
     $tokensexist = Yii::app()->db->schema->getTable('{{tokens_'.$surveyid . '}}');
@@ -302,7 +302,7 @@ function spss_fieldmap($prefix = 'V') {
 
     $fields=array();
     if (isset($tokensexist) && $tokensexist == true && $surveyprivate == 'N') {
-        $tokenattributes=GetTokenFieldsAndNames($surveyid,false);
+        $tokenattributes=getTokenFieldsAndNames($surveyid,false);
         foreach ($tokenattributes as $attributefield=>$attributedescription)
         {
             //Drop the token field, since it is in the survey too
@@ -441,7 +441,7 @@ function spss_getquery() {
     #See if tokens are being used
     if (isset($tokensexist) && $tokensexist == true && $surveyprivate == 'N') {
         $query="SELECT ";
-        $tokenattributes=GetTokenFieldsAndNames($surveyid,false);
+        $tokenattributes=getTokenFieldsAndNames($surveyid,false);
         foreach ($tokenattributes as $attributefield=>$attributedescription) {
             //Drop the token field, since it is in the survey too
             if($attributefield!='token') {
@@ -455,7 +455,7 @@ function spss_getquery() {
         $query = "SELECT *
         FROM {{survey_$surveyid}}";
     }
-    switch (incompleteAnsFilterstate()) {
+    switch (incompleteAnsFilterState()) {
         case 'inc':
             //Inclomplete answers only
             $query .= ' WHERE submitdate is null ';
@@ -521,7 +521,7 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
                     {
                         if (is_numeric($Key[0])) $Key='_'.$Key; // mask invalid element names with an underscore
                         $Key=str_replace('#','-',$Key);
-                        if (!$xmlwriter->startElement($Key)) safe_die('Invalid element key: '.$Key);
+                        if (!$xmlwriter->startElement($Key)) safeDie('Invalid element key: '.$Key);
                         // Remove invalid XML characters
                         if ($Value!='') {
                             $Value=str_replace(']]>','',$Value);
@@ -1471,7 +1471,7 @@ function lsrccsv_export($surveyid)
     // 11. Quota
     // 12. Quota Members
 
-    if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+    if (!isset($surveyid)) {$surveyid=returnGlobal('sid');}
 
 
     if (!$surveyid)
@@ -1834,11 +1834,11 @@ function tokens_export($surveyid)
     {
         if (in_array($databasetype, array('odbc_mssql', 'odbtp', 'mssql_n', 'mssqlnative')))
         {
-            $bquery .= ' and CAST(email as varchar) like '.db_quoteall('%'.$_POST['filteremail'].'%', true);
+            $bquery .= ' and CAST(email as varchar) like '.dbQuoteAll('%'.$_POST['filteremail'].'%', true);
         }
         else
         {
-            $bquery .= ' and email like '.db_quoteall('%'.$_POST['filteremail'].'%', true);
+            $bquery .= ' and email like '.dbQuoteAll('%'.$_POST['filteremail'].'%', true);
         }
     }
     if ($_POST['tokenstatus']==1)
@@ -1878,7 +1878,7 @@ function tokens_export($surveyid)
 
     if ($_POST['tokenlanguage']!='')
     {
-        $bquery .= " and language=".db_quoteall($_POST['tokenlanguage']);
+        $bquery .= " and language=".dbQuoteAll($_POST['tokenlanguage']);
     }
     $bquery .= " ORDER BY tid";
 
@@ -1887,8 +1887,8 @@ function tokens_export($surveyid)
     // Export UTF8 WITH BOM
     $tokenoutput = chr(hexdec('EF')).chr(hexdec('BB')).chr(hexdec('BF'));
     $tokenoutput .= "tid,firstname,lastname,email,emailstatus,token,language,validfrom,validuntil,invited,reminded,remindercount,completed,usesleft";
-    $attrfieldnames = GetAttributeFieldnames($surveyid);
-    $attrfielddescr = GetTokenFieldsAndNames($surveyid, true);
+    $attrfieldnames = getAttributeFieldNames($surveyid);
+    $attrfielddescr = getTokenFieldsAndNames($surveyid, true);
     foreach ($attrfieldnames as $attr_name)
     {
         $tokenoutput .=", $attr_name";

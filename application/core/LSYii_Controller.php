@@ -112,7 +112,7 @@ abstract class LSYii_Controller extends CController
 		//GlobalSettings Helper
 		Yii::import("application.helpers.globalsettings");
 
-		SSL_mode();// This really should be at the top but for it to utilise getGlobalSetting() it has to be here
+		enforceSSLMode();// This really should be at the top but for it to utilise getGlobalSetting() it has to be here
 
 		//SET LOCAL TIME
 		$timeadjust = Yii::app()->getConfig("timeadjust");

@@ -14,7 +14,7 @@
             <td align='center' valign='top' rowspan='3'>
                 <form name='editTemplate' method='post' action='<?php echo $this->createUrl("admin/templates/templatesavechanges"); ?>'>
                     <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
-                    <input type='hidden' name='screenname' value='<?php echo html_escape($screenname); ?>' />
+                    <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
                     <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
                     <input type='hidden' name='action' value='templatesavechanges' />
 
@@ -63,7 +63,7 @@
                                         style='color: #BBBBBB;' disabled='disabled' alt='<?php $clang->eT("Files in a standard template cannot be deleted."); ?>'
                                         <?php } ?>
                                     />
-                                <input type='hidden' name='screenname' value='<?php echo html_escape($screenname); ?>' />
+                                <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
                                 <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
                                 <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
                                 <input type='hidden' name='action' value='templatefiledelete' />
@@ -82,7 +82,7 @@
 
                                     />
                                 <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
-                                <input type='hidden' name='screenname' value='<?php echo html_escape($screenname); ?>' />
+                                <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
                                 <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
                                 <input type='hidden' name='action' value='templateuploadfile' />
                             </td></tr></table>

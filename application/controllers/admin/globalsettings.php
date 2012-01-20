@@ -114,21 +114,21 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('defaulthtmleditormode', sanitize_paranoid_string($_POST['defaulthtmleditormode']));
         setGlobalSetting('defaulttemplate', sanitize_paranoid_string($_POST['defaulttemplate']));
         setGlobalSetting('emailmethod', strip_tags($_POST['emailmethod']));
-        setGlobalSetting('emailsmtphost', strip_tags(returnglobal('emailsmtphost')));
-        if (returnglobal('emailsmtppassword') != 'somepassword') {
-            setGlobalSetting('emailsmtppassword', strip_tags(returnglobal('emailsmtppassword')));
+        setGlobalSetting('emailsmtphost', strip_tags(returnGlobal('emailsmtphost')));
+        if (returnGlobal('emailsmtppassword') != 'somepassword') {
+            setGlobalSetting('emailsmtppassword', strip_tags(returnGlobal('emailsmtppassword')));
         }
-        setGlobalSetting('bounceaccounthost', strip_tags(returnglobal('bounceaccounthost')));
-        setGlobalSetting('bounceaccounttype', strip_tags(returnglobal('bounceaccounttype')));
-        setGlobalSetting('bounceencryption', strip_tags(returnglobal('bounceencryption')));
-        setGlobalSetting('bounceaccountuser', strip_tags(returnglobal('bounceaccountuser')));
+        setGlobalSetting('bounceaccounthost', strip_tags(returnGlobal('bounceaccounthost')));
+        setGlobalSetting('bounceaccounttype', strip_tags(returnGlobal('bounceaccounttype')));
+        setGlobalSetting('bounceencryption', strip_tags(returnGlobal('bounceencryption')));
+        setGlobalSetting('bounceaccountuser', strip_tags(returnGlobal('bounceaccountuser')));
 
-        if (returnglobal('bounceaccountpass') != 'enteredpassword') {
-            setGlobalSetting('bounceaccountpass', strip_tags(returnglobal('bounceaccountpass')));
+        if (returnGlobal('bounceaccountpass') != 'enteredpassword') {
+            setGlobalSetting('bounceaccountpass', strip_tags(returnGlobal('bounceaccountpass')));
         }
-        setGlobalSetting('emailsmtpssl', sanitize_paranoid_string(returnglobal('emailsmtpssl')));
-        setGlobalSetting('emailsmtpdebug', sanitize_int(returnglobal('emailsmtpdebug')));
-        setGlobalSetting('emailsmtpuser', strip_tags(returnglobal('emailsmtpuser')));
+        setGlobalSetting('emailsmtpssl', sanitize_paranoid_string(returnGlobal('emailsmtpssl')));
+        setGlobalSetting('emailsmtpdebug', sanitize_int(returnGlobal('emailsmtpdebug')));
+        setGlobalSetting('emailsmtpuser', strip_tags(returnGlobal('emailsmtpuser')));
         setGlobalSetting('filterxsshtml', strip_tags($_POST['filterxsshtml']));
         setGlobalSetting('siteadminbounce', strip_tags($_POST['siteadminbounce']));
         setGlobalSetting('siteadminemail', strip_tags($_POST['siteadminemail']));

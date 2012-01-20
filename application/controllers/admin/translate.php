@@ -301,7 +301,7 @@ class translate extends Survey_Common_Action {
         $surveyinfo = Survey::model()->with('languagesettings')->findByPk($surveyid);
         $surveyinfo = array_merge($surveyinfo->attributes, $surveyinfo->languagesettings->attributes);
 
-		$surveyinfo = array_map('FlattenText', $surveyinfo);
+		$surveyinfo = array_map('flattenText', $surveyinfo);
 		$menutext = ( $surveyinfo['active'] == "N" ) ? $clang->gT("Test This Survey") : $clang->gT("Execute This Survey");
 		$menutext2 = ( $surveyinfo['active'] == "N" ) ? $clang->gTview("Test This Survey") : $clang->gTview("Execute This Survey");
 
@@ -1076,7 +1076,7 @@ class translate extends Survey_Common_Action {
 			'converted' =>  $sOutput
 		);
 
-        return ls_json_encode($aOutput) . "\n";
+        return lsJSONEncode($aOutput) . "\n";
     }
 
     /**

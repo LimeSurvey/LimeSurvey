@@ -35,7 +35,7 @@ class export extends Survey_Common_Action {
         $action = Yii::app()->request->getParam('action');
         $surveyid = sanitize_int(Yii::app()->request->getParam('surveyid'));
 
-        if ( bHasSurveyPermission($surveyid, 'surveycontent', 'export') )
+        if ( hasSurveyPermission($surveyid, 'surveycontent', 'export') )
 		{
 			$this->_surveyexport($action, $surveyid);
             return;
@@ -69,7 +69,7 @@ class export extends Survey_Common_Action {
 
         if ( count($aExportedFiles) > 0 )
 		{
-            $aZIPFileName=$this->config->item("tempdir") . DIRECTORY_SEPARATOR . sRandomChars(30);
+            $aZIPFileName=$this->config->item("tempdir") . DIRECTORY_SEPARATOR . randomChars(30);
 
             $this->load->library("admin/pclzip/pclzip", array('p_zipname' => $aZIPFileName));
 
@@ -111,7 +111,7 @@ class export extends Survey_Common_Action {
         $gid = sanitize_int(Yii::app()->request->getParam('gid'));
         $surveyid = sanitize_int(Yii::app()->request->getParam('surveyid'));
 
-        if ( Yii::app()->getConfig("export4lsrc") === TRUE && bHasSurveyPermission($surveyid, 'survey', 'export') )
+        if ( Yii::app()->getConfig("export4lsrc") === TRUE && hasSurveyPermission($surveyid, 'survey', 'export') )
 		{
             if ( ! empty($_POST['action']) )
             {
@@ -137,7 +137,7 @@ class export extends Survey_Common_Action {
         $qid = sanitize_int(Yii::app()->request->getParam('qid'));
         $surveyid = sanitize_int(Yii::app()->request->getParam('surveyid'));
 
-        if( Yii::app()->getConfig('export4lsrc') === TRUE && bHasSurveyPermission($surveyid, 'survey', 'export') )
+        if( Yii::app()->getConfig('export4lsrc') === TRUE && hasSurveyPermission($surveyid, 'survey', 'export') )
 		{
             if( ! empty($_POST['action']) )
             {
@@ -162,17 +162,17 @@ class export extends Survey_Common_Action {
         $surveyid = sanitize_int(Yii::app()->request->getParam('surveyid'));
 
         if ( ! isset($imageurl) ) { $imageurl = "./images"; }
-        if ( ! isset($surveyid) ) { $surveyid = returnglobal('sid'); }
-        if ( ! isset($exportstyle) ) { $exportstyle = returnglobal('exportstyle'); }
-        if ( ! isset($answers) ) { $answers = returnglobal('answers'); }
-        if ( ! isset($type) ) { $type = returnglobal('type'); }
-        if ( ! isset($convertyto1) ) { $convertyto1 = returnglobal('convertyto1'); }
-        if ( ! isset($convertnto2) ) { $convertnto2 = returnglobal('convertnto2'); }
-        if ( ! isset($convertspacetous) ) { $convertspacetous = returnglobal('convertspacetous'); }
+        if ( ! isset($surveyid) ) { $surveyid = returnGlobal('sid'); }
+        if ( ! isset($exportstyle) ) { $exportstyle = returnGlobal('exportstyle'); }
+        if ( ! isset($answers) ) { $answers = returnGlobal('answers'); }
+        if ( ! isset($type) ) { $type = returnGlobal('type'); }
+        if ( ! isset($convertyto1) ) { $convertyto1 = returnGlobal('convertyto1'); }
+        if ( ! isset($convertnto2) ) { $convertnto2 = returnGlobal('convertnto2'); }
+        if ( ! isset($convertspacetous) ) { $convertspacetous = returnGlobal('convertspacetous'); }
 
         $clang = Yii::app()->lang;
 
-        if ( ! bHasSurveyPermission($surveyid, 'responses', 'export') )
+        if ( ! hasSurveyPermission($surveyid, 'responses', 'export') )
         {
             exit;
         }
@@ -188,7 +188,7 @@ class export extends Survey_Common_Action {
         if ( ! $exportstyle )
         {
             //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-            $excesscols = createFieldMap($surveyid,'short',false,false,GetbaseLanguageFromSurveyid($surveyid));
+            $excesscols = createFieldMap($surveyid,'short',false,false,getBaseLanguageFromSurveyID($surveyid));
             $excesscols = array_keys($excesscols);
 
             $afieldcount = count($excesscols);
@@ -198,11 +198,11 @@ class export extends Survey_Common_Action {
 			$selecthide = "'";
 			$selectshow = "";
 			$selectinc = "";
-            if ( incompleteAnsFilterstate() == "filter" )
+            if ( incompleteAnsFilterState() == "filter" )
             {
                 $selecthide = "selected='selected'";
             }
-            elseif ( incompleteAnsFilterstate() == "inc" )
+            elseif ( incompleteAnsFilterState() == "inc" )
             {
                 $selectinc = "selected='selected'";
             }
@@ -264,7 +264,7 @@ class export extends Survey_Common_Action {
         $options->format = $type;
         $options->headerSpacesToUnderscores = $convertspacetous;
         $options->headingFormat = $exportstyle;
-        $options->responseCompletionState = incompleteAnsFilterstate();
+        $options->responseCompletionState = incompleteAnsFilterState();
 
         //If we have no data for the filter state then default to show all.
         if ( empty($options->responseCompletionState) )
@@ -297,7 +297,7 @@ class export extends Survey_Common_Action {
                 $dquery .= ", {{tokens_$surveyid}}.token";
             }
 
-			$attributeFields = GetTokenFieldsAndNames($surveyid, TRUE);
+			$attributeFields = getTokenFieldsAndNames($surveyid, TRUE);
 
             foreach ($attributeFields as $attr_name => $attr_desc)
             {
@@ -343,8 +343,8 @@ class export extends Survey_Common_Action {
 
 //		$typeMap = $this->_getTypeMap();
 
-        $filterstate = incompleteAnsFilterstate();
-        $spssver = returnglobal('spssver');
+        $filterstate = incompleteAnsFilterState();
+        $spssver = returnGlobal('spssver');
 
         if ( is_null($spssver) )
 		{
@@ -640,8 +640,8 @@ class export extends Survey_Common_Action {
         $headerComment = '';
         $tempFile = '';
 
-        if ( ! isset($surveyid) ) { $surveyid = returnglobal('sid'); }
-        $filterstate = incompleteAnsFilterstate();
+        if ( ! isset($surveyid) ) { $surveyid = returnGlobal('sid'); }
+        $filterstate = incompleteAnsFilterState();
 
         $headerComment = '#$Rev: 10193 $' . " $filterstate.\n";
 
@@ -886,7 +886,7 @@ class export extends Survey_Common_Action {
         //Exports all responses to a survey in special "Verified Voting" format.
         $clang = $this->getController()->lang;
 
-        if ( ! bHasSurveyPermission($surveyid, 'responses','export') )
+        if ( ! hasSurveyPermission($surveyid, 'responses','export') )
         {
             return;
         }
@@ -896,11 +896,11 @@ class export extends Survey_Common_Action {
 			$selecthide = "";
 			$selectshow = "";
 			$selectinc = "";
-            if( incompleteAnsFilterstate() == "inc" )
+            if( incompleteAnsFilterState() == "inc" )
             {
                 $selectinc = "selected='selected'";
             }
-            elseif ( incompleteAnsFilterstate() == "filter" )
+            elseif ( incompleteAnsFilterState() == "filter" )
             {
                 $selecthide = "selected='selected'";
             }
@@ -920,14 +920,14 @@ class export extends Survey_Common_Action {
         elseif ( isset($surveyid) && $surveyid )
         {
             //Export is happening
-            $extension = sanitize_paranoid_string(returnglobal('extension'));
+            $extension = sanitize_paranoid_string(returnGlobal('extension'));
 
 			$fn = "vvexport_$surveyid." . $extension;
 			$this->_addHeaders($fn, "text/comma-separated-values", 0, "cache");
 
             $s="\t";
 
-            $fieldmap = createFieldMap($surveyid,'full',false,false,GetbaseLanguageFromSurveyid($surveyid));
+            $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
             $surveytable = "{{survey_$surveyid}}";
 
             Survey::model()->findByPk($surveyid)->language;
@@ -957,11 +957,11 @@ class export extends Survey_Common_Action {
             $vvoutput .= $secondline . "\n";
             $query = "SELECT * FROM ".Yii::app()->db->quoteTableName($surveytable);
 
-			if (incompleteAnsFilterstate() == "inc")
+			if (incompleteAnsFilterState() == "inc")
             {
                 $query .= " WHERE submitdate IS NULL ";
             }
-            elseif (incompleteAnsFilterstate() == "filter")
+            elseif (incompleteAnsFilterState() == "filter")
             {
                 $query .= " WHERE submitdate >= '01/01/1980' ";
             }
@@ -1141,7 +1141,7 @@ class export extends Survey_Common_Action {
         // 1. questions
         // 2. answers
 
-        $lids=returnglobal('lids');
+        $lids=returnGlobal('lids');
 
         if ( ! $lid && ! $lids )
 		{
@@ -1193,11 +1193,11 @@ class export extends Survey_Common_Action {
 
         $sTempDir = Yii::app()->getConfig("tempdir");
 
-        $aZIPFileName = $sTempDir . DIRECTORY_SEPARATOR . sRandomChars(30);
-        $sLSSFileName = $sTempDir . DIRECTORY_SEPARATOR . sRandomChars(30);
-        $sLSRFileName = $sTempDir . DIRECTORY_SEPARATOR . sRandomChars(30);
-        $sLSTFileName = $sTempDir . DIRECTORY_SEPARATOR . sRandomChars(30);
-        $sLSIFileName = $sTempDir . DIRECTORY_SEPARATOR . sRandomChars(30);
+        $aZIPFileName = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
+        $sLSSFileName = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
+        $sLSRFileName = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
+        $sLSTFileName = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
+        $sLSIFileName = $sTempDir . DIRECTORY_SEPARATOR . randomChars(30);
 
     	Yii::import('application.libraries.admin.pclzip.pclzip', TRUE);
         $zip = new PclZip($aZIPFileName);

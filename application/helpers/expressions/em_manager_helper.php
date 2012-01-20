@@ -2733,11 +2733,11 @@ class LimeExpressionManager {
     private function _UpdateValuesInDatabase($updatedValues, $finished=false)
     {
         $message = '';
-        $_SESSION['datestamp']=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+        $_SESSION['datestamp']=dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
         if ($this->surveyOptions['active'] && !isset($_SESSION['srid']))
         {
             // Create initial insert row for this record
-            $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
+            $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
             $sdata = array(
                 "datestamp"=>$today,
                 "ipaddr"=>(($this->surveyOptions['ipaddr'] && isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : ''),
@@ -2791,16 +2791,16 @@ class LimeExpressionManager {
                     $thisstep = 1;
                     break;
             }
-            $setter[] = db_quote_id('lastpage') . "=" . db_quoteall($thisstep);
+            $setter[] = db_quote_id('lastpage') . "=" . dbQuoteAll($thisstep);
 
             if ($this->surveyOptions['datestamp'] && isset($_SESSION['datestamp'])) {
-                $setter[] = db_quote_id('datestamp') . "=" . db_quoteall($_SESSION['datestamp']);
+                $setter[] = db_quote_id('datestamp') . "=" . dbQuoteAll($_SESSION['datestamp']);
             }
             if ($this->surveyOptions['ipaddr'] && isset($_SERVER['REMOTE_ADDR'])) {
-                $setter[] = db_quote_id('ipaddr') . "=" . db_quoteall($_SERVER['REMOTE_ADDR']);
+                $setter[] = db_quote_id('ipaddr') . "=" . dbQuoteAll($_SERVER['REMOTE_ADDR']);
             }
             if ($finished) {
-                $setter[] = db_quote_id('submitdate') . "=" . db_quoteall($_SESSION['datestamp']);
+                $setter[] = db_quote_id('submitdate') . "=" . dbQuoteAll($_SESSION['datestamp']);
             }
 
             foreach ($updatedValues as $key=>$value)
@@ -2833,7 +2833,7 @@ class LimeExpressionManager {
                 }
                 else
                 {
-                    $setter[] = db_quote_id($key) . "=" . db_quoteall($val);
+                    $setter[] = db_quote_id($key) . "=" . dbQuoteAll($val);
                 }
             }
             $query .= implode(', ', $setter);
@@ -3869,7 +3869,7 @@ class LimeExpressionManager {
             {
                 if ($mandatoryTip != '')
                 {
-                    $debug_qmessage .= '----Mandatory Tip: ' . FlattenText($mandatoryTip) . "<br/>\n";
+                    $debug_qmessage .= '----Mandatory Tip: ' . flattenText($mandatoryTip) . "<br/>\n";
                 }
 
                 if ($prettyPrintValidTip != '')
@@ -3954,7 +3954,7 @@ class LimeExpressionManager {
         else if ($qInfo['hidden'] && $qInfo['type'] == '*')
         {
             // Process relevant equations, even if hidden, and write the result to the database
-            $result = FlattenText($LEM->ProcessString($qInfo['eqn'], $qInfo['qid'],NULL,false,1,1,false,false));
+            $result = flattenText($LEM->ProcessString($qInfo['eqn'], $qInfo['qid'],NULL,false,1,1,false,false));
             $sgqa = $LEM->qid2code[$qid];   // there will be only one, since Equation
             // Store the result of the Equation in the SESSION
             $_SESSION[$sgqa] = $result;
@@ -5302,7 +5302,7 @@ EOT;
                                     {
                                         if (file_exists($tmp . $phparray[$i]->filename))
                                         {
-                                            $sDestinationFileName = 'fu_' . sRandomChars(15);
+                                            $sDestinationFileName = 'fu_' . randomChars(15);
                                             if (!rename($tmp . $phparray[$i]->filename, $LEM->surveyOptions['target'] . $sDestinationFileName))
                                             {
                                                 echo "Error moving file to target destination";
@@ -5382,7 +5382,7 @@ EOT;
             $moveResult = LimeExpressionManager::NavigateForwards();
         }
 
-        $qtypes=getqtypelist('','array');
+        $qtypes=getQuestionTypeList('','array');
 
         templatereplace('{SITENAME}');  // to ensure that lime replacement fields loaded
 

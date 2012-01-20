@@ -101,7 +101,7 @@
 
         $register_errormsg = "";
         // Check the security question's answer
-        if (function_exists("ImageCreate") && captcha_enabled('registrationscreen',$thissurvey['usecaptcha']) )
+        if (function_exists("ImageCreate") && isCaptchaEnabled('registrationscreen',$thissurvey['usecaptcha']) )
         {
             if (!isset($_POST['loadsecurity']) ||
             !isset(Yii::app()->session['secanswer']) ||
@@ -112,7 +112,7 @@
         }
 
         //Check that the email is a valid style address
-        if (!validate_email(Yii::app()->request->getPost('register_email')))
+        if (!validateEmailAddress(Yii::app()->request->getPost('register_email')))
         {
             $register_errormsg .= $clang->gT("The email you used is not valid. Please try again.");
         }
@@ -167,7 +167,7 @@
 
         while ($mayinsert != true)
         {
-            $newtoken = sRandomChars($tokenlength);
+            $newtoken = randomChars($tokenlength);
             $ntquery = "SELECT * FROM {{tokens_$surveyid}} WHERE token='$newtoken'";
             $ntresult = db_execute_assoc($ntquery); //Checked
             if (!$ntresult->count()) {$mayinsert = true;}
@@ -177,8 +177,8 @@
         $postlastname=sanitize_xss_string(strip_tags(Yii::app()->request->getPost('register_lastname')));
         $starttime = sanitize_xss_string(Yii::app()->request->getPost('startdate'));
         $endtime = sanitize_xss_string(Yii::app()->request->getPost('enddate'));
-        /*$postattribute1=sanitize_xss_string(strip_tags(returnglobal('register_attribute1')));
-         $postattribute2=sanitize_xss_string(strip_tags(returnglobal('register_attribute2')));   */
+        /*$postattribute1=sanitize_xss_string(strip_tags(returnGlobal('register_attribute1')));
+         $postattribute2=sanitize_xss_string(strip_tags(returnGlobal('register_attribute2')));   */
 
         // Insert new entry into tokens db
         Tokens_dynamic::sid($thissurvey['sid']);
@@ -200,12 +200,12 @@
         /**
         $result = $connect->Execute($query, array($postfirstname,
         $postlastname,
-        returnglobal('register_email'),
+        returnGlobal('register_email'),
                                                   'OK',
         $newtoken)
 
         //                             $postattribute1,   $postattribute2)
-        ) or safe_die ($query."<br />".$connect->ErrorMsg());  //Checked - According to adodb docs the bound variables are quoted automatically
+        ) or safeDie ($query."<br />".$connect->ErrorMsg());  //Checked - According to adodb docs the bound variables are quoted automatically
         */
         $tid = Yii::app()->db->getLastInsertID();;
 
@@ -251,7 +251,7 @@
         if (SendEmailMessage($message, $subject, Yii::app()->request->getPost('register_email'), $from, $sitename,$useHtmlEmail,getBounceEmail($surveyid)))
         {
             // TLR change to put date into sent
-            $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
+            $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
             $query = "UPDATE {{tokens_$surveyid}}\n"
             ."SET sent='$today' WHERE tid=$tid";
             $result=db_execute_assoc($query) or show_error("Unable to execute this query : $query<br />");     //Checked
@@ -267,14 +267,14 @@
         //PRINT COMPLETED PAGE
         if (!$thissurvey['template'])
         {
-            $thistpl=sGetTemplatePath(validate_templatedir('default'));
+            $thistpl=getTemplatePath(validateTemplateDir('default'));
         }
         else
         {
-            $thistpl=sGetTemplatePath(validate_templatedir($thissurvey['template']));
+            $thistpl=getTemplatePath(validateTemplateDir($thissurvey['template']));
         }
 
-        sendcacheheaders();
+        sendCacheHeaders();
         doHeader();
 		Yii::app()->lang = $clang;
         foreach(file("$thistpl/startpage.pstpl") as $op)

@@ -56,19 +56,19 @@ class ExportSurveyResultsService
         //Do some input validation.
         if (empty($surveyId))
         {
-            safe_die('A survey ID must be supplied.');
+            safeDie('A survey ID must be supplied.');
         }
         if (empty($languageCode))
         {
-            safe_die('A language code must be supplied.');
+            safeDie('A language code must be supplied.');
         }
         if (empty($options))
         {
-            safe_die('Formatting options must be supplied.');
+            safeDie('Formatting options must be supplied.');
         }
         if (empty($options->selectedColumns))
         {
-            safe_die('At least one column must be selected for export.');
+            safeDie('At least one column must be selected for export.');
         }
         //echo $options->toString().PHP_EOL;
         $writer = null;
@@ -226,12 +226,12 @@ class SurveyDao
         $lang = Survey::model()->findByPk($intId)->language;
         $clang = new limesurvey_lang($lang);
 
-        $survey->fieldMap = createFieldMap($intId,'full',false,false,GetbaseLanguageFromSurveyid($intId));
+        $survey->fieldMap = createFieldMap($intId,'full',false,false,getBaseLanguageFromSurveyID($intId));
 
         if (empty($intId))
         {
             //The id given to us is not an integer, croak.
-            safe_die("An invalid survey ID was encountered: $sid");
+            safeDie("An invalid survey ID was encountered: $sid");
         }
 
 
@@ -299,7 +299,7 @@ class SurveyDao
         elseif (!isset($minRecord) xor !isset($maxRecord))
         {
             //One is set, but not the other...invalid input.
-            safe_die('Either none of, or both of, the variables $minRecord and $maxRecord must be set.');
+            safeDie('Either none of, or both of, the variables $minRecord and $maxRecord must be set.');
         }
         else
         {
@@ -898,7 +898,7 @@ abstract class Writer implements IWriter
 
             default:
                 //Ut oh
-                safe_die('An invalid incomplete answer filter state was encountered: '.$options->responseCompletionState);
+                safeDie('An invalid incomplete answer filter state was encountered: '.$options->responseCompletionState);
         }
     }
 
@@ -1026,7 +1026,7 @@ abstract class Writer implements IWriter
                 {
                     if ($question['title'] == $answerCode && $question['scale_id'] == 0)
                     {
-                        $subHeading = ' ['.FlattenText($question['title'], true,true).'][Scale '.$answerScale.']';
+                        $subHeading = ' ['.flattenText($question['title'], true,true).'][Scale '.$answerScale.']';
                     }
                 }
                 break;
@@ -1143,7 +1143,7 @@ abstract class Writer implements IWriter
                 {
                     if ($question['title'] == $answerCode && $question['scale_id'] == 0)
                     {
-                        $subHeading = ' ['.FlattenText($question['question'], true,true).'][Scale '.$answerScale.']';
+                        $subHeading = ' ['.flattenText($question['question'], true,true).'][Scale '.$answerScale.']';
                     }
                 }
                 break;
@@ -1245,7 +1245,7 @@ abstract class Writer implements IWriter
             {
                 //This branch may be reached erroneously if columns are added to the LimeSurvey product
                 //but are not updated in the Writer->headerTranslationKeys array.  We should trap for this
-                //condition and do a safe_die.
+                //condition and do a safeDie.
                 //FIXME fix the above condition
 
                 //Survey question field, $column value is a field name from the getFieldMap function.
@@ -1265,7 +1265,7 @@ abstract class Writer implements IWriter
 
                     default:
                         //Ut oh.
-                        safe_die('An invalid header format option was specified: '.$options->headingFormat);
+                        safeDie('An invalid header format option was specified: '.$options->headingFormat);
                 }
             }
             if ($options->headerSpacesToUnderscores)
@@ -1307,7 +1307,7 @@ abstract class Writer implements IWriter
 
                     default:
                         //Ut oh
-                        safe_die('An invalid answer format was encountered: '.$options->answerFormat);
+                        safeDie('An invalid answer format was encountered: '.$options->answerFormat);
                 }
             }
 
@@ -1318,7 +1318,7 @@ abstract class Writer implements IWriter
     protected function strip_tags_full($string)
     {
         $string=str_replace('-oth-','',$string);
-        return FlattenText($string,false,true,'UTF-8',false);
+        return flattenText($string,false,true,'UTF-8',false);
     }
 
     /**
@@ -1455,7 +1455,7 @@ class DocWriter extends Writer
         }
         else
         {
-            safe_die('An invalid answer format was selected.  Only \'short\' and \'long\' are valid.');
+            safeDie('An invalid answer format was selected.  Only \'short\' and \'long\' are valid.');
         }
     }
 
@@ -1638,7 +1638,7 @@ class PdfWriter extends Writer
         }
         else
         {
-            safe_die('An invalid answer format was encountered: '.$options->answerFormat);
+            safeDie('An invalid answer format was encountered: '.$options->answerFormat);
         }
 
     }

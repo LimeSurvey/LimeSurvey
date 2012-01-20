@@ -14,7 +14,7 @@
  */
 
 //include_once("login_check.php");
-//Security Checked: POST/GET/SESSION/DB/returnglobal
+//Security Checked: POST/GET/SESSION/DB/returnGlobal
 
 function updateset($lid)
 {
@@ -102,8 +102,8 @@ function insertlabelset()
         $postlabel_name=sanitize_labelname($_POST['label_name']);
     }
 
-    //postlabel_name = db_quoteall($postlabel_name,true);
-    //$postlanguageids = db_quoteall($postlanguageids,true);
+    //postlabel_name = dbQuoteAll($postlabel_name,true);
+    //$postlanguageids = dbQuoteAll($postlanguageids,true);
     $data = array(
     	'label_name' => $postlabel_name,
   	  'languages' => $postlanguageids
@@ -112,7 +112,7 @@ function insertlabelset()
     //$query = "INSERT INTO ".db_table_name('labelsets')." (label_name,languages) VALUES ({$postlabel_name},{$postlanguageids})";
     if (!$result = Yii::app()->db->createCommand()->insert('{{labelsets}}', $data))
     {
-        safe_die("Inserting the label set failed:<br />".$query."<br />");
+        safeDie("Inserting the label set failed:<br />".$query."<br />");
     }
     else
     {
@@ -155,7 +155,7 @@ function modlabelsetanswers($lid)
 
 
             $actualcode = $codeObj->{'code'};
-            //$codeid = db_quoteall($codeid,true);
+            //$codeid = dbQuoteAll($codeid,true);
 
             $assessmentvalue = (int)($codeObj->{'assessmentvalue'});
             foreach($data->{'langs'} as $lang){
@@ -172,7 +172,7 @@ function modlabelsetanswers($lid)
 
 
                 // Fix bug with FCKEditor saving strange BR types
-                $title = fix_FCKeditor_text($title);
+                $title = fixCKeditorText($title);
                 $sort_order = $index;
 
                 $insertdata = array(
@@ -226,7 +226,7 @@ function fixorder($lid) {
     foreach ($lslanguages as $lslanguage)
     {
         $query = "SELECT lid, code, title, sortorder FROM {{labels}} WHERE lid=:lid and language=:lang ORDER BY sortorder, code";
-        $result = Yii::app()->createCommand($query)->query(array(':lid' => $lid, ':lang' => $lslanguage)); // or safe_die("Can't read labels table: $query // (lid=$lid, language=$lslanguage) "
+        $result = Yii::app()->createCommand($query)->query(array(':lid' => $lid, ':lang' => $lslanguage)); // or safeDie("Can't read labels table: $query // (lid=$lid, language=$lslanguage) "
         $position=0;
         foreach ($result->readAll() as $row)
         {

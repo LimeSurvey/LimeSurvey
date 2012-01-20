@@ -48,21 +48,21 @@
 <script language='javascript' type='text/javascript'>
     surveyid = '<?php echo $surveyid; ?>'
 </script>
-<?php /* if (bHasSurveyPermission($surveyid, 'tokens', 'update') || bHasSurveyPermission($surveyid, 'tokens', 'delete'))
+<?php /* if (hasSurveyPermission($surveyid, 'tokens', 'update') || hasSurveyPermission($surveyid, 'tokens', 'delete'))
 { ?>
     <div class='header ui-widget-header'><?php $clang->eT("Token database administration options"); ?></div>
     <div style='width:30%; margin:0 auto;'>
         <ul>
-                    <?php if (bHasSurveyPermission($surveyid, 'tokens', 'update'))
+                    <?php if (hasSurveyPermission($surveyid, 'tokens', 'update'))
                     { ?>
-                <li><a href='#' onclick="if( confirm('<?php $clang->eT("Are you really sure you want to reset all invitation records to NO?", "js"); ?>')) { <?php echo get2post(Yii::app()->baseUrl . "?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites"); ?>}">
+                <li><a href='#' onclick="if( confirm('<?php $clang->eT("Are you really sure you want to reset all invitation records to NO?", "js"); ?>')) { <?php echo convertGETtoPOST(Yii::app()->baseUrl . "?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites"); ?>}">
                         <?php $clang->eT("Set all entries to 'No invitation sent'."); ?></a></li>
-                <li><a href='#' onclick="if ( confirm('<?php $clang->eT("Are you sure you want to delete all unique token strings?", "js"); ?>')) { <?php echo get2post(Yii::app()->baseUrl . "?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens"); ?>}">
+                <li><a href='#' onclick="if ( confirm('<?php $clang->eT("Are you sure you want to delete all unique token strings?", "js"); ?>')) { <?php echo convertGETtoPOST(Yii::app()->baseUrl . "?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens"); ?>}">
                 <?php $clang->eT("Delete all unique token strings"); ?></a></li>
                     <?php }
-                    if (bHasSurveyPermission($surveyid, 'tokens', 'delete'))
+                    if (hasSurveyPermission($surveyid, 'tokens', 'delete'))
                     { ?>
-                <li><a href='#' onclick=" if (confirm('<?php $clang->eT("Are you really sure you want to delete ALL token entries?", "js"); ?>')) { <?php echo get2post(Yii::app()->baseUrl . "?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall"); ?>}">
+                <li><a href='#' onclick=" if (confirm('<?php $clang->eT("Are you really sure you want to delete ALL token entries?", "js"); ?>')) { <?php echo convertGETtoPOST(Yii::app()->baseUrl . "?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall"); ?>}">
         <?php $clang->eT("Delete all token entries"); ?></a></li>
     <?php } ?>
         </ul>

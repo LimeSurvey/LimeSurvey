@@ -330,7 +330,7 @@ class Usergroups extends Survey_Common_Action
                 $aData["userloop"] = $userloop;
                 if (isset($row2[0]['ugid'])) {
                     $aData["useradddialog"] = true;
-                    $aData["useraddusers"] = getgroupuserlist($ugid, 'optionlist');
+                    $aData["useraddusers"] = getGroupUserList($ugid, 'optionlist');
                     $aData["useraddurl"] = "";
                 }
             }

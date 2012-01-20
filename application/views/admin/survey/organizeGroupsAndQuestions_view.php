@@ -15,7 +15,7 @@
                         <?php
                             foreach($aGroupAndQuestions['questions'] as $aQuestion)
                             {?>
-                            <li id='list_q<?php echo $aQuestion['qid'];?>'><div><b><a href='<?php echo Yii::app()->getController()->createUrl('admin/question/editquestion/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']);?>'><?php echo $aQuestion['title'];?></a></b>: <?php echo FlattenText($aQuestion['question'],true);?></div></li>
+                            <li id='list_q<?php echo $aQuestion['qid'];?>'><div><b><a href='<?php echo Yii::app()->getController()->createUrl('admin/question/editquestion/surveyid/'.$surveyid.'/gid/'.$aQuestion['gid'].'/qid/'.$aQuestion['qid']);?>'><?php echo $aQuestion['title'];?></a></b>: <?php echo flattenText($aQuestion['question'],true);?></div></li>
 
                             <?php }?>
                     </ol>

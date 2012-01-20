@@ -35,14 +35,14 @@ class database extends Survey_Common_Action
 
         $action=Yii::app()->request->getPost('action');
         $clang = $this->getController()->lang;
-        $postsid=returnglobal('sid');
-        $postgid=returnglobal('gid');
-        $postqid=returnglobal('qid');
-        $postqaid=returnglobal('qaid');
+        $postsid=returnGlobal('sid');
+        $postgid=returnGlobal('gid');
+        $postqid=returnGlobal('qid');
+        $postqaid=returnGlobal('qaid');
         $databaseoutput = '';
-        $surveyid = returnglobal('sid');
-        $gid = returnglobal('gid');
-        $qid = returnglobal('qid');
+        $surveyid = returnGlobal('sid');
+        $gid = returnGlobal('gid');
+        $qid = returnGlobal('qid');
         // if $action is not passed, check post data.
 
         if(Yii::app()->getConfig('filterxsshtml') && Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
@@ -57,7 +57,7 @@ class database extends Survey_Common_Action
         else
             $xssfilter = false;
 
-        if ($action == "updatedefaultvalues" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
+        if ($action == "updatedefaultvalues" && hasSurveyPermission($surveyid, 'surveycontent','update'))
         {
 
             $questlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
@@ -73,7 +73,7 @@ class database extends Survey_Common_Action
             $resrow = Questions::model()->findByAttributes(array('qid'=>$qid));
             $questiontype = $resrow['type'];
 
-            $qtproperties=getqtypelist('','array');
+            $qtproperties=getQuestionTypeList('','array');
             if ($qtproperties[$questiontype]['answerscales']>0 && $qtproperties[$questiontype]['subquestions']==0)
             {
                 for ($scale_id=0;$scale_id<$qtproperties[$questiontype]['answerscales'];$scale_id++)
@@ -126,7 +126,7 @@ class database extends Survey_Common_Action
         }
 
 
-        if ($action == "updateansweroptions" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
+        if ($action == "updateansweroptions" && hasSurveyPermission($surveyid, 'surveycontent','update'))
         {
             Yii::app()->loadHelper('database');
             $anslangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
@@ -137,7 +137,7 @@ class database extends Survey_Common_Action
 
             $resrow = Questions::model()->findByAttributes(array('qid'=>$qid));
             $questiontype = $resrow['type'];    // Checked)
-            $qtypes=getqtypelist('','array');
+            $qtypes=getQuestionTypeList('','array');
             $scalecount=$qtypes[$questiontype]['answerscales'];
 
             $count=0;
@@ -180,7 +180,7 @@ class database extends Survey_Common_Action
                             $answer=html_entity_decode($answer, ENT_QUOTES, "UTF-8");
                         }
                         // Fix bug with FCKEditor saving strange BR types
-                        $answer=fix_FCKeditor_text($answer);
+                        $answer=fixCKeditorText($answer);
 
                         // Now we insert the answers
                         $result=Answers::model()->insertRecords(array('code'=>$code,
@@ -224,7 +224,7 @@ class database extends Survey_Common_Action
         }
 
 
-        if ($action == "updatesubquestions" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
+        if ($action == "updatesubquestions" && hasSurveyPermission($surveyid, 'surveycontent','update'))
         {
 
             Yii::app()->loadHelper('database');
@@ -234,7 +234,7 @@ class database extends Survey_Common_Action
 
             $row = Questions::model()->findByAttributes(array('qid'=>$qid));
             $questiontype = $row['type'];    // Checked
-            $qtypes=getqtypelist('','array');
+            $qtypes=getQuestionTypeList('','array');
             $scalecount=$qtypes[$questiontype]['subquestions'];
 
             $clang = $this->getController()->lang;
@@ -325,9 +325,9 @@ class database extends Survey_Common_Action
                             }
                             else
                             {
-                                db_switchIDInsert('questions',true);
+                                switchMSSQLIdentityInsert('questions',true);
                                 Questions::model()-> insertRecords(array('qid'=>$insertqid[$position],'sid'=>$surveyid, 'gid'=>$gid, 'question_order'=>$position+1,'title'=>$codes[$scale_id][$position],'question'=>$subquestionvalue,'parent_qid'=>$qid,'language'=>$language,'scale_id'=>$scale_id));
-                                db_switchIDInsert('questions',true);
+                                switchMSSQLIdentityInsert('questions',true);
                             }
                         }
                         $position++;
@@ -354,7 +354,7 @@ class database extends Survey_Common_Action
             }
         }
 
-        if (in_array($action, array('insertquestion', 'copyquestion')) && bHasSurveyPermission($surveyid, 'surveycontent','create'))
+        if (in_array($action, array('insertquestion', 'copyquestion')) && hasSurveyPermission($surveyid, 'surveycontent','create'))
         {
             $baselang = Survey::model()->findByPk($surveyid)->language;
             if (strlen(Yii::app()->request->getPost('title')) < 1)
@@ -375,7 +375,7 @@ class database extends Survey_Common_Action
 
                     $cdresult=Yii::app()->db->createCommand($cdquery)->bindValues(array(':gid'=>$gid, ':order'=>$question_order))->query();
                 } else {
-                    $question_order=(getMaxquestionorder($gid,$surveyid));
+                    $question_order=(getMaxQuestionOrder($gid,$surveyid));
                     $question_order++;
                 }
 
@@ -393,9 +393,9 @@ class database extends Survey_Common_Action
                 }
                 else
                 {
-                    $_POST['title']=fix_FCKeditor_text(Yii::app()->request->getPost('title'));
-                    $_POST['question_'.$baselang]=fix_FCKeditor_text(Yii::app()->request->getPost('question_'.$baselang));
-                    $_POST['help_'.$baselang]=fix_FCKeditor_text(Yii::app()->request->getPost('help_'.$baselang));
+                    $_POST['title']=fixCKeditorText(Yii::app()->request->getPost('title'));
+                    $_POST['question_'.$baselang]=fixCKeditorText(Yii::app()->request->getPost('question_'.$baselang));
+                    $_POST['help_'.$baselang]=fixCKeditorText(Yii::app()->request->getPost('help_'.$baselang));
                 }
 
                 $data = array();
@@ -466,10 +466,10 @@ class database extends Survey_Common_Action
 
                 } else {
                     if ($action == 'copyquestion') {
-                        if (returnglobal('copysubquestions') == "Y")
+                        if (returnGlobal('copysubquestions') == "Y")
                         {
                             $aSQIDMappings = array();
-                            $r1 = Questions::getSubQuestions(returnglobal('oldqid'));
+                            $r1 = Questions::getSubQuestions(returnGlobal('oldqid'));
 
                             while ($qr1 = $r1->read())
                             {
@@ -489,9 +489,9 @@ class database extends Survey_Common_Action
                                 }
                             }
                         }
-                        if (returnglobal('copyanswers') == "Y")
+                        if (returnGlobal('copyanswers') == "Y")
                         {
-                            $r1 = Answers::getAnswers(returnglobal('oldqid'));
+                            $r1 = Answers::getAnswers(returnGlobal('oldqid'));
                             while ($qr1 = $r1->read())
                             {
                                 Answers::insertRecords(array(
@@ -504,9 +504,9 @@ class database extends Survey_Common_Action
                                 ));
                             }
                         }
-                        if (returnglobal('copyattributes') == "Y")
+                        if (returnGlobal('copyattributes') == "Y")
                         {
-                            $r1 = Question_attributes::getQuestionAttributes(returnglobal('oldqid'));
+                            $r1 = Question_attributes::getQuestionAttributes(returnGlobal('oldqid'));
                             while($qr1 = $r1->read())
                             {
                                 Question_attributes::insertRecords(array(
@@ -535,7 +535,7 @@ class database extends Survey_Common_Action
                         }
                     }
 
-                    fixsortorderQuestions($gid, $surveyid);
+                    fixSortOrderQuestions($gid, $surveyid);
                     Yii::app()->session['flashmessage'] =  $clang->gT("Question was successfully added.");
 
                 }
@@ -554,7 +554,7 @@ class database extends Survey_Common_Action
             }
         }
 
-        if ($action == "updatequestion" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
+        if ($action == "updatequestion" && hasSurveyPermission($surveyid, 'surveycontent','update'))
         {
             LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
 
@@ -632,7 +632,7 @@ class database extends Survey_Common_Action
             }
 
 
-            $qtypes=getqtypelist('','array');
+            $qtypes=getQuestionTypeList('','array');
             // These are the questions types that have no answers and therefore we delete the answer in that case
             $iAnswerScales = $qtypes[Yii::app()->request->getPost('type')]['answerscales'];
             $iSubquestionScales = $qtypes[Yii::app()->request->getPost('type')]['subquestions'];
@@ -677,7 +677,7 @@ class database extends Survey_Common_Action
                 if (isset($gid) && $gid != "")
                 {
 
-//                    $array_result=checkMovequestionConstraintsForConditions(sanitize_int($surveyid),sanitize_int($qid), sanitize_int($gid));
+//                    $array_result=checkMoveQuestionConstraintsForConditions(sanitize_int($surveyid),sanitize_int($qid), sanitize_int($gid));
 //                    // If there is no blocking conditions that could prevent this move
 //
 //                    if (is_null($array_result['notAbove']) && is_null($array_result['notBelow']))
@@ -691,7 +691,7 @@ class database extends Survey_Common_Action
                             $_POST['title'] = html_entity_decode(Yii::app()->request->getPost('title'), ENT_QUOTES, "UTF-8");
 
                         // Fix bug with FCKEditor saving strange BR types
-                        $_POST['title']=fix_FCKeditor_text(Yii::app()->request->getPost('title'));
+                        $_POST['title']=fixCKeditorText(Yii::app()->request->getPost('title'));
                         foreach ($questlangs as $qlang)
                         {
                             if ($xssfilter)
@@ -706,8 +706,8 @@ class database extends Survey_Common_Action
                             }
 
                             // Fix bug with FCKEditor saving strange BR types
-                            $_POST['question_'.$qlang]=fix_FCKeditor_text(Yii::app()->request->getPost('question_'.$qlang));
-                            $_POST['help_'.$qlang]=fix_FCKeditor_text(Yii::app()->request->getPost('help_'.$qlang));
+                            $_POST['question_'.$qlang]=fixCKeditorText(Yii::app()->request->getPost('question_'.$qlang));
+                            $_POST['help_'.$qlang]=fixCKeditorText(Yii::app()->request->getPost('help_'.$qlang));
 
                             if (isset($qlang) && $qlang != "")
                             { // ToDo: Sanitize the POST variables !
@@ -734,14 +734,14 @@ class database extends Survey_Common_Action
                                         // Moving question to a 'upper' group
                                         // insert question at the end of the destination group
                                         // this prevent breaking conditions if the target qid is in the dest group
-                                        $insertorder = getMaxquestionorder($gid) + 1;
+                                        $insertorder = getMaxQuestionOrder($gid) + 1;
                                         $udata = array_merge($udata,array('question_order' => $insertorder));
                                     }
                                     else
                                     {
                                         // Moving question to a 'lower' group
                                         // insert question at the beginning of the destination group
-                                        shiftorderQuestions($surveyid,$gid,1); // makes 1 spare room for new question at top of dest group
+                                        shiftOrderQuestions($surveyid,$gid,1); // makes 1 spare room for new question at top of dest group
                                         $udata = array_merge($udata,array('question_order' => 0));
                                     }
                                 }
@@ -750,7 +750,7 @@ class database extends Survey_Common_Action
                                 foreach ($udata as $k => $v)
                                     $question->$k = $v;
 
-                                $uqresult = $question->save();//($uqquery); // or safe_die ("Error Update Question: ".$uqquery."<br />");  // Checked)
+                                $uqresult = $question->save();//($uqquery); // or safeDie ("Error Update Question: ".$uqquery."<br />");  // Checked)
                                 if (!$uqresult)
                                 {
                                     $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\n\")\n //-->\n</script>\n";
@@ -764,11 +764,11 @@ class database extends Survey_Common_Action
                         {
                             Questions::model()->updateAll(array('gid'=>$gid), 'qid=:qid and parent_qid>0', array(':qid'=>$oldqid));
                             // if the group has changed then fix the sortorder of old and new group
-                            fixsortorderQuestions($oldgid, $surveyid);
-                            fixsortorderQuestions($gid, $surveyid);
+                            fixSortOrderQuestions($oldgid, $surveyid);
+                            fixSortOrderQuestions($gid, $surveyid);
                             // If some questions have conditions set on this question's answers
                             // then change the cfieldname accordingly
-                            fixmovedquestionConditions($qid, $oldgid, $gid);
+                            fixMovedQuestionConditions($qid, $oldgid, $gid);
                         }
                         if ($oldtype != Yii::app()->request->getPost('type'))
                         {
@@ -833,7 +833,7 @@ class database extends Survey_Common_Action
         }
 
 
-        if (($action == "updatesurveylocalesettings") && bHasSurveyPermission($surveyid,'surveylocale','update'))
+        if (($action == "updatesurveylocalesettings") && hasSurveyPermission($surveyid,'surveylocale','update'))
         {
             $languagelist = Survey::model()->findByPk($surveyid)->additionalLanguages;
             $languagelist[]=Survey::model()->findByPk($surveyid)->language;
@@ -877,10 +877,10 @@ class database extends Survey_Common_Action
                     $welcome = Yii::app()->request->getPost('welcome_'.$langname);
                     $endtext = Yii::app()->request->getPost('endtext_'.$langname);
 
-                    $short_title=fix_FCKeditor_text($short_title);
-                    $description=fix_FCKeditor_text($description);
-                    $welcome=fix_FCKeditor_text($welcome);
-                    $endtext=fix_FCKeditor_text($endtext);
+                    $short_title=fixCKeditorText($short_title);
+                    $description=fixCKeditorText($description);
+                    $welcome=fixCKeditorText($welcome);
+                    $endtext=fixCKeditorText($endtext);
 
                     $data = array(
                     'surveyls_title' => $short_title,
@@ -908,7 +908,7 @@ class database extends Survey_Common_Action
             }
         }
 
-        if (($action == "updatesurveysettingsandeditlocalesettings" || $action == "updatesurveysettings") && bHasSurveyPermission($surveyid,'surveysettings','update'))
+        if (($action == "updatesurveysettingsandeditlocalesettings" || $action == "updatesurveysettings") && hasSurveyPermission($surveyid,'surveysettings','update'))
         {
             Yii::app()->loadHelper('surveytranslator');
             Yii::app()->loadHelper('database');
@@ -947,9 +947,9 @@ class database extends Survey_Common_Action
             }
 
 
-            CleanLanguagesFromSurvey($surveyid,Yii::app()->request->getPost('languageids'));
+            cleanLanguagesFromSurvey($surveyid,Yii::app()->request->getPost('languageids'));
 
-            FixLanguageConsistency($surveyid,Yii::app()->request->getPost('languageids'));
+            fixLanguageConsistency($surveyid,Yii::app()->request->getPost('languageids'));
             $template = Yii::app()->request->getPost('template');
 
             if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1 && Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'] != 1 && !hasTemplateManageRights(Yii::app()->session['loginID'], $template)) $template = "default";
@@ -1048,7 +1048,7 @@ class database extends Survey_Common_Action
                     if (count($usresult)==0)
                     {
                         $bplang = $this->getController()->lang;
-                        $aDefaultTexts=aTemplateDefaultTexts($bplang,'unescaped');
+                        $aDefaultTexts=templateDefaultTexts($bplang,'unescaped');
                         if (getEmailFormat($surveyid) == "html")
                         {
                             $ishtml=true;

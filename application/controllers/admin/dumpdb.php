@@ -69,7 +69,7 @@ class Dumpdb extends Survey_Common_Action {
      */
     private function _outputHeaders($sDbName)
     {
-        $sFileName = 'LimeSurvey_'.$sDbName.'_dump_'.date_shift(date('Y-m-d H:i:s'), 'Y-m-d', Yii::app()->getConfig('timeadjust')).'.sql';
+        $sFileName = 'LimeSurvey_'.$sDbName.'_dump_'.dateShift(date('Y-m-d H:i:s'), 'Y-m-d', Yii::app()->getConfig('timeadjust')).'.sql';
 
         header('Content-type: application/octet-stream');
         header('Content-Disposition: attachment; filename='.$sFileName);
@@ -95,7 +95,7 @@ class Dumpdb extends Survey_Common_Action {
         if (!$bAllowExportAllDb) {
             echo '-- Only prefixed tables with: ' . Yii::app()->db->tablePrefix . "\n";
         }
-        echo '-- Date of Dump: ' . date_shift(date('d-M-Y'), 'd-M-Y', Yii::app()->getConfig('timeadjust')) . "\n";
+        echo '-- Date of Dump: ' . dateShift(date('d-M-Y'), 'd-M-Y', Yii::app()->getConfig('timeadjust')) . "\n";
         echo '--' . "\n";
     }
 

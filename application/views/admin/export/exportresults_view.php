@@ -3,7 +3,7 @@
 <form id='resultexport' action='<?php echo $this->createUrl("admin/export/exportresults/surveyid/$surveyid");?>' method='post'><div class='left'>
 
 <?php 	if (isset($_POST['sql'])) {echo" - ".$clang->gT("Filtered from statistics script");}
-		if (returnglobal('id')<>'') {echo " - ".$clang->gT("Single response");} ?>
+		if (returnGlobal('id')<>'') {echo " - ".$clang->gT("Single response");} ?>
 
 <fieldset><legend><?php $clang->eT("General");?></legend>
 
@@ -76,8 +76,8 @@
 <?php if (isset($_POST['sql'])) { ?>
     <input type='hidden' name='sql' value="<?php echo stripcslashes($_POST['sql']);?>" />
 <?php }
-if (returnglobal('id')<>'') { ?>
-    <input type='hidden' name='answerid' value="<?php echo stripcslashes(returnglobal('id'));?>" />
+if (returnGlobal('id')<>'') { ?>
+    <input type='hidden' name='answerid' value="<?php echo stripcslashes(returnGlobal('id'));?>" />
 <?php }
 $clang->eT("Choose Columns");?>:
 
@@ -125,7 +125,7 @@ foreach($excesscols as $ec)
         <option value='email_address' id='email_address' /><?php $clang->eT("Email address");?></option>
         <option value='token' id='token' /><?php $clang->eT("Token");?></option>
 
-        <?php $attrfieldnames=GetTokenFieldsAndNames($surveyid,true);
+        <?php $attrfieldnames=getTokenFieldsAndNames($surveyid,true);
         foreach ($attrfieldnames as $attr_name=>$attr_desc)
         {
            echo "<option value='$attr_name' id='$attr_name' />".$attr_desc."</option>\n";

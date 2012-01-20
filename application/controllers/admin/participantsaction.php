@@ -189,7 +189,7 @@ class participantsaction extends Survey_Common_Action
                 $i++;
             }
 
-            echo ls_json_encode($aData);
+            echo lsJSONEncode($aData);
         }
         // otherwise only the shared participants by that user
         else
@@ -207,7 +207,7 @@ class participantsaction extends Survey_Common_Action
                 $i++;
             }
 
-            echo ls_json_encode($aData);
+            echo lsJSONEncode($aData);
         }
     }
 
@@ -271,7 +271,7 @@ class participantsaction extends Survey_Common_Action
             $i++;
         }
 
-        echo ls_json_encode($aData);
+        echo lsJSONEncode($aData);
     }
 
     /**
@@ -434,7 +434,7 @@ class participantsaction extends Survey_Common_Action
             $i++;
         }
 
-        echo ls_json_encode($aData);
+        echo lsJSONEncode($aData);
     }
 
     /**
@@ -858,7 +858,7 @@ class participantsaction extends Survey_Common_Action
                     $i++;
                 }
             }
-            echo ls_json_encode($aData);
+            echo lsJSONEncode($aData);
         }
         // Only the owned and shared participants will be visible
         else
@@ -942,7 +942,7 @@ class participantsaction extends Survey_Common_Action
                     $i++;
                 }
             }
-            echo ls_json_encode($aData);
+            echo lsJSONEncode($aData);
         }
     }
 
@@ -1024,7 +1024,7 @@ class participantsaction extends Survey_Common_Action
                 }
                 $i++;
             }
-            echo ls_json_encode($aData);
+            echo lsJSONEncode($aData);
         }
         // Only the owned and shared participants will be visible
         else
@@ -1092,7 +1092,7 @@ class participantsaction extends Survey_Common_Action
                 }
                 $i++;
             }
-            echo ls_json_encode($aData);
+            echo lsJSONEncode($aData);
         }
     }
 
@@ -1184,7 +1184,7 @@ class participantsaction extends Survey_Common_Action
                 $i++;
             }
         }
-        echo ls_json_encode($aData);
+        echo lsJSONEncode($aData);
     }
 
     /*
@@ -1506,7 +1506,7 @@ class participantsaction extends Survey_Common_Action
                     $aEmailAddresses = explode(';', $writearray['email']);
                     foreach ($aEmailAddresses as $sEmailaddress)
                     {
-                        if (!validate_email($sEmailaddress))
+                        if (!validateEmailAddress($sEmailaddress))
                         {
                             $invalidemail = true;
                             $invalidemaillist[] = $line[0] . " " . $line[1] . " (" . $line[2] . ")";
@@ -1715,7 +1715,7 @@ class participantsaction extends Survey_Common_Action
         if (is_array($arr))
         {
             $tokenfieldnames = array_keys($arr);
-            $tokenattributefieldnames = array_filter($tokenfieldnames, 'filterforattributes');
+            $tokenattributefieldnames = array_filter($tokenfieldnames, 'filterForAttributes');
         }
         else
         {
@@ -1776,7 +1776,7 @@ class participantsaction extends Survey_Common_Action
 
         $iSurveyId = Yii::app()->request->getQuery('sid');
         $attributes = ParticipantAttributeNames::getAttributes();
-        $tokenattributefieldnames = GetTokenFieldsAndNames($iSurveyId, TRUE);
+        $tokenattributefieldnames = getTokenFieldsAndNames($iSurveyId, TRUE);
 
         $selectedattribute = array();
         $selectedcentralattribute = array();

@@ -42,7 +42,7 @@ class UserAction extends Survey_Common_Action
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/jquery.tablesorter.min.js');
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/admin/users.js');
 
-        $userlist = getuserlist();
+        $userlist = getUserList();
         $usrhimself = $userlist[0];
         unset($userlist[0]);
 
@@ -78,16 +78,16 @@ class UserAction extends Survey_Common_Action
     function adduser()
     {
         if (!Yii::app()->session['USER_RIGHT_CREATE_USER']) {
-            die(access_denied('adduser'));
+            die(accessDenied('adduser'));
         }
 
         $clang = Yii::app()->lang;
-        $new_user = FlattenText(Yii::app()->request->getPost('new_user'), false, true);
-        $new_email = FlattenText(Yii::app()->request->getPost('new_email'), false, true);
-        $new_full_name = FlattenText(Yii::app()->request->getPost('new_full_name'), false, true);
+        $new_user = flattenText(Yii::app()->request->getPost('new_user'), false, true);
+        $new_email = flattenText(Yii::app()->request->getPost('new_email'), false, true);
+        $new_full_name = flattenText(Yii::app()->request->getPost('new_full_name'), false, true);
         $aViewUrls = array();
         $valid_email = true;
-        if (!validate_email($new_email)) {
+        if (!validateEmailAddress($new_email)) {
             $valid_email = false;
             $aViewUrls['message'] = array('title' => $clang->gT("Failed to add user"), 'message' => $clang->gT("The email address is not valid."), 'class'=> 'warningheader');
         }
@@ -111,7 +111,7 @@ class UserAction extends Survey_Common_Action
                 $sresult = User::model()->getAllRecords(array('uid' => $newqid));
                 $srow = count($sresult);
 
-                $userlist = getuserlist();
+                $userlist = getUserList();
                 array_push($userlist, array("user" => $srow['users_name'], "uid" => $srow['uid'], "email" => $srow['email'],
                                            "password" => $srow["password"], "parent_id" => $srow['parent_id'], // "level"=>$level,
                                            "create_survey" => $srow['create_survey'], "participant_panel" => $srow['participant_panel'], "configurator" => $srow['configurator'], "create_user" => $srow['create_user'],
@@ -159,8 +159,8 @@ class UserAction extends Survey_Common_Action
                 }
 
                 $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Add user"), $sHeader, $classMsg, $extra,
-                                                  $this->getController()->createUrl("admin/user/setuserrights"), $clang->gT("Set user permissions"),
-                                                  array('action' => 'setuserrights', 'user' => $new_user, 'uid' => $newqid));
+                                                  $this->getController()->createUrl("admin/user/setUserRights"), $clang->gT("Set user permissions"),
+                                                  array('action' => 'setUserRights', 'user' => $new_user, 'uid' => $newqid));
             }
             else
             {
@@ -177,7 +177,7 @@ class UserAction extends Survey_Common_Action
     function deluser()
     {
         if (!(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_DELETE_USER'])) {
-            die(access_denied('deluser'));
+            die(accessDenied('deluser'));
         }
         $clang = Yii::app()->lang;
         $action = Yii::app()->request->getPost("action");
@@ -237,7 +237,7 @@ class UserAction extends Survey_Common_Action
                 }
                 else
                 {
-                    echo access_denied('deluser');
+                    echo accessDenied('deluser');
                     die();
                 }
             }
@@ -309,7 +309,7 @@ class UserAction extends Survey_Common_Action
             }
             return;
         }
-        echo access_denied('modifyuser');
+        echo accessDenied('modifyuser');
         die();
     }
 
@@ -340,7 +340,7 @@ class UserAction extends Survey_Common_Action
                 $sPassword = '';
             $full_name = html_entity_decode($postfull_name, ENT_QUOTES, 'UTF-8');
 
-            if (!validate_email($email)) {
+            if (!validateEmailAddress($email)) {
                 $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Could not modify user data."), "warningheader", $clang->gT("Email address is not valid."),
                                                   $this->getController()->createUrl('admin/user/modifyuser'), $clang->gT("Back"), array('uid' => $postuserid));
             }
@@ -388,7 +388,7 @@ class UserAction extends Survey_Common_Action
         $this->_renderWrappedTemplate('user', $aViewUrls);
     }
 
-    function setuserrights()
+    function setUserRights()
     {
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/jquery.tablesorter.min.js');
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/admin/users.js');
@@ -402,7 +402,7 @@ class UserAction extends Survey_Common_Action
         }
         else
         {
-            echo access_denied('setuserrights');
+            echo accessDenied('setUserRights');
             die();
         }
         // RELIABLY CHECK MY RIGHTS
@@ -410,11 +410,11 @@ class UserAction extends Survey_Common_Action
         ) //	if(Yii::app()->session['loginID'] != $postuserid)
         {
             $aData['postuserid'] = $postuserid;
-            $this->_renderWrappedTemplate('user', 'setuserrights', $aData);
+            $this->_renderWrappedTemplate('user', 'setUserRights', $aData);
         } // if
         else
         {
-            echo access_denied('setuserrights');
+            echo accessDenied('setUserRights');
             die();
         }
     }
@@ -454,7 +454,7 @@ class UserAction extends Survey_Common_Action
                 $rights['superadmin'] = 0; // ONLY Initial Superadmin can give this right
 
                 if ($postuserid != 1)
-                    setuserrights($postuserid, $rights);
+                    setUserRights($postuserid, $rights);
             }
             elseif (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
             {
@@ -488,11 +488,11 @@ class UserAction extends Survey_Common_Action
                 $rights['manage_template'] = (isset($_POST['manage_template']) || $rights['superadmin']) ? 1 : 0;
                 $rights['manage_label'] = (isset($_POST['manage_label']) || $rights['superadmin']) ? 1 : 0;
 
-                setuserrights($postuserid, $rights);
+                setUserRights($postuserid, $rights);
             }
             else
             {
-                echo access_denied('userrights');
+                echo accessDenied('userrights');
                 die();
             }
             $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Set user permissions"), $clang->gT("User permissions were updated successfully."), 'successheader');
@@ -515,7 +515,7 @@ class UserAction extends Survey_Common_Action
         $aData['postuserid']=$postuserid;
         $postfull_name = Yii::app()->request->getPost("full_name");
         $this->_refreshtemplates();
-        foreach (getuserlist() as $usr)
+        foreach (getUserList() as $usr)
         {
             if ($usr['uid'] == $postuserid)
             {
@@ -626,7 +626,7 @@ class UserAction extends Survey_Common_Action
 
     private function _refreshtemplates()
     {
-        $template_a = gettemplatelist();
+        $template_a = getTemplateList();
         foreach ($template_a as $tp => $fullpath)
         {
             // check for each folder if there is already an entry in the database

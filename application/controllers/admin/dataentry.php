@@ -82,7 +82,7 @@ class dataentry extends Survey_Common_Action
         $aData['surveyid'] = $surveyid;
         $aData['clang'] = $this->getController()->lang;
 
-        if( bHasSurveyPermission($surveyid,'responses','create') )
+        if( hasSurveyPermission($surveyid,'responses','create') )
         {
             // First load the database helper
             Yii::app()->loadHelper('database');
@@ -145,7 +145,7 @@ class dataentry extends Survey_Common_Action
         $aFieldnames = array_map('db_quote_id', $aFieldnames);
 
         // Find out which fields are datefields, these have to be null if the imported string is empty
-        $fieldmap = createFieldMap($surveyid,'short',false,false,GetbaseLanguageFromSurveyid($surveyid));
+        $fieldmap = createFieldMap($surveyid,'short',false,false,getBaseLanguageFromSurveyID($surveyid));
 
         $datefields = array();
         $numericfields = array();
@@ -211,13 +211,13 @@ class dataentry extends Survey_Common_Action
                 }
 
                 if (isset($fielddata['`id`'])) {
-                    db_switchIDInsert("survey_$surveyid", true);
+                    switchMSSQLIdentityInsert("survey_$surveyid", true);
                 }
 
                 $result = $survey->insertRecords($fielddata);
 
                 if (isset($fielddata['id'])) {
-                    db_switchIDInsert("survey_$surveyid", false);
+                    switchMSSQLIdentityInsert("survey_$surveyid", false);
                 }
 
                 if (!$result) {
@@ -327,7 +327,7 @@ class dataentry extends Survey_Common_Action
         'surveyid' => $surveyid
         );
 
-        if(bHasSurveyPermission($surveyid,'responses','create'))
+        if(hasSurveyPermission($surveyid,'responses','create'))
         {
             //if (!isset($surveyid)) $surveyid = $this->input->post('sid');
             if (!isset($oldtable) && isset($_POST['oldtable']))
@@ -415,7 +415,7 @@ class dataentry extends Survey_Common_Action
                     unset($row['id']);
 
                     //$sInsertSQL=Yii::app()->db->GetInsertSQL($activetable, $row);
-                    $sInsertSQL="INSERT into {$activetable} (".implode(",", array_map("db_quote_id", array_keys($row))).") VALUES (".implode(",", array_map("db_quoteall",array_values($row))).")";
+                    $sInsertSQL="INSERT into {$activetable} (".implode(",", array_map("db_quote_id", array_keys($row))).") VALUES (".implode(",", array_map("dbQuoteAll",array_values($row))).")";
                     $result = db_execute_assoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
                     $aSRIDConversions[$iOldID]=Yii::app()->db->getLastInsertID();
                 }
@@ -425,7 +425,7 @@ class dataentry extends Survey_Common_Action
                 $sOldTimingsTable=substr($oldtable,0,strrpos($oldtable,'_')).'_timings'.substr($oldtable,strrpos($oldtable,'_'));
                 $sNewTimingsTable = "{{{$surveyid}_timings}}";
 
-                if (returnglobal('importtimings')=='Y' && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable))
+                if (returnGlobal('importtimings')=='Y' && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable))
                 {
                     // Import timings
                     $aFieldsOldTimingTable=array_values($schema->getTable($sOldTimingsTable)->columnNames);
@@ -445,7 +445,7 @@ class dataentry extends Survey_Common_Action
                         }
                         else continue;
                         //$sInsertSQL=Yii::app()->db->GetInsertSQL($sNewTimingsTable,$row);
-                        $sInsertSQL="INSERT into {$sNewTimingsTable} (".implode(",", array_map("db_quote_id", array_keys($row))).") VALUES (".implode(",", array_map("db_quoteall", array_values($row))).")";
+                        $sInsertSQL="INSERT into {$sNewTimingsTable} (".implode(",", array_map("db_quote_id", array_keys($row))).") VALUES (".implode(",", array_map("dbQuoteAll", array_values($row))).")";
                         $result = db_execute_assoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
                     }
                     Yii::app()->session['flashmessage'] = sprintf($clang->gT("%s old response(s) and according timings were successfully imported."),$iRecordCount,$iRecordCountT);
@@ -484,7 +484,7 @@ class dataentry extends Survey_Common_Action
         }
 
         $surveyinfo = getSurveyInfo($surveyid);
-        if (bHasSurveyPermission($surveyid, 'responses','update'))
+        if (hasSurveyPermission($surveyid, 'responses','update'))
         {
             $surveytable = "{{survey_".$surveyid.'}}';
             $aData['clang'] = $clang = $this->getController()->lang;
@@ -522,16 +522,16 @@ class dataentry extends Survey_Common_Action
 
             //SHOW INDIVIDUAL RECORD
 
-            if ($subaction == "edit" && bHasSurveyPermission($surveyid,'responses','update'))
+            if ($subaction == "edit" && hasSurveyPermission($surveyid,'responses','update'))
             {
                 $idquery = "SELECT * FROM $surveytable WHERE id=$id";
-                $idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get individual record<br />$idquery<br />");
+                $idresult = db_execute_assoc($idquery) or safeDie ("Couldn't get individual record<br />$idquery<br />");
                 foreach ($idresult->readAll() as $idrow)
                 {
                     $results[]=$idrow;
                 }
             }
-            elseif ($subaction == "editsaved" && bHasSurveyPermission($surveyid,'responses','update'))
+            elseif ($subaction == "editsaved" && hasSurveyPermission($surveyid,'responses','update'))
             {
                 if (isset($_GET['public']) && $_GET['public']=="true")
                 {
@@ -562,7 +562,7 @@ class dataentry extends Survey_Common_Action
                     $responses[$svrow['fieldname']] = $svrow['value'];
                 } // while
 
-                $fieldmap = createFieldMap($surveyid,'short',false,false,GetbaseLanguageFromSurveyid($surveyid));
+                $fieldmap = createFieldMap($surveyid,'short',false,false,getBaseLanguageFromSurveyID($surveyid));
                 foreach($fieldmap as $fm)
                 {
                     if (isset($responses[$fm['fieldname']]))
@@ -576,7 +576,7 @@ class dataentry extends Survey_Common_Action
                 }
 
                 $results1['id'] = "";
-                $results1['datestamp'] = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
+                $results1['datestamp'] = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
                 $results1['ipaddr'] = $saver['ip'];
                 $results[] = $results1;
             }
@@ -624,7 +624,7 @@ class dataentry extends Survey_Common_Action
                     $aDataentryoutput .=">\n"
                     ."<td valign='top' align='right' width='25%'>"
                     ."\n";
-                    $aDataentryoutput .= "\t<strong>".strip_javascript($question)."</strong>\n";
+                    $aDataentryoutput .= "\t<strong>".stripJavaScript($question)."</strong>\n";
                     $aDataentryoutput .= "</td>\n"
                     ."<td valign='top' align='left'>\n";
                     //$aDataentryoutput .= "\t-={$fname[3]}=-"; //Debugging info
@@ -645,7 +645,7 @@ class dataentry extends Survey_Common_Action
                             }
                             else
                             {
-                                $mysubmitdate = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
+                                $mysubmitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
                             }
 
                             $completedate = empty($idrow['submitdate']) ? $mysubmitdate : $idrow['submitdate'];
@@ -796,7 +796,7 @@ class dataentry extends Survey_Common_Action
                                 }
 
                                 $oquery="SELECT other FROM {{questions}} WHERE qid={$fname['qid']} AND {{questions}}.language = '{$sDataEntryLanguage}'";
-                                $oresult=db_execute_assoc($oquery) or safe_die("Couldn't get other for list question<br />".$oquery."<br />");
+                                $oresult=db_execute_assoc($oquery) or safeDie("Couldn't get other for list question<br />".$oquery."<br />");
                                 foreach($oresult->readAll() as $orow)
                                 {
                                     $fother=$orow['other'];
@@ -1391,16 +1391,16 @@ class dataentry extends Survey_Common_Action
 
             $aData['sDataEntryLanguage'] = $sDataEntryLanguage;
 
-            if (!bHasSurveyPermission($surveyid, 'responses','update'))
+            if (!hasSurveyPermission($surveyid, 'responses','update'))
             { // if you are not survey owner or super admin you cannot modify responses
                 $aDataentryoutput .= "<input type='button' value='".$clang->gT("Save")."' disabled='disabled'/>\n";
             }
-            elseif ($subaction == "edit" && bHasSurveyPermission($surveyid,'responses','update'))
+            elseif ($subaction == "edit" && hasSurveyPermission($surveyid,'responses','update'))
             {
                 $aData['part'] = 'edit';
                 $aDataentryoutput .= $this->getController()->render('/admin/dataentry/edit', $aData, TRUE);
             }
-            elseif ($subaction == "editsaved" && bHasSurveyPermission($surveyid,'responses','update'))
+            elseif ($subaction == "editsaved" && hasSurveyPermission($surveyid,'responses','update'))
             {
                 $aData['part'] = 'editsaved';
                 $aDataentryoutput .= $this->getController()->render('/admin/dataentry/edit', $aData, TRUE);
@@ -1432,14 +1432,14 @@ class dataentry extends Survey_Common_Action
         'id' => $id
         );
 
-        if (bHasSurveyPermission($surveyid, 'responses','read') && $subaction == "delete"  && bHasSurveyPermission($surveyid, 'responses', 'delete'))
+        if (hasSurveyPermission($surveyid, 'responses','read') && $subaction == "delete"  && hasSurveyPermission($surveyid, 'responses', 'delete'))
         {
             $surveytable = "{{survey_".$surveyid.'}}';
             $aData['thissurvey'] = getSurveyInfo($surveyid);
 
             $delquery = "DELETE FROM $surveytable WHERE id=$id";
             Yii::app()->loadHelper('database');
-            $delresult = db_execute_assoc($delquery) or safe_die ("Couldn't delete record $id<br />\n");
+            $delresult = db_execute_assoc($delquery) or safeDie ("Couldn't delete record $id<br />\n");
 
             $this->_renderWrappedTemplate('delete', $aData);
         }
@@ -1459,7 +1459,7 @@ class dataentry extends Survey_Common_Action
         $id = Yii::app()->request->getPost('id');
         $lang = Yii::app()->request->getPost('lang');
 
-        if ($subaction == "update"  && bHasSurveyPermission($surveyid, 'responses', 'update'))
+        if ($subaction == "update"  && hasSurveyPermission($surveyid, 'responses', 'update'))
         {
 
             $baselang = Survey::model()->findByPk($surveyid)->language;
@@ -1469,7 +1469,7 @@ class dataentry extends Survey_Common_Action
 
             $aDataentryoutput = "<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n";
 
-            $fieldmap = createFieldMap($surveyid,'short',false,false,GetbaseLanguageFromSurveyid($surveyid));
+            $fieldmap = createFieldMap($surveyid,'short',false,false,getBaseLanguageFromSurveyID($surveyid));
 
             // unset timings
             foreach ($fieldmap as $fname)
@@ -1535,22 +1535,22 @@ class dataentry extends Survey_Common_Action
                     }
                     elseif (isset($_POST['completed']) && $thisvalue=="")
                     {
-                        $updateqr .= $fieldname." = '" . $_POST['completed'] . "', \n";// db_quote_id($fieldname)." = " . db_quoteall($_POST['completed'],true) . ", \n";
+                        $updateqr .= $fieldname." = '" . $_POST['completed'] . "', \n";// db_quote_id($fieldname)." = " . dbQuoteAll($_POST['completed'],true) . ", \n";
                     }
                     else
                     {
-                        $updateqr .= $fieldname." = '" . $thisvalue . "', \n"; //db_quote_id($fieldname)." = " . db_quoteall($thisvalue,true) . ", \n";
+                        $updateqr .= $fieldname." = '" . $thisvalue . "', \n"; //db_quote_id($fieldname)." = " . dbQuoteAll($thisvalue,true) . ", \n";
                     }
                 }
                 else
                 {
-                    $updateqr .= $fieldname." = '" . $thisvalue . "', \n"; // db_quote_id($fieldname)." = " . db_quoteall($thisvalue,true) . ", \n";
+                    $updateqr .= $fieldname." = '" . $thisvalue . "', \n"; // db_quote_id($fieldname)." = " . dbQuoteAll($thisvalue,true) . ", \n";
                 }
             }
             $updateqr = substr($updateqr, 0, -3);
             $updateqr .= " WHERE id=$id";
 
-            $updateres = db_execute_assoc($updateqr) or safe_die("Update failed:<br />\n<br />$updateqr");
+            $updateres = db_execute_assoc($updateqr) or safeDie("Update failed:<br />\n<br />$updateqr");
             while (ob_get_level() > 0) {
                 ob_end_flush();
             }
@@ -1586,9 +1586,9 @@ class dataentry extends Survey_Common_Action
         'clang' => $clang
         );
 
-        if (bHasSurveyPermission($surveyid, 'responses','read'))
+        if (hasSurveyPermission($surveyid, 'responses','read'))
         {
-            if ($subaction == "insert" && bHasSurveyPermission($surveyid,'responses','create'))
+            if ($subaction == "insert" && hasSurveyPermission($surveyid,'responses','create'))
             {
                 $surveytable = "{{survey_{$surveyid}}}";
                 $thissurvey = getSurveyInfo($surveyid);
@@ -1607,7 +1607,7 @@ class dataentry extends Survey_Common_Action
                 if (isset($_POST['token']))
                 {
                     $tokencompleted = "";
-                    $tcquery = "SELECT completed from {{tokens_{$surveyid}}} WHERE token='{$_POST['token']}'"; //db_quoteall($_POST['token'],true);
+                    $tcquery = "SELECT completed from {{tokens_{$surveyid}}} WHERE token='{$_POST['token']}'"; //dbQuoteAll($_POST['token'],true);
                     $tcresult = db_execute_assoc($tcquery);
                     $tccount = $tcresult->getRowCount();
                     foreach ($tcresult->readAll() as $tcrow)
@@ -1628,7 +1628,7 @@ class dataentry extends Survey_Common_Action
                     }
                     else
                     { // token is valid, survey not anonymous, try to get last recorded response id
-                        $aquery = "SELECT id,startlanguage FROM $surveytable WHERE token='".$_POST['token']."'"; //db_quoteall($_POST['token'],true);
+                        $aquery = "SELECT id,startlanguage FROM $surveytable WHERE token='".$_POST['token']."'"; //dbQuoteAll($_POST['token'],true);
                         $aresult = db_execute_assoc($aquery);
                         foreach ($aresult->readAll() as $arow)
                         {
@@ -1679,7 +1679,7 @@ class dataentry extends Survey_Common_Action
                         $saver['password']=$_POST['save_password'];
                         $saver['passwordconfirm']=$_POST['save_confirmpassword'];
                         $saver['email']=$_POST['save_email'];
-                        if (!returnglobal('redo'))
+                        if (!returnGlobal('redo'))
                         {
                             $password = md5($saver['password']);
                         }
@@ -1709,7 +1709,7 @@ class dataentry extends Survey_Common_Action
 
                     //BUILD THE SQL TO INSERT RESPONSES
                     $baselang = Survey::model()->findByPk($surveyid)->language;
-                    $fieldmap = createFieldMap($surveyid,'short',false,false,GetbaseLanguageFromSurveyid($surveyid));
+                    $fieldmap = createFieldMap($surveyid,'short',false,false,getBaseLanguageFromSurveyID($surveyid));
                     $insert_data = array();
 
                     $_POST['startlanguage'] = $baselang;
@@ -1718,7 +1718,7 @@ class dataentry extends Survey_Common_Action
                     {
                         if ($thissurvey['datestamp'] == "Y")
                         {
-                            $_POST['submitdate'] = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
+                            $_POST['submitdate'] = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
                         }
                         else
                         {
@@ -1747,7 +1747,7 @@ class dataentry extends Survey_Common_Action
                                         {
                                             if ($_FILES[$fieldname."_file_".$i]['error'] != 4)
                                             {
-                                                $target = Yii::app()->getConfig('uploaddir')."/surveys/". $thissurvey['sid'] ."/files/".sRandomChars(20);
+                                                $target = Yii::app()->getConfig('uploaddir')."/surveys/". $thissurvey['sid'] ."/files/".randomChars(20);
                                                 $size = 0.001 * $_FILES[$fieldname."_file_".$i]['size'];
                                                 $name = rawurlencode($_FILES[$fieldname."_file_".$i]['name']);
 
@@ -1800,7 +1800,7 @@ class dataentry extends Survey_Common_Action
                         if (isset($_POST['closedate']))
                         { $submitdate = $_POST['closedate']; }
                         else
-                        { $submitdate = date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust); }
+                        { $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust); }
 
                         // check how many uses the token has left
                         $usesquery = "SELECT usesleft FROM {{tokens_}}$surveyid WHERE token='".$_POST['token']."'";
@@ -1810,7 +1810,7 @@ class dataentry extends Survey_Common_Action
 
                         // query for updating tokens
                         $utquery = "UPDATE {{tokens_$surveyid}}\n";
-                        if (bIsTokenCompletedDatestamped($thissurvey))
+                        if (isTokenCompletedDatestamped($thissurvey))
                         {
                             if (isset($usesleft) && $usesleft<=1)
                             {
@@ -1833,12 +1833,12 @@ class dataentry extends Survey_Common_Action
                             }
                         }
                         $utquery .= "WHERE token='".$_POST['token']."'";
-                        $utresult = db_execute_assoc($utquery); //Yii::app()->db->Execute($utquery) or safe_die ("Couldn't update tokens table!<br />\n$utquery<br />\n".Yii::app()->db->ErrorMsg());
+                        $utresult = db_execute_assoc($utquery); //Yii::app()->db->Execute($utquery) or safeDie ("Couldn't update tokens table!<br />\n$utquery<br />\n".Yii::app()->db->ErrorMsg());
 
                         // save submitdate into survey table
                         $srid = Yii::app()->db->getLastInsertID(); // Yii::app()->db->getLastInsertID();
                         $sdquery = "UPDATE {{survey_$surveyid}} SET submitdate='".$submitdate."' WHERE id={$srid}\n";
-                        $sdresult = db_execute_assoc($sdquery) or safe_die ("Couldn't set submitdate response in survey table!<br />\n$sdquery<br />\n");
+                        $sdresult = db_execute_assoc($sdquery) or safeDie ("Couldn't set submitdate response in survey table!<br />\n$sdquery<br />\n");
                         $last_db_id = Yii::app()->db->getLastInsertID();
                     }
                     if (isset($_POST['save']) && $_POST['save'] == "on")
@@ -1853,7 +1853,7 @@ class dataentry extends Survey_Common_Action
                         $columns = array("sid", "srid", "identifier", "access_code", "email", "ip",
                         "refurl", 'saved_thisstep', "status", "saved_date");
                         $values = array("'".$surveyid."'", "'".$srid."'", "'".$saver['identifier']."'", "'".$password."'", "'".$saver['email']."'", "'".$aUserData['ip_address']."'",
-                        "'".getenv("HTTP_REFERER")."'", 0, "'"."S"."'", "'".date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", "'".Yii::app()->getConfig('timeadjust'))."'");
+                        "'".getenv("HTTP_REFERER")."'", 0, "'"."S"."'", "'".dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", "'".Yii::app()->getConfig('timeadjust'))."'");
 
                         $SQL = "INSERT INTO $saved_control_table
                         (".implode(',',$columns).")
@@ -1869,7 +1869,7 @@ class dataentry extends Survey_Common_Action
                         "refurl"=>getenv("HTTP_REFERER"),
                         'saved_thisstep' => 0,
                         "status"=>"S",
-                        "saved_date"=>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust')));
+                        "saved_date"=>dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust')));
                         $this->load->model('saved_control_model');*/
                         if (db_execute_assoc($SQL))
                         {
@@ -1888,15 +1888,15 @@ class dataentry extends Survey_Common_Action
                                 "firstname"=> $saver['identifier'],
                                 "lastname"=> $saver['identifier'],
                                 "email"=>$saver['email'],
-                                "token"=>sRandomChars(15),
+                                "token"=>randomChars(15),
                                 "language"=>$saver['language'],
-                                "sent"=>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust),
+                                "sent"=>dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust),
                                 "completed"=>"N");*/
 
                                 $columns = array("firstname", "lastname", "email", "token",
                                 "language", "sent", "completed");
                                 $values = array("'".$saver['identifier']."'", "'".$saver['identifier']."'", "'".$saver['email']."'", "'".$password."'",
-                                "'".sRandomChars(15)."'", "'".$saver['language']."'", "'"."N"."'");
+                                "'".randomChars(15)."'", "'".$saver['language']."'", "'"."N"."'");
 
                                 $SQL = "INSERT INTO $token_table
                                 (".implode(',',$columns).")
@@ -1913,7 +1913,7 @@ class dataentry extends Survey_Common_Action
                             if ($saver['email'])
                             {
                                 //Send email
-                                if (validate_email($saver['email']) && !returnglobal('redo'))
+                                if (validateEmailAddress($saver['email']) && !returnGlobal('redo'))
                                 {
                                     $subject = $clang->gT("Saved Survey Details");
                                     $message = $clang->gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
@@ -1936,7 +1936,7 @@ class dataentry extends Survey_Common_Action
                         }
                         else
                         {
-                            safe_die("Unable to insert record into saved_control table.<br /><br />");
+                            safeDie("Unable to insert record into saved_control table.<br /><br />");
                         }
 
                     }
@@ -1967,7 +1967,7 @@ class dataentry extends Survey_Common_Action
         if(isset($lang)) $lang=sanitize_languagecode($lang);
         $aViewUrls = array();
 
-        if (bHasSurveyPermission($surveyid, 'responses', 'read'))
+        if (hasSurveyPermission($surveyid, 'responses', 'read'))
         {
             $clang = Yii::app()->lang;
 
@@ -2020,14 +2020,14 @@ class dataentry extends Survey_Common_Action
                 $deqquery = "SELECT * FROM {{questions}} WHERE sid=$surveyid AND parent_qid=0 AND gid={$degrow['gid']} AND language='{$sDataEntryLanguage}'";
                 $deqrows = (array) db_execute_assoc($deqquery)->readAll();
                 $aDataentryoutput .= "\t<tr>\n"
-                ."<td colspan='3' align='center'><strong>".FlattenText($degrow['group_name'],true)."</strong></td>\n"
+                ."<td colspan='3' align='center'><strong>".flattenText($degrow['group_name'],true)."</strong></td>\n"
                 ."\t</tr>\n";
                 $gid = $degrow['gid'];
 
                 $aDataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
 
                 // Perform a case insensitive natural sort on group name then question title of a multidimensional array
-                usort($deqrows, 'GroupOrderThenQuestionOrder');
+                usort($deqrows, 'groupOrderThenQuestionOrder');
 
                 foreach ($deqrows as $deqrow)
                 {
@@ -2095,7 +2095,7 @@ class dataentry extends Survey_Common_Action
 //                                        $fquery = "SELECT * FROM {{labels}}"
 //                                        . "WHERE lid='{$conrow['lid']}'\n and language='$sDataEntryLanguage' "
 //                                        . "AND code='{$conrow['value']}'";
-//                                        $fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />Failed to execute this command in Data entry controller");
+//                                        $fresult=db_execute_assoc($fquery) or safeDie("$fquery<br />Failed to execute this command in Data entry controller");
 //                                        foreach($fresult->readAll() as $frow)
 //                                        {
 //                                            $postans=$frow['title'];
@@ -2118,7 +2118,7 @@ class dataentry extends Survey_Common_Action
 //                                        $fquery = "SELECT * FROM {{questions}} "
 //                                        . "WHERE qid='{$conrow['cqid']}'\n and language='$sDataEntryLanguage' "
 //                                        . "AND title='{$conrow['title']}' and scale_id=0";
-//                                        $fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />Failed to execute this command in Data Entry controller.");
+//                                        $fresult=db_execute_assoc($fquery) or safeDie("$fquery<br />Failed to execute this command in Data Entry controller.");
 //                                        if ($fresult->getRowCount() <= 0) die($fquery);
 //                                        foreach($fresult->readAll() as $frow)
 //                                        {
@@ -2197,7 +2197,7 @@ class dataentry extends Survey_Common_Action
                 $explanation = trim($qinfo['relEqn']);
                 $validation = trim($qinfo['prettyValidTip']);
                 $qidattributes=getQuestionAttributeValues($deqrow['qid']);
-                $array_filter_help = FlattenText($this->_array_filter_help($qidattributes, $sDataEntryLanguage, $surveyid));
+                $array_filter_help = flattenText($this->_array_filter_help($qidattributes, $sDataEntryLanguage, $surveyid));
 
                 if (($relevance != '' && $relevance != '1') || ($validation != '') || ($array_filter_help != ''))
                 {
@@ -2264,7 +2264,7 @@ class dataentry extends Survey_Common_Action
                             $cdata['dearesult'] = $dearesult->readAll();
 
                             $oquery="SELECT other FROM {{questions}} WHERE qid={$deqrow['qid']} AND language='{$baselang}'";
-                            $oresult=db_execute_assoc($oquery) or safe_die("Couldn't get other for list question<br />".$oquery);
+                            $oresult=db_execute_assoc($oquery) or safeDie("Couldn't get other for list question<br />".$oquery);
                             foreach($oresult->readAll() as $orow)
                             {
                                 $cdata['fother']=$orow['other'];
@@ -2334,7 +2334,7 @@ class dataentry extends Survey_Common_Action
                             }
 
                             $oquery="SELECT other FROM {{questions}} WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}'";
-                            $oresult=db_execute_assoc($oquery) or safe_die("Couldn't get other for list question<br />");
+                            $oresult=db_execute_assoc($oquery) or safeDie("Couldn't get other for list question<br />");
                             foreach($oresult->readAll() as $orow)
                             {
                                 $fother=$orow['other'];
@@ -2511,7 +2511,7 @@ class dataentry extends Survey_Common_Action
                             break;
                         case "E": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                             $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $mearesult=db_execute_assoc($meaquery) or safe_die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />");
+                            $mearesult=db_execute_assoc($meaquery) or safeDie ("Couldn't get answers, Type \"E\"<br />$meaquery<br />");
                             $cdata['mearesult'] = $mearesult->readAll();
 
                             break;
@@ -2575,7 +2575,7 @@ class dataentry extends Survey_Common_Action
                         case "F": //ARRAY (Flexible Labels)
                         case "H":
                             $meaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $mearesult=db_execute_assoc($meaquery) or safe_die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />");
+                            $mearesult=db_execute_assoc($meaquery) or safeDie ("Couldn't get answers, Type \"E\"<br />$meaquery<br />");
 
                             $cdata['mearesult'] = $mearesult->readAll();
 
@@ -2701,8 +2701,8 @@ class dataentry extends Survey_Common_Action
 
         // Make this safe for DB (*after* we undo first excel's
         // and then our escaping).
-        $fieldvalues = array_map( 'db_quoteall', $fieldvalues );
-        $fieldvalues = str_replace( db_quoteall('{question_not_shown}'), 'NULL', $fieldvalues );
+        $fieldvalues = array_map( 'dbQuoteAll', $fieldvalues );
+        $fieldvalues = str_replace( dbQuoteAll('{question_not_shown}'), 'NULL', $fieldvalues );
 
         return $fieldvalues;
     }
@@ -2717,7 +2717,7 @@ class dataentry extends Survey_Common_Action
         {
             $newquestiontext = Questions::model()->findByAttributes(array('title' => $qidattributes['array_filter'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
             $output .= "\n<p class='extrahelp'>
-                ".sprintf($clang->gT("Only answer this question for the items you selected in question *%s* ('%s')"),$qidattributes['array_filter'], FlattenText(br2nl($newquestiontext['question'])))."
+                ".sprintf($clang->gT("Only answer this question for the items you selected in question *%s* ('%s')"),$qidattributes['array_filter'], flattenText(breakToNewline($newquestiontext['question'])))."
             </p>\n";
         }
         if(!empty($qidattributes['array_filter_exclude']))
@@ -2725,7 +2725,7 @@ class dataentry extends Survey_Common_Action
             $newquestiontext = Questions::model()->findByAttributes(array('title' => $qidattributes['array_filter_exclude'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
 
             $output .= "\n    <p class='extrahelp'>
-                ".sprintf($clang->gT("Only answer this question for the items you did not select in question *%s* ('%s')"),$qidattributes['array_filter_exclude'], br2nl($newquestiontext['question']))."
+                ".sprintf($clang->gT("Only answer this question for the items you did not select in question *%s* ('%s')"),$qidattributes['array_filter_exclude'], breakToNewline($newquestiontext['question']))."
             </p>\n";
         }
         return $output;

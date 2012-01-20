@@ -60,7 +60,7 @@ class emailtemplates extends Survey_Common_Action {
         {
             $aData['bplangs'][$key] = new limesurvey_lang($grouplang);
             $aData['attrib'][$key] = Surveys_languagesettings::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :ls', array(':ssid' => $iSurveyId, ':ls' => $grouplang));
-            $aData['defaulttexts'][$key] = aTemplateDefaultTexts($aData['bplangs'][$key]);
+            $aData['defaulttexts'][$key] = templateDefaultTexts($aData['bplangs'][$key]);
         }
 
         $aData['surveyid'] = $iSurveyId;
@@ -76,7 +76,7 @@ class emailtemplates extends Survey_Common_Action {
     function update($iSurveyId)
     {
         $clang = $this->getController()->lang;
-        if (bHasSurveyPermission($iSurveyId, 'surveylocale','update'))
+        if (hasSurveyPermission($iSurveyId, 'surveylocale','update'))
         {
             $languagelist = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
             $languagelist[] = Survey::model()->findByPk($iSurveyId)->language;

@@ -260,8 +260,8 @@ class update extends Survey_Common_Action
                         $lstables[] = $table;
                     }
                 }
-                $sfilename = "backup_db_".random_string('unique')."_".date_shift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')).".sql";
-                $dfilename = "LimeSurvey_".$this->db->database."_dump_".date_shift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')).".sql.gz";
+                $sfilename = "backup_db_".random_string('unique')."_".dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')).".sql";
+                $dfilename = "LimeSurvey_".$this->db->database."_dump_".dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')).".sql.gz";
                 $prefs = array(
 	                'format'      => 'zip',             // gzip, zip, txt
                 // File name - NEEDED ONLY WITH ZIP FILES
@@ -535,7 +535,7 @@ class update extends Survey_Common_Action
         if(isset($continue) && $continue=="yes")
         {
             $aViewUrls['output'] = CheckForDBUpgrades($continue);
-            updatecheck();
+            updateCheck();
             $getHeader = false;
         }
         else

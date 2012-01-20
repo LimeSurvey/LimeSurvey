@@ -31,17 +31,17 @@
 
                 if ($ishtml === true)
                 {
-                    $aDefaultTexts = aTemplateDefaultTexts($bplang);
+                    $aDefaultTexts = templateDefaultTexts($bplang);
                 }
                 else
                 {
-                    $aDefaultTexts = aTemplateDefaultTexts($bplang, 'unescaped');
+                    $aDefaultTexts = templateDefaultTexts($bplang, 'unescaped');
                 }
                 if (!$thissurvey['email_invite'])
                 {
                     if ($ishtml === true)
                     {
-                        $thissurvey['email_invite'] = html_escape($aDefaultTexts['invitation']);
+                        $thissurvey['email_invite'] = HTMLEscape($aDefaultTexts['invitation']);
                     }
                     else
                     {

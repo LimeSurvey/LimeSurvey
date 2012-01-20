@@ -27,7 +27,7 @@
 
 <li><label for='template'><?php $clang->eT("Template:"); ?></label>
             <select id='template' name='template'>
-            <?php foreach (array_keys(gettemplatelist()) as $tname) {
+            <?php foreach (array_keys(getTemplateList()) as $tname) {
 
                 if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'] == 1 || hasTemplateManageRights(Yii::app()->session["loginID"], $tname) == 1) { ?>
                     <option value='<?php echo $tname; ?>'
@@ -43,7 +43,7 @@
 </li>
 
 <li><label for='preview'><?php $clang->eT("Template Preview:"); ?></label>
-        <img alt='<?php $clang->eT("Template preview image"); ?>' id='preview' src='<?php echo sGetTemplateURL($esrow['template']); ?>/preview.png' />
+        <img alt='<?php $clang->eT("Template preview image"); ?>' id='preview' src='<?php echo getTemplateURL($esrow['template']); ?>/preview.png' />
 </li>
 
 

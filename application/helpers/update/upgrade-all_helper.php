@@ -127,7 +127,7 @@ function upgrade_question_attributes148()
                 foreach ($languages as $language)
                 {
                     $sAttributeInsertQuery="insert into {{question_attributes}} (qid,attribute,value,language) VALUES({$aAttributeRow['qid']},'{$aAttributeRow['attribute']}','{$aAttributeRow['value']}','{$language}' )";
-                    modify_database("",$sAttributeInsertQuery); echo $modifyoutput; flush();@ob_flush();
+                    modifyDatabase("",$sAttributeInsertQuery); echo $modifyoutput; flush();@ob_flush();
                 }
             }
         }
@@ -168,7 +168,7 @@ function upgrade_survey_table145()
     {
         Yii::app()->loadLibrary('Limesurvey_lang',array("langcode"=>$aSurveyRow['surveyls_language']));
         $oLanguage = Yii::app()->lang;
-        $aDefaultTexts=aTemplateDefaultTexts($oLanguage,'unescaped');
+        $aDefaultTexts=templateDefaultTexts($oLanguage,'unescaped');
         unset($oLanguage);
         $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification'].$aDefaultTexts['admin_detailed_notification_css'];
         $sSurveyUpdateQuery = "update {{surveys_languagesettings}} set
@@ -202,7 +202,7 @@ function upgrade_surveypermissions_table145()
                                                                             'delete_p'=>$aPermissionRow['define_questions'],
                                                                             'sid'=>$aPermissionRow['sid'],
                                                                             'uid'=>$aPermissionRow['uid']))->getText();
-            modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
+            modifyDatabase("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
 
             $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'quotas',
                                                                             'create_p'=>$aPermissionRow['define_questions'],
@@ -211,7 +211,7 @@ function upgrade_surveypermissions_table145()
                                                                             'delete_p'=>$aPermissionRow['define_questions'],
                                                                             'sid'=>$aPermissionRow['sid'],
                                                                             'uid'=>$aPermissionRow['uid']))->getText();
-            modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
+            modifyDatabase("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
 
             $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'responses',
                                                                             'create_p'=>$aPermissionRow['browse_response'],
@@ -222,26 +222,26 @@ function upgrade_surveypermissions_table145()
                                                                             'import_p'=>$aPermissionRow['browse_response'],
                                                                             'sid'=>$aPermissionRow['sid'],
                                                                             'uid'=>$aPermissionRow['uid']))->getText();
-            modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
+            modifyDatabase("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
 
             $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'statistics',
                                                                             'read_p'=>$aPermissionRow['browse_response'],
                                                                             'sid'=>$aPermissionRow['sid'],
                                                                             'uid'=>$aPermissionRow['uid']))->getText();
-            modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
+            modifyDatabase("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
 
             $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'survey',
                                                                             'read_p'=>1,
                                                                             'delete_p'=>$aPermissionRow['delete_survey'],
                                                                             'sid'=>$aPermissionRow['sid'],
                                                                             'uid'=>$aPermissionRow['uid']))->getText();
-            modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
+            modifyDatabase("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
 
             $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'surveyactivation',
                                                                             'update_p'=>$aPermissionRow['activate_survey'],
                                                                             'sid'=>$aPermissionRow['sid'],
                                                                             'uid'=>$aPermissionRow['uid']))->getText();
-            modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
+            modifyDatabase("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
 
             $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'surveycontent',
                                                                             'create_p'=>$aPermissionRow['define_questions'],
@@ -252,21 +252,21 @@ function upgrade_surveypermissions_table145()
                                                                             'import_p'=>$aPermissionRow['define_questions'],
                                                                             'sid'=>$aPermissionRow['sid'],
                                                                             'uid'=>$aPermissionRow['uid']))->getText();
-            modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
+            modifyDatabase("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
 
             $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'surveylocale',
                                                                             'read_p'=>$aPermissionRow['edit_survey_property'],
                                                                             'update_p'=>$aPermissionRow['edit_survey_property'],
                                                                             'sid'=>$aPermissionRow['sid'],
                                                                             'uid'=>$aPermissionRow['uid']))->getText();
-            modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
+            modifyDatabase("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
 
             $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'surveysettings',
                                                                             'read_p'=>$aPermissionRow['edit_survey_property'],
                                                                             'update_p'=>$aPermissionRow['edit_survey_property'],
                                                                             'sid'=>$aPermissionRow['sid'],
                                                                             'uid'=>$aPermissionRow['uid']))->getText();
-            modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
+            modifyDatabase("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
 
             $sPermissionInsertQuery=Yii::app()->db->createCommand()->insert($tablename,array('permission'=>'tokens',
                                                                             'create_p'=>$aPermissionRow['activate_survey'],
@@ -277,7 +277,7 @@ function upgrade_surveypermissions_table145()
                                                                             'import_p'=>$aPermissionRow['activate_survey'],
                                                                             'sid'=>$aPermissionRow['sid'],
                                                                             'uid'=>$aPermissionRow['uid']))->getText();
-            modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
+            modifyDatabase("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
         }
     }
 }
@@ -292,7 +292,7 @@ function upgrade_survey_table152()
 
         Yii::app()->loadLibrary('Limesurvey_lang',array("langcode"=>$aSurveyRow['surveyls_language']));
         $oLanguage = Yii::app()->lang;
-        $aDefaultTexts=aTemplateDefaultTexts($oLanguage,'unescaped');
+        $aDefaultTexts=templateDefaultTexts($oLanguage,'unescaped');
         unset($oLanguage);
 
         if (trim(strip_tags($aSurveyRow['surveyls_email_confirm'])) == '')

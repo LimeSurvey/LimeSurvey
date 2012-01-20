@@ -89,7 +89,7 @@
 	<div class='menubar-right'>
         <label for='surveylist'><?php $clang->eT("Surveys:");?></label>
 	    <select id='surveylist' name='surveylist' onchange="window.open(this.options[this.selectedIndex].value,'_top')">
-	    <?php echo getsurveylist(false, false, $surveyid); ?>
+	    <?php echo getSurveyList(false, false, $surveyid); ?>
 	    </select>
         <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/survey/index");?>', '_top')" title="<?php $clang->eTview("Detailed list of surveys");?>" >
         <img src='<?php echo Yii::app()->getConfig('imageurl');?>/surveylist.png' alt='<?php $clang->eT("Detailed list of surveys");?>' />

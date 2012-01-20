@@ -35,21 +35,21 @@ class conditionsaction extends Survey_Common_Action {
 		if( !empty($_POST['subaction']) ) $subaction=Yii::app()->request->getPost('subaction');
 
 		//BEGIN Sanitizing POSTed data
-		if ( !isset($surveyid) ) { $surveyid = returnglobal('sid'); }
-		if ( !isset($qid) ) { $qid = returnglobal('qid'); }
-		if ( !isset($gid) ) { $gid = returnglobal('gid'); }
-		if ( !isset($p_scenario)) {$p_scenario=returnglobal('scenario');}
+		if ( !isset($surveyid) ) { $surveyid = returnGlobal('sid'); }
+		if ( !isset($qid) ) { $qid = returnGlobal('qid'); }
+		if ( !isset($gid) ) { $gid = returnGlobal('gid'); }
+		if ( !isset($p_scenario)) {$p_scenario=returnGlobal('scenario');}
 		if ( !isset($p_cqid))
 		{
-		    $p_cqid = returnglobal('cqid');
+		    $p_cqid = returnGlobal('cqid');
 		    if ($p_cqid == '') $p_cqid=0; // we are not using another question as source of condition
 		}
 
-		if (!isset($p_cid)) { $p_cid=returnglobal('cid'); }
-		if (!isset($p_subaction)) { $p_subaction=returnglobal('subaction');}
-		if (!isset($p_cquestions)) {$p_cquestions=returnglobal('cquestions');}
-		if (!isset($p_csrctoken)) {$p_csrctoken=returnglobal('csrctoken');}
-		if (!isset($p_prevquestionsgqa)) {$p_prevquestionsgqa=returnglobal('prevQuestionSGQA');}
+		if (!isset($p_cid)) { $p_cid=returnGlobal('cid'); }
+		if (!isset($p_subaction)) { $p_subaction=returnGlobal('subaction');}
+		if (!isset($p_cquestions)) {$p_cquestions=returnGlobal('cquestions');}
+		if (!isset($p_csrctoken)) {$p_csrctoken=returnGlobal('csrctoken');}
+		if (!isset($p_prevquestionsgqa)) {$p_prevquestionsgqa=returnGlobal('prevQuestionSGQA');}
 
 		if (!isset($p_canswers))
 		{
@@ -114,8 +114,8 @@ class conditionsaction extends Survey_Common_Action {
 
 		//include_once("login_check.php");
 		include_once("database.php");
-		// Caution (lemeur): database.php uses auto_unescape on all entries in $_POST
-		// Take care to not use auto_unescape on $_POST variables after this
+		// Caution (lemeur): database.php uses autoUnescape on all entries in $_POST
+		// Take care to not use autoUnescape on $_POST variables after this
 
 		$br = CHtml::openTag('br /');
 
@@ -126,7 +126,7 @@ class conditionsaction extends Survey_Common_Action {
 		    $conditionsoutput .= CHtml::submitButton($clang->gT("Main admin screen"), array(
 			    'onclick' => "window.open('".$this->getController()->createUrl("admin/")."', '_top')"
 			)).$br;
-			safe_die($conditionsoutput);
+			safeDie($conditionsoutput);
 		    return;
 		}
 
@@ -137,7 +137,7 @@ class conditionsaction extends Survey_Common_Action {
 		    $conditionsoutput .= CHtml::submitButton($clang->gT("Main admin screen"), array(
 			    'onclick' => "window.open('".$this->getController()->createUrl("admin/")."', '_top')"
 			)).$br;
-			safe_die($conditionsoutput);
+			safeDie($conditionsoutput);
 		    return;
 		}
 
@@ -261,23 +261,23 @@ class conditionsaction extends Survey_Common_Action {
 		        }
 
 		        unset($posted_condition_value);
-		        // Please note that auto_unescape is already applied in database.php included above
+		        // Please note that autoUnescape is already applied in database.php included above
 		        // so we only need to db_quote _POST variables
 		        if (isset($_POST['ConditionConst']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#CONST")
 		        {
-		            $posted_condition_value = db_quoteall(Yii::app()->request->getPost('ConditionConst'));
+		            $posted_condition_value = dbQuoteAll(Yii::app()->request->getPost('ConditionConst'));
 		        }
 		        elseif (isset($_POST['prevQuestionSGQA']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#PREVQUESTIONS")
 		        {
-		            $posted_condition_value = db_quoteall(Yii::app()->request->getPost('prevQuestionSGQA'));
+		            $posted_condition_value = dbQuoteAll(Yii::app()->request->getPost('prevQuestionSGQA'));
 		        }
 		        elseif (isset($_POST['tokenAttr']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#TOKENATTRS")
 		        {
-		            $posted_condition_value = db_quoteall(Yii::app()->request->getPost('tokenAttr'));
+		            $posted_condition_value = dbQuoteAll(Yii::app()->request->getPost('tokenAttr'));
 		        }
 		        elseif (isset($_POST['ConditionRegexp']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#REGEXP")
 		        {
-		            $posted_condition_value = db_quoteall(Yii::app()->request->getPost('ConditionRegexp'));
+		            $posted_condition_value = dbQuoteAll(Yii::app()->request->getPost('ConditionRegexp'));
 		        }
 
 		        if (isset($posted_condition_value))
@@ -331,23 +331,23 @@ class conditionsaction extends Survey_Common_Action {
 		        }
 
 		        unset($posted_condition_value);
-		        // Please note that auto_unescape is already applied in database.php included above
+		        // Please note that autoUnescape is already applied in database.php included above
 		        // so we only need to db_quote _POST variables
 		        if (isset($_POST['ConditionConst']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#CONST")
 		        {
-		            $posted_condition_value = db_quoteall(Yii::app()->request->getPost('ConditionConst'));
+		            $posted_condition_value = dbQuoteAll(Yii::app()->request->getPost('ConditionConst'));
 		        }
 		        elseif (isset($_POST['prevQuestionSGQA']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#PREVQUESTIONS")
 		        {
-		            $posted_condition_value = db_quoteall(Yii::app()->request->getPost('prevQuestionSGQA'));
+		            $posted_condition_value = dbQuoteAll(Yii::app()->request->getPost('prevQuestionSGQA'));
 		        }
 		        elseif (isset($_POST['tokenAttr']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#TOKENATTRS")
 		        {
-		            $posted_condition_value = db_quoteall(Yii::app()->request->getPost('tokenAttr'));
+		            $posted_condition_value = dbQuoteAll(Yii::app()->request->getPost('tokenAttr'));
 		        }
 		        elseif (isset($_POST['ConditionRegexp']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#REGEXP")
 		        {
-		            $posted_condition_value = db_quoteall(Yii::app()->request->getPost('ConditionRegexp'));
+		            $posted_condition_value = dbQuoteAll(Yii::app()->request->getPost('ConditionRegexp'));
 		        }
 
 		        if (isset($posted_condition_value))
@@ -401,7 +401,7 @@ class conditionsaction extends Survey_Common_Action {
 		if (isset($p_subaction) && $p_subaction == "renumberscenarios")
 		{
 		    $query = "SELECT DISTINCT scenario FROM {{conditions}} WHERE qid=:qid ORDER BY scenario";
-		    $result = Yii::app()->db->createCommand($query)->bindParam(":qid", $qid, PDO::PARAM_INT)->query() or safe_die ("Couldn't select scenario<br />$query<br />");
+		    $result = Yii::app()->db->createCommand($query)->bindParam(":qid", $qid, PDO::PARAM_INT)->query() or safeDie ("Couldn't select scenario<br />$query<br />");
 		    $newindex = 1;
 
 		    foreach ($result->readAll() as $srow)
@@ -420,9 +420,9 @@ class conditionsaction extends Survey_Common_Action {
 		if ( isset($p_subaction) && $p_subaction == "copyconditions" )
 		{
 
-		    $qid = returnglobal('qid');
-		    $copyconditionsfrom = returnglobal('copyconditionsfrom');
-		    $copyconditionsto = returnglobal('copyconditionsto');
+		    $qid = returnGlobal('qid');
+		    $copyconditionsfrom = returnGlobal('copyconditionsfrom');
+		    $copyconditionsto = returnGlobal('copyconditionsto');
 		    if (isset($copyconditionsto) && is_array($copyconditionsto) && isset($copyconditionsfrom) && is_array($copyconditionsfrom))
 		    {
 		        //Get the conditions we are going to copy
@@ -433,7 +433,7 @@ class conditionsaction extends Survey_Common_Action {
 		        $query .= implode(", ", $copyconditionsfrom);
 		        $query .= "')";
 		        $result = Yii::app()->db->createCommand($query)->query() or
-		        	safe_die("Couldn't get conditions for copy<br />$query<br />");
+		        	safeDie("Couldn't get conditions for copy<br />$query<br />");
 
 		        foreach ($result->readAll() as $row)
 		        {
@@ -518,8 +518,8 @@ class conditionsaction extends Survey_Common_Action {
 
 		//BEGIN: GATHER INFORMATION
 		// 1: Get information for this question
-		if (!isset($qid)) { $qid = returnglobal('qid'); }
-		if (!isset($surveyid)) { $surveyid = returnglobal('sid'); }
+		if (!isset($qid)) { $qid = returnGlobal('qid'); }
+		if (!isset($surveyid)) { $surveyid = returnGlobal('sid'); }
 		$thissurvey = getSurveyInfo($surveyid);
 
 		$qresult = Questions::model()->with('groups')->findByAttributes(array('qid' => $qid, 'parent_qid' => 0, 'language' => Survey::model()->findByPk($surveyid)->language));
@@ -543,7 +543,7 @@ class conditionsaction extends Survey_Common_Action {
 		foreach ($qresult as $k => $v)
 			$qrows[$k] = array_merge($v->attributes, $v->groups->attributes);
 		// Perform a case insensitive natural sort on group name then question title (known as "code" in the form) of a multidimensional array
-		usort($qrows, 'GroupOrderThenQuestionOrder');
+		usort($qrows, 'groupOrderThenQuestionOrder');
 
 		$position="before";
 		// Go through each question until we reach the current one
@@ -673,8 +673,8 @@ class conditionsaction extends Survey_Common_Action {
 
 		            foreach ($aresult as $arows)
 		            {
-		                $shortanswer = "{$arows['title']}: [" . FlattenText($arows['question']) . "]";
-		                $shortquestion = $rows['title'].":$shortanswer ".FlattenText($rows['question']);
+		                $shortanswer = "{$arows['title']}: [" . flattenText($arows['question']) . "]";
+		                $shortquestion = $rows['title'].":$shortanswer ".flattenText($rows['question']);
 		                $cquestions[] = array( $shortquestion, $rows['qid'], $rows['type'],
 		                	$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']
 		                );
@@ -776,7 +776,7 @@ class conditionsaction extends Survey_Common_Action {
 						AND sq.scale_id=1
 						ORDER BY sq.question_order";
 
-		            $x_axis_db=Yii::app()->db->createCommand($aquery)->bindParam(":lang", Survey::model()->findByPk($surveyid)->language, PDO::PARAM_STR)->bindParam(":qid", $rows[qid], PDO::PARAM_INT)->query() or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />");
+		            $x_axis_db=Yii::app()->db->createCommand($aquery)->bindParam(":lang", Survey::model()->findByPk($surveyid)->language, PDO::PARAM_STR)->bindParam(":qid", $rows[qid], PDO::PARAM_INT)->query() or safeDie ("Couldn't get answers to Array questions<br />$aquery<br />");
 
 		            foreach ($x_axis_db->readAll() as $frow)
 		            {
@@ -787,7 +787,7 @@ class conditionsaction extends Survey_Common_Action {
 		            {
 		                foreach($x_axis as $key=>$val)
 		                {
-		                    $shortquestion=$rows['title'].":{$arows['title']}:$key: [".strip_tags($arows['question']). "][" .strip_tags($val). "] " . FlattenText($rows['question']);
+		                    $shortquestion=$rows['title'].":{$arows['title']}:$key: [".strip_tags($arows['question']). "][" .strip_tags($val). "] " . flattenText($rows['question']);
 		                    $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."_".$key);
 
 		                    if ($rows['type'] == ":")
@@ -1092,7 +1092,7 @@ class conditionsaction extends Survey_Common_Action {
 		{
             foreach($canswers as $can)
             {
-                $an = ls_json_encode(FlattenText($can[2]));
+                $an = lsJSONEncode(flattenText($can[2]));
                 $aViewUrls['output'] .= "Fieldnames[$jn]='$can[0]';\n"
 	                . "Codes[$jn]='$can[1]';\n"
 	                . "Answers[$jn]={$an};\n";
@@ -1259,7 +1259,7 @@ class conditionsaction extends Survey_Common_Action {
 			            ."AND {{conditions}}.scenario=:scenario"
 			            ."AND {{conditions}}.cfieldname NOT LIKE '{%' \n" // avoid catching SRCtokenAttr conditions
 			            ."ORDER BY {{groups}}.group_order,{{questions}}.question_order";
-		            $result = Yii::app()->db->createCommand($query)->bindParam(":scenario", $scenarionr['scenario'], PDO::PARAM_INT)->bindParam(":qid", $qid, PDO::PARAM_INT)->bindParam(":lang", Survey::model()->findByPk($surveyid)->language, PDO::PARAM_STR)->query() or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />");
+		            $result = Yii::app()->db->createCommand($query)->bindParam(":scenario", $scenarionr['scenario'], PDO::PARAM_INT)->bindParam(":qid", $qid, PDO::PARAM_INT)->bindParam(":lang", Survey::model()->findByPk($surveyid)->language, PDO::PARAM_STR)->query() or safeDie ("Couldn't get other conditions for question $qid<br />$query<br />");
 		            $conditionscount=count($result);
 
 		            $querytoken = "SELECT {{conditions}}.cid, "
@@ -1275,7 +1275,7 @@ class conditionsaction extends Survey_Common_Action {
 			            ."AND {{conditions}}.scenario=:scenario\n"
 			            ."AND {{conditions}}.cfieldname LIKE '{%' \n" // only catching SRCtokenAttr conditions
 			            ."ORDER BY {{conditions}}.cfieldname";
-		            $resulttoken = Yii::app()->db->createCommand($querytoken)->bindParam(":scenario", $scenarionr['scenario'], PDO::PARAM_INT)->bindParam(":qid", $qid, PDO::PARAM_INT)->query() or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />");
+		            $resulttoken = Yii::app()->db->createCommand($querytoken)->bindParam(":scenario", $scenarionr['scenario'], PDO::PARAM_INT)->bindParam(":qid", $qid, PDO::PARAM_INT)->query() or safeDie ("Couldn't get other conditions for question $qid<br />$query<br />");
 		            $conditionscounttoken=count($resulttoken);
 
 		            $conditionscount=$conditionscount+$conditionscounttoken;
@@ -1349,14 +1349,14 @@ class conditionsaction extends Survey_Common_Action {
 		                    if ($thissurvey['anonymized'] != 'Y' && preg_match('/^{TOKEN:([^}]*)}$/',$rows['cfieldname'],$extractedTokenAttr) > 0)
 		                    {
 		                        $leftOperandType = 'tokenattr';
-		                        $aTokenAttrNames=GetTokenFieldsAndNames($surveyid);
+		                        $aTokenAttrNames=getTokenFieldsAndNames($surveyid);
 		                        if (count($aTokenAttrNames) != 0)
 		                        {
-		                            $thisAttrName=html_escape($aTokenAttrNames[strtolower($extractedTokenAttr[1])])." [".$clang->gT("From token table")."]";
+		                            $thisAttrName=HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])])." [".$clang->gT("From token table")."]";
 		                        }
 		                        else
 		                        {
-		                            $thisAttrName=html_escape($extractedTokenAttr[1])." [".$clang->gT("Inexistant token table")."]";
+		                            $thisAttrName=HTMLEscape($extractedTokenAttr[1])." [".$clang->gT("Inexistant token table")."]";
 		                        }
 		                        $aViewUrls['output'] .= "\t$thisAttrName\n";
 		                        // TIBO not sure this is used anymore !!
@@ -1397,7 +1397,7 @@ class conditionsaction extends Survey_Common_Action {
 		                    if ($rows['method'] == 'RX')
 		                    {
 		                        $rightOperandType = 'regexp';
-		                        $aViewUrls['output'] .= "".html_escape($rows['value'])."\n";
+		                        $aViewUrls['output'] .= "".HTMLEscape($rows['value'])."\n";
 		                    }
 		                    elseif (preg_match('/^@([0-9]+X[0-9]+X[^@]*)@$/',$rows['value'],$matchedSGQA) > 0)
 		                    { // SGQA
@@ -1417,19 +1417,19 @@ class conditionsaction extends Survey_Common_Action {
 		                            $matchedSGQAText=$rows['value'].' ('.$clang->gT("Not found").')';
 		                        }
 
-		                        $aViewUrls['output'] .= "".html_escape($matchedSGQAText)."\n";
+		                        $aViewUrls['output'] .= "".HTMLEscape($matchedSGQAText)."\n";
 		                    }
 		                    elseif ($thissurvey['anonymized'] != 'Y' && preg_match('/^{TOKEN:([^}]*)}$/',$rows['value'],$extractedTokenAttr) > 0)
 		                    {
 		                        $rightOperandType = 'tokenAttr';
-		                        $aTokenAttrNames=GetTokenFieldsAndNames($surveyid);
+		                        $aTokenAttrNames=getTokenFieldsAndNames($surveyid);
 		                        if (count($aTokenAttrNames) != 0)
 		                        {
-		                            $thisAttrName=html_escape($aTokenAttrNames[strtolower($extractedTokenAttr[1])])." [".$clang->gT("From token table")."]";
+		                            $thisAttrName=HTMLEscape($aTokenAttrNames[strtolower($extractedTokenAttr[1])])." [".$clang->gT("From token table")."]";
 		                        }
 		                        else
 		                        {
-		                            $thisAttrName=html_escape($extractedTokenAttr[1])." [".$clang->gT("Inexistant token table")."]";
+		                            $thisAttrName=HTMLEscape($extractedTokenAttr[1])." [".$clang->gT("Inexistant token table")."]";
 		                        }
 		                        $aViewUrls['output'] .= "\t$thisAttrName\n";
 		                    }
@@ -1456,7 +1456,7 @@ class conditionsaction extends Survey_Common_Action {
 		                        }
 		                        else
 		                        {
-		                            $aViewUrls['output'] .= "".html_escape($rows['value'])."\n";
+		                            $aViewUrls['output'] .= "".HTMLEscape($rows['value'])."\n";
 		                        }
 		                    }
 
@@ -1478,13 +1478,13 @@ class conditionsaction extends Survey_Common_Action {
 		                        // depending on the leftOperandType
 		                        if ($leftOperandType == 'tokenattr')
 		                        {
-		                        	$aViewUrls['output'] .= CHtml::hiddenField('csrctoken', html_escape($rows['cfieldname']), array(
+		                        	$aViewUrls['output'] .= CHtml::hiddenField('csrctoken', HTMLEscape($rows['cfieldname']), array(
 			                        	'id' => 'csrctoken'.$rows['cid']
 			                        ));
 		                        }
 		                        else
 		                        {
-		                        	$aViewUrls['output'] .= CHtml::hiddenField('cquestions', html_escape($rows['cfieldname']),
+		                        	$aViewUrls['output'] .= CHtml::hiddenField('cquestions', HTMLEscape($rows['cfieldname']),
 		                        		array(
 			                        		'id' => 'cquestions'.$rows['cid']
 			                        	)
@@ -1496,33 +1496,33 @@ class conditionsaction extends Survey_Common_Action {
 		                        // This is used when Editting a condition
 		                        if ($rightOperandType == 'predefinedAnsw')
 		                        {
-		                        	$aViewUrls['output'] .= CHtml::hiddenField('EDITcanswers[]', html_escape($rows['value']), array(
+		                        	$aViewUrls['output'] .= CHtml::hiddenField('EDITcanswers[]', HTMLEscape($rows['value']), array(
 			                        	'id' => 'editModeTargetVal'.$rows['cid']
 			                        ));
 		                        }
 		                        elseif ($rightOperandType == 'prevQsgqa')
 		                        {
-		                        	$aViewUrls['output'] .= CHtml::hiddenField('EDITprevQuestionSGQA', html_escape($rows['value']),
+		                        	$aViewUrls['output'] .= CHtml::hiddenField('EDITprevQuestionSGQA', HTMLEscape($rows['value']),
 		                        		array(
 			                        		'id' => 'editModeTargetVal'.$rows['cid']
 			                        	));
 		                        }
 		                        elseif ($rightOperandType == 'tokenAttr')
 		                        {
-		                        	$aViewUrls['output'] .= CHtml::hiddenField('EDITtokenAttr', html_escape($rows['value']), array(
+		                        	$aViewUrls['output'] .= CHtml::hiddenField('EDITtokenAttr', HTMLEscape($rows['value']), array(
 			                        	'id' => 'editModeTargetVal'.$rows['cid']
 			                        ));
 		                        }
 		                        elseif ($rightOperandType == 'regexp')
 		                        {
-		                        	$aViewUrls['output'] .= CHtml::hiddenField('EDITConditionRegexp', html_escape($rows['value']),
+		                        	$aViewUrls['output'] .= CHtml::hiddenField('EDITConditionRegexp', HTMLEscape($rows['value']),
 		                        		array(
 			                        		'id' => 'editModeTargetVal'.$rows['cid']
 			                        	));
 		                        }
 		                        else
 		                        {
-		                        	$aViewUrls['output'] .= CHtml::hiddenField('EDITConditionConst', html_escape($rows['value']),
+		                        	$aViewUrls['output'] .= CHtml::hiddenField('EDITConditionConst', HTMLEscape($rows['value']),
 		                        		array(
 			                        		'id' => 'editModeTargetVal'.$rows['cid']
 			                        	));
@@ -1750,7 +1750,7 @@ class conditionsaction extends Survey_Common_Action {
 
 		    // Source token Tab
 		    $aViewUrls['output'] .= "<div id='SRCTOKENATTRS'><select name='csrctoken' id='csrctoken' size='".($qcount+1)."' >\n";
-		    foreach (GetTokenFieldsAndNames($surveyid) as $tokenattr => $tokenattrName)
+		    foreach (getTokenFieldsAndNames($surveyid) as $tokenattr => $tokenattrName)
 		    {
 		        // Check to select
 		        if (isset($p_csrctoken) && $p_csrctoken == '{TOKEN:'.strtoupper($tokenattr).'}')
@@ -1761,7 +1761,7 @@ class conditionsaction extends Survey_Common_Action {
 		        {
 		            $selectThisSrcTokenAttr = "";
 		        }
-		        $aViewUrls['output'] .= "<option value='{TOKEN:".strtoupper($tokenattr)."}' $selectThisSrcTokenAttr>".html_escape($tokenattrName)."</option>\n";
+		        $aViewUrls['output'] .= "<option value='{TOKEN:".strtoupper($tokenattr)."}' $selectThisSrcTokenAttr>".HTMLEscape($tokenattrName)."</option>\n";
 		    }
 
 		    $aViewUrls['output'] .= "</select>\n"
@@ -1796,7 +1796,7 @@ class conditionsaction extends Survey_Common_Action {
 		        $multipletext = "";
 		        if (isset($_POST['EDITConditionConst']) && $_POST['EDITConditionConst'] != '')
 		        {
-		            $EDITConditionConst=html_escape($_POST['EDITConditionConst']);
+		            $EDITConditionConst=HTMLEscape($_POST['EDITConditionConst']);
 		        }
 		        else
 		        {
@@ -1804,7 +1804,7 @@ class conditionsaction extends Survey_Common_Action {
 		        }
 		        if (isset($_POST['EDITConditionRegexp']) && $_POST['EDITConditionRegexp'] != '')
 		        {
-		            $EDITConditionRegexp=html_escape($_POST['EDITConditionRegexp']);
+		            $EDITConditionRegexp=HTMLEscape($_POST['EDITConditionRegexp']);
 		        }
 		        else
 		        {
@@ -1816,7 +1816,7 @@ class conditionsaction extends Survey_Common_Action {
 		        $multipletext = "multiple";
 		        if (isset($_POST['ConditionConst']) && $_POST['ConditionConst'] != '')
 		        {
-		            $EDITConditionConst=html_escape($_POST['ConditionConst']);
+		            $EDITConditionConst=HTMLEscape($_POST['ConditionConst']);
 		        }
 		        else
 		        {
@@ -1824,7 +1824,7 @@ class conditionsaction extends Survey_Common_Action {
 		        }
 		        if (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp'] != '')
 		        {
-		            $EDITConditionRegexp=html_escape($_POST['ConditionRegexp']);
+		            $EDITConditionRegexp=HTMLEscape($_POST['ConditionRegexp']);
 		        }
 		        else
 		        {
@@ -1878,9 +1878,9 @@ class conditionsaction extends Survey_Common_Action {
 		    // Token tab
 		    $aViewUrls['output'] .= "\t<div id='TOKENATTRS'>\n"
 		    ."\t\t<select name='tokenAttr' id='tokenAttr' size='7'>\n";
-		    foreach (GetTokenFieldsAndNames($surveyid) as $tokenattr => $tokenattrName)
+		    foreach (getTokenFieldsAndNames($surveyid) as $tokenattr => $tokenattrName)
 		    {
-		        $aViewUrls['output'] .= "\t\t<option value='{TOKEN:".strtoupper($tokenattr)."}'>".html_escape($tokenattrName)."</option>\n";
+		        $aViewUrls['output'] .= "\t\t<option value='{TOKEN:".strtoupper($tokenattr)."}'>".HTMLEscape($tokenattrName)."</option>\n";
 		    }
 
 		    $aViewUrls['output'] .= "\t\t</select>\n"
@@ -1950,24 +1950,24 @@ class conditionsaction extends Survey_Common_Action {
 		        {
 		            // In order to avoid issues with backslash escaping, I don't use javascript to set the value
 		            // Thus the value is directly set when creating the Textarea element
-		            //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionConst').value='".html_escape($_POST['EDITConditionConst'])."';\n";
+		            //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionConst').value='".HTMLEscape($_POST['EDITConditionConst'])."';\n";
 		            $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
 		        }
 		        elseif (isset($_POST['EDITprevQuestionSGQA']) && $_POST['EDITprevQuestionSGQA'] != '')
 		        {
-		            $aViewUrls['output'] .= "\tdocument.getElementById('prevQuestionSGQA').value='".html_escape($_POST['EDITprevQuestionSGQA'])."';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('prevQuestionSGQA').value='".HTMLEscape($_POST['EDITprevQuestionSGQA'])."';\n";
 		            $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#PREVQUESTIONS';\n";
 		        }
 		        elseif (isset($_POST['EDITtokenAttr']) && $_POST['EDITtokenAttr'] != '')
 		        {
-		            $aViewUrls['output'] .= "\tdocument.getElementById('tokenAttr').value='".html_escape($_POST['EDITtokenAttr'])."';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('tokenAttr').value='".HTMLEscape($_POST['EDITtokenAttr'])."';\n";
 		            $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#TOKENATTRS';\n";
 		        }
 		        elseif (isset($_POST['EDITConditionRegexp']) && $_POST['EDITConditionRegexp'] != '')
 		        {
 		            // In order to avoid issues with backslash escaping, I don't use javascript to set the value
 		            // Thus the value is directly set when creating the Textarea element
-		            //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionRegexp').value='".html_escape($_POST['EDITConditionRegexp'])."';\n";
+		            //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionRegexp').value='".HTMLEscape($_POST['EDITConditionRegexp'])."';\n";
 		            $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#REGEXP';\n";
 		        }
 		        elseif (isset($_POST['EDITcanswers']) && is_array($_POST['EDITcanswers']))
@@ -1978,12 +1978,12 @@ class conditionsaction extends Survey_Common_Action {
 
 		        if (isset($_POST['csrctoken']) && $_POST['csrctoken'] != '')
 		        {
-		            $aViewUrls['output'] .= "\tdocument.getElementById('csrctoken').value='".html_escape($_POST['csrctoken'])."';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('csrctoken').value='".HTMLEscape($_POST['csrctoken'])."';\n";
 		            $aViewUrls['output'] .= "\tdocument.getElementById('editSourceTab').value='#SRCTOKENATTRS';\n";
 		        }
 		        else if (isset($_POST['cquestions']) && $_POST['cquestions'] != '')
 		        {
-		            $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".html_escape($_POST['cquestions'])."';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".HTMLEscape($_POST['cquestions'])."';\n";
 		            $aViewUrls['output'] .= "\tdocument.getElementById('editSourceTab').value='#SRCPREVQUEST';\n";
 		        }
 		    }
@@ -1993,43 +1993,43 @@ class conditionsaction extends Survey_Common_Action {
 		        {
 		            // In order to avoid issues with backslash escaping, I don't use javascript to set the value
 		            // Thus the value is directly set when creating the Textarea element
-		            //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionConst').value='".html_escape($_POST['ConditionConst'])."';\n";
+		            //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionConst').value='".HTMLEscape($_POST['ConditionConst'])."';\n";
 		            $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
 		        }
 		        elseif (isset($_POST['prevQuestionSGQA']) && $_POST['prevQuestionSGQA'] != '')
 		        {
-		            $aViewUrls['output'] .= "\tdocument.getElementById('prevQuestionSGQA').value='".html_escape($_POST['prevQuestionSGQA'])."';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('prevQuestionSGQA').value='".HTMLEscape($_POST['prevQuestionSGQA'])."';\n";
 		            $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#PREVQUESTIONS';\n";
 		        }
 		        elseif (isset($_POST['tokenAttr']) && $_POST['tokenAttr'] != '')
 		        {
-		            $aViewUrls['output'] .= "\tdocument.getElementById('tokenAttr').value='".html_escape($_POST['tokenAttr'])."';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('tokenAttr').value='".HTMLEscape($_POST['tokenAttr'])."';\n";
 		            $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#TOKENATTRS';\n";
 		        }
 		        elseif (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp'] != '')
 		        {
 		            // In order to avoid issues with backslash escaping, I don't use javascript to set the value
 		            // Thus the value is directly set when creating the Textarea element
-		            //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionRegexp').value='".html_escape($_POST['ConditionRegexp'])."';\n";
+		            //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionRegexp').value='".HTMLEscape($_POST['ConditionRegexp'])."';\n";
 		            $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#REGEXP';\n";
 		        }
 		        else
 		        { // was a predefined answers post
 		            if (isset($_POST['cquestions']))
 		            {
-		                $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".html_escape($_POST['cquestions'])."';\n";
+		                $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".HTMLEscape($_POST['cquestions'])."';\n";
 		            }
 		            $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
 		        }
 
 		        if (isset($_POST['csrctoken']) && $_POST['csrctoken'] != '')
 		        {
-		            $aViewUrls['output'] .= "\tdocument.getElementById('csrctoken').value='".html_escape($_POST['csrctoken'])."';\n";
+		            $aViewUrls['output'] .= "\tdocument.getElementById('csrctoken').value='".HTMLEscape($_POST['csrctoken'])."';\n";
 		            $aViewUrls['output'] .= "\tdocument.getElementById('editSourceTab').value='#SRCTOKENATTRS';\n";
 		        }
 		        else
 		        {
-		            if (isset($_POST['cquestions'])) $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".javascript_escape($_POST['cquestions'])."';\n";
+		            if (isset($_POST['cquestions'])) $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".javascriptEscape($_POST['cquestions'])."';\n";
 		            $aViewUrls['output'] .= "\tdocument.getElementById('editSourceTab').value='#SRCPREVQUEST';\n";
 		        }
 		    }
@@ -2066,11 +2066,11 @@ class conditionsaction extends Survey_Common_Action {
 	        $max = 20;
 	    }
 	    $htmlhinttext=str_replace("'",'&#039;',$hinttext);  //the string is already HTML except for single quotes so we just replace these only
-	    $jshinttext=javascript_escape($hinttext,true,true);
+	    $jshinttext=javascriptEscape($hinttext,true,true);
 
 	    if(strlen(html_entity_decode($hinttext,ENT_QUOTES,'UTF-8')) > ($max+3))
 	    {
-	        $shortstring = FlattenText($hinttext,true);
+	        $shortstring = flattenText($hinttext,true);
 
 	        $shortstring = htmlspecialchars(mb_strcut(html_entity_decode($shortstring,ENT_QUOTES,'UTF-8'), 0, $max, 'UTF-8'));
 
@@ -2083,7 +2083,7 @@ class conditionsaction extends Survey_Common_Action {
 	    }
 	    else
 	    {
-	        $shortstring = FlattenText($hinttext,true);
+	        $shortstring = flattenText($hinttext,true);
 
 	        $reshtml= "<span title='".$shortstring."'> \"$shortstring\"</span>";
 	    }

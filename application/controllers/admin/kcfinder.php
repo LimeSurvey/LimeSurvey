@@ -41,7 +41,7 @@ class kcfinder extends Survey_Common_Action
                 $contextarray = explode(':', Yii::app()->session['FileManagerContext'], 3);
                 $surveyid = $contextarray[2];
 
-                if (bHasSurveyPermission($surveyid, 'surveycontent', 'update'))
+                if (hasSurveyPermission($surveyid, 'surveycontent', 'update'))
                 {
                     $_SESSION['KCFINDER']['disabled'] = false;
                     $_SESSION['KCFINDER']['uploadURL'] = $this->getController()->createUrl("upload/surveys/{$surveyid}/");

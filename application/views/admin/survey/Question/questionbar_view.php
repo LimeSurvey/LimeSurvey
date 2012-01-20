@@ -13,7 +13,7 @@
     <div class='menubar-left'>
         <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/blank.gif' alt='' width='55' height='20' />
         <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt='' />
-        <?php if(bHasSurveyPermission($surveyid,'surveycontent','read'))
+        <?php if(hasSurveyPermission($surveyid,'surveycontent','read'))
             {
                 if (count(Survey::model()->findByPk($surveyid)->additionalLanguages) == 0)
                 { ?>
@@ -31,7 +31,7 @@
         } ?>
 
 
-        <?php  if(bHasSurveyPermission($surveyid,'surveycontent','update'))
+        <?php  if(hasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
 
             <a href='<?php echo $this->createUrl("admin/question/editquestion/surveyid/".$surveyid."/gid/".$gid."/qid/".$qid); ?>'
@@ -39,7 +39,7 @@
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/edit.png' alt='<?php $clang->eT("Edit Current Question"); ?>' /></a>
             <?php } ?>
 
-        <?php if(bHasSurveyPermission($surveyid,'surveyactivation','read'))
+        <?php if(hasSurveyPermission($surveyid,'surveyactivation','read'))
         { ?>
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
             <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/expressions/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/"); ?>','_blank')"
@@ -47,12 +47,12 @@
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/quality_assurance.png' alt='<?php $clang->eT("Survey Logic File for current question"); ?>' /></a>
         <?php } ?>
 
-        <?php if ((($qct == 0 && $activated != "Y") || $activated != "Y") && bHasSurveyPermission($surveyid,'surveycontent','delete'))
+        <?php if ((($qct == 0 && $activated != "Y") || $activated != "Y") && hasSurveyPermission($surveyid,'surveycontent','delete'))
             {
                 if (is_null($condarray))
                 { ?>
                 <a href='#'
-                    onclick="if (confirm('<?php $clang->eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>')) { <?php echo get2post($this->createUrl("admin/question/delete/surveyid/$surveyid/gid/$gid/qid/$qid")); ?>}">
+                    onclick="if (confirm('<?php $clang->eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/question/delete/surveyid/$surveyid/gid/$gid/qid/$qid")); ?>}">
                     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/delete.png' alt='<?php $clang->eT("Delete current question"); ?>'
                         border='0' hspace='0' /></a>
                 <?php }
@@ -75,7 +75,7 @@
 
 
 
-            if(bHasSurveyPermission($surveyid,'surveycontent','export'))
+            if(hasSurveyPermission($surveyid,'surveycontent','export'))
             { ?>
             <a href='<?php echo $this->createUrl("admin/export/question/surveyid/$surveyid/gid/$gid/qid/$qid");?>'
                 title="<?php $clang->eTview("Export this question"); ?>" >
@@ -87,7 +87,7 @@
 
 
 
-        <?php if(bHasSurveyPermission($surveyid,'surveycontent','create'))
+        <?php if(hasSurveyPermission($surveyid,'surveycontent','create'))
             {
                 if ($activated != "Y")
                 { ?>
@@ -109,7 +109,7 @@
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/blank.gif' alt='' width='40' />
             <?php }
 
-            if(bHasSurveyPermission($surveyid,'surveycontent','update'))
+            if(hasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
             <a href='#' onclick="window.open('<?php echo $this->createUrl("admin/conditions/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid");?>', '_top')"
                 title="<?php $clang->eTview("Set/view conditions for this question"); ?>">
@@ -125,7 +125,7 @@
 
 
 
-            if(bHasSurveyPermission($surveyid,'surveycontent','read'))
+            if(hasSurveyPermission($surveyid,'surveycontent','read'))
             {
                 if ($qtypes[$qrrow['type']]['subquestions'] >0)
                 { ?>
@@ -142,7 +142,7 @@
 
 
 
-            if(bHasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['answerscales'] > 0)
+            if(hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['answerscales'] > 0)
             { ?>
             <a href='<?php echo $this->createUrl('admin/question/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'
                 title="<?php $clang->eTview("Edit answer options for this question"); ?>">
@@ -156,7 +156,7 @@
 
 
 
-            if(bHasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0)
+            if(hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0)
             { ?>
             <a href='<?php echo $this->createUrl('admin/question/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>'
                 title="<?php $clang->eTview("Edit default answers for this question"); ?>">

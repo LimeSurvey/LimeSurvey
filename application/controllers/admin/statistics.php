@@ -104,8 +104,8 @@ class statistics extends Survey_Common_Action {
 		$cr_statisticsoutput = '';
 
 		// This gets all the 'to be shown questions' from the POST and puts these into an array
-		$summary=returnglobal('summary');
-		$statlang=returnglobal('statlang');
+		$summary=returnGlobal('summary');
+		$statlang=returnGlobal('statlang');
 
 		//if $summary isn't an array we create one
 		if (isset($summary) && !is_array($summary)) {
@@ -113,7 +113,7 @@ class statistics extends Survey_Common_Action {
 		}
 
 		//no survey ID? -> come and get one
-		if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+		if (!isset($surveyid)) {$surveyid=returnGlobal('sid');}
 
 		//still no survey ID -> error
 		$aData['surveyid'] = $surveyid;
@@ -212,7 +212,7 @@ class statistics extends Survey_Common_Action {
 		$rows = Questions::getQuestionList($surveyid, $language);
 
 		//SORT IN NATURAL ORDER!
-		usort($rows, 'GroupOrderThenQuestionOrder');
+		usort($rows, 'groupOrderThenQuestionOrder');
 
 		//put the question information into the filter array
 		$filters = array();
@@ -224,7 +224,7 @@ class statistics extends Survey_Common_Action {
 		    $row['type'],
 		    $row['title'],
 		    $row['group_name'],
-		    FlattenText($row['question']));
+		    flattenText($row['question']));
 		}
 		$aData['filters'] = $filters;
 
@@ -245,13 +245,13 @@ class statistics extends Survey_Common_Action {
 
 
 		//pre-selection of filter forms
-		if (incompleteAnsFilterstate() == "filter")
+		if (incompleteAnsFilterState() == "filter")
 		{
 		    $selecthide="selected='selected'";
 		    $selectshow="";
 		    $selectinc="";
 		}
-		elseif (incompleteAnsFilterstate() == "inc")
+		elseif (incompleteAnsFilterState() == "inc")
 		{
 		    $selecthide="";
 		    $selectshow="";
@@ -286,7 +286,7 @@ class statistics extends Survey_Common_Action {
 		//second row below options -> filter settings headline
 
 
-		$filterchoice_state=returnglobal('filterchoice_state');
+		$filterchoice_state=returnGlobal('filterchoice_state');
 		$aData['filterchoice_state'] = $filterchoice_state;
 
 

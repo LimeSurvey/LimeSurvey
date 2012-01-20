@@ -147,8 +147,8 @@ function mkdir_p($target){
 function makeoptions($array, $value, $text, $selectedvalue) {
     $return='';
        foreach ($array as $ar) {
-           $return .= "<option value='".html_escape($ar[$value])."'";
-           if (html_escape($ar[$value]) == $selectedvalue) {
+           $return .= "<option value='".HTMLEscape($ar[$value])."'";
+           if (HTMLEscape($ar[$value]) == $selectedvalue) {
                $return .= " selected='selected'";
            }
     $return .= '>'.$ar[$text]."</option>\n";
@@ -159,11 +159,11 @@ function makeoptions($array, $value, $text, $selectedvalue) {
 function templateoptions($optionarray, $selectedvalue) {
     $return='';
     foreach ($optionarray as $arkey=>$arvalue) {
-        $return .= "<option value='".html_escape($arkey)."'";
+        $return .= "<option value='".HTMLEscape($arkey)."'";
         if ($arkey == $selectedvalue) {
             $return .= " selected='selected'";
         }
-        $return .= '>'.html_escape($arkey)."</option>\n";
+        $return .= '>'.HTMLEscape($arkey)."</option>\n";
     }
     return $return;
 }

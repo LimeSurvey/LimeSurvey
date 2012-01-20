@@ -359,7 +359,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
      */
 
     //no survey ID? -> come and get one
-    if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+    if (!isset($surveyid)) {$surveyid=returnGlobal('sid');}
 
     //Get an array of codes of all available languages in this survey
     $surveylanguagecodes = Survey::model()->findByPk($surveyid)->additionalLanguages;
@@ -429,7 +429,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     {
         // This gets all the 'to be shown questions' from the POST and puts these into an array
         if (!is_array($q2show))
-        $summary=returnglobal('summary');
+        $summary=returnGlobal('summary');
         else
             $summary = $q2show;
 
@@ -487,7 +487,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         $pdf->setFooterFont(Array($pdfdefaultfont, '', PDF_FONT_SIZE_DATA));
 
         // set default header data
-        $pdf->SetHeaderData("statistics.png", 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".FlattenText($surveyInfo['surveyls_title'],false,true,'UTF-8')."'");
+        $pdf->SetHeaderData("statistics.png", 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'],false,true,'UTF-8')."'");
 
 
         // set default monospaced font
@@ -746,8 +746,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     $query = "SELECT count(*) FROM {{survey_$surveyid}}";
 
     //if incompleted answers should be filtert submitdate has to be not null
-    if (incompleteAnsFilterstate() == "inc") {$query .= " WHERE submitdate is null";}
-    elseif (incompleteAnsFilterstate() == "filter") {$query .= " WHERE submitdate is not null";}
+    if (incompleteAnsFilterState() == "inc") {$query .= " WHERE submitdate is null";}
+    elseif (incompleteAnsFilterState() == "filter") {$query .= " WHERE submitdate is not null";}
     $result = Yii::app()->db->createCommand($query)->query();
 
     //$total = total number of answers
@@ -757,7 +757,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     if (isset($selects) && $selects)
     {
         //filter incomplete answers?
-        if (incompleteAnsFilterstate() == "filter" || incompleteAnsFilterstate() == "inc") {$query .= " AND ";}
+        if (incompleteAnsFilterState() == "filter" || incompleteAnsFilterState() == "inc") {$query .= " AND ";}
 
         else {$query .= " WHERE ";}
 
@@ -776,8 +776,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         //$query = $_POST['sql'];
 
         //filter incomplete answers?
-        if (incompleteAnsFilterstate() == "inc") {$query .= " AND ".$newsql;}
-        elseif (incompleteAnsFilterstate() == "filter") {$query .= " AND ".$newsql;}
+        if (incompleteAnsFilterState() == "inc") {$query .= " AND ".$newsql;}
+        elseif (incompleteAnsFilterState() == "filter") {$query .= " AND ".$newsql;}
 
         else {$query .= " WHERE ".$newsql;}
     }
@@ -922,7 +922,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 	$nrow=array_values($nrow);
                     $qtitle=$nrow[0];
                     $qtype=$nrow[1];
-                    $qquestion=FlattenText($nrow[2]);
+                    $qquestion=flattenText($nrow[2]);
                     $qlid=$nrow[3];
                     $qother=$nrow[4];
                 }
@@ -938,7 +938,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     $mfield=substr($rt, 1, strlen($rt))."$row[0]";
 
                     //create an array containing answer code, answer and fieldname(??)
-                    $alist[]=array("$row[0]", FlattenText($row[1]), $mfield);
+                    $alist[]=array("$row[0]", flattenText($row[1]), $mfield);
                 }
 
                 //check "other" field. is it set?
@@ -980,9 +980,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 foreach ($nresult->readAll() as $nrow)
                 {
                 	$nrow=array_values($nrow);
-                    $qtitle=FlattenText($nrow[0]);
+                    $qtitle=flattenText($nrow[0]);
                     $qtype=$nrow[1];
-                    $qquestion=FlattenText($nrow[2]);
+                    $qquestion=flattenText($nrow[2]);
                     $nlid=$nrow[4];
                 }
 
@@ -1026,9 +1026,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 foreach ($nresult->readAll() as $nrow)
                 {
                 	$nrow=array_values($nrow);
-                    $qtitle=FlattenText($nrow[0]).'-'.$count;
+                    $qtitle=flattenText($nrow[0]).'-'.$count;
                     $qtype=$nrow[1];
-                    $qquestion=FlattenText($nrow[2]);
+                    $qquestion=flattenText($nrow[2]);
                 }
 
                 //get answers
@@ -1040,7 +1040,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 {
                 	$qrow=array_values($qrow);
                     //store each answer here
-                    $atext=FlattenText($qrow[1]);
+                    $atext=flattenText($qrow[1]);
                 }
 
                 //add this to the question title
@@ -1073,9 +1073,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 				foreach ($nresult->readAll() as $nrow)
                 {
                 	$nrow=array_values($nrow);
-                    $qtitle=FlattenText($nrow[0]). " [".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
+                    $qtitle=flattenText($nrow[0]). " [".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
                     $qtype=$nrow[1];
-                    $qquestion=FlattenText($nrow[2]). "[".$statlang->gT("Ranking")." ".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
+                    $qquestion=flattenText($nrow[2]). "[".$statlang->gT("Ranking")." ".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
                 }
 
                 //get answers
@@ -1088,7 +1088,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 	$row=array_values($row);
                     //create an array containing answer code, answer and fieldname(??)
                     $mfield=substr($rt, 1, strpos($rt, "-")-1);
-                    $alist[]=array("$row[0]", FlattenText($row[1]), $mfield);
+                    $alist[]=array("$row[0]", flattenText($row[1]), $mfield);
                 }
             }
 
@@ -1108,7 +1108,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 	$nrow=array_values($nrow);
                     $qtitle=$nrow[0];
                     $qtype=$nrow[1];
-                    $qquestion=FlattenText($nrow[2]);
+                    $qquestion=flattenText($nrow[2]);
                     $qlid=$nrow[3];
                     $qother=$nrow[4];
                 }
@@ -1164,7 +1164,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 $showem[] = array($statlang->gT("Average size per respondent"), $size/$responsecount . " KB");
 
 /*              $query="SELECT title, question FROM {{questions}} WHERE parent_qid='$qqid' AND language='{$language}' ORDER BY question_order";
-                $result=db_execute_num($query) or safe_die("Couldn't get list of subquestions for multitype<br />$query<br />");
+                $result=db_execute_num($query) or safeDie("Couldn't get list of subquestions for multitype<br />$query<br />");
 
                 //loop through multiple answers
                 while ($row=$result->FetchRow())
@@ -1172,7 +1172,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     $mfield=substr($rt, 1, strlen($rt))."$row[0]";
 
                     //create an array containing answer code, answer and fieldname(??)
-                    $alist[]=array("$row[0]", FlattenText($row[1]), $mfield);
+                    $alist[]=array("$row[0]", flattenText($row[1]), $mfield);
                 }
 
 */
@@ -1290,9 +1290,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     foreach ($nresult->readAll() as $nrow)
                     {
                     	$nrow=array_values($nrow);
-                        $qtitle=FlattenText($nrow[0]); //clean up title
+                        $qtitle=flattenText($nrow[0]); //clean up title
                         $qtype=$nrow[1];
-                        $qquestion=FlattenText($nrow[2]);
+                        $qquestion=flattenText($nrow[2]);
                         $qiqid=$nrow[3];
                         $qlid=$nrow[4];
                     }
@@ -1418,8 +1418,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     }
 
                     //filter incomplete answers if set
-                    if (incompleteAnsFilterstate() == "inc") {$query .= " AND submitdate is null";}
-                    elseif (incompleteAnsFilterstate() == "filter") {$query .= " AND submitdate is not null";}
+                    if (incompleteAnsFilterState() == "inc") {$query .= " AND submitdate is null";}
+                    elseif (incompleteAnsFilterState() == "filter") {$query .= " AND submitdate is not null";}
 
                     //$sql was set somewhere before
                     if ($sql != "NULL") {$query .= " AND $sql";}
@@ -1454,8 +1454,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     }
 
                     //filtering enabled?
-                    if (incompleteAnsFilterstate() == "inc") {$query .= " AND submitdate is null";}
-                    elseif (incompleteAnsFilterstate() == "filter") {$query .= " AND submitdate is not null";}
+                    if (incompleteAnsFilterState() == "inc") {$query .= " AND submitdate is null";}
+                    elseif (incompleteAnsFilterState() == "filter") {$query .= " AND submitdate is not null";}
 
                     //if $sql values have been passed to the statistics script from another script, incorporate them
                     if ($sql != "NULL") {$query .= " AND $sql";}
@@ -1469,8 +1469,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         $querystart .= " AND ".sanitize_int($fieldname)." != 0";
                     }
                     //filtering enabled?
-                    if (incompleteAnsFilterstate() == "inc") {$querystarter .= " AND submitdate is null";}
-                    elseif (incompleteAnsFilterstate() == "filter") {$querystarter .= " AND submitdate is not null";}
+                    if (incompleteAnsFilterState() == "inc") {$querystarter .= " AND submitdate is null";}
+                    elseif (incompleteAnsFilterState() == "filter") {$querystarter .= " AND submitdate is not null";}
 
                     //if $sql values have been passed to the statistics script from another script, incorporate them
                     if ($sql != "NULL") {$querystarter .= " AND $sql";}
@@ -1780,9 +1780,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 foreach ($nresult->readAll() as $nrow)
                 {
                 	$nrow=array_values($nrow);
-                    $qtitle=FlattenText($nrow[0]);
+                    $qtitle=flattenText($nrow[0]);
                     $qtype=$nrow[1];
-                    $qquestion=FlattenText($nrow[2]);
+                    $qquestion=flattenText($nrow[2]);
                     $qiqid=$nrow[3];
                     $qparentqid=$nrow[4];
                     $qother=$nrow[5];
@@ -1809,7 +1809,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 $alist[]=array("$i", "$i");
                             }
                             //add counter
-                            $atext=FlattenText($qrow[1]);
+                            $atext=flattenText($qrow[1]);
                         }
 
                         //list IDs and answer codes in brackets
@@ -1831,7 +1831,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             {
                                 $alist[]=array("$i", "$i");
                             }
-                            $atext=FlattenText($qrow[1]);
+                            $atext=flattenText($qrow[1]);
                         }
 
                         $qquestion .=  $linefeed."[".$atext."]";
@@ -1853,7 +1853,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             $alist[]=array("Y", $statlang->gT("Yes"));
                             $alist[]=array("N", $statlang->gT("No"));
                             $alist[]=array("U", $statlang->gT("Uncertain"));
-                            $atext=FlattenText($qrow[1]);
+                            $atext=flattenText($qrow[1]);
                         }
                         //output
                         $qquestion .=  $linefeed."[".$atext."]";
@@ -1873,7 +1873,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             $alist[]=array("I", $statlang->gT("Increase"));
                             $alist[]=array("S", $statlang->gT("Same"));
                             $alist[]=array("D", $statlang->gT("Decrease"));
-                            $atext=FlattenText($qrow[1]);
+                            $atext=flattenText($qrow[1]);
                         }
                         $qquestion .= $linefeed."[".$atext."]";
                         $qtitle .= "($qanswer)";
@@ -1896,7 +1896,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 $alist[]=array($frow['code'], $frow['answer']);
                                 $ltext=$frow['answer'];
                             }
-                            $atext=FlattenText($qrow[1]);
+                            $atext=flattenText($qrow[1]);
                         }
 
                         $qquestion .=  $linefeed."[".$atext."] [".$ltext."]";
@@ -1962,11 +1962,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             //add code and title to results for outputting them later
                             foreach ($fresult->readAll() as $frow)
                             {
-                                $alist[]=array($frow['code'], FlattenText($frow['answer']));
+                                $alist[]=array($frow['code'], flattenText($frow['answer']));
                             }
 
                             //counter
-                            $atext=FlattenText($qrow[1]);
+                            $atext=flattenText($qrow[1]);
                         }
 
                         //output
@@ -2010,7 +2010,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     case "1":	//array (dual scale)
 
                         $sSubquestionQuery = "SELECT  question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
-                        $sSubquestion = FlattenText(Yii::app()->db->createCommand($sSubquestionQuery)->query());
+                        $sSubquestion = flattenText(Yii::app()->db->createCommand($sSubquestionQuery)->query());
 
                         //get question attributes
                         $qidattributes=getQuestionAttributeValues($qqid);
@@ -2065,7 +2065,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         //put label code and label title into array
                         foreach ($fresult->readAll() as $frow)
                         {
-                            $alist[]=array($frow['code'], FlattenText($frow['answer']));
+                            $alist[]=array($frow['code'], flattenText($frow['answer']));
                         }
 
                         //adapt title and question
@@ -2086,7 +2086,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         foreach ($qresult->readAll() as $qrow)
                         {
                         	$qrow=array_values($qrow);
-                            $alist[]=array("$qrow[0]", FlattenText($qrow[1]));
+                            $alist[]=array("$qrow[0]", flattenText($qrow[1]));
                         }
 
                         //handling for "other" field for list radio or list drowpdown
@@ -2142,7 +2142,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         break;
                     case 'pdf':
 
-                        $sPDFQuestion=FlattenText($qquestion,false,true);
+                        $sPDFQuestion=flattenText($qquestion,false,true);
                         $pdfTitle = $pdf->delete_html(sprintf($statlang->gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8')));
                         $titleDesc = $sPDFQuestion;
 
@@ -2289,8 +2289,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     }
 
                     //check filter option
-                    if (incompleteAnsFilterstate() == "inc") {$query .= " AND submitdate is null";}
-                    elseif (incompleteAnsFilterstate() == "filter") {$query .= " AND submitdate is not null";}
+                    if (incompleteAnsFilterState() == "inc") {$query .= " AND submitdate is null";}
+                    elseif (incompleteAnsFilterState() == "filter") {$query .= " AND submitdate is not null";}
 
                     //check for any "sql" that has been passed from another script
                     if ($sql != "NULL") {$query .= " AND $sql";}
@@ -2582,15 +2582,15 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         $justcode[]=$al[0];
 
                         //edit labels and put them into antoher array
-                        $lbl[] = wordwrap(FlattenText("$al[1] ($row[0])"), 25, "\n"); // NMO 2009-03-24
-                        $lblrtl[] = utf8_strrev(wordwrap(FlattenText("$al[1] )$row[0]("), 25, "\n")); // NMO 2009-03-24
+                        $lbl[] = wordwrap(flattenText("$al[1] ($row[0])"), 25, "\n"); // NMO 2009-03-24
+                        $lblrtl[] = utf8_strrev(wordwrap(flattenText("$al[1] )$row[0]("), 25, "\n")); // NMO 2009-03-24
 
                     }	//end while -> loop through results
 
                 }	//end foreach -> loop through answer data
 
                 //no filtering of incomplete answers and NO multiple option questions
-                //if ((incompleteAnsFilterstate() != "filter") and ($qtype != "M") and ($qtype != "P"))
+                //if ((incompleteAnsFilterState() != "filter") and ($qtype != "M") and ($qtype != "P"))
                 //error_log("TIBO ".print_r($showaggregated_indice_table,true));
                 if (($qtype != "M") and ($qtype != "P"))
                 {
@@ -2633,7 +2633,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         $TotalIncomplete = $results - $TotalCompleted;
 
                         //output
-                        if ((incompleteAnsFilterstate() != "filter"))
+                        if ((incompleteAnsFilterState() != "filter"))
                         {
                             $fname=$statlang->gT("Not completed or Not displayed");
                         }
@@ -2665,13 +2665,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         $justcode[]=$fname;
 
                         //edit labels and put them into antoher array
-                        if ((incompleteAnsFilterstate() != "filter"))
+                        if ((incompleteAnsFilterState() != "filter"))
                         {
-                            $lbl[] = wordwrap(FlattenText($statlang->gT("Not completed or Not displayed")." ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
+                            $lbl[] = wordwrap(flattenText($statlang->gT("Not completed or Not displayed")." ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
                         }
                         else
                         {
-                            $lbl[] = wordwrap(FlattenText($statlang->gT("Not displayed")." ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
+                            $lbl[] = wordwrap(flattenText($statlang->gT("Not displayed")." ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
                         }
                     }	//end else -> noncompleted NOT checked
 
@@ -2715,7 +2715,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         {
                             case 'xls':
 
-                                $label[$i]=FlattenText($label[$i]);
+                                $label[$i]=flattenText($label[$i]);
                                 $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i]). "%");
 
                                 ++$xlsRow;
@@ -2726,7 +2726,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 break;
                             case 'pdf':
 
-                                $tablePDF[] = array(FlattenText($label[$i]),$grawdata[$i],sprintf("%01.2f", $gdata[$i]). "%", "");
+                                $tablePDF[] = array(flattenText($label[$i]),$grawdata[$i],sprintf("%01.2f", $gdata[$i]). "%", "");
 
                                 break;
                             case 'html':
@@ -2813,7 +2813,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 {
                                     case 'xls':
 
-                                        $label[$i]=FlattenText($label[$i]);
+                                        $label[$i]=flattenText($label[$i]);
                                         $tableXLS[]= array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%");
 
                                         ++$xlsRow;
@@ -2823,7 +2823,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                                         break;
                                     case 'pdf':
-                                        $label[$i]=FlattenText($label[$i]);
+                                        $label[$i]=flattenText($label[$i]);
                                         $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%", "");
 
                                         break;
@@ -2875,7 +2875,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 {
                                     case 'xls':
 
-                                        $label[$i]=FlattenText($label[$i]);
+                                        $label[$i]=flattenText($label[$i]);
                                         $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $percentage)."%");
 
                                         ++$xlsRow;
@@ -2886,7 +2886,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                                         break;
                                     case 'pdf':
-                                        $label[$i]=FlattenText($label[$i]);
+                                        $label[$i]=flattenText($label[$i]);
                                         $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $percentage)."%");
 
                                         break;
@@ -2945,7 +2945,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 {
                                     case 'xls':
 
-                                        $label[$i]=FlattenText($label[$i]);
+                                        $label[$i]=flattenText($label[$i]);
                                         $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
 
                                         ++$xlsRow;
@@ -2956,7 +2956,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                                         break;
                                     case 'pdf':
-                                        $label[$i]=FlattenText($label[$i]);
+                                        $label[$i]=flattenText($label[$i]);
                                         $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
 
                                         break;
@@ -3010,7 +3010,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 {
                                     case 'xls':
 
-                                        $label[$i]=FlattenText($label[$i]);
+                                        $label[$i]=flattenText($label[$i]);
                                         $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
 
                                         ++$xlsRow;
@@ -3021,7 +3021,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                                         break;
                                     case 'pdf':
-                                        $label[$i]=FlattenText($label[$i]);
+                                        $label[$i]=flattenText($label[$i]);
                                         $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
 
                                         break;
@@ -3122,7 +3122,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             switch($outputType)
                             {
                                 case 'xls':
-                                    $label[$i]=FlattenText($label[$i]);
+                                    $label[$i]=flattenText($label[$i]);
                                     $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i])."%", "");
 
                                     ++$xlsRow;
@@ -3132,7 +3132,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                                     break;
                                 case 'pdf':
-                                    $label[$i]=FlattenText($label[$i]);
+                                    $label[$i]=flattenText($label[$i]);
                                     $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i])."%", "");
 
                                     break;

@@ -19,7 +19,7 @@ if (empty($_REQUEST['sid']))   //  || count($_REQUEST) == 0) {
     $data = db_execute_assoc($query);
     $surveyList='';
     foreach($data->readAll() as $row) {
-        $surveyList .= "<option value='" . $row['sid'] .'|' . $row['assessments'] . "'>#" . $row['sid'] . " [" . $row['datecreated'] . '] ' . FlattenText($row['title']) . "</option>\n";
+        $surveyList .= "<option value='" . $row['sid'] .'|' . $row['assessments'] . "'>#" . $row['sid'] . " [" . $row['datecreated'] . '] ' . flattenText($row['title']) . "</option>\n";
     }
     $url = $this->createUrl('admin/expressions/survey_logic_file');
     $form = <<< EOD

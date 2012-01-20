@@ -29,7 +29,7 @@ function db_execute_assoc($sql,$inputarr=false,$silent=false)
 		$dataset=false;
 	}
 
-    if (!$silent && !$dataset)  { safe_die('Error executing query in db_execute_assoc:'.$sql); }
+    if (!$silent && !$dataset)  { safeDie('Error executing query in db_execute_assoc:'.$sql); }
     return $dataset;
 }
 
@@ -93,7 +93,7 @@ function &db_select_limit_assoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieon
 	{
 		$dataset=false;
 	}
-	if (!$dataset && $dieonerror) {safe_die('Error executing query in db_select_limit_assoc:'.$query->text);}
+	if (!$dataset && $dieonerror) {safeDie('Error executing query in db_select_limit_assoc:'.$query->text);}
     return $dataset;
 }
 
@@ -121,7 +121,7 @@ function &db_select_column($sql)
         }*/
     }
     else
-    safe_die('No results were returned from the query :'.$sql);
+    safeDie('No results were returned from the query :'.$sql);
     return $resultarray;
 }
 
@@ -181,7 +181,7 @@ function db_select_tables_like($table)
         case 'postgre' :
             $table=str_replace('\\','\\\\',$table);
             return "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' and table_name like '$table'";
-        default: safe_die ("Couldn't create 'select tables like' query for connection type 'databaseType'");
+        default: safeDie ("Couldn't create 'select tables like' query for connection type 'databaseType'");
     }
 }
 

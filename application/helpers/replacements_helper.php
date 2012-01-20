@@ -108,7 +108,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     Yii::app()->loadHelper('surveytranslator');
     $questiondetails = array('sid' => 0, 'gid' => 0, 'qid' => 0, 'aid' =>0);
-    if(isset($question) && isset($question['sgq'])) $questiondetails=getsidgidqidaidtype($question['sgq']); //Gets an array containing SID, GID, QID, AID and Question Type)
+    if(isset($question) && isset($question['sgq'])) $questiondetails=getSIDGIDQIDAIDType($question['sgq']); //Gets an array containing SID, GID, QID, AID and Question Type)
 
     if (isset($thissurvey['sid'])) {
         $surveyid = $thissurvey['sid'];
@@ -123,15 +123,15 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $templatename=Yii::app()->getConfig('defaulttemplate');
     }
-    $templatename=validate_templatedir($templatename);
-    if(!isset($templatedir)) $templatedir = sGetTemplatePath($templatename);
-    if(!isset($templateurl)) $templateurl = sGetTemplateURL($templatename)."/";
+    $templatename=validateTemplateDir($templatename);
+    if(!isset($templatedir)) $templatedir = getTemplatePath($templatename);
+    if(!isset($templateurl)) $templateurl = getTemplateURL($templatename)."/";
 
     if (stripos ($line,"</head>"))
     {
         $line=str_ireplace("</head>",
         "<script type=\"text/javascript\" src=\"".Yii::app()->getConfig('generalscripts')."survey_runtime.js\"></script>\n"
-        .use_firebug()
+        .useFirebug()
         ."\t</head>", $line);
     }
 
@@ -219,7 +219,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_question_file_valid_message = $question['file_valid_message'];
         $_question_sgq = (isset($question['sgq']) ? $question['sgq'] : '');
         $_question_essentials = $question['essentials'];
-        $_question_class = $question['class'];
+        $_getQuestionClass = $question['class'];
         $_question_man_class = $question['man_class'];
         $_question_input_error_class = $question['input_error_class'];
         $_question_number = $question['number'];
@@ -236,7 +236,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_question_file_valid_message = '';
         $_question_sgq = '';
         $_question_essentials = '';
-        $_question_class = '';
+        $_getQuestionClass = '';
         $_question_man_class = '';
         $_question_input_error_class = '';
         $_question_number = '';
@@ -340,9 +340,9 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_clearall = "<input type='button' name='clearallbtn' value='" . $clang->gT("Exit and Clear Survey") . "' class='clearall' "
         . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {\nwindow.open('".Yii::app()->getController()->createUrl("survey/index/sid/$surveyid?move=clearall&amp;lang=" . $s_lang);
 
-		if (returnglobal('token'))
+		if (returnGlobal('token'))
         {
-            $_clearall .= "&amp;token=" . urlencode(trim(sanitize_token(strip_tags(returnglobal('token')))));
+            $_clearall .= "&amp;token=" . urlencode(trim(sanitize_token(strip_tags(returnGlobal('token')))));
         }
         $_clearall .= "', '_self')}\" />";
     }
@@ -407,7 +407,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
 
     if(!isset($help)) $help = "";
-    if (FlattenText($help, true,true) != '')
+    if (flattenText($help, true,true) != '')
     {
         if (!isset($helpicon))
         {
@@ -449,10 +449,10 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     else if (isset($surveyid))
         {
             $restart_extra = "";
-            $restart_token = returnglobal('token');
+            $restart_token = returnGlobal('token');
             if (!empty($restart_token)) $restart_extra .= "/token/".urlencode($restart_token);
             else $restart_extra = "/newtest/Y";
-            if (!empty($_GET['lang'])) $restart_extra .= "/lang/".returnglobal('lang');
+            if (!empty($_GET['lang'])) $restart_extra .= "/lang/".returnGlobal('lang');
             $_restart = "<a href='".Yii::app()->getController()->createUrl("survey/index/sid/$surveyid$restart_extra")."'>".$clang->gT("Restart this Survey")."</a>";
     }
     else
@@ -472,9 +472,9 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (isset($surveyid))
     {
         $_return_to_survey = "<a href=".Yii::app()->getController()->createUrl("survey/index/sid/{$surveyid}");
-        if (returnglobal('token'))
+        if (returnGlobal('token'))
         {
-            $_return_to_survey.= "?amp;token=" . urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
+            $_return_to_survey.= "?amp;token=" . urlencode(trim(sanitize_xss_string(strip_tags(returnGlobal('token')))));
         }
         $_return_to_survey .= "'>" . $clang->gT("Return To Survey") . "</a>";
     }
@@ -487,28 +487,28 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $_saveform = "<table><tr><td align='right'>" . $clang->gT("Name") . ":</td><td><input type='text' name='savename' value='";
     if (isset($_POST['savename']))
     {
-        $_saveform .= html_escape(auto_unescape($_POST['savename']));
+        $_saveform .= HTMLEscape(autoUnescape($_POST['savename']));
     }
     $_saveform .= "' /></td></tr>\n"
     . "<tr><td align='right'>" . $clang->gT("Password") . ":</td><td><input type='password' name='savepass' value='";
     if (isset($_POST['savepass']))
     {
-        $_saveform .= html_escape(auto_unescape($_POST['savepass']));
+        $_saveform .= HTMLEscape(autoUnescape($_POST['savepass']));
     }
     $_saveform .= "' /></td></tr>\n"
     . "<tr><td align='right'>" . $clang->gT("Repeat Password") . ":</td><td><input type='password' name='savepass2' value='";
     if (isset($_POST['savepass2']))
     {
-        $_saveform .= html_escape(auto_unescape($_POST['savepass2']));
+        $_saveform .= HTMLEscape(autoUnescape($_POST['savepass2']));
     }
     $_saveform .= "' /></td></tr>\n"
     . "<tr><td align='right'>" . $clang->gT("Your Email") . ":</td><td><input type='text' name='saveemail' value='";
     if (isset($_POST['saveemail']))
     {
-        $_saveform .= html_escape(auto_unescape($_POST['saveemail']));
+        $_saveform .= HTMLEscape(autoUnescape($_POST['saveemail']));
     }
     $_saveform .= "' /></td></tr>\n";
-    if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && captcha_enabled('saveandloadscreen', $thissurvey['usecaptcha']))
+    if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']))
     {
         $_saveform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image')."' alt='' /></td><td valign='middle' style='text-align:left'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
     }
@@ -520,16 +520,16 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $_loadform = "<table><tr><td align='right'>" . $clang->gT("Saved name") . ":</td><td><input type='text' name='loadname' value='";
     if (isset($loadname))
     {
-        $_loadform .= html_escape(auto_unescape($loadname));
+        $_loadform .= HTMLEscape(autoUnescape($loadname));
     }
     $_loadform .= "' /></td></tr>\n"
     . "<tr><td align='right'>" . $clang->gT("Password") . ":</td><td><input type='password' name='loadpass' value='";
     if (isset($loadpass))
     {
-        $_loadform .= html_escape(auto_unescape($loadpass));
+        $_loadform .= HTMLEscape(autoUnescape($loadpass));
     }
     $_loadform .= "' /></td></tr>\n";
-    if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && captcha_enabled('saveandloadscreen', $thissurvey['usecaptcha']))
+    if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']))
     {
         $_loadform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image')."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' alt=''/></td></tr></table></td></tr>\n";
     }
@@ -552,7 +552,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         }
         else
         {
-            $_reglang = returnglobal('lang');
+            $_reglang = returnGlobal('lang');
         }
 
         $_registerform .= "<input type='hidden' name='lang' value='" . $_reglang . "' />\n";
@@ -564,21 +564,21 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         . "<td align='left'><input class='text' type='text' name='register_firstname'";
         if (isset($_POST['register_firstname']))
         {
-            $_registerform .= " value='" . htmlentities(returnglobal('register_firstname'), ENT_QUOTES, 'UTF-8') . "'";
+            $_registerform .= " value='" . htmlentities(returnGlobal('register_firstname'), ENT_QUOTES, 'UTF-8') . "'";
         }
         $_registerform .= " /></td></tr>"
         . "<tr><td align='right'>" . $clang->gT("Last name") . ":</td>\n"
         . "<td align='left'><input class='text' type='text' name='register_lastname'";
         if (isset($_POST['register_lastname']))
         {
-            $_registerform .= " value='" . htmlentities(returnglobal('register_lastname'), ENT_QUOTES, 'UTF-8') . "'";
+            $_registerform .= " value='" . htmlentities(returnGlobal('register_lastname'), ENT_QUOTES, 'UTF-8') . "'";
         }
         $_registerform .= " /></td></tr>\n"
         . "<tr><td align='right'>" . $clang->gT("Email address") . ":</td>\n"
         . "<td align='left'><input class='text' type='text' name='register_email'";
         if (isset($_POST['register_email']))
         {
-            $_registerform .= " value='" . htmlentities(returnglobal('register_email'), ENT_QUOTES, 'UTF-8') . "'";
+            $_registerform .= " value='" . htmlentities(returnGlobal('register_email'), ENT_QUOTES, 'UTF-8') . "'";
         }
         $_registerform .= " /></td></tr>\n";
         foreach ($thissurvey['attributedescriptions'] as $field => $attribute)
@@ -592,7 +592,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
                     <td align="left"><input class="text" type="text" name="register_' . $field . '" /></td>
                 </tr>';
         }
-        if ((count($registerdata) > 1 || isset($thissurvey['usecaptcha'])) && function_exists("ImageCreate") && captcha_enabled('registrationscreen', $thissurvey['usecaptcha']))
+        if ((count($registerdata) > 1 || isset($thissurvey['usecaptcha'])) && function_exists("ImageCreate") && isCaptchaEnabled('registrationscreen', $thissurvey['usecaptcha']))
         {
 			$_registerform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image')."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
 		}
@@ -659,7 +659,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['QUESTION'] = $_question;
     $coreReplacements['QUESTIONHELP'] = $_questionhelp;
     $coreReplacements['QUESTIONHELPPLAINTEXT'] = strip_tags(addslashes($help)); // global
-    $coreReplacements['QUESTION_CLASS'] = $_question_class;
+    $coreReplacements['QUESTION_CLASS'] = $_getQuestionClass;
     $coreReplacements['QUESTION_CODE'] = $_question_code;
     $coreReplacements['QUESTION_ESSENTIALS'] = $_question_essentials;
     $coreReplacements['QUESTION_FILE_VALID_MESSAGE'] = $_question_file_valid_message;

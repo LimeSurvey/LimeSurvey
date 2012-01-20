@@ -184,9 +184,9 @@ class browse extends Survey_Common_Action
         $oCriteria = new CDbCriteria();
         if ($aData['surveyinfo']['anonymized'] == 'N' && tableExists("{{tokens_$iSurveyId}}}"))
             $oCriteria->join = "LEFT JOIN '{{tokens_{$iSurveyId}}}' ON {{surveys_{$iSurveyId}}}.token = {{tokens_{$iSurveyId}}}.token";
-        if (incompleteAnsFilterstate() == 'inc')
+        if (incompleteAnsFilterState() == 'inc')
             $oCriteria->addCondition('submitdate = ' . mktime(0, 0, 0, 1, 1, 1980) . ' OR submitdate IS NULL');
-        elseif (incompleteAnsFilterstate() == 'filter')
+        elseif (incompleteAnsFilterState() == 'filter')
             $oCriteria->addCondition('submitdate >= ' . mktime(0, 0, 0, 1, 1, 1980));
         if ($iId < 1)
         {
@@ -267,7 +267,7 @@ class browse extends Survey_Common_Action
                     }
                     else
                     {
-                        $answervalue = htmlspecialchars(strip_tags(strip_javascript(getextendedanswer($iSurveyId, "browse", $fnames[$i][0], $iIdrow[$fnames[$i][0]], ''))), ENT_QUOTES);
+                        $answervalue = htmlspecialchars(strip_tags(stripJavaScript(getExtendedAnswer($iSurveyId, "browse", $fnames[$i][0], $iIdrow[$fnames[$i][0]], ''))), ENT_QUOTES);
                     }
                 }
                 $aData['answervalue'] = $answervalue;
@@ -300,7 +300,7 @@ class browse extends Survey_Common_Action
         }
 
         //Delete Individual answer using inrow delete buttons/links - checked
-        if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') != '' && Yii::app()->request->getPost('deleteanswer') != 'marked' && bHasSurveyPermission($iSurveyId, 'responses', 'delete'))
+        if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') != '' && Yii::app()->request->getPost('deleteanswer') != 'marked' && hasSurveyPermission($iSurveyId, 'responses', 'delete'))
         {
             $_POST['deleteanswer'] = (int) Yii::app()->request->getPost('deleteanswer'); // sanitize the value
             // delete the files as well if its a fuqt
@@ -337,7 +337,7 @@ class browse extends Survey_Common_Action
             Survey_dynamic::model($iSurveyId)->deleteAllByAttributes(array('id' => mysql_real_escape_string(Yii::app()->request->getPost('deleteanswer'))));
         }
         // Marked responses -> deal with the whole batch of marked responses
-        if (Yii::app()->request->getPost('markedresponses') && count(Yii::app()->request->getPost('markedresponses')) > 0 && bHasSurveyPermission($iSurveyId, 'responses', 'delete'))
+        if (Yii::app()->request->getPost('markedresponses') && count(Yii::app()->request->getPost('markedresponses')) > 0 && hasSurveyPermission($iSurveyId, 'responses', 'delete'))
         {
             // Delete the marked responses - checked
             if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') === 'marked')
@@ -502,11 +502,11 @@ class browse extends Survey_Common_Action
             $oCriteria->join = "LEFT JOIN {{tokens_{$iSurveyId}}} ON {{survey_{$iSurveyId}}}.token = {{tokens_{$iSurveyId}}}.token";
         }
 
-        if (incompleteAnsFilterstate() == "inc")
+        if (incompleteAnsFilterState() == "inc")
         {
             $oCriteria->addCondition("`submitdate` IS NULL");
         }
-        elseif (incompleteAnsFilterstate() == "filter")
+        elseif (incompleteAnsFilterState() == "filter")
         {
             $oCriteria->addCondition("`submitdate` IS NOT NULL");
         }
@@ -699,11 +699,11 @@ class browse extends Survey_Common_Action
         $selectinc = '';
         $selecthide = '';
 
-        if (incompleteAnsFilterstate() == "inc")
+        if (incompleteAnsFilterState() == "inc")
         {
             $selectinc = " selected='selected'";
         }
-        elseif (incompleteAnsFilterstate() == "filter")
+        elseif (incompleteAnsFilterState() == "filter")
         {
             $selecthide = " selected='selected'";
         }

@@ -32,7 +32,7 @@
                 </td>
                 <td>
                     <form method="post" action="<?php echo $this->createUrl("admin/survey/deactivate/surveyid/".$surveyid);?>">
-                        <input type='submit' value='<?php $clang->eT("Deactivate survey"); ?>' onclick="<?php echo get2post($this->createUrl("admin/survey/deactivate/".$surveyid)."?action=deactivate&amp;ok=Y&amp;sid=$surveyid"); ?>" />
+                        <input type='submit' value='<?php $clang->eT("Deactivate survey"); ?>' onclick="<?php echo convertGETtoPOST($this->createUrl("admin/survey/deactivate/".$surveyid)."?action=deactivate&amp;ok=Y&amp;sid=$surveyid"); ?>" />
                         <input type='hidden' value='Y' name='ok' />
                     </form>
                 </td>

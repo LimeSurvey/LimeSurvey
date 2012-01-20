@@ -19,7 +19,7 @@ function loadanswers()
     global $clienttoken;
     $clang = Yii::app()->lang;
 
-    $scid=returnglobal('scid');
+    $scid=returnGlobal('scid');
     if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
     {
         $query = "SELECT * FROM {{saved_control}} INNER JOIN {$thissurvey['tablename']}
@@ -30,15 +30,15 @@ function loadanswers()
         {
             $query .= "AND {{saved_control}}.scid={$scid}\n";
         }
-        $query .="AND {{saved_control}}.identifier = '".auto_escape($_SESSION['survey_'.$surveyid]['holdname'])."' ";
+        $query .="AND {{saved_control}}.identifier = '".autoEscape($_SESSION['survey_'.$surveyid]['holdname'])."' ";
 
         if (in_array(Yii::app()->db->getDriverName(), array('odbc_mssql', 'odbtp', 'mssql_n', 'mssqlnative')))
         {
-            $query .="AND CAST({{saved_control}}.access_code as varchar(32))= '".md5(auto_unescape($_SESSION['survey_'.$surveyid]['holdpass']))."'\n";
+            $query .="AND CAST({{saved_control}}.access_code as varchar(32))= '".md5(autoUnescape($_SESSION['survey_'.$surveyid]['holdpass']))."'\n";
         }
         else
         {
-            $query .="AND {{saved_control}}.access_code = '".md5(auto_unescape($_SESSION['survey_'.$surveyid]['holdpass']))."'\n";
+            $query .="AND {{saved_control}}.access_code = '".md5(autoUnescape($_SESSION['survey_'.$surveyid]['holdpass']))."'\n";
         }
     }
     elseif (isset($_SESSION['survey_'.$surveyid]['srid']))
@@ -50,10 +50,10 @@ function loadanswers()
     {
         return;
     }
-    $result = db_execute_assoc($query) or safe_die ("Error loading results<br />$query<br />");   //Checked
+    $result = db_execute_assoc($query) or safeDie ("Error loading results<br />$query<br />");   //Checked
     if ($result->count() < 1)
     {
-        safe_die($clang->gT("There is no matching saved survey")."<br />\n");
+        safeDie($clang->gT("There is no matching saved survey")."<br />\n");
     }
     else
     {
@@ -209,14 +209,14 @@ function makelanguagechanger($baselang)
 {
     if (!isset($surveyid))
     {
-        $surveyid=returnglobal('sid');
+        $surveyid=returnGlobal('sid');
     }
     if (isset($surveyid))
     {
         $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
     }
 
-    $token = sanitize_token(returnglobal('token'));
+    $token = sanitize_token(returnGlobal('token'));
     if ($token != '')
     {
         $tokenparam = "&token=$token";
@@ -360,7 +360,7 @@ function checkconfield($value)
             . "AND {{conditions}}.scenario=$scenario "
             . "AND {{conditions}}.cfieldname NOT LIKE '{%' "
             . "ORDER BY {{conditions}}.qid,{{conditions}}.cfieldname";
-            $result=db_execute_assoc($query) or safe_die($query."<br />");         //Checked
+            $result=db_execute_assoc($query) or safeDie($query."<br />");         //Checked
             $conditionsfound = $result->count();
 
             $querytoken = "SELECT {{conditions}}.*, '' as type "
@@ -370,7 +370,7 @@ function checkconfield($value)
             . "AND {{conditions}}.scenario=$scenario "
             . "AND {{conditions}}.cfieldname LIKE '{%' "
             . "ORDER BY {{conditions}}.qid,{{conditions}}.cfieldname";
-            $resulttoken=db_execute_assoc($querytoken) or safe_die($querytoken."<br />");         //Checked
+            $resulttoken=db_execute_assoc($querytoken) or safeDie($querytoken."<br />");         //Checked
             $conditionsfoundtoken = $resulttoken->count();
             $conditionsfound = $conditionsfound + $conditionsfoundtoken;
 
@@ -445,9 +445,9 @@ function checkconfield($value)
                         if ($local_thissurvey['anonymized'] == 'N' &&
                         preg_match('/^{TOKEN:([^}]*)}$/',$cqv["matchvalue"], $targetconditiontokenattr))
                         {
-                            if (isset($_SESSION['survey_'.$surveyid]['token']) && in_array(strtolower($targetconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
+                            if (isset($_SESSION['survey_'.$surveyid]['token']) && in_array(strtolower($targetconditiontokenattr[1]),getTokenConditionsFieldNames($surveyid)))
                             {
-                                $cqv["matchvalue"] = GetAttributeValue($surveyid,strtolower($targetconditiontokenattr[1]),$_SESSION['survey_'.$surveyid]['token']);
+                                $cqv["matchvalue"] = getAttributeValue($surveyid,strtolower($targetconditiontokenattr[1]),$_SESSION['survey_'.$surveyid]['token']);
                             }
                             else
                             {
@@ -475,9 +475,9 @@ function checkconfield($value)
                             elseif ($local_thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$cqv['cfieldname'],$sourceconditiontokenattr))
                             {
                                 if ( isset($_SESSION['survey_'.$surveyid]['token']) &&
-                                in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
+                                in_array(strtolower($sourceconditiontokenattr[1]),getTokenConditionsFieldNames($surveyid)))
                                 {
-                                    $comparisonLeftOperand = GetAttributeValue($surveyid,strtolower($sourceconditiontokenattr[1]),$_SESSION['survey_'.$surveyid]['token']);
+                                    $comparisonLeftOperand = getAttributeValue($surveyid,strtolower($sourceconditiontokenattr[1]),$_SESSION['survey_'.$surveyid]['token']);
                                 }
                                 else
                                 {
@@ -899,7 +899,7 @@ function aCheckInput($surveyid, $move,$backok=null)
                     ."FROM {{questions}}\n"
                     ."WHERE qid=".$fieldinfo['qid']." "
                     . "AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
-                    $pregresult=db_execute_assoc($pregquery) or safe_die("ERROR: $pregquery<br />");      //Checked
+                    $pregresult=db_execute_assoc($pregquery) or safeDie("ERROR: $pregquery<br />");      //Checked
                     foreach($pregresult->readAll() as $pregrow)
                     {
                         $preg=trim($pregrow['preg']);
@@ -1042,7 +1042,7 @@ function submittokens($quotaexit=false)
     $sitename = Yii::app()->getConfig("sitename");
 
     // Shift the date due to global timeadjust setting
-    $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
+    $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
 
     // check how many uses the token has left
     $usesquery = "SELECT usesleft FROM {{tokens_$surveyid}} WHERE token=".$clienttoken;
@@ -1055,7 +1055,7 @@ function submittokens($quotaexit=false)
     {
         $utquery .= "SET completed='Q', usesleft=usesleft-1\n";
     }
-    elseif (bIsTokenCompletedDatestamped($thissurvey))
+    elseif (isTokenCompletedDatestamped($thissurvey))
     {
         if (isset($usesleft) && $usesleft<=1)
         {
@@ -1079,7 +1079,7 @@ function submittokens($quotaexit=false)
     }
     $utquery .= "WHERE token=".$clienttoken."";
 
-    $utresult = db_execute_assoc($utquery) or safe_die ("Couldn't update tokens table!<br />\n$utquery<br />\n");     //Checked
+    $utresult = db_execute_assoc($utquery) or safeDie ("Couldn't update tokens table!<br />\n$utquery<br />\n");     //Checked
 
     if ($quotaexit==false)
     {
@@ -1101,7 +1101,7 @@ function submittokens($quotaexit=false)
             $fieldsarray["{FIRSTNAME}"]=$cnfrow['firstname'];
             $fieldsarray["{LASTNAME}"]=$cnfrow['lastname'];
             $fieldsarray["{TOKEN}"]=$clienttoken;
-            $attrfieldnames=GetAttributeFieldnames($surveyid);
+            $attrfieldnames=getAttributeFieldNames($surveyid);
             foreach ($attrfieldnames as $attr_name)
             {
                 $fieldsarray["{".strtoupper($attr_name)."}"]=$cnfrow[$attr_name];
@@ -1143,7 +1143,7 @@ function submittokens($quotaexit=false)
 
                 if (!$ishtml)
                 {
-                    $message=strip_tags(br2nl(html_entity_decode($message,ENT_QUOTES,$emailcharset)));
+                    $message=strip_tags(breakToNewline(html_entity_decode($message,ENT_QUOTES,$emailcharset)));
                 }
                 else
                 {
@@ -1151,7 +1151,7 @@ function submittokens($quotaexit=false)
                 }
 
                 //Only send confirmation email if there is a valid email address
-                if (validate_email($cnfrow['email']))
+                if (validateEmailAddress($cnfrow['email']))
                 {
                     SendEmailMessage($message, $subject, $to, $from, $sitename,$ishtml);
                 }
@@ -1217,7 +1217,7 @@ function SendSubmitNotifications()
             foreach($aRecipient as $sRecipient)
             {
                 $sRecipient=dTexts__run($sRecipient);
-                if(validate_email($sRecipient))
+                if(validateEmailAddress($sRecipient))
                 {
                     $aEmailNotificationTo[]=$sRecipient;
                 }
@@ -1243,14 +1243,14 @@ function SendSubmitNotifications()
             foreach($aRecipient as $sRecipient)
             {
                 $sRecipient=dTexts__run($sRecipient);
-                if(validate_email($sRecipient))
+                if(validateEmailAddress($sRecipient))
                 {
                     $aEmailResponseTo[]=$sRecipient;
                 }
             }
         }
 
-        $aFullResponseTable=aGetFullResponseTable($surveyid,$_SESSION['survey_'.$surveyid]['srid'],$_SESSION['survey_'.$surveyid]['s_lang']);
+        $aFullResponseTable=getFullResponseTable($surveyid,$_SESSION['survey_'.$surveyid]['srid'],$_SESSION['survey_'.$surveyid]['s_lang']);
         $ResultTableHTML = "<table class='printouttable' >\n";
         $ResultTableText ="\n\n";
         $oldgid = 0;
@@ -1392,11 +1392,11 @@ function buildsurveysession($surveyid,$previewGroup=false)
     }
 
     $totalBoilerplatequestions = 0;
-    $loadsecurity = returnglobal('loadsecurity');
+    $loadsecurity = returnGlobal('loadsecurity');
 
     // NO TOKEN REQUIRED BUT CAPTCHA ENABLED FOR SURVEY ACCESS
     if ($tokensexist == 0 &&
-    captcha_enabled('surveyaccessscreen',$thissurvey['usecaptcha']))
+    isCaptchaEnabled('surveyaccessscreen',$thissurvey['usecaptcha']))
     {
 
         // IF CAPTCHA ANSWER IS NOT CORRECT OR NOT SET
@@ -1404,7 +1404,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
         !isset($_SESSION['survey_'.$surveyid]['secanswer']) ||
         $loadsecurity != $_SESSION['survey_'.$surveyid]['secanswer'])
         {
-            sendcacheheaders();
+            sendCacheHeaders();
             doHeader();
             // No or bad answer to required security question
 
@@ -1431,7 +1431,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
             {
                 echo "
                 <input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
-                <input type='hidden' name='scid' value='".returnglobal('scid')."' id='scid' />
+                <input type='hidden' name='scid' value='".returnGlobal('scid')."' id='scid' />
                 <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
                 <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
             }
@@ -1439,7 +1439,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
             echo "
             </td>
             </tr>";
-            if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
+            if (function_exists("ImageCreate") && isCaptchaEnabled('surveyaccessscreen', $thissurvey['usecaptcha']))
             {
                 echo "<tr>
                 <td align='center' valign='middle'><label for='captcha'>".$clang->gT("Security question:")."</label></td><td align='left' valign='middle'><table><tr><td valign='middle'><img src='".Yii::app()->getController()->createUrl('/verification/image')."' alt='captcha' /></td>
@@ -1464,7 +1464,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
 
         if ($thissurvey['nokeyboard']=='Y')
         {
-            vIncludeKeypad();
+            includeKeypad();
             $kpclass = "text-keypad";
         }
         else
@@ -1474,7 +1474,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
 
         // DISPLAY REGISTER-PAGE if needed
         // DISPLAY CAPTCHA if needed
-        sendcacheheaders();
+        sendCacheHeaders();
         doHeader();
 
         $redata = compact(array_keys(get_defined_vars()));
@@ -1509,13 +1509,13 @@ function buildsurveysession($surveyid,$previewGroup=false)
             {
                 echo "
                 <input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
-                <input type='hidden' name='scid' value='".returnglobal('scid')."' id='scid' />
+                <input type='hidden' name='scid' value='".returnGlobal('scid')."' id='scid' />
                 <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
                 <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
             }
             echo "</li>";
 
-            if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
+            if (function_exists("ImageCreate") && isCaptchaEnabled('surveyaccessscreen', $thissurvey['usecaptcha']))
             {
                 echo "<li>
                 <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='".Yii::app()->getController()->createUrl('/verification/image')."' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
@@ -1535,7 +1535,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
     // TOKENS REQUIRED, A TOKEN PROVIDED
     // SURVEY WITH NO NEED TO USE CAPTCHA
     elseif ($tokensexist == 1 && $clienttoken &&
-    !captcha_enabled('surveyaccessscreen',$thissurvey['usecaptcha']))
+    !isCaptchaEnabled('surveyaccessscreen',$thissurvey['usecaptcha']))
     {
 
         //check if tokens actually haven't been already used
@@ -1555,7 +1555,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
             //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 
             killSurveySession($surveyid);
-            sendcacheheaders();
+            sendCacheHeaders();
             doHeader();
 
             $redata = compact(array_keys(get_defined_vars()));
@@ -1574,7 +1574,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
     }
     // TOKENS REQUIRED, A TOKEN PROVIDED
     // SURVEY CAPTCHA REQUIRED
-    elseif ($tokensexist == 1 && $clienttoken && captcha_enabled('surveyaccessscreen',$thissurvey['usecaptcha']))
+    elseif ($tokensexist == 1 && $clienttoken && isCaptchaEnabled('surveyaccessscreen',$thissurvey['usecaptcha']))
     {
 
         // IF CAPTCHA ANSWER IS CORRECT
@@ -1597,7 +1597,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
             list($tkexist) = $tkresult->read();
             if (!$tkexist || ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y') )
             {
-                sendcacheheaders();
+                sendCacheHeaders();
                 doHeader();
                 //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 
@@ -1624,7 +1624,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
             {
                 unset($_SESSION['survey_'.$surveyid]['srid']);
                 $gettoken = $clienttoken;
-                sendcacheheaders();
+                sendCacheHeaders();
                 doHeader();
                 // No or bad answer to required security question
                 $redata = compact(array_keys(get_defined_vars()));
@@ -1660,7 +1660,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
                         && isset($_GET['loadname']) && isset($_GET['loadpass']))
                         {
                             echo "<input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
-                            <input type='hidden' name='scid' value='".returnglobal('scid')."' id='scid' />
+                            <input type='hidden' name='scid' value='".returnGlobal('scid')."' id='scid' />
                             <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
                             <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
                         }
@@ -1679,7 +1679,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
                     && isset($_GET['loadname']) && isset($_GET['loadpass']))
                     {
                         echo "<input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
-                        <input type='hidden' name='scid' value='".returnglobal('scid')."' id='scid' />
+                        <input type='hidden' name='scid' value='".returnGlobal('scid')."' id='scid' />
                         <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
                         <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
                     }
@@ -1688,7 +1688,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
                 }
 
 
-                if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
+                if (function_exists("ImageCreate") && isCaptchaEnabled('surveyaccessscreen', $thissurvey['usecaptcha']))
                 {
                     echo "<li>
                     <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='".Yii::app()->getController()->createUrl('/verification/image')."' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
@@ -1722,15 +1722,15 @@ function buildsurveysession($surveyid,$previewGroup=false)
         //get language from token (if one exists)
         $tkquery2 = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".db_quote($clienttoken)."' AND (completed = 'N' or completed='')";
         //echo $tkquery2;
-        $result = db_execute_assoc($tkquery2) or safe_die ("Couldn't get tokens<br />$tkquery<br />");    //Checked
+        $result = db_execute_assoc($tkquery2) or safeDie ("Couldn't get tokens<br />$tkquery<br />");    //Checked
         foreach ($result->readAll() as $rw)
         {
             $tklanguage=$rw['language'];
         }
     }
-    if (returnglobal('lang'))
+    if (returnGlobal('lang'))
     {
-        $language_to_set=returnglobal('lang');
+        $language_to_set=returnGlobal('lang');
     } elseif (isset($tklanguage))
     {
         $language_to_set=$tklanguage;
@@ -1790,7 +1790,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
 
     if ($totalquestions == "0")	//break out and crash if there are no questions!
     {
-        sendcacheheaders();
+        sendCacheHeaders();
         doHeader();
 
         $redata = compact(array_keys(get_defined_vars()));
@@ -1811,7 +1811,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
     }
 
     //Perform a case insensitive natural sort on group name then question title of a multidimensional array
-    //	usort($arows, 'GroupOrderThenQuestionOrder');
+    //	usort($arows, 'groupOrderThenQuestionOrder');
 
     //3. SESSION VARIABLE - insertarray
     //An array containing information about used to insert the data into the db at the submit stage
@@ -1829,7 +1829,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
         //Gather survey data for "non anonymous" surveys, for use in presenting questions
         $_SESSION['survey_'.$surveyid]['thistoken']=getTokenData($surveyid, $clienttoken);
     }
-    $qtypes=getqtypelist('','array');
+    $qtypes=getQuestionTypeList('','array');
     $fieldmap=createFieldMap($surveyid,'full',false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
 
@@ -1862,7 +1862,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
         {
             if (!isset($_SESSION['survey_'.$surveyid]['grouplist'][$iOldGid]['shuffled']) && $iOldGid!=$iNewGid)
             {
-                $_SESSION['survey_'.$surveyid]['grouplist']=array_swap_assoc($iOldGid,$iNewGid,$_SESSION['survey_'.$surveyid]['grouplist']);
+                $_SESSION['survey_'.$surveyid]['grouplist']=arraySwapAssoc($iOldGid,$iNewGid,$_SESSION['survey_'.$surveyid]['grouplist']);
             }
             $_SESSION['survey_'.$surveyid]['grouplist'][$iNewGid]['shuffled']=true;
         }
@@ -1884,7 +1884,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
         {
             if (!isset($GroupFieldMap[$iOldGid]['shuffled']) && $iOldGid!=$iNewGid)
             {
-                $GroupFieldMap=array_swap_assoc($iOldGid,$iNewGid,$GroupFieldMap);
+                $GroupFieldMap=arraySwapAssoc($iOldGid,$iNewGid,$GroupFieldMap);
             }
             $GroupFieldMap[$iNewGid]['shuffled']=true;
         }
@@ -2226,7 +2226,7 @@ function doAssessment($surveyid, $returndataonly=false)
                         else
                         {
 
-                            $usquery = "SELECT assessment_value FROM {{answers}} where qid=".$field['qid']." and language='$baselang' and code=".db_quoteall($_SESSION['survey_'.$surveyid][$field['fieldname']]);
+                            $usquery = "SELECT assessment_value FROM {{answers}} where qid=".$field['qid']." and language='$baselang' and code=".dbQuoteAll($_SESSION['survey_'.$surveyid][$field['fieldname']]);
                             $usresult = db_execute_assoc($usquery);          //Checked
                             if ($usresult)
                             {
@@ -2343,7 +2343,7 @@ function UpdateGroupList($surveyid, $language)
     $clang = Yii::app()->lang;
     unset ($_SESSION['survey_'.$surveyid]['grouplist']);
     $query = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
-    $result = db_execute_assoc($query) or safe_die ("Couldn't get group list<br />$query<br />");  //Checked
+    $result = db_execute_assoc($query) or safeDie ("Couldn't get group list<br />$query<br />");  //Checked
     foreach ($result->readAll() as $row)
     {
         $_SESSION['survey_'.$surveyid]['grouplist'][$row['gid']]=array($row['gid'], $row['group_name'], $row['description']);
@@ -2355,7 +2355,7 @@ function UpdateGroupList($surveyid, $language)
         {
             if (!isset($_SESSION['survey_'.$surveyid]['grouplist'][$iOldGid]['shuffled']) && $iOldGid!=$iNewGid)
             {
-                $_SESSION['survey_'.$surveyid]['grouplist']=array_swap_assoc($iOldGid,$iNewGid,$_SESSION['survey_'.$surveyid]['grouplist']);
+                $_SESSION['survey_'.$surveyid]['grouplist']=arraySwapAssoc($iOldGid,$iNewGid,$_SESSION['survey_'.$surveyid]['grouplist']);
             }
             $_SESSION['survey_'.$surveyid]['grouplist'][$iNewGid]['shuffled']=true;
         }
@@ -2379,7 +2379,7 @@ function UpdateFieldArray()
             $questionarray =& $_SESSION['survey_'.$surveyid]['fieldarray'][$key];
 
             $query = "SELECT * FROM {{questions}} WHERE qid=".$questionarray[0]." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
-            $result = db_execute_assoc($query) or safe_die ("Couldn't get question <br />$query<br />");      //Checked
+            $result = db_execute_assoc($query) or safeDie ("Couldn't get question <br />$query<br />");      //Checked
             $row = $result->read();
             $questionarray[2]=$row['title'];
             $questionarray[3]=$row['question'];
@@ -2487,7 +2487,7 @@ function check_quota($checkaction,$surveyid)
                     WHERE ".implode(' AND ',$querycond)." "."
                     AND submitdate IS NOT NULL";
 
-                    $result = db_execute_assoc($querysel) or safe_die();    //Checked
+                    $result = db_execute_assoc($querysel) or safeDie();    //Checked
                     $quota_check = $result->readAll();
 
                     if ($result->count() >= $quota['Limit']) // Quota is full!!
@@ -2551,7 +2551,7 @@ function check_quota($checkaction,$surveyid)
                     }
 
                     killSurveySession($surveyid);
-                sendcacheheaders();
+                sendCacheHeaders();
                 if($quota['AutoloadUrl'] == 1 && $quota['Url'] != "")
                 {
                     header("Location: ".$quota['Url']);
@@ -2572,7 +2572,7 @@ function check_quota($checkaction,$surveyid)
             if ((isset($quota['status']) && $quota['status'] == "matched") && (isset($quota['Action']) && $quota['Action'] == "2"))
             {
 
-                sendcacheheaders();
+                sendCacheHeaders();
                 doHeader();
 
                 $redata = compact(array_keys(get_defined_vars()));
@@ -2582,7 +2582,7 @@ function check_quota($checkaction,$surveyid)
                 echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
                 echo "<form method='post' action='".Yii::app()->getController()->createUrl("/survey/index")."' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><button class='nav-button nav-button-icon-left ui-corner-all' class='submit' accesskey='p' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" name='move2'><span class='ui-icon ui-icon-seek-prev'></span>".$clang->gT("Previous")."</button>
                 <input type='hidden' name='thisstep' value='".($_SESSION['survey_'.$surveyid]['step'])."' id='thisstep' />
-                <input type='hidden' name='sid' value='".returnglobal('sid')."' id='sid' />
+                <input type='hidden' name='sid' value='".returnGlobal('sid')."' id='sid' />
                 <input type='hidden' name='token' value='".$clienttoken."' id='token' />
                 </form>\n";
                 echo "\t</div>\n";
@@ -2682,7 +2682,7 @@ function display_first_page() {
 
     $navigator = surveymover();
 
-    sendcacheheaders();
+    sendCacheHeaders();
     doHeader();
 
     LimeExpressionManager::StartProcessingPage();
@@ -2709,7 +2709,7 @@ function display_first_page() {
         echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
     }
     echo "\n<input type='hidden' name='lastgroupname' value='_WELCOME_SCREEN_' id='lastgroupname' />\n"; //This is to ensure consistency with mandatory checks, and new group test
-    $loadsecurity = returnglobal('loadsecurity');
+    $loadsecurity = returnGlobal('loadsecurity');
     if (isset($loadsecurity)) {
         echo "\n<input type='hidden' name='loadsecurity' value='$loadsecurity' id='loadsecurity' />\n";
     }
@@ -2756,7 +2756,7 @@ function UpdateSessionGroupList($surveyid, $language)
 {
     unset ($_SESSION['survey_'.$surveyid]['grouplist']);
     $query = "SELECT * FROM {{groups}} WHERE sid={$surveyid} AND language='".$language."' ORDER BY group_order";
-    $result = db_execute_assoc($query) or safe_die ("Couldn't get group list<br />$query<br />".$connect->ErrorMsg());  //Checked
+    $result = db_execute_assoc($query) or safeDie ("Couldn't get group list<br />$query<br />".$connect->ErrorMsg());  //Checked
     foreach($result->readAll() as $row)
     {
         $_SESSION['survey_'.$surveyid]['grouplist'][]=array($row['gid'], $row['group_name'], $row['description']);

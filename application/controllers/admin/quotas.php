@@ -62,7 +62,7 @@ class quotas extends Survey_Common_Action
 
     private function _checkPermissions($iSurveyId, $sPermission)
     {
-        if (!empty($sPermission) && !bHasSurveyPermission($iSurveyId, 'quotas', $sPermission)) {
+        if (!empty($sPermission) && !hasSurveyPermission($iSurveyId, 'quotas', $sPermission)) {
             die();
         }
     }
@@ -104,7 +104,7 @@ class quotas extends Survey_Common_Action
             foreach ($aResult as $aQuotaListing)
             {
                 $totalquotas += $aQuotaListing['qlimit'];
-                $completed = get_quotaCompletedCount($iSurveyId, $aQuotaListing['id']);
+                $completed = getQuotaCompletedCount($iSurveyId, $aQuotaListing['id']);
                 $highlight = ($completed >= $aQuotaListing['qlimit']) ? "" : "style='color: red'"; //Incomplete quotas displayed in red
                 $totalcompleted = $totalcompleted + $completed;
                 $csvoutput[] = $aQuotaListing['name'] . "," . $aQuotaListing['qlimit'] . "," . $completed . "," . ($aQuotaListing['qlimit'] - $completed) . "\r\n";
@@ -201,7 +201,7 @@ class quotas extends Survey_Common_Action
                 $_POST['quotals_message_' . $sLang] = html_entity_decode($_POST['quotals_message_' . $sLang], ENT_QUOTES, "UTF-8");
 
                 // Fix bug with FCKEditor saving strange BR types
-                $_POST['quotals_message_' . $sLang] = fix_FCKeditor_text($_POST['quotals_message_' . $sLang]);
+                $_POST['quotals_message_' . $sLang] = fixCKeditorText($_POST['quotals_message_' . $sLang]);
 
                 $oQuotaLanguageSettings = new Quota_languagesettings;
                 $oQuotaLanguageSettings->quotals_quota_id = $iQuotaId;
@@ -254,7 +254,7 @@ class quotas extends Survey_Common_Action
                 $_POST['quotals_message_' . $sLang] = html_entity_decode($_POST['quotals_message_' . $sLang], ENT_QUOTES, "UTF-8");
 
                 // Fix bug with FCKEditor saving strange BR types
-                $_POST['quotals_message_' . $sLang] = fix_FCKeditor_text($_POST['quotals_message_' . $sLang]);
+                $_POST['quotals_message_' . $sLang] = fixCKeditorText($_POST['quotals_message_' . $sLang]);
 
                 $oQuotaLanguageSettings = Quota_languagesettings::model()->findByAttributes(array('quotals_quota_id' => Yii::app()->request->getPost('quota_id'), 'quotals_language' => $sLang));
                 $oQuotaLanguageSettings->quotals_name = Yii::app()->request->getPost('quota_name');
@@ -354,7 +354,7 @@ class quotas extends Survey_Common_Action
         $clang = $aData['clang'];
         $aViewUrls = array();
 
-        if (($sSubAction == "new_answer" || ($sSubAction == "new_answer_two" && !isset($_POST['quota_qid']))) && bHasSurveyPermission($iSurveyId, 'quotas', 'create'))
+        if (($sSubAction == "new_answer" || ($sSubAction == "new_answer_two" && !isset($_POST['quota_qid']))) && hasSurveyPermission($iSurveyId, 'quotas', 'create'))
         {
             $result = Quota::model()->findAllByPk(Yii::app()->request->getPost('quota_id'));
             foreach ($result as $aQuotaDetails)
@@ -375,7 +375,7 @@ class quotas extends Survey_Common_Action
             }
         }
 
-        if ($sSubAction == "new_answer_two" && isset($_POST['quota_qid']) && bHasSurveyPermission($iSurveyId, 'quotas', 'create'))
+        if ($sSubAction == "new_answer_two" && isset($_POST['quota_qid']) && hasSurveyPermission($iSurveyId, 'quotas', 'create'))
         {
             $aResults = Quota::model()->findByPk(Yii::app()->request->getPost('quota_qid'));
             $sQuotaName = $aResults['name'];

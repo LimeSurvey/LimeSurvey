@@ -47,7 +47,7 @@ class printablesurvey extends Survey_Common_Action
             if ($lang) $surveyprintlang = $lang;
         } else
         {
-            $surveyprintlang=GetbaseLanguageFromSurveyid((int) $surveyid);
+            $surveyprintlang=getBaseLanguageFromSurveyID((int) $surveyid);
         }
         $_POST['surveyprintlang']=$surveyprintlang;
 
@@ -229,7 +229,7 @@ class printablesurvey extends Survey_Common_Action
             foreach ($deqresult->readAll() as $deqrow) {$deqrows[] = $deqrow;} // Get table output into array
 
             // Perform a case insensitive natural sort on group name then question title of a multidimensional array
-            usort($deqrows, 'GroupOrderThenQuestionOrder');
+            usort($deqrows, 'groupOrderThenQuestionOrder');
 
             if ($degrow['description'])
             {
@@ -358,7 +358,7 @@ class printablesurvey extends Survey_Common_Action
 //                                }
 //                            }
 //                            if(!$distinctrow['cqid']) { // cqid == 0  ==> token attribute match
-//                                $tokenData = GetTokenFieldsAndNames($surveyid);
+//                                $tokenData = getTokenFieldsAndNames($surveyid);
 //                                preg_match('/^{TOKEN:([^}]*)}$/',$distinctrow['cfieldname'],$extractedTokenAttr);
 //                                $explanation .= "Your ".$tokenData[strtolower($extractedTokenAttr[1])]." ";
 //                                if($distinctrow['method']=='==')
@@ -646,7 +646,7 @@ class printablesurvey extends Survey_Common_Action
                     ,'QUESTION_SCENARIO' => $explanation    // if there are conditions on a question, list the conditions.
                     ,'QUESTION_MANDATORY' => ''        // translated 'mandatory' identifier
                     ,'QUESTION_ID' => $deqrow['qid']    // id to be added to wrapping question div
-                    ,'QUESTION_CLASS' => question_class( $deqrow['type'])    // classes to be added to wrapping question div
+                    ,'QUESTION_CLASS' => getQuestionClass( $deqrow['type'])    // classes to be added to wrapping question div
                     ,'QUESTION_TYPE_HELP' => $qinfo['prettyValidTip']   // ''           // instructions on how to complete the question
                     ,'QUESTION_MAN_MESSAGE' => ''        // (not sure if this is used) mandatory error
                     ,'QUESTION_VALID_MESSAGE' => ''        // (not sure if this is used) validation error
@@ -763,7 +763,7 @@ class printablesurvey extends Survey_Common_Action
                             $deacount=$dearesult->getRowCount();
                             if ($deqrow['other'] == "Y") {$deacount++;}
 
-                            $wrapper = setup_columns(0, $deacount);
+                            $wrapper = setupColumns(0, $deacount);
 
                             $question['ANSWER'] = $wrapper['whole-start'];
 
@@ -879,7 +879,7 @@ class printablesurvey extends Survey_Common_Action
                             $meacount = $mearesult->getRowCount();
                             if ($deqrow['other'] == 'Y') {$meacount++;}
 
-                            $wrapper = setup_columns($dcols, $meacount);
+                            $wrapper = setupColumns($dcols, $meacount);
                             $question['ANSWER'] = $wrapper['whole-start'];
 
                             $rowcounter = 0;
@@ -933,7 +933,7 @@ class printablesurvey extends Survey_Common_Action
                             $longest_string = 0;
                             foreach ($mearesult->readAll() as $mearow)
                             {
-                                $longest_string = longest_string($mearow['question'] , $longest_string );
+                                $longest_string = longestString($mearow['question'] , $longest_string );
                                 $question['ANSWER'] .= "\t<li><span>\n\t\t".self::_input_type_image('checkbox',$mearow['question']).$mearow['question'].self::_addsgqacode(" (".$fieldname.$mearow['title'].") ")."</span>\n\t\t".self::_input_type_image('text','comment box',60).self::_addsgqacode(" (".$fieldname.$mearow['title']."comment) ")."\n\t</li>\n";
                                 $pdfoutput[$j]=array(" o ".$mearow['title']," __________");
                                 $j++;
@@ -983,7 +983,7 @@ class printablesurvey extends Survey_Common_Action
                             $longest_string = 0;
                             foreach ($mearesult->readAll() as $mearow)
                             {
-                                $longest_string = longest_string($mearow['question'] , $longest_string );
+                                $longest_string = longestString($mearow['question'] , $longest_string );
                                 if (isset($qidattributes['slider_layout']) && $qidattributes['slider_layout']==1)
                                 {
                                   $mearow['question']=explode(':',$mearow['question']);
@@ -1958,7 +1958,7 @@ class printablesurvey extends Survey_Common_Action
         {
             $newquestiontext = Questions::model()->findByAttributes(array('title' => $qidattributes['array_filter'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
             $output .= "\n<p class='extrahelp'>
-                ".sprintf($clang->gT("Only answer this question for the items you selected in question *%s* ('%s')"),$qidattributes['array_filter'], FlattenText(br2nl($newquestiontext['question'])))."
+                ".sprintf($clang->gT("Only answer this question for the items you selected in question *%s* ('%s')"),$qidattributes['array_filter'], flattenText(breakToNewline($newquestiontext['question'])))."
             </p>\n";
         }
         if(!empty($qidattributes['array_filter_exclude']))
@@ -1966,7 +1966,7 @@ class printablesurvey extends Survey_Common_Action
             $newquestiontext = Questions::model()->findByAttributes(array('title' => $qidattributes['array_filter_exclude'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
 
             $output .= "\n    <p class='extrahelp'>
-                ".sprintf($clang->gT("Only answer this question for the items you did not select in question *%s* ('%s')"),$qidattributes['array_filter_exclude'], br2nl($newquestiontext['question']))."
+                ".sprintf($clang->gT("Only answer this question for the items you did not select in question *%s* ('%s')"),$qidattributes['array_filter_exclude'], breakToNewline($newquestiontext['question']))."
             </p>\n";
         }
         return $output;

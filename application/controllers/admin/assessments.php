@@ -53,7 +53,7 @@ class Assessments extends Survey_Common_Action
         if ($action == "assessmentdelete")
              $this->_delete($iSurveyId, $_POST['id']);
 
-        if (bHasSurveyPermission($iSurveyId, 'assessments', 'read')) {
+        if (hasSurveyPermission($iSurveyId, 'assessments', 'read')) {
             $clang = $this->getController()->lang;
 
             if ($iSurveyId == '') {
@@ -91,7 +91,7 @@ class Assessments extends Survey_Common_Action
         $aData['actionvalue'] = "assessmentadd";
         $aData['editId'] = '';
 
-        if ($action == "assessmentedit" && bHasSurveyPermission($iSurveyId, 'assessments', 'update')) {
+        if ($action == "assessmentedit" && hasSurveyPermission($iSurveyId, 'assessments', 'update')) {
             $aData = $this->_collectEditData($surveyLanguage, $aData, $clang);
         }
 
@@ -144,7 +144,7 @@ class Assessments extends Survey_Common_Action
      */
     private function _add($iSurveyId)
     {
-        if (bHasSurveyPermission($iSurveyId, 'assessments', 'create')) {
+        if (hasSurveyPermission($iSurveyId, 'assessments', 'create')) {
             $first = true;
             $assessmentId = -1;
             $languages = Yii::app()->getConfig("assessmentlangs");
@@ -169,7 +169,7 @@ class Assessments extends Survey_Common_Action
      */
     private function _update($iSurveyId)
     {
-        if (bHasSurveyPermission($iSurveyId, 'assessments', 'update') && isset($_POST['id'])) {
+        if (hasSurveyPermission($iSurveyId, 'assessments', 'update') && isset($_POST['id'])) {
 
             $aid = sanitize_int($_POST['id']);
             $languages = Yii::app()->getConfig("assessmentlangs");
@@ -186,7 +186,7 @@ class Assessments extends Survey_Common_Action
      */
     private function _delete($iSurveyId, $assessmentId)
     {
-        if (bHasSurveyPermission($iSurveyId, 'assessments', 'delete')) {
+        if (hasSurveyPermission($iSurveyId, 'assessments', 'delete')) {
             Assessment::model()->deleteAllByAttributes(array('id' => $assessmentId));
         }
     }

@@ -7,7 +7,7 @@
             if ($grouplang==$baselang) { ?>(<?php $clang->eT("Base language"); ?>) <?php } ?>
             </a></li>
         <?php }
-    if (bHasSurveyPermission($surveyid,'surveycontent','import'))
+    if (hasSurveyPermission($surveyid,'surveycontent','import'))
     { ?>
         <li><a href="#import"><?php $clang->eT("Import question group"); ?></a></li>
 
@@ -52,7 +52,7 @@
 
 
 
-    <?php if (bHasSurveyPermission($surveyid,'surveycontent','import'))
+    <?php if (hasSurveyPermission($surveyid,'surveycontent','import'))
     { ?>
         <div id="import">
         <form enctype='multipart/form-data' class='form30' id='importgroup' name='importgroup' action='<?php echo $this->createUrl('admin/questiongroup/import'); ?>' method='post' onsubmit='return validatefilename(this,"<?php $clang->eT('Please select a file to import!','js'); ?>");'>

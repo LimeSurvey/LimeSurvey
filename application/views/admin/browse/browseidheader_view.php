@@ -8,18 +8,18 @@
             <a href='<?php echo $this->createUrl("admin/dataentry/editdata/subaction/edit/surveyid/{$surveyid}/id/{$id}/lang/$rlanguage"); ?>' title='<?php $clang->eT("Edit this entry"); ?>'>
                 <img align='left' src='<?php echo $imageurl; ?>/edit.png' alt='<?php $clang->gT("Edit this entry"); ?>' /></a>
         <?php }
-        if (bHasSurveyPermission($surveyid, 'responses', 'delete') && isset($rlanguage))
+        if (hasSurveyPermission($surveyid, 'responses', 'delete') && isset($rlanguage))
         { ?>
-            <a href='#' title='<?php $clang->eT("Delete this entry"); ?>' onclick="if (confirm('<?php $clang->eT("Are you sure you want to delete this entry?", "js"); ?>')) { <?php echo get2post($this->createUrl("admin/dataentry/delete/id/$id/sid/$surveyid")); ?>}">
+            <a href='#' title='<?php $clang->eT("Delete this entry"); ?>' onclick="if (confirm('<?php $clang->eT("Are you sure you want to delete this entry?", "js"); ?>')) { <?php echo convertGETtoPOST($this->createUrl("admin/dataentry/delete/id/$id/sid/$surveyid")); ?>}">
                 <img align='left' hspace='0' border='0' src='<?php echo $imageurl; ?>/delete.png' alt='<?php $clang->eT("Delete this entry"); ?>' /></a>
         <?php }
         else
         { ?>
             <img align='left' hspace='0' border='0' src='<?php echo $imageurl; ?>/delete_disabled.png' alt='<?php $clang->eT("You don't have permission to delete this entry."); ?>'/>
         <?php }
-        if (bHasFileUploadQuestion($surveyid))
+        if (hasFileUploadQuestion($surveyid))
         { ?>
-            <a href='#' title='<?php $clang->eT("Download files for this entry"); ?>' onclick="<?php echo get2post('?action=browse&amp;subaction=all&amp;downloadfile=' . $id . '&amp;sid=' . $surveyid); ?>" >
+            <a href='#' title='<?php $clang->eT("Download files for this entry"); ?>' onclick="<?php echo convertGETtoPOST('?action=browse&amp;subaction=all&amp;downloadfile=' . $id . '&amp;sid=' . $surveyid); ?>" >
                 <img align='left' hspace='0' border='0' src='<?php echo $imageurl; ?>/download.png' alt='<?php $clang->eT("Download files for this entry"); ?>' /></a>
         <?php } ?>
 

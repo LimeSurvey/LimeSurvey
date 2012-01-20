@@ -5,7 +5,7 @@
             <tr>
             <td colspan='3' align='center'>
             <strong><?php echo $thissurvey['name']; ?></strong>
-            <br /><?php echo FlattenText($thissurvey['description'],true); ?>
+            <br /><?php echo flattenText($thissurvey['description'],true); ?>
             </td>
             </tr>
     
@@ -53,7 +53,7 @@
         
             if ($thissurvey['datestamp'] == "Y") //Give datestampentry field
             { 
-                $localtimedate=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')); ?> 
+                $localtimedate=dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')); ?> 
                 <tr>
                 <td valign='top' width='1%'></td>
                 <td valign='top' align='right' width='30%'><strong>

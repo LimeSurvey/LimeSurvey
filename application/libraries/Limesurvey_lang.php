@@ -84,10 +84,10 @@ class Limesurvey_lang {
             switch ($escapemode)
             {
                 case 'html':
-                    return $this->html_escape($basestring);
+                    return $this->HTMLEscape($basestring);
                     break;
                 case 'js':
-                    return $this->javascript_escape($basestring);
+                    return $this->javascriptEscape($basestring);
                     break;
                 case 'unescaped':
                     return $basestring;
@@ -100,10 +100,10 @@ class Limesurvey_lang {
             switch ($escapemode)
             {
                 case 'html':
-                    return $this->html_escape($string);
+                    return $this->HTMLEscape($string);
                     break;
                 case 'js':
-                    return $this->javascript_escape($string);
+                    return $this->javascriptEscape($string);
                     break;
                 case 'unescaped':
                     return $string;
@@ -144,10 +144,10 @@ class Limesurvey_lang {
             switch ($escapemode)
             {
                 case 'html':
-                    return $this->html_escape($basestring);
+                    return $this->HTMLEscape($basestring);
                     break;
                 case 'js':
-                    return $this->javascript_escape($basestring);
+                    return $this->javascriptEscape($basestring);
                     break;
                 case 'unescaped':
                     return $basestring;
@@ -160,10 +160,10 @@ class Limesurvey_lang {
             switch ($escapemode)
             {
                 case 'html':
-                    return $this->html_escape($string);
+                    return $this->HTMLEscape($string);
                     break;
                 case 'js':
-                    return $this->javascript_escape($string);
+                    return $this->javascriptEscape($string);
                     break;
                 case 'unescaped':
                     return $string;
@@ -175,7 +175,7 @@ class Limesurvey_lang {
         }
     }
 
-    function html_escape($str) {
+    function HTMLEscape($str) {
         // escape newline characters, too, in case we put a value from
         // a TEXTAREA  into an <input type="hidden"> value attribute.
         return str_replace(array("\x0A","\x0D"),array("&#10;","&#13;"),
@@ -183,7 +183,7 @@ class Limesurvey_lang {
     }
 
     // make a string safe to include in a JavaScript String parameter.
-    function javascript_escape($str, $strip_tags=false, $htmldecode=false) {
+    function javascriptEscape($str, $strip_tags=false, $htmldecode=false) {
         $new_str ='';
 
         if ($htmldecode==true) {

@@ -50,7 +50,7 @@ class printanswers extends LSYii_Controller {
             Yii::import('application.libraries.admin.pdf');
         }
 
-        //if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+        //if (!isset($surveyid)) {$surveyid=returnGlobal('sid');}
         //else {
             //This next line ensures that the $surveyid value is never anything but a number.
         $surveyid = (int)($surveyid);
@@ -77,17 +77,17 @@ class printanswers extends LSYii_Controller {
             $clang = new Limesurvey_lang($baselang);
             //A nice exit
 
-            sendcacheheaders();
+            sendCacheHeaders();
             doHeader();
 
-            echo templatereplace(file_get_contents(sGetTemplatePath(validate_templatedir("default"))."/startpage.pstpl"),array(),array());
+            echo templatereplace(file_get_contents(getTemplatePath(validateTemplateDir("default"))."/startpage.pstpl"),array(),array());
             echo "<center><br />\n"
             ."\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
             ."\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
             ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail)."\n"
             ."</center><br />\n";
 
-            echo templatereplace(file_get_contents(sGetTemplatePath(validate_templatedir("default"))."/endpage.pstpl"),array(),array());
+            echo templatereplace(file_get_contents(getTemplatePath(validateTemplateDir("default"))."/endpage.pstpl"),array(),array());
             doFooter();
             exit;
         }
@@ -119,11 +119,11 @@ class printanswers extends LSYii_Controller {
         //SET THE TEMPLATE DIRECTORY
         if (!isset($thissurvey['templatedir']) || !$thissurvey['templatedir'])
         {
-            $thistpl = validate_templatedir("default");
+            $thistpl = validateTemplateDir("default");
         }
         else
         {
-            $thistpl = validate_templatedir($thissurvey['templatedir']);
+            $thistpl = validateTemplateDir($thissurvey['templatedir']);
         }
 
         if ($thissurvey['printanswers'] == 'N')
@@ -172,7 +172,7 @@ class printanswers extends LSYii_Controller {
         // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
         LimeExpressionManager::StartProcessingGroup(1,($thissurvey['anonymized']!="N"),$surveyid);
 
-        $aFullResponseTable = aGetFullResponseTable($surveyid,$id,$language,true);
+        $aFullResponseTable = getFullResponseTable($surveyid,$id,$language,true);
 
         //Get the fieldmap @TODO: do we need to filter out some fields?
         unset ($aFullResponseTable['id']);
@@ -197,7 +197,7 @@ class printanswers extends LSYii_Controller {
 
         	    if($printableexport)
         	    {
-        		    $pdf->intopdf(FlattenText($fname[0],false,true));
+        		    $pdf->intopdf(flattenText($fname[0],false,true));
         		    $pdf->ln(2);
                 }
                 else
@@ -209,7 +209,7 @@ class printanswers extends LSYii_Controller {
             {
                 if($printableexport == 'pdf')
                 {
-                    $pdf->intopdf(FlattenText($fname[0].$fname[1],false,true).": ".$fname[2]);
+                    $pdf->intopdf(flattenText($fname[0].$fname[1],false,true).": ".$fname[2]);
                     $pdf->ln(2);
                 }
                 else
@@ -221,7 +221,7 @@ class printanswers extends LSYii_Controller {
             {
                 if($printableexport == 'pdf')
                 {
-                    $pdf->intopdf(FlattenText($fname[0].$fname[1],false,true).": ".$fname[2]);
+                    $pdf->intopdf(flattenText($fname[0].$fname[1],false,true).": ".$fname[2]);
                     $pdf->ln(2);
                 }
                 else
@@ -247,12 +247,12 @@ class printanswers extends LSYii_Controller {
         if(!$printableexport)
         {
 
-            sendcacheheaders();
+            sendCacheHeaders();
             doHeader();
 
-            echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/startpage.pstpl'));
-            echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/printanswers.pstpl'),array('ANSWERTABLE'=>$printoutput));
-            echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/endpage.pstpl'));
+            echo templatereplace(file_get_contents(getTemplatePath($thistpl).'/startpage.pstpl'));
+            echo templatereplace(file_get_contents(getTemplatePath($thistpl).'/printanswers.pstpl'),array('ANSWERTABLE'=>$printoutput));
+            echo templatereplace(file_get_contents(getTemplatePath($thistpl).'/endpage.pstpl'));
             echo "</body></html>";
         }
 

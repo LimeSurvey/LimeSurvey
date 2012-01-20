@@ -19,7 +19,7 @@ class Index extends Survey_Common_Action
         $clang = Yii::app()->lang;
         $aViewUrls = array();
 
-		if (count(getsurveylist(true)) == 0)
+		if (count(getSurveyList(true)) == 0)
 		{
             $aViewUrls = 'firststeps';
 		}

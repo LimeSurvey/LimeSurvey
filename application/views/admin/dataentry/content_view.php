@@ -13,7 +13,7 @@
             <font color='red'>*</font>
             <?php } ?>
         <strong><?php
-                //                    echo FlattenText($deqrow['question']);
+                //                    echo flattenText($deqrow['question']);
                 echo $deqrow['question'];   // don't flatten if want to use EM.  However, may not be worth it as want dynamic relevance and question changes
         ?></strong></td>
     <td valign='top'  align='left' style='padding-left: 20px'>

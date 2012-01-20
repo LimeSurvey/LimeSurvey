@@ -38,7 +38,7 @@ class templates extends Survey_Common_Action
     {
         Yii::import('application.libraries.admin.Phpzip', true);
         $zip = new PHPZip();
-        $templatedir = sGetTemplatePath($templatename) . DIRECTORY_SEPARATOR;
+        $templatedir = getTemplatePath($templatename) . DIRECTORY_SEPARATOR;
         $tempdir = Yii::app()->getConfig('tempdir');
 
         $zipfile = "$tempdir/$templatename.zip";
@@ -74,8 +74,8 @@ class templates extends Survey_Common_Action
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/admin/templates.js');
 
         $aViewUrls = $this->_initialise('default', 'welcome', 'startpage.pstpl', FALSE);
-        $lid = returnglobal('lid');
-        $action = returnglobal('action');
+        $lid = returnGlobal('lid');
+        $action = returnGlobal('action');
 
 
         if ($action == 'templateupload') {
@@ -272,11 +272,11 @@ class templates extends Survey_Common_Action
      */
     public function templatefiledelete()
     {
-        if (returnglobal('action') == "templatefiledelete") {
+        if (returnGlobal('action') == "templatefiledelete") {
             // This is where the temp file is
-            $the_full_file_path = Yii::app()->getConfig('usertemplaterootdir') . "/" . $_POST['templatename'] . "/" . returnglobal('otherfile');
+            $the_full_file_path = Yii::app()->getConfig('usertemplaterootdir') . "/" . $_POST['templatename'] . "/" . returnGlobal('otherfile');
             unlink($the_full_file_path);
-            $this->getController()->redirect($this->getController()->createUrl("admin/templates/view/editfile/" . returnglobal('editfile') . "/screenname/" . returnglobal('screenname') . "/templatename/" . returnglobal('templatename')));
+            $this->getController()->redirect($this->getController()->createUrl("admin/templates/view/editfile/" . returnGlobal('editfile') . "/screenname/" . returnGlobal('screenname') . "/templatename/" . returnGlobal('templatename')));
         }
     }
 
@@ -288,17 +288,17 @@ class templates extends Survey_Common_Action
      */
     public function templaterename()
     {
-        if (returnglobal('action') == "templaterename" && returnglobal('newname') && returnglobal('copydir')) {
+        if (returnGlobal('action') == "templaterename" && returnGlobal('newname') && returnGlobal('copydir')) {
             $clang = Yii::app()->lang;
-            $newdirname = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnglobal('newname');
-            $olddirname = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnglobal('copydir');
-            if (isStandardTemplate(returnglobal('newname')))
-                $this->getController()->error(sprintf($clang->gT("Template could not be renamed to `%s`.", "js"), returnglobal('newname')) . " " . $clang->gT("This name is reserved for standard template.", "js"));
+            $newdirname = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnGlobal('newname');
+            $olddirname = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnGlobal('copydir');
+            if (isStandardTemplate(returnGlobal('newname')))
+                $this->getController()->error(sprintf($clang->gT("Template could not be renamed to `%s`.", "js"), returnGlobal('newname')) . " " . $clang->gT("This name is reserved for standard template.", "js"));
             elseif (rename($olddirname, $newdirname) == false)
-                $this->getController()->error(sprintf($clang->gT("Directory could not be renamed to `%s`.", "js"), returnglobal('newname')) . " " . $clang->gT("Maybe you don't have permission.", "js"));
+                $this->getController()->error(sprintf($clang->gT("Directory could not be renamed to `%s`.", "js"), returnGlobal('newname')) . " " . $clang->gT("Maybe you don't have permission.", "js"));
             else
             {
-                $templatename = returnglobal('newname');
+                $templatename = returnGlobal('newname');
                 $this->index("startpage.pstpl", "welcome", $templatename);
             }
         }
@@ -314,12 +314,12 @@ class templates extends Survey_Common_Action
     {
         $clang = $this->getController()->lang;
 
-        if (returnglobal('action') == "templatecopy" && returnglobal('newname') && returnglobal('copydir')) {
+        if (returnGlobal('action') == "templatecopy" && returnGlobal('newname') && returnGlobal('copydir')) {
             // Copies all the files from one template directory to a new one
             // This is a security issue because it is allowing copying from get variables...
             Yii::app()->loadHelper('admin/template');
-            $newdirname = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnglobal('newname');
-            $copydirname = sGetTemplatePath(returnglobal('copydir'));
+            $newdirname = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnGlobal('newname');
+            $copydirname = getTemplatePath(returnGlobal('copydir'));
             $mkdirresult = mkdir_p($newdirname);
 
             if ($mkdirresult == 1) {
@@ -332,13 +332,13 @@ class templates extends Survey_Common_Action
                         $this->getController()->error(sprintf($clang->gT("Failed to copy %s to new template directory.", "js"), $file));
                 }
 
-                $templatename = returnglobal('newname');
+                $templatename = returnGlobal('newname');
                 $this->index("startpage.pstpl", "welcome", $templatename);
             }
             elseif ($mkdirresult == 2)
-                $this->getController()->error(sprintf($clang->gT("Directory with the name `%s` already exists - choose another name", "js"), returnglobal('newname')));
+                $this->getController()->error(sprintf($clang->gT("Directory with the name `%s` already exists - choose another name", "js"), returnGlobal('newname')));
             else
-                $this->getController()->error(sprintf($clang->gT("Unable to create directory `%s`.", "js"), returnglobal('newname')) . " " . $clang->gT("Please check the directory permissions.", "js"));
+                $this->getController()->error(sprintf($clang->gT("Unable to create directory `%s`.", "js"), returnGlobal('newname')) . " " . $clang->gT("Please check the directory permissions.", "js"));
             ;
         }
     }
@@ -385,24 +385,24 @@ class templates extends Survey_Common_Action
      */
     public function templatesavechanges()
     {
-        if (returnglobal('changes')) {
-            $changedtext = returnglobal('changes');
+        if (returnGlobal('changes')) {
+            $changedtext = returnGlobal('changes');
             $changedtext = str_replace('<?', '', $changedtext);
             if (get_magic_quotes_gpc())
                 $changedtext = stripslashes($changedtext);
         }
 
-        if (returnglobal('changes_cp')) {
-            $changedtext = returnglobal('changes_cp');
+        if (returnGlobal('changes_cp')) {
+            $changedtext = returnGlobal('changes_cp');
             $changedtext = str_replace('<?', '', $changedtext);
             if (get_magic_quotes_gpc())
                 $changedtext = stripslashes($changedtext);
         }
 
-        $action = returnglobal('action');
-        $editfile = returnglobal('editfile');
-        $templatename = returnglobal('templatename');
-        $screenname = returnglobal('screenname');
+        $action = returnGlobal('action');
+        $editfile = returnGlobal('editfile');
+        $templatename = returnGlobal('templatename');
+        $screenname = returnGlobal('screenname');
         $files = $this->_initfiles($templatename);
         $cssfiles = $this->_initcssfiles();
 
@@ -678,23 +678,23 @@ class templates extends Survey_Common_Action
         Yii::app()->session['s_lang'] = Yii::app()->session['adminlang'];
 
         $templatename = sanitize_paranoid_string($templatename);
-        $screenname = auto_unescape($screenname);
+        $screenname = autoUnescape($screenname);
 
         // Checks if screen name is in the list of allowed screen names
         if (multiarray_search($screens, 'id', $screenname) === false)
             $this->getController()->error('Invalid screen name');
 
         if (!isset($action))
-            $action = sanitize_paranoid_string(returnglobal('action'));
+            $action = sanitize_paranoid_string(returnGlobal('action'));
 
         if (!isset($subaction))
-            $subaction = sanitize_paranoid_string(returnglobal('subaction'));
+            $subaction = sanitize_paranoid_string(returnGlobal('subaction'));
 
         if (!isset($newname))
-            $newname = sanitize_paranoid_string(returnglobal('newname'));
+            $newname = sanitize_paranoid_string(returnGlobal('newname'));
 
         if (!isset($copydir))
-            $copydir = sanitize_paranoid_string(returnglobal('copydir'));
+            $copydir = sanitize_paranoid_string(returnGlobal('copydir'));
 
         if (is_file(Yii::app()->getConfig('usertemplaterootdir') . '/' . $templatename . '/question_start.pstpl')) {
             $files[] = array('name' => 'question_start.pstpl');
@@ -713,7 +713,7 @@ class templates extends Survey_Common_Action
         else
             $codelanguage = 'en';
 
-        $templates = gettemplatelist();
+        $templates = getTemplateList();
         if (!isset($templates[$templatename]))
             $templatename = Yii::app()->getConfig('defaulttemplate');
 
@@ -773,8 +773,8 @@ class templates extends Survey_Common_Action
         $surveyid = '1295';
         $token = 1234567;
 
-        $templatedir = sGetTemplatePath($templatename);
-        $templateurl = sGetTemplateURL($templatename);
+        $templatedir = getTemplatePath($templatename);
+        $templateurl = getTemplateURL($templatename);
 
         // Save these variables in an array
         $aData['thissurvey'] = $thissurvey;
@@ -816,7 +816,7 @@ class templates extends Survey_Common_Action
                 foreach ($SurveyList as $qs)
                 {
                     $files[] = array("name" => $qs);
-                    $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename) . "/$qs", $aData));
+                    $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/$qs", $aData));
                 }
                 break;
 
@@ -826,10 +826,10 @@ class templates extends Survey_Common_Action
                     $files[] = array("name" => $qs);
 
                 $myoutput[] = $this->getController()->render('/admin/templates/templateeditor_question_meta_view', array(), true);
-                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename) . "/startpage.pstpl", $aData));
-                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename) . "/survey.pstpl", $aData));
-                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename) . "/startgroup.pstpl", $aData));
-                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename) . "/groupdescription.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/startpage.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/survey.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/startgroup.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/groupdescription.pstpl", $aData));
 
                 $question = array(
                     'all' => 'How many roads must a man walk down?',
@@ -850,7 +850,7 @@ class templates extends Survey_Common_Action
 
                 $answer = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array(), true);
                 $aData['answer'] = $answer;
-                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename) . "/question.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/question.pstpl", $aData));
 
                 $answer = $this->getController()->render('/admin/templates/templateeditor_question_answer_view', array('alt' => true), true);
                 $aData['answer'] = $answer;
@@ -870,10 +870,10 @@ class templates extends Survey_Common_Action
                     'number' => '2'
                 );
                 $aData['question'] = $question;
-                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename) . "/question.pstpl", $aData));
-                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename) . "/endgroup.pstpl", $aData));
-                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename) . "/navigator.pstpl", $aData));
-                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename) . "/endpage.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/question.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/endgroup.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/navigator.pstpl", $aData));
+                $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/endpage.pstpl", $aData));
                 break;
 
             case 'welcome':
@@ -882,7 +882,7 @@ class templates extends Survey_Common_Action
                 foreach ($Welcome as $qs)
                 {
                     $files[] = array("name" => $qs);
-                    $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename) . "/$qs", $aData));
+                    $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/$qs", $aData));
                 }
                 break;
 
@@ -937,7 +937,7 @@ class templates extends Survey_Common_Action
                 foreach ($CompletedTemplate as $qs)
                 {
                     $files[] = array("name" => $qs);
-                    $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename) . "/$qs", $aData));
+                    $myoutput = array_merge($myoutput, doreplacement(getTemplatePath($templatename) . "/$qs", $aData));
                 }
                 break;
 

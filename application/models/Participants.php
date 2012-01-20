@@ -1125,7 +1125,7 @@ class Participants extends CActiveRecord
         if (is_array($arr))
         {
             $tokenfieldnames = array_keys($arr);
-            $tokenattributefieldnames = array_filter($tokenfieldnames, 'filterforattributes');
+            $tokenattributefieldnames = array_filter($tokenfieldnames, 'filterForAttributes');
         }
         else
         {
@@ -1238,7 +1238,7 @@ class Participants extends CActiveRecord
         if (is_array($arr))
         {
             $tokenfieldnames = array_keys($arr);
-            $tokenattributefieldnames = array_filter($tokenfieldnames, 'filterforattributes');
+            $tokenattributefieldnames = array_filter($tokenfieldnames, 'filterForAttributes');
         }
         else
         {

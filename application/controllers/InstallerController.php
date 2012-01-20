@@ -357,7 +357,7 @@ class InstallerController extends CController {
                         $values['adminoutputForm'] = "<form action='".$this->createUrl("installer/createdb")."' method='post'><input type='submit' value='"
                         .$clang->gT("Create database")."' class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' /></form>";
                     }
-                    elseif ($dbexistsbutempty) //&& !(returnglobal('createdbstep2')==$clang->gT("Populate database")))
+                    elseif ($dbexistsbutempty) //&& !(returnGlobal('createdbstep2')==$clang->gT("Populate database")))
                     {
                         Yii::app()->session['populatedatabase'] = true;
 

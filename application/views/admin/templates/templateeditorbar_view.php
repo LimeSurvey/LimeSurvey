@@ -113,7 +113,7 @@
             </select>
             <label for='listboxtemplates'><?php $clang->eT("Screen:"); ?></label>
             <select class="listboxtemplates" id='listboxtemplates' name='screenname' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/screenredirect/editfile/".$editfile."/templatename/".$templatename); ?>/screenname/'+escape(this.value), '_top')">
-                <?php echo makeoptions($screens, "id", "name", html_escape($screenname) ); ?>
+                <?php echo makeoptions($screens, "id", "name", HTMLEscape($screenname) ); ?>
             </select>
             <a href='#' onclick="javascript: copyprompt('<?php $clang->eT("Create new template called:"); ?>', '<?php $clang->eT("NewTemplate"); ?>', 'default', 'copy')"
                 title="<?php $clang->eTview("Create new template"); ?>" >

@@ -329,7 +329,7 @@ class Survey_Common_Action extends CAction
         $questionsummary = "<div class='menubar'>\n";
 
         // Check if other questions in the Survey are dependent upon this question
-        $condarray = GetQuestDepsForConditions($iSurveyId, "all", "all", $qid, "by-targqid", "outsidegroup");
+        $condarray = getQuestDepsForConditions($iSurveyId, "all", "all", $qid, "by-targqid", "outsidegroup");
 
         $sumresult1 = Survey::model()->findByPk($iSurveyId);
         if (is_null($sumresult1))
@@ -338,14 +338,14 @@ class Survey_Common_Action extends CAction
         } //  if surveyid is invalid then die to prevent errors at a later time
         $surveyinfo = $sumresult1->attributes;
 
-        $surveyinfo = array_map('FlattenText', $surveyinfo);
+        $surveyinfo = array_map('flattenText', $surveyinfo);
         $aData['activated'] = $surveyinfo['active'];
 
         foreach ($qrresult as $qrrow)
         {
             $qrrow = $qrrow->attributes;
-            $qrrow = array_map('FlattenText', $qrrow);
-            if (bHasSurveyPermission($iSurveyId, 'surveycontent', 'read'))
+            $qrrow = array_map('flattenText', $qrrow);
+            if (hasSurveyPermission($iSurveyId, 'surveycontent', 'read'))
             {
                 if (count(Survey::model()->findByPk($iSurveyId)->additionalLanguages) != 0)
                 {
@@ -357,7 +357,7 @@ class Survey_Common_Action extends CAction
                     $aData['tmp_survlangs'] = $tmp_survlangs;
                 }
             }
-            $aData['qtypes'] = $qtypes = getqtypelist('', 'array');
+            $aData['qtypes'] = $qtypes = getQuestionTypeList('', 'array');
             if ($action == 'editansweroptions' || $action == "editsubquestions" || $action == "editquestion" || $action == "editdefaultvalues" || $action == "copyquestion")
             {
                 $qshowstyle = "style='display: none'";
@@ -425,7 +425,7 @@ class Survey_Common_Action extends CAction
         $grpresult = Groups::model()->findAllByAttributes(array('gid' => $gid, 'language' => $baselang));
 
         // Check if other questions/groups are dependent upon this group
-        $condarray = GetGroupDepsForConditions($iSurveyId, "all", $gid, "by-targgid");
+        $condarray = getGroupDepsForConditions($iSurveyId, "all", $gid, "by-targgid");
 
         $groupsummary = "<div class='menubar'>\n"
         . "<div class='menubar-title ui-widget-header'>\n";
@@ -434,7 +434,7 @@ class Survey_Common_Action extends CAction
         $sumresult1 = Survey::model()->with('languagesettings')->findByPk($iSurveyId); //$sumquery1, 1) ; //Checked //  if surveyid is invalid then die to prevent errors at a later time
         $surveyinfo = $sumresult1->attributes;
         $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings->attributes);
-        $surveyinfo = array_map('FlattenText', $surveyinfo);
+        $surveyinfo = array_map('flattenText', $surveyinfo);
         //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
         $aData['activated'] = $activated = $surveyinfo['active'];
 
@@ -442,7 +442,7 @@ class Survey_Common_Action extends CAction
         {
             $grow = $grow->attributes;
 
-            $grow = array_map('FlattenText', $grow);
+            $grow = array_map('flattenText', $grow);
             $aData = array();
             $aData['activated'] = $activated;
             $aData['qid'] = $qid;
@@ -494,7 +494,7 @@ class Survey_Common_Action extends CAction
         } //  if surveyid is invalid then die to prevent errors at a later time
         $surveyinfo = $sumresult1->attributes;
         $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings->attributes);
-        $surveyinfo = array_map('FlattenText', $surveyinfo);
+        $surveyinfo = array_map('flattenText', $surveyinfo);
         //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
         $activated = ($surveyinfo['active'] == 'Y');
 
@@ -519,10 +519,10 @@ class Survey_Common_Action extends CAction
         $sumresult3 = Questions::model()->findAllByAttributes($condition); //Checked
         $sumcount3 = count($sumresult3);
 
-        $aData['canactivate'] = $sumcount3 > 0 && bHasSurveyPermission($iSurveyId, 'surveyactivation', 'update');
-        $aData['candeactivate'] = bHasSurveyPermission($iSurveyId, 'surveyactivation', 'update');
-        $aData['expired'] = $surveyinfo['expires'] != '' && ($surveyinfo['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
-        $aData['notstarted'] = ($surveyinfo['startdate'] != '') && ($surveyinfo['startdate'] > date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
+        $aData['canactivate'] = $sumcount3 > 0 && hasSurveyPermission($iSurveyId, 'surveyactivation', 'update');
+        $aData['candeactivate'] = hasSurveyPermission($iSurveyId, 'surveyactivation', 'update');
+        $aData['expired'] = $surveyinfo['expires'] != '' && ($surveyinfo['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
+        $aData['notstarted'] = ($surveyinfo['startdate'] != '') && ($surveyinfo['startdate'] > dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
 
         // Start of suckerfish menu
         // TEST BUTTON
@@ -549,48 +549,48 @@ class Survey_Common_Action extends CAction
         $aData['hasadditionallanguages'] = (count($aData['additionallanguages']) > 0);
 
         // EDIT SURVEY TEXT ELEMENTS BUTTON
-        $aData['surveylocale'] = bHasSurveyPermission($iSurveyId, 'surveylocale', 'read');
+        $aData['surveylocale'] = hasSurveyPermission($iSurveyId, 'surveylocale', 'read');
         // EDIT SURVEY SETTINGS BUTTON
-        $aData['surveysettings'] = bHasSurveyPermission($iSurveyId, 'surveysettings', 'read');
+        $aData['surveysettings'] = hasSurveyPermission($iSurveyId, 'surveysettings', 'read');
         // Survey permission item
         $aData['surveysecurity'] = (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || $surveyinfo['owner_id'] == Yii::app()->session['loginID']);
         // CHANGE QUESTION GROUP ORDER BUTTON
-        $aData['surveycontent'] = bHasSurveyPermission($iSurveyId, 'surveycontent', 'read');
+        $aData['surveycontent'] = hasSurveyPermission($iSurveyId, 'surveycontent', 'read');
         $aData['groupsum'] = (getGroupSum($iSurveyId, $surveyinfo['language']) > 1);
         // SET SURVEY QUOTAS BUTTON
-        $aData['quotas'] = bHasSurveyPermission($iSurveyId, 'quotas', 'read');
+        $aData['quotas'] = hasSurveyPermission($iSurveyId, 'quotas', 'read');
         // Assessment menu item
-        $aData['assessments'] = bHasSurveyPermission($iSurveyId, 'assessments', 'read');
+        $aData['assessments'] = hasSurveyPermission($iSurveyId, 'assessments', 'read');
         // EDIT SURVEY TEXT ELEMENTS BUTTON
         // End if survey properties
         // Tools menu item
         // Delete survey item
-        $aData['surveydelete'] = bHasSurveyPermission($iSurveyId, 'survey', 'delete');
+        $aData['surveydelete'] = hasSurveyPermission($iSurveyId, 'survey', 'delete');
         // Translate survey item
-        $aData['surveytranslate'] = bHasSurveyPermission($iSurveyId, 'translations', 'read');
+        $aData['surveytranslate'] = hasSurveyPermission($iSurveyId, 'translations', 'read');
         // RESET SURVEY LOGIC BUTTON
         //$sumquery6 = "SELECT count(*) FROM ".db_table_name('conditions')." as c, ".db_table_name('questions')." as q WHERE c.qid = q.qid AND q.sid=$iSurveyId"; //Getting a count of conditions for this survey
         // TMSW Conditions->Relevance:  How is conditionscount used?  Should Relevance do the same?
 
         $query = count(Conditions::model()->findAllByAttributes(array('qid' => $iSurveyId)));
         $sumcount6 = $query; //Checked
-        $aData['surveycontent'] = bHasSurveyPermission($iSurveyId, 'surveycontent', 'update');
+        $aData['surveycontent'] = hasSurveyPermission($iSurveyId, 'surveycontent', 'update');
         $aData['conditionscount'] = ($sumcount6 > 0);
         // Eport menu item
-        $aData['surveyexport'] = bHasSurveyPermission($iSurveyId, 'surveycontent', 'export');
+        $aData['surveyexport'] = hasSurveyPermission($iSurveyId, 'surveycontent', 'export');
         // PRINTABLE VERSION OF SURVEY BUTTON
         // SHOW PRINTABLE AND SCANNABLE VERSION OF SURVEY BUTTON
         //browse responses menu item
-        $aData['respstatsread'] = bHasSurveyPermission($iSurveyId, 'responses', 'read') || bHasSurveyPermission($iSurveyId, 'statistics', 'read') || bHasSurveyPermission($iSurveyId, 'responses', 'export');
+        $aData['respstatsread'] = hasSurveyPermission($iSurveyId, 'responses', 'read') || hasSurveyPermission($iSurveyId, 'statistics', 'read') || hasSurveyPermission($iSurveyId, 'responses', 'export');
         // Data entry screen menu item
-        $aData['responsescreate'] = bHasSurveyPermission($iSurveyId, 'responses', 'create');
-        $aData['responsesread'] = bHasSurveyPermission($iSurveyId, 'responses', 'read');
+        $aData['responsescreate'] = hasSurveyPermission($iSurveyId, 'responses', 'create');
+        $aData['responsesread'] = hasSurveyPermission($iSurveyId, 'responses', 'read');
         // TOKEN MANAGEMENT BUTTON
-        $aData['tokenmanagement'] = bHasSurveyPermission($iSurveyId, 'surveysettings', 'update') || bHasSurveyPermission($iSurveyId, 'tokens', 'read');
+        $aData['tokenmanagement'] = hasSurveyPermission($iSurveyId, 'surveysettings', 'update') || hasSurveyPermission($iSurveyId, 'tokens', 'read');
 
         $aData['gid'] = $gid; // = $this->input->post('gid');
 
-        if (bHasSurveyPermission($iSurveyId, 'surveycontent', 'read'))
+        if (hasSurveyPermission($iSurveyId, 'surveycontent', 'read'))
         {
             $aData['permission'] = true;
         }
@@ -601,9 +601,9 @@ class Survey_Common_Action extends CAction
             $aData['permission'] = false;
         }
 
-        if (getgrouplistlang($gid, $baselang, $iSurveyId))
+        if (getGroupListLang($gid, $baselang, $iSurveyId))
         {
-            $aData['groups'] = getgrouplistlang($gid, $baselang, $iSurveyId);
+            $aData['groups'] = getGroupListLang($gid, $baselang, $iSurveyId);
         }
         else
         {
@@ -636,7 +636,7 @@ class Survey_Common_Action extends CAction
         } //  if surveyid is invalid then die to prevent errors at a later time
         $surveyinfo = $sumresult1->attributes;
         $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings->attributes);
-        $surveyinfo = array_map('FlattenText', $surveyinfo);
+        $surveyinfo = array_map('flattenText', $surveyinfo);
         //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
         $activated = $surveyinfo['active'];
 
@@ -719,14 +719,14 @@ class Survey_Common_Action extends CAction
             $surveysummary2 .= $clang->gT("Detailed email notification with response data is sent to:") . " {$surveyinfo['emailresponseto']}<br />\n";
         }
 
-        if (bHasSurveyPermission($iSurveyId, 'surveycontent', 'update'))
+        if (hasSurveyPermission($iSurveyId, 'surveycontent', 'update'))
         {
             $surveysummary2 .= $clang->gT("Regenerate question codes:")
             . " [<a href='#' "
-            . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want regenerate the question codes?", "js") . "')) { " .get2post(Yii::app()->baseUrl . "?action=renumberquestions&amp;sid=$iSurveyId&amp;style=straight") . "}\" "
+            . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want regenerate the question codes?", "js") . "')) { " .convertGETtoPOST(Yii::app()->baseUrl . "?action=renumberquestions&amp;sid=$iSurveyId&amp;style=straight") . "}\" "
             . ">" . $clang->gT("Straight") . "</a>] "
             . " [<a href='#' "
-            . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want regenerate the question codes?", "js") . "')) { " .get2post(Yii::app()->baseUrl . "?action=renumberquestions&amp;sid=$iSurveyId&amp;style=bygroup") . "}\" "
+            . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want regenerate the question codes?", "js") . "')) { " .convertGETtoPOST(Yii::app()->baseUrl . "?action=renumberquestions&amp;sid=$iSurveyId&amp;style=bygroup") . "}\" "
             . ">" . $clang->gT("By Group") . "</a>]";
         }
 
@@ -826,11 +826,11 @@ class Survey_Common_Action extends CAction
         if ($activated == "N" && $sumcount3 == 0)
         {
             $aData['warnings'] = $clang->gT("Survey cannot be activated yet.") . "<br />\n";
-            if ($sumcount2 == 0 && bHasSurveyPermission($iSurveyId, 'surveycontent', 'create'))
+            if ($sumcount2 == 0 && hasSurveyPermission($iSurveyId, 'surveycontent', 'create'))
             {
                 $aData['warnings'] .= "<span class='statusentryhighlight'>[" . $clang->gT("You need to add question groups") . "]</span><br />";
             }
-            if ($sumcount3 == 0 && bHasSurveyPermission($iSurveyId, 'surveycontent', 'create'))
+            if ($sumcount3 == 0 && hasSurveyPermission($iSurveyId, 'surveycontent', 'create'))
             {
                 $aData['warnings'] .= "<span class='statusentryhighlight'>[" . $clang->gT("You need to add questions") . "]</span><br />";
             }
@@ -838,7 +838,7 @@ class Survey_Common_Action extends CAction
         $aData['hints'] = $surveysummary2;
 
         //return (array('column'=>array($columns_used,$hard_limit) , 'size' => array($length, $size_limit) ));
-        //        $aData['tableusage'] = get_dbtableusage($iSurveyId);
+        //        $aData['tableusage'] = getDBTableUsage($iSurveyId);
         // ToDo: Table usage is calculated on every menu display which is too slow with bug surveys.
         // Needs to be moved to a database field and only updated if there are question/subquestions added/removed (it's currently also not functional due to the port)
         //

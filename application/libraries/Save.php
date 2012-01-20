@@ -12,7 +12,7 @@
  *
  *	$Id$
  *
-//Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
+//Security Checked: POST, GET, SESSION, REQUEST, returnGlobal, DB
 
 Redesigned 7/25/2006 - swales
 
@@ -59,7 +59,7 @@ class Save {
     {
         //Show 'SAVE FORM' only when click the 'Save so far' button the first time, or when duplicate is found on SAVE FORM.
         global $thistpl, $errormsg, $thissurvey, $surveyid, $clang, $clienttoken, $thisstep;
-        sendcacheheaders();
+        sendCacheHeaders();
         doHeader();
         foreach(file("$thistpl/startpage.pstpl") as $op)
         {
@@ -125,7 +125,7 @@ class Save {
         if ((isset($_POST['savepass']) && !isset($_POST['savepass2'])) || $_POST['savepass'] != $_POST['savepass2'])
         {$errormsg.=$clang->gT("Your passwords do not match.")."<br />\n";}
         // if security question asnwer is incorrect
-        if (function_exists("ImageCreate") && captcha_enabled('saveandloadscreen',$thissurvey['usecaptcha']))
+        if (function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen',$thissurvey['usecaptcha']))
         {
             if (!isset($_POST['loadsecurity']) ||
             !isset($_SESSION['survey_'.$surveyid]['secanswer']) ||
@@ -143,7 +143,7 @@ class Save {
         $query = "SELECT COUNT(*) FROM {{saved_control}}\n"
         ."WHERE sid=$surveyid\n"
         ."AND identifier='{$_POST['savename']}'";
-        $result = Yii::app()->db->createCommand($query)->query() or safe_die("Error checking for duplicates!<br />$query<br />");   // Checked
+        $result = Yii::app()->db->createCommand($query)->query() or safeDie("Error checking for duplicates!<br />$query<br />");   // Checked
         list($count) = $result->getRowCount();
         if ($count > 0)
         {
@@ -155,7 +155,7 @@ class Save {
             //INSERT BLANK RECORD INTO "survey_x" if one doesn't already exist
             if (!isset($_SESSION['survey_'.$surveyid]['srid']))
             {
-                $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
+                $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
                 $sdata = array("datestamp"=>$today,
                 "ipaddr"=>get_current_ip_address(),
                 "startlanguage"=>$_SESSION['survey_'.$surveyid]['s_lang'],
@@ -167,11 +167,11 @@ class Save {
                 }
                 else
                 {
-                    safe_die("Unable to insert record into survey table.<br /><br />");
+                    safeDie("Unable to insert record into survey table.<br /><br />");
                 }
             }
             //CREATE ENTRY INTO "saved_control"
-            $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
+            $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
             $scdata = array("sid"=>$surveyid,
             "srid"=>$_SESSION['survey_'.$surveyid]['srid'],
             "identifier"=>$_POST['savename'], // Binding does escape , so no quoting/escaping necessary
@@ -191,14 +191,14 @@ class Save {
             }
             else
             {
-                safe_die("Unable to insert record into saved_control table.<br /><br />");
+                safeDie("Unable to insert record into saved_control table.<br /><br />");
             }
 
             $_SESSION['survey_'.$surveyid]['holdname']=$_POST['savename']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
             $_SESSION['survey_'.$surveyid]['holdpass']=$_POST['savepass']; //Session variable used to load answers every page.  Unsafe - so it has to be taken care of on output
 
             //Email if needed
-            if (isset($_POST['saveemail']) && validate_email($_POST['saveemail']))
+            if (isset($_POST['saveemail']) && validateEmailAddress($_POST['saveemail']))
             {
                 $subject=$clang->gT("Saved Survey Details") . " - " . $thissurvey['name'];
                 $message=$clang->gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.","unescaped");

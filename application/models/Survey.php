@@ -171,7 +171,7 @@ class Survey extends CActiveRecord
                 unset($data['wishSID']);
             }
             else
-                $data['sid'] = sRandomChars(6, '123456789');
+                $data['sid'] = randomChars(6, '123456789');
 
             $isresult = self::model()->findByPk($data['sid']);
         }

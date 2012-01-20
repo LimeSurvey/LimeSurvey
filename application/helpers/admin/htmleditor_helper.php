@@ -13,7 +13,7 @@
  *	$Id$
  */
 //include_once("login_check.php");
-//Security Checked: POST/GET/SESSION/DB/returnglobal
+//Security Checked: POST/GET/SESSION/DB/returnGlobal
 
 
 function sTranslateLangCode2CK($sLanguageCode){

@@ -9,7 +9,7 @@
 
 <?php // HERE WE LIST FOR USER RIGHTS YOU CAN SET TO a USER
 // YOU CAN ONLY SET AT MOST THE RIGHTS YOU have yourself
-$userlist = getuserlist();
+$userlist = getUserList();
 foreach ($userlist as $usr) {
     if ($usr['uid'] == $postuserid) {
         $squery = "SELECT create_survey, configurator, create_user, delete_user, superadmin, participant_panel,manage_template, manage_label FROM {{users}} WHERE uid=".Yii::app()->session['loginID'];	//		added by Dennis

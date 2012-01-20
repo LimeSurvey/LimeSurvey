@@ -83,7 +83,7 @@
 ?>
                         <li>
                             <label for='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
-                                   <?php echo "{$aSubquestion['title']}: " . FlattenText($aSubquestion['question']) ?>
+                                   <?php echo "{$aSubquestion['title']}: " . flattenText($aSubquestion['question']) ?>
                             </label>
                             <select name='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'
                                     id='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>

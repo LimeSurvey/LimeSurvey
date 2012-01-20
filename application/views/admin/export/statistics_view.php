@@ -176,7 +176,7 @@
                             <tr>
                             <?php $counter=0; ?>
                             <?php endif; ?>
-                            <?php $myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}"; $niceqtext=FlattenText($flt[5]); ?>
+                            <?php $myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}"; $niceqtext=flattenText($flt[5]); ?>
                             <?php
                             if ($flt[2]=='M' || $flt[2]=='P' || $flt[2]=='N' || $flt[2]=='L' || $flt[2]=='5'
              || $flt[2]=='G' || $flt[2]=='I' || $flt[2]=='O' || $flt[2]=='Y' || $flt[2]=='!'): ?>
@@ -196,7 +196,7 @@
                     || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
                     || array_search("P{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE
                     || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE)) { echo " checked='checked'"; } ?> />
-                                <label for='filter<?php echo $myfield; ?>'><?php echo _showSpeaker(FlattenText($flt[5],true)); ?></label><br />
+                                <label for='filter<?php echo $myfield; ?>'><?php echo _showSpeaker(flattenText($flt[5],true)); ?></label><br />
                                 <?php if ($flt[2] != "N" && $flt[2] != "|"): ?>
                                 <select name='<?php endif; ?><?php if ($flt[2] == "M" ) { echo "M";} ?><?php if ($flt[2] == "P" ) { echo "P";} ?><?php if ($flt[2] != "N" && $flt[2] != "|") {echo "{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple='multiple'>\n";} ?>
                             <?php endif; ?>
@@ -237,7 +237,7 @@
                                         echo " />&nbsp;";
 
                                         //show speaker
-                                        echo _showSpeaker($flt[3]." - ".FlattenText($row[1],true))."<br />\n";
+                                        echo _showSpeaker($flt[3]." - ".flattenText($row[1],true))."<br />\n";
 
                                         //input fields
                                         echo "\t\t\t\t\t<font size='1'>".$clang->gT("Number greater than").":</font><br />\n"
@@ -284,7 +284,7 @@
                                         {echo " checked='checked'";}
 
                                         echo " />&nbsp;";
-                                        echo _showSpeaker($flt[3]." - ".FlattenText($row[1],true))
+                                        echo _showSpeaker($flt[3]." - ".flattenText($row[1],true))
                                         ."<br />\n"
                                         ."\t\t\t\t\t<font size='1'>".$clang->gT("Responses containing").":</font><br />\n"
                                         ."\t\t\t\t\t<input type='text' name='$myfield2' value='";
@@ -903,7 +903,7 @@
                                             //pre-select
                                             if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {echo " selected";}
 
-                                            echo ">({$frow['code']}) ".FlattenText($frow['answer'],true)."</option>\n";
+                                            echo ">({$frow['code']}) ".flattenText($frow['answer'],true)."</option>\n";
                                         }
 
                                         echo "\t\t\t\t</select>\n\t\t\t\t</td>\n";
@@ -1080,7 +1080,7 @@
                                             //pre-check
                                             if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {echo " selected";}
 
-                                            echo ">({$frow['code']}) ".FlattenText($frow['answer'],true)."</option>\n";
+                                            echo ">({$frow['code']}) ".flattenText($frow['answer'],true)."</option>\n";
 
                                         }
 
@@ -1157,7 +1157,7 @@
                                             //pre-check
                                             if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {echo " selected";}
 
-                                            echo ">({$frow['code']}) ".FlattenText($frow['answer'],true)."</option>\n";
+                                            echo ">({$frow['code']}) ".flattenText($frow['answer'],true)."</option>\n";
 
                                         }
 
@@ -1184,7 +1184,7 @@
                                         //pre-check
                                         if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {echo " selected";}
 
-                                        echo '>'.FlattenText($row[1],true)."</option>\n";
+                                        echo '>'.flattenText($row[1],true)."</option>\n";
                                     }
 
                                     echo "\t\t\t\t</select>\n\t\t\t\t</td>\n";
@@ -1209,7 +1209,7 @@
                                         //pre-check
                                         if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {echo " selected";}
 
-                                        echo '>'.FlattenText($row[1],true)."</option>\n";
+                                        echo '>'.flattenText($row[1],true)."</option>\n";
                                     }
 
                                     echo "\t\t\t\t</select>\n\t\t\t\t</td>\n";
@@ -1254,11 +1254,11 @@ function _showSpeaker($hinttext)
         $maxchars = 100;
     }
     $htmlhinttext=str_replace("'",'&#039;',$hinttext);  //the string is already HTML except for single quotes so we just replace these only
-    $jshinttext=javascript_escape($hinttext,true,true);
+    $jshinttext=javascriptEscape($hinttext,true,true);
 
     if(strlen($hinttext) > ($maxchars))
     {
-        $shortstring = FlattenText($hinttext);
+        $shortstring = flattenText($hinttext);
 
         $shortstring = htmlspecialchars(mb_strcut(html_entity_decode($shortstring,ENT_QUOTES,'UTF-8'), 0, $maxchars, 'UTF-8'));
 

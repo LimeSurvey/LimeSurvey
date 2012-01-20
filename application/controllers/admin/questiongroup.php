@@ -56,7 +56,7 @@ class questiongroup extends Survey_Common_Action
             }
 
             // validate that we have a SID
-            if (!returnglobal('sid'))
+            if (!returnGlobal('sid'))
                 $fatalerror .= $clang->gT("No SID (Survey) has been provided. Cannot import question.");
 
             if (isset($fatalerror))
@@ -74,7 +74,7 @@ class questiongroup extends Survey_Common_Action
                 $aImportResults = XMLImportGroup($sFullFilepath, $surveyid);
             else
                 $this->getController()->error('Unknown file extension');
-            FixLanguageConsistency($surveyid);
+            fixLanguageConsistency($surveyid);
 
             if (isset($aImportResults['fatalerror']))
             {
@@ -105,7 +105,7 @@ class questiongroup extends Survey_Common_Action
         $surveyid = sanitize_int($surveyid);
         $aViewUrls = $aData = array();
 
-        if (bHasSurveyPermission($surveyid, 'surveycontent', 'read'))
+        if (hasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
             $clang = $this->getController()->lang;
 
@@ -137,7 +137,7 @@ class questiongroup extends Survey_Common_Action
      */
     public function insert($surveyid)
     {
-        if (bHasSurveyPermission($surveyid, 'surveycontent', 'create'))
+        if (hasSurveyPermission($surveyid, 'surveycontent', 'create'))
         {
             Yii::app()->loadHelper('surveytranslator');
 
@@ -166,8 +166,8 @@ class questiongroup extends Survey_Common_Action
                     $group_description = html_entity_decode($group_description, ENT_QUOTES, "UTF-8");
 
                     // Fix bug with FCKEditor saving strange BR types
-                    $group_name = fix_FCKeditor_text($group_name);
-                    $group_description = fix_FCKeditor_text($group_description);
+                    $group_name = fixCKeditorText($group_name);
+                    $group_description = fixCKeditorText($group_description);
 
 
                     if ($first)
@@ -176,7 +176,7 @@ class questiongroup extends Survey_Common_Action
                             'sid' => $surveyid,
                             'group_name' => $group_name,
                             'description' => $group_description,
-                            'group_order' => getMaxgrouporder($surveyid),
+                            'group_order' => getMaxGroupOrder($surveyid),
                             'language' => $grouplang,
                             'randomization_group' => $_POST['randomization_group'],
                             'grelevance' => $_POST['grelevance'],
@@ -191,13 +191,13 @@ class questiongroup extends Survey_Common_Action
                     }
                     else
                     {
-                        //db_switchIDInsert('groups',true);
+                        //switchMSSQLIdentityInsert('groups',true);
                         $aData = array(
                             'gid' => $groupid,
                             'sid' => $surveyid,
                             'group_name' => $group_name,
                             'description' => $group_description,
-                            'group_order' => getMaxgrouporder($surveyid),
+                            'group_order' => getMaxGroupOrder($surveyid),
                             'language' => $grouplang,
                             'randomization_group' => $_POST['randomization_group']
                         );
@@ -227,7 +227,7 @@ class questiongroup extends Survey_Common_Action
     {
         $iSurveyId = sanitize_int($iSurveyId);
 
-        if (bHasSurveyPermission($iSurveyId, 'surveycontent', 'delete'))
+        if (hasSurveyPermission($iSurveyId, 'surveycontent', 'delete'))
         {
             LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyId);
 
@@ -266,7 +266,7 @@ class questiongroup extends Survey_Common_Action
         $gid = sanitize_int($gid);
         $aViewUrls = $aData = array();
 
-        if (bHasSurveyPermission($surveyid, 'surveycontent', 'read'))
+        if (hasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
             Yii::app()->session['FileManagerContext'] = "edit:group:{$surveyid}";
 
@@ -350,7 +350,7 @@ class questiongroup extends Survey_Common_Action
         $group = Groups::model()->findByAttributes(array('gid' => $gid));
         $surveyid = $group->sid;
 
-        if (bHasSurveyPermission($surveyid, 'surveycontent', 'update'))
+        if (hasSurveyPermission($surveyid, 'surveycontent', 'update'))
         {
             Yii::app()->loadHelper('surveytranslator');
 
@@ -370,8 +370,8 @@ class questiongroup extends Survey_Common_Action
                     $group_description = html_entity_decode($group_description, ENT_QUOTES, "UTF-8");
 
                     // Fix bug with FCKEditor saving strange BR types
-                    $group_name = fix_FCKeditor_text($group_name);
-                    $group_description = fix_FCKeditor_text($group_description);
+                    $group_name = fixCKeditorText($group_name);
+                    $group_description = fixCKeditorText($group_description);
 
                     $aData = array(
                         'group_name' => $group_name,
@@ -390,7 +390,7 @@ class questiongroup extends Survey_Common_Action
                     $ugresult = $group->save();
                     if ($ugresult)
                     {
-                        $groupsummary = getgrouplist($gid, $surveyid);
+                        $groupsummary = getGroupList($gid, $surveyid);
                     }
                 }
             }

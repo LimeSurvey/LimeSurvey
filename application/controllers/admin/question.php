@@ -36,9 +36,9 @@ class question extends Survey_Common_Action
      */
     public function import()
     {
-        $action = returnglobal('action');
-        $surveyid = returnglobal('sid');
-        $gid = returnglobal('gid');
+        $action = returnGlobal('action');
+        $surveyid = returnGlobal('sid');
+        $gid = returnGlobal('gid');
         $clang = $this->getController()->lang;
         $aViewUrls = array();
 
@@ -77,7 +77,7 @@ class question extends Survey_Common_Action
             else
                 $this->getController()->error($clang->gT('Unknown file extension'));
 
-            FixLanguageConsistency($surveyid);
+            fixLanguageConsistency($surveyid);
 
             if (isset($aImportResults['fatalerror']))
             {
@@ -129,7 +129,7 @@ class question extends Survey_Common_Action
             'gid' => $gid,
             'language' => $baselang
         ))->attributes;
-        $qtproperties = getqtypelist('', 'array');
+        $qtproperties = getQuestionTypeList('', 'array');
 
         $langopts = array();
         foreach ($questlangs as $language)
@@ -287,7 +287,7 @@ class question extends Survey_Common_Action
         $qrow = Questions::model()->findByAttributes(array('qid' => $qid, 'language' => $baselang));
         $qtype = $qrow['type'];
 
-        $qtypes = getqtypelist('', 'array');
+        $qtypes = getQuestionTypeList('', 'array');
 
         $scalecount = $qtypes[$qtype]['answerscales'];
 
@@ -384,7 +384,7 @@ class question extends Survey_Common_Action
 
         $surveyinfo = $sumresult1->attributes;
         $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings->attributes);
-        $surveyinfo = array_map('FlattenText', $surveyinfo);
+        $surveyinfo = array_map('flattenText', $surveyinfo);
         $assessmentvisible = ($surveyinfo['assessments'] == 'Y' && $qtypes[$qtype]['assessable'] == 1);
         $aData['assessmentvisible'] = $assessmentvisible;
 
@@ -447,7 +447,7 @@ class question extends Survey_Common_Action
         $resultrow = Questions::model()->findByPk(array('qid' => $qid, 'language' => $baselang))->attributes;
 
         $sQuestiontype = $resultrow['type'];
-        $aQuestiontypeInfo = getqtypelist($sQuestiontype, 'array');
+        $aQuestiontypeInfo = getQuestionTypeList($sQuestiontype, 'array');
         $iScaleCount = $aQuestiontypeInfo[$sQuestiontype]['subquestions'];
 
         for ($iScale = 0; $iScale < $iScaleCount; $iScale++)
@@ -497,7 +497,7 @@ class question extends Survey_Common_Action
                     // Means that no record for the language exists in the questions table
                     if (empty($qrow))
                     {
-                        db_switchIDInsert('questions', true);
+                        switchMSSQLIdentityInsert('questions', true);
 
                         Questions::model()->insert(array(
                             'qid' => $row->qid,
@@ -511,7 +511,7 @@ class question extends Survey_Common_Action
                             'scale_id' => $iScale,
                         ));
 
-                        db_switchIDInsert('questions', false);
+                        switchMSSQLIdentityInsert('questions', false);
                     }
                 }
             }
@@ -560,7 +560,7 @@ class question extends Survey_Common_Action
          * The following line decides if the assessment input fields are visible or not
          * for some question types the assessment values is set in the label set instead of the answers
          */
-        $qtypes = getqtypelist('', 'array');
+        $qtypes = getQuestionTypeList('', 'array');
         Yii::app()->loadHelper('surveytranslator');
 
         $aData['scalecount'] = $scalecount = $qtypes[$qtype]['subquestions'];
@@ -571,7 +571,7 @@ class question extends Survey_Common_Action
 
         $surveyinfo = $sumresult1->attributes;
         $surveyinfo = array_merge($surveyinfo, $sumresult1->languagesettings->attributes);
-        $surveyinfo = array_map('FlattenText', $surveyinfo);
+        $surveyinfo = array_map('flattenText', $surveyinfo);
 
         $aData['activated'] = $activated = $surveyinfo['active'];
         $aData['surveyid'] = $surveyid;
@@ -623,7 +623,7 @@ class question extends Survey_Common_Action
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
         Yii::app()->session['FileManagerContext'] = "create:question:{$surveyid}";
 
-        if (bHasSurveyPermission($surveyid, 'surveycontent', 'read'))
+        if (hasSurveyPermission($surveyid, 'surveycontent', 'read'))
         {
             $clang = $this->getController()->lang;
             $surveyinfo = getSurveyInfo($surveyid);
@@ -709,13 +709,13 @@ class question extends Survey_Common_Action
                 LimeExpressionManager::StartProcessingGroup($gid, ($surveyinfo['anonymized']!="N"), $surveyinfo['sid']);  // loads list of replacement values available for this group
             }
 
-            $qtypelist = getqtypelist('', 'array');
+            $qtypelist = getQuestionTypeList('', 'array');
             $qDescToCode = 'qDescToCode = {';
             $qCodeToInfo = 'qCodeToInfo = {';
             foreach ($qtypelist as $qtype => $qdesc)
             {
                 $qDescToCode .= " '{$qdesc['description']}' : '{$qtype}', \n";
-                $qCodeToInfo .= " '{$qtype}' : '" . ls_json_encode($qdesc) . "', \n";
+                $qCodeToInfo .= " '{$qtype}' : '" . lsJSONEncode($qdesc) . "', \n";
             }
             $aData['qTypeOutput'] = "$qDescToCode 'null':'null' }; \n $qCodeToInfo 'null':'null' };";
 
@@ -766,7 +766,7 @@ class question extends Survey_Common_Action
                 $this->getController()->error('Invalid Survey ID');
 
             $surveyinfo = $sumresult1->attributes;
-            $surveyinfo = array_map('FlattenText', $surveyinfo);
+            $surveyinfo = array_map('flattenText', $surveyinfo);
             $aData['activated'] = $activated = $surveyinfo['active'];
 
             if ($activated != "Y")
@@ -796,7 +796,7 @@ class question extends Survey_Common_Action
             $aViewUrls['questionJavascript_view'][] = array('type' => $eqrow['type']);
         }
         else
-            include('access_denied.php');
+            include('accessDenied.php');
 
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
@@ -818,10 +818,10 @@ class question extends Survey_Common_Action
         $gid = sanitize_int($gid);
         $qid = sanitize_int($qid);
 
-        if (bHasSurveyPermission($surveyid, 'surveycontent', 'delete'))
+        if (hasSurveyPermission($surveyid, 'surveycontent', 'delete'))
         {
             if (!isset($qid))
-                $qid = returnglobal('qid');
+                $qid = returnGlobal('qid');
 
             LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);
 
@@ -892,7 +892,7 @@ class question extends Survey_Common_Action
         $thissurvey = getSurveyInfo($surveyid);
 
         $aAttributesWithValues = Questions::model()->getAdvancedSettingsWithValues($qid, $type, $surveyid);
-        uasort($aAttributesWithValues, 'CategorySort');
+        uasort($aAttributesWithValues, 'categorySort');
 
         $aAttributesPrepared = array();
         foreach ($aAttributesWithValues as $iKey => $aAttribute)
@@ -994,9 +994,9 @@ class question extends Survey_Common_Action
         $answers = retrieveAnswers($ia,$surveyid);
 
         if (!$thissurvey['template'])
-            $thistpl = sGetTemplatePath(Yii::app()->getConfig('defaulttemplate'));
+            $thistpl = getTemplatePath(Yii::app()->getConfig('defaulttemplate'));
         else
-            $thistpl = sGetTemplatePath(validate_templatedir($thissurvey['template']));
+            $thistpl = getTemplatePath(validateTemplateDir($thissurvey['template']));
 
         doHeader();
 
@@ -1060,7 +1060,7 @@ EOD;
 
         $question = $answers[0][0];
         $question['code'] = $answers[0][5];
-        $question['class'] = question_class($qrows['type']);
+        $question['class'] = getQuestionClass($qrows['type']);
         $question['essentials'] = 'id="question' . $qrows['qid'] . '"';
         $question['sgq'] = $ia[1];
         $question['aid']='unknown';
