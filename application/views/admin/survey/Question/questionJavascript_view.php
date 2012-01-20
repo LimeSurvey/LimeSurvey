@@ -29,10 +29,16 @@
             document.getElementById('Validation').style.display = 'none';
             document.getElementById('MandatorySelection').style.display='none';
         }
-        else if (QuestionType == 'F' || QuestionType == 'H' || QuestionType == ':' || QuestionType == ';')
+        else if (QuestionType == 'F' || QuestionType == 'H')
         {
             document.getElementById('OtherSelection').style.display = 'none';
             document.getElementById('Validation').style.display = 'none';
+            document.getElementById('MandatorySelection').style.display='';
+        }
+        else if (QuestionType == ':' || QuestionType == ';')
+        {
+            document.getElementById('OtherSelection').style.display = 'none';
+            document.getElementById('Validation').style.display = '';
             document.getElementById('MandatorySelection').style.display='';
         }
         else if (QuestionType == '1')
@@ -53,6 +59,12 @@
             document.getElementById('Validation').style.display = 'none';
             document.getElementById('OtherSelection').style.display ='none';
             document.getElementById('MandatorySelection').style.display='none';
+        }
+        else if (QuestionType == 'Q')
+        {
+            document.getElementById('Validation').style.display = '';
+            document.getElementById('OtherSelection').style.display ='none';
+            document.getElementById('MandatorySelection').style.display='';
         }
         else
         {

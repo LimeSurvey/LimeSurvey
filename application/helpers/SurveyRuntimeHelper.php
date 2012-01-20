@@ -223,25 +223,27 @@ class SurveyRuntimeHelper {
                 $backok = "N";    // NA, since not moving backwards
             }
 // TODO FIXME
+            if ($thissurvey['active'] == "Y") {
+                Yii::import("application.libraries.Save");
+                $cSave = new Save();
+            }
             if ($thissurvey['active'] == "Y" && isset($_POST['saveall']))
             {
                 // must do this here to process the POSTed values
                 $moveResult = LimeExpressionManager::JumpTo($_SESSION['survey_'.$surveyid]['step'], false);   // by jumping to current step, saves data so far
 
-                require_once("save.php");   // for supporting functions only
-                showsaveform(); // generates a form and exits, awaiting input
+                $cSave->showsaveform(); // generates a form and exits, awaiting input
             }
 
             if ($thissurvey['active'] == "Y" && isset($_POST['saveprompt']))
             {
                 // The response from the save form
-                require_once("save.php");   // for supporting functions only
                 // CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
-                $flashmessage = savedcontrol();
+                $flashmessage = $cSave->savedcontrol();
 
                 if (isset($errormsg) && $errormsg != "")
                 {
-                    showsaveform(); // reshow the form if there is an error
+                    $cSave->showsaveform(); // reshow the form if there is an error
                 }
 
                 $moveResult = LimeExpressionManager::GetLastMoveResult();

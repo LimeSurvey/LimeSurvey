@@ -961,9 +961,9 @@ class question extends Survey_Common_Action
 
 
         // Prefill question/answer from defaultvalues
-        foreach (Yii::app()->session['fieldmap'] as $field)
+        foreach ($_SESSION[$surveyid]['fieldmap'] as $field)
             if (isset($field['defaultvalue']))
-                Yii::app()->session[$field['fieldname']] = $field['defaultvalue'];
+                $_SESSION[$field['fieldname']] = $field['defaultvalue'];
 
         $clang = new limesurvey_lang($language);
 
@@ -989,7 +989,7 @@ class question extends Survey_Common_Action
 
         LimeExpressionManager::StartSurvey($surveyid, 'question', NULL, false, $LEMdebugLevel);
         $qseq = LimeExpressionManager::GetQuestionSeq($qid);
-        $moveResult = LimeExpressionManager::JumpTo($qseq + 1, false, false, true);
+        $moveResult = LimeExpressionManager::JumpTo($qseq + 1, true, false, true);
 
         $answers = retrieveAnswers($ia,$surveyid);
 
@@ -999,42 +999,72 @@ class question extends Survey_Common_Action
             $thistpl = sGetTemplatePath(validate_templatedir($thissurvey['template']));
 
         doHeader();
-        $dummy_js = '
-				<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
-				<script type="text/javascript">
-		        /* <![CDATA[ */
-		            function checkconditions(value, name, type)
-		            {
-		            }
-				function noop_checkconditions(value, name, type)
-				{
-				}
-		        /* ]]> */
-				</script>';
+
+        $showQuestion = "$('#question$qid').show();";
+        $dummy_js = <<< EOD
+            <script type='text/javascript'>
+            <!--
+            function noop_checkconditions(value, name, type)
+            {
+                checkconditions(value, name, type);
+            }
+
+            function checkconditions(value, name, type)
+            {
+                if (type == 'radio' || type == 'select-one')
+                {
+                    var hiddenformname='java'+name;
+                    document.getElementById(hiddenformname).value=value;
+                }
+
+                if (type == 'checkbox')
+                {
+                    var hiddenformname='java'+name;
+                    var chkname='answer'+name;
+                    if (document.getElementById(chkname).checked)
+                    {
+                        document.getElementById(hiddenformname).value='Y';
+                    } else
+                    {
+                        document.getElementById(hiddenformname).value='';
+                    }
+                }
+                ExprMgr_process_relevance_and_tailoring();
+                $showQuestion
+            }
+            // have to add all these "$showQuestion" calls to ensure we can see the question, even if it might be irrelevant during survey
+            $(document).ready(function() {
+                $showQuestion
+            });
+            $(document).change(function() {
+                $showQuestion
+            });
+            $(document).bind('keydown',function(e) {
+                        if (e.keyCode == 9) {
+                            $showQuestion
+                            return true;
+                        }
+                        return true;
+                    });
+        // -->
+        </script>
+EOD;
 
 
         $answer = $answers[0][1];
-        $help = $answers[0][2];
+//        $help = $answers[0][2];
+
+        $qinfo = LimeExpressionManager::GetQuestionStatus($qid);
+        $help = $qinfo['info']['help'];
+
 
         $question = $answers[0][0];
         $question['code'] = $answers[0][5];
         $question['class'] = question_class($qrows['type']);
         $question['essentials'] = 'id="question' . $qrows['qid'] . '"';
         $question['sgq'] = $ia[1];
-
-        // Temporary fix for error condition arising from linked question via replacement fields
-        // @todo: find a consistent way to check and handle this - I guess this is already
-        // handled but the wrong values are entered into the DB
-        // TMSW Conditions->Relevance:  Show relevance instead of this dependency notation
-
-        $search_for = '{INSERTANS';
-        if (strpos($question['text'], $search_for) !== false)
-        {
-            $pattern_text = '/{([A-Z])*:([0-9])*X([0-9])*X([0-9])*}/';
-            $replacement_text = $clang->gT('[Dependency on another question (ID $4)]');
-            $text = preg_replace($pattern_text, $replacement_text, $question['text']);
-            $question['text'] = $text;
-        }
+        $question['aid']='unknown';
+        $question['sqid']='unknown';
 
         if ($qrows['mandatory'] == 'Y')
             $question['man_class'] = ' mandatory';
@@ -1062,6 +1092,8 @@ class question extends Survey_Common_Action
         };
 
         $content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl"), array(), $redata) . $dummy_js;
+        LimeExpressionManager::FinishProcessingGroup();
+        $content .= LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
         $content .= '<p>&nbsp;</form>';
         $content .= templatereplace(file_get_contents("$thistpl/endpage.pstpl"), array(), $redata);
 

@@ -694,6 +694,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['SURVEYDESCRIPTION'] = (isset($thissurvey['description']) ? $thissurvey['description'] : '');
     $coreReplacements['SURVEYFORMAT'] = isset($surveyformat) ? $surveyformat : '';  // global
     $coreReplacements['SURVEYLANGAGE'] = $clang->langcode;
+    $coreReplacements['SURVEYLANGUAGE'] = $clang->langcode;
     $coreReplacements['SURVEYLIST'] = (isset($surveylist))?$surveylist['list']:'';
     $coreReplacements['SURVEYLISTHEADING'] =  (isset($surveylist))?$surveylist['listheading']:'';
     $coreReplacements['SURVEYNAME'] = (isset($thissurvey['name']) ? $thissurvey['name'] : '');

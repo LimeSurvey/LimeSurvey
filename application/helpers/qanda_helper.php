@@ -84,6 +84,7 @@ function retrieveAnswers($ia)
     $name = $ia[0];
 
     $qtitle=$ia[3];
+    $inputnames=array();
 
     // TMSW - eliminate this - get from LEM
     //A bit of housekeeping to stop PHP Notices
@@ -335,12 +336,15 @@ function retrieveAnswers($ia)
     $qtitle .= $mandatory_msg;
     $question_text['man_message'] = $mandatory_msg;
 
-    if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep'])) {
-        $validation_msg = validation_message($ia);
+//    if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep'])) {
+    if (!isset($aQuestionAttributes['hide_tip']) || $aQuestionAttributes['hide_tip']==0) {
+        $_vshow = true; // whether should initially be visible - TODO should also depend upon 'hidetip'?
     }
     else {
-        $validation_msg = '';
+        $_vshow = false;
     }
+    $validation_msg = validation_message($ia,$_vshow);
+
     $qtitle .= $validation_msg;
     $question_text['valid_message'] = $validation_msg;
 
@@ -431,11 +435,20 @@ function mandatory_message($ia)
                         }
                     }
 
-function validation_message($ia)
+/**
+ *
+ * @param <type> $ia
+ * @param <type> $show - true if should initially be visible
+ * @return <type>
+ */
+function validation_message($ia,$show)
 {
-    global $clang;
     $qinfo = LimeExpressionManager::GetQuestionStatus($ia[0]);
-    $tip = $qinfo['validTip'];
+    $tip = '<span class="questionhelp" id="' . $ia[0] . '_vmsg"';
+    if (!$show) {
+        $tip .= ' style="display: none"';
+    }
+    $tip .= ">" . $qinfo['validTip'] . "</span>";
     return $tip;
 //    if (!$qinfo['valid']) {
 //        if (strlen($tip) == 0) {
@@ -878,6 +891,11 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
 function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null) {
             $htmltbody2 = "\n\n\t<$method id='javatbd$rowname'";
             $htmltbody2 .= ($class !== null) ? " class='$class'": "";
+        if (isset($_SESSION['relevanceStatus'][$rowname]) && !$_SESSION['relevanceStatus'][$rowname])
+        {
+            $htmltbody2 .= " style='display: none'";
+        }
+        $htmltbody2 .= ">\n";
         $htmltbody2 .= ">\n";
         if($ia[4]=="1") {
             //This is an array dual scale question and we have to massage the tbidpslay rowname
@@ -1900,7 +1918,7 @@ function do_listwithcomment($ia)
 
     $hint_comment = $clang->gT('Please enter your comment here');
 
-    if ($lwcdropdowns == 'R' && $anscount <= $dropdownthreshold)
+    if (isset($lwcdropdowns) && $lwcdropdowns == 'R' && $anscount <= $dropdownthreshold)
     {
         $answer .= '<div class="list">
         <ul>
@@ -2345,10 +2363,10 @@ function do_multiplechoice($ia)
     }
 
     // Check if the max_answers attribute is set
-    $maxansw = 0;
-    $callmaxanswscriptcheckbox = '';
-    $callmaxanswscriptother = '';
-    $maxanswscript = '';
+//    $maxansw = 0;
+//    $callmaxanswscriptcheckbox = '';
+//    $callmaxanswscriptother = '';
+//    $maxanswscript = '';
 
     $exclude_all_others_auto = trim($aQuestionAttributes["exclude_all_others_auto"]);
 
@@ -2357,36 +2375,36 @@ function do_multiplechoice($ia)
         $autoArray[$ia[1]]['parent'] = $ia[1];
     }
 
-    if (((int)$aQuestionAttributes['max_answers']>0) && $exclude_all_others_auto=='0')
-    {
-        $maxansw=$aQuestionAttributes['max_answers'];
-        $callmaxanswscriptcheckbox = "limitmaxansw_{$ia[0]}(this);";
-        $callmaxanswscriptother = "onkeyup='limitmaxansw_{$ia[0]}(this)'";
-        $maxanswscript = "\t<script type='text/javascript'>\n"
-        . "\t<!--\n"
-        . "function limitmaxansw_{$ia[0]}(me)\n"
-        . "{\n"
-        . "\tmax=$maxansw\n"
-        . "\tcount=0;\n"
-        . "\tif (max == 0) { return count; }\n";
-    }
-
-
-    // Check if the min_answers attribute is set
-    $minansw=0;
-    $minanswscript = "";
-
-    if ((int)$aQuestionAttributes['min_answers']>0)
-    {
-        $minansw=trim($aQuestionAttributes["min_answers"]);
-        $minanswscript = "<script type='text/javascript'>\n"
-        . "\t<!--\n"
-        . "oldonsubmit_{$ia[0]} = document.limesurvey.onsubmit;\n"
-        . "function ensureminansw_{$ia[0]}()\n"
-        . "{\n"
-        . "\tcount=0;\n"
-        ;
-    }
+//    if (((int)$aQuestionAttributes['max_answers']>0) && $exclude_all_others_auto=='0')
+//    {
+//        $maxansw=$aQuestionAttributes['max_answers'];
+//        $callmaxanswscriptcheckbox = "limitmaxansw_{$ia[0]}(this);";
+//        $callmaxanswscriptother = "onkeyup='limitmaxansw_{$ia[0]}(this)'";
+//        $maxanswscript = "\t<script type='text/javascript'>\n"
+//        . "\t<!--\n"
+//        . "function limitmaxansw_{$ia[0]}(me)\n"
+//        . "{\n"
+//        . "\tmax=$maxansw\n"
+//        . "\tcount=0;\n"
+//        . "\tif (max == 0) { return count; }\n";
+//    }
+//
+//
+//    // Check if the min_answers attribute is set
+//    $minansw=0;
+//    $minanswscript = "";
+//
+//    if ((int)$aQuestionAttributes['min_answers']>0)
+//    {
+//        $minansw=trim($aQuestionAttributes["min_answers"]);
+//        $minanswscript = "<script type='text/javascript'>\n"
+//        . "\t<!--\n"
+//        . "oldonsubmit_{$ia[0]} = document.limesurvey.onsubmit;\n"
+//        . "function ensureminansw_{$ia[0]}()\n"
+//        . "{\n"
+//        . "\tcount=0;\n"
+//        ;
+//    }
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
     $qresult = db_execute_assoc($qquery);     //Checked
@@ -2480,15 +2498,15 @@ function do_multiplechoice($ia)
             }
         $answer .= " onclick='cancelBubbleThis(event);";
 
-        $answer .= $callmaxanswscriptcheckbox    	/* Include checkbox for script for maxanswers if that attribute is selected */
+        $answer .= ''
         .  "$checkconditionFunction(this.value, this.name, this.type)' />\n"
         .  "<label for=\"answer$ia[1]{$ansrow['title']}\" class=\"answertext\">"
         .  $ansrow['question']
         .  "</label>\n";
 
 
-        if ($maxansw > 0) {$maxanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
-        if ($minansw > 0) {$minanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
+//        if ($maxansw > 0) {$maxanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
+//        if ($minansw > 0) {$minanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
 
         ++$fn;
         /* Now add the hidden field to contain information about this answer */
@@ -2538,7 +2556,7 @@ function do_multiplechoice($ia)
         {
             $answer .= CHECKED;
         }
-        $answer .= " onclick='cancelBubbleThis(event);".$callmaxanswscriptcheckbox."if(this.checked===false){ document.getElementById(\"answer$myfname\").value=\"\"; document.getElementById(\"java$myfname\").value=\"\"; }";
+        $answer .= " onclick='cancelBubbleThis(event);if(this.checked===false){ document.getElementById(\"answer$myfname\").value=\"\"; document.getElementById(\"java$myfname\").value=\"\"; }";
         $answer .= " if(this.checked===true) document.getElementById(\"answer$myfname\").focus();";
         $answer .= " $checkconditionFunction(document.getElementById(\"answer$myfname\").value, document.getElementById(\"answer$myfname\").name, document.getElementById(\"answer$myfname\").type);";
         $answer .= "' />
@@ -2548,25 +2566,25 @@ function do_multiplechoice($ia)
         {
             $answer .= ' value="'.htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname],ENT_QUOTES).'"';
         }
-        $answer .= " onchange='$(\"#java{$myfname}\").val(this.value);$checkconditionFunction(this.value, this.name, this.type);if ($.trim($(\"#java{$myfname}\").val())!=\"\" && !document.getElementById(\"answer{$myfname}cbox\").checked) { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } $numbersonly ".$callmaxanswscriptcheckbox."' />";
+        $answer .= " onchange='$(\"#java{$myfname}\").val(this.value);$checkconditionFunction(this.value, this.name, this.type);if ($.trim($(\"#java{$myfname}\").val())!=\"\" && !document.getElementById(\"answer{$myfname}cbox\").checked) { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } $numbersonly ' />";
         $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
 
-        if ($maxansw > 0)
-        {
-            // For multiplechoice question there is no DB field for the other Checkbox
-            // I've added a javascript which will warn a user if no other comment is given while the other checkbox is checked
-            // For the maxanswer script, I will alert the participant
-            // if the limit is reached when he checks the other cbox
-            // even if the -other- input field is still empty
-            $maxanswscript .= "\tif (document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n";
-        }
-        if ($minansw > 0)
-        {
-            //
-            // For multiplechoice question there is no DB field for the other Checkbox
-            // We only count the -other- as valid if both the cbox and the other text is filled
-            $minanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n";
-        }
+//        if ($maxansw > 0)
+//        {
+//            // For multiplechoice question there is no DB field for the other Checkbox
+//            // I've added a javascript which will warn a user if no other comment is given while the other checkbox is checked
+//            // For the maxanswer script, I will alert the participant
+//            // if the limit is reached when he checks the other cbox
+//            // even if the -other- input field is still empty
+//            $maxanswscript .= "\tif (document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n";
+//        }
+//        if ($minansw > 0)
+//        {
+//            //
+//            // For multiplechoice question there is no DB field for the other Checkbox
+//            // We only count the -other- as valid if both the cbox and the other text is filled
+//            $minanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n";
+//        }
 
 
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
@@ -2594,47 +2612,47 @@ function do_multiplechoice($ia)
         }
     }
     $answer .= $wrapper['whole-end'];
-    if ( $maxansw > 0 )
-    {
-        $maxanswscript .= "
-        if (count > max)
-        {
-            alert('".sprintf($clang->gT("Please choose at most %d answers for question \"%s\"","js"), $maxansw, trim(javascript_escape(str_replace(array("\n", "\r"), "", $ia[3]),true,true)))."');
-            if (me.type == 'checkbox') { me.checked = false; }
-            if (me.type == 'text') {
-                me.value = '';
-                if (document.getElementById('answer'+me.name + 'cbox') ){
-                    document.getElementById('answer'+me.name + 'cbox').checked = false;
-                }
-            }
-            return max;
-        }
-        }
-        //-->
-        </script>\n";
-        $answer = $maxanswscript . $answer;
-    }
-
-
-    if ( $minansw > 0 )
-    {
-        $minanswscript .=
-        "\tif (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n"
-        . "alert('".sprintf($clang->gT("Please choose at least %d answer(s) for question \"%s\"","js"),
-        $minansw, trim(javascript_escape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n"
-        . "return false;\n"
-        . "\t} else {\n"
-        . "if (oldonsubmit_{$ia[0]}){\n"
-        . "\treturn oldonsubmit_{$ia[0]}();\n"
-        . "}\n"
-        . "return true;\n"
-        . "\t}\n"
-        . "}\n"
-        . "document.limesurvey.onsubmit = ensureminansw_{$ia[0]}\n"
-        . "-->\n"
-        . "\t</script>\n";
-        //$answer = $minanswscript . $answer;
-    }
+//    if ( $maxansw > 0 )
+//    {
+//        $maxanswscript .= "
+//        if (count > max)
+//        {
+//            alert('".sprintf($clang->gT("Please choose at most %d answers for question \"%s\"","js"), $maxansw, trim(javascript_escape(str_replace(array("\n", "\r"), "", $ia[3]),true,true)))."');
+//            if (me.type == 'checkbox') { me.checked = false; }
+//            if (me.type == 'text') {
+//                me.value = '';
+//                if (document.getElementById('answer'+me.name + 'cbox') ){
+//                    document.getElementById('answer'+me.name + 'cbox').checked = false;
+//                }
+//            }
+//            return max;
+//        }
+//        }
+//        //-->
+//        </script>\n";
+//        $answer = $maxanswscript . $answer;
+//    }
+//
+//
+//    if ( $minansw > 0 )
+//    {
+//        $minanswscript .=
+//        "\tif (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n"
+//        . "alert('".sprintf($clang->gT("Please choose at least %d answer(s) for question \"%s\"","js"),
+//        $minansw, trim(javascript_escape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n"
+//        . "return false;\n"
+//        . "\t} else {\n"
+//        . "if (oldonsubmit_{$ia[0]}){\n"
+//        . "\treturn oldonsubmit_{$ia[0]}();\n"
+//        . "}\n"
+//        . "return true;\n"
+//        . "\t}\n"
+//        . "}\n"
+//        . "document.limesurvey.onsubmit = ensureminansw_{$ia[0]}\n"
+//        . "-->\n"
+//        . "\t</script>\n";
+//        //$answer = $minanswscript . $answer;
+//    }
 
     $checkotherscript = "";
     if ($other == 'Y')
@@ -2664,7 +2682,7 @@ function do_multiplechoice($ia)
         . "</script>\n";
     }
 
-    $answer = $minanswscript . $checkotherscript . $answer;
+    $answer = $checkotherscript . $answer;
 
     $answer .= $postrow;
     return array($answer, $inputnames);
@@ -2688,6 +2706,7 @@ function do_multiplechoice_withcomments($ia)
         $kpclass = "";
     }
 
+    $inputnames = array();
     $attribute_ref=false;
     $qaquery = "SELECT qid,attribute FROM {{question_attributes}} WHERE value LIKE '".strtolower($ia[2])."'";
     $qaresult = Yii::app()->db->createCommand($qaquery)->query();     //Checked
@@ -2733,41 +2752,41 @@ function do_multiplechoice_withcomments($ia)
     {
         $othertext=$clang->gT('Other:');
     }
-    // Check if the max_answers attribute is set
-    $maxansw=0;
-    $callmaxanswscriptcheckbox = '';
-    $callmaxanswscriptcheckbox2 = '';
+//    // Check if the max_answers attribute is set
+//    $maxansw=0;
+//    $callmaxanswscriptcheckbox = '';
+//    $callmaxanswscriptcheckbox2 = '';
     $callmaxanswscriptother = '';
-    $maxanswscript = '';
-    if (trim($aQuestionAttributes['max_answers'])!='') {
-        $maxansw=$aQuestionAttributes['max_answers'];
-        $callmaxanswscriptcheckbox = "limitmaxansw_{$ia[0]}(this);";
-        $callmaxanswscriptcheckbox2= "limitmaxansw_{$ia[0]}";
-        $callmaxanswscriptother = "onkeyup=\"limitmaxansw_{$ia[0]}(this)\"";
-
-        $maxanswscript = "\t<script type='text/javascript'>\n"
-        . "\t<!--\n"
-        . "function limitmaxansw_{$ia[0]}(me)\n"
-        . "\t{\n"
-        . "\tmax=$maxansw\n"
-        . "\tcount=0;\n"
-        . "\tif (max == 0) { return count; }\n";
-    }
-
-    // Check if the min_answers attribute is set
-    $minansw=0;
-    $minanswscript = "";
-    if (trim($aQuestionAttributes["min_answers"])!='')
-    {
-        $minansw=trim($aQuestionAttributes["min_answers"]);
-        $minanswscript = "<script type='text/javascript'>\n"
-        . "\t<!--\n"
-        . "oldonsubmit_{$ia[0]} = document.limesurvey.onsubmit;\n"
-        . "function ensureminansw_{$ia[0]}()\n"
-        . "{\n"
-        . "\tcount=0;\n"
-        ;
-    }
+//    $maxanswscript = '';
+//    if (trim($aQuestionAttributes['max_answers'])!='') {
+//        $maxansw=$aQuestionAttributes['max_answers'];
+//        $callmaxanswscriptcheckbox = "limitmaxansw_{$ia[0]}(this);";
+//        $callmaxanswscriptcheckbox2= "limitmaxansw_{$ia[0]}";
+//        $callmaxanswscriptother = "onkeyup=\"limitmaxansw_{$ia[0]}(this)\"";
+//
+//        $maxanswscript = "\t<script type='text/javascript'>\n"
+//        . "\t<!--\n"
+//        . "function limitmaxansw_{$ia[0]}(me)\n"
+//        . "\t{\n"
+//        . "\tmax=$maxansw\n"
+//        . "\tcount=0;\n"
+//        . "\tif (max == 0) { return count; }\n";
+//    }
+//
+//    // Check if the min_answers attribute is set
+//    $minansw=0;
+//    $minanswscript = "";
+//    if (trim($aQuestionAttributes["min_answers"])!='')
+//    {
+//        $minansw=trim($aQuestionAttributes["min_answers"]);
+//        $minanswscript = "<script type='text/javascript'>\n"
+//        . "\t<!--\n"
+//        . "oldonsubmit_{$ia[0]} = document.limesurvey.onsubmit;\n"
+//        . "function ensureminansw_{$ia[0]}()\n"
+//        . "{\n"
+//        . "\tcount=0;\n"
+//        ;
+//    }
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
     $qresult = Yii::app()->db->createCommand($qquery)->query();     //Checked
@@ -2784,6 +2803,9 @@ function do_multiplechoice_withcomments($ia)
     $answer_main = '';
 
     $fn = 1;
+    if (!isset($other)){
+        $other = 'N';
+    }
     if($other == 'Y')
     {
         $label_width = 25;
@@ -2823,12 +2845,12 @@ function do_multiplechoice_withcomments($ia)
                 $answer_main .= CHECKED;
             }
         }
-        $answer_main .=" onclick='cancelBubbleThis(event);".$callmaxanswscriptcheckbox."$checkconditionFunction(this.value, this.name, this.type);' "
+        $answer_main .=" onclick='cancelBubbleThis(event);$checkconditionFunction(this.value, this.name, this.type);' "
         . " onchange='document.getElementById(\"answer$myfname2\").value=\"\";' />\n"
         . $ansrow['question']."</label>\n";
 
-        if ($maxansw > 0) {$maxanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
-        if ($minansw > 0) {$minanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
+//        if ($maxansw > 0) {$maxanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
+//        if ($minansw > 0) {$minanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
 
         $answer_main .= "<input type='hidden' name='java$myfname' id='java$myfname' value='";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
@@ -2841,8 +2863,7 @@ function do_multiplechoice_withcomments($ia)
         ."<input class='text ".$kpclass."' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT("Make a comment on your choice here:")."' value='";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);}
         // --> START NEW FEATURE - SAVE
-        $answer_main .= "'  onclick='cancelBubbleThis(event);' onchange='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname}\").value,\"$myfname\",\"checkbox\");}' onkeyup='".$callmaxanswscriptcheckbox2."(document.getElementById(\"answer{$myfname}\"))' />\n\t</label>\n</span>\n"
-
+        $answer_main .= "'  onclick='cancelBubbleThis(event);' onchange='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname}\").value,\"$myfname\",\"checkbox\");}' />\n\t</label>\n</span>\n"
         . "\t</li>\n";
         // --> END NEW FEATURE - SAVE
 
@@ -2871,31 +2892,31 @@ function do_multiplechoice_withcomments($ia)
 
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);}
         // --> START NEW FEATURE - SAVE
-        $answer_main .= '" onkeyup="'.$callmaxanswscriptcheckbox2.'(document.getElementById(\'answer'.$myfname."'))\" />\n";
+        $answer_main .= "\"/>\n";
 
-        if ($maxansw > 0)
-        {
-            if ($aQuestionAttributes['other_comment_mandatory']==1)
-            {
-                $maxanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname2."').value != '') { count += 1; }\n";
-            }
-            else
-            {
-                $maxanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '') { count += 1; }\n";
-            }
-        }
-
-        if ($minansw > 0)
-        {
-            if ($aQuestionAttributes['other_comment_mandatory']==1)
-            {
-                $minanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname2."').value != '') { count += 1; }\n";
-            }
-            else
-            {
-                $minanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '') { count += 1; }\n";
-            }
-        }
+//        if ($maxansw > 0)
+//        {
+//            if ($aQuestionAttributes['other_comment_mandatory']==1)
+//            {
+//                $maxanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname2."').value != '') { count += 1; }\n";
+//            }
+//            else
+//            {
+//                $maxanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '') { count += 1; }\n";
+//            }
+//        }
+//
+//        if ($minansw > 0)
+//        {
+//            if ($aQuestionAttributes['other_comment_mandatory']==1)
+//            {
+//                $minanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname2."').value != '') { count += 1; }\n";
+//            }
+//            else
+//            {
+//                $minanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '') { count += 1; }\n";
+//            }
+//        }
 
         $answer_main .= "\t</label>\n</span>\n\t</li>\n";
         // --> END NEW FEATURE - SAVE
@@ -2906,50 +2927,50 @@ function do_multiplechoice_withcomments($ia)
     $answer .= "<ul>\n".$answer_main."</ul>\n";
 
 
-    if ( $maxansw > 0 )
-    {
-        $maxanswscript .= "\tif (count > max)\n"
-        . "{\n"
-        . "alert('".sprintf($clang->gT("Please choose at most %d answers for question \"%s\"","js"), $maxansw, trim(javascript_escape($ia[3],true,true)))."');\n"
-        . "var commentname='answer'+me.name+'comment';\n"
-        . "if (me.type == 'checkbox') {\n"
-        . "\tme.checked = false;\n"
-        . "\tvar commentname='answer'+me.name+'comment';\n"
-        . "}\n"
-        . "if (me.type == 'text') {\n"
-        . "\tme.value = '';\n"
-        . "\tif (document.getElementById(me.name + 'cbox') ){\n"
-        . " document.getElementById(me.name + 'cbox').checked = false;\n"
-        . "\t}\n"
-        . "}"
-        . "document.getElementById(commentname).value='';\n"
-        . "return max;\n"
-        . "}\n"
-        . "\t}\n"
-        . "\t//-->\n"
-        . "\t</script>\n";
-        $answer = $maxanswscript . $answer;
-    }
-
-    if ( $minansw > 0 )
-    {
-        $minanswscript .=
-        "\tif (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n"
-        . "alert('".sprintf($clang->gT("Please choose at least %d answer(s) for question \"%s\"","js"),
-        $minansw, trim(javascript_escape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n"
-        . "return false;\n"
-        . "\t} else {\n"
-        . "if (oldonsubmit_{$ia[0]}){\n"
-        . "\treturn oldonsubmit_{$ia[0]}();\n"
-        . "}\n"
-        . "return true;\n"
-        . "\t}\n"
-        . "}\n"
-        . "document.limesurvey.onsubmit = ensureminansw_{$ia[0]}\n"
-        . "-->\n"
-        . "\t</script>\n";
-        //$answer = $minanswscript . $answer;
-    }
+//    if ( $maxansw > 0 )
+//    {
+//        $maxanswscript .= "\tif (count > max)\n"
+//        . "{\n"
+//        . "alert('".sprintf($clang->gT("Please choose at most %d answers for question \"%s\"","js"), $maxansw, trim(javascript_escape($ia[3],true,true)))."');\n"
+//        . "var commentname='answer'+me.name+'comment';\n"
+//        . "if (me.type == 'checkbox') {\n"
+//        . "\tme.checked = false;\n"
+//        . "\tvar commentname='answer'+me.name+'comment';\n"
+//        . "}\n"
+//        . "if (me.type == 'text') {\n"
+//        . "\tme.value = '';\n"
+//        . "\tif (document.getElementById(me.name + 'cbox') ){\n"
+//        . " document.getElementById(me.name + 'cbox').checked = false;\n"
+//        . "\t}\n"
+//        . "}"
+//        . "document.getElementById(commentname).value='';\n"
+//        . "return max;\n"
+//        . "}\n"
+//        . "\t}\n"
+//        . "\t//-->\n"
+//        . "\t</script>\n";
+//        $answer = $maxanswscript . $answer;
+//    }
+//
+//    if ( $minansw > 0 )
+//    {
+//        $minanswscript .=
+//        "\tif (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n"
+//        . "alert('".sprintf($clang->gT("Please choose at least %d answer(s) for question \"%s\"","js"),
+//        $minansw, trim(javascript_escape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n"
+//        . "return false;\n"
+//        . "\t} else {\n"
+//        . "if (oldonsubmit_{$ia[0]}){\n"
+//        . "\treturn oldonsubmit_{$ia[0]}();\n"
+//        . "}\n"
+//        . "return true;\n"
+//        . "\t}\n"
+//        . "}\n"
+//        . "document.limesurvey.onsubmit = ensureminansw_{$ia[0]}\n"
+//        . "-->\n"
+//        . "\t</script>\n";
+//        //$answer = $minanswscript . $answer;
+//    }
 
     $checkotherscript = "";
     //if ($other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1) //TIBO
@@ -2980,7 +3001,7 @@ function do_multiplechoice_withcomments($ia)
         . "</script>\n";
     }
 
-    $answer = $minanswscript . $checkotherscript . $answer;
+    $answer = $checkotherscript . $answer;
 
     return array($answer, $inputnames);
 }
@@ -3023,7 +3044,7 @@ function do_file_upload($ia)
             $questgrppreview = 0;
     }
 
-    $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' href='{$scriptloc}?sid={Yii::app()->getConfig('surveyID')}&amp;fieldname={$ia[1]}&amp;qid={$ia[0]}&amp;preview="
+    $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' href='{$scriptloc}?sid=".Yii::app()->getConfig('surveyID')."&amp;fieldname={$ia[1]}&amp;qid={$ia[0]}&amp;preview="
     ."{$questgrppreview}&amp;show_title={$aQuestionAttributes['show_title']}&amp;show_comment={$aQuestionAttributes['show_comment']}&amp;pos=".($pos?1:0)."'>" .$clang->gT('Upload files'). "</a></h2><br /><br />";
 
     $answer =  "<script type='text/javascript'>
@@ -3064,7 +3085,6 @@ function do_file_upload($ia)
 
     $answer .= '<script type="text/javascript">
     var surveyid = '.Yii::app()->getConfig('surveyID').';
-                    var rooturl = "'.$rooturl.'";
     $(document).ready(function(){
     var fieldname = "'.$ia[1].'";
     var filecount = $("#"+fieldname+"_filecount").val();
@@ -3233,7 +3253,9 @@ function do_multipleshorttext($ia)
                 }
 
                 //NEW: textarea instead of input=text field
-                $answer_main .= "\t<li>\n"
+                list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li");
+
+                $answer_main .= "\t$htmltbody2\n"
                 . "<label for=\"answer$myfname\">{$ansrow['question']}</label>\n"
                 . "\t<span>\n".$prefix."\n".'
                 <textarea class="textarea '.$kpclass.'" name="'.$myfname.'" id="answer'.$myfname.'"
@@ -3263,7 +3285,9 @@ function do_multipleshorttext($ia)
             {
                 $myfname = $ia[1].$ansrow['title'];
                 if ($ansrow['question'] == "") {$ansrow['question'] = "&nbsp;";}
-                $answer_main .= "\t<li>\n"
+
+                list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li");
+                $answer_main .= "\t$htmltbody2\n"
                 . "<label for=\"answer$myfname\">{$ansrow['question']}</label>\n"
                 . "\t<span>\n".$prefix."\n".'<input class="text '.$kpclass.'" type="text" size="'.$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
 
@@ -3548,13 +3572,15 @@ function do_multiplenumeric($ia)
                 $sliderright="<div class=\"slider_righttext\">$sliderright</div>";
             }
 
+            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li");
+            $answer_main .= "\t$htmltbody2\n";
             if ($slider_layout === false)
             {
-                $answer_main .= "\t<li>\n<label for=\"answer$myfname\">{$theanswer}</label>\n";
+                $answer_main .= "<label for=\"answer$myfname\">{$theanswer}</label>\n";
             }
             else
             {
-                $answer_main .= "\t<li>\n<label for=\"answer$myfname\" class=\"slider-label\">{$theanswer}</label>\n";
+                $answer_main .= "<label for=\"answer$myfname\" class=\"slider-label\">{$theanswer}</label>\n";
             }
 
             if($label_width < strlen(trim(strip_tags($ansrow['question']))))
@@ -3574,7 +3600,7 @@ function do_multiplenumeric($ia)
                     $answer_main .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
                 }
 
-                $answer_main .= '" onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize."\" />\n\t".$suffix."\n</span>\n\t</li>\n";
+                $answer_main .= '" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize."\" />\n\t".$suffix."\n</span>\n\t</li>\n";
             }
             else
             {
@@ -5926,7 +5952,7 @@ function do_array_multiflexi($ia)
         $trbc = '';
         $answer = "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array type question with dropdown responses\">\n" . $mycols . $myheader . "\n";
 
-        foreach ($ansresult->readAll() as $ansrow)
+        foreach ($ansresult as $ansrow)
         {
             if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
             {
@@ -6161,7 +6187,8 @@ function do_arraycolumns($ia)
             . "\t<thead>\n"
             . "<tr>\n"
             . "\t<td>&nbsp;</td>\n";
-            foreach($ansresult->readAll() as $ansrow)
+
+            while ($ansrow = $ansresult->read())
             {
                 $anscode[]=$ansrow['title'];
                 $answers[]=dTexts__run($ansrow['question']);

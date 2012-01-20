@@ -52,7 +52,14 @@ EOD;
 else {
     $surveyInfo = (array) explode('|', $_REQUEST['sid']);
     $surveyid = $surveyInfo[0];
-    $assessments = (!empty($surveyInfo[1]) && $surveyInfo[1] == 'Y');
+    if (isset($_REQUEST['assessments']))
+    {
+        $assessments = ($_REQUEST['assessments'] == 'Y');
+    }
+    else
+    {
+        $assessments = ($surveyInfo[1] == 'Y');
+    }
     $LEMdebugLevel = (
             ((isset($_REQUEST['LEM_DEBUG_TIMING']) && $_REQUEST['LEM_DEBUG_TIMING'] == 'Y') ? LEM_DEBUG_TIMING : 0) +
             ((isset($_REQUEST['LEM_DEBUG_VALIDATION_SUMMARY']) && $_REQUEST['LEM_DEBUG_VALIDATION_SUMMARY'] == 'Y') ? LEM_DEBUG_VALIDATION_SUMMARY : 0) +

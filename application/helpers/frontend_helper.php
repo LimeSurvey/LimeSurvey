@@ -793,7 +793,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
                     $validation = array();
 
                     $query = "SELECT * FROM {{question_attributes}} WHERE qid = ".$fieldmap[$field]['qid'];
-                    $result = Yii::app()->db->createCommand($query)->readAll();
+                    $result = Yii::app()->db->createCommand($query)->query()->readAll();
                     foreach($result as $row)
                         $validation[$row['attribute']] = $row['value'];
 
@@ -1375,7 +1375,7 @@ function submitfailed($errormsg='')
 * @returns  $totalquestions Total number of questions in the survey
 *
 */
-function buildsurveysession($surveyid)
+function buildsurveysession($surveyid,$previewGroup=false)
 {
     global $thissurvey, $secerror, $clienttoken;
     global $tokensexist, $thistpl;
@@ -1459,7 +1459,7 @@ function buildsurveysession($surveyid)
 
     //BEFORE BUILDING A NEW SESSION FOR THIS SURVEY, LET'S CHECK TO MAKE SURE THE SURVEY SHOULD PROCEED!
     // TOKEN REQUIRED BUT NO TOKEN PROVIDED
-    if ($tokensexist == 1 && !$clienttoken)
+    if ($tokensexist == 1 && !$clienttoken && !$previewGroup)
     {
 
         if ($thissurvey['nokeyboard']=='Y')

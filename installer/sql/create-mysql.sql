@@ -299,6 +299,8 @@ CREATE TABLE `prefix_surveys` (
   `navigationdelay` tinyint(2) default '0',
   `nokeyboard` char(1) default 'N',
   `alloweditaftercompletion` char(1) default 'N',
+  `googleAnalyticsStyle` char(1) DEFAULT NULL,
+  `googleAnalyticsAPIKey` VARCHAR(25) DEFAULT NULL,
    PRIMARY KEY(`sid`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 

@@ -21,6 +21,7 @@
  */
 include_once('em_core_helper.php');
 Yii::app()->loadHelper('database');
+Yii::import("application.libraries.Date_Time_Converter");
 define('LEM_DEBUG_TIMING',1);
 define('LEM_DEBUG_VALIDATION_SUMMARY',2);   // also includes  SQL error messages
 define('LEM_DEBUG_VALIDATION_DETAIL',4);
@@ -2852,7 +2853,9 @@ class LimeExpressionManager {
                 }
                     // Save Timings if needed
                 if ($this->surveyOptions['savetimings']) {
-                    set_answer_time();
+                    Yii::import("application.libraries.Save");
+                    $cSave = new Save();
+                    $cSave->set_answer_time();
                 }
 
                 if ($finished)
@@ -3304,7 +3307,7 @@ class LimeExpressionManager {
         /////////////////////////////////////////////////////////
         if (($LEM->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY)
         {
-            $editlink = Yii::app()->getController()->createUrl('/admin/questiongroup/organize/surveyid/' . $LEM->sid);
+            $editlink = Yii::app()->getController()->createUrl('/admin/survey/view/surveyid/' . $LEM->sid . '/gid/' . $gid);
             $debug_message .= '<br/>[G#' . $LEM->currentGroupSeq . ']'
                     . '[' . $groupSeqInfo['qstart'] . '-' . $groupSeqInfo['qend'] . ']'
                     . "[<a href='$editlink'>"
@@ -5413,7 +5416,7 @@ EOT;
                 $grelevance = '{' . (($ginfo['grelevance']=='') ? 1 : $ginfo['grelevance']) . '}';
                 $gtext = ((trim($ginfo['description']) == '') ? '&nbsp;' : $ginfo['description']);
 
-                $editlink = Yii::app()->getController()->createUrl('/admin/survey/questiongroup/organize/' . $sid);
+                $editlink = Yii::app()->getController()->createUrl('/admin/survey/view/surveyid/' . $LEM->sid . '/gid/' . $gid);
                 $groupRow = "<tr class='LEMgroup'>"
                 . "<td>G-$gseq</td>"
                 . "<td><b>".$ginfo['group_name']."</b><br/>[<a target='_blank' href='$editlink'>GID ".$gid."</a>]</td>"

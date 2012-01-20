@@ -646,7 +646,7 @@ class database extends Survey_Common_Action
             // These are the questions types that have no validation - so zap it accordingly
 
             if (Yii::app()->request->getPost('type')== "!" || Yii::app()->request->getPost('type')== "L" || Yii::app()->request->getPost('type')== "M" || Yii::app()->request->getPost('type')== "P" ||
-            Yii::app()->request->getPost('type')== "F" || Yii::app()->request->getPost('type')== "H" || Yii::app()->request->getPost('type')== ":" || Yii::app()->request->getPost('type')== ";" ||
+            Yii::app()->request->getPost('type')== "F" || Yii::app()->request->getPost('type')== "H" ||
             Yii::app()->request->getPost('type')== "X" || Yii::app()->request->getPost('type')== "")
             {
                 $_POST['preg']='';
@@ -1017,6 +1017,8 @@ class database extends Survey_Common_Action
             'usecaptcha'=> Yii::app()->request->getPost('usecaptcha'),
             'emailresponseto'=>trim(Yii::app()->request->getPost('emailresponseto')),
             'emailnotificationto'=>trim(Yii::app()->request->getPost('emailnotificationto')),
+            'googleAnalyticsAPIKey'=>trim(Yii::app()->request->getPost('googleAnalyticsAPIKey')),
+            'googleAnalyticsStyle'=>trim(Yii::app()->request->getPost('googleAnalyticsStyle')),
             'tokenlength'=>$tokenlength
             );
 

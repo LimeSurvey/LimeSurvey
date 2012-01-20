@@ -585,27 +585,27 @@ class SurveyAction extends CAction {
             loadanswers();
         }
 
-        // SAVE POSTED ANSWERS TO DATABASE IF MOVE (NEXT,PREV,LAST, or SUBMIT) or RETURNING FROM SAVE FORM
-        if (isset($move) || isset($_POST['saveprompt']))
-        {
-            $redata = compact(array_keys(get_defined_vars()));
-            //save.php
-            Yii::import("application.libraries.Save");
-            $tmp = new Save();
-            $tmp->run($redata);
-
-            // RELOAD THE ANSWERS INCASE SOMEONE ELSE CHANGED THEM
-            if ($thissurvey['active'] == "Y" &&
-            ( $thissurvey['allowsave'] == "Y" || $thissurvey['tokenanswerspersistence'] == "Y") )
-            {
-                loadanswers();
-            }
-        }
+//        // SAVE POSTED ANSWERS TO DATABASE IF MOVE (NEXT,PREV,LAST, or SUBMIT) or RETURNING FROM SAVE FORM
+//        if (isset($move) || isset($_POST['saveprompt']))
+//        {
+//            $redata = compact(array_keys(get_defined_vars()));
+//            //save.php
+//            Yii::import("application.libraries.Save");
+//            $tmp = new Save();
+//            $tmp->run($redata);
+//
+//            // RELOAD THE ANSWERS INCASE SOMEONE ELSE CHANGED THEM
+//            if ($thissurvey['active'] == "Y" &&
+//            ( $thissurvey['allowsave'] == "Y" || $thissurvey['tokenanswerspersistence'] == "Y") )
+//            {
+//                loadanswers();
+//            }
+//        }
 
         if (isset($param['action']) && $param['action'] == 'previewgroup')
         {
             $thissurvey['format'] = 'G';
-            buildsurveysession($surveyid);
+            buildsurveysession($surveyid,true);
         }
 
         sendcacheheaders();

@@ -2192,14 +2192,34 @@ class dataentry extends Survey_Common_Action
 //                        $s++;
 //                    }
 
-                    $qinfo = LimeExpressionManager::GetQuestionStatus($deqrow['qid']);
-                    $relevance = trim($qinfo['info']['relevance']);
-                    $cdata['explanation'] = '';
+                $qinfo = LimeExpressionManager::GetQuestionStatus($deqrow['qid']);
+                $relevance = trim($qinfo['info']['relevance']);
+                $explanation = trim($qinfo['relEqn']);
+                $validation = trim($qinfo['prettyValidTip']);
+                $qidattributes=getQuestionAttributeValues($deqrow['qid']);
+                $array_filter_help = FlattenText($this->_array_filter_help($qidattributes, $sDataEntryLanguage, $surveyid));
 
-                    if ($relevance != '' && $relevance != '1')
-                    {
-                        $cdata['explanation'] = "[" . $blang->gT("Only answer this if the following conditions are met:") . "]<br />{$qinfo['relEqn']}\n";
+                if (($relevance != '' && $relevance != '1') || ($validation != '') || ($array_filter_help != ''))
+                {
+                    $showme = '';
+                    if ($bgc == "even") {$bgc = "odd";} else {$bgc = "even";} //Do no alternate on explanation row
+                    if ($relevance != '' && $relevance != '1') {
+                        $showme = "[".$blang->gT("Only answer this if the following conditions are met:")."]<br />$explanation\n";
                     }
+                    if ($showme != '' && $validation != '') {
+                        $showme .= '<br/>';
+                    }
+                    if ($validation != '') {
+                        $showme .= "[".$blang->gT("The answer(s) must meet these validation criteria:")."]<br />$validation\n";
+                    }
+                    if ($showme != '' && $array_filter_help != '') {
+                        $showme .= '<br/>';
+                    }
+                    if ($array_filter_help != '') {
+                        $showme .= "[".$blang->gT("The answer(s) must meet these array_filter criteria:")."]<br />$array_filter_help\n";
+                    }
+                    $cdata['explanation'] = "<tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'>$showme</td></tr>\n";
+                }
 
                     //END OF GETTING CONDITIONS
 
@@ -2685,6 +2705,30 @@ class dataentry extends Survey_Common_Action
         $fieldvalues = str_replace( db_quoteall('{question_not_shown}'), 'NULL', $fieldvalues );
 
         return $fieldvalues;
+    }
+
+    /*
+     * This is a duplicate of the array_filter_help function in printablesurvey.php
+     */
+    private function _array_filter_help($qidattributes, $surveyprintlang, $surveyid) {
+        $clang = $this->getController()->lang;
+        $output = "";
+        if(!empty($qidattributes['array_filter']))
+        {
+            $newquestiontext = Questions::model()->findByAttributes(array('title' => $qidattributes['array_filter'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
+            $output .= "\n<p class='extrahelp'>
+                ".sprintf($clang->gT("Only answer this question for the items you selected in question *%s* ('%s')"),$qidattributes['array_filter'], FlattenText(br2nl($newquestiontext['question'])))."
+            </p>\n";
+        }
+        if(!empty($qidattributes['array_filter_exclude']))
+        {
+            $newquestiontext = Questions::model()->findByAttributes(array('title' => $qidattributes['array_filter_exclude'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
+
+            $output .= "\n    <p class='extrahelp'>
+                ".sprintf($clang->gT("Only answer this question for the items you did not select in question *%s* ('%s')"),$qidattributes['array_filter_exclude'], br2nl($newquestiontext['question']))."
+            </p>\n";
+        }
+        return $output;
     }
 
     /**

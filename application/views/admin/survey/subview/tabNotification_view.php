@@ -149,6 +149,27 @@
          ><?php $clang->eT("No"); ?></option>
         </select></li>
 
+        <li><label for='googleAnalyticsAPIKey'><?php $clang->eT("Google Analytics API Key for this Survey?"); ?></label>
+        <input type='text' value='<?php echo $esrow['googleAnalyticsAPIKey']; ?>' name='googleAnalyticsAPIKey' id='googleAnalyticsAPIKey' size='20'/>
+        </li>
 
+        <li><label for='googleAnalyticsStyle'><?php $clang->eT("Google Analytics Style for this Survey?"); ?></label>
+        <select id='googleAnalyticsStyle' name='googleAnalyticsStyle'>
+        <option value='0'
+        <?php if (!$esrow['googleAnalyticsStyle'] || $esrow['googleAnalyticsStyle'] == "0") { ?>
+              selected='selected'
+        <?php } ?>
+            ><?php $clang->eT("Do not use Google Analytics"); ?></option>
+        <option value='1'
+        <?php if ($esrow['googleAnalyticsStyle'] == "1") { ?>
+            selected='selected'
+        <?php } ?>
+            ><?php $clang->eT("Default Google Analytics"); ?></option>
+        <option value='2'
+        <?php if ($esrow['googleAnalyticsStyle'] == "2") { ?>
+            selected='selected'
+        <?php } ?>
+            ><?php $clang->eT("SurveyName-[SID]/GroupName"); ?></option>
+        </select></li>
 
         </ul></div>

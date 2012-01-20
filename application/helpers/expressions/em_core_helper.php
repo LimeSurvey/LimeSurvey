@@ -64,7 +64,7 @@ class ExpressionManager {
 
     // The following are only needed to enable click on variable names within pretty print and open new window to edit them
     private $sid=NULL; // the survey ID
-    private $hyperlinkSyntaxHighlighting=false;
+    private $hyperlinkSyntaxHighlighting=true;  // TODO - change this back to false
 
     function __construct()
     {
@@ -1474,7 +1474,7 @@ class ExpressionManager {
                         $stringParts[] = "<span title='"  . implode('; ',$messages) . "' style='color: ". $color . "; font-weight: bold'";
                         if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid)) {
                             // Modify this link to utilize a different framework
-                            $editlink = $this->rooturl . '/admin/admin.php?sid=' . $this->sid . '&gid=' . $gid . '&qid=' . $qid;
+                            $editlink = Yii::app()->getController()->createUrl('/admin/survey/view/surveyid/' . $this->sid . '/gid/' . $gid . '/qid/' . $qid);
                             $stringParts[] = " onclick='window.open(\"" . $editlink . "\");'";
                         }
                         $stringParts[] = ">";
@@ -1542,11 +1542,11 @@ class ExpressionManager {
                     return $var['code'];    // for static values like TOKEN
                 }
                 else {
-                    if (isset(Yii::app()->session[$sgqa])) {
-//                        if (Yii::app()->session[$sgqa] == 'false') {
+                    if (isset($_SESSION[$sgqa])) {
+//                        if ($_SESSION[$sgqa] == 'false') {
 //                            return $default;  // TODO - is is safe to assume that a value of 'false' means boolean false and should be blanked?
 //                        }
-                        return Yii::app()->session[$sgqa];
+                        return $_SESSION[$sgqa];
                     }
                     if (isset($var['default']) && !is_null($var['default'])) {
                         return $var['default'];
@@ -1709,9 +1709,9 @@ class ExpressionManager {
                 if (isset($args[1]) && $args[1]=='NAOK') {
                     return 1;
                 }
-                $grel = (isset(Yii::app()->session['relevanceStatus']['G'.$gid]) ? Yii::app()->session['relevanceStatus']['G'.$gid] : 1);   // true by default
-                $qrel = (isset(Yii::app()->session['relevanceStatus'][$qid]) ? Yii::app()->session['relevanceStatus'][$qid] : 0);
-                $sqrel = (isset(Yii::app()->session['relevanceStatus'][$rowdivid]) ? Yii::app()->session['relevanceStatus'][$rowdivid] : 1);    // true by default - only want false if a subquestion is irrelevant
+                $grel = (isset($_SESSION['relevanceStatus']['G'.$gid]) ? $_SESSION['relevanceStatus']['G'.$gid] : 1);   // true by default
+                $qrel = (isset($_SESSION['relevanceStatus'][$qid]) ? $_SESSION['relevanceStatus'][$qid] : 0);
+                $sqrel = (isset($_SESSION['relevanceStatus'][$rowdivid]) ? $_SESSION['relevanceStatus'][$rowdivid] : 1);    // true by default - only want false if a subquestion is irrelevant
                 return ($grel && $qrel && $sqrel);
             default:
                 print 'UNDEFINED ATTRIBUTE: ' . $attr . "<br/>\n";
@@ -1860,7 +1860,7 @@ class ExpressionManager {
      * Start processing a group of substitions - will be incrementally numbered
      */
 
-    public function StartProcessingGroup($sid=NULL,$rooturl='',$hyperlinkSyntaxHighlighting=false,$allOnOnePage=false)
+    public function StartProcessingGroup($sid=NULL,$rooturl='',$hyperlinkSyntaxHighlighting=true,$allOnOnePage=false)
     {
         $this->substitutionNum=0;
         $this->substitutionInfo=array(); // array of JavaScripts for managing each substitution
@@ -2833,10 +2833,10 @@ EOD;
         $em->RegisterVarnamesUsingMerge($vars);
 
         // manually set relevance status
-        Yii::app()->session['relevanceStatus'] = array();
+        $_SESSION['relevanceStatus'] = array();
         foreach ($vars as $var) {
             if (isset($var['qseq'])) {
-                Yii::app()->session['relevanceStatus'][$var['qseq']] = 1;
+                $_SESSION['relevanceStatus'][$var['qseq']] = 1;
             }
         }
 
