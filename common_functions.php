@@ -7364,25 +7364,25 @@ function sGetTemplatePath($sTemplateName)
     global $standardtemplaterootdir, $usertemplaterootdir, $defaulttemplate;
     if (isStandardTemplate($sTemplateName))
     {
-        return $standardtemplaterootdir.'/'.$sTemplateName;
+        return $standardtemplaterootdir.DIRECTORY_SEPARATOR.$sTemplateName;
     }
     else
     {
-        if (file_exists($usertemplaterootdir.'/'.$sTemplateName))
+        if (file_exists($usertemplaterootdir.DIRECTORY_SEPARATOR.$sTemplateName))
         {
-            return $usertemplaterootdir.'/'.$sTemplateName;
+            return $usertemplaterootdir.DIRECTORY_SEPARATOR.$sTemplateName;
         }
-        elseif (file_exists($usertemplaterootdir.'/'.$defaulttemplate))
+        elseif (file_exists($usertemplaterootdir.DIRECTORY_SEPARATOR.$defaulttemplate))
         {
-            return $usertemplaterootdir.'/'.$defaulttemplate;
+            return $usertemplaterootdir.DIRECTORY_SEPARATOR.$defaulttemplate;
         }
-        elseif (file_exists($standardtemplaterootdir.'/'.$defaulttemplate))
+        elseif (file_exists($standardtemplaterootdir.DIRECTORY_SEPARATOR.$defaulttemplate))
         {
-            return $standardtemplaterootdir.'/'.$defaulttemplate;
+            return $standardtemplaterootdir.DIRECTORY_SEPARATOR.$defaulttemplate;
         }
         else
         {
-            return $standardtemplaterootdir.'/default';
+            return $standardtemplaterootdir.DIRECTORY_SEPARATOR.'default';
         }
     }
 }

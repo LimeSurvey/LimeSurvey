@@ -2221,6 +2221,7 @@ class LsrcHelper {
 			. "remindersent C(17) DEFAULT 'N',\n "
 			. "remindercount int I DEFAULT 0,\n "
 			. "completed C(17) DEFAULT 'N',\n "
+			. "usesleft I DEFAULT 1,\n"
 			. "validfrom date ,\n "
 			. "validuntil date ,\n "
 			. "mpid I ";
