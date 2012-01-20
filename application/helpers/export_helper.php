@@ -1,24 +1,24 @@
 <?php
 /*
- * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- *	$Id$
- */
+* LimeSurvey
+* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*	$Id$
+*/
 
 /**
- * Strips html tags and replaces new lines
- *
- * @param $string
- * @return $string
- */
+* Strips html tags and replaces new lines
+*
+* @param $string
+* @return $string
+*/
 function strip_tags_full($string) {
     $string=html_entity_decode($string, ENT_QUOTES, "UTF-8");
     //combining these into one mb_ereg_replace call ought to speed things up
@@ -29,19 +29,19 @@ function strip_tags_full($string) {
 }
 
 /**
- * Returns true if passed $value is numeric
- *
- * @param $value
- * @return bool
- */
+* Returns true if passed $value is numeric
+*
+* @param $value
+* @return bool
+*/
 function my_is_numeric($value)  {
     if (empty($value)) return true;
     $eng_or_world = preg_match
     ('/^[+-]?'. // start marker and sign prefix
-  '(((([0-9]+)|([0-9]{1,4}(,[0-9]{3,4})+)))?(\\.[0-9])?([0-9]*)|'. // american
-  '((([0-9]+)|([0-9]{1,4}(\\.[0-9]{3,4})+)))?(,[0-9])?([0-9]*))'. // world
-  '(e[0-9]+)?'. // exponent
-  '$/', // end marker
+    '(((([0-9]+)|([0-9]{1,4}(,[0-9]{3,4})+)))?(\\.[0-9])?([0-9]*)|'. // american
+    '((([0-9]+)|([0-9]{1,4}(\\.[0-9]{3,4})+)))?(,[0-9])?([0-9]*))'. // world
+    '(e[0-9]+)?'. // exponent
+    '$/', // end marker
     $value) == 1;
     return ($eng_or_world);
 }
@@ -56,13 +56,13 @@ function spss_export_data ($na = null) {
     $query = spss_getquery();
 
     $result=Yii::app()->db->createCommand($query)->query()->readAll(); //Checked
-	$num_fields = isset($result[0]) ? count($result[0]) : 0;
+    $num_fields = isset($result[0]) ? count($result[0]) : 0;
 
     //This shouldn't occur, but just to be safe:
     if (count($fields)<>$num_fields) safe_die("Database inconsistency error");
 
     foreach ($result as $row) {
-    	$row = array_change_key_case($row,CASE_UPPER);
+        $row = array_change_key_case($row,CASE_UPPER);
         //$row = $result->GetRowAssoc(true);	//Get assoc array, use uppercase
         reset($fields);	//Jump to the first element in the field array
         $i = 1;
@@ -86,76 +86,76 @@ function spss_export_data ($na = null) {
                     echo ($na);
                 }
             } else if ($field['LStype'] == 'Y')
-            {
-                if ($row[$fieldno] == 'Y')    // Yes/No Question Type
                 {
-                    echo( "'1'");
-                } else if ($row[$fieldno] == 'N'){
-                    echo( "'2'");
-                } else {
-                    echo($na);
-                }
-            } else if ($field['LStype'] == 'G')    //Gender
-            {
-                if ($row[$fieldno] == 'F')
-                {
-                    echo( "'1'");
-                } else if ($row[$fieldno] == 'M'){
-                    echo( "'2'");
-                } else {
-                    echo($na);
-                }
-            } else if ($field['LStype'] == 'C')    //Yes/No/Uncertain
-            {
-                if ($row[$fieldno] == 'Y')
-                {
-                    echo( "'1'");
-                } else if ($row[$fieldno] == 'N'){
-                    echo( "'2'");
-                } else if ($row[$fieldno] == 'U'){
-                    echo( "'3'");
-                } else {
-                    echo($na);
-                }
-            } else if ($field['LStype'] == 'E')     //Increase / Same / Decrease
-            {
-                if ($row[$fieldno] == 'I')
-                {
-                    echo( "'1'");
-                } else if ($row[$fieldno] == 'S'){
-                    echo( "'2'");
-                } else if ($row[$fieldno] == 'D'){
-                    echo( "'3'");
-                } else {
-                    echo($na);
-                }
-            } elseif (($field['LStype'] == 'P' || $field['LStype'] == 'M') && (substr($field['code'],-7) != 'comment' && substr($field['code'],-5) != 'other'))
-            {
-                if ($row[$fieldno] == 'Y')
-                {
-                    echo("'1'");
-                } else
-                {
-                    echo("'0'");
-                }
-            } elseif (!$field['hide']) {
-            	$strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
-                if (trim($strTmp) != ''){
-                    $strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
-                    /*
-                     * Temp quick fix for replacing decimal dots with comma's
-                     if (my_is_numeric($strTemp)) {
-                     $strTemp = str_replace('.',',',$strTemp);
-                     }
-                     */
-                    echo "'$strTemp'";
-                }
-                else
-                {
-                    echo $na;
-                }
-            }
-            if ($i<$num_fields && !$field['hide']) echo ',';
+                    if ($row[$fieldno] == 'Y')    // Yes/No Question Type
+                    {
+                        echo( "'1'");
+                    } else if ($row[$fieldno] == 'N'){
+                            echo( "'2'");
+                        } else {
+                            echo($na);
+                    }
+                } else if ($field['LStype'] == 'G')    //Gender
+                    {
+                        if ($row[$fieldno] == 'F')
+                        {
+                            echo( "'1'");
+                        } else if ($row[$fieldno] == 'M'){
+                                echo( "'2'");
+                            } else {
+                                echo($na);
+                        }
+                    } else if ($field['LStype'] == 'C')    //Yes/No/Uncertain
+                        {
+                            if ($row[$fieldno] == 'Y')
+                            {
+                                echo( "'1'");
+                            } else if ($row[$fieldno] == 'N'){
+                                    echo( "'2'");
+                                } else if ($row[$fieldno] == 'U'){
+                                        echo( "'3'");
+                                    } else {
+                                        echo($na);
+                            }
+                        } else if ($field['LStype'] == 'E')     //Increase / Same / Decrease
+                            {
+                                if ($row[$fieldno] == 'I')
+                                {
+                                    echo( "'1'");
+                                } else if ($row[$fieldno] == 'S'){
+                                        echo( "'2'");
+                                    } else if ($row[$fieldno] == 'D'){
+                                            echo( "'3'");
+                                        } else {
+                                            echo($na);
+                                }
+                            } elseif (($field['LStype'] == 'P' || $field['LStype'] == 'M') && (substr($field['code'],-7) != 'comment' && substr($field['code'],-5) != 'other'))
+                            {
+                                if ($row[$fieldno] == 'Y')
+                                {
+                                    echo("'1'");
+                                } else
+                                {
+                                    echo("'0'");
+                                }
+                            } elseif (!$field['hide']) {
+                                $strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
+                                if (trim($strTmp) != ''){
+                                    $strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
+                                    /*
+                                    * Temp quick fix for replacing decimal dots with comma's
+                                    if (my_is_numeric($strTemp)) {
+                                    $strTemp = str_replace('.',',',$strTemp);
+                                    }
+                                    */
+                                    echo "'$strTemp'";
+                                }
+                                else
+                                {
+                                    echo $na;
+                                }
+                            }
+                            if ($i<$num_fields && !$field['hide']) echo ',';
             $i++;
         }
         echo "\n";
@@ -163,14 +163,14 @@ function spss_export_data ($na = null) {
 }
 
 /**
- * Check it the gives field has a labelset and return it as an array if true
- *
- * @param $field array field from spss_fieldmap
- * @return array or false
- */
+* Check it the gives field has a labelset and return it as an array if true
+*
+* @param $field array field from spss_fieldmap
+* @return array or false
+*/
 function spss_getvalues ($field = array(), $qidattributes = null ) {
     global $surveyid, $language, $length_vallabel;
-	$clang = Yii::app()->lang;
+    $clang = Yii::app()->lang;
 
     if (!isset($field['LStype']) || empty($field['LStype'])) return false;
     $answers=array();
@@ -179,12 +179,12 @@ function spss_getvalues ($field = array(), $qidattributes = null ) {
             //We have a comment field, so free text
         } else {
             $query = "SELECT {{answers}}.code, {{answers}}.answer,
-			{{questions}}.type FROM {{answers}}, {{questions}} WHERE";
+            {{questions}}.type FROM {{answers}}, {{questions}} WHERE";
 
             if (isset($field['scale_id'])) $query .= " {{answers}}.scale_id = " . (int) $field['scale_id'] . " AND";
 
             $query .= " {{answers}}.qid = '".$field["qid"]."' and {{questions}}.language='".$language."' and  {{answers}}.language='".$language."'
-			    and {{questions}}.qid='".$field['qid']."' ORDER BY sortorder ASC";
+            and {{questions}}.qid='".$field['qid']."' ORDER BY sortorder ASC";
             $result= Yii::app()->db->createCommand($query)->query(); //Checked
             $num_results = $result->getRowCount();
             if ($num_results > 0)
@@ -273,11 +273,11 @@ function spss_getvalues ($field = array(), $qidattributes = null ) {
 }
 
 /**
- * Creates a fieldmap with all information necessary to output the fields
- *
- * @param $prefix string prefix for the variable ID
- * @return array
- */
+* Creates a fieldmap with all information necessary to output the fields
+*
+* @param $prefix string prefix for the variable ID
+* @return array
+*/
 function spss_fieldmap($prefix = 'V') {
     global $surveyid, $typeMap, $clang, $surveyprivate, $tokensexist, $language;
 
@@ -309,9 +309,9 @@ function spss_fieldmap($prefix = 'V') {
             if($attributefield!='token') {
                 $fieldno++;
                 $fields[] = array('id'=>"$prefix$fieldno",'name'=>mb_substr($attributefield, 0, 8),
-			    'qid'=>0,'code'=>'','SPSStype'=>'A','LStype'=>'Undef',
-			    'VariableLabel'=>$attributedescription,'sql_name'=>$attributefield,'size'=>'100',
-			    'title'=>$attributefield,'hide'=>0, 'scale'=>'');
+                'qid'=>0,'code'=>'','SPSStype'=>'A','LStype'=>'Undef',
+                'VariableLabel'=>$attributedescription,'sql_name'=>$attributefield,'size'=>'100',
+                'title'=>$attributefield,'hide'=>0, 'scale'=>'');
             }
         }
     }
@@ -356,7 +356,7 @@ function spss_fieldmap($prefix = 'V') {
             $fieldtype = 'A';
             $val_size = 255;
         } elseif ($fieldname == 'lastpage') {
-        	$hide = 1;
+            $hide = 1;
         }
 
         #Get qid (question id)
@@ -408,9 +408,9 @@ function spss_fieldmap($prefix = 'V') {
         $fid = $fieldno - $diff;
         $lsLong = isset($typeMap[$ftype]["name"])?$typeMap[$ftype]["name"]:$ftype;
         $tempArray = array('id'=>"$prefix$fid",'name'=>mb_substr($fieldname, 0, 8),
-		    'qid'=>$qid,'code'=>$code,'SPSStype'=>$fieldtype,'LStype'=>$ftype,"LSlong"=>$lsLong,
-		    'ValueLabels'=>'','VariableLabel'=>$varlabel,"sql_name"=>$fieldname,"size"=>$val_size,
-		    'title'=>$ftitle,'hide'=>$hide,'scale'=>$export_scale, 'scale_id'=>$scale_id);
+        'qid'=>$qid,'code'=>$code,'SPSStype'=>$fieldtype,'LStype'=>$ftype,"LSlong"=>$lsLong,
+        'ValueLabels'=>'','VariableLabel'=>$varlabel,"sql_name"=>$fieldname,"size"=>$val_size,
+        'title'=>$ftitle,'hide'=>$hide,'scale'=>$export_scale, 'scale_id'=>$scale_id);
         //Now check if we have to retrieve value labels
         $answers = spss_getvalues($tempArray, $aQuestionAttribs);
         if (is_array($answers)) {
@@ -431,10 +431,10 @@ function spss_fieldmap($prefix = 'V') {
 }
 
 /**
- * Creates a query string with all fields for the export
- *
- * @return string
- */
+* Creates a query string with all fields for the export
+*
+* @return string
+*/
 function spss_getquery() {
     global $surveyprivate, $surveyid, $tokensexist;
 
@@ -449,11 +449,11 @@ function spss_getquery() {
             }
         }
         $query .= "{{survey_$surveyid}}.*
-	    FROM {{survey_$surveyid}}
-	    LEFT JOIN {{tokens_$surveyid}} ON {{survey_$surveyid}}.token = {{tokens_$surveyid}}.token";
+        FROM {{survey_$surveyid}}
+        LEFT JOIN {{tokens_$surveyid}} ON {{survey_$surveyid}}.token = {{tokens_$surveyid}}.token";
     } else {
         $query = "SELECT *
-	    FROM {{survey_$surveyid}}";
+        FROM {{survey_$surveyid}}";
     }
     switch (incompleteAnsFilterstate()) {
         case 'inc':
@@ -496,8 +496,8 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
     $iStart=0;
     do
     {
-    	$QueryResult = Yii::app()->db->createCommand($Query)->limit($iChunkSize, $iStart)->query();
-    	$result = $QueryResult->readAll();
+        $QueryResult = Yii::app()->db->createCommand($Query)->limit($iChunkSize, $iStart)->query();
+        $result = $QueryResult->readAll();
         if ($iStart==0 && $QueryResult->getRowCount()>0)
         {
             $exclude = array_flip($excludes);    //Flip key/value in array for faster checks
@@ -521,9 +521,12 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
                     {
                         if (is_numeric($Key[0])) $Key='_'.$Key; // mask invalid element names with an underscore
                         $Key=str_replace('#','-',$Key);
-                        if (!$xmlwriter->startElement($Key)) safe_die('Invalid elemnt key: '.$Key);
-                            // Remove invalid XML characters
-                        if ($Value!='') $xmlwriter->writeCData(preg_replace('/[^\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u','',$Value));
+                        if (!$xmlwriter->startElement($Key)) safe_die('Invalid element key: '.$Key);
+                        // Remove invalid XML characters
+                        if ($Value!='') {
+                            $Value=str_replace(']]>','',$Value);
+                            $xmlwriter->writeCData(preg_replace('/[^\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u','',$Value));
+                        }
                         $xmlwriter->endElement();
                     }
                 }
@@ -540,8 +543,8 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
 }
 
 /**
- * from export_structure_xml.php
- */
+* from export_structure_xml.php
+*/
 function survey_getXMLStructure($surveyid, $xmlwriter, $exclude=array())
 {
     $sdump = "";
@@ -549,69 +552,69 @@ function survey_getXMLStructure($surveyid, $xmlwriter, $exclude=array())
     {
         //Answers table
         $aquery = "SELECT {{answers}}.*
-           FROM {{answers}}, {{questions}}
-		   WHERE {{answers}}.language={{questions}}.language
-		   AND {{answers}}.qid={{questions}}.qid
-		   AND {{questions}}.sid=$surveyid";
+        FROM {{answers}}, {{questions}}
+        WHERE {{answers}}.language={{questions}}.language
+        AND {{answers}}.qid={{questions}}.qid
+        AND {{questions}}.sid=$surveyid";
         BuildXMLFromQuery($xmlwriter,$aquery);
     }
 
     // Assessments
     $query = "SELECT {{assessments}}.*
-          FROM {{assessments}}
-          WHERE {{assessments}}.sid=$surveyid";
+    FROM {{assessments}}
+    WHERE {{assessments}}.sid=$surveyid";
     BuildXMLFromQuery($xmlwriter,$query);
 
     if ((!isset($exclude) && $exclude['conditions'] !== true) || empty($exclude))
     {
         //Conditions table
         $cquery = "SELECT DISTINCT {{conditions}}.*
-           FROM {{conditions}}, {{questions}}
-		   WHERE {{conditions}}.qid={{questions}}.qid
-		   AND {{questions}}.sid=$surveyid";
+        FROM {{conditions}}, {{questions}}
+        WHERE {{conditions}}.qid={{questions}}.qid
+        AND {{questions}}.sid=$surveyid";
         BuildXMLFromQuery($xmlwriter,$cquery);
     }
 
     //Default values
     $query = "SELECT {{defaultvalues}}.*
-          FROM {{defaultvalues}} JOIN {{questions}} ON {{questions}}.qid = {{defaultvalues}}.qid AND {{questions}}.sid=$surveyid AND {{questions}}.language={{defaultvalues}}.language ";
+    FROM {{defaultvalues}} JOIN {{questions}} ON {{questions}}.qid = {{defaultvalues}}.qid AND {{questions}}.sid=$surveyid AND {{questions}}.language={{defaultvalues}}.language ";
 
     BuildXMLFromQuery($xmlwriter,$query);
 
     // Groups
     $gquery = "SELECT *
-           FROM {{groups}}
-           WHERE sid=$surveyid
-           ORDER BY gid";
+    FROM {{groups}}
+    WHERE sid=$surveyid
+    ORDER BY gid";
     BuildXMLFromQuery($xmlwriter,$gquery);
 
     //Questions
     $qquery = "SELECT *
-           FROM {{questions}}
-           WHERE sid=$surveyid and parent_qid=0
-           ORDER BY qid";
+    FROM {{questions}}
+    WHERE sid=$surveyid and parent_qid=0
+    ORDER BY qid";
     BuildXMLFromQuery($xmlwriter,$qquery);
 
     //Subquestions
     $qquery = "SELECT *
-           FROM {{questions}}
-           WHERE sid=$surveyid and parent_qid>0
-           ORDER BY qid";
+    FROM {{questions}}
+    WHERE sid=$surveyid and parent_qid>0
+    ORDER BY qid";
     BuildXMLFromQuery($xmlwriter,$qquery,'subquestions');
 
     //Question attributes
     $sBaseLanguage=Survey::model()->findByPk($surveyid)->language;
-	$platform = Yii::app()->db->getDriverName();
+    $platform = Yii::app()->db->getDriverName();
     if ($platform == 'odbc_mssql' || $platform == 'odbtp' || $platform == 'mssql_n' || $platform =='mssqlnative')
     {
         $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value
-          FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$surveyid}
-          where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000))";
+        FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$surveyid}
+        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000))";
     }
     else {
         $query="SELECT qa.qid, qa.attribute, qa.value
-          FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$surveyid}
-          where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value";
+        FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$surveyid}
+        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value";
     }
 
     BuildXMLFromQuery($xmlwriter,$query,'question_attributes');
@@ -620,48 +623,48 @@ function survey_getXMLStructure($surveyid, $xmlwriter, $exclude=array())
     {
         //Quota
         $query = "SELECT {{quota}}.*
-          FROM {{quota}}
-		  WHERE {{quota}}.sid=$surveyid";
+        FROM {{quota}}
+        WHERE {{quota}}.sid=$surveyid";
         BuildXMLFromQuery($xmlwriter,$query);
 
         //1Quota members
         $query = "SELECT {{quota_members}}.*
-          FROM {{quota_members}}
-		  WHERE {{quota_members}}.sid=$surveyid";
+        FROM {{quota_members}}
+        WHERE {{quota_members}}.sid=$surveyid";
         BuildXMLFromQuery($xmlwriter,$query);
 
         //Quota languagesettings
         $query = "SELECT {{quota_languagesettings}}.*
-          FROM {{quota_languagesettings}}, {{quota}}
-		  WHERE {{quota}}.id = {{quota_languagesettings}}.quotals_quota_id
-		  AND {{quota}}.sid=$surveyid";
+        FROM {{quota_languagesettings}}, {{quota}}
+        WHERE {{quota}}.id = {{quota_languagesettings}}.quotals_quota_id
+        AND {{quota}}.sid=$surveyid";
         BuildXMLFromQuery($xmlwriter,$query);
     }
 
     // Surveys
     $squery = "SELECT *
-           FROM {{surveys}}
-           WHERE sid=$surveyid";
+    FROM {{surveys}}
+    WHERE sid=$surveyid";
     //Exclude some fields from the export
     BuildXMLFromQuery($xmlwriter,$squery,'',array('owner_id','active','datecreated'));
 
     // Survey language settings
     $slsquery = "SELECT *
-             FROM {{surveys_languagesettings}}
-             WHERE surveyls_survey_id=$surveyid";
+    FROM {{surveys_languagesettings}}
+    WHERE surveyls_survey_id=$surveyid";
     BuildXMLFromQuery($xmlwriter,$slsquery);
 
     // Survey url parameters
     $slsquery = "SELECT *
-             FROM {{survey_url_parameters}}
-             WHERE sid={$surveyid}";
+    FROM {{survey_url_parameters}}
+    WHERE sid={$surveyid}";
     BuildXMLFromQuery($xmlwriter,$slsquery);
 
 }
 
 /**
- * from export_structure_xml.php
- */
+* from export_structure_xml.php
+*/
 function survey_getXMLData($surveyid, $exclude = array())
 {
     $xml = getXMLWriter();
@@ -735,713 +738,713 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
 
 
 /**
- * from export_structure_quexml.php
- */
+* from export_structure_quexml.php
+*/
 function quexml_cleanup($string)
 {
-	return trim(strip_tags(str_ireplace("<br />","\n",$string)));
+    return trim(strip_tags(str_ireplace("<br />","\n",$string)));
 }
 
 /**
- * from export_structure_quexml.php
- */
+* from export_structure_quexml.php
+*/
 function quexml_create_free($f,$len,$lab="")
 {
-	global $dom;
-	$free = $dom->create_element("free");
+    global $dom;
+    $free = $dom->create_element("free");
 
-	$format = $dom->create_element("format");
-	$format->set_content(quexml_cleanup($f));
+    $format = $dom->create_element("format");
+    $format->set_content(quexml_cleanup($f));
 
-	$length = $dom->create_element("length");
-	$length->set_content(quexml_cleanup($len));
+    $length = $dom->create_element("length");
+    $length->set_content(quexml_cleanup($len));
 
-	$label = $dom->create_element("label");
-	$label->set_content(quexml_cleanup($lab));
+    $label = $dom->create_element("label");
+    $label->set_content(quexml_cleanup($lab));
 
-	$free->append_child($format);
-	$free->append_child($length);
-	$free->append_child($label);
+    $free->append_child($format);
+    $free->append_child($length);
+    $free->append_child($label);
 
 
-	return $free;
+    return $free;
 }
 
 /**
- * from export_structure_quexml.php
- */
+* from export_structure_quexml.php
+*/
 function quexml_fixed_array($array)
 {
-	global $dom;
-	$fixed = $dom->create_element("fixed");
+    global $dom;
+    $fixed = $dom->create_element("fixed");
 
-	foreach ($array as $key => $v)
-	{
-		$category = $dom->create_element("category");
+    foreach ($array as $key => $v)
+    {
+        $category = $dom->create_element("category");
 
-		$label = $dom->create_element("label");
-		$label->set_content(quexml_cleanup("$key"));
+        $label = $dom->create_element("label");
+        $label->set_content(quexml_cleanup("$key"));
 
-		$value= $dom->create_element("value");
-		$value->set_content(quexml_cleanup("$v"));
+        $value= $dom->create_element("value");
+        $value->set_content(quexml_cleanup("$v"));
 
-		$category->append_child($label);
-		$category->append_child($value);
+        $category->append_child($label);
+        $category->append_child($value);
 
-		$fixed->append_child($category);
-	}
+        $fixed->append_child($category);
+    }
 
 
-	return $fixed;
+    return $fixed;
 }
 
 /**
- * Calculate if this item should have a quexml_skipto element attached to it
- *
- * from export_structure_quexml.php
- *
- * @param mixed $qid
- * @param mixed $value
- *
- * @return bool|string Text of item to skip to otherwise false if nothing to skip to
- * @author Adam Zammit <adam.zammit@acspri.org.au>
- * @since  2010-10-28
- */
+* Calculate if this item should have a quexml_skipto element attached to it
+*
+* from export_structure_quexml.php
+*
+* @param mixed $qid
+* @param mixed $value
+*
+* @return bool|string Text of item to skip to otherwise false if nothing to skip to
+* @author Adam Zammit <adam.zammit@acspri.org.au>
+* @since  2010-10-28
+*/
 function quexml_skipto($qid,$value,$cfieldname = "")
 {
-	global $surveyid, $quexmllang;
-	$qlang = new limesurvey_lang($quexmllang);
+    global $surveyid, $quexmllang;
+    $qlang = new limesurvey_lang($quexmllang);
 
-	$zeros = "0000000000";
+    $zeros = "0000000000";
 
-	$Query = "SELECT q.*," . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)") ." as globalorder
-                  FROM {{questions}} as q, {{questions}} as q2, {{groups}} as g, {{groups}} as g2
-                  WHERE q.parent_qid = 0
-                  AND q2.parent_qid = 0
-                  AND q.sid=$surveyid
-                  AND q2.sid=$surveyid
-                  AND q2.qid = $qid
-                  AND g2.gid =q2.gid
-                  AND g.gid = q.gid
-                  AND " . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)") ." > " . concat("RIGHT(" . concat($zeros,'g2.gid') . ",10)","RIGHT(". concat($zeros,'q2.question_order') .",10)") ."
-                  ORDER BY globalorder";
+    $Query = "SELECT q.*," . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)") ." as globalorder
+    FROM {{questions}} as q, {{questions}} as q2, {{groups}} as g, {{groups}} as g2
+    WHERE q.parent_qid = 0
+    AND q2.parent_qid = 0
+    AND q.sid=$surveyid
+    AND q2.sid=$surveyid
+    AND q2.qid = $qid
+    AND g2.gid =q2.gid
+    AND g.gid = q.gid
+    AND " . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)") ." > " . concat("RIGHT(" . concat($zeros,'g2.gid') . ",10)","RIGHT(". concat($zeros,'q2.question_order') .",10)") ."
+    ORDER BY globalorder";
 
-	$QueryResult = Yii::app()->db->createCommand($Query)->query();
+    $QueryResult = Yii::app()->db->createCommand($Query)->query();
 
-	$nextqid="";
-	$nextorder="";
+    $nextqid="";
+    $nextorder="";
 
-	$Row = $QueryResult->read();
-	if ($Row)
-	{
-		$nextqid = $Row['qid'];
-		$nextorder = $Row['globalorder'];
-	}
-	else
-		return false;
-
-
-	$Query = "SELECT q.*
-		FROM {{questions}} as q
-		JOIN {{groups}} as g ON (g.gid = q.gid)
-		LEFT JOIN {{conditions}} as c ON (c.cqid = '$qid' AND c.qid = q.qid AND c.method LIKE '==' AND c.value NOT LIKE '$value' $cfieldname)
-		WHERE q.sid = $surveyid
-		AND q.parent_qid = 0
-		AND " . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)") ." >= $nextorder
-		AND c.cqid IS NULL
-		ORDER BY  " . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)");
+    $Row = $QueryResult->read();
+    if ($Row)
+    {
+        $nextqid = $Row['qid'];
+        $nextorder = $Row['globalorder'];
+    }
+    else
+        return false;
 
 
-	$QueryResult = Yii::app()->db->createCommand($Query)->query();
+    $Query = "SELECT q.*
+    FROM {{questions}} as q
+    JOIN {{groups}} as g ON (g.gid = q.gid)
+    LEFT JOIN {{conditions}} as c ON (c.cqid = '$qid' AND c.qid = q.qid AND c.method LIKE '==' AND c.value NOT LIKE '$value' $cfieldname)
+    WHERE q.sid = $surveyid
+    AND q.parent_qid = 0
+    AND " . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)") ." >= $nextorder
+    AND c.cqid IS NULL
+    ORDER BY  " . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)");
 
-	$Row = $QueryResult->read();
-	if ($Row)
-	{
-		if ($nextqid == $Row['qid'])
-			return false;
-		else
-			return $Row['title'];
-	}
-	else
-		return $qlang->gT("End");
+
+    $QueryResult = Yii::app()->db->createCommand($Query)->query();
+
+    $Row = $QueryResult->read();
+    if ($Row)
+    {
+        if ($nextqid == $Row['qid'])
+            return false;
+        else
+            return $Row['title'];
+    }
+    else
+        return $qlang->gT("End");
 
 }
 
 /**
- * from export_structure_quexml.php
- */
+* from export_structure_quexml.php
+*/
 function quexml_create_fixed($qid,$rotate=false,$labels=true,$scale=0,$other=false,$varname="")
 {
-	global $dom;
+    global $dom;
 
-	global $quexmllang;
-	$qlang = new limesurvey_lang($quexmllang);
+    global $quexmllang;
+    $qlang = new limesurvey_lang($quexmllang);
 
-	if ($labels)
-		$Query = "SELECT * FROM {{labels}} WHERE lid = $labels  AND language='$quexmllang' ORDER BY sortorder ASC";
-	else
-		$Query = "SELECT code,answer as title,sortorder FROM {{answers}} WHERE qid = $qid AND scale_id = $scale  AND language='$quexmllang' ORDER BY sortorder ASC";
+    if ($labels)
+        $Query = "SELECT * FROM {{labels}} WHERE lid = $labels  AND language='$quexmllang' ORDER BY sortorder ASC";
+    else
+        $Query = "SELECT code,answer as title,sortorder FROM {{answers}} WHERE qid = $qid AND scale_id = $scale  AND language='$quexmllang' ORDER BY sortorder ASC";
 
-	$QueryResult = Yii::app()->db->createCommand($Query)->query();
+    $QueryResult = Yii::app()->db->createCommand($Query)->query();
 
-	$fixed = $dom->create_element("fixed");
+    $fixed = $dom->create_element("fixed");
 
-	$nextcode = "";
+    $nextcode = "";
 
-	foreach($QueryResult->readAll() as $Row)
-	{
-		$category = $dom->create_element("category");
+    foreach($QueryResult->readAll() as $Row)
+    {
+        $category = $dom->create_element("category");
 
-		$label = $dom->create_element("label");
-		$label->set_content(quexml_cleanup($Row['title']));
+        $label = $dom->create_element("label");
+        $label->set_content(quexml_cleanup($Row['title']));
 
-		$value= $dom->create_element("value");
-		$value->set_content(quexml_cleanup($Row['code']));
+        $value= $dom->create_element("value");
+        $value->set_content(quexml_cleanup($Row['code']));
 
-		$category->append_child($label);
-		$category->append_child($value);
+        $category->append_child($label);
+        $category->append_child($value);
 
-		$st = quexml_skipto($qid,$Row['code']);
-		if ($st !== false)
-		{
-			$quexml_skipto = $dom->create_element("quexml_skipto");
-			$quexml_skipto->set_content($st);
-			$category->append_child($quexml_skipto);
-		}
+        $st = quexml_skipto($qid,$Row['code']);
+        if ($st !== false)
+        {
+            $quexml_skipto = $dom->create_element("quexml_skipto");
+            $quexml_skipto->set_content($st);
+            $category->append_child($quexml_skipto);
+        }
 
 
-		$fixed->append_child($category);
-		$nextcode = $Row['code'];
-	}
+        $fixed->append_child($category);
+        $nextcode = $Row['code'];
+    }
 
-	if ($other)
-	{
-		$category = $dom->create_element("category");
+    if ($other)
+    {
+        $category = $dom->create_element("category");
 
-		$label = $dom->create_element("label");
-		$label->set_content(quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
+        $label = $dom->create_element("label");
+        $label->set_content(quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
 
-		$value= $dom->create_element("value");
+        $value= $dom->create_element("value");
 
-		$value->set_content('-oth-');
+        $value->set_content('-oth-');
 
-		$category->append_child($label);
-		$category->append_child($value);
+        $category->append_child($label);
+        $category->append_child($value);
 
-		$contingentQuestion = $dom->create_element("contingentQuestion");
-		$length = $dom->create_element("length");
-		$text = $dom->create_element("text");
+        $contingentQuestion = $dom->create_element("contingentQuestion");
+        $length = $dom->create_element("length");
+        $text = $dom->create_element("text");
 
-		$text->set_content(quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
-		$length->set_content(24);
-		$contingentQuestion->append_child($text);
-		$contingentQuestion->append_child($length);
-		$contingentQuestion->set_attribute("varName",$varname . 'other');
+        $text->set_content(quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
+        $length->set_content(24);
+        $contingentQuestion->append_child($text);
+        $contingentQuestion->append_child($length);
+        $contingentQuestion->set_attribute("varName",$varname . 'other');
 
-		$category->append_child($contingentQuestion);
+        $category->append_child($contingentQuestion);
 
-		$fixed->append_child($category);
-	}
+        $fixed->append_child($category);
+    }
 
-	if ($rotate) $fixed->set_attribute("rotate","true");
+    if ($rotate) $fixed->set_attribute("rotate","true");
 
-	return $fixed;
+    return $fixed;
 }
 
 /**
- * from export_structure_quexml.php
- */
+* from export_structure_quexml.php
+*/
 function quexml_get_lengthth($qid,$attribute,$default)
 {
-	global $dom;
+    global $dom;
 
-	$Query = "SELECT value FROM {{question_attributes}} WHERE qid = $qid AND attribute = '$attribute'";
-	//$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
-	$QueryResult = Yii::app()->db->createCommand($Query)->query();
+    $Query = "SELECT value FROM {{question_attributes}} WHERE qid = $qid AND attribute = '$attribute'";
+    //$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
+    $QueryResult = Yii::app()->db->createCommand($Query)->query();
 
-	$Row = $QueryResult->read();
-	if ($Row && !empty($Row['value']))
-		return $Row['value'];
-	else
-		return $default;
+    $Row = $QueryResult->read();
+    if ($Row && !empty($Row['value']))
+        return $Row['value'];
+    else
+        return $default;
 
 }
 
 /**
- * from export_structure_quexml.php
- */
+* from export_structure_quexml.php
+*/
 function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = false,$other = false)
 {
-	global $dom;
-	global $quexmllang ;
-	global $surveyid;
-	$qlang = new limesurvey_lang($quexmllang);
+    global $dom;
+    global $quexmllang ;
+    global $surveyid;
+    $qlang = new limesurvey_lang($quexmllang);
 
 
-	$Query = "SELECT * FROM {{questions}} WHERE parent_qid = $qid  AND language='$quexmllang' ";
-	if ($scale_id != false) $Query .= " AND scale_id = $scale_id ";
-	$Query .= " ORDER BY question_order ASC";
-	//$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
-	$QueryResult = Yii::app()->db->createCommand($Query)->query();
+    $Query = "SELECT * FROM {{questions}} WHERE parent_qid = $qid  AND language='$quexmllang' ";
+    if ($scale_id != false) $Query .= " AND scale_id = $scale_id ";
+    $Query .= " ORDER BY question_order ASC";
+    //$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
+    $QueryResult = Yii::app()->db->createCommand($Query)->query();
 
-	$nextcode = "";
+    $nextcode = "";
 
-	foreach($QueryResult->readAll() as $Row)
-	{
-		$response = $dom->create_element("response");
-		if ($free == false)
-		{
-			$fixed = $dom->create_element("fixed");
-			$category = $dom->create_element("category");
+    foreach($QueryResult->readAll() as $Row)
+    {
+        $response = $dom->create_element("response");
+        if ($free == false)
+        {
+            $fixed = $dom->create_element("fixed");
+            $category = $dom->create_element("category");
 
-			$label = $dom->create_element("label");
-			$label->set_content(quexml_cleanup($Row['question']));
+            $label = $dom->create_element("label");
+            $label->set_content(quexml_cleanup($Row['question']));
 
-			$value= $dom->create_element("value");
-			//$value->set_content(quexml_cleanup($Row['title']));
-			$value->set_content("1");
-			$nextcode = $Row['title'];
+            $value= $dom->create_element("value");
+            //$value->set_content(quexml_cleanup($Row['title']));
+            $value->set_content("1");
+            $nextcode = $Row['title'];
 
-			$category->append_child($label);
-			$category->append_child($value);
+            $category->append_child($label);
+            $category->append_child($value);
 
-			$st = quexml_skipto($qid,'Y'," AND c.cfieldname LIKE '+$surveyid" . "X" . $Row['gid'] . "X" . $qid . $Row['title'] . "' ");
-			if ($st !== false)
-			{
-				$quexml_skipto = $dom->create_element("quexml_skipto");
-				$quexml_skipto->set_content($st);
-				$category->append_child($quexml_skipto);
-			}
-
-
-			$fixed->append_child($category);
-
-			$response->append_child($fixed);
-		}
-		else
-			$response->append_child(quexml_create_free($free['f'],$free['len'],$Row['question']));
-
-		$response->set_attribute("varName",$varname . quexml_cleanup($Row['title']));
-
-		$question->append_child($response);
-	}
-
-	if ($other && $free==false)
-	{
-		$response = $dom->create_element("response");
-		$fixed = $dom->create_element("fixed");
-		$category = $dom->create_element("category");
-
-		$label = $dom->create_element("label");
-		$label->set_content(quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
-
-		$value= $dom->create_element("value");
-
-		//Get next code
-		if (is_numeric($nextcode))
-			$nextcode++;
-		else if (is_string($nextcode))
-			$nextcode = chr(ord($nextcode) + 1);
-
-		$value->set_content(1);
-
-		$category->append_child($label);
-		$category->append_child($value);
-
-		$contingentQuestion = $dom->create_element("contingentQuestion");
-		$length = $dom->create_element("length");
-		$text = $dom->create_element("text");
-
-		$text->set_content(quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
-		$length->set_content(24);
-		$contingentQuestion->append_child($text);
-		$contingentQuestion->append_child($length);
-		$contingentQuestion->set_attribute("varName",$varname . 'other');
-
-		$category->append_child($contingentQuestion);
-
-		$fixed->append_child($category);
-		$response->append_child($fixed);
-		$response->set_attribute("varName",$varname . quexml_cleanup($nextcode));
-
-		$question->append_child($response);
-	}
+            $st = quexml_skipto($qid,'Y'," AND c.cfieldname LIKE '+$surveyid" . "X" . $Row['gid'] . "X" . $qid . $Row['title'] . "' ");
+            if ($st !== false)
+            {
+                $quexml_skipto = $dom->create_element("quexml_skipto");
+                $quexml_skipto->set_content($st);
+                $category->append_child($quexml_skipto);
+            }
 
 
+            $fixed->append_child($category);
+
+            $response->append_child($fixed);
+        }
+        else
+            $response->append_child(quexml_create_free($free['f'],$free['len'],$Row['question']));
+
+        $response->set_attribute("varName",$varname . quexml_cleanup($Row['title']));
+
+        $question->append_child($response);
+    }
+
+    if ($other && $free==false)
+    {
+        $response = $dom->create_element("response");
+        $fixed = $dom->create_element("fixed");
+        $category = $dom->create_element("category");
+
+        $label = $dom->create_element("label");
+        $label->set_content(quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
+
+        $value= $dom->create_element("value");
+
+        //Get next code
+        if (is_numeric($nextcode))
+            $nextcode++;
+        else if (is_string($nextcode))
+                $nextcode = chr(ord($nextcode) + 1);
+
+            $value->set_content(1);
+
+        $category->append_child($label);
+        $category->append_child($value);
+
+        $contingentQuestion = $dom->create_element("contingentQuestion");
+        $length = $dom->create_element("length");
+        $text = $dom->create_element("text");
+
+        $text->set_content(quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
+        $length->set_content(24);
+        $contingentQuestion->append_child($text);
+        $contingentQuestion->append_child($length);
+        $contingentQuestion->set_attribute("varName",$varname . 'other');
+
+        $category->append_child($contingentQuestion);
+
+        $fixed->append_child($category);
+        $response->append_child($fixed);
+        $response->set_attribute("varName",$varname . quexml_cleanup($nextcode));
+
+        $question->append_child($response);
+    }
 
 
-	return;
+
+
+    return;
 
 }
 
 /**
- * from export_structure_quexml.php
- */
+* from export_structure_quexml.php
+*/
 function quexml_create_subQuestions(&$question,$qid,$varname,$use_answers = false)
 {
-	global $dom;
-	global $quexmllang ;
+    global $dom;
+    global $quexmllang ;
 
-	if ($use_answers)
-		$Query = "SELECT answer as question, code as title FROM {{answers}} WHERE qid = $qid  AND language='$quexmllang' ORDER BY sortorder ASC";
-	else
-		$Query = "SELECT * FROM {{questions}} WHERE parent_qid = $qid and scale_id = 0  AND language='$quexmllang' ORDER BY question_order ASC";
-	$QueryResult = Yii::app()->db->createCommand($Query)->query();
-	foreach($QueryResult->readAll() as $Row)
-	{
-		$subQuestion = $dom->create_element("subQuestion");
-		$text = $dom->create_element("text");
-		$text->set_content(quexml_cleanup($Row['question']));
-		$subQuestion->append_child($text);
-		$subQuestion->set_attribute("varName",$varname . quexml_cleanup($Row['title']));
-		$question->append_child($subQuestion);
-	}
+    if ($use_answers)
+        $Query = "SELECT answer as question, code as title FROM {{answers}} WHERE qid = $qid  AND language='$quexmllang' ORDER BY sortorder ASC";
+    else
+        $Query = "SELECT * FROM {{questions}} WHERE parent_qid = $qid and scale_id = 0  AND language='$quexmllang' ORDER BY question_order ASC";
+    $QueryResult = Yii::app()->db->createCommand($Query)->query();
+    foreach($QueryResult->readAll() as $Row)
+    {
+        $subQuestion = $dom->create_element("subQuestion");
+        $text = $dom->create_element("text");
+        $text->set_content(quexml_cleanup($Row['question']));
+        $subQuestion->append_child($text);
+        $subQuestion->set_attribute("varName",$varname . quexml_cleanup($Row['title']));
+        $question->append_child($subQuestion);
+    }
 
-	return;
+    return;
 }
 
 /**
- * Export quexml survey.
- */
+* Export quexml survey.
+*/
 function quexml_export($surveyi, $quexmllan)
 {
-	global $dom, $quexmllang, $surveyid;
-	$quexmllang = $quexmllan;
-	$surveyid = $surveyi;
+    global $dom, $quexmllang, $surveyid;
+    $quexmllang = $quexmllan;
+    $surveyid = $surveyi;
 
-	$qlang = new limesurvey_lang($quexmllang);
+    $qlang = new limesurvey_lang($quexmllang);
 
-	Yii::app()->loadHelper("admin/domxml_wrapper");
-	$dom = domxml_new_doc("1.0");
+    Yii::app()->loadHelper("admin/domxml_wrapper");
+    $dom = domxml_new_doc("1.0");
 
-	//Title and survey id
-	$questionnaire = $dom->create_element("questionnaire");
-	$title = $dom->create_element("title");
+    //Title and survey id
+    $questionnaire = $dom->create_element("questionnaire");
+    $title = $dom->create_element("title");
 
-	$Query = "SELECT * FROM {{surveys}},{{surveys_languagesettings}} WHERE sid=$surveyid and surveyls_survey_id=sid and surveyls_language='".$quexmllang."'";
-	$QueryResult = Yii::app()->db->createCommand($Query)->query();
-	$Row = $QueryResult->read();
-	$questionnaire->set_attribute("id", $Row['sid']);
-	$title->set_content(quexml_cleanup($Row['surveyls_title']));
-	$questionnaire->append_child($title);
+    $Query = "SELECT * FROM {{surveys}},{{surveys_languagesettings}} WHERE sid=$surveyid and surveyls_survey_id=sid and surveyls_language='".$quexmllang."'";
+    $QueryResult = Yii::app()->db->createCommand($Query)->query();
+    $Row = $QueryResult->read();
+    $questionnaire->set_attribute("id", $Row['sid']);
+    $title->set_content(quexml_cleanup($Row['surveyls_title']));
+    $questionnaire->append_child($title);
 
-	//investigator and datacollector
-	$investigator = $dom->create_element("investigator");
-	$name = $dom->create_element("name");
-	$name = $dom->create_element("firstName");
-	$name = $dom->create_element("lastName");
-	$dataCollector = $dom->create_element("dataCollector");
+    //investigator and datacollector
+    $investigator = $dom->create_element("investigator");
+    $name = $dom->create_element("name");
+    $name = $dom->create_element("firstName");
+    $name = $dom->create_element("lastName");
+    $dataCollector = $dom->create_element("dataCollector");
 
-	$questionnaire->append_child($investigator);
-	$questionnaire->append_child($dataCollector);
+    $questionnaire->append_child($investigator);
+    $questionnaire->append_child($dataCollector);
 
-	//questionnaireInfo == welcome
-	if (!empty($Row['surveyls_welcometext']))
-	{
-		$questionnaireInfo = $dom->create_element("questionnaireInfo");
-		$position = $dom->create_element("position");
-		$text = $dom->create_element("text");
-		$administration = $dom->create_element("administration");
-		$position->set_content("before");
-		$text->set_content(quexml_cleanup($Row['surveyls_welcometext']));
-		$administration->set_content("self");
-		$questionnaireInfo->append_child($position);
-		$questionnaireInfo->append_child($text);
-		$questionnaireInfo->append_child($administration);
-		$questionnaire->append_child($questionnaireInfo);
-	}
+    //questionnaireInfo == welcome
+    if (!empty($Row['surveyls_welcometext']))
+    {
+        $questionnaireInfo = $dom->create_element("questionnaireInfo");
+        $position = $dom->create_element("position");
+        $text = $dom->create_element("text");
+        $administration = $dom->create_element("administration");
+        $position->set_content("before");
+        $text->set_content(quexml_cleanup($Row['surveyls_welcometext']));
+        $administration->set_content("self");
+        $questionnaireInfo->append_child($position);
+        $questionnaireInfo->append_child($text);
+        $questionnaireInfo->append_child($administration);
+        $questionnaire->append_child($questionnaireInfo);
+    }
 
-	//section == group
-
-
-	$Query = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='$quexmllang' order by group_order ASC";
-	$QueryResult = Yii::app()->db->createCommand($Query)->query();
-
-	//for each section
-	foreach($QueryResult->readAll() as $Row)
-	{
-		$gid = $Row['gid'];
-
-		$section = $dom->create_element("section");
-
-		if (!empty($Row['group_name']))
-		{
-			$sectionInfo = $dom->create_element("sectionInfo");
-			$position = $dom->create_element("position");
-			$text = $dom->create_element("text");
-			$administration = $dom->create_element("administration");
-			$position->set_content("title");
-			$text->set_content(quexml_cleanup($Row['group_name']));
-			$administration->set_content("self");
-			$sectionInfo->append_child($position);
-			$sectionInfo->append_child($text);
-			$sectionInfo->append_child($administration);
-			$section->append_child($sectionInfo);
-		}
+    //section == group
 
 
-		if (!empty($Row['description']))
-		{
-			$sectionInfo = $dom->create_element("sectionInfo");
-			$position = $dom->create_element("position");
-			$text = $dom->create_element("text");
-			$administration = $dom->create_element("administration");
-			$position->set_content("before");
-			$text->set_content(quexml_cleanup($Row['description']));
-			$administration->set_content("self");
-			$sectionInfo->append_child($position);
-			$sectionInfo->append_child($text);
-			$sectionInfo->append_child($administration);
-			$section->append_child($sectionInfo);
-		}
+    $Query = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='$quexmllang' order by group_order ASC";
+    $QueryResult = Yii::app()->db->createCommand($Query)->query();
+
+    //for each section
+    foreach($QueryResult->readAll() as $Row)
+    {
+        $gid = $Row['gid'];
+
+        $section = $dom->create_element("section");
+
+        if (!empty($Row['group_name']))
+        {
+            $sectionInfo = $dom->create_element("sectionInfo");
+            $position = $dom->create_element("position");
+            $text = $dom->create_element("text");
+            $administration = $dom->create_element("administration");
+            $position->set_content("title");
+            $text->set_content(quexml_cleanup($Row['group_name']));
+            $administration->set_content("self");
+            $sectionInfo->append_child($position);
+            $sectionInfo->append_child($text);
+            $sectionInfo->append_child($administration);
+            $section->append_child($sectionInfo);
+        }
 
 
-
-		$section->set_attribute("id", $gid);
-
-		//boilerplate questions convert to sectionInfo elements
-		$Query = "SELECT * FROM {{questions}} WHERE sid=$surveyid AND gid = $gid AND type LIKE 'X'  AND language='$quexmllang' ORDER BY question_order ASC";
-		$QR = Yii::app()->db->createCommand($Query)->query();
-		foreach($QR->readAll() as $RowQ)
-		{
-			$sectionInfo = $dom->create_element("sectionInfo");
-			$position = $dom->create_element("position");
-			$text = $dom->create_element("text");
-			$administration = $dom->create_element("administration");
-
-			$position->set_content("before");
-			$text->set_content(quexml_cleanup($RowQ['question']));
-			$administration->set_content("self");
-			$sectionInfo->append_child($position);
-			$sectionInfo->append_child($text);
-			$sectionInfo->append_child($administration);
-
-			$section->append_child($sectionInfo);
-		}
+        if (!empty($Row['description']))
+        {
+            $sectionInfo = $dom->create_element("sectionInfo");
+            $position = $dom->create_element("position");
+            $text = $dom->create_element("text");
+            $administration = $dom->create_element("administration");
+            $position->set_content("before");
+            $text->set_content(quexml_cleanup($Row['description']));
+            $administration->set_content("self");
+            $sectionInfo->append_child($position);
+            $sectionInfo->append_child($text);
+            $sectionInfo->append_child($administration);
+            $section->append_child($sectionInfo);
+        }
 
 
 
-		//foreach question
-		$Query = "SELECT * FROM {{questions}} WHERE sid=$surveyid AND gid = $gid AND parent_qid=0 AND language='$quexmllang' AND type NOT LIKE 'X' ORDER BY question_order ASC";
-		$QR = Yii::app()->db->createCommand($Query)->query();
-		foreach($QR->readAll() as $RowQ)
-		{
-			$question = $dom->create_element("question");
-			$type = $RowQ['type'];
-			$qid = $RowQ['qid'];
+        $section->set_attribute("id", $gid);
 
-			$other = false;
-			if ($RowQ['other'] == 'Y') $other = true;
+        //boilerplate questions convert to sectionInfo elements
+        $Query = "SELECT * FROM {{questions}} WHERE sid=$surveyid AND gid = $gid AND type LIKE 'X'  AND language='$quexmllang' ORDER BY question_order ASC";
+        $QR = Yii::app()->db->createCommand($Query)->query();
+        foreach($QR->readAll() as $RowQ)
+        {
+            $sectionInfo = $dom->create_element("sectionInfo");
+            $position = $dom->create_element("position");
+            $text = $dom->create_element("text");
+            $administration = $dom->create_element("administration");
 
-			//create a new text element for each new line
-			$questiontext = explode('<br />',$RowQ['question']);
-			foreach ($questiontext as $qt)
-			{
-				$txt = quexml_cleanup($qt);
-				if (!empty($txt))
-				{
-					$text = $dom->create_element("text");
-					$text->set_content($txt);
-					$question->append_child($text);
-				}
-			}
+            $position->set_content("before");
+            $text->set_content(quexml_cleanup($RowQ['question']));
+            $administration->set_content("self");
+            $sectionInfo->append_child($position);
+            $sectionInfo->append_child($text);
+            $sectionInfo->append_child($administration);
 
-
-			//directive
-			if (!empty($RowQ['help']))
-			{
-				$directive = $dom->create_element("directive");
-				$position = $dom->create_element("position");
-				$position->set_content("during");
-				$text = $dom->create_element("text");
-				$text->set_content(quexml_cleanup($RowQ['help']));
-				$administration = $dom->create_element("administration");
-				$administration->set_content("self");
-
-				$directive->append_child($position);
-				$directive->append_child($text);
-				$directive->append_child($administration);
-
-				$question->append_child($directive);
-			}
-
-			$response = $dom->create_element("response");
-			$sgq = $surveyid . "X" . $gid . "X" . $qid;
-			$response->set_attribute("varName",$sgq);
-
-			switch ($type)
-			{
-				case "X": //BOILERPLATE QUESTION - none should appear
-
-					break;
-				case "5": //5 POINT CHOICE radio-buttons
-					$response->append_child(quexml_fixed_array(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5)));
-				$question->append_child($response);
-				break;
-				case "D": //DATE
-					$response->append_child(quexml_create_free("date","8",""));
-				$question->append_child($response);
-				break;
-				case "L": //LIST drop-down/radio-button list
-					$response->append_child(quexml_create_fixed($qid,false,false,0,$other,$sgq));
-				$question->append_child($response);
-				break;
-				case "!": //List - dropdown
-					$response->append_child(quexml_create_fixed($qid,false,false,0,$other,$sgq));
-				$question->append_child($response);
-				break;
-				case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
-					$response->append_child(quexml_create_fixed($qid,false,false,0,$other,$sgq));
-				$question->append_child($response);
-				//no comment - this should be a separate question
-				break;
-				case "R": //RANKING STYLE
-					quexml_create_subQuestions($question,$qid,$sgq,true);
-				$Query = "SELECT COUNT(*) as sc FROM {{answers}} WHERE qid = $qid AND language='$quexmllang' ";
-				$QRE = Yii::app()->db->createCommand($Query)->query();
-				//$QRE = mysql_query($Query) or die ("ERROR: $QRE<br />".mysql_error());
-				//$QROW = mysql_fetch_assoc($QRE);
-				$QROW = $QRE->read();
-				$response->append_child(quexml_create_free("integer",strlen($QROW['sc']),""));
-				$question->append_child($response);
-				break;
-				case "M": //Multiple choice checkbox
-					quexml_create_multi($question,$qid,$sgq,false,false,$other);
-				break;
-				case "P": //Multiple choice with comments checkbox + text
-					//Not yet implemented
-					quexml_create_multi($question,$qid,$sgq,false,false,$other);
-				//no comments added
-				break;
-				case "Q": //MULTIPLE SHORT TEXT
-					quexml_create_subQuestions($question,$qid,$sgq);
-				$response->append_child(quexml_create_free("text",quexml_get_lengthth($qid,"maximum_chars","10"),""));
-				$question->append_child($response);
-				break;
-				case "K": //MULTIPLE NUMERICAL
-					quexml_create_subQuestions($question,$qid,$sgq);
-				$response->append_child(quexml_create_free("integer",quexml_get_lengthth($qid,"maximum_chars","10"),""));
-				$question->append_child($response);
-				break;
-				case "N": //NUMERICAL QUESTION TYPE
-					$response->append_child(quexml_create_free("integer",quexml_get_lengthth($qid,"maximum_chars","10"),""));
-				$question->append_child($response);
-				break;
-				case "S": //SHORT FREE TEXT
-					$response->append_child(quexml_create_free("text",quexml_get_lengthth($qid,"maximum_chars","240"),""));
-				$question->append_child($response);
-				break;
-				case "T": //LONG FREE TEXT
-					$response->append_child(quexml_create_free("longtext",quexml_get_lengthth($qid,"display_rows","40"),""));
-				$question->append_child($response);
-				break;
-				case "U": //HUGE FREE TEXT
-					$response->append_child(quexml_create_free("longtext",quexml_get_lengthth($qid,"display_rows","80"),""));
-				$question->append_child($response);
-				break;
-				case "Y": //YES/NO radio-buttons
-					$response->append_child(quexml_fixed_array(array($qlang->gT("Yes") => 'Y',$qlang->gT("No") => 'N')));
-				$question->append_child($response);
-				break;
-				case "G": //GENDER drop-down list
-					$response->append_child(quexml_fixed_array(array($qlang->gT("Female") => 'F',$qlang->gT("Male") => 'M')));
-				$question->append_child($response);
-				break;
-				case "A": //ARRAY (5 POINT CHOICE) radio-buttons
-					quexml_create_subQuestions($question,$qid,$sgq);
-				$response->append_child(quexml_fixed_array(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5)));
-				$question->append_child($response);
-				break;
-				case "B": //ARRAY (10 POINT CHOICE) radio-buttons
-					quexml_create_subQuestions($question,$qid,$sgq);
-				$response->append_child(quexml_fixed_array(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5,"6" => 6,"7" => 7,"8" => 8,"9" => 9,"10" => 10)));
-				$question->append_child($response);
-				break;
-				case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-					quexml_create_subQuestions($question,$qid,$sgq);
-				$response->append_child(quexml_fixed_array(array($qlang->gT("Yes") => 'Y',$qlang->gT("Uncertain") => 'U',$qlang->gT("No") => 'N')));
-				$question->append_child($response);
-				break;
-				case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
-					quexml_create_subQuestions($question,$qid,$sgq);
-				$response->append_child(quexml_fixed_array(array($qlang->gT("Increase") => 'I',$qlang->gT("Same") => 'S',$qlang->gT("Decrease") => 'D')));
-				$question->append_child($response);
-				break;
-				case "F": //ARRAY (Flexible) - Row Format
-					//select subQuestions from answers table where QID
-					quexml_create_subQuestions($question,$qid,$sgq);
-				$response->append_child(quexml_create_fixed($qid,false,false,0,$other,$sgq));
-				$question->append_child($response);
-				//select fixed responses from
-				break;
-				case "H": //ARRAY (Flexible) - Column Format
-					quexml_create_subQuestions($question,$RowQ['qid'],$sgq);
-				$response->append_child(quexml_create_fixed($qid,true,false,0,$other,$sgq));
-				$question->append_child($response);
-				break;
-				case "1": //Dualscale multi-flexi array
-					//select subQuestions from answers table where QID
-					quexml_create_subQuestions($question,$qid,$sgq);
-				$response = $dom->create_element("response");
-				$response->append_child(quexml_create_fixed($qid,false,false,0,$other,$sgq));
-				$response2 = $dom->create_element("response");
-				$response2->set_attribute("varName",quexml_cleanup($sgq) . "_2");
-				$response2->append_child(quexml_create_fixed($qid,false,false,1,$other,$sgq));
-				$question->append_child($response);
-				$question->append_child($response2);
-				break;
-				case ":": //multi-flexi array numbers
-					quexml_create_subQuestions($question,$qid,$sgq);
-				//get multiflexible_checkbox - if set then each box is a checkbox (single fixed response)
-				$mcb  = quexml_get_lengthth($qid,'multiflexible_checkbox',-1);
-				if ($mcb != -1)
-					quexml_create_multi($question,$qid,$sgq,1);
-				else
-				{
-					//get multiflexible_max - if set then make boxes of max this width
-					$mcm = strlen(quexml_get_lengthth($qid,'multiflexible_max',1));
-					quexml_create_multi($question,$qid,$sgq,1,array('f' => 'integer', 'len' => $mcm, 'lab' => ''));
-				}
-				break;
-				case ";": //multi-flexi array text
-					quexml_create_subQuestions($question,$qid,$sgq);
-				//foreach question where scale_id = 1 this is a textbox
-				quexml_create_multi($question,$qid,$sgq,1,array('f' => 'text', 'len' => 10, 'lab' => ''));
-				break;
-				case "^": //SLIDER CONTROL - not supported
-					$response->append_child(quexml_fixed_array(array("NOT SUPPORTED:$type" => 1)));
-				$question->append_child($response);
-				break;
-			} //End Switch
+            $section->append_child($sectionInfo);
+        }
 
 
 
+        //foreach question
+        $Query = "SELECT * FROM {{questions}} WHERE sid=$surveyid AND gid = $gid AND parent_qid=0 AND language='$quexmllang' AND type NOT LIKE 'X' ORDER BY question_order ASC";
+        $QR = Yii::app()->db->createCommand($Query)->query();
+        foreach($QR->readAll() as $RowQ)
+        {
+            $question = $dom->create_element("question");
+            $type = $RowQ['type'];
+            $qid = $RowQ['qid'];
 
-			$section->append_child($question);
-		}
+            $other = false;
+            if ($RowQ['other'] == 'Y') $other = true;
+
+            //create a new text element for each new line
+            $questiontext = explode('<br />',$RowQ['question']);
+            foreach ($questiontext as $qt)
+            {
+                $txt = quexml_cleanup($qt);
+                if (!empty($txt))
+                {
+                    $text = $dom->create_element("text");
+                    $text->set_content($txt);
+                    $question->append_child($text);
+                }
+            }
 
 
-		$questionnaire->append_child($section);
-	}
+            //directive
+            if (!empty($RowQ['help']))
+            {
+                $directive = $dom->create_element("directive");
+                $position = $dom->create_element("position");
+                $position->set_content("during");
+                $text = $dom->create_element("text");
+                $text->set_content(quexml_cleanup($RowQ['help']));
+                $administration = $dom->create_element("administration");
+                $administration->set_content("self");
+
+                $directive->append_child($position);
+                $directive->append_child($text);
+                $directive->append_child($administration);
+
+                $question->append_child($directive);
+            }
+
+            $response = $dom->create_element("response");
+            $sgq = $surveyid . "X" . $gid . "X" . $qid;
+            $response->set_attribute("varName",$sgq);
+
+            switch ($type)
+            {
+                case "X": //BOILERPLATE QUESTION - none should appear
+
+                    break;
+                case "5": //5 POINT CHOICE radio-buttons
+                    $response->append_child(quexml_fixed_array(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5)));
+                    $question->append_child($response);
+                    break;
+                case "D": //DATE
+                    $response->append_child(quexml_create_free("date","8",""));
+                    $question->append_child($response);
+                    break;
+                case "L": //LIST drop-down/radio-button list
+                    $response->append_child(quexml_create_fixed($qid,false,false,0,$other,$sgq));
+                    $question->append_child($response);
+                    break;
+                case "!": //List - dropdown
+                    $response->append_child(quexml_create_fixed($qid,false,false,0,$other,$sgq));
+                    $question->append_child($response);
+                    break;
+                case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
+                    $response->append_child(quexml_create_fixed($qid,false,false,0,$other,$sgq));
+                    $question->append_child($response);
+                    //no comment - this should be a separate question
+                    break;
+                case "R": //RANKING STYLE
+                    quexml_create_subQuestions($question,$qid,$sgq,true);
+                    $Query = "SELECT COUNT(*) as sc FROM {{answers}} WHERE qid = $qid AND language='$quexmllang' ";
+                    $QRE = Yii::app()->db->createCommand($Query)->query();
+                    //$QRE = mysql_query($Query) or die ("ERROR: $QRE<br />".mysql_error());
+                    //$QROW = mysql_fetch_assoc($QRE);
+                    $QROW = $QRE->read();
+                    $response->append_child(quexml_create_free("integer",strlen($QROW['sc']),""));
+                    $question->append_child($response);
+                    break;
+                case "M": //Multiple choice checkbox
+                    quexml_create_multi($question,$qid,$sgq,false,false,$other);
+                    break;
+                case "P": //Multiple choice with comments checkbox + text
+                    //Not yet implemented
+                    quexml_create_multi($question,$qid,$sgq,false,false,$other);
+                    //no comments added
+                    break;
+                case "Q": //MULTIPLE SHORT TEXT
+                    quexml_create_subQuestions($question,$qid,$sgq);
+                    $response->append_child(quexml_create_free("text",quexml_get_lengthth($qid,"maximum_chars","10"),""));
+                    $question->append_child($response);
+                    break;
+                case "K": //MULTIPLE NUMERICAL
+                    quexml_create_subQuestions($question,$qid,$sgq);
+                    $response->append_child(quexml_create_free("integer",quexml_get_lengthth($qid,"maximum_chars","10"),""));
+                    $question->append_child($response);
+                    break;
+                case "N": //NUMERICAL QUESTION TYPE
+                    $response->append_child(quexml_create_free("integer",quexml_get_lengthth($qid,"maximum_chars","10"),""));
+                    $question->append_child($response);
+                    break;
+                case "S": //SHORT FREE TEXT
+                    $response->append_child(quexml_create_free("text",quexml_get_lengthth($qid,"maximum_chars","240"),""));
+                    $question->append_child($response);
+                    break;
+                case "T": //LONG FREE TEXT
+                    $response->append_child(quexml_create_free("longtext",quexml_get_lengthth($qid,"display_rows","40"),""));
+                    $question->append_child($response);
+                    break;
+                case "U": //HUGE FREE TEXT
+                    $response->append_child(quexml_create_free("longtext",quexml_get_lengthth($qid,"display_rows","80"),""));
+                    $question->append_child($response);
+                    break;
+                case "Y": //YES/NO radio-buttons
+                    $response->append_child(quexml_fixed_array(array($qlang->gT("Yes") => 'Y',$qlang->gT("No") => 'N')));
+                    $question->append_child($response);
+                    break;
+                case "G": //GENDER drop-down list
+                    $response->append_child(quexml_fixed_array(array($qlang->gT("Female") => 'F',$qlang->gT("Male") => 'M')));
+                    $question->append_child($response);
+                    break;
+                case "A": //ARRAY (5 POINT CHOICE) radio-buttons
+                    quexml_create_subQuestions($question,$qid,$sgq);
+                    $response->append_child(quexml_fixed_array(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5)));
+                    $question->append_child($response);
+                    break;
+                case "B": //ARRAY (10 POINT CHOICE) radio-buttons
+                    quexml_create_subQuestions($question,$qid,$sgq);
+                    $response->append_child(quexml_fixed_array(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5,"6" => 6,"7" => 7,"8" => 8,"9" => 9,"10" => 10)));
+                    $question->append_child($response);
+                    break;
+                case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                    quexml_create_subQuestions($question,$qid,$sgq);
+                    $response->append_child(quexml_fixed_array(array($qlang->gT("Yes") => 'Y',$qlang->gT("Uncertain") => 'U',$qlang->gT("No") => 'N')));
+                    $question->append_child($response);
+                    break;
+                case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
+                    quexml_create_subQuestions($question,$qid,$sgq);
+                    $response->append_child(quexml_fixed_array(array($qlang->gT("Increase") => 'I',$qlang->gT("Same") => 'S',$qlang->gT("Decrease") => 'D')));
+                    $question->append_child($response);
+                    break;
+                case "F": //ARRAY (Flexible) - Row Format
+                    //select subQuestions from answers table where QID
+                    quexml_create_subQuestions($question,$qid,$sgq);
+                    $response->append_child(quexml_create_fixed($qid,false,false,0,$other,$sgq));
+                    $question->append_child($response);
+                    //select fixed responses from
+                    break;
+                case "H": //ARRAY (Flexible) - Column Format
+                    quexml_create_subQuestions($question,$RowQ['qid'],$sgq);
+                    $response->append_child(quexml_create_fixed($qid,true,false,0,$other,$sgq));
+                    $question->append_child($response);
+                    break;
+                case "1": //Dualscale multi-flexi array
+                    //select subQuestions from answers table where QID
+                    quexml_create_subQuestions($question,$qid,$sgq);
+                    $response = $dom->create_element("response");
+                    $response->append_child(quexml_create_fixed($qid,false,false,0,$other,$sgq));
+                    $response2 = $dom->create_element("response");
+                    $response2->set_attribute("varName",quexml_cleanup($sgq) . "_2");
+                    $response2->append_child(quexml_create_fixed($qid,false,false,1,$other,$sgq));
+                    $question->append_child($response);
+                    $question->append_child($response2);
+                    break;
+                case ":": //multi-flexi array numbers
+                    quexml_create_subQuestions($question,$qid,$sgq);
+                    //get multiflexible_checkbox - if set then each box is a checkbox (single fixed response)
+                    $mcb  = quexml_get_lengthth($qid,'multiflexible_checkbox',-1);
+                    if ($mcb != -1)
+                        quexml_create_multi($question,$qid,$sgq,1);
+                    else
+                    {
+                        //get multiflexible_max - if set then make boxes of max this width
+                        $mcm = strlen(quexml_get_lengthth($qid,'multiflexible_max',1));
+                        quexml_create_multi($question,$qid,$sgq,1,array('f' => 'integer', 'len' => $mcm, 'lab' => ''));
+                    }
+                    break;
+                case ";": //multi-flexi array text
+                    quexml_create_subQuestions($question,$qid,$sgq);
+                    //foreach question where scale_id = 1 this is a textbox
+                    quexml_create_multi($question,$qid,$sgq,1,array('f' => 'text', 'len' => 10, 'lab' => ''));
+                    break;
+                case "^": //SLIDER CONTROL - not supported
+                    $response->append_child(quexml_fixed_array(array("NOT SUPPORTED:$type" => 1)));
+                    $question->append_child($response);
+                    break;
+            } //End Switch
 
 
-	$dom->append_child($questionnaire);
 
-	return $dom->dump_mem(true,'UTF-8');
+
+            $section->append_child($question);
+        }
+
+
+        $questionnaire->append_child($section);
+    }
+
+
+    $dom->append_child($questionnaire);
+
+    return $dom->dump_mem(true,'UTF-8');
 }
 
 /**
- * From adodb
- *
- * Different SQL databases used different methods to combine strings together.
- * This function provides a wrapper.
- *
- * param s	variable number of string parameters
- *
- * Usage: $db->Concat($str1,$str2);
- *
- * @return concatenated string
- */
+* From adodb
+*
+* Different SQL databases used different methods to combine strings together.
+* This function provides a wrapper.
+*
+* param s	variable number of string parameters
+*
+* Usage: $db->Concat($str1,$str2);
+*
+* @return concatenated string
+*/
 function concat()
 {
     $arr = func_get_args();
@@ -1449,158 +1452,158 @@ function concat()
 }
 
 /**
- * LSRC csv survey export
- */
+* LSRC csv survey export
+*/
 function lsrccsv_export($surveyid)
 {
-	// DUMP THE RELATED DATA FOR A SINGLE SURVEY INTO A SQL FILE FOR IMPORTING LATER ON OR ON ANOTHER SURVEY SETUP
-	// DUMP ALL DATA WITH RELATED SID FROM THE FOLLOWING TABLES
-	// 1. Surveys
-	// 2. Surveys Language Table
-	// 3. Groups
-	// 4. Questions
-	// 5. Answers
-	// 6. Conditions
-	// 7. Label Sets
-	// 8. Labels
-	// 9. Question Attributes
-	// 10. Assessments
-	// 11. Quota
-	// 12. Quota Members
+    // DUMP THE RELATED DATA FOR A SINGLE SURVEY INTO A SQL FILE FOR IMPORTING LATER ON OR ON ANOTHER SURVEY SETUP
+    // DUMP ALL DATA WITH RELATED SID FROM THE FOLLOWING TABLES
+    // 1. Surveys
+    // 2. Surveys Language Table
+    // 3. Groups
+    // 4. Questions
+    // 5. Answers
+    // 6. Conditions
+    // 7. Label Sets
+    // 8. Labels
+    // 9. Question Attributes
+    // 10. Assessments
+    // 11. Quota
+    // 12. Quota Members
 
-	if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+    if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
 
-	if (!$surveyid)
-	{
-	    echo $htmlheader
-	    ."<br />\n"
-	    ."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-	    ."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-	    .$clang->gT("Export Survey")."</strong></td></tr>\n"
-	    ."\t<tr><td align='center'>\n"
-	    ."<br /><strong><font color='red'>"
-	    .$clang->gT("Error")."</font></strong><br />\n"
-	    .$clang->gT("No SID has been provided. Cannot dump survey")."<br />\n"
-	    ."<br /><input type='submit' value='"
-	    .$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n"
-	    ."\t</td></tr>\n"
-	    ."</table>\n"
-	    ."</body></html>\n";
-	    exit;
-	}
+    if (!$surveyid)
+    {
+        echo $htmlheader
+        ."<br />\n"
+        ."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+        ."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+        .$clang->gT("Export Survey")."</strong></td></tr>\n"
+        ."\t<tr><td align='center'>\n"
+        ."<br /><strong><font color='red'>"
+        .$clang->gT("Error")."</font></strong><br />\n"
+        .$clang->gT("No SID has been provided. Cannot dump survey")."<br />\n"
+        ."<br /><input type='submit' value='"
+        .$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n"
+        ."\t</td></tr>\n"
+        ."</table>\n"
+        ."</body></html>\n";
+        exit;
+    }
 
-	$dbversionnumber = getGlobalSetting('DBVersion');
-	$dumphead = "# LimeSurvey Survey Dump\n"
-	. "# DBVersion $dbversionnumber\n"
-	. "# This is a dumped survey from the LimeSurvey Script\n"
-	. "# http://www.limesurvey.org/\n"
-	. "# Do not change this header!\n";
+    $dbversionnumber = getGlobalSetting('DBVersion');
+    $dumphead = "# LimeSurvey Survey Dump\n"
+    . "# DBVersion $dbversionnumber\n"
+    . "# This is a dumped survey from the LimeSurvey Script\n"
+    . "# http://www.limesurvey.org/\n"
+    . "# Do not change this header!\n";
 
-	//1: Surveys table
-	$squery = "SELECT *
-	           FROM {{surveys}}
-			   WHERE sid=$surveyid";
-	$sdump = BuildCSVFromQuery($squery);
+    //1: Surveys table
+    $squery = "SELECT *
+    FROM {{surveys}}
+    WHERE sid=$surveyid";
+    $sdump = BuildCSVFromQuery($squery);
 
-	//2: Surveys Languagsettings table
-	$slsquery = "SELECT *
-	             FROM {{surveys_languagesettings}}
-				 WHERE surveyls_survey_id=$surveyid";
-	$slsdump = BuildCSVFromQuery($slsquery);
+    //2: Surveys Languagsettings table
+    $slsquery = "SELECT *
+    FROM {{surveys_languagesettings}}
+    WHERE surveyls_survey_id=$surveyid";
+    $slsdump = BuildCSVFromQuery($slsquery);
 
-	//3: Groups Table
-	$gquery = "SELECT *
-	           FROM {{groups}}
-			   WHERE sid=$surveyid
-			   ORDER BY gid";
-	$gdump = BuildCSVFromQuery($gquery);
+    //3: Groups Table
+    $gquery = "SELECT *
+    FROM {{groups}}
+    WHERE sid=$surveyid
+    ORDER BY gid";
+    $gdump = BuildCSVFromQuery($gquery);
 
-	//4: Questions Table
-	$qquery = "SELECT *
-	           FROM {{questions}}
-			   WHERE sid=$surveyid
-			   ORDER BY qid";
-	$qdump = BuildCSVFromQuery($qquery);
+    //4: Questions Table
+    $qquery = "SELECT *
+    FROM {{questions}}
+    WHERE sid=$surveyid
+    ORDER BY qid";
+    $qdump = BuildCSVFromQuery($qquery);
 
-	//5: Answers table
-	$aquery = "SELECT {{answers}}.*
-	           FROM {{answers}}, {{questions}}
-			   WHERE {{answers}}.language={{questions}}.language
-			   AND {{answers}}.qid={{questions}}.qid
-			   AND {{questions}}.sid=$surveyid";
-	$adump = BuildCSVFromQuery($aquery);
+    //5: Answers table
+    $aquery = "SELECT {{answers}}.*
+    FROM {{answers}}, {{questions}}
+    WHERE {{answers}}.language={{questions}}.language
+    AND {{answers}}.qid={{questions}}.qid
+    AND {{questions}}.sid=$surveyid";
+    $adump = BuildCSVFromQuery($aquery);
 
-	//6: Conditions table
-	$cquery = "SELECT DISTINCT {{conditions}}.*
-	           FROM {{conditions}}, {{questions}}
-			   WHERE {{conditions}}.qid={{questions}}.qid
-			   AND {{questions}}.sid=$surveyid";
-	$cdump = BuildCSVFromQuery($cquery);
+    //6: Conditions table
+    $cquery = "SELECT DISTINCT {{conditions}}.*
+    FROM {{conditions}}, {{questions}}
+    WHERE {{conditions}}.qid={{questions}}.qid
+    AND {{questions}}.sid=$surveyid";
+    $cdump = BuildCSVFromQuery($cquery);
 
-	//7: Label Sets
-	$lsquery = "SELECT DISTINCT {{labelsets}}.lid, label_name, {{labelsets}}.languages
-	            FROM {{labelsets}}, {{questions}}
-				WHERE ({{labelsets}}.lid={{questions}}.lid or {{labelsets}}.lid={{questions}}.lid1)
-				AND type IN ('F', 'H', 'W', 'Z', '1', ':', ';')
-				AND sid=$surveyid";
-	$lsdump = BuildCSVFromQuery($lsquery);
+    //7: Label Sets
+    $lsquery = "SELECT DISTINCT {{labelsets}}.lid, label_name, {{labelsets}}.languages
+    FROM {{labelsets}}, {{questions}}
+    WHERE ({{labelsets}}.lid={{questions}}.lid or {{labelsets}}.lid={{questions}}.lid1)
+    AND type IN ('F', 'H', 'W', 'Z', '1', ':', ';')
+    AND sid=$surveyid";
+    $lsdump = BuildCSVFromQuery($lsquery);
 
-	//8: Labels
-	$lquery = "SELECT {{labels}}.lid, {{labels}}.code, {{labels}}.title, {{labels}}.sortorder,{{labels}}.language
-	           FROM {{labels}}, {{questions}}
-			   WHERE ({{labels}}.lid={{questions}}.lid or {{labels}}.lid={{questions}}.lid1)
-			   AND type in ('F', 'W', 'H', 'Z', '1', ':', ';')
-			   AND sid=$surveyid
-			   GROUP BY {{labels}}.lid, {{labels}}.code, {{labels}}.title, {{labels}}.sortorder,{{labels}}.language";
-	$ldump = BuildCSVFromQuery($lquery);
+    //8: Labels
+    $lquery = "SELECT {{labels}}.lid, {{labels}}.code, {{labels}}.title, {{labels}}.sortorder,{{labels}}.language
+    FROM {{labels}}, {{questions}}
+    WHERE ({{labels}}.lid={{questions}}.lid or {{labels}}.lid={{questions}}.lid1)
+    AND type in ('F', 'W', 'H', 'Z', '1', ':', ';')
+    AND sid=$surveyid
+    GROUP BY {{labels}}.lid, {{labels}}.code, {{labels}}.title, {{labels}}.sortorder,{{labels}}.language";
+    $ldump = BuildCSVFromQuery($lquery);
 
-	//9: Question Attributes
-	$query = "SELECT DISTINCT {{question_attributes}}.*
-	          FROM {{question_attributes}}, {{questions}}
-			  WHERE {{question_attributes}}.qid={{questions}}.qid
-			  AND {{questions}}.sid=$surveyid";
-	$qadump = BuildCSVFromQuery($query);
+    //9: Question Attributes
+    $query = "SELECT DISTINCT {{question_attributes}}.*
+    FROM {{question_attributes}}, {{questions}}
+    WHERE {{question_attributes}}.qid={{questions}}.qid
+    AND {{questions}}.sid=$surveyid";
+    $qadump = BuildCSVFromQuery($query);
 
-	//10: Assessments;
-	$query = "SELECT {{assessments}}.*
-	          FROM {{assessments}}
-			  WHERE {{assessments}}.sid=$surveyid";
-	$asdump = BuildCSVFromQuery($query);
+    //10: Assessments;
+    $query = "SELECT {{assessments}}.*
+    FROM {{assessments}}
+    WHERE {{assessments}}.sid=$surveyid";
+    $asdump = BuildCSVFromQuery($query);
 
-	//11: Quota;
-	$query = "SELECT {{quota}}.*
-	          FROM {{quota}}
-			  WHERE {{quota}}.sid=$surveyid";
-	$quotadump = BuildCSVFromQuery($query);
+    //11: Quota;
+    $query = "SELECT {{quota}}.*
+    FROM {{quota}}
+    WHERE {{quota}}.sid=$surveyid";
+    $quotadump = BuildCSVFromQuery($query);
 
-	//12: Quota Members;
-	$query = "SELECT {{quota_members}}.*
-	          FROM {{quota_members}}
-			  WHERE {{quota_members}}.sid=$surveyid";
-	$quotamemdump = BuildCSVFromQuery($query);
+    //12: Quota Members;
+    $query = "SELECT {{quota_members}}.*
+    FROM {{quota_members}}
+    WHERE {{quota_members}}.sid=$surveyid";
+    $quotamemdump = BuildCSVFromQuery($query);
 
-	$lsrcString = $dumphead. $sdump. $gdump. $qdump. $adump. $cdump. $lsdump. $ldump. $qadump. $asdump. $slsdump. $quotadump. $quotamemdump."\n";
+    $lsrcString = $dumphead. $sdump. $gdump. $qdump. $adump. $cdump. $lsdump. $ldump. $qadump. $asdump. $slsdump. $quotadump. $quotamemdump."\n";
 
-	//Select title as Filename and save
-	$surveyTitleSql = "SELECT surveyls_title
-		             FROM {{surveys_languagesettings}}
-					 WHERE surveyls_survey_id=$surveyid";
-	$surveyTitleRs = Yii::app()->createCommand($surveyTitleSql)->query();
-	$surveyTitle = $surveyTitleRs->fetch();
+    //Select title as Filename and save
+    $surveyTitleSql = "SELECT surveyls_title
+    FROM {{surveys_languagesettings}}
+    WHERE surveyls_survey_id=$surveyid";
+    $surveyTitleRs = Yii::app()->createCommand($surveyTitleSql)->query();
+    $surveyTitle = $surveyTitleRs->fetch();
 
-	$fn = "$surveyTitle[surveyls_title].csv";
+    $fn = "$surveyTitle[surveyls_title].csv";
 
-	header("Content-Type: application/download");
-	header("Content-Disposition: attachment; filename=$fn");
-	header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-	header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-	header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-	header("Pragma: cache");                          // HTTP/1.0
+    header("Content-Type: application/download");
+    header("Content-Disposition: attachment; filename=$fn");
+    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
+    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    header("Pragma: cache");                          // HTTP/1.0
 
-	echo $lsrcString;
-	//header("Location: $scriptname?sid=$surveyid");
-	exit;
+    echo $lsrcString;
+    //header("Location: $scriptname?sid=$surveyid");
+    exit;
 }
 
 // DUMP THE RELATED DATA FOR A SINGLE QUESTION INTO A SQL FILE FOR IMPORTING LATER ON OR
@@ -1610,110 +1613,110 @@ function lsrccsv_export($surveyid)
 
 function group_export($action, $surveyid, $gid)
 {
-	$fn = "limesurvey_group_$gid.lsg";
-	$xml = getXMLWriter();
+    $fn = "limesurvey_group_$gid.lsg";
+    $xml = getXMLWriter();
 
 
-	if($action=='exportstructureLsrcCsvGroup')
-	{
-	    include_once(APPPATH.'/remotecontrol/lsrc.config.php');
-	    //Select group_name as Filename and save
-	    $group = Groups::model()->findByAttributes(array('surveyid' => $surveyid, 'gid' => $gid));
-	    $groupTitle = $group->title;
-	    $xml->openURI('remotecontrol/'.$queDir.substr($groupTitle,0,20).".lsq");
-	}
-	else
-	{
-		header("Content-Type: text/html/force-download");
-		header("Content-Disposition: attachment; filename=$fn");
-		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-		header("Pragma: cache");                // HTTP/1.0
+    if($action=='exportstructureLsrcCsvGroup')
+    {
+        include_once(APPPATH.'/remotecontrol/lsrc.config.php');
+        //Select group_name as Filename and save
+        $group = Groups::model()->findByAttributes(array('surveyid' => $surveyid, 'gid' => $gid));
+        $groupTitle = $group->title;
+        $xml->openURI('remotecontrol/'.$queDir.substr($groupTitle,0,20).".lsq");
+    }
+    else
+    {
+        header("Content-Type: text/html/force-download");
+        header("Content-Disposition: attachment; filename=$fn");
+        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
+        header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Pragma: cache");                // HTTP/1.0
 
-	    $xml->openURI('php://output');
-	}
+        $xml->openURI('php://output');
+    }
 
-	$xml->setIndent(true);
-	$xml->startDocument('1.0', 'UTF-8');
-	$xml->startElement('document');
-	$xml->writeElement('LimeSurveyDocType','Group');
-	$xml->writeElement('DBVersion', getGlobalSetting("DBVersion"));
-	$xml->startElement('languages');
+    $xml->setIndent(true);
+    $xml->startDocument('1.0', 'UTF-8');
+    $xml->startElement('document');
+    $xml->writeElement('LimeSurveyDocType','Group');
+    $xml->writeElement('DBVersion', getGlobalSetting("DBVersion"));
+    $xml->startElement('languages');
 
-	$lresult = Groups::model()->findAllByAttributes(array('gid' => $gid), array('group' => 'language'));
-	foreach($lresult as $row)
-	{
-	    $xml->writeElement('language',$row->language);
-	}
-	$xml->endElement();
-	group_getXMLStructure($xml,$gid);
-	$xml->endElement(); // close columns
-	$xml->endDocument();
-	exit;
+    $lresult = Groups::model()->findAllByAttributes(array('gid' => $gid), array('group' => 'language'));
+    foreach($lresult as $row)
+    {
+        $xml->writeElement('language',$row->language);
+    }
+    $xml->endElement();
+    group_getXMLStructure($xml,$gid);
+    $xml->endElement(); // close columns
+    $xml->endDocument();
+    exit;
 }
 
 function group_getXMLStructure($xml,$gid)
 {
     // Groups
     $gquery = "SELECT *
-               FROM {{groups}}
-               WHERE gid=$gid";
+    FROM {{groups}}
+    WHERE gid=$gid";
     BuildXMLFromQuery($xml,$gquery);
 
     // Questions table
     $qquery = "SELECT *
-               FROM {{questions}}
-               WHERE gid=$gid and parent_qid=0 order by question_order, language, scale_id";
+    FROM {{questions}}
+    WHERE gid=$gid and parent_qid=0 order by question_order, language, scale_id";
     BuildXMLFromQuery($xml,$qquery);
 
     // Questions table - Subquestions
     $qquery = "SELECT *
-               FROM {{questions}}
-               WHERE gid=$gid and parent_qid>0 order by question_order, language, scale_id";
+    FROM {{questions}}
+    WHERE gid=$gid and parent_qid>0 order by question_order, language, scale_id";
     BuildXMLFromQuery($xml,$qquery,'subquestions');
 
     //Answers
     $aquery = "SELECT DISTINCT {{answers}}.*
-               FROM {{answers}}, {{questions}}
-               WHERE ({{answers}}.qid={{questions}}.qid)
-               AND ({{questions}}.gid=$gid)";
+    FROM {{answers}}, {{questions}}
+    WHERE ({{answers}}.qid={{questions}}.qid)
+    AND ({{questions}}.gid=$gid)";
     BuildXMLFromQuery($xml,$aquery);
 
     //Conditions - THIS CAN ONLY EXPORT CONDITIONS THAT RELATE TO THE SAME GROUP
     $cquery = "SELECT DISTINCT c.*
-               FROM {{conditions}} c, {{questions}} q, {{questions}} b
-               WHERE (c.cqid=q.qid)
-               AND (c.qid=b.qid)
-               AND (q.gid={$gid})
-               AND (b.gid={$gid})";
+    FROM {{conditions}} c, {{questions}} q, {{questions}} b
+    WHERE (c.cqid=q.qid)
+    AND (c.qid=b.qid)
+    AND (q.gid={$gid})
+    AND (b.gid={$gid})";
     BuildXMLFromQuery($xml,$cquery,'conditions');
 
     //Question attributes
     $surveyid=Yii::app()->db->createCommand("select sid from {{groups}} where gid={$gid}")->query()->read();
     $surveyid=$surveyid['sid'];
     $sBaseLanguage=Survey::model()->findByPk($surveyid)->language;
-	$platform = Yii::app()->db->getDriverName();
+    $platform = Yii::app()->db->getDriverName();
     if ($platform == 'odbc_mssql' || $platform == 'odbtp' || $platform == 'mssql_n' || $platform =='mssqlnative')
     {
         $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value
-          FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.gid={$gid}
-          where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000))";
+        FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.gid={$gid}
+        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000))";
     }
     else {
         $query="SELECT qa.qid, qa.attribute, qa.value
-          FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.gid={$gid}
-          where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value";
+        FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.gid={$gid}
+        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value";
     }
     BuildXMLFromQuery($xml,$query,'question_attributes');
 
     // Default values
     $query = "SELECT dv.*
-                FROM {{defaultvalues}} dv
-                JOIN {{questions}} ON {{questions}}.qid = dv.qid
-                AND {{questions}}.language=dv.language
-                AND {{questions}}.gid=$gid
-                order by dv.language, dv.scale_id";
+    FROM {{defaultvalues}} dv
+    JOIN {{questions}} ON {{questions}}.qid = dv.qid
+    AND {{questions}}.language=dv.language
+    AND {{questions}}.gid=$gid
+    order by dv.language, dv.scale_id";
     BuildXMLFromQuery($xml,$query,'defaultvalues');
 }
 
@@ -1727,65 +1730,65 @@ function group_getXMLStructure($xml,$gid)
 
 function question_export($action, $surveyid, $gid, $qid)
 {
-	$fn = "limesurvey_question_$qid.lsq";
-	$xml = getXMLWriter();
+    $fn = "limesurvey_question_$qid.lsq";
+    $xml = getXMLWriter();
 
-	if($action=='exportstructureLsrcCsvQuestion')
-	{
-	    include_once(APPPATH.'/remotecontrol/lsrc.config.php');
-	    //Select title as Filename and save
-	    $question = Questions::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'qid' => $qid));
-	    $questionTitle = $question->title;
-	    $xml->openURI('remotecontrol/'.$queDir.substr($questionTitle,0,20).".lsq");
-	}
-	else
-	{
-		header("Content-Type: text/html/force-download");
-		header("Content-Disposition: attachment; filename=$fn");
-		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-		header("Pragma: cache");
-                       // HTTP/1.0
-	    $xml->openURI('php://output');
-	}
+    if($action=='exportstructureLsrcCsvQuestion')
+    {
+        include_once(APPPATH.'/remotecontrol/lsrc.config.php');
+        //Select title as Filename and save
+        $question = Questions::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'qid' => $qid));
+        $questionTitle = $question->title;
+        $xml->openURI('remotecontrol/'.$queDir.substr($questionTitle,0,20).".lsq");
+    }
+    else
+    {
+        header("Content-Type: text/html/force-download");
+        header("Content-Disposition: attachment; filename=$fn");
+        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
+        header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Pragma: cache");
+        // HTTP/1.0
+        $xml->openURI('php://output');
+    }
 
-	$xml->setIndent(true);
-	$xml->startDocument('1.0', 'UTF-8');
-	$xml->startElement('document');
-	$xml->writeElement('LimeSurveyDocType','Question');
-	$xml->writeElement('DBVersion', getGlobalSetting('DBVersion'));
-	$xml->startElement('languages');
+    $xml->setIndent(true);
+    $xml->startDocument('1.0', 'UTF-8');
+    $xml->startElement('document');
+    $xml->writeElement('LimeSurveyDocType','Question');
+    $xml->writeElement('DBVersion', getGlobalSetting('DBVersion'));
+    $xml->startElement('languages');
 
-	$questions = Questions::model()->find('qid=:qid or parent_qid=:pqid', array(':qid' => $qid, ':pqid' => $qid));
-	$xml->writeElement('language',$questions->language);
+    $questions = Questions::model()->find('qid=:qid or parent_qid=:pqid', array(':qid' => $qid, ':pqid' => $qid));
+    $xml->writeElement('language',$questions->language);
 
-	$xml->endElement();
-	question_getXMLStructure($xml,$gid,$qid);
-	$xml->endElement(); // close columns
-	$xml->endDocument();
-	exit;
+    $xml->endElement();
+    question_getXMLStructure($xml,$gid,$qid);
+    $xml->endElement(); // close columns
+    $xml->endDocument();
+    exit;
 }
 
 function question_getXMLStructure($xml,$gid,$qid)
 {
     // Questions table
     $qquery = "SELECT *
-               FROM {{questions}}
-               WHERE qid=$qid and parent_qid=0 order by language, scale_id, question_order";
+    FROM {{questions}}
+    WHERE qid=$qid and parent_qid=0 order by language, scale_id, question_order";
     BuildXMLFromQuery($xml,$qquery);
 
     // Questions table - Subquestions
     $qquery = "SELECT *
-               FROM {{questions}}
-               WHERE parent_qid=$qid order by language, scale_id, question_order";
+    FROM {{questions}}
+    WHERE parent_qid=$qid order by language, scale_id, question_order";
     BuildXMLFromQuery($xml,$qquery,'subquestions');
 
 
     // Answers table
     $aquery = "SELECT *
-               FROM {{answers}}
-               WHERE qid = $qid order by language, scale_id, sortorder";
+    FROM {{answers}}
+    WHERE qid = $qid order by language, scale_id, sortorder";
     BuildXMLFromQuery($xml,$aquery);
 
 
@@ -1793,26 +1796,26 @@ function question_getXMLStructure($xml,$gid,$qid)
     // Question attributes
     $surveyid=Yii::app()->db->createCommand("select sid from {{groups}} where gid={$gid}")->query();
     $surveyid=$surveyid->read();
-	$surveyid=$surveyid['sid'];
+    $surveyid=$surveyid['sid'];
     $sBaseLanguage=Survey::model()->findByPk($surveyid)->language;
-	$platform = Yii::app()->db->getDriverName();
+    $platform = Yii::app()->db->getDriverName();
     if ($platform == 'odbc_mssql' || $platform == 'odbtp' || $platform == 'mssql_n' || $platform =='mssqlnative')
     {
         $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value
-          FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.qid={$qid}
-          where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000))";
+        FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.qid={$qid}
+        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000))";
     }
     else {
         $query="SELECT qa.qid, qa.attribute, qa.value
-          FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.qid={$qid}
-          where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value";
+        FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.qid={$qid}
+        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value";
     }
     BuildXMLFromQuery($xml,$query);
 
     // Default values
     $query = "SELECT *
-              FROM {{defaultvalues}}
-              WHERE qid=$qid  order by language, scale_id";
+    FROM {{defaultvalues}}
+    WHERE qid=$qid  order by language, scale_id";
     BuildXMLFromQuery($xml,$query);
 
 }
@@ -1890,11 +1893,11 @@ function tokens_export($surveyid)
     {
         $tokenoutput .=", $attr_name";
         if (isset($attrfielddescr[$attr_name]))
-        $tokenoutput .=" <".str_replace(","," ",$attrfielddescr[$attr_name]).">";
+            $tokenoutput .=" <".str_replace(","," ",$attrfielddescr[$attr_name]).">";
     }
     $tokenoutput .="\n";
 
-	Yii::import('application.libraries.Date_Time_Converter', true);
+    Yii::import('application.libraries.Date_Time_Converter', true);
 
     foreach($bresult->readAll() as $brow)
     {
