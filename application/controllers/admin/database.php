@@ -772,7 +772,7 @@ class database extends Survey_Common_Action
                         }
                         if ($oldtype != Yii::app()->request->getPost('type'))
                         {
-                            Questions::model()->updateAll(array('type'=>Yii::app()->request->getPost('type')), 'parent_qid=:qid', array(':gid'=>$qid));
+                            Questions::model()->updateAll(array('type'=>Yii::app()->request->getPost('type')), 'parent_qid=:qid', array(':qid'=>$qid));
                         }
 
                         Answers::model()->deleteAllByAttributes(array('qid'=>$qid, 'scale_id'=>$iAnswerScales));

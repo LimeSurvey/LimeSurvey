@@ -272,6 +272,7 @@ function getToolTip(type){
 
     if (code == ":") code = "COLON";
     else if(code == "|") code = "PIPE";
+    else if(code == "*") code = "EQUATION";
 
     if (multiple > 0){
         returnval = '';
