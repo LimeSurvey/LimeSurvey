@@ -121,7 +121,7 @@ if ($subaction == "id")
     $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 
     //SHOW HEADER
-    if (!isset($_POST['sql']) || !$_POST['sql']) {$browseoutput .= $surveyoptions;} // Don't show options if coming from tokens/statistics script
+    if (!isset($_SESSION['sql']) || !$_SESSION['sql']) {$browseoutput .= $surveyoptions;} // Don't show options if coming from tokens/statistics script
     //FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 
     $fncount = 0;
@@ -198,10 +198,9 @@ if ($subaction == "id")
     else
         $idquery .= " WHERE ";
     if ($id < 1) { $id = 1; }
-    if (isset($_POST['sql']) && $_POST['sql'])
+    if (isset($_SESSION['sql']) && $_SESSION['sql'])
     {
-        if (get_magic_quotes_gpc()) {$idquery .= stripslashes($_POST['sql']);}
-        else {$idquery .= "{$_POST['sql']}";}
+        $idquery .= $_SESSION['sql'];
     }
     else {$idquery .= "$surveytable.id = $id";}
     $idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg());
@@ -318,20 +317,21 @@ elseif ($subaction == "all")
                           var noFilesSelectedForDeletion = '".$clang->gT('Please select at least one file for deletion','js')."';
                           var noFilesSelectedForDnld = '".$clang->gT('Please select at least one file for download','js')."';
                         </script>\n";
-    if (!isset($_POST['sql']))
-    {$browseoutput .= $surveyoptions;} //don't show options when called from another script with a filter on
-    else
+    $browseoutput .= $surveyoptions;
+    $bClearFilter=returnglobal('clearfilter');
+    if ($bClearFilter)
     {
-        $browseoutput .= "\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Browse Responses").":</strong> $surveyname</td></tr>\n"
-                ."\n<tr><td><table width='100%' align='center' border='0' bgcolor='#EFEFEF'>\n"
-                ."\t<tr>\n"
-                ."<td align='center'>\n"
-                ."".$clang->gT("Showing Filtered Results")."<br />\n"
-                ."&nbsp;[<a href=\"javascript:window.close()\">".$clang->gT("Close")."</a>]"
-                ."</font></td>\n"
-                ."\t</tr>\n"
-                ."</table></td></tr>\n";
-
+        unset($_SESSION['sql']);
+    }
+    if (isset($_SESSION['sql']))
+    {
+        $browseoutput .= "<form action='$scriptname?clearfilter=1' method='post'>
+        <p>".$clang->gT("Note:").'&nbsp;'.$clang->gT("Showing Filtered Results")." "
+        ."&nbsp;<input type='submit' value='".$clang->gT("Remove filter")."'>
+        <input type='hidden' name='sid' value='$surveyid' />
+        <input type='hidden' name='action' value='browse' />
+        <input type='hidden' name='subaction' value='all' />
+        </p></form>\n";
     }
 
     //Delete Individual answer using inrow delete buttons/links - checked
@@ -603,9 +603,9 @@ elseif ($subaction == "all")
     if ($limit > $dtcount) {$limit=$dtcount;}
 
     //NOW LETS SHOW THE DATA
-    if (isset($_POST['sql']))
+    if (isset($_SESSION['sql']))
     {
-        if ($_POST['sql'] == "NULL" )
+        if ($_SESSION['sql'] == "NULL" )
         {
             if ($surveyinfo['anonymized'] == "N" && db_tables_exist($tokentable))
                 $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
@@ -641,9 +641,9 @@ elseif ($subaction == "all")
             {
                 $dtquery .= " AND submitdate IS NOT NULL ";
             }
-            if (stripcslashes($_POST['sql']) !== "")
+            if ($_SESSION['sql'] !== "")
             {
-               // $dtquery .= ' AND '.stripcslashes($_POST['sql'])." ";
+                $dtquery .= ' AND '.$_SESSION['sql']." ";
             }
             $dtquery .= " ORDER BY {$surveytable}.id";
         }
