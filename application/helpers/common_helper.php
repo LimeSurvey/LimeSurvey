@@ -3112,6 +3112,38 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Multiple numeric inputs sum must equal this value'),
     "caption"=>$clang->gT('Equals sum value'));
 
+    $qattributes["em_validation_q"]=array(
+    "types"=>";:STUNKQ",
+    'category'=>$clang->gT('Logic'),
+    'sortorder'=>200,
+    'inputtype'=>'textarea',
+    "help"=>$clang->gT('Boolean equation to validate the whole question.'),
+    "caption"=>$clang->gT('Question Validation Equation'));
+
+    $qattributes["em_validation_q_tip"]=array(
+    "types"=>";:STUNKQ",
+    'category'=>$clang->gT('Logic'),
+    'sortorder'=>210,
+    'inputtype'=>'textarea',
+    "help"=>$clang->gT('Tip to show user describing the Question Validation Equation.'),
+    "caption"=>$clang->gT('Question Validation Tip'));
+
+    $qattributes["em_validation_sq"]=array(
+    "types"=>";:KQ",
+    'category'=>$clang->gT('Logic'),
+    'sortorder'=>220,
+    'inputtype'=>'textarea',
+    "help"=>$clang->gT('Boolean equation to validate each sub-question.'),
+    "caption"=>$clang->gT('Sub-Question Validation Equation'));
+
+    $qattributes["em_validation_sq_tip"]=array(
+    "types"=>";:KQ",
+    'category'=>$clang->gT('Logic'),
+    'sortorder'=>230,
+    'inputtype'=>'textarea',
+    "help"=>$clang->gT('Tip to show user describing the Sub-Question Validation Equation.'),
+    "caption"=>$clang->gT('Sub-Question Validation Tip'));
+
     $qattributes["exclude_all_others"]=array(
     "types"=>"MP",
     'category'=>$clang->gT('Logic'),

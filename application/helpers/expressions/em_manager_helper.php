@@ -1163,6 +1163,152 @@ class LimeExpressionManager {
                     }
                 }
             }
+
+            // em_validation_q_tip - a description of the EM validation equation that must be satisfied for the whole question.
+            if (isset($qattr['em_validation_q_tip']) && !is_null($qattr['em_validation_q_tip']) && trim($qattr['em_validation_q_tip']) != '')
+            {
+                $em_validation_q_tip = trim($qattr['em_validation_q_tip']);
+            }
+            else
+            {
+                $em_validation_q_tip = '';
+            }
+
+
+            // em_validation_q - an EM validation equation that must be satisfied for the whole question.  Uses 'this' in the equation
+            if (isset($qattr['em_validation_q']) && !is_null($qattr['em_validation_q']) && trim($qattr['em_validation_q']) != '')
+            {
+                $em_validation_q = $qattr['em_validation_q'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                        {
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                            case 'Q': //MULTIPLE SHORT TEXT
+                            case ';': //ARRAY (Multi Flexi) Text
+                            case ':': //ARRAY (Multi Flexi) 1 to 10
+                            case 'N': //NUMERICAL QUESTION TYPE
+                            case 'S': //SHORT FREE TEXT
+                            case 'T': //LONG FREE TEXT
+                            case 'U': //HUGE FREE TEXT
+                                $sq_name = '!(' . preg_replace('/\bthis\b/',$sq['varName'], $em_validation_q) . ')';
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $sq_names[] = $sq_name;
+                        }
+                    }
+                    if (count($sq_names) > 0) {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        if ($em_validation_q_tip =='')
+                        {
+                            $stringToParse = htmlspecialchars_decode($em_validation_q,ENT_QUOTES);
+                            $gseq = $this->questionId2groupSeq[$qinfo['qid']];
+                            $result = $this->em->ProcessBooleanExpression($stringToParse,$gseq,  $qinfo['qseq']);
+                            $_validation_tip = $this->em->GetPrettyPrintString();                        }
+                        else
+                        {
+                            $_validation_tip = $em_validation_q_tip;
+                        }
+                        $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'em_validation_q',
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') == 0)',
+                            'qid' => $questionNum,
+                            'tip' => $this->gT('The whole question must conform to this expression:') . " " . $_validation_tip . '.',
+                        );
+                    }
+                }
+            }
+
+            // em_validation_sq_tip - a description of the EM validation equation that must be satisfied for each subquestion.
+            if (isset($qattr['em_validation_sq_tip']) && !is_null($qattr['em_validation_sq_tip']) && trim($qattr['em_validation_sq']) != '')
+            {
+                $em_validation_sq_tip = trim($qattr['em_validation_sq_tip']);
+            }
+            else
+            {
+                $em_validation_sq_tip = '';
+            }
+
+
+            // em_validation_sq - an EM validation equation that must be satisfied for each subquestion.  Uses 'this' in the equation
+            if (isset($qattr['em_validation_sq']) && !is_null($qattr['em_validation_sq']) && trim($qattr['em_validation_sq']) != '')
+            {
+                $em_validation_sq = $qattr['em_validation_sq'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    $subqValidEqns = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                         {
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                            case 'Q': //MULTIPLE SHORT TEXT
+                            case ';': //ARRAY (Multi Flexi) Text
+                            case ':': //ARRAY (Multi Flexi) 1 to 10
+                                $sq_name = '!(' . preg_replace('/\bthis\b/',$sq['varName'], $em_validation_sq) . ')';
+                                break;
+                            default:
+                                break;
+                        }
+                        switch ($type)
+                        {
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                            case 'Q': //MULTIPLE SHORT TEXT
+                            case ';': //ARRAY (Multi Flexi) Text
+                            case ':': //ARRAY (Multi Flexi) 1 to 10
+                                $subqValidEqn = '(' . preg_replace('/\bthis\b/',$sq['varName'], $em_validation_sq) . ')';
+                                $subqValidSelector = $sq['jsVarName_on'];
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $sq_names[] = $sq_name;
+                            if (isset($subqValidSelector)) {
+                                $subqValidEqns[$subqValidSelector] = array(
+                                    'subqValidEqn' => $subqValidEqn,
+                                    'subqValidSelector' => $subqValidSelector,
+                                    );
+                            }
+                        }
+                    }
+                    if (count($sq_names) > 0) {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        if ($em_validation_sq_tip =='')
+                        {
+                            $stringToParse = htmlspecialchars_decode($em_validation_sq,ENT_QUOTES);
+                            $gseq = $this->questionId2groupSeq[$qinfo['qid']];
+                            $result = $this->em->ProcessBooleanExpression($stringToParse,$gseq,  $qinfo['qseq']);
+                            $_validation_tip = $this->em->GetPrettyPrintString();                        }
+                        else
+                        {
+                            $_validation_tip = $em_validation_sq_tip;
+                        }
+                        $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'em_validation_sq',
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') == 0)',
+                            'qid' => $questionNum,
+                            'tip' => $this->gT('All entries must conform to this expression:') . " " . $_validation_tip . '.',
+                            'subqValidEqns' => $subqValidEqns,
+                        );
+                    }
+                }
+            }
         }
 //        log_message('debug','**SUBQUESTION RELEVANCE**' . print_r($subQrels,true));
 //        log_message('debug','**VALIDATION EQUATIONS**' . print_r($validationEqn,true));
@@ -1858,6 +2004,8 @@ class LimeExpressionManager {
                 $this->knownVars['TOKEN:ATTRIBUTE_' . $i] = $blankVal;
             }
         }
+        // set default value for reserved 'this' variable
+        $this->knownVars['this'] = $blankVal;
 
         $this->runtimeTimings[] = array(__METHOD__ . ' - process fieldMap',(microtime(true) - $now));
         if (($this->debugLevel & LEM_DEBUG_TRANSLATION_DETAIL) == LEM_DEBUG_TRANSLATION_DETAIL)
@@ -5024,6 +5172,21 @@ EOT;
         LimeExpressionManager::SetDirtyFlag();  // so subsequent tests don't try to access these variables
     }
 
+    /**
+     * Set the 'this' variable as an alias for SGQA within the code.
+     * @param <type> $sgqa
+     */
+    public static function SetThisAsAliasForSGQA($sgqa)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        if (isset($LEM->knownVars[$sgqa]))
+        {
+            $varInfo = $LEM->knownVars[$sgqa];
+            $thisVar['this'] = $varInfo;
+            $LEM->em->RegisterVarnamesUsingMerge($thisVar);
+        }
+    }
+
     public static function ShowStackTrace($msg=NULL,&$args=NULL)
     {
         $LEM =& LimeExpressionManager::singleton();
@@ -5470,8 +5633,12 @@ EOT;
                         case 'array_filter':
                         case 'array_filter_exclude':
                         case 'code_filter':
+                        case 'em_validation_q_tip':
+                        case 'em_validation_sq_tip':
                             break;
                         case 'equals_num_value':
+                        case 'em_validation_q':
+                        case 'em_validation_sq':
                         case 'max_answers':
                         case 'max_num_value':
                         case 'max_num_value_n':
