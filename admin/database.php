@@ -1143,8 +1143,8 @@ if(isset($surveyid))
                             'usecaptcha'=>$_POST['usecaptcha'],
                             'emailresponseto'=>trim($_POST['emailresponseto']),
                             'emailnotificationto'=>trim($_POST['emailnotificationto']),
-                            'googleAnalyticsAPIKey'=>trim($_POST['googleAnalyticsAPIKey']),
-                            'googleAnalyticsStyle'=>trim($_POST['googleAnalyticsStyle']),
+                            'googleanalyticsapikey'=>trim($_POST['googleanalyticsapikey']),
+                            'googleanalyticsstyle'=>trim($_POST['googleanalyticsstyle']),
                             'tokenlength'=>$_POST['tokenlength']
         );
 

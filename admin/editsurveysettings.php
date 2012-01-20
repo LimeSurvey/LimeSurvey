@@ -60,8 +60,8 @@
             $esrow['showwelcome']              = 'Y';
             $esrow['emailresponseto']          = '';
             $esrow['assessments']              = 'N';
-            $esrow['googleAnalyticsAPIKey']    = '';
-            $esrow['googleAnalyticsStyle']     = '0';
+            $esrow['googleanalyticsapikey']    = '';
+            $esrow['googleanalyticsstyle']     = '0';
 
             $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 
@@ -840,25 +840,25 @@
 
         //GOOGLE ANALYTICS PROCESSING
         //GOOGLE ANALYTICS API KEY
-        $editsurvey .= "<li><label for='googleAnalyticsAPIKey'>".$clang->gT("Google Analytics API Key for this Survey?")."</label>\n"
-        . "<input type='text' value=\"{$esrow['googleAnalyticsAPIKey']}\" name='googleAnalyticsAPIKey' id='googleAnalyticsAPIKey' size='20'/>\n"
+        $editsurvey .= "<li><label for='googleanalyticsapikey'>".$clang->gT("Google Analytics API Key for this Survey?")."</label>\n"
+        . "<input type='text' value=\"{$esrow['googleanalyticsapikey']}\" name='googleanalyticsapikey' id='googleanalyticsapikey' size='20'/>\n"
         . "</li>\n";
 
         //GOOGLE ANALYTICS STYLE
-        $editsurvey .= "<li><label for='googleAnalyticsStyle'>".$clang->gT("Google Analytics Style for this Survey?")."</label>\n"
-        . "<select id='googleAnalyticsStyle' name='googleAnalyticsStyle'>\n"
+        $editsurvey .= "<li><label for='googleanalyticsstyle'>".$clang->gT("Google Analytics Style for this Survey?")."</label>\n"
+        . "<select id='googleanalyticsstyle' name='googleanalyticsstyle'>\n"
         . "<option value='0'";
-        if (!$esrow['googleAnalyticsStyle'] || $esrow['googleAnalyticsStyle'] == "0") {
+        if (!$esrow['googleanalyticsstyle'] || $esrow['googleanalyticsstyle'] == "0") {
             $editsurvey .= " selected='selected'";
         }
             $editsurvey .= ">".$clang->gT("Do not use Google Analytics")."</option>\n"
             . "<option value='1'";
-        if ($esrow['googleAnalyticsStyle'] == "1") {
+        if ($esrow['googleanalyticsstyle'] == "1") {
             $editsurvey .= " selected='selected'";
         }
         $editsurvey .= ">".$clang->gT("Default Google Analytics")."</option>\n"
             . "<option value='2'";
-        if ($esrow['googleAnalyticsStyle'] == "2") {
+        if ($esrow['googleanalyticsstyle'] == "2") {
             $editsurvey .= " selected='selected'";
         }
         $editsurvey .= ">".$clang->gT("SurveyName-[SID]/GroupName")."</option>\n"

@@ -559,8 +559,8 @@ function templatereplace($line, $replacements=array(), $anonymized=false, $quest
         $_assessment_current_total = '';
     }
 
-    $_googleAnalyticsAPIKey = (isset($thissurvey['googleAnalyticsAPIKey']) ? $thissurvey['googleAnalyticsAPIKey'] : '');
-    $_googleAnalyticsStyle = (isset($thissurvey['googleAnalyticsStyle']) ? $thissurvey['googleAnalyticsStyle'] : '0');
+    $_googleAnalyticsAPIKey = (isset($thissurvey['googleanalyticsapikey']) ? $thissurvey['googleanalyticsapikey'] : '');
+    $_googleAnalyticsStyle = (isset($thissurvey['googleanalyticsstyle']) ? $thissurvey['googleanalyticsstyle'] : '0');
 
     switch ($_googleAnalyticsStyle)
     {
