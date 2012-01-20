@@ -213,8 +213,8 @@ function LEMval(alias)
         suffix = 'shown';
         varName = varName.substr(10);
     }
-    else if (str.match(/\.(code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value)$/)) {
-        varName = str.replace(/\.(code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value)$/,'')
+    else if (str.match(/\.(code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|rowdivid|sgqa|shown|type|valueNAOK|value)$/)) {
+        varName = str.replace(/\.(code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|rowdivid|sgqa|shown|type|valueNAOK|value)$/,'')
         suffix = str.replace(/^(.+)\./,'');
     }
 
@@ -226,11 +226,14 @@ function LEMval(alias)
         }
     }
     var whichJsName;    // correct name whether on- or off-page
-    if (LEMallOnOnePage==true || attr.gid == LEMgid) {
+    if (LEMmode=='survey' || (LEMmode=='group' && attr.gid == LEMgid) || (LEMmode=='question' && attr.qid == LEMqid)) {
         whichJsName = (typeof attr.jsName_on === 'undefined') ? attr.jsName : attr.jsName_on;
     }
     else {
         whichJsName = attr.jsName;
+    }
+    if (whichJsName === null || typeof document.getElementById(whichJsName) === 'undefined' || document.getElementById(whichJsName) === null) {
+        an_error = true;    // this line is here to make debugging easier
     }
 
     // values should always be stored encoded with htmlspecialchars()
@@ -243,8 +246,8 @@ function LEMval(alias)
             if (!(typeof attr.qid === 'undefined') && !(document.getElementById('relevance' + attr.qid) === null)) {
                 qrel = parseInt(document.getElementById('relevance' + attr.qid).value);
             }
-            if (!(typeof attr.sgqa === 'undefined') && !(document.getElementById('relevance' + attr.sgqa) === null)) {
-                sgqarel = parseInt(document.getElementById('relevance' + attr.sgqa).value);
+            if (!(typeof attr.rowdivid === 'undefined') && !(document.getElementById('relevance' + attr.rowdivid) === null)) {
+                sgqarel = parseInt(document.getElementById('relevance' + attr.rowdivid).value);
             }
             return (grel && qrel && sgqarel);
         }
@@ -388,6 +391,11 @@ function LEMval(alias)
                 return +value;  // convert it to numeric return type
             }
         }
+        case 'rowdivid':
+            if (typeof attr.rowdivid === 'undefined' || attr.rowdivid == '') {
+                return '';
+            }
+            return attr.rowdivid;
         default:
             return 'Unknown Attribute: ' . suffix;
     }
@@ -487,9 +495,6 @@ function  LEMsetTabIndexes()
 {
     if (typeof tabIndexesSet == 'undefined') {
         $(':input[type!=hidden][id!=runonce]').each(function(index){
-            if (index==0) {
-                $(this).focus();    // focus on first active element on page
-            }
             $(this).bind('keydown',function(e) {
                 if (e.keyCode == 9) {
                     ExprMgr_process_relevance_and_tailoring(e.type);

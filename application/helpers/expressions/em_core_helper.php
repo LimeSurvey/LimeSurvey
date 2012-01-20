@@ -29,7 +29,7 @@
 
 class ExpressionManager {
     // These are the allowable suffixes for variables - each represents an attribute of a variable.
-    private static $RDP_regex_var_attr = 'code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value';
+    private static $RDP_regex_var_attr = 'code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|rowdivid|sgqa|shown|type|valueNAOK|value';
 
     // These three variables are effectively static once constructed
     private $RDP_ExpressionRegex;
@@ -81,7 +81,7 @@ class ExpressionManager {
         $RDP_regex_binary = '[+*/-]';
         $RDP_regex_compare = '<=|<|>=|>|==|!=|\ble\b|\blt\b|\bge\b|\bgt\b|\beq\b|\bne\b';
         $RDP_regex_assign = '=|\+=|-=|\*=|/=';
-        $RDP_regex_sgqa = '(?:INSERTANS:)?[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[01]?';
+        $RDP_regex_sgqa = '(?:INSERTANS:)?[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[01]?(?:\.NAOK)?';
         $RDP_regex_word = '(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:' . ExpressionManager::$RDP_regex_var_attr . '))?';
         $RDP_regex_number = '[0-9]+\.?[0-9]*|\.[0-9]+';
         $RDP_regex_andor = '\band\b|\bor\b|&&|\|\|';
@@ -1474,7 +1474,7 @@ class ExpressionManager {
                         $stringParts[] = "<span title='"  . implode('; ',$messages) . "' style='color: ". $color . "; font-weight: bold'";
                         if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid)) {
                             // Modify this link to utilize a different framework
-                            $editlink = Yii::app()->getController()->createUrl('/admin/survey/view/surveyid/' . $this->sid . '/gid/' . $gid . '/qid/' . $qid);
+                            $editlink = $this->rooturl . '/admin/admin.php?sid=' . $this->sid . '&gid=' . $gid . '&qid=' . $qid;
                             $stringParts[] = " onclick='window.open(\"" . $editlink . "\");'";
                         }
                         $stringParts[] = ">";
@@ -1702,7 +1702,7 @@ class ExpressionManager {
             case 'relevanceStatus':
                 $gid = (isset($var['gid'])) ? $var['gid'] : -1;
                 $qid = (isset($var['qid'])) ? $var['qid'] : -1;
-                $sgqa = (isset($var['sgqa'])) ? $var['sgqa'] : -1;
+                $rowdivid = (isset($var['rowdivid']) && $var['rowdivid']!='') ? $var['rowdivid'] : -1;
                 if ($qid == -1 || $gid == -1) {
                     return 1;
                 }
@@ -1711,7 +1711,7 @@ class ExpressionManager {
                 }
                 $grel = (isset(Yii::app()->session['relevanceStatus']['G'.$gid]) ? Yii::app()->session['relevanceStatus']['G'.$gid] : 1);   // true by default
                 $qrel = (isset(Yii::app()->session['relevanceStatus'][$qid]) ? Yii::app()->session['relevanceStatus'][$qid] : 0);
-                $sqrel = (isset(Yii::app()->session['relevanceStatus'][$sgqa]) ? Yii::app()->session['relevanceStatus'][$sgqa] : 1);    // true by default - only want false if a subquestion is irrelevant
+                $sqrel = (isset(Yii::app()->session['relevanceStatus'][$rowdivid]) ? Yii::app()->session['relevanceStatus'][$rowdivid] : 1);    // true by default - only want false if a subquestion is irrelevant
                 return ($grel && $qrel && $sqrel);
             default:
                 print 'UNDEFINED ATTRIBUTE: ' . $attr . "<br/>\n";
@@ -2378,7 +2378,7 @@ EOD;
         BinaryOps:  (a + b * c / d)
         Comparators:  > >= < <= == != gt ge lt le eq ne (target large gents built agile less equal)
         Assign:  = += -= *= /=
-        SGQA:  1X6X12 1X6X12ber1 1X6X12ber1_lab1 3583X84X249
+        SGQA:  1X6X12 1X6X12ber1 1X6X12ber1_lab1 3583X84X249 12X3X5lab1_ber#1 1X6X12.NAOK 1X6X12ber1.NAOK 1X6X12ber1_lab1.NAOK 3583X84X249.NAOK 12X3X5lab1_ber#1.NAOK
         Errors: Apt # 10C; (2 > 0) ? 'hi' : 'there'; array[30]; >>> <<< /* this is not a comment */ // neither is this
         Words:  q5pointChoice q5pointChoice.bogus q5pointChoice.code q5pointChoice.mandatory q5pointChoice.NAOK q5pointChoice.qid q5pointChoice.question q5pointChoice.relevance q5pointChoice.shown q5pointChoice.type
 EOD;
@@ -2901,7 +2901,7 @@ EOD;
         $body .= "<script type='text/javascript'>\n";
         $body .= "<!--\n";
         $body .= "var LEMgid=2;\n";
-        $body .= "var LEMallOnOnePage=false;\n";
+        $body .= "var LEMmode='group';\n";
         $body .= "function recompute() {\n";
         $body .= implode("\n",$javaScript);
         $body .= "}\n//-->\n</script>\n";
