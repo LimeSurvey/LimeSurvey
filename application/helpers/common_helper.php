@@ -6701,14 +6701,16 @@ function CleanLanguagesFromSurvey($sid, $availlangs)
 }
 
 /**
-* FixLanguageConsistency() fixes missing groups,questions,answers & assessments for languages on a survey
+* FixLanguageConsistency() fixes missing groups, questions, answers, quotas & assessments for languages on a survey
 * @param string $sid - the currently selected survey
 * @param string $availlangs - space seperated list of additional languages in survey - if empty all additional languages of a survey are checked against the base language
 * @return bool - always returns true
 */
 function FixLanguageConsistency($sid, $availlangs='')
 {
+    $sid=sanitize_int($sid);
     $clang = Yii::app()->lang;
+
     if (trim($availlangs)!='')
     {
         $availlangs=sanitize_languagecodeS($availlangs);
@@ -6719,7 +6721,6 @@ function FixLanguageConsistency($sid, $availlangs='')
     }
 
     $baselang = Survey::model()->findByPk($sid)->language;
-    $sid=sanitize_int($sid);
     $query = "SELECT * FROM {{groups}} WHERE sid='{$sid}' AND language='{$baselang}'  ORDER BY group_order";
     $result = Yii::app()->db->createCommand($query)->query();
     if ($result->getRowCount() > 0)
@@ -6784,7 +6785,6 @@ function FixLanguageConsistency($sid, $availlangs='')
                     'relevance' => $question['relevance']
                     );
                 	Yii::app()->db->createCommand()->insert('{{questions}}', $data);
-                    //$query = "INSERT INTO ".db_table_name('questions')." (qid,sid,gid,type,title,question,preg,help,other,mandatory,question_order,language, scale_id,parent_qid) VALUES('{$question['qid']}','{$question['sid']}','{$question['gid']}','{$question['type']}',".db_quoteall($question['title']).",".db_quoteall($question['question']).",".db_quoteall($question['preg']).",".db_quoteall($question['help']).",'{$question['other']}','{$question['mandatory']}','{$question['question_order']}','{$lang}',{$question['scale_id']},{$question['parent_qid']})";
                 }
             }
             reset($langs);
@@ -6855,6 +6855,33 @@ function FixLanguageConsistency($sid, $availlangs='')
         }
     }
 
+
+    $query = "SELECT * FROM {{quota_languagesettings}} join {{quota}} q on quotals_quota_id=q.id WHERE q.sid='{$sid}' AND quotals_language='{$baselang}'";
+    $result = Yii::app()->db->createCommand($query)->query();
+    if ($result->getRowCount() > 0)
+    {
+        foreach($result->readAll() as $qls)
+        {
+            foreach ($langs as $lang)
+            {
+                $query = "SELECT id FROM {{quota_languagesettings}} WHERE quotals_quota_id='{$qls['quotals_quota_id']}' AND quotals_language='{$lang}'";
+                $gresult = Yii::app()->db->createCommand($query)->query();
+                if ($gresult->getRowCount() < 1)
+                {
+                    $data = array(
+                    'quotals_quota_id' => $qls['quotals_quota_id'],
+                    'quotals_name' => $qls['sid'],
+                    'quotals_message' => $qls['scope'],
+                    'quotals_url' => $qls['gid'],
+                    'quotals_urldescrip' => $qls['name'],
+                    'quotals_language' => $lang
+                    );
+                    Yii::app()->db->createCommand()->insert('{{quota_languagesettings}}', $data);
+                }
+            }
+            reset($langs);
+        }
+    }
 
 
     return true;
