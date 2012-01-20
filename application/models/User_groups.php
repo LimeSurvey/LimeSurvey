@@ -125,7 +125,7 @@ class User_groups extends CActiveRecord {
 
  	function addGroup($group_name, $group_description) {
 	    $iquery = "INSERT INTO {{user_groups}} (`name`, `description`, `owner_id`) VALUES(:group_name, :group_desc, :loginID)";
-	    $command = Yii::app()->db->createCommand($iquery)->bindParam(":group_name", $group_name, PDO::PARAM_STR)->bindParam(":group_desc", $group_description, PDO::PARAM_STR)->bindParam(":loginID", Yii::app()->session['loginID'], PDO::PARAM_INT);
+	    $command = Yii::app()->db->createCommand($iquery)->bindParam(":group_name", $group_name, PDO::PARAM_STR)->bindParam(":group_desc", $group_description, PDO::PARAM_STR)->bindParam(":loginID", intval(Yii::app()->session['loginID']), PDO::PARAM_INT);
 	    $result = $command->query();
 	    if($result) { //Checked
 	    	$id = Yii::app()->db->getLastInsertID(); //Yii::app()->db->Insert_Id(db_table_name_nq('user_groups'),'ugid');
@@ -139,7 +139,7 @@ class User_groups extends CActiveRecord {
 	    	return -1;
 
     	}
-	// Many CI based functions ahead, they need refactoring!
+
 	function updateGroup($name, $description, $ugid)
     {
 		$group = User_groups::model()->findByPk($ugid);
@@ -164,11 +164,10 @@ class User_groups extends CActiveRecord {
 
 	function requestViewGroup($ugid, $userid)
 	{
-		$query = "SELECT a.ugid, a.name, a.owner_id, a.description, b.uid FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE a.ugid = {$ugid} AND uid = ".$userid." ORDER BY name";
-		//$select	= array('a.ugid', 'a.name', 'a.owner_id', 'a.description', 'b.uid');
-		//$join	= array('where' => 'user_in_groups AS b', 'type' => 'left', 'on' => 'a.ugid = b.ugid');
-		//$where	= array('uid' => $this->session->userdata('loginID'), 'a.ugid' => $ugid);
-		return db_execute_assoc($query)->readAll();
+		$query = "SELECT a.ugid, a.name, a.owner_id, a.description, b.uid FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE a.ugid = :ugid AND uid = :userid ORDER BY name";
+		$command = Yii::app()->db->createCommand($query)->bindParam(":ugid", $ugid, PDO::PARAM_INT)->bindParam(":userid", $userid, PDO::PARAM_INT);
+		$result = $command->query()->readAll();
+		return $result;
 	}
 
 	function deleteGroup($ugid, $ownerid)
