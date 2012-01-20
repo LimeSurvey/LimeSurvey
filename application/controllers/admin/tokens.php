@@ -379,12 +379,12 @@ class tokens extends Survey_Common_Action
     {
         $sOperation = Yii::app()->request->getPost('oper');
 
-        if (trim($_POST['validfrom']) == '')
+        if (trim(Yii::app()->request->getPost('validfrom')) == '')
             $from = null;
         else
             $from = date('Y-m-d H:i:s', strtotime(trim($_POST['validfrom'])));
 
-        if (trim($_POST['validuntil']) == '')
+        if (trim(Yii::app()->request->getPost('validuntil')) == '')
             $until = null;
         else
             $until = date('Y-m-d H:i:s', strtotime(trim($_POST['validuntil'])));
@@ -1632,7 +1632,7 @@ class tokens extends Survey_Common_Action
                             {
                                 if (isset($writearray[$field]))
                                 {
-                                    $dupquery.= " and ".Yii::app()->db->quoteColumnName($field)." = " . Yii::app()->db->quoteValue($writearray[$field])."'";
+                                    $dupquery.= " and ".Yii::app()->db->quoteColumnName($field)." = " . Yii::app()->db->quoteValue($writearray[$field]);
                                 }
                             }
                             $dupresult = Yii::app()->db->createCommand($dupquery)->query();
@@ -1690,11 +1690,12 @@ class tokens extends Survey_Common_Action
                             }
 
                             // sanitize it before writing into table
-                            $sanitizedArray = array_map('dbQuoteAll', array_values($writearray));
-							foreach ($writearray as &$row)
-								$row = Yii::app()->db->quoteColumnName($row);
-							foreach ($sanitizedArray as &$row)
-								$row = Yii::app()->db->quoteValue($row);
+                            foreach ($writearray as $key => $value)
+                            {
+                                if (substr($value, 0, 1)=='"' && substr($value, -1)=='"')
+                                    $value = substr($value, 1, -1);
+                                $sanitizedArray[Yii::app()->db->quoteColumnName($key)]= Yii::app()->db->quoteValue($value);
+                            }
                             $iq = "INSERT INTO {{tokens_$iSurveyId}} \n"
                                     . "(" . implode(',', array_keys($writearray)) . ") \n"
                                     . "VALUES (" . implode(",", $sanitizedArray) . ")";
