@@ -349,7 +349,7 @@ CREATE TABLE [prefix_surveys_languagesettings] (
   [surveyls_email_confirm_subj] VARCHAR(255) NULL,
   [surveyls_email_confirm] varchar(max) NULL,
   [surveyls_dateformat] INT NOT NULL DEFAULT 1,
-  [surveyls_attributecaptions] varchar(max) NOT NULL DEFAULT '',
+  [surveyls_attributecaptions] varchar(max) NOT NULL,
   [email_admin_notification_subj] VARCHAR(255) NULL,
   [email_admin_notification] varchar(max) NULL,
   [email_admin_responses_subj] VARCHAR(255) NULL,
