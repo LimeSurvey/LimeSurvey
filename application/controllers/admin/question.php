@@ -460,7 +460,8 @@ class question extends Survey_Common_Action
 
             if (empty($subquestiondata))
             {
-                Questions::model()->insert(array(
+                //Questions::model()->insert();
+                $data = array(
                     'sid' => $surveyid,
                     'gid' => $gid,
                     'parent_qid' => $qid,
@@ -469,7 +470,8 @@ class question extends Survey_Common_Action
                     'question_order' => 1,
                     'language' => $baselang,
                     'scale_id' => $iScale,
-                ));
+                );
+                Questions::model()->insertRecords($data);
 
                 $subquestiondata = Questions::model()->findAllByAttributes(array(
                     'parent_qid' => $qid,
