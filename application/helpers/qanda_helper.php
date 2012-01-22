@@ -3709,13 +3709,13 @@ function do_multiplenumeric($ia)
         if (trim($aQuestionAttributes['equals_num_value']) != ''
         || trim($aQuestionAttributes['min_num_value']) != ''
         || trim($aQuestionAttributes['max_num_value']) != ''
-        || trim($aQuestionAttributes['num_value_equals_sgqa']) != ''
-        || trim($aQuestionAttributes['min_num_value_sgqa']) != ''
-        || trim($aQuestionAttributes['max_num_value_sgqa']) != ''
+//        || trim($aQuestionAttributes['num_value_equals_sgqa']) != ''
+//        || trim($aQuestionAttributes['min_num_value_sgqa']) != ''
+//        || trim($aQuestionAttributes['max_num_value_sgqa']) != ''
         )
         {
             $qinfo = LimeExpressionManager::GetQuestionStatus($ia[0]);
-            if (trim($aQuestionAttributes['equals_num_value']) != '' || trim($aQuestionAttributes['num_value_equals_sgqa']) != '')
+            if (trim($aQuestionAttributes['equals_num_value']) != '')
             {
                 $answer_main .= "\t<li class='multiplenumerichelp'>\n"
                 . "<label for=\"remainingvalue_{$ia[0]}\">" . $clang->gT('Remaining: ') . "</label>\n"

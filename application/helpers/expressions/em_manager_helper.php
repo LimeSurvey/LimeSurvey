@@ -193,6 +193,8 @@ class LimeExpressionManager {
             db_execute_assoc($query);
             $queries[] = $query;
         }
+        // Cheat and upgrade question attributes here too.
+        $queries = array_merge($queries, self::UpgradeQuestionAttributes(true,$surveyId,$qid));        
         LimeExpressionManager::SetDirtyFlag();
         return $queries;
     }
@@ -396,11 +398,9 @@ class LimeExpressionManager {
         $this->subQrelInfo=array();  // reset it each time this is called
         $subQrels = array();    // array of sub-question-level relevance equations
         $validationEqn = array();
+        $validationTips = array();    // array of visible tips for validation criteria, indexed by $qid
 
-//        log_message('debug',print_r($this->q2subqInfo,true));
-//        log_message('debug',print_r($this->qattr,true));
-
-        // Associate these with $qid so that can be nested under appropriate question-level relevance?
+        // Associate these with $qid so that can be nested under appropriate question-level relevance
         foreach ($this->q2subqInfo as $qinfo)
         {
             if (!is_null($onlyThisQseq) && $onlyThisQseq != $qinfo['qseq']) {
@@ -538,12 +538,15 @@ class LimeExpressionManager {
                             'type' => 'equals_num_value',
                             'eqn' => '(sum(' . implode(', ', $sq_names) . ') == (' . $equals_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
                             'qid' => $questionNum,
-                            'tip' => $this->gT('Total of all entries must equal') . '{ ' . $equals_num_value . '}',
                             'sumEqn' => 'sum(' . implode(', ', $sq_names) . ')',
                             'sumRemainingEqn' => '(' . $equals_num_value . ' - sum(' . implode(', ', $sq_names) . '))',
                             );
                     }
                 }
+            }
+            else
+            {
+                $equals_num_value='';
             }
 
             // exclude_all_others
@@ -580,6 +583,10 @@ class LimeExpressionManager {
                         }
                     }
                 }
+            }
+            else
+            {
+                $exclusive_option = '';
             }
 
             // exclude_all_others_auto
@@ -636,11 +643,13 @@ class LimeExpressionManager {
                             'type' => 'min_answers',
                             'eqn' => '(count(' . implode(', ', $sq_names) . ') >= (' . $min_answers . '))',
                             'qid' => $questionNum,
-                            'tip' => $this->gT('The minimum number of answers for this question is') . ' {' . $min_answers . '}.',
-//                            'countEqn' => 'count(' . implode(', ', $sq_names) . ')',
                         );
                     }
                 }
+            }
+            else
+            {
+                $min_answers='';
             }
 
             // max_answers
@@ -694,11 +703,13 @@ class LimeExpressionManager {
                             'type' => 'max_answers',
                             'eqn' => '(count(' . implode(', ', $sq_names) . ') <= (' . $max_answers . '))',
                             'qid' => $questionNum,
-                            'tip' => $this->gT('The maximum number of answers for this question is') . ' {' . $max_answers . '}.',
-//                            'countEqn' => 'count(' . implode(', ', $sq_names) . ')',
                         );
                     }
                 }
+            }
+            else
+            {
+                $max_answers='';
             }
 
             // min_num_value_n
@@ -743,11 +754,14 @@ class LimeExpressionManager {
                             'type' => 'min_num_value_n',
                             'eqn' => implode(' && ', $sq_names),
                             'qid' => $questionNum,
-                            'tip' => $this->gT('Each answer must be at least') . ' {' . $min_num_value_n . '}.',
                             'subqValidEqns' => $subqValidEqns,
                         );
                     }
                 }
+            }
+            else
+            {
+                $min_num_value_n='';
             }
 
             // max_num_value_n
@@ -792,11 +806,14 @@ class LimeExpressionManager {
                             'type' => 'max_num_value_n',
                             'eqn' => implode(' && ', $sq_names),
                             'qid' => $questionNum,
-                            'tip' => $this->gT('Each answer must be at most') . ' {' . $max_num_value_n . '}.',
                             'subqValidEqns' => $subqValidEqns,
                         );
                     }
                 }
+            }
+            else
+            {
+                $max_num_value_n='';
             }
 
             // min_num_value
@@ -831,50 +848,14 @@ class LimeExpressionManager {
                             'type' => 'min_num_value',
                             'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
                             'qid' => $questionNum,
-                            'tip' => $this->gT('Total of all entries must be at least') . ' {' . $min_num_value . '}.',
                             'sumEqn' => 'sum(' . implode(', ', $sq_names) . ')',
                         );
                     }
                 }
             }
-
-            // min_num_value_sgqa
-            // Validation:= sum(sq1,...,sqN) >= value (which could be an expression).
-            if (isset($qattr['min_num_value_sgqa']) && trim($qattr['min_num_value_sgqa']) != '')
+            else
             {
-                $min_num_value_sgqa = $qattr['min_num_value_sgqa'];
-                if ($hasSubqs) {
-                    $subqs = $qinfo['subqs'];
-                    $sq_names = array();
-                    foreach ($subqs as $sq) {
-                        $sq_name = NULL;
-                        switch ($type)
-                        {
-                            case 'K': //MULTIPLE NUMERICAL QUESTION
-                                $sq_name = $sq['varName'] . '.NAOK';
-                                break;
-                            default:
-                                break;
-                        }
-                        if (!is_null($sq_name)) {
-                            $sq_names[] = $sq_name;
-                        }
-                    }
-                    if (count($sq_names) > 0) {
-                        if (!isset($validationEqn[$questionNum]))
-                        {
-                            $validationEqn[$questionNum] = array();
-                        }
-                        $validationEqn[$questionNum][] = array(
-                            'qtype' => $type,
-                            'type' => 'min_num_value_sgqa',
-                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value_sgqa . ') || count(' . implode(', ', $sq_names) . ') == 0)',
-                            'qid' => $questionNum,
-                            'tip' => $this->gT('Total of all entries must be at least') . ' {' . $min_num_value_sgqa . '}.',
-                            'sumEqn' => 'sum(' . implode(', ', $sq_names) . ')',
-                        );
-                    }
-                }
+                $min_num_value='';
             }
 
             // max_num_value
@@ -909,90 +890,14 @@ class LimeExpressionManager {
                             'type' => 'max_num_value',
                             'eqn' =>  '(sum(' . implode(', ', $sq_names) . ') <= (' . $max_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
                             'qid' => $questionNum,
-                            'tip' => $this->gT('Total of all entries must not exceed') . ' {' . $max_num_value . '}.',
                             'sumEqn' => 'sum(' . implode(', ', $sq_names) . ')',
                         );
                     }
                 }
             }
-
-            // max_num_value_sgqa
-            // Validation:= sum(sq1,...,sqN) <= value (which could be an expression).
-            if (isset($qattr['max_num_value_sgqa']) && trim($qattr['max_num_value_sgqa']) != '')
+            else
             {
-                $max_num_value_sgqa = $qattr['max_num_value_sgqa'];
-                if ($hasSubqs) {
-                    $subqs = $qinfo['subqs'];
-                    $sq_names = array();
-                    foreach ($subqs as $sq) {
-                        $sq_name = NULL;
-                        switch ($type)
-                        {
-                            case 'K': //MULTIPLE NUMERICAL QUESTION
-                                $sq_name = $sq['varName'] . '.NAOK';
-                                break;
-                            default:
-                                break;
-                        }
-                        if (!is_null($sq_name)) {
-                            $sq_names[] = $sq_name;
-                        }
-                    }
-                    if (count($sq_names) > 0) {
-                        if (!isset($validationEqn[$questionNum]))
-                        {
-                            $validationEqn[$questionNum] = array();
-                        }
-                        $validationEqn[$questionNum][] = array(
-                            'qtype' => $type,
-                            'type' => 'max_num_value_sgqa',
-                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') <= (' . $max_num_value_sgqa . ') || count(' . implode(', ', $sq_names) . ') == 0)',
-                            'qid' => $questionNum,
-                            'tip' => $this->gT('Total of all entries must not exceed') . ' {' . $max_num_value_sgqa . '}.',
-                            'sumEqn' => 'sum(' . implode(', ', $sq_names) . ')',
-                        );
-                    }
-                }
-            }
-
-            // num_value_equals_sgqa
-            // Validation:= sum(sq1,...,sqN) == value (which could be an expression).
-            if (isset($qattr['num_value_equals_sgqa']) && trim($qattr['num_value_equals_sgqa']) != '')
-            {
-                $num_value_equals_sgqa = $qattr['num_value_equals_sgqa'];
-                if ($hasSubqs) {
-                    $subqs = $qinfo['subqs'];
-                    $sq_names = array();
-                    foreach ($subqs as $sq) {
-                        $sq_name = NULL;
-                        switch ($type)
-                        {
-                            case 'K': //MULTIPLE NUMERICAL QUESTION
-                                $sq_name = $sq['varName'] . '.NAOK';
-                                break;
-                            default:
-                                break;
-                        }
-                        if (!is_null($sq_name)) {
-                            $sq_names[] = $sq_name;
-                        }
-                    }
-                    if (count($sq_names) > 0) {
-                        if (!isset($validationEqn[$questionNum]))
-                        {
-                            $validationEqn[$questionNum] = array();
-                        }
-                        $validationEqn[$questionNum][] = array(
-                            'qtype' => $type,
-                            'type' => 'num_value_equals_sgqa',
-                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') == (' . $num_value_equals_sgqa . ') || count(' . implode(', ', $sq_names) . ') == 0)',
-                            'qid' => $questionNum,
-                            'tip' => $this->gT('Total of all entries must equal') . ' {' . $num_value_equals_sgqa . '}',
-                            'sumEqn' => 'sum(' . implode(', ', $sq_names) . ')',
-                            'sumRemainingEqn' => '(' . $num_value_equals_sgqa . ' - sum(' . implode(', ', $sq_names) . '))',
-                        );
-                    }
-                }
+                $max_num_value='';
             }
 
             // multiflexible_min
@@ -1033,11 +938,14 @@ class LimeExpressionManager {
                             'type' => 'multiflexible_min',
                             'eqn' => implode(' && ', $sq_names),
                             'qid' => $questionNum,
-                            'tip' => $this->gT('Each answer must be at least') . ' {' . $multiflexible_min . '}.',
                             'subqValidEqns' => $subqValidEqns,
                         );
                     }
                 }
+            }
+            else
+            {
+                $multiflexible_min='';
             }
 
             // multiflexible_max
@@ -1078,11 +986,14 @@ class LimeExpressionManager {
                             'type' => 'multiflexible_max',
                             'eqn' => implode(' && ', $sq_names),
                             'qid' => $questionNum,
-                            'tip' => $this->gT('Each answer must be no more than') . ' {' . $multiflexible_max . '}.',
                             'subqValidEqns' => $subqValidEqns,
                         );
                     }
                 }
+            }
+            else
+            {
+                $multiflexible_max='';
             }
 
             // show_totals
@@ -1157,13 +1068,16 @@ class LimeExpressionManager {
                             'type' => 'preg',
                             'eqn' => '(sum(' . implode(', ', $sq_names) . ') == 0)',
                             'qid' => $questionNum,
-                            'tip' => $this->gT('All entries must conform to this regular expression:') . " " . str_replace(array('{','}'),array('{ ',' }'), $preg) . ".",
                             'subqValidEqns' => $subqValidEqns,
                         );
                     }
                 }
             }
-
+            else
+            {
+                $preg='';
+            }
+            
             // em_validation_q_tip - a description of the EM validation equation that must be satisfied for the whole question.
             if (isset($qattr['em_validation_q_tip']) && !is_null($qattr['em_validation_q_tip']) && trim($qattr['em_validation_q_tip']) != '')
             {
@@ -1193,7 +1107,7 @@ class LimeExpressionManager {
                             case 'N': //NUMERICAL QUESTION TYPE
                             case 'S': //SHORT FREE TEXT
                             case 'T': //LONG FREE TEXT
-                            case 'U': //HUGE FREE TEXT
+                            case 'U': //HUGE FREE TEXT                                
                                 $sq_name = '!(' . preg_replace('/\bthis\b/',$sq['varName'], $em_validation_q) . ')';
                                 break;
                             default:
@@ -1208,25 +1122,18 @@ class LimeExpressionManager {
                         {
                             $validationEqn[$questionNum] = array();
                         }
-                        if ($em_validation_q_tip =='')
-                        {
-                            $stringToParse = htmlspecialchars_decode($em_validation_q,ENT_QUOTES);
-                            $gseq = $this->questionId2groupSeq[$qinfo['qid']];
-                            $result = $this->em->ProcessBooleanExpression($stringToParse,$gseq,  $qinfo['qseq']);
-                            $_validation_tip = $this->em->GetPrettyPrintString();                        }
-                        else
-                        {
-                            $_validation_tip = $em_validation_q_tip;
-                        }
                         $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'em_validation_q',
                             'eqn' => '(sum(' . implode(', ', $sq_names) . ') == 0)',
                             'qid' => $questionNum,
-                            'tip' => $this->gT('The whole question must conform to this expression:') . " " . $_validation_tip . '.',
                         );
                     }
                 }
+            }
+            else
+            {
+                $em_validation_q='';
             }
 
             // em_validation_sq_tip - a description of the EM validation equation that must be satisfied for each subquestion.
@@ -1288,30 +1195,152 @@ class LimeExpressionManager {
                         {
                             $validationEqn[$questionNum] = array();
                         }
-                        if ($em_validation_sq_tip =='')
-                        {
-                            $stringToParse = htmlspecialchars_decode($em_validation_sq,ENT_QUOTES);
-                            $gseq = $this->questionId2groupSeq[$qinfo['qid']];
-                            $result = $this->em->ProcessBooleanExpression($stringToParse,$gseq,  $qinfo['qseq']);
-                            $_validation_tip = $this->em->GetPrettyPrintString();                        }
-                        else
-                        {
-                            $_validation_tip = $em_validation_sq_tip;
-                        }
                         $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'em_validation_sq',
                             'eqn' => '(sum(' . implode(', ', $sq_names) . ') == 0)',
                             'qid' => $questionNum,
-                            'tip' => $this->gT('All entries must conform to this expression:') . " " . $_validation_tip . '.',
                             'subqValidEqns' => $subqValidEqns,
                         );
                     }
                 }
             }
+            else
+            {
+                $em_validation_sq='';
+            }
+            
+            ////////////////////////////////////////////
+            // COMPOSE USER FRIENDLY MIN/MAX MESSAGES //
+            ////////////////////////////////////////////
+            
+            // Put these in the order you with them to appear in messages.
+            $qtips=array();
+            
+            // min/max answers
+            if ($min_answers!='' || $max_answers!='')
+            {
+                if ($min_answers!='' && $max_answers!='')
+                {
+                    $qtips[]=sprintf($this->gT("Please select between %s and %s answer(s)"),'{'.$min_answers.'}','{'.$max_answers.'}');
+                }
+                else if ($min_answers!='')
+                {
+                    $qtips[]=sprintf($this->gT("Please select at least %s answer(s)"),'{'.$min_answers.'}');
+                    
+                }
+                else if ($max_answers!='')
+                {
+                    $qtips[]=sprintf($this->gT("Please select at most %s answer(s)"),'{'.$max_answers.'}');
+                }
+            }
+            
+            // min/max value for each numeric entry
+            if ($min_num_value_n!='' || $max_num_value_n!='')
+            {
+                if ($min_num_value_n!='' && $max_num_value_n!='')
+                {
+                    $qtips[]=sprintf($this->gT("Each answer must be between %s and %s"),'{'.$min_num_value_n.'}','{'.$max_num_value_n.'}');
+                }
+                else if ($min_num_value_n!='')
+                {
+                    $qtips[]=sprintf($this->gT("Each answer must be at least %s"),'{'.$min_num_value_n.'}');
+                    
+                }
+                else if ($max_num_value_n!='')
+                {
+                    $qtips[]=sprintf($this->gT("Each answer must be at most %s"),'{'.$max_num_value_n.'}');
+                }
+            }
+            
+            // min/max value for each numeric entry - for multi-flexible question type
+            if ($multiflexible_min!='' || $multiflexible_max!='')
+            {
+                if ($multiflexible_min!='' && $multiflexible_max!='')
+                {
+                    $qtips[]=sprintf($this->gT("Each answer must be between %s and %s"),'{'.$multiflexible_min.'}','{'.$multiflexible_max.'}');
+                }
+                else if ($multiflexible_min!='')
+                {
+                    $qtips[]=sprintf($this->gT("Each answer must be at least %s"),'{'.$multiflexible_min.'}');
+                    
+                }
+                else if ($multiflexible_max!='')
+                {
+                    $qtips[]=sprintf($this->gT("Each answer must be at most %s"),'{'.$multiflexible_max.'}');
+                }
+            }
+            
+            // min/max sum value
+            if ($min_num_value!='' || $max_num_value!='')
+            {
+                if ($min_num_value!='' && $max_num_value!='')
+                {
+                    $qtips[]=sprintf($this->gT("The sum must be between %s and %s"),'{'.$min_num_value.'}','{'.$max_num_value.'}');
+                }
+                else if ($min_num_value!='')
+                {
+                    $qtips[]=sprintf($this->gT("The sum must be at least %s"),'{'.$min_num_value.'}');
+                    
+                }
+                else if ($max_num_value!='')
+                {
+                    $qtips[]=sprintf($this->gT("The sum must be at most %s"),'{'.$max_num_value.'}');
+                }
+            } 
+            
+            // equals_num_value
+            if ($equals_num_value!='')
+            {
+                $qtips[]=sprintf($this->gT("The sum must equal %s"),'{'.$equals_num_value.'}');
+            }
+            
+            // regular expression validation
+            if ($preg!='')
+            {
+                // do string replacement here so that curly braces within the regular expression don't trigger an EM error
+                $qtips[]=sprintf($this->gT('Each answer must conform to this regular expression: %s'), str_replace(array('{','}'),array('{ ',' }'), $preg));
+            }
+            
+            if ($em_validation_sq!='')
+            {
+                if ($em_validation_sq_tip =='')
+                {
+                    $stringToParse = htmlspecialchars_decode($em_validation_sq,ENT_QUOTES);
+                    $gseq = $this->questionId2groupSeq[$qinfo['qid']];
+                    $result = $this->em->ProcessBooleanExpression($stringToParse,$gseq,  $qinfo['qseq']);
+                    $_validation_tip = $this->em->GetPrettyPrintString();
+                    $qtips[]=sprintf($this->gT('Each answer must conform to this expression: %s'),$_validation_tip);
+                }
+                else
+                {
+                    $qtips[]=sprintf($this->gT('Each answer must meet these criteria: %s'), $em_validation_sq_tip);
+                }
+                
+            }
+            
+            // em_validation_q - whole-question validation equation
+            if ($em_validation_q!='')
+            {
+                if ($em_validation_q_tip =='')
+                {
+                    $stringToParse = htmlspecialchars_decode($em_validation_q,ENT_QUOTES);
+                    $gseq = $this->questionId2groupSeq[$qinfo['qid']];
+                    $result = $this->em->ProcessBooleanExpression($stringToParse,$gseq,  $qinfo['qseq']);
+                    $_validation_tip = $this->em->GetPrettyPrintString();
+                    $qtips[]=sprintf($this->gT('The question must conform to this expression: %s'), $_validation_tip);
+                }
+                else
+                {
+                    $qtips[]=sprintf($this->gT('The question must meet these criteria: %s'), $em_validation_q_tip);
+                }
+            }
+            
+            if (count($qtips) > 0)
+            {
+                $validationTips[$questionNum] = $qtips;
+            }
         }
-//        log_message('debug','**SUBQUESTION RELEVANCE**' . print_r($subQrels,true));
-//        log_message('debug','**VALIDATION EQUATIONS**' . print_r($validationEqn,true));
 
         // Consolidate logic across array filters
         $rowdivids = array();
@@ -1354,19 +1383,14 @@ class LimeExpressionManager {
         foreach ($validationEqn as $key=>$val)
         {
             $parts = array();
-            $tips = array();
+            $tips = (isset($validationTips[$key]) ? $validationTips[$key] : array());
             $subqValidEqns = array();
-//            $countEqn = '';
             $sumEqn = '';
-//            $countRemainingEqn = '';
             $sumRemainingEqn = '';
             foreach ($val as $v) {
                 $parts[] = $v['eqn'];
-                $tips[] = $v['tip'];
                 // even if there are min/max/preg, the count or total will always be the same
-//                $countEqn = (isset($v['countEqn'])) ? $v['countEqn'] : $countEqn;
                 $sumEqn = (isset($v['sumEqn'])) ? $v['sumEqn'] : $sumEqn;
-//                $countRemainingEqn = (isset($v['countRemainingEqn'])) ? $v['countRemainingEqn'] : $countEqn;
                 $sumRemainingEqn = (isset($v['sumRemainingEqn'])) ? $v['sumRemainingEqn'] : $sumRemainingEqn;
                 if (isset($v['subqValidEqns'])) {
                     $subqValidEqns[] = $v['subqValidEqns'];
@@ -1399,8 +1423,6 @@ class LimeExpressionManager {
                 'eqn' => '(' . implode(' and ', $parts) . ')',
                 'tips' => $tips,
                 'subqValidEqns' => $csubqValidEqns,
-//                'countEqn' => $countEqn,
-//                'countRemainingEqn' => $countRemainingEqn,
                 'sumEqn' => $sumEqn,
                 'sumRemainingEqn' => $sumRemainingEqn,
             );
@@ -1991,6 +2013,7 @@ class LimeExpressionManager {
             // Explicitly set all tokens to blank
             $blankVal = array(
                     'code'=>'',
+                    'type'=>'',
                     'jsName_on'=>'',
                     'jsName'=>'',
                     'readWrite'=>'N',
@@ -5272,17 +5295,94 @@ EOT;
 
 		return $data;
     }
+    
+/**
+     * Deprecate obsolete question attributes.
+     * @param boolean $changedb - if true, updates parameters and deletes old ones
+     * @param type $surveyid - if set, then only for that survey
+     * @param type $onlythisqid - if set, then only for this question ID
+     */
+    public static function UpgradeQuestionAttributes($changeDB=false,$surveyid=NULL,$onlythisqid=NULL)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        $qattrs = $LEM->getQuestionAttributesForEM($surveyid,$onlythisqid);
+        
+        $qupdates = array();
+        
+        $attibutemap = array(
+            'max_num_value_sgqa' => 'max_num_value',
+            'min_num_value_sgqa' => 'min_num_value',
+            'num_value_equals_sgqa' => 'equals_num_value',
+        );
+        foreach ($qattrs as $qid => $qattr)
+        {
+            $updates = array();
+            foreach ($attibutemap as $src=>$target)
+            {
+                if (isset($qattr[$src]) && trim($qattr[$src]) != '')
+                {
+                    $updates[$target] = $qattr[$src];
+                }
+            }
+            if (count($updates) > 0)
+            {
+                $qupdates[$qid] = $updates;
+            }
+        }
+        if ($changeDB)
+        {
+            $queries = array();
+            foreach ($qupdates as $qid=>$updates)
+            {
+                foreach  ($updates as $key=>$value)
+                {
+                    $query = "UPDATE {{question_attributes}} SET value='".addslashes($value)."' WHERE qid=".$qid." and attribute='".addslashes($key)."';";
+                    $queries[] = $query;                       
+                }
+            }
+            foreach ($attibutemap as $key=>$value)
+            {
+                $query = "DELETE FROM {{question_attributes}}";
+                if (!is_null($surveyid))
+                {
+                    $query .= ", {{questions}}";
+                }
+                $query .= " WHERE {{question_attributes}}.attribute='" . $key . "'";
+                if (!is_null($onlythisqid))
+                {
+                    $query .= " AND {{question_attributes}}.qid=".$onlythisqid;
+                }
+                else if (!is_null($surveyid))
+                {
+                    $query .= " AND {{question_attributes}}.qid = {{questions}}.qid";
+                    $query .= " AND {{questions}}.sid=".$surveyid;
+                }
+                $query .= ";";
+                $queries[] = $query;
+            }
+            // now update the datbase
+            foreach ($queries as $query)
+            {
+                db_execute_assoc($query);
+            }
+            return $queries;
+        }
+        else
+        {
+            return $qupdates;
+        }
+    }
 
     private function getQuestionAttributesForEM($surveyid=NULL,$qid=NULL, $lang=NULL)
     {
         if (!is_null($qid)) {
-            $where = " a.qid = ".$qid;
+            $where = " a.qid = ".$qid." and a.qid=b.qid";
         }
         else if (!is_null($surveyid)) {
             $where = " a.qid=b.qid and b.sid=".$surveyid;
         }
         else {
-            $where = " 1";
+            $where = " a.qid=b.qid";
         }
         if (!is_null($lang)) {
             $lang = " and a.language='".$lang."' and b.language='".$lang."'";
@@ -5642,14 +5742,11 @@ EOT;
                         case 'max_answers':
                         case 'max_num_value':
                         case 'max_num_value_n':
-                        case 'max_num_value_sgqa':
                         case 'min_answers':
                         case 'min_num_value':
                         case 'min_num_value_n':
-                        case 'min_num_value_sgqa':
                         case 'multiflexible_max':
                         case 'multiflexible_min':
-                        case 'num_value_equals_sgqa':
                             $value = '{' . $value . '}';
                             break;
                         case 'other_replace_text':

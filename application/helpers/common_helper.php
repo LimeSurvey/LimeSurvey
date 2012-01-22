@@ -3345,13 +3345,13 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Maximum value of the numeric input'),
     "caption"=>$clang->gT('Maximum value'));
 
-    $qattributes["max_num_value_sgqa"]=array(
-    "types"=>"K",
-    'category'=>$clang->gT('Logic'),
-    'sortorder'=>100,
-    'inputtype'=>'text',
-    "help"=>$clang->gT('Enter the SGQA identifier to use the total of a previous question as the maximum for this question'),
-    "caption"=>$clang->gT('Max value from SGQA'));
+//    $qattributes["max_num_value_sgqa"]=array(
+//    "types"=>"K",
+//    'category'=>$clang->gT('Logic'),
+//    'sortorder'=>100,
+//    'inputtype'=>'text',
+//    "help"=>$clang->gT('Enter the SGQA identifier to use the total of a previous question as the maximum for this question'),
+//    "caption"=>$clang->gT('Max value from SGQA'));
 
     $qattributes["maximum_chars"]=array(
     "types"=>"STUNQK:",
@@ -3385,13 +3385,13 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Minimum value of the numeric input'),
     "caption"=>$clang->gT('Minimum value'));
 
-    $qattributes["min_num_value_sgqa"]=array(
-    "types"=>"K",
-    'category'=>$clang->gT('Logic'),
-    'sortorder'=>100,
-    'inputtype'=>'text',
-    "help"=>$clang->gT('Enter the SGQA identifier to use the total of a previous question as the minimum for this question'),
-    "caption"=>$clang->gT('Minimum value from SGQA'));
+//    $qattributes["min_num_value_sgqa"]=array(
+//    "types"=>"K",
+//    'category'=>$clang->gT('Logic'),
+//    'sortorder'=>100,
+//    'inputtype'=>'text',
+//    "help"=>$clang->gT('Enter the SGQA identifier to use the total of a previous question as the minimum for this question'),
+//    "caption"=>$clang->gT('Minimum value from SGQA'));
 
     $qattributes["multiflexible_max"]=array(
     "types"=>":",
@@ -3439,13 +3439,13 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Present answer options in reverse order'),
     "caption"=>$clang->gT('Reverse answer order'));
 
-    $qattributes["num_value_equals_sgqa"]=array(
-    "types"=>"K",
-    'category'=>$clang->gT('Logic'),
-    'sortorder'=>100,
-    'inputtype'=>'text',
-    "help"=>$clang->gT('SGQA identifier to use total of previous question as total for this question'),
-    "caption"=>$clang->gT('Value equals SGQA'));
+//    $qattributes["num_value_equals_sgqa"]=array(
+//    "types"=>"K",
+//    'category'=>$clang->gT('Logic'),
+//    'sortorder'=>100,
+//    'inputtype'=>'text',
+//    "help"=>$clang->gT('SGQA identifier to use total of previous question as total for this question'),
+//    "caption"=>$clang->gT('Value equals SGQA'));
 
     $qattributes["num_value_int_only"]=array(
     "types"=>"N",
