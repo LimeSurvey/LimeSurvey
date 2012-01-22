@@ -110,14 +110,14 @@ function upgrade_question_attributes148()
 {
     global $modifyoutput;
     $sSurveyQuery = "SELECT sid FROM {{surveys}}";
-    $oSurveyResult = db_execute_assoc($sSurveyQuery);
+    $oSurveyResult = dbExecuteAssoc($sSurveyQuery);
     foreach ( $oSurveyResult->readAll()  as $aSurveyRow)
     {
         $surveyid=$aSurveyRow['sid'];
         $languages=array_merge(array(Survey::model()->findByPk($surveyid)->language), Survey::model()->findByPk($surveyid)->additionalLanguages);
 
         $sAttributeQuery = "select q.qid,attribute,value from {{question_attributes}} qa , {{questions}} q where q.qid=qa.qid and sid={$surveyid}";
-        $oAttributeResult = db_execute_assoc($sAttributeQuery);
+        $oAttributeResult = dbExecuteAssoc($sAttributeQuery);
         $aAllAttributes=questionAttributes(true);
         foreach ( $oAttributeResult->readAll() as $aAttributeRow)
         {
@@ -138,7 +138,7 @@ function upgrade_survey_table145()
 {
     global $modifyoutputt;
     $sSurveyQuery = "SELECT * FROM {{surveys}} where notification<>'0'";
-    $oSurveyResult = db_execute_assoc($sSurveyQuery);
+    $oSurveyResult = dbExecuteAssoc($sSurveyQuery);
     foreach ( $oSurveyResult->readAll() as $aSurveyRow )
     {
         if ($aSurveyRow['notification']=='1' && trim($aSurveyRow['adminemail'])!='')

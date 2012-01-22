@@ -35,7 +35,7 @@
                       WHERE a.sid = $surveyid ";
 
 
-        $sresult = db_execute_assoc($squery) or show_error("Couldn't execute $squery");
+        $sresult = dbExecuteAssoc($squery) or show_error("Couldn't execute $squery");
 
 
         $row = $sresult->read();
@@ -69,7 +69,7 @@
         }
 
         $usquery = "SELECT stg_value FROM {{settings_global}} where stg_name='SessionName'";
-        $usresult = db_execute_assoc($usquery,'',true);          //Checked
+        $usresult = dbExecuteAssoc($usquery,'',true);          //Checked
         if ($usresult->count() > 0)
         {
             $usrow = $usresult->read();
@@ -137,7 +137,7 @@
         //Check if this email already exists in token database
         $query = "SELECT email FROM {{tokens_$surveyid}}\n"
         . "WHERE email = '".sanitize_email(Yii::app()->request->getPost('register_email'))."'";
-        $result = db_execute_assoc($query) or show_error("Unable to execute this query : \n <br/>".$query."<br />");   //Checked)
+        $result = dbExecuteAssoc($query) or show_error("Unable to execute this query : \n <br/>".$query."<br />");   //Checked)
         if (($result->count()) > 0)
         {
             $register_errormsg=$clang->gT("The email you used has already been registered.");
@@ -169,7 +169,7 @@
         {
             $newtoken = randomChars($tokenlength);
             $ntquery = "SELECT * FROM {{tokens_$surveyid}} WHERE token='$newtoken'";
-            $ntresult = db_execute_assoc($ntquery); //Checked
+            $ntresult = dbExecuteAssoc($ntquery); //Checked
             if (!$ntresult->count()) {$mayinsert = true;}
         }
 
@@ -254,7 +254,7 @@
             $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
             $query = "UPDATE {{tokens_$surveyid}}\n"
             ."SET sent='$today' WHERE tid=$tid";
-            $result=db_execute_assoc($query) or show_error("Unable to execute this query : $query<br />");     //Checked
+            $result=dbExecuteAssoc($query) or show_error("Unable to execute this query : $query<br />");     //Checked
             $html="<center>".$clang->gT("Thank you for registering to participate in this survey.")."<br /><br />\n".$clang->gT("An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.")."<br /><br />\n".$clang->gT("Survey administrator")." {ADMINNAME} ({ADMINEMAIL})";
             $html=ReplaceFields($html, $fieldsarray);
             $html .= "<br /><br /></center>\n";

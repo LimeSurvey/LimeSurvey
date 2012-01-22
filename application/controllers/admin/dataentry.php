@@ -142,7 +142,7 @@ class dataentry extends Survey_Common_Action
 
         $importcount = 0;
         $recordcount = 0;
-        $aFieldnames = array_map('db_quote_id', $aFieldnames);
+        $aFieldnames = array_map('dbQuoteID', $aFieldnames);
 
         // Find out which fields are datefields, these have to be null if the imported string is empty
         $fieldmap = createFieldMap($surveyid,'short',false,false,getBaseLanguageFromSurveyID($surveyid));
@@ -346,19 +346,19 @@ class dataentry extends Survey_Common_Action
             {
                 // show UI for choosing old table
 
-                $result = db_get_tables_like("old\_survey\_%");
+                $result = dbGetTablesLike("old\_survey\_%");
 
                 $optionElements_array = '';
                 //$queryCheckColumnsActive = $schema->getTable($oldtable)->columnNames;
                 $resultActive = $schema->getTable("{{survey_{$surveyid}}}")->columnNames;
-                //$resultActive = db_execute_assoc($queryCheckColumnsActive) or show_error("Error:<br />$query<br />");
+                //$resultActive = dbExecuteAssoc($queryCheckColumnsActive) or show_error("Error:<br />$query<br />");
                 $countActive = count($resultActive);
 
                 foreach ($result as $row)
                 {
                     $row = each($row);
 
-                    //$resultOld = db_execute_assoc($queryCheckColumnsOld) or show_error("Error:<br />$query<br />");
+                    //$resultOld = dbExecuteAssoc($queryCheckColumnsOld) or show_error("Error:<br />$query<br />");
                     $resultOld = $schema->getTable($row[1])->columnNames;
 
                     if($countActive == count($resultOld)) //num_fields()
@@ -405,8 +405,8 @@ class dataentry extends Survey_Common_Action
                 $aValidFields = array_diff($aValidFields, $dontimportfields);
 
 
-                $queryOldValues = "SELECT ".implode(", ",array_map("db_quote_id", $aValidFields))." FROM {$oldtable} ";
-                $resultOldValues = db_execute_assoc($queryOldValues) or show_error("Error:<br />$queryOldValues<br />");
+                $queryOldValues = "SELECT ".implode(", ",array_map("dbQuoteID", $aValidFields))." FROM {$oldtable} ";
+                $resultOldValues = dbExecuteAssoc($queryOldValues) or show_error("Error:<br />$queryOldValues<br />");
                 $iRecordCount = $resultOldValues->count();
                 $aSRIDConversions=array();
                 foreach ($resultOldValues->readAll() as $row)
@@ -415,8 +415,8 @@ class dataentry extends Survey_Common_Action
                     unset($row['id']);
 
                     //$sInsertSQL=Yii::app()->db->GetInsertSQL($activetable, $row);
-                    $sInsertSQL="INSERT into {$activetable} (".implode(",", array_map("db_quote_id", array_keys($row))).") VALUES (".implode(",", array_map("dbQuoteAll",array_values($row))).")";
-                    $result = db_execute_assoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
+                    $sInsertSQL="INSERT into {$activetable} (".implode(",", array_map("dbQuoteID", array_keys($row))).") VALUES (".implode(",", array_map("dbQuoteAll",array_values($row))).")";
+                    $result = dbExecuteAssoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
                     $aSRIDConversions[$iOldID]=Yii::app()->db->getLastInsertID();
                 }
 
@@ -434,7 +434,7 @@ class dataentry extends Survey_Common_Action
                     $aValidTimingFields=array_intersect($aFieldsOldTimingTable,$aFieldsNewTimingTable);
 
                     $queryOldValues = "SELECT ".implode(", ",$aValidTimingFields)." FROM {$sOldTimingsTable} ";
-                    $resultOldValues = db_execute_assoc($queryOldValues) or show_error("Error:<br />$queryOldValues<br />");
+                    $resultOldValues = dbExecuteAssoc($queryOldValues) or show_error("Error:<br />$queryOldValues<br />");
                     $iRecordCountT=$resultOldValues->count();
                     $aSRIDConversions=array();
                     foreach ($resultOldValues->readAll() as $row)
@@ -445,8 +445,8 @@ class dataentry extends Survey_Common_Action
                         }
                         else continue;
                         //$sInsertSQL=Yii::app()->db->GetInsertSQL($sNewTimingsTable,$row);
-                        $sInsertSQL="INSERT into {$sNewTimingsTable} (".implode(",", array_map("db_quote_id", array_keys($row))).") VALUES (".implode(",", array_map("dbQuoteAll", array_values($row))).")";
-                        $result = db_execute_assoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
+                        $sInsertSQL="INSERT into {$sNewTimingsTable} (".implode(",", array_map("dbQuoteID", array_keys($row))).") VALUES (".implode(",", array_map("dbQuoteAll", array_values($row))).")";
+                        $result = dbExecuteAssoc($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
                     }
                     Yii::app()->session['flashmessage'] = sprintf($clang->gT("%s old response(s) and according timings were successfully imported."),$iRecordCount,$iRecordCountT);
                 }
@@ -498,7 +498,7 @@ class dataentry extends Survey_Common_Action
             {{questions}}.language = '{$sDataEntryLanguage}' AND g.language = '{$sDataEntryLanguage}' AND
             {{questions}}.sid={{surveys}}.sid AND {{questions}}.sid='$surveyid'
             order by group_order, question_order";
-            $fnresult = db_execute_assoc($fnquery);
+            $fnresult = dbExecuteAssoc($fnquery);
 
             $fncount = $fnresult->getRowCount();
 
@@ -525,7 +525,7 @@ class dataentry extends Survey_Common_Action
             if ($subaction == "edit" && hasSurveyPermission($surveyid,'responses','update'))
             {
                 $idquery = "SELECT * FROM $surveytable WHERE id=$id";
-                $idresult = db_execute_assoc($idquery) or safeDie ("Couldn't get individual record<br />$idquery<br />");
+                $idresult = dbExecuteAssoc($idquery) or safeDie ("Couldn't get individual record<br />$idquery<br />");
                 foreach ($idresult->readAll() as $idrow)
                 {
                     $results[]=$idrow;
@@ -743,7 +743,7 @@ class dataentry extends Survey_Common_Action
                             else
                             {
                                 $lquery = "SELECT * FROM {{answers}} WHERE qid={$fname['qid']} AND language = '{$sDataEntryLanguage}' ORDER BY sortorder, answer";
-                                $lresult = db_execute_assoc($lquery);
+                                $lresult = dbExecuteAssoc($lquery);
                                 $aDataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n"
                                 ."<option value=''";
                                 if ($idrow[$fname['fieldname']] == "") {$aDataentryoutput .= " selected='selected'";}
@@ -796,7 +796,7 @@ class dataentry extends Survey_Common_Action
                                 }
 
                                 $oquery="SELECT other FROM {{questions}} WHERE qid={$fname['qid']} AND {{questions}}.language = '{$sDataEntryLanguage}'";
-                                $oresult=db_execute_assoc($oquery) or safeDie("Couldn't get other for list question<br />".$oquery."<br />");
+                                $oresult=dbExecuteAssoc($oquery) or safeDie("Couldn't get other for list question<br />".$oquery."<br />");
                                 foreach($oresult->readAll() as $orow)
                                 {
                                     $fother=$orow['other'];
@@ -812,7 +812,7 @@ class dataentry extends Survey_Common_Action
                             break;
                         case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
                             $lquery = "SELECT * FROM {{answers}} WHERE qid={$fname['qid']} AND language = '{$sDataEntryLanguage}' ORDER BY sortorder, answer";
-                            $lresult = db_execute_assoc($lquery);
+                            $lresult = dbExecuteAssoc($lquery);
                             $aDataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n"
                             ."<option value=''";
                             if ($idrow[$fname['fieldname']] == "") {$aDataentryoutput .= " selected='selected'";}
@@ -844,7 +844,7 @@ class dataentry extends Survey_Common_Action
                                 $fname=next($fnames);
                             }
                             $ansquery = "SELECT * FROM {{answers}} WHERE language = '{$sDataEntryLanguage}' AND qid=$thisqid ORDER BY sortorder, answer";
-                            $ansresult = db_execute_assoc($ansquery);
+                            $ansresult = dbExecuteAssoc($ansquery);
                             $anscount = $ansresult->count();
                             $aDataentryoutput .= "\t<script type='text/javascript'>\n"
                             ."\t<!--\n"
@@ -1029,7 +1029,7 @@ class dataentry extends Survey_Common_Action
 
                         case "I": //Language Switch
                             $lquery = "SELECT * FROM {{answers}} WHERE qid={$fname['qid']} AND language = '{$sDataEntryLanguage}' ORDER BY sortorder, answer";
-                            $lresult = db_execute_assoc($lquery);
+                            $lresult = dbExecuteAssoc($lquery);
 
 
                             $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
@@ -1276,7 +1276,7 @@ class dataentry extends Survey_Common_Action
                                 $scale_id=0;
                                 if (isset($fname['scale_id'])) $scale_id=$fname['scale_id'];
                                 $fquery = "SELECT * FROM {{answers}} WHERE qid='{$fname['qid']}' and scale_id={$scale_id} and language='$sDataEntryLanguage' order by sortorder, answer";
-                                $fresult = db_execute_assoc($fquery);
+                                $fresult = dbExecuteAssoc($fquery);
                                 $aDataentryoutput .= "<td>\n";
                                 foreach ($fresult->readAll() as $frow)
                                 {
@@ -1439,7 +1439,7 @@ class dataentry extends Survey_Common_Action
 
             $delquery = "DELETE FROM $surveytable WHERE id=$id";
             Yii::app()->loadHelper('database');
-            $delresult = db_execute_assoc($delquery) or safeDie ("Couldn't delete record $id<br />\n");
+            $delresult = dbExecuteAssoc($delquery) or safeDie ("Couldn't delete record $id<br />\n");
 
             $this->_renderWrappedTemplate('delete', $aData);
         }
@@ -1503,7 +1503,7 @@ class dataentry extends Survey_Common_Action
                 {
                     if ($thisvalue == "")
                     {
-                        $updateqr .= $fieldname." = NULL, \n"; //db_quote_id($fieldname)." = NULL, \n";
+                        $updateqr .= $fieldname." = NULL, \n"; //dbQuoteID($fieldname)." = NULL, \n";
                     }
                     else
                     {
@@ -1516,41 +1516,41 @@ class dataentry extends Survey_Common_Action
                         //need to check if library get initialized with new value of constructor or not.
 
                         //$datetimeobj = new Date_Time_Converter($thisvalue,$dateformatdetails['phpdate']);
-                        $updateqr .= $fieldname." = '{$datetimeobj->convert("Y-m-d H:i:s")}', \n";// db_quote_id($fieldname)." = '{$datetimeobj->convert("Y-m-d H:i:s")}', \n";
+                        $updateqr .= $fieldname." = '{$datetimeobj->convert("Y-m-d H:i:s")}', \n";// dbQuoteID($fieldname)." = '{$datetimeobj->convert("Y-m-d H:i:s")}', \n";
                     }
                 }
                 elseif (($irow['type'] == 'N' || $irow['type'] == 'K') && $thisvalue == "")
                 {
-                    $updateqr .= $fieldname." = NULL, \n"; //db_quote_id($fieldname)." = NULL, \n";
+                    $updateqr .= $fieldname." = NULL, \n"; //dbQuoteID($fieldname)." = NULL, \n";
                 }
                 elseif ($irow['type'] == '|' && strpos($irow['fieldname'], '_filecount') && $thisvalue == "")
                 {
-                    $updateqr .= $fieldname." = NULL, \n"; //db_quote_id($fieldname)." = NULL, \n";
+                    $updateqr .= $fieldname." = NULL, \n"; //dbQuoteID($fieldname)." = NULL, \n";
                 }
                 elseif ($irow['type'] == 'submitdate')
                 {
                     if (isset($_POST['completed']) && ($_POST['completed']== "N"))
                     {
-                        $updateqr .= $fieldname." = NULL, \n"; //db_quote_id($fieldname)." = NULL, \n";
+                        $updateqr .= $fieldname." = NULL, \n"; //dbQuoteID($fieldname)." = NULL, \n";
                     }
                     elseif (isset($_POST['completed']) && $thisvalue=="")
                     {
-                        $updateqr .= $fieldname." = '" . $_POST['completed'] . "', \n";// db_quote_id($fieldname)." = " . dbQuoteAll($_POST['completed'],true) . ", \n";
+                        $updateqr .= $fieldname." = '" . $_POST['completed'] . "', \n";// dbQuoteID($fieldname)." = " . dbQuoteAll($_POST['completed'],true) . ", \n";
                     }
                     else
                     {
-                        $updateqr .= $fieldname." = '" . $thisvalue . "', \n"; //db_quote_id($fieldname)." = " . dbQuoteAll($thisvalue,true) . ", \n";
+                        $updateqr .= $fieldname." = '" . $thisvalue . "', \n"; //dbQuoteID($fieldname)." = " . dbQuoteAll($thisvalue,true) . ", \n";
                     }
                 }
                 else
                 {
-                    $updateqr .= $fieldname." = '" . $thisvalue . "', \n"; // db_quote_id($fieldname)." = " . dbQuoteAll($thisvalue,true) . ", \n";
+                    $updateqr .= $fieldname." = '" . $thisvalue . "', \n"; // dbQuoteID($fieldname)." = " . dbQuoteAll($thisvalue,true) . ", \n";
                 }
             }
             $updateqr = substr($updateqr, 0, -3);
             $updateqr .= " WHERE id=$id";
 
-            $updateres = db_execute_assoc($updateqr) or safeDie("Update failed:<br />\n<br />$updateqr");
+            $updateres = dbExecuteAssoc($updateqr) or safeDie("Update failed:<br />\n<br />$updateqr");
             while (ob_get_level() > 0) {
                 ob_end_flush();
             }
@@ -1608,7 +1608,7 @@ class dataentry extends Survey_Common_Action
                 {
                     $tokencompleted = "";
                     $tcquery = "SELECT completed from {{tokens_{$surveyid}}} WHERE token='{$_POST['token']}'"; //dbQuoteAll($_POST['token'],true);
-                    $tcresult = db_execute_assoc($tcquery);
+                    $tcresult = dbExecuteAssoc($tcquery);
                     $tccount = $tcresult->getRowCount();
                     foreach ($tcresult->readAll() as $tcrow)
                     {
@@ -1629,7 +1629,7 @@ class dataentry extends Survey_Common_Action
                     else
                     { // token is valid, survey not anonymous, try to get last recorded response id
                         $aquery = "SELECT id,startlanguage FROM $surveytable WHERE token='".$_POST['token']."'"; //dbQuoteAll($_POST['token'],true);
-                        $aresult = db_execute_assoc($aquery);
+                        $aresult = dbExecuteAssoc($aquery);
                         foreach ($aresult->readAll() as $arow)
                         {
                             if ($tokencompleted != "N") { $lastanswfortoken=$arow['id']; }
@@ -1804,7 +1804,7 @@ class dataentry extends Survey_Common_Action
 
                         // check how many uses the token has left
                         $usesquery = "SELECT usesleft FROM {{tokens_}}$surveyid WHERE token='".$_POST['token']."'";
-                        $usesresult = db_execute_assoc($usesquery);
+                        $usesresult = dbExecuteAssoc($usesquery);
                         $usesrow = $usesresult->readAll(); //$usesresult->row_array()
                         if (isset($usesrow)) { $usesleft = $usesrow[0]['usesleft']; }
 
@@ -1833,12 +1833,12 @@ class dataentry extends Survey_Common_Action
                             }
                         }
                         $utquery .= "WHERE token='".$_POST['token']."'";
-                        $utresult = db_execute_assoc($utquery); //Yii::app()->db->Execute($utquery) or safeDie ("Couldn't update tokens table!<br />\n$utquery<br />\n".Yii::app()->db->ErrorMsg());
+                        $utresult = dbExecuteAssoc($utquery); //Yii::app()->db->Execute($utquery) or safeDie ("Couldn't update tokens table!<br />\n$utquery<br />\n".Yii::app()->db->ErrorMsg());
 
                         // save submitdate into survey table
                         $srid = Yii::app()->db->getLastInsertID(); // Yii::app()->db->getLastInsertID();
                         $sdquery = "UPDATE {{survey_$surveyid}} SET submitdate='".$submitdate."' WHERE id={$srid}\n";
-                        $sdresult = db_execute_assoc($sdquery) or safeDie ("Couldn't set submitdate response in survey table!<br />\n$sdquery<br />\n");
+                        $sdresult = dbExecuteAssoc($sdquery) or safeDie ("Couldn't set submitdate response in survey table!<br />\n$sdquery<br />\n");
                         $last_db_id = Yii::app()->db->getLastInsertID();
                     }
                     if (isset($_POST['save']) && $_POST['save'] == "on")
@@ -1871,7 +1871,7 @@ class dataentry extends Survey_Common_Action
                         "status"=>"S",
                         "saved_date"=>dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust')));
                         $this->load->model('saved_control_model');*/
-                        if (db_execute_assoc($SQL))
+                        if (dbExecuteAssoc($SQL))
                         {
                             $scid =  Yii::app()->db->getLastInsertID(); // Yii::app()->db->getLastInsertID("{{saved_control}}","scid");
 
@@ -1883,7 +1883,7 @@ class dataentry extends Survey_Common_Action
                             if (tableExists($tokens_table)) //If the query fails, assume no tokens table exists
                             {
                                 $tkquery = "SELECT * FROM {$tokens_table}";
-                                $tkresult = db_execute_assoc($tkquery);
+                                $tkresult = dbExecuteAssoc($tkquery);
                                 /*$tokendata = array (
                                 "firstname"=> $saver['identifier'],
                                 "lastname"=> $saver['identifier'],
@@ -1903,7 +1903,7 @@ class dataentry extends Survey_Common_Action
                                 VALUES
                                 (".implode(',',$values).")";
                                 //$this->tokens_dynamic_model->insertToken($surveyid,$tokendata);
-                                db_execute_assoc($SQL);
+                                dbExecuteAssoc($SQL);
                                 //Yii::app()->db->AutoExecute(db_table_name("tokens_".$surveyid), $tokendata,'INSERT');
                                 $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), $clang->gT("A token entry for the saved survey has been created too."));
                                 //$aDataentryoutput .= "<font class='successtitle'></font><br />\n";
@@ -2009,7 +2009,7 @@ class dataentry extends Survey_Common_Action
 
             // SURVEY NAME AND DESCRIPTION TO GO HERE
             $degquery = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='{$sDataEntryLanguage}' ORDER BY {{groups}}.group_order";
-            $degresult = db_execute_assoc($degquery);
+            $degresult = dbExecuteAssoc($degquery);
             // GROUP NAME
             $aDataentryoutput = '';
 
@@ -2018,7 +2018,7 @@ class dataentry extends Survey_Common_Action
                 LimeExpressionManager::StartProcessingGroup($degrow['gid'], ($thissurvey['anonymized']!="N"),$surveyid);
 
                 $deqquery = "SELECT * FROM {{questions}} WHERE sid=$surveyid AND parent_qid=0 AND gid={$degrow['gid']} AND language='{$sDataEntryLanguage}'";
-                $deqrows = (array) db_execute_assoc($deqquery)->readAll();
+                $deqrows = (array) dbExecuteAssoc($deqquery)->readAll();
                 $aDataentryoutput .= "\t<tr>\n"
                 ."<td colspan='3' align='center'><strong>".flattenText($degrow['group_name'],true)."</strong></td>\n"
                 ."\t</tr>\n";
@@ -2043,7 +2043,7 @@ class dataentry extends Survey_Common_Action
 //                    $explanation = ""; //reset conditions explanation
 //                    $s=0;
 //                    $scenarioquery="SELECT DISTINCT scenario FROM {{conditions}} WHERE {{conditions}}.qid={$deqrow['qid']} ORDER BY scenario";
-//                    $scenarioresult=db_execute_assoc($scenarioquery);
+//                    $scenarioresult=dbExecuteAssoc($scenarioquery);
 //
 //                    foreach ($scenarioresult->readAll() as $scenariorow)
 //                    {
@@ -2052,13 +2052,13 @@ class dataentry extends Survey_Common_Action
 //
 //                        $x=0;
 //                        $distinctquery="SELECT DISTINCT cqid, {{questions}}.title FROM {{conditions}}, {{questions}} WHERE {{conditions}}.cqid={{questions}}.qid AND {{conditions}}.qid={$deqrow['qid']} AND {{conditions}}.scenario={$scenariorow['scenario']} ORDER BY cqid";
-//                        $distinctresult=db_execute_assoc($distinctquery);
+//                        $distinctresult=dbExecuteAssoc($distinctquery);
 //
 //                        foreach ($distinctresult->readAll() as $distinctrow)
 //                        {
 //                            if ($x > 0) {$explanation .= " <i>".$blang->gT("AND")."</i><br />";}
 //                            $conquery="SELECT cid, cqid, cfieldname, {{questions}}.title, {{questions}}.question, value, {{questions}}.type, method FROM {{conditions}}, {{questions}} WHERE {{conditions}}.cqid={{questions}}.qid AND {{conditions}}.cqid={$distinctrow['cqid']} AND {{conditions}}.qid={$deqrow['qid']} AND {{conditions}}.scenario={$scenariorow['scenario']}";
-//                            $conresult=db_execute_assoc($conquery);
+//                            $conresult=dbExecuteAssoc($conquery);
 //                            foreach ($conresult->readAll() as $conrow)
 //                            {
 //                                if ($conrow['method']=="==") {$conrow['method']="= ";} else {$conrow['method']=$conrow['method']." ";}
@@ -2095,7 +2095,7 @@ class dataentry extends Survey_Common_Action
 //                                        $fquery = "SELECT * FROM {{labels}}"
 //                                        . "WHERE lid='{$conrow['lid']}'\n and language='$sDataEntryLanguage' "
 //                                        . "AND code='{$conrow['value']}'";
-//                                        $fresult=db_execute_assoc($fquery) or safeDie("$fquery<br />Failed to execute this command in Data entry controller");
+//                                        $fresult=dbExecuteAssoc($fquery) or safeDie("$fquery<br />Failed to execute this command in Data entry controller");
 //                                        foreach($fresult->readAll() as $frow)
 //                                        {
 //                                            $postans=$frow['title'];
@@ -2118,7 +2118,7 @@ class dataentry extends Survey_Common_Action
 //                                        $fquery = "SELECT * FROM {{questions}} "
 //                                        . "WHERE qid='{$conrow['cqid']}'\n and language='$sDataEntryLanguage' "
 //                                        . "AND title='{$conrow['title']}' and scale_id=0";
-//                                        $fresult=db_execute_assoc($fquery) or safeDie("$fquery<br />Failed to execute this command in Data Entry controller.");
+//                                        $fresult=dbExecuteAssoc($fquery) or safeDie("$fquery<br />Failed to execute this command in Data Entry controller.");
 //                                        if ($fresult->getRowCount() <= 0) die($fquery);
 //                                        foreach($fresult->readAll() as $frow)
 //                                        {
@@ -2133,7 +2133,7 @@ class dataentry extends Survey_Common_Action
 //
 //                                    case "1":
 //                                        $ansquery="SELECT answer FROM {{answers}} WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$baselang}'";
-//                                        $ansresult=db_execute_assoc($ansquery);
+//                                        $ansresult=dbExecuteAssoc($ansquery);
 //                                        foreach ($ansresult->readAll() as $ansrow)
 //                                        {
 //                                            $conditions[]=$conrow['method']."'".$ansrow['answer']."'";
@@ -2152,7 +2152,7 @@ class dataentry extends Survey_Common_Action
 //                                    case ";":
 //                                        $thiscquestion=$fieldmap[$conrow['cfieldname']];
 //                                        $ansquery="SELECT answer FROM {{answers}} WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion['aid']}' AND language='{$sDataEntryLanguage}'";
-//                                        $ansresult=db_execute_assoc($ansquery);
+//                                        $ansresult=dbExecuteAssoc($ansquery);
 //                                        $i=0;
 //                                        foreach ($ansresult->readAll() as $ansrow)
 //                                        {
@@ -2165,7 +2165,7 @@ class dataentry extends Survey_Common_Action
 //                                        break;
 //                                    default:
 //                                        $ansquery="SELECT answer FROM {{answers}} WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$sDataEntryLanguage}'";
-//                                        $ansresult=db_execute_assoc($ansquery);
+//                                        $ansresult=dbExecuteAssoc($ansquery);
 //                                        foreach ($ansresult->readAll() as $ansrow)
 //                                        {
 //                                            $conditions[]=$conrow['method']."'".$ansrow['answer']."'";
@@ -2252,19 +2252,19 @@ class dataentry extends Survey_Common_Action
                         case "Q": //MULTIPLE SHORT TEXT
                         case "K":
                             $deaquery = "SELECT question,title FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $dearesult = db_execute_assoc($deaquery);
+                            $dearesult = dbExecuteAssoc($deaquery);
                             $cdata['dearesult'] = $dearesult->readAll();
 
                             break;
 
                         case "1": // multi scale^
                             $deaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY question_order";
-                            $dearesult = db_execute_assoc($deaquery);
+                            $dearesult = dbExecuteAssoc($deaquery);
 
                             $cdata['dearesult'] = $dearesult->readAll();
 
                             $oquery="SELECT other FROM {{questions}} WHERE qid={$deqrow['qid']} AND language='{$baselang}'";
-                            $oresult=db_execute_assoc($oquery) or safeDie("Couldn't get other for list question<br />".$oquery);
+                            $oresult=dbExecuteAssoc($oquery) or safeDie("Couldn't get other for list question<br />".$oquery);
                             foreach($oresult->readAll() as $orow)
                             {
                                 $cdata['fother']=$orow['other'];
@@ -2285,7 +2285,7 @@ class dataentry extends Survey_Common_Action
                             }
                             $defexists="";
                             $deaquery = "SELECT * FROM {{answers}} WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY sortorder, answer";
-                            $dearesult = db_execute_assoc($deaquery);
+                            $dearesult = dbExecuteAssoc($deaquery);
                             //$aDataentryoutput .= "\t<select name='$fieldname'>\n";
                             $aDatatemp='';
                             if (!isset($optCategorySeparator))
@@ -2334,7 +2334,7 @@ class dataentry extends Survey_Common_Action
                             }
 
                             $oquery="SELECT other FROM {{questions}} WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}'";
-                            $oresult=db_execute_assoc($oquery) or safeDie("Couldn't get other for list question<br />");
+                            $oresult=dbExecuteAssoc($oquery) or safeDie("Couldn't get other for list question<br />");
                             foreach($oresult->readAll() as $orow)
                             {
                                 $fother=$orow['other'];
@@ -2348,7 +2348,7 @@ class dataentry extends Survey_Common_Action
                         case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
                             $defexists="";
                             $deaquery = "SELECT * FROM {{answers}} WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY sortorder, answer";
-                            $dearesult = db_execute_assoc($deaquery);
+                            $dearesult = dbExecuteAssoc($deaquery);
                             //$aDataentryoutput .= "\t<select name='$fieldname'>\n";
                             $aDatatemp='';
                             foreach ($dearesult->readAll() as $dearow)
@@ -2366,7 +2366,7 @@ class dataentry extends Survey_Common_Action
                         case "R": //RANKING TYPE QUESTION
                             $thisqid=$deqrow['qid'];
                             $ansquery = "SELECT * FROM {{answers}} WHERE qid=$thisqid AND language='{$sDataEntryLanguage}' ORDER BY sortorder, answer";
-                            $ansresult = db_execute_assoc($ansquery);
+                            $ansresult = dbExecuteAssoc($ansquery);
                             $anscount = $ansresult->getRowCount();
 
                             $cdata['thisqid'] = $thisqid;
@@ -2460,7 +2460,7 @@ class dataentry extends Survey_Common_Action
                                 $dcols=0;
                             }
                             $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $mearesult = db_execute_assoc($meaquery);
+                            $mearesult = dbExecuteAssoc($meaquery);
                             $meacount = $mearesult->getRowCount();
 
                             $cdata['dcols'] = $dcols;
@@ -2478,7 +2478,7 @@ class dataentry extends Survey_Common_Action
                         case "P": //Multiple choice with comments checkbox + text
                             //$aDataentryoutput .= "<table border='0'>\n";
                             $meaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order, question";
-                            $mearesult = db_execute_assoc($meaquery);
+                            $mearesult = dbExecuteAssoc($meaquery);
 
                             $cdata['mearesult'] = $mearesult->readAll();
 
@@ -2493,25 +2493,25 @@ class dataentry extends Survey_Common_Action
                             break;
                         case "A": //ARRAY (5 POINT CHOICE) radio-buttons
                             $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $mearesult = db_execute_assoc($meaquery);
+                            $mearesult = dbExecuteAssoc($meaquery);
 
                             $cdata['mearesult'] = $mearesult->readAll();
 
                             break;
                         case "B": //ARRAY (10 POINT CHOICE) radio-buttons
                             $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $mearesult = db_execute_assoc($meaquery);
+                            $mearesult = dbExecuteAssoc($meaquery);
                             $cdata['mearesult'] = $mearesult->readAll();
 
                         case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                             $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $mearesult=db_execute_assoc($meaquery);
+                            $mearesult=dbExecuteAssoc($meaquery);
                             $cdata['mearesult'] = $mearesult->readAll();
 
                             break;
                         case "E": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                             $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $mearesult=db_execute_assoc($meaquery) or safeDie ("Couldn't get answers, Type \"E\"<br />$meaquery<br />");
+                            $mearesult=dbExecuteAssoc($meaquery) or safeDie ("Couldn't get answers, Type \"E\"<br />$meaquery<br />");
                             $cdata['mearesult'] = $mearesult->readAll();
 
                             break;
@@ -2552,22 +2552,22 @@ class dataentry extends Survey_Common_Action
                             $cdata['stepvalue'] = $stepvalue;
 
                             $lquery = "SELECT question, title FROM {{questions}} WHERE parent_qid={$deqrow['qid']} and scale_id=1 and language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $lresult=db_execute_assoc($lquery) or die ("Couldn't get labels, Type \":\"<br />$lquery<br />");
+                            $lresult=dbExecuteAssoc($lquery) or die ("Couldn't get labels, Type \":\"<br />$lquery<br />");
                             $cdata['lresult'] = $lresult->readAll();
 
                             $meaquery = "SELECT question, title FROM {{questions}} WHERE parent_qid={$deqrow['qid']} and scale_id=0 and language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \":\"<br />$meaquery<br />");
+                            $mearesult=dbExecuteAssoc($meaquery) or die ("Couldn't get answers, Type \":\"<br />$meaquery<br />");
                             $cdata['mearesult'] = $mearesult->readAll();
 
                             break;
                         case ";": //ARRAY (Multi Flexi)
 
                             $lquery = "SELECT * FROM {{questions}} WHERE scale_id=1 and parent_qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $lresult=db_execute_assoc($lquery) or die ("Couldn't get labels, Type \":\"<br />$lquery<br />");
+                            $lresult=dbExecuteAssoc($lquery) or die ("Couldn't get labels, Type \":\"<br />$lquery<br />");
                             $cdata['lresult'] = $lresult->readAll();
 
                             $meaquery = "SELECT * FROM {{questions}} WHERE scale_id=0 and parent_qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \":\"<br />$meaquery<br />");
+                            $mearesult=dbExecuteAssoc($meaquery) or die ("Couldn't get answers, Type \":\"<br />$meaquery<br />");
 
                             $cdata['mearesult'] = $mearesult->readAll();
 
@@ -2575,12 +2575,12 @@ class dataentry extends Survey_Common_Action
                         case "F": //ARRAY (Flexible Labels)
                         case "H":
                             $meaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $mearesult=db_execute_assoc($meaquery) or safeDie ("Couldn't get answers, Type \"E\"<br />$meaquery<br />");
+                            $mearesult=dbExecuteAssoc($meaquery) or safeDie ("Couldn't get answers, Type \"E\"<br />$meaquery<br />");
 
                             $cdata['mearesult'] = $mearesult->readAll();
 
                             $fquery = "SELECT * FROM {{answers}} WHERE qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY sortorder, code";
-                            $fresult = db_execute_assoc($fquery);
+                            $fresult = dbExecuteAssoc($fquery);
                             $cdata['fresult'] = $fresult->readAll();
                             break;
                     }

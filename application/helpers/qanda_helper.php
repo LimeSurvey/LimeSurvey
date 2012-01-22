@@ -1364,7 +1364,7 @@ function do_list_dropdown($ia)
     //question attribute random order set?
     if ($aQuestionAttributes['random_order']==1)
     {
-        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
     }
     //question attribute alphasort set?
     elseif ($aQuestionAttributes['alphasort']==1)
@@ -1641,7 +1641,7 @@ function do_list_radio($ia)
 
     //question attribute random order set?
     if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
     }
 
     //question attribute alphasort set?
@@ -1656,7 +1656,7 @@ function do_list_radio($ia)
         $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
     }
 
-    $ansresult = db_execute_assoc($ansquery)->readAll();  //Checked
+    $ansresult = dbExecuteAssoc($ansquery)->readAll();  //Checked
     $anscount = count($ansresult);
 
     if (trim($aQuestionAttributes['display_columns'])!='') {
@@ -1899,7 +1899,7 @@ function do_listwithcomment($ia)
 
     //question attribute random order set?
     if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
     }
     //question attribute alphasort set?
     elseif ($aQuestionAttributes['alphasort']==1)
@@ -2066,7 +2066,7 @@ function do_ranking($ia)
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     $answer = '';
     if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
     } else {
         $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
     }
@@ -2407,18 +2407,18 @@ function do_multiplechoice($ia)
     //    }
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
-    $qresult = db_execute_assoc($qquery);     //Checked
+    $qresult = dbExecuteAssoc($qquery);     //Checked
     $qrow = $qresult->read(); $other = $qrow['other'];
 
     if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
     }
     else
     {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
 
-    $ansresult = db_execute_assoc($ansquery)->readAll();  //Checked
+    $ansresult = dbExecuteAssoc($ansquery)->readAll();  //Checked
     $anscount = count($ansresult);
 
     if (trim($aQuestionAttributes['exclude_all_others'])!='' && $aQuestionAttributes['random_order']==1)
@@ -2792,7 +2792,7 @@ function do_multiplechoice_withcomments($ia)
     $qresult = Yii::app()->db->createCommand($qquery)->query();     //Checked
     $qrow = $qresult->read(); $other = $qrow['other'];
     if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
     } else {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
@@ -3210,14 +3210,14 @@ function do_multipleshorttext($ia)
     }
 
     if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
     }
     else
     {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
 
-    $ansresult = db_execute_assoc($ansquery);    //Checked
+    $ansresult = dbExecuteAssoc($ansquery);    //Checked
     $anscount = $ansresult->count()*2;
     //$answer .= "\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
     $fn = 1;
@@ -3520,14 +3520,14 @@ function do_multiplenumeric($ia)
 
     if ($aQuestionAttributes['random_order']==1)
     {
-        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
     }
     else
     {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0]  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
 
-    $ansresult = db_execute_assoc($ansquery);	//Checked
+    $ansresult = dbExecuteAssoc($ansquery);	//Checked
     $anscount = $ansresult->count()*2;
     //$answer .= "\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
     $fn = 1;
@@ -4458,21 +4458,21 @@ function do_array_5point($ia)
     $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
     $ansquery = "SELECT question FROM {{questions}} WHERE parent_qid=".$ia[0]." AND question like '%|%'";
-    $ansresult = db_execute_assoc($ansquery);   //Checked
+    $ansresult = dbExecuteAssoc($ansquery);   //Checked
 
     if ($ansresult->count()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
     // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
 
 
     if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
     }
     else
     {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
 
-    $ansresult = db_execute_assoc($ansquery);     //Checked
+    $ansresult = dbExecuteAssoc($ansquery);     //Checked
     $anscount = $ansresult->count();
 
     $fn = 1;
@@ -4610,7 +4610,7 @@ function do_array_10point($ia)
     }
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]."  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
-    $qresult = db_execute_assoc($qquery);      //Checked
+    $qresult = dbExecuteAssoc($qquery);      //Checked
     $qrow = $qresult->read(); $other = $qrow['other'];
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
@@ -4630,13 +4630,13 @@ function do_array_10point($ia)
     $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
     if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
     }
     else
     {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
-    $ansresult = db_execute_assoc($ansquery);   //Checked
+    $ansresult = dbExecuteAssoc($ansquery);   //Checked
     $anscount = $ansresult->count();
 
     $fn = 1;
@@ -4746,7 +4746,7 @@ function do_array_yesnouncertain($ia)
     }
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
-    $qresult = db_execute_assoc($qquery);	//Checked
+    $qresult = dbExecuteAssoc($qquery);	//Checked
     $qrow = $qresult->readAll();
     $other = isset($qrow['other']) ? $qrow['other'] : '';
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
@@ -4766,13 +4766,13 @@ function do_array_yesnouncertain($ia)
     $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
     if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
     }
     else
     {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
-    $ansresult = db_execute_assoc($ansquery);	//Checked
+    $ansresult = dbExecuteAssoc($ansquery);	//Checked
     $anscount = $ansresult->count();
     $fn = 1;
     $answer = "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - a Yes/No/uncertain Likert scale array\">\n"
@@ -4906,7 +4906,7 @@ function do_array_increasesamedecrease($ia)
     }
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
-    $qresult = db_execute_assoc($qquery);   //Checked
+    $qresult = dbExecuteAssoc($qquery);   //Checked
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     if (trim($aQuestionAttributes['answer_width'])!='')
     {
@@ -4928,13 +4928,13 @@ function do_array_increasesamedecrease($ia)
         $other = $qrow['other'];
     }
     if ($aQuestionAttributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
     }
     else
     {
         $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
     }
-    $ansresult = db_execute_assoc($ansquery);  //Checked
+    $ansresult = dbExecuteAssoc($ansquery);  //Checked
     $anscount = $ansresult->count();
 
     $fn = 1;
@@ -5081,7 +5081,7 @@ function do_array($ia)
     }
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
-    $qresult = db_execute_assoc($qquery);     //Checked
+    $qresult = dbExecuteAssoc($qquery);     //Checked
     $qrow = $qresult->read(); $other = $qrow['other'];
     $lquery = "SELECT * FROM {{answers}} WHERE qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
 
@@ -5105,7 +5105,7 @@ function do_array($ia)
         $useDropdownLayout = false;
     }
 
-    $lresult = db_execute_assoc($lquery);   //Checked
+    $lresult = dbExecuteAssoc($lquery);   //Checked
     if ($useDropdownLayout === false && $lresult->count() > 0)
     {
         foreach ($lresult->readAll() as $lrow)
@@ -5117,17 +5117,17 @@ function do_array($ia)
         //		$cellwidth=sprintf('%02d', $cellwidth);
 
         $ansquery = "SELECT question FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
-        $ansresult = db_execute_assoc($ansquery);  //Checked
+        $ansresult = dbExecuteAssoc($ansquery);  //Checked
         if ($ansresult->count()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($aQuestionAttributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
         }
         else
         {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
         }
-        $ansresult = db_execute_assoc($ansquery); //Checked
+        $ansresult = dbExecuteAssoc($ansquery); //Checked
         $anscount = $ansresult->count();
         $fn=1;
 
@@ -5295,17 +5295,17 @@ function do_array($ia)
             $labels[]=Array('code' => $lrow['code'],
             'answer' => $lrow['answer']);
         $ansquery = "SELECT question FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
-        $ansresult = db_execute_assoc($ansquery);  //Checked
+        $ansresult = dbExecuteAssoc($ansquery);  //Checked
         if ($ansresult->count()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($aQuestionAttributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
         }
         else
         {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
         }
-        $ansresult = db_execute_assoc($ansquery); //Checked
+        $ansresult = dbExecuteAssoc($ansquery); //Checked
         $anscount = $ansresult->count();
         $fn=1;
 
@@ -5598,7 +5598,7 @@ function do_array_multitext($ia)
         $cellwidth=sprintf('%02d', $cellwidth);
 
         $ansquery = "SELECT count(question) FROM {{questions}} WHERE parent_qid={$ia[0]} and scale_id=0 AND question like '%|%'";
-        $ansresult = reset(db_execute_assoc($ansquery)->read());
+        $ansresult = reset(dbExecuteAssoc($ansquery)->read());
         if ($ansresult>0)
         {
             $right_exists=true;
@@ -5610,13 +5610,13 @@ function do_array_multitext($ia)
         }
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($aQuestionAttributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
         }
         else
         {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
         }
-        $ansresult = db_execute_assoc($ansquery);
+        $ansresult = dbExecuteAssoc($ansquery);
         $anscount = $ansresult->count();
         $fn=1;
 
@@ -5789,7 +5789,7 @@ function do_array_multiflexi($ia)
     //echo '<pre>'; print_r($_POST); echo '</pre>';
     $defaultvaluescript = '';
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
-    $qresult = db_execute_assoc($qquery);
+    $qresult = dbExecuteAssoc($qquery);
     $qrow = $qresult->read(); $other = $qrow['other'];
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
@@ -5878,7 +5878,7 @@ function do_array_multiflexi($ia)
     $columnswidth=100-($answerwidth*2);
 
     $lquery = "SELECT * FROM {{questions}} WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=1 ORDER BY question_order";
-    $lresult = db_execute_assoc($lquery);
+    $lresult = dbExecuteAssoc($lquery);
     if ($lresult->count() > 0)
     {
         foreach ($lresult->readAll() as $lrow)
@@ -5893,17 +5893,17 @@ function do_array_multiflexi($ia)
         $cellwidth=sprintf('%02d', $cellwidth);
 
         $ansquery = "SELECT question FROM {{questions}} WHERE parent_qid=".$ia[0]." AND scale_id=0 AND question like '%|%'";
-        $ansresult = db_execute_assoc($ansquery);
+        $ansresult = dbExecuteAssoc($ansquery);
         if ($ansresult->count()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($aQuestionAttributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
         }
         else
         {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
         }
-        $ansresult = db_execute_assoc($ansquery)->readAll();  //Checked
+        $ansresult = dbExecuteAssoc($ansquery)->readAll();  //Checked
         if (trim($aQuestionAttributes['parent_order']!=''))
         {
             $iParentQID=(int) $aQuestionAttributes['parent_order'];
@@ -6142,10 +6142,10 @@ function do_arraycolumns($ia)
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
-    $qresult = db_execute_assoc($qquery);    //Checked
+    $qresult = dbExecuteAssoc($qquery);    //Checked
     $qrow = $qresult->read(); $other = $qrow['other'];
     $lquery = "SELECT * FROM {{answers}} WHERE qid=".$ia[0]."  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
-    $lresult = db_execute_assoc($lquery);   //Checked
+    $lresult = dbExecuteAssoc($lquery);   //Checked
     if ($lresult->count() > 0)
     {
         foreach ($lresult->readAll() as $lrow)
@@ -6161,13 +6161,13 @@ function do_arraycolumns($ia)
             $labels[]=array('answer'=>$clang->gT('No answer'), 'code'=>'');
         }
         if ($aQuestionAttributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
         }
         else
         {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
         }
-        $ansresult = db_execute_assoc($ansquery);  //Checked
+        $ansresult = dbExecuteAssoc($ansquery);  //Checked
         $anscount = $ansresult->count();
         if ($anscount>0)
         {
@@ -6302,7 +6302,7 @@ function do_array_dual($ia)
     $labelans1=array();
     $labelans=array();
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
-    $other = reset(db_execute_assoc($qquery)->read());    //Checked
+    $other = reset(dbExecuteAssoc($qquery)->read());    //Checked
     $lquery =  "SELECT * FROM {{answers}} WHERE scale_id=0 AND qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY sortorder, code";
     $lquery1 = "SELECT * FROM {{answers}} WHERE scale_id=1 AND qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY sortorder, code";
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
@@ -6333,7 +6333,7 @@ function do_array_dual($ia)
         $rightheader ='';
     }
 
-    $lresult = db_execute_assoc($lquery); //Checked
+    $lresult = dbExecuteAssoc($lquery); //Checked
     if ($useDropdownLayout === false && $lresult->count() > 0)
     {
         if (trim($aQuestionAttributes['answer_width'])!='')
@@ -6351,7 +6351,7 @@ function do_array_dual($ia)
             $labelans[]=$lrow['answer'];
             $labelcode[]=$lrow['code'];
         }
-        $lresult1 = db_execute_assoc($lquery1); //Checked
+        $lresult1 = dbExecuteAssoc($lquery1); //Checked
         if ($lresult1->count() > 0)
         {
             foreach ($lresult1->readAll() as $lrow1)
@@ -6367,7 +6367,7 @@ function do_array_dual($ia)
         $cellwidth=sprintf("%02d", $cellwidth);
 
         $ansquery = "SELECT question FROM {{questions}} WHERE parent_qid=".$ia[0]." and scale_id=0 AND question like '%|%'";
-        $ansresult = db_execute_assoc($ansquery);   //Checked
+        $ansresult = dbExecuteAssoc($ansquery);   //Checked
         if ($ansresult->count()>0)
         {
             $right_exists=true;
@@ -6378,13 +6378,13 @@ function do_array_dual($ia)
         }
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($aQuestionAttributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
         }
         else
         {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY question_order";
         }
-        $ansresult = db_execute_assoc($ansquery);   //Checked
+        $ansresult = dbExecuteAssoc($ansquery);   //Checked
         $anscount = $ansresult->count();
         $fn=1;
         // unselect second scale when using "no answer"
@@ -6665,7 +6665,7 @@ function do_array_dual($ia)
 
         //question atribute random_order set?
         if ($aQuestionAttributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY ".dbRandom();
         }
 
         //no question attributes -> order by sortorder
@@ -6673,7 +6673,7 @@ function do_array_dual($ia)
         {
             $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' ORDER BY question_order";
         }
-        $ansresult = db_execute_assoc($ansquery);    //Checked
+        $ansresult = dbExecuteAssoc($ansquery);    //Checked
         $anscount = $ansresult->count();
 
         if ($anscount==0)
@@ -6684,13 +6684,13 @@ function do_array_dual($ia)
         else
         {
 
-            //already done $lresult = db_execute_assoc($lquery);
+            //already done $lresult = dbExecuteAssoc($lquery);
             foreach ($lresult->readAll() as $lrow)
             {
                 $labels0[]=Array('code' => $lrow['code'],
                 'title' => $lrow['answer']);
             }
-            $lresult1 = db_execute_assoc($lquery1);   //Checked
+            $lresult1 = dbExecuteAssoc($lquery1);   //Checked
             foreach ($lresult1->readAll() as $lrow1)
             {
                 $labels1[]=Array('code' => $lrow1['code'],

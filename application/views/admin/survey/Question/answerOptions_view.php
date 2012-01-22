@@ -77,7 +77,7 @@
                 <?php $alternate=true;
 
                 $query = "SELECT * FROM {{answers}} WHERE qid='{$qid}' AND language='{$anslang}' and scale_id=$scale_id ORDER BY sortorder, code";
-                $result = db_execute_assoc($query);
+                $result = dbExecuteAssoc($query);
                 $anscount = $result->count();
 
                 foreach ($result->readAll() as $row)

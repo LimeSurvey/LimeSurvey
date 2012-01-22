@@ -575,7 +575,7 @@ class participantsaction extends Survey_Common_Action
         }
 
         // Load the helper and pass the array to be written to a CSV file
-        cpdb_export($outputarray, "central_" . time());
+        CPDBExport($outputarray, "central_" . time());
     }
 
     /**
@@ -726,7 +726,7 @@ class participantsaction extends Survey_Common_Action
                 }
                 $i++;
             }
-            cpdb_export($outputarray, "central_" . time());
+            CPDBExport($outputarray, "central_" . time());
         }
         else
         {
@@ -763,7 +763,7 @@ class participantsaction extends Survey_Common_Action
                 }
                 $i++;
             }
-            cpdb_export($outputarray, "central_" . time());
+            CPDBExport($outputarray, "central_" . time());
         }
     }
 

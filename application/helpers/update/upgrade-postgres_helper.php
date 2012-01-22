@@ -401,7 +401,7 @@ function db_upgrade($oldversion) {
 function upgrade_token_tables128()
 {
     global $modifyoutput;
-    $surveyidresult = db_get_tables_like("tokens%");
+    $surveyidresult = dbGetTablesLike("tokens%");
     if (empty($surveyidresult)) {return "Database Error";}
     else
     {
@@ -417,7 +417,7 @@ function upgrade_survey_tables133()
 {
     global $modifyoutput;
 
-    $surveyidquery = "SELECT sid, additional_languages FROM ".db_quote_id('{{surveys}}');
+    $surveyidquery = "SELECT sid, additional_languages FROM ".dbQuoteID('{{surveys}}');
     $surveyidresult = Yii::app()->createCommand($surveyidquery)->queryAll();
     foreach ( $surveyidresult as $sv )
     {
@@ -428,7 +428,7 @@ function upgrade_survey_tables133()
 function upgrade_token_tables134()
 {
     global $modifyoutput;
-    $surveyidresult = db_get_tables_like("tokens%");
+    $surveyidresult = dbGetTablesLike("tokens%");
     if (empty($surveyidresult)) {return "Database Error";}
     else
     {
@@ -443,7 +443,7 @@ function upgrade_token_tables134()
 function upgrade_token_tables145()
 {
     global $modifyoutput;
-    $surveyidresult = db_get_tables_like("tokens%");
+    $surveyidresult = dbGetTablesLike("tokens%");
     if (empty($surveyidresult)) {return "Database Error";}
     else
     {
@@ -458,7 +458,7 @@ function upgrade_token_tables145()
 function upgrade_survey_tables139()
 {
     global $modifyoutput;
-    $surveyidresult = db_get_tables_like("survey\_%");
+    $surveyidresult = dbGetTablesLike("survey\_%");
     if (empty($surveyidresult)) {return "Database Error";}
     else
     {
@@ -644,7 +644,7 @@ function upgrade_tables143()
 function upgrade_timing_tables146()
 {
     global $modifyoutput;
-    $aTimingTables=db_get_tables_like("%timings");
+    $aTimingTables=dbGetTablesLike("%timings");
     foreach ($aTimingTables as $sTable) {
         modifyDatabase("","ALTER TABLE {$sTable} RENAME COLUMN \"interviewTime\" TO interviewtime;"); echo $modifyoutput; flush();ob_flush();
     }

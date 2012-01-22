@@ -26,7 +26,7 @@ function fixNumbering($fixnumbering, $surveyid)
      //Fix a question id - requires renumbering a question
     $oldqid = $fixnumbering;
     $query = "SELECT qid FROM {{questions}} ORDER BY qid DESC";
-    $result = db_select_limit_assoc($query, 1);
+    $result = dbSelectLimitAssoc($query, 1);
     foreach ($result->readAll() as $row) {$lastqid=$row['qid'];}
     $newqid=$lastqid+1;
     $query = "UPDATE {{questions}} SET qid=$newqid WHERE qid=$oldqid";
@@ -39,7 +39,7 @@ function fixNumbering($fixnumbering, $surveyid)
     $result = db_execute_assosc($query);
     //Now conditions based upon this question
     $query = "SELECT cqid, cfieldname FROM {{conditions}} WHERE cqid=$oldqid";
-    $result = db_execute_assoc($query);
+    $result = dbExecuteAssoc($query);
     foreach ($result->readAll() as $row)
     {
         $switcher[]=array("cqid"=>$row['cqid'], "cfieldname"=>$row['cfieldname']);
@@ -534,7 +534,7 @@ function mssql_drop_constraint($fieldname, $tablename)
                       sys.sysconstraints AS con ON c_obj.id = con.constid INNER JOIN
                       sys.syscolumns AS col ON t_obj.id = col.id AND con.colid = col.colid
                 WHERE (c_obj.xtype = 'D') AND (col.name = '$fieldname') AND (t_obj.name={{{$tablename}}})";
-    $result = db_execute_assoc($dfquery)->read();
+    $result = dbExecuteAssoc($dfquery)->read();
     $defaultname=$result['CONTRAINT_NAME'];
     if ($defaultname!=false)
     {
@@ -553,7 +553,7 @@ function mssql_drop_primary_index($tablename)
               ."FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS "
               ."WHERE     (TABLE_NAME = {{{$tablename}}}) AND (CONSTRAINT_TYPE = 'PRIMARY KEY')";
 
-    $result = db_execute_assoc($pkquery)->read();
+    $result = dbExecuteAssoc($pkquery)->read();
     $primarykey=$result['CONTSTRAINT_NAME'];
     if ($primarykey!=false)
     {

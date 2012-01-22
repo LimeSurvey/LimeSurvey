@@ -78,7 +78,7 @@
                 {
                     // first scale
                     $delquery = "SELECT * FROM {{answers}} WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' and scale_id=0 ORDER BY sortorder, code";
-                    $delresult = db_execute_assoc($delquery); ?>
+                    $delresult = dbExecuteAssoc($delquery); ?>
                 <tr><td><?php echo $dearow['question']; ?></td><td>
                         <select name='<?php echo $fieldname.$dearow['title']; ?>#0'>
                             <option selected='selected' value=''><?php $clang->eT("Please choose..."); ?></option>
@@ -88,7 +88,7 @@
                                 <?php } ?>
                         </select></td>
                     <?php $delquery = "SELECT * FROM {{answers}} WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' and scale_id=1 ORDER BY sortorder, code";
-                        $delresult = db_execute_assoc($delquery); ?>
+                        $delresult = dbExecuteAssoc($delquery); ?>
                     <td>
                         <select name='<?php echo $fieldname.$dearow['title']; ?>#1'>
                             <option selected='selected' value=''><?php $clang->eT("Please choose..."); ?></option>

@@ -50,7 +50,7 @@ function loadanswers()
     {
         return;
     }
-    $result = db_execute_assoc($query) or safeDie ("Error loading results<br />$query<br />");   //Checked
+    $result = dbExecuteAssoc($query) or safeDie ("Error loading results<br />$query<br />");   //Checked
     if ($result->count() < 1)
     {
         safeDie($clang->gT("There is no matching saved survey")."<br />\n");
@@ -338,7 +338,7 @@ function checkconfield($value)
 
         $scenarioquery = "SELECT DISTINCT scenario FROM {{conditions}}"
         ." WHERE {{conditions}}.qid=$sfa[0] ORDER BY scenario";
-        $scenarioresult=db_execute_assoc($scenarioquery);
+        $scenarioresult=dbExecuteAssoc($scenarioquery);
         $matchfound=0;
         //$scenario=1;
         //while ($scenario > 0)
@@ -360,7 +360,7 @@ function checkconfield($value)
             . "AND {{conditions}}.scenario=$scenario "
             . "AND {{conditions}}.cfieldname NOT LIKE '{%' "
             . "ORDER BY {{conditions}}.qid,{{conditions}}.cfieldname";
-            $result=db_execute_assoc($query) or safeDie($query."<br />");         //Checked
+            $result=dbExecuteAssoc($query) or safeDie($query."<br />");         //Checked
             $conditionsfound = $result->count();
 
             $querytoken = "SELECT {{conditions}}.*, '' as type "
@@ -370,7 +370,7 @@ function checkconfield($value)
             . "AND {{conditions}}.scenario=$scenario "
             . "AND {{conditions}}.cfieldname LIKE '{%' "
             . "ORDER BY {{conditions}}.qid,{{conditions}}.cfieldname";
-            $resulttoken=db_execute_assoc($querytoken) or safeDie($querytoken."<br />");         //Checked
+            $resulttoken=dbExecuteAssoc($querytoken) or safeDie($querytoken."<br />");         //Checked
             $conditionsfoundtoken = $resulttoken->count();
             $conditionsfound = $conditionsfound + $conditionsfoundtoken;
 
@@ -899,7 +899,7 @@ function aCheckInput($surveyid, $move,$backok=null)
                     ."FROM {{questions}}\n"
                     ."WHERE qid=".$fieldinfo['qid']." "
                     . "AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
-                    $pregresult=db_execute_assoc($pregquery) or safeDie("ERROR: $pregquery<br />");      //Checked
+                    $pregresult=dbExecuteAssoc($pregquery) or safeDie("ERROR: $pregquery<br />");      //Checked
                     foreach($pregresult->readAll() as $pregrow)
                     {
                         $preg=trim($pregrow['preg']);
@@ -1046,7 +1046,7 @@ function submittokens($quotaexit=false)
 
     // check how many uses the token has left
     $usesquery = "SELECT usesleft FROM {{tokens_$surveyid}} WHERE token=".$clienttoken;
-    $usesresult = db_execute_assoc($usesquery);
+    $usesresult = dbExecuteAssoc($usesquery);
     $usesrow = $usesresult->read();
     if (isset($usesrow)) { $usesleft = $usesrow['usesleft']; }
 
@@ -1079,14 +1079,14 @@ function submittokens($quotaexit=false)
     }
     $utquery .= "WHERE token=".$clienttoken."";
 
-    $utresult = db_execute_assoc($utquery) or safeDie ("Couldn't update tokens table!<br />\n$utquery<br />\n");     //Checked
+    $utresult = dbExecuteAssoc($utquery) or safeDie ("Couldn't update tokens table!<br />\n$utquery<br />\n");     //Checked
 
     if ($quotaexit==false)
     {
         // TLR change to put date into sent and completed
         $cnfquery = "SELECT * FROM {{tokens_$surveyid}} WHERE token=".$clienttoken." AND completed!='N' AND completed!=''";
 
-        $cnfresult = db_execute_assoc($cnfquery);       //Checked
+        $cnfresult = dbExecuteAssoc($cnfquery);       //Checked
         $cnfrow = $cnfresult->read();
         if (isset($cnfrow))
         {
@@ -1227,7 +1227,7 @@ function SendSubmitNotifications()
 
     if (!empty($thissurvey['emailresponseto']))
     {
-        if (isset($_SESSION['survey_'.$surveyid]['token']) && $_SESSION['survey_'.$surveyid]['token'] != '' && db_tables_exist('{{tokens_'.$surveyid.'}}'))
+        if (isset($_SESSION['survey_'.$surveyid]['token']) && $_SESSION['survey_'.$surveyid]['token'] != '' && tableExists('{{tokens_'.$surveyid.'}}'))
         {
             //Gather token data for tokenised surveys
             $_SESSION['survey_'.$surveyid]['thistoken']=getTokenData($surveyid, $_SESSION['survey_'.$surveyid]['token']);
@@ -1548,7 +1548,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
             $tkquery = "SELECT COUNT(*) FROM {{tokens_".$surveyid."}} WHERE token=".trim(strip_tags($clienttoken))." AND (completed = 'N' or completed='')";
         }
 
-        $tkresult = db_execute_assoc($tkquery);    //Checked
+        $tkresult = dbExecuteAssoc($tkquery);    //Checked
         $tkexist = reset($tkresult->read());
         if (!$tkexist || $areTokensUsed)
         {
@@ -1593,7 +1593,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
             {
                 $tkquery = "SELECT COUNT(*) FROM {{tokens_".$surveyid."}} WHERE token='".trim(sanitize_xss_string(strip_tags($clienttoken)))."' AND (completed = 'N' or completed='')";
             }
-            $tkresult = db_execute_assoc($tkquery);     //Checked
+            $tkresult = dbExecuteAssoc($tkquery);     //Checked
             list($tkexist) = $tkresult->read();
             if (!$tkexist || ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y') )
             {
@@ -1716,13 +1716,13 @@ function buildsurveysession($surveyid,$previewGroup=false)
 
 
     //RL: multilingual support
-    if (isset($_GET['token']) && db_tables_exist('{{tokens_'.$surveyid.'}}'))
+    if (isset($_GET['token']) && tableExists('{{tokens_'.$surveyid.'}}'))
     {
 
         //get language from token (if one exists)
         $tkquery2 = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".db_quote($clienttoken)."' AND (completed = 'N' or completed='')";
         //echo $tkquery2;
-        $result = db_execute_assoc($tkquery2) or safeDie ("Couldn't get tokens<br />$tkquery<br />");    //Checked
+        $result = dbExecuteAssoc($tkquery2) or safeDie ("Couldn't get tokens<br />$tkquery<br />");    //Checked
         foreach ($result->readAll() as $rw)
         {
             $tklanguage=$rw['language'];
@@ -1765,7 +1765,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
     ." AND {{questions}}.parent_qid=0\n"
     ." ORDER BY {{groups}}.group_order,{{questions}}.question_order";
 
-    $result = db_execute_assoc($query);    //Checked
+    $result = dbExecuteAssoc($query);    //Checked
 
     $totalquestions = $result->count();
 
@@ -1824,7 +1824,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
         $_SESSION['survey_'.$surveyid]['insertarray'][]= "token";
     }
 
-    if ($tokensexist == 1 && $thissurvey['anonymized'] == "N"  && db_tables_exist('{{tokens_'.$surveyid.'}}'))
+    if ($tokensexist == 1 && $thissurvey['anonymized'] == "N"  && tableExists('{{tokens_'.$surveyid.'}}'))
     {
         //Gather survey data for "non anonymous" surveys, for use in presenting questions
         $_SESSION['survey_'.$surveyid]['thistoken']=getTokenData($surveyid, $clienttoken);
@@ -1912,7 +1912,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
     {
         $rgquery = "SELECT attr.qid, value FROM {{question_attributes}} as attr right join {{questions}} as quests on attr.qid=quests.qid WHERE attribute='random_group' and value <> '' and sid=$surveyid GROUP BY attr.qid, value";
     }
-    $rgresult = db_execute_assoc($rgquery);
+    $rgresult = dbExecuteAssoc($rgquery);
     foreach($rgresult->readAll() as $rgrow)
     {
         // Get the question IDs for each randomization group
@@ -2073,7 +2073,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
     }
 
     // Fix totalquestions by substracting Test Display questions
-    $iNumberofQuestions=db_execute_assoc("SELECT count(*)\n"
+    $iNumberofQuestions=dbExecuteAssoc("SELECT count(*)\n"
     ." FROM {{questions}}"
     ." WHERE type in ('X','*')\n"
     ." AND sid={$surveyid}"
@@ -2184,7 +2184,7 @@ function doAssessment($surveyid, $returndataonly=false)
     $query = "SELECT * FROM {{assessments}}
     WHERE sid=$surveyid and language='{$_SESSION['survey_'.$surveyid]['s_lang']}'
     ORDER BY scope, id";
-    if ($result = db_execute_assoc($query))   //Checked
+    if ($result = dbExecuteAssoc($query))   //Checked
 
     {
         if ($result->count() > 0)
@@ -2227,7 +2227,7 @@ function doAssessment($surveyid, $returndataonly=false)
                         {
 
                             $usquery = "SELECT assessment_value FROM {{answers}} where qid=".$field['qid']." and language='$baselang' and code=".dbQuoteAll($_SESSION['survey_'.$surveyid][$field['fieldname']]);
-                            $usresult = db_execute_assoc($usquery);          //Checked
+                            $usresult = dbExecuteAssoc($usquery);          //Checked
                             if ($usresult)
                             {
                                 $usrow = $usresult->read();
@@ -2343,7 +2343,7 @@ function UpdateGroupList($surveyid, $language)
     $clang = Yii::app()->lang;
     unset ($_SESSION['survey_'.$surveyid]['grouplist']);
     $query = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
-    $result = db_execute_assoc($query) or safeDie ("Couldn't get group list<br />$query<br />");  //Checked
+    $result = dbExecuteAssoc($query) or safeDie ("Couldn't get group list<br />$query<br />");  //Checked
     foreach ($result->readAll() as $row)
     {
         $_SESSION['survey_'.$surveyid]['grouplist'][$row['gid']]=array($row['gid'], $row['group_name'], $row['description']);
@@ -2379,7 +2379,7 @@ function UpdateFieldArray()
             $questionarray =& $_SESSION['survey_'.$surveyid]['fieldarray'][$key];
 
             $query = "SELECT * FROM {{questions}} WHERE qid=".$questionarray[0]." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'";
-            $result = db_execute_assoc($query) or safeDie ("Couldn't get question <br />$query<br />");      //Checked
+            $result = dbExecuteAssoc($query) or safeDie ("Couldn't get question <br />$query<br />");      //Checked
             $row = $result->read();
             $questionarray[2]=$row['title'];
             $questionarray[3]=$row['question'];
@@ -2436,7 +2436,7 @@ function check_quota($checkaction,$surveyid)
                             $fields_query_array[$fieldname] = array();
                         }
                         $fields_value_array[$fieldname][]=$member['value'];
-                        $fields_query_array[$fieldname][]= db_quote_id($fieldname)." = '{$member['value']}'";
+                        $fields_query_array[$fieldname][]= dbQuoteID($fieldname)." = '{$member['value']}'";
                     }
 
                 }
@@ -2487,7 +2487,7 @@ function check_quota($checkaction,$surveyid)
                     WHERE ".implode(' AND ',$querycond)." "."
                     AND submitdate IS NOT NULL";
 
-                    $result = db_execute_assoc($querysel) or safeDie();    //Checked
+                    $result = dbExecuteAssoc($querysel) or safeDie();    //Checked
                     $quota_check = $result->readAll();
 
                     if ($result->count() >= $quota['Limit']) // Quota is full!!
@@ -2756,7 +2756,7 @@ function UpdateSessionGroupList($surveyid, $language)
 {
     unset ($_SESSION['survey_'.$surveyid]['grouplist']);
     $query = "SELECT * FROM {{groups}} WHERE sid={$surveyid} AND language='".$language."' ORDER BY group_order";
-    $result = db_execute_assoc($query) or safeDie ("Couldn't get group list<br />$query<br />".$connect->ErrorMsg());  //Checked
+    $result = dbExecuteAssoc($query) or safeDie ("Couldn't get group list<br />$query<br />".$connect->ErrorMsg());  //Checked
     foreach($result->readAll() as $row)
     {
         $_SESSION['survey_'.$surveyid]['grouplist'][]=array($row['gid'], $row['group_name'], $row['description']);

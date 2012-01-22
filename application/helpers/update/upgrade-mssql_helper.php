@@ -578,7 +578,7 @@ function upgrade_survey_tables117()
 function upgrade_survey_tables118()
 {
     global $modifyoutput;
-    $tokentables = db_get_tables_like('tokens');
+    $tokentables = dbGetTablesLike('tokens');
     foreach ($tokentables as $sv)
     {
         modifyDatabase("","ALTER TABLE ".$sv." ALTER COLUMN [token] VARCHAR(36)"); echo $modifyoutput; flush();ob_flush();
@@ -589,7 +589,7 @@ function upgrade_survey_tables118()
 function upgrade_token_tables125()
 {
     global $modifyoutput;
-    $tokentables = db_get_tables_like('tokens');
+    $tokentables = dbGetTablesLike('tokens');
     foreach ($tokentables as $sv)
     {
         modifyDatabase("","ALTER TABLE ".$sv." ADD [emailstatus] VARCHAR(300) DEFAULT 'OK'"); echo $modifyoutput; flush();ob_flush();
@@ -600,7 +600,7 @@ function upgrade_token_tables125()
 function upgrade_token_tables128()
 {
     global $modifyoutput;
-    $tokentables = db_get_tables_like('tokens');
+    $tokentables = dbGetTablesLike('tokens');
     foreach ($tokentables as $sv)
     {
         modifyDatabase("","ALTER TABLE ".$sv." ADD [remindersent] VARCHAR(17) DEFAULT 'OK'"); echo $modifyoutput; flush();ob_flush();
@@ -627,7 +627,7 @@ function upgrade_survey_tables133a()
 function upgrade_token_tables134()
 {
     global $modifyoutput;
-    $tokentables = db_get_tables_like("tokens%");
+    $tokentables = dbGetTablesLike("tokens%");
     foreach ($tokentables as $sv)
     {
         modifyDatabase("","ALTER TABLE ".$sv." ADD [validfrom] DATETIME"); echo $modifyoutput; flush();ob_flush();
@@ -639,7 +639,7 @@ function upgrade_token_tables134()
 function upgrade_token_tables145()
 {
     global $modifyoutput;
-    $tokentables = db_get_tables_like("tokens%");
+    $tokentables = dbGetTablesLike("tokens%");
     foreach ($tokentables as $sv) {
             modifyDatabase("","ALTER TABLE ".$sv." ADD [usesleft] int NOT NULL DEFAULT '1'"); echo $modifyoutput; flush();ob_flush();
             modifyDatabase("","UPDATE ".$sv." SET usesleft=0 WHERE completed<>'N'"); echo $modifyoutput; flush();ob_flush();
@@ -687,7 +687,7 @@ function mssql_drop_constraint($fieldname, $tablename)
 function upgrade_survey_tables139()
 {
     global $modifyoutput;
-    $surveyidquery = db_get_tables_like("survey\_%");
+    $surveyidquery = dbGetTablesLike("survey\_%");
     if (empty($surveyidresult)) {return "Database Error";}
     else
     {
@@ -706,7 +706,7 @@ function upgrade_question_attributes142()
     foreach ($questionids as $questionid)
     {
         //Select all affected question attributes
-        $attributevalues=db_select_column("SELECT value from {{question_attributes}} where attribute='exclude_all_other' and qid=".$questionid);
+        $attributevalues=dbSelectColumn("SELECT value from {{question_attributes}} where attribute='exclude_all_other' and qid=".$questionid);
         modifyDatabase("","delete from {{question_attributes}} where attribute='exclude_all_other' and qid=".$questionid); echo $modifyoutput; flush();ob_flush();
         $record['value']=implode(';',$attributevalues);
         $record['attribute']='exclude_all_other';
@@ -880,7 +880,7 @@ function upgrade_tables143()
 function upgrade_timing_tables146()
 {
     global $modifyoutput;
-    $aTimingTables = db_get_tables_like("%timings");
+    $aTimingTables = dbGetTablesLike("%timings");
     foreach ($aTimingTables as $sTable) {
         modifyDatabase("","EXEC sp_rename '{$sTable}.interviewTime','interviewtime'"); echo $modifyoutput; flush(); ob_flush();
     }

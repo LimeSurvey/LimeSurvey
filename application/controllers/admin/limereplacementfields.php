@@ -12,7 +12,7 @@
  *
  * $Id$
  */
-class fck_LimeReplacementFields extends Survey_Common_Action
+class limereplacementfields extends Survey_Common_Action
 {
 
     public function index($fieldtype, $action, $surveyid = false, $gid = false, $qid = false)

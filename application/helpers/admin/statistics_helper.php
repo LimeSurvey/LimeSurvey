@@ -1890,7 +1890,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         {
                         	$qrow=array_values($qrow);
                             $fquery = "SELECT * FROM {{answers}} WHERE qid='{$qiqid}' AND scale_id=0 AND code = '{$licode}' AND language='{$language}'ORDER BY sortorder, code";
-                            $fresult = db_execute_assoc($fquery);
+                            $fresult = dbExecuteAssoc($fquery);
                             foreach ($result->readAll() as $frow)
                             {
                                 $alist[]=array($frow['code'], $frow['answer']);
@@ -1957,7 +1957,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                             //this question type uses its own labels
                             $fquery = "SELECT * FROM {{answers}} WHERE qid='{$qiqid}' AND scale_id=0 AND language='{$language}'ORDER BY sortorder, code";
-                            $fresult = db_execute_assoc($fquery);
+                            $fresult = dbExecuteAssoc($fquery);
 
                             //add code and title to results for outputting them later
                             foreach ($fresult->readAll() as $frow)

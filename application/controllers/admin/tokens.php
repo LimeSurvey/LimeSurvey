@@ -1174,7 +1174,7 @@ class tokens extends Survey_Common_Action
         if (Yii::app()->request->getPost('submit'))
         {
             Yii::app()->loadHelper("export");
-            tokens_export($iSurveyId);
+            tokensExport($iSurveyId);
         }
 
         $aData['resultr'] = Tokens_dynamic::model($iSurveyId)->find(array('select' => 'language', 'group' => 'language'));
@@ -1957,7 +1957,7 @@ class tokens extends Survey_Common_Action
         else
         {
             $this->getController()->loadHelper('database');
-            $result = Yii::app()->db->createCommand(db_select_tables_like('{{old_tokens_".intval($iSurveyId)."_%}}'))->queryAll();
+            $result = Yii::app()->db->createCommand(dbSelectTablesLike('{{old_tokens_".intval($iSurveyId)."_%}}'))->queryAll();
             $tcount = count($result);
             if ($tcount > 0)
             {

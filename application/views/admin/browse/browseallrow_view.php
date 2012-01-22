@@ -17,7 +17,7 @@
     </td>
     <?php
     $i = 0;
-    if ($surveyinfo['anonymized'] == "N" && $dtrow['token'] && db_tables_exist($tokentable))
+    if ($surveyinfo['anonymized'] == "N" && $dtrow['token'] && tableExists($tokentable))
     {
         if (isset($dtrow['tid']) && !empty($dtrow['tid']))
         {

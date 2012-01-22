@@ -693,7 +693,7 @@ function upgrade_survey_tables117()
 function upgrade_survey_tables118()
 {
     global $modifyoutput;
-    $surveyidresult = db_get_tables_like("tokens%");
+    $surveyidresult = dbGetTablesLike("tokens%");
     if (!$surveyidresult) {return "Database Error";}
     else
     {
@@ -707,7 +707,7 @@ function upgrade_survey_tables118()
 function upgrade_token_tables125()
 {
     global $modifyoutput;
-    $surveyidresult = db_get_tables_like("tokens%");
+    $surveyidresult = dbGetTablesLike("tokens%");
     if (!$surveyidresult) {return "Database Error";}
     else
     {
@@ -722,7 +722,7 @@ function upgrade_token_tables125()
 function upgrade_token_tables128()
 {
     global $modifyoutput;
-    $surveyidresult = db_get_tables_like("tokens%");
+    $surveyidresult = dbGetTablesLike("tokens%");
     if (!$surveyidresult) {return "Database Error";}
     else
     {
@@ -739,7 +739,7 @@ function upgrade_token_tables128()
 
 function upgrade_survey_tables133()
 {
-    $surveyidquery = "SELECT sid,additional_languages FROM ".db_quote_id('{{surveys}}');
+    $surveyidquery = "SELECT sid,additional_languages FROM ".dbQuoteID('{{surveys}}');
     $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
     foreach ( $surveyidresult as $sv )
     {
@@ -752,7 +752,7 @@ function upgrade_survey_tables133()
 function upgrade_token_tables134()
 {
     global $modifyoutput;
-    $surveyidresult = db_get_tables_like("tokens%");
+    $surveyidresult = dbGetTablesLike("tokens%");
     if (!$surveyidresult) {return "Database Error";}
     else
     {
@@ -768,7 +768,7 @@ function upgrade_token_tables134()
 function upgrade_token_tables145()
 {
     global $modifyoutput;
-    $surveyidresult = db_get_tables_like("tokens%");
+    $surveyidresult = dbGetTablesLike("tokens%");
     if (!$surveyidresult) {return "Database Error";}
     else
     {
@@ -837,7 +837,7 @@ function upgrade_survey_tables139()
 {
     global $modifyoutput;
     $dbprefix = Yii::app()->db->tablePrefix;
-    $surveyidresult = db_get_tables_like("survey\_%");
+    $surveyidresult = dbGetTablesLike("survey\_%");
     if (empty($surveyidresult)) {return "Database Error";}
     else
     {
@@ -862,7 +862,7 @@ function upgrade_question_attributes142()
         foreach ($questionids as $questionid)
         {
             //Select all affected question attributes
-            $attributevalues=db_select_column("SELECT value from {{question_attributes}} where attribute='exclude_all_other' and qid=".$questionid);
+            $attributevalues=dbSelectColumn("SELECT value from {{question_attributes}} where attribute='exclude_all_other' and qid=".$questionid);
             modifyDatabase("","delete from {{question_attributes}} where attribute='exclude_all_other' and qid=".$questionid); echo $modifyoutput; flush();@ob_flush();
             $record['value']=implode(';',$attributevalues);
             $record['attribute']='exclude_all_other';
@@ -1033,7 +1033,7 @@ function upgrade_tables143()
 function upgrade_timing_tables146()
 {
     global $modifyoutput;
-    $aTimingTables = db_get_tables_like("%timings");
+    $aTimingTables = dbGetTablesLike("%timings");
     foreach ($aTimingTables as $sTable) {
         modifyDatabase("","ALTER TABLE {$sTable} CHANGE `interviewTime` `interviewtime` DOUBLE NULL default 0;"); echo $modifyoutput; flush();@ob_flush();
     }

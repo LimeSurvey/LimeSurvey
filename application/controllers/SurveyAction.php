@@ -169,7 +169,7 @@ class SurveyAction extends CAction {
             AND ((a.expires >= '".date("Y-m-d H:i")."') OR (a.expires is null))
             AND ((a.startdate <= '".date("Y-m-d H:i")."') OR (a.startdate is null))
             ORDER BY surveyls_title";
-            $result = db_execute_assoc($query,false,true) or safeDie("Could not connect to database. If you try to install LimeSurvey please refer to the <a href='http://docs.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage."); //Checked
+            $result = dbExecuteAssoc($query,false,true) or safeDie("Could not connect to database. If you try to install LimeSurvey please refer to the <a href='http://docs.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage."); //Checked
             $list=array();
 
             if($result->count() > 0)
@@ -202,7 +202,7 @@ class SurveyAction extends CAction {
             AND a.startdate is not null
             ORDER BY surveyls_title";
 
-            $sresult = db_execute_assoc($squery) or safeDie("Couldn't execute $squery");
+            $sresult = dbExecuteAssoc($squery) or safeDie("Couldn't execute $squery");
 
 
             if($sresult->count() > 0)
@@ -423,7 +423,7 @@ class SurveyAction extends CAction {
             } else {
                 $tkquery = "SELECT * FROM {{'tokens_'".$surveyid."}} WHERE token=".$token." AND (completed = 'N' or completed='')";
             }
-            $tkresult = db_execute_assoc($tkquery); //Checked
+            $tkresult = dbExecuteAssoc($tkquery); //Checked
             $tokendata = $tkresult->read();
             if ($tkresult->count()==0 || $areTokensUsed)
             {
@@ -443,7 +443,7 @@ class SurveyAction extends CAction {
                 $this->_niceExit($redata, __LINE__, $thistpl, $asMessage, true);
             }
         }
-        if ($tokensexist == 1 && isset($token) && $token && db_tables_exist("{{tokens_".$surveyid."}}")) //check if token is in a valid time frame
+        if ($tokensexist == 1 && isset($token) && $token && tableExists("{{tokens_".$surveyid."}}")) //check if token is in a valid time frame
         {
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
@@ -451,7 +451,7 @@ class SurveyAction extends CAction {
             } else {
                 $tkquery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token=".$token." AND (completed = 'N' or completed='')";
             }
-            $tkresult = db_execute_assoc($tkquery); //Checked
+            $tkresult = dbExecuteAssoc($tkquery); //Checked
             $tokendata = $tkresult->read();
             if (isset($tokendata['validfrom']) && (trim($tokendata['validfrom'])!='' && $tokendata['validfrom']>dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) ||
             isset($tokendata['validuntil']) && (trim($tokendata['validuntil'])!='' && $tokendata['validuntil']<dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)))
@@ -497,7 +497,7 @@ class SurveyAction extends CAction {
                 if (isset($qid))
                 {
                     $query = "SELECT * FROM {{survey_".$surveyid."}} WHERE id=".$_SESSION['survey_'.$surveyid]['srid'];
-                    $result = db_execute_assoc($query);
+                    $result = dbExecuteAssoc($query);
                     foreach($result->readAll() as $row)
                     {
                         foreach ($qid as $question)
@@ -522,10 +522,10 @@ class SurveyAction extends CAction {
 
 
                 // delete the response but only if not already completed
-                db_execute_assoc('DELETE FROM {{survey_'.$surveyid.'}} WHERE id='.$_SESSION['survey_'.$surveyid]['srid']." AND submitdate IS NULL");
+                dbExecuteAssoc('DELETE FROM {{survey_'.$surveyid.'}} WHERE id='.$_SESSION['survey_'.$surveyid]['srid']." AND submitdate IS NULL");
 
                 // also delete a record from saved_control when there is one
-                db_execute_assoc('DELETE FROM {{saved_control}} WHERE srid='.$_SESSION['survey_'.$surveyid]['srid'].' AND sid='.$surveyid);
+                dbExecuteAssoc('DELETE FROM {{saved_control}} WHERE srid='.$_SESSION['survey_'.$surveyid]['srid'].' AND sid='.$surveyid);
             }
             killSurveySession($surveyid);
             sendCacheHeaders();
@@ -574,7 +574,7 @@ class SurveyAction extends CAction {
             $srquery="SELECT id FROM {$thissurvey['tablename']}"
             . " WHERE {$thissurvey['tablename']}.token='".$token."' order by id desc";
 
-            $result = db_select_limit_assoc($srquery,1);
+            $result = dbSelectLimitAssoc($srquery,1);
             if ($result->count()>0)
             {
                 $row=reset($result->read());
@@ -696,7 +696,7 @@ class SurveyAction extends CAction {
 
         if ($surveyId)
         {
-            $aRow = db_execute_assoc("SELECT active FROM {{surveys}} WHERE sid='".$surveyId."'")->read();
+            $aRow = dbExecuteAssoc("SELECT active FROM {{surveys}} WHERE sid='".$surveyId."'")->read();
             if (isset($aRow['active']))
             {
                 $surveyExists = true;
@@ -745,7 +745,7 @@ class SurveyAction extends CAction {
         if ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 )
             return true;
 
-        $rightresult = db_execute_assoc(
+        $rightresult = dbExecuteAssoc(
         "SELECT uid
         FROM {{survey_permissions}}
         WHERE sid = ".$iSurveyID."

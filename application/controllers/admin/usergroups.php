@@ -297,9 +297,9 @@ class Usergroups extends Survey_Common_Action
                 }
                 //$this->user_in_groups_model = new User_in_groups;
                 $eguquery = "SELECT * FROM {{user_in_groups}} AS a INNER JOIN {{users}} AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " ORDER BY b.users_name";
-                $eguresult = db_execute_assoc($eguquery);
+                $eguresult = dbExecuteAssoc($eguquery);
                 $query2 = "SELECT ugid FROM {{user_groups}} WHERE ugid = " . $ugid . " AND owner_id = " . Yii::app()->session['loginID'];
-                $result2 = db_select_limit_assoc($query2, 1);
+                $result2 = dbSelectLimitAssoc($query2, 1);
                 $row2 = $result2->readAll();
                 $row = 1;
                 $userloop = array();

@@ -339,8 +339,8 @@ class CheckIntegrity extends Survey_Common_Action
 
         /*** Check for active survey tables with missing survey entry and rename them ***/
         $sDBPrefix = Yii::app()->db->tablePrefix;
-        $sQuery = db_select_tables_like('{{survey}}\_%');
-        $aResult = db_query_or_false($sQuery) or safeDie("Couldn't get list of conditions from database<br />{$sQuery}<br />");
+        $sQuery = dbSelectTablesLike('{{survey}}\_%');
+        $aResult = dbQueryOrFalse($sQuery) or safeDie("Couldn't get list of conditions from database<br />{$sQuery}<br />");
         foreach ($aResult->readAll() as $aRow)
         {
             $sTableName = substr(reset($aRow), strlen($sDBPrefix));
@@ -362,7 +362,7 @@ class CheckIntegrity extends Survey_Common_Action
         }
 
         /*** Check for active token tables with missing survey entry ***/
-        $aResult = db_query_or_false(db_select_tables_like('{{tokens}}\_%')) or safeDie("Couldn't get list of conditions from database<br />{$sQuery}<br />");
+        $aResult = dbQueryOrFalse(dbSelectTablesLike('{{tokens}}\_%')) or safeDie("Couldn't get list of conditions from database<br />{$sQuery}<br />");
         foreach ($aResult->readAll() as $aRow)
         {
             $sTableName = substr(reset($aRow), strlen($sDBPrefix));
@@ -613,8 +613,8 @@ class CheckIntegrity extends Survey_Common_Action
         //1: Get list of 'old_survey' tables and extract the survey id
         //2: Check if that survey id still exists
         //3: If it doesn't offer it for deletion
-        $sQuery = db_select_tables_like('{{old_survey}}%');
-        $aResult = db_query_or_false($sQuery) or safeDie("Couldn't get list of conditions from database<br />$sQuery<br />");
+        $sQuery = dbSelectTablesLike('{{old_survey}}%');
+        $aResult = dbQueryOrFalse($sQuery) or safeDie("Couldn't get list of conditions from database<br />$sQuery<br />");
         $aTables = $aResult->readAll();
 
         $aOldSIDs = array();
@@ -628,7 +628,7 @@ class CheckIntegrity extends Survey_Common_Action
         }
         $aOldSIDs = array_unique($aOldSIDs);
         $sQuery = 'SELECT sid FROM {{surveys}} ORDER BY sid';
-        $oResult = db_execute_assoc($sQuery) or safeDie('Couldn\'t get unique survey ids');
+        $oResult = dbExecuteAssoc($sQuery) or safeDie('Couldn\'t get unique survey ids');
         $surveys = Survey::model()->findAll();
         if (Survey::model()->hasErrors()) safeDie(Survey::model()->getError());
         $aSIDs = array();
@@ -668,7 +668,7 @@ class CheckIntegrity extends Survey_Common_Action
                     $iMinute = substr($sDateTime, 10, 2);
                     $sDate = date('d M Y  H:i', mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
                     $sQuery = 'SELECT * FROM ' . $sTableName;
-                    $oQRresult = db_execute_assoc($sQuery) or safeDie('Failed: ' . $sQuery);
+                    $oQRresult = dbExecuteAssoc($sQuery) or safeDie('Failed: ' . $sQuery);
                     $iRecordcount = $oQRresult->count();
                     if ($iRecordcount == 0) { // empty table - so add it to immediate deletion
                         $aDelete['orphansurveytables'][] = $sTableName;
@@ -686,7 +686,7 @@ class CheckIntegrity extends Survey_Common_Action
         //1: Get list of 'old_token' tables and extract the survey id
         //2: Check if that survey id still exists
         //3: If it doesn't offer it for deletion
-        $aResult = db_query_or_false(db_select_tables_like('{{old_token}}%')) or safeDie("Couldn't get list of conditions from database<br />$sQuery<br />");
+        $aResult = dbQueryOrFalse(dbSelectTablesLike('{{old_token}}%')) or safeDie("Couldn't get list of conditions from database<br />$sQuery<br />");
         $aTables = $aResult->readAll();
 
         $aOldTokenSIDs = array();
@@ -732,7 +732,7 @@ class CheckIntegrity extends Survey_Common_Action
                     $sDate = date('D, d M Y  h:i a', mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
                     $sQuery = 'SELECT * FROM ' . $sTableName;
 
-                    $oQRresult = db_execute_assoc($sQuery) or safeDie('Failed: ' . $sQuery);
+                    $oQRresult = dbExecuteAssoc($sQuery) or safeDie('Failed: ' . $sQuery);
                     $iRecordcount = $oQRresult->count();
                     if ($iRecordcount == 0) {
                         $aDelete['orphantokentables'][] = $sTableName;

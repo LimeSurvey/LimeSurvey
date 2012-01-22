@@ -236,7 +236,7 @@ class Save {
         submitanswer();
         // Prepare email
         $tokenentryquery = 'SELECT * from {{tokens_'.$surveyid.'}} WHERE token=\''.sanitize_paranoid_string($clienttoken).'\';';
-        $tokenentryresult = db_execute_assoc($tokenentryquery);
+        $tokenentryresult = dbExecuteAssoc($tokenentryquery);
         $tokenentryarray = $tokenentryresult->read();
 
         $from = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';

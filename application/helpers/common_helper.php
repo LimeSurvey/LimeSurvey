@@ -752,7 +752,7 @@ function convertGETtoPOST($url)
 function calculateTotalFileUploadUsage(){
     global $uploaddir;
     $sQuery='select sid from {{surveys}}';
-    $oResult = db_execute_assoc($sQuery); //checked
+    $oResult = dbExecuteAssoc($sQuery); //checked
     $aRows = $oResult->readAll();
     $iTotalSize=0.0;
     foreach ($aRows as $aRow)
@@ -2791,7 +2791,7 @@ function setUserRights($uid, $rights)
     . ", manage_template=".$rights['manage_template']
     . ", manage_label=".$rights['manage_label'];
     $uquery = "UPDATE {{users}} SET ".$updates." WHERE uid = ".$uid;
-    return db_select_limit_assoc($uquery);     //Checked
+    return dbSelectLimitAssoc($uquery);     //Checked
 }
 
 /**
@@ -4514,7 +4514,7 @@ function getArrayFilterExcludesForQuestion($qid)
                     // we found the target question, now we need to know what the answers were!
                     $fields[0]=sanitize_int($fields[0]);
                     $query = "SELECT title FROM {{questions}} where parent_qid='{$fields[0]}' AND language='".Yii::app()->session[$surveyid]['s_lang']."' order by question_order";
-                    $qresult = db_execute_assoc($query);  //Checked
+                    $qresult = dbExecuteAssoc($query);  //Checked
                     foreach ($qresult->readAll() as $code)
                     {
                         if (isset(Yii::app()->session[$fields[1]]))
@@ -4524,7 +4524,7 @@ function getArrayFilterExcludesForQuestion($qid)
                     }
                     //Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
                     $query = "SELECT other FROM {{questions}} where qid='{$fields[0]}'";
-                    $qresult = db_execute_assoc($query);
+                    $qresult = dbExecuteAssoc($query);
                     foreach ($qresult->readAll() as $row) {$other=$row['other'];}
                     if($other == "Y")
                     {
@@ -5827,7 +5827,7 @@ function translateInsertansTags($newsid,$oldsid,$fieldnames)
     # translate 'surveyls_urldescription' and 'surveyls_url' INSERTANS tags in surveyls
     $sql = "SELECT surveyls_survey_id, surveyls_language, surveyls_urldescription, surveyls_url from {{surveys_languagesettings}}
     WHERE surveyls_survey_id=".$newsid." AND (surveyls_urldescription LIKE '%{$oldsid}X%' OR surveyls_url LIKE '%{$oldsid}X%')";
-    $result = db_execute_assoc($sql) or show_error("Can't read groups table in transInsertAns ");     // Checked
+    $result = dbExecuteAssoc($sql) or show_error("Can't read groups table in transInsertAns ");     // Checked
 
     //while ($qentry = $res->FetchRow())
     foreach ($result->readAll() as $qentry)
@@ -5868,7 +5868,7 @@ function translateInsertansTags($newsid,$oldsid,$fieldnames)
     # translate 'quotals_urldescrip' and 'quotals_url' INSERTANS tags in quota_languagesettings
     $sql = "SELECT quotals_id, quotals_urldescrip, quotals_url from {{quota_languagesettings}} qls, {{quota}} q
     WHERE sid=".$newsid." AND q.id=qls.quotals_quota_id AND (quotals_urldescrip LIKE '%{$oldsid}X%' OR quotals_url LIKE '%{$oldsid}X%')";
-    $res = db_execute_assoc($sql) or safeDie("Can't read quota table in transInsertAns");     // Checked
+    $res = dbExecuteAssoc($sql) or safeDie("Can't read quota table in transInsertAns");     // Checked
 
     foreach ($result->readAll() as $qentry)
     {
@@ -5887,14 +5887,14 @@ function translateInsertansTags($newsid,$oldsid,$fieldnames)
         {
             // Update Field
             $sqlupdate = "UPDATE {{quota_languagesettings}} SET quotals_urldescrip='".db_quote($urldescription)."', quotals_url='".db_quote($endurl)."' WHERE quotals_id={$qentry['quotals_id']}";
-            $updateres=db_execute_assoc($sqlupdate) or safeDie ("Couldn't update INSERTANS in quota_languagesettings<br />$sqlupdate<br />");    //Checked
+            $updateres=dbExecuteAssoc($sqlupdate) or safeDie ("Couldn't update INSERTANS in quota_languagesettings<br />$sqlupdate<br />");    //Checked
         } // Enf if modified
     } // end while qentry
 
     # translate 'description' INSERTANS tags in groups
     $sql = "SELECT gid, language, group_name, description from {{groups}}
     WHERE sid=".$newsid." AND description LIKE '%{$oldsid}X%' OR group_name LIKE '%{$oldsid}X%'";
-    $res = db_execute_assoc($sql) or show_error("Can't read groups table in transInsertAns");     // Checked
+    $res = dbExecuteAssoc($sql) or show_error("Can't read groups table in transInsertAns");     // Checked
 
     //while ($qentry = $res->FetchRow())
     foreach ($res->readAll() as $qentry)
@@ -5935,7 +5935,7 @@ function translateInsertansTags($newsid,$oldsid,$fieldnames)
     # translate 'question' and 'help' INSERTANS tags in questions
     $sql = "SELECT qid, language, question, help from {{questions}}
     WHERE sid=".$newsid." AND (question LIKE '%{$oldsid}X%' OR help LIKE '%{$oldsid}X%')";
-    $result = db_execute_assoc($sql) or die("Can't read question table in transInsertAns ");     // Checked
+    $result = dbExecuteAssoc($sql) or die("Can't read question table in transInsertAns ");     // Checked
 
     //while ($qentry = $res->FetchRow())
     $aResultData=$result->readAll() ;
@@ -6189,23 +6189,23 @@ function cleanLanguagesFromSurvey($sid, $availlangs)
 
     // Remove From Answers Table
     $query = "SELECT qid FROM {{questions}} WHERE sid='{$sid}' AND $sqllang";
-    $qidresult = db_execute_assoc($query);
+    $qidresult = dbExecuteAssoc($query);
 
     foreach ($qidresult->readAll() as $qrow)
     {
 
         $myqid = $qrow['qid'];
         $query = "DELETE FROM {{answers}} WHERE qid='$myqid' AND $sqllang";
-        db_execute_assoc($query);
+        dbExecuteAssoc($query);
     }
 
     // Remove From Questions Table
     $query = "DELETE FROM {{questions}} WHERE sid='{$sid}' AND $sqllang";
-    db_execute_assoc($query);
+    dbExecuteAssoc($query);
 
     // Remove From Groups Table
     $query = "DELETE FROM {{groups}} WHERE sid='{$sid}' AND $sqllang";
-    db_execute_assoc($query);
+    dbExecuteAssoc($query);
 
     return true;
 }
@@ -6794,7 +6794,7 @@ function getGroupUserList($ugid)
     $ugid=sanitize_int($ugid);
     $surveyidquery = "SELECT a.uid, a.users_name FROM {{users}} AS a LEFT JOIN (SELECT uid AS id FROM {{user_in_groups}} WHERE ugid = {$ugid}) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name";
 
-    $surveyidresult = db_execute_assoc($surveyidquery);  //Checked
+    $surveyidresult = dbExecuteAssoc($surveyidquery);  //Checked
     if (!$surveyidresult) {return "Database Error";}
     $surveyselecter = "";
     foreach ($surveyidresult->readAll() as $row)

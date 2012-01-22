@@ -149,11 +149,11 @@
                     ><?php $clang->eT("No"); ?></option>
             </select></li>
 
-        <li><label for='googleanalyticsapikey'><?php $clang->eT("Google Analytics API Key for this Survey?"); ?></label>
+        <li><label for='googleanalyticsapikey'><?php $clang->eT("Google Analytics API key for this survey?"); ?></label>
             <input type='text' value='<?php echo $esrow['googleanalyticsapikey']; ?>' name='googleanalyticsapikey' id='googleanalyticsapikey' size='20'/>
         </li>
 
-        <li><label for='googleanalyticsstyle'><?php $clang->eT("Google Analytics Style for this Survey?"); ?></label>
+        <li><label for='googleanalyticsstyle'><?php $clang->eT("Google Analytics style for this survey?"); ?></label>
             <select id='googleanalyticsstyle' name='googleanalyticsstyle'>
                 <option value='0'
                     <?php if (!$esrow['googleanalyticsstyle'] || $esrow['googleanalyticsstyle'] == "0") { ?>
@@ -169,7 +169,7 @@
                     <?php if ($esrow['googleanalyticsstyle'] == "2") { ?>
                         selected='selected'
                         <?php } ?>
-                    ><?php $clang->eT("SurveyName-[SID]/GroupName"); ?></option>
+                    ><?php $clang->eT("Survey name-[SID]/Group name"); ?></option>
             </select></li>
 
     </ul></div>

@@ -19,7 +19,7 @@
 * @param $string
 * @return $string
 */
-function strip_tags_full($string) {
+function stripTagsFull($string) {
     $string=html_entity_decode($string, ENT_QUOTES, "UTF-8");
     //combining these into one mb_ereg_replace call ought to speed things up
     //$string = str_replace(array("\r\n","\r","\n",'-oth-'), '', $string);
@@ -34,7 +34,7 @@ function strip_tags_full($string) {
 * @param $value
 * @return bool
 */
-function my_is_numeric($value)  {
+function isNumericExtended($value)  {
     if (empty($value)) return true;
     $eng_or_world = preg_match
     ('/^[+-]?'. // start marker and sign prefix
@@ -46,14 +46,14 @@ function my_is_numeric($value)  {
     return ($eng_or_world);
 }
 
-function spss_export_data ($na = null) {
+function SPSSExportData ($na = null) {
     global $length_data;
 
     // Build array that has to be returned
-    $fields = spss_fieldmap();
+    $fields = SPSSFieldMap();
 
     //Now get the query string with all fields to export
-    $query = spss_getquery();
+    $query = SPSSGetQuery();
 
     $result=Yii::app()->db->createCommand($query)->query()->readAll(); //Checked
     $num_fields = isset($result[0]) ? count($result[0]) : 0;
@@ -139,12 +139,12 @@ function spss_export_data ($na = null) {
                                     echo("'0'");
                                 }
                             } elseif (!$field['hide']) {
-                                $strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
+                                $strTmp=mb_substr(stripTagsFull($row[$fieldno]), 0, $length_data);
                                 if (trim($strTmp) != ''){
                                     $strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
                                     /*
                                     * Temp quick fix for replacing decimal dots with comma's
-                                    if (my_is_numeric($strTemp)) {
+                                    if (isNumericExtended($strTemp)) {
                                     $strTemp = str_replace('.',',',$strTemp);
                                     }
                                     */
@@ -165,10 +165,10 @@ function spss_export_data ($na = null) {
 /**
 * Check it the gives field has a labelset and return it as an array if true
 *
-* @param $field array field from spss_fieldmap
+* @param $field array field from SPSSFieldMap
 * @return array or false
 */
-function spss_getvalues ($field = array(), $qidattributes = null ) {
+function SPSSGetValues ($field = array(), $qidattributes = null ) {
     global $surveyid, $language, $length_vallabel;
     $clang = Yii::app()->lang;
 
@@ -194,7 +194,7 @@ function spss_getvalues ($field = array(), $qidattributes = null ) {
                 for ($i=0; $i < $num_results; $i++)
                 {
                     $row = $result->read();
-                    $answers[] = array('code'=>$row['code'], 'value'=>mb_substr(strip_tags_full($row["answer"]),0,$length_vallabel));
+                    $answers[] = array('code'=>$row['code'], 'value'=>mb_substr(stripTagsFull($row["answer"]),0,$length_vallabel));
                 }
             }
         }
@@ -262,7 +262,7 @@ function spss_getvalues ($field = array(), $qidattributes = null ) {
         foreach ($answers as $answer) {
             $len = mb_strlen($answer['code']);
             if ($len>$size) $size = $len;
-            if ($spsstype=='F' && (my_is_numeric($answer['code'])===false || $size>16)) $spsstype='A';
+            if ($spsstype=='F' && (isNumericExtended($answer['code'])===false || $size>16)) $spsstype='A';
         }
         $answers['SPSStype'] = $spsstype;
         $answers['size'] = $size;
@@ -278,7 +278,7 @@ function spss_getvalues ($field = array(), $qidattributes = null ) {
 * @param $prefix string prefix for the variable ID
 * @return array
 */
-function spss_fieldmap($prefix = 'V') {
+function SPSSFieldMap($prefix = 'V') {
     global $surveyid, $typeMap, $clang, $surveyprivate, $tokensexist, $language;
 
     $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
@@ -412,7 +412,7 @@ function spss_fieldmap($prefix = 'V') {
         'ValueLabels'=>'','VariableLabel'=>$varlabel,"sql_name"=>$fieldname,"size"=>$val_size,
         'title'=>$ftitle,'hide'=>$hide,'scale'=>$export_scale, 'scale_id'=>$scale_id);
         //Now check if we have to retrieve value labels
-        $answers = spss_getvalues($tempArray, $aQuestionAttribs);
+        $answers = SPSSGetValues($tempArray, $aQuestionAttribs);
         if (is_array($answers)) {
             //Ok we have answers
             if (isset($answers['size'])) {
@@ -435,7 +435,7 @@ function spss_fieldmap($prefix = 'V') {
 *
 * @return string
 */
-function spss_getquery() {
+function SPSSGetQuery() {
     global $surveyprivate, $surveyid, $tokensexist;
 
     #See if tokens are being used
@@ -469,14 +469,14 @@ function spss_getquery() {
 }
 
 /**
-* BuildXMLFromQuery() creates a datadump of a table in XML using XMLWriter
+* buildXMLFromQuery() creates a datadump of a table in XML using XMLWriter
 *
 * @param mixed $xmlwriter  The existing XMLWriter object
 * @param mixed $Query  The table query to build from
 * @param mixed $tagname  If the XML tag of the resulting question should be named differently than the table name set it here
 * @param array $excludes array of columnames not to include in export
 */
-function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
+function buildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
 {
     $iChunkSize=3000; // This works even for very large result sets and leaves a minimal memory footprint
 
@@ -545,7 +545,7 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
 /**
 * from export_structure_xml.php
 */
-function survey_getXMLStructure($surveyid, $xmlwriter, $exclude=array())
+function surveyGetXMLStructure($surveyid, $xmlwriter, $exclude=array())
 {
     $sdump = "";
     if ((!isset($exclude) && $exclude['answers'] !== true) || empty($exclude))
@@ -556,14 +556,14 @@ function survey_getXMLStructure($surveyid, $xmlwriter, $exclude=array())
         WHERE {{answers}}.language={{questions}}.language
         AND {{answers}}.qid={{questions}}.qid
         AND {{questions}}.sid=$surveyid";
-        BuildXMLFromQuery($xmlwriter,$aquery);
+        buildXMLFromQuery($xmlwriter,$aquery);
     }
 
     // Assessments
     $query = "SELECT {{assessments}}.*
     FROM {{assessments}}
     WHERE {{assessments}}.sid=$surveyid";
-    BuildXMLFromQuery($xmlwriter,$query);
+    buildXMLFromQuery($xmlwriter,$query);
 
     if ((!isset($exclude) && $exclude['conditions'] !== true) || empty($exclude))
     {
@@ -572,35 +572,35 @@ function survey_getXMLStructure($surveyid, $xmlwriter, $exclude=array())
         FROM {{conditions}}, {{questions}}
         WHERE {{conditions}}.qid={{questions}}.qid
         AND {{questions}}.sid=$surveyid";
-        BuildXMLFromQuery($xmlwriter,$cquery);
+        buildXMLFromQuery($xmlwriter,$cquery);
     }
 
     //Default values
     $query = "SELECT {{defaultvalues}}.*
     FROM {{defaultvalues}} JOIN {{questions}} ON {{questions}}.qid = {{defaultvalues}}.qid AND {{questions}}.sid=$surveyid AND {{questions}}.language={{defaultvalues}}.language ";
 
-    BuildXMLFromQuery($xmlwriter,$query);
+    buildXMLFromQuery($xmlwriter,$query);
 
     // Groups
     $gquery = "SELECT *
     FROM {{groups}}
     WHERE sid=$surveyid
     ORDER BY gid";
-    BuildXMLFromQuery($xmlwriter,$gquery);
+    buildXMLFromQuery($xmlwriter,$gquery);
 
     //Questions
     $qquery = "SELECT *
     FROM {{questions}}
     WHERE sid=$surveyid and parent_qid=0
     ORDER BY qid";
-    BuildXMLFromQuery($xmlwriter,$qquery);
+    buildXMLFromQuery($xmlwriter,$qquery);
 
     //Subquestions
     $qquery = "SELECT *
     FROM {{questions}}
     WHERE sid=$surveyid and parent_qid>0
     ORDER BY qid";
-    BuildXMLFromQuery($xmlwriter,$qquery,'subquestions');
+    buildXMLFromQuery($xmlwriter,$qquery,'subquestions');
 
     //Question attributes
     $sBaseLanguage=Survey::model()->findByPk($surveyid)->language;
@@ -617,7 +617,7 @@ function survey_getXMLStructure($surveyid, $xmlwriter, $exclude=array())
         where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value";
     }
 
-    BuildXMLFromQuery($xmlwriter,$query,'question_attributes');
+    buildXMLFromQuery($xmlwriter,$query,'question_attributes');
 
     if ((!isset($exclude) && $exclude['quotas'] !== true) || empty($exclude))
     {
@@ -625,20 +625,20 @@ function survey_getXMLStructure($surveyid, $xmlwriter, $exclude=array())
         $query = "SELECT {{quota}}.*
         FROM {{quota}}
         WHERE {{quota}}.sid=$surveyid";
-        BuildXMLFromQuery($xmlwriter,$query);
+        buildXMLFromQuery($xmlwriter,$query);
 
         //1Quota members
         $query = "SELECT {{quota_members}}.*
         FROM {{quota_members}}
         WHERE {{quota_members}}.sid=$surveyid";
-        BuildXMLFromQuery($xmlwriter,$query);
+        buildXMLFromQuery($xmlwriter,$query);
 
         //Quota languagesettings
         $query = "SELECT {{quota_languagesettings}}.*
         FROM {{quota_languagesettings}}, {{quota}}
         WHERE {{quota}}.id = {{quota_languagesettings}}.quotals_quota_id
         AND {{quota}}.sid=$surveyid";
-        BuildXMLFromQuery($xmlwriter,$query);
+        buildXMLFromQuery($xmlwriter,$query);
     }
 
     // Surveys
@@ -646,26 +646,26 @@ function survey_getXMLStructure($surveyid, $xmlwriter, $exclude=array())
     FROM {{surveys}}
     WHERE sid=$surveyid";
     //Exclude some fields from the export
-    BuildXMLFromQuery($xmlwriter,$squery,'',array('owner_id','active','datecreated'));
+    buildXMLFromQuery($xmlwriter,$squery,'',array('owner_id','active','datecreated'));
 
     // Survey language settings
     $slsquery = "SELECT *
     FROM {{surveys_languagesettings}}
     WHERE surveyls_survey_id=$surveyid";
-    BuildXMLFromQuery($xmlwriter,$slsquery);
+    buildXMLFromQuery($xmlwriter,$slsquery);
 
     // Survey url parameters
     $slsquery = "SELECT *
     FROM {{survey_url_parameters}}
     WHERE sid={$surveyid}";
-    BuildXMLFromQuery($xmlwriter,$slsquery);
+    buildXMLFromQuery($xmlwriter,$slsquery);
 
 }
 
 /**
 * from export_structure_xml.php
 */
-function survey_getXMLData($surveyid, $exclude = array())
+function surveyGetXMLData($surveyid, $exclude = array())
 {
     $xml = getXMLWriter();
     $xml->openMemory();
@@ -682,7 +682,7 @@ function survey_getXMLData($surveyid, $exclude = array())
         $xml->writeElement('language',$surveylanguage);
     }
     $xml->endElement();
-    survey_getXMLStructure($surveyid, $xml,$exclude);
+    surveyGetXMLStructure($surveyid, $xml,$exclude);
     $xml->endElement(); // close columns
     $xml->endDocument();
     return $xml->outputMemory(true);
@@ -723,7 +723,7 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
     $xml->endElement();
     $aquery = "SELECT * FROM {{{$sTableName}}}";
 
-    BuildXMLFromQuery($xml,$aquery, $sXMLTableTagName);
+    buildXMLFromQuery($xml,$aquery, $sXMLTableTagName);
     $xml->endElement(); // close columns
     $xml->endDocument();
     if ($sFileName='')
@@ -740,7 +740,7 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
 /**
 * from export_structure_quexml.php
 */
-function quexml_cleanup($string)
+function QueXMLCleanup($string)
 {
     return trim(strip_tags(str_ireplace("<br />","\n",$string)));
 }
@@ -748,19 +748,19 @@ function quexml_cleanup($string)
 /**
 * from export_structure_quexml.php
 */
-function quexml_create_free($f,$len,$lab="")
+function QueXMLCreateFree($f,$len,$lab="")
 {
     global $dom;
     $free = $dom->create_element("free");
 
     $format = $dom->create_element("format");
-    $format->set_content(quexml_cleanup($f));
+    $format->set_content(QueXMLCleanup($f));
 
     $length = $dom->create_element("length");
-    $length->set_content(quexml_cleanup($len));
+    $length->set_content(QueXMLCleanup($len));
 
     $label = $dom->create_element("label");
-    $label->set_content(quexml_cleanup($lab));
+    $label->set_content(QueXMLCleanup($lab));
 
     $free->append_child($format);
     $free->append_child($length);
@@ -773,7 +773,7 @@ function quexml_create_free($f,$len,$lab="")
 /**
 * from export_structure_quexml.php
 */
-function quexml_fixed_array($array)
+function QueXMLFixedArray($array)
 {
     global $dom;
     $fixed = $dom->create_element("fixed");
@@ -783,10 +783,10 @@ function quexml_fixed_array($array)
         $category = $dom->create_element("category");
 
         $label = $dom->create_element("label");
-        $label->set_content(quexml_cleanup("$key"));
+        $label->set_content(QueXMLCleanup("$key"));
 
         $value= $dom->create_element("value");
-        $value->set_content(quexml_cleanup("$v"));
+        $value->set_content(QueXMLCleanup("$v"));
 
         $category->append_child($label);
         $category->append_child($value);
@@ -799,7 +799,7 @@ function quexml_fixed_array($array)
 }
 
 /**
-* Calculate if this item should have a quexml_skipto element attached to it
+* Calculate if this item should have a QueXMLSkipTo element attached to it
 *
 * from export_structure_quexml.php
 *
@@ -810,7 +810,7 @@ function quexml_fixed_array($array)
 * @author Adam Zammit <adam.zammit@acspri.org.au>
 * @since  2010-10-28
 */
-function quexml_skipto($qid,$value,$cfieldname = "")
+function QueXMLSkipTo($qid,$value,$cfieldname = "")
 {
     global $surveyid, $quexmllang;
     $qlang = new limesurvey_lang($quexmllang);
@@ -873,7 +873,7 @@ function quexml_skipto($qid,$value,$cfieldname = "")
 /**
 * from export_structure_quexml.php
 */
-function quexml_create_fixed($qid,$rotate=false,$labels=true,$scale=0,$other=false,$varname="")
+function QueXMLCreateFixed($qid,$rotate=false,$labels=true,$scale=0,$other=false,$varname="")
 {
     global $dom;
 
@@ -896,15 +896,15 @@ function quexml_create_fixed($qid,$rotate=false,$labels=true,$scale=0,$other=fal
         $category = $dom->create_element("category");
 
         $label = $dom->create_element("label");
-        $label->set_content(quexml_cleanup($Row['title']));
+        $label->set_content(QueXMLCleanup($Row['title']));
 
         $value= $dom->create_element("value");
-        $value->set_content(quexml_cleanup($Row['code']));
+        $value->set_content(QueXMLCleanup($Row['code']));
 
         $category->append_child($label);
         $category->append_child($value);
 
-        $st = quexml_skipto($qid,$Row['code']);
+        $st = QueXMLSkipTo($qid,$Row['code']);
         if ($st !== false)
         {
             $quexml_skipto = $dom->create_element("quexml_skipto");
@@ -998,20 +998,20 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
             $category = $dom->create_element("category");
 
             $label = $dom->create_element("label");
-            $label->set_content(quexml_cleanup($Row['question']));
+            $label->set_content(QueXMLCleanup($Row['question']));
 
             $value= $dom->create_element("value");
-            //$value->set_content(quexml_cleanup($Row['title']));
+            //$value->set_content(QueXMLCleanup($Row['title']));
             $value->set_content("1");
             $nextcode = $Row['title'];
 
             $category->append_child($label);
             $category->append_child($value);
 
-            $st = quexml_skipto($qid,'Y'," AND c.cfieldname LIKE '+$surveyid" . "X" . $Row['gid'] . "X" . $qid . $Row['title'] . "' ");
+            $st = QueXMLSkipTo($qid,'Y'," AND c.cfieldname LIKE '+$surveyid" . "X" . $Row['gid'] . "X" . $qid . $Row['title'] . "' ");
             if ($st !== false)
             {
-                $quexml_skipto = $dom->create_element("quexml_skipto");
+                $quexml_skipto = $dom->create_element("QueXMLSkipTo");
                 $quexml_skipto->set_content($st);
                 $category->append_child($quexml_skipto);
             }
@@ -1022,9 +1022,9 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
             $response->append_child($fixed);
         }
         else
-            $response->append_child(quexml_create_free($free['f'],$free['len'],$Row['question']));
+            $response->append_child(QueXMLCreateFree($free['f'],$free['len'],$Row['question']));
 
-        $response->set_attribute("varName",$varname . quexml_cleanup($Row['title']));
+        $response->set_attribute("varName",$varname . QueXMLCleanup($Row['title']));
 
         $question->append_child($response);
     }
@@ -1065,7 +1065,7 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
 
         $fixed->append_child($category);
         $response->append_child($fixed);
-        $response->set_attribute("varName",$varname . quexml_cleanup($nextcode));
+        $response->set_attribute("varName",$varname . QueXMLCleanup($nextcode));
 
         $question->append_child($response);
     }
@@ -1094,9 +1094,9 @@ function quexml_create_subQuestions(&$question,$qid,$varname,$use_answers = fals
     {
         $subQuestion = $dom->create_element("subQuestion");
         $text = $dom->create_element("text");
-        $text->set_content(quexml_cleanup($Row['question']));
+        $text->set_content(QueXMLCleanup($Row['question']));
         $subQuestion->append_child($text);
-        $subQuestion->set_attribute("varName",$varname . quexml_cleanup($Row['title']));
+        $subQuestion->set_attribute("varName",$varname . QueXMLCleanup($Row['title']));
         $question->append_child($subQuestion);
     }
 
@@ -1125,7 +1125,7 @@ function quexml_export($surveyi, $quexmllan)
     $QueryResult = Yii::app()->db->createCommand($Query)->query();
     $Row = $QueryResult->read();
     $questionnaire->set_attribute("id", $Row['sid']);
-    $title->set_content(quexml_cleanup($Row['surveyls_title']));
+    $title->set_content(QueXMLCleanup($Row['surveyls_title']));
     $questionnaire->append_child($title);
 
     //investigator and datacollector
@@ -1146,7 +1146,7 @@ function quexml_export($surveyi, $quexmllan)
         $text = $dom->create_element("text");
         $administration = $dom->create_element("administration");
         $position->set_content("before");
-        $text->set_content(quexml_cleanup($Row['surveyls_welcometext']));
+        $text->set_content(QueXMLCleanup($Row['surveyls_welcometext']));
         $administration->set_content("self");
         $questionnaireInfo->append_child($position);
         $questionnaireInfo->append_child($text);
@@ -1174,7 +1174,7 @@ function quexml_export($surveyi, $quexmllan)
             $text = $dom->create_element("text");
             $administration = $dom->create_element("administration");
             $position->set_content("title");
-            $text->set_content(quexml_cleanup($Row['group_name']));
+            $text->set_content(QueXMLCleanup($Row['group_name']));
             $administration->set_content("self");
             $sectionInfo->append_child($position);
             $sectionInfo->append_child($text);
@@ -1190,7 +1190,7 @@ function quexml_export($surveyi, $quexmllan)
             $text = $dom->create_element("text");
             $administration = $dom->create_element("administration");
             $position->set_content("before");
-            $text->set_content(quexml_cleanup($Row['description']));
+            $text->set_content(QueXMLCleanup($Row['description']));
             $administration->set_content("self");
             $sectionInfo->append_child($position);
             $sectionInfo->append_child($text);
@@ -1213,7 +1213,7 @@ function quexml_export($surveyi, $quexmllan)
             $administration = $dom->create_element("administration");
 
             $position->set_content("before");
-            $text->set_content(quexml_cleanup($RowQ['question']));
+            $text->set_content(QueXMLCleanup($RowQ['question']));
             $administration->set_content("self");
             $sectionInfo->append_child($position);
             $sectionInfo->append_child($text);
@@ -1240,7 +1240,7 @@ function quexml_export($surveyi, $quexmllan)
             $questiontext = explode('<br />',$RowQ['question']);
             foreach ($questiontext as $qt)
             {
-                $txt = quexml_cleanup($qt);
+                $txt = QueXMLCleanup($qt);
                 if (!empty($txt))
                 {
                     $text = $dom->create_element("text");
@@ -1257,7 +1257,7 @@ function quexml_export($surveyi, $quexmllan)
                 $position = $dom->create_element("position");
                 $position->set_content("during");
                 $text = $dom->create_element("text");
-                $text->set_content(quexml_cleanup($RowQ['help']));
+                $text->set_content(QueXMLCleanup($RowQ['help']));
                 $administration = $dom->create_element("administration");
                 $administration->set_content("self");
 
@@ -1278,23 +1278,23 @@ function quexml_export($surveyi, $quexmllan)
 
                     break;
                 case "5": //5 POINT CHOICE radio-buttons
-                    $response->append_child(quexml_fixed_array(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5)));
+                    $response->append_child(QueXMLFixedArray(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5)));
                     $question->append_child($response);
                     break;
                 case "D": //DATE
-                    $response->append_child(quexml_create_free("date","8",""));
+                    $response->append_child(QueXMLCreateFree("date","8",""));
                     $question->append_child($response);
                     break;
                 case "L": //LIST drop-down/radio-button list
-                    $response->append_child(quexml_create_fixed($qid,false,false,0,$other,$sgq));
+                    $response->append_child(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
                     $question->append_child($response);
                     break;
                 case "!": //List - dropdown
-                    $response->append_child(quexml_create_fixed($qid,false,false,0,$other,$sgq));
+                    $response->append_child(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
                     $question->append_child($response);
                     break;
                 case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
-                    $response->append_child(quexml_create_fixed($qid,false,false,0,$other,$sgq));
+                    $response->append_child(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
                     $question->append_child($response);
                     //no comment - this should be a separate question
                     break;
@@ -1305,7 +1305,7 @@ function quexml_export($surveyi, $quexmllan)
                     //$QRE = mysql_query($Query) or die ("ERROR: $QRE<br />".mysql_error());
                     //$QROW = mysql_fetch_assoc($QRE);
                     $QROW = $QRE->read();
-                    $response->append_child(quexml_create_free("integer",strlen($QROW['sc']),""));
+                    $response->append_child(QueXMLCreateFree("integer",strlen($QROW['sc']),""));
                     $question->append_child($response);
                     break;
                 case "M": //Multiple choice checkbox
@@ -1318,78 +1318,78 @@ function quexml_export($surveyi, $quexmllan)
                     break;
                 case "Q": //MULTIPLE SHORT TEXT
                     quexml_create_subQuestions($question,$qid,$sgq);
-                    $response->append_child(quexml_create_free("text",quexml_get_lengthth($qid,"maximum_chars","10"),""));
+                    $response->append_child(QueXMLCreateFree("text",quexml_get_lengthth($qid,"maximum_chars","10"),""));
                     $question->append_child($response);
                     break;
                 case "K": //MULTIPLE NUMERICAL
                     quexml_create_subQuestions($question,$qid,$sgq);
-                    $response->append_child(quexml_create_free("integer",quexml_get_lengthth($qid,"maximum_chars","10"),""));
+                    $response->append_child(QueXMLCreateFree("integer",quexml_get_lengthth($qid,"maximum_chars","10"),""));
                     $question->append_child($response);
                     break;
                 case "N": //NUMERICAL QUESTION TYPE
-                    $response->append_child(quexml_create_free("integer",quexml_get_lengthth($qid,"maximum_chars","10"),""));
+                    $response->append_child(QueXMLCreateFree("integer",quexml_get_lengthth($qid,"maximum_chars","10"),""));
                     $question->append_child($response);
                     break;
                 case "S": //SHORT FREE TEXT
-                    $response->append_child(quexml_create_free("text",quexml_get_lengthth($qid,"maximum_chars","240"),""));
+                    $response->append_child(QueXMLCreateFree("text",quexml_get_lengthth($qid,"maximum_chars","240"),""));
                     $question->append_child($response);
                     break;
                 case "T": //LONG FREE TEXT
-                    $response->append_child(quexml_create_free("longtext",quexml_get_lengthth($qid,"display_rows","40"),""));
+                    $response->append_child(QueXMLCreateFree("longtext",quexml_get_lengthth($qid,"display_rows","40"),""));
                     $question->append_child($response);
                     break;
                 case "U": //HUGE FREE TEXT
-                    $response->append_child(quexml_create_free("longtext",quexml_get_lengthth($qid,"display_rows","80"),""));
+                    $response->append_child(QueXMLCreateFree("longtext",quexml_get_lengthth($qid,"display_rows","80"),""));
                     $question->append_child($response);
                     break;
                 case "Y": //YES/NO radio-buttons
-                    $response->append_child(quexml_fixed_array(array($qlang->gT("Yes") => 'Y',$qlang->gT("No") => 'N')));
+                    $response->append_child(QueXMLFixedArray(array($qlang->gT("Yes") => 'Y',$qlang->gT("No") => 'N')));
                     $question->append_child($response);
                     break;
                 case "G": //GENDER drop-down list
-                    $response->append_child(quexml_fixed_array(array($qlang->gT("Female") => 'F',$qlang->gT("Male") => 'M')));
+                    $response->append_child(QueXMLFixedArray(array($qlang->gT("Female") => 'F',$qlang->gT("Male") => 'M')));
                     $question->append_child($response);
                     break;
                 case "A": //ARRAY (5 POINT CHOICE) radio-buttons
                     quexml_create_subQuestions($question,$qid,$sgq);
-                    $response->append_child(quexml_fixed_array(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5)));
+                    $response->append_child(QueXMLFixedArray(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5)));
                     $question->append_child($response);
                     break;
                 case "B": //ARRAY (10 POINT CHOICE) radio-buttons
                     quexml_create_subQuestions($question,$qid,$sgq);
-                    $response->append_child(quexml_fixed_array(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5,"6" => 6,"7" => 7,"8" => 8,"9" => 9,"10" => 10)));
+                    $response->append_child(QueXMLFixedArray(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5,"6" => 6,"7" => 7,"8" => 8,"9" => 9,"10" => 10)));
                     $question->append_child($response);
                     break;
                 case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                     quexml_create_subQuestions($question,$qid,$sgq);
-                    $response->append_child(quexml_fixed_array(array($qlang->gT("Yes") => 'Y',$qlang->gT("Uncertain") => 'U',$qlang->gT("No") => 'N')));
+                    $response->append_child(QueXMLFixedArray(array($qlang->gT("Yes") => 'Y',$qlang->gT("Uncertain") => 'U',$qlang->gT("No") => 'N')));
                     $question->append_child($response);
                     break;
                 case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
                     quexml_create_subQuestions($question,$qid,$sgq);
-                    $response->append_child(quexml_fixed_array(array($qlang->gT("Increase") => 'I',$qlang->gT("Same") => 'S',$qlang->gT("Decrease") => 'D')));
+                    $response->append_child(QueXMLFixedArray(array($qlang->gT("Increase") => 'I',$qlang->gT("Same") => 'S',$qlang->gT("Decrease") => 'D')));
                     $question->append_child($response);
                     break;
                 case "F": //ARRAY (Flexible) - Row Format
                     //select subQuestions from answers table where QID
                     quexml_create_subQuestions($question,$qid,$sgq);
-                    $response->append_child(quexml_create_fixed($qid,false,false,0,$other,$sgq));
+                    $response->append_child(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
                     $question->append_child($response);
                     //select fixed responses from
                     break;
                 case "H": //ARRAY (Flexible) - Column Format
                     quexml_create_subQuestions($question,$RowQ['qid'],$sgq);
-                    $response->append_child(quexml_create_fixed($qid,true,false,0,$other,$sgq));
+                    $response->append_child(QueXMLCreateFixed($qid,true,false,0,$other,$sgq));
                     $question->append_child($response);
                     break;
                 case "1": //Dualscale multi-flexi array
                     //select subQuestions from answers table where QID
                     quexml_create_subQuestions($question,$qid,$sgq);
                     $response = $dom->create_element("response");
-                    $response->append_child(quexml_create_fixed($qid,false,false,0,$other,$sgq));
+                    $response->append_child(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
                     $response2 = $dom->create_element("response");
-                    $response2->set_attribute("varName",quexml_cleanup($sgq) . "_2");
-                    $response2->append_child(quexml_create_fixed($qid,false,false,1,$other,$sgq));
+                    $response2->set_attribute("varName",QueXMLCleanup($sgq) . "_2");
+                    $response2->append_child(QueXMLCreateFixed($qid,false,false,1,$other,$sgq));
                     $question->append_child($response);
                     $question->append_child($response2);
                     break;
@@ -1412,7 +1412,7 @@ function quexml_export($surveyi, $quexmllan)
                     quexml_create_multi($question,$qid,$sgq,1,array('f' => 'text', 'len' => 10, 'lab' => ''));
                     break;
                 case "^": //SLIDER CONTROL - not supported
-                    $response->append_child(quexml_fixed_array(array("NOT SUPPORTED:$type" => 1)));
+                    $response->append_child(QueXMLFixedArray(array("NOT SUPPORTED:$type" => 1)));
                     $question->append_child($response);
                     break;
             } //End Switch
@@ -1650,38 +1650,38 @@ function group_export($action, $surveyid, $gid)
         $xml->writeElement('language',$row->language);
     }
     $xml->endElement();
-    group_getXMLStructure($xml,$gid);
+    groupGetXMLStructure($xml,$gid);
     $xml->endElement(); // close columns
     $xml->endDocument();
     exit;
 }
 
-function group_getXMLStructure($xml,$gid)
+function groupGetXMLStructure($xml,$gid)
 {
     // Groups
     $gquery = "SELECT *
     FROM {{groups}}
     WHERE gid=$gid";
-    BuildXMLFromQuery($xml,$gquery);
+    buildXMLFromQuery($xml,$gquery);
 
     // Questions table
     $qquery = "SELECT *
     FROM {{questions}}
     WHERE gid=$gid and parent_qid=0 order by question_order, language, scale_id";
-    BuildXMLFromQuery($xml,$qquery);
+    buildXMLFromQuery($xml,$qquery);
 
     // Questions table - Subquestions
     $qquery = "SELECT *
     FROM {{questions}}
     WHERE gid=$gid and parent_qid>0 order by question_order, language, scale_id";
-    BuildXMLFromQuery($xml,$qquery,'subquestions');
+    buildXMLFromQuery($xml,$qquery,'subquestions');
 
     //Answers
     $aquery = "SELECT DISTINCT {{answers}}.*
     FROM {{answers}}, {{questions}}
     WHERE ({{answers}}.qid={{questions}}.qid)
     AND ({{questions}}.gid=$gid)";
-    BuildXMLFromQuery($xml,$aquery);
+    buildXMLFromQuery($xml,$aquery);
 
     //Conditions - THIS CAN ONLY EXPORT CONDITIONS THAT RELATE TO THE SAME GROUP
     $cquery = "SELECT DISTINCT c.*
@@ -1690,7 +1690,7 @@ function group_getXMLStructure($xml,$gid)
     AND (c.qid=b.qid)
     AND (q.gid={$gid})
     AND (b.gid={$gid})";
-    BuildXMLFromQuery($xml,$cquery,'conditions');
+    buildXMLFromQuery($xml,$cquery,'conditions');
 
     //Question attributes
     $surveyid=Yii::app()->db->createCommand("select sid from {{groups}} where gid={$gid}")->query()->read();
@@ -1708,7 +1708,7 @@ function group_getXMLStructure($xml,$gid)
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.gid={$gid}
         where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value";
     }
-    BuildXMLFromQuery($xml,$query,'question_attributes');
+    buildXMLFromQuery($xml,$query,'question_attributes');
 
     // Default values
     $query = "SELECT dv.*
@@ -1717,7 +1717,7 @@ function group_getXMLStructure($xml,$gid)
     AND {{questions}}.language=dv.language
     AND {{questions}}.gid=$gid
     order by dv.language, dv.scale_id";
-    BuildXMLFromQuery($xml,$query,'defaultvalues');
+    buildXMLFromQuery($xml,$query,'defaultvalues');
 }
 
 
@@ -1727,8 +1727,7 @@ function group_getXMLStructure($xml,$gid)
 //  - Answers
 //  - Question attributes
 //  - Default values
-
-function question_export($action, $surveyid, $gid, $qid)
+function questionExport($action, $surveyid, $gid, $qid)
 {
     $fn = "limesurvey_question_$qid.lsq";
     $xml = getXMLWriter();
@@ -1764,32 +1763,32 @@ function question_export($action, $surveyid, $gid, $qid)
     $xml->writeElement('language',$questions->language);
 
     $xml->endElement();
-    question_getXMLStructure($xml,$gid,$qid);
+    questionGetXMLStructure($xml,$gid,$qid);
     $xml->endElement(); // close columns
     $xml->endDocument();
     exit;
 }
 
-function question_getXMLStructure($xml,$gid,$qid)
+function questionGetXMLStructure($xml,$gid,$qid)
 {
     // Questions table
     $qquery = "SELECT *
     FROM {{questions}}
     WHERE qid=$qid and parent_qid=0 order by language, scale_id, question_order";
-    BuildXMLFromQuery($xml,$qquery);
+    buildXMLFromQuery($xml,$qquery);
 
     // Questions table - Subquestions
     $qquery = "SELECT *
     FROM {{questions}}
     WHERE parent_qid=$qid order by language, scale_id, question_order";
-    BuildXMLFromQuery($xml,$qquery,'subquestions');
+    buildXMLFromQuery($xml,$qquery,'subquestions');
 
 
     // Answers table
     $aquery = "SELECT *
     FROM {{answers}}
     WHERE qid = $qid order by language, scale_id, sortorder";
-    BuildXMLFromQuery($xml,$aquery);
+    buildXMLFromQuery($xml,$aquery);
 
 
 
@@ -1810,18 +1809,18 @@ function question_getXMLStructure($xml,$gid,$qid)
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.qid={$qid}
         where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value";
     }
-    BuildXMLFromQuery($xml,$query);
+    buildXMLFromQuery($xml,$query);
 
     // Default values
     $query = "SELECT *
     FROM {{defaultvalues}}
     WHERE qid=$qid  order by language, scale_id";
-    BuildXMLFromQuery($xml,$query);
+    buildXMLFromQuery($xml,$query);
 
 }
 
 
-function tokens_export($surveyid)
+function tokensExport($surveyid)
 {
     header("Content-Disposition: attachment; filename=tokens_".$surveyid.".csv");
     header("Content-type: text/comma-separated-values; charset=UTF-8");
@@ -1938,7 +1937,7 @@ function tokens_export($surveyid)
     exit;
 }
 
-function cpdb_export($data,$filename)
+function CPDBExport($data,$filename)
 {
 
     header("Content-Disposition: attachment; filename=".$filename.".csv");

@@ -899,8 +899,8 @@ class Survey_Common_Action extends CAction
 
         if (!empty($ugid)) {
             $grpquery = "SELECT gp.* FROM {{user_groups}} AS gp, {{user_in_groups}} AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = $ugid AND gu.uid=" . Yii::app()->session['loginID'];
-            $grpresult = db_execute_assoc($grpquery);
-            $grpresultcount = db_records_count($grpquery);
+            $grpresult = dbExecuteAssoc($grpquery);
+            $grpresultcount = dbRecordsCount($grpquery);
 
             if ($grpresultcount > 0) {
                 $grow = array_map('htmlspecialchars', $grpresult->read());

@@ -916,7 +916,7 @@ abstract class Writer implements IWriter
         if ($question)
         {
             $heading = $question['question'];
-            $heading = $this->strip_tags_full($heading);
+            $heading = $this->stripTagsFull($heading);
             $heading = mb_substr($heading, 0, 15).'.. ';
             $aid = $survey->fieldMap[$fieldName]['aid'];
             if (!empty($aid))
@@ -941,7 +941,7 @@ abstract class Writer implements IWriter
     {
         $question = $survey->getQuestionArray($fieldName);
         $heading = $question['question'];
-        $heading = $this->strip_tags_full($heading);
+        $heading = $this->stripTagsFull($heading);
         $heading.=$this->getFullFieldSubHeading($survey, $options, $fieldName);
         return $heading;
     }
@@ -950,7 +950,7 @@ abstract class Writer implements IWriter
     {
         $question = $survey->getQuestionArray($fieldName);
         $heading = $question['title'];
-        $heading = $this->strip_tags_full($heading);
+        $heading = $this->stripTagsFull($heading);
         $heading.=$this->getCodeFieldSubHeading($survey, $options, $fieldName);
         return $heading;
     }
@@ -1133,7 +1133,7 @@ abstract class Writer implements IWriter
                     }
                 }
 
-                $subHeading .= ' ['.$this->strip_tags_full($scaleZeroText).']['.$this->strip_tags_full($scaleOneText).']';
+                $subHeading .= ' ['.$this->stripTagsFull($scaleZeroText).']['.$this->stripTagsFull($scaleOneText).']';
                 break;
 
             case '1':
@@ -1160,7 +1160,7 @@ abstract class Writer implements IWriter
                 }
                 if (!empty($subQuestion) && !empty($subQuestion['question']))
                 {
-                    $subHeading .= ' ['.$this->strip_tags_full($subQuestion['question']).']';
+                    $subHeading .= ' ['.$this->stripTagsFull($subQuestion['question']).']';
                 }
         }
 
@@ -1184,7 +1184,7 @@ abstract class Writer implements IWriter
     * type of field the value is a response for, and the FormattingOptions.
     * All transforms should be processed during the execution of this function!
     *
-    * The final step in the transform is to apply a strip_tags_full on the $value.
+    * The final step in the transform is to apply a stripTagsFull on the $value.
     * This occurs for ALL values whether or not any other transform is applied.
     *
     * @param string $value
@@ -1212,7 +1212,7 @@ abstract class Writer implements IWriter
         }
 
         //This spot should only be reached if no transformation occurs.
-        return $this->strip_tags_full($value);
+        return $this->stripTagsFull($value);
     }
 
     /**
@@ -1315,7 +1315,7 @@ abstract class Writer implements IWriter
         }
     }
 
-    protected function strip_tags_full($string)
+    protected function stripTagsFull($string)
     {
         $string=str_replace('-oth-','',$string);
         return flattenText($string,false,true,'UTF-8',false);
@@ -1632,7 +1632,7 @@ class PdfWriter extends Writer
             foreach($headers as $header)
             {
                 $this->pdf->intopdf($header);
-                $this->pdf->intopdf($this->strip_tags_full($values[$columnCounter]));
+                $this->pdf->intopdf($this->stripTagsFull($values[$columnCounter]));
                 $columnCounter++;
             }
         }

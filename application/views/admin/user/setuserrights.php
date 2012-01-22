@@ -13,12 +13,12 @@ $userlist = getUserList();
 foreach ($userlist as $usr) {
     if ($usr['uid'] == $postuserid) {
         $squery = "SELECT create_survey, configurator, create_user, delete_user, superadmin, participant_panel,manage_template, manage_label FROM {{users}} WHERE uid=".Yii::app()->session['loginID'];	//		added by Dennis
-        $sresult = db_select_limit_assoc($squery); //Checked
+        $sresult = dbSelectLimitAssoc($squery); //Checked
         $parent = $sresult->read();
 
         // Initial SuperAdmin has parent_id == 0
         $adminquery = "SELECT uid FROM {{users}} WHERE parent_id=0";
-        $adminresult = db_select_limit_assoc($adminquery, 1);
+        $adminresult = dbSelectLimitAssoc($adminquery, 1);
         $row=$adminresult->read();
 		?>
 

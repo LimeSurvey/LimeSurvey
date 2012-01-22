@@ -190,7 +190,7 @@ class LimeExpressionManager {
         $queries = array();
         foreach ($releqns as $key=>$value) {
             $query = "UPDATE {{questions}} SET relevance='".addslashes($value)."' WHERE qid=".$key;
-            db_execute_assoc($query);
+            dbExecuteAssoc($query);
             $queries[] = $query;
         }
         // Cheat and upgrade question attributes here too.
@@ -215,7 +215,7 @@ class LimeExpressionManager {
 
         foreach ($releqns as $key=>$value) {
             $query = "UPDATE {{questions}} SET relevance=1 WHERE qid=".$key;
-            db_execute_assoc($query);
+            dbExecuteAssoc($query);
         }
         return count($releqns);
     }
@@ -2961,16 +2961,16 @@ class LimeExpressionManager {
                     $thisstep = 1;
                     break;
             }
-            $setter[] = db_quote_id('lastpage') . "=" . dbQuoteAll($thisstep);
+            $setter[] = dbQuoteID('lastpage') . "=" . dbQuoteAll($thisstep);
 
             if ($this->surveyOptions['datestamp'] && isset($_SESSION['datestamp'])) {
-                $setter[] = db_quote_id('datestamp') . "=" . dbQuoteAll($_SESSION['datestamp']);
+                $setter[] = dbQuoteID('datestamp') . "=" . dbQuoteAll($_SESSION['datestamp']);
             }
             if ($this->surveyOptions['ipaddr'] && isset($_SERVER['REMOTE_ADDR'])) {
-                $setter[] = db_quote_id('ipaddr') . "=" . dbQuoteAll($_SERVER['REMOTE_ADDR']);
+                $setter[] = dbQuoteID('ipaddr') . "=" . dbQuoteAll($_SERVER['REMOTE_ADDR']);
             }
             if ($finished) {
-                $setter[] = db_quote_id('submitdate') . "=" . dbQuoteAll($_SESSION['datestamp']);
+                $setter[] = dbQuoteID('submitdate') . "=" . dbQuoteAll($_SESSION['datestamp']);
             }
 
             foreach ($updatedValues as $key=>$value)
@@ -2999,11 +2999,11 @@ class LimeExpressionManager {
 
                 if (is_null($val))
                 {
-                    $setter[] = db_quote_id($key) . "=NULL";
+                    $setter[] = dbQuoteID($key) . "=NULL";
                 }
                 else
                 {
-                    $setter[] = db_quote_id($key) . "=" . dbQuoteAll($val);
+                    $setter[] = dbQuoteID($key) . "=" . dbQuoteAll($val);
                 }
             }
             $query .= implode(', ', $setter);
@@ -3013,7 +3013,7 @@ class LimeExpressionManager {
             {
                 $query .= $_SESSION['srid'];
 
-                if (!db_execute_assoc($query))
+                if (!dbExecuteAssoc($query))
                 {
                     echo submitfailed('');  // TODO - report SQL error?
 
@@ -4920,7 +4920,7 @@ class LimeExpressionManager {
     static function GetSyntaxErrors()
     {
         $query = "SELECT * FROM {{expression_errors}}";
-        $data = db_execute_assoc($query);
+        $data = dbExecuteAssoc($query);
         return $data->readAll();
     }
 
@@ -4931,7 +4931,7 @@ class LimeExpressionManager {
     {
         // truncate the table
         $query = "TRUNCATE TABLE {{expression_errors}}";
-        db_execute_assoc($query);
+        dbExecuteAssoc($query);
     }
 
     /**
@@ -5291,7 +5291,7 @@ EOT;
                 ." c.cqid = 0 and c.qid = q.qid"
                 ." order by sid, qid, scenario, cqid, cfieldname, value";
 
-		$data = db_execute_assoc($query);
+		$data = dbExecuteAssoc($query);
 
 		return $data;
     }
@@ -5395,7 +5395,7 @@ EOT;
                 .$lang
                 ." order by a.qid, a.attribute";
 
-        $data = db_execute_assoc($query);
+        $data = dbExecuteAssoc($query);
         $qattr = array();
 
         foreach($data->readAll() as $row) {
@@ -5447,7 +5447,7 @@ EOT;
             .$lang
             ." ORDER BY qid, scale_id, sortorder";
 
-        $data = db_execute_assoc($query);
+        $data = dbExecuteAssoc($query);
 
         $qans = array();
 
@@ -5482,7 +5482,7 @@ EOT;
             .$lang
             ." ORDER BY group_order";
 
-        $data = db_execute_assoc($query);
+        $data = dbExecuteAssoc($query);
 
         $qinfo = array();
         foreach ($data->readAll() as $d)

@@ -104,7 +104,7 @@
                 <td align='center'><?php echo $noofsurveyslist[$i];?></td>
 
                 <?php $uquery = "SELECT users_name FROM {{users}} WHERE uid=".$usr['parent_id'];
-                    $uresult = db_execute_assoc($uquery); //Checked
+                    $uresult = dbExecuteAssoc($uquery); //Checked
                     $userlist = array();
                     $srow = $uresult->read();
 

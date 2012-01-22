@@ -838,7 +838,7 @@ class SurveyAction extends Survey_Common_Action
                 }
 
                 Yii::app()->loadHelper('export');
-                $copysurveydata = survey_getXMLData($surveyid, $exclude);
+                $copysurveydata = surveyGetXMLData($surveyid, $exclude);
             }
 
             // Now, we have the survey : start importing
@@ -1349,7 +1349,7 @@ class SurveyAction extends Survey_Common_Action
     {
         $iSurveyId = (int) $iSurveyId;
         Yii::app()->loadHelper('database');
-        $oResult = db_execute_assoc("select '' as act, up.*,q.title, sq.title as sqtitle, q.question, sq.question as sqquestion from {{survey_url_parameters}} up
+        $oResult = dbExecuteAssoc("select '' as act, up.*,q.title, sq.title as sqtitle, q.question, sq.question as sqquestion from {{survey_url_parameters}} up
                             left join {{questions}} q on q.qid=up.targetqid
                             left join {{questions}} sq on q.qid=up.targetqid
                             where up.sid={$iSurveyId}");

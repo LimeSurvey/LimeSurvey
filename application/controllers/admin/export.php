@@ -141,7 +141,7 @@ class export extends Survey_Common_Action {
 		{
             if( ! empty($_POST['action']) )
             {
-                question_export(Yii::app()->request->getPost('action'), $surveyid, $gid, $qid);
+                questionExport(Yii::app()->request->getPost('action'), $surveyid, $gid, $qid);
                 return;
             }
 
@@ -151,7 +151,7 @@ class export extends Survey_Common_Action {
         }
         else
         {
-            question_export("exportstructurecsvQuestion", $surveyid, $gid, $qid);
+            questionExport("exportstructurecsvQuestion", $surveyid, $gid, $qid);
 
             return;
         }
@@ -429,7 +429,7 @@ class export extends Survey_Common_Action {
 			}
 
             $na = "";
-            spss_export_data($na);
+            SPSSExportData($na);
 
             exit;
         }
@@ -442,10 +442,10 @@ class export extends Survey_Common_Action {
             header("Pragma: public");
 
             // Build array that has to be returned
-            $fields = spss_fieldmap();
+            $fields = SPSSFieldMap();
 
             //Now get the query string with all fields to export
-            $query = spss_getquery();
+            $query = SPSSGetQuery();
             $result = Yii::app()->db->createCommand($query)->query()->readAll(); //Checked
 
             $num_fields = isset( $result[0] ) ? count($result[0]) : 0;
@@ -461,14 +461,14 @@ class export extends Survey_Common_Action {
                     //Performance improvement, don't recheck fields that have valuelabels
                     if ( ! isset($fields[$fieldno]['answers']) )
 					{
-                        $strTmp = mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
+                        $strTmp = mb_substr(stripTagsFull($row[$fieldno]), 0, $length_data);
                         $len = mb_strlen($strTmp);
 
                         if ( $len > $fields[$fieldno]['size'] ) $fields[$fieldno]['size'] = $len;
 
                         if ( trim($strTmp) != '' )
 						{
-                            if ( $fields[$fieldno]['SPSStype'] == 'F' && (my_is_numeric($strTmp) === FALSE || $fields[$fieldno]['size'] > 16) )
+                            if ( $fields[$fieldno]['SPSStype'] == 'F' && (isNumericExtended($strTmp) === FALSE || $fields[$fieldno]['size'] > 16) )
                             {
                                 $fields[$fieldno]['SPSStype'] = 'A';
                             }
@@ -528,7 +528,7 @@ class export extends Survey_Common_Action {
 			{
                 if ( ! $field['hide'] )
 				{
-					echo "VARIABLE LABELS " . $field['id'] . " \"" . str_replace('"','""',mb_substr(strip_tags_full($field['VariableLabel']), 0, $length_varlabel)) . "\".\n";
+					echo "VARIABLE LABELS " . $field['id'] . " \"" . str_replace('"','""',mb_substr(stripTagsFull($field['VariableLabel']), 0, $length_varlabel)) . "\".\n";
 				}
             }
 
@@ -548,7 +548,7 @@ class export extends Survey_Common_Action {
 					{
                         $i++;
 
-                        if ( $field['SPSStype'] == "F" && my_is_numeric($answer['code']) )
+                        if ( $field['SPSStype'] == "F" && isNumericExtended($answer['code']) )
 						{
                             $str = "{$answer['code']}";
                         }
@@ -689,7 +689,7 @@ class export extends Survey_Common_Action {
             header("Pragma: public");
 
             $na = "";	//change to empty string instead of two double quotes to fix warnings on NA
-            spss_export_data($na);
+            SPSSExportData($na);
 
             exit;
         }
@@ -709,10 +709,10 @@ class export extends Survey_Common_Action {
 
 
             // Build array that has to be returned
-            $fields = spss_fieldmap("V");
+            $fields = SPSSFieldMap("V");
 
             //Now get the query string with all fields to export
-            $query = spss_getquery();
+            $query = SPSSGetQuery();
 
             $result = Yii::app()->db->createCommand($query)->query(); //Checked
         	$result = $result->readAll();
@@ -729,14 +729,14 @@ class export extends Survey_Common_Action {
                     //Performance improvement, don't recheck fields that have valuelabels
                     if ( ! isset($fields[$fieldno]['answers']) )
 					{
-                        $strTmp = mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
+                        $strTmp = mb_substr(stripTagsFull($row[$fieldno]), 0, $length_data);
                         $len = mb_strlen($strTmp);
 
                         if ( $len > $fields[$fieldno]['size'] ) $fields[$fieldno]['size'] = $len;
 
                         if ( trim($strTmp) != '' )
 						{
-                            if ( $fields[$fieldno]['SPSStype'] == 'F' && (my_is_numeric($strTmp) === FALSE || $fields[$fieldno]['size'] > 16) )
+                            if ( $fields[$fieldno]['SPSStype'] == 'F' && (isNumericExtended($strTmp) === FALSE || $fields[$fieldno]['size'] > 16) )
                             {
                                 $fields[$fieldno]['SPSStype'] = 'A';
                             }
@@ -782,7 +782,7 @@ class export extends Survey_Common_Action {
 						. addslashes(
 							htmlspecialchars_decode(
 								mb_substr(
-									strip_tags_full(
+									stripTagsFull(
 										$field['VariableLabel']
 									), 0, $length_varlabel
 								)
@@ -801,7 +801,7 @@ class export extends Survey_Common_Action {
                         $str = "";
                         foreach ( $answers as $answer )
 						{
-                            if ( $field['SPSStype'] == "F" && my_is_numeric($answer['code']) )
+                            if ( $field['SPSStype'] == "F" && isNumericExtended($answer['code']) )
 							{
                                 $str .= ",{$answer['code']}";
                             }
@@ -1170,11 +1170,11 @@ class export extends Survey_Common_Action {
 
         // Label sets table
         $lsquery = "SELECT * FROM {{labelsets}} WHERE lid=" . implode(' or lid=', $lids);
-        BuildXMLFromQuery($xml, $lsquery, 'labelsets');
+        buildXMLFromQuery($xml, $lsquery, 'labelsets');
 
         // Labels
         $lquery = "SELECT lid, code, title, sortorder, language, assessment_value FROM {{labels}} WHERE lid=" . implode(' or lid=', $lids);
-        BuildXMLFromQuery($xml, $lquery, 'labels');
+        buildXMLFromQuery($xml, $lquery, 'labels');
         $xml->endElement(); // close columns
         $xml->endDocument();
         exit;
@@ -1202,7 +1202,7 @@ class export extends Survey_Common_Action {
     	Yii::import('application.libraries.admin.pclzip.pclzip', TRUE);
         $zip = new PclZip($aZIPFileName);
 
-        file_put_contents($sLSSFileName, survey_getXMLData($iSurveyID));
+        file_put_contents($sLSSFileName, surveyGetXMLData($iSurveyID));
 
 		$this->_addToZip($zip, $sLSSFileName, 'survey_' . $iSurveyID . '.lss');
 
@@ -1278,7 +1278,7 @@ class export extends Survey_Common_Action {
 
 			$this->_addHeaders($fn, "text/xml", "Mon, 26 Jul 1997 05:00:00 GMT");
 
-            echo survey_getXMLData($surveyid);
+            echo surveyGetXMLData($surveyid);
             exit;
         }
         elseif ( $action == "exportstructurequexml" )
