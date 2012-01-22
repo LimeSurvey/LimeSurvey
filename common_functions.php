@@ -20,11 +20,10 @@ require_once('replacements.php');
 /**
 * This function gives back an array that defines which survey permissions and what part of the CRUD+Import+Export subpermissions is available.
 * - for example it would not make sense to have  a 'create' permissions for survey locale settings as they exist with every survey
-*  so the editor for survey permission should not show a checkbox here, therfore the create element of that permission is set to 'false'
-*  If you want to generally add a new permission just add it here.
+* so the editor for survey permission should not show a checkbox here, therfore the create element of that permission is set to 'false'
+* If you want to generally add a new permission just add it here.
 *
 */
-
 function aGetBaseSurveyPermissions()
 {
     global $clang;
