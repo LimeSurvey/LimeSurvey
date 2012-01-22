@@ -256,7 +256,11 @@ class question extends Survey_Common_Action
         $aData['display']['menu_bars']['surveysummary'] = 'viewgroup';
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
         $aData['display']['menu_bars']['qid_action'] = 'editansweroptions';
-
+        
+        $aData['surveyid'] = $surveyid;
+        $aData['gid']      = $gid;
+        $aData['qid']      = $qid;
+        
         Yii::app()->session['FileManagerContext'] = "edit:answer:{$surveyid}";
 
         $aViewUrls = $this->_editansweroptions($surveyid, $gid, $qid);
@@ -419,7 +423,7 @@ class question extends Survey_Common_Action
         $aData['display']['menu_bars']['gid_action'] = 'addquestion';
         $aData['display']['menu_bars']['qid_action'] = 'editsubquestions';
         $aViewUrls = $this->_editsubquestion($surveyid, $gid, $qid);
-
+        
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
 
@@ -1127,7 +1131,7 @@ EOD;
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/jquery.dd.js');
         $this->getController()->_css_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/dd.css');
         $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
-
+        
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 }
