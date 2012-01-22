@@ -5363,7 +5363,7 @@ EOT;
             // now update the datbase
             foreach ($queries as $query)
             {
-                db_execute_assoc($query);
+                dbExecuteAssoc($query);
             }
             return $queries;
         }

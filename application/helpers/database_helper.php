@@ -15,7 +15,7 @@ if ( !defined('BASEPATH')) exit('No direct script access allowed');
 */
 function dbExecuteAssoc($sql,$inputarr=false,$silent=false)
 {
-
+    $error = '';
     try {
         if($inputarr)
         {
@@ -27,10 +27,14 @@ function dbExecuteAssoc($sql,$inputarr=false,$silent=false)
 
         }
     } catch(CDbException $e) {
+        $error = $e->getMessage();
         $dataset=false;
     }
 
-    if (!$silent && !$dataset)  { safeDie('Error executing query in dbExecuteAssoc:'.$sql); }
+    if (!$silent && !$dataset)  
+    { 
+        safeDie('Error executing query in dbExecuteAssoc:'.$error); 
+    }
     return $dataset;
 }
 
