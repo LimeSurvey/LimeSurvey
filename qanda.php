@@ -3759,13 +3759,10 @@ function do_multiplenumeric($ia)
         if (trim($qidattributes['equals_num_value'])!=''
             || trim($qidattributes['min_num_value'])!=''
             || trim($qidattributes['max_num_value'])!=''
-            || trim($qidattributes['num_value_equals_sgqa'])!=''
-            || trim($qidattributes['min_num_value_sgqa'])!=''
-            || trim($qidattributes['max_num_value_sgqa'])!=''
             )
         {
             $qinfo = LimeExpressionManager::GetQuestionStatus($ia[0]);
-            if (trim($qidattributes['equals_num_value'])!='' || trim($qidattributes['num_value_equals_sgqa'])!='')
+            if (trim($qidattributes['equals_num_value'])!='')
             {
                 $answer_main .= "\t<li class='multiplenumerichelp'>\n"
                     . "<label for=\"remainingvalue_{$ia[0]}\">".$clang->gT('Remaining: ')."</label>\n"
