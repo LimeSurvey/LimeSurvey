@@ -3,7 +3,7 @@
 <div id='tabs'><ul>
     <?php foreach ($grplangs as $grouplang)
         { ?>
-            <li><a href="#<?php echo $grouplang; ?>"><?php echo GetLanguageNameFromCode($grouplang,false);
+            <li><a href="#<?php echo $grouplang; ?>"><?php echo getLanguageNameFromCode($grouplang,false);
             if ($grouplang==$baselang) { ?>(<?php $clang->eT("Base language"); ?>) <?php } ?>
             </a></li>
         <?php }

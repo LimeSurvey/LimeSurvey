@@ -184,7 +184,7 @@ class quotas extends Survey_Common_Action
         {
             if (!$_POST['quotals_message_' . $sLang])
             {
-                $sError .= GetLanguageNameFromCode($sLang, false) . "\\n";
+                $sError .= getLanguageNameFromCode($sLang, false) . "\\n";
             }
         }
         if ($sError != '')
@@ -237,7 +237,7 @@ class quotas extends Survey_Common_Action
         {
             if (!$_POST['quotals_message_' . $sLang])
             {
-                $sError.= GetLanguageNameFromCode($sLang, false) . "\\n";
+                $sError.= getLanguageNameFromCode($sLang, false) . "\\n";
             }
         }
         if ($sError != '')

@@ -148,7 +148,7 @@ class questiongroup extends Survey_Common_Action
             $errorstring = '';
             foreach ($grplangs as $grouplang)
                 if (empty($_POST['group_name_' . $grouplang]))
-                    $errorstring.= GetLanguageNameFromCode($grouplang, false) . "\\n";
+                    $errorstring.= getLanguageNameFromCode($grouplang, false) . "\\n";
 
             if ($errorstring != '')
                 $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/surveyid/' . $surveyid));

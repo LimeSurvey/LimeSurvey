@@ -6,7 +6,7 @@
 <ul>
     <li>
     <label><?php $clang->eT("Base language:") ; ?></label>
-    <?php echo GetLanguageNameFromCode($esrow['language'],false) ?>
+    <?php echo getLanguageNameFromCode($esrow['language'],false) ?>
     </li>
     <li><label for='additional_languages'><?php $clang->eT("Additional Languages"); ?>:</label>
             <table><tr><td align='left'><select style='min-width:220px;' size='5' id='additional_languages' name='additional_languages'>

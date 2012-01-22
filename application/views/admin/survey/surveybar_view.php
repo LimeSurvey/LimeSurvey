@@ -109,7 +109,7 @@
                         <?php } ?>
                     <?php if (hasSurveyPermission($surveyid,'surveycontent','update')) { ?>
                         <li><a href="<?php echo $this->createUrl("admin/expressions"); ?>">
-                            <img src='<?php echo $imageurl;?>/expressionManager_30.png' alt=''/> <?php $clang->eT("Expression Manager");?></a></li>
+                            <img src='<?php echo $imageurl;?>/expressionmanager_30.png' alt=''/> <?php $clang->eT("Expression Manager");?></a></li>
                     <?php } ?>
                 </ul></li>
             <li><a href='#'>

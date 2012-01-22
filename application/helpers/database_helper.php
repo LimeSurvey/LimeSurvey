@@ -1,5 +1,5 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+if ( !defined('BASEPATH')) exit('No direct script access allowed');
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -35,7 +35,7 @@ function dbExecuteAssoc($sql,$inputarr=false,$silent=false)
 }
 
 
-function &dbQueryOrFalse($sql)
+function dbQueryOrFalse($sql)
 {
     try {
         $dataset=Yii::app()->db->createCommand($sql)->query();
@@ -46,7 +46,7 @@ function &dbQueryOrFalse($sql)
 }
 
 
-function &dbSelectLimitAssoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieonerror=true)
+function dbSelectLimitAssoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieonerror=true)
 {
     $query = Yii::app()->db->createCommand($sql.= " ");
     if ($numrows)
@@ -83,7 +83,7 @@ function &dbSelectLimitAssoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieonerr
 *
 * @param mixed $sql
 */
-function &dbSelectColumn($sql)
+function dbSelectColumn($sql)
 {
     $dataset=Yii::app()->db->createCommand($sql)->query();
     if ($dataset->count() > 0)

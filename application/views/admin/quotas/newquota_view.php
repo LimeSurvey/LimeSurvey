@@ -23,7 +23,7 @@
 </ul>
     <div id="tabs"><ul>
 <?php foreach ($langs as $lang) { ?>
-        <li><a href="#tabpage_<?php echo $lang ?>"><?php echo GetLanguageNameFromCode($lang,false);
+        <li><a href="#tabpage_<?php echo $lang ?>"><?php echo getLanguageNameFromCode($lang,false);
     if ($lang==$baselang) {echo '('.$clang->gT("Base language").')';} ;?></li>
     <?php } ?>
     </ul>

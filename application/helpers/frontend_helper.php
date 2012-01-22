@@ -207,6 +207,7 @@ function makegraph($currentstep, $total)
 
 function makelanguagechanger($baselang)
 {
+    Yii::app()->loadHelper("surveytranslator");
     if (!isset($surveyid))
     {
         $surveyid=returnGlobal('sid');
