@@ -181,6 +181,9 @@ class LimeExpressionManager {
     public static function UpgradeConditionsToRelevance($surveyId=NULL, $qid=NULL)
     {
         LimeExpressionManager::SetDirtyFlag();  // set dirty flag even if not conditions, since must have had a DB change
+        // Cheat and upgrade question attributes here too.
+        self::UpgradeQuestionAttributes(true,$surveyId,$qid);
+
         $releqns = self::ConvertConditionsToRelevance($surveyId,$qid);
         $num = count($releqns);
         if ($num == 0) {
@@ -193,8 +196,6 @@ class LimeExpressionManager {
             dbExecuteAssoc($query);
             $queries[] = $query;
         }
-        // Cheat and upgrade question attributes here too.
-        $queries = array_merge($queries, self::UpgradeQuestionAttributes(true,$surveyId,$qid));        
         LimeExpressionManager::SetDirtyFlag();
         return $queries;
     }
@@ -5314,6 +5315,8 @@ EOT;
             'min_num_value_sgqa' => 'min_num_value',
             'num_value_equals_sgqa' => 'equals_num_value',
         );
+        $reverseAttributeMap = array_flip($attibutemap);
+
         foreach ($qattrs as $qid => $qattr)
         {
             $updates = array();
@@ -5337,28 +5340,11 @@ EOT;
                 foreach  ($updates as $key=>$value)
                 {
                     $query = "UPDATE {{question_attributes}} SET value='".addslashes($value)."' WHERE qid=".$qid." and attribute='".addslashes($key)."';";
-                    $queries[] = $query;                       
+                    $queries[] = $query;
+                    $query = "DELETE FROM {{question_attributes}} WHERE qid=".$qid." and attribute='".addslashes($reverseAttributeMap[$key])."';";
+                    $queries[] = $query;
+
                 }
-            }
-            foreach ($attibutemap as $key=>$value)
-            {
-                $query = "DELETE FROM {{question_attributes}}";
-                if (!is_null($surveyid))
-                {
-                    $query .= ", {{questions}}";
-                }
-                $query .= " WHERE {{question_attributes}}.attribute='" . $key . "'";
-                if (!is_null($onlythisqid))
-                {
-                    $query .= " AND {{question_attributes}}.qid=".$onlythisqid;
-                }
-                else if (!is_null($surveyid))
-                {
-                    $query .= " AND {{question_attributes}}.qid = {{questions}}.qid";
-                    $query .= " AND {{questions}}.sid=".$surveyid;
-                }
-                $query .= ";";
-                $queries[] = $query;
             }
             // now update the datbase
             foreach ($queries as $query)
