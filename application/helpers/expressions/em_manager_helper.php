@@ -2029,7 +2029,30 @@ class LimeExpressionManager {
             }
         }
         // set default value for reserved 'this' variable
-        $this->knownVars['this'] = $blankVal;
+        $this->knownVars['this'] = array(
+                'jsName_on'=>'',
+                'jsName'=>'',
+                'readWrite'=>'',
+                'hidden'=>'',
+                'question'=>'this',
+                'qid'=>'',
+                'gid'=>'',
+                'grelevance'=>'',
+                'relevance'=>'',
+                'qcode'=>'this',
+                'qseq'=>'',
+                'gseq'=>'',
+                'type'=>'',
+                'sgqa'=>'',
+                'rowdivid'=>'',
+                'ansList'=>'',
+                'ansArray'=>array(),
+                'scale_id'=>'',
+                'default'=>'',
+                'rootVarName'=>'this',
+                'subqtext'=>'',
+                'rowdivid'=>'',
+                );
 
         $this->runtimeTimings[] = array(__METHOD__ . ' - process fieldMap',(microtime(true) - $now));
         if (($this->debugLevel & LEM_DEBUG_TRANSLATION_DETAIL) == LEM_DEBUG_TRANSLATION_DETAIL)
