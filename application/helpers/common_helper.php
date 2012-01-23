@@ -5617,10 +5617,21 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
     //Get response data
     $idrow = Surveys_dynamic::model($iSurveyID)->findByAttributes(array('id'=>$iResponseID));
 
+    // Create array of non-null values - those are the relevant ones
+    $aRelevantFields = array();
+
+    foreach ($aFieldMap as $sKey=>$fname)
+    {
+        if (!is_null($idrow[$fname['fieldname']]))
+        {
+            $aRelevantFields[$sKey]=$fname;
+        }
+    }
+
     $aResultTable=array();
     $oldgid = 0;
     $oldqid = 0;
-    foreach ($aFieldMap as $sKey=>$fname)
+    foreach ($aRelevantFields as $sKey=>$fname)
     {
         if (!empty($fname['qid']))
         {
@@ -5645,21 +5656,14 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
             if ($oldqid !== $fname['qid'])
             {
                 $oldqid = $fname['qid'];
-                if (($bHonorConditions && LimeExpressionManager::QuestionIsRelevant($fname['qid'])) || !$bHonorConditions)
+                if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2']))
                 {
-                    if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2']))
-                    {
-                        $aResultTable['qid_'.$fname['sid'].'X'.$fname['gid'].'X'.$fname['qid']]=array($fname['question'],'','');
-                    }
-                    else
-                    {
-                        $answer = getExtendedAnswer($fname['fieldname'], $idrow[$fname['fieldname']]);
-                        $aResultTable[$fname['fieldname']]=array($question,'',$answer);
-                        continue;
-                    }
+                    $aResultTable['qid_'.$fname['sid'].'X'.$fname['gid'].'X'.$fname['qid']]=array($fname['question'],'','');
                 }
                 else
                 {
+                    $answer = getExtendedAnswer($fname['fieldname'], $idrow[$fname['fieldname']]);
+                    $aResultTable[$fname['fieldname']]=array($question,'',$answer);
                     continue;
                 }
             }
