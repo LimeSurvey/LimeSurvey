@@ -77,6 +77,28 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.91+ (build 11804) to 1.91+ (build 12170) Jan 23, 2012
+#Updated translation: French (b00z00)
+#Updated translation: German (c_schmitz)
+#Updated translation: German Informal (c_schmitz)
+#Updated translation: Polish (elisa-ls)
+#Updated translation: Portuguese (Brazil) (c_schmitz)
+#Updated translation: Russian (c_schmitz)
+#Updated translation: Turkish by Kaya Zeren (c_schmitz)
+#Updated Feature: Added German translations to 1.91 sample survey. (maziminke)
++New feature: Code/QID visible in quick-translation answers/subquestions/questions for easier orientation (c_schmitz)
+-Fixed issue #5645 : Upload file question for all in one survey and Fancy URLs (shnoulle)
+-Fixed issue #5628: SQL error after setting a filter in statistics and removing it again (c_schmitz)
+-Fixed issue #5649: Error message on numerical input type question not working for more than one question of this type (c_schmitz)
+-Fixed issue #5662: Clicking the 'Browse' button in statistics to browser filtered data shows all reponses (c_schmitz)
+-Fixed issue #5678: usesleft field is not created by RemoteControl in tokens table (c_schmitz)
+-Fixed issue #5643: CMS integration hack. Note: this option was removed for 2.00 (shnoulle)
+-Fixed issue: Display columns layout for citronade (shnoulle)
+-Fixed issue: php alert and bad deletion of file in upload file question (shnoulle)
+-Fixed issue: Answers not properly added for dual scale questions when adding a new language to the survey (c_schmitz)
+-Fixed issue: Missing sorting for groups/question in quick translate (c_schmitz)
+-Fixed issue: Broken pdf export of printable survey due to incorrect filename (mennodekker)
+-Fixed issue: printanswers shows json string for file upload fields (mennodekker)
 
 Changes from 1.91+ (build 11379) to 1.91+ (build 11804) Dec 30, 2011
 #Updated translation: Hungarian by GCI participant Andor Uhlár (c_schmitz)
