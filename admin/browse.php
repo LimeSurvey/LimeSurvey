@@ -261,6 +261,10 @@ if ($subaction == "id")
         $highlight=false;
         for ($i = 0; $i < $nfncount+1; $i++)
         {
+            if ($fnames[$i][0] != 'completed' && is_null($idrow[$fnames[$i][0]]))
+            {
+                continue;   // irrelevant, so don't show
+            }
             $inserthighlight='';
             if ($highlight)
                 $inserthighlight="class='highlight'";
