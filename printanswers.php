@@ -159,6 +159,7 @@ if ($actcount > 0)
     {
         $surveytable = db_table_name("survey_".$actrow['sid']);
         $surveyname = "{$actrow['surveyls_title']}";
+        $anonymized = $actrow['anonymized'];
     }
 }
 
@@ -228,6 +229,21 @@ foreach ($aFullResponseTable as $sFieldname=>$fname)
         {
             $printoutput .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>{$fname[0]}</td></tr>\n";
         }
+    }
+    elseif ($sFieldname=='submitdate')
+    {
+        if($anonymized != 'Y')
+        {
+           if(isset($_POST['printableexport']))
+           {
+               $pdf->intopdf(FlattenText($fname[0].$fname[1],true).": ".$fname[2]);
+               $pdf->ln(2);
+           }
+           else
+           {
+               $printoutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]} {$sFieldname}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
+           }
+	    }
     }
     else
     {
