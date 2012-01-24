@@ -195,26 +195,69 @@ if ($action == "editdefaultvalues")
                 }
                 $editdefvalues.="<ul>";
 
-                foreach ($sqrows as $aSubquestion)
+                switch($questionrow['type'])
                 {
-                    $defaultvalue=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid=$qid AND specialtype='' and sqid={$aSubquestion['qid']} and scale_id={$scale_id} AND language='{$language}'");
-                    $editdefvalues.="<li><label for='defaultanswerscale_{$scale_id}_{$language}_{$aSubquestion['qid']}'>{$aSubquestion['title']}: ".FlattenText($aSubquestion['question'])."</label>";
-                    $editdefvalues.="<select name='defaultanswerscale_{$scale_id}_{$language}_{$aSubquestion['qid']}' id='defaultanswerscale_{$scale_id}_{$language}_{$aSubquestion['qid']}'>";
-                    foreach ($options as $value=>$label)
+                    case 'L':
+                    case 'M':
+                    case 'O':
+                    case 'P':
+                    case '!':
+                        $inputStyle='enum';
+                        break;
+                    case 'K':
+                    case 'Q':
+                        $inputStyle='text';
+                        break;
+                }
+                if ($inputStyle == 'enum')
+                {
+                    foreach ($sqrows as $aSubquestion)
                     {
-                        $editdefvalues.="<option ";
-                        if ($value==$defaultvalue)
+                        $defaultvalue=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid=$qid AND specialtype='' and sqid={$aSubquestion['qid']} and scale_id={$scale_id} AND language='{$language}'");
+                        $editdefvalues.="<li><label for='defaultanswerscale_{$scale_id}_{$language}_{$aSubquestion['qid']}'>{$aSubquestion['title']}: ".FlattenText($aSubquestion['question'])."</label>";
+                        $editdefvalues.="<select name='defaultanswerscale_{$scale_id}_{$language}_{$aSubquestion['qid']}' id='defaultanswerscale_{$scale_id}_{$language}_{$aSubquestion['qid']}'>";
+                        foreach ($options as $value=>$label)
                         {
-                            $editdefvalues.= " selected='selected' ";
+                            $editdefvalues.="<option ";
+                            if ($value==$defaultvalue)
+                            {
+                                $editdefvalues.= " selected='selected' ";
+                            }
+                            $editdefvalues.="value='{$value}'>{$label}</option>";
                         }
-                        $editdefvalues.="value='{$value}'>{$label}</option>";
+                        $editdefvalues.="</select></li> ";
                     }
-                    $editdefvalues.="</select></li> ";
+                }
+                if ($inputStyle == 'text')
+                {
+                    foreach ($sqrows as $aSubquestion)
+                    {
+                        $defaultvalue=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid=$qid AND specialtype='' and sqid={$aSubquestion['qid']} and scale_id={$scale_id} AND language='{$language}'");
+                        $editdefvalues.="<li><label for='defaultanswerscale_{$scale_id}_{$language}_{$aSubquestion['qid']}'>{$aSubquestion['title']}: ".FlattenText($aSubquestion['question'])."</label>";
+                        $editdefvalues.="<textarea cols='50' name='defaultanswerscale_{$scale_id}_{$language}_{$aSubquestion['qid']}' id='defaultanswerscale_{$scale_id}_{$language}_{$aSubquestion['qid']}'/>";
+                        $editdefvalues.=$defaultvalue."</textarea></li>\n";
+                    }
                 }
             }
         }
-            if ($language==$baselang && count($questlangs)>1)
-            {
+
+        if ($qtproperties[$questionrow['type']]['answerscales']==0 && $qtproperties[$questionrow['type']]['subquestions']==0)
+        {
+            /*
+                    case 'D':
+                    case 'N':
+                    case 'S':
+                    case 'T':
+                    case 'U':*
+             */
+            $defaultvalue=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid=$qid AND language='{$language}'");
+            $editdefvalues.="<li>";
+            $editdefvalues.="<textarea cols='50' name='defaultanswerscale_0_{$language}_0' id='defaultanswerscale_0_{$language}_0'/>";
+            $editdefvalues.=$defaultvalue."</textarea></li>\n";
+        }
+
+        if ($language==$baselang && count($questlangs)>1)
+        {
             $editdefvalues.="<li><label for='samedefault'>".$clang->gT('Use same default value across languages:')."<label><input type='checkbox' name='samedefault' id='samedefault'";
             if ($questionrow['same_default'])
             {
@@ -224,7 +267,7 @@ if ($action == "editdefaultvalues")
         }
             $editdefvalues.="</ul> ";
             $editdefvalues.="</div> "; // Closing page
-        }
+    }
     $editdefvalues.="</div> "; // Closing pane
     $editdefvalues.="<input type='hidden' id='action' name='action' value='updatedefaultvalues'> "
         . "\t<input type='hidden' id='sid' name='sid' value='$surveyid' /></p>\n"

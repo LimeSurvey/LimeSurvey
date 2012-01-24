@@ -419,6 +419,16 @@ if(isset($surveyid))
                 }
             }
         }
+        if ($qtproperties[$questiontype]['answerscales']==0 && $qtproperties[$questiontype]['subquestions']==0)
+        {
+            foreach ($questlangs as $language)
+            {
+                if (isset($_POST['defaultanswerscale_0_'.$language.'_0']))
+                {
+                   Updatedefaultvalues($postqid,0,0,'',$language,$_POST['defaultanswerscale_0_'.$language.'_0'],true);
+                }
+            }
+        }
         $_SESSION['flashmessage'] = $clang->gT("Default value settings were successfully saved.");
         LimeExpressionManager::SetDirtyFlag();
     }
