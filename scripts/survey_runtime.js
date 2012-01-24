@@ -2,7 +2,6 @@ var DOM1;
 $(document).ready(function()
 {
 	DOM1 = (typeof document.getElementsByTagName!='undefined');
-	if (typeof checkconditions!='undefined') checkconditions();
 	if (typeof template_onload!='undefined') template_onload();
 	prepareCellAdapters();
     if (typeof(focus_element) != 'undefined')
