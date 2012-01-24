@@ -1470,8 +1470,11 @@ class ExpressionManager {
                                 $color = '#4C88BE';    // cyan that goes well with the background color
                             }
                         }
+                        // prevent EM prcessing of messages within span
+                        $message = implode('; ',$messages);
+                        $message = str_replace(array('{','}'), array('{ ', ' }'), $message);
 
-                        $stringParts[] = "<span title='"  . implode('; ',$messages) . "' style='color: ". $color . "; font-weight: bold'";
+                        $stringParts[] = "<span title='"  . $message . "' style='color: ". $color . "; font-weight: bold'";
                         if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid)) {
                             // Modify this link to utilize a different framework
                             $editlink = Yii::app()->getController()->createUrl('/admin/survey/view/surveyid/' . $this->sid . '/gid/' . $gid . '/qid/' . $qid);
@@ -1880,7 +1883,7 @@ class ExpressionManager {
      * @return <type>
      */
 
-    public function sProcessStringContainingExpressions($src, $questionNum=0, $numRecursionLevels=1, $whichPrettyPrintIteration=1, $groupSeq=-1, $questionSeq=-1)
+    public function sProcessStringContainingExpressions($src, $questionNum=0, $numRecursionLevels=1, $whichPrettyPrintIteration=1, $groupSeq=-1, $questionSeq=-1, $staticReplacement=false)
     {
         // tokenize string by the {} pattern, properly dealing with strings in quotations, and escaped curly brace values
         $this->allVarsUsed = array();
@@ -1892,7 +1895,7 @@ class ExpressionManager {
         for($i=1;$i<=$numRecursionLevels;++$i)
         {
             // TODO - Since want to use <span> for dynamic substitution, what if there are recursive substititons?
-            $result = $this->sProcessStringContainingExpressionsHelper(htmlspecialchars_decode($result,ENT_QUOTES),$questionNum);
+            $result = $this->sProcessStringContainingExpressionsHelper(htmlspecialchars_decode($result,ENT_QUOTES),$questionNum, $staticReplacement);
             if ($i == $whichPrettyPrintIteration)
             {
                 $prettyPrint = $this->prettyPrintSource;
@@ -1909,7 +1912,7 @@ class ExpressionManager {
      * @return <type>
      */
 
-    public function sProcessStringContainingExpressionsHelper($src, $questionNum)
+    public function sProcessStringContainingExpressionsHelper($src, $questionNum, $staticReplacement=false)
     {
         // tokenize string by the {} pattern, properly dealing with strings in quotations, and escaped curly brace values
         $stringParts = $this->asSplitStringOnExpressions($src);
@@ -1940,7 +1943,7 @@ class ExpressionManager {
                 $prettyPrintParts[] = $this->GetPrettyPrintString();
                 $this->allVarsUsed = array_merge($this->allVarsUsed,$this->GetVarsUsed());
 
-                if (count($jsVarsUsed) > 0)
+                if (count($jsVarsUsed) > 0 && !$staticReplacement)
                 {
                     $idName = "LEMtailor_Q_" . $questionNum . "_" . $this->substitutionNum;
 //                    $resolvedParts[] = "<span id='" . $idName . "'>" . htmlspecialchars($resolvedPart,ENT_QUOTES,'UTF-8',false) . "</span>"; // TODO - encode within SPAN?
