@@ -521,7 +521,7 @@ require_once("qanda.php");
 
 //Iterate through the questions about to be displayed:
 $inputnames=array();
-
+if (isset($_SESSION['grouplist']))
 foreach ($_SESSION['grouplist'] as $gl)
 {
     $gid = $gl[0];
@@ -721,7 +721,7 @@ if (isset($showpopups) && $showpopups == 0 && isset($filenotvalidated) && $filen
 {
     echo "<p><span class='errormandatory'>" . $clang->gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</span></p>";
 }
-
+if (isset($_SESSION['grouplist']))
 foreach ($_SESSION['grouplist'] as $gl)
 {
     $gid=$gl[0];
