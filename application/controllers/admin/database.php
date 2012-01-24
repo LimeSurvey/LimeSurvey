@@ -331,7 +331,7 @@ class database extends Survey_Common_Action
                             if (!isset($insertqid[$position]))
                             {
                                 Questions::model()-> insertRecords(array('sid'=>$surveyid, 'gid'=>$gid, 'question_order'=>$position+1,'title'=>$codes[$scale_id][$position],'question'=>$subquestionvalue,'parent_qid'=>$qid,'language'=>$language,'scale_id'=>$scale_id));
-                                $insertqid[$position]=$this->db->insert_id();
+                                $insertqid[$position]=Yii::app()->db->getLastInsertID();
                             }
                             else
                             {
