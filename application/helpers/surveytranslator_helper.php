@@ -1,4 +1,5 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+    if ( ! defined('BASEPATH')) exit('No direct script access allowed');
     /*
     * LimeSurvey
     * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -17,8 +18,8 @@
     /*
     * Internationalization and Localization utilities
     *
-    * @package Classes
-    * @subpackage Core
+    * @package LimeSurvey
+    * @subpackage Helpers
     */
 
 
@@ -59,14 +60,14 @@
 
     }
 
-    function getLanguageData($orderbynative=false,$sLanguageCode='en') {
+    function getLanguageData($bOrderByNative=false,$sLanguageCode='en') {
 
         $clang = new Limesurvey_lang($sLanguageCode);
 
         static $supportedLanguages;
         static $result = array();
 
-        if (isset($result[$orderbynative])) return $result[$orderbynative];
+        if (isset($result[$bOrderByNative])) return $result[$bOrderByNative];
 
         if (!isset($supportedLanguages)) {
             // Albanian
@@ -484,16 +485,16 @@
             $supportedLanguages['vi']['radixpoint'] = 1;
         }
 
-        if ($orderbynative)
+        if ($bOrderByNative)
         {
-            uasort($supportedLanguages,"user_sort_native");
+            uasort($supportedLanguages,"userSortNative");
         }
         else
         {
-            uasort($supportedLanguages,"user_sort");
+            uasort($supportedLanguages,"userSort");
         }
 
-        $result[$orderbynative] = $supportedLanguages;
+        $result[$bOrderByNative] = $supportedLanguages;
 
         Return $supportedLanguages;
     }
@@ -505,7 +506,6 @@
     *
     *  @param int $format Format ID/Number [optional]
     */
-
     function getRadixPointData($format=-1)
     {
         $clang = Yii::app()->lang;
@@ -533,7 +533,7 @@
     * @returns string
     *
     */
-    function sPhpdateFromDateformat($sDateformat)
+    function getPHPDateFromDateFormat($sDateformat)
     {
         // Note that order is relevant (longer strings first)
         $aFmts = array(
@@ -590,7 +590,7 @@
     * @returns string
     *
     */
-    function sJsdateFromDateformat($sDateformat)
+    function getJSDateFromDateFormat($sDateformat)
     {
         // The only difference from dateformat is that Jsdate does not support truncated years
         return str_replace("yyyy", "yy", $sDateformat);
@@ -605,20 +605,20 @@
     * @returns array
     *
     */
-    function aGetDateFormatDataForQid($aQidAttributes, $mThisSurvey)
+    function getDateFormatDataForQID($aQidAttributes, $mThisSurvey)
     {
         if (trim($aQidAttributes['date_format'])!='')
         {
             $aDateFormatDetails = array();
             $aDateFormatDetails['dateformat'] = trim($aQidAttributes['date_format']);
-            $aDateFormatDetails['phpdate'] = sPhpdateFromDateformat($aDateFormatDetails['dateformat']);
-            $aDateFormatDetails['jsdate'] = sJsdateFromDateformat($aDateFormatDetails['dateformat']);
+            $aDateFormatDetails['phpdate'] = getPHPDateFromDateFormat($aDateFormatDetails['dateformat']);
+            $aDateFormatDetails['jsdate'] = getJSDateFromDateFormat($aDateFormatDetails['dateformat']);
         }
         else
         {
             if(!is_array($mThisSurvey))
             {
-                $mThisSurvey = array('surveyls_dateformat' => aGetDateFormatForSid($mThisSurvey));
+                $mThisSurvey = array('surveyls_dateformat' => getDateFormatForSID($mThisSurvey));
             }
             $aDateFormatDetails = getDateFormatData($mThisSurvey['surveyls_dateformat']);
         }
@@ -634,7 +634,7 @@
     * @returns integer
     *
     */
-    function aGetDateFormatForSid($surveyid, $languagecode='')
+    function getDateFormatForSID($surveyid, $languagecode='')
     {
         if (!isset($languagecode) || $languagecode=='')
         {
@@ -659,7 +659,7 @@
     * @returns integer
     *
     */
-    function bCanShowDatePicker($dateformatdetails, $dateformats=null)
+    function canShowDatePicker($dateformatdetails, $dateformats=null)
     {
         if(is_null($dateformats))
         {
@@ -744,8 +744,8 @@
         }
     }
 
-    function getLanguageDataRestricted($orderbynative=false) {
-        $aLanguageData=getLanguageData($orderbynative);
+    function getLanguageDataRestricted($bOrderByNative=false) {
+        $aLanguageData=getLanguageData($bOrderByNative);
 
         if (trim(Yii::app()->getConfig('restrictToLanguages'))!='')
         {
@@ -760,7 +760,8 @@
         return $aArray;
     }
 
-    function user_sort($a, $b) {
+
+    function userSort($a, $b) {
 
         // smarts is all-important, so sort it first
         if($a['description'] >$b['description']) {
@@ -771,7 +772,8 @@
         }
     }
 
-    function user_sort_native($a, $b) {
+
+    function userSortNative($a, $b) {
 
         // smarts is all-important, so sort it first
         if($a['nativedescription'] >$b['nativedescription']) {
@@ -783,27 +785,17 @@
     }
 
 
-    /*    // future languages
-    // Afrikaans
-    $supportedLanguages['za']['nativedescription'] = 'Afrikaans';
-    // Irish
-    $supportedLanguages['ie']['nativedescription'] = 'Gaeilge';
-    // Serbian
-    $supportedLanguages['yu']['nativedescription'] = 'Srpski';
-    */
-
-
     /**
     * This function  support the ability NOT to reverse numbers (for example when you output
     * a phrase as a parameter for a SWF file that can't handle RTL languages itself, but
     * obviously any numbers should remain the same as in the original phrase).
-    *  Note that it can be used just as well for UTF-8 usages if you want the numbers to remain intact
+    * Note that it can be used just as well for UTF-8 usages if you want the numbers to remain intact
     *
     * @param string $str
     * @param boolean $reverse_numbers
     * @return string
     */
-    function utf8_strrev($str, $reverse_numbers=false) {
+    function UTF8Strrev($str, $reverse_numbers=false) {
         preg_match_all('/./us', $str, $ar);
         if ($reverse_numbers)
             return join('',array_reverse($ar[0]));

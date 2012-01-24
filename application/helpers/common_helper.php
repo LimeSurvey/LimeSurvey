@@ -1762,7 +1762,7 @@ function getExtendedAnswer($surveyid, $action, $fieldcode, $value, $format='')
             case 'D': if (trim($value)!='')
                 {
                     $qidattributes = getQuestionAttributeValues($fields['qid']);
-                    $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $surveyid);
+                    $dateformatdetails = getDateFormatDataForQID($qidattributes, $surveyid);
                     $value=convertDateTimeFormat($value,"Y-m-d H:i:s",$dateformatdetails['phpdate']);
                 }
                 break;
@@ -2850,7 +2850,7 @@ function buildLabelSetCheckSumArray()
 /**
 * Returns a flat array with all question attributes for the question only (and the qid we gave it)!
 * @param $iQID The question ID
-* @return array{attribute=>value, attribute=>value} or false if the question ID does not exist (anymore)
+* @return array$bOrderByNative=>value, attribute=>value} or false if the question ID does not exist (anymore)
 */
 function getQuestionAttributeValues($iQID)
 {

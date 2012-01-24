@@ -13,52 +13,6 @@
 *	$Id$
 */
 
-/*
-* We need this later:
-*  1 - Array Dual Scale
-*  5 - 5 Point Choice
-*  A - Array (5 Point Choice)
-*  B - Array (10 Point Choice)
-*  C - Array (Yes/No/Uncertain)
-*  D - Date
-*  E - Array (Increase, Same, Decrease)
-*  F - Array
-*  G - Gender
-*  H - Array by column
-*  I - Language Switch
-*  K - Multiple Numerical Input
-*  L - List (Radio)
-*  M - Multiple choice
-*  N - Numerical Input
-*  O - List With Comment
-*  P - Multiple choice with comments
-*  Q - Multiple Short Text
-*  R - Ranking
-*  S - Short Free Text
-*  T - Long Free Text
-*  U - Huge Free Text
-*  X - Boilerplate Question
-*  Y - Yes/No
-*  ! - List (Dropdown)
-*  : - Array multiple drop down
-*  ; - Array multiple texts
-*  | - File Upload
-
-
-Debugging help:
-echo '<script language="javascript" type="text/javascript">alert("HI");</script>';
-*/
-
-//split up results to extend statistics -> NOT WORKING YET! DO NOT ENABLE THIS!
-//$showcombinedresults = 0;
-
-
-
-
-
-//don't call this script directly!
-if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
-
 
 /**
 *
@@ -276,6 +230,7 @@ function createChart($qid, $sid, $type, $lbl, $gdata, $grawdata, $cache)
     return $cachefilename;
 }
 
+
 /**
 * Return data to populate a Google Map
 * @param string$sField    Field name
@@ -299,6 +254,7 @@ function getQuestionMapData($sField, $qsid)
     }
     return $d;
 }
+
 
 /**
 * Generates statistics
@@ -2567,7 +2523,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                         //edit labels and put them into antoher array
                         $lbl[] = wordwrap(flattenText("$al[1] ($row[0])"), 25, "\n"); // NMO 2009-03-24
-                        $lblrtl[] = utf8_strrev(wordwrap(flattenText("$al[1] )$row[0]("), 25, "\n")); // NMO 2009-03-24
+                        $lblrtl[] = UTF8Strrev(wordwrap(flattenText("$al[1] )$row[0]("), 25, "\n")); // NMO 2009-03-24
 
                     }	//end while -> loop through results
 
@@ -3446,9 +3402,12 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
 }
 
-////XXXXXX***//
 
-//simple function to square a value
+/**
+* Simple function to square a value
+*
+* @param mixed $number Value to square
+*/
 function square($number)
 {
     if($number == 0)
@@ -3459,7 +3418,6 @@ function square($number)
     {
         $squarenumber = $number * $number;
     }
-
     return $squarenumber;
 }
 

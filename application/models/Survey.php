@@ -40,18 +40,18 @@ class Survey extends CActiveRecord
         return 'sid';
     }
 
-	/**
-	 * Returns the static model of Settings table
-	 *
-	 * @static
-	 * @access public
-     * @param string $class
-	 * @return CActiveRecord
-	 */
-	public static function model($class = __CLASS__)
-	{
-		return parent::model($class);
-	}
+    /**
+    * Returns the static model of Settings table
+    *
+    * @static
+    * @access public
+    * @param string $class
+    * @return CActiveRecord
+    */
+    public static function model($class = __CLASS__)
+    {
+        return parent::model($class);
+    }
 
     /**
     * Returns this model's relations
@@ -120,11 +120,11 @@ class Survey extends CActiveRecord
     }
 
     /**
-     * Returns the additional token attributes
-     *
-     * @access public
-     * @return array
-     */
+    * Returns the additional token attributes
+    *
+    * @access public
+    * @return array
+    */
     public function getTokenAttributes()
     {
         // !!! Legacy records support
@@ -139,13 +139,13 @@ class Survey extends CActiveRecord
                     $fieldname = substr($attdescription, 0, strpos($attdescription, '='));
                     $desc = substr($attdescription, strpos($attdescription, '=') + 1);
                     $fields[$fieldname] = array(
-                        'description' => $desc,
-                        'mandatory' => 'N',
-                        'show_register' => 'N',
+                    'description' => $desc,
+                    'mandatory' => 'N',
+                    'show_register' => 'N',
                     );
                     $languagesettings[$fieldname] = $desc;
                 }
-            $ls = Surveys_languagesettings::model()->findByAttributes(array('surveyls_survey_id' => $this->sid, 'surveyls_language' => $this->language));
+                $ls = Surveys_languagesettings::model()->findByAttributes(array('surveyls_survey_id' => $this->sid, 'surveyls_language' => $this->language));
             self::model()->updateByPk($this->sid, array('attributedescriptions' => serialize($fields)));
             $ls->surveyls_attributecaptions = serialize($languagesettings);
             $ls->save();
@@ -184,34 +184,34 @@ class Survey extends CActiveRecord
         if (isset($data['expires']) && trim($data['expires']) == '')
             $data['expires'] = null;
 
-		if($xssfiltering)
-		{
-			$filter = new CHtmlPurifier();
-			$filter->options = array('URI.AllowedSchemes'=>array(
-  				'http' => true,
-  				'https' => true,
-			));
-			$data["admin"] = $filter->purify($data["admin"]);
-			$data["adminemail"] = $filter->purify($data["adminemail"]);
-			$data["bounce_email"] = $filter->purify($data["bounce_email"]);
-			$data["faxto"] = $filter->purify($data["faxto"]);
-		}
+        if($xssfiltering)
+        {
+            $filter = new CHtmlPurifier();
+            $filter->options = array('URI.AllowedSchemes'=>array(
+            'http' => true,
+            'https' => true,
+            ));
+            $data["admin"] = $filter->purify($data["admin"]);
+            $data["adminemail"] = $filter->purify($data["adminemail"]);
+            $data["bounce_email"] = $filter->purify($data["bounce_email"]);
+            $data["faxto"] = $filter->purify($data["faxto"]);
+        }
 
         $survey = new self;
-		foreach ($data as $k => $v)
-			$survey->$k = $v;
-		$survey->save();
+        foreach ($data as $k => $v)
+            $survey->$k = $v;
+        $survey->save();
         return $data['sid'];
     }
 
     /**
-     * Deletes a survey and all its data
-     *
-     * @access public
-     * @param int $iSurveyID
-     * @param bool @recursive
-     * @return void
-     */
+    * Deletes a survey and all its data
+    *
+    * @access public
+    * @param int $iSurveyID
+    * @param bool @recursive
+    * @return void
+    */
     public function deleteSurvey($iSurveyID, $recursive=true)
     {
         Survey::model()->deleteByPk($iSurveyID);

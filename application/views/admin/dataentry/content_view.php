@@ -35,8 +35,8 @@
             <?php break;
             case "D": //DATE
                 //                            $qidattributes = getQuestionAttributeValues($deqrow['qid'], $deqrow['type']);
-                $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
-                if(bCanShowDatePicker($dateformatdetails))
+                $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
+                if(canShowDatePicker($dateformatdetails))
                 {
                     $goodchars = str_replace( array("m","d","y", "H", "M"), "", $dateformatdetails['dateformat']);
                     $goodchars = "0123456789".$goodchars[0]; ?>

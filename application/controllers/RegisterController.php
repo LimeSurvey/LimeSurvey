@@ -1,59 +1,51 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
- * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- *	$Id$
- */
+* LimeSurvey
+* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*	$Id$
+*/
 
- /**
-  * register
-  *
-  * @package LimeSurvey
-  * @copyright 2011
-  * @version $Id$
-  * @access public
-  */
- class RegisterController extends LSYii_Controller {
+/**
+* register
+*
+* @package LimeSurvey
+* @copyright 2011
+* @version $Id$
+* @access public
+*/
+class RegisterController extends LSYii_Controller {
 
-    function actionAjaxregisterform($surveyid)
+    function actionAJAXRegisterForm
+    ($surveyid)
     {
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('replacements');
         $redata = compact(array_keys(get_defined_vars()));
         $thistpl = Yii::app()->getConfig("standardtemplaterootdir").'/default';
         $surveyid = sanitize_int($surveyid);
-        $squery = "SELECT a.expires, a.startdate
-                      FROM {{surveys}} AS a
-                      WHERE a.sid = $surveyid ";
-
-
-        $sresult = dbExecuteAssoc($squery) or show_error("Couldn't execute $squery");
-
-
-        $row = $sresult->read();
-
+        $row = Survey::model()->find('sid=:sid',array(':sid' => $surveyid)) or show_error("Can't find survey data");
         $data['sid'] = $surveyid;
-        $data['startdate'] = $row['startdate'];
-        $data['enddate'] = $row['expires'];
+        $data['startdate'] = $row->startdate;
+        $data['enddate'] = $row->expires;
         Yii::import('application.libraries.Limesurvey_lang');
-		Yii::app()->lang = new Limesurvey_lang($baselang);
+        Yii::app()->lang = new Limesurvey_lang($baselang);
         echo templatereplace(file_get_contents("$thistpl/register.pstpl"),array(),$redata,'register.php',false,NULL,$data);
 
     }
 
     /**
-     * register::index()
-     * Process register form data and take appropriate action
-     * @return
-     */
+    * register::index()
+    * Process register form data and take appropriate action
+    * @return
+    */
     function actionIndex($surveyid = null)
     {
         Yii::app()->loadHelper('database');
@@ -81,18 +73,18 @@
             Yii::app()->setSessionName("LimeSurveyRuntime-$surveyid");
         }
 
-		Yii::app()->session->setCookieParams(array(0, Yii::app()->getConfig('relativeurl').'/'));
+        Yii::app()->session->setCookieParams(array(0, Yii::app()->getConfig('relativeurl').'/'));
 
         // Get passed language from form, so that we dont loose this!
         if (!isset($postlang) || $postlang == "" || !$postlang )
         {
             $baselang = Survey::model()->findByPk($surveyid)->language;
             Yii::import('application.libraries.Limesurvey_lang');
-			Yii::app()->lang = new Limesurvey_lang($baselang);
+            Yii::app()->lang = new Limesurvey_lang($baselang);
             $clang = Yii::app()->lang;
         } else {
             Yii::import('application.libraries.Limesurvey_lang');
-			Yii::app()->lang = new Limesurvey_lang($postlang);
+            Yii::app()->lang = new Limesurvey_lang($postlang);
             $clang = Yii::app()->lang;
             $baselang = $postlang;
         }
@@ -148,22 +140,22 @@
 
         $mayinsert = false;
 
-    	// Get the survey settings for token length
-    	//$this->load->model("surveys_model");
-    	$tlresult = Survey::model()->findAllByAttributes(array("sid"=>$surveyid));
-    	if (isset($tlresult[0])) {
-    		$tlrow = $tlresult[0];
-    	}
-    	else
-    	{
-    		$tlrow = $tlresult;
-    	}
-    	$tokenlength = $tlrow['tokenlength'];
-    	//if tokenlength is not set or there are other problems use the default value (15)
-    	if(!isset($tokenlength) || $tokenlength == '')
-    	{
-    		$tokenlength = 15;
-    	}
+        // Get the survey settings for token length
+        //$this->load->model("surveys_model");
+        $tlresult = Survey::model()->findAllByAttributes(array("sid"=>$surveyid));
+        if (isset($tlresult[0])) {
+            $tlrow = $tlresult[0];
+        }
+        else
+        {
+            $tlrow = $tlresult;
+        }
+        $tokenlength = $tlrow['tokenlength'];
+        //if tokenlength is not set or there are other problems use the default value (15)
+        if(!isset($tokenlength) || $tokenlength == '')
+        {
+            $tokenlength = 15;
+        }
 
         while ($mayinsert != true)
         {
@@ -178,7 +170,7 @@
         $starttime = sanitize_xss_string(Yii::app()->request->getPost('startdate'));
         $endtime = sanitize_xss_string(Yii::app()->request->getPost('enddate'));
         /*$postattribute1=sanitize_xss_string(strip_tags(returnGlobal('register_attribute1')));
-         $postattribute2=sanitize_xss_string(strip_tags(returnGlobal('register_attribute2')));   */
+        $postattribute2=sanitize_xss_string(strip_tags(returnGlobal('register_attribute2')));   */
 
         // Insert new entry into tokens db
         Tokens_dynamic::sid($thissurvey['sid']);
@@ -201,7 +193,7 @@
         $result = $connect->Execute($query, array($postfirstname,
         $postlastname,
         returnGlobal('register_email'),
-                                                  'OK',
+        'OK',
         $newtoken)
 
         //                             $postattribute1,   $postattribute2)
@@ -246,7 +238,7 @@
         $subject=ReplaceFields($subject, $fieldsarray);
 
         $html = ""; //Set variable
-		$sitename =  Yii::app()->getConfig('sitename');
+        $sitename =  Yii::app()->getConfig('sitename');
 
         if (SendEmailMessage($message, $subject, Yii::app()->request->getPost('register_email'), $from, $sitename,$useHtmlEmail,getBounceEmail($surveyid)))
         {
@@ -276,7 +268,7 @@
 
         sendCacheHeaders();
         doHeader();
-		Yii::app()->lang = $clang;
+        Yii::app()->lang = $clang;
         foreach(file("$thistpl/startpage.pstpl") as $op)
         {
             echo templatereplace($op);
@@ -293,4 +285,4 @@
         doFooter();
     }
 
- }
+}

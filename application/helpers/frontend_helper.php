@@ -950,7 +950,7 @@ function aCheckInput($surveyid, $move,$backok=null)
                     {
                         // $_SESSION['survey_'.$surveyid][$fieldinfo['fieldname']] now contains the crappy value parsed by
                         // Date_Time_Converter in save.php. We can leave it there. We just do validation here.
-                        $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
+                        $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                         $datetimeobj = DateTime::createFromFormat($dateformatdetails['phpdate'], $_POST[$field]);
                         if(!$datetimeobj)
                         {

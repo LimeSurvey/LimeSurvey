@@ -12,7 +12,7 @@
  *
  *	$Id$
  */
-$config['versionnumber'] = "2.0yii_alpha";
+$config['versionnumber'] = "2.0a2";
 $config['dbversionnumber'] = 155;
 $config['buildnumber'] = '';
 

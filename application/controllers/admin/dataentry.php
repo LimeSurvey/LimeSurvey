@@ -682,7 +682,7 @@ class dataentry extends Survey_Common_Action
                             break;
                         case "D": //DATE
                             $thisdate='';
-                            $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $surveyid)
+                            $dateformatdetails = getDateFormatDataForQID($qidattributes, $surveyid)
                             ;
                             if ($idrow[$fname['fieldname']]!='')
                             {
@@ -693,7 +693,7 @@ class dataentry extends Survey_Common_Action
                                 $thisdate = '';
                             }
 
-                            if(bCanShowDatePicker($dateformatdetails))
+                            if(canShowDatePicker($dateformatdetails))
                             {
                                 $goodchars = str_replace( array("m","d","y", "H", "M"), "", $dateformatdetails['dateformat']);
                                 $goodchars = "0123456789".$goodchars[0];
@@ -1508,7 +1508,7 @@ class dataentry extends Survey_Common_Action
                     else
                     {
                         $qidattributes = getQuestionAttributeValues($irow['qid'], $irow['type']);
-                        $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
+                        $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
 
                         $items = array($thisvalue,$dateformatdetails['phpdate']);
                         $this->getController()->loadLibrary('Date_Time_Converter');
@@ -1775,7 +1775,7 @@ class dataentry extends Survey_Common_Action
                             {
                                 Yii::app()->loadLibrary('Date_Time_Converter');
                                 $qidattributes = getQuestionAttributeValues($irow['qid'], $irow['type']);
-                                $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
+                                $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                                 $datetimeobj = new Date_Time_Converter($_POST[$fieldname],$dateformatdetails['phpdate']);
                                 $insert_data[$fieldname] = $datetimeobj->convert("Y-m-d H:i:s");
                             }
