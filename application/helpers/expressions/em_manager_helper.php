@@ -2190,7 +2190,7 @@ class LimeExpressionManager {
      * @return <type> - the original $string with all replacements done.
      */
 
-    static function ProcessString($string, $questionNum=NULL, $replacementFields=array(), $debug=false, $numRecursionLevels=1, $whichPrettyPrintIteration=1, $noReplacements=false, $timeit=true)
+    static function ProcessString($string, $questionNum=NULL, $replacementFields=array(), $debug=false, $numRecursionLevels=1, $whichPrettyPrintIteration=1, $noReplacements=false, $timeit=true, $staticReplacement=false)
     {
         $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
@@ -2221,7 +2221,7 @@ class LimeExpressionManager {
         }
         $stringToParse = $string;   // decode called later htmlspecialchars_decode($string,ENT_QUOTES);
         $qnum = is_null($questionNum) ? 0 : $questionNum;
-        $result = $LEM->em->sProcessStringContainingExpressions($stringToParse,$qnum, $numRecursionLevels, $whichPrettyPrintIteration, $groupSeq, $questionSeq);
+        $result = $LEM->em->sProcessStringContainingExpressions($stringToParse,$qnum, $numRecursionLevels, $whichPrettyPrintIteration, $groupSeq, $questionSeq, $staticReplacement);
         $hasErrors = $LEM->em->HasErrors();
         if ($hasErrors && (($LEM->debugLevel & LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB) == LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB)) {
             $error = array(
@@ -4175,7 +4175,9 @@ class LimeExpressionManager {
         foreach ($sgqas as $sgqa)
         {
             if (!is_null($LEM->knownVars[$sgqa]['default']) && !isset($_SESSION[$sgqa])) {
-                $_SESSION[$sgqa] = $LEM->knownVars[$sgqa]['default'];
+                // add support for replacements
+                $defaultVal = $LEM->ProcessString($LEM->knownVars[$sgqa]['default'], NULL, NULL, false, 1, 1, false, false, true);
+                $_SESSION[$sgqa] = $defaultVal;
             }
         }
 

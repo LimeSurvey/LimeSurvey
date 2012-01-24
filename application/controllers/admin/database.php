@@ -112,6 +112,16 @@ class database extends Survey_Common_Action
                     }
                 }
             }
+            if ($qtproperties[$questiontype]['answerscales']==0 && $qtproperties[$questiontype]['subquestions']==0)
+            {
+                foreach ($questlangs as $language)
+                {
+                    if (Yii::app()->request->getPost($_POST['defaultanswerscale_0_'.$language.'_0']))
+                    {
+                       $this->_updateDefaultValues($postqid,0,0,'',$language,Yii::app()->request->getPost['defaultanswerscale_0_'.$language.'_0'],true);
+                    }
+                }
+            }
             Yii::app()->session['flashmessage'] = $clang->gT("Default value settings were successfully saved.");
             LimeExpressionManager::SetDirtyFlag();
 

@@ -78,8 +78,24 @@
 ?>
                     <ul>
 <?php
-                foreach ($opts['sqresult'] as $aSubquestion)
+                switch($questionrow['type'])
                 {
+                    case 'L':
+                    case 'M':
+                    case 'O':
+                    case 'P':
+                    case '!':
+                        $inputStyle='enum';
+                        break;
+                    case 'K':
+                    case 'Q':
+                        $inputStyle='text';
+                        break;
+                }
+                if ($inputStyle == 'enum')
+                {
+                    foreach ($opts['sqresult'] as $aSubquestion)
+                    {
 ?>
                         <li>
                             <label for='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
@@ -88,21 +104,57 @@
                             <select name='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'
                                     id='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
 <?php
-                    foreach ($aSubquestion['options'] as $value => $label)
-                    {
+                        foreach ($aSubquestion['options'] as $value => $label)
+                        {
 ?>
                                 <option value="<?php echo $value ?>"<?php $value == $aSubquestion['defaultvalue'] ? ' selected="selected"' : '' ?>><?php echo $label ?></option>
 <?php
-                    }
+                        }
 ?>
                             </select>
                         </li>
 <?php
+                    }
+                }
+                if ($inputStyle == 'text')
+                {
+                    foreach ($opts['sqresult'] as $aSubquestion)
+                    {
+                        ?>
+                        <li>
+                            <label for='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
+                                   <?php echo "{$aSubquestion['title']}: " . flattenText($aSubquestion['question']) ?>
+                            </label>
+                            <textarea cols='50' name='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'
+                                    id='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
+                                <?php echo $aSubquestion['defaultvalue'] ?>
+                            </textarea>
+                        </li>
+<?php
+                    }
                 }
 ?>
                     </ul>
 <?php
             }
+        }
+        if ($qtproperties[$questionrow['type']]['answerscales']==0 && $qtproperties[$questionrow['type']]['subquestions']==0)
+        {
+            /*
+                    case 'D':
+                    case 'N':
+                    case 'S':
+                    case 'T':
+                    case 'U':*
+             */
+?>
+                    <li>
+                        <textarea cols='50' name='defaultanswerscale_<?php echo "0_{$language}_0" ?>'
+                                id='defaultanswerscale_<?php echo "0_{$language}_0" ?>'>
+                            <?php echo "TODO - not sure how to access the default value" ?>
+                        </textarea>           
+                    </li>
+<?php
         }
 
         if ($language == $baselang && count($questlangs) > 1)
