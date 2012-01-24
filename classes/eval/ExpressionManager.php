@@ -1063,6 +1063,36 @@ class ExpressionManager {
     }
 
     /**
+     * Return the list of all of the JavaScript variables used by the most recent expression - only those that are set on the current page
+     * This is used to control static vs dynamic substitution.  If an expression is entirely made up of off-page changes, it can be statically replaced.
+     * @return <type>
+     */
+    public function GetOnPageJsVarsUsed()
+    {
+        if (is_null($this->varsUsed)){
+            return array();
+        }
+        if ($this->allOnOnePage)
+        {
+            return GetJsVarsUsed();
+        }
+        $names = array_unique($this->varsUsed);
+        if (is_null($names)) {
+            return array();
+        }
+        $jsNames = array();
+        foreach ($names as $name)
+        {
+            $val = $this->GetVarAttribute($name,'jsName','');
+            $gseq = $this->GetVarAttribute($name,'gseq','');
+            if ($val != '' && $gseq == $this->groupSeq) {
+                $jsNames[] = $val;
+            }
+        }
+        return array_unique($jsNames);
+    }
+
+    /**
      * Return the list of all of the JavaScript variables used by the most recent expression
      * @return <type>
      */
@@ -1928,11 +1958,12 @@ class ExpressionManager {
                     $resolvedPart = $this->GetPrettyPrintString();
                     $allErrors[] = $this->GetErrors();
                 }
+                $onpageJsVarsUsed = $this->GetOnPageJsVarsUsed();
                 $jsVarsUsed = $this->GetJsVarsUsed();
                 $prettyPrintParts[] = $this->GetPrettyPrintString();
                 $this->allVarsUsed = array_merge($this->allVarsUsed,$this->GetVarsUsed());
 
-                if (count($jsVarsUsed) > 0 && !$staticReplacement)
+                if (count($onpageJsVarsUsed) > 0 && !$staticReplacement)
                 {
                     $idName = "LEMtailor_Q_" . $questionNum . "_" . $this->substitutionNum;
 //                    $resolvedParts[] = "<span id='" . $idName . "'>" . htmlspecialchars($resolvedPart,ENT_QUOTES,'UTF-8',false) . "</span>"; // TODO - encode within SPAN?
@@ -1944,7 +1975,7 @@ class ExpressionManager {
                         'id' => $idName,
                         'raw' => $stringPart[0],
                         'result' => $resolvedPart,
-                        'vars' => implode('|',$this->GetJsVarsUsed()),
+                        'vars' => implode('|',$jsVarsUsed),
                         'js' => $this->GetJavaScriptFunctionForReplacement($questionNum, $idName, substr($stringPart[0],1,-1)),
                     );
                 }
