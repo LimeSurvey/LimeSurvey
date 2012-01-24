@@ -29,7 +29,7 @@ function CheckForDBUpgrades($subaction = null)
         if(isset($subaction) && $subaction=="yes")
         {
             echo Yii::app()->getController()->_getAdminHeader();
-        	echo "<div style='width:90%; padding:1% 10%;background-color:#eee;'>";
+        	echo "<div style='width:90%; padding:1% 5%;background-color:#eee;'>";
             $upgradedbtype=Yii::app()->db->getDriverName();
             if ($upgradedbtype=='mysqli') $upgradedbtype='mysql';
             Yii::app()->loadHelper('update/upgrade-'.$upgradedbtype);

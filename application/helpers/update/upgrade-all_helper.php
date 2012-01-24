@@ -64,21 +64,21 @@ function db_upgrade_all($oldversion) {
             'targetqid' => 'INT NULL',
             'targetsqid' => 'INT NULL'
         );
-        Yii::app()->db->schema->createTable('{{survey_url_parameters}}',$fields);
+        Yii::app()->db->createCommand()->createTable('{{survey_url_parameters}}',$fields);
     }
     if ($oldversion < 150)
     {
         $fields = array(
             'relevance' => 'TEXT'
         );
-        Yii::app()->db->schema->addColumn('{{questions}}','relevance','TEXT');
+        Yii::app()->db->createCommand()->addColumn('{{questions}}','relevance','TEXT');
     }
     if ($oldversion < 151)
     {
         $fields = array(
             'randomization_group' => 'VARCHAR(20) NOT NULL default \'\''
         );
-        Yii::app()->db->schema->addColumn('{{groups}}','randomization_group','VARCHAR(20) NOT NULL default \'\'');
+        Yii::app()->db->createCommand()->addColumn('{{groups}}','randomization_group','VARCHAR(20) NOT NULL default \'\'');
     }
     if ($oldversion < 152)
     {
@@ -99,11 +99,11 @@ function db_upgrade_all($oldversion) {
             'eqn' => 'TEXT',
             'prettyprint' => 'TEXT'
         );
-        Yii::app()->db->schema->createTable('{{expression_errors}}',$fields);
+        Yii::app()->db->createCommand()->createTable('{{expression_errors}}',$fields);
     }
 
     if ($oldversion < 155)
-        Yii::app()->db->createCommand(Yii::app()->db->schema->addColumn('{{surveys_languagesettings}}', 'surveyls_attributecaptions', "text NOT NULL default ''"))->execute();
+        Yii::app()->db->createCommand()->addColumn('{{surveys_languagesettings}}', 'surveyls_attributecaptions', "text NOT NULL default ''");
 }
 
 function upgrade_question_attributes148()
@@ -297,15 +297,12 @@ function upgrade_survey_table152()
 
         if (trim(strip_tags($aSurveyRow['surveyls_email_confirm'])) == '')
         {
-
 			$sSurveyUpdateQuery= "update {{surveys}} set sendconfirmation='N' where sid=".$aSurveyRow['surveyls_survey_id'];
             Yii::app()->db->createCommand($sSurveyUpdateQuery)->execute();
 
-			$sSurveyUpdateQuery= "update {{surveys_languagesettings}} set
-                                  surveyls_email_confirm_subj=".$aDefaultTexts['confirmation_subject'].",
-                                  surveyls_email_confirm=".$aDefaultTexts['confirmation']."
-                                  where surveyls_survey_id=".$aSurveyRow['surveyls_survey_id'];
-            Yii::app()->db->createCommand($sSurveyUpdateQuery)->execute();
+            $aValues=array('surveyls_email_confirm_subj'=>$aDefaultTexts['confirmation_subject'],
+                           'surveyls_email_confirm'=>$aDefaultTexts['confirmation']);
+            Surveys_languagesettings::model()->updateAll($aValues,'surveyls_survey_id=:sid',array(':sid'=>$aSurveyRow['surveyls_survey_id']));
         }
     }
 }
