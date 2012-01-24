@@ -1077,7 +1077,7 @@ textarea.updater-changelog {
 
 .form30newtabs li .warningtext,
 .form30 li .warningtext {
-	display: block;
+    display: block;
     margin: 3px 0 10px 30.5%;
     font-weight: bold;
     color: #EE0000;
@@ -1130,7 +1130,7 @@ textarea.updater-changelog {
 }
 
 .form30 ul.editor-parent {
-	min-width:1000px;
+    min-width:1000px;
 }
 
 #frmeditquestion li,
@@ -1464,10 +1464,10 @@ ol.organizer {
 }
 
 .textresponses {
-	text-align: center;
-	border: 1px solid #eee;
-	height: 200px;
-	overflow: auto;
+    text-align: center;
+    border: 1px solid #eee;
+    height: 200px;
+    overflow: auto;
 }
 
 .graphdisplay img {
@@ -1479,4 +1479,10 @@ ol.organizer {
     margin: auto;
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+#gview_displaysurveys th div{
+    white-space:normal;
+    height:auto;
+    font-size: 0.8em;
 }

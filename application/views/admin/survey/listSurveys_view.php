@@ -10,9 +10,9 @@
     var editUrl = "<?php echo $this->createUrl('/admin/survey/editSurvey_json'); ?>";
     var colNames = ["<?php $clang->eT("Status") ?>","<?php $clang->eT("SID") ?>","<?php $clang->eT("Survey") ?>","<?php $clang->eT("Date created") ?>","<?php $clang->eT("Owner") ?>","<?php $clang->eT("Access") ?>","<?php $clang->eT("Anonymized responses") ?>","<?php $clang->eT("Full") ?>","<?php $clang->eT("Partial") ?>","<?php $clang->eT("Total") ?>","<?php $clang->eT("Tokens available") ?>","<?php $clang->eT("Response rate") ?>"];
     var colModels = [{ "name":"status", "index":"status", "width":15, "align":"center", "sorttype":"string", "sortable": true, "editable":false},
-    { "name":"sid", "index":"sid", "sorttype":"int", "sortable": true, "width":25, "align":"center", "editable":false},
-    { "name":"survey", "index":"survey", "sorttype":"string", "sortable": true, "width":60, "align":"left", "editable":true},
-    { "name":"date_created", "index":"date_created", "sorttype":"string", "sortable": true,"width":40, "align":"center", "editable":false},
+    { "name":"sid", "index":"sid", "sorttype":"int", "sortable": true, "width":15, "align":"center", "editable":false},
+    { "name":"survey", "index":"survey", "sorttype":"string", "sortable": true, "width":100, "align":"left", "editable":true},
+    { "name":"date_created", "index":"date_created", "sorttype":"string", "sortable": true,"width":25, "align":"center", "editable":false},
     { "name":"owner", "index":"owner","align":"center","width":40, "sorttype":"string", "sortable": true, "editable":true},
     { "name":"access", "index":"access","align":"center","width":25,"sorttype":"string", "sortable": true, "editable":true, "edittype":"checkbox", "editoptions":{ "value":"Y:N"}},
     { "name":"anonymous", "index":"anonymous","align":"center", "sorttype":"string", "sortable": true,"width":25,"editable":true, "edittype":"checkbox", "editoptions":{ "value":"Y:N"}},

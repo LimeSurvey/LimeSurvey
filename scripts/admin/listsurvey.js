@@ -99,16 +99,17 @@ $(document).ready(function(){
         colModel: returnColModel(),
         toppager: true,
         height: "100%",
-        width: "100%",
+        width: screen.width-20,
+        shrinkToFit: true,
         rowNum: 25,
         editable:true,
         scrollOffset:0,
-        autowidth: true,
         sortable : true,
+        hidegrid : false,
         sortname: 'sid',
         sortorder: 'asc',
         viewrecords : true,
-        rowList: [25,50,100,250,500,1000,5000,10000],
+        rowList: [25,50,100,250,500,1000],
         multiselect: true,
         loadonce : true,
         pager: "#pager",
@@ -142,6 +143,5 @@ $(document).ready(function(){
             });
         }
     });
-    $('.ui-jqgrid .ui-jqgrid-htable th div').css('white-space', 'normal');
-    $('.ui-jqgrid .ui-jqgrid-htable th div').css('height', 'auto');
+
 });
