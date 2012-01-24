@@ -72,8 +72,8 @@
                         <?php }
                         if (Yii::app()->session['loginID'] == "1" && $usr['parent_id'] !=1 ) { ?>
 
-                        <form method='post' action='<?php echo $scriptname;?>'>
-                            <input type='submit' value='<?php $clang->eT("Take ownership");?>' />
+                        <form method='post' action='<?php echo $this->createUrl("admin/user/setasadminchild/");?>'>
+                            <input type='image' src='<?php echo $imageurl;?>/takeownership.png' alt='<?php $clang->eT("Take ownership");?>' />
                             <input type='hidden' name='action' value='setasadminchild' />
                             <input type='hidden' name='user' value='<?php echo $usr['user'];?>' />
                             <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
