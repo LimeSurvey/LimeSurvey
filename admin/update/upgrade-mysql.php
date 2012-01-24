@@ -700,6 +700,7 @@ function db_upgrade($oldversion) {
     if ($oldversion < 154)
     {
         modify_database("","ALTER TABLE `prefix_groups` ADD `grelevance` text DEFAULT NULL;"); echo $modifyoutput; flush();@ob_flush();
+        LimeExpressionManager::UpgradeConditionsToRelevance();
         modify_database("","update `prefix_settings_global` set `stg_value`='154' where stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
     }
     if ($oldversion < 155)
