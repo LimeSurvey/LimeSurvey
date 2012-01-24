@@ -144,6 +144,7 @@ class printanswers extends LSYii_Controller {
             {
                 $surveytable = "{{survey_{$actrow->sid}}}";
                 $surveyname = "{$actrow->surveyls_title}";
+                $anonymized = $actrow->anonymized;
             }
         }
 
@@ -216,6 +217,21 @@ class printanswers extends LSYii_Controller {
                 {
                     $printoutput .= "\t<tr class='printanswersquestionhead'><td  colspan='2'>{$fname[0]}</td></tr>\n";
                 }
+            }
+            elseif ($sFieldname=='submitdate')
+            {
+                if($anonymized != 'Y')
+                {
+                   if($printableexport == 'pdf')
+                   {
+                       $pdf->intopdf(flattenText($fname[0].$fname[1],false,true).": ".$fname[2]);
+                       $pdf->ln(2);
+                   }
+                   else
+                   {
+                       $printoutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]} {$sFieldname}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
+                   }
+	            }
             }
             else
             {
