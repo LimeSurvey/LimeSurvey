@@ -1822,11 +1822,6 @@ function questionGetXMLStructure($xml,$gid,$qid)
 
 function tokensExport($surveyid)
 {
-    header("Content-Disposition: attachment; filename=tokens_".$surveyid.".csv");
-    header("Content-type: text/comma-separated-values; charset=UTF-8");
-    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-    header("Pragma: cache");
-
     $bquery = "SELECT * FROM {{tokens_$surveyid}} where 1=1";
     $databasetype = Yii::app()->db->getDriverName();
     if (trim($_POST['filteremail'])!='')
@@ -1880,8 +1875,16 @@ function tokensExport($surveyid)
         $bquery .= " and language=".dbQuoteAll($_POST['tokenlanguage']);
     }
     $bquery .= " ORDER BY tid";
-
-    $bresult = Yii::app()->db->createCommand($bquery)->query();
+    Yii::app()->loadHelper('database');
+    
+    $bresult = Yii::app()->db->createCommand($bquery)->query(); //dbExecuteAssoc($bquery) is faster but deprecated!
+    
+    //HEADERS should be after the above query else timeout errors in case there are lots of tokens!
+    header("Content-Disposition: attachment; filename=tokens_".$surveyid.".csv");
+    header("Content-type: text/comma-separated-values; charset=UTF-8");
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    header("Pragma: cache");
+    
     $bfieldcount=$bresult->getRowCount();
     // Export UTF8 WITH BOM
     $tokenoutput = chr(hexdec('EF')).chr(hexdec('BB')).chr(hexdec('BF'));

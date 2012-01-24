@@ -1,4 +1,4 @@
-<div class='header ui-widget-header'><?php $clang->eT("Token export options"); ?></div>
+<div class='header ui-widget-header'><?php $clang->eT("Token export options"); ?></div><br />
 <form id='exportdialog' name='exportdialog' action='<?php echo $this->createUrl("admin/tokens/exportdialog/surveyid/$surveyid"); ?>' method='post'>
     <ul><li><label for='tokenstatus'><?php $clang->eT('Token status:'); ?></label><select id='tokenstatus' name='tokenstatus' >
                 <option selected='selected' value='0'><?php $clang->eT('All tokens'); ?></option>
