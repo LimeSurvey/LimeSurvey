@@ -53,6 +53,7 @@ class ExpressionManager {
     private $sid=NULL; // the survey ID
     private $rooturl='';    // the root URL for LimeSurvey
     private $hyperlinkSyntaxHighlighting=false;
+    private $sgqaNaming=false;
 
     function __construct()
     {
@@ -69,7 +70,7 @@ class ExpressionManager {
         $RDP_regex_binary = '[+*/-]';
         $RDP_regex_compare = '<=|<|>=|>|==|!=|\ble\b|\blt\b|\bge\b|\bgt\b|\beq\b|\bne\b';
         $RDP_regex_assign = '=|\+=|-=|\*=|/=';
-        $RDP_regex_sgqa = '(?:INSERTANS:)?[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[01]?(?:\.NAOK)?';
+        $RDP_regex_sgqa = '(?:INSERTANS:)?[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[01]?(?:\.(?:' . ExpressionManager::$RDP_regex_var_attr . '))?';
         $RDP_regex_word = '(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:' . ExpressionManager::$RDP_regex_var_attr . '))?';
         $RDP_regex_number = '[0-9]+\.?[0-9]*|\.[0-9]+';
         $RDP_regex_andor = '\band\b|\bor\b|&&|\|\|';
@@ -1499,7 +1500,20 @@ class ExpressionManager {
                             $stringParts[] = " onclick='window.open(\"" . $editlink . "\");'";
                         }
                         $stringParts[] = ">";
-                        $stringParts[] = $displayName;
+                        if ($this->sgqaNaming)
+                        {
+                            $sgqa = substr($jsName,4);
+                            $nameParts = explode('.',$displayName);
+                            if (count($nameParts)==2)
+                            {
+                                $sgqa .= '.' . $nameParts[1];
+                            }
+                            $stringParts[] = $sgqa;
+                        }
+                        else
+                        {
+                            $stringParts[] = $displayName;
+                        }
                         $stringParts[] = "</span>";
                     }
                     break;
