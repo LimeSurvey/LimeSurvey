@@ -192,12 +192,14 @@ function resetMap(qID) {
 	var name = question.substr(0,question.length - 2);
 	var coordinates = $('#question'+qID+' input.location').attr('value');
 	var xy = coordinates.split(" ");
-	var currentMap = gmaps[question];
-	var marker = gmaps['marker__'+question];
-	var markerLatLng = new google.maps.LatLng(xy[0],xy[1]);
-	marker.setPosition(markerLatLng);
-	google.maps.event.trigger(currentMap, 'resize')
-	currentMap.setCenter(markerLatLng);
+	if(gmaps[question]) {
+		var currentMap = gmaps[question];
+		var marker = gmaps['marker__'+question];
+		var markerLatLng = new google.maps.LatLng(xy[0],xy[1]);
+		marker.setPosition(markerLatLng);
+		google.maps.event.trigger(currentMap, 'resize')
+		currentMap.setCenter(markerLatLng);
+	}
 }
 
 // Reverse geocoder
