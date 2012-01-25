@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.92RC2!
+Welcome to LimeSurvey v1.92RC3!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -76,6 +76,61 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 11. Done.
 
 Thank you to everyone who helped with this new release!
+
+Changes from 1.92RC2 (build 12006) to 1.92RC3 (build 12203) Jan 25, 2012 
+#Updated feature: Added German translations to 1.91 sample survey. (maziminke)
+#Updated feature Browse of submitted responses now only shows relevant questions and answers. (tmswhite)
+#Updated feature Default values now available for the following question types: Date, Short/Long/Huge Text, Multiple ShortText, Multiple Numerical (tmswhite)
+#Updated feature Deprecated min_num_value_sgqa, max_num_value_sgqa, and num_value_equals_sgqa (tmswhite)
+#Updated feature array_filter - now also available for multiple_numeric and multiple_short_text (tmswhite)
+#Updated feature exclude_all_others - now also available for multiple_choice_with_comments (tmswhite)
+#Updated feature max_answers - now also available for all array types, multiple_numeric and multiple_short_text (tmswhite)
+#Updated feature max_num_value_n - now also available for multiple_numeric (tmswhite)
+#Updated feature min_answers - now also available for all array types, multiple_numeric and multiple_short_text (tmswhite)
+#Updated feature:  add many more unit tests to EM and group/sort them.  Contributed by GCi participant Aaron Schmitz (tmswhite)
+#Updated feature min_num_value_n - now also available for multiple_numeric (tmswhite)
+#Updated translation: French (b00z00)
+#Updated translation: German Informal (c_schmitz)
++New feature EM reserved word "this" which refers the the current sgqa code (tmswhite)
++New feature question_attribute 'em_validation_q': "Boolean equation to validate the whole question" (tmswhite)
++New feature question_attribute 'em_validation_q_tip': "Tip to show user describing the Question Validation Equation" (tmswhite)
++New feature question_attribute 'em_validation_sq': "Boolean equation to validate each sub-question." (tmswhite)
++New feature question_attribute 'em_validation_sq_tip': "Tip to show user describing the Sub-Question Validation Equation." (tmswhite)
+-Fixed issue: parse error in user statistics. (gautamgupta)
+-Fixed issue #05591: php warning if questions don't exist in selected language (ssachdeva)
+-Fixed issue #05660: Warning: usort() [function.usort]: Invalid comparison function (tmswhite)
+-Fixed issue #05661: Survey without welcome page cannot show first question group/page correctly (tmswhite)
+-Fixed issue #05669: Fatal Error: Undefined function set_answer_time() (tmswhite)
+-Fixed issue #05670: Blank answers in non-mandatory questions prevent forward movement if there are validation rules (tmswhite)
+-Fixed issue: Array Filters and tailoring sometimes not working in Question-by-Question mode (tmswhite)
+-Fixed issue: Question Preview errors - Help value is wrong; notice of undefined indexes aid and sqid (tmswhite)
+-Fixed issue: Show Logic File button does not show assessment values when called from admin menus (tmswhite)
+-Fixed issue #05585: Token export blocks database. (ssachdeva)
+-Fixed issue #05671: validation tips only appear when there are errors, and are not color-coded (tmswhite)
+-Fixed issue #05673: Wrong sum value with min/max_num_value in multiple numeric when being array_filtered (tmswhite)
+-Fixed issue #05674: Question preview does not include any javascript (tmswhite)
+-Fixed issue #05683: Javascript errors with array-numbers question (tmswhite)
+-Fixed issue #05686: Dynamic Image with Expression Manager (SPAN problem) (tmswhite)
+-Fixed issue #5628: SQL error after setting a filter in statistics and removing it again (c_schmitz)
+-Fixed issue #5662: Clicking the 'Browse' button in statistics to browser filtered data shows all reponses (c_schmitz)
+-Fixed issue #5676: Error when showing screenshot for question type Equation (c_schmitz)
+-Fixed issue #5678: usesleft field is not created by RemoteControl in tokens table (c_schmitz)
+-Fixed issue 05290: Export to R incorrectly changes results to factors for numeric input questions (adevries)
+-Fixed issue 05590: 1980-01-01 in printview (tpartner)
+-Fixed issue 05692: Google Maps do not reappear where field is has conditions (tpartner)
+-Fixed issue: EM syntax highlighting can generate <span> tags within <span> value attribute (e.g. bad HTML) when questions contain tailoring. (tmswhite)
+-Fixed issue: PHP versions of EM functions sprintf and trig (sin/cos/tan/etc.) not working (tmswhite)
+-Fixed issue: Print Answers showing some irrelevant questions (tmswhite)
+-Fixed issue: SQL error on load  (bug related to commit/revision 12152) (tmswhite)
+-Fixed issue: Unable to preview group without entering a token if there is a tokens table (tmswhite)
+-Fixed issue: Validation messages too verbose (tmswhite)
+-Fixed issue #05450: Question code can be empty when a space is entered (tmswhite)
+-Fixed issue: Answers not properly added for dual scale questions when adding a new language to the survey (c_schmitz)
+-Fixed issue: Conditions not properly converted to expressions on update from a previous version (c_schmitz)
+-Fixed issue: Missing sorting for groups/question in quick translate (c_schmitz)
+-Fixed issue #05684: EM overrides code in template.js (tmswhite)
+-Fixed issue: Switched DB fields for Google Analytics to lower case (c_schmitz)
+
 
 Changes from 1.92RC1 (build 11702) to 1.92RC2 (build 12006) Jan 12, 2012 
 +New Feature Added Tools button to access Expression Manager Test Suite (tmswhite)
