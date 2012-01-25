@@ -348,7 +348,7 @@ class dataentry extends Survey_Common_Action
 
                 $result = dbGetTablesLike("old\_survey\_%");
 
-                $optionElements_array = '';
+                $aOptionElements = array();
                 //$queryCheckColumnsActive = $schema->getTable($oldtable)->columnNames;
                 $resultActive = $schema->getTable("{{survey_{$surveyid}}}")->columnNames;
                 //$resultActive = dbExecuteAssoc($queryCheckColumnsActive) or show_error("Error:<br />$query<br />");
@@ -363,10 +363,11 @@ class dataentry extends Survey_Common_Action
 
                     if($countActive == count($resultOld)) //num_fields()
                     {
-                        $optionElements_array[$row[1]] = $row[1];
+                        $aOptionElements[$row[1]] = $row[1];
                     }
                 }
-                $aData['optionElements'] = CHtml::listOptions('', $optionElements_array, $optionElements_array);
+                $aHTMLOptions=array('empty'=>$clang->gT('Please select...'));
+                $aData['optionElements'] = CHtml::listOptions('', $aOptionElements, $aHTMLOptions);
 
                 //Get the menubar
                 $aData['display']['menu_bars']['browse'] = $clang->gT("Quick statistics");
