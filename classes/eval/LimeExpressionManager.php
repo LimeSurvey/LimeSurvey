@@ -69,6 +69,8 @@ class LimeExpressionManager {
     private $ParseResultCache;  // temporary variable to reduce need to parse same equation multiple times.  Used for relevance and validation
     private $multiflexiAnswers; // array of 2nd scale answer lists for types ':' and ';' -- needed for convenient print of logic file
 
+    private $sgqaNaming = true;    // used to specify whether to  generate equations using SGQA codes or qcodes
+
     // A private constructor; prevents direct creation of object
     private function __construct()
     {
@@ -428,7 +430,7 @@ class LimeExpressionManager {
                             case 'P': //Multiple choice with comments checkbox + text
                             case 'K': //MULTIPLE NUMERICAL QUESTION
                             case 'Q': //MULTIPLE SHORT TEXT
-                                if ($this->surveyOptions['sgqaNaming'])
+                                if ($this->sgqaNaming)
                                 {
                                     $sq_name = $sgq . substr($sq['sqsuffix'],1);
                                 }
@@ -481,7 +483,7 @@ class LimeExpressionManager {
                             case 'P': //Multiple choice with comments checkbox + text
                             case 'K': //MULTIPLE NUMERICAL QUESTION
                             case 'Q': //MULTIPLE SHORT TEXT
-                                if ($this->surveyOptions['sgqaNaming'])
+                                if ($this->sgqaNaming)
                                 {
                                     $sq_name = $sgq . substr($sq['sqsuffix'],1);
                                 }
@@ -523,7 +525,7 @@ class LimeExpressionManager {
                         switch ($type)
                         {
                             case 'K': //MULTIPLE NUMERICAL QUESTION
-                                if ($this->surveyOptions['sgqaNaming'])
+                                if ($this->sgqaNaming)
                                 {
                                     $sq_name = $sq['rowdivid'] . '.NAOK';
                                 }
@@ -577,7 +579,7 @@ class LimeExpressionManager {
                         {
                             case 'M': //Multiple choice checkbox
                             case 'P': //Multiple choice with comments checkbox + text
-                                if ($this->surveyOptions['sgqaNaming'])
+                                if ($this->sgqaNaming)
                                 {
                                     $sq_name = $qinfo['sgqa'] . trim($exclusive_option) . '.NAOK';
                                 }
@@ -633,7 +635,7 @@ class LimeExpressionManager {
                             case 'K': //MULTIPLE NUMERICAL QUESTION
                             case 'Q': //MULTIPLE SHORT TEXT
                             case 'M': //Multiple choice checkbox
-                                if ($this->surveyOptions['sgqaNaming'])
+                                if ($this->sgqaNaming)
                                 {
                                     $sq_name = substr($sq['jsVarName'],4) . '.NAOK';
                                 }
@@ -644,7 +646,7 @@ class LimeExpressionManager {
                                 break;
                             case 'P': //Multiple choice with comments checkbox + text
                                 if (!preg_match('/comment$/',$sq['varName'])) {
-                                    if ($this->surveyOptions['sgqaNaming'])
+                                    if ($this->sgqaNaming)
                                     {
                                         $sq_name = $sq['rowdivid'] . '.NAOK';
                                     }
@@ -707,7 +709,7 @@ class LimeExpressionManager {
                             case 'K': //MULTIPLE NUMERICAL QUESTION
                             case 'Q': //MULTIPLE SHORT TEXT
                             case 'M': //Multiple choice checkbox
-                                if ($this->surveyOptions['sgqaNaming'])
+                                if ($this->sgqaNaming)
                                 {
                                     $sq_name = substr($sq['jsVarName'],4) . '.NAOK';
                                 }
@@ -718,7 +720,7 @@ class LimeExpressionManager {
                                 break;
                             case 'P': //Multiple choice with comments checkbox + text
                                 if (!preg_match('/comment$/',$sq['varName'])) {
-                                    if ($this->surveyOptions['sgqaNaming'])
+                                    if ($this->sgqaNaming)
                                     {
                                         $sq_name = $sq['rowdivid'] . '.NAOK';
                                     }
@@ -772,7 +774,7 @@ class LimeExpressionManager {
                         switch ($type)
                         {
                             case 'K': //MULTIPLE NUMERICAL QUESTION
-                                if ($this->surveyOptions['sgqaNaming'])
+                                if ($this->sgqaNaming)
                                 {
                                     $sq_name = '(is_empty(' . $sq['rowdivid'] . '.NAOK) || '. $sq['rowdivid'] . '.NAOK >= (' . $min_num_value_n . '))';
                                 }
@@ -783,7 +785,7 @@ class LimeExpressionManager {
                                 $subqValidSelector = $sq['jsVarName_on'];
                                 break;
                             case 'N': //NUMERICAL QUESTION TYPE
-                                if ($this->surveyOptions['sgqaNaming'])
+                                if ($this->sgqaNaming)
                                 {
                                     $sq_name = '(is_empty(' . $sq['rowdivid'] . '.NAOK) || '. $sq['rowdivid'] . '.NAOK >= (' . $min_num_value_n . '))';
                                 }
@@ -838,7 +840,7 @@ class LimeExpressionManager {
                         switch ($type)
                         {
                             case 'K': //MULTIPLE NUMERICAL QUESTION
-                                if ($this->surveyOptions['sgqaNaming'])
+                                if ($this->sgqaNaming)
                                 {
                                     $sq_name = '(is_empty(' . $sq['rowdivid'] . '.NAOK) || '. $sq['rowdivid'] . '.NAOK <= (' . $max_num_value_n . '))';
                                 }
@@ -849,7 +851,7 @@ class LimeExpressionManager {
                                 $subqValidSelector = $sq['jsVarName_on'];
                                 break;
                             case 'N': //NUMERICAL QUESTION TYPE
-                                if ($this->surveyOptions['sgqaNaming'])
+                                if ($this->sgqaNaming)
                                 {
                                     $sq_name = '(is_empty(' . $sq['rowdivid'] . '.NAOK) || '. $sq['rowdivid'] . '.NAOK <= (' . $max_num_value_n . '))';
                                 }
@@ -903,7 +905,7 @@ class LimeExpressionManager {
                         switch ($type)
                         {
                             case 'K': //MULTIPLE NUMERICAL QUESTION
-                                if ($this->surveyOptions['sgqaNaming'])
+                                if ($this->sgqaNaming)
                                 {
                                     $sq_name = $sq['rowdivid'] . '.NAOK';
                                 }
@@ -952,7 +954,7 @@ class LimeExpressionManager {
                         switch ($type)
                         {
                             case 'K': //MULTIPLE NUMERICAL QUESTION
-                                if ($this->surveyOptions['sgqaNaming'])
+                                if ($this->sgqaNaming)
                                 {
                                     $sq_name = $sq['rowdivid'] . '.NAOK';
                                 }
@@ -1002,7 +1004,7 @@ class LimeExpressionManager {
                         switch ($type)
                         {
                             case ':': //MULTIPLE NUMERICAL QUESTION
-                                if ($this->surveyOptions['sgqaNaming'])
+                                if ($this->sgqaNaming)
                                 {
                                     $sgqa = substr($sq['jsVarName'],4);
                                     $sq_name = '(is_empty(' . $sgqa . '.NAOK) || ' . $sgqa . '.NAOK >= (' . $multiflexible_min . '))';
@@ -1058,7 +1060,7 @@ class LimeExpressionManager {
                         switch ($type)
                         {
                             case ':': //MULTIPLE NUMERICAL QUESTION
-                                if ($this->surveyOptions['sgqaNaming'])
+                                if ($this->sgqaNaming)
                                 {
                                     $sgqa = substr($sq['jsVarName'],4);
                                     $sq_name = '(is_empty(' . $sgqa . '.NAOK) || ' . $sgqa . '.NAOK <= (' . $multiflexible_max . '))';
@@ -1129,7 +1131,7 @@ class LimeExpressionManager {
                             case 'S': //SHORT FREE TEXT
                             case 'T': //LONG FREE TEXT
                             case 'U': //HUGE FREE TEXT
-                                if ($this->surveyOptions['sgqaNaming'])
+                                if ($this->sgqaNaming)
                                 {
                                     $sq_name = '(if(is_empty('.$sgqa.'.NAOK),0,!regexMatch("' . $preg . '", ' . $sgqa . '.NAOK)))';
                                 }
@@ -1147,7 +1149,7 @@ class LimeExpressionManager {
                             case 'Q': //MULTIPLE SHORT TEXT
                             case ';': //ARRAY (Multi Flexi) Text
                             case ':': //ARRAY (Multi Flexi) 1 to 10
-                                if ($this->surveyOptions['sgqaNaming'])
+                                if ($this->sgqaNaming)
                                 {
                                     $subqValidEqn = '(is_empty('.$sgqa.'.NAOK) || regexMatch("' . $preg . '", ' . $sgqa . '.NAOK))';
                                 }
@@ -1227,7 +1229,7 @@ class LimeExpressionManager {
                             case 'S': //SHORT FREE TEXT
                             case 'T': //LONG FREE TEXT
                             case 'U': //HUGE FREE TEXT
-                                if ($this->surveyOptions['sgqaNaming'])
+                                if ($this->sgqaNaming)
                                 {
                                     $sq_name = '!(' . preg_replace('/\bthis\b/',$sq['rowdivid'], $em_validation_q) . ')';
                                 }
@@ -1289,7 +1291,7 @@ class LimeExpressionManager {
                             case 'Q': //MULTIPLE SHORT TEXT
                             case ';': //ARRAY (Multi Flexi) Text
                             case ':': //ARRAY (Multi Flexi) 1 to 10
-                                if ($this->surveyOptions['sgqaNaming'])
+                                if ($this->sgqaNaming)
                                 {
                                     $sq_name = '!(' . preg_replace('/\bthis\b/',$sq['rowdivid'], $em_validation_sq) . ')';
                                 }
@@ -1307,7 +1309,7 @@ class LimeExpressionManager {
                             case 'Q': //MULTIPLE SHORT TEXT
                             case ';': //ARRAY (Multi Flexi) Text
                             case ':': //ARRAY (Multi Flexi) 1 to 10
-                                if ($this->surveyOptions['sgqaNaming'])
+                                if ($this->sgqaNaming)
                                 {
                                     $subqValidEqn = '(' . preg_replace('/\bthis\b/',$sq['rowdivid'], $em_validation_sq) . ')';
                                 }
@@ -2689,7 +2691,7 @@ class LimeExpressionManager {
         $LEM->surveyOptions['refurl'] = (isset($options['refurl']) ? $options['refurl'] : NULL);
         $LEM->surveyOptions['rooturl'] = (isset($options['rooturl']) ? $options['rooturl'] : '');
         $LEM->surveyOptions['savetimings'] = (isset($options['savetimings']) ? $options['savetimings'] : '');
-        $LEM->surveyOptions['sgqaNaming'] = (isset($options['sgqaNaming']) ? ($options['sgqaNaming']=="Y") : true); // TODO default should eventually be false
+        $LEM->sgqaNaming = (isset($options['sgqaNaming']) ? ($options['sgqaNaming']=="Y") : true); // TODO default should eventually be false
         $LEM->surveyOptions['startlanguage'] = (isset($options['startlanguage']) ? $options['startlanguage'] : 'en');
         $LEM->surveyOptions['surveyls_dateformat'] = (isset($options['surveyls_dateformat']) ? $options['surveyls_dateformat'] : 1);
         $LEM->surveyOptions['tablename'] = (isset($options['tablename']) ? $options['tablename'] : db_table_name('survey_' . $LEM->sid));
@@ -6019,7 +6021,7 @@ EOT;
                     'gid' => $varNamesUsed[$rootVarName]['gid'],
                     'qid' => $varNamesUsed[$rootVarName]['qid']
                     );
-                if (!$LEM->surveyOptions['sgqaNaming'])
+                if (!$LEM->sgqaNaming)
                 {
                     ++$errorCount;
                 }
