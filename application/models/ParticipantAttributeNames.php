@@ -288,7 +288,7 @@ class ParticipantAttributeNames extends CActiveRecord
 
     function storeAttributeCSV($data)
     {
-        $insertnames = array('attribute_type' => '\''.$data['attribute_type'],
+        $insertnames = array('attribute_type' => $data['attribute_type'],
                             'visible' => $data['visible']);
 		Yii::app()->db->createCommand()->insert('{{participant_attribute_names}}', $insertnames);
 

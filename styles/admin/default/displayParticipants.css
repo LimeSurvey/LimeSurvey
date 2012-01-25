@@ -16,3 +16,11 @@ background-image:url('images/search.gif');
 #selectableadd .ui-selected { background: #0066CC; color: white; }
 #selectableadd { list-style-type: none; margin: 0; padding: 0; width: 90%; text-align: center; }
 #selectableadd li { margin: 3px; padding: 0.4em; font-size: 1 em; height: 18px; text-align: center;}
+
+.popupgroup {
+    border: 1px solid #DAE5F4;
+	padding: 10px;
+	border-radius: 3px;
+	margin: 8px;
+
+}

@@ -178,6 +178,7 @@ echo $colModels;
     </p>
 </div>
 <div id="shareform" title="<?php $clang->eT("Share") ?>" style="display:none">
+  <div class='popupgroup'>
     <p>
 <?php $clang->eT("User with whom the participants are to be shared"); ?></p>
     <p>
@@ -193,6 +194,8 @@ echo $colModels;
         echo CHtml::dropDownList('shareuser', 'id="shareuser"', $options);
         ?>
     </p>
+  </div>
+  <div class='popupgroup'>
     <p>
 <?php $clang->eT("Allow this user to edit these participants"); ?>
     </p>
@@ -203,16 +206,22 @@ $data = array(
     'style' => 'margin:10px',
 );
 echo CHtml::checkBox('can_edit', TRUE, $data);
-?><input type="hidden" name="can_edit" id="can_edit" value='TRUE'></p>
+?><input type="hidden" name="can_edit" id="can_edit" value='TRUE'>
+    </p>
+  </div>
 </div>
 <!--<div id="addsurvey" title="addsurvey" style="display:none">-->
+
+<!-- Add To Survey Popup Window -->
 <div class="ui-widget ui-helper-hidden" id="client-script-return-msg" style="display:none">
     <form action="<?php echo Yii::app()->getController()->createUrl("admin/participants/attributeMap"); ?>" name="addsurvey" id="addsurvey" method="POST">
         <input type="hidden" name="participant_id" id="participant_id" value=""></input>
         <input type="hidden" name="count" id="count" value=""></input>
-        <p>
-            <?php $clang->eT("Please select the survey to which participants are to be added"); ?></p>
-        <p>
+        <div class='popupgroup'>
+		  <p>
+            <?php $clang->eT("Select the survey to which participants are to be added"); ?>
+          </p>
+          <p>
             <?php
             if (!empty($surveynames))
             {
@@ -224,8 +233,23 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
                 echo CHtml::dropDownList('survey_id', 'id="survey_id"', $option);
             }
             ?>
-        </p>
-        <p><?php $clang->eT("Redirect to token table after copy "); ?>
+          </p>
+        </div>
+        <div class='popupgroup'>
+		  <p>
+            <?php $clang->eT("Select which participants to add to the selected survey"); ?>
+		  </p>
+          <center>
+            <ol id='selectableadd' class='selectable' >
+                <li class='ui-widget-content' id='all'><?php $clang->eT("all participants in current search") ?></li>
+                <li class='ui-widget-content' id='allingrid'><?php $clang->eT("all participants") ?></li>
+                <li class='ui-widget-content' id='selected'><?php $clang->eT("only the participants I have selected") ?></li>
+            </ol>
+          </center>
+        </div>
+        <div class='popupgroup'>
+          <p>
+        	<?php $clang->eT("Display survey token table after adding participants?"); ?>
             <?php
             $data = array(
                 'id' => 'redirect',
@@ -234,17 +258,14 @@ echo CHtml::checkBox('can_edit', TRUE, $data);
             );
 
             echo CHtml::checkBox('redirect', TRUE, $data);
-            ?></p>
-        <center><ol id='selectableadd' class='selectable' >
-                <li class='ui-widget-content' id='all'><?php $clang->eT("all participants in current search") ?></li>
-                <li class='ui-widget-content' id='allingrid'><?php $clang->eT("all participants") ?></li>
-                <li class='ui-widget-content' id='selected'><?php $clang->eT("only the participants I have selected") ?></li>
-            </ol></center>
+            ?>
+          </p>
+        </div>
     </form>
 </div>
 <div id="notauthorised" title="notauthorised" style="display:none">
     <p>
-<?php $clang->eT("This is shared participant and you are not authorised to edit it"); ?></p>
+<?php $clang->eT("This is a shared participant and you are not authorised to edit it"); ?></p>
 
 </div>
 <div id="exportcsv" title="exportcsv" style="display:none">

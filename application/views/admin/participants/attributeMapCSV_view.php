@@ -9,7 +9,7 @@
         <script src="<?php echo Yii::app()->getConfig('generalscripts') . "jquery/jquery.qtip.js" ?>" type="text/javascript"></script>
         <script src="<?php echo Yii::app()->getConfig('generalscripts') . "jquery/jquery.ui.sortable.js" ?>" type="text/javascript"></script>
         <script src="<?php echo Yii::app()->getConfig('adminscripts') . "attributeMapCSV.js" ?>" type="text/javascript"></script>
-        <script type="text/javascript">mapCSVcancelled
+        <script type="text/javascript">
 
             var copyUrl = "<?php echo $this->createURL("admin/participants/uploadCSV"); ?>";
             var displayParticipants = "<?php echo $this->createURL("admin/participants/displayParticipants"); ?>";
@@ -23,10 +23,12 @@
         </script>
     </head>
     <body>
-        <div class='header ui-widget-header'><strong><?php printf($clang->gT("Select attributes to copy with your %s participant(s)"), $linecount); ?></strong></div>
+        <div class='header ui-widget-header'><strong><?php printf($clang->gT("Select which fields to import as attributes with your %s participant(s)"), $linecount); ?></strong></div>
         <div class="main">
-            <div id="csvattribute">
-                <div class="heading"><?php $clang->eT("CSV headings "); ?></div>
+            <div id="csvattribute" class='container'>
+                <div class="heading"><?php $clang->eT("CSV field names "); ?></div>
+                <div class='instructions'><?php $clang->eT("LimeSurvey has found the following additional fields in your CSV file."); ?></div>
+
                 <ul class="csvatt">
                     <?php
                     foreach ($firstline as $key => $value)
@@ -36,16 +38,18 @@
                     ?>
                 </ul>
             </div>
-            <div id="newcreated"><div class="heading"><?php $clang->eT("Attributes to be created") ?></div>
-                <ul class="newcreate" id="sortable" style ="height: 40px">
+            <div id="newcreated" class='container'><div class="heading"><?php $clang->eT("Attributes to be created") ?></div>
+            <div class='instructions'><?php $clang->eT("Drop a CSV field into this area to create a new participant attribute and import your data into it."); ?></div>
+            <ul class="newcreate" id="sortable">
                 </ul>
             </div>
-            <div id="centralattribute"><div class="heading"><?php $clang->eT("Central attribute"); ?></div>
+            <div id="centralattribute" class='container'><div class="heading"><?php $clang->eT("Existing attribute"); ?></div>
+            <div class='instructions'><?php $clang->eT("Drop a CSV field into an existing participant attribute listed below to import your data into it."); ?></div>
                 <ul class="cpdbatt">
                     <?php
                     foreach ($attributes as $key => $value)
                     {
-                        echo "<li id='c_" . $value['attribute_id'] . "' name='c_" . $key . "' >" . $value['attribute_name'] . "</li>";
+                        echo "<li id='c_" . $value['attribute_id'] . "' name='c_" . $key . "' style='margin-top: 10px;'>" . $value['attribute_name'] . "</li>";
                     }
                     ?>
                 </ul>
