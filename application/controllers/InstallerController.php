@@ -140,6 +140,7 @@ class InstallerController extends CController {
             $this->redirect($this->createUrl('installer/license'));
         }
         $this->loadHelper('surveytranslator');
+        Yii::app()->session->remove('configFileWritten');
 
         $aData['clang'] = $clang = $this->lang;
         $aData['title'] = $clang->gT('Welcome');
@@ -614,7 +615,7 @@ class InstallerController extends CController {
                 Yii::app()->session['optconfig_message'] = sprintf('<b>%s</b>', $clang->gT("Passwords don't match."));
                 $this->redirect($this->createUrl('installer/optional'));
             }
-        } elseif(empty(Yii::app()->session['configFileWritten'])) {
+        } elseif(empty(Yii::app()->session->remove('configFileWritten'])) {
             $this->_writeConfigFile();
         }
 
