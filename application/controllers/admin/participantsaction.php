@@ -251,6 +251,8 @@ class participantsaction extends Survey_Common_Action
         $clang = Yii::app()->lang;
         $page = Yii::app()->request->getPost('page');
         $limit = Yii::app()->request->getPost('rows');
+    	$limit = isset($limit) ? $limit : 50; //Stop division by zero errors
+
         $records = ParticipantAttributeNames::getAttributes();
 
         $attribute_types = array(
@@ -953,6 +955,8 @@ class participantsaction extends Survey_Common_Action
     {
         $page = Yii::app()->request->getPost('page');
         $limit = Yii::app()->request->getPost('rows');
+    	$limit = isset($limit) ? $limit : 50; //Stop division by zero errors
+
         $attid = ParticipantAttributeNames::getAttributeVisibleID();
         $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blacklisted', 'surveys', 'language', 'owner_uid');
         foreach ($attid as $key => $value)
