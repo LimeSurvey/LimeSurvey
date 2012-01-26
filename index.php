@@ -342,7 +342,7 @@ if (!isset($_SESSION['s_lang'])  && (isset($move)) )
 if (isset($move) && (preg_match('/^changelang_/',$move)))
 {
     // Then changing language from the language changer
-    $_POST['lang'] = substr($move,11);
+    $_POST['lang'] = substr($_POST['move'],11); // since sanitizing $move removes hyphen in languages like de-informal
 }
 
 // Set the language of the survey, either from POST, GET parameter of session var
