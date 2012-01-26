@@ -207,7 +207,8 @@ function setUserRightsCas($user, $role="")
 
     $_SESSION['adminlang'] = $defaultlang;
     $_SESSION['htmleditormode'] = 'default';
-
+    $_SESSION['questionselectormode'] = 'default';
+    $_SESSION['templateeditormode'] = 'default';
     $_SESSION['checksessionpost'] = sRandomChars(10);
     $_SESSION['pw_notify']=false;
 

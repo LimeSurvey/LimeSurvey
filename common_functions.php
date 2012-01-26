@@ -1741,7 +1741,10 @@ function returnglobal($stringname)
             return sanitize_languagecode($urlParam);
         }
         elseif ($stringname =="htmleditormode" ||
-        $stringname =="subaction")
+            $stringname =="subaction" || 
+            $stringname =="questionselectormode" ||
+            $stringname =="templateeditormode" 
+            )
         {
             return sanitize_paranoid_string($urlParam);
         }

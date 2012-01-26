@@ -955,7 +955,7 @@ else
                                        ."\t<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
                                        ."\t<input type='hidden' name='editfile' value='$editfile' />\n"
                                        ."\t<input type='hidden' name='action' value='templatesavechanges' />\n"
-                                       ."<textarea name='changes' id='changes' rows='15' cols='40' class='codepress html'>";
+                                       ."<textarea name='changes' id='changes' rows='15' cols='40' class='codepress html ".getTemplateEditorMode()."'>";
                                        if ($editfile) {
         $templatesoutput.= textarea_encode(filetext($templatename,$editfile));
                                        }
@@ -1255,4 +1255,18 @@ function is_template_editable($templatename)
    {
        return true;
    }
+}
+
+function getTemplateEditorMode()
+{
+    global $defaulttemplateeditormode;
+    //TODO : put it on globalsettings  $defaultquestionselectormode=getGlobalSetting('defaultquestionselectormode');
+    if (isset($_SESSION['templateeditormode']) && ($_SESSION['templateeditormode']=='full' || $_SESSION['templateeditormode']=='none'))
+    {
+        return $_SESSION['templateeditormode'];
+    }
+    else
+    {
+        return $defaulttemplateeditormode;
+    }
 }

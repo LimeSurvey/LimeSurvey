@@ -242,7 +242,7 @@ $(document).ready(function(){
        });
     });
 
-    if ($("#question_type").length > 0 && $("#question_type").attr('type')!='hidden'){
+    if ($("#question_type:not(.none)").length > 0 && $("#question_type").attr('type')!='hidden'){
         $("#question_type").msDropDown({onInit:qTypeDropdownInit});
 
         $("#question_type").change(function(event){

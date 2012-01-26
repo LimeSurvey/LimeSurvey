@@ -43,7 +43,49 @@ if ($action == "personalsettings")
             $edmod1="selected='selected'";
             break;
     }
-
+    // prepare data for the questionselectormode preference
+    $qsmod1='';
+    $qsmod2='';
+    $qsmod3='';
+    $qsmod="default";
+    if( isset($_SESSION['questionselectormode']))
+    {
+        $qsmod=$_SESSION['questionselectormode'];
+    }
+    switch ($qsmod)
+    {
+        case 'full':
+            $qsmod2="selected='selected'";
+            break;
+        case 'none':
+            $qsmod3="selected='selected'";
+            break;
+        default:
+            $qsmod1="selected='selected'";
+            break;
+    }
+    // prepare data for the templateeditormode preference
+    $temod1='';
+    $temod2='';
+    $temod3='';
+    $temod="default";
+    if( isset($_SESSION['templateeditormode']))
+    {
+        $temod=$_SESSION['templateeditormode'];
+    }
+    switch ($temod)
+    {
+        case 'full':
+            $temod2="selected='selected'";
+            break;
+        case 'none':
+            $temod3="selected='selected'";
+            break;
+        default:
+            $temod1="selected='selected'";
+            break;
+    }
+    
     $cssummary = "<div class='formheader'>"
     . "<strong>".$clang->gT("Your personal settings")."</strong>\n"
     . "</div>\n"
@@ -80,6 +122,26 @@ if ($action == "personalsettings")
     $cssummary .= "</select>\n"
     . "</li>\n";
 
+    // Current questionselectormode
+    $cssummary .=  "<li>\n"
+    . "<label for='questionselectormode'>".$clang->gT("Question type selector").":</label>\n"
+    . "<select id='questionselectormode' name='questionselectormode'>\n"
+    . "<option value='default' {$qsmod1}>".$clang->gT("Default")."</option>\n"
+    . "<option value='full' {$qsmod2}>".$clang->gT("Full selector")."</option>\n"
+    . "<option value='none' {$qsmod3}>".$clang->gT("Simple selector")."</option>\n";
+    $cssummary .= "</select>\n"
+    . "</li>\n";
+
+    // Current templateeditormode
+    $cssummary .=  "<li>\n"
+    . "<label for='templateeditormode'>".$clang->gT("Template editor mode").":</label>\n"
+    . "<select id='templateeditormode' name='templateeditormode'>\n"
+    . "<option value='default' {$temod1}>".$clang->gT("Default")."</option>\n"
+    . "<option value='full' {$temod2}>".$clang->gT("Full template editor")."</option>\n"
+    . "<option value='none' {$temod3}>".$clang->gT("Simple template editor")."</option>\n";
+    $cssummary .= "</select>\n"
+    . "</li>\n";
+    
     // Date format
     $cssummary .=  "<li>\n"
     . "<label for='dateformat'>".$clang->gT("Date format").":</label>\n"

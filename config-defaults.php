@@ -190,6 +190,20 @@ $filterout_incomplete_answers = 'show';
 //  * none: no html editor
 $defaulthtmleditormode = 'inline';
 
+// $defaultquestionselectormode
+// * sets the default for the question-type selector : full or none
+//    users without specific preference inherit this setup
+// * full : javascript selector with picture of the question type
+// * none : basic html selector
+$defaultquestionselectormode = 'full';
+
+// $defaulttemplateeditormode
+// * sets the default for the template editor : full or none
+//    users without specific preference inherit this setup
+// * full : javascript editor mode, with Editarea (text formatting, search and replace and real-time syntax highlight)
+// * none : basic textarea
+$defaulttemplateeditormode = 'full';
+
 // $surveyPreview_require_Auth
 // Enforce Authentication to the LS system
 // before beeing able to preview a survey (testing a non active survey)

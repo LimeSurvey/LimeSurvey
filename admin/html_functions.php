@@ -147,4 +147,15 @@ function browsemenubar($title='')
 
     return $browsemenubar;
 }
-
+function getQuestionlistMode(){
+    global $defaultquestionselectormode;
+    //TODO : put it on globalsettings $defaultquestionselectormode=getGlobalSetting('defaultquestionselectormode');
+    if (isset($_SESSION['questionselectormode']) && ($_SESSION['questionselectormode']=='full' || $_SESSION['questionselectormode']=='none'))
+    {
+        return $_SESSION['questionselectormode'];
+    }
+    else
+    {
+    return $defaultquestionselectormode;
+    }
+}

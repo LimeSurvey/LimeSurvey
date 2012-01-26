@@ -4,5 +4,5 @@
 <div class="note">{SAVEMESSAGE}
 <div class="form">{SAVEFORM}</div>
 </div>
-<p class="tools"{RETURNTOSURVEY}</p>
+<p class="tools">{RETURNTOSURVEY}</p>
 </div>

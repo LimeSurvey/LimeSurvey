@@ -461,10 +461,10 @@ if ($action == "editquestion" || $action=="addquestion")
 
     //question type:
     $editquestion .= "\t<div id='questionbottom'><ul>\n"
-    . "<li><label for='question_type'>".$clang->gT("Question Type:")."</label>\n";
+    . "<li><label for='question_type'>".$clang->gT("Question Type:")." </label>\n";
     if ($activated != "Y")
     {
-        $editquestion .= "<select id='question_type' style='margin-bottom:5px' name='type' "
+        $editquestion .= "<select id='question_type' style='margin-bottom:5px' name='type' class='".getQuestionlistMode()."'"
         . ">\n"
         . getqtypelist($eqrow['type'],'group')
         . "</select>\n";
