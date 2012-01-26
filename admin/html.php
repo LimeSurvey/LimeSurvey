@@ -1194,7 +1194,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
 //        $qrrow = array_map('FlattenText', $qrrow);
         //$qrrow = array_map('htmlspecialchars', $qrrow);
         $questionsummary .= "<div class='menubar-title ui-widget-header'>\n"
-        . "<strong>". $clang->gT("Question")."</strong> <span class='basic'>{$qrrow['question']} (".$clang->gT("ID").":$qid)</span>\n"
+        . "<strong>". $clang->gT("Question")."</strong> <span class='basic'>".FlattenText($qrrow['question'])." (".$clang->gT("ID").":$qid)</span>\n"
         . "</div>\n"
         . "<div class='menubar-main'>\n"
         . "<div class='menubar-left'>\n"
@@ -1408,7 +1408,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         // Color code the question, help, and relevance
 
         templatereplace($qrrow['question'],false,false,$qid);
-        $questionsummary .= LimeExpressionManager::GetLastPrettyPrintExpression();
+        $questionsummary .= FlattenText(LimeExpressionManager::GetLastPrettyPrintExpression(), false, 'UTF-8', true, true);
 
         $questionsummary .= "</td></tr>\n"
         . "<tr><td align='right' valign='top'><strong>"
@@ -1416,7 +1416,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         if (trim($qrrow['help'])!='')
         {
             templatereplace($qrrow['help'],false,false,$qid);
-            $questionsummary .= LimeExpressionManager::GetLastPrettyPrintExpression();
+            $questionsummary .= FlattenText(LimeExpressionManager::GetLastPrettyPrintExpression(), false, 'UTF-8', true, true);
         }
         $questionsummary .= "</td></tr>\n";
         if ($qrrow['preg'])

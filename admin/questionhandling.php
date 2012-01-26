@@ -813,7 +813,7 @@ if($action == "orderquestions")
         $relevance = ($oqarray[$i]['relevance'] == '') ? 1 : $oqarray[$i]['relevance'];
         $showme = '[{' . $relevance . '}] ' . $oqarray[$i]['question'];
         LimeExpressionManager::ProcessString($showme, $oqarray[$i]['qid']);
-        $orderquestions.=LimeExpressionManager::GetLastPrettyPrintExpression();
+        $orderquestions.=FlattenText(LimeExpressionManager::GetLastPrettyPrintExpression(), false, 'UTF-8', true, true);
         $orderquestions.= "</li>\n" ;
     }
 
