@@ -150,6 +150,7 @@ class SurveyAction extends CAction {
 
         if (!$surveyid)
         {
+            $baselang = Yii::app()->getConfig('defaultlang');
             $clang = $this->_loadLimesurveyLang($baselang);
             if(!isset($defaulttemplate))
             {

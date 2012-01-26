@@ -2795,17 +2795,18 @@ function SetSurveyLanguage($surveyid, $language)
         }
         Yii::import('application.libraries.Limesurvey_lang', true);
         $clang = new limesurvey_lang($_SESSION['survey_'.$surveyid]['s_lang']);
+            $thissurvey=getSurveyInfo($surveyid, @$_SESSION['survey_'.$surveyid]['s_lang']);
+        Yii::app()->loadHelper('surveytranslator');
+        $_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
+
+        LimeExpressionManager::SetEMLanguage($_SESSION['survey_'.$surveyid]['s_lang']);
     }
     else {
         $_SESSION['survey_'.$surveyid]['s_lang'] = $language;
         Yii::import('application.libraries.Limesurvey_lang', true);
         $clang = new Limesurvey_lang($defaultlang);
     }
-    $thissurvey=getSurveyInfo($surveyid, @$_SESSION['survey_'.$surveyid]['s_lang']);
-    Yii::app()->loadHelper('surveytranslator');
-    $_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
 
-    LimeExpressionManager::SetEMLanguage($_SESSION['survey_'.$surveyid]['s_lang']);
     $oApplication=Yii::app();
     $oApplication->lang=$clang;
     return $clang;
