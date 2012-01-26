@@ -3102,11 +3102,11 @@ class LimeExpressionManager {
                 );
             if ($this->surveyOptions['anonymized'] == "N")
             {
-                $sdata = array_combine($sdata,array("token"=>($this->surveyOptions['token'])));
+                $sdata = array_merge($sdata,array("token"=>($this->surveyOptions['token'])));
             }
             if ($this->surveyOptions['datestamp'] == "Y")
             {
-                $sdata = array_combine($sdata, array(
+                $sdata = array_merge($sdata, array(
                                             "datestamp"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : NULL),
                                             "startdate"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : date("Y-m-d H:i:s",0))
                                                 ));
@@ -3114,11 +3114,11 @@ class LimeExpressionManager {
             }
             if ($this->surveyOptions['ipaddr'] == "Y")
             {
-                $sdata = array_combine($sdata,array("ipaddr"=>(($this->surveyOptions['ipaddr'] && isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : '')));
+                $sdata = array_merge($sdata,array("ipaddr"=>(($this->surveyOptions['ipaddr'] && isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : '')));
             }
             if ($this->surveyOptions['refurl'] == "Y")
             {
-                $sdata = array_combine($sdata,array("refurl"=>(($this->surveyOptions['refurl']) ? getenv("HTTP_REFERER") : NULL)));
+                $sdata = array_merge($sdata,array("refurl"=>(($this->surveyOptions['refurl']) ? getenv("HTTP_REFERER") : NULL)));
             }
             
             $sdata = array_filter($sdata);
