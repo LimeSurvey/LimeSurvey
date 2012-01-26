@@ -1912,6 +1912,8 @@ function tokensExport($iSurveyID)
     $tokenoutput .="\n";
 
     Yii::import('application.libraries.Date_Time_Converter', true);
+    
+    $aExportedTokens = array();
 
     foreach($bresult->readAll() as $brow)
     {
@@ -1947,9 +1949,15 @@ function tokensExport($iSurveyID)
         }
         $tokenoutput = substr($tokenoutput,0,-1); // remove last comma
         $tokenoutput .= "\n";
+        
+        $aExportedTokens[] = $brow['tid'];
     }
     echo $tokenoutput;
-    exit;
+
+    if (Yii::app()->request->getPost('tokendeleteexported') && !empty($aExportedTokens))
+    {
+        Tokens_dynamic::model($iSurveyID)->deleteByPk($aExportedTokens);
+    }
 }
 
 function CPDBExport($data,$filename)
