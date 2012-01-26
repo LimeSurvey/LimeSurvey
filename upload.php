@@ -108,7 +108,6 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
 
             $return = array(
                         "success"       => true,
-                        "file_index"    => $filecount,
                         "size"          => $size,
                         "name"          => rawurlencode(basename($filename)),
                         "ext"           => $ext,
