@@ -224,6 +224,7 @@ class SurveyAction extends CAction {
             {
                 $list[]="<li class='surveytitle'>".$clang->gT("No available surveys")."</li>";
             }
+            Yii::app()->loadConfig('email');
             $surveylist=array(
             "nosid"=>$clang->gT("You have not provided a survey identification number"),
             "contact"=>sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),Yii::app()->getConfig("siteadminname"),encodeEmail(Yii::app()->getConfig("siteadminemail"))),
