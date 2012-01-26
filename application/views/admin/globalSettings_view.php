@@ -133,6 +133,26 @@
                             <?php if ($thisdefaulthtmleditormode=='popup') { echo "selected='selected'";} ?>
                             ><?php $clang->eT("Popup HTML editor"); ?></option>
                     </select></li>
+                <?php $thisdefaultquestionselectormode=getGlobalSetting('defaultquestionselectormode'); ?>
+                <li><label for='defaultquestionselectormode'><?php $clang->eT("Question type selector:").((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
+                    <select name='defaultquestionselectormode' id='defaultquestionselectormode'>
+                        <option value='default'
+                            <?php if ($thisdefaultquestionselectormode=='default') { echo "selected='selected'";} ?>
+                            ><?php $clang->eT("Full selector (default)"); ?></option>
+                        <option value='none'
+                            <?php if ($thisdefaultquestionselectormode=='none') { echo "selected='selected'";} ?>
+                            ><?php $clang->eT("Simple selector"); ?></option>
+                    </select></li>
+                <?php $thisdefaulttemplateeditormode=getGlobalSetting('defaulttemplateeditormode'); ?>
+                <li><label for='defaulttemplateeditormode'><?php $clang->eT("Template editor:").((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
+                    <select name='defaulttemplateeditormode' id='defaulttemplateeditormode'>
+                        <option value='default'
+                            <?php if ($thisdefaulttemplateeditormode=='default') { echo "selected='selected'";} ?>
+                            ><?php $clang->eT("Full template editor (default)"); ?></option>
+                        <option value='none'
+                            <?php if ($thisdefaulttemplateeditormode=='none') { echo "selected='selected'";} ?>
+                            ><?php $clang->eT("Simple template editor"); ?></option>
+                    </select></li>
                 <?php $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']); ?>
                 <li><label for='timeadjust'><?php $clang->eT("Time difference (in hours):"); ?></label>
                     <span><input type='text' size='10' id='timeadjust' name='timeadjust' value="<?php echo htmlspecialchars(str_replace(array('+',' hours'),array('',''),getGlobalSetting('timeadjust'))); ?>" />

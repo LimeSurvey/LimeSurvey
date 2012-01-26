@@ -35,12 +35,12 @@
             </li>
 
             <li>
-                <?php echo CHtml::label($clang->gT("Question selector mode"), 'questionselectormode'); ?>:
+                <?php echo CHtml::label($clang->gT("Question type selector"), 'questionselectormode'); ?>:
                 <?php
                 echo CHtml::dropDownList('questionselectormode', Yii::app()->session['questionselectormode'], array(
                     'default' => $clang->gT("Default"),
-                    'full' => $clang->gT("Full question selector"),
-                    'none' => $clang->gT("Simple question selector")
+                    'full' => $clang->gT("Full selector"),
+                    'none' => $clang->gT("Simple selector")
                 ));
                 ?>
             </li>

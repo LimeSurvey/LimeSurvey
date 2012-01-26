@@ -112,6 +112,8 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('addTitleToLinks', sanitize_paranoid_string($_POST['addTitleToLinks']));
         setGlobalSetting('defaultlang', sanitize_languagecode($_POST['defaultlang']));
         setGlobalSetting('defaulthtmleditormode', sanitize_paranoid_string($_POST['defaulthtmleditormode']));
+        setGlobalSetting('defaultquestionselectormode', sanitize_paranoid_string($_POST['defaultquestionselectormode']));
+        setGlobalSetting('defaulttemplateeditormode', sanitize_paranoid_string($_POST['defaulttemplateeditormode']));
         setGlobalSetting('defaulttemplate', sanitize_paranoid_string($_POST['defaulttemplate']));
         setGlobalSetting('emailmethod', strip_tags($_POST['emailmethod']));
         setGlobalSetting('emailsmtphost', strip_tags(returnGlobal('emailsmtphost')));
