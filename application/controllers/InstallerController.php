@@ -615,7 +615,7 @@ class InstallerController extends CController {
                 Yii::app()->session['optconfig_message'] = sprintf('<b>%s</b>', $clang->gT("Passwords don't match."));
                 $this->redirect($this->createUrl('installer/optional'));
             }
-        } elseif(empty(Yii::app()->session->remove('configFileWritten'])) {
+        } elseif(empty(Yii::app()->session['configFileWritten'])) {
             $this->_writeConfigFile();
         }
 
