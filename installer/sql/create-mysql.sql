@@ -326,7 +326,7 @@ CREATE TABLE `prefix_surveys_languagesettings` (
   `surveyls_email_confirm_subj` varchar(255) NULL,
   `surveyls_email_confirm` TEXT NULL,
   `surveyls_dateformat` INT UNSIGNED NOT NULL DEFAULT 1,
-  `surveyls_attributecaptions` TEXT NOT NULL,
+  `surveyls_attributecaptions` TEXT NULL,
   `email_admin_notification_subj`  varchar(255) NULL,
   `email_admin_notification` TEXT NULL,
   `email_admin_responses_subj` varchar(255) NULL,

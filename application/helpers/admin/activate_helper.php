@@ -255,6 +255,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
     else
         return false;
 }
+
 /**
  * Function to activate a survey
  * @param int $surveyid The Survey ID
@@ -284,10 +285,10 @@ function activateSurvey($surveyid, $simulate = false)
     {
         $savetimings="TRUE";
     }
-
+    
     //Get list of questions for the base language
-    $fieldmap = createFieldMap($surveyid,'short',false,false,getBaseLanguageFromSurveyID($surveyid));
-
+    $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
+       
     $createsurvey = array();
     foreach ($fieldmap as $j=>$arow) //With each question, create the appropriate field(s)
     {
@@ -404,7 +405,7 @@ function activateSurvey($surveyid, $simulate = false)
     //$createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a comma
 
     $tabname = "{{survey_{$surveyid}}}";
-
+    
     $command = new CDbCommand(Yii::app()->db);
     try
     {

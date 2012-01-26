@@ -2002,17 +2002,45 @@ function buildsurveysession($surveyid,$previewGroup=false)
             //			[8]=usedinconditions
             //			[9]=used in group.php for question count
             //			[10]=new group id for question in randomization group (GroupbyGroup Mode)
+            
             if (!isset($_SESSION['survey_'.$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]))
             {
+                //JUST IN CASE : PRECAUTION!
+                //following variables are set only if $style=="full" in createFieldMap() in common_helper.                                
+                //so, if $style = "short", set some default values here!
+                if (isset($field['title']))
+                    $title = $field['title'];
+                else
+                    $title = "";
+                
+                if (isset($field['question']))
+                    $question = $field['question'];
+                else
+                    $question = "";
+                    
+                if (isset($field['mandatory']))
+                    $mandatory = $field['mandatory'];
+                else
+                    $mandatory = 'N';
+                
+                if (isset($field['hasconditions']))
+                    $hasconditions = $field['hasconditions'];
+                else
+                    $hasconditions = 'N';
+                
+                if (isset($field['usedinconditions']))
+                    $usedinconditions = $field['usedinconditions'];
+                else
+                    $usedinconditions = 'N';
                 $_SESSION['survey_'.$surveyid]['fieldarray'][$field['sid'].'X'.$field['gid'].'X'.$field['qid']]=array($field['qid'],
                 $field['sid'].'X'.$field['gid'].'X'.$field['qid'],
-                $field['title'],
-                $field['question'],
+                $title,
+                $question,
                 $field['type'],
                 $field['gid'],
-                $field['mandatory'],
-                $field['hasconditions'],
-                $field['usedinconditions']);
+                $mandatory,
+                $hasconditions,
+                $usedinconditions);
             }
             if (isset($field['random_gid']))
             {

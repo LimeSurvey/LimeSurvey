@@ -341,7 +341,7 @@ CREATE TABLE [prefix_surveys_languagesettings] (
   [surveyls_email_confirm_subj] VARCHAR(255) NULL,
   [surveyls_email_confirm] TEXT NULL,
   [surveyls_dateformat] INT NOT NULL DEFAULT 1,
-  [surveyls_attributecaptions] VARCHAR(255) NOT NULL,
+  [surveyls_attributecaptions] VARCHAR(255) NULL,
   [email_admin_notification_subj] VARCHAR(255) NULL,
   [email_admin_notification] TEXT NULL,
   [email_admin_responses_subj] VARCHAR(255) NULL,

@@ -3092,14 +3092,35 @@ class LimeExpressionManager {
             // Create initial insert row for this record
             $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
             $sdata = array(
-                "datestamp"=>$today,
-                "ipaddr"=>(($this->surveyOptions['ipaddr'] && isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : ''),
+                //"datestamp"=>$today,
+                //"ipaddr"=>(($this->surveyOptions['ipaddr'] && isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : ''),
                 "startlanguage"=>$this->surveyOptions['startlanguage'],
-                "token"=>($this->surveyOptions['token']),
-                "datestamp"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : NULL),
-                "refurl"=>(($this->surveyOptions['refurl']) ? getenv("HTTP_REFERER") : NULL),
-                "startdate"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : date("Y-m-d H:i:s",0)),
+                //"token"=>($this->surveyOptions['token']),
+                //"datestamp"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : NULL),
+                //"refurl"=>(($this->surveyOptions['refurl']) ? getenv("HTTP_REFERER") : NULL),
+                //"startdate"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : date("Y-m-d H:i:s",0)),
                 );
+            if ($this->surveyOptions['anonymized'] == "N")
+            {
+                $sdata = array_combine($sdata,array("token"=>($this->surveyOptions['token'])));
+            }
+            if ($this->surveyOptions['datestamp'] == "Y")
+            {
+                $sdata = array_combine($sdata, array(
+                                            "datestamp"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : NULL),
+                                            "startdate"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : date("Y-m-d H:i:s",0))
+                                                ));
+        
+            }
+            if ($this->surveyOptions['ipaddr'] == "Y")
+            {
+                $sdata = array_combine($sdata,array("ipaddr"=>(($this->surveyOptions['ipaddr'] && isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : '')));
+            }
+            if ($this->surveyOptions['refurl'] == "Y")
+            {
+                $sdata = array_combine($sdata,array("refurl"=>(($this->surveyOptions['refurl']) ? getenv("HTTP_REFERER") : NULL)));
+            }
+            
             $sdata = array_filter($sdata);
             if (Yii::app()->db->createCommand()->insert($this->surveyOptions['tablename'], $sdata))    // Checked
             {
