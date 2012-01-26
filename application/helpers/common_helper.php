@@ -4433,7 +4433,7 @@ function getArrayFiltersForQuestion($qid)
 
                 //Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
                 //$query = "SELECT other FROM ".db_table_name('questions')." where qid='{$fields[0]}'";
-                $qresult=Questions::model()->findAllByAttribtues(array("qid"=>$fields[0]));
+                $qresult=Questions::model()->findAllByAttributes(array("qid"=>$fields[0]));
                 foreach ($qresult->readAll() as $row) {$other=$row['other'];}
                 if($other == "Y")
                 {
@@ -5499,7 +5499,7 @@ function usedTokens($token, $surveyid)
 {
     $utresult = true;
     Tokens_dynamic::sid($surveyid);
-    $query=Tokens_dynamic::model()->findAllByAttribtues(array("tid, usesleft"), array("token"=>$token));
+    $query=Tokens_dynamic::model()->findAllByAttributes(array("token"=>$token));
 
     if (count($query) > 0) {
         $row = $query[0];

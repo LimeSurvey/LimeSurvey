@@ -57,7 +57,7 @@ class SurveyAction extends CAction {
 
         $clang = $this->_loadLimesurveyLang($surveyid);
 
-        if ( $this->_isClientTokenDifferentFromSessionToken($clienttoken) )
+        if ( $this->_isClientTokenDifferentFromSessionToken($clienttoken,$surveyid) )
         {
             $asMessage = array(
             $clang->gT('Token mismatch'),
@@ -711,7 +711,7 @@ class SurveyAction extends CAction {
     }
 
 
-    function _isClientTokenDifferentFromSessionToken($clientToken)
+    function _isClientTokenDifferentFromSessionToken($clientToken, $surveyid)
     {
         return $clientToken != '' && isset($_SESSION['survey_'.$surveyid]['token']) && $clientToken != $_SESSION['survey_'.$surveyid]['token'];
     }

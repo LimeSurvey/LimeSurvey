@@ -1488,14 +1488,16 @@ function buildsurveysession($surveyid,$previewGroup=false)
         }
         else
         {
+           // ->renderPartial('entertoken_view');
             if (isset($secerror)) echo "<span class='error'>".$secerror."</span><br />";
             echo '<div id="wrapper"><p id="tokenmessage">'.$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br />";
             echo $clang->gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
             <script type='text/javascript'>var focus_element='#token';</script>
             <form id='tokenform' method='post' action='".Yii::app()->getController()->createUrl("/survey/index/sid/$surveyid")."'>
             <ul>
-            <li>";
-
+            <li>";?>
+            <label for='token'><?php $clang->eT("Token:");?></label><input class='text <?php echo $kpclass?>' id='token' type='text' name='token' />
+            <?php
             echo "<input type='hidden' name='sid' value='".$surveyid."' id='sid' />
             <input type='hidden' name='lang' value='".$templang."' id='lang' />";
             if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
@@ -1563,7 +1565,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
             echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'frontend_helper[1676]');
             echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),$redata,'frontend_helper[1677]');
             echo '<div id="wrapper"><p id="tokenmessage">'.$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
-            ."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."<br />\n"
+            ."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."<br /><br />\n"
             ."\t".sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname'])
             ." (<a href='mailto:{$thissurvey['adminemail']}'>"
             ."{$thissurvey['adminemail']}</a>)</p></div>\n";
@@ -1608,7 +1610,7 @@ function buildsurveysession($surveyid,$previewGroup=false)
                 echo "\t<div id='wrapper'>\n"
                 ."\t<p id='tokenmessage'>\n"
                 ."\t".$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
-                ."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."<br/>\n"
+                ."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."<br/><br />\n"
                 ."\t".sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname'])
                 ." (<a href='mailto:{$thissurvey['adminemail']}'>"
                 ."{$thissurvey['adminemail']}</a>)\n"
