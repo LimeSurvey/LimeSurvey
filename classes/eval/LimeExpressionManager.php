@@ -4934,6 +4934,13 @@ class LimeExpressionManager {
                         // In such cases, PHP will make the question visible by default.  By not forcing a re-show(), template.js can hide questions with impunity
                         $jsParts[] = "  $('#question" . $arg['qid'] . "').show();\n";
                         $jsParts[] = "  $('#display" . $arg['qid'] . "').val('on');\n";
+                        if ($arg['type'] == 'S')
+                        {
+                            $jsParts[] = "  if($('#question" . $arg['qid'] . " div[id^=\"gmap_canvas\"]').length > 0)\n";
+                            $jsParts[] = "  {\n";
+                            $jsParts[] = "      resetMap(" . $arg['qid'] . ");\n";
+                            $jsParts[] = "  }\n";
+                        }
                     }
                 }
                 // If it is an equation, and relevance is true, then write the value from the question to the answer field storing the result
