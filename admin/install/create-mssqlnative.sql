@@ -324,8 +324,8 @@ CREATE TABLE [prefix_surveys] (
   [navigationdelay] tinyint default '0',
   [nokeyboard] char(1) default 'N',
   [alloweditaftercompletion] char(1) default 'N',
-  [googleAnalyticsStyle] char(1) DEFAULT NULL,
-  [googleAnalyticsAPIKey] VARCHAR(25) DEFAULT NULL,
+  [googleanalyticsstyle] char(1) DEFAULT NULL,
+  [googleanalyticsapikey] VARCHAR(25) DEFAULT NULL,
   PRIMARY KEY  ([sid])
 )
 ;
