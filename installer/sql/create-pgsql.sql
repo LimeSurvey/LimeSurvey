@@ -309,8 +309,8 @@ CREATE TABLE prefix_surveys (
     navigationdelay smallint DEFAULT '0',
     nokeyboard character(1) DEFAULT 'N'::bpchar,
     alloweditaftercompletion character(1) DEFAULT 'N'::bpchar,
-    googleAnalyticsStyle character(1) DEFAULT NULL,
-    googleAnalyticsAPIKey character varying(25) DEFAULT NULL,
+    googleanalyticsstyle character(1) DEFAULT NULL,
+    googleanalyticsapikey character varying(25) DEFAULT NULL,
     CONSTRAINT prefix_surveys_pkey PRIMARY KEY (sid)
 );
 

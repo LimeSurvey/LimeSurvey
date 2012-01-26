@@ -263,7 +263,7 @@ CREATE TABLE [prefix_surveys] (
   [startdate] DATETIME default NULL,
   [expires] DATETIME default NULL,
   [adminemail] VARCHAR(320) default NULL,
-  [anonymized] char(1) default NULL,
+  [anonymized] char(1) NOT NULL default 'N',
   [faxto] VARCHAR(20) default NULL,
   [format] char(1) default NULL,
   [savetimings] char(1) default 'N',
@@ -312,8 +312,8 @@ CREATE TABLE [prefix_surveys] (
   [navigationdelay] tinyint default '0',
   [nokeyboard] char(1) default 'N',
   [alloweditaftercompletion] char(1) default 'N',
-  [googleAnalyticsStyle] char(1) DEFAULT NULL,
-  [googleAnalyticsAPIKey] VARCHAR(25) DEFAULT NULL,
+  [googleanalyticsstyle] char(1) DEFAULT NULL,
+  [googleanalyticsapikey] VARCHAR(25) DEFAULT NULL,
 
   PRIMARY KEY  ([sid])
 )

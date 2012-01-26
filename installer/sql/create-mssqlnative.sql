@@ -320,8 +320,8 @@ CREATE TABLE [prefix_surveys] (
   [navigationdelay] tinyint default '0',
   [nokeyboard] char(1) default 'N',
   [alloweditaftercompletion] char(1) default 'N',
-  [googleAnalyticsStyle] char(1) DEFAULT NULL,
-  [googleAnalyticsAPIKey] VARCHAR(25) DEFAULT NULL,
+  [googleanalyticsstyle] char(1) DEFAULT NULL,
+  [googleanalyticsapikey] VARCHAR(25) DEFAULT NULL,
 
   PRIMARY KEY  ([sid])
 )
@@ -494,8 +494,8 @@ CREATE TABLE [prefix_participant_attribute_names] (
 -- Table structure for table participant attribute values
 --
 CREATE TABLE [prefix_participant_attribute_values] (
-                               			  [attribute_id] int(11) NOT NULL,
-                                                  [value_id] int(11) NOT NULL AUTO_INCREMENT,
+    [attribute_id] integer NOT NULL,
+    [value_id] integer NOT NULL AUTO_INCREMENT,
                                                   [value] varchar(20) NOT NULL,
                                                   PRIMARY KEY  ([value_id])
 						  );
@@ -504,7 +504,7 @@ CREATE TABLE [prefix_participant_attribute_values] (
 --
 CREATE TABLE [prefix_participant_shares] (
                                                   [participant_id] varchar(50) NOT NULL,
-                               			  [shared_uid] int(11) NOT NULL,
+    [share_uid] integer NOT NULL,
                                                   [date_added] datetime,
                                                   [can_edit] varchar(5) NOT NULL,
                                                   PRIMARY KEY  ([participant_id],[shared_uid])
@@ -514,9 +514,9 @@ CREATE TABLE [prefix_participant_shares] (
 --
 CREATE TABLE [prefix_survey_links] (
                                                   [participant_id] varchar(50) NOT NULL,
-                               			  [token_id] int(11) NOT NULL,
-                                                  [survey_id] int(11) NOT NULL,
-                                                  [date_created] datetime,
+    [token_id] integer NOT NULL,
+    [survey_id] integer NOT NULL,
+    [date_created] datetime
                                                   PRIMARY KEY  ([participant_id],[token_id],[survey_id])
 						  );
 
@@ -566,4 +566,3 @@ create index [parent_qid_idx] on [prefix_questions] ([parent_qid]);
 -- Version Info
 --
 INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '155');
-INSERT INTO [prefix_settings_global] VALUES ('SessionName', '$sessionname');
