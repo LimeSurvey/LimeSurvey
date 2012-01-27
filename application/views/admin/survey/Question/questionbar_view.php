@@ -169,7 +169,7 @@
         <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/plus.gif' title='
             <?php $clang->eT("Show Details of this Question"); ?>'  alt='<?php $clang->eT("Show Details of this Question"); ?>' onclick='document.getElementById("questiondetails").style.display="";' />
         <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/close.gif' title='
-            <?php $clang->eT("Close this Question"); ?>' alt='<?php $clang->eT("Close this Question"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/survey/view/surveyid/$surveyid/qid/$gid"); ?>', '_top')" />
+            <?php $clang->eT("Close this Question"); ?>' alt='<?php $clang->eT("Close this Question"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/survey/view/surveyid/$surveyid/gid/$gid"); ?>', '_top')" />
     </div>
 </div>
 </div>
