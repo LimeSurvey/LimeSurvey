@@ -198,13 +198,12 @@ class SurveyAction extends CAction {
             //Check for inactive surveys which allow public registration.
             $squery = "SELECT sid, surveyls_title, publicstatistics
             FROM {{surveys}}
-            INNER JOIN {{surveys_languagesettings}}
-            ON surveyls_survey_id = sid
+            INNER JOIN {{surveys_languagesettings}} ON surveyls_survey_id = sid
             WHERE surveyls_language='{$sDisplayLanguage}'
             AND allowregister='Y'
             AND active='N'
             AND listpublic='Y'
-            AND expires is not null
+            AND ((expires >= '".date("Y-m-d H:i")."') OR (expires is null))
             AND startdate is not null
             ORDER BY surveyls_title";
 

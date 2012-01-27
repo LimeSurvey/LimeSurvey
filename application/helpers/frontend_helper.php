@@ -218,7 +218,7 @@
             $previewgrp = true;
         }
 
-        $htmlcode ="<select id=\"languagechanger\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
+        $sHTMLCode = "<select id='languagechanger' name='languagechanger' class='languagechanger' onchange='javascript:window.location=this.value'>\n";
         $sAddToURL = "";
         $sTargetURL = Yii::app()->getController()->createUrl("/survey/index");
         if ($previewgrp){
@@ -242,22 +242,29 @@
 
     }
 
-
+    /**
+    * This function creates the language selector for the public survey index page
+    *
+    * @param mixed $sSelectedLanguage The language in which all information is shown
+    */
     function makeLanguageChanger($sSelectedLanguage)
     {
-        $defaultlang = Yii::app()->getConfig("defaultlang");
-        $htmlcode = "<select id=\"languagechanger\" name=\"languagechanger\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
-        foreach(getLanguageDataRestricted() as $key=>$val)
+        $sHTMLCode = "<select id='languagechanger' name='languagechanger' class='languagechanger' onchange='javascript:window.location=this.value'>\n";
+        foreach(getLanguageDataRestricted(true, $sSelectedLanguage) as $sLanguageID=>$aLanguageProperties)
         {
-            $htmlcode .= "\t<option value=\"".Yii::app()->getController()->createUrl("/survey/index")."?lang=".$key."\" ";
-            if($key == $sSelectedLanguage)
+            $sHTMLCode .= "<option value='".Yii::app()->getController()->createUrl("/survey/index")."?lang=".$sLanguageID."' ";
+            if($sLanguageID == $sSelectedLanguage)
             {
-                $htmlcode .= " selected=\"selected\" ";
+                $sHTMLCode .= " selected='selected' ";
+                $sHTMLCode .= ">{$aLanguageProperties['description']}</option>\n";
             }
-            $htmlcode .= ">".getLanguageNameFromCode($key,false)."</option>\n";
+            else
+            {
+                $sHTMLCode .= ">".$aLanguageProperties['nativedescription'].' - '.$aLanguageProperties['description']."</option>\n";
+            }
         }
-        $htmlcode .= "</select>\n";
-        return $htmlcode;
+        $sHTMLCode .= "</select>\n";
+        return $sHTMLCode;
     }
 
 

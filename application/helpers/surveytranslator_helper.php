@@ -64,12 +64,10 @@
 
         $clang = new Limesurvey_lang($sLanguageCode);
 
-        static $supportedLanguages;
         static $result = array();
 
-        if (isset($result[$bOrderByNative])) return $result[$bOrderByNative];
+        if (isset($result[$sLanguageCode][$bOrderByNative])) return $result[$sLanguageCode][$bOrderByNative];
 
-        if (!isset($supportedLanguages)) {
             // Albanian
             $supportedLanguages['sq']['description'] = $clang->gT('Albanian');
             $supportedLanguages['sq']['nativedescription'] = 'Shqipe';
@@ -483,7 +481,6 @@
             $supportedLanguages['vi']['rtl'] = false;
             $supportedLanguages['vi']['dateformat'] = 5;
             $supportedLanguages['vi']['radixpoint'] = 1;
-        }
 
         if ($bOrderByNative)
         {
@@ -494,7 +491,7 @@
             uasort($supportedLanguages,"userSort");
         }
 
-        $result[$bOrderByNative] = $supportedLanguages;
+        $result[$sLanguageCode][$bOrderByNative] = $supportedLanguages;
 
         Return $supportedLanguages;
     }
@@ -695,13 +692,17 @@
 
 
 
-    function getLanguageNameFromCode($codetosearch, $withnative=true)
+    function getLanguageNameFromCode($codetosearch, $withnative=true, $sTranslationLanguage=null)
     {
-        $detaillanguages = getLanguageData(false,Yii::app()->session['adminlang']);
+        if (is_null($sTranslationLanguage))
+        {
+           $sTranslationLanguage=Yii::app()->session['adminlang'];
+        }
+        $detaillanguages = getLanguageData(false,$sTranslationLanguage);
         if (isset($detaillanguages[$codetosearch]['description']))
         {
             if ($withnative) {
-                return $detaillanguages[$codetosearch]['description'].' - '.$detaillanguages[$codetosearch]['nativedescription'];
+                return array($detaillanguages[$codetosearch]['description'], $detaillanguages[$codetosearch]['nativedescription']);
             }
             else { return $detaillanguages[$codetosearch]['description'];}
         }
@@ -744,8 +745,8 @@
         }
     }
 
-    function getLanguageDataRestricted($bOrderByNative=false) {
-        $aLanguageData=getLanguageData($bOrderByNative);
+    function getLanguageDataRestricted($bOrderByNative=false,$sLanguageCode='en') {
+        $aLanguageData=getLanguageData($bOrderByNative, $sLanguageCode);
 
         if (trim(Yii::app()->getConfig('restrictToLanguages'))!='')
         {
