@@ -1418,7 +1418,6 @@ function getSurveyInfo($surveyid, $languagecode='')
         foreach ($row->survey as $k => $v)
             $thissurvey[$k] = $v;
 
-
         // now create some stupid array translations - needed for backward compatibility
         // Newly added surveysettings don't have to be added specifically - these will be available by field name automatically
         $thissurvey['name']=$thissurvey['surveyls_title'];
@@ -1446,8 +1445,6 @@ function getSurveyInfo($surveyid, $languagecode='')
         $thissurvey['urldescrip'] == '' ) {$thissurvey['urldescrip']=$thissurvey['surveyls_url'];}
     }
 
-    //not sure this should be here... ToDo: Find a better place
-    if (function_exists('makelanguagechanger')) $languagechanger = makelanguagechanger($languagecode);
     return $thissurvey;
 }
 
@@ -2199,7 +2196,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
     $prow = Survey::model()->findByPk($surveyid)->getAttributes(); //Checked
-    
+
     if ($prow['anonymized'] == "N")
     {
         $fieldmap["token"]=array("fieldname"=>"token", 'sid'=>$surveyid, 'type'=>"token", "gid"=>"", "qid"=>"", "aid"=>"");
@@ -2683,7 +2680,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap[$fieldname]['other']=$arow['other'];
         $fieldmap[$fieldname]['help']=$arow['help'];
     }
-    
+
     if (isset($fieldmap)) {
         $globalfieldmap[$surveyid][$style][$sLanguage] = $fieldmap;
         Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]=$fieldmap;

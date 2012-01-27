@@ -147,28 +147,35 @@ class SurveyAction extends CAction {
 
 
         //CHECK FOR REQUIRED INFORMATION (sid)
-
-        if (!$surveyid)
+        if ($surveyid)
         {
-            $baselang = Yii::app()->getConfig('defaultlang');
-            $clang = $this->_loadLimesurveyLang($baselang);
+            $clang = SetSurveyLanguage( $surveyid, $sTempLanguage);
+        }
+        else
+        {
+            if (!is_null($param['lang']))
+            {
+                $sDisplayLanguage=$param['lang'];
+            }
+            else{
+                $sDisplayLanguage = Yii::app()->getConfig('defaultlang');
+            }
+            $clang = $this->_loadLimesurveyLang($sDisplayLanguage);
             if(!isset($defaulttemplate))
             {
                 $defaulttemplate=Yii::app()->getConfig("defaulttemplate");
             }
-            $languagechanger = makelanguagechanger($baselang);
+            $languagechanger = makeLanguageChanger($sDisplayLanguage);
             //Find out if there are any publicly available surveys
-            $query = "SELECT a.sid, b.surveyls_title, a.publicstatistics
-            FROM {{surveys}} AS a
-            INNER JOIN {{surveys_languagesettings}} AS b
-            ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language )
-            WHERE surveyls_survey_id=a.sid
-            AND surveyls_language=a.language
-            AND surveyls_language='$baselang'
-            AND a.active='Y'
-            AND a.listpublic='Y'
-            AND ((a.expires >= '".date("Y-m-d H:i")."') OR (a.expires is null))
-            AND ((a.startdate <= '".date("Y-m-d H:i")."') OR (a.startdate is null))
+            $query = "SELECT sid, surveyls_title, publicstatistics
+            FROM {{surveys}}
+            INNER JOIN {{surveys_languagesettings}}
+            ON ( surveyls_survey_id = sid  )
+            WHERE surveyls_language='{$sDisplayLanguage}'
+            AND active='Y'
+            AND listpublic='Y'
+            AND ((expires >= '".date("Y-m-d H:i")."') OR (expires is null))
+            AND ((startdate <= '".date("Y-m-d H:i")."') OR (startdate is null))
             ORDER BY surveyls_title";
             $result = dbExecuteAssoc($query,false,true) or safeDie("Could not connect to database. If you try to install LimeSurvey please refer to the <a href='http://docs.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage."); //Checked
             $list=array();
@@ -189,18 +196,16 @@ class SurveyAction extends CAction {
                 }
             }
             //Check for inactive surveys which allow public registration.
-            $squery = "SELECT a.sid, b.surveyls_title, a.publicstatistics
-            FROM {{surveys}} AS a
-            INNER JOIN {{surveys_languagesettings}} AS b
-            ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language )
-            WHERE surveyls_survey_id=a.sid
-            AND surveyls_language=a.language
-            AND surveyls_language='$baselang'
-            AND a.allowregister='Y'
-            AND a.active='N'
-            AND a.listpublic='Y'
-            AND a.expires is not null
-            AND a.startdate is not null
+            $squery = "SELECT sid, surveyls_title, publicstatistics
+            FROM {{surveys}}
+            INNER JOIN {{surveys_languagesettings}}
+            ON surveyls_survey_id = sid
+            WHERE surveyls_language='{$sDisplayLanguage}'
+            AND allowregister='Y'
+            AND active='N'
+            AND listpublic='Y'
+            AND expires is not null
+            AND startdate is not null
             ORDER BY surveyls_title";
 
             $sresult = dbExecuteAssoc($squery) or safeDie("Couldn't execute $squery");
@@ -636,6 +641,8 @@ class SurveyAction extends CAction {
             }
         }
 
+        if( !isset($param['lang']) )
+            $param['lang'] = returnGlobal('lang');
         if( !isset($param['action']) )
             $param['action'] = returnGlobal('action');
         if( !isset($param['newtest']) )

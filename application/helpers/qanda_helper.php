@@ -896,7 +896,6 @@ function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $an
         $htmltbody2 .= " style='display: none'";
     }
     $htmltbody2 .= ">\n";
-    $htmltbody2 .= ">\n";
     if($ia[4]=="1") {
         //This is an array dual scale question and we have to massage the tbidpslay rowname
         $hiddenfield = "<input type='hidden' name='tbdisp$rowname#0' id='tbdisp$rowname#0' value='on' />\n";

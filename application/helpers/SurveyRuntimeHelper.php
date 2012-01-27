@@ -375,7 +375,7 @@ class SurveyRuntimeHelper {
 
                     //Send notifications
 
-                    SendSubmitNotifications();
+                    sendSubmitNotifications($surveyid);
 
 
                     $content = '';
@@ -647,9 +647,9 @@ class SurveyRuntimeHelper {
                 $percentcomplete = makegraph($_SESSION['survey_'.$surveyid]['step'], $_SESSION['survey_'.$surveyid]['totalsteps']);
             }
         }
-        if (!(isset($languagechanger) && strlen($languagechanger) > 0) && function_exists('makelanguagechanger'))
+        if (!(isset($languagechanger) && strlen($languagechanger) > 0) && function_exists('makeLanguageChangerSurvey'))
         {
-            $languagechanger = makelanguagechanger($thissurvey['language']);
+            $languagechanger = makeLanguageChangerSurvey($_SESSION['survey_'.$surveyid]['s_lang']);
         }
 
         //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
@@ -815,6 +815,7 @@ END;
                 $qinfo = LimeExpressionManager::GetQuestionStatus($qid);
                 $lastgrouparray = explode("X", $qa[7]);
                 $lastgroup = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
+                $lastanswer = $qa[7];
 
                 $q_class = getQuestionClass($qinfo['info']['type']);
 
