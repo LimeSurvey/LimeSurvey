@@ -1936,11 +1936,13 @@ function getextendedanswer($fieldcode, $value, $format='', $dateformatphp='d.m.Y
                     //Show the filename, size, title and comment -- no link!
                     $files = json_decode($value);
                     $value = '';
-                    foreach($files as $file) {
-                        $value .= $file->name .
-                            ' (' . $file->size . 'KB) ' .
-                            strip_tags($file->title) .
-                            ' - ' . strip_tags($file->comment) . "<br/>";
+                    if(is_array($files)) {
+                        foreach($files as $file) {
+                            $value .= $file->name .
+                                ' (' . $file->size . 'KB) ' .
+                                strip_tags($file->title) .
+                                ' - ' . strip_tags($file->comment) . "<br/>";
+                        }
                     }
                 }
             default:
