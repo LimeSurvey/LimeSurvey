@@ -74,15 +74,25 @@ class ExpressionManager {
         $RDP_regex_word = '(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:' . ExpressionManager::$RDP_regex_var_attr . '))?';
         $RDP_regex_number = '[0-9]+\.?[0-9]*|\.[0-9]+';
         $RDP_regex_andor = '\band\b|\bor\b|&&|\|\|';
+        $RDP_regex_lcb = '{';
+        $RDP_regex_rcb = '}';
+        $RDP_regex_sq = '\'';
+        $RDP_regex_dq= '"';
+        $RDP_regex_bs = '\\\\';
 
-        $this->RDP_ExpressionRegex = '#((?<!\\\\)' . '{' . '(?!\s*\n\|\s*\r\|\s*\r\n|\s+)' .
-//                '(' . $RDP_regex_dq_string . '|' . $RDP_regex_sq_string . '|.*?)*' .    // This line lets you have braces embedded in strings - like RegExp - but it crashes the compiler when there are many tokens
-                '.*?' .
-                '(?<!\\\\)(?<!\n|\r|\r\n|\s)' . '}' . ')#';
+        $RDP_StringSplitRegex = array(
+            $RDP_regex_lcb,
+            $RDP_regex_rcb,
+            $RDP_regex_sq,
+            $RDP_regex_dq,
+            $RDP_regex_bs,
+        );
 
+        // RDP_ExpressionRegex is the regular expression that splits apart strings that contain curly braces in order to find expressions
+        $this->RDP_ExpressionRegex =  '#(' . implode('|',$RDP_StringSplitRegex) . ')#i';
 
         // asTokenRegex and RDP_TokenType must be kept in sync  (same number and order)
-    $RDP_TokenRegex = array(
+        $RDP_TokenRegex = array(
             $RDP_regex_dq_string,
             $RDP_regex_sq_string,
             $RDP_regex_whitespace,
@@ -2244,34 +2254,31 @@ class ExpressionManager {
 
     /**
      * Split a soure string into STRING vs. EXPRESSION, where the latter is surrounded by unescaped curly braces.
-     * This version of the function is a little slower (perhaps 25%) than asStringSplitOnExpressions_old()
-     * However, it does properly handle nested curly braces and curly braces within strings within curly braces - both of which are needed to better support JavaScript
+     * This verson properly handles nested curly braces and curly braces within strings within curly braces - both of which are needed to better support JavaScript
      * Users still need to add a space or carriage return after opening braces (and ideally before closing braces too) to avoid  having them treated as expressions.
      * @param <type> $src
      * @return string
      */
     public function asSplitStringOnExpressions($src)
     {
-
-        $chars = preg_split("//",$src);
-        $count = count($chars);
+        $parts = preg_split($this->RDP_ExpressionRegex,$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
+        $count = count($parts);
         $tokens = array();
         $inSQString=false;
         $inDQString=false;
         $curlyDepth=0;
         $thistoken=array();
+        $offset=0;
         for ($j=0;$j<$count;++$j)
         {
-            $_c=$chars[$j];
-            $_this = implode('',$thistoken);
-            switch($chars[$j])
+            switch($parts[$j])
             {
                 case '{':
-                    if ($j < ($count-1) && preg_match('/\s|\n|\r/',$chars[$j+1]))
+                    if ($j < ($count-1) && preg_match('/\s|\n|\r/',substr($parts[$j+1],0,1)))
                     {
                         // don't count this as an expression if the opening brace is followed by whitespace
                         $thistoken[] = '{';
-                        $thistoken[] = $chars[++$j];
+                        $thistoken[] = $parts[++$j];
                     }
                     else if ($inDQString || $inSQString)
                     {
@@ -2289,20 +2296,22 @@ class ExpressionManager {
                         // then starting an expression - save the out-of-expression string
                         if (count($thistoken) > 0)
                         {
+                            $_token = implode('',$thistoken);
                             $tokens[] = array(
-                                implode('',$thistoken),
-                                $j-count($thistoken),
+                                $_token,
+                                $offset,
                                 'STRING'
                                 );
+                            $offset += strlen($_token);
                         }
                         $curlyDepth=1;
                         $thistoken = array();
-                        $thistoken[] = '{'; // TODO - remove this
+                        $thistoken[] = '{';
                     }
                     break;
                 case '}':
                     // don't count this as an expression if the closing brace is preceded by whitespace
-                    if ($j > 0 && preg_match('/\s|\n|\r/',$chars[$j-1]))
+                    if ($j > 0 && preg_match('/\s|\n|\r/',substr($parts[$j-1],-1,1)))
                     {
                         $thistoken[] = '}';
                     }
@@ -2324,12 +2333,14 @@ class ExpressionManager {
                             if ($curlyDepth==0)
                             {
                                 // then closing expression
-                                $thistoken[] = '}'; // TODO - remove this
+                                $thistoken[] = '}';
+                                $_token = implode('',$thistoken);
                                 $tokens[] = array(
-                                    implode('',$thistoken),
-                                    $j-count($thistoken),
+                                    $_token,
+                                    $offset,
                                     'EXPRESSION'
                                     );
+                                $offset += strlen($_token);
                                 $thistoken=array();
                             }
                             else
@@ -2388,12 +2399,12 @@ class ExpressionManager {
                     break;
                 case '\\':
                     if ($j < ($count-1)) {
-                        $thistoken[] = $chars[$j++];
-                        $thistoken[] = $chars[$j];
+                        $thistoken[] = $parts[$j++];
+                        $thistoken[] = $parts[$j];
                     }
                     break;
                 default:
-                    $thistoken[] = $chars[$j];
+                    $thistoken[] = $parts[$j];
                     break;
             }
         }
@@ -2401,37 +2412,9 @@ class ExpressionManager {
         {
             $tokens[] = array(
                 implode('',$thistoken),
-                $j-count($thistoken),
+                $offset,
                 'STRING',
             );
-        }
-        return $tokens;
-    }
-
-    /**
-     * Split a soure string into STRING vs. EXPRESSION, where the latter is surrounded by unescaped curly braces.
-     * @param <type> $src
-     * @return string
-     */
-    public function asSplitStringOnExpressions_old($src)
-    {
-        // tokenize string by the {} pattern, propertly dealing with strings in quotations, and escaped curly brace values
-        $tokens0 = preg_split($this->RDP_ExpressionRegex,$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
-
-        $tokens = array();
-        // Add token_type to $tokens:  For each token, test each categorization in order - first match will be the best.
-        for ($j=0;$j<count($tokens0);++$j)
-        {
-            $token = $tokens0[$j];
-            if (preg_match($this->RDP_ExpressionRegex,$token[0]))
-            {
-                $token[2] = 'EXPRESSION';
-            }
-            else
-            {
-                $token[2] = 'STRING';    // does type matter here?
-            }
-            $tokens[] = $token;
         }
         return $tokens;
     }
@@ -2529,6 +2512,8 @@ class ExpressionManager {
     static function UnitTestStringSplitter()
     {
        $tests = <<<EOD
+This string does not contain an expression
+"This is only a string"
 "this is a string that contains {something in curly brace}"
 How about nested curly braces, like {INSERTANS:{SGQ}}?
 This example has escaped curly braces like \{this is not an equation\}
@@ -2537,6 +2522,8 @@ What about for unmatched } closing curly braces?
 What if there is a { space after the opening brace?}
 What about a {space before the closing brace }?
 What about an { expression nested {within a string} that has white space after the opening brace}?
+This {expression has {a nested curly brace { plus ones with whitespace around them} - they should be properly captured} into an expression  with sub-expressions.
+This {is a string {since it does not close } all of its curly} braces.
 Can {expressions contain 'single' or "double" quoted strings}?
 Can an expression contain a perl regular expression like this {'/^\d{3}-\d{2}-\d{4}$/'}?
 [img src="images/mine_{Q1}.png"/]
