@@ -632,6 +632,20 @@ class LimeExpressionManager {
                         switch ($type)
                         {
                             case '1':   //Array (Flexible Labels) dual scale
+                                if (substr($sq['varName'],-1,1) == '0')
+                                {
+                                    if ($this->sgqaNaming)
+                                    {
+                                        $base = substr(substr($sq['jsVarName'],4),0,-1);
+                                        $sq_name = "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
+                                    }
+                                    else
+                                    {
+                                        $base = substr($sq['varName'],0,-1);
+                                        $sq_name = "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
+                                    }
+                                }
+                                break;
                             case ':': //ARRAY (Multi Flexi) 1 to 10
                             case ';': //ARRAY (Multi Flexi) Text
                             case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
@@ -706,6 +720,20 @@ class LimeExpressionManager {
                         switch ($type)
                         {
                             case '1':   //Array (Flexible Labels) dual scale
+                                if (substr($sq['varName'],-1,1) == '0')
+                                {
+                                    if ($this->sgqaNaming)
+                                    {
+                                        $base = substr(substr($sq['jsVarName'],4),0,-1);
+                                        $sq_name = "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
+                                    }
+                                    else
+                                    {
+                                        $base = substr($sq['varName'],0,-1);
+                                        $sq_name = "if(count(" . $base . "0.NAOK," . $base . "1.NAOK)==2,1,'')";
+                                    }
+                                }
+                                break;
                             case ':': //ARRAY (Multi Flexi) 1 to 10
                             case ';': //ARRAY (Multi Flexi) Text
                             case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
