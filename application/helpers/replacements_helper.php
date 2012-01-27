@@ -28,12 +28,12 @@
 function templatereplace($line, $replacements = array(), &$redata = array(), $debugSrc = 'Unspecified', $anonymized = false, $questionNum = NULL, $registerdata = array())
 {
     /*
-    global $clienttoken,$token,$sitename,$move,$showXquestions,$showqnumcode,$questioncode,$register_errormsg;
+    global $clienttoken,$token,$sitename,$move,$showxquestions,$showqnumcode,$questioncode,$register_errormsg;
     global $s_lang,$errormsg,$saved_id, $totalBoilerplatequestions, $relativeurl, $languagechanger,$captchapath,$loadname;
     */
     /*
     $allowedvars = array('surveylist', 'sitename', 'clienttoken', 'rooturl', 'thissurvey', 'imageurl', 'defaulttemplate',
-    'percentcomplete', 'move', 'groupname', 'groupdescription', 'question', 'showXquestions',
+    'percentcomplete', 'move', 'groupname', 'groupdescription', 'question', 'showxquestions',
     'showgroupinfo', 'showqnumcode', 'questioncode', 'answer', 'navigator', 'help', 'totalquestions',
     'surveyformat', 'completed', 'register_errormsg', 'notanswered', 'privacy', 'surveyid', 'publicurl',
     'templatedir', 'token', 'assessments', 's_lang', 'errormsg', 'clang', 'saved_id', 'usertemplaterootdir',
@@ -63,7 +63,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     'saved_id',
     'showgroupinfo',
     'showqnumcode',
-    'showXquestions',
+    'showxquestions',
     'sitename',
     'surveylist',
     'templatedir',
@@ -95,7 +95,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (!isset($showqnumcode)) { $showqnumcode = Yii::app()->getConfig('showqnumcode'); }
     $_surveyid = Yii::app()->getConfig('surveyID');
     if (!isset($totalBoilerplatequestions)) { $totalBoilerplatequestions = 0; }
-    if (!isset($showXquestions)) { $showXquestions = Yii::app()->getConfig('showXquestions'); }
+    if (!isset($showxquestions)) { $showxquestions = Yii::app()->getConfig('showxquestions'); }
     if (!isset($s_lang)) { $s_lang = (isset(Yii::app()->session['survey_'.$_surveyid]['s_lang']) ? Yii::app()->session['survey_'.$_surveyid]['s_lang'] : 'en'); }
     if (!isset($captchapath)) { $captchapath = ''; }
 
@@ -267,9 +267,9 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if(!isset($totalquestions)) $totalquestions = 0;
     $_totalquestionsAsked = $totalquestions - $totalBoilerplatequestions;
     if (
-    $showXquestions == 'show' ||
-    ($showXquestions == 'choose' && !isset($thissurvey['showXquestions'])) ||
-    ($showXquestions == 'choose' && $thissurvey['showXquestions'] == 'Y')
+    $showxquestions == 'show' ||
+    ($showxquestions == 'choose' && !isset($thissurvey['showxquestions'])) ||
+    ($showxquestions == 'choose' && $thissurvey['showxquestions'] == 'Y')
     )
     {
         if ($_totalquestionsAsked < 1)

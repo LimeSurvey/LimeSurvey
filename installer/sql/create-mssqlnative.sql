@@ -284,7 +284,7 @@ CREATE TABLE [prefix_surveys] (
   [allowsave] char(1) default 'Y',
   [autonumber_start] bigint default '0',
   [autoredirect] char(1) default 'N',
-  [showXquestions] char(1) default 'Y',
+  [showxquestions] char(1) default 'Y',
   [showgroupinfo] char(1) default 'B',
   [shownoanswer] char(1) default 'Y',
   [showqnumcode] char(1) default 'X',

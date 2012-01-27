@@ -364,8 +364,8 @@
                     <input id='repeatheadings' name='repeatheadings' value='<?php echo $thisrepeatheadings; ?>' size='4' maxlength='4' /></li>
 
                 <?php
-                    // showXquestions
-                    $set_xq=getGlobalSetting('showXquestions');
+                    // showxquestions
+                    $set_xq=getGlobalSetting('showxquestions');
                     $sel_xq = array( 'hide' => '' , 'show' => '' , 'choose' => '');
                     $sel_xq[$set_xq] = ' selected="selected"';
                     if( empty($sel_xq['hide']) && empty($sel_xq['show']) && empty($sel_xq['choose']))
@@ -373,8 +373,8 @@
                         $sel_xq['choose'] = ' selected="selected"';
                     };
                 ?>
-                <li><label for="showXquestions"><?php $clang->eT('Show "There are X questions in this survey"'); ?></label>
-                    <select id="showXquestions" name="showXquestions">
+                <li><label for="showxquestions"><?php $clang->eT('Show "There are X questions in this survey"'); ?></label>
+                    <select id="showxquestions" name="showxquestions">
                         <option value="show"<?php echo $sel_xq['show']; ?>><?php $clang->eT('Yes'); ?></option>
                         <option value="hide"<?php echo $sel_xq['hide']; ?>><?php $clang->eT('No'); ?></option>
                         <option value="choose"<?php echo $sel_xq['choose']; ?>><?php $clang->eT('Survey admin can choose'); ?></option>

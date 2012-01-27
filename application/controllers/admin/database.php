@@ -1010,7 +1010,7 @@ class database extends Survey_Common_Action
             'printanswers'=> Yii::app()->request->getPost('printanswers'),
             'publicstatistics'=> Yii::app()->request->getPost('publicstatistics'),
             'autoredirect'=> Yii::app()->request->getPost('autoredirect'),
-            'showXquestions'=> Yii::app()->request->getPost('showXquestions'),
+            'showxquestions'=> Yii::app()->request->getPost('showxquestions'),
             'showgroupinfo'=> Yii::app()->request->getPost('showgroupinfo'),
             'showqnumcode'=> Yii::app()->request->getPost('showqnumcode'),
             'shownoanswer'=> Yii::app()->request->getPost('shownoanswer'),

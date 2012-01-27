@@ -1171,7 +1171,7 @@ class SurveyAction extends Survey_Common_Action
     private function _tabPresentationNavigation($esrow)
     {
         $clang = $this->getController()->lang;
-        global $showXquestions, $showgroupinfo, $showqnumcode;
+        global $showxquestions, $showgroupinfo, $showqnumcode;
 
         Yii::app()->loadHelper('globalsettings');
 
@@ -1180,7 +1180,7 @@ class SurveyAction extends Survey_Common_Action
         $aData['clang'] = $clang;
         $aData['esrow'] = $esrow;
         $aData['shownoanswer'] = $shownoanswer;
-        $aData['showXquestions'] = $showXquestions;
+        $aData['showxquestions'] = $showxquestions;
         $aData['showgroupinfo'] = $showgroupinfo;
         $aData['showqnumcode'] = $showqnumcode;
         return $aData;
@@ -1497,7 +1497,7 @@ class SurveyAction extends Survey_Common_Action
                 'allowsave' => $_POST['allowsave'],
                 'navigationdelay' => $_POST['navigationdelay'],
                 'autoredirect' => $_POST['autoredirect'],
-                'showXquestions' => $_POST['showXquestions'],
+                'showxquestions' => $_POST['showxquestions'],
                 'showgroupinfo' => $_POST['showgroupinfo'],
                 'showqnumcode' => $_POST['showqnumcode'],
                 'shownoanswer' => $_POST['shownoanswer'],

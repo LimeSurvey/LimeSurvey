@@ -28,14 +28,14 @@ class InstallerConfigForm extends CFormModel
 	public $db_names = array(
 		'mysql' => 'MySQL',
 		'mysqli' => 'MySQLi',
-		'sqlite' => 'SQLite',
-		'sqlite2' => 'SQLite2',
+//		'sqlite' => 'SQLite',
+//		'sqlite2' => 'SQLite2',
 		'mssql' => 'Microsoft SQL Server',
 		'dblib' => 'Microsoft SQL Server (dblib)',
 		'sqlsrv' => 'Microsoft SQL Server (sqlsrv)',
 		'sybase' => 'Microsoft SQL Server (sybase)',
 		'pgsql' => 'PostgreSQL',
-		'oci' => 'Oracle'
+//		'oci' => 'Oracle'
 	);
 
 	// Optional

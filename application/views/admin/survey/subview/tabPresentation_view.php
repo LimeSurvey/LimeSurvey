@@ -211,32 +211,32 @@
         </select>
 </li>
 
-<!-- $show_dis_pre =<li><label for="dis_showXquestions"><?php $clang->eT('Show "There are X questions in this survey"'); ?></label> <input type="hidden" name="showXquestions" id="" value="
-	    $show_dis_mid = " /> <input type="text" name="dis_showXquestions" id="dis_showXquestions" disabled="disabled" value="
+<!-- $show_dis_pre =<li><label for="dis_showxquestions"><?php $clang->eT('Show "There are X questions in this survey"'); ?></label> <input type="hidden" name="showxquestions" id="" value="
+	    $show_dis_mid = " /> <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="
 	    $show_dis_post = " size="70" /></li> -->
-        <?php switch ($showXquestions) {
+        <?php switch ($showxquestions) {
 		case 'show': ?>
-		   <li><label for="dis_showXquestions"><?php $clang->eT('Show "There are X questions in this survey"'); ?></label> <input type="hidden" name="showXquestions" id="" value="Y" /> <input type="text" name="dis_showXquestions" id="dis_showXquestions" disabled="disabled" value="
+		   <li><label for="dis_showxquestions"><?php $clang->eT('Show "There are X questions in this survey"'); ?></label> <input type="hidden" name="showxquestions" id="" value="Y" /> <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="
             <?php $clang->eT('Yes (Forced by the system administrator)'); ?>
             " size="70" /></li>
 		 <?php   break;
 		case 'hide': ?>
-		   <li><label for="dis_showXquestions"><?php $clang->eT('Show "There are X questions in this survey"'); ?></label> <input type="hidden" name="showXquestions" id="" value="N" /> <input type="text" name="dis_showXquestions" id="dis_showXquestions" disabled="disabled" value="
+		   <li><label for="dis_showxquestions"><?php $clang->eT('Show "There are X questions in this survey"'); ?></label> <input type="hidden" name="showxquestions" id="" value="N" /> <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="
             <?php $clang->eT('No (Forced by the system administrator)'); ?>
             " size="70" /></li>
 		  <?php  break;
 	    	case 'choose':
 		default:
 		    $sel_showxq = array( 'Y' => '' , 'N' => '' );
-                if (isset($esrow['showXquestions'])) {
-		    	$set_showxq = $esrow['showXquestions'];
+                if (isset($esrow['showxquestions'])) {
+		    	$set_showxq = $esrow['showxquestions'];
 			$sel_showxq[$set_showxq] = ' selected="selected"';
 		    }
                 if (empty($sel_showxq['Y']) && empty($sel_showxq['N'])) {
 		    	$sel_showxq['Y'] = ' selected="selected"';
 		    }; ?>
-<li><label for="showXquestions"><?php $clang->eT('Show "There are X questions in this survey"'); ?></label>
-		    <select id="showXquestions" name="showXquestions">
+<li><label for="showxquestions"><?php $clang->eT('Show "There are X questions in this survey"'); ?></label>
+		    <select id="showxquestions" name="showxquestions">
 		    <option value="Y" <?php echo $sel_showxq['Y']; ?>><?php $clang->eT('Yes'); ?></option>
 		    <option value="N" <?php echo $sel_showxq['N']; ?>><?php $clang->eT('No'); ?></option>
 		    </select>

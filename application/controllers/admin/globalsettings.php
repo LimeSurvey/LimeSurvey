@@ -136,7 +136,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('siteadminemail', strip_tags($_POST['siteadminemail']));
         setGlobalSetting('siteadminname', strip_tags($_POST['siteadminname']));
         setGlobalSetting('shownoanswer', sanitize_int($_POST['shownoanswer']));
-        setGlobalSetting('showXquestions', ($_POST['showXquestions']));
+        setGlobalSetting('showxquestions', ($_POST['showxquestions']));
         setGlobalSetting('showgroupinfo', ($_POST['showgroupinfo']));
         setGlobalSetting('showqnumcode', ($_POST['showqnumcode']));
         $repeatheadingstemp = (int)($_POST['repeatheadings']);

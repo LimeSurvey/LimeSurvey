@@ -71,8 +71,8 @@ CREATE TABLE prefix_defaultvalues (
 --
 
 CREATE TABLE prefix_expression_errors (
-  id integer NOT NULL AUTO_INCREMENT,
-  errortime varchar(50) DEFAULT NULL,
+  id serial,
+  errortime character varying(50) DEFAULT NULL,
   sid integer DEFAULT NULL,
   gid integer DEFAULT NULL,
   qid integer DEFAULT NULL,
@@ -95,7 +95,7 @@ CREATE TABLE prefix_groups (
     group_order integer DEFAULT 0 NOT NULL,
     description text,
     "language" character varying(20) DEFAULT 'en'::character varying NOT NULL,
-    randomization_group varying(20) DEFAULT ''::character varying NOT NULL,
+    randomization_group character varying(20) DEFAULT ''::character varying NOT NULL,
     grelevance text DEFAULT NULL,
     CONSTRAINT prefix_groups_pkey PRIMARY KEY (gid, "language")
 );
@@ -274,7 +274,7 @@ CREATE TABLE prefix_surveys (
     printanswers character(1) DEFAULT 'N'::bpchar,
     autonumber_start integer DEFAULT 0,
     autoredirect character(1) DEFAULT 'N'::bpchar,
-    showXquestions character(1) DEFAULT 'Y'::bpchar,
+    showxquestions character(1) DEFAULT 'Y'::bpchar,
     showgroupinfo character(1) DEFAULT 'B'::bpchar,
     shownoanswer character(1) DEFAULT 'Y'::bpchar,
     showqnumcode character(1) DEFAULT 'X'::bpchar,
@@ -436,11 +436,11 @@ CREATE TABLE prefix_templates_rights (
 --
 CREATE TABLE prefix_participants (
   "participant_id" character varying( 50 ) PRIMARY KEY NOT NULL,
-  "firstname" character varying( 40 ) NOT NULL,
-  "lastname" character varying( 40 ) NOT NULL,
-  "email" character varying( 80 ) NOT NULL,
-  "language" character varying( 2 ) NOT NULL,
-  "blacklisted" character( 1 ) NOT NULL,
+  "firstname" character varying( 40 ) DEFAULT NULL,
+  "lastname" character varying( 40 ) DEFAULT NULL,
+  "email" character varying( 80 ) DEFAULT NULL,
+  "language" character varying( 2 ) DEFAULT NULL,
+  "blacklisted" character( 1 ) DEFAULT NULL,
   "owner_uid" integer NOT NULL
 );
 
