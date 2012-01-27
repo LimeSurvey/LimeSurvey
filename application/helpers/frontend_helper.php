@@ -205,6 +205,11 @@
         return $graph;
     }
 
+    /**
+    * This function creates the language selector for a particular survey
+    *
+    * @param mixed $sSelectedLanguage The language in which all information is shown
+    */
     function makeLanguageChangerSurvey($sSelectedLanguage)
     {
         $surveyid = Yii::app()->getConfig('surveyID');
@@ -226,19 +231,17 @@
         }
         foreach ($slangs as $sLanguage)
         {
-            $htmlcode .= "<option value=\"{$sTargetURL}?sid=". $surveyid ."&amp;lang=". $sLanguage ."{$sAddToURL}\" ";
+            $sHTMLCode .= "<option value=\"{$sTargetURL}?sid=". $surveyid ."&amp;lang=". $sLanguage ."{$sAddToURL}\" ";
             if ($sLanguage==$sSelectedLanguage)
             {
-                $htmlcode .=" selected='selected'";
+                $sHTMLCode .=" selected='selected'";
 
             }
-            $htmlcode .=">".getLanguageNameFromCode($sLanguage,false)."</option>\n";
+            $sHTMLCode .=">".getLanguageNameFromCode($sLanguage,false)."</option>\n";
         }
+        $sHTMLCode .= "</select>\n";
 
-
-        $htmlcode .= "</select>\n";
-
-        return $htmlcode;
+        return $sHTMLCode;
 
     }
 
@@ -256,7 +259,7 @@
             if($sLanguageID == $sSelectedLanguage)
             {
                 $sHTMLCode .= " selected='selected' ";
-                $sHTMLCode .= ">{$aLanguageProperties['description']}</option>\n";
+                $sHTMLCode .= ">{$aLanguageProperties['nativedescription']}</option>\n";
             }
             else
             {
