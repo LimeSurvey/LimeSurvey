@@ -7,7 +7,7 @@ if (Yii::app()->getConfig("userideditable") == 'Y')  //Firstly, if the user has 
 {
     $uid = '{ "name":"owner_uid", "index":"owner_uid", "width":150, "sorttype":"int", "sortable": true, "align":"center", "editable":true, "edittype":"select", "editoptions":{ "value":"';
     $i = 0;
-    foreach ($names->result() as $row)
+    foreach ($names as $row)
     {
         $name[$i] = $row->uid . ":" . $row->full_name;
         $i++;
