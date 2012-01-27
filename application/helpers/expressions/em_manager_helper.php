@@ -4215,7 +4215,7 @@ class LimeExpressionManager {
         if (isset($LEM->qid2validationEqn[$qid]))
         {
             $hasValidationEqn=true;
-            if ($qrel && !$qhidden)
+            if (!$qhidden)  // do this even is starts irrelevant, else will never show this information.
             {
                 $validationEqn = $LEM->qid2validationEqn[$qid]['eqn'];
                 $qvalid = $LEM->em->ProcessBooleanExpression($validationEqn,$qInfo['gseq'], $qInfo['qseq']);
