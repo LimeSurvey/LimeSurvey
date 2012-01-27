@@ -2244,10 +2244,176 @@ class ExpressionManager {
 
     /**
      * Split a soure string into STRING vs. EXPRESSION, where the latter is surrounded by unescaped curly braces.
+     * This version of the function is a little slower (perhaps 25%) than asStringSplitOnExpressions_old()
+     * However, it does properly handle nested curly braces and curly braces within strings within curly braces - both of which are needed to better support JavaScript
+     * Users still need to add a space or carriage return after opening braces (and ideally before closing braces too) to avoid  having them treated as expressions.
      * @param <type> $src
      * @return string
      */
     public function asSplitStringOnExpressions($src)
+    {
+
+        $chars = preg_split("//",$src);
+        $count = count($chars);
+        $tokens = array();
+        $inSQString=false;
+        $inDQString=false;
+        $curlyDepth=0;
+        $thistoken=array();
+        for ($j=0;$j<$count;++$j)
+        {
+            $_c=$chars[$j];
+            $_this = implode('',$thistoken);
+            switch($chars[$j])
+            {
+                case '{':
+                    if ($j < ($count-1) && preg_match('/\s|\n|\r/',$chars[$j+1]))
+                    {
+                        // don't count this as an expression if the opening brace is followed by whitespace
+                        $thistoken[] = '{';
+                        $thistoken[] = $chars[++$j];
+                    }
+                    else if ($inDQString || $inSQString)
+                    {
+                        // just push the curly brace
+                        $thistoken[] = '{';
+                    }
+                    else if ($curlyDepth>0)
+                    {
+                        // a nested curly brace - just push it
+                        $thistoken[] = '{';
+                        ++$curlyDepth;
+                    }
+                    else
+                    {
+                        // then starting an expression - save the out-of-expression string
+                        if (count($thistoken) > 0)
+                        {
+                            $tokens[] = array(
+                                implode('',$thistoken),
+                                $j-count($thistoken),
+                                'STRING'
+                                );
+                        }
+                        $curlyDepth=1;
+                        $thistoken = array();
+                        $thistoken[] = '{'; // TODO - remove this
+                    }
+                    break;
+                case '}':
+                    // don't count this as an expression if the closing brace is preceded by whitespace
+                    if ($j > 0 && preg_match('/\s|\n|\r/',$chars[$j-1]))
+                    {
+                        $thistoken[] = '}';
+                    }
+                    else if ($curlyDepth==0)
+                    {
+                        // just push the token
+                        $thistoken[] = '}';
+                    }
+                    else
+                    {
+                        if ($inSQString || $inDQString)
+                        {
+                            // just push the token
+                            $thistoken[] = '}';                            
+                        }
+                        else
+                        {
+                            --$curlyDepth;
+                            if ($curlyDepth==0)
+                            {
+                                // then closing expression
+                                $thistoken[] = '}'; // TODO - remove this
+                                $tokens[] = array(
+                                    implode('',$thistoken),
+                                    $j-count($thistoken),
+                                    'EXPRESSION'
+                                    );
+                                $thistoken=array();
+                            }
+                            else
+                            {
+                                // just push the token
+                                $thistoken[] = '}';
+                            }
+                        }
+                    }
+                    break;
+                case '\'':
+                    $thistoken[] = '\'';
+                    if ($curlyDepth==0)
+                    {
+                        // only counts as part of a string if it is already within an expression
+                    }
+                    else
+                    {
+                        if ($inDQString)
+                        {
+                            // then just push the single quote
+                        }
+                        else
+                        {
+                            if ($inSQString) {
+                                $inSQString=false;  // finishing a single-quoted string
+                            }
+                            else {
+                                $inSQString=true;   // starting a single-quoted string
+                            }
+                        }
+                    }
+                    break;
+                case '"':
+                    $thistoken[] = '"';
+                    if ($curlyDepth==0)
+                    {
+                        // only counts as part of a string if it is already within an expression
+                    }
+                    else
+                    {
+                        if ($inSQString)
+                        {
+                            // then just push the double quote
+                        }
+                        else
+                        {
+                            if ($inDQString) {
+                                $inDQString=false;  // finishing a double-quoted string
+                            }
+                            else {
+                                $inDQString=true;   // starting a double-quoted string
+                            }
+                        }
+                    }
+                    break;
+                case '\\':
+                    if ($j < ($count-1)) {
+                        $thistoken[] = $chars[$j++];
+                        $thistoken[] = $chars[$j];
+                    }
+                    break;
+                default:
+                    $thistoken[] = $chars[$j];
+                    break;
+            }
+        }
+        if (count($thistoken) > 0)
+        {
+            $tokens[] = array(
+                implode('',$thistoken),
+                $j-count($thistoken),
+                'STRING',
+            );
+        }
+        return $tokens;
+    }
+
+    /**
+     * Split a soure string into STRING vs. EXPRESSION, where the latter is surrounded by unescaped curly braces.
+     * @param <type> $src
+     * @return string
+     */
+    public function asSplitStringOnExpressions_old($src)
     {
         // tokenize string by the {} pattern, propertly dealing with strings in quotations, and escaped curly brace values
         $tokens0 = preg_split($this->RDP_ExpressionRegex,$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
