@@ -1473,25 +1473,25 @@ class LimeExpressionManager {
             }
             
             // regular expression validation
-            if ($preg!='')
-            {
-                // do string replacement here so that curly braces within the regular expression don't trigger an EM error
-                $qtips[]=sprintf($this->gT('Each answer must conform to this regular expression: %s'), str_replace(array('{','}'),array('{ ',' }'), $preg));
-            }
+//            if ($preg!='')
+//            {
+//                // do string replacement here so that curly braces within the regular expression don't trigger an EM error
+//                $qtips[]=sprintf($this->gT('Each answer must conform to this regular expression: %s'), str_replace(array('{','}'),array('{ ',' }'), $preg));
+//            }
             
             if ($em_validation_sq!='')
             {
                 if ($em_validation_sq_tip =='')
                 {
-                    $stringToParse = htmlspecialchars_decode($em_validation_sq,ENT_QUOTES);
-                    $gseq = $this->questionId2groupSeq[$qinfo['qid']];
-                    $result = $this->em->ProcessBooleanExpression($stringToParse,$gseq,  $qinfo['qseq']);
-                    $_validation_tip = $this->em->GetPrettyPrintString();
-                    $qtips[]=sprintf($this->gT('Each answer must conform to this expression: %s'),$_validation_tip);
+//                    $stringToParse = htmlspecialchars_decode($em_validation_sq,ENT_QUOTES);
+//                    $gseq = $this->questionId2groupSeq[$qinfo['qid']];
+//                    $result = $this->em->ProcessBooleanExpression($stringToParse,$gseq,  $qinfo['qseq']);
+//                    $_validation_tip = $this->em->GetPrettyPrintString();
+//                    $qtips[]=sprintf($this->gT('Each answer must conform to this expression: %s'),$_validation_tip);
                 }
                 else
                 {
-                    $qtips[]=sprintf($this->gT('Each answer must meet these criteria: %s'), $em_validation_sq_tip);
+                    $qtips[]=$em_validation_sq_tip;
                 }
                 
             }
@@ -1501,15 +1501,15 @@ class LimeExpressionManager {
             {
                 if ($em_validation_q_tip =='')
                 {
-                    $stringToParse = htmlspecialchars_decode($em_validation_q,ENT_QUOTES);
-                    $gseq = $this->questionId2groupSeq[$qinfo['qid']];
-                    $result = $this->em->ProcessBooleanExpression($stringToParse,$gseq,  $qinfo['qseq']);
-                    $_validation_tip = $this->em->GetPrettyPrintString();
-                    $qtips[]=sprintf($this->gT('The question must conform to this expression: %s'), $_validation_tip);
+//                    $stringToParse = htmlspecialchars_decode($em_validation_q,ENT_QUOTES);
+//                    $gseq = $this->questionId2groupSeq[$qinfo['qid']];
+//                    $result = $this->em->ProcessBooleanExpression($stringToParse,$gseq,  $qinfo['qseq']);
+//                    $_validation_tip = $this->em->GetPrettyPrintString();
+//                    $qtips[]=sprintf($this->gT('The question must conform to this expression: %s'), $_validation_tip);
                 }
                 else
                 {
-                    $qtips[]=sprintf($this->gT('The question must meet these criteria: %s'), $em_validation_q_tip);
+                    $qtips[]=$em_validation_q_tip;
                 }
             }
             
