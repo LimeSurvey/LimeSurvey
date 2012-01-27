@@ -579,41 +579,48 @@ class LimeExpressionManager {
             // exclude_all_others
             if (isset($qattr['exclude_all_others']) && trim($qattr['exclude_all_others']) != '')
             {
-                $exclusive_option = $qattr['exclude_all_others'];
+                $exclusive_options = explode(';',$qattr['exclude_all_others']);
                 if ($hasSubqs) {
-                    $subqs = $qinfo['subqs'];
-                    $sq_names = array();
-                    foreach ($subqs as $sq) {
-                        $sq_name = NULL;
-                        if ($sq['csuffix'] == $exclusive_option)
-                        {
-                            continue;   // so don't make the excluded option irrelevant
+                    foreach ($exclusive_options as $exclusive_option)
+                    {
+                        $exclusive_option = trim($exclusive_option);
+                        if ($exclusive_option == '') {
+                            continue;
                         }
-                        switch ($type)
-                        {
-                            case 'M': //Multiple choice checkbox
-                            case 'P': //Multiple choice with comments checkbox + text
-                                if ($this->sgqaNaming)
-                                {
-                                    $sq_name = $qinfo['sgqa'] . trim($exclusive_option) . '.NAOK';
-                                }
-                                else
-                                {
-                                    $sq_name = $qinfo['sgqa'] . trim($exclusive_option) . '.NAOK';
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-                        if (!is_null($sq_name)) {
-                            $subQrels[] = array(
-                                'qtype' => $type,
-                                'type' => 'exclude_all_others',
-                                'rowdivid' => $sq['rowdivid'],
-                                'eqn' => '(' . $sq_name . ' == "")',
-                                'qid' => $questionNum,
-                                'sgqa' => $qinfo['sgqa'],
-                            );
+                        $subqs = $qinfo['subqs'];
+                        $sq_names = array();
+                        foreach ($subqs as $sq) {
+                            $sq_name = NULL;
+                            if ($sq['csuffix'] == $exclusive_option)
+                            {
+                                continue;   // so don't make the excluded option irrelevant
+                            }
+                            switch ($type)
+                            {
+                                case 'M': //Multiple choice checkbox
+                                case 'P': //Multiple choice with comments checkbox + text
+                                    if ($this->sgqaNaming)
+                                    {
+                                        $sq_name = $qinfo['sgqa'] . trim($exclusive_option) . '.NAOK';
+                                    }
+                                    else
+                                    {
+                                        $sq_name = $qinfo['sgqa'] . trim($exclusive_option) . '.NAOK';
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                            if (!is_null($sq_name)) {
+                                $subQrels[] = array(
+                                    'qtype' => $type,
+                                    'type' => 'exclude_all_others',
+                                    'rowdivid' => $sq['rowdivid'],
+                                    'eqn' => '(' . $sq_name . ' == "")',
+                                    'qid' => $questionNum,
+                                    'sgqa' => $qinfo['sgqa'],
+                                );
+                            }
                         }
                     }
                 }
