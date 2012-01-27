@@ -286,7 +286,7 @@ CREATE TABLE `prefix_surveys` (
   `emailresponseto` text default NULL,
   `emailnotificationto` text default NULL,
   `tokenlength` tinyint(2) default '15',
-  `showXquestions` char(1) default 'Y',
+  `showxquestions` char(1) default 'Y',
   `showgroupinfo` char(1) default 'B',
   `shownoanswer` char(1) default 'Y',
   `showqnumcode` char(1) default 'X',

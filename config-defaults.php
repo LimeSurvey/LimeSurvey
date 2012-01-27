@@ -472,13 +472,13 @@ $chartfontsize =10;
 $updatecheckperiod=7;
 
 /**
- * @var $showXquestions string allows you to control whether or not
+ * @var $showxquestions string allows you to control whether or not
  * {THEREAREXQUESTIONS} is displayed (if it is included in a template)
  *	hide = always hide {THEREAREXQUESTIONS}
  *	show = always show {THEREAREXQUESTIONS}
  *	choose = allow survey admins to choose
  */
-$showXquestions = 'choose';
+$showxquestions = 'choose';
 
 
 /**

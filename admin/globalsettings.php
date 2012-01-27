@@ -81,7 +81,7 @@ function globalsettingssave()
             setGlobalSetting('siteadminemail',strip_tags($_POST['siteadminemail']));
             setGlobalSetting('siteadminname',strip_tags($_POST['siteadminname']));
             setGlobalSetting('shownoanswer',sanitize_int($_POST['shownoanswer']));
-            setGlobalSetting('showXquestions',($_POST['showXquestions']));
+            setGlobalSetting('showxquestions',($_POST['showxquestions']));
             setGlobalSetting('showgroupinfo',($_POST['showgroupinfo']));
             setGlobalSetting('showqnumcode',($_POST['showqnumcode']));
             $repeatheadingstemp=(int)($_POST['repeatheadings']);
@@ -457,16 +457,16 @@ function globalsettingsdisplay()
         . "\t\t<input id='repeatheadings' name='repeatheadings' value='$thisrepeatheadings' size='4' maxlength='4' /></li>\n";
 
 
-        // showXquestions
-        $set_xq=getGlobalSetting('showXquestions');
+        // showxquestions
+        $set_xq=getGlobalSetting('showxquestions');
 	    $sel_xq = array( 'hide' => '' , 'show' => '' , 'choose' => '');
 	    $sel_xq[$set_xq] = ' selected="selected"';
 	    if( empty($sel_xq['hide']) && empty($sel_xq['show']) && empty($sel_xq['choose']))
 	    {
 	    	$sel_xq['choose'] = ' selected="selected"';
 	    };
-            $editsurvey .= "\t<li><label for=\"showXquestions\">".$clang->gT('Show "There are X questions in this survey"')."</label>\n"
-            . "\t\t<select id=\"showXquestions\" name=\"showXquestions\">\n"
+            $editsurvey .= "\t<li><label for=\"showxquestions\">".$clang->gT('Show "There are X questions in this survey"')."</label>\n"
+            . "\t\t<select id=\"showxquestions\" name=\"showxquestions\">\n"
             . "\t\t\t<option value=\"show\"{$sel_xq['show']}>".$clang->gT('Yes')."</option>\n"
             . "\t\t\t<option value=\"hide\"{$sel_xq['hide']}>".$clang->gT('No')."</option>\n"
             . "\t\t\t<option value=\"choose\"{$sel_xq['choose']}>".$clang->gT('Survey admin can choose')."</option>\n"

@@ -252,7 +252,7 @@ $updatekeyvaliduntil='';
 require ($homedir.'/globalsettings.php');
 SSL_mode();// This really should be at the top but for it to utilise getGlobalSetting() it has to be here
 
-$showXquestions = getGlobalSetting('showXquestions');
+$showxquestions = getGlobalSetting('showxquestions');
 $showgroupinfo = getGlobalSetting('showgroupinfo');
 $showqnumcode = getGlobalSetting('showqnumcode');
 

@@ -71,8 +71,8 @@ CREATE TABLE prefix_defaultvalues (
 --
 
 CREATE TABLE prefix_expression_errors (
-  id integer NOT NULL AUTO_INCREMENT,
-  errortime varchar(50) DEFAULT NULL,
+  id serial,
+  errortime character varying(50) DEFAULT NULL,
   sid integer DEFAULT NULL,
   gid integer DEFAULT NULL,
   qid integer DEFAULT NULL,
@@ -95,7 +95,7 @@ CREATE TABLE prefix_groups (
     group_order integer DEFAULT 0 NOT NULL,
     description text,
     "language" character varying(20) DEFAULT 'en'::character varying NOT NULL,
-    randomization_group varying(20) DEFAULT ''::character varying NOT NULL,
+    randomization_group character varying(20) DEFAULT ''::character varying NOT NULL,
     grelevance text DEFAULT NULL,
     CONSTRAINT prefix_groups_pkey PRIMARY KEY (gid, "language")
 );
@@ -279,7 +279,7 @@ CREATE TABLE prefix_surveys (
     printanswers character(1) DEFAULT 'N'::bpchar,
     autonumber_start integer DEFAULT 0,
     autoredirect character(1) DEFAULT 'N'::bpchar,
-    showXquestions character(1) DEFAULT 'Y'::bpchar,
+    showxquestions character(1) DEFAULT 'Y'::bpchar,
     showgroupinfo character(1) DEFAULT 'B'::bpchar,
     shownoanswer character(1) DEFAULT 'Y'::bpchar,
     showqnumcode character(1) DEFAULT 'X'::bpchar,
@@ -419,8 +419,7 @@ CREATE TABLE prefix_users (
     templateeditormode character(7) DEFAULT 'default'::bpchar,
     questionselectormode character(7) DEFAULT 'default'::bpchar,
 	one_time_pw bytea,
-    "dateformat" integer DEFAULT 1 NOT NULL,
-    participant_panel integer NOT NULL DEFAULT '0'
+    "dateformat" integer DEFAULT 1 NOT NULL
 );
 
 

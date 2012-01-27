@@ -399,7 +399,7 @@ function db_upgrade($oldversion) {
 
     if ($oldversion < 145) //Modify surveys table
     {
-        modify_database("", "ALTER TABLE [prefix_surveys] ADD showXquestions CHAR(1) NULL default 'Y'"); echo $modifyoutput; flush();ob_flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD showxquestions CHAR(1) NULL default 'Y'"); echo $modifyoutput; flush();ob_flush();
         modify_database("", "ALTER TABLE [prefix_surveys] ADD showgroupinfo CHAR(1) NULL default 'B' "); echo $modifyoutput; flush();ob_flush();
         modify_database("", "ALTER TABLE [prefix_surveys] ADD shownoanswer CHAR(1) NULL default 'Y' "); echo $modifyoutput; flush();ob_flush();
         modify_database("", "ALTER TABLE [prefix_surveys] ADD showqnumcode CHAR(1) NULL default 'X'"); echo $modifyoutput; flush();ob_flush();

@@ -21,7 +21,7 @@ function templatereplace($line, $replacements=array(), $anonymized=false, $quest
     global $percentcomplete, $move;
     global $groupname, $groupdescription;
     global $question;
-    global $showXquestions, $showgroupinfo, $showqnumcode;
+    global $showxquestions, $showgroupinfo, $showqnumcode;
     global $answer, $navigator;
     global $help, $surveyformat;
     global $completed, $register_errormsg;
@@ -208,9 +208,9 @@ function templatereplace($line, $replacements=array(), $anonymized=false, $quest
         $_totalquestionsAsked = 0;
     }
     if (
-      $showXquestions == 'show' ||
-      ($showXquestions == 'choose' && !isset($thissurvey['showXquestions'])) ||
-      ($showXquestions == 'choose' && $thissurvey['showXquestions'] == 'Y')
+      $showxquestions == 'show' ||
+      ($showxquestions == 'choose' && !isset($thissurvey['showxquestions'])) ||
+      ($showxquestions == 'choose' && $thissurvey['showxquestions'] == 'Y')
     )
     {
         if ($_totalquestionsAsked < 1)
