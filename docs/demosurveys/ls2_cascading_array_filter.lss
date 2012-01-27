@@ -2084,7 +2084,7 @@
    <fieldname>emailresponseto</fieldname>
    <fieldname>emailnotificationto</fieldname>
    <fieldname>tokenlength</fieldname>
-   <fieldname>showXquestions</fieldname>
+   <fieldname>showxquestions</fieldname>
    <fieldname>showgroupinfo</fieldname>
    <fieldname>shownoanswer</fieldname>
    <fieldname>showqnumcode</fieldname>
@@ -2141,7 +2141,7 @@
     <emailresponseto><![CDATA[]]></emailresponseto>
     <emailnotificationto><![CDATA[]]></emailnotificationto>
     <tokenlength><![CDATA[15]]></tokenlength>
-    <showXquestions><![CDATA[Y]]></showXquestions>
+    <showxquestions><![CDATA[Y]]></showxquestions>
     <showgroupinfo><![CDATA[B]]></showgroupinfo>
     <shownoanswer><![CDATA[Y]]></shownoanswer>
     <showqnumcode><![CDATA[B]]></showqnumcode>
