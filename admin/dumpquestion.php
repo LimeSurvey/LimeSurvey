@@ -1,5 +1,6 @@
 <?php
 /*
+<<<<<<< HEAD
  * LimeSurvey
  * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -12,6 +13,20 @@
  *
  * $Id$
  */
+=======
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+* $Id$
+*/
+>>>>>>> refs/heads/stable_plus
 
 
 
@@ -90,6 +105,7 @@ function getXMLStructure($xml,$qid)
                WHERE qid=$qid and parent_qid=0 order by language, scale_id, question_order";
     BuildXMLFromQuery($xml,$qquery);
 
+<<<<<<< HEAD
     // Questions table - Subquestions
     $qquery = "SELECT *
                FROM {$dbprefix}questions 
@@ -102,6 +118,11 @@ function getXMLStructure($xml,$qid)
                FROM {$dbprefix}answers 
                WHERE qid = $qid order by language, scale_id, sortorder";
     BuildXMLFromQuery($xml,$aquery);
+=======
+//2: Answers table
+$aquery = "SELECT {$dbprefix}answers.* FROM {$dbprefix}answers WHERE {$dbprefix}answers.qid = $qid";
+$adump = BuildCSVFromQuery($aquery);
+>>>>>>> refs/heads/stable_plus
 
     
     

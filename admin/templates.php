@@ -1,5 +1,6 @@
 <?php
 /*
+<<<<<<< HEAD
  * LimeSurvey
  * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -12,6 +13,20 @@
  *
  * $Id$
  */
+=======
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+* $Id$
+*/
+>>>>>>> refs/heads/stable_plus
 
 
 include_once("login_check.php");
@@ -122,6 +137,19 @@ $printablesurveytemplate=array('print_survey.pstpl',
                                );
 
 
+//Standard Screens
+//Only these may be viewed
+
+$screens[]=array("name"=>$clang->gT("Welcome Page", "unescaped"));
+$screens[]=array("name"=>$clang->gT("Question Page", "unescaped"));
+$screens[]=array("name"=>$clang->gT("Submit Page", "unescaped"));
+$screens[]=array("name"=>$clang->gT("Completed Page", "unescaped"));
+$screens[]=array("name"=>$clang->gT("Clear All Page", "unescaped"));
+$screens[]=array("name"=>$clang->gT("Register Page", "unescaped"));
+$screens[]=array("name"=>$clang->gT("Load Page", "unescaped"));
+$screens[]=array("name"=>$clang->gT("Save Page", "unescaped"));
+
+
 // Set this so common.php doesn't throw notices about undefined variables
 $thissurvey['active']='N';
 
@@ -129,6 +157,7 @@ $thissurvey['active']='N';
 $file_version="LimeSurvey template editor ".$versionnumber;
 $_SESSION['s_lang']=$_SESSION['adminlang'];
 
+<<<<<<< HEAD
 if (!isset($templatename)) {$templatename = sanitize_paranoid_string(returnglobal('templatename'));}
 if (!isset($templatedir)) {$templatedir = sanitize_paranoid_string(returnglobal('templatedir'));}
 if (!isset($editfile)) {$editfile = sanitize_filename(returnglobal('editfile'));}
@@ -199,6 +228,35 @@ if ($subaction == "delete" && is_template_editable($templatename)==true)
 
        $templatequery = "delete from {$dbprefix}templates_rights where folder='$templatename'\n";
        $connect->Execute($templatequery) or safe_die ("Couldn't update template_rights<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked
+=======
+if(get_magic_quotes_gpc())
+{
+    $_REQUEST = array_map("stripslashes", $_REQUEST);
+}
+
+if (!isset($templatename)) {$templatename = sanitize_paranoid_string(returnglobal('templatename'));}
+if (!isset($templatedir)) {$templatedir = sanitize_paranoid_string(returnglobal('templatedir'));}
+if (!isset($editfile)) {$editfile = sanitize_paranoid_string(returnglobal('editfile'));}
+if (!isset($screenname)) {$screenname=returnglobal('screenname');}
+
+// Checks if screen name is in the list of allowed screen names  
+if ( isset($screenname) && (multiarray_search($screens,'name',$screenname)===false)) {die('Invalid screen name');}  // Die you sneaky bastard!
+
+if (!isset($action)) {$action=sanitize_paranoid_string(returnglobal('action'));}
+if (!isset($otherfile)) {$otherfile = sanitize_paranoid_string(returnglobal('otherfile'));}
+if (!isset($newname)) {$newname = sanitize_paranoid_string(returnglobal('newname'));}
+if (!isset($copydir)) {$copydir = sanitize_paranoid_string(returnglobal('copydir'));}
+
+if (isset ($_POST['changes'])) {
+	    $changedtext=$_POST['changes'];
+	    if(get_magic_quotes_gpc())
+	    {
+	       $changedtext = str_replace("\'", stripslashes("'"), $changedtext);
+	       $changedtext = str_replace('\"', stripslashes('"'), $changedtext);
+	    }
+	}
+
+>>>>>>> refs/heads/stable_plus
 
        $templatequery = "delete from {$dbprefix}templates where folder='$templatename'\n";
        $connect->Execute($templatequery) or safe_die ("Couldn't update templates<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked
@@ -221,6 +279,7 @@ if ($action == "templateupload")
 
 //Save Changes if necessary
 if ($action=="templatesavechanges" && $changedtext) {
+<<<<<<< HEAD
     $changedtext=str_replace("\r\n", "\n", $changedtext);
     if ($editfile) {
         // Check if someone tries to submit a file other than one of the allowed filenames
@@ -283,6 +342,62 @@ if ($action == "templaterename" && isset($newname) && isset($copydir))
         $templates[$newname]=$newdirname;
         $templatename=$newname;
     }
+=======
+	$changedtext=str_replace("\r\n", "\n", $changedtext);
+	if ($editfile) {
+        // Check if someone tries to submit a file other than one of the allowed filenames
+        if (multiarray_search($files,'name',$editfile)===false) {die('Invalid template filename');}  // Die you sneaky bastard!
+		$savefilename=$publicdir."/templates/".$templatename."/".$editfile;
+		if (is_writable($savefilename)) {
+			if (!$handle = fopen($savefilename, 'w')) {
+				echo "Could not open file ($savefilename)";
+				exit;
+			}
+			if (!fwrite($handle, $changedtext)) {
+				echo "Cannot write to file ($savefilename)";
+				exit;
+			}
+			fclose($handle);
+		} else {
+			echo "The file $savefilename is not writable";
+		}
+	}
+}
+
+if ($action == "templatecopy" && isset($newname) && isset($copydir)) {
+	//Copies all the files from one template directory to a new one
+	//This is a security issue because it is allowing copying from get variables...
+	$newdirname=$publicdir."/templates/".$newname;
+	$copydirname=$publicdir."/templates/".$copydir;
+	$mkdirresult=mkdir_p($newdirname);
+	if ($mkdirresult == 1) {
+		$copyfiles=getListOfFiles($copydirname);
+		foreach ($copyfiles as $file) {
+			$copyfile=$copydirname."/".$file;
+			$newfile=$newdirname."/".$file;
+			if (!copy($copyfile, $newfile)) {
+				echo "<script type=\"text/javascript\">\n<!--\nalert(\"".$clang-gT("Failed to copy","js")." $file ".$clang->gT("to new template directory.","js")."\");\n//-->\n</script>";
+			}
+		}
+		$templates[]=array("name"=>$newname, "dir"=>$newdirname);
+		$templatename=$newname;
+	} elseif($mkdirresult == 2) {
+		echo "<script type=\"text/javascript\">\n<!--\nalert(\"".$clang->gT("Directory with the name","js")." `".$newname."` ".$clang->gT("already exists - choose another name","js")."\");\n//-->\n</script>";
+	} else {
+		echo "<script type=\"text/javascript\">\n<!--\nalert(\"".$clang->gT("Unable to create directory","js")." `".$newname."`. ".$clang->gT("Maybe you don't have permission.","js")."\");\n//-->\n</script>";
+	}
+}
+
+if ($action == "templaterename" && isset($newname) && isset($copydir)) {
+	$newdirname=$publicdir."/templates/".$newname;
+	$olddirname=$publicdir."/templates/".$copydir;
+	if (rename($olddirname, $newdirname)==false) {
+		echo "<script type=\"text/javascript\">\n<!--\nalert(\"".$clang->gT("Directory could not be renamed to","js")." `".$newname."`. ".$clang->gT("Maybe you don't have permission.","js")."\");\n//-->\n</script>";
+	} else {
+		$templates[]=array("name"=>$newname, "dir"=>$newdirname);
+		$templatename=$newname;
+	}
+>>>>>>> refs/heads/stable_plus
 }
 
 if ($action == "templateuploadfile")
@@ -337,8 +452,13 @@ if ($action == "templateuploadfile")
 }
 
 if ($action == "templatefiledelete") {
+<<<<<<< HEAD
     $the_full_file_path = $usertemplaterootdir."/".$templatename."/".$otherfile; //This is where the temp file is
     unlink($the_full_file_path);
+=======
+	$the_full_file_path = $publicdir."/templates/".$templatename."/".$otherfile; //This is where the temp file is
+	unlink($the_full_file_path);
+>>>>>>> refs/heads/stable_plus
 }
 
 if ($action == "templatezip") {
@@ -372,6 +492,20 @@ foreach ($files as $fl) {
 foreach ($cssfiles as $fl) {
    $normalfiles[]=$fl["name"];
 }
+<<<<<<< HEAD
+=======
+
+
+//Page Display Instructions
+$Welcome=array("startpage.pstpl", "welcome.pstpl", "navigator.pstpl", "endpage.pstpl");
+$Question=array("startpage.pstpl", "survey.pstpl", "startgroup.pstpl", "groupdescription.pstpl", "question.pstpl", "endgroup.pstpl", "navigator.pstpl", "endpage.pstpl");
+$Submit=array("startpage.pstpl", "survey.pstpl", "submit.pstpl", "privacy.pstpl", "navigator.pstpl", "endpage.pstpl");
+$Completed=array("startpage.pstpl", "assessment.pstpl", "completed.pstpl", "endpage.pstpl");
+$Clearall=array("startpage.pstpl", "clearall.pstpl", "endpage.pstpl");
+$Register=array("startpage.pstpl", "survey.pstpl", "register.pstpl", "endpage.pstpl");
+$Save=array("startpage.pstpl", "save.pstpl", "endpage.pstpl");
+$Load=array("startpage.pstpl", "load.pstpl", "endpage.pstpl");
+>>>>>>> refs/heads/stable_plus
 
 //CHECK ALL FILES EXIST, AND IF NOT - COPY IT FROM DEFAULT DIRECTORY
 foreach ($files as $file) {
@@ -746,6 +880,7 @@ if (is_array($files)) {
 }
 
 //Get list of 'otherfiles'
+<<<<<<< HEAD
 $otherfiles=array();
 if ($handle = opendir($templatedir)) {
    while(false !== ($file = readdir($handle))) {
@@ -756,6 +891,19 @@ if ($handle = opendir($templatedir)) {
        }
    } // while
    closedir($handle);
+=======
+$dirloc=$publicdir."/templates/".$templatename;
+$otherfiles=array();
+if ($handle = opendir($dirloc)) {
+	while(false !== ($file = readdir($handle))) {
+		if (!array_search($file, $normalfiles)) {
+			if (!is_dir("$dirloc/$file")) {
+				$otherfiles[]=array("name"=>$file);
+			}
+		}
+	} // while
+	closedir($handle);
+>>>>>>> refs/heads/stable_plus
 }
 
 //****************************************************************

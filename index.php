@@ -1,5 +1,6 @@
 <?php
 /*
+<<<<<<< HEAD
  * LimeSurvey
  * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -14,6 +15,20 @@
  */
 
 // Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
+=======
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+* $Id$
+*/
+>>>>>>> refs/heads/stable_plus
 
 require_once(dirname(__FILE__).'/classes/core/startup.php');
 
@@ -36,6 +51,7 @@ if (!isset($thisstep))
     $thisstep = "";
 }
 
+<<<<<<< HEAD
 
 if (!isset($surveyid))
 {
@@ -46,6 +62,9 @@ else
     //This next line ensures that the $surveyid value is never anything but a number.
     $surveyid=sanitize_int($surveyid);
 }
+=======
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+>>>>>>> refs/heads/stable_plus
 
 //DEFAULT SETTINGS FOR TEMPLATES
 if (!$publicdir)
@@ -310,6 +329,7 @@ if (isset($_SESSION['srid']))
 if (!isset($_SESSION['s_lang'])  && (isset($move)) )
 // geez ... a session time out! RUN!
 {
+<<<<<<< HEAD
     if (isset($_REQUEST['rootdir']))
     {
         safe_die('You cannot start this script directly');
@@ -320,6 +340,15 @@ if (!isset($_SESSION['s_lang'])  && (isset($move)) )
     //A nice exit
     sendcacheheaders();
     doHeader();
+=======
+    if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
+    require_once($rootdir.'/classes/core/language.php');
+	$baselang = GetBaseLanguageFromSurveyID($surveyid);
+	$clang = new limesurvey_lang($baselang);
+	//A nice exit
+	sendcacheheaders();
+	doHeader();
+>>>>>>> refs/heads/stable_plus
 
 	echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
     echo "\t<div id='wrapper'>\n"
@@ -339,6 +368,7 @@ if (!isset($_SESSION['s_lang'])  && (isset($move)) )
 // Set the language of the survey, either from POST, GET parameter of session var
 if (isset($_POST['lang']) && $_POST['lang']!='')  // this one comes from the language question
 {
+<<<<<<< HEAD
     $templang = sanitize_languagecode($_POST['lang']);
     $clang = SetSurveyLanguage( $surveyid, $templang);
     UpdateSessionGroupList($templang);  // to refresh the language strings in the group list session variable
@@ -347,6 +377,15 @@ if (isset($_POST['lang']) && $_POST['lang']!='')  // this one comes from the lan
 }
 else
 if (isset($_GET['lang']) && $surveyid)
+=======
+    $_POST['lang'] = preg_replace("/[^a-zA-Z0-9-]/", "", $_POST['lang']);
+	if ($_POST['lang']) $clang = SetSurveyLanguage( $surveyid, $_POST['lang']);
+	UpdateSessionGroupList();  // to refresh the language strings in the group list session variable
+	UpdateFieldArray();        // to refresh question titles and question text 
+} 
+else 
+if (isset($_GET['lang']))
+>>>>>>> refs/heads/stable_plus
 {
     $templang = sanitize_languagecode($_GET['lang']);
     $clang = SetSurveyLanguage( $surveyid, $templang);
@@ -368,12 +407,21 @@ else
     $baselang=$defaultlang;
 }
 
+<<<<<<< HEAD
 if (isset($_REQUEST['embedded_inc']))
 {
     safe_die('You cannot start this script directly');
 }
 if ( $embedded && $embedded_inc != '' )
     require_once( $embedded_inc );
+=======
+
+if (isset($_REQUEST['embedded_inc'])) {die('You cannot start this script directly');}
+if ( $embedded_inc != '' )
+require_once( $embedded_inc );
+
+
+>>>>>>> refs/heads/stable_plus
 
 //CHECK FOR REQUIRED INFORMATION (sid)
 if (!$surveyid)
@@ -459,6 +507,16 @@ if (!$surveyid)
 
 // Get token
 if (!isset($token))
+<<<<<<< HEAD
+=======
+{
+	$token=trim(returnglobal('token'));
+}
+
+// If token was submitted from token form
+// Disabled for the moment (1.50) with function captcha_enabled
+if (isset($_GET['tokenSEC']) && $_GET['tokenSEC'] == 1 && function_exists("ImageCreate") && captcha_enabled('tokenloginscreen'))
+>>>>>>> refs/heads/stable_plus
 {
     $token=$clienttoken;
 }
@@ -467,17 +525,32 @@ if (!isset($token))
 $totalBoilerplatequestions =0;
 $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
 
+<<<<<<< HEAD
 if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
 {
 	//Removes any existing timer cookies so timers will start again
     setcookie ("limesurvey_timers", "", time() - 3600);
 }
 
+=======
+if (is_array($thissurvey))
+{
+	$surveyexists=1;
+} 
+else 
+{
+	$surveyexists=0;
+}
+>>>>>>> refs/heads/stable_plus
 
 
 //SEE IF SURVEY USES TOKENS AND GROUP TOKENS
 $i = 0; //$tokensexist = 0;
+<<<<<<< HEAD
 if ($surveyexists == 1 && tableExists('tokens_'.$thissurvey['sid']))
+=======
+if ($surveyexists == 1 && bHasSurveyGotTokentable($thissurvey))
+>>>>>>> refs/heads/stable_plus
 {
     $tokensexist = 1;
 
@@ -663,11 +736,16 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == $clang->gT("Load Unfinished
 //Check if TOKEN is used for EVERY PAGE
 //This function fixes a bug where users able to submit two surveys/votes
 //by checking that the token has not been used at each page displayed.
+<<<<<<< HEAD
 // bypass only this check at first page (Step=0) because
 // this check is done in buildsurveysession and error message
 // could be more interresting there (takes into accound captcha if used)
 if ($tokensexist == 1 && isset($token) && $token &&
 	isset($_SESSION['step']) && $_SESSION['step']>0 && db_tables_exist($dbprefix.'tokens_'.$surveyid))
+=======
+//if ($tokensexist == 1 && returnglobal('token'))
+if ($tokensexist == 1 && $token)
+>>>>>>> refs/heads/stable_plus
 {
 	//check if tokens actually haven't been already used
 	$areTokensUsed = usedTokens(db_quote(trim(strip_tags(returnglobal('token')))));
@@ -686,6 +764,7 @@ if ($tokensexist == 1 && isset($token) && $token &&
         doHeader();
         //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 
+<<<<<<< HEAD
         echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
         echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
         echo "\t<div id='wrapper'>\n"
@@ -739,6 +818,32 @@ if ($tokensexist == 1 && isset($token) && $token && db_tables_exist($dbprefix.'t
 	    killSession();
         exit;
     }
+=======
+	$tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' AND (completed = 'N' or completed='')";
+	$tkresult = db_execute_num($tkquery);
+	list($tkexist) = $tkresult->FetchRow();
+	if (!$tkexist)
+	{
+		sendcacheheaders();
+		doHeader();
+		//TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
+		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+		echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
+		echo "\t<center><br />\n"
+		."\t".$clang->gT("This is a closed-access survey. You need a valid token to participate.")."<br /><br />\n"
+		."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."\n"
+		."\t".$clang->gT("For further information contact")." {$thissurvey['adminname']} "
+		."(<a href='mailto:{$thissurvey['adminemail']}'>"
+		."{$thissurvey['adminemail']}</a>)<br /><br />\n"
+		."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
+//		foreach(file("$thistpl/endpage.pstpl") as $op)
+//		{
+//			echo templatereplace($op);
+//		}
+		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+		exit;
+	}
+>>>>>>> refs/heads/stable_plus
 }
 
 
@@ -925,6 +1030,7 @@ function loadanswers()
         }
         $query .="AND ".db_table_name('saved_control').".identifier = '".auto_escape($_SESSION['holdname'])."' ";
 
+<<<<<<< HEAD
         if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n' || $databasetype=='mssqlnative')
         {
             $query .="AND CAST(".db_table_name('saved_control').".access_code as varchar(32))= '".md5(auto_unescape($_SESSION['holdpass']))."'\n";
@@ -1021,14 +1127,184 @@ function loadanswers()
         } // foreach
     }
     return true;
+=======
+function getTokenData($surveyid, $token)
+{
+	global $dbprefix, $connect;
+	$query = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."'";
+	$result = db_execute_assoc($query) or die("Couldn't get token info in getTokenData()<br />".$query."<br />".htmlspecialchars($connect->ErrorMsg()));
+	while($row=$result->FetchRow())
+	{
+		$thistoken=array("firstname"=>$row['firstname'],
+		"lastname"=>$row['lastname'],
+		"email"=>$row['email'],
+		"language" =>$row['language'],
+		"attribute_1"=>$row['attribute_1'],
+		"attribute_2"=>$row['attribute_2']);
+	} // while
+	return $thistoken;
+>>>>>>> refs/heads/stable_plus
 }
 
 function makegraph($currentstep, $total)
 {
+<<<<<<< HEAD
     global $thissurvey;
     global $publicurl, $clang;
 
     $size = intval(($currentstep-1)/$total*100);
+=======
+	global $thissurvey;
+	global $thistpl, $publicurl, $clang;
+	$chart=$thistpl."/chart.jpg";
+	if (!is_file($chart)) {$shchart="chart.jpg";}
+	else {$shchart = "$publicurl/templates/{$thissurvey['templatedir']}/chart.jpg";}
+	$graph = "<table class='graph' width='100' align='center' cellpadding='2'><tr><td>\n"
+	. "<table width='180' align='center' cellpadding='0' cellspacing='0' border='0' class='innergraph'>\n"
+	. "<tr><td align='right' width='40'>0%&nbsp;</td>\n";
+	$size=intval(($thisstep-1)/$total*100);
+	$graph .= "<td width='100' align='left'>\n"
+	. "<table cellspacing='0' cellpadding='0' border='0' width='100%'>\n"
+	. "<tr><td>\n"
+	. "<img src='$shchart' width='$size' align='left' alt='$size% ".$clang->gT("complete")."' />\n"
+	. "</td></tr>\n"
+	. "</table>\n"
+	. "</td>\n"
+	. "<td align='left' width='40'>&nbsp;100%</td></tr>\n"
+	. "</table>\n"
+	. "</td></tr>\n</table>\n";
+	return $graph;
+}
+
+function checkgroupfordisplay($gid)
+{
+	//This function checks all the questions in a group to see if they have
+	//conditions, and if the do - to see if the conditions are met.
+	//If none of the questions in the group are set to display, then
+	//the function will return false, to indicate that the whole group
+	//should not display at all.
+	global $dbprefix, $connect, $deletenonvalues;
+	$countQuestionsInThisGroup=0;
+	$countConditionalQuestionsInThisGroup=0;
+	foreach ($_SESSION['fieldarray'] as $ia) //Run through all the questions
+	{
+		if ($ia[5] == $gid) //If the question is in the group we are checking:
+		{
+			$countQuestionsInThisGroup++;
+			if ($ia[7] == "Y") //This question is conditional
+			{
+				$countConditionalQuestionsInThisGroup++;
+				$QuestionsWithConditions[]=$ia; //Create an array containing all the conditional questions
+			}
+		}
+	}
+	if ($countQuestionsInThisGroup != $countConditionalQuestionsInThisGroup || !isset($QuestionsWithConditions))
+	{
+		//One of the questions in this group is NOT conditional, therefore
+		//the group MUST be displayed
+		return true;
+	}
+	else
+	{
+		//All of the questions in this group are conditional. Now we must
+		//check every question, to see if the condition for each has been met.
+		//If 1 or more have their conditions met, then the group should
+		//be displayed.
+		foreach ($QuestionsWithConditions as $cc)
+		{
+			$totalands=0;
+			$query = "SELECT * FROM ".db_table_name('conditions')."\n"
+			."WHERE qid=$cc[0] ORDER BY cqid";
+			$result = db_execute_assoc($query) or die("Couldn't check conditions<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+
+			//Iterate through each condition for this question and check if it is met.
+			while($row=$result->FetchRow())
+			{
+				$query2= "SELECT type, gid FROM ".db_table_name('questions')."\n"
+				." WHERE qid={$row['cqid']} AND language='".$_SESSION['s_lang']."'";
+				$result2=db_execute_assoc($query2) or die ("Coudn't get type from questions<br />$ccquery<br />".htmlspecialchars($connect->ErrorMsg()));
+				while($row2=$result2->FetchRow())
+				{
+					$cq_gid=$row2['gid'];
+					//Find out the "type" of the question this condition uses
+					$thistype=$row2['type'];
+				}
+                
+				if ($gid == $cq_gid)
+				{
+					//Don't do anything - this cq is in the current group
+				}
+				elseif ($thistype == "M" || $thistype == "P")
+				{
+					// For multiple choice type questions, the "answer" value will be "Y"
+					// if selected, the fieldname will have the answer code appended.
+					$fieldname=$row['cfieldname'].$row['value'];
+                    $cvalue="Y";     
+					if (isset($_SESSION[$fieldname])) { $cfieldname=$_SESSION[$fieldname]; } else { $cfieldname=""; }
+				}
+				else
+				{
+					//For all other questions, the "answer" value will be the answer code.
+					if (isset($_SESSION[$row['cfieldname']])) {$cfieldname=$_SESSION[$row['cfieldname']];} else {$cfieldname=' ';}
+                    $cvalue=$row['value'];
+				}
+                
+				if (trim($cfieldname) == trim($cvalue))
+				{
+					//This condition is met
+					//Bugfix provided by Zoran Avtarovski
+					if (!isset($distinctcqids[$row['cqid']])  || $distinctcqids[$row['cqid']] == 0)
+					{
+						$distinctcqids[$row['cqid']]=1;
+					}
+				}
+				else
+				{
+					if (!isset($distinctcqids[$row['cqid']]))
+					{
+						$distinctcqids[$row['cqid']]=0;
+					}
+				}
+			} // while
+			foreach($distinctcqids as $key=>$val)
+			{
+				//Because multiple cqids are treated as "AND", we only check
+				//one condition per conditional qid (cqid). As long as one
+				//match is found for each distinct cqid, then the condition is met.
+				$totalands=$totalands+$val;
+			}
+			if ($totalands >= count($distinctcqids))
+			{
+				//The number of matches to conditions exceeds the number of distinct
+				//conditional questions, therefore a condition has been met.
+				//As soon as any condition for a question is met, we MUST show the group.
+				return true;
+			}
+			unset($distinctcqids);
+		}
+		//Since we made it this far, there mustn't have been any conditions met.
+		//Therefore the group should not be displayed.
+		//Before we go on, if the option is selected (and it should be)
+		//we will check to see if there are any saved answers in this group being skipped.
+		//In order to avoid bug #888, and to comply with the $deletenonvalues config.php setting
+		//these should be deleted
+		//This fix only corrects the problem in group.php
+		foreach($_SESSION['fieldarray'] as $question) //Iterate through all questions
+		{
+		    if($question[5] == $gid)
+		    {
+		        if($deletenonvalues == 1)
+		            {
+		                if(!empty($_SESSION[$question[1]])) {
+						    unset($_SESSION[$question[1]]); //Since this group isn't displaying, cause the conditions aren't met, then we are deleting this response to avoid future problems
+						}
+					}
+		    } //end of if($question[5] == $gid)
+		} //end of foreach($_SESSION['fieldarray'] as $question)
+		return false;
+	}
+}
+>>>>>>> refs/heads/stable_plus
 
     $graph = '<script type="text/javascript">
 	$(function() {
@@ -1654,6 +1930,7 @@ function checkconditionalmandatorys($move, $backok=null)
 
 function checkUploadedFileValidity($move, $backok=null)
 {
+<<<<<<< HEAD
     global $connect, $thisstep, $clang;
     if (!isset($backok) || $backok != "Y")
     {
@@ -1663,6 +1940,25 @@ function checkUploadedFileValidity($move, $backok=null)
         if (isset($_POST['fieldnames']) && $_POST['fieldnames']!="")
         {
             $fields = explode("|", $_POST['fieldnames']);
+=======
+	global $thissurvey, $timeadjust;
+	global $dbprefix, $surveyid, $connect;
+	global $sitename, $thistpl, $clang;
+
+	// Put date into sent and completed
+	
+	$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);     
+	$utquery = "UPDATE {$dbprefix}tokens_$surveyid\n";
+	if (bIsTokenCompletedDatestamped($thissurvey))
+	{
+		$utquery .= "SET completed='$today'\n";
+	}
+	else
+	{
+		$utquery .= "SET completed='Y'\n";
+	}
+	$utquery .= "WHERE token='".db_quote($_POST['token'])."'";
+>>>>>>> refs/heads/stable_plus
 
             foreach ($fields as $field)
             {
@@ -1670,10 +1966,22 @@ function checkUploadedFileValidity($move, $backok=null)
                 {
                     $validation = array();
 
+<<<<<<< HEAD
                     $query = "SELECT * FROM ".$dbprefix."question_attributes WHERE qid = ".$fieldmap[$field]['qid'];
                     $result = db_execute_assoc($query);
                     while ($row = $result->FetchRow())
                         $validation[$row['attribute']] = $row['value'];
+=======
+	// TLR change to put date into sent and completed
+	$cnfquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE token='".db_quote($_POST['token'])."' AND completed!='N' AND completed!=''";
+  
+	$cnfresult = db_execute_assoc($cnfquery);
+	while ($cnfrow = $cnfresult->FetchRow())
+	{
+		$from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
+		$to = $cnfrow['email'];
+		$subject=$thissurvey['email_confirm_subj'];
+>>>>>>> refs/heads/stable_plus
 
                     $filecount = 0;
 
@@ -2270,10 +2578,28 @@ function buildsurveysession()
             //echo makedropdownlist();
             echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 
+<<<<<<< HEAD
             if (isset($loadsecurity))
             { // was a bad answer
                 echo "<font color='#FF0000'>".$clang->gT("The answer to the security question is incorrect.")."</font><br />";
             }
+=======
+		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+		exit;
+	}
+	//Tokens are required, and a token has been provided.
+	elseif ($tokensexist == 1 && returnglobal('token'))
+	{
+		//check if token actually does exist
+		$tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(returnglobal('token')))."' AND (completed = 'N' or completed='')";
+		$tkresult = db_execute_num($tkquery);
+		list($tkexist) = $tkresult->FetchRow();
+		if (!$tkexist)
+		{
+			sendcacheheaders();
+			doHeader();
+			//TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
+>>>>>>> refs/heads/stable_plus
 
             echo "<p class='captcha'>".$clang->gT("Please confirm access to survey by answering the security question below and click continue.")."</p>
 			        <form class='captcha' method='get' action='{$publicurl}/index.php'>
@@ -2352,6 +2678,7 @@ function buildsurveysession()
                 <li>
             <label for='token'>".$clang->gT("Token")."</label><input class='text $kpclass' id='token' type='text' name='token' />";
 
+<<<<<<< HEAD
             echo "<input type='hidden' name='sid' value='".$surveyid."' id='sid' />
 				<input type='hidden' name='lang' value='".$templang."' id='lang' />";
             if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
@@ -2402,6 +2729,16 @@ function buildsurveysession()
           $tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(strip_tags(returnglobal('token'))))."' ";
 		} else {
         	$tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(strip_tags(returnglobal('token'))))."' AND (completed = 'N' or completed='')";
+=======
+	if (isset($_GET['token'])){
+	//get language from token (if one exists)
+		$tkquery2 = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(returnglobal('token')))."' AND (completed = 'N' or completed='')";
+		//echo $tkquery2;
+		$result = db_execute_assoc($tkquery2) or die ("Couldn't get tokens<br />$tkquery<br />".htmlspecialchars($connect->ErrorMsg()));
+		while ($rw = $result->FetchRow())
+		{
+			$tklanguage=$rw['language'];
+>>>>>>> refs/heads/stable_plus
 		}
 
         $tkresult = db_execute_num($tkquery);    //Checked
@@ -2604,6 +2941,7 @@ function buildsurveysession()
 
 
 
+<<<<<<< HEAD
     // Optimized Query
     // Change query to use sub-select to see if conditions exist.
     $query = "SELECT ".db_table_name('questions').".*, ".db_table_name('groups').".*,\n"
@@ -2617,6 +2955,14 @@ function buildsurveysession()
     ." AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."'\n"
     ." AND ".db_table_name('questions').".parent_qid=0\n"
     ." ORDER BY ".db_table_name('groups').".group_order,".db_table_name('questions').".question_order";
+=======
+// Optimized Query
+            $abquery = "SELECT ".db_table_name('answers').".code\n"
+            . " FROM ".db_table_name('answers')." \n"
+            . " WHERE qid={$arow['qid']}\n"
+            . " AND language='".$_SESSION['s_lang']."' \n"
+            . " ORDER BY sortorder, answer";
+>>>>>>> refs/heads/stable_plus
 
     //var_dump($_SESSION);
     $result = db_execute_assoc($query);    //Checked
@@ -2940,6 +3286,7 @@ function surveymover()
  */
 function doAssessment($surveyid, $returndataonly=false)
 {
+<<<<<<< HEAD
     global $dbprefix, $thistpl, $connect;
     $baselang=GetBaseLanguageFromSurveyID($surveyid);
     $total=0;
@@ -2951,6 +3298,66 @@ function doAssessment($surveyid, $returndataonly=false)
 			  WHERE sid=$surveyid and language='{$_SESSION['s_lang']}'
 			  ORDER BY scope,id";
     if ($result = db_execute_assoc($query))   //Checked
+=======
+	global $dbprefix, $thistpl, $connect;
+	$query = "SELECT * FROM ".db_table_name('assessments')."
+			  WHERE sid=$surveyid
+			  ORDER BY scope";
+	if ($result = db_execute_assoc($query))
+	{
+		if ($result->RecordCount() > 0)
+		{
+			while ($row=$result->FetchRow())
+			{
+				if ($row['scope'] == "G")
+				{
+					$assessment['group'][$row['gid']][]=array("name"=>$row['name'],
+					"min"=>$row['minimum'],
+					"max"=>$row['maximum'],
+					"message"=>$row['message'],
+					"link"=>$row['link']);
+				}
+				else
+				{
+					$assessment['total'][]=array( "name"=>$row['name'],
+					"min"=>$row['minimum'],
+					"max"=>$row['maximum'],
+					"message"=>$row['message'],
+					"link"=>$row['link']);
+				}
+			}
+			$fieldmap=createFieldMap($surveyid, "full");
+			$i=0;
+			$total=0;
+			
+			// I added this condition : if (($field['type'] == "M") and ($_SESSION[$field['fieldname']] == "Y"))
+			// because the internal representation of the answer of multiple Options type questions is Y, not the answer code
+			// for this type of questions I use $field['aid'] insted of $_SESSION[$field['fieldname']]
+			
+			foreach($fieldmap as $field)
+			{
+				if (($field['fieldname'] != "datestamp") and ($field['fieldname'] != "ipaddr") and ($field['fieldname'] != "token"))
+				{
+					if (isset($_SESSION[$field['fieldname']])) 
+					{
+						if (($field['type'] == "M") and ($_SESSION[$field['fieldname']] == "Y")) 	// for Multiple Options type questions
+						{
+							$fieldmap[$i]['answer']=$field['aid'];
+							$total=$total+$field['aid'];
+						}
+						else     // any other type of question
+						{
+							$fieldmap[$i]['answer']=$_SESSION[$field['fieldname']];
+							$total=$total+$_SESSION[$field['fieldname']];
+						}
+					}
+					else {$fieldmap[$i]['answer']=0;}
+					$groups[]=$field['gid'];
+					$i++;
+				}
+			}
+			$groups=array_unique($groups);
+>>>>>>> refs/heads/stable_plus
 
     {
         if ($result->RecordCount() > 0)

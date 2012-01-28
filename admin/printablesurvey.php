@@ -1,5 +1,6 @@
 <?php
 /*
+<<<<<<< HEAD
  * LimeSurvey
  * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -12,6 +13,20 @@
  *
  * $Id$
  */
+=======
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+* $Id$
+*/
+>>>>>>> refs/heads/stable_plus
 
 //Ensure script is not run directly, avoid path disclosure
 include_once("login_check.php");
@@ -54,7 +69,11 @@ if (isset($_GET['lang']))
 // Setting the selected language for printout
 $clang = new limesurvey_lang($surveyprintlang);
 
+<<<<<<< HEAD
 $desquery = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid) WHERE sid={$surveyid} and surveyls_language=".$connect->qstr($surveyprintlang); //Getting data for this survey
+=======
+$desquery = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid) WHERE sid=$surveyid and surveyls_language=".$connect->qstr($surveyprintlang); //Getting data for this survey
+>>>>>>> refs/heads/stable_plus
 
 $desrow = $connect->GetRow($desquery);
 if ($desrow==false || count($desrow)==0)
@@ -1844,6 +1863,7 @@ while ($degrow = $degresult->FetchRow())
             $survey_output['GROUPS'] .= populate_template( 'group' , $group );
         }
 }
+<<<<<<< HEAD
 
 $survey_output['THEREAREXQUESTIONS'] =  str_replace( '{NUMBEROFQUESTIONS}' , $total_questions , $clang->gT('There are {NUMBEROFQUESTIONS} questions in this survey'));
 
@@ -1932,6 +1952,22 @@ if(isset($_POST['printableexport']))
     $pdf->write_out($clang->gT($surveyname)." ".$surveyid.".pdf");
 } else {
     echo populate_template( 'survey' , $survey_output );
+=======
+$printablesurveyoutput .="\t<tr>\n";
+$printablesurveyoutput .="\t\t<td colspan='3' align='center'>\n";
+$printablesurveyoutput .="\t\t\t<table width='100%' border='1' style='border-collapse: collapse'>\n";
+$printablesurveyoutput .="\t\t\t\t<tr>\n";
+$printablesurveyoutput .="\t\t\t\t\t<td align='center'>\n";
+$printablesurveyoutput .="\t\t\t\t\t\t<strong>".$clang->gT("Submit Your Survey.")."</strong><br />\n";
+$printablesurveyoutput .="\t\t\t\t\t\t".$clang->gT("Thank you for completing this survey.");
+if (!empty($surveyfaxto))
+{
+    $printablesurveyoutput .= $clang->gT("Please fax your completed survey to:")." $surveyfaxto";
+}
+if ($surveyuseexpiry=="Y")
+{
+	$printablesurveyoutput .=$clang->gT("Please submit by")." $surveyexpirydate";
+>>>>>>> refs/heads/stable_plus
 }
 
 exit;

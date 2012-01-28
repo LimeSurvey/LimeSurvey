@@ -170,6 +170,7 @@ if (!$exportstyle)
     ."<fieldset>\n"
     ."<legend>".$clang->gT("Column control")."</legend>\n";
 
+<<<<<<< HEAD
     $exportoutput.="\t<input type='hidden' name='sid' value='$surveyid' />\n";
     if (isset($_POST['sql']))
     {
@@ -183,6 +184,16 @@ if (!$exportstyle)
         .stripcslashes(returnglobal('id'))
         ."\" />\n";
     }
+=======
+	$excesscols[]='completed';
+
+	if ($thissurvey["datestamp"]=='Y')
+	{
+		$excesscols[]='datestamp';
+	}
+	if ($thissurvey["ipaddr"]=='Y') {$excesscols[]='ipaddr';}
+    if ($thissurvey["refurl"]=='Y') {$excesscols[]='refurl';}
+>>>>>>> refs/heads/stable_plus
 
     $exportoutput .= $clang->gT("Choose Columns").":\n";
 
@@ -248,6 +259,7 @@ if (!$exportstyle)
 
 
 
+<<<<<<< HEAD
 
 
 // ======================================================================
@@ -262,6 +274,28 @@ if ($tokenTableExists)
     $aTokenFieldNames=GetTokenFieldsAndNames($surveyid);
     $attributeFieldAndNames=GetTokenFieldsAndNames($surveyid,true);
     $attributeFields=array_keys($attributeFieldAndNames);
+=======
+      $workbook = new Spreadsheet_Excel_Writer();
+      // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
+      if (!empty($tempdir)) {
+        $workbook->setTempDir($tempdir);
+      }
+      $workbook->send('results.xls');
+      // Creating the first worksheet
+      $sheet =& $workbook->addWorksheet('Survey Results');
+      $separator="|";
+	break;
+	case "csv":
+	header("Content-Disposition: attachment; filename=survey.csv");
+	header("Content-type: text/comma-separated-values; charset=UTF-8");
+	$separator=",";
+	break;
+	default:
+	header("Content-Disposition: attachment; filename=survey.csv");
+	header("Content-type: text/comma-separated-values; charset=UTF-8");
+	$separator=",";
+	break;
+>>>>>>> refs/heads/stable_plus
 }
 
 switch ( $_POST["type"] ) {
@@ -342,6 +376,7 @@ if ($thissurvey['savetimings'] === "Y") {
 $surveytable = "{$dbprefix}survey_$surveyid";
 if (isset($_POST['colselect']))
 {
+<<<<<<< HEAD
     $selectfields="";
     foreach($_POST['colselect'] as $cs)
     {
@@ -368,6 +403,25 @@ if (isset($_POST['colselect']))
 else
 {
     $selectfields="$surveytable.*, CASE WHEN $surveytable.submitdate IS NULL THEN 'N' ELSE 'Y' END AS completed";
+=======
+	$selectfields="";
+	foreach($_POST['colselect'] as $cs)
+	{
+		if ($cs != 'completed')
+		{
+			$selectfields.= "$surveytable.".db_quote_id($cs).", ";
+		}
+		else
+		{
+			$selectfields.= "CASE WHEN $surveytable.submitdate IS NULL THEN 'N' ELSE 'Y' END AS completed, ";
+		}
+	}
+	$selectfields = mb_substr($selectfields, 0, strlen($selectfields)-2);
+}
+else
+{
+	$selectfields="$surveytable.*, CASE WHEN $surveytable.submitdate IS NULL THEN 'N' ELSE 'Y' END AS completed";
+>>>>>>> refs/heads/stable_plus
 }
 
 $dquery = "SELECT $selectfields";
@@ -418,9 +472,223 @@ $firstline="";
 $faid="";
 for ($i=0; $i<$fieldcount; $i++)
 {
+<<<<<<< HEAD
     //Iterate through column names and output headings
     $field=$dresult->FetchField($i);
     $fieldinfo=$field->name;
+=======
+	//Iterate through column names and output headings
+	$field=$dresult->FetchField($i);
+	$fieldinfo=$field->name;
+//	if ($fieldinfo == "token")
+//	{
+//		if ($answers == "short")
+//		{
+//			if ($type == "csv")
+//			{
+//				$firstline.="\"".$elang->gT("Token")."\"$separator";
+//			}
+//			else
+//			{
+//				$firstline .= $elang->gT("Token")."$separator";
+//			}
+//		}
+//		if ($answers == "long")
+//		{
+//			if ($style == "abrev")
+//			{
+//				if ($type == "csv") {$firstline .= "\"".$elang->gT("Token")."\"$separator";}
+//				else {$firstline .= $elang->gT("Token")."$separator";}
+//			}
+//			else
+//			{
+//				if ($type == "csv") {$firstline .= "\"".$elang->gT("Token")."\"$separator";}
+//				else {$firstline .= $elang->gT("Token")."$separator";}
+//			}
+//		}
+//	}
+//	elseif ($fieldinfo == "lastname")
+	if ($fieldinfo == "lastname")
+	{
+		if ($type == "csv") {$firstline .= "\"".$elang->gT("Last Name")."\"$separator";}
+		else {$firstline .= $elang->gT("Last Name")."$separator";}
+	}
+	elseif ($fieldinfo == "firstname")
+	{
+		if ($type == "csv") {$firstline .= "\"".$elang->gT("First Name")."\"$separator";}
+		else {$firstline .= $elang->gT("First Name")."$separator";}
+	}
+	elseif ($fieldinfo == "email")
+	{
+		if ($type == "csv") {$firstline .= "\"".$elang->gT("Email Address")."\"$separator";}
+		else {$firstline .= $elang->gT("Email Address")."$separator";}
+	}
+	elseif ($fieldinfo == "token")
+	{
+		if ($type == "csv") {$firstline .= "\"".$elang->gT("Token")."\"$separator";}
+		else {$firstline .= $elang->gT("Token")."$separator";}
+	}
+	elseif ($fieldinfo == "attribute_1")
+	{
+		if ($type == "csv") {$firstline .= "\"attr1\"$separator";}
+		else {$firstline .= $elang->gT("Attribute 1")."$separator";}
+	}
+	elseif ($fieldinfo == "attribute_2")
+	{
+		if ($type == "csv") {$firstline .= "\"attr2\"$separator";}
+		else {$firstline .= $elang->gT("Attribute 2")."$separator";}
+	}
+	elseif ($fieldinfo == "id")
+	{
+		if ($type == "csv") {$firstline .= "\"id\"$separator";}
+		else {$firstline .= "id$separator";}
+	}
+	elseif ($fieldinfo == "datestamp")
+	{
+		if ($type == "csv") {$firstline .= "\"".$elang->gT("Time Submitted")."\"$separator";}
+		else {$firstline .= $elang->gT("Time Submitted")."$separator";}
+	}
+	elseif ($fieldinfo == "completed")
+	{
+		if ($type == "csv") {$firstline .= "\"".$elang->gT("Completed")."\"$separator";}
+		else {$firstline .= $elang->gT("Completed")."$separator";}
+	}
+	elseif ($fieldinfo == "ipaddr")
+	{
+		if ($type == "csv") {$firstline .= "\"".$elang->gT("IP-Address")."\"$separator";}
+		else {$firstline .= $elang->gT("IP-Address")."$separator";}
+	}
+    elseif ($fieldinfo == "refurl")
+    {
+        if ($type == "csv") {$firstline .= "\"".$elang->gT("Referring URL")."\"$separator";}
+        else {$firstline .= $elang->gT("Referring URL")."$separator";}
+    }
+	else
+	{
+		//Data fields!
+		$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
+		$fqid=$fielddata['qid'];
+		$ftype=$fielddata['type'];
+		$fsid=$fielddata['sid'];
+		$fgid=$fielddata['gid'];
+		$faid=$fielddata['aid'];
+		if ($style == "abrev")
+		{
+			$qq = "SELECT question FROM {$dbprefix}questions WHERE qid=$fqid and language='$explang'";
+			$qr = db_execute_assoc($qq);
+			while ($qrow=$qr->FetchRow())
+			{$qname=$qrow['question'];}
+			$qname=mb_substr($qname, 0, 15)."..";
+			$qname=strip_tags($qname);
+			$firstline = str_replace("\n", "", $firstline);
+			$firstline = str_replace("\r", "", $firstline);
+			if ($type == "csv") {$firstline .= "\"$qname";}
+			else {$firstline .= "$qname";}
+			if (isset($faid)) {$firstline .= " [{$faid}]"; $faid="";}
+			if ($type == "csv") {$firstline .= "\"";}
+			$firstline .= "$separator";
+		}
+		else
+		{
+			$qq = "SELECT question, type, other, title FROM {$dbprefix}questions WHERE qid=$fqid AND language='$explang' ORDER BY gid, title"; //get the question
+			$qr = db_execute_assoc($qq) or die ("ERROR:<br />".$qq."<br />".htmlspecialchars($connect->ErrorMsg()));
+			while ($qrow=$qr->FetchRow())
+			{
+				if ($style == "headcodes"){$fquest=$qrow['title'];}
+				else {$fquest=$qrow['question'];}
+			}
+			switch ($ftype)
+			{
+				case "R": //RANKING TYPE
+				$fquest .= " [".$elang->gT("Ranking")." $faid]";
+				break;
+				case "L":
+				case "!":
+				case "W":
+				case "Z":
+				if ($faid == "other") {
+					$fquest .= " [".$elang->gT("Other")."]";
+				}
+				break;
+				case "O": //DROPDOWN LIST WITH COMMENT
+				if ($faid == "comment")
+				{
+					$fquest .= " - Comment";
+				}
+				break;
+				case "M": //multioption
+				if ($faid == "other")
+				{
+					$fquest .= " [".$elang->gT("Other")."]";
+				}
+				else
+				{
+					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$faid' AND language = '$explang'";
+					$lr = db_execute_assoc($lq);
+					while ($lrow = $lr->FetchRow())
+					{
+						$fquest .= " [".$lrow['answer']."]";
+					}
+				}
+				break;
+				case "P": //multioption with comment
+				if (mb_substr($faid, -7, 7) == "comment")
+				{
+					$faid=mb_substr($faid, 0, -7);
+					$comment=true;
+				}
+				if ($faid == "other")
+				{
+					$fquest .= " [".$elang->gT("Other")."]";
+				}
+				else
+				{
+					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code = '$faid' AND language = '$explang'";
+					$lr = db_execute_assoc($lq);
+					while ($lrow = $lr->FetchRow())
+					{
+						$fquest .= " [".$lrow['answer']."]";
+					}
+				}
+				if (isset($comment) && $comment == true) {$fquest .= " - comment"; $comment=false;}
+				break;
+				case "A":
+				case "B":
+				case "C":
+				case "E":
+				case "F":
+				case "H":
+				case "Q":
+				case "^":
+				if ($answers == "short") {
+					$fquest .= " [$faid]";
+				}
+				else
+				{
+					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code= '$faid' AND language = '$explang'";
+					$lr = db_execute_assoc($lq);
+					while ($lrow=$lr->FetchRow())
+					{
+						$fquest .= " [".$lrow['answer']."]";
+					}
+				}
+				break;
+			}
+			$fquest = strip_tags($fquest);
+			$fquest = str_replace("\n", " ", $fquest);
+			$fquest = str_replace("\r", "", $fquest);
+			if ($type == "csv")
+			{
+				$firstline .="\"$fquest\"$separator";
+			}
+			else
+			{
+				$firstline .= "$fquest $separator";
+			}
+		}
+	}
+}
+>>>>>>> refs/heads/stable_plus
 
     if ($fieldinfo == "lastname")
     {
@@ -723,6 +991,7 @@ elseif ($answers == "long")        //chose complete answers
         {
             $fqid=0;            // By default fqid is set to zero
             $field=$dresult->FetchField($i);
+<<<<<<< HEAD
             $fieldinfo=$field->name;
             if ($fieldinfo != "startlanguage" && $fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "startdate" && $fieldinfo != "ipaddr"  && $fieldinfo != "refurl" && $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && (substr($fieldinfo,0,10)!="attribute_") && $fieldinfo != "completed")
             {
@@ -775,6 +1044,58 @@ elseif ($answers == "long")        //chose complete answers
                         case "token":
                             $ftitle=$elang->gT("Token").":";
                             break;
+=======
+			$fieldinfo=$field->name;
+			if ($fieldinfo != "startlanguge" && $fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "ipaddr"  && $fieldinfo != "refurl" && $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && $fieldinfo != "attribute_1" && $fieldinfo != "attribute_2" && $fieldinfo != "completed")
+			{
+				//die(print_r($fieldmap));
+				$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
+				$fqid=$fielddata['qid'];
+				$ftype=$fielddata['type'];
+				$fsid=$fielddata['sid'];
+				$fgid=$fielddata['gid'];
+				$faid=$fielddata['aid'];
+				if ($type == "doc")
+				{
+					$ftitle=$fielddata['title'];
+				}
+				$qq = "SELECT lid, other FROM {$dbprefix}questions WHERE qid=$fqid and language='$surveybaselang'";
+				$qr = db_execute_assoc($qq) or die("Error selecting type and lid from questions table.<br />".$qq."<br />".htmlspecialchars($connect->ErrorMsg()));
+				while ($qrow = $qr->FetchRow())
+				{$lid=$qrow['lid']; $fother=$qrow['other'];} // dgk bug fix. $ftype should not be modified here!
+			}
+			else
+			{
+				$fsid=""; $fgid=""; 
+				if ($type == "doc")
+				{
+					switch($fieldinfo)
+					{
+						case "datestamp":
+						$ftitle=$elang->gT("Time Submitted").":";
+						break;
+						case "ipaddr":
+						$ftitle=$elang->gT("IP Address").":";
+						break;
+                        case "refurl":
+                        $ftitle=$elang->gT("Referring URL").":";
+                        break;
+						case "firstname":
+						$ftitle=$elang->gT("First Name").":";
+						break;
+						case "lastname":
+						$ftitle=$elang->gT("Last Name").":";
+						break;
+						case "email":
+						$ftitle=$elang->gT("Email").":";
+						break;
+						case "id":
+						$ftitle=$elang->gT("ID").":";
+						break;
+						case "token":
+						$ftitle=$elang->gT("Token").":";
+						break;
+>>>>>>> refs/heads/stable_plus
                         case "tid":
                             $ftitle=$elang->gT("Token ID").":";
                             break;

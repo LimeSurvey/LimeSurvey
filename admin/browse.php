@@ -129,6 +129,7 @@ if ($subaction == "id")
 
     $fieldmap=createFieldMap($surveyid,'full',false,false,$language);
 
+<<<<<<< HEAD
     //add token to top of list if survey is not private
     if ($surveyinfo['anonymized'] == "N" && tableExists('tokens_'.$surveyid))
     {
@@ -141,6 +142,107 @@ if ($subaction == "id")
     $fnames[] = array("completed", $clang->gT("Completed"), "0");
 
     foreach ($fieldmap as $field)
+=======
+	if ($private == "N") //add token to top ofl ist is survey is not private
+	{
+		$fnames[] = array("token", "token", $clang->gT("Token ID"));
+	}
+
+	$fnames[] = array("completed", "Completed", $clang->gT("Completed"), "0");
+
+	if ($datestamp == "Y") //add datetime to list if survey is datestamped
+	{
+		// submitdate for not-datestamped surveys is always 1980/01/01
+		// so only display it when datestamped
+		$fnames[] = array("submitdate", "submitdate", $clang->gT("Date Submitted"));
+		$fnames[] = array("datestamp", "datestamp", $clang->gT("Date Stamp"));
+	}
+	if ($ipaddr == "Y") //add ipaddr to list if survey should save submitters IP address
+	{
+		$fnames[] = array("ipaddr", "ipaddr", $clang->gT("IP Address"));
+	}
+	if ($refurl == "Y") //add refer_URL  to list if survey should save referring URL
+	{
+		$fnames[] = array("refurl", "refurl", $clang->gT("Referring URL"));
+	}
+	foreach ($fnrows as $fnrow)
+	{
+		$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
+		$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
+		$fquestion = $fnrow['question'];
+		if ($fnrow['type'] == "Q" || $fnrow['type'] == "M" ||
+		$fnrow['type'] == "A" || $fnrow['type'] == "B" ||
+		$fnrow['type'] == "C" || $fnrow['type'] == "E" ||
+		$fnrow['type'] == "F" || $fnrow['type'] == "H" ||
+		$fnrow['type'] == "J" ||
+		$fnrow['type'] == "P" || $fnrow['type'] == "^")
+		{
+			$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} AND	language='{$language}' ORDER BY sortorder, answer";
+			$fnrresult = db_execute_assoc($fnrquery);
+			while ($fnrrow = $fnrresult->FetchRow())
+			{
+				$fnames[] = array("$field{$fnrrow['code']}", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']} ({$fnrrow['answer']})");
+				if ($fnrow['type'] == "P") {$fnames[] = array("$field{$fnrrow['code']}"."comment", "$ftitle"."comment", "{$fnrow['question']} (comment)");}
+			}
+			if ($fnrow['other'] == "Y" and ($fnrow['type']=="!" or $fnrow['type']=="L" or $fnrow['type']=="M" or $fnrow['type']=="P"))
+			{
+				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)");
+			}
+		}
+		elseif ($fnrow['type'] == "R")
+		{
+			$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} AND
+			language='{$language}'
+			ORDER BY sortorder, answer";
+			$fnrresult = $connect->Execute($fnrquery);
+			$fnrcount = $fnrresult->RecordCount();
+			for ($i=1; $i<=$fnrcount; $i++)
+			{
+				$fnames[] = array("$field$i", "$ftitle ($i)", "{$fnrow['question']} ($i)");
+			}
+		}
+		elseif ($fnrow['type'] == "O")
+		{
+			$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}");
+			$field2 = $field."comment";
+			$ftitle2 = $ftitle."[Comment]";
+			$longtitle = "{$fnrow['question']}<br />[Comment]";
+			$fnames[] = array("$field2", "$ftitle2", "$longtitle");
+		}
+		else
+		{
+			$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}");
+			if (($fnrow['type'] == "L" || $fnrow['type'] == "!") && $fnrow['other'] == "Y")
+			{
+				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)");
+			}
+		}
+	}
+
+	$nfncount = count($fnames)-1;
+	//SHOW INDIVIDUAL RECORD
+	$idquery = "SELECT *, CASE WHEN submitdate IS NULL THEN 'N' ELSE 'Y' END as completed FROM $surveytable WHERE ";
+	if (incompleteAnsFilterstate() === true) {$idquery .= "submitdate >= ".$connect->DBDate('1980-01-01'). " AND ";}
+	if ($id<1) {$id=1;}
+	if (isset($_POST['sql']) && $_POST['sql'])
+	{
+		if (get_magic_quotes_gpc()) {$idquery .= stripslashes($_POST['sql']);}
+		else {$idquery .= "{$_POST['sql']}";}
+	}
+	else {$idquery .= "id=$id";}
+	$idresult = db_execute_assoc($idquery) or die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg());
+	while ($idrow = $idresult->FetchRow()) {$id=$idrow['id']; $rlangauge=$idrow['startlanguage'];}
+	$next=$id+1;
+	$last=$id-1;
+	$browseoutput .= "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+	."\t<tr>\n"
+	."\t\t<td colspan='2' height='4'><strong>"
+	. $clang->gT("View Response").":</strong> $id</td></tr>\n"
+	."\t<tr><td colspan='2'>\n"
+	."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
+	."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
+	if (isset($rlangauge))
+>>>>>>> refs/heads/stable_plus
     {
         if ($field['fieldname']=='lastpage' || $field['fieldname'] == 'submitdate')
             continue;
@@ -590,6 +692,7 @@ elseif ($subaction == "all")
 
     }
 
+<<<<<<< HEAD
     //LETS COUNT THE DATA
     //$dtquery = "SELECT count(*) FROM $sql_from $sql_where";
     $dtquery = "SELECT count(*) FROM $sql_from";
@@ -599,6 +702,46 @@ elseif ($subaction == "all")
     }
     $dtresult=db_execute_num($dtquery) or safe_die("Couldn't get response data<br />$dtquery<br />".$connect->ErrorMsg());
     while ($dtrow=$dtresult->FetchRow()) {$dtcount=$dtrow[0];}
+=======
+	if ($private == "N") //Add token to list
+	{
+		$fnames[] = array("token", $clang->gT("Token"), $clang->gT("Token ID"), "0");
+	}
+
+	$fnames[] = array("completed", "Completed", $clang->gT("Completed"), "0");
+
+	if ($datestamp == "Y") //Add datestamp
+	{
+		// submitdate for not-datestamped surveys is always 1980/01/01
+		// so only display it when datestamped
+		$fnames[] = array("submitdate", "submitdate", $clang->gT("Date Submitted"), "0");
+		$fnames[] = array("datestamp", "Datestamp", $clang->gT("Date Stamp"), "0");
+	}
+	if ($ipaddr == "Y") // Add IP Address
+	{
+		$fnames[] = array("ipaddr", "IPAddress", $clang->gT("IP Address"), "0");
+	}
+	if ($refurl == "Y") // refurl
+	{
+		$fnames[] = array("refurl", "refurl", $clang->gT("Referring URL"), "0");
+	}
+	foreach ($fnrows as $fnrow)
+	{
+		if ($fnrow['type'] != "Q" && $fnrow['type'] != "M" && $fnrow['type'] != "A" &&
+		$fnrow['type'] != "B" && $fnrow['type'] != "C" && $fnrow['type'] != "E" &&
+		$fnrow['type'] != "F" && $fnrow['type'] != "H" && $fnrow['type'] != "P" &&
+		$fnrow['type'] != "J" &&
+		$fnrow['type'] != "O" && $fnrow['type'] != "R" && $fnrow['type'] != "^")
+		{
+			$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
+			$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
+			$fquestion = $fnrow['question'];
+			$fnames[] = array("$field", "$ftitle", "$fquestion", "{$fnrow['gid']}");
+			if (($fnrow['type'] == "L" || $fnrow['type'] == "!") && $fnrow['other'] == "Y")
+			{
+				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)", "{$fnrow['gid']}");
+			}
+>>>>>>> refs/heads/stable_plus
 
     if ($limit > $dtcount) {$limit=$dtcount;}
 
@@ -622,10 +765,34 @@ elseif ($subaction == "all")
                 $dtquery .= " WHERE submitdate IS NOT NULL ";
             }
 
+<<<<<<< HEAD
             $dtquery .= " ORDER BY {$surveytable}.id";
         }
         else
         {
+=======
+	//NOW LETS CREATE A TABLE WITH THOSE HEADINGS
+	if ($fncount < 10) {$cellwidth = "10%";} else {$cellwidth = "100";}
+	$tableheader = "<!-- DATA TABLE -->";
+	if ($fncount < 10) {$tableheader .= "<table width='100%' border='0' cellpadding='0' cellspacing='1' style='border: 1px solid #555555' class='menu2columns'>\n";}
+	else {$fnwidth = (($fncount-1)*100); $tableheader .= "<table width='$fnwidth' border='0' cellpadding='1' cellspacing='1' style='border: 1px solid #555555'>\n";}
+	$tableheader .= "\t<tr valign='top'>\n"
+	. "\t\t<td  class='evenrow' width='$cellwidth'><strong>id</strong></td>\n";
+	foreach ($fnames as $fn)
+	{
+		if (!isset($currentgroup))  {$currentgroup = $fn[3]; $gbc = "oddrow";}
+		if ($currentgroup != $fn[3])
+		{
+			$currentgroup = $fn[3];
+			if ($gbc == "oddrow") {$gbc = "evenrow";}
+			else {$gbc = "oddrow";}
+		}
+		$tableheader .= "\t\t<td class='$gbc' width='$cellwidth'><strong>"
+		. strip_tags("$fn[2]")      
+		. "</strong></td>\n";
+	}
+	$tableheader .= "\t</tr>\n\n";
+>>>>>>> refs/heads/stable_plus
 
             if ($surveytable['anonymized'] == "N" && db_tables_exist($tokentable))
                 $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token WHERE 1=1 ";
@@ -664,9 +831,35 @@ elseif ($subaction == "all")
             $dtquery .= " WHERE submitdate IS NOT NULL ";
         }
 
+<<<<<<< HEAD
         $dtquery .= " ORDER BY {$surveytable}.id";
     }
     if ($order == "desc") {$dtquery .= " DESC";}
+=======
+	//NOW LETS SHOW THE DATA
+	if (isset($_POST['sql']))
+	{
+		if ($_POST['sql'] == "NULL")
+		{
+			$dtquery = "SELECT *, CASE WHEN submitdate IS NULL THEN 'N' ELSE 'Y' END as completed FROM $surveytable ";
+            if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate is not null ";}
+			$dtquery .= " ORDER BY id";
+		}
+		else
+		{
+			$dtquery = "SELECT *, CASE WHEN submitdate IS NULL THEN 'N' ELSE 'Y' END as completed FROM $surveytable WHERE ".stripcslashes($_POST['sql'])." ";
+            if (incompleteAnsFilterstate() === true) {$dtquery .= " AND submitdate is not null ";}
+			$dtquery .= " ORDER BY id";
+		}
+	}
+	else
+	{
+		$dtquery = "SELECT *, CASE WHEN submitdate IS NULL THEN 'N' ELSE 'Y' END as completed FROM $surveytable ";
+		if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate is not null ";}
+		$dtquery .= " ORDER BY id";
+	}
+	if ($order == "desc") {$dtquery .= " DESC";}
+>>>>>>> refs/heads/stable_plus
 
     if (isset($limit))
     {

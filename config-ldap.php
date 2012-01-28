@@ -1,5 +1,6 @@
 <?php
 /*
+<<<<<<< HEAD
  * LimeSurvey
  * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -12,6 +13,20 @@
  *
  * $Id$
  */
+=======
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+* $Id$
+*/
+>>>>>>> refs/heads/stable_plus
 
 
 /*********** LDAP Parameters and Functions ***********************
@@ -82,7 +97,11 @@ $ldap_server[$serverId]['bindpw']	=	"AsecretPassword";
 /* Predefined Queries for Token Imports                               */
 /*                                                                    */
 /* This sample query definition is just an fake template: do not      */
+<<<<<<< HEAD
 /* expect it to do something intelligent on your directory            */
+=======
+/* expect it to do something intelligent on your directory            */ 
+>>>>>>> refs/heads/stable_plus
 /* Instead have a look at the online documentation:                   */
 /* - Section Installation, paragraph LDAP_Settings                     */
 /* And for Active Directory tips:                                     */

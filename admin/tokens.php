@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
     /*
     * LimeSurvey
     * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
@@ -12,6 +13,21 @@
     *
     * $Id$
     */
+=======
+/*
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+* $Id$
+*/
+>>>>>>> refs/heads/stable_plus
 
 
     # TOKENS FILE
@@ -33,6 +49,7 @@
     if (!isset($gtokenids)) {$gtokenids=returnglobal('gtids');}
     if (!isset($starttokenid)) {$starttokenid=sanitize_int(returnglobal('last_tid'));}
 
+<<<<<<< HEAD
     if(isset($tokenids)) {
         $tokenidsarray=explode("|", substr($tokenids, 1)); //Make the tokenids string into an array, and exclude the first character
         unset($tokenids);
@@ -46,6 +63,73 @@
     $js_admin_includes[]='scripts/tokens.js';
     $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
     $thissurvey=getSurveyInfo($surveyid);
+=======
+if ($enableLdap)
+{
+	require_once(dirname(__FILE__).'/../config-ldap.php');
+}
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+if (!isset($order)) {$order=returnglobal('order');}
+if (!isset($limit)) {$limit=returnglobal('limit');}
+if (!isset($start)) {$start=returnglobal('start');}
+if (!isset($searchstring)) {$searchstring=returnglobal('searchstring');}
+if (!isset($tokenid)) {$tokenid=returnglobal('tid');}
+if (!isset($starttokenid)) {$starttokenid=sanitize_int(returnglobal('last_tid'));}
+
+include_once("login_check.php");
+include_once("database.php");
+
+
+if ($subaction == "import" || $subaction == "upload" )  // THis array only needs to be defined for these two functions
+{
+$encodingsarray = array("armscii8"=>$clang->gT("ARMSCII-8 Armenian")
+		               ,"ascii"=>$clang->gT("US ASCII")
+		               ,"auto"=>$clang->gT("Automatic")
+		               ,"big5"=>$clang->gT("Big5 Traditional Chinese")
+		               ,"binary"=>$clang->gT("Binary pseudo charset")
+		               ,"cp1250"=>$clang->gT("Windows Central European")
+		               ,"cp1251"=>$clang->gT("Windows Cyrillic")
+		               ,"cp1256"=>$clang->gT("Windows Arabic")
+		               ,"cp1257"=>$clang->gT("Windows Baltic")
+		               ,"cp850"=>$clang->gT("DOS West European")
+		               ,"cp852"=>$clang->gT("DOS Central European")
+		               ,"cp866"=>$clang->gT("DOS Russian")
+		               ,"cp932"=>$clang->gT("SJIS for Windows Japanese")
+		               ,"dec8"=>$clang->gT("DEC West European")
+		               ,"eucjpms"=>$clang->gT("UJIS for Windows Japanese")
+		               ,"euckr"=>$clang->gT("EUC-KR Korean")
+		               ,"gb2312"=>$clang->gT("GB2312 Simplified Chinese")
+		               ,"gbk"=>$clang->gT("GBK Simplified Chinese")
+		               ,"geostd8"=>$clang->gT("GEOSTD8 Georgian")
+		               ,"greek"=>$clang->gT("ISO 8859-7 Greek")
+		               ,"hebrew"=>$clang->gT("ISO 8859-8 Hebrew")
+		               ,"hp8"=>$clang->gT("HP West European")
+		               ,"keybcs2"=>$clang->gT("DOS Kamenicky Czech-Slovak")
+		               ,"koi8r"=>$clang->gT("KOI8-R Relcom Russian")
+		               ,"koi8u"=>$clang->gT("KOI8-U Ukrainian")
+		               ,"latin1"=>$clang->gT("cp1252 West European")
+		               ,"latin2"=>$clang->gT("ISO 8859-2 Central European")
+		               ,"latin5"=>$clang->gT("ISO 8859-9 Turkish")
+		               ,"latin7"=>$clang->gT("ISO 8859-13 Baltic")
+		               ,"macce"=>$clang->gT("Mac Central European")
+		               ,"macroman"=>$clang->gT("Mac West European")
+		               ,"sjis"=>$clang->gT("Shift-JIS Japanese")
+		               ,"swe7"=>$clang->gT("7bit Swedish")
+		               ,"tis620"=>$clang->gT("TIS620 Thai")
+		               ,"ucs2"=>$clang->gT("UCS-2 Unicode")
+		               ,"ujis"=>$clang->gT("EUC-JP Japanese")
+		               ,"utf8"=>$clang->gT("UTF-8 Unicode"));
+   if (isset($_POST['csvcharset']) && $_POST['csvcharset'])  //sanitize charset - if encoding is not found sanitize to 'auto'
+   {
+   $uploadcharset=$_POST['csvcharset'];
+   if (!array_key_exists($uploadcharset,$encodingsarray)) {$uploadcharset='auto';} 
+   }
+   					   
+}
+
+
+$tokenoutput='';
+>>>>>>> refs/heads/stable_plus
 
     if ($subaction == "import" || $subaction == "upload" )  // THis array only needs to be defined for these two functions
     {
@@ -449,6 +533,7 @@
                 ."emailstatus X(300) DEFAULT 'OK',\n ";
             }
 
+<<<<<<< HEAD
             $createtokentable.= "token C(36) ,\n "
             . "language C(25) ,\n "
             . "sent C(17) DEFAULT 'N',\n "
@@ -467,6 +552,33 @@
             $dict = NewDataDictionary($connect);
             $sqlarray = $dict->CreateTableSQL($tabname, $createtokentable, $taboptarray);
             $execresult=$dict->ExecuteSQLArray($sqlarray, false);
+=======
+// CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+$tkquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
+if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no tokens table exists
+{
+	if (isset($_GET['createtable']) && $_GET['createtable']=="Y" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
+	{
+		$createtokentable=
+		"tid int I NOTNULL AUTO PRIMARY,\n "
+		. "firstname C(40) ,\n "
+		. "lastname C(40) ,\n "
+		. "email C(320) ,\n "
+		. "token C(10) ,\n "
+		. "language C(25) ,\n "
+		. "sent C(17) DEFAULT 'N',\n "
+		. "completed C(17) DEFAULT 'N',\n "
+		. "attribute_1 C(100) ,\n"
+		. "attribute_2 C(100) ,\n"
+		. "mpid I ";
+
+
+		$tabname = "{$dbprefix}tokens_{$surveyid}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
+        $taboptarray = array('mysql' => 'TYPE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
+		$dict = NewDataDictionary($connect);
+		$sqlarray = $dict->CreateTableSQL($tabname, $createtokentable, $taboptarray);
+		$execresult=$dict->ExecuteSQLArray($sqlarray, false);
+>>>>>>> refs/heads/stable_plus
 
             if ($execresult==0 || $execresult==1)
             {
@@ -490,6 +602,14 @@
                     $result=$connect->Execute($query) or safe_die("Failed Rename!<br />".$query."<br />".$connect->ErrorMsg());
                 }
 
+<<<<<<< HEAD
+=======
+			if ($thissurvey['private'] == 'Y')
+			{
+				$tokenoutput .= "\t\t\t".$clang->gT("If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.")
+					."\t\t\t<br /><br />\n";
+			}
+>>>>>>> refs/heads/stable_plus
 
                 $tokenoutput .= "\t</div><p>\n"
                 .$clang->gT("A token table has been created for this survey.")." (\"".$dbprefix."tokens_$surveyid\")<br /><br />\n"
@@ -697,10 +817,76 @@
         while ($tkr = $tksr->FetchRow())
         {$tokenoutput .= "<th>".$clang->gT("Total with no unique Token")."</th><td> $tkr[0] / $tkcount</td></tr><tr>\n";}
 
+<<<<<<< HEAD
         $tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE (sent!='N' and sent<>'')";
         $tksr = db_execute_num($tksq);
         while ($tkr = $tksr->FetchRow())
         {$tokenoutput .= "<th>".$clang->gT("Total invitations sent")."</th><td> $tkr[0] / $tkcount</td></tr><tr>\n";}
+=======
+	//ALLOW SELECTION OF NUMBER OF RECORDS SHOWN
+	$tokenoutput .= "\t<tr><td colspan='3' height='4'><strong>"
+	.$clang->gT("Data View Control").":</strong></td></tr>\n"
+	."\t<tr><td width='230' align='left' valign='middle'>\n"
+	."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='31' height='20' border='0' hspace='0' align='left' />\n"
+	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
+	."\t\t\t<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=0&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
+	"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show start..", "js")."');return false\">".
+	"<img name='DBeginButton' align='left' src='$imagefiles/databegin.png' title='' /></a>\n"
+	."\t\t\t<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
+	"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show previous...", "js")."');return false\">" .
+	"<img name='DBackButton' align='left' src='$imagefiles/databack.png' title='' /></a>\n"
+	."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='13' height='20' border='0' hspace='0' align='left' />\n"
+	."\t\t\t<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
+	"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show next...", "js")."');return false\">" .
+	"<img name='DForwardButton' align='left' src='$imagefiles/dataforward.png' title='' /></a>\n"
+	."\t\t\t<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
+	" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show last...", "js")."');return false\">".
+	"<img name='DEndButton' align='left'  src='$imagefiles/dataend.png' title='' /></a>\n"
+	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
+	."\t\t\t\n</td><td align='left'>"
+	."\t\t\t\t<form method='post' action='$scriptname?action=tokens'>\n"
+	."\t\t\t\t\t<input type='text' name='searchstring' value='$searchstring' />\n"
+	."\t\t\t\t\t<input type='submit' value='".$clang->gT("Search")."' />\n"
+	."\t\t\t\t<input type='hidden' name='order' value='$order' />\n"
+	."\t\t\t\t<input type='hidden' name='subaction' value='search' />\n"
+	."\t\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
+	."\t\t\t\t</form>\n"
+	."\t\t</td>\n"
+	."\t\t<td align='right'><form action='$homeurl/admin.php'>\n"
+	."\t\t<font size='1' face='verdana'>"
+	."&nbsp;".$clang->gT("Records Displayed:")."<input type='text' size='4' value='$limit' name='limit' />"
+	."&nbsp;".$clang->gT("Starting From:")."<input type='text' size='4' value='$start' name='start' />"
+	."&nbsp;<input type='submit' value='".$clang->gT("Show")."' />\n"
+	."\t\t</font>\n"
+	."\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
+	."\t\t<input type='hidden' name='action' value='tokens' />\n"
+	."\t\t<input type='hidden' name='subaction' value='browse' />\n"
+	."\t\t<input type='hidden' name='order' value='$order' />\n"
+	."\t\t<input type='hidden' name='searchstring' value='$searchstring' />\n"
+	."\t\t</form></td>\n"
+	."\t</tr>\n";
+	$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
+	$bresult = db_select_limit_assoc($bquery, 1) or die($clang->gT("Error")." counting fields<br />".htmlspecialchars($connect->ErrorMsg()));
+	$bfieldcount=$bresult->FieldCount()-1;
+	$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
+	if ($searchstring)
+	{
+		$bquery .= " WHERE firstname LIKE '%$searchstring%' "
+		. "OR lastname LIKE '%$searchstring%' "
+		. "OR email LIKE '%$searchstring%' "
+		. "OR token LIKE '%$searchstring%'";
+		if ($bfieldcount == 10)
+		{
+			$bquery .= " OR attribute_1 like '%$searchstring%' "
+			. "OR attribute_2 like '%$searchstring%'";
+		}
+	}
+	if (!isset($order) || !$order) {$bquery .= " ORDER BY tid";}
+	else {$bquery .= " ORDER BY $order"; }
+	//die($bquery.":::".$start.":::".$limit);
+	$bresult = db_select_limit_assoc($bquery, $limit, $start) or die ($clang->gT("Error").": $bquery<br />".htmlspecialchars($connect->ErrorMsg()));
+	$bgc="";
+>>>>>>> refs/heads/stable_plus
 
         $tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE emailstatus = 'optOut'";
         $tksr = db_execute_num($tksq);
@@ -717,8 +903,36 @@
 
     }
 
+<<<<<<< HEAD
     #############################################################################################
     // NOW FOR VARIOUS ACTIONS:
+=======
+	while ($brow = $bresult->FetchRow())
+	{
+		$brow['token'] = trim($brow['token']);
+		if ($bgc == "evenrow") {$bgc = "oddrow";} else {$bgc = "evenrow";}
+		$tokenoutput .= "\t<tr class='$bgc'>\n";
+		foreach ($brow as $a=>$b)
+		{
+			$tokenoutput .= "\t\t<td class='$bgc'>$brow[$a]</td>\n";
+		}
+		if ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey'])
+		{
+			$tokenoutput .= "\t\t<td align='left'>\n"
+			."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='E' title='"
+			.$clang->gT("Edit Token Entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=edit&amp;tid=".$brow['tid']."', '_top')\" />"
+			."<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='D' title='"
+			.$clang->gT("Delete Token Entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=delete&amp;tid=".$brow['tid']."&amp;limit=$limit&amp;start=$start&amp;order=$order', '_top')\" />";
+			if (($brow['completed'] == "N" || $brow['completed'] == "") &&$brow['token']) {$tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='S' title='".$clang->gT("Do Survey")."' onclick=\"window.open('$publicurl/index.php?sid=$surveyid&amp;lang=".$brow['language']."&amp;token=".trim($brow['token'])."', '_blank')\" />\n";}
+			$tokenoutput .= "\n\t\t</td>\n";
+		}
+		if ($brow['completed'] != "N" && $brow['completed']!="" && $surveyprivate == "N")
+		{
+			// Get response Id
+			$query="SELECT id FROM ".db_table_name("survey_$surveyid")." WHERE token='".$brow['token']."' ORDER BY id desc";
+			$result=db_execute_num($query) or die ("<br />Could not find token!<br />\n" . htmlspecialchars($connect->ErrorMsg()));
+			list($id) = $result->FetchRow();
+>>>>>>> refs/heads/stable_plus
 
     if(isset($surveyid) && getEmailFormat($surveyid) == 'html')
     {
@@ -839,6 +1053,7 @@
         $tokenoutput .= ">".$clang->gT("POP")."</option>\n"
         ."\t\t</select></li>\n"
 
+<<<<<<< HEAD
         . "\t<li><label for='bounceaccounthost'>".$clang->gT("Server name & port:")."</label>\n"
         . "\t\t<input type='text' size='50' id='bounceaccounthost' name='bounceaccounthost' value=\"".$settings['bounceaccounthost']."\" />\n"."<font size='1'>".$clang->gT("Enter your hostname and port, e.g.: imap.gmail.com:995")."</font>\n"
         . "\t<li><label for='bounceaccountuser'>".$clang->gT("User name:")."</label>\n"
@@ -878,6 +1093,63 @@
         ."<div class='messagebox ui-corner-all'><div class='successheader'>".$clang->gT("All token entries have been set to 'Not invited'.")."</div></div><br />\n";
         $subaction="";
     }
+=======
+			$tokenoutput .= "\t<tr>\n"
+			."\t\t<td align='right'><strong>".$clang->gT("From").":</strong></font></td>\n"
+			."\t\t<td><input type='text' size='50' name='from_$language' value=\"{$thissurvey['adminname']} <{$thissurvey['adminemail']}>\" /></td>\n"
+			."\t</tr>\n"
+			."\t<tr>\n"
+			."\t\t<td align='right'><strong>".$clang->gT("Subject").":</strong></font></td>\n"
+			."\t\t<td><input type='text' size='83' name='subject_$language' value=\"$subject\" /></td>\n"
+			."\t</tr>\n"
+			."\t<tr>\n"
+			."\t\t<td align='right' valign='top'><strong>".$clang->gT("Message").":</strong></font></td>\n"
+			."\t\t<td>\n"
+			."\t\t\t<textarea name='message_$language' rows='20' cols='80'>\n"
+			.$textarea
+			."\t\t\t</textarea>\n"
+			."\t\t</td>\n"
+			."\t</tr></table></div>\n";
+		}
+		$tokenoutput .= "</div><table class='table2columns'>";
+		if (isset($tokenid))
+			{
+				$tokenoutput .= "<tr><td colspan='2'>"
+				.$clang->gT("to TokenID No")." ".$tokenid
+				."</td></tr>";
+			}		
+		$tokenoutput .="\t<tr><td>&nbsp;</td><td align='left'><input type='submit' value='"
+		.$clang->gT("Send Invitations")."'>\n"
+		."\t<input type='hidden' name='ok' value='absolutely' />\n"
+		."\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n"
+		."\t<input type='hidden' name='subaction' value='email' /></td></tr>\n";
+		if (isset($tokenid)) {$tokenoutput .= "\t<input type='hidden' name='tid' value='$tokenid' />";}
+		$tokenoutput .= "\n"
+		."</table></form>\n";
+	}
+	else
+	{
+		$tokenoutput .= $clang->gT("Sending Invitations");
+		if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to TID No:")." {$tokenid})";}
+		$tokenoutput .= "<br />\n";
+
+		$ctquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != ''";
+
+		if (isset($tokenid)) {$ctquery .= " and tid='{$tokenid}'";}
+		$tokenoutput .= "<!-- ctquery: $ctquery -->\n";
+		$ctresult = $connect->Execute($ctquery) or die("Database error!<br />\n" . htmlspecialchars($connect->ErrorMsg()));
+		$ctcount = $ctresult->RecordCount();
+		$ctfieldcount = $ctresult->FieldCount();
+		$emquery = "SELECT firstname, lastname, email, token, tid, language";
+		if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
+
+		$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != ''";
+
+		if (isset($tokenid)) {$emquery .= " and tid='{$tokenid}'";}
+		$tokenoutput .= "\n\n<!-- emquery: $emquery -->\n\n";
+		$emresult = db_select_limit_assoc($emquery,$maxemails) or die ("Couldn't do query.<br />\n$emquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
+		$emcount = $emresult->RecordCount();
+>>>>>>> refs/heads/stable_plus
 
     if ($subaction == "cleartokens" && bHasSurveyPermission($surveyid, 'tokens', 'update'))
     {
@@ -904,11 +1176,62 @@
         if (bHasSurveyPermission($surveyid, 'tokens', 'delete'))
         {
 
+<<<<<<< HEAD
             $tokenoutput .="<li><a href='#' onclick=\" if (confirm('"
             .$clang->gT("Are you really sure you want to delete ALL token entries?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall")."}\">".$clang->gT("Delete all token entries")."</a></li>\n";
         }
         $tokenoutput .= "</ul></div>\n";
     }
+=======
+				if (MailTextMessage($modmessage, $modsubject, $to , $from, $sitename))
+				{
+					// Put date into sent
+					$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
+					$udequery = "UPDATE ".db_table_name("tokens_{$surveyid}")."\n"
+					."SET sent='$today' WHERE tid={$emrow['tid']}";
+					//
+					$uderesult = $connect->Execute($udequery) or die ("Could not update tokens<br />$udequery<br />".htmlspecialchars($connect->ErrorMsg()));
+					$tokenoutput .= "[".$clang->gT("Invitation sent to:")."{$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
+				}
+				else
+				{
+					$tokenoutput .= ReplaceFields($clang->gT("Mail to {FIRSTNAME} {LASTNAME} ({EMAIL}) Failed"), $fieldsarray);
+					$tokenoutput .= "<br /><pre>$modsubject<br />$modmessage</pre>";
+				}
+			}
+			if ($ctcount > $emcount)
+			{
+				$lefttosend = $ctcount-$maxemails;
+				$tokenoutput .= "\t\t</td>\n"
+				."\t</tr>\n"
+				."\t<tr>\n"
+				."\t\t<td align='center'><strong>".$clang->gT("Warning")."</strong><br />\n"
+                ."\t\t\t<form method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'>"
+				.$clang->gT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below.")."<br /><br />\n";
+				$tokenoutput .= str_replace("{EMAILCOUNT}", "$lefttosend", $clang->gT("There are {EMAILCOUNT} emails still to be sent."));
+				$tokenoutput .= "<br /><br />\n";
+				$tokenoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Continue")."' />\n"
+				."\t\t\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
+				."\t\t\t<input type='hidden' name='subaction' value=\"email\" />\n"
+                ."\t\t\t<input type='hidden' name='action' value=\"tokens\" />\n"
+				."\t\t\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n";
+		        foreach ($surveylangs as $language)
+				    {
+          			$message = html_escape($_POST['message_'.$language]);
+          			$subject = html_escape($_POST['subject_'.$language]);
+					$tokenoutput .="\t\t\t<input type='hidden' name='from_$language' value=\"".$_POST['from_'.$language]."\" />\n"
+					."\t\t\t<input type='hidden' name='subject_$language' value=\"".$_POST['subject_'.$language]."\" />\n"
+					."\t\t\t<input type='hidden' name='message_$language' value=\"$message\" />\n";
+					}
+				$tokenoutput .="\t\t\t</form>\n";
+			}
+		}
+		else
+		{
+			$tokenoutput .= "<center><strong>".$clang->gT("Warning")."</strong><br />\n".$clang->gT("There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token.")."</center>\n";
+		}
+		$tokenoutput .= "\t\t</td>\n";
+>>>>>>> refs/heads/stable_plus
 
 
     if ($subaction == "browse" || $subaction == "search")
@@ -997,6 +1320,7 @@
         $bresult = db_select_limit_assoc($bquery, $limit, $start) or safe_die ($clang->gT("Error").": $bquery<br />".$connect->ErrorMsg());
         $bgc="";
 
+<<<<<<< HEAD
         $tokenoutput .= "</div></div></div>\n";
 
         $tokenoutput .= "<table class='browsetokens' id='browsetokens' cellpadding='1' cellspacing='1'>\n";
@@ -1042,6 +1366,75 @@
         .$clang->gT("Sort by: ")
         .$clang->gT("Email address")
         ."' border='0' align='left' /></a>".$clang->gT("Email address")."</th>\n"
+=======
+        $tokenoutput .= "</div><table class='table2columns'>\n";
+		if (isset($tokenid))
+		{
+			$tokenoutput .= "\t<tr>\n"
+			."\t\t<td align='right' width='150' valign='top'><strong>"
+			.$clang->gT("Start at Token ID No:")."</strong></td>\n"
+			."\t\t<td><input type='text' size='5' name='last_tid' /></td>\n"
+			."\t</tr>\n";
+		}
+		else
+		{
+			$tokenoutput .= "\t<tr>\n"
+			."\t\t<td align='right' width='150' valign='top'><strong>"
+			.$clang->gT("Sending to TID No:")."</strong></font></td>\n"
+			."\t\t<td>{$tokenid}</font></td>\n"
+			."\t</tr>\n";
+		}		
+		$tokenoutput .="\t\t<tr><td>&nbsp;</td><td align='left'>\n"
+		."\t\t\t<input type='submit' value='".$clang->gT("Send Reminders")."' />\n"
+		."\t<input type='hidden' name='ok' value='absolutely' />\n"
+		."\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n"
+		."\t<input type='hidden' name='subaction' value='remind' />\n"
+		."\t\t</td>\n"
+		."\t</tr>\n";
+		if (isset($tokenid)) {$tokenoutput .= "\t<input type='hidden' name='tid' value='{$tokenid}' />\n";}
+		$tokenoutput .= "\t</table>\n"
+		."</form>\n";
+	}
+	else
+	{
+		$tokenoutput .= $clang->gT("Sending Reminders")."<br />\n";
+		
+		$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+		$baselanguage = GetBaseLanguageFromSurveyID($surveyid);
+		array_unshift($surveylangs,$baselanguage);
+		
+		foreach ($surveylangs as $language)
+		    {
+			$_POST['message_'.$language]=auto_unescape($_POST['message_'.$language]);
+			$_POST['subject_'.$language]=auto_unescape($_POST['subject_'.$language]);
+			}
+
+		if (isset($starttokenid)) {$tokenoutput .= " (".$clang->gT("From")." TID: {$starttokenid})";}
+		if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to TID No:")." TID: {$tokenid})";}
+
+		$ctquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed ='N' or completed ='') AND sent<>'' AND sent<>'N' AND token <>'' AND email <> ''";
+
+		if (isset($starttokenid)) {$ctquery .= " AND tid > '{$starttokenid}'";}
+		if (isset($tokenid) && $tokenid) {$ctquery .= " AND tid = '{$tokenid}'";}
+		$tokenoutput .= "<!-- ctquery: $ctquery -->\n";
+		$ctresult = $connect->Execute($ctquery) or die ("Database error!<br />\n" . htmlspecialchars($connect->ErrorMsg()));
+		$ctcount = $ctresult->RecordCount();
+		$ctfieldcount = $ctresult->FieldCount();
+		$emquery = "SELECT firstname, lastname, email, token, tid, language ";
+		if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
+
+		// TLR change to put date into sent
+		$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent<>'' AND token <>'' AND EMAIL <>''";
+
+		if (isset($starttokenid)) {$emquery .= " AND tid > '{$starttokenid}'";}
+		if (isset($tokenid) && $tokenid) {$emquery .= " AND tid = '{$tokenid}'";}
+		$emquery .= " ORDER BY tid ";
+		$emresult = db_select_limit_assoc($emquery, $maxemails) or die ("Couldn't do query.<br />$emquery<br />".htmlspecialchars($connect->ErrorMsg()));
+		$emcount = $emresult->RecordCount();
+		$tokenoutput .= "<table width='500' align='center' >\n"
+		."\t<tr>\n"
+		."\t\t<td><font size='1'>\n";
+>>>>>>> refs/heads/stable_plus
 
         ."<th align='left'  >"
         ."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=emailstatus%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
@@ -1103,6 +1496,7 @@
         .$clang->gT("Reminder count")
         ."' border='0' align='left' /></a><span>".$clang->gT("Reminder count")."</span></th>\n"
 
+<<<<<<< HEAD
         ."<th align='left'  >"
         ."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=completed%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
         ."<img src='$imageurl/downarrow.png' title='"
@@ -1112,6 +1506,58 @@
         .$clang->gT("Sort by: ")
         .$clang->gT("Completed?")
         ."' border='0' align='left' /></a>".$clang->gT("Completed?")."</th>\n"
+=======
+				if (MailTextMessage($sendmessage, $msgsubject, $to, $from, $sitename))
+				{
+					$tokenoutput .= "\t\t\t({$emrow['tid']})[".$clang->gT("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
+				}
+				else
+				{
+					$tokenoutput .= "\t\t\t({$emrow['tid']})[Email to {$emrow['firstname']} {$emrow['lastname']} failed]<br />\n";
+				}
+				$lasttid = $emrow['tid'];
+			}
+			if ($ctcount > $emcount)
+			{
+				$lefttosend = $ctcount-$maxemails;
+				$tokenoutput .= "\t\t</td>\n"
+				."\t</tr>\n"
+                ."\t<tr><form method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'>"
+				."\t\t<td align='center'>\n"
+				."\t\t\t<strong>".$clang->gT("Warning")."</strong><br /><br />\n"
+				.$clang->gT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below.")."<br /><br />\n"
+				.str_replace("{EMAILCOUNT}", $lefttosend, $clang->gT("There are {EMAILCOUNT} emails still to be sent."))
+				."<br />\n"
+				."\t\t\t<input type='submit' value='".$clang->gT("Continue")."' />\n"
+				."\t\t</td>\n"
+				."\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
+                ."\t<input type='hidden' name='subaction' value=\"remind\" />\n"
+                ."\t<input type='hidden' name='action' value=\"tokens\" />\n"
+				."\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n";
+		        foreach ($surveylangs as $language)
+				    {
+          			$message = html_escape($_POST['message_'.$language]);
+					$tokenoutput .="\t\t\t<input type='hidden' name='from_$language' value=\"".$_POST['from_'.$language]."\" />\n"
+					."\t\t\t<input type='hidden' name='subject_$language' value=\"".$_POST['subject_'.$language]."\" />\n"
+					."\t\t\t<input type='hidden' name='message_$language' value=\"$message\" />\n";
+					}
+				$tokenoutput.="\t<input type='hidden' name='last_tid' value=\"$lasttid\" />\n"
+				."\t</form>\n";
+			}
+		}
+		else
+		{
+			$tokenoutput .= "<center><strong>".$clang->gT("Warning")."</strong><br />\n"
+			.$clang->gT("There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey.")."\n"
+			."<br /><br />\n"
+			."\t\t</td>\n";
+		}
+		$tokenoutput .= "\t</tr>\n"
+		."</table>\n";
+	}
+	$tokenoutput .= "</td></tr></table>\n";
+}
+>>>>>>> refs/heads/stable_plus
 
         ."<th align='left'>"
         ."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=usesleft%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
@@ -1133,6 +1579,7 @@
         .$clang->gT("Valid from")
         ."' border='0' align='left' /></a>".$clang->gT("Valid from")."</th>\n"
 
+<<<<<<< HEAD
         ."<th align='left'>"
         ."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=validuntil%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
         ."<img src='$imageurl/downarrow.png' title='"
@@ -1171,6 +1618,80 @@
         {
             $tokenfieldorder[]=$attr_name;
         }
+=======
+if ($subaction == "delete" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
+{
+	$dlquery = "DELETE FROM ".db_table_name("tokens_$surveyid")." WHERE tid={$tokenid}";
+	$dlresult = $connect->Execute($dlquery) or die ("Couldn't delete record {$tokenid}<br />".htmlspecialchars($connect->ErrorMsg()));
+	$tokenoutput .= "\t<tr ><td colspan='2' height='4'><strong>"
+	.$clang->gT("Delete")."</strong></td></tr>\n"
+	."\t<tr><td align='center'><br />\n"
+	."<br /><strong>".$clang->gT("Token has been deleted.")."</strong><br />\n"
+	."<font size='1'><i>".$clang->gT("Reloading Screen. Please wait.")."</i><br /><br /></font>\n"
+	."\t</td></tr></table>\n";
+}
+
+if (($subaction == "edit" || $subaction == "addnew") && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
+{
+	if ($subaction == "edit")
+	{
+		$edquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE tid={$tokenid}";
+		$edresult = db_execute_assoc($edquery);
+		$edfieldcount = $edresult->FieldCount();
+		while($edrow = $edresult->FetchRow())
+		{
+			//Create variables with the same names as the database column names and fill in the value
+			foreach ($edrow as $Key=>$Value) {$$Key = $Value;}
+		}
+	}
+	if ($subaction != "edit")
+	{
+		$edquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
+		$edresult = db_select_limit_assoc($edquery, 1);
+		$edfieldcount = $edresult->FieldCount();
+	}
+
+	$tokenoutput .= "\t</table>\n"
+	."<form method='post' action='$scriptname?action=tokens'>\n"
+	."<table width='100%' class='form2columns'>\n"
+    ."<tr><th colspan='2' ><strong>\n"
+    .$clang->gT("Add or Edit Token")."</strong></th></tr><tr>\n"
+	."\t<td align='right' width='20%'><strong>ID:</strong></font></td>\n"
+	."\t<td>";
+	if ($subaction == "edit")
+	{$tokenoutput .=$tokenid;} else {$tokenoutput .=$clang->gT("Auto");}
+	$tokenoutput .= "</font></td>\n"
+	."</tr>\n"
+	."<tr>\n"
+	."\t<td align='right' width='20%'><strong>".$clang->gT("First Name").":</strong></font></td>\n"
+	."\t<td><input type='text' size='30' name='firstname' value=\"";
+	if (isset($firstname)) {$tokenoutput .= $firstname;}
+	$tokenoutput .= "\"></font></td>\n"
+	."</tr>\n"
+	."<tr>\n"
+	."\t<td align='right' width='20%'><strong>".$clang->gT("Last Name").":</strong></font></td>\n"
+	."\t<td ><input type='text' size='30' name='lastname' value=\"";
+	if (isset($lastname)) {$tokenoutput .= $lastname;}
+	$tokenoutput .= "\"></font></td>\n"
+	."</tr>\n"
+	."<tr>\n"
+	."\t<td align='right' width='20%'><strong>".$clang->gT("Email").":</strong></font></td>\n"
+	."\t<td ><input type='text' maxsize='320' size='50' name='email' value=\"";
+	if (isset($email)) {$tokenoutput .= $email;}
+	$tokenoutput .= "\"></font></td>\n"
+	."</tr>\n"
+	."<tr>\n"
+	."\t<td align='right' width='20%'><strong>".$clang->gT("Token").":</strong></font></td>\n"
+	."\t<td ><input type='text' size='15' name='token' value=\"";
+	if (isset($token)) {$tokenoutput .= $token;}
+	$tokenoutput .= "\">\n";
+	if ($subaction == "addnew")
+	{
+		$tokenoutput .= "\t\t<font size='1' color='red'>".$clang->gT("You can leave this blank, and automatically generate tokens using 'Create Tokens'")."</font></font>\n";
+	}
+	$tokenoutput .= "\t</font></td>\n"
+	."</tr>\n"
+>>>>>>> refs/heads/stable_plus
 
         while ($brow = $bresult->FetchRow())
         {
@@ -1253,12 +1774,52 @@
                         ."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")." (".$brow['tid'].")')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=delete&amp;tid=".$brow['tid']."&amp;limit=$limit&amp;start=$start&amp;order=$order")."}\"  />";
                     }
 
+<<<<<<< HEAD
                     if ($brow['completed'] != "N" && $brow['completed']!="" && $surveyprivate == "N"  && $thissurvey['active']=='Y')
                     {
                         // Get response Id
                         $query="SELECT id FROM ".db_table_name('survey_'.$surveyid)." WHERE token='{$brow['token']}' ORDER BY id desc";
                         $result=db_execute_num($query) or safe_die ("<br />Could not find token!<br />\n" .$connect->ErrorMsg());
                         list($id) = $result->FetchRow();
+=======
+	if (isset($completed)) {$tokenoutput .= $completed;} else {$tokenoutput .= "N";}
+	if ($edfieldcount > 7)
+	{
+		$tokenoutput .= "\"></font></td>\n"
+		."</tr>\n"
+		."<tr>\n"
+		."\t<td align='right' width='20%'><strong>".$attr1_name.":</strong></font></td>\n"
+		."\t<td ><input type='text' size='50' name='attribute1' value=\"";
+		if (isset($attribute_1)) {$tokenoutput .= $attribute_1;}
+		$tokenoutput .= "\"></font></td>\n"
+		."</tr>\n"
+		."<tr>\n"
+		."\t<td align='right' width='20%'><strong>".$attr2_name.":</strong></font></td>\n"
+		."\t<td><input type='text' size='50' name='attribute2' value=\"";
+		if (isset($attribute_2)) {$tokenoutput .= $attribute_2;}
+	}
+	$tokenoutput .= "\"></font></td>\n"
+	."</tr>\n"
+	."<tr>\n"
+	."\t<td colspan='2' class='centered'>";
+	switch($subaction)
+	{
+		case "edit":
+			$tokenoutput .= "\t\t<input type='submit' value='".$clang->gT("Update Token")."'>\n"
+			."\t\t<input type='hidden' name='subaction' value='updatetoken'>\n"
+			."\t\t<input type='hidden' name='tid' value='{$tokenid}'>\n";
+			break;
+		case "addnew":
+			$tokenoutput .= "\t\t<input type='submit' value='".$clang->gT("Add Token")."'>\n"
+			."\t\t<input type='hidden' name='subaction' value='inserttoken'>\n";
+			break;
+	}
+	$tokenoutput .= "\t\t<input type='hidden' name='sid' value='$surveyid'>\n"
+	."\t</td>\n"
+	."</tr>\n\n"
+	."</table></form>\n";
+}
+>>>>>>> refs/heads/stable_plus
 
                         // UPDATE button to the tokens display in the MPID Actions column
                         if  ($id)
@@ -1292,6 +1853,7 @@
             $tokenoutput .= "\t</tr>\n";
         }
 
+<<<<<<< HEAD
         // Multiple item actions
         if ($bresult->rowCount() > 0) {
             $tokenoutput .= "<tr class='{$bgc}'>\n"
@@ -1330,6 +1892,58 @@
             . "</tr>\n";
         }
         //End multiple item actions
+=======
+if ($subaction == "updatetoken" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
+{
+	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
+	.$clang->gT("Add or Edit Token")."</strong></td></tr>\n"
+	."\t<tr><td align='center'>\n";
+	$data = array();
+	$data[] = $_POST['firstname'];
+	$data[] = $_POST['lastname'];
+	$data[] = sanitize_email($_POST['email']);
+	$data[] = sanitize_paranoid_string($_POST['token']);
+	$data[] = sanitize_languagecode($_POST['language']);
+	$data[] = $_POST['sent'];
+	$data[] = $_POST['completed'];
+	$udquery = "UPDATE ".db_table_name("tokens_$surveyid")." SET firstname=?, "
+	. "lastname=?, email=?, "
+	. "token=?, language=?, sent=?, completed=?";
+	if (isset($_POST['attribute1']))
+	{
+		$data[] = $_POST['attribute1'];
+		$data[] = $_POST['attribute2'];
+		$udquery .= ", attribute_1=?, attribute_2=?";
+	}
+
+	$udquery .= " WHERE tid={$tokenid}";
+
+	$udresult = $connect->Execute($udquery, $data) or die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
+	$tokenoutput .= "<br /><font color='green'><strong>".$clang->gT("Success")."</strong></font><br />\n"
+	."<br />".$clang->gT("Updated Token")."<br /><br />\n"
+	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse'>".$clang->gT("Display Tokens")."</a><br /><br />\n"
+	."\t</td></tr></table>\n";
+}
+
+if ($subaction == "inserttoken" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
+{
+	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
+	.$clang->gT("Add or Edit Token")."</strong></td></tr>\n"
+	."\t<tr><td align='center'>\n";
+	$data = array('firstname' => $_POST['firstname'],
+	'lastname' => $_POST['lastname'],
+	'email' => sanitize_email($_POST['email']),
+	'token' => sanitize_paranoid_string($_POST['token']),
+	'language' => sanitize_languagecode($_POST['language']),
+	'sent' => $_POST['sent'],
+	'completed' => $_POST['completed']);
+	if (isset($_POST['attribute1']))
+	{
+		$data['attribute_1'] = $_POST['attribute1'];
+		$data['attribute_2'] = $_POST['attribute2'];
+	}
+	$tblInsert=db_table_name('tokens_'.$surveyid);
+>>>>>>> refs/heads/stable_plus
 
         $tokenoutput .= "</table>\n<br />\n";
     }
@@ -1370,6 +1984,7 @@
                 $deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())." - Query: ".htmlspecialchars($deactivatequery)." <br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
             }
 
+<<<<<<< HEAD
             $tokenoutput .= '<br />'.$clang->gT("The tokens table has now been removed and tokens are no longer required to access this survey.")."<br /> ".$clang->gT("A backup of this table has been made and can be accessed by your system administrator.")."<br />\n"
             ."(\"{$dbprefix}old_tokens_{$surveyid}_$date\")"."<br /><br />\n"
             ."<input type='submit' value='"
@@ -1378,6 +1993,120 @@
         $tokenoutput .= "</div>\n";
     }
 
+=======
+if ($subaction == "upload" && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey']))
+{
+	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
+	.$clang->gT("Upload CSV File")."</strong></td></tr>\n"
+	."\t<tr><td align='center'>\n";
+	if (!isset($tempdir))
+	{
+		$the_path = $homedir;
+	}
+	else
+	{
+		$the_path = $tempdir;
+	}
+	$the_file_name = $_FILES['the_file']['name'];
+	$the_file = $_FILES['the_file']['tmp_name'];
+	$the_full_file_path = $the_path."/".$the_file_name;
+	if (!@move_uploaded_file($the_file, $the_full_file_path))
+	{
+		$errormessage="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("Upload file not found. Check your permissions and path for the upload directory")."</strong>\n";
+		form_csv_upload($errormessage);
+	}
+	else
+	{
+		$tokenoutput .= "<br /><strong>".$clang->gT("Importing CSV File")."</strong><br />\n<font color='green'>".$clang->gT("Success")."</font><br /><br />\n"
+		.$clang->gT("Creating Token Entries")."<br />\n";
+		$xz = 0; $xx = 0; $xy = 0; $xv = 0; $xe = 0;
+		// This allows to read file with MAC line endings too
+		@ini_set('auto_detect_line_endings', true);
+		// open it and trim the ednings
+		$tokenlistarray = array_map('rtrim',file($the_full_file_path));
+		if (!isset($tokenlistarray)) {$tokenoutput .= "Failed to open the uploaded file!\n";}
+		foreach ($tokenlistarray as $buffer)
+		{
+            $buffer=@mb_convert_encoding($buffer,"UTF-8",$uploadcharset);
+			$firstname = ""; $lastname = ""; $email = ""; $token = ""; $language=""; $attribute1=""; $attribute2=""; //Clear out values from the last path, in case the next line is missing a value
+			if ($xx==0)
+			{
+				//THIS IS THE FIRST LINE. IT IS THE HEADINGS. IGNORE IT
+			}
+			else
+			{
+
+				$line = convertCSVRowToArray($buffer,',','"');
+				// sanitize it before writing into table
+				$line = array_map('db_quote',$line);
+				if (isset($line[0]) && $line[0] != "" & isset($line[1]) && $line[1] != "" && isset($line[2]) && $line[2] != "")
+				{
+					if (is_numeric($line[0])) 
+					{
+						$line[7] = $line[0];
+						$line[0] = $line[1];
+						$line[1] = $line[2];
+						$line[2] = $line[3];
+						$line[3] = $line[4];
+						$line[4] = $line[5];
+						$line[5] = $line[6];
+					}
+					
+					$dupquery = "SELECT firstname, lastname from ".db_table_name("tokens_$surveyid")." where email=".$connect->qstr($line[2])." and firstname = ".$connect->qstr($line[0])." and lastname= ".$connect->qstr($line[1])."";
+					$dupresult = $connect->Execute($dupquery);
+					if ( $dupresult->RecordCount() > 0)
+					{
+						$dupfound = $dupresult->FetchRow();
+						$xy++;
+					}
+					else
+					{
+						$line[2] = trim($line[2]);
+						if (!validate_email($line[2]))
+						{
+							$xe++;
+						} else
+						{
+							if (!isset($line[3])) $line[3] = "";
+							if (!isset($line[4]) || $line[4] == "") $line[4] = GetBaseLanguageFromSurveyID($surveyid);
+							if (!isset($line[5])) $line[5] = "";
+							if (!isset($line[6])) $line[6] = "";
+							$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
+							. "(";
+							if (isset($line[7])) $iq .="tid, ";
+							$iq .="firstname, lastname, email, token, language, attribute_1, attribute_2, sent, completed";
+							$iq .=") \n"
+							. "VALUES (";
+							if (isset($line[7])) $iq .= $connect->qstr($line[7]).", ";
+							$iq .= $connect->qstr($line[0]).", ".$connect->qstr($line[1]).", ".$connect->qstr($line[2]).", ".$connect->qstr($line[3]).", ".strtolower($connect->qstr($line[4]))." , ".$connect->qstr($line[5]).", ".$connect->qstr($line[6]).", ".$connect->qstr('N').", ".$connect->qstr('N');
+							$iq .= ")";
+							$ir = $connect->Execute($iq) or die ("Couldn't insert line<br />\n$buffer<br />\n".htmlspecialchars($connect->ErrorMsg())."<pre style='text-align: left'>$iq</pre>\n");
+							$xz++;
+						}
+					}
+					$xv++;
+				}
+			}
+			$xx++;
+		}
+		$xx = $xx-1;
+		if ($xz != 0)
+		{
+			$tokenoutput .= "<font color='green'>".$clang->gT("Success")."</font><br /><br />\n";
+		} else {
+			$tokenoutput .= "<font color='red'>".$clang->gT("Failed")."</font><br /><br />\n";
+		}
+		$message = "$xx ".$clang->gT("Records in CSV").".<br />\n";
+		$message .= "$xv ".$clang->gT("Records met minumum requirements").".<br />\n";
+		$message .= "$xz ".$clang->gT("Records imported").".<br />\n";
+		$message .= "$xy ".$clang->gT("Duplicate records removed").".<br />\n";
+		$message .= "$xe ".$clang->gT("Records with invalid email address removed").".<br />\n";
+		$tokenoutput .= "<i>$message</i><br />\n";
+		unlink($the_full_file_path);
+	}
+	$tokenoutput .= "\t\t\t</td></tr></table>\n";
+}
+>>>>>>> refs/heads/stable_plus
 
     if ($subaction == "email" && bHasSurveyPermission($surveyid, 'tokens','update'))
     {
@@ -1455,10 +2184,19 @@
                 $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
                 $fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
 
+<<<<<<< HEAD
                 $subject=Replacefields($thissurvey['email_invite_subj'], $fieldsarray);
                 $textarea=Replacefields($thissurvey['email_invite'], $fieldsarray);
                 if ($ishtml!==true){$textarea=str_replace(array('<x>','</x>'),array(''),$textarea);}
                 $tokenoutput .= '<div id="'.$language.'">'."\n"; // Language Tab Div
+=======
+						// The first 3 attrs MUST exist in the ldap answer
+						// ==> send PHP notice msg to apache logs otherwise
+						$myfirstname = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['firstname_attr']]);
+						$mylastame = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['lastname_attr']]);
+						$myemail = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['email_attr']]);
+						$myemail= sanitize_email($myemail);
+>>>>>>> refs/heads/stable_plus
 
                 $tokenoutput .= "\t<ul>\n"
                 ."<li><label for='from_$language'>".$clang->gT("From").":</label>\n"
@@ -1531,6 +2269,7 @@
 
             $ctquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
 
+<<<<<<< HEAD
             if (isset($tokenid)) {$ctquery .= " AND tid='{$tokenid}'";}
             if (isset($tokenids)) {$ctquery .= " AND tid IN ('".implode("', '", $tokenids)."')";}
             $tokenoutput .= "<!-- ctquery: $ctquery -->\n";
@@ -1710,6 +2449,16 @@
     }
 
     if ($subaction == "remind" && bHasSurveyPermission($surveyid, 'tokens','update'))
+=======
+function form_csv_upload($error=false)
+{
+	global $surveyid, $tokenoutput,$scriptname, $clang, $encodingsarray;
+
+	if ($error) {$tokenoutput .= $error . "<br /><br />\n";}
+    asort($encodingsarray);               
+    $charsetsout='';
+    foreach  ($encodingsarray as $charset=>$title)
+>>>>>>> refs/heads/stable_plus
     {
         $tokenoutput .= PrepareEditorScript();
         $tokenoutput .= "\t<div class='header ui-widget-header'>"

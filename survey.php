@@ -1,5 +1,6 @@
 <?php
 /**
+<<<<<<< HEAD
  * LimeSurvey
  * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -12,6 +13,20 @@
  *
  * $Id$
  */
+=======
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+* $Id$
+*/
+>>>>>>> refs/heads/stable_plus
 
 //Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
 
@@ -146,6 +161,7 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
 
         if ($thissurvey['publicstatistics']=='Y' && $thissurvey['printanswers']=='Y') {$completed .='<br />'.$clang->gT("or");}
 
+<<<<<<< HEAD
         // Link to Public statistics  **********
         if ($thissurvey['publicstatistics']=='Y')
         {
@@ -155,6 +171,18 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
             ."</a><br />\n";
         }
         //*****************************************
+=======
+		sendcacheheaders();
+		if (!$embedded && isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
+		{
+			//Automatically redirect the page to the "url" setting for the survey
+			session_write_close();
+			
+			$url = $thissurvey['url'];
+			$url=str_replace("{SAVEDID}",$saved_id, $url);			// to activate the SAVEDID in the END URL
+			$url=str_replace("{TOKEN}",$_POST['token'], $url);			// to activate the TOKEN in the END URL
+            $url=str_replace("{SID}", $surveyid, $url);       // to activate the SID in the RND URL
+>>>>>>> refs/heads/stable_plus
 
         //Update the token if needed and send a confirmation email
         if (isset($clienttoken) && $clienttoken)
@@ -206,6 +234,7 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
 //SEE IF $surveyid EXISTS
 if ($surveyexists <1)
 {
+<<<<<<< HEAD
     sendcacheheaders();
     doHeader();
     //SURVEY DOES NOT EXIST. POLITELY EXIT.
@@ -215,6 +244,17 @@ if ($surveyexists <1)
     echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
     doFooter();
     exit;
+=======
+	sendcacheheaders();
+	doHeader();
+	//SURVEY DOES NOT EXIST. POLITELY EXIT.
+	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+	echo "\t<center><br />\n"
+	."\t".$clang->gT("Sorry. There is no matching survey.")."<br /></center>&nbsp;\n";
+	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+	doFooter();
+	exit;
+>>>>>>> refs/heads/stable_plus
 }
 
 //RUN THIS IF THIS IS THE FIRST TIME
@@ -383,6 +423,7 @@ print <<<END
 
 	function checkconditions(value, name, type)
 	{
+<<<<<<< HEAD
 
 END;
 
@@ -401,6 +442,33 @@ if ((isset($conditions) && is_array($conditions)) ||
         {
             var hiddenformname='java'+name;
             document.getElementById(hiddenformname).value=value;
+=======
+		if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq)) //New if statement
+		{
+			$java .= $endzone;
+			$endzone = "";
+			$cqcount=1;
+			$java .= "\n\t\t\tif ((";
+		}
+		if (!isset($oldcq) || !$oldcq) {$oldcq = $cd[2];}
+		if ($cd[4] == "L") //Just in case the dropdown threshold is being applied, check number of answers here
+		{
+			$cccquery="SELECT code FROM {$dbprefix}answers WHERE qid={$cd[1]}";
+			$cccresult=$connect->Execute($cccquery);
+			$cccount=$cccresult->RecordCount();
+		}
+		if ($cd[4] == "R") 	{$idname="fvalue_".$cd[1].substr($cd[2], strlen($cd[2])-1,1);}
+		elseif ($cd[4] == "5" || $cd[4] == "A" || $cd[4] == "B" || $cd[4] == "C" || $cd[4] == "E" || $cd[4] == "F" || $cd[4] == "G" || $cd[4] == "Y" || ($cd[4] == "L" && $cccount <= $dropdownthreshold))
+		{$idname="java$cd[2]";}
+		elseif ($cd[4] == "M" || $cd[4] == "P")
+		{$idname="java$cd[2]$cd[3]";}
+		else				{$idname="java".$cd[2];}
+		if ($cqcount > 1 && $oldcq ==$cd[2]) {$java .= " || ";}
+		elseif ($cqcount >1 && $oldcq != $cd[2]) {$java .= ") && (";}
+		if ($cd[3] == ' ' || $cd[3] == '')
+		{
+            $java .= "!document.getElementById('$idname') || document.getElementById('$idname').value == ' '  || document.getElementById('$idname').value == '' ";
+>>>>>>> refs/heads/stable_plus
         }
 
         if (type == 'checkbox')
@@ -889,6 +957,7 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
 }
 
 if (isset($java)) {echo $java;}
+<<<<<<< HEAD
 foreach ($groupUnconditionnalQuestionsCount as $thegid => $thecount)
 {
     if ($thecount == 0 )
@@ -897,6 +966,14 @@ foreach ($groupUnconditionnalQuestionsCount as $thegid => $thecount)
     }
 }
 echo "\t}\n"
+=======
+echo "\t\t\t\tif (navigator.userAgent.indexOf('Safari')>-1 && name !== undefined )\n"
+."\t\t\t\t{ // Safari eats the onchange so run modfield manually, except when called at onload time\n"
+."\t\t\t\t\t//alert('For Safari calling modfield for ' + name);\n"
+."\t\t\t\t\tmodfield(name);\n"
+."\t\t\t\t}\n"
+."\t\t\t}\n"
+>>>>>>> refs/heads/stable_plus
 ."\t//-->\n"
 ."\t</script>\n\n"; // End checkconditions javascript function
 

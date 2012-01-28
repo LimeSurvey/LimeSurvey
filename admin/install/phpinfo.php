@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 /*
  * LimeSurvey
@@ -15,3 +16,8 @@
 
 phpinfo();
 ?>
+=======
+<?php
+  phpinfo();
+?>
+>>>>>>> refs/heads/stable_plus

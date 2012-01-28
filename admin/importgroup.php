@@ -1,5 +1,6 @@
 <?php
 /*
+<<<<<<< HEAD
  * LimeSurvey
  * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -12,6 +13,20 @@
  *
  * $Id$
  */
+=======
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+* $Id$
+*/
+>>>>>>> refs/heads/stable_plus
 
 //Ensure script is not run directly, avoid path disclosure 
 include_once("login_check.php");
@@ -102,6 +117,7 @@ unlink($sFullFilepath);
 */
 function CSVImportGroup($sFullFilepath, $newsid)    
 {
+<<<<<<< HEAD
     global $dbprefix, $connect, $clang;       
     $aLIDReplacements=array();
     $aQIDReplacements = array(); // this array will have the "new qid" for the questions, the key will be the "old qid"
@@ -154,6 +170,18 @@ function CSVImportGroup($sFullFilepath, $newsid)
         unset($bigarray[$i]);
     }
     $bigarray = array_values($bigarray);
+=======
+	// stoppoint is the last line number
+	// this is an empty line after the QA CSV lines
+	$stoppoint = count($bigarray)-1;
+	for ($i=0; $i<=$stoppoint+1; $i++)
+	{
+		if ($i<=$stoppoint-1) {$question_attributesarray[] = $bigarray[$i];}
+		unset($bigarray[$i]);
+	}
+}
+$bigarray = array_values($bigarray);
+>>>>>>> refs/heads/stable_plus
 
     //QUESTIONS
     if (array_search("# ANSWERS TABLE\n", $bigarray))
@@ -201,6 +229,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
     }
     $bigarray = array_values($bigarray);
 
+<<<<<<< HEAD
     //CONDITIONS
     if (array_search("# LABELSETS TABLE\n", $bigarray))
     {
@@ -216,6 +245,13 @@ function CSVImportGroup($sFullFilepath, $newsid)
         unset($bigarray[$i]);
     }
     $bigarray = array_values($bigarray);
+=======
+$countconditions = 0;
+$countlabelsets = 0;
+$countlabels = 0;
+$countanswers = 0;
+$countquestion_attributes = 0;
+>>>>>>> refs/heads/stable_plus
 
     //LABELSETS
     if (array_search("# LABELS TABLE\n", $bigarray))
@@ -288,6 +324,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
     }
     else {$countanswers=0;}
 
+<<<<<<< HEAD
     $aLanguagesSupported = array();  // this array will keep all the languages supported for the survey
 
     $sBaseLanguage = GetBaseLanguageFromSurveyID($newsid);
@@ -510,6 +547,55 @@ function CSVImportGroup($sFullFilepath, $newsid)
             // translate internal links
             $grouprowdata['group_name']=translink('survey', $oldsid, $newsid, $grouprowdata['group_name']);
             $grouprowdata['description']=translink('survey', $oldsid, $newsid, $grouprowdata['description']);
+=======
+//DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEY'RE NEW LID IS FOR THE QUESTIONS
+if (isset($labelsetsarray) && $labelsetsarray) {
+	$csarray=buildLabelsetCSArray();
+    $fieldorders=convertCSVRowToArray($labelsetsarray[0],',','"');
+    $labelrowdata = array();
+    unset($labelsetsarray[0]);
+	foreach ($labelsetsarray as $lsa) {
+        $fieldcontents=convertCSVRowToArray($lsa,',','"');
+        $labelsetrowdata=array_combine($fieldorders,$fieldcontents);
+		if (isset($labelsetrowdata)) 
+		{
+			if (isset($labelsetrowdata["cid"])) $oldcid=$labelsetrowdata["cid"];
+			if (isset($labelsetrowdata["qid"])) $oldqid=$labelsetrowdata["qid"];
+			if (isset($labelsetrowdata["lid"])) $oldlid=$labelsetrowdata["lid"];
+			if (isset($labelsetrowdata["lid"])) unset($labelsetrowdata["lid"]);
+		} else 
+		{
+			$oldcid = "";
+			$oldqid = "";
+			$oldlid = "";
+		}
+
+        $newvalues=array_values($labelsetrowdata);
+        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+        $lsainsert = "insert INTO {$dbprefix}labelsets (".implode(',',array_keys($labelsetrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
+		$lsiresult=$connect->Execute($lsainsert);
+		$newlid=$connect->Insert_ID();
+        $countlabelsets++; 
+        if(!isset($labelsarray[0])) die(print_r($labelsarray));
+		if ($labelsarray) {
+            $lfieldorders=convertCSVRowToArray($labelsarray[0],',','"');
+            //unset($labelsarray[0]);
+			foreach ($labelsarray as $la) {
+				//GET ORDER OF FIELDS
+                $lfieldcontents=convertCSVRowToArray($la,',','"');
+         		$labelrowdata=array_combine($lfieldorders,$lfieldcontents);
+				$labellid=$labelrowdata['lid'];
+				if ($labellid == $oldlid) {
+					$labelrowdata['lid']=$newlid;
+                    $newvalues=array_values($labelrowdata);
+                    $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+                    $lainsert = "insert INTO {$dbprefix}labels (".implode(',',array_keys($labelrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
+					$liresult=$connect->Execute($lainsert);
+					$countlabels++;
+				}
+			}
+		}
+>>>>>>> refs/heads/stable_plus
 
             db_switchIDInsert('groups',true);
             $tablename=$dbprefix.'groups';
@@ -617,6 +703,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
                 $aSQIDReplacements=array();
                 db_switchIDInsert('questions',false);         
         
+<<<<<<< HEAD
                 // Now we will fix up old label sets where they are used as answers
                 if ((isset($oldlid1) || isset($oldlid2)) && ($qtypes[$questionrowdata['type']]['answerscales']>0 || $qtypes[$questionrowdata['type']]['subquestions']>1))
                 {
@@ -628,6 +715,62 @@ function CSVImportGroup($sFullFilepath, $newsid)
                         {
                             
                             if ($qtypes[$questionrowdata['type']]['subquestions']<2)
+=======
+		//GET NEW GID
+		$newgid=$connect->Insert_ID();
+		
+		//NOW DO NESTED QUESTIONS FOR THIS GID
+		if (isset($questionarray) && $questionarray) {
+            $currentqid='';
+			foreach ($questionarray as $qa) {
+                $qacfieldcontents=convertCSVRowToArray($qa,',','"');
+        		$questionrowdata=array_combine($questionfieldnames,$qacfieldcontents);
+                if ($currentqid=='' || ($currentqid!=$questionrowdata['qid'])) {$currentqid=$questionrowdata['qid'];$newquestion=true;}
+                  else 
+                    if ($currentqid==$questionrowdata['qid']) {$newquestion=false;}   
+                     		
+				$thisgid=$questionrowdata['gid'];
+				if ($thisgid == $oldgid) {
+					$qid = $questionrowdata['qid'];
+					// Remove qid field
+					if ($newquestion) {unset($questionrowdata['qid']);}
+					   else {$questionrowdata['qid']=$newqid;}
+					   
+					$questionrowdata["sid"] = $newsid;
+					$questionrowdata["gid"] = $newgid;
+					$oldqid=$qid;
+                    // Now we will fix up the label id 
+					$type = $questionrowdata["type"]; //Get the type
+					if ($type == "F" || $type == "H" || $type == "W" || $type == "Z") 
+                    {//IF this is a flexible label array, update the lid entry
+						if (isset($labelreplacements)) {
+							foreach ($labelreplacements as $lrp) {
+								if ($lrp[0] == $questionrowdata["lid"]) {
+									$questionrowdata["lid"]=$lrp[1];
+								}
+							}
+						}
+                    }
+					$other = $questionrowdata["other"]; //Get 'other' field value
+                    $oldlid = $questionrowdata['lid'];
+                    $questionrowdata=array_map('convertCsvreturn2return', $questionrowdata);
+                    $newvalues=array_values($questionrowdata);
+                    $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+                    $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
+					$qres = $connect->Execute($qinsert) or die ("<strong>".$clang->gT("Error")."</strong> Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg()."</body>\n</html>");
+                    if ($newquestion) {$newqid=$connect->Insert_ID();}
+                    $countquestions++;
+					$newrank=0;
+					$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
+					//NOW DO NESTED ANSWERS FOR THIS QID
+					if (isset($answerarray) && $answerarray) {
+						foreach ($answerarray as $aa) {
+                            $aacfieldcontents=convertCSVRowToArray($aa,',','"');
+                    		$answerrowdata=array_combine($answerfieldnames,$aacfieldcontents);
+							$code=$answerrowdata["code"];
+							$thisqid=$answerrowdata["qid"];
+							if ($thisqid == $qid) 
+>>>>>>> refs/heads/stable_plus
                             {
                                 $qinsert = "insert INTO ".db_table_name('answers')." (qid,code,answer,sortorder,language,assessment_value)
                                         VALUES ({$aQIDReplacements[$oldqid]},".db_quoteall($labelrow['code']).",".db_quoteall($labelrow['title']).",".db_quoteall($labelrow['sortorder']).",".db_quoteall($labelrow['language']).",".db_quoteall($labelrow['assessment_value']).")"; 
@@ -906,6 +1049,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
         $results['fatalerror'] = $clang->gT("The languages of the imported group file must at least include the base language of this survey.");
         return;
     }
+<<<<<<< HEAD
     // First get an overview of fieldnames - it's not useful for the moment but might be with newer versions
     /*
     $fieldnames=array();
@@ -938,6 +1082,37 @@ function XMLImportGroup($sFullFilepath, $newsid)
         $insertdata['sid']=$newsid;
         $insertdata['group_order']=$newgrouporder;
         $oldgid=$insertdata['gid']; unset($insertdata['gid']); // save the old qid
+=======
+    $importgroup.='<br />';
+}
+else
+{
+    $importgroup .= "<br />\n<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br />\n";
+}
+$importgroup .="<strong><u>".$clang->gT("Group Import Summary")."</u></strong><br />\n"
+."<ul>\n\t<li>".$clang->gT("Groups").": ";
+if (isset($countgroups)) {$importgroup .= $countgroups;}
+$importgroup .= "</li>\n"
+    ."\t<li>".$clang->gT("Questions").": ";
+if (isset($countquestions)) {$importgroup .= $countquestions;}
+$importgroup .= "</li>\n"
+    ."\t<li>".$clang->gT("Answers").": ";
+if (isset($countanswers)) {$importgroup .= $countanswers;}
+$importgroup .= "</li>\n"
+    ."\t<li>".$clang->gT("Conditions").": ";
+if (isset($countconditions)) {$importgroup .= $countconditions;}
+$importgroup .= "</li>\n"
+."\t<li>".$clang->gT("Label Set").": ";
+if (isset($countlabelsets)) {$importgroup .= $countlabelsets;}
+$importgroup .= " (".$clang->gT("Labels").": ";
+if (isset($countlabels)) {$importgroup .= $countlabels;}
+$importgroup .= ")</li>\n";
+$importgroup .= "\t<li>".$clang->gT("Question Attributes:");
+$importgroup .= " $countquestion_attributes";
+$importgroup .= "</li>\n</ul>\n";
+$importgroup .= "<strong>".$clang->gT("Import of group is completed.")."</strong><br />&nbsp;\n"
+."</td></tr></table><br />&nbsp;\n";
+>>>>>>> refs/heads/stable_plus
 
         // now translate any links
         $insertdata['group_name']=translink('survey', $oldsid, $newsid, $insertdata['group_name']);

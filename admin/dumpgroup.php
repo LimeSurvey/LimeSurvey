@@ -1,5 +1,6 @@
 <?php
 /*
+<<<<<<< HEAD
  * LimeSurvey
  * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -12,6 +13,20 @@
  *
  * $Id$
  */
+=======
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+* $Id$
+*/
+>>>>>>> refs/heads/stable_plus
 
 
 
@@ -92,6 +107,7 @@ $xml->endDocument();
 exit;
 
 
+<<<<<<< HEAD
 function getXMLStructure($xml,$gid)
 {
     global $dbprefix, $connect; 
@@ -154,3 +170,29 @@ function getXMLStructure($xml,$gid)
                 order by dv.language, dv.scale_id"; 
     BuildXMLFromQuery($xml,$query,'defaultvalues');                 
 }
+=======
+//2: Answers table
+$aquery = "SELECT DISTINCT {$dbprefix}answers.* FROM {$dbprefix}answers, {$dbprefix}questions WHERE ({$dbprefix}answers.qid={$dbprefix}questions.qid) AND ({$dbprefix}questions.gid=$gid)";
+$adump = BuildCSVFromQuery($aquery);
+
+//3: Conditions table - THIS CAN ONLY EXPORT CONDITIONS THAT RELATE TO THE SAME GROUP
+$cquery = "SELECT DISTINCT {$dbprefix}conditions.* FROM {$dbprefix}conditions, {$dbprefix}questions, {$dbprefix}questions b WHERE ({$dbprefix}conditions.cqid={$dbprefix}questions.qid) AND ({$dbprefix}conditions.qid=b.qid) AND ({$dbprefix}questions.gid=$gid) AND (b.gid=$gid)";
+$cdump = BuildCSVFromQuery($cquery);
+
+//4: Labelsets Table
+$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.* FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE ({$dbprefix}labelsets.lid={$dbprefix}questions.lid) AND (type in ('F', 'H', 'Z', 'W')) AND (gid=$gid)";
+$lsdump = BuildCSVFromQuery($lsquery);
+
+//5: Labels Table
+$lquery = "SELECT DISTINCT {$dbprefix}labels.* FROM {$dbprefix}labels, {$dbprefix}questions WHERE ({$dbprefix}labels.lid={$dbprefix}questions.lid) AND (type in ('F', 'H', 'Z', 'W')) AND (gid=$gid)";
+$ldump = BuildCSVFromQuery($lquery);
+  
+//8: Question Attributes
+$query = "SELECT DISTINCT {$dbprefix}question_attributes.* FROM {$dbprefix}question_attributes, {$dbprefix}questions WHERE ({$dbprefix}question_attributes.qid={$dbprefix}questions.qid) AND ({$dbprefix}questions.gid=$gid)";
+$qadump = BuildCSVFromQuery($query);
+
+// HTTP/1.0
+echo $dumphead, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump, $qadump;
+exit;
+?>
+>>>>>>> refs/heads/stable_plus

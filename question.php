@@ -1,5 +1,6 @@
 <?php
 /*
+<<<<<<< HEAD
  * LimeSurvey
  * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -12,6 +13,20 @@
  *
  * $Id$
  */
+=======
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+* $Id$
+*/
+>>>>>>> refs/heads/stable_plus
 
 //Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
 
@@ -211,10 +226,20 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         }
         $thissurvey['surveyls_url']=dTexts::run($thissurvey['surveyls_url']);
 
+<<<<<<< HEAD
         if($thissurvey['printanswers'] != 'Y')
         {
             killSession();
         }
+=======
+		if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
+		{
+			//Automatically redirect the page to the "url" setting for the survey
+			$url = $thissurvey['url'];
+			$url=str_replace("{SAVEDID}",$saved_id, $url);			// to activate the SAVEDID in the END URL
+			$url=str_replace("{TOKEN}",$_POST['token'], $url);			// to activate the TOKEN in the END URL
+            $url=str_replace("{SID}", $surveyid, $url);       // to activate the SID in the RND URL
+>>>>>>> refs/heads/stable_plus
 
         sendcacheheaders();
         doHeader();
@@ -251,8 +276,24 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         $thissurvey['surveyls_url']=dTexts::run($thissurvey['surveyls_url']);
         $thissurvey['surveyls_url']=passthruReplace($thissurvey['surveyls_url'], $thissurvey);
 
+<<<<<<< HEAD
         $content='';
         $content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+=======
+//SEE IF $surveyid EXISTS ####################################################################
+if ($surveyexists <1)
+{
+	sendcacheheaders();
+	doHeader();
+	//SURVEY DOES NOT EXIST. POLITELY EXIT.
+	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+	echo "\t<center><br />\n";
+	echo "\t".$clang->gT("Sorry. There is no matching survey.")."<br /></center>&nbsp;\n";
+	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+	doFooter();
+	exit;
+}
+>>>>>>> refs/heads/stable_plus
 
         //Check for assessments
         if ($thissurvey['assessments']== "Y")
@@ -307,8 +348,84 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         //Send notification to survey administrator
         SendSubmitNotifications();
 
+<<<<<<< HEAD
         $_SESSION['finished']=true;
         $_SESSION['sid']=$surveyid;
+=======
+// MANAGE CONDITIONAL QUESTIONS
+$conditionforthisquestion=$ia[7];
+$questionsSkipped=0;
+while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS ARE MET
+{
+	$cquery="SELECT distinct cqid FROM {$dbprefix}conditions WHERE qid={$ia[0]}";
+	$cresult=db_execute_assoc($cquery) or die("Couldn't count cqids<br />$cquery<br />".htmlspecialchars($connect->ErrorMsg()));
+	$cqidcount=$cresult->RecordCount();
+	$cqidmatches=0;
+	while ($crows=$cresult->FetchRow())//Go through each condition for this current question
+	{
+		//Check if the condition is multiple type
+		$ccquery="SELECT type FROM {$dbprefix}questions WHERE qid={$crows['cqid']} AND language='".$_SESSION['s_lang']."' ";
+		$ccresult=db_execute_assoc($ccquery) or die ("Coudn't get type from questions<br />$ccquery<br />".htmlspecialchars($connect->ErrorMsg()));
+		while($ccrows=$ccresult->FetchRow())
+		{
+			$thistype=$ccrows['type'];
+		}
+		$cqquery = "SELECT cfieldname, value, cqid FROM {$dbprefix}conditions WHERE qid={$ia[0]} AND cqid={$crows['cqid']}";
+		$cqresult = db_execute_assoc($cqquery) or die("Couldn't get conditions for this question/cqid<br />$cquery<br />".htmlspecialchars($connect->ErrorMsg()));
+		$amatchhasbeenfound="N";
+		while ($cqrows=$cqresult->FetchRow()) //Check each condition
+		{
+			$currentcqid=$cqrows['cqid'];
+			$conditionfieldname=$cqrows['cfieldname'];
+			if (!$cqrows['value'] || $cqrows['value'] == ' ') {$conditionvalue="NULL";} else {$conditionvalue=$cqrows['value'];}
+			if ($thistype == "M" || $thistype == "P") //Adjust conditionfieldname for multiple option type questions
+			{
+				$conditionfieldname .= $conditionvalue;
+				$conditionvalue = "Y";
+			}
+			if (!isset($_SESSION[$conditionfieldname]) || !$_SESSION[$conditionfieldname] || $_SESSION[$conditionfieldname] == ' ') {$currentvalue="NULL";} else {$currentvalue=$_SESSION[$conditionfieldname];}
+			if ($currentvalue == $conditionvalue) {$amatchhasbeenfound="Y";}
+		}
+		if ($amatchhasbeenfound == "Y") {$cqidmatches++;}
+	}
+	if ($cqidmatches == $cqidcount)
+	{
+		//a match has been found in ALL distinct cqids. The question WILL be displayed
+		$conditionforthisquestion="N";
+	}
+	else
+	{
+		//matches have not been found in ALL distinct cqids. The question WILL NOT be displayed
+		//If we're skipping this question, but a value exists for the question, we should delete that value
+		//if $deletenonvalues is turned on, and to avoid bug #888
+		//print_r($ia);
+		if(!empty($_SESSION[$ia[1]]))
+		{
+		    if($deletenonvalues == 1) 
+			{
+			    unset($_SESSION[$ia[1]]);
+			}
+		}
+		$questionsSkipped++;
+		if (returnglobal('move') == "movenext")
+		{
+			$currentquestion++;
+			if(isset($_SESSION['fieldarray'][$currentquestion]))
+			{
+				$ia=$_SESSION['fieldarray'][$currentquestion];
+			}
+			$_SESSION['step']++;
+			foreach ($_SESSION['grouplist'] as $gl)
+			{
+				if ($gl[0] == $ia[5])
+				{
+					$gid=$gl[0];
+					$groupname=$gl[1];
+					$groupdescription=$gl[2];
+					if ($_POST['lastgroupname'] != $groupname && $groupdescription) {$newgroup = "Y";} else {$newgroup == "N";}
+				}
+			}
+>>>>>>> refs/heads/stable_plus
 
         if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
         {
@@ -483,6 +600,7 @@ if ($bIsGroupDescrPage)
     //}
     echo "\n";
 
+<<<<<<< HEAD
     echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n";
     echo "\t<script type='text/javascript'>\n";
     echo "\t<!--\n";
@@ -497,6 +615,24 @@ if ($bIsGroupDescrPage)
     echo "\n\n<!-- END THE GROUP -->\n";
     echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"));
     echo "\n";
+=======
+	echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n";
+	echo "\t<script type='text/javascript'>\n";
+	echo "\t<!--\n";
+	echo "\t\tfunction checkconditions(value, name, type)\n";
+	echo "\t\t\t{\n";
+	echo "\t\t\t\tif (navigator.userAgent.indexOf('Safari')>-1 && name !== undefined )\n";
+	echo "\t\t\t\t{ // Safari eats the onchange so run modfield manually exepect at onload time\n";
+	echo "\t\t\t\t\t//alert('For Safari calling modfield for ' + name);\n";
+	echo "\t\t\t\t\tmodfield(name);\n";
+	echo "\t\t\t\t}\n";
+	echo "\t\t\t}\n";
+	echo "\t//-->\n";
+	echo "\t</script>\n\n";
+	echo "\n\n<!-- END THE GROUP -->\n";
+	echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"));
+	echo "\n";
+>>>>>>> refs/heads/stable_plus
 
     $_SESSION['step']--;
 }

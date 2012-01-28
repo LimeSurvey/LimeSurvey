@@ -1,5 +1,6 @@
 <?php
 /*
+<<<<<<< HEAD
  * LimeSurvey
  * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -46,6 +47,20 @@
 
 
  */
+=======
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+* $Id$
+*/
+>>>>>>> refs/heads/stable_plus
 
 include_once("login_check.php");
 $sDataEntryLanguage = $_SESSION['adminlang'];
@@ -337,6 +352,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                 $utquery .= "WHERE token=".db_quoteall($_POST['token'],true);
                 $utresult = $connect->Execute($utquery) or safe_die ("Couldn't update tokens table!<br />\n$utquery<br />\n".$connect->ErrorMsg());
 
+<<<<<<< HEAD
                 // save submitdate into survey table
                 $srid = $connect->Insert_ID();
                 $sdquery = "UPDATE {$dbprefix}survey_$surveyid SET submitdate=".db_quoteall($submitdate,true)." WHERE id={$srid}\n";
@@ -347,6 +363,87 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                 $srid = $connect->Insert_ID();
                 //CREATE ENTRY INTO "saved_control"
                 $scdata = array("sid"=>$surveyid,
+=======
+			//NOW SHOW SCREEN
+			if (bHasSurveyGotTokentable($thissurvey) && 
+			    isset($_POST['token']) && $_POST['token'] &&
+			    $thissurvey['private'] == 'N') //handle tokens if survey needs them
+			{
+				$col_name .= ", token\n";
+				$insertqr .= ", '{$_POST['token']}'";
+			}
+			if (isset($_POST['datestamp']) && $_POST['datestamp']) //handle datestamp if needed
+			{
+				$col_name .= ", datestamp\n";
+				$insertqr .= ", '{$_POST['datestamp']}'";
+			}
+			if (isset($_POST['ipaddr']) && $_POST['ipaddr']) //handle datestamp if needed
+			{
+				$col_name .= ", ipaddr\n";
+				$insertqr .= ", '{$_POST['ipaddr']}'";
+			}
+			if (isset($_POST['language']) && $_POST['language']) // handle language
+			{
+				$col_name .= ", startlanguage\n";
+				$insertqr .= ", '{$_POST['language']}'";
+			}
+			if (isset($_POST['closerecord'])) // handle Submidate if required
+			{
+				if ($thissurvey['private'] =="Y" && $thissurvey['datestamp'] =="N")
+				{
+					$col_name .= ", submitdate\n";
+					$insertqr .= ", '".date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980))."'";
+				}
+				elseif (isset($_POST['closedate']) && $_POST['closedate'] != '')
+				{
+					$col_name .= ", submitdate\n";
+					$insertqr .= ", '{$_POST['closedate']}'";
+				}
+			}
+			//		$dataentryoutput .= "\t\t\t<strong>Inserting data</strong><br />\n"
+			//			."SID: $surveyid, ($surveytable)<br /><br />\n";
+			$SQL = "INSERT INTO $surveytable
+					($col_name)
+					VALUES 
+					($insertqr)";
+			//$dataentryoutput .= $SQL; //Debugging line
+			$iinsert = $connect->Execute($SQL) or die ("Could not insert your data:<br />$SQL<br />\n" . htmlspecialchars($connect->ErrorMsg()) . "\n<pre style='text-align: left'>$SQL</pre>\n</body>\n");
+			/*if (returnglobal('redo')=="yes")
+			{
+			//This submission of data came from a saved session. Must delete the
+			//saved session now that it has been recorded in the responses table
+			$dquery = "DELETE FROM ".db_table_name("saved_control")." WHERE scid=".$saver['scid'];
+			if ($dresult=$connect->Execute($dquery))
+			{
+			$dquery = "DELETE FROM ".db_table_name("saved")." WHERE scid=".$saver['scid'];
+			$dresult=$connect->Execute($dquery) or die("Couldn't delete saved data<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg()));
+			}
+			else
+			{
+			$dataentryoutput .= "Couldn't delete saved data<br />$dquery<br />".htmlspecialchars($connect->ErrorMsg());
+			}
+			}*/
+			if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') // submittoken
+			{
+				$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust);      
+				$utquery = "UPDATE {$dbprefix}tokens_$surveyid\n";
+				if (bIsTokenCompletedDatestamped($thissurvey))
+				{
+					$utquery .= "SET completed='$today'\n";
+				}
+				else
+				{
+					$utquery .= "SET completed='Y'\n";
+				}
+				$utquery .= "WHERE token='{$_POST['token']}'";
+				$utresult = $connect->Execute($utquery) or die ("Couldn't update tokens table!<br />\n$utquery<br />\n".htmlspecialchars($connect->ErrorMsg()));
+			}
+			if (isset($_POST['save']) && $_POST['save'] == "on")
+			{
+				$srid = $connect->Insert_ID();
+				//CREATE ENTRY INTO "saved_control"
+				$scdata = array("sid"=>$surveyid,
+>>>>>>> refs/heads/stable_plus
 				"srid"=>$srid,
 				"identifier"=>$saver['identifier'],
 				"access_code"=>$password,
@@ -356,12 +453,15 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
 				'saved_thisstep' => 0,
 				"status"=>"S",
 				"saved_date"=>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust));
+<<<<<<< HEAD
 
                 if ($connect->AutoExecute("{$dbprefix}saved_control", $scdata,'INSERT'))
                 {
                     $scid = $connect->Insert_ID("{$dbprefix}saved_control","scid");
 
                     $dataentryoutput .= "<font class='successtitle'>".$clang->gT("Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you.")."</font><br />\n";
+=======
+>>>>>>> refs/heads/stable_plus
 
                     $tkquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
                     if ($tkresult = $connect->Execute($tkquery)) //If the query fails, assume no tokens table exists
@@ -372,7 +472,11 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
     				        "email"=>$saver['email'],
                     "token"=>sRandomChars(15),
                     "language"=>$saver['language'],
+<<<<<<< HEAD
                     "sent"=>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust),
+=======
+                    "sent"=>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust), 	
+>>>>>>> refs/heads/stable_plus
                     "completed"=>"N");
                         $connect->AutoExecute(db_table_name("tokens_".$surveyid), $tokendata,'INSERT');
                         $dataentryoutput .= "<font class='successtitle'>".$clang->gT("A token entry for the saved survey has been created too.")."</font><br />\n";
@@ -533,6 +637,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
         $highlight=false;
         unset($fnames['lastpage']);
 
+<<<<<<< HEAD
         // unset timings
         foreach ($fnames as $fname)
         {
@@ -542,6 +647,63 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                 $nfncount--;
             }
         }
+=======
+		//SHOW INDIVIDUAL RECORD
+		if ($subaction == "edit")
+		{
+			$idquery = "SELECT * FROM $surveytable WHERE id=$id";
+			$idresult = db_execute_assoc($idquery) or die ("Couldn't get individual record<br />$idquery<br />".htmlspecialchars($connect->ErrorMsg()));
+			while ($idrow = $idresult->FetchRow())
+			{
+				$results[]=$idrow;
+			}
+		}
+		elseif ($subaction == "editsaved")
+		{
+			if (isset($_GET['public']) && $_GET['public']=="true")
+			{
+				$password=md5($_GET['accesscode']);
+			}
+			else
+			{
+				$password=$_GET['accesscode'];
+			}
+			$svquery = "SELECT * FROM ".db_table_name("saved_control")."
+						WHERE sid=$surveyid
+						AND identifier='".$_GET['identifier']."'
+						AND access_code='".$password."'";
+			$svresult=db_execute_assoc($svquery) or die("Error getting save<br />$svquery<br />".htmlspecialchars($connect->ErrorMsg()));
+			while($svrow=$svresult->FetchRow())
+			{
+				$saver['email']=$svrow['email'];
+				$saver['scid']=$svrow['scid'];
+				$saver['ip']=$svrow['ip'];
+			}
+			$svquery = "SELECT * FROM ".db_table_name("saved_control")." WHERE scid=".$saver['scid'];
+			$svresult=db_execute_assoc($svquery) or die("Error getting saved info<br />$svquery<br />".htmlspecialchars($connect->ErrorMsg()));
+			while($svrow=$svresult->FetchRow())
+			{
+				$responses[$svrow['fieldname']]=$svrow['value'];
+			} // while
+			$fieldmap = createFieldMap($surveyid);
+			foreach($fieldmap as $fm)
+			{
+				if (isset($responses[$fm['fieldname']]))
+				{
+					$results1[$fm['fieldname']]=$responses[$fm['fieldname']];
+				}
+				else
+				{
+					$results1[$fm['fieldname']]="";
+				}
+			}
+			$results1['id']="";
+			$results1['datestamp']=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);      
+			$results1['ipaddr']=$saver['ip'];
+			$results[]=$results1;
+		}
+		//	$dataentryoutput .= "<pre>";print_r($results);$dataentryoutput .= "</pre>";
+>>>>>>> refs/heads/stable_plus
 
         foreach ($results as $idrow)
         {
@@ -1332,6 +1494,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
 						}
 				  //-->
 				  </script>\n";
+<<<<<<< HEAD
             $dataentryoutput .= "<table><tr><td align='left'>\n";
             $dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' /><label for='closerecord'>".$clang->gT("Finalize response submission")."</label></td></tr>\n";
             $dataentryoutput .="<input type='hidden' name='closedate' value='".date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)."' />\n";
@@ -1339,6 +1502,17 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
             $dataentryoutput .= "</td></tr></table>\n";
             $dataentryoutput .= "<div name='saveoptions' id='saveoptions' style='display: none'>\n";
             $dataentryoutput .= "<table align='center' class='outlinetable' cellspacing='0'>
+=======
+			$dataentryoutput .= "\t<tr>\n";
+			$dataentryoutput .= "\t\t<td colspan='3' align='center'>\n";
+			$dataentryoutput .= "\t\t<table><tr><td align='left'>\n";
+			$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' /><label for='closerecord'>".$clang->gT("Finalize response submission")."</label></td></tr>\n";
+			$dataentryoutput .="<input type='hidden' name='closedate' value='".date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)."' />\n";
+			$dataentryoutput .= "\t\t\t<tr><td align='left'><input type='checkbox' class='checkboxbtn' name='save' id='save' onclick='saveshow(this.id)' /><label for='save'>".$clang->gT("Save for further completion by survey user")."</label>\n";
+			$dataentryoutput .= "\t\t</td></tr></table>\n";
+			$dataentryoutput .= "<div name='saveoptions' id='saveoptions' style='display: none'>\n";
+			$dataentryoutput .= "<table align='center' class='outlinetable' cellspacing='0'>
+>>>>>>> refs/heads/stable_plus
 				  <tr><td align='right'>".$clang->gT("Identifier:")."</td>
 				  <td><input type='text' name='save_identifier'";
             if (returnglobal('identifier'))
@@ -1464,7 +1638,49 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
         $dataentryoutput .= "<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n";
         $dataentryoutput .= "<div class='messagebox ui-corner-all'>\n";
 
+<<<<<<< HEAD
         $thissurvey=getSurveyInfo($surveyid);
+=======
+			$dataentryoutput .= "\n"
+			. "\t<script type=\"text/javascript\"><!-- \n"
+			. "\tfunction activateSubmit(me)\n"
+			. "\t{"
+			. "\t\tif (me.value != '')"
+			. "\t\t{\n"
+			. "\t\t\tdocument.getElementById('submitdata').disabled = false;\n"
+			. "\t\t}\n"
+			. "\t\telse\n"
+			. "\t\t{\n"
+			. "\t\t\tdocument.getElementById('submitdata').disabled = true;\n"
+			. "\t\t}\n"
+			. "\t}"
+			. "\t//--></script>\n";
+			
+		}
+		if ($thissurvey['datestamp'] == "Y") //Give datestampentry field
+		{
+            $localtimedate=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);        
+			$dataentryoutput .= "\t<tr>\n"
+			."\t\t<td valign='top' width='1%'></td>\n"
+			."\t\t<td valign='top' align='right' width='30%'><strong>"
+			.$clang->gT("Datestamp").":</strong></font></td>\n"
+			."\t\t<td valign='top'  align='left' style='padding-left: 20px'>\n"
+			."\t\t\t<input type='text' name='datestamp' value='$localtimedate' />\n"
+			."\t\t</td>\n"
+			."\t</tr>\n";
+		}
+		if ($thissurvey['ipaddr'] == "Y") //Give ipaddress field
+		{
+			$dataentryoutput .= "\t<tr>\n"
+			."\t\t<td valign='top' width='1%'></td>\n"
+			."\t\t<td valign='top' align='right' width='30%'><strong>"
+			.$clang->gT("IP-Address").":</strong></font></td>\n"
+			."\t\t<td valign='top'  align='left' style='padding-left: 20px'>\n"
+			."\t\t\t<input type='text' name='ipaddr' value='NULL' />\n"
+			."\t\t</td>\n"
+			."\t</tr>\n";
+		}
+>>>>>>> refs/heads/stable_plus
 
         $delquery = "DELETE FROM $surveytable WHERE id=$id";
 
@@ -2614,11 +2830,19 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
 						}
 				  //-->
 				  </script>\n";
+<<<<<<< HEAD
             $dataentryoutput .= "\t<tr>\n";
             $dataentryoutput .= "<td colspan='3' align='center'>\n";
             $dataentryoutput .= "<table><tr><td align='left'>\n";
             $dataentryoutput .= "\t<input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' checked='checked'/><label for='closerecord'>".$clang->gT("Finalize response submission")."</label></td></tr>\n";
             $dataentryoutput .="<input type='hidden' name='closedate' value='".date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)."' />\n";
+=======
+			$dataentryoutput .= "\t<tr>\n";
+			$dataentryoutput .= "\t\t<td colspan='3' align='center'>\n";
+			$dataentryoutput .= "\t\t<table><tr><td align='left'>\n";
+			$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' checked='checked'/><label for='closerecord'>".$clang->gT("Finalize response submission")."</label></td></tr>\n";
+			$dataentryoutput .="<input type='hidden' name='closedate' value='".date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)."' />\n";
+>>>>>>> refs/heads/stable_plus
 
             if ($thissurvey['allowsave'] == "Y")
             {

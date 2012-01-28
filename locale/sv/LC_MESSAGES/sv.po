@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Swedish language file\n"
@@ -12933,3 +12934,3831 @@ msgstr "Vietnamesiska"
 
 #~ msgid "Check Settings"
 #~ msgstr "Kontrollera Inställningar"
+=======
+msgid ""
+msgstr ""
+"Project-Id-Version: LimeSurvey Swedish language file\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2007-12-03 22:21+0100\n"
+"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
+"Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: /Volumes/hdny/Arbeten/limesurvey/limesurvey/\n"
+"X-Poedit-Country: SWEDEN\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: gT\n"
+"X-Poedit-SearchPath-0: /Volumes/hdny/Arbeten/limesurvey/limesurvey\n"
+"X-Poedit-SearchPath-1: D:\\web\\xampp\\htdocs\\stable_plus\n"
+
+msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
+msgstr "Varning: du använder fortfarande det förinställda lösenordet ('password'). Ändra lösenordet och logga in igen."
+
+msgid "Administration"
+msgstr "Administration"
+
+msgid "Logged in as"
+msgstr "Inloggad som"
+
+msgid "Default Administration Page"
+msgstr "Startsida för administration"
+
+msgid "Create/Edit Users"
+msgstr "Skapa/ändra användare"
+
+msgid "Create/Edit Groups"
+msgstr "Skapa/ändra grupper"
+
+msgid "Check Settings"
+msgstr "Kontrollera Inställningar"
+
+msgid "Settings"
+msgstr "Inställningar"
+
+msgid "Check Data Integrity"
+msgstr "Kontrollera datans hälsa"
+
+msgid "List Surveys"
+msgstr "Lista enkäter"
+
+msgid "Backup Entire Database"
+msgstr "Ta backup på hela databasen"
+
+msgid "Edit/Add Label Sets"
+msgstr "Ändra/lägg till etikett-samling"
+
+msgid "Template Editor"
+msgstr "Mall-redigerare"
+
+msgid "Show Help"
+msgstr "Visa Hjälp"
+
+msgid "Logout"
+msgstr "Logga ut"
+
+msgid "Create or Import New Survey"
+msgstr "Skapa ny eller importera enkät"
+
+msgid "Surveys"
+msgstr "Enkäter"
+
+msgid "Please Choose..."
+msgstr "Välj..."
+
+msgid "None"
+msgstr "Ingen"
+
+msgid "5 Point Choice"
+msgstr "5-punktsval"
+
+msgid "Array (5 Point Choice)"
+msgstr "Samling (5 punktsval)"
+
+msgid "Array (10 Point Choice)"
+msgstr "Samling (10 punktsval)"
+
+msgid "Array (Yes/No/Uncertain)"
+msgstr "Samling (ja/nej/osäker)"
+
+msgid "Date"
+msgstr "Datum"
+
+msgid "Array (Increase, Same, Decrease)"
+msgstr "Uppställning (öka, samma, minska)"
+
+msgid "Array (Flexible Labels)"
+msgstr "Uppställning (flexibla etiketter)"
+
+msgid "Gender"
+msgstr "Kön"
+
+msgid "Array (Flexible Labels) by Column"
+msgstr "Uppställning (flexibla etiketter) efter kolumn"
+
+msgid "Language Switch"
+msgstr "Byt språk"
+
+msgid "List (Radio)"
+msgstr "Samling (flexibla etiketter) efter kolumn"
+
+msgid "Multiple Options"
+msgstr "Flera valmöjligheter"
+
+msgid "Numerical Input"
+msgstr "Numerisk inmatning"
+
+msgid "List With Comment"
+msgstr "Lista med kommentarer"
+
+msgid "Multiple Options With Comments"
+msgstr "Flera valmöjligheter med kommentarer"
+
+msgid "Multiple Short Text"
+msgstr "Flera korta textsvar"
+
+msgid "Ranking"
+msgstr "Rangordning"
+
+msgid "Short free text"
+msgstr "Kort fri text"
+
+msgid "Long free text"
+msgstr "Lång fri text"
+
+msgid "Huge Free Text"
+msgstr "Mycket lång fri text"
+
+msgid "List (Flexible Labels) (Dropdown)"
+msgstr "Lista (flexibla etiketter) (rullgardinsmeny)"
+
+msgid "Boilerplate Question"
+msgstr "Boilerplate-fråga"
+
+msgid "Yes/No"
+msgstr "Ja/Nej"
+
+msgid "List (Flexible Labels) (Radio)"
+msgstr "Lista (flexibla etiketter) (radio)"
+
+msgid "List (Dropdown)"
+msgstr "Lista (rullgardinsmeny)"
+
+msgid "No email notification"
+msgstr "Ingen rapport via e-post"
+
+msgid "Basic email notification"
+msgstr "Grundläggande rapport via e-post"
+
+msgid "Detailed email notification with result codes"
+msgstr "Detaljerad rapport via e-post med resultatkoder"
+
+msgid "LimeSurvey Setup"
+msgstr "LimeSurvey inställningar"
+
+msgid "Error"
+msgstr "Fel"
+
+msgid "It appears as if some tables or fields are missing from your database."
+msgstr "Det verkar som några fält saknas i din databas."
+
+msgid "Check Database Fields"
+msgstr "Kontrollera Databas Fält"
+
+msgid "Return to Survey Administration"
+msgstr "Tillbaka till enkät-administrationen"
+
+msgid "Show summary information"
+msgstr "Visa summerad information"
+
+msgid "Display Responses"
+msgstr "Visa svar"
+
+msgid "Display Last 50 Responses"
+msgstr "Visa sista 50 svaren"
+
+msgid "Dataentry Screen for Survey"
+msgstr "Inmatningsskärm för enkät"
+
+msgid "Get statistics from these responses"
+msgstr "Hämta statistik från dessa svar"
+
+msgid "Export Results to Application"
+msgstr "Exportera Resultat till Applikation"
+
+msgid "Export result to a SPSS command file"
+msgstr "Exportera resultat till SPSS kommando fil"
+
+msgid "Import answers from a deactivated survey table"
+msgstr "Imporetera svar från en avaktiverad enkät"
+
+msgid "View Saved but not submitted Responses"
+msgstr "Titta på sparade men inte skickade svar"
+
+msgid "Import a VV survey file"
+msgstr "Importera en VV-enkätfil"
+
+msgid "Export a VV survey file"
+msgstr "Exportera en VV-enkätfil"
+
+msgid "Preset"
+msgstr "Förinställning"
+
+msgid "Token"
+msgstr "Behörighetskod"
+
+msgid "Date Stamp"
+msgstr "Datumstämpel"
+
+msgid "IP Address"
+msgstr "IP-adress"
+
+msgid "Referring URL"
+msgstr "Hänvisande URL"
+
+msgid "Other"
+msgstr "Annat"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nej"
+
+msgid "No answer"
+msgstr "Inget svar"
+
+msgid "Male"
+msgstr "Man"
+
+msgid "Female"
+msgstr "Kvinna"
+
+msgid "Uncertain"
+msgstr "Vet ej"
+
+msgid "Increase"
+msgstr "Öka"
+
+msgid "Decrease"
+msgstr "Minska"
+
+msgid "Same"
+msgstr "Samma"
+
+msgid "Comment"
+msgstr "Kommentar"
+
+msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
+msgstr "Varning: JavaScript är avstängt i din webbläsare. Du kanske inte kan svara på alla frågor i enkäten. Var vänlig kontrollera inställningarna i din webbläsare."
+
+msgid "There are no questions in this survey"
+msgstr "Det finns inga frågor i enkäten"
+
+msgid "There is 1 question in this survey"
+msgstr "Det finns 1 fråga i enkäten"
+
+msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
+msgstr "Den här enkäten innehåller {NUMBEROFQUESTIONS} frågor."
+
+msgid "submit"
+msgstr "skicka"
+
+msgid "A Note On Privacy"
+msgstr "En kommentar om personuppgifter"
+
+msgid "This survey is anonymous."
+msgstr "Den här enkäten är anonym."
+
+msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "De svar på enkäten som sparas innehåller ingen information som kan identifiera den som svarat utom om denna fråga specifikt ställts i enkäten. Även om det krävs en behörighetskod för att kunna besvara enkäten sparas inte denna personliga information tillsammans med enkätsvaret. Behörighetskoden används endast för att avgöra om du har svarat (eller inte svarat) på enkäten och den informationen sparas separat. Det finns inget sätt att avgöra vilken behörighetskod som hör ihop med ett visst svar i den här enkäten."
+
+msgid "Are you sure you want to clear all your responses?"
+msgstr "Är du säker på att du vill rensa dina svar?"
+
+msgid "Exit and Clear Survey"
+msgstr "Lämna och rensa enkäten"
+
+msgid "Load Unfinished Survey"
+msgstr "Öppna ofullständigt besvarad enkät"
+
+msgid "Save Survey and Return"
+msgstr "Spara enkäten och återgå"
+
+msgid "Thank You!"
+msgstr "Tack!"
+
+msgid "You have completed answering the questions in this survey."
+msgstr "Du har svarat på alla frågor i den här enkäten."
+
+msgid "Click on 'Submit' now to complete the process and save your answers."
+msgstr "Klicka på 'Skicka' nu för att slutföra enkäten och spara dina svar."
+
+msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
+msgstr "Om du vill kontrollera dina svar och/eller ändra dem, kan du göra det genom att klicka på [<< tillbaka]-knappen och bläddra genom dina svar."
+
+msgid "Answers Cleared"
+msgstr "Svaren rensade"
+
+msgid "Restart this Survey"
+msgstr "Starta om enkäten"
+
+msgid "Close this Window"
+msgstr "Stäng fönstret"
+
+msgid "Save Your Unfinished Survey"
+msgstr "Spara din oavslutade enkät"
+
+msgid "Enter a name and password for this survey and click save below."
+msgstr "Fyll i ett namn och lösenord för denna enkät och klicka spara nedan."
+
+msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
+msgstr "Din enkät kommer att sparas med detta namn och lösenord och du kan senare fortsätta fylla i den genom att logga in med samma namn och lösenord."
+
+msgid "If you give an email address, an email containing the details will be sent to you."
+msgstr "Om du anger en e-postadress kommer ett meddelande som innehåller detaljerna att skickas till dig."
+
+msgid "Return To Survey"
+msgstr "Tillbaka till enkäten"
+
+msgid "Name"
+msgstr "Namn"
+
+msgid "Password"
+msgstr "Lösenord"
+
+msgid "Repeat Password"
+msgstr "Upprepa lösenord"
+
+msgid "Your Email"
+msgstr "Din e-postadress"
+
+msgid "Security Question"
+msgstr "Säkerhetsfråga"
+
+msgid "Save Now"
+msgstr "Spara nu"
+
+msgid "Load A Previously Saved Survey"
+msgstr "Öppna en tidigare sparad enkät"
+
+msgid "You can load a survey that you have previously saved from this screen."
+msgstr "Du kan öppna en enkät som du tidigare sparat från denna sida."
+
+msgid "Type in the 'name' you used to save the survey, and the password."
+msgstr "Fyll i det 'namn' och lösenord du använde när du sparade enkäten."
+
+msgid "Saved name"
+msgstr "Sparat namn"
+
+msgid "Load Now"
+msgstr "Öppna nu"
+
+msgid "You must be registered to complete this survey"
+msgstr "Du måste vara registrerad för att genomföra den här enkäten"
+
+msgid "You may register for this survey if you wish to take part."
+msgstr "Du måste registera dig för den här enkäten om du vill delta."
+
+msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "Fyll i dina uppgifter nedan och så skickas en länk till enkäten till dig med e-post genast."
+
+msgid "First Name"
+msgstr "Förnamn"
+
+msgid "Last Name"
+msgstr "Efternamn"
+
+msgid "Email Address"
+msgstr "E-postadress"
+
+msgid "Continue"
+msgstr "Fortsätt"
+
+msgid "Your Assessment"
+msgstr "Din utvärdering"
+
+msgid "Online Manual"
+msgstr "Manual på internet"
+
+msgid "Support this project - Donate to "
+msgstr "Stöd detta projekt - Donera till"
+
+msgid "Visit our website!"
+msgstr "Besök vår hemsida!"
+
+msgid "Version"
+msgstr "Version"
+
+msgid "Local Submission"
+msgstr "Lokalt inlägg"
+
+msgid "Executing"
+msgstr "Bearbetar"
+
+msgid "Failed! Reason: "
+msgstr "Misslyckades! Orsak:"
+
+msgid "Success!"
+msgstr "Lyckades!"
+
+msgid "Save your responses so far"
+msgstr "Spara dina svar så här långt"
+
+msgid "Did Not Save"
+msgstr "Sparade inte"
+
+msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr "Dina enkätsvar är inte sparade. Denna enkät är inte aktiviverad ännu."
+
+msgid "Clear Responses"
+msgstr "Rensa svaren"
+
+msgid "Thank you"
+msgstr "Tack"
+
+msgid "Your survey responses have been recorded."
+msgstr "Dina enkätsvar är sparade."
+
+msgid "Sorry. There is no matching survey."
+msgstr "Tyvärr. Det finns ingen matchade enkät."
+
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr "Denna enkät är inte aktiv för tillfället. Du kan därför inte spara dina svar."
+
+msgid "ERROR"
+msgstr "FEL"
+
+msgid "We are sorry but your session has expired."
+msgstr "Tyvärr har din session upphört."
+
+msgid "Either you have been inactive for too long or there were problems with your connection."
+msgstr "Du har antingen varit inaktiv för länge eller så har du problem med din uppkoppling."
+
+msgid "Please contact"
+msgstr "Var god kontakta"
+
+msgid "for further assistance"
+msgstr "för ytterligare assistans"
+
+msgid "You have not provided a survey identification number"
+msgstr "Du har inte angett ett id-nummer för enkäten"
+
+msgid "The answer to the security question is incorrect"
+msgstr "Svaret på säkerhetsfrågan är fel"
+
+msgid "This survey is no longer available."
+msgstr "Denna enkät är inte längre tillgänglig."
+
+msgid "You have already completed this survey."
+msgstr "Du har redan svarat på den här enkäten."
+
+msgid "You did not provide a name"
+msgstr "Du angav inget namn"
+
+msgid "You did not provide a password"
+msgstr "Du angav inget lösenord"
+
+msgid "This is a closed-access survey. You need a valid token to participate."
+msgstr "Detta är en kontrollerad enkät. Du behöver en giltig behörigetskod för att delta"
+
+msgid "The token you have provided is either not valid, or has already been used."
+msgstr "Behörighetskoden som du angett är antingen ogiltlig eller redan använd."
+
+msgid "For further information contact"
+msgstr "För ytterligare information kontakta"
+
+msgid "Survey Saved"
+msgstr "Enkäten sparad"
+
+msgid "There is no matching saved survey"
+msgstr "Det finns ingen enkät som stämmer överens"
+
+msgid "complete"
+msgstr "komplett"
+
+msgid ""
+"Dear {FIRSTNAME},\n"
+"\n"
+"This email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n"
+"\n"
+"If you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n"
+"\n"
+"Sincerely,\n"
+"\n"
+"{ADMINNAME}"
+msgstr ""
+"Bäste {FIRSTNAME},\n"
+"\n"
+"Det här meddelandet bekräftar att du har genomfört enkäten {SURVEYNAME} och dina svar har sparats. Tack för att du deltog.\n"
+"\n"
+"Om du har några frågor om detta meddelande, var vänlig kontakta {ADMINNAME} på {ADMINEMAIL}.\n"
+"\n"
+"Vänliga hälsningar,\n"
+"\n"
+"{ADMINNAME}"
+
+msgid "Survey Submitted"
+msgstr "Enkäten skickad"
+
+msgid "A new response was entered for your survey"
+msgstr "Ett nytt svar till har lämnats till din enkät"
+
+msgid "Click the following link to reload the survey:"
+msgstr "Klicka på följande länk för att ladda om enkäten:"
+
+msgid "Click the following link to see the individual response:"
+msgstr "Se det enskilda svaret genom att klicka här:"
+
+msgid "Click the following link to edit the individual response:"
+msgstr "Klicka på följande länk för att ändra det enskilda svaret:"
+
+msgid "View statistics by clicking here:"
+msgstr "Se statistik för enkäten genom att klicka här:"
+
+msgid "An unexpected error has occurred and your responses cannot be saved."
+msgstr "Ett oväntat fel har uppstått och dina svar kan inte sparas."
+
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr "Dina svar har inte försvunnit, utan de har mailats till enkätadministratören och kommer att läggas in i databasen vid ett senare tillfälle."
+
+msgid "An error occurred saving a response to survey id"
+msgstr "Ett fel uppstod under försök att spara svaret till enkät-id"
+
+msgid "DATA TO BE ENTERED"
+msgstr "Data skall fyllas i"
+
+msgid "SQL CODE THAT FAILED"
+msgstr "Sql-kod som har misslyckats"
+
+msgid "ERROR MESSAGE"
+msgstr "Felmeddelande"
+
+msgid "Error saving results"
+msgstr "Fel när resultaten skulle sparas"
+
+msgid "Try to submit again"
+msgstr "Försök att skicka igen"
+
+msgid "This is a controlled survey. You need a valid token to participate."
+msgstr "Detta är en kontrollerad enkät. Du behöver en giltlig behörigetskod för att delta"
+
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
+msgstr "Om du har fått en behörighetskod, skriv in den i rutan nedan och fortsätt."
+
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr "Denna enkät har ännu inga frågor och kan inte testas eller färdigställas."
+
+msgid "prev"
+msgstr "tillbaka"
+
+msgid "next"
+msgstr "nästa"
+
+msgid "last"
+msgstr "sista"
+
+msgid "Choose only one of the following"
+msgstr "Välj bara en av följande"
+
+msgid "Check any that apply"
+msgstr "Välj vilka som stämmer"
+
+msgid "Check at most"
+msgstr "Kontrollera som mest"
+
+msgid "answers"
+msgstr "svar"
+
+msgid "Choose your language"
+msgstr "Välj språk"
+
+msgid "*"
+msgstr "*"
+
+msgid "This question must be answered correctly"
+msgstr "Den här frågan måste besvaras korrekt"
+
+msgid "This question is mandatory"
+msgstr "Denna fråga är obligatorisk"
+
+msgid "Please complete all parts"
+msgstr "Du måste fylla i alla delar"
+
+msgid "Please rank all items"
+msgstr "Rangordna alla alternativen"
+
+msgid "Please check at least one item"
+msgstr "Välj minst ett objekt"
+
+msgid "You cannot proceed until you enter some text for one or more questions."
+msgstr "Du kan inte fortsätta förrän du fyllt i text för en eller flera frågor."
+
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr "En eller flera obligatoriska frågor har inte besvarats. Du kan inte fortsätta innan de är besvarade"
+
+msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
+msgstr "En eller flera frågor har inte besvarats på rätt sätt. Du kan inte fortsätta fürrän dessa svar är korrekta"
+
+msgid "Format: YYYY-MM-DD"
+msgstr "Format: åååå-MM-DD"
+
+msgid "(eg: 2003-12-25 for Christmas day)"
+msgstr "(tex: 2004-12-24 för Julafton)"
+
+msgid "Please choose"
+msgstr "Välj"
+
+msgid "Error: The labelset used for this question is not available in this language."
+msgstr "Fel: Etikettsamlingen som används i frågan är inte tillgänglig för detta språk."
+
+msgid "Please choose one of the following"
+msgstr "Välj ett av de följande"
+
+msgid "Please enter your comment here"
+msgstr "Skriv din kommentar här"
+
+msgid "Remove this item"
+msgstr "Ta bort detta objekt"
+
+msgid "Click on an item in the list on the left, starting with your"
+msgstr "Klicka på ett objekt i listan till vänster, börja med ditt"
+
+msgid "highest ranking item, moving through to your lowest ranking item."
+msgstr "högst rankade objekt, upprepa tills ditt lägst rankade objekt."
+
+msgid "Your Choices"
+msgstr "Dina val"
+
+msgid "Your Ranking"
+msgstr "Din rangordning"
+
+msgid "Click on the scissors next to each item on the right"
+msgstr "Klicka på saxen till höger om objektet"
+
+msgid "to remove the last entry in your ranked list"
+msgstr "för att ta bort den sista inmatningen i din rangordnade lista"
+
+msgid "Please choose at most"
+msgstr "Välj som mest"
+
+msgid "answer(s) for question"
+msgstr "svar på fråga"
+
+msgid "Make a comment on your choice here:"
+msgstr "Kommentera dina val här:"
+
+msgid "Error: This question has no answers."
+msgstr "Fel: Frågan har inga svar."
+
+msgid "Only numbers may be entered in this field"
+msgstr "Endast nummer kan skrivas i detta fält"
+
+msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
+msgstr "Fel: Etikettsamlingen som används i frågan är inte tillgänglig för detta språk och/eller finns inte."
+
+msgid "The email you used is not valid. Please try again."
+msgstr "E-postadressen du angav är inte giltig. Var vänlig försök igen."
+
+msgid "The email you used has already been registered."
+msgstr "Din e-postadress har redan anmälts."
+
+msgid "Thank you for registering to participate in this survey."
+msgstr "Tack för att du registrerat dig för att delta i denna enkät."
+
+msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
+msgstr "Ett e-postmeddelande har skickats till den adress du angav med uppgifter om hur du får tillgång till denna enkät. Följ den länk som bifogas i e-postmeddelandet för att fortsätta."
+
+msgid "Survey Administrator"
+msgstr "Enkätens administratör"
+
+msgid "Please try again."
+msgstr "Var vänlig försök igen."
+
+msgid "You must supply a name for this saved session."
+msgstr "Du måste ange ett namn för den här omgången svar."
+
+msgid "You must supply a password for this saved session."
+msgstr "Du måste ange ett lösenord för den här omgången svar."
+
+msgid "Your passwords do not match."
+msgstr "Lösenorden stömmer inte överens."
+
+msgid "This name has already been used for this survey. You must use a unique save name."
+msgstr "Det här namnet har redan använts för denna enkät. Du måste ange ett unikt namn när du sparar."
+
+msgid "Saved Survey Details"
+msgstr "Sparade enkätsvar"
+
+msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
+msgstr "Du, eller någon annan som angett din e-postadress, har sparat en oavslutad enkät. Följande uppgifter kan användas för att återvända till enkäten och fortsätta där du lämnade den."
+
+msgid "Reload your survey by clicking on the following URL:"
+msgstr "Uppdatera din enkät genom att klicka på följande länk:"
+
+msgid "Cannot submit results - there are none to submit."
+msgstr "Kunde inte skicka resultat - Finns inga att skicka."
+
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
+msgstr "Det här felet kan uppstå om du redan har skickat dina svar och klickat 'uppdatera' i din webbläsare. Om så är fallet har dina svar redan sparats."
+
+msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Detta fel kan uppstå om du redan har skickat dina svar och klickat på 'uppdatera' på din webbläsare. I så fall så är dina svar redan sparade."
+
+msgid "Access denied!"
+msgstr "Åtkomst nekad!"
+
+msgid "You are not allowed dump the database!"
+msgstr "Du har inte behörighet att göra en dump av databasen!"
+
+msgid "You are not allowed export a label set!"
+msgstr "Du har inte behörighet att exportera ett etikett-set!"
+
+msgid "You are not allowed to change user data!"
+msgstr "Du har inte behörighet att ändra användaruppgifter!"
+
+msgid "You are not allowed to create new surveys!"
+msgstr "Du har inte rätt att skapa nya enkäter!"
+
+msgid "You are not allowed to delete this survey!"
+msgstr "Du har inte behörighet att radera den här enkäten!"
+
+msgid "You are not allowed to add new questions for this survey!"
+msgstr "Du har inte rätt att lägga till nya frågor till den här enkäten!"
+
+msgid "You are not allowed to activate this survey!"
+msgstr "Du har inte behörighet att aktivera den här enkäten!"
+
+msgid "You are not allowed to deactivate this survey!"
+msgstr "Du har inte behörighet att avaktivera den här enkäten!"
+
+msgid "You are not allowed to add a group to this survey!"
+msgstr "Du har inte behörighet att lägga till en grupp till den här enkäten!"
+
+msgid "You are not allowed to order groups in this survey!"
+msgstr "Du har inte rätt att sortera grupper i den här enkäten!"
+
+msgid "You are not allowed to edit this survey!"
+msgstr "Du har inte behörighet att ändra den här enkäten!"
+
+msgid "You are not allowed to edit groups in this survey!"
+msgstr "Du har inte behörighet att ändra grupper i den här enkäten!"
+
+msgid "You are not allowed to browse responses!"
+msgstr "Du har inte behörighet att bläddra i svaren!"
+
+msgid "You are not allowed to set assessment rules!"
+msgstr "Du har inte behörighet att ange regler för utvärdering!"
+
+msgid "You are not allowed to delete this group!"
+msgstr "Du har inte behörighet att radera denna grupp!"
+
+msgid "You are not allowed to import a survey!"
+msgstr "Du har inte behörighet att importera en enkät!"
+
+msgid "You are not allowed to import a group!"
+msgstr "Du har inte behörighet att importera en grupp!"
+
+msgid "You are not allowed to to import a question!"
+msgstr "Du har inte behörighet att importera en fråga!"
+
+msgid "You are not allowed to perform this operation!"
+msgstr "Du har inte behörighet att utföra denna åtgärd!"
+
+msgid "This question is a multiple answer type question but has no answers."
+msgstr "Denna fråga är av flersvars typ men har inga svar."
+
+msgid "This question does not have a question 'type' set."
+msgstr "Denna fråga har inte 'frågetyp' satt."
+
+msgid "This question requires a Labelset, but none is set."
+msgstr "Denna fråga kräver en etikett-samling, men ingen har angivits."
+
+msgid "The labelset used in this question is missing a translation."
+msgstr "Etikettsamlingen som används i frågan saknar översättning."
+
+msgid "This question has a condition set, however the condition is based on a question that appears after it."
+msgstr "Denna fråga har ett beroende satt, beroendet baseras dock på en fråga som kommer efter denna."
+
+msgid "Activate Survey"
+msgstr "Aktivera enkät"
+
+msgid "Survey does not pass consistency check"
+msgstr "Enkäten klarade inte kontrollen av är följdriktighet"
+
+msgid "The following problems have been found:"
+msgstr "Följande problem har hittats:"
+
+msgid "The survey cannot be activated until these problems have been resolved."
+msgstr "Enkäten kan inte aktiveras förrän dessa problem har rättats till."
+
+msgid "Warning"
+msgstr "Varning"
+
+msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
+msgstr "LÄS DETTA NOGGRANT INNAN DU FORTSÄTTER"
+
+msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
+msgstr "Du bör bara aktivera en enkät när du är absolut säker att enkätens uppbyggnad är klar och inte kommer att behöva ändras."
+
+msgid "Once a survey is activated you can no longer:"
+msgstr "När en enkät är aktiverad kan du inte längre:"
+
+msgid "Add or delete groups"
+msgstr "Lägga till eller ta bort grupper"
+
+msgid "Add or remove answers to Multiple Answer questions"
+msgstr "Lägga till eller ta bort svarsalternativ till denna flersvars-fråga"
+
+msgid "Add or delete questions"
+msgstr "Lägga till eller radera frågor"
+
+msgid "However you can still:"
+msgstr "Du kan dock fortfarande:"
+
+msgid "Edit (change) your questions code, text or type"
+msgstr "Ändra frågornas kod, text eller typ"
+
+msgid "Edit (change) your group names"
+msgstr "Ändra gruppernas namn"
+
+msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
+msgstr "Lägga till, ta bort eller ändra fördefinierade svar på frågor (utom för flersvars-frågor)"
+
+msgid "Change survey name or description"
+msgstr "Ändra enkätens namn eller beskrivning"
+
+msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
+msgstr "Om du vill lägga till eller ta bort grupper eller frågor efter att svar har lagts till i denna enkät måste du avaktivera enkäten. Detta kommer att flytta de svar som redan lämnats till en separat arkiverad tabell."
+
+msgid "Survey could not be actived."
+msgstr "Enkäten kunde inte aktiveras."
+
+msgid "Main Admin Screen"
+msgstr "Startsida för administration"
+
+msgid "Survey has been activated. Results table has been successfully created."
+msgstr "Enkäten har aktiverats. En tabell för resultaten har skapats."
+
+msgid "This survey allows public registration. A token table must also be created."
+msgstr "Denna enkät tillåter allmän registrering. En tabell för behörighetskoder måste också skapas."
+
+msgid "Initialise Tokens"
+msgstr "Aktivera behörighetskoder"
+
+msgid "This survey is now active, and responses can be recorded."
+msgstr "Enkäten är nu aktiverad och svaren kan sparas."
+
+msgid "Open-access mode"
+msgstr "Läget öppen åtkomst"
+
+msgid "No invitation code is needed to complete the survey."
+msgstr "Behörighetskod behövs inte för att genomföra enkäten."
+
+msgid "You can switch to the closed-access mode by initialising a token table with the button below."
+msgstr "Du kan byta till läget stängd åtkomst genom att intialisera en tabell för behörighetskoder med knappen nedan."
+
+msgid "Optional"
+msgstr "Valfritt"
+
+msgid "Switch to closed-access mode"
+msgstr "Byt till läget stängd åtkomst"
+
+msgid "LimeSurvey Online Manual"
+msgstr "LimeSurveys manual på internet"
+
+msgid "Help"
+msgstr "Hjälp"
+
+msgid "Assessments"
+msgstr "Uppskattningar"
+
+msgid "No SID Provided"
+msgstr "Inget SID har angetts"
+
+msgid "Scope"
+msgstr "Omfattning"
+
+msgid "Group"
+msgstr "Grupp"
+
+msgid "Minimum"
+msgstr "Minimum"
+
+msgid "Maximum"
+msgstr "Maximum"
+
+msgid "Heading"
+msgstr "Rubrik"
+
+msgid "Message"
+msgstr "Meddelande"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Total"
+msgstr "Summa"
+
+msgid "Add"
+msgstr "Lägg till"
+
+msgid "Edit"
+msgstr "Ändra"
+
+msgid "If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission"
+msgstr "Om du skapat bedömningar för den valda enkäten kommer de att genomföras i slutet av enkäten efter att den skickats."
+
+msgid "Actions"
+msgstr "Åtgärder"
+
+msgid "Delete"
+msgstr "Radera"
+
+msgid "Are you sure you want to delete this entry."
+msgstr "Är det säkert att du vill radera denna inmatning"
+
+msgid "Save"
+msgstr "Spara"
+
+msgid "Cancel"
+msgstr "Avbryt"
+
+msgid "Browse Responses"
+msgstr "Bläddra bland svar"
+
+msgid "The defined surveyor database does not exist"
+msgstr "Den angivna enkät-databasen finns inte"
+
+msgid "Either your selected database has not yet been created or there is a problem accessing it."
+msgstr "Antingen har den valda databasen inte skapats än eller så är det problem att accessa den"
+
+msgid "You have not selected a survey to browse."
+msgstr "Du har inte valt en enkät att bläddra i."
+
+msgid "This survey has not been activated. There are no results to browse."
+msgstr "Denna enkät har inte aktiverats. Det finns inga resultat att bläddra i."
+
+msgid "There is no matching survey."
+msgstr "Det finns ingen passande enkät."
+
+msgid "Token ID"
+msgstr "Behörighetskod ID"
+
+msgid "Date Submitted"
+msgstr "Enkäten skickad"
+
+msgid "View Response"
+msgstr "Visa svar"
+
+msgid "Edit this entry"
+msgstr "Ändra denna inmatning"
+
+msgid "Delete this entry"
+msgstr "Radera denna inmatning"
+
+msgid "Export this Response"
+msgstr "Exportera detta svar"
+
+msgid "Show previous..."
+msgstr "Visa föregående..."
+
+msgid "Show next..."
+msgstr "Visa nästa.."
+
+msgid "Showing Filtered Results"
+msgstr "Visar filtrerade resultat"
+
+msgid "Close"
+msgstr "Stäng"
+
+msgid "Data View Control"
+msgstr "Hantering av rättigheter"
+
+msgid "Show start.."
+msgstr "Visa första.."
+
+msgid "Show last..."
+msgstr "Visa sista..."
+
+msgid "Records Displayed:"
+msgstr "Antal visade poster:"
+
+msgid "Starting From:"
+msgstr "Med början från:"
+
+msgid "Filter incomplete answers:"
+msgstr "Filtrera ofullständiga svar:"
+
+msgid "Enable"
+msgstr "Sätt på"
+
+msgid "Disable"
+msgstr "Stäng av"
+
+msgid "Show"
+msgstr "Visa"
+
+msgid "View This Record"
+msgstr "Visa denna post"
+
+msgid "responses for this survey"
+msgstr "svar i enkäten"
+
+msgid "full responses"
+msgstr "fullständiga svar"
+
+msgid "responses not completly filled out"
+msgstr "svaren är inte fullständigt ifyllda"
+
+msgid "User name invalid!"
+msgstr "Användarnamnet är ogiltigt!"
+
+msgid "User name / password dont match!"
+msgstr "Användarnamn/lösenord stämmer inte överens!"
+
+msgid "Condition Designer"
+msgstr "Villkorsredigerare"
+
+msgid "You have not selected a Survey."
+msgstr "Du har inte valt en enkät."
+
+msgid "You cannot run this script directly."
+msgstr "Du kan inte köra detta skript direkt."
+
+msgid "You have not selected a Question."
+msgstr "Du har inte valt en fråga."
+
+msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
+msgstr "Ditt villkor kunde inte läggas till! Det innehöll inte någon fråga och/eller svar för villkoret att basera på. Se till att du valt en fråga och ett svar. "
+
+msgid "Did not copy questions"
+msgstr "Kopierade inte frågor"
+
+msgid "No condition selected to copy from"
+msgstr "Inga beroenden valda att kopiera ifrån"
+
+msgid "No question selected to copy condition to"
+msgstr "Frågan att kopiera villkoret till har inte valts"
+
+msgid "Only show question {QID} IF"
+msgstr "Visa bara fråga {QID} OM"
+
+msgid "and"
+msgstr "och"
+
+msgid "OR"
+msgstr "ELLER"
+
+msgid "Equals"
+msgstr "Är lika med"
+
+msgid "Copy Conditions"
+msgstr "Kopiera villkor"
+
+msgid "Condition"
+msgstr "Villkor"
+
+msgid "Question"
+msgstr "Fråga"
+
+msgid "copy to"
+msgstr "kopiera till"
+
+msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
+msgstr "Är det säkert att du vill kopiera villkor(en) till frågan du har valt?"
+
+msgid "Add Condition"
+msgstr "Lägg till beroenden"
+
+msgid "Answer"
+msgstr "Svar"
+
+msgid "Clear"
+msgstr "Rensa"
+
+msgid "Close Window"
+msgstr "Stäng fönster"
+
+msgid ""
+"Group could not be added.\\n"
+"\\n"
+"It is missing the group name for the following languages"
+msgstr "Gruppen kunde inte läggas till, det obligatoriska gruppnamnet saknas."
+
+msgid "Error: The database reported the following error:"
+msgstr "Fel: Databasen rapporterade följande fel:"
+
+msgid "Group could not be updated"
+msgstr "Grupp kunde inte uppdateras"
+
+msgid "Group could not be deleted"
+msgstr "Grupp kunde inte tas bort"
+
+msgid "Answer could not be added. You must insert a code in the mandatory field"
+msgstr "Svaret kunde inte läggas till. Du måste fylla i en kod i det obligatoriska fältet."
+
+msgid "Question could not be created."
+msgstr "Fråga kunde inte skapas."
+
+msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
+msgstr "Fråga kunde inte uppdateras. Det finns 'val' för andra frågor som hänger på svar på denna fråga. Ändra frågetypen skapar problem. Du måste ta bort dessa 'val' innan du kan ändra frågetyp."
+
+msgid "Question could not be updated"
+msgstr "Fråga kunde inte uppdateras"
+
+msgid "Answers can't be deleted"
+msgstr "Svaren kan inte tas bort"
+
+msgid "This question relies on other question's answers and can't be moved above groupId:"
+msgstr "Denna fråga är beronde av andra frågors svar och kan inte flyttas över grupp-ID:"
+
+msgid "in position"
+msgstr "vid position"
+
+msgid "See conditions:"
+msgstr "Se villkoren:"
+
+msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
+msgstr "Några frågor är beroende av denna frågas svar. Du kan inte flytta frågan under grupp-ID:"
+
+msgid "Question could not be added. You must insert a code in the mandatory field"
+msgstr "Frågan kunde inte läggas till. Du måste fylla i en kod i det obligatoriska fältet."
+
+msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
+msgstr "Fråga kunde inte raderas. Det finns 'val' för andra frågor som hänger på svar på denna fråga. Ändring av frågetypen skapar problem. Du måste ta bort dessa 'val' innan du kan ändra frågetyp."
+
+msgid "Question could not be deleted"
+msgstr "Svar kunde inte tas bort"
+
+msgid "Add new Answer"
+msgstr "Lägg till nytt svar"
+
+msgid "Error adding answer: You can't use the same answer code more than once."
+msgstr "Fel när svar lades till: Du kan inte använda samma svarskoder flera gånger."
+
+msgid "Failed to insert answer"
+msgstr "Lyckades inte lägga till svaret"
+
+msgid "Invalid or empty answer code supplied"
+msgstr "Ogiltig eller tom svarskod angavs"
+
+msgid "Save All"
+msgstr "Spara alla"
+
+msgid "Failed to update answers"
+msgstr "Lyckades inte uppdatera svaret"
+
+msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
+msgstr "Svar med koden 0 (noll) eller ingen kod är inte tillåtna och kommer inte att sparas"
+
+msgid "Duplicate codes found, these entries won't be updated"
+msgstr "Dubblett-koder hittades, dessa kommer inte att uppdateras"
+
+msgid "Up"
+msgstr "Upp"
+
+msgid "Dn"
+msgstr "Ner"
+
+msgid "Del"
+msgstr "Radera"
+
+msgid "Failed to delete answer"
+msgstr "Lyckades inte radera svaret"
+
+msgid "Default"
+msgstr "Förvalt"
+
+msgid "Failed to make answer not default"
+msgstr "Misslyckades att göra svaret till inte förvalt"
+
+msgid "Failed to make answer default"
+msgstr "Misslyckades att ange svar till förvalt"
+
+msgid "Survey could not be updated"
+msgstr "Enkäten kunde inte uppdateras"
+
+msgid "ERROR deleting Survey id"
+msgstr "FEL vid radering av enkät id"
+
+msgid "Survey could not be created because it did not have a short title"
+msgstr "Enkäten kunde inte skapas eftersom den inte har en kort titel"
+
+msgid "Survey could not be created"
+msgstr "Enkäten kunde inte skapas"
+
+msgid "Data Entry"
+msgstr "Fyll i data"
+
+msgid "You have not selected a survey for data-entry."
+msgstr "Du har inte valt en enkät att fylla i."
+
+msgid "This is a closed-access survey, you must supply a valid token"
+msgstr "Enkäten är kontrollerad, du måste ange en giltig behörighetskod"
+
+msgid "The token you have provided is not valid."
+msgstr "Behörighetskoden du angett är ogiltig."
+
+msgid "There is already a recorded answer for this token"
+msgstr "Det finns redan ett registrerat svar för den denna behörighetskod"
+
+msgid "Follow the following link to update it"
+msgstr "Klicka på länken för att uppdatera det"
+
+msgid "This surveys uses anonymous answers, you can't update this response"
+msgstr "Enkäten har anonyma svar, du kan inte uppdatera svaret"
+
+msgid "Try again"
+msgstr "Försök igen"
+
+msgid "Identifier:"
+msgstr "Identifiering:"
+
+msgid "Password:"
+msgstr "Lösenord:"
+
+msgid "Confirm Password:"
+msgstr "Bekräfta lösenord:"
+
+msgid "Email:"
+msgstr "E-post:"
+
+msgid "Start Language:"
+msgstr "Första språk:"
+
+msgid "Your survey responses have been saved succesfully"
+msgstr "Dina enkätsvar har sparats"
+
+msgid "A token entry for the saved survey has been created too."
+msgstr "En behörighetskod för den sparade enkäten har också skapats."
+
+msgid "You, someone using your email address, or the administrator has saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
+msgstr "Du, eller någon annan som angett din e-postadress, har sparat en oavslutad enkät. Följande uppgifter kan användas för att återvända till enkäten och fortsätta där du lämnade den."
+
+msgid "An email has been sent with details about your saved survey"
+msgstr "Ett e-postmeddelande med detaljer om din sparade enkät har skickats."
+
+msgid "Success"
+msgstr "Lyckades"
+
+msgid "The entry was assigned the following record id: "
+msgstr "Inmatningen fick följande post-ID:"
+
+msgid "Add Another Record"
+msgstr "Lägg till ytterligare Record"
+
+msgid "Browse Saved Responses"
+msgstr "Bläddra bland sparade svar"
+
+msgid "Editing Response"
+msgstr "Ändrar svar"
+
+msgid "Cannot be modified"
+msgstr "Kan inte ändras"
+
+msgid "Update Entry"
+msgstr "Uppdatera denna inmatning"
+
+msgid "Finalize response submission"
+msgstr "Slutför lämnandet av svaren"
+
+msgid "Save for further completion by survey user"
+msgstr "Spara för vidare komplettering av enkät-användare"
+
+msgid "Record has been updated."
+msgstr "Poster har uppdaterats."
+
+msgid "Record Deleted"
+msgstr "Posten raderat"
+
+msgid "Datestamp"
+msgstr "Datumstämpel"
+
+msgid "IP-Address"
+msgstr "IP-adress"
+
+msgid "AND"
+msgstr "OCH"
+
+msgid "to question {QUESTION}, you answered {ANSWER}"
+msgstr "på fråga {QUESTION}, svarade du {ANSWER}"
+
+msgid "No Answer"
+msgstr "Inget svar"
+
+msgid "Only answer this if the following conditions are met:"
+msgstr "Svara bara på detta om följande villkor är uppfyllda:"
+
+msgid "Help about this question"
+msgstr "Hjälp för denna fråga"
+
+msgid "This survey is not yet active. Your response cannot be saved"
+msgstr "Denna enkät är inte aktiverad än. Dina svar kan inte sparas"
+
+msgid "The survey you selected does not exist"
+msgstr "Enkäten du valt existerar inte"
+
+msgid "Answer could not be added. There is already an answer with this code"
+msgstr "Svaret kunde inte läggas till. Det finns redan ett svar med denna kod"
+
+msgid "You have not selected a survey to delete"
+msgstr "Du har inte valt någon enkät att radera"
+
+msgid "Answer could not be updated. There is already an answer with this code"
+msgstr "Svaret kunde inte uppdateras. Det finns redan ett svar med denna kod"
+
+msgid "Deactivate Survey"
+msgstr "Avavktivera enkäten"
+
+msgid "In an active survey, a table is created to store all the data-entry records."
+msgstr "I en aktiv enkät skapas en tabell där alla uppgifter som matas in sparas."
+
+msgid "When you deactivate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
+msgstr "När du avaktiverar en enkät kommer all information som matats in i den ursprungliga tabellen att flyttas till annan plats och när du aktiverar enkäten igen kommer tabellen att vara tom. Du kommer inte att komma åt denna information i LimeSurvey igen."
+
+msgid "Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
+msgstr "Data från avaktiverad enkät är bara åtkomlig för systemadministratörer genom databasverktyg som phpMyAdmin. Om din enkät använder behörighetskoder kommer den tabellen också att döpas om och bara vara åtkomlig för systemadministratörer."
+
+msgid "Your responses table will be renamed to:"
+msgstr "Din svarstabell kommer att döpas om till:"
+
+msgid "Also you should export your responses before deactivating."
+msgstr "Du bör också exportera dina svar innan avaktivering."
+
+msgid "Survey Has Been Deactivated"
+msgstr "Enkäten har avaktiverats"
+
+msgid "The responses table has been renamed to: "
+msgstr "Svarstabellen har döps om till: "
+
+msgid "The responses to this survey are no longer available using LimeSurvey."
+msgstr "Svaren på denna enkät är inte längre tillgängliga från LimeSurvey."
+
+msgid "You should note the name of this table in case you need to access this information later."
+msgstr "Du bör notera namnet på denna tabell i fall att du behöver accessa denna information senare."
+
+msgid "The tokens table associated with this survey has been renamed to: "
+msgstr "Den tabell med behörighetskoder som hör till den här enkäten har döps om till: "
+
+msgid "Delete Survey"
+msgstr "Radera enkät"
+
+msgid "You are about to delete this survey"
+msgstr "Du är på väg att radera den här enkäten"
+
+msgid "This process will delete this survey, and all related groups, questions answers and conditions."
+msgstr "Åtgärden kommer att radera enkäten och alla relaterade grupper, frågor svar och villkor."
+
+msgid "We recommend that before you delete this survey you export the entire survey from the main administration screen."
+msgstr "Vi föreslår att du innan du raderar enkäten exporterar hela enkäten från administrationens huvudsida."
+
+msgid "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."
+msgstr "Enkäten är aktiv och en tabell för svaren finns. Om du raderar enkäten kommer svaren att raderas. Vi föreslår att du exporterar svaren innan enkäten raderas."
+
+msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
+msgstr "Den här enkäten har en tillhörande tabell med behörighetskoder. Om du raderar enkäten kommer behörighetskoderna också att raderas. Vi föreslår att du exporterar eller säkerhetskopierar dessa behörighetskoder innan du raderar enkäten."
+
+msgid "This survey has been deleted."
+msgstr "Denna enkät har raderats."
+
+msgid "Export database"
+msgstr "Exportera databas"
+
+msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
+msgstr "Databas-export är bara tillgängligt för MySQL-databaser. För andra typer använd databas-typens egen mekanism för säkerhetskopiering för att skapa en databas-dump."
+
+msgid "Export Question"
+msgstr "Exportera fråga"
+
+msgid "Export Label Set"
+msgstr "Exportera etikett-samling"
+
+msgid "No LID has been provided. Cannot dump label set."
+msgstr "Inget LID finns. Kan inte dumpa etikett-samling."
+
+msgid "No QID has been provided. Cannot dump question."
+msgstr "Inget QID har lämnats. Kan inte dumpa fråga."
+
+msgid "Export Survey"
+msgstr "Exportera enkät"
+
+msgid "No SID has been provided. Cannot dump survey"
+msgstr "Inget SID har angivits. Kan inte dumpa enkät"
+
+msgid "Export Results"
+msgstr "Exportera svar"
+
+msgid "Export Responses"
+msgstr "Exportera svar"
+
+msgid "Filtered from Statistics Script"
+msgstr "Filtrerat från statistik skript."
+
+msgid "Single Response"
+msgstr "Enstaka svar"
+
+msgid "Columns"
+msgstr "Kolumner"
+
+msgid "Questions"
+msgstr "Frågor"
+
+msgid "Abbreviated headings"
+msgstr "Förkortade rubriker"
+
+msgid "Full headings"
+msgstr "Fullständiga rubriker"
+
+msgid "Question Codes"
+msgstr "Frågekoder"
+
+msgid "Filter incomplete answers"
+msgstr "Filtrera ofullständiga svar"
+
+msgid "Answers"
+msgstr "Svar"
+
+msgid "Answer Codes"
+msgstr "Svarskoder"
+
+msgid "Full Answers"
+msgstr "Fullt svar"
+
+msgid "Format"
+msgstr "Format"
+
+msgid "Microsoft Word (Latin charset)"
+msgstr "Microsoft Word (latinsk textkodning)"
+
+msgid "Microsoft Excel (Latin charset)"
+msgstr "Microsoft Excel (latinsk textkodning)"
+
+msgid "CSV File (UTF-8 charset - use this for non-latin languages)"
+msgstr "CSV-fil (UTF-8 textkodning - använd denna för icke-latinska språk)"
+
+msgid "Export Data"
+msgstr "Exportera data"
+
+msgid "Column Control"
+msgstr "Kolumn kontroll"
+
+msgid "Choose Columns"
+msgstr "Välj kolumner"
+
+msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
+msgstr "Din enkät innehåller fler än 255 svarskolumner. Kalkylbladsprogram som Excell kan inte öppna fler än 255. Välj de kolumner du vill exportera i listan nedan."
+
+msgid "Choose the columns you wish to export."
+msgstr "Välj den kolumn du vill exportera."
+
+msgid "Token Control"
+msgstr "Kontroll av behörighetskoder"
+
+msgid "Choose Token Fields"
+msgstr "Välj fält för behörighetskoder"
+
+msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
+msgstr "Din enkät kan exportera tillhörande behörighetskoder med varje svar. Välj de ytterligare fält du vill exportera."
+
+msgid "Email"
+msgstr "E-post"
+
+msgid "Attribute 1"
+msgstr "Attribut 1"
+
+msgid "Attribute 2"
+msgstr "Attribut 2"
+
+msgid "Time Submitted"
+msgstr "Enkäten skickades"
+
+msgid "NEW RECORD"
+msgstr "NY POST"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Language"
+msgstr "språk"
+
+msgid "N/A"
+msgstr "Ej tillämpbar"
+
+msgid "Add Group"
+msgstr "Lägg till Grupp"
+
+msgid "Base Language"
+msgstr "Grundläggande språk"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Required"
+msgstr "Obligatorisk"
+
+msgid "Description:"
+msgstr "Beskrivning:"
+
+msgid "Please select a file to import!"
+msgstr "Välj en fil att importera!"
+
+msgid "Import Group"
+msgstr "Importera grupp"
+
+msgid "Select CSV File:"
+msgstr "Välj CSV-fil:"
+
+msgid "Edit Group"
+msgstr "Ändra grupp"
+
+msgid "Update Group"
+msgstr "Uppdatera grupp"
+
+msgid "Survey"
+msgstr "Enkät"
+
+msgid "Date Created"
+msgstr "Skapad den"
+
+msgid "Access"
+msgstr "Tillgång"
+
+msgid "Answer Privacy"
+msgstr "Svarssekretess"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Responses"
+msgstr "Svar"
+
+msgid "Anonymous"
+msgstr "Anonym"
+
+msgid "Not Anonymous"
+msgstr "Inte anonym"
+
+msgid "Closed-access"
+msgstr "Stängd åtkomst"
+
+msgid "Open-access"
+msgstr "Öppen åtkomst"
+
+msgid "Expired"
+msgstr "Har upphört"
+
+msgid "Active"
+msgstr "Aktiv"
+
+msgid "Inactive"
+msgstr "Inaktiv"
+
+msgid "This survey is active but expired."
+msgstr "Denna enkät är aktiv men har upphört att gälla."
+
+msgid "This survey is active but expired"
+msgstr "Denna enkät är aktiv men har upphört att gälla"
+
+msgid "De-activate this Survey"
+msgstr "Avaktivera enkäten"
+
+msgid "This survey is currently active"
+msgstr "Denna enkät är aktiv nu"
+
+msgid "Activate this Survey"
+msgstr "Aktivera denna enkät"
+
+msgid "This survey is not currently active"
+msgstr "Denna enkät är inte aktiv nu"
+
+msgid "No Surveys available - please create one."
+msgstr "Ingen enkät tillgänglig - var vänlig skapa en."
+
+msgid "LimeSurvey System Summary"
+msgstr "LimeSurvey system-sammanfattning"
+
+msgid "Database Name"
+msgstr "Databasens namn"
+
+msgid "Default Language"
+msgstr "Förvalt språk"
+
+msgid "Current Language"
+msgstr "Aktuellt språk"
+
+msgid "Users"
+msgstr "Användare"
+
+msgid "Active Surveys"
+msgstr "Aktiva enkäter"
+
+msgid "De-activated Surveys"
+msgstr "Aktiverade enkäter"
+
+msgid "Active Token Tables"
+msgstr "Aktiva tabeller för behörighetskoder"
+
+msgid "De-activated Token Tables"
+msgstr "Avaktiverade tabeller för behörighetskoder"
+
+msgid "Show PHPInfo"
+msgstr "Visa PHPInfo"
+
+msgid "Survey cannot be activated. Either you have no permission or there are no questions."
+msgstr "Enkäten kan inte aktiveras. Antingen har du inte rättigheter eller så innehåller den inga frågor."
+
+msgid "Survey Security Settings"
+msgstr "Enkätens säkerhetsinställningar"
+
+msgid "Test This Survey"
+msgstr "Testa denna enkät"
+
+msgid "Execute This Survey"
+msgstr "Genomför denna enkät"
+
+msgid "Please select a language:"
+msgstr "Välj ett språk:"
+
+msgid "This survey is not active, data entry is not allowed"
+msgstr "Enkäten är inte aktiverad, inmatning tillåts inte"
+
+msgid "Printable Version of Survey"
+msgstr "Utskriftsversion av enkäten"
+
+msgid "Edit Current Survey"
+msgstr "Ändra nuvarande enkät"
+
+msgid "Delete Current Survey"
+msgstr "Radera nuvarande enkät"
+
+msgid "Change Group Order"
+msgstr "Ändra gruppordning"
+
+msgid "Export Current Survey"
+msgstr "Exportera nuvarande enkät"
+
+msgid "Set Assessment Rules"
+msgstr "Ange regler för utvärdering"
+
+msgid "Browse Responses For This Survey"
+msgstr "Bläddra i svaren för denna enkät"
+
+msgid "Activate/Edit Tokens for this Survey"
+msgstr "Aktivera/ändra berhörighetskoder för denna enkät"
+
+msgid "Close this Survey"
+msgstr "Stäng denna enkät"
+
+msgid "Show Details of this Survey"
+msgstr "Visa detaljerna för denna enkät"
+
+msgid "Hide Details of this Survey"
+msgstr "Dölj detaljerna för denna enkät"
+
+msgid "Add New Group to Survey"
+msgstr "Lägg till ny grupp till enkäten"
+
+msgid "Groups"
+msgstr "Grupper"
+
+msgid "This survey is NOT anonymous."
+msgstr "Den här enkäten är INTE anonym."
+
+msgid "It is presented question by question."
+msgstr "Presenteras fråga för fråga."
+
+msgid "It is presented group by group."
+msgstr "Presenteras grupp för grupp."
+
+msgid "It is presented on one single page."
+msgstr "Presenteras på en (1) sida."
+
+msgid "Responses will be date stamped"
+msgstr "Svaren kommer att datumstämplas"
+
+msgid "IP Addresses will be logged"
+msgstr "IP Addressen kommer att loggas"
+
+msgid "Referer-URL will be saved"
+msgstr "Hänvisande URL kommer att sparas"
+
+msgid "It uses cookies for access control."
+msgstr "Cookies används för kontroll av behörighet."
+
+msgid "If tokens are used, the public may register for this survey"
+msgstr "Om behörighetskoder används kan vem som helst anmäla sig till enkäten"
+
+msgid "Participants can save partially finished surveys"
+msgstr "Deltagare kan spara delvis ifyllda enkäter."
+
+msgid "Regenerate Question Codes:"
+msgstr "Skapa nya frågenummer:"
+
+msgid "Are you sure you want regenerate the question codes?"
+msgstr "Är det säkert att du vill omskapa frågornas koder?"
+
+msgid "Straight"
+msgstr "Rakt"
+
+msgid "By Group"
+msgstr "Gruppvis"
+
+msgid "Survey URL"
+msgstr "Enkätens URL"
+
+msgid "Survey URL For Language:"
+msgstr "Enkätens URL för språket:"
+
+msgid "Flag"
+msgstr "Flagga"
+
+msgid "Welcome:"
+msgstr "Välkommen:"
+
+msgid "Administrator:"
+msgstr "Administratör"
+
+msgid "Fax To:"
+msgstr "Fax:"
+
+msgid "Expiry Date:"
+msgstr "Upphör den:"
+
+msgid "Template:"
+msgstr "Mall:"
+
+msgid "Base Language:"
+msgstr "Förvalt språk:"
+
+msgid "Additional Languages"
+msgstr "Ytterligare språk"
+
+msgid "Exit Link"
+msgstr "Utgångslänk"
+
+msgid "Number of questions/groups"
+msgstr "Antal frågor/grupper"
+
+msgid "Survey currently active"
+msgstr "Enkäten är aktiv"
+
+msgid "Survey table name"
+msgstr "Enkätens tabellnamn"
+
+msgid "Hints"
+msgstr "Tips"
+
+msgid "Survey cannot be activated yet."
+msgstr "Enkäten kan inte aktiveras ännu."
+
+msgid "You need to add groups"
+msgstr "Du måste lägga till grupper"
+
+msgid "You need to add questions"
+msgstr "Du måste skapa frågor"
+
+msgid "Edit Current Group"
+msgstr "Ändra denna grupp"
+
+msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
+msgstr "Raderas denna grupp kommer också alla frågor och svar gruppen innehåller att raderas. Vill du fortsätta?"
+
+msgid "Delete Current Group"
+msgstr "Radera denna grupp"
+
+msgid "Impossible to delete this group because there is at least one question having a condition on its content"
+msgstr "Det är omöjligt att radera denna grupp eftersom det finns minst en fråga som har ett villkor i gruppens innehåll"
+
+msgid "Disabled"
+msgstr "Avstängd"
+
+msgid "Change Question Order"
+msgstr "Ändra frågornas ordning"
+
+msgid "Export Current Group"
+msgstr "Exportera denna grupp"
+
+msgid "Close this Group"
+msgstr "Stäng denna grupp"
+
+msgid "Show Details of this Group"
+msgstr "Visa detaljer för denna grupp"
+
+msgid "Hide Details of this Group"
+msgstr "Dölj detaljer för denna grupp"
+
+msgid "Add New Question to Group"
+msgstr "Lägg till ny fråga till grupp"
+
+msgid "Questions with conditions to this group"
+msgstr "Frågor med villkor till denna grupp"
+
+msgid "Edit Current Question"
+msgstr "Ändra denna fråga"
+
+msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
+msgstr "Raderas denna fråga kommer också tillhörande svar att raderas. Är det säkert att du vill fortsätta?"
+
+msgid "Delete Current Question"
+msgstr "Radera denna fråga"
+
+msgid "Impossible to delete this question because  there is at least one question having a condition on it"
+msgstr "Omöjligt att radera frågan eftersom den har minst ett villkor på sig"
+
+msgid "Export this Question"
+msgstr "Exportera denna fråga"
+
+msgid "Copy Current Question"
+msgstr "Kopiera denna fråga"
+
+msgid "Copy question is not possible in an Active survey"
+msgstr "Kopiera fråga går inte i en aktiv enkät"
+
+msgid "Set Conditions for this Question"
+msgstr "Ange villkor för denna fråga"
+
+msgid "Preview This Question"
+msgstr "Förhandsvisa frågan"
+
+msgid "Edit/Add Answers for this Question"
+msgstr "Ändra/lägg till svar för denna fråga"
+
+msgid "Close this Question"
+msgstr "Stäng denna fråga"
+
+msgid "Show Details of this Question"
+msgstr "Visa detaljer för denna fråga"
+
+msgid "Hide Details of this Question"
+msgstr "Göm detaljer för denna fråga"
+
+msgid "Code:"
+msgstr "Kod:"
+
+msgid "Mandatory Question"
+msgstr "Obligatorisk fråga"
+
+msgid "Optional Question"
+msgstr "Valfri fråga"
+
+msgid "Question:"
+msgstr "Fråga:"
+
+msgid "Help:"
+msgstr "Hjälp:"
+
+msgid "Validation:"
+msgstr "Bekräftelse:"
+
+msgid "Type:"
+msgstr "Typ:"
+
+msgid "You need to add answers to this question"
+msgstr "Du måste lägga till svarsalternativ till denna fråga"
+
+msgid "You need to choose a Label Set for this question"
+msgstr "Du måste välja en etikett-samling för denna fråga"
+
+msgid "Other:"
+msgstr "Annat:"
+
+msgid "Mandatory:"
+msgstr "Obligatorisk:"
+
+msgid "Other questions having conditions on this question:"
+msgstr "Andra frågor har villkor i denna fråga:"
+
+msgid "Edit Answers"
+msgstr "Ändra svar"
+
+msgid "Code"
+msgstr "Kod"
+
+msgid "Action"
+msgstr "Åtgärd"
+
+msgid "Order"
+msgstr "Ordning"
+
+msgid "New Answer"
+msgstr "Nytt svar"
+
+msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
+msgstr "Du kan inte lägga till svar eller ändra svarskoder för denna typ av frågor eftersom enkäten är aktiv."
+
+msgid "Add User"
+msgstr "Lägg till användare"
+
+msgid "User added."
+msgstr "Användare tillagd"
+
+msgid "Set Survey Rights"
+msgstr "Ange behörigheter för enkät"
+
+msgid "Failed to add User."
+msgstr "Lyckades inte lägga till ny användare."
+
+msgid "Username already exists."
+msgstr "Användarnamnet finns redan."
+
+msgid "No Username selected."
+msgstr "Inget användarnamn valt."
+
+msgid "Add User Group"
+msgstr "Lägg till användar-grupp"
+
+msgid "User Group added."
+msgstr "Användargrupp har lagts till."
+
+msgid "Failed to add User Group."
+msgstr "Misslyckades att lägga till användargrupp."
+
+msgid "Deleting User"
+msgstr "Raderar användare"
+
+msgid "Username"
+msgstr "Användarnamn"
+
+msgid "Could not delete user. User was not supplied."
+msgstr "Kunde inte radera användare. Användare angavs inte."
+
+msgid "Edit Survey Properties"
+msgstr "Ändra enkät-inställningar"
+
+msgid "Define Questions"
+msgstr "Definiera frågor"
+
+msgid "Export"
+msgstr "Exportera"
+
+msgid "Edit Survey Property"
+msgstr "Ändra enkätens egenskaper"
+
+msgid "Browse Response"
+msgstr "Bläddra bland svaren"
+
+msgid "Survey Security"
+msgstr "Enkätsäkerhet"
+
+msgid "User Group"
+msgstr "Användargrupp"
+
+msgid "User"
+msgstr "Användare"
+
+msgid "Update survey rights successful."
+msgstr "Lyckades uppdatera enkätens behörigheter!"
+
+msgid "Failed to update survey rights!"
+msgstr "Misslyckades att uppdatera enkätens behörigheter!"
+
+msgid "Edit Survey - Step 1 of 2"
+msgstr "Ändra enkät - Steg 1 av 2"
+
+msgid "Admin Email:"
+msgstr "Administratörens e-post:"
+
+msgid "Format:"
+msgstr "Format:"
+
+msgid "Question by Question"
+msgstr "Fråga för fråga"
+
+msgid "Group by Group"
+msgstr "Grupp för grupp"
+
+msgid "All in one"
+msgstr "Alla frågor samtidigt"
+
+msgid "Use Cookies?"
+msgstr "Använd cookies?"
+
+msgid "Allow Saves?"
+msgstr "Tillåt sparningar?"
+
+msgid "Show [<< Prev] button"
+msgstr "Visa [<< tillbaka] knappen"
+
+msgid "Admin Notification:"
+msgstr "Meddela admin:"
+
+msgid "Anonymous answers?"
+msgstr "Anonyma svar?"
+
+msgid "If you set a survey to anonymous, answers to timestamped and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
+msgstr "Om du angett att en enkät ska vara anonym, svaren tidsstämplade och skapar en tabell förbehörighetskoder kommer LimeSurvey att markera dina färdiga behörighetskoder med ett 'Y' istället för datum/tid för att skydda dina deltagares anonymitet."
+
+msgid "Cannot be changed"
+msgstr "Kan inte ändras"
+
+msgid "Allow public registration?"
+msgstr "Tillåt publik registrering?"
+
+msgid "Token Attribute Names:"
+msgstr "Attribut för behörighetskoder:"
+
+msgid "Date Stamp?"
+msgstr "Datum stämpel?"
+
+msgid "Responses will not be date stamped."
+msgstr "Svaren kommer inte att datumstämplas."
+
+msgid "Responses will be date stamped."
+msgstr "Svaren kommer att datumstämplas."
+
+msgid "Save IP Address?"
+msgstr "Spara IP-adress?"
+
+msgid "Responses will not have the IP address logged."
+msgstr "IP-adresser kommer inte att bifogas med svaren"
+
+msgid "Responses will have the IP address logged"
+msgstr "IP-adresser kommer att bifogas med svaren"
+
+msgid "Save Referring URL?"
+msgstr "Spara hänvisande URL?"
+
+msgid "Responses will not have their referring URL logged."
+msgstr "Hänvisande URL kommer inte att loggas med svaren."
+
+msgid "Responses will have their referring URL logged."
+msgstr "Hänvisande URL kommer att loggas med svaren."
+
+msgid "Remove"
+msgstr "Ta bort"
+
+msgid "Expires?"
+msgstr "Upphör att gälla?"
+
+msgid "End URL:"
+msgstr "Avslutande URL:"
+
+msgid "Automatically load URL when survey complete?"
+msgstr "Automatiskt ladda sida när enkäten slutförts?"
+
+msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
+msgstr "Alla frågor, svar osv för borttagna språk kommer att förloras. Är du säker?"
+
+msgid "Save and Continue"
+msgstr "Spara och fortsätt"
+
+msgid "This will replace the existing text. Continue?"
+msgstr "Detta kommer att ersätta den existerande texten. Fortsätta?"
+
+msgid "Edit Survey - Step 2 of 2"
+msgstr "Ändra enkät - Steg 2 av 2"
+
+msgid "Invitation Email Subject:"
+msgstr "E-postinbjudan ämnesrad:"
+
+msgid "Invitation to participate in survey"
+msgstr "Inbjudan att delta i enkät"
+
+msgid "Use default"
+msgstr "Använd förinställning"
+
+msgid "Invitation Email:"
+msgstr "E-postinbjudan:"
+
+msgid ""
+"Dear {FIRSTNAME},\n"
+"\n"
+"You have been invited to participate in a survey.\n"
+"\n"
+"The survey is titled:\n"
+"\"{SURVEYNAME}\"\n"
+"\n"
+"\"{SURVEYDESCRIPTION}\"\n"
+"\n"
+"To participate, please click on the link below.\n"
+"\n"
+"Sincerely,\n"
+"\n"
+"{ADMINNAME} ({ADMINEMAIL})\n"
+"\n"
+"----------------------------------------------\n"
+"Click here to do the survey:\n"
+"{SURVEYURL}"
+msgstr ""
+"Bäste {FIRSTNAME},\n"
+"\n"
+"Du har blivit inbjuden att delta i en enkät.\n"
+"\n"
+"Enkäten heter:\n"
+"\"{SURVEYNAME}\"\n"
+"\n"
+"\"{SURVEYDESCRIPTION}\"\n"
+"\n"
+"För att delta, var vänlig klicka på länken nedan.\n"
+"\n"
+"Hälsningar,\n"
+"\n"
+"{ADMINNAME} ({ADMINEMAIL})\n"
+"\n"
+"----------------------------------------------\n"
+"Klicka här för att delta i enkäten:\n"
+"{SURVEYURL}"
+
+msgid "Email Reminder Subject:"
+msgstr "E-postpåminnelse ämnesrad:"
+
+msgid "Reminder to participate in survey"
+msgstr "Påminnelse att delta i enkät"
+
+msgid "Email Reminder:"
+msgstr "E-postpåminnelse:"
+
+msgid ""
+"Dear {FIRSTNAME},\n"
+"\n"
+"Recently we invited you to participate in a survey.\n"
+"\n"
+"We note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n"
+"\n"
+"The survey is titled:\n"
+"\"{SURVEYNAME}\"\n"
+"\n"
+"\"{SURVEYDESCRIPTION}\"\n"
+"\n"
+"To participate, please click on the link below.\n"
+"\n"
+"Sincerely,\n"
+"\n"
+"{ADMINNAME} ({ADMINEMAIL})\n"
+"\n"
+"----------------------------------------------\n"
+"Click here to do the survey:\n"
+"{SURVEYURL}"
+msgstr ""
+"Bäste {FIRSTNAME},\n"
+"\n"
+"Du har nyligen blivit inbjuden att delta i en enkät.\n"
+"\n"
+"Vi noterar att du ännu inte genomfört enkäten och vill påminna dig att den fortfarande är tillgänglig om du skulle vilja delta.\n"
+"\n"
+"Enkäten heter:\n"
+"\"{SURVEYNAME}\"\n"
+"\n"
+"\"{SURVEYDESCRIPTION}\"\n"
+"\n"
+"För att delta, klicka på länken nedan.\n"
+"\n"
+"Sincerely,\n"
+"\n"
+"{ADMINNAME} ({ADMINEMAIL})\n"
+"\n"
+"----------------------------------------------\n"
+"Klicka här för att komma till enkäten:\n"
+"{SURVEYURL}"
+
+msgid "Confirmation Email Subject"
+msgstr "E-postbekräftelse ämnesrad:"
+
+msgid "Confirmation of completed survey"
+msgstr "Bekräftelse på genomförd enkät"
+
+msgid "Confirmation Email"
+msgstr "E-postbekräftelse:"
+
+msgid "Public registration Email Subject:"
+msgstr "E-post för öppen registrering ämnesrad:"
+
+msgid "Survey Registration Confirmation"
+msgstr "Bekräftelse på enkätregistrering"
+
+msgid "Public registration Email:"
+msgstr "E-post för öppen registrering:"
+
+msgid ""
+"Dear {FIRSTNAME},\n"
+"\n"
+"You, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n"
+"\n"
+"To complete this survey, click on the following URL:\n"
+"\n"
+"{SURVEYURL}\n"
+"\n"
+"If you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."
+msgstr ""
+"Bäste {FIRSTNAME},\n"
+"\n"
+"Du, eller någon som angett din e-postadress, har anmält sig för att delta i en internet-enktät som heter {SURVEYNAME}.\n"
+"\n"
+"För att genomföra enkäten, klicka på följande länk:\n"
+"\n"
+"{SURVEYURL}\n"
+"\n"
+"Om du har några frågor om denna enkät eller om du inte anmält att du vill delta och anser att detta meddelande är feltaktigt, var vänlig kontakta {ADMINNAME} här {ADMINEMAIL}."
+
+msgid "URL Description:"
+msgstr "Länkbeskrivning:"
+
+msgid "Current survey has questions with conditions outside their own group"
+msgstr "Denna enkät har frågor med villkor som ligger utanför frågornas egen grupp."
+
+msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "Omflyttning av grupper är begränsad eftersom frågor som villkor baseras på inte kan placeras efter frågor som har villkoret angivet"
+
+msgid "The following groups are concerned"
+msgstr "Följande grupper berörs"
+
+msgid "depends on group"
+msgstr "beror på grupp"
+
+msgid "see the marked conditions on"
+msgstr "Se de markerade villkoren på"
+
+msgid "The uploaded file is bigger than the upload_max_filesize directive in php.ini"
+msgstr "Den uppladdade filens storlek är större än vad som är angivet i upload_max_filesize i php.ini"
+
+msgid "The file was only partially uploaded"
+msgstr "Filen laddades bara delvis upp"
+
+msgid "No file was uploaded"
+msgstr "Ingen fil har laddats upp"
+
+msgid "Error on file transfer. You must select a CSV file"
+msgstr "Fel i filöverföringen. Du måste väla en CSV-fil"
+
+msgid "Error: You have to enter a title for this survey."
+msgstr "Fel: Du måste ange en titel för denna enkät."
+
+msgid "Create Survey"
+msgstr "Skapa enkät"
+
+msgid "(This field is mandatory.)"
+msgstr "(Detta fält är obligatoriskt.)"
+
+msgid "This setting cannot be changed later!"
+msgstr "Denna inställning kan inte ändras senare!"
+
+msgid "Date Format"
+msgstr "Datumformat"
+
+msgid "Import Survey"
+msgstr "Importera enkät"
+
+msgid "Select CSV/SQL File:"
+msgstr "Välj CSV/SQL-fil:"
+
+msgid "You need to upload the file"
+msgstr "Du måste ladda upp filen"
+
+msgid "You must upload a CSV file"
+msgstr "Du måste ladda upp en CSV-fil"
+
+msgid "Upload CSV file"
+msgstr "Ladda upp CSV-fil"
+
+msgid "It is impossible to upload a file other than CSV type"
+msgstr "Det är omöjligt att ladda upp filer av annan typ än CSV"
+
+msgid "It is impossible to upload an empty file"
+msgstr "Du kan inte ladda upp en tom fil"
+
+msgid "Uploading CSV file"
+msgstr "Laddar upp CSV-fil"
+
+msgid "Visualization:"
+msgstr "Visualisering:"
+
+msgid "Select the field number you would like to use for your answers:"
+msgstr "Välj det fältnummer du vill använda för dina svar:"
+
+#, php-format
+msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
+msgstr "Ett fel uppstod när filen laddades upp. Detta kan ha orsakats av felaktiga rättigheter i din %s-mapp."
+
+msgid "File upload succeeded."
+msgstr "Filen laddades upp."
+
+msgid "Reading file.."
+msgstr "Läser fil.."
+
+msgid "Reading file..."
+msgstr "Läser fil.."
+
+msgid "This file is not a LimeSurvey group file. Import failed."
+msgstr "Denna fil är inte en LimeSurvey gruppfil. Importen misslyckades."
+
+msgid "You can't import a group which doesn't support the current survey's base language."
+msgstr "Du kan inte importera en grupp som inte stöder den nuvarande enkätens huvudspråk."
+
+msgid "You can't import a question which doesn't support the current survey's base language."
+msgstr "Du kan inte importera en fråga som inte stöder den nuvarande enkätens huvudspråk."
+
+msgid "You can't import label sets which don't support the current survey's base language."
+msgstr "Du kan inte importera en etikettsamling som inte stöder den nuvarande enkätens huvudspråk."
+
+msgid "Import partially successful."
+msgstr "Importen delvis lyckad."
+
+msgid "The following languages in this group were not imported since the survey does not contain such a language: "
+msgstr "Följande språk i gruppen importerades inte eftersom enkäten inte innehåller det språket:"
+
+msgid "Group Import Summary"
+msgstr "Sammanfattning av grupp-import"
+
+msgid "Conditions"
+msgstr "Villkor"
+
+msgid "Label Set"
+msgstr "Etikett-samling"
+
+msgid "Labels"
+msgstr "Etiketter"
+
+msgid "Question Attributes:"
+msgstr "Fråge attribut:"
+
+msgid "Import of group is completed."
+msgstr "Import av grupp är klar."
+
+msgid "Import Label Set"
+msgstr "Importera etikett-samling"
+
+msgid "This file is not a LimeSurvey label set file. Import failed."
+msgstr "Detta är inte en LimeSurvey etikettsamlings-fil. Importen misslyckades."
+
+msgid "Return to Labels Admin"
+msgstr "Tillbaka till etikett-hanteraren"
+
+msgid "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead."
+msgstr "Det fanns en dublett av etikett-samlingen och samlingen importerades inte. Dubletten kommer att användas istället"
+
+msgid "Label Set Import Summary"
+msgstr "Sammanfattning import av etikett-samling"
+
+msgid "Label Sets"
+msgstr "Etikett-samlingar"
+
+msgid "Languages"
+msgstr "Språk"
+
+msgid "Import of Label Set is completed."
+msgstr "Importen av etikett-samling är klar."
+
+msgid "Quick Statistics"
+msgstr "Snabb statistik"
+
+msgid "Import responses from an old (deactivated) survey table into an active survey"
+msgstr "Importera svar från en gammal (avaktiverad) enkät till en aktiv enkät"
+
+msgid "Target Survey ID"
+msgstr "Mål-enkätens ID"
+
+msgid "Source table"
+msgstr "Käll-tabell"
+
+msgid "Import Responses"
+msgstr "Importera svar"
+
+msgid "Are you sure?"
+msgstr "Är du säker?"
+
+msgid "Import Question"
+msgstr "Importera fråga"
+
+msgid "No SID (Survey) has been provided. Cannot import question."
+msgstr "Inget SID (enkät) finns. Kan inte importera frågan."
+
+msgid "No GID (Group) has been provided. Cannot import question"
+msgstr "Inget GID (Grupp) finns. Kan inte importera fråga"
+
+msgid "This file is not a LimeSurvey question file. Import failed."
+msgstr "Denna fil är inte en LimeSurvey frågefil. Importen misslyckades."
+
+msgid "You can't import a question which doesn't support the current survey's base language"
+msgstr "Du kan inte importera en fråga som inte stöder den nuvarande enkätens huvudspråk"
+
+msgid "You can't import label sets which don't support the current survey's base language"
+msgstr "Du kan inte importera etikettsamlingar som inte stöder den nuvarande enkätens huvudspråk."
+
+msgid "Question Import Summary"
+msgstr "Frågeimport Summering"
+
+msgid "Import of Survey is completed."
+msgstr "Importen av enkäten är klar."
+
+msgid "This file is not a LimeSurvey survey file. Import failed."
+msgstr "Denna fil är inte en LimeSurvey enkät-fil. Importen misslyckades."
+
+msgid "Import of this survey file failed"
+msgstr "Importen av denna enkät-fil misslyckades"
+
+msgid "File does not contain LimeSurvey data in the correct format."
+msgstr "Filen innehåller inte LimeSurvey-data i korrekt format."
+
+msgid "was NOT imported, because the question type is not know"
+msgstr "importerades INTE eftersom frågans typ är vet ej"
+
+msgid "was imported, but the type was set to \""
+msgstr "importerades men typen angavs till  \""
+
+msgid "type"
+msgstr "Typ"
+
+# D:\web\xampp\htdocs\stable_plus/admin/importsurvey.php:726
+msgid "\", because is the closest one"
+msgstr ""
+
+msgid "Survey Import Summary"
+msgstr "Sammanfattning av enkätimport"
+
+msgid "Question Attributes"
+msgstr "Frågeattribut:"
+
+msgid "Warnings"
+msgstr "Varningar"
+
+msgid "Data Consistency Check"
+msgstr "Kontroll av följdriktighet"
+
+msgid "If errors are showing up you might have to execute this script repeatedly."
+msgstr "Vid fel kan du behöva köra skriptet flera gånger."
+
+msgid "No matching Cqid"
+msgstr "Ingen passande Cqid"
+
+msgid "No matching CFIELDNAME group"
+msgstr "Ingen passande CFIELDNAME grupp"
+
+msgid "No \"CFIELDNAME\" field set!"
+msgstr "Inget \"CFIELDNAME\" fält har angetts!"
+
+msgid "The following conditions should be deleted"
+msgstr "Följande beroenden bör raderas"
+
+msgid "because"
+msgstr "eftersom"
+
+msgid "All conditions meet consistency standards"
+msgstr "Alla villkor är följdriktiga"
+
+msgid "No matching qid"
+msgstr "Ingen passande qid"
+
+msgid "The following question attributes should be deleted"
+msgstr "Följande frågeattribut bör raderas"
+
+msgid "All question_attributes meet consistency standards"
+msgstr "Alla frågeattribut är följdriktiga"
+
+msgid "No matching survey"
+msgstr "Ingen passande enkät."
+
+msgid "No matching group"
+msgstr "Ingen passande grupp"
+
+msgid "The following assessments should be deleted"
+msgstr "Följande utvärderingar bör raderas"
+
+msgid "All Survey (Total) assessments meet consistency standards"
+msgstr "Alla enkät (total) utvärderingar är följdriktiga"
+
+msgid "All Group assessments meet consistency standards"
+msgstr "Alla grupp-utvärderingar är följdriktiga"
+
+msgid "No matching question"
+msgstr "Ingen passande fråga"
+
+msgid "The following answers should be deleted"
+msgstr "Följande svar bör raderas"
+
+msgid "All answers meet consistency standards"
+msgstr "Alla svar är följdriktiga"
+
+msgid "Language specific settings missing"
+msgstr "Språk-specifik inställning saknas"
+
+msgid "The following surveys should be deleted"
+msgstr "Följande enkäter bör raderas"
+
+msgid "All survey settings meet consistency standards"
+msgstr "Alla frågor är följdriktiga"
+
+msgid "The following questions should be deleted"
+msgstr "Följande fråga bör raderas"
+
+msgid "All questions meet consistency standards"
+msgstr "Alla frågor är följdriktiga"
+
+msgid "The following groups should be deleted"
+msgstr "Följande grupper bör raderas"
+
+msgid "All groups meet consistency standards"
+msgstr "Alla grupper är följdriktiga"
+
+msgid "No database action required"
+msgstr "Databasen behöver inte åtgärdas"
+
+msgid "Should we proceed with the delete?"
+msgstr "Ska vi fortsätta raderandet?"
+
+msgid "Yes - Delete Them!"
+msgstr "Ja - Radera dem!"
+
+msgid "Deleting Surveys"
+msgstr "Raderar enkäter"
+
+msgid "Deleting Survey ID"
+msgstr "Raderar enkät ID"
+
+msgid "Deleting Assessments"
+msgstr "Raderar uppskattningar"
+
+msgid "Deleting ID"
+msgstr "Raderar ID"
+
+msgid "Deleting Question_Attributes"
+msgstr "Raderar frågeattribut"
+
+msgid "Deleting Conditions"
+msgstr "Raderar villkor"
+
+msgid "Deleting cid"
+msgstr "Raderar cid"
+
+msgid "Deleting Answers"
+msgstr "Raderar svar"
+
+msgid "Deleting answer with qid"
+msgstr "Raderar svar med qid"
+
+msgid "Deleting Questions"
+msgstr "Raderar frågor"
+
+msgid "Deleting qid"
+msgstr "Raderar qid"
+
+msgid "Deleting Groups"
+msgstr "Raderar grupper"
+
+msgid "Deleting group id"
+msgstr "Raderar grupp-id"
+
+msgid "Check database again?"
+msgstr "Kontrollera databasen igen?"
+
+msgid "Check Again"
+msgstr "Kontrollera igen"
+
+msgid "Label Sets Administration"
+msgstr "Hantering av etikett-samlingar"
+
+msgid "Add New Label Set"
+msgstr "Lägg till ny etikett-samling"
+
+msgid "Add new label set"
+msgstr "Lägg till ny etikett-samling"
+
+msgid "Labelsets"
+msgstr "Etikett-samlingar"
+
+msgid "Error: You have to enter a name for this label set."
+msgstr "Fel: Du måste ange ett namn för denna grupp etiketter."
+
+msgid "Create New Label Set"
+msgstr "Skapa ny etikett-samling"
+
+msgid "Edit Label Set"
+msgstr "Ändra etikett-samling"
+
+msgid "Set Name"
+msgstr "Ange namn"
+
+msgid "You cannot remove this items since you need at least one language in a labelset."
+msgstr "Du kan inte ta bort dessa delar eftersom du måste ha minst ett språk i en etikett-samling."
+
+msgid "Update"
+msgstr "Uppdatera"
+
+msgid "Edit label set"
+msgstr "Ändra etikett-samling"
+
+msgid "Delete label set"
+msgstr "Radera etikett-samling"
+
+msgid "New label"
+msgstr "Ny etikett"
+
+msgid "Add new label"
+msgstr "Lägg till ny etikett"
+
+msgid "Inserting New labels must be done on the first language folder."
+msgstr "Nya etiketter måste läggas till i den första språkmappen."
+
+msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
+msgstr "Du kan inte ändra koder, lägga till eller ta bort poster i denna etikett-samling eftersom den används av en aktiv enkät."
+
+msgid "Fix Sort"
+msgstr "Ordna sortering"
+
+msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
+msgstr "Några enkäter använder för närvarande denna etikett-samling. Om du ändrar koder, lägger till eller tar bort poster i etikett-samlingen kan leda till oönskade resultat i andra enkäter. "
+
+msgid "Failed to Copy already defined labels to added languages"
+msgstr "Misslyckades att kopiera redan definierade etiketter till tillagda språk"
+
+msgid "Failed to delete labels for removed languages"
+msgstr "Misslyckades att radera etiketter för borttagna språk"
+
+msgid "Update of Label Set failed"
+msgstr "Uppdatering av etikett-samling misslyckades"
+
+msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
+msgstr "Kunde inte radera etikett-samlingen - det finns frågor som är beroende av etiketterna. Du måste radera dessa frågor först."
+
+msgid "Insert of Label Set failed"
+msgstr "Uppdatering av etikett-samling misslyckades"
+
+msgid "Failed to insert label"
+msgstr "Misslyckades att lägga till etikett"
+
+msgid "This label code is already used in this labelset. Please choose another code or rename the existing one."
+msgstr "Den etikett-koden används redan i denna etikettgrupp. Välj en annan kod eller döp om den befintliga."
+
+msgid "Failed to update label"
+msgstr "Misslyckades att uppdatera etikett"
+
+msgid "Can't update labels because you are using duplicated codes"
+msgstr "Kan inte uppdatera etiketter eftersom du använder dubblerade koder"
+
+msgid "Failed to delete label"
+msgstr "Misslyckades att radera etikett"
+
+msgid "You have to enter user name and email."
+msgstr "Du måste ange användarnamn och e-postadress."
+
+msgid "Check Data"
+msgstr "Kontrollera data"
+
+msgid "You have to login first."
+msgstr "Du måste logga in först."
+
+msgid "Login"
+msgstr "Inloggning"
+
+msgid "Forgot Your Password?"
+msgstr "Glömt ditt lösenord?"
+
+msgid "if you answered"
+msgstr "om du svarat"
+
+msgid "or"
+msgstr "eller"
+
+msgid "to question"
+msgstr "på fråga"
+
+msgid "Only answer this question"
+msgstr "Svara bara på denna fråga"
+
+msgid "Please choose *only one* of the following:"
+msgstr "Välj *bara en* av följande:"
+
+msgid "Please enter a date:"
+msgstr "Fyll i datum:"
+
+msgid "Please number each box in order of preference from 1 to"
+msgstr "Rangordna i varje ruta med ett nummer från 1 till"
+
+msgid "Please choose *all* that apply:"
+msgstr "Välj *alla* som stämmer:"
+
+msgid "Please choose *at most* "
+msgstr "Välj *som mest*"
+
+msgid "answers:"
+msgstr "svar:"
+
+msgid "Please choose all that apply and provide a comment:"
+msgstr "Välj alla som stämmer och skriv en kommentar:"
+
+msgid "Please write your answer(s) here:"
+msgstr "Skriv ditt/dina svar här:"
+
+msgid "Please write your answer here:"
+msgstr "Skriv ditt svar här:"
+
+msgid "Please choose the appropriate response for each item:"
+msgstr "Välj det korrekta svaret för varje punkt:"
+
+msgid "Submit Your Survey."
+msgstr "Skicka in din enkät."
+
+msgid "Thank you for completing this survey."
+msgstr "Tack för att du svarat på denna enkät."
+
+msgid "Please fax your completed survey to:"
+msgstr "Faxa den ifyllda enkäten till:"
+
+msgid "Please submit by"
+msgstr "Skicka genom"
+
+msgid "Add Question"
+msgstr "Lägg till fråga"
+
+msgid "Label Set:"
+msgstr "Etikett-samling:"
+
+msgid "Select CSV File"
+msgstr "Välj CSV-fil"
+
+msgid "Copy Question"
+msgstr "Kopiera fråga"
+
+msgid "Note: You MUST enter a new question code!"
+msgstr "Notera: Du MÅSTE ange en ny frågekod!"
+
+msgid "Group:"
+msgstr "Grupp:"
+
+msgid "Copy Answers?"
+msgstr "Kopiera svar?"
+
+msgid "Copy Attributes?"
+msgstr "Kopiera attribut?"
+
+msgid "Edit Question"
+msgstr "Ändra fråga"
+
+msgid "Survey is currently active."
+msgstr "Enkäten är aktiv nu"
+
+msgid "Update Question"
+msgstr "Uppdatera fråga"
+
+msgid "Current group is using conditional questions"
+msgstr "Nuvarande grupp använder villkorade frågor"
+
+msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "Omflyttning av frågorna i denna grupp är begränsad för att se till att frågor som villkor baseras på inte hamnar efter frågor där villkoret anges"
+
+msgid "See the conditions marked on the following questions"
+msgstr "Visa villkoren som markerats på följande frågor"
+
+msgid "Answered"
+msgstr "Besvarad"
+
+msgid "Saved Responses:"
+msgstr "Sparade svar:"
+
+msgid "Identifier"
+msgstr "Identifierare"
+
+msgid "Date Saved"
+msgstr "Datum sparad"
+
+msgid "Are you sure you want to delete this entry?"
+msgstr "Är du säker på att du vill radera dessa svar?"
+
+msgid "Record ID"
+msgstr "Post ID"
+
+msgid "Completion Date"
+msgstr "Slutförd den"
+
+msgid "Start Language"
+msgstr "Första språk"
+
+msgid "Not Selected"
+msgstr "Inte vald"
+
+msgid "Filter Settings"
+msgstr "Filterinställningar"
+
+msgid "Number greater than"
+msgstr "Siffra större än"
+
+msgid "Number Less Than"
+msgstr "Siffra mindre än"
+
+msgid "Date (YYYY-MM-DD) equals"
+msgstr "Datum (ÅÅÅÅ-MM-DD) är lika"
+
+msgid "OR between"
+msgstr "ELLER mellan"
+
+msgid "Responses Containing"
+msgstr "Svar innehåller"
+
+msgid "View summary of all available fields"
+msgstr "Visa sammanfattning över alla tillgängliga fält"
+
+msgid "View Stats"
+msgstr "Visa statistik"
+
+msgid "Please wait ..."
+msgstr "Vänta..."
+
+msgid "Go Back"
+msgstr "Tillbaka"
+
+msgid "Getting Questions and Answers ..."
+msgstr "Hämtar frågor och svar..."
+
+msgid "Getting Result Count ..."
+msgstr "Hämtar antal resultat..."
+
+msgid "Results"
+msgstr "Resultat"
+
+msgid "No of records in this query"
+msgstr "Antal poster i denna fråga"
+
+msgid "Total records in survey"
+msgstr "Summa poster i denna enkät"
+
+msgid "Percentage of total"
+msgstr "Procent av sammanlagt"
+
+msgid "Browse"
+msgstr "Bläddra"
+
+msgid "Generating Summaries ..."
+msgstr "Skapar sammanfattning..."
+
+msgid "Field Summary for"
+msgstr "Fält-sammanfattning för"
+
+msgid "Calculation"
+msgstr "Beräkning"
+
+msgid "Result"
+msgstr "Resultat"
+
+msgid "Sum"
+msgstr "Summa"
+
+msgid "Standard Deviation"
+msgstr "Standardavvikelse"
+
+msgid "Average"
+msgstr "Genomsnittlig"
+
+msgid "1st Quartile (Q1)"
+msgstr "Första kvartil (Q1)"
+
+msgid "2nd Quartile (Median)"
+msgstr "Andra kvartil  (median)"
+
+msgid "3rd Quartile (Q3)"
+msgstr "Trejde kvartil (Q3)"
+
+msgid "Null values are ignored in calculations"
+msgstr "Tomma (null) värden ignoreras i beräkningarna."
+
+msgid "Q1 and Q3 calculated using"
+msgstr "Q1 och Q3 beräknade med"
+
+msgid "minitab method"
+msgstr "Minitab-metod"
+
+msgid "Count"
+msgstr "Antal"
+
+msgid "Percentage"
+msgstr "Procent"
+
+msgid "Non completed"
+msgstr "Inte färdig"
+
+msgid "Completed"
+msgstr "Färdigt"
+
+msgid "Select all"
+msgstr "Välj alla"
+
+msgid "Proceed"
+msgstr "Fortsätt"
+
+msgid "Question List"
+msgstr "Frågelista"
+
+msgid "Like"
+msgstr "Som"
+
+msgid "Not Equals"
+msgstr "Är inte lika med"
+
+msgid "Filter Conditions"
+msgstr "Filtervillkor"
+
+msgid "Numerical"
+msgstr "Numerisk"
+
+msgid "Huge free text"
+msgstr "Mycket lång fri text"
+
+msgid "Failed to copy"
+msgstr "Misslyckades kopiera"
+
+msgid "to new template directory."
+msgstr "till ny mallkatalog."
+
+msgid "Directory with the name"
+msgstr "Katalog med namnet"
+
+msgid "already exists - choose another name"
+msgstr "finns redan - välj ett annat namn"
+
+msgid "Unable to create directory"
+msgstr "Kunde inte skapa katalog"
+
+msgid "Maybe you don't have permission."
+msgstr "Du kanske inte har behörighet."
+
+msgid "Directory could not be renamed to"
+msgstr "Katalogen kunde inte döpas om till"
+
+msgid "This file type is not allowed to be uploaded."
+msgstr "Denna filtyp är inte tillåten att ladda upp."
+
+msgid "Welcome Page"
+msgstr "Välkommen"
+
+msgid "Question Page"
+msgstr "Frågor"
+
+msgid "Submit Page"
+msgstr "Slutför"
+
+msgid "Completed Page"
+msgstr "Avslutning"
+
+msgid "Clear All Page"
+msgstr "Rensa allt"
+
+msgid "Register Page"
+msgstr "Registrering"
+
+msgid "Load Page"
+msgstr "Öppna oavslutad"
+
+msgid "Save Page"
+msgstr "Spara oavslutad"
+
+msgid "Create new template called:"
+msgstr "Skapa ny mall som heter:"
+
+msgid "NewTemplate"
+msgstr "Ny mall"
+
+msgid "Create new template"
+msgstr "Skapa ny mall"
+
+msgid "This template can be modified"
+msgstr "Den här mallen kan ändras"
+
+msgid "This template cannot be modified"
+msgstr "Den här mallen kan inte ändras"
+
+msgid "You can't edit the default template."
+msgstr "Du kan inte ändra den förvalda mallen."
+
+msgid "Rename this template to:"
+msgstr "Döp om denna mall till:"
+
+msgid "Rename this template"
+msgstr "Döp om denna mall"
+
+msgid "Export Template"
+msgstr "Exportera mall"
+
+msgid "Copy Template"
+msgstr "Kopiera mall"
+
+msgid "Make a copy of this template"
+msgstr "Skapa en kopia av denna mall"
+
+msgid "copy_of_"
+msgstr "kopia_av_"
+
+msgid "Screen:"
+msgstr "Mallsida:"
+
+msgid "File Control:"
+msgstr "Filkontroll:"
+
+msgid "Standard Files:"
+msgstr "Standardfiler:"
+
+msgid "Now editing:"
+msgstr "Nu ändras:"
+
+msgid "Other Files:"
+msgstr "Andra filer:"
+
+msgid "Save Changes"
+msgstr "Spara ändringarna"
+
+msgid "Changes cannot be saved to the default template."
+msgstr "Ändringar av den förvalda mallen kan inte spars."
+
+msgid "Are you sure you want to delete this file?"
+msgstr "Är det säkert att du vill radera denna fil?"
+
+msgid "Files in the default template cannot be deleted."
+msgstr "Filerna i den förvalda mallen kan inte raderas."
+
+msgid "Upload a File"
+msgstr "Ladda upp fil"
+
+msgid "Upload"
+msgstr "Ladda upp"
+
+msgid "Preview:"
+msgstr "Förhandsvisning:"
+
+msgid "ARMSCII-8 Armenian"
+msgstr "ARMSCII-8 Armenisk"
+
+msgid "US ASCII"
+msgstr "US ASCII"
+
+msgid "Automatic"
+msgstr "Automatisk"
+
+msgid "Big5 Traditional Chinese"
+msgstr "Big5 Kinesisk traditionell"
+
+msgid "Binary pseudo charset"
+msgstr "Binär pseudo-textkodning"
+
+msgid "Windows Central European"
+msgstr "Windows Centraleuropeisk"
+
+msgid "Windows Cyrillic"
+msgstr "Windows Kyrillisk"
+
+msgid "Windows Arabic"
+msgstr "Windows Arabisk"
+
+msgid "Windows Baltic"
+msgstr "Windows Baltisk"
+
+msgid "DOS West European"
+msgstr "DOS Västeuropeisk"
+
+msgid "DOS Central European"
+msgstr "DOS Centraleuropeisk"
+
+msgid "DOS Russian"
+msgstr "DOS Ryska"
+
+msgid "SJIS for Windows Japanese"
+msgstr "SJIS för Windows Japansk"
+
+msgid "DEC West European"
+msgstr "DEC Västeuropeisk"
+
+msgid "UJIS for Windows Japanese"
+msgstr "UJIS för Windows Japansk"
+
+msgid "EUC-KR Korean"
+msgstr "EUC-KR Koreansk"
+
+msgid "GB2312 Simplified Chinese"
+msgstr "GB2312 Kinesisk förenklad"
+
+msgid "GBK Simplified Chinese"
+msgstr "GBK Kinesisk förenklad"
+
+msgid "GEOSTD8 Georgian"
+msgstr "GEOSTD8 Georgisk"
+
+msgid "ISO 8859-7 Greek"
+msgstr "ISO 8859-7 Grekisk"
+
+msgid "ISO 8859-8 Hebrew"
+msgstr "ISO 8859-8 Hebreisk"
+
+msgid "HP West European"
+msgstr "HP Västeuropeisk"
+
+msgid "DOS Kamenicky Czech-Slovak"
+msgstr "DOS Kamenicky Tjeckisk-Slovakisk"
+
+msgid "KOI8-R Relcom Russian"
+msgstr "KOI8-R Relcom Rysk"
+
+msgid "KOI8-U Ukrainian"
+msgstr "KOI8-U Ukrainsk"
+
+msgid "cp1252 West European"
+msgstr "cp1252 Västeuropeisk"
+
+msgid "ISO 8859-2 Central European"
+msgstr "ISO 8859-2 Centraleuropeisk"
+
+msgid "ISO 8859-9 Turkish"
+msgstr "ISO 8859-9 Turkisk"
+
+msgid "ISO 8859-13 Baltic"
+msgstr "ISO 8859-13 Baltisk"
+
+msgid "Mac Central European"
+msgstr "Mac Centraleuropeisk"
+
+msgid "Mac West European"
+msgstr "Mac Västeuropeisk"
+
+msgid "Shift-JIS Japanese"
+msgstr "Shift-JIS Japanska"
+
+msgid "7bit Swedish"
+msgstr "7bitars Svenska"
+
+msgid "TIS620 Thai"
+msgstr "TIS620 Thai"
+
+msgid "UCS-2 Unicode"
+msgstr "UCS-2 Unicode"
+
+msgid "EUC-JP Japanese"
+msgstr "EUC-JP Japanska"
+
+msgid "UTF-8 Unicode"
+msgstr "UTF-8 Unicode"
+
+msgid "You have not selected a survey"
+msgstr "Du har inte valt någon enkät"
+
+msgid "Token table could not be created."
+msgstr "Tabell för behörighetskoder kunde inte skapas."
+
+msgid "A token table has been created for this survey."
+msgstr "En tabell med behörighetskoder har skapats för denna enkät."
+
+msgid "Tokens have not been initialised for this survey."
+msgstr "Behörighetskoder har inte angivits för denna enkät."
+
+msgid "If you initialise tokens for this survey, the survey will only be accessible to users who have been assigned a token."
+msgstr "Om du anger att behörighetskoder ska användas för enkäten kommer den bara att vara tillgänglig för användare som har tilldelats en behörighetskod."
+
+msgid "Do you want to create a tokens table for this survey?"
+msgstr "Vill du skapa en tabell för behörighetskoder till enkäten?"
+
+msgid "Restore Options"
+msgstr "Återställ valmöjligheter"
+
+msgid "The following old token tables could be restored:"
+msgstr "Följande tabeller med gamla behörighetskoder kunde återställas:"
+
+msgid "Restore"
+msgstr "Återställ"
+
+msgid "Display Tokens"
+msgstr "Visa behörighetskoder"
+
+msgid "Add new token entry"
+msgstr "Lägg till ny behörighetskod"
+
+msgid "Import Tokens from CSV File"
+msgstr "Importera behörighetskoder från CSV-fil"
+
+msgid "Import Tokens from LDAP Query"
+msgstr "Importera behörighetskoder från en LDAP-sökning"
+
+msgid "Export Tokens to CSV file"
+msgstr "Exportera behörighetskoder till CSV-fil"
+
+msgid "Send email invitation"
+msgstr "Skicka inbjudan med e-post"
+
+msgid "Send email reminder"
+msgstr "Skicka påminnelse med e-post"
+
+msgid "Generate Tokens"
+msgstr "Skapa behörighetskoder"
+
+msgid "Drop tokens table"
+msgstr "Kasta tabellen med behörighetskoder"
+
+msgid "Total Records in this Token Table"
+msgstr "Antal poster i den här tabellen med behörighetskoder"
+
+msgid "Total With No Unique Token"
+msgstr "Antal utan unika behörighetskoder"
+
+msgid "Total Invitations Sent"
+msgstr "Antal skickade inbjudningar"
+
+msgid "Total Surveys Completed"
+msgstr "Antal genomförda enkäter"
+
+msgid "All token entries have been deleted."
+msgstr "Alla behörighetskoder har raderats."
+
+msgid "All invite entries have been set to 'Not Invited'."
+msgstr "Alla uppgifter om inbjudna kommer att ändras till ' inte inbjudna'."
+
+msgid "All unique token numbers have been removed."
+msgstr "Alla unika behörighetskoders nummer har tagits bort"
+
+msgid "Token Database Administration Options"
+msgstr "Administration av behörighetskods databas"
+
+msgid "Are you really sure you want to reset all invitation records to NO?"
+msgstr "Är du säker att du vill sätta alla inbjudan skickad till 'NEJ'?"
+
+msgid "Set all entries to 'No invitation sent'."
+msgstr "Sätt alla till 'Ingen inbjudan skickad'."
+
+msgid "Are you sure you want to delete all unique token numbers?"
+msgstr "Är du säker på att du vill radera alla unika behörighetskoders nummer?"
+
+msgid "Delete all unique token numbers"
+msgstr "Radera alla unika behörighetskoder"
+
+msgid "Are you really sure you want to delete ALL token entries?"
+msgstr "Är du säker på att du vill radera ALLA behörighetskoder?"
+
+msgid "Delete all token entries"
+msgstr "Radera all behörighetskoder"
+
+msgid "Update tokens table with new fields"
+msgstr "Uppdatera tabellen med behörighetskoder med nya fält"
+
+msgid "Search"
+msgstr "Sök"
+
+msgid "Sort by: "
+msgstr "Sortera efter"
+
+msgid "Invite sent?"
+msgstr "Inbjudan skickad?"
+
+msgid "Completed?"
+msgstr "Färdig?"
+
+msgid "Edit Token Entry"
+msgstr "Ändra behörighetskoder"
+
+msgid "Delete Token Entry"
+msgstr "Radera behörighetskod"
+
+msgid "Do Survey"
+msgstr "Fyll i enkäten"
+
+msgid "Update Response"
+msgstr "Uppdatera svar"
+
+msgid "Send invitation email to this entry"
+msgstr "Skicka inbjudan med epost till denna"
+
+msgid "Send reminder email to this entry"
+msgstr "Skicka påminnelse med epost till denna"
+
+msgid "Delete Tokens Table"
+msgstr "Radera tabell med behörighetskoder"
+
+msgid "If you delete this table tokens will no longer be required to access this survey."
+msgstr "Om du raderar denna tabell kommer behörighetskoder inte längre behövas för att få tillgång till enkäten."
+
+msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
+msgstr "En säkerhetskopia av tabellen skapas om du fortsätter. Din systemadministratör kan komma åt denna tabell."
+
+msgid "Delete Tokens"
+msgstr "Radera behörighetskoder"
+
+msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
+msgstr "Tabellen med behörighetskoder har nu tagits bort och behörighetskoder behövs inte längre för att få tillgång till enkäten."
+
+msgid "A backup of this table has been made and can be accessed by your system administrator."
+msgstr "En säkerhetskopia av tabellen har skapats som en systemadministratör kan komma åt."
+
+msgid "Email Invitation"
+msgstr "Inbjudan med e-post"
+
+msgid "From"
+msgstr "Från"
+
+msgid "Subject"
+msgstr "Ämne"
+
+msgid "to TokenID No"
+msgstr "till behörighetskod-ID nr"
+
+msgid "Send Invitations"
+msgstr "Skicka inbjudningar"
+
+msgid "Sending Invitations"
+msgstr "Skickar inbjudningar"
+
+msgid "Sending to TID No:"
+msgstr "Skickar till TID nr:"
+
+msgid "Invitation sent to:"
+msgstr "Inbjudan skickad till:"
+
+msgid "Mail to {FIRSTNAME} {LASTNAME} ({EMAIL}) Failed"
+msgstr "E-post till {FIRSTNAME} {LASTNAME} ({EMAIL}) misslyckades"
+
+msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
+msgstr "Det finns fler väntande e-postmeddelanden än som kan sändas i en omgång. Fortsätt skicka genom att klicka nedan."
+
+msgid "There are {EMAILCOUNT} emails still to be sent."
+msgstr "Det finns fortfarande {EMAILCOUNT} e-postmeddelanden som ska sändas."
+
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
+msgstr "Det fanns inga lämpliga e-postmeddelanden att skicka. Detta beror på att inget uppfyllde kraven att: ha en e-postadress, inte redan ha fått en inbjudan, redan slutfört enkäten och ha en behörighetskod."
+
+msgid "Email Reminder"
+msgstr "Påminnelse med e-post"
+
+msgid "Start at Token ID No:"
+msgstr "Börja med Token ID nr:"
+
+msgid "Send Reminders"
+msgstr "Skicka påminnelser"
+
+msgid "Sending Reminders"
+msgstr "Skickar påminnelser"
+
+msgid "Reminder sent to:"
+msgstr "Påminnelse skickad till:"
+
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
+msgstr "Det fanns inga lämpliga e-postmeddelanden att skicka. Detta beror på att inget uppfyllde kraven att: ha en e-postadress, ha fått en inbjudan men inte ännu slutfört enkäten."
+
+msgid "Create Tokens"
+msgstr "Skapa behörighetskoder"
+
+msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
+msgstr "Klickar du ja kommer att skapa behörighetskoder för all de i listan som ännu inte tilldelats en. Är det OK?"
+
+msgid "{TOKENCOUNT} tokens have been created"
+msgstr "{TOKENCOUNT} behörighetskoder har skapats"
+
+msgid "Token has been deleted."
+msgstr "Behörighetskoden har raderats."
+
+msgid "Reloading Screen. Please wait."
+msgstr "Laddar om sidan. Var vänlig vänta."
+
+msgid "Add or Edit Token"
+msgstr "Lägg till eller ändra behörighetskod"
+
+msgid "Auto"
+msgstr "Automatisk"
+
+msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
+msgstr "Du kan lämna detta blankt och automatisk generera behörighetskoder genom att använda 'Skapa Behörighetskoder'"
+
+msgid "Update Token"
+msgstr "Uppdatera behörighetskod"
+
+msgid "Add Token"
+msgstr "Lägg till ny behörighetskod"
+
+msgid "Updated Token"
+msgstr "Uppdatera behörighetskoder"
+
+msgid "Added New Token"
+msgstr "La till ny behörighetskod"
+
+msgid "Upload CSV File"
+msgstr "Ladda upp CSV-fil"
+
+msgid "Note:"
+msgstr "Notera:"
+
+msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [token], [language code], [attribute1], [attribute2]\"."
+msgstr "Filen måste vara en standard CSV-fil (komma-separerad) med dubbla citationstecken (standard för openoffice och excel). Första raden i filen måste innehålla rubrikinformation (som tas bort). Innehållet måste ordnas enligt följande: \"firstname, lastname, email, [token], [language code], [attribute1], [attribute2]\"."
+
+msgid "Upload LDAP entries"
+msgstr "Skicka LDAP-inmatningar"
+
+msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
+msgstr "LDAP-frågor definieras av administratören i filen config-ldap.php"
+
+msgid "Upload file not found. Check your permissions and path for the upload directory"
+msgstr "Filen hittades inte. Kontrollera dina rättigheter och sökväg till uppladdnings mappen"
+
+msgid "Importing CSV File"
+msgstr "Importerar CSV-fil"
+
+msgid "Creating Token Entries"
+msgstr "Skapar behörighetskoder"
+
+msgid "Failed"
+msgstr "Misslyckades"
+
+msgid "Records in CSV"
+msgstr "Poster i CSV"
+
+msgid "Records met minumum requirements"
+msgstr "Posterna uppfyller de minsta kraven"
+
+msgid "Records imported"
+msgstr "Poster importerade"
+
+msgid "Duplicate records removed"
+msgstr "Dubbletter raderade"
+
+msgid "Records with invalid email address removed"
+msgstr "Poster med ogiltig e-postadress raderade"
+
+msgid "Uploading LDAP Query"
+msgstr "Skickar LDAP-fråga"
+
+msgid "{TOKENCOUNT} Records Created"
+msgstr "{TOKENCOUNT} Records Skapade"
+
+msgid "Can't bind to the LDAP directory"
+msgstr "Kan inte binda till LDAP-katalogen"
+
+msgid "Can't connect to the LDAP directory"
+msgstr "Kan inte ansluta till LDAP-katalogen"
+
+msgid "Choose the CSV file to upload:"
+msgstr "Välj en CSV-fil att ladda upp:"
+
+msgid "Character set of the file:"
+msgstr "Filens textkodning:"
+
+msgid "Sorry, but the LDAP module is missing in your PHP configuration."
+msgstr "Tyvärr saknas LDAP-modulen i din PHP-konfiguration."
+
+msgid "LDAP is disabled or no LDAP query defined."
+msgstr "LDAP är avstängt eller ingen LDAP-fråga har angivits."
+
+msgid "Select the LDAP query you want to run:"
+msgstr "Välj den LDAP-fråga du vill köra:"
+
+msgid "Forgot Password"
+msgstr "Glömt lösenord"
+
+msgid "User name and/or email not found!"
+msgstr "Användarnamn och/eller e-postadress hittades inte!"
+
+msgid "Your data:"
+msgstr "Dina uppgifter:"
+
+msgid "New Password"
+msgstr "Nytt lösenord"
+
+msgid "An email with your login data was sent to you."
+msgstr "Ett e-postmeddelande med dina inloggningsuppgifter har skickats till dig."
+
+msgid "Email to {NAME} ({EMAIL}) failed."
+msgstr "E-post till {NAME} ({EMAIL}) misslyckades."
+
+msgid "Logging in..."
+msgstr "Loggar in..."
+
+msgid "Incorrect User name and/or Password!"
+msgstr "Felaktigt användarnamn och/eller e-postadress!"
+
+msgid "Welcome {NAME}"
+msgstr "Välkommen {NAME}"
+
+msgid "You logged in successfully."
+msgstr "Du har loggat in."
+
+msgid "Logout successful."
+msgstr "Utloggningen lyckades."
+
+msgid "Email address is not valid."
+msgstr "E-postadressen är inte giltig."
+
+msgid "Username was not supplied."
+msgstr "Användarnamn angavs inte."
+
+msgid "You were signed in on the site"
+msgstr "Du har registrerats här"
+
+msgid "Login here"
+msgstr "Logga in här"
+
+msgid "An email with a generated password was sent to the user."
+msgstr "Ett e-postmeddelande med ett skapat lösenord har skickats till användaren."
+
+msgid "Set User Rights"
+msgstr "Ange användarens rättigheter"
+
+msgid "Username and/or email address already exists."
+msgstr "Användarnamn och/eller e-postadressen finns redan."
+
+msgid "Admin cannot be deleted!"
+msgstr "Admin kan inte raderas!"
+
+msgid "Modifying User"
+msgstr "Modifierar användare"
+
+msgid "Could not modify User Data."
+msgstr "Kunde inte ändra användaruppgifter."
+
+msgid "Email address ist not valid."
+msgstr "E-postadressen är inte giltig."
+
+msgid "Unchanged"
+msgstr "Oförändrad"
+
+msgid "Email address already exists."
+msgstr "E-postadressen finns redan."
+
+msgid "Back"
+msgstr "Tillbaka"
+
+msgid "Update user rights successful."
+msgstr "Ändringen av användares behörigheter lyckades."
+
+msgid "You are not allowed to change your own rights!"
+msgstr "Du har inte tillstånd att ändra dina egna rättigheter!"
+
+msgid "Mail to all Members"
+msgstr "E-post till alla medlemmar"
+
+msgid "Edit Current User Group"
+msgstr "Ändra denna användargrupp"
+
+msgid "Delete Current User Group"
+msgstr "Radera denna användargrupp"
+
+msgid "Add New User Group"
+msgstr "Lägg till ny användargrupp"
+
+msgid "User Groups"
+msgstr "Användargrupper"
+
+msgid "Full name"
+msgstr "Fullt namn"
+
+msgid "Configurator"
+msgstr "Konfigurator:"
+
+msgid "Create User"
+msgstr "Skapa användare"
+
+msgid "Delete User"
+msgstr "Radera användare"
+
+msgid "Move User"
+msgstr "Flytta användare"
+
+msgid "Manage Template"
+msgstr "Hantera mallar"
+
+msgid "Manage Labels"
+msgstr "Hantera etiketter"
+
+msgid "User Control"
+msgstr "Användarkontroll"
+
+msgid "Created by"
+msgstr "Skapad av"
+
+msgid "Edit User"
+msgstr "Ändra användare"
+
+msgid "Name:"
+msgstr "Namn:"
+
+msgid "Edit User Group (Owner: "
+msgstr "Ändra användargruppens ägare:"
+
+msgid "Update User Group"
+msgstr "Uppdatera användargrupp"
+
+msgid "Send me a copy:"
+msgstr "Skicka mig en kopia:"
+
+msgid "Subject:"
+msgstr "Ämne:"
+
+msgid "Message:"
+msgstr "Meddelande:"
+
+msgid "Send"
+msgstr "Skickad"
+
+msgid "Reset"
+msgstr "Återställ"
+
+msgid "Deleting User Group"
+msgstr "Raderar användargrupp"
+
+msgid "Group Name"
+msgstr "Gruppens namn"
+
+msgid "Could not delete user group."
+msgstr "Kunde inte radera användargrupp."
+
+msgid "Could not delete user group. No group selected."
+msgstr "Kunde inte radera användargrupp. Ingen grupp vald."
+
+msgid "Adding User Group"
+msgstr "Lägger till användargrupp"
+
+msgid "Description: "
+msgstr "Beskrivning:"
+
+msgid "User group successfully added!"
+msgstr "Användargruppen har lagts till!"
+
+msgid "Failed to add Group!"
+msgstr "Misslyckades att lägga till grupp"
+
+msgid "Group already exists!"
+msgstr "Gruppen finns redan!"
+
+msgid "Group name was not supplied!"
+msgstr "Gruppens namn angavs inte:"
+
+msgid "Message(s) sent successfully!"
+msgstr "Meddelande(n) har skickats!"
+
+msgid "To:"
+msgstr "Till:"
+
+msgid "Mail not sent!"
+msgstr "E-postmeddelande skickades inte!"
+
+msgid "Edit User Group Successfully!"
+msgstr "Användargruppen har ändrats!"
+
+msgid "Failed to update!"
+msgstr "Uppdateringen misslyckades!"
+
+msgid "Adding User to group"
+msgstr "Lägger till användare till grupp"
+
+msgid "File:"
+msgstr "Fil:"
+
+msgid "Survey ID:"
+msgstr "Enkät-ID:"
+
+msgid "Exclude record IDs?"
+msgstr "Utelämna post-ID?"
+
+msgid "When an imported record matches an existing record ID:"
+msgstr "När en importerad post är samma som en befintlig posts ID:"
+
+msgid "Report an error (and skip the new record)."
+msgstr "Rapportera ett fel (och hoppa över den nya posten)."
+
+msgid "Renumber the new record."
+msgstr "Numrera om den nya posten."
+
+msgid "Ignore the new record."
+msgstr "Ignorera den nya posten."
+
+msgid "Replace the existing record."
+msgstr "Byt ut befintlig post."
+
+msgid "Import"
+msgstr "Importera"
+
+msgid "Cannot import the VVExport file."
+msgstr "Kunde inte importera VV-exportfilen."
+
+msgid "Back to Response Import"
+msgstr "Tillbaka till svars-import"
+
+msgid "Import Failed on Record"
+msgstr "Importen misslyckades vid post"
+
+msgid "Important Note:"
+msgstr "Viktig kommentar:"
+
+msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
+msgstr "Uppdatera INTE denna sida, då importeras filen igen och dubletter skapas"
+
+msgid "Total records imported:"
+msgstr "Antal poster som importerats:"
+
+msgid "Create Database"
+msgstr "Skapa databas"
+
+msgid "Populate Database"
+msgstr "Fyll databas"
+
+#, php-format
+msgid "Database `%s` has been successfully populated."
+msgstr "Databasen `%s` har fyllts i."
+
+msgid "Database Information not provided. This script must be run from admin.php only."
+msgstr "Databas information inte tillhandehållen, detta skript kan endast köras från admin.php."
+
+msgid "Database has been created."
+msgstr "Databasen har skapats."
+
+msgid "Please click below to populate the database"
+msgstr "Klicka nedan för att fylla databasen"
+
+msgid "Could not create database"
+msgstr "Kunde inte skapa databas"
+
+msgid "Welcome to LimeSurvey Setup!"
+msgstr "Välkommen till LimeSurvey inställningar!"
+
+msgid "The database defined in config.php does not exist."
+msgstr "Databasen som angetts i config.php finns inte."
+
+msgid "LimeSurvey can attempt to create this database for you."
+msgstr "LimeSurvey kan skapa denna databas åt dig."
+
+msgid "Your selected database name is:"
+msgstr "Din valda databas heter:"
+
+#, php-format
+msgid "A database named \"%s\" already exists."
+msgstr "En databas med namnet \"%s\" finns redan."
+
+msgid "Do you want to populate that database now by creating the necessary tables?"
+msgstr "Vill du fylla databasen nu genom att skapa de nödvändiga tabellerna?"
+
+msgid "Database has been successfully upgraded to version "
+msgstr "Databasen har uppgraderats till version"
+
+msgid "Albanian"
+msgstr "Albanska"
+
+msgid "Basque"
+msgstr "Baskiska"
+
+msgid "Bulgarian"
+msgstr "Bulgariska"
+
+msgid "Chinese (Simplified)"
+msgstr "Kinesiska (förenklad)"
+
+msgid "Chinese (Traditional - Hong Kong)"
+msgstr "Kinesiska (traditionell - Hong Kong)"
+
+msgid "Croatian"
+msgstr "Kroatiska"
+
+msgid "Czech"
+msgstr "Tjeckiska"
+
+msgid "Danish"
+msgstr "Danska"
+
+msgid "Dutch"
+msgstr "Holländska"
+
+msgid "English"
+msgstr "Engelska"
+
+msgid "Finnish"
+msgstr "Finska"
+
+msgid "French"
+msgstr "Franska"
+
+msgid "Galician"
+msgstr "Galisiska"
+
+msgid "German"
+msgstr "Tyska"
+
+msgid "German informal"
+msgstr "Tyska informell"
+
+msgid "Greek"
+msgstr "Grekiska"
+
+msgid "Hebrew"
+msgstr "Hebreiska"
+
+msgid "Hungarian"
+msgstr "Ungerska"
+
+msgid "Italian"
+msgstr "Italienska"
+
+msgid "Japanese"
+msgstr "Japanska"
+
+msgid "Lithuanian"
+msgstr "Litauiska"
+
+msgid "Norwegian"
+msgstr "Norska"
+
+msgid "Polish"
+msgstr "Polska"
+
+msgid "Portuguese"
+msgstr "Portugisiska"
+
+msgid "Portuguese (Brazilian)"
+msgstr "Portugisiska (Brasilien)"
+
+msgid "Russian"
+msgstr "Ryska"
+
+msgid "Romanian"
+msgstr "Rumänska"
+
+msgid "Slovenian"
+msgstr "Slovenska"
+
+msgid "Serbian"
+msgstr "Serbiska"
+
+msgid "Spanish"
+msgstr "Spanska"
+
+msgid "Spanish (Mexico)"
+msgstr "Spanska (Mexico)"
+
+msgid "Swedish"
+msgstr "Svenska"
+
+msgid "Turkish"
+msgstr "Turkiska"
+
+msgid "Thai"
+msgstr "Thailändska"
+
+msgid "Vietnamese"
+msgstr "Vietnamesiska"
+
+>>>>>>> refs/heads/stable_plus

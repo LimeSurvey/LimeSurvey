@@ -1,14 +1,21 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
+<<<<<<< HEAD
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-01-20 09:53+0100\n"
 "PO-Revision-Date: 2012-01-20 09:53+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
+=======
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2008-01-31 21:20+0100\n"
+"Last-Translator: Josef Prandstetter <jprandstetter@limesurvey.org>\n"
+>>>>>>> refs/heads/stable_plus
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+<<<<<<< HEAD
 "X-Poedit-Basepath: d:\\web\\xampp\\htdocs\\limesurvey\n"
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -16,6 +23,17 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-SearchPath-0: d:\\web\\xampp\\htdocs\\limesurvey\n"
+=======
+"X-Poedit-Basepath: D:\\web\\xampp\\htdocs\\stable_plus\n"
+"X-Poedit-Country: german\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: gT\n"
+"X-Poedit-SearchPath-0: D:\\web\\xampp\\htdocs\\stable_plus\n"
+
+# D:\web\xampp\htdocs\stable_plus/common.php:226
+msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
+msgstr "Warnung: Sie benutzen immer noch das Standard-Passwort ('password'). Bitte ändern Sie das Passwort und melden Sie sich ab und wieder an. "
+>>>>>>> refs/heads/stable_plus
 
 #: d:\web\xampp\htdocs\limesurvey/common_functions.php:3528
 msgid "'Other:' comment mandatory"
@@ -514,6 +532,7 @@ msgstr "Kategorie Trenner"
 msgid "ERROR"
 msgstr "FEHLER"
 
+<<<<<<< HEAD
 #: d:\web\xampp\htdocs\limesurvey/index.php:2214
 msgid "ERROR MESSAGE"
 msgstr "FEHLERMELDUNG"
@@ -522,6 +541,10 @@ msgstr "FEHLERMELDUNG"
 #: d:\web\xampp\htdocs\limesurvey/printanswers.php:76
 msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
 msgstr "Entweder sind Sie zu lange inaktiv gewesen, Sie haben Cookies deaktiviert oder es gab ein Problem mit Ihrer Verbindung."
+=======
+msgid "Save Your Unfinished Survey"
+msgstr "Umfrage zwischenspeichern"
+>>>>>>> refs/heads/stable_plus
 
 #: d:\web\xampp\htdocs\limesurvey/common_functions.php:7061
 msgid "Email address"
@@ -535,9 +558,17 @@ msgstr "E-Mail wurde nicht gesendet, da der Demo-Modus aktiv ist."
 msgid "Ensure a minimum number of possible answers (0=No limit)"
 msgstr "Setzen einer minimalen Anzahl von möglichen Antworten (0=Kein Limit)"
 
+<<<<<<< HEAD
 #: d:\web\xampp\htdocs\limesurvey/common_functions.php:3163
 msgid "Enter a header text for the first scale"
 msgstr "Geben Sie eine Kopfzeile für die erste Skala ein"
+=======
+msgid "Return To Survey"
+msgstr "Zur Umfrage zurückkehren"
+
+msgid "Name"
+msgstr "Name"
+>>>>>>> refs/heads/stable_plus
 
 #: d:\web\xampp\htdocs\limesurvey/common_functions.php:3171
 msgid "Enter a header text for the second scale"
@@ -10999,9 +11030,14 @@ msgstr "Updaterdatei ist nicht schreibbar (%s). Bitte setzen Sie entsprechende D
 msgid "Version file is not writable (%s). Please set according file permissions."
 msgstr "Versionsdatei ist nicht schreibbar (%s). Bitte setzen Sie entsprechende Dateiberechtigungen."
 
+<<<<<<< HEAD
 #: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:353
 msgid "Warning: The following files/directories need to be updated but their permissions are set to read-only."
 msgstr "Warnung: Die folgenden Dateien/Verzeichnisse sind für eine Aktualisierung vorgesehen aber die Dateiberechtigungn sind auf Nur-Lesen gesetzt."
+=======
+msgid "Choose only one of the following answers"
+msgstr "Bitte wählen Sie nur eine der folgenden Antworten aus"
+>>>>>>> refs/heads/stable_plus
 
 #: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:367
 #: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:380
@@ -11194,9 +11230,14 @@ msgstr "Litauisch"
 msgid "Macedonian"
 msgstr "Mazedonisch"
 
+<<<<<<< HEAD
 #: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:415
 msgid "Malay"
 msgstr "Malaisisch"
+=======
+msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Wenn Sie diese Nachricht während einer Umfrage erhalten, sollten Sie den 'Zurück'-Button in Ihrem Browser nutzen and dann die vorherige Seite neu laden. Obwohl Sie Antworten von der letzten Seite verlieren könnten, werden Ihre anderen vorherigen Antworten noch vorhanden sein. Dieses Problem kann auch auftauchen, wenn der Server überlastet ist. Wir bitten um Entschuldigung."
+>>>>>>> refs/heads/stable_plus
 
 #: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:422
 msgid "Maltese"
@@ -11495,11 +11536,19 @@ msgstr "Walisisch"
 #~ msgid "Import failed on record %d"
 #~ msgstr "Import fehlgeschlagen für Datensatz %d"
 
+<<<<<<< HEAD
 #~ msgid ""
 #~ "No confirmation emails will be sent. To send emails see Survey properties."
 #~ msgstr ""
 #~ "Es werden keine Bestätigungs-Emails versendet. Um Emails zu versenden "
 #~ "sehen Sie die Umfrage-Einstellungen ein."
+=======
+msgid "Completed"
+msgstr "Abgeschlossen"
+
+msgid "Date Submitted"
+msgstr "Datum Abgeschickt"
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid "Firstname from token"
 #~ msgstr "Vorname des Zugangsschlüssels"
@@ -12723,8 +12772,13 @@ msgstr "Walisisch"
 #~ msgid "Question groups:"
 #~ msgstr "Fragengruppen:"
 
+<<<<<<< HEAD
 #~ msgid "Additional languages:"
 #~ msgstr "Zusätzliche Sprachen:"
+=======
+msgid "If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
+msgstr "Wenn sie die Umfrage auf 'Anonyme Antworten' setzen und eine Probandentabelle erstellen, wird LimeSurvey die Zugangsschlüssel nicht mit einem Zeitstempel versehen, sondern an Stelle des Datums und der Uhrzeit nur ein 'Y' setzen, damit für ihre Teilnehmer die Anonymität gewahrt bleibt."
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid "Table column usage"
 #~ msgstr "Tabellenspaltennutzung"
@@ -12948,10 +13002,16 @@ msgstr "Walisisch"
 #~ msgid "Admin login name"
 #~ msgstr "Admin-Login Name"
 
+<<<<<<< HEAD
 #~ msgid "This will be the userid by which admin of board will login."
 #~ msgstr ""
 #~ "Dies wird die Benutzer-ID sein, mit der sich der Administrator des Boards "
 #~ "anmelden kann."
+=======
+#, php-format
+msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
+msgstr "Beim Hochladen der Datei ist ein Fehler aufgetreten. Grund dafür könnten fehlerhafte Rechteeinstellungen des Ordners %s sein."
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid "Admin login password"
 #~ msgstr "Admin-Login Kennwort"
@@ -12962,8 +13022,13 @@ msgstr "Walisisch"
 #~ msgid "Confirm your admin password"
 #~ msgstr "Bestätigen Sie Ihr Admin-Kennwort."
 
+<<<<<<< HEAD
 #~ msgid "Administrator name"
 #~ msgstr "Administratorname"
+=======
+msgid "This file is not a LimeSurvey group file. Import failed."
+msgstr "Dies ist keine LimeSurvey Gruppen-Datei. Import fehlgeschlagen."
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid ""
 #~ "This is the default name of the site administrator and used for system "
@@ -12989,8 +13054,14 @@ msgstr "Walisisch"
 #~ "Dieser Name taucht in der Umfrageübersichtsliste und in der "
 #~ "Administrations-Kopfzeile auf."
 
+<<<<<<< HEAD
 #~ msgid "Default language"
 #~ msgstr "Standardsprache"
+=======
+# D:\web\xampp\htdocs\limesurvey/admin/importgroup.php:555
+msgid "The following languages in this group were not imported since the survey does not contain such a language: "
+msgstr "Die folgenden Sprachen in der Gruppe wurden nicht importiert, da die Umfrage die entsprechene Sprache nicht nutzt:"
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid "This will be your default language."
 #~ msgstr "Dies wird Ihre Standarsprache sein."
@@ -13013,8 +13084,13 @@ msgstr "Walisisch"
 #~ msgid "Outdated"
 #~ msgstr "Veraltet"
 
+<<<<<<< HEAD
 #~ msgid "PHP5 mbstring library"
 #~ msgstr "PHP5 mbstring Bibliothek"
+=======
+msgid "This file is not a LimeSurvey label set file. Import failed."
+msgstr "Dies ist keine LimeSurvey-Beschriftungsset-Datei. Import fehlgeschlagen."
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid "file"
 #~ msgstr "Datei"
@@ -13071,9 +13147,18 @@ msgstr "Walisisch"
 #~ msgid "The file has been successfuly uploaded"
 #~ msgstr "Die Tabellen in der Datenbank `%s` wurden erfolgreich erstellt."
 
+<<<<<<< HEAD
 #, fuzzy
 #~ msgid " under "
 #~ msgstr "Geschlecht"
+=======
+msgid "This file is not a LimeSurvey question file. Import failed."
+msgstr "Dies ist keine LimeSurvey Fragen-Datei. Import fehlgeschlagen."
+
+# D:\web\xampp\htdocs\stable_plus/admin/importquestion.php:116
+msgid "Sorry, importing questions is limited to the same version. Import failed."
+msgstr "Sie können leider nur Fragen der gleichen LimeSurvey Version importieren. Import fehlgeschlagen."
+>>>>>>> refs/heads/stable_plus
 
 #, fuzzy
 #~ msgid ") is not allowed !"
@@ -13088,8 +13173,13 @@ msgstr "Walisisch"
 #~ msgid "Question selector mode"
 #~ msgstr "Fragenauswahlmodus"
 
+<<<<<<< HEAD
 #~ msgid "Simple question selector"
 #~ msgstr "Einfache Fragenauswahl"
+=======
+msgid "This file is not a LimeSurvey survey file. Import failed."
+msgstr "Dies ist keine LimeSurvey-Umfrage-Datei. Import fehlgeschlagen."
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid "Simple template editor"
 #~ msgstr "Einfacher Vorlageneditor"
@@ -13133,6 +13223,7 @@ msgstr "Walisisch"
 #~ msgid "Import answers from a deactivated survey table"
 #~ msgstr "Importiere Antworten aus einer alten deaktivierten Umfrage"
 
+<<<<<<< HEAD
 #~ msgid "Quick Statistics"
 #~ msgstr "Statistiken"
 
@@ -13178,15 +13269,64 @@ msgstr "Walisisch"
 
 #~ msgid "2nd time limit display time"
 #~ msgstr "2. Zeitlimit Warnnachricht Anzeigezeit"
+=======
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:51
+msgid "No matching Cqid"
+msgstr "Keine entsprechende Cquid"
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:58
+msgid "No matching CFIELDNAME group"
+msgstr "Keine entsprechende CFIELDNAME Gruppe"
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:62
+msgid "No \"CFIELDNAME\" field set!"
+msgstr "Kein \"CFIELDNAME\" gesetzt!"
+
+msgid "The following conditions should be deleted"
+msgstr "Die folgenden Bedingungen sollten gelöscht werden:"
+
+msgid "because"
+msgstr "Grund:"
+
+msgid "All conditions meet consistency standards"
+msgstr "Alle Bedingungen sind konsistent."
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:87
+msgid "No matching qid"
+msgstr "Keine entsprechende qid"
+
+msgid "The following question attributes should be deleted"
+msgstr "Die folgenden Fragenattribute sollten gelöscht werden:"
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid "City"
 #~ msgstr "Stadt"
 
+<<<<<<< HEAD
 #~ msgid "Country"
 #~ msgstr "Land"
 
 #~ msgid "Display select boxes"
 #~ msgstr "Anzeige als Klappboxen"
+=======
+msgid "No matching survey"
+msgstr "Keine übereinstimmende"
+
+msgid "No matching group"
+msgstr "Keine übereinstimmende Gruppe"
+
+msgid "The following assessments should be deleted"
+msgstr "Die folgenden Bewertungen sollten gelöscht werden:"
+
+msgid "All Survey (Total) assessments meet consistency standards"
+msgstr "Alle Umfrage (Gesamt-) Bewertungen sind konsistent."
+
+msgid "All Group assessments meet consistency standards"
+msgstr "Alle Gruppenbewertungen sind konsistent."
+
+msgid "No matching question"
+msgstr "Keine übereinstimmende Frage"
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid "Dropdown"
 #~ msgstr "Dropdown"
@@ -13218,14 +13358,71 @@ msgstr "Walisisch"
 #~ msgid "IP Address"
 #~ msgstr "IP-Adresse"
 
+<<<<<<< HEAD
 #~ msgid "IP-Address"
 #~ msgstr "IP-Adresse protokollieren?"
+=======
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:247
+msgid "Should we proceed with the delete?"
+msgstr "Möchten Sie mit dem Löschen forfahren?"
+
+# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:290
+msgid "Yes - Delete Them!"
+msgstr "Ja - Bitte löschen!"
+
+msgid "Deleting Surveys"
+msgstr "Lösche Umfragen"
+
+msgid "Deleting Survey ID"
+msgstr "Lösche Umfrage ID"
+
+msgid "Deleting Assessments"
+msgstr "Lösche Assessments"
+
+msgid "Deleting ID"
+msgstr "Lösche ID"
+
+msgid "Deleting Question_Attributes"
+msgstr "Lösche Fragenattribute"
+
+msgid "Deleting Conditions"
+msgstr "Lösche Bedingungen"
+
+msgid "Deleting cid"
+msgstr "Lösche cid"
+
+msgid "Deleting Answers"
+msgstr "Lösche Antworten"
+
+msgid "Deleting answer with qid"
+msgstr "Lösche Antwort mit qid"
+
+msgid "Deleting Questions"
+msgstr "Lösche Fragen"
+
+msgid "Deleting qid"
+msgstr "Lösche quid"
+
+msgid "Deleting Groups"
+msgstr "Lösche Gruppen"
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid "Label 1"
 #~ msgstr "Beschriftung 1"
 
+<<<<<<< HEAD
 #~ msgid "Label 2"
 #~ msgstr "Beschriftung 2"
+=======
+msgid "Check database again?"
+msgstr "Datenbank nochmals prüfen?"
+
+msgid "Check Again"
+msgstr "Nochmal prüfen"
+
+msgid "Label Sets Administration"
+msgstr "Beschriftung-Set Administration"
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid "Last Name"
 #~ msgstr "Nachname"
@@ -13357,8 +13554,13 @@ msgstr "Walisisch"
 #~ "Hinzufügen/Bearbeiten von Probanden nicht möglich, da die Umfrage nicht "
 #~ "aktiviert ist."
 
+<<<<<<< HEAD
 #~ msgid "Advanced"
 #~ msgstr "Erweitert"
+=======
+msgid "Please choose *all* that apply:"
+msgstr "Bitte wählen Sie alle zutreffenden Punkte aus:"
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid "Advanced survey options"
 #~ msgstr "Erweiterte Umfrageoptionen"
@@ -13387,12 +13589,20 @@ msgstr "Walisisch"
 #~ msgid "Answer Privacy"
 #~ msgstr "Schutz der Antwortdaten"
 
+<<<<<<< HEAD
 #~ msgid ""
 #~ "Answer could not be added. You must insert a code in the mandatory field "
 #~ "(%s)"
 #~ msgstr ""
 #~ "Antwort konnte nicht hinzugefügt werden. Sie müssen einen Code in das "
 #~ "Pflichtfeld eingeben (%s)"
+=======
+msgid "Please submit by"
+msgstr "Bitte übermitteln bis"
+
+msgid "Add Question"
+msgstr "Frage hinzufügen"
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid "Answers can't be deleted"
 #~ msgstr "Frage konnte nicht gelöscht werden."
@@ -13424,9 +13634,15 @@ msgstr "Walisisch"
 #~ msgid "Boilerplate Question"
 #~ msgstr "Textbaustein (nur Anzeige)"
 
+<<<<<<< HEAD
 #, fuzzy
 #~ msgid "Bounce Settings"
 #~ msgstr "E-Mail-Einstellungen"
+=======
+# D:\web\xampp\htdocs\limesurvey/admin/html.php:2504
+msgid "Current group is using conditional questions"
+msgstr "Die aktuelle Gruppe nützt Fragen mit Bedingungen"
+>>>>>>> refs/heads/stable_plus
 
 #, fuzzy
 #~ msgid "Bounce account host:"
@@ -13462,8 +13678,13 @@ msgstr "Walisisch"
 #~ msgid "Check for duplicates?"
 #~ msgstr "Nach Duplikaten überprüfen?"
 
+<<<<<<< HEAD
 #~ msgid "Clear token invites"
 #~ msgstr "Lösche "
+=======
+msgid "Not Selected"
+msgstr "Nicht Gewählt"
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid "Click here to fix"
 #~ msgstr "Klicken Sie hier, um das Problem zu beheben."
@@ -13570,8 +13791,13 @@ msgstr "Walisisch"
 #~ msgid "Date Stamp"
 #~ msgstr "Datumsstempel"
 
+<<<<<<< HEAD
 #~ msgid "Date format: %s"
 #~ msgstr "Datumsformat: %s"
+=======
+msgid "Non completed"
+msgstr "Nicht beendet"
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid "Deactivated surveys"
 #~ msgstr "Inaktive Umfragen"
@@ -13598,8 +13824,37 @@ msgstr "Walisisch"
 #~ msgid "Directory with the name"
 #~ msgstr "Verzeichnis mit dem Namen"
 
+<<<<<<< HEAD
 #~ msgid "Disabled - Change Group Order"
 #~ msgstr "Deaktiviert - Gruppen-Reihenfolge bearbeiten"
+=======
+msgid "Welcome Page"
+msgstr "Startseite"
+
+msgid "Question Page"
+msgstr "Fragen-Seite"
+
+msgid "Submit Page"
+msgstr "Senden-Seite"
+
+msgid "Completed Page"
+msgstr "Abschluss-Seite"
+
+msgid "Clear All Page"
+msgstr "Erneut-Seite"
+
+msgid "Register Page"
+msgstr "Registrierungs-Seite"
+
+msgid "Load Page"
+msgstr "Seite laden"
+
+msgid "Save Page"
+msgstr "Seite speichern"
+
+msgid "Failed to copy"
+msgstr "Fehler beim Kopieren"
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid "Display Tokens"
 #~ msgstr "Zeige Teilnehmer an"
@@ -13627,6 +13882,7 @@ msgstr "Walisisch"
 #~ msgid "Edit Current Survey"
 #~ msgstr "Diese Umfrage bearbeiten"
 
+<<<<<<< HEAD
 #~ msgid "Edit Survey Property"
 #~ msgstr "Umfrage Eigenschaft bearbeiten"
 
@@ -13654,6 +13910,10 @@ msgstr "Walisisch"
 
 #~ msgid "Email Address"
 #~ msgstr "E-Mail-Adresse"
+=======
+msgid "Create new template called:"
+msgstr "Name der neuen Vorlage:"
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid "Email Invitation"
 #~ msgstr "Einladung an Probanden versenden"
@@ -13732,8 +13992,161 @@ msgstr "Walisisch"
 #~ msgid "Failed to add User."
 #~ msgstr "Konnte Benutzer nicht hinzufügen."
 
+<<<<<<< HEAD
 #~ msgid "Failed to copy"
 #~ msgstr "Fehler beim Kopieren"
+=======
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1500
+msgid "ARMSCII-8 Armenian"
+msgstr "ARMSCII-8 Armenisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1501
+msgid "US ASCII"
+msgstr "US ASCII"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1502
+msgid "Automatic"
+msgstr "Automatisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1503
+msgid "Big5 Traditional Chinese"
+msgstr "Big5 Traditionelles Chinesisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1504
+msgid "Binary pseudo charset"
+msgstr "Binär Pseudo Zeichensatz"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1505
+msgid "Windows Central European"
+msgstr "Windows Zentral-Europäisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1506
+msgid "Windows Cyrillic"
+msgstr "Windows Kyrillisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1507
+msgid "Windows Arabic"
+msgstr "Windows Arabisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1508
+msgid "Windows Baltic"
+msgstr "Windows Baltisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1509
+msgid "DOS West European"
+msgstr "DOS West Europäisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1510
+msgid "DOS Central European"
+msgstr "DOS Zentral-Europäisch"
+
+# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:148
+msgid "DOS Russian"
+msgstr "DOS Russisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1512
+msgid "SJIS for Windows Japanese"
+msgstr "SJIS für Windows Japanisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1513
+msgid "DEC West European"
+msgstr "DEC West Europäisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1514
+msgid "UJIS for Windows Japanese"
+msgstr "UJIS für Windows Japanisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1515
+msgid "EUC-KR Korean"
+msgstr "EUC-KR Koreanisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1516
+msgid "GB2312 Simplified Chinese"
+msgstr "GB2312 Vereinfachtes Chinesisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1517
+msgid "GBK Simplified Chinese"
+msgstr "GBK Vereinfachtes Chinesisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1518
+msgid "GEOSTD8 Georgian"
+msgstr "GEOSTD8 Georgisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1519
+msgid "ISO 8859-7 Greek"
+msgstr "ISO 8859-7 Griechisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1520
+msgid "ISO 8859-8 Hebrew"
+msgstr "ISO 8859-8 Hebräisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1521
+msgid "HP West European"
+msgstr "HP West Europäisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1522
+msgid "DOS Kamenicky Czech-Slovak"
+msgstr "DOS Kamenicky Tschechisch-Slovakisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1523
+msgid "KOI8-R Relcom Russian"
+msgstr "KOI8-R Relcom Russisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1524
+msgid "KOI8-U Ukrainian"
+msgstr "KOI8-U Ukrainisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1525
+msgid "cp1252 West European"
+msgstr "cp1252 West-Europäisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1526
+msgid "ISO 8859-2 Central European"
+msgstr "ISO 8859-2 Zentral-Europäisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1527
+msgid "ISO 8859-9 Turkish"
+msgstr "ISO 8859-9 Türkisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1528
+msgid "ISO 8859-13 Baltic"
+msgstr "ISO 8859-13 Baltisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1529
+msgid "Mac Central European"
+msgstr "Mac Zentral-Europäisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1530
+msgid "Mac West European"
+msgstr "Mac West-Europäisch"
+
+# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:127
+msgid "Shift-JIS Japanese"
+msgstr "Shift-JIS Japanisch"
+
+# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:164
+msgid "7bit Swedish"
+msgstr "7bit Schwedisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1533
+msgid "TIS620 Thai"
+msgstr "TIS620 Thai"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1534
+msgid "UCS-2 Unicode"
+msgstr "UCS-2 Unicode"
+
+# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:127
+msgid "EUC-JP Japanese"
+msgstr "EUC-JP Japanisch"
+
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1536
+msgid "UTF-8 Unicode"
+msgstr "UTF-8 Unicode"
+
+msgid "You have not selected a survey"
+msgstr "Sie haben keine Umfrage ausgewählt."
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid "Failed to insert answer"
 #~ msgstr "Konnte Antwort nicht hinzufügen."
@@ -14049,6 +14462,7 @@ msgstr "Walisisch"
 #~ msgid "Number less Than"
 #~ msgstr "Werte kleiner als"
 
+<<<<<<< HEAD
 #~ msgid ""
 #~ "Number of answers to show before repeating the headings in array "
 #~ "questions:"
@@ -14184,6 +14598,11 @@ msgstr "Walisisch"
 
 #~ msgid "Second Label Set"
 #~ msgstr "Zweites Beschriftungs-Set"
+=======
+# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1548
+msgid "Choose the CSV file to upload:"
+msgstr "Wählen Sie eine CSV-Datei zum Hochladen aus:"
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid "Second Label Set:"
 #~ msgstr "Zweites Beschriftungs-Set:"
@@ -14237,6 +14656,7 @@ msgstr "Walisisch"
 #~ msgid "Show System Summary"
 #~ msgstr "Zeige Systemübersicht"
 
+<<<<<<< HEAD
 #~ msgid ""
 #~ "Some surveys currently use this label set. Modifying the codes, adding or "
 #~ "deleting entries to this label set may produce undesired results in other "
@@ -14245,6 +14665,10 @@ msgstr "Walisisch"
 #~ "Mindestens eine Umfrage benutzt momentan dieses Beschriftung-Set. ändern "
 #~ "der Codes, Hinzufügen oder Löschen von Einträgen dieses Beschriftung-Set "
 #~ "kann ungewollte Ergebnisse nach sich ziehen."
+=======
+msgid "Email address is not valid."
+msgstr "Email-Adresse ist nicht gültig."
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid ""
 #~ "Someone may be trying to use your LimeSurvey session by using dangerous "
@@ -14282,8 +14706,17 @@ msgstr "Walisisch"
 #~ msgid "Survey ID"
 #~ msgstr "Umfrage ID"
 
+<<<<<<< HEAD
 #~ msgid "Survey Registration Confirmation"
 #~ msgstr "Registrierungsbestätigung für Teilnahmeumfrage"
+=======
+msgid "Email address ist not valid."
+msgstr "Email-Adresse ist nicht gültig."
+
+# D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:316
+msgid "Unchanged"
+msgstr "Unverändert"
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid "Survey Saved"
 #~ msgstr "Umfrage gespeichert"
@@ -14341,6 +14774,7 @@ msgstr "Walisisch"
 #~ msgid "The token you have provided is not valid."
 #~ msgstr "Der von ihnen angegebene Zugangsschlüssel ist ungültig."
 
+<<<<<<< HEAD
 #~ msgid ""
 #~ "There was a duplicate labelset, so this set was not imported. The "
 #~ "duplicate will be used instead."
@@ -14368,6 +14802,10 @@ msgstr "Walisisch"
 #~ "Bedingungen erfüllt hat: E-Mail Adresse vorhanden, Einladung nicht schon "
 #~ "versendet, die Umfrage noch nicht ausgefüllt und eindeutiger "
 #~ "Zugangsschlüssel zugewiesen."
+=======
+msgid "User Control"
+msgstr "Benutzer-Administration"
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid ""
 #~ "This email contains confirmation of the responses you made to the survey"
@@ -14508,6 +14946,7 @@ msgstr "Walisisch"
 #~ "Sie können keine Gruppe importieren, welche nicht zumindest die "
 #~ "Basissprache dieser Umfrage unterstützt."
 
+<<<<<<< HEAD
 #~ msgid ""
 #~ "You can't import a question which doesn't support the current survey's "
 #~ "base language"
@@ -14521,6 +14960,11 @@ msgstr "Walisisch"
 #~ msgstr ""
 #~ "Sie können keine Frage importieren, welche nicht zumindest die "
 #~ "Basissprache dieser Umfrage unterstützt."
+=======
+# D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:235
+msgid "Important Note:"
+msgstr "Wichtige Anmerkung:"
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid ""
 #~ "You cannot change codes, add or delete entries in this label set because "
@@ -14573,9 +15017,16 @@ msgstr "Walisisch"
 #~ msgid "Your data:"
 #~ msgstr "Ihre Daten:"
 
+<<<<<<< HEAD
 #~ msgid "Your survey responses have been saved succesfully"
 #~ msgstr ""
 #~ "Ihre Antworten auf diese Umfrage sind erfolgreich gespeichert worden."
+=======
+# D:\xampp\xampp\htdocs\limesurvey/admin/admin.php:102
+#, php-format
+msgid "A database named \"%s\" already exists."
+msgstr "Eine Datenbank namens \"%s\" existiert bereits."
+>>>>>>> refs/heads/stable_plus
 
 #, fuzzy
 #~ msgid ""
@@ -14586,8 +15037,24 @@ msgstr "Walisisch"
 #~ msgid "answers"
 #~ msgstr "Antworten"
 
+<<<<<<< HEAD
 #~ msgid "answers:"
 #~ msgstr "Antworten:"
+=======
+msgid "Albanian"
+msgstr "Albanisch"
+
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:60
+msgid "Basque"
+msgstr "Baskisch"
+
+msgid "Bosnian"
+msgstr "Bosnisch"
+
+# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:66
+msgid "Bulgarian"
+msgstr "Bulgarisch"
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid "copy to"
 #~ msgstr "kopieren nach"
@@ -14598,8 +15065,18 @@ msgstr "Walisisch"
 #~ msgid "disabled"
 #~ msgstr "deaktiviert"
 
+<<<<<<< HEAD
 #~ msgid "from"
 #~ msgstr "Von"
+=======
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:88
+msgid "Czech"
+msgstr "Tschechisch"
+
+# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:82
+msgid "Danish"
+msgstr "Dänisch"
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid "if you answered"
 #~ msgstr "falls ihre Antwort "
@@ -14607,8 +15084,17 @@ msgstr "Walisisch"
 #~ msgid "if you have NOT answered"
 #~ msgstr "wenn Sie nicht geantwortet haben"
 
+<<<<<<< HEAD
 #~ msgid "next"
 #~ msgstr "Weiter"
+=======
+msgid "Estonian"
+msgstr "Estnisch"
+
+# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:94
+msgid "Finnish"
+msgstr "Finnisch"
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid "prev"
 #~ msgstr "Zurück"
@@ -14640,8 +15126,18 @@ msgstr "Walisisch"
 #~ msgid "'Other' Responses"
 #~ msgstr "'Andere' Antworten"
 
+<<<<<<< HEAD
 #~ msgid "---Select One---"
 #~ msgstr "---Auswählen---"
+=======
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:159
+msgid "Macedonian"
+msgstr "Mazedonisch"
+
+# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:135
+msgid "Norwegian"
+msgstr "Norwegisch"
+>>>>>>> refs/heads/stable_plus
 
 #~ msgid "Auto detected"
 #~ msgstr "Automatisch erkannt"
@@ -14672,14 +15168,25 @@ msgstr "Walisisch"
 #~ msgid "Database Name"
 #~ msgstr "Datenbank-Name"
 
+<<<<<<< HEAD
 #, fuzzy
 #~ msgid "Attribute's to be created"
 #~ msgstr "EINZUGEBENDE DATEN"
+=======
+# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:160
+msgid "Spanish (Mexico)"
+msgstr "Spanisch (Mexiko)"
+
+# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:164
+msgid "Swedish"
+msgstr "Schwedisch"
+>>>>>>> refs/heads/stable_plus
 
 #, fuzzy
 #~ msgid "<---Select One--->"
 #~ msgstr "Antwort wählen"
 
+<<<<<<< HEAD
 #, fuzzy
 #~ msgid "Not Found"
 #~ msgstr "Nicht gefunden"
@@ -14687,6 +15194,15 @@ msgstr "Walisisch"
 #, fuzzy
 #~ msgid "Participant Panel"
 #~ msgstr "Teilnehmer dürfen Antworten ausdrucken?"
+=======
+# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:198
+msgid "Thai"
+msgstr "Thailändisch"
+
+# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:168
+msgid "Vietnamese"
+msgstr "Vietnamesisch"
+>>>>>>> refs/heads/stable_plus
 
 #, fuzzy
 #~ msgid "Site Name"
