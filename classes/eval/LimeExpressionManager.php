@@ -5702,15 +5702,17 @@ EOT;
         $data = db_execute_assoc($query);
 
         $qinfo = array();
+        $_order=0;
         foreach ($data as $d)
         {
-            $qinfo[$d['group_order']] = array(
-                'group_order' => $d['group_order'],
+            $qinfo[$_order] = array(
+                'group_order' => $_order,
                 'gid' => $d['gid'],
                 'group_name' => $d['group_name'],
                 'description' =>  $d['description'],
                 'grelevance' => $d['grelevance'],
             );
+            ++$_order;
         }
 
         return $qinfo;
