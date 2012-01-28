@@ -4,13 +4,21 @@ $(document).ready(function(){
     setupAllTabs();
     if(typeof(userdateformat) !== 'undefined')
     {
+<<<<<<< HEAD
         $(".popupdate").datepicker({ dateFormat: userdateformat,
+=======
+        $(".popupdate").datepicker({ dateFormat: userdateformat,  
+>>>>>>> refs/heads/dev_tms
                               showOn: 'button',
                               changeYear: true,
                               changeMonth: true,
                               duration: 'fast'
                             }, $.datepicker.regional[userlanguage]);
+<<<<<<< HEAD
         $(".popupdatetime").datepicker({ dateFormat: userdateformat+' 00:00',
+=======
+        $(".popupdatetime").datepicker({ dateFormat: userdateformat+' 00:00',  
+>>>>>>> refs/heads/dev_tms
                               showOn: 'button',
                               changeYear: true,
                               changeMonth: true,
@@ -35,14 +43,24 @@ $(document).ready(function(){
         {
              $(this).qtip({
                style: { name: 'cream',
+<<<<<<< HEAD
                         tip:true,
                         color:'#1D2D45',
+=======
+                        tip:true, 
+                        color:'#1D2D45', 
+>>>>>>> refs/heads/dev_tms
                         border: {
                              width: 1,
                              radius: 5,
                              color: '#EADF95'}
+<<<<<<< HEAD
                        },
                position: { adjust: {
+=======
+                       },  
+               position: { adjust: { 
+>>>>>>> refs/heads/dev_tms
                         screen: true, scroll:true },
                         corner: {
                                 target: 'bottomRight'}
@@ -53,20 +71,34 @@ $(document).ready(function(){
         }
     });
 
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> refs/heads/dev_tms
     $('label[title]').each(function() {
         if($(this).attr('title') != '')
         {
              $(this).qtip({
                style: { name: 'cream',
+<<<<<<< HEAD
                         tip:true,
                         color:'#1D2D45',
+=======
+                        tip:true, 
+                        color:'#1D2D45', 
+>>>>>>> refs/heads/dev_tms
                         border: {
                              width: 1,
                              radius: 5,
                              color: '#EADF95'}
+<<<<<<< HEAD
                        },
                position: { adjust: {
+=======
+                       },  
+               position: { adjust: { 
+>>>>>>> refs/heads/dev_tms
                         screen: true, scroll:true },
                         corner: {
                                 target: 'bottomRight'}
@@ -81,14 +113,24 @@ $(document).ready(function(){
                 text:$('#dosurveylangpopup')
         },
         style: { name: 'cream',
+<<<<<<< HEAD
                         tip:true,
                 color:'#1D2D45',
+=======
+                        tip:true, 
+                color:'#1D2D45', 
+>>>>>>> refs/heads/dev_tms
                 border: {
                      width: 1,
                      radius: 5,
                      color: '#EADF95'}
+<<<<<<< HEAD
                },
         position: { adjust: {
+=======
+               },  
+        position: { adjust: { 
+>>>>>>> refs/heads/dev_tms
                 screen: true, scroll:true },
                 corner: {
                         target: 'bottomMiddle',
@@ -109,14 +151,24 @@ $(document).ready(function(){
                 text:$('#previewquestionpopup')
         },
         style: { name: 'cream',
+<<<<<<< HEAD
                         tip:true,
                 color:'#111111',
+=======
+                        tip:true, 
+                color:'#111111', 
+>>>>>>> refs/heads/dev_tms
                 border: {
                      width: 1,
                      radius: 5,
                      color: '#EADF95'}
+<<<<<<< HEAD
                },
         position: { adjust: {
+=======
+               },  
+        position: { adjust: { 
+>>>>>>> refs/heads/dev_tms
                 screen: true, scroll:true },
                 corner: {
                         target: 'bottomMiddle',
@@ -137,14 +189,24 @@ $(document).ready(function(){
         {
              $(this).qtip({
                style: { name: 'cream',
+<<<<<<< HEAD
                         tip:true,
                         color:'#111111',
+=======
+                        tip:true, 
+                        color:'#111111', 
+>>>>>>> refs/heads/dev_tms
                         border: {
                              width: 1,
                              radius: 5,
                              color: '#EADF95'}
+<<<<<<< HEAD
                        },
                position: { adjust: {
+=======
+                       },  
+               position: { adjust: { 
+>>>>>>> refs/heads/dev_tms
                         screen: true, scroll:true },
                         corner: {
                                 target: 'topRight',
@@ -230,14 +292,20 @@ $(document).ready(function(){
             newowner: newowner,
             survey_id : survey_id
        }, function (data){
+<<<<<<< HEAD
 
 	    var objToUpdate = $($(oldThis).parent());
 
+=======
+	
+	    var objToUpdate = $($(oldThis).parent());
+	    
+>>>>>>> refs/heads/dev_tms
 	    if (data.record_count>0)
                $(objToUpdate).html(data.newowner);
 	    else
                $(objToUpdate).html(old_owner);
-
+	       
 	    $(objToUpdate).html($(objToUpdate).html() + '(<a id="ownername_edit_69173" translate_to='+translate_to+' class="ownername_edit" href="#">'+initial_text+'</a>)' );
        });
     });
@@ -280,7 +348,11 @@ function qTypeDropdownInit()
                hide: 'mouseout'
         });
 
+<<<<<<< HEAD
     });
+=======
+    });       
+>>>>>>> refs/heads/dev_tms
 }
 
 
@@ -329,22 +401,38 @@ function updatequestionattributes()
             // Loads the tooltips for the toolbars
            $('.loader').hide();
             $('label[title]').qtip({
+<<<<<<< HEAD
                style: { name: 'cream',
                          tip: true,
                        color:'#111111',
+=======
+               style: { name: 'cream', 
+                         tip: true, 
+                       color:'#111111', 
+>>>>>>> refs/heads/dev_tms
                       border: {
                              width: 1,
                              radius: 5,
                              color: '#EADF95'}
+<<<<<<< HEAD
                        },
                position: { adjust: {
+=======
+                       },  
+               position: { adjust: { 
+>>>>>>> refs/heads/dev_tms
                         screen: true, scroll:true },
                         corner: {
                                 target: 'bottomRight'}
                         },
                show: {effect: { length:50}}
+<<<<<<< HEAD
             });}
     );
+=======
+            });}                                                                                        
+    );  
+>>>>>>> refs/heads/dev_tms
 }
 
 function validatefilename (form, strmessage )
@@ -640,6 +728,7 @@ function htmlspecialchars(str) {
  return str;
 }
 
+<<<<<<< HEAD
 function saveaslabelset()
 {
     var lang = langs.split(";");
@@ -711,5 +800,9 @@ function js2php(object){
     }
     return json.substr(0,json.length-1)+ "}";
 }
+=======
+
+
+>>>>>>> refs/heads/dev_tms
 
 

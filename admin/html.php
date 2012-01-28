@@ -121,6 +121,7 @@ if ($action == "personalsettings")
     . "<option value='none' {$edmod2}>".$clang->gT("No HTML editor")."</option>\n";
     $cssummary .= "</select>\n"
     . "</li>\n";
+<<<<<<< HEAD
 
     // Current questionselectormode
     $cssummary .=  "<li>\n"
@@ -142,6 +143,9 @@ if ($action == "personalsettings")
     $cssummary .= "</select>\n"
     . "</li>\n";
     
+=======
+
+>>>>>>> refs/heads/dev_tms
     // Date format
     $cssummary .=  "<li>\n"
     . "<label for='dateformat'>".$clang->gT("Date format").":</label>\n"
@@ -443,6 +447,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             {
                 $surveysummary .= "<li><a href=\"#\" onclick=\"alert('".$clang->gT("Currently there are no conditions configured for this survey.", "js")."');\" >"
                 . "<img src='{$imageurl}/resetsurveylogic_disabled_30.png' name='ResetSurveyLogic' /> ".$clang->gT("Reset Survey Logic")."</a></li>\n";
+<<<<<<< HEAD
             }            
         }
         
@@ -453,6 +458,10 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             . "<img src='{$imageurl}/expressionManager_30.png' name='ExpressionManager' /> ".$clang->gT("Expression Manager")."</a></li>\n";
         }
 
+=======
+            }
+        }
+>>>>>>> refs/heads/dev_tms
         $surveysummary .='</ul></li>' ;
 
 
@@ -1131,6 +1140,7 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
         {
             templatereplace($grow['description']);
             $groupsummary .= LimeExpressionManager::GetLastPrettyPrintExpression();
+<<<<<<< HEAD
         }
         if (trim($grow['grelevance'])!='')
         {
@@ -1139,6 +1149,16 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
             templatereplace('{' . $grow['grelevance'] . '}');
             $groupsummary .= LimeExpressionManager::GetLastPrettyPrintExpression();
         }
+=======
+        }
+        if (trim($grow['grelevance'])!='')
+        {
+            $groupsummary .= "</td><tr><td valign='top' align='right'><strong>";
+            $groupsummary .= $clang->gT("Relevance:")."</td>\n<td align='left'>";
+            templatereplace('{' . $grow['grelevance'] . '}');
+            $groupsummary .= LimeExpressionManager::GetLastPrettyPrintExpression();
+        }
+>>>>>>> refs/heads/dev_tms
         $groupsummary .= "</td></tr>\n";
 
 //        if (!is_null($condarray))
@@ -1408,7 +1428,11 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         // Color code the question, help, and relevance
 
         templatereplace($qrrow['question'],false,false,$qid);
+<<<<<<< HEAD
         $questionsummary .= FlattenText(LimeExpressionManager::GetLastPrettyPrintExpression(), false, 'UTF-8', true, true);
+=======
+        $questionsummary .= LimeExpressionManager::GetLastPrettyPrintExpression();
+>>>>>>> refs/heads/dev_tms
 
         $questionsummary .= "</td></tr>\n"
         . "<tr><td align='right' valign='top'><strong>"
@@ -1416,7 +1440,11 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         if (trim($qrrow['help'])!='')
         {
             templatereplace($qrrow['help'],false,false,$qid);
+<<<<<<< HEAD
             $questionsummary .= FlattenText(LimeExpressionManager::GetLastPrettyPrintExpression(), false, 'UTF-8', true, true);
+=======
+            $questionsummary .= LimeExpressionManager::GetLastPrettyPrintExpression();
+>>>>>>> refs/heads/dev_tms
         }
         $questionsummary .= "</td></tr>\n";
         if ($qrrow['preg'])

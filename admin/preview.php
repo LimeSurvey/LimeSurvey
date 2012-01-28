@@ -67,7 +67,11 @@ $ia = array(0 => $qid,
 
 LimeExpressionManager::StartSurvey($thissurvey['sid'], 'question', NULL, false,$LEMdebugLevel);
 $qseq = LimeExpressionManager::GetQuestionSeq($qid);
+<<<<<<< HEAD
 $moveResult = LimeExpressionManager::JumpTo($qseq+1,true,false,true);
+=======
+$moveResult = LimeExpressionManager::JumpTo($qseq+1,false,false,true);
+>>>>>>> refs/heads/dev_tms
 
 $answers = retrieveAnswers($ia);
 
@@ -81,6 +85,7 @@ else
 }
 
 doHeader();
+<<<<<<< HEAD
 $showQuestion = "$('#question$qid').show();";
 $dummy_js = <<< EOD
     <script type='text/javascript'>
@@ -130,6 +135,22 @@ $dummy_js = <<< EOD
 // -->
 </script>
 EOD;
+=======
+$dummy_js = '
+		<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
+		<script type="text/javascript">
+        /* <![CDATA[ */
+	function checkconditions(value, name, type)
+	{
+        }
+		function noop_checkconditions(value, name, type)
+        {
+            }
+        /* ]]> */
+</script>
+        ';
+
+>>>>>>> refs/heads/dev_tms
 
 $answer=$answers[0][1];
 
@@ -144,8 +165,11 @@ $question['code']=$answers[0][5];
 $question['class'] = question_class($qrows['type']);
 $question['essentials'] = 'id="question'.$qrows['qid'].'"';
 $question['sgq']=$ia[1];
+<<<<<<< HEAD
 $question['aid']='unknown';
 $question['sqid']='unknown';
+=======
+>>>>>>> refs/heads/dev_tms
 
 if ($qrows['mandatory'] == 'Y')
 {

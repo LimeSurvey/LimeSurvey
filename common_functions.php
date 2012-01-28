@@ -2825,7 +2825,7 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
     $surveyid=sanitize_int($surveyid);
     //checks to see if fieldmap has already been built for this page.
     if (isset($timingsFieldMap[$surveyid][$style][$clang->langcode]) && $force_refresh==false) {
-        return $timingsFieldMap[$surveyid][$style][$clang->langcode];
+        return $timingsFielsdMap[$surveyid][$style][$clang->langcode];
     }
 
     //do something
@@ -2973,7 +2973,11 @@ function SetSurveyLanguage($surveyid, $language)
 
     $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
     $_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> refs/heads/dev_tms
     LimeExpressionManager::SetEMLanguage($_SESSION['s_lang']);
     return $clang;
 }
@@ -4481,6 +4485,7 @@ function SendEmailMessage($mail, $body, $subject, $to, $from, $sitename, $ishtml
         {
             $mail->AddAddress($singletoemail);
         }
+<<<<<<< HEAD
     }
     if (is_array($customheaders))
     {
@@ -4554,13 +4559,85 @@ function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF
     {
         $sNicetext = preg_replace(array('~\Ru~'), array("\r\n"), $sNicetext);
     }
+=======
+    }
+    if (is_array($customheaders))
+    {
+        foreach ($customheaders as $key=>$val) {
+            $mail->AddCustomHeader($val);
+        }
+    }
+	$mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.sourceforge.net)");
+	if (get_magic_quotes_gpc() != "0")	{$body = stripcslashes($body);}
+    if ($ishtml) {
+        $mail->IsHTML(true);
+    	$mail->Body = $body;
+        $mail->AltBody = trim(strip_tags(html_entity_decode($body,ENT_QUOTES,'UTF-8')));
+    } else
+       {
+        $mail->IsHTML(false);
+        $mail->Body = $body;
+       }
+
+    // add the attachment if there is one
+    if(!is_null($attachment))
+    $mail->AddAttachment($attachment);
+
+	if (trim($subject)!='') {$mail->Subject = "=?$emailcharset?B?" . base64_encode($subject) . "?=";}
+    if ($emailsmtpdebug>0) {
+        ob_start();
+    }
+    $sent=$mail->Send();
+    $maildebug=$mail->ErrorInfo;
+    if ($emailsmtpdebug>0) {
+        $maildebug .= '<li>'.$clang->gT('SMTP debug output:').'</li><pre>'.strip_tags(ob_get_contents()).'</pre>';
+        ob_end_clean();
+    }
+    $maildebugbody=$mail->Body;
+    $mail->ClearAddresses();
+    $mail->ClearCustomHeaders();
+    if ($bUnsetEmail)
+    {
+        unset($mail);
+    }
+	return $sent;
+}
+
+
+
+/**
+*  This functions removes all HTML tags, Javascript, CRs, linefeeds  and other strange chars from a given text. CRs, linefeeds are not removed for .csv files
+*
+* @param string $sTextToFlatten  Text you want to clean
+* @param boolan $bDecodeHTMLEntities If set to true then all HTML entities will be decoded to the specified charset. Default: false
+* @param string $sCharset Charset to decode to if $decodeHTMLEntities is set to true
+*
+* @return string  Cleaned text
+*/
+function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF-8', $bStripNewLines=true)
+{
+    $sNicetext = strip_javascript($sTextToFlatten);
+    $sNicetext = strip_tags($sNicetext);
+
+    if ($bStripNewLines ){
+        $sNicetext = preg_replace('~\Ru~', '', $sNicetext);
+    }
+    else // unify newlines
+    {
+        $sNicetext = preg_replace('~\Ru~', "\r\n", $sNicetext);
+    }
+>>>>>>> refs/heads/dev_tms
     if ($bDecodeHTMLEntities==true)
     {
         $sNicetext = str_replace('&nbsp;',' ', $sNicetext); // html_entity_decode does not convert &nbsp; to spaces
         $sNicetext = html_entity_decode($sNicetext, ENT_QUOTES, $sCharset);
     }
+<<<<<<< HEAD
     $sNicetext = trim($sNicetext);
     return  $sNicetext;
+=======
+    return trim($sNicetext); ;
+>>>>>>> refs/heads/dev_tms
 }
 
 /**
@@ -5073,7 +5150,11 @@ function FixLanguageConsistency($sid, $availlangs='')
                 if ($gresult->RecordCount() < 1)
                 {
                     db_switchIDInsert('groups',true);
+<<<<<<< HEAD
                     $query = "INSERT INTO ".db_table_name('groups')." (gid,sid,group_name,group_order,description,grelevance,language) VALUES('{$group['gid']}','{$group['sid']}',".db_quoteall($group['group_name']).",'{$group['group_order']}',".db_quoteall($group['description']).",'".db_quote($group['grelevance'])."','{$lang}')";
+=======
+                    $query = "INSERT INTO ".db_table_name('groups')." (gid,sid,group_name,group_order,description,grelevance,language) VALUES('{$group['gid']}','{$group['sid']}',".db_quoteall($group['group_name']).",'{$group['group_order']}',".db_quoteall($group['description']).",'".db_quoteall($group['grelevance'])."','{$lang}')";
+>>>>>>> refs/heads/dev_tms
                     $connect->Execute($query) or safe_die($connect->ErrorMsg());  //Checked
                     db_switchIDInsert('groups',false);
                 }
@@ -5999,8 +6080,13 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 
         foreach ($fieldnames as $sOldFieldname=>$sNewFieldname)
         {
+<<<<<<< HEAD
             $pattern = $sOldFieldname;
             $replacement = $sNewFieldname;
+=======
+            $pattern = "{INSERTANS:".$sOldFieldname."}";
+            $replacement = "{INSERTANS:".$sNewFieldname."}";
+>>>>>>> refs/heads/dev_tms
             $urldescription=preg_replace('/'.$pattern.'/', $replacement, $urldescription);
             $endurl=preg_replace('/'.$pattern.'/', $replacement, $endurl);
         }
@@ -7007,6 +7093,8 @@ function aGetFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonor
             if ($oldqid !== $fname['qid'])
             {
                 $oldqid = $fname['qid'];
+                if (($bHonorConditions && LimeExpressionManager::QuestionIsRelevant($fname['qid'])) || !$bHonorConditions)
+                {
                 if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2']))
                 {
                     $aResultTable['qid_'.$fname['sid'].'X'.$fname['gid'].'X'.$fname['qid']]=array($fname['question'],'','');
@@ -7017,6 +7105,13 @@ function aGetFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonor
                     $aResultTable[$fname['fieldname']]=array($question,'',$answer);
                     continue;
                 }
+
+            }
+                else
+                {
+                    continue;
+        }
+
             }
         }
         else

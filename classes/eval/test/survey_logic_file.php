@@ -1,7 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<<<<<<< HEAD
 <?php
 if (count($_POST) == 0 && !((isset($subaction) && $subaction == 'survey_logic_file'))) {die("Cannot run this script directly");}
 ?>
+=======
+>>>>>>> refs/heads/dev_tms
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -17,7 +20,11 @@ if (count($_POST) == 0 && !((isset($subaction) && $subaction == 'survey_logic_fi
                     $_POST[$key] = $val;
                 }
             }
+<<<<<<< HEAD
             if ((isset($subaction) && $subaction == 'survey_logic_file') || $_POST['LEMcalledFromAdmin']=='Y') {
+=======
+            if ($_POST['LEMcalledFromAdmin']=='Y') {
+>>>>>>> refs/heads/dev_tms
                 $rootpath = $rootdir;
             }
             else {
@@ -31,8 +38,12 @@ if (count($_POST) == 0 && !((isset($subaction) && $subaction == 'survey_logic_fi
 
             $clang = new limesurvey_lang("en");
 
+<<<<<<< HEAD
             if ((isset($subaction) && $subaction == 'survey_logic_file'))   //  || count($_POST) == 0) {
             {
+=======
+            if (count($_POST) == 0) {
+>>>>>>> refs/heads/dev_tms
                 $query = "select a.surveyls_survey_id as sid, a.surveyls_title as title, b.datecreated, b.assessments "
                 . "from " . db_table_name('surveys_languagesettings') . " as a join ". db_table_name('surveys') . " as b on a.surveyls_survey_id = b.sid"
                 . " where a.surveyls_language='en' order by a.surveyls_title, b.datecreated";
@@ -43,7 +54,11 @@ if (count($_POST) == 0 && !((isset($subaction) && $subaction == 'survey_logic_fi
                 }
 
                 $form = <<< EOD
+<<<<<<< HEAD
 <form method='post' action='../classes/eval/test/survey_logic_file.php'>
+=======
+<form method='post' action='survey_logic_file.php'>
+>>>>>>> refs/heads/dev_tms
 <h3>Generate a logic file for the survey</h3>
 <table border='1'>
 <tr><th>Parameter</th><th>Value</th></tr>
@@ -78,6 +93,7 @@ EOD;
             else {
                 $surveyInfo = explode('|',$_POST['sid']);
                 $surveyid = $surveyInfo[0];
+<<<<<<< HEAD
                 if (isset($_POST['assessments']))
                 {
                     $assessments = ($_POST['assessments'] == 'Y');
@@ -86,6 +102,9 @@ EOD;
                 {
                     $assessments = ($surveyInfo[1] == 'Y');
                 }
+=======
+                $assessments = ($surveyInfo[1] == 'Y');
+>>>>>>> refs/heads/dev_tms
                 $surveyMode = $_POST['surveyMode'];
                 $LEMdebugLevel = (
                         ((isset($_POST['LEM_DEBUG_TIMING']) && $_POST['LEM_DEBUG_TIMING'] == 'Y') ? LEM_DEBUG_TIMING : 0) +

@@ -2,7 +2,11 @@
 // based on TTabs from http://interface.eyecon.ro/
 
 $(document).ready(function(){
+<<<<<<< HEAD
     if($("#changes:not(.none)").length > 0) {
+=======
+    if($("#changes").length > 0) {
+>>>>>>> refs/heads/dev_tms
         editAreaLoader.init({
             language: adminlanguage,
             id : "changes"        // textarea id

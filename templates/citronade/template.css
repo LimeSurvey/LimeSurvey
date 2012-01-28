@@ -15,9 +15,15 @@
 /* This part don't have to be modified */
 /* Base style only */
 html{font-size:100%}
+<<<<<<< HEAD
 body{font-family:Arial, Helvetica, FreeSans, sans-serif;font-size:.85em;line-height:1.4em;color:#000;background:#FFF;margin:0;padding:0}
 html,body{height:100%}
 h1,h2,h3,h4,h5,h6{line-height:1.2em;font-weight:700;font-style:normal;margin:1em 0 .5em}
+=======
+body{font-family:Arial, Helvetica, FreeSans, sans-serif;font-size:.85em;line-height:1.4;color:#000;background:#FFF;margin:0;padding:0}
+html,body{height:100%}
+h1,h2,h3,h4,h5,h6{line-height:1.2;font-weight:700;font-style:normal;margin:1em 0 .5em}
+>>>>>>> refs/heads/dev_tms
 h1{font-size:1.5em}
 h2{font-size:1.3em}
 h3{font-size:1.2em}
@@ -59,12 +65,21 @@ ul#surveylist{list-style:none}
 .ie6 .ui-slider,.ie7 .ui-slider{display:block;float:left;}
 .ie6 .slider_lefttext ,.ie7 .slider_lefttext {float: left;margin-top:1em;}
 .ie6 .slider_righttext ,.ie7 .slider_righttext {float: left;margin-top:1em;}
+<<<<<<< HEAD
 
 #percentcomplete{height:20px;display:block;margin:5px 0}
 h5,h6{font-size:1em}
 p,dl{margin:.75em 0}
 em,q,cite{font-style:italic}
+=======
+>>>>>>> refs/heads/dev_tms
 
+#percentcomplete{height:20px;display:block;margin:5px 0}
+h5,h6{font-size:1em}
+p,dl{margin:.75em 0}
+em,q,cite{font-style:italic}
+.error,.problem{color:#f70}
+.ie .ui-slider{display:inline;}
 /* --------------------------------------------- */
 /* Basic adaptation of the template :            */
 /* color and image                               */
@@ -162,8 +177,13 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 .note,#tokenmessage{border:#8195BA 1px solid;background:#EEF6FF;}
 
 /* Group decoration */
+<<<<<<< HEAD
 .groupdescription{border: 0 solid #5670A1;border-top:0px none #5670A1;background:#EEF6FF;}
 .grouptitle{border: 0 solid #5670A1;border-bottom:0px none #5670A1;background:#5670A1;color:#FEFEFE}
+=======
+.groupdescription{border: 1px solid #5670A1;border-top:0px none #5670A1;background:#EEF6FF;}
+.grouptitle{border: 1px solid #5670A1;border-bottom:0px none #5670A1;background:#5670A1;color:#FEFEFE}
+>>>>>>> refs/heads/dev_tms
 
 
 /* Question bloc decoration */
@@ -302,8 +322,13 @@ div.form table table td{padding:0;}
 
 /* Group decoration */
 .group{margin-bottom: 2em}
+<<<<<<< HEAD
 .groupdescription{padding:0 1.5em;margin:0 0 0.5em;}
 .grouptitle{line-height:2em;padding:0 1em;margin:0 0 0em;font-size:1.1em;}
+=======
+.groupdescription{padding:1em 1.5em 0.5em;margin:0 0 0.5em;}
+.grouptitle{padding:0.2em 1em 0.5em;margin:0 0 0em;font-size:1.1em;}
+>>>>>>> refs/heads/dev_tms
 
 
 /* Question decoration */
@@ -609,10 +634,13 @@ table.question tbody td.ddarrayseparator{border-top-width: 0px;}
     text-align: left;
     margin: 1em 0;
 }
+<<<<<<< HEAD
 .answers label:hover {
     color:#222;
 }
 
+=======
+>>>>>>> refs/heads/dev_tms
 .ie .multiple-opt-comments  .answers,
 	.ie .multiple-short-txt  .answers,
 	.ie .numeric-multi  .answers,
@@ -849,9 +877,17 @@ text-align:center;
 , .list-radio .answers ul li
 , .list-radio-flexible .answers ul li
 {
+<<<<<<< HEAD
 	padding-left:30%;
+=======
+	margin-left:40%;
+>>>>>>> refs/heads/dev_tms
 }
-
+.ie .multiple-opt .answers ul li input.checkbox,
+	.ie .list-radio .answers ul li input.radio,
+	.ie .list-with-comment .answers ul li input.radio,
+	.ie .list-radio-flexible .answers ul li input.radio 
+	{margin-left:0;}
 
 @media screen and (max-width: 640px) {
 .multiple-opt .answers ul li

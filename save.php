@@ -215,6 +215,7 @@ global $errormsg;   // since neeeded by savecontrol()
  * The times are saved in table: {prefix}{surveytable}_timings
  * @return void
  */
+<<<<<<< HEAD
 function set_answer_time()
 {
 	global $connect, $thissurvey, $surveyid;
@@ -223,6 +224,11 @@ function set_answer_time()
         return; // means haven't passed welcome page yet.
     }
 
+=======
+    function set_answer_time()
+    {
+	global $connect, $thissurvey;
+>>>>>>> refs/heads/dev_tms
     if (isset($_POST['lastanswer']))
     {
         $setField = $_POST['lastanswer'];
@@ -237,6 +243,7 @@ function set_answer_time()
     $tablename = db_table_name('survey_' . $surveyid . '_timings');
 
 	if(!isset($setField)){ //we show the whole survey on one page - we don't have to save time for group/question
+<<<<<<< HEAD
         $query = "UPDATE ".$tablename." SET "
             ."interviewtime = interviewtime" ." + " .$passedTime
             ." WHERE id = " .$_SESSION['srid'];
@@ -254,4 +261,33 @@ function set_answer_time()
         $connect->execute($query);
     }
 }
+=======
+		if($connect->Insert_ID($thissurvey['tablename'],"id") > 0){	// means that the last operation was INSERT
+			$query = "INSERT INTO ".db_quote_id($thissurvey['tablename']."_timings") ." ("
+				 ."id, interviewtime)"
+				 ." VALUES (" .$_SESSION['srid'] ."," .$passedTime .")";
+		}else{	// UPDATE
+			$query = "UPDATE {$thissurvey['tablename']}_timings SET "
+				."interviewtime = interviewtime" ." + " .$passedTime
+				." WHERE id = " .$_SESSION['srid'];
+		}
+		$connect->execute($query);
+		return;
+	}
+
+	$setField .= "time";
+	//saving the times
+	if($connect->Insert_ID($thissurvey['tablename'],"id") > 0){	// means that the last operation was INSERT
+		$query = "INSERT INTO ".db_quote_id($thissurvey['tablename']."_timings") ." ("
+			 ."id, interviewtime, " .db_quote_id($setField) .")"
+			 ." VALUES (" .$_SESSION['srid'] ."," .$passedTime ."," .$passedTime.")";
+	}else{	// UPDATE
+		$query = "UPDATE {$thissurvey['tablename']}_timings SET "
+			."interviewtime = interviewtime" ." + " .$passedTime .","
+			.db_quote_id($setField) ." = " .db_quote_id($setField) ." + " .$passedTime
+			." WHERE id = " .$_SESSION['srid'];
+	}
+	$connect->execute($query);
+    }
+>>>>>>> refs/heads/dev_tms
 ?>

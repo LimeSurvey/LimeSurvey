@@ -57,8 +57,30 @@
 
 
 
+<<<<<<< HEAD
     //don't call this script directly!
     if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
+=======
+/**
+* Generates statistics
+*
+* @param int $surveyid The survey id
+* @param mixed $allfields
+* @param mixed $q2show
+* @param mixed $usegraph
+* @param string $outputType Optional - Can be xls, html or pdf - Defaults to pdf
+* @param string $pdfOutput Sets the target for the PDF output: DD=File download , F=Save file to local disk
+* @param string $statlangcode Lamguage for statistics
+* @param mixed $browse  Show browse buttons
+* @return buffer
+*/
+function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$statlangcode=null, $browse = true)
+{
+    //$allfields ="";
+    global $connect, $dbprefix, $clang,
+    $rooturl, $rootdir, $homedir, $homeurl, $tempdir, $tempurl, $scriptname, $imagedir,
+    $chartfontfile, $chartfontsize, $admintheme, $pdfdefaultfont, $pdffontsize, $showaggregateddata;
+>>>>>>> refs/heads/dev_tms
 
 
     /**
@@ -146,7 +168,17 @@
             ." FROM {$dbprefix}questions WHERE parent_qid=0"
             ." AND sid=$surveyid ";
 
+<<<<<<< HEAD
             $summaryRs = db_execute_assoc($summarySql);
+=======
+            // Multiple choice get special treatment
+            if ($field['type'] == "M") {$myField = "M$myField";}
+            if ($field['type'] == "P") {$myField = "P$myField";}
+            //numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
+            if ($field['type'] == "N") {$myField = "N$myField";}
+
+            if ($field['type'] == "|") {$myField = "|$myField";}
+>>>>>>> refs/heads/dev_tms
 
             foreach($summaryRs as $field)
             {
@@ -181,13 +213,37 @@
 
 
                 }
+<<<<<<< HEAD
                 if($q2show=='all')
                     $summary[]=$myField;
+=======
+                //$myField = "{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]";
+
+
+            }
+            if($q2show=='all')
+            $summary[]=$myField;
+>>>>>>> refs/heads/dev_tms
 
                 //$allfields[]=$myField;
             }
         }
+<<<<<<< HEAD
         else
+=======
+    }
+    else
+    {
+        // This gets all the 'to be shown questions' from the POST and puts these into an array
+        if (!is_array($q2show))
+        $summary=returnglobal('summary');
+        else
+            $summary = $q2show;
+
+        //print_r($_POST);
+        //if $summary isn't an array we create one
+        if (isset($summary) && !is_array($summary))
+>>>>>>> refs/heads/dev_tms
         {
             // This gets all the 'to be shown questions' from the POST and puts these into an array
             if (!is_array($q2show))
@@ -203,8 +259,13 @@
             }
         }
 
+<<<<<<< HEAD
         /* Some variable depend on output type, actually : only line feed */
         switch($outputType)
+=======
+	/* Some variable depend on output type, actually : only line feed */
+    switch($outputType)
+>>>>>>> refs/heads/dev_tms
         {
             case 'xls':
                 $linefeed = "\n";
@@ -220,6 +281,7 @@
                 break;
         }
 
+<<<<<<< HEAD
         /**
         * pdf Config
         */
@@ -233,9 +295,35 @@
             // create new PDF document
             $pdf = new MyPDF();
             $pdf->SetFont($pdfdefaultfont,'',$pdffontsize);
+=======
+    /**
+     * pdf Config
+     */
+    if($outputType=='pdf')
+    {
+        require_once('classes/tcpdf/config/lang/eng.php');
+        global $l;
+        $l['w_page'] = $statlang->gT("Page",'unescaped');
+        require_once('classes/tcpdf/mypdf.php');
+
+        // create new PDF document
+        $pdf = new MyPDF();
+        $pdf->SetFont($pdfdefaultfont,'',$pdffontsize);
+
+        $surveyInfo = getSurveyInfo($surveyid,$language);
+
+        // set document information
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('LimeSurvey');
+        $pdf->SetTitle('Statistic survey '.$surveyid);
+        $pdf->SetSubject($surveyInfo['surveyls_title']);
+        $pdf->SetKeywords('LimeSurvey, Statistics, Survey '.$surveyid.'');
+        $pdf->SetDisplayMode('fullpage', 'two');
+>>>>>>> refs/heads/dev_tms
 
             $surveyInfo = getSurveyInfo($surveyid,$language);
 
+<<<<<<< HEAD
             // set document information
             $pdf->SetCreator(PDF_CREATOR);
             $pdf->SetAuthor('LimeSurvey');
@@ -243,6 +331,15 @@
             $pdf->SetSubject($surveyInfo['surveyls_title']);
             $pdf->SetKeywords('LimeSurvey, Statistics, Survey '.$surveyid.'');
             $pdf->SetDisplayMode('fullpage', 'two');
+=======
+        // set default header data
+        // the path looks awkward - did not find a better solution to set the image path?
+        $pdf->SetHeaderData("statistics.png", 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".FlattenText($surveyInfo['surveyls_title'],true,'UTF-8')."'");
+
+
+        // set default monospaced font
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+>>>>>>> refs/heads/dev_tms
 
             // set header and footer fonts
             $pdf->setHeaderFont(Array($pdfdefaultfont, '', PDF_FONT_SIZE_MAIN));
@@ -253,6 +350,7 @@
             $pdf->SetHeaderData("statistics.png", 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".FlattenText($surveyInfo['surveyls_title'],true,'UTF-8')."'");
 
 
+<<<<<<< HEAD
             // set default monospaced font
             $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
@@ -260,6 +358,40 @@
             $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
             $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
             $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+=======
+        //set some language-dependent strings
+        $pdf->setLanguageArray($l);
+    }
+    if($outputType=='xls')
+    {
+        /**
+         * Initiate the Spreadsheet_Excel_Writer
+         */
+        include_once(dirname(__FILE__)."/classes/pear/Spreadsheet/Excel/Writer.php");
+        if($pdfOutput=='F')
+        $workbook = new Spreadsheet_Excel_Writer($tempdir.'/statistic-survey'.$surveyid.'.xls');
+        else
+        $workbook = new Spreadsheet_Excel_Writer();
+
+        $workbook->setVersion(8);
+        // Inform the module that our data will arrive as UTF-8.
+        // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
+        if (!empty($tempdir)) {
+            $workbook->setTempDir($tempdir);
+        }
+        if ($pdfOutput!='F')
+        $workbook->send('statistic-survey'.$surveyid.'.xls');
+
+        // Creating the first worksheet
+        $sheet =& $workbook->addWorksheet(utf8_decode('results-survey'.$surveyid));
+        $sheet->setInputEncoding('utf-8');
+        $sheet->setColumn(0,20,20);
+        $separator="~|";
+    }
+    /**
+     * Start generating
+     */
+>>>>>>> refs/heads/dev_tms
 
             //set auto page breaks
             $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
@@ -267,10 +399,24 @@
             //set image scale factor
             $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
+<<<<<<< HEAD
             //set some language-dependent strings
             $pdf->setLanguageArray($l);
         }
         if($outputType=='xls')
+=======
+    /*
+     * Iterate through postvars to create "nice" data for SQL later.
+     *
+     * Remember there might be some filters applied which have to be put into an SQL statement
+     */
+    if(isset($postvars))
+
+    foreach ($postvars as $pv)
+    {
+        //Only do this if there is actually a value for the $pv
+        if (in_array($pv, $allfields) || in_array(substr($pv,1),$aQuestionMap) || in_array($pv,$aQuestionMap) || (($pv[0]=='D' || $pv[0]=='N' || $pv[0]=='K') && in_array(substr($pv,1,strlen($pv)-2),$aQuestionMap)))
+>>>>>>> refs/heads/dev_tms
         {
             /**
             * Initiate the Spreadsheet_Excel_Writer
@@ -352,6 +498,7 @@
                         $selects[]=$thisquestion;
                     }
 
+<<<<<<< HEAD
                     //M - Multiple choice
                     //P - Multiple choice with comments
                     elseif ($firstletter == "M"  || $firstletter == "P")
@@ -359,6 +506,18 @@
                         $mselects=array();
                         //create a list out of the $pv array
                         list($lsid, $lgid, $lqid) = explode("X", $pv);
+=======
+
+            //N - Numerical Input
+            //K - Multiple Numerical Input
+            elseif ($firstletter == "N" || $firstletter == "K")
+            {
+                //value greater than
+                if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
+                {
+                    $selects[]=db_quote_id(substr($pv, 1, -1))." > ".sanitize_int($_POST[$pv]);
+                }
+>>>>>>> refs/heads/dev_tms
 
                         $aquery="SELECT title FROM ".db_table_name("questions")." WHERE parent_qid=$lqid AND language='{$language}' and scale_id=0 ORDER BY question_order";
                         $aresult=db_execute_num($aquery) or safe_die ("Couldn't get subquestions<br />$aquery<br />".$connect->ErrorMsg());
@@ -526,6 +685,15 @@
             $query .= implode(" AND ", $selects);
         }
 
+<<<<<<< HEAD
+=======
+    //$_POST['sql'] is a post field that is sent from the statistics script to the export script in order
+    // to export just those results filtered by this statistics script. It can also be passed to the statistics
+    // script to filter from external scripts.
+    elseif (isset($_SESSION['sql']) && $_SESSION['sql']!='NULL' && !isset($_POST['id=']))
+    {
+        $newsql=substr($_SESSION['sql'], strpos($_SESSION['sql'], "WHERE")+5, strlen($_SESSION['sql']));
+>>>>>>> refs/heads/dev_tms
 
         //get me some data Scotty
         $result=db_execute_num($query) or safe_die("Couldn't get results<br />$query<br />".$connect->ErrorMsg());
@@ -558,6 +726,7 @@
                 break;
             case 'pdf':
 
+<<<<<<< HEAD
                 // add summary to pdf
                 $array = array();
                 //$array[] = array($statlang->gT("Results"),"");
@@ -574,6 +743,25 @@
                 $pdf->tableintopdf($array);
 
                 $pdf->addPage('P','A4');
+=======
+    }
+    switch($outputType)
+    {
+        case "xls":
+            $xlsRow = 0;
+            $sheet->write($xlsRow,0,$statlang->gT("Number of records in this query:"));
+            $sheet->write($xlsRow,1,$results);
+            ++$xlsRow;
+            $sheet->write($xlsRow,0,$statlang->gT("Total records in survey:"));
+            $sheet->write($xlsRow,1,$total);
+
+            if($total)
+            {
+                ++$xlsRow;
+                $sheet->write($xlsRow,0,$statlang->gT("Percentage of total:"));
+                $sheet->write($xlsRow,1,$percent."%");
+            }
+>>>>>>> refs/heads/dev_tms
 
                 break;
             case 'html':
@@ -651,11 +839,30 @@
                 $firstletter = substr($rt, 0, 1);
                 // 1. Get answers for question ##############################################################
 
+<<<<<<< HEAD
                 //M - Multiple choice, therefore multiple fields
                 if ($firstletter == "M" || $firstletter == "P")
                 {
                     //get SGQ data
                     list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
+=======
+    //only continue if we have something to output
+    if ($results > 0)
+    {
+        if($outputType=='html' && $browse === true)
+        {
+            $_SESSION['sql']=$sql;
+            //add a buttons to browse results
+            $statisticsoutput .= "<form action='$scriptname?action=browse' method='post' target='_blank'>\n"
+            ."\t\t<p>"
+            ."\t\t\t<input type='submit' value='".$statlang->gT("Browse")."'  />\n"
+            ."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
+            ."\t\t\t<input type='hidden' name='subaction' value='all' />\n"
+            ."\t\t</p>"
+            ."\t\t</form>\n";
+        }
+    }	//end if (results > 0)
+>>>>>>> refs/heads/dev_tms
 
                     //select details for this question
                     $nquery = "SELECT title, type, question, parent_qid, other FROM ".db_table_name("questions")." WHERE language='{$language}' AND parent_qid=0 AND qid='$qqid'";
@@ -689,6 +896,7 @@
                     {
                         $mfield=substr($rt, 1, strlen($rt))."other";
 
+<<<<<<< HEAD
                         //create an array containing answer code, answer and fieldname(??)
                         $alist[]=array($statlang->gT("Other"), $statlang->gT("Other"), $mfield);
                     }
@@ -698,6 +906,43 @@
                 //S - Short Free Text
                 //T - Long Free Text
                 elseif ($firstletter == "T" || $firstletter == "S") //Short and long text
+=======
+            //M - Multiple choice, therefore multiple fields
+            if ($firstletter == "M" || $firstletter == "P")
+            {
+                //get SGQ data
+                list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
+
+                //select details for this question
+                $nquery = "SELECT title, type, question, parent_qid, other FROM ".db_table_name("questions")." WHERE language='{$language}' AND parent_qid=0 AND qid='$qqid'";
+                $nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
+
+                //loop through question data
+                while ($nrow=$nresult->FetchRow())
+                {
+                    $qtitle=$nrow[0];
+                    $qtype=$nrow[1];
+                    $qquestion=FlattenText($nrow[2]);
+                    $qlid=$nrow[3];
+                    $qother=$nrow[4];
+                }
+
+                //1. Get list of answers
+                $query="SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qqid' AND language='{$language}' and scale_id=0 ORDER BY question_order";
+                $result=db_execute_num($query) or safe_die("Couldn't get list of subquestions for multitype<br />$query<br />".$connect->ErrorMsg());
+
+                //loop through multiple answers
+                while ($row=$result->FetchRow())
+                {
+                    $mfield=substr($rt, 1, strlen($rt))."$row[0]";
+
+                    //create an array containing answer code, answer and fieldname(??)
+                    $alist[]=array("$row[0]", FlattenText($row[1]), $mfield);
+                }
+
+                //check "other" field. is it set?
+                if ($qother == "Y")
+>>>>>>> refs/heads/dev_tms
                 {
 
                     //search for key
@@ -709,10 +954,55 @@
                     $qgid=$fielddata['gid'];
                     $qqid=$fielddata['qid'];
 
+<<<<<<< HEAD
 
                     list($qanswer, $qlid)=!empty($fielddata['aid']) ? explode("_", $fielddata['aid']) : array("", "");
                     //get SGQ data
                     //list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
+=======
+            //S - Short Free Text
+            //T - Long Free Text
+            elseif ($firstletter == "T" || $firstletter == "S") //Short and long text
+            {
+
+                //search for key
+                $fld = substr($rt, 1, strlen($rt));
+                $fielddata=$fieldmap[$fld];
+
+                //get SGQA IDs
+                $qsid=$fielddata['sid'];
+                $qgid=$fielddata['gid'];
+                $qqid=$fielddata['qid'];
+
+
+                list($qanswer, $qlid)=!empty($fielddata['aid']) ? explode("_", $fielddata['aid']) : array("", "");
+                //get SGQ data
+                //list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
+
+
+                //get question data
+                $nquery = "SELECT title, type, question, other, parent_qid FROM ".db_table_name("questions")." WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
+                $nresult = db_execute_num($nquery) or safe_die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
+
+                //loop through question data
+                while ($nrow=$nresult->FetchRow())
+                {
+                    $qtitle=FlattenText($nrow[0]);
+                    $qtype=$nrow[1];
+                    $qquestion=FlattenText($nrow[2]);
+                    $nlid=$nrow[4];
+                }
+
+                $mfield=substr($rt, 1, strlen($rt));
+
+                //Text questions either have an answer, or they don't. There's no other way of quantising the results.
+                // So, instead of building an array of predefined answers like we do with lists & other types,
+                // we instead create two "types" of possible answer - either there is a response.. or there isn't.
+                // This question type then can provide a % of the question answered in the summary.
+                $alist[]=array("Answers", $statlang->gT("Answer"), $mfield);
+                $alist[]=array("NoAnswer", $statlang->gT("No answer"), $mfield);
+            }
+>>>>>>> refs/heads/dev_tms
 
 
                     //get question data
@@ -730,6 +1020,7 @@
 
                     $mfield=substr($rt, 1, strlen($rt));
 
+<<<<<<< HEAD
                     //Text questions either have an answer, or they don't. There's no other way of quantising the results.
                     // So, instead of building an array of predefined answers like we do with lists & other types,
                     // we instead create two "types" of possible answer - either there is a response.. or there isn't.
@@ -737,6 +1028,32 @@
                     $alist[]=array("Answers", $statlang->gT("Answer"), $mfield);
                     $alist[]=array("NoAnswer", $statlang->gT("No answer"), $mfield);
                 }
+=======
+                //length of QID
+                $qidlength=strlen($tmpqid);
+
+                //we somehow get the answer code (see SQL later) from the $qqid
+                $qaid=substr($qqid, $qidlength, strlen($qqid)-$qidlength);
+
+                //get some question data
+                $nquery = "SELECT title, type, question, other FROM ".db_table_name("questions")." WHERE qid='".substr($qqid, 0, $qidlength)."' AND parent_qid=0 AND language='{$language}'";
+                $nresult = db_execute_num($nquery) or safe_die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
+
+                //more substrings
+                $count = substr($qqid, strlen($qqid)-1);
+
+                //loop through question data
+                while ($nrow=$nresult->FetchRow())
+                {
+                    $qtitle=FlattenText($nrow[0]).'-'.$count;
+                    $qtype=$nrow[1];
+                    $qquestion=FlattenText($nrow[2]);
+                }
+
+                //get answers
+                $qquery = "SELECT title as code, question as answer FROM ".db_table_name("questions")." WHERE parent_qid='".substr($qqid, 0, $qidlength)."' AND title='$qaid' AND language='{$language}' ORDER BY question_order";
+                $qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
+>>>>>>> refs/heads/dev_tms
 
 
                 //Multiple short text
@@ -748,18 +1065,71 @@
                     //separating another ID
                     $tmpqid=substr($qqid, 0, strlen($qqid)-1);
 
+<<<<<<< HEAD
                     //check if we have legid QIDs. if not create them by substringing
                     while (!in_array ($tmpqid,$legitqids)) $tmpqid=substr($tmpqid, 0, strlen($tmpqid)-1);
+=======
+                //even more substrings...
+                $mfield=substr($rt, 1, strlen($rt));
+
+                //Text questions either have an answer, or they don't. There's no other way of quantising the results.
+                // So, instead of building an array of predefined answers like we do with lists & other types,
+                // we instead create two "types" of possible answer - either there is a response.. or there isn't.
+                // This question type then can provide a % of the question answered in the summary.
+                $alist[]=array("Answers", $statlang->gT("Answer"), $mfield);
+                $alist[]=array("NoAnswer", $statlang->gT("No answer"), $mfield);
+            }
+>>>>>>> refs/heads/dev_tms
 
                     //length of QID
                     $qidlength=strlen($tmpqid);
 
+<<<<<<< HEAD
                     //we somehow get the answer code (see SQL later) from the $qqid
                     $qaid=substr($qqid, $qidlength, strlen($qqid)-$qidlength);
 
                     //get some question data
                     $nquery = "SELECT title, type, question, other FROM ".db_table_name("questions")." WHERE qid='".substr($qqid, 0, $qidlength)."' AND parent_qid=0 AND language='{$language}'";
                     $nresult = db_execute_num($nquery) or safe_die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
+=======
+            //RANKING OPTION THEREFORE CONFUSING
+            elseif ($firstletter == "R")
+            {
+                //getting the needed IDs somehow
+                $lengthofnumeral=substr($rt, strpos($rt, "-")+1, 1);
+                list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strpos($rt, "-")-($lengthofnumeral+1)), 3);
+
+                //get question data
+                $nquery = "SELECT title, type, question FROM ".db_table_name("questions")." WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
+                $nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
+
+                //loop through question data
+                while ($nrow=$nresult->FetchRow())
+                {
+                    $qtitle=FlattenText($nrow[0]). " [".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
+                    $qtype=$nrow[1];
+                    $qquestion=FlattenText($nrow[2]). "[".$statlang->gT("Ranking")." ".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
+                }
+
+                //get answers
+                $query="SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
+                $result=db_execute_num($query) or safe_die("Couldn't get list of answers for multitype<br />$query<br />".$connect->ErrorMsg());
+
+                //loop through answers
+                while ($row=$result->FetchRow())
+                {
+                    //create an array containing answer code, answer and fieldname(??)
+                    $mfield=substr($rt, 1, strpos($rt, "-")-1);
+                    $alist[]=array("$row[0]", FlattenText($row[1]), $mfield);
+                }
+            }
+
+            else if ($firstletter == "|") // File UPload
+            {
+
+                //get SGQ data
+                list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
+>>>>>>> refs/heads/dev_tms
 
                     //more substrings
                     $count = substr($qqid, strlen($qqid)-1);
@@ -776,6 +1146,7 @@
                     $qquery = "SELECT title as code, question as answer FROM ".db_table_name("questions")." WHERE parent_qid='".substr($qqid, 0, $qidlength)."' AND title='$qaid' AND language='{$language}' ORDER BY question_order";
                     $qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
 
+<<<<<<< HEAD
                     //loop through answer data
                     while ($qrow=$qresult->FetchRow())
                     {
@@ -785,6 +1156,24 @@
 
                     //add this to the question title
                     $qtitle .= " [$atext]";
+=======
+                 /*
+                    4)      Average size of file per respondent
+                    5)      Average no. of files
+                    5)      Summary/count of file types (ie: 37 jpg, 65 gif, 12 png)
+                    6)      Total size of all files (useful if you're about to download them all)
+                    7)      You could also add things like smallest file size, largest file size, median file size
+                    8)      no. of files corresponding to each extension
+                    9)      max file size
+                    10)     min file size
+                 */
+
+                // 1) Total number of files uploaded
+                // 2)      Number of respondents who uploaded at least one file (with the inverse being the number of respondents who didn’t upload any)
+                $fieldname=substr($rt, 1, strlen($rt));
+                $query = "SELECT SUM(".db_quote_id($fieldname.'_filecount').") as sum, AVG(".db_quote_id($fieldname.'_filecount').") as avg FROM ".db_table_name("survey_$surveyid");
+                $result=db_execute_assoc($query) or safe_die("Couldn't fetch the records<br />$query<br />".$connect->ErrorMsg());
+>>>>>>> refs/heads/dev_tms
 
                     //even more substrings...
                     $mfield=substr($rt, 1, strlen($rt));
@@ -797,6 +1186,7 @@
                     $alist[]=array("NoAnswer", $statlang->gT("No answer"), $mfield);
                 }
 
+<<<<<<< HEAD
 
                 //RANKING OPTION THEREFORE CONFUSING
                 elseif ($firstletter == "R")
@@ -808,6 +1198,21 @@
                     //get question data
                     $nquery = "SELECT title, type, question FROM ".db_table_name("questions")." WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
                     $nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
+=======
+
+                $query = "SELECT ". $fieldname ." as json FROM ".db_table_name("survey_$surveyid");
+                $result=db_execute_assoc($query) or safe_die("Couldn't fetch the records<br />$query<br />".$connect->ErrorMsg());
+
+                $responsecount = 0;
+                $filecount = 0;
+                $size = 0;
+
+                while ($row = $result->FetchRow())
+                {
+
+                    $json = $row['json'];
+                    $phparray = json_decode($json);
+>>>>>>> refs/heads/dev_tms
 
                     //loop through question data
                     while ($nrow=$nresult->FetchRow())
@@ -816,6 +1221,17 @@
                         $qtype=$nrow[1];
                         $qquestion=FlattenText($nrow[2]). "[".$statlang->gT("Ranking")." ".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
                     }
+<<<<<<< HEAD
+=======
+                    $responsecount++;
+                }
+                $showem[] = array($statlang->gT("Total size of files"), $size." KB");
+                $showem[] = array($statlang->gT("Average file size"), $size/$filecount . " KB");
+                $showem[] = array($statlang->gT("Average size per respondent"), $size/$responsecount . " KB");
+
+/*              $query="SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qqid' AND language='{$language}' ORDER BY question_order";
+                $result=db_execute_num($query) or safe_die("Couldn't get list of subquestions for multitype<br />$query<br />".$connect->ErrorMsg());
+>>>>>>> refs/heads/dev_tms
 
                     //get answers
                     $query="SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
@@ -889,6 +1305,7 @@
                             $json = $row['json'];
                             $phparray = json_decode($json);
 
+<<<<<<< HEAD
                             foreach ($phparray as $metadata)
                             {
                                 $size += (int) $metadata->size;
@@ -899,6 +1316,15 @@
                         $showem[] = array($statlang->gT("Total size of files"), $size." KB");
                         $showem[] = array($statlang->gT("Average file size"), $size/$filecount . " KB");
                         $showem[] = array($statlang->gT("Average size per respondent"), $size/$responsecount . " KB");
+=======
+                        //get question details from DB
+                        $nquery = "SELECT title, type, question, qid, parent_qid
+								   FROM ".db_table_name("questions")."
+								   WHERE parent_qid=0 AND qid='".substr($qqid, 0, $qidlength)."'
+								   AND language='{$language}'";
+                        $nresult = db_execute_num($nquery) or safe_die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
+                    }
+>>>>>>> refs/heads/dev_tms
 
                         /*              $query="SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qqid' AND language='{$language}' ORDER BY question_order";
                         $result=db_execute_num($query) or safe_die("Couldn't get list of subquestions for multitype<br />$query<br />".$connect->ErrorMsg());
@@ -927,6 +1353,7 @@
                                 ++$xlsRow;
                                 ++$xlsRow;
 
+<<<<<<< HEAD
                                 ++$xlsRow;
                                 $sheet->setCellValueByColumnAndRow(0,$xlsRow,$xlsTitle);
                                 ++$xlsRow;
@@ -936,6 +1363,17 @@
                                 ++$xlsRow;
                                 $sheet->setCellValueByColumnAndRow(0, $xlsRow,$statlang->gT("Calculation"));
                                 $sheet->setCellValueByColumnAndRow(1, $xlsRow,$statlang->gT("Result"));
+=======
+                            ++$xlsRow;
+                            $sheet->write($xlsRow, 0,$xlsTitle);
+                            ++$xlsRow;
+                            $sheet->write($xlsRow, 0,$xlsDesc);
+
+                            $headXLS[] = array($statlang->gT("Calculation"),$statlang->gT("Result"));
+                            ++$xlsRow;
+                            $sheet->write($xlsRow, 0,$statlang->gT("Calculation"));
+                            $sheet->write($xlsRow, 1,$statlang->gT("Result"));
+>>>>>>> refs/heads/dev_tms
 
                                 break;
                             case 'pdf':
@@ -1051,10 +1489,26 @@
                                 $tableXLS = array();
                                 $footXLS = array();
 
+<<<<<<< HEAD
                                 $xlsTitle = sprintf($statlang->gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
                                 $xlsDesc = html_entity_decode($qquestion,ENT_QUOTES,'UTF-8');
                                 ++$xlsRow;
                                 ++$xlsRow;
+=======
+                    //get calculated data
+                    while ($row=$result->FetchRow())
+                    {
+                        //put translation of mean and calculated data into $showem array
+                        $showem[]=array($statlang->gT("Sum"), $row['sum']);
+                        $showem[]=array($statlang->gT("Standard deviation"), round($row['stdev'],2));
+                        $showem[]=array($statlang->gT("Average"), round($row['average'],2));
+                        $showem[]=array($statlang->gT("Minimum"), $row['minimum']);
+
+                        //Display the maximum and minimum figures after the quartiles for neatness
+                        $maximum=$row['maximum'];
+                        $minimum=$row['minimum'];
+                    }
+>>>>>>> refs/heads/dev_tms
 
                                 ++$xlsRow;
                                 $sheet->write($xlsRow, 0,$xlsTitle);
@@ -1108,15 +1562,43 @@
                             $query = "SELECT STDEVP(".db_quote_id($fieldname)."*1) as stdev";
                         }
 
+<<<<<<< HEAD
                         //other databases (MySQL, Postgres)
                         else
+=======
+                    // Calculating only makes sense with more than one result
+                    if ($medcount>1)
+                    {
+                        //1ST QUARTILE (Q1)
+                        $q1=(1/4)*($medcount+1);
+                        $q1b=(int)((1/4)*($medcount+1));
+                        $q1c=$q1b-1;
+                        $q1diff=$q1-$q1b;
+                        $total=0;
+
+                        // fix if there are too few values to evaluate.
+                        if ($q1c<0) {$q1c=0;}
+
+                        if ($q1 != $q1b)
+>>>>>>> refs/heads/dev_tms
                         {
                             //standard deviation
                             $query = "SELECT STDDEV(".db_quote_id($fieldname).") as stdev";
                         }
 
+<<<<<<< HEAD
                         //sum
                         $query .= ", SUM(".db_quote_id($fieldname)."*1) as sum";
+=======
+                            while ($row=$result->FetchRow())
+                            {
+                                if ($total == 0)    {$total=$total-$row[$fieldname];}
+
+                                else                {$total=$total+$row[$fieldname];}
+
+                                $lastnumber=$row[$fieldname];
+                            }
+>>>>>>> refs/heads/dev_tms
 
                         //average
                         $query .= ", AVG(".db_quote_id($fieldname)."*1) as average";
@@ -1139,8 +1621,35 @@
                                 $query .= " AND (".db_quote_id($fieldname)." <> 0)";
                             }
                         }
+<<<<<<< HEAD
 
                         //other databases (MySQL, Postgres)
+=======
+
+                        $total=0;
+
+
+                        //MEDIAN (Q2)
+                        $median=(1/2)*($medcount+1);
+                        $medianb=(int)((1/2)*($medcount+1));
+                        $medianc=$medianb-1;
+                        $mediandiff=$median-$medianb;
+
+                        if ($median != $medianb)
+                        {
+                            //remainder
+                            $query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
+                            $result=db_select_limit_assoc($query,2, $medianc) or safe_die("What a complete mess with the remainder<br />$query<br />".$connect->ErrorMsg());
+
+                            while
+                            (
+                            $row=$result->FetchRow()) {$total=$total+$row[$fieldname];
+                            }
+
+                            $showem[]=array($statlang->gT("2nd quartile (Median)"), $total/2);
+                        }
+
+>>>>>>> refs/heads/dev_tms
                         else
                         {
                             //no NULL/empty values please
@@ -1151,19 +1660,53 @@
                                 $query .= " AND (".db_quote_id($fieldname)." != 0)";
                             }
                         }
+<<<<<<< HEAD
 
                         //filter incomplete answers if set
                         if (incompleteAnsFilterstate() == "inc") {$query .= " AND submitdate is null";}
                         elseif (incompleteAnsFilterstate() == "filter") {$query .= " AND submitdate is not null";}
+=======
+
+                        $total=0;
+
+
+                        //3RD QUARTILE (Q3)
+                        $q3=(3/4)*($medcount+1);
+                        $q3b=(int)((3/4)*($medcount+1));
+                        $q3c=$q3b-1;
+                        $q3diff=$q3-$q3b;
+
+                        if ($q3 != $q3b)
+                        {
+                            $query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
+                            $result = db_select_limit_assoc($query,2,$q3c) or safe_die("3rd Quartile query failed<br />".$connect->ErrorMsg());
+
+                            while ($row=$result->FetchRow())
+                            {
+                                if ($total == 0)    {$total=$total-$row[$fieldname];}
+
+                                else                {$total=$total+$row[$fieldname];}
+
+                                $lastnumber=$row[$fieldname];
+                            }
+                            $q3total=$lastnumber-((1-$q3diff)*$total);
+>>>>>>> refs/heads/dev_tms
 
                         //$sql was set somewhere before
                         if ($sql != "NULL") {$query .= " AND $sql";}
 
+<<<<<<< HEAD
                         //execute query
                         $result=db_execute_assoc($query) or safe_die("Couldn't do maths testing<br />$query<br />".$connect->ErrorMsg());
 
                         //get calculated data
                         while ($row=$result->FetchRow())
+=======
+                            $showem[]=array($statlang->gT("3rd quartile (Q3)"), $q3total);
+                        }
+
+                        else
+>>>>>>> refs/heads/dev_tms
                         {
                             //put translation of mean and calculated data into $showem array
                             $showem[]=array($statlang->gT("Sum"), $row['sum']);
@@ -1176,6 +1719,7 @@
                             $minimum=$row['minimum'];
                         }
 
+<<<<<<< HEAD
 
 
                         //CALCULATE QUARTILES
@@ -1184,13 +1728,27 @@
                         $query ="SELECT ".db_quote_id($fieldname)." FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT null";
                         //NO ZEROES
                         if(!$excludezeros)
+=======
+                        $total=0;
+
+                        $showem[]=array($statlang->gT("Maximum"), $maximum);
+
+                        //output results
+                        foreach ($showem as $shw)
+>>>>>>> refs/heads/dev_tms
                         {
                             $query .= " AND ".db_quote_id($fieldname)." != 0";
                         }
 
+<<<<<<< HEAD
                         //filtering enabled?
                         if (incompleteAnsFilterstate() == "inc") {$query .= " AND submitdate is null";}
                         elseif (incompleteAnsFilterstate() == "filter") {$query .= " AND submitdate is not null";}
+=======
+                                    ++$xlsRow;
+                                    $sheet->write($xlsRow, 0,html_entity_decode($shw[0],ENT_QUOTES,'UTF-8'));
+                                    $sheet->write($xlsRow, 1,html_entity_decode($shw[1],ENT_QUOTES,'UTF-8'));
+>>>>>>> refs/heads/dev_tms
 
                         //if $sql values have been passed to the statistics script from another script, incorporate them
                         if ($sql != "NULL") {$query .= " AND $sql";}
@@ -1230,8 +1788,15 @@
                             $q1diff=$q1-$q1b;
                             $total=0;
 
+<<<<<<< HEAD
                             // fix if there are too few values to evaluate.
                             if ($q1c<0) {$q1c=0;}
+=======
+                                ++$xlsRow;
+                                $sheet->write($xlsRow, 0,$statlang->gT("Null values are ignored in calculations"));
+                                ++$xlsRow;
+                                $sheet->write($xlsRow, 0,sprintf($statlang->gT("Q1 and Q3 calculated using %s"), $statlang->gT("minitab method")));
+>>>>>>> refs/heads/dev_tms
 
                             if ($q1 != $q1b)
                             {
@@ -1269,11 +1834,18 @@
                             $total=0;
 
 
+<<<<<<< HEAD
                             //MEDIAN (Q2)
                             $median=(1/2)*($medcount+1);
                             $medianb=(int)((1/2)*($medcount+1));
                             $medianc=$medianb-1;
                             $mediandiff=$median-$medianb;
+=======
+                        //clean up
+                        unset($showem);
+
+                    }	//end if (enough results?)
+>>>>>>> refs/heads/dev_tms
 
                             if ($median != $medianb)
                             {
@@ -1286,8 +1858,13 @@
                                 $row=$result->FetchRow()) {$total=$total+$row[$fieldname];
                                 }
 
+<<<<<<< HEAD
                                 $showem[]=array($statlang->gT("2nd quartile (Median)"), $total/2);
                             }
+=======
+                                ++$xlsRow;
+                                $sheet->write($xlsRow, 0, $statlang->gT("Not enough values for calculation"));
+>>>>>>> refs/heads/dev_tms
 
                             else
                             {
@@ -1335,34 +1912,90 @@
                                 $query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1";
                                 $result = db_select_limit_assoc($query,1, $q3c) or safe_die("3rd Quartile even query failed<br />".$connect->ErrorMsg());
 
+<<<<<<< HEAD
                                 while ($row=$result->FetchRow())
                                 {
                                     $showem[]=array($statlang->gT("3rd quartile (Q3)"), $row[$fieldname]);
                                 }
                             }
+=======
+                }	//end else -> check last character, greater/less/equals don't need special treatment
+
+            }	//end else-if -> multiple numerical types
+>>>>>>> refs/heads/dev_tms
 
                             $total=0;
 
                             $showem[]=array($statlang->gT("Maximum"), $maximum);
 
+<<<<<<< HEAD
                             //output results
                             foreach ($showem as $shw)
                             {
                                 switch($outputType)
                                 {
                                     case 'xls':
+=======
+            // NICE SIMPLE SINGLE OPTION ANSWERS
+            else
+            {
+                //search for key
+                $fielddata=$fieldmap[$rt];
+                //print_r($fielddata);
+                //get SGQA IDs
+                $qsid=$fielddata['sid'];
+                $qgid=$fielddata['gid'];
+                $qqid=$fielddata['qid'];
+                $qanswer=$fielddata['aid'];
+
+                //question type
+                $qtype=$fielddata['type'];
+>>>>>>> refs/heads/dev_tms
 
                                         ++$xlsRow;
                                         $sheet->write($xlsRow, 0,html_entity_decode($shw[0],ENT_QUOTES,'UTF-8'));
                                         $sheet->write($xlsRow, 1,html_entity_decode($shw[1],ENT_QUOTES,'UTF-8'));
 
+<<<<<<< HEAD
+=======
+                //question ID
+                $rqid=$qqid;
+
+                //get question data
+                $nquery = "SELECT title, type, question, qid, parent_qid, other FROM ".db_table_name("questions")." WHERE qid='{$rqid}' AND parent_qid=0 and language='{$language}'";
+                $nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
+
+                //loop though question data
+                while ($nrow=$nresult->FetchRow())
+                {
+                    $qtitle=FlattenText($nrow[0]);
+                    $qtype=$nrow[1];
+                    $qquestion=FlattenText($nrow[2]);
+                    $qiqid=$nrow[3];
+                    $qparentqid=$nrow[4];
+                    $qother=$nrow[5];
+                }
+
+                //check question types
+                switch($qtype)
+                {
+                    //Array of 5 point choices (several items to rank!)
+                    case "A":
+>>>>>>> refs/heads/dev_tms
 
                                         $tableXLS[] = array($shw[0],$shw[1]);
 
                                         break;
                                     case 'pdf':
 
+<<<<<<< HEAD
                                         $tablePDF[] = array(html_entity_decode($shw[0],ENT_QUOTES,'UTF-8'),html_entity_decode($shw[1],ENT_QUOTES,'UTF-8'));
+=======
+                        //list IDs and answer codes in brackets
+                        $qquestion .= $linefeed."[".$atext."]";
+                        $qtitle .= "($qanswer)";
+                        break;
+>>>>>>> refs/heads/dev_tms
 
                                         break;
                                     case 'html':
@@ -1383,10 +2016,16 @@
                             {
                                 case 'xls':
 
+<<<<<<< HEAD
                                     ++$xlsRow;
                                     $sheet->write($xlsRow, 0,$statlang->gT("Null values are ignored in calculations"));
                                     ++$xlsRow;
                                     $sheet->write($xlsRow, 0,sprintf($statlang->gT("Q1 and Q3 calculated using %s"), $statlang->gT("minitab method")));
+=======
+                        $qquestion .= $linefeed."[".$atext."]";
+                        $qtitle .= "($qanswer)";
+                        break;
+>>>>>>> refs/heads/dev_tms
 
                                     $footXLS[] = array($statlang->gT("Null values are ignored in calculations"));
                                     $footXLS[] = array(sprintf($statlang->gT("Q1 and Q3 calculated using %s"), $statlang->gT("minitab method")));
@@ -1400,7 +2039,23 @@
                                     $pdf->Bookmark($pdf->delete_html($qquestion), 1, 0);
                                     $pdf->titleintopdf($pdfTitle,$titleDesc);
 
+<<<<<<< HEAD
                                     $pdf->headTable($headPDF, $tablePDF);
+=======
+                        //loop thorugh results
+                        while ($qrow=$qresult->FetchRow())
+                        {
+                            //add results
+                            $alist[]=array("Y", $statlang->gT("Yes"));
+                            $alist[]=array("N", $statlang->gT("No"));
+                            $alist[]=array("U", $statlang->gT("Uncertain"));
+                            $atext=FlattenText($qrow[1]);
+                        }
+                        //output
+                        $qquestion .= $linefeed."[".$atext."]";
+                        $qtitle .= "($qanswer)";
+                        break;
+>>>>>>> refs/heads/dev_tms
 
                                     $pdf->tablehead($footPDF);
 
@@ -1435,13 +2090,43 @@
                             {
                                 case 'xls':
 
+<<<<<<< HEAD
                                     $tableXLS = array();
                                     $tableXLS[] = array($statlang->gT("Not enough values for calculation"));
+=======
+                        $qquestion .= $linefeed."[".$atext."] [".$ltext."]";
+                        $qtitle .= "($qanswer)";
+                        break;
+>>>>>>> refs/heads/dev_tms
 
                                     ++$xlsRow;
                                     $sheet->write($xlsRow, 0, $statlang->gT("Not enough values for calculation"));
 
 
+<<<<<<< HEAD
+=======
+                        if (trim($qidattributes['multiflexible_min'])!='')
+                        {
+                            $minvalue=$qidattributes['multiflexible_min'];
+                        }
+                        else {
+                            $minvalue=1;
+                        }
+
+                        if (trim($qidattributes['multiflexible_step'])!='')
+                        {
+                            $stepvalue=$qidattributes['multiflexible_step'];
+                        }
+                        else {
+                            $stepvalue=1;
+                        }
+
+                        if ($qidattributes['multiflexible_checkbox']!=0) {
+                            $minvalue=0;
+                            $maxvalue=1;
+                            $stepvalue=1;
+                        }
+>>>>>>> refs/heads/dev_tms
 
                                     break;
                                 case 'pdf':
@@ -1536,6 +2221,7 @@
                             $qquery = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
                             $qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
 
+<<<<<<< HEAD
                             //loop through results
                             while ($qrow=$qresult->FetchRow())
                             {
@@ -1548,6 +2234,16 @@
                                 //add counter
                                 $atext=FlattenText($qrow[1]);
                             }
+=======
+
+                    case "1":	//array (dual scale)
+
+                        $sSubquestionQuery = "SELECT  question FROM ".db_table_name("questions")." WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
+                        $sSubquestion=FlattenText($connect->GetOne($sSubquestionQuery));
+
+                        //get question attributes
+                        $qidattributes=getQuestionAttributes($qqid);
+>>>>>>> refs/heads/dev_tms
 
                             //list IDs and answer codes in brackets
                             $qquestion .= $linefeed."[".$atext."]";
@@ -1646,6 +2342,7 @@
                                 $maxvalue=10;
                             }
 
+<<<<<<< HEAD
                             if (trim($qidattributes['multiflexible_min'])!='')
                             {
                                 $minvalue=$qidattributes['multiflexible_min'];
@@ -1653,6 +2350,15 @@
                             else {
                                 $minvalue=1;
                             }
+=======
+                }	//end switch question type
+
+                //moved because it's better to have "no answer" at the end of the list instead of the beginning
+                //put data into array
+                $alist[]=array("", $statlang->gT("No answer"));
+
+            }	//end else -> single option answers
+>>>>>>> refs/heads/dev_tms
 
                             if (trim($qidattributes['multiflexible_step'])!='')
                             {
@@ -1690,20 +2396,39 @@
                                 $fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid='{$qiqid}' AND scale_id=0 AND language='{$language}'ORDER BY sortorder, code";
                                 $fresult = db_execute_assoc($fquery);
 
+<<<<<<< HEAD
                                 //add code and title to results for outputting them later
                                 while ($frow=$fresult->FetchRow())
                                 {
                                     $alist[]=array($frow['code'], FlattenText($frow['answer']));
                                 }
+=======
+
+                // this will count the answers considered completed
+                $TotalCompleted = 0;
+                switch($outputType)
+                {
+                    case 'xls':
+
+                        $xlsTitle = sprintf($statlang->gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
+                        $xlsDesc = html_entity_decode($qquestion,ENT_QUOTES,'UTF-8');
+>>>>>>> refs/heads/dev_tms
 
                                 //counter
                                 $atext=FlattenText($qrow[1]);
                             }
 
+<<<<<<< HEAD
                             //output
                             $qquestion .= $linefeed."[".$atext."]";
                             $qtitle .= "($qanswer)";
                             break;
+=======
+                        ++$xlsRow;
+                        $sheet->write($xlsRow, 0,$xlsTitle);
+                        ++$xlsRow;
+                        $sheet->write($xlsRow, 0,$xlsDesc);
+>>>>>>> refs/heads/dev_tms
 
 
 
@@ -1713,12 +2438,69 @@
                             break;
 
 
+<<<<<<< HEAD
+=======
+                        break;
+                    case 'html':
+                        //output
+                        $statisticsoutput .= "<table class='statisticstable'>\n"
+                        ."\t<thead><tr><th colspan='4' align='center'><strong>"
+
+                        //headline
+                        .sprintf($statlang->gT("Field summary for %s"),$qtitle)."</strong>"
+                        ."</th></tr>\n"
+                        ."\t<tr><th colspan='4' align='center'><strong>"
+
+                        //question title
+                        .$qquestion."</strong></th></tr>\n"
+                        ."\t<tr>\n\t\t<th width='50%' align='center' >";
+                        break;
+                    default:
+>>>>>>> refs/heads/dev_tms
 
                         case "Y": //Yes\No
                             $alist[]=array("Y", $statlang->gT("Yes"));
                             $alist[]=array("N", $statlang->gT("No"));
                             break;
 
+<<<<<<< HEAD
+=======
+                        break;
+                }
+                echo '';
+                //loop thorugh the array which contains all answer data
+                foreach ($alist as $al)
+                {
+                    //picks out alist that come from the multiple list above
+                    if (isset($al[2]) && $al[2])
+                    {
+                        //handling for "other" option
+
+                        if ($al[0] == $statlang->gT("Other"))
+                        {
+                            if($qtype=='!' || $qtype=='L')
+                            {
+                                // It is better for single choice question types to filter on the number of '-oth-' entries, than to
+                                // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
+                                $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id(substr($al[2],0,strlen($al[2])-5))."='-oth-'";
+                            }
+                            else
+                            {
+	                            //get data
+	                            $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ";
+	                            $query .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
+                        	}
+                        }
+
+                        /*
+                         * text questions:
+                         *
+                         * U = huge free text
+                         * T = long free text
+                         * S = short free text
+                         * Q = multiple short text
+                         */
+>>>>>>> refs/heads/dev_tms
 
 
                         case "I": //Language
@@ -1735,6 +2517,7 @@
                             {
                                 $alist[]=array("$i", "$i");
                             }
+<<<<<<< HEAD
                             break;
 
 
@@ -1742,6 +2525,18 @@
 
                             $sSubquestionQuery = "SELECT  question FROM ".db_table_name("questions")." WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
                             $sSubquestion=FlattenText($connect->GetOne($sSubquestionQuery));
+=======
+                        }
+                        elseif ($qtype == "O")
+                        {
+                            $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ( ";
+                            $query .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." <> '')" : " (".db_quote_id($al[2])." NOT LIKE ''))";
+                            // all other question types
+                        }
+                        else
+                        {
+                            $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($al[2])." =";
+>>>>>>> refs/heads/dev_tms
 
                             //get question attributes
                             $qidattributes=getQuestionAttributes($qqid);
@@ -1771,8 +2566,16 @@
                             //label 2
                             else
                             {
+<<<<<<< HEAD
                                 //get label 2
                                 $fquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid='{$qqid}' AND scale_id=1 AND language='{$language}' ORDER BY sortorder, code";
+=======
+                                $query .= " 'Y'";
+                            }
+                        }
+
+                    }	//end if -> alist set
+>>>>>>> refs/heads/dev_tms
 
                                 //header available?
                                 if (trim($qidattributes['dualscale_headerB'])!='') {
@@ -1813,29 +2616,135 @@
                             $qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
                             $qresult = db_execute_num($qquery) or safe_die ("Couldn't get answers list<br />$qquery<br />".$connect->ErrorMsg());
 
+<<<<<<< HEAD
                             //put answer code and title into array
                             while ($qrow=$qresult->FetchRow())
                             {
                                 $alist[]=array("$qrow[0]", FlattenText($qrow[1]));
                             }
+=======
+                        //"no answer" handling
+                        if ($al[0] === "")
+                        {$fname=$statlang->gT("No answer");}
+
+                        //"other" handling
+                        //"Answers" means that we show an option to list answer to "other" text field
+                        elseif ($al[0] === $statlang->gT("Other") || $al[0] === "Answers" || ($qtype === "O" && $al[0] === $statlang->gT("Comments")) || $qtype === "P")
+                        {
+                            if ($qtype == "P" ) $ColumnName_RM = $al[2]."comment";
+                            else  $ColumnName_RM = $al[2];
+                            if ($qtype=='O') {
+                                $TotalCompleted -=$row[0];
+                            }
+                            $fname="$al[1]";
+                            if (!isset($_POST['showtextinline']) && $browse===true) $fname .= " <input type='button' value='".$statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&amp;sid={$surveyid}&amp;column={$ColumnName_RM}', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
+                        	if(isset($_POST['showtextinline']) && ($qtype != "S" && $qtype != "U" && $qtype != "T" && $qtype != "Q")) {
+                        		//Generate list of 'other' text entries for display
+                        		$headPDF2=array();
+                        		$headPDF2[]=array($statlang->gt("'Other' Responses"));
+                        		$tablePDF2=array();
+                        		$query2 = "SELECT ".db_quote_id($al[2])." FROM ".db_table_name("survey_$surveyid")." WHERE ";
+                        		$query2 .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
+                        		$result2=db_execute_num($query2) or safe_die ("Couldn't do count of values<br />$query<br />".$connect->ErrorMsg());
+                        		$fnamelast = "<div id='textresponses_$fname' class='textresponses' style='text-align: center;'>\n";
+                        		$fnamelast .= "<b>".$clang->gT("'Other' Responses")."</b><br />\n";
+                        		//$fname .= $query2;
+                        		while ($row2=$result2->FetchRow())
+                        		{
+                        			$fnamelast .= $row2[0]."<br />\n";
+                        			$tablePDF2[]=array($row2[0]);
+                        		}
+                        		$fnamelast .= "</div>\n";
+                        	}
+						}
+
+                        /*
+                         * text questions:
+                         *
+                         * U = huge free text
+                         * T = long free text
+                         * S = short free text
+                         * Q = multiple short text
+                         */
+                        elseif ($qtype == "S" || $qtype == "U" || $qtype == "T" || $qtype == "Q")
+                        {
+                            $headPDF = array();
+                            $headPDF[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
+>>>>>>> refs/heads/dev_tms
 
                             //handling for "other" field for list radio or list drowpdown
                             if ((($qtype == "L" || $qtype == "!") && $qother == "Y"))
                             {
+<<<<<<< HEAD
                                 //add "other"
                                 $alist[]=array($statlang->gT("Other"),$statlang->gT("Other"),$fielddata['fieldname'].'other');
+=======
+                                $fname= "$al[1]";
+                                if (!isset($_POST['showtextinline']) && $browse===true) $fname .= " <input type='submit' value='"
+                                . $statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
+>>>>>>> refs/heads/dev_tms
                             }
                             if ( $qtype == "O")
                             {
                                 //add "comment"
                                 $alist[]=array($statlang->gT("Comments"),$statlang->gT("Comments"),$fielddata['fieldname'].'comment');
                             }
+<<<<<<< HEAD
+=======
+
+							$statisticsoutput .= "</th>\n"
+							."\t\t<th width='25%' align='center' >"
+							."<strong>".$statlang->gT("Count")."</strong></th>\n"
+							."\t\t<th width='25%' align='center' >"
+							."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
+							."\t</tr></thead>\n";
+
+                        	if (isset($_POST['showtextinline'])) {
+                        		$headPDF2=array();
+                        		$headPDF2[]=array($statlang->gt("Responses"));
+                        		$tablePDF2=array();
+                        		$query2 = "SELECT ".db_quote_id($al[2])." FROM ".db_table_name("survey_$surveyid")." WHERE ";
+                        		$query2 .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
+                        		$result2=db_execute_num($query2) or safe_die ("Couldn't do count of values<br />$query<br />".$connect->ErrorMsg());
+                        		$fnamelast = "<div id='textresponses_$fname' class='textresponses' style='text-align: center;'>\n";
+								$fnamelast .= "<b>".$clang->gT("Responses")."</b><br />\n";
+                        		//$fname .= $query2;
+                        		while ($row2=$result2->FetchRow())
+                        		{
+                        			$fnamelast .= $row2[0]."<br />\n";
+                        			$tablePDF2[]=array($row2[0]);
+                        		}
+                        		$fnamelast .= "</div>\n";
+
+                        	}
+                        }
+
+
+                        //check if aggregated results should be shown
+                        elseif (isset($showaggregateddata) && $showaggregateddata == 1)
+                        {
+                            if(!isset($showheadline) || $showheadline != false)
+                            {
+                                if($qtype == "5" || $qtype == "A")
+                                {
+                                    switch($outputType)
+                                    {
+                                        case 'xls':
+>>>>>>> refs/heads/dev_tms
 
                     }	//end switch question type
 
+<<<<<<< HEAD
                     //moved because it's better to have "no answer" at the end of the list instead of the beginning
                     //put data into array
                     $alist[]=array("", $statlang->gT("No answer"));
+=======
+                                            ++$xlsRow;
+                                            $sheet->write($xlsRow,0,$statlang->gT("Answer"));
+                                            $sheet->write($xlsRow,1,$statlang->gT("Count"));
+                                            $sheet->write($xlsRow,2,$statlang->gT("Percentage"));
+                                            $sheet->write($xlsRow,3,$statlang->gT("Sum"));
+>>>>>>> refs/heads/dev_tms
 
                 }	//end else -> single option answers
 
@@ -2311,8 +3220,12 @@
                                     $showheadline = false;
 
                                 }
+<<<<<<< HEAD
                                 //answer text
                                 $fname="$al[1] ($al[0])";
+=======
+
+>>>>>>> refs/heads/dev_tms
                             }
 
                             //are there some results to play with?
@@ -2333,6 +3246,7 @@
                             {
                                 //put absolute data into array
                                 $grawdata[]=$row[0];
+<<<<<<< HEAD
                             }
                             else
                             {
@@ -2386,10 +3300,93 @@
 
                                 //increase counter
                                 $i++;
+=======
+                                $showaggregated_indice=count($grawdata) - 1;
+                                $showaggregated_indice_table[$showaggregated_indice]="aggregated";
+                                $showaggregated_indice=-1;
+
+                                //keep in mind that we already added data (will be checked later)
+                                $justadded = true;
+
+                                //we need a counter because we want to sum up certain values
+                                //reset counter if 5 items have passed
+                                if(!isset($testcounter) || $testcounter >= 4)
+                                {
+                                    $testcounter = 0;
+                                }
+                                else
+                                {
+                                    $testcounter++;
+                                }
+
+                                //beside the known percentage value a new aggregated value should be shown
+                                //therefore this item is marked in a certain way
+
+                                if($testcounter == 0 )	//add 300 to original value
+                                {
+                                    //HACK: add three times the total number of results to the value
+                                    //This way we get a 300 + X percentage which can be checked later
+                                    $row[0] += (3*$results);
+                                }
+
+                                //the third value should be shown twice later -> mark it
+                                if($testcounter == 2)	//add 400 to original value
+                                {
+                                    //HACK: add four times the total number of results to the value
+                                    //This way there should be a 400 + X percentage which can be checked later
+                                    $row[0] += (4*$results);
+                                }
+
+                                //the last value aggregates the data of item 4 + item 5 later
+                                if($testcounter == 4 )	//add 200 to original value
+                                {
+                                    //HACK: add two times the total number of results to the value
+                                    //This way there should be a 200 + X percentage which can be checked later
+                                    $row[0] += (2*$results);
+                                }
+
+                            }	//end if -> question type = "5"/"A"
+
+                        }	//end if -> show aggregated data
+
+                        //handling what's left
+                        else
+                        {
+                            if(!isset($showheadline) || $showheadline != false)
+                            {
+                                switch($outputType)
+                                {
+                                    case 'xls':
+
+                                        $headXLS = array();
+                                        $headXLS[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
+
+                                        ++$xlsRow;
+                                        $sheet->write($xlsRow,0,$statlang->gT("Answer"));
+                                        $sheet->write($xlsRow,1,$statlang->gT("Count"));
+                                        $sheet->write($xlsRow,2,$statlang->gT("Percentage"));
+>>>>>>> refs/heads/dev_tms
 
                             }	//end while (data available)
 
+<<<<<<< HEAD
                         }	//end if -> noncompleted checked
+=======
+                                        $headPDF = array();
+                                        $headPDF[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
+
+                                        break;
+                                    case 'html':
+                                        //three columns
+                                        $statisticsoutput .= "<strong>".$statlang->gT("Answer")."</strong></th>\n"
+                                        ."\t\t<th width='25%' align='center' >"
+                                        ."<strong>".$statlang->gT("Count")."</strong></th>\n"
+                                        ."\t\t<th width='25%' align='center' >"
+                                        ."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
+                                        ."\t</tr></thead>\n";
+                                        break;
+                                    default:
+>>>>>>> refs/heads/dev_tms
 
                         //noncompleted is NOT checked
                         else
@@ -2413,12 +3410,53 @@
                                 //calculate percentage
                                 $gdata[] = ($TotalIncomplete/$results)*100;
                             }
+<<<<<<< HEAD
 
                             //no data :(
                             else
                             {
                                 $gdata[] = "N/A";
                             }
+=======
+                            //answer text
+                            $fname="$al[1] ($al[0])";
+                        }
+
+                        //are there some results to play with?
+                        if ($results > 0)
+                        {
+                            //calculate percentage
+                            $gdata[] = ($row[0]/$results)*100;
+                        }
+                        //no results
+                        else
+                        {
+                            //no data!
+                            $gdata[] = "N/A";
+                        }
+
+                        //only add this if we don't handle question type "5"/"A"
+                        if(!isset($justadded))
+                        {
+                            //put absolute data into array
+                            $grawdata[]=$row[0];
+                        }
+                        else
+                        {
+                            //unset to handle "no answer" data correctly
+                            unset($justadded);
+                        }
+
+                        //put question title and code into array
+                        $label[]=$fname;
+
+                        //put only the code into the array
+                        $justcode[]=$al[0];
+
+                        //edit labels and put them into antoher array
+                        $lbl[] = wordwrap(FlattenText("$al[1] ($row[0])"), 25, "\n"); // NMO 2009-03-24
+                        $lblrtl[] = utf8_strrev(wordwrap(FlattenText("$al[1] )$row[0]("), 25, "\n")); // NMO 2009-03-24
+>>>>>>> refs/heads/dev_tms
 
                             //put data of incompleted records into array
                             $grawdata[]=$TotalIncomplete;
@@ -2442,9 +3480,64 @@
 
                     }	//end if -> no filtering of incomplete answers and no multiple option questions
 
+<<<<<<< HEAD
 
                     //counter
                     $i=0;
+=======
+                        }	//end while (data available)
+
+                    }	//end if -> noncompleted checked
+
+                    //noncompleted is NOT checked
+                    else
+                    {
+                        //calculate total number of incompleted records
+                        $TotalIncomplete = $results - $TotalCompleted;
+
+                        //output
+                        if ((incompleteAnsFilterstate() != "filter"))
+                        {
+                            $fname=$statlang->gT("Not completed or Not displayed");
+                        }
+                        else
+                        {
+                            $fname=$statlang->gT("Not displayed");
+                        }
+
+                        //we need some data
+                        if ($results > 0)
+                        {
+                            //calculate percentage
+                            $gdata[] = ($TotalIncomplete/$results)*100;
+                        }
+
+                        //no data :(
+                        else
+                        {
+                            $gdata[] = "N/A";
+                        }
+
+                        //put data of incompleted records into array
+                        $grawdata[]=$TotalIncomplete;
+
+                        //put question title ("Not completed") into array
+                        $label[]= $fname;
+
+                        //put the code ("Not completed") into the array
+                        $justcode[]=$fname;
+
+                        //edit labels and put them into antoher array
+                        if ((incompleteAnsFilterstate() != "filter"))
+                        {
+                            $lbl[] = wordwrap(FlattenText($statlang->gT("Not completed or Not displayed")." ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
+                        }
+                        else
+                        {
+                            $lbl[] = wordwrap(FlattenText($statlang->gT("Not displayed")." ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
+                        }
+                    }	//end else -> noncompleted NOT checked
+>>>>>>> refs/heads/dev_tms
 
                     //we need to know which item we are editing
                     $itemcounter = 1;
@@ -2458,6 +3551,20 @@
                         //repeat header (answer, count, ...) for each new question
                         unset($showheadline);
 
+<<<<<<< HEAD
+=======
+                //we need to know which item we are editing
+                $itemcounter = 1;
+
+                //array to store items 1 - 5 of question types "5" and "A"
+                $stddevarray = array();
+
+                //loop through all available answers
+                while (isset($gdata[$i]))
+                {
+                    //repeat header (answer, count, ...) for each new question
+                    unset($showheadline);
+>>>>>>> refs/heads/dev_tms
 
                         /*
                         * there are 3 colums:
@@ -2469,27 +3576,79 @@
                         $statisticsoutput .= "\t<tr>\n\t\t<td align='center' >" . $label[$i] ."\n"
                         ."\t\t</td>\n"
 
+<<<<<<< HEAD
                         //output absolute number of records
                         ."\t\t<td align='center' >" . $grawdata[$i] . "\n</td>";
+=======
+                    /*
+                     * there are 3 colums:
+                     *
+                     * 1 (50%) = answer (title and code in brackets)
+                     * 2 (25%) = count (absolute)
+                     * 3 (25%) = percentage
+                     */
+                    $statisticsoutput .= "\t<tr>\n\t\t<td align='center' >" . $label[$i] ."\n"
+                    ."\t\t</td>\n"
+
+                    //output absolute number of records
+                    ."\t\t<td align='center' >" . $grawdata[$i] . "\n</td>";
+>>>>>>> refs/heads/dev_tms
 
 
                         //no data
                         if ($gdata[$i] == "N/A")
                         {
+<<<<<<< HEAD
                             switch($outputType)
                             {
                                 case 'xls':
 
                                     $label[$i]=FlattenText($label[$i]);
                                     $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i]). "%");
+=======
+                            case 'xls':
+
+                                $label[$i]=FlattenText($label[$i]);
+                                $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i]). "%");
+
+                                ++$xlsRow;
+                                $sheet->write($xlsRow,0,$label[$i]);
+                                $sheet->write($xlsRow,1,$grawdata[$i]);
+                                $sheet->write($xlsRow,2,sprintf("%01.2f", $gdata[$i]). "%");
+>>>>>>> refs/heads/dev_tms
 
                                     ++$xlsRow;
                                     $sheet->write($xlsRow,0,$label[$i]);
                                     $sheet->write($xlsRow,1,$grawdata[$i]);
                                     $sheet->write($xlsRow,2,sprintf("%01.2f", $gdata[$i]). "%");
 
+<<<<<<< HEAD
                                     break;
                                 case 'pdf':
+=======
+                                $tablePDF[] = array(FlattenText($label[$i]),$grawdata[$i],sprintf("%01.2f", $gdata[$i]). "%", "");
+
+                                break;
+                            case 'html':
+                                //output when having no data
+                                $statisticsoutput .= "\t\t<td  align='center' >";
+
+                                //percentage = 0
+                                $statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
+                                $gdata[$i] = 0;
+
+                                //check if we have to adjust ouput due to $showaggregateddata setting
+                                if(isset($showaggregateddata) && $showaggregateddata == 1 && ($qtype == "5" || $qtype == "A"))
+                                {
+                                    $statisticsoutput .= "\t\t</td>";
+                                }
+								elseif ($qtype == "S" || $qtype == "U" || $qtype == "T" || $qtype == "Q")
+                        		{
+                                    $statisticsoutput .= "</td>\n\t</tr>\n";
+                                }
+                                break;
+                            default:
+>>>>>>> refs/heads/dev_tms
 
                                     $tablePDF[] = array(FlattenText($label[$i]),$grawdata[$i],sprintf("%01.2f", $gdata[$i]). "%", "");
 
@@ -2636,6 +3795,7 @@
                                         //get the original percentage
                                         $percentage = $gdata[$i];
                                     }
+<<<<<<< HEAD
                                     switch($outputType)
                                     {
                                         case 'xls':
@@ -2648,6 +3808,42 @@
                                             $sheet->write($xlsRow,1,$grawdata[$i]);
                                             $sheet->write($xlsRow,2,sprintf("%01.2f", $percentage)."%");
                                             $sheet->write($xlsRow,3,sprintf("%01.2f", $percentage)."%");
+=======
+                                }
+                                else
+                                {
+                                    $percentage = $gdata[$i];
+                                }
+                                switch($outputType)
+                                {
+                                    case 'xls':
+
+                                        $label[$i]=FlattenText($label[$i]);
+                                        $tableXLS[]= array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%");
+
+                                        ++$xlsRow;
+                                        $sheet->write($xlsRow,0,$label[$i]);
+                                        $sheet->write($xlsRow,1,$grawdata[$i]);
+                                        $sheet->write($xlsRow,2,sprintf("%01.2f", $percentage)."%");
+
+                                        break;
+                                    case 'pdf':
+                                        $label[$i]=FlattenText($label[$i]);
+                                        $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%", "");
+
+                                        break;
+                                    case 'html':
+                                        //output
+                                        $statisticsoutput .= "\t\t<td align='center'>";
+
+                                        //output percentage
+                                        $statisticsoutput .= sprintf("%01.2f", $percentage) . "%";
+
+                                        //adjust output
+                                        $statisticsoutput .= "\t\t</td>";
+                                        break;
+                                    default:
+>>>>>>> refs/heads/dev_tms
 
                                             break;
                                         case 'pdf':
@@ -2667,6 +3863,7 @@
                                             break;
                                         default:
 
+<<<<<<< HEAD
 
                                             break;
                                     }
@@ -2677,6 +3874,17 @@
                                 //old: if($gdata[$i] >= 300 && $gdata[$i] < 400)
                                 //trying to fix bug #2583:
                                 if(($gdata[$i] >= 300 && $gdata[$i] < 400) || ($i == 0 && $gdata[$i] <= 400))
+=======
+                            //item 3 - just show results twice
+                            //old: if($gdata[$i] >= 400)
+                            //trying to fix bug #2583:
+                            if($gdata[$i] >= 400 && $i != 0)
+                            {
+                                //remove "400" which was added before
+                                $gdata[$i] -= 400;
+
+                                if($itemcounter == 3 && $label[$i+3] == $statlang->gT("No answer"))
+>>>>>>> refs/heads/dev_tms
                                 {
                                     //remove "300" which was added before
                                     $gdata[$i] -= 300;
@@ -2702,6 +3910,7 @@
                                         $percentage = $gdata[$i];
                                         $percentage2 = $gdata[$i+1];
                                     }
+<<<<<<< HEAD
                                     //percentage of item 1 + item 2
                                     $aggregatedgdata = $percentage + $percentage2;
 
@@ -2709,6 +3918,44 @@
                                     switch($outputType)
                                     {
                                         case 'xls':
+=======
+                                }
+                                else
+                                {
+                                    //get the original percentage
+                                    $percentage = $gdata[$i];
+                                }
+                                switch($outputType)
+                                {
+                                    case 'xls':
+
+                                        $label[$i]=FlattenText($label[$i]);
+                                        $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $percentage)."%");
+
+                                        ++$xlsRow;
+                                        $sheet->write($xlsRow,0,$label[$i]);
+                                        $sheet->write($xlsRow,1,$grawdata[$i]);
+                                        $sheet->write($xlsRow,2,sprintf("%01.2f", $percentage)."%");
+                                        $sheet->write($xlsRow,3,sprintf("%01.2f", $percentage)."%");
+
+                                        break;
+                                    case 'pdf':
+                                        $label[$i]=FlattenText($label[$i]);
+                                        $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $percentage)."%");
+
+                                        break;
+                                    case 'html':
+                                        //output percentage
+                                        $statisticsoutput .= "\t\t<td align='center' >";
+                                        $statisticsoutput .= sprintf("%01.2f", $percentage) . "%</td>";
+
+                                        //output again (no real aggregation here)
+                                        $statisticsoutput .= "\t\t<td align='center' >";
+                                        $statisticsoutput .= sprintf("%01.2f", $percentage)."%";
+                                        $statisticsoutput .= "</td>\t\t";
+                                        break;
+                                    default:
+>>>>>>> refs/heads/dev_tms
 
                                             $label[$i]=FlattenText($label[$i]);
                                             $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
@@ -2724,6 +3971,7 @@
                                             $label[$i]=FlattenText($label[$i]);
                                             $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
 
+<<<<<<< HEAD
                                             break;
                                         case 'html':
                                             //output percentage
@@ -2744,6 +3992,17 @@
 
                                 //LAST value -> add item 4 + item 5
                                 if($gdata[$i] > 100 && $gdata[$i] < 300)
+=======
+                            //FIRST value -> add percentage of item 1 + item 2
+                            //old: if($gdata[$i] >= 300 && $gdata[$i] < 400)
+                            //trying to fix bug #2583:
+                            if(($gdata[$i] >= 300 && $gdata[$i] < 400) || ($i == 0 && $gdata[$i] <= 400))
+                            {
+                                //remove "300" which was added before
+                                $gdata[$i] -= 300;
+
+                                if($itemcounter == 1 && $label[$i+5] == $statlang->gT("No answer"))
+>>>>>>> refs/heads/dev_tms
                                 {
                                     //remove "200" which was added before
                                     $gdata[$i] -= 200;
@@ -2765,6 +4024,7 @@
                                     }
                                     else
                                     {
+<<<<<<< HEAD
                                         $percentage = $gdata[$i];
                                         $percentage2 = $gdata[$i-1];
                                     }
@@ -2777,6 +4037,34 @@
 
                                             $label[$i]=FlattenText($label[$i]);
                                             $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
+=======
+                                        $percentage = 0;
+                                        $percentage2 = 0;
+
+                                    }
+                                }
+                                else
+                                {
+                                    $percentage = $gdata[$i];
+                                    $percentage2 = $gdata[$i+1];
+                                }
+                                //percentage of item 1 + item 2
+                                $aggregatedgdata = $percentage + $percentage2;
+
+
+                                switch($outputType)
+                                {
+                                    case 'xls':
+
+                                        $label[$i]=FlattenText($label[$i]);
+                                        $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
+
+                                        ++$xlsRow;
+                                        $sheet->write($xlsRow,0,$label[$i]);
+                                        $sheet->write($xlsRow,1,$grawdata[$i]);
+                                        $sheet->write($xlsRow,2,sprintf("%01.2f", $percentage)."%");
+                                        $sheet->write($xlsRow,3,sprintf("%01.2f", $aggregatedgdata)."%");
+>>>>>>> refs/heads/dev_tms
 
                                             ++$xlsRow;
                                             $sheet->write($xlsRow,0,$label[$i]);
@@ -2784,10 +4072,25 @@
                                             $sheet->write($xlsRow,2,sprintf("%01.2f", $percentage)."%");
                                             $sheet->write($xlsRow,3,sprintf("%01.2f", $aggregatedgdata)."%");
 
+<<<<<<< HEAD
                                             break;
                                         case 'pdf':
                                             $label[$i]=FlattenText($label[$i]);
                                             $tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
+=======
+                                        break;
+                                    case 'html':
+                                        //output percentage
+                                        $statisticsoutput .= "\t\t<td align='center' >";
+                                        $statisticsoutput .= sprintf("%01.2f", $percentage) . "%</td>";
+
+                                        //output aggregated data
+                                        $statisticsoutput .= "\t\t<td align='center' >";
+                                        $statisticsoutput .= sprintf("%01.2f", $aggregatedgdata)."%";
+                                        $statisticsoutput .= "</td>\t\t";
+                                        break;
+                                    default:
+>>>>>>> refs/heads/dev_tms
 
                                             break;
                                         case 'html':
@@ -2802,6 +4105,7 @@
                                             break;
                                         default:
 
+<<<<<<< HEAD
 
                                             break;
                                     }
@@ -2816,6 +4120,18 @@
 
                                     //special treatment for zero values
                                     if($sumitems > 0)
+=======
+                            //LAST value -> add item 4 + item 5
+                            if($gdata[$i] > 100 && $gdata[$i] < 300)
+                            {
+                                //remove "200" which was added before
+                                $gdata[$i] -= 200;
+
+                                if($itemcounter == 5 && $label[$i+1] == $statlang->gT("No answer"))
+                                {
+                                    //prevent division by zero
+                                    if(($results - $grawdata[$i+1]) > 0)
+>>>>>>> refs/heads/dev_tms
                                     {
                                         $sumpercentage = "100.00";
                                     }
@@ -2878,6 +4194,7 @@
                                     }
 
                                 }
+<<<<<<< HEAD
 
                             }	//end if -> show aggregated data
 
@@ -2887,14 +4204,33 @@
                                 switch($outputType)
                                 {
                                     case 'xls':
+=======
+                                else
+                                {
+                                    $percentage = $gdata[$i];
+                                    $percentage2 = $gdata[$i-1];
+                                }
+
+                                //item 4 + item 5
+                                $aggregatedgdata = $percentage + $percentage2;
+                                switch($outputType)
+                                {
+                                    case 'xls':
+
+>>>>>>> refs/heads/dev_tms
                                         $label[$i]=FlattenText($label[$i]);
                                         $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i])."%", "");
 
                                         ++$xlsRow;
                                         $sheet->write($xlsRow,0,$label[$i]);
                                         $sheet->write($xlsRow,1,$grawdata[$i]);
+<<<<<<< HEAD
                                         $sheet->write($xlsRow,2,sprintf("%01.2f", $gdata[$i])."%");
                                         //$sheet->write($xlsRow,3,$sumpercentage."%");
+=======
+                                        $sheet->write($xlsRow,2,sprintf("%01.2f", $percentage)."%");
+                                        $sheet->write($xlsRow,3,sprintf("%01.2f", $aggregatedgdata)."%");
+>>>>>>> refs/heads/dev_tms
 
                                         break;
                                     case 'pdf':
@@ -2905,10 +4241,19 @@
                                     case 'html':
                                         //output percentage
                                         $statisticsoutput .= "\t\t<td align='center' >";
+<<<<<<< HEAD
                                         $statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
                                         $statisticsoutput .= "\t\t";
                                         //end output per line. there has to be a whitespace within the table cell to display correctly
                                         $statisticsoutput .= "\t\t&nbsp;</td>\n\t</tr>\n";
+=======
+                                        $statisticsoutput .= sprintf("%01.2f", $percentage) . "%</td>";
+
+                                        //output aggregated data
+                                        $statisticsoutput .= "\t\t<td align='center' >";
+                                        $statisticsoutput .= sprintf("%01.2f", $aggregatedgdata)."%";
+                                        $statisticsoutput .= "</td>\t\t";
+>>>>>>> refs/heads/dev_tms
                                         break;
                                     default:
 
@@ -2916,6 +4261,7 @@
                                         break;
                                 }
 
+<<<<<<< HEAD
                             }
 
                         }	//end else -> $gdata[$i] != "N/A"
@@ -2951,6 +4297,22 @@
                                 //calculate and round results
                                 //there are always 5 items
                                 for($x = 0; $x < 5; $x++)
+=======
+                                // create new row "sum"
+                                //calculate sum of items 1-5
+                                $sumitems = $grawdata[$i]
+                                + $grawdata[$i-1]
+                                + $grawdata[$i-2]
+                                + $grawdata[$i-3]
+                                + $grawdata[$i-4];
+
+                                //special treatment for zero values
+                                if($sumitems > 0)
+                                {
+                                    $sumpercentage = "100.00";
+                                }
+                                else
+>>>>>>> refs/heads/dev_tms
                                 {
                                     //create product of item * value
                                     $am += (($x+1) * $stddevarray[$x]);
@@ -2965,6 +4327,13 @@
                                 {
                                     $am = 0;
                                 }
+<<<<<<< HEAD
+=======
+                                switch($outputType)
+                                {
+                                    case 'xls':
+
+>>>>>>> refs/heads/dev_tms
 
                                 //calculate standard deviation -> loop through all data
                                 /*
@@ -2976,6 +4345,18 @@
                                 * 5 = get root
                                 */
 
+<<<<<<< HEAD
+=======
+                                        ++$xlsRow;
+                                        $sheet->write($xlsRow,0,$statlang->gT("Sum")." (".$statlang->gT("Answers").")");
+                                        $sheet->write($xlsRow,1,$sumitems);
+                                        $sheet->write($xlsRow,2,$sumpercentage."%");
+                                        $sheet->write($xlsRow,3,$sumpercentage."%");
+                                        ++$xlsRow;
+                                        $sheet->write($xlsRow,0,$statlang->gT("Number of cases"));
+                                        $sheet->write($xlsRow,1,$TotalCompleted);
+                                        $sheet->write($xlsRow,2,$casepercentage."%");
+>>>>>>> refs/heads/dev_tms
 
 
                                 for($j = 0; $j < 5; $j++)
@@ -3013,6 +4394,15 @@
                                 $stddev = sqrt($stddev);
                                 $stddev = round($stddev,2);
                             }
+<<<<<<< HEAD
+=======
+
+                        }	//end if -> show aggregated data
+
+                        //don't show aggregated data
+                        else
+                        {
+>>>>>>> refs/heads/dev_tms
                             switch($outputType)
                             {
                                 case 'xls':
@@ -3025,8 +4415,15 @@
                                     $sheet->write($xlsRow,1,$am);
 
                                     ++$xlsRow;
+<<<<<<< HEAD
                                     $sheet->write($xlsRow,0,$statlang->gT("Standard deviation"));
                                     $sheet->write($xlsRow,1,$stddev);
+=======
+                                    $sheet->write($xlsRow,0,$label[$i]);
+                                    $sheet->write($xlsRow,1,$grawdata[$i]);
+                                    $sheet->write($xlsRow,2,sprintf("%01.2f", $gdata[$i])."%");
+                                    //$sheet->write($xlsRow,3,$sumpercentage."%");
+>>>>>>> refs/heads/dev_tms
 
                                     break;
                                 case 'pdf':
@@ -3061,7 +4458,12 @@
                             $pdf->headTable($headPDF2, $tablePDF2);
                             unset($headPDF2, $tablePDF2);
                         }
+<<<<<<< HEAD
                         //$pdf->tableintopdf($tablePDF);
+=======
+
+                    }	//end else -> $gdata[$i] != "N/A"
+>>>>>>> refs/heads/dev_tms
 
                         //				if(isset($footPDF))
                         //				foreach($footPDF as $foot)
@@ -3074,6 +4476,7 @@
 
 
 
+<<<<<<< HEAD
                     //-------------------------- PCHART OUTPUT ----------------------------
 
                     //PCHART has to be enabled and we need some data
@@ -3112,6 +4515,26 @@
                             $setcentrey=0.5/(($gheight/320));
                         }
                         else
+=======
+                }	//end while
+            	if(isset($fnamelast)) {
+            		$statisticsoutput.= "<tr><td colspan='3'>".$fnamelast."</td></tr>\n";
+            		unset($fnamelast);
+            	}
+                //only show additional values when this setting is enabled
+                if(isset($showaggregateddata) && $showaggregateddata == 1 )
+                {
+                    //it's only useful to calculate standard deviation and arithmetic means for question types
+                    //5 = 5 Point Scale
+                    //A = Array (5 Point Choice)
+                    if($qtype == "5" || $qtype == "A")
+                    {
+                        $stddev = 0;
+                        $am = 0;
+
+                        //calculate arithmetic mean
+                        if(isset($sumitems) && $sumitems > 0)
+>>>>>>> refs/heads/dev_tms
                         {
                             $gheight=320;
                             $fontsize=8;
@@ -3194,8 +4617,12 @@
                                     array_splice ($gdata, $i, 1);
                                     array_splice ($lbl, $i, 1);
                                 }
+<<<<<<< HEAD
                                 else
                                 {$i++;}
+=======
+
+>>>>>>> refs/heads/dev_tms
                             }
 
                             $lblout=array();
@@ -3269,10 +4696,24 @@
                         switch($outputType)
                         {
                             case 'xls':
+<<<<<<< HEAD
 
                                 /**
                                 * No Image for Excel...
                                 */
+=======
+
+                                $tableXLS[] = array($statlang->gT("Arithmetic mean"),$am,'','');
+                                $tableXLS[] = array($statlang->gT("Standard deviation"),$stddev,'','');
+
+                                ++$xlsRow;
+                                $sheet->write($xlsRow,0,$statlang->gT("Arithmetic mean"));
+                                $sheet->write($xlsRow,1,$am);
+
+                                ++$xlsRow;
+                                $sheet->write($xlsRow,0,$statlang->gT("Standard deviation"));
+                                $sheet->write($xlsRow,1,$stddev);
+>>>>>>> refs/heads/dev_tms
 
                                 break;
                             case 'pdf':
@@ -3292,12 +4733,199 @@
 
                                 break;
                         }
+<<<<<<< HEAD
+=======
+                    }
+                }
+
+                if($outputType=='pdf') //XXX TODO PDF
+                {
+                    //$tablePDF = array();
+                    $tablePDF = array_merge_recursive($tablePDF, $footPDF);
+                    $pdf->headTable($headPDF,$tablePDF);
+                	if(isset($headPDF2)) {
+                		$tablePDF = array_merge_recursive($headPDF2, $tablePDF2);
+                		$pdf->headTable($headPDF2, $tablePDF2);
+                		unset($headPDF2, $tablePDF2);
+                	}
+                    //$pdf->tableintopdf($tablePDF);
+
+                    //				if(isset($footPDF))
+                    //				foreach($footPDF as $foot)
+                    //				{
+                    //					$footA = array($foot);
+                    //					$pdf->tablehead($footA);
+                    //				}
+                }
+
+
+>>>>>>> refs/heads/dev_tms
 
                     }
 
+<<<<<<< HEAD
                     //close table/output
                     if($outputType=='html')
                         $statisticsoutput .= "</table><br /> \n";
+=======
+                    // Create bar chart for Multiple choice
+                    if ($qtype == "M" || $qtype == "P")
+                    {
+                        //new bar chart using data from array $grawdata which contains percentage
+
+                        $DataSet = new pData;
+                        $counter=0;
+                        $maxyvalue=0;
+                        foreach ($grawdata as $datapoint)
+                        {
+                            $DataSet->AddPoint(array($datapoint),"Serie$counter");
+                            $DataSet->AddSerie("Serie$counter");
+
+                            $counter++;
+                            if ($datapoint>$maxyvalue) $maxyvalue=$datapoint;
+                        }
+
+                        if ($maxyvalue<10) {++$maxyvalue;}
+                        $counter=0;
+                        foreach ($lbl as $label)
+                        {
+                            $DataSet->SetSerieName($label,"Serie$counter");
+                            $counter++;
+                        }
+
+                        if ($MyCache->IsInCache("graph".$surveyid,$DataSet->GetData()))
+                        {
+                            $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData()));
+                        }
+                        else
+                        {
+                            $graph = new pChart(1,1);
+
+                            $graph->setFontProperties($rootdir."/fonts/".$chartfontfile, $chartfontsize);
+                            $legendsize=$graph->getLegendBoxSize($DataSet->GetDataDescription());
+
+                            if ($legendsize[1]<320) $gheight=420; else $gheight=$legendsize[1]+100;
+                            $graph = new pChart(690+$legendsize[0],$gheight);
+                            $graph->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
+                            $graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);
+                            $graph->setGraphArea(50,30,500,$gheight-60);
+                            $graph->drawFilledRoundedRectangle(7,7,523+$legendsize[0],$gheight-7,5,254,255,254);
+                            $graph->drawRoundedRectangle(5,5,525+$legendsize[0],$gheight-5,5,230,230,230);
+                            $graph->drawGraphArea(255,255,255,TRUE);
+                            $graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE,5,false);
+                            $graph->drawGrid(4,TRUE,230,230,230,50);
+                            // Draw the 0 line
+                            $graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);
+                            $graph->drawTreshold(0,143,55,72,TRUE,TRUE);
+
+                            // Draw the bar graph
+                            $graph->drawBarGraph($DataSet->GetData(),$DataSet->GetDataDescription(),FALSE);
+                            //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");
+                            // Finish the graph
+                            $graph->setFontProperties($rootdir."/fonts/".$chartfontfile, $chartfontsize);
+                            $graph->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
+
+                            $MyCache->WriteToCache("graph".$surveyid,$DataSet->GetData(),$graph);
+                            $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData()));
+                            unset($graph);
+                        }
+                    }	//end if (bar chart)
+
+                    //Pie Chart
+                    else
+                    {
+                        // this block is to remove the items with value == 0
+                        $i = 0;
+                        while (isset ($gdata[$i]))
+                        {
+                            if ($gdata[$i] == 0)
+                            {
+                                array_splice ($gdata, $i, 1);
+                                array_splice ($lbl, $i, 1);
+                            }
+                            else
+                            {$i++;}
+                        }
+
+                        $lblout=array();
+                        if ($language=='ar')
+                        {
+                            $lblout=$lbl; //reset text order to original
+                            include_once($rootdir.'/classes/core/Arabic.php');
+                            $Arabic = new Arabic('ArGlyphs');
+                            foreach($lblout as $kkey => $kval){
+                                if (preg_match("^[A-Za-z]^", $kval)) { //auto detect if english
+                                    //eng
+                                    //no reversing
+                                }
+                                else{
+                                    $kval = $Arabic->utf8Glyphs($kval,50,false);
+                                    $lblout[$kkey] = $kval;
+                                }
+                            }
+                        }
+                        elseif (getLanguageRTL($language))
+                        {
+                            $lblout=$lblrtl;
+                        }
+                        else
+                        {
+                            $lblout=$lbl;
+                        }
+
+
+                        //create new 3D pie chart
+                        if ($usegraph==1)
+                        {
+                            $DataSet = new pData;
+                            $DataSet->AddPoint($gdata,"Serie1");
+                            $DataSet->AddPoint($lblout,"Serie2");
+                            $DataSet->AddAllSeries();
+                            $DataSet->SetAbsciseLabelSerie("Serie2");
+
+                            if ($MyCache->IsInCache("graph".$surveyid,$DataSet->GetData()))
+                            {
+                                $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData()));
+                            }
+                            else
+                            {
+
+                                $gheight=ceil($gheight);
+                                $graph = new pChart(690,$gheight);
+                                $graph->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
+                                $graph->drawFilledRoundedRectangle(7,7,687,$gheight-3,5,254,255,254);
+                                $graph->drawRoundedRectangle(5,5,689,$gheight-1,5,230,230,230);
+
+                                // Draw the pie chart
+                                $graph->setFontProperties($rootdir."/fonts/".$chartfontfile, $chartfontsize);
+                                $graph->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),225,round($gheight/2),170,PIE_PERCENTAGE,TRUE,50,20,5);
+                                $graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);
+                                $graph->drawPieLegend(430,12,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);
+                                $MyCache->WriteToCache("graph".$surveyid,$DataSet->GetData(),$graph);
+                                $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData()));
+                                unset($graph);
+                            }
+                            //print_r($DataSet->GetData()); echo "<br/><br/>";
+                        }
+
+                    }	//end else -> pie charts
+
+                    //introduce new counter
+                    if (!isset($ci)) {$ci=0;}
+
+                    //increase counter, start value -> 1
+                    $ci++;
+                    switch($outputType)
+                    {
+                        case 'xls':
+
+                            /**
+                             * No Image for Excel...
+                             */
+
+                            break;
+                        case 'pdf':
+>>>>>>> refs/heads/dev_tms
 
                 }	//end if -> collect and display results
 
@@ -3329,6 +4957,7 @@
                 {
                     return $sFileName;
                 }
+<<<<<<< HEAD
                 else
                 {
                     return;
@@ -3344,6 +4973,48 @@
                 }
                 else
                     return $pdf->Output($statlang->gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf', $pdfOutput);
+=======
+
+                //close table/output
+                if($outputType=='html')
+                $statisticsoutput .= "</table><br /> \n";
+
+            }	//end if -> collect and display results
+
+            //delete data
+            unset($gdata);
+            unset($grawdata);
+            unset($label);
+            unset($lbl);
+            unset($lblrtl);
+            unset($lblout);
+            unset($justcode);
+            unset ($alist);
+
+        }	// end foreach -> loop through all questions
+
+        //output
+        if($outputType=='html')
+        $statisticsoutput .= "<br />&nbsp;\n";
+
+    }	//end if -> show summary results
+
+    switch($outputType)
+    {
+        case 'xls':
+
+            //$workbook->
+            $workbook->close();
+            if($pdfOutput=='F')
+            {
+                return $sFileName;
+            }
+            else
+            {
+                return;
+            }
+            break;
+>>>>>>> refs/heads/dev_tms
 
                 break;
             case 'html':

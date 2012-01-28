@@ -14,8 +14,11 @@
  */
 if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 
+<<<<<<< HEAD
 require_once("save.php");   // for supporting functions only
 
+=======
+>>>>>>> refs/heads/dev_tms
 // $LEMdebugLevel - customizable debugging for Lime Expression Manager
 $LEMdebugLevel=0;   // LEM_DEBUG_TIMING;    // (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
 switch ($thissurvey['format'])
@@ -78,8 +81,12 @@ else
         }
         else if (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N') {
             //If explicitply set, hide the welcome screen
+<<<<<<< HEAD
             $_SESSION['step'] = 0;
             $move = "movenext";
+=======
+            $_SESSION['step'] = 1;
+>>>>>>> refs/heads/dev_tms
         }
     }
 
@@ -203,12 +210,20 @@ else
         // must do this here to process the POSTed values
         $moveResult = LimeExpressionManager::JumpTo($_SESSION['step'],false);   // by jumping to current step, saves data so far
 
+<<<<<<< HEAD
+=======
+        require_once("save.php");   // for supporting functions only
+>>>>>>> refs/heads/dev_tms
         showsaveform(); // generates a form and exits, awaiting input
     }
 
     if ($thissurvey['active'] == "Y" && isset($_POST['saveprompt']))
     {
         // The response from the save form
+<<<<<<< HEAD
+=======
+        require_once("save.php");   // for supporting functions only
+>>>>>>> refs/heads/dev_tms
         // CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
         $flashmessage = savedcontrol();
         
@@ -521,7 +536,11 @@ require_once("qanda.php");
 
 //Iterate through the questions about to be displayed:
 $inputnames=array();
+<<<<<<< HEAD
 if (isset($_SESSION['grouplist']))
+=======
+
+>>>>>>> refs/heads/dev_tms
 foreach ($_SESSION['grouplist'] as $gl)
 {
     $gid = $gl[0];
@@ -721,7 +740,11 @@ if (isset($showpopups) && $showpopups == 0 && isset($filenotvalidated) && $filen
 {
     echo "<p><span class='errormandatory'>" . $clang->gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</span></p>";
 }
+<<<<<<< HEAD
 if (isset($_SESSION['grouplist']))
+=======
+
+>>>>>>> refs/heads/dev_tms
 foreach ($_SESSION['grouplist'] as $gl)
 {
     $gid=$gl[0];
@@ -755,7 +778,10 @@ foreach ($_SESSION['grouplist'] as $gl)
         $qinfo = LimeExpressionManager::GetQuestionStatus($qid);
 		$lastgrouparray = explode("X",$qa[7]);
 		$lastgroup = $lastgrouparray[0]."X".$lastgrouparray[1]; // id of the last group, derived from question id
+<<<<<<< HEAD
         $lastanswer = $qa[7];
+=======
+>>>>>>> refs/heads/dev_tms
 
         $q_class = question_class($qinfo['info']['type']);
 
@@ -815,12 +841,18 @@ foreach ($_SESSION['grouplist'] as $gl)
             echo templatereplace($question_template,NULL,false,$qa[4]);
         };
     }
+<<<<<<< HEAD
     if ($surveyMode == 'group') {
         echo "<input type='hidden' name='lastgroup' value='$lastgroup' id='lastgroup' />\n"; // for counting the time spent on each group
     }
     if ($surveyMode == 'question') {
         echo "<input type='hidden' name='lastanswer' value='$lastanswer' id='lastanswer' />\n";
     }
+=======
+    if ($surveyMode != 'survey') {
+        echo "<input type='hidden' name='lastgroup' value='$lastgroup' id='lastgroup' />\n"; // for counting the time spent on each group
+    }
+>>>>>>> refs/heads/dev_tms
     echo "\n\n<!-- END THE GROUP -->\n";
     echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"));
     echo "\n\n</div>\n";
@@ -868,7 +900,11 @@ if (!$previewgrp){
                 $lastGseq = $stepInfo['gseq'];
             }
 
+<<<<<<< HEAD
             $sText = (($surveyMode == 'group') ? FlattenText($stepInfo['gname'] . ': ' . $stepInfo['gtext']) : FlattenText($stepInfo['qtext']));
+=======
+            $sText = (($surveyMode == 'group') ? FlattenText($stepInfo['gname']) : FlattenText($stepInfo['qtext']));
+>>>>>>> refs/heads/dev_tms
             $bGAnsw = !$stepInfo['anyUnanswered'];
 
             ++$v;

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 Welcome to LimeSurvey v1.92RC3!
+=======
+Welcome to LimeSurvey v1.91+!
+>>>>>>> refs/heads/dev_tms
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -77,6 +81,7 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
 
+<<<<<<< HEAD
 Changes from 1.92RC2 (build 12006) to 1.92RC3 (build 12204) Jan 25, 2012 
 #Updated feature: Added German translations to 1.91 sample survey. (maziminke)
 #Updated feature Browse of submitted responses now only shows relevant questions and answers. (tmswhite)
@@ -202,6 +207,8 @@ Changes from 1.91+ (build 10218) to 1.92RC1 (build 11702) Dec 20, 2011
 -Fixed issue #5259: Datepicker localisation broken during survey taking (mennodekker)
 -Fixed issue: Added missing ie_fix files to citronate template (tmswhite)
 
+=======
+>>>>>>> refs/heads/dev_tms
 Changes from 1.91+ (build 11343) to 1.91+ (build 11379) Nov 16, 2011
 -Fixed issue #5580: conditions don't work when using slider with emoticons and evaluation is done on the same page (lemeur)
 -Fixed issue #5570: INSERTANS does not return other comment in multiple questions with Other activated (c_schmitz)

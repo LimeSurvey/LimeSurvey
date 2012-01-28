@@ -121,7 +121,11 @@ if ($subaction == "id")
     $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 
     //SHOW HEADER
+<<<<<<< HEAD
     if (!isset($_SESSION['sql']) || !$_SESSION['sql']) {$browseoutput .= $surveyoptions;} // Don't show options if coming from tokens/statistics script
+=======
+    if (!isset($_POST['sql']) || !$_POST['sql']) {$browseoutput .= $surveyoptions;} // Don't show options if coming from tokens/statistics script
+>>>>>>> refs/heads/dev_tms
     //FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 
     $fncount = 0;
@@ -321,9 +325,15 @@ elseif ($subaction == "all")
                           var noFilesSelectedForDeletion = '".$clang->gT('Please select at least one file for deletion','js')."';
                           var noFilesSelectedForDnld = '".$clang->gT('Please select at least one file for download','js')."';
                         </script>\n";
+<<<<<<< HEAD
     $browseoutput .= $surveyoptions;
     $bClearFilter=returnglobal('clearfilter');
     if ($bClearFilter)
+=======
+    if (!isset($_POST['sql']))
+    {$browseoutput .= $surveyoptions;} //don't show options when called from another script with a filter on
+    else
+>>>>>>> refs/heads/dev_tms
     {
         unset($_SESSION['sql']);
     }
@@ -647,7 +657,11 @@ elseif ($subaction == "all")
             }
             if ($_SESSION['sql'] !== "")
             {
+<<<<<<< HEAD
                 $dtquery .= ' AND '.$_SESSION['sql']." ";
+=======
+               // $dtquery .= ' AND '.stripcslashes($_POST['sql'])." ";
+>>>>>>> refs/heads/dev_tms
             }
             $dtquery .= " ORDER BY {$surveytable}.id";
         }

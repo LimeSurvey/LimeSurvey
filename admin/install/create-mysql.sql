@@ -61,6 +61,7 @@ CREATE TABLE `prefix_defaultvalues` (
 --
 -- Table structure for table expression_errors
 --
+<<<<<<< HEAD
 
 CREATE TABLE `prefix_expression_errors` (
   `id` int(9) NOT NULL AUTO_INCREMENT,
@@ -76,6 +77,23 @@ CREATE TABLE `prefix_expression_errors` (
   PRIMARY KEY (`id`)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
+=======
+
+CREATE TABLE `prefix_expression_errors` (
+  `id` int(9) NOT NULL AUTO_INCREMENT,
+  `errortime` varchar(50) DEFAULT NULL,
+  `sid` int(11) DEFAULT NULL,
+  `gid` int(11) DEFAULT NULL,
+  `qid` int(11) DEFAULT NULL,
+  `gseq` int(11) DEFAULT NULL,
+  `qseq` int(11) DEFAULT NULL,
+  `type` varchar(50) ,
+  `eqn` text,
+  `prettyprint` text,
+  PRIMARY KEY (`id`)
+) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+>>>>>>> refs/heads/dev_tms
 --
 -- Table structure for table groups
 --
@@ -87,7 +105,11 @@ CREATE TABLE `prefix_groups` (
   `description` text,
   `language` varchar(20) default 'en',
   `randomization_group` varchar(20) NOT NULL default '',
+<<<<<<< HEAD
   `grelevance` text DEFAULT NULL,
+=======
+  `grelevance` text,
+>>>>>>> refs/heads/dev_tms
   PRIMARY KEY  (`gid`,`language`)
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -540,6 +562,7 @@ create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
 --
 -- Version Info
 --
+<<<<<<< HEAD
 INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '155');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
@@ -549,3 +572,6 @@ INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 --
 INSERT INTO `prefix_users` (`users_name`, `password`, `full_name`, `parent_id`, `lang` ,`email`, `create_survey`,`create_user` ,`delete_user` ,`superadmin` ,`configurator` ,`manage_template` , `manage_label`) VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);
 
+=======
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '154');
+>>>>>>> refs/heads/dev_tms

@@ -71,8 +71,13 @@ CREATE TABLE prefix_defaultvalues (
 --
 
 CREATE TABLE prefix_expression_errors (
+<<<<<<< HEAD
   id serial,
   errortime character varying(50) DEFAULT NULL,
+=======
+  id integer NOT NULL AUTO_INCREMENT,
+  errortime varchar(50) DEFAULT NULL,
+>>>>>>> refs/heads/dev_tms
   sid integer DEFAULT NULL,
   gid integer DEFAULT NULL,
   qid integer DEFAULT NULL,
@@ -95,8 +100,13 @@ CREATE TABLE prefix_groups (
     group_order integer DEFAULT 0 NOT NULL,
     description text,
     "language" character varying(20) DEFAULT 'en'::character varying NOT NULL,
+<<<<<<< HEAD
     randomization_group character varying(20) DEFAULT ''::character varying NOT NULL,
     grelevance text DEFAULT NULL,
+=======
+    randomization_group varying(20) DEFAULT ''::character varying NOT NULL,
+    grelevance text,
+>>>>>>> refs/heads/dev_tms
     CONSTRAINT prefix_groups_pkey PRIMARY KEY (gid, "language")
 );
 
@@ -313,8 +323,11 @@ CREATE TABLE prefix_surveys (
     navigationdelay smallint DEFAULT '0',
     nokeyboard character(1) DEFAULT 'N'::bpchar,
     alloweditaftercompletion character(1) DEFAULT 'N'::bpchar,
+<<<<<<< HEAD
     googleanalyticsstyle character(1) DEFAULT NULL,
     googleanalyticsapikey character varying(25) DEFAULT NULL,
+=======
+>>>>>>> refs/heads/dev_tms
     CONSTRAINT prefix_surveys_pkey PRIMARY KEY (sid)
 );
 
@@ -419,7 +432,8 @@ CREATE TABLE prefix_users (
     templateeditormode character(7) DEFAULT 'default'::bpchar,
     questionselectormode character(7) DEFAULT 'default'::bpchar,
 	one_time_pw bytea,
-    "dateformat" integer DEFAULT 1 NOT NULL
+    "dateformat" integer DEFAULT 1 NOT NULL,
+    participant_panel integer NOT NULL DEFAULT '0'
 );
 
 
@@ -456,6 +470,10 @@ CREATE TABLE prefix_participant_attribute (
   "attribute_id" integer NOT NULL,
   "value" integer NOT NULL,
   CONSTRAINT prefix_participant_attribut_pkey PRIMARY KEY (participant_id,attribute_id)
+<<<<<<< HEAD
+);
+
+=======
 );
 
 
@@ -507,8 +525,61 @@ CREATE TABLE prefix_survey_links (
   "date_created" date NOT NULL,
   CONSTRAINT prefix_survey_links_pkey PRIMARY KEY (participant_id,token_id,survey_id)
 );
+>>>>>>> refs/heads/dev_tms
+
+--
+-- Table structure for table participant_attribute_names
+--
+CREATE TABLE prefix_participant_attribute_names (
+  "attribute_id" serial NOT NULL,
+  "attribute_type" character varying( 30 ) NOT NULL,
+  "visible" character varying( 5 ) NOT NULL,
+  CONSTRAINT prefix_participant_attribute_names_pkey PRIMARY KEY (attribute_id, attribute_type)
+);
+--
+-- Table structure for table participant_attribute_lang
+--
+CREATE TABLE prefix_participant_attribute_names_lang (
+  "id" serial PRIMARY KEY NOT NULL,
+  "attribute_id" integer NOT NULL,
+  "attribute_name" character varying( 30 ) NOT NULL,
+  "lang" character varying( 20 ) NOT NULL
+);
+--
+-- Table structure for table participant_attribute_values
+--
+CREATE TABLE prefix_participant_attribute_values (
+  "value_id" serial PRIMARY KEY NOT NULL,
+  "attribute_id" integer NOT NULL,
+  "value" character varying( 20 ) NOT NULL
+);
+--
+-- Table structure for table participant_shares
+--
+CREATE TABLE prefix_participant_shares (
+  "participant_id" character varying( 50 ) NOT NULL,
+  "shared_uid" integer NOT NULL,
+  "date_added" date NOT NULL,
+  "can_edit" character varying( 5 ) NOT NULL,
+  CONSTRAINT prefix_participant_shares_pkey PRIMARY KEY (participant_id,shared_uid)
+);
 
 
+--
+-- Table structure for table participant_attribute_values
+--
+CREATE TABLE prefix_survey_links (
+  "participant_id" character varying ( 50 ) NOT NULL,
+  "token_id" integer NOT NULL,
+  "survey_id" integer NOT NULL,
+  "date_created" date NOT NULL,
+  CONSTRAINT prefix_survey_links_pkey PRIMARY KEY (participant_id,token_id,survey_id)
+);
+
+<<<<<<< HEAD
+
+=======
+>>>>>>> refs/heads/dev_tms
 --
 -- Table structure for table templates
 --
@@ -550,6 +621,7 @@ create index parent_qid_idx on prefix_questions (parent_qid);
 --
 -- Version Info
 --
+<<<<<<< HEAD
 INSERT INTO prefix_settings_global VALUES ('DBVersion', '155');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
@@ -563,3 +635,6 @@ INSERT INTO prefix_users(
             create_survey, create_user, delete_user, superadmin, configurator,
             manage_template, manage_label,htmleditormode)
             VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail',1,1,1,1,1,1,1,'default');
+=======
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '154');
+>>>>>>> refs/heads/dev_tms

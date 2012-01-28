@@ -119,9 +119,13 @@ $(document).ready(function()
          var row = $("#index .row.current");
          idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);
     */
+<<<<<<< HEAD
 //    if (typeof ExprMgr_process_relevance_and_tailoring === 'function') {
 //        ExprMgr_process_relevance_and_tailoring();
 //    }
+=======
+   ExprMgr_process_relevance_and_tailoring();
+>>>>>>> refs/heads/dev_tms
 });
 
 gmaps = new Object;
@@ -192,6 +196,7 @@ function resetMap(qID) {
 	var name = question.substr(0,question.length - 2);
 	var coordinates = $('#question'+qID+' input.location').attr('value');
 	var xy = coordinates.split(" ");
+<<<<<<< HEAD
 	if(gmaps[question]) {
 		var currentMap = gmaps[question];
 		var marker = gmaps['marker__'+question];
@@ -200,6 +205,14 @@ function resetMap(qID) {
 		google.maps.event.trigger(currentMap, 'resize')
 		currentMap.setCenter(markerLatLng);
 	}
+=======
+	var currentMap = gmaps[question];
+	var marker = gmaps['marker__'+question];
+	var markerLatLng = new google.maps.LatLng(xy[0],xy[1]);
+	marker.setPosition(markerLatLng);
+	google.maps.event.trigger(currentMap, 'resize')
+	currentMap.setCenter(markerLatLng);
+>>>>>>> refs/heads/dev_tms
 }
 
 // Reverse geocoder

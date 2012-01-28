@@ -16,7 +16,11 @@
 
 class ExpressionManager {
     // These are the allowable suffixes for variables - each represents an attribute of a variable.
+<<<<<<< HEAD
     private static $RDP_regex_var_attr = 'code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|rowdivid|sgqa|shown|type|valueNAOK|value';
+=======
+    private static $RDP_regex_var_attr = 'code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|sgqa|shown|type|valueNAOK|value';
+>>>>>>> refs/heads/dev_tms
 
     // These three variables are effectively static once constructed
     private $RDP_ExpressionRegex;
@@ -53,7 +57,10 @@ class ExpressionManager {
     private $sid=NULL; // the survey ID
     private $rooturl='';    // the root URL for LimeSurvey
     private $hyperlinkSyntaxHighlighting=false;
+<<<<<<< HEAD
     private $sgqaNaming=false;
+=======
+>>>>>>> refs/heads/dev_tms
 
     function __construct()
     {
@@ -70,6 +77,7 @@ class ExpressionManager {
         $RDP_regex_binary = '[+*/-]';
         $RDP_regex_compare = '<=|<|>=|>|==|!=|\ble\b|\blt\b|\bge\b|\bgt\b|\beq\b|\bne\b';
         $RDP_regex_assign = '=|\+=|-=|\*=|/=';
+<<<<<<< HEAD
         $RDP_regex_sgqa = '(?:INSERTANS:)?[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[01]?(?:\.(?:' . ExpressionManager::$RDP_regex_var_attr . '))?';
         $RDP_regex_word = '(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:' . ExpressionManager::$RDP_regex_var_attr . '))?';
         $RDP_regex_number = '[0-9]+\.?[0-9]*|\.[0-9]+';
@@ -93,6 +101,21 @@ class ExpressionManager {
 
         // asTokenRegex and RDP_TokenType must be kept in sync  (same number and order)
         $RDP_TokenRegex = array(
+=======
+        $RDP_regex_sgqa = '(?:INSERTANS:)?[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[01]?';
+        $RDP_regex_word = '(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:' . ExpressionManager::$RDP_regex_var_attr . '))?';
+        $RDP_regex_number = '[0-9]+\.?[0-9]*|\.[0-9]+';
+        $RDP_regex_andor = '\band\b|\bor\b|&&|\|\|';
+
+        $this->RDP_ExpressionRegex = '#((?<!\\\\)' . '{' . '(?!\s*\n\|\s*\r\|\s*\r\n|\s+)' .
+//                '(' . $RDP_regex_dq_string . '|' . $RDP_regex_sq_string . '|.*?)*' .    // This line lets you have braces embedded in strings - like RegExp - but it crashes the compiler when there are many tokens
+                '.*?' .
+                '(?<!\\\\)(?<!\n|\r|\r\n|\s)' . '}' . ')#';
+
+
+        // asTokenRegex and RDP_TokenType must be kept in sync  (same number and order)
+    $RDP_TokenRegex = array(
+>>>>>>> refs/heads/dev_tms
             $RDP_regex_dq_string,
             $RDP_regex_sq_string,
             $RDP_regex_whitespace,
@@ -1074,6 +1097,7 @@ class ExpressionManager {
     }
 
     /**
+<<<<<<< HEAD
      * Return the list of all of the JavaScript variables used by the most recent expression - only those that are set on the current page
      * This is used to control static vs dynamic substitution.  If an expression is entirely made up of off-page changes, it can be statically replaced.
      * @return <type>
@@ -1104,6 +1128,8 @@ class ExpressionManager {
     }
 
     /**
+=======
+>>>>>>> refs/heads/dev_tms
      * Return the list of all of the JavaScript variables used by the most recent expression
      * @return <type>
      */
@@ -1350,7 +1376,11 @@ class ExpressionManager {
         $errIndex = 0;
         if ($errCount > 0)
         {
+<<<<<<< HEAD
             usort($errs,"cmpErrorTokens");
+=======
+            usort($errs,"self::cmpErrorTokens");
+>>>>>>> refs/heads/dev_tms
         }
         $errSpecificStyle= "style='border-style: solid; border-width: 2px; border-color: red;'";
         $stringParts=array();
@@ -1499,17 +1529,23 @@ class ExpressionManager {
                                 $color = '#4C88BE';    // cyan that goes well with the background color
                             }
                         }
+<<<<<<< HEAD
                         // prevent EM prcessing of messages within span
                         $message = implode('; ',$messages);
                         $message = str_replace(array('{','}'), array('{ ', ' }'), $message);
 
                         $stringParts[] = "<span title='"  . $message . "' style='color: ". $color . "; font-weight: bold'";
+=======
+
+                        $stringParts[] = "<span title='"  . implode('; ',$messages) . "' style='color: ". $color . "; font-weight: bold'";
+>>>>>>> refs/heads/dev_tms
                         if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid)) {
                             // Modify this link to utilize a different framework
                             $editlink = $this->rooturl . '/admin/admin.php?sid=' . $this->sid . '&gid=' . $gid . '&qid=' . $qid;
                             $stringParts[] = " onclick='window.open(\"" . $editlink . "\");'";
                         }
                         $stringParts[] = ">";
+<<<<<<< HEAD
                         if ($this->sgqaNaming)
                         {
                             $sgqa = substr($jsName,4);
@@ -1524,6 +1560,9 @@ class ExpressionManager {
                         {
                             $stringParts[] = $displayName;
                         }
+=======
+                        $stringParts[] = $displayName;
+>>>>>>> refs/heads/dev_tms
                         $stringParts[] = "</span>";
                     }
                     break;
@@ -1747,7 +1786,11 @@ class ExpressionManager {
             case 'relevanceStatus':
                 $gid = (isset($var['gid'])) ? $var['gid'] : -1;
                 $qid = (isset($var['qid'])) ? $var['qid'] : -1;
+<<<<<<< HEAD
                 $rowdivid = (isset($var['rowdivid']) && $var['rowdivid']!='') ? $var['rowdivid'] : -1;
+=======
+                $sgqa = (isset($var['sgqa'])) ? $var['sgqa'] : -1;
+>>>>>>> refs/heads/dev_tms
                 if ($qid == -1 || $gid == -1) {
                     return 1;
                 }
@@ -1756,7 +1799,11 @@ class ExpressionManager {
                 }
                 $grel = (isset($_SESSION['relevanceStatus']['G'.$gid]) ? $_SESSION['relevanceStatus']['G'.$gid] : 1);   // true by default
                 $qrel = (isset($_SESSION['relevanceStatus'][$qid]) ? $_SESSION['relevanceStatus'][$qid] : 0);
+<<<<<<< HEAD
                 $sqrel = (isset($_SESSION['relevanceStatus'][$rowdivid]) ? $_SESSION['relevanceStatus'][$rowdivid] : 1);    // true by default - only want false if a subquestion is irrelevant
+=======
+                $sqrel = (isset($_SESSION['relevanceStatus'][$sgqa]) ? $_SESSION['relevanceStatus'][$sgqa] : 1);    // true by default - only want false if a subquestion is irrelevant
+>>>>>>> refs/heads/dev_tms
                 return ($grel && $qrel && $sqrel);
             default:
                 print 'UNDEFINED ATTRIBUTE: ' . $attr . "<br/>\n";
@@ -1926,7 +1973,11 @@ class ExpressionManager {
      * @return <type>
      */
 
+<<<<<<< HEAD
     public function sProcessStringContainingExpressions($src, $questionNum=0, $numRecursionLevels=1, $whichPrettyPrintIteration=1, $groupSeq=-1, $questionSeq=-1, $staticReplacement=false)
+=======
+    public function sProcessStringContainingExpressions($src, $questionNum=0, $numRecursionLevels=1, $whichPrettyPrintIteration=1, $groupSeq=-1, $questionSeq=-1)
+>>>>>>> refs/heads/dev_tms
     {
         // tokenize string by the {} pattern, properly dealing with strings in quotations, and escaped curly brace values
         $this->allVarsUsed = array();
@@ -1938,7 +1989,11 @@ class ExpressionManager {
         for($i=1;$i<=$numRecursionLevels;++$i)
         {
             // TODO - Since want to use <span> for dynamic substitution, what if there are recursive substititons?
+<<<<<<< HEAD
             $result = $this->sProcessStringContainingExpressionsHelper(htmlspecialchars_decode($result,ENT_QUOTES),$questionNum, $staticReplacement);
+=======
+            $result = $this->sProcessStringContainingExpressionsHelper(htmlspecialchars_decode($result,ENT_QUOTES),$questionNum);
+>>>>>>> refs/heads/dev_tms
             if ($i == $whichPrettyPrintIteration)
             {
                 $prettyPrint = $this->prettyPrintSource;
@@ -1955,7 +2010,11 @@ class ExpressionManager {
      * @return <type>
      */
 
+<<<<<<< HEAD
     public function sProcessStringContainingExpressionsHelper($src, $questionNum, $staticReplacement=false)
+=======
+    public function sProcessStringContainingExpressionsHelper($src, $questionNum)
+>>>>>>> refs/heads/dev_tms
     {
         // tokenize string by the {} pattern, properly dealing with strings in quotations, and escaped curly brace values
         $stringParts = $this->asSplitStringOnExpressions($src);
@@ -1982,12 +2041,19 @@ class ExpressionManager {
                     $resolvedPart = $this->GetPrettyPrintString();
                     $allErrors[] = $this->GetErrors();
                 }
+<<<<<<< HEAD
                 $onpageJsVarsUsed = $this->GetOnPageJsVarsUsed();
+=======
+>>>>>>> refs/heads/dev_tms
                 $jsVarsUsed = $this->GetJsVarsUsed();
                 $prettyPrintParts[] = $this->GetPrettyPrintString();
                 $this->allVarsUsed = array_merge($this->allVarsUsed,$this->GetVarsUsed());
 
+<<<<<<< HEAD
                 if (count($onpageJsVarsUsed) > 0 && !$staticReplacement)
+=======
+                if (count($jsVarsUsed) > 0)
+>>>>>>> refs/heads/dev_tms
                 {
                     $idName = "LEMtailor_Q_" . $questionNum . "_" . $this->substitutionNum;
 //                    $resolvedParts[] = "<span id='" . $idName . "'>" . htmlspecialchars($resolvedPart,ENT_QUOTES,'UTF-8',false) . "</span>"; // TODO - encode within SPAN?
@@ -1999,7 +2065,11 @@ class ExpressionManager {
                         'id' => $idName,
                         'raw' => $stringPart[0],
                         'result' => $resolvedPart,
+<<<<<<< HEAD
                         'vars' => implode('|',$jsVarsUsed),
+=======
+                        'vars' => implode('|',$this->GetJsVarsUsed()),
+>>>>>>> refs/heads/dev_tms
                         'js' => $this->GetJavaScriptFunctionForReplacement($questionNum, $idName, substr($stringPart[0],1,-1)),
                     );
                 }
@@ -2077,6 +2147,7 @@ class ExpressionManager {
                         return false;
                     }
                     if (!$this->RDP_onlyparse) {
+<<<<<<< HEAD
                         switch($funcName) {
                             case 'sprintf':
                                 // PHP doesn't let you pass array of parameters to sprintf, so must use call_user_func_array
@@ -2086,6 +2157,9 @@ class ExpressionManager {
                                 $result = $funcName($params);
                                 break;
                         }
+=======
+                        $result = $funcName($params);
+>>>>>>> refs/heads/dev_tms
                     }
                 // Call  function with the params passed
                 } elseif (in_array($argsPassed, $numArgsAllowed)) {
@@ -2109,7 +2183,11 @@ class ExpressionManager {
                                 case 'sin':
                                 case 'sqrt':
                                 case 'tan':
+<<<<<<< HEAD
                                     if (is_numeric($params[0]))
+=======
+                                    if (is_float($params[0]))
+>>>>>>> refs/heads/dev_tms
                                     {
                                         $result = $funcName(floatval($params[0]));
                                     }
@@ -2128,7 +2206,11 @@ class ExpressionManager {
                         if (!$this->RDP_onlyparse) {
                             switch($funcName) {
                                 case 'atan2':
+<<<<<<< HEAD
                                     if (is_numeric($params[0]) && is_numeric($params[1]))
+=======
+                                    if (is_float($params[0]) && is_float($params[1]))
+>>>>>>> refs/heads/dev_tms
                                     {
                                         $result = $funcName(floatval($params[0]),floatval($params[1]));
                                     }
@@ -2254,13 +2336,17 @@ class ExpressionManager {
 
     /**
      * Split a soure string into STRING vs. EXPRESSION, where the latter is surrounded by unescaped curly braces.
+<<<<<<< HEAD
      * This verson properly handles nested curly braces and curly braces within strings within curly braces - both of which are needed to better support JavaScript
      * Users still need to add a space or carriage return after opening braces (and ideally before closing braces too) to avoid  having them treated as expressions.
+=======
+>>>>>>> refs/heads/dev_tms
      * @param <type> $src
      * @return string
      */
     public function asSplitStringOnExpressions($src)
     {
+<<<<<<< HEAD
         $parts = preg_split($this->RDP_ExpressionRegex,$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
         $count = count($parts);
         $tokens = array();
@@ -2415,6 +2501,25 @@ class ExpressionManager {
                 $offset,
                 'STRING',
             );
+=======
+        // tokenize string by the {} pattern, propertly dealing with strings in quotations, and escaped curly brace values
+        $tokens0 = preg_split($this->RDP_ExpressionRegex,$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
+
+        $tokens = array();
+        // Add token_type to $tokens:  For each token, test each categorization in order - first match will be the best.
+        for ($j=0;$j<count($tokens0);++$j)
+        {
+            $token = $tokens0[$j];
+            if (preg_match($this->RDP_ExpressionRegex,$token[0]))
+            {
+                $token[2] = 'EXPRESSION';
+            }
+            else
+            {
+                $token[2] = 'STRING';    // does type matter here?
+            }
+            $tokens[] = $token;
+>>>>>>> refs/heads/dev_tms
         }
         return $tokens;
     }
@@ -2512,18 +2617,25 @@ class ExpressionManager {
     static function UnitTestStringSplitter()
     {
        $tests = <<<EOD
+<<<<<<< HEAD
 This string does not contain an expression
 "This is only a string"
 "this is a string that contains {something in curly brace}"
 How about nested curly braces, like {INSERTANS:{SGQ}}?
+=======
+"this is a string that contains {something in curly brace}"
+>>>>>>> refs/heads/dev_tms
 This example has escaped curly braces like \{this is not an equation\}
 Should the parser check for unmatched { opening curly braces?
 What about for unmatched } closing curly braces?
 What if there is a { space after the opening brace?}
 What about a {space before the closing brace }?
 What about an { expression nested {within a string} that has white space after the opening brace}?
+<<<<<<< HEAD
 This {expression has {a nested curly brace { plus ones with whitespace around them} - they should be properly captured} into an expression  with sub-expressions.
 This {is a string {since it does not close } all of its curly} braces.
+=======
+>>>>>>> refs/heads/dev_tms
 Can {expressions contain 'single' or "double" quoted strings}?
 Can an expression contain a perl regular expression like this {'/^\d{3}-\d{2}-\d{4}$/'}?
 [img src="images/mine_{Q1}.png"/]
@@ -2568,7 +2680,11 @@ EOD;
         BinaryOps:  (a + b * c / d)
         Comparators:  > >= < <= == != gt ge lt le eq ne (target large gents built agile less equal)
         Assign:  = += -= *= /=
+<<<<<<< HEAD
         SGQA:  1X6X12 1X6X12ber1 1X6X12ber1_lab1 3583X84X249 12X3X5lab1_ber#1 1X6X12.NAOK 1X6X12ber1.NAOK 1X6X12ber1_lab1.NAOK 3583X84X249.NAOK 12X3X5lab1_ber#1.NAOK
+=======
+        SGQA:  1X6X12 1X6X12ber1 1X6X12ber1_lab1 3583X84X249
+>>>>>>> refs/heads/dev_tms
         Errors: Apt # 10C; (2 > 0) ? 'hi' : 'there'; array[30]; >>> <<< /* this is not a comment */ // neither is this
         Words:  q5pointChoice q5pointChoice.bogus q5pointChoice.code q5pointChoice.mandatory q5pointChoice.NAOK q5pointChoice.qid q5pointChoice.question q5pointChoice.relevance q5pointChoice.shown q5pointChoice.type
 EOD;
@@ -2641,18 +2757,26 @@ EOD;
 // also include SGQA values and read-only variable attributes
 '12X34X56' => array('sgqa'=>'12X34X56', 'code'=>5, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
 '12X3X5lab1_ber' => array('sgqa'=>'12X3X5lab1_ber', 'code'=>10, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
+<<<<<<< HEAD
 'q5pointChoice' => array('sgqa'=>'q5pointChoice', 'code'=>3, 'jsName'=>'java_q5pointChoice', 'readWrite'=>'N','shown'=>'Father', 'relevance'=>1, 'type'=>'5', 'question'=>'(question for q5pointChoice)', 'qid'=>14,'gseq'=>2,'qseq'=>14),
+=======
+'q5pointChoice' => array('sgqa'=>'q5pointChoice', 'code'=>3, 'jsName'=>'java_q5pointChoice', 'readWrite'=>'N','shown'=>'Father', 'relevance'=>1, 'type'=>'5', 'question'=>'(question for q5pointChoice)', 'qid'=>13,'gseq'=>2,'qseq'=>13),
+>>>>>>> refs/heads/dev_tms
 'qArrayNumbers_ls1_min' => array('sgqa'=>'qArrayNumbers_ls1_min', 'code'=> 7, 'jsName'=>'java_qArrayNumbers_ls1_min', 'readWrite'=>'N','shown'=> 'I love LimeSurvey', 'relevance'=>1, 'type'=>'A', 'question'=>'(question for qArrayNumbers)', 'qid'=>6,'gseq'=>2,'qseq'=>6),
 '12X3X5lab1_ber#1' => array('sgqa'=>'12X3X5lab1_ber#1', 'code'=> 15, 'jsName'=>'', 'readWrite'=>'N', 'gseq'=>1,'qseq'=>1),
 'zero' => array('sgqa'=>'zero', 'code'=>0, 'jsName'=>'java_zero', 'gseq'=>0,'qseq'=>0),
 'empty' => array('sgqa'=>'empty', 'code'=>'', 'jsName'=>'java_empty', 'gseq'=>0,'qseq'=>0),
+<<<<<<< HEAD
 'BREAKS' => array('sgqa'=>'BREAKS', 'code'=>'1\n2\n3', 'jsName'=>'', 'readWrite'=>'N'),
+=======
+>>>>>>> refs/heads/dev_tms
         );
 
         // Syntax for $tests is
         // expectedResult~expression
         // if the expected result is an error, use NULL for the expected result
         $tests  = <<<EOD
+<<<<<<< HEAD
 <b>SETUP</b>~'<b>SETUP</b>'
 &quot;Can strings contain embedded \&quot;quoted passages\&quot; (and parentheses + other characters?)?&quot;~a=htmlspecialchars(ASSESSMENT_HEADING)
 &quot;can single quoted strings&quot; . &#039;contain nested &#039;quoted sections&#039;?~b=htmlspecialchars(QUESTIONHELP)
@@ -2835,6 +2959,8 @@ IGNORE THIS ERROR~time()
 I was trimmed~trim('     I was trimmed   ')
 Hi There You~ucwords('hi there you')
 <b>EXPRESSIONS</b>~'<b>EXPRESSIONS</b>'
+=======
+>>>>>>> refs/heads/dev_tms
 1~!'0'
 1~0 eq '0'
 0~0 ne '0'
@@ -2842,6 +2968,15 @@ Hi There You~ucwords('hi there you')
 1~0 ne empty
 0~0 eq ''
 1~0 ne ''
+<<<<<<< HEAD
+=======
+1~is_empty(empty)
+1~is_empty('')
+0~is_empty(0)
+0~is_empty('0')
+0~is_empty('false')
+0~is_empty('NULL')
+>>>>>>> refs/heads/dev_tms
 0~'' < 10
 0~0 < empty
 1~0 <= empty
@@ -2855,6 +2990,17 @@ Hi There You~ucwords('hi there you')
 1~'0' >= empty
 1~empty eq empty
 0~empty ne empty
+<<<<<<< HEAD
+=======
+0~if('0',1,0)
+0~if(0,1,0)
+1~if(!0,1,0)
+0~if(!(!0),1,0)
+1~if('true',1,0)
+1~if('false',1,0)
+1~if('00',1,0)
+0~if('',1,0)
+>>>>>>> refs/heads/dev_tms
 0~'' > 0
 0~' ' > 0
 1~!0
@@ -2906,6 +3052,14 @@ NAN~'A' / empty
 0~0 - empty
 0~0 * empty
 NAN~0 / empty
+<<<<<<< HEAD
+=======
+0~is_numeric(empty)
+1~if('A',1,0)
+0~if(empty,1,0)
+0~if(0,1,0)
+1~if('false',1,0)
+>>>>>>> refs/heads/dev_tms
 0~(-1 > 0)
 0~zero
 ~empty
@@ -2919,6 +3073,7 @@ NAN~0 / empty
 1~q5pointChoice.relevance
 4~q5pointChoice.NAOK + 1
 NULL~q5pointChoice.bogus
+<<<<<<< HEAD
 14~q5pointChoice.qid
 7~qArrayNumbers_ls1_min.code
 1~(one * (two + (three - four) + five) / six)
@@ -2926,16 +3081,44 @@ NULL~q5pointChoice.bogus
 50~12X34X56 * 12X3X5lab1_ber
 1~c == 'Hi there!'
 1~c == "Hi there!"
+=======
+13~q5pointChoice.qid
+7~qArrayNumbers_ls1_min.code
+6~max(five,(one + (two * four)- three))
+6~max((one + (two * four)- three))
+212~5 + max(1,(2+3),(4 + (5 + 6)),((7 + 8) + 9),((10 + 11), 12),(13 + (14 * 15) - 16))
+29~five + max(one, (two + three), (four + (five + six)),((seven + eight) + nine),((ten + eleven), twelve),(one + (two * three) - four))
+1024~max(one,(two*three),pow(four,five),six)
+1~(one * (two + (three - four) + five) / six)
+2~max(one,two)
+5~max(one,two,three,four,five)
+1~min(five,four,one,two,three)
+0~(a=rand())-a
+3~floor(pi())
+2.4~(one  * two) + (three * four) / (five * six)
+1~sin(0.5 * pi())
+50~12X34X56 * 12X3X5lab1_ber
+>>>>>>> refs/heads/dev_tms
 3~a=three
 3~c=a
 12~c*=four
 15~c+=a
 5~c/=a
 -1~c-=six
+<<<<<<< HEAD
+=======
+27~pow(3,3)
+>>>>>>> refs/heads/dev_tms
 24~one * two * three * four
 -4~five - four - three - two
 0~two * three - two - two - two
 4~two * three - two
+<<<<<<< HEAD
+=======
+1~pi() == pi() * 2 - pi()
+1~sin(pi()/2)
+1~sin(pi()/2) == sin(.5 * pi())
+>>>>>>> refs/heads/dev_tms
 105~5 + 1, 7 * 15
 7~7
 15~10 + 5
@@ -2960,9 +3143,29 @@ there~hi
 1~four != three
 0~four ne four
 NAN~one * hi
+<<<<<<< HEAD
 0~a='hello',b='',c=0
 hello~a
 0~c
+=======
+5~abs(-five)
+0~acos(cos(pi()))-pi()
+0~floor(asin(sin(pi())))
+10~ceil(9.1)
+9~floor(9.9)
+15~sum(one,two,three,four,five)
+5~count(one,two,three,four,five)
+0~a='hello',b='',c=0
+hello~a
+0~c
+2~count(a,b,c)
+5~intval(5.7)
+1~is_float(pi())
+0~is_float(5)
+1~is_numeric(five)
+0~is_numeric(hi)
+1~is_string(hi)
+>>>>>>> refs/heads/dev_tms
 0~one && 0
 0~two and 0
 1~five && 6
@@ -2970,6 +3173,14 @@ hello~a
 1~one or 0
 1~one || 0
 1~(one and 0) || (two and three)
+<<<<<<< HEAD
+=======
+NULL~hi(there);
+NULL~(one * two + (three - four)
+NULL~(one * two + (three - four)))
+NULL~++a
+NULL~--b
+>>>>>>> refs/heads/dev_tms
 value for {QID}~QID
 "Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"~ASSESSMENT_HEADING
 "can single quoted strings" . 'contain nested 'quoted sections'?~QUESTIONHELP
@@ -2977,6 +3188,7 @@ Can strings have embedded <tags> like <html>, or even unbalanced "quotes or enti
 value for {TOKEN:FIRSTNAME}~TOKEN:FIRSTNAME
 value for {THEREAREXQUESTIONS}~THEREAREXQUESTIONS
 15~12X3X5lab1_ber#1
+<<<<<<< HEAD
 1~three == three
 1~three == 3
 11~eleven
@@ -2985,12 +3197,22 @@ value for {THEREAREXQUESTIONS}~THEREAREXQUESTIONS
 8~five + + three
 2~five + - three
 <b>SYNTAX ERRORS</b>~'<b>SYNTAX ERRORS</b>'
+=======
+>>>>>>> refs/heads/dev_tms
 NULL~*
 NULL~three +
 NULL~four * / seven
 NULL~(five - three
 NULL~five + three)
 NULL~seven + = four
+<<<<<<< HEAD
+=======
+NULL~if(seven,three,four))
+NULL~if(seven)
+NULL~if(seven,three)
+NULL~if(seven,three,four,five)
+NULL~if(seven,three,)
+>>>>>>> refs/heads/dev_tms
 NULL~>
 NULL~five > > three
 NULL~seven > = four
@@ -3001,8 +3223,16 @@ NULL~three +
 NULL~three >=
 NULL~three +=
 NULL~three !
+<<<<<<< HEAD
 NULL~three *
 NULL~five ! three
+=======
+0~!three
+NULL~three *
+NULL~five ! three
+8~five + + three
+2~five + - three
+>>>>>>> refs/heads/dev_tms
 NULL~(5 + 7) = 8
 NULL~&& four
 NULL~min(
@@ -3017,6 +3247,80 @@ NULL~NUMBEROFQUESTIONS/=5
 NULL~NUMBEROFQUESTIONS-=6
 NULL~'Tom'='tired'
 NULL~max()
+<<<<<<< HEAD
+=======
+1|2|3|4|5~implode('|',one,two,three,four,five)
+0, 1, 3, 5~list(0,one,'',three,'',five)
+5~strlen(hi)
+I love LimeSurvey~str_replace('like','love','I like LimeSurvey')
+2~strpos('I like LimeSurvey','like')
+<span id="d" style="border-style: solid; border-width: 2px; border-color: green">Hi there!</span>~d='<span id="d" style="border-style: solid; border-width: 2px; border-color: green">Hi there!</span>'
+Hi there!~c=strip_tags(d)
+Hi there!~c
++,-,*,/,!,,,and,&&,or,||,gt,>,lt,<,ge,>=,le,<=,eq,==,ne,!=~implode(',','+','-','*','/','!',',','and','&&','or','||','gt','>','lt','<','ge','>=','le','<=','eq','==','ne','!=')
+HI THERE!~strtoupper(c)
+hi there!~strtolower(c)
+1~three == three
+1~three == 3
+1~c == 'Hi there!'
+1~c == "Hi there!"
+1~strpos(c,'there')>1
+1~regexMatch('/there/',c)
+1~regexMatch('/^.*there.*$/',c)
+0~regexMatch('/joe/',c)
+1~regexMatch('/(?:dog|cat)food/','catfood stinks')
+1~regexMatch('/(?:dog|cat)food/','catfood stinks')
+1~regexMatch('/[0-9]{3}-[0-9]{2}-[0-9]{4}/','123-45-6789')
+1~regexMatch('/\d{3}-\d{2}-\d{4}/','123-45-6789')
+1~regexMatch('/(?:\(\d{3}\))\s*\d{3}-\d{4}/','(212) 555-1212')
+11~eleven
+144~twelve * twelve
+4~if(5 > 7,2,4)
+there~if((one > two),'hi','there')
+64~if((one < two),pow(2,6),pow(6,2))
+1, 2, 3, 4, 5~list(one,two,three,min(four,five,six),max(three,four,five))
+11, 12~list(eleven,twelve)
+1~is_empty('0')
+1~is_empty('')
+0~is_empty(1)
+1~is_empty(one==two)
+0~if('',1,0)
+1~if(' ',1,0)
+0~!is_empty(one==two)
+1~!is_empty(1)
+&quot;Can strings contain embedded \&quot;quoted passages\&quot; (and parentheses + other characters?)?&quot;~a=htmlspecialchars(ASSESSMENT_HEADING)
+&quot;can single quoted strings&quot; . &#039;contain nested &#039;quoted sections&#039;?~b=htmlspecialchars(QUESTIONHELP)
+Can strings have embedded &lt;tags&gt; like &lt;html&gt;, or even unbalanced &quot;quotes or entities without terminal semicolons like &amp;amp and  &amp;lt?~c=htmlspecialchars(QUESTION_HELP)
+1~c==htmlspecialchars(htmlspecialchars_decode(c))
+1~b==htmlspecialchars(htmlspecialchars_decode(b))
+1~a==htmlspecialchars(htmlspecialchars_decode(a))
+&quot;Can strings contain embedded \\&quot;quoted passages\\&quot; (and parentheses + other characters?)?&quot;~addslashes(a)
+&quot;can single quoted strings&quot; . &#039;contain nested &#039;quoted sections&#039;?~addslashes(b)
+Can strings have embedded &lt;tags&gt; like &lt;html&gt;, or even unbalanced &quot;quotes or entities without terminal semicolons like &amp;amp and  &amp;lt?~addslashes(c)
+"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"~html_entity_decode(a)
+"can single quoted strings" . &#039;contain nested &#039;quoted sections&#039;?~html_entity_decode(b)
+Can strings have embedded <tags> like <html>, or even unbalanced "quotes or entities without terminal semicolons like &amp and  &lt?~html_entity_decode(c)
+&quot;Can strings contain embedded \&quot;quoted passages\&quot; (and parentheses + other characters?)?&quot;~htmlentities(a)
+&quot;can single quoted strings&quot; . &#039;contain nested &#039;quoted sections&#039;?~htmlentities(b)
+Can strings have embedded &lt;tags&gt; like &lt;html&gt;, or even unbalanced &quot;quotes or entities without terminal semicolons like &amp;amp and &amp;lt?~htmlentities(c)
+"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"~htmlspecialchars_decode(a)
+"can single quoted strings" . 'contain nested 'quoted sections'?~htmlspecialchars_decode(b)
+Can strings have embedded like , or even unbalanced "quotes or entities without terminal semicolons like & and <?~htmlspecialchars_decode(c)
+"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"~htmlspecialchars(a)
+"can single quoted strings" . 'contain nested 'quoted sections'?~htmlspecialchars(b)
+Can strings have embedded <tags> like <html>, or even unbalanced "quotes or entities without terminal semicolons like &amp and &lt?~htmlspecialchars(c)
+I was trimmed   ~ltrim('     I was trimmed   ')
+     I was trimmed~rtrim('     I was trimmed   ')
+I was trimmed~trim('     I was trimmed   ')
+1,234,567~number_format(1234567)
+Hi There You~ucwords('hi there you')
+1~checkdate(1,29,1967)
+0~checkdate(2,29,1967)
+1144191723~mktime(1,2,3,4,5,6)
+April 5, 2006, 1:02 am~date('F j, Y, g:i a',mktime(1,2,3,4,5,6))
+NULL~time()
+NULL~date('F j, Y, g:i a',time())
+>>>>>>> refs/heads/dev_tms
 EOD;
 
         $em = new ExpressionManager();
@@ -3091,7 +3395,11 @@ EOD;
         $body .= "<script type='text/javascript'>\n";
         $body .= "<!--\n";
         $body .= "var LEMgid=2;\n";
+<<<<<<< HEAD
         $body .= "var LEMmode='group';\n";
+=======
+        $body .= "var LEMallOnOnePage=false;\n";
+>>>>>>> refs/heads/dev_tms
         $body .= "function recompute() {\n";
         $body .= implode("\n",$javaScript);
         $body .= "}\n//-->\n</script>\n";
@@ -3168,6 +3476,7 @@ EOD;
             return $string;
         }
     }
+<<<<<<< HEAD
 }
 
 /**
@@ -3192,6 +3501,31 @@ function cmpErrorTokens($a, $b)
         return 0;
     }
     return ($a[1][1] < $b[1][1]) ? -1 : 1;
+=======
+
+    /**
+     * Used by usort() to order Error tokens by their position within the string
+     * @param <type> $a
+     * @param <type> $b
+     * @return <type>
+     */
+    function cmpErrorTokens($a, $b)
+    {
+        if (is_null($a[1])) {
+            if (is_null($b[1])) {
+                return 0;
+            }
+            return 1;
+        }
+        if (is_null($b[1])) {
+            return -1;
+        }
+        if ($a[1][1] == $b[1][1]) {
+            return 0;
+        }
+        return ($a[1][1] < $b[1][1]) ? -1 : 1;
+    }
+>>>>>>> refs/heads/dev_tms
 }
 
 /**

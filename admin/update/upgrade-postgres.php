@@ -345,6 +345,7 @@ function db_upgrade($oldversion) {
         lang CHAR( 20 ) NOT NULL,
         PRIMARY KEY (lang,attribute_id)
         );"); echo $modifyoutput; flush();ob_flush();
+<<<<<<< HEAD
 
         modify_database("","CREATE TABLE prefix_participant_attribute_values (
         attribute_id integer NOT NULL,
@@ -388,6 +389,51 @@ function db_upgrade($oldversion) {
         );"); echo $modifyoutput; flush();@ob_flush();
         modify_database("", "UPDATE prefix_settings_global SET stg_value='149' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
 
+=======
+
+        modify_database("","CREATE TABLE prefix_participant_attribute_values (
+        attribute_id integer NOT NULL,
+        value_id integer NOT NULL AUTO_INCREMENT,
+        value VARCHAR( 20 ) NOT NULL,
+        PRIMARY KEY (value_id)
+        );"); echo $modifyoutput; flush();ob_flush();
+
+        modify_database("","CREATE TABLE prefix_participant_shares (
+        participant_id VARCHAR( 50 ) NOT NULL,
+        shared_uid integer NOT NULL,
+        date_added date NOT NULL,
+        can_edit VARCHAR( 5 ) NOT NULL,
+        PRIMARY KEY (lang,attribute_id)
+        );"); echo $modifyoutput; flush();ob_flush();
+
+        modify_database("","CREATE TABLE prefix_survey_links (
+        participant_id VARCHAR( 50 ) NOT NULL,
+        token_id integer NOT NULL,
+        survey_id integer NOT NULL,
+        date_created date NOT NULL,
+        PRIMARY KEY (participant_id,token_id,survey_id)
+        );"); echo $modifyoutput; flush();ob_flush();
+        modify_database("","ALTER TABLE prefix_user ADD participant_panel integer NOT NULL default '0'"); echo $modifyoutput; flush();ob_flush();
+        // add language field to question_attributes table
+        modify_database("","ALTER TABLE prefix_question_attributes ADD language character varying(20)"); echo $modifyoutput; flush();ob_flush();
+        upgrade_question_attributes148();
+        fixSubquestions();
+        modify_database("", "UPDATE prefix_settings_global SET stg_value='148' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
+
+    }
+
+    if ($oldversion < 149)
+    {
+        modify_database("","CREATE TABLE prefix_survey_url_parameters (
+        id serial PRIMARY KEY NOT NULL,
+        sid integer NOT NULL,
+        parameter character varying(50) NOT NULL,
+        targetqid integer NULL,
+        targetsqid integer NULL
+        );"); echo $modifyoutput; flush();@ob_flush();
+        modify_database("", "UPDATE prefix_settings_global SET stg_value='149' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
+
+>>>>>>> refs/heads/dev_tms
     }
     if ($oldversion < 150)
     {
@@ -423,6 +469,7 @@ function db_upgrade($oldversion) {
     }
     if ($oldversion < 154)
     {
+<<<<<<< HEAD
         modify_database("","ALTER TABLE prefix_groups ADD grelevance text DEFAULT NULL;"); echo $modifyoutput; flush();@ob_flush();
         LimeExpressionManager::UpgradeConditionsToRelevance();
         modify_database("", "UPDATE prefix_settings_global SET stg_value='154' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
@@ -433,6 +480,11 @@ function db_upgrade($oldversion) {
         modify_database("","ALTER TABLE prefix_surveys ADD googleanalyticsapikey character varying(25) DEFAULT NULL;"); echo $modifyoutput; flush();@ob_flush();
         modify_database("", "UPDATE prefix_settings_global SET stg_value='155' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
     }
+=======
+        modify_database("","ALTER TABLE prefix_groups ADD grelevance text;"); echo $modifyoutput; flush();@ob_flush();
+        modify_database("", "UPDATE prefix_settings_global SET stg_value='154' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
+    }
+>>>>>>> refs/heads/dev_tms
 
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br />';
     return true;
@@ -686,7 +738,19 @@ function upgrade_tables143()
         }
         closedir($handle);
     }
+<<<<<<< HEAD
 
+}
+=======
+>>>>>>> refs/heads/dev_tms
+
+function upgrade_timing_tables146()
+{
+    global $modifyoutput,$dbprefix, $connect;
+    $aTimingTables=$connect->MetaTables('TABLES',false, "%timings");
+    foreach ($aTimingTables as $sTable) {
+        modify_database("","ALTER TABLE {$sTable} RENAME COLUMN \"interviewTime\" TO interviewtime;"); echo $modifyoutput; flush();ob_flush();
+    }
 }
 
 function upgrade_timing_tables146()

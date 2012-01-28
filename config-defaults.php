@@ -553,6 +553,7 @@ $ipInfoDbAPIKey = '';
 
 $googleMapsAPIKey = '';
 
+<<<<<<< HEAD
 // Google Analytics API key:  http://www.google.com/analytics/
 $googleAnalyticsAPIKey = '';
 
@@ -562,6 +563,8 @@ $googleAnalyticsAPIKey = '';
 // 2 = SurveyName-[SID]/GroupName
 $googleAnalyticsStyle = '0';
 
+=======
+>>>>>>> refs/heads/dev_tms
 /**
 * This variable defines the total space available to the file upload question across all surveys. If set to 0 then no limit applies.
 *

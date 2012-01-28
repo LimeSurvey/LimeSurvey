@@ -260,6 +260,7 @@ if(isset($_SESSION['loginID']))
     {
         if(bHasSurveyPermission($surveyid,'surveyactivation','read'))
         {
+<<<<<<< HEAD
             $surveyid = sanitize_int($surveyid);
             $thissurvey  = getSurveyInfo($surveyid);
             $_POST['sid'] = $surveyid . '|N';
@@ -267,6 +268,12 @@ if(isset($_SESSION['loginID']))
             $_POST['surveyMode'] = 'survey';
             $_POST['LEMcalledFromAdmin'] = 'Y';
             $_POST['assessments'] = $thissurvey['assessments'];
+=======
+            $_POST['sid'] = sanitize_int($surveyid) . '|N';
+            $_POST['LEM_PRETTY_PRINT_ALL_SYNTAX'] = 'Y';
+            $_POST['surveyMode'] = 'survey';
+            $_POST['LEMcalledFromAdmin'] = 'Y';
+>>>>>>> refs/heads/dev_tms
             if (isset($_GET['gid'])) { $_POST['gid'] = $_GET['gid']; }
             if (isset($_GET['qid'])) { $_POST['qid'] = $_GET['qid']; }
             include($rootdir . '/classes/eval/test/survey_logic_file.php');

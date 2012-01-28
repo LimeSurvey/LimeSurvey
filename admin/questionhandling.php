@@ -195,7 +195,11 @@ if ($action == "editdefaultvalues")
                 }
                 $editdefvalues.="<ul>";
 
+<<<<<<< HEAD
                 switch($questionrow['type'])
+=======
+                foreach ($sqrows as $aSubquestion)
+>>>>>>> refs/heads/dev_tms
                 {
                     case 'L':
                     case 'M':
@@ -267,7 +271,11 @@ if ($action == "editdefaultvalues")
         }
             $editdefvalues.="</ul> ";
             $editdefvalues.="</div> "; // Closing page
+<<<<<<< HEAD
     }
+=======
+        }
+>>>>>>> refs/heads/dev_tms
     $editdefvalues.="</div> "; // Closing pane
     $editdefvalues.="<input type='hidden' id='action' name='action' value='updatedefaultvalues'> "
         . "\t<input type='hidden' id='sid' name='sid' value='$surveyid' /></p>\n"
@@ -464,7 +472,11 @@ if ($action == "editquestion" || $action=="addquestion")
     . "<li><label for='question_type'>".$clang->gT("Question Type:")." </label>\n";
     if ($activated != "Y")
     {
+<<<<<<< HEAD
         $editquestion .= "<select id='question_type' style='margin-bottom:5px' name='type' class='".getQuestionlistMode()."'"
+=======
+        $editquestion .= "<select id='question_type' style='margin-bottom:5px' name='type' "
+>>>>>>> refs/heads/dev_tms
         . ">\n"
         . getqtypelist($eqrow['type'],'group')
         . "</select>\n";
@@ -813,7 +825,11 @@ if($action == "orderquestions")
         $relevance = ($oqarray[$i]['relevance'] == '') ? 1 : $oqarray[$i]['relevance'];
         $showme = '[{' . $relevance . '}] ' . $oqarray[$i]['question'];
         LimeExpressionManager::ProcessString($showme, $oqarray[$i]['qid']);
+<<<<<<< HEAD
         $orderquestions.=FlattenText(LimeExpressionManager::GetLastPrettyPrintExpression(), false, 'UTF-8', true, true);
+=======
+        $orderquestions.=LimeExpressionManager::GetLastPrettyPrintExpression();
+>>>>>>> refs/heads/dev_tms
         $orderquestions.= "</li>\n" ;
     }
 

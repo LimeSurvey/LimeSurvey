@@ -30,7 +30,10 @@ class LimeExpressionManager {
     private $surveyOptions=array(); // a set of global survey options passed from LimeSurvey
     private $qid2code;  // array of mappings of Question # to list of SGQA codes used within it
     private $jsVar2qid; // reverse mapping of JavaScript Variable name to Question
+<<<<<<< HEAD
     private $qcode2sgq; // maps name of the variable to
+=======
+>>>>>>> refs/heads/dev_tms
     private $alias2varName; // JavaScript array of mappings of aliases to the JavaScript variable names
     private $varNameAttr;   // JavaScript array of mappings of canonical JavaScript variable name to key attributes.
     private $pageTailoringLog;  // Debug log of tailorings done on this page
@@ -48,7 +51,11 @@ class LimeExpressionManager {
     private $questionSeq2relevance; // keeps relevance in proper sequence so can minimize relevance processing to see what should be see on page and in indexes
     private $currentGroupSeq;   // current Group sequence (0-based index)
     private $currentQuestionSeq;    // for Question-by-Question mode, the 0-based index
+<<<<<<< HEAD
     private $currentQID;        // used in Question-by-Question mode
+=======
+    private $currentQID;        // used in Question-by-Question modecu
+>>>>>>> refs/heads/dev_tms
     private $currentQset=NULL;   // set of the current set of questions to be displayed, indexed by QID - at least one must be relevant
     private $lastMoveResult=NULL;   // last result of NavigateForwards, NavigateBackwards, or JumpTo
     private $indexQseq;         // array of information needed to generate navigation index in question-by-question mode
@@ -69,8 +76,11 @@ class LimeExpressionManager {
     private $ParseResultCache;  // temporary variable to reduce need to parse same equation multiple times.  Used for relevance and validation
     private $multiflexiAnswers; // array of 2nd scale answer lists for types ':' and ';' -- needed for convenient print of logic file
 
+<<<<<<< HEAD
     private $sgqaNaming = true;    // used to specify whether to  generate equations using SGQA codes or qcodes
 
+=======
+>>>>>>> refs/heads/dev_tms
     // A private constructor; prevents direct creation of object
     private function __construct()
     {
@@ -170,9 +180,12 @@ class LimeExpressionManager {
     public static function UpgradeConditionsToRelevance($surveyId=NULL, $qid=NULL)
     {
         LimeExpressionManager::SetDirtyFlag();  // set dirty flag even if not conditions, since must have had a DB change
+<<<<<<< HEAD
         // Cheat and upgrade question attributes here too.
         self::UpgradeQuestionAttributes(true,$surveyId,$qid);
         
+=======
+>>>>>>> refs/heads/dev_tms
         $releqns = self::ConvertConditionsToRelevance($surveyId,$qid);
         $num = count($releqns);
         if ($num == 0) {
@@ -281,17 +294,29 @@ class LimeExpressionManager {
             else if ($row['type'] == 'M' || $row['type'] == 'P') {
                 if (substr($row['cfieldname'],0,1) == '+') {
                     // if prefixed with +, then a fully resolved name
+<<<<<<< HEAD
                     $fieldname = substr($row['cfieldname'],1) . '.NAOK';
+=======
+                    $fieldname = substr($row['cfieldname'],1);
+>>>>>>> refs/heads/dev_tms
                     $value = $row['value'];
                 }
                 else {
                     // else create name by concatenating two parts together
+<<<<<<< HEAD
                     $fieldname = $row['cfieldname'] . $row['value'] . '.NAOK';
+=======
+                    $fieldname = $row['cfieldname'] . $row['value'];
+>>>>>>> refs/heads/dev_tms
                     $value = 'Y';
                 }
             }
             else {
+<<<<<<< HEAD
                 $fieldname = $row['cfieldname'] . '.NAOK';
+=======
+                $fieldname = $row['cfieldname'];
+>>>>>>> refs/heads/dev_tms
                 $value = $row['value'];
             }
 
@@ -388,9 +413,17 @@ class LimeExpressionManager {
         $this->subQrelInfo=array();  // reset it each time this is called
         $subQrels = array();    // array of sub-question-level relevance equations
         $validationEqn = array();
+<<<<<<< HEAD
         $validationTips = array();    // array of visible tips for validation criteria, indexed by $qid
 
         // Associate these with $qid so that can be nested under appropriate question-level relevance
+=======
+
+//        log_message('debug',print_r($this->q2subqInfo,true));
+//        log_message('debug',print_r($this->qattr,true));
+
+        // Associate these with $qid so that can be nested under appropriate question-level relevance?
+>>>>>>> refs/heads/dev_tms
         foreach ($this->q2subqInfo as $qinfo)
         {
             if (!is_null($onlyThisQseq) && $onlyThisQseq != $qinfo['qseq']) {
@@ -410,7 +443,10 @@ class LimeExpressionManager {
             if (isset($qattr['array_filter']) && trim($qattr['array_filter']) != '')
             {
                 $array_filter = $qattr['array_filter'];
+<<<<<<< HEAD
                 $sgq = ((isset($this->qcode2sgq[$array_filter])) ? $this->qcode2sgq[$array_filter] : $array_filter);
+=======
+>>>>>>> refs/heads/dev_tms
                 if ($hasSubqs) {
                     $subqs = $qinfo['subqs'];
                     foreach ($subqs as $sq) {
@@ -428,6 +464,7 @@ class LimeExpressionManager {
                             case 'L': //LIST drop-down/radio-button list
                             case 'M': //Multiple choice checkbox
                             case 'P': //Multiple choice with comments checkbox + text
+<<<<<<< HEAD
                             case 'K': //MULTIPLE NUMERICAL QUESTION
                             case 'Q': //MULTIPLE SHORT TEXT
                                 if ($this->sgqaNaming)
@@ -438,6 +475,9 @@ class LimeExpressionManager {
                                 {
                                     $sq_name = $array_filter . $sq['sqsuffix'];
                                 }
+=======
+                                $sq_name = $array_filter . $sq['sqsuffix'];
+>>>>>>> refs/heads/dev_tms
                                 break;
                             default:
                                 break;
@@ -462,7 +502,10 @@ class LimeExpressionManager {
             if (isset($qattr['array_filter_exclude']) && trim($qattr['array_filter_exclude']) != '')
             {
                 $array_filter_exclude = $qattr['array_filter_exclude'];
+<<<<<<< HEAD
                 $sgq = ((isset($this->qcode2sgq[$array_filter_exclude])) ? $this->qcode2sgq[$array_filter_exclude] : $array_filter_exclude);
+=======
+>>>>>>> refs/heads/dev_tms
                 if ($hasSubqs) {
                     $subqs = $qinfo['subqs'];
                     $sq_names = array();
@@ -481,6 +524,7 @@ class LimeExpressionManager {
                             case 'L': //LIST drop-down/radio-button list
                             case 'M': //Multiple choice checkbox
                             case 'P': //Multiple choice with comments checkbox + text
+<<<<<<< HEAD
                             case 'K': //MULTIPLE NUMERICAL QUESTION
                             case 'Q': //MULTIPLE SHORT TEXT
                                 if ($this->sgqaNaming)
@@ -491,6 +535,9 @@ class LimeExpressionManager {
                                 {
                                     $sq_name = $array_filter_exclude . $sq['sqsuffix'];
                                 }
+=======
+                                $sq_name = $array_filter_exclude . $sq['sqsuffix'];
+>>>>>>> refs/heads/dev_tms
                                 break;
                             default:
                                 break;
@@ -525,6 +572,7 @@ class LimeExpressionManager {
                         switch ($type)
                         {
                             case 'K': //MULTIPLE NUMERICAL QUESTION
+<<<<<<< HEAD
                                 if ($this->sgqaNaming)
                                 {
                                     $sq_name = $sq['rowdivid'] . '.NAOK';
@@ -533,6 +581,9 @@ class LimeExpressionManager {
                                 {
                                     $sq_name = $sq['varName'] . '.NAOK';
                                 }
+=======
+                                $sq_name = $sq['varName'] . '.NAOK';
+>>>>>>> refs/heads/dev_tms
                                 break;
                             default:
                                 break;
@@ -549,22 +600,32 @@ class LimeExpressionManager {
                         $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'equals_num_value',
+<<<<<<< HEAD
                             'eqn' => '(sum(' . implode(', ', $sq_names) . ') == (' . $equals_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
                             'qid' => $questionNum,
                             'sumEqn' => 'sum(' . implode(', ', $sq_names) . ')',
                             'sumRemainingEqn' => '(' . $equals_num_value . ' - sum(' . implode(', ', $sq_names) . '))',
+=======
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') == (' . $equals_num_value . '))',
+                            'qid' => $questionNum,
+                            'tip' => $this->gT('Total of all entries must equal') . ' {' . $equals_num_value . '}',
+>>>>>>> refs/heads/dev_tms
                             );
                     }
                 }
             }
+<<<<<<< HEAD
             else
             {
                 $equals_num_value='';
             }
+=======
+>>>>>>> refs/heads/dev_tms
 
             // exclude_all_others
             if (isset($qattr['exclude_all_others']) && trim($qattr['exclude_all_others']) != '')
             {
+<<<<<<< HEAD
                 $exclusive_options = explode(';',$qattr['exclude_all_others']);
                 if ($hasSubqs) {
                     foreach ($exclusive_options as $exclusive_option)
@@ -607,14 +668,46 @@ class LimeExpressionManager {
                                     'sgqa' => $qinfo['sgqa'],
                                 );
                             }
+=======
+                $exclusive_option = $qattr['exclude_all_others'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        if ($sq['csuffix'] == $exclusive_option)
+                        {
+                            continue;   // so don't make the excluded option irrelevant
+                        }
+                        switch ($type)
+                        {
+                            case 'M': //Multiple choice checkbox
+                                $sq_name = $qinfo['sgqa'] . $exclusive_option;
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $subQrels[] = array(
+                                'qtype' => $type,
+                                'type' => 'exclude_all_others',
+                                'rowdivid' => $sq['rowdivid'],
+                                'eqn' => '(' . $sq_name . ' == "")',
+                                'qid' => $questionNum,
+                                'sgqa' => $qinfo['sgqa'],
+                            );
+>>>>>>> refs/heads/dev_tms
                         }
                     }
                 }
             }
+<<<<<<< HEAD
             else
             {
                 $exclusive_option = '';
             }
+=======
+>>>>>>> refs/heads/dev_tms
 
             // exclude_all_others_auto
             //  TODO
@@ -631,6 +724,7 @@ class LimeExpressionManager {
                         $sq_name = NULL;
                         switch ($type)
                         {
+<<<<<<< HEAD
                             case '1':   //Array (Flexible Labels) dual scale
                                 if (substr($sq['varName'],-1,1) == '0')
                                 {
@@ -675,6 +769,14 @@ class LimeExpressionManager {
                                     {
                                         $sq_name = $sq['rowdivid'] . '.NAOK';
                                     }
+=======
+                            case 'M': //Multiple choice checkbox
+                                $sq_name = $sq['varName'] . '.NAOK';
+                                break;
+                            case 'P': //Multiple choice with comments checkbox + text
+                                if (!preg_match('/comment$/',$sq['varName'])) {
+                                    $sq_name = $sq['varName'] . '.NAOK';
+>>>>>>> refs/heads/dev_tms
                                 }
                                 break;
                             case 'R': //RANKING STYLE
@@ -698,10 +800,15 @@ class LimeExpressionManager {
                             'type' => 'min_answers',
                             'eqn' => '(count(' . implode(', ', $sq_names) . ') >= (' . $min_answers . '))',
                             'qid' => $questionNum,
+<<<<<<< HEAD
+=======
+                            'tip' => $this->gT('The minimum number of answers for this question is') . ' {' . $min_answers . '}',
+>>>>>>> refs/heads/dev_tms
                         );
                     }
                 }
             }
+<<<<<<< HEAD
             else
             {
                 $min_answers='';
@@ -712,6 +819,14 @@ class LimeExpressionManager {
             if (isset($qattr['max_answers']) && trim($qattr['max_answers']) != '')
             {
                 $max_answers = $qattr['max_answers'];
+=======
+
+            // min_num_value
+            // Validation:= sum(sq1,...,sqN) >= value (which could be an expression).
+            if (isset($qattr['min_num_value']) && trim($qattr['min_num_value']) != '')
+            {
+                $min_num_value = $qattr['min_num_value'];
+>>>>>>> refs/heads/dev_tms
                 if ($hasSubqs) {
                     $subqs = $qinfo['subqs'];
                     $sq_names = array();
@@ -719,6 +834,7 @@ class LimeExpressionManager {
                         $sq_name = NULL;
                         switch ($type)
                         {
+<<<<<<< HEAD
                             case '1':   //Array (Flexible Labels) dual scale
                                 if (substr($sq['varName'],-1,1) == '0')
                                 {
@@ -768,6 +884,10 @@ class LimeExpressionManager {
                             case 'R': //RANKING STYLE
                                 // TODO - does not have sub-questions, so how should this be done?
                                 // Current JavaScript works fine, but can't use expression value
+=======
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                                $sq_name = $sq['varName'] . '.NAOK';
+>>>>>>> refs/heads/dev_tms
                                 break;
                             default:
                                 break;
@@ -783,17 +903,27 @@ class LimeExpressionManager {
                         }
                         $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
+<<<<<<< HEAD
                             'type' => 'max_answers',
                             'eqn' => '(count(' . implode(', ', $sq_names) . ') <= (' . $max_answers . '))',
                             'qid' => $questionNum,
+=======
+                            'type' => 'min_num_value',
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value . '))',
+                            'qid' => $questionNum,
+                            'tip' => $this->gT('Total of all entries must be at least') . ' {' . $min_num_value . '}',
+>>>>>>> refs/heads/dev_tms
                         );
                     }
                 }
             }
+<<<<<<< HEAD
             else
             {
                 $max_answers='';
             }
+=======
+>>>>>>> refs/heads/dev_tms
 
             // min_num_value_n
             // Validation:= N >= value (which could be an expression).
@@ -801,6 +931,7 @@ class LimeExpressionManager {
             {
                 $min_num_value_n = $qattr['min_num_value_n'];
                 if ($hasSubqs) {
+<<<<<<< HEAD
                     $subqs = $qinfo['subqs'];
                     $sq_names = array();
                     $subqValidEqns = array();
@@ -842,6 +973,18 @@ class LimeExpressionManager {
                         }
                     }
                     if (count($sq_names) > 0) {
+=======
+                    $sq = $qinfo['subqs'][0];
+                    switch ($type)
+                    {
+                        case 'N': //NUMERICAL QUESTION TYPE
+                            $sq_name = $sq['varName'];
+                            break;
+                        default:
+                            break;
+                    }
+                    if (!is_null($sq_name)) {
+>>>>>>> refs/heads/dev_tms
                         if (!isset($validationEqn[$questionNum]))
                         {
                             $validationEqn[$questionNum] = array();
@@ -849,13 +992,20 @@ class LimeExpressionManager {
                         $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'min_num_value_n',
+<<<<<<< HEAD
                             'eqn' => implode(' && ', $sq_names),
                             'qid' => $questionNum,
                             'subqValidEqns' => $subqValidEqns,
+=======
+                            'eqn' => '(' . $sq_name . ' >= (' . $min_num_value_n . '))',
+                            'qid' => $questionNum,
+                            'tip' => $this->gT('The entry must be at least') . ' {' . $min_num_value_n . '}',
+>>>>>>> refs/heads/dev_tms
                         );
                     }
                 }
             }
+<<<<<<< HEAD
             else
             {
                 $min_num_value_n='';
@@ -870,11 +1020,23 @@ class LimeExpressionManager {
                     $subqs = $qinfo['subqs'];
                     $sq_names = array();
                     $subqValidEqns = array();
+=======
+
+            // min_num_value_sgqa
+            // Validation:= sum(sq1,...,sqN) >= value (which could be an expression).
+            if (isset($qattr['min_num_value_sgqa']) && trim($qattr['min_num_value_sgqa']) != '')
+            {
+                $min_num_value_sgqa = $qattr['min_num_value_sgqa'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+>>>>>>> refs/heads/dev_tms
                     foreach ($subqs as $sq) {
                         $sq_name = NULL;
                         switch ($type)
                         {
                             case 'K': //MULTIPLE NUMERICAL QUESTION
+<<<<<<< HEAD
                                 if ($this->sgqaNaming)
                                 {
                                     $sq_name = '(is_empty(' . $sq['rowdivid'] . '.NAOK) || '. $sq['rowdivid'] . '.NAOK <= (' . $max_num_value_n . '))';
@@ -895,16 +1057,22 @@ class LimeExpressionManager {
                                     $sq_name = '(is_empty(' . $sq['varName'] . '.NAOK) || '. $sq['varName'] . '.NAOK <= (' . $max_num_value_n . '))';
                                 }
                                 $subqValidSelector = '';
+=======
+                                $sq_name = $sq['varName'] . '.NAOK';
+>>>>>>> refs/heads/dev_tms
                                 break;
                             default:
                                 break;
                         }
                         if (!is_null($sq_name)) {
                             $sq_names[] = $sq_name;
+<<<<<<< HEAD
                             $subqValidEqns[$subqValidSelector] = array(
                                 'subqValidEqn' => $sq_name,
                                 'subqValidSelector' => $subqValidSelector,
                                 );
+=======
+>>>>>>> refs/heads/dev_tms
                         }
                     }
                     if (count($sq_names) > 0) {
@@ -914,14 +1082,22 @@ class LimeExpressionManager {
                         }
                         $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
+<<<<<<< HEAD
                             'type' => 'max_num_value_n',
                             'eqn' => implode(' && ', $sq_names),
                             'qid' => $questionNum,
                             'subqValidEqns' => $subqValidEqns,
+=======
+                            'type' => 'min_num_value_sgqa',
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value_sgqa . '))',
+                            'qid' => $questionNum,
+                            'tip' => $this->gT('Total of all entries must be at least') . ' {' . $min_num_value_sgqa . '}',
+>>>>>>> refs/heads/dev_tms
                         );
                     }
                 }
             }
+<<<<<<< HEAD
             else
             {
                 $max_num_value_n='';
@@ -932,6 +1108,14 @@ class LimeExpressionManager {
             if (isset($qattr['min_num_value']) && trim($qattr['min_num_value']) != '')
             {
                 $min_num_value = $qattr['min_num_value'];
+=======
+
+            // max_answers
+            // Validation:= count(sq1,...,sqN) <= value (which could be an expression).
+            if (isset($qattr['max_answers']) && trim($qattr['max_answers']) != '')
+            {
+                $max_answers = $qattr['max_answers'];
+>>>>>>> refs/heads/dev_tms
                 if ($hasSubqs) {
                     $subqs = $qinfo['subqs'];
                     $sq_names = array();
@@ -939,6 +1123,7 @@ class LimeExpressionManager {
                         $sq_name = NULL;
                         switch ($type)
                         {
+<<<<<<< HEAD
                             case 'K': //MULTIPLE NUMERICAL QUESTION
                                 if ($this->sgqaNaming)
                                 {
@@ -949,6 +1134,20 @@ class LimeExpressionManager {
                                     $sq_name = $sq['varName'] . '.NAOK';
                                 }
                                 break;
+=======
+                            case 'M': //Multiple choice checkbox
+                                $sq_name = $sq['varName'] . '.NAOK';
+                                break;
+                            case 'P': //Multiple choice with comments checkbox + text
+                                if (!preg_match('/comment$/',$sq['varName'])) {
+                                    $sq_name = $sq['varName'] . '.NAOK';
+                                }
+                                break;
+                            case 'R': //RANKING STYLE
+                                // TODO - does not have sub-questions, so how should this be done?
+                                // Current JavaScript works fine, but can't use expression value
+                                break;
+>>>>>>> refs/heads/dev_tms
                             default:
                                 break;
                         }
@@ -963,18 +1162,28 @@ class LimeExpressionManager {
                         }
                         $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
+<<<<<<< HEAD
                             'type' => 'min_num_value',
                             'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
                             'qid' => $questionNum,
                             'sumEqn' => 'sum(' . implode(', ', $sq_names) . ')',
+=======
+                            'type' => 'max_answers',
+                            'eqn' => '(count(' . implode(', ', $sq_names) . ') <= (' . $max_answers . '))',
+                            'qid' => $questionNum,
+                            'tip' => $this->gT('The maximum number of answers for this question is') . ' {' . $max_answers . '}',
+>>>>>>> refs/heads/dev_tms
                         );
                     }
                 }
             }
+<<<<<<< HEAD
             else
             {
                 $min_num_value='';
             }
+=======
+>>>>>>> refs/heads/dev_tms
 
             // max_num_value
             // Validation:= sum(sq1,...,sqN) <= value (which could be an expression).
@@ -989,6 +1198,7 @@ class LimeExpressionManager {
                         switch ($type)
                         {
                             case 'K': //MULTIPLE NUMERICAL QUESTION
+<<<<<<< HEAD
                                 if ($this->sgqaNaming)
                                 {
                                     $sq_name = $sq['rowdivid'] . '.NAOK';
@@ -997,6 +1207,9 @@ class LimeExpressionManager {
                                 {
                                     $sq_name = $sq['varName'] . '.NAOK';
                                 }
+=======
+                                $sq_name = $sq['varName'] . '.NAOK';
+>>>>>>> refs/heads/dev_tms
                                 break;
                             default:
                                 break;
@@ -1013,13 +1226,20 @@ class LimeExpressionManager {
                         $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'max_num_value',
+<<<<<<< HEAD
                             'eqn' =>  '(sum(' . implode(', ', $sq_names) . ') <= (' . $max_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
                             'qid' => $questionNum,
                             'sumEqn' => 'sum(' . implode(', ', $sq_names) . ')',
+=======
+                            'eqn' =>  '(sum(' . implode(', ', $sq_names) . ') <= (' . $max_num_value . '))',
+                            'qid' => $questionNum,
+                            'tip' => $this->gT('Total of all entries must not exceed') . ' {' . $max_num_value . '}',
+>>>>>>> refs/heads/dev_tms
                         );
                     }
                 }
             }
+<<<<<<< HEAD
             else
             {
                 $max_num_value='';
@@ -1118,20 +1338,47 @@ class LimeExpressionManager {
                         }
                     }
                     if (count($sq_names) > 0) {
+=======
+
+            // max_num_value_n
+            // Validation:= N <= value (which could be an expression).
+            if (isset($qattr['max_num_value_n']) && trim($qattr['max_num_value_n']) != '')
+            {
+                $max_num_value_n = $qattr['max_num_value_n'];
+                if ($hasSubqs) {
+                    $sq = $qinfo['subqs'][0];
+                    switch ($type)
+                    {
+                        case 'N': //NUMERICAL QUESTION TYPE
+                            $sq_name = $sq['varName'];
+                            break;
+                        default:
+                            break;
+                    }
+                    if (!is_null($sq_name)) {
+>>>>>>> refs/heads/dev_tms
                         if (!isset($validationEqn[$questionNum]))
                         {
                             $validationEqn[$questionNum] = array();
                         }
                         $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
+<<<<<<< HEAD
                             'type' => 'multiflexible_max',
                             'eqn' => implode(' && ', $sq_names),
                             'qid' => $questionNum,
                             'subqValidEqns' => $subqValidEqns,
+=======
+                            'type' => 'max_num_value_n',
+                            'eqn' => '(' . $sq_name . ' <= (' . $max_num_value_n . '))',
+                            'qid' => $questionNum,
+                            'tip' => $this->gT('The entry must not exceed') . ' {' . $max_num_value_n . '}',
+>>>>>>> refs/heads/dev_tms
                         );
                     }
                 }
             }
+<<<<<<< HEAD
             else
             {
                 $multiflexible_max='';
@@ -1200,18 +1447,38 @@ class LimeExpressionManager {
                             case 'U': //HUGE FREE TEXT
 //                                $subqValidEqn = '(strlen('.$sq['varName'].'.NAOK)==0 || regexMatch("' . $preg . '", ' . $sq['varName'] . '.NAOK))';
 //                                $subqValidSelector = 'question' . $questionNum . ' :input';
+=======
+
+            // max_num_value_sgqa
+            // Validation:= sum(sq1,...,sqN) <= value (which could be an expression).
+            if (isset($qattr['max_num_value_sgqa']) && trim($qattr['max_num_value_sgqa']) != '')
+            {
+                $max_num_value_sgqa = $qattr['max_num_value_sgqa'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                        {
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                                $sq_name = $sq['varName'] . '.NAOK';
+>>>>>>> refs/heads/dev_tms
                                 break;
                             default:
                                 break;
                         }
                         if (!is_null($sq_name)) {
                             $sq_names[] = $sq_name;
+<<<<<<< HEAD
                             if (isset($subqValidSelector)) {
                                 $subqValidEqns[$subqValidSelector] = array(
                                     'subqValidEqn' => $subqValidEqn,
                                     'subqValidSelector' => $subqValidSelector,
                                     );
                             }
+=======
+>>>>>>> refs/heads/dev_tms
                         }
                     }
                     if (count($sq_names) > 0) {
@@ -1221,14 +1488,22 @@ class LimeExpressionManager {
                         }
                         $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
+<<<<<<< HEAD
                             'type' => 'preg',
                             'eqn' => '(sum(' . implode(', ', $sq_names) . ') == 0)',
                             'qid' => $questionNum,
                             'subqValidEqns' => $subqValidEqns,
+=======
+                            'type' => 'max_num_value_sgqa',
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') <= (' . $max_num_value_sgqa . '))',
+                            'qid' => $questionNum,
+                            'tip' => $this->gT('Total of all entries must not exceed') . ' {' . $max_num_value_sgqa . '}',
+>>>>>>> refs/heads/dev_tms
                         );
                     }
                 }
             }
+<<<<<<< HEAD
             else
             {
                 $preg='';
@@ -1249,6 +1524,14 @@ class LimeExpressionManager {
             if (isset($qattr['em_validation_q']) && !is_null($qattr['em_validation_q']) && trim($qattr['em_validation_q']) != '')
             {
                 $em_validation_q = $qattr['em_validation_q'];
+=======
+
+            // num_value_equals_sgqa
+            // Validation:= sum(sq1,...,sqN) == value (which could be an expression).
+            if (isset($qattr['num_value_equals_sgqa']) && trim($qattr['num_value_equals_sgqa']) != '')
+            {
+                $num_value_equals_sgqa = $qattr['num_value_equals_sgqa'];
+>>>>>>> refs/heads/dev_tms
                 if ($hasSubqs) {
                     $subqs = $qinfo['subqs'];
                     $sq_names = array();
@@ -1257,6 +1540,7 @@ class LimeExpressionManager {
                         switch ($type)
                         {
                             case 'K': //MULTIPLE NUMERICAL QUESTION
+<<<<<<< HEAD
                             case 'Q': //MULTIPLE SHORT TEXT
                             case ';': //ARRAY (Multi Flexi) Text
                             case ':': //ARRAY (Multi Flexi) 1 to 10
@@ -1272,6 +1556,9 @@ class LimeExpressionManager {
                                 {
                                     $sq_name = '!(' . preg_replace('/\bthis\b/',$sq['varName'], $em_validation_q) . ')';
                                 }
+=======
+                                $sq_name = $sq['varName'] . '.NAOK';
+>>>>>>> refs/heads/dev_tms
                                 break;
                             default:
                                 break;
@@ -1287,13 +1574,21 @@ class LimeExpressionManager {
                         }
                         $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
+<<<<<<< HEAD
                             'type' => 'em_validation_q',
                             'eqn' => '(sum(' . implode(', ', $sq_names) . ') == 0)',
                             'qid' => $questionNum,
+=======
+                            'type' => 'num_value_equals_sgqa',
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') == (' . $num_value_equals_sgqa . '))',
+                            'qid' => $questionNum,
+                            'tip' => $this->gT('Total of all entries must equal') . ' {' . $num_value_equals_sgqa . '}',
+>>>>>>> refs/heads/dev_tms
                         );
                     }
                 }
             }
+<<<<<<< HEAD
             else
             {
                 $em_validation_q='';
@@ -1353,10 +1648,42 @@ class LimeExpressionManager {
                                     $subqValidEqn = '(' . preg_replace('/\bthis\b/',$sq['varName'], $em_validation_sq) . ')';
                                 }
                                 $subqValidSelector = $sq['jsVarName_on'];
+=======
+
+            // show_totals
+            // TODO - create equations for these?
+
+            // assessment_value
+            // TODO?  How does it work?
+            // The assesment value (referenced how?) = count(sq1,...,sqN) * assessment_value
+            // Since there are easy work-arounds to this, skipping it for now
+
+            // preg - a PHP Regular Expression to validate text input fields
+            if (isset($qinfo['preg']) && !is_null($qinfo['preg']))
+            {
+                $preg = $qinfo['preg'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                        {
+                            case 'N': //NUMERICAL QUESTION TYPE
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                            case 'Q': //MULTIPLE SHORT TEXT
+                            case ';': //ARRAY (Multi Flexi) Text
+                            case 'S': //SHORT FREE TEXT
+                            case 'T': //LONG FREE TEXT
+                            case 'U': //HUGE FREE TEXT
+                                // TODO - should empty always be an option? or require that empty be an explicit option in the regex?
+                                $sq_name = '(if((strlen('.$sq['varName'].'.NAOK)==0),0,!regexMatch("' . $preg . '", ' . $sq['varName'] . '.NAOK)))';
+>>>>>>> refs/heads/dev_tms
                                 break;
                             default:
                                 break;
                         }
+<<<<<<< HEAD
                         if (!is_null($sq_name)) {
                             $sq_names[] = $sq_name;
                             if (isset($subqValidSelector)) {
@@ -1365,6 +1692,14 @@ class LimeExpressionManager {
                                     'subqValidSelector' => $subqValidSelector,
                                     );
                             }
+=======
+                        // TODO - refactor this so validate each resposne separately:
+                        // (1) store a flag in $_SESSION and JavaScript indicating valiations status
+                        // (2) Use that flag to color-code individual responses that fail validation
+                        // (3) Let overall validation equation assess those flags, not re-do full regex for all
+                        if (!is_null($sq_name)) {
+                            $sq_names[] = $sq_name;
+>>>>>>> refs/heads/dev_tms
                         }
                     }
                     if (count($sq_names) > 0) {
@@ -1374,14 +1709,22 @@ class LimeExpressionManager {
                         }
                         $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
+<<<<<<< HEAD
                             'type' => 'em_validation_sq',
                             'eqn' => '(sum(' . implode(', ', $sq_names) . ') == 0)',
                             'qid' => $questionNum,
                             'subqValidEqns' => $subqValidEqns,
+=======
+                            'type' => 'preg',
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') == 0)',
+                            'qid' => $questionNum,
+                            'tip' => $this->gT('All entries must conform to this regular expression:') . " " . str_replace(array('{','}'),array('{ ',' }'), $preg),
+>>>>>>> refs/heads/dev_tms
                         );
                     }
                 }
             }
+<<<<<<< HEAD
             else
             {
                 $em_validation_sq='';
@@ -1518,6 +1861,11 @@ class LimeExpressionManager {
                 $validationTips[$questionNum] = $qtips;
             }
         }
+=======
+        }
+//        log_message('debug','**SUBQUESTION RELEVANCE**' . print_r($subQrels,true));
+//        log_message('debug','**VALIDATION EQUATIONS**' . print_r($validationEqn,true));
+>>>>>>> refs/heads/dev_tms
 
         // Consolidate logic across array filters
         $rowdivids = array();
@@ -1557,6 +1905,7 @@ class LimeExpressionManager {
             $result = $this->_ProcessSubQRelevance($sq['eqn'], $sq['qid'], $sq['rowdivid'], $sq['type'], $sq['qtype'],  $sq['sgqa']);
         }
 
+<<<<<<< HEAD
         foreach ($validationEqn as $key=>$val)
         {
             $parts = array();
@@ -1595,13 +1944,26 @@ class LimeExpressionManager {
                     'subqValidSelector' => $csq['subqValidSelector'],
                     'subqValidEqn' => implode(' && ', $csq['subqValidEqns']),
                     );
+=======
+        // TODO - refactor this so that done at subq level too?
+        foreach ($validationEqn as $key=>$val)
+        {
+            $parts = array();
+            $tips = array();
+            foreach ($val as $v) {
+                $parts[] = $v['eqn'];
+                $tips[] = $v['tip'];
+>>>>>>> refs/heads/dev_tms
             }
             $this->qid2validationEqn[$key] = array(
                 'eqn' => '(' . implode(' and ', $parts) . ')',
                 'tips' => $tips,
+<<<<<<< HEAD
                 'subqValidEqns' => $csubqValidEqns,
                 'sumEqn' => $sumEqn,
                 'sumRemainingEqn' => $sumRemainingEqn,
+=======
+>>>>>>> refs/heads/dev_tms
             );
         }
 
@@ -1648,7 +2010,10 @@ class LimeExpressionManager {
         $this->debugLog = array();    // array of mappings among values to confirm their accuracy
         $this->qid2code = array();    // List of codes for each question - needed to know which to NULL if a question is irrelevant
         $this->jsVar2qid = array();
+<<<<<<< HEAD
         $this->qcode2sgq = array();
+=======
+>>>>>>> refs/heads/dev_tms
         $this->alias2varName = array();
         $this->varNameAttr = array();
         $this->questionId2questionSeq = array();
@@ -1714,8 +2079,11 @@ class LimeExpressionManager {
             $mandatory = $fielddata['mandatory'];
             $fieldNameParts = explode('X',$sgqa);
             $groupNum = $fieldNameParts[1];
+<<<<<<< HEAD
             $aid = (isset($fielddata['aid']) ? $fielddata['aid'] : '');
             $sqid = (isset($fielddata['sqid']) ? $fielddata['sqid'] : '');
+=======
+>>>>>>> refs/heads/dev_tms
 
             $questionId = $fieldNameParts[2];
             $questionNum = $fielddata['qid'];
@@ -1782,6 +2150,7 @@ class LimeExpressionManager {
                 case 'H': //ARRAY (Flexible) - Column Format
                 case 'F': //ARRAY (Flexible) - Row Format
                 case 'R': //RANKING STYLE
+<<<<<<< HEAD
                     $ansArray = (isset($this->qans[$questionNum]) ? $this->qans[$questionNum] : NULL);
                     if ($other == 'Y' && ($type == 'L' || $type == '!'))
                     {
@@ -1800,6 +2169,18 @@ class LimeExpressionManager {
                             }
                             $ansArray['0~-oth-'] = '0|' . $othertext;
                         }
+=======
+                    $ansArray = $this->qans[$questionNum];
+                    if ($other == 'Y' && ($type == 'L' || $type == '!')) {
+                        $_qattr = isset($qattr[$questionNum]) ? $qattr[$questionNum] : array();
+                        if (isset($_qattr['other_replace_text']) && trim($_qattr['other_replace_text']) != '') {
+                            $othertext = trim($_qattr['other_replace_text']);
+                        }
+                        else {
+                            $othertext = $this->gT('Other:');
+                        }
+                        $ansArray['0~-oth-'] = '0|' . $othertext;
+>>>>>>> refs/heads/dev_tms
                     }
                     break;
                 case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
@@ -1877,9 +2258,12 @@ class LimeExpressionManager {
                     $csuffix = '';
                     $sqsuffix = '';
                     $varName = $fielddata['title'];
+<<<<<<< HEAD
                     if ($fielddata['aid'] != '') {
                         $varName .= '_' . $fielddata['aid'];
                     }
+=======
+>>>>>>> refs/heads/dev_tms
                     $question = $fielddata['question'];
                     break;
                 case '1': //Array (Flexible Labels) dual scale
@@ -1905,7 +2289,11 @@ class LimeExpressionManager {
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['subquestion'];
 //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
+<<<<<<< HEAD
                     if ($type != 'H' & $type != 'R') {
+=======
+                    if ($type != 'H' && $type != 'Q' && $type != 'R') {
+>>>>>>> refs/heads/dev_tms
                         if ($type == 'P' && preg_match("/comment$/", $sgqa)) {
 //                            $rowdivid = substr($sgqa,0,-7);
                         }
@@ -1959,6 +2347,7 @@ class LimeExpressionManager {
                 case 'F': //ARRAY (Flexible) - Row Format
                 case 'H': //ARRAY (Flexible) - Column Format
                 case 'M': //Multiple choice checkbox
+<<<<<<< HEAD
                 case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
                     $jsVarName = 'java' . $sgqa;
                     $jsVarName_on = $jsVarName;
@@ -1967,6 +2356,22 @@ class LimeExpressionManager {
                 case ';': //ARRAY (Multi Flexi) Text
                     $jsVarName = 'java' . $sgqa;
                     $jsVarName_on = 'answer' . $sgqa;;
+=======
+                case ':': //ARRAY (Multi Flexi) 1 to 10
+                case ';': //ARRAY (Multi Flexi) Text
+                    $jsVarName = 'java' . $sgqa;
+                    $jsVarName_on = $jsVarName;
+                    break;
+                case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                    if (preg_match("/comment$/", $sgqa)) {
+                        $jsVarName = 'java' . $sgqa;
+                        $varName = $varName . "_comment";
+                    }
+                    else {
+                        $jsVarName = 'java' . $sgqa;
+                    }
+                    $jsVarName_on = $jsVarName;
+>>>>>>> refs/heads/dev_tms
                     break;
                 case '|': //File Upload
                     // Only want the use the one that ends in '_filecount'
@@ -1975,7 +2380,11 @@ class LimeExpressionManager {
                     $jsVarName_on = $jsVarName;
                     break;
                 case 'P': //Multiple choice with comments checkbox + text
+<<<<<<< HEAD
                     if (preg_match("/(other|comment)$/",$sgqa))
+=======
+                    if (preg_match("/comment$/",$sgqa))
+>>>>>>> refs/heads/dev_tms
                     {
                         $jsVarName_on = 'answer' . $sgqa;  // is this true for survey.php and not for group.php?
                         $jsVarName = 'java' . $sgqa;
@@ -2005,6 +2414,7 @@ class LimeExpressionManager {
                 }
                 if ($type == 'L')
                 {
+<<<<<<< HEAD
                     if (!is_null($ansArray))
                     {
                         foreach (array_keys($ansArray) as $key)
@@ -2019,6 +2429,19 @@ class LimeExpressionManager {
                                 'sqsuffix' => '_' . $parts[1],
                                 );
                         }
+=======
+                    foreach (array_keys($ansArray) as $key)
+                    {
+                        $parts = explode('~',$key);
+                        if ($parts[1] == '-oth-') {
+                            $parts[1] = 'other';
+                        }
+                        $q2subqInfo[$questionNum]['subqs'][] = array(
+                            'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum . $parts[1],
+                            'varName' => $varName,
+                            'sqsuffix' => '_' . $parts[1],
+                            );
+>>>>>>> refs/heads/dev_tms
                     }
                 }
                 else if ($type == 'N'
@@ -2026,8 +2449,11 @@ class LimeExpressionManager {
                 {
                     $q2subqInfo[$questionNum]['subqs'][] = array(
                         'varName' => $varName,
+<<<<<<< HEAD
                         'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
                         'jsVarName' => 'java' . $surveyid . 'X' . $groupNum . 'X' . $questionNum,
+=======
+>>>>>>> refs/heads/dev_tms
                         );
                 }
                 else
@@ -2068,13 +2494,20 @@ class LimeExpressionManager {
                 'gseq'=>$groupSeq,
                 'type'=>$type,
                 'sgqa'=>$sgqa,
+<<<<<<< HEAD
+=======
+                'rowdivid'=>$rowdivid,
+>>>>>>> refs/heads/dev_tms
                 'ansList'=>$ansList,
                 'ansArray'=>$ansArray,
                 'scale_id'=>$scale_id,
                 'default'=>$defaultValue,
                 'rootVarName'=>$fielddata['title'],
                 'subqtext'=>$subqtext,
+<<<<<<< HEAD
                 'rowdivid'=>(is_null($rowdivid) ? '' : $rowdivid),
+=======
+>>>>>>> refs/heads/dev_tms
                 );
 
             $this->questionSeq2relevance[$questionSeq] = array(
@@ -2096,16 +2529,22 @@ class LimeExpressionManager {
                 'other'=>$other,
                 'default'=>$defaultValue,
                 'rootVarName'=>$fielddata['title'],
+<<<<<<< HEAD
                 'rowdivid'=>(is_null($rowdivid) ? '' : $rowdivid),
                 'aid'=>$aid,
                 'sqid'=>$sqid,
+=======
+>>>>>>> refs/heads/dev_tms
                 );
 
             $this->knownVars[$varName] = $varInfo_Code;
             $this->knownVars[$sgqa] = $varInfo_Code;
 
             $this->jsVar2qid[$jsVarName] = $questionNum;
+<<<<<<< HEAD
             $this->qcode2sgq[$fielddata['title']] = $surveyid . 'X' . $groupNum . 'X' . $questionNum;
+=======
+>>>>>>> refs/heads/dev_tms
 
             // Create JavaScript arrays
             $this->alias2varName[$varName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $varName . "':'" . $jsVarName . "'");
@@ -2124,7 +2563,10 @@ class LimeExpressionManager {
                 . "','readWrite':'" . $readWrite
                 . "','grelevance':'" . (($grelevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$grelevance),ENT_QUOTES) : 1)
                 . "','default':'" . (is_null($defaultValue) ? '' : $defaultValue)
+<<<<<<< HEAD
                 . "','rowdivid':'" . (is_null($rowdivid) ?  '' : $rowdivid)
+=======
+>>>>>>> refs/heads/dev_tms
                 . "','gseq':" . $groupSeq
                 . ",'qseq':" . $questionSeq
                 .$ansList."}";
@@ -2194,7 +2636,10 @@ class LimeExpressionManager {
             // Explicitly set all tokens to blank
             $blankVal = array(
                     'code'=>'',
+<<<<<<< HEAD
                     'type'=>'',
+=======
+>>>>>>> refs/heads/dev_tms
                     'jsName_on'=>'',
                     'jsName'=>'',
                     'readWrite'=>'N',
@@ -2208,6 +2653,7 @@ class LimeExpressionManager {
                 $this->knownVars['TOKEN:ATTRIBUTE_' . $i] = $blankVal;
             }
         }
+<<<<<<< HEAD
         // set default value for reserved 'this' variable
         $this->knownVars['this'] = array(
                 'jsName_on'=>'',
@@ -2233,6 +2679,8 @@ class LimeExpressionManager {
                 'subqtext'=>'',
                 'rowdivid'=>'',
                 );
+=======
+>>>>>>> refs/heads/dev_tms
 
         $this->runtimeTimings[] = array(__METHOD__ . ' - process fieldMap',(microtime(true) - $now));
         if (($this->debugLevel & LEM_DEBUG_TRANSLATION_DETAIL) == LEM_DEBUG_TRANSLATION_DETAIL)
@@ -2254,7 +2702,11 @@ class LimeExpressionManager {
             $debugLog_html .= "</table>";
             $this->surveyLogicFile = $debugLog_html;
         }
+<<<<<<< HEAD
         usort($this->questionSeq2relevance,'cmpQuestionSeq');
+=======
+        usort($this->questionSeq2relevance,'self::cmpQuestionSeq');
+>>>>>>> refs/heads/dev_tms
         $this->numQuestions = count($this->questionSeq2relevance);
         $this->numGroups = count($this->groupId2groupSeq);
 
@@ -2265,6 +2717,7 @@ class LimeExpressionManager {
     }
 
     /**
+<<<<<<< HEAD
      * Return whether a sub-question is relevant
      * @param <type> $sgqa
      * @return <boolean>
@@ -2290,6 +2743,8 @@ class LimeExpressionManager {
     }
 
     /**
+=======
+>>>>>>> refs/heads/dev_tms
      * Return whether question $qid is relevanct
      * @param <type> $qid
      * @return boolean
@@ -2318,6 +2773,32 @@ class LimeExpressionManager {
     }
 
     /**
+<<<<<<< HEAD
+=======
+ * Used by usort() to order $this->questionSeq2relevance in proper order
+ * @param <type> $a
+ * @param <type> $b
+ * @return <type>
+ */
+    function cmpQuestionSeq($a, $b)
+    {
+        if (is_null($a['qseq'])) {
+            if (is_null($b['qseq'])) {
+                return 0;
+            }
+            return 1;
+        }
+        if (is_null($b['qseq'])) {
+            return -1;
+        }
+        if ($a['qseq'] == $b['qseq']) {
+            return 0;
+        }
+        return ($a['qseq'] < $b['qseq']) ? -1 : 1;
+    }
+
+    /**
+>>>>>>> refs/heads/dev_tms
      * Check the relevance status of all questions on or before the current group.
      * This generates needed JavaScript for dynamic relevance, and sets flags about which questions and groups are relevant
      */
@@ -2370,7 +2851,11 @@ class LimeExpressionManager {
      * @return <type> - the original $string with all replacements done.
      */
 
+<<<<<<< HEAD
     static function ProcessString($string, $questionNum=NULL, $replacementFields=array(), $debug=false, $numRecursionLevels=1, $whichPrettyPrintIteration=1, $noReplacements=false, $timeit=true, $staticReplacement=false)
+=======
+    static function ProcessString($string, $questionNum=NULL, $replacementFields=array(), $debug=false, $numRecursionLevels=1, $whichPrettyPrintIteration=1, $noReplacements=false, $timeit=true)
+>>>>>>> refs/heads/dev_tms
     {
         $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
@@ -2401,7 +2886,11 @@ class LimeExpressionManager {
         }
         $stringToParse = $string;   // decode called later htmlspecialchars_decode($string,ENT_QUOTES);
         $qnum = is_null($questionNum) ? 0 : $questionNum;
+<<<<<<< HEAD
         $result = $LEM->em->sProcessStringContainingExpressions($stringToParse,$qnum, $numRecursionLevels, $whichPrettyPrintIteration, $groupSeq, $questionSeq, $staticReplacement);
+=======
+        $result = $LEM->em->sProcessStringContainingExpressions($stringToParse,$qnum, $numRecursionLevels, $whichPrettyPrintIteration, $groupSeq, $questionSeq);
+>>>>>>> refs/heads/dev_tms
         $hasErrors = $LEM->em->HasErrors();
         if ($hasErrors && (($LEM->debugLevel & LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB) == LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB)) {
             $error = array(
@@ -2726,11 +3215,17 @@ class LimeExpressionManager {
         $LEM->surveyOptions['refurl'] = (isset($options['refurl']) ? $options['refurl'] : NULL);
         $LEM->surveyOptions['rooturl'] = (isset($options['rooturl']) ? $options['rooturl'] : '');
         $LEM->surveyOptions['savetimings'] = (isset($options['savetimings']) ? $options['savetimings'] : '');
+<<<<<<< HEAD
         $LEM->sgqaNaming = (isset($options['sgqaNaming']) ? ($options['sgqaNaming']=="Y") : true); // TODO default should eventually be false
         $LEM->surveyOptions['startlanguage'] = (isset($options['startlanguage']) ? $options['startlanguage'] : 'en');
         $LEM->surveyOptions['surveyls_dateformat'] = (isset($options['surveyls_dateformat']) ? $options['surveyls_dateformat'] : 1);
         $LEM->surveyOptions['tablename'] = (isset($options['tablename']) ? $options['tablename'] : db_table_name('survey_' . $LEM->sid));
         $LEM->surveyOptions['tablename_timings'] = ((isset($options['savetimings']) && $options['savetimings'] == 'Y') ? db_table_name('survey_' . $LEM->sid . '_timings') : '');
+=======
+        $LEM->surveyOptions['startlanguage'] = (isset($options['startlanguage']) ? $options['startlanguage'] : 'en');
+        $LEM->surveyOptions['surveyls_dateformat'] = (isset($options['surveyls_dateformat']) ? $options['surveyls_dateformat'] : 1);
+        $LEM->surveyOptions['tablename'] = (isset($options['tablename']) ? $options['tablename'] : db_table_name('survey_' . $LEM->sid));
+>>>>>>> refs/heads/dev_tms
         $LEM->surveyOptions['target'] = (isset($options['target']) ? $options['target'] : '/temp/files/');
         $LEM->surveyOptions['timeadjust'] = (isset($options['timeadjust']) ? $options['timeadjust'] : 0);
         $LEM->surveyOptions['tempdir'] = (isset($options['tempdir']) ? $options['tempdir'] : '/temp/');
@@ -3128,7 +3623,10 @@ class LimeExpressionManager {
                 "startlanguage"=>$this->surveyOptions['startlanguage'],
                 "token"=>($this->surveyOptions['token']),
                 "datestamp"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : NULL),
+<<<<<<< HEAD
                 "refurl"=>(($this->surveyOptions['refurl']) ? getenv("HTTP_REFERER") : NULL),
+=======
+>>>>>>> refs/heads/dev_tms
                 "startdate"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : date("Y-m-d H:i:s",0)),
                 );
             //One of the strengths of ADOdb's AutoExecute() is that only valid field names for $table are updated
@@ -3137,6 +3635,7 @@ class LimeExpressionManager {
                 $srid = $connect->Insert_ID($this->surveyOptions['tablename'],"sid");
                 $_SESSION['srid'] = $srid;
             }
+<<<<<<< HEAD
             else
             {
                 $message .= $this->gT("Unable to insert record into survey table: ") .$connect->ErrorMsg() . "<br/>";
@@ -3159,6 +3658,11 @@ class LimeExpressionManager {
                     $_SESSION['flashmessage'] = $message;
                     echo $message;
                 }
+=======
+            else if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY)
+            {
+                $message .= "Unable to insert record into survey table.<br />".$connect->ErrorMsg() . "<br/>";
+>>>>>>> refs/heads/dev_tms
             }
         }
 
@@ -3238,11 +3742,14 @@ class LimeExpressionManager {
                         $message .= 'Error in SQL update: '. $connect->ErrorMsg() . '<br/>';
                     }
                 }
+<<<<<<< HEAD
                     // Save Timings if needed
                 if ($this->surveyOptions['savetimings']) {
                     set_answer_time();
                 }
 
+=======
+>>>>>>> refs/heads/dev_tms
                 if ($finished)
                 {
                     // Delete the save control record if successfully finalize the submission
@@ -3272,6 +3779,14 @@ class LimeExpressionManager {
                     {
                         check_quota('enforce',$this->sid);  // will create a page and quit.
                     }
+<<<<<<< HEAD
+=======
+
+                    // Save Timings if needed
+                    if ($this->surveyOptions['savetimings']) {
+                        set_answer_time();
+                    }
+>>>>>>> refs/heads/dev_tms
                 }
                 else if ($this->surveyOptions['allowsave'] && isset($_SESSION['scid']))
                 {
@@ -3663,7 +4178,11 @@ class LimeExpressionManager {
             if ($qStatus['relevant']==true) {
                 $grel = $gRelInfo['result'];    // true;   // at least one question relevant
             }
+<<<<<<< HEAD
             if ($qStatus['hidden']==false && $qStatus['relevant'] == true) {
+=======
+            if ($qStatus['hidden']==false) {
+>>>>>>> refs/heads/dev_tms
                 $ghidden=false; // at least one question is visible
             }
             if ($qStatus['mandViolation']==true) {
@@ -3905,12 +4424,18 @@ class LimeExpressionManager {
                                 if ($sqrel)
                                 {
                                     $relevantSQs[] = $sgqa;
+<<<<<<< HEAD
                                     $_SESSION['relevanceStatus'][$sq['rowdivid']]=true;
+=======
+>>>>>>> refs/heads/dev_tms
                                 }
                                 else
                                 {
                                     $irrelevantSQs[] = $sgqa;
+<<<<<<< HEAD
                                     $_SESSION['relevanceStatus'][$sq['rowdivid']]=false;
+=======
+>>>>>>> refs/heads/dev_tms
                                 }
                             }
                             break;
@@ -3946,12 +4471,18 @@ class LimeExpressionManager {
                                 if ($sqrel)
                                 {
                                     $relevantSQs[] = $sgqa;
+<<<<<<< HEAD
                                     $_SESSION['relevanceStatus'][$sq['rowdivid']]=true;
+=======
+>>>>>>> refs/heads/dev_tms
                                 }
                                 else
                                 {
                                     $irrelevantSQs[] = $sgqa;
+<<<<<<< HEAD
                                     $_SESSION['relevanceStatus'][$sq['rowdivid']]=false;
+=======
+>>>>>>> refs/heads/dev_tms
                                 }
                             }
                         case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
@@ -3992,12 +4523,18 @@ class LimeExpressionManager {
                                 if ($sqrel)
                                 {
                                     $relevantSQs[] = $sgqa;
+<<<<<<< HEAD
                                     $_SESSION['relevanceStatus'][$sq['rowdivid']]=true;
+=======
+>>>>>>> refs/heads/dev_tms
                                 }
                                 else
                                 {
                                     $irrelevantSQs[] = $sgqa;
+<<<<<<< HEAD
                                     $_SESSION['relevanceStatus'][$sq['rowdivid']]=false;
+=======
+>>>>>>> refs/heads/dev_tms
                                 }
                             }
                             break;
@@ -4187,10 +4724,18 @@ class LimeExpressionManager {
         $validationEqn='';
         $validationJS='';       // assume can't generate JavaScript to validate equation
         $validTip='';           // default is none
+<<<<<<< HEAD
         if (isset($LEM->qid2validationEqn[$qid]))
         {
             $hasValidationEqn=true;
             if (!$qhidden)  // do this even is starts irrelevant, else will never show this information.
+=======
+        // TODO - when there are multiple questions which each use the same validation, need to know which sub-questions are invalid
+        if (isset($LEM->qid2validationEqn[$qid]))
+        {
+            $hasValidationEqn=true;
+            if ($qrel && !$qhidden)
+>>>>>>> refs/heads/dev_tms
             {
                 $validationEqn = $LEM->qid2validationEqn[$qid]['eqn'];
                 $qvalid = $LEM->em->ProcessBooleanExpression($validationEqn,$qInfo['gseq'], $qInfo['qseq']);
@@ -4213,11 +4758,14 @@ class LimeExpressionManager {
                 {
                     $prettyPrintValidTip = $LEM->GetLastPrettyPrintExpression();
                 }
+<<<<<<< HEAD
                 $sumEqn = $LEM->qid2validationEqn[$qid]['sumEqn'];
                 $sumRemainingEqn = $LEM->qid2validationEqn[$qid]['sumRemainingEqn'];
 //                $countEqn = $LEM->qid2validationEqn[$qid]['countEqn'];
 //                $countRemainingEqn = $LEM->qid2validationEqn[$qid]['countRemainingEqn'];
 
+=======
+>>>>>>> refs/heads/dev_tms
             }
             else
             {
@@ -4364,9 +4912,13 @@ class LimeExpressionManager {
         foreach ($sgqas as $sgqa)
         {
             if (!is_null($LEM->knownVars[$sgqa]['default']) && !isset($_SESSION[$sgqa])) {
+<<<<<<< HEAD
                 // add support for replacements
                 $defaultVal = $LEM->ProcessString($LEM->knownVars[$sgqa]['default'], NULL, NULL, false, 1, 1, false, false, true);
                 $_SESSION[$sgqa] = $defaultVal;
+=======
+                $_SESSION[$sgqa] = $LEM->knownVars[$sgqa]['default'];
+>>>>>>> refs/heads/dev_tms
             }
         }
 
@@ -4396,11 +4948,14 @@ class LimeExpressionManager {
             'mandTip' => $mandatoryTip,
             'message' => $debug_qmessage,
             'updatedValues' => $updatedValues,
+<<<<<<< HEAD
             'sumEqn' => (isset($sumEqn) ? $sumEqn : ''),
             'sumRemainingEqn' => (isset($sumRemainingEqn) ? $sumRemainingEqn : ''),
 //            'countEqn' => (isset($countEqn) ? $countEqn : ''),
 //            'countRemainingEqn' => (isset($countRemainingEqn) ? $countRemainingEqn : ''),
 
+=======
+>>>>>>> refs/heads/dev_tms
             );
 
         $LEM->currentQset[$qid] = $qStatus;
@@ -4672,6 +5227,7 @@ class LimeExpressionManager {
 
         $jsParts=array();
         $allJsVarsUsed=array();
+<<<<<<< HEAD
         $rowdividList=array();   // list of subquestions needing relevance entries
         $jsParts[] = '<script type="text/javascript" src="'.$rooturl.'/classes/eval/em_javascript.js"></script>';
         $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
@@ -4685,6 +5241,12 @@ class LimeExpressionManager {
             $jsParts[] = "var LEMqid=" . $LEM->currentQID . ";\n";  // current group num so can compute isOnCurrentPage
         }
 
+=======
+        $jsParts[] = '<script type="text/javascript" src="'.$rooturl.'/classes/eval/em_javascript.js"></script>';
+        $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
+        $jsParts[] = "var LEMgid=" . $LEM->groupNum . ";\n";    // current group num so can compute isOnCurrentPage
+        $jsParts[] = "var LEMallOnOnePage=" . (($LEM->allOnOnePage) ? 'true' : 'false') . ";\n";
+>>>>>>> refs/heads/dev_tms
         $jsParts[] = "function ExprMgr_process_relevance_and_tailoring(evt_type){\n";
         $jsParts[] = "if (typeof LEM_initialized == 'undefined') {\nLEM_initialized=true;\nLEMsetTabIndexes();\n}\n";
         $jsParts[] = "if (evt_type == 'onchange' && (typeof last_evt_type != 'undefined' && last_evt_type == 'keydown') && (typeof target_tabIndex != 'undefined' && target_tabIndex == document.activeElement.tabIndex)) {\nreturn;\n}\n";
@@ -4748,6 +5310,7 @@ class LimeExpressionManager {
 
                 $qidList[$arg['qid']] = $arg['qid'];
 
+<<<<<<< HEAD
                 // Now check whether any sub-question validation needs to be performed
                 $subqValidations = array();
                 $validationEqn='';
@@ -4774,6 +5337,11 @@ class LimeExpressionManager {
                 $relevance = $arg['relevancejs'];
 
                 if (($relevance == '' || $relevance == '1') && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && trim($validationEqn) == '')
+=======
+                $relevance = $arg['relevancejs'];
+
+                if (($relevance == '' || $relevance == '1') && count($tailorParts) == 0 && count($subqParts) == 0)
+>>>>>>> refs/heads/dev_tms
                 {
                     // Only show constitutively true relevances if there is tailoring that should be done.
 //                    $jsParts[] = "document.getElementById('relevance" . $arg['qid'] . "').value='1'; // always true\n";
@@ -4790,14 +5358,20 @@ class LimeExpressionManager {
                 $jsParts[] = "\nif (\n  ";
                 $jsParts[] = $relevance;
                 $jsParts[] = "\n  )\n{\n";
+<<<<<<< HEAD
 
                 ////////////////////////////////////////////////////////////////////////
                 // DO ALL ARRAY FILTERING FIRST - MAY AFFECT VALIDATION AND TAILORING //
                 ////////////////////////////////////////////////////////////////////////
+=======
+                // Do all tailoring
+                $jsParts[] = implode("\n",$tailorParts);
+>>>>>>> refs/heads/dev_tms
 
                 // Do all sub-question filtering (e..g array_filter)
                 foreach ($subqParts as $sq)
                 {
+<<<<<<< HEAD
                     $rowdividList[$sq['rowdivid']] = $sq['result'];
                     $jsParts[] = "  // Apply " . $sq['type'] . ": " . $sq['eqn'] ."\n";
                     $jsParts[] = "  if ( " . $sq['relevancejs'] . " ) {\n";
@@ -4806,6 +5380,16 @@ class LimeExpressionManager {
                     switch ($sq['qtype'])
                     {
                         case '1': //Array (Flexible Labels) dual scale
+=======
+                    $jsParts[] = "  // Apply " . $sq['type'] . ": " . $sq['eqn'] ."\n";
+                    $jsParts[] = "  if ( " . $sq['relevancejs'] . " ) {\n";
+                    $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').show();\n";
+                    switch ($sq['qtype'])
+                    {
+                        case '1': //Array (Flexible Labels) dual scale
+//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "#0').value = 'on';\n";
+//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "#1').value = 'on';\n";
+>>>>>>> refs/heads/dev_tms
                             $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#0').val('on');\n";
                             $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#1').val('on');\n";
                             break;
@@ -4819,6 +5403,10 @@ class LimeExpressionManager {
                         case 'L': //LIST drop-down/radio-button list
                         case 'M': //Multiple choice checkbox
                         case 'P': //Multiple choice with comments checkbox + text
+<<<<<<< HEAD
+=======
+//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'on';\n";
+>>>>>>> refs/heads/dev_tms
                             $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('on');\n";
                             break;
                         default:
@@ -4826,11 +5414,19 @@ class LimeExpressionManager {
                     }
                     $jsParts[] = "  }\n  else {\n";
                     $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
+<<<<<<< HEAD
                     $jsParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('');";
                     switch ($sq['qtype'])
                     {
                         /*  No longer need to explicitly clear values - can simply hide them via sub-question-level relevance
                         case '1': //Array (Flexible Labels) dual scale
+=======
+                    switch ($sq['qtype'])
+                    {
+                        case '1': //Array (Flexible Labels) dual scale
+//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "#0').value = 'off';\n";
+//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "#1').value = 'off';\n";
+>>>>>>> refs/heads/dev_tms
                             $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#0').val('off');\n";
                             $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#1').val('off');\n";
                             $jsParts[] = "    $('#java" . $sq['rowdivid'] . "#0').val('');\n";
@@ -4839,11 +5435,19 @@ class LimeExpressionManager {
                             $jsParts[] = "    $('#answer" . $sq['rowdivid'] . "#0-').attr('checked',true);\n";
                             break;
                         case ';': //ARRAY (Multi Flexi) Text
+<<<<<<< HEAD
+=======
+//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
+>>>>>>> refs/heads/dev_tms
                             $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
                             $jsParts[] = "    $('#java" . $sq['rowdivid'] . "').val('');\n";
                             $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=text]').val('');\n";
                             break;
                         case ':': //ARRAY (Multi Flexi) 1 to 10
+<<<<<<< HEAD
+=======
+//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
+>>>>>>> refs/heads/dev_tms
                             $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
                             $jsParts[] = "    $('#java" . $sq['rowdivid'] . "').val('');\n";
                             $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " select').val('');\n";
@@ -4855,6 +5459,10 @@ class LimeExpressionManager {
                         case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                         case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
                         case 'F': //ARRAY (Flexible) - Row Format
+<<<<<<< HEAD
+=======
+//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
+>>>>>>> refs/heads/dev_tms
                             $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
                             $jsParts[] = "    $('#java" . $sq['rowdivid'] . "').val('');\n";
                             $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=radio]').attr('checked',false);\n";
@@ -4862,11 +5470,16 @@ class LimeExpressionManager {
                             break;
                         case 'M': //Multiple choice checkbox
                         case 'P': //Multiple choice with comments checkbox + text
+<<<<<<< HEAD
+=======
+//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
+>>>>>>> refs/heads/dev_tms
                             $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
                             $jsParts[] = "    $('#java" . $sq['rowdivid'] . "').val('');\n";
                             $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=checkbox]').attr('checked',false);\n";
                             $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=text]').val('');\n";
                             break;
+<<<<<<< HEAD
                          */
                         case 'L': //LIST drop-down/radio-button list
                             $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
@@ -4876,6 +5489,13 @@ class LimeExpressionManager {
                                 $jsParts[] = " || ($('#java" . $sq['sgqa'] ."').val() == '-oth-')";
                             }
                             $jsParts[] = "){\n";
+=======
+                        case 'L': //LIST drop-down/radio-button list
+//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
+                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
+                            $listItem = substr($sq['rowdivid'],strlen($sq['sgqa']));    // gets the part of the rowdiv id past the end of the sgqa code.
+                            $jsParts[] = "    if ($('#java" . $sq['sgqa'] ."').val() == '" . $listItem . "'){\n";
+>>>>>>> refs/heads/dev_tms
                             $jsParts[] = "      $('#java" . $sq['sgqa'] . "').val('');\n";
                             $jsParts[] = "      $('#answer" . $sq['sgqa'] . "NANS').attr('checked',true);\n";
                             $jsParts[] = "    }\n";
@@ -4892,6 +5512,7 @@ class LimeExpressionManager {
                     }
                 }
 
+<<<<<<< HEAD
                 // Do all tailoring
                 $jsParts[] = implode("\n",$tailorParts);
 
@@ -4977,17 +5598,42 @@ class LimeExpressionManager {
                             $jsParts[] = "  }\n";
                         }
                     }
+=======
+                if ($arg['hidden']) {
+                    $jsParts[] = "  // This question should always be hidden\n";
+                    $jsParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
+//                    $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='';\n";
+                    $jsParts[] = "  $('#display" . $arg['qid'] . "').val('');\n";
+                }
+                else {
+                    $jsParts[] = "  $('#question" . $arg['qid'] . "').show();\n";
+//                    $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='on';\n";
+                    $jsParts[] = "  $('#display" . $arg['qid'] . "').val('on');\n";
+>>>>>>> refs/heads/dev_tms
                 }
                 // If it is an equation, and relevance is true, then write the value from the question to the answer field storing the result
                 if ($arg['type'] == '*')
                 {
                     $jsParts[] = "  // Write value from the question into the answer field\n";
+<<<<<<< HEAD
                     $jsParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val(escape(jQuery.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .questiontext').find('span').next().next().html()))).replace(/%20/g,' '));\n";
                 }
                 $jsParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
                 $jsParts[] = "}\nelse {\n";
                 $jsParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
                 $jsParts[] = "  $('#display" . $arg['qid'] . "').val('');\n";
+=======
+//                    $jsParts[] = "  document.getElementById('" . $jsResultVar . "').value=escape(jQuery.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .questiontext').find('span').next().next().html()))).replace(/%20/g,' ');\n";
+                    $jsParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val(escape(jQuery.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .questiontext').find('span').next().next().html()))).replace(/%20/g,' '));\n";
+                }
+//                $jsParts[] = "  document.getElementById('relevance" . $arg['qid'] . "').value='1';\n";
+                $jsParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
+                $jsParts[] = "}\nelse {\n";
+                $jsParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
+//                $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='';\n";
+                $jsParts[] = "  $('#display" . $arg['qid'] . "').val('');\n";
+//                $jsParts[] = "  document.getElementById('relevance" . $arg['qid'] . "').value='0';\n";
+>>>>>>> refs/heads/dev_tms
                 $jsParts[] = "  $('#relevance" . $arg['qid'] . "').val('0');\n";
                 $jsParts[] = "}\n";
 
@@ -5018,7 +5664,11 @@ class LimeExpressionManager {
                 $jsParts[] = "}\n";
             }
             // now make sure any needed variables are accessible
+<<<<<<< HEAD
             $vars = explode('|',$gr['relevanceVars']);
+=======
+            $vars = explode('|',$arg['relevanceVars']);
+>>>>>>> refs/heads/dev_tms
             if (is_array($vars))
             {
                 $allJsVarsUsed = array_merge($allJsVarsUsed,$vars);
@@ -5139,10 +5789,13 @@ class LimeExpressionManager {
             }
             $jsParts[] = "<input type='hidden' id='relevanceG" . $gid . "' name='relevanceG" . $gid .  "' value='" . $relStatus . "'/>\n";
         }
+<<<<<<< HEAD
         foreach ($rowdividList as $key=>$val)
         {
             $jsParts[] = "<input type='hidden' id='relevance" . $key . "' name='relevance" . $key .  "' value='" . $val . "'/>\n";
         }
+=======
+>>>>>>> refs/heads/dev_tms
         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
         return implode('',$jsParts);
@@ -5324,7 +5977,10 @@ EOT;
         $testArgs = array();
         $argInfo = array();
 
+<<<<<<< HEAD
         LimeExpressionManager::SetDirtyFlag();
+=======
+>>>>>>> refs/heads/dev_tms
         $LEM =& LimeExpressionManager::singleton();
 
 
@@ -5427,6 +6083,7 @@ EOT;
             print "</div>\n";
         }
         print "</table>";
+<<<<<<< HEAD
         LimeExpressionManager::SetDirtyFlag();  // so subsequent tests don't try to access these variables
     }
 
@@ -5443,6 +6100,8 @@ EOT;
             $thisVar['this'] = $varInfo;
             $LEM->em->RegisterVarnamesUsingMerge($thisVar);
         }
+=======
+>>>>>>> refs/heads/dev_tms
     }
 
     public static function ShowStackTrace($msg=NULL,&$args=NULL)
@@ -5529,6 +6188,7 @@ EOT;
 
 		return $data;
     }
+<<<<<<< HEAD
     
     /**
      * Deprecate obsolete question attributes.
@@ -5594,12 +6254,23 @@ EOT;
     {
         if (!is_null($qid)) {
             $where = " a.qid = ".$qid." and a.qid=b.qid";
+=======
+
+    private function getQuestionAttributesForEM($surveyid=NULL,$qid=NULL, $lang=NULL)
+    {
+        if (!is_null($qid)) {
+            $where = " a.qid = ".$qid;
+>>>>>>> refs/heads/dev_tms
         }
         else if (!is_null($surveyid)) {
             $where = " a.qid=b.qid and b.sid=".$surveyid;
         }
         else {
+<<<<<<< HEAD
             $where = " a.qid=b.qid";
+=======
+            $where = " 1";
+>>>>>>> refs/heads/dev_tms
         }
         if (!is_null($lang)) {
             $lang = " and a.language='".$lang."' and b.language='".$lang."'";
@@ -5732,6 +6403,7 @@ EOT;
             $qid = $qinfo['info']['qid'];
             $relevant = (isset($_POST['relevance' . $qid]) ? ($_POST['relevance' . $qid] == 1) : false);
             $_SESSION['relevanceStatus'][$qid] = $relevant;
+<<<<<<< HEAD
             if (isset($qinfo['info']['rowdivid']) && $qinfo['info']['rowdivid']!='')
             {
                 $rowdivid=$qinfo['info']['rowdivid'];
@@ -5741,6 +6413,8 @@ EOT;
                     $_SESSION['relevanceStatus'][$rowdivid] = $sqrelevant;
                 }
             }
+=======
+>>>>>>> refs/heads/dev_tms
             foreach (explode('|',$qinfo['sgqa']) as $sq)
             {
                 if ($relevant)
@@ -5951,6 +6625,7 @@ EOT;
                         case 'array_filter':
                         case 'array_filter_exclude':
                         case 'code_filter':
+<<<<<<< HEAD
                         case 'em_validation_q_tip':
                         case 'em_validation_sq_tip':
                             break;
@@ -5965,6 +6640,21 @@ EOT;
                         case 'min_num_value_n':
                         case 'multiflexible_max':
                         case 'multiflexible_min':
+=======
+                            break;
+                        case 'equals_num_value':
+                        case 'max_answers':
+                        case 'max_num_value':
+                        case 'max_num_value_n':
+                        case 'max_num_value_sgqa':
+                        case 'min_answers':
+                        case 'min_num_value':
+                        case 'min_num_value_n':
+                        case 'min_num_value_sgqa':
+                        case 'multiflexible_max':
+                        case 'multiflexible_min':
+                        case 'num_value_equals_sgqa':
+>>>>>>> refs/heads/dev_tms
                             $value = '{' . $value . '}';
                             break;
                         case 'other_replace_text':
@@ -6054,7 +6744,11 @@ EOT;
 
             if (!preg_match('/^[_a-zA-Z][_0-9a-zA-Z]*$/', $rootVarName))
             {
+<<<<<<< HEAD
                 $varNameErrorMsg .= $LEM->gT('Starting in 1.92, variable names can only contain letters, numbers, and underscores. This variable name is deprecated.');
+=======
+                $varNameErrorMsg .= $LEM->gT('This variable name contains invalid characters.');
+>>>>>>> refs/heads/dev_tms
             }
             if ($varNameErrorMsg != '')
             {
@@ -6063,10 +6757,14 @@ EOT;
                     'gid' => $varNamesUsed[$rootVarName]['gid'],
                     'qid' => $varNamesUsed[$rootVarName]['qid']
                     );
+<<<<<<< HEAD
                 if (!$LEM->sgqaNaming)
                 {
                     ++$errorCount;
                 }
+=======
+                ++$errorCount;
+>>>>>>> refs/heads/dev_tms
             }
 
             //////
@@ -6198,7 +6896,11 @@ EOT;
             else
             {
                 $editlink = $LEM->surveyOptions['rooturl'] . '/admin/admin.php?sid=' . $LEM->sid . '&gid=' . $varNameError['gid'] . '&qid=' . $varNameError['qid'];
+<<<<<<< HEAD
                 $questionRow .= "<span style='border-style: solid; border-width: 2px; border-color: #FF00FF; color: red;' title='" . $varNameError['message'] . "' "
+=======
+                $questionRow .= "<span style='border-style: solid; border-width: 2px; border-color: red;' title='" . $varNameError['message'] . "' "
+>>>>>>> refs/heads/dev_tms
                     . "onclick='window.open(\"$editlink\",\"_blank\")'>"
                     . $rootVarName . "</span>";
             }
@@ -6248,6 +6950,7 @@ EOT;
             );
     }
 }
+<<<<<<< HEAD
 
 /**
 * Used by usort() to order $this->questionSeq2relevance in proper order
@@ -6271,4 +6974,6 @@ function cmpQuestionSeq($a, $b)
     }
     return ($a['qseq'] < $b['qseq']) ? -1 : 1;
 }
+=======
+>>>>>>> refs/heads/dev_tms
 ?>

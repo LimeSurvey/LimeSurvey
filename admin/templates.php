@@ -955,7 +955,11 @@ else
                                        ."\t<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
                                        ."\t<input type='hidden' name='editfile' value='$editfile' />\n"
                                        ."\t<input type='hidden' name='action' value='templatesavechanges' />\n"
+<<<<<<< HEAD
                                        ."<textarea name='changes' id='changes' rows='15' cols='40' class='codepress html ".getTemplateEditorMode()."'>";
+=======
+                                       ."<textarea name='changes' id='changes' rows='15' cols='40' class='codepress html'>";
+>>>>>>> refs/heads/dev_tms
                                        if ($editfile) {
         $templatesoutput.= textarea_encode(filetext($templatename,$editfile));
                                        }

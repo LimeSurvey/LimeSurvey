@@ -136,22 +136,38 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
             if (pos)
             {
                 if (isValueInArray(image_extensions, jsonobj[i].ext))
+<<<<<<< HEAD
                     display += '<tr><td><img src="'+rooturl+'/uploader.php?sid='+surveyid+'&amp;filegetcontents='+decodeURIComponent(jsonobj[i].filename)+'" height=100px  align="center"/></td>';
                 else
                     display += '<tr><td><img src="'+rooturl+'/images/placeholder.png" height=100px  align="center"/></td>';
+=======
+                    display += '<tr><td><img src="uploader.php?sid='+surveyid+'&amp;filegetcontents='+decodeURIComponent(jsonobj[i].filename)+'" height=100px  align="center"/></td>';
+                else
+                    display += '<tr><td><img src="images/placeholder.png" height=100px  align="center"/></td>';
+>>>>>>> refs/heads/dev_tms
             }
             else
             {
                 if (isValueInArray(image_extensions, jsonobj[i].ext))
+<<<<<<< HEAD
                     display += '<tr><td><img src="'+rooturl+'/uploader.php?sid='+surveyid+'&amp;filegetcontents='+decodeURIComponent(jsonobj[i].filename)+'" height=100px  align="center"/></td>';
                 else
                     display += '<tr><td><img src="'+rooturl+'/images/placeholder.png" height=100px  align="center"/></td>';
+=======
+                    display += '<tr><td><img src="uploader.php?filegetcontents='+decodeURIComponent(jsonobj[i].filename)+'" height=100px  align="center"/></td>';
+                else
+                    display += '<tr><td><img src="images/placeholder.png" height=100px  align="center"/></td>';
+>>>>>>> refs/heads/dev_tms
             }
             if (show_title != 0)
                 display += '<td>'+jsonobj[i].title+'</td>';
             if (show_comment != 0)
                 display += '<td>'+jsonobj[i].comment+'</td>';
+<<<<<<< HEAD
             display +='<td>'+decodeURIComponent(jsonobj[i].name)+'</td><td>'+'<img src="'+rooturl+'/images/edit.png" onclick="$(\'#upload_'+fieldname+'\').click()" style="cursor:pointer"></td></tr>';
+=======
+            display +='<td>'+decodeURIComponent(jsonobj[i].name)+'</td><td>'+'<img src="images/edit.png" onclick="$(\'#upload_'+fieldname+'\').click()" style="cursor:pointer"></td></tr>';
+>>>>>>> refs/heads/dev_tms
         }
         display += '</table>';
 
@@ -173,4 +189,8 @@ function showBasic() {
 
 function hideBasic() {
     $('#basic').hide();
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> refs/heads/dev_tms

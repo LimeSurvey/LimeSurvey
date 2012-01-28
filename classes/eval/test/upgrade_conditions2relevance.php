@@ -1,7 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<<<<<<< HEAD
 <?php
 if (!((isset($subaction) && $subaction == 'upgrade_conditions2relevance'))) {die("Cannot run this script directly");}
 ?>
+=======
+>>>>>>> refs/heads/dev_tms
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -9,10 +12,17 @@ if (!((isset($subaction) && $subaction == 'upgrade_conditions2relevance'))) {die
     </head>
     <body>
         <?php
+<<<<<<< HEAD
 //            require_once("../../../config-defaults.php");
 //            require_once("../../../config.php");
 //            require_once("../../../common.php");
 //            include_once('../LimeExpressionManager.php');
+=======
+            require_once("../../../config-defaults.php");
+            require_once("../../../config.php");
+            require_once("../../../common.php");
+            include_once('../LimeExpressionManager.php');
+>>>>>>> refs/heads/dev_tms
             $data = LimeExpressionManager::UpgradeConditionsToRelevance();
             if (is_null($data)) {
                 echo "No conditions found in database";

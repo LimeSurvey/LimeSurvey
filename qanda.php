@@ -82,7 +82,10 @@ function retrieveAnswers($ia)
     $name = $ia[0];
 
     $qtitle=$ia[3];
+<<<<<<< HEAD
     $inputnames=array();
+=======
+>>>>>>> refs/heads/dev_tms
 
     // TMSW - eliminate this - get from LEM
     //A bit of housekeeping to stop PHP Notices
@@ -169,6 +172,7 @@ function retrieveAnswers($ia)
             {
                 $maxansw=trim($qidattributes['max_answers']);
                 $minansw=trim($qidattributes['min_answers']);
+<<<<<<< HEAD
 //                if (!($maxansw || $minansw))
 //                {
 //                    $qtitle .= "<br />\n<span class=\"questionhelp\">"
@@ -194,6 +198,33 @@ function retrieveAnswers($ia)
 //                        $question_text['help'] = sprintf($clang->ngT("Check at least %d answer","Check at least %d answers",$minansw),$minansw);
 //                    }
 //                }
+=======
+                if (!($maxansw || $minansw))
+                {
+                    $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                    . $clang->gT('Check any that apply').'</span>';
+                    $question_text['help'] = $clang->gT('Check any that apply');
+                }
+                else
+                {
+                    if ($maxansw && $minansw)
+                    {
+                        $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                        . sprintf($clang->gT("Check between %d and %d answers"), $minansw, $maxansw)."</span>";
+                        $question_text['help'] = sprintf($clang->gT("Check between %d and %d answers"), $minansw, $maxansw);
+                    } elseif ($maxansw)
+                    {
+                        $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                        . sprintf($clang->gT("Check at most %d answers"), $maxansw)."</span>";
+                        $question_text['help'] = sprintf($clang->gT("Check at most %d answers"), $maxansw);
+                    } else
+                    {
+                        $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                        . sprintf($clang->ngT("Check at least %d answer","Check at least %d answers",$minansw),$minansw)."</span>";
+                        $question_text['help'] = sprintf($clang->ngT("Check at least %d answer","Check at least %d answers",$minansw),$minansw);
+                    }
+                }
+>>>>>>> refs/heads/dev_tms
             }
             break;
 
@@ -210,6 +241,7 @@ function retrieveAnswers($ia)
             $values=do_multiplechoice_withcomments($ia);
             if (count($values[1]) > 1 && $qidattributes['hide_tip']==0)
             {
+<<<<<<< HEAD
 //                $maxansw=trim($qidattributes["max_answers"]);
 //                $minansw=trim($qidattributes["min_answers"]);
 //                if (!($maxansw || $minansw))
@@ -237,6 +269,35 @@ function retrieveAnswers($ia)
 //                        $question_text['help'] = sprintf($clang->gT("Check at least %d answers"), $minansw);
 //                    }
 //                }
+=======
+                $maxansw=trim($qidattributes["max_answers"]);
+                $minansw=trim($qidattributes["min_answers"]);
+                if (!($maxansw || $minansw))
+                {
+                    $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                    . $clang->gT('Check any that apply').'</span>';
+                    $question_text['help'] = $clang->gT('Check any that apply');
+                }
+                else
+                {
+                    if ($maxansw && $minansw)
+                    {
+                        $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                        . sprintf($clang->gT("Check between %d and %d answers"), $minansw, $maxansw)."</span>";
+                        $question_text['help'] = sprintf($clang->gT("Check between %d and %d answers"), $minansw, $maxansw);
+                    } elseif ($maxansw)
+                    {
+                        $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                        . sprintf($clang->gT("Check at most %d answers"), $maxansw)."</span>";
+                        $question_text['help'] = sprintf($clang->gT("Check at most %d answers"), $maxansw);
+                    } else
+                    {
+                        $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                        . sprintf($clang->gT("Check at least %d answers"), $minansw)."</span>";
+                        $question_text['help'] = sprintf($clang->gT("Check at least %d answers"), $minansw);
+                    }
+                }
+>>>>>>> refs/heads/dev_tms
             }
             break;
         case '|': //File Upload
@@ -334,6 +395,7 @@ function retrieveAnswers($ia)
     $qtitle .= $mandatory_msg;
     $question_text['man_message'] = $mandatory_msg;
 
+<<<<<<< HEAD
 
 //    if (($_SESSION['step'] != $_SESSION['maxstep']) || ($_SESSION['step'] == $_SESSION['prevstep'])) {
     if (!isset($qidattributes['hide_tip']) || $qidattributes['hide_tip']==0) {
@@ -344,6 +406,14 @@ function retrieveAnswers($ia)
     }
     $validation_msg = validation_message($ia,$_vshow);
 
+=======
+    if (($_SESSION['step'] != $_SESSION['maxstep']) || ($_SESSION['step'] == $_SESSION['prevstep'])) {
+        $validation_msg = validation_message($ia);
+    }
+    else {
+        $validation_msg = '';
+    }
+>>>>>>> refs/heads/dev_tms
     $qtitle .= $validation_msg;
     $question_text['valid_message'] = $validation_msg;
 
@@ -441,6 +511,7 @@ function mandatory_message($ia)
  */
 function validation_message($ia,$show)
 {
+<<<<<<< HEAD
     $qinfo = LimeExpressionManager::GetQuestionStatus($ia[0]);
     $tip = '<span class="questionhelp" id="' . $ia[0] . '_vmsg"';
     if (!$show) {
@@ -460,6 +531,27 @@ function validation_message($ia,$show)
 //    else {
 //        return $tip;
 //    }
+=======
+    global $clang;
+    $qinfo = LimeExpressionManager::GetQuestionStatus($ia[0]);
+    if (!$qinfo['valid']) {
+        $help = $qinfo['info']['help'];
+        if (strlen($help) > 0) {
+            $help .= '<br/>';
+        }
+        $help .= $qinfo['validTip'];
+        if (strlen($help) == 0) {
+            $help = $clang->gT('This question must be answered correctly');
+        }
+        else {
+            $help=' <span class="questionhelp">'.$help.'</span>';
+        }
+        return '<br /><span class="errormandatory">'.$help.'</span><br />';
+    }
+    else {
+        return "";
+    }
+>>>>>>> refs/heads/dev_tms
 }
 
 // TMSW Validation -> EM
@@ -881,10 +973,13 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 function return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null) {
     $htmltbody2 = "\n\n\t<$method id='javatbd$rowname'";
     $htmltbody2 .= ($class !== null) ? " class='$class'": "";
+<<<<<<< HEAD
     if (isset($_SESSION['relevanceStatus'][$rowname]) && !$_SESSION['relevanceStatus'][$rowname])
     {
         $htmltbody2 .= " style='display: none'";
     }
+=======
+>>>>>>> refs/heads/dev_tms
     $htmltbody2 .= ">\n";
     if($ia[4]=="1") {
         //This is an array dual scale question and we have to massage the tbidpslay rowname
@@ -1516,7 +1611,11 @@ function do_list_dropdown($ia)
     }
     $sselect = '
 			<p class="question">
+<<<<<<< HEAD
 				<select name="'.$ia[1].'" id="answer'.$ia[1].'"'.$dropdownSize.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide.'">
+=======
+				<select name="'.$ia[1].'" id="answer'.$ia[1].'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide.'">
+>>>>>>> refs/heads/dev_tms
     ';
     $answer = $sselect.$answer;
 
@@ -2374,6 +2473,7 @@ function do_multiplechoice($ia)
         $autoArray[$ia[1]]['parent'] = $ia[1];
     }
 
+<<<<<<< HEAD
 //    if (((int)$qidattributes['max_answers']>0) && $exclude_all_others_auto=='0')
 //    {
 //        $maxansw=$qidattributes['max_answers'];
@@ -2387,8 +2487,25 @@ function do_multiplechoice($ia)
 //        . "\tcount=0;\n"
 //        . "\tif (max == 0) { return count; }\n";
 //    }
+=======
+    if (((int)$qidattributes['max_answers']>0) && $exclude_all_others_auto=='0')
+    {
+        $maxansw=$qidattributes['max_answers'];
+        $callmaxanswscriptcheckbox = "limitmaxansw_{$ia[0]}(this);";
+        $callmaxanswscriptother = "onkeyup='limitmaxansw_{$ia[0]}(this)'";
+        $maxanswscript = "\t<script type='text/javascript'>\n"
+        . "\t<!--\n"
+        . "function limitmaxansw_{$ia[0]}(me)\n"
+        . "{\n"
+        . "\tmax=$maxansw\n"
+        . "\tcount=0;\n"
+        . "\tif (max == 0) { return count; }\n";
+    }
+
+>>>>>>> refs/heads/dev_tms
 
 
+<<<<<<< HEAD
 //    // Check if the min_answers attribute is set
 //    $minansw=0;
 //    $minanswscript = "";
@@ -2404,6 +2521,19 @@ function do_multiplechoice($ia)
 //        . "\tcount=0;\n"
 //        ;
 //    }
+=======
+    if ((int)$qidattributes['min_answers']>0)
+    {
+        $minansw=trim($qidattributes["min_answers"]);
+        $minanswscript = "<script type='text/javascript'>\n"
+        . "\t<!--\n"
+        . "oldonsubmit_{$ia[0]} = document.limesurvey.onsubmit;\n"
+        . "function ensureminansw_{$ia[0]}()\n"
+        . "{\n"
+        . "\tcount=0;\n"
+        ;
+    }
+>>>>>>> refs/heads/dev_tms
 
     $qquery = "SELECT other FROM ".db_table_name('questions')." WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
     $qresult = db_execute_assoc($qquery);     //Checked
@@ -2556,7 +2686,11 @@ function do_multiplechoice($ia)
         {
             $answer .= CHECKED;
         }
+<<<<<<< HEAD
         $answer .= " onclick='cancelBubbleThis(event);if(this.checked===false){ document.getElementById(\"answer$myfname\").value=\"\"; document.getElementById(\"java$myfname\").value=\"\"; }";
+=======
+        $answer .= " onclick='cancelBubbleThis(event);".$callmaxanswscriptcheckbox."if(this.checked===false){ document.getElementById(\"answer$myfname\").value=\"\"; document.getElementById(\"java$myfname\").value=\"\"; }";
+>>>>>>> refs/heads/dev_tms
         $answer .= " if(this.checked===true) document.getElementById(\"answer$myfname\").focus();";
         $answer .= " $checkconditionFunction(document.getElementById(\"answer$myfname\").value, document.getElementById(\"answer$myfname\").name, document.getElementById(\"answer$myfname\").type);";
         $answer .= "' />
@@ -2566,6 +2700,7 @@ function do_multiplechoice($ia)
         {
             $answer .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';
         }
+<<<<<<< HEAD
         $answer .= " onchange='$(\"#java{$myfname}\").val(this.value);$checkconditionFunction(this.value, this.name, this.type);if ($.trim($(\"#java{$myfname}\").val())!=\"\" && !document.getElementById(\"answer{$myfname}cbox\").checked) { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } $numbersonly ' />";
         $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
 
@@ -2585,6 +2720,27 @@ function do_multiplechoice($ia)
 //            // We only count the -other- as valid if both the cbox and the other text is filled
 //            $minanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n";
 //        }
+=======
+        $answer .= " onchange='$(\"#java{$myfname}\").val(this.value);$checkconditionFunction(this.value, this.name, this.type);if ($.trim($(\"#java{$myfname}\").val())!=\"\" && !document.getElementById(\"answer{$myfname}cbox\").checked) { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } $numbersonly ".$callmaxanswscriptcheckbox."' />";
+        $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
+
+        if ($maxansw > 0)
+        {
+            // For multiplechoice question there is no DB field for the other Checkbox
+            // I've added a javascript which will warn a user if no other comment is given while the other checkbox is checked
+            // For the maxanswer script, I will alert the participant
+            // if the limit is reached when he checks the other cbox
+            // even if the -other- input field is still empty
+            $maxanswscript .= "\tif (document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n";
+        }
+        if ($minansw > 0)
+        {
+            //
+            // For multiplechoice question there is no DB field for the other Checkbox
+            // We only count the -other- as valid if both the cbox and the other text is filled
+            $minanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n";
+        }
+>>>>>>> refs/heads/dev_tms
 
 
         if (isset($_SESSION[$myfname]))
@@ -2612,6 +2768,7 @@ function do_multiplechoice($ia)
         }
     }
     $answer .= $wrapper['whole-end'];
+<<<<<<< HEAD
 //    if ( $maxansw > 0 )
 //    {
 //        $maxanswscript .= "
@@ -2632,6 +2789,28 @@ function do_multiplechoice($ia)
 //        </script>\n";
 //        $answer = $maxanswscript . $answer;
 //    }
+=======
+    if ( $maxansw > 0 )
+    {
+        $maxanswscript .= "
+        if (count > max)
+        {
+            alert('".sprintf($clang->gT("Please choose at most %d answers for question \"%s\"","js"), $maxansw, trim(javascript_escape(str_replace(array("\n", "\r"), "", $ia[3]),true,true)))."');
+            if (me.type == 'checkbox') { me.checked = false; }
+            if (me.type == 'text') {
+                me.value = '';
+                if (document.getElementById('answer'+me.name + 'cbox') ){
+                    document.getElementById('answer'+me.name + 'cbox').checked = false;
+                }
+            }
+            return max;
+        }
+        }
+        //-->
+        </script>\n";
+        $answer = $maxanswscript . $answer;
+    }
+>>>>>>> refs/heads/dev_tms
 
 
 //    if ( $minansw > 0 )
@@ -2707,7 +2886,10 @@ function do_multiplechoice_withcomments($ia)
         $kpclass = "";
     }
 
+<<<<<<< HEAD
     $inputnames = array();
+=======
+>>>>>>> refs/heads/dev_tms
     $attribute_ref=false;
     $qaquery = "SELECT qid,attribute FROM ".db_table_name('question_attributes')." WHERE value LIKE '".strtolower($ia[2])."'";
     $qaresult = db_execute_assoc($qaquery);     //Checked
@@ -2868,8 +3050,12 @@ function do_multiplechoice_withcomments($ia)
         ."<input class='text ".$kpclass."' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT("Make a comment on your choice here:")."' value='";
         if (isset($_SESSION[$myfname2])) {$answer_main .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
         // --> START NEW FEATURE - SAVE
+<<<<<<< HEAD
 //        $answer_main .= "'  onclick='cancelBubbleThis(event);' onchange='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname}\").value,\"$myfname\",\"checkbox\");}' onkeyup='".$callmaxanswscriptcheckbox2."(document.getElementById(\"answer{$myfname}\"))' />\n\t</label>\n</span>\n"
         $answer_main .= "'  onclick='cancelBubbleThis(event);' onchange='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname}\").value,\"$myfname\",\"checkbox\");}' />\n\t</label>\n</span>\n"
+=======
+        $answer_main .= "'  onclick='cancelBubbleThis(event);' onchange='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname}\").value,\"$myfname\",\"checkbox\");}' onkeyup='".$callmaxanswscriptcheckbox2."(document.getElementById(\"answer{$myfname}\"))' />\n\t</label>\n</span>\n"
+>>>>>>> refs/heads/dev_tms
 
         . "\t</li>\n";
         // --> END NEW FEATURE - SAVE
@@ -2935,6 +3121,7 @@ function do_multiplechoice_withcomments($ia)
     $answer .= "<ul>\n".$answer_main."</ul>\n";
 
 
+<<<<<<< HEAD
 //    if ( $maxansw > 0 )
 //    {
 //        $maxanswscript .= "\tif (count > max)\n"
@@ -2959,6 +3146,32 @@ function do_multiplechoice_withcomments($ia)
 //        . "\t</script>\n";
 //        $answer = $maxanswscript . $answer;
 //    }
+=======
+    if ( $maxansw > 0 )
+    {
+        $maxanswscript .= "\tif (count > max)\n"
+        . "{\n"
+        . "alert('".sprintf($clang->gT("Please choose at most %d answers for question \"%s\"","js"), $maxansw, trim(javascript_escape($ia[3],true,true)))."');\n"
+        . "var commentname='answer'+me.name+'comment';\n"
+        . "if (me.type == 'checkbox') {\n"
+        . "\tme.checked = false;\n"
+        . "\tvar commentname='answer'+me.name+'comment';\n"
+        . "}\n"
+        . "if (me.type == 'text') {\n"
+        . "\tme.value = '';\n"
+        . "\tif (document.getElementById(me.name + 'cbox') ){\n"
+        . " document.getElementById(me.name + 'cbox').checked = false;\n"
+        . "\t}\n"
+        . "}"
+        . "document.getElementById(commentname).value='';\n"
+        . "return max;\n"
+        . "}\n"
+        . "\t}\n"
+        . "\t//-->\n"
+        . "\t</script>\n";
+        $answer = $maxanswscript . $answer;
+    }
+>>>>>>> refs/heads/dev_tms
 
 //    if ( $minansw > 0 )
 //    {
@@ -3099,11 +3312,18 @@ function do_file_upload($ia)
              returnTxt: '" . $clang->gT('Return to survey') . "'
             };
     </script>\n";
+<<<<<<< HEAD
     /*if ($pos)
         $answer .= "<script type='text/javascript' src='{$rooturl}/scripts/modaldialog.js'></script>";
     else
         $answer .= "<script type='text/javascript' src='{$rooturl}/scripts/modaldialog.js'></script>";*/
     $js_header_includes[]= '/scripts/modaldialog.js';
+=======
+    if ($pos)
+        $answer .= "<script type='text/javascript' src='../scripts/modaldialog.js'></script>";
+    else
+        $answer .= "<script type='text/javascript' src='scripts/modaldialog.js'></script>";
+>>>>>>> refs/heads/dev_tms
 
     // Modal dialog
     $answer .= $uploadbutton;
@@ -3131,7 +3351,10 @@ function do_file_upload($ia)
 
     $answer .= '<script type="text/javascript">
                     var surveyid = '.$surveyid.';
+<<<<<<< HEAD
                     var rooturl = "'.$rooturl.'";
+=======
+>>>>>>> refs/heads/dev_tms
                     $(document).ready(function(){
                         var fieldname = "'.$ia[1].'";
                         var filecount = $("#"+fieldname+"_filecount").val();
@@ -3620,9 +3843,12 @@ function do_multiplenumeric($ia)
                 $sliderright="<div class=\"slider_righttext\">$sliderright</div>";
             }
 
+<<<<<<< HEAD
             list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li");
             $answer_main .= "\t$htmltbody2\n";
 
+=======
+>>>>>>> refs/heads/dev_tms
             if ($slider_layout === false)
             {
                 $answer_main .= "<label for=\"answer$myfname\">{$theanswer}</label>\n";
@@ -3798,6 +4024,7 @@ function do_multiplenumeric($ia)
      */
     $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeperator = $sSeperator['seperator'];
+<<<<<<< HEAD
 //    if ($max_num_value || $equals_num_value || $min_num_value)
 //    { //Do value validation
 //        $answer .= '<input type="hidden" name="qattribute_answer[]" value="'.$ia[1]."\" />\n";
@@ -3882,6 +4109,92 @@ function do_multiplenumeric($ia)
 //        $answer .= "</script>\n";
 //
 //    }
+=======
+    if ($max_num_value || $equals_num_value || $min_num_value)
+    { //Do value validation
+        $answer .= '<input type="hidden" name="qattribute_answer[]" value="'.$ia[1]."\" />\n";
+        $answer .= '<input type="hidden" name="qattribute_answer'.$ia[1]."\" />\n";
+
+        $answer .= "<script type='text/javascript'>\n";
+        $answer .= "    function calculateValue".$ia[1]."(method) {\n";
+        //Make all empty fields 0 (or else calculation won't work
+        foreach ($inputnames as $inputname)
+        {
+            $answer .= "       if(document.limesurvey.answer".$inputname.".value == '') { document.limesurvey.answer".$inputname.".value = 0; }\n";
+            $javainputnames[]="parseInt(parseFloat((document.limesurvey.answer".$inputname.".value).split(',').join('.'))*1000)";
+        }
+        $answer .= "       bob = eval('document.limesurvey.qattribute_answer".$ia[1]."');\n";
+        $answer .= "       totalvalue_".$ia[1]."=(";
+        $answer .= implode(" + ", $javainputnames);
+        $answer .= ")/1000;\n";
+        $answer .= "       $('#totalvalue_{$ia[1]}').val((parseFloat(totalvalue_{$ia[1]})+'').split('.').join('{$sSeperator}'));\n";
+        $answer .= "       var ua = navigator.appVersion.indexOf('MSIE');\n";
+        $answer .= "       var ieAtt = ua != -1 ? 'className' : 'class';\n";
+        $answer .= "       switch(method)\n";
+        $answer .= "       {\n";
+        $answer .= "       case 1:\n";
+        $answer .= "          if (totalvalue_".$ia[1]." > $max_num_value)\n";
+        $answer .= "             {\n";
+        $answer .= "               bob.value = '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$max_num_value."';\n";
+        $answer .= "               document.getElementById('totalvalue_{$ia[1]}').setAttribute(ieAtt,'" . $errorClass . "');\n";
+        $answer .= "               document.getElementById('max_num_value_{$ia[1]}').setAttribute(ieAtt,'" . $errorClass . "');\n";
+        $answer .= "             }\n";
+        $answer .= "             else\n";
+        $answer .= "             {\n";
+        $answer .= "               if (bob.value == '' || bob.value == '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$max_num_value."')\n";
+        $answer .= "               {\n";
+        $answer .= "                 bob.value = '';\n";
+        $answer .= "                 document.getElementById('totalvalue_{$ia[1]}').setAttribute(ieAtt,'" . $goodClass . "');\n";
+        $answer .= "               }\n";
+        $answer .= "               document.getElementById('max_num_value_{$ia[1]}').setAttribute(ieAtt,'" . $goodClass . "');\n";
+        $answer .= "             }\n";
+        $answer .= "          break;\n";
+        $answer .= "       case 2:\n";
+        $answer .= "          if (totalvalue_".$ia[1]." < $min_num_value)\n";
+        $answer .= "             {\n";
+        $answer .= "               bob.value = '".sprintf($clang->gT("Answer is invalid. The total of all entries should add up to at least %s.",'js'),$min_num_value)."';\n";
+        $answer .= "               document.getElementById('totalvalue_".$ia[1]."').setAttribute(ieAtt,'" . $errorClass . "');\n";
+        $answer .= "               document.getElementById('min_num_value_".$ia[1]."').setAttribute(ieAtt,'" . $errorClass . "');\n";
+        $answer .= "             }\n";
+        $answer .= "             else\n";
+        $answer .= "             {\n";
+        $answer .= "               if (bob.value == '' || bob.value == '".sprintf($clang->gT("Answer is invalid. The total of all entries should add up to at least %s.",'js'),$min_num_value)."')\n";
+        $answer .= "               {\n";
+        $answer .= "                 bob.value = '';\n";
+        $answer .= "                 document.getElementById('totalvalue_".$ia[1]."').setAttribute(ieAtt,'" . $goodClass . "');\n";
+        $answer .= "               }\n";
+        $answer .= "               document.getElementById('min_num_value_".$ia[1]."').setAttribute(ieAtt,'" . $goodClass . "');\n";
+        $answer .= "             }\n";
+        $answer .= "          break;\n";
+        $answer .= "       case 3:\n";
+        $answer .= "          remainingvalue = (parseInt(parseFloat($equals_num_value)*1000) - parseInt(parseFloat(totalvalue_".$ia[1].")*1000))/1000;\n";
+        $answer .= "          document.getElementById('remainingvalue_".$ia[1]."').value=remainingvalue;\n";
+        $answer .= "          if (totalvalue_".$ia[1]." == $equals_num_value)\n";
+        $answer .= "             {\n";
+        $answer .= "               if (bob.value == '' || bob.value == '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$equals_num_value."')\n";
+        $answer .= "               {\n";
+        $answer .= "                 bob.value = '';\n";
+        $answer .= "                 document.getElementById('totalvalue_".$ia[1]."').setAttribute(ieAtt,'" . $goodClass . "');\n";
+        $answer .= "                 document.getElementById('equals_num_value_".$ia[1]."').setAttribute(ieAtt,'" . $goodClass . "');\n";
+        $answer .= "               }\n";
+        $answer .= "             }\n";
+        $answer .= "             else\n";
+        $answer .= "             {\n";
+        $answer .= "             bob.value = '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$equals_num_value."';\n";
+        $answer .= "             document.getElementById('totalvalue_".$ia[1]."').setAttribute(ieAtt,'" . $errorClass . "');\n";
+        $answer .= "             document.getElementById('equals_num_value_".$ia[1]."').setAttribute(ieAtt,'" . $errorClass . "');\n";
+        $answer .= "             }\n";
+        $answer .= "             break;\n";
+        $answer .= "       }\n";
+        $answer .= "    }\n";
+        foreach($calculateValue as $cValue)
+        {
+            $answer .= "    calculateValue".$ia[1]."($cValue);\n";
+        }
+        $answer .= "</script>\n";
+
+    }
+>>>>>>> refs/heads/dev_tms
 
     return array($answer, $inputnames);
 }

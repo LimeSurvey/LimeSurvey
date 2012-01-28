@@ -67,7 +67,11 @@ function upgrade_question_attributes148()
 
         $sAttributeQuery = "select q.qid,attribute,value from {$sDBPrefix}question_attributes qa , {$sDBPrefix}questions q where q.qid=qa.qid and sid={$surveyid}";
         $oAttributeResult = db_execute_assoc($sAttributeQuery);
+<<<<<<< HEAD
         $aAllAttributes = questionAttributes(true);
+=======
+        $aAllAttributes=questionAttributes(true);
+>>>>>>> refs/heads/dev_tms
         foreach ( $oAttributeResult->FetchRow() as $aAttributeRow)
         {
             if (isset($aAllAttributes[$aAttributeRow['attribute']]['i18n']) && $aAllAttributes[$aAttributeRow['attribute']]['i18n'])
