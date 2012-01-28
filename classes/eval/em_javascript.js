@@ -234,6 +234,7 @@ function LEMval(alias)
     }
     if (whichJsName === null || typeof document.getElementById(whichJsName) === 'undefined' || document.getElementById(whichJsName) === null) {
         an_error = true;    // this line is here to make debugging easier
+        return '';
     }
 
     // values should always be stored encoded with htmlspecialchars()
