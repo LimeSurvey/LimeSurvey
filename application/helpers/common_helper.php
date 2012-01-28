@@ -2322,11 +2322,18 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     $aquery.=" ORDER BY group_order, question_order";
     $aresult = Yii::app()->db->createCommand($aquery)->queryAll();
     $questionSeq=-1; // this is incremental question sequence across all groups
+    $groupSeq=-1;
+    $_groupOrder=-1;
 
     foreach ($aresult as $arow) //With each question, create the appropriate field(s))
     {
         ++$questionSeq;
-
+        
+        // fix fact taht group_order may have gaps
+        if ($_groupOrder != $arow['group_order']) {
+            $_groupOrder = $arow['group_order'];
+            ++$groupSeq;
+        }
         // Conditions indicators are obsolete with EM.  However, they are so tightly coupled into LS code that easider to just set values to 'N' for now and refactor later.
         $conditions = 'N';
         $usedinconditions = 'N';
@@ -2353,7 +2360,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 $fieldmap[$fieldname]['hasconditions']=$conditions;
                 $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                 $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                 if (isset($defaultValues[$arow['qid'].'~0'])) {
                     $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$arow['qid'].'~0'];
                 }
@@ -2384,7 +2391,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                             $fieldmap[$fieldname]['hasconditions']=$conditions;
                             $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                             $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                            $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                            $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                             if (isset($defaultValues[$arow['qid'].'~other'])) {
                                 $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$arow['qid'].'~other'];
                             }
@@ -2412,7 +2419,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         $fieldmap[$fieldname]['hasconditions']=$conditions;
                         $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                         $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                        $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                        $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                     }
                     break;
             }
@@ -2462,7 +2469,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         $fieldmap[$fieldname]['hasconditions']=$conditions;
                         $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                         $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                        $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                        $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                         $fieldmap[$fieldname]['preg']=$arow['preg'];
                         $fieldmap[$fieldname]['answerList']=$answerList;
                     }
@@ -2489,7 +2496,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                     $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                    $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                    $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                 }
 
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#1";
@@ -2506,7 +2513,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                     $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                    $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                    $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                 }
             }
         }
@@ -2532,7 +2539,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                     $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                    $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                    $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                 }
             }
         }
@@ -2560,7 +2567,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                     $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                    $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                    $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                 }
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}"."_filecount";
                 $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
@@ -2579,7 +2586,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                     $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                    $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                    $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                 }
             }
         }
@@ -2608,7 +2615,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                     $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                    $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                    $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                     $fieldmap[$fieldname]['preg']=$arow['preg'];
                     if (isset($defaultValues[$arow['qid'].'~'.$abrow['qid']])) {
                         $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$arow['qid'].'~'.$abrow['qid']];
@@ -2629,7 +2636,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         $fieldmap[$fieldname]['hasconditions']=$conditions;
                         $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                         $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                        $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                        $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                     }
                 }
             }
@@ -2648,7 +2655,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                     $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                    $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                    $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                     $fieldmap[$fieldname]['other']=$arow['other'];
                 }
                 if ($arow['type']=="P")
@@ -2666,7 +2673,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         $fieldmap[$fieldname]['hasconditions']=$conditions;
                         $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                         $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-                        $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                        $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                         $fieldmap[$fieldname]['other']=$arow['other'];
                     }
                 }
@@ -2675,7 +2682,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap[$fieldname]['relevance']=$arow['relevance'];
         $fieldmap[$fieldname]['grelevance']=$arow['grelevance'];
         $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-        $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+        $fieldmap[$fieldname]['groupSeq']=$groupSeq;
         $fieldmap[$fieldname]['preg']=$arow['preg'];
         $fieldmap[$fieldname]['other']=$arow['other'];
         $fieldmap[$fieldname]['help']=$arow['help'];
