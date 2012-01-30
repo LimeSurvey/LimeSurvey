@@ -1,0 +1,15 @@
+<table width='100%' cellspacing='0' bgcolor='#2F5376'>
+	<tr>
+		<td bgcolor='#2F5376'>
+		<div align="center">
+			<font style="font-family: Verdana; font-size: 14px;" color='#FFFFFF'><b>{SURVEYNAME}</b></font><br />
+			<font color='#FFFFFF'>{SURVEYDESCRIPTION}</font>
+		  </div>
+	  </td>
+	</tr>
+	<tr>
+		<td height="30" align='center' valign="middle">
+			{PERCENTCOMPLETE}
+		</td>
+	</tr>
+</table>

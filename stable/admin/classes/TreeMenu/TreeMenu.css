@@ -1,0 +1,52 @@
+/* TreeMenu.css
+  A component of HTML_TreeMenu as extended by Chip Chapin
+  2002-10-31 Chip Chapin
+*/
+.tmenu0text {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 10pt;
+  font-weight: bold;
+}
+.tmenu1text {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 9pt;
+}
+.tmenu2text {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 9pt;
+  font-style: italic;
+}
+.tmenu3text {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 7.5pt;
+}
+
+/* Since all menu items are links, the following is equally important 
+ * to your menu appearance.  
+ * The main thing you may want to change are the A:link and A:visited colors.
+ */
+*.tmenu0text A:link,*.tmenu1text A:link,*.tmenu2text A:link,*.tmenu3text A:link 
+  { text-decoration:none; color:#505080 }
+*.tmenu0text A:visited,*.tmenu1text A:visited,*.tmenu2text A:visited,*.tmenu3text A:visited 
+  { text-decoration:none; color:#505080 }
+*.tmenu0text A:active,*.tmenu1text A:active,*.tmenu2text A:active,*.tmenu3text A:active 
+  { text-decoration:none; color:#805050 }
+*.tmenu0text A:hover,*.tmenu1text A:hover,*.tmenu2text A:hover,*.tmenu3text A:hover 
+  { text-decoration:underline; color:#FF0000 }
+
+/* .tmlistbox controls the appearance of Listbox menus */
+.tmlistbox {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 11px;  /* match 'smalltext' value */
+  font-size-adjust: 0.58; /* Verdana */
+  margin-bottom: 0px;
+}
+
+/* .tmenuSelected is used with linkSelectKey to highlight selected items */
+.tmenuSelected { 
+  background-color: yellow;
+}
+*.tmenuSelected A:link    { text-decoration:none; color:#2020ff }
+*.tmenuSelected A:visited { text-decoration:none; color:#2020ff }
+*.tmenuSelected A:active  { text-decoration:none; color:#ff2020 }
+*.tmenuSelected A:hover   { text-decoration:underline; color:#FF0000 }

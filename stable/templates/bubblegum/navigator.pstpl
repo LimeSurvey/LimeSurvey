@@ -1,0 +1,10 @@
+<table width='100%' align='center' bgcolor='#800000'>
+	<tr>
+		<td align='center'>
+			{NAVIGATOR}<br />
+			{CLEARALL}
+			{SAVE}
+
+		</td>
+	</tr>
+</table>
