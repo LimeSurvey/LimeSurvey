@@ -134,7 +134,7 @@ class Tokens_dynamic extends CActiveRecord
     }
     function selectEmptyTokens($iSurveyID)
     {
-        return Yii::app()->db->createCommand("SELECT tid FROM :tablename WHERE token IS NULL OR token=''")->bindParam(":tablename", $this->tableName(), PDO::PARAM_STR)->queryAll();
+        return Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$iSurveyID}}} WHERE token IS NULL OR token=''")->queryAll();
     }
     function createTokens($iSurveyID)
     {

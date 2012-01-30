@@ -807,7 +807,7 @@ class InstallerController extends CController {
                 $this->connection->createCommand("ALTER DATABASE ". $this->connection->quoteTableName($sDatabaseName) ." DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;")->execute();
                 break;
             case 'pgsql':
-                if ($this->connection->getClientVersion() == '9') {
+                if (version_compare($this->connection->getServerVersion(),'9','>=')) {
                     $this->connection->createCommand("ALTER DATABASE ". $this->connection->quoteTableName($sDatabaseName) ." SET bytea_output='escape';")->execute();
                 }
                 break;
