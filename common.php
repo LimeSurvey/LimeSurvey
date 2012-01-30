@@ -620,7 +620,11 @@ function browsemenubar()
 	{
 		$browsemenubar .= "\t\t\t<a href='$scriptname?action=exportresults&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Results to Application", "js")."')\"><img name='Export' src='$imagefiles/export.png' "
 		. "title='' alt=''align='left' /></a>\n"
+<<<<<<< HEAD
 		. "\t\t\t<a href='$scriptname?action=exportspss&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export result to a SPSS command file", "js")."')\"><img src='$imagefiles/exportspss.png' align='left' "
+=======
+		. "\t\t\t<a href='spss.php?sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export result to a SPSS command file", "js")."')\"><img src='$imagefiles/exportspss.png' align='left' "
+>>>>>>> refs/heads/limesurvey16
 		. "title='' border='0' alt='". $clang->gT("Export result to a SPSS command file")."' /></a>\n";
 	}
 	$browsemenubar .= "\t\t\t<a href='$scriptname?action=importoldresponses&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Import answers from a deactivated survey table", "js")."')\" >" .
@@ -3067,6 +3071,7 @@ function incompleteAnsFilterstate()
 	{ // last resort is to prevent filtering
 		return false;
 	}
+<<<<<<< HEAD
 }
 
 /**
@@ -3333,6 +3338,8 @@ function bIsTokenCompletedDatestamped($thesurvey)
 	{
 		return true;
 	}
+=======
+>>>>>>> refs/heads/limesurvey16
 }
 
 function date_shift($date, $dformat, $shift)

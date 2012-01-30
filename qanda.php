@@ -38,6 +38,7 @@ global $thissurvey;
 * $ia[9] => incremental question count (used by {QUESTION_NUMBER})
 *
 * $conditions element structure
+<<<<<<< HEAD
 * $condition[n][0] => qid = question id
 * $condition[n][1] => cqid = question id of the target question, or 0 for TokenAttr leftOperand
 * $condition[n][2] => field name of element [1] (Except for type M or P)
@@ -47,6 +48,111 @@ global $thissurvey;
 * $condition[n][6] => method used to evaluate
 * $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
 */
+=======
+* $condition[n][0] => question id
+* $condition[n][1] => question with value to evaluate
+* $condition[n][2] => internal field name of element [1]
+* $condition[n][3] => value to be evaluated on answers labeled. *NEW* tittle of questions to evaluate.
+* $condition[n][4] => type of question
+* $condition[n][5] => equal to [2], but concatenated in this time (why the same value 2 times?)
+* $condition[n][6] => method used to evaluate *NEW*
+*/
+function retrieveConditionInfo($ia)
+{
+	//This function returns an array containing all related conditions
+	//for a question - the array contains the fields from the conditions table
+	global $dbprefix, $connect;
+
+	if ($ia[7] == "Y")
+	{ //DEVELOP CONDITIONS ARRAY FOR THIS QUESTION
+		$cquery = "SELECT {$dbprefix}conditions.qid, "
+		                ."{$dbprefix}conditions.cqid, "
+		                ."{$dbprefix}conditions.cfieldname, "
+		                ."{$dbprefix}conditions.value, "
+		                ."{$dbprefix}questions.type, "
+		                ."{$dbprefix}questions.sid, "
+                		."{$dbprefix}questions.gid, "
+                		."{$dbprefix}conditions.method "
+		           ."FROM {$dbprefix}conditions, "
+		                ."{$dbprefix}questions "
+		          ."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid "
+		            ."AND {$dbprefix}conditions.qid=$ia[0] "
+		            ."AND {$dbprefix}questions.language='".$_SESSION['s_lang']."' "
+        	   ."ORDER BY {$dbprefix}conditions.cqid, "
+        	            ."{$dbprefix}conditions.cfieldname";
+		$cresult = db_execute_assoc($cquery) or die ("OOPS<br />$cquery<br />".htmlspecialchars($connect->ErrorMsg()));
+		while ($crow = $cresult->FetchRow())
+		{
+			$conditions[] = array ($crow['qid'],
+			                       $crow['cqid'],
+			                       $crow['cfieldname'],
+			                       $crow['value'],
+			                       $crow['type'],
+			                       $crow['sid']."X".$crow['gid']."X".$crow['cqid'],
+			                       $crow['method']);
+		}
+		return $conditions;
+	}
+	else
+	{
+		return null;
+	}
+}
+
+function create_mandatorylist($ia)
+{
+	//Checks current question and returns required mandatory arrays if required
+	if ($ia[6] == "Y")
+	{
+		switch($ia[4])
+		{
+			case "R":
+			$thismandatory=setman_ranking($ia);
+			break;
+			case "M":
+			$thismandatory=setman_questionandcode($ia);
+			break;
+			case "J":
+			case "P":
+			case "Q":
+			case "A":
+			case "B":
+			case "C":
+			case "E":
+			case "F":
+			case "H":
+			$thismandatory=setman_questionandcode($ia);
+			break;
+			case "X":
+			//Do nothing - boilerplate questions CANNOT be mandatory
+			break;
+			default:
+			$thismandatory=setman_normal($ia);
+		}
+		if ($ia[7] != "Y" && isset($thismandatory)) //Question is not conditional - addto mandatory arrays
+		{
+			$mandatory=$thismandatory;
+		}
+		if ($ia[7] == "Y" && isset($thismandatory)) //Question IS conditional - add to conmandatory arrays
+		{
+			$conmandatory=$thismandatory;
+		}
+	}
+
+	if (isset($mandatory))
+	{
+		return array($mandatory, null);
+	}
+	elseif (isset($conmandatory))
+	{
+		return array(null, $conmandatory);
+	}
+	else
+	{
+		return array(null, null);
+	}
+}
+>>>>>>> refs/heads/limesurvey16
 
 if($shownoanswer > 0 && $thissurvey['shownoanswer'] != 'N')
 {
@@ -341,6 +447,7 @@ function setman_ranking($ia)
 	{
 		$defaultvaluescript = "";
 		$answer .= "\t\t\t<input class='radio' type='radio' name='$ia[1]' id='NoAnswer' value=''";
+<<<<<<< HEAD
 		if (!$_SESSION[$ia[1]])
 		{
 			$answer .= " checked='checked'";
@@ -350,6 +457,9 @@ function setman_ranking($ia)
 				. "\t\t\t//-->\n"
 				. "\t\t\t</script>\n";
 		}
+=======
+		if (!$_SESSION[$ia[1]]) {$answer .= " checked='checked'";}
+>>>>>>> refs/heads/limesurvey16
 		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='NoAnswer' class='answertext'>".$clang->gT("No answer")."</label>\n";
 		$answer .= $defaultvaluescript;
 >>>>>>> refs/heads/stable_plus
@@ -359,12 +469,42 @@ function setman_ranking($ia)
 
 function setman_questionandcode($ia)
 {
+<<<<<<< HEAD
     global $dbprefix, $connect;
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
     $qresult = db_execute_assoc($qquery);     //Checked
     while ($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
     $subquestionquery = "SELECT title FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     $sqresult = db_execute_assoc($subquestionquery); //Checked
+=======
+	global $clang;
+  $answer = keycontroljs()
+  . "\t\t\t<input class='text' type='text' size='10' name='$ia[1]' "
+  . "id='answer{$ia[1]}' value=\"".$_SESSION[$ia[1]]
+  . "\" maxlength='10' onKeyPress=\"return goodchars(event,'0123456789-')\" onchange='modfield(this.name);checkconditions(this.value, this.name, this.type)' onBlur='ValidDate(this)'/><button type='reset' id='f_trigger_{$ia[1]}'>...</button>\n"
+	. "\t\t\t<table class='question'>\n"
+	. "\t\t\t\t<tr>\n"
+	. "\t\t\t\t\t<td>\n"
+	. "\t\t\t\t\t\t<font size='1'>".$clang->gT("Format: YYYY-MM-DD")."<br />\n"
+	. "\t\t\t\t\t\t".$clang->gT("(eg: 2003-12-25 for Christmas day)")."\n"
+	. "\t\t\t\t\t</font></td>\n"
+	. "\t\t\t\t</tr>\n"
+	. "\t\t\t</table>\n";
+	// Here we do setup the date javascript
+	$answer .= "<script type=\"text/javascript\">\n"
+	. "Calendar.setup({\n"
+	. "inputField     :    \"answer{$ia[1]}\",\n"    // id of the input field
+	. "ifFormat       :    \"%Y-%m-%d\",\n"   // format of the input field
+	. "showsTime      :    false,\n"                    // will display a time selector
+	. "button         :    \"f_trigger_{$ia[1]}\",\n"         // trigger for the calendar (button ID)
+	. "singleClick    :    true,\n"                   // double-click mode
+	. "step           :    1\n"                        // show all years in drop-down boxes (instead of every other year as default)
+	. "});\n"
+	. "</script>\n";
+	$inputnames[]=$ia[1];
+	return array($answer, $inputnames);
+}
+>>>>>>> refs/heads/limesurvey16
 
     while ($subquestionrow = $sqresult->FetchRow())
     {
@@ -372,6 +512,7 @@ function setman_questionandcode($ia)
         $mandatoryfns[]=$ia[1];
     }
 
+<<<<<<< HEAD
     if ($other == "Y" and ($ia[4]=="!" or $ia[4]=="L" or $ia[4]=="M" or $ia[4]=="P"))
     {
         $mandatorys[]=$ia[1]."other";
@@ -379,6 +520,30 @@ function setman_questionandcode($ia)
     }
 
     return array($mandatorys, $mandatoryfns);
+=======
+function do_language($ia)
+{
+	global $dbprefix, $surveyid, $clang;
+	$answerlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+	$answerlangs [] = GetBaseLanguageFromSurveyID($surveyid);
+	$answer = "\n\t\t\t\t\t<select name='$ia[1]' id='$ia[1]' onchange='checkconditions(this.value, this.name, this.type);modfield(this.name);document.getElementById(\"lang\").value=this.value;'>\n";
+	if (!$_SESSION[$ia[1]]) {$answer .= "\t\t\t\t\t\t<option value='' selected='selected'>".$clang->gT("Please choose")."..</option>\n";}
+	foreach ($answerlangs as $ansrow)
+	{
+		$answer .= "\t\t\t\t\t\t<option value='{$ansrow}'";
+		if ($_SESSION[$ia[1]] == $ansrow)
+		{
+			$answer .= " selected='selected'";
+		}
+		elseif ($ansrow['default_value'] == "Y") {$answer .= " selected='selected'"; $defexists = "Y";}
+		$answer .= ">".getLanguageNameFromCode($ansrow, true)."</option>\n";
+	}
+	$answer .= "\t\t\t\t\t</select>\n";
+	$inputnames[]=$ia[1];
+    $answer .= "\n\t\t\t<input type='hidden' name='lang' id='lang' value='' />";
+		
+	return array($answer, $inputnames);
+>>>>>>> refs/heads/limesurvey16
 }
 
 
@@ -446,7 +611,10 @@ function setman_multiflex($ia)
 	}
 	if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != "") && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>".$clang->gT("No answer")."</option>\n";}
 	$answer .= "\t\t\t\t\t</select>\n";
+<<<<<<< HEAD
 	$answer .= $defaultvaluescript;
+=======
+>>>>>>> refs/heads/limesurvey16
     $answer .= "\t\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}' />\n";
   
 	$sselect = "\n\t\t\t\t\t<select name='$ia[1]' id='answer$ia[1]' onchange='checkconditions(this.value, this.name, this.type);modfield(this.name);";
@@ -594,21 +762,29 @@ function setman_questionandcode_multiscale($ia)
 	{
 		while ($ansrow = $ansresult->FetchRow())
 		{
+<<<<<<< HEAD
 			$answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
 			if ($_SESSION[$ia[1]] == $ansrow['code'])
 			{
 				$answer .= " selected='selected'";
 			}
 			$answer .= ">{$ansrow['title']}</option>\n";
+=======
+			$answer .= " selected='selected'";
+>>>>>>> refs/heads/limesurvey16
 		}
 		if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists))
 		{
+<<<<<<< HEAD
 			$answer = "\t\t\t\t\t\t<option value='' selected='selected'>".$clang->gT("Please choose")."..</option>\n".$answer;
 			$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
 				. "\t\t\t\t\t\t<!--\n"
 				. "\t\t\t\t\t\t\tmodfield(\"$ia[1]\");\n"
 				. "\t\t\t\t\t\t//-->\n"
 				. "\t\t\t\t\t\t</script>\n";
+=======
+			$answer .= " selected='selected'";
+>>>>>>> refs/heads/limesurvey16
 		}
 		if (isset($other) && $other=="Y")
 		{
@@ -801,11 +977,14 @@ function do_list_radio($ia)
 		if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == "") && (!isset($defexists) || !$defexists)) || ($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
 		{
 			$answer .= " checked='checked'"; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
+<<<<<<< HEAD
 			$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
 				. "\t\t\t\t\t\t<!--\n"
 				. "\t\t\t\t\t\t\tmodfield(\"$ia[1]\");\n"
 				. "\t\t\t\t\t\t//-->\n"
 				. "\t\t\t\t\t\t</script>\n";
+=======
+>>>>>>> refs/heads/limesurvey16
 		}
 		// --> START NEW FEATURE - SAVE
 		$answer .=" onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/>"
@@ -897,10 +1076,38 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
 		. "\t\t\t\t\t\t\t<td align='left'>\n";
 	}
 	$rowcounter=0;
+<<<<<<< HEAD
 >>>>>>> refs/heads/stable_plus
 
     //DISPLAY
     $display = $ia[7];
+=======
+	while ($ansrow = $ansresult->FetchRow())
+	{
+		$rowcounter++;
+		$answer .= "\t\t\t\t\t\t\t\t  <input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='answer$ia[1]{$ansrow['code']}'";
+		if ($_SESSION[$ia[1]] == $ansrow['code'])
+		{
+			$answer .= " checked='checked'";
+		}
+		// --> START NEW FEATURE - SAVE
+		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['title']}</label><br />\n";
+		// --> END NEW FEATURE - SAVE
+
+		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
+	}
+	if (isset($other) && $other=="Y")
+	{
+		$rowcounter++;
+		$answer .= "\t\t\t\t\t\t\t\t  <input class='radio' type='radio' value='-oth-' name='$ia[1]' id='SOTH$ia[1]'";
+		if ($_SESSION[$ia[1]] == "-oth-")
+		{
+			$answer .= " checked='checked'";
+		}
+		// --> START NEW FEATURE - SAVE
+		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='SOTH$ia[1]' class='answertext'>".$clang->gT("Other")."</label>\n";
+		// --> END NEW FEATURE - SAVE
+>>>>>>> refs/heads/limesurvey16
 
     //QUESTION NAME
     $name = $ia[0];
@@ -920,11 +1127,14 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
 		if ((!isset($defexists) || $defexists != "Y") && (!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == "" || $_SESSION[$ia[1]] == " "))
 		{
 			$answer .= " checked='checked'"; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
+<<<<<<< HEAD
 			$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
 				. "\t\t\t\t\t\t<!--\n"
 				. "\t\t\t\t\t\t\tmodfield(\"$ia[1]\");\n"
 				. "\t\t\t\t\t\t//-->\n"
 				. "\t\t\t\t\t\t</script>\n";
+=======
+>>>>>>> refs/heads/limesurvey16
 		}
 		// --> START NEW FEATURE - SAVE
 		$answer .=" onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/>"
@@ -967,12 +1177,24 @@ function do_listwithcomment($ia)
 		. "\t\t\t\t\t<td valign='top' align='left'>\n";
 >>>>>>> refs/heads/stable_plus
 
+<<<<<<< HEAD
     //A bit of housekeeping to stop PHP Notices
     $answer = "";
     if (!isset($_SESSION[$ia[1]])) {$_SESSION[$ia[1]] = "";}
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     //echo "<pre>";print_r($qidattributes);echo "</pre>";
     //Create the question/answer html
+=======
+		while ($ansrow=$ansresult->FetchRow())
+		{
+			$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='answer$ia[1]{$ansrow['code']}'";
+			if ($_SESSION[$ia[1]] == $ansrow['code'])
+			{$answer .= " checked='checked'";}
+			elseif ($ansrow['default_value'] == "Y") {$answer .= " checked='checked'"; $defexists = "Y";}
+			// --> START NEW FEATURE - SAVE
+			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
+			// --> END NEW FEATURE - SAVE
+>>>>>>> refs/heads/limesurvey16
 
 <<<<<<< HEAD
     // Previously in limesurvey, it was virtually impossible to control how the start of questions were formatted.
@@ -988,11 +1210,14 @@ function do_listwithcomment($ia)
 			if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == "") && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
 			{
 				$answer .= "checked='checked' />";
+<<<<<<< HEAD
 				$defaultvaluescript .= "\t\t\t\t\t\t<script type='text/javascript'>\n"
 					. "\t\t\t\t\t\t<!--\n"
 					. "\t\t\t\t\t\t\tmodfield(\"$ia[1]\");\n"
 					. "\t\t\t\t\t\t//-->\n"
 					. "\t\t\t\t\t\t</script>\n";
+=======
+>>>>>>> refs/heads/limesurvey16
 			}
 			elseif ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != "") && (!isset($defexists) || !$defexists))
 			{
@@ -1310,6 +1535,7 @@ function do_listwithcomment($ia)
     $answer .= 'on'; //If this is single format, then it must be showing. Needed for checking conditional mandatories
     $answer .= "' />\n"; //for conditional mandatory questions
 
+<<<<<<< HEAD
     if ($ia[6] == 'Y')
     {
         $qtitle = '<span class="asterisk">'.$clang->gT('*').'</span>'.$qtitle;
@@ -1319,6 +1545,55 @@ function do_listwithcomment($ia)
     //add a message HIGHLIGHTING the question
     $qtitle .= mandatory_message($ia);
     $question_text['man_message'] = mandatory_message($ia);
+=======
+		$maxanswscript = "\t\t\t<script type='text/javascript'>\n"
+			. "\t\t\t<!--\n"
+			. "\t\t\t\tfunction limitmaxansw_{$ia[0]}(me)\n"
+			. "\t\t\t\t\t{\n"
+			. "\t\t\t\t\tmax=$maxansw\n"
+			. "\t\t\t\t\tcount=0;\n"
+			. "\t\t\t\t\tif (max == 0) { return count; }\n";
+	}
+	$answer  = "\t\t\t<table class='question'>\n"
+	. "\t\t\t\t<tr>\n"
+	. "\t\t\t\t\t<td>&nbsp;</td>\n"
+	. "\t\t\t\t\t<td align='left' class='answertext'>\n";
+	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
+	$qresult = db_execute_assoc($qquery);
+	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
+	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY RAND()";
+	} else {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+	}
+	$ansresult = db_execute_assoc($ansquery);
+	$anscount = $ansresult->RecordCount();
+	if ($other == "Y") {$anscount++;} //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
+	$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount' />\n";
+	$divider="";
+	$maxrows=0;
+	$closetable=false;
+	if ($dcols >0 && $anscount >= $dcols) //Break into columns
+	{
+		$width=sprintf("%0d", 100/$dcols);
+		$maxrows=ceil(100*($anscount/$dcols)/100); //Always rounds up to nearest whole number
+		$answer .= "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap='nowrap'>";
+		$divider=" </td>\n <td valign='top' width='$width%' nowrap='nowrap'>";
+		$closetable=true;
+	}
+	$fn = 1;
+	if (!isset($multifields)) {$multifields="";}
+	$rowcounter=0;
+	while ($ansrow = $ansresult->FetchRow())
+	{
+		$rowcounter++;
+		$myfname = $ia[1].$ansrow['code'];
+		$answer .= "\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='$ia[1]{$ansrow['code']}' id='answer$ia[1]{$ansrow['code']}' value='Y'";
+		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "Y") {$answer .= " checked='checked'";}
+		// --> START NEW FEATURE - SAVE
+		$answer .= " onclick='".$callmaxanswscriptcheckbox."checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
+		// --> END NEW FEATURE - SAVE
+>>>>>>> refs/heads/limesurvey16
 
     $qtitle .= validation_message($ia);
     $question_text['valid_message'] = validation_message($ia);
@@ -1392,6 +1667,7 @@ function do_listwithcomment($ia)
 }
 >>>>>>> refs/heads/stable_plus
 
+<<<<<<< HEAD
         $c = 1;
         // START: <EMBED> work-around step 1
         $qtitle_custom = preg_replace( '/(<embed[^>]+>)(<\/embed>)/i' , '\1NOT_EMPTY\2' , $qtitle_custom );
@@ -1401,6 +1677,57 @@ function do_listwithcomment($ia)
             $matches = 0;
             $oldtitle=$qtitle_custom;
             $qtitle_custom = preg_replace( '/<([^ >]+)[^>]*>[\r\n\t ]*<\/\1>[\r\n\t ]*/isU' , '' , $qtitle_custom , -1); // I removed the $count param because it is PHP 5.1 only.
+=======
+function do_multiplechoice_withcomments($ia)
+{
+	global $dbprefix, $clang;
+	$qidattributes=getQuestionAttributes($ia[0]);
+	$answer  = "\t\t\t<table class='question'>\n"
+	. "\t\t\t\t<tr>\n"
+	. "\t\t\t\t\t<td>&nbsp;</td>\n"
+	. "\t\t\t\t\t<td align='left'>\n";
+	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
+	$qresult = db_execute_assoc($qquery);
+	while ($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
+	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY RAND()";
+	} else {
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+	}
+	$ansresult = db_execute_assoc($ansquery);
+	$anscount = $ansresult->RecordCount()*2;
+	$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount' />\n"
+	. "\t\t\t\t\t\t<table class='question'>\n";
+	$fn = 1;
+	while ($ansrow = $ansresult->FetchRow())
+	{
+		$myfname = $ia[1].$ansrow['code'];
+		$myfname2 = $myfname."comment";
+		$answer .= "\t\t\t\t\t\t\t<tr>\n"
+		. "\t\t\t\t\t\t\t\t<td>\n"
+		. "\t\t\t\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='$myfname' id='answer$myfname' value='Y'";
+		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "Y") {$answer .= " checked='checked'";}
+		// --> START NEW FEATURE - SAVE
+		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' />"
+		. "<label for='answer$myfname' class='answertext'>"
+		// --> END NEW FEATURE - SAVE
+
+		. $ansrow['answer']."</label>\n"
+		. "\t\t\t\t\t\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+		if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+		$answer .= "' />\n"
+		. "\t\t\t\t\t\t\t\t</td>\n";
+		$fn++;
+		$answer .= "\t\t\t\t\t\t\t\t<td>\n"
+		. "\t\t\t\t\t\t\t\t\t<label for='answer$myfname2'>"
+		."<input class='text' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT("Make a comment on your choice here:")."' value='";
+		if (isset($_SESSION[$myfname2])) {$answer .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
+		// --> START NEW FEATURE - SAVE
+		$answer .= "' onchange='modfield(this.name)' /></label>\n"
+		. "\t\t\t\t\t\t\t\t</td>\n"
+		. "\t\t\t\t\t\t\t</tr>\n";
+		// --> END NEW FEATURE - SAVE
+>>>>>>> refs/heads/limesurvey16
 
 <<<<<<< HEAD
             $c = ($qtitle_custom!=$oldtitle)?1:0;
@@ -1544,11 +1871,39 @@ function validation_message($ia)
 
 function file_validation_message($ia)
 {
+<<<<<<< HEAD
     global $filenotvalidated, $clang;
     $qtitle = "";
     if (isset($filenotvalidated) && is_array($filenotvalidated) && $ia[4] == "|")
     {
         global $filevalidationpopup, $popup;
+=======
+	global $clang;
+	$qidattributes=getQuestionAttributes($ia[0]);
+	if ($maxchars=arraySearchByKey("maximum_chars", $qidattributes, "attribute", 1))
+	{
+		$maxsize=$maxchars['value'];
+	}
+	else
+	{
+		$maxsize=255;
+	}
+	if ($maxchars=arraySearchByKey("text_input_width", $qidattributes, "attribute", 1))
+	{
+		$tiwidth=$maxchars['value'];
+	}
+	else
+	{
+		$tiwidth=10;
+	}
+	// --> START NEW FEATURE - SAVE
+	$answer = keycontroljs()
+	. "\t\t\t<input class='text' type='text' size='$tiwidth' name='$ia[1]' "
+	. "id='answer{$ia[1]}' value=\"{$_SESSION[$ia[1]]}\" onkeypress=\"return goodchars(event,'0123456789.')\" onkeyup='modfield(this.name);checkconditions(this.value, this.name, this.type)'"
+	. "maxlength='$maxsize' /><br />\n"
+	. "\t\t\t<font size='1'><i>".$clang->gT("Only numbers may be entered in this field")."</i></font>\n";
+	// --> END NEW FEATURE - SAVE
+>>>>>>> refs/heads/limesurvey16
 
         foreach ($filenotvalidated as $k => $v)
         {
@@ -1561,6 +1916,7 @@ function file_validation_message($ia)
 
 function mandatory_popup($ia, $notanswered=null)
 {
+<<<<<<< HEAD
     global $showpopups;
     //This sets the mandatory popup message to show if required
     //Called from question.php, group.php or survey.php
@@ -1591,6 +1947,30 @@ function mandatory_popup($ia, $notanswered=null)
         return false;
     }
 }
+=======
+	$qidattributes=getQuestionAttributes($ia[0]);
+	if ($maxchars=arraySearchByKey("maximum_chars", $qidattributes, "attribute", 1))
+	{
+		$maxsize=$maxchars['value'];
+	}
+	else
+	{
+		$maxsize=255;
+	}
+	if ($maxchars=arraySearchByKey("text_input_width", $qidattributes, "attribute", 1))
+	{
+		$tiwidth=$maxchars['value'];
+	}
+	else
+	{
+		$tiwidth=50;
+	}
+	// --> START NEW FEATURE - SAVE
+	$answer = "\t\t\t<input class='text' type='text' size='$tiwidth' name='$ia[1]' id='answer$ia[1]' value=\""
+	.str_replace ("\"", "'", str_replace("\\", "", $_SESSION[$ia[1]]))
+	."\" maxlength='$maxsize' onkeyup='modfield(this.name);checkconditions(this.value, this.name, this.type)'/>\n";
+	// --> END NEW FEATURE - SAVE
+>>>>>>> refs/heads/limesurvey16
 
 function validation_popup($ia, $notvalidated=null)
 {
@@ -1673,7 +2053,11 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 =======
 	// --> START NEW FEATURE - SAVE
 	$answer .= "<textarea class='textarea' name='{$ia[1]}' id='answer{$ia[1]}' "
+<<<<<<< HEAD
 	."rows='{$drows}' cols='{$tiwidth}' onkeyup=\"textLimit('answer".$ia[1]."', $maxsize)\" onchange='modfield(this.name)'>";
+=======
+	."rows='{$drows}' cols='{$tiwidth}' onkeyup=\"textLimit('".$ia[1]."', $maxsize)\";modfield(this.name);checkconditions(this.value, this.name, this.type)\">";
+>>>>>>> refs/heads/limesurvey16
 	// --> END NEW FEATURE - SAVE
 >>>>>>> refs/heads/stable_plus
 
@@ -2036,7 +2420,11 @@ function return_array_filter_include_strings($ia, $qidattributes, $thissurvey, $
 =======
 	// --> START NEW FEATURE - SAVE
 	$answer .= "<textarea class='display' name='{$ia[1]}' id='answer$ia[1]' "
+<<<<<<< HEAD
 	."rows='{$drows}' cols='{$tiwidth}' onkeyup=\"textLimit('answer".$ia[1]."', $maxsize)\" onchange='modfield(this.name)'>";
+=======
+	."rows='{$drows}' cols='{$tiwidth}' onkeyup=\"textLimit('".$ia[1]."', $maxsize)\";modfield(this.name);checkconditions(this.value, this.name, this.type)\">";
+>>>>>>> refs/heads/limesurvey16
 	// --> END NEW FEATURE - SAVE
 >>>>>>> refs/heads/stable_plus
 
@@ -2222,6 +2610,7 @@ function do_yesno($ia)
 	if ($ia[6] != "Y" && $shownoanswer == 1)
 	{
 		$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1] ' value=''";
+<<<<<<< HEAD
 		if ($_SESSION[$ia[1]] == "")
 		{
 			$answer .= " checked='checked'";
@@ -2231,6 +2620,9 @@ function do_yesno($ia)
 				. "\t\t\t\t\t\t//-->\n"
 				. "\t\t\t\t\t\t</script>\n";
 		}
+=======
+		if ($_SESSION[$ia[1]] == "") {$answer .= " checked='checked'";}
+>>>>>>> refs/heads/limesurvey16
 		// --> START NEW FEATURE - SAVE
 		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1] ' class='answertext'>".$clang->gT("No answer")."</label><br />\n";
 		// --> END NEW FEATURE - SAVE
@@ -2269,11 +2661,18 @@ function do_boilerplate($ia)
 	// --> END NEW FEATURE - SAVE
 >>>>>>> refs/heads/stable_plus
 
+<<<<<<< HEAD
     if (trim($qidattributes['time_limit'])!='')
     {
         $js_header_includes[] = '/scripts/coookies.js';
         $answer .= return_timer_script($qidattributes, $ia);
     }
+=======
+	if ($_SESSION[$ia[1]] == "M") {$answer .= " checked='checked'";}
+	// --> START NEW FEATURE - SAVE
+	$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1]M' class='answertext'>".$clang->gT("Male")."</label><br />\n";
+	// --> END NEW FEATURE - SAVE
+>>>>>>> refs/heads/limesurvey16
 
 <<<<<<< HEAD
     $answer .= '<input type="hidden" name="$ia[1]" id="answer'.$ia[1].'" value="" />';
@@ -2282,6 +2681,7 @@ function do_boilerplate($ia)
 	if ($ia[6] != "Y" && $shownoanswer == 1)
 	{
 		$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1] ' value=''";
+<<<<<<< HEAD
 		if ($_SESSION[$ia[1]] == "")
 		{
 			$answer .= " checked='checked'";
@@ -2291,6 +2691,9 @@ function do_boilerplate($ia)
 				. "\t\t\t\t\t\t//-->\n"
 				. "\t\t\t\t\t\t</script>\n";
 		}
+=======
+		if ($_SESSION[$ia[1]] == "") {$answer .= " checked='checked'";}
+>>>>>>> refs/heads/limesurvey16
 		// --> START NEW FEATURE - SAVE
 		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/><label for='answer$ia[1] ' class='answertext'>".$clang->gT("No answer")."</label>\n";
 		// --> END NEW FEATURE - SAVE
@@ -2479,6 +2882,7 @@ function do_5pointchoice($ia)
 		{
 			$answer .= "\t\t\t\t\t<td align='center'><label for='answer$myfname-'>"
 			."<input class='radio' type='radio' name='$myfname' id='answer$myfname-' value='' title='".$clang->gT("No answer")."'";
+<<<<<<< HEAD
 			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "")
 			{
 				$answer .= " checked='checked'";
@@ -2488,6 +2892,9 @@ function do_5pointchoice($ia)
 					. "\t\t\t\t\t\t//-->\n"
 					. "\t\t\t\t\t\t</script>\n";
 			}
+=======
+			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked='checked'";}
+>>>>>>> refs/heads/limesurvey16
 			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 			$answer .= $defaultvaluescript;
 		}
@@ -2582,6 +2989,7 @@ function do_array_10point($ia)
 		{
 			$answer .= "\t\t\t\t\t<td align='center'><label for='answer$myfname-'>"
 			."<input class='radio' type='radio' name='$myfname' id='answer$myfname-' value='' title='".$clang->gT("No answer")."'";
+<<<<<<< HEAD
 			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "")
 			{
 				$answer .= " checked='checked'";
@@ -2591,6 +2999,9 @@ function do_array_10point($ia)
 					. "\t\t\t\t\t\t//-->\n"
 					. "\t\t\t\t\t\t</script>\n";
 			}
+=======
+			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked='checked'";}
+>>>>>>> refs/heads/limesurvey16
 			// --> START NEW FEATURE - SAVE
 			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 			// --> END NEW FEATURE - SAVE
@@ -2667,11 +3078,46 @@ function do_date($ia)
 					$htmltbody2 = "<tbody id='javatbd$myfname' style='display: '><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on' />";
 				}
 			}
+<<<<<<< HEAD
 			$answer .= "\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
 			. "\t\t\t\t\t<td align='right' class='answertext'>$answertext</td>\n"
 			. "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-Y'>"
 			."<input class='radio' type='radio' name='$myfname' id='answer$myfname-Y' value='Y' title='".$clang->gT("Yes")."'";
 			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "Y") {$answer .= " checked='checked'";}
+=======
+		}
+		$answer .= "\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
+		. "\t\t\t\t\t<td align='right'>$answertext</td>\n"
+		. "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-Y'>"
+		."<input class='radio' type='radio' name='$myfname' id='answer$myfname-Y' value='Y' title='".$clang->gT("Yes")."'";
+		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "Y") {$answer .= " checked='checked'";}
+		// --> START NEW FEATURE - SAVE
+		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n"
+		. "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-U'>"
+		."<input class='radio' type='radio' name='$myfname' id='answer$myfname-U' value='U' title='".$clang->gT("Uncertain")."'";
+		// --> END NEW FEATURE - SAVE
+
+		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "U") {$answer .= " checked='checked'";}
+		// --> START NEW FEATURE - SAVE
+		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n"
+		. "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-N'>"
+		."<input class='radio' type='radio' name='$myfname' id='answer$myfname-N' value='N' title='".$clang->gT("No")."'";
+		// --> END NEW FEATURE - SAVE
+
+		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "N") {$answer .= " checked='checked'";}
+		// --> START NEW FEATURE - SAVE
+		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)'/></label>\n"
+		. "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+		// --> END NEW FEATURE - SAVE
+		if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+		$answer .= "' /></td>\n";
+
+		if ($ia[6] != "Y" && $shownoanswer == 1)
+		{
+			$answer .= "\t\t\t\t\t<td align='center'><label for='answer$myfname-'>"
+			."<input class='radio' type='radio' name='$myfname' id='answer$myfname-' value='' title='".$clang->gT("No answer")."'";
+			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked='checked'";}
+>>>>>>> refs/heads/limesurvey16
 			// --> START NEW FEATURE - SAVE
 			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n"
 			. "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-U'>"
@@ -3016,14 +3462,27 @@ function do_array_increasesamedecrease($ia)
 		. "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-I'>"
 		."<input class='radio' type='radio' name='$myfname' id='answer$myfname-I' value='I' title='".$clang->gT("Increase")."'";
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "I") {$answer .= " checked='checked'";}
+<<<<<<< HEAD
 >>>>>>> refs/heads/stable_plus
+=======
+>>>>>>> refs/heads/limesurvey16
 
 
+<<<<<<< HEAD
 
 // ---------------------------------------------------------------
 function do_language($ia)
 {
     global $dbprefix, $surveyid, $clang;
+=======
+		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "S") {$answer .= " checked='checked'";}
+
+		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n"
+		. "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-D'>"
+		."<input class='radio' type='radio' name='$myfname' id='answer$myfname-D' value='D' title='".$clang->gT("Decrease")."'";
+		// --> END NEW FEATURE - SAVE
+		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "D") {$answer .= " checked='checked'";}
+>>>>>>> refs/heads/limesurvey16
 
     if ($ia[8] == 'Y')
     {
@@ -3060,6 +3519,7 @@ function do_language($ia)
 		{
 			$answer .= "\t\t\t\t\t<td align='center'><label for='answer$myfname-'>"
 			."<input class='radio' type='radio' name='$myfname' id='answer$myfname-' value='' title='".$clang->gT("No answer")."'";
+<<<<<<< HEAD
 			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "")
 			{
 				$answer .= " checked='checked'";
@@ -3069,6 +3529,9 @@ function do_language($ia)
 					. "\t\t\t\t\t\t//-->\n"
 					. "\t\t\t\t\t\t</script>\n";
 			}
+=======
+			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked='checked'";}
+>>>>>>> refs/heads/limesurvey16
 			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 			$answer .= $defaultvaluescript;
 		}
@@ -3128,7 +3591,25 @@ function do_list_dropdown($ia)
 
 
 
+<<<<<<< HEAD
     $answer='';
+=======
+			$answer .= "\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
+			. "\t\t\t\t\t<td align='right' class='answertext' width='$answerwidth%'>$answertext\n"
+			. "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+			$answer .= "' /></td>\n";
+			$thiskey=0;
+			foreach ($labelcode as $ld)
+			{
+				$answer .= "\t\t\t\t\t<td align='center' width='$cellwidth%'><label for='answer$myfname-$ld'>";
+				$answer .= "<input class='radio' type='radio' name='$myfname' value='$ld' id='answer$myfname-$ld' title='"
+				. html_escape($labelans[$thiskey])."'";
+				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ld) {$answer .= " checked='checked'";}
+				// --> START NEW FEATURE - SAVE
+				$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
+				// --> END NEW FEATURE - SAVE
+>>>>>>> refs/heads/limesurvey16
 
 
     $query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
@@ -3346,6 +3827,7 @@ function do_list_dropdown($ia)
 			{
 				$answer .= "\t\t\t\t\t<td align='center' width='$cellwidth%'><label for='answer$myfname-'>"
 				."<input class='radio' type='radio' name='$myfname' value='' id='answer$myfname-' title='".$clang->gT("No answer")."'";
+<<<<<<< HEAD
 				if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "")
 				{
 					$answer .= " checked='checked'";
@@ -3355,6 +3837,9 @@ function do_list_dropdown($ia)
 						. "\t\t\t\t\t\t//-->\n"
 						. "\t\t\t\t\t\t</script>\n";
 				}
+=======
+				if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "") {$answer .= " checked='checked'";}
+>>>>>>> refs/heads/limesurvey16
 				// --> START NEW FEATURE - SAVE
 				$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
 				// --> END NEW FEATURE - SAVE
@@ -3676,8 +4161,22 @@ function do_list_radio($ia)
 		$cellwidth=round(50/$cellwidth);
 		while ($ansrow = $ansresult->FetchRow())
 		{
+<<<<<<< HEAD
 			$anscode[]=$ansrow['code'];
 			$answers[]=answer_replace($ansrow['answer']);
+=======
+			if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
+			$myfname=$ia[1].$ld;
+			$answer .= "\t\t\t\t\t<td align='center' class='$trbc' width='$cellwidth%'>"
+			. "<label for='answer$myfname-".$ansrow['code']."'>";
+			$answer .= "<input class='radio' type='radio' name='$myfname' value='".$ansrow['code']."' id='answer$myfname-".$ansrow['code']."'"
+			. " title='".html_escape($ansrow['answer'])."'";
+			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ansrow['code']) {$answer .= " checked='checked'";}
+			// --> START NEW FEATURE - SAVE
+			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' onchange='modfield(this.name)' /></label></td>\n";
+			// --> END NEW FEATURE - SAVE
+
+>>>>>>> refs/heads/limesurvey16
 		}
 		foreach ($answers as $ld)
 		{

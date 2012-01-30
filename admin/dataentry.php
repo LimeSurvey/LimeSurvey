@@ -106,6 +106,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
         $dataentryoutput .= $surveyoptions."<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n"
         ."\t<div class='messagebox ui-corner-all'>\n";
 
+<<<<<<< HEAD
         $lastanswfortoken=''; // check if a previous answer has been submitted or saved
         $rlanguage='';
         if (isset($_POST['token']) && $_POST['token'])
@@ -190,6 +191,56 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                 {
                     $dataentryoutput .= $errormsg;
                     $dataentryoutput .= $clang->gT("Try again").":<br />
+=======
+		$lastanswfortoken=''; // check if a previous answer has been submitted or saved
+		$rlanguage='';
+		if (isset($_POST['token']) && $_POST['token'])
+		{ // a token has been given, check if a previous answer wasn't recorded
+			$aquery = "SELECT id,startlanguage FROM $surveytable WHERE token='".$_POST['token']."'";
+			$aresult = db_execute_assoc($aquery);
+			while ($arow = $aresult->FetchRow())
+			{
+				$lastanswfortoken=$arow['id'];
+				$rlanguage=$arow['startlanguage'];
+			}
+		}
+
+		if ($thissurvey['private'] == 'N' && (!isset($_POST['token']) || !$_POST['token']))
+		{// First Check if the survey is private and if a token has been provided
+			$errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("This survey is not anonymous, you must supply a valid token")."</strong>\n";
+		}
+		elseif ($thissurvey['private'] == 'N' && $lastanswfortoken != '')
+		{
+			$errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("There is already a recorded answer for this token, follow the following link to update it").":</strong>\n"
+			. "<a href='$scriptname?action=dataentry&amp;subaction=edit&amp;id=$lastanswfortoken&amp;sid=$surveyid&amp;language=$rlanguage&amp;surveytable=$surveytable'"
+			. "onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Edit this entry", "js")."')\">[id:$lastanswfortoken]</a>";
+		}
+		else
+		{
+			if (isset($_POST['save']) && $_POST['save'] == "on")
+			{
+				$saver['identifier']=returnglobal('save_identifier');
+				$saver['language']=returnglobal('save_language');
+				$saver['password']=returnglobal('save_password');
+				$saver['passwordconfirm']=returnglobal('save_confirmpassword');
+				$saver['email']=returnglobal('save_email');
+				if (!returnglobal('redo'))
+				{
+					$password=md5($saver['password']);
+				}
+				else
+				{
+					$password=$saver['password'];
+				}
+				$errormsg="";
+				if (!$saver['identifier']) {$errormsg .= $clang->gT("Error").": ".$clang->gT("You must supply a name for this saved session.");}
+				if (!$saver['password']) {$errormsg .= $clang->gT("Error").": ".$clang->gT("You must supply a password for this saved session.");}
+				if ($saver['password'] != $saver['passwordconfirm']) {$errormsg .= $clang->gT("Error").": ".$clang->gT("Your passwords do not match.");}
+				if ($errormsg)
+				{
+					$dataentryoutput .= $errormsg;
+					$dataentryoutput .= $clang->gT("Try again").":<br />
+>>>>>>> refs/heads/limesurvey16
     				 <form method='post'>
 					  <table class='outlinetable' cellspacing='0' align='center'>
 					  <tr>

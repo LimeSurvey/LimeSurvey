@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # translation of es.po to es-ES
 # Copyright (C) 2009 LimeSurvey copyright holders
 # This file is distributed under the same license as LimeSurvey.
@@ -14083,6 +14084,8 @@ msgstr "Vietnamita"
 # Leonardo Andrés Gallego <lgallego@tida.com.ar>, 2007.
 # translation of es.po to
 # Copyright (C) 2007 Free Software Foundation, Inc.
+=======
+>>>>>>> refs/heads/limesurvey16
 # Permission is granted to freely copy and distribute
 # this file and modified versions, provided that this
 # header is not removed and modified versions are marked
@@ -14092,18 +14095,101 @@ msgstr "Vietnamita"
 msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
+<<<<<<< HEAD
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-09-27 08:00+0200\n"
 "PO-Revision-Date: 2007-10-08 16:37-0300\n"
 "Last-Translator: Leonardo Andrés Gallego <lgallego@tida.com.ar>\n"
 "Language-Team: Spanish <limesurvey-translator@lists.sourceforge.net>\n"
+=======
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2007-06-04 22:13-0300\n"
+"Last-Translator: Esteban Adrián Pérez <dgeaperez@yahoo.com.ar>\n"
+"Language-Team:  <es@li.org>\n"
+>>>>>>> refs/heads/limesurvey16
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: gT\n"
 "X-Poedit-Basepath: .\n"
+<<<<<<< HEAD
 "X-Generator: KBabel 1.11.4\n"
 "X-Poedit-SearchPath-0: C:/documentos/www/docs/limesurvey15\n"
+=======
+"X-Poedit-SearchPath-0: C:/documentos/www/limesurvey16\n"
+
+msgid "Administration"
+msgstr "Administración"
+
+# C:\documentos\www\limesurvey16/common.php:189
+msgid "Logged in as"
+msgstr "Ingresó como"
+
+msgid "Default Administration Page"
+msgstr "Inicio de Página de Administración"
+
+msgid "Create/Edit Users"
+msgstr "Crear/editar usuarios"
+
+# C:\documentos\www\limesurvey16/common.php:212
+# C:\documentos\www\limesurvey16/common.php:213
+msgid "Create/Edit Groups"
+msgstr "Crear/Editar Grupos"
+
+msgid "Check Settings"
+msgstr "Revisar Opciones del Sistema"
+
+msgid "Check Data Integrity"
+msgstr "Verificar Integridad de Datos"
+
+msgid "List Surveys"
+msgstr "Listar cuestionarios"
+
+msgid "Backup Entire Database"
+msgstr "Hacer copia de seguridad de toda la base de datos"
+
+msgid "Edit/Add Label Sets"
+msgstr "Modificar/Agregar Conjuntos de Etiquetas"
+
+msgid "Template Editor"
+msgstr "Editor de plantillas"
+
+msgid "Show Help"
+msgstr "Mostrar Ayuda"
+
+# C:\documentos\www\limesurvey16/common.php:291
+# C:\documentos\www\limesurvey16/common.php:293
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:144
+msgid "Logout"
+msgstr "Cerrar Sesión"
+
+msgid "Create or Import New Survey"
+msgstr "Crear o Importar una Nuevo Cuestionario"
+
+msgid "Surveys"
+msgstr "Cuestionarios"
+
+msgid "Please Choose..."
+msgstr "Por favor elija.."
+
+msgid "None"
+msgstr "Ninguna"
+
+msgid "5 Point Choice"
+msgstr "Elegir entre 5 Puntos"
+
+msgid "Array (5 Point Choice)"
+msgstr "Arreglo (Elegir entre 5 Puntos)"
+
+msgid "Array (10 Point Choice)"
+msgstr "Arreglo (Elegir entre 10 Puntos)"
+
+msgid "Array (Yes/No/Uncertain)"
+msgstr "Serie de opciones (Sí/No/No sé)"
+
+msgid "Date"
+msgstr "Fecha"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/vvimport.php:28
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1290
@@ -14373,6 +14459,7 @@ msgstr "por que"
 msgid "Important Note:"
 msgstr "Lea Atentamente:"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/vvimport.php:204
 msgid ""
 "Do NOT refresh this page, as this will import the file again and produce "
@@ -14380,6 +14467,11 @@ msgid ""
 msgstr ""
 "NO refresque esta página, esto haría que se importe "
 "nuevamente el archivo y produzca duplicados"
+=======
+# C:\documentos\www\limesurvey16/common.php:1178
+msgid "Export Results to Application"
+msgstr "Exportar los resultados a"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/vvimport.php:206
 msgid "Total records imported:"
@@ -14416,6 +14508,7 @@ msgstr "No se ha provisto un SID"
 msgid "Scope"
 msgstr "Alcance"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/assessments.php:86
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/assessments.php:87
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/assessments.php:108
@@ -14426,6 +14519,11 @@ msgstr "Alcance"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/stats.php:291
 msgid "Group"
 msgstr "Grupo"
+=======
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:140
+msgid "Preset"
+msgstr "Preconfigurado"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/assessments.php:86
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:1080
@@ -14535,11 +14633,17 @@ msgstr "Guardar"
 msgid "Cancel"
 msgstr "Cancelar"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importlabel.php:21
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:182
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:190
 msgid "Import Label Set"
 msgstr "Importar Conjunto de Etiquetas"
+=======
+# C:\documentos\www\limesurvey16/common.php:1768
+msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
+msgstr "Aviso: La ejecución de JavaScript está deshabilitada en su navegador. Es posible q no pueda responder todas las preguntas del questionario. Por favor, verifique los parámetros de su navegador."
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importlabel.php:30
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:132
@@ -14591,6 +14695,7 @@ msgstr ""
 msgid "Return to Labels Admin"
 msgstr "Regresar a la Administración de Etiquetas"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importlabel.php:182
 msgid ""
 "There was a duplicate labelset, so this set was not imported. The duplicate "
@@ -14598,17 +14703,28 @@ msgid ""
 msgstr ""
 "Hay un conjunto de etiquetas duplicado, por lo que este conjunto no fue "
 "importado. El duplicado será utilizado en su lugar."
+=======
+# C:\documentos\www\limesurvey16/common.php:1822
+msgid "A Note On Privacy"
+msgstr "Nota sobre la privacidad"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importlabel.php:190
 msgid "Label Set Import Summary"
 msgstr "Sumario de la importación del conjunto de etiquetas"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importlabel.php:191
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importsurvey.php:1021
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importsurvey.php:1044
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:466
 msgid "Label Sets"
 msgstr "Conjunto de Etiquetas"
+=======
+# C:\documentos\www\limesurvey16/common.php:1822
+msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "Los registros que contienen sus respuestas al cuestionario no contienen ninguna identificación suya a menos que una pregunta específicamente así lo haga. Si responde a este cuestionario utilizando una invitación que le da acceso al cuestionario, puede estar seguro que la misma no se asocia a ninguna de sus respuestas. Esto se administra en una base de datos separada, que sólo se actualiza para indicar que ha completado o no el cuestionario. No hay manera de identificar sus respuestas."
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importlabel.php:192
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:253
@@ -14811,6 +14927,7 @@ msgstr "Otros Archivos:"
 msgid "Save Changes"
 msgstr "Guardar los Cambios"
 
+<<<<<<< HEAD
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:544
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:582
 msgid "Changes cannot be saved to the default template."
@@ -14819,6 +14936,52 @@ msgstr "No pueden guardarse los cambios en la plantilla predeterminada."
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:593
 msgid "Are you sure you want to delete this file?"
 msgstr "¿Está seguro de que quiere borrar este archivo?"
+=======
+msgid "Success!"
+msgstr "Éxito"
+
+msgid "Save your responses so far"
+msgstr "Guardar las respuestas realizadas hasta ahora"
+
+msgid "Did Not Save"
+msgstr "No se guardó"
+
+msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr "Sus respuestas no han sido guardadas porque el cuestionario no se activó aún."
+
+msgid "Clear Responses"
+msgstr "Borrar las respuestas"
+
+msgid "Thank you"
+msgstr "Gracias"
+
+msgid "Your survey responses have been recorded."
+msgstr "Sus respuestas han sido guardadas."
+
+msgid "Sorry. There is no matching survey."
+msgstr "Lo sentimos. No hay ningún cuestionario que coincida."
+
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr "Este cuestionario no está activo. No podrá guardar sus respuestas."
+
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:164
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:322
+msgid "Date is not valid!"
+msgstr "¡La fecha no es válida!"
+
+# C:\documentos\www\limesurvey16/index.php:68
+# C:\documentos\www\limesurvey16/index.php:117
+msgid "ERROR"
+msgstr "ERROR"
+
+# C:\documentos\www\limesurvey16/index.php:69
+msgid "We are sorry but your session has expired."
+msgstr "Lamentablemente su sesión ha expirado."
+
+# C:\documentos\www\limesurvey16/index.php:69
+msgid "Either you have been inactive for too long or there were problems with your connection."
+msgstr "O bien ha estado inactivo por mucho tiempo o hubo algún problema con su conexión."
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:595
 msgid "Files in the default template cannot be deleted."
@@ -14833,9 +14996,18 @@ msgstr "Subir un archivo"
 msgid "Upload"
 msgstr "Enviar"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/templates.php:629
 msgid "Preview:"
 msgstr "Vista Previa:"
+=======
+# C:\documentos\www\limesurvey16/index.php:138
+# C:\documentos\www\limesurvey16/index.php:246
+# C:\documentos\www\limesurvey16/register.php:70
+# C:\documentos\www\limesurvey16/save.php:215
+msgid "The answer to the security question is incorrect"
+msgstr "La respuesta a la pregunta de seguridad es incorrecta."
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:99
 msgid "Export Results"
@@ -15082,11 +15254,18 @@ msgstr "Atributo 2"
 msgid "Email Address"
 msgstr "Dirección de correo electrónico"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:483
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:484
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:806
 msgid "Time Submitted"
 msgstr "Hora de envío"
+=======
+# C:\documentos\www\limesurvey16/qanda.php:375
+# C:\documentos\www\limesurvey16/admin/printablesurvey.php:250
+msgid "*"
+msgstr "*"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:488
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:489
@@ -15157,6 +15336,7 @@ msgstr "Otro"
 msgid "NEW RECORD"
 msgstr "NUEVO REGISTRO"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:809
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:154
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:342
@@ -15165,6 +15345,11 @@ msgstr "NUEVO REGISTRO"
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1382
 msgid "IP Address"
 msgstr "Dirección IP"
+=======
+# C:\documentos\www\limesurvey16/qanda.php:462
+msgid "You cannot proceed until you enter some text for one or more questions."
+msgstr "No puede continuar hasta que no complete una o más preguntas."
+>>>>>>> refs/heads/limesurvey16
 
 # C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/exportresults.php:788
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/exportresults.php:824
@@ -15600,10 +15785,17 @@ msgstr "Vista de Control de Datos"
 msgid "Show start.."
 msgstr "Mostrar inicio.."
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:524
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:495
 msgid "Show last..."
 msgstr "Mostrar anterior..."
+=======
+# C:\documentos\www\limesurvey16/save.php:287
+# C:\documentos\www\limesurvey16/admin/dataentry.php:220
+msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
+msgstr "Usted, o alguien utilizando su dirección de correo, ha guardado un cuestionario en proceso. Los siguentes detalles pueden ser utilizados para reresar al cuestionario y continuar desde donde lo dejó."
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:546
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:509
@@ -15615,22 +15807,34 @@ msgstr "Registros Desplegados:"
 msgid "Starting From:"
 msgstr "Empezando Desde:"
 
+<<<<<<< HEAD
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:692
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:548
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:630
 msgid "Filter incomplete answers:"
 msgstr "Filtrar respuestas incompletas:"
+=======
+# C:\documentos\www\limesurvey16/save.php:449
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
+msgstr "Este error puede ocurrir si ya ha enviado sus respuestas y presionó el botón de \"Recargar\" en su navegador. En este caso, sus respuestas ya habían sido guardadas."
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:552
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:511
 msgid "Show"
 msgstr "Mostrar"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:578
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:438
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:1394
 msgid "View This Record"
 msgstr "Ver Este Registro"
+=======
+# C:\documentos\www\limesurvey16/admin/access_denied.php:43
+msgid "Access denied!"
+msgstr "Acceso denegado"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/browse.php:629
 msgid "responses for this survey"
@@ -15670,6 +15874,7 @@ msgstr "Estado"
 msgid "Responses"
 msgstr "Respuestas"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:44
 msgid "Anonymous"
 msgstr "Anónimo"
@@ -15677,6 +15882,15 @@ msgstr "Anónimo"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:46
 msgid "Not Anonymous"
 msgstr "No anónimo"
+=======
+# C:\documentos\www\limesurvey16/admin/access_denied.php:103
+msgid "You are not allowed to browse response!"
+msgstr "No está habilitado para ver las respuestas."
+
+# C:\documentos\www\limesurvey16/admin/access_denied.php:108
+msgid "You are not allowed to set assessment rules!"
+msgstr "No está habilitado para indicar reglas."
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:51
 msgid "Closed-access"
@@ -15686,9 +15900,15 @@ msgstr "Acceso restringido"
 msgid "Open-access"
 msgstr "Acceso libre"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:62
 msgid "Expired"
 msgstr "Expiró"
+=======
+# C:\documentos\www\limesurvey16/admin/access_denied.php:137
+msgid "You are not allowed to perform this operation!"
+msgstr "No está habilitado para realizar esta operación."
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:64
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:131
@@ -15750,6 +15970,7 @@ msgstr "Sumario del Sistema de LimeSurvey"
 msgid "Database Name"
 msgstr "Nombre de la Base de Datos"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:202
 msgid "Default Language"
 msgstr "Idioma por defecto"
@@ -15758,6 +15979,15 @@ msgstr "Idioma por defecto"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/login_check.php:104
 msgid "Current Language"
 msgstr "Idioma Actual"
+=======
+# C:\documentos\www\limesurvey16/admin/activate.php:241
+msgid "Once a survey is activated you can no longer:"
+msgstr "una vez activado el cuestionario no se le permitirá:"
+
+# C:\documentos\www\limesurvey16/admin/activate.php:241
+msgid "Add or delete groups"
+msgstr "Agregar o eliminar grupos"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:226
 msgid "Users"
@@ -15770,6 +16000,7 @@ msgstr "Usuarios"
 msgid "Surveys"
 msgstr "Encuestas"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:240
 msgid "Active Surveys"
 msgstr "Encuestas Activas"
@@ -15789,6 +16020,27 @@ msgstr "Tablas de Encuestados/as Desactivadas"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:271
 msgid "Show PHPInfo"
 msgstr "Mostrar PHPInfo"
+=======
+# C:\documentos\www\limesurvey16/admin/activate.php:242
+msgid "However you can still:"
+msgstr "Sin embargo, aún podrá:"
+
+# C:\documentos\www\limesurvey16/admin/activate.php:242
+msgid "Edit (change) your questions code, text or type"
+msgstr "Editar (cambiar) los códigos de sus preguntas, texto o tipo."
+
+# C:\documentos\www\limesurvey16/admin/activate.php:242
+msgid "Edit (change) your group names"
+msgstr "Editar (cambiar) el nombre de los grupos"
+
+# C:\documentos\www\limesurvey16/admin/activate.php:242
+msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
+msgstr "Agregar, editar o eliminar respuestas predefinidas (excepto las Multi- respuestas)"
+
+# C:\documentos\www\limesurvey16/admin/activate.php:242
+msgid "Change survey name or description"
+msgstr "Cambiar el nombre o descripción del cuestionario"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:325
 msgid ""
@@ -16003,9 +16255,15 @@ msgstr "¿Está seguro que desea regenerar los códigos de las preguntas?"
 msgid "Straight"
 msgstr "Completo"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:651
 msgid "By Group"
 msgstr "Por Grupo"
+=======
+# C:\documentos\www\limesurvey16/admin/browse.php:320
+msgid "Showing Filtered Results"
+msgstr "Mostrar los resultados filtrados"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:656
 msgid "Survey URL"
@@ -16043,11 +16301,17 @@ msgstr "Bienvenido:"
 msgid "Administrator:"
 msgstr "Administrador:"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:678
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1829
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2381
 msgid "Fax To:"
 msgstr "Nº Fax:"
+=======
+# C:\documentos\www\limesurvey16/admin/database.php:692
+msgid "Filter incomplete answers:"
+msgstr "Filtrar respuestas incompletas:"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:682
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2063
@@ -16055,11 +16319,18 @@ msgstr "Nº Fax:"
 msgid "Expiry Date:"
 msgstr "Expiración:"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:697
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2018
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2509
 msgid "Base Language:"
 msgstr "Idioma predeterminado:"
+=======
+# C:\documentos\www\limesurvey16/admin/html.php:881
+# C:\documentos\www\limesurvey16/admin/html.php:1041
+msgid "Disable"
+msgstr "Deshabilitar"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:706
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2023
@@ -16098,9 +16369,15 @@ msgstr "Debe agregar grupos"
 msgid "You need to add questions"
 msgstr "Debe agregar preguntas"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:805
 msgid "Edit Current Group"
 msgstr "Modificar Grupo Seleccionado"
+=======
+# C:\documentos\www\limesurvey16/admin/conditions.php:88
+msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
+msgstr "¡No puede agregarse su condición! Esto no incluye la pregunta y/o respuesta sobre las cuales la condición está basada. Por favor, asegúrese de haber seleccionado una pregunta y una respuesta."
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:817
 msgid ""
@@ -16158,9 +16435,16 @@ msgstr "Ocultar detalles de este grupo"
 msgid "Add New Question to Group"
 msgstr "Agregar nueva pregunta al grupo"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:913
 msgid "Questions with conditions to this group"
 msgstr "Preguntas con condiciones en este grupo"
+=======
+# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/conditions.php:654
+# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/conditions.php:865
+msgid "Regular Expression"
+msgstr "Expresión regular"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:950
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importsurvey.php:720
@@ -16176,6 +16460,7 @@ msgstr "Pregunta"
 msgid "Edit Current Question"
 msgstr "Modificar Pregunta Seleccionada"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:975
 msgid ""
 "Deleting this question will also delete any answers it includes. Are you "
@@ -16183,6 +16468,13 @@ msgid ""
 msgstr ""
 "Suprimir esta pregunta también suprimirá cualquier respuesta que incluya. "
 "¿Está usted seguro de que desea continuar?"
+=======
+msgid "No Answer"
+msgstr "Sin responder"
+
+msgid "Copy Conditions"
+msgstr "Copiar Condiciones"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:977
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:986
@@ -16373,10 +16665,16 @@ msgstr "Respuesta"
 msgid "Action"
 msgstr "Acción"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1262
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:284
 msgid "Order"
 msgstr "Orden"
+=======
+# C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/conditions.php:872
+msgid "Constant Value or Regular Expression"
+msgstr "Constante o Expresión Regular"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1279
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1316
@@ -16461,6 +16759,7 @@ msgstr "Usuario agregado."
 msgid "Set Survey Rights"
 msgstr "Establecer permisos para la encuesta"
 
+<<<<<<< HEAD
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1440
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1446
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1500
@@ -16479,6 +16778,11 @@ msgstr "Establecer permisos para la encuesta"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:216
 msgid "Failed to add User."
 msgstr "No se pudo agregar el nombre de usuario."
+=======
+# C:\documentos\www\limesurvey16/admin/database.php:143
+msgid "Error: The database reported the following error:"
+msgstr "Error: La base de datos informó el siguiente error:"
+>>>>>>> refs/heads/limesurvey16
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1440
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:974
@@ -16643,6 +16947,7 @@ msgstr "Guardar ahora"
 msgid "Edit Survey Property"
 msgstr "Modificar propiedades de la encuesta"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1602
 msgid "Browse Response"
 msgstr "Revisar las respuestas"
@@ -16650,12 +16955,23 @@ msgstr "Revisar las respuestas"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1651
 msgid "Survey Security"
 msgstr "Parámetros de seguridad de la encuesta"
+=======
+# C:\documentos\www\limesurvey16/admin/database.php:580
+# C:\documentos\www\limesurvey16/admin/database.php:588
+msgid "Failed to insert answer"
+msgstr "No se pudo agregar la respuesta"
+
+# C:\documentos\www\limesurvey16/admin/database.php:592
+msgid "Invalid or empty answer code supplied"
+msgstr "Se indicó un codigo de respuesta no válido o se omitió"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1654
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:30
 msgid "User Group"
 msgstr "Grupo de Usuarios"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1730
 msgid "User"
 msgstr "Usuario"
@@ -16669,6 +16985,19 @@ msgstr "Se actualizaron con éxito los permisos la encuesta"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1797
 msgid "Failed to update survey rights!"
 msgstr "No se pudieron actualizar los permisos de la encuesta"
+=======
+# C:\documentos\www\limesurvey16/admin/database.php:644
+msgid "Failed to update answers"
+msgstr "Falló la actualización de respuestas"
+
+# C:\documentos\www\limesurvey16/admin/database.php:659
+msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
+msgstr "Las respuestas con código 0 (cero) o en blanco no están permitidas y no serán guardadas"
+
+# C:\documentos\www\limesurvey16/admin/database.php:660
+msgid "Duplicate codes found, these entries won't be updated"
+msgstr "Se halló una duplicidad en los códigos, estas entradas no serán actualizadas."
+>>>>>>> refs/heads/limesurvey16
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1843
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1824
@@ -16685,16 +17014,23 @@ msgstr "Correo electrónico del administrador:"
 msgid "Format:"
 msgstr "Formato:"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1835
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2385
 msgid "Question by Question"
 msgstr "Pregunta por Pregunta"
+=======
+# C:\documentos\www\limesurvey16/admin/database.php:692
+msgid "Failed to delete answer"
+msgstr "no se pudo eliminar la respuesta"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1838
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2386
 msgid "Group by Group"
 msgstr "Grupo por Grupo"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1841
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2387
 msgid "All in one"
@@ -16704,16 +17040,31 @@ msgstr "Todos en Uno"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2402
 msgid "Use Cookies?"
 msgstr "¿Utilizar Cookies?"
+=======
+# C:\documentos\www\limesurvey16/admin/database.php:707
+msgid "Failed to make answer not default"
+msgstr "No se pudo quitar la respuesta por omisión"
+
+# C:\documentos\www\limesurvey16/admin/database.php:721
+msgid "Failed to make answer default"
+msgstr "No se pudo establecer la respuesta por omisión"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1868
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2413
 msgid "Allow Saves?"
 msgstr "¿Permitir Guardar?"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1879
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2424
 msgid "Show [<< Prev] button"
 msgstr "Mostrar el botón [<< Anterior]"
+=======
+# C:\documentos\www\limesurvey16/admin/database.php:974
+msgid "ERROR deleting Survey id"
+msgstr "ERROR eliminado la identificación del cuestionario"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1890
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2435
@@ -16745,6 +17096,7 @@ msgstr ""
 msgid "Cannot be changed"
 msgstr "No se puede modificar"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1931
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2477
 msgid "Allow public registration?"
@@ -16754,6 +17106,18 @@ msgstr "¿Permitir inscripción pública?"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2488
 msgid "Token Attribute Names:"
 msgstr "Nombres de los atributos de los/as encuestados/as:"
+=======
+# C:\documentos\www\limesurvey16/admin/dataentry.php:249
+msgid "This survey is not anonymous, you must supply a valid token"
+msgstr "Este cuestionario no es anónimo, debe ingresar un código de invitación válido"
+
+# C:/documentos/www/limesurvey16/admin/dataentry.php:122
+msgid "There is already a recorded answer for this token, follow the following link to update it"
+msgstr "Existen respuestas guardadas para esta llamada, siga el siguiente enlace para actualizarla."
+
+msgid "Try again"
+msgstr "Intente otra vez"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1945
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2491
@@ -16788,10 +17152,17 @@ msgstr "Las respuestas tendrán registrada la dirección IP."
 msgid "Save Referring URL?"
 msgstr "¿Guardar la URL de referencia?"
 
+<<<<<<< HEAD
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2004
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1998
 msgid "Responses will not have their referring URL logged."
 msgstr "La respuestas no registrarán la URL referente."
+=======
+# C:\documentos\www\limesurvey16/save.php:287
+# C:\documentos\www\limesurvey16/admin/dataentry.php:220
+msgid "You, someone using your email address, or the administrator has saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
+msgstr "Usted, o alguien utilizando su dirección de correo, ha guardado un cuestionario en proceso. Los siguentes detalles pueden ser utilizados para regresar al cuestionario y continuar desde donde lo dejó."
+>>>>>>> refs/heads/limesurvey16
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2005
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:1999
@@ -17094,6 +17465,7 @@ msgstr "depende del grupo"
 msgid "see the marked conditions on"
 msgstr "ver las condiciones marcadas en"
 
+<<<<<<< HEAD
 # D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1855
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2343
 msgid "The uploaded file is bigger than the upload_max_filesize directive in php.ini"
@@ -17103,6 +17475,10 @@ msgstr "El archivo enviado es mayor que la directiva upload_max_filesize en php.
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2347
 msgid "The file was only partially uploaded"
 msgstr "El archivo sólo se envió parcialmente"
+=======
+msgid "Only answer this if the following conditions are met:"
+msgstr "Contestar a esta pregunta sólo bajo las siguientes condiciones:"
+>>>>>>> refs/heads/limesurvey16
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/html.php:1863
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/html.php:2351
@@ -17278,9 +17654,15 @@ msgstr "Editar el actual grupo de usuarios"
 msgid "Delete Current User Group"
 msgstr "Eliminar el actual grupo de usuarios"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:91
 msgid "Add New User Group"
 msgstr "Agregar grupo de usuarios"
+=======
+# C:\documentos\www\limesurvey16/admin/database.php:692
+msgid "Filter incomplete answers"
+msgstr "Filtrar respuestas icompletas"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:95
 msgid "User Groups"
@@ -17374,11 +17756,17 @@ msgstr "Editar usuario"
 msgid "Name:"
 msgstr "Nombre:"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:484
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/grouphandling.php:40
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/questionhandling.php:30
 msgid "Required"
 msgstr "Obligatorio"
+=======
+# C:\documentos\www\limesurvey16/admin/exportresults.php:730
+msgid "NEW RECORD"
+msgstr "NUEVO REGISTRO"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:487
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/grouphandling.php:27
@@ -17481,10 +17869,16 @@ msgstr "Para:"
 msgid "Mail not sent!"
 msgstr "¡Mensaje de correo electrónico no enviado!"
 
+<<<<<<< HEAD
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/userrighthandling.php:690
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:687
 msgid "Edit User Group Successfully!"
 msgstr "¡Se modificó el grupo de usuarios con éxito!"
+=======
+# C:\documentos\www\limesurvey16/admin/html.php:158
+msgid "No Surveys available - please create one."
+msgstr "no existen cuestionarios - Por favor cree uno."
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/userrighthandling.php:688
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:406
@@ -17588,10 +17982,18 @@ msgstr ""
 msgid "Select CSV File:"
 msgstr "Seleccionar Archivo CSV"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:221
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importgroup.php:624
 msgid "Label Set"
 msgstr "Conjunto de Etiquetas"
+=======
+# C:\documentos\www\limesurvey16/admin/html.php:568
+# C:\documentos\www\limesurvey16/admin/html.php:569
+# C:\documentos\www\limesurvey16/admin/html.php:2255
+msgid "Change Group Order"
+msgstr "Cambiar el orden de los grupos"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/labels.php:225
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/conditions.php:691
@@ -17841,6 +18243,7 @@ msgstr ""
 msgid "Survey could not be actived."
 msgstr "El cuestionario no pudo ser activado."
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/activate.php:460
 msgid "Survey has been activated. Results table has been successfully created."
 msgstr ""
@@ -17852,6 +18255,16 @@ msgid "This survey allows public registration. A token table must also be create
 msgstr ""
 "Este cuestionario admite registro público. Es necesario crear la tabla de "
 "encuestados/as igualmente."
+=======
+# C:\documentos\www\limesurvey16/admin/html.php:879
+msgid "Impossible to delete this group because there is at least one question having a condition on its content"
+msgstr "No se puede eliminar el grupo porque al menos una de sus preguntas está asociada a una condición."
+
+# C:\documentos\www\limesurvey16/admin/html.php:881
+# C:\documentos\www\limesurvey16/admin/html.php:1041
+msgid "Disabled"
+msgstr "Deshabilitado"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/activate.php:475
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:257
@@ -17906,6 +18319,7 @@ msgstr ""
 "Este proceso borrará la encuesta, junto con todos los grupos, preguntas, "
 "respuestas y condiciones relacionadas."
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/deletesurvey.php:43
 msgid ""
 "We recommend that before you delete this survey you export the entire survey "
@@ -17913,6 +18327,11 @@ msgid ""
 msgstr ""
 "Se recomienda que, antes de borrar la encuesta, la exporte completamente "
 "desde la página de administración."
+=======
+# C:\documentos\www\limesurvey16/admin/html.php:1039
+msgid "Impossible to delete this question because  there is at least one question having a condition on it"
+msgstr "No se puede elmininar la pregunta porque al menos otra pregunta tiene una condición dependiente de ella"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/deletesurvey.php:47
 msgid ""
@@ -18059,6 +18478,7 @@ msgstr "No se copiaron las preguntas"
 msgid "No condition selected to copy from"
 msgstr "No se ha seleccionado una condición como origen para copiar"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/conditions.php:137
 msgid "No question selected to copy condition to"
 msgstr "No se ha seleccionado una pregunta como destino para copiar"
@@ -18119,6 +18539,29 @@ msgstr "Sin respuesta"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/conditions.php:475
 msgid "Only show question {QID} IF"
 msgstr "Sólo mostrar la respuesta {QID} SI"
+=======
+# C:\documentos\www\limesurvey16/admin/html.php:1440
+# C:\documentos\www\limesurvey16/admin/html.php:1446
+# C:\documentos\www\limesurvey16/admin/html.php:1500
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:164
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:168
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:224
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:974
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:980
+msgid "Failed to add User."
+msgstr "No se pudo agregar el Usuario."
+
+# C:\documentos\www\limesurvey16/admin/html.php:1440
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:974
+msgid "Username already exists."
+msgstr "El usuario ya existe."
+
+# C:\documentos\www\limesurvey16/admin/html.php:1446
+# C:\documentos\www\limesurvey16/admin/html.php:1500
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:980
+msgid "No Username selected."
+msgstr "No se seleccionó ningun usuario."
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/conditions.php:508
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:162
@@ -18127,6 +18570,7 @@ msgstr "Sólo mostrar la respuesta {QID} SI"
 msgid "and"
 msgstr "y"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/conditions.php:536
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/conditions.php:665
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/stats.php:349
@@ -18138,6 +18582,15 @@ msgstr "Equivale"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/conditions.php:614
 msgid "Copy Conditions"
 msgstr "Copiar Condiciones"
+=======
+# C:\documentos\www\limesurvey16/admin/html.php:1482
+msgid "User Group added."
+msgstr "Se agrego el Grupo."
+
+# C:\documentos\www\limesurvey16/admin/html.php:1494
+msgid "Failed to add User Group."
+msgstr "No se pudo agregar el Grupo de Usuarios."
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/conditions.php:588
 msgid "Condition"
@@ -18203,6 +18656,7 @@ msgstr "Copiar Pregunta"
 msgid "Note: You MUST enter a new question code!"
 msgstr "Nota: DEBE introducir un nuevo código de pregunta."
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/questionhandling.php:203
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/questionhandling.php:406
 msgid "Group:"
@@ -18215,6 +18669,19 @@ msgstr "¿Copiar Respuestas?"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/questionhandling.php:258
 msgid "Copy Attributes?"
 msgstr "¿Copiar los atributos?"
+=======
+# C:\documentos\www\limesurvey16/admin/html.php:1812
+msgid "Update survey rights successful."
+msgstr "Se actualizaron con éxito los permisos del cuestionario."
+
+# C:\documentos\www\limesurvey16/admin/html.php:1816
+msgid "Failed to update survey rights!"
+msgstr "No se pudieron actualizar los permisos del cuestionario."
+
+# C:\documentos\www\limesurvey16/admin/html.php:1843
+msgid "Edit Survey - Step 1 of 2"
+msgstr "Editar Cuestionario - Paso 1 de 2"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/questionhandling.php:310
 msgid "Edit Question"
@@ -18311,6 +18778,7 @@ msgstr "¡No puede editar el cuestionario!"
 msgid "You are not allowed to edit groups in this survey!"
 msgstr "¡No puede editar los grupos del cuestionario!"
 
+<<<<<<< HEAD
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/access_denied.php:103
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/access_denied.php:85
 msgid "You are not allowed to browse responses!"
@@ -18324,6 +18792,20 @@ msgstr "No está habilitado para indicar reglas."
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/access_denied.php:95
 msgid "You are not allowed to delete this group!"
 msgstr "¡No puede eliminar este grupo!"
+=======
+# C:\documentos\www\limesurvey16/admin/html.php:2004
+msgid "Responses will not have their referring URL logged."
+msgstr "La respuestas no registrarán la URL referente."
+
+# C:\documentos\www\limesurvey16/admin/html.php:2005
+msgid "Responses will have their referring URL logged."
+msgstr "La respuestas registrarán la URL referente."
+
+# C:\documentos\www\limesurvey16/admin/html.php:2048
+# C:\documentos\www\limesurvey16/admin/labels.php:160
+msgid "Remove"
+msgstr "Quitar"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/access_denied.php:100
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/cmdline_importsurvey.php:69
@@ -18338,10 +18820,16 @@ msgstr "¡No esta permitido que importe un grupo!"
 msgid "You are not allowed to to import a question!"
 msgstr "¡No esta permitido que importe una pregunta!"
 
+<<<<<<< HEAD
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/access_denied.php:137
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/access_denied.php:116
 msgid "You are not allowed to perform this operation!"
 msgstr "No está habilitado para realizar esta operación."
+=======
+# C:\documentos\www\limesurvey16/admin/html.php:2083
+msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
+msgstr "Se perderán todas las preguntas, respuestas, etc para los idiomas eliminados. ¿Está seguro?"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importoldresponses.php:35
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:76
@@ -18356,9 +18844,15 @@ msgstr ""
 "Importar respuestas de un cuestionario antigua (desactivada) a un "
 "cuestionario activo"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importoldresponses.php:45
 msgid "Target Survey ID"
 msgstr "ID de el cuestionario destino"
+=======
+# C:\documentos\www\limesurvey16/admin/html.php:2133
+msgid "Edit Survey - Step 2 of 2"
+msgstr "Editar Cuestionario - Paso 2 de 2"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importoldresponses.php:50
 msgid "Source table"
@@ -18455,6 +18949,7 @@ msgstr "Respuestas Que Contienen"
 msgid "View summary of all available fields"
 msgstr "Ver resumen de todos los campos disponibles"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:635
 msgid "View Stats"
 msgstr "Ver Estadísticas"
@@ -18462,11 +18957,21 @@ msgstr "Ver Estadísticas"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:712
 msgid "Please wait ..."
 msgstr "Aguarde, por favor..."
+=======
+# C:\documentos\www\limesurvey16/admin/html.php:2264
+msgid "Current survey has questions with conditions outside their own group"
+msgstr "El presente cuestionario tiene preguntas con condiciones fuera de su propio grupo."
+
+# C:\documentos\www\limesurvey16/admin/html.php:2264
+msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "Se restringe el reordenamiento de los grupos para asegurar que las preguntas en las cuales se basan sus condiciones no se reordenen luego de sus dependientes."
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:714
 msgid "Go Back"
 msgstr "Volver"
 
+<<<<<<< HEAD
 # C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/statistics.php:734
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:725
 msgid "Getting Questions and Answers ..."
@@ -18476,6 +18981,15 @@ msgstr "Recuperando Preguntas y Respuestas..."
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:833
 msgid "Getting Result Count ..."
 msgstr "Recuperando Resultados..."
+=======
+# C:\documentos\www\limesurvey16/admin/html.php:2269
+msgid "depends on group"
+msgstr "depende del grupo"
+
+# C:\documentos\www\limesurvey16/admin/html.php:2269
+msgid "see the marked conditions on"
+msgstr "ver las condiciones marcadas en"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:859
 msgid "Results"
@@ -18509,9 +19023,15 @@ msgstr "Generando Totales..."
 msgid "Field Summary for"
 msgstr "Resumen de Campo para"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:1054
 msgid "Calculation"
 msgstr "Cálculo"
+=======
+# C:\documentos\www\limesurvey16/admin/html.php:2510
+msgid "This setting cannot be changed later!"
+msgstr "¡Este dato no podrá ser cambiado luego!"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/statistics.php:1056
 msgid "Result"
@@ -18587,6 +19107,7 @@ msgstr "Contestado"
 msgid "No SID (Survey) has been provided. Cannot import question."
 msgstr "No se indicó un SID (Encuesta). No se pudo importar la pregunta."
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:60
 msgid "No GID (Group) has been provided. Cannot import question"
 msgstr "No se indicó un GID (Grupo). No se pudo importar la pregunta"
@@ -18596,6 +19117,15 @@ msgid "This file is not a LimeSurvey question file. Import failed."
 msgstr ""
 "Este archivo no es un archivo de pregunta LimeSurvey válido. Falló la "
 "importación."
+=======
+# C:\documentos\www\limesurvey16/admin/importgroup.php:566
+msgid "Import partially successful."
+msgstr "Importación parcialmente exitosa."
+
+# C:\documentos\www\limesurvey16/admin/importgroup.php:567
+msgid "The following languages in this group were not imported since the survey does not contain such a language: "
+msgstr "Los siguientes idiomas en este grupo no se importaron debido a que el cuestionario no los contiene:"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/importquestion.php:194
 msgid ""
@@ -18726,12 +19256,19 @@ msgstr ""
 "Error al agregar la pregunta: No puede utilizar el mismo código para dos "
 "preguntas."
 
+<<<<<<< HEAD
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:580
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:588
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/database.php:635
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/database.php:643
 msgid "Failed to insert answer"
 msgstr "No se pudo agregar la respuesta"
+=======
+# C:\documentos\www\limesurvey16/admin/importoldresponses.php:83
+# C:\documentos\www\limesurvey16/admin/labels.php:252
+msgid "Are you sure?"
+msgstr "¿Está seguro?"
+>>>>>>> refs/heads/limesurvey16
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:592
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/database.php:648
@@ -18789,10 +19326,15 @@ msgstr "No se pudo crear el cuestionario porque no tenía título corto."
 msgid "Survey could not be created"
 msgstr "No se pudo crear el cuestionario."
 
+<<<<<<< HEAD
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/integritycheck.php:52
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/integritycheck.php:326
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/integritycheck.php:30
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/integritycheck.php:304
+=======
+# C:\documentos\www\limesurvey16/admin/integritycheck.php:52
+# C:\documentos\www\limesurvey16/admin/integritycheck.php:326
+>>>>>>> refs/heads/limesurvey16
 msgid "Data Consistency Check"
 msgstr "Verificación de Consistencia de Datos"
 
@@ -18870,8 +19412,12 @@ msgstr "Las siguientes respuestas deberían ser borradas"
 msgid "All answers meet consistency standards"
 msgstr "Todas las respuestas son consistentes"
 
+<<<<<<< HEAD
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/integritycheck.php:202
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/integritycheck.php:180
+=======
+# C:\documentos\www\limesurvey16/admin/integritycheck.php:202
+>>>>>>> refs/heads/limesurvey16
 msgid "Language specific settings missing"
 msgstr "No se encuentran los datos específicos del idioma"
 
@@ -19010,10 +19556,16 @@ msgstr "Proceda"
 msgid "Question List"
 msgstr "Lista de preguntas"
 
+<<<<<<< HEAD
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/stats.php:368
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/stats.php:348
 msgid "Like"
 msgstr "Como"
+=======
+# C:\documentos\www\limesurvey16/admin/labels.php:160
+msgid "You cannot remove this items since you need at least one language in a labelset."
+msgstr "No puede eliminar estos ítems debido a que se necesita al menos un idioma en un juego de etiquetas."
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/stats.php:356
 msgid "Not Equals"
@@ -19321,11 +19873,17 @@ msgstr "Enviar Invitaciones"
 msgid "Sending Invitations"
 msgstr "Enviando Invitaciones"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:792
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:977
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1007
 msgid "Sending to TID No:"
 msgstr "Enviando al TID Nro:"
+=======
+# C:\documentos\www\limesurvey16/admin/labels.php:383
+msgid "Inserting New labels must be done on the first language folder."
+msgstr "Para ingresar nuevas etiquetas debe hacerlo en la carpeta del idioma primario."
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:860
 msgid "Invitation sent to:"
@@ -19345,6 +19903,7 @@ msgstr ""
 "Hay más correos pendientes de ser enviados que pueden ser enviados en un "
 "sólo viaje. Para continuar enviando da clic abajo."
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:877
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1078
 msgid "There are {EMAILCOUNT} emails still to be sent."
@@ -19360,6 +19919,15 @@ msgstr ""
 "porque no había encuestados/as que tuvieran direcciones de correo "
 "electrónico, tenían contraseña generada, no habían completado la encuesta y "
 "aún no habían recibido invitación."
+=======
+# C:\documentos\www\limesurvey16/admin/labels.php:482
+msgid "Failed to Copy already defined labels to added languages"
+msgstr "No se pudieron copiar las etiquetas definidas a los idiomas agregados."
+
+# C:\documentos\www\limesurvey16/admin/labels.php:498
+msgid "Failed to delete labels for removed languages"
+msgstr "No se pudieron elminar las etiquetas de los idiomas eliminados"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:909
 msgid "Email Reminder"
@@ -19369,6 +19937,7 @@ msgstr "Enviar Recordatorio (por email)"
 msgid "Start at Token ID No:"
 msgstr "Iniciar en el ID de autenticación Nro:"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:982
 msgid "Send Reminders"
 msgstr "Enviar Recordatorios"
@@ -19391,11 +19960,29 @@ msgstr ""
 "porque los criterios no se satisficieron:  tener una dirección de correo "
 "electrónico, haber recibido una invitación y no haber completado el "
 "cuestionario aún."
+=======
+# C:\documentos\www\limesurvey16/admin/labels.php:585
+msgid "Failed to insert label"
+msgstr "No se pudo insertar la etiqueta"
+
+# C:\documentos\www\limesurvey16/admin/labels.php:615
+msgid "Failed to update label"
+msgstr "No se pudo actualizar la etiqueta"
+
+# C:\documentos\www\limesurvey16/admin/labels.php:653
+msgid "Failed to delete label"
+msgstr "No se pudo eliminar la etiqueta"
+
+# C:\documentos\www\limesurvey16/admin/login_check.php:45
+msgid "You have to enter user name and email."
+msgstr "Debe ingrear un nombre de usario y una dirección de correo electrónico."
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1112
 msgid "Create Tokens"
 msgstr "Generar contraseñas"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1116
 msgid ""
 "Clicking yes will generate tokens for all those in this token list that have "
@@ -19412,6 +19999,19 @@ msgstr "Se han generado {TOKENCOUNT} contraseñas"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1156
 msgid "Token has been deleted."
 msgstr "Se ha borrado el/la encuestado/a."
+=======
+# C:\documentos\www\limesurvey16/admin/login_check.php:76
+msgid "You have to login first."
+msgstr "Debe ingresar al sistema primero."
+
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:93
+msgid "Login"
+msgstr "Ingreso"
+
+# C:\documentos\www\limesurvey16/admin/login_check.php:94
+msgid "Forgot Your Password?"
+msgstr "¿Olvidó su clave?"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1157
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:117
@@ -19568,6 +20168,7 @@ msgstr "ASCII Norteamericano"
 msgid "Automatic"
 msgstr "Automático"
 
+<<<<<<< HEAD
 # C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1502
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1598
 msgid "Big5 Traditional Chinese"
@@ -19577,6 +20178,15 @@ msgstr "Big5 Chino tradicional"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1599
 msgid "Binary pseudo charset"
 msgstr "Juego de caracteres pseudo binario"
+=======
+# C:\documentos\www\limesurvey16/admin/questionhandling.php:586
+msgid "Current group is using conditional questions"
+msgstr "El grupo actual está utilizando preguntas condicionales"
+
+# C:\documentos\www\limesurvey16/admin/questionhandling.php:586
+msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "El reordenamiento de preguntas en este grupo está restringido para asegurar que las preguntas dependientes de sus condiciones no se reordenen una vez que se estableció su dependencia."
+>>>>>>> refs/heads/limesurvey16
 
 # C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/tokens.php:1504
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1600
@@ -19758,6 +20368,7 @@ msgstr "Disculpe, pero el módulo LDAP no se encuentra en su configuración de P
 msgid "LDAP is disabled or no LDAP query defined."
 msgstr "LDAP está deshabilitado o no se definió ninguna consulta LDAP."
 
+<<<<<<< HEAD
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1508
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/tokens.php:1670
 msgid "Select the LDAP query you want to run:"
@@ -19766,6 +20377,15 @@ msgstr "Seleccione la consulta LDAP que desea ejecutar:"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/printablesurvey.php:119
 msgid "if you answered"
 msgstr "si usted respondió"
+=======
+# C:\documentos\www\limesurvey16/admin/statistics.php:1171
+msgid "Q1 and Q3 calculated using"
+msgstr "Q1 y Q3 deben ser calculadas utilizando"
+
+# C:\documentos\www\limesurvey16/admin/statistics.php:1171
+msgid "minitab method"
+msgstr "método minitab"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/printablesurvey.php:213
 msgid "or"
@@ -19786,6 +20406,7 @@ msgstr "Sólo responda esta pregunta"
 msgid "*"
 msgstr "*"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/printablesurvey.php:257
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/printablesurvey.php:268
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/printablesurvey.php:283
@@ -19794,16 +20415,27 @@ msgstr "*"
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/printablesurvey.php:516
 msgid "Please choose *only one* of the following:"
 msgstr "Por favor elija SOLO una de los siguientes"
+=======
+# C:\documentos\www\limesurvey16/admin/stats.php:257
+msgid "Proceed"
+msgstr "Proceda"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/printablesurvey.php:264
 msgid "Please enter a date:"
 msgstr "Por favor, introduzca la fecha:"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/printablesurvey.php:384
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:1524
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:1550
 msgid "Make a comment on your choice here:"
 msgstr "Comente su opción aquí:"
+=======
+# C:\documentos\www\limesurvey16/admin/stats.php:368
+msgid "Like"
+msgstr "Como"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/printablesurvey.php:391
 msgid "Please number each box in order of preference from 1 to"
@@ -19825,9 +20457,16 @@ msgstr "Respuestas:"
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Por favor, elija todas las que correspondan y escriba un comentario:"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/printablesurvey.php:485
 msgid "Please write your answer(s) here:"
 msgstr "Por favor, escriba su(s) respuesta(s) aquí:"
+=======
+# C:\documentos\www\limesurvey16/admin/templates.php:95
+# C:\documentos\www\limesurvey16/admin/templates.php:211
+msgid "Failed to copy"
+msgstr "No se pudo copiar"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/printablesurvey.php:500
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/printablesurvey.php:504
@@ -19836,6 +20475,7 @@ msgstr "Por favor, escriba su(s) respuesta(s) aquí:"
 msgid "Please write your answer here:"
 msgstr "Por favor, escriba su respuesta aquí:"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/printablesurvey.php:523
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/printablesurvey.php:550
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/printablesurvey.php:569
@@ -19856,6 +20496,24 @@ msgstr "Gracias por completar este cuestionario."
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/printablesurvey.php:695
 msgid "Please fax your completed survey to:"
 msgstr "Por favor, envíe un fax con su cuestionario completado a:"
+=======
+# C:\documentos\www\limesurvey16/admin/templates.php:101
+msgid "Directory with the name"
+msgstr "Carpeta con el nombre"
+
+# C:\documentos\www\limesurvey16/admin/templates.php:101
+msgid "already exists - choose another name"
+msgstr "ya existe - elija otro nombre"
+
+# C:\documentos\www\limesurvey16/admin/templates.php:103
+msgid "Unable to create directory"
+msgstr "no se puede crear la carpeta"
+
+# C:\documentos\www\limesurvey16/admin/templates.php:103
+# C:\documentos\www\limesurvey16/admin/templates.php:111
+msgid "Maybe you don't have permission."
+msgstr "Quizá no tenga permisos."
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/printablesurvey.php:698
 msgid "Please submit by"
@@ -19927,10 +20585,16 @@ msgstr "El nombre de la base de datos seleccionada es:"
 msgid "A database named \"%s\" already exists."
 msgstr "Una base de datos con el nombre  \"%s\" ya existe."
 
+<<<<<<< HEAD
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/install/index.php:69
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/install/index.php:49
 msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr "¿Desea poblar la base de datos ahora creando las tablas necesarias?"
+=======
+# C:\documentos\www\limesurvey16/admin/templates.php:478
+msgid "You can't edit the default template."
+msgstr "No puede modificar la plantilla por omisión."
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/install/index.php:81
 msgid "Database has been successfully upgraded to version "
@@ -20000,6 +20664,7 @@ msgstr ""
 msgid "The tokens table associated with this survey has been renamed to: "
 msgstr "La tabla de encuestados/as asociada al cuestionario ahora es: "
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:40
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:56
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:77
@@ -20009,6 +20674,11 @@ msgstr "La tabla de encuestados/as asociada al cuestionario ahora es: "
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:1450
 msgid "Data Entry"
 msgstr "Entrada de Datos"
+=======
+# C:\documentos\www\limesurvey16/admin/templates.php:544
+msgid "Changes cannot be saved to the default template."
+msgstr "No pueden guardarse los cambios en la plantilla por omisión."
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/dataentry.php:59
 msgid "You have not selected a survey for data-entry."
@@ -20275,6 +20945,7 @@ msgstr "Contraseña Nueva"
 msgid "An email with your login data was sent to you."
 msgstr "Se envió un mensaje de correo electrónico con los datos."
 
+<<<<<<< HEAD
 # D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:733
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:60
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:204
@@ -20282,6 +20953,11 @@ msgid "Email to {NAME} ({EMAIL}) failed."
 msgstr ""
 "El envío del mensaje de correo electrónico a {FIRSTNAME} {LASTNAME} "
 "({EMAIL}) falló"
+=======
+# C:\documentos\www\limesurvey16/admin/tokens.php:675
+msgid "If you delete this table tokens will no longer be required to access this survey."
+msgstr "Si elimina la tabla de invitacións no será requerida para ingresar al cuestionario."
+>>>>>>> refs/heads/limesurvey16
 
 # C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/usercontrol.php:93
 #: /srv/www/virtual/limesurvey.org/stableSVN/admin/usercontrol.php:69
@@ -20501,6 +21177,7 @@ msgstr "No ingresó la contraseña"
 msgid "Load Unfinished Survey"
 msgstr "Recuperar un cuestionario no terminado"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:282
 msgid "This is a closed-access survey. You need a valid token to participate."
 msgstr ""
@@ -20511,6 +21188,15 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:1123
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr "La contraseña que se le ha proporcionado no es válida o ya fue usada."
+=======
+# C:\documentos\www\limesurvey16/admin/tokens.php:1279
+msgid "Upload LDAP entries"
+msgstr "Se leyeron los registros LDAP"
+
+# C:\documentos\www\limesurvey16/admin/tokens.php:1286
+msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
+msgstr "Las consultas basadas en LDAP están definidas por el administrador en el archivo config-ldap.php"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:284
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:1124
@@ -20537,6 +21223,7 @@ msgstr "Cuestionario guardado"
 msgid "There is no matching saved survey"
 msgstr "No existen cuestionarios con dicho nombre"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:477
 msgid "complete"
 msgstr "completo"
@@ -20544,11 +21231,21 @@ msgstr "completo"
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:952
 msgid "Survey Submitted"
 msgstr "Cuestionario enviado"
+=======
+# C:\documentos\www\limesurvey16/admin/tokens.php:1380
+msgid "Records in CSV"
+msgstr "Registros en CSV"
+
+# C:\documentos\www\limesurvey16/admin/tokens.php:1381
+msgid "Records met minumum requirements"
+msgstr "Los registros cumplen los requerimientos mínimos"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:953
 msgid "A new response was entered for your survey"
 msgstr "Se añadió una nueva respuesta a su cuestionario "
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:956
 msgid "Click the following link to reload the survey:"
 msgstr "Pulse en el siguiente enlace para recuperar el cuestionario:"
@@ -20556,6 +21253,15 @@ msgstr "Pulse en el siguiente enlace para recuperar el cuestionario:"
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:960
 msgid "Click the following link to see the individual response:"
 msgstr "Pulse en el siguiente enlace para ver la respuesta individual:"
+=======
+# C:\documentos\www\limesurvey16/admin/tokens.php:1383
+msgid "Duplicate records removed"
+msgstr "Se eliminaron los registros duplicados"
+
+# C:\documentos\www\limesurvey16/admin/tokens.php:1384
+msgid "Records with invalid email address removed"
+msgstr "Se eliminaron los registros con direcciones de correo electrónico no válidas"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:963
 msgid "Click the following link to edit the individual response:"
@@ -20565,6 +21271,7 @@ msgstr "Pulse en el siguiente enlace para editar la respuesta individual:"
 msgid "View statistics by clicking here:"
 msgstr "Vea las estadísticas pulsando aquí:"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:1016
 #: /srv/www/virtual/limesurvey.org/stableSVN/group.php:98
 #: /srv/www/virtual/limesurvey.org/stableSVN/question.php:83
@@ -20575,6 +21282,15 @@ msgstr "No se guardó"
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:1017
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "Ha ocurrido un error inesperado y sus respuestas no han podido ser guardadas."
+=======
+# C:\documentos\www\limesurvey16/admin/tokens.php:1455
+msgid "Can't bind to the LDAP directory"
+msgstr "No puede enlazarse a la carpeta LDAP"
+
+# C:\documentos\www\limesurvey16/admin/tokens.php:1461
+msgid "Can't connect to the LDAP directory"
+msgstr "No puede conectarse a la carpeta LDAP"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:1020
 msgid ""
@@ -20642,9 +21358,15 @@ msgstr ""
 "Este cuestionario  todavía no tiene preguntas y no puede ser probado ni "
 "completado."
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:1432
 msgid "prev"
 msgstr "anterior"
+=======
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:149
+msgid "DOS Russian"
+msgstr "DOS Ruso"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:1437
 #: /srv/www/virtual/limesurvey.org/stableSVN/index.php:1442
@@ -20754,6 +21476,7 @@ msgstr "respuestas"
 msgid "Choose your language"
 msgstr "Elija su Idioma"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:387
 msgid "This question must be answered correctly"
 msgstr "Esta pregunta debe ser contestada correctamente"
@@ -20761,6 +21484,15 @@ msgstr "Esta pregunta debe ser contestada correctamente"
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:404
 msgid "This question is mandatory"
 msgstr "Esta pregunta es de respuesta obligatoria"
+=======
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:128
+msgid "Shift-JIS Japanese"
+msgstr "Shift-JIS Japonés"
+
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:165
+msgid "7bit Swedish"
+msgstr "7bit Sueco"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:414
 msgid "Please complete all parts"
@@ -20770,9 +21502,15 @@ msgstr "Por favor  complete todas las partes"
 msgid "Please rank all items"
 msgstr "Por favor clasifique todos los elementos"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:421
 msgid "Please check at least one item"
 msgstr "Por favor seleccione al menos un elemento"
+=======
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:128
+msgid "EUC-JP Japanese"
+msgstr "EUC-JP Japonés"
+>>>>>>> refs/heads/limesurvey16
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/qanda.php:462
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:441
@@ -20799,6 +21537,7 @@ msgstr ""
 msgid "Format: YYYY-MM-DD"
 msgstr "Formato: AAAA-MM-DD"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:518
 msgid "(eg: 2003-12-25 for Christmas day)"
 msgstr "(p.ej.: 2003-12-25 para Navidad)"
@@ -20807,11 +21546,21 @@ msgstr "(p.ej.: 2003-12-25 para Navidad)"
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:930
 msgid "Error: The labelset used for this question is not available in this language."
 msgstr "Error: El set de etiquetas utilizado para esta pregunta no esta disponible en este lenguaje."
+=======
+# C:\documentos\www\limesurvey16/admin/tokens.php:1502
+msgid "LDAP is disabled or no LDAP query defined."
+msgstr "LDAP está deshabilitado o no se definió ninguna consulta LDAP."
+
+# C:\documentos\www\limesurvey16/admin/tokens.php:1508
+msgid "Select the LDAP query you want to run:"
+msgstr "Seleccione la consulta LDAP que desea ejecutar:"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:995
 msgid "Please choose one of the following"
 msgstr "Por favor elija una de los siguientes"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:996
 msgid "Please enter your comment here"
 msgstr "Por favor  teclee su comentario aquí"
@@ -20819,6 +21568,18 @@ msgstr "Por favor  teclee su comentario aquí"
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:1282
 msgid "Click on an item in the list on the left, starting with your"
 msgstr "Pulse en un elemento de la lista de la izquierda, empezando por el"
+=======
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:56
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:104
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:135
+msgid "User name and/or email not found!"
+msgstr "¡Nombre de usuario y/o dirección de correo electrónico no encontrados!"
+
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:65
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:194
+msgid "Your data:"
+msgstr "Sus datos:"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:1283
 msgid "highest ranking item, moving through to your lowest ranking item."
@@ -20826,9 +21587,15 @@ msgstr ""
 "elemento con más alta clasificación hasta llegar al elemento con más baja "
 "clasificación."
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:1311
 msgid "Click on the scissors next to each item on the right"
 msgstr "Pulse en las tijeras que hay a la derecha de cada elemento"
+=======
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:79
+msgid "An email with your login data was sent to you."
+msgstr "Se envió un mensaje de correo electrónico con los datos."
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:1312
 msgid "to remove the last entry in your ranked list"
@@ -20842,6 +21609,7 @@ msgstr "Escoja a lo sumo"
 msgid "answer(s) for question"
 msgstr "respuesta(s) para la pregunta"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:1634
 #: /srv/www/virtual/limesurvey.org/stableSVN/qanda.php:2148
 msgid "Error: This question has no answers."
@@ -20857,6 +21625,20 @@ msgid ""
 "Error: The labelset used for this question is not available in this language "
 "and/or does not exist."
 msgstr "Error: El set de etiquetas utilizado para esta pregunta no esta disponible en este lenguaje y/o no existe."
+=======
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:121
+msgid "You logged in successfully."
+msgstr "Ingresó correctamente."
+
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:148
+msgid "Logout successful."
+msgstr "Salida exitosa."
+
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:164
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:322
+msgid "Email address ist not valid."
+msgstr "La dirección de correo electrónico no es válida"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:226
 msgid ""
@@ -20864,6 +21646,7 @@ msgid ""
 "change your password and re-login again."
 msgstr "Atención: Todavía estás utilizando la clave por defecto ('password'). Por favor cambiela y vuelva a ingresar."
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:232
 msgid "Administration"
 msgstr "Administración"
@@ -20877,6 +21660,19 @@ msgstr "Ingresó como"
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:254
 msgid "Create/Edit Users"
 msgstr "Crear/Editar usuarios"
+=======
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:193
+msgid "You were signed in on the site"
+msgstr "Ingresó al sitio"
+
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:197
+msgid "Login here"
+msgstr "Ingrese aquí"
+
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:207
+msgid "An email with a generated password was sent to the user."
+msgstr "Un mensaje de correo electrónico con la clave generada fue enviado al usuario."
+>>>>>>> refs/heads/limesurvey16
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:212
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:213
@@ -20885,9 +21681,15 @@ msgstr "Crear/Editar usuarios"
 msgid "Create/Edit Groups"
 msgstr "Crear/Editar Grupos"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:265
 msgid "Check Settings"
 msgstr "Revisar Opciones del Sistema"
+=======
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:224
+msgid "Username and/or email address already exists."
+msgstr "Ya existe el Nombre de usuario y/o dirección de correo electrónico.!"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:267
 msgid "Settings"
@@ -20898,6 +21700,7 @@ msgstr "Opciones"
 msgid "Check Data Integrity"
 msgstr "Verificar Integridad de Datos"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:286
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:288
 msgid "List Surveys"
@@ -20928,14 +21731,48 @@ msgstr "Elegir entre 5 Puntos"
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:710
 msgid "Array (5 Point Choice)"
 msgstr "Matriz (Elegir entre 5 Puntos)"
+=======
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:322
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:346
+msgid "Could not modify User Data."
+msgstr "No puede modificar los datos del usuario."
+
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:338
+msgid "Unchanged"
+msgstr "Sin cambios"
+
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:346
+msgid "Email address already exists."
+msgstr "Ya existe la dirección de correo electrónico."
+
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:352
+msgid "Back"
+msgstr "Atrás"
+
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:397
+msgid "Update user rights successful."
+msgstr "La actualización de los permisos del usuario fue exitosa."
+
+# C:\documentos\www\limesurvey16/admin/usercontrol.php:407
+msgid "You are not allowed to change your own rights!"
+msgstr "¡No puede cambiar sus propios permisos!"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:711
 msgid "Array (10 Point Choice)"
 msgstr "Matriz (Elegir entre 10 Puntos)"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:712
 msgid "Array (Yes/No/Uncertain)"
 msgstr "Matriz (Sí/No/No sé)"
+=======
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:69
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:543
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:637
+msgid "Mail to all Members"
+msgstr "Enviar un mensaje de correo electrónico a todos los miembros"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:714
 msgid "Array (Increase, Same, Decrease)"
@@ -20977,6 +21814,7 @@ msgstr "Lista con Comentarios"
 msgid "Multiple Options With Comments"
 msgstr "Múltiples Opciones con Comentarios"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:724
 msgid "Multiple Short Text"
 msgstr "Múltiples Textos Cortos"
@@ -20984,6 +21822,15 @@ msgstr "Múltiples Textos Cortos"
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:728
 msgid "Huge Free Text"
 msgstr "Texto libre enorme"
+=======
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:309
+msgid "Setting new Parent"
+msgstr "Establecer nuevo Origen"
+
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:310
+msgid "Set Parent successful."
+msgstr "Se estableció un nuevo origen con éxito."
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:729
 msgid "List (Flexible Labels) (Dropdown)"
@@ -21005,17 +21852,29 @@ msgstr "Lista (Etiquetas Flexibles) (Radio)"
 msgid "List (Dropdown)"
 msgstr "Lista (Desplegable)"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1067
 msgid "It appears as if some tables or fields are missing from your database."
 msgstr "Parece como si faltaran algunas tablas o campos en la base de datos."
+=======
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:507
+msgid "Edit User Group (Owner: "
+msgstr "Editar grupo de usuarios (Propietario:"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1069
 msgid "Check Database Fields"
 msgstr "Revisar Campos de la Base de Datos"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1270
 msgid "Display Last 50 Responses"
 msgstr "Mostrar últimas 50 Contestaciones"
+=======
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:547
+msgid "Send me a copy:"
+msgstr "Envíame una copia:"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1275
 msgid "Get statistics from these responses"
@@ -21026,6 +21885,7 @@ msgstr "Generar estadísticas a partir de estas contestaciones"
 msgid "Export Results to Application"
 msgstr "Exportar los resultados"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1282
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1283
 msgid "Export result to a SPSS command file"
@@ -21035,6 +21895,15 @@ msgstr "Exportar los resultados a un archivo de comandos SPSS"
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1285
 msgid "Import answers from a deactivated survey table"
 msgstr "Importar respuestas de un cuestionario inactivo."
+=======
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:553
+msgid "Send"
+msgstr "Enviar"
+
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:140
+msgid "Reset"
+msgstr "Restaurar"
+>>>>>>> refs/heads/limesurvey16
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:140
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1379
@@ -21069,6 +21938,7 @@ msgstr "Hay {NUMBEROFQUESTIONS} preguntas en este cuestionario"
 msgid "A Note On Privacy"
 msgstr "Nota sobre la privacidad"
 
+<<<<<<< HEAD
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:1822
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1945
 msgid ""
@@ -21090,19 +21960,31 @@ msgstr ""
 "cuestionario, pero sin establecer vínculo alguno con la tabla donde se "
 "almacenan sus respuestas, por lo que no hay manera de asociar una respuesta "
 "con la persona que la hizo."
+=======
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:617
+msgid "User group successfully added!"
+msgstr "¡Se agregó el grupo de usuarios con éxito!"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1954
 msgid "Are you sure you want to clear all your responses?"
 msgstr "¿Está seguro de eliminar todas sus respuestas?"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1955
 msgid "Exit and Clear Survey"
 msgstr "Salir y reiniciar el cuestionario"
+=======
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:623
+msgid "Group already exists!"
+msgstr "¡El grupo ya existe!"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:1988
 msgid "Save Survey and Return"
 msgstr "Guardar cuestionario y regresar"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2006
 msgid "Thank You!"
 msgstr "¡Gracias!"
@@ -21130,6 +22012,27 @@ msgstr ""
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2033
 msgid "Answers Cleared"
 msgstr "Respuestas borradas"
+=======
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:310
+msgid "Message(s) sent successfully!"
+msgstr "¡Se han enviado los mensajes exitosamente!"
+
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:545
+msgid "To:"
+msgstr "Para:"
+
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:672
+msgid "Mail not sent!"
+msgstr "¡Mensaje de correo electrónico no enviado!"
+
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:690
+msgid "Edit User Group Successfully!"
+msgstr "¡Se modificó el grupo de usuarios con éxito!"
+
+# C:\documentos\www\limesurvey16/admin/userrighthandling.php:695
+msgid "Failed to update!"
+msgstr "¡No se pudo actualizar!"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2038
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2044
@@ -21193,9 +22096,15 @@ msgstr "Escriba el «nombre» que usó para guardar el cuestionario y la contras
 msgid "Saved name"
 msgstr "Nombre guardado"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2101
 msgid "Load Now"
 msgstr "Recuperar Ahora"
+=======
+# C:\documentos\www\limesurvey16/admin/vvimport.php:77
+msgid "Cannot import the VVExport file."
+msgstr "No se pudo importar el archivo VVExport."
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2106
 msgid "You must be registered to complete this survey"
@@ -21215,9 +22124,15 @@ msgstr ""
 "Introduzca sus datos a continuación, y se le enviará inmediatamente un "
 "mensaje de correo electrónico."
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2172
 msgid "Your Assessment"
 msgstr "Sus Evaluaciones"
+=======
+# C:\documentos\www\limesurvey16/admin/vvimport.php:230
+msgid "Important Note:"
+msgstr "Lea Atentamente:"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2431
 msgid "Online Manual"
@@ -21233,9 +22148,15 @@ msgstr "Colabore con el proyecto - Haga una donación para"
 msgid "Visit our website!"
 msgstr "Visite nuestro sitio web"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2437
 msgid "Version"
 msgstr "Versión"
+=======
+# C:\documentos\www\limesurvey16/admin/install/index.php:51
+msgid "The database defined in config.php does not exist."
+msgstr "La base de datos definida en el archivo config.php no existe."
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2600
 msgid "Local Submission"
@@ -21248,6 +22169,7 @@ msgstr "Envió Local"
 msgid "Executing"
 msgstr "Ejecutando"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2800
 msgid "Failed! Reason: "
 msgstr "Motivo de la Falla:"
@@ -21255,11 +22177,22 @@ msgstr "Motivo de la Falla:"
 #: /srv/www/virtual/limesurvey.org/stableSVN/common.php:2805
 msgid "Success!"
 msgstr "Éxito"
+=======
+# C:\documentos\www\limesurvey16/admin/install/index.php:68
+#, php-format
+msgid "A database named \"%s\" does already exist."
+msgstr "una base de datos con el nombre  \"%s\" ya existe."
+
+# C:\documentos\www\limesurvey16/admin/install/index.php:69
+msgid "Do you want to populate that database now by creating the necessary tables?"
+msgstr "¿Desea poblar la base de datos ahora creando las tablas necesarias?"
+>>>>>>> refs/heads/limesurvey16
 
 #: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:60
 msgid "Basque"
 msgstr "Vazco"
 
+<<<<<<< HEAD
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:67
 #: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:64
 msgid "Bulgarian"
@@ -21267,6 +22200,17 @@ msgstr "Búlgaro"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:75
 #: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:68
+=======
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:67
+msgid "Bulgarian"
+msgstr "Búlgaro"
+
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:71
+msgid "Chinese (Traditional)"
+msgstr "Chino (Tradicional)"
+
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:75
+>>>>>>> refs/heads/limesurvey16
 msgid "Chinese (Simplified)"
 msgstr "Chino (Simplificado)"
 
@@ -21279,6 +22223,7 @@ msgstr "Chino (Tradicional)"
 msgid "Croatian"
 msgstr "Croata"
 
+<<<<<<< HEAD
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:83
 #: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:80
 msgid "Danish"
@@ -21361,16 +22306,83 @@ msgstr "Polaco"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:140
 #: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:145
+=======
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:83
+msgid "Danish"
+msgstr "Danés"
+
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:87
+msgid "Dutch"
+msgstr "Holandés"
+
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:91
+msgid "English"
+msgstr "Inglés"
+
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:95
+msgid "Finnish"
+msgstr "Finlandés"
+
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:100
+msgid "French"
+msgstr "Francés"
+
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:104
+msgid "German"
+msgstr "Alemán"
+
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:108
+msgid "German informal"
+msgstr "Alemán informal"
+
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:112
+msgid "Greek"
+msgstr "Griego"
+
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:116
+msgid "Hebrew"
+msgstr "Hebreo"
+
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:120
+msgid "Hungarian"
+msgstr "Húngaro"
+
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:124
+msgid "Italian"
+msgstr "Italiano"
+
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:128
+msgid "Japanese"
+msgstr "Japonés"
+
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:132
+msgid "Lithuanian"
+msgstr "Lituanés"
+
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:136
+msgid "Norwegian"
+msgstr "Noruego"
+
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:140
+>>>>>>> refs/heads/limesurvey16
 msgid "Portuguese"
 msgstr "Portugués"
 
+<<<<<<< HEAD
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:144
 #: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:149
+=======
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:144
+>>>>>>> refs/heads/limesurvey16
 msgid "Portuguese (Brazilian)"
 msgstr "Portugués (Brasil)"
 
+<<<<<<< HEAD
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:149
 #: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:154
+=======
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:149
+>>>>>>> refs/heads/limesurvey16
 msgid "Russian"
 msgstr "Ruso"
 
@@ -21378,6 +22390,7 @@ msgstr "Ruso"
 msgid "Romanian"
 msgstr "Rumano"
 
+<<<<<<< HEAD
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:157
 #: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:162
 msgid "Slovenian"
@@ -21395,6 +22408,17 @@ msgstr "Español"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:165
 #: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:174
+=======
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:157
+msgid "Slovenian"
+msgstr "Esloveno"
+
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:161
+msgid "Spanish"
+msgstr "Español"
+
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:165
+>>>>>>> refs/heads/limesurvey16
 msgid "Swedish"
 msgstr "Sueco"
 
@@ -21403,12 +22427,16 @@ msgstr "Sueco"
 msgid "Turkish"
 msgstr "Turco"
 
+<<<<<<< HEAD
 #: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:182
 msgid "Thai"
 msgstr "Tailandés"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/classes/core/surveytranslator.php:169
 #: /srv/www/virtual/limesurvey.org/stableSVN/classes/core/surveytranslator.php:187
+=======
+# C:\documentos\www\limesurvey16/classes/core/surveytranslator.php:169
+>>>>>>> refs/heads/limesurvey16
 msgid "Vietnamese"
 msgstr "Vietnamita"
 

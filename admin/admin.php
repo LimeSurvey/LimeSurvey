@@ -28,7 +28,12 @@
 */
 >>>>>>> refs/heads/stable_plus
 
+<<<<<<< HEAD
 // Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
+=======
+require_once(dirname(__FILE__).'/../config.php');  // config.php itself includes common.php
+ini_set("memory_limit","10M"); //Guys: one survey touched ceil...   on line 285
+>>>>>>> refs/heads/limesurvey16
 
 require_once(dirname(__FILE__).'/../classes/core/startup.php');
 
@@ -60,6 +65,18 @@ if (!isset($action)) {$action=returnglobal('action');}          //Desired action
 if (!isset($subaction)) {$subaction=returnglobal('subaction');} //Desired subaction
 if (!isset($editedaction)) {$editedaction=returnglobal('editedaction');} // for html editor integration
 
+<<<<<<< HEAD
+=======
+if ($action != "showprintablesurvey")
+{
+  $adminoutput = helpscreenscript();
+  $adminoutput .= "<table width='100%' border='0' cellpadding='0' cellspacing='0' >\n"
+  ."\t<tr>\n"
+  ."\t\t<td valign='top' align='center' bgcolor='#F8F8FF'>\n";
+} else {$adminoutput='';}
+include_once("login_check.php");
+  
+>>>>>>> refs/heads/limesurvey16
 
 if ($action != 'showprintablesurvey' && substr($action,0,4)!= 'ajax')
 {

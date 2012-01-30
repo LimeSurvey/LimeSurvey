@@ -93,6 +93,7 @@ if (isset($browselang) && $browselang!='')
 }
 elseif (isset($_SESSION['browselang']))
 {
+<<<<<<< HEAD
     $language=$_SESSION['browselang'];
     $languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
     $languagelist[]=GetBaseLanguageFromSurveyID($surveyid);
@@ -100,6 +101,26 @@ elseif (isset($_SESSION['browselang']))
     {
         $language = GetBaseLanguageFromSurveyID($surveyid);
     }
+=======
+	while ($actrow = $actresult->FetchRow())
+	{
+		$surveytable = db_table_name("survey_".$actrow['sid']);
+		$surveyname = "{$actrow['surveyls_title']}";
+		if ($actrow['active'] == "N") //SURVEY IS NOT ACTIVE YET
+		{
+			$browseoutput .= "\t<tr><td colspan='2' height='4'><strong>"
+			. $clang->gT("Browse Responses").": <font color='#778899'>$surveyname</font></strong></td></tr>\n"
+			."\t<tr><td align='center'>\n"
+			."<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
+			. $clang->gT("This survey has not been activated. There are no results to browse.")."<br /><br />\n"
+			."<input type='submit' value='"
+			. $clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" /><br />\n"
+			."</td></tr></table>\n"
+			."</body>\n</html>";
+			return;
+		}
+	}
+>>>>>>> refs/heads/limesurvey16
 }
 else
 {
@@ -118,7 +139,15 @@ $qulanguage = GetBaseLanguageFromSurveyID($surveyid);
 
 if ($subaction == "id")
 {
+<<<<<<< HEAD
     $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
+=======
+	//SHOW HEADER
+	$browseoutput .= "\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Browse Responses").": <font color='#778899'>$surveyname</font></strong></td></tr>\n";
+	if (!isset($_POST['sql']) || !$_POST['sql']) {$browseoutput .= "$surveyoptions";} // Don't show options if coming from tokens script
+	$browseoutput .= "</table>\n"
+	."<table><tr><td></td></tr></table>\n";
+>>>>>>> refs/heads/limesurvey16
 
     //SHOW HEADER
     if (!isset($_SESSION['sql']) || !$_SESSION['sql']) {$browseoutput .= $surveyoptions;} // Don't show options if coming from tokens/statistics script
@@ -883,6 +912,7 @@ elseif ($subaction == "all")
     if ($next >= $dtcount) {$next=$dtcount-$limit;}
     if ($end < 0) {$end=0;}
 
+<<<<<<< HEAD
     $browseoutput .= "<div class='menubar'>\n"
     . "\t<div class='menubar-title ui-widget-header'>\n"
     . "<strong>".$clang->gT("Data view control")."</strong></div>\n"
@@ -896,6 +926,32 @@ elseif ($subaction == "all")
         ."title='".$clang->gTview("Show previous..")."' >"
         ."<img name='DataBack' align='left'  src='$imageurl/databack.png' alt='".$clang->gT("Show previous..")."' /></a>\n"
         ."<img src='$imageurl/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
+=======
+	$browseoutput .= "<table><tr><td></td></tr></table>\n"
+	."<table class='menubar'>\n"
+	."\t<tr ><td colspan='2' height='4'><strong>"
+	. $clang->gT("Data View Control").":</strong></td></tr>\n";
+	if (!isset($_POST['sql']))
+	{
+		$browseoutput .= "\t<tr><td align='left' width='200'>\n"
+			."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=0&amp;limit=$limit' " .
+				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show start..", "js")."');return false\">" .
+						"<img name='DataBegin' align='left' src='$imagefiles/databegin.png' title='' /></a>\n"
+		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit' " .
+				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show previous...", "js")."');return false\">" .
+				"<img name='DataBack' align='left'  src='$imagefiles/databack.png' title='' /></a>\n"
+		."\t\t\t<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
+		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit' " .
+				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show next...", "js")."');return false\">".
+				"<img name='DataForward' align='left' src='$imagefiles/dataforward.png' title='' /></a>\n"
+		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit' " .
+				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show last...", "js")."');return false\">" .
+				"<img name='DataEnd' align='left' src='$imagefiles/dataend.png' title='' /></a>\n"
+		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
+	} else {
+		$browseoutput .= "\t<tr><td align='left'>\n";
+	}
+>>>>>>> refs/heads/limesurvey16
 
         ."<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit' " .
         "title='".$clang->gT("Show next...")."' >".

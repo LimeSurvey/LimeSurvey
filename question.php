@@ -583,6 +583,88 @@ echo "\n\n<!-- INPUT NAMES -->\n";
 echo "\t<input type='hidden' name='fieldnames' value='";
 echo implode("|", $inputnames);
 echo "' id='fieldnames'  />\n";
+<<<<<<< HEAD
+=======
+
+// --> START NEW FEATURE - SAVE
+// Used to keep track of the fields modified, so only those are updated during save
+echo "\t<input type='hidden' name='modfields' value='";
+
+// Debug - uncomment if you want to see the value of modfields on the next page source (to see what was modified)
+//         however doing so will cause the save routine to save all fields that have ever been modified whether
+//	   they are on the current page or not.  Recommend just using this for debugging.
+//if (isset($_POST['modfields']) && $_POST['modfields']) {
+//	$inputmodfields=explode("|", $_POST['modfields']);
+//	echo implode("|", $inputmodfields);
+//}
+
+echo "' id='modfields' />\n";
+echo "\n";
+echo "\n\n<!-- JAVASCRIPT FOR MODIFIED QUESTIONS -->\n";
+echo "\t<script type='text/javascript'>\n";
+echo "\t<!--\n";
+echo "\t\tfunction modfield(name)\n";
+echo "\t\t\t{\n";
+echo "\t\t\t\ttemp=document.getElementById('modfields').value;\n";
+echo "\t\t\t\tif (temp=='') {\n";
+echo "\t\t\t\t\tdocument.getElementById('modfields').value=name;\n";
+echo "\t\t\t\t}\n";
+echo "\t\t\t\telse {\n";
+echo "\t\t\t\t\tmyarray=temp.split('|');\n";
+echo "\t\t\t\t\tif (!inArray(name, myarray)) {\n";
+echo "\t\t\t\t\t\tmyarray.push(name);\n";
+echo "\t\t\t\t\t\tdocument.getElementById('modfields').value=myarray.join('|');\n";
+echo "\t\t\t\t\t}\n";
+echo "\t\t\t\t}\n";
+echo "\t\t\t}\n";
+echo "\n";
+echo "\t\tfunction inArray(needle, haystack)\n";
+echo "\t\t\t{\n";
+echo "\t\t\t\tfor (h in haystack) {\n";
+echo "\t\t\t\t\tif (haystack[h] == needle) {\n";
+echo "\t\t\t\t\t\treturn true;\n";
+echo "\t\t\t\t\t}\n";
+echo "\t\t\t\t}\n";
+echo "\t\t\treturn false;\n";
+echo "\t\t\t} \n";
+echo "\n";
+echo "\t\t\t\tfunction ValidDate(oObject)\n";
+echo "\t\t\t\t{// --- Regular expression used to check if date is in correct format\n";
+echo "\t\t\t\t\tvar str_regexp = /[1-9][0-9]{3}-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])/;\n";
+echo "\t\t\t\t\tvar pattern = new RegExp(str_regexp);\n";
+echo "\t\t\t\t\tif ((oObject.value.match(pattern)!=null))\n";
+echo "\t\t\t\t\t{var date_array = oObject.value.split('-');\n";
+echo "\t\t\t\t\t\tvar day = date_array[2];\n";
+echo "\t\t\t\t\t\tvar month = date_array[1];\n";
+echo "\t\t\t\t\t\tvar year = date_array[0];\n";
+echo "\t\t\t\t\t\tstr_regexp = /1|3|5|7|8|10|12/;\n";
+echo "\t\t\t\t\t\tpattern = new RegExp(str_regexp);\n";
+echo "\t\t\t\t\t\tif ( day <= 31 && (month.match(pattern)!=null))\n";
+echo "\t\t\t\t\t\t{ return true;\n";
+echo "\t\t\t\t\t\t}\n";
+echo "\t\t\t\t\t\tstr_regexp = /4|6|9|11/;\n";
+echo "\t\t\t\t\t\tpattern = new RegExp(str_regexp);\n";
+echo "\t\t\t\t\t\tif ( day <= 30 && (month.match(pattern)!=null))\n";
+echo "\t\t\t\t\t\t{ return true;\n";
+echo "\t\t\t\t\t\t}\n";
+echo "\t\t\t\t\t\tif (day == 29 && month == 2 && (year % 4 == 0))\n";
+echo "\t\t\t\t\t\t{ return true;\n";
+echo "\t\t\t\t\t\t}\n";
+echo "\t\t\t\t\t\tif (day <= 28 && month == 2)\n";
+echo "\t\t\t\t\t\t{ return true;\n";
+echo "\t\t\t\t\t\t}        \n";
+echo "\t\t\t\t\t}\n";
+echo "\t\t\t\t\twindow.alert('".$clang->gT("Date is not valid!")."');\n";
+echo "\t\t\t\t\toObject.focus();\n";
+echo "\t\t\t\t\toObject.select();\n";
+echo "\t\t\t\t\treturn false;\n";
+echo "\t\t\t\t}\n";
+echo "\t\t}\n";
+echo "\t//-->\n";
+echo "\t</script>\n\n";
+// <-- END NEW FEATURE - SAVE
+
+>>>>>>> refs/heads/limesurvey16
 echo "\n\n<!-- START THE SURVEY -->\n";
 echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 

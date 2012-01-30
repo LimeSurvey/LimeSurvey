@@ -947,13 +947,20 @@ if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
     //echo "Reset Cookie!";
 }
 
+<<<<<<< HEAD
 //Check to see if a refering URL has been captured.
 GetReferringUrl();
 // Let's do this only if
+=======
+// for non anonymous surveys, it is possible to load
+// pre-filled answers
+// Let's do this only if 
+>>>>>>> refs/heads/limesurvey16
 //  - a saved answer record hasn't been loaded through the saved feature
 //  - the survey is not anonymous
 //  - the survey is active
 //  - a token information has been provided
+<<<<<<< HEAD
 //  - the survey is setup to allow token-response-persistence
 if ($thissurvey['tokenanswerspersistence'] == 'Y' && !isset($_SESSION['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
 {
@@ -970,6 +977,25 @@ if ($thissurvey['tokenanswerspersistence'] == 'Y' && !isset($_SESSION['srid']) &
     }
     buildsurveysession();
     loadanswers();
+=======
+//  - the feature has been explicitely enabled in the config file
+//    to enable define $allow_direct_survey_prefill = true; in config.php
+if (  isset($allow_direct_survey_prefill) &&
+	$allow_direct_survey_prefill===true &&
+	!isset($_SESSION['srid']) && 
+	$thissurvey['private'] == "N" &&
+	$thissurvey['active'] == "Y" && $token !='')
+{
+	// load previous answers if any (dataentry with nosubmit)
+	$srquery="SELECT id FROM {$thissurvey['tablename']}"
+		. " WHERE {$thissurvey['tablename']}.token='".$token."'\n";
+
+	$result = db_execute_assoc($srquery) or die ("Error loading results<br />$query<br />".htmlspecialchars($connect->ErrorMsg()));
+	while ($srrow = $result->FetchRow() )
+	{
+		$_SESSION['srid'] = $srrow['id'];
+	}
+>>>>>>> refs/heads/limesurvey16
 }
 
 // SAVE POSTED ANSWERS TO DATABASE IF MOVE (NEXT,PREV,LAST, or SUBMIT) or RETURNING FROM SAVE FORM
@@ -2346,6 +2372,7 @@ function SendSubmitNotifications()
 
     $bIsHTML = ($thissurvey['htmlemail'] == 'Y');
 
+<<<<<<< HEAD
     $aReplacementVars=array();
 
 
@@ -2492,6 +2519,50 @@ function SendSubmitNotifications()
         $mail->SmtpClose();
     }
 
+=======
+	$message = $clang->gT("Survey Submitted")." - {$thissurvey['name']}\n"
+	. $clang->gT("A new response was entered for your survey")."\n\n";
+	if ($thissurvey['allowsave'] == "Y" && isset($_SESSION['scid']))
+	{
+		$message .= $clang->gT("Click the following link to reload the survey:")."\n";
+		$message .= "  $publicurl/index.php?sid=$surveyid&loadall=reload&scid=".$_SESSION['scid']."&loadname=".urlencode($_SESSION['holdname'])."&loadpass=".urlencode($_SESSION['holdpass'])."\n\n";
+	}
+
+	$message .= $clang->gT("Click the following link to see the individual response:")."\n"
+	. "  $homeurl/admin.php?action=browse&sid=$surveyid&subaction=id&id=".$_SESSION['srid']."\n\n"
+	// Add link to edit individual responses from notification email
+	. $clang->gT("Click the following link to edit the individual response:")."\n"
+
+	. "  $homeurl/admin.php?action=dataentry&sid=$surveyid&subaction=edit&surveytable=survey_$surveyid&id=".$_SESSION['srid']."\n\n"
+	. $clang->gT("View statistics by clicking here:")."\n"
+	. "  $homeurl/admin.php?action=statistics&sid=$surveyid\n\n";
+	if ($sendnotification > 1)
+	{ //Send results as well. Currently just bare-bones - will be extended in later release
+		$message .= "----------------------------\n";
+		foreach ($_SESSION['insertarray'] as $value)
+		{
+			$questiontitle=returnquestiontitlefromfieldcode($value);
+			$message .= "$questiontitle:   ";
+			$details = arraySearchByKey($value, createFieldMap($surveyid),"fieldname", 1);
+			if ( $details['type'] == "T" or $details['type'] == "U")
+			{
+				$message .= "\r\n";
+				if (isset($_SESSION[$value]))
+				{
+					foreach (explode("\n",getextendedanswer($value,$_SESSION[$value])) as $line) $message .= "\t" . $line . "\n";
+				}
+			}
+			elseif (isset($_SESSION[$value]))
+			{
+				$message .= getextendedanswer($value, $_SESSION[$value]);
+				$message .= "\n";
+			}
+		}
+		$message .= "----------------------------\n\n";
+	}
+	$message.= "LimeSurvey";
+	$from = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
+>>>>>>> refs/heads/limesurvey16
 
 }
 
@@ -3277,6 +3348,65 @@ function surveymover()
     return $surveymover;
 }
 
+<<<<<<< HEAD
+=======
+function surveymover()
+{
+	//This function creates the form elements in the survey navigation bar
+	//with "<<PREV" or ">>NEXT" in them. The "submit" value determines how the script moves from
+	//one survey page to another. It is a hidden element, updated by clicking
+	//on the  relevant button - allowing "NEXT" to be the default setting when
+	//a user presses enter.
+	//
+	//Attribute accesskey added for keyboard navigation.
+	global $thissurvey, $clang;
+	global $surveyid, $presentinggroupdescription;
+	$surveymover = "";
+	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] != "A")
+	{
+		$surveymover = "<input type=\"hidden\" name=\"move\" value=\"movelast\" id=\"movelast\" />";
+	}
+	else
+	{
+		$surveymover = "<input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" />";
+	}
+	
+	
+	if (isset($_SESSION['step']) && $_SESSION['step'] > 0 && $thissurvey['format'] != "A" && $thissurvey['allowprev'] != "N")
+	{
+		$surveymover .= "<input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" value=' << "
+		. $clang->gT("prev")." ' name='move2' />\n";
+	}
+	if (isset($_SESSION['step']) && $_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
+	{
+		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
+		. $clang->gT("next")." >> ' name='move2' />\n";
+	}
+    // here, in some lace, is where I must modify to turn the next button conditionable
+	if (!isset($_SESSION['step']) || !$_SESSION['step'])
+	{
+		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
+		. $clang->gT("next")." >> ' name='move2' />\n";
+	}
+	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && $presentinggroupdescription == "yes")
+	{
+		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
+		. $clang->gT("next")." >> ' name='move2' />\n";
+	}
+	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] != "A")
+	{
+		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.limesurvey.move.value = 'movelast';\" value=' "
+		. $clang->gT("last")." ' name='move2' />\n";
+	}
+	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription && $thissurvey['format'] == "A")
+	{
+		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" value=' "
+		. $clang->gT("submit")." ' name='move2' />\n";
+	}
+//	$surveymover .= "<input type='hidden' name='PHPSESSID' value='".session_id()."' id='PHPSESSID' />\n";
+	return $surveymover;
+}
+>>>>>>> refs/heads/limesurvey16
 
 /**
  * Caculate assessement scores
@@ -3836,6 +3966,7 @@ function GetReferringUrl()
     echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
     echo "\n<form method='post' action='{$publicurl}/index.php' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
 
+<<<<<<< HEAD
     echo "\n\n<!-- START THE SURVEY -->\n";
 
     echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"))."\n";
@@ -3863,3 +3994,6 @@ function GetReferringUrl()
     doFooter();
 }
 // Closing PHP tag intentionally left out - yes, it is okay
+=======
+?>
+>>>>>>> refs/heads/limesurvey16

@@ -41,6 +41,7 @@ if (!bHasSurveyPermission($surveyid, 'responses','export'))
 
 if (!$subaction == "export")
 {
+<<<<<<< HEAD
     if(incompleteAnsFilterstate() == "inc")
     {
         $selecthide="";
@@ -86,6 +87,40 @@ if (!$subaction == "export")
     ."</form>"
 
     ."<p><span style='font-size: 7pt'>* ".$clang->gT("For easy opening in MS Excel, change the extension to 'tab' or 'txt'")."</span><br />\n";
+=======
+	if (incompleteAnsFilterstate() === true)
+	{
+		$selecthide="selected='selected'";
+		$selectshow="";
+	}
+	else
+	{
+		$selecthide="";
+		$selectshow="selected='selected'";
+	}
+
+	$vvoutput = "<br /><form method='post' action='admin.php?action=vvexport&sid=$surveyid'>"
+    	."<table align='center' class='outlinetable'>"
+        ."<tr><th colspan='2'>".$clang->gT("Export a VV survey file")."</th></tr>"
+        ."<tr>"
+        ."<td align='right'>".$clang->gT("Export Survey").":</td>"
+        ."<td><input type='text' size='10' value='$surveyid' name='sid' readonly='readonly' /></td>"
+        ."</tr>"
+	."<tr>"
+	."<td align='right'>".$clang->gT("Filter incomplete answers")." </td>"
+	."<td><select name='filterinc'>\n"
+	."\t<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
+	."\t<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
+	."</select></td>\n"
+        ."<tr>"
+        ."<td colspan='2' align='center'>"
+        ."<input type='submit' value='".$clang->gT("Export Responses")."' />&nbsp;"
+        ."<input type='hidden' name='subaction' value='export' />"
+        ."</td>"
+        ."</tr>"
+        ."<tr><td colspan='2' align='center'>[<a href='$scriptname?action=browse&amp;sid=$surveyid'>".$clang->gT("Return to Survey Administration")."</a>]</td></tr>"
+        ."</table>";
+>>>>>>> refs/heads/limesurvey16
 }
 elseif (isset($surveyid) && $surveyid)
 {

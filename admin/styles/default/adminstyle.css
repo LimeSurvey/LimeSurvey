@@ -1,4 +1,5 @@
 body {
+<<<<<<< HEAD
     font-family: verdana, arial, sans-serif;
     text-align: left;
     background-color: #5670A1;
@@ -21,10 +22,22 @@ ul,ol {
 p {
     clear: left;
     text-align:center;
+=======
+	font-family: verdana, arial, sans-serif;
+	margin: 0;
+	text-align: left;
+   background-color: #5670A1; 
+}
+.boxstyle {
+	border-color: #99CC00;
+	border-width: 1;
+	border-style: solid;
+>>>>>>> refs/heads/limesurvey16
 }
 
 /* Administration footer box */
 .footer {
+<<<<<<< HEAD
     text-align: center;
     color: #9C0;
     height: 30px;
@@ -33,6 +46,14 @@ p {
     padding: 5px;
     margin-bottom:400px;
     clear:left;
+=======
+	margin: 0;
+	padding: 5px;
+	text-align: center;
+	color: #99CC00;
+	height: 30px;
+	background: #121a28;
+>>>>>>> refs/heads/limesurvey16
 }
 
 img {
@@ -53,6 +74,7 @@ a:hover {
 th, p, div {
     font-size: 10pt;
 }
+<<<<<<< HEAD
 
 fieldset {
     padding:0 6px 0px 6px;
@@ -218,6 +240,61 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
 #groupdetails td:first-child,
 #questiondetails td:first-child {
     width:20%;
+=======
+a:link {
+   font-size: 10pt;
+   color:#819D26;
+   text-decoration: none;
+}
+
+a:hover{
+   font-size: 10pt;
+   color:#819D26;
+   text-decoration: underline;
+}
+
+th, p, div {
+	font-size: 10pt;
+}
+
+.maintitle {
+   font-size: 14pt;
+   font-weight: bold;
+   color: #228A57;
+   text-align: center;
+   margin: auto;
+   background: #D6D6D6;
+   border-top: 2px solid #7FFF00;
+   border-bottom: 1px groove #00FA9A;
+   background-image: url(bkgmaintitle.gif);
+   background-repeat: repeat-x;
+   }
+
+table.menubar {
+   width: 100%;
+   border-color: #8195BA;
+   border-width: 1px;
+   border-style: solid;
+   border-collapse: collapse;
+}
+.menubar tr:first-child {
+   background-color: #EEF6FF;
+}
+.menubar tr {
+	background-color: #EEF6FF;
+}
+.menubar td{  
+   color: #265522;
+   font-size: 8pt;
+   border-bottom: 2px solid #D2E0F2;
+}
+
+table.table2columns {
+   background-color: #FFFFFF;
+	width: 100%;
+   text-align: center;
+   border: 1px solid #555555;
+>>>>>>> refs/heads/limesurvey16
 }
 
 #surveydetails td+td,
@@ -231,20 +308,41 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
 }
 
 .outlinetable td {
+<<<<<<< HEAD
     font-size: 10pt;
     border: 1px solid #483D8B;
     background: #EEF6FF;
+=======
+   font-size: 10pt;
+   border: 1px solid #483D8B;
+   background: #869DC1;
+>>>>>>> refs/heads/limesurvey16
 }
 
 .outlinetable th {
+<<<<<<< HEAD
     font-size: 10pt;
     color: #1D2D45;
     background: #CCE6FF;
+=======
+   font-size: 10pt;
+   color: #FFF;
+   background: #483D8B;
+}
+ul {
+	font-size: 10pt;
+	color: #000;
+>>>>>>> refs/heads/limesurvey16
 }
 
 td {
+<<<<<<< HEAD
     font-size: 10pt;
     color: #1D2D45;
+=======
+   font-size: 10pt;
+   color: #1D2D45;
+>>>>>>> refs/heads/limesurvey16
 }
 
 .btstyle {
@@ -312,12 +410,47 @@ textarea {
 }
 
 .listboxtemplates {
+<<<<<<< HEAD
     margin-top: 10px;
     height: 20px;
     color: #333;
     width: 180px;
 }
 
+=======
+	margin-top: 10px;
+	height: 20px;
+	font-size: 10px;
+	color: #333;
+	background: #F8F8FF;
+	width: 180px;
+}
+
+.listboxsurveys {
+	margin-top: 10px;
+	height: 20px;
+	font-size: 10px;
+	color: #333;
+	background: #F8F8FF;
+	width: 180px;
+}
+.listboxgroups {
+	margin-top: 10px;
+	height: 20px;
+	font-size: 10px;
+	color: #333;
+	background: #F8F8FF;
+	width: 180px;
+}
+.listboxquestions {
+	margin-top: 10px;
+	height: 20px;
+	font-size: 10px;
+	color: #333;
+	background: #F8F8FF;
+	width: 180px;
+}
+>>>>>>> refs/heads/limesurvey16
 .boxcaption {
     font-size: 12px;
     font-weight: 700;
@@ -326,6 +459,7 @@ textarea {
 }
 
 .saveOrderbtn {
+<<<<<<< HEAD
     border: thin solid #00CED1;
     text-decoration: none;
     font-weight: 700;
@@ -334,6 +468,16 @@ textarea {
     border-top: 1px solid #00BFFF;
     border-left: 1px solid #00BFFF;
     margin: 5px;
+=======
+   border: thin solid #00CED1;
+   text-decoration: none;
+   font-weight: bold;
+   color: #B5B0DD;
+   margin: 5px;
+   background: #483D8B;
+   border-top: 1px solid #00BFFF;
+   border-left: 1px solid #00BFFF;
+>>>>>>> refs/heads/limesurvey16
 }
 
 .settingentryhighlight {
@@ -342,6 +486,7 @@ textarea {
 }
 
 .statusentryhighlight {
+<<<<<<< HEAD
     font-size: 10px;
     color: #E00;
 }
@@ -354,6 +499,10 @@ textarea {
 .annotation {
     font-size: 10px;
     color: #E00;
+=======
+   font-size: 10px;
+   color: #00FF82;
+>>>>>>> refs/heads/limesurvey16
 }
 
 .errortitle {
@@ -362,24 +511,50 @@ textarea {
 }
 
 .warningtitle {
+<<<<<<< HEAD
     font-weight: 700;
     color: #ee303a;
+=======
+   font-weight: bold;
+   color: #FFA07A;
+>>>>>>> refs/heads/limesurvey16
 }
 
 .successtitle {
+<<<<<<< HEAD
     font-weight: 700;
     color: #16B700;
+=======
+   font-weight: bold;
+   color: #97FF31;
+>>>>>>> refs/heads/limesurvey16
 }
 
 font.settingcaption {
+<<<<<<< HEAD
     vertical-align: top;
     text-align: right;
     font-size: 13px;
     font-weight: 700;
     color: #1D2D45;
+=======
+	vertical-align: top;
+	text-align: right;
+	font-size: 13px;
+	font-weight: bold;
+   color: #1D2D45;
+}
+.settingcaption {
+	text-align: center;
+	font-size: 13px;
+	font-weight: bold;
+   background-color: #D2E0F2;
+   color: #1D2D45;
+>>>>>>> refs/heads/limesurvey16
 }
 
 span.settingcaption {
+<<<<<<< HEAD
     float: left;
     width: 350px;
     text-align: right;
@@ -388,9 +563,21 @@ span.settingcaption {
     margin-bottom: 10px;
     background-color: #F8F8FF;
     color: #1D2D45;
+=======
+	float: left;
+	width: 150px;
+	text-align: right;
+	font-size: 13px;
+	font-weight: bold;
+	clear: left;
+	margin-bottom: 10px;
+   background-color: #F8F8FF;
+   color: #1D2D45;
+>>>>>>> refs/heads/limesurvey16
 }
 
 .settingentry {
+<<<<<<< HEAD
     float: left;
     width: 660px;
     padding-left: 5px;
@@ -404,6 +591,23 @@ span.settingcaption {
 
 .settingentry span {
 	outline: 0 none;
+=======
+	float: left;
+	width: 450px;
+	padding-left: 5px;
+	font-size: 13px;
+	text-align: left;
+	clear: right;
+	margin-bottom: 10px;
+   background-color: #F8F8FF;
+}
+.settingrow {
+	width: 620px;
+	float: center;
+	clear: left;
+	margin-bottom: 20px;
+   background-color: #F8F8FF;
+>>>>>>> refs/heads/limesurvey16
 }
 
 .settingrow {
@@ -1459,3 +1663,13 @@ div.translate {
 #translateform textarea:focus{
   outline: blue solid thin;
 }
+
+
+.tab-page{
+   background-color: #F8F8FF;
+}
+
+
+
+
+
