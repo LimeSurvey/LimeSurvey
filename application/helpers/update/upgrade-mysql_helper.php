@@ -668,6 +668,8 @@ function db_upgrade($oldversion) {
     {
         modifyDatabase("","ALTER TABLE `prefix_surveys` ADD `googleanalyticsstyle` char(1) DEFAULT NULL;"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("","ALTER TABLE `prefix_surveys` ADD `googleanalyticsapikey` varchar(25) DEFAULT NULL;"); echo $modifyoutput; flush();@ob_flush();
+        modifyDatabase("","ALTER TABLE `prefix_surveys` CHANGE `showXquestions` `showxquestions` char(1) collate utf8_unicode_ci NOT NULL default 'Y';"); echo $modifyoutput; flush();@ob_flush();
+
         modifyDatabase("", "UPDATE `prefix_settings_global` SET stg_value='155' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
     }
 
