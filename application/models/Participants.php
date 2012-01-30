@@ -139,7 +139,7 @@ class Participants extends CActiveRecord
 
     function insertParticipant($data)
     {
-        Yii::app()->db->createCommand()->insert('{{participants}}', $data)->query();
+        Yii::app()->db->createCommand()->insert('{{participants}}', $data);
     }
 
     /*
@@ -281,7 +281,7 @@ class Participants extends CActiveRecord
                 }
                 foreach ($data as $key => $value)
                 {
-					$count = count(Yii::app()->db->createCommand()->where('participant_id = :participant_id')->from('{{survey_links}}')->select('*')->bindParam(":participant_id", $value['participant_id'], PDO::PARAM_INT)->queryAll());	
+					$count = count(Yii::app()->db->createCommand()->where('participant_id = :participant_id')->from('{{survey_links}}')->select('*')->bindParam(":participant_id", $value['participant_id'], PDO::PARAM_INT)->queryAll());
                     if ($count == $condition[2])
                     {
                         array_push($resultarray, $value);
@@ -1158,7 +1158,7 @@ class Participants extends CActiveRecord
             $previouseattribute = $previousatt->queryRow();
             Yii::app()->db->createCommand()->update('{{surveys}}', array("attributedescriptions" => Yii::app()->db->quoteValue($previouseattribute['attributedescriptions'] . $fieldcontents)), 'sid = '.intval($surveyid)); // load description in the surveys table
             foreach ($fields as $key => $value)
-            {	
+            {
                 Yii::app()->db->createCommand("ALTER TABLE {{tokens_$surveyid}} ADD COLUMN ". Yii::app()->db->quoteColumnName($key) ." ". $value['type'] ." ( ".intval($value['constraint'])." )")->query(); // add columns in token's table
             }
         }
