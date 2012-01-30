@@ -2328,7 +2328,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     foreach ($aresult as $arow) //With each question, create the appropriate field(s))
     {
         ++$questionSeq;
-        
+
         // fix fact taht group_order may have gaps
         if ($_groupOrder != $arow['group_order']) {
             $_groupOrder = $arow['group_order'];
@@ -2344,7 +2344,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         // If S or A don't exist then set it to 0
         // Implicit (subqestion intermal to a question type ) or explicit qubquestions/answer count starts at 1
 
-        // Types "L", "!" , "O", "D", "G", "N", "X", "Y", "5","S","T","U"
+        // Types "L", "!", "O", "D", "G", "N", "X", "Y", "5", "S", "T", "U"
         $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
 
         if ($qtypes[$arow['type']]['subquestions']==0  && $arow['type'] != "R" && $arow['type'] != "|")
@@ -2679,13 +2679,16 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 }
             }
         }
-        $fieldmap[$fieldname]['relevance']=$arow['relevance'];
-        $fieldmap[$fieldname]['grelevance']=$arow['grelevance'];
-        $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-        $fieldmap[$fieldname]['groupSeq']=$groupSeq;
-        $fieldmap[$fieldname]['preg']=$arow['preg'];
-        $fieldmap[$fieldname]['other']=$arow['other'];
-        $fieldmap[$fieldname]['help']=$arow['help'];
+        if (isset($fieldmap[$fieldname]))
+        {
+            $fieldmap[$fieldname]['relevance']=$arow['relevance'];
+            $fieldmap[$fieldname]['grelevance']=$arow['grelevance'];
+            $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+            $fieldmap[$fieldname]['groupSeq']=$groupSeq;
+            $fieldmap[$fieldname]['preg']=$arow['preg'];
+            $fieldmap[$fieldname]['other']=$arow['other'];
+            $fieldmap[$fieldname]['help']=$arow['help'];
+        }
     }
 
     if (isset($fieldmap)) {
