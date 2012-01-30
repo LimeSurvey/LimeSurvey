@@ -244,6 +244,7 @@ function LEMval(alias)
 <<<<<<< HEAD
     if (whichJsName === null || typeof document.getElementById(whichJsName) === 'undefined' || document.getElementById(whichJsName) === null) {
         an_error = true;    // this line is here to make debugging easier
+        return '';
     }
 =======
 >>>>>>> refs/heads/dev_tms

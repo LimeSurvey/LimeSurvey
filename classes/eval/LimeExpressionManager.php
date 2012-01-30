@@ -6373,15 +6373,17 @@ EOT;
         $data = db_execute_assoc($query);
 
         $qinfo = array();
+        $_order=0;
         foreach ($data as $d)
         {
-            $qinfo[$d['group_order']] = array(
-                'group_order' => $d['group_order'],
+            $qinfo[$_order] = array(
+                'group_order' => $_order,
                 'gid' => $d['gid'],
                 'group_name' => $d['group_name'],
                 'description' =>  $d['description'],
                 'grelevance' => $d['grelevance'],
             );
+            ++$_order;
         }
 
         return $qinfo;
@@ -6592,7 +6594,20 @@ EOT;
             $type = $q['info']['type'];
             $typedesc = $qtypes[$type]['description'];
 
-            $default = (is_null($q['info']['default']) ? '' : '<p>(DEFAULT: ' . $q['info']['default'] . ')</p>');
+            $sgqas = explode('|',$q['sgqa']);
+            if (count($sgqas) == 1 && !is_null($q['info']['default']))
+            {
+                $LEM->ProcessString($q['info']['default'], $qid,NULL,false,1,1,false,false);
+                $_default = $LEM->GetLastPrettyPrintExpression();
+                if ($LEM->em->HasErrors()) {
+                    ++$errorCount;
+                }
+                $default = '<br/>(' . $LEM->gT('DEFAULT:') . '  ' . $_default . ')';
+            }
+            else
+            {
+                $default = '';
+            }
 
             $qtext = (($q['info']['qtext'] != '') ? $q['info']['qtext'] : '&nbsp');
             $help = (($q['info']['help'] != '') ? '<hr/>[HELP: ' . $q['info']['help'] . ']': '');
@@ -6770,7 +6785,6 @@ EOT;
             //////
             // SHOW ALL SUB-QUESTIONS
             //////
-            $sgqas = explode('|',$q['sgqa']);
             $sqRows='';
             $i=0;
             $sawthis = array(); // array of rowdivids already seen so only show them once
@@ -6829,6 +6843,16 @@ EOT;
 
                 $sgqaInfo = $LEM->knownVars[$sgqa];
                 $subqText = $sgqaInfo['subqtext'];
+
+                if (isset($sgqaInfo['default']) && $sgqaInfo['default'] !== '')
+                {
+                    $LEM->ProcessString($sgqaInfo['default'], $qid,NULL,false,1,1,false,false);
+                    $_default = $LEM->GetLastPrettyPrintExpression();
+                    if ($LEM->em->HasErrors()) {
+                        ++$errorCount;
+                    }
+                    $subQeqn .= '<br/>(' . $LEM->gT('DEFAULT:') . '  ' . $_default . ')';
+                }
 
                 $sqRows .= "<tr class='LEMsubq'>"
                 . "<td>SQ-$i</td>"
