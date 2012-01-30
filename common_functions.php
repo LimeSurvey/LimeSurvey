@@ -1741,9 +1741,9 @@ function returnglobal($stringname)
             return sanitize_languagecode($urlParam);
         }
         elseif ($stringname =="htmleditormode" ||
-            $stringname =="subaction" || 
+            $stringname =="subaction" ||
             $stringname =="questionselectormode" ||
-            $stringname =="templateeditormode" 
+            $stringname =="templateeditormode"
             )
         {
             return sanitize_paranoid_string($urlParam);
@@ -2800,13 +2800,16 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
                 }
             }
         }
-        $fieldmap[$fieldname]['relevance']=$arow['relevance'];
-        $fieldmap[$fieldname]['grelevance']=$arow['grelevance'];
-        $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-        $fieldmap[$fieldname]['groupSeq']=$groupSeq;
-        $fieldmap[$fieldname]['preg']=$arow['preg'];
-        $fieldmap[$fieldname]['other']=$arow['other'];
-        $fieldmap[$fieldname]['help']=$arow['help'];
+        if (isset($fieldmap[$fieldname])) // only add these fields if there is actually a valid field
+        {
+            $fieldmap[$fieldname]['relevance']=$arow['relevance'];
+            $fieldmap[$fieldname]['grelevance']=$arow['grelevance'];
+            $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+            $fieldmap[$fieldname]['groupSeq']=$groupSeq;
+            $fieldmap[$fieldname]['preg']=$arow['preg'];
+            $fieldmap[$fieldname]['other']=$arow['other'];
+            $fieldmap[$fieldname]['help']=$arow['help'];
+        }
     }
     if (isset($fieldmap)) {
         $globalfieldmap[$surveyid][$style][$clang->langcode] = $fieldmap;
