@@ -310,7 +310,7 @@ class SurveyRuntimeHelper {
                     }
                     if ($thissurvey['printanswers'] != 'Y')
                     {
-                        killSession();
+                        killSurveySession($surveyid);
                     }
 
                     sendCacheHeaders();
@@ -450,7 +450,7 @@ class SurveyRuntimeHelper {
                     //if($thissurvey['printanswers'] != 'Y' && $thissurvey['usecookie'] != 'Y' && $tokensexist !=1)
                     if ($thissurvey['printanswers'] != 'Y')
                     {
-                        killSession();
+                        killSurveySession($surveyid);
                     }
 
                     doHeader();
