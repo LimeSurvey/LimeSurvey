@@ -48,7 +48,7 @@ class ExpressionManager {
     private $questionSeq;   // sequence order of question - so can detect if try to use variable before it is set
     private $groupSeq;  // sequence order of groups - so can detect if try to use variable before it is set
     private $allOnOnePage=false;
-    
+
     // The following are only needed to enable click on variable names within pretty print and open new window to edit them
     private $sid=NULL; // the survey ID
     private $rooturl='';    // the root URL for LimeSurvey
@@ -2325,7 +2325,7 @@ class ExpressionManager {
                         if ($inSQString || $inDQString)
                         {
                             // just push the token
-                            $thistoken[] = '}';                            
+                            $thistoken[] = '}';
                         }
                         else
                         {
@@ -3344,7 +3344,7 @@ function expr_mgr_htmlspecialchars_decode($string)
 function exprmgr_regexMatch($pattern, $input)
 {
     try {
-        $result = preg_match($pattern, $input);
+        $result = @preg_match($pattern, $input);
     } catch (Exception $e) {
         $result = false;
         // How should errors be logged?
