@@ -3,27 +3,27 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 /*
- * LimeSurvey
- * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- * $Id$
- */
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+* $Id$
+*/
 
 /**
- * User Controller
- *
- * This controller performs user actions
- *
- * @package        LimeSurvey
- * @subpackage    Backend
- */
+* User Controller
+*
+* This controller performs user actions
+*
+* @package        LimeSurvey
+* @subpackage    Backend
+*/
 class UserAction extends Survey_Common_Action
 {
 
@@ -35,8 +35,8 @@ class UserAction extends Survey_Common_Action
     }
 
     /**
-     * Show users table
-     */
+    * Show users table
+    */
     public function index()
     {
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/jquery.tablesorter.min.js');
@@ -113,10 +113,10 @@ class UserAction extends Survey_Common_Action
 
                 $userlist = getUserList();
                 array_push($userlist, array("user" => $srow['users_name'], "uid" => $srow['uid'], "email" => $srow['email'],
-                                           "password" => $srow["password"], "parent_id" => $srow['parent_id'], // "level"=>$level,
-                                           "create_survey" => $srow['create_survey'], "participant_panel" => $srow['participant_panel'], "configurator" => $srow['configurator'], "create_user" => $srow['create_user'],
-                                           "delete_user" => $srow['delete_user'], "superadmin" => $srow['superadmin'], "manage_template" => $srow['manage_template'],
-                                           "manage_label" => $srow['manage_label']));
+                "password" => $srow["password"], "parent_id" => $srow['parent_id'], // "level"=>$level,
+                "create_survey" => $srow['create_survey'], "participant_panel" => $srow['participant_panel'], "configurator" => $srow['configurator'], "create_user" => $srow['create_user'],
+                "delete_user" => $srow['delete_user'], "superadmin" => $srow['superadmin'], "manage_template" => $srow['manage_template'],
+                "manage_label" => $srow['manage_label']));
 
                 // send Mail
                 $body = sprintf($clang->gT("Hello %s,"), $new_full_name) . "<br /><br />\n";
@@ -159,8 +159,8 @@ class UserAction extends Survey_Common_Action
                 }
 
                 $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Add user"), $sHeader, $classMsg, $extra,
-                                                  $this->getController()->createUrl("admin/user/setUserRights"), $clang->gT("Set user permissions"),
-                                                  array('action' => 'setUserRights', 'user' => $new_user, 'uid' => $newqid));
+                $this->getController()->createUrl("admin/user/setUserRights"), $clang->gT("Set user permissions"),
+                array('action' => 'setUserRights', 'user' => $new_user, 'uid' => $newqid));
             }
             else
             {
@@ -172,8 +172,8 @@ class UserAction extends Survey_Common_Action
     }
 
     /**
-     * Delete user
-     */
+    * Delete user
+    */
     function deluser()
     {
         if (!(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_DELETE_USER'])) {
@@ -275,7 +275,11 @@ class UserAction extends Survey_Common_Action
         $dresult = Survey_permissions::model()->deleteAllByAttributes(array('uid' => $postuserid));
 
         if ($postuserid == Yii::app()->session['loginID'])
-            session_destroy();
+        {
+            session_destroy;    // user deleted himself
+            $this->redirect($this->createUrl('/admin'));
+            die();
+        }
 
         $extra = "<br />" . sprintf($clang->gT("User '%s' was successfully deleted."),$postuser)."<br /><br />\n";
         if ($transfer_surveys_to > 0 && $iSurveysTransferred>0) {
@@ -290,8 +294,8 @@ class UserAction extends Survey_Common_Action
     }
 
     /**
-     * Modify User
-     */
+    * Modify User
+    */
     function modifyuser()
     {
         if (isset($_POST['uid'])) {
@@ -300,7 +304,7 @@ class UserAction extends Survey_Common_Action
             $sresultcount = count($sresult);
 
             if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['loginID'] == $postuserid ||
-                (Yii::app()->session['USER_RIGHT_CREATE_USER'] && $sresultcount > 0) )
+            (Yii::app()->session['USER_RIGHT_CREATE_USER'] && $sresultcount > 0) )
             {
                 $sresult = User::model()->parentAndUser($postuserid);
                 $aData['mur'] = $sresult;
@@ -314,8 +318,8 @@ class UserAction extends Survey_Common_Action
     }
 
     /**
-     * Modify User POST
-     */
+    * Modify User POST
+    */
     function moduser()
     {
         $clang = Yii::app()->lang;
@@ -331,7 +335,7 @@ class UserAction extends Survey_Common_Action
         $sresultcount = count($sresult);
 
         if ((Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || $postuserid == Yii::app()->session['loginID'] ||
-             ($sresultcount > 0 && Yii::app()->session['USER_RIGHT_CREATE_USER'])) && !(Yii::app()->getConfig("demoMode") == true && $postuserid == 1)
+        ($sresultcount > 0 && Yii::app()->session['USER_RIGHT_CREATE_USER'])) && !(Yii::app()->getConfig("demoMode") == true && $postuserid == 1)
         ) {
             $users_name = html_entity_decode($postuser, ENT_QUOTES, 'UTF-8');
             $email = html_entity_decode($postemail, ENT_QUOTES, 'UTF-8');
@@ -342,7 +346,7 @@ class UserAction extends Survey_Common_Action
 
             if (!validateEmailAddress($email)) {
                 $aViewUrls['mboxwithredirect'][] = $this->_messageBoxWithRedirect($clang->gT("Editing user"), $clang->gT("Could not modify user data."), "warningheader", $clang->gT("Email address is not valid."),
-                                                  $this->getController()->createUrl('admin/user/modifyuser'), $clang->gT("Back"), array('uid' => $postuserid));
+                $this->getController()->createUrl('admin/user/modifyuser'), $clang->gT("Back"), array('uid' => $postuserid));
             }
             else
             {
@@ -420,8 +424,8 @@ class UserAction extends Survey_Common_Action
     }
 
     /**
-     * User Rights POST
-     */
+    * User Rights POST
+    */
     function userrights()
     {
         $clang = Yii::app()->lang;
@@ -437,19 +441,19 @@ class UserAction extends Survey_Common_Action
                 $rights = array();
 
                 $rights['create_survey'] = (isset($_POST['create_survey']) && Yii::app()->session['USER_RIGHT_CREATE_SURVEY'])
-                        ? 1 : 0;
+                ? 1 : 0;
                 $rights['configurator'] = (isset($_POST['configurator']) && Yii::app()->session['USER_RIGHT_CONFIGURATOR'])
-                        ? 1 : 0;
+                ? 1 : 0;
                 $rights['create_user'] = (isset($_POST['create_user']) && Yii::app()->session['USER_RIGHT_CREATE_USER'])
-                        ? 1 : 0;
+                ? 1 : 0;
                 $rights['participant_panel'] = (isset($_POST['participant_panel']) && Yii::app()->session['USER_RIGHT_PARTICIPANT_PANEL'])
-                        ? 1 : 0;
+                ? 1 : 0;
                 $rights['delete_user'] = (isset($_POST['delete_user']) && Yii::app()->session['USER_RIGHT_DELETE_USER'])
-                        ? 1 : 0;
+                ? 1 : 0;
                 $rights['manage_template'] = (isset($_POST['manage_template']) && Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'])
-                        ? 1 : 0;
+                ? 1 : 0;
                 $rights['manage_label'] = (isset($_POST['manage_label']) && Yii::app()->session['USER_RIGHT_MANAGE_LABEL'])
-                        ? 1 : 0;
+                ? 1 : 0;
 
                 $rights['superadmin'] = 0; // ONLY Initial Superadmin can give this right
 
@@ -576,8 +580,8 @@ class UserAction extends Survey_Common_Action
     }
 
     /**
-     * Manage user personal settings
-     */
+    * Manage user personal settings
+    */
     function personalsettings()
     {
         $clang = Yii::app()->lang;
@@ -585,11 +589,11 @@ class UserAction extends Survey_Common_Action
         // Save Data
         if (Yii::app()->request->getPost("action")) {
             $aData = array(
-                'lang' => Yii::app()->request->getPost('lang'),
-                'dateformat' => Yii::app()->request->getPost('dateformat'),
-                'htmleditormode' => Yii::app()->request->getPost('htmleditormode'),
-                'questionselectormode' => Yii::app()->request->getPost('questionselectormode'),
-                'templateeditormode' => Yii::app()->request->getPost('templateeditormode')
+            'lang' => Yii::app()->request->getPost('lang'),
+            'dateformat' => Yii::app()->request->getPost('dateformat'),
+            'htmleditormode' => Yii::app()->request->getPost('htmleditormode'),
+            'questionselectormode' => Yii::app()->request->getPost('questionselectormode'),
+            'templateeditormode' => Yii::app()->request->getPost('templateeditormode')
             );
 
             $uresult = User::model()->updateByPk(Yii::app()->session['loginID'], $aData);
@@ -718,12 +722,12 @@ class UserAction extends Survey_Common_Action
     }
 
     /**
-     * Renders template(s) wrapped in header and footer
-     *
-     * @param string $sAction Current action, the folder to fetch views from
-     * @param string|array $aViewUrls View url(s)
-     * @param array $aData Data to be passed on. Optional.
-     */
+    * Renders template(s) wrapped in header and footer
+    *
+    * @param string $sAction Current action, the folder to fetch views from
+    * @param string|array $aViewUrls View url(s)
+    * @param array $aData Data to be passed on. Optional.
+    */
     protected function _renderWrappedTemplate($sAction = 'user', $aViewUrls = array(), $aData = array())
     {
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
