@@ -70,6 +70,8 @@ class LimeExpressionManager {
     private $multiflexiAnswers; // array of 2nd scale answer lists for types ':' and ';' -- needed for convenient print of logic file
 
     private $sgqaNaming = true;    // used to specify whether to  generate equations using SGQA codes or qcodes
+    private $numGroups=0;
+    private $numQuestions=0;
 
     // A private constructor; prevents direct creation of object
     private function __construct()
