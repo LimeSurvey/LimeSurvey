@@ -1480,19 +1480,41 @@ class ExpressionManager {
                                 $descriptor .= ': ';
                             }
 
-                            $messages[] = $descriptor . htmlspecialchars($question,ENT_QUOTES,'UTF-8',false);
-                            if ($ansList != '')
+                            if (strnatcmp(phpversion(), "5.2.3")>=0)
                             {
-                                $messages[] = htmlspecialchars($ansList,ENT_QUOTES,'UTF-8',false);
-                            }
-                            if ($code != '') {
-                                if ($token[2] == 'SGQA' && preg_match('/^INSERTANS:/',$token[0])) {
-                                    $shown = $this->GetVarAttribute($token[0], 'shown', '');
-                                    $messages[] = 'value=[' . htmlspecialchars($code,ENT_QUOTES,'UTF-8',false) . '] '
-                                            . htmlspecialchars($shown,ENT_QUOTES,'UTF-8',false);
+                                // 4th parameter to htmlspecialchars only became available in PHP version 5.2.3
+                                $messages[] = $descriptor . htmlspecialchars($question,ENT_QUOTES,'UTF-8',false);
+                                if ($ansList != '')
+                                {
+                                    $messages[] = htmlspecialchars($ansList,ENT_QUOTES,'UTF-8',false);
                                 }
-                                else {
-                                    $messages[] = 'value=' . htmlspecialchars($code,ENT_QUOTES,'UTF-8',false);
+                                if ($code != '') {
+                                    if ($token[2] == 'SGQA' && preg_match('/^INSERTANS:/',$token[0])) {
+                                        $shown = $this->GetVarAttribute($token[0], 'shown', '');
+                                        $messages[] = 'value=[' . htmlspecialchars($code,ENT_QUOTES,'UTF-8',false) . '] '
+                                                . htmlspecialchars($shown,ENT_QUOTES,'UTF-8',false);
+                                    }
+                                    else {
+                                        $messages[] = 'value=' . htmlspecialchars($code,ENT_QUOTES,'UTF-8',false);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                $messages[] = $descriptor . htmlspecialchars($question,ENT_QUOTES,'UTF-8');
+                                if ($ansList != '')
+                                {
+                                    $messages[] = htmlspecialchars($ansList,ENT_QUOTES,'UTF-8');
+                                }
+                                if ($code != '') {
+                                    if ($token[2] == 'SGQA' && preg_match('/^INSERTANS:/',$token[0])) {
+                                        $shown = $this->GetVarAttribute($token[0], 'shown', '');
+                                        $messages[] = 'value=[' . htmlspecialchars($code,ENT_QUOTES,'UTF-8') . '] '
+                                                . htmlspecialchars($shown,ENT_QUOTES,'UTF-8');
+                                    }
+                                    else {
+                                        $messages[] = 'value=' . htmlspecialchars($code,ENT_QUOTES,'UTF-8');
+                                    }
                                 }
                             }
                             if ($this->groupSeq == -1 || $groupSeq == -1 || $questionSeq == -1 || $this->questionSeq == -1) {
