@@ -1468,7 +1468,7 @@ class ExpressionManager {
                                 $descriptor .= ': ';
                             }
 
-                            if (strnatcmp(phpversion(), "5.2.3")>=0)
+                            if (version_compare(phpversion(), "5.2.3")>=0)
                             {
                                 // 4th parameter to htmlspecialchars only became available in PHP version 5.2.3
                                 $messages[] = $descriptor . htmlspecialchars($question,ENT_QUOTES,'UTF-8',false);
