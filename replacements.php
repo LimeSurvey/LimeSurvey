@@ -149,8 +149,8 @@ function templatereplace($line, $replacements=array(), $anonymized=false, $quest
         $_question_class = $question['class'];
         $_question_man_class = $question['man_class'];
         $_question_input_error_class = $question['input_error_class'];
-        $_aid = $question['aid'];
-        $_sqid = $question['sqid'];
+        $_aid = (isset($question['aid']) ? $question['aid'] : '');
+        $_sqid = (isset($question['sqid']) ?  $question['sqid'] : '');
     }
     else
     {
