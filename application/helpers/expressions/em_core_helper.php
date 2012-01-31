@@ -3355,7 +3355,7 @@ function expr_mgr_htmlspecialchars_decode($string)
 function exprmgr_regexMatch($pattern, $input)
 {
     try {
-        $result = preg_match($pattern, $input);
+        $result = @preg_match($pattern, $input);
     } catch (Exception $e) {
         $result = false;
         // How should errors be logged?
