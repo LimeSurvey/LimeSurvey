@@ -4953,9 +4953,9 @@ class LimeExpressionManager {
                     $validationJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
 
                     $jsParts[] = "\n  if(" . $validationJS . "){\n";
-                    $jsParts[] = "    $('#" . $_veq['subqValidSelector'] . "').css('background-color','');\n";
+                    $jsParts[] = "    $('#" . $_veq['subqValidSelector'] . "').addClass('em_sq_validation').removeClass('error').addClass('good');;\n";
                     $jsParts[] = "  }\n  else {\n";
-                    $jsParts[] = "    $('#" . $_veq['subqValidSelector'] . "').css('background-color','pink');\n";
+                    $jsParts[] = "    $('#" . $_veq['subqValidSelector'] . "').addClass('em_sq_validation').removeClass('good').addClass('error');\n";
                     $jsParts[] = "  }\n";
                 }
 
@@ -4985,9 +4985,9 @@ class LimeExpressionManager {
                         $_validationJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
 
                         $jsParts[] = "\n  if(" . $_validationJS . "){\n";
-                        $jsParts[] = "    $('#" . $arg['qid'] . "_vmsg_" . $vclass . "').css('color','green');\n";
+                        $jsParts[] = "    $('#" . $arg['qid'] . "_vmsg_" . $vclass . "').removeClass('error').addClass('good');\n";
                         $jsParts[] = "  }\n  else {\n";
-                        $jsParts[] = "    $('#" . $arg['qid'] . "_vmsg_" . $vclass ."').css('color','red').show();\n";
+                        $jsParts[] = "    $('#" . $arg['qid'] . "_vmsg_" . $vclass ."').removeClass('good').addClass('error');\n";
                         switch ($vclass)
                         {
                             case 'sum_range':
@@ -5007,11 +5007,9 @@ class LimeExpressionManager {
                     }
 
                     $jsParts[] = "\n  if(isValidSum" . $arg['qid'] . "){\n";
-                    $jsParts[] = "    $('#totalvalue_" . $arg['qid'] . "').css('color','green').css('font-weight','bold').css('background-color','#d3d3d3');\n";
-                    $jsParts[] = "    $('#remainingvalue_" . $arg['qid'] . "').css('background-color','#d3d3d3');\n";
+                    $jsParts[] = "    $('#totalvalue_" . $arg['qid'] . "').removeClass('error').addClass('good');\n";
                     $jsParts[] = "  }\n  else {\n";
-                    $jsParts[] = "    $('#totalvalue_" . $arg['qid'] . "').css('color','red').css('font-weight','bold').css('background-color','#d3d3d3');\n";
-                    $jsParts[] = "    $('#remainingvalue_" . $arg['qid'] . "').css('background-color','#d3d3d3');\n";
+                    $jsParts[] = "    $('#totalvalue_" . $arg['qid'] . "').removeClass('good').addClass('error');\n";
                     $jsParts[] = "  }\n";
 
                     // color-code single-entry fields as needed
@@ -5022,9 +5020,9 @@ class LimeExpressionManager {
                         case 'T':
                         case 'U':
                             $jsParts[] = "\n  if(isValidOther" . $arg['qid'] . "){\n";
-                            $jsParts[] = "    $('#question" . $arg['qid'] . " :input').css('background-color','');\n";
+                            $jsParts[] = "    $('#question" . $arg['qid'] . " :input').addClass('em_sq_validation').removeClass('error').addClass('good');\n";
                             $jsParts[] = "  }\n  else {\n";
-                            $jsParts[] = "    $('#question" . $arg['qid'] . " :input').css('background-color','pink');\n";
+                            $jsParts[] = "    $('#question" . $arg['qid'] . " :input').addClass('em_sq_validation').removeClass('good').addClass('error');\n";
                             $jsParts[] = "  }\n";
                             break;
                         default:
@@ -5032,10 +5030,10 @@ class LimeExpressionManager {
                     }
 
                     $jsParts[] = "\n  if(isValidOther" . $arg['qid'] ." && isValidSum" . $arg['qid'] . "){\n";
-                    $jsParts[]= "    $('#" . $arg['qid'] . "_vmsg').css('color','green');\n";
+                    $jsParts[]= "    $('#" . $arg['qid'] . "_vmsg').removeClass('error').addClass('good');\n";
                     $jsParts[]= "    $('#question" . $arg['qid'] . "').removeClass('input-error');\n";
                     $jsParts[] = "  }\n  else {\n";
-                    $jsParts[]= "    $('#" . $arg['qid'] . "_vmsg').css('color','red').show();\n";
+                    $jsParts[]= "    $('#" . $arg['qid'] . "_vmsg').removeClass('good').addClass('error');\n";
                     $jsParts[]= "    $('#question" . $arg['qid'] . "').addClass('input-error');\n";
                     $jsParts[] = "  }\n";
                 }
