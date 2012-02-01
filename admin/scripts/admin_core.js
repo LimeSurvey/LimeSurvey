@@ -261,10 +261,10 @@ function qTypeDropdownInit()
 
         $(element).qtip({
                style: {
-                            'margin' : '15px',
-                            'width': '450px',
-                            'height':'auto',
-                            'border':{
+                            margin : 15,
+                            width: 450,
+                            height: 'auto',
+                            border:{
                                     width: 4,
                                     radius: 2
                             }
