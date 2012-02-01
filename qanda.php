@@ -3767,14 +3767,14 @@ function do_multiplenumeric($ia)
             {
                 $answer_main .= "\t<li class='multiplenumerichelp'>\n"
                     . "<label for=\"remainingvalue_{$ia[0]}\">".$clang->gT('Remaining: ')."</label>\n"
-                    . "<span id=\"remainingvalue_{$ia[0]}\">$prefix\n"
+                    . "<span id=\"remainingvalue_{$ia[0]}\" class=\"dynamic_remaining\">$prefix\n"
                     . "{" . $qinfo['sumRemainingEqn'] . "}\n"
                     . "$suffix</span>\n"
                     . "\t</li>\n";
             }
             $answer_main .= "\t<li class='multiplenumerichelp'>\n"
                 . "<label for=\"totalvalue_{$ia[0]}\">".$clang->gT('Total: ')."</label>\n"
-                . "<span id=\"totalvalue_{$ia[0]}\">$prefix\n"
+                . "<span id=\"totalvalue_{$ia[0]}\" class=\"dynamic_sum\">$prefix\n"
                 . "{" . $qinfo['sumEqn'] . "}\n"
                 . "$suffix</span>\n"
                 . "\t</li>\n";
