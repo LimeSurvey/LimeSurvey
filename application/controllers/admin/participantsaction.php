@@ -1371,7 +1371,7 @@ class participantsaction extends Survey_Common_Action
      */
     function uploadCSV()
     {
-       unset(Yii::app()->session['summary']);
+        unset(Yii::app()->session['summary']);
         $characterset = Yii::app()->request->getPost('characterset');
         $seperator = Yii::app()->request->getPost('seperatorused');
         $newarray = Yii::app()->request->getPost('newarray');
@@ -1409,12 +1409,14 @@ class participantsaction extends Survey_Common_Action
         }
         foreach ($tokenlistarray as $buffer)
         {
-            $buffer = @mb_convert_encoding($buffer, "UTF-8", $uploadcharset);
+        	$buffer = @mb_convert_encoding($buffer, "UTF-8", $uploadcharset);
             $firstname = "";
             $lastname = "";
             $email = "";
             $language = "";
             if ($recordcount == 0)
+            	//The first time we iterate through the file we look at the very
+            	//first line, which contains field names, not values to import
             {
                 // Pick apart the first line
                 $buffer = removeBOM($buffer);
@@ -1463,6 +1465,7 @@ class participantsaction extends Survey_Common_Action
                 }
             }
             else
+            // After looking at the first line, we now import the actual values
             {
                 $line = convertCSVRowToArray($buffer, $separator, '"');
                 if (count($firstline) != count($line))
@@ -1480,29 +1483,31 @@ class participantsaction extends Survey_Common_Action
                 $dupfound = false;
                 $thisduplicate = 0;
                 $filterduplicatefields = array('firstname', 'lastname', 'email');
-                foreach ($writearray as $value)
-                {
-                    //For duplicate  values
-                    $aData = array(
-                        'firstname' => $writearray['firstname'],
-                        'lastname' => $writearray['lastname'],
-                        'email' => $writearray['email'],
-                        'owner_uid' => Yii::app()->session['loginID']
-                    );
-                    $aData = "firstname = '{$writearray['firstname']}' AND lastname = '{$writearray['lastname']}' AND email = '{$writearray['email']}' AND owner_uid = '".Yii::app()->session['loginID']."'";
-                    $aData = Participants::model()->checkforDuplicate($aData);
-                    if ($aData == true)
-                    {
-                        $thisduplicate = 1;
-                        $dupcount++;
-                    }
-                }
 
+                //Check for duplicate participants
+                $aData = array(
+                         'firstname' => $writearray['firstname'],
+                         'lastname' => $writearray['lastname'],
+                         'email' => $writearray['email'],
+                         'owner_uid' => Yii::app()->session['loginID']
+                         );
+            	//HACK - converting into SQL instead of doing an array search
+                $aData = "firstname = '".mysql_real_escape_string($writearray['firstname'])."' AND lastname = '".mysql_real_escape_string($writearray['lastname'])."' AND email = '".mysql_real_escape_string($writearray['email'])."' AND owner_uid = '".Yii::app()->session['loginID']."'";
+                //End of HACK
+				echo "Checking $aData for duplicates<br />";
+				$aData = Participants::model()->checkforDuplicate($aData);
+                if ($aData == true)
+                {
+                    $thisduplicate = 1;
+                    $dupcount++;
+                }
                 if ($thisduplicate == 1)
                 {
                     $dupfound = true;
                     $duplicatelist[] = $writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")";
                 }
+
+                //Checking the email address is in a valid format
                 $invalidemail = false;
                 $writearray['email'] = trim($writearray['email']);
                 if ($writearray['email'] != '')
@@ -1517,12 +1522,13 @@ class participantsaction extends Survey_Common_Action
                         }
                     }
                 }
-
                 if (!$dupfound && !$invalidemail)
+                //If it isn't a duplicate value or an invalid email, process
+                //the entry
                 {
-                    $uuid = $this->gen_uuid();
                     if (!isset($writearray['participant_id']) || $writearray['participant_id'] == "")
                     {
+                        $uuid = $this->gen_uuid(); //Generate a UUID for the new participant
                         $writearray['participant_id'] = $uuid;
                     }
                     if (isset($writearray['emailstatus']) && trim($writearray['emailstatus'] == ''))
@@ -1542,7 +1548,6 @@ class participantsaction extends Survey_Common_Action
                     {
                         unset($writearray['validuntil']);
                     }
-
                     if ($writearray['email'] == "" || $writearray['firstname'] == "" || $writearray['lastname'] == "")
                     {
                         $mandatory++;
@@ -1565,7 +1570,7 @@ class participantsaction extends Survey_Common_Action
                                                     'attribute_id' => $attid,
                                                     'value' => $value
                                                 );
-                                                ParticipantAttributeNames::model()->saveParticipantAttributeValue($aData);
+                                            	ParticipantAttributeNames::model()->saveParticipantAttributeValue($aData);
                                             }
                                             else
                                             {
