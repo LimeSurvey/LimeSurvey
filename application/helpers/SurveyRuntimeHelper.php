@@ -1,17 +1,17 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
- * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- *	$Id$
- */
+* LimeSurvey
+* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*	$Id$
+*/
 
 class SurveyRuntimeHelper {
 
@@ -21,7 +21,7 @@ class SurveyRuntimeHelper {
     * @param mixed $surveyid
     * @param mixed $args
     */
- 	function run($surveyid,$args) {
+    function run($surveyid,$args) {
         extract($args);
 
         // $LEMdebugLevel - customizable debugging for Lime Expression Manager
@@ -40,21 +40,21 @@ class SurveyRuntimeHelper {
                 break;
         }
         $surveyOptions = array(
-            'active' => ($thissurvey['active'] == 'Y'),
-            'allowsave' => ($thissurvey['allowsave'] == 'Y'),
-            'anonymized' => ($thissurvey['anonymized'] != 'N'),
-            'assessments' => ($thissurvey['assessments'] == 'Y'),
-            'datestamp' => ($thissurvey['datestamp'] == 'Y'),
-            'hyperlinkSyntaxHighlighting' => (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY), // TODO set this to true if in admin mode but not if running a survey
-            'ipaddr' => ($thissurvey['ipaddr'] == 'Y'),
-            'refurl' => (($thissurvey['refurl'] == "Y") ? $_SESSION['survey_'.$surveyid]['refurl'] : NULL),
-            'savetimings' => ($thissurvey['savetimings'] == "Y"),
-            'surveyls_dateformat' => (isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
-            'startlanguage' => (isset($_SESSION['survey_'.$surveyid]['s_lang']) ? $_SESSION['survey_'.$surveyid]['s_lang'] : 'en'),
-            'target' => (isset($uploaddir) ? "{$uploaddir}/surveys/{$thissurvey['sid']}/files/" : "/temp/{$thissurvey['sid']}/files"),
-            'tempdir' => (isset($tempdir) ? $tempdir : '/temp/'),
-            'timeadjust' => (isset($timeadjust) ? $timeadjust : 0),
-            'token' => (isset($clienttoken) ? $clienttoken : NULL),
+        'active' => ($thissurvey['active'] == 'Y'),
+        'allowsave' => ($thissurvey['allowsave'] == 'Y'),
+        'anonymized' => ($thissurvey['anonymized'] != 'N'),
+        'assessments' => ($thissurvey['assessments'] == 'Y'),
+        'datestamp' => ($thissurvey['datestamp'] == 'Y'),
+        'hyperlinkSyntaxHighlighting' => (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY), // TODO set this to true if in admin mode but not if running a survey
+        'ipaddr' => ($thissurvey['ipaddr'] == 'Y'),
+        'refurl' => (($thissurvey['refurl'] == "Y") ? $_SESSION['survey_'.$surveyid]['refurl'] : NULL),
+        'savetimings' => ($thissurvey['savetimings'] == "Y"),
+        'surveyls_dateformat' => (isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
+        'startlanguage' => (isset($_SESSION['survey_'.$surveyid]['s_lang']) ? $_SESSION['survey_'.$surveyid]['s_lang'] : 'en'),
+        'target' => (isset($uploaddir) ? "{$uploaddir}/surveys/{$thissurvey['sid']}/files/" : "/temp/{$thissurvey['sid']}/files"),
+        'tempdir' => (isset($tempdir) ? $tempdir : '/temp/'),
+        'timeadjust' => (isset($timeadjust) ? $timeadjust : 0),
+        'token' => (isset($clienttoken) ? $clienttoken : NULL),
         );
 
         //Security Checked: POST, GET, SESSION, REQUEST, returnGlobal, DB
@@ -63,8 +63,8 @@ class SurveyRuntimeHelper {
         {
             $previewgrp = true;
         }
-//        if (isset($param['newtest']) && $param['newtest'] == "Y")
-//            setcookie("limesurvey_timers", "0");   //@todo fix - sometimes results in headers already sent error
+        //        if (isset($param['newtest']) && $param['newtest'] == "Y")
+        //            setcookie("limesurvey_timers", "0");   //@todo fix - sometimes results in headers already sent error
         $show_empty_group = false;
 
         if ($previewgrp)
@@ -85,11 +85,11 @@ class SurveyRuntimeHelper {
                     $move = "movenext"; // to force a call to NavigateForwards()
                 }
                 else if (isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N')
-                {
-                    //If explicitply set, hide the welcome screen
-                    $_SESSION['survey_'.$surveyid]['step'] = 0;
-                    $move = "movenext";
-                }
+                    {
+                        //If explicitply set, hide the welcome screen
+                        $_SESSION['survey_'.$surveyid]['step'] = 0;
+                        $move = "movenext";
+                    }
             }
 
             if (!isset($_SESSION['survey_'.$surveyid]['totalsteps']))
@@ -102,7 +102,7 @@ class SurveyRuntimeHelper {
             }
             $_SESSION['survey_'.$surveyid]['prevstep'] = $_SESSION['survey_'.$surveyid]['step'];
 
-            if (isset($_SESSION['survey_'.$surveyid]['LEMpostKey']) && (!isset($_POST['LEMpostKey']) || ($_POST['LEMpostKey'] != $_SESSION['survey_'.$surveyid]['LEMpostKey'])))
+            if (isset($_SESSION['LEMpostKey']) && isset($_POST['LEMpostKey']) && $_POST['LEMpostKey'] != $_SESSION['LEMpostKey'])
             {
                 // then trying to resubmit (e.g. Next, Previous, Submit) from a cached copy of the page
                 // Simply re-display the current page without re-processing POST or re-validating input.  Means user will lose whatever data entry the just tried
@@ -112,7 +112,7 @@ class SurveyRuntimeHelper {
                 $invalidLastPage = true;
                 $vpopup = "<script type=\"text/javascript\">\n
                 <!--\n $(document).ready(function(){
-                    alert(\"" . $clang->gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.", "js") . "\");});\n //-->\n
+                alert(\"" . $clang->gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.", "js") . "\");});\n //-->\n
                 </script>\n";
             }
             else
@@ -206,8 +206,8 @@ class SurveyRuntimeHelper {
             //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
             //First, see if we are moving backwards or doing a Save so far, and its OK not to check:
             if (
-                    (isset($move) && ($move == "moveprev" || (is_int($move) && $_SESSION['survey_'.$surveyid]['prevstep'] == $_SESSION['survey_'.$surveyid]['maxstep']) || $_SESSION['survey_'.$surveyid]['prevstep'] == $_SESSION['survey_'.$surveyid]['step'])) ||
-                    (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far")))
+            (isset($move) && ($move == "moveprev" || (is_int($move) && $_SESSION['survey_'.$surveyid]['prevstep'] == $_SESSION['survey_'.$surveyid]['maxstep']) || $_SESSION['survey_'.$surveyid]['prevstep'] == $_SESSION['survey_'.$surveyid]['step'])) ||
+            (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far")))
             {
                 if (Yii::app()->getConfig('allowmandbackwards') == 1)
                 {
@@ -222,7 +222,7 @@ class SurveyRuntimeHelper {
             {
                 $backok = "N";    // NA, since not moving backwards
             }
-// TODO FIXME
+            // TODO FIXME
             if ($thissurvey['active'] == "Y") {
                 Yii::import("application.libraries.Save");
                 $cSave = new Save();
@@ -292,7 +292,7 @@ class SurveyRuntimeHelper {
             //SUBMIT ###############################################################################
             if ((isset($move) && $move == "movesubmit"))
             {
-//                setcookie("limesurvey_timers", "", time() - 3600); // remove the timers cookies   //@todo fix - sometimes results in headers already sent error
+                //                setcookie("limesurvey_timers", "", time() - 3600); // remove the timers cookies   //@todo fix - sometimes results in headers already sent error
                 if ($thissurvey['refurl'] == "Y")
                 {
                     if (!in_array("refurl", $_SESSION['survey_'.$surveyid]['insertarray'])) //Only add this if it doesn't already exist
@@ -327,11 +327,11 @@ class SurveyRuntimeHelper {
                     // fetch all filenames from $_SESSIONS['files'] and delete them all
                     // from the /upload/tmp/ directory
                     /* echo "<pre>";print_r($_SESSION);echo "</pre>";
-                      for($i = 1; isset($_SESSION['files'][$i]); $i++)
-                      {
-                      unlink('upload/tmp/'.$_SESSION['files'][$i]['filename']);
-                      }
-                     */
+                    for($i = 1; isset($_SESSION['files'][$i]); $i++)
+                    {
+                    unlink('upload/tmp/'.$_SESSION['files'][$i]['filename']);
+                    }
+                    */
                     $completed = $thissurvey['surveyls_endtext'];
                     $completed .= "<br /><strong><font size='2' color='red'>" . $clang->gT("Did Not Save") . "</font></strong><br /><br />\n\n";
                     $completed .= $clang->gT("Your survey responses have not been recorded. This survey is not yet active.") . "<br /><br />\n";
@@ -347,7 +347,7 @@ class SurveyRuntimeHelper {
                     if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1) //don't use cookies if tokens are being used
                     {
                         $cookiename = "PHPSID" . returnGlobal('sid') . "STATUS";
-//                        setcookie("$cookiename", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days   //@todo fix - sometimes results in headers already sent error
+                        //                        setcookie("$cookiename", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days   //@todo fix - sometimes results in headers already sent error
                     }
 
                     //Before doing the "templatereplace()" function, check the $thissurvey['url']
@@ -397,7 +397,7 @@ class SurveyRuntimeHelper {
                     if (trim(strip_tags($thissurvey['surveyls_endtext'])) == '')
                     {
                         $completed = "<br /><span class='success'>" . $clang->gT("Thank you!") . "</span><br /><br />\n\n"
-                                . $clang->gT("Your survey responses have been recorded.") . "<br /><br />\n";
+                        . $clang->gT("Your survey responses have been recorded.") . "<br /><br />\n";
                     }
                     else
                     {
@@ -408,9 +408,9 @@ class SurveyRuntimeHelper {
                     if ($thissurvey['printanswers'] == 'Y')
                     {
                         $completed .= "<br /><br />"
-                                . "<a class='printlink' href='printanswers.php?sid=$surveyid'  target='_blank'>"
-                                . $clang->gT("Print your answers.")
-                                . "</a><br />\n";
+                        . "<a class='printlink' href='printanswers.php?sid=$surveyid'  target='_blank'>"
+                        . $clang->gT("Print your answers.")
+                        . "</a><br />\n";
                     }
                     //*****************************************
 
@@ -423,9 +423,9 @@ class SurveyRuntimeHelper {
                     if ($thissurvey['publicstatistics'] == 'Y')
                     {
                         $completed .= "<br /><br />"
-                                . "<a class='publicstatisticslink' href='statistics_user.php?sid=$surveyid' target='_blank'>"
-                                . $clang->gT("View the statistics for this survey.")
-                                . "</a><br />\n";
+                        . "<a class='publicstatisticslink' href='statistics_user.php?sid=$surveyid' target='_blank'>"
+                        . $clang->gT("View the statistics for this survey.")
+                        . "</a><br />\n";
                     }
                     //*****************************************
 
@@ -492,7 +492,7 @@ class SurveyRuntimeHelper {
 
         if ($surveyMode == 'group' && $previewgrp)
         {
-//            setcookie("limesurvey_timers", "0"); //@todo fix - sometimes results in headers already sent error
+            //            setcookie("limesurvey_timers", "0"); //@todo fix - sometimes results in headers already sent error
             $_gid = sanitize_int($param['gid']);
 
             LimeExpressionManager::StartSurvey($thissurvey['sid'], 'group', $surveyOptions, false, $LEMdebugLevel);
@@ -527,13 +527,13 @@ class SurveyRuntimeHelper {
                 $groupdescription = $clang->gT("There are no more questions. Please press the <Submit> button to finish this survey.");
             }
             else if ($surveyMode != 'survey')
-            {
+                {
 
-                $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
-                $gid = $stepInfo['gid'];
-                $groupname = $stepInfo['gname'];
-                $groupdescription = $stepInfo['gtext'];
-            }
+                    $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+                    $gid = $stepInfo['gid'];
+                    $groupname = $stepInfo['gname'];
+                    $groupdescription = $stepInfo['gtext'];
+                }
         }
 
         if ($_SESSION['survey_'.$surveyid]['step'] > $_SESSION['survey_'.$surveyid]['maxstep'])
@@ -544,14 +544,14 @@ class SurveyRuntimeHelper {
         // If the survey uses answer persistence and a srid is registered in SESSION
         // then loadanswers from this srid
         /* Only survey mode used this - should all?
-          if ($thissurvey['tokenanswerspersistence'] == 'Y' &&
-          $thissurvey['anonymized'] == "N" &&
-          isset($_SESSION['srid']) &&
-          $thissurvey['active'] == "Y")
-          {
-          loadanswers();
-          }
-         */
+        if ($thissurvey['tokenanswerspersistence'] == 'Y' &&
+        $thissurvey['anonymized'] == "N" &&
+        isset($_SESSION['srid']) &&
+        $thissurvey['active'] == "Y")
+        {
+        loadanswers();
+        }
+        */
 
         //******************************************************************************************************
         //PRESENT SURVEY
@@ -675,7 +675,7 @@ class SurveyRuntimeHelper {
 
         //ALTER PAGE CLASS TO PROVIDE WHOLE-PAGE ALTERNATION
         if ($surveyMode != 'survey' && $_SESSION['survey_'.$surveyid]['step'] != $_SESSION['survey_'.$surveyid]['prevstep'] ||
-                (isset($_SESSION['survey_'.$surveyid]['stepno']) && $_SESSION['survey_'.$surveyid]['stepno'] % 2))
+        (isset($_SESSION['survey_'.$surveyid]['stepno']) && $_SESSION['survey_'.$surveyid]['stepno'] % 2))
         {
             if (!isset($_SESSION['survey_'.$surveyid]['stepno']))
                 $_SESSION['survey_'.$surveyid]['stepno'] = 0;
@@ -693,12 +693,12 @@ class SurveyRuntimeHelper {
 
         if (isset($upload_file) && $upload_file)
             echo "<form enctype=\"multipart/form-data\" method='post' action='" . Yii::app()->getController()->createUrl("survey/index") . "' id='limesurvey' name='limesurvey' autocomplete='off'>
-              <!-- INPUT NAMES -->
-              <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
+            <!-- INPUT NAMES -->
+            <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
         else
             echo "<form method='post' action='" . Yii::app()->getController()->createUrl("survey/index") . "' id='limesurvey' name='limesurvey' autocomplete='off'>
-              <!-- INPUT NAMES -->
-              <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
+            <!-- INPUT NAMES -->
+            <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
         echo sDefaultSubmitHandler();
 
         // <-- END FEATURE - SAVE
@@ -729,9 +729,9 @@ class SurveyRuntimeHelper {
         // the runonce element has been changed from a hidden to a text/display:none one
         // in order to workaround an not-reproduced issue #4453 (lemeur)
         echo "<input type='text' id='runonce' value='0' style='display: none;'/>
-            <!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
-            <script type='text/javascript'>
-            <!--\n";
+        <!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
+        <script type='text/javascript'>
+        <!--\n";
 
         print <<<END
             function noop_checkconditions(value, name, type)
@@ -866,8 +866,8 @@ END;
                     $question_template = str_replace('{QUESTION_ESSENTIALS}', '', $question_template);
                     $question_template = str_replace('{QUESTION_CLASS}', '', $question_template);
                     echo '
-            <!-- NEW QUESTION -->
-                        <div id="question' . $qa[4] . '" class="' . $q_class . $man_class . '"' . $n_q_display . '>';
+                    <!-- NEW QUESTION -->
+                    <div id="question' . $qa[4] . '" class="' . $q_class . $man_class . '"' . $n_q_display . '>';
                     echo templatereplace($question_template, array(), $redata, false, false, $qa[4]);
                     echo '</div>';
                 }
@@ -993,5 +993,5 @@ END;
 
         doFooter();
 
-	}
+    }
 }
