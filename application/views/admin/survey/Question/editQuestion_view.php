@@ -157,12 +157,12 @@
 
                 <li id='MandatorySelection'>
                     <label><?php $clang->eT("Mandatory:"); ?></label>
-                    <label for='MY'><?php $clang->eT("Yes"); ?></label><input id='MY' type='radio' class='radiobtn' name='mandatory' value='Y'
+                    <label for='MY'><?php $clang->eT("Yes"); ?></label> <input id='MY' type='radio' class='radiobtn' name='mandatory' value='Y'
                         <?php if ($eqrow['mandatory'] == "Y") { ?>
                             checked='checked'
                             <?php } ?>
                         />&nbsp;&nbsp;
-                    <label for='MN'><?php $clang->eT("No"); ?></label><input id='MN' type='radio' class='radiobtn' name='mandatory' value='N'
+                    <label for='MN'><?php $clang->eT("No"); ?></label> <input id='MN' type='radio' class='radiobtn' name='mandatory' value='N'
                         <?php if ($eqrow['mandatory'] != "Y") { ?>
                             checked='checked'
                             <?php } ?>
