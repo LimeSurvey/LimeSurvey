@@ -87,7 +87,7 @@ else
     if (!isset($_SESSION['maxstep'])) {$_SESSION['maxstep']=0;}
     $_SESSION['prevstep']=$_SESSION['step'];
 
-    if (isset($_SESSION['LEMpostKey']) && (!isset($_POST['LEMpostKey']) || ($_POST['LEMpostKey'] != $_SESSION['LEMpostKey'])))
+    if (isset($_SESSION['LEMpostKey']) && isset($_POST['LEMpostKey']) && $_POST['LEMpostKey'] != $_SESSION['LEMpostKey'])
     {
         // then trying to resubmit (e.g. Next, Previous, Submit) from a cached copy of the page
         // Simply re-display the current page without re-processing POST or re-validating input.  Means user will lose whatever data entry the just tried
@@ -211,7 +211,7 @@ else
         // The response from the save form
         // CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
         $flashmessage = savedcontrol();
-        
+
         if (isset($errormsg) && $errormsg != "")
         {
             showsaveform(); // reshow the form if there is an error
@@ -517,7 +517,7 @@ $okToShowErrors = (!$previewgrp && (isset($invalidLastPage) ||  $_SESSION['prevs
 
 
 
-require_once("qanda.php"); 
+require_once("qanda.php");
 
 //Iterate through the questions about to be displayed:
 $inputnames=array();
