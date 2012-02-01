@@ -1,13 +1,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
 <?php
 if (count($_POST) == 0 && !((isset($subaction) && $subaction == 'survey_logic_file'))) {die("Cannot run this script directly");}
 ?>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Survey Logic File</title>
-    </head>
-    <body>
         <?php
             if (count($_GET) > 0) {
                 foreach ($_GET as $key=>$val) {
@@ -43,6 +38,11 @@ if (count($_POST) == 0 && !((isset($subaction) && $subaction == 'survey_logic_fi
                 }
 
                 $form = <<< EOD
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Survey Logic File</title>
+</head>
+<body>
 <form method='post' action='../classes/eval/test/survey_logic_file.php'>
 <h3>Generate a logic file for the survey</h3>
 <table border='1'>
@@ -72,6 +72,7 @@ Specify which debugging features to use
 <tr><td colspan='2'><input type='submit'/></td></tr>
 </table>
 </form>
+</body>
 EOD;
                 echo $form;
             }
@@ -101,8 +102,7 @@ EOD;
                 $qid = (isset($_POST['qid']) ? sanitize_int($_POST['qid']) : NULL);
 
                 print <<< EOD
-<html>
-    <head>
+<head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Logic File - Survey #$surveyid</title>
 <style type="text/css">
@@ -146,9 +146,7 @@ EOD;
 
                 print <<< EOD
 </body>
-</html>
 EOD;
             }
         ?>
-    </body>
 </html>
