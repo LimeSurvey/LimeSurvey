@@ -343,7 +343,7 @@ function retrieveAnswers($ia)
     else {
         $_vshow = false;
     }
-    $validation_msg = validation_message($ia,$_vshow);
+    list($validation_msg,$isValid) = validation_message($ia,$_vshow);
 
     $qtitle .= $validation_msg;
     $question_text['valid_message'] = $validation_msg;
@@ -357,7 +357,7 @@ function retrieveAnswers($ia)
     $qtitle .= $ia[4] == "|" ? $file_validation_msg : "";
     $question_text['file_valid_message'] = $ia[4] == "|" ? $file_validation_msg : "";
 
-    if(!empty($question_text['man_message']) || !empty($question_text['valid_message']) || !empty($question_text['file_valid_message']))
+    if(!empty($question_text['man_message']) || !$isValid || !empty($question_text['file_valid_message']))
     {
         $question_text['input_error_class'] = ' input-error';// provides a class to style question wrapper differently if there is some kind of user input error;
     }
@@ -449,7 +449,8 @@ function validation_message($ia,$show)
         $tip .= ' style="display: none"';
     }
     $tip .= ">" . $qinfo['validTip'] . "</span>";
-    return $tip;
+    $isValid = $qinfo['valid'];
+    return array($tip,$isValid);
     //    if (!$qinfo['valid']) {
     //        if (strlen($tip) == 0) {
     //            $help = $clang->gT('This question must be answered correctly');
