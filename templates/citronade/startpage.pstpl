@@ -20,7 +20,7 @@
 <div id="container">
 	<div id="head">
 		<div class="wrapper">
-			<a href="http://www.limesurvey.org" title="The survey software" id="link-logo"><img src="{TEMPLATEURL}logo.png" alt="LimeSurvey" id="logo"/></a>
+			<a href="#" title="Made with LimeSurvey" id="link-logo"><img src="{TEMPLATEURL}logo.png" alt=" " id="logo"/></a>
 			<h1 id="sitename">{SITENAME}</h1>
 		</div>
 	</div>
