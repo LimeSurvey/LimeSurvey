@@ -162,6 +162,7 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 	.ie input#loadbutton
 		{height:2em}
 
+.no-js input.saveall,.no-js input.clearall,.no-js input#moveprevbtn  {display:none}
 /* gloabl information block */
 .note,#tokenmessage{border:#8195BA 1px solid;background:#EEF6FF;}
 
@@ -333,17 +334,34 @@ div.form table table td{padding:0;}
 
 /* tip bloc */
 .help-wrapper {font-style:italic}
-.help-wrapper .questionhelp {margin:0.5em auto;width:96%;}
-.help-wrapper .questionhelp {display:block;padding:0 4px}
-.help-wrapper span,.help-wrapper div{display:block;padding:0 4px;margin:0.5em auto;width:96%;font-size:0.8em;}
-.help-wrapper .error{color:#944}
+.help-wrapper > span,.help-wrapper > div{display:block;padding:0 4px;margin:0.5em auto;width:96%;font-size:0.8em;}
+.help-wrapper .error,.help-wrapper .error-wrapper{color:#944}
 .help-wrapper .success,.help-wrapper .good,.help-wrapper .ok{color:#494}
 .help-wrapper .problem{color:#944}
 .help-wrapper .errormandatory{color:#944;font-size:1em;}
 .help-wrapper .errormandatory br:first,.help-wrapper .errormandatory strong br:first{display:none;}
 
-.js .help-wrapper span,.js .help-wrapper div{display:none;}
-.js .help-wrapper span,.js .help-wrapper div{border: 1px solid #fcefa1; background: #fefefe; color: #363636;}
+.js .help-wrapper > span,.js .help-wrapper > div,.js .help-wrapper > span,.js .help-wrapper > div{display:none;}
+.help-wrapper .error-wrapper{display:none;}
+.input-error .help-wrapper .mandatory{display:block;}
+
+.mandatory br{display:none;}/* don't put linefeed at start of an error box */
+.help-wrapper > .mandatory span{display:block;}
+.helpwrapper > .mandatory {margin:0.5em auto;width:96%;}
+
+.no-js  .input-error  .help-wrapper {border: 1px solid #fcefa1; padding:4px;padding-left:20px;width:96%;margin:0.5em auto;}
+.no-js .input-error .help-wrapper {background:transparent url(./exclamation.png) no-repeat 2px center;padding:4px;padding-left:20px;}
+.no-js .input-error .help-wrapper > .error {border:#CD0A0A solid 1px;}
+.no-js .input-error .help-wrapper > .error {-moz-border-radius: 4px;-webkit-border-radius: 4px;border-radius:4px;}
+
+.js .help-wrapper > span,.js .help-wrapper > div{border: 1px solid #fcefa1; background: #fefefe; color: #363636;}
+.js .help-wrapper > .good {background:transparent;padding:4px;padding-left:20px;}
+.js .help-wrapper > .good {border:#0ACD0A solid 1px;}
+.js .help-wrapper > .good {-moz-border-radius: 4px;-webkit-border-radius: 4px;border-radius:4px;}
+.js .help-wrapper > .error {background:transparent url(./exclamation.png) no-repeat 2px center;padding:4px;padding-left:20px;}
+.js .help-wrapper > .error {border:#CD0A0A solid 1px;}
+.js .help-wrapper > .error {-moz-border-radius: 4px;-webkit-border-radius: 4px;border-radius:4px;}
+
 /* input error */
 input.error,input.problem{font-weight:bold}/* some width problem : todo :fix it */
 input[type="text"].tip,input.tip,input.tip{border:0;background:transparent}
@@ -817,7 +835,6 @@ text-align:center;
 {
 	display: block;
 	width:99%;
-	display:table;
 }
 .numeric-multi ul li
 ,.multiple-opt ul li
@@ -825,38 +842,43 @@ text-align:center;
 ,.multiple-short-txt ul li
 {
 	display: block;
-	width:100%;
-	display:table-row;
-
 }
 
-.numeric-multi ul li label
-,.multiple-opt-comments ul li span.option
-,.multiple-short-txt ul li label
-{
-	width:45%;
-	padding: 0.3em 1em 1em 0;
-}
-.ie6 .numeric-multi ul li label,.ie7 .numeric-multi ul li label
-,.ie6 .multiple-opt-comments ul li span.option,.ie7 .multiple-opt-comments ul li span.option
-,.ie6 .multiple-short-txt ul li label,.ie7 .multiple-short-txt ul li label
-{
-	clear:left;
-	float:left; 
-}
-.numeric-multi ul li label, .numeric-multi ul li > span
-,.multiple-opt ul li label,.multiple-opt ul li > span
-,.multiple-opt-comments ul li label,.multiple-opt-comments ul li > span
-,.multiple-short-txt ul li label,.multiple-short-txt ul li > span
-{
-	display:table-cell;
-	padding-bottom:1em;
-}
 .numeric-multi ul li label
 ,.multiple-short-txt ul li label
 {
 	text-align:right;
 	}
+.multinum-slider{text-align:center;display:inline;}	
+.numeric-multi ul li span.input
+,.multiple-opt-comments ul li span.comment
+,.multiple-short-txt ul li span
+{
+	text-align: left;
+}
+
+.numeric-multi ul.multiplenumerichelp span input {
+    border: none;
+    background-color: #fff;
+    color: #222;
+    padding: 0%;
+    width: 7em;
+}
+.numeric-multi ul li label
+,.multiple-opt-comments ul li span.option
+,.multiple-short-txt ul li label
+{
+	clear:left;
+	float:left; 
+	width:45%;
+	padding: 0.3em 1em 0% 0%;
+}
+.multiple-opt .answers-wrapper ul li
+, .list-radio .answers-wrapper ul li
+, .list-radio-flexible .answers-wrapper ul li
+{
+	padding-left:30%;
+}
 	
 @media screen and (max-width: 640px) {
 	.numeric-multi ul li label
@@ -871,47 +893,38 @@ text-align:center;
 		width:auto;
 		padding: 0.3em 0 0;
 	}
-}
-.multinum-slider{text-align:center;display:inline;}	
-.numeric-multi ul li span.input
-,.multiple-opt-comments ul li span.comment
-,.multiple-short-txt ul li span
-{
-	text-align: left;
-}
 
-.numeric-multi .multiplenumerichelp span {
-    border: none;
-    background-color: #fff;
-    color: #222;
-    padding: 0.3em 1em 0 0;
-    display:inline-block;
-    width: 7em;
-    text-align:center;
-}
-.numeric-multi .multiplenumerichelp span span{
-    background:transparent;
-    padding: 0;
-    display:inline;
-    width: auto;
-}
-
-.multiple-opt .answers-wrapper ul li
-, .list-radio .answers-wrapper ul li
-, .list-radio-flexible .answers-wrapper ul li
-{
-	padding-left:30%;
-}
-
-
-@media screen and (max-width: 640px) {
-.multiple-opt .answers-wrapper ul li
-, .list-radio .answers-wrapper ul li
-, .list-with-comment .answers-wrapper ul li 
-, .list-radio-flexible .answers-wrapper ul li 
-{
-	padding-left:0;
-}
+	.numeric-multi .answers-wrapper ul li
+	, .multiple-short-txt .answers-wrapper ul li
+	, .multiple-opt .answers-wrapper ul li
+	, .multiple-opt-comments  .answers-wrapper ul
+	, .list-radio .answers-wrapper ul li
+	, .list-with-comment .answers-wrapper ul li 
+	, .list-radio-flexible .answers-wrapper ul li 
+	{
+		padding-left:0;
+		display:table-row;
+	}
+	.numeric-multi .answers-wrapper ul li
+	, .multiple-short-txt .answers-wrapper ul li
+	, .multiple-opt .answers-wrapper ul li
+	, .multiple-opt-comments  .answers-wrapper ul
+	, .list-radio .answers-wrapper ul li
+	, .list-with-comment .answers-wrapper ul li 
+	, .list-radio-flexible .answers-wrapper ul li 
+	{
+		display:table;
+	}
+	.numeric-multi .answers-wrapper ul li
+	, .multiple-short-txt .answers-wrapper ul li
+	, .multiple-opt .answers-wrapper ul li
+	, .multiple-opt-comments  .answers-wrapper ul
+	, .list-radio .answers-wrapper ul li
+	, .list-with-comment .answers-wrapper ul li 
+	, .list-radio-flexible .answers-wrapper ul li 
+	{
+		display:table;
+	}
 }
 
  .text-short input
@@ -1004,87 +1017,26 @@ input.text,textarea{
 
 
 /* Tips / Validation Messages */
-div.em_num_answers.good {
- color: green;
-}
-
-div.em_num_answers.error {
-  color: red;
-  display: block;
-}
-
-div.em_value_range.good {
-  color: green;
-}
-div.em_value_range.error {
-  color: red;
-  display: block;
-}
-
-div.em_sum_range.good {
-  color: green;
-}
-div.em_sum_range.error {
-  color: red;
-  display: block;
-}
-
-div.em_regex_validation {
-  display: none;
-}
-div.em_regex_validation.good {
-  color: green;
-}
-div.em_regex_validation.error {
-  color: red;
-}
-
-div.em_q_fn_validation {
-  display: none;
-}
-div.em_q_fn_validation.good {
-  color: green;
-}
-div.em_q_fn_validation.error {
-  color: red;
-}
-
-div.em_sq_fn_validation {
-  display: none;
-}
-div.em_sq_fn_validation.good {
-  color: green;
-}
-div.em_sq_fn_validation.error {
-  color: red;
-}
-
-input.em_sq_validation.good {
-}
-
-input.em_sq_validation.error {
-  color: black;
-  background-color:  pink;
-}
-
-span.dynamic_sum {
-  font-weight: bold;
-  background-color: #d3d3d3;
-}
-span.dynamic_sum.good {
-  color: green;
-}
-span.dynamic_sum.error {
-  color: red;
-}
-
-span.dynamic_remaining {
-  font-weight: bold;
-  background-color: #d3d3d3;
-}
-span.dyanamic_remaining.good {
-  color: green;
-}
-span.dynamic_remaining.error {
-  color: red;
-}
+.em_num_answers.good {}
+.em_num_answers.error {}
+.em_value_range.good {}
+.em_value_range.error {}
+.em_sum_range.good {}
+.em_sum_range.error {}
+.em_regex_validation {/*display: none;*/}
+.em_regex_validation.good {}
+.em_regex_validation.error {}
+.em_q_fn_validation {/*display: none;*/}
+.em_q_fn_validation.good {}
+.em_q_fn_validation.error {}
+.em_sq_fn_validation {/*display: none;*/}
+.em_sq_fn_validation.good {}
+.em_sq_fn_validation.error {}
+.em_sq_validation.good {}
+.em_sq_validation.error {}
+.dynamic_sum {font-weight: bold;line-height: 2em;}
+.dynamic_sum.good {}
+.dynamic_sum.error {}
+.dynamic_remaining {line-height: 2em;}
+.dyanamic_remaining.good {}
+.dynamic_remaining.error {}

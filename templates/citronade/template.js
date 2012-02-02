@@ -42,10 +42,9 @@ function jalert(text) {
 
 	$dialog.dialog('open');
 }
+// Comment this part to have default alert
 function alert(text) {
-// Uncomment this part to replace alert with jquery.dialog
-	
-	//jalert(text);
+	jalert(text);
 }
 
 /*
@@ -58,7 +57,8 @@ function alert(text) {
 
 $(document).ready(function(){
   // focusFirst(); /** Uncomment if you want to use the focusFirst function **/
-  $(".help-wrapper > span,.help-wrapper > div").not(":empty").css('display','block');
+  $(".help-wrapper > span,.help-wrapper > div").not(".error-wrapper").not(":empty").css('display','block');
+  $(".help-wrapper .error-wrapper > span,.help-wrapper .error-wrapper > div").not(".error-wrapper").not(":empty").css('display','block');
 })
 
 
