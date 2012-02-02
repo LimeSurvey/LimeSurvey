@@ -351,8 +351,8 @@ div.form table table td{padding:0;}
 
 .no-js  .input-error  .help-wrapper {border: 1px solid #fcefa1; padding:4px;padding-left:20px;width:96%;margin:0.5em auto;}
 .no-js .input-error .help-wrapper {background:transparent url(./exclamation.png) no-repeat 2px center;padding:4px;padding-left:20px;}
-.no-js .input-error .help-wrapper > .error {border:#CD0A0A solid 1px;}
-.no-js .input-error .help-wrapper > .error {-moz-border-radius: 4px;-webkit-border-radius: 4px;border-radius:4px;}
+.no-js .input-error .help-wrapper  {border:#CD0A0A solid 1px;}
+.no-js .input-error .help-wrapper  {-moz-border-radius: 4px;-webkit-border-radius: 4px;border-radius:4px;}
 
 .js .help-wrapper > span,.js .help-wrapper > div{border: 1px solid #fcefa1; background: #fefefe; color: #363636;}
 .js .help-wrapper > .good {background:transparent;padding:4px;padding-left:20px;}
