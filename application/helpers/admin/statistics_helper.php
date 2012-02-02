@@ -295,10 +295,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     }
     else
     {
-        $statlang = new limesurvey_lang($statlangcode);
+        $statlang = new Limesurvey_lang($statlangcode);
     }
 
-    $fieldmap=createFieldMap($surveyid, "full", false, false, $statlang);
+    $fieldmap=createFieldMap($surveyid, "full", false, false, $statlang->getlangcode());
 
     /*
     * this variable is used in the function shortencode() which cuts off a question/answer title

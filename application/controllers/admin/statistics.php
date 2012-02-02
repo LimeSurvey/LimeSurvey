@@ -232,13 +232,19 @@ class statistics extends Survey_Common_Action {
 		// SHOW ID FIELD
 
 		$grapherror = false;
+        $error = '';
 		if (!function_exists("gd_info")) {
 			$grapherror = true;
+            $error.='<br />'.$clang->gT('You do not have the GD Library installed. Showing charts requires the GD library to function properly.');
+            $error.='<br />'.$clang->gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
 		}
 		elseif (!function_exists("imageftbbox")) {
 		    $grapherror = true;
+            $error.='<br />'.$clang->gT('You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly.');
+            $error.='<br />'.$clang->gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
 		}
-		if (!$grapherror)
+        
+		if ($grapherror)
 		{
 		    unset($_POST['usegraph']);
 		}
@@ -266,6 +272,7 @@ class statistics extends Survey_Common_Action {
 		$aData['selecthide'] = $selecthide;
 		$aData['selectshow'] = $selectshow;
 		$aData['selectinc'] = $selectinc;
+        $aData['error'] = $error;
 
 		//if ($selecthide!='')
 		//{
@@ -520,6 +527,7 @@ class statistics extends Survey_Common_Action {
 		    {
 		        $usegraph = 0;
 		    }
+            $aData['usegraph'] = $usegraph;
 		    $outputType = $_POST['outputtype'];
 		    switch($outputType){
 
@@ -541,7 +549,7 @@ class statistics extends Survey_Common_Action {
 		    }
 
 		}	//end if -> show summary results
-
+        
 		$aData['output'] = $statisticsoutput;
 
         $this->_renderWrappedTemplate('export', 'statistics_view', $aData);

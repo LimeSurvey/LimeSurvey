@@ -104,7 +104,7 @@
         <ul>
             <li>
                 <label for='usegraph'><?php $clang->eT("Show graphs"); ?></label>
-                <input type='checkbox' id='usegraph' name='usegraph' <?php if (isset($_POST['usegraph'])) { echo "checked='checked'"; } ?> /><br />
+                <input type='checkbox' id='usegraph' name='usegraph' <?php if (isset($usegraph) && $usegraph == 1) { echo "checked='checked'"; } ?> /><br />
                 <?php if($error != '') { echo "<span id='grapherror' style='display:none'>$error<hr /></span>"; } ?>
             </li>
 
