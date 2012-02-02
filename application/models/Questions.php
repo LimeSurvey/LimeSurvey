@@ -231,14 +231,17 @@ class Questions extends CActiveRecord
         return $command->query();
     }
 
-    public function getQuestionsForStatistics($fields, $condition, $orderby)
+    public function getQuestionsForStatistics($fields, $condition, $orderby=FALSE)
     {
-        return Yii::app()->db->createCommand()
+        $command = Yii::app()->db->createCommand()
         ->select($fields)
         ->from(self::tableName())
-        ->where($condition)
-        ->order($orderby)
-        ->queryAll();
+        ->where($condition);
+        if ($orderby != FALSE)
+        {
+            $command->order($orderby);
+        }
+        return $command->queryAll();
     }
 
     public function getQuestionList($surveyid, $language)

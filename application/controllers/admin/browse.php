@@ -515,7 +515,7 @@ class browse extends Survey_Common_Action
             $oCriteria->addCondition("`submitdate` IS NOT NULL");
         }
 
-        $dtcount = Survey_dynamic::model($iSurveyId)->count($oCriteria) or die("Couldn't get response data<br />");
+        $dtcount = Survey_dynamic::model($iSurveyId)->count($oCriteria);// or die("Couldn't get response data<br />");
 
         if ($limit > $dtcount)
         {
@@ -655,7 +655,7 @@ class browse extends Survey_Common_Action
         $oCriteria->select = 'tid';
         $oCriteria->join = "INNER JOIN {{survey_{$iSurveyId}}} ON {{survey_{$iSurveyId}_timings}}.id={{survey_{$iSurveyId}}}.id";
         $oCriteria->condition = 'submitdate IS NOT NULL';
-        $dtcount = Survey_timings::model($iSurveyId)->count($oCriteria) or die("Couldn't get response data");
+        $dtcount = Survey_timings::model($iSurveyId)->count($oCriteria); // or die("Couldn't get response data");
 
         if ($limit > $dtcount)
         {

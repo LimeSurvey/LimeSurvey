@@ -211,48 +211,54 @@
                                     $counter2=0;
 
                                     //go through all the (multiple) answers
-                                    foreach($result[$key1] as $row)
+                                    foreach($result[$key1] as $row1)
                                     {
-                                        $row = array_values($row);
-                                        /*
-                                         * filter form for numerical input
-                                         * - checkbox
-                                         * - greater than
-                                         * - less than
-                                         */
-                                        $myfield1="K".$myfield.$row[0];
-                                        $myfield2="K{$myfield}".$row[0]."G";
-                                        $myfield3="K{$myfield}".$row[0]."L";
-                                        if ($counter2 == 4) { echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
-
-                                        //start new TD
-                                        echo "\t\t\t\t<td align='center' valign='top'>";
-
-                                        //checkbox
-                                        echo "<input type='checkbox'  name='summary[]' value='$myfield1'";
-
-                                        //check SGQA -> do we want to pre-check the checkbox?
-                                        if (isset($summary) && (array_search("K{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $summary) !== FALSE))
-                                        {echo " checked='checked'";}
-                                        echo " />&nbsp;";
-
-                                        //show speaker
-                                        echo _showSpeaker($flt[3]." - ".flattenText($row[1],true))."<br />\n";
-
-                                        //input fields
-                                        echo "\t\t\t\t\t<font size='1'>".$clang->gT("Number greater than").":</font><br />\n"
-                                        ."\t\t\t\t\t<input type='text' name='$myfield2' value='";
-                                        if (isset($_POST[$myfield2])){echo $_POST[$myfield2];}
-
-                                        //check number input using JS
-                                        echo "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n"
-                                        ."\t\t\t\t\t<font size='1'>".$clang->gT("Number less than").":</font><br />\n"
-                                        ."\t\t\t\t\t<input type='text' name='$myfield3' value='";
-                                        if (isset($_POST[$myfield3])) {echo $_POST[$myfield3];}
-                                        echo "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n";
-
-                                        //we added 1 form -> increase counter
-                                        $counter2++;
+                                        $row1 = array_values($row1);
+                                        
+                                        foreach($row1 as $row)
+                                        {
+                                            $row = array_values($row);
+                                            /*
+                                             * filter form for numerical input
+                                             * - checkbox
+                                             * - greater than
+                                             * - less than
+                                             */
+                                             
+                                            $myfield1="K".$myfield.$row[0];
+                                            $myfield2="K{$myfield}".$row[0]."G";
+                                            $myfield3="K{$myfield}".$row[0]."L";
+                                            if ($counter2 == 4) { echo "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
+    
+                                            //start new TD
+                                            echo "\t\t\t\t<td align='center' valign='top'>";
+    
+                                            //checkbox
+                                            echo "<input type='checkbox'  name='summary[]' value='$myfield1'";
+    
+                                            //check SGQA -> do we want to pre-check the checkbox?
+                                            if (isset($summary) && (array_search("K{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $summary) !== FALSE))
+                                            {echo " checked='checked'";}
+                                            echo " />&nbsp;";
+    
+                                            //show speaker
+                                            echo _showSpeaker($flt[3]." - ".flattenText($row[1],true))."<br />\n";
+    
+                                            //input fields
+                                            echo "\t\t\t\t\t<font size='1'>".$clang->gT("Number greater than").":</font><br />\n"
+                                            ."\t\t\t\t\t<input type='text' name='$myfield2' value='";
+                                            if (isset($_POST[$myfield2])){echo $_POST[$myfield2];}
+    
+                                            //check number input using JS
+                                            echo "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n"
+                                            ."\t\t\t\t\t<font size='1'>".$clang->gT("Number less than").":</font><br />\n"
+                                            ."\t\t\t\t\t<input type='text' name='$myfield3' value='";
+                                            if (isset($_POST[$myfield3])) {echo $_POST[$myfield3];}
+                                            echo "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n";
+    
+                                            //we added 1 form -> increase counter
+                                            $counter2++;
+                                        }
 
                                     }
                                     break;
