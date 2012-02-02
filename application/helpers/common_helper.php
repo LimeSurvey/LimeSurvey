@@ -4938,7 +4938,13 @@ function reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRep
 {
     $aGIDReplacements=array_flip($aGIDReplacements);
     $aQIDReplacements=array_flip($aQIDReplacements);
-    $aFieldMap = createFieldMap($iNewSID,'short',false,false,getBaseLanguageFromSurveyID($iNewSID));
+    if ($iOldSID==$iNewSID) {
+        $forceRefresh=true; // otherwise grabs the cached copy and throws undefined index exceptions
+    }
+    else {
+        $forceRefresh=false;
+    }
+    $aFieldMap = createFieldMap($iNewSID,'short',$forceRefresh,false,getBaseLanguageFromSurveyID($iNewSID));
 
     $aFieldMappings=array();
     foreach ($aFieldMap as $sFieldname=>$aFieldinfo)
