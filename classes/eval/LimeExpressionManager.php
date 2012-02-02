@@ -5155,7 +5155,12 @@ class LimeExpressionManager {
                     if ($jsVar == $knownVar['jsName'])
                     {
                         if ($LEM->surveyMode=='group' && $knownVar['gid'] == $LEM->groupNum) {
-                            continue;
+                            if ($knownVar['hidden'] && $knownVar['type'] != '*') {
+                                ;   // need to  declare a hidden variable for non-equation hidden variables so can do dynamic lookup.
+                            }
+                            else {
+                                continue;
+                            }
                         }
                         if ($LEM->surveyMode=='question' && $knownVar['qid'] == $LEM->currentQID) {
                             continue;
@@ -5168,7 +5173,6 @@ class LimeExpressionManager {
                         if (isset($LEM->jsVar2qid[$jsVar])) {
                             $qidList[$LEM->jsVar2qid[$jsVar]] = $LEM->jsVar2qid[$jsVar];
                         }
-//                        break;    // why was this here?
                     }
                 }
             }
