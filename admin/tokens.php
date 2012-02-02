@@ -2054,6 +2054,7 @@
             $tokenoutput .= "<div class='warningheader'>".$clang->gT("Warning")."</div>\n"
             .$clang->gT("There were no eligible emails to send. This will be because none satisfied the criteria of:")."\n"
             ."<br/>&nbsp;<ul><li>".$clang->gT("having a valid email address")."</li>"
+            ."<li>".$clang->gT("having a token")."</li>"
             ."<li>".$clang->gT("not having been sent an invitation already")."</li>"
             ."<li>".$clang->gT("but not having already completed the survey")."</li>"
             ."</ul><br />\n";
