@@ -484,7 +484,7 @@ class tokens extends Survey_Common_Action
             die("no permissions"); // TODO Replace
         }
 
-        if (Yii::app()->request->getPost('subaction'))
+        if (Yii::app()->request->getPost('subaction') == 'inserttoken')
         {
             $clang = $this->getController()->lang;
 
@@ -492,21 +492,21 @@ class tokens extends Survey_Common_Action
             //Fix up dates and match to database format
             if (trim(Yii::app()->request->getPost('validfrom')) == '')
             {
-                $_POST['validuntil'] = null;
+                $validfrom = null;
             }
             else
             {
                 $datetimeobj = new Date_Time_Converter(array(trim(Yii::app()->request->getPost('validfrom')), $dateformatdetails['phpdate'] . ' H:i'));
-                $_POST['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
+                $validfrom = $datetimeobj->convert('Y-m-d H:i:s');
             }
             if (trim(Yii::app()->request->getPost('validuntil')) == '')
             {
-                $_POST['validuntil'] = null;
+                $validuntil = null;
             }
             else
             {
                 $datetimeobj = new Date_Time_Converter(array(trim(Yii::app()->request->getPost('validuntil')), $dateformatdetails['phpdate'] . ' H:i'));
-                $_POST['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
+                $validuntil = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
             $sanitizedtoken = sanitize_token(Yii::app()->request->getPost('token'));
@@ -525,7 +525,9 @@ class tokens extends Survey_Common_Action
                 }
                 $sanitizedtoken = $newtoken;
             }
-
+            
+            
+            
             $aData = array(
                 'firstname' => Yii::app()->request->getPost('firstname'),
                 'lastname' => Yii::app()->request->getPost('lastname'),
@@ -537,8 +539,8 @@ class tokens extends Survey_Common_Action
                 'remindersent' => Yii::app()->request->getPost('remindersent'),
                 'completed' => Yii::app()->request->getPost('completed'),
                 'usesleft' => Yii::app()->request->getPost('usesleft'),
-                'validfrom' => Yii::app()->request->getPost('validfrom'),
-                'validuntil' => Yii::app()->request->getPost('validuntil'),
+                'validfrom' => $validfrom,
+                'validuntil' => $validuntil,
             );
 
             // add attributes

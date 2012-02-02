@@ -425,9 +425,9 @@ class SurveyAction extends CAction {
             // check if token actually does exist
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-                $tkquery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token=".$token." ";
+                $tkquery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".$token."'";
             } else {
-                $tkquery = "SELECT * FROM {{'tokens_'".$surveyid."}} WHERE token=".$token." AND (completed = 'N' or completed='')";
+                $tkquery = "SELECT * FROM {{'tokens_'".$surveyid."}} WHERE token='".$token."' AND (completed = 'N' or completed='')";
             }
             $tkresult = dbExecuteAssoc($tkquery); //Checked
             $tokendata = $tkresult->read();
@@ -453,9 +453,9 @@ class SurveyAction extends CAction {
         {
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-                $tkquery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token=".$token." ";
+                $tkquery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".$token."'";
             } else {
-                $tkquery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token=".$token." AND (completed = 'N' or completed='')";
+                $tkquery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".$token."' AND (completed = 'N' or completed='')";
             }
             $tkresult = dbExecuteAssoc($tkquery); //Checked
             $tokendata = $tkresult->read();

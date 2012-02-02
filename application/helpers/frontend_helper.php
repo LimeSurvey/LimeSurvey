@@ -1029,7 +1029,7 @@
         $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
 
         // check how many uses the token has left
-        $usesquery = "SELECT usesleft FROM {{tokens_$surveyid}} WHERE token=".$clienttoken;
+        $usesquery = "SELECT usesleft FROM {{tokens_$surveyid}} WHERE token='".$clienttoken."'";
         $usesresult = dbExecuteAssoc($usesquery);
         $usesrow = $usesresult->read();
         if (isset($usesrow)) { $usesleft = $usesrow['usesleft']; }
@@ -1061,14 +1061,14 @@
                 $utquery .= "SET usesleft=usesleft-1\n";
             }
         }
-        $utquery .= "WHERE token=".$clienttoken."";
+        $utquery .= "WHERE token='".$clienttoken."'";
 
         $utresult = dbExecuteAssoc($utquery) or safeDie ("Couldn't update tokens table!<br />\n$utquery<br />\n");     //Checked
 
         if ($quotaexit==false)
         {
             // TLR change to put date into sent and completed
-            $cnfquery = "SELECT * FROM {{tokens_$surveyid}} WHERE token=".$clienttoken." AND completed!='N' AND completed!=''";
+            $cnfquery = "SELECT * FROM {{tokens_$surveyid}} WHERE token='".$clienttoken."' AND completed!='N' AND completed!=''";
 
             $cnfresult = dbExecuteAssoc($cnfquery);       //Checked
             $cnfrow = $cnfresult->read();
@@ -1529,9 +1529,9 @@
         //check if token actually does exist
         // check also if it is allowed to change survey after completion
         if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-            $tkquery = "SELECT COUNT(*) FROM {{tokens_".$surveyid."}} WHERE token=".trim(strip_tags($clienttoken))." ";
+            $tkquery = "SELECT COUNT(*) FROM {{tokens_".$surveyid."}} WHERE token='".trim(strip_tags($clienttoken))."'";
         } else {
-            $tkquery = "SELECT COUNT(*) FROM {{tokens_".$surveyid."}} WHERE token=".trim(strip_tags($clienttoken))." AND (completed = 'N' or completed='')";
+            $tkquery = "SELECT COUNT(*) FROM {{tokens_".$surveyid."}} WHERE token='".trim(strip_tags($clienttoken))."' AND (completed = 'N' or completed='')";
         }
 
         $tkresult = dbExecuteAssoc($tkquery);    //Checked
@@ -1706,7 +1706,7 @@
     {
 
         //get language from token (if one exists)
-        $tkquery2 = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".db_quote($clienttoken)."' AND (completed = 'N' or completed='')";
+        $tkquery2 = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".$clienttoken."' AND (completed = 'N' or completed='')";
         //echo $tkquery2;
         $result = dbExecuteAssoc($tkquery2) or safeDie ("Couldn't get tokens<br />$tkquery<br />");    //Checked
         foreach ($result->readAll() as $rw)
