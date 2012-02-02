@@ -5172,7 +5172,12 @@ class LimeExpressionManager {
                     if ($jsVar == $knownVar['jsName'])
                     {
                         if ($LEM->surveyMode=='group' && $knownVar['gid'] == $LEM->groupNum) {
-                            continue;
+                            if ($knownVar['hidden'] && $knownVar['type'] != '*') {
+                                ;   // need to  declare a hidden variable for non-equation hidden variables so can do dynamic lookup.
+                            }
+                            else {
+                                continue;
+                            }
                         }
                         if ($LEM->surveyMode=='question' && $knownVar['qid'] == $LEM->currentQID) {
                             continue;
