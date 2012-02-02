@@ -353,6 +353,7 @@ function retrieveAnswers($ia)
     }
     else {
         $file_validation_msg = '';
+        $isValid = true;    // don't want to show any validation messages.
     }
     $qtitle .= $ia[4] == "|" ? $file_validation_msg : "";
     $question_text['file_valid_message'] = $ia[4] == "|" ? $file_validation_msg : "";

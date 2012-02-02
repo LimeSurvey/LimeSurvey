@@ -1199,12 +1199,13 @@ div.questionTitle {
 #index .container input { margin: 1em; }
 
 /* Tips / Validation Messages */
+/* If the question is invalid, but has not been submitted, give it a pleasant warning color */
 div.em_num_answers.good {
  color: green;
 }
 
 div.em_num_answers.error {
-  color: red;
+  color: #FF00FF;
   display: block;
 }
 
@@ -1212,7 +1213,7 @@ div.em_value_range.good {
   color: green;
 }
 div.em_value_range.error {
-  color: red;
+  color: #FF00FF;
   display: block;
 }
 
@@ -1220,7 +1221,7 @@ div.em_sum_range.good {
   color: green;
 }
 div.em_sum_range.error {
-  color: red;
+  color: #FF00FF;
   display: block;
 }
 
@@ -1231,7 +1232,7 @@ div.em_regex_validation.good {
   color: green;
 }
 div.em_regex_validation.error {
-  color: red;
+  color: #FF00FF;
 }
 
 div.em_q_fn_validation {
@@ -1241,7 +1242,7 @@ div.em_q_fn_validation.good {
   color: green;
 }
 div.em_q_fn_validation.error {
-  color: red;
+  color: #FF00FF;
 }
 
 div.em_sq_fn_validation {
@@ -1251,7 +1252,7 @@ div.em_sq_fn_validation.good {
   color: green;
 }
 div.em_sq_fn_validation.error {
-  color: red;
+  color: #FF00FF;
 }
 
 input.em_sq_validation.good {
@@ -1282,4 +1283,10 @@ span.dyanamic_remaining.good {
 }
 span.dynamic_remaining.error {
   color: red;
+}
+
+/* If  it is still invalid after submit, flag it in red */
+.input-error div.error {
+  color: red;
+  display: block;
 }
