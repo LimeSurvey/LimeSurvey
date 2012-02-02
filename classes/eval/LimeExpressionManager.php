@@ -5014,10 +5014,10 @@ class LimeExpressionManager {
 
                     $jsParts[] = "\n  if(isValidOther" . $arg['qid'] ." && isValidSum" . $arg['qid'] . "){\n";
                     $jsParts[]= "    $('#" . $arg['qid'] . "_vmsg').removeClass('error').addClass('good');\n";
-                    $jsParts[]= "    $('#question" . $arg['qid'] . "').removeClass('input-error');\n";
+//                    $jsParts[]= "    $('#question" . $arg['qid'] . "').removeClass('input-error');\n";
                     $jsParts[] = "  }\n  else {\n";
                     $jsParts[]= "    $('#" . $arg['qid'] . "_vmsg').removeClass('good').addClass('error');\n";
-                    $jsParts[]= "    $('#question" . $arg['qid'] . "').addClass('input-error');\n";
+//                    $jsParts[]= "    $('#question" . $arg['qid'] . "').addClass('input-error');\n";
                     $jsParts[] = "  }\n";
                 }
                 
