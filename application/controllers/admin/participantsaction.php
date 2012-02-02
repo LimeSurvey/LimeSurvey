@@ -322,6 +322,8 @@ class participantsaction extends Survey_Common_Action
     {
         $selectoption = Yii::app()->request->getPost('selectedoption');
         $iParticipantId = Yii::app()->request->getPost('participant_id');
+		//echo $selectoption." -- ".$iParticipantId."<br />";
+    	//die();
 
         // Deletes from participants only
         if ($selectoption == 'po')

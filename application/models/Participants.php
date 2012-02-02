@@ -238,9 +238,9 @@ class Participants extends CActiveRecord
         $rowid = explode(",", $rows);
         foreach ($rowid as $row)
         {
-            Yii::app()->db->createCommand()->delete('{{participants}}', 'participant_id = :row')->bindParam(":row", $row, PDO::PARAM_INT);
-            Yii::app()->db->createCommand()->delete('{{survey_links}}', 'participant_id = :row')->bindParam(":row", $row, PDO::PARAM_INT);
-            Yii::app()->db->createCommand()->delete('{{participant_attribute}}', 'participant_id = :row')->bindParam(":row", $row, PDO::PARAM_INT);
+            Yii::app()->db->createCommand()->delete(Participants::model()->tableName(), array('in', 'participant_id', $row));
+        	Yii::app()->db->createCommand()->delete(Survey_links::model()->tableName(), array('in', 'participant_id', $row));
+        	Yii::app()->db->createCommand()->delete(Participant_attribute::model()->tableName(), array('in', 'participant_id', $row));
         }
     }
 
@@ -250,16 +250,18 @@ class Participants extends CActiveRecord
         foreach ($rowid as $row)
         {
             $tokens = Yii::app()->db->createCommand()->select('*')->from('{{survey_links}}')->where('participant_id = :row')->bindParam(":row", $row, PDO::PARAM_INT)->queryAll();
-            foreach ($tokens as $key => $value)
+
+			foreach ($tokens as $key => $value)
             {
                 if (Yii::app()->db->schema->getTable('tokens_' . intval($value['survey_id'])))
                 {
-                    Yii::app()->db->createCommand()->delete('{{tokens_' . intval($value['survey_id']) . '}}', 'participant_id = :participant_id')->bindParam(":participant_id", $value['participant_id'], PDO::PARAM_INT);
-                }
+                    Yii::app()->db->createCommend()->delete(Tokens::model()->tableName(), array('in', 'participant_id', $row));
+				}
             }
-            Yii::app()->db->createCommand()->delete('{{participants}}', 'participant_id = :row')->bindParam(":row", $row, PDO::PARAM_INT);
-            Yii::app()->db->createCommand()->delete('{{survey_links}}', 'participant_id = :row')->bindParam(":row", $row, PDO::PARAM_INT);
-            Yii::app()->db->createCommand()->delete('{{participant_attribute}}', 'participant_id = :row')->bindParam(":row", $row, PDO::PARAM_INT);
+
+        	Yii::app()->db->createCommand()->delete(Participants::model()->tableName(), array('in', 'participant_id', $row));
+        	Yii::app()->db->createCommand()->delete(Survey_links::model()->tableName(), array('in', 'participant_id', $row));
+        	Yii::app()->db->createCommand()->delete(Participant_attribute::model()->tableName(), array('in', 'participant_id', $row));
         }
     }
 
