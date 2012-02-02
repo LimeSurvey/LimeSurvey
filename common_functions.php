@@ -5942,7 +5942,13 @@ function aReverseTranslateFieldnames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRe
 {
     $aGIDReplacements=array_flip($aGIDReplacements);
     $aQIDReplacements=array_flip($aQIDReplacements);
-    $aFieldMap=createFieldMap($iNewSID);
+    if ($iOldSID==$iNewSID) {
+        $forceRefresh=true; // otherwise grabs the cached copy and throws undefined index exceptions
+    }
+    else {
+        $forceRefresh=false;
+    }
+    $aFieldMap=createFieldMap($iNewSID,'full',$forceRefresh);
     $aFieldMappings=array();
     foreach ($aFieldMap as $sFieldname=>$aFieldinfo)
     {
