@@ -1162,6 +1162,51 @@ class LimeExpressionManager {
                 $multiflexible_max='';
             }
 
+            // other_comment_mandatory
+            // Validation:= sqN <= value (which could be an expression).
+            if (isset($qattr['other_comment_mandatory']) && trim($qattr['other_comment_mandatory']) != '')
+            {
+                $other_comment_mandatory = $qattr['other_comment_mandatory'];
+                $eqn='';
+                if ($other_comment_mandatory == '1')
+                {
+                    $sgqa = $qinfo['sgqa'];
+                    switch ($type)
+                    {
+                        // TODO oddly, the other field has value of 0 when empty instead of "", so cheating and looking for strlen > 1
+                        case '!': //List - dropdown
+                        case 'L': //LIST drop-down/radio-button list
+                            $eqn = "(" . $sgqa . ".NAOK!='-oth-' || (" . $sgqa . ".NAOK=='-oth-' && strlen(trim(" . $sgqa . "other.NAOK))>1))";
+                            break;
+                        case 'P': //Multiple choice with comments checkbox + text
+                            $eqn = "(is_empty(trim(" . $sgqa . "other.NAOK)) || (!is_empty(trim(" . $sgqa . "other.NAOK)) && strlen(trim(" . $sgqa . "othercomment.NAOK))>1))";
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                if ($eqn != '')
+                {
+                    if (!isset($validationEqn[$questionNum]))
+                    {
+                        $validationEqn[$questionNum] = array();
+                    }
+                    $validationEqn[$questionNum][] = array(
+                        'qtype' => $type,
+                        'type' => 'other_comment_mandatory',
+                        'class' => 'other_comment_mandatory',
+                        'eqn' => $eqn,
+                        'qid' => $questionNum,
+                    );
+                }
+            }
+            else
+            {
+                $other_comment_mandatory = '';
+            }
+
+
+
             // show_totals
             // TODO - create equations for these?
 
@@ -1498,6 +1543,12 @@ class LimeExpressionManager {
             if ($equals_num_value!='')
             {
                 $qtips['sum_range']=sprintf($this->gT("The sum must equal %s"),'{'.$equals_num_value.'}');
+            }
+
+            // other comment mandatory
+            if ($other_comment_mandatory!='')
+            {
+                $qtips['other_comment_mandatory']=$this->gT('Please also fill in the "other comment" field.');
             }
 
             // regular expression validation
@@ -1982,10 +2033,32 @@ class LimeExpressionManager {
                     $jsVarName = 'java' . $sgqa;
                     break;
                 case '!': //List - dropdown
+                    if (preg_match("/other$/",$sgqa))
+                    {
+                        $jsVarName = 'java' . $sgqa;
+                        $jsVarName_on = 'othertext' . substr($sgqa,0,-5);
+                    }
+                    else
+                    {
+                        $jsVarName = 'java' . $sgqa;
+                        $jsVarName_on = $jsVarName;
+                    }
+                    break;
+                case 'L': //LIST drop-down/radio-button list
+                    if (preg_match("/other$/",$sgqa))
+                    {
+                        $jsVarName = 'java' . $sgqa;
+                        $jsVarName_on = 'answer' . $sgqa . "text";
+                    }
+                    else
+                    {
+                        $jsVarName = 'java' . $sgqa;
+                        $jsVarName_on = $jsVarName;
+                    }
+                    break;
                 case '5': //5 POINT CHOICE radio-buttons
                 case 'G': //GENDER drop-down list
                 case 'I': //Language Question
-                case 'L': //LIST drop-down/radio-button list
                 case 'Y': //YES/NO radio-buttons
                 case '*': //Equation
                 case '1': //Array (Flexible Labels) dual scale
@@ -2024,7 +2097,7 @@ class LimeExpressionManager {
                     }
                     break;
             }
-            if (!is_null($rowdivid) || $type == 'L' || $type == 'N' || !is_null($preg)) {
+            if (!is_null($rowdivid) || $type == 'L' || $type == 'N' || $type == '!' || !is_null($preg)) {
                 if (!isset($q2subqInfo[$questionNum])) {
                     $q2subqInfo[$questionNum] = array(
                         'qid' => $questionNum,
@@ -2040,7 +2113,7 @@ class LimeExpressionManager {
                 if (!isset($q2subqInfo[$questionNum]['subqs'])) {
                     $q2subqInfo[$questionNum]['subqs'] = array();
                 }
-                if ($type == 'L')
+                if ($type == 'L' || $type == '!')
                 {
                     if (!is_null($ansArray))
                     {
@@ -4963,8 +5036,10 @@ class LimeExpressionManager {
                 if (count($validationEqns) > 0) {
                     $_hasSumRange=false;
                     $_hasOtherValidation=false;
+                    $_hasOther2Validation=false;
                     $jsParts[] = "  isValidSum" . $arg['qid'] . "=true;\n";    // assume valid until proven otherwise
                     $jsParts[] = "  isValidOther" . $arg['qid'] . "=true;\n";    // assume valid until proven otherwise
+                    $jsParts[] = "  isValidOtherComment" . $arg['qid'] . "=true;\n";    // assume valid until proven otherwise
                     foreach ($validationEqns as $vclass=>$validationEqn)
                     {
                         if ($validationEqn == '') {
@@ -4973,6 +5048,10 @@ class LimeExpressionManager {
                         if ($vclass == 'sum_range')
                         {
                             $_hasSumRange = true;
+                        }
+                        else if ($vclass == 'other_comment_mandatory')
+                        {
+                            $_hasOther2Validation = true;
                         }
                         else
                         {
@@ -4992,6 +5071,9 @@ class LimeExpressionManager {
                         {
                             case 'sum_range':
                                 $jsParts[] = "    isValidSum" . $arg['qid'] . "=false;\n";
+                                break;
+                            case 'other_comment_mandatory':
+                                $jsParts[] = "    isValidOtherComment" . $arg['qid'] . "=false;\n";
                                 break;
 //                            case 'num_answers':
 //                            case 'value_range':
@@ -5029,13 +5111,39 @@ class LimeExpressionManager {
                             break;
                     }
 
-                    $jsParts[] = "\n  if(isValidOther" . $arg['qid'] ." && isValidSum" . $arg['qid'] . "){\n";
-                    $jsParts[]= "    $('#" . $arg['qid'] . "_vmsg').removeClass('error').addClass('good');\n";
-//                    $jsParts[]= "    $('#question" . $arg['qid'] . "').removeClass('input-error');\n";
-                    $jsParts[] = "  }\n  else {\n";
-                    $jsParts[]= "    $('#" . $arg['qid'] . "_vmsg').removeClass('good').addClass('error');\n";
-//                    $jsParts[]= "    $('#question" . $arg['qid'] . "').addClass('input-error');\n";
-                    $jsParts[] = "  }\n";
+                    // color-code mandatory other comment fields
+                    switch ($arg['type'])
+                    {
+                        case '!':
+                        case 'L':
+                        case 'P':
+                            switch ($arg['type'])
+                            {
+                                case '!':
+                                    $othervar = 'othertext' . substr($arg['jsResultVar'],4,-5);
+                                    break;
+                                case 'L':
+                                    $othervar = 'answer' . substr($arg['jsResultVar'],4) . 'text';
+                                    break;
+                                case 'P':
+                                    $othervar = 'answer' . substr($arg['jsResultVar'],4);
+                                    break;
+                            }
+                            $jsParts[] = "\n  if(isValidOtherComment" . $arg['qid'] . "){\n";
+                            $jsParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').removeClass('error').addClass('good');\n";
+                            $jsParts[] = "  }\n  else {\n";
+                            $jsParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').removeClass('good').addClass('error');\n";
+                            $jsParts[] = "  }\n";
+                            break;
+                        default:
+                            break;
+                    }
+
+//                    $jsParts[] = "\n  if(isValidOther" . $arg['qid'] ." && isValidSum" . $arg['qid'] . "){\n";
+//                    $jsParts[]= "    $('#" . $arg['qid'] . "_vmsg').removeClass('error').addClass('good');\n";
+//                    $jsParts[] = "  }\n  else {\n";
+//                    $jsParts[]= "    $('#" . $arg['qid'] . "_vmsg').removeClass('good').addClass('error');\n";
+//                    $jsParts[] = "  }\n";
                 }
 
                 if ($arg['hidden']) {

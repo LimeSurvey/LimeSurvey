@@ -1588,31 +1588,31 @@ function do_list_dropdown($ia)
         $answer .= "</p>";
     }
 
-    $checkotherscript = "";
-    if (isset($other) && $other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1)
-    {
-        $checkotherscript = "\n<script type='text/javascript'>\n"
-        . "\t<!--\n"
-        . "oldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"
-        . "function ensureOther_{$ia[0]}()\n"
-        . "{\n"
-        . "\tothercommentval=document.getElementById('othertext{$ia[1]}').value;\n"
-        . "\totherval=document.getElementById('answer{$ia[1]}').value;\n"
-        . "\tif (otherval == '-oth-' && othercommentval == '') {\n"
-        . "alert('".sprintf($clang->gT("You've selected the \"%s\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($othertext,true,true)),trim(javascriptEscape($ia[3],true,true)))."');\n"
-        . "return false;\n"
-        . "\t}\n"
-        . "\telse {\n"
-        . "if(typeof oldonsubmitOther_{$ia[0]} == 'function') {\n"
-        . "\treturn oldonsubmitOther_{$ia[0]}();\n"
-        . "}\n"
-        . "\t}\n"
-        . "}\n"
-        . "document.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
-        . "\t-->\n"
-        . "</script>\n";
-    }
-    $answer = $checkotherscript . $answer;
+//    $checkotherscript = "";
+//    if (isset($other) && $other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1)
+//    {
+//        $checkotherscript = "\n<script type='text/javascript'>\n"
+//        . "\t<!--\n"
+//        . "oldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"
+//        . "function ensureOther_{$ia[0]}()\n"
+//        . "{\n"
+//        . "\tothercommentval=document.getElementById('othertext{$ia[1]}').value;\n"
+//        . "\totherval=document.getElementById('answer{$ia[1]}').value;\n"
+//        . "\tif (otherval == '-oth-' && othercommentval == '') {\n"
+//        . "alert('".sprintf($clang->gT("You've selected the \"%s\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($othertext,true,true)),trim(javascriptEscape($ia[3],true,true)))."');\n"
+//        . "return false;\n"
+//        . "\t}\n"
+//        . "\telse {\n"
+//        . "if(typeof oldonsubmitOther_{$ia[0]} == 'function') {\n"
+//        . "\treturn oldonsubmitOther_{$ia[0]}();\n"
+//        . "}\n"
+//        . "\t}\n"
+//        . "}\n"
+//        . "document.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
+//        . "\t-->\n"
+//        . "</script>\n";
+//    }
+//    $answer = $checkotherscript . $answer;
 
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
@@ -1848,33 +1848,33 @@ function do_list_radio($ia)
     $answer .= $wrapper['whole-end'].'
     <input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" />\n";
 
-    $checkotherscript = "";
-
-    if (isset($other) && $other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1)
-    {
-        $checkotherscript = "<script type='text/javascript'>\n"
-        . "\t<!--\n"
-        . "oldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"
-        . "function ensureOther_{$ia[0]}()\n"
-        . "{\n"
-        . "\tothercommentval=document.getElementById('answer{$ia[1]}othertext').value;\n"
-        . "\totherval=document.getElementById('SOTH{$ia[1]}').checked;\n"
-        . "\tif (otherval == true && othercommentval == '') {\n"
-        . "alert('".sprintf($clang->gT("You've selected the \"%s\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($othertext,true,true)),trim(javascriptEscape($ia[3],true,true)))."');\n"
-        . "return false;\n"
-        . "\t}\n"
-        . "\telse {\n"
-        . "if(typeof oldonsubmitOther_{$ia[0]} == 'function') {\n"
-        . "\treturn oldonsubmitOther_{$ia[0]}();\n"
-        . "}\n"
-        . "\t}\n"
-        . "}\n"
-        . "document.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
-        . "\t-->\n"
-        . "</script>\n";
-    }
-
-    $answer = $checkotherscript . $answer;
+//    $checkotherscript = "";
+//
+//    if (isset($other) && $other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1)
+//    {
+//        $checkotherscript = "<script type='text/javascript'>\n"
+//        . "\t<!--\n"
+//        . "oldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"
+//        . "function ensureOther_{$ia[0]}()\n"
+//        . "{\n"
+//        . "\tothercommentval=document.getElementById('answer{$ia[1]}othertext').value;\n"
+//        . "\totherval=document.getElementById('SOTH{$ia[1]}').checked;\n"
+//        . "\tif (otherval == true && othercommentval == '') {\n"
+//        . "alert('".sprintf($clang->gT("You've selected the \"%s\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($othertext,true,true)),trim(javascriptEscape($ia[3],true,true)))."');\n"
+//        . "return false;\n"
+//        . "\t}\n"
+//        . "\telse {\n"
+//        . "if(typeof oldonsubmitOther_{$ia[0]} == 'function') {\n"
+//        . "\treturn oldonsubmitOther_{$ia[0]}();\n"
+//        . "}\n"
+//        . "\t}\n"
+//        . "}\n"
+//        . "document.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
+//        . "\t-->\n"
+//        . "</script>\n";
+//    }
+//
+//    $answer = $checkotherscript . $answer;
 
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
@@ -2986,36 +2986,36 @@ function do_multiplechoice_withcomments($ia)
     //        //$answer = $minanswscript . $answer;
     //    }
 
-    $checkotherscript = "";
-    //if ($other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1) //TIBO
-    if ($other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1) //TIBO
-    {
-        // Multiple choice with 'other' is a specific case as the checkbox isn't recorded into DB
-        // this means that if it is cehcked We must force the end-user to enter text in the input
-        // box
-        $checkotherscript = "<script type='text/javascript'>\n"
-        . "\t<!--\n"
-        . "oldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"
-        . "function ensureOther_{$ia[0]}()\n"
-        . "{\n"
-        . "\tothercommentval=document.getElementById('answer".$myfname2."').value;\n"
-        . "\totherval=document.getElementById('answer".$myfname."').value;\n"
-        . "\tif (otherval != '' && othercommentval == '') {\n"
-        . "alert('".sprintf($clang->gT("You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($ia[3],true,true)))."');\n"
-        . "return false;\n"
-        . "\t}\n"
-        . "\telse {\n"
-        . "if(typeof oldonsubmitOther_{$ia[0]} == 'function') {\n"
-        . "\treturn oldonsubmitOther_{$ia[0]}();\n"
-        . "}\n"
-        . "\t}\n"
-        . "}\n"
-        . "document.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
-        . "\t-->\n"
-        . "</script>\n";
-    }
-
-    $answer = $checkotherscript . $answer;
+//    $checkotherscript = "";
+//    //if ($other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1) //TIBO
+//    if ($other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1) //TIBO
+//    {
+//        // Multiple choice with 'other' is a specific case as the checkbox isn't recorded into DB
+//        // this means that if it is cehcked We must force the end-user to enter text in the input
+//        // box
+//        $checkotherscript = "<script type='text/javascript'>\n"
+//        . "\t<!--\n"
+//        . "oldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"
+//        . "function ensureOther_{$ia[0]}()\n"
+//        . "{\n"
+//        . "\tothercommentval=document.getElementById('answer".$myfname2."').value;\n"
+//        . "\totherval=document.getElementById('answer".$myfname."').value;\n"
+//        . "\tif (otherval != '' && othercommentval == '') {\n"
+//        . "alert('".sprintf($clang->gT("You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascriptEscape($ia[3],true,true)))."');\n"
+//        . "return false;\n"
+//        . "\t}\n"
+//        . "\telse {\n"
+//        . "if(typeof oldonsubmitOther_{$ia[0]} == 'function') {\n"
+//        . "\treturn oldonsubmitOther_{$ia[0]}();\n"
+//        . "}\n"
+//        . "\t}\n"
+//        . "}\n"
+//        . "document.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
+//        . "\t-->\n"
+//        . "</script>\n";
+//    }
+//
+//    $answer = $checkotherscript . $answer;
 
     return array($answer, $inputnames);
 }
