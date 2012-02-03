@@ -1168,7 +1168,7 @@ class LimeExpressionManager {
             {
                 $other_comment_mandatory = $qattr['other_comment_mandatory'];
                 $eqn='';
-                if ($other_comment_mandatory == '1')
+                if ($other_comment_mandatory == '1' && $this->questionSeq2relevance[$qinfo['qseq']]['other'] == 'Y')
                 {
                     $sgqa = $qinfo['sgqa'];
                     switch ($type)
