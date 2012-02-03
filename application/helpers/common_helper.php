@@ -2686,6 +2686,10 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             $fieldmap[$fieldname]['other']=$arow['other'];
             $fieldmap[$fieldname]['help']=$arow['help'];
         }
+        else
+        {
+            --$questionSeq; // didn't generate a valid $fieldmap entry, so decrement the question counter to ensure they are sequential
+        }
     }
 
     if (isset($fieldmap)) {
