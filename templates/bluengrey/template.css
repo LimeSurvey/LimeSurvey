@@ -1388,6 +1388,14 @@ div.em_sq_fn_validation.error {
   color: #FF00FF;
 }
 
+div.em_other_comment_mandatory.good {
+  display: none;
+}
+div.em_other_comment_mandatory.error {
+  color: #FF00FF;
+  display: block;
+}
+
 input.em_sq_validation.good {
 }
 
