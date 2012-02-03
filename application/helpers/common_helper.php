@@ -2142,16 +2142,13 @@ function validateTemplateDir($templatename)
 * @return array
 */
 function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sLanguage) {
-    global $globalfieldmap, $aDuplicateQIDs;
+    global $aDuplicateQIDs;
 
     $sLanguage = sanitize_languagecode($sLanguage);
     $surveyid = sanitize_int($surveyid);
     $clang = new Limesurvey_lang($sLanguage); ;
 
     //checks to see if fieldmap has already been built for this page.
-    if (isset($globalfieldmap[$surveyid][$style][$sLanguage]) && $force_refresh==false) {
-        return $globalfieldmap[$surveyid][$style][$sLanguage];
-    }
     if (isset(Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]) && !$force_refresh) {
         return Yii::app()->session['fieldmap-' . $surveyid . $sLanguage];
     }
@@ -2692,7 +2689,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     }
 
     if (isset($fieldmap)) {
-        $globalfieldmap[$surveyid][$style][$sLanguage] = $fieldmap;
         Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]=$fieldmap;
         return $fieldmap;
     }
@@ -2722,7 +2718,7 @@ function hasFileUploadQuestion($surveyid) {
 */
 function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
 
-    global $globalfieldmap, $aDuplicateQIDs;
+    global $aDuplicateQIDs;
     static $timingsFieldMap;
 
     $clang = Yii::app()->lang;
