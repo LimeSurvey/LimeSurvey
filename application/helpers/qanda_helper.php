@@ -683,9 +683,6 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
         function freezeFrame(elementid) {
         if(document.getElementById(elementid) !== null) {
         var answer=document.getElementById(elementid);
-        if(answer.value == '') {
-        answer.value=' ';
-        }
         answer.blur();
         answer.onfocus=function() { answer.blur();};
         }
