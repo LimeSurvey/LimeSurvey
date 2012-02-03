@@ -2245,7 +2245,7 @@ function validate_templatedir($templatename)
 */
 function createFieldMap($surveyid, $style='full', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
 
-    global $dbprefix, $connect, $globalfieldmap, $clang, $aDuplicateQIDs;
+    global $dbprefix, $connect, $clang, $aDuplicateQIDs;
     $surveyid=sanitize_int($surveyid);
 
         //Get list of questions
@@ -2265,9 +2265,6 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
     $s_lang = $clang->langcode;
 
     //checks to see if fieldmap has already been built for this page.
-    if (isset($globalfieldmap[$surveyid][$style][$s_lang]) && $force_refresh==false) {
-        return $globalfieldmap[$surveyid][$style][$s_lang];
-    }
     if (isset($_SESSION['fieldmap-' . $surveyid . $s_lang]) && !$force_refresh) {
         return $_SESSION['fieldmap-' . $surveyid . $s_lang];
     }
@@ -2812,7 +2809,6 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
         }
     }
     if (isset($fieldmap)) {
-        $globalfieldmap[$surveyid][$style][$clang->langcode] = $fieldmap;
         $_SESSION['fieldmap-' . $surveyid . $clang->langcode]=$fieldmap;
         return $fieldmap;
     }
@@ -2830,7 +2826,7 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
 */
 function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
 
-    global $dbprefix, $connect, $globalfieldmap, $clang, $aDuplicateQIDs;
+    global $dbprefix, $connect, $clang, $aDuplicateQIDs;
     static $timingsFieldMap;
 
     $surveyid=sanitize_int($surveyid);
