@@ -519,6 +519,10 @@ $okToShowErrors = (!$previewgrp && (isset($invalidLastPage) ||  $_SESSION['prevs
 
 require_once("qanda.php");
 
+//store id's of all the question in $idlist array.
+$idlist = array();
+//store type of all the question in $qtypelist array.
+$qtypelist = array();
 //Iterate through the questions about to be displayed:
 $inputnames=array();
 if (isset($_SESSION['grouplist']))
@@ -558,6 +562,11 @@ foreach ($_SESSION['grouplist'] as $gl)
             // TMSW - can content of retrieveAnswers() be provided by LEM?  Review scope of what it provides.
             // TODO - retrieveAnswers is slow - queries database separately for each question. May be fixed in _CI or _YII ports, so ignore for now
             list($plus_qanda, $plus_inputnames) = retrieveAnswers($ia);
+            
+            //can eliminate extra space for these 2 arrays if $_SESSION['fieldmap'] is used directly!
+            
+            $idlist[] = $ia[1];
+            $qtypelist[] = $ia[4];
             if ($plus_qanda)
             {
                 $plus_qanda[] = $ia[4];
@@ -721,6 +730,8 @@ if (isset($showpopups) && $showpopups == 0 && isset($filenotvalidated) && $filen
 {
     echo "<p><span class='errormandatory'>" . $clang->gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</span></p>";
 }
+
+
 if (isset($_SESSION['grouplist']))
 foreach ($_SESSION['grouplist'] as $gl)
 {
@@ -744,7 +755,7 @@ foreach ($_SESSION['grouplist'] as $gl)
     echo "\n";
 
     echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
-
+    $i=0;
     foreach ($qanda as $qa) // one entry per QID
     {
         if ($gid != $qa[6]) {
@@ -778,6 +789,7 @@ foreach ($_SESSION['grouplist'] as $gl)
         }
 
         $question= $qa[0];
+        
         //===================================================================
         // The following four variables offer the templating system the
         // capacity to fully control the HTML output for questions making the
@@ -791,8 +803,14 @@ foreach ($_SESSION['grouplist'] as $gl)
         $question['sqid']=$qinfo['info']['sqid'];
         //===================================================================
         $answer=$qa[1];
+        
         $help=$qinfo['info']['help'];   // $qa[2];
-
+        
+        $answer_id = $idlist[$i];
+        $question_type = $qtypelist[$i];
+        //$answer_id = $_SESSION['fieldarray'][$i][1];
+        //$question_type = $_SESSION['fieldarray'][$i][4];
+        $i++;
         $question_template = file_get_contents($thistpl.'/question.pstpl');
         if( preg_match( '/\{QUESTION_ESSENTIALS\}/' , $question_template ) === false || preg_match( '/\{QUESTION_CLASS\}/' , $question_template ) === false )
         {

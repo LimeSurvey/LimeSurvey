@@ -600,8 +600,10 @@ pageTracker._trackPageview("$_trackURL");
 EOD;
             break;
     }
-
+    global $answer_id,$question_type;
+    //echo $answer_id;
     // Set the array of replacement variables here - don't include curly braces
+    
 	$corecoreReplacements = array();
 	$coreReplacements['AID'] = $_aid;  // global
 	$coreReplacements['ANSWER'] = $answer;  // global
@@ -646,7 +648,15 @@ EOD;
 	$coreReplacements['QUESTION_MAN_CLASS'] = $_question_man_class;
 	$coreReplacements['QUESTION_MAN_MESSAGE'] = $_question_man_message;
 	$coreReplacements['QUESTION_NUMBER'] = $_question_number;
-	$coreReplacements['QUESTION_TEXT'] = $_question_text;
+    
+	if ($question_type == 'N' || $question_type == 'U' || $question_type == 'T' || $question_type == 'S')
+    {
+        $coreReplacements['QUESTION_TEXT'] = '<label for="answer'.$answer_id.'" >'.$_question_text.'</label>';
+    } else
+    {
+        $coreReplacements['QUESTION_TEXT'] = $_question_text;
+    }
+    
 	$coreReplacements['QUESTION_VALID_MESSAGE'] = $_question_valid_message;
 	$coreReplacements['REGISTERERROR'] = $register_errormsg;    // global
 	$coreReplacements['REGISTERFORM'] = $_registerform;
