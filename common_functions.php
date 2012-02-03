@@ -2807,6 +2807,10 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
             $fieldmap[$fieldname]['other']=$arow['other'];
             $fieldmap[$fieldname]['help']=$arow['help'];
         }
+        else
+        {
+            --$questionSeq; // didn't generate a valid $fieldmap entry, so decrement the question counter to ensure they are sequential
+        }
     }
     if (isset($fieldmap)) {
         $_SESSION['fieldmap-' . $surveyid . $clang->langcode]=$fieldmap;
