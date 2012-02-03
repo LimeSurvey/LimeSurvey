@@ -1979,7 +1979,7 @@ class LimeExpressionManager {
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['subquestion'];
 //                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
-                    if ($type != 'H' & $type != 'R') {
+                    if ($type != 'H' && $type != 'R') {
                         if ($type == 'P' && preg_match("/comment$/", $sgqa)) {
 //                            $rowdivid = substr($sgqa,0,-7);
                         }
