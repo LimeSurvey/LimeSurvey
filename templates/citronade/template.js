@@ -43,9 +43,9 @@ function jalert(text) {
 	$dialog.dialog('open');
 }
 // Comment this part to have default alert
-function alert(text) {
+/*function alert(text) {
 	jalert(text);
-}
+}*/
 
 /*
  * The focusFirst function is added to the eventlistener, when the page is loaded.

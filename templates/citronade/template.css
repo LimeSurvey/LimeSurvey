@@ -1,4 +1,6 @@
-/* This file is part of Lime Survey Template :a free template
+/*  This file is part of Lime Survey Template : citronade
+    Copyright (C) 2007-2012 The LimeSurvey Project Team / Carsten Schmitz
+    Copyright (C) 2010-2012 GsiLL / Denis Chenu
     you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -333,34 +335,16 @@ div.form table table td{padding:0;}
 .question-help img{margin:1px 5px 5px 1px;}
 
 /* tip bloc */
-.help-wrapper {font-style:italic}
-.help-wrapper > span,.help-wrapper > div{display:block;padding:0 4px;margin:0.5em auto;width:96%;font-size:0.8em;}
-.help-wrapper .error,.help-wrapper .error-wrapper{color:#944}
+.help-wrapper {font-style:italic;margin:0.5em auto;width:96%;font-size:0.8em;}
+.help-wrapper .error,.help-wrapper .error-wrapper{color:#944;font-weight:bold}
 .help-wrapper .success,.help-wrapper .good,.help-wrapper .ok{color:#494}
 .help-wrapper .problem{color:#944}
-.help-wrapper .errormandatory{color:#944;font-size:1em;}
+.help-wrapper .errormandatory{color:#944;font-weight:1em;}
 .help-wrapper .errormandatory br:first,.help-wrapper .errormandatory strong br:first{display:none;}
-
-.js .help-wrapper > span,.js .help-wrapper > div,.js .help-wrapper > span,.js .help-wrapper > div{display:none;}
-.help-wrapper .error-wrapper{display:none;}
-.input-error .help-wrapper .mandatory{display:block;}
-
 .mandatory br{display:none;}/* don't put linefeed at start of an error box */
-.help-wrapper > .mandatory span{display:block;}
-.helpwrapper > .mandatory {margin:0.5em auto;width:96%;}
 
-.no-js  .input-error  .help-wrapper {border: 1px solid #fcefa1; padding:4px;padding-left:20px;width:96%;margin:0.5em auto;}
-.no-js .input-error .help-wrapper {background:transparent url(./exclamation.png) no-repeat 2px center;padding:4px;padding-left:20px;}
-.no-js .input-error .help-wrapper  {border:#CD0A0A solid 1px;}
-.no-js .input-error .help-wrapper  {-moz-border-radius: 4px;-webkit-border-radius: 4px;border-radius:4px;}
-
-.js .help-wrapper > span,.js .help-wrapper > div{border: 1px solid #fcefa1; background: #fefefe; color: #363636;}
-.js .help-wrapper > .good {background:transparent;padding:4px;padding-left:20px;}
-.js .help-wrapper > .good {border:#0ACD0A solid 1px;}
-.js .help-wrapper > .good {-moz-border-radius: 4px;-webkit-border-radius: 4px;border-radius:4px;}
-.js .help-wrapper > .error {background:transparent url(./exclamation.png) no-repeat 2px center;padding:4px;padding-left:20px;}
-.js .help-wrapper > .error {border:#CD0A0A solid 1px;}
-.js .help-wrapper > .error {-moz-border-radius: 4px;-webkit-border-radius: 4px;border-radius:4px;}
+.help-wrapper .mandatory{display:none;}
+.input-error .help-wrapper .mandatory{display:block;}
 
 /* input error */
 input.error,input.problem{font-weight:bold}/* some width problem : todo :fix it */
