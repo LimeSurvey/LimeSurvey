@@ -361,7 +361,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
                     ."AND q.language='{$baselang}' "
                     ."AND g.language='{$baselang}' "
                                      ."AND parent_qid=0 "
-                    ."ORDER BY group_order,question_order ",
+                    ."ORDER BY group_order,question_order, scale_id ",
                 "queryto" => "SELECT q.qid as questionid, q.title, q.question, q.qid, q.gid "
                     ."FROM ".db_table_name('questions')." q "
                     ."JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
@@ -369,7 +369,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
                     ."AND q.language='{$tolang}' "
                     ."AND g.language='{$tolang}' "
                                      ." AND parent_qid=0 "
-                    ."ORDER BY group_order,question_order ",
+                    ."ORDER BY group_order,question_order, scale_id ",
         "queryupdate" => "UPDATE ".db_table_name('questions')
                          ."SET question = ".db_quoteall($new,true)
                          ."WHERE qid = '{$id1}' "
@@ -432,14 +432,14 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
                     ."JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
                     ."WHERE sq.sid=".db_quoteall($surveyid,true)
                     ."AND sq.language='{$baselang}' AND q.language='{$baselang}' AND g.language='{$baselang}' AND sq.parent_qid>0 "
-                    ."ORDER BY g.group_order, q.question_order, sq.question_order ",
+                    ."ORDER BY g.group_order, q.question_order, sq.question_order, scale_id ",
                 "queryto"   => "SELECT sq.question "
                     ."FROM ".db_table_name('questions')." sq "
                     ."JOIN ".db_table_name('questions')." q ON sq.parent_qid=q.qid  "
                     ."JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
                     ."WHERE sq.sid=".db_quoteall($surveyid,true)
                     ."AND sq.language=".db_quoteall($tolang,true)." AND q.language=".db_quoteall($tolang,true)." AND g.language=".db_quoteall($tolang,true)." AND sq.parent_qid>0 "
-                    ."ORDER BY g.group_order, q.question_order, sq.question_order ",
+                    ."ORDER BY g.group_order, q.question_order, sq.question_order, scale_id ",
         "queryupdate" => "UPDATE ".db_table_name('questions')
                          ."SET question = ".db_quoteall($new,true)
                          ."WHERE qid = '{$id1}' "
@@ -468,7 +468,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
                     ." AND a.language = '{$baselang}'"
                     ." AND q.language = '{$baselang}'"
                     ." AND g.language = '{$baselang}'"
-                    ." ORDER BY g.group_order, q.question_order, a.sortorder",
+                    ." ORDER BY g.group_order, q.question_order, a.sortorder, a.scale_id",
                 "queryto" => "SELECT a.code, a.answer, q.qid, q.title "
                     ." FROM ".db_table_name('answers')." a "
                     ." JOIN ".db_table_name('questions')." q ON a.qid=q.qid  "
@@ -478,7 +478,7 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
                     ." AND a.language = ".db_quoteall($tolang,true)
                     ." AND q.language = ".db_quoteall($tolang,true)
                     ." AND g.language = ".db_quoteall($tolang,true)
-                    ." ORDER BY g.group_order, q.question_order, a.sortorder",
+                    ." ORDER BY g.group_order, q.question_order, a.sortorder, a.scale_id",
         "queryupdate" => "UPDATE ".db_table_name('answers')
                          ."SET answer = ".db_quoteall($new,true)
                          ."WHERE qid = '{$id1}' "
