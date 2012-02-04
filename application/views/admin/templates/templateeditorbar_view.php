@@ -119,7 +119,7 @@
                 title="<?php $clang->eTview("Create new template"); ?>" >
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/add.png' alt='<?php $clang->eT("Create new template"); ?>' /></a>
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt='' />
-            <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/authentication/logout");?>', '_top')"
+            <a href="<?php echo $this->createUrl("admin/authentication/logout"); ?>"
                 title="<?php $clang->eTview("Logout"); ?>" >
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/logout.png' name='Logout'
                     alt='<?php $clang->eT("Logout"); ?>' /></a>

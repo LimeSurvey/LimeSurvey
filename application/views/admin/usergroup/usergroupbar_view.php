@@ -15,7 +15,7 @@
 
     <?php if($ugid && $grpresultcount > 0)
     { ?>
-        <a href="#" onclick="window.location='<?php echo $this->createUrl("admin/usergroups/mail/ugid/".$ugid); ?>'"
+        <a href="<?php echo $this->createUrl("admin/usergroups/mail/ugid/".$ugid); ?>"
          title='<?php $clang->eTview("Mail to all Members"); ?>'>
         <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/invite.png' alt='<?php $clang->eT("Mail to all Members"); ?>' name='MailUserGroup' /></a>
     <?php }
@@ -29,7 +29,7 @@
     <?php if($ugid && $grpresultcount > 0 &&
     Yii::app()->session['loginID'] == $grow['owner_id'])
     { ?>
-        <a href="#" onclick="window.location='<?php echo $this->createUrl("admin/usergroups/edit/ugid/".$ugid); ?>'"
+        <a href="<?php echo $this->createUrl("admin/usergroups/edit/ugid/".$ugid); ?>"
          title='<?php $clang->eTview("Edit current user group"); ?>'>
         <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/edit.png' alt='<?php $clang->eT("Edit current user group"); ?>' name='EditUserGroup' /></a>
     <?php }
@@ -61,8 +61,7 @@
     { ?>
         <a href='<?php echo $this->createUrl("admin/usergroups/add"); ?>'
          title='<?php $clang->eTview("Add new user group"); ?>'>
-        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/add.png' alt='<?php $clang->eT("Add new user group"); ?>'
-         onclick="window.location=''" /></a>
+        <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/add.png' alt='<?php $clang->eT("Add new user group"); ?>' /></a>
     <?php } ?>
     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt='' />
     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/blank.gif' alt='' width='82' height='20' />

@@ -5,16 +5,16 @@
             </div>
             <div class='menubar-main'>
                 <div class='menubar-left'>
-                    <a href="#" onclick="window.open('<?php echo $this->createUrl("/admin/survey/view/$surveyid$extraGetParams");?>', '_top')" title='"<?php $clang->eTview("Return to survey administration");?>'>
+                    <a href="<?php echo $this->createUrl("/admin/survey/view/$surveyid$extraGetParams"); ?>" title='"<?php $clang->eTview("Return to survey administration");?>'>
                         <img name='HomeButton' src='<?php echo $imageurl;?>/home.png' alt='<?php $clang->eT("Return to survey administration");?>' /></a>
                     <img src='<?php echo $imageurl;?>/blank.gif' alt='' width='11' />
                     <img src='<?php echo $imageurl;?>/seperator.gif' alt='' />
-                    <a href="#" onclick="window.open('<?php echo $this->createUrl("/admin/conditions/index/subaction/conditions/surveyid/$surveyid/gid/$gid/qid/$qid");?>', '_top')" title='<?php $clang->eTview("Show conditions for this question");?>' >
+                    <a href="<?php echo $this->createUrl("/admin/conditions/index/subaction/conditions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" title='<?php $clang->eTview("Show conditions for this question");?>' >
                         <img name='SummaryButton' src='<?php echo $imageurl;?>/summary.png' alt='<?php $clang->eT("Show conditions for this question");?>' /></a>
                     <img src='<?php echo $imageurl;?>/seperator.gif' alt='' />
-                    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/conditions/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid");?>', '_top')" title='<?php $clang->eTview("Add and edit conditions");?>' >
+                    <a href="<?php echo $this->createUrl("admin/conditions/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" title='<?php $clang->eTview("Add and edit conditions");?>' >
                         <img name='ConditionAddButton' src='<?php echo $imageurl;?>/conditions_add.png' alt='"<?php $clang->eT("Add and edit conditions");?>' /></a>
-                    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/conditions/index/subaction/copyconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid");?>', '_top')" title='<?php $clang->eTview("Copy conditions");?>' >
+                    <a href="<?php echo $this->createUrl("admin/conditions/index/subaction/copyconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" title='<?php $clang->eTview("Copy conditions");?>' >
                         <img name='ConditionCopyButton' src='<?php echo $imageurl;?>/conditions_copy.png' alt='<?php $clang->eT("Copy conditions");?>' /></a>
 
                 </div><div class='menubar-right'>

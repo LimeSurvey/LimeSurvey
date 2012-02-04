@@ -17,12 +17,12 @@
             {
                 if (count(Survey::model()->findByPk($surveyid)->additionalLanguages) == 0)
                 { ?>
-                <a href="#" accesskey='q' onclick="window.open('<?php echo $this->createUrl("admin/question/preview/surveyid/$surveyid/qid/$qid/");?>', '_blank')"
+                <a accesskey='q' href="<?php echo $this->createUrl("admin/question/preview/surveyid/$surveyid/qid/$qid/"); ?>" target="_blank"
                     title="<?php $clang->eTview("Preview This Question"); ?>">
                     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/preview.png' alt='<?php $clang->eT("Preview This Question"); ?>' /></a>
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt='' />
                 <?php } else { ?>
-                <a href="#" accesskey='q' id='previewquestion'
+                <a accesskey='q' id='previewquestion'
                     title="<?php $clang->eTview("Preview This Question"); ?>">
                     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/preview.png' title='' alt='<?php $clang->eT("Preview This Question"); ?>' /></a>
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
@@ -42,7 +42,7 @@
         <?php if(hasSurveyPermission($surveyid,'surveyactivation','read'))
         { ?>
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
-            <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/expressions/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/"); ?>','_blank')"
+            <a href="<?php echo $this->createUrl("admin/expressions/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/"); ?>','_blank')"
                 title="<?php $clang->eTview("Survey Logic File for current question"); ?>">
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/quality_assurance.png' alt='<?php $clang->eT("Survey Logic File for current question"); ?>' /></a>
         <?php } ?>
@@ -111,7 +111,7 @@
 
             if(hasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
-            <a href='#' onclick="window.open('<?php echo $this->createUrl("admin/conditions/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid");?>', '_top')"
+            <a href="<?php echo $this->createUrl("admin/conditions/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>"
                 title="<?php $clang->eTview("Set/view conditions for this question"); ?>">
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/conditions.png' alt='<?php $clang->eT("Set conditions for this question"); ?>'  /></a>
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt='' />
@@ -169,7 +169,7 @@
         <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/plus.gif' title='
             <?php $clang->eT("Show Details of this Question"); ?>'  alt='<?php $clang->eT("Show Details of this Question"); ?>' onclick='document.getElementById("questiondetails").style.display="";' />
         <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/close.gif' title='
-            <?php $clang->eT("Close this Question"); ?>' alt='<?php $clang->eT("Close this Question"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/survey/view/surveyid/$surveyid/gid/$gid"); ?>', '_top')" />
+            <?php $clang->eT("Close this Question"); ?>' alt='<?php $clang->eT("Close this Question"); ?>' href="<?php echo $this->createUrl("admin/survey/view/surveyid/$surveyid/gid/$gid"); ?>" />
     </div>
 </div>
 </div>

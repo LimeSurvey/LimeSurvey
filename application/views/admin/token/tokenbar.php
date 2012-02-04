@@ -9,21 +9,21 @@
             </a>
             <img src='<?php echo $imageurl; ?>/blank.gif' alt='' width='11' />
             <img src='<?php echo $imageurl; ?>/seperator.gif' alt='' />
-            <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/index/surveyid/$surveyid"); ?>', '_top')" title='<?php $clang->eTview("Show token summary"); ?>' >
+            <a href="<?php echo $this->createUrl("admin/tokens/index/surveyid/$surveyid"); ?>" title='<?php $clang->eTview("Show token summary"); ?>' >
                 <img name='SummaryButton' src='<?php echo $imageurl; ?>/summary.png' alt='<?php $clang->eT("Show token summary"); ?>' />
             </a>
             <img src='<?php echo $imageurl; ?>/seperator.gif' alt='' />
-            <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/browse/surveyid/$surveyid"); ?>', '_top')"
+            <a href="<?php echo $this->createUrl("admin/tokens/browse/surveyid/$surveyid"); ?>"
                title='<?php $clang->eTview("Display tokens"); ?>' >
                 <img name='ViewAllButton' src='<?php echo $imageurl; ?>/document.png' alt='<?php $clang->eT("Display tokens"); ?>' />
             </a>
             <?php if (hasSurveyPermission($surveyid, 'tokens', 'create'))
             { ?>
-                <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/addnew/surveyid/$surveyid"); ?>', '_top')"
+                <a href="<?php echo $this->createUrl("admin/tokens/addnew/surveyid/$surveyid"); ?>"
                    title='<?php $clang->eTview("Add new token entry"); ?>' >
                     <img name='AddNewButton' src='<?php echo $imageurl; ?>/add.png' title='' alt='<?php $clang->eT("Add new token entry"); ?>' />
                 </a>
-                <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/adddummies/surveyid/$surveyid"); ?>', '_top')"
+                <a href="<?php echo $this->createUrl("admin/tokens/adddummies/surveyid/$surveyid"); ?>"
                    title='<?php $clang->eTview("Add dummy tokens"); ?>' >
                     <img name='AddNewDummyButton' src='<?php echo $imageurl; ?>/create_dummy_token.png' title='' alt='<?php $clang->eT("Add dummy tokens"); ?>' />
                 </a>
@@ -34,7 +34,7 @@
             {
                 ?>
                 <img src='<?php echo $imageurl; ?>/seperator.gif' alt='' />
-                <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/managetokenattributes/surveyid/$surveyid"); ?>', '_top')"
+                <a href="<?php echo $this->createUrl("admin/tokens/managetokenattributes/surveyid/$surveyid"); ?>"
                    title='<?php $clang->eTview("Manage additional attribute fields"); ?>'>
                     <img name='ManageAttributesButton' src='<?php echo $imageurl; ?>/token_manage.png' title='' alt='<?php $clang->eT("Manage additional attribute fields"); ?>' />
                 </a>
@@ -44,11 +44,11 @@ if (hasSurveyPermission($surveyid, 'tokens', 'import'))
 {
     ?>
                 <img src='<?php echo $imageurl; ?>/seperator.gif' alt='' />
-                <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/import/surveyid/$surveyid") ?>', '_top')"
+                <a href="<?php echo $this->createUrl("admin/tokens/import/surveyid/$surveyid") ?>"
                    title='<?php $clang->eTview("Import tokens from CSV file"); ?>'>
                     <img name='ImportButton' src='<?php echo $imageurl; ?>/importcsv.png' title='' alt='<?php $clang->eT("Import tokens from CSV file"); ?>' />
                 </a>
-                <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/importldap/surveyid/$surveyid") ?>', '_top')"
+                <a href="<?php echo $this->createUrl("admin/tokens/importldap/surveyid/$surveyid") ?>"
                    title='<?php $clang->eTview("Import tokens from LDAP query"); ?>'>
                     <img name='ImportLdapButton' src='<?php echo $imageurl; ?>/importldap.png' alt='<?php $clang->eT("Import tokens from LDAP query"); ?>' />
                 </a>
@@ -57,7 +57,7 @@ if (hasSurveyPermission($surveyid, 'tokens', 'import'))
 if (hasSurveyPermission($surveyid, 'tokens', 'export'))
 {
     ?>
-                <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/exportdialog/surveyid/$surveyid"); ?>', '_top')"
+                <a href="<?php echo $this->createUrl("admin/tokens/exportdialog/surveyid/$surveyid"); ?>"
                    title='<?php $clang->eTview("Export tokens to CSV file"); ?>'>
                     <img name='ExportButton' src='<?php echo $imageurl; ?>/exportcsv.png' alt='<?php $clang->eT("Export tokens to CSV file"); ?>' />
                 </a>
@@ -70,16 +70,16 @@ if (hasSurveyPermission($surveyid, 'tokens', 'update'))
                 <a href='<?php echo $this->createUrl("admin/emailtemplates/index/surveyid/$surveyid"); ?>' title='<?php $clang->eTview("Edit email templates"); ?>'>
                     <img name='EmailTemplatesButton' src='<?php echo $imageurl; ?>/emailtemplates.png' alt='<?php $clang->eT("Edit email templates"); ?>' />
                 </a>
-                <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/email/surveyid/$surveyid"); ?>', '_top')"
+                <a href="<?php echo $this->createUrl("admin/tokens/email/surveyid/$surveyid"); ?>"
                    title='<?php $clang->eTview("Send email invitation"); ?>'>
                     <img name='InviteButton' src='<?php echo $imageurl; ?>/invite.png' alt='<?php $clang->eT("Send email invitation"); ?>' />
                 </a>
-                <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/email/action/remind/surveyid/$surveyid"); ?>', '_top')"
+                <a href="<?php echo $this->createUrl("admin/tokens/email/action/remind/surveyid/$surveyid"); ?>"
                    title='<?php $clang->eTview("Send email reminder"); ?>'>
                     <img name='RemindButton' src='<?php echo $imageurl; ?>/remind.png' alt='<?php $clang->eT("Send email reminder"); ?>' />
                 </a>
                 <img src='<?php echo $imageurl; ?>/seperator.gif' alt='' />
-                <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/tokenify/surveyid/$surveyid"); ?>', '_top')"
+                <a href="<?php echo $this->createUrl("admin/tokens/tokenify/surveyid/$surveyid"); ?>"
                    title='<?php $clang->eTview("Generate tokens"); ?>'>
                     <img name='TokenifyButton' src='<?php echo $imageurl; ?>/tokenify.png' alt='<?php $clang->eT("Generate tokens"); ?>' />
                 </a>
@@ -89,7 +89,7 @@ if (hasSurveyPermission($surveyid, 'tokens', 'update'))
             if (hasSurveyPermission($surveyid, 'tokens', 'update'))
             {
                 ?>
-                <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/bouncesettings/surveyid/$surveyid"); ?>', '_top')"
+                <a href="<?php echo $this->createUrl("admin/tokens/bouncesettings/surveyid/$surveyid"); ?>"
                    title='<?php $clang->eTview("Bounce processing settings"); ?>' >
                     <img name='BounceSettings' src='<?php echo $imageurl; ?>/bounce_settings.png' alt='<?php $clang->eT("Bounce settings"); ?>' />
                 </a>
@@ -99,7 +99,7 @@ if (hasSurveyPermission($surveyid, 'tokens', 'update'))
             if (hasSurveyPermission($surveyid, 'surveyactivation', 'update'))
             {
                 ?>
-                <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/kill/surveyid/$surveyid"); ?>', '_top')"
+                <a href="<?php echo $this->createUrl("admin/tokens/kill/surveyid/$surveyid"); ?>"
                    title='<?php $clang->eTview("Drop tokens table"); ?>' >
                     <img name='DeleteParticipantTable' src='<?php echo $imageurl; ?>/delete.png' alt='<?php $clang->eT("Drop tokens table"); ?>' />
                 </a>

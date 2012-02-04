@@ -8,7 +8,7 @@
             <?php if(!$activated) { ?>
                 <img src='<?php echo $imageurl;?>/inactive.png' alt='<?php $clang->eT("This survey is currently not active"); ?>' />
                 <?php if($canactivate) { ?>
-                    <a href="#" onclick="window.open('<?php echo $this->createurl("admin/survey/activate/surveyid/$surveyid");?>', '_top')"
+                    <a href="<?php echo $this->createurl("admin/survey/activate/surveyid/$surveyid"); ?>"
                         title="<?php $clang->eTview("Activate this Survey"); ?>" >
                         <img src='<?php echo $imageurl; ?>/activate.png' alt='<?php $clang->eT("Activate this Survey"); ?>'/></a>
                     <?php } else { ?>
@@ -24,7 +24,7 @@
                     <img src='<?php echo $imageurl; ?>/active.png' title='' alt='<?php $clang->eT("This survey is currently active."); ?>' />
                     <?php }
                     if($canactivate) { ?>
-                    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/survey/deactivate/surveyid/$surveyid"); ?>', '_top')"
+                    <a href="<?php echo $this->createUrl("admin/survey/deactivate/surveyid/$surveyid"); ?>"
                         title="<?php $clang->eTview("Stop this survey"); ?>" >
                         <img src='<?php echo $imageurl;?>/deactivate.png' alt='<?php $clang->eT("Stop this survey"); ?>' /></a>
                     <?php } else { ?>
@@ -35,7 +35,7 @@
         </div>
         <ul class='sf-menu'>
             <?php if($onelanguage) { ?>
-                <li><a href='#' accesskey='d' onclick="window.open('<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$baselang");?>', '_blank')" title="<?php echo $icontext2;?>" >
+                <li><a accesskey='d' href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$baselang");?>', '_blank')" title="<?php echo $icontext2;?>" >
                         <img src='<?php echo $imageurl;?>/do.png' alt='<?php echo $icontext;?>' />
                     </a></li>
                 <?php } else { ?>
@@ -115,7 +115,7 @@
             <li><a href='#'>
                     <img src='<?php echo $imageurl;?>/display_export.png' alt='<?php $clang->eT("Display / Export");?>' width="40" height="40"/></a><ul>
                     <?php if($surveyexport) { ?>
-                        <li><a href='#' >
+                        <li><a href='#'>
                             <img src='<?php echo $imageurl;?>/export_30.png' alt='' width="30" height="30"/> <?php $clang->eT("Export...");?></a>
                             <?php } ?>
                         <ul>
@@ -216,7 +216,7 @@
             } ?>
 
             <?php if($tokenmanagement) { ?>
-                <li><a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/index/surveyid/$surveyid");?>', '_top')"
+                <li><a href="<?php echo $this->createUrl("admin/tokens/index/surveyid/$surveyid"); ?>"
                         title="<?php $clang->eTview("Token management");?>" >
                         <img src='<?php echo $imageurl;?>/tokens.png' alt='<?php $clang->eT("Token management");?>' width="40" height="40"/></a>
                 </li>
@@ -274,7 +274,7 @@
                     else
                     { ?>
 
-                    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/questiongroup/add/surveyid/$surveyid"); ?>', '_top')"
+                    <a href="<?php echo $this->createUrl("admin/questiongroup/add/surveyid/$surveyid"); ?>"
                         title="<?php $clang->eTview("Add new group to survey"); ?>">
                         <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/add.png' alt='<?php $clang->eT("Add new group to survey"); ?>' width="40" height="40"/></a>
                     <?php }
@@ -291,7 +291,7 @@
                 { ?>
 
                 <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/close.gif' title='<?php $clang->eT("Close this survey"); ?>'
-                    alt='<?php $clang->eT("Close this survey"); ?>' onclick="window.open('<?php echo $this->createUrl("/admin"); ?>', '_top')" />
+                    alt='<?php $clang->eT("Close this survey"); ?>' href="<?php echo $this->createUrl("/admin"); ?>" />
                 <?php }
                 else
                 { ?>

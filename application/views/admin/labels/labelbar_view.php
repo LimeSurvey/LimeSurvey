@@ -15,7 +15,7 @@
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/dumplabel.png' alt='<?php $clang->eT("Export this label set"); ?>' align='left' /></a>
         </div>
         <div class='menubar-right'>
-            <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/close.gif' title='<?php $clang->eT("Close Window"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/labels/view"); ?>', '_top')" />
+            <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/close.gif' title='<?php $clang->eT("Close Window"); ?>' href="<?php echo $this->createUrl("admin/labels/view"); ?>" />
         </div>
     </div>
 </div>

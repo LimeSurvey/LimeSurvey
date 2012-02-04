@@ -9,8 +9,8 @@
         <?php if(hasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
-            <a href="#" onclick="window.open('<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/");?>','_blank')"
-                title="<?php $clang->eTview("Preview current question group"); ?>">
+            <a href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"); ?>"
+                title="<?php $clang->eTview("Preview current question group"); ?>" target="_blank">
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/preview.png' alt='<?php $clang->eT("Preview current question group"); ?>' width="40" height="40"/></a>
             <?php }
             else{ ?>
@@ -20,7 +20,7 @@
         <?php if(hasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
-            <a href="#" onclick="window.open('<?php echo $this->createUrl('admin/questiongroup/edit/surveyid/'.$surveyid.'/gid/'.$gid); ?>','_top')"
+            <a href="<?php echo $this->createUrl('admin/questiongroup/edit/surveyid/'.$surveyid.'/gid/'.$gid); ?>"
                 title="<?php $clang->eTview("Edit current question group"); ?>">
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/edit.png' alt='<?php $clang->eT("Edit current question group"); ?>' width="40" height="40"/></a>
         <?php } ?>
@@ -28,7 +28,7 @@
         <?php if(hasSurveyPermission($surveyid,'surveyactivation','read'))
         { ?>
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
-            <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/expressions/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>','_blank')"
+            <a href="<?php echo $this->createUrl("admin/expressions/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>"
                 title="<?php $clang->eTview("Survey Logic File for current question group"); ?>">
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/quality_assurance.png' alt='<?php $clang->eT("Survey Logic File for current question group"); ?>' /></a>
         <?php } ?>
@@ -112,15 +112,13 @@
         <?php if ($activated == "Y")
             { ?>
             <a href='#'>
-                <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/add_disabled.png' title='' alt='<?php echo $clang->gT("Disabled").' - '.$clang->gT("This survey is currently active."); ?>'
-                   onclick="window.open('', '_top')" width="40" height="40"/></a>
+                <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/add_disabled.png' title='' alt='<?php echo $clang->gT("Disabled").' - '.$clang->gT("This survey is currently active."); ?>' width="40" height="40" /></a>
             <?php }
             elseif(hasSurveyPermission($surveyid,'surveycontent','create'))
             { ?>
             <a href='<?php echo $this->createUrl("admin/question/addquestion/surveyid/".$surveyid."/gid/".$gid); ?>'
                 title="<?php $clang->eTview("Add new question to group"); ?>" >
-                <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/add.png' title='' alt='<?php $clang->eT("Add New Question to Group"); ?>'
-                   onclick="window.open('', '_top')" width="40" height="40"/></a>
+                <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/add.png' title='' alt='<?php $clang->eT("Add New Question to Group"); ?>' width="40" height="40" /></a>
             <?php } ?>
 
         <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
@@ -131,7 +129,7 @@
         <?php if (!$qid)
             { ?>
             <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/close.gif' title='<?php $clang->eT("Close this Group"); ?>' alt='<?php $clang->eT("Close this Group"); ?>'
-                onclick="window.open('<?php echo $this->createUrl("admin/survey/view/surveyid/".$surveyid); ?>', '_top')" />
+                href="<?php echo $this->createUrl("admin/survey/view/surveyid/".$surveyid); ?>" />
             <?php }
             else
             { ?>
@@ -193,7 +191,7 @@
                     {
 
                         $listcid=implode("-",$depcid);?>
-                    <a href='#' onclick="window.open('<?php echo $this->createUrl("admin/conditions/markcid/" . implode("-",$depcid) . "/surveyid/$surveyid/gid/$depgid/qid/$depqid"); ?>','_top')">[QID: <?php echo $depqid; ?>]</a>
+                    <a href='<?php echo $this->createUrl("admin/conditions/markcid/" . implode("-",$depcid) . "/surveyid/$surveyid/gid/$depgid/qid/$depqid"); ?>'>[QID: <?php echo $depqid; ?>]</a>
                     <?php }
             } ?>
         </td></tr>
