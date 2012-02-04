@@ -1442,3 +1442,16 @@ span.dynamic_remaining.error {
   color: red;
   display: block;
 }
+
+span.hide-tip div.good {
+    display: none;
+}
+
+span.hide-tip div.error {
+    color: #FF00FF;
+}
+
+.input-error span.hide-tip div.error {
+    color: red;
+    display: block;
+}

@@ -443,11 +443,11 @@ function mandatory_message($ia)
 function validation_message($ia,$show)
 {
     $qinfo = LimeExpressionManager::GetQuestionStatus($ia[0]);
-    $tip = '<span class="questionhelp" id="' . $ia[0] . '_vmsg"';
+    $class = "questionhelp";
     if (!$show) {
-        $tip .= ' style="display: none"';
+        $class .= ' hide-tip';
     }
-    $tip .= ">" . $qinfo['validTip'] . "</span>";
+    $tip = '<span class="' . $class . '" id="' . $ia[0] . '_vmsg">' . $qinfo['validTip'] . "</span>";
     $isValid = $qinfo['valid'];
     return array($tip,$isValid);
 //    if (!$qinfo['valid']) {
