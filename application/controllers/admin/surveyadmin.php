@@ -13,7 +13,7 @@ if (!defined('BASEPATH'))
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-* 	$Id$
+* 	$Id: surveyaction.php 12301 2012-02-02 08:51:43Z c_schmitz $
 */
 
 /**
@@ -22,10 +22,10 @@ if (!defined('BASEPATH'))
 * @package LimeSurvey
 * @author  The LimeSurvey Project team
 * @copyright 2011
-* @version $Id$
+* @version $Id: surveyaction.php 12301 2012-02-02 08:51:43Z c_schmitz $
 * @access public
 */
-class SurveyAction extends Survey_Common_Action
+class SurveyAdmin extends Survey_Common_Action
 {
     /**
     * Initiates the survey action, checks for superadmin permission
@@ -53,9 +53,6 @@ class SurveyAction extends Survey_Common_Action
     */
     public function index()
     {
-        $clang = $this->getController()->lang;
-        $aData['clang'] = $clang;
-
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/js/i18n/grid.locale-en.js");
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/js/jquery.jqGrid.min.js");
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jquery.coookie.js");
@@ -69,11 +66,8 @@ class SurveyAction extends Survey_Common_Action
 
         Yii::app()->loadHelper('surveytranslator');
 
-        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
-        {
-            $aData['issuperadmin'] = false;
-        }
-        else
+        $aData['issuperadmin'] = false;
+        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
         {
             $aData['issuperadmin'] = true;
         }
@@ -92,7 +86,6 @@ class SurveyAction extends Survey_Common_Action
 
         $this->_registerScriptFiles();
         Yii::app()->loadHelper('surveytranslator');
-        $clang = Yii::app()->lang;
 
         $esrow = $this->_fetchSurveyInfo('newsurvey');
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);

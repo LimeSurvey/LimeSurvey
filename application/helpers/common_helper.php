@@ -320,7 +320,7 @@ function getSurveyList($returnarray=false, $returnwithouturl=false, $surveyid=fa
         else
             $surveyidresult = Survey::model()->with('languagesettings')->findAll();
 
-        if (!$surveyidresult) {return "Database Error";}
+        if (!$surveyidresult) {return array();}
 
         $surveynames = array();
         foreach ($surveyidresult as $result)
@@ -1756,7 +1756,8 @@ function getExtendedAnswer($surveyid, $action, $fieldcode, $value, $format='')
         $this_type = $fields['type'];
         switch($this_type)
         {
-            case 'D': if (trim($value)!='')
+            case 'D':
+                if (trim($value)!='')
                 {
                     $qidattributes = getQuestionAttributeValues($fields['qid']);
                     $dateformatdetails = getDateFormatDataForQID($qidattributes, $surveyid);
@@ -1771,7 +1772,7 @@ function getExtendedAnswer($surveyid, $action, $fieldcode, $value, $format='')
             case "R":
                 $result = Answers::model()->getAnswerCode($fields['qid'],$value,$s_lang) or die ("Couldn't get answer type L - getExtendedAnswer() in common_helper.php<br />$query<br />"); //Checked
 
-                foreach($result->readAll() as $row)
+                foreach($result as $row)
                 {
                     $this_answer=$row['answer'];
                 } // while
@@ -2870,11 +2871,15 @@ function getQuestionAttributeValues($iQID)
     if (isset($cache[$iQID])) {
         return $cache[$iQID];
     }
-    $row = Questions::model()->findByAttributes(array('qid' => $iQID))->getAttributes(); //, 'parent_qid' => 0), array('group' => 'type')
+    $row = Questions::model()->findByAttributes(array('qid' => $iQID)); //, 'parent_qid' => 0), array('group' => 'type')
     if (empty($row)) // Question was deleted while running the survey
     {
         $cache[$iQID] = false;
         return false;
+    }
+    else
+    {
+        $row = $row->getAttributes();
     }
     $type = $row['type'];
     $surveyid = $row['sid'];

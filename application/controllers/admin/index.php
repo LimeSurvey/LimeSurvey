@@ -14,26 +14,30 @@
  */
 class Index extends Survey_Common_Action
 {
-	public function run()
-	{
-        $clang = Yii::app()->lang;
-        $aViewUrls = array();
 
-		if (count(getSurveyList(true)) == 0)
-		{
-            $aViewUrls = 'firststeps';
-		}
-        elseif (Yii::app()->session['just_logged_in'])
+    public function run()
+    {
+        $clang = Yii::app()->lang;
+
+        if (Yii::app()->session['just_logged_in'])
         {
             $aViewUrls = array('message' => array(
                 'title' => $clang->gT("Logged in"),
                 'message' => Yii::app()->session['loginsummary']
             ));
             unset(Yii::app()->session['just_logged_in'], Yii::app()->session['loginsummary']);
+
+            $this->_renderWrappedTemplate('super', $aViewUrls);
+        }
+        elseif (count(getSurveyList(true)) == 0)
+		{
+            $this->_renderWrappedTemplate('super', 'firststeps');
+		}
+        else
+        {
+            Yii::app()->request->redirect(Yii::app()->getController()->createUrl('admin/survey/index'));
         }
 
-        $this->_renderWrappedTemplate('super', $aViewUrls);
-
-	}
+    }
 
 }

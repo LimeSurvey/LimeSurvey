@@ -194,7 +194,7 @@ class AdminController extends LSYii_Controller
         'remotecontrol'    => 'remotecontrol',
         'saved'            => 'saved',
         'statistics'       => 'statistics',
-        'survey'           => 'surveyaction',
+        'survey'           => 'surveyadmin',
         'surveypermission' => 'surveypermission',
         'user'             => 'useraction',
         'usergroups'       => 'usergroups',

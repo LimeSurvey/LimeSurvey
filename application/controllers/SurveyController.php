@@ -17,11 +17,11 @@ class SurveyController extends LSYii_Controller
     public $lang = null;
 
     /**
-    * Initialises this controller, does some basic checks and setups
-    *
-    * @access protected
-    * @return void
-    */
+     * Initialises this controller, does some basic checks and setups
+     *
+     * @access protected
+     * @return void
+     */
     protected function _init()
     {
         parent::_init();
@@ -45,11 +45,11 @@ class SurveyController extends LSYii_Controller
     }
 
     /**
-    * Load and set session vars
-    *
-    * @access protected
-    * @return void
-    */
+     * Load and set session vars
+     *
+     * @access protected
+     * @return void
+     */
     protected function _sessioncontrol()
     {
         if (!Yii::app()->session["adminlang"] || Yii::app()->session["adminlang"]=='')
@@ -61,23 +61,23 @@ class SurveyController extends LSYii_Controller
     }
 
     /**
-    * Routes all the actions to their respective places
-    *
-    * @access public
-    * @return array
-    */
+     * Routes all the actions to their respective places
+     *
+     * @access public
+     * @return array
+     */
     public function actions()
     {
         return array(
-        'tcpdf_check' => 'application.controllers.tcpdf_check',
-        'index' => 'application.controllers.SurveyAction',
-        'optin' => 'application.controllers.optin',
-        'optout' => 'application.controllers.optout',
-        'printanswers' => 'application.controllers.printanswers',
-        'register' => 'application.controllers.register',
-        'statistics_user' => 'application.controllers.statistics_user',
-        'uploader' => 'application.controllers.uploader',
-        'verification' => 'application.controllers.verification',
+            'index' => 'application.controllers.SurveyAction',
+            'optin' => 'application.controllers.optin',
+            'optout' => 'application.controllers.optout',
+            'printanswers' => 'application.controllers.printanswers',
+            'register' => 'application.controllers.register',
+            'statistics_user' => 'application.controllers.statistics_user',
+            'tcpdf_check' => 'application.controllers.tcpdf_check',
+            'uploader' => 'application.controllers.uploader',
+            'verification' => 'application.controllers.verification'
         );
     }
 
