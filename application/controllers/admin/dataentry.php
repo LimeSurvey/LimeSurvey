@@ -222,7 +222,7 @@ class dataentry extends Survey_Common_Action
 
                 if (!$result) {
                     $aData['error_msg'] = sprintf($clang->gT("Import failed on record %d"), $recordcount);
-                    $this->_renderWrappedTemplate('warning_header', $aData);
+                    $this->_renderWrappedTemplate('dataentry', 'warning_header', $aData);
                     die();
                 }
                 else
@@ -237,7 +237,7 @@ class dataentry extends Survey_Common_Action
         $aData['noid'] = Yii::app()->request->getPost('noid');
         $aData['insertstyle'] = Yii::app()->request->getPost('insertstyle');
 
-        $this->_renderWrappedTemplate('vvimport_upload', $aData);
+        $this->_renderWrappedTemplate('dataentry', 'vvimport_upload', $aData);
     }
 
     private function _getFieldInfo($aFileContents)
@@ -279,7 +279,7 @@ class dataentry extends Survey_Common_Action
             $clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),
             Yii::app()->getConfig('tempdir')
             );
-            $this->_renderWrappedTemplate('warning_header', $aData);
+            $this->_renderWrappedTemplate('dataentry', 'warning_header', $aData);
             die();
         }
         return $the_full_file_path;
@@ -296,7 +296,7 @@ class dataentry extends Survey_Common_Action
         $aData['charsetsout'] = $charsetsout;
         $aData['display']['menu_bars']['browse'] = $this->getController()->lang->gT("Import VV file");
 
-        $this->_renderWrappedTemplate('vvimport', $aData);
+        $this->_renderWrappedTemplate('dataentry', 'vvimport', $aData);
     }
 
     private function _getUploadCharset($encodingsarray)
@@ -372,7 +372,7 @@ class dataentry extends Survey_Common_Action
                 //Get the menubar
                 $aData['display']['menu_bars']['browse'] = $clang->gT("Quick statistics");
 
-                $this->_renderWrappedTemplate('import', $aData);
+                $this->_renderWrappedTemplate('dataentry', 'import', $aData);
             }
             //elseif (isset($surveyid) && $surveyid && isset($oldtable))
             else
@@ -451,12 +451,8 @@ class dataentry extends Survey_Common_Action
                     }
                     Yii::app()->session['flashmessage'] = sprintf($clang->gT("%s old response(s) and according timings were successfully imported."),$iRecordCount,$iRecordCountT);
                 }
-
-                $aData['display']['menu_bars']['browse'] = $clang->gT("Quick statistics");
-
-                $this->_renderWrappedTemplate('', $aData);
+                $this->getController()->redirect("/admin/browse/index/surveyid/{$surveyid}");
             }
-
         }
     }
 
@@ -1410,7 +1406,7 @@ class dataentry extends Survey_Common_Action
             $aDataentryoutput .= "</form>\n";
 
             $aViewUrls['output'] = $aDataentryoutput;
-            $this->_renderWrappedTemplate($aViewUrls, $aData);
+            $this->_renderWrappedTemplate('dataentry', $aViewUrls, $aData);
         }
     }
 
@@ -1442,7 +1438,7 @@ class dataentry extends Survey_Common_Action
             Yii::app()->loadHelper('database');
             $delresult = dbExecuteAssoc($delquery) or safeDie ("Couldn't delete record $id<br />\n");
 
-            $this->_renderWrappedTemplate('delete', $aData);
+            $this->_renderWrappedTemplate('dataentry', 'delete', $aData);
         }
     }
 
@@ -1565,7 +1561,7 @@ class dataentry extends Survey_Common_Action
             ."</div>\n";
 
             $aViewUrls['output'] = $aDataentryoutput;
-            $this->_renderWrappedTemplate($aViewUrls, $aData);
+            $this->_renderWrappedTemplate('dataentry', $aViewUrls, $aData);
         }
     }
 
@@ -1948,7 +1944,7 @@ class dataentry extends Survey_Common_Action
 
                 $aData['dataentrymsgs'] = $aDataentrymsgs;
 
-                $this->_renderWrappedTemplate('insert', $aData);
+                $this->_renderWrappedTemplate('dataentry', 'insert', $aData);
             }
 
         }
@@ -2603,22 +2599,18 @@ class dataentry extends Survey_Common_Action
             $aData['surveyid'] = $surveyid;
             $aData['sDataEntryLanguage'] = $sDataEntryLanguage;
 
-            if ($thissurvey['active'] == "Y")
+            if ($thissurvey['active'] == "Y" && $thissurvey['allowsave'] == "Y")
             {
-                if ($thissurvey['allowsave'] == "Y")
-                {
-                    $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-                    $sbaselang = Survey::model()->findByPk($surveyid)->language;
-                    array_unshift($slangs,$sbaselang);
-                    $aData['slangs'] = $slangs;
-                    $aData['baselang'] = $baselang;
-                }
-
+                $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+                $sbaselang = Survey::model()->findByPk($surveyid)->language;
+                array_unshift($slangs,$sbaselang);
+                $aData['slangs'] = $slangs;
+                $aData['baselang'] = $baselang;
             }
 
             $aViewUrls[] = 'active_html_view';
 
-            $this->_renderWrappedTemplate($aViewUrls, $aData);
+            $this->_renderWrappedTemplate('dataentry', $aViewUrls, $aData);
         }
     }
 
@@ -2733,18 +2725,19 @@ class dataentry extends Survey_Common_Action
     }
 
     /**
-    * Renders template(s) wrapped in header and footer
-    *
-    * @param string|array $aViewUrls View url(s)
-    * @param array $aData Data to be passed on. Optional.
-    */
-    protected function _renderWrappedTemplate($aViewUrls = array(), $aData = array())
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string $sAction Current action, the folder to fetch views from
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
+    protected function _renderWrappedTemplate($sAction = 'dataentry', $aViewUrls = array(), $aData = array())
     {
         if (!isset($aData['display']['menu_bars']['browse']))
         {
             $aData['display']['menu_bars']['browse'] = $this->getController()->lang->gT("Data entry");
         }
-        parent::_renderWrappedTemplate('dataentry', $aViewUrls, $aData);
+        parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
 }

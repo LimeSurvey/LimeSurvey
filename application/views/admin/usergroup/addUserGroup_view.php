@@ -1,4 +1,5 @@
 <div class='header ui-widget-header'><?php $clang->eT("Add user group"); ?></div>
+<br />
 <form action='<?php echo $this->createUrl("admin/usergroups/add"); ?>' id='usergroupform' class='form30' method='post'>
     <ul>
         <li>

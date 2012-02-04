@@ -34,9 +34,9 @@ class Authentication extends Survey_Common_Action
     {
         $this->_redirectIfLoggedIn();
         $sIp = Yii::app()->request->getUserHostAddress();
-        $canLogin = $this->_userCanLogin($sIp);
+        $bCanLogin = $this->_userCanLogin($sIp);
 
-        if ($canLogin && !is_array($canLogin))
+        if ($bCanLogin && !is_array($bCanLogin))
         {
             if (Yii::app()->request->getPost('action'))
             {
@@ -52,7 +52,8 @@ class Authentication extends Survey_Common_Action
                     $this->_doRedirect();
                     die();
                 }
-                else {
+                else
+                {
                     $this->_renderWrappedTemplate('authentication', 'error', $aData);
                 }
             }
@@ -63,7 +64,7 @@ class Authentication extends Survey_Common_Action
         }
         else
         {
-            $this->_renderWrappedTemplate('authentication', 'error', $canLogin);
+            $this->_renderWrappedTemplate('authentication', 'error', $bCanLogin);
         }
     }
 
@@ -89,10 +90,10 @@ class Authentication extends Survey_Common_Action
         }
         else
         {
-            $postuser = Yii::app()->request->getPost('user');
+            $sUserName = Yii::app()->request->getPost('user');
             $sEmailAddr = Yii::app()->request->getPost('email');
 
-            $aFields = User::model()->findAllByAttributes(array('users_name' => $postuser, 'email' => $sEmailAddr));
+            $aFields = User::model()->findAllByAttributes(array('users_name' => $sUserName, 'email' => $sEmailAddr));
 
             if (count($aFields) < 1)
             {
@@ -142,8 +143,8 @@ class Authentication extends Survey_Common_Action
         }
         else
         {
-            $tmp = str_replace("{NAME}", '<strong>' . $aFields[0]['users_name'] . '</strong>', $clang->gT("Email to {NAME} ({EMAIL}) failed."));
-            $sMessage = str_replace("{EMAIL}", $sEmailAddr, $tmp) . '<br />';
+            $sTmp = str_replace("{NAME}", '<strong>' . $aFields[0]['users_name'] . '</strong>', $clang->gT("Email to {NAME} ({EMAIL}) failed."));
+            $sMessage = str_replace("{EMAIL}", $sEmailAddr, $sTmp) . '<br />';
         }
 
         return $sMessage;
@@ -320,14 +321,11 @@ class Authentication extends Survey_Common_Action
     private function _checkForUsageOfDefaultPassword()
     {
         $clang = $this->getController()->lang;
+        Yii::app()->session['pw_notify'] = false;
         if (strtolower($_POST['password']) === 'password')
         {
             Yii::app()->session['pw_notify'] = true;
             Yii::app()->session['flashmessage'] = $clang->gT('Warning: You are still using the default password (\'password\'). Please change your password and re-login again.');
-        }
-        else
-        {
-            Yii::app()->session['pw_notify'] = false;
         }
     }
 

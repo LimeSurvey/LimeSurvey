@@ -513,11 +513,11 @@ class UserAction extends Survey_Common_Action
     {
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/jquery/jquery.tablesorter.min.js');
         $this->getController()->_js_admin_includes(Yii::app()->baseUrl . '/scripts/admin/users.js');
-        $postuser = Yii::app()->request->getPost("user");
-        $postemail = Yii::app()->request->getPost("email");
+        $aData['postuser']  = Yii::app()->request->getPost("user");
+        $aData['postemail'] = Yii::app()->request->getPost("email");
         $postuserid = Yii::app()->request->getPost("uid");
-        $aData['postuserid']=$postuserid;
-        $postfull_name = Yii::app()->request->getPost("full_name");
+        $aData['postuserid'] = $postuserid;
+        $aData['postfull_name'] = Yii::app()->request->getPost("full_name");
         $this->_refreshtemplates();
         foreach (getUserList() as $usr)
         {

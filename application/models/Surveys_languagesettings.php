@@ -88,14 +88,13 @@ class Surveys_languagesettings extends CActiveRecord
 
     function getDateFormat($surveyid,$languagecode)
     {
-		$query=Yii::app()->db->createCommand();
-        $query->select('surveyls_dateformat');
-        $query->from('{{surveys_languagesettings}}');
-		$query->join('surveys','surveys.sid = surveys_languagesettings.surveyls_survey_id AND surveyls_survey_id = :surveyid');
-        $query->where('surveyls_language = :langcode');
-		$query->bindParam(":langcode", $languagecode, PDO::PARAM_STR)
-			->bindParam(":surveyid", $surveyid, PDO::PARAM_INT);
-        return $query->query();
+		return Yii::app()->db->createCommand()->select('surveyls_dateformat')
+            ->from('{{surveys_languagesettings}}')
+            ->join('{{surveys}}','{{surveys}}.sid = {{surveys_languagesettings}}.surveyls_survey_id AND surveyls_survey_id = :surveyid')
+            ->where('surveyls_language = :langcode')
+            ->bindParam(":langcode", $languagecode, PDO::PARAM_STR)
+			->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)
+            ->query();
     }
 
     function getAllSurveys($hasPermission = FALSE)

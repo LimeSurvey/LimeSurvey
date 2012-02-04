@@ -20,7 +20,7 @@
 
     <?php foreach ($grplangs as $grouplang)
     { ?>
-        || document.getElementById('group_name_$grouplang').value.length==0
+        || document.getElementById('group_name_<?php echo $grouplang; ?>').value.length==0
     <?php } ?>
      ) { alert ('<?php $clang->eT("Error: You have to enter a group title for each language.",'js'); ?>'); return false;}" >
 

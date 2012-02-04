@@ -2812,7 +2812,8 @@ function SetSurveyLanguage($surveyid, $language)
 
         LimeExpressionManager::SetEMLanguage($_SESSION['survey_'.$surveyid]['s_lang']);
     }
-    else {
+    else
+    {
         $_SESSION['survey_'.$surveyid]['s_lang'] = $language;
         Yii::import('application.libraries.Limesurvey_lang', true);
         $clang = new Limesurvey_lang($defaultlang);
