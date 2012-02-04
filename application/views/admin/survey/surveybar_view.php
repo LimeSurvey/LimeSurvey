@@ -35,7 +35,7 @@
         </div>
         <ul class='sf-menu'>
             <?php if($onelanguage) { ?>
-                <li><a accesskey='d' href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$baselang");?>', '_blank')" title="<?php echo $icontext2;?>" >
+                <li><a accesskey='d' target='_blank' href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$baselang"); ?>" title="<?php echo $icontext2;?>" >
                         <img src='<?php echo $imageurl;?>/do.png' alt='<?php echo $icontext;?>' />
                     </a></li>
                 <?php } else { ?>
