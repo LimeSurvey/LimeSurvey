@@ -3,12 +3,12 @@
 
 
         <li><label for='emailnotificationto'><?php $clang->eT("Send basic admin notification email to:"); ?></label>
-            <input size='70' type='text' value="<?php echo $esrow['emailnotificationto']; ?>" id='emailnotificationto' name='emailnotificationto' />
+            <input size='70' type='email' value="<?php echo $esrow['emailnotificationto']; ?>" id='emailnotificationto' name='emailnotificationto' />
         </li>
 
 
         <li><label for='emailresponseto'><?php $clang->eT("Send detailed admin notification email to:"); ?></label>
-            <input size='70' type='text' value="<?php echo $esrow['emailresponseto']; ?>" id='emailresponseto' name='emailresponseto' />
+            <input size='70' type='email' value="<?php echo $esrow['emailresponseto']; ?>" id='emailresponseto' name='emailresponseto' />
         </li>
 
 

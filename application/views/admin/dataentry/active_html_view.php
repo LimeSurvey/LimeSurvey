@@ -1,4 +1,4 @@
-<?php 
+<?php
 $yii = Yii::app();
 
 if ($thissurvey['active'] == "Y")
@@ -27,7 +27,7 @@ if ($thissurvey['active'] == "Y")
                 <table><tr><td align='left'>
                 <input type='checkbox' class='checkboxbtn' name='closerecord' id='closerecord' checked='checked'/><label for='closerecord'><?php $clang->eT("Finalize response submission"); ?></label></td></tr>
                 <input type='hidden' name='closedate' value='<?php echo dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $yii->getConfig('timeadjust')); ?>' />
-    
+
                 <?php if ($thissurvey['allowsave'] == "Y")
                 { ?>
 
@@ -42,7 +42,7 @@ if ($thissurvey['active'] == "Y")
     					  <tr><td align='right'><?php $clang->eT("Confirm Password:"); ?></td>
     					  <td><input type='password' name='save_confirmpassword' /></td></tr>
     					  <tr><td align='right'><?php $clang->eT("Email:"); ?></td>
-    					  <td><input type='text' name='save_email' /></td></tr>
+    					  <td><input type='email' name='save_email' /></td></tr>
     					  <tr><td align='right'><?php $clang->eT("Start Language:"); ?></td>
     					  <td>
                     <select name='save_language'>
@@ -56,8 +56,8 @@ if ($thissurvey['active'] == "Y")
                             <?php }
                     } ?>
                     </select>
-    
-    
+
+
                     </td></tr></table></div>
                     </td>
                     </tr>
@@ -65,7 +65,7 @@ if ($thissurvey['active'] == "Y")
                 <tr>
                 <td colspan='3' align='center'>
                 <input type='submit' id='submitdata' value='<?php $clang->eT("Submit"); ?>'
-    
+
                 <?php if (tableExists('tokens_'.$thissurvey['sid']))
                 { ?>
                      disabled='disabled'/>

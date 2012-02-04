@@ -191,7 +191,7 @@
 
         <div id='email'><ul>
                 <li><label for='siteadminemail'><?php $clang->eT("Default site admin email:"); ?></label>
-                    <input type='text' size='50' id='siteadminemail' name='siteadminemail' value="<?php echo htmlspecialchars(getGlobalSetting('siteadminemail')); ?>" /></li>
+                    <input type='email' size='50' id='siteadminemail' name='siteadminemail' value="<?php echo htmlspecialchars(getGlobalSetting('siteadminemail')); ?>" /></li>
 
                 <li><label for='siteadminname'><?php $clang->eT("Administrator name:"); ?></label>
                     <input type='text' size='50' id='siteadminname' name='siteadminname' value="<?php echo htmlspecialchars(getGlobalSetting('siteadminname')); ?>" /><br /><br /></li>

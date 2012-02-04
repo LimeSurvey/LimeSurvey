@@ -15,7 +15,7 @@
         <li><label for='lastname'><?php $clang->eT("Last name"); ?>:</label>
             <input type='text' size='30'  id='lastname' name='lastname' value="" /></li>
         <li><label for='email'><?php $clang->eT("Email"); ?>:</label>
-            <input type='text' maxlength='320' size='50' id='email' name='email' value="" /></li>
+            <input type='email' maxlength='320' size='50' id='email' name='email' value="" /></li>
         </li>
         <li><label for='language'><?php $clang->eT("Language"); ?>:</label>
             <?php echo languageDropdownClean($surveyid, Survey::model()->findByPk($surveyid)->language); ?>

@@ -38,7 +38,7 @@ else
                        echo $lastname;
                    } ?>" /></li>
         <li><label for='email'><?php $clang->eT("Email"); ?>:</label>
-            <input type='text' maxlength='320' size='50' id='email' name='email' value="<?php if (isset($email))
+            <input type='email' maxlength='320' size='50' id='email' name='email' value="<?php if (isset($email))
             {
                 echo $email;
             } ?>" /></li>

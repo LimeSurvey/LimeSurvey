@@ -26,7 +26,7 @@
 			  	<tr>
 			  		<td align='right'><?php $clang->eT("Email:"); ?></td>
 			   		<td>
-			   			<input type='text' name='save_email' value='<?php echo $_POST['save_email']; ?>' />
+			   			<input type='email' name='save_email' value='<?php echo $_POST['save_email']; ?>' />
 			   		</td>
 			   	</tr>
 			  	<tr>

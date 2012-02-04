@@ -3,7 +3,7 @@
 
     <ul>
         <li><label for="user"><?php $clang->eT('Username'); ?></label><input name="user" id="user" type="text" size="60" maxlength="60" value="" /></li>
-        <li><label for="email"><?php $clang->eT('Email'); ?></label><input name="email" id="email" type="text" size="60" maxlength="60" value="" /></li>
+        <li><label for="email"><?php $clang->eT('Email'); ?></label><input name="email" id="email" type="email" size="60" maxlength="60" value="" /></li>
         <p>
             <input type="hidden" name="action" value="forgotpass" />
             <input class="action" type="submit" value="<?php $clang->eT('Check Data'); ?>" />

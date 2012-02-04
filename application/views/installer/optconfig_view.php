@@ -51,6 +51,7 @@
 <td><b><?php echo CHtml::activeLabelEx($model, 'adminEmail', array('label' => $clang->gT("Administrator email"))); ?></b><br />
 <div class="description-field"><?php $clang->eT("This is the default email address of the site administrator and used for system messages, contact options and default bounce email."); ?></div>
 </td>
+<?php /* @todo HTML5 email field */ ?>
 <td align="right"><?php echo CHtml::activeTextField($model, 'adminEmail'); ?></td>
 </tr>
 <tr>
