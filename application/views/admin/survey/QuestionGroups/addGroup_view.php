@@ -31,7 +31,7 @@
         <ul>
         <li>
         <label for='group_name_$grouplang'><?php $clang->eT("Title:"); ?></label>
-        <input type='text' size='80' maxlength='100' name='group_name_<?php echo $grouplang; ?>' id='group_name_<?php echo $grouplang; ?>' /><font color='red' face='verdana' size='1'> <?php $clang->eT("Required"); ?></font></li>
+        <input type='text' size='80' maxlength='100' name='group_name_<?php echo $grouplang; ?>' id='group_name_<?php echo $grouplang; ?>' required="required" /><font color='red' face='verdana' size='1'> <?php $clang->eT("Required"); ?></font></li>
         <li><label for='description_<?php echo $grouplang; ?>'><?php $clang->eT("Description:"); ?></label>
         <textarea cols='80' rows='8' id='description_<?php echo $grouplang; ?>' name='description_<?php echo $grouplang; ?>'></textarea>
         <?php echo getEditor("group-desc","description_".$grouplang, "[".$clang->gT("Description:", "js")."](".$grouplang.")",$surveyid,'','',$action); ?>
