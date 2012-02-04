@@ -233,6 +233,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
     }
     //CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
     $fieldmap=createFieldMap($surveyid, "full");
+    $clang = new limesurvey_lang($_SESSION['adminlang']);
     if (isset($fieldmap))
     {
         foreach($fieldmap as $fielddata)
