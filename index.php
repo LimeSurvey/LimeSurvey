@@ -2216,14 +2216,15 @@ function buildsurveysession($previewGroup=false)
 
     }
 
-    // Prefill question/answer from defaultvalues
-    foreach ($fieldmap as $field)
-    {
-        if (isset($field['defaultvalue']))
-        {
-            $_SESSION[$field['fieldname']]=$field['defaultvalue'];
-        }
-    }
+    // Defaults need to be set within Expression Manager so that it can process defaults comprised of equations
+//    // Prefill question/answer from defaultvalues
+//    foreach ($fieldmap as $field)
+//    {
+//        if (isset($field['defaultvalue']))
+//        {
+//            $_SESSION[$field['fieldname']]=$field['defaultvalue'];
+//        }
+//    }
     // Prefill questions/answers from command line params
     if (isset($_SESSION['insertarray']))
     {
