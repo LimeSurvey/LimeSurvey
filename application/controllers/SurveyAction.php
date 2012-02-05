@@ -427,7 +427,7 @@ class SurveyAction extends CAction {
             if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
                 $tkquery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".$token."'";
             } else {
-                $tkquery = "SELECT * FROM {{'tokens_'".$surveyid."}} WHERE token='".$token."' AND (completed = 'N' or completed='')";
+                $tkquery = "SELECT * FROM {{tokens_".$surveyid."}} WHERE token='".$token."' AND (completed = 'N' or completed='')";
             }
             $tkresult = dbExecuteAssoc($tkquery); //Checked
             $tokendata = $tkresult->read();
