@@ -119,6 +119,18 @@ $(document).ready(function() {
         rowList: [25,50,100,250,500,1000,5000,10000],
         multiselect: true,
         loadonce : false,
+        loadError : function(xhr, st, str) {
+            var dialog_buttons={}; 
+            dialog_buttons[okBtn]=function(){
+                $( this ).dialog( "close" );
+            };
+            $("<p><strong>" + str + " (Error " + xhr.status + ")</strong><br/> Could not process your query.</p>").dialog({
+                modal: true,
+                title: error,
+                buttons: dialog_buttons,
+                resizable: false
+            });
+        },
         ondblClickRow: function(id) {
             var can_edit = $('#displayparticipants').getCell(id, 'can_edit');
             if(can_edit == 'false') {
@@ -349,7 +361,6 @@ $(document).ready(function() {
                     } else {
                         if(conditionid == 1) {
                             searchconditions = searchconditions + $('#field_1').val()+"||"+$('#condition_1').val()+"||"+$('#conditiontext_1').val();
-                            jQuery("#displayparticipants").jqGrid('setGridParam',{ url:jsonSearchUrl+'/'+searchconditions}).trigger("reloadGrid");
                         } else {
                             searchconditions = $('#field_1').val()+"||"+$('#condition_1').val()+"||"+$('#conditiontext_1').val();
                             for( i=2 ; i<=conditionid; i++) {
@@ -357,8 +368,22 @@ $(document).ready(function() {
                                     searchconditions = searchconditions + "||"+ $('#join_'+(i)).val()+"||"+$('#field_'+i).val()+"||"+$('#condition_'+i).val()+"||"+$('#conditiontext_'+i).val();
                                 }
                             }
-                            jQuery("#displayparticipants").jqGrid('setGridParam',{ url:jsonSearchUrl+'/'+searchconditions}).trigger("reloadGrid");
                         }
+                        jQuery("#displayparticipants").jqGrid('setGridParam',{
+                        	url:jsonSearchUrl+'/'+searchconditions,
+                            gridComplete: function(){ 
+                                if(jQuery("#displayparticipants").jqGrid('getGridParam', 'records') == 0) {
+                                    var dialog_buttons={}; 
+                                    dialog_buttons[okBtn]=function(){
+                                        $( this ).dialog( "close" );
+                                    };
+                                    $("<p>Your search returned no results.</p>").dialog({
+                                        modal: true,
+                                        buttons: dialog_buttons,
+                                        resizable: false
+                                    });
+                                }
+                        }}).trigger("reloadGrid");
                         $(this).dialog("close");
                     }
                 };

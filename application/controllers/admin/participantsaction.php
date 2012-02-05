@@ -425,7 +425,7 @@ class participantsaction extends Survey_Common_Action
     {
         $participantid = Yii::app()->request->getQuery('pid');
         $records = Survey_links::model()->findAllByAttributes((array('participant_id' => $participantid)));
-        $aData = new Object();
+        $aData = new stdClass();
         $aData->page = 1;
         $aData->records = count($records);
         $aData->total = ceil($aData->records / 10);
@@ -874,7 +874,7 @@ class participantsaction extends Survey_Common_Action
             $searchcondition = urldecode($searchcondition);
             $finalcondition = array();
             $condition = explode("||", $searchcondition);
-            $aData = new Object();
+            $aData = new stdClass();
             $aData->page = $page;
             if (count($condition) == 3)
             {
@@ -1113,7 +1113,7 @@ class participantsaction extends Survey_Common_Action
         $iParticipantId = Yii::app()->request->getQuery('pid');
         $records = ParticipantAttributeNames::getParticipantVisibleAttribute($iParticipantId);
         $getallattributes = ParticipantAttributeNames::getAttributes();
-        $aData = new Object();
+        $aData = new stdClass();
         $aData->page = 1;
         $aData->records = count($records);
         $aData->total = ceil($aData->records / 10);
