@@ -773,8 +773,13 @@ class participantsaction extends Survey_Common_Action
 
     function getParticipantsResults_json()
     {
+    	///admin/participants/getParticipantsResults_json/search/email||contain||com
+        //First entry is field to search, second method, third value, seperated by double pipe "||"
         $page = Yii::app()->request->getPost('page');
         $limit = Yii::app()->request->getPost('rows');
+    	$page=($page) ? $page : 1;
+    	$limit=($limit) ? $limit : 25;
+
         $attid = ParticipantAttributeNames::getAttributeVisibleID();
         $participantfields = array('participant_id', 'can_edit', 'firstname', 'lastname', 'email', 'blacklisted', 'surveys', 'language', 'owner_uid');
 
@@ -785,11 +790,10 @@ class participantsaction extends Survey_Common_Action
             $searchcondition = urldecode($searchcondition);
             $finalcondition = array();
             $condition = explode("||", $searchcondition);
-            $aData = new Object();
+            $aData = new stdClass();
             $aData->page = $page;
             if (count($condition) == 3)
             {
-
                 $records = Participants::getParticipantsSearch($condition, $page, $limit);
                 $aData->records = count(Participants::getParticipantsSearch($condition, 0, 0));
                 $aData->total = ceil($aData->records / $limit);
@@ -800,7 +804,6 @@ class participantsaction extends Survey_Common_Action
                 $aData->records = count(Participants::getParticipantsSearchMultiple($condition, 0, 0));
                 $aData->total = ceil($aData->records / $limit);
             }
-
             $i = 0;
             foreach ($records as $row => $value)
             {
@@ -850,7 +853,7 @@ class participantsaction extends Survey_Common_Action
                 $sortedarray = subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
                 $i = 0;
                 $count = count($sortedarray[0]);
-                $aData = new Object();
+                $aData = new stdClass();
                 foreach ($sortedarray as $key => $value)
                 {
                     $aData->rows[$i]['id'] = $value[0];

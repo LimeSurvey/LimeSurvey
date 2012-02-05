@@ -390,7 +390,7 @@ class Participants extends CActiveRecord
             }
             else
             {
-                $command = Yii::app()->db->createCommand()->where(array('like', Yii::app()->db->quoteValue($condition[0]), Yii::app()->db->quoteValue($condition[2])))->select('*')->from('{{participants}}');
+                $command = Yii::app()->db->createCommand()->where(array('like', $condition[0], $condition[2]))->select('*')->from('{{participants}}');
                 if ($page == 0 && $limit == 0)
                 {
                     $data = $command->queryAll();
@@ -676,6 +676,8 @@ class Participants extends CActiveRecord
 
     function getParticipantsSearchMultiple($condition, $page, $limit)
     {
+    	//http://localhost/limesurvey_yii/admin/participants/getParticipantsResults_json/search/email||contains||gov||and||firstname||contains||AL
+    	//First contains fieldname, second contains method, third contains value, fourth contains BOOLEAN SQL and, or
         $i = 0;
         $j = 1;
         $tobedonelater = array();
@@ -704,11 +706,12 @@ class Participants extends CActiveRecord
                 }
                 else if ($condition[1] == 'contains')
                 {
+                	$condition[2]="%".$condition[2]."%";
                     if (is_numeric($condition[0]))
                     {
                         $newsub = $j;
-                        $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value LIKE :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", "%".$condition[2]."%", PDO::PARAM_STR)->queryAll();
-
+                        //$arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_0 AND {{participant_attribute}}.value LIKE :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_INT)->bindParam(":condition_2", "%".$condition[2]."%", PDO::PARAM_STR)->queryAll();
+						$arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition[0].' AND {{participant_attribute}}.value LIKE '.$condition[2])->queryAll();
 
 
                         $command->addInCondition('participant_id', $arr);
@@ -716,8 +719,10 @@ class Participants extends CActiveRecord
                     }
                     else
                     {
-                        $command->addCondition(':condition_0 LIKE :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_STR)->bindParam(":condition_2", "%".$condition[2]."%", PDO::PARAM_STR);
-                    }
+                    	//BUG: bindParam does not exist as a method
+                        //$command->addCondition(':condition_0 LIKE :condition_2')->bindParam(":condition_0", $condition[0], PDO::PARAM_STR)->bindParam(":condition_2", "%".$condition[2]."%", PDO::PARAM_STR);
+                        $command->addCondition($condition[0] . ' LIKE "'. $condition[2].'"');
+					}
                 }
                 else if ($condition[1] == 'notequal')
                 {
@@ -784,7 +789,7 @@ class Participants extends CActiveRecord
                     }
                 }
             }
-            else if ($condition[$i] != '')
+            else if ($condition[$i] != '') //This section deals with subsequent filter conditions that have boolean joiner
             {
                 if ($condition[$i + 2] == 'equal')
                 {
@@ -823,8 +828,8 @@ class Participants extends CActiveRecord
                         if ($condition[$i] == 'and')
                         {
                             $newsub = $j;
-                            $arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value LIKE :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR)->queryAll();
-
+                            //$arr = Yii::app()->db->createCommand('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = :condition_p1 AND {{participant_attribute}}.value LIKE :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_INT)->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR)->queryAll();
+							$arr = Yii::app()->db->createComment('SELECT {{participant_attribute}}.participant_id FROM {{participant_attribute}} WHERE {{participant_attribute}}.attribute_id = '.$condition[$i+1].' AND {{participant_attribute}}.value LIKE "%'.$condition[$i+3].'%"')->queryAll();
 
                             $command->addInCondition('participant_id', $arr);
                             $j++;
@@ -839,13 +844,14 @@ class Participants extends CActiveRecord
                     {
                         if ($condition[$i] == 'and')
                         {
-
-                            $command->addCondition(':condition_p1 LIKE :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_STR)->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR);
+                            //$command->addCondition(':condition_p1 LIKE :condition_p3')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_STR)->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR);
+                        	$command->addCondition($condition[$i+1].' LIKE "%'.$condition[$i+3].'%"');
                         }
                         else
                         {
-                            $command->addCondition(':condition_p1 LIKE :condition_p3', 'OR')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_STR)->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR);
-                        }
+                            //$command->addCondition(':condition_p1 LIKE :condition_p3', 'OR')->bindParam(":condition_p1", $condition[$i + 1], PDO::PARAM_STR)->bindParam(":condition_p3", "%".$condition[$i + 3]."%", PDO::PARAM_STR);
+                            $command->addCondition($condition[$i+1].' LIKE "%'.$condition[$i+3].'%"', 'OR');
+						}
                     }
                 }
                 else if ($condition[$i + 2] == 'notequal')
@@ -982,7 +988,8 @@ class Participants extends CActiveRecord
                 $i = $i + 4;
             }
         }
-        if ($page == 0 && $limit == 0)
+    	//print_r($command); die();
+    	if ($page == 0 && $limit == 0)
         {
             $arr = Participants::model()->findAll($command);
             $data = array();
