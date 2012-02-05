@@ -1825,7 +1825,11 @@ function getExtendedAnswer($surveyid, $action, $fieldcode, $value, $format='')
             case "H":
             case "1":
                 $fieldtoselect = array('answer');
-                $condition = "qid = {$fields['qid']} AND code=".$value." AND language='".$s_lang."' AND scale_id={$fields['scale_id']}";
+                $condition = "qid = {$fields['qid']} AND code=".$value." AND language='".$s_lang."'";
+                if (isset($fields['scale_id']))
+                {
+                    $condition.=" AND scale_id={$fields['scale_id']}";
+                }
 
                 $result = Answers::model()->findAllByAttributes(array('qid' => $fields['qid'], 'code' => $value, 'language' => $s_lang)) or die ("Couldn't get answer type F/H - getExtendedAnswer() in common_helper.php");   //Checked
                 foreach($result as $row)
