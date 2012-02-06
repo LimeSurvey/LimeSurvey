@@ -1,17 +1,17 @@
 <?php
 /*
- * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- *	$Id$
- *
+* LimeSurvey
+* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*	$Id$
+*
 //Security Checked: POST, GET, SESSION, REQUEST, returnGlobal, DB
 
 Redesigned 7/25/2006 - swales
@@ -232,7 +232,7 @@ class Save {
     */
     function savedsilent()
     {
-        global $surveyid, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust, $clang, $clienttoken, $thisstep, $modrewrite;
+        global $surveyid, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust, $clang, $clienttoken, $thisstep;
         submitanswer();
         // Prepare email
         $tokenentryquery = 'SELECT * from {{tokens_'.$surveyid.'}} WHERE token=\''.sanitize_paranoid_string($clienttoken).'\';';
@@ -246,14 +246,10 @@ class Save {
         $message .= $clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):","unescaped").":\n";
         $language = $tokenentryarray['language'];
 
-        if($modrewrite)
-        {
-            $message .= "\n\n$publicurl/$surveyid/lang-$language/tk-$clienttoken";
-        }
-        else
-        {
-            $message .= "\n\n$publicurl/index.php?lang=$language&sid=$surveyid&token=$clienttoken";
-        };
+
+        $message .= "\n\n$publicurl/$surveyid/lang-$language/tk-$clienttoken";
+
+
         if (SendEmailMessage($message, $subject, $to, $from, $sitename, false, getBounceEmail($surveyid)))
         {
             $emailsent="Y";
@@ -284,10 +280,10 @@ class Save {
             $setField = $_POST['lastanswer'];
         }
         else if (isset($_POST['lastgroup']))
-        {
-            $setField = $_POST['lastgroup'];
-        }
-        $passedTime = round(microtime(true) - $_POST['start_time'],2);
+            {
+                $setField = $_POST['lastgroup'];
+            }
+            $passedTime = round(microtime(true) - $_POST['start_time'],2);
 
         if(!isset($setField)){ //we show the whole survey on one page - we don't have to save time for group/question
             $query = "UPDATE {{survey_{$thissurvey['sid']}_timings}} SET "

@@ -1,17 +1,17 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
- * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- *	$Id$
- */
+* LimeSurvey
+* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*	$Id$
+*/
 $config = array();
 
 // CAUTION
@@ -72,24 +72,6 @@ $config['showpopups']         =   1;                // Show popup messages if ma
 // 1=Show popup message, 0=Show message on page instead.
 
 $config['maxemails']          = 50;               // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
-
-// Support for Fancy URLs
-//
-// This new feature makes survey URLs more readable
-// For example a normal survey that looks like this
-
-//     http://example.com/limesurvey/index.php?sid=12345&lang=de
-
-// will look like this
-
-//      http://example.com/lime/survey/12345/lang-fr/tk-ertoiuy [^]
-
-// If you want to have fancy URLs, set this to 1 AND
-// rename htaccess.txt in the LimeSurvey root directory to .htaccess
-//
-// NOTE: You MUST have the Apache mod_rewrite module installed.
-// If you don't know what this is better leave this setting alone.
-$config['modrewrite']         =   0;
 
 // Enable or Disable LDAP feature
 $config['enableLdap'] = false;
@@ -256,76 +238,76 @@ $config['addTitleToLinks'] = false;
 $config['demoMode'] = false;
 
 /** -----------------------------------------------------
- * Because columns are tricky things, in terms of balancing visual
- * layout against semantic markup. The choice has been left to the
- * system administrator or designer. (Who ever cares most.)
- *
- * $column_style defines how columns are rendered for survey answers.
- * There are four possible options:
- *     'css'   using one of the various CSS only methods for creating
- columns (see template style sheet for details).
- *     'ul'    using multiple floated unordered lists. (DEFAULT)
- *     'table' using conventional tables based layout.
- *     NULL    blocks the use of columns
- */
+* Because columns are tricky things, in terms of balancing visual
+* layout against semantic markup. The choice has been left to the
+* system administrator or designer. (Who ever cares most.)
+*
+* $column_style defines how columns are rendered for survey answers.
+* There are four possible options:
+*     'css'   using one of the various CSS only methods for creating
+columns (see template style sheet for details).
+*     'ul'    using multiple floated unordered lists. (DEFAULT)
+*     'table' using conventional tables based layout.
+*     NULL    blocks the use of columns
+*/
 $config['column_style'] = 'ul';
 
 /**
- * $hide_groupdescr_allinone.
- * This parameter 'hide_groupdescr_allinone' can be set to control
- * if the group description should be hidden if the group description of a group of questions
- * with all questions hidden by conditions is displayed in all-in-one survey mode.
- * hide_groupdescr_allinone can be set to true or false (default: true)
- */
+* $hide_groupdescr_allinone.
+* This parameter 'hide_groupdescr_allinone' can be set to control
+* if the group description should be hidden if the group description of a group of questions
+* with all questions hidden by conditions is displayed in all-in-one survey mode.
+* hide_groupdescr_allinone can be set to true or false (default: true)
+*/
 $config['hide_groupdescr_allinone']=true;
 
 
 /**
- * Use FireBug Lite for JavaScript and template development and testing.
- * This allows you to use all the features of Firebug in any browser.
- * see http://getfirebug.com/lite.html for more info.
- */
+* Use FireBug Lite for JavaScript and template development and testing.
+* This allows you to use all the features of Firebug in any browser.
+* see http://getfirebug.com/lite.html for more info.
+*/
 $config['use_firebug_lite'] = false;
 
 /*
- * When activated there are additional values like arithmetic mean and standard deviation at statistics.
- * This only affects question types "A" (5 point array) and "5" (5 point choice).
- * Furthermore data is aggregated to get a faster overview.
- */
+* When activated there are additional values like arithmetic mean and standard deviation at statistics.
+* This only affects question types "A" (5 point array) and "5" (5 point choice).
+* Furthermore data is aggregated to get a faster overview.
+*/
 $config['showaggregateddata'] = 1;
 
 
 /**
- * When this settings is true/1 (default) then the standard templates that are delivered with the
- * LimeSurvey installation package are read-only. If you want to modify a template just copy it first.
- * This prevents upgrade problems later because if you modify your standard templates you could accidenitally
- * overwrite these on a LimSurvey upgrade. Only set this to 0 if you know what you are doing.
- */
+* When this settings is true/1 (default) then the standard templates that are delivered with the
+* LimeSurvey installation package are read-only. If you want to modify a template just copy it first.
+* This prevents upgrade problems later because if you modify your standard templates you could accidenitally
+* overwrite these on a LimSurvey upgrade. Only set this to 0 if you know what you are doing.
+*/
 $config['standard_templates_readonly'] =  true;
 
 
 /**
- * When this settings is true/1 (default = false/0) then the printable survey option will show a reference
- * to the "lime_survey_12345" table which stores the survey answers.
- * It will show a code like "12345X22X333name":
- * 12345 = surveyID
- * 22 = groupID
- * 333 = questionID
- * name = answer code (only shown for certain question types
- *
- * This code will be shown in front of each question and in front of each answer option at the printable survey.
- * It can be used as a data analysis code book for querying data from the main response table.
- */
+* When this settings is true/1 (default = false/0) then the printable survey option will show a reference
+* to the "lime_survey_12345" table which stores the survey answers.
+* It will show a code like "12345X22X333name":
+* 12345 = surveyID
+* 22 = groupID
+* 333 = questionID
+* name = answer code (only shown for certain question types
+*
+* This code will be shown in front of each question and in front of each answer option at the printable survey.
+* It can be used as a data analysis code book for querying data from the main response table.
+*/
 $config['showsgqacode'] =  false;
 
 
 
 /**
- *  PDF Export Settings
- *  This feature activates PDF export for printable survey and Print Answers
- *  The PDF export is totally experimental. The output is mostly ugly.
- *  At this point no support can be given - if you want to help to fix it please get in touch with us
- */
+*  PDF Export Settings
+*  This feature activates PDF export for printable survey and Print Answers
+*  The PDF export is totally experimental. The output is mostly ugly.
+*  At this point no support can be given - if you want to help to fix it please get in touch with us
+*/
 
 $config['usepdfexport']   = 1;                       //Set 0 to disable; 1 to enable
 //$config['pdfdefaultfont'] = 'freemono';              //Default font for the pdf Export
@@ -337,26 +319,26 @@ $config['notsupportlanguages'] = array('zh-Hant-TW','zh-Hant-HK','zh-Hans','ja',
 
 // RemoteControl Settings
 /**
- * This value determines if the RemoteControl is enabled (true) or not (false)
- */
+* This value determines if the RemoteControl is enabled (true) or not (false)
+*/
 $config['enableLsrc'] = false;
 
 /**
- * This value determines if you can save survey structures (as .csv) into your lsrc folder in export menu
- */
+* This value determines if you can save survey structures (as .csv) into your lsrc folder in export menu
+*/
 $config['export4lsrc'] = false;
 
 // CAS Settings
 /**
- * Please note that CAS functionality is very basic and you have to modify the client to your needs.
- * At least the hard work is done.
- * The Client is deployed in Limesurvey and a file login_check_cas.php does what login_check.php does in normal mode.
- *
- * $casEnabled determines if CAS should be used or not for Authentication.
- * $casAuthServer the servername of the cas Auth Server. Without http://
- * $casAuthPort CAS Server listening Port
- * $casAuthUri relative uri from $casAuthServer to cas workingdirectory
- */
+* Please note that CAS functionality is very basic and you have to modify the client to your needs.
+* At least the hard work is done.
+* The Client is deployed in Limesurvey and a file login_check_cas.php does what login_check.php does in normal mode.
+*
+* $casEnabled determines if CAS should be used or not for Authentication.
+* $casAuthServer the servername of the cas Auth Server. Without http://
+* $casAuthPort CAS Server listening Port
+* $casAuthUri relative uri from $casAuthServer to cas workingdirectory
+*/
 $config['casEnabled'] = false;
 $config['casAuthServer'] = 'localhost';
 $config['casAuthPort'] = 8443;
@@ -364,97 +346,97 @@ $config['casAuthUri'] = '/cas-server/';
 
 
 /**
- *  Statistics chart settings
- *  Different languages need different fonts to properly create charts - this is what the following settings are for
- */
+*  Statistics chart settings
+*  Different languages need different fonts to properly create charts - this is what the following settings are for
+*/
 
 /**
- *  $chartfontfile - set the font file name used to created the charts in statistics - this font must reside in <limesurvey root folder>/fonts
- *  Set this to specific font-file (for example 'vera.ttf') or set it to 'auto' and LimeSurvey tried to pick the best font depending on your survey base language
- */
+*  $chartfontfile - set the font file name used to created the charts in statistics - this font must reside in <limesurvey root folder>/fonts
+*  Set this to specific font-file (for example 'vera.ttf') or set it to 'auto' and LimeSurvey tried to pick the best font depending on your survey base language
+*/
 $config['chartfontfile']='auto';
 
 /**
- *  $chartfontsize - set the size of the font to created the charts in statistics
- */
+*  $chartfontsize - set the size of the font to created the charts in statistics
+*/
 $config['chartfontsize'] =10;
 
 
 /**
- * $updatecheckperiod - sets how often LimeSurvey checks for updates - the number sets the number of days between updates.
- * Set to 0 to disable any update checks
- * Recommended: 7
- */
+* $updatecheckperiod - sets how often LimeSurvey checks for updates - the number sets the number of days between updates.
+* Set to 0 to disable any update checks
+* Recommended: 7
+*/
 $config['updatecheckperiod']=7;
 
 /**
- * @var $showxquestions string allows you to control whether or not
- * {THEREAREXQUESTIONS} is displayed (if it is included in a template)
- *	hide = always hide {THEREAREXQUESTIONS}
- *	show = always show {THEREAREXQUESTIONS}
- *	choose = allow survey admins to choose
- */
+* @var $showxquestions string allows you to control whether or not
+* {THEREAREXQUESTIONS} is displayed (if it is included in a template)
+*	hide = always hide {THEREAREXQUESTIONS}
+*	show = always show {THEREAREXQUESTIONS}
+*	choose = allow survey admins to choose
+*/
 $config['showxquestions'] = 'choose';
 
 
 /**
- * @var $showgroupinfo string allows you to control whether or not
- * {GROUPNAME} and/or {GROUPDESCRIPTION} are displayed (if they are
- * included in a template)
- *	none = always hide both title and description
- *	name = always {GROUPNAME} only
- *	description = always show {GROUPDESCRIPTION} only
- *	both = always show both {GROUPNAME} and {GROUPDESCRIPTION}
- *	choose = allow survey admins to choose
- */
+* @var $showgroupinfo string allows you to control whether or not
+* {GROUPNAME} and/or {GROUPDESCRIPTION} are displayed (if they are
+* included in a template)
+*	none = always hide both title and description
+*	name = always {GROUPNAME} only
+*	description = always show {GROUPDESCRIPTION} only
+*	both = always show both {GROUPNAME} and {GROUPDESCRIPTION}
+*	choose = allow survey admins to choose
+*/
 $config['showgroupinfo'] = 'choose';
 
 
 /**
- * @var $showqnumcode string allows you to control whether or not
- * {QUESTION_NUMBER} and/or {QUESTION_CODE} are displayed (if they
- * are included in a template)
- *	none = always hide both {QUESTION_NUMBER} and {QUESTION_CODE}
- *	code = always show {QUESTION_CODE} only
- *	number = always show {QUESTION_NUMBER} only
- *	both = always show both {QUESTION_NUMBER} and {QUESTION_CODE}
- *	choose = allow survey admins to choose
- */
+* @var $showqnumcode string allows you to control whether or not
+* {QUESTION_NUMBER} and/or {QUESTION_CODE} are displayed (if they
+* are included in a template)
+*	none = always hide both {QUESTION_NUMBER} and {QUESTION_CODE}
+*	code = always show {QUESTION_CODE} only
+*	number = always show {QUESTION_NUMBER} only
+*	both = always show both {QUESTION_NUMBER} and {QUESTION_CODE}
+*	choose = allow survey admins to choose
+*/
 $config['showqnumcode'] = 'choose';
 
 
 /**
- * @var $force_ssl string - forces LimeSurvey to run through HTTPS or to block HTTPS
- * 	'on' =	force SSL/HTTPS to be on (This will cause LimeSurvey
- *		to fail in SSL is turned off)
- *	'off' =	block SSL/HTTPS (this prevents LimeSurvey from
- *		running through SSL)
- *	'' =	do nothing (default)
- *
- * DO NOT turn on secure unless you are sure SSL/HTTPS is working and
- * that you have a current, working, valid certificate. If you are
- * unsure whether your server has a valid certificate, just add 's'
- * to the http part of your normal LimeSurvey URL.
- *	e.g. https://your.domain.org/limesurvey/admin/admin.php
- * If LimeSurvey comes up as normal, then everything is fine. If you
- * get a page not found error or permission denied error then
- */
+* @var $force_ssl string - forces LimeSurvey to run through HTTPS or to block HTTPS
+* 	'on' =	force SSL/HTTPS to be on (This will cause LimeSurvey
+*		to fail in SSL is turned off)
+*	'off' =	block SSL/HTTPS (this prevents LimeSurvey from
+*		running through SSL)
+*	'' =	do nothing (default)
+*
+* DO NOT turn on secure unless you are sure SSL/HTTPS is working and
+* that you have a current, working, valid certificate. If you are
+* unsure whether your server has a valid certificate, just add 's'
+* to the http part of your normal LimeSurvey URL.
+*	e.g. https://your.domain.org/limesurvey/admin/admin.php
+* If LimeSurvey comes up as normal, then everything is fine. If you
+* get a page not found error or permission denied error then
+*/
 $config['force_ssl'] = ''; // DO not turn on unless you are sure your server supports SSL/HTTPS
 
 
 /**
- * @var $ssl_emergency_override boolean forces SSL off
- * if You've turned HTTPS/SSL on in the global settings but your
- * server doesn't have HTTPS enabled, the only way to turn it off is
- * by changing a value in the database directly. This allows you to
- * force HTTPS off while you change the global settings for Force Secure.
- *
- *     false = do nothing;
- *     true = override $force_ssl=on;
- *
- * This should always be false except in emergencies where you change
- * it to true until you fix the problem.
- */
+* @var $ssl_emergency_override boolean forces SSL off
+* if You've turned HTTPS/SSL on in the global settings but your
+* server doesn't have HTTPS enabled, the only way to turn it off is
+* by changing a value in the database directly. This allows you to
+* force HTTPS off while you change the global settings for Force Secure.
+*
+*     false = do nothing;
+*     true = override $force_ssl=on;
+*
+* This should always be false except in emergencies where you change
+* it to true until you fix the problem.
+*/
 $config['ssl_emergency_override'] = false;
 
 
