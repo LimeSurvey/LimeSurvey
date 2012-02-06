@@ -776,9 +776,9 @@ class translate extends Survey_Common_Action {
                     case 'question_help':
                         return Questions::model()->findAllByAttributes(array('sid' => $surveyid,'language' => $baselang,'parent_qid' => 0), array('order' => 'question_order, scale_id'));
                     case 'subquestion':
-                        return Questions::model()->with('parents', 'groups')->findAllByAttributes(array('sid' => $surveyid,'language' => $baselang), array('order' => 'groups.group_order, parents.question_order, t.question_order, scale_id', 'condition'=>'parents.language=:baselang AND groups.language=:baselang AND t.parent_qid>0', 'params'=>array(':baselang'=>$baselang)));
+                        return Questions::model()->with('parents', 'groups')->findAllByAttributes(array('sid' => $surveyid,'language' => $baselang), array('order' => 'groups.group_order, parents.question_order, t.scale_id, t.question_order', 'condition'=>'parents.language=:baselang AND groups.language=:baselang AND t.parent_qid>0', 'params'=>array(':baselang'=>$baselang)));
                     case 'answer':
-                        return Answers::model()->with('questions', 'groups')->findAllByAttributes(array('language' => $baselang), array('order' => 'groups.group_order, questions.question_order, t.sortorder, t.scale_id', 'condition'=>'questions.sid=:sid AND questions.language=:baselang AND groups.language=:baselang', 'params'=>array(':baselang'=>$baselang, ':sid' => $surveyid)));
+                        return Answers::model()->with('questions', 'groups')->findAllByAttributes(array('language' => $baselang), array('order' => 'groups.group_order, questions.question_order, t.scale_id, t.sortorder', 'condition'=>'questions.sid=:sid AND questions.language=:baselang AND groups.language=:baselang', 'params'=>array(':baselang'=>$baselang, ':sid' => $surveyid)));
                 }
             case "queryupdate":
                 switch ( $type )
