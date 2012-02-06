@@ -4435,7 +4435,7 @@ class LimeExpressionManager {
                 $updatedValues[$sgqa] = NULL;
             }
         }
-        else if ($qInfo['hidden'] && $qInfo['type'] == '*')
+        else if ($qInfo['type'] == '*')
         {
             // Process relevant equations, even if hidden, and write the result to the database
             $result = FlattenText($LEM->ProcessString($qInfo['eqn'], $qInfo['qid'],NULL,false,1,1,false,false));
