@@ -2366,7 +2366,7 @@ function do_multiplechoice($ia)
     {
         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeperator= $sSeperator['seperator'];
-        $numbersonly = 'return goodchars(event,"0123456789'.$sSeperator.'")';
+        $numbersonly = " onkeypress='return goodchars(event,\"0123456789$sSeperator\")'";
     }
     else
     {
@@ -2577,7 +2577,7 @@ function do_multiplechoice($ia)
         {
             $answer .= ' value="'.htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname],ENT_QUOTES).'"';
         }
-        $answer .= " onchange='$(\"#java{$myfname}\").val(this.value);$checkconditionFunction(this.value, this.name, this.type);if ($.trim($(\"#java{$myfname}\").val())!=\"\" && !document.getElementById(\"answer{$myfname}cbox\").checked) { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } $numbersonly ' />";
+        $answer .= " onchange='$(\"#java{$myfname}\").val(this.value);$checkconditionFunction(this.value, this.name, this.type);if ($.trim($(\"#java{$myfname}\").val())!=\"\" && !document.getElementById(\"answer{$myfname}cbox\").checked) { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); }' $numbersonly />";
         $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
 
         //        if ($maxansw > 0)
