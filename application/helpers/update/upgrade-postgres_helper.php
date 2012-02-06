@@ -93,8 +93,6 @@ function db_upgrade($oldversion) {
         // change the primary index to include language
         modifyDatabase("","ALTER TABLE prefix_assessments DROP CONSTRAINT prefix_assessments_pkey"); echo $modifyoutput; flush();@ob_flush();
         modifyDatabase("","ALTER TABLE prefix_assessments ADD CONSTRAINT prefix_assessments_pkey PRIMARY KEY (id,language)"); echo $modifyoutput; flush();@ob_flush();
-        // and fix missing translations for assessments
-        upgrade_survey_tables133();
 
         // Add new fields to survey language settings
         modifyDatabase("","ALTER TABLE prefix_surveys_languagesettings ADD surveyls_url character varying(255)"); echo $modifyoutput; flush();@ob_flush();
@@ -396,6 +394,7 @@ function db_upgrade($oldversion) {
         modifyDatabase("", "UPDATE prefix_settings_global SET stg_value='155' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
     }
 
+    fixLanguageConsistencyAllSurveys();
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
     return true;
 }
@@ -415,7 +414,7 @@ function upgrade_token_tables128()
     }
 }
 
-function upgrade_survey_tables133()
+function fixLanguageConsistencyAllSurveys()
 {
     global $modifyoutput;
 

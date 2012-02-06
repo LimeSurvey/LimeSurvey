@@ -156,10 +156,11 @@ function createChart($qid, $sid, $type, $lbl, $gdata, $grawdata, $cache)
         else
         {
             // this block is to remove the items with value == 0
+            // and an unelegant way to remove comments from List with Comments questions
             $i = 0;
             while (isset ($gdata[$i]))
             {
-                if ($gdata[$i] == 0)
+                if ($gdata[$i] == 0 || ($qtype == "O" && substr($lbl[$i],0,strlen($statlang->gT("Comments")))==$statlang->gT("Comments")))
                 {
                     array_splice ($gdata, $i, 1);
                     array_splice ($lbl, $i, 1);
@@ -2244,10 +2245,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     foreach ($result->readAll() as $row)
                     {
                         $row=array_values($row);
-                        
+
                         //store temporarily value of answer count of question type '5' and 'A'.
                         $tempcount = -1; //count can't be less han zero
-                            
+
                         //increase counter
                         $TotalCompleted += $row[0];
 
@@ -2532,7 +2533,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         $justcode[]=$al[0];
 
                         //edit labels and put them into antoher array
-                            
+
                         //first check if $tempcount is > 0. If yes, $row[0] has been modified and $tempcount has the original count.
                         if ($tempcount > 0)
                         {
@@ -2543,7 +2544,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         {
                             $lbl[] = wordwrap(FlattenText("$al[1] ($row[0])"), 25, "\n"); // NMO 2009-03-24
                             $lblrtl[] = utf8_strrev(wordwrap(FlattenText("$al[1] )$row[0]("), 25, "\n")); // NMO 2009-03-24
-                                
+
                         }
 
                     }	//end while -> loop through results
