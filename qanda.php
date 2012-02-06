@@ -169,12 +169,12 @@ function retrieveAnswers($ia)
             {
                 $maxansw=trim($qidattributes['max_answers']);
                 $minansw=trim($qidattributes['min_answers']);
-//                if (!($maxansw || $minansw))
-//                {
-//                    $qtitle .= "<br />\n<span class=\"questionhelp\">"
-//                    . $clang->gT('Check any that apply').'</span>';
-//                    $question_text['help'] = $clang->gT('Check any that apply');
-//                }
+                if (!($maxansw || $minansw))
+                {
+                    $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                    . $clang->gT('Check any that apply').'</span>';
+                    $question_text['help'] = $clang->gT('Check any that apply');
+                }
 //                else
 //                {
 //                    if ($maxansw && $minansw)
@@ -210,14 +210,14 @@ function retrieveAnswers($ia)
             $values=do_multiplechoice_withcomments($ia);
             if (count($values[1]) > 1 && $qidattributes['hide_tip']==0)
             {
-//                $maxansw=trim($qidattributes["max_answers"]);
-//                $minansw=trim($qidattributes["min_answers"]);
-//                if (!($maxansw || $minansw))
-//                {
-//                    $qtitle .= "<br />\n<span class=\"questionhelp\">"
-//                    . $clang->gT('Check any that apply').'</span>';
-//                    $question_text['help'] = $clang->gT('Check any that apply');
-//                }
+                $maxansw=trim($qidattributes["max_answers"]);
+                $minansw=trim($qidattributes["min_answers"]);
+                if (!($maxansw || $minansw))
+                {
+                    $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                    . $clang->gT('Check any that apply').'</span>';
+                    $question_text['help'] = $clang->gT('Check any that apply');
+                }
 //                else
 //                {
 //                    if ($maxansw && $minansw)

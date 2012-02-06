@@ -4217,19 +4217,13 @@ class LimeExpressionManager {
                 case 'H':
                 case ':':
                 case ';':
+                case '1':
                     // In general, if any relevant questions aren't answered, then it violates the mandatory rule
                     if (count($unansweredSQs) > 0)
                     {
                         $qmandViolation = true; // TODO - what about 'other'?
                     }
                     $mandatoryTip .= $LEM->gT('Please complete all parts').'.';
-                    break;
-                case '1':
-                    if (count($unansweredSQs) > 0)
-                    {
-                        $qmandViolation = true; // TODO - what about 'other'?
-                    }
-                    $mandatoryTip .= $LEM->gT('Please check the items').'.';
                     break;
                 case 'R':
                     if (count($unansweredSQs) > 0)
@@ -4243,7 +4237,6 @@ class LimeExpressionManager {
                     {
                         $qmandViolation = true; 
                     }
-                    $mandatoryTip .= $LEM->gT('Please answer this question').'.';
                     break;
             }
             $mandatoryTip .= "</span></strong>\n";
