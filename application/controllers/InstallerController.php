@@ -252,9 +252,12 @@ class InstallerController extends CController {
                 $sDatabasePort = '';
                 if (strpos($sDatabaseLocation, ':')!==false)
                 {
-                    list($sDatabasePort, $sDatabaseLocation) = explode(':', $sDatabaseLocation, 2);
+                    list($sDatabaseLocation, $sDatabasePort) = explode(':', $sDatabaseLocation, 2);
                 }
-                $sDatabasePort = self::_getDbPort($sDatabaseType, $sDatabasePort);
+                else
+                {
+                    $sDatabasePort = self::_getDbPort($sDatabaseType, $sDatabasePort);
+                }
 
                 $bDBExists = false;
                 $bDBConnectionWorks = false;
@@ -422,26 +425,47 @@ class InstallerController extends CController {
 
         $aData['adminoutputForm'] = '';
         // Yii doesn't have a method to create a database
+        $createDb = true; // We are thinking positive
         switch ($sDatabaseType)
         {
             case 'mysqli':
             case 'mysql':
-                $createDb = $this->connection->createCommand("CREATE DATABASE `$sDatabaseName` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci")->execute();
+                try
+                {
+                    $this->connection->createCommand("CREATE DATABASE `$sDatabaseName` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci")->execute();
+                }
+                catch(Exception $e)
+                {
+                  $createDb=false;
+                }
                 break;
             case 'mssql':
             case 'odbc':
-                $createDb = $this->connection->createCommand("CREATE DATABASE [$sDatabaseName];")->execute();
+                try
+                {
+                    $this->connection->createCommand("CREATE DATABASE [$sDatabaseName];")->execute();
+                }
+                catch(Exception $e)
+                {
+                  $createDb=false;
+                }
                 break;
             default:
-                $createDb = $this->connection->createCommand("CREATE DATABASE $sDatabaseName")->execute();
+                try
+                {
+                    $this->connection->createCommand("CREATE DATABASE $sDatabaseName")->execute();
+                }
+                catch(Exception $e)
+                {
+                  $createDb=false;
+                }
                 break;
         }
 
         //$this->load->dbforge();
         if ($createDb) //Database has been successfully created
         {
-            $dsn = self::_getDsn($sDatabaseType, $sDatabasePort);
-            $sDsn = sprintf($dsn, $sDatabaseLocation, $sDatabaseName, $sDatabasePort);
+            $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
             $this->connection = new CDbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
 
             Yii::app()->session['populatedatabase'] = true;
@@ -869,7 +893,7 @@ class InstallerController extends CController {
             $this->loadHelper('file');
 
             extract(self::_getDatabaseConfig());
-            $sDsn = sprintf(self::_getDsn($sDatabaseType, $sDatabasePort), $sDatabaseLocation, $sDatabaseName, $sDatabasePort);
+            $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
 
             // mod_rewrite existence check
             if ((function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())) || strtolower(getenv('HTTP_MOD_REWRITE')) == 'on')
@@ -994,15 +1018,19 @@ class InstallerController extends CController {
     * @param string $sDatabaseType
     * @param string $sDatabasePort
     */
-    function _getDsn($sDatabaseType, $sDatabasePort = '')
+    function _getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd)
     {
         switch ($sDatabaseType) {
             case 'mysql':
             case 'mysqli':
-                $dsn = 'mysql:host=%1$s;port=%3$s;dbname=%2$s';
+                $dsn = "mysql:host={$sDatabaseLocation};port={$sDatabasePort};dbname={$sDatabaseName};";
                 break;
             case 'pgsql':
-                $dsn = 'pgsql:host=%1$s;port=%3$s;dbname=%2$s';
+                $dsn = "pgsql:host={$sDatabaseLocation};port={$sDatabasePort};user={$sDatabaseUser};password={$sDatabasePwd};";
+                if ($sDatabaseName!='')
+                {
+                    $dsn.="dbname={$sDatabaseName};";
+                }
                 break;
             case 'sqlite':
                 $dsn = 'sqlite:%1$s/%2$s.sq3';
@@ -1087,12 +1115,11 @@ class InstallerController extends CController {
     function _dbConnect($aDbConfig = array(), $aData = array())
     {
         extract(empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig);
-        $dsn = self::_getDsn($sDatabaseType, $sDatabasePort);
+        $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
         $sDatabaseName = empty($sDatabaseName) ? '' : $sDatabaseName;
         $sDatabasePort = empty($sDatabasePort) ? '' : $sDatabasePort;
 
         try {
-            $sDsn = sprintf($dsn, $sDatabaseLocation, $sDatabaseName, $sDatabasePort);
             $this->connection = new CDbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
             $this->connection->emulatePrepare = true;
             $this->connection->active = true;
@@ -1100,7 +1127,7 @@ class InstallerController extends CController {
             return true;
         } catch(Exception $e) {
             if (!empty($aData['model']) && !empty($aData['clang'])) {
-                $aData['model']->addError('dblocation', $aData['clang']->gT('Try again! Connection with database failed. Reason: ') . $e);
+                $aData['model']->addError('dblocation', $aData['clang']->gT('Try again! Connection with database failed. Reason: ') . $e->message);
                 $this->render('/installer/dbconfig_view', $aData);
             } else {
                 return false;
