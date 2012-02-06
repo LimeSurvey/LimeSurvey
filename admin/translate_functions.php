@@ -197,7 +197,7 @@
                 ." WHERE surveyls_survey_id=".db_quoteall($surveyid,true)
                 ." AND surveyls_language=".db_quoteall($baselang,true),
                 "queryto"   => "SELECT * "
-                ."FROM ".db_table_name('surveys_languagesettings')
+                ." FROM ".db_table_name('surveys_languagesettings')
                 ." WHERE surveyls_survey_id=".db_quoteall($surveyid,true)
                 ." AND surveyls_language=".db_quoteall($tolang,true),
                 "queryupdate" => "UPDATE ".db_table_name('surveys_languagesettings')
@@ -219,17 +219,17 @@
             case 'description':
                 $amTypeOptions = array(
                 "querybase" => "SELECT * "
-                ."FROM ".db_table_name('surveys_languagesettings')
-                ."WHERE surveyls_survey_id=".db_quoteall($surveyid,true)
-                ."AND surveyls_language='{$baselang}'  ",
+                ." FROM ".db_table_name('surveys_languagesettings')
+                ." WHERE surveyls_survey_id=".db_quoteall($surveyid,true)
+                ." AND surveyls_language='{$baselang}'  ",
                 "queryto"   => "SELECT * "
-                ."FROM ".db_table_name('surveys_languagesettings')
-                ."WHERE surveyls_survey_id=".db_quoteall($surveyid,true)
-                ."AND surveyls_language='{$tolang}'  ",
+                ." FROM ".db_table_name('surveys_languagesettings')
+                ." WHERE surveyls_survey_id=".db_quoteall($surveyid,true)
+                ." AND surveyls_language='{$tolang}'  ",
                 "queryupdate" => "UPDATE ".db_table_name('surveys_languagesettings')
-                ."SET surveyls_description = ".db_quoteall($new,true)
-                ."WHERE surveyls_survey_id=".db_quoteall($surveyid,true)
-                ."AND surveyls_language='{$tolang}'",
+                ." SET surveyls_description = ".db_quoteall($new,true)
+                ." WHERE surveyls_survey_id=".db_quoteall($surveyid,true)
+                ." AND surveyls_language='{$tolang}'",
                 "id1"  => "",
                 "id2"  => "",
                 "gid"  => FALSE,
@@ -245,17 +245,17 @@
             case 'welcome':
                 $amTypeOptions = array(
                 "querybase" => "SELECT * "
-                ."FROM ".db_table_name('surveys_languagesettings')
-                ."WHERE surveyls_survey_id=".db_quoteall($surveyid,true)
-                ."AND surveyls_language='{$baselang}'  ",
+                ." FROM ".db_table_name('surveys_languagesettings')
+                ." WHERE surveyls_survey_id=".db_quoteall($surveyid,true)
+                ." AND surveyls_language='{$baselang}'  ",
                 "queryto"   => "SELECT * "
-                ."FROM ".db_table_name('surveys_languagesettings')
-                ."WHERE surveyls_survey_id=".db_quoteall($surveyid,true)
-                ."AND surveyls_language='{$tolang}'  ",
+                ." FROM ".db_table_name('surveys_languagesettings')
+                ." WHERE surveyls_survey_id=".db_quoteall($surveyid,true)
+                ." AND surveyls_language='{$tolang}'  ",
                 "queryupdate" => "UPDATE ".db_table_name('surveys_languagesettings')
-                ."SET surveyls_welcometext = ".db_quoteall($new,true)
-                ."WHERE surveyls_survey_id=".db_quoteall($surveyid,true)
-                ."AND surveyls_language='{$tolang}'",
+                ." SET surveyls_welcometext = ".db_quoteall($new,true)
+                ." WHERE surveyls_survey_id=".db_quoteall($surveyid,true)
+                ." AND surveyls_language='{$tolang}'",
                 "id1"  => "",
                 "id2"  => "",
                 "gid"  => FALSE,
@@ -271,17 +271,17 @@
             case 'end':
                 $amTypeOptions = array(
                 "querybase" => "SELECT * "
-                ."FROM ".db_table_name('surveys_languagesettings')
-                ."WHERE surveyls_survey_id=".db_quoteall($surveyid,true)
-                ."AND surveyls_language='{$baselang}'  ",
+                ." FROM ".db_table_name('surveys_languagesettings')
+                ." WHERE surveyls_survey_id=".db_quoteall($surveyid,true)
+                ." AND surveyls_language='{$baselang}'  ",
                 "queryto"   => "SELECT * "
-                ."FROM ".db_table_name('surveys_languagesettings')
-                ."WHERE surveyls_survey_id=".db_quoteall($surveyid,true)
-                ."AND surveyls_language='{$tolang}'  ",
+                ." FROM ".db_table_name('surveys_languagesettings')
+                ." WHERE surveyls_survey_id=".db_quoteall($surveyid,true)
+                ." AND surveyls_language='{$tolang}'  ",
                 "queryupdate" => "UPDATE ".db_table_name('surveys_languagesettings')
-                ."SET surveyls_endtext = ".db_quoteall($new,true)
-                ."WHERE surveyls_survey_id=".db_quoteall($surveyid,true)
-                ."AND surveyls_language='{$tolang}'",
+                ." SET surveyls_endtext = ".db_quoteall($new,true)
+                ." WHERE surveyls_survey_id=".db_quoteall($surveyid,true)
+                ." AND surveyls_language='{$tolang}'",
                 "id1"  => "",
                 "id2"  => "",
                 "gid"  => FALSE,
@@ -297,20 +297,20 @@
             case 'group':
                 $amTypeOptions = array(
                 "querybase" => "SELECT * "
-                ."FROM ".db_table_name('groups')
-                ."WHERE sid=".db_quoteall($surveyid,true)
-                ."AND language='{$baselang}' "
-                ."ORDER BY group_order ",
+                ." FROM ".db_table_name('groups')
+                ." WHERE sid=".db_quoteall($surveyid,true)
+                ." AND language='{$baselang}' "
+                ." ORDER BY group_order ",
                 "queryto"   => "SELECT * "
-                ."FROM ".db_table_name('groups')
-                ."WHERE sid=".db_quoteall($surveyid,true)
-                ."AND language=".db_quoteall($tolang,true)
-                ."ORDER BY group_order ",
+                ." FROM ".db_table_name('groups')
+                ." WHERE sid=".db_quoteall($surveyid,true)
+                ." AND language=".db_quoteall($tolang,true)
+                ." ORDER BY group_order ",
                 "queryupdate" => "UPDATE ".db_table_name('groups')
-                ."SET group_name = ".db_quoteall($new,true)
-                ."WHERE gid = '{$id1}' "
-                ."AND sid=".db_quoteall($surveyid,true)
-                ."AND language='{$tolang}'",
+                ." SET group_name = ".db_quoteall($new,true)
+                ." WHERE gid = '{$id1}' "
+                ." AND sid=".db_quoteall($surveyid,true)
+                ." AND language='{$tolang}'",
                 "id1"  => "gid",
                 "id2"  => "",
                 "gid"  => TRUE,
@@ -326,20 +326,20 @@
             case 'group_desc':
                 $amTypeOptions = array(
                 "querybase" => "SELECT * "
-                ."FROM ".db_table_name('groups')
-                ."WHERE sid=".db_quoteall($surveyid,true)
-                ."AND language='{$baselang}' "
-                ."ORDER BY group_order ",
+                ." FROM ".db_table_name('groups')
+                ." WHERE sid=".db_quoteall($surveyid,true)
+                ." AND language='{$baselang}' "
+                ." ORDER BY group_order ",
                 "queryto"   => "SELECT *"
-                ."FROM ".db_table_name('groups')
-                ."WHERE sid=".db_quoteall($surveyid,true)
-                ."AND language=".db_quoteall($tolang,true)
-                ."ORDER BY group_order ",
+                ." FROM ".db_table_name('groups')
+                ." WHERE sid=".db_quoteall($surveyid,true)
+                ." AND language=".db_quoteall($tolang,true)
+                ." ORDER BY group_order ",
                 "queryupdate" => "UPDATE ".db_table_name('groups')
-                ."SET description = ".db_quoteall($new,true)
-                ."WHERE gid = '{$id1}' "
-                ."AND sid=".db_quoteall($surveyid,true)
-                ."AND language='{$tolang}'",
+                ." SET description = ".db_quoteall($new,true)
+                ." WHERE gid = '{$id1}' "
+                ." AND sid=".db_quoteall($surveyid,true)." "
+                ." AND language='{$tolang}'",
                 "id1"  => "gid",
                 "id2"  => "",
                 "gid"  => TRUE,
@@ -355,27 +355,27 @@
             case 'question':
                 $amTypeOptions = array(
                 "querybase" => "SELECT q.qid as questionid, q.title, q.question, q.qid, q.gid "
-                    ."FROM ".db_table_name('questions')." q "
-                    ."JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
-                    ."WHERE q.sid=".db_quoteall($surveyid,true)
-                    ."AND q.language='{$baselang}' "
-                    ."AND g.language='{$baselang}' "
-                    ."AND parent_qid=0 "
-                    ."ORDER BY group_order,question_order, scale_id ",
-                "queryto" => "SELECT q.qid as questionid, q.title, q.question, q.qid, q.gid "
-                    ."FROM ".db_table_name('questions')." q "
-                    ."JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
-                    ."WHERE q.sid=".db_quoteall($surveyid,true)
-                    ."AND q.language='{$tolang}' "
-                    ."AND g.language='{$tolang}' "
+                    ." FROM ".db_table_name('questions')." q "
+                    ." JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
+                    ." WHERE q.sid=".db_quoteall($surveyid,true)
+                    ." AND q.language='{$baselang}' "
+                    ." AND g.language='{$baselang}' "
                     ." AND parent_qid=0 "
-                    ."ORDER BY group_order,question_order, scale_id ",
+                    ." ORDER BY group_order,question_order, scale_id ",
+                "queryto" => "SELECT q.qid as questionid, q.title, q.question, q.qid, q.gid "
+                    ." FROM ".db_table_name('questions')." q "
+                    ." JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
+                    ." WHERE q.sid=".db_quoteall($surveyid,true)
+                    ." AND q.language='{$tolang}' "
+                    ." AND g.language='{$tolang}' "
+                    ." AND parent_qid=0 "
+                    ." ORDER BY group_order,question_order, scale_id ",
                 "queryupdate" => "UPDATE ".db_table_name('questions')
-                ."SET question = ".db_quoteall($new,true)
-                ."WHERE qid = '{$id1}' "
-                ."AND sid=".db_quoteall($surveyid,true)
+                ." SET question = ".db_quoteall($new,true)
+                ." WHERE qid = '{$id1}' "
+                ." AND sid=".db_quoteall($surveyid,true)
                 ." AND parent_qid=0 "
-                ."AND language='{$tolang}'",
+                ." AND language='{$tolang}'",
                 "dbColumn" => 'question',
                 "id1"  => 'qid',
                 "id2"  => "",
@@ -391,27 +391,27 @@
             case 'question_help':
                 $amTypeOptions = array(
                 "querybase" => "SELECT q.qid as questionid, q.help, q.qid, q.title "
-                    ."FROM ".db_table_name('questions')." q "
-                    ."JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
-                    ."WHERE g.sid=".db_quoteall($surveyid,true)
-                    ."AND q.language='{$baselang}' "
-                    ."AND g.language='{$baselang}' "
-                    ."AND parent_qid=0 "
-                    ."ORDER BY group_order,question_order ",
-                "queryto" => "SELECT q.qid as questionid, q.help, q.qid, q.title "
-                    ."FROM ".db_table_name('questions')." q "
-                    ."JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
-                    ."WHERE g.sid=".db_quoteall($surveyid,true)
-                    ."AND q.language='{$tolang}' "
-                    ."AND g.language='{$tolang}' "
+                    ." FROM ".db_table_name('questions')." q "
+                    ." JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
+                    ." WHERE g.sid=".db_quoteall($surveyid,true)
+                    ." AND q.language='{$baselang}' "
+                    ." AND g.language='{$baselang}' "
                     ." AND parent_qid=0 "
-                    ."ORDER BY group_order,question_order ",
+                    ." ORDER BY group_order,question_order ",
+                "queryto" => "SELECT q.qid as questionid, q.help, q.qid, q.title "
+                    ." FROM ".db_table_name('questions')." q "
+                    ." JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
+                    ." WHERE g.sid=".db_quoteall($surveyid,true)
+                    ." AND q.language='{$tolang}' "
+                    ." AND g.language='{$tolang}' "
+                    ." AND parent_qid=0 "
+                    ." ORDER BY g.group_order,q.question_order ",
                 "queryupdate" => "UPDATE ".db_table_name('questions')
-                ."SET help = ".db_quoteall($new,true)
-                ."WHERE qid = '{$id1}' "
-                ."AND sid=".db_quoteall($surveyid,true)
+                ." SET help = ".db_quoteall($new,true)
+                ." WHERE qid = '{$id1}' "
+                ." AND sid=".db_quoteall($surveyid,true)
                 ." AND parent_qid=0 "
-                ."AND language='{$tolang}'",
+                ." AND language='{$tolang}'",
                 "dbColumn" => 'help',
                 "id1"  => 'qid',
                 "id2"  => "",
@@ -427,24 +427,24 @@
             case 'subquestion':
                 $amTypeOptions = array(
                 "querybase" => "SELECT q.qid as questionid, q.title, sq.qid, sq.question, sq.gid "
-                    ."FROM ".db_table_name('questions')." sq "
-                    ."JOIN ".db_table_name('questions')." q ON sq.parent_qid=q.qid  "
-                    ."JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
-                    ."WHERE sq.sid=".db_quoteall($surveyid,true)
-                    ."AND sq.language='{$baselang}' AND q.language='{$baselang}' AND g.language='{$baselang}' AND sq.parent_qid>0 "
-                    ."ORDER BY g.group_order, q.question_order, sq.question_order, scale_id ",
+                    ." FROM ".db_table_name('questions')." sq "
+                    ." JOIN ".db_table_name('questions')." q ON sq.parent_qid=q.qid  "
+                    ." JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
+                    ." WHERE sq.sid=".db_quoteall($surveyid,true)
+                    ." AND sq.language='{$baselang}' AND q.language='{$baselang}' AND g.language='{$baselang}' AND sq.parent_qid>0 "
+                    ." ORDER BY g.group_order, q.question_order, q.scale_id, sq.scale_id, sq.question_order ",
                 "queryto"   => "SELECT sq.question "
-                    ."FROM ".db_table_name('questions')." sq "
-                    ."JOIN ".db_table_name('questions')." q ON sq.parent_qid=q.qid  "
-                    ."JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
-                    ."WHERE sq.sid=".db_quoteall($surveyid,true)
-                    ."AND sq.language=".db_quoteall($tolang,true)." AND q.language=".db_quoteall($tolang,true)." AND g.language=".db_quoteall($tolang,true)." AND sq.parent_qid>0 "
-                    ."ORDER BY g.group_order, q.question_order, sq.question_order, scale_id ",
+                    ." FROM ".db_table_name('questions')." sq "
+                    ." JOIN ".db_table_name('questions')." q ON sq.parent_qid=q.qid  "
+                    ." JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
+                    ." WHERE sq.sid=".db_quoteall($surveyid,true)
+                    ." AND sq.language=".db_quoteall($tolang,true)." AND q.language=".db_quoteall($tolang,true)." AND g.language=".db_quoteall($tolang,true)." AND sq.parent_qid>0 "
+                    ." ORDER BY g.group_order, q.question_order, q.scale_id, sq.scale_id, sq.question_order ",
                 "queryupdate" => "UPDATE ".db_table_name('questions')
-                    ."SET question = ".db_quoteall($new,true)
-                    ."WHERE qid = '{$id1}' "
-                    ."AND sid=".db_quoteall($surveyid,true)
-                    ."AND language='{$tolang}'",
+                    ." SET question = ".db_quoteall($new,true)
+                    ." WHERE qid = '{$id1}' "
+                    ." AND sid=".db_quoteall($surveyid,true)
+                    ." AND language='{$tolang}'",
                 "dbColumn" => 'question',
                 "id1"  => 'qid',
                 "id2"  => "",
@@ -480,10 +480,10 @@
                     ." AND g.language = ".db_quoteall($tolang,true)
                     ." ORDER BY g.group_order, q.question_order, a.sortorder, a.scale_id",
                 "queryupdate" => "UPDATE ".db_table_name('answers')
-                    ."SET answer = ".db_quoteall($new,true)
-                    ."WHERE qid = '{$id1}' "
-                    ."AND code='{$id2}' "
-                    ."AND language='{$tolang}'",
+                    ." SET answer = ".db_quoteall($new,true)
+                    ." WHERE qid = '{$id1}' "
+                    ." AND code='{$id2}' "
+                    ." AND language='{$tolang}'",
                 "dbColumn" => 'answer',
                 "id1"  => 'qid',
                 "id2"  => 'code',
@@ -505,7 +505,7 @@
                 "queryupdate" => "UPDATE ".db_table_name("surveys_languagesettings")
                 ."SET surveyls_email_invite_subj = ".db_quoteall($new,true)
                 ." WHERE surveyls_survey_id=$surveyid "
-                ."AND surveyls_language='$tolang'",
+                ." AND surveyls_language='$tolang'",
                 "dbColumn" => 'surveyls_email_invite_subj',
                 "id1"  => '',
                 "id2"  => '',
@@ -525,9 +525,9 @@
                 "queryto" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
                 "queryupdate" => "UPDATE ".db_table_name("surveys_languagesettings")
-                ."SET surveyls_email_invite = ".db_quoteall($new,true)
+                ." SET surveyls_email_invite = ".db_quoteall($new,true)
                 ." WHERE surveyls_survey_id=$surveyid "
-                ."AND surveyls_language='$tolang'",
+                ." AND surveyls_language='$tolang'",
                 "dbColumn" => 'surveyls_email_invite',
                 "id1"  => '',
                 "id2"  => '',
@@ -547,9 +547,9 @@
                 "queryto" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
                 "queryupdate" => "UPDATE ".db_table_name("surveys_languagesettings")
-                ."SET surveyls_email_remind_subj = ".db_quoteall($new,true)
+                ." SET surveyls_email_remind_subj = ".db_quoteall($new,true)
                 ." WHERE surveyls_survey_id=$surveyid "
-                ."AND surveyls_language='$tolang'",
+                ." AND surveyls_language='$tolang'",
                 "dbColumn" => 'surveyls_email_remind_subj',
                 "id1"  => '',
                 "id2"  => '',
@@ -569,7 +569,7 @@
                 "queryto" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
                 "queryupdate" => "UPDATE ".db_table_name("surveys_languagesettings")
-                ."SET surveyls_email_remind = ".db_quoteall($new,true)
+                ." SET surveyls_email_remind = ".db_quoteall($new,true)
                 ." WHERE surveyls_survey_id=$surveyid "
                 ."AND surveyls_language='$tolang'",
                 "dbColumn" => 'surveyls_email_remind',
@@ -591,9 +591,9 @@
                 "queryto" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
                 "queryupdate" => "UPDATE ".db_table_name("surveys_languagesettings")
-                ."SET surveyls_email_confirm_subj = ".db_quoteall($new,true)
+                ." SET surveyls_email_confirm_subj = ".db_quoteall($new,true)
                 ." WHERE surveyls_survey_id=$surveyid "
-                ."AND surveyls_language='$tolang'",
+                ." AND surveyls_language='$tolang'",
                 "dbColumn" => 'surveyls_email_confirm_subj',
                 "id1"  => '',
                 "id2"  => '',
@@ -615,7 +615,7 @@
                 "queryupdate" => "UPDATE ".db_table_name("surveys_languagesettings")
                 ."SET surveyls_email_confirm = ".db_quoteall($new,true)
                 ." WHERE surveyls_survey_id=$surveyid "
-                ."AND surveyls_language='$tolang'",
+                ." AND surveyls_language='$tolang'",
                 "dbColumn" => 'surveyls_email_confirm',
                 "id1"  => '',
                 "id2"  => '',
@@ -637,7 +637,7 @@
                 "queryupdate" => "UPDATE ".db_table_name("surveys_languagesettings")
                 ."SET surveyls_email_register_subj = ".db_quoteall($new,true)
                 ." WHERE surveyls_survey_id=$surveyid "
-                ."AND surveyls_language='$tolang'",
+                ." AND surveyls_language='$tolang'",
                 "dbColumn" => 'surveyls_email_register_subj',
                 "id1"  => '',
                 "id2"  => '',
@@ -679,9 +679,9 @@
                 "queryto" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
                 "queryupdate" => "UPDATE ".db_table_name("surveys_languagesettings")
-                ."SET surveyls_email_confirm_subj = ".db_quoteall($new,true)
+                ." SET surveyls_email_confirm_subj = ".db_quoteall($new,true)
                 ." WHERE surveyls_survey_id=$surveyid "
-                ."AND surveyls_language='$tolang'",
+                ." AND surveyls_language='$tolang'",
                 "dbColumn" => 'surveyls_email_confirm_subj',
                 "id1"  => '',
                 "id2"  => '',
@@ -701,9 +701,9 @@
                 "queryto" => "SELECT * FROM ".db_table_name("surveys_languagesettings")
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
                 "queryupdate" => "UPDATE ".db_table_name("surveys_languagesettings")
-                ."SET surveyls_email_confirm = ".db_quoteall($new,true)
+                ." SET surveyls_email_confirm = ".db_quoteall($new,true)
                 ." WHERE surveyls_survey_id=$surveyid "
-                ."AND surveyls_language='$tolang'",
+                ." AND surveyls_language='$tolang'",
                 "dbColumn" => 'surveyls_email_confirm',
                 "id1"  => '',
                 "id2"  => '',
