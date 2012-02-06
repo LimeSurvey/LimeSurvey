@@ -31,7 +31,7 @@
     *  L - List (Radio)
     *  M - Multiple choice
     *  N - Numerical Input
-    *  O - List With Comment
+    *  O - List with comment
     *  P - Multiple choice with comments
     *  Q - Multiple Short Text
     *  R - Ranking
@@ -3208,10 +3208,11 @@
                         else
                         {
                             // this block is to remove the items with value == 0
+                            // and an unelegant way to remove comments from List with Comments questions
                             $i = 0;
                             while (isset ($gdata[$i]))
                             {
-                                if ($gdata[$i] == 0)
+                                if ($gdata[$i] == 0 || ($qtype == "O" && substr($lbl[$i],0,strlen($statlang->gT("Comments")))==$statlang->gT("Comments")))
                                 {
                                     array_splice ($gdata, $i, 1);
                                     array_splice ($lbl, $i, 1);

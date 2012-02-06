@@ -251,8 +251,9 @@ function db_upgrade($oldversion) {
         // drop the old link field
         modify_database("","ALTER TABLE [prefix_assessments] DROP COLUMN [link]"); echo $modifyoutput; flush();ob_flush();
         // change the primary index to include language
-        // and fix missing translations for assessments
-        upgrade_survey_tables133a();
+        mssql_drop_primary_index('assessments');
+        // add the new primary key
+        modify_database("","ALTER TABLE [prefix_assessments] ADD CONSTRAINT pk_assessments_id_lang PRIMARY KEY ([id],[language])"); echo $modifyoutput; flush();ob_flush();
 
         // Add new fields to survey language settings
         modify_database("","ALTER TABLE [prefix_surveys_languagesettings] ADD [surveyls_url] varchar(255)"); echo $modifyoutput; flush();ob_flush();
@@ -654,12 +655,9 @@ function upgrade_token_tables128()
 }
 
 
-function upgrade_survey_tables133a()
+function fixLanguageConsistencyAllSurveys()
 {
     global $dbprefix, $connect, $modifyoutput;
-    mssql_drop_primary_index('assessments');
-    // add the new primary key
-    modify_database("","ALTER TABLE [prefix_assessments] ADD CONSTRAINT pk_assessments_id_lang PRIMARY KEY ([id],[language])"); echo $modifyoutput; flush();ob_flush();
     $surveyidquery = "SELECT sid,additional_languages FROM ".db_table_name('surveys');
     $surveyidresult = db_execute_num($surveyidquery);
     while ( $sv = $surveyidresult->FetchRow() )
