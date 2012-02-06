@@ -251,7 +251,7 @@ class Date_Time_Converter
                 /*		START FIX FOR UNITS WITHOUT LEADING ZEROS		*/
                 if ($type == "n" || $type == "j" || $type == "g" || $type == "G") {
                     //if its not numeric, try a shorter digit
-                    if (!is_numeric($val)) {
+                    if (!is_numeric($val) || strval(intval($val))!==$val) {
                         $val = substr($thedate, $pos, strlen($chars)-1);
                         $mask = str_replace($chars, $type, $mask);
                     } else {
