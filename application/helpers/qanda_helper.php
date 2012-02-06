@@ -171,12 +171,12 @@ function retrieveAnswers($ia)
             {
                 $maxansw=trim($aQuestionAttributes['max_answers']);
                 $minansw=trim($aQuestionAttributes['min_answers']);
-                //                if (!($maxansw || $minansw))
-                //                {
-                //                    $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                //                    . $clang->gT('Check any that apply').'</span>';
-                //                    $question_text['help'] = $clang->gT('Check any that apply');
-                //                }
+                if (!($maxansw || $minansw))
+                {
+                    $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                    . $clang->gT('Check any that apply').'</span>';
+                    $question_text['help'] = $clang->gT('Check any that apply');
+                }
                 //                else
                 //                {
                 //                    if ($maxansw && $minansw)
@@ -212,14 +212,14 @@ function retrieveAnswers($ia)
             $values=do_multiplechoice_withcomments($ia);
             if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
             {
-                //                $maxansw=trim($aQuestionAttributes["max_answers"]);
-                //                $minansw=trim($aQuestionAttributes["min_answers"]);
-                //                if (!($maxansw || $minansw))
-                //                {
-                //                    $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                //                    . $clang->gT('Check any that apply').'</span>';
-                //                    $question_text['help'] = $clang->gT('Check any that apply');
-                //                }
+                $maxansw=trim($aQuestionAttributes["max_answers"]);
+                $minansw=trim($aQuestionAttributes["min_answers"]);
+                if (!($maxansw || $minansw))
+                {
+                    $qtitle .= "<br />\n<span class=\"questionhelp\">"
+                    . $clang->gT('Check any that apply').'</span>';
+                    $question_text['help'] = $clang->gT('Check any that apply');
+                }
                 //                else
                 //                {
                 //                    if ($maxansw && $minansw)
