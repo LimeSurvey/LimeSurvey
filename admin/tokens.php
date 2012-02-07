@@ -1585,6 +1585,7 @@
                 foreach ($attributes as $attributefield=>$attributedescription)
                 {
                     $fieldsarray['{'.strtoupper($attributefield).'}']=$emrow[$attributefield];
+                    $fieldsarray['{TOKEN:'.strtoupper($attributefield).'}']=$emrow[$attributefield];
                 }
 
                 $emrow['language']=trim($emrow['language']);
@@ -1919,6 +1920,7 @@
                 foreach ($attributes as $attributefield=>$attributedescription)
                 {
                     $fieldsarray['{'.strtoupper($attributefield).'}']=$emrow[$attributefield];
+                    $fieldsarray['{TOKEN:'.strtoupper($attributefield).'}']=$emrow[$attributefield];
                 }
 
                 $emrow['language']=trim($emrow['language']);
