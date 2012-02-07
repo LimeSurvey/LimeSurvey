@@ -4232,6 +4232,20 @@ class LimeExpressionManager {
                     }
                     $mandatoryTip .= $LEM->gT('Please rank all items').'.';
                     break;
+                case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                    $_count=0;
+                    for ($i=0;$i<count($unansweredSQs);++$i)
+                    {
+                        if (preg_match("/comment$/",$unansweredSQs[$i])) {
+                            continue;
+                        }
+                        ++$_count;
+                    }
+                    if ($_count > 0)
+                    {
+                        $qmandViolation = true;
+                    }
+                    break;
                 default:
                     if (count($unansweredSQs) > 0)
                     {
