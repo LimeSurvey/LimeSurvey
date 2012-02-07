@@ -3270,15 +3270,15 @@ function questionAttributes($returnByName=false)
     'sortorder'=>200,
     'inputtype'=>'textarea',
     "help"=>$clang->gT('Boolean equation to validate the whole question.'),
-    "caption"=>$clang->gT('Question Validation Equation'));
+    "caption"=>$clang->gT('Question validation equation'));
 
     $qattributes["em_validation_q_tip"]=array(
     "types"=>";:STUNKQ",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>210,
     'inputtype'=>'textarea',
-    "help"=>$clang->gT('Tip to show user describing the Question Validation Equation.'),
-    "caption"=>$clang->gT('Question Validation Tip'));
+    "help"=>$clang->gT('Tip to show user describing the question validation equation.'),
+    "caption"=>$clang->gT('Question validation tip'));
 
     $qattributes["em_validation_sq"]=array(
     "types"=>";:KQ",
@@ -3286,15 +3286,15 @@ function questionAttributes($returnByName=false)
     'sortorder'=>220,
     'inputtype'=>'textarea',
     "help"=>$clang->gT('Boolean equation to validate each sub-question.'),
-    "caption"=>$clang->gT('Sub-Question Validation Equation'));
+    "caption"=>$clang->gT('Sub-question validation equation'));
 
     $qattributes["em_validation_sq_tip"]=array(
     "types"=>";:KQ",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>230,
     'inputtype'=>'textarea',
-    "help"=>$clang->gT('Tip to show user describing the Sub-Question Validation Equation.'),
-    "caption"=>$clang->gT('Sub-Question Validation Tip'));
+    "help"=>$clang->gT('Tip to show user describing the sub-question validation equation.'),
+    "caption"=>$clang->gT('Sub-question validation tip'));
 
     $qattributes["exclude_all_others"]=array(
     "types"=>"MP",
@@ -3845,7 +3845,7 @@ function questionAttributes($returnByName=false)
     'sortorder'=>201,
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('None'),
-        1=>$clang->gT('Order - like 3)'),
+        1=>$clang->gT('Order'),
         ),
     'default'=>0,
     "help"=>$clang->gT('Accelerator keys for list items'),

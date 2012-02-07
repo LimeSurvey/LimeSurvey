@@ -974,8 +974,8 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
         {
             $groupsummary .= "<img src='$imageurl/seperator.gif' alt=''  />\n"
             . "<a href=\"#\" onclick=\"window.open('$scriptname?action=showlogicfile&amp;sid=$surveyid&amp;gid=$gid','_blank')\""
-            . " title=\"".$clang->gTview("Survey Logic File for current question group")."\">"
-            . "<img src='$imageurl/quality_assurance.png' alt='".$clang->gT("Survey Logic File for current question group")."' name='ShowGroupLogicFile' /></a>\n" ;
+            . " title=\"".$clang->gTview("Survey logic file for current question group")."\">"
+            . "<img src='$imageurl/quality_assurance.png' alt='".$clang->gT("Survey logic file for current question group")."' name='ShowGroupLogicFile' /></a>\n" ;
         }
 
         // DELETE CURRENT QUESTION GROUP BUTTON
@@ -1250,8 +1250,8 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         {
             $questionsummary .= "<img src='$imageurl/seperator.gif' alt=''  />\n"
             . "<a href=\"#\" onclick=\"window.open('$scriptname?action=showlogicfile&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid','_blank')\""
-            . " title=\"".$clang->gTview("Survey Logic File for current question")."\">"
-            . "<img src='$imageurl/quality_assurance.png' alt='".$clang->gT("Survey Logic File for current question")."' name='ShowQuestionLogicFile' /></a>\n" ;
+            . " title=\"".$clang->gTview("Survey logic file for current question")."\">"
+            . "<img src='$imageurl/quality_assurance.png' alt='".$clang->gT("Survey logic file for current question")."' name='ShowQuestionLogicFile' /></a>\n" ;
         }
 
 

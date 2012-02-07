@@ -861,7 +861,7 @@
         if ($esrow['googleanalyticsstyle'] == "2") {
             $editsurvey .= " selected='selected'";
         }
-        $editsurvey .= ">".$clang->gT("SurveyName-[SID]/GroupName")."</option>\n"
+        $editsurvey .= ">".$clang->gT("Track pages within survey")."</option>\n"
         . "</select></li>\n";
 
         // End Notification and Data management TAB

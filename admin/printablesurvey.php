@@ -1950,10 +1950,10 @@ function min_max_answers_help($qidattributes, $surveyprintlang, $surveyid) {
 	global $clang;
 	$output = "";
 	if(!empty($qidattributes['min_answers'])) {
-		$output .= "\n<p class='extrahelp'>".sprintf($clang->gT("Please choose at least (%s) items"), $qidattributes['min_answers'])."</p>\n";
+		$output .= "\n<p class='extrahelp'>".sprintf($clang->gT("Please choose at least %s item(s)"), $qidattributes['min_answers'])."</p>\n";
 	}
     if(!empty($qidattributes['max_answers'])) {
-		$output .= "\n<p class='extrahelp'>".sprintf($clang->gT("Please choose no more than (%s) items"),$qidattributes['max_answers'])."</p>\n";
+		$output .= "\n<p class='extrahelp'>".sprintf($clang->gT("Please choose no more than %s item(s)"),$qidattributes['max_answers'])."</p>\n";
 	}
 	return $output;
 }
