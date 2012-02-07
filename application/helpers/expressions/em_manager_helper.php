@@ -562,14 +562,38 @@ class LimeExpressionManager {
                         {
                             $validationEqn[$questionNum] = array();
                         }
+                        // sumEqn and sumRemainingEqn may need to be rounded if using sliders
+                        $precision=NULL;    // default is not to round
+                        if (isset($qattr['slider_layout']) && $qattr['slider_layout']=='1')
+                        {
+                            $precision=0;   // default is to round to whole numbers
+                            if (isset($qattr['slider_accuracy']) && trim($qattr['slider_accuracy'])!='')
+                            {
+                                $slider_accuracy = $qattr['slider_accuracy'];
+                                $_parts = explode('.',$slider_accuracy);
+                                if (isset($_parts[1]))
+                                {
+                                    $precision = strlen($_parts[1]);    // number of digits after mantissa
+                                }
+                            }
+                        }
+                        $sumEqn = 'sum(' . implode(', ', $sq_names) . ')';
+                        $sumRemainingEqn = '(' . $equals_num_value . ' - sum(' . implode(', ', $sq_names) . '))';
+
+                        if (!is_null($precision))
+                        {
+                            $sumEqn = 'round(' . $sumEqn . ', ' . $precision . ')';
+                            $sumRemainingEqn = 'round(' . $sumRemainingEqn . ', ' . $precision . ')';
+                        }
+
                         $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'equals_num_value',
                             'class' => 'sum_range',
                             'eqn' => '(sum(' . implode(', ', $sq_names) . ') == (' . $equals_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
                             'qid' => $questionNum,
-                            'sumEqn' => 'sum(' . implode(', ', $sq_names) . ')',
-                            'sumRemainingEqn' => '(' . $equals_num_value . ' - sum(' . implode(', ', $sq_names) . '))',
+                            'sumEqn' => $sumEqn,
+                            'sumRemainingEqn' => $sumRemainingEqn,
                             );
                     }
                 }
