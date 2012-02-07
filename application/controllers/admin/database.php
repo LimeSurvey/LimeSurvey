@@ -624,16 +624,18 @@ class database extends Survey_Common_Action
                 {
                     if (Yii::app()->request->getPost($validAttribute['name']))
                     {
+                        $value=Yii::app()->request->getPost($validAttribute['name']);
+
                         $result = Question_attributes::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$qid));
                         if (count($result)>0)
                         {
-                            Question_attributes::model()->updateAll(array('value'=>$validAttribute['name']), 'attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$qid));
+                            Question_attributes::model()->updateAll(array('value'=>$value), 'attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$qid));
                         }
                         else
                         {
                             $attribute = new Question_attributes;
                             $attribute->qid = $qid;
-                            $attribute->value = $validAttribute['name'];
+                            $attribute->value = $value;
                             $attribute->attribute = $validAttribute['name'];
                             $attribute->save();
                         }
