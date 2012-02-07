@@ -1150,7 +1150,7 @@ class LimeExpressionManager {
 
             // other_comment_mandatory
             // Validation:= sqN <= value (which could be an expression).
-            if (isset($qattr['other_comment_mandatory']) && trim($qattr['other_comment_mandatory']) != '')
+            if (isset($qattr['other_comment_mandatory']) && trim($qattr['other_comment_mandatory']) == '1')
             {
                 $other_comment_mandatory = $qattr['other_comment_mandatory'];
                 $eqn='';
