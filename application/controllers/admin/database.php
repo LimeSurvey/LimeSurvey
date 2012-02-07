@@ -787,10 +787,10 @@ class database extends Survey_Common_Action
                             Questions::model()->updateAll(array('type'=>Yii::app()->request->getPost('type')), 'parent_qid=:qid', array(':qid'=>$qid));
                         }
 
-                        Answers::model()->deleteAllByAttributes(array('qid'=>$qid, 'scale_id'=>$iAnswerScales));
+                        Answers::model()->deleteAllByAttributes(array('qid' => $qid), 'scale_id >= :scale_id', array(':scale_id' => $iAnswerScales));
 
                         // Remove old subquestion scales
-                        Questions::model()->deleteAllByAttributes(array('qid'=>$qid, 'scale_id'=>$iSubquestionScales));
+                        Questions::model()->deleteAllByAttributes(array('parent_qid' => $qid), 'scale_id >= :scale_id', array(':scale_id' => $iSubquestionScales));
 
                         Yii::app()->session['flashmessage'] = $clang->gT("Question was successfully saved.");
 //                    }

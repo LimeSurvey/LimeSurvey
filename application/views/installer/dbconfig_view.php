@@ -25,10 +25,10 @@
                     <tr>
                         <td style="width: 428px;">
                             <b><?php echo CHtml::activeLabelEx($model, 'dbtype', array('label' => $clang->gT("Database type"))); ?></b><br />
-                            <div class="description-field"><?php $clang->eT("This is the database type."); ?> </div>
+                            <div class="description-field"><?php $clang->eT("The name of your database management system."); ?> </div>
                         </td>
                         <td style="width: 224px;" align="right">
-                            <?php echo CHtml::activeDropDownList($model, 'dbtype', $model->supported_db_types, array('required' => 'required', 'style' => 'width: 147px')); ?>
+                            <?php echo CHtml::activeDropDownList($model, 'dbtype', $model->supported_db_types, array('required' => 'required', 'style' => 'width: 155px', 'autofocus' => 'autofocus')); ?>
                         </td>
                     </tr>
                     <tr>
@@ -61,7 +61,7 @@
                     </tr>
                     <tr>
                         <td style="width: 428px;">
-                            <b><?php echo CHtml::activeLabelEx($model, 'dbprefix', array('label' => $clang->gT("Database prefix"))); ?></b><br />
+                            <b><?php echo CHtml::activeLabelEx($model, 'dbprefix', array('label' => $clang->gT("Table prefix"))); ?></b><br />
                             <div class="description-field"><?php $clang->eT('If your database is shared, recommended prefix is "lime_" else you can leave this setting blank.'); ?></div>
                         </td>
                         <td style="width: 224px;" align="right"><?php echo CHtml::activeTextField($model, 'dbprefix', array('value' => 'lime_')) ?></td>

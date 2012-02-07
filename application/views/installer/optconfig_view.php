@@ -25,7 +25,7 @@
 <legend class="content-table-heading"><?php $clang->eT("Optional settings"); ?></legend>
 <table style="width: 640px; font-size:14px;">
 <tr>
-<td><b><?php echo CHtml::activeLabelEx($model, 'adminLoginName', array('label' => $clang->gT("Admin login name"))); ?></b><br />
+<td><b><?php echo CHtml::activeLabelEx($model, 'adminLoginName', array('label' => $clang->gT("Admin login name"), 'autofocus' => 'autofocus')); ?></b><br />
 <div class="description-field"><?php $clang->eT("This will be the userid by which admin of board will login."); ?></div>
 </td>
 <td align="right"><?php echo CHtml::activeTextField($model, 'adminLoginName'); ?></td>

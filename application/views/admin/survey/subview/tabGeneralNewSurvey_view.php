@@ -16,7 +16,7 @@
 
         <span class='annotation'> <?php $clang->eT("*This setting cannot be changed later!"); ?></span></li>
         <li><label for='surveyls_title'><?php $clang->eT("Title"); ?> :</label>
-        <input type='text' size='82' maxlength='200' id='surveyls_title' name='surveyls_title' required="required" /> <span class='annotation'><?php $clang->eT("Required"); ?> </span>
+        <input type='text' size='82' maxlength='200' id='surveyls_title' name='surveyls_title' required="required" autofocus="autofocus" /> <span class='annotation'><?php $clang->eT("Required"); ?> </span>
         </li>
         <li><label for='description'><?php $clang->eT("Description:"); ?> </label>
         <textarea cols='80' rows='10' id='description' name='description'></textarea>

@@ -88,7 +88,7 @@ class InstallerConfigForm extends CFormModel
 			'dbname' => 'Database name',
 			'dbuser' => 'Database user',
 			'dbpwd' => 'Database password',
-			'dbprefix' => 'Database prefix',
+			'dbprefix' => 'Table prefix',
 		);
 	}
 }
