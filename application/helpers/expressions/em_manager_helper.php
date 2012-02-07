@@ -3433,6 +3433,7 @@ class LimeExpressionManager {
     static function GetLastMoveResult()
     {
         $LEM =& LimeExpressionManager::singleton();
+        $LEM->em->ClearSubstitutionInfo();  // need to avoid double-generation of tailoring info
         return (isset($LEM->lastMoveResult) ? $LEM->lastMoveResult : NULL);
     }
 
@@ -4718,10 +4719,15 @@ class LimeExpressionManager {
     /**
      * Should be called after each group finishes
      */
-    static function FinishProcessingGroup()
+    static function FinishProcessingGroup($skipReprocessing=false)
     {
 //        $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
+        if ($skipReprocessing)
+        {
+            $LEM->pageTailorInfo=array();
+            $LEM->pageRelevanceInfo=array();
+        }
         $LEM->pageTailorInfo[] = $LEM->em->GetCurrentSubstitutionInfo();
         $LEM->pageRelevanceInfo[] = $LEM->groupRelevanceInfo;
 //        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));

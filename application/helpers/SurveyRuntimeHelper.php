@@ -26,6 +26,7 @@ class SurveyRuntimeHelper {
 
         // $LEMdebugLevel - customizable debugging for Lime Expression Manager
         $LEMdebugLevel = 0;   // LEM_DEBUG_TIMING;    // (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
+        $LEMskipReprocessing=false; // true if used GetLastMoveResult to avoid generation of unneeded extra JavaScript
         switch ($thissurvey['format'])
         {
             case "A": //All in one
@@ -108,6 +109,7 @@ class SurveyRuntimeHelper {
                 // Simply re-display the current page without re-processing POST or re-validating input.  Means user will lose whatever data entry the just tried
                 // Also flash a message
                 $moveResult = LimeExpressionManager::GetLastMoveResult();
+                $LEMskipReprocessing=true;
                 $move = "movenext"; // so will re-display the survey
                 $invalidLastPage = true;
                 $vpopup = "<script type=\"text/javascript\">\n
@@ -170,6 +172,7 @@ class SurveyRuntimeHelper {
                 {
                     // Just in case not set via any other means, but don't do this if it is the welcome page
                     $moveResult = LimeExpressionManager::GetLastMoveResult();
+                    $LEMskipReprocessing=true;
                 }
             }
 
@@ -247,6 +250,7 @@ class SurveyRuntimeHelper {
                 }
 
                 $moveResult = LimeExpressionManager::GetLastMoveResult();
+                $LEMskipReprocessing=true;
 
                 // TODO - does this work automatically for token answer persistence? Used to be savedsilent()
             }
@@ -892,7 +896,7 @@ END;
             echo "\n\n</div>\n";
         }
 
-        LimeExpressionManager::FinishProcessingGroup();
+        LimeExpressionManager::FinishProcessingGroup($LEMskipReprocessing);
         echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
         LimeExpressionManager::FinishProcessingPage();
 
