@@ -4530,8 +4530,7 @@ function do_array_5point($ia)
         /* Check if this item has not been answered: the 'notanswered' variable must be an array,
         containing a list of unanswered questions, the current question must be in the array,
         and there must be no answer available for the item in this session. */
-        // TMSW Mandatory -> EM
-        if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') ) {
+        if ((is_array($notanswered)) && (array_search($myfname, $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') ) {
             $answertext = "<span class=\"errormandatory\">{$answertext}</span>";
         }
 
@@ -4687,8 +4686,7 @@ function do_array_10point($ia)
         /* Check if this item has not been answered: the 'notanswered' variable must be an array,
         containing a list of unanswered questions, the current question must be in the array,
         and there must be no answer available for the item in this session. */
-        // TMSW Mandatory -> EM
-        if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == "") ) {
+        if ((is_array($notanswered)) && (array_search($myfname, $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == "") ) {
             $answertext = "<span class='errormandatory'>{$answertext}</span>";
         }
         $trbc = alternation($trbc , 'row');
@@ -4827,8 +4825,7 @@ function do_array_yesnouncertain($ia)
             /* Check if this item has not been answered: the 'notanswered' variable must be an array,
             containing a list of unanswered questions, the current question must be in the array,
             and there must be no answer available for the item in this session. */
-            // TMSW Mandatory -> EM
-            if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') ) {
+            if ((is_array($notanswered)) && (array_search($myfname, $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') ) {
                 $answertext = "<span class='errormandatory'>{$answertext}</span>";
             }
             $trbc = alternation($trbc , 'row');
@@ -4987,8 +4984,7 @@ function do_array_increasesamedecrease($ia)
         /* Check if this item has not been answered: the 'notanswered' variable must be an array,
         containing a list of unanswered questions, the current question must be in the array,
         and there must be no answer available for the item in this session. */
-        // TMSW Mandatory -> EM
-        if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == "") )
+        if ((is_array($notanswered)) && (array_search($myfname, $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == "") )
         {
             $answertext = "<span class=\"errormandatory\">{$answertext}</span>";
         }
@@ -5204,8 +5200,7 @@ function do_array($ia)
 
             if (strpos($answertext,'|')) {$answerwidth=$answerwidth/2;}
 
-            // TMSW Mandatory -> EM
-            if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') ) {
+            if ((is_array($notanswered)) && (array_search($myfname, $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') ) {
                 $answertext = '<span class="errormandatory">'.$answertext.'</span>';
             }
             // Get array_filter stuff
@@ -5353,8 +5348,7 @@ function do_array($ia)
 
             if (strpos($answertext,'|')) {$answerwidth=$answerwidth/2;}
 
-            // TMSW Mandatory -> EM
-            if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') ) {
+            if ((is_array($notanswered)) && (array_search($myfname, $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') ) {
                 $answertext = '<span class="errormandatory">'.$answertext.'</span>';
             }
             // Get array_filter stuff
@@ -5688,19 +5682,18 @@ function do_array_multitext($ia)
             /* Check if this item has not been answered: the 'notanswered' variable must be an array,
             containing a list of unanswered questions, the current question must be in the array,
             and there must be no answer available for the item in this session. */
-            if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE))
+            if (is_array($notanswered))
             {
                 //Go through each labelcode and check for a missing answer! If any are found, highlight this line
                 $emptyresult=0;
                 foreach($labelcode as $ld)
                 {
                     $myfname2=$myfname.'_'.$ld;
-                    if($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] == '')
+                    if((array_search($myfname2, $notanswered) !== FALSE) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] == '')
                     {
                         $emptyresult=1;
                     }
                 }
-                // TMSW Mandatory -> EM
                 if ($emptyresult == 1)
                 {
                     $answertext = "<span class=\"errormandatory\">{$answertext}</span>";
@@ -5985,19 +5978,18 @@ function do_array_multiflexi($ia)
             /* Check if this item has not been answered: the 'notanswered' variable must be an array,
             containing a list of unanswered questions, the current question must be in the array,
             and there must be no answer available for the item in this session. */
-            if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE))
+            if (is_array($notanswered))
             {
                 //Go through each labelcode and check for a missing answer! If any are found, highlight this line
                 $emptyresult=0;
                 foreach($labelcode as $ld)
                 {
                     $myfname2=$myfname.'_'.$ld;
-                    if($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] == "")
+                    if((array_search($myfname2, $notanswered) !== FALSE) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2] == "")
                     {
                         $emptyresult=1;
                     }
                 }
-                // TMSW Mandatory -> EM
                 if ($emptyresult == 1)
                 {
                     $answertext = '<span class="errormandatory">'.$answertext.'</span>';
@@ -6206,15 +6198,15 @@ function do_arraycolumns($ia)
             }
             $trbc = '';
             $odd_even = '';
-            foreach ($answers as $ld)
+            for ($_i=0;$_i<count($answers);++$_i)
             {
-                $myfname = $ia[1].$ansrow['code'];
+                $ld = $answers[$_i];
+                $myfname = $ia[1].$anscode[$_i];
                 $trbc = alternation($trbc , 'row');
                 /* Check if this item has not been answered: the 'notanswered' variable must be an array,
-                containing a list of unanswered questions, the current question must be in the array,
-                and there must be no answer available for the item in this session. */
-                // TMSW Mandatory -> EM
-                if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == "") )
+                 containing a list of unanswered questions, the current question must be in the array,
+                 and there must be no answer available for the item in this session. */
+                if ((is_array($notanswered)) && (array_search($myfname, $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == "") )
                 {
                     $ld = "<span class=\"errormandatory\">{$ld}</span>";
                 }
@@ -6549,8 +6541,7 @@ function do_array_dual($ia)
             /* Check if this item has not been answered: the 'notanswered' variable must be an array,
             containing a list of unanswered questions, the current question must be in the array,
             and there must be no answer available for the item in this session. */
-            // TMSW Mandatory -> EM
-            if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == '')) )
+            if ((is_array($notanswered)) && ((array_search($myfname, $notanswered) !== FALSE) || (array_search($myfname1, $notanswered) !== FALSE)) && (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == '')) )
             {
                 $answertext = "<span class='errormandatory'>{$answertext}</span>";
             }
@@ -6784,8 +6775,7 @@ function do_array_dual($ia)
                 $dualgroup1=1;
                 $myfname1 = $ia[1].$ansrow['title']."#".$dualgroup1;
 
-                // TMSW Mandatory -> EM
-                if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == "" || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == "") )
+                if ((is_array($notanswered)) && ((array_search($myfname, $notanswered) !== FALSE) || (array_search($myfname1, $notanswered) !== FALSE)) && (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1] == '')) )
                 {
                     $answertext="<span class='errormandatory'>".dTexts__run($ansrow['question'])."</span>";
                 }

@@ -253,6 +253,8 @@ class SurveyRuntimeHelper {
 
             //Now, we check mandatory questions if necessary
             //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
+            global $notanswered;
+
             if (isset($moveResult) && !$moveResult['finished'])
             {
                 $unansweredSQList = $moveResult['unansweredSQs'];
