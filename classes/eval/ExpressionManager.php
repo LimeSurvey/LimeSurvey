@@ -1938,6 +1938,16 @@ class ExpressionManager {
     }
 
     /**
+     * Clear cache of tailoring content.
+     * When re-displaying same page, need to avoid generating double the amount of tailoring content.
+     */
+    public function ClearSubstitutionInfo()
+    {
+        $this->substitutionNum=0;
+        $this->substitutionInfo=array(); // array of JavaScripts for managing each substitution
+    }
+
+    /**
      * Process multiple substitution iterations of a full string, containing multiple expressions delimited by {}, return a consolidated string
      * @param <type> $src
      * @param <type> $questionNum
