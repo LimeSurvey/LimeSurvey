@@ -5196,6 +5196,7 @@ static function GetRelevanceAndTailoringJavaScript()
                 if ($arg['type'] == '*')
                 {
                     $relParts[] = "  // Write value from the question into the answer field\n";
+                    $jsResultVar = $LEM->em->GetJsVarFor($arg['jsResultVar']);
                     $relParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val(escape(jQuery.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .questiontext').find('span').next().next().html()))).replace(/%20/g,' '));\n";
                 }
                 $relParts[] = "  if ($('#relevance" . $arg['qid'] . "').val()!='1') { relChange" . $arg['qid'] . "=true; }\n";
