@@ -4825,7 +4825,10 @@ class LimeExpressionManager {
 
         $jsParts[] = "function ExprMgr_process_relevance_and_tailoring(evt_type){\n";
         $jsParts[] = "if (typeof LEM_initialized == 'undefined') {\nLEM_initialized=true;\nLEMsetTabIndexes();\n}\n";
-        $jsParts[] = "if (evt_type == 'onchange' && (typeof last_evt_type != 'undefined' && last_evt_type == 'keydown') && (typeof target_tabIndex != 'undefined' && target_tabIndex == document.activeElement.tabIndex)) {\nreturn;\n}\n";
+        $jsParts[] = "if (evt_type == 'onchange' && (typeof last_evt_type != 'undefined' && last_evt_type == 'keydown')) {\n";
+        $jsParts[] = "  last_evt_type='onchange';\n";
+        $jsParts[] = "  return;\n";
+        $jsParts[] = "}\n";
         $jsParts[] = "last_evt_type = evt_type;\n\n";
 
         // flatten relevance array, keeping proper order

@@ -495,10 +495,11 @@ function LEManyNA()
 function  LEMsetTabIndexes()
 {
     if (typeof tabIndexesSet == 'undefined') {
-        $(':input[type!=hidden][id!=runonce]').each(function(index){
+        $('#limesurvey :input[type!=hidden][id!=runonce]').each(function(index){
             $(this).bind('keydown',function(e) {
                 if (e.keyCode == 9) {
                     ExprMgr_process_relevance_and_tailoring(e.type);
+                    $(this).focus();
                     return true;
                 }
                 return true;

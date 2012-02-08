@@ -2,6 +2,7 @@ var DOM1;
 $(document).ready(function()
 {
 	DOM1 = (typeof document.getElementsByTagName!='undefined');
+    if (typeof LEMsetTabIndexes === 'function') { LEMsetTabIndexes(); }
 	if (typeof checkconditions!='undefined') checkconditions();
 	if (typeof template_onload!='undefined') template_onload();
 	prepareCellAdapters();
@@ -119,9 +120,6 @@ $(document).ready(function()
          var row = $("#index .row.current");
          idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);
     */
-//    if (typeof ExprMgr_process_relevance_and_tailoring === 'function') {
-//        ExprMgr_process_relevance_and_tailoring();
-//    }
 });
 
 gmaps = new Object;

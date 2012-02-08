@@ -8,8 +8,9 @@ if (!((isset($subaction) && $subaction == 'relevance'))) {die("Cannot run this s
         <title>ExpressionManager:  Unit Test Relevance</title>
         <script type="text/javascript" src="../scripts/jquery/jquery.js"></script>
         <script type="text/javascript" src="../classes/eval/em_javascript.js"></script>
+        <script type="text/javascript" src="../scripts/survey_runtime.js"></script>
     </head>
-    <body id="limesurvey" onload="ExprMgr_process_relevance_and_tailoring('');">
+    <body id="limesurvey">
         <?php
 //            include_once('../LimeExpressionManager.php');
             LimeExpressionManager::UnitTestRelevance();
