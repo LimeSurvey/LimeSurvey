@@ -4690,7 +4690,9 @@ class LimeExpressionManager {
         $LEM =& LimeExpressionManager::singleton();
         $LEM->em->StartProcessingGroup(
                 isset($surveyid) ? $surveyid : NULL,
-                isset($LEM->surveyOptions['hyperlinkSyntaxHighlighting']) ? $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] : false
+                '',
+                isset($LEM->surveyOptions['hyperlinkSyntaxHighlighting']) ? $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] : false,
+                $LEM->surveyMode
                 );
         $LEM->groupRelevanceInfo = array();
         if (!is_null($groupNum))
@@ -4838,7 +4840,7 @@ static function GetRelevanceAndTailoringJavaScript()
         {
             $jsParts[] = "var LEMgid=" . $LEM->groupNum . ";\n";    // current group num so can compute isOnCurrentPage
         }
-        if ($LEM->surveyMode == 'question')
+        if ($LEM->surveyMode == 'question' && isset($LEM->currentQID))
         {
             $jsParts[] = "var LEMqid=" . $LEM->currentQID . ";\n";  // current group num so can compute isOnCurrentPage
         }
@@ -5239,6 +5241,10 @@ static function GetRelevanceAndTailoringJavaScript()
                     }
                 }
                 $qrelQIDs = array_unique($qrelQIDs);
+                if ($LEM->surveyMode=='question')
+                {
+                    $qrelQIDs=array();  // in question-by-questin mode, should never test for dependencies on self or other questions.
+                }    
 
                 $qrelJS = "function LEMrel" . $arg['qid'] . "(sgqa){\n";
                 $qrelJS .= "  var UsesVars = ' " . implode(' ', $relJsVarsUsed) . " ';\n";

@@ -60,7 +60,7 @@ class ExpressionManager {
 
     private $questionSeq;   // sequence order of question - so can detect if try to use variable before it is set
     private $groupSeq;  // sequence order of groups - so can detect if try to use variable before it is set
-    private $allOnOnePage=false;
+    private $surveyMode='group';
 
     // The following are only needed to enable click on variable names within pretty print and open new window to edit them
     private $sid=NULL; // the survey ID
@@ -1095,21 +1095,35 @@ class ExpressionManager {
         if (is_null($this->varsUsed)){
             return array();
         }
-        if ($this->allOnOnePage)
+        if ($this->surveyMode=='survey')
         {
-            return GetJsVarsUsed();
+            return $this->GetJsVarsUsed();
         }
         $names = array_unique($this->varsUsed);
         if (is_null($names)) {
             return array();
         }
         $jsNames = array();
-        foreach ($names as $name)
+        if ($this->surveyMode=='group')
         {
-            $val = $this->GetVarAttribute($name,'jsName','');
-            $gseq = $this->GetVarAttribute($name,'gseq','');
-            if ($val != '' && $gseq == $this->groupSeq) {
-                $jsNames[] = $val;
+            foreach ($names as $name)
+            {
+                $val = $this->GetVarAttribute($name,'jsName','');
+                $gseq = $this->GetVarAttribute($name,'gseq','');
+                if ($val != '' && $gseq == $this->groupSeq) {
+                    $jsNames[] = $val;
+                }
+            }
+        }
+        else
+        {
+            foreach ($names as $name)
+            {
+                $val = $this->GetVarAttribute($name,'jsName','');
+                $qseq = $this->GetVarAttribute($name,'qseq','');
+                if ($val != '' && $qseq == $this->questionSeq) {
+                    $jsNames[] = $val;
+                }
             }
         }
         return array_unique($jsNames);
@@ -1673,11 +1687,16 @@ class ExpressionManager {
                 }
                 break;
             case 'jsName':
-                if ($this->allOnOnePage || ($this->groupSeq != -1 && isset($var['gseq']) && $this->groupSeq == $var['gseq'])) {
-                    // then on the same page, so return the on-page javaScript name if there is one.
+                if ($this->surveyMode=='survey'
+                        || ($this->surveyMode=='group' && $this->groupSeq != -1 && isset($var['gseq']) && $this->groupSeq == $var['gseq'])
+                        || ($this->surveyMode=='question' && $this->questionSeq != -1 && isset($var['qseq']) && $this->questionSeq == $var['qseq']))
+                {
                     return (isset($var['jsName_on']) ? $var['jsName_on'] : (isset($var['jsName'])) ? $var['jsName'] : $default);
                 }
-                return (isset($var['jsName']) ? $var['jsName'] : $default);
+                else {
+                    return (isset($var['jsName']) ? $var['jsName'] : $default);
+                }
+                break;
             case 'sgqa':
             case 'mandatory':
             case 'qid':
@@ -1939,11 +1958,11 @@ class ExpressionManager {
      * Start processing a group of substitions - will be incrementally numbered
      */
 
-    public function StartProcessingGroup($sid=NULL,$rooturl='',$hyperlinkSyntaxHighlighting=true,$allOnOnePage=false)
+    public function StartProcessingGroup($sid=NULL,$rooturl='',$hyperlinkSyntaxHighlighting=true,$surveyMode='group')
     {
         $this->substitutionNum=0;
         $this->substitutionInfo=array(); // array of JavaScripts for managing each substitution
-        $this->allOnOnePage=$allOnOnePage;
+        $this->surveyMode=$surveyMode;
         $this->sid=$sid;
         $this->hyperlinkSyntaxHighlighting=$hyperlinkSyntaxHighlighting;
     }
