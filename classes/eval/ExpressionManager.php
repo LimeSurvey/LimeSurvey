@@ -1311,7 +1311,7 @@ class ExpressionManager {
     public function GetJavaScriptFunctionForReplacement($questionNum, $name,$eqn)
     {
         $jsParts = array();
-        $jsParts[] = "\n  // Tailor Question " . $questionNum . " - " . $name . ": { " . $eqn . " }\n";
+//        $jsParts[] = "\n  // Tailor Question " . $questionNum . " - " . $name . ": { " . $eqn . " }\n";
         $jsParts[] = "  try{\n";
         $jsParts[] = "  document.getElementById('" . $name . "').innerHTML=htmlspecialchars(\n    ";
         $jsParts[] = $this->GetJavaScriptEquivalentOfExpression();
