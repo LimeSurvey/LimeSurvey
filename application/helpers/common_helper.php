@@ -950,6 +950,8 @@ if(!defined('COLSTYLE'))
 *
 * @param integer $columns - the number of columns, usually supplied by $dcols
 * @param integer $answer_count - the number of answers to a question, usually supplied by $anscount
+* @param string $wrapperclass - a global class for the wrapper
+* @param string $itemclass - a class for the item
 * @return array with all the various opening and closing tags to generate a set of columns.
 *
 * It returns an array with the following items:
@@ -962,6 +964,8 @@ if(!defined('COLSTYLE'))
 *    $wrapper['item-start']    = opening wrapper tag for individual
 *                                option
 *    $wrapper['item-start-other'] = opening wrapper tag for other
+*                                option
+*    $wrapper['item-start-noanswer'] = opening wrapper tag for no answer
 *                                option
 *    $wrapper['item-end']      = closing wrapper tag for individual
 *                                option
@@ -1010,18 +1014,11 @@ if(!defined('COLSTYLE'))
 * 'ul' is the default because it's the best possible compromise
 * between semantic markup and visual layout.
 */
-function setupColumns($columns, $answer_count)
+function setupColumns($columns, $answer_count,$wrapperclass="",$itemclass="")
 {
-
 
     $colstyle = COLSTYLE;
 
-    /*
-    if(defined('PRINT_TEMPLATE')) // This forces tables based columns for printablesurvey
-    {
-    $colstyle = 'table';
-    };
-    */
     if($columns < 2)
     {
         $colstyle = null;
@@ -1038,7 +1035,7 @@ function setupColumns($columns, $answer_count)
         $columns = ceil($answer_count/ceil($answer_count/$columns)); // # of columns is # of answers divided by # of rows (all rounded up)
     }
 
-    $class_first = '';
+    $class_first = ' class="'.$wrapperclass.'"';
     if($columns > 1 && $colstyle != null)
     {
         if($colstyle == 'ul')
@@ -1049,16 +1046,16 @@ function setupColumns($columns, $answer_count)
         {
             $ul = '';
         }
-        $class_first = ' class="cols-'.$columns . $ul.' first"';
-        $class = ' class="cols-'.$columns . $ul.'"';
-        $class_last_ul = ' class="cols-'.$columns . $ul.' last"';
-        $class_last_table = ' class="cols-'.$columns.' last"';
+        $class_first = ' class="'.$wrapperclass.' cols-'.$columns . $ul.' first"';
+        $class = ' class="'.$wrapperclass.' cols-'.$columns . $ul.'"';
+        $class_last_ul = ' class="'.$wrapperclass.' cols-'.$columns . $ul.' last"';
+        $class_last_table = ' class="'.$wrapperclass.' cols-'.$columns.' last"';
     }
     else
     {
-        $class = '';
-        $class_last_ul = '';
-        $class_last_table = '';
+        $class = ' class="'.$wrapperclass.'"';
+        $class_last_ul = ' class="'.$wrapperclass.'"';
+        $class_last_table = ' class="'.$wrapperclass.'"';
     };
 
     $wrapper = array(
@@ -1066,8 +1063,9 @@ function setupColumns($columns, $answer_count)
     ,'whole-end'    => "</ul>\n"
     ,'col-devide'   => ''
     ,'col-devide-last' => ''
-    ,'item-start'   => "\t<li>\n"
-    ,'item-start-other' => "\t<li class=\"other\">\n"
+    ,'item-start'   => "\t<li class=\"{$itemclass}\">\n"
+    ,'item-start-other' => "\t<li class=\"{$itemclass} other other-item\">\n"
+    ,'item-start-noanswer' => "\t<li class=\"{$itemclass} noanswer-item\">\n"
     ,'item-end' => "\t</li>\n"
     ,'maxrows'  => ceil($answer_count/$columns) //Always rounds up to nearest whole number
     ,'cols'     => $columns
@@ -1102,8 +1100,8 @@ function setupColumns($columns, $answer_count)
             };
             $wrapper['whole-start'] = "\n<table$class>\n$table_cols\n\t<tbody>\n<tr>\n<td>\n\t<ul>\n";
             $wrapper['whole-end']   = "\t</ul>\n</td>\n</tr>\n\t</tbody>\n</table>\n";
-            $wrapper['item-start']  = "<li>\n";
-            $wrapper['item-end']    = "</li>\n";
+            $wrapper['item-start']  = "<li class=\"{$itemclass}\">\n";
+            $wrapper['item-end']    = "</li class=\"{$itemclass}\">\n";
     };
 
     return $wrapper;

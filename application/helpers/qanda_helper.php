@@ -955,10 +955,10 @@ function do_5pointchoice($ia)
     }
     $aQuestionAttributes=  getQuestionAttributeValues($ia[0], $ia[4]);
     $id = 'slider'.time().rand(0,100);
-    $answer = "\n<ul id=\"{$id}\">\n";
+    $answer = "\n<ul id=\"{$id}\"> class=\"answers-list radio-list\"\n";
     for ($fp=1; $fp<=5; $fp++)
     {
-        $answer .= "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer$ia[1]$fp\" value=\"$fp\"";
+        $answer .= "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer$ia[1]$fp\" value=\"$fp\"";
         if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == $fp)
         {
             $answer .= CHECKED;
@@ -968,7 +968,7 @@ function do_5pointchoice($ia)
 
     if ($ia[6] != "Y"  && SHOW_NO_ANSWER == 1) // Add "No Answer" option if question is not mandatory
     {
-        $answer .= "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"NoAnswer\" value=\"\"";
+        $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"NoAnswer\" value=\"\"";
         if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]))
         {
             $answer .= CHECKED;
@@ -1115,14 +1115,14 @@ function do_date($ia)
         }
 
         $dateorder = preg_split('/[-\.\/ ]/', $dateformatdetails['phpdate']);
-        $answer='<p class="question">';
+        $answer='<p class="question answer-item select-item date-item">';
         foreach($dateorder as $datepart)
         {
             switch($datepart)
             {
                 // Show day select box
                 case 'j':
-                case 'd':   $answer .= ' <select id="day'.$ia[1].'" class="day">
+                case 'd':   $answer .= ' <label for="day'.$ia[1].'" class="hide">'.$clang->gT('Day').'</label><select id="day'.$ia[1].'" name="day'.$ia[1].'" class="day">
                     <option value="">'.$clang->gT('Day')."</option>\n";
                     for ($i=1; $i<=31; $i++) {
                         if ($i == $currentdate)
@@ -1139,7 +1139,7 @@ function do_date($ia)
                     break;
                     // Show month select box
                 case 'n':
-                case 'm':   $answer .= ' <select id="month'.$ia[1].'" class="month">
+                case 'm':   $answer .= ' <label for="month'.$ia[1].'" class="hide">'.$clang->gT('Month').'</label><select id="month'.$ia[1].'" name="month'.$ia[1].'" class="month">
                     <option value="">'.$clang->gT('Month')."</option>\n";
                     $montharray=array(
                     $clang->gT('Jan'),
@@ -1169,7 +1169,7 @@ function do_date($ia)
                     $answer .= '    </select>';
                     break;
                     // Show year select box
-                case 'Y':   $answer .= ' <select id="year'.$ia[1].'" class="year">
+                case 'Y':   $answer .= ' <label for="year'.$ia[1].'" class="hide">'.$clang->gT('Year').'</label><select id="year'.$ia[1].'" name="year'.$ia[1].'" class="year">
                     <option value="">'.$clang->gT('Year').'</option>';
 
                     /*
@@ -1280,7 +1280,7 @@ function do_date($ia)
         $goodchars = str_replace( array("m","d","y"), "", $dateformatdetails['jsdate']);
         $goodchars = "0123456789".$goodchars[0];
 
-        $answer ="<p class=\"question\">
+        $answer ="<p class=\"question answer-item text-item date-item\">
         <input class='popupdate' type=\"text\" alt=\"".$clang->gT('Date picker')."\" size=\"10\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"10\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
         <input  type='hidden' name='dateformat{$ia[1]}' id='dateformat{$ia[1]}' value='{$dateformatdetails['jsdate']}'  />
         <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='{$clang->langcode}'  />
@@ -1313,7 +1313,7 @@ function do_language($ia)
 
     $answerlangs = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->additionalLanguages;
     $answerlangs [] = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
-    $answer = "\n\t<p class=\"question\">\n<select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"document.getElementById('lang').value=this.value; $checkconditionFunction(this.value, this.name, this.type);\">\n";
+    $answer = "\n\t<p class=\"question answer-item select-item langage-item\">\n<select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"document.getElementById('lang').value=this.value; $checkconditionFunction(this.value, this.name, this.type);\">\n";
     if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {$answer .= "\t<option value=\"\" selected=\"selected\">".$clang->gT('Please choose...')."</option>\n";}
     foreach ($answerlangs as $ansrow)
     {
@@ -1518,7 +1518,7 @@ function do_list_dropdown($ia)
         if ($prefixStyle == 1) {
             $_prefix = ++$_rowNum . ') ';
         }
-        $answer .= '<option value="">'.$_prefix.$clang->gT('No answer')."</option>\n";
+        $answer .= '<option class="noanswer-item" value="">'.$_prefix.$clang->gT('No answer')."</option>\n";
     }
     $answer .= '				</select>
     <input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="'.$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]].'" />';
@@ -1532,7 +1532,7 @@ function do_list_dropdown($ia)
         $sselect_show_hide = '';
     }
     $sselect = '
-    <p class="question">
+    <p class="question answer-item select-item">
     <select name="'.$ia[1].'" id="answer'.$ia[1].'"'.$dropdownSize.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide.'">
     ';
     $answer = $sselect.$answer;
@@ -1690,9 +1690,8 @@ function do_list_radio($ia)
     if (isset($other) && $other=='Y') {$anscount++;} //Count up for the Other answer
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$anscount++;} //Count up if "No answer" is showing
 
-    $wrapper = setupColumns($dcols , $anscount);
+    $wrapper = setupColumns($dcols , $anscount,"answers-list radio-list","answer-item radio-item");
     $answer = $wrapper['whole-start'];
-
     // Get array_filter stuff
 
     $rowcounter = 0;
@@ -1708,10 +1707,9 @@ function do_list_radio($ia)
             $check_ans = CHECKED;
         }
 
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li");
-
-        if($wrapper['item-start'] == "\t<li>\n")
-        {
+        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li","answer-item radio-item");
+        if(substr($wrapper['item-start'],0,4) == "\t<li")
+        { 
             $startitem = "\t$htmltbody2\n";
         } else {
             $startitem = $wrapper['item-start'];
@@ -1774,9 +1772,9 @@ function do_list_radio($ia)
             $answer_other = ' value=""';
         }
 
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, array("code"=>"other"), $thisfieldname, $trbc, $myfname, "li", "other");
+        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, array("code"=>"other"), $thisfieldname, $trbc, $myfname, "li", "answer-item radio-item other-item other");
 
-        if($wrapper['item-start-other'] == "\t<li class=\"other\">\n")
+        if(substr($wrapper['item-start-other'],0,4) == "\t<li")
         {
             $startitem = "\t$htmltbody2\n";
         } else {
@@ -1820,7 +1818,7 @@ function do_list_radio($ia)
             $check_ans = '';
         }
 
-        $answer .= $wrapper['item-start'].'		<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
+        $answer .= $wrapper['item-start-noanswer'].'		<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
         <label for="answer'.$ia[1].'NANS" class="answertext">'.$clang->gT('No answer').'</label>
         '.$wrapper['item-end'];
         // --> END NEW FEATURE - SAVE
@@ -1932,7 +1930,7 @@ function do_listwithcomment($ia)
     if (isset($lwcdropdowns) && $lwcdropdowns == 'R' && $anscount <= $dropdownthreshold)
     {
         $answer .= '<div class="list">
-        <ul>
+        <ul class="answers-list radio-list">
         ';
 
         foreach ($ansresult->readAll() as $ansrow)
@@ -1942,7 +1940,7 @@ function do_listwithcomment($ia)
             {
                 $check_ans = CHECKED;
             }
-            $answer .= '		<li>
+            $answer .= '		<li class="answer-item radio-item">
             <input type="radio" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'" value="'.$ansrow['code'].'" class="radio" '.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
             <label for="answer'.$ia[1].$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
             </li>
@@ -1959,7 +1957,7 @@ function do_listwithcomment($ia)
             {
                 $check_ans = '';
             }
-            $answer .= '		<li>
+            $answer .= '		<li class="answer-item radio-item noanswer-item">
             <input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'" value=" " onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)"'.$check_ans.' />
             <label for="answer'.$ia[1].'" class="answertext">'.$clang->gT('No answer').'</label>
             </li>
@@ -1976,7 +1974,7 @@ function do_listwithcomment($ia)
         $answer .= '	</ul>
         </div>
 
-        <p class="comment">
+        <p class="comment answer-item text-item">
         <label for="answer'.$ia[1].'comment">'.$hint_comment.':</label>
 
         <textarea class="textarea '.$kpclass.'" name="'.$ia[1].'comment" id="answer'.$ia[1].'comment" rows="'.floor($tarows).'" cols="30" >';
@@ -1996,7 +1994,7 @@ function do_listwithcomment($ia)
     else //Dropdown list
     {
         // --> START NEW FEATURE - SAVE
-        $answer .= '<p class="select">
+        $answer .= '<p class="select answer-item select-item">
         <select class="select" name="'.$ia[1].'" id="answer'.$ia[1].'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" >
         ';
         // --> END NEW FEATURE - SAVE
@@ -2024,7 +2022,7 @@ function do_listwithcomment($ia)
             {
                 $check_ans = '';
             }
-            $answer .= '<option value=""'.$check_ans.'>'.$clang->gT('No answer')."</option>\n";
+            $answer .= '<option class="noanswer-item" value=""'.$check_ans.'>'.$clang->gT('No answer')."</option>\n";
         }
         $answer .= '	</select>
         </p>
@@ -2035,8 +2033,8 @@ function do_listwithcomment($ia)
         $maxoptionsize=$maxoptionsize*0.72;
         if ($maxoptionsize < 33) {$maxoptionsize=33;}
         if ($maxoptionsize > 70) {$maxoptionsize=70;}
-        $answer .= '<p class="comment">
-        '.$hint_comment.'
+        $answer .= '<p class="comment answer-item text-item">
+        <label for="answer'.$ia[1].'comment">'.$hint_comment.':</label>
         <textarea class="textarea '.$kpclass.'" name="'.$ia[1].'comment" id="answer'.$ia[1].'comment" rows="'.$tarows.'" cols="'.$maxoptionsize.'" >';
         // --> END NEW FEATURE - SAVE
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2])
@@ -2455,7 +2453,7 @@ function do_multiplechoice($ia)
         $anscount++; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
     }
 
-    $wrapper = setupColumns($dcols, $anscount);
+    $wrapper = setupColumns($dcols, $anscount,"subquestions-list questions-list checkbox-list","question-item answer-item checkbox-item");
 
     $answer = '<input type="hidden" name="MULTI'.$ia[1].'" value="'.$anscount."\" />\n\n".$wrapper['whole-start'];
 
@@ -2473,21 +2471,22 @@ function do_multiplechoice($ia)
     foreach ($ansresult as $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
-
+        $extra_class="";
         if ($exclude_all_others_auto==1){
             if ($ansrow['title']==trim($aQuestionAttributes['exclude_all_others'])){
                 $autoArray[$ia[1]]['focus'] = $ia[1].trim($aQuestionAttributes['exclude_all_others']);
             }
             else{
                 $autoArray[$ia[1]]['children'][] = $myfname;
+                $extra_class=" excludeallothers";
             }
         }
 
         $trbc='';
         /* Check for array_filter */
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li");
+        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li","question-item answer-item checkbox-item".$extra_class); //ENCOURS
 
-        if($wrapper['item-start'] == "\t<li>\n")
+        if(substr($wrapper['item-start'],0,4) == "\t<li")
         {
             $startitem = "\t$htmltbody2\n";
         } else {
@@ -2551,13 +2550,13 @@ function do_multiplechoice($ia)
     if ($other == 'Y')
     {
         $myfname = $ia[1].'other';
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, array("code"=>"other"), $myfname, $trbc, $myfname, "li");
+        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, array("code"=>"other"), $myfname, $trbc, $myfname, "li","question-item answer-item checkbox-item other-item");
 
-        if($wrapper['item-start'] == "\t<li>\n")
+        if(substr($wrapper['item-start-other'],0,4) == "\t<li")
         {
             $startitem = "\t$htmltbody2\n";
         } else {
-            $startitem = $wrapper['item-start'];
+            $startitem = $wrapper['item-start-other'];
         }
         $answer .= $startitem;
         $answer .= $hiddenfield.'
@@ -2570,8 +2569,8 @@ function do_multiplechoice($ia)
         $answer .= " onclick='cancelBubbleThis(event);if(this.checked===false){ document.getElementById(\"answer$myfname\").value=\"\"; document.getElementById(\"java$myfname\").value=\"\"; }";
         $answer .= " if(this.checked===true) document.getElementById(\"answer$myfname\").focus();";
         $answer .= " $checkconditionFunction(document.getElementById(\"answer$myfname\").value, document.getElementById(\"answer$myfname\").name, document.getElementById(\"answer$myfname\").type);";
-        $answer .= "' />
-        <label for=\"answer$myfname\" class=\"answertext\">".$othertext."</label>
+        $answer .= "' />"// TODO :adding a lable for the cbox <label for=\"answer{$myfname}cbox\" >".$othertext."</label>
+        ." <label for=\"answer$myfname\" class=\"answertext\">".$othertext."</label>
         <input class=\"text ".$kpclass."\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\"";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
@@ -2832,7 +2831,7 @@ function do_multiplechoice_withcomments($ia)
         $trbc='';
         /* Check for array_filter */
 
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li");
+        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li","question-item answer-item checkbox-text-item");
 
         if($label_width < strlen(trim(strip_tags($ansrow['question']))))
         {
@@ -2870,11 +2869,11 @@ function do_multiplechoice_withcomments($ia)
         }
         $answer_main .= "' />\n";
         $fn++;
-        $answer_main .= "</span>\n<span class=\"comment\">\n\t<label for='answer$myfname2' class=\"answer-comment\">\n"
-        ."<input class='text ".$kpclass."' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT("Make a comment on your choice here:")."' value='";
+        $answer_main .= "</span>\n<span class=\"comment\">\n\t<label for='answer$myfname2' class=\"answer-comment hide \">".$clang->gT('Make a comment on your choice here:')."</label>\n"
+        ."<input class='text ".$kpclass."' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT('Make a comment on your choice here:')."' value='";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);}
         // --> START NEW FEATURE - SAVE
-        $answer_main .= "'  onclick='cancelBubbleThis(event);' onchange='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname}\").value,\"$myfname\",\"checkbox\");}' />\n\t</label>\n</span>\n"
+        $answer_main .= "'  onclick='cancelBubbleThis(event);' onchange='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname}\").value,\"$myfname\",\"checkbox\");}' />\n</span>\n"
         . "\t</li>\n";
         // --> END NEW FEATURE - SAVE
 
@@ -2887,7 +2886,7 @@ function do_multiplechoice_withcomments($ia)
         $myfname = $ia[1].'other';
         $myfname2 = $myfname.'comment';
         $anscount = $anscount + 2;
-        $answer_main .= "\t<li class=\"other\" id=\"javatbd$myfname\">\n<span class=\"option\">\n"
+        $answer_main .= "\t<li class=\"other question-item answer-item checkbox-text-item other-item\" id=\"javatbd$myfname\">\n<span class=\"option\">\n"
         . "\t<label for=\"answer$myfname\" class=\"answertext\">\n".$othertext."\n<input class=\"text other ".$kpclass."\" $numbersonly type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])
         {
@@ -2896,7 +2895,7 @@ function do_multiplechoice_withcomments($ia)
         $fn++;
         // --> START NEW FEATURE - SAVE
         $answer_main .= "  $callmaxanswscriptother />\n\t</label>\n</span>\n"
-        . "<span class=\"comment\">\n\t<label for=\"answer$myfname2\" class=\"answer-comment\">\n"
+        . "<span class=\"comment\">\n\t<label for=\"answer$myfname2\" class=\"answer-comment hide\">".$clang->gT('Make a comment on your choice here:')."\t</label>\n"
         . '
         <input class="text '.$kpclass.'" type="text" size="40" name="'.$myfname2.'" id="answer'.$myfname2.'" title="'.$clang->gT('Make a comment on your choice here:').'" value="';
         // --> END NEW FEATURE - SAVE
@@ -2929,13 +2928,13 @@ function do_multiplechoice_withcomments($ia)
         //            }
         //        }
 
-        $answer_main .= "\t</label>\n</span>\n\t</li>\n";
+        $answer_main .= "</span>\n\t</li>\n";
         // --> END NEW FEATURE - SAVE
 
         $inputnames[]=$myfname;
         $inputnames[]=$myfname2;
     }
-    $answer .= "<ul>\n".$answer_main."</ul>\n";
+    $answer .= "<ul class=\"subquestions-list questions-list checkbox-text-list\">\n".$answer_main."</ul>\n";
 
 
     //    if ( $maxansw > 0 )
@@ -3056,7 +3055,7 @@ function do_file_upload($ia)
     }
 
     $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' href='{$scriptloc}?sid=".Yii::app()->getConfig('surveyID')."&amp;fieldname={$ia[1]}&amp;qid={$ia[0]}&amp;preview="
-    ."{$questgrppreview}&amp;show_title={$aQuestionAttributes['show_title']}&amp;show_comment={$aQuestionAttributes['show_comment']}&amp;pos=".($pos?1:0)."'>" .$clang->gT('Upload files'). "</a></h2><br /><br />";
+    ."{$questgrppreview}&amp;show_title={$aQuestionAttributes['show_title']}&amp;show_comment={$aQuestionAttributes['show_comment']}&amp;pos=".($pos?1:0)."'>" .$clang->gT('Upload files'). "</a></h2>";
 
     $answer =  "<script type='text/javascript'>
     var translt = {
@@ -3155,7 +3154,7 @@ function do_multipleshorttext($ia)
     global $thissurvey;
 
     $clang = Yii::app()->lang;
-
+    $extraclass ="";
     if ($ia[8] == 'Y')
     {
         $checkconditionFunction = "checkconditions";
@@ -3172,6 +3171,7 @@ function do_multipleshorttext($ia)
         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeperator = $sSeperator['seperator'];
         $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
+        $extraclass =" numberonly";
     }
     else
     {
@@ -3180,6 +3180,7 @@ function do_multipleshorttext($ia)
     if (trim($aQuestionAttributes['maximum_chars'])!='')
     {
         $maxsize=$aQuestionAttributes['maximum_chars'];
+        $extraclass =" maxchars maxchars".trim($aQuestionAttributes['maximum_chars']);
     }
     else
     {
@@ -3188,6 +3189,7 @@ function do_multipleshorttext($ia)
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
         $tiwidth=$aQuestionAttributes['text_input_width'];
+        $extraclass =" inputwidth".trim($aQuestionAttributes['text_input_width']);
     }
     else
     {
@@ -3196,6 +3198,7 @@ function do_multipleshorttext($ia)
 
     if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
         $prefix=$aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+        $extraclass =" withprefix";
     }
     else
     {
@@ -3204,6 +3207,7 @@ function do_multipleshorttext($ia)
 
     if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
         $suffix=$aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+        $extraclass =" withsuffix";
     }
     else
     {
@@ -3214,6 +3218,7 @@ function do_multipleshorttext($ia)
     {
         includeKeypad();
         $kpclass = "text-keypad";
+        $extraclass =" inputkeypad";
     }
     else
     {
@@ -3264,7 +3269,7 @@ function do_multipleshorttext($ia)
                 }
 
                 //NEW: textarea instead of input=text field
-                list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li");
+                list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li","question-item answer-item text-item".$extraclass);
 
                 $answer_main .= "\t$htmltbody2\n"
                 . "<label for=\"answer$myfname\">{$ansrow['question']}</label>\n"
@@ -3297,7 +3302,7 @@ function do_multipleshorttext($ia)
                 $myfname = $ia[1].$ansrow['title'];
                 if ($ansrow['question'] == "") {$ansrow['question'] = "&nbsp;";}
 
-                list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li");
+                list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li","question-item answer-item text-item".$extraclass);
                 $answer_main .= "\t$htmltbody2\n"
                 . "<label for=\"answer$myfname\">{$ansrow['question']}</label>\n"
                 . "\t<span>\n".$prefix."\n".'<input class="text '.$kpclass.'" type="text" size="'.$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
@@ -3324,7 +3329,7 @@ function do_multipleshorttext($ia)
         }
     }
 
-    $answer = "<ul>\n".$answer_main."</ul>\n";
+    $answer = "<ul class=\"subquestions-list questions-list text-list\">\n".$answer_main."</ul>\n";
 
     return array($answer, $inputnames);
 }
@@ -3336,7 +3341,7 @@ function do_multiplenumeric($ia)
     global $js_header_includes, $css_header_includes, $thissurvey;
 
     $clang = Yii::app()->lang;
-
+    $extraclass="";
     if ($ia[8] == 'Y')
     {
         $checkconditionFunction = "checkconditions";
@@ -3351,9 +3356,11 @@ function do_multiplenumeric($ia)
     $sSeperator = $sSeperator['seperator'];
     //Must turn on the "numbers only javascript"
     $numbersonly = 'onkeypress="inputField = event.srcElement ? event.srcElement : event.target || event.currentTarget; if (inputField.value.indexOf(\''.$sSeperator.'\')>0 && String.fromCharCode(getkey(event))==\''.$sSeperator.'\') return false; return goodchars(event,\'0123456789'.$sSeperator.'\')"';
+    $extraclass =" numberonly";
     if (trim($aQuestionAttributes['maximum_chars'])!='')
     {
         $maxsize=$aQuestionAttributes['maximum_chars'];
+        $extraclass =" maxchars maxchars".trim($aQuestionAttributes['maximum_chars']);
     }
     else
     {
@@ -3411,6 +3418,7 @@ function do_multiplenumeric($ia)
 
     if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
         $prefix=$aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+        $extraclass =" withprefix";
     }
     else
     {
@@ -3419,6 +3427,7 @@ function do_multiplenumeric($ia)
 
     if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
         $suffix=$aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+        $extraclass =" withsuffix";
     }
     else
     {
@@ -3429,13 +3438,14 @@ function do_multiplenumeric($ia)
     {
         includeKeypad();
         $kpclass = "num-keypad";
+        $extraclass =" keypad";
     }
     else
     {
         $kpclass = "";
     }
 
-    if(!empty($numbersonlyonblur))
+    /*if(!empty($numbersonlyonblur))
     {
         $numbersonly .= ' onblur="'.implode(';', $numbersonlyonblur).'"';
         $numbersonly_slider = implode(';', $numbersonlyonblur);
@@ -3443,11 +3453,13 @@ function do_multiplenumeric($ia)
     else
     {
         $numbersonly_slider = '';
-    }
+    }*/
+        $numbersonly_slider = '';
 
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
         $tiwidth=$aQuestionAttributes['text_input_width'];
+        $extraclass =" inputwidth".trim($aQuestionAttributes['text_input_width']);
     }
     else
     {
@@ -3456,9 +3468,8 @@ function do_multiplenumeric($ia)
     if ($aQuestionAttributes['slider_layout']==1)
     {
         $slider_layout=true;
+        $extraclass =" withslider";
         $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css';
-
-
         if (trim($aQuestionAttributes['slider_accuracy'])!='')
         {
             //$slider_divisor = 1 / $slider_accuracy['value'];
@@ -3583,7 +3594,7 @@ function do_multiplenumeric($ia)
                 $sliderright="<div class=\"slider_righttext\">$sliderright</div>";
             }
 
-            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li");
+            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, '', $myfname, "li","question-item answer-item text-item numeric-item".$extraclass);
             $answer_main .= "\t$htmltbody2\n";
             if ($slider_layout === false)
             {
@@ -3728,23 +3739,22 @@ function do_multiplenumeric($ia)
             $qinfo = LimeExpressionManager::GetQuestionStatus($ia[0]);
             if (trim($aQuestionAttributes['equals_num_value']) != '')
             {
-                $answer_main .= "\t<li class='multiplenumerichelp'>\n"
-                    . "<label for=\"remainingvalue_{$ia[0]}\">".$clang->gT('Remaining: ')."</label>\n"
+                $answer_main .= "\t<li class='multiplenumerichelp help-item'>\n"
+                    . "<span class=\"label\">".$clang->gT('Remaining: ')."</span>\n"
                     . "<span id=\"remainingvalue_{$ia[0]}\" class=\"dynamic_remaining\">$prefix\n"
                     . "{" . $qinfo['sumRemainingEqn'] . "}\n"
                     . "$suffix</span>\n"
                     . "\t</li>\n";
             }
 
-            $answer_main .= "\t<li class='multiplenumerichelp'>\n"
-                . "<label for=\"totalvalue_{$ia[0]}\">".$clang->gT('Total: ')."</label>\n"
+            $answer_main .= "\t<li class='multiplenumerichelp  help-item'>\n"
+                . "<span class=\"label\">".$clang->gT('Total: ')."</span>\n"
                 . "<span id=\"totalvalue_{$ia[0]}\" class=\"dynamic_sum\">$prefix\n"
                 . "{" . $qinfo['sumEqn'] . "}\n"
                 . "$suffix</span>\n"
                 . "\t</li>\n";
         }
-
-        $answer .= $question_tip."<ul>\n".$answer_main."</ul>\n";
+        $answer .= $question_tip."<ul class=\"subquestions-list questions-list text-list numeric-list\">\n".$answer_main."</ul>\n";
     }
     //just added these here so its easy to change in one place
     $errorClass = 'tip problem';
@@ -3870,7 +3880,7 @@ function do_numerical($ia)
     global $thissurvey;
 
     $clang = Yii::app()->lang;
-
+    $extraclass="";
     if ($ia[8] == 'Y')
     {
         $checkconditionFunction = "checkconditions";
@@ -3882,6 +3892,7 @@ function do_numerical($ia)
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
         $prefix=$aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+        $extraclass=" withprefix";
     }
     else
     {
@@ -3889,6 +3900,7 @@ function do_numerical($ia)
     }
     if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
         $suffix=$aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+        $extraclass=" withsuffix";
     }
     else
     {
@@ -3897,6 +3909,7 @@ function do_numerical($ia)
     if (trim($aQuestionAttributes['maximum_chars'])!='')
     {
         $maxsize=$aQuestionAttributes['maximum_chars'];
+        $extraclass=" maxchars maxchars-".trim($aQuestionAttributes['maximum_chars']);
         if ($maxsize>20)
         {
             $maxsize=20;
@@ -3909,6 +3922,7 @@ function do_numerical($ia)
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
         $tiwidth=$aQuestionAttributes['text_input_width'];
+        $extraclass=" inputwidth-".trim($aQuestionAttributes['text_input_width']);
     }
     else
     {
@@ -3918,6 +3932,7 @@ function do_numerical($ia)
     if (trim($aQuestionAttributes['num_value_int_only'])==1)
     {
         $acomma="";
+        $extraclass=" integeronly";
     }
     else
     {
@@ -3932,6 +3947,7 @@ function do_numerical($ia)
     if ($thissurvey['nokeyboard']=='Y')
     {
         includeKeypad();
+        $extraclass=" inputkeypad";
         $kpclass = "num-keypad";
     }
     else
@@ -3939,7 +3955,7 @@ function do_numerical($ia)
         $kpclass = "";
     }
     // --> START NEW FEATURE - SAVE
-    $answer = "<p class=\"question\">\n\t$prefix\n\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" "
+    $answer = "<p class=\"question answer-item text-item numeric-item {$extraclass}\">\n\t$prefix\n\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" "
     . "id=\"answer{$ia[1]}\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" alt=\"".$clang->gT('Answer')."\" onkeypress=\"return goodchars(event,'-0123456789{$acomma}')\" onchange='$checkconditionFunction(this.value, this.name, this.type)'"
     . "maxlength=\"{$maxsize}\" />\n\t{$suffix}\n</p>\n";
     if ($aQuestionAttributes['hide_tip']==0)
@@ -3964,7 +3980,7 @@ function do_shortfreetext($ia)
 
     $clang = Yii::app()->lang;
     $googleMapsAPIKey = Yii::app()->getConfig("googleMapsAPIKey");
-
+    $extraclass="";
     if ($ia[8] == 'Y')
     {
         $checkconditionFunction = "checkconditions";
@@ -3981,6 +3997,7 @@ function do_shortfreetext($ia)
         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeperator = $sSeperator['seperator'];
         $numbersonly = 'onkeypress="return goodchars(event,\'0123456789'.$sSeperator.'\')"';
+        $extraclass=" numberonly";
     }
     else
     {
@@ -3989,6 +4006,7 @@ function do_shortfreetext($ia)
     if (trim($aQuestionAttributes['maximum_chars'])!='')
     {
         $maxsize=$aQuestionAttributes['maximum_chars'];
+        $extraclass=" maxchars maxchars-".trim($aQuestionAttributes['maximum_chars']);
     }
     else
     {
@@ -3997,6 +4015,7 @@ function do_shortfreetext($ia)
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
         $tiwidth=$aQuestionAttributes['text_input_width'];
+        $extraclass=" inputwidth-".trim($aQuestionAttributes['text_input_width']);
     }
     else
     {
@@ -4004,6 +4023,7 @@ function do_shortfreetext($ia)
     }
     if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
         $prefix=$aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+        $extraclass=" withprefix";
     }
     else
     {
@@ -4011,6 +4031,7 @@ function do_shortfreetext($ia)
     }
     if (trim($aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
         $suffix=$aQuestionAttributes['suffix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+        $extraclass=" withsuffix";
     }
     else
     {
@@ -4020,6 +4041,7 @@ function do_shortfreetext($ia)
     {
         includeKeypad();
         $kpclass = "text-keypad";
+        $extraclass=" inputkeypad";
     }
     else
     {
@@ -4046,13 +4068,14 @@ function do_shortfreetext($ia)
         //NEW: textarea instead of input=text field
 
         // --> START NEW FEATURE - SAVE
+        $answer ="<p class=\"question answer-item text-item {$extraclass}\">";
         $answer = '<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" '
         .'rows="'.$drows.'" cols="'.$tiwidth.'" maxlength="'.$maxsize.'" onchange="textLimit(\'answer'.$ia[1].'\', '.$maxsize.');'.$checkconditionFunction.'(this.value, this.name, this.type);" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); " '.$numbersonly.'>';
         // --> END NEW FEATURE - SAVE
 
         if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);}
 
-        $answer .= "</textarea>\n";
+        $answer .= "</textarea></p>>\n";
     }
     elseif((int)($aQuestionAttributes['location_mapservice'])!=0){
         $mapservice = $aQuestionAttributes['location_mapservice'];
@@ -4099,19 +4122,19 @@ function do_shortfreetext($ia)
         <script type=\"text/javascript\">
         zoom['$ia[1]'] = {$aQuestionAttributes['location_mapzoom']};
         </script>
-        <p class=\"question\">
+        <div class=\"question answer-item geoloc-item {$extraclass}\">
         <input type=\"hidden\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\"{$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]}\">
 
         <input class=\"text location ".$kpclass."\" type=\"text\" size=\"20\" name=\"$ia[1]_c\"
         id=\"answer$ia[1]_c\" value=\"$currentLocation\"
         onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
-        </p>
 
         <input type=\"hidden\" name=\"boycott_$ia[1]\" id=\"boycott_$ia[1]\"
         value = \"{$strBuild}\" >
         <input type=\"hidden\" name=\"mapservice_$ia[1]\" id=\"mapservice_$ia[1]\"
         class=\"mapservice\" value = \"{$aQuestionAttributes['location_mapservice']}\" >
-        <div id=\"gmap_canvas_$ia[1]_c\" style=\"width: {$aQuestionAttributes['location_mapwidth']}px; height: {$aQuestionAttributes['location_mapheight']}px\"></div>";
+        <div id=\"gmap_canvas_$ia[1]_c\" style=\"width: {$aQuestionAttributes['location_mapwidth']}px; height: {$aQuestionAttributes['location_mapheight']}px\"></div>
+        </div>";
 
         if ($aQuestionAttributes['location_mapservice']==1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
             $js_header_includes[] = "https://maps.googleapis.com/maps/api/js?sensor=false";
@@ -4120,17 +4143,17 @@ function do_shortfreetext($ia)
             elseif ($aQuestionAttributes['location_mapservice']==2)
                 $js_header_includes[] = "http://www.openlayers.org/api/OpenLayers.js";
 
-            if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
+        if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
         {
-            $answer .= "<br />\n<span class=\"questionhelp\">"
-            . $clang->gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.').'</span>';
+            $answer .= "<div class=\"questionhelp\">"
+            . $clang->gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.').'</div>';
             $question_text['help'] = $clang->gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.');
         }
     }
     else
     {
         //no question attribute set, use common input text field
-        $answer = "<p class=\"question\">\n\t$prefix\n\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\""
+        $answer = "<p class=\"question answer-item text-item {$extraclass}\">\n\t$prefix\n\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\""
         .htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES,'UTF-8')
         ."\" maxlength=\"$maxsize\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" $numbersonly />\n\t$suffix\n</p>\n";
     }
@@ -4168,7 +4191,7 @@ function getLatLongFromIp($ip){
 function do_longfreetext($ia)
 {
     global $js_header_includes, $thissurvey;
-
+    $extraclass="";
 
 
     $clang=Yii::app()->lang;
@@ -4177,6 +4200,7 @@ function do_longfreetext($ia)
     {
         includeKeypad();
         $kpclass = "text-keypad";
+        $extraclass=" inputkeypad";
     }
     else
     {
@@ -4197,6 +4221,7 @@ function do_longfreetext($ia)
     if (trim($aQuestionAttributes['maximum_chars'])!='')
     {
         $maxsize=$aQuestionAttributes['maximum_chars'];
+        $extraclass=" maxchars maxchars-".trim($aQuestionAttributes['maximum_chars']);
     }
     else
     {
@@ -4218,6 +4243,7 @@ function do_longfreetext($ia)
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
         $tiwidth=$aQuestionAttributes['text_input_width'];
+        $extraclass=" inputwidth-".trim($aQuestionAttributes['text_input_width']);
     }
     else
     {
@@ -4226,8 +4252,10 @@ function do_longfreetext($ia)
     // <-- END ENHANCEMENT - TEXT INPUT WIDTH
 
     // --> START NEW FEATURE - SAVE
-    $answer = '<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
+    $answer = "<p class=\"question answer-item text-item {$extraclass}\">";
+    $answer .='<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
     .'rows="'.$drows.'" cols="'.$tiwidth.'" maxlength="'.$maxsize.'" onchange="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type)" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.');">';
+    $answer .="</p>";
     // --> END NEW FEATURE - SAVE
 
     if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);}
@@ -4249,11 +4277,12 @@ function do_hugefreetext($ia)
 {
     global $js_header_includes, $thissurvey;
     $clang =Yii::app()->lang;
-
+    $extraclass="";
     if ($thissurvey['nokeyboard']=='Y')
     {
         includeKeypad();
         $kpclass = "text-keypad";
+        $extraclass=" inputkeypad";
     }
     else
     {
@@ -4274,6 +4303,7 @@ function do_hugefreetext($ia)
     if (trim($aQuestionAttributes['maximum_chars'])!='')
     {
         $maxsize=$aQuestionAttributes['maximum_chars'];
+        $extraclass=" maxchars maxchars-".trim($aQuestionAttributes['maximum_chars']);
     }
     else
     {
@@ -4295,6 +4325,7 @@ function do_hugefreetext($ia)
     if (trim($aQuestionAttributes['text_input_width'])!='')
     {
         $tiwidth=$aQuestionAttributes['text_input_width'];
+        $extraclass=" inputwidth-".trim($aQuestionAttributes['text_input_width']);
     }
     else
     {
@@ -4303,14 +4334,14 @@ function do_hugefreetext($ia)
     // <-- END ENHANCEMENT - TEXT INPUT WIDTH
 
     // --> START NEW FEATURE - SAVE
-    $answer = '<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
+    $answer = "<p class=\"question answer-item text-item {$extraclass}\">";
+    $answer .='<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
     .'rows="'.$drows.'" cols="'.$tiwidth.'" maxlength="'.$maxsize.'" onchange="textLimit(\'answer'.$ia[1].'\', '.$maxsize.');'.$checkconditionFunction.'(this.value, this.name, this.type)" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.');">';
     // --> END NEW FEATURE - SAVE
 
     if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);}
-
     $answer .= "</textarea>\n";
-
+    $answer .="</p>";
     if (trim($aQuestionAttributes['time_limit']) != '')
     {
         $js_header_includes[] = '/scripts/coookies.js';
@@ -4335,8 +4366,8 @@ function do_yesno($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $answer = "<ul>\n"
-    . "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}Y\" value=\"Y\"";
+    $answer = "<ul class=\"answers-list radio-list\">\n"
+    . "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}Y\" value=\"Y\"";
 
     if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'Y')
     {
@@ -4344,7 +4375,7 @@ function do_yesno($ia)
     }
     // --> START NEW FEATURE - SAVE
     $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}Y\" class=\"answertext\">\n\t".$clang->gT('Yes')."\n</label>\n\t</li>\n"
-    . "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}N\" value=\"N\"";
+    . "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}N\" value=\"N\"";
     // --> END NEW FEATURE - SAVE
 
     if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'N')
@@ -4357,7 +4388,7 @@ function do_yesno($ia)
 
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
-        $answer .= "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"\"";
+        $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"\"";
         if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '')
         {
             $answer .= CHECKED;
@@ -4388,8 +4419,8 @@ function do_gender($ia)
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
-    $answer = "<ul>\n"
-    . "\t<li>\n"
+    $answer = "<ul class=\"answers-list radio-list\">\n"
+    . "\t<li class=\"answer-item radio-item\">\n"
     . '		<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'F" value="F"';
     if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'F')
     {
@@ -4398,7 +4429,7 @@ function do_gender($ia)
     $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
     . '		<label for="answer'.$ia[1].'F" class="answertext">'.$clang->gT('Female')."</label>\n\t</li>\n";
 
-    $answer .= "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer".$ia[1].'M" value="M"';
+    $answer .= "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer".$ia[1].'M" value="M"';
 
     if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == 'M')
     {
@@ -4408,7 +4439,7 @@ function do_gender($ia)
 
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
-        $answer .= "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer".$ia[1].'" value=""';
+        $answer .= "\t<li class=\"answer-item radio-item noanswer-item\">\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer".$ia[1].'" value=""';
         if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '')
         {
             $answer .= CHECKED;
@@ -4438,7 +4469,7 @@ function do_gender($ia)
 function do_array_5point($ia)
 {
     global $notanswered, $thissurvey;
-
+    $extraclass="";
     $clang = Yii::app()->lang;
 
     if ($ia[8] == 'Y')
@@ -4455,6 +4486,7 @@ function do_array_5point($ia)
     if (trim($aQuestionAttributes['answer_width'])!='')
     {
         $answerwidth=$aQuestionAttributes['answer_width'];
+        $extraclass=" answerwidth-".trim($aQuestionAttributes['answer_width']);
     }
     else
     {
@@ -4487,7 +4519,7 @@ function do_array_5point($ia)
     $anscount = $ansresult->count();
 
     $fn = 1;
-    $answer = "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - a five point Likert scale array\">\n\n"
+    $answer = "\n<table class=\"question subquestion-list questions-list\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - a five point Likert scale array\">\n\n"
     . "\t<colgroup class=\"col-responses\">\n"
     . "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n";
     $odd_even = '';
@@ -6826,7 +6858,7 @@ function do_array_dual($ia)
                 // If not mandatory and showanswer, show no ans
                 if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
                 {
-                    $answer .= "\t<option value=\"\" ";
+                    $answer .= "\t<option class=\"noanswer-item\" value=\"\" ";
                     if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')
                     {
                         $answer .= SELECTED;
@@ -6880,7 +6912,7 @@ function do_array_dual($ia)
                 // If not mandatory and showanswer, show no ans
                 if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
                 {
-                    $answer .= "\t<option value='' ";
+                    $answer .= "\t<option class=\"noanswer-item\" value='' ";
                     if (empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                     {
                         $answer .= SELECTED;
