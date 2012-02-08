@@ -65,8 +65,8 @@ $(document).ready(function(){
 				//var thevalue = ui.value / slider_divisor;
 				var thevalue = slider_stepping * Math.round(ui.value / slider_stepping) / slider_divisor;
 				$('#answer'+basename).val(thevalue);
-				checkconditions( thevalue,'#answer'+basename,'text');
-				eval(slider_onchange);	
+				checkconditions( thevalue,basename,'text');
+				eval(slider_onchange);
 			};
 
 

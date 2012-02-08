@@ -765,7 +765,7 @@ class SurveyRuntimeHelper {
                         document.getElementById(hiddenformname).value='';
                     }
                 }
-                ExprMgr_process_relevance_and_tailoring('onchange');
+                ExprMgr_process_relevance_and_tailoring('onchange',name);
             }
         // -->
         </script>

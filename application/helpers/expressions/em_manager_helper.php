@@ -579,18 +579,20 @@ class LimeExpressionManager {
                         }
                         $sumEqn = 'sum(' . implode(', ', $sq_names) . ')';
                         $sumRemainingEqn = '(' . $equals_num_value . ' - sum(' . implode(', ', $sq_names) . '))';
+                        $mainEqn = 'sum(' . implode(', ', $sq_names) . ')';
 
                         if (!is_null($precision))
                         {
                             $sumEqn = 'round(' . $sumEqn . ', ' . $precision . ')';
                             $sumRemainingEqn = 'round(' . $sumRemainingEqn . ', ' . $precision . ')';
+                            $mainEqn = 'round(' . $mainEqn . ', ' . $precision . ')';
                         }
 
                         $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'equals_num_value',
                             'class' => 'sum_range',
-                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') == (' . $equals_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
+                            'eqn' =>  '(' . $mainEqn . ' == (' . $equals_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
                             'qid' => $questionNum,
                             'sumEqn' => $sumEqn,
                             'sumRemainingEqn' => $sumRemainingEqn,
@@ -4819,7 +4821,7 @@ class LimeExpressionManager {
      * Generate JavaScript needed to do dynamic relevance and tailoring
      * Also create list of variables that need to be declared
      */
-    static function GetRelevanceAndTailoringJavaScript()
+static function GetRelevanceAndTailoringJavaScript()
     {
         $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
@@ -4841,13 +4843,15 @@ class LimeExpressionManager {
             $jsParts[] = "var LEMqid=" . $LEM->currentQID . ";\n";  // current group num so can compute isOnCurrentPage
         }
 
-        $jsParts[] = "function ExprMgr_process_relevance_and_tailoring(evt_type){\n";
+        $jsParts[] = "function ExprMgr_process_relevance_and_tailoring(evt_type,sgqa){\n";
         $jsParts[] = "if (typeof LEM_initialized == 'undefined') {\nLEM_initialized=true;\nLEMsetTabIndexes();\n}\n";
-        $jsParts[] = "if (evt_type == 'onchange' && (typeof last_evt_type != 'undefined' && last_evt_type == 'keydown')) {\n";
+        $jsParts[] = "if (evt_type == 'onchange' && (typeof last_sgqa !== 'undefined' && sgqa==last_sgqa) && (typeof last_evt_type !== 'undefined' && last_evt_type == 'keydown')) {\n";
         $jsParts[] = "  last_evt_type='onchange';\n";
+        $jsParts[] = "  last_sgqa=sgqa;\n";
         $jsParts[] = "  return;\n";
         $jsParts[] = "}\n";
         $jsParts[] = "last_evt_type = evt_type;\n\n";
+        $jsParts[] = "last_sgqa=sgqa;\n";
 
         // flatten relevance array, keeping proper order
 
@@ -4866,6 +4870,11 @@ class LimeExpressionManager {
             }
         }
 
+        $valEqns = array();
+        $relEqns = array();
+        $relChangeVars = array();
+        $relFnCalls = array();
+
         if (is_array($pageRelevanceInfo))
         {
             foreach ($pageRelevanceInfo as $arg)
@@ -4876,6 +4885,10 @@ class LimeExpressionManager {
                 $gidList[$arg['gid']] = $arg['gid'];    // so keep them in order
                 // First check if there is any tailoring  and construct the tailoring JavaScript if needed
                 $tailorParts = array();
+                $relParts = array();    // relevance equation
+                $valParts = array();    // validation
+                $relJsVarsUsed = array();   // vars used in relevance and tailoring
+                $valJsVarsUsed = array();   // vars used in validations
                 foreach ($LEM->pageTailorInfo as $tailor)
                 {
                     if (is_array($tailor))
@@ -4889,6 +4902,7 @@ class LimeExpressionManager {
                                 if (is_array($vars))
                                 {
                                     $allJsVarsUsed = array_merge($allJsVarsUsed,$vars);
+                                    $relJsVarsUsed = array_merge($relJsVarsUsed,$vars);
                                 }
                             }
                         }
@@ -4932,24 +4946,23 @@ class LimeExpressionManager {
 
                 $relevance = $arg['relevancejs'];
 
+                $relChangeVars[] = "  relChange" . $arg['qid'] . "=false;\n"; // detect change in relevance status
+
                 if (($relevance == '' || $relevance == '1') && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0)
                 {
                     // Only show constitutively true relevances if there is tailoring that should be done.
 //                    $jsParts[] = "document.getElementById('relevance" . $arg['qid'] . "').value='1'; // always true\n";
-                    $jsParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
+                    $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
                     continue;
                 }
                 $relevance = ($relevance == '') ? '1' : $relevance;
-                $jsResultVar = $LEM->em->GetJsVarFor($arg['jsResultVar']);
-                $jsParts[] = "\n// Process Relevance for Question " . $arg['qid'];
-                if ($relevance != 1)
-                {
-                    $jsParts[] = ": { " . $arg['eqn'] . " }";
-                }
-                $jsParts[] = "\nif (\n  ";
-                $jsParts[] = $relevance;
-                $jsParts[] = "\n  )\n{\n";
-
+//                $jsResultVar = $LEM->em->GetJsVarFor($arg['jsResultVar']);
+//                $relParts[] = "\n// Process Relevance for Question " . $arg['qid'];
+//                if ($relevance != 1)
+//                {
+//                    $relParts[] = ": { " . $arg['eqn'] . " }";
+//                }
+                $relParts[] = "\nif (" . $relevance . ")\n{\n";
                 ////////////////////////////////////////////////////////////////////////
                 // DO ALL ARRAY FILTERING FIRST - MAY AFFECT VALIDATION AND TAILORING //
                 ////////////////////////////////////////////////////////////////////////
@@ -4958,15 +4971,16 @@ class LimeExpressionManager {
                 foreach ($subqParts as $sq)
                 {
                     $rowdividList[$sq['rowdivid']] = $sq['result'];
-                    $jsParts[] = "  // Apply " . $sq['type'] . ": " . $sq['eqn'] ."\n";
-                    $jsParts[] = "  if ( " . $sq['relevancejs'] . " ) {\n";
-                    $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').show();\n";
-                    $jsParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('1');";
+//                    $relParts[] = "  // Apply " . $sq['type'] . ": " . $sq['eqn'] ."\n";
+                    $relParts[] = "  if ( " . $sq['relevancejs'] . " ) {\n";
+                    $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').show();\n";
+                    $relParts[] = "    if ($('#relevance" . $sq['rowdivid'] . "').val()!='1') { relChange" . $arg['qid'] . "=true; }\n";
+                    $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('1');\n";
                     switch ($sq['qtype'])
                     {
                         case '1': //Array (Flexible Labels) dual scale
-                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#0').val('on');\n";
-                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#1').val('on');\n";
+                            $relParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#0').val('on');\n";
+                            $relParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#1').val('on');\n";
                             break;
                         case ':': //ARRAY (Multi Flexi) 1 to 10
                         case ';': //ARRAY (Multi Flexi) Text
@@ -4978,81 +4992,44 @@ class LimeExpressionManager {
                         case 'L': //LIST drop-down/radio-button list
                         case 'M': //Multiple choice checkbox
                         case 'P': //Multiple choice with comments checkbox + text
-                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('on');\n";
+                            $relParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('on');\n";
                             break;
                         default:
                             break;
                     }
-                    $jsParts[] = "  }\n  else {\n";
-                    $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
-                    $jsParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('');";
+                    $relParts[] = "  }\n  else {\n";
+                    $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
+                    $relParts[] = "    if ($('#relevance" . $sq['rowdivid'] . "').val()=='1') { relChange" . $arg['qid'] . "=true; }\n";
+                    $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('');\n";
                     switch ($sq['qtype'])
                     {
-                        /*  No longer need to explicitly clear values - can simply hide them via sub-question-level relevance
-                        case '1': //Array (Flexible Labels) dual scale
-                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#0').val('off');\n";
-                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#1').val('off');\n";
-                            $jsParts[] = "    $('#java" . $sq['rowdivid'] . "#0').val('');\n";
-                            $jsParts[] = "    $('#java" . $sq['rowdivid'] . "#1').val('');\n";
-                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=radio]').attr('checked',false);\n";
-                            $jsParts[] = "    $('#answer" . $sq['rowdivid'] . "#0-').attr('checked',true);\n";
-                            break;
-                        case ';': //ARRAY (Multi Flexi) Text
-                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
-                            $jsParts[] = "    $('#java" . $sq['rowdivid'] . "').val('');\n";
-                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=text]').val('');\n";
-                            break;
-                        case ':': //ARRAY (Multi Flexi) 1 to 10
-                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
-                            $jsParts[] = "    $('#java" . $sq['rowdivid'] . "').val('');\n";
-                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " select').val('');\n";
-                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=checkbox]').attr('checked',false);\n";
-                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=text]').val('');\n";
-                            break;
-                        case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                        case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                        case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                        case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                        case 'F': //ARRAY (Flexible) - Row Format
-                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
-                            $jsParts[] = "    $('#java" . $sq['rowdivid'] . "').val('');\n";
-                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=radio]').attr('checked',false);\n";
-                            $jsParts[] = "    $('#answer" . $sq['rowdivid'] . "-').attr('checked',true);\n";
-                            break;
-                        case 'M': //Multiple choice checkbox
-                        case 'P': //Multiple choice with comments checkbox + text
-                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
-                            $jsParts[] = "    $('#java" . $sq['rowdivid'] . "').val('');\n";
-                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=checkbox]').attr('checked',false);\n";
-                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=text]').val('');\n";
-                            break;
-                         */
                         case 'L': //LIST drop-down/radio-button list
-                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
+                            $relParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
                             $listItem = substr($sq['rowdivid'],strlen($sq['sgqa']));    // gets the part of the rowdiv id past the end of the sgqa code.
-                            $jsParts[] = "    if (($('#java" . $sq['sgqa'] ."').val() == '" . $listItem . "')";
+                            $relParts[] = "    if (($('#java" . $sq['sgqa'] ."').val() == '" . $listItem . "')";
                             if ($listItem == 'other') {
-                                $jsParts[] = " || ($('#java" . $sq['sgqa'] ."').val() == '-oth-')";
+                                $relParts[] = " || ($('#java" . $sq['sgqa'] ."').val() == '-oth-')";
                             }
-                            $jsParts[] = "){\n";
-                            $jsParts[] = "      $('#java" . $sq['sgqa'] . "').val('');\n";
-                            $jsParts[] = "      $('#answer" . $sq['sgqa'] . "NANS').attr('checked',true);\n";
-                            $jsParts[] = "    }\n";
+                            $relParts[] = "){\n";
+                            $relParts[] = "      $('#java" . $sq['sgqa'] . "').val('');\n";
+                            $relParts[] = "      $('#answer" . $sq['sgqa'] . "NANS').attr('checked',true);\n";
+                            $relParts[] = "    }\n";
                             break;
                         default:
                             break;
                     }
-                    $jsParts[] = "  }\n";
+                    $relParts[] = "  }\n";
 
                     $sqvars = explode('|',$sq['relevanceVars']);
                     if (is_array($sqvars))
                     {
                         $allJsVarsUsed = array_merge($allJsVarsUsed,$sqvars);
+                        $relJsVarsUsed = array_merge($relJsVarsUsed,$sqvars);
                     }
                 }
 
                 // Do all tailoring
-                $jsParts[] = implode("\n",$tailorParts);
+                $relParts[] = implode("\n",$tailorParts);
 
                 // Do custom validation
                 foreach ($subqValidations as $_veq)
@@ -5063,13 +5040,14 @@ class LimeExpressionManager {
                     $isValid = $LEM->em->ProcessBooleanExpression($_veq['subqValidEqn']);
                     $_sqValidVars = $LEM->em->GetJSVarsUsed();
                     $allJsVarsUsed = array_merge($allJsVarsUsed,$_sqValidVars);
+                    $valJsVarsUsed = array_merge($valJsVarsUsed,$_sqValidVars);
                     $validationJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
 
-                    $jsParts[] = "\n  if(" . $validationJS . "){\n";
-                    $jsParts[] = "    $('#" . $_veq['subqValidSelector'] . "').addClass('em_sq_validation').removeClass('error').addClass('good');;\n";
-                    $jsParts[] = "  }\n  else {\n";
-                    $jsParts[] = "    $('#" . $_veq['subqValidSelector'] . "').addClass('em_sq_validation').removeClass('good').addClass('error');\n";
-                    $jsParts[] = "  }\n";
+                    $valParts[] = "\n  if(" . $validationJS . "){\n";
+                    $valParts[] = "    $('#" . $_veq['subqValidSelector'] . "').addClass('em_sq_validation').removeClass('error').addClass('good');;\n";
+                    $valParts[] = "  }\n  else {\n";
+                    $valParts[] = "    $('#" . $_veq['subqValidSelector'] . "').addClass('em_sq_validation').removeClass('good').addClass('error');\n";
+                    $valParts[] = "  }\n";
                 }
 
                 // Set color-coding for validation equations
@@ -5077,9 +5055,9 @@ class LimeExpressionManager {
                     $_hasSumRange=false;
                     $_hasOtherValidation=false;
                     $_hasOther2Validation=false;
-                    $jsParts[] = "  isValidSum" . $arg['qid'] . "=true;\n";    // assume valid until proven otherwise
-                    $jsParts[] = "  isValidOther" . $arg['qid'] . "=true;\n";    // assume valid until proven otherwise
-                    $jsParts[] = "  isValidOtherComment" . $arg['qid'] . "=true;\n";    // assume valid until proven otherwise
+                    $valParts[] = "  isValidSum" . $arg['qid'] . "=true;\n";    // assume valid until proven otherwise
+                    $valParts[] = "  isValidOther" . $arg['qid'] . "=true;\n";    // assume valid until proven otherwise
+                    $valParts[] = "  isValidOtherComment" . $arg['qid'] . "=true;\n";    // assume valid until proven otherwise
                     foreach ($validationEqns as $vclass=>$validationEqn)
                     {
                         if ($validationEqn == '') {
@@ -5101,19 +5079,20 @@ class LimeExpressionManager {
                         $_isValid = $LEM->em->ProcessBooleanExpression($validationEqn);
                         $_vars = $LEM->em->GetJSVarsUsed();
                         $allJsVarsUsed = array_merge($allJsVarsUsed,$_vars);
+                        $valJsVarsUsed = array_merge($valJsVarsUsed,$_vars);
                         $_validationJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
 
-                        $jsParts[] = "\n  if(" . $_validationJS . "){\n";
-                        $jsParts[] = "    $('#" . $arg['qid'] . "_vmsg_" . $vclass . "').removeClass('error').addClass('good');\n";
-                        $jsParts[] = "  }\n  else {\n";
-                        $jsParts[] = "    $('#" . $arg['qid'] . "_vmsg_" . $vclass ."').removeClass('good').addClass('error');\n";
+                        $valParts[] = "\n  if(" . $_validationJS . "){\n";
+                        $valParts[] = "    $('#" . $arg['qid'] . "_vmsg_" . $vclass . "').removeClass('error').addClass('good');\n";
+                        $valParts[] = "  }\n  else {\n";
+                        $valParts[] = "    $('#" . $arg['qid'] . "_vmsg_" . $vclass ."').removeClass('good').addClass('error');\n";
                         switch ($vclass)
                         {
                             case 'sum_range':
-                                $jsParts[] = "    isValidSum" . $arg['qid'] . "=false;\n";
+                                $valParts[] = "    isValidSum" . $arg['qid'] . "=false;\n";
                                 break;
                             case 'other_comment_mandatory':
-                                $jsParts[] = "    isValidOtherComment" . $arg['qid'] . "=false;\n";
+                                $valParts[] = "    isValidOtherComment" . $arg['qid'] . "=false;\n";
                                 break;
 //                            case 'num_answers':
 //                            case 'value_range':
@@ -5121,18 +5100,18 @@ class LimeExpressionManager {
 //                            case 'q_fn_validation':
 //                            case 'regex_validation':
                             default:
-                                $jsParts[] = "    isValidOther" . $arg['qid'] . "=false;\n";
+                                $valParts[] = "    isValidOther" . $arg['qid'] . "=false;\n";
                                 break;
 
                         }
-                        $jsParts[] = "  }\n";
+                        $valParts[] = "  }\n";
                     }
 
-                    $jsParts[] = "\n  if(isValidSum" . $arg['qid'] . "){\n";
-                    $jsParts[] = "    $('#totalvalue_" . $arg['qid'] . "').removeClass('error').addClass('good');\n";
-                    $jsParts[] = "  }\n  else {\n";
-                    $jsParts[] = "    $('#totalvalue_" . $arg['qid'] . "').removeClass('good').addClass('error');\n";
-                    $jsParts[] = "  }\n";
+                    $valParts[] = "\n  if(isValidSum" . $arg['qid'] . "){\n";
+                    $valParts[] = "    $('#totalvalue_" . $arg['qid'] . "').removeClass('error').addClass('good');\n";
+                    $valParts[] = "  }\n  else {\n";
+                    $valParts[] = "    $('#totalvalue_" . $arg['qid'] . "').removeClass('good').addClass('error');\n";
+                    $valParts[] = "  }\n";
 
                     // color-code single-entry fields as needed
                     switch ($arg['type'])
@@ -5141,11 +5120,11 @@ class LimeExpressionManager {
                         case 'S':
                         case 'T':
                         case 'U':
-                            $jsParts[] = "\n  if(isValidOther" . $arg['qid'] . "){\n";
-                            $jsParts[] = "    $('#question" . $arg['qid'] . " :input').addClass('em_sq_validation').removeClass('error').addClass('good');\n";
-                            $jsParts[] = "  }\n  else {\n";
-                            $jsParts[] = "    $('#question" . $arg['qid'] . " :input').addClass('em_sq_validation').removeClass('good').addClass('error');\n";
-                            $jsParts[] = "  }\n";
+                            $valParts[] = "\n  if(isValidOther" . $arg['qid'] . "){\n";
+                            $valParts[] = "    $('#question" . $arg['qid'] . " :input').addClass('em_sq_validation').removeClass('error').addClass('good');\n";
+                            $valParts[] = "  }\n  else {\n";
+                            $valParts[] = "    $('#question" . $arg['qid'] . " :input').addClass('em_sq_validation').removeClass('good').addClass('error');\n";
+                            $valParts[] = "  }\n";
                             break;
                         default:
                             break;
@@ -5169,61 +5148,109 @@ class LimeExpressionManager {
                                     $othervar = 'answer' . substr($arg['jsResultVar'],4);
                                     break;
                             }
-                            $jsParts[] = "\n  if(isValidOtherComment" . $arg['qid'] . "){\n";
-                            $jsParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').removeClass('error').addClass('good');\n";
-                            $jsParts[] = "  }\n  else {\n";
-                            $jsParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').removeClass('good').addClass('error');\n";
-                            $jsParts[] = "  }\n";
+                            $valParts[] = "\n  if(isValidOtherComment" . $arg['qid'] . "){\n";
+                            $valParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').removeClass('error').addClass('good');\n";
+                            $valParts[] = "  }\n  else {\n";
+                            $valParts[] = "    $('#" . $othervar . "').addClass('em_sq_validation').removeClass('good').addClass('error');\n";
+                            $valParts[] = "  }\n";
                             break;
                         default:
                             break;
                     }
+                }
 
-//                    $jsParts[] = "\n  if(isValidOther" . $arg['qid'] ." && isValidSum" . $arg['qid'] . "){\n";
-//                    $jsParts[]= "    $('#" . $arg['qid'] . "_vmsg').removeClass('error').addClass('good');\n";
-//                    $jsParts[] = "  }\n  else {\n";
-//                    $jsParts[]= "    $('#" . $arg['qid'] . "_vmsg').removeClass('good').addClass('error');\n";
-//                    $jsParts[] = "  }\n";
+                if (count($valParts) > 0)
+                {
+                    $valJsVarsUsed = array_unique($valJsVarsUsed);
+                    $qvalJS = "function LEMval" . $arg['qid'] . "(sgqa){\n";
+//                    $qvalJS .= "  var UsesVars = ' " . implode(' ', $valJsVarsUsed) . " ';\n";
+//                    $qvalJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n return;\n }\n";
+                    $qvalJS .= implode("",$valParts);
+                    $qvalJS .= "}\n";
+                    $valEqns[] = $qvalJS;
+
+                    $relParts[] = "  LEMval" . $arg['qid'] . "(sgqa);\n";
                 }
 
                 if ($arg['hidden']) {
-                    $jsParts[] = "  // This question should always be hidden\n";
-                    $jsParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
-                    $jsParts[] = "  $('#display" . $arg['qid'] . "').val('');\n";
+                    $relParts[] = "  // This question should always be hidden\n";
+                    $relParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
+                    $relParts[] = "  $('#display" . $arg['qid'] . "').val('');\n";
                 }
                 else {
                     if (!($relevance == '' || $relevance == '1'))
                     {
                         // In such cases, PHP will make the question visible by default.  By not forcing a re-show(), template.js can hide questions with impunity
-                        $jsParts[] = "  $('#question" . $arg['qid'] . "').show();\n";
-                        $jsParts[] = "  $('#display" . $arg['qid'] . "').val('on');\n";
+                        $relParts[] = "  $('#question" . $arg['qid'] . "').show();\n";
+                        $relParts[] = "  $('#display" . $arg['qid'] . "').val('on');\n";
                         if ($arg['type'] == 'S')
                         {
-                            $jsParts[] = "  if($('#question" . $arg['qid'] . " div[id^=\"gmap_canvas\"]').length > 0)\n";
-                            $jsParts[] = "  {\n";
-                            $jsParts[] = "      resetMap(" . $arg['qid'] . ");\n";
-                            $jsParts[] = "  }\n";
+                            $relParts[] = "  if($('#question" . $arg['qid'] . " div[id^=\"gmap_canvas\"]').length > 0)\n";
+                            $relParts[] = "  {\n";
+                            $relParts[] = "      resetMap(" . $arg['qid'] . ");\n";
+                            $relParts[] = "  }\n";
                         }
                     }
                 }
                 // If it is an equation, and relevance is true, then write the value from the question to the answer field storing the result
                 if ($arg['type'] == '*')
                 {
-                    $jsParts[] = "  // Write value from the question into the answer field\n";
-                    $jsParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val(escape(jQuery.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .questiontext').find('span').next().next().html()))).replace(/%20/g,' '));\n";
+                    $relParts[] = "  // Write value from the question into the answer field\n";
+                    $relParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val(escape(jQuery.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .questiontext').find('span').next().next().html()))).replace(/%20/g,' '));\n";
                 }
-                $jsParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
-                $jsParts[] = "}\nelse {\n";
-                $jsParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
-                $jsParts[] = "  $('#display" . $arg['qid'] . "').val('');\n";
-                $jsParts[] = "  $('#relevance" . $arg['qid'] . "').val('0');\n";
-                $jsParts[] = "}\n";
+                $relParts[] = "  if ($('#relevance" . $arg['qid'] . "').val()!='1') { relChange" . $arg['qid'] . "=true; }\n";
+                $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
+
+                $relParts[] = "}\n";
+                if (!($relevance == '' || $relevance == '1'))
+                {
+                    $relParts[] = "else {\n";
+                    $relParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
+                    $relParts[] = "  $('#display" . $arg['qid'] . "').val('');\n";
+                    $relParts[] = "  if ($('#relevance" . $arg['qid'] . "').val()=='1') { relChange" . $arg['qid'] . "=true; }\n";
+                    $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('0');\n";
+                    $relParts[] = "}\n";
+                }
 
                 $vars = explode('|',$arg['relevanceVars']);
                 if (is_array($vars))
                 {
                     $allJsVarsUsed = array_merge($allJsVarsUsed,$vars);
+                    $relJsVarsUsed = array_merge($relJsVarsUsed,$vars);
                 }
+
+                $relJsVarsUsed = array_merge($relJsVarsUsed,$valJsVarsUsed);
+                $relJsVarsUsed = array_unique($relJsVarsUsed);
+                $qrelQIDs = array();
+                foreach ($relJsVarsUsed as $jsVar)
+                {
+                    if ($jsVar != '' && isset($LEM->knownVars[substr($jsVar,4)]['qid']))
+                    {
+                        $knownVar = $LEM->knownVars[substr($jsVar,4)];
+                        if ($LEM->surveyMode=='group' && $knownVar['gid'] != $LEM->groupNum) {
+                            continue;   // don't make dependent upon off-page variables
+                        }
+                        $_qid = $knownVar['qid'];
+                        if ($_qid == $arg['qid']) {
+                            continue;   // don't make dependent upon itself
+                        }
+                        $qrelQIDs[] = 'relChange' . $_qid;
+                    }
+                }
+                $qrelQIDs = array_unique($qrelQIDs);
+
+                $qrelJS = "function LEMrel" . $arg['qid'] . "(sgqa){\n";
+                $qrelJS .= "  var UsesVars = ' " . implode(' ', $relJsVarsUsed) . " ';\n";
+                if (count($qrelQIDs) > 0)
+                {
+                    $qrelJS .= "  if(" . implode(' || ', $qrelQIDs) . "){\n    ;\n  }\n  else";
+                }
+                $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n    return;\n }\n";
+                $qrelJS .= implode("",$relParts);
+                $qrelJS .= "}\n";
+                $relEqns[] = $qrelJS;
+
+                $relFnCalls[] = "  LEMrel" . $arg['qid'] . "(sgqa);\n";
             }
         }
 
@@ -5233,10 +5260,10 @@ class LimeExpressionManager {
             if (!array_key_exists($gr['gid'],$gidList)) {
                 continue;
             }
-            $jsParts[] = "\n// Process Relevance for Group " . $gr['gid'];
             if ($gr['relevancejs'] != '')
             {
-                $jsParts[] = ": { " . $gr['eqn'] . " }";
+//                $jsParts[] = "\n// Process Relevance for Group " . $gr['gid'];
+//                $jsParts[] = ": { " . $gr['eqn'] . " }";
                 $jsParts[] = "\nif (" . $gr['relevancejs'] . ") {\n";
                 $jsParts[] = "  $('#group-" . $gr['gid'] . "').show();\n";
                 $jsParts[] = "  $('#relevanceG" . $gr['gid'] . "').val(1);\n";
@@ -5253,7 +5280,13 @@ class LimeExpressionManager {
             }
         }
 
+        $jsParts[] = implode("",$relChangeVars);
+        $jsParts[] = implode("",$relFnCalls);
+
         $jsParts[] = "\n}\n";
+
+        $jsParts[] = implode("\n",$relEqns);
+        $jsParts[] = implode("\n",$valEqns);
 
         $allJsVarsUsed = array_unique($allJsVarsUsed);
 
@@ -5338,7 +5371,6 @@ class LimeExpressionManager {
                         if (isset($LEM->jsVar2qid[$jsVar])) {
                             $qidList[$LEM->jsVar2qid[$jsVar]] = $LEM->jsVar2qid[$jsVar];
                         }
-//                        break;    // why was this here?
                     }
                 }
             }

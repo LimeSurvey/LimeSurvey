@@ -766,6 +766,7 @@ function multi_set(ids)
 					calc_vert(_bits[0].length - 1);
 					break;
 			}
+            checkconditions($(el).val(), $(el).attr('name'), $(el).attr('type'));
 			return(true);
 		};
 		//retuns the id from end of string like 'vert_[id] horo_[id] other class'
