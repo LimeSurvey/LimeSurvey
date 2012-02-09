@@ -4866,7 +4866,7 @@ function do_array_yesnouncertain($ia)
 
             $answer_t_content .= $htmltbody2;
 
-            $answer_t_content .= "<tr class=\"$trbc answer-list radio-list\">\n"
+            $answer_t_content .= "<tr class=\"$trbc answers-list radio-list\">\n"
             . "\t<th class=\"answertext\">\n"
             . $hiddenfield
             . "\t\t\t\t$answertext</th>\n"
@@ -5027,7 +5027,7 @@ function do_array_increasesamedecrease($ia)
 
         $answer_body .= $htmltbody2;
 
-        $answer_body .= "<tr class=\"$trbc answer-list radio-list\">\n"
+        $answer_body .= "<tr class=\"$trbc answers-list radio-list\">\n"
         . "\t<th class=\"answertext\">\n"
         . "$answertext\n"
         . $hiddenfield
@@ -5247,7 +5247,7 @@ function do_array($ia)
             //			}
             $answer .= $htmltbody2;
 
-            $answer .= "<tr class=\"$trbc answer-list radio-list\">\n"
+            $answer .= "<tr class=\"$trbc answers-list radio-list\">\n"
             . "\t<th class=\"answertext\">\n$answertext"
             . $hiddenfield
             . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
@@ -6229,7 +6229,7 @@ function do_arraycolumns($ia)
             for( $c = 0 ; $c < $anscount ; ++$c )
             {
                 $odd_even = alternation($odd_even);
-                $answer .= "<col class=\"$odd_even question-item answer-list radio-list\" width=\"$cellwidth%\" />\n";
+                $answer .= "<col class=\"$odd_even question-item answers-list radio-list\" width=\"$cellwidth%\" />\n";
             }
             $answer .= "\t</colgroup>\n\n"
             . "\t<thead>\n"
@@ -6604,7 +6604,7 @@ function do_array_dual($ia)
             if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
 
             array_push($inputnames,$myfname);
-            $answer .= "<tr class=\"$trbc answer-list radio-list\">\n" // Note real : answers-list radios-list ? or answer-list radio-list dualanswer-list dualradio-list
+            $answer .= "<tr class=\"$trbc answers-list radio-list\">\n" // Note real : answers-list radios-list ? or answers-list radio-list dualanswers-list dualradio-list
             . "\t<th class=\"answertext\">\n"
             . $hiddenfield
             . "$answertext\n"
