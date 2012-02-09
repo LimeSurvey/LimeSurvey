@@ -6005,9 +6005,16 @@ EOT;
                     switch($type)
                     {
                         case 'D': //DATE
-                            $dateformatdatat=getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
-                            $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
-                            $value=$datetimeobj->convert("Y-m-d");
+                            if (trim($value)=="")
+                            {
+                                $value = "";
+                            }
+                            else
+                            {
+                                $dateformatdatat=getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
+                                $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
+                                $value=$datetimeobj->convert("Y-m-d");
+                            }
                             break;
                         case 'N': //NUMERICAL QUESTION TYPE
                         case 'K': //MULTIPLE NUMERICAL QUESTION
