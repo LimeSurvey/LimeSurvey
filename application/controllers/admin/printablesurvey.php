@@ -1789,9 +1789,9 @@ class printablesurvey extends Survey_Common_Action
             }
             $pdf->titleintopdf($clang->gT("Submit Your Survey."),$clang->gT("Thank you for completing this survey."));
             $pdf->write_out($clang->gT($surveyname)." ".$surveyid.".pdf");
+        } else {
+            $this->getController()->render('/admin/survey/printablesurvey_view', $data);
         }
-
-        $this->getController()->render('/admin/survey/printablesurvey_view', $data);
     }
 
     private function _populate_template( $template , $input  , $line = '')
