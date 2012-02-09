@@ -953,9 +953,30 @@ class participantsaction extends Survey_Common_Action
         }
     }
 
-    /*
-     * Sends the data in JSON format extracted from the database to be displayed using the jqGrid
-     */
+	function subval_sort($a, $subkey, $order)
+	{
+		foreach ($a as $k => $v)
+		{
+			$b[$k] = strtolower($v[$subkey]);
+		}
+		if ($order == "asc")
+		{
+			asort($b, SORT_REGULAR);
+		}
+		else
+		{
+			arsort($b, SORT_REGULAR);
+		}
+		foreach ($b as $key => $val)
+		{
+			$c[] = $a[$key];
+		}
+		return $c;
+	}
+
+	/*
+	   * Sends the data in JSON format extracted from the database to be displayed using the jqGrid
+	*/
     function getParticipants_json()
     {
         $page = Yii::app()->request->getPost('page');
@@ -977,7 +998,8 @@ class participantsaction extends Survey_Common_Action
             $aData->records = Participants::model()->count();
             $aData->total = ceil($aData->records / $limit);
             $i = 0;
-            foreach ($records as $key => $row)
+        	$sortablearray=array();
+        	foreach ($records as $key => $row)
             {
                 $username = User::getName($row['owner_uid']); //for conversion of uid to human readable names
                 $surveycount = Participants::getSurveyCount($row['participant_id']);
@@ -998,41 +1020,22 @@ class participantsaction extends Survey_Common_Action
                 $i++;
             }
 
-            function subval_sort($a, $subkey, $order)
-            {
-                foreach ($a as $k => $v)
-                {
-                    $b[$k] = strtolower($v[$subkey]);
-                }
-                if ($order == "asc")
-                {
-                    asort($b, SORT_REGULAR);
-                }
-                else
-                {
-                    arsort($b, SORT_REGULAR);
-                }
-                foreach ($b as $key => $val)
-                {
-                    $c[] = $a[$key];
-                }
-                return $c;
-            }
-
             $indexsort = array_search(Yii::app()->request->getPost('sidx'), $participantfields);
-            $sortedarray = subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
-            $i = 0;
-            $count = count($sortedarray[0]);
-            foreach ($sortedarray as $key => $value)
-            {
-                $aData->rows[$i]['id'] = $value[0];
-                $aData->rows[$i]['cell'] = array();
-                for ($j = 0; $j < $count; $j++)
-                {
-                    array_push($aData->rows[$i]['cell'], $value[$j]);
-                }
-                $i++;
-            }
+        	if(!empty($sortablearray)) {
+        		$sortedarray = subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
+        		$i = 0;
+        		$count = count($sortedarray[0]);
+        		foreach ($sortedarray as $key => $value)
+        		{
+        			$aData->rows[$i]['id'] = $value[0];
+        			$aData->rows[$i]['cell'] = array();
+        			for ($j = 0; $j < $count; $j++)
+        			{
+        				array_push($aData->rows[$i]['cell'], $value[$j]);
+        			}
+        			$i++;
+        		}
+        	}
             echo lsJSONEncode($aData);
         }
         // Only the owned and shared participants will be visible
@@ -1045,6 +1048,7 @@ class participantsaction extends Survey_Common_Action
             $aData->total = ceil($aData->records / $limit);
             $attid = ParticipantAttributeNames::getAttributeVisibleID();
             $i = 0;
+        	$sortablearray=array();
             foreach ($records as $row)
             {
                 $surveycount = Participants::getSurveyCount($row['participant_id']);
@@ -1066,41 +1070,22 @@ class participantsaction extends Survey_Common_Action
                 $i++;
             }
 
-            function subval_sort($a, $subkey, $order)
-            {
-                foreach ($a as $k => $v)
-                {
-                    $b[$k] = strtolower($v[$subkey]);
-                }
-                if ($order == "asc")
-                {
-                    asort($b, SORT_REGULAR);
-                }
-                else
-                {
-                    arsort($b, SORT_REGULAR);
-                }
-                foreach ($b as $key => $val)
-                {
-                    $c[] = $a[$key];
-                }
-                return $c;
-            }
-
             $indexsort = array_search(Yii::app()->request->getPost('sidx'), $participantfields);
-            $sortedarray = subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
-            $i = 0;
-            $count = count($sortedarray[0]);
-            foreach ($sortedarray as $key => $value)
-            {
-                $aData->rows[$i]['id'] = $value[0];
-                $aData->rows[$i]['cell'] = array();
-                for ($j = 0; $j < $count; $j++)
-                {
-                    array_push($aData->rows[$i]['cell'], $value[$j]);
-                }
-                $i++;
-            }
+        	if(!empty($sortablearray)) {
+        		$sortedarray = subval_sort($sortablearray, $indexsort, Yii::app()->request->getPost('sord'));
+	            $i = 0;
+	            $count = count($sortedarray[0]);
+	            foreach ($sortedarray as $key => $value)
+	            {
+	                $aData->rows[$i]['id'] = $value[0];
+	                $aData->rows[$i]['cell'] = array();
+	                for ($j = 0; $j < $count; $j++)
+	                {
+	                    array_push($aData->rows[$i]['cell'], $value[$j]);
+	                }
+	                $i++;
+	            }
+        	}
             echo lsJSONEncode($aData);
         }
     }
@@ -1499,7 +1484,7 @@ class participantsaction extends Survey_Common_Action
             	//HACK - converting into SQL instead of doing an array search
                 $aData = "firstname = '".mysql_real_escape_string($writearray['firstname'])."' AND lastname = '".mysql_real_escape_string($writearray['lastname'])."' AND email = '".mysql_real_escape_string($writearray['email'])."' AND owner_uid = '".Yii::app()->session['loginID']."'";
                 //End of HACK
-				echo "Checking $aData for duplicates<br />";
+
 				$aData = Participants::model()->checkforDuplicate($aData);
                 if ($aData == true)
                 {

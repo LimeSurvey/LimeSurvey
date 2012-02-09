@@ -77,6 +77,8 @@ else
     /* End search form titles */
 
     var exportToCSVTitle = "<?php $clang->eT("Export to CSV"); ?>";
+    var fullSearchTitle = "<?php $clang->eT("Full search"); ?>";
+    var noSearchResultsTxt = "<?php $clang->eT("Your search returned no results"); ?>";
     var spTitle = "<?php $clang->eT("Sharing participants..."); ?>";
     var spAddBtn = "<?php $clang->eT("Share the selected participants"); ?>";
     var sfNoUser = "<?php $clang->eT("No other user in the system"); ?>";

@@ -250,7 +250,8 @@ $(document).ready(function() {
             height: '100%'});
         }
     });
-
+    $.jgrid.formatter.integer.thousandsSeparator=''; //Removes the default spacing as a thousands seperator
+                                                     //Todo - global setting for all jqGrids to match language/regional number formats
     jQuery("#displayparticipants").jqGrid(
         'navGrid',
     	'#pager',
@@ -338,7 +339,7 @@ $(document).ready(function() {
         '#pager',
     	{
             caption:"",
-            title:"Full Search",
+            title: fullSearchTitle,
             buttonicon:'searchicon',
                 onClickButton:function(){
                 var dialog_buttons={};
@@ -384,7 +385,7 @@ $(document).ready(function() {
                                     dialog_buttons[okBtn]=function(){
                                         $( this ).dialog( "close" );
                                     };
-                                    $("<p>Your search returned no results.</p>").dialog({
+                                    $("<p>"+noSearchResultsTxt+"</p>").dialog({
                                         modal: true,
                                         buttons: dialog_buttons,
                                         resizable: false
@@ -402,7 +403,7 @@ $(document).ready(function() {
                     height: 300,
 				    width: 750,
 				    modal: true,
-                    title : 'Full Search',
+                    title : fullSearchTitle,
 	                buttons: dialog_buttons
 	            });
             }
