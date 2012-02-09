@@ -1757,7 +1757,7 @@ function checkUploadedFileValidity($move, $backok=null)
 
 function checkpregs($move,$backok=null)
 {
-    global $connect, $thisstep;
+    global $connect, $thisstep, $thissurvey;
     if (!isset($backok) || $backok != "Y")
     {
         global $dbprefix;
@@ -1795,6 +1795,9 @@ function checkpregs($move,$backok=null)
 
                     if ($fieldinfo['type'] == 'N')
                     {
+                        $nSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
+                        $nSeperator = $nSeperator['seperator'];
+                        $_POST[$field] = str_replace($nSeperator,'.',$_POST[$field]);
                         $neg = true;
                         if (trim($qidattributes['max_num_value_n'])!='' &&
                             $qidattributes['max_num_value_n'] >= 0)
