@@ -953,32 +953,32 @@ class participantsaction extends Survey_Common_Action
         }
     }
 
-	function subval_sort($a, $subkey, $order)
-	{
-		foreach ($a as $k => $v)
-		{
-			$b[$k] = strtolower($v[$subkey]);
-		}
-		if ($order == "asc")
-		{
-			asort($b, SORT_REGULAR);
-		}
-		else
-		{
-			arsort($b, SORT_REGULAR);
-		}
-		foreach ($b as $key => $val)
-		{
-			$c[] = $a[$key];
-		}
-		return $c;
-	}
-
 	/*
 	   * Sends the data in JSON format extracted from the database to be displayed using the jqGrid
 	*/
     function getParticipants_json()
     {
+    	function subval_sort($a, $subkey, $order)
+    	{
+    		foreach ($a as $k => $v)
+    		{
+    			$b[$k] = strtolower($v[$subkey]);
+    		}
+    		if ($order == "asc")
+    		{
+    			asort($b, SORT_REGULAR);
+    		}
+    		else
+    		{
+    			arsort($b, SORT_REGULAR);
+    		}
+    		foreach ($b as $key => $val)
+    		{
+    			$c[] = $a[$key];
+    		}
+    		return $c;
+    	}
+
         $page = Yii::app()->request->getPost('page');
         $limit = Yii::app()->request->getPost('rows');
     	$limit = isset($limit) ? $limit : 50; //Stop division by zero errors

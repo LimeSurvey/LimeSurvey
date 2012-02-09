@@ -56,8 +56,9 @@
             </div>
         </ul>
     </div>
-    <p><input type="button" name="attmap" id="attmap" value="Continue" />
-        <input type="button" name="attmapcancel" id="attmapcancel" value="Cancel" />
+    <p><input type="button" name="attmap" id="attmap" value="<?php $clang->eT("Continue"); ?>" />
+        <input type="button" name="attmapcancel" id="attmapcancel" value="<?php $clang->eT("Cancel") ?>" />
+        <input type="button" name="attreset" id="attreset" value="<?php $clang->eT("Reset") ?>" onClick="window.location.reload();" />
     </p>
     <div id="processing" title="<?php $clang->eT("Processing...") ?>" style="display:none">
         <img src="<?php echo Yii::app()->getConfig('imageurl') . '/ajax-loader.gif'; ?>" alt="<?php $clang->eT('Loading...'); ?>" title="<?php $clang->eT('Loading...'); ?>" />
