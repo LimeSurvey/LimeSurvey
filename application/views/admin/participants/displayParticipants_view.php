@@ -75,7 +75,8 @@ else
     var andTxt="<?php $clang->eT("AND") ?>";
     var orTxt="<?php $clang->eT("OR") ?>";
     /* End search form titles */
-
+    
+    var resetBtn = "<?php $clang->eT("Reset"); ?>";
     var exportToCSVTitle = "<?php $clang->eT("Export to CSV"); ?>";
     var fullSearchTitle = "<?php $clang->eT("Full search"); ?>";
     var noSearchResultsTxt = "<?php $clang->eT("Your search returned no results"); ?>";

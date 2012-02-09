@@ -392,11 +392,32 @@ $(document).ready(function() {
                                     });
                                 }
                         }}).trigger("reloadGrid");
-                        $(this).dialog("close");
+                        
                     }
                 };
 			    dialog_buttons[cancelBtn]=function(){
-                    $(this).dialog("close");
+                    $( this ).dialog( "close" );
+			    };
+				dialog_buttons[resetBtn]=function(){
+                    
+					jQuery("#displayparticipants").jqGrid('setGridParam',{
+                        	url:jsonUrl,
+                            gridComplete: function(){
+                                if(jQuery("#displayparticipants").jqGrid('getGridParam', 'records') == 0) {
+                                    var dialog_buttons={};
+                                    dialog_buttons[okBtn]=function(){
+                                        $( this ).dialog( "close" );
+                                    };
+                                    $("<p>"+noSearchResultsTxt+"</p>").dialog({
+                                        modal: true,
+                                        buttons: dialog_buttons,
+                                        resizable: false
+                                    });
+                                }
+                        }});
+						
+						$("#displayparticipants").jqGrid('setGridParam', { search: false, postData: { "filters": ""} }).trigger("reloadGrid");
+						
 			    };
 			    /* End of building array for button functions */
 	            $("#search").dialog({
