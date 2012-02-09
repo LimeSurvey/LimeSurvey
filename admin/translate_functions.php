@@ -432,14 +432,14 @@
                     ." JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
                     ." WHERE sq.sid=".db_quoteall($surveyid,true)
                     ." AND sq.language='{$baselang}' AND q.language='{$baselang}' AND g.language='{$baselang}' AND sq.parent_qid>0 "
-                    ." ORDER BY g.group_order, q.question_order, q.scale_id, sq.scale_id, sq.question_order ",
+                    ." ORDER BY g.group_order, q.question_order, q.scale_id, sq.question_order, sq.scale_id ",
                 "queryto"   => "SELECT sq.question "
                     ." FROM ".db_table_name('questions')." sq "
                     ." JOIN ".db_table_name('questions')." q ON sq.parent_qid=q.qid  "
                     ." JOIN ".db_table_name('groups')." g ON g.gid=q.gid "
                     ." WHERE sq.sid=".db_quoteall($surveyid,true)
                     ." AND sq.language=".db_quoteall($tolang,true)." AND q.language=".db_quoteall($tolang,true)." AND g.language=".db_quoteall($tolang,true)." AND sq.parent_qid>0 "
-                    ." ORDER BY g.group_order, q.question_order, q.scale_id, sq.scale_id, sq.question_order ",
+                    ." ORDER BY g.group_order, q.question_order, q.scale_id, sq.question_order, sq.scale_id ",
                 "queryupdate" => "UPDATE ".db_table_name('questions')
                     ." SET question = ".db_quoteall($new,true)
                     ." WHERE qid = '{$id1}' "
