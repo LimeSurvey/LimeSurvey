@@ -339,7 +339,8 @@ function getParticipantsSearch($condition, $page, $limit)
             }
             else
             {
-                $command = Yii::app()->db->createCommand()->where(Yii::app()->db->quoteValue($condition[0]) . ' = "' . Yii::app()->db->quoteValue($condition[2]) . '"');
+                
+                $command = Yii::app()->db->createCommand()->where($condition[0] . " = :cvalue", array(':cvalue' => $condition[2])); //Yii::app()->db->quoteValue($condition[2])
                 if ($page == 0 && $limit == 0)
                 {
                     $data = $command->select('*')->from('{{participants}}')->queryAll();
@@ -348,6 +349,7 @@ function getParticipantsSearch($condition, $page, $limit)
                 {
                     $data = $command->select('*')->from('{{participants}}')->limit(intval($limit), $start)->queryAll();
                 }
+
                 return $data;
             }
         }
