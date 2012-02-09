@@ -613,6 +613,12 @@ class SurveyAction extends CAction {
             $thissurvey['format'] = 'G';
             buildsurveysession($surveyid,true);
         }
+        
+        if (isset($param['action']) && $param['action'] == 'previewquestion')
+        {
+            $thissurvey['format'] = 'S';
+            buildsurveysession($surveyid,true);
+        }
 
         sendCacheHeaders();
 
@@ -646,6 +652,8 @@ class SurveyAction extends CAction {
             $param['action'] = returnGlobal('action');
         if( !isset($param['newtest']) )
             $param['newtest'] = returnGlobal('newtest');
+        if( !isset($param['qid']) )
+            $param['qid'] = returnGlobal('qid');
         if( !isset($param['gid']) )
             $param['gid'] = returnGlobal('gid');
         if ( !isset($param['sid']) )
@@ -731,9 +739,9 @@ class SurveyAction extends CAction {
 
     function _isPreviewAction($param = array())
     {
-        return isset($param['action']) && $param['action'] == 'previewgroup';
+        return isset($param['action']) && ($param['action'] == 'previewgroup' || $param['action'] == 'previewquestion');
     }
-
+    
     function _surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $bIsSurveyActive, $bSurveyExists)
     {
         $bSurveyPreviewRequireAuth = Yii::app()->getConfig('surveyPreview_require_Auth');

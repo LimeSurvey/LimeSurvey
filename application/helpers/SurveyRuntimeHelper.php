@@ -64,11 +64,16 @@ class SurveyRuntimeHelper {
         {
             $previewgrp = true;
         }
+        $previewquestion = false;
+        if ($surveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion'))
+        {
+            $previewquestion = true;
+        }
         //        if (isset($param['newtest']) && $param['newtest'] == "Y")
         //            setcookie("limesurvey_timers", "0");   //@todo fix - sometimes results in headers already sent error
         $show_empty_group = false;
 
-        if ($previewgrp)
+        if ($previewgrp || $previewquestion)
         {
             $_SESSION['survey_'.$surveyid]['prevstep'] = 1;
             $_SESSION['survey_'.$surveyid]['maxstep'] = 0;
@@ -534,8 +539,15 @@ class SurveyRuntimeHelper {
             }
             else if ($surveyMode != 'survey')
                 {
-
-                    $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+                    if ($previewquestion) {
+                        $_qid = sanitize_int($param['qid']);
+                        LimeExpressionManager::StartSurvey($surveyid, 'question', NULL, false,$LEMdebugLevel);
+                        $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
+                        $moveResult = LimeExpressionManager::JumpTo($qSec+1,true,false,true);
+                        $stepInfo   = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+                     } else {
+                        $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+                    }
                     $gid = $stepInfo['gid'];
                     $groupname = $stepInfo['gname'];
                     $groupdescription = $stepInfo['gtext'];

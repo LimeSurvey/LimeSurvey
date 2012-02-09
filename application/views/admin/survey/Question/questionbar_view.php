@@ -2,8 +2,8 @@
     <div class="langpopup" id="previewquestionpopup"><?php $clang->eT("Please select a language:"); ?><ul>
             <?php foreach ($tmp_survlangs as $tmp_lang)
                 { ?>
-                <li><a target='_blank' onclick="$('#previewquestion').qtip('hide');" href='<?php echo $this->createUrl("admin/question/preview/surveyid/".$surveyid."/qid/".$qid."/lang/".$tmp_lang); ?>' accesskey='d'><?php echo getLanguageNameFromCode($tmp_lang,false); ?></a></li>
-                <?php } ?>
+                <li><a target='_blank' onclick="$('#previewquestion').qtip('hide');" href='<?php echo $this->createUrl("survey/index/action/previewgroup/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid . "/lang/" . $tmp_lang); ?>' accesskey='d'><?php echo getLanguageNameFromCode($tmp_lang,false); ?></a></li>
+                    <?php } ?>
         </ul></div>
     <?php } ?>
 <div class='menubar-title ui-widget-header'>
@@ -17,7 +17,7 @@
             {
                 if (count(Survey::model()->findByPk($surveyid)->additionalLanguages) == 0)
                 { ?>
-                <a accesskey='q' href="<?php echo $this->createUrl("admin/question/preview/surveyid/$surveyid/qid/$qid/"); ?>" target="_blank"
+                <a accesskey='q' href="<?php echo $this->createUrl("survey/index/action/previewgroup/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid); ?>" target="_blank"
                     title="<?php $clang->eTview("Preview This Question"); ?>">
                     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/preview.png' alt='<?php $clang->eT("Preview This Question"); ?>' /></a>
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt='' />
