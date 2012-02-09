@@ -76,6 +76,7 @@ else
     var orTxt="<?php $clang->eT("OR") ?>";
     /* End search form titles */
 
+    var exportToCSVTitle = "<?php $clang->eT("Export to CSV"); ?>";
     var spTitle = "<?php $clang->eT("Sharing participants..."); ?>";
     var spAddBtn = "<?php $clang->eT("Share the selected participants"); ?>";
     var sfNoUser = "<?php $clang->eT("No other user in the system"); ?>";

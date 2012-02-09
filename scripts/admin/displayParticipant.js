@@ -120,7 +120,7 @@ $(document).ready(function() {
         multiselect: true,
         loadonce : false,
         loadError : function(xhr, st, str) {
-            var dialog_buttons={}; 
+            var dialog_buttons={};
             dialog_buttons[okBtn]=function(){
                 $( this ).dialog( "close" );
             };
@@ -259,9 +259,16 @@ $(document).ready(function() {
     	{width : 400},
     	{msg:deleteMsg, width : 700,
             afterShowForm: function($form) {
+                /* This code sets the position of the delete dialog to just below the last selected item */
+                /* Unless this would put the delete dialog off the page, in which case it will be pushed up a bit */
                 var dialog = $form.closest('div.ui-jqdialog'),
                 selRowId = jQuery("#displayparticipants").jqGrid('getGridParam', 'selrow'),
                 selRowCoordinates = $('#'+selRowId).offset();
+                selRowCoordinates.top=selRowCoordinates.top+25;
+                selRowCoordinates.left=50;
+                if(selRowCoordinates.top+325 > $(window).height()) {
+                    selRowCoordinates.top=selRowCoordinates.top-325;
+				}
                 dialog.offset(selRowCoordinates);
             },
         beforeSubmit : function(postdata, formid) {
@@ -292,7 +299,7 @@ $(document).ready(function() {
         '#pager',
     	{
 	        caption:"",
-		    title:"Export to CSV",
+		    title:exportToCSVTitle,
 		    buttonicon:'exporticon',
 		    onClickButton:function() {
                 $.post(
@@ -371,9 +378,9 @@ $(document).ready(function() {
                         }
                         jQuery("#displayparticipants").jqGrid('setGridParam',{
                         	url:jsonSearchUrl+'/'+searchconditions,
-                            gridComplete: function(){ 
+                            gridComplete: function(){
                                 if(jQuery("#displayparticipants").jqGrid('getGridParam', 'records') == 0) {
-                                    var dialog_buttons={}; 
+                                    var dialog_buttons={};
                                     dialog_buttons[okBtn]=function(){
                                         $( this ).dialog( "close" );
                                     };
