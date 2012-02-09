@@ -541,7 +541,7 @@ class SurveyRuntimeHelper {
                 {
                     if ($previewquestion) {
                         $_qid = sanitize_int($param['qid']);
-                        LimeExpressionManager::StartSurvey($surveyid, 'question', NULL, false,$LEMdebugLevel);
+                        LimeExpressionManager::StartSurvey($surveyid, 'question', $surveyOptions, false, $LEMdebugLevel);
                         $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
                         $moveResult = LimeExpressionManager::JumpTo($qSec+1,true,false,true);
                         $stepInfo   = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
