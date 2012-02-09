@@ -4255,12 +4255,11 @@ function do_longfreetext($ia)
     $answer = "<p class=\"question answer-item text-item {$extraclass}\">";
     $answer .='<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
     .'rows="'.$drows.'" cols="'.$tiwidth.'" maxlength="'.$maxsize.'" onchange="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type)" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.');">';
-    $answer .="</p>";
     // --> END NEW FEATURE - SAVE
 
     if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);}
 
-    $answer .= "</textarea>\n";
+    $answer .= "</textarea></p>\n";
 
     if (trim($aQuestionAttributes['time_limit'])!='')
     {
