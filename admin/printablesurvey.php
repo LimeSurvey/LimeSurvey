@@ -1940,10 +1940,9 @@ if(isset($_POST['printableexport']))
     }
     $pdf->titleintopdf($clang->gT("Submit Your Survey."),$clang->gT("Thank you for completing this survey."));
     $pdf->write_out($clang->gT($surveyname)." ".$surveyid.".pdf");
+} else {
+    echo populate_template( 'survey' , $survey_output );
 }
-
-echo populate_template( 'survey' , $survey_output );
-
 exit;
 
 function min_max_answers_help($qidattributes, $surveyprintlang, $surveyid) {

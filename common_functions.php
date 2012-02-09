@@ -1944,6 +1944,23 @@ function getextendedanswer($fieldcode, $value, $format='', $dateformatphp='d.m.Y
                     $this_answer=$clang->gT("Other");
                 }
                 break;
+            case "|": //File upload
+                if (substr($fieldcode, -9) == 'filecount') {
+                    $this_answer = $clang->gT("File count");
+                } else {
+                    //Show the filename, size, title and comment -- no link!
+                    $files = json_decode($value);
+                    $value = '';
+                    if (is_array($files)) {
+                        foreach ($files as $file) {
+                            $value .= $file->name .
+                                    ' (' . $file->size . 'KB) ' .
+                                    strip_tags($file->title) .
+                                    ' - ' . strip_tags($file->comment) . "<br/>";
+                        }
+                    }
+                }
+                break;
             default:
                 ;
         } // switch
