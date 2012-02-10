@@ -615,7 +615,7 @@ EOD;
     // Set the array of replacement variables here - don't include curly braces
     // Please put any conditional logic above this section.  Here below should just be an alphabetical list of replacement values with no embedded logic.
     
-	$corecoreReplacements = array();
+	$coreReplacements = array();
 	$coreReplacements['AID'] = $_aid;  // global
 	$coreReplacements['ANSWER'] = $answer;  // global
 	$coreReplacements['ANSWERSCLEARED'] = $clang->gT("Answers Cleared");
