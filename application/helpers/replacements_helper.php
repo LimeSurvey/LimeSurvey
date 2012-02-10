@@ -251,7 +251,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     else if ($_question_type == '*')
     {
-        $_question_text = '<span class="em_equation">' .$_question_text. '</span>';
+        $_question_text = '<div class="em_equation">' .$_question_text. '</div>';
     }
 
     if (!(
