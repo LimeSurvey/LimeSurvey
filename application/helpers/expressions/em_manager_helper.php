@@ -5201,7 +5201,7 @@ static function GetRelevanceAndTailoringJavaScript()
                     $jsResultVar = $LEM->em->GetJsVarFor($arg['jsResultVar']);
                     $relParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val(escape(jQuery.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .questiontext').find('span').next().next().html()))).replace(/%20/g,' '));\n";
                 }
-                $relParts[] = "  if ($('#relevance" . $arg['qid'] . "').val()!='1') { relChange" . $arg['qid'] . "=true; }\n";
+                $relParts[] = "  relChange" . $arg['qid'] . "=true;\n";
                 $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
 
                 $relParts[] = "}\n";
