@@ -74,6 +74,12 @@ class tokens extends Survey_Common_Action
     */
     function bounceprocessing($iSurveyId)
     {
+        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        if (!$bTokenExists) //If no tokens table exists
+        {
+            self::_newtokentable($iSurveyId);
+        }
         $iSurveyId = sanitize_int($iSurveyId);
         $clang = $this->getController()->lang;
         $thissurvey = getSurveyInfo($iSurveyId);
@@ -234,6 +240,12 @@ class tokens extends Survey_Common_Action
     */
     function browse($iSurveyId, $limit = 50, $start = 0, $order = false, $searchstring = false)
     {
+        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        if (!$bTokenExists) //If no tokens table exists
+        {
+            self::_newtokentable($iSurveyId);
+        }
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "admin/tokens.js");
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/js/i18n/grid.locale-en.js");
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . "jquery/jqGrid/js/jquery.jqGrid.min.js");
@@ -326,6 +338,12 @@ class tokens extends Survey_Common_Action
     */
     function getTokens_json($iSurveyId)
     {
+        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        if (!$bTokenExists) //If no tokens table exists
+        {
+            self::_newtokentable($iSurveyId);
+        }
         $clang = $this->getController()->lang;
         $page  = Yii::app()->request->getPost('page');
         $limit = Yii::app()->request->getPost('rows');
@@ -377,6 +395,12 @@ class tokens extends Survey_Common_Action
 
     function editToken($iSurveyId)
     {
+        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        if (!$bTokenExists) //If no tokens table exists
+        {
+            self::_newtokentable($iSurveyId);
+        }
         $sOperation = Yii::app()->request->getPost('oper');
 
         if (trim(Yii::app()->request->getPost('validfrom')) == '')
@@ -474,6 +498,12 @@ class tokens extends Survey_Common_Action
     */
     function addnew($iSurveyId)
     {
+        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        if (!$bTokenExists) //If no tokens table exists
+        {
+            self::_newtokentable($iSurveyId);
+        }
         $iSurveyId = sanitize_int($iSurveyId);
         Yii::app()->loadHelper("surveytranslator");
 
@@ -584,6 +614,12 @@ class tokens extends Survey_Common_Action
     */
     function edit($iSurveyId, $iTokenId)
     {
+        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        if (!$bTokenExists) //If no tokens table exists
+        {
+            self::_newtokentable($iSurveyId);
+        }
         $iSurveyId = sanitize_int($iSurveyId);
         $iTokenId = sanitize_int($iTokenId);
 
@@ -683,6 +719,12 @@ class tokens extends Survey_Common_Action
     */
     function delete($iSurveyId)
     {
+        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        if (!$bTokenExists) //If no tokens table exists
+        {
+            self::_newtokentable($iSurveyId);
+        }
         $iSurveyId = sanitize_int($iSurveyId);
         $iTokenId = Yii::app()->request->getPost('tid');
 
@@ -698,6 +740,12 @@ class tokens extends Survey_Common_Action
     */
     function addDummies($iSurveyId, $subaction = '')
     {
+        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        if (!$bTokenExists) //If no tokens table exists
+        {
+            self::_newtokentable($iSurveyId);
+        }
         $iSurveyId = sanitize_int($iSurveyId);
         $clang = $this->getController()->lang;
 
@@ -812,6 +860,12 @@ class tokens extends Survey_Common_Action
     */
     function managetokenattributes($iSurveyId)
     {
+        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        if (!$bTokenExists) //If no tokens table exists
+        {
+            self::_newtokentable($iSurveyId);
+        }
         $clang = $this->getController()->lang;
         $iSurveyId = sanitize_int($iSurveyId);
 
@@ -843,6 +897,12 @@ class tokens extends Survey_Common_Action
     */
     function updatetokenattributes($iSurveyId)
     {
+        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        if (!$bTokenExists) //If no tokens table exists
+        {
+            self::_newtokentable($iSurveyId);
+        }
         $clang = $this->getController()->lang;
         $iSurveyId = sanitize_int($iSurveyId);
         if (!hasSurveyPermission($iSurveyId, 'tokens', 'update'))
@@ -879,6 +939,12 @@ class tokens extends Survey_Common_Action
     */
     function updatetokenattributedescriptions($iSurveyId)
     {
+        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        if (!$bTokenExists) //If no tokens table exists
+        {
+            self::_newtokentable($iSurveyId);
+        }
         $clang = $this->getController()->lang;
         $iSurveyId = sanitize_int($iSurveyId);
         if (!hasSurveyPermission($iSurveyId, 'tokens', 'update'))
@@ -922,6 +988,12 @@ class tokens extends Survey_Common_Action
     */
     function email($iSurveyId, $aTokenIds = null)
     {
+        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        if (!$bTokenExists) //If no tokens table exists
+        {
+            self::_newtokentable($iSurveyId);
+        }
         $clang = $this->getController()->lang;
         $iSurveyId = sanitize_int($iSurveyId);
 
@@ -1166,6 +1238,12 @@ class tokens extends Survey_Common_Action
     */
     function exportdialog($iSurveyId)
     {
+        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        if (!$bTokenExists) //If no tokens table exists
+        {
+            self::_newtokentable($iSurveyId);
+        }
         $clang = $this->getController()->lang;
         $iSurveyId = sanitize_int($iSurveyId);
         if (!hasSurveyPermission($iSurveyId, 'tokens', 'export'))//EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
@@ -1197,6 +1275,12 @@ class tokens extends Survey_Common_Action
     */
     public function importldap($iSurveyId)
     {
+        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        if (!$bTokenExists) //If no tokens table exists
+        {
+            self::_newtokentable($iSurveyId);
+        }
         $iSurveyId = (int) $iSurveyId;
         $clang = $this->getController()->lang;
 
@@ -1456,6 +1540,12 @@ class tokens extends Survey_Common_Action
     */
     function import($iSurveyId)
     {
+        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        if (!$bTokenExists) //If no tokens table exists
+        {
+            self::_newtokentable($iSurveyId);
+        }
         $clang = $this->getController()->lang;
         $iSurveyId = (int) $iSurveyId;
 
@@ -1752,6 +1842,12 @@ class tokens extends Survey_Common_Action
     */
     function tokenify($iSurveyId)
     {
+        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        if (!$bTokenExists) //If no tokens table exists
+        {
+            self::_newtokentable($iSurveyId);
+        }
         $iSurveyId = sanitize_int($iSurveyId);
         $clang = $this->getController()->lang;
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
@@ -1790,6 +1886,12 @@ class tokens extends Survey_Common_Action
     */
     function kill($iSurveyId)
     {
+        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        if (!$bTokenExists) //If no tokens table exists
+        {
+            self::_newtokentable($iSurveyId);
+        }
         $iSurveyId = sanitize_int($iSurveyId);
         $clang = $this->getController()->lang;
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
@@ -1832,6 +1934,12 @@ class tokens extends Survey_Common_Action
 
     function bouncesettings($iSurveyId)
     {
+        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        if (!$bTokenExists) //If no tokens table exists
+        {
+            self::_newtokentable($iSurveyId);
+        }
         $iSurveyId = sanitize_int($iSurveyId);
         $clang = $this->getController()->lang;
         $aData['thissurvey'] = $aData['settings'] = getSurveyInfo($iSurveyId);
@@ -1875,6 +1983,12 @@ class tokens extends Survey_Common_Action
     */
     function _handletokenform($iSurveyId, $subaction, $iTokenId="")
     {
+        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        if (!$bTokenExists) //If no tokens table exists
+        {
+            self::_newtokentable($iSurveyId);
+        }
         $clang = $this->getController()->lang;
 
         Yii::app()->loadHelper("surveytranslator");
@@ -1896,6 +2010,12 @@ class tokens extends Survey_Common_Action
 
     private function _getTokenIds($aTokenIds)
     {
+        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        if (!$bTokenExists) //If no tokens table exists
+        {
+            self::_newtokentable($iSurveyId);
+        }
         if (empty($aTokenIds))
         {
             $aTokenIds = Yii::app()->request->getPost('tokenids', false);
@@ -1947,9 +2067,9 @@ class tokens extends Survey_Common_Action
             . $clang->gT("Continue") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
             )));
         }
-        elseif (returnGlobal('restoretable') == "Y" && tableExists(Yii::app()->request->getPost('oldtable')) && hasSurveyPermission($iSurveyId, 'surveyactivation', 'update'))
+        elseif (returnGlobal('restoretable') == "Y" && Yii::app()->request->getPost('oldtable') && hasSurveyPermission($iSurveyId, 'surveyactivation', 'update'))
         {
-            Yii::app()->db->createCommand()->renameTable(Yii::app()->request->getPost('oldtable'), "tokens_".intval($iSurveyId));
+            Yii::app()->db->createCommand()->renameTable(Yii::app()->request->getPost('oldtable'), Yii::app()->db->tablePrefix."tokens_".intval($iSurveyId));
 
             $this->_renderWrappedTemplate('token', array('message' => array(
             'title' => $clang->gT("Import old tokens"),
@@ -1961,7 +2081,7 @@ class tokens extends Survey_Common_Action
         else
         {
             $this->getController()->loadHelper('database');
-            $result = Yii::app()->db->createCommand(dbSelectTablesLike('{{old_tokens_".intval($iSurveyId)."_%}}'))->queryAll();
+            $result = Yii::app()->db->createCommand(dbSelectTablesLike("{{old_tokens_".intval($iSurveyId)."_%}}"))->queryAll();
             $tcount = count($result);
             if ($tcount > 0)
             {
@@ -1977,13 +2097,19 @@ class tokens extends Survey_Common_Action
             $aData['surveyid'] = $iSurveyId;
             $aData['tcount'] = $tcount;
             $aData['databasetype'] = Yii::app()->db->getDriverName();
-
+            
             $this->_renderWrappedTemplate('token', 'tokenwarning', $aData);
         }
     }
 
     function getSearch_json($iSurveyId)
     {
+        // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+        $bTokenExists = tableExists('{{tokens_' . $iSurveyId . '}}');
+        if (!$bTokenExists) //If no tokens table exists
+        {
+            self::_newtokentable($iSurveyId);
+        }
         $page = Yii::app()->request->getPost('page');
         $limit = Yii::app()->request->getPost('rows');
         $fields = array('tid', 'firstname', 'lastname', 'email', 'emailstatus', 'token', 'language', 'sent', 'sentreminder', 'remindercount', 'completed', 'usesleft', 'validfrom', 'validuntil');

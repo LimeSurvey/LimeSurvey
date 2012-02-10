@@ -51,7 +51,7 @@ if ($tcount > 0 && $databasetype != 'postgre' && hasSurveyPermission($surveyid, 
             </select><br /><br />
             <input type='submit' value='<?php $clang->eT("Restore"); ?>' />
             <input type='hidden' name='restoretable' value='Y' />
-            <input type='hidden' name='sid' value='$surveyid' />
+            <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
         </form></div>
 <?php } ?>
 <script type="text/javascript">
