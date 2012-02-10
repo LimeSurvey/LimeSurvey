@@ -173,6 +173,8 @@ function templatereplace($line, $replacements=array(), $anonymized=false, $quest
         $_question_type = '';
     };
 
+    global $answer_id;
+
 	if ($_question_type == 'N' || $_question_type == 'U' || $_question_type == 'T' || $_question_type == 'S')
     {
         $_question_text = '<label for="answer'.$answer_id.'" >'.$_question_text.'</label>';
@@ -611,7 +613,6 @@ pageTracker._trackPageview("$_trackURL");
 EOD;
             break;
     }
-    global $answer_id;
     // Set the array of replacement variables here - don't include curly braces
     // Please put any conditional logic above this section.  Here below should just be an alphabetical list of replacement values with no embedded logic.
     
