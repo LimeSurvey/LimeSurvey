@@ -32,7 +32,7 @@ class Yii extends YiiBase
      * @return LSYii_Application the application singleton, null if the singleton has not been created yet.
      */
     public static function app() {
-        return self::$_app;
+        return parent::app();
     }
 
 }

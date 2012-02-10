@@ -62,7 +62,7 @@ abstract class LSYii_Controller extends CController
 	 */
 	public function loadHelper($helper)
 	{
-		Yii::app()->loadHelper($library);
+		Yii::app()->loadHelper($helper);
 	}
 
 	/**
