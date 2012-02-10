@@ -1178,12 +1178,14 @@ class tokens extends Survey_Common_Action
             Yii::app()->loadHelper("export");
             tokensExport($iSurveyId);
         }
+        else
+        {
+            $aData['resultr'] = Tokens_dynamic::model($iSurveyId)->find(array('select' => 'language', 'group' => 'language'));
+            $aData['thissurvey'] = getSurveyInfo($iSurveyId);
+            $aData['surveyid'] = $iSurveyId;
 
-        $aData['resultr'] = Tokens_dynamic::model($iSurveyId)->find(array('select' => 'language', 'group' => 'language'));
-        $aData['thissurvey'] = getSurveyInfo($iSurveyId);
-        $aData['surveyid'] = $iSurveyId;
-
-        $this->_renderWrappedTemplate('token', array('tokenbar', 'exportdialog'), $aData);
+            $this->_renderWrappedTemplate('token', array('tokenbar', 'exportdialog'), $aData);
+        }
     }
 
     /**

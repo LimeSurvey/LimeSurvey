@@ -24,9 +24,11 @@
         <li><label for='tokenlanguage' ><?php $clang->eT('Filter by language'); ?></label><select id='tokenlanguage' name='tokenlanguage' >
                 <option selected='selected' value=''><?php $clang->eT('All'); ?></option>
 <?php
-foreach ($resultr as $lrow)
-{
-    echo "<option value='{$lrow['language']}'>" . getLanguageNameFromCode($lrow['language']) . "</option>";
+if($resultr){
+    foreach ($resultr as $lrow)
+    {
+        echo "<option value='{$lrow['language']}'>" . getLanguageNameFromCode($lrow['language']) . "</option>";
+    }
 }
 ?>
             </select></li>
