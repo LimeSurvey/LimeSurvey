@@ -527,8 +527,6 @@ require_once("qanda.php");
 
 //store id's of all the question in $idlist array.
 $idlist = array();
-//store type of all the question in $qtypelist array.
-$qtypelist = array();
 //Iterate through the questions about to be displayed:
 $inputnames=array();
 if (isset($_SESSION['grouplist']))
@@ -572,7 +570,6 @@ foreach ($_SESSION['grouplist'] as $gl)
             //can eliminate extra space for these 2 arrays if $_SESSION['fieldmap'] is used directly!
             
             $idlist[] = $ia[1];
-            $qtypelist[] = $ia[4];
             if ($plus_qanda)
             {
                 $plus_qanda[] = $ia[4];
@@ -807,15 +804,14 @@ foreach ($_SESSION['grouplist'] as $gl)
         $question['sgq']=$qa[7];
         $question['aid']=$qinfo['info']['aid'];
         $question['sqid']=$qinfo['info']['sqid'];
+        $question['type']=$qinfo['info']['type'];
         //===================================================================
         $answer=$qa[1];
         
         $help=$qinfo['info']['help'];   // $qa[2];
         
         $answer_id = $idlist[$i];
-        $question_type = $qtypelist[$i];
         //$answer_id = $_SESSION['fieldarray'][$i][1];
-        //$question_type = $_SESSION['fieldarray'][$i][4];
         $i++;
         $question_template = file_get_contents($thistpl.'/question.pstpl');
         if( preg_match( '/\{QUESTION_ESSENTIALS\}/' , $question_template ) === false || preg_match( '/\{QUESTION_CLASS\}/' , $question_template ) === false )
