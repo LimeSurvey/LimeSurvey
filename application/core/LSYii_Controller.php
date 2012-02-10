@@ -62,7 +62,7 @@ abstract class LSYii_Controller extends CController
 	 */
 	public function loadHelper($helper)
 	{
-		Yii::import('application.helpers.' . $helper . '_helper', true);
+		Yii::app()->loadHelper($library);
 	}
 
 	/**
@@ -74,7 +74,7 @@ abstract class LSYii_Controller extends CController
 	 */
 	public function loadLibrary($library)
 	{
-		Yii::import('application.libraries.'.$library.'', true);
+		Yii::app()->loadLibrary($library);
 	}
 
 	protected function _init()

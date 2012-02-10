@@ -9,7 +9,7 @@ if (count($_GET) > 0) {
 }
 
 $clang = Yii::app()->lang;
-$this->loadHelper('frontend');
+Yii::app()->loadHelper('frontend');
 
 if (empty($_REQUEST['sid']))   //  || count($_REQUEST) == 0) {
 {

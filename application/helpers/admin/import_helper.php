@@ -3937,7 +3937,7 @@ function GetNewSurveyID($oldsid)
 
 function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeFields=true)
 {
-    $this->getController()->loadhelper('database');
+    Yii::app()->loadHelper('database');
     $clang = Yii::app()->lang;
     $xml = simplexml_load_file($sFullFilepath);
 
