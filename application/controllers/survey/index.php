@@ -10,10 +10,10 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
+*	$Id: SurveyAction.php 12422 2012-02-09 13:23:27Z mennodekker $
 */
 
-class SurveyAction extends CAction {
+class index extends CAction {
 
     public function run()
     {
