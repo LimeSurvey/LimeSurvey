@@ -871,6 +871,7 @@ END;
                 $question['sgq'] = $qa[7];
                 $question['aid'] = !empty($qinfo['info']['aid']) ? $qinfo['info']['aid'] : 0;
                 $question['sqid'] = !empty($qinfo['info']['sqid']) ? $qinfo['info']['sqid'] : 0;
+                $question['type']=$qinfo['info']['type'];
                 //===================================================================
                 $answer = $qa[1];
                 $help = $qinfo['info']['help'];   // $qa[2];

@@ -224,6 +224,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_question_input_error_class = $question['input_error_class'];
         $_question_number = $question['number'];
         $_question_code = $question['code'];
+        $_question_type = $question['type'];
     }
     else
     {
@@ -241,7 +242,17 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_question_input_error_class = '';
         $_question_number = '';
         $_question_code = '';
+        $_question_type = '';
     };
+
+	if ($_question_type == 'N' || $_question_type == 'U' || $_question_type == 'T' || $_question_type == 'S')
+    {
+        $_question_text = '<label for="answer'.$answer_id.'" >'.$_question_text.'</label>';
+    }
+    else if ($_question_type == '*')
+    {
+        $_question_text = '<span class="em_equation">' .$_question_text. '</span>';
+    }
 
     if (!(
     $showqnumcode == 'both' ||
