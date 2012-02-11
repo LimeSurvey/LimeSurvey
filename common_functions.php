@@ -1919,6 +1919,10 @@ function getextendedanswer($fieldcode, $value, $format='', $dateformatphp='d.m.Y
             case "H":
             case "1":
                 $query = "SELECT answer FROM ".db_table_name('answers')." WHERE qid={$fields['qid']} AND code='".$connect->escape($value)."' AND language='".$s_lang."'";
+                if (isset($fields['scale_id']))
+                {
+                    $query.=" AND scale_id={$fields['scale_id']}";
+                }
                 $result = db_execute_assoc($query) or safe_die ("Couldn't get answer type F/H - getextendedanswer() in common.php");   //Checked
                 while($row=$result->FetchRow())
                 {

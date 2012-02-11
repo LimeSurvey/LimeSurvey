@@ -77,6 +77,27 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.91+ (build 12358) to 1.91+ (build 12416) Feb 7, 2012
+#Updated translation: Greek by Yannis Kaskamanidis (c_schmitz)
+-Fixed issue #5734: Problem upgrading from 1.72 to 1.91+ (c_schmitz)
+-Fixed issue #5739: Wrong percentage in graphs with List with Comments question types (c_schmitz)
+-Fixed issue #5749: Wrong date conversion when using certain date formats (c_schmitz)
+-Fixed issue #5775: SQL error on translation (shnoulle)
+
+Changes from 1.91+ (build 12170) to 1.91+ (build 12358) Feb 5, 2012
+#Updated translation: German (maziminke)
+-Fixed issue: Added missing information about a token being required for sending invitations. (maziminke)
+-Fixed issue #5589: Error messages when user deletes himself (c_schmitz)
+-Fixed issue #5592: Wrong answer mapping for dual scale matrix in detailed admin notification email (c_schmitz)
+-Fixed issue #5648: Quota list of questions is not sorted (c_schmitz)
+-Fixed issue #5688: Quota answers not in base language (c_schmitz)
+-Fixed issue #5695: When creating a survey 'List survey publicly' defaults to Yes instead of Np (c_schmitz)
+-Fixed issue #5751: Quick translation - assignment problem with dual matrix (c_schmitz)
+-Fixed issue #5590: 1980-01-01 in printview (tpartner)
+-Fixed issue #5692: Google Maps do not reappear where field is has conditions (tpartner)
+-Fixed issue: Fixing notice introduced with commit 12113 (mennodekker)
+-Fixed issue: uploader on preview (mennodekker)
+
 Changes from 1.91+ (build 11804) to 1.91+ (build 12170) Jan 23, 2012
 #Updated translation: French (b00z00)
 #Updated translation: German (c_schmitz)
@@ -85,7 +106,7 @@ Changes from 1.91+ (build 11804) to 1.91+ (build 12170) Jan 23, 2012
 #Updated translation: Portuguese (Brazil) (c_schmitz)
 #Updated translation: Russian (c_schmitz)
 #Updated translation: Turkish by Kaya Zeren (c_schmitz)
-#Updated Feature: Added German translations to 1.91 sample survey. (maziminke)
+#Updated feature: Added German translations to 1.91 sample survey. (maziminke)
 +New feature: Code/QID visible in quick-translation answers/subquestions/questions for easier orientation (c_schmitz)
 -Fixed issue #5645 : Upload file question for all in one survey and Fancy URLs (shnoulle)
 -Fixed issue #5628: SQL error after setting a filter in statistics and removing it again (c_schmitz)

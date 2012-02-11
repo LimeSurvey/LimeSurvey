@@ -4,6 +4,7 @@ msgstr ""
 <<<<<<< HEAD
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-01-20 09:53+0100\n"
+<<<<<<< HEAD
 "PO-Revision-Date: 2012-01-20 09:53+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 =======
@@ -11,6 +12,10 @@ msgstr ""
 "PO-Revision-Date: 2008-01-31 21:20+0100\n"
 "Last-Translator: Josef Prandstetter <jprandstetter@limesurvey.org>\n"
 >>>>>>> refs/heads/stable_plus
+=======
+"PO-Revision-Date: 2012-02-02 14:46+0100\n"
+"Last-Translator: mm\n"
+>>>>>>> refs/heads/limesurvey
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -8330,7 +8335,7 @@ msgstr "Alle Zugangsschlüssel-Einträge wurden auf 'Nicht eingeladen' zurückge
 
 #: d:\web\xampp\htdocs\limesurvey/admin/tokens.php:1779
 msgid "All token entries to whom a reminder email would apply"
-msgstr "Alle Teilnehmer Einträge für die eine Erinnerungsemail versendet würde"
+msgstr "Alle Teilnehmer, die Bedingungen für eine Erinnerungsemail erfüllen"
 
 #: d:\web\xampp\htdocs\limesurvey/admin/tokens.php:741
 msgid "All tokens"

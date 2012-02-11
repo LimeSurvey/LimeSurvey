@@ -6230,7 +6230,7 @@ function do_multiplenumeric($ia)
         foreach ($inputnames as $inputname)
         {
             $answer .= "       if(document.limesurvey.answer".$inputname.".value == '') { document.limesurvey.answer".$inputname.".value = 0; }\n";
-            $javainputnames[]="parseInt(parseFloat((document.limesurvey.answer".$inputname.".value).split(',').join('.'))*1000)";
+            $javainputnames[]="parseInt(parseFloat((document.limesurvey.answer".$inputname.".value).split('{$sSeperator}').join('.'))*1000)";
         }
         $answer .= "       bob = eval('document.limesurvey.qattribute_answer".$ia[1]."');\n";
         $answer .= "       totalvalue_".$ia[1]."=(";
