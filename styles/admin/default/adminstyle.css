@@ -1486,3 +1486,5 @@ ol.organizer {
     height:auto;
     font-size: 0.8em;
 }
+.labelsets-update label{display:block}
+.button-list{text-align:left}

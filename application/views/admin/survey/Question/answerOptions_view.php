@@ -21,6 +21,7 @@
     var quickaddtitle='<?php $clang->eT('Quick-add answers','js'); ?>';
     var sAssessmentValue='<?php $clang->eT('Assessment value','js'); ?>';
     var duplicateanswercode='<?php $clang->eT('Error: You are trying to use duplicate answer codes.','js'); ?>';
+    var strNoLabelSet='<?php $clang->eT('There are no label sets which match the survey default language','js'); ?>';
     var langs='<?php echo implode(';',$anslangs); ?>';
     var ci_path="<?php echo Yii::app()->getConfig('imageurl'); ?>";
     var saveaslabletitle  = '<?php $clang->eT('Save as Label','js'); ?>';
@@ -159,21 +160,27 @@
             $first=false; ?>
             </div>
         <?php } ?>
-      <div id='labelsetbrowser' style='display:none;'><div style='float:left;width:260px;'>
+      <div id='labelsetbrowser' class='labelsets-update' style='display:none;'><div style='float:left;width:260px;'>
                           <label for='labelsets'><?php $clang->eT('Available label sets:'); ?></label>
-                          <br /><select id='labelsets' size='10' style='width:250px;'><option>&nbsp;</option></select>
-                          <br /><button id='btnlsreplace' type='button'><?php $clang->eT('Replace'); ?></button>
-                          <button id='btnlsinsert' type='button'><?php $clang->eT('Add'); ?></button>
-                          <button id='btncancel' type='button'><?php $clang->eT('Cancel'); ?></button></div>
+                          <select id='labelsets' size='10' style='width:250px;'><option>&nbsp;</option></select>
+                          <p class=button-list'>
+                              <button id='btnlsreplace' type='button'><?php $clang->eT('Replace'); ?></button>
+                              <button id='btnlsinsert' type='button'><?php $clang->eT('Add'); ?></button>
+                              <button id='btncancel' type='button'><?php $clang->eT('Cancel'); ?></button>
+                          </p>
+                          </div>
 
                        <div id='labelsetpreview' style='float:right;width:500px;'></div>
         </div>
-        <div id='quickadd' style='display:none;'><div style='float:left;'>
+        <div id='quickadd' class='labelsets-update' style='display:none;'><div style='float:left;'>
                           <label for='quickadd'><?php $clang->eT('Enter your answers:'); ?></label>
-                          <br /><textarea id='quickaddarea' class='tipme' title='<?php $clang->eT('Enter one answer per line. You can provide a code by separating code and answer text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or space.'); ?>' cols='100' rows='30' style='width:570px;'></textarea>
-                          <br /><button id='btnqareplace' type='button'><?php $clang->eT('Replace'); ?></button>
-                          <button id='btnqainsert' type='button'><?php $clang->eT('Add'); ?></button>
-                          <button id='btnqacancel' type='button'><?php $clang->eT('Cancel'); ?></button></div>
+                          <textarea id='quickaddarea' class='tipme' title='<?php $clang->eT('Enter one answer per line. You can provide a code by separating code and answer text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or space.'); ?>' cols='100' rows='30' style='width:570px;'></textarea>
+                            <p class=button-list'>
+                            <button id='btnqareplace' type='button'><?php $clang->eT('Replace'); ?></button>
+                            <button id='btnqainsert' type='button'><?php $clang->eT('Add'); ?></button>
+                            <button id='btnqacancel' type='button'><?php $clang->eT('Cancel'); ?></button>
+                            </p>
+                          </div>
         </div>
         <div id="saveaslabel" style='display:none;'>
             <input type="radio" name="savelabeloption" id="newlabel"> <label for="newlabel"><?php $clang->eT('New Label Set'); ?></label><br /><br />
