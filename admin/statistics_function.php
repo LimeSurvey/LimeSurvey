@@ -31,7 +31,7 @@
     *  L - List (Radio)
     *  M - Multiple choice
     *  N - Numerical Input
-    *  O - List With Comment
+    *  O - List with comment
     *  P - Multiple choice with comments
     *  Q - Multiple Short Text
     *  R - Ranking
@@ -2814,6 +2814,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             break;
                     }
                     echo '';
+                    
                     //loop thorugh the array which contains all answer data
                     foreach ($alist as $al)
                     {
@@ -2942,6 +2943,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         // this just extracts the data, after we present
                         while ($row=$result->FetchRow())
                         {
+                            //store temporarily value of answer count of question type '5' and 'A'.
+                            $tempcount = -1; //count can't be less han zero
+                            
                             //increase counter
                             $TotalCompleted += $row[0];
 
@@ -3153,6 +3157,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                                     if($testcounter == 0 )	//add 300 to original value
                                     {
+                                        //store the original value!
+                                        $tempcount = $row[0];
                                         //HACK: add three times the total number of results to the value
                                         //This way we get a 300 + X percentage which can be checked later
                                         $row[0] += (3*$results);
@@ -3161,6 +3167,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                     //the third value should be shown twice later -> mark it
                                     if($testcounter == 2)	//add 400 to original value
                                     {
+                                        //store the original value!
+                                        $tempcount = $row[0];
                                         //HACK: add four times the total number of results to the value
                                         //This way there should be a 400 + X percentage which can be checked later
                                         $row[0] += (4*$results);
@@ -3169,6 +3177,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                     //the last value aggregates the data of item 4 + item 5 later
                                     if($testcounter == 4 )	//add 200 to original value
                                     {
+                                        //store the original value!
+                                        $tempcount = $row[0];
                                         //HACK: add two times the total number of results to the value
                                         //This way there should be a 200 + X percentage which can be checked later
                                         $row[0] += (2*$results);
@@ -3261,8 +3271,20 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             $justcode[]=$al[0];
 
                             //edit labels and put them into antoher array
-                            $lbl[] = wordwrap(FlattenText("$al[1] ($row[0])"), 25, "\n"); // NMO 2009-03-24
-                            $lblrtl[] = utf8_strrev(wordwrap(FlattenText("$al[1] )$row[0]("), 25, "\n")); // NMO 2009-03-24
+                            
+                            //first check if $tempcount is > 0. If yes, $row[0] has been modified and $tempcount has the original count.
+                            if ($tempcount > 0)
+                            {
+                                $lbl[] = wordwrap(FlattenText("$al[1] ($tempcount)"), 25, "\n"); // NMO 2009-03-24
+                                $lblrtl[] = utf8_strrev(wordwrap(FlattenText("$al[1] )$tempcount("), 25, "\n")); // NMO 2009-03-24
+                            }
+                            else
+                            {
+                                $lbl[] = wordwrap(FlattenText("$al[1] ($row[0])"), 25, "\n"); // NMO 2009-03-24
+                                $lblrtl[] = utf8_strrev(wordwrap(FlattenText("$al[1] )$row[0]("), 25, "\n")); // NMO 2009-03-24
+                                
+                            }
+                            
 
                         }	//end while -> loop through results
 
@@ -4609,10 +4631,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         else
                         {
                             // this block is to remove the items with value == 0
+                            // and an unelegant way to remove comments from List with Comments questions
                             $i = 0;
                             while (isset ($gdata[$i]))
                             {
-                                if ($gdata[$i] == 0)
+                                if ($gdata[$i] == 0 || ($qtype == "O" && substr($lbl[$i],0,strlen($statlang->gT("Comments")))==$statlang->gT("Comments")))
                                 {
                                     array_splice ($gdata, $i, 1);
                                     array_splice ($lbl, $i, 1);
@@ -4687,7 +4710,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             }
 
                         }	//end else -> pie charts
-
+                        
                         //introduce new counter
                         if (!isset($ci)) {$ci=0;}
 

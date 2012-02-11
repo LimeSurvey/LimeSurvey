@@ -1,12 +1,3 @@
-/* The following styles are for IE 8 only*/
-.rank label {
-  line-height: 27px;
-}
+/* For versions of IE 8 and older style */
+/* use .ie8 specfic class in template.css */
 
-td .rank {
-  padding-right: 20px;
-}
-
-td.survey-question-help {
-  text-align: left;
-}

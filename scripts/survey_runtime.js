@@ -2,6 +2,7 @@ var DOM1;
 $(document).ready(function()
 {
 	DOM1 = (typeof document.getElementsByTagName!='undefined');
+    if (typeof LEMsetTabIndexes === 'function') { LEMsetTabIndexes(); }
 	if (typeof checkconditions!='undefined') checkconditions();
 	if (typeof template_onload!='undefined') template_onload();
 	prepareCellAdapters();
@@ -120,12 +121,15 @@ $(document).ready(function()
          idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);
     */
 <<<<<<< HEAD
+<<<<<<< HEAD
 //    if (typeof ExprMgr_process_relevance_and_tailoring === 'function') {
 //        ExprMgr_process_relevance_and_tailoring();
 //    }
 =======
    ExprMgr_process_relevance_and_tailoring();
 >>>>>>> refs/heads/dev_tms
+=======
+>>>>>>> refs/heads/limesurvey_dev
 });
 
 gmaps = new Object;
@@ -767,6 +771,7 @@ function multi_set(ids)
 					calc_vert(_bits[0].length - 1);
 					break;
 			}
+            checkconditions($(el).val(), $(el).attr('name'), $(el).attr('type'));
 			return(true);
 		};
 		//retuns the id from end of string like 'vert_[id] horo_[id] other class'

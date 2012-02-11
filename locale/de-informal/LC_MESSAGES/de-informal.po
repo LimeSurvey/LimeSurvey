@@ -4,12 +4,17 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 <<<<<<< HEAD
 "POT-Creation-Date: 2011-12-17 15:21+0100\n"
+<<<<<<< HEAD
 "PO-Revision-Date: 2012-01-20 15:40+0100\n"
 =======
 "POT-Creation-Date: 2011-11-17 17:17+0100\n"
 "PO-Revision-Date: 2011-11-17 17:17+0100\n"
 >>>>>>> refs/heads/dev_tms
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
+=======
+"PO-Revision-Date: 2012-02-02 14:46+0100\n"
+"Last-Translator: mm\n"
+>>>>>>> refs/heads/limesurvey_dev
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20792,9 +20797,15 @@ msgstr "Dies ist die Abschlussnachricht der Umfrage."
 msgid "This name is reserved for a standard template."
 msgstr "Dieser Name ist für eine Standardvorlage reserviert."
 
+<<<<<<< HEAD
 #: d:\web\xampp\htdocs\limesurvey/admin/tokens.php:1206
 msgid "This participant opted out of this survey."
 msgstr "Dieser Teilnehmer hat sich aus der Umfrage ausgetragen."
+=======
+#: admin/tokens.php:1779
+msgid "All token entries to whom a reminder email would apply"
+msgstr "Alle Teilnehmer, die Bedingungen für eine Erinnerungsemail erfüllen"
+>>>>>>> refs/heads/limesurvey_dev
 
 #: d:\web\xampp\htdocs\limesurvey/admin/surveylist.php:131
 msgid "This survey is active - click here to deactivate this survey."

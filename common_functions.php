@@ -1741,9 +1741,9 @@ function returnglobal($stringname)
             return sanitize_languagecode($urlParam);
         }
         elseif ($stringname =="htmleditormode" ||
-            $stringname =="subaction" || 
+            $stringname =="subaction" ||
             $stringname =="questionselectormode" ||
-            $stringname =="templateeditormode" 
+            $stringname =="templateeditormode"
             )
         {
             return sanitize_paranoid_string($urlParam);
@@ -1930,6 +1930,10 @@ function getextendedanswer($fieldcode, $value, $format='', $dateformatphp='d.m.Y
             case "H":
             case "1":
                 $query = "SELECT answer FROM ".db_table_name('answers')." WHERE qid={$fields['qid']} AND code='".$connect->escape($value)."' AND language='".$s_lang."'";
+                if (isset($fields['scale_id']))
+                {
+                    $query.=" AND scale_id={$fields['scale_id']}";
+                }
                 $result = db_execute_assoc($query) or safe_die ("Couldn't get answer type F/H - getextendedanswer() in common.php");   //Checked
                 while($row=$result->FetchRow())
                 {
@@ -1938,6 +1942,23 @@ function getextendedanswer($fieldcode, $value, $format='', $dateformatphp='d.m.Y
                 if ($value == "-oth-")
                 {
                     $this_answer=$clang->gT("Other");
+                }
+                break;
+            case "|": //File upload
+                if (substr($fieldcode, -9) == 'filecount') {
+                    $this_answer = $clang->gT("File count");
+                } else {
+                    //Show the filename, size, title and comment -- no link!
+                    $files = json_decode($value);
+                    $value = '';
+                    if (is_array($files)) {
+                        foreach ($files as $file) {
+                            $value .= $file->name .
+                                    ' (' . $file->size . 'KB) ' .
+                                    strip_tags($file->title) .
+                                    ' - ' . strip_tags($file->comment) . "<br/>";
+                        }
+                    }
                 }
                 break;
             default:
@@ -2245,7 +2266,7 @@ function validate_templatedir($templatename)
 */
 function createFieldMap($surveyid, $style='full', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
 
-    global $dbprefix, $connect, $globalfieldmap, $clang, $aDuplicateQIDs;
+    global $dbprefix, $connect, $clang, $aDuplicateQIDs;
     $surveyid=sanitize_int($surveyid);
 
         //Get list of questions
@@ -2265,9 +2286,6 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
     $s_lang = $clang->langcode;
 
     //checks to see if fieldmap has already been built for this page.
-    if (isset($globalfieldmap[$surveyid][$style][$s_lang]) && $force_refresh==false) {
-        return $globalfieldmap[$surveyid][$style][$s_lang];
-    }
     if (isset($_SESSION['fieldmap-' . $surveyid . $s_lang]) && !$force_refresh) {
         return $_SESSION['fieldmap-' . $surveyid . $s_lang];
     }
@@ -2800,16 +2818,22 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
                 }
             }
         }
-        $fieldmap[$fieldname]['relevance']=$arow['relevance'];
-        $fieldmap[$fieldname]['grelevance']=$arow['grelevance'];
-        $fieldmap[$fieldname]['questionSeq']=$questionSeq;
-        $fieldmap[$fieldname]['groupSeq']=$groupSeq;
-        $fieldmap[$fieldname]['preg']=$arow['preg'];
-        $fieldmap[$fieldname]['other']=$arow['other'];
-        $fieldmap[$fieldname]['help']=$arow['help'];
+        if (isset($fieldmap[$fieldname])) // only add these fields if there is actually a valid field
+        {
+            $fieldmap[$fieldname]['relevance']=$arow['relevance'];
+            $fieldmap[$fieldname]['grelevance']=$arow['grelevance'];
+            $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+            $fieldmap[$fieldname]['groupSeq']=$groupSeq;
+            $fieldmap[$fieldname]['preg']=$arow['preg'];
+            $fieldmap[$fieldname]['other']=$arow['other'];
+            $fieldmap[$fieldname]['help']=$arow['help'];
+        }
+        else
+        {
+            --$questionSeq; // didn't generate a valid $fieldmap entry, so decrement the question counter to ensure they are sequential
+        }
     }
     if (isset($fieldmap)) {
-        $globalfieldmap[$surveyid][$style][$clang->langcode] = $fieldmap;
         $_SESSION['fieldmap-' . $surveyid . $clang->langcode]=$fieldmap;
         return $fieldmap;
     }
@@ -2827,7 +2851,7 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
 */
 function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
 
-    global $dbprefix, $connect, $globalfieldmap, $clang, $aDuplicateQIDs;
+    global $dbprefix, $connect, $clang, $aDuplicateQIDs;
     static $timingsFieldMap;
 
     $surveyid=sanitize_int($surveyid);
@@ -3267,15 +3291,15 @@ function questionAttributes($returnByName=false)
     'sortorder'=>200,
     'inputtype'=>'textarea',
     "help"=>$clang->gT('Boolean equation to validate the whole question.'),
-    "caption"=>$clang->gT('Question Validation Equation'));
+    "caption"=>$clang->gT('Question validation equation'));
 
     $qattributes["em_validation_q_tip"]=array(
     "types"=>";:STUNKQ",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>210,
     'inputtype'=>'textarea',
-    "help"=>$clang->gT('Tip to show user describing the Question Validation Equation.'),
-    "caption"=>$clang->gT('Question Validation Tip'));
+    "help"=>$clang->gT('Tip to show user describing the question validation equation.'),
+    "caption"=>$clang->gT('Question validation tip'));
 
     $qattributes["em_validation_sq"]=array(
     "types"=>";:KQ",
@@ -3283,15 +3307,15 @@ function questionAttributes($returnByName=false)
     'sortorder'=>220,
     'inputtype'=>'textarea',
     "help"=>$clang->gT('Boolean equation to validate each sub-question.'),
-    "caption"=>$clang->gT('Sub-Question Validation Equation'));
+    "caption"=>$clang->gT('Sub-question validation equation'));
 
     $qattributes["em_validation_sq_tip"]=array(
     "types"=>";:KQ",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>230,
     'inputtype'=>'textarea',
-    "help"=>$clang->gT('Tip to show user describing the Sub-Question Validation Equation.'),
-    "caption"=>$clang->gT('Sub-Question Validation Tip'));
+    "help"=>$clang->gT('Tip to show user describing the sub-question validation equation.'),
+    "caption"=>$clang->gT('Sub-question validation tip'));
 
     $qattributes["exclude_all_others"]=array(
     "types"=>"MP",
@@ -3842,7 +3866,7 @@ function questionAttributes($returnByName=false)
     'sortorder'=>201,
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('None'),
-        1=>$clang->gT('Order - like 3)'),
+        1=>$clang->gT('Order'),
         ),
     'default'=>0,
     "help"=>$clang->gT('Accelerator keys for list items'),
@@ -6020,7 +6044,13 @@ function aReverseTranslateFieldnames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRe
 {
     $aGIDReplacements=array_flip($aGIDReplacements);
     $aQIDReplacements=array_flip($aQIDReplacements);
-    $aFieldMap=createFieldMap($iNewSID);
+    if ($iOldSID==$iNewSID) {
+        $forceRefresh=true; // otherwise grabs the cached copy and throws undefined index exceptions
+    }
+    else {
+        $forceRefresh=false;
+    }
+    $aFieldMap=createFieldMap($iNewSID,'full',$forceRefresh);
     $aFieldMappings=array();
     foreach ($aFieldMap as $sFieldname=>$aFieldinfo)
     {

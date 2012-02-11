@@ -2300,10 +2300,9 @@ if(isset($_POST['printableexport']))
     }
     $pdf->titleintopdf($clang->gT("Submit Your Survey."),$clang->gT("Thank you for completing this survey."));
     $pdf->write_out($clang->gT($surveyname)." ".$surveyid.".pdf");
+} else {
+    echo populate_template( 'survey' , $survey_output );
 }
-
-echo populate_template( 'survey' , $survey_output );
-
 exit;
 
 function min_max_answers_help($qidattributes, $surveyprintlang, $surveyid) {
@@ -2311,9 +2310,10 @@ function min_max_answers_help($qidattributes, $surveyprintlang, $surveyid) {
 	$output = "";
 <<<<<<< HEAD
 	if(!empty($qidattributes['min_answers'])) {
-		$output .= "\n<p class='extrahelp'>".sprintf($clang->gT("Please choose at least (%s) items"), $qidattributes['min_answers'])."</p>\n";
+		$output .= "\n<p class='extrahelp'>".sprintf($clang->gT("Please choose at least %s item(s)"), $qidattributes['min_answers'])."</p>\n";
 	}
     if(!empty($qidattributes['max_answers'])) {
+<<<<<<< HEAD
 		$output .= "\n<p class='extrahelp'>".sprintf($clang->gT("Please choose no more than (%s) items"),$qidattributes['max_answers'])."</p>\n";
 =======
 	if(!empty($qidattributes['max_answers'])) {
@@ -2322,6 +2322,9 @@ function min_max_answers_help($qidattributes, $surveyprintlang, $surveyid) {
 	if(!empty($qidattributes['min_answers'])) {
 		$output .= "\n<p class='extrahelp'>".sprintf($clang->gT("Please choose at least %d items"), $qidattributes['min_answers'])."</p>\n";
 >>>>>>> refs/heads/dev_tms
+=======
+		$output .= "\n<p class='extrahelp'>".sprintf($clang->gT("Please choose no more than %s item(s)"),$qidattributes['max_answers'])."</p>\n";
+>>>>>>> refs/heads/limesurvey_dev
 	}
 	return $output;
 }

@@ -260,8 +260,6 @@ function db_upgrade($oldversion) {
         modify_database("","ALTER TABLE `prefix_assessments` DROP COLUMN `link`"); echo $modifyoutput; flush();@ob_flush();
         // change the primary index to include language
         modify_database("","ALTER TABLE `prefix_assessments` DROP PRIMARY KEY, ADD PRIMARY KEY  USING BTREE(`id`, `language`)"); echo $modifyoutput; flush();@ob_flush();
-        //finally fix missing translations for assessments
-        upgrade_survey_tables133();
         // Add new fields to survey language settings
         modify_database("","ALTER TABLE `prefix_surveys_languagesettings` ADD `surveyls_url` varchar(255)"); echo $modifyoutput; flush();@ob_flush();
         modify_database("","ALTER TABLE `prefix_surveys_languagesettings` ADD `surveyls_endtext` text"); echo $modifyoutput; flush();@ob_flush();
@@ -715,8 +713,11 @@ function db_upgrade($oldversion) {
     {
         modify_database("","ALTER TABLE `prefix_surveys` ADD `googleanalyticsstyle` char(1) DEFAULT NULL;"); echo $modifyoutput; flush();@ob_flush();
         modify_database("","ALTER TABLE `prefix_surveys` ADD `googleanalyticsapikey` varchar(25) DEFAULT NULL;"); echo $modifyoutput; flush();@ob_flush();
+        modify_database("","ALTER TABLE `prefix_surveys` CHANGE `showXquestions` `showxquestions` char(1) collate utf8_unicode_ci NOT NULL default 'Y';"); echo $modifyoutput; flush();@ob_flush();
+
         modify_database("", "UPDATE `prefix_settings_global` SET stg_value='155' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
     }
+<<<<<<< HEAD
 =======
      if ($oldversion < 147)
     {
@@ -840,6 +841,9 @@ function db_upgrade($oldversion) {
     }
 
 >>>>>>> refs/heads/dev_tms
+=======
+    fixLanguageConsistencyAllSurveys();
+>>>>>>> refs/heads/limesurvey_dev
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br />';
     return true;
 }
@@ -910,13 +914,13 @@ function upgrade_token_tables128()
 
 
 
-function upgrade_survey_tables133()
+function fixLanguageConsistencyAllSurveys()
 {
     $surveyidquery = "SELECT sid,additional_languages FROM ".db_table_name('surveys');
     $surveyidresult = db_execute_num($surveyidquery);
     while ( $sv = $surveyidresult->FetchRow() )
     {
-        FixLanguageConsistency($sv[0],$sv[1]);
+        FixLanguageConsistency($sv[0]);
     }
 }
 

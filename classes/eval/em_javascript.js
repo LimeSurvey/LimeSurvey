@@ -515,6 +515,7 @@ function LEManyNA()
 function  LEMsetTabIndexes()
 {
     if (typeof tabIndexesSet == 'undefined') {
+<<<<<<< HEAD
         $(':input[type!=hidden][id!=runonce]').each(function(index){
 <<<<<<< HEAD
 =======
@@ -522,9 +523,13 @@ function  LEMsetTabIndexes()
                 $(this).focus();    // focus on first active element on page
             }
 >>>>>>> refs/heads/dev_tms
+=======
+        $('#limesurvey :input[type!=hidden][id!=runonce]').each(function(index){
+>>>>>>> refs/heads/limesurvey_dev
             $(this).bind('keydown',function(e) {
                 if (e.keyCode == 9) {
-                    ExprMgr_process_relevance_and_tailoring(e.type);
+                    ExprMgr_process_relevance_and_tailoring(e.type,$(this).attr('name'));
+                    $(this).focus();
                     return true;
                 }
                 return true;
@@ -532,11 +537,14 @@ function  LEMsetTabIndexes()
         })	// MUST DO THIS FIRST
         tabIndexesSet = true;
 <<<<<<< HEAD
+<<<<<<< HEAD
 //
 //        // focus on first element by default
 //    	$('#limesurvey :input:visible:enabled:first').focus();
 =======
 >>>>>>> refs/heads/dev_tms
+=======
+>>>>>>> refs/heads/limesurvey_dev
     }
 }
 

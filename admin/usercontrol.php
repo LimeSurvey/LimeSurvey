@@ -592,7 +592,12 @@ elseif (($action == "deluser" || $action == "finaldeluser") && ($_SESSION['USER_
                     $dquery="DELETE FROM {$dbprefix}survey_permissions WHERE uid=".$postuserid;
                     $dresult=$connect->Execute($dquery); //Checked
 
-                    if($postuserid == $_SESSION['loginID']) killSession();	// user deleted himself
+                    if($postuserid == $_SESSION['loginID'])
+                    {
+                      killSession();    // user deleted himself
+                      header( "Location: " . $homeurl . "/admin.php");
+                      die();
+                    }
 
                     $addsummary .= "<br />".$clang->gT("Username").": {$postuser}<br /><br />\n";
                     $addsummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";

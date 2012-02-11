@@ -19,7 +19,7 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
 {
     global $clang;
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
-    $query = "SELECT type, title FROM ".db_table_name('questions')." WHERE qid='{$qid}' AND language='{$baselang}'";
+    $query = "SELECT type, title FROM ".db_table_name('questions')."q JOIN ".db_table_name('groups')."g on g.gid=q.gid WHERE qid='{$qid}' AND q.language='{$baselang}' AND g.language='{$baselang}' order by group_order, question_order";
     $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
     $qtype = $result->FetchRow();
 
@@ -73,7 +73,7 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
         $query = "SELECT * FROM ".db_table_name('quota_members')." WHERE sid='{$surveyid}' and qid='{$qid}' and quota_id='{$quota_id}'";
         $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
-        $query = "SELECT code,answer FROM ".db_table_name('answers')." WHERE qid='{$qid}'";
+        $query = "SELECT code,answer FROM ".db_table_name('answers')." WHERE qid='{$qid}' and language='{$baselang}'";
         $ansresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
         $answerlist = array();
@@ -130,7 +130,7 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
         $query = "SELECT * FROM ".db_table_name('quota_members')." WHERE sid='{$surveyid}' and qid='{$qid}' and quota_id='{$quota_id}'";
         $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
-        $query = "SELECT code,answer FROM ".db_table_name('answers')." WHERE qid='{$qid}'";
+        $query = "SELECT code,answer FROM ".db_table_name('answers')." WHERE qid='{$qid}' and language='{$baselang}'";
         $ansresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
         $answerlist = array();
@@ -677,7 +677,7 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
             $quota_name=$quotadetails['name'];
         }
 
-        $query = "SELECT qid, title, question FROM ".db_table_name('questions')." WHERE $allowed_types AND sid='$surveyid' AND language='{$baselang}' order by question_order";
+        $query = "SELECT qid, title, question FROM ".db_table_name('questions')."q JOIN ".db_table_name('groups')."g on g.gid=q.gid WHERE {$allowed_types} AND g.sid={$surveyid} AND q.language='{$baselang}' AND g.language='{$baselang}' order by group_order, question_order";
         $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
         if ($result->RecordCount() == 0)
         {

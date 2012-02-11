@@ -240,6 +240,7 @@ class LsrcHelper {
                         while(isset($emrow["attribute_$c"]))
                         {
                             $fieldsarray["{ATTRIBUTE_$c}"]=$emrow["attribute_$c"];
+                            $fieldsarray["{TOKEN:ATTRIBUTE_$c}"]=$emrow["attribute_$c"];
                             ++$c;
                         }
                         $fieldsarray["{ADMINNAME}"]= $thissurvey['adminname'];
@@ -496,6 +497,7 @@ class LsrcHelper {
                         while(isset($emrow["attribute_$c"]))
                         {
                             $fieldsarray["{ATTRIBUTE_$c}"]=$emrow["attribute_$c"];
+                            $fieldsarray["{TOKEN:ATTRIBUTE_$c}"]=$emrow["attribute_$c"];
                             ++$c;
                         }
 

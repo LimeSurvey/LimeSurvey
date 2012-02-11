@@ -21,6 +21,7 @@ require_once("save.php");   // for supporting functions only
 >>>>>>> refs/heads/dev_tms
 // $LEMdebugLevel - customizable debugging for Lime Expression Manager
 $LEMdebugLevel=0;   // LEM_DEBUG_TIMING;    // (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
+$LEMskipReprocessing=false; // true if used GetLastMoveResult to avoid generation of unneeded extra JavaScript
 switch ($thissurvey['format'])
 {
     case "A": //All in one
@@ -94,12 +95,13 @@ else
     if (!isset($_SESSION['maxstep'])) {$_SESSION['maxstep']=0;}
     $_SESSION['prevstep']=$_SESSION['step'];
 
-    if (isset($_SESSION['LEMpostKey']) && (!isset($_POST['LEMpostKey']) || ($_POST['LEMpostKey'] != $_SESSION['LEMpostKey'])))
+    if (isset($_SESSION['LEMpostKey']) && isset($_POST['LEMpostKey']) && $_POST['LEMpostKey'] != $_SESSION['LEMpostKey'])
     {
         // then trying to resubmit (e.g. Next, Previous, Submit) from a cached copy of the page
         // Simply re-display the current page without re-processing POST or re-validating input.  Means user will lose whatever data entry the just tried
         // Also flash a message
         $moveResult = LimeExpressionManager::GetLastMoveResult();
+        $LEMskipReprocessing=true;
         $move = "movenext"; // so will re-display the survey
         $invalidLastPage=true;
         $vpopup="<script type=\"text/javascript\">\n
@@ -157,6 +159,7 @@ else
         if (!isset($moveResult) && !($surveyMode != 'survey' && $_SESSION['step'] == 0)) {
             // Just in case not set via any other means, but don't do this if it is the welcome page
             $moveResult = LimeExpressionManager::GetLastMoveResult();
+            $LEMskipReprocessing=true;
         }
     }
 
@@ -226,19 +229,22 @@ else
 >>>>>>> refs/heads/dev_tms
         // CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
         $flashmessage = savedcontrol();
-        
+
         if (isset($errormsg) && $errormsg != "")
         {
             showsaveform(); // reshow the form if there is an error
         }
 
         $moveResult = LimeExpressionManager::GetLastMoveResult();
+        $LEMskipReprocessing=true;
 
         // TODO - does this work automatically for token answer persistence? Used to be savedsilent()
     }
 
     //Now, we check mandatory questions if necessary
     //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
+    global $notanswered;
+    
     if (isset($moveResult) && !$moveResult['finished'])
     {
         $unansweredSQList = $moveResult['unansweredSQs'];
@@ -532,8 +538,10 @@ $okToShowErrors = (!$previewgrp && (isset($invalidLastPage) ||  $_SESSION['prevs
 
 
 
-require_once("qanda.php"); 
+require_once("qanda.php");
 
+//store id's of all the question in $idlist array.
+$idlist = array();
 //Iterate through the questions about to be displayed:
 $inputnames=array();
 <<<<<<< HEAD
@@ -577,6 +585,10 @@ foreach ($_SESSION['grouplist'] as $gl)
             // TMSW - can content of retrieveAnswers() be provided by LEM?  Review scope of what it provides.
             // TODO - retrieveAnswers is slow - queries database separately for each question. May be fixed in _CI or _YII ports, so ignore for now
             list($plus_qanda, $plus_inputnames) = retrieveAnswers($ia);
+            
+            //can eliminate extra space for these 2 arrays if $_SESSION['fieldmap'] is used directly!
+            
+            $idlist[] = $ia[1];
             if ($plus_qanda)
             {
                 $plus_qanda[] = $ia[4];
@@ -717,7 +729,7 @@ print <<<END
 		        document.getElementById(hiddenformname).value='';
             }
         }
-        ExprMgr_process_relevance_and_tailoring();
+        ExprMgr_process_relevance_and_tailoring('onchange',name);
 	}
 // -->
 </script>
@@ -741,6 +753,11 @@ if (isset($showpopups) && $showpopups == 0 && isset($filenotvalidated) && $filen
     echo "<p><span class='errormandatory'>" . $clang->gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</span></p>";
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> refs/heads/limesurvey_dev
 if (isset($_SESSION['grouplist']))
 =======
 
@@ -767,7 +784,7 @@ foreach ($_SESSION['grouplist'] as $gl)
     echo "\n";
 
     echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
-
+    $i=0;
     foreach ($qanda as $qa) // one entry per QID
     {
         if ($gid != $qa[6]) {
@@ -804,6 +821,7 @@ foreach ($_SESSION['grouplist'] as $gl)
         }
 
         $question= $qa[0];
+        
         //===================================================================
         // The following four variables offer the templating system the
         // capacity to fully control the HTML output for questions making the
@@ -815,10 +833,15 @@ foreach ($_SESSION['grouplist'] as $gl)
         $question['sgq']=$qa[7];
         $question['aid']=$qinfo['info']['aid'];
         $question['sqid']=$qinfo['info']['sqid'];
+        $question['type']=$qinfo['info']['type'];
         //===================================================================
         $answer=$qa[1];
+        
         $help=$qinfo['info']['help'];   // $qa[2];
-
+        
+        $answer_id = $idlist[$i];
+        //$answer_id = $_SESSION['fieldarray'][$i][1];
+        $i++;
         $question_template = file_get_contents($thistpl.'/question.pstpl');
         if( preg_match( '/\{QUESTION_ESSENTIALS\}/' , $question_template ) === false || preg_match( '/\{QUESTION_CLASS\}/' , $question_template ) === false )
         {
@@ -859,7 +882,7 @@ foreach ($_SESSION['grouplist'] as $gl)
 
 }
 
-LimeExpressionManager::FinishProcessingGroup();
+LimeExpressionManager::FinishProcessingGroup($LEMskipReprocessing);
 echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
 LimeExpressionManager::FinishProcessingPage();
 

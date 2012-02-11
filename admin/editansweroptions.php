@@ -107,7 +107,7 @@
 
     // Insert some Javascript variables
     $surveysummary .= "\n<script type='text/javascript'>
-                          var languagecount=".count($anslangs).";\n
+                          var languagecount=".count($anslangs).";
                           var scalecount=".$scalecount.";
                           var assessmentvisible=".($assessmentvisible?'true':'false').";
                           var newansweroption_text='".$clang->gT('New answer option','js')."';
@@ -118,6 +118,7 @@
                           var quickaddtitle='".$clang->gT('Quick-add answers','js')."';
                           var sAssessmentValue='".$clang->gT('Assessment value','js')."';
                           var duplicateanswercode='".$clang->gT('Error: You are trying to use duplicate answer codes.','js')."';
+                          var strNoLabelSet='".$clang->gT('There are no label sets which match the survey default language','js')."';
                           var langs='".implode(';',$anslangs)."';</script>\n";
 
     foreach ($anslangs as $anslang)
@@ -239,20 +240,20 @@
     }
     // Label set browser
 //                      <br/><input type='checkbox' checked='checked' id='languagefilter' /><label for='languagefilter'>".$clang->gT('Match language')."</label>
-    $vasummary .= "<div id='labelsetbrowser' style='display:none;'><div style='float:left;width:260px;'>
+    $vasummary .= "<div id='labelsetbrowser' class='labelsets-update' style='display:none;'><div class='labelset-list' style='float:left;width:260px;'>
                       <label for='labelsets'>".$clang->gT('Available label sets:')."</label>
-                      <br /><select id='labelsets' size='10' style='width:250px;'><option>&nbsp;</option></select>
-                      <br /><button id='btnlsreplace' type='button'>".$clang->gT('Replace')."</button>
+                      <select id='labelsets' size='10' style='width:250px;'><option>&nbsp;</option></select>
+                      <p class='button-list'><button id='btnlsreplace' type='button'>".$clang->gT('Replace')."</button>
                       <button id='btnlsinsert' type='button'>".$clang->gT('Add')."</button>
-                      <button id='btncancel' type='button'>".$clang->gT('Cancel')."</button></div>
+                      <button id='btncancel' type='button'>".$clang->gT('Cancel')."</button></p></div>
 
                    <div id='labelsetpreview' style='float:right;width:500px;'></div></div> ";
-    $vasummary .= "<div id='quickadd' style='display:none;'><div style='float:left;'>
+    $vasummary .= "<div id='quickadd' class='labelsets-update' style='display:none;'><div class='labelset-list' style='float:left;'>
                       <label for='quickadd'>".$clang->gT('Enter your answers:')."</label>
-                      <br /><textarea id='quickaddarea' class='tipme' title='".$clang->gT('Enter one answer per line. You can provide a code by separating code and answer text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon/tab.')."' rows='30' style='width:570px;'></textarea>
-                      <br /><button id='btnqareplace' type='button'>".$clang->gT('Replace')."</button>
+                      <textarea id='quickaddarea' class='tipme' title='".$clang->gT('Enter one answer per line. You can provide a code by separating code and answer text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon/tab.')."' rows='30' style='width:570px;'></textarea>
+                      <p class='button-list'><button id='btnqareplace' type='button'>".$clang->gT('Replace')."</button>
                       <button id='btnqainsert' type='button'>".$clang->gT('Add')."</button>
-                      <button id='btnqacancel' type='button'>".$clang->gT('Cancel')."</button></div>
+                      <button id='btnqacancel' type='button'>".$clang->gT('Cancel')."</button></p></div>
                    </div> ";
     // Save button
     $vasummary .= "<p><input type='submit' id='saveallbtn_$anslang' name='method' value='".$clang->gT("Save changes")."' />\n";

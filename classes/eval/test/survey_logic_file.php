@@ -1,5 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <<<<<<< HEAD
+<<<<<<< HEAD
 <?php
 if (count($_POST) == 0 && !((isset($subaction) && $subaction == 'survey_logic_file'))) {die("Cannot run this script directly");}
 ?>
@@ -11,6 +12,12 @@ if (count($_POST) == 0 && !((isset($subaction) && $subaction == 'survey_logic_fi
         <title>Survey Logic File</title>
     </head>
     <body>
+=======
+<html>
+<?php
+if (count($_POST) == 0 && !((isset($subaction) && $subaction == 'survey_logic_file'))) {die("Cannot run this script directly");}
+?>
+>>>>>>> refs/heads/limesurvey_dev
         <?php
             if (count($_GET) > 0) {
                 foreach ($_GET as $key=>$val) {
@@ -55,6 +62,14 @@ if (count($_POST) == 0 && !((isset($subaction) && $subaction == 'survey_logic_fi
 
                 $form = <<< EOD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Survey Logic File</title>
+</head>
+<body>
+>>>>>>> refs/heads/limesurvey_dev
 <form method='post' action='../classes/eval/test/survey_logic_file.php'>
 =======
 <form method='post' action='survey_logic_file.php'>
@@ -87,6 +102,7 @@ Specify which debugging features to use
 <tr><td colspan='2'><input type='submit'/></td></tr>
 </table>
 </form>
+</body>
 EOD;
                 echo $form;
             }
@@ -120,8 +136,7 @@ EOD;
                 $qid = (isset($_POST['qid']) ? sanitize_int($_POST['qid']) : NULL);
 
                 print <<< EOD
-<html>
-    <head>
+<head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Logic File - Survey #$surveyid</title>
 <style type="text/css">
@@ -165,9 +180,7 @@ EOD;
 
                 print <<< EOD
 </body>
-</html>
 EOD;
             }
         ?>
-    </body>
 </html>

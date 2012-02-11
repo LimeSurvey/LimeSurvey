@@ -158,8 +158,14 @@ function templatereplace($line, $replacements=array(), $anonymized=false, $quest
         $_question_man_class = $question['man_class'];
         $_question_input_error_class = $question['input_error_class'];
 <<<<<<< HEAD
+<<<<<<< HEAD
         $_aid = $question['aid'];
         $_sqid = $question['sqid'];
+=======
+        $_aid = (isset($question['aid']) ? $question['aid'] : '');
+        $_sqid = (isset($question['sqid']) ?  $question['sqid'] : '');
+        $_question_type = $question['type'];
+>>>>>>> refs/heads/limesurvey_dev
     }
     else
     {
@@ -187,9 +193,24 @@ function templatereplace($line, $replacements=array(), $anonymized=false, $quest
 <<<<<<< HEAD
         $_aid = '';
         $_sqid = '';
+<<<<<<< HEAD
 =======
 >>>>>>> refs/heads/dev_tms
+=======
+        $_question_type = '';
+>>>>>>> refs/heads/limesurvey_dev
     };
+
+    global $answer_id;
+
+	if ($_question_type == 'N' || $_question_type == 'U' || $_question_type == 'T' || $_question_type == 'S')
+    {
+        $_question_text = '<label for="answer'.$answer_id.'" >'.$_question_text.'</label>';
+    }
+    else if ($_question_type == '*')
+    {
+        $_question_text = '<div class="em_equation">' .$_question_text. '</div>';
+    }
 
     if (
         $showqnumcode == 'both' ||
@@ -627,9 +648,10 @@ pageTracker._trackPageview("$_trackURL");
 EOD;
             break;
     }
-
     // Set the array of replacement variables here - don't include curly braces
-	$corecoreReplacements = array();
+    // Please put any conditional logic above this section.  Here below should just be an alphabetical list of replacement values with no embedded logic.
+    
+	$coreReplacements = array();
 	$coreReplacements['AID'] = $_aid;  // global
 =======
     // Set the array of replacement variables here - don't include curly braces
@@ -683,7 +705,7 @@ EOD;
 	$coreReplacements['QUESTION_MAN_CLASS'] = $_question_man_class;
 	$coreReplacements['QUESTION_MAN_MESSAGE'] = $_question_man_message;
 	$coreReplacements['QUESTION_NUMBER'] = $_question_number;
-	$coreReplacements['QUESTION_TEXT'] = $_question_text;
+    $coreReplacements['QUESTION_TEXT'] = $_question_text;
 	$coreReplacements['QUESTION_VALID_MESSAGE'] = $_question_valid_message;
 	$coreReplacements['REGISTERERROR'] = $register_errormsg;    // global
 	$coreReplacements['REGISTERFORM'] = $_registerform;
