@@ -314,8 +314,11 @@ function lsbrowser()
         }
         else
         {
+            $("#labelsetpreview").html("<p class='ui-state-highlight ui-corner-all ui-notify-message'>"+strNoLabelSet+"</p>");
             $('#btnlsreplace').addClass('ui-state-disabled');
             $('#btnlsinsert').addClass('ui-state-disabled');
+            $('#btnlsreplace').attr('disabled','disabled');
+            $('#btnlsinsert').attr('disabled','disabled');
         }
     });
 
