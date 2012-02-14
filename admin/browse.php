@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: browse.php 12164 2012-01-23 14:24:20Z tmswhite $
 */
 
 include_once("login_check.php");  //Login Check dies also if the script is started directly

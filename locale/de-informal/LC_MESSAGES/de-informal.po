@@ -10966,895 +10966,826 @@ msgstr "Verschiebe die Benutzertemplates in neues Verzeichnis (%s)..."
 msgid "Database update finished (%s)"
 msgstr "Datenbankaktualisierung beendet (%s)"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:710
-msgid "Could not delete user group. No group selected."
-msgstr "Konnte Benutzergruppe nicht löschen. Es wurde keine Gruppe ausgewählt."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:315
-msgid "Create Survey"
-msgstr "Erstelle Umfrage"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:321
-msgid "Create User"
-msgstr "Benutzer anlegen"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:444
-msgid "Created by"
-msgstr "Angelegt von"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:87
-msgid "Delete Current User Group"
-msgstr "Diese Benutzergruppe löschen"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:562
-msgid "Delete this user"
-msgstr "Diesen Eintrag löschen"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:950
-msgid "Delete this user from group"
-msgstr "Diesen Benutzer aus der Gruppe löschen"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:677
-msgid "Deleting User Group"
-msgstr "Lösche Benutzergruppe"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:739
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:862
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:902
-msgid "Description: "
-msgstr "Beschreibung:"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/vvimport.php:317
-msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
-msgstr "Diese Seite bitte NICHT aktualisieren, da ansonsten die Datei nochmal importiert wird und Duplikate erzeugt werden"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:74
-msgid "Edit Current User Group"
-msgstr "Diese Benutzergruppe bearbeiten"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:860
-msgid "Edit User Group Successfully!"
-msgstr "Benutzergruppe erfolgreich geändert."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:127
-msgid "Edit template permissions"
-msgstr "Bearbeite Designvorlage-Berechtigungen"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:520
-msgid "Edit this user"
-msgstr "Bearbeite diesen Nutzer"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:461
-msgid "Edit user"
-msgstr "Benutzer bearbeiten"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:639
-#, php-format
-msgid "Editing user group (Owner: %s)"
-msgstr "Bearbeite Benutzergruppe (Eigentümer: %s)"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:828
-#, php-format
-msgid "Email to %s failed. Error Message:"
-msgstr "E-Mailversand an %s fehlgeschlagen. Fehlermeldung:"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/vvimport.php:85
-msgid "Exclude record IDs?"
-msgstr "Datensatz IDs auslassen?"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/vvexport.php:48
-msgid "Export VV file"
-msgstr "VV-Datei exportieren"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:747
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:754
-msgid "Failed to add Group!"
-msgstr "Konnte Gruppe nicht hinzufügen."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:867
-msgid "Failed to update!"
-msgstr "Fehler beim Aktualisieren der Daten!"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/vvexport.php:65
-msgid "File Extension"
-msgstr "Datei-Erweiterung"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/vvimport.php:83
-msgid "File:"
-msgstr "Datei:"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/vvexport.php:73
-msgid "For easy opening in MS Excel, change the extension to 'tab' or 'txt'"
-msgstr "Zum einfachen Öffnen in MS Excel ändere die Dateierweiterung in 'tab' oder 'txt'."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:694
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:735
-msgid "Group Name"
-msgstr "Gruppenname"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:748
-msgid "Group already exists!"
-msgstr "Gruppe existiert bereits."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:755
-msgid "Group name was not supplied!"
-msgstr "Es wurde kein Gruppenname angegeben."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/vvimport.php:303
-#, php-format
-msgid "Import Failed on Record %d because [%s]"
-msgstr "Import fehlgeschlagen für Datensatz %d . Grund: %s"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/vvimport.php:79
-msgid "Import VV file"
-msgstr "VV-Datei importieren"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/vvimport.php:104
-#: d:\web\xampp\htdocs\limesurvey/admin/vvimport.php:116
-msgid "Import a VV response data file"
-msgstr "VV-Umfrage-Datendatei importieren"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/vvimport.php:92
-msgid "Import as not finalized answers?"
-msgstr "Import als nicht abgeschlossene Antworten?"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/vvimport.php:317
-msgid "Important Note:"
-msgstr "Wichtige Anmerkung:"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:60
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:660
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:768
-msgid "Mail to all Members"
-msgstr "Nachricht an alle Mitglieder"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:330
-msgid "Manage Labels"
-msgstr "Beschriftungssets verwalten"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:821
-msgid "Message(s) sent successfully!"
-msgstr "Nachricht(en) erfolgreich versandt."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:622
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:642
-msgid "Name:"
-msgstr "Name:"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:442
-msgid "No of surveys"
-msgstr "Anzahl Umfragen"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:420
-msgid "Ownership was successfully changed."
-msgstr "User wurde erfolgreich übernommen."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/vvimport.php:268
-#, php-format
-msgid "Record ID %d was skipped because of duplicate ID."
-msgstr "Datensatz ID %d wurde wegen doppeltee ID ausgelassen."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/vvimport.php:89
-msgid "Renumber the new record."
-msgstr "Neue ID dem Datensatz zuweisen."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/vvimport.php:90
-msgid "Replace the existing record."
-msgstr "Alten Datensatz ersetzen."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/vvimport.php:88
-msgid "Report and skip the new record."
-msgstr "Zeige Fehler und überspringe den neuen Datensatz."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:669
-msgid "Reset"
-msgstr "Voreinstellung"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:668
-msgid "Send"
-msgstr "Sende"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:662
-msgid "Send me a copy:"
-msgstr "Sende eine Kopie an:"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:287
-msgid "Set User Rights"
-msgstr "Setze Benutzerrechte"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:532
-msgid "Set global permissions for this user"
-msgstr "Setze globale Berechtigungen für diesen Nutzer"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:551
-msgid "Set template permissions for this user"
-msgstr "Setze Vorlagenberechtigungen für diesen Benutzer"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:132
-msgid "Set templates that this user may access"
-msgstr "Vorlagen festsetzen, auf die dieser User Zugriff hat."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:664
-msgid "Subject:"
-msgstr "Betreff:"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:312
-msgid "SuperAdministrator"
-msgstr "Super-Administrator"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/vvimport.php:84
-msgid "Survey ID:"
-msgstr "Umfrage ID:"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:541
-msgid "Take ownership"
-msgstr "User übernehmen"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:149
-msgid "Template name"
-msgstr "Vorlagen-Name"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:822
-msgid "To:"
-msgstr "An:"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/vvimport.php:319
-msgid "Total records imported:"
-msgstr "Anzahl Datensätze importiert:"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:646
-msgid "Update User Group"
-msgstr "Benutzergruppe aktualisieren"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:327
-msgid "Use all/manage templates"
-msgstr "Nutze alle/verwalte Vorlagen"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:97
-msgid "User Groups"
-msgstr "Benutzergruppen"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:430
-msgid "User control"
-msgstr "Benutzer-Administration"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:742
-msgid "User group successfully added!"
-msgstr "Benutzergruppe erfolgreich hinzugefügt!"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/vvimport.php:87
-msgid "When an imported record matches an existing record ID:"
-msgstr "Wenn ein importierter Datensatz mit einer bestehenden Datensatz-ID übereinstimmt:"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/install/index.php:53
-#, php-format
-msgid "A database named \"%s\" already exists."
-msgstr "Eine Datenbank namens \"%s\" existiert bereits."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/install/createdb.php:100
-msgid "Could not create database"
-msgstr "Konnte Datenbank nicht erstellen"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/install/createdb.php:30
-#: d:\web\xampp\htdocs\limesurvey/admin/install/index.php:42
-msgid "Create Database"
-msgstr "Erstelle Datenbank"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/install/createdb.php:31
-msgid "Creating tables. This might take a moment..."
-msgstr "Erstelle Tabellen. Dies könnte einen Moment dauern..."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/install/createdb.php:65
-msgid "Database Information not provided. This script must be run from admin.php only."
-msgstr "Datenbank Information nicht angegeben. Dieses Skript muss von admin.php aufgerufen werden."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/install/createdb.php:50
-#, php-format
-msgid "Database `%s` has been successfully populated."
-msgstr "Die Tabellen in der Datenbank `%s` wurden erfolgreich erstellt."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/install/createdb.php:92
-msgid "Database has been created."
-msgstr "Datenbank wurde erstellt."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/install/index.php:54
-msgid "Do you want to populate that database now by creating the necessary tables?"
-msgstr "Möchten Du in der Datenbank nun die notwendigen Tabellen anlegen?"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/install/cmd_install.php:170
-msgid "Executing"
-msgstr "Ausführen"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/install/cmd_install.php:170
-msgid "Failed! Reason:"
-msgstr "Fehlgeschlagen! Grund:"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/install/index.php:35
-#: d:\web\xampp\htdocs\limesurvey/admin/install/index.php:51
-msgid "LimeSurvey Setup"
-msgstr "LimeSurvey Einrichten"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/install/index.php:39
-msgid "LimeSurvey can attempt to create this database for you."
-msgstr "LimeSurvey kann versuchen diese Datenbank für Dich zu erstellen."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/install/createdb.php:93
-msgid "Please click below to populate the database"
-msgstr "Bitte klicke auf 'Tabellen erstellen' um fortzufahren."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/install/createdb.php:34
-#: d:\web\xampp\htdocs\limesurvey/admin/install/createdb.php:95
-#: d:\web\xampp\htdocs\limesurvey/admin/install/index.php:46
-#: d:\web\xampp\htdocs\limesurvey/admin/install/index.php:56
-msgid "Populate Database"
-msgstr "Tabellen erstellen"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/install/index.php:38
-msgid "The database defined in config.php does not exist."
-msgstr "Die in config.php definierte Datenbank existiert nicht."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/install/index.php:37
-msgid "Welcome to LimeSurvey Setup!"
-msgstr "Willkommen zur LimeSurvey Installation!"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/install/index.php:40
-msgid "Your selected database name is:"
-msgstr "Dein gewählter Datenbankname ist:"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/remotecontrol/lsrc.helper.php:2112
-#: d:\web\xampp\htdocs\limesurvey/admin/remotecontrol/lsrc.helper.php:2117
-#, php-format
-msgid "Statistics Survey #%s"
-msgstr "Statistiken Umfrage #%s"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/remotecontrol/lsrc.helper.php:2111
-#: d:\web\xampp\htdocs\limesurvey/admin/remotecontrol/lsrc.helper.php:2116
-#, php-format
-msgid "This is your personal statistic sheet for survey #%s"
-msgstr "Die ist Deine persönliche Statistikseite für die Umfrage #%s"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:307
-msgid "Back to global settings"
-msgstr "Zurück zu den globalen Einstellungen"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:607
-#, php-format
-msgid "Buildnumber was successfully updated to %s."
-msgstr "Buildnummer wurde erfolgreich auf %s aktualisiert."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:196
-msgid "Change log"
-msgstr "Änderungslog"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:233
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:394
-msgid "Check again"
-msgstr "Nochmal prüfen"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:177
-msgid "Checking basic requirements..."
-msgstr "Überprüfe Basis-Anforderungen..."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:350
-msgid "Checking existing LimeSurvey files..."
-msgstr "Überprüfe bestehende LimeSurvey-Dateien..."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:660
-msgid "Click here to continue"
-msgstr "Klicke hier, um fortzufahren"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:255
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:413
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:495
-#, php-format
-msgid "ComfortUpdate step %s"
-msgstr "ComfortUpdate Schritt %s"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:414
-msgid "Creating DB & file backup"
-msgstr "Datenbank- & Dateisicherung"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:472
-msgid "Creating database backup... "
-msgstr "Sichere Datenbank ..."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:457
-msgid "Creating file backup... "
-msgstr "Sichere Dateien..."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:476
-msgid "DB backup created:"
-msgstr "Datenbanksicherung durchgeführt"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:481
-msgid "Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!"
-msgstr "Datenbanksicherungsfunktionalität ist momentan nicht verfügbar für Ihre Datenbank. Vor dem Fortfahren sichern Sie bitte Ihre Datenbank mit einer entsprechenden Sicherungssoftware."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:640
-#, php-format
-msgid "Database has been successfully upgraded to version %s"
-msgstr "Datenbank wurde erfolgreich auf Version %s aktualisiert."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:653
-msgid "Database type"
-msgstr "Datenbanktyp"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/upgrade-mssql.php:481
-#: d:\web\xampp\htdocs\limesurvey/admin/update/upgrade-mssqlnative.php:481
-#: d:\web\xampp\htdocs\limesurvey/admin/update/upgrade-mysql.php:586
-#: d:\web\xampp\htdocs\limesurvey/admin/update/upgrade-postgres.php:309
-#, php-format
-msgid "Database update finished (%s)"
-msgstr "Datenbankaktualisierung beendet (%s)"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:651
-msgid "Database upgrade"
-msgstr "Datenbank aktualisieren"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:237
-msgid "Everything looks alright. Please proceed to the next step."
-msgstr "Alles sieht gut aus. Bitte fahre mit dem nächsten Schritt fort."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:464
-msgid "File backup created:"
-msgstr "Dateisicherung durchgeführt:"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:569
-#, php-format
-msgid "File deleted: %s"
-msgstr "Datei gelöscht: %s"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:176
-msgid "If necessary the database will be updated."
-msgstr "Wenn notwendig wird die Datenbank aktualisiert."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/upgrade-all.php:29
-#, php-format
-msgid "Moving user templates to new location at %s..."
-msgstr "Verschiebe die Benutzertemplates in neues Verzeichnis (%s)..."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:581
-msgid "New files were successfully installed."
-msgstr "Neue Dateien wurden erfolgreich installiert."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:175
-msgid "New files will be downloaded and installed."
-msgstr "Neue Dateien werden heruntergeladen und installiert."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:481
-msgid "No DB backup created:"
-msgstr "Keine Datenbanksicherung erzeugt:"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:286
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:294
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:417
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:425
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:498
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:506
-msgid "On requesting the update information from limesurvey.org there has been an error:"
-msgstr "Beim Holen der Update-Informationen von Limesurvey.org ist ein Fehler aufgetreten:"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:306
-msgid "Please be patient and try again in about 10 minutes."
-msgstr "Bitte gedulde Dich ein wenig und versuche es erneut in 10 Minuten."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/upgrade-all.php:24
-msgid "Please be patient..."
-msgstr "Bitte gedulde dich..."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:608
-msgid "Please check any problems above - update was done."
-msgstr "Bitte überprüfe ob etwaige Probleme gemeldet wurden - Update wurde durchgeführt."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:484
-msgid "Please check any problems above and then proceed to the final step."
-msgstr "Bitte überprüfe ob Probleme gezeigt werden und fahre dann mit dem letzten Schritt fort."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:398
-msgid "Please check any problems above and then proceed to the next step."
-msgstr "Bitte überprüfe ob Probleme gezeigt werden und fahre dann mit dem nächsten Schritt fort."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:180
-msgid "Please enter a valid update-key:"
-msgstr "Bitte gebe einen gültigen Update-Schlüssel ein:"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:652
-msgid "Please verify the following information before continuing with the database upgrade:"
-msgstr "Bitte überprüfen die folgenden Informationen bevor Du mit dem Datenbank-Upgrade fortfährst:"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:240
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:400
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:486
-#, php-format
-msgid "Proceed to step %s"
-msgstr "Weiter zu Schritt %s"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:657
-msgid "Root URL"
-msgstr "Haupt-URL"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:181
-msgid "Save update key"
-msgstr "Speichere Update-Schlüssel"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:656
-msgid "Site name"
-msgstr "Sitename"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:655
-msgid "Table prefix"
-msgstr "Tabellen-Präfix"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:88
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:188
-#, php-format
-msgid "Tempdir %s is not writable"
-msgstr "Temporäres Verzeichnis %s ist nicht schreibbar"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:171
-msgid "The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey."
-msgstr "Das LimeSurvey ComfortUpdate ist eine einfache Prozedur, um schnell auf die letzte Version von LimeSurvey zu aktualisieren."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/upgrade-all.php:24
-msgid "The LimeSurvey database is being upgraded"
-msgstr "Die LimeSurvey Datenbank wird aktualisiert"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:379
-msgid "The following files will be modified or deleted but were already modified by someone else."
-msgstr "Die folgenden Dateien werden verändert oder gelöscht, sind aber bereits früher verändert worden."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:366
-msgid "The following files would be added by the update but already exist. This is very unusual and may be co-incidental."
-msgstr "Die folgenden Daten würden durch das Update hinzugefügt werden, aber existieren schon. Dies ist sehr ungewöhnlich und könnte ein Zufall sein."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:172
-msgid "The following steps will be done by this update:"
-msgstr "Die folgenden Schritte werden von diesem Update durchgeführt:"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:305
-msgid "The update server is currently busy. This usually happens when the update files for a new version are being prepared."
-msgstr "Der Update-Server ist momentan ausgelastet. Dies passiert normalerweise nur, wenn die notwendigen Update-Dateien für eine neue Version gerade vorbereitet werden."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:587
-msgid "There was a problem downloading the update file. Please try to restart the update process."
-msgstr "Es gab ein Problem beim Herunterladen der Update-Datei. Bitte starte den Update-Prozess neu."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:153
-msgid "There was a problem downloading the updater file. Please try to restart the update process."
-msgstr "Es gab ein Problem beim Herunterladen der Updater-Datei. Bitte starte den Update-Prozess neu."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:184
-msgid "Update key: Valid"
-msgstr "Update Schlüssel: Gültig"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:304
-msgid "Update server busy"
-msgstr "Aktualisierungserver nicht verfügbar"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:93
-#, php-format
-msgid "Updater file is not writable (%s). Please set according file permissions."
-msgstr "Updaterdatei ist nicht schreibbar (%s). Bitte setze entsprechende Dateiberechtigungen."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:193
-#, php-format
-msgid "Version file is not writable (%s). Please set according file permissions."
-msgstr "Versionsdatei ist nicht schreibbar (%s). Bitte setze entsprechende Dateiberechtigungen."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:353
-msgid "Warning: The following files/directories need to be updated but their permissions are set to read-only."
-msgstr "Warnung: Die folgenden Dateien/Verzeichnisse sind für eine Aktualisierung vorgesehen aber die Dateiberechtigungn sind auf Nur-Lesen gesetzt."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:367
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:380
-msgid "We recommend that these files should be replaced by the update procedure."
-msgstr "Wir empfehlen, dass die Aktualisierungsprozedur diese Dateien ersetzt."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:170
-msgid "Welcome to the ComfortUpdate"
-msgstr "Willkommen zum ComfortUpdate"
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:392
-msgid "When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed."
-msgstr "Beim Überprüfen Deiner Dateiberechtigungen wurden ein oder mehrere Probleme gefunden. Bitte überprüfe etwaige Fehlermeldungen und behebe diese bevor Du fortfahren kannst."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:231
-msgid "When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed."
-msgstr "Beim Überprüfen Deiner Installation wurden ein oder mehrere Probleme gefunden. Bitte überprüfe obige Fehlermeldungen und beheben diese, bevor Du fortfahren kannst."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:354
-msgid "You must set according write permissions on these filese before you can proceed. If you are unsure what to do please contact your system administrator for advice."
-msgstr "Du musst entsprechende Schreibbrechtigungen auf diesen Dateien setzen bevor Du fortfahren kannst. Wenn Du Dir unsicher bist, was zu tun ist, so frage bitte Deinen Systemadministrator um Rat."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:179
-msgid "You need an update key to run the comfort update. During the beta test of this update feature the key \"LIMESURVEYUPDATE\" can be used."
-msgstr "Du benötigst einen Aktualisierungsschlüssel um das ComfortUpdate zu starten. Während des Beta-Test kann der Schlüssel \"LIMESURVEYUPDATE\" genutzt werden."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:174
-msgid "Your DB and any changed files will be backed up."
-msgstr "Deine Datenbank und alle geänderten Dateien werden gesichert."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:173
-msgid "Your LimeSurvey installation is checked if the update can be run successfully."
-msgstr "Deine LimeSurvey Installation wird überprüft, ob das Update erfolgreich durchgeführt werden kann."
-
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:291
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:422
-#: d:\web\xampp\htdocs\limesurvey/admin/update/updater.php:503
-msgid "Your update key is invalid and was removed. "
-msgstr "Dein Aktualisierungsschlüssel war ungültig und wurde entfernt."
-
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:156
-msgid "Albanian"
-msgstr "Albanisch"
-
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:163
-msgid "Arabic"
-msgstr "Arabisch"
-
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:170
-msgid "Basque"
-msgstr "Baskisch"
-
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:177
-msgid "Belarusian"
-msgstr "Belarussisch"
-
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:184
-msgid "Bosnian"
-msgstr "Bosnisch"
-
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:191
-msgid "Bulgarian"
-msgstr "Bulgarisch"
-
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:198
-msgid "Catalan"
-msgstr "Katalan"
-
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:212
-msgid "Chinese (Simplified)"
-msgstr "Chinesisch (Vereinfacht)"
-
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:219
-msgid "Chinese (Traditional - Hong Kong)"
-msgstr "Chinesisch (Traditionell - Hong Kong)"
-
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:226
-msgid "Chinese (Traditional - Taiwan)"
-msgstr "Chinesisch - (Traditionell - Taiwan)"
-
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:71
-msgid "Comma (,)"
-msgstr "Komma (,)"
-
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:233
-msgid "Croatian"
-msgstr "Kroatisch"
-
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:240
-msgid "Czech"
-msgstr "Tschechisch"
-
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:247
-msgid "Danish"
-msgstr "Dänisch"
-
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:70
+#: classes/core/surveytranslator.php:70
 msgid "Dot (.)"
 msgstr "Punkt (.)"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:254
+#: classes/core/surveytranslator.php:71
+msgid "Comma (,)"
+msgstr "Komma (,)"
+
+#: classes/core/surveytranslator.php:156
+msgid "Albanian"
+msgstr "Albanisch"
+
+#: classes/core/surveytranslator.php:163
+msgid "Arabic"
+msgstr "Arabisch"
+
+#: classes/core/surveytranslator.php:170
+msgid "Basque"
+msgstr "Baskisch"
+
+#: classes/core/surveytranslator.php:177
+msgid "Belarusian"
+msgstr "Belarussisch"
+
+#: classes/core/surveytranslator.php:184
+msgid "Bosnian"
+msgstr "Bosnisch"
+
+#: classes/core/surveytranslator.php:191
+msgid "Bulgarian"
+msgstr "Bulgarisch"
+
+#: classes/core/surveytranslator.php:198
+msgid "Catalan"
+msgstr "Katalan"
+
+#: classes/core/surveytranslator.php:205
+msgid "Welsh"
+msgstr "Walisisch"
+
+#: classes/core/surveytranslator.php:212
+msgid "Chinese (Simplified)"
+msgstr "Chinesisch (Vereinfacht)"
+
+#: classes/core/surveytranslator.php:219
+msgid "Chinese (Traditional - Hong Kong)"
+msgstr "Chinesisch (Traditionell - Hong Kong)"
+
+#: classes/core/surveytranslator.php:226
+msgid "Chinese (Traditional - Taiwan)"
+msgstr "Chinesisch - (Traditionell - Taiwan)"
+
+#: classes/core/surveytranslator.php:233
+msgid "Croatian"
+msgstr "Kroatisch"
+
+#: classes/core/surveytranslator.php:240
+msgid "Czech"
+msgstr "Tschechisch"
+
+#: classes/core/surveytranslator.php:247
+msgid "Danish"
+msgstr "Dänisch"
+
+#: classes/core/surveytranslator.php:254
 msgid "Dutch"
 msgstr "Niederländisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:261
+#: classes/core/surveytranslator.php:261
 msgid "Dutch Informal"
 msgstr "Holländisch (Du-Form)"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:268
+#: classes/core/surveytranslator.php:268
 msgid "English"
 msgstr "Englisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:275
+#: classes/core/surveytranslator.php:275
 msgid "Estonian"
 msgstr "Estnisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:282
+#: classes/core/surveytranslator.php:282
 msgid "Finnish"
 msgstr "Finnisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:289
+#: classes/core/surveytranslator.php:289
 msgid "French"
 msgstr "Französisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:296
+#: classes/core/surveytranslator.php:296
 msgid "Galician"
 msgstr "Galizisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:303
+#: classes/core/surveytranslator.php:303
 msgid "German"
 msgstr "Deutsch (Sie-Form)"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:310
+#: classes/core/surveytranslator.php:310
 msgid "German informal"
 msgstr "Deutsch (Du-Form)"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:317
+#: classes/core/surveytranslator.php:317
 msgid "Greek"
 msgstr "Griechisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:331
-msgid "Hebrew"
-msgstr "Hebräisch"
-
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:324
+#: classes/core/surveytranslator.php:324
 msgid "Hindi"
 msgstr "Hindi"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:338
+#: classes/core/surveytranslator.php:331
+msgid "Hebrew"
+msgstr "Hebräisch"
+
+#: classes/core/surveytranslator.php:338
 msgid "Hungarian"
 msgstr "Ungarisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:345
+#: classes/core/surveytranslator.php:345
 msgid "Icelandic"
 msgstr "Isländisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:352
+#: classes/core/surveytranslator.php:352
 msgid "Indonesian"
 msgstr "Indonesisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:359
+#: classes/core/surveytranslator.php:359
 msgid "Irish"
 msgstr "Irisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:366
+#: classes/core/surveytranslator.php:366
 msgid "Italian"
 msgstr "Italienisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:373
+#: classes/core/surveytranslator.php:373
 msgid "Italian (formal)"
 msgstr "Italienisch (Förmlich)"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:380
+#: classes/core/surveytranslator.php:380
 msgid "Japanese"
 msgstr "Japanisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:387
+#: classes/core/surveytranslator.php:387
 msgid "Korean"
 msgstr "Koreanisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:401
-msgid "Latvian"
-msgstr "Lettisch"
-
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:394
+#: classes/core/surveytranslator.php:394
 msgid "Lithuanian"
 msgstr "Litauisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:408
+#: classes/core/surveytranslator.php:401
+msgid "Latvian"
+msgstr "Lettisch"
+
+#: classes/core/surveytranslator.php:408
 msgid "Macedonian"
 msgstr "Mazedonisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:415
+#: classes/core/surveytranslator.php:415
 msgid "Malay"
 msgstr "Malaiisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:422
+#: classes/core/surveytranslator.php:422
 msgid "Maltese"
 msgstr "Maltesisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:429
+#: classes/core/surveytranslator.php:429
 msgid "Norwegian (Bokmal)"
 msgstr "Norwegisch (Bokmal)"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:436
+#: classes/core/surveytranslator.php:436
 msgid "Norwegian (Nynorsk)"
 msgstr "Norwegisch (Nynorsk)"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:443
+#: classes/core/surveytranslator.php:443
 msgid "Persian"
 msgstr "Persisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:450
+#: classes/core/surveytranslator.php:450
 msgid "Polish"
 msgstr "Polnisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:457
+#: classes/core/surveytranslator.php:457
 msgid "Portuguese"
 msgstr "Portugiesisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:464
+#: classes/core/surveytranslator.php:464
 msgid "Portuguese (Brazilian)"
 msgstr "Portugiesisch (Brasilien)"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:471
+#: classes/core/surveytranslator.php:471
 msgid "Punjabi"
 msgstr "Panjabi"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:485
-msgid "Romanian"
-msgstr "Rumänisch"
-
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:478
+#: classes/core/surveytranslator.php:478
 msgid "Russian"
 msgstr "Russisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:513
-msgid "Serbian"
-msgstr "Serbisch"
+#: classes/core/surveytranslator.php:485
+msgid "Romanian"
+msgstr "Rumänisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:499
-msgid "Sinhala"
-msgstr "Singhalesisch"
-
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:492
+#: classes/core/surveytranslator.php:492
 msgid "Slovak"
 msgstr "Slovakisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:506
+#: classes/core/surveytranslator.php:499
+msgid "Sinhala"
+msgstr "Singhalesisch"
+
+#: classes/core/surveytranslator.php:506
 msgid "Slovenian"
 msgstr "Slovenisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:520
+#: classes/core/surveytranslator.php:513
+msgid "Serbian"
+msgstr "Serbisch"
+
+#: classes/core/surveytranslator.php:520
 msgid "Spanish"
 msgstr "Spanisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:527
+#: classes/core/surveytranslator.php:527
 msgid "Spanish (Mexico)"
 msgstr "Spanisch (Mexiko)"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:534
+#: classes/core/surveytranslator.php:534
 msgid "Swedish"
 msgstr "Schwedisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:548
-msgid "Thai"
-msgstr "Thailändisch"
-
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:541
+#: classes/core/surveytranslator.php:541
 msgid "Turkish"
 msgstr "Türkisch"
 
-#: d:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:556
+#: classes/core/surveytranslator.php:548
+msgid "Thai"
+msgstr "Thailändisch"
+
+#: classes/core/surveytranslator.php:556
 msgid "Urdu"
 msgstr "Urdu"
 
+#: classes/core/surveytranslator.php:563
+msgid "Vietnamese"
+msgstr "Vietnamesisch"
+
+#: classes/eval/ExpressionManager.php:134
+#, fuzzy
+msgid "Absolute value"
+msgstr "Absoluter Wert"
+
+#: classes/eval/ExpressionManager.php:135
+msgid "Arc cosine"
+msgstr "Arkuskosinus"
+
+#: classes/eval/ExpressionManager.php:136
+msgid "addslashes"
+msgstr "addslashes"
+
+#: classes/eval/ExpressionManager.php:137
+msgid "Arc sine"
+msgstr "Arkussinus"
+
+#: classes/eval/ExpressionManager.php:138
+msgid "Arc tangent"
+msgstr "Arkustangens"
+
+#: classes/eval/ExpressionManager.php:139
+msgid "Arc tangent of two variables"
+msgstr "Arkustangens zweier Variablen"
+
+#: classes/eval/ExpressionManager.php:140
+msgid "Round fractions up"
+msgstr "Aufrunden"
+
+#: classes/eval/ExpressionManager.php:141
+#, fuzzy
+msgid "Returns true(1) if it is a valid date in gregorian calendar"
+msgstr "Gib true(1) zurück, wenn es ein valides Datum des gregorianischen Kalenders ist"
+
+#: classes/eval/ExpressionManager.php:142
+msgid "Cosine"
+msgstr "Cosinus"
+
+#: classes/eval/ExpressionManager.php:143
+#, fuzzy
+msgid "Count the number of answered questions in the list"
+msgstr "Zähle die Anzahl der beantworteten Fragen in der Liste"
+
+#: classes/eval/ExpressionManager.php:144
+msgid "Format a local date/time"
+msgstr "Formatiere ein(e) lokale(s) Zeit/Datum"
+
+#: classes/eval/ExpressionManager.php:145
+#, fuzzy
+msgid "Calculates the exponent of e"
+msgstr "Berechnet den Exponenten von e"
+
+#: classes/eval/ExpressionManager.php:146
+msgid "Round fractions down"
+msgstr "Abrunden"
+
+#: classes/eval/ExpressionManager.php:147
+#, fuzzy
+msgid "Format a GMT date/time"
+msgstr "Formatiere ein(e) GTM-Datum/Zeit"
+
+#: classes/eval/ExpressionManager.php:148
+#, fuzzy
+msgid "Convert all HTML entities to their applicable characters (always uses ENT_QUOTES and UTF-8)"
+msgstr "Konvertiere alle HTML-Entitäten in ihre übertragbaren Zeichen (nutzt immer ENT_QUOTES und UTF-8)"
+
+#: classes/eval/ExpressionManager.php:149
+#, fuzzy
+msgid "Convert all applicable characters to HTML entities (always uses ENT_QUOTES and UTF-8)"
+msgstr "Konvertiere alle entsprechenden Zeichen in ihre HTML-Entitäten (nutzt immer ENT_QUOTES und UTF-8)"
+
+#: classes/eval/ExpressionManager.php:150
+#, fuzzy
+msgid "Convert special characters to HTML entities (always uses ENT_QUOTES and UTF-8)"
+msgstr "Konvertiere alle Zeichen zurück in ihre HTML-Sonderentitäten (nutzt immer ENT_QUOTES und UTF-8)"
+
+#: classes/eval/ExpressionManager.php:151
+#, fuzzy
+msgid "Convert special HTML entities back to characters (always uses ENT_QUOTES and UTF-8)"
+msgstr "Konvertiere alle HTML-Sonderentitäten zurück in ihre Zeichen (nutzt immer ENT_QUOTES und UTF-8)"
+
+#: classes/eval/ExpressionManager.php:152
+#, fuzzy
+msgid "Format a local time/date as integer"
+msgstr "Formatiere ein(e) lokale(s) Zeit/Datum zu einer Zahl"
+
+#: classes/eval/ExpressionManager.php:153
+msgid "Conditional processing"
+msgstr "Bedingte Bearbeitung"
+
+#: classes/eval/ExpressionManager.php:154
+#, fuzzy
+msgid "Join array elements with a string"
+msgstr "Verbinde Feld-Elemente mit einer Zeichenkette"
+
+#: classes/eval/ExpressionManager.php:155
+msgid "Get the integer value of a variable"
+msgstr "Den Zahlenwert einer Variable erhalten"
+
+#: classes/eval/ExpressionManager.php:156
+#, fuzzy
+msgid "Determine whether a variable is considered to be empty"
+msgstr "Bestimmen, ob eine Variable als leer betrachtet wird"
+
+#: classes/eval/ExpressionManager.php:157
+#, fuzzy
+msgid "Finds whether the type of a variable is float"
+msgstr "Herausfinden, ob der Variablentyp eine Fließkommazahl ist"
+
+#: classes/eval/ExpressionManager.php:158
+#, fuzzy
+msgid "Find whether the type of a variable is integer"
+msgstr "Herausfinden, ob der Variablentyp eine ganze Zahl ist"
+
+#: classes/eval/ExpressionManager.php:159
+msgid "Finds whether a value is not a number"
+msgstr "Herausfinden, ob ein Wert keine Zahl ist"
+
+#: classes/eval/ExpressionManager.php:160
+#, fuzzy
+msgid "Finds whether a variable is NULL"
+msgstr "Herausfinden, ob eine Variable NULL ist"
+
+#: classes/eval/ExpressionManager.php:161
+#, fuzzy
+msgid "Finds whether a variable is a number or a numeric string"
+msgstr "Herausfinden, ob eine Variable eine Nummer oder eine nummerische Zeichenkette ist"
+
+#: classes/eval/ExpressionManager.php:162
+#, fuzzy
+msgid "Find whether the type of a variable is string"
+msgstr "Herausfinden, ob eine Variable eine Zeichenkette ist"
+
+#: classes/eval/ExpressionManager.php:163
+#, fuzzy
+msgid "Return comma-separated list of values"
+msgstr "Gib eine mit Kommata getrennte Liste der Werte zurück"
+
+#: classes/eval/ExpressionManager.php:164
+msgid "Natural logarithm"
+msgstr "Natürlicher Logarithmus"
+
+#: classes/eval/ExpressionManager.php:165
+#, fuzzy
+msgid "Strip whitespace (or other characters) from the beginning of a string"
+msgstr "Entferne Leerzeichen (oder andere Zeichen) vom Anfang einer Zeichenkette"
+
+#: classes/eval/ExpressionManager.php:166
+msgid "Find highest value"
+msgstr "Finde höchsten Wert"
+
+#: classes/eval/ExpressionManager.php:167
+msgid "Find lowest value"
+msgstr "Finde niedrigsten Wert"
+
+#: classes/eval/ExpressionManager.php:168
+#, fuzzy
+msgid "Get UNIX timestamp for a date (each of the 6 arguments are optional)"
+msgstr "Erhalte den UNIX-Zeitstempel eines Datums (alle 6 Argumente sind optional)"
+
+#: classes/eval/ExpressionManager.php:169
+#, fuzzy
+msgid "Inserts HTML line breaks before all newlines in a string"
+msgstr "Fügt HTML-Zeilenumbrüche vor alle neuen Zeilen in einer Zeichenkette ein"
+
+#: classes/eval/ExpressionManager.php:170
+msgid "Format a number with grouped thousands"
+msgstr "Formatiere eine Zahl mit Tausender-Gruppierung"
+
+#: classes/eval/ExpressionManager.php:171
+msgid "Get value of pi"
+msgstr "Erhalte den Wert von pi"
+
+#: classes/eval/ExpressionManager.php:172
+#, fuzzy
+msgid "Exponential expression"
+msgstr "Exponentieller Ausdruck"
+
+#: classes/eval/ExpressionManager.php:173
+#, fuzzy
+msgid "Convert a quoted-printable string to an 8 bit string"
+msgstr "Konvertiere eine quotiert-druckbare Zeichenkette in eine 8-Bit-Zeichenkette"
+
+#: classes/eval/ExpressionManager.php:174
+#, fuzzy
+msgid "Convert a 8 bit string to a quoted-printable string"
+msgstr "Konvertiere eine 8-Bit-Zeichenkette in eine quotiert-druckbare Zeichenkette"
+
+#: classes/eval/ExpressionManager.php:175
+#, fuzzy
+msgid "Quote meta characters"
+msgstr "Quotiere Meta-Zeichen"
+
+#: classes/eval/ExpressionManager.php:176
+#, fuzzy
+msgid "Generate a random integer"
+msgstr "Generiere eine Zufallszahl"
+
+#: classes/eval/ExpressionManager.php:177
+#, fuzzy
+msgid "Compare a string to a regular expression pattern"
+msgstr "Vergleiche eine Zeichenkette mit einem regulären Ausdruck"
+
+#: classes/eval/ExpressionManager.php:178
+#, fuzzy
+msgid "Rounds a number to an optional precision"
+msgstr "Rundet eine Zahl auf eine optionale Prezision"
+
+#: classes/eval/ExpressionManager.php:179
+#, fuzzy
+msgid "Strip whitespace (or other characters) from the end of a string"
+msgstr "Entfernt Leerzeichen (oder andere Zeichen) vom Ende einer Zeichenkette"
+
+#: classes/eval/ExpressionManager.php:180
+msgid "Sine"
+msgstr "Sinus"
+
+#: classes/eval/ExpressionManager.php:181
+msgid "Return a formatted string"
+msgstr "Gib eine formatierte Zeichenkette zurück"
+
+#: classes/eval/ExpressionManager.php:182
+msgid "Square root"
+msgstr "Quadratwurzel"
+
+#: classes/eval/ExpressionManager.php:183
+#, fuzzy
+msgid "Calculate the Sample Standard Deviation for the list of numbers"
+msgstr "Berechne die Standardabweichung der Stichprobe für die Liste von Nummern"
+
+#: classes/eval/ExpressionManager.php:184
+msgid "Pad a string to a certain length with another string"
+msgstr "Fülle eine Zeichenkette bis zu einer bestimmten Länge mit einer anderen Zeichenkette"
+
+#: classes/eval/ExpressionManager.php:185
+msgid "Repeat a string"
+msgstr "Eine Zeichenfolge wiederholen"
+
+#: classes/eval/ExpressionManager.php:186
+msgid "Replace all occurrences of the search string with the replacement string"
+msgstr "Ersetze alle Vorkommnisse der gesuchten Zeichenkette mit der ersetzenden Zeichenkette"
+
+#: classes/eval/ExpressionManager.php:187
+#, fuzzy
+msgid "Binary safe case-insensitive string comparison"
+msgstr "Binär-sicherer Vergleich von Zeichenketten mit Achtung von Groß- und Kleinschreibung"
+
+#: classes/eval/ExpressionManager.php:188
+#, fuzzy
+msgid "Binary safe string comparison"
+msgstr "Binär-sicherer Vergleich von Zeichenketten"
+
+#: classes/eval/ExpressionManager.php:189
+msgid "Strip HTML and PHP tags from a string"
+msgstr "HTML- und PHP-Tags aus einer Zeichenkette entfernen"
+
+#: classes/eval/ExpressionManager.php:190
+#, fuzzy
+msgid "Find position of first occurrence of a case-insensitive string"
+msgstr "Finde die Position des ersten Vorkommens der Zeichenkette ohne Beachtung von Groß- und Kleinschreibung"
+
+#: classes/eval/ExpressionManager.php:191
+msgid "Un-quotes a quoted string"
+msgstr "Einen kommentierten String entkommentieren"
+
+#: classes/eval/ExpressionManager.php:192
+msgid "Case-insensitive strstr"
+msgstr "strstr ohne Rücksichtnahme auf Groß- und Kleinschreibung"
+
+#: classes/eval/ExpressionManager.php:193
+msgid "Get string length"
+msgstr "Erhalte die Länge der Zeichenkette"
+
+#: classes/eval/ExpressionManager.php:194
+#, fuzzy
+msgid "Find position of first occurrence of a string"
+msgstr "Position des ersten Auftauchens einer Zeichenkette"
+
+#: classes/eval/ExpressionManager.php:195
+msgid "Reverse a string"
+msgstr "Kehre eine Zeichenkette um"
+
+#: classes/eval/ExpressionManager.php:196
+msgid "Find first occurrence of a string"
+msgstr "Erstes Auftauchen einer Zeichenkette finden"
+
+#: classes/eval/ExpressionManager.php:197
+msgid "Make a string lowercase"
+msgstr "Eine Zeichenkette in Kleinbuchstaben umwandeln"
+
+#: classes/eval/ExpressionManager.php:198
+msgid "Make a string uppercase"
+msgstr "Eine Zeichenkette in Großbuchstaben umwandeln"
+
+#: classes/eval/ExpressionManager.php:199
+msgid "Return part of a string"
+msgstr "Gibt einen Teil einer Zeichenkette zurück"
+
+#: classes/eval/ExpressionManager.php:200
+#, fuzzy
+msgid "Calculate the sum of values in an array"
+msgstr "Berechne die Summe der Werte in einem Feld"
+
+#: classes/eval/ExpressionManager.php:201
+msgid "Tangent"
+msgstr "Tangens"
+
+#: classes/eval/ExpressionManager.php:202
+#, fuzzy
+msgid "Return current UNIX timestamp"
+msgstr "Gebe aktuellen Unix-Zeitstempel zurück"
+
+#: classes/eval/ExpressionManager.php:203
+#, fuzzy
+msgid "Strip whitespace (or other characters) from the beginning and end of a string"
+msgstr "Entferne Leerzeichen (oder andere Zeichen) vom Anfang und vom Ende einer Zeichenkette"
+
+#: classes/eval/ExpressionManager.php:204
+#, fuzzy
+msgid "Uppercase the first character of each word in a string"
+msgstr "Schreibe den Anfangsbuchstaben jedes Wortes der Zeichenkette groß"
+
+#: classes/eval/LimeExpressionManager.php:523
+#: classes/eval/LimeExpressionManager.php:907
+msgid "Total of all entries must equal"
+msgstr "Summe aller Einträge muss sein gleich"
+
+#: classes/eval/LimeExpressionManager.php:608
+msgid "The minimum number of answers for this question is"
+msgstr "The minimale Anzahl an Antworten für diese Frage ist"
+
+#: classes/eval/LimeExpressionManager.php:646
+#: classes/eval/LimeExpressionManager.php:715
+msgid "Total of all entries must be at least"
+msgstr "Summe aller Einträge müssen größer sein als"
+
+#: classes/eval/LimeExpressionManager.php:677
+msgid "The entry must be at least"
+msgstr "Die eingegebene Zahl muss sein mindestens"
+
+#: classes/eval/LimeExpressionManager.php:762
+msgid "The maximum number of answers for this question is"
+msgstr "The maximale Anzahl an Antworten für diese Frage ist "
+
+#: classes/eval/LimeExpressionManager.php:800
+#: classes/eval/LimeExpressionManager.php:869
+msgid "Total of all entries must not exceed"
+msgstr "Summe aller Einträge darf nicht größer sein als"
+
+#: classes/eval/LimeExpressionManager.php:831
+msgid "The entry must not exceed"
+msgstr "Die Eingabe darf nicht größer sein als"
+
+#: classes/eval/LimeExpressionManager.php:963
+msgid "All entries must conform to this regular expression:"
+msgstr "Alle Eingaben müssen diesem regulären Ausdruch gerecht werden:"
+
+#: classes/eval/LimeExpressionManager.php:3428
+msgid "This question is mandatory"
+msgstr "Bitte beantworte diese Frage"
+
+#: classes/eval/LimeExpressionManager.php:3440
+msgid "Please check at least one item."
+msgstr "Bitte mache mindestens ein Kreuz."
+
+#: classes/eval/LimeExpressionManager.php:3450
+#, php-format
+msgid "If you choose '%s' you must provide a description."
+msgstr "Wenn Du '%s' wählst, musst Du eine Beschreibung angeben."
+
+#: classes/eval/LimeExpressionManager.php:3472
+msgid "Please complete all parts"
+msgstr "Bitte beantworte alle Bereiche innerhalb der Fragen."
+
+#: classes/eval/LimeExpressionManager.php:3479
+msgid "Please check the items"
+msgstr "Bitte überprüfe die Einträge"
+
+#: classes/eval/LimeExpressionManager.php:3486
+msgid "Please rank all items"
+msgstr "Bitte bringe alle Elemente in eine Rangfolge"
+
+#: classes/eval/LimeExpressionManager.php:3493
+msgid "Please answer this question"
+msgstr "Bitte beantworte diese Frage"
+
+#: classes/eval/LimeExpressionManager.php:5011
+msgid "Invalid question - probably missing sub-questions or language-specific settings for language "
+msgstr "Ungültige Frage - möglicherweise fehlen Unterfragen der sprachspezifische Einstellungen für diese Sprache"
+
+#: classes/eval/LimeExpressionManager.php:5016
+msgid "Name [ID]"
+msgstr "Name [ID]"
+
+#: classes/eval/LimeExpressionManager.php:5016
+msgid "Relevance [Validation] (Default)"
+msgstr "Relevanz [Validierung] (Standard)"
+
+#: classes/eval/LimeExpressionManager.php:5016
+msgid "Text [Help] (Tip)"
+msgstr "Text [Hilfe] (Hinweis)"
+
+#: classes/eval/LimeExpressionManager.php:5182
+msgid "This variable name has already been used."
+msgstr "Dieser Variablenname wurde schon einmal benutzt."
+
+#: classes/eval/LimeExpressionManager.php:5194
+msgid "This variable name contains invalid characters."
+msgstr "Dieser Variablenname enthält ungültige Zeichen."
+
+#: classes/eval/LimeExpressionManager.php:5361
+msgid " Question(s) contain errors that need to be corrected"
+msgstr "%d Fragen haben Fehler, die korrigiert werden müssen."
+
+#: classes/eval/LimeExpressionManager.php:5367
+msgid "No syntax errors detected in this survey"
+msgstr "Keine Syntax-Fehler gefunden in dieser Umfrage"
+
+#: classes/eval/LimeExpressionManager.php:5370
+msgid "This group, by itself, does not contain any syntax errors"
+msgstr "Diese Gruppe, an sich, enthält keine Syntaxfehler."
+
+#: classes/eval/LimeExpressionManager.php:5373
+msgid "This question, by itself, does not contain any syntax errors"
+msgstr "Diese Frage, an sich, enthält keine Syntaxfehler."
+
+#: classes/eval/test/survey_logic_file.php:131
+msgid "Logic File for Survey # "
+msgstr "Logikdatei für die Umfrage ID %s"
+
+#~ msgid "Click here to print your answers."
+#~ msgstr "Klicke hier um Deine Antworten auszudrucken"
+
+#~ msgid "Code filter"
+#~ msgstr "Code Filter"
+
+#~ msgid "Filter the available answers by this value"
+#~ msgstr "Filtere die verfügbaren Antworten mit diesem Wert"
+
+#~ msgid "One or more uploaded files do not satisfy the criteria"
+#~ msgstr "Ein oder mehrere hochgeladene Dateien erfüllen nicht die Kriterien"
+
+#~ msgid "Cannot submit results - there are none to submit."
+#~ msgstr "Kann keine Ergebnisse abschicken, da keine vorhanden sind."
+
 #~ msgid ""
-#~ "Dear {FIRSTNAME},\n"
-#~ "\n"
-#~ "You have been invited to participate in a survey.\n"
-#~ "\n"
-#~ "The survey is titled:\n"
-#~ "\"{SURVEYNAME}\"\n"
-#~ "\n"
-#~ "\"{SURVEYDESCRIPTION}\"\n"
-#~ "\n"
-#~ "To participate, please click on the link below.\n"
-#~ "\n"
-#~ "Sincerely,\n"
-#~ "\n"
-#~ "{ADMINNAME} ({ADMINEMAIL})\n"
-#~ "\n"
-#~ "----------------------------------------------\n"
-#~ "Click here to do the survey:\n"
-#~ "{SURVEYURL}"
+#~ "If you receive this message in the middle of completing a survey, you "
+#~ "should choose '<- BACK' on your browser and then refresh/reload the "
+#~ "previous page. While you will lose answers from the last page all your "
+#~ "others will still exist. This problem can occur if the webserver is "
+#~ "suffering from overload or excessive use. We apologise for this problem."
 #~ msgstr ""
-#~ "Hallo {FIRSTNAME},\n"
-#~ "\n"
-#~ "Hiermit möchten wir Dich zu einer Umfrage einladen.\n"
-#~ "\n"
-#~ "Der Titel der Umfrage ist \n"
-#~ "'{SURVEYNAME}'\n"
-#~ "\n"
-#~ "'{SURVEYDESCRIPTION}'nnUm an dieser Umfrage teilzunehmen, klicke bitte "
-#~ "auf den unten stehenden Link.nn Mit freundlichen Grüßen,\n"
-#~ "\n"
-#~ "{ADMINNAME} ({ADMINEMAIL})\n"
-#~ "\n"
-#~ "----------------------------------------------\n"
-#~ "Klicken hier um die Umfrage zu starten:\n"
-#~ "{SURVEYURL}"
+#~ "Wenn Du diese Nachricht während einer Umfrage erhälst, solltest Du den "
+#~ "'Zurück'-Button in Deinem Browser nutzen and dann die vorherige Seite neu "
+#~ "laden. Obwohl Du die Antworten von der letzten Seite verlieren könntest, "
+#~ "werden Deine anderen vorherigen Antworten noch vorhanden sein. Diese "
+#~ "Problem kann auftauchen, wenn der Server überlastet ist. Wir bitten um "
+#~ "Entschuldigung."
+
+#~ msgid ""
+#~ "One or more files are either not in the proper format or exceed the "
+#~ "maximum file size limitation. You cannot proceed until these answers are "
+#~ "valid."
+#~ msgstr ""
+#~ "Ein oder mehrere Dateien sind nicht im korrekten Format oder "
+#~ "überschreiten die maximale Dateigröße.Du kannst nicht fortfahren, bevor "
+#~ "du dies korrigiert hast."
+
+#~ msgid ""
+#~ "Thank you for saving your survey in progress. You can return to the "
+#~ "survey at the same point you saved it at any time using the link from "
+#~ "this or any previous email sent to regarding this survey."
+#~ msgstr ""
+#~ "Vielen Dank für das Zwischenspeichern deiner Umfrage. Du kannst zu der "
+#~ "Umfrage jederzeit zurückkehren, indem du den Link aus dieser oder jeder "
+#~ "vorherigen E-Mail bzgl. dieser Umfrage nutzt."
+
+#~ msgid ""
+#~ "This error can occur if you have already submitted your responses and "
+#~ "pressed 'refresh' on your browser. In this case, your responses have "
+#~ "already been saved."
+#~ msgstr ""
+#~ "Diese Fehler kann auftreten, wenn Du Deine Antworten schon abgesendet "
+#~ "hast und in Deinem Browser auf 'Aktualisieren' geklickt hast. In diesem "
+#~ "Fall sind Deine Antworten schon gespeichert worden. "
+
+#~ msgid "See conditions:"
+#~ msgstr "Siehe Bedingungen:"
+
+#~ msgid ""
+#~ "Some questions rely on this question's answers. You can't move this "
+#~ "question below groupId:"
+#~ msgstr ""
+#~ "Einige Fragen beziehen sich auf die Antworten in dieser Frage. Du kannst "
+#~ "diese Frage nicht vor die folgende GruppenID schieben."
+
+#~ msgid ""
+#~ "This question relies on other question's answers and can't be moved above "
+#~ "groupId:"
+#~ msgstr ""
+#~ "Diese Frage bezieht sich durch Bedingungen auf die Antworten andere "
+#~ "Fragen und kann daher in der Reihenfolge nicht hinter folgende GruppenID "
+#~ "verschoben werden:"
+
+#~ msgid "in position"
+#~ msgstr "an Position"
+
+#~ msgid "Are you sure you want regenerate the question codes?"
+#~ msgstr ""
+#~ "Bist Du wirklich sicher, dass Du die Fragencodes neu erzeugen lassen "
+#~ "willst?"
+
+#~ msgid "Disabled - Delete current question"
+#~ msgstr "Deaktiviert - Diese Frage löschen"
+
+#~ msgid ""
+#~ "Impossible to delete this group because there is at least one question "
+#~ "having a condition on its content"
+#~ msgstr ""
+#~ "Es ist unmöglich diese Gruppe zu löschen, da es mindestens eine Frage "
+#~ "gibt, die Bedingungen zu eine Frage in dieser Gruppe hat."
+
+#~ msgid ""
+#~ "It's impossible to delete this question because there is at least one "
+#~ "question having a condition on it."
+#~ msgstr ""
+#~ "Es ist unmöglich diese Frage zu löschen, da mindestens eine Frage eine "
+#~ "Bedingung darauf gesetzt hat."
+
+#~ msgid "Other questions having conditions on this question:"
+#~ msgstr "Fragen mit Bedingungen basierend auf dieser Frage:"
+
+#~ msgid "Questions with conditions to this group"
+#~ msgstr "Fragen mit Bedingungen zu dieser Gruppe"
+
+#~ msgid "Current group is using conditional questions"
+#~ msgstr "Die aktuelle Gruppe nutzt Fragen mit Bedingungen"
+
+#~ msgid "Current survey has questions with conditions outside their own group"
+#~ msgstr ""
+#~ "Die aktuelle Umfrage besitzt Fragen mit Bedingungen ausserhalb der "
+#~ "eigenen Gruppe."
+
+#~ msgid "Group %s depends on group %s, see the marked conditions on:"
+#~ msgstr "Gruppe %s ist abhängig von Gruppe %s, siehe Bedingungen von:"
+
+#~ msgid "QID"
+#~ msgstr "QID"
+
+#~ msgid ""
+#~ "Re-ordering groups is restricted to ensure that questions on which "
+#~ "conditions are based aren't reordered after questions having the "
+#~ "conditions set"
+#~ msgstr ""
+#~ "Das Verändern der Gruppen-Reihenfolge ist bestimmten Beschränkungen "
+#~ "unterworfen, um sicherzustellen, dass Fragen mit Bedingungen nicht vor "
+#~ "Fragen verschoben werden von denen die Bedingung abhängt."
+
+#~ msgid ""
+#~ "Re-ordering questions in this group is restricted to ensure that "
+#~ "questions on which conditions are based aren't reordered after questions "
+#~ "having the conditions set"
+#~ msgstr ""
+#~ "Das Verändern der Reihenfolge in dieser Gruppe ist bestimmten "
+#~ "Beschränkungen unterworfen, um sicherzustellen, dass Fragen mit "
+#~ "Bedingungen nicht vor Fragen verschoben werden von denen die Bedingung "
+#~ "abhängt."
+
+#~ msgid "See the conditions marked on the following questions"
+#~ msgstr "Bedingungen für diese Frage setzten"
+
+#~ msgid "The following groups are concerned"
+#~ msgstr "Die folgenden Gruppen sind betroffen"
+
+#~ msgid "[Dependency on another question (ID $4)]"
+#~ msgstr "[Abhängigkeit von einer anderen Frage (ID $4)]"
 
 #~ msgid "Please specify"
 #~ msgstr "Bitte wählen"

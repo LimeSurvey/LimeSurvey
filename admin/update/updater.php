@@ -12,7 +12,7 @@
  *
  * $Id: updater.php 8987 2010-07-27 12:59:34Z c_schmitz $
  */
-list(,$updaterversion)=explode(' ','$Rev$');  // this is updated by subversion so don't change this string
+list(,$updaterversion)=explode(' ','$Rev: 11664 $');  // this is updated by subversion so don't change this string
 
 if (isset($_REQUEST['update'])) die();
 

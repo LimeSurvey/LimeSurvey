@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: export_data_r.php 12179 2012-01-24 13:27:31Z adevries $
  */
 
 // Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
@@ -74,7 +74,7 @@ $typeMap = array(
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 $filterstate = incompleteAnsFilterstate();
 
-$headerComment = '#$Rev$' . " $filterstate.\n";
+$headerComment = '#$Rev: 12179 $' . " $filterstate.\n";
 
 if (isset($_GET['dldata'])) $subaction = "dldata";
 if (isset($_GET['dlstructure'])) $subaction = "dlstructure";

@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id$
+*	$Id: common_functions.php 12418 2012-02-09 11:54:10Z mennodekker $
 *	Files Purpose: lots of common functions
 */
 
@@ -2857,7 +2857,7 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
     $surveyid=sanitize_int($surveyid);
     //checks to see if fieldmap has already been built for this page.
     if (isset($timingsFieldMap[$surveyid][$style][$clang->langcode]) && $force_refresh==false) {
-        return $timingsFielsdMap[$surveyid][$style][$clang->langcode];
+        return $timingsFieldMap[$surveyid][$style][$clang->langcode];
     }
 
     //do something
@@ -4513,7 +4513,6 @@ function SendEmailMessage($mail, $body, $subject, $to, $from, $sitename, $ishtml
         {
             $mail->AddAddress($singletoemail);
         }
-<<<<<<< HEAD
     }
     if (is_array($customheaders))
     {
@@ -4560,7 +4559,7 @@ function SendEmailMessage($mail, $body, $subject, $to, $from, $sitename, $ishtml
 
 
 /**
-*  This functions removes all HTML tags, Javascript, CRs, linefeeds  and other strange chars from a given text. CRs, linefeeds are not removed for .csv files
+*  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
 *
 * @param string $sTextToFlatten  Text you want to clean
 * @param boolan $bDecodeHTMLEntities If set to true then all HTML entities will be decoded to the specified charset. Default: false
@@ -4568,19 +4567,25 @@ function SendEmailMessage($mail, $body, $subject, $to, $from, $sitename, $ishtml
 *
 * @return string  Cleaned text
 */
-function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF-8', $bStripNewLines=true)
+function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF-8', $bStripNewLines=true, $keepSpan=false)
 {
     $sNicetext = strip_javascript($sTextToFlatten);
-    $sNicetext = strip_tags($sNicetext);
-
-    if ($bStripNewLines ){
-        $sNicetext = preg_replace('~\Ru~', '', $sNicetext);
+    // When stripping tags, add a space before closing tags so that strings with embedded HTML tables don't get concatenated
+    $sNicetext = str_replace('</',' </', $sNicetext);
+    if ($keepSpan) {
+        // Keep <span> so can show EM syntax-highlighting; add space before tags so that word-wrapping not destroyed when remove tags.
+        $sNicetext = strip_tags($sNicetext,'<span><table><tr><td><th>');
     }
-    else // unify newlines
+    else {
+        $sNicetext = strip_tags($sNicetext);
+    }
+    if ($bStripNewLines ){  // strip new lines
+        $sNicetext = preg_replace(array('~\Ru~','/\s{2,}/'),array(' ',' '), $sNicetext);
+    }
+    else // unify newlines to \r\n
     {
         $sNicetext = preg_replace(array('~\Ru~'), array("\r\n"), $sNicetext);
     }
->>>>>>> refs/heads/dev_tms
     if ($bDecodeHTMLEntities==true)
     {
         $sNicetext = str_replace('&nbsp;',' ', $sNicetext); // html_entity_decode does not convert &nbsp; to spaces
@@ -7040,8 +7045,6 @@ function aGetFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonor
             if ($oldqid !== $fname['qid'])
             {
                 $oldqid = $fname['qid'];
-                if (($bHonorConditions && LimeExpressionManager::QuestionIsRelevant($fname['qid'])) || !$bHonorConditions)
-                {
                 if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2']))
                 {
                     $aResultTable['qid_'.$fname['sid'].'X'.$fname['gid'].'X'.$fname['qid']]=array($fname['question'],'','');
@@ -7052,13 +7055,6 @@ function aGetFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonor
                     $aResultTable[$fname['fieldname']]=array($question,'',$answer);
                     continue;
                 }
-
-            }
-                else
-                {
-                    continue;
-        }
-
             }
         }
         else

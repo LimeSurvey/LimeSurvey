@@ -9,7 +9,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: lime-slider.js 12404 2012-02-08 19:30:28Z tmswhite $
  */
 
 

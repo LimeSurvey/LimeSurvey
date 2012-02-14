@@ -1,4 +1,4 @@
-// $Id$
+// $Id: answers.js 12442 2012-02-11 00:07:00Z shnoulle $
 var labelcache=[];
 $(document).ready(function(){
        $('.tab-page:first .answertable tbody').sortable({   containment:'parent',

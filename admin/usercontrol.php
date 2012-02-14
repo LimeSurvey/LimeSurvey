@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: usercontrol.php 12260 2012-01-31 00:32:32Z c_schmitz $
  */
 
 // Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
@@ -383,6 +383,8 @@ if (!isset($_SESSION['loginID']))
             $_SESSION['user'] = $fields['users_name'];
             $_SESSION['adminlang'] = $fields['lang'];
             $_SESSION['htmleditormode'] = $fields['htmleditormode'];
+            $_SESSION['questionselectormode'] = $fields['questionselectormode'];
+            $_SESSION['templateeditormode'] = $fields['templateeditormode'];
             $_SESSION['dateformat'] = $fields['dateformat'];
             $_SESSION['checksessionpost'] = sRandomChars(10);
             $_SESSION['pw_notify']=false;

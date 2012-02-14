@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: export_data_spss.php 11664 2011-12-16 05:19:42Z tmswhite $
  */
 
 // Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
@@ -93,7 +93,7 @@ switch ($spssver) {
 
 }
 
-$headerComment = '*$Rev$' . " $filterstate $spssver.\n";
+$headerComment = '*$Rev: 11664 $' . " $filterstate $spssver.\n";
 
 if (isset($_GET['dldata'])) $subaction = "dldata";
 if (isset($_GET['dlstructure'])) $subaction = "dlstructure";

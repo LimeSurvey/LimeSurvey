@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: index.php 12361 2012-02-05 19:40:30Z tmswhite $
  */
 
 // Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB

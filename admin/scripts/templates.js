@@ -1,4 +1,4 @@
-// $Id$
+// $Id: templates.js 12211 2012-01-26 17:02:27Z shnoulle $
 // based on TTabs from http://interface.eyecon.ro/
 
 $(document).ready(function(){

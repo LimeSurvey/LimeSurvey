@@ -578,7 +578,6 @@ function db_upgrade($oldversion) {
     {
         upgrade_timing_tables146();
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='146' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
-<<<<<<< HEAD
     }
 
      if ($oldversion < 147)
@@ -650,8 +649,6 @@ function db_upgrade($oldversion) {
         upgrade_question_attributes148();
         fixSubquestions();
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='148' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
-=======
->>>>>>> refs/heads/dev_tms
     }
     if ($oldversion < 149)
     {
@@ -665,7 +662,6 @@ function db_upgrade($oldversion) {
         ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();@ob_flush();
         modify_database("","update `prefix_settings_global` set `stg_value`='149' where stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
 
-<<<<<<< HEAD
     }
     if ($oldversion < 150)
     {
@@ -713,131 +709,6 @@ function db_upgrade($oldversion) {
 
         modify_database("", "UPDATE `prefix_settings_global` SET stg_value='155' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
     }
-<<<<<<< HEAD
-=======
-     if ($oldversion < 147)
-    {
-        modify_database("", "ALTER TABLE `prefix_users` ADD `templateeditormode` VARCHAR( 7 )NOT NULL DEFAULT 'default' AFTER `htmleditormode`"); echo $modifyoutput; flush();@ob_flush();
-        modify_database("", "ALTER TABLE `prefix_users` ADD `questionselectormode` VARCHAR( 7 )NOT NULL DEFAULT 'default' AFTER `templateeditormode`"); echo $modifyoutput; flush();@ob_flush();
-        modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='147' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
-    }
-    if ($oldversion < 148)
-    {
-        modify_database("","ALTER TABLE `prefix_users` ADD `participant_panel` tinyint(1) NOT NULL default '0'"); echo $modifyoutput; flush();@ob_flush();
-        modify_database("","CREATE TABLE `prefix_participants` (`participant_id` varchar(50) NOT NULL,
-                                                                `firstname` varchar(40) default NULL,
-                                                                `lastname` varchar(40) default NULL,
-                                                                `email` varchar(80) collate utf8_unicode_ci default NULL,
-                                                                `language` varchar(40) default NULL,
-                                                                `blacklisted` varchar(1) NOT NULL,
-                                                                `owner_uid` int(20) NOT NULL ,
-                                                                PRIMARY KEY  (`participant_id`)
-                                                                )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();@ob_flush();
-
-        modify_database("","CREATE TABLE `prefix_participant_attribute` (
-        `participant_id` varchar(50) NOT NULL,
-        `attribute_id` int(11) NOT NULL,
-        `value` varchar(50) NOT NULL,
-        PRIMARY KEY  (`participant_id`,`attribute_id`)
-        )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();@ob_flush();
-
-
-        modify_database("","CREATE TABLE `prefix_participant_attribute_names` (
-        `attribute_id` int(11) NOT NULL AUTO_INCREMENT,
-        `attribute_type` varchar(4) NOT NULL,
-        `visible` char(5) NOT NULL,
-        PRIMARY KEY  (`attribute_id`,`attribute_type`)
-        )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();@ob_flush();
-
-        modify_database("","CREATE TABLE `prefix_participant_attribute_names_lang` (
-        `attribute_id` int(11) NOT NULL,
-        `attribute_name` varchar(30) NOT NULL,
-        `lang` varchar(20) NOT NULL,
-        PRIMARY KEY  (`attribute_id`,`lang`)
-        )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();@ob_flush();
-
-        modify_database("","CREATE TABLE `prefix_participant_attribute_values` (
-        `attribute_id` int(11) NOT NULL,
-        `value_id` int(11) NOT NULL AUTO_INCREMENT,
-        `value` varchar(20) NOT NULL,
-        PRIMARY KEY  (`value_id`)
-        )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();@ob_flush();
-
-        modify_database("","CREATE TABLE `prefix_participant_shares` (
-        `participant_id` varchar(50) NOT NULL,
-        `share_uid` int(11) NOT NULL,
-        `date_added` datetime NOT NULL,
-        `can_edit` varchar(5) NOT NULL,
-        PRIMARY KEY  (`participant_id`,`share_uid`)
-        )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();@ob_flush();
-
-        modify_database("","CREATE TABLE `prefix_survey_links` (
-        `participant_id` varchar(50) NOT NULL,
-        `token_id` int(11) NOT NULL,
-        `survey_id` int(11) NOT NULL,
-        `date_created` datetime NOT NULL,
-        PRIMARY KEY  (`participant_id`,`token_id`,`survey_id`)
-        )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();@ob_flush();
-
-        // add question_attributes field to assessment table
-        modify_database("","ALTER TABLE `prefix_question_attributes` ADD `language` varchar(20)"); echo $modifyoutput; flush();@ob_flush();
-        upgrade_question_attributes148();
-        fixSubquestions();
-        modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='148' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
-    }
-    if ($oldversion < 149)
-    {
-        modify_database("","CREATE TABLE `prefix_survey_url_parameters` (
-        `id` int(9) NOT NULL AUTO_INCREMENT,
-        `sid` int(10) NOT NULL,
-        `parameter` varchar(50) NOT NULL,
-        `targetqid` int(10) NULL,
-        `targetsqid` int(10) NULL,
-        PRIMARY KEY (`id`)
-        ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();@ob_flush();
-        modify_database("","update `prefix_settings_global` set `stg_value`='149' where stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
-
-    }
-    if ($oldversion < 150)
-    {
-        modify_database("","ALTER TABLE `prefix_questions` ADD `relevance` TEXT;"); echo $modifyoutput; flush();@ob_flush();
-        modify_database("","update `prefix_settings_global` set `stg_value`='150' where stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
-    }
-    if ($oldversion < 151)
-    {
-        modify_database("","ALTER TABLE `prefix_groups` ADD `randomization_group` VARCHAR(20) NOT NULL DEFAULT '';"); echo $modifyoutput; flush();@ob_flush();
-        modify_database("","update `prefix_settings_global` set `stg_value`='151' where stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
-    }
-    if ($oldversion < 152)
-    {
-        modify_database("","CREATE INDEX `question_attributes_idx3` ON `prefix_question_attributes` (`attribute`);"); echo $modifyoutput; flush();@ob_flush();
-        modify_database("","update `prefix_settings_global` set `stg_value`='152' where stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
-    }
-    if ($oldversion < 153)
-    {
-        modify_database("","CREATE TABLE `prefix_expression_errors` (
-        `id` int(9) NOT NULL AUTO_INCREMENT,
-        `errortime` varchar(50) DEFAULT NULL,
-        `sid` int(11) DEFAULT NULL,
-        `gid` int(11) DEFAULT NULL,
-        `qid` int(11) DEFAULT NULL,
-        `gseq` int(11) DEFAULT NULL,
-        `qseq` int(11) DEFAULT NULL,
-        `type` varchar(50) ,
-        `eqn` text,
-        `prettyprint` text,
-        PRIMARY KEY (`id`)
-        ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();@ob_flush();
-        modify_database("","update `prefix_settings_global` set `stg_value`='153' where stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
-    }
-    if ($oldversion < 154)
-    {
-        modify_database("","ALTER TABLE `prefix_groups` ADD `grelevance` text;"); echo $modifyoutput; flush();@ob_flush();
-        modify_database("","update `prefix_settings_global` set `stg_value`='154' where stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
-    }
-
->>>>>>> refs/heads/dev_tms
-=======
     fixLanguageConsistencyAllSurveys();
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br />';
     return true;

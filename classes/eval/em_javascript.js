@@ -496,7 +496,6 @@ function  LEMsetTabIndexes()
 {
     if (typeof tabIndexesSet == 'undefined') {
         $('#limesurvey :input[type!=hidden][id!=runonce]').each(function(index){
->>>>>>> refs/heads/limesurvey_dev
             $(this).bind('keydown',function(e) {
                 if (e.keyCode == 9) {
                     ExprMgr_process_relevance_and_tailoring(e.type,$(this).attr('name'));
@@ -507,15 +506,6 @@ function  LEMsetTabIndexes()
             })
         })	// MUST DO THIS FIRST
         tabIndexesSet = true;
-<<<<<<< HEAD
-<<<<<<< HEAD
-//
-//        // focus on first element by default
-//    	$('#limesurvey :input:visible:enabled:first').focus();
-=======
->>>>>>> refs/heads/dev_tms
-=======
->>>>>>> refs/heads/limesurvey_dev
     }
 }
 

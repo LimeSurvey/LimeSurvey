@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: html.php 12398 2012-02-07 20:02:56Z tmswhite $
  */
 
 //Security Checked: POST, GET, SESSION, DB, REQUEST, returnglobal
@@ -1131,7 +1131,6 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
         {
             templatereplace($grow['description']);
             $groupsummary .= LimeExpressionManager::GetLastPrettyPrintExpression();
-<<<<<<< HEAD
         }
         if (trim($grow['grelevance'])!='')
         {
@@ -1140,16 +1139,6 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
             templatereplace('{' . $grow['grelevance'] . '}');
             $groupsummary .= LimeExpressionManager::GetLastPrettyPrintExpression();
         }
-=======
-        }
-        if (trim($grow['grelevance'])!='')
-        {
-            $groupsummary .= "</td><tr><td valign='top' align='right'><strong>";
-            $groupsummary .= $clang->gT("Relevance:")."</td>\n<td align='left'>";
-            templatereplace('{' . $grow['grelevance'] . '}');
-            $groupsummary .= LimeExpressionManager::GetLastPrettyPrintExpression();
-        }
->>>>>>> refs/heads/dev_tms
         $groupsummary .= "</td></tr>\n";
 
 //        if (!is_null($condarray))

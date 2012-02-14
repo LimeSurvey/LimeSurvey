@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: printanswers.php 12172 2012-01-23 20:28:20Z tpartner $
  *
  */
 

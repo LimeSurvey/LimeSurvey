@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: export_structure_quexml.php 11697 2011-12-20 04:17:59Z azammitdcarf $
  */
 
 

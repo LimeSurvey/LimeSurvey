@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id$
+ *	$Id: activate_functions.php 12339 2012-02-04 12:48:38Z c_schmitz $
  *	Files Purpose: holds functions to activate a survey and precheck the consistency of the survey
  */
 

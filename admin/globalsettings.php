@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: globalsettings.php 12242 2012-01-27 23:41:13Z c_schmitz $
  */
 require_once('classes/core/settingsstorage.php');
 

@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: deactivate.php 11664 2011-12-16 05:19:42Z tmswhite $
  */
 
 include_once("login_check.php");  //Login Check dies also if the script is started directly

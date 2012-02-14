@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: createdb.php 9622 2010-12-10 21:38:02Z c_schmitz $
  */
 
 //Ensure script is not run directly, avoid path disclosure

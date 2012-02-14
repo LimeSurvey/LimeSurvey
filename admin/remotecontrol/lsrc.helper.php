@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: lsrc.helper.php 12399 2012-02-07 20:37:00Z tmswhite $
  *
  */
 /**

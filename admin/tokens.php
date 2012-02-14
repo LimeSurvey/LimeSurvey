@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: tokens.php 12399 2012-02-07 20:37:00Z tmswhite $
  */
 
 
@@ -169,11 +169,6 @@
         $bquery .= " and language=".db_quoteall($_POST['tokenlanguage']);
     }
     $bquery .= " ORDER BY tid";
-
-        header("Content-Disposition: attachment; filename=tokens_".$surveyid.".csv");
-        header("Content-type: text/comma-separated-values; charset=UTF-8");
-        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-        header("Pragma: cache");
 
     $bresult = db_execute_assoc($bquery) or die ("$bquery<br />".htmlspecialchars($connect->ErrorMsg()));
     $bfieldcount=$bresult->FieldCount();
@@ -371,7 +366,6 @@
             @imap_close($mbox);
             $entertimestamp = "update ".db_table_name("surveys")." set bouncetime='$datelastbounce' where sid='$surveyid'";
             $executetimestamp = $connect->Execute($entertimestamp);
-<<<<<<< HEAD
 
         }
         else
@@ -386,22 +380,6 @@
     exit(0); // if bounceprocessing : javascript : no more todo
     }
 
-=======
-
-        }
-        else
-        {
-            echo $clang->gT("Please check your settings");
-        }
-    }
-    else
-    {
-        echo $clang->gT("We are sorry but you don't have permissions to do this.");
-    }
-    exit(0); // if bounceprocessing : javascript : no more todo
-    }
-
->>>>>>> refs/heads/dev_tms
     if ($subaction == "delete" && bHasSurveyPermission($surveyid, 'tokens','delete'))
     {
     $_SESSION['metaHeader']="<meta http-equiv=\"refresh\" content=\"1;URL={$scriptname}?action=tokens&amp;subaction=browse&amp;sid=".returnglobal('sid')."&amp;start=$start&amp;limit=$limit&amp;order=$order\" />";

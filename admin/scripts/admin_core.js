@@ -1,4 +1,4 @@
-//$Id$
+//$Id: admin_core.js 12275 2012-02-01 13:18:38Z ssachdeva $
 
 $(document).ready(function(){
     setupAllTabs();
@@ -237,7 +237,7 @@ $(document).ready(function(){
                $(objToUpdate).html(data.newowner);
 	    else
                $(objToUpdate).html(old_owner);
-	       
+
 	    $(objToUpdate).html($(objToUpdate).html() + '(<a id="ownername_edit_69173" translate_to='+translate_to+' class="ownername_edit" href="#">'+initial_text+'</a>)' );
        });
     });

@@ -419,8 +419,7 @@ CREATE TABLE prefix_users (
     templateeditormode character(7) DEFAULT 'default'::bpchar,
     questionselectormode character(7) DEFAULT 'default'::bpchar,
 	one_time_pw bytea,
-    "dateformat" integer DEFAULT 1 NOT NULL,
-    participant_panel integer NOT NULL DEFAULT '0'
+    "dateformat" integer DEFAULT 1 NOT NULL
 );
 
 

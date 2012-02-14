@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: phpinfo.php 8540 2010-03-31 11:37:19Z texens $
  */
 
 phpinfo();

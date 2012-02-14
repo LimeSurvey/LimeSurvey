@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: templates.php 12211 2012-01-26 17:02:27Z shnoulle $
  */
 
 

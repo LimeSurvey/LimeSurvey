@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: dataentry.php 12452 2012-02-14 11:33:25Z maziminke $
  */
 
 /*

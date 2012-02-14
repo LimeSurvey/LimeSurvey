@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: admin.php 12082 2012-01-17 04:55:39Z tmswhite $
  */
 
 // Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB

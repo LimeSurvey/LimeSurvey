@@ -1,11 +1,4 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<<<<<<< HEAD
-<<<<<<< HEAD
-<?php
-if (count($_POST) == 0 && !((isset($subaction) && $subaction == 'survey_logic_file'))) {die("Cannot run this script directly");}
-?>
-=======
->>>>>>> refs/heads/dev_tms
 <html>
 <?php
 if (count($_POST) == 0 && !((isset($subaction) && $subaction == 'survey_logic_file'))) {die("Cannot run this script directly");}
@@ -50,7 +43,6 @@ if (count($_POST) == 0 && !((isset($subaction) && $subaction == 'survey_logic_fi
 <title>Survey Logic File</title>
 </head>
 <body>
->>>>>>> refs/heads/limesurvey_dev
 <form method='post' action='../classes/eval/test/survey_logic_file.php'>
 <h3>Generate a logic file for the survey</h3>
 <table border='1'>

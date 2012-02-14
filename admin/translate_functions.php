@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-* $Id$
+* $Id: translate_functions.php 12366 2012-02-06 15:13:47Z shnoulle $
 *
 */
 
@@ -306,7 +306,6 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
                         ." WHERE sid=".db_quoteall($surveyid,true)
                         ." AND language=".db_quoteall($tolang,true)
                         ." ORDER BY group_order ",
->>>>>>> refs/heads/limesurvey_dev
         "queryupdate" => "UPDATE ".db_table_name('groups')
                         ." SET group_name = ".db_quoteall($new,true)
                         ." WHERE gid = '{$id1}' "
@@ -336,7 +335,6 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
                         ." WHERE sid=".db_quoteall($surveyid,true)
                         ."AND language=".db_quoteall($tolang,true)
                         ."ORDER BY group_order ",
->>>>>>> refs/heads/limesurvey_dev
         "queryupdate" => "UPDATE ".db_table_name('groups')
                         ."SET description = ".db_quoteall($new,true)
                         ."WHERE gid = '{$id1}' "
@@ -372,7 +370,6 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
                         ." AND g.language='{$tolang}' "
                         ." AND q.parent_qid=0 "
                         ." ORDER BY g.group_order,q.question_order, q.scale_id ",
->>>>>>> refs/heads/limesurvey_dev
         "queryupdate" => "UPDATE ".db_table_name('questions')
                         ." SET question = ".db_quoteall($new,true)
                         ." WHERE qid = '{$id1}' "
@@ -409,7 +406,6 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
                         ." AND g.language='{$tolang}' "
                         ." AND parent_qid=0 "
                         ." ORDER BY g.group_order,q.question_order ",
->>>>>>> refs/heads/limesurvey_dev
         "queryupdate" => "UPDATE ".db_table_name('questions')
                         ." SET help = ".db_quoteall($new,true)
                         ." WHERE qid = '{$id1}' "
@@ -444,7 +440,6 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
                         ." WHERE sq.sid=".db_quoteall($surveyid,true)
                         ." AND sq.language=".db_quoteall($tolang,true)." AND q.language=".db_quoteall($tolang,true)." AND g.language=".db_quoteall($tolang,true)." AND sq.parent_qid>0 "
                         ." ORDER BY g.group_order, q.question_order,q.scale_id, sq.scale_id, sq.question_order ",
->>>>>>> refs/heads/limesurvey_dev
         "queryupdate" => "UPDATE ".db_table_name('questions')
                         ." SET question = ".db_quoteall($new,true)
                         ." WHERE qid = '{$id1}' "
@@ -484,7 +479,6 @@ function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id
                         ." AND q.language = ".db_quoteall($tolang,true)
                         ." AND g.language = ".db_quoteall($tolang,true)
                         ." ORDER BY g.group_order, q.question_order, a.sortorder, a.scale_id",
->>>>>>> refs/heads/limesurvey_dev
         "queryupdate" => "UPDATE ".db_table_name('answers')
                         ." SET answer = ".db_quoteall($new,true)
                         ." WHERE qid = '{$id1}' "
