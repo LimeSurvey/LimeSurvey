@@ -1247,7 +1247,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                             $dataentryoutput .= "<td>\n";
                             if ($qidattributes['input_boxes']!=0) {
                                 $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='";
-                                if (!empty($idrow[$fname['fieldname']])) {$datentryoutput .= $idrow[$fname['fieldname']];}
+                                if (!empty($idrow[$fname['fieldname']])) {$dataentryoutput .= $idrow[$fname['fieldname']];}
                                 $dataentryoutput .= "' size=4 />";
                             } else {
                                 $dataentryoutput .= "\t<select name='{$fname['fieldname']}'>\n";
