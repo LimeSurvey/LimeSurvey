@@ -5728,6 +5728,7 @@ function do_array_multitext($ia)
                         $emptyresult=1;
                     }
                 }
+// TMSW Mandatory -> EM
                 if ($emptyresult == 1)
                 {
                     $answertext = "<span class=\"errormandatory\">{$answertext}</span>";
@@ -6005,6 +6006,7 @@ function do_array_multiflexi($ia)
                         $emptyresult=1;
                     }
                 }
+// TMSW Mandatory -> EM
                 if ($emptyresult == 1)
                 {
                     $answertext = '<span class="errormandatory">'.$answertext.'</span>';

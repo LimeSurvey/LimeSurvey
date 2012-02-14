@@ -383,8 +383,6 @@ if (!isset($_SESSION['loginID']))
             $_SESSION['user'] = $fields['users_name'];
             $_SESSION['adminlang'] = $fields['lang'];
             $_SESSION['htmleditormode'] = $fields['htmleditormode'];
-            $_SESSION['questionselectormode'] = $fields['questionselectormode'];
-            $_SESSION['templateeditormode'] = $fields['templateeditormode'];
             $_SESSION['dateformat'] = $fields['dateformat'];
             $_SESSION['checksessionpost'] = sRandomChars(10);
             $_SESSION['pw_notify']=false;

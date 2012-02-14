@@ -2857,7 +2857,7 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
     $surveyid=sanitize_int($surveyid);
     //checks to see if fieldmap has already been built for this page.
     if (isset($timingsFieldMap[$surveyid][$style][$clang->langcode]) && $force_refresh==false) {
-        return $timingsFieldMap[$surveyid][$style][$clang->langcode];
+        return $timingsFielsdMap[$surveyid][$style][$clang->langcode];
     }
 
     //do something
@@ -7045,6 +7045,8 @@ function aGetFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonor
             if ($oldqid !== $fname['qid'])
             {
                 $oldqid = $fname['qid'];
+                if (($bHonorConditions && LimeExpressionManager::QuestionIsRelevant($fname['qid'])) || !$bHonorConditions)
+                {
                 if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2']))
                 {
                     $aResultTable['qid_'.$fname['sid'].'X'.$fname['gid'].'X'.$fname['qid']]=array($fname['question'],'','');
@@ -7055,6 +7057,13 @@ function aGetFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonor
                     $aResultTable[$fname['fieldname']]=array($question,'',$answer);
                     continue;
                 }
+
+            }
+                else
+                {
+                    continue;
+        }
+
             }
         }
         else

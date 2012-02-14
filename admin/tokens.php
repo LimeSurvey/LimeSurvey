@@ -170,6 +170,11 @@
     }
     $bquery .= " ORDER BY tid";
 
+        header("Content-Disposition: attachment; filename=tokens_".$surveyid.".csv");
+        header("Content-type: text/comma-separated-values; charset=UTF-8");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Pragma: cache");
+
     $bresult = db_execute_assoc($bquery) or die ("$bquery<br />".htmlspecialchars($connect->ErrorMsg()));
     $bfieldcount=$bresult->FieldCount();
     

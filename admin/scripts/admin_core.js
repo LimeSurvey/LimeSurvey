@@ -237,7 +237,7 @@ $(document).ready(function(){
                $(objToUpdate).html(data.newowner);
 	    else
                $(objToUpdate).html(old_owner);
-
+	       
 	    $(objToUpdate).html($(objToUpdate).html() + '(<a id="ownername_edit_69173" translate_to='+translate_to+' class="ownername_edit" href="#">'+initial_text+'</a>)' );
        });
     });
