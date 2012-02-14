@@ -87,8 +87,8 @@ class queXMLPDF extends TCPDF {
 	/**
 	 * The distance between the right hand page border and
 	 * the end of the barcode in MM
-	 * 
-	 * @var bool  Defaults to 23. 
+	 *
+	 * @var bool  Defaults to 23.
 	 * @since 2011-10-25
 	 */
 	protected $barcodeMarginX = 23;
@@ -319,8 +319,8 @@ class queXMLPDF extends TCPDF {
 	/**
 	 * The left hand margin of text responses to auto calculate responses
 	 * per line (mm)
-	 * 
-	 * @var mixed  Defaults to 13. 
+	 *
+	 * @var mixed  Defaults to 13.
 	 * @since 2011-10-25
 	 */
 	protected $textResponseMarginX = 13;
@@ -338,8 +338,8 @@ class queXMLPDF extends TCPDF {
 	/**
 	 * The left hand margin of text responses to auto calculated responses
 	 * per line where the label should appear on the same line (mm)
-	 * 
-	 * @var mixed  Defaults to 62. 
+	 *
+	 * @var mixed  Defaults to 62.
 	 * @since 2011-10-25
 	 */
 	protected $labelTextResponsesSameLineMarginX = 62;

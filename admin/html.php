@@ -1131,6 +1131,7 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
         {
             templatereplace($grow['description']);
             $groupsummary .= LimeExpressionManager::GetLastPrettyPrintExpression();
+<<<<<<< HEAD
         }
         if (trim($grow['grelevance'])!='')
         {
@@ -1139,6 +1140,16 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
             templatereplace('{' . $grow['grelevance'] . '}');
             $groupsummary .= LimeExpressionManager::GetLastPrettyPrintExpression();
         }
+=======
+        }
+        if (trim($grow['grelevance'])!='')
+        {
+            $groupsummary .= "</td><tr><td valign='top' align='right'><strong>";
+            $groupsummary .= $clang->gT("Relevance:")."</td>\n<td align='left'>";
+            templatereplace('{' . $grow['grelevance'] . '}');
+            $groupsummary .= LimeExpressionManager::GetLastPrettyPrintExpression();
+        }
+>>>>>>> refs/heads/dev_tms
         $groupsummary .= "</td></tr>\n";
 
 //        if (!is_null($condarray))

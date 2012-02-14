@@ -16,6 +16,8 @@ if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this scri
 
 require_once("save.php");   // for supporting functions only
 
+=======
+>>>>>>> refs/heads/dev_tms
 // $LEMdebugLevel - customizable debugging for Lime Expression Manager
 $LEMdebugLevel=0;   // LEM_DEBUG_TIMING;    // (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
 $LEMskipReprocessing=false; // true if used GetLastMoveResult to avoid generation of unneeded extra JavaScript
@@ -735,6 +737,8 @@ if (isset($showpopups) && $showpopups == 0 && isset($filenotvalidated) && $filen
 }
 
 
+
+>>>>>>> refs/heads/limesurvey_dev
 if (isset($_SESSION['grouplist']))
 foreach ($_SESSION['grouplist'] as $gl)
 {

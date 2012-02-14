@@ -371,6 +371,7 @@
             @imap_close($mbox);
             $entertimestamp = "update ".db_table_name("surveys")." set bouncetime='$datelastbounce' where sid='$surveyid'";
             $executetimestamp = $connect->Execute($entertimestamp);
+<<<<<<< HEAD
 
         }
         else
@@ -385,6 +386,22 @@
     exit(0); // if bounceprocessing : javascript : no more todo
     }
 
+=======
+
+        }
+        else
+        {
+            echo $clang->gT("Please check your settings");
+        }
+    }
+    else
+    {
+        echo $clang->gT("We are sorry but you don't have permissions to do this.");
+    }
+    exit(0); // if bounceprocessing : javascript : no more todo
+    }
+
+>>>>>>> refs/heads/dev_tms
     if ($subaction == "delete" && bHasSurveyPermission($surveyid, 'tokens','delete'))
     {
     $_SESSION['metaHeader']="<meta http-equiv=\"refresh\" content=\"1;URL={$scriptname}?action=tokens&amp;subaction=browse&amp;sid=".returnglobal('sid')."&amp;start=$start&amp;limit=$limit&amp;order=$order\" />";

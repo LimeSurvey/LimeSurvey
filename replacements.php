@@ -152,6 +152,7 @@ function templatereplace($line, $replacements=array(), $anonymized=false, $quest
         $_aid = (isset($question['aid']) ? $question['aid'] : '');
         $_sqid = (isset($question['sqid']) ?  $question['sqid'] : '');
         $_question_type = $question['type'];
+>>>>>>> refs/heads/limesurvey_dev
     }
     else
     {
@@ -170,7 +171,12 @@ function templatereplace($line, $replacements=array(), $anonymized=false, $quest
         $_question_input_error_class = '';
         $_aid = '';
         $_sqid = '';
+<<<<<<< HEAD
+=======
+>>>>>>> refs/heads/dev_tms
+=======
         $_question_type = '';
+>>>>>>> refs/heads/limesurvey_dev
     };
 
     global $answer_id;

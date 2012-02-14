@@ -764,9 +764,258 @@ while ($degrow = $degresult->FetchRow())
 //                $s++;
 //            }
 
+<<<<<<< HEAD
             $qinfo = LimeExpressionManager::GetQuestionStatus($deqrow['qid']);
             $relevance = trim($qinfo['info']['relevance']);
             $explanation = $qinfo['relEqn'];
+
+            if (trim($relevance) != '' && trim($relevance) != '1')
+=======
+                $x=0;
+                $distinctquery="SELECT DISTINCT cqid, method, cfieldname, value
+                            FROM ".db_table_name("conditions")."
+                            WHERE  ".db_table_name("conditions").".qid={$deqrow['qid']}
+                                AND ".db_table_name("conditions").".scenario={$scenariorow['scenario']}
+                            ORDER BY cqid";
+                $distinctresult=db_execute_assoc($distinctquery);
+                //Loop through each condition for a particular scenario.
+                while ($distinctrow=$distinctresult->FetchRow())
+                {
+                    $subquery='select title, question, type from '.db_table_name("questions")." where qid={$distinctrow['cqid']} AND parent_qid=0 AND language='{$surveyprintlang}'";
+                    $subresult=$connect->GetRow($subquery);
+
+                    if($x > 0)
+                    {
+                        $explanation .= ' <em class=\'scenario-and-seperator\'>'.$clang->gT('and').'</em> ';
+                    }
+                    if(trim($distinctrow['method'])=='') //If there is no method, assume "equals"
+                    {
+                        $distinctrow['method']='==';
+                    }
+
+                    if($distinctrow['cqid']){ // cqid != 0  ==> previous answer match
+                        if($distinctrow['method']=='==')
+                        {
+                            $explanation .= $clang->gT("Answer was")." ";
+                        }
+                        elseif($distinctrow['method']=='!=')
+                        {
+                            $explanation .= $clang->gT("Answer was NOT")." ";
+                        }
+                        elseif($distinctrow['method']=='<')
+                        {
+                            $explanation .= $clang->gT("Answer was less than")." ";
+                        }
+                        elseif($distinctrow['method']=='<=')
+                        {
+                            $explanation .= $clang->gT("Answer was less than or equal to")." ";
+                        }
+                        elseif($distinctrow['method']=='>=')
+                        {
+                            $explanation .= $clang->gT("Answer was greater than or equal to")." ";
+                        }
+                        elseif($distinctrow['method']=='>')
+                        {
+                            $explanation .= $clang->gT("Answer was greater than")." ";
+                        }
+                        elseif($distinctrow['method']=='RX')
+                        {
+                            $explanation .= $clang->gT("Answer matched (regexp)")." ";
+                        }
+                        else
+                        {
+                            $explanation .= $clang->gT("Answer was")." ";
+                        }
+                    	if($distinctrow['value'] == '') {
+                    		$explanation .= " ".$clang->gT("not selected")." ";
+                    	}
+                    	//If question type is numerical or multi numerical, show the actual value, otherwise don't
+                    	if($subresult['type'] == "N" || $subresult['type']=="K") {
+                    		$explanation .= " ".$distinctrow['value']. " ";
+                    	}
+                    }
+                    if(!$distinctrow['cqid']) { // cqid == 0  ==> token attribute match
+                        $tokenData = GetTokenFieldsAndNames($surveyid);
+                        preg_match('/^{TOKEN:([^}]*)}$/',$distinctrow['cfieldname'],$extractedTokenAttr);
+                        $explanation .= "Your ".$tokenData[strtolower($extractedTokenAttr[1])]." ";
+                        if($distinctrow['method']=='==')
+                        {
+                            $explanation .= $clang->gT("is")." ";
+                        }
+                        elseif($distinctrow['method']=='!=')
+                        {
+                            $explanation .= $clang->gT("is NOT")." ";
+                        }
+                        elseif($distinctrow['method']=='<')
+                        {
+                            $explanation .= $clang->gT("is less than")." ";
+                        }
+                        elseif($distinctrow['method']=='<=')
+                        {
+                            $explanation .= $clang->gT("is less than or equal to")." ";
+                        }
+                        elseif($distinctrow['method']=='>=')
+                        {
+                            $explanation .= $clang->gT("is greater than or equal to")." ";
+                        }
+                        elseif($distinctrow['method']=='>')
+                        {
+                            $explanation .= $clang->gT("is greater than")." ";
+                        }
+                        elseif($distinctrow['method']=='RX')
+                        {
+                            $explanation .= $clang->gT("is matched (regexp)")." ";
+                        }
+                        else
+                        {
+                            $explanation .= $clang->gT("is")." ";
+                        }
+                        $answer_section = " ".$distinctrow['value']." ";
+                    }
+
+                    $conquery="SELECT cid, cqid, q.title,\n"
+                    ."q.question, value, q.type, cfieldname\n"
+                    ."FROM ".db_table_name("conditions")." c, ".db_table_name("questions")." q\n"
+                    ."WHERE c.cqid=q.qid\n"
+                    ."AND c.cqid={$distinctrow['cqid']}\n"
+                    ."AND c.qid={$deqrow['qid']} \n"
+                    ."AND c.scenario={$scenariorow['scenario']} \n"
+                    ."AND language='{$surveyprintlang}'";
+                    $conresult=db_execute_assoc($conquery) or safe_die("$conquery<br />".htmlspecialchars($connect->ErrorMsg()));
+                    $conditions=array();
+                    while ($conrow=$conresult->FetchRow())
+                    {
+
+                        $postans="";
+                        $value=$conrow['value'];
+                        switch($conrow['type'])
+                        {
+                            case "Y":
+                                switch ($conrow['value'])
+                                {
+                                    case "Y": $conditions[]=$clang->gT("Yes"); break;
+                                    case "N": $conditions[]=$clang->gT("No"); break;
+                                }
+                                break;
+                            case "G":
+                                switch($conrow['value'])
+                                {
+                                    case "M": $conditions[]=$clang->gT("Male"); break;
+                                    case "F": $conditions[]=$clang->gT("Female"); break;
+                                } // switch
+                                break;
+                            case "A":
+                            case "B":
+                            case ":":
+                            case ";":
+                                $conditions[]=$conrow['value'];
+                                break;
+                            case "C":
+                                switch($conrow['value'])
+                                {
+                                    case "Y": $conditions[]=$clang->gT("Yes"); break;
+                                    case "U": $conditions[]=$clang->gT("Uncertain"); break;
+                                    case "N": $conditions[]=$clang->gT("No"); break;
+                                } // switch
+                                break;
+                            case "E":
+                                switch($conrow['value'])
+                                {
+                                    case "I": $conditions[]=$clang->gT("Increase"); break;
+                                    case "D": $conditions[]=$clang->gT("Decrease"); break;
+                                    case "S": $conditions[]=$clang->gT("Same"); break;
+                                }
+                            case "1":
+                                $labelIndex=preg_match("/^[^#]+#([01]{1})$/",$conrow['cfieldname']);
+                                if ($labelIndex == 0)
+                                { // TIBO
+                                    $fquery = "SELECT * FROM ".db_table_name("answers")."\n"
+                                    . "WHERE qid='{$conrow['cqid']}'\n"
+                                    . "AND code='{$conrow['value']}' and scale_id=0 AND language='{$surveyprintlang}'";
+                                    $fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />".htmlspecialchars($connect->ErrorMsg()));
+                                    while($frow=$fresult->FetchRow())
+                                    {
+                                        $postans=$frow['answer'];
+                                        $conditions[]=$frow['answer'];
+                                    } // while
+                                }
+                                elseif ($labelIndex == 1)
+                                {
+                                    $fquery = "SELECT * FROM ".db_table_name("answers")."\n"
+                                    . "WHERE qid='{$conrow['cqid']}'\n"
+                                    . "AND code='{$conrow['value']}' and scale_id=1 AND language='{$surveyprintlang}'";
+                                    $fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />".htmlspecialchars($connect->ErrorMsg()));
+                                    while($frow=$fresult->FetchRow())
+                                    {
+                                        $postans=$frow['answer'];
+                                        $conditions[]=$frow['answer'];
+                                    } // while
+                                }
+                                break;
+                            case "L":
+                            case "!":
+                            case "O":
+                            case "R":
+                                $ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
+                                $ansresult=db_execute_assoc($ansquery);
+                                while ($ansrow=$ansresult->FetchRow())
+                                {
+                                    $conditions[]=$ansrow['answer'];
+                                }
+                            	if($conrow['value'] == "-oth-") {
+                            	    $conditions[]=$clang->gT("Other");
+                            	}
+                                $conditions = array_unique($conditions);
+                                break;
+                            case "M":
+                            case "P":
+                                $ansquery="SELECT question FROM ".db_table_name("questions")." WHERE parent_qid='{$conrow['cqid']}' AND title='{$conrow['value']}' AND language='{$surveyprintlang}'";
+                                $ansresult=db_execute_assoc($ansquery);
+                                while ($ansrow=$ansresult->FetchRow())
+                                {
+                                    $conditions[]=$ansrow['question'];
+                                }
+                                $conditions = array_unique($conditions);
+                                break;
+                            case "N":
+                            	$conditions[]=$value;
+                            	break;
+							case "F":
+                            case "H":
+                            default:
+                                $value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
+                                $fquery = "SELECT * FROM ".db_table_name("answers")."\n"
+                                . "WHERE qid='{$conrow['cqid']}'\n"
+                                . "AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
+                                $fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />".htmlspecialchars($connect->ErrorMsg()));
+                                while($frow=$fresult->FetchRow())
+                                {
+                                    $postans=$frow['answer'];
+                                    $conditions[]=$frow['answer'];
+                                } // while
+                                break;
+                        } // switch
+
+                        // Now let's complete the answer text with the answer_section
+                        $answer_section="";
+                        switch($conrow['type'])
+                        {
+                            case "A":
+                            case "B":
+                            case "C":
+                            case "E":
+                            case "F":
+                            case "H":
+                            case "K":
+                                $thiscquestion=$fieldmap[$conrow['cfieldname']];
+                                $ansquery="SELECT question FROM ".db_table_name("questions")." WHERE parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
+                                //$ansquery="SELECT question FROM ".db_table_name("questions")." WHERE qid='{$conrow['cqid']}' AND language='{$surveyprintlang}'";
+                                $ansresult=db_execute_assoc($ansquery);
+                                while ($ansrow=$ansresult->FetchRow())
+                                {
+                                    $answer_section=" (".$ansrow['question'].")";
+                                }
+                                break;
 
             if (trim($relevance) != '' && trim($relevance) != '1')
             {

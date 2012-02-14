@@ -852,6 +852,25 @@ text-align:center;
 ,.multiple-opt-comments ul li span.option
 ,.multiple-short-txt ul li label
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+	padding-left:30%;
+=======
+	margin-left:40%;
+>>>>>>> refs/heads/dev_tms
+}
+.ie .multiple-opt .answers ul li input.checkbox,
+	.ie .list-radio .answers ul li input.radio,
+	.ie .list-with-comment .answers ul li input.radio,
+	.ie .list-radio-flexible .answers ul li input.radio 
+	{margin-left:0;}
+
+@media screen and (max-width: 640px) {
+.multiple-opt .answers ul li
+, .list-radio .answers ul li
+, .list-with-comment .answers ul li 
+, .list-radio-flexible .answers ul li 
+=======
 	clear:left;
 	float:left; 
 	width:45%;
@@ -860,6 +879,7 @@ text-align:center;
 .multiple-opt .answers-wrapper ul li
 , .list-radio .answers-wrapper ul li
 , .list-radio-flexible .answers-wrapper ul li
+>>>>>>> refs/heads/limesurvey_dev
 {
 	padding-left:30%;
 }

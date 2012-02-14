@@ -419,6 +419,7 @@ if(isset($surveyid))
                 }
             }
         }
+<<<<<<< HEAD
         if ($qtproperties[$questiontype]['answerscales']==0 && $qtproperties[$questiontype]['subquestions']==0)
         {
             foreach ($questlangs as $language)
@@ -429,6 +430,8 @@ if(isset($surveyid))
                 }
             }
         }
+=======
+>>>>>>> refs/heads/dev_tms
         $_SESSION['flashmessage'] = $clang->gT("Default value settings were successfully saved.");
         LimeExpressionManager::SetDirtyFlag();
     }
