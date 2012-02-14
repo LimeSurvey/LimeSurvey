@@ -225,7 +225,7 @@
 				<div id="advancedquestionsettingswrapper" style="display:none;">
 					<div class="loader"><?php $clang->eT("Loading..."); ?></div>
 					<div id="advancedquestionsettings"></div>
-				</div>
+				</div><br />
 			<?php } ?>
 
                 <?php if ($adding)
@@ -247,7 +247,7 @@
                     <input type='hidden' id='qid' name='qid' value='<?php echo $qid; ?>' />
 					<p><input type='submit' value='<?php $clang->eT("Update question"); ?>' />
                     <?php } ?>
-                <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid; ?>' /></p>
+                <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid; ?>' /></p><br />
         </div></form></div>
 
 
