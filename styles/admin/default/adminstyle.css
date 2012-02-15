@@ -595,6 +595,44 @@ a.optoutemail {
     width:90%;
 }
 
+.assessmentlist {
+	margin-top: 15px;
+}
+
+ul.assessmentscope {
+	margin: 15px 0;
+}
+
+ul.assessmentscope li label:first-child {
+    width: 45%;
+}
+
+#assessmentsform #languagetabs {
+	margin: 15px auto;
+	min-width: 740px;
+}
+
+#assessmentsform #languagetabs ul.editor-parent {
+	width: 710px;
+	min-width: 710px;
+	padding: 0;
+	margin: 0 auto;
+}
+
+#assessmentsform #languagetabs .cke_skin_office2003 {
+	width: 580px !important;
+}
+
+#assessmentsform #languagetabs label {
+	width: 100px;
+}
+
+#assessmentsform #languagetabs input[type="text"] {
+	width: 565px;
+	margin-bottom: 5px;
+}
+
+
 .users
 {
     width:80%;
