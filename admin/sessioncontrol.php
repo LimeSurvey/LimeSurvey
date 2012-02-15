@@ -1,6 +1,5 @@
 <?php
 /*
-<<<<<<< HEAD
  * LimeSurvey
  * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -13,30 +12,15 @@
  *
  * $Id$
  */
-=======
-* LimeSurvey
-* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: GNU/GPL License v2 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*
-* $Id$
-*/
->>>>>>> refs/heads/stable_plus
 
 // Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
 
 //SESSIONCONTROL.PHP FILE MANAGES ADMIN SESSIONS.
 //Ensure script is not run directly, avoid path disclosure
 
-if (!isset($homedir) || isset($_REQUEST['homedir'])) {die("Cannot run this script directly");}
+if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 
 // Read the session name from the settings table
-<<<<<<< HEAD
 $usresult = getGlobalSetting('SessionName');
 if ($usresult)
 {
@@ -52,19 +36,6 @@ if (session_id() == "")
     else  {session_start();}
 }
 
-=======
-$usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
-$usresult = db_execute_assoc($usquery,'',true);
-if ($usresult)
-{
-	$usrow = $usresult->FetchRow();
-	@session_name($usrow['stg_value']);
-}
- else {session_name("LimeSurveyAdmin");}
- 
- 
-if (session_id() == "") @session_start();
->>>>>>> refs/heads/stable_plus
 //LANGUAGE ISSUES
 // if changelang is called from the login page, then there is no userId
 //  ==> thus we just change the login form lang: no user profile update
@@ -247,25 +218,16 @@ returnglobal('action') != '')
 
 function GetSessionUserRights($loginID)
 {
-<<<<<<< HEAD
     global $dbprefix,$connect;
     $squery = "SELECT create_survey, configurator, create_user, delete_user, superadmin, manage_template, manage_label FROM {$dbprefix}users WHERE uid=$loginID";
     $sresult = db_execute_assoc($squery); //Checked
     if ($sresult->RecordCount()>0)
     {
-=======
-	global $dbprefix; 
-    $squery = "SELECT create_survey, configurator, create_user, delete_user, move_user, manage_template, manage_label FROM {$dbprefix}users WHERE uid=$loginID";	//		added by Dennis
-    $sresult = db_execute_assoc($squery);
-    if ($sresult->RecordCount()>0)
-        {
->>>>>>> refs/heads/stable_plus
         $fields = $sresult->FetchRow();
         $_SESSION['USER_RIGHT_CREATE_SURVEY'] = $fields['create_survey'];
         $_SESSION['USER_RIGHT_CONFIGURATOR'] = $fields['configurator'];
         $_SESSION['USER_RIGHT_CREATE_USER'] = $fields['create_user'];
         $_SESSION['USER_RIGHT_DELETE_USER'] = $fields['delete_user'];
-<<<<<<< HEAD
         $_SESSION['USER_RIGHT_SUPERADMIN'] = $fields['superadmin'];
         $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] = $fields['manage_template'];
         $_SESSION['USER_RIGHT_MANAGE_LABEL'] = $fields['manage_label'];
@@ -300,12 +262,6 @@ function GetSessionUserRights($loginID)
     {
         $_SESSION['USER_RIGHT_INITIALSUPERADMIN'] = 0;
     }
-=======
-        $_SESSION['USER_RIGHT_MOVE_USER'] = $fields['move_user'];
-        $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] = $fields['manage_template'];
-        $_SESSION['USER_RIGHT_MANAGE_LABEL'] = $fields['manage_label'];
-        }
->>>>>>> refs/heads/stable_plus
 }
 
 

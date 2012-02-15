@@ -8,14 +8,9 @@ CREATE TABLE `prefix_answers` (
   `assessment_value` int(11) NOT NULL default '0',
   `sortorder` int(11) NOT NULL,
   `language` varchar(20) default 'en',
-<<<<<<< HEAD
   `scale_id` tinyint NOT NULL default '0',
   PRIMARY KEY  (`qid`,`code`,`language`,`scale_id`)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-=======
-  PRIMARY KEY  (`qid`,`code`,`language`)
-) TYPE=MyISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
->>>>>>> refs/heads/stable_plus
 
 
 -- 
@@ -30,15 +25,9 @@ CREATE TABLE `prefix_assessments` (
   `minimum` varchar(50) NOT NULL default '',
   `maximum` varchar(50) NOT NULL default '',
   `message` text NOT NULL,
-<<<<<<< HEAD
   `language` varchar(20) NOT NULL default 'en',
   PRIMARY KEY  (`id`,`language`)
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-=======
-  `link` text NOT NULL,
-  PRIMARY KEY  (`id`)
-) TYPE=MyISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
->>>>>>> refs/heads/stable_plus
 
 
 -- 
@@ -53,11 +42,7 @@ CREATE TABLE `prefix_conditions` (
   `method` char(5) NOT NULL default '',
   `value` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`cid`)
-<<<<<<< HEAD
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-=======
-) TYPE=MyISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
->>>>>>> refs/heads/stable_plus
 
 
 -- 
@@ -85,11 +70,7 @@ CREATE TABLE `prefix_groups` (
   `description` text,
   `language` varchar(20) default 'en',
   PRIMARY KEY  (`gid`,`language`)
-<<<<<<< HEAD
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-=======
-) TYPE=MyISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
->>>>>>> refs/heads/stable_plus
 
 
 -- 
@@ -104,11 +85,7 @@ CREATE TABLE `prefix_labels` (
   `language` varchar(20) default 'en',
   PRIMARY KEY  (`lid`,`sortorder`,`language`),
   KEY `ixcode` (`code`)
-<<<<<<< HEAD
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-=======
-) TYPE=MyISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
->>>>>>> refs/heads/stable_plus
 
 
 -- 
@@ -119,11 +96,7 @@ CREATE TABLE `prefix_labelsets` (
   `label_name` varchar(100) NOT NULL default '',
   `languages` varchar(200) default 'en',
   PRIMARY KEY  (`lid`)
-<<<<<<< HEAD
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-=======
-) TYPE=MyISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
->>>>>>> refs/heads/stable_plus
 
 
 -- 
@@ -135,7 +108,6 @@ CREATE TABLE `prefix_question_attributes` (
   `attribute` varchar(50) default NULL,
   `value` text default NULL,
   PRIMARY KEY  (`qaid`)
-<<<<<<< HEAD
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
@@ -167,9 +139,6 @@ CREATE TABLE `prefix_quota_languagesettings` (
   `quotals_urldescrip` varchar(255),
   PRIMARY KEY (`quotals_id`)
 )  ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-=======
-) TYPE=MyISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
->>>>>>> refs/heads/stable_plus
 
 
 -- 
@@ -206,13 +175,7 @@ CREATE TABLE `prefix_questions` (
   `scale_id` tinyint NOT NULL default '0',
   `same_default` tinyint NOT NULL default '0' COMMENT 'Saves if user set to use the same default value across languages in default options dialog',
   PRIMARY KEY  (`qid`,`language`)
-<<<<<<< HEAD
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-=======
-) TYPE=MyISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
--- --------------------------------------------------------
->>>>>>> refs/heads/stable_plus
 
 
 -- 
@@ -231,7 +194,6 @@ CREATE TABLE `prefix_saved_control` (
   `saved_date` datetime NOT NULL,
   `refurl` text,
   PRIMARY KEY  (`scid`)
-<<<<<<< HEAD
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
@@ -249,9 +211,6 @@ CREATE TABLE `prefix_sessions`(
       INDEX sess2_expiry( expiry ),
       INDEX sess2_expireref( expireref )
 );
-=======
-) TYPE=MyISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
->>>>>>> refs/heads/stable_plus
 
 
 -- 
@@ -272,16 +231,10 @@ CREATE TABLE `prefix_surveys` (
   `owner_id` int(11) NOT NULL,
   `admin` varchar(50) default NULL,
   `active` char(1) NOT NULL default 'N',
-<<<<<<< HEAD
   `expires` datetime default NULL,
   `startdate` datetime default NULL,
   `adminemail` varchar(320) default NULL,
   `anonymized` char(1) NOT NULL default 'N',
-=======
-  `expires` date default NULL,
-  `adminemail` varchar(320) default NULL,
-  `private` char(1) default NULL,
->>>>>>> refs/heads/stable_plus
   `faxto` varchar(20) default NULL,
   `format` char(1) default NULL,
   `savetimings` char(1) default 'N',
@@ -298,7 +251,6 @@ CREATE TABLE `prefix_surveys` (
   `printanswers` char(1) default 'N',
   `ipaddr` char(1) default 'N',
   `refurl` char(1) default 'N',
-<<<<<<< HEAD
   `datecreated` date default NULL, 
   `publicstatistics` char(1) default 'N',
   `publicgraphs` char(1) default 'N',
@@ -332,11 +284,6 @@ CREATE TABLE `prefix_surveys` (
   `alloweditaftercompletion` char(1) default 'N',
    PRIMARY KEY(`sid`)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-=======
-  `datecreated` date default NULL,
-  PRIMARY KEY  (`sid`)
-) TYPE=MyISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
->>>>>>> refs/heads/stable_plus
 
 
 -- 
@@ -367,12 +314,7 @@ CREATE TABLE `prefix_surveys_languagesettings` (
   `surveyls_numberformat` INT NOT NULL DEFAULT 0,
   
   PRIMARY KEY (`surveyls_survey_id`, `surveyls_language`)
-<<<<<<< HEAD
 ) ENGINE = $databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-=======
-)
-TYPE = MyISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
->>>>>>> refs/heads/stable_plus
 
 
 -- 
@@ -430,7 +372,6 @@ CREATE TABLE `prefix_users` (
   `superadmin` tinyint(1) NOT NULL default '0',
   `configurator` tinyint(1) NOT NULL default '0',
   `manage_template` tinyint(1) NOT NULL default '0',
-<<<<<<< HEAD
   `manage_label` tinyint(1) NOT NULL default '0',
   `htmleditormode` varchar(7) default 'default',
   `one_time_pw` BLOB,
@@ -459,39 +400,10 @@ CREATE TABLE `prefix_templates` (
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
-=======
-  `manage_label` tinyint(1) NOT NULL default '0'
-) TYPE=MyISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-CREATE TABLE `prefix_surveys_rights` (
-	`sid` int(10) unsigned NOT NULL default '0',
-	`uid` int(10) unsigned NOT NULL default '0',
-	`edit_survey_property` tinyint(1) NOT NULL default '0',
-	`define_questions` tinyint(1) NOT NULL default '0',
-	`browse_response` tinyint(1) NOT NULL default '0',
-	`export` tinyint(1) NOT NULL default '0',
-	`delete_survey` tinyint(1) NOT NULL default '0',
-	`activate_survey` tinyint(1) NOT NULL default '0',
-	PRIMARY KEY (sid, uid)
-) TYPE=MyISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-CREATE TABLE `prefix_user_groups` (
-	`ugid` int(10) unsigned NOT NULL auto_increment PRIMARY KEY,
-	`name` varchar(20) NOT NULL UNIQUE,
-	`description` TEXT NOT NULL,
-	`owner_id` int(10) unsigned NOT NULL
-) TYPE=MyISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
-CREATE TABLE `prefix_user_in_groups` (
-	`ugid` int(10) unsigned NOT NULL,
-	`uid` int(10) unsigned NOT NULL
-) TYPE=MyISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
->>>>>>> refs/heads/stable_plus
 --
 -- Create failed_login_attempts
 --
 
-<<<<<<< HEAD
 CREATE TABLE `prefix_failed_login_attempts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ip` varchar(37) NOT NULL,
@@ -516,13 +428,6 @@ create index `questions_idx4` on `prefix_questions` (`type`);
 create index `quota_idx2` on `prefix_quota` (`sid`);
 create index `saved_control_idx2` on `prefix_saved_control` (`sid`);
 create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
-=======
-CREATE TABLE `prefix_settings_global` (
-  `stg_name` varchar(50) NOT NULL default '',
-  `stg_value` varchar(255) NOT NULL default '',
-  PRIMARY KEY  (`stg_name`)
-) TYPE=MyISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
->>>>>>> refs/heads/stable_plus
 
 --
 -- Version Info
@@ -530,11 +435,6 @@ CREATE TABLE `prefix_settings_global` (
 INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '146');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
-<<<<<<< HEAD
-=======
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '114');
-INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
->>>>>>> refs/heads/stable_plus
 
 --
 -- Create admin user

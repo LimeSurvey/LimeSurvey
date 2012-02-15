@@ -1,6 +1,5 @@
 <?php
 /*
-<<<<<<< HEAD
  * LimeSurvey
  * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -21,28 +20,6 @@
  $locale = new limesurvey_lang('en'); // Char code
  print $locale->getTranslation("Hello World!");
  */
-=======
-* LimeSurvey
-* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*
-* $Id$
-*
-
-
-Wrapper to use phpgettext as a class
-USAGE:
-require_once($rootdir.'classes/core/language.php');
-$locale = new limesurvey_lang('en'); // Char code
-print $locale->getTranslation("Hello World!");
-*/
->>>>>>> refs/heads/stable_plus
 
 if (!isset($rootdir) || isset($_REQUEST['rootdir'])) {die("Cannot run this script directly");}
 
@@ -55,7 +32,6 @@ class limesurvey_lang {
     var $langcode;
 
     function limesurvey_lang($langcode){
-<<<<<<< HEAD
         global $rootdir;
         $langcode=sanitize_languagecode($langcode);
         $streamer = new FileReader($rootdir.'/locale/'.$langcode.'/LC_MESSAGES/'.$langcode.'.mo');
@@ -79,13 +55,6 @@ class limesurvey_lang {
         {
             return '';
         }
-=======
-        	global $rootdir;
-        	$langcode=sanitize_languagecode($langcode);
-            $streamer = new FileReader($rootdir.'/locale/'.$langcode.'/LC_MESSAGES/'.$langcode.'.mo');
-            $this->gettextclass = new gettext_reader($streamer);
-            $this->langcode = $langcode;
->>>>>>> refs/heads/stable_plus
     }
     
 

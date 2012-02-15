@@ -1,6 +1,5 @@
 <?php
 /**
-<<<<<<< HEAD
  * LimeSurvey
  * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -13,20 +12,6 @@
  *
  * $Id$
  */
-=======
-* LimeSurvey
-* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: GNU/GPL License v2 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*
-* $Id$
-*/
->>>>>>> refs/heads/stable_plus
 
 //Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
 
@@ -161,7 +146,6 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
 
         if ($thissurvey['publicstatistics']=='Y' && $thissurvey['printanswers']=='Y') {$completed .='<br />'.$clang->gT("or");}
 
-<<<<<<< HEAD
         // Link to Public statistics  **********
         if ($thissurvey['publicstatistics']=='Y')
         {
@@ -171,18 +155,6 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
             ."</a><br />\n";
         }
         //*****************************************
-=======
-		sendcacheheaders();
-		if (!$embedded && isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
-		{
-			//Automatically redirect the page to the "url" setting for the survey
-			session_write_close();
-			
-			$url = $thissurvey['url'];
-			$url=str_replace("{SAVEDID}",$saved_id, $url);			// to activate the SAVEDID in the END URL
-			$url=str_replace("{TOKEN}",$_POST['token'], $url);			// to activate the TOKEN in the END URL
-            $url=str_replace("{SID}", $surveyid, $url);       // to activate the SID in the RND URL
->>>>>>> refs/heads/stable_plus
 
         //Update the token if needed and send a confirmation email
         if (isset($clienttoken) && $clienttoken)
@@ -234,7 +206,6 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
 //SEE IF $surveyid EXISTS
 if ($surveyexists <1)
 {
-<<<<<<< HEAD
     sendcacheheaders();
     doHeader();
     //SURVEY DOES NOT EXIST. POLITELY EXIT.
@@ -244,17 +215,6 @@ if ($surveyexists <1)
     echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
     doFooter();
     exit;
-=======
-	sendcacheheaders();
-	doHeader();
-	//SURVEY DOES NOT EXIST. POLITELY EXIT.
-	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-	echo "\t<center><br />\n"
-	."\t".$clang->gT("Sorry. There is no matching survey.")."<br /></center>&nbsp;\n";
-	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
-	doFooter();
-	exit;
->>>>>>> refs/heads/stable_plus
 }
 
 //RUN THIS IF THIS IS THE FIRST TIME
@@ -383,77 +343,10 @@ if(isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N') {
     echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"))."\n";
 }
 
-<<<<<<< HEAD
 if ($thissurvey['anonymized'] == "Y")
 {
     echo templatereplace(file_get_contents("$thistpl/privacy.pstpl"))."\n";
 }
-=======
-echo "' id='modfields'>\n";
-echo "\n";
-echo "\n\n<!-- JAVASCRIPT FOR MODIFIED QUESTIONS -->\n";
-echo "\t<script type='text/javascript'>\n";
-echo "\t<!--\n";
-echo "\t\tfunction modfield(name)\n";
-echo "\t\t\t{\n";
-echo "\t\t\t\ttemp=document.getElementById('modfields').value;\n";
-echo "\t\t\t\tif (temp=='') {\n";
-echo "\t\t\t\t\tdocument.getElementById('modfields').value=name;\n";
-echo "\t\t\t\t}\n";
-echo "\t\t\t\telse {\n";
-echo "\t\t\t\t\tmyarray=temp.split('|');\n";
-echo "\t\t\t\t\tif (!inArray(name, myarray)) {\n";
-echo "\t\t\t\t\t\tmyarray.push(name);\n";
-echo "\t\t\t\t\t\tdocument.getElementById('modfields').value=myarray.join('|');\n";
-echo "\t\t\t\t\t}\n";
-echo "\t\t\t\t}\n";
-echo "\t\t\t}\n";
-echo "\n";
-echo "  function inArray(needle, haystack)\n";
-echo "   {\n";
-echo "    for (h in haystack) {\n";
-echo "     if (haystack[h] == needle) {\n";
-echo "      return true;\n";
-echo "     }\n";
-echo "    }\n";
-echo "   return false;\n";
-echo "   } \n";
-echo "    function ValidDate(oObject)\n";
-echo "    {// --- Regular expression used to check if date is in correct format\n";
-echo "     var str_regexp = /[1-9][0-9]{3}-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])/;\n";
-echo "     var pattern = new RegExp(str_regexp);\n";
-echo "     if ((oObject.value.match(pattern)!=null))\n";
-echo "     {var date_array = oObject.value.split('-');\n";
-echo "      var day = date_array[2];\n";
-echo "      var month = date_array[1];\n";
-echo "      var year = date_array[0];\n";
-echo "      str_regexp = /1|3|5|7|8|10|12/;\n";
-echo "      pattern = new RegExp(str_regexp);\n";
-echo "      if ( day <= 31 && (month.match(pattern)!=null))\n";
-echo "      { return true;\n";
-echo "      }\n";
-echo "      str_regexp = /4|6|9|11/;\n";
-echo "      pattern = new RegExp(str_regexp);\n";
-echo "      if ( day <= 30 && (month.match(pattern)!=null))\n";
-echo "      { return true;\n";
-echo "      }\n";
-echo "      if (day == 29 && month == 2 && (year % 4 == 0))\n";
-echo "      { return true;\n";
-echo "      }\n";
-echo "      if (day <= 28 && month == 2)\n";
-echo "      { return true;\n";
-echo "      }        \n";
-echo "     }\n";
-echo "     window.alert('".$clang->gT("Date is not valid!")."');\n";
-echo "     oObject.focus();\n";
-echo "     oObject.select();\n";
-echo "     return false;\n";
-echo "    }\n";
-echo "  }\n";
-echo "\t//-->\n";
-echo "\t</script>\n\n";
-// <-- END NEW FEATURE - SAVE
->>>>>>> refs/heads/limesurvey16
 
 print <<<END
 
@@ -490,7 +383,6 @@ print <<<END
 
 	function checkconditions(value, name, type)
 	{
-<<<<<<< HEAD
 
 END;
 
@@ -509,54 +401,6 @@ if ((isset($conditions) && is_array($conditions)) ||
         {
             var hiddenformname='java'+name;
             document.getElementById(hiddenformname).value=value;
-=======
-		if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq)) //New if statement
-		{
-			$java .= $endzone;
-			$endzone = "";
-			$cqcount=1;
-      $java .= "\n   if ((";
-    }
-
-    if (!isset($oldcq) || !$oldcq)
-    {
-        $oldcq = $cd[2];
-		}
-
-    //Just in case the dropdown threshold is being applied, check number of answers here
-    if ($cd[4] == "L")
-		{
-			$cccquery="SELECT code FROM {$dbprefix}answers WHERE qid={$cd[1]}";
-			$cccresult=$connect->Execute($cccquery);
-			$cccount=$cccresult->RecordCount();
-		}
-    if ($cd[4] == "R")
-    {
-       $idname="fvalue_".$cd[1].substr($cd[2], strlen($cd[2])-1,1);
-    }
-    elseif ($cd[4] == "5" ||
-            $cd[4] == "A" ||
-            $cd[4] == "B" ||
-            $cd[4] == "C" ||
-            $cd[4] == "E" ||
-            $cd[4] == "F" ||
-            $cd[4] == "G" ||
-            $cd[4] == "Y" ||
-            ($cd[4] == "L" &&
-             $cccount <= $dropdownthreshold))
-    {
-        $idname="java$cd[2]";
-    }
-		elseif ($cd[4] == "M" || $cd[4] == "P")
-<<<<<<< HEAD
-		{$idname="java$cd[2]$cd[3]";}
-		else				{$idname="java".$cd[2];}
-		if ($cqcount > 1 && $oldcq ==$cd[2]) {$java .= " || ";}
-		elseif ($cqcount >1 && $oldcq != $cd[2]) {$java .= ") && (";}
-		if ($cd[3] == ' ' || $cd[3] == '')
-		{
-            $java .= "!document.getElementById('$idname') || document.getElementById('$idname').value == ' '  || document.getElementById('$idname').value == '' ";
->>>>>>> refs/heads/stable_plus
         }
 
         if (type == 'checkbox')
@@ -849,66 +693,6 @@ END;
         $oldcq = $cd[2];  //Update oldcq for next loop
     }
     $java .= $endzone;
-=======
-	{
-        $idname="java$cd[2]$cd[3]";
-    }
-    else
-    {
-        $idname="java".$cd[2];
-    }
-
-    if ($cqcount > 1 && $oldcq ==$cd[2])
-    {
-        $java .= " || ";
-    }
-    elseif ($cqcount >1 && $oldcq != $cd[2])
-    {
-        $java .= ") && (";
-    }
-
-    if ($cd[3] == '')
-    {
-      $java .= "document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value";
-        }
-		elseif($cd[4] == "M" || $cd[4] == "P")
-		{
-			$java .= "document.getElementById('$idname').value == 'Y'";
-		}
-		else
-		{
-      // NEW
-      // If the value is enclossed by @
-      // the value of this question must be evaluated instead.
-      if (ereg('^@[^@]+@', $cd[3]))
-      {
-        $java .= "document.getElementById('$idname').value $cd[6] document.getElementById('$cd[2]').value";
-	  }
-	  else
-	  {
-			$java .= "document.getElementById('$idname').value == '$cd[3]'";
-		}
-    }
-
-		if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq))//Close if statement
-		{
-			$endzone = "))\n"
-      . "    {\n"
-      . "    document.getElementById('question$cd[0]').style.display='';\n"
-      . "    document.getElementById('display$cd[0]').value='on';\n"
-      . "    }\n"
-      . "   else\n"
-      . "    {\n"
-      . "    document.getElementById('question$cd[0]').style.display='none';\n"
-      . "    document.getElementById('display$cd[0]').value='';\n"
-      . "    }\n";
-			$cqcount++;
-		}
-		$oldq = $cd[0]; //Update oldq for next loop
-		$oldcq = $cd[2];  //Update oldcq for next loop
-	}
-	$java .= $endzone;
->>>>>>> refs/heads/limesurvey16
 }
 
 
@@ -1105,7 +889,6 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
 }
 
 if (isset($java)) {echo $java;}
-<<<<<<< HEAD
 foreach ($groupUnconditionnalQuestionsCount as $thegid => $thecount)
 {
     if ($thecount == 0 )
@@ -1114,14 +897,6 @@ foreach ($groupUnconditionnalQuestionsCount as $thegid => $thecount)
     }
 }
 echo "\t}\n"
-=======
-echo "\t\t\t\tif (navigator.userAgent.indexOf('Safari')>-1 && name !== undefined )\n"
-."\t\t\t\t{ // Safari eats the onchange so run modfield manually, except when called at onload time\n"
-."\t\t\t\t\t//alert('For Safari calling modfield for ' + name);\n"
-."\t\t\t\t\tmodfield(name);\n"
-."\t\t\t\t}\n"
-."\t\t\t}\n"
->>>>>>> refs/heads/stable_plus
 ."\t//-->\n"
 ."\t</script>\n\n"; // End checkconditions javascript function
 

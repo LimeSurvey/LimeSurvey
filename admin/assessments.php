@@ -1,6 +1,5 @@
 <?php
 /*
-<<<<<<< HEAD
  * LimeSurvey
  * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -13,20 +12,6 @@
  *
  * $Id$
  */
-=======
-* LimeSurvey
-* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: GNU/GPL License v2 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*
-* $Id$
-*/
->>>>>>> refs/heads/stable_plus
 
 
 include_once("login_check.php");
@@ -169,18 +154,7 @@ if (bHasSurveyPermission($surveyid, 'assessments','read'))
 			$editdata=$row;
 		}
 		$groupselect=str_replace("'".$editdata['gid']."'", "'".$editdata['gid']."' selected", $groupselect);
-<<<<<<< HEAD
 		$actiontitle=$clang->gT("Edit");
-=======
-		$inputs=array($scopeselect,
-		$groupselect,
-		"<input type='text' name='minimum' value='".$editdata['minimum']."' />",
-		"<input type='text' name='maximum' value='".$editdata['maximum']."' />",
-		"<input type='text' name='name' size='80' value='".htmlentities(stripslashes($editdata['name']), ENT_QUOTES,'UTF-8')."'/>",
-		"<textarea name='message' rows='10' cols='80'>".htmlentities(stripslashes($editdata['message']), ENT_QUOTES,'UTF-8')."</textarea>",
-		"<input type='text' name='link' size='80' value='".$editdata['link']."' />");
-		$actiontitle=$clang->gT("Edit");	
->>>>>>> refs/heads/stable_plus
 		$actionvalue="assessmentupdate";
 		$thisid=$editdata['id'];
 	}

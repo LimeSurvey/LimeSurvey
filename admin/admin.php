@@ -1,6 +1,5 @@
 <?php
 /*
-<<<<<<< HEAD
  * LimeSurvey
  * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -13,27 +12,8 @@
  *
  * $Id$
  */
-=======
-* LimeSurvey
-* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: GNU/GPL License v2 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*
-* $Id$
-*/
->>>>>>> refs/heads/stable_plus
 
-<<<<<<< HEAD
 // Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
-=======
-require_once(dirname(__FILE__).'/../config.php');  // config.php itself includes common.php
-ini_set("memory_limit","10M"); //Guys: one survey touched ceil...   on line 285
->>>>>>> refs/heads/limesurvey16
 
 require_once(dirname(__FILE__).'/../classes/core/startup.php');
 
@@ -65,18 +45,6 @@ if (!isset($action)) {$action=returnglobal('action');}          //Desired action
 if (!isset($subaction)) {$subaction=returnglobal('subaction');} //Desired subaction
 if (!isset($editedaction)) {$editedaction=returnglobal('editedaction');} // for html editor integration
 
-<<<<<<< HEAD
-=======
-if ($action != "showprintablesurvey")
-{
-  $adminoutput = helpscreenscript();
-  $adminoutput .= "<table width='100%' border='0' cellpadding='0' cellspacing='0' >\n"
-  ."\t<tr>\n"
-  ."\t\t<td valign='top' align='center' bgcolor='#F8F8FF'>\n";
-} else {$adminoutput='';}
-include_once("login_check.php");
-  
->>>>>>> refs/heads/limesurvey16
 
 if ($action != 'showprintablesurvey' && substr($action,0,4)!= 'ajax')
 {
@@ -179,15 +147,6 @@ if(isset($_SESSION['loginID']))
 
 
 
-<<<<<<< HEAD
-=======
-if (isset($surveyid) && $surveyid)
-{
-$surquery = "SELECT * FROM {$dbprefix}surveys_rights WHERE sid=".db_quote($surveyid)." AND uid = ".db_quote($_SESSION['loginID']); //Getting rights for this survey
-$surresult = db_execute_assoc($surquery);   
-$surrows = $surresult->FetchRow();
-}
->>>>>>> refs/heads/stable_plus
 
     /* Check survey right actions for validity
      Currently existing survey rights:
@@ -575,17 +534,6 @@ $surrows = $surresult->FetchRow();
         }
     }
 
-<<<<<<< HEAD
-=======
-    
- if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) && !isset($savedsurveyoutput) && !isset( $listcolumnoutput  ) &&         
-     !isset($dataentryoutput) && !isset($conditionsoutput) && !isset($importoldresponsesoutput) && 
-     !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&    
-     (isset($surveyid) || $action=="listurveys" || $action=="changelang" ||  $action=="checksettings" ||       //Still to check
-      $action=="editsurvey" || $action=="updatesurvey" || $action=="ordergroups"  ||
-      $action=="uploadf" || $action=="newsurvey" || $action=="listsurveys" ||   
-      $action=="surveyrights") ) include("html.php");
->>>>>>> refs/heads/stable_plus
 
     if ($action=='adduser' || $action=='deluser'|| $action=='finaldeluser' || $action=='moduser' || $action=='setusertemplates' || $action=='usertemplates' ||                                        //Still to check
     $action=='userrights' || $action=='modifyuser' || $action=='editusers' ||
@@ -722,7 +670,6 @@ $surrows = $surresult->FetchRow();
         $adminoutput .= getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
     }
 
-<<<<<<< HEAD
 }
 else
 { //not logged in
@@ -740,71 +687,5 @@ if (($action=='showphpinfo') && ($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1))
 else
 {
     echo $adminoutput;
-=======
-    $helpoutput="\t\t<td id='help' width='200' valign='top' style='display: none' bgcolor='#CCCCCC'>\n"
-  	."\t\t\t<table width='100%'><tr><td>"
-  	."<table width='100%' align='center' cellspacing='0'>\n"
-  	."\t\t\t\t<tr>\n"
-  	."\t\t\t\t\t<td bgcolor='#555555' height='8'>\n"
-  	."\t\t\t\t\t\t<font color='white' size='1'><strong>"
-  	.$clang->gT("Help")."</strong>\n"
-  	."\t\t\t\t\t</font></td>\n"
-  	."\t\t\t\t</tr>\n"
-  	."\t\t\t\t<tr>\n"
-  	."\t\t\t\t\t<td align='center' bgcolor='#AAAAAA' style='border-style: solid; border-width: 1px; border-color: #555555'>\n"
-  	."\t\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' hspace='0' border='0' align='left' />\n"
-  	."\t\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' name='CloseHelp' align='right' onclick=\"showhelp('hide')\" />\n"
-  	."\t\t\t\t\t</td>\n"
-  	."\t\t\t\t</tr>\n"
-  	."\t\t\t\t<tr>\n"
-  	."\t\t\t\t\t<td bgcolor='silver' height='100%' style='border-style: solid; border-width: 1px; border-color: #333333'>\n";
-  	//determine which help document to show
-  	if (!$surveyid && $action != "editusers")
-  	{
-  		$helpdoc = "$langdir/admin.html";
-  	}
-  	elseif (!$surveyid && $action=="editusers")
-  	{
-  		$helpdoc = "$langdir/users.html";
-  	}
-  	elseif ($surveyid && !$gid)
-  	{
-  		$helpdoc = "$langdir/survey.html";
-  	}
-  	elseif ($surveyid && $gid && !$qid)
-  	{
-  		$helpdoc = "$langdir/group.html";
-  	}
-  	//elseif ($surveyid && $gid && $qid && !$_GET['viewanswer'] && !$_POST['viewanswer'])
-  	elseif ($surveyid && $gid && $qid && !returnglobal('viewanswer'))
-  	{
-  		$helpdoc = "$langdir/question.html";
-  	}
-  	elseif ($surveyid && $gid && $qid && (returnglobal('viewanswer')))
-  	{
-  		$helpdoc = "$langdir/answer.html";
-  	}
-  	$helpoutput.= "\t\t\t\t\t\t<iframe width='200' height='400' src='$helpdoc' marginwidth='2' marginheight='2'>\n"
-  	."\t\t\t\t\t\t</iframe>\n"
-  	."\t\t\t\t\t</td>"
-  	."\t\t\t\t</tr>\n"
-  	."\t\t\t</table></td></tr></table>\n"
-  	."\t\t</td>\n";
-  	return $helpoutput;
-  }
-  
-
-  
-function convertToArray($stringtoconvert, $seperator, $start, $end) 
-// this function is still used to read SQL files from version 1.0 or older
-{
-    $begin=strpos($stringtoconvert, $start)+strlen($start);
-    $len=strpos($stringtoconvert, $end)-$begin;
-    $stringtoconvert=substr($stringtoconvert, $begin, $len);
-    $stringtoconvert=str_replace('\n',"\n",$stringtoconvert);  //removes masking
-    $stringtoconvert=stripslashes($stringtoconvert);
-    $resultarray=explode($seperator, $stringtoconvert);
-    return $resultarray;
->>>>>>> refs/heads/stable_plus
 }
 

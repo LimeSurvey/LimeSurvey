@@ -1,6 +1,5 @@
 <?php
 /*
-<<<<<<< HEAD
  * LimeSurvey
  * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -19,23 +18,6 @@
 require_once(dirname(__FILE__).'/classes/core/startup.php');    // Since this file can be directly run
 require_once(dirname(__FILE__).'/config-defaults.php');
 require_once(dirname(__FILE__).'/common.php');
-=======
-* LimeSurvey
-* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: GNU/GPL License v2 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*
-* $Id$
-*/
-
-if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
-require_once(dirname(__FILE__).'/config.php');
->>>>>>> refs/heads/stable_plus
 require_once($rootdir.'/classes/core/language.php');
 
 $surveyid=returnglobal('sid');
@@ -184,7 +166,6 @@ $html=""; //Set variable
 
 if (SendEmailMessage(null, $message, $subject, returnglobal('register_email'), $from, $sitename,$useHtmlEmail,getBounceEmail($surveyid)))
 {
-<<<<<<< HEAD
     // TLR change to put date into sent
     //	$query = "UPDATE {$dbprefix}tokens_$surveyid\n"
     //			."SET sent='Y' WHERE tid=$tid";
@@ -195,18 +176,6 @@ if (SendEmailMessage(null, $message, $subject, returnglobal('register_email'), $
     $html="<center>".$clang->gT("Thank you for registering to participate in this survey.")."<br /><br />\n".$clang->gT("An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.")."<br /><br />\n".$clang->gT("Survey Administrator")." {ADMINNAME} ({ADMINEMAIL})";
     $html=ReplaceFields($html, $fieldsarray);
     $html .= "<br /><br /></center>\n";
-=======
-	// TLR change to put date into sent
-	//	$query = "UPDATE {$dbprefix}tokens_$surveyid\n"
-	//			."SET sent='Y' WHERE tid=$tid";
-	$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
-	$query = "UPDATE {$dbprefix}tokens_$surveyid\n"
-	."SET sent='$today' WHERE tid=$tid";
-	$result=$connect->Execute($query) or die ("$query<br />".htmlspecialchars($connect->ErrorMsg()));
-	$html="<center>".$clang->gT("Thank you for registering to participate in this survey.")."<br /><br />\n".$clang->gT("An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.")."<br /><br />\n".$clang->gT("Survey Administrator")." {ADMINNAME} ({ADMINEMAIL})";
-	$html=Replacefields($html, $fieldsarray);
-	$html .= "<br /><br />\n<input type='submit' onclick='javascript: self.close()' value='".$clang->gT("Close this Window")."'></center>\n";
->>>>>>> refs/heads/stable_plus
 }
 else
 {

@@ -1,6 +1,5 @@
 <?php
 /*
-<<<<<<< HEAD
  * LimeSurvey
  * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -13,26 +12,11 @@
  *
  * $Id$
  */
-=======
-* LimeSurvey
-* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: GNU/GPL License v2 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*
-* $Id$
-*/
->>>>>>> refs/heads/stable_plus
 
 include_once("login_check.php");  //Login Check dies also if the script is started directly
 
 if ($database_exists && ($databasetype=='mysql' || $databasetype=='mysqli') && $demoModeOnly != true && $action=='dumpdb') {
 
-<<<<<<< HEAD
     $export=completedump();
 
     $file_name = "LimeSurvey_{$databasename}_dump_".date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust).".sql";
@@ -118,38 +102,6 @@ function defdump($tablename)
     }
     $def .= "\n);\n\n\n";
     return (stripslashes($def));
-=======
-	$tables = $connect->MetaTables();
-	
-	$export="";
-	$export .="#------------------------------------------"."\n";
-	$export .="# LimeSurvey Database Dump of `$databasename`"."\n";
-	if ($allowexportalldb==0) {
-		$export .="# Only prefixed tables with: ". $dbprefix ."\n";
-	}
-	$export .="# Date of Dump: ". date("d-M-Y") ."\n";
-	$export .="#------------------------------------------"."\n\n\n";
-	
-	foreach($tables as $table) {
-		if ($allowexportalldb==0) {
-			if ($dbprefix==substr($table, 0, strlen($dbprefix))) {
-				$export .= defdump($table);
-				$export .= datadump($table);
-			}
-		}
-		else {
-			$export .= defdump($table);
-			$export .= datadump($table);
-		}
-	}
-	
-	$file_name = "LimeSurvey_{$databasename}_dump_".date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust).".sql";
-	Header("Content-type: application/octet-stream");
-	Header("Content-Disposition: attachment; filename=$file_name");
-	Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-	echo $export;
-	exit;
->>>>>>> refs/heads/stable_plus
 }
 
 

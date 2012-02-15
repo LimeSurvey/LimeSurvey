@@ -1,6 +1,5 @@
 <?php
 /*
-<<<<<<< HEAD
  * LimeSurvey
  * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -13,20 +12,6 @@
  *
  * $Id$
  */
-=======
-* LimeSurvey
-* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: GNU/GPL License v2 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*
-* $Id$
-*/
->>>>>>> refs/heads/stable_plus
 
 
 //Ensure script is not run directly, avoid path disclosure
@@ -87,7 +72,6 @@ else
 }
 
 doHeader();
-<<<<<<< HEAD
 $dummy_js = '
 		<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
 		<script type="text/javascript">
@@ -153,28 +137,6 @@ $content .= '<p>&nbsp;</form>';
 $content .= templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 
 echo $content;
-=======
-//echo "\t\t\t\t<div id='question'";
-echo "<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
-	<script type='text/javascript'>
-	<!--
-		function checkconditions(value, name, type)
-			{
-			}
-
-		function modfield(name)
-			{
-			}
-	//-->
-	</script>";
-echo "<form method='post' action='/limesurvey/index.php' id='limesurvey' name='limesurvey'>\n";
-$question="<label for='$answers[0][7]'>" . $answers[0][0] . "</label>";
-$answer=$answers[0][1];
-$help=$answers[0][2];
-$questioncode=$answers[0][5];
-echo templatereplace(file_get_contents("$thistpl/preview.pstpl"));
-echo "</form>\n";
->>>>>>> refs/heads/stable_plus
 echo "</html>\n";
 
 

@@ -1,22 +1,10 @@
 msgid ""
 msgstr ""
-<<<<<<< HEAD
 "Project-Id-Version: LimeSurvey German Informal language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-01-20 15:32+0100\n"
-<<<<<<< HEAD
-"PO-Revision-Date: 2012-01-20 15:33+0100\n"
-"Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
-=======
-"Project-Id-Version: LimeSurvey German language file\n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-12-03 22:01+0100\n"
-"Last-Translator: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
->>>>>>> refs/heads/stable_plus
-=======
 "PO-Revision-Date: 2012-02-02 14:46+0100\n"
 "Last-Translator: mm\n"
->>>>>>> refs/heads/limesurvey
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,18 +13,9 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
-<<<<<<< HEAD
 "X-Poedit-KeywordsList: gT;ngT:1,2\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SearchPath-0: .\n"
-=======
-"X-Poedit-KeywordsList: gT\n"
-"X-Poedit-SearchPath-0: D:\\web\\xampp\\htdocs\\stable_plus\n"
-
-# D:\web\xampp\htdocs\stable_plus/common.php:229
-msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
-msgstr "Warnung: Du benutzt immer noch das Standard-Passwort ('password'). Bitte ändere das Passwort und melden Dich ab und wieder an. "
->>>>>>> refs/heads/stable_plus
 
 #: common_functions.php:3540
 msgid "'Other:' comment mandatory"
@@ -484,7 +463,6 @@ msgstr "Deaktiviere den 'Nächste Seite'-Knopf bis das Zeitlimit abgelaufen ist"
 msgid "Display"
 msgstr "Anzeige"
 
-<<<<<<< HEAD
 #: common_functions.php:3816
 msgid "Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr "Zeige eine 'Zeitlimitwarnung' wenn nur noch so viele Sekunden beim Ablauf des Countdown vorhanden sind (Warnung wird nicht gezeigt, wenn dies leer gelassen wird)"
@@ -492,10 +470,6 @@ msgstr "Zeige eine 'Zeitlimitwarnung' wenn nur noch so viele Sekunden beim Ablau
 #: common_functions.php:3117
 msgid "Display columns"
 msgstr "Anzahl Spalten"
-=======
-msgid "Save Your Unfinished Survey"
-msgstr "Umfrage zwischenspeichern"
->>>>>>> refs/heads/stable_plus
 
 #: common_functions.php:3136
 msgid "Display dropdown boxes"
@@ -509,17 +483,9 @@ msgstr "Zeige Minimal- und Maximalwerte unter dem Schieberegler"
 msgid "Display rows"
 msgstr "Anzahl Zeilen"
 
-<<<<<<< HEAD
 #: common_functions.php:3680
 msgid "Display slider min and max value"
 msgstr "Zeige Schieberegler Minimal- und Maximalwerte"
-=======
-msgid "Return To Survey"
-msgstr "Zur Umfrage zurückkehren"
-
-msgid "Name"
-msgstr "Unverändert"
->>>>>>> refs/heads/stable_plus
 
 #: common_functions.php:3792
 msgid "Display the 'time limit expiry message' for this many seconds before performing the 'time limit action' (defaults to 1 second if left blank)"
@@ -983,14 +949,9 @@ msgstr "Summe der numerischen Eingabe darf nicht größer sein als dieser Wert"
 msgid "Maximum value"
 msgstr "Maximal Wert"
 
-<<<<<<< HEAD
 #: common_functions.php:3415
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr "Maximalwert für für Matrix (Multi-Flexi) Fragentyp"
-=======
-msgid "Make a comment on your choice here:"
-msgstr "Bitte schreibe einen Kommentar zu Deiner Auswahl"
->>>>>>> refs/heads/stable_plus
 
 #: common_functions.php:3359
 msgid "Maximum value of the numeric input"
@@ -1073,24 +1034,9 @@ msgstr "Mehrfachauswahl"
 msgid "Multiple choice questions"
 msgstr "Mehrfachauswahl"
 
-<<<<<<< HEAD
 #: common_functions.php:197
 msgid "Multiple choice with comments"
 msgstr "Mehrfachauswahl mit Kommentar"
-=======
-msgid "You are not allowed dump the database!"
-msgstr "Du bist nicht berechtigt, die Dtaenbank zu exportieren!"
-
-msgid "You are not allowed export a label set!"
-msgstr "Du bist nicht berechtigt, Beschriftungssets zu exportieren!"
-
-# D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:384
-msgid "You are not allowed to change user data!"
-msgstr "Du bist nicht berechtigt, Benutzer zu bearbeiten!"
-
-msgid "You are not allowed to create new surveys!"
-msgstr "Du bist nicht berechtigt neue Umfragen zu erstellen!"
->>>>>>> refs/heads/stable_plus
 
 #: common_functions.php:3191
 msgid "Multiple numeric inputs sum must equal this value"
@@ -1195,15 +1141,9 @@ msgstr "Nominal"
 msgid "None"
 msgstr "Keine"
 
-<<<<<<< HEAD
 #: qanda.php:1822
 msgid "Nov"
 msgstr "Nov"
-=======
-# D:\web\xampp\htdocs\limesurvey/admin/access_denied.php:103
-msgid "You are not allowed to browse responses!"
-msgstr "Du bist nicht berechtigt, sich Ergebnisse anzuschauen."
->>>>>>> refs/heads/stable_plus
 
 #: common_functions.php:3487
 msgid "Numbers only"
@@ -1217,21 +1157,9 @@ msgstr "Nur numerische Eingabe für 'Sonstiges'"
 msgid "Numerical Input"
 msgstr "Zahleneingabe"
 
-<<<<<<< HEAD
 #: qanda.php:1821
 msgid "Oct"
 msgstr "Okt"
-=======
-msgid "You are not allowed to import a group!"
-msgstr "Du bist nicht berechtigt eine Gruppe zu importieren!"
-
-msgid "You are not allowed to to import a question!"
-msgstr "Du bist nicht berechtigt eine Frage zu importieren!"
-
-# D:\web\xampp\htdocs\limesurvey/admin/access_denied.php:138
-msgid "You are not allowed to perform this operation!"
-msgstr "Du bist nicht berechtigt diese Operation durchzuführen!"
->>>>>>> refs/heads/stable_plus
 
 #: common_functions.php:3264
 #: common_functions.php:3496
@@ -1529,17 +1457,9 @@ msgstr "Rank %s"
 msgid "Ranking"
 msgstr "Reihenfolge"
 
-<<<<<<< HEAD
 #: common_functions.php:2357
 msgid "Referrer URL"
 msgstr "Weiterleitungs-URL"
-=======
-msgid "Completed"
-msgstr "Abgeschlossen"
-
-msgid "Date Submitted"
-msgstr "Datum Abgeschickt"
->>>>>>> refs/heads/stable_plus
 
 #: qanda.php:4458
 msgid "Remaining: "
@@ -1733,7 +1653,6 @@ msgstr "Schieberegler Maximalwert"
 msgid "Slider minimum value"
 msgstr "Schieberegler Minimalwert"
 
-<<<<<<< HEAD
 #: common_functions.php:3654
 msgid "Slider starts at the middle position"
 msgstr "Schieberegler startet in der Mittelposition"
@@ -1769,16 +1688,6 @@ msgstr "Start-Sprache"
 #: common_functions.php:35
 msgid "Statistics"
 msgstr "Statistiken"
-=======
-msgid ""
-"Group could not be added.\\n"
-"\\n"
-"It is missing the group name for the following languages"
-msgstr ""
-"Gruppe konnte nicht hinzugefügt werden.\\n"
-"\\n"
-" Der Gruppenname für die folgenden Sprachen fehlt"
->>>>>>> refs/heads/stable_plus
 
 #: common_functions.php:3431
 #: common_functions.php:3432
@@ -2396,44 +2305,9 @@ msgstr "Hinzufügen oder löschen von Teilfragen oder den Code zu verändern"
 msgid "Add, remove or edit answer options"
 msgstr "Antwortoptionen hinzufügen, löschen oder bearbeiten"
 
-<<<<<<< HEAD
 #: replacements.php:599
 msgid "After having clicked the save button you can either close this browser window or continue filling out the survey."
 msgstr "Nachdem Du auf Speichern geklickt hast, kannst Du den Browser schließen oder mit dem Ausfüllen des Fragebogen fortfahren."
-=======
-msgid "Add Group"
-msgstr "Gruppe hinzufügen"
-
-msgid "Base Language"
-msgstr "Basis-Sprache"
-
-msgid "Title"
-msgstr "Titel"
-
-msgid "Required"
-msgstr "Pflichtangabe"
-
-msgid "Description:"
-msgstr "Beschreibung:"
-
-msgid "Please select a file to import!"
-msgstr "Bitte wähle eine Datei zum Importieren aus!"
-
-msgid "Import Group"
-msgstr "Gruppen importieren"
-
-msgid "Select CSV File:"
-msgstr "CSV-Datei auswählen:"
-
-msgid "Edit Group"
-msgstr "Gruppe bearbeiten"
-
-msgid "Update Group"
-msgstr "Gruppe aktualisieren"
-
-msgid "Survey"
-msgstr "Umfrage"
->>>>>>> refs/heads/stable_plus
 
 #: admin/access_denied.php:122
 #: admin/access_denied.php:127
@@ -2659,18 +2533,9 @@ msgstr "Umfrage verlassen und löschen"
 msgid "Generating summaries ..."
 msgstr "Generiere Zusammenfassungen..."
 
-<<<<<<< HEAD
 #: statistics_user.php:403
 msgid "Getting questions and answers ..."
 msgstr "Ermittle Fragen und Antworten..."
-=======
-# D:\web\xampp\htdocs\stable_plus/admin/html.php:273
-msgid "Show PHPInfo"
-msgstr "PHPInfo anzeigen"
-
-msgid "Survey cannot be activated. Either you have no permission or there are no questions."
-msgstr "Die Umfrage kann nicht aktiviert werden, da Du entweder keine Berechtigung hast oder keine Fragen vorhanden sind."
->>>>>>> refs/heads/stable_plus
 
 #: statistics_user.php:394
 msgid "Go back"
@@ -2819,7 +2684,6 @@ msgstr "Zurück zur Hauptseite"
 msgid "Maximum"
 msgstr "Maximum"
 
-<<<<<<< HEAD
 #: admin/assessments.php:173
 #: admin/assessments.php:271
 msgid "Message"
@@ -2828,10 +2692,6 @@ msgstr "Meldung"
 #: admin/assessments.php:288
 msgid "Message:"
 msgstr "Nachricht:"
-=======
-msgid "This survey is NOT anonymous."
-msgstr "Diese Umfrage ist nicht anonym."
->>>>>>> refs/heads/stable_plus
 
 #: admin/assessments.php:145
 #: admin/assessments.php:236
@@ -2905,7 +2765,6 @@ msgstr "Fragegruppe"
 msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
 msgstr "Lese dies sorgfältig durch, bevor Du fortfährst."
 
-<<<<<<< HEAD
 #: save.php:387
 #: save.php:426
 msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
@@ -2914,10 +2773,6 @@ msgstr "Rufe die Umfrage auf, indem Du auf folgende URL klickst (oder den Link m
 #: admin/admin_functions.php:307
 msgid "Reminder to participate in a survey"
 msgstr "Erinnerung an die Teilnahme an einer Umfrage"
-=======
-msgid "Welcome:"
-msgstr "Willkommenstext:"
->>>>>>> refs/heads/stable_plus
 
 #: replacements.php:427
 msgid "Repeat Password"
@@ -3142,7 +2997,6 @@ msgstr "Diese Frage benötigt Teilfragen aber es wurden noch keine angelegt."
 msgid "This question requires a second answer set but none is set."
 msgstr "Diese Frage benötigt ein zweites Antwort-Set, aber es wurde keines angegeben."
 
-<<<<<<< HEAD
 #: admin/activate_functions.php:163
 msgid "This question requires answers, but none are set."
 msgstr "Diese Frage benötigt Antworten, aber keine sind gesetzt."
@@ -3150,20 +3004,6 @@ msgstr "Diese Frage benötigt Antworten, aber keine sind gesetzt."
 #: admin/activate_functions.php:470
 msgid "This survey allows public registration. A token table must also be created."
 msgstr "Diese Umfrage erlaubt öffentliche Registrierungen. Daher muss eine Zugangsschlüssel-Tabelle angelegt werden."
-=======
-# D:\xampp\xampp\htdocs\limesurvey/admin/html.php:795
-# D:\xampp\xampp\htdocs\limesurvey/admin/labels.php:251
-# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:224
-# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:1005
-# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:1029
-# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:1037
-# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:1043
-# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:1046
-# D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:1047
-# D:\xampp\xampp\htdocs\limesurvey/admin/statistics.php:1446
-msgid "Code"
-msgstr "Code"
->>>>>>> refs/heads/stable_plus
 
 #: replacements.php:571
 msgid "This survey is anonymous."
@@ -3263,7 +3103,6 @@ msgstr "Du bist nicht berechtigt Gruppen dieser Umfrage zu bearbeiten!"
 msgid "You are not allowed to edit this survey!"
 msgstr "Du bist nicht berechtigt diese Umfrage zu bearbeiten!"
 
-<<<<<<< HEAD
 #: admin/access_denied.php:108
 msgid "You are not allowed to import a group!"
 msgstr "Du bist nicht berechtigt eine Gruppe zu importieren!"
@@ -3271,11 +3110,6 @@ msgstr "Du bist nicht berechtigt eine Gruppe zu importieren!"
 #: admin/access_denied.php:102
 msgid "You are not allowed to import a survey!"
 msgstr "Du bist nicht berechtigt eine Umfrage zu importieren!"
-=======
-# D:\web\xampp\htdocs\limesurvey/admin/html.php:3085
-msgid "Update survey rights successful."
-msgstr "Benutzerrechte erfolgreich aktualisiert."
->>>>>>> refs/heads/stable_plus
 
 #: admin/access_denied.php:72
 msgid "You are not allowed to order groups in this survey!"
@@ -3326,7 +3160,6 @@ msgstr "Du musst einen Namen angeben."
 msgid "You must supply a password for this saved session."
 msgstr "Du musst ein Passwort angeben."
 
-<<<<<<< HEAD
 #: uploader.php:99
 #, php-format
 msgid ""
@@ -3335,13 +3168,6 @@ msgid ""
 msgstr ""
 "Du musst %s weitere Dateien für diese Frage hochladen.\n"
 "Bist du sicher, dass du abbrechen möchtest?"
-=======
-# D:\web\xampp\htdocs\limesurvey/admin/html.php:1919
-# D:\web\xampp\htdocs\limesurvey/admin/html.php:2464
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:272
-msgid "If you set a survey to anonymous, answers to timestamped and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
-msgstr "Wenn du die Umfrage auf  -Anonyme Antworten- setzt, die Antworten mit einem Zeitstempel versiehst und eine Probandentabelle erstellst, wird LimeSurvey die Zugangsschlüssel nicht mit einem Zeitstempel versehen, sondern an Stelle des Datums und der Uhrzeit nur ein 'Y' setzen, damit für die Teilnehmer die Anonymität gewahrt bleibt."
->>>>>>> refs/heads/stable_plus
 
 #: admin/activate.php:72
 msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
@@ -11016,7 +10842,6 @@ msgstr "Datenbank wurde erfolgreich auf Version %s aktualisiert."
 msgid "Database type"
 msgstr "Datenbanktyp"
 
-<<<<<<< HEAD
 #: admin/update/upgrade-mssql.php:481
 #: admin/update/upgrade-mssqlnative.php:481
 #: admin/update/upgrade-mysql.php:586
@@ -11028,10 +10853,6 @@ msgstr "Datenbankaktualisierung beendet (%s)"
 #: admin/update/updater.php:651
 msgid "Database upgrade"
 msgstr "Datenbank aktualisieren"
-=======
-msgid "Import Survey"
-msgstr "Umfrage importieren"
->>>>>>> refs/heads/stable_plus
 
 #: admin/update/updater.php:237
 msgid "Everything looks alright. Please proceed to the next step."
@@ -11076,15 +10897,9 @@ msgstr "Keine Datenbanksicherung erzeugt:"
 msgid "On requesting the update information from limesurvey.org there has been an error:"
 msgstr "Beim Holen der Update-Informationen von Limesurvey.org ist ein Fehler aufgetreten:"
 
-<<<<<<< HEAD
 #: admin/update/updater.php:306
 msgid "Please be patient and try again in about 10 minutes."
 msgstr "Bitte gedulde Dich ein wenig und versuche es erneut in 10 Minuten."
-=======
-#, php-format
-msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
-msgstr "Beim Hochladen der Datei ist ein Fehler aufgetreten. Grund dafür könnten fehlerhafte Rechteeinstellungen des Ordners %s sein."
->>>>>>> refs/heads/stable_plus
 
 #: admin/update/upgrade-all.php:24
 msgid "Please be patient..."
@@ -11094,7 +10909,6 @@ msgstr "Bitte gedulde dich..."
 msgid "Please check any problems above - update was done."
 msgstr "Bitte überprüfe ob etwaige Probleme gemeldet wurden - Update wurde durchgeführt."
 
-<<<<<<< HEAD
 #: admin/update/updater.php:484
 msgid "Please check any problems above and then proceed to the final step."
 msgstr "Bitte überprüfe ob Probleme gezeigt werden und fahre dann mit dem letzten Schritt fort."
@@ -11102,10 +10916,6 @@ msgstr "Bitte überprüfe ob Probleme gezeigt werden und fahre dann mit dem letz
 #: admin/update/updater.php:398
 msgid "Please check any problems above and then proceed to the next step."
 msgstr "Bitte überprüfe ob Probleme gezeigt werden und fahre dann mit dem nächsten Schritt fort."
-=======
-msgid "Reading file..."
-msgstr "Lese Datei..."
->>>>>>> refs/heads/stable_plus
 
 #: admin/update/updater.php:180
 msgid "Please enter a valid update-key:"
@@ -11237,19 +11047,9 @@ msgstr "Deine LimeSurvey Installation wird überprüft, ob das Update erfolgreic
 msgid "Your update key is invalid and was removed. "
 msgstr "Dein Aktualisierungsschlüssel war ungültig und wurde entfernt."
 
-<<<<<<< HEAD
 #: classes/core/surveytranslator.php:156
 msgid "Albanian"
 msgstr "Albanisch"
-=======
-# D:\web\xampp\htdocs\stable_plus/admin/importquestion.php:116
-msgid "Sorry, importing questions is limited to the same version. Import failed."
-msgstr "Du kannst leider nur Fragen der gleichen LimeSurvey Version importieren. Import fehlgeschlagen."
-
-# D:\web\xampp\htdocs\limesurvey/admin/importquestion.php:217
-msgid "You can't import a question which doesn't support the current survey's base language"
-msgstr "Du kannst keine Frage importieren, welche nicht zumindest die Basissprache dieser Umfrage unterstützt."
->>>>>>> refs/heads/stable_plus
 
 #: classes/core/surveytranslator.php:163
 msgid "Arabic"
@@ -11311,7 +11111,6 @@ msgstr "Punkt (.)"
 msgid "Dutch"
 msgstr "Niederländisch"
 
-<<<<<<< HEAD
 #: classes/core/surveytranslator.php:261
 msgid "Dutch Informal"
 msgstr "Holländisch (Du-Form)"
@@ -11323,41 +11122,11 @@ msgstr "Englisch"
 #: classes/core/surveytranslator.php:275
 msgid "Estonian"
 msgstr "Estnisch"
-=======
-# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:53
-msgid "No matching Cqid"
-msgstr "Keine entsprechende Cquid"
-
-# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:60
-msgid "No matching CFIELDNAME group"
-msgstr "Keine entsprechende CFIELDNAME Gruppe"
-
-# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:64
-msgid "No \"CFIELDNAME\" field set!"
-msgstr "Kein \"CFIELDNAME\" gesetzt!"
-
-msgid "The following conditions should be deleted"
-msgstr "Die folgenden Bedingungen sollten gelöscht werden:"
-
-msgid "because"
-msgstr "Grund:"
-
-msgid "All conditions meet consistency standards"
-msgstr "Alle Bedingungen sind konsistent."
-
-# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:89
-msgid "No matching qid"
-msgstr "Keine entsprechende qid"
-
-msgid "The following question attributes should be deleted"
-msgstr "Die folgenden Fragenattribute sollten gelöscht werden:"
->>>>>>> refs/heads/stable_plus
 
 #: classes/core/surveytranslator.php:282
 msgid "Finnish"
 msgstr "Finnisch"
 
-<<<<<<< HEAD
 #: classes/core/surveytranslator.php:289
 msgid "French"
 msgstr "Französisch"
@@ -11365,25 +11134,6 @@ msgstr "Französisch"
 #: classes/core/surveytranslator.php:296
 msgid "Galician"
 msgstr "Galizisch"
-=======
-msgid "No matching survey"
-msgstr "Keine übereinstimmende"
-
-msgid "No matching group"
-msgstr "Keine übereinstimmende Gruppe"
-
-msgid "The following assessments should be deleted"
-msgstr "Die folgenden Bewertungen sollten gelöscht werden:"
-
-msgid "All Survey (Total) assessments meet consistency standards"
-msgstr "Alle Umfrage (Gesamt-) Bewertungen sind konsistent."
-
-msgid "All Group assessments meet consistency standards"
-msgstr "Alle Gruppenbewertungen sind konsistent."
-
-msgid "No matching question"
-msgstr "Keine übereinstimmende Frage"
->>>>>>> refs/heads/stable_plus
 
 #: classes/core/surveytranslator.php:303
 msgid "German"
@@ -11425,74 +11175,17 @@ msgstr "Irisch"
 msgid "Italian"
 msgstr "Italienisch"
 
-<<<<<<< HEAD
 #: classes/core/surveytranslator.php:373
 msgid "Italian (formal)"
 msgstr "Italienisch (Förmlich)"
-=======
-# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:249
-msgid "Should we proceed with the delete?"
-msgstr "Möchtest Du mit dem Löschen forfahren?"
-
-# D:\web\xampp\htdocs\stable_plus/admin/integritycheck.php:292
-msgid "Yes - Delete Them!"
-msgstr "Ja - Bitte löschen!"
-
-msgid "Deleting Surveys"
-msgstr "Lösche Umfragen"
-
-msgid "Deleting Survey ID"
-msgstr "Lösche Umfrage ID"
-
-msgid "Deleting Assessments"
-msgstr "Lösche Assessments"
-
-msgid "Deleting ID"
-msgstr "Lösche ID"
-
-msgid "Deleting Question_Attributes"
-msgstr "Lösche Fragenattribute"
-
-msgid "Deleting Conditions"
-msgstr "Lösche Bedingungen"
-
-msgid "Deleting cid"
-msgstr "Lösche cid"
-
-msgid "Deleting Answers"
-msgstr "Lösche Antworten"
-
-msgid "Deleting answer with qid"
-msgstr "Lösche Antwort mit qid"
-
-msgid "Deleting Questions"
-msgstr "Lösche Fragen"
-
-msgid "Deleting qid"
-msgstr "Lösche quid"
-
-msgid "Deleting Groups"
-msgstr "Lösche Gruppen"
->>>>>>> refs/heads/stable_plus
 
 #: classes/core/surveytranslator.php:380
 msgid "Japanese"
 msgstr "Japanisch"
 
-<<<<<<< HEAD
 #: classes/core/surveytranslator.php:387
 msgid "Korean"
 msgstr "Koreanisch"
-=======
-msgid "Check database again?"
-msgstr "Datenbank nochmals prüfen?"
-
-msgid "Check Again"
-msgstr "Nochmal prüfen"
-
-msgid "Label Sets Administration"
-msgstr "Beschriftung-Set Administration"
->>>>>>> refs/heads/stable_plus
 
 #: classes/core/surveytranslator.php:401
 msgid "Latvian"
@@ -11530,7 +11223,6 @@ msgstr "Persisch"
 msgid "Polish"
 msgstr "Polnisch"
 
-<<<<<<< HEAD
 #: classes/core/surveytranslator.php:457
 msgid "Portuguese"
 msgstr "Portugiesisch"
@@ -11538,10 +11230,6 @@ msgstr "Portugiesisch"
 #: classes/core/surveytranslator.php:464
 msgid "Portuguese (Brazilian)"
 msgstr "Portugiesisch (Brasilien)"
-=======
-msgid "Edit label set"
-msgstr "Beschriftung-Set bearbeiten"
->>>>>>> refs/heads/stable_plus
 
 #: classes/core/surveytranslator.php:471
 msgid "Punjabi"
@@ -11726,7 +11414,6 @@ msgstr "Walisisch"
 #~ msgid "Width"
 #~ msgstr "Breite"
 
-<<<<<<< HEAD
 #~ msgid "Zoom"
 #~ msgstr "Vergrößerung"
 
@@ -11735,16 +11422,6 @@ msgstr "Walisisch"
 
 #~ msgid "Last Name"
 #~ msgstr "Nachname"
-=======
-msgid "Please submit by"
-msgstr "Bitte übermitteln bis"
-
-msgid "Add Question"
-msgstr "Frage hinzufügen"
-
-msgid "Label Set:"
-msgstr "Beschriftung-Set:"
->>>>>>> refs/heads/stable_plus
 
 #~ msgid "LimeSurvey Online Manual"
 #~ msgstr "LimeSurvey Systemübersicht"
@@ -11848,18 +11525,8 @@ msgstr "Beschriftung-Set:"
 #~ msgid "Data Entry"
 #~ msgstr "Dateneingabe"
 
-<<<<<<< HEAD
 #~ msgid "Export Results"
 #~ msgstr "Ergebnisse exportieren"
-=======
-# D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:330
-msgid "Go Back"
-msgstr "Zurück"
-
-# D:\web\xampp\htdocs\limesurvey/admin/statistics.php:734
-msgid "Getting Questions and Answers ..."
-msgstr "Ermittle Fragen und Antworten..."
->>>>>>> refs/heads/stable_plus
 
 #~ msgid "Fax To:"
 #~ msgstr "Faxnummer:"
@@ -11928,13 +11595,8 @@ msgstr "Ermittle Fragen und Antworten..."
 #~ msgid "ComfortUpdate Step 3"
 #~ msgstr "ComfortUpdate Schritt 3"
 
-<<<<<<< HEAD
 #~ msgid "ComfortUpdate Step 4"
 #~ msgstr "ComfortUpdate Schritt 4"
-=======
-msgid "Non completed"
-msgstr "Nicht beendet"
->>>>>>> refs/heads/stable_plus
 
 #~ msgid "Browse Response"
 #~ msgstr "Antworten anzeigen"
@@ -11960,38 +11622,8 @@ msgstr "Nicht beendet"
 #~ msgid "Email Address"
 #~ msgstr "E-Mail-Addresse"
 
-<<<<<<< HEAD
 #~ msgid "2nd Time Limit Warning CSS Style"
 #~ msgstr "CSS Style für die 2. Zeitlimit-Warnnachricht"
-=======
-msgid "Welcome Page"
-msgstr "Startseite"
-
-msgid "Question Page"
-msgstr "Fragen-Seite"
-
-msgid "Submit Page"
-msgstr "Senden-Seite"
-
-msgid "Completed Page"
-msgstr "Abschluss-Seite"
-
-msgid "Clear All Page"
-msgstr "Erneut-Seite"
-
-msgid "Register Page"
-msgstr "Registrierungs-Seite"
-
-msgid "Load Page"
-msgstr "Seite laden"
-
-msgid "Save Page"
-msgstr "Seite speichern"
-
-# D:\web\xampp\htdocs\limesurvey/admin/html.php:1823
-msgid "Failed to copy"
-msgstr "Fehler beim Kopieren"
->>>>>>> refs/heads/stable_plus
 
 #~ msgid "Hello!"
 #~ msgstr "Hallo!"
@@ -12012,7 +11644,6 @@ msgstr "Fehler beim Kopieren"
 #~ msgid "View statistics by clicking here:"
 #~ msgstr "Klicke hier, um die Gesamtstatistik zu sehen:"
 
-<<<<<<< HEAD
 #~ msgid ""
 #~ "This email contains confirmation of the responses you made to the survey"
 #~ msgstr ""
@@ -12043,14 +11674,6 @@ msgstr "Fehler beim Kopieren"
 
 #~ msgid "Survey Registration Confirmation"
 #~ msgstr "Registrierungsbestätigung für Teilnahmeumfrage"
-=======
-# D:\web\xampp\htdocs\stable_plus/admin/templates.php:175
-# D:\web\xampp\htdocs\stable_plus/admin/templates.php:187
-# D:\web\xampp\htdocs\stable_plus/admin/templates.php:467
-# D:\web\xampp\htdocs\stable_plus/admin/templates.php:476
-msgid "This file type is not allowed to be uploaded."
-msgstr "Dieser Dateityp darf nicht hochgeladen werden."
->>>>>>> refs/heads/stable_plus
 
 #~ msgid "Survey could not be created"
 #~ msgstr "Umfrage konnte nicht erstellt werden."
@@ -12128,7 +11751,6 @@ msgstr "Dieser Dateityp darf nicht hochgeladen werden."
 #~ msgid "Update Quota"
 #~ msgstr "Quote aktualisieren"
 
-<<<<<<< HEAD
 #~ msgid "Modify"
 #~ msgstr "Ändern"
 
@@ -12196,206 +11818,6 @@ msgstr "Dieser Dateityp darf nicht hochgeladen werden."
 
 #~ msgid "Match language"
 #~ msgstr "Übereinstimmende Sprachen"
-=======
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1500
-msgid "ARMSCII-8 Armenian"
-msgstr "ARMSCII-8 Armenisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1501
-msgid "US ASCII"
-msgstr "US ASCII"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1502
-msgid "Automatic"
-msgstr "Automatisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1503
-msgid "Big5 Traditional Chinese"
-msgstr "Big5 Traditionelles Chinesisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1504
-msgid "Binary pseudo charset"
-msgstr "Binär Pseudo Zeichensatz"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1505
-msgid "Windows Central European"
-msgstr "Windows Zentral-Europäisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1506
-msgid "Windows Cyrillic"
-msgstr "Windows Kyrillisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1507
-msgid "Windows Arabic"
-msgstr "Windows Arabisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1508
-msgid "Windows Baltic"
-msgstr "Windows Baltisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1509
-msgid "DOS West European"
-msgstr "DOS West Europäisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1510
-msgid "DOS Central European"
-msgstr "DOS Zentral-Europäisch"
-
-# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:148
-msgid "DOS Russian"
-msgstr "DOS Russisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1512
-msgid "SJIS for Windows Japanese"
-msgstr "SJIS für Windows Japanisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1513
-msgid "DEC West European"
-msgstr "DEC West Europäisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1514
-msgid "UJIS for Windows Japanese"
-msgstr "UJIS für Windows Japanisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1515
-msgid "EUC-KR Korean"
-msgstr "EUC-KR Koreanisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1516
-msgid "GB2312 Simplified Chinese"
-msgstr "GB2312 Vereinfachtes Chinesisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1517
-msgid "GBK Simplified Chinese"
-msgstr "GBK Vereinfachtes Chinesisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1518
-msgid "GEOSTD8 Georgian"
-msgstr "GEOSTD8 Georgisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1519
-msgid "ISO 8859-7 Greek"
-msgstr "ISO 8859-7 Griechisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1520
-msgid "ISO 8859-8 Hebrew"
-msgstr "ISO 8859-8 Hebräisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1521
-msgid "HP West European"
-msgstr "HP West Europäisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1522
-msgid "DOS Kamenicky Czech-Slovak"
-msgstr "DOS Kamenicky Tschechisch-Slovakisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1523
-msgid "KOI8-R Relcom Russian"
-msgstr "KOI8-R Relcom Russisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1524
-msgid "KOI8-U Ukrainian"
-msgstr "KOI8-U Ukrainisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1525
-msgid "cp1252 West European"
-msgstr "cp1252 West-Europäisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1526
-msgid "ISO 8859-2 Central European"
-msgstr "ISO 8859-2 Zentral-Europäisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1527
-msgid "ISO 8859-9 Turkish"
-msgstr "ISO 8859-9 Türkisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1528
-msgid "ISO 8859-13 Baltic"
-msgstr "ISO 8859-13 Baltisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1529
-msgid "Mac Central European"
-msgstr "Mac Zentral-Europäisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1530
-msgid "Mac West European"
-msgstr "Mac West-Europäisch"
-
-# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:127
-msgid "Shift-JIS Japanese"
-msgstr "Shift-JIS Japanisch"
-
-# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:164
-msgid "7bit Swedish"
-msgstr "7bit Schwedisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1533
-msgid "TIS620 Thai"
-msgstr "TIS620 Thai"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1534
-msgid "UCS-2 Unicode"
-msgstr "UCS-2 Unicode"
-
-# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:127
-msgid "EUC-JP Japanese"
-msgstr "EUC-JP Japanisch"
-
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1536
-msgid "UTF-8 Unicode"
-msgstr "UTF-8 Unicode"
-
-msgid "You have not selected a survey"
-msgstr "Du hast keine Umfrage ausgewählt."
-
-msgid "Token table could not be created."
-msgstr "Zugangsschlüssel-Tabelle konnte nicht erzeugt werden."
-
-msgid "A token table has been created for this survey."
-msgstr "Es wurde eine Zugangsschlüsseltabelle für diese Umfrage erstellt."
-
-msgid "Tokens have not been initialised for this survey."
-msgstr "Die Zugangsschlüssel wurden für diese Umfrage noch nicht initialisiert."
-
-msgid "If you initialise tokens for this survey, the survey will only be accessible to users who have been assigned a token."
-msgstr "Wenn Du Zugangschlüssel für diese Umfrage initialisierst, wird die Umfrage nur mehr mit einem gültigen Zugangsschlüssel ausfüllbar sein."
-
-msgid "Do you want to create a tokens table for this survey?"
-msgstr "Möchten Du eine Zugangsschlüsseltabelle mit Zugangsschlüsseln für diese Umfrage erstellen?"
-
-msgid "Restore Options"
-msgstr "Wiederherstellungsoptionen"
-
-msgid "The following old token tables could be restored:"
-msgstr "Die folgenden alten Zugangsschlüssel-Tabelle können wiederhergestellt werden:"
-
-msgid "Restore"
-msgstr "Wiederherstellen"
-
-msgid "Display Tokens"
-msgstr "Zeige Zugangsschlüssel an"
-
-msgid "Add new token entry"
-msgstr "Neuen Zugangsschlüssel hinzufügen"
-
-msgid "Import Tokens from CSV File"
-msgstr "Import von Zugangsschlüssel von einer CSV-Datei"
-
-msgid "Import Tokens from LDAP Query"
-msgstr "Import von Zugangsschlüsseln aus LDAP"
-
-msgid "Export Tokens to CSV file"
-msgstr "Export von Zugangsschlüssel CSV-Datei"
-
-msgid "Send email invitation"
-msgstr "Sende E-Mail Einladung"
-
-msgid "Send email reminder"
-msgstr "Sende E-Mail Erinnerung"
-
-msgid "Generate Tokens"
-msgstr "Generiere eindeutige Zugangsschlüssel-Nummer"
->>>>>>> refs/heads/stable_plus
 
 #~ msgid "Date Stamp"
 #~ msgstr "Datumsstempel"
@@ -12697,7 +12119,6 @@ msgstr "Generiere eindeutige Zugangsschlüssel-Nummer"
 #~ "nicht schon versendet<LI><LI>Die Umfrage noch nicht "
 #~ "ausgefüllt<LI><LI>Eindeutiger Zugangsschlüssel zugewiesen<LI><UL>."
 
-<<<<<<< HEAD
 #~ msgid "Stop at Token ID:"
 #~ msgstr "Stoppe bei Token ID:"
 
@@ -12811,11 +12232,6 @@ msgstr "Generiere eindeutige Zugangsschlüssel-Nummer"
 
 #~ msgid "This survey is active but expired"
 #~ msgstr "Diese Umfrage aktiv aber abgelaufen"
-=======
-# D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1548
-msgid "Choose the CSV file to upload:"
-msgstr "Wähle eine CSV-Datei zum Hochladen aus:"
->>>>>>> refs/heads/stable_plus
 
 #~ msgid "LimeSurvey System Summary"
 #~ msgstr "LimeSurvey Systemübersicht"
@@ -12866,15 +12282,8 @@ msgstr "Wähle eine CSV-Datei zum Hochladen aus:"
 #~ msgid "Update user rights successful."
 #~ msgstr "Benutzerrechte erfolgreich geändert."
 
-<<<<<<< HEAD
 #~ msgid "Export Responses"
 #~ msgstr "Antworten exportieren"
-=======
-# D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:157
-# D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:300
-msgid "Email address is not valid."
-msgstr "Email-Adresse ist nicht gültig."
->>>>>>> refs/heads/stable_plus
 
 #~ msgid "Please choose one of the following"
 #~ msgstr "Bitte wähle  eine Antwort aus"
@@ -12906,19 +12315,8 @@ msgstr "Email-Adresse ist nicht gültig."
 #~ "Es tut uns leid, aber leider haben Deine Antworten eine Quote dieser "
 #~ "Umfrage überschritten."
 
-<<<<<<< HEAD
 #~ msgid "Please complete all parts of the date"
 #~ msgstr "Bitte setzen Sie alle Teile des Datums"
-=======
-# D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:157
-# D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:300
-msgid "Email address ist not valid."
-msgstr "Email-Adresse ist nicht gültig."
-
-# D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:316
-msgid "Unchanged"
-msgstr "Unverändert"
->>>>>>> refs/heads/stable_plus
 
 #~ msgid "Format: YYYY-MM-DD"
 #~ msgstr "Format: JJJJ-MM-TT"
@@ -12972,7 +12370,6 @@ msgstr "Unverändert"
 #~ msgid "Click on an item in the list on the left, starting with your"
 #~ msgstr "Klicken in der Liste links bitte zuerst das am höchsten"
 
-<<<<<<< HEAD
 #~ msgid "Save All"
 #~ msgstr "Alles Speichern"
 
@@ -12981,10 +12378,6 @@ msgstr "Unverändert"
 
 #~ msgid "This template cannot be modified"
 #~ msgstr "Diese Vorlage kann nicht bearbeitet werden."
-=======
-msgid "User Control"
-msgstr "Benutzer-Administration"
->>>>>>> refs/heads/stable_plus
 
 #~ msgid "You can't edit a standard template."
 #~ msgstr "Du kannst eine Standardvorlage nicht bearbeiten."
@@ -13078,7 +12471,6 @@ msgstr "Benutzer-Administration"
 #~ msgid "Record ID"
 #~ msgstr "Umfrage ID"
 
-<<<<<<< HEAD
 #~ msgid "Edit Current Survey"
 #~ msgstr "Diese Umfrage bearbeiten"
 
@@ -13090,10 +12482,6 @@ msgstr "Benutzer-Administration"
 #~ "Failed! Reason:\n"
 #~ " "
 #~ msgstr "Fehlgeschlagen! Grund:"
-=======
-msgid "Adding User to group"
-msgstr "Füge Benutzer zu Gruppe hinzu"
->>>>>>> refs/heads/stable_plus
 
 #~ msgid "Condition designer"
 #~ msgstr "Bedingungs Designer"
@@ -13135,17 +12523,11 @@ msgstr "Füge Benutzer zu Gruppe hinzu"
 #~ msgid "Disabled - Change Group Order"
 #~ msgstr "Deaktiviert - Gruppen-Reihenfolge bearbeiten"
 
-<<<<<<< HEAD
 #~ msgid "Participiants may print answers?"
 #~ msgstr "Teilnehmer dürfen Antworten ausdrucken?"
 
 #~ msgid "Split up results"
 #~ msgstr "Ergebnisse aufteilen"
-=======
-# D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:235
-msgid "Important Note:"
-msgstr "Wichtige Anmerkung:"
->>>>>>> refs/heads/stable_plus
 
 #~ msgid "Enabled"
 #~ msgstr "Aktiviert"
@@ -13158,35 +12540,8 @@ msgstr "Wichtige Anmerkung:"
 #~ "wenn der 'Nicht vollständige Antworten ausblenden' auf 'Deaktiviert' "
 #~ "gesetzt ist)"
 
-<<<<<<< HEAD
 #~ msgid "You were signed in on the site %s"
 #~ msgstr "Sie wurden auf der Webseite %s  eingetragen."
-=======
-msgid "Create Database"
-msgstr "Erstelle Datenbank"
-
-msgid "Populate Database"
-msgstr "Tabellen erstellen"
-
-#, php-format
-msgid "Database `%s` has been successfully populated."
-msgstr "Die Tabellen in der Datenbank `%s` wurden erfolgreich erstellt."
-
-msgid "Database Information not provided. This script must be run from admin.php only."
-msgstr "Datenbank Information nicht angegeben. Dieses Skript muss von admin.php aufgerufen werden."
-
-msgid "Database has been created."
-msgstr "Datenbank wurde erstellt."
-
-msgid "Please click below to populate the database"
-msgstr "Bitte klicke auf 'Tabellen erstellen' um fortzufahren."
-
-msgid "Could not create database"
-msgstr "Konnte Datenbank nicht erstellen"
-
-msgid "Welcome to LimeSurvey Setup!"
-msgstr "Willkommen zur LimeSurvey Installation!"
->>>>>>> refs/heads/stable_plus
 
 #~ msgid "Login here"
 #~ msgstr "Anmeldung hier"
@@ -13197,15 +12552,8 @@ msgstr "Willkommen zur LimeSurvey Installation!"
 #~ msgid "(XML module only in PHP 4 available)"
 #~ msgstr "(nur möglich mit PHP4)"
 
-<<<<<<< HEAD
 #~ msgid "answers"
 #~ msgstr "Antworten"
-=======
-# D:\xampp\xampp\htdocs\limesurvey/admin/admin.php:102
-#, php-format
-msgid "A database named \"%s\" already exists."
-msgstr "Eine Datenbank namens \"%s\" existiert bereits."
->>>>>>> refs/heads/stable_plus
 
 #~ msgid "to remove the last entry in your ranked list"
 #~ msgstr "zuletzt hinzugefügte Element aus der Liste zu entfernen"
@@ -13213,24 +12561,8 @@ msgstr "Eine Datenbank namens \"%s\" existiert bereits."
 #~ msgid "Please choose at most"
 #~ msgstr "Bitte wähle maximal"
 
-<<<<<<< HEAD
 #~ msgid "No matching Group"
 #~ msgstr "Keine übereinstimmende Gruppe"
-=======
-msgid "Albanian"
-msgstr "Albanisch"
-
-# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:66
-msgid "Basque"
-msgstr "Baskisch"
-
-msgid "Bosnian"
-msgstr "Bosnisch"
-
-# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:66
-msgid "Bulgarian"
-msgstr "Bulgarisch"
->>>>>>> refs/heads/stable_plus
 
 #~ msgid "No matching Survey!"
 #~ msgstr "Keine übereinstimmende Umfrage!"
@@ -13241,18 +12573,8 @@ msgstr "Bulgarisch"
 #~ msgid "depends on group"
 #~ msgstr "Hängt ab von Gruppe"
 
-<<<<<<< HEAD
 #~ msgid "Are you sure you want to delete this entry."
 #~ msgstr "Bist Du sicher, dass Du diesen Eintrag löschen willst?"
-=======
-# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:94
-msgid "Czech"
-msgstr "Tschechisch"
-
-# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:82
-msgid "Danish"
-msgstr "Dänisch"
->>>>>>> refs/heads/stable_plus
 
 #~ msgid "Failed to copy"
 #~ msgstr "Fehler beim Kopieren"
@@ -13260,17 +12582,8 @@ msgstr "Dänisch"
 #~ msgid "Directory with the name"
 #~ msgstr "Verzeichnis mit dem Namen"
 
-<<<<<<< HEAD
 #~ msgid "Farsi"
 #~ msgstr "Persisch"
-=======
-msgid "Estonian"
-msgstr "Estnisch"
-
-# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:94
-msgid "Finnish"
-msgstr "Finnisch"
->>>>>>> refs/heads/stable_plus
 
 #~ msgid ""
 #~ "This is a closed-access survey. You need a valid token to participate."
@@ -13313,18 +12626,8 @@ msgstr "Finnisch"
 #~ msgid "You must upload a CSV file"
 #~ msgstr "Du musst eine Komma getrennte Datei (CSV) hochladen"
 
-<<<<<<< HEAD
 #~ msgid "Upload CSV file"
 #~ msgstr "Komma getrennte Datei (CSV) hochladen"
-=======
-# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:159
-msgid "Macedonian"
-msgstr "Mazedonisch"
-
-# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:135
-msgid "Norwegian"
-msgstr "Norwegisch"
->>>>>>> refs/heads/stable_plus
 
 #~ msgid "It is impossible to upload a file other than CSV type"
 #~ msgstr "Du kannst nur CSV-Dateien hochladen."
@@ -13351,34 +12654,14 @@ msgstr "Norwegisch"
 #~ msgid "Question List"
 #~ msgstr "Fragenliste"
 
-<<<<<<< HEAD
 #~ msgid "Like"
 #~ msgstr "Wie"
-=======
-# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:160
-msgid "Spanish (Mexico)"
-msgstr "Spanisch (Mexiko)"
-
-# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:164
-msgid "Swedish"
-msgstr "Schwedisch"
->>>>>>> refs/heads/stable_plus
 
 #~ msgid "Not Equals"
 #~ msgstr "Ungleich"
 
-<<<<<<< HEAD
 #~ msgid "Filter Conditions"
 #~ msgstr "Filer-Bedingungen"
-=======
-# D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:212
-msgid "Thai"
-msgstr "Thailändisch"
-
-# D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:168
-msgid "Vietnamese"
-msgstr "Vietnamesisch"
->>>>>>> refs/heads/stable_plus
 
 #~ msgid "Huge free text"
 #~ msgstr "Ausführlicher Freitext"

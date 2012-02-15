@@ -1,6 +1,5 @@
 <?php
 /*
-<<<<<<< HEAD
  * LimeSurvey
  * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -13,20 +12,6 @@
  *
  * $Id$
  */
-=======
-* LimeSurvey
-* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: GNU/GPL License v2 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*
-* $Id$
-*/
->>>>>>> refs/heads/stable_plus
 
 include_once("login_check.php");
 if (!isset($noid)) {$noid=returnglobal('noid');}
@@ -152,20 +137,7 @@ else
     }
     fclose($handle);
 
-<<<<<<< HEAD
     $surveytable = "{$dbprefix}survey_$surveyid";
-=======
-	$vvoutput .= "<strong><font color='green'>".$clang->gT("Success")."</font></strong><br />\n";
-	$vvoutput .= $clang->gT("File upload succeeded.")."<br /><br />\n";
-	$vvoutput .= $clang->gT("Reading file..")."<br />\n";
-	$handle = fopen($the_full_file_path, "r");
-	while (!feof($handle))
-	{
-		$buffer = fgets($handle); //To allow for very long lines
-		$bigarray[] = $buffer;
-	}
-	fclose($handle);
->>>>>>> refs/heads/stable_plus
 
     unlink($the_full_file_path); //delete the uploaded file
     unset($bigarray[0]); //delete the first line
