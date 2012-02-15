@@ -18,6 +18,9 @@
             var okBtn = "<?php $clang->eT("OK") ?>";
             var processed = "<?php $clang->eT("Summary") ?>";
             var summary = "<?php $clang->eT("Upload summary") ?>";
+            var notPairedErrorTxt = "<?php $clang->eT("You have to pair this field with an existing attribute") ?>";
+            var onlyOnePairedErrorTxt = "<?php $clang->eT("Only one CSV attribute is mapped with central attribute") ?>";
+            var cannotAcceptErrorTxt="<?php $clang->eT("This list cannot accept token attributes") ?>";
             var seperator = "<?php echo $_POST['seperatorused']; ?>";
             var thefilepath = "<?php echo $fullfilepath ?>";
         </script>
@@ -40,7 +43,7 @@
             </div>
             <div id="newcreated" class='container'><div class="heading"><?php $clang->eT("Attributes to be created") ?></div>
             <div class='instructions'><?php $clang->eT("Drop a CSV field into this area to create a new participant attribute and import your data into it."); ?></div>
-            <ul class="newcreate" id="sortable">
+                <ul class="newcreate" id="sortable">
                 </ul>
             </div>
             <div id="centralattribute" class='container'><div class="heading"><?php $clang->eT("Existing attribute"); ?></div>
@@ -49,7 +52,7 @@
                     <?php
                     foreach ($attributes as $key => $value)
                     {
-                        echo "<li id='c_" . $value['attribute_id'] . "' name='c_" . $key . "' style='margin-top: 10px;'>" . $value['attribute_name'] . "</li>";
+                        echo "<li id='c_" . $value['attribute_id'] . "' name='c_" . $key . "' style='margin-top: 10px;'>" . $value['attribute_name'] . "<br />&nbsp;</li>";
                     }
                     ?>
                 </ul>

@@ -1381,33 +1381,41 @@ class participantsaction extends Survey_Common_Action
         $invalidparticipantid = array();
         // This allows to read file with MAC line endings too
         @ini_set('auto_detect_line_endings', true);
-        // open it and trim the ednings
+        // open it and trim the endings
         $separator = Yii::app()->request->getPost('seperatorused');
         $uploadcharset = Yii::app()->request->getPost('characterset');
-        if (!empty($newarray))
+        /* The $newarray contains a list of fields that will be used
+           to create new attributes */
+		if (!empty($newarray))
         {
+			/* Create a new entry in the lime_participant_attribute_names table,
+			   and it's associated lime_participant_attribute_names_lang table
+			   for each NEW attribute being created in this import process */
             foreach ($newarray as $key => $value)
             {
                 $aData = array('attribute_type' => 'TB', 'attribute_name' => $value, 'visible' => 'FALSE');
                 $insertid = ParticipantAttributeNames::model()->storeAttributeCSV($aData);
-                $mappedarray[$insertid] = $value;
+            	/* Keep a record of the attribute_id for this new attribute
+            	   in the $mappedarray string. For example, if the new attribute
+            	   has attribute_id of 35 and is called "gender",
+            	   $mappedarray['35']='gender' */
+				$mappedarray[$insertid] = $value;
             }
         }
         if (!isset($uploadcharset))
         {
             $uploadcharset = 'auto';
         }
-        foreach ($tokenlistarray as $buffer)
+        foreach ($tokenlistarray as $buffer) //Iterate through the CSV file line by line
         {
         	$buffer = @mb_convert_encoding($buffer, "UTF-8", $uploadcharset);
             $firstname = "";
             $lastname = "";
             $email = "";
             $language = "";
-            if ($recordcount == 0)
+        	if ($recordcount == 0) {
             	//The first time we iterate through the file we look at the very
             	//first line, which contains field names, not values to import
-            {
                 // Pick apart the first line
                 $buffer = removeBOM($buffer);
                 $attrid = ParticipantAttributeNames::model()->getAttributeID();
@@ -1453,10 +1461,8 @@ class participantsaction extends Survey_Common_Action
                     $recordcount = count($tokenlistarray);
                     break;
                 }
-            }
-            else
-            // After looking at the first line, we now import the actual values
-            {
+        	} else {
+                // After looking at the first line, we now import the actual values
                 $line = convertCSVRowToArray($buffer, $separator, '"');
                 if (count($firstline) != count($line))
                 {
@@ -1484,15 +1490,12 @@ class participantsaction extends Survey_Common_Action
             	//HACK - converting into SQL instead of doing an array search
                 $aData = "firstname = '".mysql_real_escape_string($writearray['firstname'])."' AND lastname = '".mysql_real_escape_string($writearray['lastname'])."' AND email = '".mysql_real_escape_string($writearray['email'])."' AND owner_uid = '".Yii::app()->session['loginID']."'";
                 //End of HACK
-
 				$aData = Participants::model()->checkforDuplicate($aData);
-                if ($aData == true)
-                {
+                if ($aData == true) {
                     $thisduplicate = 1;
                     $dupcount++;
                 }
-                if ($thisduplicate == 1)
-                {
+                if ($thisduplicate == 1) {
                     $dupfound = true;
                     $duplicatelist[] = $writearray['firstname'] . " " . $writearray['lastname'] . " (" . $writearray['email'] . ")";
                 }
@@ -1500,71 +1503,58 @@ class participantsaction extends Survey_Common_Action
                 //Checking the email address is in a valid format
                 $invalidemail = false;
                 $writearray['email'] = trim($writearray['email']);
-                if ($writearray['email'] != '')
-                {
+                if ($writearray['email'] != '') {
                     $aEmailAddresses = explode(';', $writearray['email']);
-                    foreach ($aEmailAddresses as $sEmailaddress)
-                    {
-                        if (!validateEmailAddress($sEmailaddress))
-                        {
+                    foreach ($aEmailAddresses as $sEmailaddress) {
+                        if (!validateEmailAddress($sEmailaddress)) {
                             $invalidemail = true;
                             $invalidemaillist[] = $line[0] . " " . $line[1] . " (" . $line[2] . ")";
                         }
                     }
                 }
-                if (!$dupfound && !$invalidemail)
-                //If it isn't a duplicate value or an invalid email, process
-                //the entry
-                {
-                    if (!isset($writearray['participant_id']) || $writearray['participant_id'] == "")
-                    {
+            	if (!$dupfound && !$invalidemail) {
+            		//If it isn't a duplicate value or an invalid email, process
+                    //the entry
+               	    //First, process the known fields
+                    if (!isset($writearray['participant_id']) || $writearray['participant_id'] == "") {
                         $uuid = $this->gen_uuid(); //Generate a UUID for the new participant
                         $writearray['participant_id'] = $uuid;
                     }
-                    if (isset($writearray['emailstatus']) && trim($writearray['emailstatus'] == ''))
-                    {
+                    if (isset($writearray['emailstatus']) && trim($writearray['emailstatus'] == '')) {
                         unset($writearray['emailstatus']);
                     }
-                    if (!isset($writearray['language']) || $writearray['language'] == "")
-                        $writearray['language'] = "en";
-                    if (!isset($writearray['blacklisted']) || $writearray['blacklisted'] == "")
+                	if (!isset($writearray['language']) || $writearray['language'] == "") {
+                		$writearray['language'] = "en";
+                	}
+                	if (!isset($writearray['blacklisted']) || $writearray['blacklisted'] == "") {
                         $writearray['blacklisted'] = "N";
+                    }
                     $writearray['owner_uid'] = Yii::app()->session['loginID'];
-                    if (isset($writearray['validfrom']) && trim($writearray['validfrom'] == ''))
-                    {
+                    if (isset($writearray['validfrom']) && trim($writearray['validfrom'] == '')) {
                         unset($writearray['validfrom']);
                     }
-                    if (isset($writearray['validuntil']) && trim($writearray['validuntil'] == ''))
-                    {
+                    if (isset($writearray['validuntil']) && trim($writearray['validuntil'] == '')) {
                         unset($writearray['validuntil']);
                     }
-                    if ($writearray['email'] == "" || $writearray['firstname'] == "" || $writearray['lastname'] == "")
-                    {
+                    if ($writearray['email'] == "" || $writearray['firstname'] == "" || $writearray['lastname'] == "") {
+                    	//The mandatory fields of email, firstname and lastname
+						//must be filled, but one or more are empty
                         $mandatory++;
-                    }
-                    else
-                    {
-                        foreach ($writearray as $key => $value)
-                        {
-                            if (!empty($mappedarray))
-                            {
-                                if (in_array($key, $allowedfieldnames))
-                                {
-                                    foreach ($mappedarray as $attid => $attname)
-                                    {
-                                        if ($attname == $key)
-                                        {
-                                            if (!empty($value))
-                                            {
+                    } else {
+                        foreach ($writearray as $key => $value) {
+                            if (!empty($mappedarray)) {
+                            	//The mapped array contains the attributes we are
+                            	//saving in this import
+                            	if (in_array($key, $allowedfieldnames)) {
+                                    foreach ($mappedarray as $attid => $attname) {
+                                        if ($attname == $key) {
+                                            if (!empty($value)) {
                                                 $aData = array('participant_id' => $writearray['participant_id'],
-                                                    'attribute_id' => $attid,
-                                                    'value' => $value
-                                                );
-                                            	ParticipantAttributeNames::model()->saveParticipantAttributeValue($aData);
-                                            }
-                                            else
-                                            {
-
+                                                               'attribute_id' => $attid,
+                                                               'value' => $value);
+                                             	ParticipantAttributeNames::model()->saveParticipantAttributeValue($aData);
+                                            } else {
+                                                //If the value is empty, don't write the value
                                             }
                                         }
                                     }
@@ -1574,7 +1564,7 @@ class participantsaction extends Survey_Common_Action
                     }
                     Participants::model()->insertParticipantCSV($writearray);
                     $imported++;
-                }
+            	}
                 $mincriteria++;
             }
             $recordcount++;

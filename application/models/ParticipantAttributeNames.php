@@ -327,6 +327,6 @@ class ParticipantAttributeNames extends CActiveRecord
 
     function saveParticipantAttributeValue($data)
     {
-		Yii::app()->db->createCommand()->insert('{{participant_attribute_names}}', $data);
+    	Yii::app()->db->createCommand()->insert('{{participant_attribute}}', $data);
     }
 }
