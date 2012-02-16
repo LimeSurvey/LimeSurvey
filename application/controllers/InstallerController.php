@@ -311,7 +311,7 @@ class InstallerController extends CController {
                         Yii::app()->session['optconfig_message'] = sprintf('<b>%s</b>', $clang->gT('The database you specified is up to date.'));
                         Yii::app()->session['step3'] = true;
                         
-                        //wrte config file! as we no longer redirect to optional view.
+                        //wrte config file! as we no longer redirect to optional view
                         $this->_writeConfigFile();
 
                         //$this->redirect($this->createUrl("installer/loadOptView"));
