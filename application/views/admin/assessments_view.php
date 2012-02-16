@@ -56,7 +56,7 @@ else {echo "<tr class='evenrow'>\n";} ?>
 <?php if ((hasSurveyPermission($surveyid, 'assessments','update') && $actionvalue=="assessmentupdate") || (hasSurveyPermission($surveyid, 'assessments','create')&& $actionvalue=="assessmentadd")) { ?>
 <br /><form method='post' class='form30' id='assessmentsform' name='assessmentsform' action='<?php echo $this->createUrl("admin/assessments/index/surveyid/$surveyid");?>'>
 	<div class='header ui-widget-header'><?php echo $actiontitle;?></div>
-	<ul><li><label><?php $clang->eT("Scope");?></label>
+	<ul class="assessmentscope"><li><label><?php $clang->eT("Scope");?></label>
 	<input type='radio' id='radiototal' name='scope' value='T' <?php
     if (!isset($editdata) || $editdata['scope'] == "T") {echo "checked='checked' ";} ?>/>
     <label for='radiototal'><?php $clang->eT("Total");?></label>
@@ -99,9 +99,9 @@ else {echo "<tr class='evenrow'>\n";} ?>
 		    $message=htmlspecialchars($editdata['message']);
 	    } ?>
 	    <div id="tablang<?php echo $assessmentlang;?>">
-	    <ul><li><label style="width:100px;" for='name_<?php echo $assessmentlang;?>'><?php $clang->eT("Heading");?>:</label>
+	    <ul><li><label for='name_<?php echo $assessmentlang;?>'><?php $clang->eT("Heading");?>:</label>
 	    <input type='text' name='name_<?php echo $assessmentlang;?>' id='name_<?php echo $assessmentlang;?>' size='80' value='<?php echo $heading;?>'/></li>
-	    <li><label style="width:100px;" for='assessmentmessage_<?php echo $assessmentlang;?>'><?php $clang->eT("Message");?>:</label>
+	    <li><label for='assessmentmessage_<?php echo $assessmentlang;?>'><?php $clang->eT("Message");?>:</label>
 	    <textarea name='assessmentmessage_<?php echo $assessmentlang;?>' id='assessmentmessage_<?php echo $assessmentlang;?>' rows='10' cols='80'><?php echo $message;?></textarea></li>
         <li style="text-align:center;"><input type='submit' value='<?php $clang->eT("Save");?>'/></li></ul>
 	    </div>

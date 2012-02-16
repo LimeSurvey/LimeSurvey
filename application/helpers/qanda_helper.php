@@ -3065,9 +3065,9 @@ function do_file_upload($ia)
     </script>\n";
     /*if ($pos)
     $answer .= "<script type='text/javascript' src='{$rooturl}/scripts/modaldialog.js'></script>";
-    else
-    $answer .= "<script type='text/javascript' src='{$rooturl}/scripts/modaldialog.js'></script>";*/
-    $js_header_includes[]= '/scripts/modaldialog.js';
+    else */
+    $answer .= "<script type='text/javascript' src='".Yii::app()->getBaseUrl(true)."/scripts/modaldialog.js'></script>";
+    //$js_header_includes[]= '/scripts/modaldialog.js'; //not working!
 
     // Modal dialog
     $answer .= $uploadbutton;

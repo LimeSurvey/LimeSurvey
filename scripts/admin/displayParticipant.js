@@ -442,7 +442,7 @@ $(document).ready(function() {
         title: spTitle,
         modal: true,
         autoOpen: false,
-        height: 200,
+        height: 400,
         width: 400,
         show: 'blind',
         hide: 'blind'
@@ -626,7 +626,7 @@ $(document).ready(function() {
         /* End of building array containing button functions */
 
         $("#addsurvey").dialog({
-            height: 350,
+            height: 400,
             width: 450,
             title : addsurvey,
             modal: true,

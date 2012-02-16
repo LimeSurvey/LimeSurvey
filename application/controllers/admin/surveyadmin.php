@@ -1089,6 +1089,13 @@ class SurveyAdmin extends Survey_Common_Action
             $esresult = Survey::model()->find('sid = :sid', array(':sid' => $surveyid));
             if ($esresult)
             {
+                // Set template to default if not exist
+                if (!$esresult['template'])
+                {
+                    $esresult['template']=Yii::app()->getConfig('defaulttemplate');
+                }
+                $esresult['template']=validateTemplateDir($esresult['template']);
+                
                 $esrow = $esresult;
             }
         }

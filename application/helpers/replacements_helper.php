@@ -247,7 +247,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
 	if ($_question_type == 'N' || $_question_type == 'U' || $_question_type == 'T' || $_question_type == 'S')
     {
-        $_question_text = '<label for="answer'.$answer_id.'" >'.$_question_text.'</label>';
+        $_question_text = '<label for="answer'.$_question_sgq.'" >'.$_question_text.'</label>';
     }
     else if ($_question_type == '*')
     {

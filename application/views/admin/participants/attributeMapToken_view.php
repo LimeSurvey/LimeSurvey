@@ -35,7 +35,7 @@
     <?php } ?>
 <?php if (!empty($tokenattribute))
 { ?>
-        <div id="newcreated"><div class="heading">Attribute's to be created</div>
+        <div id="newcreated"><div class="heading">Attributes to be created</div>
             <ul class="newcreate" id="sortable" style ="height: 40px">
             </ul>
         </div>

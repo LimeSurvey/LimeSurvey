@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
     /*
     * LimeSurvey
-    * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+    * Copyright (C) 2007-2012 The LimeSurvey Project Team / Carsten Schmitz
     * All rights reserved.
     * License: GNU/GPL License v2 or later, see LICENSE.php
     * LimeSurvey is free software. This version may have been modified pursuant
@@ -217,31 +217,36 @@
 
         $slangs = Survey::model()->findByPk($surveyid)->getAdditionalLanguages();
         $slangs[]= GetBaseLanguageFromSurveyID($surveyid);
-        $previewgrp = false;
-        if (isset($_REQUEST['action'])&& $_REQUEST['action']=='previewgroup')
+        if (count($slangs)>1) // return a dropdow only of there are more than one lanagage
         {
-            $previewgrp = true;
-        }
-
-        $sHTMLCode = "<select id='languagechanger' name='languagechanger' class='languagechanger' onchange='javascript:window.location=this.value'>\n";
-        $sAddToURL = "";
-        $sTargetURL = Yii::app()->getController()->createUrl("/survey/index");
-        if ($previewgrp){
-            $sAddToURL = "&amp;action=previewgroup&amp;gid={$_REQUEST['gid']}";
-        }
-        foreach ($slangs as $sLanguage)
-        {
-            $sHTMLCode .= "<option value=\"{$sTargetURL}?sid=". $surveyid ."&amp;lang=". $sLanguage ."{$sAddToURL}\" ";
-            if ($sLanguage==$sSelectedLanguage)
+            $previewgrp = false;
+            if (isset($_REQUEST['action'])&& $_REQUEST['action']=='previewgroup')
             {
-                $sHTMLCode .=" selected='selected'";
-
+                $previewgrp = true;
             }
-            $sHTMLCode .=">".getLanguageNameFromCode($sLanguage,false)."</option>\n";
-        }
-        $sHTMLCode .= "</select>\n";
+            $sHTMLCode = "<select id='languagechanger' name='languagechanger' class='languagechanger' onchange='javascript:window.location=this.value'>\n";
+            $sAddToURL = "";
+            $sTargetURL = Yii::app()->getController()->createUrl("/survey/index");
+            if ($previewgrp){
+                $sAddToURL = "&amp;action=previewgroup&amp;gid={$_REQUEST['gid']}";
+            }
+            foreach ($slangs as $sLanguage)
+            {
+                $sHTMLCode .= "<option value=\"{$sTargetURL}?sid=". $surveyid ."&amp;lang=". $sLanguage ."{$sAddToURL}\" ";
+                if ($sLanguage==$sSelectedLanguage)
+                {
+                    $sHTMLCode .=" selected='selected'";
 
-        return $sHTMLCode;
+                }
+                $sHTMLCode .=">".getLanguageNameFromCode($sLanguage,false)."</option>\n";
+            }
+            $sHTMLCode .= "</select>\n";
+            return $sHTMLCode;
+        }
+        else
+        {
+            return false;
+        }
 
     }
 

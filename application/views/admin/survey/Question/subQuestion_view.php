@@ -10,7 +10,7 @@
     var strNoLabelSet='<?php $clang->eT('There are no label sets which match the survey default language','js'); ?>';
     var langs='<?php echo implode(';',$anslangs); ?>';
     var ci_path='<?php echo Yii::app()->getConfig('imageurl'); ?>';
-    var saveaslabletitle  = '<?php $clang->eT('Save as Label','js'); ?>';
+    var saveaslabletitle  = '<?php $clang->eT('Save as label set','js'); ?>';
     var lanameurl = '<?php echo Yii::app()->createUrl('/admin/labels/getAllSets'); ?>';
     var lasaveurl = '<?php echo Yii::app()->createUrl('/admin/labels/ajaxSets'); ?>';
     var check = true;
@@ -176,13 +176,13 @@ $codeids='';
     </div>
 </div>
 <div id="saveaslabel" style='display:none;'>
-    <input type="radio" name="savelabeloption" id="newlabel"> <label for="newlabel"><?php $clang->eT('New Label Set'); ?></label><br /><br />
-    <input type="radio" name="savelabeloption" id="replacelabel"> <label for="replacelabel"><?php $clang->eT('Replace Existing Label'); ?></label><br /><br />
+    <input type="radio" name="savelabeloption" id="newlabel"> <label for="newlabel"><?php $clang->eT('New label set'); ?></label><br /><br />
+    <input type="radio" name="savelabeloption" id="replacelabel"> <label for="replacelabel"><?php $clang->eT('Replace existing label set'); ?></label><br /><br />
     <button id='btnsave' type='button'><?php $clang->eT('Save'); ?></button>
     <button id='btnlacancel' type='button'><?php $clang->eT('Cancel'); ?></button>
 </div>
 <div id="dialog-confirm-replace" title="Replace Label Set?" style='display:none;'>
-    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><?php $clang->eT('You are about to replace a given label set with the current sub questions. Continue?'); ?></p>
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><?php $clang->eT('You are about to replace a given label set with the labels of this subquestions. Continue?'); ?></p>
 </div>
 
 <div id="dialog-duplicate" title="Duplicate Label Set Name" style='display:none;'>
@@ -190,7 +190,7 @@ $codeids='';
 </div>
 
 <div id="dialog-result" title="Query Result" style='display:none;'>
-    
+
 </div>
 <p>
     <input type='submit' id='saveallbtn_<?php echo $anslang; ?>' name='method' value='<?php $clang->eT("Save changes"); ?>' />
