@@ -188,7 +188,7 @@ class export extends Survey_Common_Action {
         if ( ! $exportstyle )
         {
             //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-            $excesscols = createFieldMap($iSurveyID,'short',false,false,getBaseLanguageFromSurveyID($iSurveyID));
+            $excesscols = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
             $excesscols = array_keys($excesscols);
 
             $afieldcount = count($excesscols);
