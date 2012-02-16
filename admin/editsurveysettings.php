@@ -276,6 +276,11 @@
         . "</li>\n";
 
         //TEMPLATES
+        if (!$esrow['template'])
+        {
+            $esrow['template']=$defaulttemplate;
+        }
+        $esrow['template']=validate_templatedir($esrow['template']);
         $editsurvey .= "<li><label for='template'>".$clang->gT("Template:")."</label>\n"
         . "<select id='template' name='template'>\n";
         foreach (array_keys(gettemplatelist()) as $tname) {
@@ -283,8 +288,6 @@
             if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1 || hasTemplateManageRights($_SESSION["loginID"], $tname) == 1) {
                 $editsurvey .= "<option value='$tname'";
                 if ($esrow['template'] && htmlspecialchars($tname) == $esrow['template']) {
-                    $editsurvey .= " selected='selected'";
-                } elseif (!$esrow['template'] && $tname == "default") {
                     $editsurvey .= " selected='selected'";
                 }
                 $editsurvey .= ">$tname</option>\n";
