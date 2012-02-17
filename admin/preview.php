@@ -37,15 +37,6 @@ if (!isset($_GET['lang']) || $_GET['lang'] == "")
 }
 
 $_SESSION['s_lang'] = $language;
-$_SESSION['fieldmap']=createFieldMap($surveyid,'full',false,$qid);
-// Prefill question/answer from defaultvalues
-foreach ($_SESSION['fieldmap'] as $field)
-{
-    if (isset($field['defaultvalue']))
-    {
-        $_SESSION[$field['fieldname']]=$field['defaultvalue'];
-    }
-}
 $clang = new limesurvey_lang($language);
 
 $thissurvey=getSurveyInfo($surveyid);
@@ -146,6 +137,7 @@ $question['essentials'] = 'id="question'.$qrows['qid'].'"';
 $question['sgq']=$ia[1];
 $question['aid']='unknown';
 $question['sqid']='unknown';
+$question['type']= $qrows['type'];
 
 if ($qrows['mandatory'] == 'Y')
 {
