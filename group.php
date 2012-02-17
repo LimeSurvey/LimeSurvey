@@ -878,6 +878,7 @@ if (!$previewgrp){
 
         $stepIndex = LimeExpressionManager::GetStepIndexInfo();
         $lastGseq=-1;
+        $gseq = -1;
         for($v = 0, $n = 0; $n != $_SESSION['maxstep']; ++$n)
         {
             if (!isset($stepIndex[$n])) {
@@ -888,13 +889,24 @@ if (!$previewgrp){
             if (!$stepInfo['show'])
                 continue;
 
-            if ($surveyMode == 'question' && $lastGseq != $stepInfo['gseq']) {
-                // show the group label
-                echo '<h3>' . FlattenText($stepInfo['gname']) . "</h3>";
-                $lastGseq = $stepInfo['gseq'];
+            if ($surveyMode == 'question')
+            {
+                if ($lastGseq != $stepInfo['gseq']) {
+                    // show the group label
+                    ++$gseq;
+                    $g = $_SESSION['grouplist'][$gseq];                
+                    echo '<h3>' . FlattenText($g[1]) . "</h3>";
+                    $lastGseq = $stepInfo['gseq'];
+                }
+                $q = $_SESSION['fieldarray'][$n];
+            }
+            else
+            {
+                ++$gseq;
+                $g = $_SESSION['grouplist'][$gseq];
             }
 
-            $sText = (($surveyMode == 'group') ? FlattenText($stepInfo['gname'] . ': ' . $stepInfo['gtext']) : FlattenText($stepInfo['qtext']));
+            $sText = (($surveyMode == 'group') ? FlattenText($g[1]) : FlattenText($q[3]));
             $bGAnsw = !$stepInfo['anyUnanswered'];
 
             ++$v;
