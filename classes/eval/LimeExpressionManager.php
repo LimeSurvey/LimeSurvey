@@ -2822,7 +2822,7 @@ class LimeExpressionManager {
         }
         $LEM->initialized=true;
     }
-
+    
     /**
      * Initialize a survey so can use EM to manage navigation
      * @param <type> $surveyid
@@ -2882,6 +2882,12 @@ class LimeExpressionManager {
         $LEM->currentQuestionSeq=-1;    // for question-by-question mode
         $LEM->indexGseq=array();
         $LEM->indexQseq=array();
+        
+        if (isset($_SESSION['startingValues']) && is_array($_SESSION['startingValues']) && count($_SESSION['startingValues']) > 0)
+        {
+            $startingValues = $_SESSION['startingValues'];
+            $LEM->_UpdateValuesInDatabase($startingValues);
+        }
 
         return array(
             'hasNext'=>true,
