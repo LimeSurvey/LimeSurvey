@@ -941,11 +941,11 @@ END;
                 echo '<div id="index"><div class="container"><h2>' . $clang->gT("Question index") . '</h2>';
 
                 $stepIndex = LimeExpressionManager::GetStepIndexInfo();
-                $lastGseq = -1;
-                for ($v = 0, $n = 0; $n != $_SESSION['survey_'.$surveyid]['maxstep']; ++$n)
+                $lastGseq=-1;
+                $gseq = -1;
+                for($v = 0, $n = 0; $n != $_SESSION['survey_'.$surveyid]['maxstep']; ++$n)
                 {
-                    if (!isset($stepIndex[$n]))
-                    {
+                    if (!isset($stepIndex[$n])) {
                         continue;   // this is an invalid group - skip it
                     }
                     $stepInfo = $stepIndex[$n];
@@ -953,14 +953,24 @@ END;
                     if (!$stepInfo['show'])
                         continue;
 
-                    if ($surveyMode == 'question' && $lastGseq != $stepInfo['gseq'])
+                    if ($surveyMode == 'question')
                     {
-                        // show the group label
-                        echo '<h3>' . flattenText($stepInfo['gname']) . "</h3>";
-                        $lastGseq = $stepInfo['gseq'];
+                        if ($lastGseq != $stepInfo['gseq']) {
+                            // show the group label
+                            ++$gseq;
+                            $g = $_SESSION['survey_'.$surveyid]['grouplist'][$gseq];                
+                            echo '<h3>' . flattenText($g[1]) . "</h3>";
+                            $lastGseq = $stepInfo['gseq'];
+                        }
+                        $q = $_SESSION['survey_'.$surveyid]['fieldarray'][$n];
+                    }
+                    else
+                    {
+                        ++$gseq;
+                        $g = $_SESSION['survey_'.$surveyid]['grouplist'][$gseq];
                     }
 
-                    $sText = (($surveyMode == 'group') ? flattenText($stepInfo['gname'] . ': ' . $stepInfo['gtext']) : flattenText($stepInfo['qtext']));
+                    $sText = (($surveyMode == 'group') ? flattenText($g[1]) : flattenText($q[3]));
                     $bGAnsw = !$stepInfo['anyUnanswered'];
 
                     ++$v;
