@@ -2890,6 +2890,12 @@ class LimeExpressionManager {
         $LEM->currentQuestionSeq=-1;    // for question-by-question mode
         $LEM->indexGseq=array();
         $LEM->indexQseq=array();
+        
+        if (isset($_SESSION['survey_'.$surveyid]['startingValues']) && is_array($_SESSION['survey_'.$surveyid]['startingValues']) && count($_SESSION['survey_'.$surveyid]['startingValues']) > 0)
+        {
+            $startingValues = $_SESSION['survey_'.$surveyid]['startingValues'];
+            $LEM->_UpdateValuesInDatabase($startingValues);
+        }
 
         return array(
             'hasNext'=>true,

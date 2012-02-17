@@ -2048,17 +2048,55 @@
 //        }
 //    }
     // Prefill questions/answers from command line params
+    $startingValues=array();
     if (isset($_SESSION['survey_'.$surveyid]['insertarray']))
     {
         foreach($_SESSION['survey_'.$surveyid]['insertarray'] as $field)
         {
             if (isset($_GET[$field]) && $field!='token')
             {
-                $_SESSION['survey_'.$surveyid][$field]=$_GET[$field];
+                $value=$_GET[$field];
+                $type = $fieldmap[$field]['type'];
+                switch($type)
+                {
+                    case 'D': //DATE
+                        if (trim($value)=="")
+                        {
+                            $value = NULL;
+                        }
+                        else
+                        {
+                            $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
+                            $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
+                            $value=$datetimeobj->convert("Y-m-d");
+                        }
+                        break;
+                    case 'N': //NUMERICAL QUESTION TYPE
+                    case 'K': //MULTIPLE NUMERICAL QUESTION
+                        if (trim($value)=="") {
+                            $value = NULL;
+                        }
+                        else {
+                            $value = sanitize_float($value);
+                        }
+                        break;
+                    case '|': //File Upload
+                        $value=NULL;  // can't upload a file via GET
+                        break;
+                }
+                if (!is_null($value))
+                {
+                    $_SESSION['survey_'.$surveyid][$field] = $value;
+                    $startingValues[$field] = array (
+                        'type'=>$type,
+                        'value'=>$value,
+                        );  
+                }
             }
         }
     }
-
+    $_SESSION['survey_'.$surveyid]['startingValues']=$startingValues;
+    
     if (isset($_SESSION['survey_'.$surveyid]['fieldarray'])) $_SESSION['survey_'.$surveyid]['fieldarray']=array_values($_SESSION['survey_'.$surveyid]['fieldarray']);
 
     //Check if a passthru label and value have been included in the query url
