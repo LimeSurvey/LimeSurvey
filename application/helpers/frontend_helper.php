@@ -59,6 +59,8 @@
         {
             //A match has been found. Let's load the values!
             //If this is from an email, build surveysession first
+            $_SESSION['LEMtokenResume']=true;
+                    
             $row=$result->read();
             foreach ($row as $column => $value)
             {

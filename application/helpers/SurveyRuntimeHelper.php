@@ -122,6 +122,12 @@ class SurveyRuntimeHelper {
                 alert(\"" . $clang->gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.", "js") . "\");});\n //-->\n
                 </script>\n";
             }
+            else if (isset($_SESSION['LEMtokenResume']))
+            {
+                LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);
+                $moveResult = LimeExpressionManager::JumpTo($_SESSION['survey_'.$surveyid]['step']+1,false,false);   // if late in the survey, will re-validate contents, which may be overkill
+                unset($_SESSION['LEMtokenResume']);       
+            }            
             else
             {
                 //Move current step ###########################################################################
