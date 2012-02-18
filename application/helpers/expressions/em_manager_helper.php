@@ -5906,7 +5906,7 @@ EOT;
             // Then get non-language specific first, and overwrite with language-specific
             $qattr2 = $qattr;
             $qattr = $this->getQuestionAttributesForEM($surveyid,$qid);
-            foreach ($qattr2 as $q => $qatrs) {
+            foreach ($qattr2 as $q => $qattrs) {
                 if (isset($qattrs) && is_array($qattrs)) {
                     foreach ($qattrs as $attr=>$value) {
                         $qattr[$q][$attr] = $value;
@@ -6377,7 +6377,7 @@ EOT;
             //////
             $sqRows='';
             $i=0;
-            $sawthis = array(); // array of rowdivids already seen so only show them once
+            $sawThis = array(); // array of rowdivids already seen so only show them once
             foreach ($sgqas as $sgqa)
             {
                 if ($LEM->knownVars[$sgqa]['qcode'] == $rootVarName) {
