@@ -61,6 +61,7 @@ require_once($homedir.'/statistics_function.php');
  */
 
 $surveyid=returnglobal('sid');
+$postlang = returnglobal('lang');
 if (!$surveyid){
     //This next line ensures that the $surveyid value is never anything but a number.
     safe_die('You have to provide a valid survey ID.');
@@ -125,7 +126,10 @@ if (isset($publicgraphs) && $publicgraphs == 1)
 
 
 // Set language for questions and labels to base language of this survey
-$language = GetBaseLanguageFromSurveyID($surveyid);
+if (isset($postlang) && $postlang != null )
+    $language = $postlang;
+else
+    $language = GetBaseLanguageFromSurveyID($surveyid);
 
 
 

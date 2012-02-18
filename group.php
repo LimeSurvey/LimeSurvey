@@ -397,7 +397,7 @@ else
             if ($thissurvey['publicstatistics']=='Y')
             {
                 $completed .= "<br /><br />"
-                ."<a class='publicstatisticslink' href='statistics_user.php?sid=$surveyid' target='_blank'>"
+                ."<a class='publicstatisticslink' href='statistics_user.php?sid=$surveyid&lang=".$_SESSION['s_lang']."' target='_blank'>"
                 .$clang->gT("View the statistics for this survey.")
                 ."</a><br />\n";
             }
