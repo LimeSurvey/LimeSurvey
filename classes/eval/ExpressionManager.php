@@ -748,7 +748,7 @@ class ExpressionManager {
         $token2 = $this->RDP_tokens[++$this->RDP_pos];
         if ($token2[2] != 'LP')
         {
-            $this->RDP_AddError("Expected left parentheses after function name", $token);
+            $this->RDP_AddError("Expected left parentheses after function name", $funcNameToken);
         }
         $params = array();  // will just store array of values, not tokens
         while ($this->RDP_pos + 1 < $this->RDP_count)
