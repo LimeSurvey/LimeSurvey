@@ -38,6 +38,7 @@ class Statistics_userController extends LSYii_Controller {
 	function actionAction($surveyid)
 	{
 		$surveyid=(int)$surveyid;
+        $postlang = returnglobal('lang');
 		Yii::import('application.libraries.admin.progressbar',true);
 		Yii::app()->loadHelper("admin/statistics");
 		Yii::app()->loadHelper('database');
@@ -141,7 +142,11 @@ class Statistics_userController extends LSYii_Controller {
 
 
 		// Set language for questions and labels to base language of this survey
-		$language = Survey::model()->findByPk($surveyid)->language;
+		if (isset($postlang) && $postlang != null )
+            $language = $postlang;
+        else
+            $language = Survey::model()->findByPk($surveyid)->language;  
+        
 
 
 		$chartfontfile = Yii::app()->getConfig("chartfontfile");

@@ -439,10 +439,12 @@ class SurveyRuntimeHelper {
                     // Link to Public statistics  **********
                     if ($thissurvey['publicstatistics'] == 'Y')
                     {
+                        $hidden_field = "<input type='hidden' name='lang' value='".$_SESSION['s_lang']."' />";
                         $completed .= "<br /><br />"
                         . "<a class='publicstatisticslink' href='statistics_user.php?sid=$surveyid' target='_blank'>"
                         . $clang->gT("View the statistics for this survey.")
                         . "</a><br />\n";
+                        $completed .= $hidden_field."\n";
                     }
                     //*****************************************
 
