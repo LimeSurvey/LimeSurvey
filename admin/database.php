@@ -987,7 +987,8 @@ if(isset($surveyid))
         $myFilter = new InputFilter('','',1,1,1);
 
 
-        $insertqids=array();
+        //$insertqids=array(); //?
+        $insertqid = array(); 
         for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
         {
             foreach ($anslangs as $language)
@@ -1010,16 +1011,16 @@ if(isset($surveyid))
                     }
                     else
                     {
-                        if (!isset($insertqid[$position]))
+                        if (!isset($insertqid[$scale_id][$position]))
                         {
                             $query='INSERT into '.db_table_name('questions').' (sid, gid, question_order, title, question, parent_qid, language, scale_id) values ('.$surveyid.','.$gid.','.($position+1).','.db_quoteall($codes[$scale_id][$position]).','.db_quoteall($subquestionvalue).','.$qid.','.db_quoteall($language).','.$scale_id.')';
                             $connect->execute($query);
-                            $insertqid[$position]=$connect->Insert_Id(db_table_name_nq('questions'),"qid");
+                            $insertqid[$scale_id][$position]=$connect->Insert_Id(db_table_name_nq('questions'),"qid");
                         }
                         else
                         {
                             db_switchIDInsert('questions',true);
-                            $query='INSERT into '.db_table_name('questions').' (qid, sid, gid, question_order, title, question, parent_qid, language, scale_id) values ('.$insertqid[$position].','.$surveyid.','.$gid.','.($position+1).','.db_quoteall($codes[$scale_id][$position]).','.db_quoteall($subquestionvalue).','.$qid.','.db_quoteall($language).','.$scale_id.')';
+                            $query='INSERT into '.db_table_name('questions').' (qid, sid, gid, question_order, title, question, parent_qid, language, scale_id) values ('.$insertqid[$scale_id][$position].','.$surveyid.','.$gid.','.($position+1).','.db_quoteall($codes[$scale_id][$position]).','.db_quoteall($subquestionvalue).','.$qid.','.db_quoteall($language).','.$scale_id.')';
                             $connect->execute($query);
                             db_switchIDInsert('questions',true);
                         }
