@@ -2244,7 +2244,7 @@ function doAssessment($surveyid, $returndataonly=false)
         $_SESSION['survey_'.$surveyid]['s_lang']=$baselang;
     }
     $query = "SELECT * FROM {{assessments}}
-    WHERE sid=$surveyid and language='{$_SESSION['survey_'.$surveyid]['s_lang']}'
+    WHERE sid=$surveyid and language='".$_SESSION['survey_'.$surveyid]['s_lang']."'
     ORDER BY scope, id";
     if ($result = dbExecuteAssoc($query))   //Checked
 
@@ -2268,7 +2268,7 @@ function doAssessment($surveyid, $returndataonly=false)
                     "message"=>$row['message']);
                 }
             }
-            $fieldmap=createFieldMap($surveyid, "full");
+            $fieldmap=createFieldMap($surveyid, "full",false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
             $i=0;
             $total=0;
             $groups=array();
