@@ -295,28 +295,28 @@ function activateSurvey($surveyid, $simulate = false)
         switch($arow['type'])
         {
             case 'startlanguage':
-                $createsurvey[$arow['fieldname']] = " VARCHAR(20) NOT NULL";
+                $createsurvey[$arow['fieldname']] = "VARCHAR(20) NOT NULL";
                 break;
             case 'id':
-                $createsurvey[$arow['fieldname']] = " INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY";
+                $createsurvey[$arow['fieldname']] = "INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY";
                 $createsurveytimings .= " `{$arow['fieldname']}` INT NOT NULL PRIMARY,\n";
                 break;
             case "startdate":
             case "datestamp":
-                $createsurvey[$arow['fieldname']] = " DATETIME NOT NULL";
+                $createsurvey[$arow['fieldname']] = "DATETIME NOT NULL";
                 break;
             case "submitdate":
-                $createsurvey[$arow['fieldname']] = " DATETIME";
+                $createsurvey[$arow['fieldname']] = "DATETIME";
                 break;
             case "lastpage":
-                $createsurvey[$arow['fieldname']] = " INT(10)";
+                $createsurvey[$arow['fieldname']] = "INT(10)";
                 break;
             case "N":  //NUMERICAL
-                $createsurvey[$arow['fieldname']] = " FLOAT";
+                $createsurvey[$arow['fieldname']] = "FLOAT";
                 break;
             case "S":  //SHORT TEXT
-                if (Yii::app()->db->driverName == 'mysql' || Yii::app()->db->driverName == 'mysqli')    {$createsurvey[$arow['fieldname']] = " TEXT";}
-                else  {$createsurvey[$arow['fieldname']] = " VARCHAR(255)";}
+                if (Yii::app()->db->driverName == 'mysql' || Yii::app()->db->driverName == 'mysqli')    {$createsurvey[$arow['fieldname']] = "TEXT";}
+                else  {$createsurvey[$arow['fieldname']] = "VARCHAR(255)";}
                 break;
             case "L":  //LIST (RADIO)
             case "!":  //LIST (DROPDOWN)
@@ -325,61 +325,61 @@ function activateSurvey($surveyid, $simulate = false)
             case "O":  //DROPDOWN LIST WITH COMMENT
                 if ($arow['aid'] != 'other' && strpos($arow['aid'],'comment')===false && strpos($arow['aid'],'othercomment')===false)
                 {
-                    $createsurvey[$arow['fieldname']] = " VARCHAR(5)";
+                    $createsurvey[$arow['fieldname']] = "VARCHAR(5)";
                 }
                 else
                 {
-                    $createsurvey[$arow['fieldname']] = " TEXT";
+                    $createsurvey[$arow['fieldname']] = "TEXT";
                 }
                 break;
             case "K":  // Multiple Numerical
-                $createsurvey[$arow['fieldname']] = " FLOAT(20)";
+                $createsurvey[$arow['fieldname']] = "FLOAT(20)";
                 break;
             case "U":  //Huge text
             case "Q":  //Multiple short text
             case "T":  //LONG TEXT
             case ";":  //Multi Flexi
             case ":":  //Multi Flexi
-                $createsurvey[$arow['fieldname']] = " TEXT";
+                $createsurvey[$arow['fieldname']] = "TEXT";
                 break;
             case "D":  //DATE
-                $createsurvey[$arow['fieldname']] = " DATETIME";
+                $createsurvey[$arow['fieldname']] = "DATETIME";
                 break;
             case "5":  //5 Point Choice
             case "G":  //Gender
             case "Y":  //YesNo
             case "X":  //Boilerplate
-                $createsurvey[$arow['fieldname']] = " VARCHAR(1)";
+                $createsurvey[$arow['fieldname']] = "VARCHAR(1)";
                 break;
             case "I":  //Language switch
-                $createsurvey[$arow['fieldname']] = " VARCHAR(20)";
+                $createsurvey[$arow['fieldname']] = "VARCHAR(20)";
                 break;
             case "|":
                 $createsurveydirectory = true;
                 if (strpos($arow['fieldname'], "_"))
-                    $createsurvey[$arow['fieldname']] = " INT(1)";
+                    $createsurvey[$arow['fieldname']] = "INT(1)";
                 else
-                   $createsurvey[$arow['fieldname']] = " TEXT";
+                   $createsurvey[$arow['fieldname']] = "TEXT";
                 break;
             case "ipaddress":
                 if ($prow['ipaddr'] == "Y")
-                    $createsurvey[$arow['fieldname']] = " TEXT";
+                    $createsurvey[$arow['fieldname']] = "TEXT";
                 break;
             case "url":
                 if ($prow['refurl'] == "Y")
-                    $createsurvey[$arow['fieldname']] = " TEXT";
+                    $createsurvey[$arow['fieldname']] = "TEXT";
                 break;
             case "token":
                 if ($prow['anonymized'] == "N")
                 {
-                    $createsurvey[$arow['fieldname']] = " VARCHAR(36)";
+                    $createsurvey[$arow['fieldname']] = "VARCHAR(36)";
                 }
                 break;
             case '*': // Equation
-                $createsurvey[$arow['fieldname']] = " TEXT";
+                $createsurvey[$arow['fieldname']] = "TEXT";
                 break;
             default:
-                $createsurvey[$arow['fieldname']] = " VARCHAR(5)";
+                $createsurvey[$arow['fieldname']] = "VARCHAR(5)";
         }
 
         if ($simulate){
@@ -405,7 +405,6 @@ function activateSurvey($surveyid, $simulate = false)
     //$createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a comma
 
     $tabname = "{{survey_{$surveyid}}}";
-    
     $command = new CDbCommand(Yii::app()->db);
     try
     {
@@ -414,6 +413,7 @@ function activateSurvey($surveyid, $simulate = false)
     }
     catch (CDbException $e)
     {
+        echo $e->getMessage();
         $execresult = false;
     }
 
@@ -459,7 +459,7 @@ function activateSurvey($surveyid, $simulate = false)
 
             if (isset($savetimings) && $savetimings=="TRUE")
             {
-                $timingsfieldmap = createTimingsFieldMap($surveyid);
+                $timingsfieldmap = createTimingsFieldMap($surveyid,"full",false,false,getBaseLanguageFromSurveyID($surveyid));
                 $createsurveytimings .= '`'.implode("` F DEFAULT '0',\n`",array_keys($timingsfieldmap)) . "` F DEFAULT '0'";
 
 
