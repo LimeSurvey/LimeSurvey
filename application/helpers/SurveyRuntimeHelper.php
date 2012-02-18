@@ -80,6 +80,7 @@ class SurveyRuntimeHelper {
         }
         else
         {
+            
             //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
             if (!isset($_SESSION['survey_'.$surveyid]['step']))  //  || !$_SESSION['step']) - don't do this for step0, else rebuild the session
             {
@@ -474,7 +475,7 @@ class SurveyRuntimeHelper {
                     doHeader();
                     echo $content;
                 }
-                $redata['completed'] = $completed;
+                $redata['completed'] = $completed;                
                 echo templatereplace(file_get_contents("$thistpl/completed.pstpl"), array('completed' => $completed), $redata);
                 echo "\n<br />\n";
                 if ((($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING))
@@ -555,10 +556,15 @@ class SurveyRuntimeHelper {
                      } else {
                         $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
                     }
+                    
                     $gid = $stepInfo['gid'];
                     $groupname = $stepInfo['gname'];
                     $groupdescription = $stepInfo['gtext'];
                 }
+        }
+        if ($previewquestion)
+        {
+            $_SESSION['survey_'.$surveyid]['step'] = 0; //maybe unset it after the question has been displayed?
         }
 
         if ($_SESSION['survey_'.$surveyid]['step'] > $_SESSION['survey_'.$surveyid]['maxstep'])

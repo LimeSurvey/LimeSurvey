@@ -504,7 +504,19 @@ class question extends Survey_Common_Action
                     if (empty($qrow))
                     {
                         switchMSSQLIdentityInsert('questions', true);
-
+                        
+                        $question = new Questions;
+                        $question->qid = $row->qid;
+                        $question->sid = $surveyid;
+                        $question->gid = $row->gid;
+                        $question->parent_qid = $qid;
+                        $question->title = $row->title;
+                        $question->question = $row->question;
+                        $question->question_order = $row->question_order;
+                        $question->language = $language;
+                        $question->scale_id = $iScale;
+                        $question->save();
+                        /** //activerecord is not not new bugfix!
                         Questions::model()->insert(array(
                             'qid' => $row->qid,
                             'sid' => $surveyid,
@@ -516,7 +528,7 @@ class question extends Survey_Common_Action
                             'language' => $language,
                             'scale_id' => $iScale,
                         ));
-
+                        */
                         switchMSSQLIdentityInsert('questions', false);
                     }
                 }
