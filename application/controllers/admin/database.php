@@ -307,7 +307,8 @@ class database extends Survey_Common_Action
             //$myFilter = new InputFilter('','',1,1,1);
 
 
-            $insertqids=array();
+            //$insertqids=array(); //?
+            $insertqid =array(); 
             for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
             {
                 foreach ($anslangs as $language)
@@ -328,7 +329,7 @@ class database extends Survey_Common_Action
                         }
                         else
                         {
-                            if (!isset($insertqid[$position]))
+                            if (!isset($insertqid[$scale_id][$position]))
                             {
                                 Questions::model()-> insertRecords(array('sid'=>$surveyid, 'gid'=>$gid, 'question_order'=>$position+1,'title'=>$codes[$scale_id][$position],'question'=>$subquestionvalue,'parent_qid'=>$qid,'language'=>$language,'scale_id'=>$scale_id));
                                 $insertqid[$position]=Yii::app()->db->getLastInsertID();
@@ -336,7 +337,7 @@ class database extends Survey_Common_Action
                             else
                             {
                                 switchMSSQLIdentityInsert('questions',true);
-                                Questions::model()-> insertRecords(array('qid'=>$insertqid[$position],'sid'=>$surveyid, 'gid'=>$gid, 'question_order'=>$position+1,'title'=>$codes[$scale_id][$position],'question'=>$subquestionvalue,'parent_qid'=>$qid,'language'=>$language,'scale_id'=>$scale_id));
+                                Questions::model()-> insertRecords(array('qid'=>$insertqid[$scale_id][$position],'sid'=>$surveyid, 'gid'=>$gid, 'question_order'=>$position+1,'title'=>$codes[$scale_id][$position],'question'=>$subquestionvalue,'parent_qid'=>$qid,'language'=>$language,'scale_id'=>$scale_id));
                                 switchMSSQLIdentityInsert('questions',true);
                             }
                         }
