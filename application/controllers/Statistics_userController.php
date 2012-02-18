@@ -35,10 +35,10 @@ class Statistics_userController extends LSYii_Controller {
 	    return call_user_func_array(array($this, "action"), $params);
 	}
 
-	function actionAction($surveyid)
+	function actionAction($surveyid,$postlang)
 	{
 		$surveyid=(int)$surveyid;
-        $postlang = returnglobal('lang');
+        //$postlang = returnglobal('lang');
 		Yii::import('application.libraries.admin.progressbar',true);
 		Yii::app()->loadHelper("admin/statistics");
 		Yii::app()->loadHelper('database');

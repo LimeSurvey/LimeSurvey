@@ -1184,11 +1184,13 @@
         {
             $aReplacementVars['RELOADURL']='';
         }
-
+        
+        if (!isset($_SESSION['survey_'.$surveyid]['srid']))
+            $srid = null;
         $aReplacementVars['ADMINNAME'] = $thissurvey['adminname'];
         $aReplacementVars['ADMINEMAIL'] = $thissurvey['adminemail'];
-        $aReplacementVars['VIEWRESPONSEURL']="{$homeurl}/admin.php?action=browse&sid={$surveyid}&subaction=id&id={$_SESSION['survey_'.$surveyid]['srid']}";
-        $aReplacementVars['EDITRESPONSEURL']="{$homeurl}/admin.php?action=dataentry&sid={$surveyid}&subaction=edit&surveytable=survey_{$surveyid}&id=".$_SESSION['survey_'.$surveyid]['srid'];
+        $aReplacementVars['VIEWRESPONSEURL']="{$homeurl}/admin.php?action=browse&sid={$surveyid}&subaction=id&id=".$srid;
+        $aReplacementVars['EDITRESPONSEURL']="{$homeurl}/admin.php?action=dataentry&sid={$surveyid}&subaction=edit&surveytable=survey_{$surveyid}&id=".$srid;
         $aReplacementVars['STATISTICSURL']="{$homeurl}/admin.php?action=statistics&sid={$surveyid}";
         if ($bIsHTML)
         {

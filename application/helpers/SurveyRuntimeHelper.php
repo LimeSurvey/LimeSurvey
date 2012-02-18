@@ -439,12 +439,11 @@ class SurveyRuntimeHelper {
                     // Link to Public statistics  **********
                     if ($thissurvey['publicstatistics'] == 'Y')
                     {
-                        $hidden_field = "<input type='hidden' name='lang' value='".$_SESSION['s_lang']."' />";
+                        $url = Yii::app()->getController()->createUrl("statistics_user/sid/{$surveyid}/lang/".$_SESSION['survey_'.$surveyid]['s_lang']);
                         $completed .= "<br /><br />"
-                        . "<a class='publicstatisticslink' href='statistics_user.php?sid=$surveyid' target='_blank'>"
+                        . "<a class='publicstatisticslink' href='$url' target='_blank'>"
                         . $clang->gT("View the statistics for this survey.")
                         . "</a><br />\n";
-                        $completed .= $hidden_field."\n";
                     }
                     //*****************************************
 
@@ -475,8 +474,8 @@ class SurveyRuntimeHelper {
                     doHeader();
                     echo $content;
                 }
-
-                echo templatereplace(file_get_contents("$thistpl/completed.pstpl"), array(), $redata);
+                $redata['completed'] = $completed;
+                echo templatereplace(file_get_contents("$thistpl/completed.pstpl"), array('completed' => $completed), $redata);
                 echo "\n<br />\n";
                 if ((($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING))
                 {
