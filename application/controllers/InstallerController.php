@@ -453,6 +453,16 @@ class InstallerController extends CController {
                   $createDb=false;
                 }
                 break;
+            case 'postgres':
+                try
+                {
+                    $this->connection->createCommand("CREATE DATABASE \"$sDatabaseName\" ENCODING 'UTF8'")->execute();
+                }
+                catch (Exception $e)
+                {
+                    $createdb = false;
+                }
+                break;
             default:
                 try
                 {
