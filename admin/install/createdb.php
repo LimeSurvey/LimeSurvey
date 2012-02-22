@@ -79,8 +79,10 @@ if (!$database_exists) //Database named in config-defaults.php does not exist
         break;
         case 'mssql_n':
         case 'odbc_mssql':
-		case 'mssqlnative':
+        case 'mssqlnative':
         case 'odbtp': $createDb=$connect->Execute("CREATE DATABASE [$dbname];");
+        break;
+        case 'postgres': $createDb=$connect->Execute("CREATE DATABASE \"$dbname\" ENCODING 'UTF8'");
         break;
         default: $createDb=$connect->Execute("CREATE DATABASE $dbname");
     }
