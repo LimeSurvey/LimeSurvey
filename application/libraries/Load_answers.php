@@ -26,7 +26,7 @@ class Load_answers {
 		}
 		echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
 		."\t<script type='text/javascript'>\n"
-		."function checkconditions(value, name, type)\n"
+		."function checkconditions(value, name, type, evt_type)\n"
 		."\t{\n"
 		."\t}\n"
 		."\t</script>\n\n";

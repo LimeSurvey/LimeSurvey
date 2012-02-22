@@ -1022,32 +1022,41 @@ class question extends Survey_Common_Action
         $dummy_js = <<< EOD
             <script type='text/javascript'>
             <!--
-            function noop_checkconditions(value, name, type)
+            function noop_checkconditions(value, name, type, evt_type)
             {
-                checkconditions(value, name, type);
+                if (typeof evt_type === 'undefined')
+                { 
+                    evt_type = 'onchange'; 
+                }    
+                checkconditions(value, name, type, evt_type);
             }
 
-            function checkconditions(value, name, type)
+            function checkconditions(value, name, type, evt_type)
             {
+                if (typeof evt_type === 'undefined') 
+                { 
+                    evt_type = 'onchange'; 
+                }
                 if (type == 'radio' || type == 'select-one')
                 {
                     var hiddenformname='java'+name;
                     document.getElementById(hiddenformname).value=value;
                 }
-
-                if (type == 'checkbox')
+                else if (type == 'checkbox')
                 {
-                    var hiddenformname='java'+name;
-                    var chkname='answer'+name;
-                    if (document.getElementById(chkname).checked)
+                    if (document.getElementById('answer'+name).checked)
                     {
-                        document.getElementById(hiddenformname).value='Y';
+                        $('#java'+name).val('Y');
                     } else
                     {
-                        document.getElementById(hiddenformname).value='';
+                        $('#java'+name).val('');
                     }
                 }
-                ExprMgr_process_relevance_and_tailoring();
+                else if (type == 'text' && name.match(/other$/) && typeof document.getElementById('java'+name) !== 'undefined' && document.getElementById('java'+name) != null)
+                {
+                    $('#java'+name).val(value);
+                }
+                ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
                 $showQuestion
             }
             // have to add all these "$showQuestion" calls to ensure we can see the question, even if it might be irrelevant during survey

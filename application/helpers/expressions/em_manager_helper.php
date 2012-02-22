@@ -4852,14 +4852,14 @@ static function GetRelevanceAndTailoringJavaScript()
             $jsParts[] = "var LEMqid=" . $LEM->currentQID . ";\n";  // current group num so can compute isOnCurrentPage
         }
 
-        $jsParts[] = "function ExprMgr_process_relevance_and_tailoring(evt_type,sgqa){\n";
+        $jsParts[] = "function ExprMgr_process_relevance_and_tailoring(evt_type,sgqa,type){\n";
         $jsParts[] = "if (typeof LEM_initialized == 'undefined') {\nLEM_initialized=true;\nLEMsetTabIndexes();\n}\n";
-        $jsParts[] = "if (evt_type == 'onchange' && (typeof last_sgqa !== 'undefined' && sgqa==last_sgqa) && (typeof last_evt_type !== 'undefined' && last_evt_type == 'keydown')) {\n";
+        $jsParts[] = "if (evt_type == 'onchange' && (typeof last_sgqa !== 'undefined' && sgqa==last_sgqa) && (typeof last_evt_type !== 'undefined' && last_evt_type == 'TAB' && type != 'checkbox')) {\n";
         $jsParts[] = "  last_evt_type='onchange';\n";
         $jsParts[] = "  last_sgqa=sgqa;\n";
         $jsParts[] = "  return;\n";
         $jsParts[] = "}\n";
-        $jsParts[] = "last_evt_type = evt_type;\n\n";
+        $jsParts[] = "last_evt_type = evt_type;\n";
         $jsParts[] = "last_sgqa=sgqa;\n";
 
         // flatten relevance array, keeping proper order
