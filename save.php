@@ -50,7 +50,7 @@ global $errormsg;   // since neeeded by savecontrol()
     echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
     ."\t<script type='text/javascript'>\n"
     ."\t<!--\n"
-    ."function checkconditions(value, name, type)\n"
+    ."function checkconditions(value, name, type, evt_type)\n"
     ."\t{\n"
     ."\t}\n"
     ."\t//-->\n"

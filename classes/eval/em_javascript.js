@@ -498,7 +498,7 @@ function  LEMsetTabIndexes()
         $('#limesurvey :input[type!=hidden][id!=runonce]').each(function(index){
             $(this).bind('keydown',function(e) {
                 if (e.keyCode == 9) {
-                    ExprMgr_process_relevance_and_tailoring(e.type,$(this).attr('name'));
+                    checkconditions($(this).attr('value'), $(this).attr('name'), $(this).attr('type'), 'TAB');
                     $(this).focus();
                     return true;
                 }
@@ -507,6 +507,23 @@ function  LEMsetTabIndexes()
         })	// MUST DO THIS FIRST
         tabIndexesSet = true;
     }
+}
+
+/** Function to set color coding for Other option in multiple choice questions so that it gets filled in if selected
+ */
+function LEMflagMandOther(sgqa,checked)
+{
+	if (checked) {
+		if ($.trim($('#java'+sgqa).val()) == '') {
+			$('#answer'+sgqa).addClass('em_sq_validation error').removeClass('good');
+		}
+		else {
+			$('#answer'+sgqa).addClass('em_sq_validation good').removeClass('error');
+		}
+	}
+	else {
+		$('#answer'+sgqa).addClass('em_sq_validation good').removeClass('error');
+	}
 }
 
 /* The following functions are courtesy of phpjs.org */

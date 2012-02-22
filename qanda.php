@@ -2573,9 +2573,8 @@ function do_multiplechoice($ia)
         {
             $answer .= CHECKED;
         }
-        $answer .= " onclick='cancelBubbleThis(event);if(this.checked===false){ document.getElementById(\"answer$myfname\").value=\"\"; document.getElementById(\"java$myfname\").value=\"\"; }";
-        $answer .= " if(this.checked===true) document.getElementById(\"answer$myfname\").focus();";
-        $answer .= " $checkconditionFunction(document.getElementById(\"answer$myfname\").value, document.getElementById(\"answer$myfname\").name, document.getElementById(\"answer$myfname\").type);";
+        $answer .= " onclick='cancelBubbleThis(event);if(this.checked===false){ document.getElementById(\"answer$myfname\").value=\"\"; document.getElementById(\"java$myfname\").value=\"\"; $checkconditionFunction(\"\", \"$myfname\", \"text\"); }";
+        $answer .= " if(this.checked===true) { document.getElementById(\"answer$myfname\").focus(); }; LEMflagMandOther(\"$myfname\",this.checked);";
         $answer .= "' />
 		<label for=\"answer$myfname\" class=\"answertext\">".$othertext."</label>
 		<input class=\"text ".$kpclass."\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\"";
@@ -2583,7 +2582,7 @@ function do_multiplechoice($ia)
         {
             $answer .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';
         }
-        $answer .= " onchange='$(\"#java{$myfname}\").val(this.value);$checkconditionFunction(this.value, this.name, this.type);if ($.trim($(\"#java{$myfname}\").val())!=\"\" && !document.getElementById(\"answer{$myfname}cbox\").checked) { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); }' $numbersonly />";
+        $answer .= " onchange='$(\"#java{$myfname}\").val(this.value);$checkconditionFunction(this.value, this.name, this.type);if ($.trim($(\"#java{$myfname}\").val())!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"\"); }; LEMflagMandOther(\"$myfname\",this.checked);' $numbersonly />";
         $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
 
 //        if ($maxansw > 0)
