@@ -2287,6 +2287,9 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
 
     //checks to see if fieldmap has already been built for this page.
     if (isset($_SESSION['fieldmap-' . $surveyid . $s_lang]) && !$force_refresh) {
+        if (isset($_SESSION['adminlang']) && $clang->langcode != $_SESSION['adminlang']) {
+            $clang = new limesurvey_lang($_SESSION['adminlang']);
+        }
         return $_SESSION['fieldmap-' . $surveyid . $s_lang];
     }
 
@@ -2835,6 +2838,10 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
     }
     if (isset($fieldmap)) {
         $_SESSION['fieldmap-' . $surveyid . $clang->langcode]=$fieldmap;
+        
+        if (isset($_SESSION['adminlang']) && $clang->langcode != $_SESSION['adminlang']) {
+            $clang = new limesurvey_lang($_SESSION['adminlang']);
+        }       
         return $fieldmap;
     }
 }
