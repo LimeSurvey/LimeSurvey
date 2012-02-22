@@ -108,7 +108,7 @@ class SurveyRuntimeHelper {
                 $_SESSION['survey_'.$surveyid]['maxstep'] = 0;
             }
             
-            if (!(isset($_POST['saveall']) || isset($_POST['saveprompt']) || isset($_POST['loadall']) || isset($_GET['sid'])))
+            if (!(isset($_POST['saveall']) || isset($_POST['saveprompt']) || isset($_POST['loadall']) || isset($_GET['sid']) || (isset($move) && (preg_match('/^changelang_/',$move)))))
             {
                 $_SESSION['survey_'.$surveyid]['prevstep'] = $_SESSION['survey_'.$surveyid]['step'];
             }
