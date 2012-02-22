@@ -232,7 +232,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
         }
     }
     //CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
-    $fieldmap=createFieldMap($surveyid, "full");
+    $fieldmap=createFieldMap($surveyid, 'full', false, false, GetBaseLanguageFromSurveyID($surveyid));
     $clang = new limesurvey_lang($_SESSION['adminlang']);
     if (isset($fieldmap))
     {
@@ -293,8 +293,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
     $createsurvey = rtrim($createsurvey, ",\n");
 
     //Get list of questions for the base language
-    $baselang = GetBaseLanguageFromSurveyID($surveyid);
-    $fieldmap=createFieldMap($surveyid, NULL, false, false, $baselang);
+    $fieldmap=createFieldMap($surveyid, 'full', false, false, GetBaseLanguageFromSurveyID($surveyid));
     foreach ($fieldmap as $arow) //With each question, create the appropriate field(s)
     {
         if ($createsurvey!='') {$createsurvey .= ",\n";}
