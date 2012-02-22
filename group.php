@@ -87,7 +87,34 @@ else
     if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
     if (!isset($_SESSION['maxstep'])) {$_SESSION['maxstep']=0;}
     
-    if (!(isset($_POST['saveall']) || isset($_POST['saveprompt']) || isset($_POST['loadall']) || isset($_GET['sid']) || (isset($move) && (preg_match('/^changelang_/',$move)))))
+    if (isset($_SESSION['LEMpostKey']) && isset($_POST['LEMpostKey']) && $_POST['LEMpostKey'] != $_SESSION['LEMpostKey'])
+    {
+        // then trying to resubmit (e.g. Next, Previous, Submit) from a cached copy of the page
+        // Does not try to save anything from the page to the database
+        $moveResult = LimeExpressionManager::GetLastMoveResult();
+        if (isset($_POST['thisstep']) && isset($moveResult['seq']))
+        {
+            if ($_POST['thisstep'] == $moveResult['seq'])
+            {
+                // then pressing F5 or otherwise refreshing the current page, which is OK
+                $LEMskipReprocessing=true;
+                $move = "movenext"; // so will re-display the survey 
+            }
+            else
+            {
+                // trying to use browser back buttons, which may be disallowed if no 'previous' button is present
+                $LEMskipReprocessing=true;
+                $move = "movenext"; // so will re-display the survey                 
+                $invalidLastPage=true;
+                $vpopup="<script type=\"text/javascript\">\n
+                <!--\n $(document).ready(function(){
+                    alert(\"".$clang->gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.", "js")."\");});\n //-->\n
+                </script>\n";                
+            }
+        }
+    }
+    
+    if (!(isset($_POST['saveall']) || isset($_POST['saveprompt']) || isset($_POST['loadall']) || isset($_GET['sid']) || $LEMskipReprocessing || (isset($move) && (preg_match('/^changelang_/',$move)))))
     {
         $_SESSION['prevstep']=$_SESSION['step'];
     }
@@ -95,22 +122,8 @@ else
     {
         $_SESSION['prevstep']=-1;   // this only happens on re-load
     }
-
-    if (isset($_SESSION['LEMpostKey']) && isset($_POST['LEMpostKey']) && $_POST['LEMpostKey'] != $_SESSION['LEMpostKey'])
-    {
-        // then trying to resubmit (e.g. Next, Previous, Submit) from a cached copy of the page
-        // Simply re-display the current page without re-processing POST or re-validating input.  Means user will lose whatever data entry the just tried
-        // Also flash a message
-        $moveResult = LimeExpressionManager::GetLastMoveResult();
-        $LEMskipReprocessing=true;
-        $move = "movenext"; // so will re-display the survey
-        $invalidLastPage=true;
-        $vpopup="<script type=\"text/javascript\">\n
-        <!--\n $(document).ready(function(){
-            alert(\"".$clang->gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.", "js")."\");});\n //-->\n
-        </script>\n";
-    }
-    else if (isset($_SESSION['LEMtokenResume']))
+    
+    if (isset($_SESSION['LEMtokenResume']))
     {
         LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);
         $moveResult = LimeExpressionManager::JumpTo($_SESSION['step']+1,false,false);   // if late in the survey, will re-validate contents, which may be overkill
