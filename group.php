@@ -86,7 +86,15 @@ else
 
     if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
     if (!isset($_SESSION['maxstep'])) {$_SESSION['maxstep']=0;}
-    $_SESSION['prevstep']=$_SESSION['step'];
+    
+    if (!(isset($_POST['saveall']) || isset($_POST['saveprompt']) || isset($_POST['loadall']) || isset($_GET['sid'])))
+    {
+        $_SESSION['prevstep']=$_SESSION['step'];
+    }
+    if (!isset($_SESSION['prevstep']))
+    {
+        $_SESSION['prevstep']=-1;   // this only happens on re-load
+    }
 
     if (isset($_SESSION['LEMpostKey']) && isset($_POST['LEMpostKey']) && $_POST['LEMpostKey'] != $_SESSION['LEMpostKey'])
     {
@@ -106,7 +114,8 @@ else
     {
         LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);
         $moveResult = LimeExpressionManager::JumpTo($_SESSION['step']+1,false,false);   // if late in the survey, will re-validate contents, which may be overkill
-        unset($_SESSION['LEMtokenResume']);       
+        unset($_SESSION['LEMtokenResume']);
+        unset($_SESSION['LEMreload']);
     }
     else
     {
