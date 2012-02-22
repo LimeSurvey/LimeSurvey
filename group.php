@@ -87,7 +87,7 @@ else
     if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
     if (!isset($_SESSION['maxstep'])) {$_SESSION['maxstep']=0;}
     
-    if (!(isset($_POST['saveall']) || isset($_POST['saveprompt']) || isset($_POST['loadall']) || isset($_GET['sid'])))
+    if (!(isset($_POST['saveall']) || isset($_POST['saveprompt']) || isset($_POST['loadall']) || isset($_GET['sid']) || (isset($move) && (preg_match('/^changelang_/',$move)))))
     {
         $_SESSION['prevstep']=$_SESSION['step'];
     }
