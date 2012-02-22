@@ -293,7 +293,8 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
     $createsurvey = rtrim($createsurvey, ",\n");
 
     //Get list of questions for the base language
-    $fieldmap=createFieldMap($surveyid);
+    $baselang = GetBaseLanguageFromSurveyID($surveyid);
+    $fieldmap=createFieldMap($surveyid, NULL, false, false, $baselang);
     foreach ($fieldmap as $arow) //With each question, create the appropriate field(s)
     {
         if ($createsurvey!='') {$createsurvey .= ",\n";}
