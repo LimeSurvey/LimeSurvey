@@ -66,17 +66,8 @@
         $postedfieldnames=explode("|", $_POST['fieldnames']);
 
         // Remove invalid fieldnames from fieldnames array
-        for($x=count($postedfieldnames)-1;$x>=0;$x--)
-        {
-            if (!isset($_SESSION['fieldmap'][$postedfieldnames[$x]]))
-            {
-                array_remval($postedfieldnames[$x],$postedfieldnames);
-            }
-
-        }
+        $postedfieldnames=array_intersect(array_keys($_SESSION['fieldmap']),$postedfieldnames);
         $_POST['fieldnames']=implode("|",$postedfieldnames);
-
-
         foreach ($postedfieldnames as $pf)
         {
             if (isset($_POST[$pf])) {$_SESSION[$pf] = $_POST[$pf];}
@@ -785,18 +776,6 @@
 
         $result=$connect->Execute($query);    // Checked
         return $result;
-    }
-
-    function array_remval($val, &$arr)
-    {
-        $array_remval = $arr;
-        for($x=0;$x<count($array_remval)-1;$x++)
-        {
-            $i=array_search($val,$array_remval);
-            if($i===false)return false;
-            $array_remval=array_merge(array_slice($array_remval, 0,$i), array_slice($array_remval, $i+1));
-        }
-        return $array_remval;
     }
 
     /**
