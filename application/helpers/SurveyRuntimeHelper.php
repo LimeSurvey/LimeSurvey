@@ -107,7 +107,15 @@ class SurveyRuntimeHelper {
             {
                 $_SESSION['survey_'.$surveyid]['maxstep'] = 0;
             }
-            $_SESSION['survey_'.$surveyid]['prevstep'] = $_SESSION['survey_'.$surveyid]['step'];
+            
+            if (!(isset($_POST['saveall']) || isset($_POST['saveprompt']) || isset($_POST['loadall']) || isset($_GET['sid'])))
+            {
+                $_SESSION['survey_'.$surveyid]['prevstep'] = $_SESSION['survey_'.$surveyid]['step'];
+            }
+            if (!isset($_SESSION['prevstep']))
+            {
+                $_SESSION['survey_'.$surveyid]['prevstep']=-1;   // this only happens on re-load
+            }            
 
             if (isset($_SESSION['LEMpostKey']) && isset($_POST['LEMpostKey']) && $_POST['LEMpostKey'] != $_SESSION['LEMpostKey'])
             {
@@ -127,7 +135,8 @@ class SurveyRuntimeHelper {
             {
                 LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, false,$LEMdebugLevel);
                 $moveResult = LimeExpressionManager::JumpTo($_SESSION['survey_'.$surveyid]['step']+1,false,false);   // if late in the survey, will re-validate contents, which may be overkill
-                unset($_SESSION['LEMtokenResume']);       
+                unset($_SESSION['LEMtokenResume']);   
+                unset($_SESSION['LEMreload']);
             }            
             else
             {
