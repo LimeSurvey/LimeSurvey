@@ -1,3 +1,6 @@
+<?php
+    $usrhimself=array_map('htmlspecialchars', $usrhimself);
+?>
 <div class='header ui-widget-header'><?php $clang->eT("User control");?></div><br />
 <table id='users' class='users' width='100%' border='0'>
     <thead>
@@ -40,14 +43,16 @@
                 <?php } ?>
 
             <?php if(isset($usrhimself['parent_id']) && $usrhimself['parent_id']!=0) { ?>
-                <td align='center'><strong><?php echo $srow['users_name'];?></strong></td>
+                <td align='center'><strong><?php echo $row;?></strong></td>
                 <?php } else { ?>
                 <td align='center'><strong>---</strong></td>
                 <?php } ?>
         </tr>
 
         <?php for($i=1; $i<=count($usr_arr); $i++) {
-                $usr = $usr_arr[$i]; ?>
+                $usr = $usr_arr[$i];
+                $usr=array_map('htmlspecialchars', $usr);
+            ?>
             <tr>
 
                 <td align='center' style='padding:3px;'>

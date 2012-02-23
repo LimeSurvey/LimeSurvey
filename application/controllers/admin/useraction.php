@@ -51,12 +51,15 @@ class UserAction extends Survey_Common_Action
             $aData['noofsurveys'] = $noofsurveys;
         }
 
+        $aData['row'] = 0;
         if (isset($usrhimself['parent_id']) && $usrhimself['parent_id'] != 0)
+        {
             $aData['row'] = User::model()->findByAttributes(array('uid' => $usrhimself['parent_id']))->users_name;
+        }
+
 
         $aData['usrhimself'] = $usrhimself;
         // other users
-        $aData['row'] = 0;
         $aData['usr_arr'] = $userlist;
         $noofsurveyslist = array();
 

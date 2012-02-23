@@ -1330,7 +1330,7 @@ function getUserList($outputformat='fullinfoarray')
             )
             )
             UNION
-            SELECT * from {{users}} where users.parent_id=$myuid";
+            SELECT * from {{users}} v where v.parent_id=$myuid";
         }
         else
         {
