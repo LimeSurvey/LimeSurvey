@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id: userrighthandling.php 11664 2011-12-16 05:19:42Z tmswhite $
+ * $Id$
  */
 //Security Checked: POST/GET/DB/SESSION
 //Ensure script is not run directly, avoid path disclosure
@@ -445,8 +445,10 @@ if ($action == "editusers")
     . "</tr></thead><tbody>\n";
 
     $userlist = getuserlist();
+
     $ui = count($userlist);
     $usrhimself = $userlist[0];
+    $usrhimself =array_map('htmlspecialchars',$usrhimself);
     unset($userlist[0]);
 
     //	output users
@@ -511,6 +513,8 @@ if ($action == "editusers")
     {
 
         $usr = $usr_arr[$i];
+        $usr =array_map('htmlspecialchars',$usr);
+
         $usersummary .= "<tr>\n";
 
         $usersummary .= "<td align='center' style='padding:3px;'>\n";
