@@ -15,9 +15,9 @@
 
 include_once("login_check.php");  //Login Check dies also if the script is started directly
 
-if (!isset($limit)) {$limit=returnglobal('limit');}
+if (!isset($limit)) {$limit=(int)returnglobal('limit');}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
-if (!isset($id)) {$id=returnglobal('id');}
+if (!isset($id)) {$id=(int)returnglobal('id');}
 if (!isset($order)) {$order=returnglobal('order');}
 if (!isset($browselang)) {$browselang=returnglobal('browselang');}
 
