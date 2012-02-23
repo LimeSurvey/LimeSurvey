@@ -487,7 +487,7 @@ if ($action == "editusers")
         $uquery = "SELECT users_name FROM ".db_table_name('users')." WHERE uid=".$usrhimself['parent_id'];
         $uresult = db_execute_assoc($uquery); //Checked
         $srow = $uresult->FetchRow();
-        $usersummary .= "<td align='center'><strong>{$srow['users_name']}</strong></td>\n";
+        $usersummary .= "<td align='center'><strong>".htmlspecialchars($srow['users_name'],ENT_QUOTES,'utf-8')."</strong></td>\n";
     }
     else
     {
@@ -511,6 +511,7 @@ if ($action == "editusers")
     {
 
         $usr = $usr_arr[$i];
+        $usr =array_map('htmlspecialchars',$usr);
         $usersummary .= "<tr>\n";
 
         $usersummary .= "<td align='center' style='padding:3px;'>\n";
