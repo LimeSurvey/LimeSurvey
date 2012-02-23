@@ -2908,6 +2908,7 @@ function GetReferringUrl()
     }
     $_SESSION['LEMpostKey'] = mt_rand();
     echo "<input type='hidden' name='LEMpostKey' value='{$_SESSION['LEMpostKey']}' id='LEMpostKey' />\n";
+    echo "<input type='hidden' name='thisstep' id='thisstep' value='0' />\n";
 
     echo "\n</form>\n";
     echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
