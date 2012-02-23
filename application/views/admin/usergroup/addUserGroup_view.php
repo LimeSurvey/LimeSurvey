@@ -4,7 +4,7 @@
     <ul>
         <li>
             <label for='group_name'><?php $clang->eT("Name:"); ?></label>
-            <input type='text' size='50' id='group_name' name='group_name' required="required" autofocus="autofocus" />
+            <input type='text' size='50' maxlength='20' id='group_name' name='group_name' required="required" autofocus="autofocus" />
             <font color='red' face='verdana' size='1'> <?php $clang->eT("Required"); ?></font>
         </li>
         <li>
