@@ -10,7 +10,6 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-* $Id$
 */
 
 include_once("login_check.php");  //Login Check dies also if the script is started directly
