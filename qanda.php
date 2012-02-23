@@ -938,14 +938,7 @@ function do_5pointchoice($ia)
     global $clang, $imageurl;
 	global $js_header_includes, $css_header_includes;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     //print_r($qidattributes);
 	$id = 'slider'.time().rand(0,100);
@@ -1082,14 +1075,7 @@ function do_date($ia)
     $js_header_includes[] = '/scripts/jquery/lime-calendar.js';
 
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $dateformatdetails=getDateFormatData($thissurvey['surveyls_dateformat']);
     $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
@@ -1296,14 +1282,7 @@ function do_language($ia)
 {
     global $dbprefix, $surveyid, $clang;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $answerlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
     $answerlangs [] = GetBaseLanguageFromSurveyID($surveyid);
@@ -1336,14 +1315,7 @@ function do_list_dropdown($ia)
 {
     global $dbprefix,  $dropdownthreshold, $lwcdropdowns, $connect;
     global $clang;
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     if (trim($qidattributes['other_replace_text'])!='')
@@ -1639,17 +1611,10 @@ function do_list_radio($ia)
         $kpclass = "";
     }
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
-
+    
     $query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
     $result = db_execute_assoc($query);  //Checked
     while($row = $result->FetchRow())
@@ -1756,10 +1721,12 @@ function do_list_radio($ia)
         if ($qidattributes['other_numbers_only']==1)
         {
             $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
+            $oth_checkconditionFunction = 'fixnum_checkconditions';
         }
         else
         {
             $numbersonly = '';
+            $oth_checkconditionFunction = 'checkconditions';
         }
 
 
@@ -1775,7 +1742,12 @@ function do_list_radio($ia)
         $thisfieldname=$ia[1].'other';
         if (isset($_SESSION[$thisfieldname]))
         {
-            $answer_other = ' value="'.htmlspecialchars($_SESSION[$thisfieldname],ENT_QUOTES).'"';
+            $dispVal = $_SESSION[$thisfieldname];
+            if ($qidattributes['other_numbers_only']==1)
+            {
+                $dispVal = str_replace('.',$sSeperator,$dispVal);
+            }
+            $answer_other = ' value="'.htmlspecialchars($dispVal,ENT_QUOTES).'"';
         }
         else
         {
@@ -1795,7 +1767,7 @@ function do_list_radio($ia)
         $answer .= '		<input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
 		<label for="SOTH'.$ia[1].'" class="answertext">'.$othertext.'</label>
 		<label for="answer'.$ia[1].'othertext">
-			<input type="text" class="text '.$kpclass.'" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.$clang->gT('Other').'"'.$answer_other.' '.$numbersonly.' onkeyup="javascript:document.getElementById(\'SOTH'.$ia[1].'\').checked=true; '.$checkconditionFunction.'(document.getElementById(\'SOTH'.$ia[1].'\').value, document.getElementById(\'SOTH'.$ia[1].'\').name, document.getElementById(\'SOTH'.$ia[1].'\').type);" />
+			<input type="text" class="text '.$kpclass.'" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.$clang->gT('Other').'"'.$answer_other.' '.$numbersonly.' onchange="if($.trim($(this).val())!=\'\'){ $(\'#SOTH'.$ia[1].'\').attr(\'checked\',\'checked\'); }; '.$oth_checkconditionFunction.'(this.value, this.name, this.type);" />
 		</label>
         '.$wrapper['item-end'];
 
@@ -1903,14 +1875,7 @@ function do_listwithcomment($ia)
         $kpclass = "";
     }
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $answer = '';
 
@@ -2069,14 +2034,7 @@ function do_ranking($ia)
 {
     global $dbprefix, $imageurl, $clang, $thissurvey, $showpopups;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     $answer="";
@@ -2338,14 +2296,7 @@ function do_multiplechoice($ia)
         }
     }
 
-    if ($ia[8] == 'Y' || $attribute_ref === true)
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
@@ -2372,10 +2323,12 @@ function do_multiplechoice($ia)
         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeperator= $sSeperator['seperator'];
         $numbersonly = " onkeypress='return goodchars(event,\"-0123456789$sSeperator\")'";
+        $oth_checkconditionFunction = "fixnum_checkconditions";
     }
     else
     {
         $numbersonly = '';
+        $oth_checkconditionFunction = "checkconditions";
     }
 
     // Check if the max_answers attribute is set
@@ -2558,7 +2511,7 @@ function do_multiplechoice($ia)
     {
         $myfname = $ia[1].'other';
         list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, array("code"=>"other"), $myfname, $trbc, $myfname, "li");
-
+        
         if($wrapper['item-start'] == "\t<li>\n")
         {
             $startitem = "\t$htmltbody2\n";
@@ -2580,9 +2533,14 @@ function do_multiplechoice($ia)
 		<input class=\"text ".$kpclass."\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\"";
         if (isset($_SESSION[$myfname]))
         {
-            $answer .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';
+            $dispVal = $_SESSION[$myfname];
+            if ($qidattributes['other_numbers_only']==1)
+            {
+                $dispVal = str_replace('.',$sSeperator,$dispVal);
+            }
+            $answer .= ' value="'.htmlspecialchars($dispVal,ENT_QUOTES).'"';
         }
-        $answer .= " onchange='$(\"#java{$myfname}\").val(this.value);$checkconditionFunction(this.value, this.name, this.type);if ($.trim($(\"#java{$myfname}\").val())!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"\"); }; LEMflagMandOther(\"$myfname\",this.checked);' $numbersonly />";
+        $answer .= " onchange='$(\"#java{$myfname}\").val(this.value);$oth_checkconditionFunction(this.value, this.name, this.type);if ($.trim($(\"#java{$myfname}\").val())!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"\"); }; LEMflagMandOther(\"$myfname\",this.checked);' $numbersonly />";
         $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
 
 //        if ($maxansw > 0)
@@ -2605,7 +2563,12 @@ function do_multiplechoice($ia)
 
         if (isset($_SESSION[$myfname]))
         {
-            $answer .= htmlspecialchars($_SESSION[$myfname],ENT_QUOTES);
+            $dispVal = $_SESSION[$myfname];
+            if ($qidattributes['other_numbers_only']==1)
+            {
+                $dispVal = str_replace('.',$sSeperator,$dispVal);
+            }
+            $answer .= ' value="'.htmlspecialchars($dispVal,ENT_QUOTES).'"';
         }
 
         $answer .= "\" />\n{$wrapper['item-end']}";
@@ -2738,14 +2701,7 @@ function do_multiplechoice_withcomments($ia)
         }
     }
 
-    if ($ia[8] == 'Y' || $attribute_ref == true)
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
@@ -2754,10 +2710,12 @@ function do_multiplechoice_withcomments($ia)
         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeperator = $sSeperator['seperator'];
         $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
+        $oth_checkconditionFunction = "fixnum_checkconditions";
     }
     else
     {
         $numbersonly = '';
+        $oth_checkconditionFunction = "checkconditions";
     }
 
     if (trim($qidattributes['other_replace_text'])!='')
@@ -2901,9 +2859,15 @@ function do_multiplechoice_withcomments($ia)
         $anscount = $anscount + 2;
         $answer_main .= "\t<li class=\"other\" id=\"javatbd$myfname\">\n<span class=\"option\">\n"
         . "\t<label for=\"answer$myfname\" class=\"answertext\">\n".$othertext."\n<input class=\"text other ".$kpclass."\" $numbersonly type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
+        $answer_main .= " onchange='$oth_checkconditionFunction(this.value, this.name, this.type)'";
         if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
         {
-            $answer_main .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';
+            $dispVal = $_SESSION[$myfname];
+            if ($qidattributes['other_numbers_only']==1)
+            {
+                $dispVal = str_replace('.',$sSeperator,$dispVal);
+            }
+            $answer_main .= ' value="'.htmlspecialchars($dispVal,ENT_QUOTES).'"';
         }
         $fn++;
         // --> START NEW FEATURE - SAVE
@@ -3037,10 +3001,7 @@ function do_file_upload($ia)
 {
     global $rooturl,$clang, $js_header_includes, $thissurvey, $surveyid;
 
-    if ($ia[8] == 'Y')
-        $checkconditionFunction = "checkconditions";
-    else
-        $checkconditionFunction = "noop_checkconditions";
+    $checkconditionFunction = "checkconditions";
 
    	$qidattributes=getQuestionAttributes($ia[0]);
 
@@ -3209,14 +3170,6 @@ function do_multipleshorttext($ia)
 {
     global $dbprefix, $clang, $thissurvey;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
     $answer='';
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
@@ -3225,10 +3178,12 @@ function do_multipleshorttext($ia)
         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeperator = $sSeperator['seperator'];
 		$numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
+        $checkconditionFunction = "fixnum_checkconditions";
     }
     else
     {
         $numbersonly = '';
+        $checkconditionFunction = "checkconditions";
     }
     if (trim($qidattributes['maximum_chars'])!='')
     {
@@ -3332,7 +3287,12 @@ function do_multipleshorttext($ia)
 
                 if (isset($_SESSION[$myfname]))
                 {
-                    $answer_main .= $_SESSION[$myfname];
+                    $dispVal = $_SESSION[$myfname];
+                    if ($qidattributes['numbers_only']==1)
+                    {
+                        $dispVal = str_replace('.',$sSeperator,$dispVal);
+                    }
+                    $answer_main .= $dispVal;
                 }
 
                 $answer_main .= "</textarea>\n".$suffix."\n\t</span>\n"
@@ -3363,7 +3323,12 @@ function do_multipleshorttext($ia)
 
                 if (isset($_SESSION[$myfname]))
                 {
-                    $answer_main .= $_SESSION[$myfname];
+                    $dispVal = $_SESSION[$myfname];
+                    if ($qidattributes['numbers_only']==1)
+                    {
+                        $dispVal = str_replace('.',$sSeperator,$dispVal);
+                    }
+                    $answer_main .= htmlspecialchars($dispVal,ENT_QUOTES,'UTF-8');
                 }
 
                 // --> START NEW FEATURE - SAVE
@@ -3390,14 +3355,7 @@ function do_multiplenumeric($ia)
 {
     global $dbprefix, $clang, $js_header_includes, $css_header_includes, $thissurvey;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "fixnum_checkconditions";
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     $answer='';
     $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
@@ -3664,8 +3622,8 @@ function do_multiplenumeric($ia)
                 $answer_main .= "<span class=\"input\">\n\t".$prefix."\n\t<input class=\"text $kpclass\" type=\"text\" size=\"".$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
                 if (isset($_SESSION[$myfname]))
                 {
-                    $_SESSION[$myfname] = str_replace('.',$sSeperator,$_SESSION[$myfname]);
-                    $answer_main .= $_SESSION[$myfname];
+                    $dispVal = str_replace('.',$sSeperator,$_SESSION[$myfname]);
+                    $answer_main .= $dispVal;
                 }
 
                 $answer_main .= '" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize."\" />\n\t".$suffix."\n</span>\n\t</li>\n";
@@ -3911,14 +3869,7 @@ function do_numerical($ia)
 {
     global $clang, $thissurvey;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "fixnum_checkconditions";
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     if (trim($qidattributes['prefix'])!='') {
         $prefix=$qidattributes['prefix'];
@@ -3967,7 +3918,7 @@ function do_numerical($ia)
     }
     $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeperator = $sSeperator['seperator'];
-    $_SESSION[$ia[1]] = str_replace('.',$sSeperator,$_SESSION[$ia[1]]);
+    $dispVal = str_replace('.',$sSeperator,$_SESSION[$ia[1]]);
 
     if ($thissurvey['nokeyboard']=='Y')
     {
@@ -3980,7 +3931,7 @@ function do_numerical($ia)
     }
     // --> START NEW FEATURE - SAVE
     $answer = "<p class=\"question\">\n\t$prefix\n\t<label for=\"answer{$ia[1]}\"><input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" "
-    . "id=\"answer{$ia[1]}\" value=\"{$_SESSION[$ia[1]]}\" alt=\"".$clang->gT('Answer')."\" onkeypress=\"return goodchars(event,'-0123456789{$acomma}')\" onchange='$checkconditionFunction(this.value, this.name, this.type)'"
+    . "id=\"answer{$ia[1]}\" value=\"{$dispVal}\" alt=\"".$clang->gT('Answer')."\" onkeypress=\"return goodchars(event,'-0123456789{$acomma}')\" onchange='$checkconditionFunction(this.value, this.name, this.type)' "
     . "maxlength=\"{$maxsize}\" /></label>\n\t{$suffix}\n</p>\n";
     if ($qidattributes['hide_tip']==0)
     {
@@ -4002,15 +3953,6 @@ function do_shortfreetext($ia)
 {
     global $clang, $js_header_includes, $thissurvey,$googleMapsAPIKey;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
-
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     if ($qidattributes['numbers_only']==1)
@@ -4018,10 +3960,12 @@ function do_shortfreetext($ia)
         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeperator = $sSeperator['seperator'];
         $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
+        $checkconditionFunction = "fixnum_checkconditions";
     }
     else
     {
         $numbersonly = '';
+        $checkconditionFunction = "checkconditions";
     }
     if (trim($qidattributes['maximum_chars'])!='')
     {
@@ -4087,7 +4031,14 @@ function do_shortfreetext($ia)
         .'rows="'.$drows.'" cols="'.$tiwidth.'" maxlength="'.$maxsize.'" onchange="textLimit(\'answer'.$ia[1].'\', '.$maxsize.');'.$checkconditionFunction.'(this.value, this.name, this.type);" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); " '.$numbersonly.'>';
         // --> END NEW FEATURE - SAVE
 
-        if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}
+        if ($_SESSION[$ia[1]]) {
+            $dispVal = str_replace("\\", "", $_SESSION[$ia[1]]);
+            if ($qidattributes['numbers_only']==1)
+            {
+                $dispVal = str_replace('.',$sSeperator,$dispVal);
+            }
+            $answer .= $dispVal;
+        }
 
         $answer .= "</textarea></label>\n";
     }
@@ -4170,9 +4121,17 @@ function do_shortfreetext($ia)
     else
     {
         //no question attribute set, use common input text field
-        $answer = "<p class=\"question\">\n\t$prefix\n\t<label for=\"answer$ia[1]\"><input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\""
-        .htmlspecialchars($_SESSION[$ia[1]],ENT_QUOTES,'UTF-8')
-        ."\" maxlength=\"$maxsize\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" $numbersonly /></label>\n\t$suffix\n</p>\n";
+        $answer = "<p class=\"question\">\n\t$prefix\n\t<label for=\"answer$ia[1]\"><input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\"";
+        
+        $dispVal = $_SESSION[$ia[1]];
+        if ($qidattributes['numbers_only']==1)
+        {
+            $dispVal = str_replace('.',$sSeperator,$dispVal);
+        }
+        $dispVal = htmlspecialchars($dispVal,ENT_QUOTES,'UTF-8');
+        $answer .= " value=\"$dispVal\"";
+        
+        $answer .=" maxlength=\"$maxsize\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" $numbersonly /></label>\n\t$suffix\n</p>\n";
     }
 
 
@@ -4217,14 +4176,7 @@ function do_longfreetext($ia)
         $kpclass = "";
     }
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
    	$qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
@@ -4296,14 +4248,7 @@ function do_hugefreetext($ia)
         $kpclass = "";
     }
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
@@ -4365,14 +4310,7 @@ function do_yesno($ia)
 {
     global $clang;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $answer = "<ul>\n"
     . "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}Y\" value=\"Y\"";
@@ -4419,14 +4357,7 @@ function do_gender($ia)
 {
     global $clang;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
@@ -4482,15 +4413,7 @@ function do_array_5point($ia)
     global $dbprefix, $notanswered, $thissurvey, $clang;
     $inputnames=array();
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
-
+    $checkconditionFunction = "checkconditions";
 
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
@@ -4650,14 +4573,7 @@ function do_array_10point($ia)
 {
     global $dbprefix, $notanswered, $thissurvey, $clang;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]."  AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);      //Checked
@@ -4787,14 +4703,7 @@ function do_array_yesnouncertain($ia)
 {
     global $dbprefix, $notanswered, $thissurvey, $clang;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);	//Checked
@@ -4943,14 +4852,7 @@ function do_array_increasesamedecrease($ia)
     global $dbprefix, $thissurvey, $clang;
     global $notanswered;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);   //Checked
@@ -5115,14 +5017,7 @@ function do_array($ia)
     global $notanswered;
     global $minrepeatheadings;
 
-    if (isset($ia[8]) && $ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);     //Checked
@@ -5478,14 +5373,7 @@ function do_array_multitext($ia)
         $kpclass = "";
     }
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     //echo "<pre>"; print_r($_POST); echo "</pre>";
     $defaultvaluescript = "";
@@ -5511,6 +5399,7 @@ function do_array_multitext($ia)
 
     if ($qidattributes['numbers_only']==1)
     {
+        $checkconditionFunction = "fixnum_checkconditions";
         $q_table_id = 'totals_'.$ia[0];
 	$q_table_id_HTML = ' id="'.$q_table_id.'"';
         //	$numbersonly = 'onkeypress="return goodchars(event,\'-0123456789.\')"';
@@ -5813,14 +5702,7 @@ function do_array_multiflexi($ia)
     global $notanswered;
     global $minrepeatheadings;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "fixnum_checkconditions";
 
     //echo '<pre>'; print_r($_POST); echo '</pre>';
     $defaultvaluescript = '';
@@ -6072,7 +5954,8 @@ function do_array_multiflexi($ia)
                         . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" onkeypress=\"return goodchars(event,'-0123456789$sSeperator')\""
                         . " value=\"";
                         if(isset($_SESSION[$myfname2]) && $_SESSION[$myfname2]) {
-                            $answer .= $_SESSION[$myfname2];
+                            $dispVal = str_replace('.',$sSeperator,$_SESSION[$myfname2]);
+                            $answer .= $dispVal;
                         }
                         $answer .= "\" />\n";
                     }
@@ -6149,14 +6032,7 @@ function do_arraycolumns($ia)
     global $dbprefix;
     global $notanswered, $clang;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
@@ -6305,14 +6181,7 @@ function do_array_dual($ia)
     global $notanswered;
     global $minrepeatheadings;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $inputnames=array();
     $labelans1=array();

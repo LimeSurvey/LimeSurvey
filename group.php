@@ -32,6 +32,9 @@ switch ($thissurvey['format'])
         $surveyMode='group';
         break;
 }
+$radix=getRadixPointData($thissurvey['surveyls_numberformat']);
+$radix = $radix['seperator'];
+
 $surveyOptions = array(
     'active'=>($thissurvey['active']=='Y'),
     'allowsave'=>($thissurvey['allowsave']=='Y'),
@@ -40,6 +43,7 @@ $surveyOptions = array(
     'datestamp'=>($thissurvey['datestamp']=='Y'),
     'hyperlinkSyntaxHighlighting'=>(($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY),     // TODO set this to true if in admin mode but not if running a survey
     'ipaddr'=>($thissurvey['ipaddr']=='Y'),
+    'radix'=>$radix,
     'refurl'=>(($thissurvey['refurl'] == "Y") ? $_SESSION['refurl'] : NULL),
     'rooturl'=>(isset($rooturl) ? $rooturl : ''),
     'savetimings'=>($thissurvey['savetimings'] == "Y"),
@@ -709,14 +713,28 @@ echo "<input type='text' id='runonce' value='0' style='display: none;'/>
     <script type='text/javascript'>
     <!--\n";
 
+echo "var LEMradix='" . $radix . "'\n";
+
 print <<<END
-	function noop_checkconditions(value, name, type, evt_type)
+	function fixnum_checkconditions(value, name, type, evt_type)
 	{
+        newval = value;
+        if (LEMradix === ',') {
+            newval = value.split(',').join('.');
+        }
+        if (newval != parseFloat(newval)) {
+            newval = '';
+            if (name.match(/other$/)) {
+                $('#answer'+name+'text').val('');            
+            }
+            $('#answer'+name).val('');
+        }
+
         if (typeof evt_type === 'undefined')
         { 
             evt_type = 'onchange'; 
         }    
-        checkconditions(value, name, type, evt_type);
+        checkconditions(newval, name, type, evt_type);
 	}
 
 	function checkconditions(value, name, type, evt_type)

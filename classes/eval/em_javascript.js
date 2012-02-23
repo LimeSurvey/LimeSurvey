@@ -381,8 +381,18 @@ function LEMval(alias)
                         break;
                 }
             }
-
-            if (isNaN(value)) {
+            
+            if (typeof attr.onlynum !== 'undefined' && attr.onlynum==1) {
+                newval = value;
+                if (LEMradix === ',') {
+                    newval = value.split(',').join('.');
+                }
+                if (newval != parseFloat(newval)) {
+                    newval = '';
+                }
+                return +newval;
+            }
+            else if (isNaN(value)) {
                 if (value==='false') {
                     return '';  // so Boolean operations will treat it as false. In JavaScript, Boolean("false") is true since "false" is not a zero-length string
                 }
@@ -400,6 +410,21 @@ function LEMval(alias)
         default:
             return 'Unknown Attribute: ' . suffix;
     }
+}
+
+/** Display number with comma as radix separator, if needed
+ */
+function LEMfixnum(value)
+{
+    var newval = String(value);
+    if (parseFloat(newval) != value) {
+        return htmlspecialchars(value);   // unchanged
+    }
+    if (LEMradix===',') {
+        newval = newval.split('.').join(',');
+        return newval;
+    }
+    return value;
 }
 
 /*
