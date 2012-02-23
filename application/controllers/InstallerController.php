@@ -310,7 +310,7 @@ class InstallerController extends CController {
                     {
                         Yii::app()->session['optconfig_message'] = sprintf('<b>%s</b>', $clang->gT('The database you specified is up to date.'));
                         Yii::app()->session['step3'] = true;
-                        
+
                         //wrte config file! as we no longer redirect to optional view
                         $this->_writeConfigFile();
 
@@ -909,14 +909,17 @@ class InstallerController extends CController {
             $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
 
             // mod_rewrite existence check
-            if ((function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())) || strtolower(getenv('HTTP_MOD_REWRITE')) == 'on')
-            {
-                $showScriptName = 'false';
-            }
-            else
-            {
+            // Section commented out until a better method of knowing whether the mod_rewrite actually
+            // works is found. In the meantime, it is better to set $showScriptName to 'true' so it
+            // works on all installations, and allow users to change it manually later.
+            //if ((function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())) || strtolower(getenv('HTTP_MOD_REWRITE')) == 'on')
+            //{
+            //    $showScriptName = 'false';
+            //}
+            //else
+            //{
                 $showScriptName = 'true';
-            }
+            //}
 
             $dbdata = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');" . "\n"
             ."/*"."\n"
