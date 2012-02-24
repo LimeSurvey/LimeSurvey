@@ -449,6 +449,7 @@ if ($action == "editusers")
 
     $ui = count($userlist);
     $usrhimself = $userlist[0];
+    $usrhimself =array_map('htmlspecialchars',$usrhimself);
     unset($userlist[0]);
 
     //	output users
@@ -513,6 +514,8 @@ if ($action == "editusers")
     {
 
         $usr = $usr_arr[$i];
+        $usr =array_map('htmlspecialchars',$usr);
+
         $usersummary .= "<tr>\n";
 
         $usersummary .= "<td align='center' style='padding:3px;'>\n";
