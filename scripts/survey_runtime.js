@@ -550,7 +550,7 @@ function std_onsubmit_handler()
 // ==========================================================
 // totals
 
-function multi_set(ids)
+function multi_set(ids,_radix)
 {
 	//quick ie check
 	var ie=(navigator.userAgent.indexOf("MSIE")>=0)?true:false;
@@ -558,6 +558,7 @@ function multi_set(ids)
 	var _match_grand = new RegExp('grand');
 	//match for total
 	var _match_total = new RegExp('total');
+    var radix = _radix; // comma, period, X (for not using numbers only)
 	//main function (obj)
 	//id = wrapper id
 	function multi_total(id)
@@ -618,7 +619,7 @@ function multi_set(ids)
 								_bits[_counter].push(_tdin);
 								//set key board actions
 								_tdin.onkeydown = _in_key;
-								_tdin.onkeyup = calc;
+								_tdin.onchange = calc;
 								//check for total and grand total
 								if(_td[_a].className && _td[_a].className.match(_match_total,'ig'))
 								{
@@ -759,6 +760,16 @@ function multi_set(ids)
 			e=(e)?e:event;
 			var el=e.target||e.srcElement;
 			var _id=el.getAttribute(ie ? 'className' : 'class');
+            
+            // eliminate bad numbers
+            _aval=el.value;
+            if (radix===',') {
+                _aval = _aval.split(',').join('.');
+            }
+            if (radix!=='X' && _aval != parseFloat(_aval)) {
+                el.value = "";
+            }
+                    
 			//vert_[id] horo_[id] in class trigger vert or horo calc on row[id]
 			if(_id.match('vert_','ig'))
 			{
@@ -817,24 +828,13 @@ function multi_set(ids)
 				}
 				else if(_bits[i][vid].value)
 				{
-					if(_bits[i][vid].value.match('-','ig'))
-					{
-						var _iklebit = _bits[i][vid].value.replace('-','','ig');
-						//alert(iklebit);
-						if(_iklebit)
-						{
-							qt -=(_iklebit * 1);
-						}
-					}
-					else
-					{
-						qt += (_bits[i][vid].value * 1);
-					}
-
-//				}
-//				else
-//				{
-//					_bits[i][vid].value = '0';
+                    _aval=_bits[i][vid].value;
+                    if (radix===',') {
+                        _aval = _aval.split(',').join('.');
+                    }
+                    if  (_aval == parseFloat(_aval)) {
+                        qt += +_aval;
+                    }
 				};
 			};
 
@@ -860,23 +860,13 @@ function multi_set(ids)
 				}
 				else if(_bits[hid][i].value)
 				{
-					if(_bits[hid][i].value.match('-','ig'))
-					{
-						var _iklebit = _bits[hid][i].value.replace('-','','ig');
-						//alert(_iklebit);
-						if(_iklebit)
-						{
-							qt -= (_iklebit * 1);
-						}
-					}
-					else
-					{
-						qt += (_bits[hid][i].value * 1);
-					}
-//				}
-//				else
-//				{
-//					_bits[hid][i].value = '0';
+                    _aval=_bits[hid][i].value;
+                    if (radix===',') {
+                        _aval = _aval.split(',').join('.');
+                    }
+                    if  (_aval == parseFloat(_aval)) {
+                        qt += +_aval;
+                    }
 				};
 			};
 		};
@@ -929,6 +919,9 @@ function multi_set(ids)
 				case 110:
 				case 109:
                 case 189:
+                case 188:
+                    if (radix===',' && e.keyCode == 190) { return false; }
+                    if (radix==='.' && e.keyCode == 188) { return false; }
 					return(e.keyCode);
 				default:
 				//alert(e.keyCode);

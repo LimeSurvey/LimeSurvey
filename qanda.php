@@ -5370,7 +5370,9 @@ function do_array_multitext($ia)
     }
 
     $checkconditionFunction = "checkconditions";
-
+    $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
+    $sSeperator = $sSeperator['seperator']; 
+                
     //echo "<pre>"; print_r($_POST); echo "</pre>";
     $defaultvaluescript = "";
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
@@ -5671,25 +5673,51 @@ function do_array_multitext($ia)
             }
 
             $answer .= str_replace(array('[[ROW_NAME]]','[[INPUT_WIDTH]]') , array(strip_tags($answertext),$inputwidth) , $row_total);
-	    $answer .= "\n\t\t</tr>\n";
+            $answer .= "\n\t\t</tr>\n";
             $answer .= "</tbody>\n";
             //IF a MULTIPLE of flexi-redisplay figure, repeat the headings
             $fn++;
         }
-	if($show_totals == 'col' || $show_totals = 'both' || $grand_total == true)
-	{
-            $answer .= "\t\t<tr class=\"total\">$row_head";
-	    for( $a = 0; $a < count($labelcode) ; ++$a )
-	    {
-	        $answer .= str_replace(array('[[ROW_NAME]]','[[INPUT_WIDTH]]') , array(strip_tags($answertext),$inputwidth) , $col_total);
-	    };
-	    $answer .= str_replace(array('[[ROW_NAME]]','[[INPUT_WIDTH]]') , array(strip_tags($answertext),$inputwidth) , $grand_total)."\n\t\t</tr>\n";
-        };
-        $answer .= "\t</tbody>\n</table>\n";
-	if(!empty($q_table_id))
-	{
-            $answer .= "\n<script type=\"text/javascript\">new multi_set('$q_table_id');</script>\n";
-	};
+        if($show_totals == 'col' || $show_totals = 'both' || $grand_total == true)
+        {
+                $answer .= "\t\t<tr class=\"total\">$row_head";
+            for( $a = 0; $a < count($labelcode) ; ++$a )
+            {
+                $answer .= str_replace(array('[[ROW_NAME]]','[[INPUT_WIDTH]]') , array(strip_tags($answertext),$inputwidth) , $col_total);
+            };
+            $answer .= str_replace(array('[[ROW_NAME]]','[[INPUT_WIDTH]]') , array(strip_tags($answertext),$inputwidth) , $grand_total)."\n\t\t</tr>\n";
+            };
+            $answer .= "\t</tbody>\n</table>\n";
+        if(!empty($q_table_id))
+        {
+                if ($qidattributes['numbers_only']==1)
+                {
+                    $radix = $sSeperator;
+                }
+                else {
+                    $radix = 'X';   // to indicate that should not try to change entered values
+                }
+                $answer .= "\n<script type=\"text/javascript\">new multi_set('$q_table_id','$radix');</script>\n";
+        }
+        else
+        {
+            $addcheckcond = <<< EOD
+<script type="text/javascript">
+<!--
+$(document).ready(function()
+{
+    $('#question{$ia[0]} :input:visible:enabled').each(function(index){
+        $(this).bind('change',function(e) {
+            checkconditions($(this).attr('value'), $(this).attr('name'), $(this).attr('type'));
+            return true;
+        })
+    })
+})
+// -->
+</script>
+EOD;
+            $answer .= $addcheckcond;
+        }
     }
     else
     {
