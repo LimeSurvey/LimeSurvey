@@ -56,7 +56,13 @@ $ia = array(0 => $qid,
 7 => 'N',
 8 => 'N' ); // ia[8] is usedinconditions
 
-LimeExpressionManager::StartSurvey($thissurvey['sid'], 'question', NULL, false,$LEMdebugLevel);
+$radix=getRadixPointData($thissurvey['surveyls_numberformat']);
+$radix = $radix['seperator'];
+$surveyOptions = array(
+    'radix'=>$radix,
+    );
+
+LimeExpressionManager::StartSurvey($thissurvey['sid'], 'question', $surveyOptions, false,$LEMdebugLevel);
 $qseq = LimeExpressionManager::GetQuestionSeq($qid);
 $moveResult = LimeExpressionManager::JumpTo($qseq+1,true,false,true);
 
@@ -76,13 +82,26 @@ $showQuestion = "$('#question$qid').show();";
 $dummy_js = <<< EOD
     <script type='text/javascript'>
     <!--
-	function noop_checkconditions(value, name, type, evt_type)
+    LEMradix='$radix';
+	function fixnum_checkconditions(value, name, type, evt_type)
 	{
+        newval = value;
+        if (LEMradix === ',') {
+            newval = value.split(',').join('.');
+        }
+        if (newval != parseFloat(newval)) {
+            newval = '';
+            if (name.match(/other$/)) {
+                $('#answer'+name+'text').val('');            
+            }
+            $('#answer'+name).val('');
+        }
+
         if (typeof evt_type === 'undefined')
         { 
             evt_type = 'onchange'; 
         }    
-        checkconditions(value, name, type, evt_type);
+        checkconditions(newval, name, type, evt_type);
 	}
 
 	function checkconditions(value, name, type, evt_type)
