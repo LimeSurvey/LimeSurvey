@@ -3185,13 +3185,15 @@ function do_multipleshorttext($ia)
         $numbersonly = '';
         $checkconditionFunction = "checkconditions";
     }
-    if (trim($qidattributes['maximum_chars'])!='')
+    if (intval(trim($qidattributes['maximum_chars']))>0)
     {
-        $maxsize=$qidattributes['maximum_chars'];
+        // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
+        $maximum_chars= intval(trim($qidattributes['maximum_chars']));
+        $maxlength= "maxlength='{$maximum_chars}' ";
     }
     else
     {
-        $maxsize=255;
+        $maxlength= "";
     }
     if (trim($qidattributes['text_input_width'])!='')
     {
@@ -3257,12 +3259,6 @@ function do_multipleshorttext($ia)
             //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
             $drows=$qidattributes['display_rows'];
 
-            //extend maximum chars if this is set to short text default of 255
-            if($maxsize == 255)
-            {
-                $maxsize=65525;
-            }
-
             while ($ansrow = $ansresult->FetchRow())
             {
                 $myfname = $ia[1].$ansrow['title'];
@@ -3278,7 +3274,7 @@ function do_multipleshorttext($ia)
                 . "<label for=\"answer$myfname\">{$ansrow['question']}</label>\n"
                 . "\t<span>\n".$prefix."\n".'
 				<textarea class="textarea '.$kpclass.'" name="'.$myfname.'" id="answer'.$myfname.'"
-				rows="'.$drows.'" cols="'.$tiwidth.'" maxlength="'.$maxsize.'" onchange="textLimit(\'answer'.$myfname.'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type);" onkeyup="textLimit(\'answer'.$myfname.'\', '.$maxsize.');" '.$numbersonly.'>';
+				rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
 
                 if($label_width < strlen(trim(strip_tags($ansrow['question']))))
                 {
@@ -3332,7 +3328,7 @@ function do_multipleshorttext($ia)
                 }
 
                 // --> START NEW FEATURE - SAVE
-                $answer_main .= '" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize.'" />'."\n".$suffix."\n\t</span>\n"
+                $answer_main .= '" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.' '.$maxlength.' />'."\n".$suffix."\n\t</span>\n"
                 . "\t</li>\n";
                 // --> END NEW FEATURE - SAVE
 
@@ -3362,13 +3358,15 @@ function do_multiplenumeric($ia)
     $sSeperator = $sSeperator['seperator'];
     //Must turn on the "numbers only javascript"
     $numbersonly = 'onkeypress="inputField = event.srcElement ? event.srcElement : event.target || event.currentTarget; if (inputField.value.indexOf(\''.$sSeperator.'\')>0 && String.fromCharCode(getkey(event))==\''.$sSeperator.'\') return false; return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
-    if (trim($qidattributes['maximum_chars'])!='')
+    if (intval(trim($qidattributes['maximum_chars']))>0)
     {
-        $maxsize=$qidattributes['maximum_chars'];
+        // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
+        $maximum_chars= intval(trim($qidattributes['maximum_chars']));
+        $maxlength= "maxlength='{$maximum_chars}' ";
     }
     else
     {
-        $maxsize = 25;
+        $maxlength= "maxlength='25'";
     }
 
 //    //EQUALS VALUE
@@ -3626,7 +3624,7 @@ function do_multiplenumeric($ia)
                     $answer_main .= $dispVal;
                 }
 
-                $answer_main .= '" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize."\" />\n\t".$suffix."\n</span>\n\t</li>\n";
+                $answer_main .= '" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);" '." {$numbersonly} {$maxlength} />\n\t".$suffix."\n</span>\n\t</li>\n";
 
             }
             else
@@ -3885,17 +3883,15 @@ function do_numerical($ia)
     {
         $suffix = '';
     }
-    if (trim($qidattributes['maximum_chars'])!='')
+    if (intval(trim($qidattributes['maximum_chars']))>0 && intval(trim($qidattributes['maximum_chars']))<20) // Limt to 20 chars for numeric
     {
-        $maxsize=$qidattributes['maximum_chars'];
-        if ($maxsize>20)
-        {
-            $maxsize=20;
-        }
+        // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
+        $maximum_chars= intval(trim($qidattributes['maximum_chars']));
+        $maxlength= "maxlength='{$maximum_chars}' ";
     }
     else
     {
-        $maxsize=20;  // The field length for numerical fields is 20
+        $maxlength= "maxlength='20' ";
     }
     if (trim($qidattributes['text_input_width'])!='')
     {
@@ -3932,7 +3928,7 @@ function do_numerical($ia)
     // --> START NEW FEATURE - SAVE
     $answer = "<p class=\"question\">\n\t$prefix\n\t<label for=\"answer{$ia[1]}\"><input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" "
     . "id=\"answer{$ia[1]}\" value=\"{$dispVal}\" alt=\"".$clang->gT('Answer')."\" onkeypress=\"return goodchars(event,'-0123456789{$acomma}')\" onchange='$checkconditionFunction(this.value, this.name, this.type)' "
-    . "maxlength=\"{$maxsize}\" /></label>\n\t{$suffix}\n</p>\n";
+    . " {$maxlength} /></label>\n\t{$suffix}\n</p>\n";
     if ($qidattributes['hide_tip']==0)
     {
         $answer .= "<p class=\"tip\">".$clang->gT('Only numbers may be entered in this field')."</p>\n";
@@ -3967,13 +3963,15 @@ function do_shortfreetext($ia)
         $numbersonly = '';
         $checkconditionFunction = "checkconditions";
     }
-    if (trim($qidattributes['maximum_chars'])!='')
+    if (intval(trim($qidattributes['maximum_chars']))>0)
     {
-        $maxsize=$qidattributes['maximum_chars'];
+        // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
+        $maximum_chars= intval(trim($qidattributes['maximum_chars']));
+        $maxlength= "maxlength='{$maximum_chars}' ";
     }
     else
     {
-        $maxsize=255;
+        $maxlength= "";
     }
     if (trim($qidattributes['text_input_width'])!='')
     {
@@ -4011,12 +4009,6 @@ function do_shortfreetext($ia)
         //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
         $drows=$qidattributes['display_rows'];
 
-        //extend maximum chars if this is set to short text default of 255
-        if($maxsize == 255)
-        {
-            $maxsize=65525;
-        }
-
         //if a textarea should be displayed we make it equal width to the long text question
         //this looks nicer and more continuous
         if($tiwidth == 50)
@@ -4028,7 +4020,7 @@ function do_shortfreetext($ia)
 
         // --> START NEW FEATURE - SAVE
         $answer = '<label for="answer'.$ia[1].'"><textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" '
-        .'rows="'.$drows.'" cols="'.$tiwidth.'" maxlength="'.$maxsize.'" onchange="textLimit(\'answer'.$ia[1].'\', '.$maxsize.');'.$checkconditionFunction.'(this.value, this.name, this.type);" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); " '.$numbersonly.'>';
+        .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
         // --> END NEW FEATURE - SAVE
 
         if ($_SESSION[$ia[1]]) {
@@ -4131,7 +4123,7 @@ function do_shortfreetext($ia)
         $dispVal = htmlspecialchars($dispVal,ENT_QUOTES,'UTF-8');
         $answer .= " value=\"$dispVal\"";
         
-        $answer .=" maxlength=\"$maxsize\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" $numbersonly /></label>\n\t$suffix\n</p>\n";
+        $answer .=" {$maxlength} onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" $numbersonly /></label>\n\t$suffix\n</p>\n";
     }
 
 
@@ -4180,13 +4172,15 @@ function do_longfreetext($ia)
 
    	$qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
-    if (trim($qidattributes['maximum_chars'])!='')
+    if (intval(trim($qidattributes['maximum_chars']))>0)
     {
-        $maxsize=$qidattributes['maximum_chars'];
+        // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
+        $maximum_chars= intval(trim($qidattributes['maximum_chars']));
+        $maxlength= "maxlength='{$maximum_chars}' ";
     }
     else
     {
-        $maxsize=65525;
+        $maxlength= "";
     }
 
     // --> START ENHANCEMENT - DISPLAY ROWS
@@ -4213,7 +4207,7 @@ function do_longfreetext($ia)
 
     // --> START NEW FEATURE - SAVE
     $answer = '<label for="answer'.$ia[1].'"><textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
-    .'rows="'.$drows.'" cols="'.$tiwidth.'" maxlength="'.$maxsize.'" onchange="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type)" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.');">';
+    .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" >';
     // --> END NEW FEATURE - SAVE
 
     if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}
@@ -4252,13 +4246,15 @@ function do_hugefreetext($ia)
 
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
-    if (trim($qidattributes['maximum_chars'])!='')
+    if (intval(trim($qidattributes['maximum_chars']))>0)
     {
-        $maxsize=$qidattributes['maximum_chars'];
+        // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
+        $maximum_chars= intval(trim($qidattributes['maximum_chars']));
+        $maxlength= "maxlength='{$maximum_chars}' ";
     }
     else
     {
-        $maxsize=65525;
+        $maxlength= "";
     }
 
     // --> START ENHANCEMENT - DISPLAY ROWS
@@ -4285,7 +4281,7 @@ function do_hugefreetext($ia)
 
     // --> START NEW FEATURE - SAVE
     $answer = '<label for="answer'.$ia[1].'"><textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
-    .'rows="'.$drows.'" cols="'.$tiwidth.'" maxlength="'.$maxsize.'" onchange="textLimit(\'answer'.$ia[1].'\', '.$maxsize.');'.$checkconditionFunction.'(this.value, this.name, this.type)" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.');">';
+    .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" >';
     // --> END NEW FEATURE - SAVE
 
     if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}
@@ -5383,6 +5379,17 @@ function do_array_multitext($ia)
 
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
+    if (intval(trim($qidattributes['maximum_chars']))>0)
+    {
+        // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
+        $maximum_chars= intval(trim($qidattributes['maximum_chars']));
+        $maxlength= "maxlength='{$maximum_chars}' ";
+    }
+    else
+    {
+        $maxlength= "";
+    }
+    
     $show_grand = $qidattributes['show_grand_total'];
     $totals_class = '';
     $num_class = '';
@@ -5645,7 +5652,7 @@ function do_array_multitext($ia)
                 $answer .= "\t<td class=\"answer_cell_00$ld\">\n"
                 . "\t\t\t\t<label for=\"answer{$myfname2}\">\n"
                 . "\t\t\t\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" />\n"
-                . "\t\t\t\t<input type=\"text\" name=\"$myfname2\" id=\"answer{$myfname2}\" class=\"".$kpclass."\" title=\""
+                . "\t\t\t\t<input type=\"text\" name=\"$myfname2\" id=\"answer{$myfname2}\" {$maxlength} class=\"".$kpclass."\" title=\""
                 . FlattenText($labelans[$thiskey]).'" '
                 . 'size="'.$inputwidth.'" '
                 . ' value="'.str_replace ('"', "'", str_replace('\\', '', $myfname2value))."\" />\n";
@@ -5766,13 +5773,15 @@ function do_array_multiflexi($ia)
         $inputboxlayout=true;
     }
 
-    if (trim($qidattributes['maximum_chars'])!='')
+    if (intval(trim($qidattributes['maximum_chars']))>0)
     {
-        $maxsize=$qidattributes['maximum_chars'];
+        // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
+        $maximum_chars= intval(trim($qidattributes['maximum_chars']));
+        $maxlength= "maxlength='{$maximum_chars}' ";
     }
     else
     {
-        $maxsize=255;
+        $maxlength= "";
     }
 
     if ($thissurvey['nokeyboard']=='Y')
@@ -5949,7 +5958,7 @@ function do_array_multiflexi($ia)
                     {
                         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
                         $sSeperator = $sSeperator['seperator'];
-                        $answer .= "\t<input type='text' class=\"multiflexitext $kpclass\" name=\"$myfname2\" id=\"answer{$myfname2}\" maxlength=\"{$maxsize}\" size=5 title=\""
+                        $answer .= "\t<input type='text' class=\"multiflexitext $kpclass\" name=\"$myfname2\" id=\"answer{$myfname2}\" {$maxlength} size=5 title=\""
                         . html_escape($labelans[$thiskey]).'"'
                         . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" onkeypress=\"return goodchars(event,'-0123456789$sSeperator')\""
                         . " value=\"";
