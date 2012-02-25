@@ -77,6 +77,32 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.92RC4 (build 12204) to 1.92RC5 (build 120224) Feb 24, 2012 
+-Fixed issue #05524: matrix (text) + additionl option only numbers not working correct Dev This input type now supports comma as the radix separator Dev Made comparable to other numeric inputs - only does processing on change; and if an invalid number is detected, the field is immediately blanked Dev Note, in 1.91, also did not have checkconditions() bound when non-numeric; so fixed that too. (Thomas White)
+-Fixed issue #05752: statistics_user.php - always shown in baselang for dev branch (magiclko)
+-Fixed issue #05756: Activate Survey screen always in primary language Fixed issue #05802: Importing Survey Switches UI language Dev Root problem was that CreateFieldMap might change language, but not restore $clang to be admin language - e.g. real root problem is use of global variables (Thomas White)
+-Fixed issue #05764: If enter Y-scale and X-scale at same time, and click save, only Y-scale is saved (magiclko)
+-Fixed issue #05786: when click on "other" option in multiple choice, array-filtered 'other' options don't immediately change Dev Also highlighted small bug in tab processing, so fixed that too. Dev updated ls2_subquestion_relevance survey, as it was used to test and validate tihs fix (Thomas White)
+-Fixed issue #05792: Problem with comma separator for EM_validation Dev Comma as radix separator now works for all question types that can require numbers, except for array multi text using the option numbers_only (which is the topic of bug http://bugs.limesurvey.org/view.php?id=5524) (Thomas White)
+-Fixed issue #05793: Javascript function for "please use navigation button" don't work Dev Further fix - reloading page (e.g. via F5) now works for all pages, including first and last pages (Thomas White)
+-Fixed issue #05793: Javascript function for "please use navigation button" don't work Dev it is no OK to use F5 to reload the current page - F5 will not save data, nor show any error messages (so any data entered on the page is lost) Dev All tested browsers (Firefox, Chrome, Internet Explorer) were expiring older pages.  So, given that, and the fact that users should use the Previous button if they want to go backwards, did not attempt to support use of browser back button in lieu of Previous button. (Thomas White)
+-Fixed issue #05810: When editing the default template and the question page limesurvey kind of crashes (Thomas White)
+-Fixed issue #05811: Group Index isn't in right language (Thomas White)
+-Fixed issue #05816: Create User Group not possible (Thomas White)
+-Fixed issue #05818: Values passed on the URL do not get saved when the questions are hidden (Thomas White)
+-Fixed issue #05819: Survey with token activated. When users go back on an uncompleted survey, they get an error and cannot continue. (Thomas White)
+-Fixed issue #05823: Confusing message to users for questions with regular expression validation (Thomas White)
+-Fixed issue #05833: Non-english language surveys don't consistently publish (Thomas White)
+-Fixed issue #05844: Validation message should not be shown when using resume later function
+-Fixed issue #05845: Duplicate message after having imported a label set (Thomas White)
+-Fixed issue #5831: User name not properly quoted on display Fixed issue #5832: Unsanitized variable id when viewing a single response (Carsten Schmitz)
+-Fixed issue #5840 maximum_chars attribute not available in Array (text) question type Dev : remove inline js for maxchar Dev : use maxlength attribute on textarea too. Script can be replaced by inline js in template (Shnoulle)
+-Fixed issue: language-specific values for question attributes not loaded into EM for non-primary language Dev also fixed a couple of typos (Thomas White)
+-Fixed issue: Warning on question preview - undefined index 'type' Fixed issue Performance - extra copies of $_SESSION['fieldmap'] being created (Thomas White)
+-Fixed issue: Warnings to upload/* directories do not exist Dev placed blank index.html files into needed directories, since Git does support empty directories (Thomas White)
+-Fixed issue: Quote dbname correctly and use utf-8 for postgres installation (Stephan Beyer)
+
+
 Changes from 1.92RC3 (build 12204) to 1.92RC4 (build 12453) Feb 14, 2012 
 #Updated language: German (maziminke)
 +New Feature Each type of validation tip can be styled separately (so if a question fails validation checks, you can see whether it is because of wrong number of answers, wrong value range, wrong sum range, or wrong regex criteria). (tmswhite)
