@@ -47,6 +47,9 @@ $(document).ready(function()
 			});
     }
 
+    // Maxlength for textareas TODO limit to not CSS3 compatible browser
+    maxlengthtextarea();
+
     // Maps
 	$(".location").each(function(index,element){
 		var question = $(element).attr('name');
@@ -950,12 +953,33 @@ function array_dual_dd_checkconditions(value, name, type, rank, condfunction)
     condfunction(value, name, type);
 }
 
-// Maxlength for textareas
-function textLimit(field, maxlen) { 
-	if (document.getElementById(field).value.length > maxlen) {
-		document.getElementById(field).value = document.getElementById(field).value.substring(0, maxlen);
-	}
+/* Maxlengt on textarea */
+function maxlengthtextarea(){
+    // Calling this function at document.ready : use maxlength attribute on textarea
+    // Can be replaced by inline javascript
+    $("textarea[maxlength]").change(function(){ // global solution
+        var maxlen=$(this).attr("maxlength");
+        if ($(this).val().length > maxlen) {
+            $(this).val($(this).val().substring(0, maxlen));
+        }
+    });
+    $("textarea[maxlength]").keyup(function(){ // For copy/paste (not for all browser)
+        var maxlen=$(this).attr("maxlength");
+        if ($(this).val().length > maxlen) {
+            $(this).val($(this).val().substring(0, maxlen));
+        }
+    });
+    $("textarea[maxlength]").keydown(function(event){ // No new key after maxlength
+        var maxlen=$(this).attr("maxlength");
+        var k =event.keyCode;
+        if (($(this).val().length >= maxlen) &&
+         !(k == null ||k==0||k==8||k==9||k==13||k==27||k==37||k==38||k==39||k==40||k==46)) {
+            // Don't accept new key except NULL,Backspace,Tab,Enter,Esc,arrows,Delete
+            return false;
+        }
+    });
 }
+
 
 /* DRAG N DROP RANKING QUESTIONS */
 // @param setItemssameSize, Boolean, whether to have items the same size or not
