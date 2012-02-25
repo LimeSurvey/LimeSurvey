@@ -1209,8 +1209,8 @@ class participantsaction extends Survey_Common_Action
             'attributevalues' => ParticipantAttributeNames::getAttributesValues($iAttributeId)
         );
 
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . 'admin/default/participants.css');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . 'admin/default/viewAttribute.css');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . 'admin/'.Yii::app()->getConfig("admintheme").'/participants.css');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . 'admin/'.Yii::app()->getConfig("admintheme").'/viewAttribute.css');
 
         $this->_renderWrappedTemplate('participants', array('participantsPanel', 'viewAttribute'), $aData);
     }
@@ -1693,7 +1693,7 @@ class participantsaction extends Survey_Common_Action
     {
         Yii::app()->loadHelper('common');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . "attributeMap.js");
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/attributeMap.css");
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/".Yii::app()->getConfig('admintheme')."/attributeMap.css");
 
         $iSurveyId = Yii::app()->request->getPost('survey_id');
         $redirect = Yii::app()->request->getPost('redirect');

@@ -561,7 +561,7 @@ class quotas extends Survey_Common_Action
     {
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts') . '/jquery/jquery.tablesorter.min.js');
         $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts') . '/quotas.js');
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . 'admin/default/superfish.css');
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . 'admin/'.Yii::app()->getConfig("admintheme").'/superfish.css');
 
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }

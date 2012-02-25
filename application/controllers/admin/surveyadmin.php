@@ -1620,7 +1620,7 @@ class SurveyAdmin extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction = 'survey', $aViewUrls = array(), $aData = array())
     {
-        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/default/superfish.css");
+        $this->getController()->_css_admin_includes(Yii::app()->getConfig('styleurl') . "admin/".Yii::app()->getConfig('admintheme')."/superfish.css");
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
