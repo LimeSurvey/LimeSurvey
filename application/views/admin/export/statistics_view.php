@@ -50,7 +50,9 @@
                 {
                     $language_options .= "selected=\"selected\" " ;
                 }
-                $language_options .= ">".getLanguageNameFromCode($survlang,true)."</option>\n";
+                $temp = getLanguageNameFromCode($survlang,true);
+                $language_options .= ">".$temp[1]."</option>\n";
+                
             }
 
             ?>
