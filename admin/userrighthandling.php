@@ -445,7 +445,6 @@ if ($action == "editusers")
     . "</tr></thead><tbody>\n";
 
     $userlist = getuserlist();
-    $userlist =array_map('htmlspecialchars',$userlist);
 
     $ui = count($userlist);
     $usrhimself = $userlist[0];
