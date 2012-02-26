@@ -24,7 +24,6 @@ class ExpressionManager {
     private $RDP_TokenizerRegex;
     private $RDP_CategorizeTokensRegex;
     private $RDP_ValidFunctions; // names and # params of valid functions
-    private $RDP_Vars;    // names and values of valid variables
 
     // Thes variables are used while  processing the equation
     private $RDP_expr;  // the source expression
@@ -216,7 +215,6 @@ class ExpressionManager {
 'ucwords' => array('ucwords', 'ucwords', $this->gT('Uppercase the first character of each word in a string'), 'string ucwords(string)', 'http://www.php.net/manual/en/function.ucwords.php', 1),
         );
 
-        $this->RDP_Vars = array();
     }
 
     /**
@@ -1598,219 +1596,7 @@ class ExpressionManager {
      */
     private function GetVarAttribute($name,$attr,$default)
     {
-        $args = explode(".", $name);
-        $varName = $args[0];
-        $varName = preg_replace("/^(?:INSERTANS:)?(.*?)$/", "$1", $varName);
-        if (!isset($this->RDP_Vars[$varName]))
-        {
-//            echo 'UNDEFINED VARIABLE: ' . $varName;
-//            return $default;    // and throw error?
-            return '{' . $name . '}';
-        }
-        $var = $this->RDP_Vars[$varName];
-        $sgqa = isset($var['sgqa']) ? $var['sgqa'] : NULL;
-        if (is_null($attr))
-        {
-            // then use the requested attribute, if any
-            $attr = (count($args)==2) ? $args[1] : 'code';
-        }
-        switch ($attr)
-        {
-            case 'varName':
-                return $name;
-            case 'code':
-            case 'NAOK':
-                if (isset($var['code'])) {
-                    return $var['code'];    // for static values like TOKEN
-                }
-                else {
-                    if (isset($_SESSION[$sgqa])) {
-//                        if ($_SESSION[$sgqa] == 'false') {
-//                            return $default;  // TODO - is is safe to assume that a value of 'false' means boolean false and should be blanked?
-//                        }
-                        return $_SESSION[$sgqa];
-                    }
-                    if (isset($var['default']) && !is_null($var['default'])) {
-                        return $var['default'];
-                    }
-                    return $default;
-                }
-            case 'value':
-            case 'valueNAOK':
-            {
-                $type = $var['type'];
-                $code = $this->GetVarAttribute($name,'code',$default);
-                switch($type)
-                {
-                    case '!': //List - dropdown
-                    case 'L': //LIST drop-down/radio-button list
-                    case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                    case '1': //Array (Flexible Labels) dual scale  // need scale
-                    case 'H': //ARRAY (Flexible) - Column Format
-                    case 'F': //ARRAY (Flexible) - Row Format
-                    case 'R': //RANKING STYLE
-                        $scale_id = $this->GetVarAttribute($name,'scale_id','0');
-                        $which_ans = $scale_id . '~' . $code;
-                        $ansArray = $var['ansArray'];
-                        if (is_null($ansArray))
-                        {
-                            $value = $default;
-                        }
-                        else
-                        {
-                            if (isset($ansArray[$which_ans])) {
-                                $answerInfo = explode('|',$ansArray[$which_ans]);
-                                $answer = $answerInfo[0];
-                            }
-                            else {
-                                $answer = $default;
-                            }
-                            $value = $answer;
-                        }
-                        break;
-                    default:
-                        $value = $code;
-                        break;
-                    }
-                    return $value;
-                }
-                break;
-            case 'jsName':
-//                if ($this->allOnOnePage || ($this->groupSeq != -1 && isset($var['gseq']) && $this->groupSeq == $var['gseq'])) {
-//                    // then on the same page, so return the on-page javaScript name if there is one.
-//                    return (isset($var['jsName_on']) ? $var['jsName_on'] : (isset($var['jsName'])) ? $var['jsName'] : $default);
-//                }
-//                return (isset($var['jsName']) ? $var['jsName'] : $default);
-//
-                if ($this->surveyMode=='survey'
-                        || ($this->surveyMode=='group' && $this->groupSeq != -1 && isset($var['gseq']) && $this->groupSeq == $var['gseq'])
-                        || ($this->surveyMode=='question' && $this->questionSeq != -1 && isset($var['qseq']) && $this->questionSeq == $var['qseq']))
-                {
-                    return (isset($var['jsName_on']) ? $var['jsName_on'] : (isset($var['jsName'])) ? $var['jsName'] : $default);
-                }
-                else {
-                    return (isset($var['jsName']) ? $var['jsName'] : $default);
-                }
-                break;
-            case 'sgqa':
-            case 'mandatory':
-            case 'qid':
-            case 'gid':
-            case 'grelevance':
-            case 'question':
-            case 'readWrite':
-            case 'relevance':
-            case 'type':
-            case 'qcode':
-            case 'gseq':
-            case 'qseq':
-            case 'ansList':
-            case 'scale_id':
-                return (isset($var[$attr])) ? $var[$attr] : $default;
-            case 'shown':
-                if (isset($var['shown']))
-                {
-                    return $var['shown'];    // for static values like TOKEN
-                }
-                else
-                {
-                    $type = $var['type'];
-                    $code = $this->GetVarAttribute($name,'code',$default);
-                    switch($type)
-                    {
-                        case '!': //List - dropdown
-                        case 'L': //LIST drop-down/radio-button list
-                        case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                        case '1': //Array (Flexible Labels) dual scale  // need scale
-                        case 'H': //ARRAY (Flexible) - Column Format
-                        case 'F': //ARRAY (Flexible) - Row Format
-                        case 'R': //RANKING STYLE
-                            $scale_id = $this->GetVarAttribute($name,'scale_id','0');
-                            $which_ans = $scale_id . '~' . $code;
-                            $ansArray = $var['ansArray'];
-                            if (is_null($ansArray))
-                            {
-                                $shown=$code;
-                            }
-                            else
-                            {
-                                if (isset($ansArray[$which_ans])) {
-                                    $answerInfo = explode('|',$ansArray[$which_ans]);
-                                    array_shift($answerInfo);
-                                    $answer = join('|',$answerInfo);
-                                }
-                                else {
-                                    $answer = $code;
-                                }
-                                $shown = $answer;
-                            }
-                            break;
-                        case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                        case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                        case ':': //ARRAY (Multi Flexi) 1 to 10
-                        case '5': //5 POINT CHOICE radio-buttons
-                            $shown = $code;
-                            break;
-                        case 'N': //NUMERICAL QUESTION TYPE
-                        case 'K': //MULTIPLE NUMERICAL QUESTION
-                        case 'Q': //MULTIPLE SHORT TEXT
-                        case ';': //ARRAY (Multi Flexi) Text
-                        case 'S': //SHORT FREE TEXT
-                        case 'T': //LONG FREE TEXT
-                        case 'U': //HUGE FREE TEXT
-                        case 'M': //Multiple choice checkbox
-                        case 'P': //Multiple choice with comments checkbox + text
-                        case 'D': //DATE
-                        case '*': //Equation
-                        case 'I': //Language Question
-                        case '|': //File Upload
-                        case 'X': //BOILERPLATE QUESTION
-                            $shown = $code;
-                            break;
-                        case 'G': //GENDER drop-down list
-                        case 'Y': //YES/NO radio-buttons
-                        case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                        case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                            $ansArray = $var['ansArray'];
-                            if (is_null($ansArray))
-                            {
-                                $shown=$default;
-                            }
-                            else
-                            {
-                                if (isset($ansArray[$code])) {
-                                    $answerInfo = explode('|',$ansArray[$code]);
-                                    array_shift($answerInfo);
-                                    $answer = join('|',$answerInfo);
-                                }
-                                else {
-                                    $answer = $default;
-                                }
-                                $shown = $answer;
-                            }
-                            break;
-                    }
-                    return $shown;
-                }
-            case 'relevanceStatus':
-                $gid = (isset($var['gid'])) ? $var['gid'] : -1;
-                $qid = (isset($var['qid'])) ? $var['qid'] : -1;
-                $rowdivid = (isset($var['rowdivid']) && $var['rowdivid']!='') ? $var['rowdivid'] : -1;
-                if ($qid == -1 || $gid == -1) {
-                    return 1;
-                }
-                if (isset($args[1]) && $args[1]=='NAOK') {
-                    return 1;
-                }
-                $grel = (isset($_SESSION['relevanceStatus']['G'.$gid]) ? $_SESSION['relevanceStatus']['G'.$gid] : 1);   // true by default
-                $qrel = (isset($_SESSION['relevanceStatus'][$qid]) ? $_SESSION['relevanceStatus'][$qid] : 0);
-                $sqrel = (isset($_SESSION['relevanceStatus'][$rowdivid]) ? $_SESSION['relevanceStatus'][$rowdivid] : 1);    // true by default - only want false if a subquestion is irrelevant
-                return ($grel && $qrel && $sqrel);
-            default:
-                print 'UNDEFINED ATTRIBUTE: ' . $attr . "<br/>\n";
-                return $default;
-        }
-        return $default;    // and throw and error?
+        return LimeExpressionManager::GetVarAttribute($name,$attr,$default,$this->groupSeq,$this->questionSeq);
     }
 
     /**
@@ -1909,7 +1695,7 @@ class ExpressionManager {
     private function RDP_isValidVariable($name)
     {
         $varName = preg_replace("/^(?:INSERTANS:)?(.*?)(?:\.(?:" . ExpressionManager::$RDP_regex_var_attr . "))?$/", "$1", $name);
-        return array_key_exists($varName,$this->RDP_Vars);
+        return LimeExpressionManager::isValidVariable($varName);
     }
 
     /**
@@ -2255,28 +2041,6 @@ class ExpressionManager {
     }
 
     /**
-     * Add list of allowable variable names within the equation
-     * $varnames is an array of key to value mappings.
-     * where value is optional (e.g. can be blank), and can be any scalar type (e.g. string, number, but not array)
-     * the system will use the values as  fast lookup when doing calculations, but if it needs to set values, it will call
-     * the interface function to set the values by name
-     * See function GetVarAttribute() for list of allowable attributes
-     *
-     * @param array $varnames
-     */
-    public function RegisterVarnamesUsingMerge(array $varnames) {
-        $this->RDP_Vars = array_merge($this->RDP_Vars, $varnames);
-    }
-
-    /**
-     * Like RegisterVarnamesUsingMerge, except deletes pre-registered varnames.
-     * @param array $varnames
-     */
-    public function RegisterVarnamesUsingReplace(array $varnames) {
-        $this->RDP_Vars = array_merge(array(), $varnames);
-    }
-
-    /**
      * Set the value of a registered variable
      * @param $op - the operator (=,*=,/=,+=,-=)
      * @param <type> $name
@@ -2284,30 +2048,11 @@ class ExpressionManager {
      */
     private function RDP_SetVariableValue($op,$name,$value)
     {
-        // TODO - set this externally
         if ($this->RDP_onlyparse)
         {
             return 1;
         }
-        switch($op)
-        {
-            case '=':
-                $this->RDP_Vars[$name]['code'] = $value;
-                break;
-            case '*=':
-                $this->RDP_Vars[$name]['code'] *= $value;
-                break;
-            case '/=':
-                $this->RDP_Vars[$name]['code'] /= $value;
-                break;
-            case '+=':
-                $this->RDP_Vars[$name]['code'] += $value;
-                break;
-            case '-=':
-                $this->RDP_Vars[$name]['code'] -= $value;
-                break;
-        }
-        return $this->RDP_Vars[$name]['code'];
+        return LimeExpressionManager::SetVariableValue($op, $name, $value);
     }
 
     /**
@@ -3077,8 +2822,9 @@ NULL~'Tom'='tired'
 NULL~max()
 EOD;
 
+        $LEM =& LimeExpressionManager::singleton();
         $em = new ExpressionManager();
-        $em->RegisterVarnamesUsingMerge($vars);
+        $LEM->setTempVars($vars);
 
         // manually set relevance status
         $_SESSION['relevanceStatus'] = array();
@@ -3166,7 +2912,7 @@ EOD;
         {
             ++$i;
             $pre .= "<tr><td>" .  $i . "</td><td>" . $jsVarName;
-            foreach($em->RDP_Vars as $k => $v) {
+            foreach($vars as $k => $v) {
                 if ($v['jsName'] == $jsVarName)
                 {
                     $value = $v['code'];
@@ -3179,8 +2925,7 @@ EOD;
             $LEMalias2varName[] = "'" . $jsVarName . "':'" . $jsVarName . "'";
             $attrInfo = "'" . $jsVarName .  "': {'jsName':'" . $jsVarName . "'";
 
-            // populate this from $em->RDP_Vars - cheat, knowing that the jsVaraName will be java_xxxx
-            $varInfo = $em->RDP_Vars[substr($jsVarName,5)];
+            $varInfo = $vars[substr($jsVarName,5)];
             foreach ($varInfo as $k=>$v) {
                 if ($k == 'code') {
                     continue;   // will access it from hidden node
