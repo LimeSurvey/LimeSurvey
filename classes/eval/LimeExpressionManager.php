@@ -405,6 +405,15 @@ class LimeExpressionManager {
             $type = $qinfo['type'];
             $hasSubqs = (isset($qinfo['subqs']) && count($qinfo['subqs'] > 0));
             $qattr = isset($this->qattr[$questionNum]) ? $this->qattr[$questionNum] : array();
+            
+            if (isset($qattr['input_boxes']) && $qattr['input_boxes'] == '1')
+            {
+                $input_boxes='1';
+            }
+            else
+            {
+                $input_boxes='';
+            }
 
             // array_filter
             // If want to filter question Q2 on Q1, where each have subquestions SQ1-SQ3, this is equivalent to relevance equations of:
@@ -1062,7 +1071,7 @@ class LimeExpressionManager {
 
             // multiflexible_min
             // Validation:= sqN >= value (which could be an expression).
-            if (isset($qattr['multiflexible_min']) && trim($qattr['multiflexible_min']) != '')
+            if (isset($qattr['multiflexible_min']) && trim($qattr['multiflexible_min']) != '' && $input_boxes=='1')
             {
                 $multiflexible_min = $qattr['multiflexible_min'];
                 if ($hasSubqs) {
@@ -1119,7 +1128,7 @@ class LimeExpressionManager {
 
             // multiflexible_max
             // Validation:= sqN <= value (which could be an expression).
-            if (isset($qattr['multiflexible_max']) && trim($qattr['multiflexible_max']) != '')
+            if (isset($qattr['multiflexible_max']) && trim($qattr['multiflexible_max']) != '' && $input_boxes=='1')
             {
                 $multiflexible_max = $qattr['multiflexible_max'];
                 if ($hasSubqs) {
