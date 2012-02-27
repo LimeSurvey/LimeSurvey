@@ -2904,7 +2904,7 @@ class LimeExpressionManager {
         $LEM->sgqaNaming = (isset($options['sgqaNaming']) ? ($options['sgqaNaming']=="Y") : true); // TODO default should eventually be false
         $LEM->surveyOptions['startlanguage'] = (isset($options['startlanguage']) ? $options['startlanguage'] : 'en');
         $LEM->surveyOptions['surveyls_dateformat'] = (isset($options['surveyls_dateformat']) ? $options['surveyls_dateformat'] : 1);
-        $LEM->surveyOptions['tablename'] = (isset($options['tablename']) ? $options['tablename'] : 'survey_' . $LEM->sid);
+        $LEM->surveyOptions['tablename'] = (isset($options['tablename']) ? $options['tablename'] : db_table_name_nq('survey_' . $LEM->sid));
         $LEM->surveyOptions['tablename_timings'] = ((isset($options['savetimings']) && $options['savetimings'] == 'Y') ? db_table_name('survey_' . $LEM->sid . '_timings') : '');
         $LEM->surveyOptions['target'] = (isset($options['target']) ? $options['target'] : '/temp/files/');
         $LEM->surveyOptions['timeadjust'] = (isset($options['timeadjust']) ? $options['timeadjust'] : 0);
