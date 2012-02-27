@@ -309,7 +309,7 @@ CREATE TABLE `prefix_surveys` (
 -- Table structure for table surveys_languagesettings
 --
 CREATE TABLE `prefix_surveys_languagesettings` (
-  `surveyls_survey_id` INT UNSIGNED NOT NULL DEFAULT 0,
+  `surveyls_survey_id` int(11) NOT NULL DEFAULT 0,
   `surveyls_language` varchar(45) NULL DEFAULT 'en',
   `surveyls_title` varchar(200) NOT NULL,
   `surveyls_description` TEXT NULL,
@@ -341,8 +341,8 @@ CREATE TABLE `prefix_surveys_languagesettings` (
 -- Table structure for table survey_permissions
 --
 CREATE TABLE `prefix_survey_permissions` (
-	`sid` int(10) unsigned NOT NULL,
-	`uid` int(10) unsigned NOT NULL,
+	`sid` int(11) NOT NULL,
+	`uid` int(11) NOT NULL,
 	`permission` varchar(20) NOT NULL,
 	`create_p` tinyint(1) NOT NULL default '0',
     `read_p` tinyint(1) NOT NULL default '0',
@@ -359,7 +359,7 @@ CREATE TABLE `prefix_survey_permissions` (
 --
 CREATE TABLE `prefix_survey_url_parameters` (
 	`id` int(9) NOT NULL AUTO_INCREMENT,
-	`sid` int(10) NOT NULL,
+	`sid` int(11) NOT NULL,
 	`parameter` varchar(50) NOT NULL,
 	`targetqid` int(10) NULL,
 	`targetsqid` int(10) NULL,
@@ -370,10 +370,10 @@ CREATE TABLE `prefix_survey_url_parameters` (
 -- Table structure for table user_groups
 --
 CREATE TABLE `prefix_user_groups` (
-	`ugid` int(10) unsigned NOT NULL auto_increment PRIMARY KEY,
+	`ugid` int(11) NOT NULL auto_increment PRIMARY KEY,
 	`name` varchar(20) NOT NULL UNIQUE,
 	`description` TEXT NOT NULL,
-	`owner_id` int(10) unsigned NOT NULL
+	`owner_id` int(11) NOT NULL
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
@@ -381,8 +381,8 @@ CREATE TABLE `prefix_user_groups` (
 -- Table structure for table user_in_groups
 --
 CREATE TABLE `prefix_user_in_groups` (
-	`ugid` int(10) unsigned NOT NULL,
-	`uid` int(10) unsigned NOT NULL,
+	`ugid` int(11) NOT NULL,
+	`uid` int(11) NOT NULL,
      PRIMARY KEY  (`ugid`,`uid`)
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -395,22 +395,22 @@ CREATE TABLE `prefix_users` (
   `users_name` varchar(64) NOT NULL UNIQUE default '',
   `password` BLOB NOT NULL,
   `full_name` varchar(50) NOT NULL,
-  `parent_id` int(10) unsigned NOT NULL,
+  `parent_id` int(11) NOT NULL,
   `lang` varchar(20),
   `email` varchar(320),
-  `create_survey` TINYINT(1) NOT NULL default '0',
-  `create_user` TINYINT(1) NOT NULL default '0',
-  `participant_panel` TINYINT(1) NOT NULL default '0',
-  `delete_user` TINYINT(1) NOT NULL default '0',
-  `superadmin` TINYINT(1) NOT NULL default '0',
-  `configurator` TINYINT(1) NOT NULL default '0',
-  `manage_template` TINYINT(1) NOT NULL default '0',
-  `manage_label` TINYINT(1) NOT NULL default '0',
+  `create_survey` tinyint(1) NOT NULL default '0',
+  `create_user` tinyint(1) NOT NULL default '0',
+  `participant_panel` tinyint(1) NOT NULL default '0',
+  `delete_user` tinyint(1) NOT NULL default '0',
+  `superadmin` tinyint(1) NOT NULL default '0',
+  `configurator` tinyint(1) NOT NULL default '0',
+  `manage_template` tinyint(1) NOT NULL default '0',
+  `manage_label` tinyint(1) NOT NULL default '0',
   `htmleditormode` varchar(7) default 'default',
   `templateeditormode` varchar(7) default 'default',
   `questionselectormode` varchar(7) default 'default',
   `one_time_pw` BLOB,
-  `dateformat` INT UNSIGNED NOT NULL DEFAULT 1
+  `dateformat` INT NOT NULL DEFAULT 1
 ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
