@@ -300,6 +300,7 @@ function db_upgrade($oldversion) {
     if ($oldversion < 146) //Modify surveys table
     {
         upgrade_timing_tables146();
+        modify_database("", "INSERT into prefix_survey_permissions (sid,uid,permission,read_p,update_p) SELECT sid,owner_id,'translations','1','1' from prefix_surveys"); echo $modifyoutput; flush();ob_flush();
         modify_database("", "UPDATE prefix_settings_global SET stg_value='146' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
     }
 
