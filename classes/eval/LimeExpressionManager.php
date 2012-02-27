@@ -5300,6 +5300,9 @@ class LimeExpressionManager {
                 $relFnCalls[] = "  LEMrel" . $arg['qid'] . "(sgqa);\n";
             }
         }
+        
+        $jsParts[] = implode("",$relChangeVars);
+        $jsParts[] = implode("",$relFnCalls);        
 
         // Finally do Group-level Relevance.  Might consider surrounding questions with group-level relevance, but might message up Q.NAOK - not sure.
         foreach ($LEM->gRelInfo as $gr)
@@ -5326,9 +5329,6 @@ class LimeExpressionManager {
                 $allJsVarsUsed = array_merge($allJsVarsUsed,$vars);
             }
         }
-
-        $jsParts[] = implode("",$relChangeVars);
-        $jsParts[] = implode("",$relFnCalls);
 
         $jsParts[] = "\n}\n";
 
