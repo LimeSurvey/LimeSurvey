@@ -1,33 +1,33 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
- * LimeSurvey
- * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- *	$Id$
- */
+* LimeSurvey
+* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*	$Id$
+*/
 list(,$updaterversion)=explode(' ','$Rev: 11155 $');  // this is updated by subversion so don't change this string
 
 /**
- * Update Controller
- *
- * This controller performs updates
- *
- * @package		LimeSurvey
- * @subpackage	Backend
- */
+* Update Controller
+*
+* This controller performs updates
+*
+* @package		LimeSurvey
+* @subpackage	Backend
+*/
 class update extends Survey_Common_Action
 {
 
     /**
-     * Default Controller Action
-     */
+    * Default Controller Action
+    */
     function index($subaction = null)
     {
         global $updaterversion;
@@ -227,6 +227,8 @@ class update extends Survey_Common_Action
         $basefilename = date("YmdHis-").md5(uniqid(rand(), true));
         //Now create a backup of the files to be delete or modified
 
+        $filestozip=array();
+
         foreach ($updateinfo['files'] as $file)
         {
             if (is_file($publicdir.$file['file'])===true) // Sort out directories
@@ -263,13 +265,13 @@ class update extends Survey_Common_Action
                 $sfilename = "backup_db_".random_string('unique')."_".dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')).".sql";
                 $dfilename = "LimeSurvey_".$this->db->database."_dump_".dateShift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')).".sql.gz";
                 $prefs = array(
-	                'format'      => 'zip',             // gzip, zip, txt
+                'format'      => 'zip',             // gzip, zip, txt
                 // File name - NEEDED ONLY WITH ZIP FILES
-	                'filename'    => $sfilename,
-	                'tables'      => $lstables,
-	                'add_drop'    => TRUE,              // Whether to add DROP TABLE statements to backup file
-	                'add_insert'  => TRUE,              // Whether to add INSERT data to backup file
-	                'newline'     => "\n"               // Newline character used in backup file
+                'filename'    => $sfilename,
+                'tables'      => $lstables,
+                'add_drop'    => TRUE,              // Whether to add DROP TABLE statements to backup file
+                'add_insert'  => TRUE,              // Whether to add INSERT data to backup file
+                'newline'     => "\n"               // Newline character used in backup file
                 );
                 $this->dbutil->backup($prefs);
                 $backup =& $this->dbutil->backup();
@@ -333,12 +335,12 @@ class update extends Survey_Common_Action
             @unlink($tempdir.'/update.zip');
         }
         else if($error=='') {
-            $body='';
-            $pFile = fopen($tempdir.'/update.zip', 'w');
-            for(;;){
-                $error = $http->ReadReplyBody($body,100000);
-                if($error != "" || strlen($body)==0) break;
-                fwrite($pFile, $body);
+                $body='';
+                $pFile = fopen($tempdir.'/update.zip', 'w');
+                for(;;){
+                    $error = $http->ReadReplyBody($body,100000);
+                    if($error != "" || strlen($body)==0) break;
+                    fwrite($pFile, $body);
             }
             fclose($pFile);
         }
@@ -525,8 +527,8 @@ class update extends Survey_Common_Action
     }
 
     /**
-     * Update database
-     */
+    * Update database
+    */
     function db($continue = null)
     {
         $clang = $this->getController()->lang;
@@ -549,12 +551,12 @@ class update extends Survey_Common_Action
     }
 
     /**
-     * Renders template(s) wrapped in header and footer
-     *
-     * @param string $sAction Current action, the folder to fetch views from
-     * @param string|array $aViewUrls View url(s)
-     * @param array $aData Data to be passed on. Optional.
-     */
+    * Renders template(s) wrapped in header and footer
+    *
+    * @param string $sAction Current action, the folder to fetch views from
+    * @param string|array $aViewUrls View url(s)
+    * @param array $aData Data to be passed on. Optional.
+    */
     protected function _renderWrappedTemplate($sAction = 'update', $aViewUrls = array(), $aData = array())
     {
         $aData['display']['menu_bars'] = false;
