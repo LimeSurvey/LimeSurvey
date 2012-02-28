@@ -141,7 +141,7 @@ class index extends CAction {
         }
         else
         {
-           $sTempLanguage='';
+            $sTempLanguage='';
         }
         $clang = SetSurveyLanguage( $surveyid, $sTempLanguage);
 
@@ -573,9 +573,8 @@ class index extends CAction {
         //  - a token information has been provided
         //  - the survey is setup to allow token-response-persistence
 
-        if ($thissurvey['tokenanswerspersistence'] == 'Y' && !isset($_SESSION['survey_'.$surveyid]['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
+        if (!isset($_SESSION['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
         {
-
             // load previous answers if any (dataentry with nosubmit)
             $srquery="SELECT id FROM {$thissurvey['tablename']}"
             . " WHERE {$thissurvey['tablename']}.token='".$token."' order by id desc";
@@ -584,36 +583,39 @@ class index extends CAction {
             if ($result->count()>0)
             {
                 $row=reset($result->read());
-                if($row['submitdate']=='' || ($row['submitdate']!='' && $thissurvey['alloweditaftercompletion'] == 'Y'))
+                if(($row['submitdate']==''  && $thissurvey['tokenanswerspersistence'] == 'Y' )|| ($row['submitdate']!='' && $thissurvey['alloweditaftercompletion'] == 'Y'))
+                {
                     $_SESSION['survey_'.$surveyid]['srid'] = $row['id'];
+
+                }
+                buildsurveysession();
+                loadanswers();
             }
-            buildsurveysession();
-            loadanswers();
         }
 
-//        // SAVE POSTED ANSWERS TO DATABASE IF MOVE (NEXT,PREV,LAST, or SUBMIT) or RETURNING FROM SAVE FORM
-//        if (isset($move) || isset($_POST['saveprompt']))
-//        {
-//            $redata = compact(array_keys(get_defined_vars()));
-//            //save.php
-//            Yii::import("application.libraries.Save");
-//            $tmp = new Save();
-//            $tmp->run($redata);
-//
-//            // RELOAD THE ANSWERS INCASE SOMEONE ELSE CHANGED THEM
-//            if ($thissurvey['active'] == "Y" &&
-//            ( $thissurvey['allowsave'] == "Y" || $thissurvey['tokenanswerspersistence'] == "Y") )
-//            {
-//                loadanswers();
-//            }
-//        }
+        //        // SAVE POSTED ANSWERS TO DATABASE IF MOVE (NEXT,PREV,LAST, or SUBMIT) or RETURNING FROM SAVE FORM
+        //        if (isset($move) || isset($_POST['saveprompt']))
+        //        {
+        //            $redata = compact(array_keys(get_defined_vars()));
+        //            //save.php
+        //            Yii::import("application.libraries.Save");
+        //            $tmp = new Save();
+        //            $tmp->run($redata);
+        //
+        //            // RELOAD THE ANSWERS INCASE SOMEONE ELSE CHANGED THEM
+        //            if ($thissurvey['active'] == "Y" &&
+        //            ( $thissurvey['allowsave'] == "Y" || $thissurvey['tokenanswerspersistence'] == "Y") )
+        //            {
+        //                loadanswers();
+        //            }
+        //        }
 
         if (isset($param['action']) && $param['action'] == 'previewgroup')
         {
             $thissurvey['format'] = 'G';
             buildsurveysession($surveyid,true);
         }
-        
+
         if (isset($param['action']) && $param['action'] == 'previewquestion')
         {
             $thissurvey['format'] = 'S';
@@ -741,7 +743,7 @@ class index extends CAction {
     {
         return isset($param['action']) && ($param['action'] == 'previewgroup' || $param['action'] == 'previewquestion');
     }
-    
+
     function _surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $bIsSurveyActive, $bSurveyExists)
     {
         $bSurveyPreviewRequireAuth = Yii::app()->getConfig('surveyPreview_require_Auth');
