@@ -1,17 +1,17 @@
 <?php
 /*
- * LimeSurvey
- * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- * $Id: index.php 12361 2012-02-05 19:40:30Z tmswhite $
- */
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+* $Id: index.php 12361 2012-02-05 19:40:30Z tmswhite $
+*/
 
 // Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
 
@@ -81,7 +81,7 @@ else
 }
 session_set_cookie_params(0,$relativeurl.'/');
 if (!isset($_SESSION) || empty($_SESSION)) // the $_SESSION variable can be empty if register_globals is on
-	@session_start();
+    @session_start();
 
 
 
@@ -98,9 +98,9 @@ if ($surveyid)
         $surveyexists=true;
         if($aRow['active']=='Y')
         {
-        $issurveyactive=true;
+            $issurveyactive=true;
+        }
     }
-}
     else
     {
         $surveyexists=false;
@@ -120,7 +120,7 @@ $clienttoken != $_SESSION['token'])
     sendcacheheaders();
     doHeader();
 
-	echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
+    echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
     echo "\t<div id='wrapper'>\n"
     ."\t<p id='tokenmessage'>\n"
     ."\t<span class='error'>".$clang->gT("Token mismatch")."</span><br /><br />\n"
@@ -129,7 +129,7 @@ $clienttoken != $_SESSION['token'])
     ."\t</p>\n"
     ."\t</div>\n";
 
-	echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
+    echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
     doFooter();
     exit;
 }
@@ -146,7 +146,7 @@ if (isset($_SESSION['finished']) && $_SESSION['finished'] === true)
     sendcacheheaders();
     doHeader();
 
-	echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
+    echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
     echo "\t<div id='wrapper'>\n"
     ."\t<p id='tokenmessage'>\n"
     ."\t<span class='error'>".$clang->gT("Previous session is set to be finished.")."</span><br /><br />\n"
@@ -155,18 +155,18 @@ if (isset($_SESSION['finished']) && $_SESSION['finished'] === true)
     ."\t</p>\n"
     ."\t</div>\n";
 
-	echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
+    echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
     doFooter();
     exit;
 }
 $previewgrp = false;
 if (isset($_REQUEST['action']) && ($_REQUEST['action'] == 'previewgroup')){
-	$rightquery="SELECT uid FROM {$dbprefix}survey_permissions WHERE sid=".db_quote($surveyid)." AND uid = ".db_quote($_SESSION['loginID'].' group by uid');
-	$rightresult = db_execute_assoc($rightquery);
-	if ($rightresult->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-	{
-		$previewgrp = true;
-	}
+    $rightquery="SELECT uid FROM {$dbprefix}survey_permissions WHERE sid=".db_quote($surveyid)." AND uid = ".db_quote($_SESSION['loginID'].' group by uid');
+    $rightresult = db_execute_assoc($rightquery);
+    if ($rightresult->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+    {
+        $previewgrp = true;
+    }
 }
 
 if (($surveyid &&
@@ -291,7 +291,7 @@ $surveyPreview_require_Auth == true) &&  $previewgrp == false)
         sendcacheheaders();
         doHeader();
 
-		echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
+        echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
         echo "\t<div id='wrapper'>\n"
         ."\t<p id='tokenmessage'>\n"
         ."\t<span class='error'>".$clang->gT("ERROR")."</span><br /><br />\n"
@@ -300,7 +300,7 @@ $surveyPreview_require_Auth == true) &&  $previewgrp == false)
         ."\t</p>\n"
         ."\t</div>\n";
 
-		echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
+        echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
         doFooter();
         exit;
     }
@@ -324,7 +324,7 @@ if (!isset($_SESSION['s_lang'])  && (isset($move)) )
     sendcacheheaders();
     doHeader();
 
-	echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
+    echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
     echo "\t<div id='wrapper'>\n"
     ."\t<p id='tokenmessage'>\n"
     ."\t<span class='error'>".$clang->gT("ERROR")."</span><br /><br />\n"
@@ -334,7 +334,7 @@ if (!isset($_SESSION['s_lang'])  && (isset($move)) )
     ."\t</p>\n"
     ."\t</div>\n";
 
-	echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
+    echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
     doFooter();
     exit;
 };
@@ -355,25 +355,25 @@ if (isset($_POST['lang']) && $_POST['lang']!='')  // this one comes from the lan
     UpdateFieldArray();        // to refresh question titles and question text
 }
 else
-if (isset($_GET['lang']) && $surveyid)
-{
-    $templang = sanitize_languagecode($_GET['lang']);
-    $clang = SetSurveyLanguage( $surveyid, $templang);
-    UpdateSessionGroupList($templang);  // to refresh the language strings in the group list session variable
-    UpdateFieldArray();        // to refresh question titles and question text
-}
-else
-if (isset($_SESSION['s_lang']))
-{
-    $clang = SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
-}
-elseif (isset($surveyid) && $surveyid)
-{
-    $baselang = GetBaseLanguageFromSurveyID($surveyid);
-    $clang = SetSurveyLanguage( $surveyid, $baselang);
-}
+    if (isset($_GET['lang']) && $surveyid)
+    {
+        $templang = sanitize_languagecode($_GET['lang']);
+        $clang = SetSurveyLanguage( $surveyid, $templang);
+        UpdateSessionGroupList($templang);  // to refresh the language strings in the group list session variable
+        UpdateFieldArray();        // to refresh question titles and question text
+    }
+    else
+        if (isset($_SESSION['s_lang']))
+        {
+            $clang = SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
+        }
+        elseif (isset($surveyid) && $surveyid)
+        {
+            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+            $clang = SetSurveyLanguage( $surveyid, $baselang);
+        }
 
-if (isset($_REQUEST['embedded_inc']))
+        if (isset($_REQUEST['embedded_inc']))
 {
     safe_die('You cannot start this script directly');
 }
@@ -401,16 +401,16 @@ if (!$surveyid)
     $languagechanger = makelanguagechanger();
     //Find out if there are any publicly available surveys
     $query = "SELECT a.sid, b.surveyls_title, a.publicstatistics
-	          FROM ".db_table_name('surveys')." AS a
-			  INNER JOIN ".db_table_name('surveys_languagesettings')." AS b
-			  ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language )
-			  WHERE surveyls_survey_id=a.sid
-			  AND surveyls_language=a.language
-			  AND a.active='Y'
-			  AND a.listpublic='Y'
-			  AND ((a.expires >= '".date("Y-m-d H:i")."') OR (a.expires is null))
-              AND ((a.startdate <= '".date("Y-m-d H:i")."') OR (a.startdate is null))
-			  ORDER BY surveyls_title";
+    FROM ".db_table_name('surveys')." AS a
+    INNER JOIN ".db_table_name('surveys_languagesettings')." AS b
+    ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language )
+    WHERE surveyls_survey_id=a.sid
+    AND surveyls_language=a.language
+    AND a.active='Y'
+    AND a.listpublic='Y'
+    AND ((a.expires >= '".date("Y-m-d H:i")."') OR (a.expires is null))
+    AND ((a.startdate <= '".date("Y-m-d H:i")."') OR (a.startdate is null))
+    ORDER BY surveyls_title";
     $result = db_execute_assoc($query,false,true) or die("Could not connect to database. If you try to install LimeSurvey please refer to the <a href='http://docs.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage."); //Checked
     $list=array();
     if($result->RecordCount() > 0)
@@ -443,10 +443,10 @@ if (!$surveyid)
         $list[]="<li class='surveytitle'>".$clang->gT("No available surveys")."</li>";
     }
     $surveylist=array(
-            "nosid"=>$clang->gT("You have not provided a survey identification number"),
-            "contact"=>sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,encodeEmail($siteadminemail)),
-            "listheading"=>$clang->gT("The following surveys are available:"),
-            "list"=>implode("\n",$list),
+    "nosid"=>$clang->gT("You have not provided a survey identification number"),
+    "contact"=>sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,encodeEmail($siteadminemail)),
+    "listheading"=>$clang->gT("The following surveys are available:"),
+    "list"=>implode("\n",$list),
     );
 
     $thissurvey['name']=$sitename;
@@ -455,11 +455,11 @@ if (!$surveyid)
     //A nice exit
     sendcacheheaders();
     doHeader();
-	echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/startpage.pstpl"));
+    echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/startpage.pstpl"));
 
-	echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/surveylist.pstpl"));
+    echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/surveylist.pstpl"));
 
-	echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/endpage.pstpl"));
+    echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/endpage.pstpl"));
     doFooter();
     exit;
 }
@@ -476,7 +476,7 @@ $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
 
 if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
 {
-	//Removes any existing timer cookies so timers will start again
+    //Removes any existing timer cookies so timers will start again
     setcookie ("limesurvey_timers", "", time() - 3600);
 }
 
@@ -520,15 +520,15 @@ if ($thissurvey['expiry']!='' and date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s",
     sendcacheheaders();
     doHeader();
 
-	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+    echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
     echo "\t<div id='wrapper'>\n"
     ."\t<p id='tokenmessage'>\n"
     ."\t".$clang->gT("This survey is no longer available.")."<br /><br />\n"
     ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']).".<br /><br />\n"
-	."\t</p>\n"
+    ."\t</p>\n"
     ."\t</div>\n";
 
-	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
     doFooter();
     exit;
 }
@@ -560,7 +560,7 @@ if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $this
     sendcacheheaders();
     doHeader();
 
-	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+    echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
     echo "\t<div id='wrapper'>\n"
     ."\t<p id='tokenmessage'>\n"
     ."\t<span class='error'>".$clang->gT("Error")."</span><br /><br />\n"
@@ -569,7 +569,7 @@ if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $this
     ."\t</p>\n"
     ."\t</div>\n";
 
-	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
     doFooter();
     exit;
 }
@@ -675,16 +675,16 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == $clang->gT("Load Unfinished
 // this check is done in buildsurveysession and error message
 // could be more interresting there (takes into accound captcha if used)
 if ($tokensexist == 1 && isset($token) && $token &&
-	isset($_SESSION['step']) && $_SESSION['step']>0 && db_tables_exist($dbprefix.'tokens_'.$surveyid))
+isset($_SESSION['step']) && $_SESSION['step']>0 && db_tables_exist($dbprefix.'tokens_'.$surveyid))
 {
-	//check if tokens actually haven't been already used
-	$areTokensUsed = usedTokens(db_quote(trim(strip_tags(returnglobal('token')))));
-	// check if token actually does exist
-	// check also if it is allowed to change survey after completion
-	if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-    	$tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' ";
-	} else {
-    	$tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' AND (completed = 'N' or completed='')";
+    //check if tokens actually haven't been already used
+    $areTokensUsed = usedTokens(db_quote(trim(strip_tags(returnglobal('token')))));
+    // check if token actually does exist
+    // check also if it is allowed to change survey after completion
+    if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
+        $tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' ";
+    } else {
+        $tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' AND (completed = 'N' or completed='')";
     }
     $tkresult = db_execute_num($tkquery); //Checked
     $tokendata = $tkresult->FetchRow();
@@ -707,16 +707,16 @@ if ($tokensexist == 1 && isset($token) && $token &&
         ."\t</div>\n";
 
         echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
-	    killSession();
+        killSession();
         doFooter();
         exit;
-}
+    }
 }
 if ($tokensexist == 1 && isset($token) && $token && db_tables_exist($dbprefix.'tokens_'.$surveyid)) //check if token is in a valid time frame
 {
 
-	// check also if it is allowed to change survey after completion
-	if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
+    // check also if it is allowed to change survey after completion
+    if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
         $tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' ";
     } else {
         $tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' AND (completed = 'N' or completed='')";
@@ -744,7 +744,7 @@ if ($tokensexist == 1 && isset($token) && $token && db_tables_exist($dbprefix.'t
 
         echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
         doFooter();
-	    killSession();
+        killSession();
         exit;
     }
 }
@@ -858,7 +858,7 @@ GetReferringUrl();
 //  - the survey is active
 //  - a token information has been provided
 //  - the survey is setup to allow token-response-persistence
-if ($thissurvey['tokenanswerspersistence'] == 'Y' && !isset($_SESSION['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
+if (!isset($_SESSION['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
 {
     // load previous answers if any (dataentry with nosubmit)
     $srquery="SELECT id,submitdate FROM {$thissurvey['tablename']}"
@@ -868,16 +868,18 @@ if ($thissurvey['tokenanswerspersistence'] == 'Y' && !isset($_SESSION['srid']) &
     if ($result->RecordCount()>0)
     {
         $row=$result->FetchRow();
-        if($row['submitdate']=='' || ($row['submitdate']!='' && $thissurvey['alloweditaftercompletion'] == 'Y'))
-        $_SESSION['srid'] = $row['id'];
+        if(($row['submitdate']==''  && $thissurvey['tokenanswerspersistence'] == 'Y' )|| ($row['submitdate']!='' && $thissurvey['alloweditaftercompletion'] == 'Y'))
+        {
+            $_SESSION['srid'] = $row['id'];
+        }
+        buildsurveysession();
+        loadanswers();
     }
-    buildsurveysession();
-    loadanswers();
 }
 
 if (isset($_REQUEST['action']) && ($_REQUEST['action'] == 'previewgroup')){
-        $thissurvey['format'] = 'G';
-        buildsurveysession(true);
+    $thissurvey['format'] = 'G';
+    buildsurveysession(true);
 }
 
 sendcacheheaders();
@@ -899,8 +901,8 @@ function loadanswers()
     if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
     {
         $query = "SELECT * FROM ".db_table_name('saved_control')." INNER JOIN {$thissurvey['tablename']}
-			ON ".db_table_name('saved_control').".srid = {$thissurvey['tablename']}.id
-			WHERE ".db_table_name('saved_control').".sid=$surveyid\n";
+        ON ".db_table_name('saved_control').".srid = {$thissurvey['tablename']}.id
+        WHERE ".db_table_name('saved_control').".sid=$surveyid\n";
         if (isset($scid)) //Would only come from email
 
         {
@@ -920,7 +922,7 @@ function loadanswers()
     elseif (isset($_SESSION['srid']))
     {
         $query = "SELECT * FROM {$thissurvey['tablename']}
-			WHERE {$thissurvey['tablename']}.id=".$_SESSION['srid']."\n";
+        WHERE {$thissurvey['tablename']}.id=".$_SESSION['srid']."\n";
     }
     else
     {
@@ -936,7 +938,7 @@ function loadanswers()
         //A match has been found. Let's load the values!
         //If this is from an email, build surveysession first
         $_SESSION['LEMtokenResume']=true;
-        
+
         $row=$result->FetchRow();
         foreach ($row as $column => $value)
         {
@@ -957,14 +959,14 @@ function loadanswers()
                 $thisstep=$value-1;
             }
             /*
-               Commented this part out because otherwise startlanguage would overwrite any other language during a running survey.
-               We will need a new field named 'endlanguage' to save the current language (for example for returning participants)
-               /the language the survey was completed in.
+            Commented this part out because otherwise startlanguage would overwrite any other language during a running survey.
+            We will need a new field named 'endlanguage' to save the current language (for example for returning participants)
+            /the language the survey was completed in.
             elseif ($column =='startlanguage')
             {
-                $clang = SetSurveyLanguage( $surveyid, $value);
-                UpdateSessionGroupList($value);  // to refresh the language strings in the group list session variable
-                UpdateFieldArray();        // to refresh question titles and question text
+            $clang = SetSurveyLanguage( $surveyid, $value);
+            UpdateSessionGroupList($value);  // to refresh the language strings in the group list session variable
+            UpdateFieldArray();        // to refresh question titles and question text
             }*/
             elseif ($column == "scid")
             {
@@ -987,20 +989,20 @@ function loadanswers()
                 //Only make session variables for those in insertarray[]
                 if (in_array($column, $_SESSION['insertarray']))
                 {
-//                    if (($_SESSION['fieldmap'][$column]['type'] == 'N' ||
-//                            $_SESSION['fieldmap'][$column]['type'] == 'K' ||
-//                            $_SESSION['fieldmap'][$column]['type'] == 'D') && $value == null)
-//                    {   // For type N,K,D NULL in DB is to be considered as NoAnswer in any case.
-//                        // We need to set the _SESSION[field] value to '' in order to evaluate conditions.
-//                        // This is especially important for the deletenonvalue feature,
-//                        // otherwise we would erase any answer with condition such as EQUALS-NO-ANSWER on such
-//                        // question types (NKD)
-//                        $_SESSION[$column]='';
-//                    }
-//                    else
-//                    {
+                    //                    if (($_SESSION['fieldmap'][$column]['type'] == 'N' ||
+                    //                            $_SESSION['fieldmap'][$column]['type'] == 'K' ||
+                    //                            $_SESSION['fieldmap'][$column]['type'] == 'D') && $value == null)
+                    //                    {   // For type N,K,D NULL in DB is to be considered as NoAnswer in any case.
+                    //                        // We need to set the _SESSION[field] value to '' in order to evaluate conditions.
+                    //                        // This is especially important for the deletenonvalue feature,
+                    //                        // otherwise we would erase any answer with condition such as EQUALS-NO-ANSWER on such
+                    //                        // question types (NKD)
+                    //                        $_SESSION[$column]='';
+                    //                    }
+                    //                    else
+                    //                    {
                     $_SESSION[$column]=$value;
-//                }
+                    //                }
                 }  // if (in_array(
             }  // else
         } // foreach
@@ -1016,25 +1018,25 @@ function makegraph($currentstep, $total)
     $size = intval(($currentstep-1)/$total*100);
 
     $graph = '<script type="text/javascript">
-	$(function() {
-		$("#progressbar").progressbar({
-			value: '.$size.'
-		});
-	});';
+    $(function() {
+    $("#progressbar").progressbar({
+    value: '.$size.'
+    });
+    });';
     if (getLanguageRTL($clang->langcode))
     {
         $graph.='
-		$(document).ready(function() {
-			$("div.ui-progressbar-value").removeClass("ui-corner-left");
-			$("div.ui-progressbar-value").addClass("ui-corner-right");
-		});';
+        $(document).ready(function() {
+        $("div.ui-progressbar-value").removeClass("ui-corner-left");
+        $("div.ui-progressbar-value").addClass("ui-corner-right");
+        });';
     }
     $graph.='
-	</script>
+    </script>
 
-	<div id="progress-wrapper">
-	<span class="hide">'.sprintf($clang->gT('You have completed %s%% of this survey'),$size).'</span>
-		<div id="progress-pre">';
+    <div id="progress-wrapper">
+    <span class="hide">'.sprintf($clang->gT('You have completed %s%% of this survey'),$size).'</span>
+    <div id="progress-pre">';
     if (getLanguageRTL($clang->langcode))
     {
         $graph.='100%';
@@ -1045,8 +1047,8 @@ function makegraph($currentstep, $total)
     }
 
     $graph.='</div>
-		<div id="progressbar"></div>
-		<div id="progress-post">';
+    <div id="progressbar"></div>
+    <div id="progress-post">';
     if (getLanguageRTL($clang->langcode))
     {
         $graph.='0%';
@@ -1056,17 +1058,17 @@ function makegraph($currentstep, $total)
         $graph.='100%';
     }
     $graph.='</div>
-	</div>';
+    </div>';
 
     if ($size == 0) // Progress bar looks dumb if 0
 
     {
         $graph.='
-		<script type="text/javascript">
-			$(document).ready(function() {
-				$("div.ui-progressbar-value").hide();
-			});
-		</script>';
+        <script type="text/javascript">
+        $(document).ready(function() {
+        $("div.ui-progressbar-value").hide();
+        });
+        </script>';
     }
 
     return $graph;
@@ -1102,30 +1104,30 @@ function makelanguagechanger()
         if ($_REQUEST['action']=='previewgroup')
             $previewgrp = true;
 
-    if (!empty($slangs))
+        if (!empty($slangs))
     {
         if (isset($_SESSION['s_lang']) && $_SESSION['s_lang'] != '')
         {
             $lang = sanitize_languagecode($_SESSION['s_lang']);
         }
         else if(isset($_POST['lang']) && $_POST['lang']!='')
-        {
-            $lang = sanitize_languagecode($_POST['lang']);
-        }
-        else if (isset($_GET['lang']) && $_GET['lang'] != '')
-        {
-            $lang = sanitize_languagecode($_GET['lang']);
-        }
-        else
-        {
-            $lang = $sBaseLanguage;
+            {
+                $lang = sanitize_languagecode($_POST['lang']);
+            }
+            else if (isset($_GET['lang']) && $_GET['lang'] != '')
+                {
+                    $lang = sanitize_languagecode($_GET['lang']);
+                }
+                else
+                {
+                    $lang = $sBaseLanguage;
         }
         $slangs[]=$sBaseLanguage;
         $aAllLanguages=getLanguageData();
         $slangs=array_keys(array_intersect_key($aAllLanguages,array_flip($slangs))); // Sort languages by their locale name
 
         // Changed how language changer works so that posts any currently set values.  This also ensures that token (and other) parmeters are also posted.
-//        $htmlcode ="<select name=\"select\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
+        //        $htmlcode ="<select name=\"select\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
         $htmlcode ="<select name=\"select\" class='languagechanger'"
         . "onchange=\"javascript:$('[name=move]').val('changelang_'+ this.value);$('#limesurvey').submit();\">\n";
 
@@ -1137,13 +1139,13 @@ function makelanguagechanger()
         }
         foreach ($slangs as $otherlang)
         {
-//            $htmlcode .= "\t<option value=\"$sTargetURL?sid=". $surveyid ."&amp;lang=". $otherlang ."$tokenparam$sAddToURL\" ";
+            //            $htmlcode .= "\t<option value=\"$sTargetURL?sid=". $surveyid ."&amp;lang=". $otherlang ."$tokenparam$sAddToURL\" ";
             $htmlcode .= "\t<option value=\"". $otherlang ."\" ";
 
             if($otherlang == $lang)
-        {
+            {
                 $htmlcode .= " selected=\"selected\" ";
-        }
+            }
             $htmlcode .= ">".getLanguageNameFromCode($otherlang,false)."</option>\n";
         }
 
@@ -1166,7 +1168,7 @@ function makelanguagechanger()
     }
 }
 
- function checkUploadedFileValidity($move, $backok=null)
+function checkUploadedFileValidity($move, $backok=null)
 {
     global $connect, $thisstep, $clang;
     if (!isset($backok) || $backok != "Y")
@@ -1305,12 +1307,12 @@ function remove_nulls_from_array($array)
 
 
 /**
- * Marks a tokens as completed and sends a confirmation email to the participiant.
- * If $quotaexit is set to true then the user exited the survey due to a quota
- * restriction and the according token is only marked as 'Q'
- *
- * @param mixed $quotaexit
- */
+* Marks a tokens as completed and sends a confirmation email to the participiant.
+* If $quotaexit is set to true then the user exited the survey due to a quota
+* restriction and the according token is only marked as 'Q'
+*
+* @param mixed $quotaexit
+*/
 function submittokens($quotaexit=false)
 {
     global $thissurvey, $timeadjust, $emailcharset ;
@@ -1335,23 +1337,23 @@ function submittokens($quotaexit=false)
     {
         if (isset($usesleft) && $usesleft<=1)
         {
-			$utquery .= "SET usesleft=usesleft-1, completed='$today'\n";
-    }
-    else
-    {
-			$utquery .= "SET usesleft=usesleft-1\n";
-    }
+            $utquery .= "SET usesleft=usesleft-1, completed='$today'\n";
+        }
+        else
+        {
+            $utquery .= "SET usesleft=usesleft-1\n";
+        }
     }
     else
     {
         if (isset($usesleft) && $usesleft<=1)
         {
-			$utquery .= "SET usesleft=usesleft-1, completed='Y'\n";
-		}
-		else
-		{
-			$utquery .= "SET usesleft=usesleft-1\n";
-		}
+            $utquery .= "SET usesleft=usesleft-1, completed='Y'\n";
+        }
+        else
+        {
+            $utquery .= "SET usesleft=usesleft-1\n";
+        }
     }
     $utquery .= "WHERE token='".db_quote($clienttoken)."'";
 
@@ -1501,7 +1503,7 @@ function SendSubmitNotifications()
 
     if (!empty($thissurvey['emailresponseto']))
     {
-		if (isset($_SESSION['token']) && $_SESSION['token'] != '' && db_tables_exist($dbprefix.'tokens_'.$surveyid))
+        if (isset($_SESSION['token']) && $_SESSION['token'] != '' && db_tables_exist($dbprefix.'tokens_'.$surveyid))
         {
             //Gather token data for tokenised surveys
             $_SESSION['thistoken']=getTokenData($surveyid, $_SESSION['token']);
@@ -1534,8 +1536,8 @@ function SendSubmitNotifications()
             if (substr($sFieldname,0,4)=='gid_')
             {
 
-               $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>{$fname[0]}</td></tr>\n";
-               $ResultTableText .="\n{$fname[0]}\n\n";
+                $ResultTableHTML .= "\t<tr class='printanswersgroup'><td colspan='2'>{$fname[0]}</td></tr>\n";
+                $ResultTableText .="\n{$fname[0]}\n\n";
             }
             elseif (substr($sFieldname,0,4)=='qid_')
             {
@@ -1690,37 +1692,37 @@ function buildsurveysession($previewGroup=false)
             }
 
             echo "<p class='captcha'>".$clang->gT("Please confirm access to survey by answering the security question below and click continue.")."</p>
-			        <form class='captcha' method='get' action='{$publicurl}/index.php'>
-			        <table align='center'>
-				        <tr>
-					        <td align='right' valign='middle'>
-					        <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
-					        <input type='hidden' name='lang' value='".$templang."' id='lang' />";
+            <form class='captcha' method='get' action='{$publicurl}/index.php'>
+            <table align='center'>
+            <tr>
+            <td align='right' valign='middle'>
+            <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
+            <input type='hidden' name='lang' value='".$templang."' id='lang' />";
             // In case we this is a direct Reload previous answers URL, then add hidden fields
             if (isset($_GET['loadall']) && isset($_GET['scid'])
             && isset($_GET['loadname']) && isset($_GET['loadpass']))
             {
                 echo "
-						<input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
-						<input type='hidden' name='scid' value='".returnglobal('scid')."' id='scid' />
-						<input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
-						<input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
+                <input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
+                <input type='hidden' name='scid' value='".returnglobal('scid')."' id='scid' />
+                <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
+                <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
             }
 
             echo "
-				        </td>
-			        </tr>";
+            </td>
+            </tr>";
             if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
             {
                 echo "<tr>
-				                <td align='center' valign='middle'><label for='captcha'>".$clang->gT("Security question:")."</label></td><td align='left' valign='middle'><table><tr><td valign='middle'><img src='$rooturl/verification.php?sid=$surveyid' alt='captcha' /></td>
-                                <td valign='middle'><input id='captcha' type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table>
-				                </td>
-			                </tr>";
+                <td align='center' valign='middle'><label for='captcha'>".$clang->gT("Security question:")."</label></td><td align='left' valign='middle'><table><tr><td valign='middle'><img src='$rooturl/verification.php?sid=$surveyid' alt='captcha' /></td>
+                <td valign='middle'><input id='captcha' type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table>
+                </td>
+                </tr>";
             }
             echo "<tr><td colspan='2' align='center'><input class='submit' type='submit' value='".$clang->gT("Continue")."' /></td></tr>
-		        </table>
-		        </form>";
+            </table>
+            </form>";
 
             echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
             doFooter();
@@ -1761,16 +1763,16 @@ function buildsurveysession($previewGroup=false)
             echo '<div id="wrapper"><p id="tokenmessage">'.$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br />";
             echo $clang->gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
             <script type='text/javascript'>var focus_element='#token';</script>
-	        <form id='tokenform' method='get' action='{$publicurl}/index.php'>
-                <ul>
-                <li>
+            <form id='tokenform' method='get' action='{$publicurl}/index.php'>
+            <ul>
+            <li>
             <label for='token'>".$clang->gT("Token")."</label><input class='text $kpclass' id='token' type='text' name='token' />";
 
             echo "<input type='hidden' name='sid' value='".$surveyid."' id='sid' />
-				<input type='hidden' name='lang' value='".$templang."' id='lang' />";
+            <input type='hidden' name='lang' value='".$templang."' id='lang' />";
             if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
             {
-                  echo "  <input type='hidden' name='newtest' value='Y' id='newtest' />";
+                echo "  <input type='hidden' name='newtest' value='Y' id='newtest' />";
 
             }
 
@@ -1779,24 +1781,24 @@ function buildsurveysession($previewGroup=false)
             && isset($_GET['loadname']) && isset($_GET['loadpass']))
             {
                 echo "
-					<input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
-					<input type='hidden' name='scid' value='".returnglobal('scid')."' id='scid' />
-					<input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
-					<input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
+                <input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
+                <input type='hidden' name='scid' value='".returnglobal('scid')."' id='scid' />
+                <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
+                <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
             }
             echo "</li>";
 
             if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
             {
                 echo "<li>
-			                <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='$rooturl/verification.php?sid=$surveyid' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
-		                  </li>";
+                <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='$rooturl/verification.php?sid=$surveyid' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
+                </li>";
             }
             echo "<li>
-                        <input class='submit' type='submit' value='".$clang->gT("Continue")."' />
-                      </li>
+            <input class='submit' type='submit' value='".$clang->gT("Continue")."' />
+            </li>
             </ul>
-	        </form></div>";
+            </form></div>";
         }
 
         echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
@@ -1809,14 +1811,14 @@ function buildsurveysession($previewGroup=false)
     !captcha_enabled('surveyaccessscreen',$thissurvey['usecaptcha']))
     {
         //check if tokens actually haven't been already used
-		$areTokensUsed = usedTokens(db_quote(trim(strip_tags(returnglobal('token')))));
+        $areTokensUsed = usedTokens(db_quote(trim(strip_tags(returnglobal('token')))));
         //check if token actually does exist
-	    // check also if it is allowed to change survey after completion
-		if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-          $tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(strip_tags(returnglobal('token'))))."' ";
-		} else {
-        	$tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(strip_tags(returnglobal('token'))))."' AND (completed = 'N' or completed='')";
-		}
+        // check also if it is allowed to change survey after completion
+        if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
+            $tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(strip_tags(returnglobal('token'))))."' ";
+        } else {
+            $tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(strip_tags(returnglobal('token'))))."' AND (completed = 'N' or completed='')";
+        }
 
         $tkresult = db_execute_num($tkquery);    //Checked
         list($tkexist) = $tkresult->FetchRow();
@@ -1889,65 +1891,65 @@ function buildsurveysession($previewGroup=false)
         }
         // IF CAPTCHA ANSWER IS NOT CORRECT
         else if (!isset($move) || is_null($move))
-        {
-            $gettoken = $clienttoken;
-            sendcacheheaders();
-            doHeader();
-            // No or bad answer to required security question
-            echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-            echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
-            // If token wasn't provided and public registration
-            // is enabled then show registration form
-            if ( !isset($gettoken) && isset($thissurvey) && $thissurvey['allowregister'] == "Y")
             {
-                echo templatereplace(file_get_contents("$thistpl/register.pstpl"));
-            }
-            else
-            { // only show CAPTCHA
-
-                echo '<div id="wrapper"><p id="tokenmessage">';
-                if (isset($loadsecurity))
-                { // was a bad answer
-                    echo "<span class='error'>".$clang->gT("The answer to the security question is incorrect.")."</span><br />";
-                }
-
-                echo $clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />";
-                // IF TOKEN HAS BEEN GIVEN THEN AUTOFILL IT
-                // AND HIDE ENTRY FIELD
-                if (!isset($gettoken))
+                $gettoken = $clienttoken;
+                sendcacheheaders();
+                doHeader();
+                // No or bad answer to required security question
+                echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+                echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
+                // If token wasn't provided and public registration
+                // is enabled then show registration form
+                if ( !isset($gettoken) && isset($thissurvey) && $thissurvey['allowregister'] == "Y")
                 {
-                    echo $clang->gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
-			            <form id='tokenform' method='get' action='{$publicurl}/index.php'>
-                        <ul>
-                        <li>
-					        <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
-						    <input type='hidden' name='lang' value='".$templang."' id='lang' />";
-                    if (isset($_GET['loadall']) && isset($_GET['scid'])
-                    && isset($_GET['loadname']) && isset($_GET['loadpass']))
-                    {
-                        echo "<input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
-						        <input type='hidden' name='scid' value='".returnglobal('scid')."' id='scid' />
-						        <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
-						        <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
+                    echo templatereplace(file_get_contents("$thistpl/register.pstpl"));
+                }
+                else
+                { // only show CAPTCHA
+
+                    echo '<div id="wrapper"><p id="tokenmessage">';
+                    if (isset($loadsecurity))
+                    { // was a bad answer
+                        echo "<span class='error'>".$clang->gT("The answer to the security question is incorrect.")."</span><br />";
                     }
 
-                    echo '<label for="token">'.$clang->gT("Token")."</label><input class='text' type='text' id='token' name='token'></li>";
+                    echo $clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />";
+                    // IF TOKEN HAS BEEN GIVEN THEN AUTOFILL IT
+                    // AND HIDE ENTRY FIELD
+                    if (!isset($gettoken))
+                    {
+                        echo $clang->gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
+                        <form id='tokenform' method='get' action='{$publicurl}/index.php'>
+                        <ul>
+                        <li>
+                        <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
+                        <input type='hidden' name='lang' value='".$templang."' id='lang' />";
+                        if (isset($_GET['loadall']) && isset($_GET['scid'])
+                        && isset($_GET['loadname']) && isset($_GET['loadpass']))
+                        {
+                            echo "<input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
+                            <input type='hidden' name='scid' value='".returnglobal('scid')."' id='scid' />
+                            <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
+                            <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
+                        }
+
+                        echo '<label for="token">'.$clang->gT("Token")."</label><input class='text' type='text' id='token' name='token'></li>";
                 }
                 else
                 {
                     echo $clang->gT("Please confirm the token by answering the security question below and click continue.")."</p>
-			            <form id='tokenform' method='get' action='{$publicurl}/index.php'>
-                        <ul>
-			            <li>
-					            <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
-						        <input type='hidden' name='lang' value='".$templang."' id='lang' />";
+                    <form id='tokenform' method='get' action='{$publicurl}/index.php'>
+                    <ul>
+                    <li>
+                    <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
+                    <input type='hidden' name='lang' value='".$templang."' id='lang' />";
                     if (isset($_GET['loadall']) && isset($_GET['scid'])
                     && isset($_GET['loadname']) && isset($_GET['loadpass']))
                     {
                         echo "<input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
-                              <input type='hidden' name='scid' value='".returnglobal('scid')."' id='scid' />
-                              <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
-                              <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
+                        <input type='hidden' name='scid' value='".returnglobal('scid')."' id='scid' />
+                        <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
+                        <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
                     }
                     echo '<label for="token">'.$clang->gT("Token:")."</label><span id='token'>$gettoken</span>"
                     ."<input type='hidden' name='token' value='$gettoken'></li>";
@@ -1957,13 +1959,13 @@ function buildsurveysession($previewGroup=false)
                 if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
                 {
                     echo "<li>
-                            <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='$rooturl/verification.php?sid=$surveyid' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
-                          </li>";
+                    <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='$rooturl/verification.php?sid=$surveyid' alt='captcha' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
+                    </li>";
                 }
                 echo "<li><input class='submit' type='submit' value='".$clang->gT("Continue")."' /></li>
-		                </ul>
-		                </form>
-		                </id>";
+                </ul>
+                </form>
+                </id>";
             }
 
             echo '</div>'.templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
@@ -1985,7 +1987,7 @@ function buildsurveysession($previewGroup=false)
 
     //RL: multilingual support
 
-	if (isset($_GET['token']) && db_tables_exist($dbprefix.'tokens_'.$surveyid))
+    if (isset($_GET['token']) && db_tables_exist($dbprefix.'tokens_'.$surveyid))
     {
         //get language from token (if one exists)
         $tkquery2 = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($clienttoken)."' AND (completed = 'N' or completed='')";
@@ -2021,10 +2023,10 @@ function buildsurveysession($previewGroup=false)
     // Optimized Query
     // Change query to use sub-select to see if conditions exist.
     $query = "SELECT ".db_table_name('questions').".*, ".db_table_name('groups').".*\n"
-//    ." (SELECT count(1) FROM ".db_table_name('conditions')."\n"
-//    ." WHERE ".db_table_name('questions').".qid = ".db_table_name('conditions').".qid) AS hasconditions,\n"
-//    ." (SELECT count(1) FROM ".db_table_name('conditions')."\n"
-//    ." WHERE ".db_table_name('questions').".qid = ".db_table_name('conditions').".cqid) AS usedinconditions\n"
+    //    ." (SELECT count(1) FROM ".db_table_name('conditions')."\n"
+    //    ." WHERE ".db_table_name('questions').".qid = ".db_table_name('conditions').".qid) AS hasconditions,\n"
+    //    ." (SELECT count(1) FROM ".db_table_name('conditions')."\n"
+    //    ." WHERE ".db_table_name('questions').".qid = ".db_table_name('conditions').".cqid) AS usedinconditions\n"
     ." FROM ".db_table_name('groups')." INNER JOIN ".db_table_name('questions')." ON ".db_table_name('groups').".gid = ".db_table_name('questions').".gid\n"
     ." WHERE ".db_table_name('questions').".sid=".$surveyid."\n"
     ." AND ".db_table_name('groups').".language='".$_SESSION['s_lang']."'\n"
@@ -2035,7 +2037,7 @@ function buildsurveysession($previewGroup=false)
     //var_dump($_SESSION);
     $result = db_execute_assoc($query);    //Checked
 
-//    $arows = $result->GetRows();  // Not used?
+    //    $arows = $result->GetRows();  // Not used?
 
     $totalquestions = $result->RecordCount();
 
@@ -2070,7 +2072,7 @@ function buildsurveysession($previewGroup=false)
         ."\t".sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname'])
         ." (<a href='mailto:{$thissurvey['adminemail']}'>"
         ."{$thissurvey['adminemail']}</a>)<br /><br />\n"
-		."\t</p>\n"
+        ."\t</p>\n"
         ."\t</div>\n";
 
         echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
@@ -2092,7 +2094,7 @@ function buildsurveysession($previewGroup=false)
         $_SESSION['insertarray'][]= "token";
     }
 
-	if ($tokensexist == 1 && $thissurvey['anonymized'] == "N"  && db_tables_exist($dbprefix.'tokens_'.$surveyid))
+    if ($tokensexist == 1 && $thissurvey['anonymized'] == "N"  && db_tables_exist($dbprefix.'tokens_'.$surveyid))
     {
         //Gather survey data for "non anonymous" surveys, for use in presenting questions
         $_SESSION['thistoken']=getTokenData($surveyid, $clienttoken);
@@ -2176,7 +2178,7 @@ function buildsurveysession($previewGroup=false)
         $fieldmap=$copyFieldMap;
 
     }
-//die(print_r($fieldmap));
+    //die(print_r($fieldmap));
 
     foreach ($fieldmap as $field)
     {
@@ -2218,14 +2220,14 @@ function buildsurveysession($previewGroup=false)
     }
 
     // Defaults need to be set within Expression Manager so that it can process defaults comprised of equations
-//    // Prefill question/answer from defaultvalues
-//    foreach ($fieldmap as $field)
-//    {
-//        if (isset($field['defaultvalue']))
-//        {
-//            $_SESSION[$field['fieldname']]=$field['defaultvalue'];
-//        }
-//    }
+    //    // Prefill question/answer from defaultvalues
+    //    foreach ($fieldmap as $field)
+    //    {
+    //        if (isset($field['defaultvalue']))
+    //        {
+    //            $_SESSION[$field['fieldname']]=$field['defaultvalue'];
+    //        }
+    //    }
     // Prefill questions/answers from command line params
     $startingValues=array();
     if (isset($_SESSION['insertarray']))
@@ -2267,9 +2269,9 @@ function buildsurveysession($previewGroup=false)
                 {
                     $_SESSION[$field] = $value;
                     $startingValues[$field] = array (
-                        'type'=>$type,
-                        'value'=>$value,
-                        );  
+                    'type'=>$type,
+                    'value'=>$value,
+                    );
                 }
             }
         }
@@ -2299,11 +2301,11 @@ function buildsurveysession($previewGroup=false)
 
     // Fix totalquestions by substracting Test Display questions
     $sNoOfTextDisplayQuestions=(int) $connect->GetOne("SELECT count(*)\n"
-        ." FROM ".db_table_name('questions')
-        ." WHERE type in ('X','*')\n"
-        ." AND sid={$surveyid}"
-        ." AND language='".$_SESSION['s_lang']."'"
-        ." AND parent_qid=0");
+    ." FROM ".db_table_name('questions')
+    ." WHERE type in ('X','*')\n"
+    ." AND sid={$surveyid}"
+    ." AND language='".$_SESSION['s_lang']."'"
+    ." AND parent_qid=0");
 
     $_SESSION['therearexquestions'] = $totalquestions - $sNoOfTextDisplayQuestions; // must be global for THEREAREXQUESTIONS replacement field to work
 
@@ -2324,7 +2326,7 @@ function surveymover()
     $surveymover = "";
 
     if ($thissurvey['navigationdelay'] > 0 && (
-        isset($_SESSION['maxstep']) && $_SESSION['maxstep'] > 0 && $_SESSION['maxstep'] == $_SESSION['step']))
+    isset($_SESSION['maxstep']) && $_SESSION['maxstep'] > 0 && $_SESSION['maxstep'] == $_SESSION['step']))
     {
         $disabled = "disabled=\"disabled\"";
         $surveymover .= "<script type=\"text/javascript\">\n"
@@ -2346,12 +2348,12 @@ function surveymover()
     }
 
     if (isset($_SESSION['step']) && $thissurvey['format'] != "A" && ($thissurvey['allowprev'] != "N" || $thissurvey['allowjumps'] == "Y") &&
-	($_SESSION['step'] > 0 || (!$_SESSION['step'] && $presentinggroupdescription && $thissurvey['showwelcome'] == 'Y')))
+    ($_SESSION['step'] > 0 || (!$_SESSION['step'] && $presentinggroupdescription && $thissurvey['showwelcome'] == 'Y')))
     {
         //To prevent too much complication in the if statement above I put it here...
         if ($thissurvey['showwelcome'] == 'N' && $_SESSION['step'] == 1) {
-           //first step and we do not want to go back to the welcome screen since we don't show that...
-           //so skip the prev button
+            //first step and we do not want to go back to the welcome screen since we don't show that...
+            //so skip the prev button
         } else {
             $surveymover .= "<input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; $('#limesurvey').submit();\" value=' &lt;&lt; "
             . $clang->gT("Previous")." ' name='move2' id='moveprevbtn' $disabled />\n";
@@ -2385,11 +2387,11 @@ function surveymover()
 
 
 /**
- * Caculate assessement scores
- *
- * @param mixed $surveyid
- * @param mixed $returndataonly - only returns an array with data
- */
+* Caculate assessement scores
+*
+* @param mixed $surveyid
+* @param mixed $returndataonly - only returns an array with data
+*/
 function doAssessment($surveyid, $returndataonly=false)
 {
     global $dbprefix, $thistpl, $connect;
@@ -2400,8 +2402,8 @@ function doAssessment($surveyid, $returndataonly=false)
         $_SESSION['s_lang']=$baselang;
     }
     $query = "SELECT * FROM ".db_table_name('assessments')."
-			  WHERE sid=$surveyid and language='{$_SESSION['s_lang']}'
-			  ORDER BY scope,id";
+    WHERE sid=$surveyid and language='{$_SESSION['s_lang']}'
+    ORDER BY scope,id";
     if ($result = db_execute_assoc($query))   //Checked
 
     {
@@ -2412,16 +2414,16 @@ function doAssessment($surveyid, $returndataonly=false)
                 if ($row['scope'] == "G")
                 {
                     $assessment['group'][$row['gid']][]=array("name"=>$row['name'],
-                            "min"=>$row['minimum'],
-                            "max"=>$row['maximum'],
-                            "message"=>$row['message']);
+                    "min"=>$row['minimum'],
+                    "max"=>$row['maximum'],
+                    "message"=>$row['message']);
                 }
                 else
                 {
                     $assessment['total'][]=array( "name"=>$row['name'],
-                            "min"=>$row['minimum'],
-                            "max"=>$row['maximum'],
-                            "message"=>$row['message']);
+                    "min"=>$row['minimum'],
+                    "max"=>$row['maximum'],
+                    "message"=>$row['message']);
                 }
             }
             $fieldmap=createFieldMap($surveyid, "full");
@@ -2444,7 +2446,7 @@ function doAssessment($surveyid, $returndataonly=false)
                         else
                         {
 
-                                    $usquery = "SELECT assessment_value FROM ".db_table_name("answers")." where qid=".$field['qid']." and language='$baselang' and code=".db_quoteall($_SESSION[$field['fieldname']]);
+                            $usquery = "SELECT assessment_value FROM ".db_table_name("answers")." where qid=".$field['qid']." and language='$baselang' and code=".db_quoteall($_SESSION[$field['fieldname']]);
                             $usresult = db_execute_assoc($usquery);          //Checked
                             if ($usresult)
                             {
@@ -2486,9 +2488,9 @@ function doAssessment($surveyid, $returndataonly=false)
                         if (isset ($_SESSION[$field['fieldname']]))
                         {
                             if (($field['type'] == "M") and ($_SESSION[$field['fieldname']] == "Y")) 	// for Multiple choice type questions
-                            $grouptotal=$grouptotal+$field['assessment_value'];
+                                $grouptotal=$grouptotal+$field['assessment_value'];
                             else																		// any other type of question
-                            $grouptotal=$grouptotal+$field['assessment_value'];
+                                $grouptotal=$grouptotal+$field['assessment_value'];
                         }
                     }
                 }
@@ -2507,16 +2509,16 @@ function doAssessment($surveyid, $returndataonly=false)
                         if ($val >= $assessed['min'] && $val <= $assessed['max'] && $returndataonly===false)
                         {
                             $assessments .= "\t<!-- GROUP ASSESSMENT: Score: $val Min: ".$assessed['min']." Max: ".$assessed['max']."-->
-        					    <table class='assessments' align='center'>
-								 <tr>
-								  <th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), $assessed['name'])."
-								  </th>
-								 </tr>
-								 <tr>
-								  <td align='center'>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), $assessed['message'])."
-								 </td>
-								</tr>
-							   </table><br />\n";
+                            <table class='assessments' align='center'>
+                            <tr>
+                            <th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), $assessed['name'])."
+                            </th>
+                            </tr>
+                            <tr>
+                            <td align='center'>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), $assessed['message'])."
+                            </td>
+                            </tr>
+                            </table><br />\n";
                         }
                     }
                 }
@@ -2530,13 +2532,13 @@ function doAssessment($surveyid, $returndataonly=false)
                 if ($total >= $assessed['min'] && $total <= $assessed['max'] && $returndataonly===false)
                 {
                     $assessments .= "\t\t\t<!-- TOTAL ASSESSMENT: Score: $total Min: ".$assessed['min']." Max: ".$assessed['max']."-->
-						<table class='assessments' align='center'><tr><th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), stripslashes($assessed['name']))."
-						 </th></tr>
-						 <tr>
-						  <td align='center'>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), stripslashes($assessed['message']))."
-						  </td>
-						 </tr>
-						</table>\n";
+                    <table class='assessments' align='center'><tr><th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), stripslashes($assessed['name']))."
+                    </th></tr>
+                    <tr>
+                    <td align='center'>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), stripslashes($assessed['message']))."
+                    </td>
+                    </tr>
+                    </table>\n";
                 }
             }
         }
@@ -2593,13 +2595,13 @@ function UpdateFieldArray()
 
 
 /**
- * check_quota() returns quota information for the current survey
- * @param string $checkaction - action the function must take after completing:
- * 								enforce: Enforce the Quota action
- * 								return: Return the updated quota array from getQuotaAnswers()
- * @param string $surveyid - Survey identification number
- * @return array - nested array, Quotas->Members->Fields, includes quota status and which members matched in session.
- */
+* check_quota() returns quota information for the current survey
+* @param string $checkaction - action the function must take after completing:
+* 								enforce: Enforce the Quota action
+* 								return: Return the updated quota array from getQuotaAnswers()
+* @param string $surveyid - Survey identification number
+* @return array - nested array, Quotas->Members->Fields, includes quota status and which members matched in session.
+*/
 function check_quota($checkaction,$surveyid)
 {
     if (!isset($_SESSION['s_lang'])){
@@ -2652,14 +2654,14 @@ function check_quota($checkaction,$surveyid)
                 {
                     foreach($member['fieldnames'] as $fieldname)
                     {
-                	if (isset($_SESSION[$fieldname]))
+                        if (isset($_SESSION[$fieldname]))
                         {
-                        if (in_array($_SESSION[$fieldname],$fields_value_array[$fieldname])){
-                            $quota_info[$x]['members'][$y]['insession'] = "true";
+                            if (in_array($_SESSION[$fieldname],$fields_value_array[$fieldname])){
+                                $quota_info[$x]['members'][$y]['insession'] = "true";
                             }
                         }
                     }
-                   $y++;
+                    $y++;
                 }
                 unset($fields_query_array);unset($fields_value_array);
 
@@ -2685,8 +2687,8 @@ function check_quota($checkaction,$surveyid)
 
                     // Check the status of the quota, is it full or not
                     $querysel = "SELECT id FROM ".db_table_name('survey_'.$surveyid)."
-					             WHERE ".implode(' AND ',$querycond)." "."
-								 AND submitdate IS NOT NULL";
+                    WHERE ".implode(' AND ',$querycond)." "."
+                    AND submitdate IS NOT NULL";
 
                     $result = db_execute_assoc($querysel) or safe_die($connect->ErrorMsg());    //Checked
                     $quota_check = $result->FetchRow();
@@ -2734,22 +2736,22 @@ function check_quota($checkaction,$surveyid)
     {
         return $quota_info;
     } else if ($global_matched == true && $checkaction == 'enforce')
-    {
-        // Need to add Quota action enforcement here.
-        reset($quota_info);
-
-        $tempmsg ="";
-        $found = false;
-        foreach($quota_info as $quota)
         {
-            if ((isset($quota['status']) && $quota['status'] == "matched") && (isset($quota['Action']) && $quota['Action'] == "1"))
+            // Need to add Quota action enforcement here.
+            reset($quota_info);
+
+            $tempmsg ="";
+            $found = false;
+            foreach($quota_info as $quota)
             {
-                // If a token is used then mark the token as completed
-                if (isset($clienttoken) && $clienttoken)
+                if ((isset($quota['status']) && $quota['status'] == "matched") && (isset($quota['Action']) && $quota['Action'] == "1"))
                 {
-                    submittokens(true);
-                }
-                session_destroy();
+                    // If a token is used then mark the token as completed
+                    if (isset($clienttoken) && $clienttoken)
+                    {
+                        submittokens(true);
+                    }
+                    session_destroy();
                 sendcacheheaders();
                 if($quota['AutoloadUrl'] == 1 && $quota['Url'] != "")
                 {
@@ -2776,10 +2778,10 @@ function check_quota($checkaction,$surveyid)
                 echo "\t".$quota['Message']."<br /><br />\n";
                 echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
                 echo "<form method='post' action='{$publicurl}/index.php' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" value=' &lt;&lt; ". $clang->gT("Previous")." ' name='move2' />
-					<input type='hidden' name='thisstep' value='".($_SESSION['step'])."' id='thisstep' />
-					<input type='hidden' name='sid' value='".returnglobal('sid')."' id='sid' />
-					<input type='hidden' name='token' value='".$clienttoken."' id='token' />
-					</form>\n";
+                <input type='hidden' name='thisstep' value='".($_SESSION['step'])."' id='thisstep' />
+                <input type='hidden' name='sid' value='".returnglobal('sid')."' id='sid' />
+                <input type='hidden' name='token' value='".$clienttoken."' id='token' />
+                </form>\n";
                 echo "\t</div>\n";
                 echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
                 doFooter();
@@ -2797,13 +2799,13 @@ function check_quota($checkaction,$surveyid)
 }
 
 /**
- * put your comment there...
- *
- * @param mixed $mail
- * @param mixed $text
- * @param mixed $class
- * @param mixed $params
- */
+* put your comment there...
+*
+* @param mixed $mail
+* @param mixed $text
+* @param mixed $class
+* @param mixed $params
+*/
 function encodeEmail($mail, $text="", $class="", $params=array())
 {
     $encmail ="";
@@ -2834,8 +2836,8 @@ function encodeEmail($mail, $text="", $class="", $params=array())
 
 
 /**
- * GetReferringUrl() returns the reffering URL
- */
+* GetReferringUrl() returns the reffering URL
+*/
 function GetReferringUrl()
 {
     global $clang,$stripQueryFromRefurl;
@@ -2871,9 +2873,9 @@ function GetReferringUrl()
 }
 
 /**
- * Shows the welcome page, used in group by group and question by question mode
- */
- function display_first_page() {
+* Shows the welcome page, used in group by group and question by question mode
+*/
+function display_first_page() {
     global $clang, $thistpl, $token, $surveyid, $thissurvey, $navigator,$publicurl;
     sendcacheheaders();
     doHeader();
