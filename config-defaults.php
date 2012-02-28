@@ -562,6 +562,9 @@ $googleAnalyticsAPIKey = '';
 // 2 = SurveyName-[SID]/GroupName
 $googleAnalyticsStyle = '0';
 
+// Google Translate API key:  https://code.google.com/apis/language/translate/v2/getting_started.html
+$googletranslateapikey = '';
+
 /**
 * This variable defines the total space available to the file upload question across all surveys. If set to 0 then no limit applies.
 *
