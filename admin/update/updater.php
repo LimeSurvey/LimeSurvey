@@ -435,6 +435,7 @@ function UpdateStep3()
     $basefilename = date("YmdHis-").md5(uniqid(rand(), true));
     //Now create a backup of the files to be delete or modified
 
+    $filestozip=array();
     Foreach ($updateinfo['files'] as $file)
     {
         if (is_file($publicdir.$file['file'])===true) // Sort out directories
@@ -450,7 +451,6 @@ function UpdateStep3()
     //PclTraceOn(1);
 
     $archive = new PclZip($tempdir.DIRECTORY_SEPARATOR.'files-'.$basefilename.'.zip');
-
 
     $v_list = $archive->add($filestozip, PCLZIP_OPT_REMOVE_PATH, $publicdir);
 
