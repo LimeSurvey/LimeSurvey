@@ -1280,8 +1280,8 @@ function do_date($ia)
         $goodchars = str_replace( array("m","d","y"), "", $dateformatdetails['jsdate']);
         $goodchars = "0123456789".$goodchars[0];
 
-        $answer ="<p class=\"question answer-item text-item date-item\">
-        <input class='popupdate' type=\"text\" alt=\"".$clang->gT('Date picker')."\" size=\"10\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"10\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
+        $answer ="<p class='question answer-item text-item date-item'><label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Date picker')}</label>
+        <input class='popupdate' type=\"text\" size=\"10\" name=\"{$ia[1]}\" alt='".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'])."' id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"10\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
         <input  type='hidden' name='dateformat{$ia[1]}' id='dateformat{$ia[1]}' value='{$dateformatdetails['jsdate']}'  />
         <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='{$clang->langcode}'  />
         <input  type='hidden' name='dateyearrange{$ia[1]}' id='dateyearrange{$ia[1]}' value='{$minyear}:{$maxyear}'  />
@@ -1313,7 +1313,9 @@ function do_language($ia)
 
     $answerlangs = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->additionalLanguages;
     $answerlangs [] = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
-    $answer = "\n\t<p class=\"question answer-item dropdown-item langage-item\">\n<select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"document.getElementById('lang').value=this.value; $checkconditionFunction(this.value, this.name, this.type);\">\n";
+    $answer = "\n\t<p class=\"question answer-item dropdown-item langage-item\">\n"
+    ."<label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Choose your language')}</label>"
+    ."<select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"document.getElementById('lang').value=this.value; $checkconditionFunction(this.value, this.name, this.type);\">\n";
     if (!$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {$answer .= "\t<option value=\"\" selected=\"selected\">".$clang->gT('Please choose...')."</option>\n";}
     foreach ($answerlangs as $ansrow)
     {
@@ -1532,7 +1534,7 @@ function do_list_dropdown($ia)
         $sselect_show_hide = '';
     }
     $sselect = '
-    <p class="question answer-item dropdown-item">
+    <p class="question answer-item dropdown-item"><label for="answer'.$ia[1].'" class="hide label">'.$clang->gT('Please choose').'</label>
     <select name="'.$ia[1].'" id="answer'.$ia[1].'"'.$dropdownSize.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide.'">
     ';
     $answer = $sselect.$answer;
@@ -3878,6 +3880,7 @@ function do_numerical($ia)
 
     $clang = Yii::app()->lang;
     $extraclass ="";
+    $answertypeclass = "numeric";
     if ($ia[8] == 'Y')
     {
         $checkconditionFunction = "checkconditions";
@@ -3928,6 +3931,7 @@ function do_numerical($ia)
     {
         $acomma="";
         $extraclass .=" integeronly";
+        $answertypeclass = " integeronly";
     }
     else
     {
@@ -3943,15 +3947,17 @@ function do_numerical($ia)
     {
         includeKeypad();
         $extraclass .=" inputkeypad";
-        $kpclass = "num-keypad";
+        $answertypeclass = "num-keypad";
     }
     else
     {
         $kpclass = "";
     }
     // --> START NEW FEATURE - SAVE
-    $answer = "<p class=\"question answer-item text-item numeric-item {$extraclass}\">\n$prefix\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" "
-    . "id=\"answer{$ia[1]}\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" alt=\"".$clang->gT('Answer')."\" onkeypress=\"return goodchars(event,'-0123456789{$acomma}')\" onchange='$checkconditionFunction(this.value, this.name, this.type)'"
+    $answer = "<p class='question answer-item text-item numeric-item {$extraclass}'>"
+    . " <label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Answer')}</label>\n$prefix\t"
+    . "<input class='text {$answertypeclass}' type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" "
+    . "id=\"answer{$ia[1]}\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" onkeypress=\"return goodchars(event,'-0123456789{$acomma}')\" onchange='$checkconditionFunction(this.value, this.name, this.type)'"
     . " {$maxlength} />\t{$suffix}\n</p>\n";
     if ($aQuestionAttributes['hide_tip']==0)
     {
@@ -4059,8 +4065,8 @@ function do_shortfreetext($ia)
         //NEW: textarea instead of input=text field
 
         // --> START NEW FEATURE - SAVE
-        $answer ="<p class=\"question answer-item text-item {$extraclass}\">";
-        $answer .= '<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" '
+        $answer ="<p class='question answer-item text-item {$extraclass}'><label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Answer')}</label>"
+        . '<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" '
         .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
         // --> END NEW FEATURE - SAVE
 
@@ -4144,7 +4150,9 @@ function do_shortfreetext($ia)
     else
     {
         //no question attribute set, use common input text field
-        $answer = "<p class=\"question answer-item text-item {$extraclass}\">\n$prefix\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\""
+        $answer = "<p class=\"question answer-item text-item {$extraclass}\">\n"
+        ."<label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Answer')}</label>"
+        ."$prefix\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\""
         .htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES,'UTF-8')
         ."\" {$maxlength} onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" $numbersonly />\t$suffix\n</p>\n";
     }
@@ -4245,7 +4253,7 @@ function do_longfreetext($ia)
     // <-- END ENHANCEMENT - TEXT INPUT WIDTH
 
     // --> START NEW FEATURE - SAVE
-    $answer = "<p class=\"question answer-item text-item {$extraclass}\">";
+    $answer = "<p class='question answer-item text-item {$extraclass}'><label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Answer')}</label>";
     $answer .='<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
     .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)">';
     // --> END NEW FEATURE - SAVE
@@ -4328,8 +4336,8 @@ function do_hugefreetext($ia)
     // <-- END ENHANCEMENT - TEXT INPUT WIDTH
 
     // --> START NEW FEATURE - SAVE
-    $answer = "<p class=\"question answer-item text-item {$extraclass}\">";
-    $answer .='<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
+    $answer = "<p class=\"question answer-item text-item {$extraclass}\"><label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Answer')}</label>";
+    $answer .='<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" '
     .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)">';
     // --> END NEW FEATURE - SAVE
 
