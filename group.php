@@ -713,7 +713,7 @@ echo "<input type='text' id='runonce' value='0' style='display: none;'/>
     <script type='text/javascript'>
     <!--\n";
 
-echo "var LEMradix='" . $radix . "'\n";
+echo "var LEMradix='" . $radix . "';\n";
 
 print <<<END
 	function fixnum_checkconditions(value, name, type, evt_type)
