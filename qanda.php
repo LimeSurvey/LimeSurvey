@@ -314,10 +314,6 @@ function retrieveAnswers($ia)
         list($answer, $inputnames)=$values;
     }
 
-    $answer .= "\n\t<input type='hidden' name='display$ia[1]' id='display$ia[0]' value='";
-    $answer .= 'on'; //If this is single format, then it must be showing. Needed for checking conditional mandatories
-    $answer .= "' />\n"; //for conditional mandatory questions
-
     if ($ia[6] == 'Y')
     {
         $qtitle = '<span class="asterisk">'.$clang->gT('*').'</span>'.$qtitle;
@@ -885,14 +881,7 @@ function return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, 
         $htmltbody2 .= " style='display: none'";
     }
     $htmltbody2 .= ">\n";
-    if($ia[4]=="1") {
-        //This is an array dual scale question and we have to massage the tbidpslay rowname
-        $hiddenfield = "<input type='hidden' name='tbdisp$rowname#0' id='tbdisp$rowname#0' value='on' />\n";
-        $hiddenfield .= "<input type='hidden' name='tbdisp$rowname#1' id='tbdisp$rowname#1' value='on' />\n";
-    } else {
-        $hiddenfield = "<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='on' />\n";
-    }
-    return array($htmltbody2, $hiddenfield);
+    return array($htmltbody2, "");
 }
 
 // ==================================================================
