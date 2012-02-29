@@ -799,7 +799,13 @@ foreach ($_SESSION['grouplist'] as $gl)
     }
 
     echo "\n\n<!-- START THE GROUP -->\n";
-    echo "\n\n<div id='group-$gid'>\n";
+    echo "\n\n<div id='group-$gid'";
+    $gnoshow = LimeExpressionManager::GroupIsIrelevantOrHidden($gid);
+    if  ($gnoshow)
+    {
+        echo " style='display: none;'";
+    }
+    echo ">\n";
     echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));
     echo "\n";
 

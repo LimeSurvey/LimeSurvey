@@ -2483,12 +2483,13 @@ class LimeExpressionManager {
      * @param <type> $gid
      * @return boolean
      */
-    static function GroupIsRelevant($gid)
+    static function GroupIsIrelevantOrHidden($gid)
     {
         $LEM =& LimeExpressionManager::singleton();
         $grel = (isset($_SESSION['relevanceStatus']['G' . $gid]) ? $_SESSION['relevanceStatus']['G' . $gid] : 1);   // group-level relevance based upon grelevance equation
-        $qgrel = (isset($LEM->gid2relevanceStatus[$gid]) ? isset($LEM->gid2relevanceStatus[$gid]) : 1); // group-level relevance based upon ensuring at least one contained question is relevant
-        return ($grel && $qgrel);
+        $gseq = (isset($LEM->groupId2groupSeq[$gid]) ? $LEM->groupId2groupSeq[$gid] : -1);
+        $gshow = (isset($LEM->indexGseq[$gseq]['show']) ? $LEM->indexGseq[$gseq]['show'] : true);   // default to true?
+        return !($grel && $gshow);
     }
 
     /**
@@ -3757,13 +3758,13 @@ class LimeExpressionManager {
             if ($gStatus['relevant']) {
                 $srel = true;
             }
-            if (!$gStatus['hidden']) {
+            if ($gStatus['relevant'] && !$gStatus['hidden']) {
                 $shidden=false;
             }
-            if ($gStatus['mandViolation']) {
+            if ($gStatus['relevant'] && !$gStatus['hidden'] && $gStatus['mandViolation']) {
                 $smandViolation = true;
             }
-            if (!$gStatus['valid']) {
+            if ($gStatus['relevant'] && !$gStatus['hidden'] && !$gStatus['valid']) {
                 $svalid=false;
             }
             if ($gStatus['anyUnanswered']) {
@@ -3832,7 +3833,7 @@ class LimeExpressionManager {
         $ganyUnanswered = false;
 
         $gRelInfo = $LEM->gRelInfo[$groupSeq];
-
+        
         /////////////////////////////////////////////////////////
         // CHECK EACH QUESTION, AND SET GROUP-LEVEL PROPERTIES //
         /////////////////////////////////////////////////////////
@@ -3842,19 +3843,19 @@ class LimeExpressionManager {
 
             $updatedValues = array_merge($updatedValues,$qStatus['updatedValues']);
 
-            if ($qStatus['relevant']==true) {
+            if ($gRelInfo['result']==true && $qStatus['relevant']==true) {
                 $grel = $gRelInfo['result'];    // true;   // at least one question relevant
             }
             if ($qStatus['hidden']==false && $qStatus['relevant'] == true) {
                 $ghidden=false; // at least one question is visible
             }
-            if ($qStatus['mandViolation']==true) {
+            if ($qStatus['relevant']==true && $qStatus['hidden']==false && $qStatus['mandViolation']==true) {
                 $gmandViolation=true;   // at least one relevant question fails mandatory test
             }
             if ($qStatus['anyUnanswered']==true) {
                 $ganyUnanswered=true;
             }
-            if ($qStatus['valid']==false) {
+            if ($qStatus['relevant']==true && $qStatus['hidden']==false && $qStatus['valid']==false) {
                 $gvalid=false;  // at least one question fails validity constraints
             }
             $currentQset[$qStatus['info']['qid']] = $qStatus;
@@ -3982,6 +3983,9 @@ class LimeExpressionManager {
         $gid=$qInfo['gid'];
         $qhidden = $qInfo['hidden'];
         $debug_qmessage='';
+        
+        $gRelInfo = $LEM->gRelInfo[$qInfo['gseq']];
+        $grel = $gRelInfo['result'];
 
         ///////////////////////////
         // IS QUESTION RELEVANT? //
@@ -4518,7 +4522,7 @@ class LimeExpressionManager {
         // CREATE ARRAY OF VALUES THAT NEED TO BE SILENTLY UPDATED //
         /////////////////////////////////////////////////////////////
         $updatedValues=array();
-        if (!$qrel)
+        if (!$qrel || !$grel)
         {
             // If not relevant, then always NULL it in the database
             $sgqas = explode('|',$LEM->qid2code[$qid]);
@@ -4879,8 +4883,6 @@ class LimeExpressionManager {
         $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
 
-//        $knownVars =& $LEM->knownVars;
-
         $jsParts=array();
         $allJsVarsUsed=array();
         $rowdividList=array();   // list of subquestions needing relevance entries
@@ -4911,6 +4913,7 @@ class LimeExpressionManager {
         $pageRelevanceInfo=array();
         $qidList = array(); // list of questions used in relevance and tailoring
         $gidList = array(); // list of groups on this page
+        $gid_qidList = array(); // list of qids using relevance/tailoring within each group
 
         if (is_array($LEM->pageRelevanceInfo))
         {
@@ -4926,7 +4929,6 @@ class LimeExpressionManager {
         $valEqns = array();
         $relEqns = array();
         $relChangeVars = array();
-        $relFnCalls = array();
 
         if (is_array($pageRelevanceInfo))
         {
@@ -4973,6 +4975,12 @@ class LimeExpressionManager {
                 }
 
                 $qidList[$arg['qid']] = $arg['qid'];
+                if (!isset($gid_qidList[$arg['gid']]))
+                {
+                    $gid_qidList[$arg['gid']] = array();
+                }
+                $gid_qidList[$arg['gid']][$arg['qid']] = '0';   // means the qid is within this gid, but may not have a relevance equation      
+                
 
                 // Now check whether any sub-question validation needs to be performed
                 $subqValidations = array();
@@ -4997,6 +5005,7 @@ class LimeExpressionManager {
                     $validationEqns = $LEM->qid2validationEqn[$arg['qid']]['eqn'];
                 }
 
+                // Process relevance for question $arg['qid'];
                 $relevance = $arg['relevancejs'];
 
                 $relChangeVars[] = "  relChange" . $arg['qid'] . "=false;\n"; // detect change in relevance status
@@ -5004,17 +5013,11 @@ class LimeExpressionManager {
                 if (($relevance == '' || $relevance == '1') && count($tailorParts) == 0 && count($subqParts) == 0 && count($subqValidations) == 0 && count($validationEqns) == 0)
                 {
                     // Only show constitutively true relevances if there is tailoring that should be done.
-//                    $jsParts[] = "document.getElementById('relevance" . $arg['qid'] . "').value='1'; // always true\n";
                     $relParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
                     continue;
                 }
                 $relevance = ($relevance == '') ? '1' : $relevance;
-//                $jsResultVar = $LEM->em->GetJsVarFor($arg['jsResultVar']);
-//                $relParts[] = "\n// Process Relevance for Question " . $arg['qid'];
-//                if ($relevance != 1)
-//                {
-//                    $relParts[] = ": { " . $arg['eqn'] . " }";
-//                }
+                
                 $relParts[] = "\nif (" . $relevance . ")\n{\n";
                 ////////////////////////////////////////////////////////////////////////
                 // DO ALL ARRAY FILTERING FIRST - MAY AFFECT VALIDATION AND TAILORING //
@@ -5252,7 +5255,7 @@ class LimeExpressionManager {
                     $jsResultVar = $LEM->em->GetJsVarFor($arg['jsResultVar']);
                     $relParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val(escape(jQuery.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .em_equation').find('span').html()))).replace(/%20/g,' '));\n";
                 }
-                $relParts[] = "  relChange" . $arg['qid'] . "=true;\n";
+                $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
                 $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
 
                 $relParts[] = "}\n";
@@ -5261,7 +5264,7 @@ class LimeExpressionManager {
                     $relParts[] = "else {\n";
                     $relParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
                     $relParts[] = "  $('#display" . $arg['qid'] . "').val('');\n";
-                    $relParts[] = "  if ($('#relevance" . $arg['qid'] . "').val()=='1') { relChange" . $arg['qid'] . "=true; }\n";
+                    $relParts[] = "  if ($('#relevance" . $arg['qid'] . "').val()=='1') { relChange" . $arg['qid'] . "=true; }\n";  // only propagate changes if changing from relevant to irrelevant
                     $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('0');\n";
                     $relParts[] = "}\n";
                 }
@@ -5276,6 +5279,7 @@ class LimeExpressionManager {
                 $relJsVarsUsed = array_merge($relJsVarsUsed,$valJsVarsUsed);
                 $relJsVarsUsed = array_unique($relJsVarsUsed);
                 $qrelQIDs = array();
+                $qrelGIDs = array();    // so that any group-level change is also propagated
                 foreach ($relJsVarsUsed as $jsVar)
                 {
                     if ($jsVar != '' && isset($LEM->knownVars[substr($jsVar,4)]['qid']))
@@ -5289,12 +5293,16 @@ class LimeExpressionManager {
                             continue;   // don't make dependent upon itself
                         }
                         $qrelQIDs[] = 'relChange' . $_qid;
+                        $qrelGIDs[] = 'relChangeG' . $knownVar['gid'];
                     }
                 }
+                $qrelGIDs[] = 'relChangeG' . $arg['gid'];   // so if current group changes visibility, re-tailor it.
                 $qrelQIDs = array_unique($qrelQIDs);
+                $qrelGIDs = array_unique($qrelGIDs);
                 if ($LEM->surveyMode=='question')
                 {
                     $qrelQIDs=array();  // in question-by-questin mode, should never test for dependencies on self or other questions.
+                    $qrelGIDs=array();
                 }
 
                 $qrelJS = "function LEMrel" . $arg['qid'] . "(sgqa){\n";
@@ -5303,19 +5311,26 @@ class LimeExpressionManager {
                 {
                     $qrelJS .= "  if(" . implode(' || ', $qrelQIDs) . "){\n    ;\n  }\n  else";
                 }
+                if (count($qrelGIDs) > 0)
+                {
+                    $qrelJS .= "  if(" . implode(' || ', $qrelGIDs) . "){\n    ;\n  }\n  else";
+                }                
                 $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n    return;\n }\n";
                 $qrelJS .= implode("",$relParts);
                 $qrelJS .= "}\n";
                 $relEqns[] = $qrelJS;
 
-                $relFnCalls[] = "  LEMrel" . $arg['qid'] . "(sgqa);\n";
+                $gid_qidList[$arg['gid']][$arg['qid']] = '1';   // means has an explicit LEMrel() function   
             }
         }
 
+        foreach(array_keys($gid_qidList) as $_gid)
+        {
+            $relChangeVars[] = "  relChangeG" . $_gid . "=false;\n";
+        }
         $jsParts[] = implode("",$relChangeVars);
-        $jsParts[] = implode("",$relFnCalls);
 
-        // Finally do Group-level Relevance.  Might consider surrounding questions with group-level relevance, but might message up Q.NAOK - not sure.
+        // Process relevance for each group; and if group is relevant, process each contained question in order
         foreach ($LEM->gRelInfo as $gr)
         {
             if (!array_key_exists($gr['gid'],$gidList)) {
@@ -5327,11 +5342,34 @@ class LimeExpressionManager {
 //                $jsParts[] = ": { " . $gr['eqn'] . " }";
                 $jsParts[] = "\nif (" . $gr['relevancejs'] . ") {\n";
                 $jsParts[] = "  $('#group-" . $gr['gid'] . "').show();\n";
+                $jsParts[] = "  relChangeG" . $gr['gid'] . "=true;\n";
                 $jsParts[] = "  $('#relevanceG" . $gr['gid'] . "').val(1);\n";
+
+                $qids = $gid_qidList[$gr['gid']];
+                foreach ($qids as $_qid=>$_val)
+                {
+                    if ($_val==1)
+                    {
+                        $jsParts[] = "  LEMrel" . $_qid . "(sgqa);\n";
+                    }
+                }
+                
                 $jsParts[] = "}\nelse {\n";
                 $jsParts[] = "  $('#group-" . $gr['gid'] . "').hide();\n";
+                $jsParts[] = "  if ($('#relevanceG" . $gr['gid'] . "').val()=='1') { relChangeG" . $gr['gid'] . "=true; }\n";
                 $jsParts[] = "  $('#relevanceG" . $gr['gid'] . "').val(0);\n";
                 $jsParts[] = "}\n";
+            }
+            else
+            {
+                $qids = $gid_qidList[$gr['gid']];
+                foreach ($qids as $_qid=>$_val)
+                {
+                    if ($_val == 1)
+                    {
+                        $jsParts[] = "  LEMrel" . $_qid . "(sgqa);\n";
+                    }
+                }
             }
             // now make sure any needed variables are accessible
             $vars = explode('|',$gr['relevanceVars']);
@@ -5440,7 +5478,6 @@ class LimeExpressionManager {
                 $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
             }
         }
-        sort($qidList,SORT_NUMERIC);
         foreach ($qidList as $qid)
         {
             if (isset($_SESSION['relevanceStatus'])) {
@@ -6086,8 +6123,11 @@ EOD;
         {
             $relevant=false;
             $qid = $qinfo['info']['qid'];
+            $gid = $qinfo['info']['gid'];
             $relevant = (isset($_POST['relevance' . $qid]) ? ($_POST['relevance' . $qid] == 1) : false);
+            $grelevant = (isset($_POST['relevanceG' . $gid]) ? ($_POST['relevanceG' . $gid] == 1) : false);
             $_SESSION['relevanceStatus'][$qid] = $relevant;
+            $_SESSION['relevanceStatus']['G' . $gid] = $grelevant;
             if (isset($qinfo['info']['rowdivid']) && $qinfo['info']['rowdivid']!='')
             {
                 $rowdivid=$qinfo['info']['rowdivid'];
@@ -6099,7 +6139,7 @@ EOD;
             }
             foreach (explode('|',$qinfo['sgqa']) as $sq)
             {
-                if ($relevant)
+                if ($relevant && $grelevant)
                 {
                     $value = (isset($_POST[$sq]) ? $_POST[$sq] : '');
                     $type = $qinfo['info']['type'];
