@@ -1087,7 +1087,7 @@ function do_date($ia)
             {
                 // Show day select box
                 case 'j':
-                case 'd':   $answer .= ' <label for="day'.$ia[1].'"><select id="day'.$ia[1].'" class="day">
+                case 'd':   $answer .= ' <label for="day'.$ia[1].'" class="hide">'.$clang->gT('Day').'</label><select id="day'.$ia[1].'" class="day">
                                                 <option value="">'.$clang->gT('Day')."</option>\n";
                 for ($i=1; $i<=31; $i++) {
                     if ($i == $currentdate)
@@ -1100,11 +1100,11 @@ function do_date($ia)
                     }
                     $answer .= '    <option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.sprintf('%02d', $i)."</option>\n";
                 }
-                $answer .='</select></label>';
+                $answer .='</select>';
                 break;
                 // Show month select box
                 case 'n':
-                case 'm':   $answer .= ' <label for="month'.$ia[1].'"><select id="month'.$ia[1].'" class="month">
+                case 'm':   $answer .= ' <label for="month'.$ia[1].'" class="hide">'.$clang->gT('Month').'</label><select id="month'.$ia[1].'" class="month">
                                             <option value="">'.$clang->gT('Month')."</option>\n";
                 $montharray=array(
                 $clang->gT('Jan'),
@@ -1131,10 +1131,10 @@ function do_date($ia)
 
                     $answer .= '    <option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.$montharray[$i-1].'</option>';
                 }
-                $answer .= '    </select></label>';
+                $answer .= '    </select>';
                 break;
                 // Show year select box
-                case 'Y':   $answer .= ' <label for="year'.$ia[1].'"><select id="year'.$ia[1].'" class="year">
+                case 'Y':   $answer .= ' <label for="year'.$ia[1].'" class="hide">'.$clang->gT('Year').'</label><select id="year'.$ia[1].'" class="year">
                                             <option value="">'.$clang->gT('Year').'</option>';
 
                 /*
@@ -1193,7 +1193,7 @@ function do_date($ia)
                     }
                     $answer .= '  <option value="'.$i.'"'.$i_date_selected.'>'.$i.'</option>';
                 }
-                $answer .= '</select></label>';
+                $answer .= '</select>';
 
                 break;
             }
@@ -1246,9 +1246,8 @@ function do_date($ia)
         $goodchars = "0123456789".$goodchars[0];
 
         $answer ="<p class=\"question\">
-                        <label for=\"answer{$ia[1]}\">
-                        <input class='popupdate' type=\"text\" alt=\"".$clang->gT('Date picker')."\" size=\"10\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"10\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
-                        </label>
+                        <label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Date picker')}</label>
+                        <input class='popupdate' type=\"text\" title=\"".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'])."\" size=\"10\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"10\" onkeypress=\"return goodchars(event,'".$goodchars."')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
                         <input  type='hidden' name='dateformat{$ia[1]}' id='dateformat{$ia[1]}' value='{$dateformatdetails['jsdate']}'  />
                         <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='{$clang->langcode}'  />
                         <input  type='hidden' name='dateyearrange{$ia[1]}' id='dateyearrange{$ia[1]}' value='{$minyear}:{$maxyear}'  />
@@ -1275,7 +1274,7 @@ function do_language($ia)
 
     $answerlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
     $answerlangs [] = GetBaseLanguageFromSurveyID($surveyid);
-    $answer = "\n\t<p class=\"question\">\n<label for=\"answer$ia[1]\"><select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"document.getElementById('lang').value=this.value; $checkconditionFunction(this.value, this.name, this.type);\">\n";
+    $answer = "\n\t<p class=\"question\">\n.<label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Choose your language')}</label><select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"document.getElementById('lang').value=this.value; $checkconditionFunction(this.value, this.name, this.type);\">\n";
     if (!$_SESSION[$ia[1]]) {$answer .= "\t<option value=\"\" selected=\"selected\">".$clang->gT('Please choose...')."</option>\n";}
     foreach ($answerlangs as $ansrow)
     {
@@ -1286,7 +1285,7 @@ function do_language($ia)
         }
         $answer .= '>'.getLanguageNameFromCode($ansrow, true)."</option>\n";
     }
-    $answer .= "</select></label>\n";
+    $answer .= "</select>\n";
     $answer .= "<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"{$_SESSION[$ia[1]]}\" />\n";
 
     $inputnames[]=$ia[1];
@@ -1480,7 +1479,7 @@ function do_list_dropdown($ia)
         }
         $answer .= '<option value="">'.$_prefix.$clang->gT('No answer')."</option>\n";
     }
-    $answer .= '				</select></label>
+    $answer .= '
 				<input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="'.$_SESSION[$ia[1]].'" />';
 
     if (isset($other) && $other=='Y')
@@ -1493,7 +1492,7 @@ function do_list_dropdown($ia)
     }
     $sselect = '
 			<p class="question">
-                <label for="answer'.$ia[1].'">
+                <label for="answer'.$ia[1].'" class="hide label">'.$clang->gT('Please choose').'</label>
 				<select name="'.$ia[1].'" id="answer'.$ia[1].'"'.$dropdownSize.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide.'">
     ';
     $answer = $sselect.$answer;
@@ -3915,9 +3914,9 @@ function do_numerical($ia)
         $kpclass = "";
     }
     // --> START NEW FEATURE - SAVE
-    $answer = "<p class=\"question\">\n\t$prefix\n\t<label for=\"answer{$ia[1]}\"><input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" "
-    . "id=\"answer{$ia[1]}\" value=\"{$dispVal}\" alt=\"".$clang->gT('Answer')."\" onkeypress=\"return goodchars(event,'-0123456789{$acomma}')\" onchange='$checkconditionFunction(this.value, this.name, this.type)' "
-    . " {$maxlength} /></label>\n\t{$suffix}\n</p>\n";
+    $answer = "<p class=\"question\"><label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Answer')}</label>\n$prefix\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" "
+    . "id=\"answer{$ia[1]}\" value=\"{$dispVal}\" title=\"".$clang->gT('Only numbers may be entered in this field')."\" onkeypress=\"return goodchars(event,'-0123456789{$acomma}')\" onchange='$checkconditionFunction(this.value, this.name, this.type)' "
+    . " {$maxlength} />\n\t{$suffix}\n</p>\n";
     if ($qidattributes['hide_tip']==0)
     {
         $answer .= "<p class=\"tip\">".$clang->gT('Only numbers may be entered in this field')."</p>\n";
@@ -4008,7 +4007,7 @@ function do_shortfreetext($ia)
         //NEW: textarea instead of input=text field
 
         // --> START NEW FEATURE - SAVE
-        $answer = '<label for="answer'.$ia[1].'"><textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" '
+        $answer = '<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" <label for="answer'.$ia[1].'" class="hide label">'.$clang->gT('Answer').'</label>'
         .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
         // --> END NEW FEATURE - SAVE
 
@@ -4021,7 +4020,7 @@ function do_shortfreetext($ia)
             $answer .= $dispVal;
         }
 
-        $answer .= "</textarea></label>\n";
+        $answer .= "</textarea>\n";
     }
     elseif((int)($qidattributes['location_mapservice'])!=0){
 
@@ -4102,7 +4101,7 @@ function do_shortfreetext($ia)
     else
     {
         //no question attribute set, use common input text field
-        $answer = "<p class=\"question\">\n\t$prefix\n\t<label for=\"answer$ia[1]\"><input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\"";
+        $answer = "<p class=\"question\">\n<label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Answer')}</label>\t$prefix\n\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\"";
         
         $dispVal = $_SESSION[$ia[1]];
         if ($qidattributes['numbers_only']==1)
@@ -4112,7 +4111,7 @@ function do_shortfreetext($ia)
         $dispVal = htmlspecialchars($dispVal,ENT_QUOTES,'UTF-8');
         $answer .= " value=\"$dispVal\"";
         
-        $answer .=" {$maxlength} onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" $numbersonly /></label>\n\t$suffix\n</p>\n";
+        $answer .=" {$maxlength} onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" $numbersonly />\n\t$suffix\n</p>\n";
     }
 
 
@@ -4195,13 +4194,13 @@ function do_longfreetext($ia)
     // <-- END ENHANCEMENT - TEXT INPUT WIDTH
 
     // --> START NEW FEATURE - SAVE
-    $answer = '<label for="answer'.$ia[1].'"><textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
+    $answer = '<label for="answer'.$ia[1].'" class="hide label">'.$clang->gT('Answer').'</label><textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" '
     .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" >';
     // --> END NEW FEATURE - SAVE
 
     if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}
 
-    $answer .= "</textarea></label>\n";
+    $answer .= "</textarea>\n";
 
     if (trim($qidattributes['time_limit'])!='')
     {
@@ -4269,13 +4268,13 @@ function do_hugefreetext($ia)
     // <-- END ENHANCEMENT - TEXT INPUT WIDTH
 
     // --> START NEW FEATURE - SAVE
-    $answer = '<label for="answer'.$ia[1].'"><textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
+    $answer = '<label for="answer'.$ia[1].'" class="hide label">'.$clang->gT('Answer').'</label><textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" '
     .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" >';
     // --> END NEW FEATURE - SAVE
 
     if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}
 
-    $answer .= "</textarea></label>\n";
+    $answer .= "</textarea>\n";
 
     if (trim($qidattributes['time_limit']) != '')
     {

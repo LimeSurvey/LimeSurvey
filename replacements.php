@@ -175,11 +175,7 @@ function templatereplace($line, $replacements=array(), $anonymized=false, $quest
 
     global $answer_id;
 
-	if ($_question_type == 'N' || $_question_type == 'U' || $_question_type == 'T' || $_question_type == 'S')
-    {
-        $_question_text = '<label for="answer'.$answer_id.'" >'.$_question_text.'</label>';
-    }
-    else if ($_question_type == '*')
+    if ($_question_type == '*')
     {
         $_question_text = '<div class="em_equation">' .$_question_text. '</div>';
     }

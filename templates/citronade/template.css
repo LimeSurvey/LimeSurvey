@@ -45,7 +45,7 @@ table{border-collapse:separate;border-spacing:0;border:1px solid gray;margin:0}
 table td,table th{border:1px solid #ccc;vertical-align:top;padding:4px}
 article,aside,dialog,figure,footer,header,hgroup,menu,nav,section{display:block}
 ul#surveylist{list-style:none}
-.hide{position:absolute;top:-9999px;left:-9999px}
+.hide{position:absolute;top:auto;left:-999999px}
 .good{color:#090}
 #progress-wrapper{width:252px;font-size:12px;height:20px;margin:0 auto}
 #progress-wrapper #progress-pre{float:left;width:45px;text-align:right;margin:0 5px 0 0}
