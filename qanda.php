@@ -1479,7 +1479,7 @@ function do_list_dropdown($ia)
         }
         $answer .= '<option value="">'.$_prefix.$clang->gT('No answer')."</option>\n";
     }
-    $answer .= '<input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="'.$_SESSION[$ia[1]].'" />';
+    $answer .= '</select><input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="'.$_SESSION[$ia[1]].'" />';
 
     if (isset($other) && $other=='Y')
     {
@@ -1495,7 +1495,6 @@ function do_list_dropdown($ia)
 				<select name="'.$ia[1].'" id="answer'.$ia[1].'"'.$dropdownSize.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide.'">
     ';
     $answer = $sselect.$answer;
-    $answer .= "</select>";
 
     if (isset($other) && $other=='Y')
     {
