@@ -2483,7 +2483,7 @@ class LimeExpressionManager {
      * @param <type> $gid
      * @return boolean
      */
-    static function GroupIsIrelevantOrHidden($gid)
+    static function GroupIsIrrelevantOrHidden($gid)
     {
         $LEM =& LimeExpressionManager::singleton();
         $grel = (isset($_SESSION['relevanceStatus']['G' . $gid]) ? $_SESSION['relevanceStatus']['G' . $gid] : 1);   // group-level relevance based upon grelevance equation
@@ -3044,8 +3044,10 @@ class LimeExpressionManager {
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
                     $message .= $result['message'];
+                    $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
+                    $grel = $gRelInfo['result'];                    
 
-                    if (!$result['relevant'] || $result['hidden'])
+                    if (!$grel || !$result['relevant'] || $result['hidden'])
                     {
                         // then skip this question - assume already saved?
                         continue;
@@ -3204,7 +3206,10 @@ class LimeExpressionManager {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
-                    if (!is_null($result) && ($result['mandViolation'] || !$result['valid']))
+                    $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
+                    $grel = $gRelInfo['result'];
+                    
+                    if ($grel && !is_null($result) && ($result['mandViolation'] || !$result['valid']))
                     {
                         // redisplay the current question
                         $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
@@ -3259,8 +3264,10 @@ class LimeExpressionManager {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
+                    $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
+                    $grel = $gRelInfo['result'];                    
 
-                    if (!$result['relevant'] || $result['hidden'])
+                    if (!$grel || !$result['relevant'] || $result['hidden'])
                     {
                         // then skip this question - assume already saved?
                         continue;
@@ -3631,7 +3638,9 @@ class LimeExpressionManager {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
-                    if ($result['mandViolation'] || !$result['valid'])
+                    $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
+                    $grel = $gRelInfo['result'];                    
+                    if ($grel && ($result['mandViolation'] || !$result['valid']))
                     {
                         // redisplay the current question
                         $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
@@ -3692,10 +3701,16 @@ class LimeExpressionManager {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
-
-                    if (!$preview && (!$result['relevant'] || $result['hidden']))
+                    $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
+                    $grel = $gRelInfo['result'];
+                    
+                    if (!$preview && (!$grel || !$result['relevant'] || $result['hidden']))
                     {
                         // then skip this question
+                        continue;
+                    }
+                    else if (!$grel)
+                    {
                         continue;
                     }
                     else if (!($result['mandViolation'] || !$result['valid']) && $LEM->currentQuestionSeq < $seq) {
