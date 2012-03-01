@@ -1117,11 +1117,18 @@ function XMLImportGroup($sFullFilepath, $newsid)
                 $insertdata[(string)$key]=(string)$value;
             }
             $insertdata['qid']=$aQIDReplacements[(int)$insertdata['qid']]; // remap the qid
-            $insertdata['sqid']=$aQIDReplacements[(int)$insertdata['sqid']]; // remap the subqeustion id
+            if (!isset($aQIDReplacements[(int)$insertdata['sqid']]) || is_null($aQIDReplacements[(int)$insertdata['sqid']]))
+            {
+                $insertdata['sqid'] = 0;    // defaults for non-array types
+            }
+            else
+            {
+                $insertdata['sqid']=$aQIDReplacements[(int)$insertdata['sqid']]; // remap the subqeustion id
+            }
 
             // now translate any links
             $query=$connect->GetInsertSQL($tablename,$insertdata); 
-            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />\$query<br />\n".$connect->ErrorMsg());
+            $result=$connect->Execute($query) or safe_die ($clang->gT("Error").": Failed to insert data<br />". $query. "<br />\n".$connect->ErrorMsg());
             $results['defaultvalues']++;
         }             
     }
