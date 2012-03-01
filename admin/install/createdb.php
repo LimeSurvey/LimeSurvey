@@ -18,7 +18,7 @@ if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
 require_once(dirname(__FILE__).'/../../config-defaults.php');
 require_once(dirname(__FILE__).'/../../common.php');
 require_once($rootdir.'/classes/core/language.php');
-require_once(dirname(__FILE__).'/../admin_functions.php');      
+require_once(dirname(__FILE__).'/../admin_functions.php');
 $clang = new limesurvey_lang("en");
 
 
@@ -39,7 +39,7 @@ if (returnglobal('createdbstep2')==$clang->gT("Populate Database"))
         $createdbtype='mysql';
     }
     if ($createdbtype=='mssql_n' || $createdbtype=='odbc_mssql' || $createdbtype=='odbtp') $createdbtype='mssql';
-    if($createdbtype=='postgres' && $connect->pgVersion=='9') 
+    if($createdbtype=='postgres' && version_compare($connect->pgVersion, '9') >= 0)
     {
         $connect->execute("ALTER DATABASE {$dbname} SET bytea_output='escape';");
     }
