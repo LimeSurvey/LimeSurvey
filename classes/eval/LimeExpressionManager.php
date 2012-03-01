@@ -6268,6 +6268,7 @@ EOD;
             case 'question':
             case 'readWrite':
             case 'relevance':
+            case 'rowdivid':
             case 'type':
             case 'qcode':
             case 'gseq':
