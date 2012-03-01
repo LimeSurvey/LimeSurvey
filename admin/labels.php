@@ -613,7 +613,7 @@ function modlabelsetanswers($lid)
             $myFilter = new InputFilter('','',1,1,1);
         }
 
-        $query = "DELETE FROM ".db_table_name('labels')."  WHERE `lid` = '$lid'";
+        $query = "DELETE FROM ".db_table_name('labels')."  WHERE lid = {$lid}";
 
         $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
@@ -646,8 +646,8 @@ function modlabelsetanswers($lid)
                 $sort_order = db_quoteall($index);
                 $lang = db_quoteall($lang);
 
-                $query = "INSERT INTO ".db_table_name('labels')." (`lid`,`code`,`title`,`sortorder`, `assessment_value`, `language`)
-                    VALUES('$lid',$actualcode,$title,$sort_order,$assessmentvalue,$lang)";
+                $query = "INSERT INTO ".db_table_name('labels')." (lid,code,title,sortorder, assessment_value, language)
+                    VALUES({$lid},{$actualcode},{$title},{$sort_order},{$assessmentvalue},{$lang})";
 
                 $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
             }
