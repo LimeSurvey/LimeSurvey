@@ -186,7 +186,7 @@ class ExpressionManager {
 'quotemeta' => array('quotemeta', 'quotemeta', $this->gT('Quote meta characters'), 'string quotemeta(string)', 'http://www.php.net/manual/en/function.quotemeta.php', 1),
 'rand' => array('rand', 'Math.random', $this->gT('Generate a random integer'), 'int rand() OR int rand(min, max)', 'http://www.php.net/manual/en/function.rand.php', 0,2),
 'regexMatch' => array('exprmgr_regexMatch', 'LEMregexMatch', $this->gT('Compare a string to a regular expression pattern'), 'bool regexMatch(pattern,input)', '', 2),
-'round' => array('round', 'LEMround', $this->gT('Rounds a number to an optional precision'), 'number round(val [, precision])', 'http://www.php.net/manual/en/function.round.php', 1,2),
+'round' => array('round', 'round', $this->gT('Rounds a number to an optional precision'), 'number round(val [, precision])', 'http://www.php.net/manual/en/function.round.php', 1,2),
 'rtrim' => array('rtrim', 'rtrim', $this->gT('Strip whitespace (or other characters) from the end of a string'), 'string rtrim(string [, charlist])', 'http://www.php.net/manual/en/function.rtrim.php', 1,2),
 'sin' => array('sin', 'Math.sin', $this->gT('Sine'), 'number sin(arg)', 'http://www.php.net/manual/en/function.sin.php', 1),
 'sprintf' => array('sprintf', 'sprintf', $this->gT('Return a formatted string'), 'string sprintf(format, arg1, arg2, ... argN)', 'http://www.php.net/manual/en/function.sprintf.php', -2),
@@ -2597,6 +2597,8 @@ IGNORE THIS ERROR~rand(3,5)
 1~regexMatch('/(?:\(\d{3}\))\s*\d{3}-\d{4}/','(212) 555-1212')
 0~round(0.2)
 1~round(.8)
+0.07~0.01 + 0.06
+0.07~round(0.01 + 0.06,10)
      I was trimmed~rtrim('     I was trimmed   ')
 0.2~sin(asin(0.2))
 1~sin(pi()/2)
