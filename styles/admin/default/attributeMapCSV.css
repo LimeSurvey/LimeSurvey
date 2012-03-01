@@ -9,10 +9,10 @@ html, body{
    margin-top: 10px;
 }
 #newcreated{
-
    float : left;
    background-color: #D2E0F2;
  }
+
 #csvattribute {
     float : left;
     background-color: #D2E0F2;
@@ -31,8 +31,11 @@ html, body{
     padding : 4px;
 }
 .newcreate ul{
-    padding : 100px;
-	height: 100px;
+}
+
+.newcreate, .csvatt, .cpdbatt {
+    min-height: 100px;
+    padding-bottom: 50px;
 }
 
 .cpdbatt {
