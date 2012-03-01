@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey 1.91+\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-17 15:20+0100\n"
-"PO-Revision-Date: 2012-01-17 15:20+0100\n"
+"POT-Creation-Date: 2012-03-01 16:40+0100\n"
+"PO-Revision-Date: 2012-03-01 16:40+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: Kaya Zeren <kaya.zeren@zeron.net>\n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Poedit-Basepath: ..\\..\\..\\\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: common_functions.php:3526
+#: common_functions.php:3545
 msgid "'Other:' comment mandatory"
 msgstr "'Diğer' açıklaması zorunlu"
 
@@ -30,87 +30,87 @@ msgstr "*"
 msgid "..."
 msgstr "..."
 
-#: common_functions.php:3827
+#: common_functions.php:3846
 msgid "1st time limit warning CSS style"
 msgstr "Birinci süre sınırı uyarısının CSS stili "
 
-#: common_functions.php:3819
+#: common_functions.php:3838
 msgid "1st time limit warning message"
 msgstr "Birinci süre sınırı uyarısı iletisi "
 
-#: common_functions.php:3811
+#: common_functions.php:3830
 msgid "1st time limit warning message display time"
 msgstr "Birinci süre sınırı uyarı iletisi gösterim süresi "
 
-#: common_functions.php:3803
+#: common_functions.php:3822
 msgid "1st time limit warning message timer"
 msgstr "Birinci süre sınırı uyarı iletisi sayacı "
 
-#: common_functions.php:3859
+#: common_functions.php:3878
 msgid "2nd time limit warning CSS style"
 msgstr "İkinci süre sınırı uyarısının CSS stili"
 
-#: common_functions.php:3851
+#: common_functions.php:3870
 msgid "2nd time limit warning message"
 msgstr "İkinci süre sınırı uyarısı iletisi "
 
-#: common_functions.php:3843
+#: common_functions.php:3862
 msgid "2nd time limit warning message display time"
 msgstr "İkinci süre sınırı uyarı iletisi gösterim süresi"
 
-#: common_functions.php:3835
+#: common_functions.php:3854
 msgid "2nd time limit warning message timer"
 msgstr "İkinci süre sınırı uyarı iletisi sayacı "
 
-#: common_functions.php:107
+#: common_functions.php:106
 msgid "5 Point Choice"
 msgstr "5 Seçenekli"
 
-#: common_functions.php:3733
+#: common_functions.php:3752
 msgid "Action to perform when time limit is up"
 msgstr "Süre sınırı dolduğunda yapılacak işlem"
 
-#: common_functions.php:3252
+#: common_functions.php:3271
 msgid "Activate this to show a map above the input field where the user can select a location"
 msgstr "Kullanıcıların yer seçebildiği giriş alanı üzerinde bir harita göstermek için bunu aktif yapın"
 
-#: common_functions.php:622
+#: common_functions.php:621
 msgid "Active"
 msgstr "Etkin"
 
-#: common_functions.php:3563
+#: common_functions.php:3582
 msgid "Add a prefix to the answer field"
 msgstr "Yanıt alanına bir önek ekle"
 
-#: common_functions.php:3681
+#: common_functions.php:3700
 msgid "Add a suffix to the answer field"
 msgstr "Yanıt alanına bir sonek ekle"
 
-#: common_functions.php:3472
+#: common_functions.php:3491
 msgid "Allow only numerical input"
 msgstr "Yalnız sayısal değer girişine izin ver"
 
-#: common_functions.php:3536
+#: common_functions.php:3555
 msgid "Allow only numerical input for 'Other' text"
 msgstr "'Diğer' metni için yalnız sayısal girişe izin verir"
 
-#: common_functions.php:3918
+#: common_functions.php:3937
 msgid "Allowed file types"
 msgstr "İzin verilen dosya türleri"
 
-#: common_functions.php:3917
+#: common_functions.php:3936
 msgid "Allowed file types in comma separated format. e.g. pdf,doc,odt"
 msgstr "Virgülle ayrılmış izin verilen dosya türleri. e.g. pdf,doc,odt"
 
-#: common_functions.php:3322
+#: common_functions.php:3341
 msgid "Always hide this question"
 msgstr "Bu soruyu her zaman gizle"
 
-#: index.php:2206
+#: index.php:2209
 msgid "An error occurred saving a response to survey id"
 msgstr "Bir yanıt anket koduna kaydedilirken bir hata oluştu"
 
-#: index.php:2198
+#: index.php:2201
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "Beklenmedik bir hata oluştu ve yanıtlarınız kaydedilemedi."
 
@@ -134,19 +134,19 @@ msgstr "Yanıt geçersiz. Tüm kayıtların toplamı en azından %s olmalı."
 msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "Yanıt geçersiz. Toplam kayıtların sayısı şundan fazla olamamalı"
 
-#: common_functions.php:3564
+#: common_functions.php:3583
 msgid "Answer prefix"
 msgstr "Yanıt öneki"
 
-#: common_functions.php:3682
+#: common_functions.php:3701
 msgid "Answer suffix"
 msgstr "Soru soneki"
 
-#: common_functions.php:3051
+#: common_functions.php:3070
 msgid "Answer width"
 msgstr "Yanıt genişliği"
 
-#: common_functions.php:3673
+#: common_functions.php:3692
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
 msgstr "Yanıtta |Sol kaydırıcı metni|Sağ kaydırıcı metni arasındaki karakter"
 
@@ -154,59 +154,59 @@ msgstr "Yanıtta |Sol kaydırıcı metni|Sağ kaydırıcı metni arasındaki kar
 msgid "Apr"
 msgstr "Nis"
 
-#: common_functions.php:143
+#: common_functions.php:142
 msgid "Array"
 msgstr "Dizi"
 
-#: common_functions.php:119
+#: common_functions.php:118
 msgid "Array (10 Point Choice)"
 msgstr "Dizi (10 noktalı seçenek)"
 
-#: common_functions.php:113
+#: common_functions.php:112
 msgid "Array (5 Point Choice)"
 msgstr "Dizi (5 noktalı seçenek)"
 
-#: common_functions.php:137
+#: common_functions.php:136
 msgid "Array (Increase/Same/Decrease)"
 msgstr "Dizi (Artan/Aynı/Azalan)"
 
-#: common_functions.php:251
+#: common_functions.php:250
 msgid "Array (Numbers)"
 msgstr "Dizi (Rakamlar)"
 
-#: common_functions.php:257
+#: common_functions.php:256
 msgid "Array (Texts)"
 msgstr "Dizi (Metinler)"
 
-#: common_functions.php:125
+#: common_functions.php:124
 msgid "Array (Yes/No/Uncertain)"
 msgstr "Dizi (Evet/Hayır/Bilmiyorum)"
 
-#: common_functions.php:155
+#: common_functions.php:154
 msgid "Array by column"
 msgstr "Sütuna göre dizi"
 
-#: common_functions.php:101
+#: common_functions.php:100
 msgid "Array dual scale"
 msgstr "Çift Ölçekli Dizi "
 
-#: common_functions.php:3059
+#: common_functions.php:3078
 msgid "Array filter"
 msgstr "Dizi süzgeci"
 
-#: common_functions.php:3067
+#: common_functions.php:3086
 msgid "Array filter exclusion"
 msgstr "Dizi süzgeci dışlaması"
 
-#: common_functions.php:93
+#: common_functions.php:92
 msgid "Arrays"
 msgstr "Diziler"
 
-#: common_functions.php:3076
+#: common_functions.php:3095
 msgid "Assessment value"
 msgstr "Değer"
 
-#: common_functions.php:32
+#: common_functions.php:31
 msgid "Assessments"
 msgstr "Değerlendirmeler"
 
@@ -216,7 +216,7 @@ msgstr "Değerlendirmeler"
 msgid "At least %d files must be uploaded for this question"
 msgstr "En azından %d dosyaları bu soru için yüklenmiş olmalı."
 
-#: common_functions.php:7086
+#: common_functions.php:7105
 #, php-format
 msgid "Attribute %s"
 msgstr "Öznitelik %s"
@@ -225,7 +225,7 @@ msgstr "Öznitelik %s"
 msgid "Aug"
 msgstr "Ağu"
 
-#: common_functions.php:3197
+#: common_functions.php:3216
 msgid "Auto-check exclusive option if all others are checked"
 msgstr "Eğer diğer bütün seçenekler işaretlendiyse özel seçeneği otamatikman işaretle"
 
@@ -233,32 +233,32 @@ msgstr "Eğer diğer bütün seçenekler işaretlendiyse özel seçeneği otamat
 msgid "Back to main menu"
 msgstr "Ana Menüye Dön"
 
-#: common_functions.php:1258
+#: common_functions.php:1257
 msgid "Basic email notification"
 msgstr "Basit e-posta bilgilendirmesi"
 
-#: common_functions.php:3485
+#: common_functions.php:3504
 msgid "Both rows and columns"
 msgstr "Satır ve sütun beraber"
 
-#: common_functions.php:3770
+#: common_functions.php:3789
 msgid "CSS Style for the message that displays in the countdown timer during the countdown"
 msgstr "Geri sayma sırasında sayaçla birlikte gösterilecek iletinin CSS stili"
 
-#: common_functions.php:3794
+#: common_functions.php:3813
 msgid "CSS style for the 'time limit expiry message'"
 msgstr "'Süre sınırı doldu' iletisinin CSS stili"
 
-#: common_functions.php:3826
+#: common_functions.php:3845
 msgid "CSS style used when the 'time limit warning' message is displayed"
 msgstr "Birinci 'Süre sınırı uyarısı' iletisinin CSS stili"
 
-#: common_functions.php:3858
+#: common_functions.php:3877
 msgid "CSS style used when the 2nd 'time limit warning' message is displayed"
 msgstr "İkinci 'Süre sınırı uyarısı' iletisinin CSS stili"
 
-#: common_functions.php:3083
-#: common_functions.php:3084
+#: common_functions.php:3102
+#: common_functions.php:3103
 msgid "Category separator"
 msgstr "Kategori Ayıracı "
 
@@ -307,7 +307,7 @@ msgstr "Lütfen en çok %d yanıt işaretleyin"
 msgid "Check between %d and %d answers"
 msgstr "%d ile %d arasında yanıtı denetle"
 
-#: common_functions.php:3429
+#: common_functions.php:3448
 msgid "Checkbox layout"
 msgstr "İşaret kutusu yerleşimi"
 
@@ -342,34 +342,34 @@ msgstr "Soldaki listeden, en yüksek dereceli ögeden başlayarak en düşük de
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr "Sıralanmış listenizden son ögeyi çıkarmak için her ögenin sağ yanındaki makasa tıklayın"
 
-#: common_functions.php:3092
+#: common_functions.php:3111
 msgid "Code filter"
 msgstr "Kod süzgeci"
 
-#: common_functions.php:3484
+#: common_functions.php:3503
 msgid "Columns"
 msgstr "Sütunlar"
 
-#: common_functions.php:2497
-#: common_functions.php:2692
+#: common_functions.php:2516
+#: common_functions.php:2711
 msgid "Comment"
 msgstr "Açıklama"
 
-#: index.php:2307
-#: index.php:2382
-#: index.php:2549
+#: index.php:2310
+#: index.php:2385
+#: index.php:2552
 msgid "Continue"
 msgstr "Devam"
 
-#: index.php:2207
+#: index.php:2210
 msgid "DATA TO BE ENTERED"
 msgstr "YAZILAN VERİ"
 
-#: common_functions.php:131
+#: common_functions.php:130
 msgid "Date"
 msgstr "Tarih"
 
-#: common_functions.php:2304
+#: common_functions.php:2323
 msgid "Date last action"
 msgstr "Son işlem tarihi"
 
@@ -377,11 +377,11 @@ msgstr "Son işlem tarihi"
 msgid "Date picker"
 msgstr "Tarih seçici"
 
-#: common_functions.php:2316
+#: common_functions.php:2335
 msgid "Date started"
 msgstr "Başlangıç tarihi"
 
-#: common_functions.php:2257
+#: common_functions.php:2276
 msgid "Date submitted"
 msgstr "Gönderildiği tarih"
 
@@ -393,105 +393,105 @@ msgstr "Gün"
 msgid "Dec"
 msgstr "Ara"
 
-#: common_functions.php:1915
+#: common_functions.php:1914
 #: qanda.php:5694
 #: qanda.php:5758
 msgid "Decrease"
 msgstr "Azalt"
 
-#: common_functions.php:3708
+#: common_functions.php:3727
 msgid "Default"
 msgstr "Varsayılan"
 
-#: common_functions.php:3288
+#: common_functions.php:3307
 msgid "Default coordinates of the map when the page first loads. Format: latitude [space] longtitude"
 msgstr "Sayfa ilk yüklendiğinde haritanın varsayılan koordinatları. Biçim: enlem [boşluk] boylam"
 
-#: common_functions.php:3289
+#: common_functions.php:3308
 msgid "Default position"
 msgstr "Varsayılan pozisyon"
 
-#: common_functions.php:1259
+#: common_functions.php:1258
 msgid "Detailed email notification with result codes"
 msgstr "Sonuç kodlarıyla beraber ayrıntılı e-posta bilgilendirmesi"
 
 #: group.php:184
-#: index.php:2197
+#: index.php:2200
 #: question.php:230
 msgid "Did Not Save"
 msgstr "Kaydedilmeyen"
 
-#: common_functions.php:3732
+#: common_functions.php:3751
 msgid "Disable only"
 msgstr "Yalnızca devre dışı"
 
-#: common_functions.php:3744
+#: common_functions.php:3763
 msgid "Disable the next button until time limit expires"
 msgstr "Süre sınırı dolana kadar sonraki düğmesini devre dışı bırak"
 
-#: common_functions.php:3754
+#: common_functions.php:3773
 msgid "Disable the prev button until the time limit expires"
 msgstr "Süre sınırı dolana kadar önceki düğmesini devre dışı bırak"
 
-#: common_functions.php:3034
-#: common_functions.php:3045
-#: common_functions.php:3080
-#: common_functions.php:3096
-#: common_functions.php:3107
+#: common_functions.php:3053
+#: common_functions.php:3064
+#: common_functions.php:3099
 #: common_functions.php:3115
 #: common_functions.php:3126
 #: common_functions.php:3134
-#: common_functions.php:3142
-#: common_functions.php:3150
-#: common_functions.php:3158
-#: common_functions.php:3166
-#: common_functions.php:3304
-#: common_functions.php:3315
-#: common_functions.php:3398
-#: common_functions.php:3406
-#: common_functions.php:3414
-#: common_functions.php:3422
+#: common_functions.php:3145
+#: common_functions.php:3153
+#: common_functions.php:3161
+#: common_functions.php:3169
+#: common_functions.php:3177
+#: common_functions.php:3185
+#: common_functions.php:3323
+#: common_functions.php:3334
+#: common_functions.php:3417
+#: common_functions.php:3425
 #: common_functions.php:3433
-#: common_functions.php:3508
-#: common_functions.php:3541
+#: common_functions.php:3441
+#: common_functions.php:3452
+#: common_functions.php:3527
 #: common_functions.php:3560
 #: common_functions.php:3579
-#: common_functions.php:3644
-#: common_functions.php:3678
-#: common_functions.php:3686
-#: common_functions.php:3694
+#: common_functions.php:3598
+#: common_functions.php:3663
+#: common_functions.php:3697
+#: common_functions.php:3705
+#: common_functions.php:3713
 msgid "Display"
 msgstr "Görünüm"
 
-#: common_functions.php:3802
+#: common_functions.php:3821
 msgid "Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr "Sayaç bu rakama geldiğinde gösterilecek birinci 'Süre sınırı uyarısı' (boş bırakılırsa uyarı gösterilmez)"
 
-#: common_functions.php:3103
+#: common_functions.php:3122
 msgid "Display columns"
 msgstr "Sütunları göster"
 
-#: common_functions.php:3122
+#: common_functions.php:3141
 msgid "Display dropdown boxes"
 msgstr "Tıkla aç kutularını göster"
 
-#: common_functions.php:3665
+#: common_functions.php:3684
 msgid "Display min and max value under the slider"
 msgstr "En küçük ve en büyük değerleri kaydırıcının altında gösterir"
 
-#: common_functions.php:3111
+#: common_functions.php:3130
 msgid "Display rows"
 msgstr "Satırları göster"
 
-#: common_functions.php:3666
+#: common_functions.php:3685
 msgid "Display slider min and max value"
 msgstr "En büyük ve en küçük değerleri göster"
 
-#: common_functions.php:3778
+#: common_functions.php:3797
 msgid "Display the 'time limit expiry message' for this many seconds before performing the 'time limit action' (defaults to 1 second if left blank)"
 msgstr "'Süre doldu işlemi'ni yapmadan önce 'Süre doldu iletisi'nin gösterileceği süre (boş bırakılırsa varsayılan süre 1 saniyedir) "
 
-#: common_functions.php:3834
+#: common_functions.php:3853
 msgid "Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"
 msgstr "Sayaç bu rakama geldiğinde gösterilecek ikinci 'Süre sınırı uyarısı' (boş bırakılırsa uyarı gösterilmez)"
 
@@ -500,11 +500,11 @@ msgstr "Sayaç bu rakama geldiğinde gösterilecek ikinci 'Süre sınırı uyar�
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr "İğneyi istenilen bölgeye sürükleyip bırakın. Ayrıca iğneyi hareket ettirmek için haritaya sağ tıklayabilirsiniz."
 
-#: common_functions.php:3146
+#: common_functions.php:3165
 msgid "Dropdown prefix/suffix"
 msgstr "Açılır kapanır önek/sonek"
 
-#: common_functions.php:3154
+#: common_functions.php:3173
 msgid "Dropdown separator"
 msgstr "Açılan kutu ayıraçları "
 
@@ -514,7 +514,7 @@ msgstr "Açılan kutu ayıraçları "
 msgid "ERROR"
 msgstr "HATA"
 
-#: index.php:2214
+#: index.php:2217
 msgid "ERROR MESSAGE"
 msgstr "HATA İLETİSİ"
 
@@ -523,52 +523,52 @@ msgstr "HATA İLETİSİ"
 msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
 msgstr "Bu durum, çok uzun süre bir şey yapmadığınızdan, tarayıcınızın çerezleri devre dışı olduğundan ya da bağlantı sorunlarından kaynaklanabilir."
 
-#: common_functions.php:7059
+#: common_functions.php:7078
 msgid "Email address"
 msgstr "E-posta adresi"
 
-#: common_functions.php:4243
+#: common_functions.php:4262
 msgid "Email was not sent because demo-mode is activated."
 msgstr "Tanıtım kipi etkinleştirilmiş olduğundan e-posta gönderilmedi."
 
-#: common_functions.php:3369
+#: common_functions.php:3388
 msgid "Ensure a minimum number of possible answers (0=No limit)"
 msgstr "Olası yanıtların en düşük değerini sağla (0=Sınırsız)"
 
-#: common_functions.php:3161
+#: common_functions.php:3180
 msgid "Enter a header text for the first scale"
 msgstr "birinci ölçek için bir başlık bilgisi yazın"
 
-#: common_functions.php:3169
+#: common_functions.php:3188
 msgid "Enter a header text for the second scale"
 msgstr "İkinci ölçek için bir başlık bilgisi yazın"
 
-#: common_functions.php:3353
+#: common_functions.php:3372
 msgid "Enter the SGQA identifier to use the total of a previous question as the maximum for this question"
 msgstr "Önceki sorunun toplamının bu soru için en büyük değer olarak kullanılmasını sağlayacak SGQA belirtecini yazın"
 
-#: common_functions.php:3393
+#: common_functions.php:3412
 msgid "Enter the SGQA identifier to use the total of a previous question as the minimum for this question"
 msgstr "Önceki sorunun toplamının bu soru için en küçük değer olarak kullanılmasını sağlayacak SGQA belirtecini yazın"
 
-#: common_functions.php:3066
+#: common_functions.php:3085
 msgid "Enter the code of a Multiple choice question to exclude the matching answer options in this question."
 msgstr "Yalnızca bu sorudaki yanıtlara uymayan seçeneklerin gösterileceği eşleşen çoktan seçmeli sorunun kodunu yazın."
 
-#: common_functions.php:3058
+#: common_functions.php:3077
 msgid "Enter the code of a Multiple choice question to only show the matching answer options in this question."
 msgstr "Yalnızca bu sorudaki yanıtlara uyan seçeneklerin gösterileceği eşleşen  çoktan seçmeli sorunun kodunu yazın."
 
-#: common_functions.php:3178
+#: common_functions.php:3197
 msgid "Equals sum value"
 msgstr "Eşdeğer toplam değeri"
 
-#: common_functions.php:5978
+#: common_functions.php:5997
 #: index.php:559
 msgid "Error"
 msgstr "Hata"
 
-#: index.php:2216
+#: index.php:2219
 msgid "Error saving results"
 msgstr "Sonuçlar keydedilirken hata oldu"
 
@@ -591,15 +591,15 @@ msgstr "Hata: Bu soru için hiç yanıt tanımlanmamış."
 msgid "Error: This question has no answers."
 msgstr "Hata: Bu sorunun yanıtı yok."
 
-#: common_functions.php:3185
+#: common_functions.php:3204
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon."
 msgstr "Belirli bir yanıt seçildiğinde tüm diğer seçenekleri dışlar - yalnızca yanıt kodlarını, noktalı virgül ile ayırarak yazın."
 
-#: common_functions.php:3186
+#: common_functions.php:3205
 msgid "Exclusive option"
 msgstr "Dışlama seçeneği"
 
-#: common_functions.php:627
+#: common_functions.php:626
 msgid "Expired"
 msgstr "Süresi Dolmuş"
 
@@ -607,7 +607,7 @@ msgstr "Süresi Dolmuş"
 msgid "Feb"
 msgstr "Şub"
 
-#: common_functions.php:1899
+#: common_functions.php:1898
 #: qanda.php:5115
 msgid "Female"
 msgstr "Kadın"
@@ -617,28 +617,33 @@ msgstr "Kadın"
 msgid "File %s deleted"
 msgstr "%s dosyası silindi. "
 
-#: common_functions.php:3863
-#: common_functions.php:3874
+#: common_functions.php:1938
+#, fuzzy
+msgid "File count"
+msgstr "Hatırlatıcı sayısı"
+
+#: common_functions.php:3882
+#: common_functions.php:3893
 msgid "File metadata"
 msgstr "Dosya üstverisi"
 
-#: common_functions.php:263
+#: common_functions.php:262
 msgid "File upload"
 msgstr "Dosya güncelleme"
 
-#: common_functions.php:3091
+#: common_functions.php:3110
 msgid "Filter the available answers by this value"
 msgstr "Verilmiş yanıtları bu değere göre süz"
 
-#: common_functions.php:7057
+#: common_functions.php:7076
 msgid "First name"
 msgstr "Adı"
 
 #: index.php:695
 #: index.php:731
-#: index.php:2421
-#: index.php:2465
-#: index.php:2656
+#: index.php:2424
+#: index.php:2468
+#: index.php:2659
 #, php-format
 msgid "For further information please contact %s"
 msgstr "Ayrıntılı bilgi için %s ile görüşün"
@@ -648,67 +653,67 @@ msgstr "Ayrıntılı bilgi için %s ile görüşün"
 msgid "Format: %s"
 msgstr "Biçim: %s"
 
-#: common_functions.php:149
+#: common_functions.php:148
 msgid "Gender"
 msgstr "Cinsiyet"
 
-#: common_functions.php:3280
+#: common_functions.php:3299
 msgid "Get the default location using the user's IP address?"
 msgstr "Kullanıcının IP adresini kullanarak varsayılan konumu al"
 
-#: common_functions.php:3251
+#: common_functions.php:3270
 msgid "Google Maps"
 msgstr "Google haritalar"
 
-#: common_functions.php:2770
+#: common_functions.php:2789
 msgid "Group time"
 msgstr "Grup zamanı"
 
-#: common_functions.php:3162
+#: common_functions.php:3181
 msgid "Header for first scale"
 msgstr "Başlık için ilk ölçek"
 
-#: common_functions.php:3170
+#: common_functions.php:3189
 msgid "Header for second scale"
 msgstr "İkinci ölçek için başlık"
 
-#: common_functions.php:3270
+#: common_functions.php:3289
 msgid "Height of the map in pixel"
 msgstr "Piksel olarak harita yüksekliği"
 
-#: common_functions.php:3310
+#: common_functions.php:3329
 msgid "Hide the tip that is normally shown with a question"
 msgstr "Normalde sorularda gösterilen ipucunu gizle"
 
-#: common_functions.php:3321
+#: common_functions.php:3340
 msgid "Hide this question at any time. This is useful for including data using answer prefilling."
 msgstr "Bu soruyu her zaman için gizle. Bu seçenek, önceden doldurulmuş yanıtlar kullandığınızda işe yarar."
 
-#: common_functions.php:3311
+#: common_functions.php:3330
 msgid "Hide tip"
 msgstr "İpucunu gizle"
 
-#: common_functions.php:3110
+#: common_functions.php:3129
 msgid "How many rows to display"
 msgstr "Kaç satır gösterilsin?"
 
-#: common_functions.php:227
+#: common_functions.php:226
 msgid "Huge Free Text"
 msgstr "Uzun Serbest Metin"
 
-#: common_functions.php:2332
+#: common_functions.php:2351
 msgid "IP address"
 msgstr "IP Adresi"
 
-#: common_functions.php:3281
+#: common_functions.php:3300
 msgid "IP as default location"
 msgstr "Varsayılan konum Ip"
 
-#: common_functions.php:3075
+#: common_functions.php:3094
 msgid "If one of the subquestions is marked then for each marked subquestion this value is added as assessment."
 msgstr "İşaretlenecek her altsoru için bu değerlendirme değeri eklenecektir. "
 
-#: common_functions.php:3196
+#: common_functions.php:3215
 msgid "If the participant marks all options, uncheck all and check the option set in the \"Exclusive option\" setting"
 msgstr "Eğer katılımcı tüm seçenekleri işaretlediyse tümünün işaretini kaldırın ve \"Özel seçenek\" ayarını işaretleyin"
 
@@ -717,56 +722,56 @@ msgstr "Eğer katılımcı tüm seçenekleri işaretlediyse tümünün işaretin
 msgid "If you choose '%s' you must provide a description."
 msgstr "'%s' seçerseniz bir açıklama yazmalısınız."
 
-#: index.php:2348
-#: index.php:2505
+#: index.php:2351
+#: index.php:2508
 msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr "Eğer size bir pin kodu verilmişse lütfen aşağıdaki kutuya yazın ve Devam düğmesine tıklayın."
 
-#: common_functions.php:632
+#: common_functions.php:631
 msgid "Inactive"
 msgstr "Etkin değil"
 
-#: common_functions.php:1914
+#: common_functions.php:1913
 #: qanda.php:5692
 #: qanda.php:5735
 msgid "Increase"
 msgstr "Arttır"
 
-#: common_functions.php:3174
-#: common_functions.php:3334
-#: common_functions.php:3342
-#: common_functions.php:3358
-#: common_functions.php:3374
-#: common_functions.php:3382
-#: common_functions.php:3452
+#: common_functions.php:3193
+#: common_functions.php:3353
+#: common_functions.php:3361
+#: common_functions.php:3377
+#: common_functions.php:3393
+#: common_functions.php:3401
+#: common_functions.php:3471
 msgid "Input"
 msgstr "Giriş"
 
-#: common_functions.php:3690
+#: common_functions.php:3709
 msgid "Input box width"
 msgstr "Giriş kutusu genişliği"
 
-#: common_functions.php:3555
+#: common_functions.php:3574
 msgid "Insert a page break before this question in printable view by setting this to Yes."
 msgstr "Evet olarak seçtiğinizde, yazdırılabilir görünümde bu sorudan önce bir sayfa başı eklenir."
 
-#: common_functions.php:3556
+#: common_functions.php:3575
 msgid "Insert page break in printable view"
 msgstr "Yazdırılabilir görünümde sayfa başı ekle"
 
-#: common_functions.php:3460
+#: common_functions.php:3479
 msgid "Integer only"
 msgstr "Sadece sayı"
 
-#: common_functions.php:7062
+#: common_functions.php:7081
 msgid "Invitation sent date"
 msgstr "Çağrı gönderim zamanı"
 
-#: common_functions.php:3880
+#: common_functions.php:3899
 msgid "Is the participant required to give a comment to the uploaded file?"
 msgstr "Katılımcının yüklediği dosyaya yorum yapması gerekiyor mu?"
 
-#: common_functions.php:3869
+#: common_functions.php:3888
 msgid "Is the participant required to give a title to the uploaded file?"
 msgstr "Katılımcının yüklediği dosyaya başlık vermesi gerekiyor mu?"
 
@@ -782,27 +787,27 @@ msgstr "Tem"
 msgid "Jun"
 msgstr "Haz"
 
-#: common_functions.php:3545
+#: common_functions.php:3564
 msgid "Label for 'Other:' option"
 msgstr "'Diğer' seçeneğinin etiketi"
 
-#: common_functions.php:161
+#: common_functions.php:160
 msgid "Language Switch"
 msgstr "Dil Seçici"
 
-#: common_functions.php:7061
+#: common_functions.php:7080
 msgid "Language code"
 msgstr "Dil kodu"
 
-#: common_functions.php:7063
+#: common_functions.php:7082
 msgid "Last Reminder sent date"
 msgstr "Hatırlatmaların en son gönderildiği zaman"
 
-#: common_functions.php:7058
+#: common_functions.php:7077
 msgid "Last name"
 msgstr "Soyadı"
 
-#: common_functions.php:2265
+#: common_functions.php:2284
 msgid "Last page"
 msgstr "Son bakılan sayfa"
 
@@ -811,23 +816,23 @@ msgstr "Son bakılan sayfa"
 msgid "LimeSurvey online manual"
 msgstr "LimeSurvey çevrimiçi kullanım klavuzu."
 
-#: common_functions.php:3329
+#: common_functions.php:3348
 msgid "Limit the number of possible answers"
 msgstr "Olası yanıt sayısını sınırla"
 
-#: common_functions.php:3722
+#: common_functions.php:3741
 msgid "Limit time to answer question (in seconds)"
 msgstr "Saniye olarak, soruları yanıtlama süresini sınırlar"
 
-#: common_functions.php:245
+#: common_functions.php:244
 msgid "List (Dropdown)"
 msgstr "Liste (Açılan)"
 
-#: common_functions.php:173
+#: common_functions.php:172
 msgid "List (Radio)"
 msgstr "Liste (Radyo)"
 
-#: common_functions.php:191
+#: common_functions.php:190
 msgid "List with comment"
 msgstr "Açıklamalı Liste"
 
@@ -836,37 +841,37 @@ msgstr "Açıklamalı Liste"
 msgid "Load Unfinished Survey"
 msgstr "Kaydedilmiş Anketi Yükle"
 
-#: common_functions.php:3204
-#: common_functions.php:3215
-#: common_functions.php:3226
-#: common_functions.php:3237
-#: common_functions.php:3247
-#: common_functions.php:3257
+#: common_functions.php:3223
+#: common_functions.php:3234
+#: common_functions.php:3245
+#: common_functions.php:3256
 #: common_functions.php:3266
-#: common_functions.php:3275
+#: common_functions.php:3276
 #: common_functions.php:3285
-#: common_functions.php:3293
+#: common_functions.php:3294
+#: common_functions.php:3304
+#: common_functions.php:3312
 msgid "Location"
 msgstr "Konum"
 
-#: common_functions.php:3055
-#: common_functions.php:3063
-#: common_functions.php:3071
-#: common_functions.php:3088
-#: common_functions.php:3182
-#: common_functions.php:3190
-#: common_functions.php:3326
-#: common_functions.php:3350
-#: common_functions.php:3366
-#: common_functions.php:3390
-#: common_functions.php:3444
-#: common_functions.php:3519
-#: common_functions.php:3530
-#: common_functions.php:3922
+#: common_functions.php:3074
+#: common_functions.php:3082
+#: common_functions.php:3090
+#: common_functions.php:3107
+#: common_functions.php:3201
+#: common_functions.php:3209
+#: common_functions.php:3345
+#: common_functions.php:3369
+#: common_functions.php:3385
+#: common_functions.php:3409
+#: common_functions.php:3463
+#: common_functions.php:3538
+#: common_functions.php:3549
+#: common_functions.php:3941
 msgid "Logic"
 msgstr "Mantık"
 
-#: common_functions.php:221
+#: common_functions.php:220
 msgid "Long Free Text"
 msgstr "Uzun Serbest Metin"
 
@@ -875,24 +880,24 @@ msgstr "Uzun Serbest Metin"
 msgid "Make a comment on your choice here:"
 msgstr "Seçiminiz hakkında bir açıklama yazın:"
 
-#: common_functions.php:3525
+#: common_functions.php:3544
 msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
 msgstr "f'Diğer' seçeneği etkinken 'Diğer için açıklama' alanının doldurulmasını zorunlu kılar"
 
-#: common_functions.php:1898
+#: common_functions.php:1897
 #: qanda.php:5123
 msgid "Male"
 msgstr "Erkek"
 
-#: common_functions.php:3271
+#: common_functions.php:3290
 msgid "Map height"
 msgstr "harita yüksekliği"
 
-#: common_functions.php:3262
+#: common_functions.php:3281
 msgid "Map width"
 msgstr "Harita genişliği"
 
-#: common_functions.php:3297
+#: common_functions.php:3316
 msgid "Map zoom level"
 msgstr "Harita yakınlaştırma seviyesi"
 
@@ -900,64 +905,64 @@ msgstr "Harita yakınlaştırma seviyesi"
 msgid "Mar"
 msgstr "Mar"
 
-#: common_functions.php:94
+#: common_functions.php:93
 msgid "Mask questions"
 msgstr "Sorularu maskele"
 
-#: common_functions.php:3900
+#: common_functions.php:3919
 msgid "Max number of files"
 msgstr "En çok dosya sayısı"
 
-#: common_functions.php:3354
+#: common_functions.php:3373
 msgid "Max value from SGQA"
 msgstr "SGQA'nın en büyük değeri"
 
-#: common_functions.php:3330
+#: common_functions.php:3349
 msgid "Maximum answers"
 msgstr "En çok yanıt"
 
-#: common_functions.php:3362
+#: common_functions.php:3381
 msgid "Maximum characters"
 msgstr "En çok karakter"
 
-#: common_functions.php:3361
+#: common_functions.php:3380
 msgid "Maximum characters allowed"
 msgstr "İzin verilen en çok karakter sayısı"
 
-#: common_functions.php:3891
+#: common_functions.php:3910
 msgid "Maximum file size allowed (in KB)"
 msgstr "İzin verilen en çok dosya büyüklüğü(kb olarak)"
 
-#: common_functions.php:3899
+#: common_functions.php:3918
 msgid "Maximum number of files that the participant can upload for this question"
 msgstr "Katılımcının bu soru için yükleyebileceği en fazla dosya sayısı"
 
-#: common_functions.php:3338
+#: common_functions.php:3357
 msgid "Maximum sum value"
 msgstr "Toplamda en büyük değer"
 
-#: common_functions.php:3337
+#: common_functions.php:3356
 msgid "Maximum sum value of multiple numeric input"
 msgstr "Birden çok sayısal değerin toplamının en büyük değeri"
 
-#: common_functions.php:3346
-#: common_functions.php:3402
+#: common_functions.php:3365
+#: common_functions.php:3421
 msgid "Maximum value"
 msgstr "En çok toplam değer"
 
-#: common_functions.php:3401
+#: common_functions.php:3420
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr "Dizi için en büyük değer (çoklu-esnek) soru tipi"
 
-#: common_functions.php:3345
+#: common_functions.php:3364
 msgid "Maximum value of the numeric input"
 msgstr "Birden çok sayısal değerin toplamının en büyük değeri "
 
-#: common_functions.php:3138
+#: common_functions.php:3157
 msgid "Maximum year"
 msgstr "En yeni yıl"
 
-#: common_functions.php:3137
+#: common_functions.php:3156
 msgid "Maximum year value for calendar"
 msgstr "Takvimdeki en yeni yıl"
 
@@ -965,44 +970,44 @@ msgstr "Takvimdeki en yeni yıl"
 msgid "May"
 msgstr "May"
 
-#: common_functions.php:3909
+#: common_functions.php:3928
 msgid "Min number of files"
 msgstr "En az dosya sayısı"
 
-#: common_functions.php:3370
+#: common_functions.php:3389
 msgid "Minimum answers"
 msgstr "En az yanıt"
 
-#: common_functions.php:3908
+#: common_functions.php:3927
 msgid "Minimum number of files that the participant must upload for this question"
 msgstr "Katılımcının bu soru için yüklemesi gereken en az dosya sayısı"
 
-#: common_functions.php:3378
+#: common_functions.php:3397
 msgid "Minimum sum value"
 msgstr "En az toplam değer"
 
-#: common_functions.php:3386
-#: common_functions.php:3410
+#: common_functions.php:3405
+#: common_functions.php:3429
 msgid "Minimum value"
 msgstr "En az değer"
 
-#: common_functions.php:3409
+#: common_functions.php:3428
 msgid "Minimum value for array(multi-flexible) question type"
 msgstr "Dizi için en küçük değer (çoklu-esnek) soru tipi"
 
-#: common_functions.php:3394
+#: common_functions.php:3413
 msgid "Minimum value from SGQA"
 msgstr "SGQA'dan en küçük değer"
 
-#: common_functions.php:3385
+#: common_functions.php:3404
 msgid "Minimum value of the numeric input"
 msgstr "Birden çok sayısal değerin toplamının en küçük değeri"
 
-#: common_functions.php:3130
+#: common_functions.php:3149
 msgid "Minimum year"
 msgstr "En eski yıl"
 
-#: common_functions.php:3129
+#: common_functions.php:3148
 msgid "Minimum year value in calendar"
 msgstr "Takvimdeki en eski yıl"
 
@@ -1010,82 +1015,82 @@ msgstr "Takvimdeki en eski yıl"
 msgid "Month"
 msgstr "Ay"
 
-#: common_functions.php:3731
+#: common_functions.php:3750
 msgid "Move on without warning"
 msgstr "Uyarmadan ilerle"
 
-#: common_functions.php:167
+#: common_functions.php:166
 msgid "Multiple Numerical Input"
 msgstr "Birden Çok Sayısal Giriş"
 
-#: common_functions.php:203
+#: common_functions.php:202
 msgid "Multiple Short Text"
 msgstr "Birden Çok Kısa Metin"
 
-#: common_functions.php:179
+#: common_functions.php:178
 msgid "Multiple choice"
 msgstr "Birden çok seçenek"
 
-#: common_functions.php:96
+#: common_functions.php:95
 msgid "Multiple choice questions"
 msgstr "Çoktan Seçmeli sorular"
 
-#: common_functions.php:197
+#: common_functions.php:196
 msgid "Multiple choice with comments"
 msgstr "Açıklamalı Çoktan Seçmeler "
 
-#: common_functions.php:3177
+#: common_functions.php:3196
 msgid "Multiple numeric inputs sum must equal this value"
 msgstr "Birden çok sayısal girişin toplamı bu değere eşit olmalı"
 
-#: index.php:2911
-#: index.php:2917
-#: index.php:2922
+#: index.php:2914
+#: index.php:2920
+#: index.php:2925
 msgid "Next"
 msgstr "Sonraki"
 
-#: common_functions.php:1891
-#: common_functions.php:1907
-#: common_functions.php:3037
-#: common_functions.php:3118
-#: common_functions.php:3193
-#: common_functions.php:3208
-#: common_functions.php:3219
-#: common_functions.php:3230
-#: common_functions.php:3241
-#: common_functions.php:3279
-#: common_functions.php:3307
-#: common_functions.php:3318
-#: common_functions.php:3425
-#: common_functions.php:3436
-#: common_functions.php:3456
-#: common_functions.php:3468
-#: common_functions.php:3498
-#: common_functions.php:3511
-#: common_functions.php:3522
-#: common_functions.php:3533
+#: common_functions.php:1890
+#: common_functions.php:1906
+#: common_functions.php:3056
+#: common_functions.php:3137
+#: common_functions.php:3212
+#: common_functions.php:3227
+#: common_functions.php:3238
+#: common_functions.php:3249
+#: common_functions.php:3260
+#: common_functions.php:3298
+#: common_functions.php:3326
+#: common_functions.php:3337
+#: common_functions.php:3444
+#: common_functions.php:3455
+#: common_functions.php:3475
+#: common_functions.php:3487
+#: common_functions.php:3517
+#: common_functions.php:3530
+#: common_functions.php:3541
 #: common_functions.php:3552
 #: common_functions.php:3571
-#: common_functions.php:3582
-#: common_functions.php:3593
-#: common_functions.php:3636
-#: common_functions.php:3648
-#: common_functions.php:3662
-#: common_functions.php:3697
-#: common_functions.php:3742
-#: common_functions.php:3752
-#: common_functions.php:3866
-#: common_functions.php:3877
+#: common_functions.php:3590
+#: common_functions.php:3601
+#: common_functions.php:3612
+#: common_functions.php:3655
+#: common_functions.php:3667
+#: common_functions.php:3681
+#: common_functions.php:3716
+#: common_functions.php:3761
+#: common_functions.php:3771
+#: common_functions.php:3885
+#: common_functions.php:3896
 #: qanda.php:5068
 #: qanda.php:5532
 #: qanda.php:5587
 msgid "No"
 msgstr "Hayır"
 
-#: common_functions.php:1892
-#: common_functions.php:1900
-#: common_functions.php:5964
-#: common_functions.php:5969
+#: common_functions.php:1891
+#: common_functions.php:1899
+#: common_functions.php:5983
+#: common_functions.php:5988
 #: qanda.php:1660
 #: qanda.php:2156
 #: qanda.php:2466
@@ -1119,21 +1124,21 @@ msgstr "Yanıt yok"
 msgid "No available surveys"
 msgstr "Şu anda katılabileceğiniz bir anket yok"
 
-#: common_functions.php:1257
+#: common_functions.php:1256
 msgid "No email notification"
 msgstr "E-posta bilgilendirmesi yapılmasın"
 
-#: common_functions.php:3709
+#: common_functions.php:3728
 msgid "Nominal"
 msgstr "Göstermelik"
 
-#: common_functions.php:642
-#: common_functions.php:645
-#: common_functions.php:1302
-#: common_functions.php:1327
-#: common_functions.php:1402
-#: common_functions.php:5051
-#: common_functions.php:5087
+#: common_functions.php:641
+#: common_functions.php:644
+#: common_functions.php:1301
+#: common_functions.php:1326
+#: common_functions.php:1401
+#: common_functions.php:5070
+#: common_functions.php:5106
 msgid "None"
 msgstr "Seçime geri dön"
 
@@ -1141,15 +1146,15 @@ msgstr "Seçime geri dön"
 msgid "Nov"
 msgstr "Kas"
 
-#: common_functions.php:3473
+#: common_functions.php:3492
 msgid "Numbers only"
 msgstr "Yalnız rakamlar"
 
-#: common_functions.php:3537
+#: common_functions.php:3556
 msgid "Numbers only for 'Other'"
 msgstr "'Diğer' yalnız sayı olsun"
 
-#: common_functions.php:185
+#: common_functions.php:184
 msgid "Numerical Input"
 msgstr "Sayısal Giriş"
 
@@ -1157,8 +1162,8 @@ msgstr "Sayısal Giriş"
 msgid "Oct"
 msgstr "Eki"
 
-#: common_functions.php:3250
-#: common_functions.php:3482
+#: common_functions.php:3269
+#: common_functions.php:3501
 msgid "Off"
 msgstr "Kapalı"
 
@@ -1186,7 +1191,7 @@ msgstr "Bir ya da daha çok soruyu geçerli şekilde yanıtlamadınız. Bunları
 msgid "One or more uploaded files do not satisfy the criteria"
 msgstr "Yüklenmiş bir ya da daha fazla dosya kriterleri karşılamıyor"
 
-#: common_functions.php:4122
+#: common_functions.php:4141
 msgid "Online Manual"
 msgstr "Çevrim İçi Kullanıcı Kitabı"
 
@@ -1202,24 +1207,24 @@ msgstr "Bu alana yalnız sayılar yazılabilir"
 msgid "Oops, There was an error deleting the file"
 msgstr "Özür dileriz , dosyanın silinmesi sırasında hata oluştu."
 
-#: common_functions.php:3710
+#: common_functions.php:3729
 msgid "Ordinal"
 msgstr "Sırasal"
 
-#: common_functions.php:1876
-#: common_functions.php:1930
-#: common_functions.php:2466
-#: common_functions.php:2709
-#: common_functions.php:3464
-#: common_functions.php:3478
-#: common_functions.php:3494
-#: common_functions.php:3549
+#: common_functions.php:1875
+#: common_functions.php:1933
+#: common_functions.php:2485
+#: common_functions.php:2728
+#: common_functions.php:3483
+#: common_functions.php:3497
+#: common_functions.php:3513
 #: common_functions.php:3568
-#: common_functions.php:3705
-#: common_functions.php:3886
-#: common_functions.php:3895
-#: common_functions.php:3904
-#: common_functions.php:3913
+#: common_functions.php:3587
+#: common_functions.php:3724
+#: common_functions.php:3905
+#: common_functions.php:3914
+#: common_functions.php:3923
+#: common_functions.php:3932
 #: qanda.php:2432
 #: qanda.php:3260
 #: qanda.php:3604
@@ -1230,7 +1235,7 @@ msgstr "Diğer"
 msgid "Other answer"
 msgstr "Diğer yanıt"
 
-#: common_functions.php:2724
+#: common_functions.php:2743
 msgid "Other comment"
 msgstr "Diğer için açıklama"
 
@@ -1242,59 +1247,59 @@ msgstr "Diğer için açıklama"
 msgid "Other:"
 msgstr "Diğer:"
 
-#: printanswers.php:166
+#: printanswers.php:167
 msgid "PDF Export"
 msgstr "PDF Olarak Ver"
 
-#: common_functions.php:37
+#: common_functions.php:36
 msgid "Permission to activate/deactivate a survey"
 msgstr "Anketi aktif/pasif yapabilme izni"
 
-#: common_functions.php:34
+#: common_functions.php:33
 msgid "Permission to create(data entry)/view/update/delete/import/export responses"
 msgstr "Cevapları oluşturma(veri girişi)/gösterme/yenileme/silme/ekleme/çıkarma izni"
 
-#: common_functions.php:42
+#: common_functions.php:41
 msgid "Permission to create/update/delete/import/export token entries"
 msgstr "Belirteç girdilerini oluşturma/yenileme/silme/ekleme/çıkarma izni"
 
-#: common_functions.php:32
+#: common_functions.php:31
 msgid "Permission to create/view/update/delete assessments rules for a survey"
 msgstr "Anket için değerlendirme kuralları oluşturma/gösterme/yenileme/silme izni"
 
-#: common_functions.php:33
+#: common_functions.php:32
 msgid "Permission to create/view/update/delete quota rules for a survey"
 msgstr "Anket için kota kuralları oluşturma/gösterme/yenileme/silme izni"
 
-#: common_functions.php:38
+#: common_functions.php:37
 msgid "Permission to create/view/update/delete/import/export the questions, groups, answers & conditions of a survey"
 msgstr "Soruları, grupları, cevapları & anket koşullarını oluşturma/gösterme/yenileme/silme/ekleme/çıkarma izni"
 
-#: common_functions.php:36
+#: common_functions.php:35
 msgid "Permission to delete a survey"
 msgstr "Anket silme izni"
 
-#: common_functions.php:40
+#: common_functions.php:39
 msgid "Permission to modify survey security settings"
 msgstr "Anket güvenliği ayarları değiştirme izni"
 
-#: common_functions.php:43
+#: common_functions.php:42
 msgid "Permission to view & update the translations using the quick-translation feature"
 msgstr "Hızlı çeviri özelliği kullanılan çevirileri gösterme & yenileme izni"
 
-#: common_functions.php:35
+#: common_functions.php:34
 msgid "Permission to view statistics"
 msgstr "İstatiks"
 
-#: common_functions.php:39
+#: common_functions.php:38
 msgid "Permission to view/update the survey locale settings"
 msgstr "Anket yerel ayarlarını gösterme/yenileme izni"
 
-#: common_functions.php:41
+#: common_functions.php:40
 msgid "Permission to view/update the survey settings including token table creation"
 msgstr "Belirteç tablo oluşturma dahil olmak üzere anket ayarlarını gösterme/yenileme izni"
 
-#: common_functions.php:3925
+#: common_functions.php:3944
 msgid "Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"
 msgstr "Soruları belirli bir randomizasyon grubuna yerleştir, belirlenen grupta bulunan tüm sorular rastgele bir sıra ile görüntülenecektir."
 
@@ -1322,15 +1327,15 @@ msgstr "Lütfen en az %d yanıt seçin (\"%s\" sorusu için)"
 msgid "Please choose at most %d answers for question \"%s\""
 msgstr "Lütfen sorusu için en çok %d yanıt seçin (\"%s\" )"
 
-#: common_functions.php:637
-#: common_functions.php:691
-#: common_functions.php:1301
-#: common_functions.php:1326
-#: common_functions.php:1401
-#: common_functions.php:5001
-#: common_functions.php:5050
-#: common_functions.php:5086
-#: common_functions.php:5122
+#: common_functions.php:636
+#: common_functions.php:690
+#: common_functions.php:1300
+#: common_functions.php:1325
+#: common_functions.php:1400
+#: common_functions.php:5020
+#: common_functions.php:5069
+#: common_functions.php:5105
+#: common_functions.php:5141
 #: qanda.php:1986
 #: qanda.php:2138
 #: qanda.php:7511
@@ -1342,11 +1347,11 @@ msgstr "Seçmek için tıklayın..."
 msgid "Please complete all parts"
 msgstr "Lütfen tüm bölümleri tamamlayın"
 
-#: index.php:2278
+#: index.php:2281
 msgid "Please confirm access to survey by answering the security question below and click continue."
 msgstr "Lütfen ankete erişmek için aşağıdaki güvenlik sorusunu yanıtlayın ve Devam düğmesine tıklayın."
 
-#: index.php:2524
+#: index.php:2527
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr "Lütfen pin kodunu onaylamak için aşağıdaki güvenlik sorusunu yanıtlayın ve Devam düğmesine tıklayın."
 
@@ -1382,28 +1387,28 @@ msgstr[1] "Lütfen en az %d ögeyi \"%s\" sorusu için sıralayın."
 msgid "Please wait to begin with a new session."
 msgstr "Yeni bir oturuma başlamak için lütfen bekleyin."
 
-#: common_functions.php:3153
+#: common_functions.php:3172
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr "Açılan kutular için Yanıt Sonrası Ayıracı|Açılan Kutu Ayıracı"
 
-#: common_functions.php:3145
+#: common_functions.php:3164
 msgid "Prefix|Suffix for dropdown lists"
 msgstr "Açılan kutular için önek|sonek"
 
-#: common_functions.php:3439
+#: common_functions.php:3458
 msgid "Present answer options in reverse order"
 msgstr "Yanıtları seçeneklerini ters sırada sun"
 
-#: common_functions.php:3585
+#: common_functions.php:3604
 msgid "Present answers in random order"
 msgstr "Yanıtları rastgele sırada sun"
 
-#: common_functions.php:3514
+#: common_functions.php:3533
 msgid "Present as text input boxes instead of dropdown lists"
 msgstr "Açılan kutular yerine metin giriş kutuları olarak göster"
 
-#: index.php:2905
-#: index.php:3326
+#: index.php:2908
+#: index.php:3329
 msgid "Previous"
 msgstr "Önceki"
 
@@ -1415,7 +1420,7 @@ msgstr "Önceki oturum kapatıldı."
 msgid "Print your answers."
 msgstr "Yanıtlarınızı yazdırın."
 
-#: printanswers.php:191
+#: printanswers.php:192
 msgid "Question"
 msgstr "Soru"
 
@@ -1424,36 +1429,36 @@ msgstr "Soru"
 msgid "Question index"
 msgstr "Soru içeriği"
 
-#: common_functions.php:2777
+#: common_functions.php:2796
 msgid "Question time"
 msgstr "Soru zamanı"
 
-#: common_functions.php:43
+#: common_functions.php:42
 msgid "Quick translation"
 msgstr "Hızlı çeviri"
 
-#: common_functions.php:33
+#: common_functions.php:32
 msgid "Quotas"
 msgstr "Kotalar"
 
-#: common_functions.php:3586
+#: common_functions.php:3605
 msgid "Random answer order"
 msgstr "Rastgele yanıt sıralaması"
 
-#: common_functions.php:3926
+#: common_functions.php:3945
 msgid "Randomization group name"
 msgstr "Randomizasyon grup adı"
 
-#: common_functions.php:2600
+#: common_functions.php:2619
 #, php-format
 msgid "Rank %s"
 msgstr "Derece %s"
 
-#: common_functions.php:209
+#: common_functions.php:208
 msgid "Ranking"
 msgstr "Derecelendirme"
 
-#: common_functions.php:2343
+#: common_functions.php:2362
 msgid "Referrer URL"
 msgstr "Gelinen İnternet Adresi"
 
@@ -1465,19 +1470,19 @@ msgstr "Kalan:"
 msgid "Remove this item"
 msgstr "Bu ögeyi sil"
 
-#: common_functions.php:3544
+#: common_functions.php:3563
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
 msgstr "'Diğer' alanının etiketini istenen bir metin ile değiştirir"
 
-#: common_functions.php:2249
+#: common_functions.php:2268
 msgid "Response ID"
 msgstr "Yanıt kodu"
 
-#: common_functions.php:34
+#: common_functions.php:33
 msgid "Responses"
 msgstr "Yanıtlar"
 
-#: common_functions.php:3459
+#: common_functions.php:3478
 msgid "Restrict input to integer values"
 msgstr "Girdileri tam sayı değerleri ile kısıtlayın"
 
@@ -1485,54 +1490,54 @@ msgstr "Girdileri tam sayı değerleri ile kısıtlayın"
 msgid "Return to survey"
 msgstr "Ankete geri dön"
 
-#: common_functions.php:3440
+#: common_functions.php:3459
 msgid "Reverse answer order"
 msgstr "Yanıtları ters sırala"
 
-#: common_functions.php:3483
+#: common_functions.php:3502
 msgid "Rows"
 msgstr "Satırlar"
 
-#: common_functions.php:3447
+#: common_functions.php:3466
 msgid "SGQA identifier to use total of previous question as total for this question"
 msgstr "Önceki sorunun toplamının bu soru için toplam değer olarak kullanılmasını sağlayacak SGQA belirteci"
 
-#: common_functions.php:4371
+#: common_functions.php:4390
 msgid "SMTP debug output:"
 msgstr "SMTP hata ayıklama çıktısı:"
 
-#: common_functions.php:3714
+#: common_functions.php:3733
 msgid "SPSS export scale type"
 msgstr "SPSS verme ölçeği tipi"
 
-#: index.php:2212
+#: index.php:2215
 msgid "SQL CODE THAT FAILED"
 msgstr "YÜRÜTÜLEMEYEN SQL KODU"
 
-#: common_functions.php:4901
+#: common_functions.php:4920
 #, php-format
 msgid "SQL command failed: %s Reason: %s"
 msgstr "SQL komutu başarılamadı %s Sebep %s"
 
-#: common_functions.php:1916
+#: common_functions.php:1915
 #: qanda.php:5693
 #: qanda.php:5746
 msgid "Same"
 msgstr "Aynı"
 
-#: common_functions.php:3210
+#: common_functions.php:3229
 msgid "Save city"
 msgstr "Şehri kaydet"
 
-#: common_functions.php:3243
+#: common_functions.php:3262
 msgid "Save country"
 msgstr "Ülkeyi kaydet"
 
-#: common_functions.php:3232
+#: common_functions.php:3251
 msgid "Save postal code"
 msgstr "Posta kodu kaydedilsin mi ?"
 
-#: common_functions.php:3221
+#: common_functions.php:3240
 msgid "Save state"
 msgstr "Bölgeyi kaydet"
 
@@ -1541,24 +1546,24 @@ msgstr "Bölgeyi kaydet"
 msgid "Save your responses so far"
 msgstr "Şu ana kadar verdiğiniz yanıtları kaydedin"
 
-#: common_functions.php:3711
+#: common_functions.php:3730
 msgid "Scale"
 msgstr "Ölçek"
 
-#: common_functions.php:2564
+#: common_functions.php:2583
 msgid "Scale 1"
 msgstr "Ölçek 1"
 
-#: common_functions.php:2579
+#: common_functions.php:2598
 msgid "Scale 2"
 msgstr "Ölçek 2"
 
-#: index.php:2378
-#: index.php:2546
+#: index.php:2381
+#: index.php:2549
 msgid "Security Question"
 msgstr "Güvenlik sorusu"
 
-#: index.php:2302
+#: index.php:2305
 msgid "Security question:"
 msgstr "Güvenlik sorusu:"
 
@@ -1566,90 +1571,90 @@ msgstr "Güvenlik sorusu:"
 msgid "Sep"
 msgstr "Eyl"
 
-#: common_functions.php:3713
+#: common_functions.php:3732
 msgid "Set a specific SPSS export scale type for this question"
 msgstr "Bu soru için özel bir SPPS verme ölçeği seçer"
 
-#: common_functions.php:3050
+#: common_functions.php:3069
 msgid "Set the percentage width of the answer column (1-100)"
 msgstr "Yanıt sütununun yüzde olarak genişliğini ayarlayın (1-100)"
 
-#: common_functions.php:215
+#: common_functions.php:214
 msgid "Short Free Text"
 msgstr "Kısa Serbest Metin"
 
-#: common_functions.php:3881
+#: common_functions.php:3900
 msgid "Show comment"
 msgstr "Yorumu göster"
 
-#: common_functions.php:3503
+#: common_functions.php:3522
 msgid "Show grand total"
 msgstr "En büyük toplamını göster"
 
-#: common_functions.php:3502
+#: common_functions.php:3521
 msgid "Show grand total for either columns or rows"
 msgstr "Satırlar veya sütunların en büyük toplamını göster"
 
-#: common_functions.php:3575
+#: common_functions.php:3594
 msgid "Show in public statistics"
 msgstr "Herkese açık istatistiklerde göster"
 
-#: common_functions.php:3574
+#: common_functions.php:3593
 msgid "Show statistics of this question in the public statistics page"
 msgstr "BU sorunun istatistiklerini herkese açık istatistikler sayfasında göster"
 
-#: common_functions.php:3870
+#: common_functions.php:3889
 msgid "Show title"
 msgstr "Başlığı Göster"
 
-#: common_functions.php:3489
+#: common_functions.php:3508
 msgid "Show totals for"
 msgstr "Şunun için toplamları göster"
 
-#: common_functions.php:3488
+#: common_functions.php:3507
 msgid "Show totals for either rows, columns or both rows and columns"
 msgstr "Satırlar, sütunlar veya ikisi için de toplamları göster"
 
-#: common_functions.php:95
+#: common_functions.php:94
 msgid "Single choice questions"
 msgstr "Tek seçmeli sorular."
 
-#: common_functions.php:3590
-#: common_functions.php:3601
 #: common_functions.php:3609
-#: common_functions.php:3617
-#: common_functions.php:3625
-#: common_functions.php:3633
-#: common_functions.php:3659
-#: common_functions.php:3670
+#: common_functions.php:3620
+#: common_functions.php:3628
+#: common_functions.php:3636
+#: common_functions.php:3644
+#: common_functions.php:3652
+#: common_functions.php:3678
+#: common_functions.php:3689
 msgid "Slider"
 msgstr "Kaydırıcı"
 
-#: common_functions.php:3620
-#: common_functions.php:3621
+#: common_functions.php:3639
+#: common_functions.php:3640
 msgid "Slider accuracy"
 msgstr "Kaydırıcının hassasiyeti"
 
-#: common_functions.php:3628
-#: common_functions.php:3629
+#: common_functions.php:3647
+#: common_functions.php:3648
 msgid "Slider initial value"
 msgstr "Kaydırıcının başlangıç değeri"
 
-#: common_functions.php:3674
+#: common_functions.php:3693
 msgid "Slider left/right text separator"
 msgstr "Kaydırıcı sol/sağ metin ayıracı"
 
-#: common_functions.php:3612
-#: common_functions.php:3613
+#: common_functions.php:3631
+#: common_functions.php:3632
 msgid "Slider maximum value"
 msgstr "Kaydırıcının en büyük değeri"
 
-#: common_functions.php:3604
-#: common_functions.php:3605
+#: common_functions.php:3623
+#: common_functions.php:3624
 msgid "Slider minimum value"
 msgstr "Kaydırıcının en küçük değeri"
 
-#: common_functions.php:3640
+#: common_functions.php:3659
 msgid "Slider starts at the middle position"
 msgstr "Kaydırıcı orta konumdan başlasın"
 
@@ -1669,45 +1674,45 @@ msgstr "Üzgünüz, yüklenen dosya (%s) izin verilen dosya boyutu olan %s KB'ta
 msgid "Sorry. There is no matching survey."
 msgstr "Malesef, uyan anket bulunamadı."
 
-#: common_functions.php:3041
+#: common_functions.php:3060
 msgid "Sort answers alphabetically"
 msgstr "Yanıtları alfabetik olarak diz"
 
-#: common_functions.php:3040
+#: common_functions.php:3059
 msgid "Sort the answer options alphabetically"
 msgstr "cevap seçeneklerini  alfabetik olarak sırala"
 
-#: common_functions.php:2273
+#: common_functions.php:2292
 msgid "Start language"
 msgstr "Başlangıç dili"
 
-#: common_functions.php:35
+#: common_functions.php:34
 msgid "Statistics"
 msgstr "İstatistikler"
 
-#: common_functions.php:3417
-#: common_functions.php:3418
+#: common_functions.php:3436
+#: common_functions.php:3437
 msgid "Step value"
 msgstr "Adım değeri"
 
-#: common_functions.php:3209
+#: common_functions.php:3228
 msgid "Store the city?"
 msgstr "Şehri depola"
 
-#: common_functions.php:3242
+#: common_functions.php:3261
 msgid "Store the country?"
 msgstr "Ülke kaydedilsin mi ?"
 
-#: common_functions.php:3231
+#: common_functions.php:3250
 msgid "Store the postal code?"
 msgstr "Posta kodu depo edilsin mi ?"
 
-#: common_functions.php:3220
+#: common_functions.php:3239
 msgid "Store the state?"
 msgstr "Bölge depo edilsin mi ?"
 
 #: group.php:1351
-#: index.php:2927
+#: index.php:2930
 #: question.php:666
 msgid "Submit"
 msgstr "Gönder"
@@ -1716,51 +1721,51 @@ msgstr "Gönder"
 msgid "Submit your answers"
 msgstr "Yanıtlarınızı gönderin"
 
-#: common_functions.php:4125
+#: common_functions.php:4144
 msgid "Support this project - Donate to "
 msgstr "Bağış yaparak bu projeyi destekleyin"
 
-#: common_functions.php:37
+#: common_functions.php:36
 msgid "Survey activation"
 msgstr "Anket aktivasyonu"
 
-#: common_functions.php:38
+#: common_functions.php:37
 msgid "Survey content"
 msgstr "Anket içeriği"
 
-#: common_functions.php:36
+#: common_functions.php:35
 msgid "Survey deletion"
 msgstr "Anket silme"
 
-#: common_functions.php:39
+#: common_functions.php:38
 msgid "Survey locale settings"
 msgstr "Anket yerel ayarları"
 
-#: printanswers.php:173
+#: printanswers.php:174
 msgid "Survey name (ID)"
 msgstr "Anket Adı (Kodu)"
 
-#: printanswers.php:175
+#: printanswers.php:176
 msgid "Survey name (ID):"
 msgstr "Anket Adı (Kodu) "
 
-#: common_functions.php:40
+#: common_functions.php:39
 msgid "Survey security"
 msgstr "Anket güvenliği"
 
-#: common_functions.php:41
+#: common_functions.php:40
 msgid "Survey settings"
 msgstr "Anket ayarları"
 
-#: common_functions.php:233
+#: common_functions.php:232
 msgid "Text display"
 msgstr "Metin görüntüleme"
 
-#: common_functions.php:3515
+#: common_functions.php:3534
 msgid "Text inputs"
 msgstr "Metin girişleri"
 
-#: common_functions.php:97
+#: common_functions.php:96
 msgid "Text questions"
 msgstr "Metin soruları"
 
@@ -1769,25 +1774,25 @@ msgstr "Metin soruları"
 msgid "Thank you!"
 msgstr "Teşekkürler!"
 
-#: common_functions.php:3810
+#: common_functions.php:3829
 msgid "The 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr "Birinci  'Süre sınırı uyarısı'nın kaç saniye gösterileceği (boş bırakılırsa sürekli görünür)"
 
-#: common_functions.php:3842
+#: common_functions.php:3861
 msgid "The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"
 msgstr "Birinci  'Süre sınırı uyarısı'nın kaç saniye gösterileceği (boş bırakılırsa sürekli görünür)"
 
-#: common_functions.php:3850
+#: common_functions.php:3869
 msgid "The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr "İkinci 'Süre sınırı uyarısı' olarak gösterilecek ileti (boş bırakılırsa varsayılan bir uyarı gösterilir)"
 
-#: common_functions.php:3102
+#: common_functions.php:3121
 msgid "The answer options will be distributed across the number of columns set here"
 msgstr "Yanıt seçenekleri burada ayarlanan sütun sayısına göre dağıtılacaktır"
 
 #: index.php:635
-#: index.php:2275
-#: index.php:2497
+#: index.php:2278
+#: index.php:2500
 msgid "The answer to the security question is incorrect."
 msgstr "Güvenlik sorusuna verdiğiniz yanıt geçersiz."
 
@@ -1795,15 +1800,15 @@ msgstr "Güvenlik sorusuna verdiğiniz yanıt geçersiz."
 msgid "The following surveys are available:"
 msgstr "Katılabileceğiniz anketler şunlardır:"
 
-#: common_functions.php:3639
+#: common_functions.php:3658
 msgid "The handle is displayed at the middle of the slider (this will not set the initial value)"
 msgstr "Kaydrıcının ortasında gösterilecek düğm (bu değer başlangıç değeri olarak ayarlanmayacak)"
 
-#: common_functions.php:3818
+#: common_functions.php:3837
 msgid "The message to display as a 'time limit warning' (a default warning will display if this is left blank)"
 msgstr "Birinci 'Süre sınırı uyarısı' olarak gösterilecek ileti (boş bırakılırsa varsayılan bir uyarı gösterilir)"
 
-#: common_functions.php:3786
+#: common_functions.php:3805
 msgid "The message to display when the time limit has expired (a default message will display if this setting is left blank)"
 msgstr "Süre sınırı dolduğunda gösterilecek ileti (boş bıraklırsa varsayılan bir ileti gösterilir)"
 
@@ -1811,21 +1816,21 @@ msgstr "Süre sınırı dolduğunda gösterilecek ileti (boş bıraklırsa varsa
 msgid "The minimum number of files has not been uploaded."
 msgstr "Olabilecek en az sayıda dosya yüklendi."
 
-#: common_functions.php:3890
+#: common_functions.php:3909
 msgid "The participant cannot upload a single file larger than this size"
 msgstr "Katılımcı bu boyuttan büyük bir dosya yükleyemez"
 
-#: common_functions.php:3377
+#: common_functions.php:3396
 msgid "The sum of the multiple numeric inputs must be greater than this value"
 msgstr "Birden çok sayısal giriş bu değerden büyük olmalıdır "
 
-#: common_functions.php:3762
+#: common_functions.php:3781
 msgid "The text message that displays in the countdown timer during the countdown"
 msgstr "Geri sayma sırasında sayaçla birlikte gösterilecek ileti metni"
 
 #: index.php:694
-#: index.php:2420
-#: index.php:2464
+#: index.php:2423
+#: index.php:2467
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr "Verdiğiniz pin kodu geçersiz ya da daha önce kullanılmış."
 
@@ -1842,10 +1847,10 @@ msgid "There is no matching saved survey"
 msgstr "Uygun kaydedilmiş anket bulunamadı"
 
 #: index.php:693
-#: index.php:2347
-#: index.php:2419
-#: index.php:2463
-#: index.php:2500
+#: index.php:2350
+#: index.php:2422
+#: index.php:2466
+#: index.php:2503
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Bu ankete erişim sınırlanmış olduğundan, katılmak için bir pin koduna sahip olmalısınız."
 
@@ -1861,12 +1866,12 @@ msgstr "Bu soru doğru yanıtlanmalı"
 msgid "This survey does not seem to exist."
 msgstr "Bu anket bulunamıyor."
 
-#: index.php:2655
+#: index.php:2658
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Bu ankette henüz hiç soru yok. Bu nedenle sınanamaz ya da doldurulamaz."
 
 #: group.php:1305
-#: index.php:3443
+#: index.php:3446
 #: question.php:619
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr "Bu anket şu anda etkin değil. Yanıtlarınız kaydedemeyeceksiniz."
@@ -1879,39 +1884,39 @@ msgstr "Bu anket artık geçersiz."
 msgid "This survey is not yet started."
 msgstr "Bu anket henüz başlatılmamış."
 
-#: common_functions.php:3723
+#: common_functions.php:3742
 msgid "Time limit"
 msgstr "Süre sınırı"
 
-#: common_functions.php:3734
+#: common_functions.php:3753
 msgid "Time limit action"
 msgstr "Süre sınırı işlemi"
 
-#: common_functions.php:3763
+#: common_functions.php:3782
 msgid "Time limit countdown message"
 msgstr "Süre sınırı geri sayma iletisi"
 
-#: common_functions.php:3745
+#: common_functions.php:3764
 msgid "Time limit disable next"
 msgstr "Süre sınırında sonraki devre dışı"
 
-#: common_functions.php:3755
+#: common_functions.php:3774
 msgid "Time limit disable prev"
 msgstr "Süre sınırında önceki devre dışı"
 
-#: common_functions.php:3787
+#: common_functions.php:3806
 msgid "Time limit expiry message"
 msgstr "Süre doldu iletisi"
 
-#: common_functions.php:3779
+#: common_functions.php:3798
 msgid "Time limit expiry message display time"
 msgstr "Süre sınırının dolduğunu belirten iletinin gösterim süresi"
 
-#: common_functions.php:3795
+#: common_functions.php:3814
 msgid "Time limit message CSS style"
 msgstr "Süre sınırı doldu iletisi CSS stili"
 
-#: common_functions.php:3771
+#: common_functions.php:3790
 msgid "Time limit timer CSS style"
 msgstr "Süre sınırı sayacı CSS stili"
 
@@ -1919,33 +1924,33 @@ msgstr "Süre sınırı sayacı CSS stili"
 msgid "Time remaining"
 msgstr "Kalan süre"
 
-#: common_functions.php:3719
-#: common_functions.php:3727
 #: common_functions.php:3738
-#: common_functions.php:3749
-#: common_functions.php:3759
-#: common_functions.php:3767
-#: common_functions.php:3775
-#: common_functions.php:3783
-#: common_functions.php:3791
-#: common_functions.php:3799
-#: common_functions.php:3807
-#: common_functions.php:3815
-#: common_functions.php:3823
-#: common_functions.php:3831
-#: common_functions.php:3839
-#: common_functions.php:3847
-#: common_functions.php:3855
+#: common_functions.php:3746
+#: common_functions.php:3757
+#: common_functions.php:3768
+#: common_functions.php:3778
+#: common_functions.php:3786
+#: common_functions.php:3794
+#: common_functions.php:3802
+#: common_functions.php:3810
+#: common_functions.php:3818
+#: common_functions.php:3826
+#: common_functions.php:3834
+#: common_functions.php:3842
+#: common_functions.php:3850
+#: common_functions.php:3858
+#: common_functions.php:3866
+#: common_functions.php:3874
 msgid "Timer"
 msgstr "Zamanlayıcı"
 
-#: common_functions.php:2289
-#: index.php:2353
-#: index.php:2520
+#: common_functions.php:2308
+#: index.php:2356
+#: index.php:2523
 msgid "Token"
 msgstr "Pin kodu"
 
-#: common_functions.php:7060
+#: common_functions.php:7079
 msgid "Token code"
 msgstr "Pin kodu"
 
@@ -1953,15 +1958,15 @@ msgstr "Pin kodu"
 msgid "Token mismatch"
 msgstr "Pin kodu uyuşmuyor"
 
-#: index.php:2538
+#: index.php:2541
 msgid "Token:"
 msgstr "Pin Kodu:"
 
-#: common_functions.php:42
+#: common_functions.php:41
 msgid "Tokens"
 msgstr "Fiş"
 
-#: common_functions.php:7064
+#: common_functions.php:7083
 msgid "Total numbers of sent reminders"
 msgstr "Gönderilen toplam hatırlatma sayısı"
 
@@ -1980,7 +1985,7 @@ msgstr "Tüm kayıtlar %d değerine eşit olmalı"
 msgid "Total of all entries must not exceed %d"
 msgstr "Tüm kayıtların toplamı %d sayısını aşmamalı"
 
-#: common_functions.php:2763
+#: common_functions.php:2782
 msgid "Total time"
 msgstr "Toplam zaman:"
 
@@ -1988,11 +1993,11 @@ msgstr "Toplam zaman:"
 msgid "Total: "
 msgstr "Toplam:"
 
-#: index.php:2224
+#: index.php:2227
 msgid "Try to submit again"
 msgstr "Yeniden göndermeyi deneyin"
 
-#: common_functions.php:1908
+#: common_functions.php:1907
 #: qanda.php:5531
 #: qanda.php:5577
 msgid "Uncertain"
@@ -2006,42 +2011,42 @@ msgstr "dosyalar tükle"
 msgid "Upload your files"
 msgstr "dosyalarınızı yükleyin"
 
-#: common_functions.php:3121
+#: common_functions.php:3140
 msgid "Use accessible dropdown boxes instead of calendar popup"
 msgstr "Takvim açılır penceresi yerine erişilebilir seçim kutuları kullan "
 
-#: common_functions.php:3428
+#: common_functions.php:3447
 msgid "Use checkbox layout"
 msgstr "İşaret kutusu düzenini kullan"
 
-#: common_functions.php:3701
+#: common_functions.php:3720
 msgid "Use dropdown boxes"
 msgstr "Açılır kutular kullan"
 
-#: common_functions.php:3700
+#: common_functions.php:3719
 msgid "Use dropdown boxes instead of list of radio buttons"
 msgstr "Çift ölçek yerine çift açılan kutu kullanır "
 
-#: common_functions.php:3253
+#: common_functions.php:3272
 msgid "Use mapping service"
 msgstr "Haritalama servisini kullan"
 
-#: common_functions.php:3596
-#: common_functions.php:3597
-#: common_functions.php:3653
-#: common_functions.php:3654
+#: common_functions.php:3615
+#: common_functions.php:3616
+#: common_functions.php:3672
+#: common_functions.php:3673
 msgid "Use slider layout"
 msgstr "Kaydırıcı düzenini kullan"
 
-#: common_functions.php:7065
+#: common_functions.php:7084
 msgid "Uses left"
 msgstr "Kullanıcı kaldı"
 
-#: common_functions.php:3448
+#: common_functions.php:3467
 msgid "Value equals SGQA"
 msgstr "SGQA'ya eşit değer"
 
-#: common_functions.php:4113
+#: common_functions.php:4132
 msgid "Version"
 msgstr "Sürüm"
 
@@ -2054,11 +2059,11 @@ msgstr "İstatistikleri göster"
 msgid "View the statistics for this survey."
 msgstr "Bu anketin istatistiklerini göster."
 
-#: common_functions.php:4128
+#: common_functions.php:4147
 msgid "Visit our website!"
 msgstr "Web sitemize bakın!"
 
-#: common_functions.php:3730
+#: common_functions.php:3749
 msgid "Warn and move on"
 msgstr "Uyar ve ilerle"
 
@@ -2075,11 +2080,11 @@ msgstr "Malesef bunu yapmak için izniniz yok."
 msgid "We are sorry but your session has expired."
 msgstr "Malesef oturumunuzun süresi dolmuş."
 
-#: common_functions.php:3689
+#: common_functions.php:3708
 msgid "Width of text input box"
 msgstr "Metin giriş kutusunun genişliği"
 
-#: common_functions.php:3261
+#: common_functions.php:3280
 msgid "Width of the map in pixel"
 msgstr "Haritanın piksel olarak genişliği"
 
@@ -2087,53 +2092,53 @@ msgstr "Haritanın piksel olarak genişliği"
 msgid "Year"
 msgstr "Yıl"
 
-#: common_functions.php:1884
-#: common_functions.php:1890
-#: common_functions.php:1906
-#: common_functions.php:3038
-#: common_functions.php:3119
-#: common_functions.php:3194
-#: common_functions.php:3207
-#: common_functions.php:3218
-#: common_functions.php:3229
-#: common_functions.php:3240
-#: common_functions.php:3278
-#: common_functions.php:3308
-#: common_functions.php:3319
-#: common_functions.php:3426
-#: common_functions.php:3437
-#: common_functions.php:3457
-#: common_functions.php:3469
-#: common_functions.php:3499
-#: common_functions.php:3512
-#: common_functions.php:3523
-#: common_functions.php:3534
+#: common_functions.php:1883
+#: common_functions.php:1889
+#: common_functions.php:1905
+#: common_functions.php:3057
+#: common_functions.php:3138
+#: common_functions.php:3213
+#: common_functions.php:3226
+#: common_functions.php:3237
+#: common_functions.php:3248
+#: common_functions.php:3259
+#: common_functions.php:3297
+#: common_functions.php:3327
+#: common_functions.php:3338
+#: common_functions.php:3445
+#: common_functions.php:3456
+#: common_functions.php:3476
+#: common_functions.php:3488
+#: common_functions.php:3518
+#: common_functions.php:3531
+#: common_functions.php:3542
 #: common_functions.php:3553
 #: common_functions.php:3572
-#: common_functions.php:3583
-#: common_functions.php:3594
-#: common_functions.php:3637
-#: common_functions.php:3663
-#: common_functions.php:3698
-#: common_functions.php:3743
-#: common_functions.php:3753
-#: common_functions.php:3867
-#: common_functions.php:3878
+#: common_functions.php:3591
+#: common_functions.php:3602
+#: common_functions.php:3613
+#: common_functions.php:3656
+#: common_functions.php:3682
+#: common_functions.php:3717
+#: common_functions.php:3762
+#: common_functions.php:3772
+#: common_functions.php:3886
+#: common_functions.php:3897
 #: qanda.php:5059
 #: qanda.php:5530
 #: qanda.php:5569
 msgid "Yes"
 msgstr "Evet"
 
-#: common_functions.php:3650
+#: common_functions.php:3669
 msgid "Yes - slider with emoticon"
 msgstr "Evet - Yüz ifadeleri ile kaydırcı"
 
-#: common_functions.php:3649
+#: common_functions.php:3668
 msgid "Yes - stars"
 msgstr "Evet - yıldızlar"
 
-#: common_functions.php:239
+#: common_functions.php:238
 msgid "Yes/No"
 msgstr "Evet/Hayır"
 
@@ -2194,7 +2199,7 @@ msgstr "Seçimleriniz"
 msgid "Your Ranking"
 msgstr "Derecelendirmeniz"
 
-#: printanswers.php:191
+#: printanswers.php:192
 msgid "Your answer"
 msgstr "Yanıtınız "
 
@@ -2202,7 +2207,7 @@ msgstr "Yanıtınız "
 msgid "Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning."
 msgstr "Tarayıcınız bu anketi daha önce yanıtladığınızı söylüyor. Bu oturumu sıfırlıyoruz böylece baştan başlayabileceksiniz."
 
-#: index.php:2201
+#: index.php:2204
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr "Yanıtlarınız kaybolmadı ve anket yöneticisine e-posta ile gönderildi. Veritabanına ise daha sonra eklenecek."
 
@@ -2233,7 +2238,7 @@ msgstr "Bu soruyu yanıtlama süreniz dolmak üzere. {TIME} süreniz kaldı."
 msgid "Your token seems to be valid but can be used only during a certain time period."
 msgstr "Pin kodunuz geçerli olmasına rağmen, yalnız belirli bir zaman aralığında kullanılabilir."
 
-#: common_functions.php:3298
+#: common_functions.php:3317
 msgid "Zoom level"
 msgstr "yakınlaştırma kademesi"
 
@@ -2338,7 +2343,7 @@ msgstr "Ana dil"
 msgid "Cancel"
 msgstr "İptal"
 
-#: save.php:739
+#: save.php:730
 msgid "Cannot submit results - there are none to submit."
 msgstr "Sonuçlar gönderilemedi - gönderilecek bir şey yok."
 
@@ -2358,7 +2363,7 @@ msgstr "İşlemi tamamlamak için 'Gönder' düğmesine tıklayarak yanıtların
 msgid "Close this window"
 msgstr "Bu pencereyi kapat "
 
-#: statistics_user.php:460
+#: statistics_user.php:464
 msgid "Completed"
 msgstr "Tamamlandı"
 
@@ -2527,15 +2532,15 @@ msgstr "Aşağıya bilgilerinizi yazdığınızda, gerekli bilgileri içeren bir
 msgid "Exit and Clear Survey"
 msgstr "Çık ve Anketi Temizle"
 
-#: statistics_user.php:432
+#: statistics_user.php:436
 msgid "Generating summaries ..."
 msgstr "Özetler üretiliyor..."
 
-#: statistics_user.php:403
+#: statistics_user.php:407
 msgid "Getting questions and answers ..."
 msgstr "Sorular ve yanıtlar alınıyor..."
 
-#: statistics_user.php:394
+#: statistics_user.php:398
 msgid "Go back"
 msgstr "Geri dön"
 
@@ -2644,7 +2649,7 @@ msgstr ""
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "E-posta adresinizi de yazarsanız, size ayrıntıları içeren bir e-posta gönderilir."
 
-#: save.php:740
+#: save.php:731
 msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
 msgstr "Bu iletiyi bir anketin ortasında görürseniz, tarayıcınızda '<- Geri' gidip önceki sayfayı yenilemeli ya da yeniden yüklemelesiniz. Son sayfadaki yanıtlarınızı kaybetseniz de öncekiler hala geçerli olacaktır. Bu sorun web sunucusu ağır yük altında çalışıyorsa ortaya çıkar. Bu sorundan dolayı özür dileriz. "
 
@@ -2697,7 +2702,7 @@ msgid "Minimum"
 msgstr "En az"
 
 #: replacements.php:415
-#: save.php:385
+#: save.php:376
 msgid "Name"
 msgstr "Kayıt Adı"
 
@@ -2736,11 +2741,11 @@ msgstr "Açık-erişim kipi"
 
 #: replacements.php:421
 #: replacements.php:453
-#: save.php:386
+#: save.php:377
 msgid "Password"
 msgstr "Parola"
 
-#: save.php:257
+#: save.php:248
 msgid "Please try again."
 msgstr "Lütfen yeniden deneyin."
 
@@ -2749,7 +2754,7 @@ msgstr "Lütfen yeniden deneyin."
 msgid "Please upload %s more file(s)."
 msgstr "Lütfen daha fazla %s dosya(lar) yükleyin."
 
-#: statistics_user.php:392
+#: statistics_user.php:396
 msgid "Please wait ..."
 msgstr "Lütfen bekleyin..."
 
@@ -2763,8 +2768,8 @@ msgstr "Soru grubu"
 msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
 msgstr "DEVAM ETMEDEN ÖNCE DİKKATLİCE OKUYUN"
 
-#: save.php:387
-#: save.php:426
+#: save.php:378
+#: save.php:417
 msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
 msgstr "Anketi kaldığınız yerden sürdürmek için aşağıdaki bağlantıya tıklayın ya da tarayıcınıza yapıştırın."
 
@@ -2819,8 +2824,8 @@ msgstr "Anketi Kaydet"
 msgid "Save Your Unfinished Survey"
 msgstr "Yarım Bırakacağınız Anketinizi Kaydedin"
 
-#: save.php:382
-#: save.php:424
+#: save.php:373
+#: save.php:415
 msgid "Saved Survey Details"
 msgstr "Kaydedilen Anket Ayrıntıları"
 
@@ -2857,7 +2862,7 @@ msgstr "Özür dileriz, daha fazla dosya yüklenemez"
 msgid "Sorry, only %s files can be uploaded for this question!"
 msgstr "Özür dileriz,bu soru için  %s dosyalar yüklenebilir!"
 
-#: upload.php:166
+#: upload.php:165
 msgid "Sorry, there was an error uploading your file"
 msgstr "Özüe dileriz, dosyanız yüklenirken bir hata oldu."
 
@@ -2866,13 +2871,13 @@ msgstr "Özüe dileriz, dosyanız yüklenirken bir hata oldu."
 msgid "Sorry, this file extension (%s) is not allowed!"
 msgstr "Özür dileriz bu eklenti %s izinli değildir!"
 
-#: upload.php:131
+#: upload.php:130
 #, php-format
 msgid "Sorry, this file is too large. Only files up to %s KB are allowed."
 msgstr "Özür dileriz, bu dosya çok büyük. Sadece %s KB a kadar dosyalar yükleyebilirsiniz."
 
 #: upload.php:101
-#: upload.php:176
+#: upload.php:175
 #, php-format
 msgid "Sorry, this file is too large. Only files upto %s KB are allowed."
 msgstr "Özür dileriz, bu dosya çok büyük. Sadece %s KB a kadar dosyalar yükleyebilirsiniz."
@@ -2905,11 +2910,11 @@ msgstr "Genel erişime kapalı kipe geç"
 msgid "Thank you for registering to participate in this survey."
 msgstr "Bu ankete katılmak için kayıt olduğunuzdan dolayı teşekkürler."
 
-#: save.php:383
+#: save.php:374
 msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
 msgstr "Sürdürmekte olduğunuz anketi kaydettiniz. Aşağıdaki ayrıntılar, ankete geri döndüğünüzde kaldığınız yerden devam etmenizi sağlayacaktır. Parolanızı size yeniden iletmemizin bir yolu olmadığından, bu e-postayı özenle saklayın."
 
-#: save.php:425
+#: save.php:416
 msgid "Thank you for saving your survey in progress. You can return to the survey at the same point you saved it at any time using the link from this or any previous email sent to regarding this survey."
 msgstr "Anketinizi ilerlemede kaydettiğiniz için teşekkür ederiz. Ankete buradaki veya size bu anketle ilişkin gönderilen herhangi bir emaildeki linki kullanarak istediğiniz zaman kaydettiğiniz noktada dönebilirsiniz. "
 
@@ -2921,8 +2926,8 @@ msgstr "Kullandığınız e-posta adresi zaten kaydedilmiş."
 msgid "The email you used is not valid. Please try again."
 msgstr "Kullandığınız e-posta adresi geçersiz. Lütfen yeniden deneyin."
 
-#: upload.php:116
-#: upload.php:153
+#: upload.php:115
+#: upload.php:152
 msgid "The file has been successfuly uploaded."
 msgstr "Dosya başarılı bir şekilde yüklendi."
 
@@ -2963,7 +2968,7 @@ msgstr "Bu ankette {NUMBEROFQUESTIONS} soru var."
 msgid "There is 1 question in this survey"
 msgstr "Bu ankette 1 soru var"
 
-#: save.php:740
+#: save.php:731
 msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
 msgstr "Bu hata, sonuçları gönderdikten sonra web tarayıcınızında yenileme işlemi yaptığınızda ortaya çıkar. Bu durumda yanıtlarınız kaydedilmiş olur."
 
@@ -2971,7 +2976,7 @@ msgstr "Bu hata, sonuçları gönderdikten sonra web tarayıcınızında yenilem
 msgid "This group does not contain any question(s)."
 msgstr "Bu grup hiç soru içermiyor."
 
-#: save.php:326
+#: save.php:317
 msgid "This name has already been used for this survey. You must use a unique save name."
 msgstr "Bu ad bu anket için zaten kullanılmış. Kaydedebilmek için eşsiz bir ad kullanmalısınız."
 
@@ -3025,7 +3030,7 @@ msgstr "Anonim kalmak için lütfen isminiz yerine bir takma ad kullanınız, ve
 msgid "Total"
 msgstr "Toplam"
 
-#: statistics_user.php:419
+#: statistics_user.php:423
 msgid "Total records in survey"
 msgstr "Anketteki toplam kayıt"
 
@@ -3033,7 +3038,7 @@ msgstr "Anketteki toplam kayıt"
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "Anketi kaydederken belirttiğiniz adı ve parolayı yazın."
 
-#: upload.php:185
+#: upload.php:184
 msgid "Unknown error"
 msgstr "Bilinmeyen hata"
 
@@ -3045,7 +3050,7 @@ msgstr "Yükleniyor"
 msgid "Warning"
 msgstr "Uyarı"
 
-#: upload.php:139
+#: upload.php:138
 msgid "We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator."
 msgstr "Çok üzgünüz"
 
@@ -3150,11 +3155,11 @@ msgstr "Katılmak istiyorsanız buradan kayıt olabilirsiniz."
 msgid "You must be registered to complete this survey"
 msgstr "Bu ankete yalnız kayıt olmuş kişiler katılabilir."
 
-#: save.php:299
+#: save.php:290
 msgid "You must supply a name for this saved session."
 msgstr "Bu kaydedilmiş oturum için bir ad belirtmelisiniz."
 
-#: save.php:300
+#: save.php:291
 msgid "You must supply a password for this saved session."
 msgstr "Bu kaydedilmiş oturum için bir parola belirtmelisiniz."
 
@@ -3177,12 +3182,12 @@ msgstr "Değerlendirmeleriniz"
 msgid "Your Email"
 msgstr "E-posta adresiniz"
 
-#: save.php:302
+#: save.php:293
 msgid "Your passwords do not match."
 msgstr "Parolalarınız aynı değil."
 
-#: save.php:402
-#: save.php:445
+#: save.php:393
+#: save.php:436
 msgid "Your survey was successfully saved."
 msgstr "Anketiniz sorunsuz kaydedildi."
 
@@ -3268,7 +3273,7 @@ msgstr "Tümü sorular bir arada"
 msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
 msgstr "Silinen diller için hazırlanmış tüm sorular, yanıtlar ve diğer ögeler silinecek. Emin misiniz?"
 
-#: admin/browse.php:729
+#: admin/browse.php:728
 msgid "All responses"
 msgstr "Tüm yanıtlar"
 
@@ -3350,7 +3355,7 @@ msgstr "Anket bitince verilen adres yüklensin:"
 msgid "Available label sets:"
 msgstr "Uygun etiket takımları:"
 
-#: admin/browse.php:1044
+#: admin/browse.php:1043
 msgid "Average interview time: "
 msgstr "Ortalama mülakat süresi:"
 
@@ -3372,11 +3377,10 @@ msgstr "Önceki"
 msgid "Bounce Email:"
 msgstr "Geri Dönüş E-postası:"
 
-#: admin/browse.php:31
-#: admin/browse.php:62
-#: admin/browse.php:74
-#: admin/browse.php:109
-#: admin/browse.php:325
+#: admin/browse.php:30
+#: admin/browse.php:61
+#: admin/browse.php:73
+#: admin/browse.php:108
 #: admin/dataentry.php:1458
 #: admin/dataentry.php:1474
 msgid "Browse Responses"
@@ -3406,10 +3410,6 @@ msgstr "Hepsini denetle"
 msgid "Clear"
 msgstr "Temizle"
 
-#: admin/browse.php:330
-msgid "Close"
-msgstr "Kapat"
-
 #: admin/editansweroptions.php:114
 #: admin/editansweroptions.php:144
 #: admin/editsubquestions.php:70
@@ -3421,7 +3421,7 @@ msgstr "Kod"
 msgid "Comparison operator"
 msgstr "Karşılaştırma operatörü"
 
-#: admin/browse.php:730
+#: admin/browse.php:729
 msgid "Completed responses only"
 msgstr "Yalnız tamamlanmış yanıtlar"
 
@@ -3512,8 +3512,8 @@ msgstr "Şimdiki"
 msgid "Data entry"
 msgstr "Veri Girişi "
 
-#: admin/browse.php:695
-#: admin/browse.php:943
+#: admin/browse.php:694
+#: admin/browse.php:942
 msgid "Data view control"
 msgstr "Veri görünümü denetimi"
 
@@ -3556,8 +3556,8 @@ msgstr "Varsayılan değer ayarları başarılı bir şekilde kaydedildi."
 msgid "Delete all conditions"
 msgstr "Tüm koşulları sil"
 
-#: admin/browse.php:559
-#: admin/browse.php:899
+#: admin/browse.php:558
+#: admin/browse.php:898
 msgid "Delete marked responses"
 msgstr "İşaretlenmiş yanıtları sil"
 
@@ -3570,12 +3570,12 @@ msgstr "Anketi sil"
 msgid "Delete this condition"
 msgstr "Bu koşulu sil"
 
-#: admin/browse.php:230
+#: admin/browse.php:228
 msgid "Delete this entry"
 msgstr "Bu kayıdı sil"
 
-#: admin/browse.php:773
-#: admin/browse.php:1003
+#: admin/browse.php:772
+#: admin/browse.php:1002
 msgid "Delete this response"
 msgstr "Bu yanıtı sil"
 
@@ -3602,29 +3602,29 @@ msgstr "Sonuç kodlarıyla beraber ayrıntılı e-posta bilgilendirmesi "
 msgid "Detailed admin notification subject:"
 msgstr "Sonuç kodlarıyla beraber ayrıntılı e-posta bilgilendirmesi konusu:"
 
-#: admin/browse.php:728
+#: admin/browse.php:727
 msgid "Display:"
 msgstr "Görünüm:"
 
-#: admin/browse.php:317
-#: admin/browse.php:841
+#: admin/browse.php:315
+#: admin/browse.php:840
 msgid "Do you really want to delete all marked responses?"
 msgstr "Bütün işaretlenmiş yanıtları silmek istediğinizden emin misiniz?"
 
-#: admin/browse.php:316
-#: admin/browse.php:840
+#: admin/browse.php:314
+#: admin/browse.php:839
 msgid "Do you really want to delete this response?"
 msgstr "Bu yanıtı silmek istediğinizden emin misiniz?"
 
-#: admin/browse.php:769
+#: admin/browse.php:768
 msgid "Download all files in this response as a zip file"
 msgstr "Bütün dosyaları bu soru içinde zip dosyası olarak indir"
 
-#: admin/browse.php:240
+#: admin/browse.php:238
 msgid "Download files for this entry"
 msgstr "Bu giriş için indirmeler"
 
-#: admin/browse.php:562
+#: admin/browse.php:561
 msgid "Download marked files"
 msgstr "İşaretlenmiş dosyaları indir"
 
@@ -3632,7 +3632,7 @@ msgstr "İşaretlenmiş dosyaları indir"
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "Yinelenen kodlar bulundu, bu kayıtlar güncellenmeyecek"
 
-#: admin/database.php:1239
+#: admin/database.php:1240
 msgid "ERROR deleting Survey id"
 msgstr "Anket kodu silinirken HATA oldu"
 
@@ -3668,17 +3668,17 @@ msgstr "Anket metini materyallerini düzenle"
 msgid "Edit this condition"
 msgstr "Bu koşulu düzenle"
 
-#: admin/browse.php:224
+#: admin/browse.php:222
 #: admin/dataentry.php:146
 msgid "Edit this entry"
 msgstr "Bu kaydı düzenle"
 
-#: admin/browse.php:764
-#: admin/browse.php:1002
+#: admin/browse.php:763
+#: admin/browse.php:1001
 msgid "Edit this response"
 msgstr "Bu yanıtı düzenle"
 
-#: admin/browse.php:783
+#: admin/browse.php:782
 msgid "Edit this token"
 msgstr "Bu pin kodunu düzenle"
 
@@ -3687,8 +3687,8 @@ msgstr "Bu pin kodunu düzenle"
 msgid "Editing response (ID %s)"
 msgstr "Yanıt düzenleniyor (Kod %s)"
 
-#: admin/browse.php:138
-#: admin/browse.php:476
+#: admin/browse.php:137
+#: admin/browse.php:475
 msgid "Email"
 msgstr "E-posta"
 
@@ -3697,7 +3697,7 @@ msgstr "E-posta"
 msgid "Email reminder:"
 msgstr "Hatırlatma e-postasının metni:"
 
-#: admin/database.php:1225
+#: admin/database.php:1226
 msgid "Email templates successfully saved."
 msgstr "Email temaları sorunsuz kaydedildi."
 
@@ -3791,7 +3791,7 @@ msgstr "Soru Ver"
 msgid "Export Resources As ZIP Archive"
 msgstr "Kaynakları ZIP Arşivi Olarak Ver"
 
-#: admin/browse.php:246
+#: admin/browse.php:244
 msgid "Export this Response"
 msgstr "Bu Yanıtı Ver"
 
@@ -3826,7 +3826,7 @@ msgstr "Soru Biçimi:"
 msgid "From token table"
 msgstr "Pin kodu tablosundan"
 
-#: admin/browse.php:1098
+#: admin/browse.php:1097
 msgid "Full responses:"
 msgstr "Tamamlanan yanıtlar:"
 
@@ -3923,11 +3923,11 @@ msgstr "Anket al"
 msgid "In an active survey, a table is created to store all the data-entry records."
 msgstr "Etkin bir ankette, bütün veri giriş kayıtlarının tutulduğu bir tablo oluşturulur."
 
-#: admin/browse.php:731
+#: admin/browse.php:730
 msgid "Incomplete responses only"
 msgstr "Yalnız eksik yanıtlar"
 
-#: admin/browse.php:1099
+#: admin/browse.php:1098
 msgid "Incomplete responses:"
 msgstr "Eksik yanıtlar:"
 
@@ -3936,7 +3936,7 @@ msgstr "Eksik yanıtlar:"
 msgid "Inexistant token table"
 msgstr "Varolmayan pin kodu tablosu"
 
-#: admin/browse.php:1030
+#: admin/browse.php:1029
 msgid "Interview time"
 msgstr "Görüşme zamanı:"
 
@@ -4004,7 +4004,7 @@ msgstr "Anket herkese açık olarak listelensin:"
 msgid "Main admin screen"
 msgstr "Ana yönetici ekranı"
 
-#: admin/browse.php:1072
+#: admin/browse.php:1071
 msgid "Median: "
 msgstr "Medyan değeri "
 
@@ -4053,6 +4053,10 @@ msgstr "Eşit değildir"
 #: admin/conditionshandling.php:1432
 msgid "Not found"
 msgstr "Bulunamadı"
+
+#: admin/browse.php:328
+msgid "Note:"
+msgstr "Not:"
 
 #: admin/deactivate.php:122
 msgid "Note: If you deactivated this survey in error, it is possible to restore this data easily if you do not make any changes to the survey structure. See the LimeSurvey documentation for further details"
@@ -4106,11 +4110,11 @@ msgstr "Parola:"
 msgid "Please select a file to import!"
 msgstr "Alınacak dosyayı seçin!"
 
-#: admin/browse.php:318
+#: admin/browse.php:316
 msgid "Please select at least one file for deletion"
 msgstr "Lütfen silmek için an azından bir ögeyi seçin"
 
-#: admin/browse.php:319
+#: admin/browse.php:317
 msgid "Please select at least one file for download"
 msgstr "Lütfen indirmek için an azından bir ögeyi seçin"
 
@@ -4237,8 +4241,8 @@ msgstr "Kayıt Silindi"
 msgid "Record has been updated."
 msgstr "Kayıt güncellendi."
 
-#: admin/browse.php:725
-#: admin/browse.php:973
+#: admin/browse.php:724
+#: admin/browse.php:972
 msgid "Records displayed:"
 msgstr "Gösterilen kayıtlar:"
 
@@ -4272,6 +4276,11 @@ msgstr "Hatırlatıcı e-posta konusu:"
 msgid "Remove"
 msgstr " Sil  "
 
+#: admin/browse.php:329
+#, fuzzy
+msgid "Remove filter"
+msgstr "Yanıt süzgeçleri"
+
 #: admin/conditionshandling.php:1177
 msgid "Renumber scenario automatically"
 msgstr "Senaryoyu kendiliğinden yeniden numaralandır"
@@ -4291,7 +4300,7 @@ msgstr "Koşullar sıfırlansın mı?"
 msgid "Resources"
 msgstr "kaynaklar"
 
-#: admin/browse.php:1094
+#: admin/browse.php:1093
 msgid "Response summary"
 msgstr "Yanıtların Özeti"
 
@@ -4389,8 +4398,8 @@ msgstr "Çerez kullanarak yeniden katılımı önle:"
 msgid "Set token length to:"
 msgstr "Pin kodu uzunluğu:"
 
-#: admin/browse.php:727
-#: admin/browse.php:975
+#: admin/browse.php:726
+#: admin/browse.php:974
 msgid "Show"
 msgstr "Göster"
 
@@ -4447,33 +4456,33 @@ msgstr "Sadece grup adını göster"
 msgid "Show group name only (Forced by the system administrator)"
 msgstr "Sadece grup adını göster (sistem yöneticisi tarafından zorunlu)"
 
-#: admin/browse.php:712
-#: admin/browse.php:960
+#: admin/browse.php:711
+#: admin/browse.php:959
 msgid "Show last.."
 msgstr "Sonuncuyu göster..."
 
-#: admin/browse.php:711
-#: admin/browse.php:959
+#: admin/browse.php:710
+#: admin/browse.php:958
 msgid "Show last..."
 msgstr "Sonuncuyu göster..."
 
-#: admin/browse.php:709
-#: admin/browse.php:957
+#: admin/browse.php:708
+#: admin/browse.php:956
 msgid "Show next.."
 msgstr "Sonrakini göster..."
 
-#: admin/browse.php:254
-#: admin/browse.php:708
-#: admin/browse.php:956
+#: admin/browse.php:252
+#: admin/browse.php:707
+#: admin/browse.php:955
 msgid "Show next..."
 msgstr "Sonrakini göster..."
 
-#: admin/browse.php:704
-#: admin/browse.php:952
+#: admin/browse.php:703
+#: admin/browse.php:951
 msgid "Show previous.."
 msgstr "Öncekini göster..."
 
-#: admin/browse.php:251
+#: admin/browse.php:249
 msgid "Show previous..."
 msgstr "Öncekini göster..."
 
@@ -4506,8 +4515,8 @@ msgstr "sadece soru sayısını göster"
 msgid "Show question number only (Forced by the system administrator)"
 msgstr "Sadece soru numarasını göster (Sistem yöneticisi tarafından zorunludur)"
 
-#: admin/browse.php:701
-#: admin/browse.php:949
+#: admin/browse.php:700
+#: admin/browse.php:948
 msgid "Show start..."
 msgstr "Birinciyi göster..."
 
@@ -4515,7 +4524,7 @@ msgstr "Birinciyi göster..."
 msgid "Show welcome screen?"
 msgstr "Hoşgeldiniz ekanı gösterilsin mi ?"
 
-#: admin/browse.php:329
+#: admin/browse.php:328
 msgid "Showing Filtered Results"
 msgstr "Süzülmüş Sonuçlar Gösteriliyor"
 
@@ -4544,12 +4553,12 @@ msgstr "Başlangıç Dili:"
 msgid "Start date/time:"
 msgstr "Başlangıç tarihi/zamanı:"
 
-#: admin/browse.php:726
-#: admin/browse.php:974
+#: admin/browse.php:725
+#: admin/browse.php:973
 msgid "Starting from:"
 msgstr "Başlangıç zamanı:"
 
-#: admin/browse.php:140
+#: admin/browse.php:139
 msgid "Submission date"
 msgstr "Gönderim tarihi"
 
@@ -4561,7 +4570,7 @@ msgstr "Altsoru"
 msgid "Subquestion:"
 msgstr "Altsoru:"
 
-#: admin/database.php:1034
+#: admin/database.php:1035
 msgid "Subquestions were successfully saved."
 msgstr "alt sorular sorunsuz kaydedildi."
 
@@ -4581,19 +4590,19 @@ msgstr "Anket Erişimi"
 msgid "Survey Has Been Deactivated"
 msgstr "Anket Devre Dışı Bırakıldı"
 
-#: admin/database.php:1317
+#: admin/database.php:1318
 msgid "Survey could not be created because it did not have a title"
 msgstr "Anketin adı olmadığından oluşturulamadı"
 
-#: admin/database.php:1200
+#: admin/database.php:1201
 msgid "Survey could not be updated"
 msgstr "Anket güncellenemedi"
 
-#: admin/database.php:1195
+#: admin/database.php:1196
 msgid "Survey settings were successfully saved."
 msgstr "Anket ayarlarını sorunsuz kaydedildi."
 
-#: admin/database.php:1298
+#: admin/database.php:1299
 msgid "Survey text elements successfully saved."
 msgstr "Anket metin elementleri sorunsuz kaydedildi."
 
@@ -4601,7 +4610,7 @@ msgstr "Anket metin elementleri sorunsuz kaydedildi."
 msgid "Survey title"
 msgstr "Anket başlığı:"
 
-#: admin/database.php:1473
+#: admin/database.php:1474
 msgid "Survey was successfully added."
 msgstr "Anketiniz sorunsuz kaydedildi. "
 
@@ -4653,7 +4662,7 @@ msgstr "Bu anketle ilişkili pin kodu tablosu şu şekilde yeniden adlandırıld
 msgid "There is already a recorded answer for this token"
 msgstr "Anket daha önce bu pin koduyla yanıtlanmış"
 
-#: admin/browse.php:76
+#: admin/browse.php:75
 msgid "There is no matching survey."
 msgstr "Eşleşen anket yok."
 
@@ -4693,7 +4702,7 @@ msgstr "Bu anketle ilişkili bir pin kodu tablosu var. Bu anketi silerdiğinizde
 msgid "This survey has been deleted."
 msgstr "Bu anket silindi."
 
-#: admin/browse.php:64
+#: admin/browse.php:63
 msgid "This survey has not been activated. There are no results to browse."
 msgstr "Bu anket etkinleştirilmemiş. Göz atılacak sonuç yok."
 
@@ -4721,11 +4730,11 @@ msgstr "Bu anket anonim yanıtlar kullandığından yanıtlarınızı güncelley
 msgid "This will replace the existing text. Continue?"
 msgstr "Bu metin varolan metnin üzerine yazılsın mı?"
 
-#: admin/browse.php:836
+#: admin/browse.php:835
 msgid "Time statistics"
 msgstr "Zaman İstatistikleri"
 
-#: admin/browse.php:1079
+#: admin/browse.php:1078
 msgid "Timings"
 msgstr "Zamanlamalar"
 
@@ -4737,8 +4746,8 @@ msgstr "Zamanlama kaydedilecek"
 msgid "Timings will not be saved."
 msgstr "Zamanlama kaydedilmeyecek"
 
-#: admin/browse.php:135
-#: admin/browse.php:473
+#: admin/browse.php:134
+#: admin/browse.php:472
 msgid "Token ID"
 msgstr "Pin Kodu No"
 
@@ -4747,7 +4756,7 @@ msgstr "Pin Kodu No"
 msgid "Token fields"
 msgstr "Pin kodu alanları"
 
-#: admin/browse.php:1096
+#: admin/browse.php:1095
 msgid "Total responses:"
 msgstr "Toplam yanıt:"
 
@@ -4808,13 +4817,13 @@ msgstr "Kullanıcı adı geçersiz!"
 msgid "View This Record"
 msgstr "Bu Kaydı Göster"
 
-#: admin/browse.php:216
+#: admin/browse.php:214
 #, php-format
 msgid "View response ID %d"
 msgstr "Yanıt gör (Belirleyici numara  %d)"
 
-#: admin/browse.php:760
-#: admin/browse.php:1001
+#: admin/browse.php:759
+#: admin/browse.php:1000
 msgid "View response details"
 msgstr "Yanıt ayrıntılarını göster"
 
@@ -4873,7 +4882,7 @@ msgstr "Son yanıt seçeneğini silemezsiniz."
 msgid "You cannot delete the last subquestion."
 msgstr "Son altsoruyu silemezsiniz."
 
-#: admin/browse.php:234
+#: admin/browse.php:232
 msgid "You don't have permission to delete this entry."
 msgstr "Bu kayıdı silmek için izniniz yok."
 
@@ -4889,7 +4898,7 @@ msgstr "Bir anket seçmediniz"
 msgid "You have not selected a survey for data-entry."
 msgstr "Veri Girişi için bir anket seçmediniz."
 
-#: admin/browse.php:33
+#: admin/browse.php:32
 msgid "You have not selected a survey to browse."
 msgstr "Tarama yapmak için bir anket seçmediniz."
 
@@ -4906,7 +4915,7 @@ msgstr "Bu verilere daha sonra yeniden erişebilmek için bu tablonun adını ha
 msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
 msgstr "Koşul eklenemiyor! Bu koşula hangi soru ve/veya yanıtın bağlı olacağı bilgisi eksik. Lütfen bir soru ya da yanıt seçtiğinizden emin olun."
 
-#: admin/database.php:1499
+#: admin/database.php:1500
 msgid "Your personal settings were successfully saved."
 msgstr "Kişisel ayarlarınız sorunsuz kaydedildi."
 
@@ -6891,32 +6900,32 @@ msgstr "Tüm anket dil ayarları bütünlük standartlarına uygun"
 msgid "All survey settings meet consistency standards"
 msgstr "Tüm anket ayarları bütünlük standartlarına uygun"
 
-#: admin/printablesurvey.php:489
+#: admin/printablesurvey.php:490
 msgid "Answer matched (regexp)"
 msgstr "Uyan yanıt (regexp)"
 
-#: admin/printablesurvey.php:465
-#: admin/printablesurvey.php:493
+#: admin/printablesurvey.php:466
+#: admin/printablesurvey.php:494
 msgid "Answer was"
 msgstr "Yanıt şuydu"
 
-#: admin/printablesurvey.php:469
+#: admin/printablesurvey.php:470
 msgid "Answer was NOT"
 msgstr "Yanıt şu değildi"
 
-#: admin/printablesurvey.php:485
+#: admin/printablesurvey.php:486
 msgid "Answer was greater than"
 msgstr "Yanıt şundan daha büyüktü"
 
-#: admin/printablesurvey.php:481
+#: admin/printablesurvey.php:482
 msgid "Answer was greater than or equal to"
 msgstr "Yanıt şundan daha büyük ya da eşitti"
 
-#: admin/printablesurvey.php:473
+#: admin/printablesurvey.php:474
 msgid "Answer was less than"
 msgstr "Yanıt şundan küçük"
 
-#: admin/printablesurvey.php:477
+#: admin/printablesurvey.php:478
 msgid "Answer was less than or equal to"
 msgstr "Yanıt şundan daha küçük ya da eşitti"
 
@@ -6987,6 +6996,10 @@ msgstr "Seçili"
 #: admin/iterate_survey.php:31
 msgid "Click on the following button if you want to"
 msgstr "Eğer şunu yapmak istiyorsanız aşağıdaki butona tıklayın:"
+
+#: admin/labels.php:275
+msgid "Close"
+msgstr "Kapat"
 
 #: admin/labels.php:231
 #: admin/questiongrouphandling.php:83
@@ -7335,7 +7348,7 @@ msgstr "%s grubu %s grubuna bağlı, işaretlenmiş koşullara bakın:"
 msgid "Hide advanced settings"
 msgstr "Gelişmiş ayarları gizle"
 
-#: admin/printablesurvey.php:777
+#: admin/printablesurvey.php:778
 msgid "ID:"
 msgstr "Belirleyici Numara"
 
@@ -7529,17 +7542,17 @@ msgstr "Not: Yeni bir soru kodu yazmalısınız!"
 msgid "OK"
 msgstr "Tamam"
 
-#: admin/printablesurvey.php:1956
+#: admin/printablesurvey.php:1957
 #, php-format
 msgid "Only answer this question for the items you did not select in question %d ('%s')"
 msgstr "Bu soruyu yalnız soru %d ('%s') içinde seçmediğiniz ögeler için yanıtlayın"
 
-#: admin/printablesurvey.php:1947
+#: admin/printablesurvey.php:1948
 #, php-format
 msgid "Only answer this question for the items you selected in question %d ('%s')"
 msgstr "Bu soruyu yalnız soru %d ('%s') içinde seçtiğiniz ögeler için yanıtlayın"
 
-#: admin/printablesurvey.php:757
+#: admin/printablesurvey.php:758
 msgid "Only answer this question if the following conditions are met:"
 msgstr "Yalnızca aşağıdaki koşullar sağlanıyorsa bunu yanıtlayın:"
 
@@ -7566,54 +7579,54 @@ msgstr "Kullanılan tek kullanımlık parola yanlış ya da kullanıcı bulunama
 msgid "Place after.."
 msgstr "Şunun ardına yerleştir..."
 
-#: admin/printablesurvey.php:1010
 #: admin/printablesurvey.php:1011
+#: admin/printablesurvey.php:1012
 msgid "Please choose *all* that apply:"
 msgstr "Lütfen uygun olanların *tümünü* seçin:"
 
-#: admin/printablesurvey.php:1074
 #: admin/printablesurvey.php:1075
+#: admin/printablesurvey.php:1076
 msgid "Please choose *at most* "
 msgstr "Lütfen *en çok* yanıtı seçin"
 
-#: admin/printablesurvey.php:1016
 #: admin/printablesurvey.php:1017
+#: admin/printablesurvey.php:1018
 #, php-format
 msgid "Please choose *at most* %s answers:"
 msgstr "Lütfen *en çok* %s yanıt seçin:"
 
-#: admin/printablesurvey.php:835
 #: admin/printablesurvey.php:836
-#: admin/printablesurvey.php:860
-#: admin/printablesurvey.php:867
-#: admin/printablesurvey.php:893
-#: admin/printablesurvey.php:896
-#: admin/printablesurvey.php:960
+#: admin/printablesurvey.php:837
+#: admin/printablesurvey.php:861
+#: admin/printablesurvey.php:868
+#: admin/printablesurvey.php:894
+#: admin/printablesurvey.php:897
 #: admin/printablesurvey.php:961
-#: admin/printablesurvey.php:1199
-#: admin/printablesurvey.php:1203
+#: admin/printablesurvey.php:962
+#: admin/printablesurvey.php:1200
+#: admin/printablesurvey.php:1204
 msgid "Please choose *only one* of the following:"
 msgstr "Lütfen aşağıdakilerden *yalnız birini* seçin:"
 
-#: admin/printablesurvey.php:1068
 #: admin/printablesurvey.php:1069
+#: admin/printablesurvey.php:1070
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Lütfen istediklerinizi seçip açıklamalarınızı yazın:"
 
-#: admin/printablesurvey.php:1213
-#: admin/printablesurvey.php:1230
-#: admin/printablesurvey.php:1277
-#: admin/printablesurvey.php:1286
-#: admin/printablesurvey.php:1313
-#: admin/printablesurvey.php:1328
-#: admin/printablesurvey.php:1354
-#: admin/printablesurvey.php:1369
-#: admin/printablesurvey.php:1578
-#: admin/printablesurvey.php:1588
-#: admin/printablesurvey.php:1682
-#: admin/printablesurvey.php:1685
-#: admin/printablesurvey.php:1789
+#: admin/printablesurvey.php:1214
+#: admin/printablesurvey.php:1231
+#: admin/printablesurvey.php:1278
+#: admin/printablesurvey.php:1287
+#: admin/printablesurvey.php:1314
+#: admin/printablesurvey.php:1329
+#: admin/printablesurvey.php:1355
+#: admin/printablesurvey.php:1370
+#: admin/printablesurvey.php:1579
+#: admin/printablesurvey.php:1589
+#: admin/printablesurvey.php:1683
+#: admin/printablesurvey.php:1686
 #: admin/printablesurvey.php:1790
+#: admin/printablesurvey.php:1791
 msgid "Please choose the appropriate response for each item:"
 msgstr "Lütfen her bir öge için uygun yanıtları seçin:"
 
@@ -7621,59 +7634,59 @@ msgstr "Lütfen her bir öge için uygun yanıtları seçin:"
 msgid "Please choose the label sets you want to export:"
 msgstr "Vermek istediğiniz etiket takımlarını seçin:"
 
-#: admin/printablesurvey.php:852
-#: admin/printablesurvey.php:854
+#: admin/printablesurvey.php:853
+#: admin/printablesurvey.php:855
 msgid "Please enter a date:"
 msgstr "Lütfen bir tarih yazın:"
 
-#: admin/printablesurvey.php:1435
 #: admin/printablesurvey.php:1436
+#: admin/printablesurvey.php:1437
 #, php-format
 msgid "Please enter a number between %d and %d for each item:"
 msgstr "Lütfen her öge için %d ile %d arasında bir rakam yazın:"
 
-#: admin/printablesurvey.php:165
+#: admin/printablesurvey.php:166
 msgid "Please fax your completed survey to:"
 msgstr "Lütfen tamamladığınız anketi şu numaraya fakslayın:"
 
-#: admin/printablesurvey.php:1928
+#: admin/printablesurvey.php:1929
 #, php-format
 msgid "Please fax your completed survey to: %s"
 msgstr "Lütfen tamamladığınız anketi şu numaraya fakslayın: %s"
 
-#: admin/printablesurvey.php:987
+#: admin/printablesurvey.php:988
 msgid "Please number each box in order of preference from 1 to"
 msgstr "Lütfen her kutuya 1'den başlayarak bir numara verin"
 
-#: admin/printablesurvey.php:988
+#: admin/printablesurvey.php:989
 msgid "Please number each box in order of preference from 1 to "
 msgstr "Lütfen her kutuya 1'den başlayarak bir numara verin"
 
-#: admin/printablesurvey.php:171
-#: admin/printablesurvey.php:1924
+#: admin/printablesurvey.php:172
+#: admin/printablesurvey.php:1925
 #, php-format
 msgid "Please submit by %s"
 msgstr "Lütfen %s tarihinde gönderin"
 
-#: admin/printablesurvey.php:1431
 #: admin/printablesurvey.php:1432
+#: admin/printablesurvey.php:1433
 #, php-format
 msgid "Please write a multiple of %d between %d and %d for each item:"
 msgstr "Lütfen her öge için çoklu bir %d yazın. %d ile %d arasında olsun:"
 
-#: admin/printablesurvey.php:1154
-#: admin/printablesurvey.php:1156
-#: admin/printablesurvey.php:1163
-#: admin/printablesurvey.php:1166
-#: admin/printablesurvey.php:1176
-#: admin/printablesurvey.php:1179
-#: admin/printablesurvey.php:1189
-#: admin/printablesurvey.php:1192
+#: admin/printablesurvey.php:1155
+#: admin/printablesurvey.php:1157
+#: admin/printablesurvey.php:1164
+#: admin/printablesurvey.php:1167
+#: admin/printablesurvey.php:1177
+#: admin/printablesurvey.php:1180
+#: admin/printablesurvey.php:1190
+#: admin/printablesurvey.php:1193
 msgid "Please write your answer here:"
 msgstr "Lütfen yanıtınızı buraya yazın:"
 
-#: admin/printablesurvey.php:1114
-#: admin/printablesurvey.php:1132
+#: admin/printablesurvey.php:1115
+#: admin/printablesurvey.php:1133
 msgid "Please write your answer(s) here:"
 msgstr "Lütfen yanıtlarınızı buraya yazın:"
 
@@ -7693,7 +7706,7 @@ msgstr "Soru Özellikleri"
 msgid "Question Type:"
 msgstr "Soru tipi:"
 
-#: admin/printablesurvey.php:778
+#: admin/printablesurvey.php:779
 msgid "Question code:"
 msgstr "Soru kodu"
 
@@ -7716,7 +7729,7 @@ msgstr "Soru alma özeti"
 msgid "Quick statistics"
 msgstr "Hızlı İstatistik"
 
-#: admin/printablesurvey.php:726
+#: admin/printablesurvey.php:727
 msgid "RANK"
 msgstr "SIRALAMA"
 
@@ -7816,8 +7829,8 @@ msgstr "Malesef bu anketteki yanıtlarınız kotayı aştı."
 msgid "Source table:"
 msgstr "Kaynak tablosu:"
 
-#: admin/printablesurvey.php:149
-#: admin/printablesurvey.php:1930
+#: admin/printablesurvey.php:150
+#: admin/printablesurvey.php:1931
 msgid "Submit Your Survey."
 msgstr "Anketi Bitir."
 
@@ -7855,8 +7868,8 @@ msgstr "%s kalıbı bulunamadı, lütfen etkinleştireceğiniz zaman gözden ge�
 msgid "Template '%s' does already exist."
 msgstr "'%s' kalıbı zaten var."
 
-#: admin/printablesurvey.php:151
-#: admin/printablesurvey.php:1930
+#: admin/printablesurvey.php:152
+#: admin/printablesurvey.php:1931
 msgid "Thank you for completing this survey."
 msgstr "Anketi doldurduğunuz için teşekkür ederiz."
 
@@ -7950,7 +7963,7 @@ msgstr "Silinebilecek %s yetim kota dil ayarı var."
 msgid "There are %s orphaned quota members which can be deleted."
 msgstr "Silinebilecek %s yetim kota üyesi var."
 
-#: admin/printablesurvey.php:1847
+#: admin/printablesurvey.php:1848
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
 msgstr "Bu ankette {NUMBEROFQUESTIONS} soru var"
 
@@ -8059,12 +8072,12 @@ msgstr "En az bir etiket takımı seçmelisiniz."
 msgid "[Dependency on another question (ID $4)]"
 msgstr "[Başka bi soru üzerinden bağımlılık (ID $4)]"
 
-#: admin/printablesurvey.php:1074
 #: admin/printablesurvey.php:1075
+#: admin/printablesurvey.php:1076
 msgid "answers and provide a comment:"
 msgstr "ve açıklama yazın:"
 
-#: admin/printablesurvey.php:745
+#: admin/printablesurvey.php:746
 msgid "at question"
 msgstr "soruda"
 
@@ -8077,32 +8090,32 @@ msgstr "soruda"
 msgid "because"
 msgstr "çünkü"
 
-#: admin/printablesurvey.php:503
-#: admin/printablesurvey.php:531
+#: admin/printablesurvey.php:504
+#: admin/printablesurvey.php:532
 msgid "is"
 msgstr "Mi ?"
 
-#: admin/printablesurvey.php:507
+#: admin/printablesurvey.php:508
 msgid "is NOT"
 msgstr "Değil "
 
-#: admin/printablesurvey.php:523
+#: admin/printablesurvey.php:524
 msgid "is greater than"
 msgstr "Büyük mü?"
 
-#: admin/printablesurvey.php:519
+#: admin/printablesurvey.php:520
 msgid "is greater than or equal to"
 msgstr "Büyük ya da eşit mi ?"
 
-#: admin/printablesurvey.php:511
+#: admin/printablesurvey.php:512
 msgid "is less than"
 msgstr "Az mı ?"
 
-#: admin/printablesurvey.php:515
+#: admin/printablesurvey.php:516
 msgid "is less than or equal to"
 msgstr "Az veya eşit mi?"
 
-#: admin/printablesurvey.php:527
+#: admin/printablesurvey.php:528
 msgid "is matched (regexp)"
 msgstr "Eşleşiyor mu ? (regexp) "
 
@@ -8118,17 +8131,17 @@ msgstr "Tablo"
 msgid "timings"
 msgstr "Saat tutma"
 
-#: admin/tokens.php:2901
+#: admin/tokens.php:2902
 #, php-format
 msgid "%s duplicate records removed"
 msgstr "%s yinelenen kayıt silindi"
 
-#: admin/tokens.php:2255
+#: admin/tokens.php:2256
 #, php-format
 msgid "%s field(s) were successfully added."
 msgstr "%s alan sorunsuz eklendi."
 
-#: admin/tokens.php:2913
+#: admin/tokens.php:2914
 #, php-format
 msgid "%s lines had a mismatching number of fields."
 msgstr "%s satır alan sayısına uymuyor."
@@ -8143,38 +8156,38 @@ msgstr "%s mesajları tarandı, %s'ler/lar sistem tarafından sekme olarak işar
 msgid "%s messages were scanned, none were marked as bounce by the system."
 msgstr "%s mesajları tarandı, hiç biri sistem tarafından sekme olarak işaretlenmedi."
 
-#: admin/tokens.php:2892
+#: admin/tokens.php:2893
 #, php-format
 msgid "%s records imported"
 msgstr "%s kayıt alındı"
 
-#: admin/tokens.php:2890
+#: admin/tokens.php:2891
 #, php-format
 msgid "%s records in CSV"
 msgstr "CSV dosyasında %s kayıt var"
 
-#: admin/tokens.php:2891
+#: admin/tokens.php:2892
 #, php-format
 msgid "%s records met minumum requirements"
 msgstr "%s kayıt en düşük gereksinimleri karşılıyor"
 
-#: admin/tokens.php:2923
-#: admin/tokens.php:3150
+#: admin/tokens.php:2924
+#: admin/tokens.php:3151
 #, php-format
 msgid "%s records with invalid email address removed"
 msgstr "Geçersiz e-posta adresi bulunan %s kayıt silindi"
 
-#: admin/statistics_function.php:1271
-#: admin/statistics_function.php:1281
+#: admin/statistics_function.php:1255
+#: admin/statistics_function.php:1265
 msgid "1st quartile (Q1)"
 msgstr "1. Çeyrek (Q1)"
 
-#: admin/statistics_function.php:1305
+#: admin/statistics_function.php:1289
 msgid "2nd quartile (Median)"
 msgstr "2. Çeyrek (Medyan)"
 
-#: admin/statistics_function.php:1346
-#: admin/statistics_function.php:1356
+#: admin/statistics_function.php:1330
+#: admin/statistics_function.php:1340
 msgid "3rd quartile (Q3)"
 msgstr "3. Çeyrek (Q3)"
 
@@ -8182,7 +8195,7 @@ msgstr "3. Çeyrek (Q3)"
 msgid "7bit Swedish"
 msgstr "7bit İsveççe"
 
-#: admin/tokens.php:2171
+#: admin/tokens.php:2172
 msgid "<no data>"
 msgstr "<veri yok>"
 
@@ -8231,32 +8244,32 @@ msgstr "Yanıt Ekle"
 msgid "Add New Quota"
 msgstr "Yeni Kota Ekle"
 
-#: admin/tokens.php:2597
+#: admin/tokens.php:2598
 msgid "Add another token entry"
 msgstr "Başka bir pin kodu kaydı ekle"
 
 #: admin/tokens.php:611
-#: admin/tokens.php:2475
-#: admin/tokens.php:2630
+#: admin/tokens.php:2476
+#: admin/tokens.php:2631
 msgid "Add dummy tokens"
 msgstr "Karşılıksız pin kodu ekle"
 
-#: admin/tokens.php:2191
+#: admin/tokens.php:2192
 msgid "Add fields"
 msgstr "Alan ekle"
 
 #: admin/tokens.php:607
-#: admin/tokens.php:2604
+#: admin/tokens.php:2605
 msgid "Add new token entry"
 msgstr "Yeni pin kodu kaydı ekle"
 
-#: admin/tokens.php:2182
+#: admin/tokens.php:2183
 msgid "Add token attributes"
 msgstr "Pin kodu özniteliği ekle"
 
-#: admin/tokens.php:2290
-#: admin/tokens.php:2400
-#: admin/tokens.php:2568
+#: admin/tokens.php:2291
+#: admin/tokens.php:2401
+#: admin/tokens.php:2569
 msgid "Add token entry"
 msgstr "Pin kodu kaydı ekle"
 
@@ -8264,7 +8277,7 @@ msgstr "Pin kodu kaydı ekle"
 msgid "Add user"
 msgstr "Kullanıcı ekle"
 
-#: admin/tokens.php:2250
+#: admin/tokens.php:2251
 msgid "Adding attribute fields failed:"
 msgstr "Öznitelik alanları eklenemedi:"
 
@@ -8282,7 +8295,7 @@ msgstr "Bu kotadaki bütün sorular zaten seçilmiş."
 msgid "All conditions in this survey have been deleted."
 msgstr "Bu anketteki tüm koşullar silindi."
 
-#: admin/usercontrol.php:592
+#: admin/usercontrol.php:597
 #, php-format
 msgid "All of the user's surveys were transferred to %s."
 msgstr "Kullanıcıların tüm anketleri %s 'a/e taşındı."
@@ -8354,10 +8367,10 @@ msgstr "Bu dosyayı silmek istediğinizden emin misiniz?"
 msgid "Are you sure you want to delete this template?"
 msgstr "Bu kalıbı silmek istediğinizden emin misiniz?"
 
-#: admin/statistics_function.php:2996
+#: admin/statistics_function.php:2980
+#: admin/statistics_function.php:2984
+#: admin/statistics_function.php:2994
 #: admin/statistics_function.php:3000
-#: admin/statistics_function.php:3010
-#: admin/statistics_function.php:3016
 msgid "Arithmetic mean"
 msgstr "Aritmetik ortalama"
 
@@ -8369,12 +8382,12 @@ msgstr "Değerlendirme ayrıntıları"
 msgid "Assessment heading"
 msgstr "Değerlendirme başlığı"
 
-#: admin/tokens.php:2154
+#: admin/tokens.php:2155
 msgid "Attribute field"
 msgstr "Öznitelik alanı"
 
-#: admin/tokens.php:2298
-#: admin/tokens.php:2430
+#: admin/tokens.php:2299
+#: admin/tokens.php:2431
 msgid "Auto"
 msgstr "Kendiliğinden"
 
@@ -8382,7 +8395,7 @@ msgstr "Kendiliğinden"
 msgid "Auto Translate"
 msgstr "Otomatik çeviri"
 
-#: admin/tokens.php:3188
+#: admin/tokens.php:3189
 msgid "Auto detect"
 msgstr "Otomatik algılama"
 
@@ -8399,26 +8412,26 @@ msgstr "Kendiliğinden Yükleme İnternet Adresi"
 msgid "Automatic"
 msgstr "Kendiliğinden"
 
-#: admin/statistics_function.php:1187
+#: admin/statistics_function.php:1171
 msgid "Average"
 msgstr "Ortalama"
 
-#: admin/statistics_function.php:916
+#: admin/statistics_function.php:900
 msgid "Average file size"
 msgstr "Ortalama dosya boyutu"
 
-#: admin/statistics_function.php:891
+#: admin/statistics_function.php:875
 msgid "Average no. of files per respondent"
 msgstr "Her cevap için ortalama dosya numarası"
 
-#: admin/statistics_function.php:917
+#: admin/statistics_function.php:901
 msgid "Average size per respondent"
 msgstr "Her cevap için ortalama boyut"
 
-#: admin/tokens.php:2217
-#: admin/tokens.php:2222
-#: admin/tokens.php:2251
-#: admin/tokens.php:2256
+#: admin/tokens.php:2218
+#: admin/tokens.php:2223
+#: admin/tokens.php:2252
+#: admin/tokens.php:2257
 msgid "Back to attribute field management."
 msgstr "Öznitelik alanı yönetimine dön."
 
@@ -8442,9 +8455,9 @@ msgstr "Yanıtlama e-posta ayarları kaydedildi."
 msgid "Bounce settings to be used"
 msgstr "Kullanılacak yanıtlama e-posta ayarları "
 
-#: admin/statistics_function.php:636
-#: admin/statistics_function.php:2069
-#: admin/statistics_function.php:2090
+#: admin/statistics_function.php:620
+#: admin/statistics_function.php:2053
+#: admin/statistics_function.php:2074
 msgid "Browse"
 msgstr "Gözat"
 
@@ -8461,26 +8474,26 @@ msgstr "Geçersiz e-posta adreslerine pin kodlarını gönderme"
 msgid "CSS & Javascript files:"
 msgstr "CSS ve Javascript dosyaları:"
 
-#: admin/tokens.php:2687
+#: admin/tokens.php:2688
 msgid "CSV input format"
 msgstr "CSV giriş biçimi"
 
-#: admin/statistics_function.php:951
-#: admin/statistics_function.php:953
-#: admin/statistics_function.php:966
-#: admin/statistics_function.php:977
-#: admin/statistics_function.php:1080
-#: admin/statistics_function.php:1082
-#: admin/statistics_function.php:1095
-#: admin/statistics_function.php:1105
+#: admin/statistics_function.php:935
+#: admin/statistics_function.php:937
+#: admin/statistics_function.php:950
+#: admin/statistics_function.php:961
+#: admin/statistics_function.php:1064
+#: admin/statistics_function.php:1066
+#: admin/statistics_function.php:1079
+#: admin/statistics_function.php:1089
 msgid "Calculation"
 msgstr "Hesaplama"
 
-#: admin/tokens.php:3161
+#: admin/tokens.php:3162
 msgid "Can't bind to the LDAP directory"
 msgstr "LDAP klasörüne bağlanılamıyor"
 
-#: admin/tokens.php:3167
+#: admin/tokens.php:3168
 msgid "Can't connect to the LDAP directory"
 msgstr "LDAP klasörüne bağlanılamıyor"
 
@@ -8488,11 +8501,11 @@ msgstr "LDAP klasörüne bağlanılamıyor"
 msgid "Changes cannot be saved to a standard template."
 msgstr "Standart bir kalıpta değişiklik yapamazsınız."
 
-#: admin/tokens.php:3195
+#: admin/tokens.php:3196
 msgid "Character set of the file:"
 msgstr "Dosyanın karakter seti:"
 
-#: admin/tokens.php:3194
+#: admin/tokens.php:3195
 msgid "Choose the CSV file to upload:"
 msgstr "Karşıya yüklenecek CSV dosyasını seçin:"
 
@@ -8504,7 +8517,7 @@ msgstr "Tüm Yanıtlar Silindi Sayfası"
 msgid "Click here to log in."
 msgstr "Giriş için buraya tıklayın."
 
-#: admin/tokens.php:2069
+#: admin/tokens.php:2070
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
 msgstr "Evet'e tıkladığınızda bu listedeki pin kodu oluşturulmamış tüm kullanıcılar için pin kodları oluşturulacak. Devam etmek istiyor musunuz?"
 
@@ -8512,12 +8525,13 @@ msgstr "Evet'e tıkladığınızda bu listedeki pin kodu oluşturulmamış tüm 
 msgid "Closed"
 msgstr "Kapalı"
 
-#: admin/tokens.php:3190
+#: admin/tokens.php:3191
 msgid "Comma"
 msgstr "virgül"
 
-#: admin/statistics_function.php:1847
-#: admin/statistics_function.php:2061
+#: admin/statistics_function.php:1831
+#: admin/statistics_function.php:2045
+#: admin/statistics_function.php:3148
 msgid "Comments"
 msgstr "Yorumlar"
 
@@ -8528,7 +8542,7 @@ msgstr "Anket Sonu Sayfası"
 #: admin/tokens.php:1110
 #: admin/tokens.php:1113
 #: admin/tokens.php:1114
-#: admin/tokens.php:2355
+#: admin/tokens.php:2356
 msgid "Completed?"
 msgstr "Tamamlandı:"
 
@@ -8542,26 +8556,26 @@ msgstr "Kalıbı kopyala"
 msgid "Copy template"
 msgstr "Kalıbı kopyala"
 
-#: admin/usercontrol.php:662
-#: admin/usercontrol.php:697
+#: admin/usercontrol.php:667
+#: admin/usercontrol.php:702
 msgid "Could not modify user data."
 msgstr "Kullanıcı verisi değiştirilemedi. "
 
-#: admin/statistics_function.php:1234
+#: admin/statistics_function.php:1218
+#: admin/statistics_function.php:2067
 #: admin/statistics_function.php:2083
-#: admin/statistics_function.php:2099
-#: admin/statistics_function.php:2118
-#: admin/statistics_function.php:2122
-#: admin/statistics_function.php:2130
-#: admin/statistics_function.php:2137
-#: admin/statistics_function.php:2160
-#: admin/statistics_function.php:2164
-#: admin/statistics_function.php:2172
-#: admin/statistics_function.php:2179
-#: admin/statistics_function.php:2261
-#: admin/statistics_function.php:2265
-#: admin/statistics_function.php:2272
-#: admin/statistics_function.php:2279
+#: admin/statistics_function.php:2102
+#: admin/statistics_function.php:2106
+#: admin/statistics_function.php:2114
+#: admin/statistics_function.php:2121
+#: admin/statistics_function.php:2144
+#: admin/statistics_function.php:2148
+#: admin/statistics_function.php:2156
+#: admin/statistics_function.php:2163
+#: admin/statistics_function.php:2245
+#: admin/statistics_function.php:2249
+#: admin/statistics_function.php:2256
+#: admin/statistics_function.php:2263
 msgid "Count"
 msgstr "Sayı"
 
@@ -8569,7 +8583,7 @@ msgstr "Sayı"
 msgid "Count stats for each question based only on the total number of responses for which the question was displayed"
 msgstr "Her soru için yalnız gösterilen sorunun toplam yanıt sayısını baz alarak istatistikleri say."
 
-#: admin/tokens.php:2425
+#: admin/tokens.php:2426
 msgid "Create dummy tokens"
 msgstr "Aldatıcı pinler oluştur"
 
@@ -8581,7 +8595,7 @@ msgstr "Yeni bir kalıp oluştur"
 msgid "Create new template called:"
 msgstr "Şu adla yeni bir kalıp oluştur:"
 
-#: admin/tokens.php:2065
+#: admin/tokens.php:2066
 msgid "Create tokens"
 msgstr "Pin kodlarını oluştur"
 
@@ -8633,7 +8647,7 @@ msgstr "Pin Kodlarını Sil"
 msgid "Delete Tokens Table"
 msgstr "Pin Kodu Tablosunu Sil"
 
-#: admin/usercontrol.php:618
+#: admin/usercontrol.php:623
 msgid "Delete User"
 msgstr "Kullanıcı Silme"
 
@@ -8683,10 +8697,10 @@ msgid "Directory with the name `%s` already exists - choose another name"
 msgstr "`%s` adında bir klasör zaten var, başka bir ad seçin"
 
 #: admin/tokens.php:602
-#: admin/tokens.php:2537
-#: admin/tokens.php:2596
-#: admin/tokens.php:2603
-#: admin/tokens.php:2678
+#: admin/tokens.php:2538
+#: admin/tokens.php:2597
+#: admin/tokens.php:2604
+#: admin/tokens.php:2679
 msgid "Display tokens"
 msgstr "Pin kodlarını göster "
 
@@ -8703,11 +8717,11 @@ msgstr "Bu anket için pin kodu tablosunu oluşturmak istiyor musunuz?"
 msgid "Drop tokens table"
 msgstr "Pin kodu tablosunu sil"
 
-#: admin/tokens.php:3142
+#: admin/tokens.php:3143
 msgid "Duplicate records removed"
 msgstr "Yinelenen kayıtlar silindi"
 
-#: admin/tokens.php:3201
+#: admin/tokens.php:3202
 msgid "Duplicates are determined by:"
 msgstr "Yinelenenler şuna göre belirlendi:"
 
@@ -8733,8 +8747,8 @@ msgstr "Kotayı düzenle"
 
 #: admin/tokens.php:1242
 #: admin/tokens.php:1244
-#: admin/tokens.php:2286
-#: admin/tokens.php:2483
+#: admin/tokens.php:2287
+#: admin/tokens.php:2484
 msgid "Edit token entry"
 msgstr "Pin kodu kaydını düzenle"
 
@@ -8743,19 +8757,19 @@ msgstr "Pin kodu kaydını düzenle"
 msgid "Editing template '%s' - File '%s'"
 msgstr "'%s' kalıbı düzenleniyor - Dosya '%s'"
 
-#: admin/usercontrol.php:640
+#: admin/usercontrol.php:645
 msgid "Editing user"
 msgstr "Kullanıcı Düzenleme"
 
-#: admin/tokens.php:2312
+#: admin/tokens.php:2313
 msgid "Email Status"
 msgstr "E-posta durumu"
 
-#: admin/usercontrol.php:698
+#: admin/usercontrol.php:703
 msgid "Email address already exists."
 msgstr "Bu e-posta adresi zaten var."
 
-#: admin/usercontrol.php:663
+#: admin/usercontrol.php:668
 msgid "Email address is not valid."
 msgstr "E-posta adresi geçersiz."
 
@@ -8789,15 +8803,15 @@ msgstr "{NAME} adlı kişinin ({EMAIL}) adresine e-posta gönderilemedi."
 msgid "Equals:"
 msgstr "Eşit:"
 
-#: admin/usercontrol.php:838
+#: admin/usercontrol.php:843
 msgid "Error while updating usertemplates."
 msgstr "Kullanıcı kalıpları güncellenirken hata oldu."
 
-#: admin/tokens.php:2785
+#: admin/tokens.php:2786
 msgid "Error: Your uploaded file is missing one or more of the mandatory columns: 'firstname', 'lastname' or 'email'"
 msgstr "Hata: Karşıya yüklemek istediğiniz dosyada 'ad', 'soyad', 'e-posta' gibi bir ya da daha çok gerekli sütün eksik"
 
-#: admin/tokens.php:2154
+#: admin/tokens.php:2155
 msgid "Example data"
 msgstr "Örnek veri"
 
@@ -8818,9 +8832,9 @@ msgstr "Pin kodlarını ver"
 msgid "Export tokens to CSV file"
 msgstr "Pin kodlarını CSV dosyasına ver "
 
-#: admin/tokens.php:2541
-#: admin/tokens.php:2601
-#: admin/tokens.php:3137
+#: admin/tokens.php:2542
+#: admin/tokens.php:2602
+#: admin/tokens.php:3138
 msgid "Failed"
 msgstr "Başarısız"
 
@@ -8838,32 +8852,32 @@ msgstr "Kullanıcı eklenemedi"
 msgid "Failed to copy %s to new template directory."
 msgstr "%s yeni kalıp klasörüne kopyalanamadı."
 
-#: admin/tokens.php:2888
+#: admin/tokens.php:2889
 msgid "Failed to create token entries"
 msgstr "Pin kodu kayıtları oluşturulamadı"
 
-#: admin/tokens.php:2738
+#: admin/tokens.php:2739
 msgid "Failed to open the uploaded file!"
 msgstr "Karşıya yüklenen dosya açılamadı!"
 
-#: admin/tokens.php:2154
+#: admin/tokens.php:2155
 msgid "Field description"
 msgstr "Alan açıklaması"
 
-#: admin/statistics_function.php:941
-#: admin/statistics_function.php:963
-#: admin/statistics_function.php:973
-#: admin/statistics_function.php:1070
-#: admin/statistics_function.php:1092
-#: admin/statistics_function.php:1101
-#: admin/statistics_function.php:1876
+#: admin/statistics_function.php:925
+#: admin/statistics_function.php:947
+#: admin/statistics_function.php:957
+#: admin/statistics_function.php:1054
+#: admin/statistics_function.php:1076
+#: admin/statistics_function.php:1085
+#: admin/statistics_function.php:1860
+#: admin/statistics_function.php:1878
 #: admin/statistics_function.php:1894
-#: admin/statistics_function.php:1910
 #, php-format
 msgid "Field summary for %s"
 msgstr "%s için alan özeti"
 
-#: admin/tokens.php:2688
+#: admin/tokens.php:2689
 msgid "File should be a standard CSV (comma delimited) file with optional double quotes around values (default for OpenOffice and Excel). The first line must contain the field names. The fields can be in any order."
 msgstr "Dosyada alanlar standart virgülle ayrılmışken (CSV), değerler isteğe bağlı olarak çift tırnak arasında olabilir (OpenOffice ve Excel için varsayılan). İlk satır başlık bilgilerini içermelidir. Alanlar herhangi bir sırada olabilir."
 
@@ -8871,8 +8885,8 @@ msgstr "Dosyada alanlar standart virgülle ayrılmışken (CSV), değerler iste�
 msgid "Files in a standard template cannot be deleted."
 msgstr "Standart bir kalıbın dosyaları silinemez."
 
-#: admin/tokens.php:3199
-#: admin/tokens.php:3250
+#: admin/tokens.php:3200
+#: admin/tokens.php:3251
 msgid "Filter blank email addresses:"
 msgstr "E-posta adresi olmayanları süz:"
 
@@ -8884,8 +8898,8 @@ msgstr "E-posta adresine göre süz"
 msgid "Filter by language"
 msgstr "Dile göre süz"
 
-#: admin/tokens.php:3200
-#: admin/tokens.php:3251
+#: admin/tokens.php:3201
+#: admin/tokens.php:3252
 msgid "Filter duplicate records:"
 msgstr "Yinelenen kayıtları süz:"
 
@@ -9024,7 +9038,7 @@ msgstr "Çağrı gönderilenler:"
 #: admin/tokens.php:1080
 #: admin/tokens.php:1083
 #: admin/tokens.php:1084
-#: admin/tokens.php:2337
+#: admin/tokens.php:2338
 msgid "Invitation sent?"
 msgstr "Çağrı gönderildi mi ?"
 
@@ -9044,11 +9058,11 @@ msgstr "KOI8-R Relcom Rusça"
 msgid "KOI8-U Ukrainian"
 msgstr "KOI8-U Ukraynaca"
 
-#: admin/tokens.php:3237
+#: admin/tokens.php:3238
 msgid "LDAP is disabled or no LDAP query defined."
 msgstr "LDAP devre dışı ya da LDAP sorgusu tanımlanmamış."
 
-#: admin/tokens.php:2699
+#: admin/tokens.php:2700
 msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
 msgstr "LDAP sorguları yönetici tarafından config-ldap.php dosyasında tanımlanır"
 
@@ -9069,11 +9083,11 @@ msgstr "LimeSurvey web sunucusu kimlik denetimini kullanmaya ayarlanmış fakat 
 msgid "Limit"
 msgstr "Sınır"
 
-#: admin/tokens.php:2902
-#: admin/tokens.php:2914
-#: admin/tokens.php:2924
-#: admin/tokens.php:3143
-#: admin/tokens.php:3151
+#: admin/tokens.php:2903
+#: admin/tokens.php:2915
+#: admin/tokens.php:2925
+#: admin/tokens.php:3144
+#: admin/tokens.php:3152
 msgid "List"
 msgstr "Liste"
 
@@ -9105,15 +9119,15 @@ msgstr "Mac Batı Avrupa"
 msgid "Manage additional attribute fields"
 msgstr "Ek öznitelik alanlarını yönet"
 
-#: admin/tokens.php:2150
+#: admin/tokens.php:2151
 msgid "Manage token attribute fields"
 msgstr "Pin kodu öznitelik alanlarını yönet"
 
-#: admin/tokens.php:2688
+#: admin/tokens.php:2689
 msgid "Mandatory fields:"
 msgstr "Zorunlu alanlar:"
 
-#: admin/tokens.php:2135
+#: admin/tokens.php:2136
 msgid "Marked tokens have been deleted."
 msgstr "İşaretlenmiş pin kodları silindi."
 
@@ -9125,7 +9139,7 @@ msgstr "En fazla hatırlatma"
 msgid "Maybe you don't have permission."
 msgstr "Belki izniniz olmayabilir."
 
-#: admin/statistics_function.php:1316
+#: admin/statistics_function.php:1300
 msgid "Median value"
 msgstr "Medyan değeri"
 
@@ -9133,7 +9147,7 @@ msgstr "Medyan değeri"
 msgid "Min days between reminders"
 msgstr "Hatırlatıcılar arası en kısa gün sayısı"
 
-#: admin/tokens.php:2677
+#: admin/tokens.php:2678
 msgid "New dummy tokens were added."
 msgstr "Yeni aldatıcı pinler eklendi."
 
@@ -9145,7 +9159,7 @@ msgstr "Yeni Parola "
 msgid "New quota"
 msgstr "Yeni kota"
 
-#: admin/tokens.php:2595
+#: admin/tokens.php:2596
 msgid "New token was added."
 msgstr "Yeni pin kodu eklendi."
 
@@ -9169,7 +9183,7 @@ msgstr "Hiç hatırlatıcı gönderilmedi"
 msgid "No tokens selected"
 msgstr "Pin seçilmedi"
 
-#: admin/tokens.php:2137
+#: admin/tokens.php:2138
 msgid "No tokens were selected for deletion"
 msgstr "Silmek için hiç bir pin kodu seçilmedi"
 
@@ -9177,20 +9191,20 @@ msgstr "Silmek için hiç bir pin kodu seçilmedi"
 msgid "Not Active"
 msgstr "Etkin Olmayan"
 
-#: admin/statistics_function.php:2382
-#: admin/statistics_function.php:2414
+#: admin/statistics_function.php:2366
+#: admin/statistics_function.php:2398
 msgid "Not completed or Not displayed"
 msgstr "Tamamlanmayan ya da gösterilmeyen"
 
-#: admin/statistics_function.php:2386
-#: admin/statistics_function.php:2418
+#: admin/statistics_function.php:2370
+#: admin/statistics_function.php:2402
 msgid "Not displayed"
 msgstr "Gösterilmeyen"
 
-#: admin/statistics_function.php:1455
-#: admin/statistics_function.php:1458
-#: admin/statistics_function.php:1466
-#: admin/statistics_function.php:1478
+#: admin/statistics_function.php:1439
+#: admin/statistics_function.php:1442
+#: admin/statistics_function.php:1450
+#: admin/statistics_function.php:1462
 msgid "Not enough values for calculation"
 msgstr "Hesaplama için yeterli veri yok"
 
@@ -9210,10 +9224,6 @@ msgstr "Henüz etkin değil"
 msgid "Note that this assessment section will only show if assessment rules have been set and assessment mode is activated."
 msgstr "Bu değerlendirme bölümü, ancak değerlendirme kuralları belirlenip değerlendirme kipi etkinleştirildiğinde görünür."
 
-#: admin/tokens.php:2698
-msgid "Note:"
-msgstr "Not:"
-
 #: admin/tokens.php:538
 msgid "Note: If you turn on the -Anonymized responses- option for this survey then LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
 msgstr "Not: Bu anket için -anonim yanıtlar- seçeneğini etkinleştirirseniz,  LimeSurvey katılımcıların anonim kalmasını sağlamak için tamamlanmış pin kodlarına tarih/saat yerine yalnızca 'Y' işareti koyar. "
@@ -9227,10 +9237,10 @@ msgstr "Dikkat: Bu standart bir kalıptır. Düzenlemek istiyorsanız %sönce ko
 msgid "Nothing to translate on this page"
 msgstr "Bu sayfada çevirilecek öge yok"
 
-#: admin/statistics_function.php:1403
-#: admin/statistics_function.php:1407
+#: admin/statistics_function.php:1387
+#: admin/statistics_function.php:1391
+#: admin/statistics_function.php:1397
 #: admin/statistics_function.php:1413
-#: admin/statistics_function.php:1429
 msgid "Null values are ignored in calculations"
 msgstr "Boş değerler hesaba katılmadı"
 
@@ -9244,14 +9254,14 @@ msgstr "Numarası şundan büyük"
 msgid "Number less than"
 msgstr "Numarası şundan küçük"
 
-#: admin/tokens.php:2187
+#: admin/tokens.php:2188
 msgid "Number of attribute fields to add:"
 msgstr "Eklenecek öznitelik alanlarının sayısı:"
 
+#: admin/statistics_function.php:2804
+#: admin/statistics_function.php:2812
 #: admin/statistics_function.php:2820
-#: admin/statistics_function.php:2828
-#: admin/statistics_function.php:2836
-#: admin/statistics_function.php:2847
+#: admin/statistics_function.php:2831
 msgid "Number of cases"
 msgstr "Durum sayısı"
 
@@ -9263,13 +9273,13 @@ msgstr "Şundan büyük dosyaların sayısı"
 msgid "Number of files less than"
 msgstr "Şundan az  dosyaların sayısı"
 
-#: admin/statistics_function.php:561
-#: admin/statistics_function.php:580
-#: admin/statistics_function.php:599
+#: admin/statistics_function.php:545
+#: admin/statistics_function.php:564
+#: admin/statistics_function.php:583
 msgid "Number of records in this query:"
 msgstr "Bu sorgudaki kayıt sayısı:"
 
-#: admin/tokens.php:2432
+#: admin/tokens.php:2433
 msgid "Number of tokens"
 msgstr "Pin sayısı"
 
@@ -9277,7 +9287,7 @@ msgstr "Pin sayısı"
 msgid "Open"
 msgstr "Açık"
 
-#: admin/tokens.php:2689
+#: admin/tokens.php:2690
 msgid "Optional fields:"
 msgstr "İsteğe bağlı alanlar:"
 
@@ -9297,26 +9307,26 @@ msgstr "Yöneticisi"
 msgid "Page"
 msgstr "Sayfa"
 
-#: admin/statistics_function.php:2083
-#: admin/statistics_function.php:2101
-#: admin/statistics_function.php:2118
+#: admin/statistics_function.php:2067
+#: admin/statistics_function.php:2085
+#: admin/statistics_function.php:2102
+#: admin/statistics_function.php:2107
+#: admin/statistics_function.php:2114
 #: admin/statistics_function.php:2123
-#: admin/statistics_function.php:2130
-#: admin/statistics_function.php:2139
-#: admin/statistics_function.php:2160
+#: admin/statistics_function.php:2144
+#: admin/statistics_function.php:2149
+#: admin/statistics_function.php:2156
 #: admin/statistics_function.php:2165
-#: admin/statistics_function.php:2172
-#: admin/statistics_function.php:2181
-#: admin/statistics_function.php:2261
-#: admin/statistics_function.php:2266
-#: admin/statistics_function.php:2272
-#: admin/statistics_function.php:2281
+#: admin/statistics_function.php:2245
+#: admin/statistics_function.php:2250
+#: admin/statistics_function.php:2256
+#: admin/statistics_function.php:2265
 msgid "Percentage"
 msgstr "Yüzde oran"
 
-#: admin/statistics_function.php:570
-#: admin/statistics_function.php:584
-#: admin/statistics_function.php:608
+#: admin/statistics_function.php:554
+#: admin/statistics_function.php:568
+#: admin/statistics_function.php:592
 msgid "Percentage of total:"
 msgstr "Toplama göre yüzde:"
 
@@ -9376,10 +9386,10 @@ msgstr "Yanıt Yazdırma Sayfası"
 msgid "Printable survey page"
 msgstr "Anket Yazdırma Sayfası"
 
-#: admin/statistics_function.php:1405
-#: admin/statistics_function.php:1408
+#: admin/statistics_function.php:1389
+#: admin/statistics_function.php:1392
+#: admin/statistics_function.php:1398
 #: admin/statistics_function.php:1414
-#: admin/statistics_function.php:1430
 #, php-format
 msgid "Q1 and Q3 calculated using %s"
 msgstr "Q1 ve Q3 %s kullanılarak hesaplandı"
@@ -9431,11 +9441,11 @@ msgstr "Kota iletisi"
 msgid "Quota name"
 msgstr "Kota adı"
 
-#: admin/tokens.php:3141
+#: admin/tokens.php:3142
 msgid "Records imported"
 msgstr "Kayıtlar alındı"
 
-#: admin/tokens.php:3140
+#: admin/tokens.php:3141
 msgid "Records met minumum requirements"
 msgstr "Kayıtlar en düşük gereksinimleri karşılıyor"
 
@@ -9447,7 +9457,7 @@ msgstr "Kayıt Olma Sayfası"
 msgid "Registration email"
 msgstr "Kayıt e-mail adresi."
 
-#: admin/tokens.php:2144
+#: admin/tokens.php:2145
 msgid "Reloading Screen. Please wait."
 msgstr "Sayfa yeniden yükleniyor. Lütfen bekleyin."
 
@@ -9470,7 +9480,7 @@ msgstr "Hatırlatıcı E-posta:"
 msgid "Reminder count"
 msgstr "Hatırlatıcı sayısı"
 
-#: admin/tokens.php:2349
+#: admin/tokens.php:2350
 msgid "Reminder count:"
 msgstr "Hatırlatıcı sayısı"
 
@@ -9485,7 +9495,7 @@ msgstr "Hatırlatıcının gönderildiği kişi:"
 #: admin/tokens.php:1090
 #: admin/tokens.php:1093
 #: admin/tokens.php:1094
-#: admin/tokens.php:2342
+#: admin/tokens.php:2343
 msgid "Reminder sent?"
 msgstr "Hatırlatıcı gönderilsin:"
 
@@ -9536,24 +9546,24 @@ msgstr "Geri Yükle"
 msgid "Restore options"
 msgstr "Geri yükleme seçenekleri "
 
-#: admin/statistics_function.php:951
-#: admin/statistics_function.php:954
-#: admin/statistics_function.php:966
-#: admin/statistics_function.php:979
-#: admin/statistics_function.php:1080
-#: admin/statistics_function.php:1083
-#: admin/statistics_function.php:1095
-#: admin/statistics_function.php:1107
+#: admin/statistics_function.php:935
+#: admin/statistics_function.php:938
+#: admin/statistics_function.php:950
+#: admin/statistics_function.php:963
+#: admin/statistics_function.php:1064
+#: admin/statistics_function.php:1067
+#: admin/statistics_function.php:1079
+#: admin/statistics_function.php:1091
 msgid "Result"
 msgstr "Sonuç"
 
-#: admin/statistics_function.php:588
-#: admin/statistics_function.php:589
-#: admin/statistics_function.php:598
+#: admin/statistics_function.php:572
+#: admin/statistics_function.php:573
+#: admin/statistics_function.php:582
 msgid "Results"
 msgstr "Sonuçlar"
 
-#: admin/tokens.php:3139
+#: admin/tokens.php:3140
 msgid "Results from LDAP Query"
 msgstr "LDAP Sorgusunun Sonucu"
 
@@ -9605,11 +9615,11 @@ msgstr "Çıktı biçimi"
 msgid "Select template ZIP file:"
 msgstr "Kalıbın bulunduğu ZIP dosyasını seçin:"
 
-#: admin/tokens.php:3243
+#: admin/tokens.php:3244
 msgid "Select the LDAP query you want to run:"
 msgstr "Çalıştırmak istediğiniz LDAP sorgusunu seçin:"
 
-#: admin/tokens.php:3192
+#: admin/tokens.php:3193
 msgid "Semicolon"
 msgstr "Noktalı virgül"
 
@@ -9681,7 +9691,7 @@ msgstr "Pin kodu numaralarına gönderiliyor"
 msgid "Sending to:"
 msgstr "Şu adrese gönderiliyor:"
 
-#: admin/tokens.php:3196
+#: admin/tokens.php:3197
 msgid "Separator used:"
 msgstr "Ayraç kullanıldı:"
 
@@ -9689,12 +9699,12 @@ msgstr "Ayraç kullanıldı:"
 msgid "Set all entries to 'No invitation sent'."
 msgstr "Tüm kayıtları 'Çağrı gönderilmedi' yap."
 
-#: admin/usercontrol.php:806
+#: admin/usercontrol.php:811
 msgid "Set template permissions"
 msgstr "Tema izinlerini düzenle"
 
 #: admin/usercontrol.php:494
-#: admin/usercontrol.php:723
+#: admin/usercontrol.php:728
 msgid "Set user permissions"
 msgstr "Kullanıcı  İzinleri"
 
@@ -9710,7 +9720,7 @@ msgstr "Grafikleri Göster"
 msgid "Show help"
 msgstr "Yardımı görüntüle "
 
-#: admin/tokens.php:2543
+#: admin/tokens.php:2544
 msgid "Show this token entry"
 msgstr "Bu pin kodu kaydını göster"
 
@@ -9726,7 +9736,7 @@ msgstr "Örnek İnternet adresi"
 msgid "Sorry there are no supported question types in this survey."
 msgstr "Malesef bu ankette desteklenen soru tipi bulunmuyor."
 
-#: admin/tokens.php:3231
+#: admin/tokens.php:3232
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
 msgstr "Malesef PHP yapılandırmanızda LDAP modülü eksik."
 
@@ -9766,11 +9776,11 @@ msgstr "Şuna göre diz:"
 msgid "Standard Files:"
 msgstr "Standart Dosyalar:"
 
-#: admin/statistics_function.php:1186
-#: admin/statistics_function.php:2997
-#: admin/statistics_function.php:3004
-#: admin/statistics_function.php:3011
-#: admin/statistics_function.php:3018
+#: admin/statistics_function.php:1170
+#: admin/statistics_function.php:2981
+#: admin/statistics_function.php:2988
+#: admin/statistics_function.php:2995
+#: admin/statistics_function.php:3002
 msgid "Standard deviation"
 msgstr "Standart sapma"
 
@@ -9804,19 +9814,19 @@ msgstr "Anketinizi gönderin."
 msgid "Subtotals based on displayed questions"
 msgstr "Gösterilen soruların alttoplamları"
 
-#: admin/tokens.php:2886
+#: admin/tokens.php:2887
 msgid "Successfully created token entries"
 msgstr "Pin kodu kayıtları sorunsuz oluşturuldu"
 
-#: admin/statistics_function.php:1185
-#: admin/statistics_function.php:2118
-#: admin/statistics_function.php:2124
-#: admin/statistics_function.php:2130
-#: admin/statistics_function.php:2141
+#: admin/statistics_function.php:1169
+#: admin/statistics_function.php:2102
+#: admin/statistics_function.php:2108
+#: admin/statistics_function.php:2114
+#: admin/statistics_function.php:2125
+#: admin/statistics_function.php:2803
+#: admin/statistics_function.php:2807
 #: admin/statistics_function.php:2819
-#: admin/statistics_function.php:2823
-#: admin/statistics_function.php:2835
-#: admin/statistics_function.php:2841
+#: admin/statistics_function.php:2825
 msgid "Sum"
 msgstr "Toplam"
 
@@ -9859,7 +9869,7 @@ msgstr "Anket Kalıbı Örneği"
 msgid "Template could not be renamed to `%s`."
 msgstr "Klasör adı `%s` olarak değiştirilemedi. "
 
-#: admin/usercontrol.php:832
+#: admin/usercontrol.php:837
 msgid "Template permissions were updated successfully."
 msgstr "Kullanıcı kalıp izinleri sorunsuz güncellendi."
 
@@ -9883,7 +9893,7 @@ msgstr "E-posta adresi geçersiz."
 msgid "The following old token tables could be restored:"
 msgstr "Şu eski pin kodu tabloları geri yüklenebilir:"
 
-#: admin/tokens.php:2536
+#: admin/tokens.php:2537
 msgid "The token entry was successfully updated."
 msgstr "Pin kodu kaydı sorunsuz güncellendi."
 
@@ -9895,7 +9905,7 @@ msgstr "Pin Kodu tablosu silindiğinden artık bu ankete erişim için pin kodla
 msgid "The user name already exists."
 msgstr "Bu adlı bir kullanıcı zaten var."
 
-#: admin/tokens.php:2184
+#: admin/tokens.php:2185
 #, php-format
 msgid "There are %s user attribute fields in this token table"
 msgstr "Bu pin kodu tablosunda %s kullanıcı öznitelik alanı var"
@@ -9910,8 +9920,8 @@ msgstr "Bir seferde gönderilebilecek daha çok e-posta var. E-posta göndermeye
 msgid "There are {EMAILCOUNT} emails still to be sent."
 msgstr "Daha gönderilecek {EMAILCOUNT} adet e-posta var."
 
-#: admin/tokens.php:2542
-#: admin/tokens.php:2602
+#: admin/tokens.php:2543
+#: admin/tokens.php:2603
 msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
 msgstr "Tabloda bu pin kodu için bir kayıt daha önce oluşturulmuş. Birden çok kayıt için aynı pin kodu kullanılamaz."
 
@@ -9981,7 +9991,7 @@ msgstr "Bu anket şu anda etkin değil."
 msgid "This survey is not yet activated and so your participants won't be able to fill out the survey."
 msgstr "Bu anket etkinleştirilmediğinden katılımcılar anketi dolduramayacak."
 
-#: admin/tokens.php:2221
+#: admin/tokens.php:2222
 msgid "Token attribute descriptions were successfully updated."
 msgstr "Pin kodu öznitelik açıklamaları sorunsuz güncellendi."
 
@@ -9993,15 +10003,15 @@ msgstr "Pin kodu veritabanı yönetimi seçenekleri"
 msgid "Token export options"
 msgstr "Pin kodu ver seçenekleri"
 
-#: admin/tokens.php:2709
+#: admin/tokens.php:2710
 msgid "Token file upload"
 msgstr "Pin kodu dosyasını karşıya yükleme"
 
-#: admin/tokens.php:2142
+#: admin/tokens.php:2143
 msgid "Token has been deleted."
 msgstr "Pin kodu silindi."
 
-#: admin/tokens.php:2434
+#: admin/tokens.php:2435
 msgid "Token length"
 msgstr "Pin kodu uzunluğu: "
 
@@ -10029,7 +10039,7 @@ msgstr "Bu anket için pin kodları oluşturulmamış."
 msgid "Total invitations sent"
 msgstr "Gönderilen toplam çağrı"
 
-#: admin/statistics_function.php:890
+#: admin/statistics_function.php:874
 msgid "Total number of files"
 msgstr "Dosyaların toplam sayısı"
 
@@ -10037,9 +10047,9 @@ msgstr "Dosyaların toplam sayısı"
 msgid "Total opted out"
 msgstr "Toplam vazgeçilenler"
 
-#: admin/statistics_function.php:564
-#: admin/statistics_function.php:581
-#: admin/statistics_function.php:601
+#: admin/statistics_function.php:548
+#: admin/statistics_function.php:565
+#: admin/statistics_function.php:585
 msgid "Total records in survey:"
 msgstr "Anketteki toplam kayıt:"
 
@@ -10047,7 +10057,7 @@ msgstr "Anketteki toplam kayıt:"
 msgid "Total records in this token table"
 msgstr "Bu pin kodu tablosundaki toplam kayıt "
 
-#: admin/statistics_function.php:915
+#: admin/statistics_function.php:899
 msgid "Total size of files"
 msgstr "Dosyaların toplam büyüklüğü"
 
@@ -10059,7 +10069,7 @@ msgstr "Tamamlanan toplam anket"
 msgid "Total with no unique Token"
 msgstr "Eşsiz pin kodu olmayanlarla birlikte toplam"
 
-#: admin/usercontrol.php:599
+#: admin/usercontrol.php:604
 msgid "Transfer the user's surveys to: "
 msgstr "Kullanıcıların anketini şuraya transfer et:"
 
@@ -10103,36 +10113,36 @@ msgstr "UTF-8 Unicode"
 msgid "Unable to create directory `%s`."
 msgstr "`%s` klasörü oluşturulamadı."
 
-#: admin/usercontrol.php:679
+#: admin/usercontrol.php:684
 msgid "Unchanged"
 msgstr "Değişmedi"
 
-#: admin/tokens.php:2212
+#: admin/tokens.php:2213
 msgid "Update token attribute descriptions"
 msgstr "Pin kodu öznitelik açıklamalarını güncelleyin"
 
-#: admin/tokens.php:2246
+#: admin/tokens.php:2247
 msgid "Update token attributes"
 msgstr "Pin kodu özniteliklerini güncelle"
 
-#: admin/tokens.php:2395
+#: admin/tokens.php:2396
 msgid "Update token entry"
 msgstr "Pin kodu kaydını düzenle"
 
-#: admin/tokens.php:2216
+#: admin/tokens.php:2217
 msgid "Updating token attribute descriptions failed:"
 msgstr "Pin kodu öznitelik açıklamaları güncellenemedi:"
 
 #: admin/templates.php:1009
-#: admin/tokens.php:3216
+#: admin/tokens.php:3217
 msgid "Upload"
 msgstr "Karşıya Yükle"
 
-#: admin/tokens.php:2684
+#: admin/tokens.php:2685
 msgid "Upload CSV File"
 msgstr "CSV Dosyasını Karşıya Yükle"
 
-#: admin/tokens.php:2695
+#: admin/tokens.php:2696
 msgid "Upload LDAP entries"
 msgstr "LDAP kayıtlarını karşıya yükle"
 
@@ -10140,7 +10150,7 @@ msgstr "LDAP kayıtlarını karşıya yükle"
 msgid "Upload a file:"
 msgstr "Karşıya bir dosya yükle:"
 
-#: admin/tokens.php:2729
+#: admin/tokens.php:2730
 msgid "Uploaded CSV file successfully"
 msgstr "CSV dosyası karşıya sorunsuz yüklendi"
 
@@ -10148,7 +10158,7 @@ msgstr "CSV dosyası karşıya sorunsuz yüklendi"
 msgid "Uploaded template file"
 msgstr "Kalıp dosyası yükleme"
 
-#: admin/tokens.php:2945
+#: admin/tokens.php:2946
 msgid "Uploading LDAP Query"
 msgstr "LDAP Sorgusu Karşıya Yükleniyor"
 
@@ -10168,8 +10178,8 @@ msgstr "Kullanıcı verisi"
 msgid "User name and/or email not found!"
 msgstr "Kullanıcı adı ve/veya e-posta adresi bulunamadı!"
 
-#: admin/usercontrol.php:748
-#: admin/usercontrol.php:788
+#: admin/usercontrol.php:753
+#: admin/usercontrol.php:793
 msgid "User permissions were updated successfully."
 msgstr "Kullanıcı izinleri sorunsuz güncellendi."
 
@@ -10178,16 +10188,16 @@ msgstr "Kullanıcı izinleri sorunsuz güncellendi."
 msgid "User registration at '%s'"
 msgstr "Kullanıcı kayıt zamanı: '%s'"
 
-#: admin/tokens.php:2360
-#: admin/tokens.php:2446
+#: admin/tokens.php:2361
+#: admin/tokens.php:2447
 msgid "Uses left:"
 msgstr "kalanları kullanır"
 
 #: admin/tokens.php:1130
 #: admin/tokens.php:1133
 #: admin/tokens.php:1134
-#: admin/tokens.php:2365
-#: admin/tokens.php:2448
+#: admin/tokens.php:2366
+#: admin/tokens.php:2449
 msgid "Valid from"
 msgstr "Geçerlilik başlangıcı"
 
@@ -10258,11 +10268,11 @@ msgstr "Windows Kiril"
 msgid "You are about to delete all conditions on this survey's questions"
 msgstr "Bu anketin sorularındaki tüm koşulları silmek üzeresiniz"
 
-#: admin/usercontrol.php:798
+#: admin/usercontrol.php:803
 msgid "You are not allowed to change your own permissions!"
 msgstr "Kendi izinlerinizi değiştirmenize izin yok!"
 
-#: admin/tokens.php:2327
+#: admin/tokens.php:2328
 msgid "You can leave this blank, and automatically generate tokens using 'Generate Tokens'"
 msgstr "Boş bıraktığınızda 'Pin Kodu Oluştur' düğmesiyle pin kodlarını oluşturabilirsiniz "
 
@@ -10315,7 +10325,7 @@ msgstr "Gelen kutunuz boş."
 msgid "Your user data for accessing %s"
 msgstr "%s erişimi için kullanıcı verisi"
 
-#: admin/tokens.php:2056
+#: admin/tokens.php:2057
 msgid "but not having already completed the survey"
 msgstr "Ama zaten anketi tamamlamış değilsiniz"
 
@@ -10330,6 +10340,7 @@ msgid "cp1252 West European"
 msgstr "cp1252 Batı Avrupa"
 
 #: admin/tokens.php:1705
+#: admin/tokens.php:2055
 msgid "having a token"
 msgstr "pin kodu almış olan"
 
@@ -10342,20 +10353,20 @@ msgstr "geçerli bir e-posta adresi olmadığından"
 msgid "having already completed the survey"
 msgstr "bu ankete zaten katılmış olduğundan"
 
-#: admin/tokens.php:2377
-#: admin/tokens.php:2460
+#: admin/tokens.php:2378
+#: admin/tokens.php:2461
 msgid "hh:mm"
 msgstr "ss:dd"
 
-#: admin/statistics_function.php:1405
-#: admin/statistics_function.php:1408
+#: admin/statistics_function.php:1389
+#: admin/statistics_function.php:1392
+#: admin/statistics_function.php:1398
 #: admin/statistics_function.php:1414
-#: admin/statistics_function.php:1430
 msgid "minitab method"
 msgstr "Minitab yöntemi"
 
 #: admin/tokens.php:1703
-#: admin/tokens.php:2055
+#: admin/tokens.php:2056
 msgid "not having been sent an invitation already"
 msgstr "çağrı zaten gönderilmemişse"
 
@@ -10364,8 +10375,8 @@ msgstr "çağrı zaten gönderilmemişse"
 msgid "this is an automated email to notify that a user has been created for you on the site '%s'."
 msgstr "bu e-posta '%s' sitesinde bir kullanıcı hesabının açıldığını bildirmek amacıyla kendiliğinden gönderilmiştir."
 
-#: admin/tokens.php:2371
-#: admin/tokens.php:2454
+#: admin/tokens.php:2372
+#: admin/tokens.php:2455
 msgid "until"
 msgstr "Geçerlilik sonu:"
 
@@ -10374,11 +10385,11 @@ msgstr "Geçerlilik sonu:"
 msgid "visit http://us2.php.net/manual/en/ref.image.php for more information"
 msgstr "daha detaylı bilgi için http://us2.php.net/manual/tr/ref.image.php adresini inceleyin."
 
-#: admin/tokens.php:2118
+#: admin/tokens.php:2119
 msgid "{TOKENCOUNT} tokens have been created"
 msgstr "{TOKENCOUNT} adet pin kodu oluşturuldu"
 
-#: admin/userrighthandling.php:626
+#: admin/userrighthandling.php:630
 msgid "Add Group"
 msgstr "Grubu Ekle"
 
@@ -10386,15 +10397,15 @@ msgstr "Grubu Ekle"
 msgid "Add New User Group"
 msgstr "Yeni kullanıcı grubu ekle"
 
-#: admin/userrighthandling.php:604
+#: admin/userrighthandling.php:608
 msgid "Add user:"
 msgstr "Yeni kullanıcı:"
 
-#: admin/userrighthandling.php:719
+#: admin/userrighthandling.php:723
 msgid "Adding User Group"
 msgstr "Kullancı Grubu Ekleniyor"
 
-#: admin/userrighthandling.php:1045
+#: admin/userrighthandling.php:1049
 msgid "Adding User to group"
 msgstr "Kullanıcı gruba ekleniyor"
 
@@ -10418,11 +10429,11 @@ msgstr "Tüm ögeleri seç ya da bırak"
 msgid "Configurator"
 msgstr "Yapılandırma"
 
-#: admin/userrighthandling.php:699
+#: admin/userrighthandling.php:703
 msgid "Could not delete user group."
 msgstr "Kullanıcı grubu silinemiyor."
 
-#: admin/userrighthandling.php:710
+#: admin/userrighthandling.php:714
 msgid "Could not delete user group. No group selected."
 msgstr "Hiç bir grup seçilmediğinden kullanıcı grubu silinemiyor."
 
@@ -10442,21 +10453,21 @@ msgstr "Oluşturan"
 msgid "Delete Current User Group"
 msgstr "Bu kullanıcı grubunu sil"
 
-#: admin/userrighthandling.php:562
+#: admin/userrighthandling.php:566
 msgid "Delete this user"
 msgstr "Bu kullanıcıyı sil"
 
-#: admin/userrighthandling.php:950
+#: admin/userrighthandling.php:954
 msgid "Delete this user from group"
 msgstr "Bu kullanıcıyı gruptan sil"
 
-#: admin/userrighthandling.php:677
+#: admin/userrighthandling.php:681
 msgid "Deleting User Group"
 msgstr "Kullanıcı Grubu Silme"
 
-#: admin/userrighthandling.php:739
-#: admin/userrighthandling.php:862
-#: admin/userrighthandling.php:902
+#: admin/userrighthandling.php:743
+#: admin/userrighthandling.php:866
+#: admin/userrighthandling.php:906
 msgid "Description: "
 msgstr "Açıklama:"
 
@@ -10468,7 +10479,7 @@ msgstr "Bu sayfayı yenilemeyin. Yoksa dosya yeniden alınır ve çift kayıtlar
 msgid "Edit Current User Group"
 msgstr "Bu kullanıcı grubunu düzenle"
 
-#: admin/userrighthandling.php:860
+#: admin/userrighthandling.php:864
 msgid "Edit User Group Successfully!"
 msgstr "Kullanıcı grubu sorunsuz güncellendi."
 
@@ -10476,20 +10487,20 @@ msgstr "Kullanıcı grubu sorunsuz güncellendi."
 msgid "Edit template permissions"
 msgstr "Kullanıcı Kalıp İzinleri"
 
-#: admin/userrighthandling.php:520
+#: admin/userrighthandling.php:524
 msgid "Edit this user"
 msgstr "Bu kullanıcıyı düzenle"
 
-#: admin/userrighthandling.php:461
+#: admin/userrighthandling.php:463
 msgid "Edit user"
 msgstr "Kullanıcı düzenle"
 
-#: admin/userrighthandling.php:639
+#: admin/userrighthandling.php:643
 #, php-format
 msgid "Editing user group (Owner: %s)"
 msgstr "Kullanıcı grubu düzenleniyor (Sahibi: %s)"
 
-#: admin/userrighthandling.php:828
+#: admin/userrighthandling.php:832
 #, php-format
 msgid "Email to %s failed. Error Message:"
 msgstr "%s adlı kişiye e-posta gönderilemedi. Hata iletisi:"
@@ -10502,12 +10513,12 @@ msgstr "Kayıt numaralarını katma:"
 msgid "Export VV file"
 msgstr "VV dosyasına ver"
 
-#: admin/userrighthandling.php:747
-#: admin/userrighthandling.php:754
+#: admin/userrighthandling.php:751
+#: admin/userrighthandling.php:758
 msgid "Failed to add Group!"
 msgstr "Grup eklenemedi!"
 
-#: admin/userrighthandling.php:867
+#: admin/userrighthandling.php:871
 msgid "Failed to update!"
 msgstr "Kullanıcı grubu güncellenemedi!"
 
@@ -10523,16 +10534,16 @@ msgstr "Dosya:"
 msgid "For easy opening in MS Excel, change the extension to 'tab' or 'txt'"
 msgstr "MS Excel ile kolayca açabilmek için uzantıyı 'tab' ya da 'txt' olarak belirtin"
 
-#: admin/userrighthandling.php:694
-#: admin/userrighthandling.php:735
+#: admin/userrighthandling.php:698
+#: admin/userrighthandling.php:739
 msgid "Group Name"
 msgstr "Grup Adı"
 
-#: admin/userrighthandling.php:748
+#: admin/userrighthandling.php:752
 msgid "Group already exists!"
 msgstr "Grup zaten var!"
 
-#: admin/userrighthandling.php:755
+#: admin/userrighthandling.php:759
 msgid "Group name was not supplied!"
 msgstr "Grup adı belirtilmemiş!"
 
@@ -10559,8 +10570,8 @@ msgid "Important Note:"
 msgstr "Önemli Not:"
 
 #: admin/userrighthandling.php:60
-#: admin/userrighthandling.php:660
-#: admin/userrighthandling.php:768
+#: admin/userrighthandling.php:664
+#: admin/userrighthandling.php:772
 msgid "Mail to all Members"
 msgstr "Tüm üyelere e-posta gönder"
 
@@ -10568,12 +10579,12 @@ msgstr "Tüm üyelere e-posta gönder"
 msgid "Manage Labels"
 msgstr "Etiket Yönetme"
 
-#: admin/userrighthandling.php:821
+#: admin/userrighthandling.php:825
 msgid "Message(s) sent successfully!"
 msgstr "İletiler sorunsuz gönderildi."
 
-#: admin/userrighthandling.php:622
-#: admin/userrighthandling.php:642
+#: admin/userrighthandling.php:626
+#: admin/userrighthandling.php:646
 msgid "Name:"
 msgstr "Ad:"
 
@@ -10602,15 +10613,15 @@ msgstr "Varolan kayıdı değiştir"
 msgid "Report and skip the new record."
 msgstr "Hata bildir ve yeni kayıda geç"
 
-#: admin/userrighthandling.php:669
+#: admin/userrighthandling.php:673
 msgid "Reset"
 msgstr "Temizle"
 
-#: admin/userrighthandling.php:668
+#: admin/userrighthandling.php:672
 msgid "Send"
 msgstr "Gönder"
 
-#: admin/userrighthandling.php:662
+#: admin/userrighthandling.php:666
 msgid "Send me a copy:"
 msgstr "Bir kopyasını da bana gönder:"
 
@@ -10618,11 +10629,11 @@ msgstr "Bir kopyasını da bana gönder:"
 msgid "Set User Rights"
 msgstr "Kullanıcı İzinleri"
 
-#: admin/userrighthandling.php:532
+#: admin/userrighthandling.php:536
 msgid "Set global permissions for this user"
 msgstr "Bu kullanıcı için genel izinler"
 
-#: admin/userrighthandling.php:551
+#: admin/userrighthandling.php:555
 msgid "Set template permissions for this user"
 msgstr "Bu kullanıcı için kalıp izinleri"
 
@@ -10630,7 +10641,7 @@ msgstr "Bu kullanıcı için kalıp izinleri"
 msgid "Set templates that this user may access"
 msgstr "Şu kullanıcının erişebileceği kalıpları belirleyin"
 
-#: admin/userrighthandling.php:664
+#: admin/userrighthandling.php:668
 msgid "Subject:"
 msgstr "Konu:"
 
@@ -10642,7 +10653,7 @@ msgstr "Süper Yönetici"
 msgid "Survey ID:"
 msgstr "Anket Kodu:"
 
-#: admin/userrighthandling.php:541
+#: admin/userrighthandling.php:545
 msgid "Take ownership"
 msgstr "Sahipliği Devral "
 
@@ -10650,7 +10661,7 @@ msgstr "Sahipliği Devral "
 msgid "Template name"
 msgstr "Kalıp adı"
 
-#: admin/userrighthandling.php:822
+#: admin/userrighthandling.php:826
 msgid "To:"
 msgstr "Kime:"
 
@@ -10658,7 +10669,7 @@ msgstr "Kime:"
 msgid "Total records imported:"
 msgstr "Alınan toplam kayıt:"
 
-#: admin/userrighthandling.php:646
+#: admin/userrighthandling.php:650
 msgid "Update User Group"
 msgstr "Kullanıcı Grubunu Güncelle"
 
@@ -10674,88 +10685,13 @@ msgstr "Kullanıcı Grubu"
 msgid "User control"
 msgstr "Kullanıcı Yönetimi"
 
-#: admin/userrighthandling.php:742
+#: admin/userrighthandling.php:746
 msgid "User group successfully added!"
 msgstr "Kullanıcı grubu sorunsuz eklendi."
 
 #: admin/vvimport.php:87
 msgid "When an imported record matches an existing record ID:"
 msgstr "Alınan bir kayıt, varolan bir kayıdın numarasına eşit olduğunda:"
-
-#: admin/install/index.php:53
-#, php-format
-msgid "A database named \"%s\" already exists."
-msgstr " \"%s\" adıyla bir veritabanı zaten var."
-
-#: admin/install/createdb.php:100
-msgid "Could not create database"
-msgstr "Veritabanı oluşturulamadı"
-
-#: admin/install/createdb.php:30
-#: admin/install/index.php:42
-msgid "Create Database"
-msgstr "Veritabanı Oluştur"
-
-#: admin/install/createdb.php:31
-msgid "Creating tables. This might take a moment..."
-msgstr "Tablo oluşturma. Bu bir kaç dakika sürecektir..."
-
-#: admin/install/createdb.php:65
-msgid "Database Information not provided. This script must be run from admin.php only."
-msgstr "Veritabanı bilgisi belirtilmedi. Bu betik yalnızca admin.php'den çalıştırılabilir."
-
-#: admin/install/createdb.php:50
-#, php-format
-msgid "Database `%s` has been successfully populated."
-msgstr "`%s` veritabanına örnek veriler başarıyla yüklendi."
-
-#: admin/install/createdb.php:92
-msgid "Database has been created."
-msgstr "Veritabanı oluşturuldu."
-
-#: admin/install/index.php:54
-msgid "Do you want to populate that database now by creating the necessary tables?"
-msgstr "Gerekli tabloları oluşturup, örnek verileri yazarak veritabanını oluşturmak istiyor musunuz?"
-
-#: admin/install/cmd_install.php:170
-msgid "Executing"
-msgstr "Yürütülüyor"
-
-#: admin/install/cmd_install.php:170
-msgid "Failed! Reason:"
-msgstr "Başarısız! Nedeni:"
-
-#: admin/install/index.php:35
-#: admin/install/index.php:51
-msgid "LimeSurvey Setup"
-msgstr "LimeSurvey Kurulumu"
-
-#: admin/install/index.php:39
-msgid "LimeSurvey can attempt to create this database for you."
-msgstr "LimeSurvey bu veritabanını sizin için oluşturmayı deneyebilir."
-
-#: admin/install/createdb.php:93
-msgid "Please click below to populate the database"
-msgstr "Örnek verileri yüklemek için aşağıya tıklayın"
-
-#: admin/install/createdb.php:34
-#: admin/install/createdb.php:95
-#: admin/install/index.php:46
-#: admin/install/index.php:56
-msgid "Populate Database"
-msgstr "Veritabanına Örnek Veri Yükle"
-
-#: admin/install/index.php:38
-msgid "The database defined in config.php does not exist."
-msgstr "config.php'de belirtilen veritabanı bulunamadı."
-
-#: admin/install/index.php:37
-msgid "Welcome to LimeSurvey Setup!"
-msgstr "LimeSurvey Kurulumuna Hoş Geldiniz!"
-
-#: admin/install/index.php:40
-msgid "Your selected database name is:"
-msgstr "Belirttiğiniz veritabanı adı:"
 
 #: admin/remotecontrol/lsrc.helper.php:2112
 #: admin/remotecontrol/lsrc.helper.php:2117
@@ -10835,9 +10771,9 @@ msgstr "Veritabanı sürümü sorunsuz şekilde %s olarak güncellendi"
 msgid "Database type"
 msgstr "Veritabanı tipi"
 
-#: admin/update/upgrade-mssql.php:481
-#: admin/update/upgrade-mssqlnative.php:481
-#: admin/update/upgrade-mysql.php:586
+#: admin/update/upgrade-mssql.php:483
+#: admin/update/upgrade-mssqlnative.php:483
+#: admin/update/upgrade-mysql.php:587
 #: admin/update/upgrade-postgres.php:309
 #, php-format
 msgid "Database update finished (%s)"
@@ -11283,6 +11219,65 @@ msgstr "Vietnamca"
 #: classes/core/surveytranslator.php:205
 msgid "Welsh"
 msgstr "Galce"
+
+#~ msgid "A database named \"%s\" already exists."
+#~ msgstr " \"%s\" adıyla bir veritabanı zaten var."
+
+#~ msgid "Could not create database"
+#~ msgstr "Veritabanı oluşturulamadı"
+
+#~ msgid "Create Database"
+#~ msgstr "Veritabanı Oluştur"
+
+#~ msgid "Creating tables. This might take a moment..."
+#~ msgstr "Tablo oluşturma. Bu bir kaç dakika sürecektir..."
+
+#~ msgid ""
+#~ "Database Information not provided. This script must be run from admin.php "
+#~ "only."
+#~ msgstr ""
+#~ "Veritabanı bilgisi belirtilmedi. Bu betik yalnızca admin.php'den "
+#~ "çalıştırılabilir."
+
+#~ msgid "Database `%s` has been successfully populated."
+#~ msgstr "`%s` veritabanına örnek veriler başarıyla yüklendi."
+
+#~ msgid "Database has been created."
+#~ msgstr "Veritabanı oluşturuldu."
+
+#~ msgid ""
+#~ "Do you want to populate that database now by creating the necessary "
+#~ "tables?"
+#~ msgstr ""
+#~ "Gerekli tabloları oluşturup, örnek verileri yazarak veritabanını "
+#~ "oluşturmak istiyor musunuz?"
+
+#~ msgid "Executing"
+#~ msgstr "Yürütülüyor"
+
+#~ msgid "Failed! Reason:"
+#~ msgstr "Başarısız! Nedeni:"
+
+#~ msgid "LimeSurvey Setup"
+#~ msgstr "LimeSurvey Kurulumu"
+
+#~ msgid "LimeSurvey can attempt to create this database for you."
+#~ msgstr "LimeSurvey bu veritabanını sizin için oluşturmayı deneyebilir."
+
+#~ msgid "Please click below to populate the database"
+#~ msgstr "Örnek verileri yüklemek için aşağıya tıklayın"
+
+#~ msgid "Populate Database"
+#~ msgstr "Veritabanına Örnek Veri Yükle"
+
+#~ msgid "The database defined in config.php does not exist."
+#~ msgstr "config.php'de belirtilen veritabanı bulunamadı."
+
+#~ msgid "Welcome to LimeSurvey Setup!"
+#~ msgstr "LimeSurvey Kurulumuna Hoş Geldiniz!"
+
+#~ msgid "Your selected database name is:"
+#~ msgstr "Belirttiğiniz veritabanı adı:"
 
 #, fuzzy
 #~ msgid "Database %s has been successfully populated."
