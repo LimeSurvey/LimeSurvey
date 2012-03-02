@@ -1005,7 +1005,12 @@ class question extends Survey_Common_Action
             8 => 'N'
         );
 
-        LimeExpressionManager::StartSurvey($surveyid, 'question', NULL, false, $LEMdebugLevel);
+        $radix=getRadixPointData($thissurvey['surveyls_numberformat']);
+        $radix = $radix['seperator'];
+        $surveyOptions = array(
+            'radix'=>$radix,
+            );
+        LimeExpressionManager::StartSurvey($surveyid, 'question', $surveyOptions, false, $LEMdebugLevel);
         $qseq = LimeExpressionManager::GetQuestionSeq($qid);
         $moveResult = LimeExpressionManager::JumpTo($qseq + 1, true, false, true);
 
@@ -1022,20 +1027,33 @@ class question extends Survey_Common_Action
         $dummy_js = <<< EOD
             <script type='text/javascript'>
             <!--
-            function noop_checkconditions(value, name, type, evt_type)
+            LEMradix='$radix';
+            function fixnum_checkconditions(value, name, type, evt_type)
             {
+                newval = value;
+                if (LEMradix === ',') {
+                    newval = value.split(',').join('.');
+                }
+                if (newval != parseFloat(newval)) {
+                    newval = '';
+                    if (name.match(/other$/)) {
+                        $('#answer'+name+'text').val('');
+                    }
+                    $('#answer'+name).val('');
+                }
+
                 if (typeof evt_type === 'undefined')
-                { 
-                    evt_type = 'onchange'; 
-                }    
-                checkconditions(value, name, type, evt_type);
+                {
+                    evt_type = 'onchange';
+                }
+                checkconditions(newval, name, type, evt_type);
             }
 
             function checkconditions(value, name, type, evt_type)
             {
-                if (typeof evt_type === 'undefined') 
-                { 
-                    evt_type = 'onchange'; 
+                if (typeof evt_type === 'undefined')
+                {
+                    evt_type = 'onchange';
                 }
                 if (type == 'radio' || type == 'select-one')
                 {
@@ -1059,7 +1077,6 @@ class question extends Survey_Common_Action
                 ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
                 $showQuestion
             }
-            // have to add all these "$showQuestion" calls to ensure we can see the question, even if it might be irrelevant during survey
             $(document).ready(function() {
                 $showQuestion
             });
