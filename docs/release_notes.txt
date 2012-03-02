@@ -77,6 +77,18 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.91+ (build 120224) to 1.91+ (build 120302) Mar 2, 2012
+-Fixed issue #5721: Login with admin and default password doesn't work on Postgres with certain server versions (Carsten Schmitz)
+-Fixed issue #5783: Surveys created in versions pre QuickTranslate do not set permission rights correctly (Carsten Schmitz)
+-Fixed issue: Updater bugging out if no files exist for backup (Carsten Schmitz)
+#Updated translation: German (Informal) by Gregor Herrmann (Carsten Schmitz)
+#Updated translation: German Updated translation: German (informal) (Carsten Schmitz)
+#Updated translation: Indonesian (Carsten Schmitz)
+#Updated translation: Portuguese (Brazil) (Carsten Schmitz)
+#Updated translation: Turkish (Carsten Schmitz)
+#Update translation: Greek by Yannis Kaskamanidis (Carsten Schmitz)
+
+
 Changes from 1.91+ (build 12416) to 1.91+ (build 120224) Feb 24, 2012
 -Fixed issue #05752: statistics_user.php - always shown in baselang (magiclko)
 -Fixed issue #05764: If enter Y-scale and X-scale at same time, and click save, only Y-scale is saved (magiclko)
