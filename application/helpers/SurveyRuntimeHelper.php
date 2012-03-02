@@ -874,7 +874,13 @@ END;
             $redata = compact(array_keys(get_defined_vars()));
 
             echo "\n\n<!-- START THE GROUP -->\n";
-            echo "\n\n<div id='group-$gid'>\n";
+            echo "\n\n<div id='group-$gid'";
+            $gnoshow = LimeExpressionManager::GroupIsIrrelevantOrHidden($gid);
+            if  ($gnoshow)
+            {
+                echo " style='display: none;'";
+            }
+            echo ">\n";
             echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"), array(), $redata);
             echo "\n";
 
