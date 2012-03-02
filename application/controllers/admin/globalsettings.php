@@ -149,6 +149,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('sess_expiration', $iSessionExpirationTime);
         setGlobalSetting('ipInfoDbAPIKey', $_POST['ipInfoDbAPIKey']);
         setGlobalSetting('googleMapsAPIKey', $_POST['googleMapsAPIKey']);
+        setGlobalSetting('googletranslateapikey',$_POST['googletranslateapikey']);
         setGlobalSetting('force_ssl', $_POST['force_ssl']);
         setGlobalSetting('surveyPreview_require_Auth', $_POST['surveyPreview_require_Auth']);
         setGlobalSetting('enableXMLRPCInterface', $_POST['enableXMLRPCInterface']);

@@ -1041,26 +1041,24 @@ class translate extends Survey_Common_Action {
             // Gtranslate requires you to run function named XXLANG_to_XXLANG
             $sProcedure = $sBaselang . "_to_" . $sTolang;
 
-            // Replace {TEXT} with <TEXT>. Text within <> act as a placeholder and are
-            // not translated by Google Translate
-            $sToNewconvert  = preg_replace("/\{(\w+)\}/", "<$1>" ,$sToconvert);
-            $bDoNotConvertBack = FALSE;
+            $parts = LimeExpressionManager::SplitStringOnExpressions($sToconvert);
 
-            if ( $sToNewconvert == $sToconvert )
-			{
-                $bDoNotConvertBack = TRUE;
-			}
-
-            $sToconvert = $sToNewconvert;
-            $sConverted = $objGt->$sProcedure($sToconvert);
-            $sConverted = str_replace("<br>", "\r\n", $sConverted);
-
-            if ( ! $bDoNotConvertBack )
-			{
-                $sConverted  = preg_replace("/\<(\w+)\>/", '{$1}', $sConverted);
-			}
-
-            $sOutput  = html_entity_decode(stripcslashes($sConverted));
+            $sparts = array();
+            foreach($parts as $part)
+            {
+                if ($part[2]=='EXPRESSION')
+                {
+                    $sparts[] = $part[0];
+                }
+                else
+                {
+                    $convertedPart = $objGt->$sProcedure($part[0]);
+                    $convertedPart  = str_replace("<br>","\r\n",$convertedPart);
+                    $convertedPart  = html_entity_decode(stripcslashes($convertedPart));
+                    $sparts[] = $convertedPart;
+                }
+            }
+            $sOutput = implode(' ', $sparts);
         }
 		catch ( GTranslateException $ge )
 		{

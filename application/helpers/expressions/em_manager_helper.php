@@ -4797,6 +4797,17 @@ class LimeExpressionManager {
     }
 
     /**
+     * Returns an array of string parts, splitting out expressions
+     * @param type $src
+     * @return type
+     */
+    static function SplitStringOnExpressions($src)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        return $LEM->em->asSplitStringOnExpressions($src);
+    }
+
+    /**
      * Return a formatted table showing how much time each part of EM consumed
      * @return <type>
      */

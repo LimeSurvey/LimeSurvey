@@ -38,11 +38,6 @@
 * </code>
 */
 
-/**
-* To initialize this class in CodeIgniter use
-* $this->load->library('gtranslate/gtranslate', 'GTranslate'); 
-*/
-
 
 /**
 * Exception class for GTranslated Exceptions
@@ -64,32 +59,32 @@ class GTranslate
 	/**
 	* Google Translate(TM) Api endpoint
 	* @access private
-	* @var String 
+	* @var String
 	*/
-	private $url = "http://ajax.googleapis.com/ajax/services/language/translate";
-	
+	private $url = "https://www.googleapis.com/language/translate/v2";
+
         /**
         * Google Translate (TM) Api Version
         * @access private
-        * @var String 
-        */	
-	private $api_version = "1.0";
+        * @var String
+        */
+	private $api_version = "2";
 
         /**
         * Comunication Transport Method
  	* Available: http / curl
         * @access private
-        * @var String 
+        * @var String
         */
 	private $request_type = "http";
 
         /**
         * Path to available languages file
         * @access private
-        * @var String 
+        * @var String
         */
 	private $available_languages_file 	= "languages.ini";
-	
+
         /**
         * Holder to the parse of the ini file
         * @access private
@@ -99,7 +94,7 @@ class GTranslate
 
 	/**
 	* Google Translate api key
- 	* @access private 
+ 	* @access private
 	* @var string
 	*/
 	private $api_key = null;
@@ -107,7 +102,7 @@ class GTranslate
 	/**
 	* Google request User IP
 	* @access private
-	* @var string	
+	* @var string
 	*/
 	private $user_ip = null;
 
@@ -130,26 +125,19 @@ class GTranslate
 	private function urlFormat($lang_pair,$string)
 	{
 		$parameters = array(
-			"v" => $this->api_version,
 			"q" => $string,
-			"langpair"=> implode("|",$lang_pair)
+            "source" => $lang_pair[0],
+            "target" => $lang_pair[1],
 		);
 
 		if(!empty($this->api_key))
 		{
 			$parameters["key"] = $this->api_key;
 		}
-
-		if( empty($this->user_ip) ) 
-		{
-			if( !empty($_SERVER["REMOTE_ADDR"]) ) 
-			{
-				$parameters["userip"]	=	$_SERVER["REMOTE_ADDR"];
-			}
-		} else 
-		{
-			$parameters["userip"]   =	$this->user_ip;
-		}
+        else
+        {
+            $parameters["key"] = getGlobalSetting('googletranslateapikey');
+        }
 
 		$url  = "";
 
@@ -187,7 +175,7 @@ class GTranslate
   		}
 		return false;
 	}
-	
+
 	/**
 	* Define the User Ip for the query
  	* @access public
@@ -201,9 +189,9 @@ class GTranslate
   		}
 		return false;
 	}
-	
+
         /**
-        * Query the Google(TM) endpoint 
+        * Query the Google(TM) endpoint
         * @access private
         * @param array $lang_pair
         * @param array $string
@@ -218,7 +206,7 @@ class GTranslate
 	}
 
         /**
-        * Query Wrapper for Http Transport 
+        * Query Wrapper for Http Transport
         * @access private
         * @param String $url
         * returns String $response
@@ -226,11 +214,14 @@ class GTranslate
 
 	private function requestHttp($url)
 	{
-		return GTranslate::evalResponse(json_decode(file_get_contents($this->url."?".$url)));
+        $fullurl = $this->url."?".$url;
+        $return = file_get_contents($fullurl);
+        $json = json_decode($return);
+		return GTranslate::evalResponse($json);
 	}
 
-        /**     
-        * Query Wrapper for Curl Transport 
+        /**
+        * Query Wrapper for Curl Transport
         * @access private
         * @param String $url
         * returns String $response
@@ -249,9 +240,9 @@ class GTranslate
 		return GTranslate::evalResponse(json_decode($body));
 	}
 
-        /**     
+        /**
         * Response Evaluator, validates the response
-	* Throws an exception on error 
+	* Throws an exception on error
         * @access private
         * @param String $json_response
         * returns String $response
@@ -259,21 +250,20 @@ class GTranslate
 
 	private function evalResponse($json_response)
 	{
-		switch($json_response->responseStatus)
-		{
-			case 200:
-				return $json_response->responseData->translatedText;
-				break;
-			default:
-				throw new GTranslateException("Unable to perform Translation:".$json_response->responseDetails);
-			break;
+        if (isset($json_response->data->translations))
+        {
+            return $json_response->data->translations[0]->translatedText;
+        }
+        else
+        {
+            throw new GTranslateException("Unable to perform Translation:".$json_response->data);
 		}
 	}
 
 
-        /**     
+        /**
         * Validates if the language pair is valid
-        * Throws an exception on error 
+        * Throws an exception on error
         * @access private
         * @param Array $languages
         * returns Array $response Array with formated languages pair
@@ -289,7 +279,7 @@ class GTranslate
 		$valid_languages 	= 	false;
 		if( TRUE == in_array($languages[0],$language_list_v) AND TRUE == in_array($languages[1],$language_list_v) )
 		{
-			$valid_languages 	= 	true;	
+			$valid_languages 	= 	true;
 		}
 
 		if( FALSE === $valid_languages AND TRUE == in_array($languages[0],$language_list_k) AND TRUE == in_array($languages[1],$language_list_k) )
@@ -306,7 +296,7 @@ class GTranslate
 		return $languages;
 	}
 
-        /**     
+        /**
         * Magic method to understande translation comman
 	* Evaluates methods like language_to_language
         * @access public
@@ -322,7 +312,7 @@ class GTranslate
 		$languages = $this->isValidLanguage($languages_list);
 
 		$string 	= 	$args[0];
-                
+
 		return $this->query($languages,$string);
 	}
 }
