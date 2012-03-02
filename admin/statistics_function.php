@@ -2361,14 +2361,13 @@
                             //first check if $tempcount is > 0. If yes, $row[0] has been modified and $tempcount has the original count.
                             if ($tempcount > 0)
                             {
-                                $lbl[] = wordwrap(FlattenText("$al[1] ($tempcount)"), 25, "\n"); // NMO 2009-03-24
-                                $lblrtl[] = utf8_strrev(wordwrap(FlattenText("$al[1] )$tempcount("), 25, "\n")); // NMO 2009-03-24
+                                $lbl[] = iconv_wordwrap(FlattenText("$al[1] ($tempcount)"), 25, "\n"); // NMO 2009-03-24
+                                $lblrtl[] = utf8_strrev(iconv_wordwrap(FlattenText("$al[1] )$tempcount("), 25, "\n")); // NMO 2009-03-24
                             }
                             else
                             {
-                                $lbl[] = wordwrap(FlattenText("$al[1] ($row[0])"), 25, "\n"); // NMO 2009-03-24
-                                $lblrtl[] = utf8_strrev(wordwrap(FlattenText("$al[1] )$row[0]("), 25, "\n")); // NMO 2009-03-24
-                                
+                                $lbl[] = iconv_wordwrap(FlattenText("$al[1] ($row[0])"), 30, "\n"); // NMO 2009-03-24
+                                $lblrtl[] = utf8_strrev(iconv_wordwrap(FlattenText("$al[1] )$row[0]("), 30, "\n")); // NMO 2009-03-24
                             }
                             
 
@@ -3162,7 +3161,7 @@
                             $counter=0;
                             foreach ($lbl as $label)
                             {
-                                $DataSet->SetSerieName($label,"Serie$counter");
+                                $DataSet->SetSerieName(encodeAllToHTMLEntities($label),"Serie$counter");
                                 $counter++;
                             }
 
@@ -3247,6 +3246,10 @@
                                 $lblout=$lbl;
                             }
 
+                            foreach ($lblout as $key=>$value)
+                            {
+                               $lblout[$key]=encodeAllToHTMLEntities($value);
+                            }
 
                             //create new 3D pie chart
                             if ($usegraph==1)
@@ -3397,5 +3400,64 @@
 
         return $squarenumber;
     }
+
+function iconv_wordwrap($string, $width = 75, $break = "\n", $cut = false, $charset = 'utf-8')
+{
+    $stringWidth = iconv_strlen($string, $charset);
+    $breakWidth  = iconv_strlen($break, $charset);
+
+    if (strlen($string) === 0) {
+        return '';
+    } elseif ($breakWidth === null) {
+        throw new Zend_Text_Exception('Break string cannot be empty');
+    } elseif ($width === 0 && $cut) {
+        throw new Zend_Text_Exception('Can\'t force cut when width is zero');
+    }
+
+    $result    = '';
+    $lastStart = $lastSpace = 0;
+
+    for ($current = 0; $current < $stringWidth; $current++) {
+        $char = iconv_substr($string, $current, 1, $charset);
+
+        if ($breakWidth === 1) {
+            $possibleBreak = $char;
+        } else {
+            $possibleBreak = iconv_substr($string, $current, $breakWidth, $charset);
+        }
+
+        if ($possibleBreak === $break) {
+            $result    .= iconv_substr($string, $lastStart, $current - $lastStart + $breakWidth, $charset);
+            $current   += $breakWidth - 1;
+            $lastStart  = $lastSpace = $current + 1;
+        } elseif ($char === ' ') {
+            if ($current - $lastStart >= $width) {
+                $result    .= iconv_substr($string, $lastStart, $current - $lastStart, $charset) . $break;
+                $lastStart  = $current + 1;
+            }
+
+            $lastSpace = $current;
+        } elseif ($current - $lastStart >= $width && $cut && $lastStart >= $lastSpace) {
+            $result    .= iconv_substr($string, $lastStart, $current - $lastStart, $charset) . $break;
+            $lastStart  = $lastSpace = $current;
+        } elseif ($current - $lastStart >= $width && $lastStart < $lastSpace) {
+            $result    .= iconv_substr($string, $lastStart, $lastSpace - $lastStart, $charset) . $break;
+            $lastStart  = $lastSpace = $lastSpace + 1;
+        }
+    }
+
+    if ($lastStart !== $current) {
+        $result .= iconv_substr($string, $lastStart, $current - $lastStart, $charset);
+    }
+
+    return $result;
+}
+
+    function encodeAllToHTMLEntities($sString)
+    {
+        $convmap = array(0x80, 0x10ffff, 0, 0xffffff);
+        return mb_encode_numericentity($sString, $convmap, "UTF-8");
+    }
+
 
 ?>
