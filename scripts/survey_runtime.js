@@ -547,6 +547,36 @@ function std_onsubmit_handler()
     return true;
 }
 
+// round function from phpjs.org
+function round (value, precision, mode) {
+    // http://kevin.vanzonneveld.net
+    var m, f, isHalf, sgn; // helper variables
+    precision |= 0; // making sure precision is integer
+    m = Math.pow(10, precision);
+    value *= m;
+    sgn = (value > 0) | -(value < 0); // sign of the number
+    isHalf = value % 1 === 0.5 * sgn;
+    f = Math.floor(value);
+
+    if (isHalf) {
+        switch (mode) {
+        case 'PHP_ROUND_HALF_DOWN':
+            value = f + (sgn < 0); // rounds .5 toward zero
+            break;
+        case 'PHP_ROUND_HALF_EVEN':
+            value = f + (f % 2 * sgn); // rouds .5 towards the next even integer
+            break;
+        case 'PHP_ROUND_HALF_ODD':
+            value = f + !(f % 2); // rounds .5 towards the next odd integer
+            break;
+        default:
+            value = f + (sgn > 0); // rounds .5 away from zero
+        }
+    }
+
+    return (isHalf ? value : Math.round(value)) / m;
+}
+
 // ==========================================================
 // totals
 
@@ -712,15 +742,18 @@ function multi_set(ids,_radix)
 				_bits[id][i].onChange = calc;
 				if(i == (l - 1))
 				{
-					_bits[id][i].value = qt;
+					_bits[id][i].value = round(qt,12)
 				}
 				else if(_bits[id][i].value)
 				{
-					qt += (_bits[id][i].value * 1);
-//				}
-//				else
-//				{
-//					_bits[id][i].value = '0';
+                    _aval=_bits[id][i].value;
+                    if (radix===',') {
+                        _aval = _aval.split(',').join('.');
+                        _bits[id][i].value = _aval.split('.').join(',');
+                    }
+                    if  (_aval == parseFloat(_aval)) {
+                        qt += +_aval;
+                    }
 				};
 			};
 
@@ -740,15 +773,18 @@ function multi_set(ids,_radix)
 				_bits[i][id].onchange = calc;
 				if(i == (l - 1))
 				{
-					_bits[i][id].value = qt;
+					_bits[i][id].value = round(qt,12);
 				}
 				else if(_bits[i][id].value)
 				{
-					qt += (_bits[i][id].value * 1);
-//				}
-//				else
-//				{
-//					_bits[i][id].value = '0';
+                    _aval=_bits[i][id].value;
+                    if (radix===',') {
+                        _aval = _aval.split(',').join('.');
+                        _bits[i][id].value = _aval.split('.').join(',');
+                    }
+                    if  (_aval == parseFloat(_aval)) {
+                        qt += +_aval;
+                    }
 				};
 			};
 		};
@@ -823,7 +859,7 @@ function multi_set(ids,_radix)
                     }
                     else
                     {
-                        _bits[i][vid].value = qt;
+                        _bits[i][vid].value = round(qt,12);
                     }
 				}
 				else if(_bits[i][vid].value)
@@ -855,7 +891,7 @@ function multi_set(ids,_radix)
                     }
                     else
                     {
-                        _bits[hid][i].value = qt;
+                        _bits[hid][i].value = round(qt,12);
                     }
 				}
 				else if(_bits[hid][i].value)
