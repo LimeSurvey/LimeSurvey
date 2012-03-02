@@ -1363,7 +1363,7 @@ class LimeExpressionManager {
                             case 'U': //HUGE FREE TEXT                                
                                 if ($this->sgqaNaming)
                                 {
-                                    $sq_name = '!(' . preg_replace('/\bthis\b/',$sq['rowdivid'], $em_validation_q) . ')';
+                                    $sq_name = '!(' . preg_replace('/\bthis\b/',substr($sq['jsVarName'],4), $em_validation_q) . ')';
                                 }
                                 else
                                 {
@@ -1424,9 +1424,13 @@ class LimeExpressionManager {
                             case 'Q': //MULTIPLE SHORT TEXT
                             case ';': //ARRAY (Multi Flexi) Text
                             case ':': //ARRAY (Multi Flexi) 1 to 10
+                            case 'N': //NUMERICAL QUESTION TYPE
+                            case 'S': //SHORT FREE TEXT
+                            case 'T': //LONG FREE TEXT
+                            case 'U': //HUGE FREE TEXT
                                 if ($this->sgqaNaming)
                                 {
-                                    $sq_name = '!(' . preg_replace('/\bthis\b/',$sq['rowdivid'], $em_validation_sq) . ')';
+                                    $sq_name = '!(' . preg_replace('/\bthis\b/',substr($sq['jsVarName'],4), $em_validation_sq) . ')';
                                 }
                                 else
                                 {
@@ -1442,9 +1446,13 @@ class LimeExpressionManager {
                             case 'Q': //MULTIPLE SHORT TEXT
                             case ';': //ARRAY (Multi Flexi) Text
                             case ':': //ARRAY (Multi Flexi) 1 to 10
+                            case 'N': //NUMERICAL QUESTION TYPE
+                            case 'S': //SHORT FREE TEXT
+                            case 'T': //LONG FREE TEXT
+                            case 'U': //HUGE FREE TEXT
                                 if ($this->sgqaNaming)
                                 {
-                                    $subqValidEqn = '(' . preg_replace('/\bthis\b/',$sq['rowdivid'], $em_validation_sq) . ')';
+                                    $sq_name = '!(' . preg_replace('/\bthis\b/',substr($sq['jsVarName'],4), $em_validation_sq) . ')';
                                 }
                                 else
                                 {
@@ -2153,7 +2161,8 @@ class LimeExpressionManager {
                     }
                     break;
             }
-            if (!is_null($rowdivid) || $type == 'L' || $type == 'N' || $type == '!' || !is_null($preg)) {
+            if (!is_null($rowdivid) || $type == 'L' || $type == 'N' || $type == '!' || !is_null($preg)
+                    || $type == 'S' || $type == 'T' || $type == 'U') {
                 if (!isset($q2subqInfo[$questionNum])) {
                     $q2subqInfo[$questionNum] = array(
                         'qid' => $questionNum,
@@ -2194,6 +2203,7 @@ class LimeExpressionManager {
                         'varName' => $varName,
                         'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
                         'jsVarName' => 'java' . $surveyid . 'X' . $groupNum . 'X' . $questionNum,
+                        'jsVarName_on' => $jsVarName_on,
                         );
                 }
                 else

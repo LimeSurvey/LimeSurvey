@@ -1326,10 +1326,10 @@ div.em_other_comment_mandatory.error {
   display: block;
 }
 
-input.em_sq_validation.good {
+input.em_sq_validation.good, textarea.em_sq_validation.good {
 }
 
-input.em_sq_validation.error {
+input.em_sq_validation.error, textarea.em_sq_validation.error {
   color: black;
   background-color:  pink;
 }

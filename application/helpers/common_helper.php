@@ -3162,7 +3162,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Question Validation Tip'));
 
     $qattributes["em_validation_sq"]=array(
-    "types"=>";:KQ",
+    "types"=>";:KQSTUN",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>220,
     'inputtype'=>'textarea',
@@ -3170,7 +3170,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Sub-Question Validation Equation'));
 
     $qattributes["em_validation_sq_tip"]=array(
-    "types"=>";:KQ",
+    "types"=>";:KQSTUN",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>230,
     'inputtype'=>'textarea',
