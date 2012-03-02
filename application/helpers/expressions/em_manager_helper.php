@@ -1490,24 +1490,24 @@ class LimeExpressionManager {
             // COMPOSE USER FRIENDLY MIN/MAX MESSAGES //
             ////////////////////////////////////////////
             
-            // Put these in the order you with them to appear in messages.
+             // Put these in the order you with them to appear in messages.
             $qtips=array();
-            
+
             // min/max answers
             if ($min_answers!='' || $max_answers!='')
             {
                 if ($min_answers!='' && $max_answers!='')
                 {
-                    $qtips['num_answers']=sprintf($this->gT("Please select between %s and %s answer(s)"),'{'.$min_answers.'}','{'.$max_answers.'}');
+                    $qtips['num_answers']=sprintf($this->gT("Please select between %s and %s answer(s)"),'{fixnum('.$min_answers.')}','{fixnum('.$max_answers.')}');
                 }
                 else if ($min_answers!='')
                 {
-                    $qtips['num_answers']=sprintf($this->gT("Please select at least %s answer(s)"),'{'.$min_answers.'}');
+                    $qtips['num_answers']=sprintf($this->gT("Please select at least %s answer(s)"),'{fixnum('.$min_answers.')}');
 
                 }
                 else if ($max_answers!='')
                 {
-                    $qtips['num_answers']=sprintf($this->gT("Please select at most %s answer(s)"),'{'.$max_answers.'}');
+                    $qtips['num_answers']=sprintf($this->gT("Please select at most %s answer(s)"),'{fixnum('.$max_answers.')}');
                 }
             }
 
@@ -1516,16 +1516,16 @@ class LimeExpressionManager {
             {
                 if ($min_num_value_n!='' && $max_num_value_n!='')
                 {
-                    $qtips['value_range']=sprintf($this->gT("Each answer must be between %s and %s"),'{'.$min_num_value_n.'}','{'.$max_num_value_n.'}');
+                    $qtips['value_range']=sprintf($this->gT("Each answer must be between %s and %s"),'{fixnum('.$min_num_value_n.')}','{fixnum('.$max_num_value_n.')}');
                 }
                 else if ($min_num_value_n!='')
                 {
-                    $qtips['value_range']=sprintf($this->gT("Each answer must be at least %s"),'{'.$min_num_value_n.'}');
+                    $qtips['value_range']=sprintf($this->gT("Each answer must be at least %s"),'{fixnum('.$min_num_value_n.')}');
 
                 }
                 else if ($max_num_value_n!='')
                 {
-                    $qtips['value_range']=sprintf($this->gT("Each answer must be at most %s"),'{'.$max_num_value_n.'}');
+                    $qtips['value_range']=sprintf($this->gT("Each answer must be at most %s"),'{fixnum('.$max_num_value_n.')}');
                 }
             }
 
@@ -1534,16 +1534,16 @@ class LimeExpressionManager {
             {
                 if ($multiflexible_min!='' && $multiflexible_max!='')
                 {
-                    $qtips['value_range']=sprintf($this->gT("Each answer must be between %s and %s"),'{'.$multiflexible_min.'}','{'.$multiflexible_max.'}');
+                    $qtips['value_range']=sprintf($this->gT("Each answer must be between %s and %s"),'{fixnum('.$multiflexible_min.')}','{fixnum('.$multiflexible_max.')}');
                 }
                 else if ($multiflexible_min!='')
                 {
-                    $qtips['value_range']=sprintf($this->gT("Each answer must be at least %s"),'{'.$multiflexible_min.'}');
+                    $qtips['value_range']=sprintf($this->gT("Each answer must be at least %s"),'{fixnum('.$multiflexible_min.')}');
 
                 }
                 else if ($multiflexible_max!='')
                 {
-                    $qtips['value_range']=sprintf($this->gT("Each answer must be at most %s"),'{'.$multiflexible_max.'}');
+                    $qtips['value_range']=sprintf($this->gT("Each answer must be at most %s"),'{fixnum('.$multiflexible_max.')}');
                 }
             }
 
@@ -1552,23 +1552,23 @@ class LimeExpressionManager {
             {
                 if ($min_num_value!='' && $max_num_value!='')
                 {
-                    $qtips['sum_range']=sprintf($this->gT("The sum must be between %s and %s"),'{'.$min_num_value.'}','{'.$max_num_value.'}');
+                    $qtips['sum_range']=sprintf($this->gT("The sum must be between %s and %s"),'{fixnum('.$min_num_value.')}','{fixnum('.$max_num_value.')}');
                 }
                 else if ($min_num_value!='')
                 {
-                    $qtips['sum_range']=sprintf($this->gT("The sum must be at least %s"),'{'.$min_num_value.'}');
+                    $qtips['sum_range']=sprintf($this->gT("The sum must be at least %s"),'{fixnum('.$min_num_value.')}');
 
                 }
                 else if ($max_num_value!='')
                 {
-                    $qtips['sum_range']=sprintf($this->gT("The sum must be at most %s"),'{'.$max_num_value.'}');
+                    $qtips['sum_range']=sprintf($this->gT("The sum must be at most %s"),'{fixnum('.$max_num_value.')}');
                 }
             }
 
             // equals_num_value
             if ($equals_num_value!='')
             {
-                $qtips['sum_range']=sprintf($this->gT("The sum must equal %s"),'{'.$equals_num_value.'}');
+                $qtips['sum_range']=sprintf($this->gT("The sum must equal %s"),'{fixnum('.$equals_num_value.')}');
             }
 
             // other comment mandatory
@@ -2041,6 +2041,35 @@ class LimeExpressionManager {
                     break;
             }
 
+            // $onlynum
+            $onlynum=false; // the default
+            switch($type)
+            {
+                case 'K': //MULTIPLE NUMERICAL QUESTION
+                case 'N': //NUMERICAL QUESTION TYPE
+                case ':': //ARRAY (Multi Flexi) 1 to 10
+                    $onlynum=true;
+                    break;
+                case ';': //ARRAY (Multi Flexi) Text
+                case 'Q': //MULTIPLE SHORT TEXT
+                case 'S': //SHORT FREE TEXT
+                    if (isset($qattr[$questionNum]['numbers_only']) && $qattr[$questionNum]['numbers_only']=='1')
+                    {
+                        $onlynum=true;
+                    }
+                    break;
+                case 'L': //LIST drop-down/radio-button list
+                case 'M': //Multiple choice checkbox
+                case 'P': //Multiple choice with comments checkbox + text
+                    if (isset($qattr[$questionNum]['other_numbers_only']) && $qattr[$questionNum]['other_numbers_only']=='1' && preg_match('/other$/',$sgqa))
+                    {
+                        $onlynum=true;
+                    }
+                    break;
+                default:
+                    break;
+            }
+
             // Set $jsVarName_on (for on-page variables - e.g. answerSGQA) and $jsVarName (for off-page  variables; the primary name - e.g. javaSGQA)
             switch($type)
             {
@@ -2212,6 +2241,7 @@ class LimeExpressionManager {
                 'rootVarName'=>$fielddata['title'],
                 'subqtext'=>$subqtext,
                 'rowdivid'=>(is_null($rowdivid) ? '' : $rowdivid),
+                'onlynum'=>$onlynum,
                 );
 
             $this->questionSeq2relevance[$questionSeq] = array(
@@ -2262,6 +2292,7 @@ class LimeExpressionManager {
                 . "','grelevance':'" . (($grelevance != '') ? htmlspecialchars(preg_replace('/[[:space:]]/',' ',$grelevance),ENT_QUOTES) : 1)
                 . "','default':'" . (is_null($defaultValue) ? '' : $defaultValue)
                 . "','rowdivid':'" . (is_null($rowdivid) ?  '' : $rowdivid)
+                . "','onlynum':'" . ($onlynum ? '1' : '')
                 . "','gseq':" . $groupSeq
                 . ",'qseq':" . $questionSeq
                 .$ansList."}";
@@ -2855,6 +2886,7 @@ class LimeExpressionManager {
         $LEM->surveyOptions['datestamp'] = (isset($options['datestamp']) ? $options['datestamp'] : false);
         $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] = (isset($options['hyperlinkSyntaxHighlighting']) ? $options['hyperlinkSyntaxHighlighting'] : false);
         $LEM->surveyOptions['ipaddr'] = (isset($options['ipaddr']) ? $options['ipaddr'] : false);
+        $LEM->surveyOptions['radix'] = (isset($options['radix']) ? $options['radix'] : '.');
         $LEM->surveyOptions['refurl'] = (isset($options['refurl']) ? $options['refurl'] : NULL);
         $LEM->surveyOptions['savetimings'] = (isset($options['savetimings']) ? $options['savetimings'] : '');
         $LEM->sgqaNaming = (isset($options['sgqaNaming']) ? ($options['sgqaNaming']=="Y") : true); // TODO default should eventually be false
@@ -5779,6 +5811,17 @@ EOT;
         }
     }
 
+    /**
+     * Returns true if the survey is using comma as the radix
+     * @return type
+     */
+    public static  function usingCommaAsRadix()
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        $usingCommaAsRadix = (($LEM->surveyOptions['radix']==',') ? true : false);
+        return $usingCommaAsRadix;
+    }
+
     private static function getConditionsForEM($surveyid=NULL, $qid=NULL)
     {
         if (!is_null($qid)) {
@@ -6010,6 +6053,7 @@ EOT;
             return array();
         }
         $updatedValues=array();
+        $radixchange = (($LEM->surveyOptions['radix']==',') ? true : false);
         foreach ($LEM->currentQset as $qinfo)
         {
             $relevant=false;
@@ -6031,6 +6075,11 @@ EOT;
                 {
                     $value = (isset($_POST[$sq]) ? $_POST[$sq] : '');
                     $type = $qinfo['info']['type'];
+                    if ($radixchange && isset($LEM->knownVars[$sq]['onlynum']) && $LEM->knownVars[$sq]['onlynum']=='1')
+                    {
+                        // convert from comma back to decimal
+                        $value = implode('.',explode(',',$value));
+                    }
                     switch($type)
                     {
                         case 'D': //DATE

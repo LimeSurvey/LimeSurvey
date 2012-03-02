@@ -166,6 +166,7 @@ class ExpressionManager {
 'count' => array('exprmgr_count', 'LEMcount', $this->gT('Count the number of answered questions in the list'), 'number count(arg1, arg2, ... argN)', '', -1),
 'date' => array('date', 'date', $this->gT('Format a local date/time'), 'string date(format [, timestamp=time()])', 'http://www.php.net/manual/en/function.date.php', 1,2),
 'exp' => array('exp', 'Math.exp', $this->gT('Calculates the exponent of e'), 'number exp(number)', 'http://www.php.net/manual/en/function.exp.php', 1),
+'fixnum' => array('exprmgr_fixnum', 'LEMfixnum', $this->gT('Display numbers with comma as radix separator, if needed'), 'string fixnum(number)', '', 1),
 'floor' => array('floor', 'Math.floor', $this->gT('Round fractions down'), 'number floor(number)', 'http://www.php.net/manual/en/function.floor.php', 1),
 'gmdate' => array('gmdate', 'gmdate', $this->gT('Format a GMT date/time'), 'string gmdate(format [, timestamp=time()])', 'http://www.php.net/manual/en/function.gmdate.php', 1,2),
 'html_entity_decode' => array('html_entity_decode', 'html_entity_decode', $this->gT('Convert all HTML entities to their applicable characters (always uses ENT_QUOTES and UTF-8)'), 'string html_entity_decode(string)', 'http://www.php.net/manual/en/function.html-entity-decode.php', 1),
@@ -1339,7 +1340,7 @@ class ExpressionManager {
         $jsParts = array();
 //        $jsParts[] = "\n  // Tailor Question " . $questionNum . " - " . $name . ": { " . $eqn . " }\n";
         $jsParts[] = "  try{\n";
-        $jsParts[] = "  document.getElementById('" . $name . "').innerHTML=htmlspecialchars(\n    ";
+        $jsParts[] = "  document.getElementById('" . $name . "').innerHTML=LEMfixnum(\n    ";
         $jsParts[] = $this->GetJavaScriptEquivalentOfExpression();
         $jsParts[] = ");\n";
         $jsParts[] = "  } catch (e) { }\n";
@@ -3413,6 +3414,21 @@ function exprmgr_regexMatch($pattern, $input)
         print 'Invalid PERL Regular Expression: ' . htmlspecialchars($pattern);
     }
     return $result;
+}
+
+/**
+ * Display number with comma as radix separator, if needed
+ * @param type $value
+ * @return type
+ */
+function exprmgr_fixnum($value)
+{
+    if (LimeExpressionManager::usingCommaAsRadix())
+    {
+        $newval = implode(',',explode('.',$value));
+        return $newval;
+    }
+    return $value;
 }
 
 ?>

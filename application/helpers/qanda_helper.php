@@ -945,14 +945,7 @@ function do_5pointchoice($ia)
 {
     $clang=Yii::app()->lang;
     $imageurl = Yii::app()->getConfig("imageurl");
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
     $aQuestionAttributes=  getQuestionAttributeValues($ia[0], $ia[4]);
     $id = 'slider'.time().rand(0,100);
     $answer = "\n<ul id=\"{$id}\"> class=\"answers-list radio-list\"\n";
@@ -1087,14 +1080,7 @@ function do_date($ia)
     $js_admin_includes[] = '/scripts/jquery/lime-calendar.js';
     Yii::app()->setConfig("js_admin_includes", $js_admin_includes);
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $dateformatdetails = getDateFormatData($thissurvey['surveyls_dateformat']);
     $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
@@ -1302,14 +1288,7 @@ function do_language($ia)
 
     $clang = Yii::app()->lang;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $answerlangs = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->additionalLanguages;
     $answerlangs [] = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
@@ -1343,14 +1322,7 @@ function do_list_dropdown($ia)
 
     $clang=Yii::app()->lang;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
@@ -1634,14 +1606,7 @@ function do_list_radio($ia)
         $kpclass = "";
     }
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
@@ -1748,10 +1713,12 @@ function do_list_radio($ia)
         if ($aQuestionAttributes['other_numbers_only']==1)
         {
             $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
+            $oth_checkconditionFunction = 'fixnum_checkconditions';
         }
         else
         {
             $numbersonly = '';
+            $oth_checkconditionFunction = 'checkconditions';
         }
 
 
@@ -1767,7 +1734,12 @@ function do_list_radio($ia)
         $thisfieldname=$ia[1].'other';
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname]))
         {
-            $answer_other = ' value="'.htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname],ENT_QUOTES).'"';
+            $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname];
+            if ($aQuestionAttributes['other_numbers_only']==1)
+            {
+                $dispVal = str_replace('.',$sSeperator,$dispVal);
+            }
+            $answer_other = ' value="'.htmlspecialchars($dispVal,ENT_QUOTES).'"';
         }
         else
         {
@@ -1787,7 +1759,7 @@ function do_list_radio($ia)
         $answer .= '		<input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
         <label for="SOTH'.$ia[1].'" class="answertext">'.$othertext.'</label>
         <label for="answer'.$ia[1].'othertext">
-        <input type="text" class="text '.$kpclass.'" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.$clang->gT('Other').'"'.$answer_other.' '.$numbersonly.' onkeyup="javascript:document.getElementById(\'SOTH'.$ia[1].'\').checked=true; '.$checkconditionFunction.'(document.getElementById(\'SOTH'.$ia[1].'\').value, document.getElementById(\'SOTH'.$ia[1].'\').name, document.getElementById(\'SOTH'.$ia[1].'\').type);" />
+        <input type="text" class="text '.$kpclass.'" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.$clang->gT('Other').'"'.$answer_other.' '.$numbersonly.' onchange="if($.trim($(this).val())!=\'\'){ $(\'#SOTH'.$ia[1].'\').attr(\'checked\',\'checked\'); }; '.$oth_checkconditionFunction.'(this.value, this.name, this.type);" />
         </label>
         '.$wrapper['item-end'];
 
@@ -1894,14 +1866,7 @@ function do_listwithcomment($ia)
         $kpclass = "";
     }
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $answer = '';
 
@@ -2065,14 +2030,7 @@ function do_ranking($ia)
     $clang=Yii::app()->lang;
     $imageurl = Yii::app()->getConfig("imageurl");
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     $answer = '';
@@ -2333,14 +2291,7 @@ function do_multiplechoice($ia)
         }
     }
 
-    if ($ia[8] == 'Y' || $attribute_ref === true)
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
@@ -2367,10 +2318,12 @@ function do_multiplechoice($ia)
         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeperator= $sSeperator['seperator'];
         $numbersonly = " onkeypress='return goodchars(event,\"-0123456789$sSeperator\")'";
+        $oth_checkconditionFunction = "fixnum_checkconditions";
     }
     else
     {
         $numbersonly = '';
+        $oth_checkconditionFunction = "checkconditions";
     }
 
     // Check if the max_answers attribute is set
@@ -2575,9 +2528,14 @@ function do_multiplechoice($ia)
 		<input class=\"text ".$kpclass."\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\"";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
-            $answer .= ' value="'.htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname],ENT_QUOTES).'"';
+            $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+            if ($aQuestionAttributes['other_numbers_only']==1)
+            {
+                $dispVal = str_replace('.',$sSeperator,$dispVal);
+            }
+            $answer .= ' value="'.htmlspecialchars($dispVal,ENT_QUOTES).'"';
         }
-        $answer .= " onchange='$(\"#java{$myfname}\").val(this.value);$checkconditionFunction(this.value, this.name, this.type);if ($.trim($(\"#java{$myfname}\").val())!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"\"); }; LEMflagMandOther(\"$myfname\",this.checked);' $numbersonly />";
+        $answer .= " onchange='$(\"#java{$myfname}\").val(this.value);$oth_checkconditionFunction(this.value, this.name, this.type);if ($.trim($(\"#java{$myfname}\").val())!=\"\") { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } else { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"\"); }; LEMflagMandOther(\"$myfname\",this.checked);' $numbersonly />";
         $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
 
         //        if ($maxansw > 0)
@@ -2600,7 +2558,12 @@ function do_multiplechoice($ia)
 
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
-            $answer .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname],ENT_QUOTES);
+            $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+            if ($aQuestionAttributes['other_numbers_only']==1)
+            {
+                $dispVal = str_replace('.',$sSeperator,$dispVal);
+            }
+            $answer .= ' value="'.htmlspecialchars($dispVal,ENT_QUOTES).'"';
         }
 
         $answer .= "\" />\n{$wrapper['item-end']}";
@@ -2733,14 +2696,7 @@ function do_multiplechoice_withcomments($ia)
         }
     }
 
-    if ($ia[8] == 'Y' || $attribute_ref == true)
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
@@ -2749,10 +2705,12 @@ function do_multiplechoice_withcomments($ia)
         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeperator = $sSeperator['seperator'];
         $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
+        $oth_checkconditionFunction = "fixnum_checkconditions";
     }
     else
     {
         $numbersonly = '';
+        $oth_checkconditionFunction = "checkconditions";
     }
 
     if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
@@ -2889,9 +2847,15 @@ function do_multiplechoice_withcomments($ia)
         $anscount = $anscount + 2;
         $answer_main .= "\t<li class=\"other question-item answer-item checkbox-text-item other-item\" id=\"javatbd$myfname\">\n<span class=\"option\">\n"
         . "\t<label for=\"answer$myfname\" class=\"answertext\">\n".$othertext."\n<input class=\"text other ".$kpclass."\" $numbersonly type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
+        $answer_main .= " onchange='$oth_checkconditionFunction(this.value, this.name, this.type)'";
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])
         {
-            $answer_main .= ' value="'.htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname],ENT_QUOTES).'"';
+            $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+            if ($aQuestionAttributes['other_numbers_only']==1)
+            {
+                $dispVal = str_replace('.',$sSeperator,$dispVal);
+            }
+            $answer_main .= ' value="'.htmlspecialchars($dispVal,ENT_QUOTES).'"';
         }
         $fn++;
         // --> START NEW FEATURE - SAVE
@@ -3024,10 +2988,7 @@ function do_file_upload($ia)
 
     $clang = Yii::app()->lang;
 
-    if ($ia[8] == 'Y')
-        $checkconditionFunction = "checkconditions";
-    else
-        $checkconditionFunction = "noop_checkconditions";
+    $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes=getQuestionAttributeValues($ia[0]);
 
@@ -3156,14 +3117,6 @@ function do_multipleshorttext($ia)
 
     $clang = Yii::app()->lang;
     $extraclass ="";
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
     $answer='';
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
@@ -3173,10 +3126,12 @@ function do_multipleshorttext($ia)
         $sSeperator = $sSeperator['seperator'];
         $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
         $extraclass .=" numberonly";
+        $checkconditionFunction = "fixnum_checkconditions";
     }
     else
     {
         $numbersonly = '';
+        $checkconditionFunction = "checkconditions";
     }
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
     {
@@ -3281,7 +3236,12 @@ function do_multipleshorttext($ia)
 
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
-                    $answer_main .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                    $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                    if ($qidattributes['numbers_only']==1)
+                    {
+                        $dispVal = str_replace('.',$sSeperator,$dispVal);
+                    }
+                    $answer_main .= $dispVal;
                 }
 
                 $answer_main .= "</textarea>\n".$suffix."\n\t</span>\n"
@@ -3311,7 +3271,12 @@ function do_multipleshorttext($ia)
 
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
-                    $answer_main .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                    $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                    if ($qidattributes['numbers_only']==1)
+                    {
+                        $dispVal = str_replace('.',$sSeperator,$dispVal);
+                    }
+                    $answer_main .= $dispVal;
                 }
 
                 // --> START NEW FEATURE - SAVE
@@ -3339,14 +3304,7 @@ function do_multiplenumeric($ia)
 
     $clang = Yii::app()->lang;
     $extraclass ="";
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "fixnum_checkconditions";
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     $answer='';
     $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
@@ -3617,8 +3575,8 @@ function do_multiplenumeric($ia)
                 $answer_main .= "<span class=\"input\">\n\t".$prefix."\n\t<input class=\"text $kpclass\" type=\"text\" size=\"".$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
-                    $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] = str_replace('.',$sSeperator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]);
-                    $answer_main .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+                    $dispVal = str_replace('.',$sSeperator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]);
+                    $answer_main .= $dispVal;            
                 }
 
                 $answer_main .= '" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);" '." {$numbersonly} {$maxlength} />\t{$suffix}\n</span>\n\t</li>\n";
@@ -3881,14 +3839,7 @@ function do_numerical($ia)
     $clang = Yii::app()->lang;
     $extraclass ="";
     $answertypeclass = "numeric";
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "fixnum_checkconditions";
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     if (trim($aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
         $prefix=$aQuestionAttributes['prefix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
@@ -3941,7 +3892,7 @@ function do_numerical($ia)
     }
     $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeperator = $sSeperator['seperator'];
-    $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] = str_replace('.',$sSeperator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
+    $dispVal = str_replace('.',$sSeperator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
 
     if ($thissurvey['nokeyboard']=='Y')
     {
@@ -3957,7 +3908,7 @@ function do_numerical($ia)
     $answer = "<p class='question answer-item text-item numeric-item {$extraclass}'>"
     . " <label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Answer')}</label>\n$prefix\t"
     . "<input class='text {$answertypeclass}' type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\"  title=\"".$clang->gT('Only numbers may be entered in this field')."\" "
-    . "id=\"answer{$ia[1]}\" value=\"".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]."\" onkeypress=\"return goodchars(event,'-0123456789{$acomma}')\" onchange='$checkconditionFunction(this.value, this.name, this.type)'"
+    . "id=\"answer{$ia[1]}\" value=\"{$dispVal}\" title=\"".$clang->gT('Only numbers may be entered in this field')."\" onkeypress=\"return goodchars(event,'-0123456789{$acomma}')\" onchange='$checkconditionFunction(this.value, this.name, this.type)' "
     . " {$maxlength} />\t{$suffix}\n</p>\n";
     if ($aQuestionAttributes['hide_tip']==0)
     {
@@ -3982,15 +3933,6 @@ function do_shortfreetext($ia)
     $clang = Yii::app()->lang;
     $googleMapsAPIKey = Yii::app()->getConfig("googleMapsAPIKey");
     $extraclass ="";
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
-
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
     if ($aQuestionAttributes['numbers_only']==1)
@@ -3999,10 +3941,12 @@ function do_shortfreetext($ia)
         $sSeperator = $sSeperator['seperator'];
         $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
         $extraclass .=" numberonly";
+        $checkconditionFunction = "fixnum_checkconditions";
     }
     else
     {
         $numbersonly = '';
+        $checkconditionFunction = "fixnum_checkconditions";
     }
     if (intval(trim($aQuestionAttributes['maximum_chars']))>0)
     {
@@ -4070,7 +4014,14 @@ function do_shortfreetext($ia)
         .'rows="'.$drows.'" cols="'.$tiwidth.'" '.$maxlength.' onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
         // --> END NEW FEATURE - SAVE
 
-        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);}
+        if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {
+            $dispVal = str_replace("\\", "", $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
+            if ($aQuestionAttributes['numbers_only']==1)
+            {
+                $dispVal = str_replace('.',$sSeperator,$dispVal);
+            }
+            $answer .= $dispVal;
+        }
 
         $answer .= "</textarea></p>\n";
     }
@@ -4152,11 +4103,18 @@ function do_shortfreetext($ia)
         //no question attribute set, use common input text field
         $answer = "<p class=\"question answer-item text-item {$extraclass}\">\n"
         ."<label for='answer{$ia[1]}' class='hide label'>{$clang->gT('Answer')}</label>"
-        ."$prefix\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\""
-        .htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES,'UTF-8')
-        ."\" {$maxlength} onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" $numbersonly />\t$suffix\n</p>\n";
-    }
+        ."$prefix\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\"";
 
+        $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
+        if ($aQuestionAttributes['numbers_only']==1)
+        {
+            $dispVal = str_replace('.',$sSeperator,$dispVal);
+        }
+        $dispVal = htmlspecialchars($dispVal,ENT_QUOTES,'UTF-8');
+        $answer .= " value=\"$dispVal\"";
+
+        $answer .=" {$maxlength} onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" $numbersonly />\n\t$suffix\n</p>\n";
+    }
 
     if (trim($aQuestionAttributes['time_limit'])!='')
     {
@@ -4206,14 +4164,7 @@ function do_longfreetext($ia)
         $kpclass = "";
     }
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
@@ -4289,14 +4240,7 @@ function do_hugefreetext($ia)
         $kpclass = "";
     }
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
@@ -4359,14 +4303,7 @@ function do_yesno($ia)
 {
     $clang = Yii::app()->lang;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $answer = "<ul class=\"answers-list radio-list\">\n"
     . "\t<li class=\"answer-item radio-item\">\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}Y\" value=\"Y\"";
@@ -4410,14 +4347,7 @@ function do_gender($ia)
 {
     $clang = Yii::app()->lang;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
@@ -4474,14 +4404,7 @@ function do_array_5point($ia)
     $extraclass ="";
     $clang = Yii::app()->lang;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
 
@@ -4644,14 +4567,7 @@ function do_array_10point($ia)
     $extraclass ="";
     $clang = Yii::app()->lang;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]."  AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
     $qresult = dbExecuteAssoc($qquery);      //Checked
@@ -4779,14 +4695,7 @@ function do_array_yesnouncertain($ia)
     $extraclass ="";
     $clang = Yii::app()->lang;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
     $qresult = dbExecuteAssoc($qquery);	//Checked
@@ -4938,14 +4847,7 @@ function do_array_increasesamedecrease($ia)
     $extraclass ="";
     $clang = Yii::app()->lang;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
     $qresult = dbExecuteAssoc($qquery);   //Checked
@@ -5112,15 +5014,7 @@ function do_array($ia)
     $extraclass ="";
     $clang = Yii::app()->lang;
 
-    if (isset($ia[8]) && $ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
-
+    $checkconditionFunction = "checkconditions";
     $qquery = "SELECT other FROM {{questions}} WHERE qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
     $qresult = dbExecuteAssoc($qquery);     //Checked
     $qrow = $qresult->read(); $other = $qrow['other'];
@@ -5479,14 +5373,7 @@ function do_array_multitext($ia)
         $kpclass = "";
     }
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $defaultvaluescript = "";
     $qquery = "SELECT other FROM {{questions}} WHERE qid={$ia[0]} AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
@@ -5523,6 +5410,7 @@ function do_array_multitext($ia)
     }
     if ($aQuestionAttributes['numbers_only']==1)
     {
+        $checkconditionFunction = "fixnum_checkconditions";
         $q_table_id = 'totals_'.$ia[0];
         $q_table_id_HTML = ' id="'.$q_table_id.'"';
         //	$numbersonly = 'onkeypress="return goodchars(event,\'-0123456789.\')"';
@@ -5829,15 +5717,7 @@ function do_array_multiflexi($ia)
     $answertypeclass = "";
     $clang = Yii::app()->lang;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
-
+    $checkconditionFunction = "fixnum_checkconditions";
     //echo '<pre>'; print_r($_POST); echo '</pre>';
     $defaultvaluescript = '';
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and parent_qid=0";
@@ -6117,7 +5997,8 @@ function do_array_multiflexi($ia)
                         . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" onkeypress=\"return goodchars(event,'-0123456789$sSeperator')\""
                         . " value=\"";
                         if(isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]) {
-                            $answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2];
+                            $dispVal = str_replace('.',$sSeperator,$_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2]);
+                            $answer .= $dispVal;                            
                         }
                         $answer .= "\" />\n";
                     }
@@ -6194,14 +6075,7 @@ function do_arraycolumns($ia)
     global $notanswered;
     $clang = Yii::app()->lang;
     $extraclass = "";
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $aQuestionAttributes = getQuestionAttributeValues($ia[0], $ia[4]);
     $qquery = "SELECT other FROM {{questions}} WHERE qid=".$ia[0]." AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."'";
@@ -6353,14 +6227,7 @@ function do_array_dual($ia)
     $answertypeclass = ""; // Maybe not
     $clang = Yii::app()->lang;
 
-    if ($ia[8] == 'Y')
-    {
-        $checkconditionFunction = "checkconditions";
-    }
-    else
-    {
-        $checkconditionFunction = "noop_checkconditions";
-    }
+    $checkconditionFunction = "checkconditions";
 
     $inputnames=array();
     $labelans1=array();
