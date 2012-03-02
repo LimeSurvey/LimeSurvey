@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Japanese language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-17 16:52+0100\n"
+"POT-Creation-Date: 2011-12-17 15:21+0100\n"
 "PO-Revision-Date: 2011-11-17 17:03+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: DIP <nomoto@d-ip.jp>\n"
@@ -263,263 +263,267 @@ msgstr "配列（テキスト）"
 msgid "File upload"
 msgstr "ファイルをアップロード"
 
-#: common_functions.php:622
+#: common_functions.php:269
+msgid "Equation"
+msgstr "式"
+
+#: common_functions.php:628
 msgid "Active"
 msgstr "実行中"
 
-#: common_functions.php:627
+#: common_functions.php:633
 msgid "Expired"
 msgstr "期限切れ"
 
-#: common_functions.php:632
+#: common_functions.php:638
 msgid "Inactive"
 msgstr "停止中"
 
-#: common_functions.php:637 common_functions.php:691 common_functions.php:1301
-#: common_functions.php:1326 common_functions.php:1401
-#: common_functions.php:4999 common_functions.php:5048
-#: common_functions.php:5084 common_functions.php:5120 qanda.php:1986
-#: qanda.php:2138 qanda.php:7511 qanda.php:7565
+#: common_functions.php:643 common_functions.php:697 common_functions.php:1308
+#: common_functions.php:1333 common_functions.php:1408
+#: common_functions.php:4685 common_functions.php:4734
+#: common_functions.php:4770 common_functions.php:4806 qanda.php:1280
+#: qanda.php:1433 qanda.php:6736 qanda.php:6790
 msgid "Please choose..."
 msgstr "選択してください・・・"
 
-#: common_functions.php:642 common_functions.php:645 common_functions.php:1302
-#: common_functions.php:1327 common_functions.php:1402
-#: common_functions.php:5049 common_functions.php:5085
+#: common_functions.php:648 common_functions.php:651 common_functions.php:1309
+#: common_functions.php:1334 common_functions.php:1409
+#: common_functions.php:4735 common_functions.php:4771
 msgid "None"
 msgstr "なし"
 
-#: common_functions.php:1257
+#: common_functions.php:1264
 msgid "No email notification"
 msgstr "通知なし"
 
-#: common_functions.php:1258
+#: common_functions.php:1265
 msgid "Basic email notification"
 msgstr "通知あり（簡易）"
 
-#: common_functions.php:1259
+#: common_functions.php:1266
 msgid "Detailed email notification with result codes"
 msgstr "通知あり（詳細：結果つき）"
 
-#: common_functions.php:1876 common_functions.php:1930
-#: common_functions.php:2466 common_functions.php:2709
-#: common_functions.php:3464 common_functions.php:3478
-#: common_functions.php:3494 common_functions.php:3549
-#: common_functions.php:3568 common_functions.php:3705
-#: common_functions.php:3886 common_functions.php:3895
-#: common_functions.php:3904 common_functions.php:3913 qanda.php:2432
-#: qanda.php:3260 qanda.php:3604
+#: common_functions.php:1884 common_functions.php:1938
+#: common_functions.php:2494 common_functions.php:2762
+#: common_functions.php:3533 common_functions.php:3547
+#: common_functions.php:3563 common_functions.php:3618
+#: common_functions.php:3637 common_functions.php:3785
+#: common_functions.php:3966 common_functions.php:3975
+#: common_functions.php:3984 common_functions.php:3993 qanda.php:1728
+#: qanda.php:2500 qanda.php:2829
 msgid "Other"
 msgstr "その他"
 
-#: common_functions.php:1884 common_functions.php:1890
-#: common_functions.php:1906 common_functions.php:3038
-#: common_functions.php:3119 common_functions.php:3194
-#: common_functions.php:3207 common_functions.php:3218
-#: common_functions.php:3229 common_functions.php:3240
-#: common_functions.php:3278 common_functions.php:3308
-#: common_functions.php:3319 common_functions.php:3426
-#: common_functions.php:3437 common_functions.php:3457
-#: common_functions.php:3469 common_functions.php:3499
-#: common_functions.php:3512 common_functions.php:3523
-#: common_functions.php:3534 common_functions.php:3553
-#: common_functions.php:3572 common_functions.php:3583
-#: common_functions.php:3594 common_functions.php:3637
-#: common_functions.php:3663 common_functions.php:3698
-#: common_functions.php:3743 common_functions.php:3753
-#: common_functions.php:3867 common_functions.php:3878 qanda.php:5059
-#: qanda.php:5530 qanda.php:5569
+#: common_functions.php:1892 common_functions.php:1898
+#: common_functions.php:1914 common_functions.php:3107
+#: common_functions.php:3188 common_functions.php:3263
+#: common_functions.php:3276 common_functions.php:3287
+#: common_functions.php:3298 common_functions.php:3309
+#: common_functions.php:3347 common_functions.php:3377
+#: common_functions.php:3388 common_functions.php:3495
+#: common_functions.php:3506 common_functions.php:3526
+#: common_functions.php:3538 common_functions.php:3568
+#: common_functions.php:3581 common_functions.php:3592
+#: common_functions.php:3603 common_functions.php:3622
+#: common_functions.php:3641 common_functions.php:3652
+#: common_functions.php:3674 common_functions.php:3717
+#: common_functions.php:3743 common_functions.php:3778
+#: common_functions.php:3823 common_functions.php:3833
+#: common_functions.php:3947 common_functions.php:3958 qanda.php:4276
+#: qanda.php:4738 qanda.php:4778
 msgid "Yes"
 msgstr "はい"
 
-#: common_functions.php:1891 common_functions.php:1907
-#: common_functions.php:3037 common_functions.php:3118
-#: common_functions.php:3193 common_functions.php:3208
-#: common_functions.php:3219 common_functions.php:3230
-#: common_functions.php:3241 common_functions.php:3279
-#: common_functions.php:3307 common_functions.php:3318
-#: common_functions.php:3425 common_functions.php:3436
-#: common_functions.php:3456 common_functions.php:3468
-#: common_functions.php:3498 common_functions.php:3511
-#: common_functions.php:3522 common_functions.php:3533
-#: common_functions.php:3552 common_functions.php:3571
-#: common_functions.php:3582 common_functions.php:3593
-#: common_functions.php:3636 common_functions.php:3648
-#: common_functions.php:3662 common_functions.php:3697
-#: common_functions.php:3742 common_functions.php:3752
-#: common_functions.php:3866 common_functions.php:3877 qanda.php:5068
-#: qanda.php:5532 qanda.php:5587
+#: common_functions.php:1899 common_functions.php:1915
+#: common_functions.php:3106 common_functions.php:3187
+#: common_functions.php:3262 common_functions.php:3277
+#: common_functions.php:3288 common_functions.php:3299
+#: common_functions.php:3310 common_functions.php:3348
+#: common_functions.php:3376 common_functions.php:3387
+#: common_functions.php:3494 common_functions.php:3505
+#: common_functions.php:3525 common_functions.php:3537
+#: common_functions.php:3567 common_functions.php:3580
+#: common_functions.php:3591 common_functions.php:3602
+#: common_functions.php:3621 common_functions.php:3640
+#: common_functions.php:3651 common_functions.php:3673
+#: common_functions.php:3716 common_functions.php:3728
+#: common_functions.php:3742 common_functions.php:3777
+#: common_functions.php:3822 common_functions.php:3832
+#: common_functions.php:3946 common_functions.php:3957 qanda.php:4285
+#: qanda.php:4740 qanda.php:4796
 msgid "No"
 msgstr "いいえ"
 
-#: common_functions.php:1892 common_functions.php:1900
-#: common_functions.php:5962 common_functions.php:5967 qanda.php:1660
-#: qanda.php:2156 qanda.php:2466 qanda.php:2606 qanda.php:2669 qanda.php:5079
-#: qanda.php:5147 qanda.php:5244 qanda.php:5308 qanda.php:5403 qanda.php:5451
-#: qanda.php:5535 qanda.php:5607 qanda.php:5697 qanda.php:5776 qanda.php:5883
-#: qanda.php:5905 qanda.php:5978 qanda.php:6111 qanda.php:6857 qanda.php:6858
-#: qanda.php:7149 qanda.php:7224 qanda.php:7329 qanda.php:7531 qanda.php:7585
+#: common_functions.php:1900 common_functions.php:1908
+#: common_functions.php:5648 common_functions.php:5653 qanda.php:956
+#: qanda.php:1451 qanda.php:1762 qanda.php:1903 qanda.php:1966 qanda.php:4296
+#: qanda.php:4350 qanda.php:4448 qanda.php:4513 qanda.php:4609 qanda.php:4658
+#: qanda.php:4743 qanda.php:4816 qanda.php:4907 qanda.php:4987 qanda.php:5095
+#: qanda.php:5117 qanda.php:5193 qanda.php:5327 qanda.php:6078 qanda.php:6079
+#: qanda.php:6372 qanda.php:6447 qanda.php:6553 qanda.php:6756 qanda.php:6810
 msgid "No answer"
 msgstr "わからない"
 
-#: common_functions.php:1898 qanda.php:5123
+#: common_functions.php:1906 qanda.php:4340
 msgid "Male"
 msgstr "男性"
 
-#: common_functions.php:1899 qanda.php:5115
+#: common_functions.php:1907 qanda.php:4332
 msgid "Female"
 msgstr "女性"
 
-#: common_functions.php:1908 qanda.php:5531 qanda.php:5577
+#: common_functions.php:1916 qanda.php:4739 qanda.php:4786
 msgid "Uncertain"
 msgstr "どちらでもない"
 
-#: common_functions.php:1914 qanda.php:5692 qanda.php:5735
+#: common_functions.php:1922 qanda.php:4902 qanda.php:4946
 msgid "Increase"
 msgstr "増加"
 
-#: common_functions.php:1915 qanda.php:5694 qanda.php:5758
+#: common_functions.php:1923 qanda.php:4904 qanda.php:4969
 msgid "Decrease"
 msgstr "減少"
 
-#: common_functions.php:1916 qanda.php:5693 qanda.php:5746
+#: common_functions.php:1924 qanda.php:4903 qanda.php:4957
 msgid "Same"
 msgstr "同じ"
 
-#: common_functions.php:2249
+#: common_functions.php:2277
 msgid "Response ID"
 msgstr "回答ID"
 
-#: common_functions.php:2257
+#: common_functions.php:2285
 msgid "Date submitted"
 msgstr "投稿日時"
 
-#: common_functions.php:2265
+#: common_functions.php:2293
 msgid "Last page"
 msgstr "最終ページ"
 
-#: common_functions.php:2273
+#: common_functions.php:2301
 msgid "Start language"
 msgstr "開始言語"
 
-#: common_functions.php:2289 index.php:2354 index.php:2521
+#: common_functions.php:2317 index.php:1762 index.php:1929
 msgid "Token"
 msgstr "トークン"
 
-#: common_functions.php:2304
+#: common_functions.php:2332
 msgid "Date last action"
 msgstr "日の最終操作"
 
-#: common_functions.php:2316
+#: common_functions.php:2344
 msgid "Date started"
 msgstr "開始日時"
 
-#: common_functions.php:2332
+#: common_functions.php:2360
 msgid "IP address"
 msgstr "IPアドレス"
 
-#: common_functions.php:2343
+#: common_functions.php:2371
 msgid "Referrer URL"
 msgstr "リンク元URL"
 
-#: common_functions.php:2497 common_functions.php:2692
+#: common_functions.php:2523 common_functions.php:2743
 msgid "Comment"
 msgstr "コメント"
 
-#: common_functions.php:2564
+#: common_functions.php:2601
 msgid "Scale 1"
 msgstr "スケール1"
 
-#: common_functions.php:2579
+#: common_functions.php:2618
 msgid "Scale 2"
 msgstr "スケール2"
 
-#: common_functions.php:2600
+#: common_functions.php:2641
 #, php-format
 msgid "Rank %s"
 msgstr "ランク %s "
 
-#: common_functions.php:2724
+#: common_functions.php:2780
 msgid "Other comment"
 msgstr "その他コメント"
 
-#: common_functions.php:2763
+#: common_functions.php:2830
 msgid "Total time"
 msgstr "合計時間"
 
-#: common_functions.php:2770
+#: common_functions.php:2837
 msgid "Group time"
 msgstr "グループ時刻"
 
-#: common_functions.php:2777
+#: common_functions.php:2844
 msgid "Question time"
 msgstr "質問時刻"
 
-#: common_functions.php:3034 common_functions.php:3045
-#: common_functions.php:3080 common_functions.php:3096
-#: common_functions.php:3107 common_functions.php:3115
-#: common_functions.php:3126 common_functions.php:3134
-#: common_functions.php:3142 common_functions.php:3150
-#: common_functions.php:3158 common_functions.php:3166
-#: common_functions.php:3304 common_functions.php:3315
-#: common_functions.php:3398 common_functions.php:3406
-#: common_functions.php:3414 common_functions.php:3422
-#: common_functions.php:3433 common_functions.php:3508
-#: common_functions.php:3541 common_functions.php:3560
-#: common_functions.php:3579 common_functions.php:3644
-#: common_functions.php:3678 common_functions.php:3686
-#: common_functions.php:3694
+#: common_functions.php:3103 common_functions.php:3114
+#: common_functions.php:3149 common_functions.php:3165
+#: common_functions.php:3176 common_functions.php:3184
+#: common_functions.php:3195 common_functions.php:3203
+#: common_functions.php:3211 common_functions.php:3219
+#: common_functions.php:3227 common_functions.php:3235
+#: common_functions.php:3373 common_functions.php:3384
+#: common_functions.php:3467 common_functions.php:3475
+#: common_functions.php:3483 common_functions.php:3491
+#: common_functions.php:3502 common_functions.php:3577
+#: common_functions.php:3610 common_functions.php:3629
+#: common_functions.php:3648 common_functions.php:3724
+#: common_functions.php:3758 common_functions.php:3766
+#: common_functions.php:3774
 msgid "Display"
 msgstr "表示"
 
-#: common_functions.php:3040
+#: common_functions.php:3109
 msgid "Sort the answer options alphabetically"
 msgstr "回答をアルファベット順にソート"
 
-#: common_functions.php:3041
+#: common_functions.php:3110
 msgid "Sort answers alphabetically"
 msgstr "回答をアルファベット順にソート"
 
-#: common_functions.php:3050
+#: common_functions.php:3119
 msgid "Set the percentage width of the answer column (1-100)"
 msgstr "回答カラムの幅をパーセンテージで設定(1-100)"
 
-#: common_functions.php:3051
+#: common_functions.php:3120
 msgid "Answer width"
 msgstr "回答期間"
 
-#: common_functions.php:3055 common_functions.php:3063
-#: common_functions.php:3071 common_functions.php:3088
-#: common_functions.php:3182 common_functions.php:3190
-#: common_functions.php:3326 common_functions.php:3350
-#: common_functions.php:3366 common_functions.php:3390
-#: common_functions.php:3444 common_functions.php:3519
-#: common_functions.php:3530 common_functions.php:3922
+#: common_functions.php:3124 common_functions.php:3132
+#: common_functions.php:3140 common_functions.php:3251
+#: common_functions.php:3259 common_functions.php:3395
+#: common_functions.php:3419 common_functions.php:3435
+#: common_functions.php:3459 common_functions.php:3513
+#: common_functions.php:3588 common_functions.php:3599
+#: common_functions.php:4002
 msgid "Logic"
 msgstr "ロジック"
 
-#: common_functions.php:3058
+#: common_functions.php:3127
 msgid ""
 "Enter the code of a Multiple choice question to only show the matching "
 "answer options in this question."
 msgstr "この質問の回答と一致する回答の質問のコードを入力してください。"
 
-#: common_functions.php:3059
+#: common_functions.php:3128
 msgid "Array filter"
 msgstr "整列フィルタ"
 
-#: common_functions.php:3066
+#: common_functions.php:3135
 msgid ""
 "Enter the code of a Multiple choice question to exclude the matching answer "
 "options in this question."
 msgstr ""
 "この質問の回答と一致するものを除いた回答の質問のコードを入力してください。"
 
-#: common_functions.php:3067
+#: common_functions.php:3136
 msgid "Array filter exclusion"
 msgstr "除外フィルタ配列"
 
-#: common_functions.php:3075
+#: common_functions.php:3144
 msgid ""
 "If one of the subquestions is marked then for each marked subquestion this "
 "value is added as assessment."
@@ -527,111 +531,103 @@ msgstr ""
 "サブ質問のいずれかがマークされていた場合、それぞれのマークされたサブ質問の値"
 "は評価として追加されます。"
 
-#: common_functions.php:3076
+#: common_functions.php:3145
 msgid "Assessment value"
 msgstr "評価値"
 
-#: common_functions.php:3083 common_functions.php:3084
+#: common_functions.php:3152 common_functions.php:3153
 msgid "Category separator"
 msgstr "カテゴリ分け"
 
-#: common_functions.php:3091
-msgid "Filter the available answers by this value"
-msgstr "この値で利用可能な回答をフィルタ"
-
-#: common_functions.php:3092
-msgid "Code filter"
-msgstr "コードフィルター"
-
-#: common_functions.php:3102
+#: common_functions.php:3171
 msgid ""
 "The answer options will be distributed across the number of columns set here"
 msgstr "回答オプションはここで設定するカラムの数で分配されます"
 
-#: common_functions.php:3103
+#: common_functions.php:3172
 msgid "Display columns"
 msgstr "列の表示"
 
-#: common_functions.php:3110
+#: common_functions.php:3179
 msgid "How many rows to display"
 msgstr "どれだけの行を表示"
 
-#: common_functions.php:3111
+#: common_functions.php:3180
 msgid "Display rows"
 msgstr "行の表示"
 
-#: common_functions.php:3121
+#: common_functions.php:3190
 msgid "Use accessible dropdown boxes instead of calendar popup"
 msgstr "カレンダーポップアップの代わりに選択ボックスを利用可能にする"
 
-#: common_functions.php:3122
+#: common_functions.php:3191
 msgid "Display dropdown boxes"
 msgstr "ドロップダウンボックスの表示"
 
-#: common_functions.php:3129
+#: common_functions.php:3198
 msgid "Minimum year value in calendar"
 msgstr "カレンダーの最小の年"
 
-#: common_functions.php:3130
+#: common_functions.php:3199
 msgid "Minimum year"
 msgstr "最小年"
 
-#: common_functions.php:3137
+#: common_functions.php:3206
 msgid "Maximum year value for calendar"
 msgstr "カレンダーの最大の年"
 
-#: common_functions.php:3138
+#: common_functions.php:3207
 msgid "Maximum year"
 msgstr "最大年"
 
-#: common_functions.php:3145
+#: common_functions.php:3214
 msgid "Prefix|Suffix for dropdown lists"
 msgstr "ドロップダウンリストの接頭辞｜接尾辞"
 
-#: common_functions.php:3146
+#: common_functions.php:3215
 msgid "Dropdown prefix/suffix"
 msgstr "文字列の先頭/末尾をドロップダウンする"
 
-#: common_functions.php:3153
+#: common_functions.php:3222
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr "回答送信区切り | 内部ドロップダウンリスト区切り"
 
-#: common_functions.php:3154
+#: common_functions.php:3223
 msgid "Dropdown separator"
 msgstr "ドロップダウンの区切り"
 
-#: common_functions.php:3161
+#: common_functions.php:3230
 msgid "Enter a header text for the first scale"
 msgstr "第一スケールのヘッダテキスト入力"
 
-#: common_functions.php:3162
+#: common_functions.php:3231
 msgid "Header for first scale"
 msgstr "第一スケールのヘッダ"
 
-#: common_functions.php:3169
+#: common_functions.php:3238
 msgid "Enter a header text for the second scale"
 msgstr "第二スケールのヘッダテキスト入力"
 
-#: common_functions.php:3170
+#: common_functions.php:3239
 msgid "Header for second scale"
 msgstr "第二スケールのヘッダ"
 
-#: common_functions.php:3174 common_functions.php:3334
-#: common_functions.php:3342 common_functions.php:3358
-#: common_functions.php:3374 common_functions.php:3382
-#: common_functions.php:3452
+#: common_functions.php:3243 common_functions.php:3403
+#: common_functions.php:3411 common_functions.php:3427
+#: common_functions.php:3443 common_functions.php:3451
+#: common_functions.php:3521
 msgid "Input"
 msgstr "入力"
 
-#: common_functions.php:3177
+#: common_functions.php:3246
 msgid "Multiple numeric inputs sum must equal this value"
 msgstr "複数の入力合計はこの値と等しくなければならない"
 
-#: common_functions.php:3178
+#: common_functions.php:3247
 msgid "Equals sum value"
 msgstr "合計値が等しい"
 
-#: common_functions.php:3185
+#: common_functions.php:3254
 msgid ""
 "Excludes all other options if a certain answer is selected - just enter the "
 "answer code(s) seperated with a semikolon."
@@ -639,11 +635,11 @@ msgstr ""
 "選択された回答を含む全ての他のオプションを除外(セミコロンで区切られた回答コー"
 "ドを入力した時)"
 
-#: common_functions.php:3186
+#: common_functions.php:3255
 msgid "Exclusive option"
 msgstr "排他オプション"
 
-#: common_functions.php:3196
+#: common_functions.php:3265
 msgid ""
 "If the participant marks all options, uncheck all and check the option set "
 "in the \"Exclusive option\" setting"
@@ -651,59 +647,59 @@ msgstr ""
 "参加者はすべてのオプションをマークする場合、いったんすべてのチェックを外した"
 "後、\"排他的なオプション\"で設定したオプションをチェックしてください"
 
-#: common_functions.php:3197
+#: common_functions.php:3266
 msgid "Auto-check exclusive option if all others are checked"
 msgstr "他のすべてがチェックされている場合の排他的オートチェックオプション"
 
-#: common_functions.php:3204 common_functions.php:3215
-#: common_functions.php:3226 common_functions.php:3237
-#: common_functions.php:3247 common_functions.php:3257
-#: common_functions.php:3266 common_functions.php:3275
-#: common_functions.php:3285 common_functions.php:3293
+#: common_functions.php:3273 common_functions.php:3284
+#: common_functions.php:3295 common_functions.php:3306
+#: common_functions.php:3316 common_functions.php:3326
+#: common_functions.php:3335 common_functions.php:3344
+#: common_functions.php:3354 common_functions.php:3362
 msgid "Location"
 msgstr "位置"
 
-#: common_functions.php:3209
+#: common_functions.php:3278
 msgid "Store the city?"
 msgstr "都市名を保存しますか？"
 
-#: common_functions.php:3210
+#: common_functions.php:3279
 msgid "Save city"
 msgstr "都市名を保存"
 
-#: common_functions.php:3220
+#: common_functions.php:3289
 msgid "Store the state?"
 msgstr "状態を保存しますか？"
 
-#: common_functions.php:3221
+#: common_functions.php:3290
 msgid "Save state"
 msgstr "県名を保存"
 
-#: common_functions.php:3231
+#: common_functions.php:3300
 msgid "Store the postal code?"
 msgstr "郵便番号を保存しますか？"
 
-#: common_functions.php:3232
+#: common_functions.php:3301
 msgid "Save postal code"
 msgstr "郵便番号を保存する"
 
-#: common_functions.php:3242
+#: common_functions.php:3311
 msgid "Store the country?"
 msgstr "国名を保存しますか？"
 
-#: common_functions.php:3243
+#: common_functions.php:3312
 msgid "Save country"
 msgstr "国名を保存"
 
-#: common_functions.php:3250 common_functions.php:3482
+#: common_functions.php:3319 common_functions.php:3551
 msgid "Off"
 msgstr "オフ"
 
-#: common_functions.php:3251
+#: common_functions.php:3320
 msgid "Google Maps"
 msgstr "Google Maps"
 
-#: common_functions.php:3252
+#: common_functions.php:3321
 msgid ""
 "Activate this to show a map above the input field where the user can select "
 "a location"
@@ -711,35 +707,35 @@ msgstr ""
 "ユーザーが保存場所を選択できる入力フィールドの上にマップを表示するために、こ"
 "れをアクティブにする"
 
-#: common_functions.php:3253
+#: common_functions.php:3322
 msgid "Use mapping service"
 msgstr "マッピングサービスを使う"
 
-#: common_functions.php:3261
+#: common_functions.php:3330
 msgid "Width of the map in pixel"
 msgstr "テキスト入力ボックスの幅（ピクセル）"
 
-#: common_functions.php:3262
+#: common_functions.php:3331
 msgid "Map width"
 msgstr "地図の横幅"
 
-#: common_functions.php:3270
+#: common_functions.php:3339
 msgid "Height of the map in pixel"
 msgstr "地図のピクセル単位の縦幅"
 
-#: common_functions.php:3271
+#: common_functions.php:3340
 msgid "Map height"
 msgstr "地図の縦幅"
 
-#: common_functions.php:3280
+#: common_functions.php:3349
 msgid "Get the default location using the user's IP address?"
 msgstr "ユーザーのIPアドレスを使用してデフォルトの場所を取得しますか？"
 
-#: common_functions.php:3281
+#: common_functions.php:3350
 msgid "IP as default location"
 msgstr "規定場所のIP"
 
-#: common_functions.php:3288
+#: common_functions.php:3357
 msgid ""
 "Default coordinates of the map when the page first loads. Format: latitude "
 "[space] longtitude"
@@ -747,228 +743,228 @@ msgstr ""
 "ページを最初に読み込む時のデフォルトのマップ座標。フォーマット: 緯度 [スペー"
 "ス] 経度"
 
-#: common_functions.php:3289
+#: common_functions.php:3358
 msgid "Default position"
 msgstr "既定の位置"
 
-#: common_functions.php:3297
+#: common_functions.php:3366
 msgid "Map zoom level"
 msgstr "ま"
 
-#: common_functions.php:3298
+#: common_functions.php:3367
 msgid "Zoom level"
 msgstr "ズームレベル"
 
-#: common_functions.php:3310
+#: common_functions.php:3379
 msgid "Hide the tip that is normally shown with a question"
 msgstr "通常の質問で表示されているTIPS（豆知識）を隠す"
 
-#: common_functions.php:3311
+#: common_functions.php:3380
 msgid "Hide tip"
 msgstr "TIPS非表示"
 
-#: common_functions.php:3321
+#: common_functions.php:3390
 msgid ""
 "Hide this question at any time. This is useful for including data using "
 "answer prefilling."
 msgstr "この質問をいつも隠します。これは、回答前のデータを含み有効です。"
 
-#: common_functions.php:3322
+#: common_functions.php:3391
 msgid "Always hide this question"
 msgstr "この質問をいつも隠す"
 
-#: common_functions.php:3329
+#: common_functions.php:3398
 msgid "Limit the number of possible answers"
 msgstr "可能な回答数の制限"
 
-#: common_functions.php:3330
+#: common_functions.php:3399
 msgid "Maximum answers"
 msgstr "最大回答数"
 
-#: common_functions.php:3337
+#: common_functions.php:3406
 msgid "Maximum sum value of multiple numeric input"
 msgstr "複数の入力の最大合計値"
 
-#: common_functions.php:3338
+#: common_functions.php:3407
 msgid "Maximum sum value"
 msgstr "最大合計値"
 
-#: common_functions.php:3345
+#: common_functions.php:3414
 msgid "Maximum value of the numeric input"
 msgstr "複数の入力値の最大限"
 
-#: common_functions.php:3346 common_functions.php:3402
+#: common_functions.php:3415 common_functions.php:3471
 msgid "Maximum value"
 msgstr "最大値"
 
-#: common_functions.php:3353
+#: common_functions.php:3422
 msgid ""
 "Enter the SGQA identifier to use the total of a previous question as the "
 "maximum for this question"
 msgstr "この質問の最大として前の質問の合計を用いて、SGQAを入力"
 
-#: common_functions.php:3354
+#: common_functions.php:3423
 msgid "Max value from SGQA"
 msgstr "SGQAからの最大値"
 
-#: common_functions.php:3361
+#: common_functions.php:3430
 msgid "Maximum characters allowed"
 msgstr "許可された最大文字数"
 
-#: common_functions.php:3362
+#: common_functions.php:3431
 msgid "Maximum characters"
 msgstr "最大文字数"
 
-#: common_functions.php:3369
+#: common_functions.php:3438
 msgid "Ensure a minimum number of possible answers (0=No limit)"
 msgstr "回答可能な最小数を保証(0は無制限)"
 
-#: common_functions.php:3370
+#: common_functions.php:3439
 msgid "Minimum answers"
 msgstr "最小回答数"
 
-#: common_functions.php:3377
+#: common_functions.php:3446
 msgid "The sum of the multiple numeric inputs must be greater than this value"
 msgstr "複数入力はこの値より大きくなければいけません"
 
-#: common_functions.php:3378
+#: common_functions.php:3447
 msgid "Minimum sum value"
 msgstr "最小合計値"
 
-#: common_functions.php:3385
+#: common_functions.php:3454
 msgid "Minimum value of the numeric input"
 msgstr "複数の入力の最小値"
 
-#: common_functions.php:3386 common_functions.php:3410
+#: common_functions.php:3455 common_functions.php:3479
 msgid "Minimum value"
 msgstr "最小値"
 
-#: common_functions.php:3393
+#: common_functions.php:3462
 msgid ""
 "Enter the SGQA identifier to use the total of a previous question as the "
 "minimum for this question"
 msgstr "この質問の最小として前の質問の合計を用いて、SGQAを入力"
 
-#: common_functions.php:3394
+#: common_functions.php:3463
 msgid "Minimum value from SGQA"
 msgstr "SGQAからの最小値"
 
-#: common_functions.php:3401
+#: common_functions.php:3470
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr "複数行文字質問タイプの最大値"
 
-#: common_functions.php:3409
+#: common_functions.php:3478
 msgid "Minimum value for array(multi-flexible) question type"
 msgstr "配列（自由ラベル）の最小値"
 
-#: common_functions.php:3417 common_functions.php:3418
+#: common_functions.php:3486 common_functions.php:3487
 msgid "Step value"
 msgstr "段階的な値"
 
-#: common_functions.php:3428
+#: common_functions.php:3497
 msgid "Use checkbox layout"
 msgstr "チェックボックスレイアウトを使う"
 
-#: common_functions.php:3429
+#: common_functions.php:3498
 msgid "Checkbox layout"
 msgstr "チェックボックスレイアウト"
 
-#: common_functions.php:3439
+#: common_functions.php:3508
 msgid "Present answer options in reverse order"
 msgstr "回答オプションを逆に表示"
 
-#: common_functions.php:3440
+#: common_functions.php:3509
 msgid "Reverse answer order"
 msgstr "回答の順序を逆にする"
 
-#: common_functions.php:3447
+#: common_functions.php:3516
 msgid ""
 "SGQA identifier to use total of previous question as total for this question"
 msgstr "この質問の合計として前の質問の合計を用いて、SGQAを入力"
 
-#: common_functions.php:3448
+#: common_functions.php:3517
 msgid "Value equals SGQA"
 msgstr "SGQAと等しい値"
 
-#: common_functions.php:3459
+#: common_functions.php:3528
 msgid "Restrict input to integer values"
 msgstr "整数値の入力を制限する"
 
-#: common_functions.php:3460
+#: common_functions.php:3529
 msgid "Integer only"
 msgstr "整数値のみ"
 
-#: common_functions.php:3472
+#: common_functions.php:3541
 msgid "Allow only numerical input"
 msgstr "数字入力のみ許可"
 
-#: common_functions.php:3473
+#: common_functions.php:3542
 msgid "Numbers only"
 msgstr "数字のみ"
 
-#: common_functions.php:3483
+#: common_functions.php:3552
 msgid "Rows"
 msgstr "閲覧"
 
-#: common_functions.php:3484
+#: common_functions.php:3553
 msgid "Columns"
 msgstr "列"
 
-#: common_functions.php:3485
+#: common_functions.php:3554
 msgid "Both rows and columns"
 msgstr "行と列の両方"
 
-#: common_functions.php:3488
+#: common_functions.php:3557
 msgid "Show totals for either rows, columns or both rows and columns"
 msgstr "行か列のどちらか、または両方の合計を表示する"
 
-#: common_functions.php:3489
+#: common_functions.php:3558
 msgid "Show totals for"
 msgstr "の合計を表示する"
 
-#: common_functions.php:3502
+#: common_functions.php:3571
 msgid "Show grand total for either columns or rows"
 msgstr "行または列の総計を表示"
 
-#: common_functions.php:3503
+#: common_functions.php:3572
 msgid "Show grand total"
 msgstr "総計を表示する"
 
-#: common_functions.php:3514
+#: common_functions.php:3583
 msgid "Present as text input boxes instead of dropdown lists"
 msgstr "ドロップダウンリストの代わりに、テキスト入力ボックスを掲示"
 
-#: common_functions.php:3515
+#: common_functions.php:3584
 msgid "Text inputs"
 msgstr "テキスト入力"
 
-#: common_functions.php:3525
+#: common_functions.php:3594
 msgid ""
 "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
 msgstr ""
 "'Other:' オプションがアクティブの時、'Other:' コメントフィールド権限を与える"
 
-#: common_functions.php:3526
+#: common_functions.php:3595
 msgid "'Other:' comment mandatory"
 msgstr "'Other:'へコメントの委任"
 
-#: common_functions.php:3536
+#: common_functions.php:3605
 msgid "Allow only numerical input for 'Other' text"
 msgstr "'その他'テキストのために数字だけの入力を許可"
 
-#: common_functions.php:3537
+#: common_functions.php:3606
 msgid "Numbers only for 'Other'"
 msgstr "'その他'のために数字だけ"
 
-#: common_functions.php:3544
+#: common_functions.php:3613
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
 msgstr "'Other:'のラベルを 回答オプションのカスタムテキストと差し替える"
 
-#: common_functions.php:3545
+#: common_functions.php:3614
 msgid "Label for 'Other:' option"
 msgstr "'Other:' オプションのラベル"
 
-#: common_functions.php:3555
+#: common_functions.php:3624
 msgid ""
 "Insert a page break before this question in printable view by setting this "
 "to Yes."
@@ -976,222 +972,222 @@ msgstr ""
 "この設定を[はい]に設定することで、印刷可能表示のこの質問の前に改ページを挿入"
 "します。"
 
-#: common_functions.php:3556
+#: common_functions.php:3625
 msgid "Insert page break in printable view"
 msgstr "印刷可能なビューに改ページを挿入"
 
-#: common_functions.php:3563
+#: common_functions.php:3632
 msgid "Add a prefix to the answer field"
 msgstr "回答フィールド接頭辞の追加"
 
-#: common_functions.php:3564
+#: common_functions.php:3633
 msgid "Answer prefix"
 msgstr "回答の接頭語"
 
-#: common_functions.php:3574
+#: common_functions.php:3643
 msgid "Show statistics of this question in the public statistics page"
 msgstr "公開統計ページにこの質問の統計を表示"
 
-#: common_functions.php:3575
+#: common_functions.php:3644
 msgid "Show in public statistics"
 msgstr "統計を公開する"
 
-#: common_functions.php:3585
+#: common_functions.php:3654
 msgid "Present answers in random order"
 msgstr "ランダムに回答"
 
-#: common_functions.php:3586
+#: common_functions.php:3655
 msgid "Random answer order"
 msgstr "ランダムに回答を並べる"
 
-#: common_functions.php:3590 common_functions.php:3601
-#: common_functions.php:3609 common_functions.php:3617
-#: common_functions.php:3625 common_functions.php:3633
-#: common_functions.php:3659 common_functions.php:3670
+#: common_functions.php:3670 common_functions.php:3681
+#: common_functions.php:3689 common_functions.php:3697
+#: common_functions.php:3705 common_functions.php:3713
+#: common_functions.php:3739 common_functions.php:3750
 msgid "Slider"
 msgstr "スライダー"
 
-#: common_functions.php:3596 common_functions.php:3597
-#: common_functions.php:3653 common_functions.php:3654
+#: common_functions.php:3676 common_functions.php:3677
+#: common_functions.php:3733 common_functions.php:3734
 msgid "Use slider layout"
 msgstr "スライダーレイアウトを使用"
 
-#: common_functions.php:3604 common_functions.php:3605
+#: common_functions.php:3684 common_functions.php:3685
 msgid "Slider minimum value"
 msgstr "スライダー最小値"
 
-#: common_functions.php:3612 common_functions.php:3613
+#: common_functions.php:3692 common_functions.php:3693
 msgid "Slider maximum value"
 msgstr "スライダー最大値"
 
-#: common_functions.php:3620 common_functions.php:3621
+#: common_functions.php:3700 common_functions.php:3701
 msgid "Slider accuracy"
 msgstr "スライダー精度"
 
-#: common_functions.php:3628 common_functions.php:3629
+#: common_functions.php:3708 common_functions.php:3709
 msgid "Slider initial value"
 msgstr "スライダー初期値"
 
-#: common_functions.php:3639
+#: common_functions.php:3719
 msgid ""
 "The handle is displayed at the middle of the slider (this will not set the "
 "initial value)"
 msgstr "スライダーの真ん中に表示されるハンドル（これは、初期値を設定しません)"
 
-#: common_functions.php:3640
+#: common_functions.php:3720
 msgid "Slider starts at the middle position"
 msgstr "中間位置からスライダー開始"
 
-#: common_functions.php:3649
+#: common_functions.php:3729
 msgid "Yes - stars"
 msgstr "はい - スター"
 
-#: common_functions.php:3650
+#: common_functions.php:3730
 msgid "Yes - slider with emoticon"
 msgstr "はい - 顔文字付きスライダー"
 
-#: common_functions.php:3665
+#: common_functions.php:3745
 msgid "Display min and max value under the slider"
 msgstr "スライダーの下に表示する最小値と最大値"
 
-#: common_functions.php:3666
+#: common_functions.php:3746
 msgid "Display slider min and max value"
 msgstr "スライダーの最小値と最大値を表示"
 
-#: common_functions.php:3673
+#: common_functions.php:3753
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
 msgstr "回答|左スライダーテキスト|右スライダーテキスト 区切り文字"
 
-#: common_functions.php:3674
+#: common_functions.php:3754
 msgid "Slider left/right text separator"
 msgstr "スライダー 左／右 テキスト区切り"
 
-#: common_functions.php:3681
+#: common_functions.php:3761
 msgid "Add a suffix to the answer field"
 msgstr "回答フィールドに接尾辞を追加"
 
-#: common_functions.php:3682
+#: common_functions.php:3762
 msgid "Answer suffix"
 msgstr "回答の接尾語"
 
-#: common_functions.php:3689
+#: common_functions.php:3769
 msgid "Width of text input box"
 msgstr "テキスト入力ボックスの幅"
 
-#: common_functions.php:3690
+#: common_functions.php:3770
 msgid "Input box width"
 msgstr "入力ボックスの幅"
 
-#: common_functions.php:3700
+#: common_functions.php:3780
 #, fuzzy
 msgid "Use dropdown boxes instead of list of radio buttons"
 msgstr "ラジオボタンのリストの代わりにドロップダウンコントロールを出す"
 
-#: common_functions.php:3701
+#: common_functions.php:3781
 #, fuzzy
 msgid "Use dropdown boxes"
 msgstr "ドロップダウンボックスの表示"
 
-#: common_functions.php:3708
+#: common_functions.php:3788
 msgid "Default"
 msgstr "デフォルト"
 
-#: common_functions.php:3709
+#: common_functions.php:3789
 msgid "Nominal"
 msgstr "名称"
 
-#: common_functions.php:3710
+#: common_functions.php:3790
 msgid "Ordinal"
 msgstr "順序"
 
-#: common_functions.php:3711
+#: common_functions.php:3791
 msgid "Scale"
 msgstr "スケール"
 
-#: common_functions.php:3713
+#: common_functions.php:3793
 msgid "Set a specific SPSS export scale type for this question"
 msgstr "この質問のために特定のSPSSエクスポートスケールタイプの設定"
 
-#: common_functions.php:3714
+#: common_functions.php:3794
 msgid "SPSS export scale type"
 msgstr "SPSSエクスポートスケールタイプ"
 
-#: common_functions.php:3719 common_functions.php:3727
-#: common_functions.php:3738 common_functions.php:3749
-#: common_functions.php:3759 common_functions.php:3767
-#: common_functions.php:3775 common_functions.php:3783
-#: common_functions.php:3791 common_functions.php:3799
-#: common_functions.php:3807 common_functions.php:3815
-#: common_functions.php:3823 common_functions.php:3831
+#: common_functions.php:3799 common_functions.php:3807
+#: common_functions.php:3818 common_functions.php:3829
 #: common_functions.php:3839 common_functions.php:3847
-#: common_functions.php:3855
+#: common_functions.php:3855 common_functions.php:3863
+#: common_functions.php:3871 common_functions.php:3879
+#: common_functions.php:3887 common_functions.php:3895
+#: common_functions.php:3903 common_functions.php:3911
+#: common_functions.php:3919 common_functions.php:3927
+#: common_functions.php:3935
 msgid "Timer"
 msgstr "タイマー"
 
-#: common_functions.php:3722
+#: common_functions.php:3802
 msgid "Limit time to answer question (in seconds)"
 msgstr "質問回答の時間制限(秒)"
 
-#: common_functions.php:3723
+#: common_functions.php:3803
 msgid "Time limit"
 msgstr "時間制限"
 
-#: common_functions.php:3730
+#: common_functions.php:3810
 msgid "Warn and move on"
 msgstr "警告して移動"
 
-#: common_functions.php:3731
+#: common_functions.php:3811
 msgid "Move on without warning"
 msgstr "警告なしに移動"
 
-#: common_functions.php:3732
+#: common_functions.php:3812
 msgid "Disable only"
 msgstr "無効化のみ"
 
-#: common_functions.php:3733
+#: common_functions.php:3813
 msgid "Action to perform when time limit is up"
 msgstr "時間制限を超えた時に実行するアクション"
 
-#: common_functions.php:3734
+#: common_functions.php:3814
 msgid "Time limit action"
 msgstr "時間制限アクション"
 
-#: common_functions.php:3744
+#: common_functions.php:3824
 msgid "Disable the next button until time limit expires"
 msgstr "時間制限の期限まで「次へ」ボタン無効化"
 
-#: common_functions.php:3745
+#: common_functions.php:3825
 msgid "Time limit disable next"
 msgstr "制限時間中「次へ」無効"
 
-#: common_functions.php:3754
+#: common_functions.php:3834
 msgid "Disable the prev button until the time limit expires"
 msgstr "時間制限の期限まで「前へ」ボタン無効化"
 
-#: common_functions.php:3755
+#: common_functions.php:3835
 msgid "Time limit disable prev"
 msgstr "制限時間中「前へ」無効"
 
-#: common_functions.php:3762
+#: common_functions.php:3842
 msgid ""
 "The text message that displays in the countdown timer during the countdown"
 msgstr "カウントダウン中のカウントダウンタイマーに表示するテキストメッセージ"
 
-#: common_functions.php:3763
+#: common_functions.php:3843
 msgid "Time limit countdown message"
 msgstr "時間制限カウントダウンメッセージ"
 
-#: common_functions.php:3770
+#: common_functions.php:3850
 msgid ""
 "CSS Style for the message that displays in the countdown timer during the "
 "countdown"
 msgstr "時間制限カウントダウンタイマー表示のためのCSS"
 
-#: common_functions.php:3771
+#: common_functions.php:3851
 msgid "Time limit timer CSS style"
 msgstr "時間制限タイマーCSS"
 
-#: common_functions.php:3778
+#: common_functions.php:3858
 msgid ""
 "Display the 'time limit expiry message' for this many seconds before "
 "performing the 'time limit action' (defaults to 1 second if left blank)"
@@ -1199,11 +1195,11 @@ msgstr ""
 "’時間制限操作’実行以前に、秒数の'時間制限期限メッセージ'を表示(ブランクの場合"
 "は既定値1秒)"
 
-#: common_functions.php:3779
+#: common_functions.php:3859
 msgid "Time limit expiry message display time"
 msgstr "時間制限の有効期限メッセージの表示時間"
 
-#: common_functions.php:3786
+#: common_functions.php:3866
 msgid ""
 "The message to display when the time limit has expired (a default message "
 "will display if this setting is left blank)"
@@ -1211,29 +1207,29 @@ msgstr ""
 "時間制限切れの際、表示するメッセージ(ブランクの場合、既定のメッセージが表示さ"
 "れます)"
 
-#: common_functions.php:3787
+#: common_functions.php:3867
 msgid "Time limit expiry message"
 msgstr "時間制限の有効期限メッセージ"
 
-#: common_functions.php:3794
+#: common_functions.php:3874
 msgid "CSS style for the 'time limit expiry message'"
 msgstr "’時間制限有効期限メッセージ’のためのCSS"
 
-#: common_functions.php:3795
+#: common_functions.php:3875
 msgid "Time limit message CSS style"
 msgstr "時間制限メッセージCSS"
 
-#: common_functions.php:3802
+#: common_functions.php:3882
 msgid ""
 "Display a 'time limit warning' when there are this many seconds remaining in "
 "the countdown (warning will not display if left blank)"
 msgstr "カウントダウン中に、残り秒数がある場合、’時間制限警告’を表示"
 
-#: common_functions.php:3803
+#: common_functions.php:3883
 msgid "1st time limit warning message timer"
 msgstr "最初の時間制限警告メッセージタイマー"
 
-#: common_functions.php:3810
+#: common_functions.php:3890
 msgid ""
 "The 'time limit warning' will stay visible for this many seconds (will not "
 "turn off if this setting is left blank)"
@@ -1241,11 +1237,11 @@ msgstr ""
 "’時間制限警告’は秒数の表示を留めます(この設定がブランクの場合はオフとなりま"
 "す)"
 
-#: common_functions.php:3811
+#: common_functions.php:3891
 msgid "1st time limit warning message display time"
 msgstr "最初の時間制限警告メッセージ表示時刻"
 
-#: common_functions.php:3818
+#: common_functions.php:3898
 msgid ""
 "The message to display as a 'time limit warning' (a default warning will "
 "display if this is left blank)"
@@ -1253,19 +1249,19 @@ msgstr ""
 "’時間制限警告’として表示するためのメッセージ(ブランクの場合は、既定の警告が表"
 "示されます)"
 
-#: common_functions.php:3819
+#: common_functions.php:3899
 msgid "1st time limit warning message"
 msgstr "最初の時間制限警告メッセージ"
 
-#: common_functions.php:3826
+#: common_functions.php:3906
 msgid "CSS style used when the 'time limit warning' message is displayed"
 msgstr "’時間制限警告’メッセージが表示される際のCSS"
 
-#: common_functions.php:3827
+#: common_functions.php:3907
 msgid "1st time limit warning CSS style"
 msgstr "最初の時間制限警告CSS"
 
-#: common_functions.php:3834
+#: common_functions.php:3914
 msgid ""
 "Display the 2nd 'time limit warning' when there are this many seconds "
 "remaining in the countdown (warning will not display if left blank)"
@@ -1273,11 +1269,11 @@ msgstr ""
 "カウントダウン中、残り秒数がある場合に二度目の’時間制限警告’を表示(ブランクの"
 "場合は表示しません)"
 
-#: common_functions.php:3835
+#: common_functions.php:3915
 msgid "2nd time limit warning message timer"
 msgstr "二度目の時間制限警告メッセージタイマー"
 
-#: common_functions.php:3842
+#: common_functions.php:3922
 msgid ""
 "The 2nd 'time limit warning' will stay visible for this many seconds (will "
 "not turn off if this setting is left blank)"
@@ -1285,11 +1281,11 @@ msgstr ""
 "二度目の’時間制限警告’は秒数の表示を留めます(この設定がブランクの場合はオフと"
 "なります)"
 
-#: common_functions.php:3843
+#: common_functions.php:3923
 msgid "2nd time limit warning message display time"
 msgstr "二度目の時間制限警告メッセージ表示時刻"
 
-#: common_functions.php:3850
+#: common_functions.php:3930
 msgid ""
 "The 2nd message to display as a 'time limit warning' (a default warning will "
 "display if this is left blank)"
@@ -1297,73 +1293,73 @@ msgstr ""
 "’時間制限警告’として表示するための二度目のメッセージ(ブランクの場合は、既定の"
 "警告が表示されます)"
 
-#: common_functions.php:3851
+#: common_functions.php:3931
 msgid "2nd time limit warning message"
 msgstr "二度目の時間制限警告メッセージ"
 
-#: common_functions.php:3858
+#: common_functions.php:3938
 msgid "CSS style used when the 2nd 'time limit warning' message is displayed"
 msgstr "二度目の’時間制限警告’メッセージ表示の際のCSS"
 
-#: common_functions.php:3859
+#: common_functions.php:3939
 msgid "2nd time limit warning CSS style"
 msgstr "二度目の時間制限警告CSS"
 
-#: common_functions.php:3863 common_functions.php:3874
+#: common_functions.php:3943 common_functions.php:3954
 msgid "File metadata"
 msgstr "メタデータ"
 
-#: common_functions.php:3869
+#: common_functions.php:3949
 msgid "Is the participant required to give a title to the uploaded file?"
 msgstr "参加者はアップロードされたファイルにタイトルを付ける必要がありますか？"
 
-#: common_functions.php:3870
+#: common_functions.php:3950
 msgid "Show title"
 msgstr "タイトルを表示"
 
-#: common_functions.php:3880
+#: common_functions.php:3960
 msgid "Is the participant required to give a comment to the uploaded file?"
 msgstr "参加者はアップロードされたファイルにコメントを付ける必要がありますか？"
 
-#: common_functions.php:3881
+#: common_functions.php:3961
 msgid "Show comment"
 msgstr "コメントを表示"
 
-#: common_functions.php:3890
+#: common_functions.php:3970
 msgid "The participant cannot upload a single file larger than this size"
 msgstr "参加者はこのサイズ以上のファイルをアップロードできません。"
 
-#: common_functions.php:3891
+#: common_functions.php:3971
 msgid "Maximum file size allowed (in KB)"
 msgstr "許可された最大文字数（KB)"
 
-#: common_functions.php:3899
+#: common_functions.php:3979
 msgid ""
 "Maximum number of files that the participant can upload for this question"
 msgstr "この質問に対して参加者がアップロードできる最大ファイル数"
 
-#: common_functions.php:3900
+#: common_functions.php:3980
 msgid "Max number of files"
 msgstr "ファイル個数の最大限"
 
-#: common_functions.php:3908
+#: common_functions.php:3988
 msgid ""
 "Minimum number of files that the participant must upload for this question"
 msgstr "この質問に対して参加者がアップロードしなければならない最小ファイル数"
 
-#: common_functions.php:3909
+#: common_functions.php:3989
 msgid "Min number of files"
 msgstr "ファイル個数の最小限"
 
-#: common_functions.php:3917
+#: common_functions.php:3997
 msgid "Allowed file types in comma separated format. e.g. pdf,doc,odt"
 msgstr "コンマで区切られたファイルタイプを許可。 例: pdf,doc,odt"
 
-#: common_functions.php:3918
+#: common_functions.php:3998
 msgid "Allowed file types"
 msgstr "許可されたファイルの種類"
 
-#: common_functions.php:3925
+#: common_functions.php:4005
 msgid ""
 "Place questions into a specified randomization group, all questions included "
 "in the specified group will appear in a random order"
@@ -1371,80 +1367,80 @@ msgstr ""
 "指定されたランダム化グループに質問を設置し、指定されたグループに含まれるすべ"
 "ての質問はランダムな順序で表示されます。"
 
-#: common_functions.php:3926
+#: common_functions.php:4006
 msgid "Randomization group name"
 msgstr "ランダム化グループ名"
 
-#: common_functions.php:4112
+#: common_functions.php:4192
 msgid "Version"
 msgstr "バージョン"
 
-#: common_functions.php:4121
+#: common_functions.php:4201
 msgid "Online Manual"
 msgstr "オンラインマニュアル"
 
-#: common_functions.php:4124
+#: common_functions.php:4204
 msgid "Support this project - Donate to "
 msgstr "このプロジェクトを支援しませんか？"
 
-#: common_functions.php:4127
+#: common_functions.php:4207
 msgid "Visit our website!"
 msgstr "LimeSurveyウェブサイトへ"
 
-#: common_functions.php:4241
+#: common_functions.php:4321
 msgid "Email was not sent because demo-mode is activated."
 msgstr "デモモードがアクティブなためメールが送信されません。"
 
-#: common_functions.php:4369
+#: common_functions.php:4449
 msgid "SMTP debug output:"
 msgstr "SMTPデバッグ出力:"
 
-#: common_functions.php:4899
+#: common_functions.php:4585
 #, fuzzy, php-format
 msgid "SQL command failed: %s Reason: %s"
 msgstr "SQLコマンドが失敗しました: %s"
 
-#: common_functions.php:5976 index.php:559
+#: common_functions.php:5662 index.php:563
 msgid "Error"
 msgstr "エラー"
 
-#: common_functions.php:7055
+#: common_functions.php:6384
 msgid "First name"
 msgstr "名"
 
-#: common_functions.php:7056
+#: common_functions.php:6385
 msgid "Last name"
 msgstr "姓"
 
-#: common_functions.php:7057
+#: common_functions.php:6386
 msgid "Email address"
 msgstr "メールアドレス"
 
-#: common_functions.php:7058
+#: common_functions.php:6387
 msgid "Token code"
 msgstr "トークンコード"
 
-#: common_functions.php:7059
+#: common_functions.php:6388
 msgid "Language code"
 msgstr "言語コード"
 
-#: common_functions.php:7060
+#: common_functions.php:6389
 msgid "Invitation sent date"
 msgstr "案内メール送信日"
 
-#: common_functions.php:7061
+#: common_functions.php:6390
 msgid "Last Reminder sent date"
 msgstr "最後の催促メール送信日"
 
-#: common_functions.php:7062
+#: common_functions.php:6391
 msgid "Total numbers of sent reminders"
 msgstr "送信リマインダーの合計"
 
-#: common_functions.php:7063
+#: common_functions.php:6392
 msgid "Uses left"
 msgstr "既定のものを用いる"
 
-#: common_functions.php:7084
+#: common_functions.php:6413
 #, php-format
 msgid "Attribute %s"
 msgstr "属性 %s"
@@ -1459,52 +1455,69 @@ msgstr "ファイルは削除されました： %s"
 msgid "Oops, There was an error deleting the file"
 msgstr "ファイルのアップロード中にエラーが発生しました。"
 
-#: group.php:82 question.php:50
+#: group.php:97
+msgid ""
+"Please use the LimeSurvey navigation buttons or index.  It appears you "
+"attempted to use the browser back button to re-submit a page."
+msgstr ""
+
+#: group.php:183
 msgid "Save your responses so far"
 msgstr "これまでの回答を保存"
 
-#: group.php:184 index.php:2198 question.php:230
+#: group.php:300 index.php:1606
 msgid "Did Not Save"
 msgstr "アンケートの結果内容を記録しませんでした。"
 
-#: group.php:185 question.php:231
+#: group.php:301
 msgid ""
 "Your survey responses have not been recorded. This survey is not yet active."
 msgstr "このアンケートはまだ実行されていないので、回答を保存できません。"
 
-#: group.php:190 question.php:237
+#: group.php:306
 msgid "Clear Responses"
 msgstr "回答を消去"
 
-#: group.php:248 question.php:270
+#: group.php:363
 msgid "Thank you!"
 msgstr "ありがとうございます！"
 
-#: group.php:249 question.php:271
+#: group.php:364
 msgid "Your survey responses have been recorded."
 msgstr "アンケートへの回答が記録されました。"
 
-#: group.php:261
+#: group.php:376
 msgid "Print your answers."
 msgstr "あなたの回答印刷"
 
-#: group.php:266 question.php:288
+#: group.php:381
 msgid "or"
 msgstr "または"
 
-#: group.php:273 question.php:295
+#: group.php:388
 msgid "View the statistics for this survey."
 msgstr "このアンケートの統計を閲覧"
 
-#: group.php:322 question.php:77
+#: group.php:444
 msgid "Sorry. There is no matching survey."
 msgstr "該当するアンケートは見つかりません。"
 
-#: group.php:352
+#: group.php:460
+#, fuzzy
+msgid "Invalid group number for this survey: "
+msgstr "件の回答があります"
+
+#: group.php:465
+msgid ""
+"This group contains no questions.  You must add questions to this group "
+"before you can preview it"
+msgstr ""
+
+#: group.php:482
 msgid "Submit your answers"
 msgstr "回答の投稿"
 
-#: group.php:353
+#: group.php:483
 msgid ""
 "There are no more questions. Please press the <Submit> button to finish this "
 "survey."
@@ -1512,55 +1525,55 @@ msgstr ""
 "これ以上質問がありません。<投稿>ボタンをクリックしてアンケートを終了してくだ"
 "さい。"
 
-#: group.php:1212 qanda.php:990 question.php:528
+#: group.php:709 qanda.php:495
 msgid ""
 "One or more mandatory questions have not been answered. You cannot proceed "
 "until these have been completed."
 msgstr "質問に回答してください。回答が完了するまで先に進めません。"
 
-#: group.php:1218 qanda.php:1017 question.php:534
+#: group.php:715 qanda.php:524
 msgid ""
 "One or more questions have not been answered in a valid manner. You cannot "
 "proceed until these answers are valid."
 msgstr "有効な方法で質問に回答してください。回答が完了するまで先に進めません。"
 
-#: group.php:1224
+#: group.php:721
 msgid ""
 "One or more uploaded files are not in proper format/size. You cannot proceed "
 "until these files are valid."
 msgstr "有効な方法で質問に回答してください。回答が完了するまで先に進めません。"
 
-#: group.php:1305 index.php:3444 question.php:619
+#: group.php:836 index.php:2855
 msgid ""
 "This survey is currently not active. You will not be able to save your "
 "responses."
 msgstr "このアンケートはまだ実行されていないので、回答を保存できません。"
 
-#: group.php:1313 question.php:630
+#: group.php:844
 msgid "Question index"
 msgstr "質問コード"
 
-#: group.php:1351 index.php:2928 question.php:666
+#: group.php:879 index.php:2336
 msgid "Submit"
 msgstr "投稿する"
 
-#: index.php:124
+#: index.php:126
 msgid "Token mismatch"
 msgstr "トークン不適格"
 
-#: index.php:125
+#: index.php:127
 msgid "The token you provided doesn't match the one in your session."
 msgstr "あなたのトークンは有効でないか、もうすでに使われています。"
 
-#: index.php:126 index.php:152
+#: index.php:128 index.php:154
 msgid "Please wait to begin with a new session."
 msgstr "新しいセッションを開始するのでお待ち下さい。"
 
-#: index.php:150
+#: index.php:152
 msgid "Previous session is set to be finished."
 msgstr "以前のセッションは終了となっています。"
 
-#: index.php:151
+#: index.php:153
 msgid ""
 "Your browser reports that it was used previously to answer this survey. We "
 "are resetting the session so that you can start from the beginning."
@@ -1568,25 +1581,25 @@ msgstr ""
 "予めこのアンケートに回答することを通知するのにブラウザが利用されます。アン"
 "ケートの始めから開始できるようにセッションがリセットされます。"
 
-#: index.php:295 index.php:328 printanswers.php:75
+#: index.php:297 index.php:330 printanswers.php:75
 msgid "ERROR"
 msgstr "エラー"
 
-#: index.php:296
+#: index.php:298
 msgid "We are sorry but you don't have permissions to do this."
 msgstr "おそらく、権限がありません。"
 
-#: index.php:297 index.php:331 index.php:440 index.php:520 index.php:539
-#: index.php:561 printanswers.php:77
+#: index.php:299 index.php:333 index.php:444 index.php:524 index.php:543
+#: index.php:565 printanswers.php:77
 #, php-format
 msgid "Please contact %s ( %s ) for further assistance."
 msgstr "ご不明な点は %s ( %s )  に御連絡下さい。"
 
-#: index.php:329 printanswers.php:76
+#: index.php:331 printanswers.php:76
 msgid "We are sorry but your session has expired."
 msgstr "申し訳ありませんが、セッションの期限が切れています。"
 
-#: index.php:330 printanswers.php:76
+#: index.php:332 printanswers.php:76
 msgid ""
 "Either you have been inactive for too long, you have cookies disabled for "
 "your browser, or there were problems with your connection."
@@ -1594,88 +1607,88 @@ msgstr ""
 "長い間操作をしなかったか、そうでなければ、あなたのブラウザのCookieが無効にさ"
 "れているか、または接続に問題がある可能性があります。"
 
-#: index.php:429
+#: index.php:433
 msgid "View statistics"
 msgstr "統計を表示"
 
-#: index.php:436
+#: index.php:440
 msgid "No available surveys"
 msgstr "利用可能なアンケートはありません"
 
-#: index.php:439
+#: index.php:443
 msgid "You have not provided a survey identification number"
 msgstr "アンケート識別番号が入力されていません。"
 
-#: index.php:441
+#: index.php:445
 msgid "The following surveys are available:"
 msgstr "次のアンケートが利用可能です:"
 
-#: index.php:519
+#: index.php:523
 msgid "This survey is no longer available."
 msgstr "このアンケートはもう利用できません。"
 
-#: index.php:538
+#: index.php:542
 msgid "This survey is not yet started."
 msgstr "このアンケートは現在実行されていません。"
 
-#: index.php:560
+#: index.php:564
 msgid "You have already completed this survey."
 msgstr "このアンケートはすでに完了しています。"
 
-#: index.php:618
+#: index.php:622
 msgid "You did not provide a name"
 msgstr "名前を入力してください。"
 
-#: index.php:623
+#: index.php:627
 msgid "You did not provide a password"
 msgstr "パスワードを入力してください。"
 
-#: index.php:635 index.php:2276 index.php:2498
+#: index.php:639 index.php:1684 index.php:1906 register.php:72
 msgid "The answer to the security question is incorrect."
 msgstr "セキュリティ質問への回答が正しくありません。"
 
-#: index.php:653 index.php:657
+#: index.php:658 index.php:662
 msgid "Load Unfinished Survey"
 msgstr "前回終わらなかったアンケートのデータを読み込む"
 
-#: index.php:693 index.php:2348 index.php:2420 index.php:2464 index.php:2501
+#: index.php:698 index.php:1756 index.php:1828 index.php:1872 index.php:1909
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "このアンケートに回答するには、有効なトークンが必要です。"
 
-#: index.php:694 index.php:2421 index.php:2465
+#: index.php:699 index.php:1829 index.php:1873
 msgid ""
 "The token you have provided is either not valid, or has already been used."
 msgstr "あなたのトークンは有効でないか、もうすでに使われています。"
 
-#: index.php:695 index.php:731 index.php:2422 index.php:2466 index.php:2657
+#: index.php:700 index.php:736 index.php:1830 index.php:1874 index.php:2065
 #, php-format
 msgid "For further information please contact %s"
 msgstr "ご不明な点がありましたら %s に連絡を取ってください。 "
 
-#: index.php:729
+#: index.php:734
 msgid "We are sorry but you are not allowed to enter this survey."
 msgstr "このアンケートに参加する権限がありません。"
 
-#: index.php:730
+#: index.php:735
 msgid ""
 "Your token seems to be valid but can be used only during a certain time "
 "period."
 msgstr "あなたのトークンは正確なようですが、有効な期間でないと使用できません。"
 
-#: index.php:907
+#: index.php:887
 msgid "Your responses were successfully saved."
 msgstr "あなたの回答は無事保存されました。"
 
-#: index.php:949
+#: index.php:929
 msgid "There is no matching saved survey"
 msgstr "残念ですが、該当するアンケートは見つかりません。"
 
-#: index.php:1051
+#: index.php:1031
 #, php-format
 msgid "You have completed %s%% of this survey"
 msgstr "このアンケートの %s%% はすでに完了しています。"
 
-#: index.php:1706
+#: index.php:1215
 #, php-format
 msgid ""
 "Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."
@@ -1683,22 +1696,22 @@ msgstr ""
 "アップロードされたファイル(%s)は、php.iniで指定された最大アップロード可能サイ"
 "ズ(%s KB)を超えています。"
 
-#: index.php:1719 index.php:1725
+#: index.php:1228 index.php:1234
 #, php-format
 msgid "Sorry, only %s extensions are allowed!"
 msgstr "申し訳ありません、拡張子 %s のみが許可されています。"
 
-#: index.php:1737
+#: index.php:1246
 msgid "The minimum number of files has not been uploaded."
 msgstr "ファイルのアップロード数がひ最小限に達していません。"
 
-#: index.php:2199
+#: index.php:1607
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr ""
 "大変申し訳ありません。エラーが起こったため、アンケートの回答内容は保存されま"
 "せんでした。"
 
-#: index.php:2202
+#: index.php:1610
 msgid ""
 "Your responses have not been lost and have been emailed to the survey "
 "administrator and will be entered into our database at a later point."
@@ -1706,31 +1719,31 @@ msgstr ""
 "回答は失われることなく、アンケート管理者にメール送信されました。通常の場合よ"
 "り少し遅くはなりますが、確実にデータベースに入力されます。"
 
-#: index.php:2207
+#: index.php:1615
 msgid "An error occurred saving a response to survey id"
 msgstr "回答を保存する際にエラーが発生しました。アンケートID："
 
-#: index.php:2208
+#: index.php:1616
 msgid "DATA TO BE ENTERED"
 msgstr "入力されるべきデータ"
 
-#: index.php:2213
+#: index.php:1621
 msgid "SQL CODE THAT FAILED"
 msgstr "実行に失敗したSQLコード"
 
-#: index.php:2215
+#: index.php:1623
 msgid "ERROR MESSAGE"
 msgstr "エラーメッセージ"
 
-#: index.php:2217
+#: index.php:1625
 msgid "Error saving results"
 msgstr "結果保存エラー"
 
-#: index.php:2225
+#: index.php:1633
 msgid "Try to submit again"
 msgstr "もう一度送信する"
 
-#: index.php:2279
+#: index.php:1687
 msgid ""
 "Please confirm access to survey by answering the security question below and "
 "click continue."
@@ -1738,15 +1751,15 @@ msgstr ""
 "continueをクリックする前にセキュリティの質問に回答することでアンケートへのア"
 "クセスを確認してください。"
 
-#: index.php:2303
+#: index.php:1711
 msgid "Security question:"
 msgstr "セキュリティ質問:"
 
-#: index.php:2308 index.php:2383 index.php:2550
+#: index.php:1716 index.php:1791 index.php:1958
 msgid "Continue"
 msgstr "続ける"
 
-#: index.php:2349 index.php:2506
+#: index.php:1757 index.php:1914
 msgid ""
 "If you have been issued a token, please enter it in the box below and click "
 "continue."
@@ -1754,11 +1767,11 @@ msgstr ""
 "トークンをお持ちの場合、次のボックスに入力して「継続」をクリックしてくださ"
 "い。"
 
-#: index.php:2379 index.php:2547
+#: index.php:1787 index.php:1955
 msgid "Security Question"
 msgstr "セキュリティ質問"
 
-#: index.php:2525
+#: index.php:1933
 msgid ""
 "Please confirm the token by answering the security question below and click "
 "continue."
@@ -1766,21 +1779,21 @@ msgstr ""
 "「継続」をクリックする前にセキュリティ質問に回答してトークンを確認してくださ"
 "い。"
 
-#: index.php:2539
+#: index.php:1947
 msgid "Token:"
 msgstr "トークン:"
 
-#: index.php:2656
+#: index.php:2064
 msgid ""
 "This survey does not yet have any questions and cannot be tested or "
 "completed."
 msgstr "このアンケートはまだ準備中なので、試すことはできません。"
 
-#: index.php:2906 index.php:3327
+#: index.php:2314 index.php:2735
 msgid "Previous"
 msgstr "前へ"
 
-#: index.php:2912 index.php:2918 index.php:2923
+#: index.php:2320 index.php:2326 index.php:2331
 msgid "Next"
 msgstr "次へ"
 
@@ -1800,122 +1813,93 @@ msgstr "あなたは、このアンケートからの削除が無事完了しま
 msgid "You have been already removed from this survey."
 msgstr "あなたは、既にこのアンケートから削除されています。"
 
-#: printanswers.php:166
+#: printanswers.php:171
 msgid "PDF Export"
 msgstr "PDF出力"
 
-#: printanswers.php:173
+#: printanswers.php:178
 msgid "Survey name (ID)"
 msgstr "アンケート名(ID)"
 
-#: printanswers.php:175
+#: printanswers.php:180
 msgid "Survey name (ID):"
 msgstr "アンケート名(ID)"
 
-#: printanswers.php:191
+#: printanswers.php:200
 msgid "Question"
 msgstr "質問"
 
-#: printanswers.php:191
+#: printanswers.php:200
 msgid "Your answer"
 msgstr "あなたの回答"
 
-#: qanda.php:595 qanda.php:596 qanda.php:604 qanda.php:605 qanda.php:613
-#: qanda.php:614
+#: qanda.php:130 qanda.php:131 qanda.php:139 qanda.php:140 qanda.php:148
+#: qanda.php:149
 msgid "Choose one of the following answers"
 msgstr "以下から一つだけ選んでください。"
 
-#: qanda.php:621
+#: qanda.php:156
 msgid ""
 "Click on an item in the list on the left, starting with your highest ranking "
 "item, moving through to your lowest ranking item."
 msgstr ""
 "最も高い順位のものから最も低い順位のものまで、順番にクリックしてください。"
 
-#: qanda.php:625 qanda.php:626
+#: qanda.php:160 qanda.php:161
 #, php-format
 msgid "Check at least %d item"
 msgid_plural "Check at least %d items"
 msgstr[0] "少なくとも %d 個以上のアイテムを選んでください。"
 msgstr[1] "少なくとも %d 個以上のアイテムを選んでください。"
 
-#: qanda.php:639 qanda.php:640 qanda.php:682 qanda.php:683
+#: qanda.php:174 qanda.php:175 qanda.php:217 qanda.php:218
 msgid "Check any that apply"
 msgstr "あてはまるものをすべてチェックしてください。"
 
-#: qanda.php:647 qanda.php:648 qanda.php:690 qanda.php:691
+#: qanda.php:182 qanda.php:183 qanda.php:225 qanda.php:226
 #, php-format
 msgid "Check between %d and %d answers"
 msgstr "%d と %d の間でチェック"
 
-#: qanda.php:652 qanda.php:653 qanda.php:695 qanda.php:696
+#: qanda.php:187 qanda.php:188 qanda.php:230 qanda.php:231
 #, php-format
 msgid "Check at most %d answers"
 msgstr "最大で %d の回答をチェック"
 
-#: qanda.php:657 qanda.php:658
+#: qanda.php:192 qanda.php:193
 #, php-format
 msgid "Check at least %d answer"
 msgid_plural "Check at least %d answers"
 msgstr[0] "最小で %d 個の回答をチェック"
 msgstr[1] "最小で %d 個の回答をチェック"
 
-#: qanda.php:669 qanda.php:670
+#: qanda.php:204 qanda.php:205
 msgid "Choose your language"
 msgstr "言語を選択："
 
-#: qanda.php:700 qanda.php:701
+#: qanda.php:235 qanda.php:236
 #, php-format
 msgid "Check at least %d answers"
 msgstr "最小で %d の回答をチェック"
 
-#: qanda.php:713 qanda.php:714
+#: qanda.php:248 qanda.php:249
 #, php-format
 msgid "At least %d files must be uploaded for this question"
 msgstr "%d　個以上のファイルが必要です"
 
-#: qanda.php:784 qanda.php:785
+#: qanda.php:322 qanda.php:323
 msgid "*"
 msgstr "*"
 
-#: qanda.php:877
-msgid "This question is mandatory"
-msgstr "次の質問へ行くには、この質問に回答する必要があります。"
-
-#: qanda.php:889
-msgid "Please complete all parts"
-msgstr "すべての質問に回答してください。"
-
-#: qanda.php:892
-msgid "Please check the items"
-msgstr "項目を確認してください。"
-
-#: qanda.php:895
-msgid "Please rank all items"
-msgstr "すべての選択肢に順位を付けてください。"
-
-#: qanda.php:899
-msgid "Please check at least one item."
-msgstr "一つ以上の項目を確認してください。"
-
-#: qanda.php:912 qanda.php:2029 qanda.php:2329 qanda.php:2988 qanda.php:3474
-msgid "Other:"
-msgstr "その他："
-
-#: qanda.php:914
-#, php-format
-msgid "If you choose '%s' you must provide a description."
-msgstr "'%s' を選択する場合、説明文を用意しなければなりません"
-
-#: qanda.php:944
+#: qanda.php:442
 msgid "This question must be answered correctly"
 msgstr "質問に適切に回答してください。"
 
-#: qanda.php:983
+#: qanda.php:488
 msgid "You cannot proceed until you enter some text for one or more questions."
 msgstr "すべての質問に回答するまで、先に進むことはできません。"
 
-#: qanda.php:1041
+#: qanda.php:549
 msgid ""
 "One or more file have either exceeded the filesize/are not in the right "
 "format or the minimum number of required files have not been uploaded. You "
@@ -1924,111 +1908,115 @@ msgstr ""
 "個数、サイズ、フォーマットが条件に合ってないファイルがあり回答できません。回"
 "答が完了するまで先に進めません。"
 
-#: qanda.php:1084
+#: qanda.php:592
 msgid "Your time to answer this question has expired"
 msgstr "この質問への回答期限が切れました"
 
-#: qanda.php:1087
+#: qanda.php:595
 msgid "Time remaining"
 msgstr "残り時間"
 
-#: qanda.php:1088 qanda.php:1091
+#: qanda.php:596 qanda.php:599
 msgid ""
 "Your time to answer this question has nearly expired. You have {TIME} "
 "remaining."
 msgstr ""
 "この質問に回答するための期限切れが近づいています。残り時間は {TIME} です。"
 
-#: qanda.php:1244 qanda.php:1262 qanda.php:1293
+#: qanda.php:752 qanda.php:770 qanda.php:801
 msgid "hours"
 msgstr "時間"
 
-#: qanda.php:1245 qanda.php:1263 qanda.php:1294
+#: qanda.php:753 qanda.php:771 qanda.php:802
 msgid "mins"
 msgstr "分"
 
-#: qanda.php:1246 qanda.php:1264 qanda.php:1295 qanda.php:1296
+#: qanda.php:754 qanda.php:772 qanda.php:803 qanda.php:804
 msgid "seconds"
 msgstr "秒"
 
-#: qanda.php:1793
+#: qanda.php:1087
 msgid "Day"
 msgstr "日"
 
-#: qanda.php:1810
+#: qanda.php:1104
 msgid "Month"
 msgstr "月"
 
-#: qanda.php:1812
+#: qanda.php:1106
 msgid "Jan"
 msgstr "1月"
 
-#: qanda.php:1813
+#: qanda.php:1107
 msgid "Feb"
 msgstr "2月"
 
-#: qanda.php:1814
+#: qanda.php:1108
 msgid "Mar"
 msgstr "3月"
 
-#: qanda.php:1815
+#: qanda.php:1109
 msgid "Apr"
 msgstr "4月"
 
-#: qanda.php:1816
+#: qanda.php:1110
 msgid "May"
 msgstr "5月"
 
-#: qanda.php:1817
+#: qanda.php:1111
 msgid "Jun"
 msgstr "6月"
 
-#: qanda.php:1818
+#: qanda.php:1112
 msgid "Jul"
 msgstr "7月"
 
-#: qanda.php:1819
+#: qanda.php:1113
 msgid "Aug"
 msgstr "8月"
 
-#: qanda.php:1820
+#: qanda.php:1114
 msgid "Sep"
 msgstr "9月"
 
-#: qanda.php:1821
+#: qanda.php:1115
 msgid "Oct"
 msgstr "10月"
 
-#: qanda.php:1822
+#: qanda.php:1116
 msgid "Nov"
 msgstr "11月"
 
-#: qanda.php:1823
+#: qanda.php:1117
 msgid "Dec"
 msgstr "12月"
 
-#: qanda.php:1840
+#: qanda.php:1134
 msgid "Year"
 msgstr "年"
 
-#: qanda.php:1904 qanda.php:4657 qanda.php:4937 qanda.php:5016
+#: qanda.php:1198 qanda.php:3874 qanda.php:4154 qanda.php:4233
 msgid "Answer"
 msgstr "回答"
 
-#: qanda.php:1951
+#: qanda.php:1245
 msgid "Date picker"
 msgstr "日付ピッカー"
 
-#: qanda.php:1958
+#: qanda.php:1252
 #, php-format
 msgid "Format: %s"
 msgstr "フォーマット： %s"
 
-#: qanda.php:2210
+#: qanda.php:1324 qanda.php:1625 qanda.php:2288 qanda.php:2699
+msgid "Other:"
+msgstr "その他："
+
+#: qanda.php:1505
 msgid "Other answer"
 msgstr "その他の回答"
 
-#: qanda.php:2234 qanda.php:2503
+#: qanda.php:1529 qanda.php:1799
 #, php-format
 msgid ""
 "You've selected the \"%s\" answer for question \"%s\". Please also fill in "
@@ -2037,23 +2025,23 @@ msgstr ""
 "あなたが、\"%s\" を選択しました。(質問 \"%s\" ) \"other comment\" フィールド"
 "をあわせて入力してください。"
 
-#: qanda.php:2572
+#: qanda.php:1869
 msgid "Please enter your comment here"
 msgstr "コメントを記入してください。"
 
-#: qanda.php:2842
+#: qanda.php:2140
 msgid "Remove this item"
 msgstr "このアイテムを削除"
 
-#: qanda.php:2870
+#: qanda.php:2169
 msgid "Your Choices"
 msgstr "選択"
 
-#: qanda.php:2881
+#: qanda.php:2180
 msgid "Your Ranking"
 msgstr "順位"
 
-#: qanda.php:2889
+#: qanda.php:2188
 msgid ""
 "Click on the scissors next to each item on the right to remove the last "
 "entry in your ranked list"
@@ -2061,24 +2049,24 @@ msgstr ""
 "右にある各項目の×マークをクリックして、あなたの並べたリストのエントリーを削除"
 "します。"
 
-#: qanda.php:2900 qanda.php:2915
+#: qanda.php:2199 qanda.php:2214
 #, php-format
 msgid "Please rank at least %d item for question \"%s\""
 msgid_plural "Please rank at least %d items for question \"%s\"."
 msgstr[0] "少なくとも %d 個のアイテムを質問 \"%s\" に対して並べてください。"
 msgstr[1] "少なくとも %d アイテムを質問 \"%s\" に対して並べてください。"
 
-#: qanda.php:3327 qanda.php:3658
+#: qanda.php:2567 qanda.php:2883
 #, php-format
 msgid "Please choose at most %d answers for question \"%s\""
 msgstr "多くても %d 個の回答を選択してください。（質問 \"%s\"）"
 
-#: qanda.php:3348 qanda.php:3683
+#: qanda.php:2588 qanda.php:2908
 #, php-format
 msgid "Please choose at least %d answer(s) for question \"%s\""
 msgstr "少なくとも %d 以上の回答を選択してください（質問 \"%s\" ）"
 
-#: qanda.php:3383 qanda.php:3714
+#: qanda.php:2623 qanda.php:2939
 #, php-format
 msgid ""
 "You've marked the \"other\" field for question \"%s\". Please also fill in "
@@ -2087,59 +2075,59 @@ msgstr ""
 "\"other\" フィールドがマークされました。（質問 \"%s\" ） \"other comment\" "
 "フィールドを一緒に入力してください。"
 
-#: qanda.php:3586 qanda.php:3614
+#: qanda.php:2811 qanda.php:2839
 msgid "Make a comment on your choice here:"
 msgstr "選んだ理由："
 
-#: qanda.php:3811
+#: qanda.php:3036
 msgid "Upload files"
 msgstr "ファイルをアップロード："
 
-#: qanda.php:3815
+#: qanda.php:3040
 msgid "Upload your files"
 msgstr "ファイルをアップロード："
 
-#: qanda.php:3816
+#: qanda.php:3041
 msgid "Return to survey"
 msgstr "アンケートに戻る"
 
-#: qanda.php:3994 qanda.php:4296 qanda.php:5542 qanda.php:7381
+#: qanda.php:3220 qanda.php:3523 qanda.php:4750 qanda.php:6605
 msgid "Error: This question has no answers."
 msgstr "エラー：　回答がありません。"
 
-#: qanda.php:4438
+#: qanda.php:3665
 msgid "Only numbers may be entered in these fields"
 msgstr "これらの欄には数字しか入力できません。"
 
-#: qanda.php:4442
+#: qanda.php:3669
 #, php-format
 msgid "Total of all entries must not exceed %d"
 msgstr "エントリー全ての合計が %d を超えてはなりません"
 
-#: qanda.php:4446
+#: qanda.php:3673
 #, php-format
 msgid "Total of all entries must equal %d"
 msgstr "エントリー全ての合計が %d と等しい必要があります"
 
-#: qanda.php:4450
+#: qanda.php:3677
 #, php-format
 msgid "Total of all entries must be at least %s"
 msgstr "エントリー全ての合計が少なくとも %s 以上出なければなりません"
 
-#: qanda.php:4458
+#: qanda.php:3685
 msgid "Remaining: "
 msgstr "残り: "
 
-#: qanda.php:4460
+#: qanda.php:3687
 msgid "Total: "
 msgstr "合計:"
 
-#: qanda.php:4506 qanda.php:4512 qanda.php:4548 qanda.php:4559
+#: qanda.php:3733 qanda.php:3739 qanda.php:3769 qanda.php:3778
 msgid ""
 "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "回答が無効です。全てのエントリーの合計をこれ以上増やせません。"
 
-#: qanda.php:4525 qanda.php:4533
+#: qanda.php:3750 qanda.php:3756
 #, php-format
 msgid ""
 "Answer is invalid. The total of all entries should add up to at least %s."
@@ -2147,11 +2135,11 @@ msgstr ""
 "回答が無効です。全てのエントリーの合計は、少なくとも %s 以上で合計すべきで"
 "す。"
 
-#: qanda.php:4661
+#: qanda.php:3878
 msgid "Only numbers may be entered in this field"
 msgstr "この欄には数字しか入力できません。"
 
-#: qanda.php:4838 qanda.php:4839
+#: qanda.php:4055 qanda.php:4056
 msgid ""
 "Drag and drop the pin to the desired location. You may also right click on "
 "the map to move the pin."
@@ -2159,11 +2147,11 @@ msgstr ""
 "ピンをドラッグして目的の場所にドロップします。また、マップを右クリックするこ"
 "とでピンを動かすことも出来ます。"
 
-#: qanda.php:6091
+#: qanda.php:5307
 msgid "Please choose"
 msgstr "選んでください。"
 
-#: qanda.php:6135 qanda.php:6481 qanda.php:6818 qanda.php:6970 qanda.php:7611
+#: qanda.php:5351 qanda.php:5699 qanda.php:6038 qanda.php:6192 qanda.php:6836
 msgid ""
 "Error: There are no answer options for this question and/or they don't exist "
 "in this language."
@@ -2171,21 +2159,13 @@ msgstr ""
 "エラー：　この質問に回答オプションがありません。または、この言語では存在しま"
 "せん。"
 
-#: qanda.php:6736
+#: qanda.php:5956
 msgid "..."
 msgstr "..."
 
-#: qanda.php:6964
+#: qanda.php:6186
 msgid "Error: There are no answers defined for this question."
 msgstr "エラー: この質問に回答が定義されていません。"
-
-#: question.php:283
-msgid "Click here to print your answers."
-msgstr "あなたの回答を印刷するにはここをクリックします。"
-
-#: question.php:540
-msgid "One or more uploaded files do not satisfy the criteria"
-msgstr "アップロードしたファイルのうちに基準を満たさないものがあります。"
 
 #: register.php:79
 msgid "The email you used is not valid. Please try again."
@@ -2212,42 +2192,42 @@ msgstr ""
 msgid "Survey Administrator"
 msgstr "アンケート管理者"
 
-#: replacements.php:201
+#: replacements.php:203
 msgid "There are no questions in this survey"
 msgstr "アンケートに質問がありません。"
 
-#: replacements.php:205
+#: replacements.php:207
 msgid "There is 1 question in this survey"
 msgstr "このアンケートは全部で 1 問です。"
 
-#: replacements.php:209
+#: replacements.php:211
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "このアンケートは全部で {NUMBEROFQUESTIONS} 問あります。"
 
-#: replacements.php:281
+#: replacements.php:283
 msgid "Exit and Clear Survey"
 msgstr "アンケートを消去して終了"
 
-#: replacements.php:282
+#: replacements.php:284
 msgid "Are you sure you want to clear all your responses?"
 msgstr "すべての回答を消去しますか？"
 
-#: replacements.php:307 replacements.php:311 replacements.php:331
+#: replacements.php:309 replacements.php:313 replacements.php:333
 msgid "Resume Later"
 msgstr "後で再開"
 
-#: replacements.php:377
+#: replacements.php:379
 msgid ""
 "If you want to check any of the answers you have made, and/or change them, "
 "you can do that now by clicking on the [<< prev] button and browsing through "
 "your responses."
 msgstr "回答を確認・変更する場合は、「前へ」ボタンをクリックしてください。"
 
-#: replacements.php:386 replacements.php:397
+#: replacements.php:388 replacements.php:399
 msgid "Restart this Survey"
 msgstr "もう一度このアンケートを始める"
 
-#: replacements.php:401
+#: replacements.php:403
 msgid ""
 "To remain anonymous please use a pseudonym as your username, also an email "
 "address is not required."
@@ -2255,47 +2235,47 @@ msgstr ""
 "匿名を保つためにユーザ名は偽名にしてください。メールアドレスも必須ではありま"
 "せん。"
 
-#: replacements.php:413
+#: replacements.php:415
 msgid "Return To Survey"
 msgstr "アンケートに戻る"
 
-#: replacements.php:415 save.php:385
+#: replacements.php:417 save.php:191
 msgid "Name"
 msgstr "名前："
 
-#: replacements.php:421 replacements.php:453 save.php:386
+#: replacements.php:423 replacements.php:455 save.php:192
 msgid "Password"
 msgstr "パスワード"
 
-#: replacements.php:427
+#: replacements.php:429
 msgid "Repeat Password"
 msgstr "パスワード（再入力）"
 
-#: replacements.php:433
+#: replacements.php:435
 msgid "Your Email"
 msgstr "メールアドレス"
 
-#: replacements.php:444
+#: replacements.php:446
 msgid "Save Now"
 msgstr "保存する"
 
-#: replacements.php:447
+#: replacements.php:449
 msgid "Saved name"
 msgstr "保存された名前"
 
-#: replacements.php:465
+#: replacements.php:467
 msgid "Load Now"
 msgstr "データの読込"
 
-#: replacements.php:548
+#: replacements.php:550
 msgid "Answers Cleared"
 msgstr "回答を消去しました。"
 
-#: replacements.php:551
+#: replacements.php:553
 msgid "Your Assessment"
 msgstr "評価"
 
-#: replacements.php:552
+#: replacements.php:554
 msgid ""
 "Caution: JavaScript execution is disabled in your browser. You may not be "
 "able to answer all questions in this survey. Please, verify your browser "
@@ -2305,31 +2285,31 @@ msgstr ""
 "ケートの全質問に回答することができません。ブラウザの設定を確認してくださるよ"
 "うお願いいたします。"
 
-#: replacements.php:554
+#: replacements.php:556
 msgid "Close this window"
 msgstr "このウィンドウを閉じる。"
 
-#: replacements.php:564
+#: replacements.php:566
 msgid "Load A Previously Saved Survey"
 msgstr "前回保存されたアンケートを読込"
 
-#: replacements.php:565
+#: replacements.php:567
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr "前回保存したアンケートのデータを読み込むことができます。"
 
-#: replacements.php:565
+#: replacements.php:567
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "このアンケートを保存する際に用いた名前とパスワードを入力してください。"
 
-#: replacements.php:571
+#: replacements.php:573
 msgid "A Note On Privacy"
 msgstr "プライバシーについての注意"
 
-#: replacements.php:571
+#: replacements.php:573
 msgid "This survey is anonymous."
 msgstr "このアンケートは匿名です。"
 
-#: replacements.php:571
+#: replacements.php:573
 msgid ""
 "The record kept of your survey responses does not contain any identifying "
 "information about you unless a specific question in the survey has asked for "
@@ -2347,15 +2327,15 @@ msgstr ""
 "くは、完了しなかった）ことを示す場合にのみ更新されます。個人識別用のトークン"
 "と、アンケートの回答とをマッチさせる方法は存在しません。"
 
-#: replacements.php:589
+#: replacements.php:591
 msgid "You must be registered to complete this survey"
 msgstr "このアンケートを完了するには、登録を行う必要があります。"
 
-#: replacements.php:590
+#: replacements.php:592
 msgid "You may register for this survey if you wish to take part."
 msgstr "このアンケートに参加するには、登録を行う必要があります。"
 
-#: replacements.php:590
+#: replacements.php:592
 msgid ""
 "Enter your details below, and an email containing the link to participate in "
 "this survey will be sent immediately."
@@ -2363,15 +2343,15 @@ msgstr ""
 "以下に御記入下さい。このアンケートへの参加ページのURLを記載したメールをすぐに"
 "送信いたします。"
 
-#: replacements.php:598
+#: replacements.php:600
 msgid "Save Your Unfinished Survey"
 msgstr "完了しなかったアンケートの保存"
 
-#: replacements.php:599
+#: replacements.php:601
 msgid "Enter a name and password for this survey and click save below."
 msgstr "名前とパスワードを入力し、「保存」をクリックしてください。"
 
-#: replacements.php:599
+#: replacements.php:601
 msgid ""
 "Your survey will be saved using that name and password, and can be completed "
 "later by logging in with the same name and password."
@@ -2379,14 +2359,14 @@ msgstr ""
 "アンケートはこの名前とパスワードを用いて記録されます。途中で回答を中断した場"
 "合、同じ名前とパスワードを入力すれば再開できます。"
 
-#: replacements.php:599
+#: replacements.php:601
 msgid ""
 "If you give an email address, an email containing the details will be sent "
 "to you."
 msgstr ""
 "メールアドレスを御記入いただければ、詳細についてのメールをお送りいたします。"
 
-#: replacements.php:599
+#: replacements.php:601
 msgid ""
 "After having clicked the save button you can either close this browser "
 "window or continue filling out the survey."
@@ -2394,42 +2374,42 @@ msgstr ""
 "保存ボタンをクリックした後、ブラウザウィンドウを閉じることもできますし、アン"
 "ケートの記入を続けることもできます。"
 
-#: replacements.php:604
+#: replacements.php:606
 msgid "You have completed answering the questions in this survey."
 msgstr "質問は以上で終了です。"
 
-#: replacements.php:604
+#: replacements.php:606
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr ""
 "「投稿」をクリックしてください。回答が記録され、アンケートが完了します。"
 
-#: save.php:257
+#: save.php:63
 msgid "Please try again."
 msgstr "もう一回試してください。"
 
-#: save.php:299
+#: save.php:105
 msgid "You must supply a name for this saved session."
 msgstr "このセッション用の名前を入力してください。"
 
-#: save.php:300
+#: save.php:106
 msgid "You must supply a password for this saved session."
 msgstr "このセッション用のパスワードを入力してください。"
 
-#: save.php:302
+#: save.php:108
 msgid "Your passwords do not match."
 msgstr "パスワードが一致しません。"
 
-#: save.php:326
+#: save.php:132
 msgid ""
 "This name has already been used for this survey. You must use a unique save "
 "name."
 msgstr "この名前はすでに使われています。別の名前で保存してください。"
 
-#: save.php:382 save.php:424
+#: save.php:188
 msgid "Saved Survey Details"
 msgstr "保存されたアンケートの詳細"
 
-#: save.php:383
+#: save.php:189
 msgid ""
 "Thank you for saving your survey in progress.  The following details can be "
 "used to return to this survey and continue where you left off.  Please keep "
@@ -2439,7 +2419,7 @@ msgstr ""
 "は次のとおりです。メールアドレスとパスワードを覚えておいてください。※忘れてし"
 "まった場合、あなたのパスワードを取り戻すことができません。"
 
-#: save.php:387 save.php:426
+#: save.php:193
 msgid ""
 "Reload your survey by clicking on the following link (or pasting it into "
 "your browser):"
@@ -2447,45 +2427,9 @@ msgstr ""
 "アンケートをリロードするには次のURLをクリック（あるいはブラウザにURLをコ"
 "ピー)："
 
-#: save.php:402 save.php:445
+#: save.php:208
 msgid "Your survey was successfully saved."
 msgstr "あなたのアンケートの保存に成功しました。"
-
-#: save.php:425
-msgid ""
-"Thank you for saving your survey in progress. You can return to the survey "
-"at the same point you saved it at any time using the link from this or any "
-"previous email sent to regarding this survey."
-msgstr ""
-"アンケートの回答の保存ありがとうございます。このリンク、もしくは以前にお送り"
-"したメールを使用していつでも続きから回答できます。"
-
-#: save.php:739
-msgid "Cannot submit results - there are none to submit."
-msgstr "回答を投稿できません。投稿できる回答がありませんでした。"
-
-#: save.php:740
-msgid ""
-"This error can occur if you have already submitted your responses and "
-"pressed 'refresh' on your browser. In this case, your responses have already "
-"been saved."
-msgstr ""
-"このエラーは、あなたがすでに回答を終えて、ブラウザの「更新」ボタンを押した場"
-"合に生じることがあります。この場合、あなたの回答はすでに保存されています。"
-
-#: save.php:740
-msgid ""
-"If you receive this message in the middle of completing a survey, you should "
-"choose '<- BACK' on your browser and then refresh/reload the previous page. "
-"While you will lose answers from the last page all your others will still "
-"exist. This problem can occur if the webserver is suffering from overload or "
-"excessive use. We apologise for this problem."
-msgstr ""
-"もしアンケートの回答中にこのメッセージが表示された場合には、ブラウザの「戻"
-"る」ボタンを押して、前のページを更新／再読込してください。万一、最後のページ"
-"の回答が失われていたとしても、その他のページでの回答はすべて保存されていま"
-"す。この問題は、私どものサーバにおける過負荷が原因で生じたものと考えられま"
-"す。大変申し訳ありません。"
 
 #: statistics_user.php:386
 msgid "Please wait ..."
@@ -2507,15 +2451,10 @@ msgstr "アンケートの全レコード"
 msgid "Generating summaries ..."
 msgstr "要約を作成中…"
 
-#: statistics_user.php:454
+#: statistics_user.php:454 admin/browse.php:140 admin/browse.php:141
+#: admin/browse.php:479
 msgid "Completed"
 msgstr "完了"
-
-#: survey.php:918
-msgid ""
-"One or more files are either not in the proper format or exceed the maximum "
-"file size limitation. You cannot proceed until these answers are valid."
-msgstr "有効な方法で質問に回答してください。回答が完了するまで先に進めません。"
 
 #: upload.php:87
 #, php-format
@@ -2671,7 +2610,7 @@ msgstr "評価ルールを設定する権限がありません。"
 msgid "You are not allowed to delete this group!"
 msgstr "グループを削除する権限がありません。"
 
-#: admin/access_denied.php:102
+#: admin/access_denied.php:102 admin/cmdline_importsurvey.php:80
 msgid "You are not allowed to import a survey!"
 msgstr "アンケートをインポートする権限がありません。"
 
@@ -2710,7 +2649,7 @@ msgid "You are not allowed to perform this operation!"
 msgstr "この操作を実行する権限がありません。"
 
 #: admin/activate.php:39 admin/activate.php:67 admin/activate.php:76
-#: admin/activate_functions.php:406 admin/activate_functions.php:446
+#: admin/activate_functions.php:413 admin/activate_functions.php:453
 msgid "Activate Survey"
 msgstr "アンケートを実行"
 
@@ -2788,33 +2727,33 @@ msgstr ""
 "には、アンケートの実行を停止する必要があります。実行停止時には、それまでに入"
 "力されたデータは別のテーブルに保存されます。"
 
-#: admin/activate_functions.php:85
+#: admin/activate_functions.php:89
 msgid "This group does not contain any question(s)."
 msgstr "このグループは質問がありません。"
 
-#: admin/activate_functions.php:133
+#: admin/activate_functions.php:137
 msgid ""
 "This question is a subquestion type question but has no configured "
 "subquestions."
 msgstr "この質問はサブ質問タイプの質問ですが、サブ質問が設定されていません。"
 
-#: admin/activate_functions.php:143
+#: admin/activate_functions.php:147
 msgid "This question is a multiple answer type question but has no answers."
 msgstr "この質問は複数回答ですが、回答がありません。"
 
-#: admin/activate_functions.php:153
+#: admin/activate_functions.php:157
 msgid "This question does not have a question 'type' set."
 msgstr "この質問には質問形式のセットがありません。"
 
-#: admin/activate_functions.php:163
+#: admin/activate_functions.php:167
 msgid "This question requires answers, but none are set."
 msgstr "この質問には回答が必要ですが、設定されていません。"
 
-#: admin/activate_functions.php:170
+#: admin/activate_functions.php:174
 msgid "This question requires a second answer set but none is set."
 msgstr "この質問には二つ目が必要ですが、設定されていません。"
 
-#: admin/activate_functions.php:225
+#: admin/activate_functions.php:229
 msgid ""
 "This question has a condition set, however the condition is based on a "
 "question that appears after it."
@@ -2822,23 +2761,24 @@ msgstr ""
 "この質問には条件設定がありますが、条件がこの質問よりも後の質問に対して設定さ"
 "れています。"
 
-#: admin/activate_functions.php:407
+#: admin/activate_functions.php:414
 msgid "Survey could not be actived."
 msgstr "アンケートを実行できませんでした。"
 
-#: admin/activate_functions.php:409
+#: admin/activate_functions.php:416
 msgid "Database error:"
 msgstr "データベースエラー："
 
-#: admin/activate_functions.php:411
+#: admin/activate_functions.php:418 admin/browse.php:34 admin/browse.php:65
+#: admin/browse.php:77
 msgid "Main Admin Screen"
 msgstr "管理画面"
 
-#: admin/activate_functions.php:447
+#: admin/activate_functions.php:454
 msgid "Survey has been activated. Results table has been successfully created."
 msgstr "アンケートは実行中です。結果テーブルが作成されました。"
 
-#: admin/activate_functions.php:456
+#: admin/activate_functions.php:463
 #, fuzzy
 msgid ""
 "The required directory for saving the uploaded files couldn't be created. "
@@ -2847,30 +2787,30 @@ msgstr ""
 "アップロードされたファイルを保存するのに必要なディレクトリが作成されていませ"
 "ん。ファイルのパーミッションをチェックして下さい"
 
-#: admin/activate_functions.php:470
+#: admin/activate_functions.php:477
 msgid ""
 "This survey allows public registration. A token table must also be created."
 msgstr ""
 "このアンケートは一般参加者の登録を許可しています。トークンテーブルを作成する"
 "必要があります。"
 
-#: admin/activate_functions.php:471
+#: admin/activate_functions.php:478
 msgid "Initialise tokens"
 msgstr "トークンを初期化"
 
-#: admin/activate_functions.php:475
+#: admin/activate_functions.php:482
 msgid "This survey is now active, and responses can be recorded."
 msgstr "アンケートは実行中です。回答を記録できます。"
 
-#: admin/activate_functions.php:476
+#: admin/activate_functions.php:483
 msgid "Open-access mode"
 msgstr "オープンアクセスモード"
 
-#: admin/activate_functions.php:476
+#: admin/activate_functions.php:483
 msgid "No invitation code is needed to complete the survey."
 msgstr "このアンケートでは、案内メールにあるコードは必要ありません。"
 
-#: admin/activate_functions.php:476
+#: admin/activate_functions.php:483
 msgid ""
 "You can switch to the closed-access mode by initialising a token table with "
 "the button below."
@@ -2878,11 +2818,11 @@ msgstr ""
 "下のボタンでトークンテーブルを初期化すれば、クローズド・アクセスモードに変更"
 "できます。"
 
-#: admin/activate_functions.php:477
+#: admin/activate_functions.php:484
 msgid "Switch to closed-access mode"
 msgstr "クローズド・アクセスモードに変更"
 
-#: admin/activate_functions.php:478
+#: admin/activate_functions.php:485
 msgid "No, thanks."
 msgstr "わからない"
 
@@ -3197,7 +3137,7 @@ msgstr "評価ルール"
 msgid "ID"
 msgstr "ID"
 
-#: admin/assessments.php:169
+#: admin/assessments.php:169 admin/browse.php:541 admin/browse.php:883
 msgid "Actions"
 msgstr "操作"
 
@@ -3213,7 +3153,7 @@ msgstr "メッセージ"
 msgid "Delete"
 msgstr "削除"
 
-#: admin/assessments.php:194
+#: admin/assessments.php:194 admin/browse.php:229
 msgid "Are you sure you want to delete this entry?"
 msgstr "本当にこのエントリーを削除しますか？"
 
@@ -3221,7 +3161,7 @@ msgstr "本当にこのエントリーを削除しますか？"
 msgid "Total"
 msgstr "全体"
 
-#: admin/assessments.php:234
+#: admin/assessments.php:234 admin/browse.php:871
 msgid "Group"
 msgstr "グループ"
 
@@ -3246,8 +3186,7 @@ msgid "Message:"
 msgstr "本文："
 
 #: admin/browse.php:31 admin/browse.php:62 admin/browse.php:74
-#: admin/browse.php:109 admin/browse.php:325 admin/dataentry.php:1458
-#: admin/dataentry.php:1474
+#: admin/browse.php:109 admin/browse.php:325
 msgid "Browse Responses"
 msgstr "回答を閲覧"
 
@@ -3280,7 +3219,7 @@ msgstr "発表日"
 msgid "View response ID %d"
 msgstr "回答を表示（ID %d）"
 
-#: admin/browse.php:224 admin/dataentry.php:146
+#: admin/browse.php:224
 msgid "Edit this entry"
 msgstr "この入力を編集"
 
@@ -3481,7 +3420,7 @@ msgid "Greater than"
 msgstr "次よりも大きい"
 
 #: admin/conditionshandling.php:69 admin/conditionshandling.php:85
-#: admin/conditionshandling.php:1923
+#: admin/conditionshandling.php:1931
 msgid "Regular expression"
 msgstr "正規表現"
 
@@ -3517,7 +3456,7 @@ msgstr "メイン管理画面"
 msgid "You have not selected a question"
 msgstr "質問が選択されていません。"
 
-#: admin/conditionshandling.php:173 admin/conditionshandling.php:249
+#: admin/conditionshandling.php:173 admin/conditionshandling.php:250
 msgid ""
 "Your condition could not be added! It did not include the question and/or "
 "answer upon which the condition was based. Please ensure you have selected a "
@@ -3526,240 +3465,241 @@ msgstr ""
 "条件を追加できませんでした。条件となる質問・回答がありません。質問・回答を確"
 "認してください。"
 
-#: admin/conditionshandling.php:410
+#: admin/conditionshandling.php:418
 msgid ""
 "Conditions successfully copied (some were skipped because they were "
 "duplicates)"
 msgstr "条件のコピー成功（条件が全く同様のため、いくつかスキップされました）"
 
-#: admin/conditionshandling.php:414
+#: admin/conditionshandling.php:422
 msgid "Conditions successfully copied"
 msgstr "条件のコピー成功"
 
-#: admin/conditionshandling.php:419
+#: admin/conditionshandling.php:427
 msgid "No conditions could be copied (due to duplicates)"
 msgstr "条件のコピー失敗（重複しているため）"
 
-#: admin/conditionshandling.php:862
+#: admin/conditionshandling.php:870
 msgid "Group of checkboxes"
 msgstr "チェックボックスのグループ"
 
-#: admin/conditionshandling.php:878
+#: admin/conditionshandling.php:886
 msgid "Single checkbox"
 msgstr "単一回答"
 
-#: admin/conditionshandling.php:881
+#: admin/conditionshandling.php:889
 msgid "checked"
 msgstr "確認済み"
 
-#: admin/conditionshandling.php:882
+#: admin/conditionshandling.php:890
 msgid "not checked"
 msgstr "未確認"
 
-#: admin/conditionshandling.php:990
+#: admin/conditionshandling.php:998
 msgid "Conditions designer"
 msgstr "条件設定"
 
-#: admin/conditionshandling.php:999
+#: admin/conditionshandling.php:1007
 msgid "Show conditions for this question"
 msgstr "この質問の条件を表示"
 
-#: admin/conditionshandling.php:1002
+#: admin/conditionshandling.php:1010
 msgid "Add and edit conditions"
 msgstr "条件の編集と追加"
 
-#: admin/conditionshandling.php:1004 admin/conditionshandling.php:1592
-#: admin/conditionshandling.php:1637
+#: admin/conditionshandling.php:1012 admin/conditionshandling.php:1600
+#: admin/conditionshandling.php:1645
 msgid "Copy conditions"
 msgstr "条件をコピー"
 
-#: admin/conditionshandling.php:1008
+#: admin/conditionshandling.php:1016
 msgid "Before"
 msgstr "以前"
 
-#: admin/conditionshandling.php:1025
+#: admin/conditionshandling.php:1033
 msgid "Current"
 msgstr "現在"
 
-#: admin/conditionshandling.php:1038
+#: admin/conditionshandling.php:1046
 msgid "After"
 msgstr "以後"
 
-#: admin/conditionshandling.php:1058 admin/conditionshandling.php:1872
+#: admin/conditionshandling.php:1066 admin/conditionshandling.php:1880
+#: admin/exportresults.php:103
 msgid "Questions"
 msgstr "質問"
 
-#: admin/conditionshandling.php:1146
+#: admin/conditionshandling.php:1154
 msgid "Only show question {QID} IF"
 msgstr "以下の場合のみ質問{QID}を表示する"
 
-#: admin/conditionshandling.php:1167
+#: admin/conditionshandling.php:1175
 msgid ""
 "Are you sure you want to delete all conditions set to the questions you have "
 "selected?"
 msgstr ""
 "本当に選択された質問へ設定されている全ての条件を削除してもよろしいですか？"
 
-#: admin/conditionshandling.php:1169
+#: admin/conditionshandling.php:1177
 msgid "Delete all conditions"
 msgstr "全ての条件を削除"
 
-#: admin/conditionshandling.php:1175
+#: admin/conditionshandling.php:1183
 msgid ""
 "Are you sure you want to renumber the scenarios with incremented numbers "
 "beginning from 1?"
 msgstr "本当にシナリオの1から始まる番号を付け直してもよろしいですか？"
 
-#: admin/conditionshandling.php:1177
+#: admin/conditionshandling.php:1185
 msgid "Renumber scenario automatically"
 msgstr "自動的にシナリオの番号を付け直します"
 
-#: admin/conditionshandling.php:1205 admin/conditionshandling.php:1345
+#: admin/conditionshandling.php:1213 admin/conditionshandling.php:1353
 #: admin/dataentry.php:1612 admin/dataentry.php:1702 admin/dataentry.php:1734
 msgid "OR"
 msgstr "または"
 
-#: admin/conditionshandling.php:1221
+#: admin/conditionshandling.php:1229
 msgid "New scenario number"
 msgstr "新規シナリオ番号"
 
-#: admin/conditionshandling.php:1228
+#: admin/conditionshandling.php:1236
 msgid "Update scenario"
 msgstr "シナリオを更新"
 
-#: admin/conditionshandling.php:1239
+#: admin/conditionshandling.php:1247
 msgid "Are you sure you want to delete all conditions set in this scenario?"
 msgstr "本当にこのシナリオの全ての条件を削除しますか？"
 
-#: admin/conditionshandling.php:1241
+#: admin/conditionshandling.php:1249
 msgid "Delete this scenario"
 msgstr "このシナリオを削除"
 
-#: admin/conditionshandling.php:1247
+#: admin/conditionshandling.php:1255
 msgid "Edit scenario"
 msgstr "シナリオを編集"
 
-#: admin/conditionshandling.php:1338
+#: admin/conditionshandling.php:1346
 msgid "and"
 msgstr "かつ"
 
-#: admin/conditionshandling.php:1370 admin/conditionshandling.php:1443
+#: admin/conditionshandling.php:1378 admin/conditionshandling.php:1451
 msgid "From token table"
 msgstr "トークンテーブルから"
 
-#: admin/conditionshandling.php:1374 admin/conditionshandling.php:1447
+#: admin/conditionshandling.php:1382 admin/conditionshandling.php:1455
 msgid "Inexistant token table"
 msgstr "トークンテーブルが存在しない"
 
-#: admin/conditionshandling.php:1432
+#: admin/conditionshandling.php:1440
 msgid "Not found"
 msgstr "見つかりません"
 
-#: admin/conditionshandling.php:1489
+#: admin/conditionshandling.php:1497
 msgid "Are you sure you want to delete this condition?"
 msgstr "本当にこの条件を削除しますか？"
 
-#: admin/conditionshandling.php:1491
+#: admin/conditionshandling.php:1499
 msgid "Delete this condition"
 msgstr "この条件を削除"
 
-#: admin/conditionshandling.php:1494
+#: admin/conditionshandling.php:1502
 msgid "Edit this condition"
 msgstr "この条件を編集"
 
-#: admin/conditionshandling.php:1571
+#: admin/conditionshandling.php:1579
 msgid "This question is always shown."
 msgstr "この質問はいつも表示されます。"
 
-#: admin/conditionshandling.php:1609
+#: admin/conditionshandling.php:1617
 msgid "No questions selected"
 msgstr "質問が選択されていません"
 
-#: admin/conditionshandling.php:1609
+#: admin/conditionshandling.php:1617
 msgid "Check all"
 msgstr "全て確認"
 
-#: admin/conditionshandling.php:1609
+#: admin/conditionshandling.php:1617
 msgid "Uncheck all"
 msgstr "全てのチェックを外す"
 
-#: admin/conditionshandling.php:1609
+#: admin/conditionshandling.php:1617
 msgid "selected"
 msgstr "選択済み"
 
-#: admin/conditionshandling.php:1612
+#: admin/conditionshandling.php:1620
 msgid "Copy the selected conditions to"
 msgstr "選択した条件をコピー"
 
-#: admin/conditionshandling.php:1661
+#: admin/conditionshandling.php:1669
 msgid "This survey's questions don't use conditions"
 msgstr "このアンケートの質問は条件を使いません。"
 
-#: admin/conditionshandling.php:1698
+#: admin/conditionshandling.php:1706
 msgid "Edit condition"
 msgstr "条件を編集"
 
-#: admin/conditionshandling.php:1702 admin/conditionshandling.php:1940
+#: admin/conditionshandling.php:1710 admin/conditionshandling.php:1948
 msgid "Add condition"
 msgstr "条件を追加"
 
-#: admin/conditionshandling.php:1713
+#: admin/conditionshandling.php:1721
 msgid "Add scenario"
 msgstr "シナリオを追加"
 
-#: admin/conditionshandling.php:1714
+#: admin/conditionshandling.php:1722
 msgid "Default scenario"
 msgstr "既定のシナリオ"
 
-#: admin/conditionshandling.php:1725
+#: admin/conditionshandling.php:1733
 msgid "Scenario"
 msgstr "シナリオ"
 
-#: admin/conditionshandling.php:1737
+#: admin/conditionshandling.php:1745
 msgid "Previous questions"
 msgstr "前の質問"
 
-#: admin/conditionshandling.php:1738 admin/conditionshandling.php:1873
+#: admin/conditionshandling.php:1746 admin/conditionshandling.php:1881
 msgid "Token fields"
 msgstr "トークンフィールド"
 
-#: admin/conditionshandling.php:1795
+#: admin/conditionshandling.php:1803
 msgid "Comparison operator"
 msgstr "オペレータ比較"
 
-#: admin/conditionshandling.php:1870
+#: admin/conditionshandling.php:1878
 msgid "Predefined"
 msgstr "予め定義された"
 
-#: admin/conditionshandling.php:1871
+#: admin/conditionshandling.php:1879
 msgid "Constant"
 msgstr "一定"
 
-#: admin/conditionshandling.php:1874
+#: admin/conditionshandling.php:1882
 msgid "RegExp"
 msgstr "正規表現"
 
-#: admin/conditionshandling.php:1881
+#: admin/conditionshandling.php:1889
 msgid "Predefined answer options for this question"
 msgstr "この質問の定義済みの回答オプション"
 
-#: admin/conditionshandling.php:1887
+#: admin/conditionshandling.php:1895
 msgid "Constant value"
 msgstr "一定の値"
 
-#: admin/conditionshandling.php:1905
+#: admin/conditionshandling.php:1913
 msgid "Answers from previous questions"
 msgstr "前の質問から回答"
 
-#: admin/conditionshandling.php:1917
+#: admin/conditionshandling.php:1925
 msgid "Attributes values from the participant's token"
 msgstr "参加者のトークンからの属性値"
 
-#: admin/conditionshandling.php:1934
+#: admin/conditionshandling.php:1942
 msgid "Update condition"
 msgstr "条件を更新"
 
-#: admin/conditionshandling.php:1950
+#: admin/conditionshandling.php:1958
 msgid "Clear"
 msgstr "消去"
 
@@ -3769,63 +3709,63 @@ msgid ""
 "following languages"
 msgstr "グループを追加できませんでした\\n\\n次の言語のグループ名がありません。"
 
-#: admin/database.php:107
+#: admin/database.php:108
 msgid "Error: The database reported the following error:"
 msgstr "エラー：　データベースは次のエラーを報告しています："
 
-#: admin/database.php:116
+#: admin/database.php:117
 msgid "New question group was saved."
 msgstr "新規質問グループの保存"
 
-#: admin/database.php:158
+#: admin/database.php:159
 msgid "Group could not be updated"
 msgstr "グループを更新できませんでした。"
 
-#: admin/database.php:163
+#: admin/database.php:164
 msgid "Question group successfully saved."
 msgstr "質問グループが追加されました。"
 
-#: admin/database.php:193
+#: admin/database.php:196
 msgid "The question group was deleted."
 msgstr "質問グループは削除されました。"
 
-#: admin/database.php:197
+#: admin/database.php:200
 msgid "Group could not be deleted"
 msgstr "グループを削除できませんでした。"
 
-#: admin/database.php:207
+#: admin/database.php:211
 msgid ""
 "The question could not be added. You must enter at least enter a question "
 "code."
 msgstr "質問を追加できませんでした。質問コードを入力しなければなりません。"
 
-#: admin/database.php:269
+#: admin/database.php:273
 #, php-format
 msgid "Question in language %s could not be created."
 msgstr "言語 %s の質問を作成できませんでした。"
 
-#: admin/database.php:280 admin/database.php:695 admin/database.php:724
+#: admin/database.php:284 admin/database.php:711 admin/database.php:740
 msgid "Question could not be created."
 msgstr "質問を作成できませんでした。"
 
-#: admin/database.php:302
+#: admin/database.php:306
 msgid "Question was successfully added."
 msgstr "あなたの質問の追加に正鵠しました。"
 
-#: admin/database.php:338
+#: admin/database.php:348
 #, fuzzy
 msgid "Question codes were successfully regenerated."
 msgstr "質問は削除されました。"
 
-#: admin/database.php:363 admin/database.php:582 admin/database.php:647
+#: admin/database.php:374 admin/database.php:597 admin/database.php:662
 msgid "Question could not be updated"
 msgstr "質問を更新できませんでした。"
 
-#: admin/database.php:411
+#: admin/database.php:422
 msgid "Default value settings were successfully saved."
 msgstr "初期設定値が保存されました。"
 
-#: admin/database.php:510
+#: admin/database.php:524
 msgid ""
 "Question could not be updated. There are conditions for other questions that "
 "rely on the answers to this question and changing the type will cause "
@@ -3836,47 +3776,23 @@ msgstr ""
 "の変更は問題を起こすおそれがあります。質問形式を変更する前に、この質問に条件"
 "付けられた質問を削除してください。"
 
-#: admin/database.php:609
+#: admin/database.php:624
 msgid "Question was successfully saved."
 msgstr "あなたの質問の保存に成功しました。"
 
-#: admin/database.php:619
-msgid ""
-"This question relies on other question's answers and can't be moved above "
-"groupId:"
-msgstr ""
-"この質問は他の質問の回答に依存しているので、次のグループIDよりも上位に移動す"
-"ることはできません："
-
-#: admin/database.php:620 admin/database.php:632
-msgid "in position"
-msgstr "次の場所に："
-
-#: admin/database.php:621 admin/database.php:633
-msgid "See conditions:"
-msgstr "条件を見る："
-
-#: admin/database.php:631
-msgid ""
-"Some questions rely on this question's answers. You can't move this question "
-"below groupId:"
-msgstr ""
-"他の質問がこの質問の回答に依存しているので、この質問を次のグループIDよりも下"
-"位に移動することはできません："
-
-#: admin/database.php:657
+#: admin/database.php:673
 msgid ""
 "Question could not be added. You must insert a code in the mandatory field"
 msgstr ""
 "質問を追加できませんでした。コードを強制入力フィールドに入れる必要がありま"
 "す。"
 
-#: admin/database.php:800
+#: admin/database.php:816
 #, fuzzy
 msgid "Question was successfully copied."
 msgstr "あなたの質問の追加に正鵠しました。"
 
-#: admin/database.php:815
+#: admin/database.php:834
 msgid ""
 "Question could not be deleted. There are conditions for other questions that "
 "rely on this question. You cannot delete this question until those "
@@ -3885,66 +3801,66 @@ msgstr ""
 "質問を削除できませんでした。この質問に条件付けられた質問があります。この質問"
 "に条件付けられた質問を先に削除してください。"
 
-#: admin/database.php:834
+#: admin/database.php:853
 msgid "Question was successfully deleted."
 msgstr "質問は削除されました。"
 
-#: admin/database.php:903
+#: admin/database.php:924
 msgid "Failed to update answers"
 msgstr "回答を更新できませんでした。"
 
-#: admin/database.php:911
+#: admin/database.php:934
 msgid ""
 "Answers with a code of 0 (zero) or blank code are not allowed, and will not "
 "be saved"
 msgstr ""
 "回答コードを0（ゼロ）もしくは空白にすることはできません。保存はできません。"
 
-#: admin/database.php:912
+#: admin/database.php:935
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "複製されたコードがあるので、これらのエントリは更新されません。"
 
-#: admin/database.php:915
+#: admin/database.php:938
 msgid "Answer options were successfully saved."
 msgstr "あなたの回答設定は無事保存されました。"
 
-#: admin/database.php:944
+#: admin/database.php:969
 msgid "Failed to delete answer"
 msgstr "回答を削除できませんでした。"
 
-#: admin/database.php:1034
+#: admin/database.php:1061
 msgid "Subquestions were successfully saved."
 msgstr "あなたの質問（サブ・クエスチョン）は無事保存されました。"
 
-#: admin/database.php:1195
+#: admin/database.php:1222
 msgid "Survey settings were successfully saved."
 msgstr "あなたの個人設定が保存されました。"
 
-#: admin/database.php:1200
+#: admin/database.php:1227
 msgid "Survey could not be updated"
 msgstr "アンケートを更新できませんでした。"
 
-#: admin/database.php:1225
+#: admin/database.php:1252
 msgid "Email templates successfully saved."
 msgstr "メールのテンプレートが保存されました。"
 
-#: admin/database.php:1239
+#: admin/database.php:1266
 msgid "ERROR deleting Survey id"
 msgstr "アンケートIDを削除する際にエラーが発生しました。"
 
-#: admin/database.php:1298
+#: admin/database.php:1325
 msgid "Survey text elements successfully saved."
 msgstr "あなたのアンケートの保存に成功しました。"
 
-#: admin/database.php:1317
+#: admin/database.php:1344
 msgid "Survey could not be created because it did not have a title"
 msgstr "アンケートを作成できませんでした。タイトルが設定されていません。"
 
-#: admin/database.php:1473
+#: admin/database.php:1500
 msgid "Survey was successfully added."
 msgstr "あなたのアンケートの保存に成功しました。"
 
-#: admin/database.php:1499
+#: admin/database.php:1526
 msgid "Your personal settings were successfully saved."
 msgstr "あなたの個人設定が保存されました。"
 
@@ -3987,23 +3903,23 @@ msgstr "このアンケートは匿名なので、回答を更新できません
 msgid "Try again"
 msgstr "もう一度"
 
-#: admin/dataentry.php:181 admin/dataentry.php:1342 admin/dataentry.php:2630
+#: admin/dataentry.php:181 admin/dataentry.php:1342 admin/dataentry.php:2631
 msgid "Identifier:"
 msgstr "名前："
 
-#: admin/dataentry.php:183 admin/dataentry.php:2632
+#: admin/dataentry.php:183 admin/dataentry.php:2633
 msgid "Password:"
 msgstr "パスワード："
 
-#: admin/dataentry.php:185 admin/dataentry.php:2634
+#: admin/dataentry.php:185 admin/dataentry.php:2635
 msgid "Confirm Password:"
 msgstr "パスワード確認："
 
-#: admin/dataentry.php:187 admin/dataentry.php:2636
+#: admin/dataentry.php:187 admin/dataentry.php:2637
 msgid "Email:"
 msgstr "Eメール："
 
-#: admin/dataentry.php:189 admin/dataentry.php:2638
+#: admin/dataentry.php:189 admin/dataentry.php:2639
 msgid "Start Language:"
 msgstr "開始時の言語："
 
@@ -4054,11 +3970,11 @@ msgstr "回答を編集（ID %s）"
 msgid "Viewing response (ID %s)"
 msgstr "回答を表示（ID %s）"
 
-#: admin/dataentry.php:1336 admin/dataentry.php:2620
+#: admin/dataentry.php:1336 admin/dataentry.php:2621
 msgid "Finalize response submission"
 msgstr "回答の投稿を確定"
 
-#: admin/dataentry.php:1338 admin/dataentry.php:2626
+#: admin/dataentry.php:1338 admin/dataentry.php:2627
 msgid "Save for further completion by survey user"
 msgstr "後で回答を再開できるように保存"
 
@@ -4090,20 +4006,20 @@ msgstr "わからない"
 msgid "Only answer this if the following conditions are met:"
 msgstr "次の条件が満たされた場合にのみ回答："
 
-#: admin/dataentry.php:1786
+#: admin/dataentry.php:1787
 msgid "Help about this question"
 msgstr "この質問に関するヘルプ"
 
-#: admin/dataentry.php:1830
+#: admin/dataentry.php:1831
 #, php-format
 msgid "Label %s"
 msgstr "ラベル %s"
 
-#: admin/dataentry.php:2675
+#: admin/dataentry.php:2676
 msgid "This survey is not yet active. Your response cannot be saved"
 msgstr "このアンケートはまだ実行されていないので、回答を保存できません。"
 
-#: admin/dataentry.php:2685
+#: admin/dataentry.php:2686
 msgid "The survey you selected does not exist"
 msgstr "選択されたアンケートは存在しません。"
 
@@ -4301,32 +4217,32 @@ msgstr "回答スケール %s"
 msgid "Answer option"
 msgstr "回答オプション"
 
-#: admin/editansweroptions.php:225
+#: admin/editansweroptions.php:216
 msgid "Answer:"
 msgstr "回答："
 
-#: admin/editansweroptions.php:249 admin/editsubquestions.php:232
+#: admin/editansweroptions.php:230 admin/editsubquestions.php:232
 msgid "Predefined label sets..."
 msgstr "定義済みのラベルセット．．．"
 
-#: admin/editansweroptions.php:250 admin/editsubquestions.php:233
+#: admin/editansweroptions.php:231 admin/editsubquestions.php:233
 msgid "Quick add..."
 msgstr "素早く追加．．．"
 
-#: admin/editansweroptions.php:262 admin/editsubquestions.php:243
+#: admin/editansweroptions.php:243 admin/editsubquestions.php:243
 msgid "Available label sets:"
 msgstr "有効なラベルセット："
 
-#: admin/editansweroptions.php:264 admin/editansweroptions.php:272
+#: admin/editansweroptions.php:245 admin/editansweroptions.php:253
 #: admin/editsubquestions.php:245 admin/editsubquestions.php:252
 msgid "Replace"
 msgstr "入れ替え"
 
-#: admin/editansweroptions.php:270
+#: admin/editansweroptions.php:251
 msgid "Enter your answers:"
 msgstr "回答を入力してください："
 
-#: admin/editansweroptions.php:271
+#: admin/editansweroptions.php:252
 #, fuzzy
 msgid ""
 "Enter one answer per line. You can provide a code by separating code and "
@@ -4336,7 +4252,7 @@ msgstr ""
 "一行に一つの回答を入力してください。セミコロン（;）またはTABを用いて区分コー"
 "ドと回答テキストを記載することができます。"
 
-#: admin/editansweroptions.php:277 admin/editsubquestions.php:257
+#: admin/editansweroptions.php:258 admin/editsubquestions.php:257
 msgid "Save changes"
 msgstr "変更を保存"
 
@@ -4515,6 +4431,7 @@ msgid "Edit survey settings"
 msgstr "アンケートのプロパティを編集"
 
 #: admin/editsurveysettings.php:90 admin/editsurveysettings.php:185
+#: admin/exportresults.php:90
 msgid "General"
 msgstr "全般"
 
@@ -5033,8 +4950,6 @@ msgid "Decimal separator:"
 msgstr "小数点:"
 
 #: admin/exportresults.php:57 admin/exportresults.php:58
-#: admin/export_data_r.php:83 admin/export_data_r.php:85
-#: admin/export_data_spss.php:102
 msgid "Export results"
 msgstr "結果を出力"
 
@@ -5078,8 +4993,7 @@ msgstr "質問コード"
 msgid "Convert spaces in question text to underscores"
 msgstr "質問テキストの下線をスペースに変換します"
 
-#: admin/exportresults.php:118 admin/http_importsurvey.php:159
-#: admin/importgroup.php:82
+#: admin/exportresults.php:118
 msgid "Answers"
 msgstr "回答"
 
@@ -5166,7 +5080,7 @@ msgstr ""
 "アンケートから各回答に関連づけられたトークンを出力することができます。追加し"
 "て出力するフィールドを選択してください。"
 
-#: admin/exportresults.php:245 admin/export_data_spss.php:135
+#: admin/exportresults.php:245
 msgid "Export data"
 msgstr "データを出力"
 
@@ -5213,39 +5127,39 @@ msgstr "トークン問題 - トークンテーブルが見つかりません"
 msgid "Not Selected"
 msgstr "未選択"
 
-#: admin/export_data_r.php:86
+#: admin/export_data_r.php:87
 msgid "Export result data to R"
 msgstr "結果データをRへ出力"
 
-#: admin/export_data_r.php:103 admin/export_data_spss.php:120
+#: admin/export_data_r.php:104 admin/export_data_spss.php:121
 msgid "Data selection:"
 msgstr "選択データ："
 
-#: admin/export_data_r.php:113 admin/export_data_spss.php:134
+#: admin/export_data_r.php:114 admin/export_data_spss.php:135
 msgid "Step 1:"
 msgstr "ステップ 1:"
 
-#: admin/export_data_r.php:113
+#: admin/export_data_r.php:114
 msgid "Export R syntax file"
 msgstr "Rシンタックスファイル出力"
 
-#: admin/export_data_r.php:114 admin/export_data_spss.php:135
+#: admin/export_data_r.php:115 admin/export_data_spss.php:136
 msgid "Step 2:"
 msgstr "ステップ 2"
 
-#: admin/export_data_r.php:114
+#: admin/export_data_r.php:115
 msgid "Export .csv data file"
 msgstr ".csvデータファイルを出力"
 
-#: admin/export_data_r.php:117 admin/export_data_spss.php:138
+#: admin/export_data_r.php:118 admin/export_data_spss.php:139
 msgid "Instructions for the impatient"
 msgstr "短期的な実施のための指示"
 
-#: admin/export_data_r.php:119 admin/export_data_spss.php:140
+#: admin/export_data_r.php:120 admin/export_data_spss.php:141
 msgid "Download the data and the syntax file."
 msgstr "データと構成ファイルのダウンロード"
 
-#: admin/export_data_r.php:120
+#: admin/export_data_r.php:121
 msgid ""
 "Save both of them on the R working directory (use getwd() and setwd() on the "
 "R command window to get and set it)"
@@ -5253,7 +5167,7 @@ msgstr ""
 "Rワークディレクトリに保存します（Rコマンドウィンドウ上で、 getwd() と setwd"
 "() を使用）"
 
-#: admin/export_data_r.php:121
+#: admin/export_data_r.php:122
 #, php-format
 msgid ""
 "digit:       source(\"%s\", encoding = \"UTF-8\")        on the R command "
@@ -5262,7 +5176,7 @@ msgstr ""
 "digit:       source(\"%s\", encoding = \"UTF-8\")        on the R command "
 "window"
 
-#: admin/export_data_r.php:123
+#: admin/export_data_r.php:124
 msgid ""
 "Your data should be imported now, the data.frame is named \"data\", the "
 "variable.labels are attributes of data (\"attributes(data)$variable.labels"
@@ -5271,41 +5185,41 @@ msgstr ""
 "data.frame名 \"data\" データがインポートされました、variable.labels はデータ"
 "の属性です (\"attributes(data)$variable.labels\") 。"
 
-#: admin/export_data_spss.php:103
+#: admin/export_data_spss.php:104
 msgid "Export result data to SPSS"
 msgstr "結果データをSPSSコマンドファイルに出力"
 
-#: admin/export_data_spss.php:126
+#: admin/export_data_spss.php:127
 msgid "SPSS version:"
 msgstr "SPSS バージョン："
 
-#: admin/export_data_spss.php:128
+#: admin/export_data_spss.php:129
 msgid "Prior to 16"
 msgstr "前から 16 へ"
 
-#: admin/export_data_spss.php:130
+#: admin/export_data_spss.php:131
 msgid "16 or up"
 msgstr "16あるいはさらに上"
 
-#: admin/export_data_spss.php:134
+#: admin/export_data_spss.php:135
 msgid "Export syntax"
 msgstr "シンタックスを出力"
 
-#: admin/export_data_spss.php:141
+#: admin/export_data_spss.php:142
 msgid "Open the syntax file in SPSS in Unicode mode"
 msgstr "UnicodeモードでのSPSSファイルにある構成ファイルを開く"
 
-#: admin/export_data_spss.php:142
+#: admin/export_data_spss.php:143
 msgid ""
 "Edit the 4th line and complete the filename with a full path to the "
 "downloaded data file."
 msgstr "4行目とダウンロードデータファイルへの完全なファイル名を編集"
 
-#: admin/export_data_spss.php:143
+#: admin/export_data_spss.php:144
 msgid "Choose 'Run/All' from the menu to run the import."
 msgstr "インポートを実行するメニューから 'Run/All' を選択"
 
-#: admin/export_data_spss.php:145
+#: admin/export_data_spss.php:146
 msgid "Your data should be imported now."
 msgstr "あなたのデータは、インポートされました。"
 
@@ -5479,7 +5393,7 @@ msgstr "アンケートモードは次の様に設定されています %s:"
 msgid "Global settings were saved."
 msgstr "全体設定は保存されました。"
 
-#: admin/globalsettings.php:127 admin/html.php:2064
+#: admin/globalsettings.php:127 admin/html.php:2158
 msgid "Global settings"
 msgstr "全体設定"
 
@@ -5819,7 +5733,7 @@ msgstr "データベース名"
 msgid "Users"
 msgstr "ユーザ"
 
-#: admin/globalsettings.php:629 admin/html.php:2109
+#: admin/globalsettings.php:629 admin/html.php:2203
 #: admin/http_importsurvey.php:155
 msgid "Surveys"
 msgstr "アンケート"
@@ -5896,7 +5810,7 @@ msgstr "このアンケートは実行中ですが、期限を過ぎています
 msgid "This survey is active but has a start date."
 msgstr "このアンケートは実行中ですが、期限を過ぎています。"
 
-#: admin/html.php:185 admin/html.php:567 admin/html.php:969
+#: admin/html.php:185 admin/html.php:593 admin/html.php:1016
 msgid "This survey is currently active."
 msgstr "アンケートは現在実行中です。"
 
@@ -5924,7 +5838,7 @@ msgstr "テキストを編集"
 msgid "General settings"
 msgstr "一般設定"
 
-#: admin/html.php:268 admin/html.php:1735
+#: admin/html.php:268 admin/html.php:1829
 msgid "Survey permissions"
 msgstr "アンケート権限"
 
@@ -5947,128 +5861,133 @@ msgstr "アンケートが実行中の場合は質問をコピーできません
 msgid "Email templates"
 msgstr "メールテンプレート"
 
-#: admin/html.php:317
+#: admin/html.php:315
+#, fuzzy
+msgid "Survey  Logic File"
+msgstr "アンケートロジックをリセット"
+
+#: admin/html.php:343
 msgid "Tools"
 msgstr "ツール"
 
-#: admin/html.php:337 admin/html.php:342
+#: admin/html.php:363 admin/html.php:368
 msgid "Quick-translation"
 msgstr "クイック翻訳"
 
-#: admin/html.php:341
+#: admin/html.php:367
 msgid "Currently there are no additional languages configured for this survey."
 msgstr "現在、このアンケートには言語条件が設定されていません。"
 
-#: admin/html.php:352
+#: admin/html.php:378
 msgid "Reset conditions"
 msgstr "条件のリセット"
 
-#: admin/html.php:356
+#: admin/html.php:382
 msgid "Currently there are no conditions configured for this survey."
 msgstr "現在、このアンケートには条件が設定されていません。"
 
-#: admin/html.php:357
+#: admin/html.php:383
 msgid "Reset Survey Logic"
 msgstr "アンケートロジックをリセット"
 
-#: admin/html.php:366
+#: admin/html.php:392
 msgid "Display / Export"
 msgstr "表示、出力"
 
-#: admin/html.php:372
+#: admin/html.php:398
 #, fuzzy
 msgid "Export survey"
 msgstr "アンケートを出力"
 
-#: admin/html.php:380 admin/html.php:385
+#: admin/html.php:406 admin/html.php:411
 msgid "Printable version"
 msgstr "印刷可能なバージョン"
 
-#: admin/html.php:406 admin/html.php:411
+#: admin/html.php:432 admin/html.php:437
 msgid "QueXML export"
 msgstr "QueXML エクスポート:"
 
-#: admin/html.php:440 admin/html.php:445
+#: admin/html.php:466 admin/html.php:471
 msgid "Responses & statistics"
 msgstr "回答と記述"
 
-#: admin/html.php:444 admin/html.php:475
+#: admin/html.php:470 admin/html.php:501
 msgid "This survey is not active - no responses are available."
 msgstr "このアンケートはまだ実行されていないので、回答を保存できません。"
 
-#: admin/html.php:456 admin/html.php:460
+#: admin/html.php:482 admin/html.php:486
 msgid "Data entry screen"
 msgstr "データ入力画面"
 
-#: admin/html.php:459
+#: admin/html.php:485
 msgid "This survey is not active, data entry is not allowed"
 msgstr "このアンケートは実行中でないので、データを入力することはできません。"
 
-#: admin/html.php:471 admin/html.php:476
+#: admin/html.php:497 admin/html.php:502
 msgid "Partial (saved) responses"
 msgstr "不完全な回答"
 
-#: admin/html.php:491
+#: admin/html.php:517
 msgid "Token management"
 msgstr "トークン管理"
 
-#: admin/html.php:506 admin/http_importsurvey.php:157
+#: admin/html.php:532 admin/http_importsurvey.php:157
 msgid "Question groups"
 msgstr "質問グループ"
 
-#: admin/html.php:533 admin/html.php:534
+#: admin/html.php:559 admin/html.php:560
 msgid "Previous question group"
 msgstr "前の質問グループ"
 
-#: admin/html.php:539
+#: admin/html.php:565
 msgid "No previous question group"
 msgstr "前の質問グループはありません"
 
-#: admin/html.php:548
+#: admin/html.php:574
 msgid "Next question group"
 msgstr "次の質問グループ"
 
-#: admin/html.php:554
+#: admin/html.php:580
 msgid "No next question group"
 msgstr "次の質問グループはありません"
 
-#: admin/html.php:567 admin/html.php:969
+#: admin/html.php:593 admin/html.php:1016
 msgid "Disabled"
 msgstr "無効"
 
-#: admin/html.php:574
+#: admin/html.php:600
 msgid "Add new group to survey"
 msgstr "新規グループをアンケートに追加"
 
-#: admin/html.php:579 admin/html.php:580
+#: admin/html.php:605 admin/html.php:606
 msgid "Hide details of this Survey"
 msgstr "このアンケートの詳細を隠す"
 
-#: admin/html.php:583 admin/html.php:584
+#: admin/html.php:609 admin/html.php:610
 msgid "Show details of this survey"
 msgstr "このアンケートの詳細を表示"
 
-#: admin/html.php:589 admin/html.php:590
+#: admin/html.php:615 admin/html.php:616
 msgid "Close this survey"
 msgstr "このアンケートを閉じる"
 
-#: admin/html.php:621
+#: admin/html.php:647
 msgid "It is presented question by question."
 msgstr "質問は一問ずつ表示されます。"
 
-#: admin/html.php:622
+#: admin/html.php:648
 msgid "It is presented group by group."
 msgstr "質問はグループごとに表示されます。"
 
-#: admin/html.php:623
+#: admin/html.php:649
 msgid "It is presented on one single page."
 msgstr "質問は一つのページにまとめて表示されます。"
 
-#: admin/html.php:626
+#: admin/html.php:652
 msgid "No question index will be shown with this format."
 msgstr "このフォーマットでは質問コードは表示されていません。"
 
-#: admin/html.php:627
+#: admin/html.php:653
 msgid ""
 "A question index will be shown; participants will be able to jump between "
 "viewed questions."
@@ -6076,178 +5995,188 @@ msgstr ""
 "質問コードが公開され、参加者は閲覧した質問項目にジャンプできるようになりま"
 "す。"
 
-#: admin/html.php:630
+#: admin/html.php:656
 msgid "IP Addresses will be logged"
 msgstr "IPアドレスが記録されます。"
 
-#: admin/html.php:631
+#: admin/html.php:657
 msgid "Referrer URL will be saved."
 msgstr "リンク元URLが記録されます。"
 
-#: admin/html.php:632
+#: admin/html.php:658
 msgid "It uses cookies for access control."
 msgstr "アクセス管理のためにクッキーを利用します。"
 
-#: admin/html.php:633
+#: admin/html.php:659
 msgid "If tokens are used, the public may register for this survey"
 msgstr "トークンを用いれば、一般の参加者がこのアンケートに登録できます。"
 
-#: admin/html.php:634
+#: admin/html.php:660
 msgid "Participants can save partially finished surveys"
 msgstr "未完了の回答を保存することができます。"
 
-#: admin/html.php:637
+#: admin/html.php:663
 msgid "Basic email notification is sent to:"
 msgstr "通知宛先（簡易）"
 
-#: admin/html.php:641
+#: admin/html.php:667
 msgid "Detailed email notification with response data is sent to:"
 msgstr "通知宛先（詳細：結果つき）"
 
-#: admin/html.php:646
+#: admin/html.php:672
 msgid "Regenerate question codes:"
 msgstr "質問コードを再生成："
 
-#: admin/html.php:648 admin/html.php:651
-msgid "Are you sure you want regenerate the question codes?"
-msgstr "質問コードを再生成しますか？"
+#: admin/html.php:674 admin/html.php:677
+msgid ""
+"Are you sure you want to regenerate the question codes?\n"
+"\n"
+"WARNING:\n"
+"This is safe if you only use the Conditions editor.\n"
+"\n"
+"HOWEVER, if you manually specified any relevance equations, regenerating the "
+"question codes will break all of that survey logic."
+msgstr ""
 
-#: admin/html.php:649
+#: admin/html.php:675
 msgid "Straight"
 msgstr "一括"
 
-#: admin/html.php:652
+#: admin/html.php:678
 msgid "By Group"
 msgstr "グループごと"
 
-#: admin/html.php:657
+#: admin/html.php:683
 msgid "Survey URL"
 msgstr "アンケートURL："
 
-#: admin/html.php:663 admin/html.php:670
+#: admin/html.php:689 admin/html.php:696
 msgid "Survey URL for language:"
 msgstr "次の言語のアンケートURL："
 
-#: admin/html.php:663 admin/html.php:670
+#: admin/html.php:689 admin/html.php:696
 msgid "Flag"
 msgstr "フラグ"
 
-#: admin/html.php:752
+#: admin/html.php:791
 msgid "End URL"
 msgstr "終了URL"
 
-#: admin/html.php:764
+#: admin/html.php:803
 msgid "Number of questions/groups"
 msgstr "質問数／グループ数"
 
-#: admin/html.php:766
+#: admin/html.php:805
 msgid "Survey currently active"
 msgstr "アンケートは現在実行中です。"
 
-#: admin/html.php:780
+#: admin/html.php:819
 msgid "Survey table name"
 msgstr "アンケートのテーブル名"
 
-#: admin/html.php:783
+#: admin/html.php:822
 msgid "Hints"
 msgstr "ヒント"
 
-#: admin/html.php:787
+#: admin/html.php:826
 msgid "Survey cannot be activated yet."
 msgstr "アンケートはまだ実行されていません。"
 
-#: admin/html.php:790
+#: admin/html.php:829
 msgid "You need to add question groups"
 msgstr "質問グループの追加が必要です。"
 
-#: admin/html.php:794
+#: admin/html.php:833
 msgid "You need to add questions"
 msgstr "質問を追加してください。"
 
-#: admin/html.php:845
+#: admin/html.php:884
 msgid "Preview current question group"
 msgstr "現在の質問グループを表示"
 
-#: admin/html.php:860
+#: admin/html.php:899
 msgid "Edit current question group"
 msgstr "現在の質問グループを編集"
 
-#: admin/html.php:873
+#: admin/html.php:908
+#, fuzzy
+msgid "Survey Logic File for current question group"
+msgstr "現在の質問グループを表示"
+
+#: admin/html.php:920
 msgid ""
 "Deleting this group will also delete any questions and answers it contains. "
 "Are you sure you want to continue?"
 msgstr ""
 "グループを削除すると、その中の質問および回答も削除されます。削除しますか？"
 
-#: admin/html.php:875 admin/html.php:882
+#: admin/html.php:922
 msgid "Delete current question group"
 msgstr "現在の質問グループを削除"
 
-#: admin/html.php:880
-msgid ""
-"Impossible to delete this group because there is at least one question "
-"having a condition on its content"
-msgstr ""
-"このグループの中の要素に条件付けられている質問があるので、グループを削除でき"
-"ません。"
-
-#: admin/html.php:898
+#: admin/html.php:945
 msgid "Export this question group"
 msgstr "現在の質問グループを出力"
 
-#: admin/html.php:912
+#: admin/html.php:959
 msgid "Change Question Order"
 msgstr "質問の順序を変更"
 
-#: admin/html.php:936
+#: admin/html.php:983
 msgid "Previous question"
 msgstr "前の質問"
 
-#: admin/html.php:942
+#: admin/html.php:989
 msgid "No previous question"
 msgstr "前の質問がありません"
 
-#: admin/html.php:952
+#: admin/html.php:999
 msgid "Next question"
 msgstr "次の質問"
 
-#: admin/html.php:958
+#: admin/html.php:1005
 msgid "No next question"
 msgstr "次の質問がありません"
 
-#: admin/html.php:976
+#: admin/html.php:1023
 msgid "Add New Question to Group"
 msgstr "新しい質問をこのグループに追加"
 
-#: admin/html.php:987
+#: admin/html.php:1034
 msgid "Hide Details of this Group"
 msgstr "このグループの詳細を隠す"
 
-#: admin/html.php:989
+#: admin/html.php:1036
 msgid "Show Details of this Group"
 msgstr "このグループの詳細を表示"
 
-#: admin/html.php:993
+#: admin/html.php:1040
 msgid "Close this Group"
 msgstr "このグループを閉じる"
 
-#: admin/html.php:1019
-msgid "Questions with conditions to this group"
-msgstr "条件付きの質問をこのグループに追加"
+#: admin/html.php:1068 admin/html.php:1422
+#, fuzzy
+msgid "Relevance:"
+msgstr "入れ替え"
 
-#: admin/html.php:1081 admin/html.php:1086
+#: admin/html.php:1139 admin/html.php:1144
 msgid "Preview This Question"
 msgstr "この質問をプレビュー"
 
-#: admin/html.php:1095 admin/html_functions.php:54
+#: admin/html.php:1153 admin/html_functions.php:54
 msgid "Please select a language:"
 msgstr "言語を選択してください："
 
-#: admin/html.php:1117
+#: admin/html.php:1175
 msgid "Edit Current Question"
 msgstr "この質問を編集"
 
-#: admin/html.php:1128
+#: admin/html.php:1184
+#, fuzzy
+msgid "Survey Logic File for current question"
+msgstr "現在の質問を削除"
+
+#: admin/html.php:1195
 msgid ""
 "Deleting this question will also delete any answer options and subquestions "
 "it includes. Are you sure you want to continue?"
@@ -6255,285 +6184,271 @@ msgstr ""
 "質問を削除すると、それに対する回答や含まれるサブ質問も削除されます。本当に削"
 "除しますか？"
 
-#: admin/html.php:1129
+#: admin/html.php:1196
 msgid "Delete current question"
 msgstr "現在の質問を削除"
 
-#: admin/html.php:1135
-msgid ""
-"It's impossible to delete this question because there is at least one "
-"question having a condition on it."
-msgstr "この質問に条件付けられている質問があるので、質問を削除できません。"
-
-#: admin/html.php:1137
-msgid "Disabled - Delete current question"
-msgstr "無効化 - 現在の質問を削除"
-
-#: admin/html.php:1149
+#: admin/html.php:1216
 msgid "Export this question"
 msgstr "この質問を出力"
 
-#: admin/html.php:1163 admin/html.php:1170
+#: admin/html.php:1230 admin/html.php:1237
 msgid "Copy Current Question"
 msgstr "この質問をコピー"
 
-#: admin/html.php:1169
+#: admin/html.php:1236
 msgid "You can't copy a question if the survey is active."
 msgstr "アンケートが実行中の場合は質問をコピーできません。"
 
-#: admin/html.php:1186
+#: admin/html.php:1253
 msgid "Set conditions for this question"
 msgstr "この質問に条件を設定"
 
-#: admin/html.php:1204 admin/html.php:1300
+#: admin/html.php:1271 admin/html.php:1378
 msgid "Edit subquestions for this question"
 msgstr "この質問のサブ質問を編集"
 
-#: admin/html.php:1219 admin/html.php:1290
+#: admin/html.php:1286 admin/html.php:1368
 msgid "Edit answer options for this question"
 msgstr "この質問の回答オプションを編集"
 
-#: admin/html.php:1233
+#: admin/html.php:1300
 msgid "Edit default answers for this question"
 msgstr "この質問の既定の回答を編集"
 
-#: admin/html.php:1238
+#: admin/html.php:1305
 msgid "Hide Details of this Question"
 msgstr "この質問の詳細を隠す"
 
-#: admin/html.php:1241
+#: admin/html.php:1308
 msgid "Show Details of this Question"
 msgstr "この質問の詳細を表示"
 
-#: admin/html.php:1244
+#: admin/html.php:1311
 msgid "Close this Question"
 msgstr "この質問を閉じる"
 
-#: admin/html.php:1260
+#: admin/html.php:1327
 msgid "Code:"
 msgstr "コード："
 
-#: admin/html.php:1264
+#: admin/html.php:1331
 msgid "Mandatory Question"
 msgstr "強制回答の質問"
 
-#: admin/html.php:1265
+#: admin/html.php:1332
 msgid "Optional Question"
 msgstr "任意回答の質問"
 
-#: admin/html.php:1269
+#: admin/html.php:1336
 msgid "Question:"
 msgstr "質問："
 
-#: admin/html.php:1271
+#: admin/html.php:1345
 msgid "Help:"
 msgstr "ヘルプ："
 
-#: admin/html.php:1277
+#: admin/html.php:1355
 msgid "Validation:"
 msgstr "検証（Validation）："
 
-#: admin/html.php:1282
+#: admin/html.php:1360
 msgid "Type:"
 msgstr "質問形式："
 
-#: admin/html.php:1288
+#: admin/html.php:1366
 msgid "You need to add answer options to this question"
 msgstr "この質問に回答オプションを追加する必要があります。"
 
-#: admin/html.php:1298
+#: admin/html.php:1376
 msgid "You need to add subquestions to this question"
 msgstr "この質問にサブ質問を追加する必要があります。"
 
-#: admin/html.php:1307
+#: admin/html.php:1385
 msgid "Option 'Other':"
 msgstr "オプション 'その他'："
 
-#: admin/html.php:1316
+#: admin/html.php:1394
 msgid "Mandatory:"
 msgstr "質問を強制："
 
-#: admin/html.php:1325
-msgid "Other questions having conditions on this question:"
-msgstr "この質問には他の質問が条件付けられています。"
-
-#: admin/html.php:1362 admin/html.php:1864
+#: admin/html.php:1456 admin/html.php:1958
 msgid "Add User"
 msgstr "ユーザを追加"
 
-#: admin/html.php:1378
+#: admin/html.php:1472
 msgid "User added."
 msgstr "ユーザが追加されました。"
 
-#: admin/html.php:1380
+#: admin/html.php:1474
 msgid "Set survey permissions"
 msgstr "アンケート権限の設定"
 
-#: admin/html.php:1388 admin/html.php:1395 admin/html.php:1456
+#: admin/html.php:1482 admin/html.php:1489 admin/html.php:1550
 msgid "Failed to add user."
 msgstr "ユーザが追加できませんでした。"
 
-#: admin/html.php:1389
+#: admin/html.php:1483
 msgid "Username already exists."
 msgstr "そのユーザ名はすでに存在しています。"
 
-#: admin/html.php:1396 admin/html.php:1457
+#: admin/html.php:1490 admin/html.php:1551
 msgid "No Username selected."
 msgstr "ユーザ名が選択されていません。"
 
-#: admin/html.php:1410
+#: admin/html.php:1504
 msgid "Add user group"
 msgstr "ユーザグループを追加"
 
-#: admin/html.php:1432
+#: admin/html.php:1526
 msgid "User Group added."
 msgstr "ユーザグループが追加されました。"
 
-#: admin/html.php:1435
+#: admin/html.php:1529
 msgid "Set Survey Rights"
 msgstr "調査権を設定"
 
-#: admin/html.php:1443 admin/html.php:1450
+#: admin/html.php:1537 admin/html.php:1544
 msgid "Failed to add User Group."
 msgstr "ユーザグループが追加できませんでした。"
 
-#: admin/html.php:1470
+#: admin/html.php:1564
 msgid "Deleting User"
 msgstr "ユーザを削除"
 
-#: admin/html.php:1482 admin/html.php:1739
+#: admin/html.php:1576 admin/html.php:1833
 msgid "Username"
 msgstr "ユーザ名"
 
-#: admin/html.php:1483
+#: admin/html.php:1577
 msgid "Success!"
 msgstr "成功しました。"
 
-#: admin/html.php:1487
+#: admin/html.php:1581
 msgid "Could not delete user. User was not supplied."
 msgstr "ユーザを削除できません。ユーザが記入されていません。"
 
-#: admin/html.php:1513
+#: admin/html.php:1607
 #, php-format
 msgid "Edit survey permissions for user %s"
 msgstr "ユーザ%sにアンケート権限を編集"
 
-#: admin/html.php:1518
+#: admin/html.php:1612
 #, php-format
 msgid "Edit survey permissions for group %s"
 msgstr "グループ%sのアンケート権限を編集"
 
-#: admin/html.php:1524
+#: admin/html.php:1618
 msgid "Permission"
 msgstr "権限"
 
-#: admin/html.php:1526
+#: admin/html.php:1620
 msgid "Create"
 msgstr "作成者"
 
-#: admin/html.php:1527
+#: admin/html.php:1621
 msgid "View/read"
 msgstr "表示"
 
-#: admin/html.php:1528
+#: admin/html.php:1622
 msgid "Update"
 msgstr "更新"
 
-#: admin/html.php:1531
+#: admin/html.php:1625
 msgid "Export"
 msgstr "出力"
 
-#: admin/html.php:1593
+#: admin/html.php:1687
 msgid "Export Survey Structure"
 msgstr "アンケート構成を出力"
 
-#: admin/html.php:1597
+#: admin/html.php:1691
 msgid "LimeSurvey XML survey file (*.lss)"
 msgstr "LimeSurvey XMLアンケートファイル (*.lss)"
 
-#: admin/html.php:1601
+#: admin/html.php:1695
 msgid "queXML Survey XML Format (*.xml)"
 msgstr "queXML アンケートXMLフォーマット (*.xml)"
 
-#: admin/html.php:1613 admin/html.php:1654 admin/html.php:1701
+#: admin/html.php:1707 admin/html.php:1748 admin/html.php:1795
 msgid "Save for Lsrc (*.csv)"
 msgstr "Lsrc用に保存 (*.csv)"
 
-#: admin/html.php:1620
+#: admin/html.php:1714
 msgid "Export To File"
 msgstr "ファイルへ出力"
 
-#: admin/html.php:1632
+#: admin/html.php:1726
 msgid "Export group structure"
 msgstr "グループ構成を出力"
 
-#: admin/html.php:1638 admin/html.php:1685
+#: admin/html.php:1732 admin/html.php:1779
 msgid "LimeSurvey group file (*.csv)"
 msgstr "LimeSurveyグループファイル (*.csv)"
 
-#: admin/html.php:1661 admin/html.php:1708
+#: admin/html.php:1755 admin/html.php:1802
 msgid "Export to file"
 msgstr "ファイルへ出力"
 
-#: admin/html.php:1679
+#: admin/html.php:1773
 msgid "Export question structure"
 msgstr "質問構成を出力"
 
-#: admin/html.php:1740
+#: admin/html.php:1834
 msgid "User Group"
 msgstr "ユーザグループ"
 
-#: admin/html.php:1741
+#: admin/html.php:1835
 msgid "Full name"
 msgstr "フルネーム"
 
-#: admin/html.php:1796
+#: admin/html.php:1890
 msgid "Edit permissions"
 msgstr "権限を編集"
 
-#: admin/html.php:1861
+#: admin/html.php:1955
 msgid "User"
 msgstr "ユーザ"
 
-#: admin/html.php:1864
+#: admin/html.php:1958
 msgid "Please select a user first"
 msgstr "最初にユーザーを選択してください。"
 
-#: admin/html.php:1868 admin/importgroup.php:79
+#: admin/html.php:1962 admin/importgroup.php:79
 msgid "Groups"
 msgstr "グループ"
 
-#: admin/html.php:1871
+#: admin/html.php:1965
 msgid "Add User Group"
 msgstr "ユーザグループを追加"
 
-#: admin/html.php:1871
+#: admin/html.php:1965
 msgid "Please select a user group first"
 msgstr "最初にユーザグループを選択してください。"
 
-#: admin/html.php:1884
+#: admin/html.php:1978
 msgid "Edit survey permissions"
 msgstr "アンケート権限を編集"
 
-#: admin/html.php:1933
+#: admin/html.php:2027
 msgid ""
 "Survey permissions for all users in this group were successfully updated."
 msgstr "グループ全員の権限設定が保存されました。"
 
-#: admin/html.php:1940
+#: admin/html.php:2034
 msgid "Survey permissions were successfully updated."
 msgstr "権限の更新に成功しました。"
 
-#: admin/html.php:1944
+#: admin/html.php:2038
 msgid "Failed to update survey permissions!"
 msgstr "アンケート権限を更新できませんでした。"
 
-#: admin/html.php:1977
+#: admin/html.php:2071
 #, fuzzy
 msgid "Quick-translate survey"
 msgstr "アンケートの翻訳"
 
-#: admin/html.php:2028
+#: admin/html.php:2122
 msgid ""
 "Warning: You are still using the default password ('password'). Please "
 "change your password and re-login again."
@@ -6541,48 +6456,48 @@ msgstr ""
 "警告：パスワードがデフォルト（'password'）のままになっています。パスワードを"
 "変更して、再ログインしてください。"
 
-#: admin/html.php:2032
+#: admin/html.php:2126
 msgid "Administration"
 msgstr "管理"
 
-#: admin/html.php:2035
+#: admin/html.php:2129
 msgid "Logged in as:"
 msgstr "次の名前でログイン："
 
-#: admin/html.php:2037
+#: admin/html.php:2131
 msgid "Edit your personal preferences"
 msgstr "あなた自身の設定編集"
 
-#: admin/html.php:2043
+#: admin/html.php:2137
 #, php-format
 msgid "Update available: %s"
 msgstr "利用可能なアップデート: %s"
 
-#: admin/html.php:2049
+#: admin/html.php:2143
 msgid "Default Administration Page"
 msgstr "管理画面"
 
-#: admin/html.php:2056
+#: admin/html.php:2150
 msgid "Create/Edit Users"
 msgstr "ユーザを作成／編集"
 
-#: admin/html.php:2059
+#: admin/html.php:2153
 msgid "Create/Edit Groups"
 msgstr "ユーザグループを作成／編集"
 
-#: admin/html.php:2071
+#: admin/html.php:2165
 msgid "Check Data Integrity"
 msgstr "データの整合性を確認"
 
-#: admin/html.php:2076
+#: admin/html.php:2170
 msgid "List Surveys"
 msgstr "アンケートの一覧"
 
-#: admin/html.php:2085
+#: admin/html.php:2179
 msgid "Backup Entire Database"
 msgstr "データベースをバックアップ"
 
-#: admin/html.php:2090
+#: admin/html.php:2184
 msgid ""
 "The database export is only available for MySQL databases. For other "
 "database types please use the according backup mechanism to create a "
@@ -6592,54 +6507,54 @@ msgstr ""
 "る場合は、バックアップを作成する要領で、データベースのダンプを作成してくださ"
 "い。"
 
-#: admin/html.php:2098
+#: admin/html.php:2192
 msgid "Edit label sets"
 msgstr "ラベルセットの編集"
 
-#: admin/html.php:2105
+#: admin/html.php:2199
 msgid "Template Editor"
 msgstr "テンプレートエディタ"
 
-#: admin/html.php:2118
+#: admin/html.php:2212
 msgid "Create, import, or copy a survey"
 msgstr "アンケートの作成／インポート／コピー"
 
-#: admin/html.php:2127
+#: admin/html.php:2221
 msgid "Logout"
 msgstr "ログアウト"
 
-#: admin/html.php:2140
+#: admin/html.php:2234
 #, php-format
 msgid "Welcome to %s!"
 msgstr "ようこそ %s!"
 
-#: admin/html.php:2141
+#: admin/html.php:2235
 msgid "Some piece-of-cake steps to create your very own first survey:"
 msgstr "最初のアンケートを作成するのに、いくつかのステップを踏みます："
 
-#: admin/html.php:2143
+#: admin/html.php:2237
 #, php-format
 msgid "Create a new survey clicking on the %s icon in the upper right."
 msgstr "右上の %s アイコンをクリックして新規アンケートを作成します。"
 
-#: admin/html.php:2143
+#: admin/html.php:2237
 msgid "Add survey"
 msgstr "アンケートの追加"
 
-#: admin/html.php:2144
+#: admin/html.php:2238
 msgid "Create a new question group inside your survey."
 msgstr "アンケート内に新規質問グループを作成します。"
 
-#: admin/html.php:2145
+#: admin/html.php:2239
 msgid "Create one or more questions inside the new question group."
 msgstr "新規質問グループ内に一つ以上の質問を作成します。"
 
-#: admin/html.php:2146
+#: admin/html.php:2240
 #, php-format
 msgid "Done. Test your survey using the %s icon."
 msgstr "完了しました。あなたのアンケートを %s アイコンを使ってテストします。"
 
-#: admin/html.php:2146
+#: admin/html.php:2240
 msgid "Test survey"
 msgstr "アンケートテスト"
 
@@ -6704,7 +6619,7 @@ msgstr "結果をSPSS/PASWコマンドファイルに出力"
 msgid "Export results to a R data file"
 msgstr "結果をRデータファイルに出力"
 
-#: admin/html_functions.php:112
+#: admin/html_functions.php:112 admin/importoldresponses.php:51
 msgid "Import responses from a deactivated survey table"
 msgstr "停止したアンケートテーブルから回答をインポート"
 
@@ -6725,6 +6640,7 @@ msgid "Iterate survey"
 msgstr "アンケートを繰り返す"
 
 #: admin/http_importsurvey.php:47 admin/importgroup.php:28
+#: admin/importlabel.php:30
 #, php-format
 msgid ""
 "An error occurred uploading your file. This may be caused by incorrect "
@@ -6734,10 +6650,12 @@ msgstr ""
 "問題があると考えられます。"
 
 #: admin/http_importsurvey.php:54 admin/importgroup.php:53
+#: admin/importlabel.php:36
 msgid "File upload succeeded."
 msgstr "ファイルのアップロードに成功しました。"
 
 #: admin/http_importsurvey.php:55 admin/importgroup.php:54
+#: admin/importlabel.php:37
 msgid "Reading file.."
 msgstr "ファイルを読み込んでいます…"
 
@@ -6770,6 +6688,7 @@ msgid "Conditions"
 msgstr "条件"
 
 #: admin/http_importsurvey.php:174 admin/importgroup.php:85
+#: admin/importlabel.php:76 admin/importlabel.php:86
 msgid "Label sets"
 msgstr "ラベルセット"
 
@@ -6797,7 +6716,7 @@ msgstr "クォータメンバー"
 msgid "quota language settings"
 msgstr "クォータ言語設定"
 
-#: admin/http_importsurvey.php:186
+#: admin/http_importsurvey.php:186 admin/importlabel.php:66
 msgid "Warnings"
 msgstr "注意："
 
@@ -6887,7 +6806,7 @@ msgstr ""
 msgid "Faulty line in import - fields and data don't match"
 msgstr "インポートに障害があるライン - フィールドとデータが一致しない"
 
-#: admin/importgroup.php:906
+#: admin/importgroup.php:909
 msgid ""
 "The languages of the imported group file must at least include the base "
 "language of this survey."
@@ -6895,7 +6814,7 @@ msgstr ""
 "インポートされたグループファイルの言語は、少なくともこのアンケートの基本言語"
 "を含む必要があります。"
 
-#: admin/importlabel.php:21 admin/import_resources_zip.php:215
+#: admin/importlabel.php:21
 msgid "Import Label Set"
 msgstr "ラベルをインポート"
 
@@ -6912,7 +6831,7 @@ msgstr ""
 msgid "Return to label set administration"
 msgstr "ラベルセット管理画面に戻る"
 
-#: admin/importlabel.php:77 admin/importlabel.php:87 admin/labels.php:300
+#: admin/importlabel.php:77 admin/importlabel.php:87
 msgid "Labels"
 msgstr "ラベル"
 
@@ -6980,7 +6899,7 @@ msgstr "あなたの%s個の回答は無事インポートされました。"
 msgid "%s old response(s) and according timings were successfully imported."
 msgstr "あなたの%s個の回答と回答時間は無事保存されました。"
 
-#: admin/importquestion.php:19 admin/questionhandling.php:553
+#: admin/importquestion.php:19 admin/questionhandling.php:572
 msgid "Import Question"
 msgstr "質問をインポート"
 
@@ -7000,7 +6919,7 @@ msgstr "質問のインポートが完了しました。"
 msgid "Go to question"
 msgstr "質問へ"
 
-#: admin/importquestion.php:727
+#: admin/importquestion.php:729
 msgid ""
 "The languages of the imported question file must at least include the base "
 "language of this survey."
@@ -7047,13 +6966,13 @@ msgstr ""
 "CSV／SQLファイルのグループが同じアンケートの一部ではありません。アンケートの"
 "インポートが停止されました。"
 
-#: admin/import_functions.php:1021
+#: admin/import_functions.php:1021 admin/quota.php:833
 msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr ""
 "申し訳ありません、あなたの回答はこのアンケートのクォータを超えてしまいまし"
 "た。"
 
-#: admin/import_functions.php:1092
+#: admin/import_functions.php:1095
 msgid "This is not a valid LimeSurvey survey structure XML file."
 msgstr ""
 "インポートに失敗しました。このファイルは利用可能なXMLファイルではありません。"
@@ -7670,8 +7589,8 @@ msgstr "ラベルセットファイル選択 (*.lsl,*.csv):"
 msgid "Don't import if label set already exists:"
 msgstr "同じラベルセットが既に存在している場合は、インポートされません："
 
-#: admin/labels.php:231 admin/questiongrouphandling.php:83
-#: admin/questionhandling.php:548
+#: admin/labels.php:231 admin/questiongrouphandling.php:87
+#: admin/questionhandling.php:567
 msgid "Convert resource links?"
 msgstr "リソースリンク変換しますか？"
 
@@ -7819,10 +7738,6 @@ msgstr "ログイン試行数が上限を超えました。%d分待ってから�
 msgid "Forgot Your Password?"
 msgstr "パスワードをお忘れですか？"
 
-#: admin/preview.php:105
-msgid "[Dependency on another question (ID $4)]"
-msgstr "[別の質問に依存(ID $4)]"
-
 #: admin/printablesurvey.php:135
 msgid "Database"
 msgstr "データベース"
@@ -7831,11 +7746,11 @@ msgstr "データベース"
 msgid "table"
 msgstr "テーブル"
 
-#: admin/printablesurvey.php:149 admin/printablesurvey.php:1930
+#: admin/printablesurvey.php:149 admin/printablesurvey.php:1948
 msgid "Submit Your Survey."
 msgstr "回答を投稿してください。"
 
-#: admin/printablesurvey.php:151 admin/printablesurvey.php:1930
+#: admin/printablesurvey.php:151 admin/printablesurvey.php:1948
 msgid "Thank you for completing this survey."
 msgstr "アンケートはこれで完了です。御協力ありがとうございました。"
 
@@ -7843,7 +7758,7 @@ msgstr "アンケートはこれで完了です。御協力ありがとうござ
 msgid "Please fax your completed survey to:"
 msgstr "記入が完了したアンケート用紙は、次の番号までファックスで御送信下さい。"
 
-#: admin/printablesurvey.php:171 admin/printablesurvey.php:1924
+#: admin/printablesurvey.php:171 admin/printablesurvey.php:1942
 #, php-format
 msgid "Please submit by %s"
 msgstr "%s で提出してください"
@@ -7876,143 +7791,158 @@ msgstr "回答が次よりも大きい"
 msgid "Answer matched (regexp)"
 msgstr "回答にマッチ（正規表現）"
 
-#: admin/printablesurvey.php:503 admin/printablesurvey.php:531
+#: admin/printablesurvey.php:496
+#, fuzzy
+msgid "not selected"
+msgstr "未選択"
+
+#: admin/printablesurvey.php:509 admin/printablesurvey.php:537
 msgid "is"
 msgstr "は"
 
-#: admin/printablesurvey.php:507
+#: admin/printablesurvey.php:513
 msgid "is NOT"
 msgstr "ではない"
 
-#: admin/printablesurvey.php:511
+#: admin/printablesurvey.php:517
 msgid "is less than"
 msgstr "次よりも小さい"
 
-#: admin/printablesurvey.php:515
+#: admin/printablesurvey.php:521
 msgid "is less than or equal to"
 msgstr "次よりも小さい、あるいは等しい"
 
-#: admin/printablesurvey.php:519
+#: admin/printablesurvey.php:525
 msgid "is greater than or equal to"
 msgstr "次よりも大きい、あるいは等しい"
 
-#: admin/printablesurvey.php:523
+#: admin/printablesurvey.php:529
 msgid "is greater than"
 msgstr "次よりも大きい"
 
-#: admin/printablesurvey.php:527
+#: admin/printablesurvey.php:533
 msgid "is matched (regexp)"
 msgstr "にマッチ（正規表現）"
 
-#: admin/printablesurvey.php:726
+#: admin/printablesurvey.php:735
 msgid "RANK"
 msgstr "ランク"
 
-#: admin/printablesurvey.php:745
+#: admin/printablesurvey.php:754
 msgid "at question"
 msgstr "質問において"
 
-#: admin/printablesurvey.php:757
+#: admin/printablesurvey.php:766
 msgid "Only answer this question if the following conditions are met:"
 msgstr "次の条件が満たされた場合にのみ回答："
 
-#: admin/printablesurvey.php:777
+#: admin/printablesurvey.php:786
 msgid "ID:"
 msgstr "ID："
 
-#: admin/printablesurvey.php:778
+#: admin/printablesurvey.php:787
 msgid "Question code:"
 msgstr "質問コード："
 
-#: admin/printablesurvey.php:835 admin/printablesurvey.php:836
-#: admin/printablesurvey.php:860 admin/printablesurvey.php:867
-#: admin/printablesurvey.php:893 admin/printablesurvey.php:896
-#: admin/printablesurvey.php:960 admin/printablesurvey.php:961
-#: admin/printablesurvey.php:1199 admin/printablesurvey.php:1203
+#: admin/printablesurvey.php:844 admin/printablesurvey.php:845
+#: admin/printablesurvey.php:869 admin/printablesurvey.php:876
+#: admin/printablesurvey.php:902 admin/printablesurvey.php:905
+#: admin/printablesurvey.php:969 admin/printablesurvey.php:970
+#: admin/printablesurvey.php:1217 admin/printablesurvey.php:1221
 msgid "Please choose *only one* of the following:"
 msgstr "以下から<b>ひとつだけ</b>選んでください。"
 
-#: admin/printablesurvey.php:852 admin/printablesurvey.php:854
+#: admin/printablesurvey.php:861 admin/printablesurvey.php:863
 msgid "Please enter a date:"
 msgstr "日付を入力してください："
 
-#: admin/printablesurvey.php:987
+#: admin/printablesurvey.php:996
 msgid "Please number each box in order of preference from 1 to"
 msgstr "好ましい順に、各ボックスに番号を1から順に付けてください。最大数："
 
-#: admin/printablesurvey.php:988
+#: admin/printablesurvey.php:998
 msgid "Please number each box in order of preference from 1 to "
 msgstr "好ましい順に、各ボックスに番号を1から順に付けてください"
 
-#: admin/printablesurvey.php:1010 admin/printablesurvey.php:1011
+#: admin/printablesurvey.php:1020 admin/printablesurvey.php:1021
 msgid "Please choose *all* that apply:"
 msgstr "あてはまるものを<b>全て</b>選んでください。"
 
-#: admin/printablesurvey.php:1016 admin/printablesurvey.php:1017
+#: admin/printablesurvey.php:1026 admin/printablesurvey.php:1027
 #, php-format
 msgid "Please choose *at most* %s answers:"
 msgstr "多くて %s 回答を選択してください："
 
-#: admin/printablesurvey.php:1068 admin/printablesurvey.php:1069
+#: admin/printablesurvey.php:1078 admin/printablesurvey.php:1079
 msgid "Please choose all that apply and provide a comment:"
 msgstr "あてはまるものをすべて選択し、それについてコメントしてください："
 
-#: admin/printablesurvey.php:1074 admin/printablesurvey.php:1075
+#: admin/printablesurvey.php:1084 admin/printablesurvey.php:1085
 msgid "Please choose *at most* "
 msgstr "あてはまるものを選んでください。　選択可能最大数："
 
-#: admin/printablesurvey.php:1074 admin/printablesurvey.php:1075
+#: admin/printablesurvey.php:1084 admin/printablesurvey.php:1085
 msgid "answers and provide a comment:"
 msgstr "あてはまるものをすべて選択し、それについてコメントしてください："
 
-#: admin/printablesurvey.php:1114 admin/printablesurvey.php:1132
+#: admin/printablesurvey.php:1124 admin/printablesurvey.php:1142
 msgid "Please write your answer(s) here:"
 msgstr "ここに回答を記入してください："
 
-#: admin/printablesurvey.php:1154 admin/printablesurvey.php:1156
-#: admin/printablesurvey.php:1163 admin/printablesurvey.php:1166
-#: admin/printablesurvey.php:1176 admin/printablesurvey.php:1179
-#: admin/printablesurvey.php:1189 admin/printablesurvey.php:1192
+#: admin/printablesurvey.php:1164 admin/printablesurvey.php:1166
+#: admin/printablesurvey.php:1173 admin/printablesurvey.php:1176
+#: admin/printablesurvey.php:1186 admin/printablesurvey.php:1189
+#: admin/printablesurvey.php:1207 admin/printablesurvey.php:1210
 msgid "Please write your answer here:"
 msgstr "ここに回答を記入してください："
 
-#: admin/printablesurvey.php:1213 admin/printablesurvey.php:1230
-#: admin/printablesurvey.php:1277 admin/printablesurvey.php:1286
-#: admin/printablesurvey.php:1313 admin/printablesurvey.php:1328
-#: admin/printablesurvey.php:1354 admin/printablesurvey.php:1369
-#: admin/printablesurvey.php:1578 admin/printablesurvey.php:1588
-#: admin/printablesurvey.php:1682 admin/printablesurvey.php:1685
-#: admin/printablesurvey.php:1789 admin/printablesurvey.php:1790
+#: admin/printablesurvey.php:1231 admin/printablesurvey.php:1248
+#: admin/printablesurvey.php:1295 admin/printablesurvey.php:1304
+#: admin/printablesurvey.php:1331 admin/printablesurvey.php:1346
+#: admin/printablesurvey.php:1372 admin/printablesurvey.php:1387
+#: admin/printablesurvey.php:1596 admin/printablesurvey.php:1606
+#: admin/printablesurvey.php:1700 admin/printablesurvey.php:1703
+#: admin/printablesurvey.php:1807 admin/printablesurvey.php:1808
 msgid "Please choose the appropriate response for each item:"
 msgstr "各選択肢について、適切な回答を選択してください。"
 
-#: admin/printablesurvey.php:1431 admin/printablesurvey.php:1432
+#: admin/printablesurvey.php:1449 admin/printablesurvey.php:1450
 #, php-format
 msgid "Please write a multiple of %d between %d and %d for each item:"
 msgstr "%d の複数項目それぞれに書き込んでください( %d から %d の間)："
 
-#: admin/printablesurvey.php:1435 admin/printablesurvey.php:1436
+#: admin/printablesurvey.php:1453 admin/printablesurvey.php:1454
 #, php-format
 msgid "Please enter a number between %d and %d for each item:"
 msgstr "%d と %d の間のそれぞれの項目に数字を入力してください："
 
-#: admin/printablesurvey.php:1847
+#: admin/printablesurvey.php:1865
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
 msgstr "このアンケートは全部で {NUMBEROFQUESTIONS} 問あります。"
 
-#: admin/printablesurvey.php:1928
+#: admin/printablesurvey.php:1946
 #, php-format
 msgid "Please fax your completed survey to: %s"
 msgstr ""
 "記入が完了したアンケート用紙は、次の番号までファックスで御送信下さい。： %s"
 
-#: admin/printablesurvey.php:1947
+#: admin/printablesurvey.php:1960
+#, fuzzy, php-format
+msgid "Please choose no more than %d items"
+msgstr "項目を確認してください。"
+
+#: admin/printablesurvey.php:1963
+#, fuzzy, php-format
+msgid "Please choose at least %d items"
+msgstr "一つ以上の項目を確認してください。"
+
+#: admin/printablesurvey.php:1977
 #, php-format
 msgid ""
 "Only answer this question for the items you selected in question %d ('%s')"
 msgstr "質問 %d ('%s') で選択されたアイテムのみこの質問に回答"
 
-#: admin/printablesurvey.php:1956
+#: admin/printablesurvey.php:1986
 #, php-format
 msgid ""
 "Only answer this question for the items you did not select in question %d ('%"
@@ -8031,61 +7961,37 @@ msgstr "エラー：　グループタイトルをそれぞれの言語で入力
 msgid "Required"
 msgstr "必須"
 
-#: admin/questiongrouphandling.php:65
+#: admin/questiongrouphandling.php:65 admin/questiongrouphandling.php:151
+#: admin/questionhandling.php:71 admin/questionhandling.php:496
+msgid "Relevance equation:"
+msgstr "関連性の方程式:"
+
+#: admin/questiongrouphandling.php:69
 msgid "Save question group"
 msgstr "質問グループ保存"
 
-#: admin/questiongrouphandling.php:81
+#: admin/questiongrouphandling.php:85
 msgid "Select question group file (*.lsg/*.csv):"
 msgstr "質問グループファイル選択 (*.lsg/*.csv):"
 
-#: admin/questiongrouphandling.php:164
+#: admin/questiongrouphandling.php:172
 msgid "Edit Group"
 msgstr "グループの編集"
 
-#: admin/questiongrouphandling.php:178
+#: admin/questiongrouphandling.php:186
 msgid "Update Group"
 msgstr "グループの更新"
 
-#: admin/questiongrouphandling.php:256
+#: admin/questiongrouphandling.php:266
 msgid "Change Group Order"
 msgstr "グループの順序を変更"
 
-#: admin/questiongrouphandling.php:265
-msgid "Current survey has questions with conditions outside their own group"
-msgstr ""
-"このアンケートには、自身の属するグループ以外に条件付けられた質問が含まれてい"
-"ます。"
-
-#: admin/questiongrouphandling.php:265
-msgid ""
-"Re-ordering groups is restricted to ensure that questions on which "
-"conditions are based aren't reordered after questions having the conditions "
-"set"
-msgstr ""
-"グループの並べ替えは、条件付けられた質問が、その条件となっている質問よりも前"
-"に来ることのないように（例えば質問Aが質問Bに条件付けられている場合に、BがAよ"
-"りも前に来ることのないように）制限されています。"
-
-#: admin/questiongrouphandling.php:265
-msgid "The following groups are concerned"
-msgstr "次のグループが関係しています："
-
-#: admin/questiongrouphandling.php:270
-#, php-format
-msgid "Group %s depends on group %s, see the marked conditions on:"
-msgstr "グループ %s は、次にマークされた条件（グループ %s ）を見る："
-
-#: admin/questiongrouphandling.php:275
-msgid "QID"
-msgstr "QID"
-
-#: admin/questiongrouphandling.php:341 admin/questionhandling.php:690
+#: admin/questiongrouphandling.php:351 admin/questionhandling.php:710
 msgid "Place after.."
 msgstr "お待ちください……"
 
-#: admin/questiongrouphandling.php:346 admin/questionhandling.php:496
-#: admin/questionhandling.php:695
+#: admin/questiongrouphandling.php:356 admin/questionhandling.php:515
+#: admin/questionhandling.php:714
 msgid "At beginning"
 msgstr "初めに"
 
@@ -8093,7 +7999,7 @@ msgstr "初めに"
 msgid "Copy Question"
 msgstr "質問をコピー"
 
-#: admin/questionhandling.php:29 admin/questionhandling.php:341
+#: admin/questionhandling.php:29 admin/questionhandling.php:354
 msgid "Error: You have to enter a question code."
 msgstr "エラー：　質問コードを入力してください。"
 
@@ -8101,120 +8007,102 @@ msgstr "エラー：　質問コードを入力してください。"
 msgid "Note: You MUST enter a new question code!"
 msgstr "注意： 質問コードは必ず入力してください。"
 
-#: admin/questionhandling.php:69 admin/questionhandling.php:434
-#: admin/questionhandling.php:442
+#: admin/questionhandling.php:75 admin/questionhandling.php:447
+#: admin/questionhandling.php:455
 msgid "Question group:"
 msgstr "質問グループ："
 
-#: admin/questionhandling.php:97
+#: admin/questionhandling.php:103
 msgid "Copy subquestions?"
 msgstr "サブ質問をコピーしますか？"
 
-#: admin/questionhandling.php:100
+#: admin/questionhandling.php:106
 msgid "Copy answer options?"
 msgstr "回答オプションをコピーしますか？"
 
-#: admin/questionhandling.php:103
+#: admin/questionhandling.php:109
 msgid "Copy advanced settings?"
 msgstr "アドバンスド設定をコピーしますか？"
 
-#: admin/questionhandling.php:106
+#: admin/questionhandling.php:112
 msgid "Copy question"
 msgstr "質問をコピー"
 
-#: admin/questionhandling.php:124
+#: admin/questionhandling.php:130
 msgid "Edit default answer values"
 msgstr "既定の回答値を編集"
 
-#: admin/questionhandling.php:139 admin/questionhandling.php:184
+#: admin/questionhandling.php:145 admin/questionhandling.php:190
 #, php-format
 msgid "Default answer for scale %s:"
 msgstr "スケール %s の既定回答:"
 
-#: admin/questionhandling.php:143
+#: admin/questionhandling.php:149
 msgid "Default answer value:"
 msgstr "既定の回答値："
 
-#: admin/questionhandling.php:152 admin/questionhandling.php:188
+#: admin/questionhandling.php:158 admin/questionhandling.php:194
 msgid "<No default value>"
 msgstr "<既定値がありません>"
 
-#: admin/questionhandling.php:169
+#: admin/questionhandling.php:175
 msgid "Default value for option 'Other':"
 msgstr "オプション'その他'の既定値:"
 
-#: admin/questionhandling.php:188
+#: admin/questionhandling.php:194
 msgid "Checked"
 msgstr "確認"
 
-#: admin/questionhandling.php:212
+#: admin/questionhandling.php:218
 msgid "Use same default value across languages:"
 msgstr "言語を跨って同じ既定値を使用:"
 
-#: admin/questionhandling.php:302
+#: admin/questionhandling.php:314
 msgid "Edit question"
 msgstr "質問を編集"
 
-#: admin/questionhandling.php:302
+#: admin/questionhandling.php:314
 msgid "Add a new question"
 msgstr "新規質問を追加"
 
-#: admin/questionhandling.php:408
+#: admin/questionhandling.php:421
 msgid "Question Type:"
 msgstr "質問タイプ："
 
-#: admin/questionhandling.php:419 admin/questionhandling.php:443
-#: admin/questionhandling.php:461
+#: admin/questionhandling.php:432 admin/questionhandling.php:456
+#: admin/questionhandling.php:474
 msgid "Cannot be changed (survey is active)"
 msgstr "変更できません。(アンケート実行中)"
 
-#: admin/questionhandling.php:493
+#: admin/questionhandling.php:512
 msgid "Position:"
 msgstr "次の場所に："
 
-#: admin/questionhandling.php:495
+#: admin/questionhandling.php:514
 msgid "At end"
 msgstr "末尾において"
 
-#: admin/questionhandling.php:513
+#: admin/questionhandling.php:532
 msgid "Show advanced settings"
 msgstr "アドバンスド設定表示"
 
-#: admin/questionhandling.php:513
+#: admin/questionhandling.php:532
 msgid "Hide advanced settings"
 msgstr "アドバンスド設定を隠す"
 
-#: admin/questionhandling.php:515
+#: admin/questionhandling.php:534
 msgid "Loading..."
 msgstr "読込中…"
 
-#: admin/questionhandling.php:540
+#: admin/questionhandling.php:559
 msgid "...or import a question"
 msgstr "・・・あるいは質問をインポート"
 
-#: admin/questionhandling.php:544
+#: admin/questionhandling.php:563
 msgid "Select LimeSurvey question file (*.lsq/*.csv)"
 msgstr "LimeSurvey質問ファイル選択 (*.lsq/*.csv)"
 
-#: admin/questionhandling.php:650
-msgid "Current group is using conditional questions"
-msgstr "このグループには条件付き質問があります。"
-
-#: admin/questionhandling.php:650
-msgid ""
-"Re-ordering questions in this group is restricted to ensure that questions "
-"on which conditions are based aren't reordered after questions having the "
-"conditions set"
-msgstr ""
-"このグループの質問の並び替えは、条件付けられた質問が、その条件となっている質"
-"問よりも前に来ることのないように（例えば質問Aが質問Bに条件付けられている場合"
-"に、BがAよりも前に来ることのないように）制限されます。"
-
-#: admin/questionhandling.php:650
-msgid "See the conditions marked on the following questions"
-msgstr "次の質問に付けられた条件を見る"
-
-#: admin/questionhandling.php:751
+#: admin/questionhandling.php:769
 msgid "View Question"
 msgstr "質問を表示"
 
@@ -8285,7 +8173,7 @@ msgstr "クォータを保存"
 msgid "Survey quotas"
 msgstr "アンケートクォータ"
 
-#: admin/quota.php:481 admin/surveylist.php:30
+#: admin/quota.php:481
 msgid "Status"
 msgstr "状態"
 
@@ -8362,7 +8250,7 @@ msgstr ""
 "手続きを続行する前に、管理画面からアンケートを出力しておくことをおすすめしま"
 "す。"
 
-#: admin/resetsurveylogic.php:64
+#: admin/resetsurveylogic.php:65
 msgid "All conditions in this survey have been deleted."
 msgstr "このアンケートの全ての条件は削除されました。"
 
@@ -8473,48 +8361,52 @@ msgstr "出力オプション"
 msgid "Show graphs"
 msgstr "グラフ表示"
 
-#: admin/statistics.php:346
+#: admin/statistics.php:345
+msgid "Show text responses inline"
+msgstr "回答テキストをインライン表示"
+
+#: admin/statistics.php:352
 msgid "Select output format"
 msgstr "出力フォーマットの選択"
 
-#: admin/statistics.php:351 admin/statistics.php:1593
+#: admin/statistics.php:357 admin/statistics.php:1599
 msgid "View stats"
 msgstr "統計を表示"
 
-#: admin/statistics.php:358
+#: admin/statistics.php:364
 msgid "Response filters"
 msgstr "回答フィルター"
 
-#: admin/statistics.php:563 admin/statistics.php:678
+#: admin/statistics.php:569 admin/statistics.php:684
 msgid "Number greater than"
 msgstr "次よりも大きな数："
 
-#: admin/statistics.php:569 admin/statistics.php:684
+#: admin/statistics.php:575 admin/statistics.php:690
 msgid "Number less than"
 msgstr "より小さな数"
 
-#: admin/statistics.php:609 admin/statistics.php:639 admin/statistics.php:662
-#: admin/statistics.php:1083
+#: admin/statistics.php:615 admin/statistics.php:645 admin/statistics.php:668
+#: admin/statistics.php:1089
 msgid "Responses containing"
 msgstr "回答が次を含む"
 
-#: admin/statistics.php:702
+#: admin/statistics.php:708
 msgid "Number of files greater than"
 msgstr "次よりも大きな数"
 
-#: admin/statistics.php:708
+#: admin/statistics.php:714
 msgid "Number of files less than"
 msgstr "より小さな数"
 
-#: admin/statistics.php:753
+#: admin/statistics.php:759
 msgid "Date (YYYY-MM-DD) equals"
 msgstr "日付 (YYYY-MM-DD) ＝"
 
-#: admin/statistics.php:759
+#: admin/statistics.php:765
 msgid "Date is"
 msgstr "日付"
 
-#: admin/statistics.php:765
+#: admin/statistics.php:771
 msgid "AND/OR Date is"
 msgstr "AND/OR 日付は"
 
@@ -8543,7 +8435,7 @@ msgid "Results"
 msgstr "結果"
 
 #: admin/statistics_function.php:636 admin/statistics_function.php:2069
-#: admin/statistics_function.php:2090
+#: admin/statistics_function.php:2108
 msgid "Browse"
 msgstr "閲覧"
 
@@ -8590,17 +8482,17 @@ msgstr "計算"
 msgid "Result"
 msgstr "結果"
 
-#: admin/statistics_function.php:1185 admin/statistics_function.php:2118
-#: admin/statistics_function.php:2124 admin/statistics_function.php:2130
-#: admin/statistics_function.php:2141 admin/statistics_function.php:2819
-#: admin/statistics_function.php:2823 admin/statistics_function.php:2835
-#: admin/statistics_function.php:2841
+#: admin/statistics_function.php:1185 admin/statistics_function.php:2155
+#: admin/statistics_function.php:2161 admin/statistics_function.php:2167
+#: admin/statistics_function.php:2178 admin/statistics_function.php:2856
+#: admin/statistics_function.php:2860 admin/statistics_function.php:2872
+#: admin/statistics_function.php:2878
 msgid "Sum"
 msgstr "合計"
 
-#: admin/statistics_function.php:1186 admin/statistics_function.php:2997
-#: admin/statistics_function.php:3004 admin/statistics_function.php:3011
-#: admin/statistics_function.php:3018
+#: admin/statistics_function.php:1186 admin/statistics_function.php:3037
+#: admin/statistics_function.php:3044 admin/statistics_function.php:3051
+#: admin/statistics_function.php:3058
 msgid "Standard deviation"
 msgstr "標準偏差"
 
@@ -8608,14 +8500,14 @@ msgstr "標準偏差"
 msgid "Average"
 msgstr "平均"
 
-#: admin/statistics_function.php:1234 admin/statistics_function.php:2083
-#: admin/statistics_function.php:2099 admin/statistics_function.php:2118
-#: admin/statistics_function.php:2122 admin/statistics_function.php:2130
-#: admin/statistics_function.php:2137 admin/statistics_function.php:2160
-#: admin/statistics_function.php:2164 admin/statistics_function.php:2172
-#: admin/statistics_function.php:2179 admin/statistics_function.php:2261
-#: admin/statistics_function.php:2265 admin/statistics_function.php:2272
-#: admin/statistics_function.php:2279
+#: admin/statistics_function.php:1234 admin/statistics_function.php:2101
+#: admin/statistics_function.php:2117 admin/statistics_function.php:2155
+#: admin/statistics_function.php:2159 admin/statistics_function.php:2167
+#: admin/statistics_function.php:2174 admin/statistics_function.php:2197
+#: admin/statistics_function.php:2201 admin/statistics_function.php:2209
+#: admin/statistics_function.php:2216 admin/statistics_function.php:2298
+#: admin/statistics_function.php:2302 admin/statistics_function.php:2309
+#: admin/statistics_function.php:2316
 msgid "Count"
 msgstr "カウント"
 
@@ -8660,31 +8552,35 @@ msgstr "計算のための十分な値がない"
 msgid "Comments"
 msgstr "コメント"
 
-#: admin/statistics_function.php:2083 admin/statistics_function.php:2101
-#: admin/statistics_function.php:2118 admin/statistics_function.php:2123
-#: admin/statistics_function.php:2130 admin/statistics_function.php:2139
-#: admin/statistics_function.php:2160 admin/statistics_function.php:2165
-#: admin/statistics_function.php:2172 admin/statistics_function.php:2181
-#: admin/statistics_function.php:2261 admin/statistics_function.php:2266
-#: admin/statistics_function.php:2272 admin/statistics_function.php:2281
+#: admin/statistics_function.php:2079
+msgid "'Other' Responses"
+msgstr "「その他」の回答"
+
+#: admin/statistics_function.php:2101 admin/statistics_function.php:2119
+#: admin/statistics_function.php:2155 admin/statistics_function.php:2160
+#: admin/statistics_function.php:2167 admin/statistics_function.php:2176
+#: admin/statistics_function.php:2197 admin/statistics_function.php:2202
+#: admin/statistics_function.php:2209 admin/statistics_function.php:2218
+#: admin/statistics_function.php:2298 admin/statistics_function.php:2303
+#: admin/statistics_function.php:2309 admin/statistics_function.php:2318
 msgid "Percentage"
 msgstr "百分率"
 
-#: admin/statistics_function.php:2382 admin/statistics_function.php:2414
+#: admin/statistics_function.php:2419 admin/statistics_function.php:2451
 msgid "Not completed or Not displayed"
 msgstr "未完了あるいは非表示"
 
-#: admin/statistics_function.php:2386 admin/statistics_function.php:2418
+#: admin/statistics_function.php:2423 admin/statistics_function.php:2455
 msgid "Not displayed"
 msgstr "非表示"
 
-#: admin/statistics_function.php:2820 admin/statistics_function.php:2828
-#: admin/statistics_function.php:2836 admin/statistics_function.php:2847
+#: admin/statistics_function.php:2857 admin/statistics_function.php:2865
+#: admin/statistics_function.php:2873 admin/statistics_function.php:2884
 msgid "Number of cases"
 msgstr "ケース数"
 
-#: admin/statistics_function.php:2996 admin/statistics_function.php:3000
-#: admin/statistics_function.php:3010 admin/statistics_function.php:3016
+#: admin/statistics_function.php:3036 admin/statistics_function.php:3040
+#: admin/statistics_function.php:3050 admin/statistics_function.php:3056
 msgid "Arithmetic mean"
 msgstr "算術平均"
 
@@ -10390,11 +10286,12 @@ msgstr "すべてのユーザーのアンケートは%sに転送されました�
 msgid "Transfer the user's surveys to: "
 msgstr "ユーザーのアンケートの転送先："
 
-#: admin/usercontrol.php:618
+#: admin/usercontrol.php:618 admin/userrighthandling.php:324
+#: admin/userrighthandling.php:995
 msgid "Delete User"
 msgstr "ユーザを削除"
 
-#: admin/usercontrol.php:640
+#: admin/usercontrol.php:640 admin/userrighthandling.php:222
 msgid "Editing user"
 msgstr "ユーザを編集しています"
 
@@ -11145,8 +11042,8 @@ msgstr "お待ちください……"
 msgid "Moving user templates to new location at %s..."
 msgstr "%sにユーザーテンプレートを新しい場所に移動..."
 
-#: admin/update/upgrade-mssql.php:481 admin/update/upgrade-mssqlnative.php:481
-#: admin/update/upgrade-mysql.php:586 admin/update/upgrade-postgres.php:309
+#: admin/update/upgrade-mssql.php:595 admin/update/upgrade-mssqlnative.php:595
+#: admin/update/upgrade-mysql.php:706 admin/update/upgrade-postgres.php:430
 #, php-format
 msgid "Database update finished (%s)"
 msgstr "データベースの更新が終了しました %s"
@@ -11395,6 +11292,429 @@ msgstr "ウルドゥー語"
 msgid "Vietnamese"
 msgstr "ベトナム語"
 
+#: classes/eval/ExpressionManager.php:134
+msgid "Absolute value"
+msgstr "絶対値"
+
+#: classes/eval/ExpressionManager.php:135
+msgid "Arc cosine"
+msgstr "アークコサイン"
+
+#: classes/eval/ExpressionManager.php:136
+msgid "addslashes"
+msgstr "文字列をスラッシュでクォートする"
+
+#: classes/eval/ExpressionManager.php:137
+msgid "Arc sine"
+msgstr "アークサイン"
+
+#: classes/eval/ExpressionManager.php:138
+msgid "Arc tangent"
+msgstr "アークタンジェント"
+
+#: classes/eval/ExpressionManager.php:139
+msgid "Arc tangent of two variables"
+msgstr "二つの変数のアークタンジェント"
+
+#: classes/eval/ExpressionManager.php:140
+msgid "Round fractions up"
+msgstr "分数の切り上げ"
+
+#: classes/eval/ExpressionManager.php:141
+msgid "Returns true(1) if it is a valid date in gregorian calendar"
+msgstr "有効なグレゴリオ暦の日付であった場合はtrue(1)を返す"
+
+#: classes/eval/ExpressionManager.php:142
+msgid "Cosine"
+msgstr "コサイン"
+
+#: classes/eval/ExpressionManager.php:143
+msgid "Count the number of answered questions in the list"
+msgstr "回答済み質問の個数を数える"
+
+#: classes/eval/ExpressionManager.php:144
+msgid "Format a local date/time"
+msgstr "ローカル日時の初期化"
+
+#: classes/eval/ExpressionManager.php:145
+msgid "Calculates the exponent of e"
+msgstr "eの指数を計算する"
+
+#: classes/eval/ExpressionManager.php:146
+msgid "Round fractions down"
+msgstr "分数の切り下げ"
+
+#: classes/eval/ExpressionManager.php:147
+msgid "Format a GMT date/time"
+msgstr "GMT日時の初期化"
+
+#: classes/eval/ExpressionManager.php:148
+msgid ""
+"Convert all HTML entities to their applicable characters (always uses "
+"ENT_QUOTES and UTF-8)"
+msgstr ""
+"すべてのHTMLエンティティを適用可能な文字に変換する(常にENT_QUOTESとUTF-8を使"
+"用する)"
+
+#: classes/eval/ExpressionManager.php:149
+msgid ""
+"Convert all applicable characters to HTML entities (always uses ENT_QUOTES "
+"and UTF-8)"
+msgstr ""
+"適用可能な文字をHTMLエンティティにすべて変換する(常にENT_QUOTESとUTF-8を使用"
+"する)"
+
+#: classes/eval/ExpressionManager.php:150
+msgid ""
+"Convert special characters to HTML entities (always uses ENT_QUOTES and UTF-"
+"8)"
+msgstr "特殊文字をHTMLエンティティに変換する(常にENT_QUOTESとUTF-8を使用する)"
+
+#: classes/eval/ExpressionManager.php:151
+msgid ""
+"Convert special HTML entities back to characters (always uses ENT_QUOTES and "
+"UTF-8)"
+msgstr ""
+"HTMLエンティティを普通の文字に変換する(常にENT_QUOTESとUTF-8を使用する)"
+
+#: classes/eval/ExpressionManager.php:152
+msgid "Format a local time/date as integer"
+msgstr "現地時間/日付を整数値にフォーマット"
+
+#: classes/eval/ExpressionManager.php:153
+msgid "Conditional processing"
+msgstr "条件処理"
+
+#: classes/eval/ExpressionManager.php:154
+msgid "Join array elements with a string"
+msgstr "文字列で配列要素を結合"
+
+#: classes/eval/ExpressionManager.php:155
+msgid "Get the integer value of a variable"
+msgstr "変数の整数値を取得する"
+
+#: classes/eval/ExpressionManager.php:156
+msgid "Determine whether a variable is considered to be empty"
+msgstr "引数に指定した変数に値がセットされているかどうかを決定する"
+
+#: classes/eval/ExpressionManager.php:157
+msgid "Finds whether the type of a variable is float"
+msgstr "変数の型がfloatであるかを調べる"
+
+#: classes/eval/ExpressionManager.php:158
+msgid "Find whether the type of a variable is integer"
+msgstr "変数の型がintegerであるかを調べる"
+
+#: classes/eval/ExpressionManager.php:159
+msgid "Finds whether a value is not a number"
+msgstr "変数が数値でないかを調べる"
+
+#: classes/eval/ExpressionManager.php:160
+msgid "Finds whether a variable is NULL"
+msgstr "変数がNULLであるかを調べる"
+
+#: classes/eval/ExpressionManager.php:161
+msgid "Finds whether a variable is a number or a numeric string"
+msgstr "変数が数値か数値形式の文字列であるかを調べる"
+
+#: classes/eval/ExpressionManager.php:162
+msgid "Find whether the type of a variable is string"
+msgstr "変数の型が文字列であるかを調べる"
+
+#: classes/eval/ExpressionManager.php:163
+msgid "Return comma-separated list of values"
+msgstr "値のコンマ区切りのリストを返す"
+
+#: classes/eval/ExpressionManager.php:164
+msgid "Natural logarithm"
+msgstr "自然対数"
+
+#: classes/eval/ExpressionManager.php:165
+msgid "Strip whitespace (or other characters) from the beginning of a string"
+msgstr "文字列の先頭から空白(や他の文字)を削除する"
+
+#: classes/eval/ExpressionManager.php:166
+msgid "Find highest value"
+msgstr "最も大きい値を調べる"
+
+#: classes/eval/ExpressionManager.php:167
+msgid "Find lowest value"
+msgstr "最も小さい値を調べる"
+
+#: classes/eval/ExpressionManager.php:168
+msgid "Get UNIX timestamp for a date (each of the 6 arguments are optional)"
+msgstr ""
+"UNIXタイムスタンプを日付として取得する(6つの引数のそれぞれはオプションです)"
+
+#: classes/eval/ExpressionManager.php:169
+msgid "Inserts HTML line breaks before all newlines in a string"
+msgstr "改行文字の前にHTMLの改行タグを挿入する"
+
+#: classes/eval/ExpressionManager.php:170
+msgid "Format a number with grouped thousands"
+msgstr "数値を1000単位でグループ化してフォーマットする"
+
+#: classes/eval/ExpressionManager.php:171
+msgid "Get value of pi"
+msgstr "πの値を取得する"
+
+#: classes/eval/ExpressionManager.php:172
+msgid "Exponential expression"
+msgstr "指数表現"
+
+#: classes/eval/ExpressionManager.php:173
+msgid "Convert a quoted-printable string to an 8 bit string"
+msgstr "quoted-printable文字列を8ビット文字列に変換する"
+
+#: classes/eval/ExpressionManager.php:174
+msgid "Convert a 8 bit string to a quoted-printable string"
+msgstr "8ビット文字列をquoted-printable文字列に変換する"
+
+#: classes/eval/ExpressionManager.php:175
+msgid "Quote meta characters"
+msgstr "メタ文字をエスケープ"
+
+#: classes/eval/ExpressionManager.php:176
+msgid "Generate a random integer"
+msgstr "ランダムな整数値を生成する"
+
+#: classes/eval/ExpressionManager.php:177
+msgid "Compare a string to a regular expression pattern"
+msgstr "文字列を正規表現パターンと比較する"
+
+#: classes/eval/ExpressionManager.php:178
+msgid "Rounds a number to an optional precision"
+msgstr "数を任意の精度に丸める"
+
+#: classes/eval/ExpressionManager.php:179
+msgid "Strip whitespace (or other characters) from the end of a string"
+msgstr "文字列の末尾から空白(や他の文字)を削除する"
+
+#: classes/eval/ExpressionManager.php:180
+msgid "Sine"
+msgstr "サイン"
+
+#: classes/eval/ExpressionManager.php:181
+msgid "Return a formatted string"
+msgstr "フォーマットされた文字列を返す"
+
+#: classes/eval/ExpressionManager.php:182
+msgid "Square root"
+msgstr "平方根"
+
+#: classes/eval/ExpressionManager.php:183
+msgid "Calculate the Sample Standard Deviation for the list of numbers"
+msgstr "数値のリストからサンプル標準偏差を計算する。"
+
+#: classes/eval/ExpressionManager.php:184
+msgid "Pad a string to a certain length with another string"
+msgstr "文字列を固定長の他の文字列で埋める"
+
+#: classes/eval/ExpressionManager.php:185
+msgid "Repeat a string"
+msgstr "再入力"
+
+#: classes/eval/ExpressionManager.php:186
+msgid ""
+"Replace all occurrences of the search string with the replacement string"
+msgstr "検索文字列の出現箇所を、すべて置換文字列に置き換えます。"
+
+#: classes/eval/ExpressionManager.php:187
+msgid "Binary safe case-insensitive string comparison"
+msgstr "バイナリセーフな大文字と小文字を区別しない文字列比較"
+
+#: classes/eval/ExpressionManager.php:188
+msgid "Binary safe string comparison"
+msgstr "バイナリセーフな文字列比較"
+
+#: classes/eval/ExpressionManager.php:189
+msgid "Strip HTML and PHP tags from a string"
+msgstr "文字列からHTMLやPHPのタグを削除する"
+
+#: classes/eval/ExpressionManager.php:190
+msgid "Find position of first occurrence of a case-insensitive string"
+msgstr "大文字と小文字を区別せずに文字列が最初に出現した位置を調べる"
+
+#: classes/eval/ExpressionManager.php:191
+msgid "Un-quotes a quoted string"
+msgstr "引用符で囲まれた文字列をアンクォートする"
+
+#: classes/eval/ExpressionManager.php:192
+msgid "Case-insensitive strstr"
+msgstr "大文字と小文字を比較しないstrstr"
+
+#: classes/eval/ExpressionManager.php:193
+msgid "Get string length"
+msgstr "文字列の長さを取得"
+
+#: classes/eval/ExpressionManager.php:194
+msgid "Find position of first occurrence of a string"
+msgstr "文字列が最初に出現した位置を調べる"
+
+#: classes/eval/ExpressionManager.php:195
+msgid "Reverse a string"
+msgstr "文字列を反転する"
+
+#: classes/eval/ExpressionManager.php:196
+msgid "Find first occurrence of a string"
+msgstr "文字列の最初の出現位置を見つける"
+
+#: classes/eval/ExpressionManager.php:197
+msgid "Make a string lowercase"
+msgstr "文字列を小文字に替える"
+
+#: classes/eval/ExpressionManager.php:198
+msgid "Make a string uppercase"
+msgstr "文字列を大文字に替える"
+
+#: classes/eval/ExpressionManager.php:199
+msgid "Return part of a string"
+msgstr "文字列の一部を返す"
+
+#: classes/eval/ExpressionManager.php:200
+msgid "Calculate the sum of values in an array"
+msgstr "配列要素の和を計算する"
+
+#: classes/eval/ExpressionManager.php:201
+msgid "Tangent"
+msgstr "タンジェント"
+
+#: classes/eval/ExpressionManager.php:202
+msgid "Return current UNIX timestamp"
+msgstr "現在のUNIXタイムスタンプを返す"
+
+#: classes/eval/ExpressionManager.php:203
+msgid ""
+"Strip whitespace (or other characters) from the beginning and end of a string"
+msgstr "文字列の先頭と末尾から空白(や他の文字)を削除する"
+
+#: classes/eval/ExpressionManager.php:204
+msgid "Uppercase the first character of each word in a string"
+msgstr "文字列の各単語の先頭文字を大文字にする"
+
+#: classes/eval/LimeExpressionManager.php:523
+#: classes/eval/LimeExpressionManager.php:907
+#, fuzzy
+msgid "Total of all entries must equal"
+msgstr "エントリー全ての合計が %d と等しい必要があります"
+
+#: classes/eval/LimeExpressionManager.php:608
+#, fuzzy
+msgid "The minimum number of answers for this question is"
+msgstr "この質問の既定の回答を編集"
+
+#: classes/eval/LimeExpressionManager.php:646
+#: classes/eval/LimeExpressionManager.php:715
+#, fuzzy
+msgid "Total of all entries must be at least"
+msgstr "エントリー全ての合計が少なくとも %s 以上出なければなりません"
+
+#: classes/eval/LimeExpressionManager.php:677
+#, fuzzy
+msgid "The entry must be at least"
+msgstr "エントリー全ての合計が少なくとも %s 以上出なければなりません"
+
+#: classes/eval/LimeExpressionManager.php:762
+#, fuzzy
+msgid "The maximum number of answers for this question is"
+msgstr "この質問の既定の回答を編集"
+
+#: classes/eval/LimeExpressionManager.php:800
+#: classes/eval/LimeExpressionManager.php:869
+#, fuzzy
+msgid "Total of all entries must not exceed"
+msgstr "エントリー全ての合計が %d を超えてはなりません"
+
+#: classes/eval/LimeExpressionManager.php:831
+#, fuzzy
+msgid "The entry must not exceed"
+msgstr "エントリー全ての合計が %d を超えてはなりません"
+
+#: classes/eval/LimeExpressionManager.php:963
+msgid "All entries must conform to this regular expression:"
+msgstr ""
+
+#: classes/eval/LimeExpressionManager.php:3428
+msgid "This question is mandatory"
+msgstr "次の質問へ行くには、この質問に回答する必要があります。"
+
+#: classes/eval/LimeExpressionManager.php:3440
+msgid "Please check at least one item."
+msgstr "一つ以上の項目を確認してください。"
+
+#: classes/eval/LimeExpressionManager.php:3450
+#, php-format
+msgid "If you choose '%s' you must provide a description."
+msgstr "'%s' を選択する場合、説明文を用意しなければなりません"
+
+#: classes/eval/LimeExpressionManager.php:3472
+msgid "Please complete all parts"
+msgstr "すべての質問に回答してください。"
+
+#: classes/eval/LimeExpressionManager.php:3479
+msgid "Please check the items"
+msgstr "項目を確認してください。"
+
+#: classes/eval/LimeExpressionManager.php:3486
+msgid "Please rank all items"
+msgstr "すべての選択肢に順位を付けてください。"
+
+#: classes/eval/LimeExpressionManager.php:3493
+#, fuzzy
+msgid "Please answer this question"
+msgstr "Only answer this question"
+
+#: classes/eval/LimeExpressionManager.php:5011
+msgid ""
+"Invalid question - probably missing sub-questions or language-specific "
+"settings for language "
+msgstr ""
+
+#: classes/eval/LimeExpressionManager.php:5016
+#, fuzzy
+msgid "Name [ID]"
+msgstr "名前："
+
+#: classes/eval/LimeExpressionManager.php:5016
+msgid "Relevance [Validation] (Default)"
+msgstr ""
+
+#: classes/eval/LimeExpressionManager.php:5016
+msgid "Text [Help] (Tip)"
+msgstr ""
+
+#: classes/eval/LimeExpressionManager.php:5182
+#, fuzzy
+msgid "This variable name has already been used."
+msgstr "このメールアドレスはすでに登録されています。"
+
+#: classes/eval/LimeExpressionManager.php:5194
+msgid "This variable name contains invalid characters."
+msgstr ""
+
+#: classes/eval/LimeExpressionManager.php:5361
+msgid " Question(s) contain errors that need to be corrected"
+msgstr ""
+
+#: classes/eval/LimeExpressionManager.php:5367
+#, fuzzy
+msgid "No syntax errors detected in this survey"
+msgstr "あなたは、このアンケートの参加者ではありません。"
+
+#: classes/eval/LimeExpressionManager.php:5370
+#, fuzzy
+msgid "This group, by itself, does not contain any syntax errors"
+msgstr "このグループは質問がありません。"
+
+#: classes/eval/LimeExpressionManager.php:5373
+#, fuzzy
+msgid "This question, by itself, does not contain any syntax errors"
+msgstr "このグループは質問がありません。"
+
+#: classes/eval/test/survey_logic_file.php:131
+msgid "Logic File for Survey # "
+msgstr ""
+
 #~ msgid "Modify Quota"
 #~ msgstr "クォータ変更"
 
@@ -11540,6 +11860,9 @@ msgstr "ベトナム語"
 #~ msgid "Referer-URL will be saved"
 #~ msgstr "リンク元URLが記録されます。"
 
+#~ msgid "Are you sure you want regenerate the question codes?"
+#~ msgstr "質問コードを再生成しますか？"
+
 #~ msgid "Fax To:"
 #~ msgstr "Fax番号:"
 
@@ -11549,11 +11872,32 @@ msgstr "ベトナム語"
 #~ msgid "Exit Link"
 #~ msgstr "退出先のリンク"
 
+#~ msgid ""
+#~ "Impossible to delete this group because there is at least one question "
+#~ "having a condition on its content"
+#~ msgstr ""
+#~ "このグループの中の要素に条件付けられている質問があるので、グループを削除で"
+#~ "きません。"
+
+#~ msgid "Questions with conditions to this group"
+#~ msgstr "条件付きの質問をこのグループに追加"
+
+#~ msgid ""
+#~ "It's impossible to delete this question because there is at least one "
+#~ "question having a condition on it."
+#~ msgstr "この質問に条件付けられている質問があるので、質問を削除できません。"
+
+#~ msgid "Disabled - Delete current question"
+#~ msgstr "無効化 - 現在の質問を削除"
+
 #~ msgid "Export this Question"
 #~ msgstr "この質問を出力"
 
 #~ msgid "Set Conditions for this Question"
 #~ msgstr "この質問に条件を設定"
+
+#~ msgid "Other questions having conditions on this question:"
+#~ msgstr "この質問には他の質問が条件付けられています。"
 
 #~ msgid "Match language"
 #~ msgstr "回答時の言語"
@@ -11669,6 +12013,26 @@ msgstr "ベトナム語"
 #~ msgid "Answers can't be deleted"
 #~ msgstr "回答を削除できませんでした。"
 
+#~ msgid ""
+#~ "This question relies on other question's answers and can't be moved above "
+#~ "groupId:"
+#~ msgstr ""
+#~ "この質問は他の質問の回答に依存しているので、次のグループIDよりも上位に移動"
+#~ "することはできません："
+
+#~ msgid "in position"
+#~ msgstr "次の場所に："
+
+#~ msgid "See conditions:"
+#~ msgstr "条件を見る："
+
+#~ msgid ""
+#~ "Some questions rely on this question's answers. You can't move this "
+#~ "question below groupId:"
+#~ msgstr ""
+#~ "他の質問がこの質問の回答に依存しているので、この質問を次のグループIDよりも"
+#~ "下位に移動することはできません："
+
 #~ msgid "Invitation to participate in survey"
 #~ msgstr "アンケートの御案内"
 
@@ -11767,6 +12131,21 @@ msgstr "ベトナム語"
 
 #~ msgid "Update Question"
 #~ msgstr "質問を更新"
+
+#~ msgid "Current group is using conditional questions"
+#~ msgstr "このグループには条件付き質問があります。"
+
+#~ msgid ""
+#~ "Re-ordering questions in this group is restricted to ensure that "
+#~ "questions on which conditions are based aren't reordered after questions "
+#~ "having the conditions set"
+#~ msgstr ""
+#~ "このグループの質問の並び替えは、条件付けられた質問が、その条件となっている"
+#~ "質問よりも前に来ることのないように（例えば質問Aが質問Bに条件付けられている"
+#~ "場合に、BがAよりも前に来ることのないように）制限されます。"
+
+#~ msgid "See the conditions marked on the following questions"
+#~ msgstr "次の質問に付けられた条件を見る"
 
 #~ msgid "New Password"
 #~ msgstr "新しいパスワード"
@@ -12004,6 +12383,29 @@ msgstr "ベトナム語"
 #~ msgid "Note: Demo mode is activated. Marked (*) settings won't be saved."
 #~ msgstr "注意：デモモードで実行されます。マーク（*）の設定が保存されません。"
 
+#~ msgid "Current survey has questions with conditions outside their own group"
+#~ msgstr ""
+#~ "このアンケートには、自身の属するグループ以外に条件付けられた質問が含まれて"
+#~ "います。"
+
+#~ msgid ""
+#~ "Re-ordering groups is restricted to ensure that questions on which "
+#~ "conditions are based aren't reordered after questions having the "
+#~ "conditions set"
+#~ msgstr ""
+#~ "グループの並べ替えは、条件付けられた質問が、その条件となっている質問よりも"
+#~ "前に来ることのないように（例えば質問Aが質問Bに条件付けられている場合に、B"
+#~ "がAよりも前に来ることのないように）制限されています。"
+
+#~ msgid "The following groups are concerned"
+#~ msgstr "次のグループが関係しています："
+
+#~ msgid "Group %s depends on group %s, see the marked conditions on:"
+#~ msgstr "グループ %s は、次にマークされた条件（グループ %s ）を見る："
+
+#~ msgid "QID"
+#~ msgstr "QID"
+
 #~ msgid "Italian-Formal"
 #~ msgstr "イタリア形式"
 
@@ -12011,6 +12413,34 @@ msgstr "ベトナム語"
 #~ "This survey is not currently active. You will not be able to save your "
 #~ "responses."
 #~ msgstr "このアンケートはまだ実行されていないので、回答を保存できません。"
+
+#~ msgid "Click here to print your answers."
+#~ msgstr "あなたの回答を印刷するにはここをクリックします。"
+
+#~ msgid "Cannot submit results - there are none to submit."
+#~ msgstr "回答を投稿できません。投稿できる回答がありませんでした。"
+
+#~ msgid ""
+#~ "This error can occur if you have already submitted your responses and "
+#~ "pressed 'refresh' on your browser. In this case, your responses have "
+#~ "already been saved."
+#~ msgstr ""
+#~ "このエラーは、あなたがすでに回答を終えて、ブラウザの「更新」ボタンを押した"
+#~ "場合に生じることがあります。この場合、あなたの回答はすでに保存されていま"
+#~ "す。"
+
+#~ msgid ""
+#~ "If you receive this message in the middle of completing a survey, you "
+#~ "should choose '<- BACK' on your browser and then refresh/reload the "
+#~ "previous page. While you will lose answers from the last page all your "
+#~ "others will still exist. This problem can occur if the webserver is "
+#~ "suffering from overload or excessive use. We apologise for this problem."
+#~ msgstr ""
+#~ "もしアンケートの回答中にこのメッセージが表示された場合には、ブラウザの「戻"
+#~ "る」ボタンを押して、前のページを更新／再読込してください。万一、最後のペー"
+#~ "ジの回答が失われていたとしても、その他のページでの回答はすべて保存されてい"
+#~ "ます。この問題は、私どものサーバにおける過負荷が原因で生じたものと考えられ"
+#~ "ます。大変申し訳ありません。"
 
 #~ msgid "Survey Name (ID)"
 #~ msgstr "アンケート名(ID)"
@@ -12105,6 +12535,12 @@ msgstr "ベトナム語"
 
 #~ msgid "Category Separator"
 #~ msgstr "カテゴリ分け"
+
+#~ msgid "Filter the available answers by this value"
+#~ msgstr "この値で利用可能な回答をフィルタ"
+
+#~ msgid "Code filter"
+#~ msgstr "コードフィルター"
 
 #~ msgid "Use accessible select boxes instead of calendar popup"
 #~ msgstr "カレンダーポップアップの代わりに選択ボックスを利用可能にする"
@@ -12361,9 +12797,6 @@ msgstr "ベトナム語"
 
 #~ msgid "Save as label set"
 #~ msgstr "ラベルセットとして保存"
-
-#~ msgid "Relevance equation:"
-#~ msgstr "関連性の方程式:"
 
 #~ msgid "Response import summary"
 #~ msgstr "質問インポートの概要"
@@ -13122,9 +13555,6 @@ msgstr "ベトナム語"
 #~ msgid "Date/Time"
 #~ msgstr "日付"
 
-#~ msgid "Equation"
-#~ msgstr "式"
-
 #~ msgid ""
 #~ "If you have blacklisted before but want to participate in this survey and "
 #~ "want to receive invitations please click the following link:\n"
@@ -13240,244 +13670,8 @@ msgstr "ベトナム語"
 #~ msgid "Database error!!"
 #~ msgstr "データベースエラー"
 
-#~ msgid "'Other' Responses"
-#~ msgstr "「その他」の回答"
-
-#~ msgid "Absolute value"
-#~ msgstr "絶対値"
-
-#~ msgid "Arc cosine"
-#~ msgstr "アークコサイン"
-
-#~ msgid "addslashes"
-#~ msgstr "文字列をスラッシュでクォートする"
-
-#~ msgid "Arc sine"
-#~ msgstr "アークサイン"
-
-#~ msgid "Arc tangent"
-#~ msgstr "アークタンジェント"
-
-#~ msgid "Arc tangent of two variables"
-#~ msgstr "二つの変数のアークタンジェント"
-
-#~ msgid "Round fractions up"
-#~ msgstr "分数の切り上げ"
-
-#~ msgid "Returns true(1) if it is a valid date in gregorian calendar"
-#~ msgstr "有効なグレゴリオ暦の日付であった場合はtrue(1)を返す"
-
-#~ msgid "Cosine"
-#~ msgstr "コサイン"
-
-#~ msgid "Count the number of answered questions in the list"
-#~ msgstr "回答済み質問の個数を数える"
-
-#~ msgid "Format a local date/time"
-#~ msgstr "ローカル日時の初期化"
-
-#~ msgid "Calculates the exponent of e"
-#~ msgstr "eの指数を計算する"
-
-#~ msgid "Round fractions down"
-#~ msgstr "分数の切り下げ"
-
-#~ msgid "Format a GMT date/time"
-#~ msgstr "GMT日時の初期化"
-
-#~ msgid ""
-#~ "Convert all HTML entities to their applicable characters (always uses "
-#~ "ENT_QUOTES and UTF-8)"
-#~ msgstr ""
-#~ "すべてのHTMLエンティティを適用可能な文字に変換する(常にENT_QUOTESとUTF-8を"
-#~ "使用する)"
-
-#~ msgid ""
-#~ "Convert all applicable characters to HTML entities (always uses "
-#~ "ENT_QUOTES and UTF-8)"
-#~ msgstr ""
-#~ "適用可能な文字をHTMLエンティティにすべて変換する(常にENT_QUOTESとUTF-8を使"
-#~ "用する)"
-
-#~ msgid ""
-#~ "Convert special characters to HTML entities (always uses ENT_QUOTES and "
-#~ "UTF-8)"
-#~ msgstr ""
-#~ "特殊文字をHTMLエンティティに変換する(常にENT_QUOTESとUTF-8を使用する)"
-
-#~ msgid ""
-#~ "Convert special HTML entities back to characters (always uses ENT_QUOTES "
-#~ "and UTF-8)"
-#~ msgstr ""
-#~ "HTMLエンティティを普通の文字に変換する(常にENT_QUOTESとUTF-8を使用する)"
-
-#~ msgid "Format a local time/date as integer"
-#~ msgstr "現地時間/日付を整数値にフォーマット"
-
-#~ msgid "Conditional processing"
-#~ msgstr "条件処理"
-
-#~ msgid "Join array elements with a string"
-#~ msgstr "文字列で配列要素を結合"
-
-#~ msgid "Get the integer value of a variable"
-#~ msgstr "変数の整数値を取得する"
-
 #~ msgid "Finds out whether a variable is a boolean"
 #~ msgstr "変数がbooleanであるかを調べる"
-
-#~ msgid "Determine whether a variable is considered to be empty"
-#~ msgstr "引数に指定した変数に値がセットされているかどうかを決定する"
-
-#~ msgid "Finds whether the type of a variable is float"
-#~ msgstr "変数の型がfloatであるかを調べる"
-
-#~ msgid "Find whether the type of a variable is integer"
-#~ msgstr "変数の型がintegerであるかを調べる"
-
-#~ msgid "Finds whether a value is not a number"
-#~ msgstr "変数が数値でないかを調べる"
-
-#~ msgid "Finds whether a variable is NULL"
-#~ msgstr "変数がNULLであるかを調べる"
-
-#~ msgid "Finds whether a variable is a number or a numeric string"
-#~ msgstr "変数が数値か数値形式の文字列であるかを調べる"
-
-#~ msgid "Find whether the type of a variable is string"
-#~ msgstr "変数の型が文字列であるかを調べる"
-
-#~ msgid "Return comma-separated list of values"
-#~ msgstr "値のコンマ区切りのリストを返す"
-
-#~ msgid "Natural logarithm"
-#~ msgstr "自然対数"
-
-#~ msgid ""
-#~ "Strip whitespace (or other characters) from the beginning of a string"
-#~ msgstr "文字列の先頭から空白(や他の文字)を削除する"
-
-#~ msgid "Find highest value"
-#~ msgstr "最も大きい値を調べる"
-
-#~ msgid "Find lowest value"
-#~ msgstr "最も小さい値を調べる"
-
-#~ msgid "Get UNIX timestamp for a date (each of the 6 arguments are optional)"
-#~ msgstr ""
-#~ "UNIXタイムスタンプを日付として取得する(6つの引数のそれぞれはオプションで"
-#~ "す)"
-
-#~ msgid "Inserts HTML line breaks before all newlines in a string"
-#~ msgstr "改行文字の前にHTMLの改行タグを挿入する"
-
-#~ msgid "Format a number with grouped thousands"
-#~ msgstr "数値を1000単位でグループ化してフォーマットする"
-
-#~ msgid "Get value of pi"
-#~ msgstr "πの値を取得する"
-
-#~ msgid "Exponential expression"
-#~ msgstr "指数表現"
-
-#~ msgid "Convert a quoted-printable string to an 8 bit string"
-#~ msgstr "quoted-printable文字列を8ビット文字列に変換する"
-
-#~ msgid "Convert a 8 bit string to a quoted-printable string"
-#~ msgstr "8ビット文字列をquoted-printable文字列に変換する"
-
-#~ msgid "Quote meta characters"
-#~ msgstr "メタ文字をエスケープ"
-
-#~ msgid "Generate a random integer"
-#~ msgstr "ランダムな整数値を生成する"
-
-#~ msgid "Compare a string to a regular expression pattern"
-#~ msgstr "文字列を正規表現パターンと比較する"
-
-#~ msgid "Rounds a number to an optional precision"
-#~ msgstr "数を任意の精度に丸める"
-
-#~ msgid "Strip whitespace (or other characters) from the end of a string"
-#~ msgstr "文字列の末尾から空白(や他の文字)を削除する"
-
-#~ msgid "Sine"
-#~ msgstr "サイン"
-
-#~ msgid "Return a formatted string"
-#~ msgstr "フォーマットされた文字列を返す"
-
-#~ msgid "Square root"
-#~ msgstr "平方根"
-
-#~ msgid "Calculate the Sample Standard Deviation for the list of numbers"
-#~ msgstr "数値のリストからサンプル標準偏差を計算する。"
-
-#~ msgid "Pad a string to a certain length with another string"
-#~ msgstr "文字列を固定長の他の文字列で埋める"
-
-#~ msgid "Repeat a string"
-#~ msgstr "再入力"
-
-#~ msgid ""
-#~ "Replace all occurrences of the search string with the replacement string"
-#~ msgstr "検索文字列の出現箇所を、すべて置換文字列に置き換えます。"
-
-#~ msgid "Binary safe case-insensitive string comparison"
-#~ msgstr "バイナリセーフな大文字と小文字を区別しない文字列比較"
-
-#~ msgid "Binary safe string comparison"
-#~ msgstr "バイナリセーフな文字列比較"
-
-#~ msgid "Strip HTML and PHP tags from a string"
-#~ msgstr "文字列からHTMLやPHPのタグを削除する"
-
-#~ msgid "Find position of first occurrence of a case-insensitive string"
-#~ msgstr "大文字と小文字を区別せずに文字列が最初に出現した位置を調べる"
-
-#~ msgid "Un-quotes a quoted string"
-#~ msgstr "引用符で囲まれた文字列をアンクォートする"
-
-#~ msgid "Case-insensitive strstr"
-#~ msgstr "大文字と小文字を比較しないstrstr"
-
-#~ msgid "Get string length"
-#~ msgstr "文字列の長さを取得"
-
-#~ msgid "Find position of first occurrence of a string"
-#~ msgstr "文字列が最初に出現した位置を調べる"
-
-#~ msgid "Reverse a string"
-#~ msgstr "文字列を反転する"
-
-#~ msgid "Find first occurrence of a string"
-#~ msgstr "文字列の最初の出現位置を見つける"
-
-#~ msgid "Make a string lowercase"
-#~ msgstr "文字列を小文字に替える"
-
-#~ msgid "Make a string uppercase"
-#~ msgstr "文字列を大文字に替える"
-
-#~ msgid "Return part of a string"
-#~ msgstr "文字列の一部を返す"
-
-#~ msgid "Calculate the sum of values in an array"
-#~ msgstr "配列要素の和を計算する"
-
-#~ msgid "Tangent"
-#~ msgstr "タンジェント"
-
-#~ msgid "Return current UNIX timestamp"
-#~ msgstr "現在のUNIXタイムスタンプを返す"
-
-#~ msgid ""
-#~ "Strip whitespace (or other characters) from the beginning and end of a "
-#~ "string"
-#~ msgstr "文字列の先頭と末尾から空白(や他の文字)を削除する"
-
-#~ msgid "Uppercase the first character of each word in a string"
-#~ msgstr "文字列の各単語の先頭文字を大文字にする"
 
 #~ msgid "January"
 #~ msgstr "1月"
@@ -13703,9 +13897,6 @@ msgstr "ベトナム語"
 #~ msgid "Sending to token IDs"
 #~ msgstr "トークンIDに送る（複数）"
 
-#~ msgid "Show text responses inline"
-#~ msgstr "回答テキストをインライン表示"
-
 #~ msgid "User created successfully! "
 #~ msgstr "ユーザグループが追加されました。"
 
@@ -13741,6 +13932,9 @@ msgstr "ベトナム語"
 #~ msgid "You are not authorized to delete questions."
 #~ msgstr "質問を削除する権限がありません。"
 
+#~ msgid "[Dependency on another question (ID $4)]"
+#~ msgstr "[別の質問に依存(ID $4)]"
+
 #~ msgid "Group name length more than 20 characters!"
 #~ msgstr "グループ名の文字数が２０文字を超えています。"
 
@@ -13759,6 +13953,24 @@ msgstr "ベトナム語"
 
 #~ msgid "You are already a part of this survey."
 #~ msgstr "このアンケートはすでに完了しています。"
+
+#~ msgid ""
+#~ "Thank you for saving your survey in progress. You can return to the "
+#~ "survey at the same point you saved it at any time using the link from "
+#~ "this or any previous email sent to regarding this survey."
+#~ msgstr ""
+#~ "アンケートの回答の保存ありがとうございます。このリンク、もしくは以前にお送"
+#~ "りしたメールを使用していつでも続きから回答できます。"
+
+#~ msgid "One or more uploaded files do not satisfy the criteria"
+#~ msgstr "アップロードしたファイルのうちに基準を満たさないものがあります。"
+
+#~ msgid ""
+#~ "One or more files are either not in the proper format or exceed the "
+#~ "maximum file size limitation. You cannot proceed until these answers are "
+#~ "valid."
+#~ msgstr ""
+#~ "有効な方法で質問に回答してください。回答が完了するまで先に進めません。"
 
 #~ msgid "Edit/Add Label Sets"
 #~ msgstr "ラベルセットを作成／編集"
@@ -14095,10 +14307,6 @@ msgstr "ベトナム語"
 #~ msgstr "以下からひとつだけ選んでください。"
 
 #, fuzzy
-#~ msgid "%d responses for this survey"
-#~ msgstr "件の回答があります"
-
-#, fuzzy
 #~ msgid "%d full responses"
 #~ msgstr "回答（全文）"
 
@@ -14337,10 +14545,6 @@ msgstr "ベトナム語"
 #, fuzzy
 #~ msgid "if you have NOT answered"
 #~ msgstr "回答した場合"
-
-#, fuzzy
-#~ msgid "Only answer this question %s"
-#~ msgstr "Only answer this question"
 
 #~ msgid ""
 #~ "If you create any assessments in this page, for the currently selected "

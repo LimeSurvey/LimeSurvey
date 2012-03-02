@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: printanswers.php 12172 2012-01-23 20:28:20Z tpartner $
  *
  */
 
@@ -114,12 +114,17 @@ if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die("browse - Cannot run 
 
 // Set the language for dispay
 require_once($rootdir.'/classes/core/language.php');  // has been secured
-if (isset($_SESSION['s_lang']))
+if (isset($_REQUEST['lang'])) {
+    $lang = sanitize_languagecode($_REQUEST['lang']);
+    $clang = SetSurveyLanguage( $surveyid, $lang);
+    $language = $_SESSION['s_lang'];
+}
+else if (isset($_SESSION['s_lang']))
 {
     $clang = SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
     $language = $_SESSION['s_lang'];
 } else {
-$language = GetBaseLanguageFromSurveyID($surveyid);
+    $language = GetBaseLanguageFromSurveyID($surveyid);
     $clang = SetSurveyLanguage( $surveyid, $language);
 }
 
@@ -174,6 +179,10 @@ if(isset($_POST['printableexport']))
         $pdf->titleintopdf($clang->gT("Survey name (ID)",'unescaped').": {$surveyname} ({$surveyid})");
 }
 $printoutput .= "\t<div class='printouttitle'><strong>".$clang->gT("Survey name (ID):")."</strong> $surveyname ($surveyid)</div><p>&nbsp;\n";
+
+LimeExpressionManager::StartProcessingPage(true);  // means that all variables are on the same page
+// Since all data are loaded, and don't need JavaScript, pretend all from Group -1
+LimeExpressionManager::StartProcessingGroup(-1,($thissurvey['anonymized']!="N"),$surveyid);
 
 $bHonorConditions=($printanswershonorsconditions==1);
 $aFullResponseTable=aGetFullResponseTable($surveyid,$id,$language,$bHonorConditions);
@@ -258,7 +267,7 @@ if(isset($_POST['printableexport']))
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 
     $sExportFileName=sanitize_filename($surveyname);
-    $pdf->Output($sExportFileName."-".$surveyid.".pdf","D");
+			$pdf->Output($sExportFileName."-".$surveyid.".pdf","D");
 }
 
 
@@ -274,5 +283,7 @@ if(!isset($_POST['printableexport']))
     echo "</body></html>";
 }
 
+LimeExpressionManager::FinishProcessingGroup();
+LimeExpressionManager::FinishProcessingPage();
 
 ?>

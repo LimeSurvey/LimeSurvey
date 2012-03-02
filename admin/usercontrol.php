@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: usercontrol.php 12260 2012-01-31 00:32:32Z c_schmitz $
  */
 
 // Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
@@ -176,6 +176,8 @@ if (!isset($_SESSION['loginID']))
                         $_SESSION['user'] = $fields['users_name'];
                         $_SESSION['full_name'] = $fields['full_name'];
                         $_SESSION['htmleditormode'] = $fields['htmleditormode'];
+                        $_SESSION['questionselectormode'] = $fields['questionselectormode'];
+                        $_SESSION['templateeditormode'] = $fields['templateeditormode'];
                         $_SESSION['dateformat'] = $fields['dateformat'];
                         // Compute a checksession random number to test POSTs
                         $_SESSION['checksessionpost'] = sRandomChars(10);
@@ -286,7 +288,7 @@ if (!isset($_SESSION['loginID']))
         }
 
         include("database.php");
-        $query = "SELECT uid, users_name, password, parent_id, email, lang, htmleditormode, dateformat FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($mappeduser);
+        $query = "SELECT uid, users_name, password, parent_id, email, lang, htmleditormode, questionselectormode, templateeditormode, dateformat FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($mappeduser);
         $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC; //Checked
         $result = $connect->SelectLimit($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());
         if ($result->RecordCount() < 1)
@@ -381,6 +383,8 @@ if (!isset($_SESSION['loginID']))
             $_SESSION['user'] = $fields['users_name'];
             $_SESSION['adminlang'] = $fields['lang'];
             $_SESSION['htmleditormode'] = $fields['htmleditormode'];
+            $_SESSION['questionselectormode'] = $fields['questionselectormode'];
+            $_SESSION['templateeditormode'] = $fields['templateeditormode'];
             $_SESSION['dateformat'] = $fields['dateformat'];
             $_SESSION['checksessionpost'] = sRandomChars(10);
             $_SESSION['pw_notify']=false;

@@ -73,9 +73,9 @@ $meta = '<script type="text/javascript">
     var rooturl ="'.$rooturl.'";
 </script>';
 
-$meta .='<script type="text/javascript" src="'.$rooturl.'/scripts/ajaxupload.js"></script>
-<script type="text/javascript" src="'.$rooturl.'/scripts/uploader.js"></script>
-<link type="text/css" href="'.$rooturl.'/scripts/uploader.css" rel="stylesheet" />';
+$meta .='<script type="text/javascript" src="scripts/ajaxupload.js"></script>
+<script type="text/javascript" src="scripts/uploader.js"></script>
+<link type="text/css" href="scripts/uploader.css" rel="stylesheet" />';
 
 $baselang = GetBaseLanguageFromSurveyID($surveyid);
 $clang = new limesurvey_lang($baselang);

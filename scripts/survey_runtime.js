@@ -2,6 +2,7 @@ var DOM1;
 $(document).ready(function()
 {
 	DOM1 = (typeof document.getElementsByTagName!='undefined');
+    if (typeof LEMsetTabIndexes === 'function') { LEMsetTabIndexes(); }
 	if (typeof checkconditions!='undefined') checkconditions();
 	if (typeof template_onload!='undefined') template_onload();
 	prepareCellAdapters();
@@ -46,6 +47,9 @@ $(document).ready(function()
 			});
     }
 
+    // Maxlength for textareas TODO limit to not CSS3 compatible browser
+    maxlengthtextarea();
+
     // Maps
 	$(".location").each(function(index,element){
 		var question = $(element).attr('name');
@@ -77,38 +81,40 @@ $(document).ready(function()
 		marker.setPosition(markerLatLng);
 		currentMap.panTo(markerLatLng);
 	});
-	
-    if ((typeof(autoArray) != "undefined")){
-        if ((autoArray.list != 'undefined') && (autoArray.list.length > 0)){
-            var aListOfQuestions = autoArray.list;
 
-            $(aListOfQuestions).each(function(index,element){
-
-                var elementInfo = autoArray[element];
-                var strJSelector = "#answer" + (elementInfo.children.join(", #answer"));
-
-                var aJSelectors = strJSelector.split(", ");
-                var strCheckedSelector = (aJSelectors.join(":checked ,"))+":checked";
-
-                $(strJSelector).live('change',function(event){
-
-                    if ($(strCheckedSelector).length == $(strJSelector).length){
-
-                        $("#answer"+elementInfo.focus).trigger('click');
-
-                        eval("excludeAllOthers"+elementInfo.parent + "('answer"+elementInfo.focus + "', 'yes')");
-
-                        checkconditions($("#answer"+elementInfo.focus).val(),
-                                        $("#answer"+elementInfo.focus).attr("name"),
-                                        $("#answer"+elementInfo.focus).attr('type')
-                                    );
-
-                    }
-                });
-
-            });
-        }
-    }
+//    /* TMSW - not needed?
+//    if ((typeof(autoArray) != "undefined")){
+//        if ((autoArray.list != 'undefined') && (autoArray.list.length > 0)){
+//            var aListOfQuestions = autoArray.list;
+//
+//            $(aListOfQuestions).each(function(index,element){
+//
+//                var elementInfo = autoArray[element];
+//                var strJSelector = "#answer" + (elementInfo.children.join(", #answer"));
+//
+//                var aJSelectors = strJSelector.split(", ");
+//                var strCheckedSelector = (aJSelectors.join(":checked ,"))+":checked";
+//
+//                $(strJSelector).live('change',function(event){
+//
+//                    if ($(strCheckedSelector).length == $(strJSelector).length){
+//
+//                        $("#answer"+elementInfo.focus).trigger('click');
+//
+//                        eval("excludeAllOthers"+elementInfo.parent + "('answer"+elementInfo.focus + "', 'yes')");
+//
+//                        checkconditions($("#answer"+elementInfo.focus).val(),
+//                                        $("#answer"+elementInfo.focus).attr("name"),
+//                                        $("#answer"+elementInfo.focus).attr('type')
+//                                    );
+//
+//                    }
+//                });
+//
+//            });
+//        }
+//    }
+//    */
     /*replacement for inline javascript for #index */
     /*
     $("#index").parents(".outerframe").addClass("withindex");
@@ -119,6 +125,33 @@ $(document).ready(function()
     */
 });
 
+function maxlengthtextarea(){
+    // Calling this function at document.ready : use maxlength attribute on textarea
+    // Can be replaced by inline javascript
+    $("textarea[maxlength]").change(function(){ // global solution
+        var maxlen=$(this).attr("maxlength");
+        if ($(this).val().length > maxlen) {
+            $(this).val($(this).val().substring(0, maxlen));
+        }
+    });
+    $("textarea[maxlength]").keyup(function(){ // For copy/paste (not for all browser)
+        var maxlen=$(this).attr("maxlength");
+        if ($(this).val().length > maxlen) {
+            $(this).val($(this).val().substring(0, maxlen));
+        }
+    });
+    $("textarea[maxlength]").keydown(function(event){ // No new key after maxlength
+        var maxlen=$(this).attr("maxlength");
+        var k =event.keyCode;
+        if (($(this).val().length >= maxlen) &&
+         !(k == null ||k==0||k==8||k==9||k==13||k==27||k==37||k==38||k==39||k==40||k==46)) {
+            // Don't accept new key except NULL,Backspace,Tab,Enter,Esc,arrows,Delete
+            return false;
+        }
+    });
+}
+
+// OSMap
 gmaps = new Object;
 osmaps = new Object;
 zoom = [];
@@ -514,10 +547,40 @@ function std_onsubmit_handler()
     return true;
 }
 
+// round function from phpjs.org
+function round (value, precision, mode) {
+    // http://kevin.vanzonneveld.net
+    var m, f, isHalf, sgn; // helper variables
+    precision |= 0; // making sure precision is integer
+    m = Math.pow(10, precision);
+    value *= m;
+    sgn = (value > 0) | -(value < 0); // sign of the number
+    isHalf = value % 1 === 0.5 * sgn;
+    f = Math.floor(value);
+
+    if (isHalf) {
+        switch (mode) {
+        case 'PHP_ROUND_HALF_DOWN':
+            value = f + (sgn < 0); // rounds .5 toward zero
+            break;
+        case 'PHP_ROUND_HALF_EVEN':
+            value = f + (f % 2 * sgn); // rouds .5 towards the next even integer
+            break;
+        case 'PHP_ROUND_HALF_ODD':
+            value = f + !(f % 2); // rounds .5 towards the next odd integer
+            break;
+        default:
+            value = f + (sgn > 0); // rounds .5 away from zero
+        }
+    }
+
+    return (isHalf ? value : Math.round(value)) / m;
+}
+
 // ==========================================================
 // totals
 
-function multi_set(ids)
+function multi_set(ids,_radix)
 {
 	//quick ie check
 	var ie=(navigator.userAgent.indexOf("MSIE")>=0)?true:false;
@@ -525,6 +588,7 @@ function multi_set(ids)
 	var _match_grand = new RegExp('grand');
 	//match for total
 	var _match_total = new RegExp('total');
+    var radix = _radix; // comma, period, X (for not using numbers only)
 	//main function (obj)
 	//id = wrapper id
 	function multi_total(id)
@@ -585,7 +649,7 @@ function multi_set(ids)
 								_bits[_counter].push(_tdin);
 								//set key board actions
 								_tdin.onkeydown = _in_key;
-								_tdin.onkeyup = calc;
+								_tdin.onchange = calc;
 								//check for total and grand total
 								if(_td[_a].className && _td[_a].className.match(_match_total,'ig'))
 								{
@@ -678,15 +742,18 @@ function multi_set(ids)
 				_bits[id][i].onChange = calc;
 				if(i == (l - 1))
 				{
-					_bits[id][i].value = qt;
+					_bits[id][i].value = round(qt,12)
 				}
 				else if(_bits[id][i].value)
 				{
-					qt += (_bits[id][i].value * 1);
-//				}
-//				else
-//				{
-//					_bits[id][i].value = '0';
+                    _aval=_bits[id][i].value;
+                    if (radix===',') {
+                        _aval = _aval.split(',').join('.');
+                        _bits[id][i].value = _aval.split('.').join(',');
+                    }
+                    if  (_aval == parseFloat(_aval)) {
+                        qt += +_aval;
+                    }
 				};
 			};
 
@@ -706,15 +773,18 @@ function multi_set(ids)
 				_bits[i][id].onchange = calc;
 				if(i == (l - 1))
 				{
-					_bits[i][id].value = qt;
+					_bits[i][id].value = round(qt,12);
 				}
 				else if(_bits[i][id].value)
 				{
-					qt += (_bits[i][id].value * 1);
-//				}
-//				else
-//				{
-//					_bits[i][id].value = '0';
+                    _aval=_bits[i][id].value;
+                    if (radix===',') {
+                        _aval = _aval.split(',').join('.');
+                        _bits[i][id].value = _aval.split('.').join(',');
+                    }
+                    if  (_aval == parseFloat(_aval)) {
+                        qt += +_aval;
+                    }
 				};
 			};
 		};
@@ -726,6 +796,16 @@ function multi_set(ids)
 			e=(e)?e:event;
 			var el=e.target||e.srcElement;
 			var _id=el.getAttribute(ie ? 'className' : 'class');
+            
+            // eliminate bad numbers
+            _aval=el.value;
+            if (radix===',') {
+                _aval = _aval.split(',').join('.');
+            }
+            if (radix!=='X' && _aval != parseFloat(_aval)) {
+                el.value = "";
+            }
+                    
 			//vert_[id] horo_[id] in class trigger vert or horo calc on row[id]
 			if(_id.match('vert_','ig'))
 			{
@@ -749,6 +829,7 @@ function multi_set(ids)
 					calc_vert(_bits[0].length - 1);
 					break;
 			}
+            checkconditions($(el).val(), $(el).attr('name'), $(el).attr('type'));
 			return(true);
 		};
 		//retuns the id from end of string like 'vert_[id] horo_[id] other class'
@@ -778,29 +859,18 @@ function multi_set(ids)
                     }
                     else
                     {
-                        _bits[i][vid].value = qt;
+                        _bits[i][vid].value = round(qt,12);
                     }
 				}
 				else if(_bits[i][vid].value)
 				{
-					if(_bits[i][vid].value.match('-','ig'))
-					{
-						var _iklebit = _bits[i][vid].value.replace('-','','ig');
-						//alert(iklebit);
-						if(_iklebit)
-						{
-							qt -=(_iklebit * 1);
-						}
-					}
-					else
-					{
-						qt += (_bits[i][vid].value * 1);
-					}
-
-//				}
-//				else
-//				{
-//					_bits[i][vid].value = '0';
+                    _aval=_bits[i][vid].value;
+                    if (radix===',') {
+                        _aval = _aval.split(',').join('.');
+                    }
+                    if  (_aval == parseFloat(_aval)) {
+                        qt += +_aval;
+                    }
 				};
 			};
 
@@ -821,28 +891,18 @@ function multi_set(ids)
                     }
                     else
                     {
-                        _bits[hid][i].value = qt;
+                        _bits[hid][i].value = round(qt,12);
                     }
 				}
 				else if(_bits[hid][i].value)
 				{
-					if(_bits[hid][i].value.match('-','ig'))
-					{
-						var _iklebit = _bits[hid][i].value.replace('-','','ig');
-						//alert(_iklebit);
-						if(_iklebit)
-						{
-							qt -= (_iklebit * 1);
-						}
-					}
-					else
-					{
-						qt += (_bits[hid][i].value * 1);
-					}
-//				}
-//				else
-//				{
-//					_bits[hid][i].value = '0';
+                    _aval=_bits[hid][i].value;
+                    if (radix===',') {
+                        _aval = _aval.split(',').join('.');
+                    }
+                    if  (_aval == parseFloat(_aval)) {
+                        qt += +_aval;
+                    }
 				};
 			};
 		};
@@ -895,6 +955,9 @@ function multi_set(ids)
 				case 110:
 				case 109:
                 case 189:
+                case 188:
+                    if (radix===',' && e.keyCode == 190) { return false; }
+                    if (radix==='.' && e.keyCode == 188) { return false; }
 					return(e.keyCode);
 				default:
 				//alert(e.keyCode);

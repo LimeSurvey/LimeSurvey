@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id: html_functions.php 9668 2010-12-21 00:49:44Z c_schmitz $
+ * $Id: html_functions.php 12211 2012-01-26 17:02:27Z shnoulle $
  */
 function browsemenubar($title='')
 {
@@ -147,4 +147,15 @@ function browsemenubar($title='')
 
     return $browsemenubar;
 }
-
+function getQuestionlistMode(){
+    global $defaultquestionselectormode;
+    //TODO : put it on globalsettings $defaultquestionselectormode=getGlobalSetting('defaultquestionselectormode');
+    if (isset($_SESSION['questionselectormode']) && ($_SESSION['questionselectormode']=='full' || $_SESSION['questionselectormode']=='none'))
+    {
+        return $_SESSION['questionselectormode'];
+    }
+    else
+    {
+    return $defaultquestionselectormode;
+    }
+}

@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: questionhandling.php 12217 2012-01-26 17:54:59Z tmswhite $
  */
 
 
@@ -64,6 +64,12 @@ if ($action == "copyquestion")
     $editquestion .= "\t<li id='Validation'>\n"
     . "<label for='preg'>".$clang->gT("Validation:")."</label>\n"
     . "<input type='text' id='preg' name='preg' size='50' value=\"".$eqrow['preg']."\" />\n"
+    . "</li>\n"
+
+    // Relevance
+    ."<li>"
+    . "<label for='relevance'>".$clang->gT("Relevance equation:")."</label>"
+    . "<textarea cols='50' rows='1' id='relevance' name='relevance'>".$eqrow['relevance']."</textarea>"
     . "</li>\n"
 
     . "<li ><label for='gid'>".$clang->gT("Question group:")."</label>\n"
@@ -189,26 +195,69 @@ if ($action == "editdefaultvalues")
                 }
                 $editdefvalues.="<ul>";
 
-                foreach ($sqrows as $aSubquestion)
+                switch($questionrow['type'])
                 {
-                    $defaultvalue=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid=$qid AND specialtype='' and sqid={$aSubquestion['qid']} and scale_id={$scale_id} AND language='{$language}'");
-                    $editdefvalues.="<li><label for='defaultanswerscale_{$scale_id}_{$language}_{$aSubquestion['qid']}'>{$aSubquestion['title']}: ".FlattenText($aSubquestion['question'])."</label>";
-                    $editdefvalues.="<select name='defaultanswerscale_{$scale_id}_{$language}_{$aSubquestion['qid']}' id='defaultanswerscale_{$scale_id}_{$language}_{$aSubquestion['qid']}'>";
-                    foreach ($options as $value=>$label)
+                    case 'L':
+                    case 'M':
+                    case 'O':
+                    case 'P':
+                    case '!':
+                        $inputStyle='enum';
+                        break;
+                    case 'K':
+                    case 'Q':
+                        $inputStyle='text';
+                        break;
+                }
+                if ($inputStyle == 'enum')
+                {
+                    foreach ($sqrows as $aSubquestion)
                     {
-                        $editdefvalues.="<option ";
-                        if ($value==$defaultvalue)
+                        $defaultvalue=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid=$qid AND specialtype='' and sqid={$aSubquestion['qid']} and scale_id={$scale_id} AND language='{$language}'");
+                        $editdefvalues.="<li><label for='defaultanswerscale_{$scale_id}_{$language}_{$aSubquestion['qid']}'>{$aSubquestion['title']}: ".FlattenText($aSubquestion['question'])."</label>";
+                        $editdefvalues.="<select name='defaultanswerscale_{$scale_id}_{$language}_{$aSubquestion['qid']}' id='defaultanswerscale_{$scale_id}_{$language}_{$aSubquestion['qid']}'>";
+                        foreach ($options as $value=>$label)
                         {
-                            $editdefvalues.= " selected='selected' ";
+                            $editdefvalues.="<option ";
+                            if ($value==$defaultvalue)
+                            {
+                                $editdefvalues.= " selected='selected' ";
+                            }
+                            $editdefvalues.="value='{$value}'>{$label}</option>";
                         }
-                        $editdefvalues.="value='{$value}'>{$label}</option>";
+                        $editdefvalues.="</select></li> ";
                     }
-                    $editdefvalues.="</select></li> ";
+                }
+                if ($inputStyle == 'text')
+                {
+                    foreach ($sqrows as $aSubquestion)
+                    {
+                        $defaultvalue=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid=$qid AND specialtype='' and sqid={$aSubquestion['qid']} and scale_id={$scale_id} AND language='{$language}'");
+                        $editdefvalues.="<li><label for='defaultanswerscale_{$scale_id}_{$language}_{$aSubquestion['qid']}'>{$aSubquestion['title']}: ".FlattenText($aSubquestion['question'])."</label>";
+                        $editdefvalues.="<textarea cols='50' name='defaultanswerscale_{$scale_id}_{$language}_{$aSubquestion['qid']}' id='defaultanswerscale_{$scale_id}_{$language}_{$aSubquestion['qid']}'/>";
+                        $editdefvalues.=$defaultvalue."</textarea></li>\n";
+                    }
                 }
             }
         }
-            if ($language==$baselang && count($questlangs)>1)
-            {
+
+        if ($qtproperties[$questionrow['type']]['answerscales']==0 && $qtproperties[$questionrow['type']]['subquestions']==0)
+        {
+            /*
+                    case 'D':
+                    case 'N':
+                    case 'S':
+                    case 'T':
+                    case 'U':*
+             */
+            $defaultvalue=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid=$qid AND language='{$language}'");
+            $editdefvalues.="<li>";
+            $editdefvalues.="<textarea cols='50' name='defaultanswerscale_0_{$language}_0' id='defaultanswerscale_0_{$language}_0'/>";
+            $editdefvalues.=$defaultvalue."</textarea></li>\n";
+        }
+
+        if ($language==$baselang && count($questlangs)>1)
+        {
             $editdefvalues.="<li><label for='samedefault'>".$clang->gT('Use same default value across languages:')."<label><input type='checkbox' name='samedefault' id='samedefault'";
             if ($questionrow['same_default'])
             {
@@ -218,7 +267,7 @@ if ($action == "editdefaultvalues")
         }
             $editdefvalues.="</ul> ";
             $editdefvalues.="</div> "; // Closing page
-        }
+    }
     $editdefvalues.="</div> "; // Closing pane
     $editdefvalues.="<input type='hidden' id='action' name='action' value='updatedefaultvalues'> "
         . "\t<input type='hidden' id='sid' name='sid' value='$surveyid' /></p>\n"
@@ -232,6 +281,12 @@ if ($action == "editdefaultvalues")
 if ($action == "editquestion" || $action=="addquestion")
 {
     $adding=($action=="addquestion");
+    if ($adding)
+    {
+        // This is needed to properly color-code content if it contains replacements
+        LimeExpressionManager::StartProcessingPage(false,$rooturl);  // so can click on syntax highlighting to edit questions
+        LimeExpressionManager::StartProcessingGroup($gid,($surveyinfo['anonymized']!="N"),$surveyinfo['sid']);  // loads list of replacement values available for this group
+    }
     $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
     $questlangs[] = $baselang;
@@ -321,6 +376,7 @@ if ($action == "editquestion" || $action=="addquestion")
         $eqrow['other']='N';
         $eqrow['mandatory']='N';
         $eqrow['preg']='';
+        $eqrow['relevance']='1';
     }
    $editquestion .= "<div id='tabs'><ul>";
 
@@ -334,7 +390,7 @@ if ($action == "editquestion" || $action=="addquestion")
         foreach  ($addlanguages as $addlanguage)
         {
 		$editquestion .= '<li><a href="#'.$addlanguage.'">'.getLanguageNameFromCode($addlanguage,false);
-	    $editquestion .= "</a></li>\n";
+	$editquestion .= "</a></li>\n";
 		}
 
 		$editquestion .= "\n</ul>\n";
@@ -405,10 +461,10 @@ if ($action == "editquestion" || $action=="addquestion")
 
     //question type:
     $editquestion .= "\t<div id='questionbottom'><ul>\n"
-    . "<li><label for='question_type'>".$clang->gT("Question Type:")."</label>\n";
+    . "<li><label for='question_type'>".$clang->gT("Question Type:")." </label>\n";
     if ($activated != "Y")
     {
-        $editquestion .= "<select id='question_type' style='margin-bottom:5px' name='type' "
+        $editquestion .= "<select id='question_type' style='margin-bottom:5px' name='type' class='".getQuestionlistMode()."'"
         . ">\n"
         . getqtypelist($eqrow['type'],'group')
         . "</select>\n";
@@ -477,6 +533,12 @@ if ($action == "editquestion" || $action=="addquestion")
     . "<label for='preg'>".$clang->gT("Validation:")."</label>\n"
     . "<input type='text' id='preg' name='preg' size='50' value=\"".$eqrow['preg']."\" />\n"
     . "\t</li>";
+
+    // Relevance
+    $editquestion .=  "<li>
+                    <label for='relevance'>".$clang->gT("Relevance equation:")."</label>
+                    <textarea cols='50' rows='1' id='relevance' name='relevance'>".$eqrow['relevance']."</textarea>
+                </li>";
 
 
     if ($adding)
@@ -600,6 +662,7 @@ if($action == "orderquestions")
                 $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
                 break;
         }
+        LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
     }
     if ((!empty($_POST['questionmovefrom']) || (isset($_POST['questionmovefrom']) && $_POST['questionmovefrom'] == '0')) && (!empty($_POST['questionmoveto']) || (isset($_POST['questionmoveto']) && $_POST['questionmoveto'] == '0')))
     {
@@ -630,6 +693,7 @@ if($action == "orderquestions")
             $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=".($newpos+1)." WHERE gid=$gid AND question_order=-1";
             $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
         }
+        LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
     }
 
     //Get the questions for this group
@@ -644,44 +708,43 @@ if($action == "orderquestions")
     $minioqarray=$oqarray;
 
     // Get the condition dependecy array for all questions in this array and group
-    $questdepsarray = GetQuestDepsForConditions($surveyid,$gid);
-    if (!is_null($questdepsarray))
-    {
-        $orderquestions .= "<br/><div class='movableNode' style='margin:0 auto;'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current group is using conditional questions")."</strong><br /><br /><i>".$clang->gT("Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set")."</i></strong><br /><br/>".$clang->gT("See the conditions marked on the following questions").":<ul>\n";
-        foreach ($questdepsarray as $depqid => $depquestrow)
-        {
-            foreach ($depquestrow as $targqid => $targcid)
-            {
-                $listcid=implode("-",$targcid);
-                $question=arraySearchByKey($depqid, $oqarray, "qid", 1);
-
-                $orderquestions .= "<li><a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$gid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."','_top')\">".$question['title'].": ".FlattenText($question['question']). " [QID: ".$depqid."] </a> ";
-            }
-            $orderquestions .= "</li>\n";
-        }
-        $orderquestions .= "</ul></div>";
-    }
+//    $questdepsarray = GetQuestDepsForConditions($surveyid,$gid);
+//    if (!is_null($questdepsarray))
+//    {
+//        $orderquestions .= "<br/><div class='movableNode' style='margin:0 auto;'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current group is using conditional questions")."</strong><br /><br /><i>".$clang->gT("Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set")."</i></strong><br /><br/>".$clang->gT("See the conditions marked on the following questions").":<ul>\n";
+//        foreach ($questdepsarray as $depqid => $depquestrow)
+//        {
+//            foreach ($depquestrow as $targqid => $targcid)
+//            {
+//                $listcid=implode("-",$targcid);
+//                $question=arraySearchByKey($depqid, $oqarray, "qid", 1);
+//
+//                $orderquestions .= "<li><a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$gid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."','_top')\">".$question['title'].": ".FlattenText($question['question']). " [QID: ".$depqid."] </a> ";
+//            }
+//            $orderquestions .= "</li>\n";
+//        }
+//        $orderquestions .= "</ul></div>";
+//    }
 
     $orderquestions	.= "<form method='post' action=''><ul class='movableList'>";
+
+    LimeExpressionManager::StartProcessingPage(false,$rooturl);  // so can click on syntax highlighting to edit questions
+    LimeExpressionManager::StartProcessingGroup($gid, false, $surveyid);   // will this work?
 
     for($i=0; $i < $questioncount ; $i++) //Assumes that all question orders start with 0
     {
         $downdisabled = "";
         $updisabled = "";
         //Check if question is relied on as a condition dependency by the next question, and if so, don't allow moving down
-        if ( !is_null($questdepsarray) && $i < $questioncount-1 &&
-        array_key_exists($oqarray[$i+1]['qid'],$questdepsarray) &&
-        array_key_exists($oqarray[$i]['qid'],$questdepsarray[$oqarray[$i+1]['qid']]) )
-        {
-            $downdisabled = "disabled=\"true\" class=\"disabledUpDnBtn\"";
-        }
+//        if ($i < $questioncount-1)
+//        {
+//            $downdisabled = "disabled=\"true\" class=\"disabledUpDnBtn\"";
+//        }
         //Check if question has a condition dependency on the preceding question, and if so, don't allow moving up
-        if ( !is_null($questdepsarray) && $i !=0  &&
-        array_key_exists($oqarray[$i]['qid'],$questdepsarray) &&
-        array_key_exists($oqarray[$i-1]['qid'],$questdepsarray[$oqarray[$i]['qid']]) )
-        {
-            $updisabled = "disabled=\"true\" class=\"disabledUpDnBtn\"";
-        }
+//        if ($i !=0)
+//        {
+//            $updisabled = "disabled=\"true\" class=\"disabledUpDnBtn\"";
+//        }
 
         //Move to location
         $orderquestions.="<li class='movableNode'>\n" ;
@@ -689,46 +752,44 @@ if($action == "orderquestions")
         $orderquestions.="' name='questionmovetomethod$i' onchange=\"this.form.questionmovefrom.value='".$oqarray[$i]['question_order']."';this.form.questionmoveto.value=this.value;submit()\">\n";
         $orderquestions.="<option value=''>".$clang->gT("Place after..")."</option>\n";
         //Display the "position at beginning" item
-        if(empty($questdepsarray) || (!is_null($questdepsarray)  && $i != 0 &&
-        !array_key_exists($oqarray[$i]['qid'], $questdepsarray)))
+        if($i != 0)
         {
             $orderquestions.="<option value='-1'>".$clang->gT("At beginning")."</option>\n";
         }
         //Find out if there are any dependencies
         $max_start_order=0;
-        if ( !is_null($questdepsarray) && $i!=0 &&
-        array_key_exists($oqarray[$i]['qid'], $questdepsarray)) //This should find out if there are any dependencies
-        {
-            foreach($questdepsarray[$oqarray[$i]['qid']] as $key=>$val) {
-                //qet the question_order value for each of the dependencies
-                foreach($minioqarray as $mo) {
-                    if($mo['qid'] == $key && $mo['question_order'] > $max_start_order) //If there is a matching condition, and the question order for that condition is higher than the one already set:
-                    {
-                        $max_start_order = $mo['question_order']; //Set the maximum question condition to this
-                    }
-                }
-            }
-        }
-        //Find out if any questions use this as a dependency
+//        if ($i!=0) //This should find out if there are any dependencies
+//        {
+//            foreach($questdepsarray[$oqarray[$i]['qid']] as $key=>$val) {
+//                //qet the question_order value for each of the dependencies
+//                foreach($minioqarray as $mo) {
+//                    if($mo['qid'] == $key && $mo['question_order'] > $max_start_order) //If there is a matching condition, and the question order for that condition is higher than the one already set:
+//                    {
+//                        $max_start_order = $mo['question_order']; //Set the maximum question condition to this
+//                    }
+//                }
+//            }
+//        }
+//        //Find out if any questions use this as a dependency
         $max_end_order=$questioncount+1;
-        if ( !is_null($questdepsarray))
-        {
-            //There doesn't seem to be any choice but to go through the questdepsarray one at a time
-            //to find which question has a dependence on this one
-            foreach($questdepsarray as $qdarray)
-            {
-                if (array_key_exists($oqarray[$i]['qid'], $qdarray))
-                {
-                    $cqidquery = "SELECT question_order
-				          FROM ".db_table_name('conditions').", ".db_table_name('questions')."
-						  WHERE ".db_table_name('conditions').".qid=".db_table_name('questions').".qid
-						  AND cid=".$qdarray[$oqarray[$i]['qid']][0];
-                    $cqidresult = db_execute_assoc($cqidquery);
-                    $cqidrow = $cqidresult->FetchRow();
-                    $max_end_order=$cqidrow['question_order'];
-                }
-            }
-        }
+//        if ( !is_null($questdepsarray))
+//        {
+//            //There doesn't seem to be any choice but to go through the questdepsarray one at a time
+//            //to find which question has a dependence on this one
+//            foreach($questdepsarray as $qdarray)
+//            {
+//                if (array_key_exists($oqarray[$i]['qid'], $qdarray))
+//                {
+//                    $cqidquery = "SELECT question_order
+//				          FROM ".db_table_name('conditions').", ".db_table_name('questions')."
+//						  WHERE ".db_table_name('conditions').".qid=".db_table_name('questions').".qid
+//						  AND cid=".$qdarray[$oqarray[$i]['qid']][0];
+//                    $cqidresult = db_execute_assoc($cqidquery);
+//                    $cqidrow = $cqidresult->FetchRow();
+//                    $max_end_order=$cqidrow['question_order'];
+//                }
+//            }
+//        }
         $minipos=$minioqarray[0]['question_order']; //Start at the very first question_order
         foreach($minioqarray as $mo)
         {
@@ -748,7 +809,11 @@ if($action == "orderquestions")
             // Fill the sortorder hiddenfield so we know what field is moved down
             $orderquestions.= "\t<input type='image' src='$imageurl/down.png' style='float:right;' name='btndown_$i' onclick=\"$('#sortorder').val('{$oqarray[$i]['question_order']}');$('#questionordermethod').val('down')\" ".$downdisabled."/>\n";
         }
-        $orderquestions.= "<a href='admin.php?sid=$surveyid&amp;gid=$gid&amp;qid={$oqarray[$i]['qid']}' title='".$clang->gT("View Question")."'>".$oqarray[$i]['title']."</a>: ".FlattenText($oqarray[$i]['question']);
+        $orderquestions.= "<a href='admin.php?sid=$surveyid&amp;gid=$gid&amp;qid={$oqarray[$i]['qid']}' title='".$clang->gT("View Question")."'>".$oqarray[$i]['title']."</a>: ";
+        $relevance = ($oqarray[$i]['relevance'] == '') ? 1 : $oqarray[$i]['relevance'];
+        $showme = '[{' . $relevance . '}] ' . $oqarray[$i]['question'];
+        LimeExpressionManager::ProcessString($showme, $oqarray[$i]['qid']);
+        $orderquestions.=FlattenText(LimeExpressionManager::GetLastPrettyPrintExpression(), false, 'UTF-8', true, true);
         $orderquestions.= "</li>\n" ;
     }
 
@@ -760,6 +825,9 @@ if($action == "orderquestions")
     . "\t<input type='hidden' name='action' value='orderquestions' />"
     . "</form>" ;
     $orderquestions .="<br />" ;
+
+    LimeExpressionManager::FinishProcessingGroup();
+    LimeExpressionManager::FinishProcessingPage();
 }
 
 function questionjavascript($type)
@@ -795,10 +863,16 @@ function questionjavascript($type)
     . "document.getElementById('Validation').style.display = 'none';\n"
     . "document.getElementById('MandatorySelection').style.display='none';\n"
     . "}\n"
-    . "\telse if (QuestionType == 'F' || QuestionType == 'H' || QuestionType == ':' || QuestionType == ';')\n"
+    . "\telse if (QuestionType == 'F' || QuestionType == 'H')\n"
     . "{\n"
     . "document.getElementById('OtherSelection').style.display = 'none';\n"
     . "document.getElementById('Validation').style.display = 'none';\n"
+    . "document.getElementById('MandatorySelection').style.display='';\n"
+    . "}\n"
+    . "\telse if (QuestionType == ';' || QuestionType == ':')\n"
+    . "{\n"
+    . "document.getElementById('OtherSelection').style.display = 'none';\n"
+    . "document.getElementById('Validation').style.display = '';\n"
     . "document.getElementById('MandatorySelection').style.display='';\n"
     . "}\n"
     . "\telse if (QuestionType == '1')\n"
@@ -820,6 +894,12 @@ function questionjavascript($type)
     . "document.getElementById('OtherSelection').style.display ='none';\n"
     . "document.getElementById('MandatorySelection').style.display='none';\n"
     . "}\n"
+    . "\telse if (QuestionType == 'Q')\n"
+    . "{\n"
+    . "document.getElementById('Validation').style.display = '';\n"
+    . "document.getElementById('OtherSelection').style.display ='none';\n"
+    . "document.getElementById('MandatorySelection').style.display='';\n"
+    . "}\n"    
     . "\telse\n"
     . "{\n"
     . "document.getElementById('OtherSelection').style.display = 'none';\n"

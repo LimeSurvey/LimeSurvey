@@ -1,4 +1,4 @@
-// $Id$
+// $Id: surveysettings.js 9757 2011-02-09 20:52:33Z c_schmitz $
 
 $(document).ready(function(){
     $("#template").change(templatechange);

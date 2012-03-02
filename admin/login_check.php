@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: login_check.php 12211 2012-01-26 17:02:27Z shnoulle $
  */
 
 
@@ -51,7 +51,7 @@ if(isset($_GET['user']) && isset($_GET['onepass']))
         else
         {
             //check if user exists in DB
-            $query = "SELECT uid, users_name, password, one_time_pw, dateformat, full_name, htmleditormode FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($user);
+            $query = "SELECT uid, users_name, password, one_time_pw, dateformat, full_name, htmleditormode, questionselectormode, templateeditormode FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($user);
             $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC; //Checked
             $result = $connect->SelectLimit($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());
             if(!$result)
@@ -101,6 +101,8 @@ if(isset($_GET['user']) && isset($_GET['onepass']))
                     $_SESSION['loginID'] = $srow['uid'];
                     $_SESSION['dateformat'] = $srow['dateformat'];
                     $_SESSION['htmleditormode'] = $srow['htmleditormode'];
+                    $_SESSION['questionselectormode'] = $srow['questionselectormode'];
+                    $_SESSION['templateeditormode'] = $srow['templateeditormode'];
                     $_SESSION['full_name'] = $srow['full_name'];
                     GetSessionUserRights($_SESSION['loginID']);
 

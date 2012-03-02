@@ -93,7 +93,7 @@ if (isset($argv[1]) && $argv[1]=='install')
 	if ($createdbtype=='mssqlnative') $createdbtype == 'mssqlnative';
     
 	//this is the SQL file holding the installation details to set up the Limesurvey DB
-	$sqlfile = dirname(__FILE__).'/create-'.$createdbtype.'.sql' ;
+    $sqlfile = dirname(__FILE__).'/create-'.$createdbtype.'.sql' ;
 
 	//check if file is not empty
     if (!empty($sqlfile)) 
@@ -108,7 +108,7 @@ if (isset($argv[1]) && $argv[1]=='install')
             print "\nTried to populate database, but '". $sqlfile ."' doesn't exist!\n";
             
 			//return error flag
-			return $success;
+            return $success;
         } 
 		//everything is fine -> read in the file
 		else 
@@ -170,7 +170,7 @@ if (isset($argv[1]) && $argv[1]=='install')
                     print ("\n".$clang->gT("Executing").".....".$command."...".$clang->gT('Failed! Reason:')."\n".$connect->ErrorMsg()."\n\n");
                     
 					//set error flag
-					$success=1;
+                    $success=1;
                 }
 				
 				//empty command variable
@@ -214,7 +214,7 @@ elseif (isset($argv[1]) && $argv[1]=='upgrade')
     if ($upgradedbtype=='mssqnlative') $upgradedbtype='mssqlnative';
     
 	//we need thise files to run the update
-	include ('upgrade-all.php');
+    include ('upgrade-all.php');
     include ('upgrade-'.$upgradedbtype.'.php');
 
 	//get current DB version
@@ -223,7 +223,7 @@ elseif (isset($argv[1]) && $argv[1]=='upgrade')
     $usrow = $usresult->FetchRow();
     
 	//if user doesn't run the latest DB version, show a message and run update
-	if (intval($usrow['stg_value'])<$dbversionnumber)
+    if (intval($usrow['stg_value'])<$dbversionnumber)
     {
         print("Upgrading db to $dbversionnumber\n");
         db_upgrade_all(intval($usrow['stg_value']));

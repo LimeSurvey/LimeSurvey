@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: sessioncontrol.php 11675 2011-12-18 02:27:59Z tmswhite $
  */
 
 // Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
@@ -152,7 +152,8 @@ $dangerousActionsArray = Array
         5 => Array('subaction' => 'insertquotaanswer'),
         6 => Array('subaction' => 'quota_delans')
     ),
-    'translate' => Array()
+    'translate' => Array(),
+    'ajaxmodlabelsetanswers'=>Array()
 );
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['action']) &&

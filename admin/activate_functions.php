@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id: activate_functions.php 9671 2010-12-21 20:02:24Z c_schmitz $
+ *	$Id: activate_functions.php 12339 2012-02-04 12:48:38Z c_schmitz $
  *	Files Purpose: holds functions to activate a survey and precheck the consistency of the survey
  */
 
@@ -24,8 +24,10 @@
 function fixNumbering($fixnumbering)
 {
 
-    global $dbprefix, $connect, $clang;
-     //Fix a question id - requires renumbering a question
+    global $dbprefix, $connect, $clang, $surveyid;
+
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
+ //Fix a question id - requires renumbering a question
     $oldqid = $fixnumbering;
     $query = "SELECT qid FROM {$dbprefix}questions ORDER BY qid DESC";
     $result = db_select_limit_assoc($query, 1) or safe_die($query."<br />".$connect->ErrorMsg());
@@ -63,6 +65,8 @@ function fixNumbering($fixnumbering)
     //Now answers
     $query = "UPDATE {$dbprefix}answers SET qid=$newqid WHERE qid=$oldqid";
     $result = $connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());
+
+    LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
 }
 /**
  * checks consistency of groups
@@ -228,7 +232,8 @@ function checkQuestions($postsid, $surveyid, $qtypes)
         }
     }
     //CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
-    $fieldmap=createFieldMap($surveyid, "full");
+    $fieldmap=createFieldMap($surveyid, 'full', false, false, GetBaseLanguageFromSurveyID($surveyid));
+    $clang = new limesurvey_lang($_SESSION['adminlang']);
     if (isset($fieldmap))
     {
         foreach($fieldmap as $fielddata)
@@ -288,7 +293,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
     $createsurvey = rtrim($createsurvey, ",\n");
 
     //Get list of questions for the base language
-    $fieldmap=createFieldMap($surveyid);
+    $fieldmap=createFieldMap($surveyid, 'full', false, false, GetBaseLanguageFromSurveyID($surveyid));
     foreach ($fieldmap as $arow) //With each question, create the appropriate field(s)
     {
         if ($createsurvey!='') {$createsurvey .= ",\n";}
@@ -375,6 +380,9 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
                 {
                     $createsurvey .= " C(36)";
                 }
+                break;
+            case '*':   // Equation
+                $createsurvey .= " X";  // could be anything, from numeric to a long message, so default to text
                 break;
             default:
                 $createsurvey .= " C(5)";

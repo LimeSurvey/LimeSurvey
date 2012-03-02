@@ -10,7 +10,7 @@
     * other free or open source software licenses.
     * See COPYRIGHT.php for copyright notices and details.
     *
-    * $Id: statistics_function.php 9671 2010-12-21 20:02:24Z c_schmitz $
+    * $Id: statistics_function.php 12369 2012-02-06 15:41:16Z c_schmitz $
     *
     */
 
@@ -1905,6 +1905,7 @@
                             break;
                     }
                     echo '';
+                    
                     //loop thorugh the array which contains all answer data
                     foreach ($alist as $al)
                     {
@@ -2033,6 +2034,9 @@
                         // this just extracts the data, after we present
                         while ($row=$result->FetchRow())
                         {
+                            //store temporarily value of answer count of question type '5' and 'A'.
+                            $tempcount = -1; //count can't be less han zero
+                            
                             //increase counter
                             $TotalCompleted += $row[0];
 
@@ -2050,7 +2054,25 @@
                                     $TotalCompleted -=$row[0];
                                 }
                                 $fname="$al[1]";
-                                if ($browse===true) $fname .= " <input type='button' value='".$statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&amp;sid={$surveyid}&amp;column={$ColumnName_RM}', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
+                                if (!isset($_POST['showtextinline']) && $browse===true) $fname .= " <input type='button' value='".$statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&amp;sid={$surveyid}&amp;column={$ColumnName_RM}', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
+                                if(isset($_POST['showtextinline']) && ($qtype != "S" && $qtype != "U" && $qtype != "T" && $qtype != "Q")) {
+                                    //Generate list of 'other' text entries for display
+                                    $headPDF2=array();
+                                    $headPDF2[]=array($statlang->gt("'Other' Responses"));
+                                    $tablePDF2=array();
+                                    $query2 = "SELECT ".db_quote_id($al[2])." FROM ".db_table_name("survey_$surveyid")." WHERE ";
+                                    $query2 .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
+                                    $result2=db_execute_num($query2) or safe_die ("Couldn't do count of values<br />$query<br />".$connect->ErrorMsg());
+                                    $fnamelast = "<div id='textresponses_$fname' class='textresponses' style='text-align: center;'>\n";
+                                    $fnamelast .= "<b>".$clang->gT("'Other' Responses")."</b><br />\n";
+                                    //$fname .= $query2;
+                                    while ($row2=$result2->FetchRow())
+                                    {
+                                        $fnamelast .= $row2[0]."<br />\n";
+                                        $tablePDF2[]=array($row2[0]);
+                                    }
+                                    $fnamelast .= "</div>\n";
+                                }
                             }
 
                             /*
@@ -2070,7 +2092,7 @@
                                 if ($al[0] == "Answers")
                                 {
                                     $fname= "$al[1]";
-                                    if ($browse===true) $fname .= " <input type='submit' value='"
+                                    if (!isset($_POST['showtextinline']) && $browse===true) $fname .= " <input type='submit' value='"
                                         . $statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
                                 }
                                 elseif ($al[0] == "NoAnswer")
@@ -2084,6 +2106,25 @@
                                 ."\t\t<th width='25%' align='center' >"
                                 ."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
                                 ."\t</tr></thead>\n";
+
+                                if (isset($_POST['showtextinline'])) {
+                                    $headPDF2=array();
+                                    $headPDF2[]=array($statlang->gt("Responses"));
+                                    $tablePDF2=array();
+                                    $query2 = "SELECT ".db_quote_id($al[2])." FROM ".db_table_name("survey_$surveyid")." WHERE ";
+                                    $query2 .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
+                                    $result2=db_execute_num($query2) or safe_die ("Couldn't do count of values<br />$query<br />".$connect->ErrorMsg());
+                                    $fnamelast = "<div id='textresponses_$fname' class='textresponses' style='text-align: center;'>\n";
+                                    $fnamelast .= "<b>".$clang->gT("Responses")."</b><br />\n";
+                                    //$fname .= $query2;
+                                    while ($row2=$result2->FetchRow())
+                                    {
+                                        $fnamelast .= $row2[0]."<br />\n";
+                                        $tablePDF2[]=array($row2[0]);
+                                    }
+                                    $fnamelast .= "</div>\n";
+
+                                }
                             }
 
 
@@ -2207,6 +2248,8 @@
 
                                     if($testcounter == 0 )	//add 300 to original value
                                     {
+                                        //store the original value!
+                                        $tempcount = $row[0];
                                         //HACK: add three times the total number of results to the value
                                         //This way we get a 300 + X percentage which can be checked later
                                         $row[0] += (3*$results);
@@ -2215,6 +2258,8 @@
                                     //the third value should be shown twice later -> mark it
                                     if($testcounter == 2)	//add 400 to original value
                                     {
+                                        //store the original value!
+                                        $tempcount = $row[0];
                                         //HACK: add four times the total number of results to the value
                                         //This way there should be a 400 + X percentage which can be checked later
                                         $row[0] += (4*$results);
@@ -2223,6 +2268,8 @@
                                     //the last value aggregates the data of item 4 + item 5 later
                                     if($testcounter == 4 )	//add 200 to original value
                                     {
+                                        //store the original value!
+                                        $tempcount = $row[0];
                                         //HACK: add two times the total number of results to the value
                                         //This way there should be a 200 + X percentage which can be checked later
                                         $row[0] += (2*$results);
@@ -2310,8 +2357,19 @@
                             $justcode[]=$al[0];
 
                             //edit labels and put them into antoher array
-                            $lbl[] = wordwrap(FlattenText("$al[1] ($row[0])"), 25, "\n"); // NMO 2009-03-24
-                            $lblrtl[] = utf8_strrev(wordwrap(FlattenText("$al[1] )$row[0]("), 25, "\n")); // NMO 2009-03-24
+                            
+                            //first check if $tempcount is > 0. If yes, $row[0] has been modified and $tempcount has the original count.
+                            if ($tempcount > 0)
+                            {
+                                $lbl[] = iconv_wordwrap(FlattenText("$al[1] ($tempcount)"), 25, "\n"); // NMO 2009-03-24
+                                $lblrtl[] = utf8_strrev(iconv_wordwrap(FlattenText("$al[1] )$tempcount("), 25, "\n")); // NMO 2009-03-24
+                            }
+                            else
+                            {
+                                $lbl[] = iconv_wordwrap(FlattenText("$al[1] ($row[0])"), 30, "\n"); // NMO 2009-03-24
+                                $lblrtl[] = utf8_strrev(iconv_wordwrap(FlattenText("$al[1] )$row[0]("), 30, "\n")); // NMO 2009-03-24
+                            }
+                            
 
                         }	//end while -> loop through results
 
@@ -2891,7 +2949,10 @@
                         $itemcounter++;
 
                     }	//end while
-
+                    if(isset($fnamelast)) {
+                        $statisticsoutput.= "<tr><td colspan='3'>".$fnamelast."</td></tr>\n";
+                        unset($fnamelast);
+                    }
                     //only show additional values when this setting is enabled
                     if(isset($showaggregateddata) && $showaggregateddata == 1 )
                     {
@@ -3016,6 +3077,11 @@
                         //$tablePDF = array();
                         $tablePDF = array_merge_recursive($tablePDF, $footPDF);
                         $pdf->headTable($headPDF,$tablePDF);
+                        if(isset($headPDF2)) {
+                            $tablePDF = array_merge_recursive($headPDF2, $tablePDF2);
+                            $pdf->headTable($headPDF2, $tablePDF2);
+                            unset($headPDF2, $tablePDF2);
+                        }
                         //$pdf->tableintopdf($tablePDF);
 
                         //				if(isset($footPDF))
@@ -3095,7 +3161,7 @@
                             $counter=0;
                             foreach ($lbl as $label)
                             {
-                                $DataSet->SetSerieName($label,"Serie$counter");
+                                $DataSet->SetSerieName(encodeAllToHTMLEntities($label),"Serie$counter");
                                 $counter++;
                             }
 
@@ -3180,6 +3246,10 @@
                                 $lblout=$lbl;
                             }
 
+                            foreach ($lblout as $key=>$value)
+                            {
+                               $lblout[$key]=encodeAllToHTMLEntities($value);
+                            }
 
                             //create new 3D pie chart
                             if ($usegraph==1)
@@ -3216,7 +3286,7 @@
                             }
 
                         }	//end else -> pie charts
-
+                        
                         //introduce new counter
                         if (!isset($ci)) {$ci=0;}
 
@@ -3330,5 +3400,64 @@
 
         return $squarenumber;
     }
+
+function iconv_wordwrap($string, $width = 75, $break = "\n", $cut = false, $charset = 'utf-8')
+{
+    $stringWidth = iconv_strlen($string, $charset);
+    $breakWidth  = iconv_strlen($break, $charset);
+
+    if (strlen($string) === 0) {
+        return '';
+    } elseif ($breakWidth === null) {
+        throw new Zend_Text_Exception('Break string cannot be empty');
+    } elseif ($width === 0 && $cut) {
+        throw new Zend_Text_Exception('Can\'t force cut when width is zero');
+    }
+
+    $result    = '';
+    $lastStart = $lastSpace = 0;
+
+    for ($current = 0; $current < $stringWidth; $current++) {
+        $char = iconv_substr($string, $current, 1, $charset);
+
+        if ($breakWidth === 1) {
+            $possibleBreak = $char;
+        } else {
+            $possibleBreak = iconv_substr($string, $current, $breakWidth, $charset);
+        }
+
+        if ($possibleBreak === $break) {
+            $result    .= iconv_substr($string, $lastStart, $current - $lastStart + $breakWidth, $charset);
+            $current   += $breakWidth - 1;
+            $lastStart  = $lastSpace = $current + 1;
+        } elseif ($char === ' ') {
+            if ($current - $lastStart >= $width) {
+                $result    .= iconv_substr($string, $lastStart, $current - $lastStart, $charset) . $break;
+                $lastStart  = $current + 1;
+            }
+
+            $lastSpace = $current;
+        } elseif ($current - $lastStart >= $width && $cut && $lastStart >= $lastSpace) {
+            $result    .= iconv_substr($string, $lastStart, $current - $lastStart, $charset) . $break;
+            $lastStart  = $lastSpace = $current;
+        } elseif ($current - $lastStart >= $width && $lastStart < $lastSpace) {
+            $result    .= iconv_substr($string, $lastStart, $lastSpace - $lastStart, $charset) . $break;
+            $lastStart  = $lastSpace = $lastSpace + 1;
+        }
+    }
+
+    if ($lastStart !== $current) {
+        $result .= iconv_substr($string, $lastStart, $current - $lastStart, $charset);
+    }
+
+    return $result;
+}
+
+    function encodeAllToHTMLEntities($sString)
+    {
+        $convmap = array(0x80, 0x10ffff, 0, 0xffffff);
+        return mb_encode_numericentity($sString, $convmap, "UTF-8");
+    }
+
 
 ?>

@@ -1127,3 +1127,117 @@ td.statsImageholder {
 #index .container .row.current { background: #000099; color: #fff; }
 #index .container .row.missing { background: #CC0000; color: #fff; }
 #index .container input { margin: 1em; }
+
+/* Tips / Validation Messages */
+/* If the question is invalid, but has not been submitted, give it a pleasant warning color */
+div.em_num_answers.good {
+ color: green;
+}
+
+div.em_num_answers.error {
+  color: #FF00FF;
+  display: block;
+}
+
+div.em_value_range.good {
+  color: green;
+}
+div.em_value_range.error {
+  color: #FF00FF;
+  display: block;
+}
+
+div.em_sum_range.good {
+  color: green;
+}
+div.em_sum_range.error {
+  color: #FF00FF;
+  display: block;
+}
+
+div.em_regex_validation {
+  display: none;
+}
+div.em_regex_validation.good {
+  color: green;
+}
+div.em_regex_validation.error {
+  color: #FF00FF;
+}
+
+div.em_q_fn_validation {
+  display: none;
+}
+div.em_q_fn_validation.good {
+  color: green;
+}
+div.em_q_fn_validation.error {
+  color: #FF00FF;
+}
+
+div.em_sq_fn_validation {
+  display: none;
+}
+div.em_sq_fn_validation.good {
+  color: green;
+}
+div.em_sq_fn_validation.error {
+  color: #FF00FF;
+}
+
+div.em_other_comment_mandatory.good {
+  display: none;
+}
+div.em_other_comment_mandatory.error {
+  color: #FF00FF;
+  display: block;
+}
+
+input.em_sq_validation.good, textarea.em_sq_validation.good {
+}
+
+input.em_sq_validation.error, textarea.em_sq_validation.error {
+  color: black;
+  background-color:  pink;
+}
+
+span.dynamic_sum {
+  font-weight: bold;
+  background-color: #d3d3d3;
+}
+span.dynamic_sum.good {
+  color: green;
+}
+span.dynamic_sum.error {
+  color: red;
+}
+
+span.dynamic_remaining {
+  font-weight: bold;
+  background-color: #d3d3d3;
+}
+span.dyanamic_remaining.good {
+  color: green;
+}
+span.dynamic_remaining.error {
+  color: red;
+}
+
+/* If  it is still invalid after submit, flag it in red */
+.input-error div.error {
+  color: red;
+  display: block;
+}
+
+span.hide-tip div.good {
+    display: none;
+}
+
+span.hide-tip div.error {
+    color: #FF00FF;
+}
+
+.input-error span.hide-tip div.error {
+    color: red;
+    display: block;
+}

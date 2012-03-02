@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: export_data_r.php 12179 2012-01-24 13:27:31Z adevries $
  */
 
 // Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
@@ -66,14 +66,15 @@ $typeMap = array(
 'R'=>Array('name'=>'Ranking','size'=>1,'SPSStype'=>'F'),
 'S'=>Array('name'=>'Short free text','size'=>1,'SPSStype'=>'F'),
 'Y'=>Array('name'=>'Yes/No','size'=>1,'SPSStype'=>'F'),
-':'=>Array('name'=>'Multi flexi numbers','size'=>1,'SPSStype'=>'F','Scale'=>3),
+':'=>Array('name'=>'Multi flexi numbers','size'=>1,'SPSStype'=>'F'),
 ';'=>Array('name'=>'Multi flexi text','size'=>1,'SPSStype'=>'A'),
+'*'=>Array('name'=>'Equation','size'=>1,'SPSStype'=>'A'),
 );
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 $filterstate = incompleteAnsFilterstate();
 
-$headerComment = '#$Rev$' . " $filterstate.\n";
+$headerComment = '#$Rev: 12179 $' . " $filterstate.\n";
 
 if (isset($_GET['dldata'])) $subaction = "dldata";
 if (isset($_GET['dlstructure'])) $subaction = "dlstructure";
@@ -194,25 +195,25 @@ if  ($subaction=='dlstructure')
   $i = 1;
   foreach ($fields as $field)
   {
-        if($field['SPSStype'] == 'DATETIME23.2') $field['size']='';
+    if($field['SPSStype'] == 'DATETIME23.2') $field['size']='';
     if($field['LStype'] == 'N' || $field['LStype']=='K')
     {
-            $field['size'].='.'.($field['size']-1);
-        }
+        $field['size'].='.'.($field['size']-1);
+    }
     switch ($field['SPSStype'])
     {
-            case 'F':
-                $type="numeric";
-                break;
-            case 'A':
-                $type="character";
-                break;
-            case 'DATETIME23.2':
-            case 'SDATE':
-                $type="character";
-                //@TODO set $type to format for date
-                break;
-        }
+      case 'F':
+          $type="numeric";
+          break;
+      case 'A':
+          $type="character";
+          break;
+      case 'DATETIME23.2':
+      case 'SDATE':
+          $type="character";
+          //@TODO set $type to format for date
+          break;
+    }
 
     if (!$field['hide'])
     {
@@ -224,7 +225,7 @@ if  ($subaction=='dlstructure')
                   htmlspecialchars_decode(
                     mb_substr(
                       strip_tags_full(
-                        $field['VariableLabel']),0,$length_varlabel)))  // <AdV> added htmlspecialchars_decode
+                        $field['VariableLabel']),0,$length_varlabel)))  
               . '"' . "\n";
 
       // Create the value Labels!
@@ -232,30 +233,32 @@ if  ($subaction=='dlstructure')
       {
             $answers = $field['answers'];
             //print out the value labels!
-            // data$V14=factor(data$V14,levels=c(1,2,3),labels=c("Yes","No","Uncertain"))
-        echo 'data[, ' . $i .'] <- factor(data[, ' . $i . '], levels=c(';
-            $str="";
-            foreach ($answers as $answer) {
-                if ($field['SPSStype']=="F" && my_is_numeric($answer['code'])) {
-                    $str .= ",{$answer['code']}";
-                } else {
-                    $str .= ",\"{$answer['code']}\"";
+            if($field['LStype'] != ':') // Exclude array (numeric) type questions. There must be a better way of doing this, but I can't find it. (AdV)
+              {
+                echo 'data[, ' . $i .'] <- factor(data[, ' . $i . '], levels=c(';
+                $str="";
+                foreach ($answers as $answer) {
+                    if ($field['SPSStype']=="F" && my_is_numeric($answer['code'])) {
+                        $str .= ",{$answer['code']}";
+                    } else {
+                        $str .= ",\"{$answer['code']}\"";
+                    }
                 }
-            }
-            $str = mb_substr($str,1);
-            echo $str . '),labels=c(';
-            $str="";
-            foreach ($answers as $answer) {
-                $str .= ",\"{$answer['value']}\"";
-            }
-            $str = mb_substr($str,1);
+                $str = mb_substr($str,1);
+                echo $str . '),labels=c(';
+                $str="";
+                foreach ($answers as $answer) {
+                    $str .= ",\"{$answer['value']}\"";
+                }
+                $str = mb_substr($str,1);
             if($field['scale']!=='' && $field['scale'] == 2 ) {
-                $scale = ",ordered=TRUE";
-            } else {
-                $scale = "";
+                    $scale = ",ordered=TRUE";
+                } else {
+                    $scale = "";
+                }
+                echo "$str)$scale)\n";
             }
-            echo "$str)$scale)\n";
-        }
+          }
 
     //Rename the Variables (in case somethings goes wrong, we still have the OLD values
       if (isset($field['sql_name']))

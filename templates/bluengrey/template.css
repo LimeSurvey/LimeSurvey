@@ -103,6 +103,7 @@ div.questiontext {
 
 div.questiontext ul,
 div.questiontext ol {
+  padding-right: 0;
   padding-left: 25px;
 }
 
@@ -527,20 +528,21 @@ td.clearall-result .warning-text {
    START: General list styles - - -  - - -  - - - - */
 .choice-5-pt-radio .answers ul,.list-radio-flexible .answers ul,.list-radio .answers ul,.list-with-comment .answers ul,.multiple-opt .answers ul,.multiple-opt-comments .answers ul,.multiple-short-txt .answers ul,.numeric-multi .answers ul,.yes-no .answers ul,.gender .answers ul
   {
-  margin-left: 0%;
-  padding-left: 0%;
+  margin: 0;
+  padding: 0;
 }
 
 .choice-5-pt-radio .answers li,.list-radio-flexible .answers li,.list-radio .answers li,.list-with-comment .answers li,.multiple-opt .answers li,.multiple-opt-comments .answers li,.multiple-short-txt .answers li,.numeric-multi .answers li,.yes-no .answers li,.gender .answers li
   {
   list-style-type: none;
   text-align: left;
-  margin: 0 0 0.3em 0.5em;
+  margin-top:0;margin-bottom: 0.3em;
+  margin-right:0;margin-left:0.5em;
 }
 
 .choice-5-pt-radio .answers li,.list-radio-flexible .answers li,.list-radio .answers li,.list-with-comment .answers li,.yes-no .answers li,.gender .answers li
   {
-  margin-left: 2em;
+  margin-left: 2em;margin-right:0;
   text-indent: -1.7em;
 }
 
@@ -551,22 +553,20 @@ td.clearall-result .warning-text {
 */
 .choice-5-pt-radio .answers ul,.yes-no .answers ul,.gender .answers ul {
   text-align: left;
-  margin-left: 0%;
-  padding-left: 0%;
   font-size: 90%;
 }
 
 .choice-5-pt-radio .answers ul li,.yes-no .answers ul li,.gender .answers ul li {
   display: inline;
   padding: 0% 2em 0% 0%;
-  margin-left: 0%;
+  margin-right:0;margin-left: 0;
 }
 
 /* STYLES NOT YET DEFINED - - - - -
 .date {}
 */
 .date p.question {
-  margin-left: 1em;
+  margin-left: 1em;margin-right:0;
 }
 
 .date p.question select.day {
@@ -583,7 +583,7 @@ td.clearall-result .warning-text {
 
 .date p.tip,.numeric-multi p.tip,.numeric p.tip,.list-with-comment div.list p.tip
   {
-  margin-left: 0.9em;
+  margin-left: 0.9em;margin-right:0;
   font-size: 0.6em;
   font-style: italic;
   line-height: 150%;
@@ -630,7 +630,7 @@ If you want ul.multinumerichelp to float beside the input boxes, you need to unc
 ul.cols-2,table.cols-2,ul.cols-3,table.cols-3,ul.cols-4,table.cols-4,ul.cols-5,table.cols-5,ul.cols-6,table.cols-6,ul.cols-7,table.cols-7,ul.cols-8,table.cols-8
   {
   width: 98%;
-  margin: 0% auto 0% auto;
+  margin: 0 auto;
 }
 
 ul.cols-2 li,ul.cols-3 li,ul.cols-4 li,ul.cols-5 li,ul.cols-6 li,ul.cols-7 li,ul.cols-8 li
@@ -679,7 +679,7 @@ ul.cols-2-ul,ul.cols-3-ul,ul.cols-4-ul,ul.cols-5-ul,ul.cols-6-ul,ul.cols-7-ul,ul
 
 ul.cols-2-ul li,ul.cols-3-ul li,ul.cols-4-ul li,ul.cols-5-ul li,ul.cols-6-ul li,ul.cols-7-ul li,ul.cols-8-ul li
   {
-  padding: 0 1.5em 0 0;
+  padding: 0;padding-right:1.5em;
 }
 
 ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.cols-6-ul label,ul.cols-7-ul label,ul.cols-8-ul label
@@ -688,7 +688,7 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
 }
 
 .list-dropdown-flexible p.question {
-  margin-left: 1em;
+  margin-right:0;margin-left: 1em;
 }
 
 /* STYLES NOT YET DEFINED - - - - -
@@ -750,12 +750,12 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
 }
 
 .numeric-multi ul {
-  margin: 0% 1em 1.5em 1em;
+  margin: 0 1em 1.5em 1em;
 }
 
 .numeric-multi ul.computed {
   float: left;
-  padding-right: 2em;
+  padding-left:0;padding-right: 2em;
 }
 
 .numeric-multi div.multinum-slider {
@@ -777,40 +777,44 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
 }
 
 .multiple-opt-comments ul li span.option {
-  padding: 0.3em 1em 0% 1.5em;
+  padding: 0.3em 1em 0 1em;
+  padding-left:1.5em;padding-right:1em;
   text-indent: -1.5em;
   display: table-cell;
   vertical-align: baseline;
 }
 
 .numeric-multi ul li label,.numeric-multi ul.slider li label {
-  padding: 0.3em 1em 0% 0%;
+  padding-top: 0.3em;padding-bottom:0;
+  padding-right:1em;padding-left:0;
   display: table-cell;
   vertical-align: baseline;
 }
 
 .multiple-short-txt ul li label {
-  padding: 0.3em 1em 0% 0%;
+  padding-top: 0.3em;
+  padding-right: 1em;padding-left:0;
   display: table-cell;
   vertical-align: middle;
 }
 
 .numeric-multi ul.computed li label
 .numeric-multi ul.slider.computed li label {
-  padding-right: 0%;
   font-size: 12px;
 }
 
 .multiple-opt-comments ul li span.comment,.multiple-short-txt ul li span,.numeric-multi ul li span,.numeric-multi ul li.slider span
   {
-  padding: 0.3em 0% 0% 1em;
+  padding-top: 0.3em;
+  padding-right:1em;padding-left:0;
   display: table-cell;
   vertical-align: baseline;
   white-space: nowrap;
 }
 
 .multiple-opt-comments ul li span {
-  padding: 0.3em 1em 0% 0%;
+  padding-top: 0.3em
+  padding-right:1em;padding-left:0;
 }
 
 .numeric-multi ul.multiplenumerichelp,.numeric-multi ul.multiplenumerichelp.slider
@@ -826,7 +830,7 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
 
 .numeric-multi ul.multiplenumerichelp li span,.numeric-multi ul.multiplenumerichelp.slider li span
   {
-  padding: 0% 0% 0% 0.3em;
+  padding-right:0.3em;padding-left:0;
   display: table-cell;
 }
 
@@ -834,13 +838,13 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
   border: none;
   background-color: #fff;
   color: #222;
-  padding: 0%;
+  padding: 0;
   width: 7em;
 }
 
 .numeric input,.text-short input,.text-long textarea,.text-huge textarea
   {
-  margin-left: 1em;
+  margin-left: 1em;margin-right:0;
 }
 
 /* STYLES NOT YET DEFINED - - - - -
@@ -956,7 +960,7 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
   overflow: hidden;
   position: absolute;
   top: -20px;
-  margin-left: -3px;
+  margin-left: -3px;margin-right:0;
   color: #284a6e;
   font-size: 0.75em;
   font-weight: bold;
@@ -986,7 +990,7 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
 .slider_lefttext {
   display: table-cell;
   padding-top: 1.5em;
-  padding-right: 11px;
+  padding-right: 11px;padding-left:0;
   vertical-align: top;
   text-align: right;
   font-size: 0.9em;
@@ -995,7 +999,7 @@ ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.c
 .slider_righttext {
   display: table-cell;
   padding-top: 1.5em;
-  padding-left: 11px;
+  padding-left: 11px;padding-right:0;
   vertical-align: top;
   font-size: 0.9em;
 }
@@ -1016,6 +1020,15 @@ table.navigator {
 table.navigator td {
   width: 33%;
 }
+table.navigator td.clear-all {
+  text-align:right;
+}
+table.navigator td.submit-buttons {
+  text-align:center;
+}
+table.navigator td.save-all {
+  text-align:left;
+}
 
 div.answers {
   margin-bottom: 10px;
@@ -1033,7 +1046,7 @@ div.answers table {
 
 .choice-5-pt-radio .answers li {
   display: inline;
-  margin-left: 0.5em;
+  margin-left: 0.5em;margin-right:0;
 }
 
 .choice-5-pt-radio .answers ul {
@@ -1046,7 +1059,7 @@ div #loadtable,div #savetable {
 
 #loadtable td,#savetable td {
   padding-top: 5px;
-  padding-left: 3px;
+  padding-right:0;padding-left: 3px;
 }
 
 #loadbutton,#savebutton {
@@ -1073,7 +1086,7 @@ li.other .answer-comment {
 }
 
 p.captcha {
-  margin-left: 10px;
+  margin-right:0;margin-left: 10px;
   margin-top: 10px;
 }
 
@@ -1096,7 +1109,7 @@ form.captcha label {
 #tokenform label {
   float: left;
   width: 20em;
-  margin-right: 0.5em;
+  margin-right: 0.5em;margin-left:0;
   text-align: right;
 }
 
@@ -1106,8 +1119,7 @@ form.captcha label {
 }
 
 #tokenform img {
-  margin-bottom: -5px;
-  margin-right: 5px;
+  margin:0 5px -5px 0;
 }
 
 p#tokenmessage {
@@ -1125,9 +1137,7 @@ div#wrapper {
 }
 
 #tokenform input.submit {
-  margin-left: 18em;
-  margin-top: 1em;
-  margin-bottom: 1em;
+  margin:1em 0 1em 18em;
 }
 
 #statsContainer {
@@ -1236,7 +1246,7 @@ td.statsImageholder {
 }
 
 #listingList a {
-  margin-left: 5px;
+  margin-right:0;margin-left: 5px;
   color: #444444;
   text-decoration: underline;
 }
@@ -1247,7 +1257,7 @@ td.statsImageholder {
 }
 
 #listingList a.surveytitle {
-  margin-left: 0px;
+  margin:0;
 }
 
 table.assessments{
@@ -1330,3 +1340,117 @@ table.assessments th{
 #index .container .row.current { background: #444; color: #fff; }
 #index .container .row.missing { background: #CC0000; color: #fff; }
 #index .container input { margin: 1em; }
+
+/* Tips / Validation Messages */
+/* If the question is invalid, but has not been submitted, give it a pleasant warning color */
+div.em_num_answers.good {
+ color: green;
+}
+
+div.em_num_answers.error {
+  color: #FF00FF;
+  display: block;
+}
+
+div.em_value_range.good {
+  color: green;
+}
+div.em_value_range.error {
+  color: #FF00FF;
+  display: block;
+}
+
+div.em_sum_range.good {
+  color: green;
+}
+div.em_sum_range.error {
+  color: #FF00FF;
+  display: block;
+}
+
+div.em_regex_validation {
+  display: none;
+}
+div.em_regex_validation.good {
+  color: green;
+}
+div.em_regex_validation.error {
+  color: #FF00FF;
+}
+
+div.em_q_fn_validation {
+  display: none;
+}
+div.em_q_fn_validation.good {
+  color: green;
+}
+div.em_q_fn_validation.error {
+  color: #FF00FF;
+}
+
+div.em_sq_fn_validation {
+  display: none;
+}
+div.em_sq_fn_validation.good {
+  color: green;
+}
+div.em_sq_fn_validation.error {
+  color: #FF00FF;
+}
+
+div.em_other_comment_mandatory.good {
+  display: none;
+}
+div.em_other_comment_mandatory.error {
+  color: #FF00FF;
+  display: block;
+}
+
+input.em_sq_validation.good, textarea.em_sq_validation.good {
+}
+
+input.em_sq_validation.error, textarea.em_sq_validation.error {
+  color: black;
+  background-color:  pink;
+}
+
+span.dynamic_sum {
+  font-weight: bold;
+  background-color: #d3d3d3;
+}
+span.dynamic_sum.good {
+  color: green;
+}
+span.dynamic_sum.error {
+  color: red;
+}
+
+span.dynamic_remaining {
+  font-weight: bold;
+  background-color: #d3d3d3;
+}
+span.dyanamic_remaining.good {
+  color: green;
+}
+span.dynamic_remaining.error {
+  color: red;
+}
+
+/* If  it is still invalid after submit, flag it in red */
+.input-error div.error {
+  color: red;
+  display: block;
+}
+
+span.hide-tip div.good {
+    display: none;
+}
+
+span.hide-tip div.error {
+    color: #FF00FF;
+}
+
+.input-error span.hide-tip div.error {
+    color: red;
+    display: block;
+}

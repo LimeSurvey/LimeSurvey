@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id: globalsettings.php 9662 2010-12-20 15:26:32Z c_schmitz $
+ * $Id: globalsettings.php 12242 2012-01-27 23:41:13Z c_schmitz $
  */
 require_once('classes/core/settingsstorage.php');
 
@@ -81,7 +81,7 @@ function globalsettingssave()
             setGlobalSetting('siteadminemail',strip_tags($_POST['siteadminemail']));
             setGlobalSetting('siteadminname',strip_tags($_POST['siteadminname']));
             setGlobalSetting('shownoanswer',sanitize_int($_POST['shownoanswer']));
-            setGlobalSetting('showXquestions',($_POST['showXquestions']));
+            setGlobalSetting('showxquestions',($_POST['showxquestions']));
             setGlobalSetting('showgroupinfo',($_POST['showgroupinfo']));
             setGlobalSetting('showqnumcode',($_POST['showqnumcode']));
             $repeatheadingstemp=(int)($_POST['repeatheadings']);
@@ -94,6 +94,8 @@ function globalsettingssave()
             setGlobalSetting('sessionlifetime',$sessionlifetimetemp);
             setGlobalSetting('ipInfoDbAPIKey',$_POST['ipInfoDbAPIKey']);
             setGlobalSetting('googleMapsAPIKey',$_POST['googleMapsAPIKey']);
+            setGlobalSetting('googleanalyticsapikey',$_POST['googleanalyticsapikey']);
+            setGlobalSetting('googletranslateapikey',$_POST['googletranslateapikey']);
             setGlobalSetting('force_ssl',$_POST['force_ssl']);
             setGlobalSetting('surveyPreview_require_Auth',strip_tags($_POST['surveyPreview_require_Auth']));
             $savetime=trim(strip_tags((float) $_POST['timeadjust']).' hours'); //makes sure it is a number, at least 0
@@ -261,7 +263,10 @@ function globalsettingsdisplay()
             . "<input type='text' size='35' id='ipInfoDbAPIKey' name='ipInfoDbAPIKey' value=\"".htmlspecialchars(getGlobalSetting('ipInfoDbAPIKey'))."\" /></li>"
             . "<li><label for='googleMapsAPIKey'>".$clang->gT("Google Maps API key:")."</label>\n"
             . "<input type='text' size='35' id='googleMapsAPIKey' name='googleMapsAPIKey' value=\"".htmlspecialchars(getGlobalSetting('googleMapsAPIKey'))."\" /></li>"
-
+            . "<li><label for='googleanalyticsapikey'>".$clang->gT("Google Analytics API key:")."</label>\n"
+            . "<input type='text' size='35' id='googleanalyticsapikey' name='googleanalyticsapikey' value=\"".htmlspecialchars(getGlobalSetting('googleanalyticsapikey'))."\" /></li>"
+            . "<li><label for='googletranslateapikey'>".$clang->gT("Google Translate API key:")."</label>\n"
+            . "<input type='text' size='35' id='googletranslateapikey' name='googletranslateapikey' value=\"".htmlspecialchars(getGlobalSetting('googletranslateapikey'))."\" /></li>"                    
                     ;
 
 
@@ -455,16 +460,16 @@ function globalsettingsdisplay()
         . "\t\t<input id='repeatheadings' name='repeatheadings' value='$thisrepeatheadings' size='4' maxlength='4' /></li>\n";
 
 
-        // showXquestions
-        $set_xq=getGlobalSetting('showXquestions');
+        // showxquestions
+        $set_xq=getGlobalSetting('showxquestions');
 	    $sel_xq = array( 'hide' => '' , 'show' => '' , 'choose' => '');
 	    $sel_xq[$set_xq] = ' selected="selected"';
 	    if( empty($sel_xq['hide']) && empty($sel_xq['show']) && empty($sel_xq['choose']))
 	    {
 	    	$sel_xq['choose'] = ' selected="selected"';
 	    };
-            $editsurvey .= "\t<li><label for=\"showXquestions\">".$clang->gT('Show "There are X questions in this survey"')."</label>\n"
-            . "\t\t<select id=\"showXquestions\" name=\"showXquestions\">\n"
+            $editsurvey .= "\t<li><label for=\"showxquestions\">".$clang->gT('Show "There are X questions in this survey"')."</label>\n"
+            . "\t\t<select id=\"showxquestions\" name=\"showxquestions\">\n"
             . "\t\t\t<option value=\"show\"{$sel_xq['show']}>".$clang->gT('Yes')."</option>\n"
             . "\t\t\t<option value=\"hide\"{$sel_xq['hide']}>".$clang->gT('No')."</option>\n"
             . "\t\t\t<option value=\"choose\"{$sel_xq['choose']}>".$clang->gT('Survey admin can choose')."</option>\n"

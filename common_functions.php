@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-*	$Id: common_functions.php 9671 2010-12-21 20:02:24Z c_schmitz $
+*	$Id: common_functions.php 12418 2012-02-09 11:54:10Z mennodekker $
 *	Files Purpose: lots of common functions
 */
 
@@ -20,29 +20,29 @@ require_once('replacements.php');
 /**
 * This function gives back an array that defines which survey permissions and what part of the CRUD+Import+Export subpermissions is available.
 * - for example it would not make sense to have  a 'create' permissions for survey locale settings as they exist with every survey
-* so the editor for survey permission should not show a checkbox here, therfore the create element of that permission is set to 'false'
-* If you want to generally add a new permission just add it here.
+*  so the editor for survey permission should not show a checkbox here, therfore the create element of that permission is set to 'false'
+*  If you want to generally add a new permission just add it here.
 *
 */
 function aGetBaseSurveyPermissions()
 {
     global $clang;
     $aPermissions=array(
-    'assessments'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Assessments"),'description'=>$clang->gT("Permission to create/view/update/delete assessments rules for a survey"),'img'=>'assessments'),  // Checked
-    'quotas'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Quotas"),'description'=>$clang->gT("Permission to create/view/update/delete quota rules for a survey"),'img'=>'quota'), // Checked
-    'responses'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Responses"),'description'=>$clang->gT("Permission to create(data entry)/view/update/delete/import/export responses"),'img'=>'browse'),
-    'statistics'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Statistics"),'description'=>$clang->gT("Permission to view statistics"),'img'=>'statistics'),    //Checked
-    'survey'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Survey deletion"),'description'=>$clang->gT("Permission to delete a survey"),'img'=>'delete'),   //Checked
-    'surveyactivation'=>array('create'=>false,'read'=>false,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Survey activation"),'description'=>$clang->gT("Permission to activate/deactivate a survey"),'img'=>'activate_deactivate'),  //Checked
-    'surveycontent'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Survey content"),'description'=>$clang->gT("Permission to create/view/update/delete/import/export the questions, groups, answers & conditions of a survey"),'img'=>'add'),
-    'surveylocale'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Survey locale settings"),'description'=>$clang->gT("Permission to view/update the survey locale settings"),'img'=>'edit'),
-    'surveysecurity'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Survey security"),'description'=>$clang->gT("Permission to modify survey security settings"),'img'=>'survey_security'),
-    'surveysettings'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Survey settings"),'description'=>$clang->gT("Permission to view/update the survey settings including token table creation"),'img'=>'survey_settings'),
-    'tokens'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Tokens"),'description'=>$clang->gT("Permission to create/update/delete/import/export token entries"),'img'=>'tokens'),
-    'translations'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Quick translation"),'description'=>$clang->gT("Permission to view & update the translations using the quick-translation feature"),'img'=>'translate')
-    );
-    uasort($aPermissions,"aComparePermission");
-    return $aPermissions;
+                    'assessments'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Assessments"),'description'=>$clang->gT("Permission to create/view/update/delete assessments rules for a survey"),'img'=>'assessments'),  // Checked
+                    'quotas'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Quotas"),'description'=>$clang->gT("Permission to create/view/update/delete quota rules for a survey"),'img'=>'quota'), // Checked
+                    'responses'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Responses"),'description'=>$clang->gT("Permission to create(data entry)/view/update/delete/import/export responses"),'img'=>'browse'),
+                    'statistics'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Statistics"),'description'=>$clang->gT("Permission to view statistics"),'img'=>'statistics'),    //Checked
+                    'survey'=>array('create'=>false,'read'=>true,'update'=>false,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Survey deletion"),'description'=>$clang->gT("Permission to delete a survey"),'img'=>'delete'),   //Checked
+                    'surveyactivation'=>array('create'=>false,'read'=>false,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Survey activation"),'description'=>$clang->gT("Permission to activate/deactivate a survey"),'img'=>'activate_deactivate'),  //Checked
+                    'surveycontent'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Survey content"),'description'=>$clang->gT("Permission to create/view/update/delete/import/export the questions, groups, answers & conditions of a survey"),'img'=>'add'),
+                    'surveylocale'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Survey locale settings"),'description'=>$clang->gT("Permission to view/update the survey locale settings"),'img'=>'edit'),
+                    'surveysecurity'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Survey security"),'description'=>$clang->gT("Permission to modify survey security settings"),'img'=>'survey_security'),
+                    'surveysettings'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Survey settings"),'description'=>$clang->gT("Permission to view/update the survey settings including token table creation"),'img'=>'survey_settings'),
+                    'tokens'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Tokens"),'description'=>$clang->gT("Permission to create/update/delete/import/export token entries"),'img'=>'tokens'),
+                    'translations'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Quick translation"),'description'=>$clang->gT("Permission to view & update the translations using the quick-translation feature"),'img'=>'translate')
+                    );
+   uasort($aPermissions,"aComparePermission");
+   return $aPermissions;
 }
 
 /**
@@ -98,173 +98,179 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 
     $qtypes = array(
     "1"=>array('description'=>$clang->gT("Array dual scale"),
-    'group'=>$group['Arrays'],
-    'subquestions'=>1,
-    'assessable'=>1,
-    'hasdefaultvalues'=>0,
-    'answerscales'=>2),
+               'group'=>$group['Arrays'],
+               'subquestions'=>1,
+               'assessable'=>1,
+               'hasdefaultvalues'=>0,
+               'answerscales'=>2),
     "5"=>array('description'=>$clang->gT("5 Point Choice"),
-    'group'=>$group['SinChoiceQues'],
-    'subquestions'=>0,
-    'hasdefaultvalues'=>0,
-    'assessable'=>0,
-    'answerscales'=>0),
+               'group'=>$group['SinChoiceQues'],
+               'subquestions'=>0,
+               'hasdefaultvalues'=>0,
+               'assessable'=>0,
+               'answerscales'=>0),
     "A"=>array('description'=>$clang->gT("Array (5 Point Choice)"),
-    'group'=>$group['Arrays'],
-    'subquestions'=>1,
-    'hasdefaultvalues'=>0,
-    'assessable'=>1,
-    'answerscales'=>0),
+               'group'=>$group['Arrays'],
+               'subquestions'=>1,
+               'hasdefaultvalues'=>0,
+               'assessable'=>1,
+               'answerscales'=>0),
     "B"=>array('description'=>$clang->gT("Array (10 Point Choice)"),
-    'group'=>$group['Arrays'],
-    'subquestions'=>1,
-    'hasdefaultvalues'=>0,
-    'assessable'=>1,
-    'answerscales'=>0),
+               'group'=>$group['Arrays'],
+               'subquestions'=>1,
+               'hasdefaultvalues'=>0,
+               'assessable'=>1,
+               'answerscales'=>0),
     "C"=>array('description'=>$clang->gT("Array (Yes/No/Uncertain)"),
-    'group'=>$group['Arrays'],
-    'subquestions'=>1,
-    'hasdefaultvalues'=>0,
-    'assessable'=>1,
-    'answerscales'=>0),
+               'group'=>$group['Arrays'],
+               'subquestions'=>1,
+               'hasdefaultvalues'=>0,
+               'assessable'=>1,
+               'answerscales'=>0),
     "D"=>array('description'=>$clang->gT("Date"),
-    'group'=>$group['MaskQuestions'],
-    'subquestions'=>0,
-    'hasdefaultvalues'=>0,
-    'assessable'=>0,
-    'answerscales'=>0),
+               'group'=>$group['MaskQuestions'],
+               'subquestions'=>0,
+               'hasdefaultvalues'=>1,
+               'assessable'=>0,
+               'answerscales'=>0),
     "E"=>array('description'=>$clang->gT("Array (Increase/Same/Decrease)"),
-    'group'=>$group['Arrays'],
-    'subquestions'=>1,
-    'hasdefaultvalues'=>0,
-    'assessable'=>1,
-    'answerscales'=>0),
+               'group'=>$group['Arrays'],
+               'subquestions'=>1,
+               'hasdefaultvalues'=>0,
+               'assessable'=>1,
+               'answerscales'=>0),
     "F"=>array('description'=>$clang->gT("Array"),
-    'group'=>$group['Arrays'],
-    'subquestions'=>1,
-    'hasdefaultvalues'=>0,
-    'assessable'=>1,
-    'answerscales'=>1),
+               'group'=>$group['Arrays'],
+               'subquestions'=>1,
+               'hasdefaultvalues'=>0,
+               'assessable'=>1,
+               'answerscales'=>1),
     "G"=>array('description'=>$clang->gT("Gender"),
-    'group'=>$group['MaskQuestions'],
-    'subquestions'=>0,
-    'hasdefaultvalues'=>0,
-    'assessable'=>0,
-    'answerscales'=>0),
+               'group'=>$group['MaskQuestions'],
+               'subquestions'=>0,
+               'hasdefaultvalues'=>0,
+               'assessable'=>0,
+               'answerscales'=>0),
     "H"=>array('description'=>$clang->gT("Array by column"),
-    'group'=>$group['Arrays'],
-    'hasdefaultvalues'=>0,
-    'subquestions'=>1,
-    'assessable'=>1,
-    'answerscales'=>1),
+               'group'=>$group['Arrays'],
+               'hasdefaultvalues'=>0,
+               'subquestions'=>1,
+               'assessable'=>1,
+               'answerscales'=>1),
     "I"=>array('description'=>$clang->gT("Language Switch"),
-    'group'=>$group['MaskQuestions'],
-    'hasdefaultvalues'=>0,
-    'subquestions'=>0,
-    'assessable'=>0,
-    'answerscales'=>0),
+               'group'=>$group['MaskQuestions'],
+               'hasdefaultvalues'=>0,
+               'subquestions'=>0,
+               'assessable'=>0,
+               'answerscales'=>0),
     "K"=>array('description'=>$clang->gT("Multiple Numerical Input"),
-    'group'=>$group['MaskQuestions'],
-    'hasdefaultvalues'=>0,
-    'subquestions'=>1,
-    'assessable'=>1,
-    'answerscales'=>0),
+               'group'=>$group['MaskQuestions'],
+               'hasdefaultvalues'=>1,
+               'subquestions'=>1,
+               'assessable'=>1,
+               'answerscales'=>0),
     "L"=>array('description'=>$clang->gT("List (Radio)"),
-    'group'=>$group['SinChoiceQues'],
-    'subquestions'=>0,
-    'hasdefaultvalues'=>1,
-    'assessable'=>1,
-    'answerscales'=>1),
+               'group'=>$group['SinChoiceQues'],
+               'subquestions'=>0,
+               'hasdefaultvalues'=>1,
+               'assessable'=>1,
+               'answerscales'=>1),
     "M"=>array('description'=>$clang->gT("Multiple choice"),
-    'group'=>$group['MulChoiceQues'],
-    'subquestions'=>1,
-    'hasdefaultvalues'=>1,
-    'assessable'=>1,
-    'answerscales'=>0),
+               'group'=>$group['MulChoiceQues'],
+               'subquestions'=>1,
+               'hasdefaultvalues'=>1,
+               'assessable'=>1,
+               'answerscales'=>0),
     "N"=>array('description'=>$clang->gT("Numerical Input"),
-    'group'=>$group['MaskQuestions'],
-    'subquestions'=>0,
-    'hasdefaultvalues'=>0,
-    'assessable'=>0,
-    'answerscales'=>0),
+               'group'=>$group['MaskQuestions'],
+               'subquestions'=>0,
+               'hasdefaultvalues'=>1,
+               'assessable'=>0,
+               'answerscales'=>0),
     "O"=>array('description'=>$clang->gT("List with comment"),
-    'group'=>$group['SinChoiceQues'],
-    'subquestions'=>0,
-    'hasdefaultvalues'=>1,
-    'assessable'=>1,
-    'answerscales'=>1),
+               'group'=>$group['SinChoiceQues'],
+               'subquestions'=>0,
+               'hasdefaultvalues'=>1,
+               'assessable'=>1,
+               'answerscales'=>1),
     "P"=>array('description'=>$clang->gT("Multiple choice with comments"),
-    'group'=>$group['MulChoiceQues'],
-    'subquestions'=>1,
-    'hasdefaultvalues'=>1,
-    'assessable'=>1,
-    'answerscales'=>0),
+               'group'=>$group['MulChoiceQues'],
+               'subquestions'=>1,
+               'hasdefaultvalues'=>1,
+               'assessable'=>1,
+               'answerscales'=>0),
     "Q"=>array('description'=>$clang->gT("Multiple Short Text"),
-    'group'=>$group['TextQuestions'],
-    'subquestions'=>1,
-    'hasdefaultvalues'=>0,
-    'assessable'=>0,
-    'answerscales'=>0),
+               'group'=>$group['TextQuestions'],
+               'subquestions'=>1,
+               'hasdefaultvalues'=>1,
+               'assessable'=>0,
+               'answerscales'=>0),
     "R"=>array('description'=>$clang->gT("Ranking"),
-    'group'=>$group['MaskQuestions'],
-    'subquestions'=>0,
-    'hasdefaultvalues'=>0,
-    'assessable'=>1,
-    'answerscales'=>1),
+               'group'=>$group['MaskQuestions'],
+               'subquestions'=>0,
+               'hasdefaultvalues'=>0,
+               'assessable'=>1,
+               'answerscales'=>1),
     "S"=>array('description'=>$clang->gT("Short Free Text"),
-    'group'=>$group['TextQuestions'],
-    'subquestions'=>0,
-    'hasdefaultvalues'=>0,
-    'assessable'=>0,
-    'answerscales'=>0),
+               'group'=>$group['TextQuestions'],
+               'subquestions'=>0,
+               'hasdefaultvalues'=>1,
+               'assessable'=>0,
+               'answerscales'=>0),
     "T"=>array('description'=>$clang->gT("Long Free Text"),
-    'group'=>$group['TextQuestions'],
-    'subquestions'=>0,
-    'hasdefaultvalues'=>0,
-    'assessable'=>0,
-    'answerscales'=>0),
+               'group'=>$group['TextQuestions'],
+               'subquestions'=>0,
+               'hasdefaultvalues'=>1,
+               'assessable'=>0,
+               'answerscales'=>0),
     "U"=>array('description'=>$clang->gT("Huge Free Text"),
-    'group'=>$group['TextQuestions'],
-    'subquestions'=>0,
-    'hasdefaultvalues'=>0,
-    'assessable'=>0,
-    'answerscales'=>0),
+               'group'=>$group['TextQuestions'],
+               'subquestions'=>0,
+               'hasdefaultvalues'=>1,
+               'assessable'=>0,
+               'answerscales'=>0),
     "X"=>array('description'=>$clang->gT("Text display"),
-    'group'=>$group['MaskQuestions'],
-    'subquestions'=>0,
-    'hasdefaultvalues'=>0,
-    'assessable'=>0,
-    'answerscales'=>0),
+               'group'=>$group['MaskQuestions'],
+               'subquestions'=>0,
+               'hasdefaultvalues'=>0,
+               'assessable'=>0,
+               'answerscales'=>0),
     "Y"=>array('description'=>$clang->gT("Yes/No"),
-    'group'=>$group['MaskQuestions'],
-    'subquestions'=>0,
-    'hasdefaultvalues'=>0,
-    'assessable'=>0,
-    'answerscales'=>0),
+               'group'=>$group['MaskQuestions'],
+               'subquestions'=>0,
+               'hasdefaultvalues'=>0,
+               'assessable'=>0,
+               'answerscales'=>0),
     "!"=>array('description'=>$clang->gT("List (Dropdown)"),
-    'group'=>$group['SinChoiceQues'],
-    'subquestions'=>0,
-    'hasdefaultvalues'=>1,
-    'assessable'=>1,
-    'answerscales'=>1),
+               'group'=>$group['SinChoiceQues'],
+               'subquestions'=>0,
+               'hasdefaultvalues'=>1,
+               'assessable'=>1,
+               'answerscales'=>1),
     ":"=>array('description'=>$clang->gT("Array (Numbers)"),
-    'group'=>$group['Arrays'],
-    'subquestions'=>2,
-    'hasdefaultvalues'=>0,
-    'assessable'=>1,
-    'answerscales'=>0),
+               'group'=>$group['Arrays'],
+               'subquestions'=>2,
+               'hasdefaultvalues'=>0,
+               'assessable'=>1,
+               'answerscales'=>0),
     ";"=>array('description'=>$clang->gT("Array (Texts)"),
-    'group'=>$group['Arrays'],
-    'subquestions'=>2,
-    'hasdefaultvalues'=>0,
-    'assessable'=>0,
-    'answerscales'=>0),
+               'group'=>$group['Arrays'],
+               'subquestions'=>2,
+               'hasdefaultvalues'=>0,
+               'assessable'=>0,
+               'answerscales'=>0),
     "|"=>array('description'=>$clang->gT("File upload"),
-    'group'=>$group['MaskQuestions'],
-    'subquestions'=>0,
-    'hasdefaultvalues'=>0,
-    'assessable'=>0,
-    'answerscales'=>0),
+               'group'=>$group['MaskQuestions'],
+               'subquestions'=>0,
+               'hasdefaultvalues'=>0,
+               'assessable'=>0,
+               'answerscales'=>0),
+    "*"=>array('description'=>$clang->gT("Equation"),
+               'group'=>$group['MaskQuestions'],
+               'subquestions'=>0,
+               'hasdefaultvalues'=>0,
+               'assessable'=>0,
+               'answerscales'=>0),
     );
     asort($qtypes);
     if ($ReturnType == "array") {return $qtypes;}
@@ -274,7 +280,7 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
         }
 
 
-        $qtypeselecter = "";
+    $qtypeselecter = "";
         foreach($newqType as $group=>$members)
         {
             $qtypeselecter .= '<optgroup label="'.$group.'">';
@@ -309,16 +315,16 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 function isStandardTemplate($sTemplateName)
 {
     return in_array($sTemplateName,array('basic',
-    'bluengrey',
-    'business_grey',
-    'citronade',
-    'clear_logo',
-    'default',
-    'eirenicon',
-    'limespired',
-    'mint_idea',
-    'sherpa',
-    'vallendar'));
+                                        'bluengrey',
+                                        'business_grey',
+                                        'citronade',
+                                        'clear_logo',
+                                        'default',
+                                        'eirenicon',
+                                        'limespired',
+                                        'mint_idea',
+                                        'sherpa',
+                                        'vallendar'));
 }
 
 
@@ -400,7 +406,7 @@ function db_quote_id($id)
             break;
         case "mssql_n" :
         case "mssql" :
-        case "mssqlnative" :
+		case "mssqlnative" :
         case "odbc_mssql" :
             return "[".$id."]";
             break;
@@ -552,11 +558,11 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
         foreach($surveynames as $sv)
         {
 
-            $surveylstitle=FlattenText($sv['surveyls_title']);
-            if (strlen($surveylstitle)>45)
-            {
-                $surveylstitle = htmlspecialchars(mb_strcut(html_entity_decode($surveylstitle,ENT_QUOTES,'UTF-8'), 0, 45, 'UTF-8'))."...";
-            }
+			$surveylstitle=FlattenText($sv['surveyls_title']);
+			if (strlen($surveylstitle)>45)
+			{
+				$surveylstitle = htmlspecialchars(mb_strcut(html_entity_decode($surveylstitle,ENT_QUOTES,'UTF-8'), 0, 45, 'UTF-8'))."...";
+			}
 
             if($sv['active']!='Y')
             {
@@ -825,11 +831,11 @@ function fCalculateTotalFileUploadUsage(){
     $iTotalSize=0.0;
     foreach ($aRows as $aRow)
     {
-        $sFilesPath=$uploaddir.'/surveys/'.$aRow['sid'].'/files';
-        if (file_exists($sFilesPath))
-        {
-            $iTotalSize+=(float)iGetDirectorySize($sFilesPath);
-        }
+       $sFilesPath=$uploaddir.'/surveys/'.$aRow['sid'].'/files';
+       if (file_exists($sFilesPath))
+       {
+           $iTotalSize+=(float)iGetDirectorySize($sFilesPath);
+       }
     }
     return (float)$iTotalSize/1024/1024;
 }
@@ -979,10 +985,11 @@ function question_class($input)
         case 'E': return 'array-increase-same-decrease'; // ARRAY (Increase/Same/Decrease) radio-buttons
         case 'F': return 'array-flexible-row';  //  ARRAY (Flexible) - Row Format
         case 'H': return 'array-flexible-column'; //    ARRAY (Flexible) - Column Format
-            //      case '^': return 'slider';          //  SLIDER CONTROL
+        //      case '^': return 'slider';          //  SLIDER CONTROL
         case ':': return 'array-multi-flexi';   //  ARRAY (Multi Flexi) 1 to 10
         case ";": return 'array-multi-flexi-text';
         case "1": return 'array-flexible-duel-scale'; //    Array dual scale
+        case "*": return 'equation';    // Equation
         default:  return 'generic_question';    //  Should have a default fallback
     };
 };
@@ -990,11 +997,11 @@ function question_class($input)
 if(!defined('COLSTYLE'))
 {
     /**
-    * The following prepares and defines the 'COLSTYLE' constant which
-    * dictates how columns are to be marked up for list type questions.
-    *
-    * $column_style is initialised at the end of config-defaults.php or from within config.php
-    */
+     * The following prepares and defines the 'COLSTYLE' constant which
+     * dictates how columns are to be marked up for list type questions.
+     *
+     * $column_style is initialised at the end of config-defaults.php or from within config.php
+     */
     if( !isset($column_style)   ||
     $column_style  != 'css' ||
     $column_style  != 'ul'  ||
@@ -1010,81 +1017,81 @@ if(!defined('COLSTYLE'))
 function setup_columns($columns, $answer_count)
 {
     /**
-    * setup_columns() defines all the html tags to be wrapped around
-    * various list type answers.
-    *
-    * @param integer $columns - the number of columns, usually supplied by $dcols
-    * @param integer $answer_count - the number of answers to a question, usually supplied by $anscount
-    * @return array with all the various opening and closing tags to generate a set of columns.
-    *
-    * It returns an array with the following items:
-    *    $wrapper['whole-start']   = Opening wrapper for the whole list
-    *    $wrapper['whole-end']     = closing wrapper for the whole list
-    *    $wrapper['col-devide']    = normal column devider
-    *    $wrapper['col-devide-last'] = the last column devider (to allow
-    *                                for different styling of the last
-    *                                column
-    *    $wrapper['item-start']    = opening wrapper tag for individual
-    *                                option
-    *    $wrapper['item-start-other'] = opening wrapper tag for other
-    *                                option
-    *    $wrapper['item-end']      = closing wrapper tag for individual
-    *                                option
-    *    $wrapper['maxrows']       = maximum number of rows in each
-    *                                column
-    *    $wrapper['cols']          = Number of columns to be inserted
-    *                                (and checked against)
-    *
-    * It also expect the constant COLSTYLE which sets how columns should
-    * be rendered.
-    *
-    * COLSTYLE is defined 30 lines above.
-    *
-    * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    * Columns are a problem.
-    * Really there is no perfect solution to columns at the moment.
-    *
-    * -  Using Tables is problematic semanticly.
-    * -  Using inline or float to create columns, causes the answers
-    *    flows horizontally, not vertically which is not ideal visually.
-    * -  Using CSS3 columns is also a problem because of browser support
-    *    and also because if you have answeres split across two or more
-    *    lines, and those answeres happen to fall at the bottom of a
-    *    column, the answer might be split across columns as well as
-    *    lines.
-    * -  Using nested unordered list with the first level of <LI>s
-    *    floated is the same as using tables and so is bad semantically
-    *    for the same reason tables are bad.
-    * -  Breaking the unordered lists into consecutive floated unordered
-    *    lists is not great semantically but probably not as bad as
-    *    using tables.
-    *
-    * Because I haven't been able to decide which option is the least
-    * bad, I have handed over that responsibility to the admin who sets
-    * LimeSurvey up on their server.
-    *
-    * There are four options:
-    *    'css'   using one of the various CSS only methods for
-    *            rendering columns.
-    *            (Check the CSS file for your chosen template to see
-    *             how columns are defined.)
-    *    'ul'    using multiple floated unordered lists. (DEFAULT)
-    *    'table' using conventional tables based layout.
-    *     NULL   blocks the use of columns
-    *
-    * 'ul' is the default because it's the best possible compromise
-    * between semantic markup and visual layout.
-    */
+     * setup_columns() defines all the html tags to be wrapped around
+     * various list type answers.
+     *
+     * @param integer $columns - the number of columns, usually supplied by $dcols
+     * @param integer $answer_count - the number of answers to a question, usually supplied by $anscount
+     * @return array with all the various opening and closing tags to generate a set of columns.
+     *
+     * It returns an array with the following items:
+     *    $wrapper['whole-start']   = Opening wrapper for the whole list
+     *    $wrapper['whole-end']     = closing wrapper for the whole list
+     *    $wrapper['col-devide']    = normal column devider
+     *    $wrapper['col-devide-last'] = the last column devider (to allow
+     *                                for different styling of the last
+     *                                column
+     *    $wrapper['item-start']    = opening wrapper tag for individual
+     *                                option
+     *    $wrapper['item-start-other'] = opening wrapper tag for other
+     *                                option
+     *    $wrapper['item-end']      = closing wrapper tag for individual
+     *                                option
+     *    $wrapper['maxrows']       = maximum number of rows in each
+     *                                column
+     *    $wrapper['cols']          = Number of columns to be inserted
+     *                                (and checked against)
+     *
+     * It also expect the constant COLSTYLE which sets how columns should
+     * be rendered.
+     *
+     * COLSTYLE is defined 30 lines above.
+     *
+     * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+     * Columns are a problem.
+     * Really there is no perfect solution to columns at the moment.
+     *
+     * -  Using Tables is problematic semanticly.
+     * -  Using inline or float to create columns, causes the answers
+     *    flows horizontally, not vertically which is not ideal visually.
+     * -  Using CSS3 columns is also a problem because of browser support
+     *    and also because if you have answeres split across two or more
+     *    lines, and those answeres happen to fall at the bottom of a
+     *    column, the answer might be split across columns as well as
+     *    lines.
+     * -  Using nested unordered list with the first level of <LI>s
+     *    floated is the same as using tables and so is bad semantically
+     *    for the same reason tables are bad.
+     * -  Breaking the unordered lists into consecutive floated unordered
+     *    lists is not great semantically but probably not as bad as
+     *    using tables.
+     *
+     * Because I haven't been able to decide which option is the least
+     * bad, I have handed over that responsibility to the admin who sets
+     * LimeSurvey up on their server.
+     *
+     * There are four options:
+     *    'css'   using one of the various CSS only methods for
+     *            rendering columns.
+     *            (Check the CSS file for your chosen template to see
+     *             how columns are defined.)
+     *    'ul'    using multiple floated unordered lists. (DEFAULT)
+     *    'table' using conventional tables based layout.
+     *     NULL   blocks the use of columns
+     *
+     * 'ul' is the default because it's the best possible compromise
+     * between semantic markup and visual layout.
+     */
 
 
     $colstyle = COLSTYLE;
 
     /*
-    if(defined('PRINT_TEMPLATE')) // This forces tables based columns for printablesurvey
-    {
-    $colstyle = 'table';
-    };
-    */
+     if(defined('PRINT_TEMPLATE')) // This forces tables based columns for printablesurvey
+     {
+     $colstyle = 'table';
+     };
+     */
     if($columns < 2)
     {
         $colstyle = null;
@@ -1098,7 +1105,7 @@ function setup_columns($columns, $answer_count)
 
     if ($answer_count>0 && $columns>0)
     {
-        $columns = ceil($answer_count/ceil($answer_count/$columns)); // # of columns is # of answers divided by # of rows (all rounded up)
+    $columns = ceil($answer_count/ceil($answer_count/$columns)); // # of columns is # of answers divided by # of rows (all rounded up)
     }
 
     $class_first = '';
@@ -1125,7 +1132,7 @@ function setup_columns($columns, $answer_count)
     };
 
     $wrapper = array(
-    'whole-start'  => "\n<ul$class_first>\n"
+             'whole-start'  => "\n<ul$class_first>\n"
     ,'whole-end'    => "</ul>\n"
     ,'col-devide'   => ''
     ,'col-devide-last' => ''
@@ -1139,34 +1146,34 @@ function setup_columns($columns, $answer_count)
     switch($colstyle)
     {
         case 'ul':  if($columns > 1)
-            {
-                $wrapper['col-devide']  = "\n</ul>\n\n<ul$class>\n";
-                $wrapper['col-devide-last'] = "\n</ul>\n\n<ul$class_last_ul>\n";
-            }
-            break;
+        {
+            $wrapper['col-devide']  = "\n</ul>\n\n<ul$class>\n";
+            $wrapper['col-devide-last'] = "\n</ul>\n\n<ul$class_last_ul>\n";
+        }
+        break;
 
         case 'table':   $table_cols = '';
-            for($cols = $columns ; $cols > 0 ; --$cols)
+        for($cols = $columns ; $cols > 0 ; --$cols)
+        {
+            switch($cols)
             {
-                switch($cols)
-                {
-                    case $columns:  $table_cols .= "\t<col$class_first />\n";
-                        break;
-                    case 1:     $table_cols .= "\t<col$class_last_table />\n";
-                        break;
-                    default:    $table_cols .= "\t<col$class />\n";
-                };
+                case $columns:  $table_cols .= "\t<col$class_first />\n";
+                break;
+                case 1:     $table_cols .= "\t<col$class_last_table />\n";
+                break;
+                default:    $table_cols .= "\t<col$class />\n";
             };
+        };
 
-            if($columns > 1)
-            {
-                $wrapper['col-devide']  = "\t</ul>\n</td>\n\n<td>\n\t<ul>\n";
-                $wrapper['col-devide-last'] = "\t</ul>\n</td>\n\n<td class=\"last\">\n\t<ul>\n";
-            };
-            $wrapper['whole-start'] = "\n<table$class>\n$table_cols\n\t<tbody>\n<tr>\n<td>\n\t<ul>\n";
-            $wrapper['whole-end']   = "\t</ul>\n</td>\n</tr>\n\t</tbody>\n</table>\n";
-            $wrapper['item-start']  = "<li>\n";
-            $wrapper['item-end']    = "</li>\n";
+        if($columns > 1)
+        {
+            $wrapper['col-devide']  = "\t</ul>\n</td>\n\n<td>\n\t<ul>\n";
+            $wrapper['col-devide-last'] = "\t</ul>\n</td>\n\n<td class=\"last\">\n\t<ul>\n";
+        };
+        $wrapper['whole-start'] = "\n<table$class>\n$table_cols\n\t<tbody>\n<tr>\n<td>\n\t<ul>\n";
+        $wrapper['whole-end']   = "\t</ul>\n</td>\n</tr>\n\t</tbody>\n</table>\n";
+        $wrapper['item-start']  = "<li>\n";
+        $wrapper['item-end']    = "</li>\n";
     };
 
     return $wrapper;
@@ -1175,31 +1182,31 @@ function setup_columns($columns, $answer_count)
 function alternation($alternate = '' , $type = 'col')
 {
     /**
-    * alternation() Returns a class identifyer for alternating between
-    * two options. Used to style alternate elements differently. creates
-    * or alternates between the odd string and the even string used in
-    * as column and row classes for array type questions.
-    *
-    * @param string $alternate = '' (empty) (default) , 'array2' ,  'array1' , 'odd' , 'even'
-    * @param string  $type = 'col' (default) or 'row'
-    *
-    * @return string representing either the first alternation or the opposite alternation to the one supplied..
-    */
+     * alternation() Returns a class identifyer for alternating between
+     * two options. Used to style alternate elements differently. creates
+     * or alternates between the odd string and the even string used in
+     * as column and row classes for array type questions.
+     *
+     * @param string $alternate = '' (empty) (default) , 'array2' ,  'array1' , 'odd' , 'even'
+     * @param string  $type = 'col' (default) or 'row'
+     *
+     * @return string representing either the first alternation or the opposite alternation to the one supplied..
+     */
     /*
-    // The following allows type to be left blank for row in subsequent
-    // function calls.
-    // It has been left out because 'row' must be defined the first time
-    // alternation() is called. Since it is only ever written once for each
-    // while statement within a function, 'row' is always defined.
-    if(!empty($alternate) && $type != 'row')
-    {   if($alternate == ('array2' || 'array1'))
-    {
-    $type = 'row';
-    };
-    };
-    // It has been left in case it becomes useful but probably should be
-    // removed.
-    */
+     // The following allows type to be left blank for row in subsequent
+     // function calls.
+     // It has been left out because 'row' must be defined the first time
+     // alternation() is called. Since it is only ever written once for each
+     // while statement within a function, 'row' is always defined.
+     if(!empty($alternate) && $type != 'row')
+     {   if($alternate == ('array2' || 'array1'))
+     {
+     $type = 'row';
+     };
+     };
+     // It has been left in case it becomes useful but probably should be
+     // removed.
+     */
     if($type == 'row')
     {
         $odd  = 'array2'; // should be row_odd
@@ -1423,11 +1430,11 @@ function getuserlist($outputformat='fullinfoarray')
             // a subselect is used here because MSSQL does not like to group by text
             // also Postgres does like this one better
             $uquery = " SELECT * FROM ".db_table_name('users')." where uid in
-            (SELECT u.uid FROM ".db_table_name('users')." AS u,
-            ".db_table_name('user_in_groups')." AS ga ,".db_table_name('user_in_groups')." AS gb
-            WHERE u.uid=$myuid
-            OR (ga.ugid=gb.ugid AND ( (gb.uid=$myuid AND u.uid=ga.uid) OR (u.parent_id=$myuid) ) )
-            GROUP BY u.uid)";
+                        (SELECT u.uid FROM ".db_table_name('users')." AS u,
+                        ".db_table_name('user_in_groups')." AS ga ,".db_table_name('user_in_groups')." AS gb
+                        WHERE u.uid=$myuid
+                        OR (ga.ugid=gb.ugid AND ( (gb.uid=$myuid AND u.uid=ga.uid) OR (u.parent_id=$myuid) ) )
+                        GROUP BY u.uid)";
         }
         else
         {
@@ -1531,8 +1538,9 @@ function getSurveyInfo($surveyid, $languagecode='')
         $thissurvey['passthruvalue']=isset($_SESSION['passthruvalue']) ? $_SESSION['passthruvalue'] : "";
     }
 
-    //not sure this should be here... ToDo: Find a better place
-    if (function_exists('makelanguagechanger')) $languagechanger = makelanguagechanger();
+    if (!(isset($languagechanger) && strlen($languagechanger) > 0) && function_exists('makelanguagechanger')) {
+        $languagechanger = makelanguagechanger();
+    }
     return $thissurvey;
 }
 
@@ -1733,7 +1741,10 @@ function returnglobal($stringname)
             return sanitize_languagecode($urlParam);
         }
         elseif ($stringname =="htmleditormode" ||
-        $stringname =="subaction")
+            $stringname =="subaction" ||
+            $stringname =="questionselectormode" ||
+            $stringname =="templateeditormode"
+            )
         {
             return sanitize_paranoid_string($urlParam);
         }
@@ -1853,11 +1864,11 @@ function getextendedanswer($fieldcode, $value, $format='', $dateformatphp='d.m.Y
         switch($this_type)
         {
             case 'D': if (trim($value)!='')
-                {
-                    $datetimeobj = new Date_Time_Converter($value , "Y-m-d H:i:s");
-                    $value=$datetimeobj->convert($dateformatphp);
-                }
-                break;
+            {
+                $datetimeobj = new Date_Time_Converter($value , "Y-m-d H:i:s");
+                $value=$datetimeobj->convert($dateformatphp);
+            }
+            break;
             case "L":
             case "!":
             case "O":
@@ -1878,43 +1889,43 @@ function getextendedanswer($fieldcode, $value, $format='', $dateformatphp='d.m.Y
             case "M":
             case "J":
             case "P":
-            switch($value)
-            {
-                case "Y": $this_answer=$clang->gT("Yes"); break;
-            }
-            break;
+                switch($value)
+                {
+                    case "Y": $this_answer=$clang->gT("Yes"); break;
+                }
+                break;
             case "Y":
-            switch($value)
-            {
-                case "Y": $this_answer=$clang->gT("Yes"); break;
-                case "N": $this_answer=$clang->gT("No"); break;
-                default: $this_answer=$clang->gT("No answer");
-            }
-            break;
+                switch($value)
+                {
+                    case "Y": $this_answer=$clang->gT("Yes"); break;
+                    case "N": $this_answer=$clang->gT("No"); break;
+                    default: $this_answer=$clang->gT("No answer");
+                }
+                break;
             case "G":
-            switch($value)
-            {
-                case "M": $this_answer=$clang->gT("Male"); break;
-                case "F": $this_answer=$clang->gT("Female"); break;
-                default: $this_answer=$clang->gT("No answer");
-            }
-            break;
+                switch($value)
+                {
+                    case "M": $this_answer=$clang->gT("Male"); break;
+                    case "F": $this_answer=$clang->gT("Female"); break;
+                    default: $this_answer=$clang->gT("No answer");
+                }
+                break;
             case "C":
-            switch($value)
-            {
-                case "Y": $this_answer=$clang->gT("Yes"); break;
-                case "N": $this_answer=$clang->gT("No"); break;
-                case "U": $this_answer=$clang->gT("Uncertain"); break;
-            }
-            break;
+                switch($value)
+                {
+                    case "Y": $this_answer=$clang->gT("Yes"); break;
+                    case "N": $this_answer=$clang->gT("No"); break;
+                    case "U": $this_answer=$clang->gT("Uncertain"); break;
+                }
+                break;
             case "E":
-            switch($value)
-            {
-                case "I": $this_answer=$clang->gT("Increase"); break;
-                case "D": $this_answer=$clang->gT("Decrease"); break;
-                case "S": $this_answer=$clang->gT("Same"); break;
-            }
-            break;
+                switch($value)
+                {
+                    case "I": $this_answer=$clang->gT("Increase"); break;
+                    case "D": $this_answer=$clang->gT("Decrease"); break;
+                    case "S": $this_answer=$clang->gT("Same"); break;
+                }
+                break;
             case "F":
             case "H":
             case "1":
@@ -1935,20 +1946,21 @@ function getextendedanswer($fieldcode, $value, $format='', $dateformatphp='d.m.Y
                 break;
             case "|": //File upload
                 if (substr($fieldcode, -9) == 'filecount') {
-                    $this_answer=$clang->gT("File count");
+                    $this_answer = $clang->gT("File count");
                 } else {
                     //Show the filename, size, title and comment -- no link!
                     $files = json_decode($value);
                     $value = '';
-                    if(is_array($files)) {
-                        foreach($files as $file) {
+                    if (is_array($files)) {
+                        foreach ($files as $file) {
                             $value .= $file->name .
-                                ' (' . $file->size . 'KB) ' .
-                                strip_tags($file->title) .
-                                ' - ' . strip_tags($file->comment) . "<br/>";
+                                    ' (' . $file->size . 'KB) ' .
+                                    strip_tags($file->title) .
+                                    ' - ' . strip_tags($file->comment) . "<br/>";
                         }
                     }
                 }
+                break;
             default:
                 ;
         } // switch
@@ -2097,14 +2109,14 @@ function validate_email($email){
     }
 
     $bits = array(
-    'local'            => isset($m[1]) ? $m[1] : '',
-    'local-atom'        => isset($m[2]) ? $m[2] : '',
-    'local-quoted'        => isset($m[3]) ? $m[3] : '',
-    'local-obs'        => isset($m[4]) ? $m[4] : '',
-    'domain'        => isset($m[5]) ? $m[5] : '',
-    'domain-atom'        => isset($m[6]) ? $m[6] : '',
-    'domain-literal'    => isset($m[7]) ? $m[7] : '',
-    'domain-obs'        => isset($m[8]) ? $m[8] : '',
+            'local'            => isset($m[1]) ? $m[1] : '',
+            'local-atom'        => isset($m[2]) ? $m[2] : '',
+            'local-quoted'        => isset($m[3]) ? $m[3] : '',
+            'local-obs'        => isset($m[4]) ? $m[4] : '',
+            'domain'        => isset($m[5]) ? $m[5] : '',
+            'domain-atom'        => isset($m[6]) ? $m[6] : '',
+            'domain-literal'    => isset($m[7]) ? $m[7] : '',
+            'domain-obs'        => isset($m[8]) ? $m[8] : '',
     );
 
 
@@ -2230,7 +2242,7 @@ function validate_templatedir($templatename)
     }
     elseif (is_dir("$standardtemplaterootdir/{$templatename}/"))
     {
-        return $templatename;
+         return $templatename;
     }
     elseif (is_dir("$usertemplaterootdir/{$defaulttemplate}/"))
     {
@@ -2252,13 +2264,33 @@ function validate_templatedir($templatename)
 * @param int $questionid Limit to a certain qid only (for question preview) - default is false
 * @return array
 */
-function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
+function createFieldMap($surveyid, $style='full', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
 
-    global $dbprefix, $connect, $globalfieldmap, $clang, $aDuplicateQIDs;
+    global $dbprefix, $connect, $clang, $aDuplicateQIDs;
     $surveyid=sanitize_int($surveyid);
+
+        //Get list of questions
+    if (is_null($sQuestionLanguage))
+    {
+        if (isset($_SESSION['s_lang'])) {
+            $sQuestionLanguage = $_SESSION['s_lang'];
+        }
+        else {
+            $sQuestionLanguage = GetBaseLanguageFromSurveyID($surveyid);
+        }
+    }
+    $sQuestionLanguage = sanitize_languagecode($sQuestionLanguage);
+    if ($clang->langcode != $sQuestionLanguage) {
+        SetSurveyLanguage($surveyid, $sQuestionLanguage);
+    }
+    $s_lang = $clang->langcode;
+
     //checks to see if fieldmap has already been built for this page.
-    if (isset($globalfieldmap[$surveyid][$style][$clang->langcode]) && $force_refresh==false) {
-        return $globalfieldmap[$surveyid][$style][$clang->langcode];
+    if (isset($_SESSION['fieldmap-' . $surveyid . $s_lang]) && !$force_refresh) {
+        if (isset($_SESSION['adminlang']) && $clang->langcode != $_SESSION['adminlang']) {
+            $clang = new limesurvey_lang($_SESSION['adminlang']);
+        }
+        return $_SESSION['fieldmap-' . $surveyid . $s_lang];
     }
 
     $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
@@ -2299,93 +2331,125 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     $presult=db_execute_assoc($pquery); //Checked
     while($prow=$presult->FetchRow())
     {
-        if ($prow['anonymized'] == "N")
-        {
-            $fieldmap["token"]=array("fieldname"=>"token", 'sid'=>$surveyid, 'type'=>"token", "gid"=>"", "qid"=>"", "aid"=>"");
-            if ($style == "full")
-            {
-                $fieldmap["token"]['title']="";
-                $fieldmap["token"]['question']=$clang->gT("Token");
-                $fieldmap["token"]['group_name']="";
-            }
-        }
-        if ($prow['datestamp'] == "Y")
-        {
-            $fieldmap["datestamp"]=array("fieldname"=>"datestamp",
-            'type'=>"datestamp",
-            'sid'=>$surveyid,
-            "gid"=>"",
-            "qid"=>"",
-            "aid"=>"");
-            if ($style == "full")
-            {
-                $fieldmap["datestamp"]['title']="";
-                $fieldmap["datestamp"]['question']=$clang->gT("Date last action");
-                $fieldmap["datestamp"]['group_name']="";
-            }
-            $fieldmap["startdate"]=array("fieldname"=>"startdate",
-            'type'=>"startdate",
-            'sid'=>$surveyid,
-            "gid"=>"",
-            "qid"=>"",
-            "aid"=>"");
-            if ($style == "full")
-            {
-                $fieldmap["startdate"]['title']="";
-                $fieldmap["startdate"]['question']=$clang->gT("Date started");
-                $fieldmap["startdate"]['group_name']="";
-            }
-
-        }
-        if ($prow['ipaddr'] == "Y")
-        {
-            $fieldmap["ipaddr"]=array("fieldname"=>"ipaddr",
-            'type'=>"ipaddress",
-            'sid'=>$surveyid,
-            "gid"=>"",
-            "qid"=>"",
-            "aid"=>"");
-            if ($style == "full")
-            {
-                $fieldmap["ipaddr"]['title']="";
-                $fieldmap["ipaddr"]['question']=$clang->gT("IP address");
-                $fieldmap["ipaddr"]['group_name']="";
-            }
-        }
-        // Add 'refurl' to fieldmap.
-        if ($prow['refurl'] == "Y")
-        {
-            $fieldmap["refurl"]=array("fieldname"=>"refurl", 'type'=>"url", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
-            if ($style == "full")
-            {
-                $fieldmap["refurl"]['title']="";
-                $fieldmap["refurl"]['question']=$clang->gT("Referrer URL");
-                $fieldmap["refurl"]['group_name']="";
-            }
-        }
-    }
-
-    //Get list of questions
-    if (is_null($sQuestionLanguage))
+    if ($prow['anonymized'] == "N")
     {
-        $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+        $fieldmap["token"]=array("fieldname"=>"token", 'sid'=>$surveyid, 'type'=>"token", "gid"=>"", "qid"=>"", "aid"=>"");
+        if ($style == "full")
+        {
+            $fieldmap["token"]['title']="";
+            $fieldmap["token"]['question']=$clang->gT("Token");
+            $fieldmap["token"]['group_name']="";
+        }
     }
-    else
+    if ($prow['datestamp'] == "Y")
     {
-        $s_lang = $sQuestionLanguage;
+        $fieldmap["datestamp"]=array("fieldname"=>"datestamp",
+        'type'=>"datestamp",
+        'sid'=>$surveyid,
+        "gid"=>"",
+        "qid"=>"",
+        "aid"=>"");
+        if ($style == "full")
+        {
+            $fieldmap["datestamp"]['title']="";
+            $fieldmap["datestamp"]['question']=$clang->gT("Date last action");
+            $fieldmap["datestamp"]['group_name']="";
+        }
+        $fieldmap["startdate"]=array("fieldname"=>"startdate",
+        'type'=>"startdate",
+        'sid'=>$surveyid,
+        "gid"=>"",
+        "qid"=>"",
+        "aid"=>"");
+        if ($style == "full")
+        {
+            $fieldmap["startdate"]['title']="";
+            $fieldmap["startdate"]['question']=$clang->gT("Date started");
+            $fieldmap["startdate"]['group_name']="";
+        }
+
     }
+    if ($prow['ipaddr'] == "Y")
+    {
+        $fieldmap["ipaddr"]=array("fieldname"=>"ipaddr",
+        'type'=>"ipaddress",
+        'sid'=>$surveyid,
+        "gid"=>"",
+        "qid"=>"",
+        "aid"=>"");
+        if ($style == "full")
+        {
+            $fieldmap["ipaddr"]['title']="";
+            $fieldmap["ipaddr"]['question']=$clang->gT("IP address");
+            $fieldmap["ipaddr"]['group_name']="";
+        }
+    }
+    // Add 'refurl' to fieldmap.
+    if ($prow['refurl'] == "Y")
+    {
+        $fieldmap["refurl"]=array("fieldname"=>"refurl", 'type'=>"url", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
+        if ($style == "full")
+        {
+            $fieldmap["refurl"]['title']="";
+            $fieldmap["refurl"]['question']=$clang->gT("Referrer URL");
+            $fieldmap["refurl"]['group_name']="";
+        }
+    }
+    }
+
+    // Collect all default values once so don't need separate query for each question with defaults
+    // First collect language specific defaults
+    $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
+        . " FROM ".db_table_name('defaultvalues')." as a, ".db_table_name('questions')." as b"
+        . " WHERE a.qid = b.qid"
+        . " AND a.language = b.language"
+        . " AND a.language = '$s_lang'"
+        . " AND b.same_default=0"
+        . " AND b.sid = ".$surveyid;
+    $defaultResults = db_execute_assoc($defaultsQuery) or safe_die ("Couldn't get list of default values in createFieldMap.<br/>$defaultsQuery<br/>".$conect->ErrorMsg());
+
+    $defaultValues = array();   // indexed by question then subquestion
+    foreach($defaultResults as $dv)
+    {
+        if ($dv['specialtype'] != '') {
+            $sq = $dv['specialtype'];
+        }
+        else {
+            $sq = $dv['sqid'];
+        }
+        $defaultValues[$dv['qid'].'~'.$sq] = $dv['defaultvalue'];
+    }
+
+    // Now overwrite language-specific defaults (if any) base language values for each question that uses same_defaults=1
+    $baseLanguage = GetBaseLanguageFromSurveyID($surveyid);
+    $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
+        . " FROM ".db_table_name('defaultvalues')." as a, ".db_table_name('questions')." as b"
+        . " WHERE a.qid = b.qid"
+        . " AND a.language = b.language"
+        . " AND a.language = '$baseLanguage'"
+        . " AND b.same_default=1"
+        . " AND b.sid = ".$surveyid;
+    $defaultResults = db_execute_assoc($defaultsQuery) or safe_die ("Couldn't get list of default values in createFieldMap.<br/>$defaultsQuery<br/>".$conect->ErrorMsg());
+
+    foreach($defaultResults as $dv)
+    {
+        if ($dv['specialtype'] != '') {
+            $sq = $dv['specialtype'];
+        }
+        else {
+            $sq = $dv['sqid'];
+        }
+        $defaultValues[$dv['qid'].'~'.$sq] = $dv['defaultvalue'];
+    }
+
     $qtypes=getqtypelist('','array');
-    $aquery = "SELECT *, "
-    ." (SELECT count(1) FROM ".db_table_name('conditions')." c\n"
-    ." WHERE questions.qid = c.qid) AS hasconditions,\n"
-    ." (SELECT count(1) FROM ".db_table_name('conditions')." c\n"
-    ." WHERE questions.qid = c.cqid) AS usedinconditions\n"
-    ." FROM ".db_table_name('questions')." as questions, ".db_table_name('groups')." as groups"
-    ." WHERE questions.gid=groups.gid AND "
-    ." questions.sid=$surveyid AND "
-    ." questions.language='{$s_lang}' AND "
-    ." questions.parent_qid=0 AND "
-    ." groups.language='{$s_lang}' ";
+    $aquery = "SELECT * "
+        ." FROM ".db_table_name('questions')." as questions, ".db_table_name('groups')." as groups"
+        ." WHERE questions.gid=groups.gid AND "
+        ." questions.sid=$surveyid AND "
+        ." questions.language='{$s_lang}' AND "
+        ." questions.parent_qid=0 AND "
+        ." groups.language='{$s_lang}' ";
     if ($questionid!==false)
     {
         $aquery.=" and questions.qid={$questionid} ";
@@ -2393,41 +2457,23 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     $aquery.=" ORDER BY group_order, question_order";
     $aresult = db_execute_assoc($aquery) or safe_die ("Couldn't get list of questions in createFieldMap function.<br />$query<br />".$connect->ErrorMsg()); //Checked
 
+    $questionSeq=-1; // this is incremental question sequence across all groups
+    $groupSeq=-1;
+    $_groupOrder=-1;
+
     while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
     {
-        if ($arow['hasconditions']>0)
-        {
-            $conditions = "Y";
+        ++$questionSeq;
+
+        // fix fact taht group_order may have gaps
+        if ($_groupOrder != $arow['group_order']) {
+            $_groupOrder = $arow['group_order'];
+            ++$groupSeq;
         }
-        else
-        {
-            $conditions = "N";
-        }
-        if ($arow['usedinconditions']>0)
-        {
-            $usedinconditions = "Y";
-        }
-        else
-        {
-            // This question is not directly used in a condition, however we should
-            // check if its SGQA code is not used as a value in another condition
-            // as a @SGQA@ code
-            $atsgqaQuery = "SELECT count(1) as sgqausedincondition "
-            . "FROM ".db_table_name('questions')." as q, "
-            . db_table_name('conditions')." as c "
-            . "WHERE c.qid=q.qid AND q.sid=".$arow['sid']." AND "
-            . "c.value like '@".$arow['sid']."X".$arow['gid']."X".$arow['qid']."%'";
-            $atsgqaResult = db_execute_assoc($atsgqaQuery) or safe_die ("Couldn't get list @sgqa@ conditions in createFieldMap function.<br />$atsgqaQuery<br />".$connect->ErrorMsg()); //Checked
-            $atsgqaRow = $atsgqaResult->FetchRow();
-            if ($atsgqaRow['sgqausedincondition'] == 0 )
-            {
-                $usedinconditions = "N";
-            }
-            else
-            {
-                $usedinconditions = "Y";
-            }
-        }
+
+        // Conditions indicators are obsolete with EM.  However, they are so tightly coupled into LS code that easider to just set values to 'N' for now and refactor later.
+        $conditions = 'N';
+        $usedinconditions = 'N';
 
         // Field identifier
         // GXQXSXA
@@ -2435,11 +2481,11 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         // If S or A don't exist then set it to 0
         // Implicit (subqestion intermal to a question type ) or explicit qubquestions/answer count starts at 1
 
-        // Types "L", "!" , "O", "D", "G", "N", "X", "Y", "5","S","T","U"
+        // Types "L", "!" , "O", "D", "G", "N", "X", "Y", "5","S","T","U","*"
+        $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
 
         if ($qtypes[$arow['type']]['subquestions']==0  && $arow['type'] != "R" && $arow['type'] != "|")
         {
-            $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
             if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
             $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"{$arow['type']}", 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"");
             if ($style == "full")
@@ -2450,22 +2496,17 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                 $fieldmap[$fieldname]['hasconditions']=$conditions;
                 $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                if ($qtypes[$arow['type']]['hasdefaultvalues'])
-                {
-                    if ($arow['same_default'])
-                    {
-                        $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
-                    }
-                    else
-                    {
-                        $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
-                    }
+                $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                $fieldmap[$fieldname]['groupSeq']=$groupSeq;
+                if (isset($defaultValues[$arow['qid'].'~0'])) {
+                    $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$arow['qid'].'~0'];
                 }
             }
             switch($arow['type'])
             {
                 case "L":  //RADIO LIST
                 case "!":  //DROPDOWN LIST
+                    $fieldmap[$fieldname]['other']=$arow['other'];  // so that base variable knows whether has other value
                     if ($arow['other'] == "Y")
                     {
                         $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other";
@@ -2487,13 +2528,11 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                             $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                             $fieldmap[$fieldname]['hasconditions']=$conditions;
                             $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                            if ($arow['same_default'])
-                            {
-                                $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."' and specialtype='other'");
-                            }
-                            else
-                            {
-                                $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}' and specialtype='other'");
+                            $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                            $fieldmap[$fieldname]['groupSeq']=$groupSeq;
+                            $fieldmap[$fieldname]['other']=$arow['other'];
+                            if (isset($defaultValues[$arow['qid'].'~other'])) {
+                                $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$arow['qid'].'~other'];
                             }
                         }
                     }
@@ -2518,6 +2557,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                         $fieldmap[$fieldname]['hasconditions']=$conditions;
                         $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                        $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                        $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                     }
                     break;
             }
@@ -2529,10 +2570,15 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             $abrows = getSubQuestions($surveyid,$arow['qid'],$s_lang);
             //Now first process scale=1
             $answerset=array();
+            $answerList = array();
             foreach ($abrows as $key=>$abrow)
             {
                 if($abrow['scale_id']==1) {
                     $answerset[]=$abrow;
+                    $answerList[] = array(
+                        'code'=>$abrow['title'],
+                        'answer'=>$abrow['question'],
+                    );
                     unset($abrows[$key]);
                 }
             }
@@ -2561,6 +2607,10 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                         $fieldmap[$fieldname]['hasconditions']=$conditions;
                         $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                        $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                        $fieldmap[$fieldname]['groupSeq']=$groupSeq;
+                        $fieldmap[$fieldname]['preg']=$arow['preg'];
+                        $fieldmap[$fieldname]['answerList']=$answerList;
                     }
                 }
             }
@@ -2584,6 +2634,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                    $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                    $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                 }
 
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#1";
@@ -2599,6 +2651,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                    $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                    $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                 }
             }
         }
@@ -2621,56 +2675,62 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                    $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                    $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                 }
             }
         }
         elseif ($arow['type'] == "|")
         {
             $abquery = "SELECT value FROM ".db_table_name('question_attributes')
-            ." WHERE attribute='max_num_of_files' AND qid=".$arow['qid'];
+                ." WHERE attribute='max_num_of_files' AND qid=".$arow['qid'];
             $abresult = db_execute_assoc($abquery) or safe_die ("Couldn't get maximum
-            number of files that can be uploaded <br />$abquery<br />".$connect->ErrorMsg());
+                number of files that can be uploaded <br />$abquery<br />".$connect->ErrorMsg());
             $abrow = $abresult->FetchRow();
 
             for ($i = 1; $i <= $abrow['value']; $i++)
             {
-                $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
-                'type'=>$arow['type'],
-                'sid'=>$surveyid,
-                "gid"=>$arow['gid'],
-                "qid"=>$arow['qid'],
-                "aid"=>''
-                );
-                if ($style == "full")
-                {
-                    $fieldmap[$fieldname]['title']=$arow['title'];
-                    $fieldmap[$fieldname]['question']=$arow['question'];
-                    $fieldmap[$fieldname]['max_files']=$abrow['value'];
-                    $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                    $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
-                    $fieldmap[$fieldname]['hasconditions']=$conditions;
-                    $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                }
-                $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}"."_filecount";
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
-                'type'=>$arow['type'],
-                'sid'=>$surveyid,
-                "gid"=>$arow['gid'],
-                "qid"=>$arow['qid'],
-                "aid"=>"filecount"
-                );
-                if ($style == "full")
-                {
-                    $fieldmap[$fieldname]['title']=$arow['title'];
-                    $fieldmap[$fieldname]['question']="filecount - ".$arow['question'];
-                    //$fieldmap[$fieldname]['subquestion']=$clang->gT("Comment");
-                    $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                    $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
-                    $fieldmap[$fieldname]['hasconditions']=$conditions;
-                    $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                }
+            $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
+            $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
+            'type'=>$arow['type'],
+            'sid'=>$surveyid,
+            "gid"=>$arow['gid'],
+            "qid"=>$arow['qid'],
+            "aid"=>''
+            );
+            if ($style == "full")
+            {
+                $fieldmap[$fieldname]['title']=$arow['title'];
+                $fieldmap[$fieldname]['question']=$arow['question'];
+                $fieldmap[$fieldname]['max_files']=$abrow['value'];
+                $fieldmap[$fieldname]['group_name']=$arow['group_name'];
+                $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
+                $fieldmap[$fieldname]['hasconditions']=$conditions;
+                $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                $fieldmap[$fieldname]['groupSeq']=$groupSeq;
             }
+            $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}"."_filecount";
+            $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
+            'type'=>$arow['type'],
+            'sid'=>$surveyid,
+            "gid"=>$arow['gid'],
+            "qid"=>$arow['qid'],
+            "aid"=>"filecount"
+            );
+            if ($style == "full")
+            {
+                $fieldmap[$fieldname]['title']=$arow['title'];
+                $fieldmap[$fieldname]['question']="filecount - ".$arow['question'];
+                    //$fieldmap[$fieldname]['subquestion']=$clang->gT("Comment");
+                $fieldmap[$fieldname]['group_name']=$arow['group_name'];
+                $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
+                $fieldmap[$fieldname]['hasconditions']=$conditions;
+                $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                $fieldmap[$fieldname]['groupSeq']=$groupSeq;
+            }
+        }
         }
         else  // Question types with subquestions and one answer per subquestion  (M/A/B/C/E/F/H/P)
         {
@@ -2680,7 +2740,13 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}";
                 if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title']);
+                $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
+                'type'=>$arow['type'],
+                'sid'=>$surveyid,
+                'gid'=>$arow['gid'],
+                'qid'=>$arow['qid'],
+                'aid'=>$abrow['title'],
+                'sqid'=>$abrow['qid']);
                 if ($style == "full")
                 {
                     $fieldmap[$fieldname]['title']=$arow['title'];
@@ -2690,13 +2756,11 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                    if ($arow['same_default'])
-                    {
-                        $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE sqid={$abrow['qid']} and qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
-                    }
-                    else
-                    {
-                        $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE sqid={$abrow['qid']} and qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
+                    $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                    $fieldmap[$fieldname]['groupSeq']=$groupSeq;
+                    $fieldmap[$fieldname]['preg']=$arow['preg'];
+                    if (isset($defaultValues[$arow['qid'].'~'.$abrow['qid']])) {
+                        $fieldmap[$fieldname]['defaultvalue'] = $defaultValues[$arow['qid'].'~'.$abrow['qid']];
                     }
                 }
                 if ($arow['type'] == "P")
@@ -2713,6 +2777,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                         $fieldmap[$fieldname]['hasconditions']=$conditions;
                         $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                        $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                        $fieldmap[$fieldname]['groupSeq']=$groupSeq;
                     }
                 }
             }
@@ -2730,6 +2796,9 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                    $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                    $fieldmap[$fieldname]['groupSeq']=$groupSeq;
+                    $fieldmap[$fieldname]['other']=$arow['other'];
                 }
                 if ($arow['type']=="P")
                 {
@@ -2745,13 +2814,34 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                         $fieldmap[$fieldname]['hasconditions']=$conditions;
                         $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                        $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                        $fieldmap[$fieldname]['groupSeq']=$groupSeq;
+                        $fieldmap[$fieldname]['other']=$arow['other'];
                     }
                 }
             }
         }
+        if (isset($fieldmap[$fieldname])) // only add these fields if there is actually a valid field
+        {
+            $fieldmap[$fieldname]['relevance']=$arow['relevance'];
+            $fieldmap[$fieldname]['grelevance']=$arow['grelevance'];
+            $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+            $fieldmap[$fieldname]['groupSeq']=$groupSeq;
+            $fieldmap[$fieldname]['preg']=$arow['preg'];
+            $fieldmap[$fieldname]['other']=$arow['other'];
+            $fieldmap[$fieldname]['help']=$arow['help'];
+        }
+        else
+        {
+            --$questionSeq; // didn't generate a valid $fieldmap entry, so decrement the question counter to ensure they are sequential
+        }
     }
     if (isset($fieldmap)) {
-        $globalfieldmap[$surveyid][$style][$clang->langcode] = $fieldmap;
+        $_SESSION['fieldmap-' . $surveyid . $clang->langcode]=$fieldmap;
+        
+        if (isset($_SESSION['adminlang']) && $clang->langcode != $_SESSION['adminlang']) {
+            $clang = new limesurvey_lang($_SESSION['adminlang']);
+        }       
         return $fieldmap;
     }
 }
@@ -2768,7 +2858,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 */
 function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
 
-    global $dbprefix, $connect, $globalfieldmap, $clang, $aDuplicateQIDs;
+    global $dbprefix, $connect, $clang, $aDuplicateQIDs;
     static $timingsFieldMap;
 
     $surveyid=sanitize_int($surveyid);
@@ -2848,13 +2938,13 @@ function GetBaseLanguageFromSurveyID($surveyid)
     global $connect;
     $surveyid=(int)($surveyid);
     if (!isset($cache[$surveyid])) {
-        $query = "SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
-        $surveylanguage = $connect->GetOne($query); //Checked
-        if (is_null($surveylanguage))
-        {
-            $surveylanguage='en';
-        }
-        $cache[$surveyid] = $surveylanguage;
+	    $query = "SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
+	    $surveylanguage = $connect->GetOne($query); //Checked
+	    if (is_null($surveylanguage))
+	    {
+	        $surveylanguage='en';
+	    }
+	    $cache[$surveyid] = $surveylanguage;
     } else {
         $surveylanguage = $cache[$surveyid];
     }
@@ -2869,16 +2959,16 @@ function GetAdditionalLanguagesFromSurveyID($surveyid)
     $surveyid=sanitize_int($surveyid);
     if (!isset($cache[$surveyid])) {
         $query = "SELECT additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
-        $additional_languages = $connect->GetOne($query);
+	    $additional_languages = $connect->GetOne($query);
         if (trim($additional_languages)=='')
-        {
-            $additional_languages = array();
-        }
-        else
-        {
-            $additional_languages = explode(" ", trim($additional_languages));
-        }
-        $cache[$surveyid] = $additional_languages;
+	    {
+	        $additional_languages = array();
+	    }
+	    else
+	    {
+	        $additional_languages = explode(" ", trim($additional_languages));
+	    }
+	    $cache[$surveyid] = $additional_languages;
     } else {
         $additional_languages = $cache[$surveyid];
     }
@@ -2922,6 +3012,8 @@ function SetSurveyLanguage($surveyid, $language)
 
     $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
     $_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
+
+    LimeExpressionManager::SetEMLanguage($_SESSION['s_lang']);
     return $clang;
 }
 
@@ -2931,17 +3023,17 @@ function buildLabelSetCheckSumArray()
     global $connect;
     // BUILD CHECKSUMS FOR ALL EXISTING LABEL SETS
     $query = "SELECT lid
-    FROM ".db_table_name('labelsets')."
-    ORDER BY lid";
+              FROM ".db_table_name('labelsets')."
+              ORDER BY lid";
     $result = db_execute_assoc($query) or safe_die("safe_died collecting labelset ids<br />$query<br />".$connect->ErrorMsg());  //Checked
     $csarray=array();
     while ($row=$result->FetchRow())
     {
         $thisset="";
         $query2 = "SELECT code, title, sortorder, language, assessment_value
-        FROM ".db_table_name('labels')."
-        WHERE lid={$row['lid']}
-        ORDER BY language, sortorder, code";
+                   FROM ".db_table_name('labels')."
+                   WHERE lid={$row['lid']}
+                   ORDER BY language, sortorder, code";
         $result2 = db_execute_num($query2) or safe_die("safe_died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg()); //Checked
         while($row2=$result2->FetchRow())
         {
@@ -3001,12 +3093,12 @@ function getQuestionAttributes($qid, $type='')
     $setattributes=array();
     $qid=sanitize_int($qid);
     $query = "SELECT attribute, value FROM ".db_table_name('question_attributes')." WHERE qid=$qid";
-    $result = db_execute_assoc($query) or safe_die("Error finding question attributes");  //Checked
+        $result = db_execute_assoc($query) or safe_die("Error finding question attributes");  //Checked
     $setattributes=array();
-    while ($row=$result->FetchRow())
-    {
+        while ($row=$result->FetchRow())
+        {
         $setattributes[$row['attribute']]=$row['value'];
-    }
+        }
     //echo "<pre>";print_r($qid_attributes);echo "</pre>";
     $qid_attributes=array_merge($defaultattributes,$setattributes);
     $cache[$qid]=$qid_attributes;
@@ -3070,7 +3162,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Answer width'));
 
     $qattributes["array_filter"]=array(
-    "types"=>"1ABCEF:;MPL",
+    "types"=>"1ABCEF:;MPLKQ",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3078,7 +3170,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Array filter'));
 
     $qattributes["array_filter_exclude"]=array(
-    "types"=>"1ABCEF:;MPL",
+    "types"=>"1ABCEF:;MPLKQ",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3101,14 +3193,14 @@ function questionAttributes($returnByName=false)
     'inputtype'=>'text',
     "help"=>$clang->gT('Category separator'),
     "caption"=>$clang->gT('Category separator'));
-
-    $qattributes["code_filter"]=array(
-    "types"=>"WZ",
-    'category'=>$clang->gT('Logic'),
-    'sortorder'=>100,
-    'inputtype'=>'text',
-    "help"=>$clang->gT('Filter the available answers by this value'),
-    "caption"=>$clang->gT('Code filter'));
+//  Question types 'W' (list-dropdown-flexible) and 'Z'(list-radio-flexible) are no longer supported, so neither is code_filter
+//    $qattributes["code_filter"]=array(
+//    "types"=>"WZ",
+//    'category'=>$clang->gT('Logic'),
+//    'sortorder'=>100,
+//    'inputtype'=>'text',
+//    "help"=>$clang->gT('Filter the available answers by this value'),
+//    "caption"=>$clang->gT('Code filter'));
 
     $qattributes["display_columns"]=array(
     "types"=>"GLMZ",
@@ -3196,8 +3288,40 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Multiple numeric inputs sum must equal this value'),
     "caption"=>$clang->gT('Equals sum value'));
 
+    $qattributes["em_validation_q"]=array(
+    "types"=>";:STUNKQ",
+    'category'=>$clang->gT('Logic'),
+    'sortorder'=>200,
+    'inputtype'=>'textarea',
+    "help"=>$clang->gT('Boolean equation to validate the whole question.'),
+    "caption"=>$clang->gT('Question validation equation'));
+
+    $qattributes["em_validation_q_tip"]=array(
+    "types"=>";:STUNKQ",
+    'category'=>$clang->gT('Logic'),
+    'sortorder'=>210,
+    'inputtype'=>'textarea',
+    "help"=>$clang->gT('Tip to show user describing the question validation equation.'),
+    "caption"=>$clang->gT('Question validation tip'));
+
+    $qattributes["em_validation_sq"]=array(
+    "types"=>";:KQSTUN",
+    'category'=>$clang->gT('Logic'),
+    'sortorder'=>220,
+    'inputtype'=>'textarea',
+    "help"=>$clang->gT('Boolean equation to validate each sub-question.'),
+    "caption"=>$clang->gT('Sub-question validation equation'));
+
+    $qattributes["em_validation_sq_tip"]=array(
+    "types"=>";:KQSTUN",
+    'category'=>$clang->gT('Logic'),
+    'sortorder'=>230,
+    'inputtype'=>'textarea',
+    "help"=>$clang->gT('Tip to show user describing the sub-question validation equation.'),
+    "caption"=>$clang->gT('Sub-question validation tip'));
+
     $qattributes["exclude_all_others"]=array(
-    "types"=>"M",
+    "types"=>"MP",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>130,
     'inputtype'=>'text',
@@ -3330,7 +3454,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Hide tip'));
 
     $qattributes['hidden']=array(
-    'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|',
+    'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
     'category'=>$clang->gT('Display'),
     'sortorder'=>101,
     'inputtype'=>'singleselect',
@@ -3341,7 +3465,7 @@ function questionAttributes($returnByName=false)
     'caption'=>$clang->gT('Always hide this question'));
 
     $qattributes["max_answers"]=array(
-    "types"=>"MPR",
+    "types"=>"MPR1:;ABCEFKQ",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>11,
     'inputtype'=>'integer',
@@ -3357,23 +3481,23 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Maximum sum value'));
 
     $qattributes["max_num_value_n"]=array(
-    "types"=>"N",
+    "types"=>"NK",
     'category'=>$clang->gT('Input'),
     'sortorder'=>110,
     'inputtype'=>'integer',
     "help"=>$clang->gT('Maximum value of the numeric input'),
     "caption"=>$clang->gT('Maximum value'));
 
-    $qattributes["max_num_value_sgqa"]=array(
-    "types"=>"K",
-    'category'=>$clang->gT('Logic'),
-    'sortorder'=>100,
-    'inputtype'=>'text',
-    "help"=>$clang->gT('Enter the SGQA identifier to use the total of a previous question as the maximum for this question'),
-    "caption"=>$clang->gT('Max value from SGQA'));
+//    $qattributes["max_num_value_sgqa"]=array(
+//    "types"=>"K",
+//    'category'=>$clang->gT('Logic'),
+//    'sortorder'=>100,
+//    'inputtype'=>'text',
+//    "help"=>$clang->gT('Enter the SGQA identifier to use the total of a previous question as the maximum for this question'),
+//    "caption"=>$clang->gT('Max value from SGQA'));
 
     $qattributes["maximum_chars"]=array(
-    "types"=>"STUNQK:",
+    "types"=>"STUNQK:;",
     'category'=>$clang->gT('Input'),
     'sortorder'=>100,
     'inputtype'=>'text',
@@ -3381,7 +3505,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Maximum characters'));
 
     $qattributes["min_answers"]=array(
-    "types"=>"MPR",
+    "types"=>"MPR1:;ABCEFKQ",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>10,
     'inputtype'=>'integer',
@@ -3397,26 +3521,26 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Minimum sum value'));
 
     $qattributes["min_num_value_n"]=array(
-    "types"=>"N",
+    "types"=>"NK",
     'category'=>$clang->gT('Input'),
     'sortorder'=>100,
     'inputtype'=>'integer',
     "help"=>$clang->gT('Minimum value of the numeric input'),
     "caption"=>$clang->gT('Minimum value'));
 
-    $qattributes["min_num_value_sgqa"]=array(
-    "types"=>"K",
-    'category'=>$clang->gT('Logic'),
-    'sortorder'=>100,
-    'inputtype'=>'text',
-    "help"=>$clang->gT('Enter the SGQA identifier to use the total of a previous question as the minimum for this question'),
-    "caption"=>$clang->gT('Minimum value from SGQA'));
+//    $qattributes["min_num_value_sgqa"]=array(
+//    "types"=>"K",
+//    'category'=>$clang->gT('Logic'),
+//     'sortorder'=>100,
+//   'inputtype'=>'text',
+//    "help"=>$clang->gT('Enter the SGQA identifier to use the total of a previous question as the minimum for this question'),
+//    "caption"=>$clang->gT('Minimum value from SGQA'));
 
     $qattributes["multiflexible_max"]=array(
     "types"=>":",
     'category'=>$clang->gT('Display'),
-    'sortorder'=>112,
-    'inputtype'=>'text',
+     'sortorder'=>112,
+   'inputtype'=>'text',
     "help"=>$clang->gT('Maximum value for array(mult-flexible) question type'),
     "caption"=>$clang->gT('Maximum value'));
 
@@ -3458,13 +3582,13 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Present answer options in reverse order'),
     "caption"=>$clang->gT('Reverse answer order'));
 
-    $qattributes["num_value_equals_sgqa"]=array(
-    "types"=>"K",
-    'category'=>$clang->gT('Logic'),
-    'sortorder'=>100,
-    'inputtype'=>'text',
-    "help"=>$clang->gT('SGQA identifier to use total of previous question as total for this question'),
-    "caption"=>$clang->gT('Value equals SGQA'));
+//    $qattributes["num_value_equals_sgqa"]=array(
+//    "types"=>"K",
+//    'category'=>$clang->gT('Logic'),
+//    'sortorder'=>100,
+//    'inputtype'=>'text',
+//    "help"=>$clang->gT('SGQA identifier to use total of previous question as total for this question'),
+//    "caption"=>$clang->gT('Value equals SGQA'));
 
     $qattributes["num_value_int_only"]=array(
     "types"=>"N",
@@ -3472,66 +3596,66 @@ function questionAttributes($returnByName=false)
     'sortorder'=>100,
     'inputtype'=>'singleselect',
     'options'=>array(
-    0=>$clang->gT('No'),
-    1=>$clang->gT('Yes')),
+        0=>$clang->gT('No'),
+        1=>$clang->gT('Yes')),
     'default'=>0,
     "help"=>$clang->gT('Restrict input to integer values'),
     "caption"=>$clang->gT('Integer only'));
 
     $qattributes["numbers_only"]=array(
-    "types"=>"Q;S",
-    'category'=>$clang->gT('Other'),
-    'sortorder'=>100,
-    'inputtype'=>'singleselect',
-    'options'=>array(
-    0=>$clang->gT('No'),
-    1=>$clang->gT('Yes')
-    ),
-    'default'=>0,
-    "help"=>$clang->gT('Allow only numerical input'),
-    "caption"=>$clang->gT('Numbers only')
+        "types"=>"Q;S",
+        'category'=>$clang->gT('Other'),
+        'sortorder'=>100,
+        'inputtype'=>'singleselect',
+        'options'=>array(
+	        0=>$clang->gT('No'),
+            1=>$clang->gT('Yes')
+	    ),
+        'default'=>0,
+        "help"=>$clang->gT('Allow only numerical input'),
+        "caption"=>$clang->gT('Numbers only')
     );
 
     $qattributes['show_totals'] =	array(
-    'types' =>	';',
-    'category' =>	$clang->gT('Other'),
-    'sortorder' =>	100,
-    'inputtype'	=> 'singleselect',
-    'options' =>	array(
-    'X' =>	$clang->gT('Off'),
-    'R' =>	$clang->gT('Rows'),
-    'C' =>	$clang->gT('Columns'),
-    'B' =>	$clang->gT('Both rows and columns')
-    ),
-    'default' =>	'X',
-    'help' =>	$clang->gT('Show totals for either rows, columns or both rows and columns'),
-    'caption' =>	$clang->gT('Show totals for')
+ 	'types' =>	';',
+ 	'category' =>	$clang->gT('Other'),
+ 	'sortorder' =>	100,
+ 	'inputtype'	=> 'singleselect',
+ 	'options' =>	array(
+ 	    'X' =>	$clang->gT('Off'),
+ 	    'R' =>	$clang->gT('Rows'),
+ 	    'C' =>	$clang->gT('Columns'),
+ 	    'B' =>	$clang->gT('Both rows and columns')
+ 	    ),
+ 	    'default' =>	'X',
+ 	    'help' =>	$clang->gT('Show totals for either rows, columns or both rows and columns'),
+        'caption' =>	$clang->gT('Show totals for')
     );
 
     $qattributes['show_grand_total'] =	array(
-    'types' =>	';',
-    'category' =>	$clang->gT('Other'),
-    'sortorder' =>	100,
-    'inputtype' =>	'singleselect',
-    'options' =>	array(
-    0 =>	$clang->gT('No'),
-    1 =>	$clang->gT('Yes')
-    ),
-    'default' =>	0,
-    'help' =>	$clang->gT('Show grand total for either columns or rows'),
-    'caption' =>	$clang->gT('Show grand total')
+ 	'types' =>	';',
+ 	'category' =>	$clang->gT('Other'),
+ 	'sortorder' =>	100,
+ 	'inputtype' =>	'singleselect',
+ 	'options' =>	array(
+             0 =>	$clang->gT('No'),
+             1 =>	$clang->gT('Yes')
+ 	),
+ 	'default' =>	0,
+        'help' =>	$clang->gT('Show grand total for either columns or rows'),
+        'caption' =>	$clang->gT('Show grand total')
     );
 
     $qattributes["input_boxes"]=array(
-    "types"=>":",
-    'category'=>$clang->gT('Display'),
-    'sortorder'=>100,
-    'inputtype'=>'singleselect',
-    'options'=>array(0=>$clang->gT('No'),
+	"types"=>":",
+	'category'=>$clang->gT('Display'),
+	'sortorder'=>100,
+	'inputtype'=>'singleselect',
+	'options'=>array(0=>$clang->gT('No'),
     1=>$clang->gT('Yes')),
-    'default'=>0,
-    "help"=>$clang->gT("Present as text input boxes instead of dropdown lists"),
-    "caption"=>$clang->gT("Text inputs"));
+	'default'=>0,
+	"help"=>$clang->gT("Present as text input boxes instead of dropdown lists"),
+	"caption"=>$clang->gT("Text inputs"));
 
     $qattributes["other_comment_mandatory"]=array(
     "types"=>"PLW!Z",
@@ -3547,8 +3671,8 @@ function questionAttributes($returnByName=false)
     $qattributes["other_numbers_only"]=array(
     "types"=>"LMP",
     'category'=>$clang->gT('Logic'),
-    'sortorder'=>100,
-    'inputtype'=>'singleselect',
+     'sortorder'=>100,
+   'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('No'),
     1=>$clang->gT('Yes')),
     'default'=>0,
@@ -3564,7 +3688,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Label for 'Other:' option"));
 
     $qattributes["page_break"]=array(
-    "types"=>"15ABCDEFGHKLMNOPQRSTUWXYZ!:;|",
+    "types"=>"15ABCDEFGHKLMNOPQRSTUWXYZ!:;|*",
     'category'=>$clang->gT('Other'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3583,7 +3707,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Answer prefix'));
 
     $qattributes["public_statistics"]=array(
-    "types"=>"15ABCEFGHKLMNOPRWYZ!:",
+    "types"=>"15ABCEFGHKLMNOPRWYZ!:*",
     'category'=>$clang->gT('Other'),
     'sortorder'=>80,
     'inputtype'=>'singleselect',
@@ -3603,6 +3727,17 @@ function questionAttributes($returnByName=false)
     'default'=>0,
     "help"=>$clang->gT('Present answers in random order'),
     "caption"=>$clang->gT('Random answer order'));
+
+//    $qattributes['relevance']=array(
+//    'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
+//    'category'=>$clang->gT('Display'),
+//    'sortorder'=>1,
+//    'inputtype'=>'text',
+//    'default'=>'1',
+//    'help'=>$clang->gT('The Relevance Equation determines whether a question should be shown (if true) or hiddden and marked as Not Applicable (if false).'
+//            . '  The Relevance equation can be as complex as you like, using any combination of mathematical operators, nested parentheses,'
+//            . ' any variable or token that has already been set, and any of more than 50 functions.  It is parsed by the ExpressionManager.'),
+//    'caption'=>$clang->gT('Relevance Equation'));
 
     $qattributes["slider_layout"]=array(
     "types"=>"K",
@@ -3664,10 +3799,10 @@ function questionAttributes($returnByName=false)
     'sortorder'=>90,
     'inputtype'=>'singleselect',
     'options'=>array(
-    0=>$clang->gT('No'),
-    1=>$clang->gT('Yes - stars'),
-    2=>$clang->gT('Yes - slider with emoticon'),
-    ),
+        0=>$clang->gT('No'),
+        1=>$clang->gT('Yes - stars'),
+        2=>$clang->gT('Yes - slider with emoticon'),
+        ),
     'default'=>0,
     "help"=>$clang->gT('Use slider layout'),
     "caption"=>$clang->gT('Use slider layout'));
@@ -3719,8 +3854,29 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Use dropdown boxes instead of list of radio buttons'),
     "caption"=>$clang->gT('Use dropdown boxes'));
 
+    $qattributes["dropdown_size"]=array(
+    "types"=>"!",   // TODO add these later?  "1F",
+    'category'=>$clang->gT('Display'),
+    'sortorder'=>200,
+    'inputtype'=>'text',
+    'default'=>0,
+    "help"=>$clang->gT('For list dropdown boxes, show up to this many rows'),
+    "caption"=>$clang->gT('Height of dropdown'));
+
+    $qattributes["dropdown_prefix"]=array(
+    "types"=>"!",   // TODO add these later?  "1F",
+    'category'=>$clang->gT('Display'),
+    'sortorder'=>201,
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('None'),
+        1=>$clang->gT('Order'),
+        ),
+    'default'=>0,
+    "help"=>$clang->gT('Accelerator keys for list items'),
+    "caption"=>$clang->gT('Prefix for list items'));
+
     $qattributes["scale_export"]=array(
-    "types"=>"CEFGHLMOPWYZ1!:",
+    "types"=>"CEFGHLMOPWYZ1!:*",
     'category'=>$clang->gT('Other'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3764,22 +3920,22 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Time limit disable next"));
 
     $qattributes["time_limit_disable_prev"]=array(
-    "types"=>"STUX",
+	"types"=>"STUX",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>96,
     "inputtype"=>"singleselect",
     'options'=>array(0=>$clang->gT('No'),
     1=>$clang->gT('Yes')),
-    "help"=>$clang->gT("Disable the prev button until the time limit expires"),
-    "caption"=>$clang->gT("Time limit disable prev"));
+	"help"=>$clang->gT("Disable the prev button until the time limit expires"),
+	"caption"=>$clang->gT("Time limit disable prev"));
 
     $qattributes["time_limit_countdown_message"]=array(
-    "types"=>"STUX",
+	"types"=>"STUX",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>98,
     "inputtype"=>"textarea",
-    "help"=>$clang->gT("The text message that displays in the countdown timer during the countdown"),
-    "caption"=>$clang->gT("Time limit countdown message"));
+	"help"=>$clang->gT("The text message that displays in the countdown timer during the countdown"),
+	"caption"=>$clang->gT("Time limit countdown message"));
 
     $qattributes["time_limit_timer_style"]=array(
     "types"=>"STUX",
@@ -3846,95 +4002,95 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("1st time limit warning CSS style"));
 
     $qattributes["time_limit_warning_2"]=array(
-    "types"=>"STUX",
+	"types"=>"STUX",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>116,
     "inputtype"=>"integer",
-    "help"=>$clang->gT("Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"),
-    "caption"=>$clang->gT("2nd time limit warning message timer"));
+	"help"=>$clang->gT("Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"),
+	"caption"=>$clang->gT("2nd time limit warning message timer"));
 
     $qattributes["time_limit_warning_2_display_time"]=array(
-    "types"=>"STUX",
+	"types"=>"STUX",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>118,
     "inputtype"=>"integer",
-    "help"=>$clang->gT("The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"),
-    "caption"=>$clang->gT("2nd time limit warning message display time"));
+	"help"=>$clang->gT("The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"),
+	"caption"=>$clang->gT("2nd time limit warning message display time"));
 
     $qattributes["time_limit_warning_2_message"]=array(
-    "types"=>"STUX",
+	"types"=>"STUX",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>120,
     "inputtype"=>"textarea",
-    "help"=>$clang->gT("The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"),
-    "caption"=>$clang->gT("2nd time limit warning message"));
+	"help"=>$clang->gT("The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"),
+	"caption"=>$clang->gT("2nd time limit warning message"));
 
     $qattributes["time_limit_warning_2_style"]=array(
-    "types"=>"STUX",
+	"types"=>"STUX",
     'category'=>$clang->gT('Timer'),
     'sortorder'=>122,
     "inputtype"=>"textarea",
-    "help"=>$clang->gT("CSS style used when the 2nd 'time limit warning' message is displayed"),
-    "caption"=>$clang->gT("2nd time limit warning CSS style"));
+	"help"=>$clang->gT("CSS style used when the 2nd 'time limit warning' message is displayed"),
+	"caption"=>$clang->gT("2nd time limit warning CSS style"));
 
     $qattributes["show_title"]=array(
-    "types"=>"|",
+	"types"=>"|",
     'category'=>$clang->gT('File metadata'),
     'sortorder'=>124,
     "inputtype"=>"singleselect",
     'options'=>array(0=>$clang->gT('No'),
     1=>$clang->gT('Yes')),
     'default'=>1,
-    "help"=>$clang->gT("Is the participant required to give a title to the uploaded file?"),
-    "caption"=>$clang->gT("Show title"));
+	"help"=>$clang->gT("Is the participant required to give a title to the uploaded file?"),
+	"caption"=>$clang->gT("Show title"));
 
     $qattributes["show_comment"]=array(
-    "types"=>"|",
+	"types"=>"|",
     'category'=>$clang->gT('File metadata'),
     'sortorder'=>126,
     "inputtype"=>"singleselect",
     'options'=>array(0=>$clang->gT('No'),
     1=>$clang->gT('Yes')),
     'default'=>1,
-    "help"=>$clang->gT("Is the participant required to give a comment to the uploaded file?"),
-    "caption"=>$clang->gT("Show comment"));
+	"help"=>$clang->gT("Is the participant required to give a comment to the uploaded file?"),
+	"caption"=>$clang->gT("Show comment"));
 
 
     $qattributes["max_filesize"]=array(
-    "types"=>"|",
+	"types"=>"|",
     'category'=>$clang->gT('Other'),
     'sortorder'=>128,
     "inputtype"=>"integer",
     'default'=>1024,
-    "help"=>$clang->gT("The participant cannot upload a single file larger than this size"),
-    "caption"=>$clang->gT("Maximum file size allowed (in KB)"));
+	"help"=>$clang->gT("The participant cannot upload a single file larger than this size"),
+	"caption"=>$clang->gT("Maximum file size allowed (in KB)"));
 
     $qattributes["max_num_of_files"]=array(
-    "types"=>"|",
+	"types"=>"|",
     'category'=>$clang->gT('Other'),
     'sortorder'=>130,
     "inputtype"=>"integer",
     'default'=>1,
-    "help"=>$clang->gT("Maximum number of files that the participant can upload for this question"),
-    "caption"=>$clang->gT("Max number of files"));
+	"help"=>$clang->gT("Maximum number of files that the participant can upload for this question"),
+	"caption"=>$clang->gT("Max number of files"));
 
     $qattributes["min_num_of_files"]=array(
-    "types"=>"|",
+	"types"=>"|",
     'category'=>$clang->gT('Other'),
     'sortorder'=>132,
     "inputtype"=>"integer",
     'default'=>0,
-    "help"=>$clang->gT("Minimum number of files that the participant must upload for this question"),
-    "caption"=>$clang->gT("Min number of files"));
+	"help"=>$clang->gT("Minimum number of files that the participant must upload for this question"),
+	"caption"=>$clang->gT("Min number of files"));
 
     $qattributes["allowed_filetypes"]=array(
-    "types"=>"|",
+	"types"=>"|",
     'category'=>$clang->gT('Other'),
     'sortorder'=>134,
     'inputtype'=>'text',
     'default'=>"png, gif, doc, odt",
-    "help"=>$clang->gT("Allowed file types in comma separated format. e.g. pdf,doc,odt"),
-    "caption"=>$clang->gT("Allowed file types"));
+	"help"=>$clang->gT("Allowed file types in comma separated format. e.g. pdf,doc,odt"),
+	"caption"=>$clang->gT("Allowed file types"));
 
     $qattributes["random_group"]=array(
     "types"=>"15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|",
@@ -3953,14 +4109,14 @@ function questionAttributes($returnByName=false)
             for ($i=0; $i<=strlen($qvalue['types'])-1; $i++)
             {
                 $qat[substr($qvalue['types'], $i, 1)][]=array("name"=>$qname,
-                "inputtype"=>$qvalue['inputtype'],
-                "category"=>$qvalue['category'],
-                "sortorder"=>$qvalue['sortorder'],
-                "readonly"=>isset($qvalue['readonly_when_active'])?$qvalue['readonly_when_active']:false,
-                "options"=>isset($qvalue['options'])?$qvalue['options']:'',
-                "default"=>isset($qvalue['default'])?$qvalue['default']:'',
-                "help"=>$qvalue['help'],
-                "caption"=>$qvalue['caption']);
+                                                            "inputtype"=>$qvalue['inputtype'],
+                                                            "category"=>$qvalue['category'],
+                                                            "sortorder"=>$qvalue['sortorder'],
+                                                            "readonly"=>isset($qvalue['readonly_when_active'])?$qvalue['readonly_when_active']:false,
+                                                            "options"=>isset($qvalue['options'])?$qvalue['options']:'',
+                                                            "default"=>isset($qvalue['default'])?$qvalue['default']:'',
+                                                            "help"=>$qvalue['help'],
+                                                            "caption"=>$qvalue['caption']);
             }
         }
         return $qat;
@@ -4010,7 +4166,7 @@ function auto_escape($str) {
 function auto_unescape($str) {
     if (!isset($str)) {return null;};
     if (!get_magic_quotes_gpc()) {
-        return $str;
+    return $str;
     }
     return stripslashes($str);
 }
@@ -4168,14 +4324,14 @@ function getPrintableHeader()
 {
     global $rooturl,$homeurl;
     $headelements = '
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <script type="text/javascript" src="'.$rooturl.'/scripts/jquery/jquery.js"></script>
-    <script type="text/javascript" src="'.$homeurl.'/scripts/printablesurvey.js"></script>
+            <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+            <script type="text/javascript" src="'.$rooturl.'/scripts/jquery/jquery.js"></script>
+            <script type="text/javascript" src="'.$homeurl.'/scripts/printablesurvey.js"></script>
 
     <!--[if lt IE 7]>
-    <script type="text/javascript" src="'.$homeurl.'/scripts/DD_belatedPNG_0.0.8a-min.js"></script>
-    <script>
-    DD_belatedPNG.fix("img");
+            <script type="text/javascript" src="'.$homeurl.'/scripts/DD_belatedPNG_0.0.8a-min.js"></script>
+            <script>
+  DD_belatedPNG.fix("img");
     </script>
     <![endif]-->
     ';
@@ -4212,17 +4368,24 @@ function doFooter()
 
 // This function replaces field names in a text with the related values
 // (e.g. for email and template functions)
-function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=false)
+function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=true)
 {
-
-    foreach ( $fieldsarray as $key => $value )
-    {
-        $text=str_replace($key, $value, $text);
-    }
 
     if ($bReplaceInsertans)
     {
-        $text = insertansReplace($text);
+        $replacements = array();
+        foreach ( $fieldsarray as $key => $value )
+        {
+            $replacements[substr($key,1,-1)] = $value;
+        }
+        $text = LimeExpressionManager::ProcessString($text, NULL, $replacements, false, 2, 1);
+    }
+    else
+    {
+        foreach ( $fieldsarray as $key => $value )
+        {
+            $text=str_replace($key, $value, $text);
+        }
     }
     return $text;
 }
@@ -4264,14 +4427,14 @@ function SendEmailMessage($mail, $body, $subject, $to, $from, $sitename, $ishtml
         return false;
     }
 
-    if (is_null($bouncemail) )
-    {
-        $sender=$from;
-    }
-    else
-    {
-        $sender=$bouncemail;
-    }
+	if (is_null($bouncemail) )
+	{
+		$sender=$from;
+	}
+	else
+	{
+		$sender=$bouncemail;
+	}
     $bUnsetEmail=false;
     if (is_null($mail))
     {
@@ -4287,61 +4450,61 @@ function SendEmailMessage($mail, $body, $subject, $to, $from, $sitename, $ishtml
     {
         $mail->SetLanguage('en',$rootdir.'/classes/phpmailer/language/');
     }
-    $mail->CharSet = $emailcharset;
-    if (isset($emailsmtpssl) && trim($emailsmtpssl)!=='' && $emailsmtpssl!==0) {
+	$mail->CharSet = $emailcharset;
+	if (isset($emailsmtpssl) && trim($emailsmtpssl)!=='' && $emailsmtpssl!==0) {
         if ($emailsmtpssl===1) {$mail->SMTPSecure = "ssl";}
-        else {$mail->SMTPSecure = $emailsmtpssl;}
-    }
+    	 else {$mail->SMTPSecure = $emailsmtpssl;}
+	 }
 
-    $fromname='';
-    $fromemail=$from;
-    if (strpos($from,'<'))
-    {
-        $fromemail=substr($from,strpos($from,'<')+1,strpos($from,'>')-1-strpos($from,'<'));
-        $fromname=trim(substr($from,0, strpos($from,'<')-1));
-    }
+	$fromname='';
+	$fromemail=$from;
+	if (strpos($from,'<'))
+	{
+		$fromemail=substr($from,strpos($from,'<')+1,strpos($from,'>')-1-strpos($from,'<'));
+		$fromname=trim(substr($from,0, strpos($from,'<')-1));
+	}
 
-    $sendername='';
-    $senderemail=$sender;
-    if (strpos($sender,'<'))
-    {
-        $senderemail=substr($sender,strpos($sender,'<')+1,strpos($sender,'>')-1-strpos($sender,'<'));
-        $sendername=trim(substr($sender,0, strpos($sender,'<')-1));
-    }
+	$sendername='';
+	$senderemail=$sender;
+	if (strpos($sender,'<'))
+	{
+		$senderemail=substr($sender,strpos($sender,'<')+1,strpos($sender,'>')-1-strpos($sender,'<'));
+		$sendername=trim(substr($sender,0, strpos($sender,'<')-1));
+	}
 
-    switch ($emailmethod) {
-        case "qmail":
-            $mail->IsQmail();
-            break;
-        case "smtp":
-            $mail->IsSMTP();
-            if ($emailsmtpdebug>0)
-            {
+	switch ($emailmethod) {
+    	case "qmail":
+			$mail->IsQmail();
+			break;
+    	case "smtp":
+    		$mail->IsSMTP();
+			if ($emailsmtpdebug>0)
+		        {
                 $mail->SMTPDebug = $emailsmtpdebug;
-            }
-            if (strpos($emailsmtphost,':')>0)
-            {
-                $mail->Host = substr($emailsmtphost,0,strpos($emailsmtphost,':'));
-                $mail->Port = substr($emailsmtphost,strpos($emailsmtphost,':')+1);
-            }
-            else {
-                $mail->Host = $emailsmtphost;
-            }
-            $mail->Username =$emailsmtpuser;
-            $mail->Password =$emailsmtppassword;
+		        }
+	        if (strpos($emailsmtphost,':')>0)
+	        {
+	            $mail->Host = substr($emailsmtphost,0,strpos($emailsmtphost,':'));
+	            $mail->Port = substr($emailsmtphost,strpos($emailsmtphost,':')+1);
+	        }
+	        else {
+	            $mail->Host = $emailsmtphost;
+	        }
+		    $mail->Username =$emailsmtpuser;
+		    $mail->Password =$emailsmtppassword;
             if (trim($emailsmtpuser)!="")
-            {
-                $mail->SMTPAuth = true;
-            }
-            break;
-        case "sendmail":
-            $mail->IsSendmail();
-            break;
-        default:
-            //Set to the default value to rule out incorrect settings.
-            $emailmethod="mail";
-            $mail->IsMail();
-    }
+		    {
+	            $mail->SMTPAuth = true;
+	        }
+    		break;
+    	case "sendmail":
+    		$mail->IsSendmail();
+    		break;
+    	default:
+    	   	//Set to the default value to rule out incorrect settings.
+    		$emailmethod="mail";
+    		$mail->IsMail();
+	}
 
     $mail->SetFrom($fromemail, $fromname);
     $mail->Sender = $senderemail; // Sets Return-Path for error notifications
@@ -4349,9 +4512,9 @@ function SendEmailMessage($mail, $body, $subject, $to, $from, $sitename, $ishtml
     {
         if (strpos($singletoemail, '<') )
         {
-            $toemail=substr($singletoemail,strpos($singletoemail,'<')+1,strpos($singletoemail,'>')-1-strpos($singletoemail,'<'));
-            $toname=trim(substr($singletoemail,0, strpos($singletoemail,'<')-1));
-            $mail->AddAddress($toemail,$toname);
+	       $toemail=substr($singletoemail,strpos($singletoemail,'<')+1,strpos($singletoemail,'>')-1-strpos($singletoemail,'<'));
+           $toname=trim(substr($singletoemail,0, strpos($singletoemail,'<')-1));
+           $mail->AddAddress($toemail,$toname);
         }
         else
         {
@@ -4364,23 +4527,23 @@ function SendEmailMessage($mail, $body, $subject, $to, $from, $sitename, $ishtml
             $mail->AddCustomHeader($val);
         }
     }
-    $mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.sourceforge.net)");
-    if (get_magic_quotes_gpc() != "0")	{$body = stripcslashes($body);}
+	$mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.sourceforge.net)");
+	if (get_magic_quotes_gpc() != "0")	{$body = stripcslashes($body);}
     if ($ishtml) {
         $mail->IsHTML(true);
-        $mail->Body = $body;
+    	$mail->Body = $body;
         $mail->AltBody = trim(strip_tags(html_entity_decode($body,ENT_QUOTES,'UTF-8')));
     } else
-    {
+       {
         $mail->IsHTML(false);
         $mail->Body = $body;
-    }
+       }
 
     // add the attachment if there is one
     if(!is_null($attachment))
-        $mail->AddAttachment($attachment);
+    $mail->AddAttachment($attachment);
 
-    if (trim($subject)!='') {$mail->Subject = "=?$emailcharset?B?" . base64_encode($subject) . "?=";}
+	if (trim($subject)!='') {$mail->Subject = "=?$emailcharset?B?" . base64_encode($subject) . "?=";}
     if ($emailsmtpdebug>0) {
         ob_start();
     }
@@ -4397,13 +4560,13 @@ function SendEmailMessage($mail, $body, $subject, $to, $from, $sitename, $ishtml
     {
         unset($mail);
     }
-    return $sent;
+	return $sent;
 }
 
 
 
 /**
-*  This functions removes all HTML tags, Javascript, CRs, linefeeds  and other strange chars from a given text. CRs, linefeeds are not removed for .csv files
+*  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
 *
 * @param string $sTextToFlatten  Text you want to clean
 * @param boolan $bDecodeHTMLEntities If set to true then all HTML entities will be decoded to the specified charset. Default: false
@@ -4411,291 +4574,34 @@ function SendEmailMessage($mail, $body, $subject, $to, $from, $sitename, $ishtml
 *
 * @return string  Cleaned text
 */
-function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF-8', $bStripNewLines=true)
+function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF-8', $bStripNewLines=true, $keepSpan=false)
 {
     $sNicetext = strip_javascript($sTextToFlatten);
-    $sNicetext = strip_tags($sNicetext);
-
-    if ($bStripNewLines ){
-        $sNicetext = preg_replace('~\Ru~', '', $sNicetext);
+    // When stripping tags, add a space before closing tags so that strings with embedded HTML tables don't get concatenated
+    $sNicetext = str_replace('</',' </', $sNicetext);
+    if ($keepSpan) {
+        // Keep <span> so can show EM syntax-highlighting; add space before tags so that word-wrapping not destroyed when remove tags.
+        $sNicetext = strip_tags($sNicetext,'<span><table><tr><td><th>');
     }
-    else // unify newlines
+    else {
+        $sNicetext = strip_tags($sNicetext);
+    }
+    if ($bStripNewLines ){  // strip new lines
+        $sNicetext = preg_replace(array('~\Ru~','/\s{2,}/'),array(' ',' '), $sNicetext);
+    }
+    else // unify newlines to \r\n
     {
-        $sNicetext = preg_replace('~\Ru~', "\r\n", $sNicetext);
+        $sNicetext = preg_replace(array('~\Ru~'), array("\r\n"), $sNicetext);
     }
     if ($bDecodeHTMLEntities==true)
     {
         $sNicetext = str_replace('&nbsp;',' ', $sNicetext); // html_entity_decode does not convert &nbsp; to spaces
         $sNicetext = html_entity_decode($sNicetext, ENT_QUOTES, $sCharset);
     }
-    return trim($sNicetext); ;
+    $sNicetext = trim($sNicetext);
+    return  $sNicetext;
 }
 
-
-/**
-* getArrayFiltersForGroup() queries the database and produces a list of array_filter questions and targets with in the same group
-* @global string $surveyid
-* @global string $gid
-* @global string $dbprefix
-* @return returns an nested array which contains arrays with the keys: question id (qid), question manditory, target type (type), and list_filter id (fid)
-*/
-function getArrayFiltersForGroup($surveyid,$gid)
-{
-    // TODO: Check list_filter values to make sure questions are previous?
-    global $dbprefix;
-    $surveyid=sanitize_int($surveyid);
-    $gid=sanitize_int($gid);
-    // Get All Questions in Current Group
-    $fieldmap = createFieldMap($surveyid,'full');
-    if($gid != "") {
-        $qrows = arraySearchByKey($gid, $fieldmap, 'gid');
-    } else {
-        $qrows = $fieldmap;
-    }
-    $grows = array(); //Create an empty array in case query not return any rows
-    // Store each result as an array with in the $grows array
-    foreach ($qrows as $qrow) {
-        if (isset($qrow['gid']) && !empty($qrow['gid'])) {
-            $grows[$qrow['qid']] = array('qid' => $qrow['qid'],'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title'], 'gid' => $qrow['gid']);
-        }
-    }
-    $attrmach = array(); // Stores Matches of filters that have their values as questions with in current group
-    $grows2 = $grows;
-    foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
-    {
-        $qresult = getQuestionAttributes($qrow['qid']);
-        if (isset($qresult['array_filter'])) // We Found a array_filter attribute
-        {
-            $val = $qresult['array_filter']; // Get the Value of the Attribute ( should be a previous question's title in same group )
-            foreach ($grows2 as $avalue)
-            {
-                if ($avalue['title'] == $val)
-                {
-                    $filter = array('qid' => $qrow['qid'], 'mandatory' => $qrow['mandatory'], 'type' => $avalue['type'], 'fid' => $avalue['qid'], 'gid' => $qrow['gid'], 'gid2'=>$avalue['gid']);
-                    array_push($attrmach,$filter);
-                }
-            }
-            reset($grows2);
-        }
-    }
-    return $attrmach;
-}
-
-/**
-* getArrayFilterExcludesCascadesForGroup() queries the database and produces a list of array_filter_exclude questions and targets with in the same group
-* @global string $surveyid
-* @global string $gid
-* @global string $output - expects 'qid' or 'title'
-* @global string $dbprefix
-* @return returns a keyed nested array, keyed by the qid of the question, containing cascade information
-*/
-function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid")
-{
-    global $dbprefix;
-    $surveyid=sanitize_int($surveyid);
-    $gid=sanitize_int($gid);
-
-    $cascaded=array();
-    $sources=array();
-    $qidtotitle=array();
-    $fieldmap = createFieldMap($surveyid,'full');
-    if($gid != "") {
-        $qrows = arraySearchByKey($gid, $fieldmap, 'gid');
-    } else {
-        $qrows = $fieldmap;
-    }
-    $grows = array(); //Create an empty array in case query not return any rows
-    // Store each result as an array with in the $grows array
-    foreach ($qrows as $qrow) {
-        if (isset($qrow['gid']) && !empty($qrow['gid'])) {
-            $grows[$qrow['qid']] = array('qid' => $qrow['qid'],'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title'], 'gid' => $qrow['gid']);
-        }
-    }
-    $attrmach = array(); // Stores Matches of filters that have their values as questions within current group
-    foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
-    {
-        $qidtotitle[$qrow['qid']]=$qrow['title'];
-        $qresult = getQuestionAttributes($qrow['qid'],$qrow['type']);
-        if (isset($qresult['array_filter_exclude'])) // We Found a array_filter attribute
-        {
-            $val = $qresult['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
-            foreach ($grows as $avalue) // Cycle through all the other questions in this group until we find the source question for this array_filter
-            {
-                if ($avalue['title'] == $val)
-                {
-                    /* This question ($avalue) is the question that provides the source information we use
-                    * to determine which answers show up in the question we're looking at, which is $qrow['qid']
-                    * So, in other words, we're currently working on question $qrow['qid'], trying to find out more
-                    * information about question $avalue['qid'], because that's the source */
-                    $sources[$qrow['qid']]=$avalue['qid']; /* This question ($qrow['qid']) relies on answers in $avalue['qid'] */
-                    if(isset($cascades)) {unset($cascades);}
-                    $cascades=array();                     /* Create an empty array */
-
-                    /* At this stage, we know for sure that this question relies on one other question for the filter */
-                    /* But this function wants to send back information about questions that rely on multiple other questions for the filter */
-                    /* So we don't want to do anything yet */
-
-                    /* What we need to do now, is check whether the question this one relies on, also relies on another */
-
-                    /* The question we are now checking is $avalue['qid'] */
-                    $keepgoing=1;
-                    $questiontocheck=$avalue['qid'];
-                    /* If there is a key in the $sources array that is equal to $avalue['qid'] then we want to add that
-                    * to the $cascades array */
-                    while($keepgoing > 0)
-                    {
-                        if(!empty($sources[$questiontocheck]))
-                        {
-                            $cascades[] = $sources[$questiontocheck];
-                            /* Now we need to move down the chain */
-                            /* We want to check the $sources[$questiontocheck] question */
-                            $questiontocheck=$sources[$questiontocheck];
-                        } else {
-                            /* Since it was empty, there must not be any more questions down the cascade */
-                            $keepgoing=0;
-                        }
-                    }
-                    /* Now add all that info */
-                    if(count($cascades) > 0) {
-                        $cascaded[$qrow['qid']]=$cascades;
-                    }
-                }
-            }
-        }
-    }
-    $cascade2=array();
-    if($output == "title")
-    {
-        foreach($cascaded as $key=>$cascade) {
-            foreach($cascade as $item)
-            {
-                $cascade2[$key][]=$qidtotitle[$item];
-            }
-        }
-        $cascaded=$cascade2;
-    }
-    return $cascaded;
-}
-
-/**
-* getArrayFilterExcludesForGroup() queries the database and produces a list of array_filter_exclude questions and targets with in the same group
-* @global string $surveyid
-* @global string $gid
-* @global string $dbprefix
-* @return returns an nested array which contains arrays with the keys: question id (qid), question manditory, target type (type), and list_filter id (fid)
-*/
-function getArrayFilterExcludesForGroup($surveyid,$gid)
-{
-    // TODO: Check list_filter values to make sure questions are previous?
-    global $dbprefix;
-    $surveyid=sanitize_int($surveyid);
-    $gid=sanitize_int($gid);
-    // Get All Questions in Current Group
-    $fieldmap = createFieldMap($surveyid,'full');
-    if($gid != "") {
-        $qrows = arraySearchByKey($gid, $fieldmap, 'gid');
-    } else {
-        $qrows = $fieldmap;
-    }
-    $grows = array(); //Create an empty array in case query not return any rows
-    // Store each result as an array with in the $grows array
-    foreach ($qrows as $qrow) {
-        if (isset($qrow['gid']) && !empty($qrow['gid'])) {
-            $grows[$qrow['qid']] = array('qid' => $qrow['qid'],'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title'], 'gid' => $qrow['gid']);
-        }
-    }
-    $attrmach = array(); // Stores Matches of filters that have their values as questions within current group
-    $grows2 = $grows;
-    foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
-    {
-        $qresult = getQuestionAttributes($qrow['qid'],$qrow['type']);
-        if (isset($qresult['array_filter_exclude'])) // We Found a array_filter attribute
-        {
-            $val = $qresult['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
-            foreach ($grows2 as $avalue)
-            {
-                if ($avalue['title'] == $val)
-                {
-                    //Get the code for this question, so we can see if any later questions in this group us it for an array_filter_exclude
-                    $cqquery = "SELECT {$dbprefix}questions.title FROM {$dbprefix}questions WHERE {$dbprefix}questions.qid='".$qrow['qid']."'";
-                    $cqresult=db_execute_assoc($cqquery);
-                    $xqid="";
-                    while($ftitle=$cqresult->FetchRow())
-                    {
-                        $xqid=$ftitle['title'];
-                    }
-
-                    $filter = array('qid'           => $qrow['qid'],
-                    'mandatory'     => $qrow['mandatory'],
-                    'type'          => $avalue['type'],
-                    'fid'           => $avalue['qid'],
-                    'gid'           => $qrow['gid'],
-                    'gid2'          => $avalue['gid'],
-                    'source_title'  => $avalue['title'],
-                    'source_qid'    => $avalue['qid'],
-                    'this_title'    => $xqid);
-                    array_push($attrmach,$filter);
-                }
-            }
-            reset($grows2);
-        }
-    }
-    return $attrmach;
-}
-
-/**
-* getArrayFiltersForQuestion($qid) finds out if a question has an array_filter attribute and what codes where selected on target question
-* @global string $surveyid
-* @global string $gid
-* @global string $dbprefix
-* @return returns an array of codes that were selected else returns false
-*/
-function getArrayFiltersForQuestion($qid)
-{
-    static $cache = array();
-
-    // TODO: Check list_filter values to make sure questions are previous?
-    global $surveyid, $dbprefix;
-    $qid=sanitize_int($qid);
-
-    if (isset($cache[$qid])) return $cache[$qid];
-
-    $attributes = getQuestionAttributes($qid);
-    if (isset($attributes['array_filter']) && isset($_SESSION['fieldarray'])) {
-        $val = $attributes['array_filter']; // Get the Value of the Attribute ( should be a previous question's title in same group )
-        foreach ($_SESSION['fieldarray'] as $fields)
-        {
-            if ($fields[2] == $val)
-            {
-                // we found the target question, now we need to know what the answers where, we know its a multi!
-                $fields[0]=sanitize_int($fields[0]);
-                $query = "SELECT title FROM ".db_table_name('questions')." where parent_qid='{$fields[0]}' AND language='".$_SESSION['s_lang']."' order by question_order";
-                $qresult = db_execute_assoc($query);  //Checked
-                $selected = array();
-                while ($code = $qresult->fetchRow())
-                {
-                    if ((isset($_SESSION[$fields[1].$code['title']]) && $_SESSION[$fields[1].$code['title']] == "Y")
-                    || $_SESSION[$fields[1]] == $code['title'])			 array_push($selected,$code['title']);
-                }
-
-                //Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
-                $query = "SELECT other FROM ".db_table_name('questions')." where qid='{$fields[0]}'";
-                $qresult = db_execute_assoc($query);
-                while ($row=$qresult->fetchRow()) {$other=$row['other'];}
-                if($other == "Y")
-                {
-                    if($_SESSION[$fields[1].'other'] != "") {array_push($selected, "other");}
-                }
-                $cache[$qid] = $selected;
-                return $cache[$qid];
-            }
-        }
-        $cache[$qid] = false;
-        return $cache[$qid];
-    }
-    $cache[$qid] = false;
-    return $cache[$qid];
-}
 /**
 * getGroupsByQuestion($surveyid)
 * @global string $surveyid
@@ -4714,135 +4620,6 @@ function getGroupsByQuestion($surveyid) {
         $output[$val['qid']]=$val['gid'];
     }
     return $output;
-}
-/**
-* getArrayFilterExcludesForQuestion($qid) finds out if a question has an array_filter_exclude attribute and what codes where selected on target question
-* @global string $surveyid
-* @global string $gid
-* @global string $dbprefix
-* @return returns an array of codes that were selected else returns false
-*/
-function getArrayFilterExcludesForQuestion($qid)
-{
-    static $cascadesCache = array();
-    static $cache = array();
-
-    // TODO: Check list_filter values to make sure questions are previous?
-    global $surveyid, $dbprefix;
-    $qid=sanitize_int($qid);
-
-    if (isset($cache[$qid])) return $cache[$qid];
-
-    $attributes = getQuestionAttributes($qid);
-    $excludevals=array();
-    if (isset($attributes['array_filter_exclude'])) // We Found a array_filter_exclude attribute
-    {
-        $selected=array();
-        $excludevals[] = $attributes['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
-        /* Find any cascades and place them in the $excludevals array*/
-        if (!isset($cascadesCache[$surveyid])) {
-            $cascadesCache[$surveyid] = getArrayFilterExcludesCascadesForGroup($surveyid, "", "title");
-        }
-        $array_filterXqs_cascades = $cascadesCache[$surveyid];
-
-        if(isset($array_filterXqs_cascades[$qid]))
-        {
-            foreach($array_filterXqs_cascades[$qid] as $afc)
-            {
-                $excludevals[]=array("value"=>$afc);
-
-            }
-        }
-        /* For each $val (question title) that applies to this, check what values exist and add them to the $selected array */
-        foreach ($excludevals as $val)
-        {
-            foreach ($_SESSION['fieldarray'] as $fields) //iterate through every question in the survey
-            {
-                if ($fields[2] == $val)
-                {
-                    // we found the target question, now we need to know what the answers were!
-                    $fields[0]=sanitize_int($fields[0]);
-                    $query = "SELECT title FROM ".db_table_name('questions')." where parent_qid='{$fields[0]}' AND language='".$_SESSION['s_lang']."' order by question_order";
-                    $qresult = db_execute_assoc($query);  //Checked
-                    while ($code = $qresult->fetchRow())
-                    {
-                        if (isset($_SESSION[$fields[1]]))
-                            if ((isset($_SESSION[$fields[1].$code['title']]) && $_SESSION[$fields[1].$code['title']] == "Y")
-                            || $_SESSION[$fields[1]] == $code['title'])
-                                array_push($selected,$code['title']);
-                    }
-                    //Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
-                    $query = "SELECT other FROM ".db_table_name('questions')." where qid='{$fields[0]}'";
-                    $qresult = db_execute_assoc($query);
-                    while ($row=$qresult->fetchRow()) {$other=$row['other'];}
-                    if($other == "Y")
-                    {
-                        if($_SESSION[$fields[1].'other'] != "") {array_push($selected, "other");}
-                    }
-                }
-            }
-        }
-        if(count($selected) > 0)
-        {
-            $cache[$qid] = $selected;
-            return $cache[$qid];
-        } else {
-            $cache[$qid] = false;
-            return $cache[$qid];
-        }
-    }
-    $cache[$qid] = false;
-    return $cache[$qid];
-}
-/**
-* getArrayFiltersForGroup($qid) finds out if a question is in the current group or not for array filter
-* @global string $qid
-* @return returns true if its not in currect group and false if it is..
-*/
-function getArrayFiltersOutGroup($qid)
-{
-    // TODO: Check list_filter values to make sure questions are previous?
-    global $surveyid, $dbprefix, $gid;
-    $qid=sanitize_int($qid);
-    $attributes = getQuestionAttributes($qid);
-    if (isset($attributes['array_filter'])) // We Found a array_filter attribute
-    {
-        $val = $attributes['array_filter']; // Get the Value of the Attribute ( should be a previous question's title in same group )
-
-        // we found the target question, now we need to know what the answers where, we know its a multi!
-        $surveyid=returnglobal('sid');
-        $fieldmap = createFieldMap($surveyid, 'full');
-        $val2 = arraySearchByKey($val, $fieldmap, 'title', 1);
-        if ($val2['gid'] != $gid) return true;
-        if ($val2['gid'] == $gid) return false;
-        return false;
-    }
-    return false;
-}
-
-/**
-* getArrayFiltersExcludesOutGroup($qid) finds out if a question is in the current group or not for array filter exclude
-* @global string $qid
-* @return returns true if its not in currect group and false if it is..
-*/
-function getArrayFiltersExcludesOutGroup($qid)
-{
-    // TODO: Check list_filter values to make sure questions are previous?
-    global $surveyid, $dbprefix, $gid;
-    $qid=sanitize_int($qid);
-    $attributes = getQuestionAttributes($qid);
-    if (isset($attributes['array_filter_exclude'])) // We Found a array_filter attribute
-    {
-        $val = $attributes['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
-
-        // we found the target question, now we need to know what the answers where, we know its a multi!
-        $surveyid=returnglobal('sid');
-        $fieldmap = createFieldMap($surveyid, 'full');
-        $val2 = arraySearchByKey($val, $fieldmap, 'title', 1);
-        if ($val2['gid'] != $gid) return true;
-        if ($val2['gid'] == $gid) return false;
-    }
-    return false;
 }
 
 /**
@@ -5034,8 +4811,8 @@ function sGetSurveyUserlist($bIncludeOwner=true, $bIncludeSuperAdmins=true)
     $surveyid=sanitize_int($surveyid);
 
     $sSurveyIDQuery = "SELECT a.uid, a.users_name, a.full_name FROM ".db_table_name('users')." AS a
-    LEFT OUTER JOIN (SELECT uid AS id FROM ".db_table_name('survey_permissions')." WHERE sid = {$surveyid}) AS b ON a.uid = b.id
-    WHERE id IS NULL ";
+                      LEFT OUTER JOIN (SELECT uid AS id FROM ".db_table_name('survey_permissions')." WHERE sid = {$surveyid}) AS b ON a.uid = b.id
+                      WHERE id IS NULL ";
     if (!$bIncludeSuperAdmins)
     {
         $sSurveyIDQuery.='and superadmin=0 ';
@@ -5317,7 +5094,7 @@ function FixLanguageConsistency($sid, $availlangs='')
         $langs = explode(" ",$availlangs);
         if($langs[count($langs)-1] == "") array_pop($langs);
     } else {
-        $langs=GetAdditionalLanguagesFromSurveyID($sid);
+       $langs=GetAdditionalLanguagesFromSurveyID($sid);
     }
 
     $baselang = GetBaseLanguageFromSurveyID($sid);
@@ -5335,7 +5112,7 @@ function FixLanguageConsistency($sid, $availlangs='')
                 if ($gresult->RecordCount() < 1)
                 {
                     db_switchIDInsert('groups',true);
-                    $query = "INSERT INTO ".db_table_name('groups')." (gid,sid,group_name,group_order,description,language) VALUES('{$group['gid']}','{$group['sid']}',".db_quoteall($group['group_name']).",'{$group['group_order']}',".db_quoteall($group['description']).",'{$lang}')";
+                    $query = "INSERT INTO ".db_table_name('groups')." (gid,sid,group_name,group_order,description,grelevance,language) VALUES('{$group['gid']}','{$group['sid']}',".db_quoteall($group['group_name']).",'{$group['group_order']}',".db_quoteall($group['description']).",'".db_quote($group['grelevance'])."','{$lang}')";
                     $connect->Execute($query) or safe_die($connect->ErrorMsg());  //Checked
                     db_switchIDInsert('groups',false);
                 }
@@ -5359,7 +5136,7 @@ function FixLanguageConsistency($sid, $availlangs='')
                 if ($gresult->RecordCount() < 1)
                 {
                     db_switchIDInsert('questions',true);
-                    $query = "INSERT INTO ".db_table_name('questions')." (qid,sid,gid,type,title,question,preg,help,other,mandatory,question_order,language, scale_id,parent_qid) VALUES('{$question['qid']}','{$question['sid']}','{$question['gid']}','{$question['type']}',".db_quoteall($question['title']).",".db_quoteall($question['question']).",".db_quoteall($question['preg']).",".db_quoteall($question['help']).",'{$question['other']}','{$question['mandatory']}','{$question['question_order']}','{$lang}',{$question['scale_id']},{$question['parent_qid']})";
+                    $query = "INSERT INTO ".db_table_name('questions')." (qid,sid,gid,type,title,question,preg,help,other,mandatory,question_order,language, scale_id,parent_qid, relevance) VALUES('{$question['qid']}','{$question['sid']}','{$question['gid']}','{$question['type']}',".db_quoteall($question['title']).",".db_quoteall($question['question']).",".db_quoteall($question['preg']).",".db_quoteall($question['help']).",'{$question['other']}','{$question['mandatory']}','{$question['question_order']}','{$lang}',{$question['scale_id']},{$question['parent_qid']}, '{$question['relevance']}')";
                     $connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());   //Checked
                     db_switchIDInsert('questions',false);
                 }
@@ -5425,333 +5202,333 @@ function FixLanguageConsistency($sid, $availlangs='')
     return true;
 }
 
-/**
-* GetGroupDepsForConditions() get Dependencies between groups caused by conditions
-* @param string $sid - the currently selected survey
-* @param string $depgid - (optionnal) get only the dependencies applying to the group with gid depgid
-* @param string $targgid - (optionnal) get only the dependencies for groups dependents on group targgid
-* @param string $index-by - (optionnal) "by-depgid" for result indexed with $res[$depgid][$targgid]
-*                   "by-targgid" for result indexed with $res[$targgid][$depgid]
-* @return array - returns an array describing the conditions or NULL if no dependecy is found
-*
-* Example outupt assumin $index-by="by-depgid":
-*Array
-*(
-*    [125] => Array             // Group Id 125 is dependent on
-*        (
-*            [123] => Array         // Group Id 123
-*                (
-*                    [depgpname] => G3      // GID-125 has name G3
-*                    [targetgpname] => G1   // GID-123 has name G1
-*                    [conditions] => Array
-*                        (
-*                            [189] => Array // Because Question Id 189
-*                                (
-*                                    [0] => 9   // Have condition 9 set
-*                                    [1] => 10  // and condition 10 set
-*                                    [2] => 14  // and condition 14 set
-*                                )
-*
-*                        )
-*
-*                )
-*
-*            [124] => Array         // GID 125 is also dependent on GID 124
-*                (
-*                    [depgpname] => G3
-*                    [targetgpname] => G2
-*                    [conditions] => Array
-*                        (
-*                            [189] => Array // Because Question Id 189 have conditions set
-*                                (
-*                                    [0] => 11
-*                                )
-*
-*                            [215] => Array // And because Question Id 215 have conditions set
-*                                (
-*                                    [0] => 12
-*                                )
-*
-*                        )
-*
-*                )
-*
-*        )
-*
-*)
-*
-* Usage example:
-*   * Get all group dependencies for SID $sid indexed by depgid:
-*       $result=GetGroupDepsForConditions($sid);
-*   * Get all group dependencies for GID $gid in survey $sid indexed by depgid:
-*       $result=GetGroupDepsForConditions($sid,$gid);
-*   * Get all group dependents on group $gid in survey $sid indexed by targgid:
-*       $result=GetGroupDepsForConditions($sid,"all",$gid,"by-targgid");
-*/
-function GetGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="by-depgid")
-{
-    global $connect, $clang;
-    $sid=sanitize_int($sid);
-    $condarray = Array();
+///**
+//* GetGroupDepsForConditions() get Dependencies between groups caused by conditions
+//* @param string $sid - the currently selected survey
+//* @param string $depgid - (optionnal) get only the dependencies applying to the group with gid depgid
+//* @param string $targgid - (optionnal) get only the dependencies for groups dependents on group targgid
+//* @param string $index-by - (optionnal) "by-depgid" for result indexed with $res[$depgid][$targgid]
+//*                   "by-targgid" for result indexed with $res[$targgid][$depgid]
+//* @return array - returns an array describing the conditions or NULL if no dependecy is found
+//*
+//* Example outupt assumin $index-by="by-depgid":
+//*Array
+//*(
+//*    [125] => Array             // Group Id 125 is dependent on
+//*        (
+//*            [123] => Array         // Group Id 123
+//*                (
+//*                    [depgpname] => G3      // GID-125 has name G3
+//*                    [targetgpname] => G1   // GID-123 has name G1
+//*                    [conditions] => Array
+//*                        (
+//*                            [189] => Array // Because Question Id 189
+//*                                (
+//*                                    [0] => 9   // Have condition 9 set
+//*                                    [1] => 10  // and condition 10 set
+//*                                    [2] => 14  // and condition 14 set
+//*                                )
+//*
+//*                        )
+//*
+//*                )
+//*
+//*            [124] => Array         // GID 125 is also dependent on GID 124
+//*                (
+//*                    [depgpname] => G3
+//*                    [targetgpname] => G2
+//*                    [conditions] => Array
+//*                        (
+//*                            [189] => Array // Because Question Id 189 have conditions set
+//*                                (
+//*                                    [0] => 11
+//*                                )
+//*
+//*                            [215] => Array // And because Question Id 215 have conditions set
+//*                                (
+//*                                    [0] => 12
+//*                                )
+//*
+//*                        )
+//*
+//*                )
+//*
+//*        )
+//*
+//*)
+//*
+//* Usage example:
+//*   * Get all group dependencies for SID $sid indexed by depgid:
+//*       $result=GetGroupDepsForConditions($sid);
+//*   * Get all group dependencies for GID $gid in survey $sid indexed by depgid:
+//*       $result=GetGroupDepsForConditions($sid,$gid);
+//*   * Get all group dependents on group $gid in survey $sid indexed by targgid:
+//*       $result=GetGroupDepsForConditions($sid,"all",$gid,"by-targgid");
+//*/
+//function GetGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="by-depgid")
+//{
+//    global $connect, $clang;
+//    $sid=sanitize_int($sid);
+//    $condarray = Array();
+//
+//    $sqldepgid="";
+//    $sqltarggid="";
+//    if ($depgid != "all") { $depgid = sanitize_int($depgid); $sqldepgid="AND tq.gid=$depgid";}
+//    if ($targgid != "all") {$targgid = sanitize_int($targgid); $sqltarggid="AND tq2.gid=$targgid";}
+//
+//    $baselang = GetBaseLanguageFromSurveyID($sid);
+//    $condquery = "SELECT tg.gid as depgid, tg.group_name as depgpname, "
+//    . "tg2.gid as targgid, tg2.group_name as targgpname, tq.qid as depqid, tc.cid FROM "
+//    . db_table_name('conditions')." AS tc, "
+//    . db_table_name('questions')." AS tq, "
+//    . db_table_name('questions')." AS tq2, "
+//    . db_table_name('groups')." AS tg ,"
+//    . db_table_name('groups')." AS tg2 "
+//    . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tg.language='{$baselang}' AND tg2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
+//    . "AND tq.gid = tg.gid AND tg2.gid = tq2.gid "
+//    . "AND tq2.qid=tc.cqid AND tq.gid != tg2.gid $sqldepgid $sqltarggid";
+//    $condresult=db_execute_assoc($condquery) or safe_die($connect->ErrorMsg());   //Checked
+//
+//    if ($condresult->RecordCount() > 0) {
+//        while ($condrow = $condresult->FetchRow())
+//        {
+//
+//            switch ($indexby)
+//            {
+//                case "by-depgid":
+//                    $depgid=$condrow['depgid'];
+//                    $targetgid=$condrow['targgid'];
+//                    $depqid=$condrow['depqid'];
+//                    $cid=$condrow['cid'];
+//                    $condarray[$depgid][$targetgid]['depgpname'] = $condrow['depgpname'];
+//                    $condarray[$depgid][$targetgid]['targetgpname'] = $condrow['targgpname'];
+//                    $condarray[$depgid][$targetgid]['conditions'][$depqid][]=$cid;
+//                    break;
+//
+//                case "by-targgid":
+//                    $depgid=$condrow['depgid'];
+//                    $targetgid=$condrow['targgid'];
+//                    $depqid=$condrow['depqid'];
+//                    $cid=$condrow['cid'];
+//                    $condarray[$targetgid][$depgid]['depgpname'] = $condrow['depgpname'];
+//                    $condarray[$targetgid][$depgid]['targetgpname'] = $condrow['targgpname'];
+//                    $condarray[$targetgid][$depgid]['conditions'][$depqid][] = $cid;
+//                    break;
+//            }
+//        }
+//        return $condarray;
+//    }
+//    return null;
+//}
 
-    $sqldepgid="";
-    $sqltarggid="";
-    if ($depgid != "all") { $depgid = sanitize_int($depgid); $sqldepgid="AND tq.gid=$depgid";}
-    if ($targgid != "all") {$targgid = sanitize_int($targgid); $sqltarggid="AND tq2.gid=$targgid";}
-
-    $baselang = GetBaseLanguageFromSurveyID($sid);
-    $condquery = "SELECT tg.gid as depgid, tg.group_name as depgpname, "
-    . "tg2.gid as targgid, tg2.group_name as targgpname, tq.qid as depqid, tc.cid FROM "
-    . db_table_name('conditions')." AS tc, "
-    . db_table_name('questions')." AS tq, "
-    . db_table_name('questions')." AS tq2, "
-    . db_table_name('groups')." AS tg ,"
-    . db_table_name('groups')." AS tg2 "
-    . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tg.language='{$baselang}' AND tg2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
-    . "AND tq.gid = tg.gid AND tg2.gid = tq2.gid "
-    . "AND tq2.qid=tc.cqid AND tq.gid != tg2.gid $sqldepgid $sqltarggid";
-    $condresult=db_execute_assoc($condquery) or safe_die($connect->ErrorMsg());   //Checked
-
-    if ($condresult->RecordCount() > 0) {
-        while ($condrow = $condresult->FetchRow())
-        {
-
-            switch ($indexby)
-            {
-                case "by-depgid":
-                    $depgid=$condrow['depgid'];
-                    $targetgid=$condrow['targgid'];
-                    $depqid=$condrow['depqid'];
-                    $cid=$condrow['cid'];
-                    $condarray[$depgid][$targetgid]['depgpname'] = $condrow['depgpname'];
-                    $condarray[$depgid][$targetgid]['targetgpname'] = $condrow['targgpname'];
-                    $condarray[$depgid][$targetgid]['conditions'][$depqid][]=$cid;
-                    break;
-
-                case "by-targgid":
-                    $depgid=$condrow['depgid'];
-                    $targetgid=$condrow['targgid'];
-                    $depqid=$condrow['depqid'];
-                    $cid=$condrow['cid'];
-                    $condarray[$targetgid][$depgid]['depgpname'] = $condrow['depgpname'];
-                    $condarray[$targetgid][$depgid]['targetgpname'] = $condrow['targgpname'];
-                    $condarray[$targetgid][$depgid]['conditions'][$depqid][] = $cid;
-                    break;
-            }
-        }
-        return $condarray;
-    }
-    return null;
-}
-
-/**
-* GetQuestDepsForConditions() get Dependencies between groups caused by conditions
-* @param string $sid - the currently selected survey
-* @param string $gid - (optionnal) only search dependecies inside the Group Id $gid
-* @param string $depqid - (optionnal) get only the dependencies applying to the question with qid depqid
-* @param string $targqid - (optionnal) get only the dependencies for questions dependents on question Id targqid
-* @param string $index-by - (optionnal) "by-depqid" for result indexed with $res[$depqid][$targqid]
-*                   "by-targqid" for result indexed with $res[$targqid][$depqid]
-* @return array - returns an array describing the conditions or NULL if no dependecy is found
-*
-* Example outupt assumin $index-by="by-depqid":
-*Array
-*(
-*    [184] => Array     // Question Id 184
-*        (
-*            [183] => Array // Depends on Question Id 183
-*                (
-*                    [0] => 5   // Because of condition Id 5
-*                )
-*
-*        )
-*
-*)
-*
-* Usage example:
-*   * Get all questions dependencies for Survey $sid and group $gid indexed by depqid:
-*       $result=GetQuestDepsForConditions($sid,$gid);
-*   * Get all questions dependencies for question $qid in survey/group $sid/$gid indexed by depqid:
-*       $result=GetGroupDepsForConditions($sid,$gid,$qid);
-*   * Get all questions dependents on question $qid in survey/group $sid/$gid indexed by targqid:
-*       $result=GetGroupDepsForConditions($sid,$gid,"all",$qid,"by-targgid");
-*/
-function GetQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",$indexby="by-depqid", $searchscope="samegroup")
-{
-    global $connect, $clang;
-    $condarray = Array();
-
-    $baselang = GetBaseLanguageFromSurveyID($sid);
-    $sqlgid="";
-    $sqldepqid="";
-    $sqltargqid="";
-    $sqlsearchscope="";
-    if ($gid != "all") {$gid = sanitize_int($gid); $sqlgid="AND tq.gid=$gid";}
-    if ($depqid != "all") {$depqid = sanitize_int($depqid); $sqldepqid="AND tq.qid=$depqid";}
-    if ($targqid != "all") {$targqid = sanitize_int($targqid); $sqltargqid="AND tq2.qid=$targqid";}
-    if ($searchscope == "samegroup") {$sqlsearchscope="AND tq2.gid=tq.gid";}
-
-    $condquery = "SELECT tq.qid as depqid, tq2.qid as targqid, tc.cid FROM "
-    . db_table_name('conditions')." AS tc, "
-    . db_table_name('questions')." AS tq, "
-    . db_table_name('questions')." AS tq2 "
-    . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
-    . "AND  tq2.qid=tc.cqid $sqlsearchscope $sqlgid $sqldepqid $sqltargqid";
-
-    $condresult=db_execute_assoc($condquery) or safe_die($connect->ErrorMsg());    //Checked
-
-    if ($condresult->RecordCount() > 0) {
-        while ($condrow = $condresult->FetchRow())
-        {
-            $depqid=$condrow['depqid'];
-            $targetqid=$condrow['targqid'];
-            $condid=$condrow['cid'];
-            switch ($indexby)
-            {
-                case "by-depqid":
-                    $condarray[$depqid][$targetqid][] = $condid;
-                    break;
-
-                case "by-targqid":
-                    $condarray[$targetqid][$depqid][] = $condid;
-                    break;
-            }
-        }
-        return $condarray;
-    }
-    return null;
-}
+///**
+//* GetQuestDepsForConditions() get Dependencies between groups caused by conditions
+//* @param string $sid - the currently selected survey
+//* @param string $gid - (optionnal) only search dependecies inside the Group Id $gid
+//* @param string $depqid - (optionnal) get only the dependencies applying to the question with qid depqid
+//* @param string $targqid - (optionnal) get only the dependencies for questions dependents on question Id targqid
+//* @param string $index-by - (optionnal) "by-depqid" for result indexed with $res[$depqid][$targqid]
+//*                   "by-targqid" for result indexed with $res[$targqid][$depqid]
+//* @return array - returns an array describing the conditions or NULL if no dependecy is found
+//*
+//* Example outupt assumin $index-by="by-depqid":
+//*Array
+//*(
+//*    [184] => Array     // Question Id 184
+//*        (
+//*            [183] => Array // Depends on Question Id 183
+//*                (
+//*                    [0] => 5   // Because of condition Id 5
+//*                )
+//*
+//*        )
+//*
+//*)
+//*
+//* Usage example:
+//*   * Get all questions dependencies for Survey $sid and group $gid indexed by depqid:
+//*       $result=GetQuestDepsForConditions($sid,$gid);
+//*   * Get all questions dependencies for question $qid in survey/group $sid/$gid indexed by depqid:
+//*       $result=GetGroupDepsForConditions($sid,$gid,$qid);
+//*   * Get all questions dependents on question $qid in survey/group $sid/$gid indexed by targqid:
+//*       $result=GetGroupDepsForConditions($sid,$gid,"all",$qid,"by-targgid");
+//*/
+//function GetQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",$indexby="by-depqid", $searchscope="samegroup")
+//{
+//    global $connect, $clang;
+//    $condarray = Array();
+//
+//    $baselang = GetBaseLanguageFromSurveyID($sid);
+//    $sqlgid="";
+//    $sqldepqid="";
+//    $sqltargqid="";
+//    $sqlsearchscope="";
+//    if ($gid != "all") {$gid = sanitize_int($gid); $sqlgid="AND tq.gid=$gid";}
+//    if ($depqid != "all") {$depqid = sanitize_int($depqid); $sqldepqid="AND tq.qid=$depqid";}
+//    if ($targqid != "all") {$targqid = sanitize_int($targqid); $sqltargqid="AND tq2.qid=$targqid";}
+//    if ($searchscope == "samegroup") {$sqlsearchscope="AND tq2.gid=tq.gid";}
+//
+//    $condquery = "SELECT tq.qid as depqid, tq2.qid as targqid, tc.cid FROM "
+//    . db_table_name('conditions')." AS tc, "
+//    . db_table_name('questions')." AS tq, "
+//    . db_table_name('questions')." AS tq2 "
+//    . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
+//    . "AND  tq2.qid=tc.cqid $sqlsearchscope $sqlgid $sqldepqid $sqltargqid";
+//
+//    $condresult=db_execute_assoc($condquery) or safe_die($connect->ErrorMsg());    //Checked
+//
+//    if ($condresult->RecordCount() > 0) {
+//        while ($condrow = $condresult->FetchRow())
+//        {
+//            $depqid=$condrow['depqid'];
+//            $targetqid=$condrow['targqid'];
+//            $condid=$condrow['cid'];
+//            switch ($indexby)
+//            {
+//                case "by-depqid":
+//                    $condarray[$depqid][$targetqid][] = $condid;
+//                    break;
+//
+//                case "by-targqid":
+//                    $condarray[$targetqid][$depqid][] = $condid;
+//                    break;
+//            }
+//        }
+//        return $condarray;
+//    }
+//    return null;
+//}
 
 
-/**
-* checkMovequestionConstraintsForConditions()
-* @param string $sid - the currently selected survey
-* @param string $qid - qid of the question you want to check possible moves
-* @param string $newgid - (optionnal) get only constraints when trying to move to this particular GroupId
-*                                     otherwise, get all moves constraints for this question
-*
-* @return array - returns an array describing the conditions
-*                 Array
-*                 (
-*                   ['notAbove'] = null | Array
-*                       (
-*                         Array ( gid1, group_order1, qid1, cid1 )
-*                       )
-*                   ['notBelow'] = null | Array
-*                       (
-*                         Array ( gid2, group_order2, qid2, cid2 )
-*                       )
-*                 )
-*
-* This should be read as:
-*    - this question can't be move above group gid1 in position group_order1 because of the condition cid1 on question qid1
-*    - this question can't be move below group gid2 in position group_order2 because of the condition cid2 on question qid2
-*
-*/
-function checkMovequestionConstraintsForConditions($sid,$qid,$newgid="all")
-{
-    global $connect;
-    $resarray=Array();
-    $resarray['notAbove']=null; // defaults to no constraint
-    $resarray['notBelow']=null; // defaults to no constraint
-    $sid=sanitize_int($sid);
-    $qid=sanitize_int($qid);
-
-    if ($newgid != "all")
-    {
-        $newgid=sanitize_int($newgid);
-        $newgorder=getGroupOrder($sid,$newgid);
-    }
-    else
-    {
-        $neworder=""; // Not used in this case
-    }
-
-    $baselang = GetBaseLanguageFromSurveyID($sid);
-
-    // First look for 'my dependencies': questions on which I have set conditions
-    $condquery = "SELECT tq.qid as depqid, tq.gid as depgid, tg.group_order as depgorder, "
-    . "tq2.qid as targqid, tq2.gid as targgid, tg2.group_order as targgorder, "
-    . "tc.cid FROM "
-    . db_table_name('conditions')." AS tc, "
-    . db_table_name('questions')." AS tq, "
-    . db_table_name('questions')." AS tq2, "
-    . db_table_name('groups')." AS tg, "
-    . db_table_name('groups')." AS tg2 "
-    . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
-    . "AND  tq2.qid=tc.cqid AND tg.gid=tq.gid AND tg2.gid=tq2.gid AND tq.qid=$qid ORDER BY tg2.group_order DESC";
-
-    $condresult=db_execute_assoc($condquery) or safe_die($connect->ErrorMsg());    //Checked
-
-    if ($condresult->RecordCount() > 0) {
-
-        while ($condrow = $condresult->FetchRow() )
-        {
-            // This Question can go up to the minimum GID on the 1st row
-            $depqid=$condrow['depqid'];
-            $depgid=$condrow['depgid'];
-            $depgorder=$condrow['depgorder'];
-            $targetqid=$condrow['targqid'];
-            $targetgid=$condrow['targgid'];
-            $targetgorder=$condrow['targgorder'];
-            $condid=$condrow['cid'];
-            //echo "This question can't go above to GID=$targetgid/order=$targetgorder because of CID=$condid";
-            if ($newgid != "all")
-            { // Get only constraints when trying to move to this group
-                if ($newgorder < $targetgorder)
-                {
-                    $resarray['notAbove'][]=Array($targetgid,$targetgorder,$depqid,$condid);
-                }
-            }
-            else
-            { // get all moves constraints
-                $resarray['notAbove'][]=Array($targetgid,$targetgorder,$depqid,$condid);
-            }
-        }
-    }
-
-    // Secondly look for 'questions dependent on me': questions that have conditions on my answers
-    $condquery = "SELECT tq.qid as depqid, tq.gid as depgid, tg.group_order as depgorder, "
-    . "tq2.qid as targqid, tq2.gid as targgid, tg2.group_order as targgorder, "
-    . "tc.cid FROM "
-    . db_table_name('conditions')." AS tc, "
-    . db_table_name('questions')." AS tq, "
-    . db_table_name('questions')." AS tq2, "
-    . db_table_name('groups')." AS tg, "
-    . db_table_name('groups')." AS tg2 "
-    . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
-    . "AND  tq2.qid=tc.cqid AND tg.gid=tq.gid AND tg2.gid=tq2.gid AND tq2.qid=$qid ORDER BY tg.group_order";
-
-    $condresult=db_execute_assoc($condquery) or safe_die($connect->ErrorMsg());        //Checked
-
-    if ($condresult->RecordCount() > 0) {
-
-        while ($condrow = $condresult->FetchRow())
-        {
-            // This Question can go down to the maximum GID on the 1st row
-            $depqid=$condrow['depqid'];
-            $depgid=$condrow['depgid'];
-            $depgorder=$condrow['depgorder'];
-            $targetqid=$condrow['targqid'];
-            $targetgid=$condrow['targgid'];
-            $targetgorder=$condrow['targgorder'];
-            $condid=$condrow['cid'];
-            //echo "This question can't go below to GID=$depgid/order=$depgorder because of CID=$condid";
-            if ($newgid != "all")
-            { // Get only constraints when trying to move to this group
-                if ($newgorder > $depgorder)
-                {
-                    $resarray['notBelow'][]=Array($depgid,$depgorder,$depqid,$condid);
-                }
-            }
-            else
-            { // get all moves constraints
-                $resarray['notBelow'][]=Array($depgid,$depgorder,$depqid,$condid);
-            }
-        }
-    }
-    return $resarray;
-}
+///**
+//* checkMovequestionConstraintsForConditions()
+//* @param string $sid - the currently selected survey
+//* @param string $qid - qid of the question you want to check possible moves
+//* @param string $newgid - (optionnal) get only constraints when trying to move to this particular GroupId
+//*                                     otherwise, get all moves constraints for this question
+//*
+//* @return array - returns an array describing the conditions
+//*                 Array
+//*                 (
+//*                   ['notAbove'] = null | Array
+//*                       (
+//*                         Array ( gid1, group_order1, qid1, cid1 )
+//*                       )
+//*                   ['notBelow'] = null | Array
+//*                       (
+//*                         Array ( gid2, group_order2, qid2, cid2 )
+//*                       )
+//*                 )
+//*
+//* This should be read as:
+//*    - this question can't be move above group gid1 in position group_order1 because of the condition cid1 on question qid1
+//*    - this question can't be move below group gid2 in position group_order2 because of the condition cid2 on question qid2
+//*
+//*/
+//function checkMovequestionConstraintsForConditions($sid,$qid,$newgid="all")
+//{
+//    global $connect;
+//    $resarray=Array();
+//    $resarray['notAbove']=null; // defaults to no constraint
+//    $resarray['notBelow']=null; // defaults to no constraint
+//    $sid=sanitize_int($sid);
+//    $qid=sanitize_int($qid);
+//
+//    if ($newgid != "all")
+//    {
+//        $newgid=sanitize_int($newgid);
+//        $newgorder=getGroupOrder($sid,$newgid);
+//    }
+//    else
+//    {
+//        $neworder=""; // Not used in this case
+//    }
+//
+//    $baselang = GetBaseLanguageFromSurveyID($sid);
+//
+//    // First look for 'my dependencies': questions on which I have set conditions
+//    $condquery = "SELECT tq.qid as depqid, tq.gid as depgid, tg.group_order as depgorder, "
+//    . "tq2.qid as targqid, tq2.gid as targgid, tg2.group_order as targgorder, "
+//    . "tc.cid FROM "
+//    . db_table_name('conditions')." AS tc, "
+//    . db_table_name('questions')." AS tq, "
+//    . db_table_name('questions')." AS tq2, "
+//    . db_table_name('groups')." AS tg, "
+//    . db_table_name('groups')." AS tg2 "
+//    . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
+//    . "AND  tq2.qid=tc.cqid AND tg.gid=tq.gid AND tg2.gid=tq2.gid AND tq.qid=$qid ORDER BY tg2.group_order DESC";
+//
+//    $condresult=db_execute_assoc($condquery) or safe_die($connect->ErrorMsg());    //Checked
+//
+//    if ($condresult->RecordCount() > 0) {
+//
+//        while ($condrow = $condresult->FetchRow() )
+//        {
+//            // This Question can go up to the minimum GID on the 1st row
+//            $depqid=$condrow['depqid'];
+//            $depgid=$condrow['depgid'];
+//            $depgorder=$condrow['depgorder'];
+//            $targetqid=$condrow['targqid'];
+//            $targetgid=$condrow['targgid'];
+//            $targetgorder=$condrow['targgorder'];
+//            $condid=$condrow['cid'];
+//            //echo "This question can't go above to GID=$targetgid/order=$targetgorder because of CID=$condid";
+//            if ($newgid != "all")
+//            { // Get only constraints when trying to move to this group
+//                if ($newgorder < $targetgorder)
+//                {
+//                    $resarray['notAbove'][]=Array($targetgid,$targetgorder,$depqid,$condid);
+//                }
+//            }
+//            else
+//            { // get all moves constraints
+//                $resarray['notAbove'][]=Array($targetgid,$targetgorder,$depqid,$condid);
+//            }
+//        }
+//    }
+//
+//    // Secondly look for 'questions dependent on me': questions that have conditions on my answers
+//    $condquery = "SELECT tq.qid as depqid, tq.gid as depgid, tg.group_order as depgorder, "
+//    . "tq2.qid as targqid, tq2.gid as targgid, tg2.group_order as targgorder, "
+//    . "tc.cid FROM "
+//    . db_table_name('conditions')." AS tc, "
+//    . db_table_name('questions')." AS tq, "
+//    . db_table_name('questions')." AS tq2, "
+//    . db_table_name('groups')." AS tg, "
+//    . db_table_name('groups')." AS tg2 "
+//    . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
+//    . "AND  tq2.qid=tc.cqid AND tg.gid=tq.gid AND tg2.gid=tq2.gid AND tq2.qid=$qid ORDER BY tg.group_order";
+//
+//    $condresult=db_execute_assoc($condquery) or safe_die($connect->ErrorMsg());        //Checked
+//
+//    if ($condresult->RecordCount() > 0) {
+//
+//        while ($condrow = $condresult->FetchRow())
+//        {
+//            // This Question can go down to the maximum GID on the 1st row
+//            $depqid=$condrow['depqid'];
+//            $depgid=$condrow['depgid'];
+//            $depgorder=$condrow['depgorder'];
+//            $targetqid=$condrow['targqid'];
+//            $targetgid=$condrow['targgid'];
+//            $targetgorder=$condrow['targgorder'];
+//            $condid=$condrow['cid'];
+//            //echo "This question can't go below to GID=$depgid/order=$depgorder because of CID=$condid";
+//            if ($newgid != "all")
+//            { // Get only constraints when trying to move to this group
+//                if ($newgorder > $depgorder)
+//                {
+//                    $resarray['notBelow'][]=Array($depgid,$depgorder,$depqid,$condid);
+//                }
+//            }
+//            else
+//            { // get all moves constraints
+//                $resarray['notBelow'][]=Array($depgid,$depgorder,$depqid,$condid);
+//            }
+//        }
+//    }
+//    return $resarray;
+//}
 
 function incompleteAnsFilterstate()
 {
@@ -6071,12 +5848,12 @@ function getBounceEmail($surveyid)
         return getGlobalSetting('siteadminbounce');
     }
     else if ($surveyInfo['bounce_email'] == '')
-        {
-            return null; // will be converted to from in MailText
-        }
-        else
-        {
-            return $surveyInfo['bounce_email'];
+    {
+        return null; // will be converted to from in MailText
+    }
+    else
+    {
+        return $surveyInfo['bounce_email'];
     }
 }
 
@@ -6193,16 +5970,22 @@ function aReverseTranslateFieldnames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRe
 {
     $aGIDReplacements=array_flip($aGIDReplacements);
     $aQIDReplacements=array_flip($aQIDReplacements);
-    $aFieldMap=createFieldMap($iNewSID);
+    if ($iOldSID==$iNewSID) {
+        $forceRefresh=true; // otherwise grabs the cached copy and throws undefined index exceptions
+    }
+    else {
+        $forceRefresh=false;
+    }
+    $aFieldMap=createFieldMap($iNewSID,'full',$forceRefresh);
     $aFieldMappings=array();
     foreach ($aFieldMap as $sFieldname=>$aFieldinfo)
     {
-        if ($aFieldinfo['qid']!=null)
-        {
-            $aFieldMappings[$sFieldname]=$iOldSID.'X'.$aGIDReplacements[$aFieldinfo['gid']].'X'.$aQIDReplacements[$aFieldinfo['qid']].$aFieldinfo['aid'];
-            // now also add a shortened field mapping which is needed for certain kind of condition mappings
-            $aFieldMappings[$iNewSID.'X'.$aFieldinfo['gid'].'X'.$aFieldinfo['qid']]=$iOldSID.'X'.$aGIDReplacements[$aFieldinfo['gid']].'X'.$aQIDReplacements[$aFieldinfo['qid']];
-        }
+      if ($aFieldinfo['qid']!=null)
+      {
+          $aFieldMappings[$sFieldname]=$iOldSID.'X'.$aGIDReplacements[$aFieldinfo['gid']].'X'.$aQIDReplacements[$aFieldinfo['qid']].$aFieldinfo['aid'];
+          // now also add a shortened field mapping which is needed for certain kind of condition mappings
+          $aFieldMappings[$iNewSID.'X'.$aFieldinfo['gid'].'X'.$aFieldinfo['qid']]=$iOldSID.'X'.$aGIDReplacements[$aFieldinfo['gid']].'X'.$aQIDReplacements[$aFieldinfo['qid']];
+      }
     }
     return array_flip($aFieldMappings);
 }
@@ -6235,8 +6018,8 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 
         foreach ($fieldnames as $sOldFieldname=>$sNewFieldname)
         {
-            $pattern = "{INSERTANS:".$sOldFieldname."}";
-            $replacement = "{INSERTANS:".$sNewFieldname."}";
+            $pattern = $sOldFieldname;
+            $replacement = $sNewFieldname;
             $urldescription=preg_replace('/'.$pattern.'/', $replacement, $urldescription);
             $endurl=preg_replace('/'.$pattern.'/', $replacement, $endurl);
         }
@@ -6261,8 +6044,8 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 
         foreach ($fieldnames as $sOldFieldname=>$sNewFieldname)
         {
-            $pattern = "{INSERTANS:".$sOldFieldname."}";
-            $replacement = "{INSERTANS:".$sNewFieldname."}";
+            $pattern = $sOldFieldname;
+            $replacement = $sNewFieldname;
             $urldescription=preg_replace('/'.$pattern.'/', $replacement, $urldescription);
             $endurl=preg_replace('/'.$pattern.'/', $replacement, $endurl);
         }
@@ -6290,14 +6073,14 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 
         foreach ($fieldnames as $sOldFieldname=>$sNewFieldname)
         {
-            $pattern = "{INSERTANS:".$sOldFieldname."}";
-            $replacement = "{INSERTANS:".$sNewFieldname."}";
+            $pattern = $sOldFieldname;
+            $replacement = $sNewFieldname;
             $gpname = preg_replace('/'.$pattern.'/', $replacement, $gpname);
             $description=preg_replace('/'.$pattern.'/', $replacement, $description);
         }
 
         if (strcmp($description,$qentry['description']) !=0  ||
-        strcmp($gpname,$qentry['group_name']) !=0)
+            strcmp($gpname,$qentry['group_name']) !=0)
         {
             // Update Fields
             $sqlupdate = "UPDATE {$dbprefix}groups SET description='".db_quote($description)."', group_name='".db_quote($gpname)."' WHERE gid=$gid AND language='$language'";
@@ -6318,8 +6101,8 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 
         foreach ($fieldnames as $sOldFieldname=>$sNewFieldname)
         {
-            $pattern = "{INSERTANS:".$sOldFieldname."}";
-            $replacement = "{INSERTANS:".$sNewFieldname."}";
+            $pattern = $sOldFieldname;
+            $replacement = $sNewFieldname;
             $question=preg_replace('/'.$pattern.'/', $replacement, $question);
             $help=preg_replace('/'.$pattern.'/', $replacement, $help);
         }
@@ -6347,8 +6130,8 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 
         foreach ($fieldnames as $sOldFieldname=>$sNewFieldname)
         {
-            $pattern = "{INSERTANS:".$sOldFieldname."}";
-            $replacement = "{INSERTANS:".$sNewFieldname."}";
+            $pattern = $sOldFieldname;
+            $replacement = $sNewFieldname;
             $answer=preg_replace('/'.$pattern.'/', $replacement, $answer);
         }
 
@@ -6418,9 +6201,9 @@ function sRandomChars($length,$pattern="23456789abcdefghijkmnpqrstuvwxyz")
     for($i=0;$i<$length;$i++)
     {
         if(isset($key))
-            $key .= $pattern{rand(0,$patternlength)};
+        $key .= $pattern{rand(0,$patternlength)};
         else
-            $key = $pattern{rand(0,$patternlength)};
+        $key = $pattern{rand(0,$patternlength)};
     }
     return $key;
 }
@@ -6489,9 +6272,9 @@ function getQuotaInformation($surveyid,$language,$quotaid='all')
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
 
     $query = "SELECT * FROM ".db_table_name('quota').", ".db_table_name('quota_languagesettings')."
-    WHERE ".db_table_name('quota').".id = ".db_table_name('quota_languagesettings').".quotals_quota_id
-    AND sid='{$surveyid}'
-    AND quotals_language='".$language."'";
+		   	  WHERE ".db_table_name('quota').".id = ".db_table_name('quota_languagesettings').".quotals_quota_id
+			  AND sid='{$surveyid}'
+              AND quotals_language='".$language."'";
     if ($quotaid != 'all')
     {
         $query .= " AND id=$quotaid";
@@ -6515,12 +6298,12 @@ function getQuotaInformation($surveyid,$language,$quotaid='all')
             $survey_quotas['quotals_url']=str_replace("{TOKEN}",$clienttoken, $survey_quotas['quotals_url']);
 
             array_push($quota_info,array('Name' => $survey_quotas['name'],
-            'Limit' => $survey_quotas['qlimit'],
-            'Action' => $survey_quotas['action'],
-            'Message' => $survey_quotas['quotals_message'],
-            'Url' => passthruReplace(insertansReplace($survey_quotas['quotals_url']), $surveyinfo),
-            'UrlDescrip' => $survey_quotas['quotals_urldescrip'],
-            'AutoloadUrl' => $survey_quotas['autoload_url']));
+                                         'Limit' => $survey_quotas['qlimit'],
+                                         'Action' => $survey_quotas['action'],
+                                         'Message' => $survey_quotas['quotals_message'],
+                                         'Url' => passthruReplace(insertansReplace($survey_quotas['quotals_url']), $surveyinfo),
+                                         'UrlDescrip' => $survey_quotas['quotals_urldescrip'],
+                                         'AutoloadUrl' => $survey_quotas['autoload_url']));
             $query = "SELECT * FROM ".db_table_name('quota_members')." WHERE quota_id='{$survey_quotas['id']}'";
             $result_qe = db_execute_assoc($query) or safe_die($connect->ErrorMsg());      //Checked
             $quota_info[$x]['members'] = array();
@@ -6560,11 +6343,11 @@ function getQuotaInformation($surveyid,$language,$quotaid='all')
                     }
 
                     array_push($quota_info[$x]['members'],array('Title' => $qtype['title'],
-                    'type' => $qtype['type'],
-                    'code' => $quota_entry['code'],
-                    'value' => $value,
-                    'qid' => $quota_entry['qid'],
-                    'fieldnames' => $fieldnames));
+                                                                'type' => $qtype['type'],
+                                                                'code' => $quota_entry['code'],
+                                                                'value' => $value,
+                                                                'qid' => $quota_entry['qid'],
+                                                                'fieldnames' => $fieldnames));
                 }
             }
             $x++;
@@ -6657,363 +6440,6 @@ function recursive_stripslashes($array_or_string)
 
 
 
-
-/**
-* This function checks if a given question should be displayed or not
-* If the optionnal gid parameter is set, then we are in a group/group survey
-* and thus we can't evaluate conditions using answers on the same page
-* (this will be done by javascript): in this case we disregard conditions on
-* answers from same page
-*
-* @param mixed $qid
-* @param mixed $gid
-*/
-function checkquestionfordisplay($qid, $gid=null)
-{
-    global $dbprefix, $connect,$surveyid,$thissurvey;
-
-    if (!is_array($thissurvey))
-    {
-        $local_thissurvey=getSurveyInfo($surveyid);
-    }
-    else
-    {
-        $local_thissurvey=$thissurvey;
-    }
-
-    $scenarioquery = "SELECT DISTINCT scenario FROM ".db_table_name("conditions")
-    ." WHERE ".db_table_name("conditions").".qid=$qid ORDER BY scenario";
-    $scenarioresult=db_execute_assoc($scenarioquery);
-
-    if ($scenarioresult->RecordCount() == 0)
-    {
-        return true;
-    }
-
-    while ($scenariorow=$scenarioresult->FetchRow())
-    {
-        $scenario = $scenariorow['scenario'];
-        $totalands=0;
-        $query = "SELECT * FROM ".db_table_name('conditions')."\n"
-        ."WHERE qid=$qid AND scenario=$scenario ORDER BY cqid,cfieldname";
-        $result = db_execute_assoc($query) or safe_die("Couldn't check conditions<br />$query<br />".$connect->ErrorMsg());   //Checked
-
-        $conditionsfoundforthisscenario=0;
-        while($row=$result->FetchRow())
-        {
-            // Conditions on different cfieldnames from the same question are ANDed together
-            // (for instance conditions on several multiple-numerical lines)
-            //
-            // However, if they are related to the same cfieldname
-            // they are ORed. Conditions on the same cfieldname can be either:
-            // * conditions on the same 'simple question':
-            //   - for instance several possible answers on the same radio-button question
-            // * conditions on the same 'multiple choice question':
-            //   - this case is very specific. In fact each checkbox corresponds to a different
-            //     cfieldname (1X1X1a, 1X1X1b, ...), but the condition uses only the base
-            //     'SGQ' cfieldname and the expected answers codes as values
-            //   - then, in the following lines for questions M or P, we transform the
-            //     condition SGQ='a' to SGQa='Y'. We need also to keep the artificial distinctcfieldname
-            //     value to SGQ so that we can implement ORed conditions between the cbx
-            //  ==> This explains why conditions on multiple choice answers are ORed even if
-            //      in reality they use a different cfieldname for each checkbox
-            //
-            // In order to implement this we build an array storing the result
-            // of condition evaluations for this group and scenario
-            // This array is processed as follow:
-            // * it is indexed by cfieldname,
-            // * each 'cfieldname' row is added at the first condition eval on this fieldname
-            // * each row is updated only if the condition evaluation is successful
-            //   ==> this way if only 1 condition for a cfieldname is successful, the set of
-            //       conditions for this cfieldname is assumed to be met (Ored conditions)
-
-            $conditionsfoundforthisscenario++;
-            $conditionCanBeEvaluated=true;
-            //Iterate through each condition for this question and check if it is met.
-
-            if (preg_match("/^\+(.*)$/",$row['cfieldname'],$cfieldnamematch))
-            { // this condition uses a single checkbox as source
-                $conditionSourceType='question';
-                $query2= "SELECT type, gid FROM ".db_table_name('questions')."\n"
-                ." WHERE qid={$row['cqid']} AND language='".$_SESSION['s_lang']."'";
-                $result2=db_execute_assoc($query2) or safe_die ("Coudn't get type from questions<br />$ccquery<br />".$connect->ErrorMsg());   //Checked
-                while($row2=$result2->FetchRow())
-                {
-                    $cq_gid=$row2['gid'];
-                    // set type to +M or +P in order to skip
-                    $thistype='+'.$row2['type'];
-                }
-
-                $row['cfieldname']=$cfieldnamematch[1]; // remover the leading '+'
-            }
-            elseif (preg_match("/^{/",$row['cfieldname']))
-            { // this condition uses a token attr as source
-                $conditionSourceType='tokenattr';
-                $thistype="";
-                $cq_gid=0;
-            }
-            else
-            { // this is a simple condition using a question as source
-                $conditionSourceType='question';
-                $query2= "SELECT type, gid FROM ".db_table_name('questions')."\n"
-                ." WHERE qid={$row['cqid']} AND language='".$_SESSION['s_lang']."'";
-                $result2=db_execute_assoc($query2) or safe_die ("Coudn't get type from questions<br />$ccquery<br />".$connect->ErrorMsg());   //Checked
-                while($row2=$result2->FetchRow())
-                {
-                    $cq_gid=$row2['gid'];
-                    //Find out the 'type' of the question this condition uses
-                    $thistype=$row2['type'];
-                }
-            }
-
-
-
-            // Fix the cfieldname and cvalue in case of type M or P questions
-            if ($thistype == "M" || $thistype == "P")
-            {
-                // The distinctcfieldname simply is the virtual cfieldname
-                $row['distinctcfieldname']=$row['cfieldname'];
-
-                // For multiple choice type questions, the "answer" value will be "Y"
-                // if selected, the fieldname will have the answer code appended.
-                $row['cfieldname']=$row['cfieldname'].$row['value'];
-                $row['value']="Y";
-            }
-            else
-            {
-                // the distinctcfieldname simply is the real cfieldname
-                $row['distinctcfieldname']=$row['cfieldname'];
-            }
-
-            if ( !is_null($gid) && $gid == $cq_gid && $conditionSourceType == 'question')
-            {
-                //Don't do anything - this cq is in the current group
-            }
-            elseif (preg_match('/^@([0-9]+X[0-9]+X[^@]+)@'.'/',$row['value'],$targetconditionfieldname))
-            {
-                if (isset($_SESSION[$targetconditionfieldname[1]]) )
-                {
-                    // If value uses @SIDXGIDXQID@ codes i
-                    // then try to replace them with a
-                    // value recorded in SESSION if any
-                    $cvalue=$_SESSION[$targetconditionfieldname[1]];
-                    if ($conditionSourceType == 'question')
-                    {
-                        if (isset($_SESSION[$row['cfieldname']]))
-                        {
-                            $cfieldname=$_SESSION[$row['cfieldname']];
-                        }
-                        else
-                        {
-                            $conditionCanBeEvaluated=false;
-                            //$cfieldname=' ';
-                        }
-                    }
-                    elseif ($local_thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$row['cfieldname'],$sourceconditiontokenattr))
-                    {
-                        if ( isset($_SESSION['token']) &&
-                        in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
-                        {
-                            $cfieldname=GetAttributeValue($surveyid,strtolower($sourceconditiontokenattr[1]),$_SESSION['token']);
-                        }
-                        else
-                        {
-                            $conditionCanBeEvaluated=false;
-                        }
-
-                    }
-                    else
-                    {
-                        $conditionCanBeEvaluated=false;
-                    }
-                }
-                else
-                { // if _SESSION[$targetconditionfieldname[1]] is not set then evaluate condition as FALSE
-                    $conditionCanBeEvaluated=false;
-                    //$cfieldname=' ';
-                }
-            }
-            elseif ($local_thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$row['value'],$targetconditiontokenattr))
-            {
-                if ( isset($_SESSION['token']) &&
-                in_array(strtolower($targetconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
-                {
-                    // If value uses {TOKEN:XXX} placeholders
-                    // then try to replace them with a
-                    // the value recorded in DB
-                    $cvalue=GetAttributeValue($surveyid,strtolower($targetconditiontokenattr[1]),$_SESSION['token']);
-                    if ($conditionSourceType == 'question')
-                    {
-                        if (isset($_SESSION[$row['cfieldname']]))
-                        {
-                            $cfieldname=$_SESSION[$row['cfieldname']];
-                        }
-                        else
-                        {
-                            $conditionCanBeEvaluated=false;
-                        }
-                    }
-                    elseif ($local_thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$row['cfieldname'],$sourceconditiontokenattr))
-                    {
-                        if ( isset($_SESSION['token']) &&
-                        in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
-                        {
-                            $cfieldname=GetAttributeValue($surveyid,strtolower($sourceconditiontokenattr[1]),$_SESSION['token']);
-                        }
-                        else
-                        {
-                            $conditionCanBeEvaluated=false;
-                        }
-
-                    }
-                    else
-                    {
-                        $conditionCanBeEvaluated=false;
-                    }
-                }
-                else
-                { // if _SESSION[$targetconditionfieldname[1]] is not set then evaluate condition as FALSE
-                    $conditionCanBeEvaluated=false;
-                }
-            }
-            else
-            {
-                $cvalue=$row['value'];
-                if ($conditionSourceType == 'question')
-                {
-                    if (isset($_SESSION[$row['cfieldname']]))
-                    {
-                        $cfieldname=$_SESSION[$row['cfieldname']];
-                    }
-                    elseif ($thistype == "M" || $thistype == "P" || $thistype == "+M" || $thistype == "+P")
-                    {
-                        $cfieldname="";
-                    }
-                    else
-                    {
-                        $conditionCanBeEvaluated=false;
-                    }
-                }
-                elseif ($local_thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$row['cfieldname'],$sourceconditiontokenattr))
-                {
-                    if ( isset($_SESSION['token']) &&
-                    in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
-                    {
-                        $cfieldname=GetAttributeValue($surveyid,strtolower($sourceconditiontokenattr[1]),$_SESSION['token']);
-                    }
-                    else
-                    {
-                        $conditionCanBeEvaluated=false;
-                    }
-
-                }
-                else
-                {
-                    $conditionCanBeEvaluated=false;
-                }
-            }
-
-            if ( !is_null($gid) && $gid == $cq_gid && $conditionSourceType == 'question')
-            {
-                //Don't do anything - this cq is in the current group
-                $conditionMatches=true;
-            }
-            elseif ($conditionCanBeEvaluated === false)
-            {
-                // condition can't be evaluated, so let's assume FALSE
-                $conditionMatches=false;
-            }
-            else
-            {
-                if (trim($row['method'])=='')
-                {
-                    $row['method']='==';
-                }
-                if ($row['method'] != 'RX')
-                {
-                    if (preg_match("/^a(.*)b$/",$row['method'],$matchmethods))
-                    {
-                        // strings comparizon operator in PHP are the same as numerical operators
-                        $matchOperator = $matchmethods[1];
-                    }
-                    else
-                    {
-                        $matchOperator = $row['method'];
-                    }
-                    if (eval('if (trim($cfieldname)'. $matchOperator.' trim($cvalue)) return true; else return false;'))
-                    {
-                        //error_log("TIBO1 oper=$matchOperator");
-                        $conditionMatches=true;
-                        //This condition is met
-                    }
-                    else
-                    {
-                        //error_log("TIBO2 oper=$matchOperator");
-                        $conditionMatches=false;
-                    }
-                }
-                else
-                {
-                    if (preg_match('/'.trim($cvalue).'/',trim($cfieldname)))
-                    {
-                        $conditionMatches=true;
-
-                    }
-                    else
-                    {
-                        $conditionMatches=false;
-                    }
-                }
-            }
-
-            if ($conditionMatches === true)
-            {
-                // Let's store this positive result in the distinctcqids array
-                // indexed by cfieldname so that conditions on theb same cfieldname ar Ored
-                // while conditions on different cfieldnames (either different conditions
-                // or conditions on different cfieldnames inside the same question)
-                if (!isset($distinctcqids[$row['distinctcfieldname']]) || $distinctcqids[$row['distinctcfieldname']] == 0)
-                {
-                    $distinctcqids[$row['distinctcfieldname']] = 1;
-                }
-            }
-            else
-            {
-                // Let's store this negative result in the distinctcqids array
-                // indexed by cfieldname so that conditions on theb same cfieldname ar Ored
-                // while conditions on different cfieldnames (either different conditions
-                // or conditions on different cfieldnames inside the same question)
-                if (!isset($distinctcqids[$row['distinctcfieldname']]))
-                {
-                    $distinctcqids[$row['distinctcfieldname']] = 0;
-                }
-            }
-        } // while
-        if ($conditionsfoundforthisscenario > 0) {
-            foreach($distinctcqids as $key=>$val)
-            {
-                // Let's count the number of conditions that are met, and then compare
-                // it to the total number of stored results
-                $totalands=$totalands+$val;
-            }
-            if ($totalands >= count($distinctcqids))
-            {
-                // if all stored results are positive then we MUST show the group
-                // because at least this question is displayed
-                return true;
-            }
-        }
-        else
-        {
-            //Curious there is no condition for this question in this scenario
-            // this is not a normal behaviour, but I propose to defaults to a
-            // condition-matched state in this case
-            return true;
-        }
-        unset($distinctcqids);
-    } // end while scenario
-    return false;
-}
 
 /**
 * This is a helper function for GetAttributeFieldNames
@@ -7157,7 +6583,7 @@ function GetAttributeValue($surveyid,$attrName,$token)
 */
 function strip_javascript($content){
     $search = array('@<script[^>]*?>.*?</script>@si',  // Strip out javascript
-    '@<style[^>]*?>.*?</style>@siU'    // Strip style tags properly
+                   '@<style[^>]*?>.*?</style>@siU'    // Strip style tags properly
     /*               ,'@<[\/\!]*?[^<>]*?>@si',            // Strip out HTML tags
     '@<![\s\S]*?--[ \t\n\r]*>@'         // Strip multi-line comments including CDATA
     */
@@ -7341,6 +6767,7 @@ function getTokenData($surveyid, $token)
     global $dbprefix, $connect;
     $query = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."'";
     $result = db_execute_assoc($query) or safe_die("Couldn't get token info in getTokenData()<br />".$query."<br />".$connect->ErrorMsg());    //Checked
+    $thistoken=array(); // so has default value
     while($row=$result->FetchRow())
     {
         $thistoken=array("firstname"=>$row['firstname'],
@@ -7369,25 +6796,25 @@ function sGetTemplatePath($sTemplateName)
     global $standardtemplaterootdir, $usertemplaterootdir, $defaulttemplate;
     if (isStandardTemplate($sTemplateName))
     {
-        return $standardtemplaterootdir.DIRECTORY_SEPARATOR.$sTemplateName;
+        return $standardtemplaterootdir.'/'.$sTemplateName;
     }
     else
     {
-        if (file_exists($usertemplaterootdir.DIRECTORY_SEPARATOR.$sTemplateName))
+        if (file_exists($usertemplaterootdir.'/'.$sTemplateName))
         {
-            return $usertemplaterootdir.DIRECTORY_SEPARATOR.$sTemplateName;
+            return $usertemplaterootdir.'/'.$sTemplateName;
         }
-        elseif (file_exists($usertemplaterootdir.DIRECTORY_SEPARATOR.$defaulttemplate))
+        elseif (file_exists($usertemplaterootdir.'/'.$defaulttemplate))
         {
-            return $usertemplaterootdir.DIRECTORY_SEPARATOR.$defaulttemplate;
+            return $usertemplaterootdir.'/'.$defaulttemplate;
         }
-        elseif (file_exists($standardtemplaterootdir.DIRECTORY_SEPARATOR.$defaulttemplate))
+        elseif (file_exists($standardtemplaterootdir.'/'.$defaulttemplate))
         {
-            return $standardtemplaterootdir.DIRECTORY_SEPARATOR.$defaulttemplate;
+            return $standardtemplaterootdir.'/'.$defaulttemplate;
         }
         else
         {
-            return $standardtemplaterootdir.DIRECTORY_SEPARATOR.'default';
+            return $standardtemplaterootdir.'/default';
         }
     }
 }
@@ -7451,19 +6878,19 @@ function getSubQuestions($sid, $qid, $sLanguage) {
     static $subquestions;
 
     if (!isset($subquestions[$sid])) {
-        $sid = sanitize_int($sid);
-        $query = "SELECT sq.*, q.other FROM {$dbprefix}questions as sq, {$dbprefix}questions as q"
-        ." WHERE sq.parent_qid=q.qid AND q.sid=$sid"
-        ." AND sq.language='".$sLanguage. "' "
-        ." AND q.language='".$sLanguage. "' "
-        ." ORDER BY sq.parent_qid, q.question_order,sq.scale_id , sq.question_order";
-        $result=db_execute_assoc($query) or safe_die ("Couldn't get perform answers query<br />$query<br />".$connect->ErrorMsg());    //Checked
+	    $sid = sanitize_int($sid);
+	    $query = "SELECT sq.*, q.other FROM {$dbprefix}questions as sq, {$dbprefix}questions as q"
+	            ." WHERE sq.parent_qid=q.qid AND q.sid=$sid"
+	            ." AND sq.language='".$sLanguage. "' "
+	            ." AND q.language='".$sLanguage. "' "
+	            ." ORDER BY sq.parent_qid, q.question_order,sq.scale_id , sq.question_order";
+	    $result=db_execute_assoc($query) or safe_die ("Couldn't get perform answers query<br />$query<br />".$connect->ErrorMsg());    //Checked
         $resultset=array();
-        while ($row=$result->FetchRow())
-        {
-            $resultset[$row['parent_qid']][] = $row;
-        }
-        $subquestions[$sid] = $resultset;
+	    while ($row=$result->FetchRow())
+	    {
+	        $resultset[$row['parent_qid']][] = $row;
+	    }
+	    $subquestions[$sid] = $resultset;
     }
     if (isset($subquestions[$sid][$qid])) return $subquestions[$sid][$qid];
     return array();
@@ -7529,9 +6956,9 @@ function redirect($ssl_mode)
     if (!headers_sent())
     {	// If headers not sent yet... then do php redirect
         ob_clean();
-        header('Location: '.$url);
-        ob_flush();
-        exit;
+	    header('Location: '.$url);
+	    ob_flush();
+	    exit;
     };
 };
 
@@ -7559,11 +6986,11 @@ function SSL_mode()
     };
     if( $force_ssl == 'on' && $https == '' )
     {
-        redirect('s');
+                redirect('s');
     }
     if( $force_ssl == 'off' && $https != '')
     {
-        redirect('');
+                redirect('');
     };
 };
 
@@ -7585,11 +7012,22 @@ function aGetFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonor
     $idquery = "SELECT * FROM ".db_table_name('survey_'.$iSurveyID)." WHERE id=".$iResponseID;
     $idrow=$connect->GetRow($idquery) or safe_die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg()); //Checked
 
+    // Create array of non-null values - those are the relevant ones
+    $aRelevantFields = array();
+
+    foreach ($aFieldMap as $sKey=>$fname)
+    {
+        if (!is_null($idrow[$fname['fieldname']]))
+        {
+            $aRelevantFields[$sKey]=$fname;
+        }
+    }
+
     $aResultTable=array();
 
     $oldgid = 0;
     $oldqid = 0;
-    foreach ($aFieldMap as $sKey=>$fname)
+    foreach ($aRelevantFields as $sKey=>$fname)
     {
         if (!empty($fname['qid']))
         {
@@ -7606,44 +7044,24 @@ function aGetFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonor
             if ($oldgid !== $fname['gid'])
             {
                 $oldgid = $fname['gid'];
-                if (!$bHonorConditions || checkgroupfordisplay($fname['gid']))
-                {
-                    $aResultTable['gid_'.$fname['gid']]=array($fname['group_name']);
-                }
+                $aResultTable['gid_'.$fname['gid']]=array($fname['group_name']);
             }
         }
         if (isset($fname['qid']) && !empty($fname['qid']))
         {
-            if ($bHonorConditions)
-            {
-                 $isQuestionVisible=checkquestionfordisplay($fname['qid'],null);
-            }
-            else
-            {
-                 $isQuestionVisible=true;
-            }
             if ($oldqid !== $fname['qid'])
             {
                 $oldqid = $fname['qid'];
-                if ($isQuestionVisible)
+                if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2']))
                 {
-                    if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2']))
-                    {
-                        $aResultTable['qid_'.$fname['sid'].'X'.$fname['gid'].'X'.$fname['qid']]=array($fname['question'],'','');
-                    }
-                    else
-                    {
-                        $answer=getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]);
-                        $aResultTable[$fname['fieldname']]=array($question,'',$answer);
-                        continue;
-                    }
-
+                    $aResultTable['qid_'.$fname['sid'].'X'.$fname['gid'].'X'.$fname['qid']]=array($fname['question'],'','');
                 }
                 else
                 {
+                    $answer=getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]);
+                    $aResultTable[$fname['fieldname']]=array($question,'',$answer);
                     continue;
                 }
-
             }
         }
         else
@@ -7653,19 +7071,16 @@ function aGetFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonor
             continue;
         }
         if (isset($fname['subquestion']))
-            $subquestion = "{$fname['subquestion']}";
+        $subquestion = "{$fname['subquestion']}";
 
         if (isset($fname['subquestion1']))
-            $subquestion = "{$fname['subquestion1']}";
+        $subquestion = "{$fname['subquestion1']}";
 
         if (isset($fname['subquestion2']))
-            $subquestion .= "[{$fname['subquestion2']}]";
-        if ($isQuestionVisible)
-        {
-            $answer=getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]);
-            $aResultTable[$fname['fieldname']]=array('',$subquestion,$answer);
-        }
+        $subquestion .= "[{$fname['subquestion2']}]";
 
+        $answer=getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]);
+        $aResultTable[$fname['fieldname']]=array('',$subquestion,$answer);
     }
     return $aResultTable;
 }
@@ -7704,87 +7119,6 @@ function aArrayInvert($aArr)
     return $aRet;
 }
 
-/**
-* Check if a question was (at least partially) answered in the current session.
-*
-* @param integer $q - Question id
-* @param array $aFieldnamesInfoInv - Inverted fieldnamesInfo
-*/
-function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
-{
-    $qtype = @$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'];
-
-    switch ($qtype) {
-        case 'X':
-            return true;
-        case 'M':
-        case 'P':
-        case 'O':
-            // multiple choice and list with comments question types - just one answer is required and comments are not required
-            foreach($aFieldnamesInfoInv[$q] as $sField)
-                if(!strstr($sField, 'comment') && isset($_SESSION[$sField]) && trim($_SESSION[$sField])!='')
-                    return true;
-                return false;
-        case 'L': // List questions only need one answer (including the 'other' option)
-            foreach($aFieldnamesInfoInv[$q] as $sField)
-            {
-                if(isset($_SESSION[$sField]) && trim($_SESSION[$sField])!='')
-                    return true;
-            }
-            return false;
-
-        case 'F':
-        case ':':
-        case ';':
-        case '1':
-        case 'C':
-        case 'B':
-        case 'A':
-        case 'E':
-            // array question types - if filtered only displayed answer are required
-            $qattr = getQuestionAttributes(@$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['qid'], $qtype);
-
-            $qcodefilter = @$qattr['array_filter'];
-
-            $sgqfilter = '';
-
-            foreach($_SESSION['fieldarray'] as $field)
-                //look for the multiple choice filter
-                if ($field[2] == $qcodefilter && $field[4] == 'M')
-                {
-                    //filter SQG
-                    $sgqfilter = $field[1];
-                    break;
-                }
-
-                //if filter not found checkall answers
-                if ($sgqfilter == '')
-            {
-                // all answers required
-                foreach($aFieldnamesInfoInv[$q] as $sField)
-                    if(!isset($_SESSION[$sField]) || trim($_SESSION[$sField])=='')
-                        return false;
-                    return true;
-            }
-
-            foreach($aFieldnamesInfoInv[$q] as $sField)
-            {
-                //keep only first subquestion code for multiple scale answer
-                $aid = explode('_',$_SESSION['fieldmap'][$sField]['aid']);
-                $aid = explode('#',$aid[0]);
-                //if a checked answer in the multiple choice is not present
-                if ($_SESSION[$sgqfilter.$aid[0]] == 'Y' && $_SESSION[$sField] == '')
-                    return false;
-            }
-            return true;
-        default:
-            // all answers required for all other question types
-            foreach($aFieldnamesInfoInv[$q] as $sField)
-                if(!isset($_SESSION[$sField]) || trim($_SESSION[$sField])=='')
-                    return false;
-                return true;
-    }
-}
 /**
 * Include Keypad headers
 */
@@ -7846,64 +7180,5 @@ function fixSubquestions()
 
 }
 
-
-function checkgroupfordisplay($gid)
-{
-    //This function checks all the questions in a group to see if they have
-    //conditions, and if the do - to see if the conditions are met.
-    //If none of the questions in the group are set to display, then
-    //the function will return false, to indicate that the whole group
-    //should not display at all.
-    global $dbprefix, $connect;
-    $countQuestionsInThisGroup=0;
-    $countConditionalQuestionsInThisGroup=0;
-    foreach ($_SESSION['fieldarray'] as $ia) //Run through all the questions
-
-    {
-        if ($ia[5] == $gid) //If the question is in the group we are checking:
-
-        {
-            // Check if this question is hidden
-            $qidattributes=getQuestionAttributes($ia[0]);
-            if ($qidattributes!==false && $qidattributes['hidden']==0)
-            {
-                $countQuestionsInThisGroup++;
-                if ($ia[7] == "Y") //This question is conditional
-
-                {
-                    $countConditionalQuestionsInThisGroup++;
-                    $QuestionsWithConditions[]=$ia; //Create an array containing all the conditional questions
-                }
-            }
-        }
-    }
-    if ($countQuestionsInThisGroup===0)
-    {
-        return false;
-    }
-    elseif ($countQuestionsInThisGroup != $countConditionalQuestionsInThisGroup || !isset($QuestionsWithConditions) )
-    {
-        //One of the questions in this group is NOT conditional, therefore
-        //the group MUST be displayed
-        return true;
-    }
-    else
-    {
-        //All of the questions in this group are conditional. Now we must
-        //check every question, to see if the condition for each has been met.
-        //If 1 or more have their conditions met, then the group should
-        //be displayed.
-        foreach ($QuestionsWithConditions as $cc)
-        {
-            if (checkquestionfordisplay($cc[0], $gid) === true)
-            {
-                return true;
-            }
-        }
-        //Since we made it this far, there mustn't have been any conditions met.
-        //Therefore the group should not be displayed.
-        return false;
-    }
-}
 
 // Closing PHP tag intentionally omitted - yes, it is okay

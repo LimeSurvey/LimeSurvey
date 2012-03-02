@@ -438,3 +438,5 @@ div.menubar input {
 #surveydetails td+td,#groupdetails td+td,#questiondetails td+td {
   text-align: right;
 }
+.labelsets-update label{display:block}
+.button-list{text-align:right}

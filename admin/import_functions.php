@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id: import_functions.php 9586 2010-12-06 03:08:07Z c_schmitz $
+ *	$Id: import_functions.php 11664 2011-12-16 05:19:42Z tmswhite $
  *	Files Purpose:
  */
 
@@ -1061,6 +1061,9 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 
         }
     }
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance($newsid);
+    LimeExpressionManager::UpgradeConditionsToRelevance($newsid);
+
     $importresults['importversion']=$importversion;
     $importresults['newsid']=$newsid;
     $importresults['oldsid']=$oldsid;
@@ -1577,6 +1580,9 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     {
         TranslateInsertansTags($newsid,$oldsid,$aOldNewFieldmap);
     }
+
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance($newsid);
+    LimeExpressionManager::UpgradeConditionsToRelevance($newsid);
 
     return $results;
 }

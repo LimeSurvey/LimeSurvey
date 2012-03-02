@@ -1,15 +1,15 @@
 <?php
 /*
-* LimeSurvey
-* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: GNU/GPL License v2 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*
+ * LimeSurvey
+ * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ *
 */
 
 include_once("login_check.php");  //Login Check dies also if the script is started directly
@@ -27,11 +27,11 @@ if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this scr
 if (!$surveyid && !$subaction) //NO SID OR ACTION PROVIDED
 {
     $browseoutput = "\t<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>"
-    . $clang->gT("Browse Responses")."</div><div class='warningheader'>"
-    .$clang->gT("Error")."\t</div>\n"
-    . $clang->gT("You have not selected a survey to browse.")."<br />\n"
-    ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
-    ."</div>";
+            . $clang->gT("Browse Responses")."</div><div class='warningheader'>"
+            .$clang->gT("Error")."\t</div>\n"
+            . $clang->gT("You have not selected a survey to browse.")."<br />\n"
+            ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
+            ."</div>";
     return;
 }
 //CHECK IF SURVEY IS ACTIVATED AND EXISTS
@@ -47,22 +47,22 @@ if ($actcount > 0)
         $surveytimingstable = db_table_name("survey_".$actrow['sid']."_timings");
         $tokentable = $dbprefix."tokens_".$actrow['sid'];
         /*
-        * DO NEVER EVER PUT VARIABLES AND FUNCTIONS WHICH GIVE BACK DIFFERENT QUOTES
-        * IN DOUBLE QUOTED(' and " and \" is used) JAVASCRIPT/HTML CODE!!! (except for: you know what you are doing)
-        *
-        * Used for deleting a record, fix quote bugs..
-        */
+         * DO NEVER EVER PUT VARIABLES AND FUNCTIONS WHICH GIVE BACK DIFFERENT QUOTES
+         * IN DOUBLE QUOTED(' and " and \" is used) JAVASCRIPT/HTML CODE!!! (except for: you know what you are doing)
+         *
+         * Used for deleting a record, fix quote bugs..
+         */
         $surveytableNq = db_table_name_nq("survey_".$surveyid);
 
         $surveyname = "{$actrow['surveyls_title']}";
         if ($actrow['active'] == "N") //SURVEY IS NOT ACTIVE YET
         {
             $browseoutput = "\t<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>"
-            . $clang->gT("Browse Responses")."</div><div class='warningheader'>"
-            .$clang->gT("Error")."\t</div>\n"
-            . $clang->gT("This survey has not been activated. There are no results to browse.")."<br />\n"
-            ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" /><br />\n"
-            ."</div>";
+                    . $clang->gT("Browse Responses")."</div><div class='warningheader'>"
+                    .$clang->gT("Error")."\t</div>\n"
+                    . $clang->gT("This survey has not been activated. There are no results to browse.")."<br />\n"
+                    ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" /><br />\n"
+                    ."</div>";
             return;
         }
     }
@@ -70,11 +70,11 @@ if ($actcount > 0)
 else //SURVEY MATCHING $surveyid DOESN'T EXIST
 {
     $browseoutput = "\t<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>"
-    . $clang->gT("Browse Responses")."</div><div class='warningheader'>"
-    .$clang->gT("Error")."\t</div>\n"
-    . $clang->gT("There is no matching survey.")."<br />\n"
-    ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
-    ."</div>";
+            . $clang->gT("Browse Responses")."</div><div class='warningheader'>"
+            .$clang->gT("Error")."\t</div>\n"
+            . $clang->gT("There is no matching survey.")."<br />\n"
+            ."<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br />\n"
+            ."</div>";
     return;
 }
 
@@ -183,7 +183,7 @@ if ($subaction == "id")
             else
                 $fnames[] = array($field['fieldname'], "File count");
         }
-    }
+}
 
     $nfncount = count($fnames)-1;
     //SHOW INDIVIDUAL RECORD
@@ -211,21 +211,21 @@ if ($subaction == "id")
     $next=$id+1;
     $last=$id-1;
     $browseoutput .= "<div class='menubar'>\n"
-    ."<div class='menubar-title ui-widget-header'>".sprintf($clang->gT("View response ID %d"),$id)."</div>"
-    ."\t<div class='menubar-main'>\n"
-    ."<img src='$imageurl/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
-    ."<img src='$imageurl/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
+            ."<div class='menubar-title ui-widget-header'>".sprintf($clang->gT("View response ID %d"),$id)."</div>"
+            ."\t<div class='menubar-main'>\n"
+            ."<img src='$imageurl/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
+            ."<img src='$imageurl/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
     if (isset($rlanguage))
     {
         $browseoutput .="<a href='$scriptname?action=dataentry&amp;subaction=edit&amp;id=$id&amp;sid=$surveyid&amp;language=$rlanguage' "
-        ."title='".$clang->gTview("Edit this entry")."'>"
-        ."<img align='left' src='$imageurl/edit.png' alt='".$clang->gT("Edit this entry")."' /></a>\n";
+                ."title='".$clang->gTview("Edit this entry")."'>"
+                ."<img align='left' src='$imageurl/edit.png' alt='".$clang->gT("Edit this entry")."' /></a>\n";
     }
     if (bHasSurveyPermission($surveyid,'responses','delete') && isset($rlanguage))
     {
 
         $browseoutput .= "<a href='#' title='".$clang->gTview("Delete this entry")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')) {".get2post($scriptname.'?action=dataentry&amp;subaction=delete&amp;id='.$id.'&amp;sid='.$surveyid)."}\" >"
-        ."<img align='left' hspace='0' border='0' src='$imageurl/delete.png' alt='".$clang->gT("Delete this entry")."' /></a>\n";
+                ."<img align='left' hspace='0' border='0' src='$imageurl/delete.png' alt='".$clang->gT("Delete this entry")."' /></a>\n";
     }
     else
     {
@@ -235,23 +235,23 @@ if ($subaction == "id")
     if (bHasFileUploadQuestion($surveyid))
     {
         $browseoutput .= "<a href='#' title='".$clang->gTview("Download files for this entry")."' onclick=\" ".get2post($scriptname.'?action=browse&amp;subaction=all&amp;downloadfile='.$id.'&amp;sid='.$surveyid)."\" >"
-        ."<img align='left' hspace='0' border='0' src='$imageurl/download.png' alt='".$clang->gT("Download files for this entry")."' /></a>\n";
+                ."<img align='left' hspace='0' border='0' src='$imageurl/download.png' alt='".$clang->gT("Download files for this entry")."' /></a>\n";
     }
 
     //Export this response
     $browseoutput .= "<a href='$scriptname?action=exportresults&amp;sid=$surveyid&amp;id=$id'" .
-    "title='".$clang->gTview("Export this Response")."' >" .
-    "<img name='ExportAnswer' src='$imageurl/export.png' alt='". $clang->gT("Export this Response")."' align='left' /></a>\n"
-    ."<img src='$imageurl/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
-    ."<img src='$imageurl/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt='' />\n"
-    ."<a href='$scriptname?action=browse&amp;subaction=id&amp;id=$last&amp;sid=$surveyid' "
-    ."title='".$clang->gTview("Show previous...")."' >"
-    ."<img name='DataBack' align='left' src='$imageurl/databack.png' alt='".$clang->gT("Show previous...")."' /></a>\n"
-    ."<img src='$imageurl/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
-    ."<a href='$scriptname?action=browse&amp;subaction=id&amp;id=$next&amp;sid=$surveyid' title='".$clang->gTview("Show next...")."'>"
-    ."<img name='DataForward' align='left' src='$imageurl/dataforward.png' alt='".$clang->gT("Show next...")."' /></a>\n"
-    ."</div>\n"
-    ."\t</div>\n";
+            "title='".$clang->gTview("Export this Response")."' >" .
+            "<img name='ExportAnswer' src='$imageurl/export.png' alt='". $clang->gT("Export this Response")."' align='left' /></a>\n"
+            ."<img src='$imageurl/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
+            ."<img src='$imageurl/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt='' />\n"
+            ."<a href='$scriptname?action=browse&amp;subaction=id&amp;id=$last&amp;sid=$surveyid' "
+            ."title='".$clang->gTview("Show previous...")."' >"
+            ."<img name='DataBack' align='left' src='$imageurl/databack.png' alt='".$clang->gT("Show previous...")."' /></a>\n"
+            ."<img src='$imageurl/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
+            ."<a href='$scriptname?action=browse&amp;subaction=id&amp;id=$next&amp;sid=$surveyid' title='".$clang->gTview("Show next...")."'>"
+            ."<img name='DataForward' align='left' src='$imageurl/dataforward.png' alt='".$clang->gT("Show next...")."' /></a>\n"
+            ."</div>\n"
+            ."\t</div>\n";
 
     $browseoutput .= "<table class='detailbrowsetable' width='99%'>\n";
     $idresult = db_execute_assoc($idquery) or safe_die ("Couldn't get entry<br />$idquery<br />".$connect->ErrorMsg());
@@ -260,13 +260,17 @@ if ($subaction == "id")
         $highlight=false;
         for ($i = 0; $i < $nfncount+1; $i++)
         {
+            if ($fnames[$i][0] != 'completed' && is_null($idrow[$fnames[$i][0]]))
+            {
+                continue;   // irrelevant, so don't show
+            }
             $inserthighlight='';
             if ($highlight)
                 $inserthighlight="class='highlight'";
             $browseoutput .= "\t<tr $inserthighlight>\n"
-            ."<th align='right' width='50%'>"
-            .strip_tags(strip_javascript($fnames[$i][1]))."</th>\n"
-            ."<td align='left' >";
+                    ."<th align='right' width='50%'>"
+                    .strip_tags(strip_javascript($fnames[$i][1]))."</th>\n"
+                    ."<td align='left' >";
             if ($fnames[$i][0] == 'completed')
             {
                 if ($idrow['submitdate'] == NULL || $idrow['submitdate'] == "N") { $browseoutput .= "N"; }
@@ -284,9 +288,9 @@ if ($subaction == "id")
                         if ($metadata === "size")
                             $browseoutput .= rawurldecode(((int)($phparray[$index][$metadata]))." KB");
                         else if ($metadata === "name")
-                                $browseoutput .= "<a href='#' onclick=\" ".get2post($scriptname.'?action=browse&amp;subaction=all&amp;downloadindividualfile=' . $phparray[$index][$metadata] . '&amp;fieldname='.$fnames[$i][0].'&amp;id='.$id.'&amp;sid='.$surveyid)."\" >".rawurldecode($phparray[$index][$metadata])."</a>";
-                            else
-                                $browseoutput .= rawurldecode($phparray[$index][$metadata]);
+                            $browseoutput .= "<a href='#' onclick=\" ".get2post($scriptname.'?action=browse&amp;subaction=all&amp;downloadindividualfile=' . $phparray[$index][$metadata] . '&amp;fieldname='.$fnames[$i][0].'&amp;id='.$id.'&amp;sid='.$surveyid)."\" >".rawurldecode($phparray[$index][$metadata])."</a>";
+                        else
+                            $browseoutput .= rawurldecode($phparray[$index][$metadata]);
                     }
                     else
                         $browseoutput .= "";
@@ -305,17 +309,17 @@ if ($subaction == "id")
 elseif ($subaction == "all")
 {
     /**
-    * fnames is used as informational array
-    * it containts
-    *             $fnames[] = array(<dbfieldname>, <some strange title>, <questiontext>, <group_id>, <questiontype>);
-    */
+     * fnames is used as informational array
+     * it containts
+     *             $fnames[] = array(<dbfieldname>, <some strange title>, <questiontext>, <group_id>, <questiontype>);
+     */
 
     $browseoutput .= "\n<script type='text/javascript'>
-    var strdeleteconfirm='".$clang->gT('Do you really want to delete this response?','js')."';
-    var strDeleteAllConfirm='".$clang->gT('Do you really want to delete all marked responses?','js')."';
-    var noFilesSelectedForDeletion = '".$clang->gT('Please select at least one file for deletion','js')."';
-    var noFilesSelectedForDnld = '".$clang->gT('Please select at least one file for download','js')."';
-    </script>\n";
+                          var strdeleteconfirm='".$clang->gT('Do you really want to delete this response?','js')."';
+                          var strDeleteAllConfirm='".$clang->gT('Do you really want to delete all marked responses?','js')."';
+                          var noFilesSelectedForDeletion = '".$clang->gT('Please select at least one file for deletion','js')."';
+                          var noFilesSelectedForDnld = '".$clang->gT('Please select at least one file for download','js')."';
+                        </script>\n";
     $browseoutput .= $surveyoptions;
     $bClearFilter=returnglobal('clearfilter');
     if ($bClearFilter)
@@ -417,51 +421,51 @@ elseif ($subaction == "all")
         }
         // Download all files for all marked responses  - checked
         else if (isset($_POST['downloadfile']) && $_POST['downloadfile'] === 'marked')
-            {
-                // Now, zip all the files in the filelist
-                $zipfilename = "Responses_for_survey_" . $surveyid . ".zip";
-                zipFiles($_POST['markedresponses'], $zipfilename);
-            }
+        {
+            // Now, zip all the files in the filelist
+            $zipfilename = "Responses_for_survey_" . $surveyid . ".zip";
+            zipFiles($_POST['markedresponses'], $zipfilename);
+        }
     }
     // Download all files for this entry - checked
     else if (isset($_POST['downloadfile']) && $_POST['downloadfile'] != '' && $_POST['downloadfile'] !== true)
+    {
+        // Now, zip all the files in the filelist
+        $zipfilename = "LS_Responses_for_" . $_POST['downloadfile'] . ".zip";
+        zipFiles($_POST['downloadfile'], $zipfilename);
+    }
+    else if (isset($_POST['downloadindividualfile']) && $_POST['downloadindividualfile'] != '')
+    {
+        $id = (int)$_POST['id'];
+        $downloadindividualfile = $_POST['downloadindividualfile'];
+        $fieldname = $_POST['fieldname'];
+
+        $query = "SELECT ".db_quote_id($fieldname)." FROM {$surveytable} WHERE id={$id}";
+        $result=db_execute_num($query);
+        $row=$result->FetchRow();
+        $phparray = json_decode($row[0]);
+
+        for ($i = 0; $i < count($phparray); $i++)
         {
-            // Now, zip all the files in the filelist
-            $zipfilename = "LS_Responses_for_" . $_POST['downloadfile'] . ".zip";
-            zipFiles($_POST['downloadfile'], $zipfilename);
-        }
-        else if (isset($_POST['downloadindividualfile']) && $_POST['downloadindividualfile'] != '')
+            if ($phparray[$i]->name == $downloadindividualfile)
             {
-                $id = (int)$_POST['id'];
-                $downloadindividualfile = $_POST['downloadindividualfile'];
-                $fieldname = $_POST['fieldname'];
-
-                $query = "SELECT ".db_quote_id($fieldname)." FROM {$surveytable} WHERE id={$id}";
-                $result=db_execute_num($query);
-                $row=$result->FetchRow();
-                $phparray = json_decode($row[0]);
-
-                for ($i = 0; $i < count($phparray); $i++)
-                {
-                    if ($phparray[$i]->name == $downloadindividualfile)
-                    {
-                        $file = $uploaddir. "/surveys/" . $surveyid . "/files/" . $phparray[$i]->filename;
-                        if (file_exists($file)) {
-                            header('Content-Description: File Transfer');
-                            header('Content-Type: application/octet-stream');
-                            header('Content-Disposition: attachment; filename="' . rawurldecode($phparray[$i]->name) . '"');
-                            header('Content-Transfer-Encoding: binary');
-                            header('Expires: 0');
-                            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-                            header('Pragma: public');
-                            header('Content-Length: ' . filesize($file));
-                            ob_clean();
-                            flush();
-                            readfile($file);
-                            exit;
-                        }
-                        break;
+                $file = $uploaddir. "/surveys/" . $surveyid . "/files/" . $phparray[$i]->filename;
+                if (file_exists($file)) {
+                    header('Content-Description: File Transfer');
+                    header('Content-Type: application/octet-stream');
+                    header('Content-Disposition: attachment; filename="' . rawurldecode($phparray[$i]->name) . '"');
+                    header('Content-Transfer-Encoding: binary');
+                    header('Expires: 0');
+                    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                    header('Pragma: public');
+                    header('Content-Length: ' . filesize($file));
+                    ob_clean();
+                    flush();
+                    readfile($file);
+                    exit;
                 }
+                break;
+            }
         }
     }
 
@@ -491,17 +495,17 @@ elseif ($subaction == "all")
 
             // no headers for time data
             if ($fielddetails['type']=='interview_time')
-                continue;
+			    continue;
             if ($fielddetails['type']=='page_time')
-                continue;
-            if ($fielddetails['type']=='answer_time')
-                continue;
+			    continue;
+		    if ($fielddetails['type']=='answer_time')
+			    continue;
             if (isset($fielddetails['subquestion']) && $fielddetails['subquestion']!='')
                 $question .=' ('.$fielddetails['subquestion'].')';
             if (isset($fielddetails['subquestion1']) && isset($fielddetails['subquestion2']))
                 $question .=' ('.$fielddetails['subquestion1'].':'.$fielddetails['subquestion2'].')';
             if (isset($fielddetails['scale_id']))
-                $question .='['.$fielddetails['scale'].']';
+            $question .='['.$fielddetails['scale'].']';
             $fnames[]=array($fielddetails['fieldname'],$question);
         }
         else
@@ -536,8 +540,8 @@ elseif ($subaction == "all")
     if ($fncount < 10) {$tableheader .= "<table class='browsetable' width='100%'>\n";}
     else {$tableheader .= "<table class='browsetable'>\n";}
     $tableheader .= "\t<thead><tr valign='top'>\n"
-    . "<th><input type='checkbox' id='selectall'></th>\n"
-    . "<th>".$clang->gT('Actions')."</th>\n";
+            . "<th><input type='checkbox' id='selectall'></th>\n"
+            . "<th>".$clang->gT('Actions')."</th>\n";
     foreach ($fnames as $fn)
     {
         if (!isset($currentgroup))  {$currentgroup = $fn[1]; $gbc = "odd";}
@@ -546,10 +550,10 @@ elseif ($subaction == "all")
             $currentgroup = $fn[1];
             if ($gbc == "odd") {$gbc = "even";}
             else {$gbc = "odd";}
-        }
+            }
         $tableheader .= "<th class='$gbc'><strong>"
-        . FlattenText("$fn[1]")
-        . "</strong></th>\n";
+                . FlattenText("$fn[1]")
+                . "</strong></th>\n";
     }
     $tableheader .= "\t</tr></thead>\n\n";
     $tableheader .= "\t<tfoot><tr><td colspan=".($fncount+2).">";
@@ -690,26 +694,26 @@ elseif ($subaction == "all")
     if ($end < 0) {$end=0;}
 
     $browseoutput .= "<div class='menubar'>\n"
-    . "\t<div class='menubar-title ui-widget-header'>\n"
-    . "<strong>".$clang->gT("Data view control")."</strong></div>\n"
-    . "\t<div class='menubar-main'>\n";
+            . "\t<div class='menubar-title ui-widget-header'>\n"
+            . "<strong>".$clang->gT("Data view control")."</strong></div>\n"
+            . "\t<div class='menubar-main'>\n";
     if (!isset($_POST['sql']))
     {
         $browseoutput .= "<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=0&amp;limit=$limit' "
-        ."title='".$clang->gTview("Show start...")."' >"
-        ."<img name='DataBegin' align='left' src='$imageurl/databegin.png' alt='".$clang->gT("Show start...")."' /></a>\n"
-        ."<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit' "
-        ."title='".$clang->gTview("Show previous..")."' >"
-        ."<img name='DataBack' align='left'  src='$imageurl/databack.png' alt='".$clang->gT("Show previous..")."' /></a>\n"
-        ."<img src='$imageurl/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
+                ."title='".$clang->gTview("Show start...")."' >"
+                ."<img name='DataBegin' align='left' src='$imageurl/databegin.png' alt='".$clang->gT("Show start...")."' /></a>\n"
+                ."<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit' "
+                ."title='".$clang->gTview("Show previous..")."' >"
+                ."<img name='DataBack' align='left'  src='$imageurl/databack.png' alt='".$clang->gT("Show previous..")."' /></a>\n"
+                ."<img src='$imageurl/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
 
-        ."<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit' " .
-        "title='".$clang->gT("Show next...")."' >".
-        "<img name='DataForward' align='left' src='$imageurl/dataforward.png' alt='".$clang->gT("Show next..")."' /></a>\n"
-        ."<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit' " .
-        "title='".$clang->gT("Show last...")."' >" .
-        "<img name='DataEnd' align='left' src='$imageurl/dataend.png' alt='".$clang->gT("Show last..")."' /></a>\n"
-        ."<img src='$imageurl/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
+                ."<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit' " .
+                "title='".$clang->gT("Show next...")."' >".
+                "<img name='DataForward' align='left' src='$imageurl/dataforward.png' alt='".$clang->gT("Show next..")."' /></a>\n"
+                ."<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit' " .
+                "title='".$clang->gT("Show last...")."' >" .
+                "<img name='DataEnd' align='left' src='$imageurl/dataend.png' alt='".$clang->gT("Show last..")."' /></a>\n"
+                ."<img src='$imageurl/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
     }
     $selectshow='';
     $selectinc='';
@@ -720,27 +724,27 @@ elseif ($subaction == "all")
     else { $selectshow="selected='selected'"; }
 
     $browseoutput .="<form action='$scriptname?action=browse' id='browseresults' method='post'><font size='1' face='verdana'>\n"
-    ."<img src='$imageurl/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />\n"
-    ."".$clang->gT("Records displayed:")."<input type='text' size='4' value='$dtcount2' name='limit' id='limit' />\n"
-    ."&nbsp;&nbsp; ".$clang->gT("Starting from:")."<input type='text' size='4' value='$start' name='start' id='start' />\n"
-    ."&nbsp;&nbsp; <input type='submit' value='".$clang->gT("Show")."' />\n"
-    ."&nbsp;&nbsp; ".$clang->gT("Display:")."<select name='filterinc' onchange='javascript:document.getElementById(\"limit\").value=\"\";submit();'>\n"
-    ."\t<option value='show' $selectshow>".$clang->gT("All responses")."</option>\n"
-    ."\t<option value='filter' $selecthide>".$clang->gT("Completed responses only")."</option>\n"
-    ."\t<option value='incomplete' $selectinc>".$clang->gT("Incomplete responses only")."</option>\n"
-    ."</select>\n";
+            ."<img src='$imageurl/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />\n"
+            ."".$clang->gT("Records displayed:")."<input type='text' size='4' value='$dtcount2' name='limit' id='limit' />\n"
+            ."&nbsp;&nbsp; ".$clang->gT("Starting from:")."<input type='text' size='4' value='$start' name='start' id='start' />\n"
+            ."&nbsp;&nbsp; <input type='submit' value='".$clang->gT("Show")."' />\n"
+            ."&nbsp;&nbsp; ".$clang->gT("Display:")."<select name='filterinc' onchange='javascript:document.getElementById(\"limit\").value=\"\";submit();'>\n"
+            ."\t<option value='show' $selectshow>".$clang->gT("All responses")."</option>\n"
+            ."\t<option value='filter' $selecthide>".$clang->gT("Completed responses only")."</option>\n"
+            ."\t<option value='incomplete' $selectinc>".$clang->gT("Incomplete responses only")."</option>\n"
+            ."</select>\n";
 
-    $browseoutput .= "</font>\n"
-    ."<input type='hidden' name='sid' value='$surveyid' />\n"
-    ."<input type='hidden' name='action' value='browse' />\n"
-    ."<input type='hidden' name='subaction' value='all' />\n";
+     $browseoutput .= "</font>\n"
+            ."<input type='hidden' name='sid' value='$surveyid' />\n"
+            ."<input type='hidden' name='action' value='browse' />\n"
+            ."<input type='hidden' name='subaction' value='all' />\n";
 
     if (isset($_POST['sql']))
     {
         $browseoutput .= "<input type='hidden' name='sql' value='".html_escape($_POST['sql'])."' />\n";
     }
     $browseoutput .= 	 "</form></div>\n"
-    ."\t</div><form action='$scriptname?action=browse' id='resulttableform' method='post'>\n";
+            ."\t</div><form action='$scriptname?action=browse' id='resulttableform' method='post'>\n";
 
     $browseoutput .= $tableheader;
     $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
@@ -752,10 +756,10 @@ elseif ($subaction == "all")
         {
             if ($bgcc == "even") {$bgcc = "odd";}
             else {$bgcc = "even";}
-        }
+            }
         $browseoutput .= "\t<tr class='{$bgcc}' valign='top'>\n"
-        ."<td align='center'><input type='checkbox' class='cbResponseMarker' value='{$dtrow['id']}' name='markedresponses[]' /></td>\n"
-        ."<td align='center'>
+                ."<td align='center'><input type='checkbox' class='cbResponseMarker' value='{$dtrow['id']}' name='markedresponses[]' /></td>\n"
+                ."<td align='center'>
         <a href='{$scriptname}?action=browse&amp;sid={$surveyid}&amp;subaction=id&amp;id={$dtrow['id']}'><img src='$imageurl/token_viewanswer.png' alt='".$clang->gT('View response details')."'/></a>";
 
         if (bHasSurveyPermission($surveyid,'responses','update'))
@@ -788,7 +792,7 @@ elseif ($subaction == "all")
             }
             $browseoutput .= "<td align='center'>$browsedatafield</td>\n";
             $i++;   //We skip the first record (=token) as we just outputted that one
-        }
+            }
 
         for ($i; $i<$fncount; $i++)
         {
@@ -811,9 +815,9 @@ elseif ($subaction == "all")
                     if ($metadata === "size")
                         $browseoutput .= "<td align='center'>".rawurldecode(((int)($phparray[$index][$metadata]))." KB")."</td>\n";
                     else if ($metadata === "name")
-                            $browseoutput .= "<td align='center'><a href='#' onclick=\" ".get2post($scriptname.'?action=browse&amp;subaction=all&amp;downloadindividualfile='.$phparray[$index][$metadata].'&amp;fieldname='.$fnames[$i][0].'&amp;id='.$dtrow['id'].'&amp;sid='.$surveyid)."\" >".rawurldecode($phparray[$index][$metadata])."</a></td>\n";
-                        else
-                            $browseoutput .= "<td align='center'>".rawurldecode($phparray[$index][$metadata])."</td>\n";
+                        $browseoutput .= "<td align='center'><a href='#' onclick=\" ".get2post($scriptname.'?action=browse&amp;subaction=all&amp;downloadindividualfile='.$phparray[$index][$metadata].'&amp;fieldname='.$fnames[$i][0].'&amp;id='.$dtrow['id'].'&amp;sid='.$surveyid)."\" >".rawurldecode($phparray[$index][$metadata])."</a></td>\n";
+                    else
+                        $browseoutput .= "<td align='center'>".rawurldecode($phparray[$index][$metadata])."</td>\n";
                 }
                 else
                     $browseoutput .= "<td align='center'>&nbsp;</td>\n";
@@ -831,14 +835,14 @@ elseif ($subaction == "all")
     </form>\n<br />\n";
 }
 elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
-    $browseoutput .= $surveyoptions;
-    $browseoutput .= '<div class="header ui-widget-header">'.$clang->gT('Time statistics').'</div>';
+	$browseoutput .= $surveyoptions;
+	$browseoutput .= '<div class="header ui-widget-header">'.$clang->gT('Time statistics').'</div>';
 
-    // table of time statistics - only display completed surveys
+	// table of time statistics - only display completed surveys
     $browseoutput .= "\n<script type='text/javascript'>
-    var strdeleteconfirm='".$clang->gT('Do you really want to delete this response?','js')."';
-    var strDeleteAllConfirm='".$clang->gT('Do you really want to delete all marked responses?','js')."';
-    </script>\n";
+                          var strdeleteconfirm='".$clang->gT('Do you really want to delete this response?','js')."';
+                          var strDeleteAllConfirm='".$clang->gT('Do you really want to delete all marked responses?','js')."';
+                        </script>\n";
 
     if (isset($_POST['deleteanswer']) && $_POST['deleteanswer']!='')
     {
@@ -878,8 +882,8 @@ elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
     if ($fncount < 10) {$tableheader .= "<table class='browsetable' width='100%'>\n";}
     else {$tableheader .= "<table class='browsetable'>\n";}
     $tableheader .= "\t<thead><tr valign='top'>\n"
-    . "<th><input type='checkbox' id='selectall'></th>\n"
-    . "<th>".$clang->gT('Actions')."</th>\n";
+            . "<th><input type='checkbox' id='selectall'></th>\n"
+            . "<th>".$clang->gT('Actions')."</th>\n";
     foreach ($fnames as $fn)
     {
         if (!isset($currentgroup))  {$currentgroup = $fn[1]; $gbc = "oddrow";}
@@ -888,15 +892,15 @@ elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
             $currentgroup = $fn[1];
             if ($gbc == "oddrow") {$gbc = "evenrow";}
             else {$gbc = "oddrow";}
-        }
+            }
         $tableheader .= "<th class='$gbc'><strong>"
-        . strip_javascript("$fn[1]")
-        . "</strong></th>\n";
+                . strip_javascript("$fn[1]")
+                . "</strong></th>\n";
     }
     $tableheader .= "\t</tr></thead>\n\n";
     $tableheader .= "\t<tfoot><tr><td colspan=".($fncount+2).">"
-    ."<img id='imgDeleteMarkedResponses' src='$imageurl/token_delete.png' alt='".$clang->gT('Delete marked responses')."' />"
-    ."\t</tr></tfoot>\n\n";
+                   ."<img id='imgDeleteMarkedResponses' src='$imageurl/token_delete.png' alt='".$clang->gT('Delete marked responses')."' />"
+                   ."\t</tr></tfoot>\n\n";
 
     $start=returnglobal('start');
     $limit=returnglobal('limit');
@@ -921,8 +925,8 @@ elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
         if (!isset($start)) {$start = 0;}
         $dtresult = db_select_limit_assoc($dtquery, $limit, $start) or safe_die("Couldn't get surveys<br />$dtquery<br />".$connect->ErrorMsg());
     }
-    else
-    {
+else
+{
         $dtresult = db_execute_assoc($dtquery) or safe_die("Couldn't get surveys<br />$dtquery<br />".$connect->ErrorMsg());
     }
     $dtcount2 = $dtresult->RecordCount();
@@ -938,26 +942,26 @@ elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
     if ($end < 0) {$end=0;}
 
     $browseoutput .= "<div class='menubar'>\n"
-    . "\t<div class='menubar-title ui-widget-header'>\n"
-    . "<strong>".$clang->gT("Data view control")."</strong></div>\n"
-    . "\t<div class='menubar-main'>\n";
+            . "\t<div class='menubar-title ui-widget-header'>\n"
+            . "<strong>".$clang->gT("Data view control")."</strong></div>\n"
+            . "\t<div class='menubar-main'>\n";
     if (!isset($_POST['sql']))
     {
         $browseoutput .= "<a href='$scriptname?action=browse&amp;subaction=time&amp;sid=$surveyid&amp;start=0&amp;limit=$limit' "
-        ."title='".$clang->gTview("Show start...")."' >"
-        ."<img name='DataBegin' align='left' src='$imageurl/databegin.png' alt='".$clang->gT("Show start...")."' /></a>\n"
-        ."<a href='$scriptname?action=browse&amp;subaction=time&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit' "
-        ."title='".$clang->gTview("Show previous..")."' >"
-        ."<img name='DataBack' align='left'  src='$imageurl/databack.png' alt='".$clang->gT("Show previous..")."' /></a>\n"
-        ."<img src='$imageurl/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
+                ."title='".$clang->gTview("Show start...")."' >"
+                ."<img name='DataBegin' align='left' src='$imageurl/databegin.png' alt='".$clang->gT("Show start...")."' /></a>\n"
+                ."<a href='$scriptname?action=browse&amp;subaction=time&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit' "
+                ."title='".$clang->gTview("Show previous..")."' >"
+                ."<img name='DataBack' align='left'  src='$imageurl/databack.png' alt='".$clang->gT("Show previous..")."' /></a>\n"
+                ."<img src='$imageurl/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
 
-        ."<a href='$scriptname?action=browse&amp;subaction=time&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit' " .
-        "title='".$clang->gT("Show next...")."' >".
-        "<img name='DataForward' align='left' src='$imageurl/dataforward.png' alt='".$clang->gT("Show next..")."' /></a>\n"
-        ."<a href='$scriptname?action=browse&amp;subaction=time&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit' " .
-        "title='".$clang->gT("Show last...")."' >" .
-        "<img name='DataEnd' align='left' src='$imageurl/dataend.png' alt='".$clang->gT("Show last..")."' /></a>\n"
-        ."<img src='$imageurl/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
+                ."<a href='$scriptname?action=browse&amp;subaction=time&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit' " .
+                "title='".$clang->gT("Show next...")."' >".
+                "<img name='DataForward' align='left' src='$imageurl/dataforward.png' alt='".$clang->gT("Show next..")."' /></a>\n"
+                ."<a href='$scriptname?action=browse&amp;subaction=time&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit' " .
+                "title='".$clang->gT("Show last...")."' >" .
+                "<img name='DataEnd' align='left' src='$imageurl/dataend.png' alt='".$clang->gT("Show last..")."' /></a>\n"
+                ."<img src='$imageurl/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
     }
     $selectshow='';
     $selectinc='';
@@ -968,20 +972,20 @@ elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
     else { $selectshow="selected='selected'"; }
 
     $browseoutput .="<form action='$scriptname?action=browse' id='browseresults' method='post'><font size='1' face='verdana'>\n"
-    ."<img src='$imageurl/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />\n"
-    ."".$clang->gT("Records displayed:")."<input type='text' size='4' value='$dtcount2' name='limit' id='limit' />\n"
-    ."&nbsp;&nbsp; ".$clang->gT("Starting from:")."<input type='text' size='4' value='$start' name='start' id='start' />\n"
-    ."&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' value='".$clang->gT("Show")."' />\n"
-    ."</font>\n"
-    ."<input type='hidden' name='sid' value='$surveyid' />\n"
-    ."<input type='hidden' name='action' value='browse' />\n"
-    ."<input type='hidden' name='subaction' value='time' />\n";
+            ."<img src='$imageurl/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />\n"
+            ."".$clang->gT("Records displayed:")."<input type='text' size='4' value='$dtcount2' name='limit' id='limit' />\n"
+            ."&nbsp;&nbsp; ".$clang->gT("Starting from:")."<input type='text' size='4' value='$start' name='start' id='start' />\n"
+            ."&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' value='".$clang->gT("Show")."' />\n"
+            ."</font>\n"
+            ."<input type='hidden' name='sid' value='$surveyid' />\n"
+            ."<input type='hidden' name='action' value='browse' />\n"
+            ."<input type='hidden' name='subaction' value='time' />\n";
     if (isset($_POST['sql']))
     {
         $browseoutput .= "<input type='hidden' name='sql' value='".html_escape($_POST['sql'])."' />\n";
     }
     $browseoutput .= 	 "</form></div>\n"
-    ."\t</div><form action='$scriptname?action=browse' id='resulttableform' method='post'>\n";
+            ."\t</div><form action='$scriptname?action=browse' id='resulttableform' method='post'>\n";
 
     $browseoutput .= $tableheader;
     $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
@@ -993,10 +997,10 @@ elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
         {
             if ($bgcc == "evenrow") {$bgcc = "oddrow";}
             else {$bgcc = "evenrow";}
-        }
+            }
         $browseoutput .= "\t<tr class='$bgcc' valign='top'>\n"
-        ."<td align='center'><input type='checkbox' class='cbResponseMarker' value='{$dtrow['id']}' name='markedresponses[]' /></td>\n"
-        ."<td align='center'>
+                ."<td align='center'><input type='checkbox' class='cbResponseMarker' value='{$dtrow['id']}' name='markedresponses[]' /></td>\n"
+                ."<td align='center'>
         <a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id={$dtrow['id']}'><img src='$imageurl/token_viewanswer.png' alt='".$clang->gT('View response details')."'/></a>
         <a href='$scriptname?action=dataentry&amp;sid=$surveyid&amp;subaction=edit&amp;id={$dtrow['id']}'><img src='$imageurl/token_edit.png' alt='".$clang->gT('Edit this response')."'/></a>
         <a><img id='deleteresponse_{$dtrow['id']}' src='$imageurl/token_delete.png' alt='".$clang->gT('Delete this response')."' class='deleteresponse'/></a></td>\n";
@@ -1006,13 +1010,13 @@ elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
             $browsedatafield=htmlspecialchars($dtrow[$fnames[$i][0]]);
 
             // seconds -> minutes & seconds
-            if (strtolower(substr($fnames[$i][0],-4)) == "time")
-            {
+			if (strtolower(substr($fnames[$i][0],-4)) == "time")
+			{
                 $minutes = (int)($browsedatafield/60);
                 $seconds = $browsedatafield%60;
                 $browsedatafield = '';
                 if ($minutes > 0)
-                    $browsedatafield .= "$minutes min ";
+				    $browsedatafield .= "$minutes min ";
                 $browsedatafield .= "$seconds s";
             }
             $browseoutput .= "<td align='center'>$browsedatafield</td>\n";
@@ -1025,58 +1029,58 @@ elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
     <input id='deleteanswer' name='deleteanswer' value='' type='hidden' />
     </form>\n<br />\n";
 
-    // Interview time
-    $browseoutput .= '<div class="header ui-widget-header">'.$clang->gT('Interview time').'</div>';
+	// Interview time
+	$browseoutput .= '<div class="header ui-widget-header">'.$clang->gT('Interview time').'</div>';
 
-    //interview Time statistics
-    $count=false;
-    //$survstats=substr($surveytableNq);
-    $queryAvg="SELECT AVG(timings.interviewtime) AS avg, COUNT(timings.id) AS count FROM {$surveytableNq}_timings AS timings JOIN {$surveytable} AS surv ON timings.id=surv.id WHERE surv.submitdate IS NOT NULL";
-    $queryAll="SELECT timings.interviewtime FROM {$surveytableNq}_timings AS timings JOIN {$surveytable} AS surv ON timings.id=surv.id WHERE surv.submitdate IS NOT NULL ORDER BY timings.interviewtime";
-    $browseoutput .= '<table class="statisticssummary">';
-    if($result=db_execute_assoc($queryAvg)){
+	//interview Time statistics
+	$count=false;
+	//$survstats=substr($surveytableNq);
+	$queryAvg="SELECT AVG(timings.interviewtime) AS avg, COUNT(timings.id) AS count FROM {$surveytableNq}_timings AS timings JOIN {$surveytable} AS surv ON timings.id=surv.id WHERE surv.submitdate IS NOT NULL";
+	$queryAll="SELECT timings.interviewtime FROM {$surveytableNq}_timings AS timings JOIN {$surveytable} AS surv ON timings.id=surv.id WHERE surv.submitdate IS NOT NULL ORDER BY timings.interviewtime";
+	$browseoutput .= '<table class="statisticssummary">';
+	if($result=db_execute_assoc($queryAvg)){
 
-        $row=$result->FetchRow();
-        $min = (int)($row['avg']/60);
-        $sec = $row['avg']%60;
-        $count=$row['count'];
-        $browseoutput .= '<tr><Th>'.$clang->gT('Average interview time: ')."</th><td>{$min} min. {$sec} sec.</td></tr>";
-    }
+		$row=$result->FetchRow();
+		$min = (int)($row['avg']/60);
+		$sec = $row['avg']%60;
+		$count=$row['count'];
+		$browseoutput .= '<tr><Th>'.$clang->gT('Average interview time: ')."</th><td>{$min} min. {$sec} sec.</td></tr>";
+	}
 
-    if($count && $result=db_execute_assoc($queryAll)){
+	if($count && $result=db_execute_assoc($queryAll)){
 
-        $middleval = floor(($count-1)/2);
-        $i=0;
-        if($count%2){
-            while($row=$result->FetchRow()){
+		$middleval = floor(($count-1)/2);
+		$i=0;
+		if($count%2){
+			while($row=$result->FetchRow()){
 
-                if($i==$middleval){
-                    $median=$row['interviewtime'];
-                    break;
-                }
-                $i++;
-            }
-        }else{
-            while($row=$result->FetchRow()){
-                if($i==$middleval){
-                    $nextrow=$result->FetchRow();
-                    $median=($row['interviewtime']+$nextrow['interviewtime'])/2;
-                    break;
-                }
-                $i++;
-            }
-        }
-        $min = (int)($median/60);
-        $sec = $median%60;
-        $browseoutput.='<tr><Th>'.$clang->gT('Median: ')."</th><td>{$min} min. {$sec} sec.</td></tr>";
-    }
-    $browseoutput .= '</table>';
+				if($i==$middleval){
+					$median=$row['interviewtime'];
+					break;
+				}
+				$i++;
+			}
+		}else{
+			while($row=$result->FetchRow()){
+				if($i==$middleval){
+					$nextrow=$result->FetchRow();
+					$median=($row['interviewtime']+$nextrow['interviewtime'])/2;
+					break;
+				}
+				$i++;
+			}
+		}
+		$min = (int)($median/60);
+		$sec = $median%60;
+		$browseoutput.='<tr><Th>'.$clang->gT('Median: ')."</th><td>{$min} min. {$sec} sec.</td></tr>";
+	}
+	$browseoutput .= '</table>';
 }
 elseif ($subaction=="time")
 {
     $browseoutput .= $surveyoptions;
     $browseoutput .= "<div class='header ui-widget-header'>".$clang->gT("Timings")."</div>";
-    $browseoutput .= "Timing saving is disabled or the timing table does not exist. Try to reactivate survey.\n";
+	$browseoutput .= "Timing saving is disabled or the timing table does not exist. Try to reactivate survey.\n";
 }
 else
 {
@@ -1091,22 +1095,22 @@ else
     while ($gnrow=$gnresult->FetchRow()) {$num_total_answers=$gnrow[0];}
     while ($gnrow2=$gnresult2->FetchRow()) {$num_completed_answers=$gnrow2[0];}
     $browseoutput .= "<div class='header ui-widget-header'>".$clang->gT("Response summary")."</div>"
-    ."<p><table class='statisticssummary'>\n"
-    ."<tfoot><tr><th>".$clang->gT("Total responses:")."</th><td>".$num_total_answers."</td></tr></tfoot>"
-    ."\t<tbody>"
-    ."<tr><th>".$clang->gT("Full responses:")."</th><td>".$num_completed_answers."</td></tr>"
-    ."<tr><th>".$clang->gT("Incomplete responses:")."</th><td>".($num_total_answers-$num_completed_answers)."</td></tr></tbody>"
-    ."</table>";
+            ."<p><table class='statisticssummary'>\n"
+            ."<tfoot><tr><th>".$clang->gT("Total responses:")."</th><td>".$num_total_answers."</td></tr></tfoot>"
+            ."\t<tbody>"
+            ."<tr><th>".$clang->gT("Full responses:")."</th><td>".$num_completed_answers."</td></tr>"
+            ."<tr><th>".$clang->gT("Incomplete responses:")."</th><td>".($num_total_answers-$num_completed_answers)."</td></tr></tbody>"
+            ."</table>";
 
 }
 
 /**
-* Supply an array with the responseIds and all files will be added to the zip
-* and it will be be spit out on success
-*
-* @param array $responseIds
-* @return ZipArchive
-*/
+ * Supply an array with the responseIds and all files will be added to the zip
+ * and it will be be spit out on success
+ *
+ * @param array $responseIds
+ * @return ZipArchive
+ */
 function zipFiles($responseIds, $zipfilename) {
     global $uploaddir, $surveyid, $surveytable;
 
@@ -1146,12 +1150,12 @@ function zipFiles($responseIds, $zipfilename) {
                         $file['name'] = rawurldecode($file['name']);
                         $file['index'] = $filecount;
                         /*
-                        * Now add the file to the archive, prefix files with responseid_index to keep them
-                        * unique. This way we can have 234_1_image1.gif, 234_2_image1.gif as it could be
-                        * files from a different source with the same name.
-                        */
+                         * Now add the file to the archive, prefix files with responseid_index to keep them
+                         * unique. This way we can have 234_1_image1.gif, 234_2_image1.gif as it could be
+                         * files from a different source with the same name.
+                         */
                         $filelist[] = array(PCLZIP_ATT_FILE_NAME          =>$tmpdir . $file['filename'],
-                        PCLZIP_ATT_FILE_NEW_FULL_NAME =>sprintf("%05s_%02s_%s", $file['responseid'], $file['index'], $file['name']));
+                                            PCLZIP_ATT_FILE_NEW_FULL_NAME =>sprintf("%05s_%02s_%s", $file['responseid'], $file['index'], $file['name']));
                     }
                 }
             }

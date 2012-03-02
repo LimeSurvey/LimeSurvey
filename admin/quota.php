@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: quota.php 12303 2012-02-02 10:49:40Z c_schmitz $
  */
 
 include_once("login_check.php");  //Login Check dies also if the script is started directly

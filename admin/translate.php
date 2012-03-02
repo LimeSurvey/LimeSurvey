@@ -11,7 +11,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-* $Id: translate.php 9652 2010-12-16 20:25:39Z c_schmitz $
+* $Id: translate.php 11974 2012-01-10 16:34:56Z c_schmitz $
 *
 */
 

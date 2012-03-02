@@ -1,3 +1,4 @@
+
 <?php
 /*
  * LimeSurvey
@@ -10,7 +11,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: statistics_user.php 12008 2012-01-12 15:20:59Z gautamgupta $
  *
  */
 
@@ -128,7 +129,7 @@ if (isset($publicgraphs) && $publicgraphs == 1)
 if (isset($postlang) && $postlang != null )
     $language = $postlang;
 else
-    $language = GetBaseLanguageFromSurveyID($surveyid);   
+    $language = GetBaseLanguageFromSurveyID($surveyid);
 
 
 
@@ -177,7 +178,6 @@ else
     if ( function_exists( $embedded_headerfunc ) )
         echo $embedded_headerfunc();
 }
-
 
 
 /*
@@ -324,8 +324,8 @@ if(isset($filters)){
 					while ($frow = $fresult->FetchRow())
 					{
 						$myfield2 = $myfield . $row[0] . "_" . $frow['title'];
-					    $allfields[]=$myfield2;
-				    }
+					$allfields[]=$myfield2;
+				}
 				}
 				break;
 			case "R": //RANKING

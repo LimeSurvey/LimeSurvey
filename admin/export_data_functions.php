@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: export_data_functions.php 11664 2011-12-16 05:19:42Z tmswhite $
  */
 
 /**
@@ -138,9 +138,9 @@ function spss_export_data ($na = null) {
                     echo("'0'");
                 }
             } elseif (!$field['hide']) {
-                $strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
+					$strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
                 if (trim($strTmp) != ''){
-                    $strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
+						$strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
                     /*
                      * Temp quick fix for replacing decimal dots with comma's
                      if (my_is_numeric($strTemp)) {

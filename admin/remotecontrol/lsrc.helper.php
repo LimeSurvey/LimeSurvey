@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: lsrc.helper.php 12399 2012-02-07 20:37:00Z tmswhite $
  *
  */
 /**
@@ -240,6 +240,7 @@ class LsrcHelper {
                         while(isset($emrow["attribute_$c"]))
                         {
                             $fieldsarray["{ATTRIBUTE_$c}"]=$emrow["attribute_$c"];
+                            $fieldsarray["{TOKEN:ATTRIBUTE_$c}"]=$emrow["attribute_$c"];
                             ++$c;
                         }
                         $fieldsarray["{ADMINNAME}"]= $thissurvey['adminname'];
@@ -496,6 +497,7 @@ class LsrcHelper {
                         while(isset($emrow["attribute_$c"]))
                         {
                             $fieldsarray["{ATTRIBUTE_$c}"]=$emrow["attribute_$c"];
+                            $fieldsarray["{TOKEN:ATTRIBUTE_$c}"]=$emrow["attribute_$c"];
                             ++$c;
                         }
 

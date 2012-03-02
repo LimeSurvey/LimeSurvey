@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id: login_check_cas.php 9586 2010-12-06 03:08:07Z c_schmitz $
+ * $Id: login_check_cas.php 12211 2012-01-26 17:02:27Z shnoulle $
  */
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 if (!isset($action)) {$action=returnglobal('action');}
@@ -207,7 +207,8 @@ function setUserRightsCas($user, $role="")
 
     $_SESSION['adminlang'] = $defaultlang;
     $_SESSION['htmleditormode'] = 'default';
-
+    $_SESSION['questionselectormode'] = 'default';
+    $_SESSION['templateeditormode'] = 'default';
     $_SESSION['checksessionpost'] = sRandomChars(10);
     $_SESSION['pw_notify']=false;
 

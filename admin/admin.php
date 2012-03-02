@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: admin.php 12082 2012-01-17 04:55:39Z tmswhite $
  */
 
 // Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
@@ -45,6 +45,7 @@ if (!isset($action)) {$action=returnglobal('action');}          //Desired action
 if (!isset($subaction)) {$subaction=returnglobal('subaction');} //Desired subaction
 if (!isset($editedaction)) {$editedaction=returnglobal('editedaction');} // for html editor integration
 
+LimeExpressionManager::SetSurveyId($surveyid);  // must be called early - it clears internal cache if a new survey is being used
 
 if ($action != 'showprintablesurvey' && substr($action,0,4)!= 'ajax')
 {
@@ -254,6 +255,24 @@ if(isset($_SESSION['loginID']))
         require_once('../index.php');
         exit;
 
+    }
+    elseif ($action == 'showlogicfile')
+    {
+        if(bHasSurveyPermission($surveyid,'surveyactivation','read'))
+        {
+            $surveyid = sanitize_int($surveyid);
+            $thissurvey  = getSurveyInfo($surveyid);
+            $_POST['sid'] = $surveyid . '|N';
+            $_POST['LEM_PRETTY_PRINT_ALL_SYNTAX'] = 'Y';
+            $_POST['surveyMode'] = 'survey';
+            $_POST['LEMcalledFromAdmin'] = 'Y';
+            $_POST['assessments'] = $thissurvey['assessments'];
+            if (isset($_GET['gid'])) { $_POST['gid'] = $_GET['gid']; }
+            if (isset($_GET['qid'])) { $_POST['qid'] = $_GET['qid']; }
+            include($rootdir . '/classes/eval/test/survey_logic_file.php');
+            exit;
+        }
+        else { include('access_denied.php');}
     }
     elseif ($action=='addgroup' || $action=='editgroup' || $action=='ordergroups')
     {
@@ -519,6 +538,101 @@ if(isset($_SESSION['loginID']))
     {
         if(bHasSurveyPermission($surveyid,'responses','create'))    {include('vvimport.php');}
         else { include('access_denied.php');}
+    }
+    elseif ($action == 'EMtest') {
+        switch ($subaction) {
+            case 'functions':
+                if(bHasSurveyPermission($surveyid,'surveycontent','read')) {
+                    include('../classes/eval/test/functions.php');
+                }
+                else {
+                    include('access_denied.php');
+                }
+                break;
+            case 'stringsplit':
+                if(bHasSurveyPermission($surveyid,'surveycontent','read')) {
+                    include('../classes/eval/test/stringsplit.php');
+                }
+                else {
+                    include('access_denied.php');
+                }
+                break;
+            case 'tokenizer':
+                if(bHasSurveyPermission($surveyid,'surveycontent','read')) {
+                    include('../classes/eval/test/tokenizer.php');
+                }
+                else {
+                    include('access_denied.php');
+                }
+                break;
+            case 'unit':
+                if(bHasSurveyPermission($surveyid,'surveycontent','read')) {
+                    include('../classes/eval/test/unit.php');
+                }
+                else {
+                    include('access_denied.php');
+                }
+                break;
+            case 'strings_with_expressions':
+                if(bHasSurveyPermission($surveyid,'surveycontent','read')) {
+                    include('../classes/eval/test/strings_with_expressions.php');
+                }
+                else {
+                    include('access_denied.php');
+                }
+                break;
+            case 'relevance':
+                if(bHasSurveyPermission($surveyid,'surveycontent','read')) {
+                    include('../classes/eval/test/relevance.php');
+                }
+                else {
+                    include('access_denied.php');
+                }
+                break;
+            case 'conditions2relevance':
+                if (bHasSurveyPermission($surveyid, 'surveycontent', 'read'))
+                {
+                    include('../classes/eval/test/conditions2relevance.php');
+                }
+                else
+                {
+                    include('access_denied.php');
+                }
+                break;
+            case 'navigation_test':
+                if($_SESSION['USER_RIGHT_CONFIGURATOR']==1) {
+                    include('../classes/eval/test/navigation_test.php');
+                }
+                else {
+                    include('access_denied.php');
+                }
+                break;
+            case 'survey_logic_file':
+                if($_SESSION['USER_RIGHT_CONFIGURATOR']==1) {
+                    include('../classes/eval/test/survey_logic_file.php');
+                }
+                else {
+                    include('access_denied.php');
+                }
+                break;
+            case 'upgrade_conditions2relevance':
+                if($_SESSION['USER_RIGHT_CONFIGURATOR']==1) {
+                    include('../classes/eval/test/upgrade_conditions2relevance.php');
+                }
+                else {
+                    include('access_denied.php');
+                }
+                break;
+            default:
+                if(bHasSurveyPermission($surveyid,'surveycontent','read')) {
+                    include('../classes/eval/test/test.php');
+                }
+                else {
+                    include('access_denied.php');
+                }
+                break;
+        }
+        exit;
     }
     if ($action=='addquestion'    || $action=='copyquestion' || $action=='editquestion' || $action=='editdefaultvalues' ||
         $action=='orderquestions' || $action=='ajaxquestionattributes' || $action=='ajaxlabelsetpicker' || $action=='ajaxlabelsetdetails')

@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id$
+ * $Id: statistics.php 11664 2011-12-16 05:19:42Z tmswhite $
  *
  */
 
@@ -340,6 +340,12 @@ if ($grapherror!='')
 }
 $statisticsoutput.="</li>\n";
 
+//Show text responses inline
+$statisticsoutput .= "<li>
+    <label>".$clang->gT("Show text responses inline").":</label>
+    <input type='checkbox' id='showtextinline' name='showtextinline' ";
+if(isset($_POST['showtextinline'])) { $statisticsoutput .= "checked='checked'"; }
+$statisticsoutput .= "/><br /></li>\n";
 //Output selector
 $statisticsoutput .= "<li>"
 ."<label>"

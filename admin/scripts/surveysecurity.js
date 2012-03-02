@@ -1,4 +1,4 @@
-//$Id$
+//$Id: surveysecurity.js 9376 2010-10-31 15:13:46Z c_schmitz $
 
 $(document).ready(function(){
     $(".surveysecurity").tablesorter({

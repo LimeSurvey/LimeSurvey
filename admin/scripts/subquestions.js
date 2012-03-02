@@ -1,4 +1,4 @@
-// $Id$
+// $Id: subquestions.js 12442 2012-02-11 00:07:00Z shnoulle $
 var labelcache=[];  
 $(document).ready(function(){
        $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
@@ -266,6 +266,7 @@ function lsbrowser()
         } 
         else
         {
+            $("#labelsetpreview").html("<p class='ui-state-highlight ui-corner-all ui-notify-message'>"+strNoLabelSet+"</p>");
             $('#btnlsreplace').addClass('ui-state-disabled');
             $('#btnlsinsert').addClass('ui-state-disabled');
             $('#btnlsreplace').attr('disabled','disabled');

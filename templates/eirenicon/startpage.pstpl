@@ -25,7 +25,7 @@
 	<link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />    
 </head>
 
-	<body bgcolor="#C0C0C0" class="lang-{SURVEYLANGAGE} {SURVEYFORMAT}">
+	<body bgcolor="#C0C0C0" class="lang-{SURVEYLANGUAGE} {SURVEYFORMAT}">
                 <div class="outerframe">
 <table class="outer-frame">
                         	<tr>
