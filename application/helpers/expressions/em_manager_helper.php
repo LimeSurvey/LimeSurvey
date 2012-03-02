@@ -36,7 +36,9 @@ class LimeExpressionManager {
     private $sid;
     private $groupNum;
     private $debugLevel=0;  // sum of LEM_DEBUG constants - use bitwise AND comparisons to identify which parts to use
-    private $knownVars;
+    private $knownVars; // collection of variable attributes, indexed by SGQA code
+    private $qcode2sgqa;  // maps qcode varname to SGQA code
+    private $tempVars;  // variables temporarily set for substitution purposes
     private $pageRelevanceInfo;
     private $pageTailorInfo;
     private $allOnOnePage=false;    // internally set to true for survey.php so get group-specific logging but keep javascript variable namings consistent on the page.
@@ -44,7 +46,7 @@ class LimeExpressionManager {
     private $surveyOptions=array(); // a set of global survey options passed from LimeSurvey
     private $qid2code;  // array of mappings of Question # to list of SGQA codes used within it
     private $jsVar2qid; // reverse mapping of JavaScript Variable name to Question
-    private $qcode2sgq; // maps name of the variable to
+    private $qcode2sgq; // maps name of the variable to the  SGQ name
     private $alias2varName; // JavaScript array of mappings of aliases to the JavaScript variable names
     private $varNameAttr;   // JavaScript array of mappings of canonical JavaScript variable name to key attributes.
     private $pageTailoringLog;  // Debug log of tailorings done on this page
@@ -1777,6 +1779,8 @@ class LimeExpressionManager {
         }
 
         $this->knownVars = array();   // mapping of VarName to Value
+        $this->qcode2sgqa = array();
+        $this->tempVars = array();
         $this->debugLog = array();    // array of mappings among values to confirm their accuracy
         $this->qid2code = array();    // List of codes for each question - needed to know which to NULL if a question is irrelevant
         $this->jsVar2qid = array();
@@ -2286,8 +2290,8 @@ class LimeExpressionManager {
                 'sqid'=>$sqid,
                 );
 
-            $this->knownVars[$varName] = $varInfo_Code;
             $this->knownVars[$sgqa] = $varInfo_Code;
+            $this->qcode2sgqa[$varName]=$sgqa;
 
             $this->jsVar2qid[$jsVarName] = $questionNum;
             $this->qcode2sgq[$fielddata['title']] = $surveyid . 'X' . $groupNum . 'X' . $questionNum;
@@ -2444,9 +2448,6 @@ class LimeExpressionManager {
         $this->numQuestions = count($this->questionSeq2relevance);
         $this->numGroups = count($this->groupId2groupSeq);
 
-        // Some values changed, so need to update what was registered to ExpressionManager
-        $this->em->RegisterVarnamesUsingMerge($this->knownVars);
-
         return true;
     }
 
@@ -2577,7 +2578,7 @@ class LimeExpressionManager {
                     'readWrite'=>'N',
                 );
             }
-            $LEM->em->RegisterVarnamesUsingMerge($replaceArray);   // TODO - is it safe to just merge these in each time, or should a refresh be forced?
+            $LEM->tempVars = $replaceArray;
         }
         $questionSeq = -1;
         $groupSeq = -1;
@@ -4885,8 +4886,6 @@ static function GetRelevanceAndTailoringJavaScript()
         $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
 
-        $knownVars =& $LEM->knownVars;
-
         $jsParts=array();
         $allJsVarsUsed=array();
         $rowdividList=array();   // list of subquestions needing relevance entries
@@ -5402,9 +5401,9 @@ static function GetRelevanceAndTailoringJavaScript()
         // Now figure out which variables have not been declared (those not on the current page)
         $undeclaredJsVars = array();
         $undeclaredVal = array();
-        if (!$LEM->allOnOnePage && isset($knownVars) && is_array($knownVars))
+        if (!$LEM->allOnOnePage)
         {
-            foreach ($knownVars as $key=>$knownVar)
+            foreach ($LEM->knownVars as $key=>$knownVar)
             {
                 if (!is_numeric($key[0])) {
                     continue;
@@ -5498,6 +5497,12 @@ static function GetRelevanceAndTailoringJavaScript()
         dbExecuteAssoc($query);
     }
 
+    static function setTempVars($vars)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        $LEM->tempVars = $vars;
+    }
+
     /**
      * Unit test strings containing expressions
      */
@@ -5571,7 +5576,7 @@ EOST;
         LimeExpressionManager::StartProcessingGroup(1);
 
         $LEM =& LimeExpressionManager::singleton();
-        $LEM->em->RegisterVarnamesUsingMerge($vars);
+        $LEM->tempVars = $vars;
 
         $LEM->questionId2questionSeq = array();
         $LEM->questionId2groupSeq = array();
@@ -5665,7 +5670,7 @@ EOT;
         foreach(explode("\n",$tests) as $test)
         {
             $args = explode("~",$test);
-            $vars[$args[0]] = array('sgqa'=>$args[0], 'code'=>'', 'jsName'=>'java_' . $args[0], 'jsName_on'=>'java_' . $args[0], 'readWrite'=>'Y', 'type'=>'X', 'relevanceStatus'=>'1','gseq'=>1, 'qseq'=>$i);
+            $vars[$args[0]] = array('sgqa'=>$args[0], 'code'=>'', 'jsName'=>'java' . $args[0], 'jsName_on'=>'java' . $args[0], 'readWrite'=>'Y', 'type'=>'X', 'relevanceStatus'=>'1','gseq'=>1, 'qseq'=>$i);
             $varSeq[] = $args[0];
             $testArgs[] = $args;
             $LEM->questionId2questionSeq[$i] = $i;
@@ -5675,7 +5680,7 @@ EOT;
                 'qid'=>$i,
                 'qseq'=>$i,
                 'gseq'=>1,
-                'jsResultVar'=>'java_' . $args[0],
+                'jsResultVar'=>'java' . $args[0],
                 'type'=>(($args[1]=='expr') ? '*' : ($args[1]=='message') ? 'X' : 'S'),
                 'hidden'=>false,
                 'gid'=>1,   // ($i % 3),
@@ -5683,7 +5688,7 @@ EOT;
             ++$i;
         }
 
-        $LEM->em->RegisterVarnamesUsingMerge($vars);
+        $LEM->tempVars = $vars;
         $LEM->ProcessAllNeededRelevance();
 
         // collect relevance
@@ -5696,7 +5701,7 @@ EOT;
             $rel = LimeExpressionManager::QuestionIsRelevant($i);
             $question = LimeExpressionManager::ProcessString($testArg[3], $i, NULL, true, 1, 1);
 
-            $jsVarName='java_' . $testArg[0];
+            $jsVarName='java' . $testArg[0];
 
             $argInfo[] = array(
                 'num' => $i,
@@ -5711,7 +5716,7 @@ EOT;
             $varNameAttr[$jsVarName] = "'" . $jsVarName . "':{"
                 . "'jsName':'" . $jsVarName
                 . "','jsName_on':'" . $jsVarName
-                . "','sgqa':'" . $jsVarName
+                . "','sgqa':'" . substr($jsVarName,4)
                 . "','qid':" . $i
                 . ",'gid':". 1  // ($i % 3)   // so have 3 possible group numbers
             . "}";
@@ -5720,6 +5725,23 @@ EOT;
         $LEM->varNameAttr = $varNameAttr;
         LimeExpressionManager::FinishProcessingGroup();
         LimeExpressionManager::FinishProcessingPage();
+
+
+        print <<< EOD
+    <script type='text/javascript'>
+    <!--
+    var LEMradix='.';
+	function checkconditions(value, name, type, evt_type)
+	{
+        if (typeof evt_type === 'undefined')
+        {
+            evt_type = 'onchange';
+        }
+        ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
+	}
+    // -->
+    </script>
+EOD;
 
         print LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
 
@@ -5768,9 +5790,7 @@ EOT;
         $LEM =& LimeExpressionManager::singleton();
         if (isset($LEM->knownVars[$sgqa]))
         {
-            $varInfo = $LEM->knownVars[$sgqa];
-            $thisVar['this'] = $varInfo;
-            $LEM->em->RegisterVarnamesUsingMerge($thisVar);
+            $LEM->qcode2sgqa['this']=$sgqa;
         }
     }
 
@@ -6170,6 +6190,310 @@ EOT;
         }
         return $updatedValues;
     }
+
+    static public function isValidVariable($varName)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+
+        if (isset($LEM->knownVars[$varName]))
+        {
+            return true;
+        }
+        else if (isset($LEM->qcode2sgqa[$varName]))
+        {
+            return true;
+        }
+        else if (isset($LEM->tempVars[$varName]))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    static public function GetVarAttribute($name,$attr,$default,$gseq,$qseq)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        return $LEM->_GetVarAttribute($name,$attr,$default,$gseq,$qseq);
+    }
+
+    private function _GetVarAttribute($name,$attr,$default,$gseq,$qseq)
+    {
+        $args = explode(".", $name);
+        $varName = $args[0];
+        $varName = preg_replace("/^(?:INSERTANS:)?(.*?)$/", "$1", $varName);
+
+        if (isset($this->knownVars[$varName]))
+        {
+            $var = $this->knownVars[$varName];
+        }
+        else if (isset($this->qcode2sgqa[$varName]))
+        {
+            $var = $this->knownVars[$this->qcode2sgqa[$varName]];
+        }
+        else if (isset($this->tempVars[$varName]))
+        {
+            $var = $this->tempVars[$varName];
+        }
+        else
+        {
+            return '{' . $name . '}';
+        }
+        $sgqa = isset($var['sgqa']) ? $var['sgqa'] : NULL;
+        if (is_null($attr))
+        {
+            // then use the requested attribute, if any
+            $attr = (count($args)==2) ? $args[1] : 'code';
+        }
+        switch ($attr)
+        {
+            case 'varName':
+                return $name;
+            case 'code':
+            case 'NAOK':
+                if (isset($var['code'])) {
+                    return $var['code'];    // for static values like TOKEN
+                }
+                else {
+                    if (isset($_SESSION[$sgqa])) {
+                        return $_SESSION[$sgqa];
+                    }
+                    if (isset($var['default']) && !is_null($var['default'])) {
+                        return $var['default'];
+                    }
+                    return $default;
+                }
+            case 'value':
+            case 'valueNAOK':
+            {
+                $type = $var['type'];
+                $code = $this->_GetVarAttribute($name,'code',$default,$gseq,$qseq);
+                switch($type)
+                {
+                    case '!': //List - dropdown
+                    case 'L': //LIST drop-down/radio-button list
+                    case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                    case '1': //Array (Flexible Labels) dual scale  // need scale
+                    case 'H': //ARRAY (Flexible) - Column Format
+                    case 'F': //ARRAY (Flexible) - Row Format
+                    case 'R': //RANKING STYLE
+                        $scale_id = $this->_GetVarAttribute($name,'scale_id','0',$gseq,$qseq);
+                        $which_ans = $scale_id . '~' . $code;
+                        $ansArray = $var['ansArray'];
+                        if (is_null($ansArray))
+                        {
+                            $value = $default;
+                        }
+                        else
+                        {
+                            if (isset($ansArray[$which_ans])) {
+                                $answerInfo = explode('|',$ansArray[$which_ans]);
+                                $answer = $answerInfo[0];
+                            }
+                            else {
+                                $answer = $default;
+                            }
+                            $value = $answer;
+                        }
+                        break;
+                    default:
+                        $value = $code;
+                        break;
+                    }
+                    return $value;
+                }
+                break;
+            case 'jsName':
+                if ($this->surveyMode=='survey'
+                        || ($this->surveyMode=='group' && $gseq != -1 && isset($var['gseq']) && $gseq == $var['gseq'])
+                        || ($this->surveyMode=='question' && $qseq != -1 && isset($var['qseq']) && $qseq == $var['qseq']))
+                {
+                    return (isset($var['jsName_on']) ? $var['jsName_on'] : (isset($var['jsName'])) ? $var['jsName'] : $default);
+                }
+                else {
+                    return (isset($var['jsName']) ? $var['jsName'] : $default);
+                }
+                break;
+            case 'sgqa':
+            case 'mandatory':
+            case 'qid':
+            case 'gid':
+            case 'grelevance':
+            case 'question':
+            case 'readWrite':
+            case 'relevance':
+            case 'rowdivid':
+            case 'type':
+            case 'qcode':
+            case 'gseq':
+            case 'qseq':
+            case 'ansList':
+            case 'scale_id':
+                return (isset($var[$attr])) ? $var[$attr] : $default;
+            case 'shown':
+                if (isset($var['shown']))
+                {
+                    return $var['shown'];    // for static values like TOKEN
+                }
+                else
+                {
+                    $type = $var['type'];
+                    $code = $this->_GetVarAttribute($name,'code',$default,$gseq,$qseq);
+                    switch($type)
+                    {
+                        case '!': //List - dropdown
+                        case 'L': //LIST drop-down/radio-button list
+                        case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                        case '1': //Array (Flexible Labels) dual scale  // need scale
+                        case 'H': //ARRAY (Flexible) - Column Format
+                        case 'F': //ARRAY (Flexible) - Row Format
+                        case 'R': //RANKING STYLE
+                            $scale_id = $this->_GetVarAttribute($name,'scale_id','0',$gseq,$qseq);
+                            $which_ans = $scale_id . '~' . $code;
+                            $ansArray = $var['ansArray'];
+                            if (is_null($ansArray))
+                            {
+                                $shown=$code;
+                            }
+                            else
+                            {
+                                if (isset($ansArray[$which_ans])) {
+                                    $answerInfo = explode('|',$ansArray[$which_ans]);
+                                    array_shift($answerInfo);
+                                    $answer = join('|',$answerInfo);
+                                }
+                                else {
+                                    $answer = $code;
+                                }
+                                $shown = $answer;
+                            }
+                            break;
+                        case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                        case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                        case ':': //ARRAY (Multi Flexi) 1 to 10
+                        case '5': //5 POINT CHOICE radio-buttons
+                            $shown = $code;
+                            break;
+                        case 'N': //NUMERICAL QUESTION TYPE
+                        case 'K': //MULTIPLE NUMERICAL QUESTION
+                        case 'Q': //MULTIPLE SHORT TEXT
+                        case ';': //ARRAY (Multi Flexi) Text
+                        case 'S': //SHORT FREE TEXT
+                        case 'T': //LONG FREE TEXT
+                        case 'U': //HUGE FREE TEXT
+                        case 'M': //Multiple choice checkbox
+                        case 'P': //Multiple choice with comments checkbox + text
+                        case 'D': //DATE
+                        case '*': //Equation
+                        case 'I': //Language Question
+                        case '|': //File Upload
+                        case 'X': //BOILERPLATE QUESTION
+                            $shown = $code;
+                            break;
+                        case 'G': //GENDER drop-down list
+                        case 'Y': //YES/NO radio-buttons
+                        case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                        case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                            $ansArray = $var['ansArray'];
+                            if (is_null($ansArray))
+                            {
+                                $shown=$default;
+                            }
+                            else
+                            {
+                                if (isset($ansArray[$code])) {
+                                    $answerInfo = explode('|',$ansArray[$code]);
+                                    array_shift($answerInfo);
+                                    $answer = join('|',$answerInfo);
+                                }
+                                else {
+                                    $answer = $default;
+                                }
+                                $shown = $answer;
+                            }
+                            break;
+                    }
+                    return $shown;
+                }
+            case 'relevanceStatus':
+                $gid = (isset($var['gid'])) ? $var['gid'] : -1;
+                $qid = (isset($var['qid'])) ? $var['qid'] : -1;
+                $rowdivid = (isset($var['rowdivid']) && $var['rowdivid']!='') ? $var['rowdivid'] : -1;
+                if ($qid == -1 || $gid == -1) {
+                    return 1;
+                }
+                if (isset($args[1]) && $args[1]=='NAOK') {
+                    return 1;
+                }
+                $grel = (isset($_SESSION['relevanceStatus']['G'.$gid]) ? $_SESSION['relevanceStatus']['G'.$gid] : 1);   // true by default
+                $qrel = (isset($_SESSION['relevanceStatus'][$qid]) ? $_SESSION['relevanceStatus'][$qid] : 0);
+                $sqrel = (isset($_SESSION['relevanceStatus'][$rowdivid]) ? $_SESSION['relevanceStatus'][$rowdivid] : 1);    // true by default - only want false if a subquestion is irrelevant
+                return ($grel && $qrel && $sqrel);
+            default:
+                print 'UNDEFINED ATTRIBUTE: ' . $attr . "<br/>\n";
+                return $default;
+        }
+        return $default;    // and throw and error?
+    }
+
+    public static function SetVariableValue($op,$name,$value)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+
+        if (isset($LEM->tempVars[$name]))
+        {
+            switch($op)
+            {
+                case '=':
+                    $LEM->tempVars[$name]['code'] = $value;
+                    break;
+                case '*=':
+                    $LEM->tempVars[$name]['code'] *= $value;
+                    break;
+                case '/=':
+                    $LEM->tempVars[$name]['code'] /= $value;
+                    break;
+                case '+=':
+                    $LEM->tempVars[$name]['code'] += $value;
+                    break;
+                case '-=':
+                    $LEM->tempVars[$name]['code'] -= $value;
+                    break;
+            }
+            return $LEM->tempVars[$name]['code'];
+        }
+        else
+        {
+            if (isset($LEM->knownVars[$name]))
+            {
+                $vname = $name;
+            }
+            else if (isset($LEM->qcode2sgqa[$name]))
+            {
+                $vname = $LEM->qcode2sgqa[$name];
+            }
+
+            switch($op)
+            {
+                case '=':
+                    $LEM->knownVars[$name]['code'] = $value;
+                    break;
+                case '*=':
+                    $LEM->knownVars[$name]['code'] *= $value;
+                    break;
+                case '/=':
+                    $LEM->knownVars[$name]['code'] /= $value;
+                    break;
+                case '+=':
+                    $LEM->knownVars[$name]['code'] += $value;
+                    break;
+                case '-=':
+                    $LEM->knownVars[$name]['code'] -= $value;
+                    break;
+            }
+            return $LEM->knownVars[$name]['code'];
+        }
+    }
+
 
     /**
      * Create HTML view of the survey, showing everything that uses EM
