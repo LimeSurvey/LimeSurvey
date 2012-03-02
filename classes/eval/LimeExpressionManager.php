@@ -6061,18 +6061,19 @@ EOD;
             $grelevant = (isset($_POST['relevanceG' . $gid]) ? ($_POST['relevanceG' . $gid] == 1) : false);
             $_SESSION['relevanceStatus'][$qid] = $relevant;
             $_SESSION['relevanceStatus']['G' . $gid] = $grelevant;
-            if (isset($qinfo['info']['rowdivid']) && $qinfo['info']['rowdivid']!='')
-            {
-                $rowdivid=$qinfo['info']['rowdivid'];
-                if ($rowdivid!='' && isset($_POST['relevance' . $rowdivid]))
-                {
-                    $sqrelevant = ($_POST['relevance' . $rowdivid] == 1);
-                    $_SESSION['relevanceStatus'][$rowdivid] = $sqrelevant;
-                }
-            }
             foreach (explode('|',$qinfo['sgqa']) as $sq)
             {
-                if ($relevant && $grelevant)
+                $sqrelevant=true;
+                if (isset($LEM->subQrelInfo[$qid][$sq]['rowdivid']))
+                {
+                    $rowdivid = $LEM->subQrelInfo[$qid][$sq]['rowdivid'];
+                    if ($rowdivid!='' && isset($_POST['relevance' . $rowdivid]))
+                    {
+                        $sqrelevant = ($_POST['relevance' . $rowdivid] == 1);
+                        $_SESSION['relevanceStatus'][$rowdivid] = $sqrelevant;
+                    }
+                }
+                if ($relevant && $grelevant && $sqrelevant)
                 {
                     $value = (isset($_POST[$sq]) ? $_POST[$sq] : '');
                     $type = $qinfo['info']['type'];
@@ -6144,6 +6145,10 @@ EOD;
                 else {  // irrelevant, so database will be NULLed separately
                     // Must unset the value, rather than setting to '', so that EM can re-use the default value as needed.
                     unset($_SESSION[$sq]);
+                    $updatedValues[$sq] = array (
+                        'type'=>$type,
+                        'value'=>NULL,
+                        );
                 }
             }
         }
