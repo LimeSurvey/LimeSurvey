@@ -5,7 +5,7 @@
 	<div class="help-wrapper">
 		<div class="mandatory error">{QUESTION_MAN_MESSAGE}</div>
 		{QUESTION_VALID_MESSAGE}
-		<div class="tip help">{QUESTION_HELP}</div>
+		<div class="tip">{QUESTION_HELP}</div>
 	</div>
 	<div class="answers-wrapper">
 		{ANSWER}

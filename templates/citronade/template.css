@@ -46,7 +46,6 @@ table td,table th{border:1px solid #ccc;vertical-align:top;padding:4px}
 article,aside,dialog,figure,footer,header,hgroup,menu,nav,section{display:block}
 ul#surveylist{list-style:none}
 .hide{position:absolute;top:auto;left:-999999px}
-.good{color:#090}
 #progress-wrapper{width:252px;font-size:12px;height:20px;margin:0 auto}
 #progress-wrapper #progress-pre{float:left;width:45px;text-align:right;margin:0 5px 0 0}
 #progress-wrapper .ui-widget-content{float:left;width:150px;height:1em;text-align:left;border-color:#666;border-style:solid;border-width:1px}
@@ -196,6 +195,7 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 .error{color:#944}
 .good{color:#494}
 .problem{color:#944}
+/* input error */
 
 /* If you want some round box, add round style */
 .round{-moz-border-radius: 4px;-webkit-border-radius: 4px;border-radius:4px;}
@@ -337,7 +337,7 @@ div.form table table td{padding:0;}
 /* tip bloc */
 .help-wrapper {font-style:italic;margin:0.5em auto;width:96%;font-size:0.8em;}
 .help-wrapper .error,.help-wrapper .error-wrapper{color:#944;font-weight:bold}
-.help-wrapper .success,.help-wrapper .good,.help-wrapper .ok{color:#494}
+.help-wrapper .success,.help-wrapper .good,.help-wrapper .ok{color:#444}
 .help-wrapper .problem{color:#944}
 .help-wrapper .errormandatory{color:#944;font-weight:1em;}
 .help-wrapper .errormandatory br:first,.help-wrapper .errormandatory strong br:first{display:none;}
@@ -345,24 +345,33 @@ div.form table table td{padding:0;}
 
 .help-wrapper .mandatory{display:none;}
 .input-error .help-wrapper .mandatory{display:block;}
-
 /* input error */
-input.error,input.problem{font-weight:bold}/* some width problem : todo :fix it */
 input[type="text"].tip,input.tip,input.tip{border:0;background:transparent}
 /* input decoration */
 .answers-wrapper input.text,.answers-wrapper textarea,.answers-wrapper input[type=text]
 	{margin:3px;padding:2px;}
 .form input[type=text],.answers-wrapper input.text,.answers-wrapper textarea, .answers-wrapper input[type=text]
 	{border:1px solid #999;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius:3px;}
-.answers-wrapper textarea:focus, .answers-wrapper input.text:focus, .answers-wrapper input[type=text]:focus{
-  background-color:#F0F0F0;border-color:#666;
-  -moz-box-shadow: 1px 1px 3px #555;
-  -webkit-box-shadow: 1px 1px 3px #555;
-  box-shadow: 1px 1px 3px #555;
-}
 
 .answers-wrapper textarea[disabled], .answers-wrapper input.text[disabled], .answers-wrapper input[type=text][disabled]{
   background-color:#FFF;border-color:#EEE;
+}
+
+.answers-wrapper textarea.error, .answers-wrapper input[type=text].error{
+	border:1px solid #944;color:#444;background-color:#FEF;
+}
+.answers-wrapper textarea.good, .answers-wrapper input[type=text].good{
+	border:1px solid #494;color:#444
+}
+.answers-wrapper textarea.empty, .answers-wrapper input[type=text].empty{
+	border:1px solid #999;color:#444;background-color:#FFF;
+}
+
+.answers-wrapper textarea:focus, .answers-wrapper input.text:focus, .answers-wrapper input[type=text]:focus{
+  background-color:#FFF;border-color:#666;color:#222;
+  -moz-box-shadow: 1px 1px 3px #555;
+  -webkit-box-shadow: 1px 1px 3px #555;
+  box-shadow: 1px 1px 3px #555;
 }
 
 /* specific questions color and background*/
@@ -1002,114 +1011,12 @@ input.text,textarea{
 
 /* Tips / Validation Messages */
 /* If the question is invalid, but has not been submitted, give it a pleasant warning color */
-div.em_num_answers.good {
- color: green;
-}
 
-div.em_num_answers.error {
-  color: #FF00FF;
-  display: block;
-}
-
-div.em_value_range.good {
-  color: green;
-}
-div.em_value_range.error {
-  color: #FF00FF;
-  display: block;
-}
-
-div.em_sum_range.good {
-  color: green;
-}
-div.em_sum_range.error {
-  color: #FF00FF;
-  display: block;
-}
-
-div.em_regex_validation {
-  display: none;
-}
-div.em_regex_validation.good {
-  color: green;
-}
-div.em_regex_validation.error {
-  color: #FF00FF;
-}
-
-div.em_q_fn_validation {
-  display: none;
-}
-div.em_q_fn_validation.good {
-  color: green;
-}
-div.em_q_fn_validation.error {
-  color: #FF00FF;
-}
-
-div.em_sq_fn_validation {
-  display: none;
-}
-div.em_sq_fn_validation.good {
-  color: green;
-}
-div.em_sq_fn_validation.error {
-  color: #FF00FF;
-}
-
-div.em_other_comment_mandatory.good {
-  display: none;
-}
-div.em_other_comment_mandatory.error {
-  color: #FF00FF;
-  display: block;
-}
-
-input.em_sq_validation.good, textarea.em_sq_validation.good {
-}
-
-input.em_sq_validation.error, textarea.em_sq_validation.error {
-  color: black;
-  background-color:  pink;
-}
-
-span.dynamic_sum {
-  font-weight: bold;
-  background-color: #d3d3d3;
-}
-span.dynamic_sum.good {
-  color: green;
-}
-span.dynamic_sum.error {
-  color: red;
-}
-
-span.dynamic_remaining {
-  font-weight: bold;
-  background-color: #d3d3d3;
-}
-span.dyanamic_remaining.good {
-  color: green;
-}
-span.dynamic_remaining.error {
-  color: red;
-}
-
-/* If  it is still invalid after submit, flag it in red */
-.input-error div.error {
-  color: red;
-  display: block;
-}
-
-span.hide-tip div.good {
+.hide-tip .good {
     display: none;
 }
-
-span.hide-tip div.error {
-    color: #FF00FF;
+.hide-tip .error {
 }
-
-.input-error span.hide-tip div.error {
-    color: red;
+.input-error .hide-tip .error {
     display: block;
 }
