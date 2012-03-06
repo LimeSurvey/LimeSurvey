@@ -8,6 +8,14 @@
     var redUrl = "<?php echo Yii::app()->baseUrl . "/index.php/admin/participants/displayParticipants"; ?>";
     var copyUrl = "<?php echo Yii::app()->baseUrl . "/index.php/admin/participants/addToCentral"; ?>";
     var surveyId = "<?php echo Yii::app()->request->getQuery('sid'); ?>";
+
+    /* LANGUAGE */
+    var attributesMappedText = "<?php $clang->et("All the attributes are automatically mapped") ?>";
+    var mustPairAttributeText= "<?php $clang->et("You have to pair it with one attribute of the token table") ?>";
+    var onlyOneAttributeMappedText="<?php $clang->et("Only one central attribute is mapped with token attribute ") ?>";
+    var cannotAcceptTokenAttributesText="<?php $clang->et("This list cannot accept token attributes") ?>";
+    var addElementBelowText="<?php $clang->et("You have to add the element below the list") ?>";
+
 </script>
 </head>
 <body>
