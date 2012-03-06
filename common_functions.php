@@ -14,6 +14,10 @@
 *	Files Purpose: lots of common functions
 */
 
+if (version_compare(PHP_VERSION,'5.1.2')<0)
+{
+    die('Your PHP version is outdated. LimeSurvey needs PHP 5.2 or later.');
+}
 require_once('replacements.php');
 
 
@@ -2838,10 +2842,10 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
     }
     if (isset($fieldmap)) {
         $_SESSION['fieldmap-' . $surveyid . $clang->langcode]=$fieldmap;
-        
+
         if (isset($_SESSION['adminlang']) && $clang->langcode != $_SESSION['adminlang']) {
             $clang = new limesurvey_lang($_SESSION['adminlang']);
-        }       
+        }
         return $fieldmap;
     }
 }
