@@ -8,7 +8,14 @@
     }
     var copyUrl = "<?php echo Yii::app()->baseUrl . "/index.php/admin/participants/addToTokenattmap"; ?>";
     var participant_id = "<?php echo $participant_id; ?>";
-</script>
+
+    /* SCRIPT TEXT */
+    var attributesMappedText = "<?php $clang->et("All the attributes are automatically mapped") ?>";
+    var mustPairAttributeText= "<?php $clang->et("You have to pair it with one attribute of the token table") ?>";
+    var onlyOneAttributeMappedText="<?php $clang->et("Only one central attribute is mapped with token attribute ") ?>";
+    var cannotAcceptTokenAttributesText="<?php $clang->et("This list cannot accept token attributes") ?>";
+
+    </script>
 <?php
 	$columncount = 0;
 	if (!empty($selectedcentralattribute))
@@ -16,14 +23,14 @@
 	if (!empty($selectedtokenattribute))
 		$columncount++;
 	$columnstyle = "attrcol_".$columncount;
-?>	
+?>
 <div class='header ui-widget-header'>
     <strong>
         <?php echo $count ?>
     </strong>
 </div>
 <div class="main">
-	<p><?php $clang->eT("To add or not add participants to the survey just drag and drop their attributes in the correct boxes."); ?><br />
+	<p><?php $clang->eT("Select any attributes you'd like use in your survey by dropping the attribute in the right hand column."); ?><br />
 		<?php $clang->eT("Click on 'Continue' when you are done."); ?>
 	</p>
     <?php
