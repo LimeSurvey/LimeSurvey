@@ -145,6 +145,10 @@ height:12px;
   font-size: 1em;
 }
 
+/* navigator-table */
+.clear-all{text-align:left}
+.save-all{text-align:center}
+.submit-buttons{text-align:right}
 table,img {
   border: 0;
 }

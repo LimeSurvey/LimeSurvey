@@ -118,11 +118,8 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 	input#registercontinue,
 	.navigator input
 		{border:1px solid #ABB8D1;background:#FEFEFE;color:#415479;
-  -moz-box-shadow: 2px 2px 5px #ccc;
-  -webkit-box-shadow: 2px 2px 5px #ccc;
-  box-shadow: 2px 2px 5px #ccc;
-
-}
+		-moz-box-shadow: 2px 2px 5px #ccc;-webkit-box-shadow: 2px 2px 5px #ccc;box-shadow: 2px 2px 5px #ccc;
+		}
 #languagechanger select:hover,
 	.tools input:hover,
 	.tools a:hover,
@@ -140,9 +137,7 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 	input#loadbutton:focus,
 	input#registercontinue:focus
 		{color:#415479;background:#dcdfe6;border-color:#ABB8D1;
-  -moz-box-shadow: 2px 2px 5px #415479;
-  -webkit-box-shadow: 2px 2px 5px #415479;
-  box-shadow: 2px 2px 5px #415479;
+		-moz-box-shadow: 2px 2px 5px #415479;-webkit-box-shadow: 2px 2px 5px #415479;box-shadow: 2px 2px 5px #415479;
 		}
 #languagechanger select:hover option{background:#FEFEFE;}
 
@@ -181,9 +176,9 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 .question-wrapper .question-text strong,.question-wrapper .question-text b{font-weight:bolder;}/* see for strong and b to add some color */
 .asterisk {display:none}
 .mandatory .asterisk {display:inline;}
-.asterisk {color:#FF8900;padding-right:1em;}
+.asterisk {color:#FF8900;}
 .showqnumcode-X .qnumcode {display:none;}
-.qnumcode {font-style:italic;padding-right:1em;}
+.qnumcode {font-style:italic;}
 
 /* input decoration */
 .form input[type=text],#tokenform input[type=text]
@@ -195,7 +190,7 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 .error{color:#944}
 .good{color:#494}
 .problem{color:#944}
-/* input error */
+/* input error after*/
 
 /* If you want some round box, add round style */
 .round{-moz-border-radius: 4px;-webkit-border-radius: 4px;border-radius:4px;}
@@ -216,7 +211,7 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 
 /* index */
 #index .container{margin-top: 2em;border: 1px solid #5670A1;background:#EEF6FF;}
-#index .container h2{padding:0.2em 1em 0.5em;margin:0 0 0em;font-size:1.1em;}
+#index .container h2{padding:0.2em 1em 0.5em;margin:0 0 0;font-size:1.1em;}
 #index .container h2{background:#5670A1;color:#FEFEFE;font-size:1.2em}
 #index .hdr{color:#5670A1;padding:0 0.5em;}
 #index .row{padding:0.1em 1em;cursor: pointer;color:#5670A1;text-decoration: underline;}
@@ -225,11 +220,12 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 #index .row:hover, #index .row:focus, #index .row:active {background-color: #E5F8A8;color: #5670A1;text-decoration:none;}
 #index .container .submit{margin:0 auto 0.5em;display:block}
 /* --------------------------------------------- */
-/* More tempate adaptation                       */
+/* More template adaptation                       */
 /* --------------------------------------------- */
-#container{margin:0;text-align:center;} /* Global container */
-
-.wrapper,#content{overflow:auto;position:relative;text-align:left;}
+#container{margin:0;} /* Global container */
+.ie6 #container,.ie7 #container{text-align:center}
+.wrapper,#content{overflow:auto;position:relative;}
+.ie6 .wrapper,.ie6 #content,.ie7 .wrapper,.ie7 #content{text-align:left;}
 #container{min-height:100%;position:relative;}
 
 #head{position:relative;}
@@ -321,7 +317,7 @@ div.form table table td{padding:0;}
 /* Group decoration */
 .group{margin-bottom: 2em}
 .groupdescription{padding:0 1.5em;margin:0 0 0.5em;}
-.grouptitle{line-height:2em;padding:0 1em;margin:0 0 0em;font-size:1.1em;}
+.grouptitle{line-height:2em;padding:0 1em;margin:0;font-size:1.1em;}
 
 
 /* Question decoration */
@@ -335,7 +331,9 @@ div.form table table td{padding:0;}
 .question-help img{margin:1px 5px 5px 1px;}
 
 /* tip bloc */
-.help-wrapper {font-style:italic;margin:0.5em auto;width:96%;font-size:0.8em;}
+
+.help-wrapper ,.tip{font-style:italic;margin:0.5em auto;width:96%;line-height: 150%;}
+.help-wrapper {font-size:0.8em;}
 .help-wrapper .error,.help-wrapper .error-wrapper{color:#944;font-weight:bold}
 .help-wrapper .success,.help-wrapper .good,.help-wrapper .ok{color:#444}
 .help-wrapper .problem{color:#944}
@@ -345,6 +343,7 @@ div.form table table td{padding:0;}
 
 .help-wrapper .mandatory{display:none;}
 .input-error .help-wrapper .mandatory{display:block;}
+.answer-wrapper .tip{text-align:left;font-size:0.8em;}
 /* input error */
 input[type="text"].tip,input.tip,input.tip{border:0;background:transparent}
 /* input decoration */
@@ -353,10 +352,8 @@ input[type="text"].tip,input.tip,input.tip{border:0;background:transparent}
 .form input[type=text],.answers-wrapper input.text,.answers-wrapper textarea, .answers-wrapper input[type=text]
 	{border:1px solid #999;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius:3px;}
 
-.answers-wrapper textarea[disabled], .answers-wrapper input.text[disabled], .answers-wrapper input[type=text][disabled]{
-  background-color:#FFF;border-color:#EEE;
-}
 
+.mandatory .answers-wrapper textarea.empty,.mandatory  .answers-wrapper input[type=text].empty,
 .answers-wrapper textarea.error, .answers-wrapper input[type=text].error{
 	border:1px solid #944;color:#444;background-color:#FEF;
 }
@@ -365,6 +362,12 @@ input[type="text"].tip,input.tip,input.tip{border:0;background:transparent}
 }
 .answers-wrapper textarea.empty, .answers-wrapper input[type=text].empty{
 	border:1px solid #999;color:#444;background-color:#FFF;
+}
+.answers-wrapper textarea[disabled], .answers-wrapper input.text[disabled], .answers-wrapper input[type=text][disabled]{
+  background-color:#FFF;border-color:#EEE;
+}
+.answers-wrapper textarea.empty[disabled], .answers-wrapper input[type=text].empty[disabled]{
+	border:1px solid #EEE;color:#444;background-color:#FFF;
 }
 
 .answers-wrapper textarea:focus, .answers-wrapper input.text:focus, .answers-wrapper input[type=text]:focus{
@@ -425,8 +428,7 @@ button.ui-button::-moz-focus-inner {
 	line-height: normal;
 }
 
-.ui-button-icon-only { 
-	width: 2.2em; /* To make room for the icon, a width needs to be set here */
+.ui-button-icon-only { width: 2.2em;
 } 
 
 button.ui-button-icon-only { 
@@ -656,7 +658,7 @@ table.question tbody td.ddarrayseparator{border-top-width: 0px;}
 ,.gender .answers-wrapper ul li
 {
 	display: inline;
-	padding: 0% 1em 0% 0%;
+	padding: 0 1em 0 0;
 	text-align:left;
 }
  .choice-5-pt-radio .answers-wrapper li
@@ -664,7 +666,7 @@ table.question tbody td.ddarrayseparator{border-top-width: 0px;}
 ,.list-radio .answers-wrapper li
 ,.list-with-comment .answers-wrapper li
 {
-	margin-left: 3em;
+	margin-right:0;margin-left: 3em;
 }
 @media screen and (max-width: 640px) {
 	 .choice-5-pt-radio .answers-wrapper li
@@ -678,21 +680,10 @@ table.question tbody td.ddarrayseparator{border-top-width: 0px;}
 .list-radio-flexible li{width:auto;}
 .list-radio-flexible ul{width:auto;margin:0 auto 0.5em;}
 
-
- .date p.tip
-,.numeric-multi p.tip
-,.numeric p.tip
-{
-	font-size: 80%;
-	font-style: italic;
-}
-
 table.rank{width:98%;table-layout:fixed;}
 table.rank, table.rank table{border:0px none #FFF;border-collapse:collapse}
 table.rank td{border-width:1px;}
 table.rank table td{border-width:0px;}
-
-
 
 .numeric-multi ul.slider.computed
 {
@@ -712,54 +703,28 @@ table.rank table td{border-width:0px;}
 ,.gender .answers-wrapper ul li
 {
 	display: inline;
-	padding: 0% 2em 0% 0%;
+	padding: 0 2em 0 0;
 	text-align:left;
 }
 
-.date p.question { margin-left: 1em;margin-right: 1em; text-align:center;}
-.date p.question select.day {}
-.date p.question select.month {}
-.date p.question select.year {}
-
- .date p.tip
-,.numeric-multi p.tip
-,.numeric p.tip
-{
-	padding-left: 1.5em;
-	font-size: 80%;
-	font-style: italic;
-	line-height: 150%;
-}
-.numeric p.question
+p.question
 {
 	 margin-left: 1em;margin-right: 1em;
 	font-weight: normal;
 	text-align:center;
 }
- .numeric-multi p.tip.error
-,.numeric-multi input.tip.error
-{
-	text-align: left;
-}
- .numeric-multi p.tip.good
-,.numeric-multi input.tip.good
-{
-	text-align: left;
-}
-
 
 table.rank, table.rank table{border:0px none #FFF;border-collapse:collapse}
 table.rank{margin:0.3em auto;}
 table.rank select{width:99%;min-width:10em;padding-left:0.3em;}
 table.rank td{border:1px solid #D5DBE7}
 table.rank table td{border:0px none #D5DBE7}
-
-/*input{text-align:right}*/
+table.rank input{border:1px solid #999}
 
 
 .list-dropdown-flexible .question, .list-dropdown .question, .language .question
 {
-text-align:center;
+	text-align:center;
 }
 
 .list-with-comment div.list
@@ -773,11 +738,11 @@ text-align:center;
 	width: 47%;
 	float: left;
 	padding: 0.5em;
-	margin: 0%;
+	margin: 0;
 }
 .list-with-comment div.list p
 {
-	margin: 0%;
+	margin: 0;
 	text-align: left;
 }
 .list-with-comment p.comment
@@ -793,11 +758,6 @@ text-align:center;
 	width: 100%;
 }
 
- .multiple-opt-comments td.answer
-,.multiple-short-txt td.answer
-,.numeric-multi td.answer
-{
-}
  .multiple-opt-comments ul
 ,.multiple-short-txt ul
 ,.numeric-multi ul
@@ -808,13 +768,11 @@ text-align:center;
 	width:99%;
 }
 
-
-
-.numeric-multi ul	{	}
+.numeric-multi ul	{}
 .numeric-multi ul.computed
 {
 	float:left;
-	padding-right: 2em;
+	padding-left: 0;padding-right: 2em;
 }
 .numeric-multi ul.slider.computed
 {
@@ -830,9 +788,9 @@ text-align:center;
 	width:99%;
 }
 .numeric-multi ul li
-,.multiple-opt ul li
-,.multiple-opt-comments ul li
-,.multiple-short-txt ul li
+, .multiple-opt ul li
+, .multiple-opt-comments ul li
+, .multiple-short-txt ul li
 {
 	display: block;
 }
@@ -850,83 +808,78 @@ text-align:center;
 	text-align: left;
 }
 
-.numeric-multi ul.multiplenumerichelp span input {
-    border: none;
-    background-color: #fff;
-    color: #222;
-    padding: 0%;
-    width: 7em;
+.numeric-multi .answers-wrapper ul
+, .multiple-short-txt .answers-wrapper ul 
+, .multiple-opt-comments  .answers-wrapper ul
+{
+	display:table;
 }
-.numeric-multi ul li label
-,.multiple-opt-comments ul li span.option
-,.multiple-short-txt ul li label
+.numeric-multi .answers-wrapper ul li
+, .multiple-short-txt .answers-wrapper ul li
+, .multiple-opt-comments  .answers-wrapper ul li
+{
+	display:table-row;
+}
+
+.numeric-multi .answers-wrapper ul li label, .numeric-multi .answers-wrapper ul li span 
+, .multiple-short-txt .answers-wrapper ul li label, .multiple-short-txt .answers-wrapper ul li span
+, .multiple-opt-comments  .answers-wrapper ul .option, .multiple-opt-comments  .answers-wrapper ul .comment
+{
+	display:table-cell;
+	vertical-align:middle;
+	width:50%;
+	padding:0.3em 0.5em 0.7em;
+}
+
+.numeric-multi .answers-wrapper ul li label span
+, .multiple-short-txt .answers-wrapper ul li label span
+{
+	display:inline;
+	width:auto
+}
+
+.numeric-multi .answers-wrapper ul li span span
+, .multiple-short-txt .answers-wrapper ul li span span
+{
+	display:inline-block;
+	width:5em;
+	text-align:center;
+	font-weight:bold;
+}
+.ie6 .numeric-multi ul li label,.ie7 .numeric-multi ul li label
+,.ie6 .multiple-opt-comments ul li span.option,.ie7 .multiple-opt-comments ul li span.option
+,.ie6 .multiple-short-txt ul li label,.ie7 .multiple-short-txt ul li label
 {
 	clear:left;
 	float:left; 
 	width:45%;
-	padding: 0.3em 1em 0% 0%;
+	padding: 0.3em 1em 0 0;
 }
+
 .multiple-opt .answers-wrapper ul li
 , .list-radio .answers-wrapper ul li
 , .list-radio-flexible .answers-wrapper ul li
 {
-	padding-left:30%;
+	padding-right:0;padding-left:40%;
 }
-	
 @media screen and (max-width: 640px) {
-	.numeric-multi ul li label
-	,.multiple-short-txt ul li label
-	{
-		text-align:left;
-	}
-	.numeric-multi ul li label
-	,.multiple-opt-comments ul li span.option
-	,.multiple-short-txt ul li label
-	{
-		width:auto;
-		padding: 0.3em 0 0;
-	}
-
-	.numeric-multi .answers-wrapper ul li
-	, .multiple-short-txt .answers-wrapper ul li
-	, .multiple-opt .answers-wrapper ul li
-	, .multiple-opt-comments  .answers-wrapper ul
-	, .list-radio .answers-wrapper ul li
-	, .list-with-comment .answers-wrapper ul li 
-	, .list-radio-flexible .answers-wrapper ul li 
+	.multiple-opt .answers-wrapper ul li
+	, .list-radio .answers ul li
+	, .list-with-comment .answers ul li 
+	, .list-radio-flexible .answers ul li 
 	{
 		padding-left:0;
-		display:table-row;
-	}
-	.numeric-multi .answers-wrapper ul li
-	, .multiple-short-txt .answers-wrapper ul li
-	, .multiple-opt .answers-wrapper ul li
-	, .multiple-opt-comments  .answers-wrapper ul
-	, .list-radio .answers-wrapper ul li
-	, .list-with-comment .answers-wrapper ul li 
-	, .list-radio-flexible .answers-wrapper ul li 
-	{
-		display:table;
-	}
-	.numeric-multi .answers-wrapper ul li
-	, .multiple-short-txt .answers-wrapper ul li
-	, .multiple-opt .answers-wrapper ul li
-	, .multiple-opt-comments  .answers-wrapper ul
-	, .list-radio .answers-wrapper ul li
-	, .list-with-comment .answers-wrapper ul li 
-	, .list-radio-flexible .answers-wrapper ul li 
-	{
-		display:table;
 	}
 }
 
+
  .text-short input
- ,.text-short textarea
+,.text-short textarea
 ,.text-long textarea
 ,.text-huge textarea
 {
-	margin-left: 1em;
-text-align:left;
+	margin-right: 0;margin-left: 1em;
+    text-align:left;
 }
  .text-short .question
  ,.text-short .answers-wrapper
@@ -935,6 +888,7 @@ text-align:left;
 {
 text-align:center;
 }
+
 
 /* multi column */
   ul.cols-2 , table.cols-2

@@ -30,7 +30,7 @@ function focusFirst(Event)
 
 // This function deactivate comment on multi with comment
 function autoDisabledComment(){
-  $(".answers li input.checkbox").each(function(){
+  $(".answers-wrapper li input.checkbox").each(function(){
     if($(this).attr('checked')){
       $(this).closest('li').find('input:text').attr('disabled','');
     }else{
@@ -38,7 +38,7 @@ function autoDisabledComment(){
       $(this).closest('li').find('input:text').attr('disabled','disabled');
     }
   });
-  $(".answers li input.checkbox").click(function(){
+  $(".answers-wrapper li input.checkbox").click(function(){
     if($(this).attr('checked')){
       $(this).closest('li').find('input:text').attr('disabled','');
       $(this).closest('li').find('input:text').focus();

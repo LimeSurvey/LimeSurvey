@@ -157,7 +157,7 @@ table.question {
 }
 
 .innergraph {
-  direction: ltr;
+
 }
 
 .innergraph,.question {
@@ -229,8 +229,8 @@ td.welcome-content {
 }
 
 .privacy td {
-	text-align: 
-	center; font-size: 100%;
+	text-align: center; 
+	font-size: 100%;
 	padding: 20px 0;
 }
 
@@ -538,14 +538,14 @@ table.clearall-result td {
 */
 .choice-5-pt-radio .question-answer ul,.yes-no .question-answer ul,.gender .question-answer ul {
   text-align: left;
-  margin-left: 0% auto;
-  padding-left: 0.5em;
+  margin: 0 auto;
+  padding: 0 0.5em;
 }
 
 .choice-5-pt-radio .question-answer ul li,.yes-no .question-answer ul li,.gender .question-answer ul li {
   display: inline;
-  margin-left: 0%;
-  padding: 0% 2em 0% 0%;
+  margin-left: 0;
+  padding: 0 2em 0 0;
 }
 
 /* STYLES NOT YET DEFINED - - - - -
@@ -708,7 +708,7 @@ table.rank td.helptext {
 }
 
 .numeric-multi ul {
-  margin: 0% 1em 1.5em 1em;
+  margin: 0 1em 1.5em 1em;
 }
 
 .numeric-multi ul.computed {
@@ -726,21 +726,21 @@ table.rank td.helptext {
 }
 
 .multiple-opt-comments ul li span.option {
-  padding: 0.3em 1em 0% 2.3em;
+  padding: 0.3em 1em 0 2.3em;
   text-indent: -2.3em;
   display: table-cell;
   vertical-align: baseline;
 }
 
 .multiple-short-txt ul li label,.numeric-multi ul li label {
-  padding: 0.3em 1em 0% 0%;
+  padding: 0.3em 1em 0 0;
   display: table-cell;
   vertical-align: middle;
 }
 
 .numeric-multi ul.computed li label
 .numeric-multi ul.slider.computed li label {
-  padding-right: 0%;
+  padding-right: 0;
 }
 
 .multiple-opt-comments ul li span.comment,.multiple-short-txt ul li span,.numeric-multi ul li span
@@ -772,13 +772,13 @@ table.rank td.helptext {
 
 .numeric-multi ul.multiplenumerichelp li label,.numeric-multi ul.multiplenumerichelp.slider li label
   {
-  padding: 0.3em 0% 0% 0%;
+  padding: 0.3em 0 0 0;
   display: table-cell;
 }
 
 .numeric-multi ul.multiplenumerichelp li span,.numeric-multi ul.multiplenumerichelp.slider li span
   {
-  padding: 0% 0% 0% 0.3em;
+  padding: 0 0 0 0.3em;
   display: table-cell;
 }
 
@@ -786,7 +786,7 @@ table.rank td.helptext {
   border: none;
   background-color: #fff;
   color: #222;
-  padding: 0%;
+  padding: 0;
   width: 7em;
 }
 
