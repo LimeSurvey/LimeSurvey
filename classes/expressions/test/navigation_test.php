@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <?php
-if (count($_POST)==0 && !((isset($subaction) && $subaction == 'navigation_test'))) {die("Cannot run this script directly");}
+    if (count($_POST)==0 && !((isset($subaction) && $subaction == 'navigation_test'))) {die("Cannot run this script directly");}
 ?>
 <html>
     <head>
@@ -15,14 +15,14 @@ if (count($_POST)==0 && !((isset($subaction) && $subaction == 'navigation_test')
                 $query = "select a.surveyls_survey_id as sid, a.surveyls_title as title, b.datecreated, b.assessments "
                 . "from " . db_table_name('surveys_languagesettings') . " as a join ". db_table_name('surveys') . " as b on a.surveyls_survey_id = b.sid"
                 . " where a.surveyls_language='en' order by a.surveyls_title, b.datecreated";
-        		$data = db_execute_assoc($query);
+                $data = db_execute_assoc($query);
                 $surveyList='';
                 foreach($data->GetRows() as $row) {
                     $surveyList .= "<option value='" . $row['sid'] .'|' . $row['assessments'] . "'>#" . $row['sid'] . " [" . $row['datecreated'] . '] ' . FlattenText($row['title']) . "</option>\n";
                 }
 
                 $form = <<< EOD
-<form method='post' action='../classes/eval/test/navigation_test.php'>
+<form method='post' action='../classes/expressions/test/navigation_test.php'>
 <h3>Enter the following variables to test navigation for a survey using different styles</h3>
 <table border='1'>
 <tr><th>Parameter</th><th>Value</th></tr>
@@ -67,22 +67,22 @@ EOD;
                 $assessments = ($surveyInfo[1] == 'Y');
                 $surveyMode = $_POST['surveyMode'];
                 $LEMdebugLevel = (
-                        ((isset($_POST['LEM_DEBUG_TIMING']) && $_POST['LEM_DEBUG_TIMING'] == 'Y') ? LEM_DEBUG_TIMING : 0) +
-                        ((isset($_POST['LEM_DEBUG_VALIDATION_SUMMARY']) && $_POST['LEM_DEBUG_VALIDATION_SUMMARY'] == 'Y') ? LEM_DEBUG_VALIDATION_SUMMARY : 0) +
-                        ((isset($_POST['LEM_DEBUG_VALIDATION_DETAIL']) && $_POST['LEM_DEBUG_VALIDATION_DETAIL'] == 'Y') ? LEM_DEBUG_VALIDATION_DETAIL : 0) +
-                        ((isset($_POST['LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB']) && $_POST['LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB'] == 'Y') ? LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB : 0) +
-                        ((isset($_POST['LEM_PRETTY_PRINT_ALL_SYNTAX']) && $_POST['LEM_PRETTY_PRINT_ALL_SYNTAX'] == 'Y') ? LEM_PRETTY_PRINT_ALL_SYNTAX : 0)
-                        );
+                ((isset($_POST['LEM_DEBUG_TIMING']) && $_POST['LEM_DEBUG_TIMING'] == 'Y') ? LEM_DEBUG_TIMING : 0) +
+                ((isset($_POST['LEM_DEBUG_VALIDATION_SUMMARY']) && $_POST['LEM_DEBUG_VALIDATION_SUMMARY'] == 'Y') ? LEM_DEBUG_VALIDATION_SUMMARY : 0) +
+                ((isset($_POST['LEM_DEBUG_VALIDATION_DETAIL']) && $_POST['LEM_DEBUG_VALIDATION_DETAIL'] == 'Y') ? LEM_DEBUG_VALIDATION_DETAIL : 0) +
+                ((isset($_POST['LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB']) && $_POST['LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB'] == 'Y') ? LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB : 0) +
+                ((isset($_POST['LEM_PRETTY_PRINT_ALL_SYNTAX']) && $_POST['LEM_PRETTY_PRINT_ALL_SYNTAX'] == 'Y') ? LEM_PRETTY_PRINT_ALL_SYNTAX : 0)
+                );
 
                 $surveyOptions = array(
-                    'active'=>false,
-                    'allowsave'=>true,
-                    'anonymized'=>false,
-                    'assessments'=>$assessments,
-                    'datestamp'=>true,
-                    'hyperlinkSyntaxHighlighting'=>true,
-                    'ipaddr'=>true,
-                    'rooturl'=>'../../..',
+                'active'=>false,
+                'allowsave'=>true,
+                'anonymized'=>false,
+                'assessments'=>$assessments,
+                'datestamp'=>true,
+                'hyperlinkSyntaxHighlighting'=>true,
+                'ipaddr'=>true,
+                'rooturl'=>'../../..',
                 );
 
                 print '<h3>Starting survey ' . $surveyid . " using Survey Mode '". $surveyMode . (($assessments) ? "' [Uses Assessments]" : "'") . "</h3>";
@@ -95,7 +95,7 @@ EOD;
                     $result = LimeExpressionManager::NavigateForwards(true);
                     print $result['message'] . "<br/>";
                     LimeExpressionManager::FinishProcessingPage();
-//                    print LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
+                    //                    print LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
                     if (($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING) {
                         print LimeExpressionManager::GetDebugTimingMessage();
                     }

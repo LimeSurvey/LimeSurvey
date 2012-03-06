@@ -1,6 +1,6 @@
 <?php
 global $rootdir;
-include_once($rootdir.'/classes/eval/LimeExpressionManager.php');
+include_once($rootdir.'/classes/expressions/LimeExpressionManager.php');
 
 /**
  * This function replaces keywords in a text and is mainly intended for templates
@@ -611,7 +611,7 @@ EOD;
     }
     // Set the array of replacement variables here - don't include curly braces
     // Please put any conditional logic above this section.  Here below should just be an alphabetical list of replacement values with no embedded logic.
-    
+
 	$coreReplacements = array();
 	$coreReplacements['AID'] = $_aid;  // global
 	$coreReplacements['ANSWER'] = $answer;  // global
