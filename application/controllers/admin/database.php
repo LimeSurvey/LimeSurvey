@@ -598,48 +598,53 @@ class database extends Survey_Common_Action
                 if ($validAttribute['i18n'])
                 {
                     foreach ($aLanguages as $sLanguage)
-                    {
-                        if (Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage))
+                    {// TODO sanitise XSS
+                        $value=Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
+                        $result = Question_attributes::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$qid, 'language'=>$sLanguage));
+                        if (count($result)>0)
                         {
-                            $value=Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
-
-                            $result = Question_attributes::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$qid, 'language'=>$sLanguage));
-
-                            if (count($result)>0)
+                            if ($value!='')
                             {
-                                Question_attributes::model()->updateAll(array('value'=>$value), 'attribute=:attribute AND qid=:qid AND language=:$sLanguage', array(':attribute'=>$validAttribute['name'], ':qid'=>$qid, ':language'=>$sLanguage));
+                                Question_attributes::model()->updateAll(array('value'=>$value), 'attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$qid, ':language'=>$sLanguage));
                             }
                             else
                             {
-                                $attribute = new Question_attributes;
-                                $attribute->qid = $qid;
-                                $attribute->value = $value;
-                                $attribute->attribute = $validAttribute['name'];
-                                $attribute->language = $sLanguage;
-                                $attribute->save();
+                                Question_attributes::model()->deleteAll('attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$qid, ':language'=>$sLanguage));
                             }
                         }
-                    }
-                }
-                else
-                {
-                    if (Yii::app()->request->getPost($validAttribute['name']))
-                    {
-                        $value=Yii::app()->request->getPost($validAttribute['name']);
-
-                        $result = Question_attributes::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$qid));
-                        if (count($result)>0)
-                        {
-                            Question_attributes::model()->updateAll(array('value'=>$value), 'attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$qid));
-                        }
-                        else
+                        elseif($value!='')
                         {
                             $attribute = new Question_attributes;
                             $attribute->qid = $qid;
                             $attribute->value = $value;
                             $attribute->attribute = $validAttribute['name'];
+                            $attribute->language = $sLanguage;
                             $attribute->save();
                         }
+                    }
+                }
+                else
+                {
+                    $value=Yii::app()->request->getPost($validAttribute['name']);
+                    $result = Question_attributes::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$qid));
+                    if (count($result)>0)
+                    {
+                        if($value!=$validAttribute['default'])
+                        {
+                            Question_attributes::model()->updateAll(array('value'=>$value),'attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$qid));
+                        }
+                        else
+                        {
+                            Question_attributes::model()->deleteAll('attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$qid));
+                        }
+                    }
+                    elseif($value!=$validAttribute['default'])
+                    {
+                        $attribute = new Question_attributes;
+                        $attribute->qid = $qid;
+                        $attribute->value = $value;
+                        $attribute->attribute = $validAttribute['name'];
+                        $attribute->save();
                     }
                 }
             }
