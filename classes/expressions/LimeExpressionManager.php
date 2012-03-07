@@ -1401,7 +1401,7 @@
                             'qtype' => $type,
                             'type' => 'em_validation_q',
                             'class' => 'q_fn_validation',
-                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') == 0)',
+                            'eqn' => '(sum(' . implode(', ', array_unique($sq_names)) . ') == 0)',
                             'qid' => $questionNum,
                             );
                         }
