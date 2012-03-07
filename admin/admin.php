@@ -269,7 +269,7 @@ if(isset($_SESSION['loginID']))
             $_POST['assessments'] = $thissurvey['assessments'];
             if (isset($_GET['gid'])) { $_POST['gid'] = $_GET['gid']; }
             if (isset($_GET['qid'])) { $_POST['qid'] = $_GET['qid']; }
-            include($rootdir . '/expressions/eval/test/survey_logic_file.php');
+            include($rootdir . '/classes/expressions/test/survey_logic_file.php');
             exit;
         }
         else { include('access_denied.php');}
