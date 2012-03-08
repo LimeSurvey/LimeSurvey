@@ -764,6 +764,32 @@ print <<<END
             $('#java'+name).val(value);
         }
         ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
+
+END;
+
+if ($previewgrp)
+{
+    // force the group to be visible, even if irrelevant - will not always work
+    print <<<END
+    $('#relevanceG' + LEMgid).val(1);
+    $(document).ready(function() {
+        $('#group-' + LEMgid).show();
+    });
+    $(document).change(function() {
+        $('#group-' + LEMgid).show();
+    });
+    $(document).bind('keydown',function(e) {
+                if (e.keyCode == 9) {
+                    $('#group-' + LEMgid).show();
+                    return true;
+                }
+                return true;
+            });
+            
+END;
+}
+
+print <<<END
 	}
 // -->
 </script>
@@ -802,7 +828,7 @@ foreach ($_SESSION['grouplist'] as $gl)
     echo "\n\n<!-- START THE GROUP -->\n";
     echo "\n\n<div id='group-$gid'";
     $gnoshow = LimeExpressionManager::GroupIsIrrelevantOrHidden($gid);
-    if  ($gnoshow)
+    if  ($gnoshow && !$previewgrp)
     {
         echo " style='display: none;'";
     }
