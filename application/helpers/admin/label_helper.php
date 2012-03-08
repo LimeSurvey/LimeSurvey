@@ -136,12 +136,17 @@ function modlabelsetanswers($lid)
     if (!isset($_POST['method'])) {
         $_POST['method'] = $clang->gT("Save");
     }
-
-    $data = json_decode(CHttpRequest::getPost('dataToSend'));
+    
+    //unescape single quotes
+    $labeldata = CHttpRequest::getPost('dataToSend');
+    $labeldata = str_replace("\'","'",$labeldata);
+    
+    
+    $data = json_decode($labeldata);
 
     if ($ajax)
         $lid = insertlabelset();
-
+    
     if (count(array_unique($data->{'codelist'})) == count($data->{'codelist'}))
     {
 
