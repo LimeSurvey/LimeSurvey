@@ -237,7 +237,7 @@ class ExpressionManager {
      */
     private function RDP_AddError($errMsg, $token)
     {
-        $this->RDP_errs[] = array($this->gT($errMsg), $token);
+        $this->RDP_errs[] = array($errMsg, $token);
     }
 
     /**
@@ -252,14 +252,14 @@ class ExpressionManager {
     {
         if (count($this->RDP_stack) < 2)
         {
-            $this->RDP_AddError("Unable to evaluate binary operator - fewer than 2 entries on stack", $token);
+            $this->RDP_AddError($this->gT("Unable to evaluate binary operator - fewer than 2 entries on stack"), $token);
             return false;
         }
         $arg2 = $this->RDP_StackPop();
         $arg1 = $this->RDP_StackPop();
         if (is_null($arg1) or is_null($arg2))
         {
-            $this->RDP_AddError("Invalid value(s) on the stack", $token);
+            $this->RDP_AddError($this->gT("Invalid value(s) on the stack"), $token);
             return false;
         }
         // TODO:  try to determine datatype?
@@ -392,13 +392,13 @@ class ExpressionManager {
     {
         if (count($this->RDP_stack) < 1)
         {
-            $this->RDP_AddError("Unable to evaluate unary operator - no entries on stack", $token);
+            $this->RDP_AddError($this->gT("Unable to evaluate unary operator - no entries on stack"), $token);
             return false;
         }
         $arg1 = $this->RDP_StackPop();
         if (is_null($arg1))
         {
-            $this->RDP_AddError("Invalid value(s) on the stack", $token);
+            $this->RDP_AddError($this->gT("Invalid value(s) on the stack"), $token);
             return false;
         }
         // TODO:  try to determine datatype?
@@ -447,7 +447,7 @@ class ExpressionManager {
         {
             if ($this->RDP_pos < $this->RDP_count)
             {
-                $this->RDP_AddError("Extra tokens found", $this->RDP_tokens[$this->RDP_pos]);
+                $this->RDP_AddError($this->gT("Extra tokens found"), $this->RDP_tokens[$this->RDP_pos]);
                 return false;
             }
             $this->RDP_result = $this->RDP_StackPop();
@@ -462,13 +462,13 @@ class ExpressionManager {
             }
             else
             {
-                $this-RDP_AddError("Unbalanced equation - values left on stack",NULL);
+                $this-RDP_AddError($this->gT("Unbalanced equation - values left on stack"),NULL);
                 return false;
             }
         }
         else
         {
-            $this->RDP_AddError("Not a valid expression",NULL);
+            $this->RDP_AddError($this->gT("Not a valid expression"),NULL);
             return false;
         }
     }
@@ -529,7 +529,7 @@ class ExpressionManager {
     {
         if ($this->RDP_pos + 1 >= $this->RDP_count)
         {
-             $this->RDP_AddError("Poorly terminated expression - expected a constant or variable", NULL);
+             $this->RDP_AddError($this->gT("Poorly terminated expression - expected a constant or variable"), NULL);
              return false;
         }
         $token = $this->RDP_tokens[++$this->RDP_pos];
@@ -567,21 +567,21 @@ class ExpressionManager {
                         $groupSeq = $this->GetVarAttribute($token[0],'gseq',-1);
                         if (($groupSeq != -1 && $this->groupSeq != -1) && ($groupSeq > $this->groupSeq))
                         {
-                            $this->RDP_AddError("This variable is not declared until a later page",$token);
+                            $this->RDP_AddError($this->gT("This variable is not declared until a later page"),$token);
                             return false;
                         }
                         return true;
                     }
                     else
                     {
-                        $this->RDP_AddError("Undefined variable", $token);
+                        $this->RDP_AddError($this->gT("Undefined variable"), $token);
                         return false;
                     }
                 }
                 break;
             case 'COMMA':
                 --$this->RDP_pos;
-                $this->RDP_AddError("Should never  get to this line?",$token);
+                $this->RDP_AddError($this->gT("Should never  get to this line?"),$token);
                 return false;
             default:
                 return false;
@@ -667,13 +667,13 @@ class ExpressionManager {
                     }
                     else
                     {
-                        $this->RDP_AddError('The value of this variable can not be changed', $token1);
+                        $this->RDP_AddError($this->gT('The value of this variable can not be changed'), $token1);
                         return false;
                     }
                 }
                 else
                 {
-                    $this->RDP_AddError('Only variables can be assigned values', $token1);
+                    $this->RDP_AddError($this->gT('Only variables can be assigned values'), $token1);
                     return false;
                 }
             }
@@ -729,7 +729,7 @@ class ExpressionManager {
             }
             else
             {
-                $this->RDP_AddError("Expected expressions separated by commas",$token);
+                $this->RDP_AddError($this->gT("Expected expressions separated by commas"),$token);
                 $evalStatus = false;
                 break;
             }
@@ -737,7 +737,7 @@ class ExpressionManager {
         while (++$this->RDP_pos < $this->RDP_count)
         {
             $token = $this->RDP_tokens[$this->RDP_pos];
-            $this->RDP_AddError("Extra token found after Expressions",$token);
+            $this->RDP_AddError($this->gT("Extra token found after Expressions"),$token);
             $evalStatus = false;
         }
         return $evalStatus;
@@ -753,13 +753,13 @@ class ExpressionManager {
         $funcName = $funcNameToken[0];
         if (!$this->RDP_isValidFunction($funcName))
         {
-            $this->RDP_AddError("Undefined Function", $funcNameToken);
+            $this->RDP_AddError($this->gT("Undefined Function"), $funcNameToken);
             return false;
         }
         $token2 = $this->RDP_tokens[++$this->RDP_pos];
         if ($token2[2] != 'LP')
         {
-            $this->RDP_AddError("Expected left parentheses after function name", $funcNameToken);
+            $this->RDP_AddError($this->gT("Expected left parentheses after function name"), $funcNameToken);
         }
         $params = array();  // will just store array of values, not tokens
         while ($this->RDP_pos + 1 < $this->RDP_count)
@@ -783,7 +783,7 @@ class ExpressionManager {
                     }
                     else
                     {
-                        $this->RDP_AddError("Extra comma found in function", $token3);
+                        $this->RDP_AddError($this->gT("Extra comma found in function"), $token3);
                         return false;
                     }
                 }
@@ -950,7 +950,7 @@ class ExpressionManager {
     private function RDP_EvaluatePrimaryExpression()
     {
         if (($this->RDP_pos + 1) >= $this->RDP_count) {
-            $this->RDP_AddError("Poorly terminated expression - expected a constant or variable", NULL);
+            $this->RDP_AddError($this->gT("Poorly terminated expression - expected a constant or variable"), NULL);
             return false;
         }
         $token = $this->RDP_tokens[++$this->RDP_pos];
@@ -967,7 +967,7 @@ class ExpressionManager {
             }
             else
             {
-                $this->RDP_AddError("Expected right parentheses", $token);
+                $this->RDP_AddError($this->gT("Expected right parentheses"), $token);
                 return false;
             }
         }
@@ -1031,7 +1031,7 @@ class ExpressionManager {
     private function RDP_EvaluateUnaryExpression()
     {
         if (($this->RDP_pos + 1) >= $this->RDP_count) {
-            $this->RDP_AddError("Poorly terminated expression - expected a constant or variable", NULL);
+            $this->RDP_AddError($this->gT("Poorly terminated expression - expected a constant or variable"), NULL);
             return false;
         }
         $token = $this->RDP_tokens[++$this->RDP_pos];
@@ -1654,7 +1654,7 @@ class ExpressionManager {
                     --$nesting;
                     if ($nesting < 0)
                     {
-                        $this->RDP_AddError("Extra right parentheses detected", $token);
+                        $this->RDP_AddError($this->gT("Extra right parentheses detected"), $token);
                     }
                     break;
                 case 'WORD':
@@ -1663,19 +1663,19 @@ class ExpressionManager {
                     {
                         if (!$this->RDP_isValidFunction($token[0]))
                         {
-                            $this->RDP_AddError("Undefined function", $token);
+                            $this->RDP_AddError($this->gT("Undefined function"), $token);
                         }
                     }
                     else
                     {
                         if (!($this->RDP_isValidVariable($token[0])))
                         {
-                            $this->RDP_AddError("Undefined variable", $token);
+                            $this->RDP_AddError($this->gT("Undefined variable"), $token);
                         }
                     }
                     break;
                 case 'OTHER':
-                    $this->RDP_AddError("Unsupported syntax", $token);
+                    $this->RDP_AddError($this->gT("Unsupported syntax"), $token);
                     break;
                 default:
                     break;
@@ -1683,7 +1683,7 @@ class ExpressionManager {
         }
         if ($nesting != 0)
         {
-            $this->RDP_AddError("Parentheses not balanced",NULL);
+            $this->RDP_AddError(sprintf($this->gT("Missing %s closing right parentheses"),$nesting),NULL);
         }
         return (count($this->RDP_errs) > 0);
     }
@@ -1928,7 +1928,7 @@ class ExpressionManager {
                     $minArgs = abs($numArgsAllowed[0] + 1); // so if value is -2, means that requires at least one argument
                     if ($argsPassed < $minArgs)
                     {
-                        $this->RDP_AddError("Function must have at least ". $minArgs . " argument(s)", $funcNameToken);
+                        $this->RDP_AddError(sprintf($this->gT("Function must have at least %s argument(s)"), $minArgs), $funcNameToken);
                         return false;
                     }
                     if (!$this->RDP_onlyparse) {
@@ -2019,13 +2019,13 @@ class ExpressionManager {
                         }
                         break;
                     default:
-                        $this->RDP_AddError("Unsupported number of arguments: " . $argsPassed, $funcNameToken);
+                        $this->RDP_AddError(sprintf($this->gT("Unsupported number of arguments: %s", $argsPassed)), $funcNameToken);
                         return false;
                     }
 
                 } else {
-                    $this->RDP_AddError("Function does not support that number of arguments:  " . $argsPassed .
-                            ".  Function supports this many arguments, where -1=unlimited: " . implode(',', $numArgsAllowed), $funcNameToken);
+                    $this->RDP_AddError(sprintf($this->gT("Function does not support %s arguments. "), $argsPassed)
+                            . sprintf($this->gT("Function supports this many arguments, where -1=unlimited: %s."), implode(',', $numArgsAllowed)), $funcNameToken);
                     return false;
                 }
             }
@@ -2246,7 +2246,7 @@ class ExpressionManager {
         }
         else
         {
-            $this->RDP_AddError("Tried to pop value off of empty stack", NULL);
+            $this->RDP_AddError($this->gT("Tried to pop value off of empty stack"), NULL);
             return NULL;
         }
     }
@@ -3162,7 +3162,7 @@ function exprmgr_regexMatch($pattern, $input)
     } catch (Exception $e) {
         $result = false;
         // How should errors be logged?
-        print 'Invalid PERL Regular Expression: ' . htmlspecialchars($pattern);
+        echo sprintf($this->gT('Invalid PERL Regular Expression: %s'), htmlspecialchars($pattern));
     }
     return $result;
 }

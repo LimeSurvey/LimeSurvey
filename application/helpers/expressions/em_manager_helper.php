@@ -5480,7 +5480,7 @@ static function GetRelevanceAndTailoringJavaScript()
 <b>Unknown/Misspelled Variables, Functions, and Operators</b><br/>{if(sex=='M','Mr.','Mrs.')} {surname}, next year you will be {age++} years old.
 <b>Warns if use = instead of == or perform value assignments</b><br>Hello, {if(gender='M','Mr.','Mrs.')} {surname}, next year you will be {age+=1} years old.
 <b>Wrong number of arguments for functions:</b><br/>{if(gender=='M','Mr.','Mrs.','Other')} {surname}, sum(age,numKids,numPets)={sum(age,numKids,numPets,)}
-<b>Mismatched parentheses</b><br/>pow(3,4)={pow(3,4)}<br/>but these are wrong: {pow(3,4}, {(pow(3,4)}, {pow(3,4))}
+<b>Mismatched parentheses</b><br/>pow(3,4)={pow(3,4)}<br/>but these are wrong: {pow(3,4}, {(((pow(3,4)}, {pow(3,4))}
 <b>Unsupported syntax</b><br/>No support for '++', '--', '%',';': {min(++age, --age, age % 2);}<br/>Nor '|', '&', '^':  {(sum(2 | 3, 3 & 4, 5 ^ 6)}}<br/>Nor arrays:  {name[2], name['mine']}
 <b>Invalid assignments</b><br/>Assign values to equations or strings:  {(3 + 4)=5}, {'hi'='there'}<br/>Assign read-only vars:  {TOKEN:ATTRIBUTE_1='boss'}, {name='Sally'}
 <b>Values:</b><br/>name={name}; surname={surname}<br/>gender={gender}; age={age}; numPets={numPets}<br/>numKids=INSERTANS:61764X1X3={numKids}={INSERTANS:61764X1X3}<br/>TOKEN:ATTRIBUTE_1={TOKEN:ATTRIBUTE_1}
@@ -6578,15 +6578,15 @@ EOD;
             }
 
             $qtext = (($q['info']['qtext'] != '') ? $q['info']['qtext'] : '&nbsp');
-            $help = (($q['info']['help'] != '') ? '<hr/>[HELP: ' . $q['info']['help'] . ']': '');
-            $prettyValidTip = (($q['prettyValidTip'] == '') ? '' : '<hr/>(TIP: ' . $q['prettyValidTip'] . ')');
+            $help = (($q['info']['help'] != '') ? '<hr/>[' . $LEM->gT("HELP:") . ' ' . $q['info']['help'] . ']': '');
+            $prettyValidTip = (($q['prettyValidTip'] == '') ? '' : '<hr/>(' . $LEM->gT("TIP:") . ' ' . $q['prettyValidTip'] . ')');
 
             //////
             // SHOW QUESTION ATTRIBUTES THAT ARE PROCESSED BY EM
             //////
             $attrTable = '';
             if (isset($LEM->qattr[$qid]) && count($LEM->qattr[$qid]) > 0) {
-                $attrTable = "<hr/><table border='1'><tr><th>Question Attribute</th><th>Value</th></tr>\n";
+                $attrTable = "<hr/><table border='1'><tr><th>" . $LEM->gT("Question Attribute") . "</th><th>" . $LEM->gT("Value"). "</th></tr>\n";
                 $count=0;
                 foreach ($LEM->qattr[$qid] as $key=>$value) {
                     if (is_null($value) || trim($value) == '') {
@@ -6711,7 +6711,7 @@ EOD;
 
             if (!preg_match('/^[_a-zA-Z][_0-9a-zA-Z]*$/', $rootVarName))
             {
-                $varNameErrorMsg .= $LEM->gT('Starting in 1.92, variable names can only contain letters, numbers, and underscores. This variable name is deprecated.');
+                $varNameErrorMsg .= $LEM->gT('Starting in 1.92, variable names should only contain letters, numbers, and underscores; and may not start with a number. This variable name is deprecated.');
             }
             if ($varNameErrorMsg != '')
             {
@@ -6851,7 +6851,7 @@ EOD;
             //////
             // FINALLY, SHOW THE QUESTION ROW(S), COLOR-CODING QUESTIONS THAT CONTAIN ERRORS
             //////
-            $errclass = ($errorCount > 0) ? "class='LEMerror' title='This question has at least $errorCount error(s)'" : '';
+            $errclass = ($errorCount > 0) ? "class='LEMerror' title='" . sprintf($LEM->gT("This question has at least %s error(s)"), $errorCount) . "'" : '';
 
             $questionRow = "<tr class='LEMquestion'>"
             . "<td $errclass>Q-" . $q['info']['qseq'] . "</td>"
@@ -6890,7 +6890,7 @@ EOD;
         }
 
         if (count($allErrors) > 0) {
-            $out = "<p class='LEMerror'>".sprintf($LEM->gT("%d question(s) contain errors that need to be corrected"), count($allErrors)) . "</p>\n" . $out;
+            $out = "<p class='LEMerror'>". sprintf($LEM->gT("%s question(s) contain errors that need to be corrected"), count($allErrors)) . "</p>\n" . $out;
         }
         else {
             switch ($surveyMode)
