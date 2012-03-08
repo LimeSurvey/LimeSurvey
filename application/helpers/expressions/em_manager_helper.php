@@ -28,6 +28,8 @@ define('LEM_DEBUG_VALIDATION_DETAIL',4);
 define('LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB',8);
 define('LEM_PRETTY_PRINT_ALL_SYNTAX',32);
 
+define('LEM_DEFAULT_PRECISION',12);
+
 class LimeExpressionManager {
     private static $instance;
     private $em;    // Expression Manager
@@ -570,7 +572,7 @@ class LimeExpressionManager {
                             $validationEqn[$questionNum] = array();
                         }
                         // sumEqn and sumRemainingEqn may need to be rounded if using sliders
-                        $precision=NULL;    // default is not to round
+                        $precision=LEM_DEFAULT_PRECISION;    // default is not to round
                         if (isset($qattr['slider_layout']) && $qattr['slider_layout']=='1')
                         {
                             $precision=0;   // default is to round to whole numbers
@@ -1015,13 +1017,21 @@ class LimeExpressionManager {
                         {
                             $validationEqn[$questionNum] = array();
                         }
+
+                        $sumEqn = 'sum(' . implode(', ', $sq_names) . ')';
+                        $precision = LEM_DEFAULT_PRECISION;
+                        if (!is_null($precision))
+                        {
+                            $sumEqn = 'round(' . $sumEqn . ', ' . $precision . ')';
+                        }
+
                         $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'min_num_value',
                             'class' => 'sum_range',
                             'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
                             'qid' => $questionNum,
-                            'sumEqn' => 'sum(' . implode(', ', $sq_names) . ')',
+                            'sumEqn' => $sumEqn,
                         );
                     }
                 }
@@ -1065,13 +1075,21 @@ class LimeExpressionManager {
                         {
                             $validationEqn[$questionNum] = array();
                         }
+
+                        $sumEqn = 'sum(' . implode(', ', $sq_names) . ')';
+                        $precision = LEM_DEFAULT_PRECISION;
+                        if (!is_null($precision))
+                        {
+                            $sumEqn = 'round(' . $sumEqn . ', ' . $precision . ')';
+                        }
+
                         $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'max_num_value',
                             'class' => 'sum_range',
                             'eqn' =>  '(sum(' . implode(', ', $sq_names) . ') <= (' . $max_num_value . ') || count(' . implode(', ', $sq_names) . ') == 0)',
                             'qid' => $questionNum,
-                            'sumEqn' => 'sum(' . implode(', ', $sq_names) . ')',
+                            'sumEqn' => $sumEqn,
                         );
                     }
                 }
