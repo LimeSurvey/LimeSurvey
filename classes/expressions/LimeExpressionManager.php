@@ -4376,7 +4376,7 @@
                     $stringToParse = '';
                     foreach ($LEM->qid2validationEqn[$qid]['tips'] as $vclass=>$vtip)
                     {
-                        $stringToParse .= "<div id='" . $qid . "_vmsg_" . $vclass . "' class='em_" . $vclass . "'>" . $vtip . "</div>\n";
+                        $stringToParse .= "<div id='vmsg_" . $qid  . '_' . $vclass . "' class='em_" . $vclass . "'>" . $vtip . "</div>\n";
                     }
                     $prettyPrintValidTip = $stringToParse;
                     $validTip = $LEM->ProcessString($stringToParse, $qid,NULL,false,1,1,false,false);
@@ -5065,9 +5065,9 @@
                             $_validationJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
 
                             $valParts[] = "\n  if(" . $_validationJS . "){\n";
-                            $valParts[] = "    $('#" . $arg['qid'] . "_vmsg_" . $vclass . "').removeClass('error').addClass('good');\n";
+                            $valParts[] = "    $('#vmsg_" . $arg['qid'] . '_' . $vclass . "').removeClass('error').addClass('good');\n";
                             $valParts[] = "  }\n  else {\n";
-                            $valParts[] = "    $('#" . $arg['qid'] . "_vmsg_" . $vclass ."').removeClass('good').addClass('error');\n";
+                            $valParts[] = "    $('#vmsg_" . $arg['qid'] . '_' . $vclass ."').removeClass('good').addClass('error');\n";
                             switch ($vclass)
                             {
                                 case 'sum_range':

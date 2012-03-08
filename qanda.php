@@ -443,7 +443,7 @@ function validation_message($ia,$show)
     if (!$show) {
         $class .= ' hide-tip';
     }
-    $tip = '<span class="' . $class . '" id="' . $ia[0] . '_vmsg">' . $qinfo['validTip'] . "</span>";
+    $tip = '<span class="' . $class . '" id="vmsg_' . $ia[0] . '">' . $qinfo['validTip'] . "</span>";
     $isValid = $qinfo['valid'];
     return array($tip,$isValid);
 //    if (!$qinfo['valid']) {
