@@ -3447,7 +3447,7 @@ function questionAttributes($returnByName=false)
     // End Map Options
 
     $qattributes["hide_tip"]=array(
-    "types"=>"!KLMNOPRSWZ",
+    "types"=>"15ABCDEFGHIKLMNOPQRSTUXY!:;|",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
