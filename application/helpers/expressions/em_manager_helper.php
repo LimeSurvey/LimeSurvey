@@ -26,7 +26,6 @@ define('LEM_DEBUG_TIMING',1);
 define('LEM_DEBUG_VALIDATION_SUMMARY',2);   // also includes  SQL error messages
 define('LEM_DEBUG_VALIDATION_DETAIL',4);
 define('LEM_DEBUG_LOG_SYNTAX_ERRORS_TO_DB',8);
-define('LEM_DEBUG_TRANSLATION_DETAIL',16);
 define('LEM_PRETTY_PRINT_ALL_SYNTAX',32);
 
 class LimeExpressionManager {
@@ -49,8 +48,6 @@ class LimeExpressionManager {
     private $qcode2sgq; // maps name of the variable to the  SGQ name
     private $alias2varName; // JavaScript array of mappings of aliases to the JavaScript variable names
     private $varNameAttr;   // JavaScript array of mappings of canonical JavaScript variable name to key attributes.
-    private $pageTailoringLog;  // Debug log of tailorings done on this page
-    private $surveyLogicFile;   // Shows current configuration and data from most recent $fieldmap
 
     private $qans;  // array of answer lists indexed by qid
     private $groupId2groupSeq;  // map of gid to 0-based sequence number of groups
@@ -1781,7 +1778,6 @@ class LimeExpressionManager {
         $this->knownVars = array();   // mapping of VarName to Value
         $this->qcode2sgqa = array();
         $this->tempVars = array();
-        $this->debugLog = array();    // array of mappings among values to confirm their accuracy
         $this->qid2code = array();    // List of codes for each question - needed to know which to NULL if a question is irrelevant
         $this->jsVar2qid = array();
         $this->qcode2sgq = array();
@@ -2318,21 +2314,6 @@ class LimeExpressionManager {
                 . "','gseq':" . $groupSeq
                 . ",'qseq':" . $questionSeq
                 .$ansList."}";
-
-            if (($this->debugLevel & LEM_DEBUG_TRANSLATION_DETAIL) == LEM_DEBUG_TRANSLATION_DETAIL)
-            {
-                $this->debugLog[] = array(
-                    'sgqa' => $sgqa,
-                    'type' => $type,
-                    'varname' => $varName,
-                    'jsName_on'=> $jsVarName_on,
-                    'jsName' => $jsVarName,
-                    'question' => $question,
-                    'readWrite' => $readWrite,
-                    'relevance' => $relevance,
-                    'hidden' => $hidden,
-                    );
-            }
         }
 
         $this->q2subqInfo = $q2subqInfo;
@@ -2362,21 +2343,6 @@ class LimeExpressionManager {
                     'jsName'=>'',
                     'readWrite'=>'N',
                     );
-
-                if (($this->debugLevel & LEM_DEBUG_TRANSLATION_DETAIL) == LEM_DEBUG_TRANSLATION_DETAIL)
-                {
-                    $this->debugLog[] = array(
-                        'sgqa' => $key,
-                        'type' => '&nbsp;',
-                        'varname' => '&nbsp;',
-                        'jsName_on' => '&nbsp;',
-                        'jsName' => '&nbsp;',
-                        'question' => '&nbsp;',
-                        'readWrite'=>'N',
-                        'relevance'=>'',
-                        'hidden'=>'',
-                    );
-                }
             }
         }
         else
@@ -2425,25 +2391,6 @@ class LimeExpressionManager {
                 );
 
         $this->runtimeTimings[] = array(__METHOD__ . ' - process fieldMap',(microtime(true) - $now));
-        if (($this->debugLevel & LEM_DEBUG_TRANSLATION_DETAIL) == LEM_DEBUG_TRANSLATION_DETAIL)
-        {
-            $debugLog_html = "<table border='1'>";
-            $debugLog_html .= "<tr><th>Code</th><th>Type</th><th>VarName</th><th>CodeVal</th><th>DisplayVal</th><th>JSname</th><th>Writable?</th><th>Set On This Page?</th><th>Relevance</th><th>Hidden</th><th>Question</th></tr>";
-            foreach ($this->debugLog as $t)
-            {
-                $debugLog_html .= "<tr><td>" . $t['sgqa']
-                    . "</td><td>" . $t['type']
-                    . "</td><td>" . $t['varname']
-                    . "</td><td>" . $t['jsName']
-                    . "</td><td>" . $t['readWrite']
-                    . "</td><td>" . $t['relevance']
-                    . "</td><td>" . $t['hidden']
-                    . "</td><td>" . $t['question']
-                    . "</td></tr>";
-            }
-            $debugLog_html .= "</table>";
-            $this->surveyLogicFile = $debugLog_html;
-        }
         usort($this->questionSeq2relevance,'cmpQuestionSeq');
         $this->numQuestions = count($this->questionSeq2relevance);
         $this->numGroups = count($this->groupId2groupSeq);
@@ -2608,14 +2555,6 @@ class LimeExpressionManager {
 
         if ($timeit) {
             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-        }
-
-        if (($LEM->debugLevel & LEM_DEBUG_TRANSLATION_DETAIL) == LEM_DEBUG_TRANSLATION_DETAIL)
-        {
-            $varsUsed = $LEM->em->GetJSVarsUsed();
-            if (is_array($varsUsed) and count($varsUsed) > 0) {
-                $LEM->pageTailoringLog .= '<tr><td>' . $LEM->groupNum . '</td><td>' . $string . '</td><td>' . $LEM->em->GetLastPrettyPrintExpression() . '</td><td>' . $result . "</td></tr>\n";
-            }
         }
 
         return $result;
@@ -2870,17 +2809,11 @@ class LimeExpressionManager {
         $LEM->pageRelevanceInfo=array();
         $LEM->pageTailorInfo=array();
         $LEM->allOnOnePage=$allOnOnePage;
-        $LEM->pageTailoringLog='';
-        $LEM->surveyLogicFile='';
         $LEM->processedRelevance=false;
         $LEM->surveyOptions['hyperlinkSyntaxHighlighting']=true;    // this will be temporary - should be reset in running survey
 
 //        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
-        if (($LEM->debugLevel & LEM_DEBUG_TRANSLATION_DETAIL) == LEM_DEBUG_TRANSLATION_DETAIL)
-        {
-            $LEM->pageTailoringLog .= '<tr><th>Source</th><th>Pretty Print</th><th>Result</th></tr>';
-        }
         $LEM->initialized=true;
     }
 
@@ -4842,8 +4775,6 @@ class LimeExpressionManager {
     static function FinishProcessingPage()
     {
         $LEM =& LimeExpressionManager::singleton();
-        $_SESSION['EM_pageTailoringLog'] = $LEM->pageTailoringLog;
-        $_SESSION['EM_surveyLogicFile'] = $LEM->surveyLogicFile;
 
         $totalTime = 0.;
         if ((($LEM->debugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING) && count($LEM->runtimeTimings)>0) {
@@ -4881,30 +4812,6 @@ class LimeExpressionManager {
         $LEM->initialized=false;    // so detect calls after done
         $LEM->ParseResultCache=array(); // don't need to persist it in session
         $_SESSION['LEMsingleton']=serialize($LEM);
-    }
-
-    /**
-     * Show the HTML for the logic file if $debugLevel has LEM_DEBUG_TRANSLATION_DETAIL bit set
-     * @return <type>
-     */
-    static function ShowLogicFile()
-    {
-        if (isset($_SESSION['EM_surveyLogicFile'])) {
-            return $_SESSION['EM_surveyLogicFile'];
-        }
-        return '';
-    }
-
-    /**
-     * Show the HTML of the tailorings on this page if $debugLevel has LEM_DEBUG_TRANSLATION_DETAIL bit set
-     * @return <type>
-     */
-    static function ShowPageTailorings()
-    {
-        if (isset($_SESSION['EM_pageTailoringLog'])) {
-            return $_SESSION['EM_pageTailoringLog'];
-        }
-        return '';
     }
 
     /*
@@ -5711,7 +5618,8 @@ EOT;
         foreach(explode("\n",$tests) as $test)
         {
             $args = explode("~",$test);
-            $vars[$args[0]] = array('sgqa'=>$args[0], 'code'=>'', 'jsName'=>'java' . $args[0], 'jsName_on'=>'java' . $args[0], 'readWrite'=>'Y', 'type'=>'X', 'relevanceStatus'=>'1','gseq'=>1, 'qseq'=>$i);
+            $type = (($args[1]=='expr') ? '*' : ($args[1]=='message') ? 'X' : 'S');
+            $vars[$args[0]] = array('sgqa'=>$args[0], 'code'=>'', 'jsName'=>'java' . $args[0], 'jsName_on'=>'java' . $args[0], 'readWrite'=>'Y', 'type'=>$type, 'relevanceStatus'=>'1', 'gid'=>1, 'gseq'=>1, 'qseq'=>$i, 'qid'=>$i);
             $varSeq[] = $args[0];
             $testArgs[] = $args;
             $LEM->questionId2questionSeq[$i] = $i;
@@ -5722,14 +5630,24 @@ EOT;
                 'qseq'=>$i,
                 'gseq'=>1,
                 'jsResultVar'=>'java' . $args[0],
-                'type'=>(($args[1]=='expr') ? '*' : ($args[1]=='message') ? 'X' : 'S'),
+                'type'=>$type,
                 'hidden'=>false,
                 'gid'=>1,   // ($i % 3),
                 );
             ++$i;
         }
 
-        $LEM->tempVars = $vars;
+        $LEM->knownVars = $vars;
+        $LEM->gRelInfo[1] = array(
+            'gid' => 1,
+            'gseq' => 1,
+            'eqn' => '',
+            'result' => 1,
+            'numJsVars' => 0,
+            'relevancejs' => '',
+            'relevanceVars' => '',
+            'prettyPrint'=> '',
+        );
         $LEM->ProcessAllNeededRelevance();
 
         // collect relevance
@@ -5747,6 +5665,7 @@ EOT;
             $argInfo[] = array(
                 'num' => $i,
                 'name' => $jsVarName,
+                'sgqa' => $testArg[0],
                 'type' => $testArg[2],
                 'question' => $question,
                 'relevance' => $testArg[1],
@@ -5808,10 +5727,10 @@ EOD;
                 {
                     case 'yesno':
                     case 'text':
-                        print "<td><input type='text' id='" . $arg['name'] . "' value='' onchange='ExprMgr_process_relevance_and_tailoring(\"onchange\")'/></td>\n";
+                        print "<td><input type='text' id='" . $arg['name'] . "' name='" . $arg['sgqa'] . "' value='' onchange='checkconditions(this.value, this.name, this.type)'/></td>\n";
                         break;
                     case 'message':
-                        print "<input type='hidden' id='" . $arg['name'] . "' name='" . $arg['name'] . "' value=''/>\n";
+                        print "<input type='hidden' id='" . $arg['name'] . "' name='" . $arg['sgqa'] . "' value=''/>\n";
                         break;
                 }
                 print "</tr>\n</table>\n";
