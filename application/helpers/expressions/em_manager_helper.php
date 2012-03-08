@@ -5063,27 +5063,6 @@ static function GetRelevanceAndTailoringJavaScript()
                     $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').show();\n";
                     $relParts[] = "    if ($('#relevance" . $sq['rowdivid'] . "').val()!='1') { relChange" . $arg['qid'] . "=true; }\n";
                     $relParts[] = "    $('#relevance" . $sq['rowdivid'] . "').val('1');\n";
-                    switch ($sq['qtype'])
-                    {
-                        case '1': //Array (Flexible Labels) dual scale
-                            $relParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#0').val('on');\n";
-                            $relParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#1').val('on');\n";
-                            break;
-                        case ':': //ARRAY (Multi Flexi) 1 to 10
-                        case ';': //ARRAY (Multi Flexi) Text
-                        case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                        case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                        case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                        case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                        case 'F': //ARRAY (Flexible) - Row Format
-                        case 'L': //LIST drop-down/radio-button list
-                        case 'M': //Multiple choice checkbox
-                        case 'P': //Multiple choice with comments checkbox + text
-                            $relParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('on');\n";
-                            break;
-                        default:
-                            break;
-                    }
                     $relParts[] = "  }\n  else {\n";
                     $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
                     $relParts[] = "    if ($('#relevance" . $sq['rowdivid'] . "').val()=='1') { relChange" . $arg['qid'] . "=true; }\n";
@@ -5091,7 +5070,6 @@ static function GetRelevanceAndTailoringJavaScript()
                     switch ($sq['qtype'])
                     {
                         case 'L': //LIST drop-down/radio-button list
-                            $relParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
                             $listItem = substr($sq['rowdivid'],strlen($sq['sgqa']));    // gets the part of the rowdiv id past the end of the sgqa code.
                             $relParts[] = "    if (($('#java" . $sq['sgqa'] ."').val() == '" . $listItem . "')";
                             if ($listItem == 'other') {
