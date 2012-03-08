@@ -87,7 +87,8 @@ $dummy_js = <<< EOD
 	{
         newval = value;
         if (LEMradix === ',') {
-            newval = value.split(',').join('.');
+            newval = new String(value);
+            newval = newval.split(',').join('.');
         }
         if (newval != parseFloat(newval)) {
             newval = '';
