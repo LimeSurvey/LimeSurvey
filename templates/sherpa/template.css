@@ -1162,9 +1162,6 @@ div.em_regex_validation.error {
   color: #FF00FF;
 }
 
-div.em_q_fn_validation {
-  display: none;
-}
 div.em_q_fn_validation.good {
   color: green;
 }
@@ -1172,9 +1169,6 @@ div.em_q_fn_validation.error {
   color: #FF00FF;
 }
 
-div.em_sq_fn_validation {
-  display: none;
-}
 div.em_sq_fn_validation.good {
   color: green;
 }
