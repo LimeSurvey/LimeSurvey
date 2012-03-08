@@ -1002,6 +1002,7 @@ END;
                 $stepIndex = LimeExpressionManager::GetStepIndexInfo();
                 $lastGseq=-1;
                 $gseq = -1;
+                $grel = true;
                 for($v = 0, $n = 0; $n != $_SESSION['survey_'.$surveyid]['maxstep']; ++$n)
                 {
                     if (!isset($stepIndex[$n])) {
@@ -1009,23 +1010,32 @@ END;
                     }
                     $stepInfo = $stepIndex[$n];
 
-                    if (!$stepInfo['show'])
-                        continue;
-
                     if ($surveyMode == 'question')
                     {
                         if ($lastGseq != $stepInfo['gseq']) {
                             // show the group label
                             ++$gseq;
-                            $g = $_SESSION['survey_'.$surveyid]['grouplist'][$gseq];                
-                            echo '<h3>' . flattenText($g[1]) . "</h3>";
+                            $g = $_SESSION['survey_'.$surveyid]['grouplist'][$gseq];
+                            $grel = !LimeExpressionManager::GroupIsIrrelevantOrHidden($stepInfo['gid']);
+                            if ($grel)
+                            {
+                                echo '<h3>' . flattenText($g[1]) . "</h3>";
+                            }
                             $lastGseq = $stepInfo['gseq'];
+                        }
+                        if (!$grel || !$stepInfo['show'])
+                        {
+                            continue;
                         }
                         $q = $_SESSION['survey_'.$surveyid]['fieldarray'][$n];
                     }
                     else
                     {
                         ++$gseq;
+                        if (!$stepInfo['show'])
+                        {
+                            continue;
+                        }
                         $g = $_SESSION['survey_'.$surveyid]['grouplist'][$gseq];
                     }
 

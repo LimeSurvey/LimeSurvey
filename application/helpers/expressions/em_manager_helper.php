@@ -3051,8 +3051,10 @@ class LimeExpressionManager {
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
                     $message .= $result['message'];
+                    $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
+                    $grel = $gRelInfo['result'];
 
-                    if (!$result['relevant'] || $result['hidden'])
+                    if (!$grel || !$result['relevant'] || $result['hidden'])
                     {
                         // then skip this question - assume already saved?
                         continue;
@@ -3211,7 +3213,10 @@ class LimeExpressionManager {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
-                    if (!is_null($result) && ($result['mandViolation'] || !$result['valid']))
+                    $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
+                    $grel = $gRelInfo['result'];
+
+                    if ($grel && !is_null($result) && ($result['mandViolation'] || !$result['valid']))
                     {
                         // redisplay the current question
                         $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
@@ -3266,8 +3271,10 @@ class LimeExpressionManager {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
+                    $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
+                    $grel = $gRelInfo['result'];
 
-                    if (!$result['relevant'] || $result['hidden'])
+                    if (!$grel || !$result['relevant'] || $result['hidden'])
                     {
                         // then skip this question - assume already saved?
                         continue;
@@ -3655,7 +3662,9 @@ class LimeExpressionManager {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
-                    if ($result['mandViolation'] || !$result['valid'])
+                    $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
+                    $grel = $gRelInfo['result'];
+                    if ($grel && ($result['mandViolation'] || !$result['valid']))
                     {
                         // redisplay the current question
                         $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
@@ -3716,10 +3725,16 @@ class LimeExpressionManager {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
+                    $gRelInfo = $LEM->gRelInfo[$LEM->currentGroupSeq];
+                    $grel = $gRelInfo['result'];
 
-                    if (!$preview && (!$result['relevant'] || $result['hidden']))
+                    if (!$preview && (!$grel || !$result['relevant'] || $result['hidden']))
                     {
                         // then skip this question
+                        continue;
+                    }
+                    else if (!$grel)
+                    {
                         continue;
                     }
                     else if (!($result['mandViolation'] || !$result['valid']) && $LEM->currentQuestionSeq < $seq) {
