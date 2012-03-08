@@ -6062,115 +6062,120 @@ EOD;
     /**
      * Cleanse the $_POSTed data and update $_SESSION variables accordingly
      */
-    static function ProcessCurrentResponses()
-    {
-        $LEM =& LimeExpressionManager::singleton();
-        if (!isset($LEM->currentQset)) {
-            return array();
-        }
-        $updatedValues=array();
-        $radixchange = (($LEM->surveyOptions['radix']==',') ? true : false);
-        foreach ($LEM->currentQset as $qinfo)
+        static function ProcessCurrentResponses()
         {
-            $relevant=false;
-            $qid = $qinfo['info']['qid'];
-            $gid = $qinfo['info']['gid'];
-            $relevant = (isset($_POST['relevance' . $qid]) ? ($_POST['relevance' . $qid] == 1) : false);
-            $grelevant = (isset($_POST['relevanceG' . $gid]) ? ($_POST['relevanceG' . $gid] == 1) : false);
-            $_SESSION['relevanceStatus'][$qid] = $relevant;
-            $_SESSION['relevanceStatus']['G' . $gid] = $grelevant;
-            if (isset($qinfo['info']['rowdivid']) && $qinfo['info']['rowdivid']!='')
-            {
-                $rowdivid=$qinfo['info']['rowdivid'];
-                if ($rowdivid!='' && isset($_POST['relevance' . $rowdivid]))
-                {
-                    $sqrelevant = ($_POST['relevance' . $rowdivid] == 1);
-                    $_SESSION['relevanceStatus'][$rowdivid] = $sqrelevant;
-                }
+            $LEM =& LimeExpressionManager::singleton();
+            if (!isset($LEM->currentQset)) {
+                return array();
             }
-            foreach (explode('|',$qinfo['sgqa']) as $sq)
+            $updatedValues=array();
+            $radixchange = (($LEM->surveyOptions['radix']==',') ? true : false);
+            foreach ($LEM->currentQset as $qinfo)
             {
-                if ($relevant && $grelevant)
+                $relevant=false;
+                $qid = $qinfo['info']['qid'];
+                $gid = $qinfo['info']['gid'];
+                $relevant = (isset($_POST['relevance' . $qid]) ? ($_POST['relevance' . $qid] == 1) : false);
+                $grelevant = (isset($_POST['relevanceG' . $gid]) ? ($_POST['relevanceG' . $gid] == 1) : false);
+                $_SESSION['relevanceStatus'][$qid] = $relevant;
+                $_SESSION['relevanceStatus']['G' . $gid] = $grelevant;
+                foreach (explode('|',$qinfo['sgqa']) as $sq)
                 {
-                    $value = (isset($_POST[$sq]) ? $_POST[$sq] : '');
+                    $sqrelevant=true;
+                    if (isset($LEM->subQrelInfo[$qid][$sq]['rowdivid']))
+                    {
+                        $rowdivid = $LEM->subQrelInfo[$qid][$sq]['rowdivid'];
+                        if ($rowdivid!='' && isset($_POST['relevance' . $rowdivid]))
+                        {
+                            $sqrelevant = ($_POST['relevance' . $rowdivid] == 1);
+                            $_SESSION['relevanceStatus'][$rowdivid] = $sqrelevant;
+                        }
+                    }
                     $type = $qinfo['info']['type'];
-                    if ($radixchange && isset($LEM->knownVars[$sq]['onlynum']) && $LEM->knownVars[$sq]['onlynum']=='1')
+                    if ($relevant && $grelevant && $sqrelevant)
                     {
-                        // convert from comma back to decimal
-                        $value = implode('.',explode(',',$value));
-                    }
-                    switch($type)
-                    {
-                        case 'D': //DATE
-                            if (trim($value)=="")
-                            {
-                                $value = "";
-                            }
-                            else
-                            {
-                                $dateformatdatat=getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
-                                $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
-                                $value=$datetimeobj->convert("Y-m-d");
-                            }
-                            break;
-                        case 'N': //NUMERICAL QUESTION TYPE
-                        case 'K': //MULTIPLE NUMERICAL QUESTION
-                            if (trim($value)=="") {
-                                $value = "";
-                            }
-                            else {
-                                $value = sanitize_float($value);
-                            }
-                            break;
-                        case '|': //File Upload
-                            if (!preg_match('/_filecount$/', $sq))
-                            {
-                                $json = $value;
-                                $phparray = json_decode(stripslashes($json));
-
-                                // if the files have not been saved already,
-                                // move the files from tmp to the files folder
-
-                                $tmp = $LEM->surveyOptions['tempdir'] . '/upload/';
-                                if (!is_null($phparray) && count($phparray) > 0)
+                        $value = (isset($_POST[$sq]) ? $_POST[$sq] : '');
+                        if ($radixchange && isset($LEM->knownVars[$sq]['onlynum']) && $LEM->knownVars[$sq]['onlynum']=='1')
+                        {
+                            // convert from comma back to decimal
+                            $value = implode('.',explode(',',$value));
+                        }
+                        switch($type)
+                        {
+                            case 'D': //DATE
+                                if (trim($value)=="")
                                 {
-                                    // Move the (unmoved, temp) files from temp to files directory.
-                                    // Check all possible file uploads
-                                    for ($i = 0; $i < count($phparray); $i++)
-                                    {
-                                        if (file_exists($tmp . $phparray[$i]->filename))
-                                        {
-                                            $sDestinationFileName = 'fu_' . randomChars(15);
-                                            if (!rename($tmp . $phparray[$i]->filename, $LEM->surveyOptions['target'] . $sDestinationFileName))
-                                            {
-                                                echo "Error moving file to target destination";
-                                            }
-                                            $phparray[$i]->filename = $sDestinationFileName;
-                                        }
-                                    }
-                                    $value = str_replace('{','{ ',json_encode($phparray));  // so that EM doesn't try to parse it.
+                                    $value = "";
                                 }
-                            }
-                            break;
-                    }
-                    $_SESSION[$sq] = $value;
-                    $updatedValues[$sq] = array (
+                                else
+                                {
+                                    $dateformatdatat=getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
+                                    $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
+                                    $value=$datetimeobj->convert("Y-m-d");
+                                }
+                                break;
+                            case 'N': //NUMERICAL QUESTION TYPE
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                                if (trim($value)=="") {
+                                    $value = "";
+                                }
+                                else {
+                                    $value = sanitize_float($value);
+                                }
+                                break;
+                            case '|': //File Upload
+                                if (!preg_match('/_filecount$/', $sq))
+                                {
+                                    $json = $value;
+                                    $phparray = json_decode(stripslashes($json));
+
+                                    // if the files have not been saved already,
+                                    // move the files from tmp to the files folder
+
+                                    $tmp = $LEM->surveyOptions['tempdir'] . '/upload/';
+                                    if (!is_null($phparray) && count($phparray) > 0)
+                                    {
+                                        // Move the (unmoved, temp) files from temp to files directory.
+                                        // Check all possible file uploads
+                                        for ($i = 0; $i < count($phparray); $i++)
+                                        {
+                                            if (file_exists($tmp . $phparray[$i]->filename))
+                                            {
+                                                $sDestinationFileName = 'fu_' . randomChars(15);
+                                                if (!rename($tmp . $phparray[$i]->filename, $LEM->surveyOptions['target'] . $sDestinationFileName))
+                                                {
+                                                    echo "Error moving file to target destination";
+                                                }
+                                                $phparray[$i]->filename = $sDestinationFileName;
+                                            }
+                                        }
+                                        $value = str_replace('{','{ ',json_encode($phparray));  // so that EM doesn't try to parse it.
+                                    }
+                                }
+                                break;
+                        }
+                        $_SESSION[$sq] = $value;
+                        $updatedValues[$sq] = array (
                         'type'=>$type,
                         'value'=>$value,
                         );
-                }
-                else {  // irrelevant, so database will be NULLed separately
-                    // Must unset the value, rather than setting to '', so that EM can re-use the default value as needed.
-                    unset($_SESSION[$sq]);
+                    }
+                    else {  // irrelevant, so database will be NULLed separately
+                        // Must unset the value, rather than setting to '', so that EM can re-use the default value as needed.
+                        unset($_SESSION[$sq]);
+                        $updatedValues[$sq] = array (
+                        'type'=>$type,
+                        'value'=>NULL,
+                        );
+                    }
                 }
             }
+            if (isset($_POST['timerquestion']))
+            {
+                $_SESSION[$_POST['timerquestion']]=sanitize_float($_POST[$_POST['timerquestion']]);
+            }
+            return $updatedValues;
         }
-        if (isset($_POST['timerquestion']))
-        {
-            $_SESSION[$_POST['timerquestion']]=sanitize_float($_POST[$_POST['timerquestion']]);
-        }
-        return $updatedValues;
-    }
 
     static public function isValidVariable($varName)
     {
