@@ -2219,7 +2219,7 @@ function do_ranking($ia)
         . "  function ensureminansw_{$ia[0]}()\n"
         . "  {\n"
         . "     count={$anscount} - document.getElementById('CHOICES_{$ia[0]}').options.length;\n"
-        . "     if (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n";
+        . "     if (count < {$minansw} && $('#relevance{$ia[0]}').val()==1){\n";
         if(!isset($showpopups) || $showpopups == 0)
         {
             $minanswscript .= "\n
